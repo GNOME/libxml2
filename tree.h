@@ -94,15 +94,16 @@ typedef struct xmlAttr {
 #define XML_TYPE_ENTITY		3
 
 typedef struct xmlNode {
+    int             type;	/* type number in the DTD */
     struct xmlNode *parent;	/* child->parent link */
     struct xmlNode *next;	/* next sibling link  */
     struct xmlNode *childs;	/* parent->childs link */
     struct xmlAttr *properties;	/* properties list */
-    int             type;	/* type number in the DTD */
     const CHAR     *name;       /* the name of the node, or the entity */
     xmlNs          *ns;         /* pointer to the associated namespace */
     xmlNs          *nsDef;      /* namespace definitions on this node */
     CHAR           *content;    /* the content */
+    void           *servant;	/* for Corba ! */
 } xmlNode, *xmlNodePtr;
 
 /*
@@ -118,6 +119,7 @@ typedef struct xmlDoc {
     struct xmlNs   *oldNs;	/* Global namespace, the old way */
     void          *entities;    /* Hash table for general entities if any */
     struct xmlNode *root;	/* the document tree */
+    void           *servant;	/* for Corba ! */
 } xmlDoc, *xmlDocPtr;
 
 /*

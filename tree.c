@@ -277,6 +277,7 @@ xmlDocPtr xmlNewDoc(const CHAR *version) {
     cur->entities = NULL;
     cur->standalone = -1;
     cur->compression = xmlCompressMode;
+    cur->servant = NULL;
     return(cur);
 }
 
@@ -404,6 +405,7 @@ xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name, CHAR *content) {
     cur->name = xmlStrdup(name);
     cur->ns = ns;
     cur->nsDef = NULL;
+    cur->servant = NULL;
     if (content != NULL)
 	cur->content = xmlStrdup(content);
     else 

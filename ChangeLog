@@ -1,3 +1,8 @@
+Wed Oct  7 23:42:46 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* added hooks to keep track of servants when creating objects
+	  xmlDoc and xmlNode (for Corba export).
+
 Sun Oct  4 03:18:09 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* added xml-config script.

@@ -10286,6 +10286,7 @@ xmlSetEntityReferenceFunc(xmlEntityReferenceFunc func)
 #include <libxml/xpath.h>
 #endif
 
+extern void xmlGenericErrorDefaultFunc(void *ctx, const char *msg, ...);
 static int xmlParserInitialized = 0;
 
 /**
@@ -10301,7 +10302,9 @@ xmlInitParser(void) {
     if (xmlParserInitialized != 0)
 	return;
 
-    initGenericErrorDefaultFunc(NULL);
+    if ((xmlGenericError == xmlGenericErrorDefaultFunc) ||
+	(xmlGenericError == NULL))
+	initGenericErrorDefaultFunc(NULL);
     xmlInitThreads();
     xmlInitMemory();
     xmlInitCharEncodingHandlers();

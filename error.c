@@ -75,12 +75,12 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
 }
 
 void
-initGenericErrorDefaultFunc(xmlGenericErrorFunc *handler)
+initGenericErrorDefaultFunc(xmlGenericErrorFunc * handler)
 {
-	if (handler == NULL)
-		xmlGenericError = xmlGenericErrorDefaultFunc;
-	else
-		(*handler) = xmlGenericErrorDefaultFunc;
+    if (handler == NULL)
+        xmlGenericError = xmlGenericErrorDefaultFunc;
+    else
+        (*handler) = xmlGenericErrorDefaultFunc;
 }
 
 /**

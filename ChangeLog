@@ -1,3 +1,8 @@
+Fri Jan 18 12:47:15 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c error.c: Keith Isdale complained rightly that 
+	  xmlInitParser() did not preserve value set by xmlSetGenericErrorFunc
+
 Thu Jan 17 09:44:44 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed the funxtion to set the xml: attributes
@@ -108,7 +113,7 @@ Mon Jan  7 00:03:58 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 Sun Jan  6 13:45:49 CET 2002 Daniel Veillard <daniel@veillard.com>
 
-	* parser.c: patch from Jack J Franklin to remove a bug in
+	* parser.c: patch from Frank J Franklin to remove a bug in
 	  xmlCreatePushParserCtxt() when the initial buffer passed
 	  is large.
 

@@ -3,7 +3,7 @@
 <svg width="4in" height="3in">
   <defs>
     <symbol id="Triangle1" min-x="0" min-y="0" max-x="300" max-y="200">
-      <path d="M 50 0 L 50 200 L 250 0 z"/>
+      <path d="M 50 0 L  50 200 L 250 0 z"/>
     </symbol>
     <symbol id="Triangle2" min-x="0" min-y="0" max-x="300" max-y="200">
       <path d="M 50 0 L 250 200 L 250 0 z"/>

@@ -1,4 +1,10 @@
-Wed Nov 17 18:28:06 CET 1999
+Thu Nov 18 14:57:18 CET 1999
+
+	* parser.c: Fixed some wrongly space collapsing code due to
+	            a misreading of the spec.
+	* result/*: fixed the output accordingly	    
+
+Wed Nov 17 18:28:06 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* encoding.c: bug fix and typos
 	* xmlIO.[ch] parser.c: first bits toward real progressive parsing

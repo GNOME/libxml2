@@ -2509,6 +2509,12 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
  *   #x20 is appended for a "#xD#xA" sequence that is part of an external
  *   parsed entity or the literal entity value of an internal parsed entity 
  * - other characters are processed by appending them to the normalized value 
+ * If the declared value is not CDATA, then the XML processor must further
+ * process the normalized attribute value by discarding any leading and
+ * trailing space (#x20) characters, and by replacing sequences of space
+ * (#x20) characters by a single space (#x20) character.  
+ * All attributes for which no declaration has been read should be treated
+ * by a non-validating parser as if declared CDATA.
  *
  * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
  */
@@ -2523,7 +2529,6 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
     xmlChar *current = NULL;
     xmlEntityPtr ent;
     xmlChar cur;
-    int blank = 0;
 
 
     SHRINK;
@@ -2564,7 +2569,6 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
         if ((cur == '&') && (NXT(1) == '#')) {
 	    int val = xmlParseCharRef(ctxt);
 	    *out++ = val;
-	    blank = 0;
 	} else if (cur == '&') {
 	    ent = xmlParseEntityRef(ctxt);
 	    if ((ent != NULL) && 
@@ -2594,20 +2598,16 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 		    *out++ = *cur++;
 		*out++ = ';';
 	    }
-	    blank = 0;
 	} else {
 	    /*  invalid for UTF-8 , use COPY(out); !!!!!! */
 	    if ((cur == 0x20) || (cur == 0xD) || (cur == 0xA) || (cur == 0x9)) {
-	        if (!blank) {
-		    *out++ = 0x20;
-		    if (out - buffer > buffer_size - 10) {
-		      int index = out - buffer;
-		      
-		      growBuffer(buffer);
-		      out = &buffer[index];
-		    }
+		*out++ = 0x20;
+		if (out - buffer > buffer_size - 10) {
+		  int index = out - buffer;
+		  
+		  growBuffer(buffer);
+		  out = &buffer[index];
 		}
-		blank = 1;
 	    } else {
 		*out++ = cur;
 		if (out - buffer > buffer_size - 10) {
@@ -2616,7 +2616,6 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 		  growBuffer(buffer);
 		  out = &buffer[index];
 		}
-		blank = 0;
 	    }
 	    NEXT;
 	}

@@ -50,13 +50,6 @@ extern double xmlXPathNINF;
 
 #define IS_WSP_SPACE_CH(c)	((c) == 0x20)
 
-
-static unsigned long powten[10] = {
-    1, 10, 100, 1000, 10000, 100000, 1000000, 10000000L,
-    100000000L, 1000000000L
-};
-
-
 /* Date value */
 typedef struct _xmlSchemaValDate xmlSchemaValDate;
 typedef xmlSchemaValDate *xmlSchemaValDatePtr;
@@ -1890,42 +1883,76 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 goto return0;
             }
         case XML_SCHEMAS_DECIMAL:{
-                const xmlChar *cur = value, *tmp;
-                unsigned int frac = 0, len, neg = 0;
-                unsigned long base = 0;
+                const xmlChar *cur = value;
+                unsigned int len, neg = 0;
+		xmlChar cval[25];
+		xmlChar *cptr = cval;
+		int dec = -1;
 
                 if (cur == NULL)
                     goto return1;
+		/* First we handle an optional sign */
                 if (*cur == '+')
                     cur++;
                 else if (*cur == '-') {
                     neg = 1;
                     cur++;
                 }
-                tmp = cur;
-                while ((*cur >= '0') && (*cur <= '9')) {
-                    base = base * 10 + (*cur - '0');
-                    cur++;
-                }
-                len = cur - tmp;
-                if (*cur == '.') {
-                    cur++;
-                    tmp = cur;
-                    while ((*cur >= '0') && (*cur <= '9')) {
-                        base = base * 10 + (*cur - '0');
-                        cur++;
-                    }
-                    frac = cur - tmp;
-                }
-                if (*cur != 0)
-                    goto return1;
+		/*
+		 * Next we "pre-parse" the number, in preparation for calling
+		 * the common routine xmlSchemaParseUInt.  We get rid of any
+		 * leading zeroes (because we have reserved only 25 chars),
+		 * and note the position of any decimal point.
+		 */
+		len = 0;
+		while (len < 24) {
+		    if ((*cur >= '0') && (*cur <= '9')) {
+			*cptr++ = *cur;
+			len++;
+		    } else if (*cur == '.') {
+			if (dec != -1)
+			    goto return1;	/* multiple decimal points */
+			if (!len) {	/* num starts with '.' */
+			    *cptr++ = '0';
+			    len++;
+			}
+			dec = len++;
+		    } else
+			break;
+		    cur++;
+		}
+		if (*cur != 0)
+		    goto return1;	/* error if any extraneous chars */
+
                 if (val != NULL) {
                     v = xmlSchemaNewValue(XML_SCHEMAS_DECIMAL);
                     if (v != NULL) {
-                        v->value.decimal.lo = base;
+			/*
+		 	* If a mixed decimal, get rid of trailing zeroes
+		 	*/
+			if (dec) {
+			    while ((cptr > cval) && (*(cptr-1) == '0')) {
+				cptr--;
+				len--;
+			    }
+			}
+			*cptr = 0;	/* Terminate our (preparsed) string */
+			cptr = cval;
+			/*
+		 	* Now evaluate the significant digits of the number
+		 	*/
+			xmlSchemaParseUInt((const xmlChar **)&cptr,
+					    &v->value.decimal.lo,
+					    &v->value.decimal.mi,
+					    &v->value.decimal.hi);
                         v->value.decimal.sign = neg;
-                        v->value.decimal.frac = frac;
-                        v->value.decimal.total = frac + len;
+			if (dec == -1) {
+			    v->value.decimal.frac = 0;
+			    v->value.decimal.total = len;
+			} else {
+			    v->value.decimal.frac = len - dec - 1;
+			    v->value.decimal.total = len - 1;
+			}
                         *val = v;
                     }
                 }
@@ -2879,59 +2906,106 @@ static int
 xmlSchemaCompareDecimals(xmlSchemaValPtr x, xmlSchemaValPtr y)
 {
     xmlSchemaValPtr swp;
-    int order = 1, p;
-    unsigned long tmp;
+    int order = 1, integx, integy, dlen;
+    unsigned long hi, mi, lo;
 
+    /*
+     * First test: If x is -ve and not zero
+     */
     if ((x->value.decimal.sign) && 
 	((x->value.decimal.lo != 0) ||
 	 (x->value.decimal.mi != 0) ||
 	 (x->value.decimal.hi != 0))) {
+	/*
+	 * Then if y is -ve and not zero reverse the compare
+	 */
 	if ((y->value.decimal.sign) &&
 	    ((y->value.decimal.lo != 0) ||
 	     (y->value.decimal.mi != 0) ||
 	     (y->value.decimal.hi != 0)))
 	    order = -1;
+	/*
+	 * Otherwise (y >= 0) we have the answer
+	 */
 	else
 	    return (-1);
+    /*
+     * If x is not -ve and y is -ve we have the answer
+     */
     } else if ((y->value.decimal.sign) &&
 	       ((y->value.decimal.lo != 0) ||
 		(y->value.decimal.mi != 0) ||
 		(y->value.decimal.hi != 0))) {
         return (1);
     }
-    if (x->value.decimal.frac == y->value.decimal.frac) {
-	if (x->value.decimal.hi < y->value.decimal.hi)
-	    return (-order);
-	if (x->value.decimal.hi > y->value.decimal.hi)
-	    return (order);
-	if (x->value.decimal.mi < y->value.decimal.mi)
-	    return (-order);
-	if (x->value.decimal.mi > y->value.decimal.mi)
-	    return (order);
-        if (x->value.decimal.lo < y->value.decimal.lo)
-            return (-order);
-        if (x->value.decimal.lo > y->value.decimal.lo)
-	    return(order);
-	return(0);
+    /*
+     * If it's not simply determined by a difference in sign,
+     * then we need to compare the actual values of the two nums.
+     * To do this, we start by looking at the integral parts.
+     * If the number of integral digits differ, then we have our
+     * answer.
+     */
+    integx = x->value.decimal.total - x->value.decimal.frac;
+    integy = y->value.decimal.total - y->value.decimal.frac;
+    if (integx > integy)
+	return order;
+    else if (integy > integx)
+	return -order;
+    /*
+     * If the number of integral digits is the same for both numbers,
+     * then things get a little more complicated.  We need to "normalize"
+     * the numbers in order to properly compare them.  To do this, we
+     * look at the total length of each number (length => number of
+     * significant digits), and divide the "shorter" by 10 (decreasing
+     * the length) until they are of equal length.
+     */
+    dlen = x->value.decimal.total - y->value.decimal.total;
+    if (dlen < 0) {	/* y has more digits than x */
+	swp = x;
+	hi = y->value.decimal.hi;
+	mi = y->value.decimal.mi;
+	lo = y->value.decimal.lo;
+	dlen = -dlen;
+	order = -order;
+    } else {		/* x has more digits than y */
+	swp = y;
+	hi = x->value.decimal.hi;
+	mi = x->value.decimal.mi;
+	lo = x->value.decimal.lo;
     }
-    if (y->value.decimal.frac > x->value.decimal.frac) {
-        swp = y;
-        y = x;
-        x = swp;
-        order = -order;
+    while (dlen > 8) {	/* in effect, right shift by 10**8 */
+	lo = mi;
+	mi = hi;
+	hi = 0;
+	dlen -= 8;
     }
-    p = powten[x->value.decimal.frac - y->value.decimal.frac];
-    tmp = x->value.decimal.lo / p;
-    if (tmp > y->value.decimal.lo)
-        return (order);
-    if (tmp < y->value.decimal.lo)
-        return (-order);
-    tmp = y->value.decimal.lo * p;
-    if (x->value.decimal.lo < tmp)
-        return (-order);
-    if (x->value.decimal.lo == tmp)
-        return (0);
-    return (order);
+    while (dlen > 0) {
+	unsigned long rem1, rem2;
+	rem1 = (hi % 10) * 100000000L;
+	hi = hi / 10;
+	rem2 = (mi % 10) * 100000000L;
+	mi = (mi + rem1) / 10;
+	lo = (lo + rem2) / 10;
+	dlen--;
+    }
+    if (hi > swp->value.decimal.hi) {
+	return order;
+    } else if (hi == swp->value.decimal.hi) {
+	if (mi > swp->value.decimal.mi) {
+	    return order;
+	} else if (mi == swp->value.decimal.mi) {
+	    if (lo > swp->value.decimal.lo) {
+		return order;
+	    } else if (lo == swp->value.decimal.lo) {
+		if (x->value.decimal.total == y->value.decimal.total) {
+		    return 0;
+		} else {
+		    return order;
+		}
+	    }
+	}
+    }
+    return -order;
 }
 
 /**

@@ -1,3 +1,10 @@
+Fri Mar 11 23:53:13 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemastypes.c: enhanced the parsing of XML_SCHEMAS_DECIMAL
+	  and much of the routine xmlSchemaCompareDecimals.  The
+	  changes were necessary to fix a problem reported on the
+	  mailing list by John Hockaday.
+
 Fri Mar 11 13:22:52 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: The schema parser will stop if components could

@@ -311,6 +311,14 @@ struct _xmlDoc {
 };
 
 /*
+ * Compatibility naming layer with libxml1
+ */
+#ifndef xmlChildrenNode
+#define xmlChildrenNode childs
+#define xmlRootNode root
+#endif
+
+/*
  * Variables.
  */
 extern xmlNsPtr baseDTD;

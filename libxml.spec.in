@@ -88,7 +88,13 @@ if [ -f $RPM_BUILD_ROOT/%{prefix}/lib/libxml.so.@VERSION@ ]
 then
     (cd $RPM_BUILD_ROOT/%{prefix}/lib/ ; cp libxml.so.@VERSION@ libxml.so.0.99.0 ; ln -sf libxml.so.0.99.0 libxml.so.0)
 fi
-
+#
+# another hack to get /usr/include/gnome-xml/libxml/
+#
+if [ -d $RPM_BUILD_ROOT/%{prefix}/include/gnome-xml ]
+then
+    (cd $RPM_BUILD_ROOT/%{prefix}/include/gnome-xml ; ln -sf . libxml)
+fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -32,10 +32,10 @@ for file in valid_files:
         continue
     reader = libxml2.newTextReaderFilename(file)
     #print "%s:" % (file)
-    reader.setParserProp(libxml2.PARSER_VALIDATE, 1)
-    ret = reader.read()
+    reader.SetParserProp(libxml2.PARSER_VALIDATE, 1)
+    ret = reader.Read()
     while ret == 1:
-        ret = reader.read()
+        ret = reader.Read()
     if ret != 0:
         print "Error parsing and validating %s" % (file)
 	#sys.exit(1)

@@ -681,7 +681,6 @@ def nameFixup(name, classe, type, file):
         func = "regexp" + name[6:]
     elif name[0:13] == "xmlTextReader" and file == "xmlreader":
         func = name[13:]
-        func = string.lower(func[0:1]) + func[1:]
     elif name[0:11] == "xmlACatalog":
         func = name[11:]
         func = string.lower(func[0:1]) + func[1:]

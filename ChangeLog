@@ -1,3 +1,11 @@
+Sat Dec 28 22:11:57 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml2class.txt 
+	  python/tests/reader.py python/tests/reader2.py: changed the
+	  generator to provide casing for the XmlTextReader similar to
+	  C# so that examples and documentation are more directly transposable.
+	  Fixed the couple of tests in the suite.
+
 Sat Dec 28 15:55:32 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/guidelines.html: added a document on guildeline for

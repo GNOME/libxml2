@@ -1,3 +1,8 @@
+Tue Jan 11 10:14:33 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* Makefile.am configure.in: fixed dependency on python 2.3,
+	  also small improvement for cygwin (bug 163273)
+
 Sun Jan  9 18:46:32 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: William noticed I forgot to add special

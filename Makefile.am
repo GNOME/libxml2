@@ -123,7 +123,7 @@ noinst_LTLIBRARIES = testdso.la
 testdso_la_SOURCES = testdso.c
 testdso_la_LDFLAGS = -module -rpath $(libdir)
 
-testapi.c: gentest.py doc/libxml2-api.xml
+testapi.c: $(srcdir)/gentest.py doc/libxml2-api.xml
 	-@(if [ "$(PYTHON)" != "" ] ; then \
 	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
 

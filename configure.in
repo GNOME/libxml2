@@ -582,7 +582,7 @@ if test "$with_python" != "no" ; then
 	    echo Found python in $with_python
 	    PYTHON="$with_python"
 	else
-	    AC_PATH_PROG(PYTHON, python python2.3 python2.2 python2.1 python2.0 python1.6 python1.5)
+	    AC_PATH_PROG(PYTHON, python python2.4 python2.3 python2.2 python2.1 python2.0 python1.6 python1.5)
 	fi
     fi
     if test "$PYTHON" != ""
@@ -737,6 +737,8 @@ else
        *mingw32*) WITH_THREADS="1"
            THREADS_W32="Win32"
 	   THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"
+       ;;
+       *cygwin*) THREAD_LIBS=""
        ;;
        *beos*) WITH_THREADS="1"
 	   THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_BEOS_THREADS"
@@ -1157,6 +1159,8 @@ AC_SUBST(WITH_RUN_DEBUG)
 
 WIN32_EXTRA_LIBADD=
 WIN32_EXTRA_LDFLAGS=
+CYGWIN_EXTRA_LDFLAGS=
+CYGWIN_EXTRA_PYTHON_LIBADD=
 case "$host" in
  *-*-mingw*)
  CPPFLAGS="$CPPFLAGS -DWIN32"
@@ -1168,7 +1172,10 @@ case "$host" in
  ;;
  *-*-cygwin*)
  CYGWIN_EXTRA_LDFLAGS="-no-undefined"
- CYGWIN_EXTRA_PYTHON_LIBADD="-L/usr/lib/python2.3/config -lpython2.3"
+ if test "${PYTHON}" != ""
+ then
+   CYGWIN_EXTRA_PYTHON_LIBADD="-L/usr/lib/python${PYTHON_VERSION}/config -lpython${PYTHON_VERSION}"
+ fi
  ;;
 esac
 AC_SUBST(WIN32_EXTRA_LIBADD)

@@ -1,3 +1,8 @@
+Mon Mar 15 10:37:18 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* relaxng.c: enhanced to ignore XML_XINCLUDE_START and XML_XINCLUDE_END
+	  nodes (bug 137153)
+
 Sun Mar 14 13:19:20 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: applied patch from John Belmonte for anyURI.

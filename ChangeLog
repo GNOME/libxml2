@@ -1,3 +1,8 @@
+Thu Apr 12 17:41:09 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c result/HTML/*: revamped the way the HTML
+	  parser handles end of tags or end of input
+
 Thu Apr 12 10:50:34 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.[ch] : added xmlDocCopyNode for gdome2 support

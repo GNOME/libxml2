@@ -445,7 +445,7 @@ htmlElemDesc  html40ElementTable[] = {
 { "th",		0,	1,	0,	0,	0,	0, "table header cell" },
 { "thead",	0,	1,	0,	0,	0,	0, "table header " },
 { "title",	0,	0,	0,	0,	0,	0, "document title " },
-{ "tr",		0,	1,	0,	0,	0,	0, "table row " },
+{ "tr",		0,	0,	0,	0,	0,	0, "table row " },
 { "tt",		0,	0,	0,	0,	0,	0, "teletype or monospaced text style" },
 { "u",		0,	0,	0,	0,	1,	1, "underlined text style" },
 { "ul",		0,	0,	0,	0,	0,	0, "unordered list " },
@@ -661,6 +661,7 @@ htmlCheckAutoClose(const xmlChar *newtag, const xmlChar *oldtag) {
  * htmlAutoCloseOnClose:
  * @ctxt:  an HTML parser context
  * @newtag:  The new tag name
+ * @force:  force the tag closure
  *
  * The HTmL DtD allows an ending tag to implicitely close other tags.
  */
@@ -688,11 +689,7 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 	    xmlGenericError(xmlGenericErrorContext,"htmlAutoCloseOnClose: %s closes %s\n", newtag, ctxt->name);
 #endif
         } else {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData,
-		 "Opening and ending tag mismatch: %s and %s\n",
-		                 newtag, ctxt->name);
-	    ctxt->wellFormed = 0;
+	    return;
 	}
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, ctxt->name);
@@ -700,6 +697,39 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 	if (oldname != NULL) {
 #ifdef DEBUG
 	    xmlGenericError(xmlGenericErrorContext,"htmlAutoCloseOnClose: popped %s\n", oldname);
+#endif
+	    xmlFree(oldname);
+	}	
+    }
+}
+
+/**
+ * htmlAutoCloseOnEnd:
+ * @ctxt:  an HTML parser context
+ *
+ * Close all remaining tags at the end of the stream
+ */
+static void
+htmlAutoCloseOnEnd(htmlParserCtxtPtr ctxt) {
+    xmlChar *oldname;
+    int i;
+
+    if (ctxt->nameNr == 0)
+	return;
+#ifdef DEBUG
+    xmlGenericError(xmlGenericErrorContext,"Close of stack: %d elements\n", ctxt->nameNr);
+#endif
+
+    for (i = (ctxt->nameNr - 1);i >= 0;i--) {
+#ifdef DEBUG
+        xmlGenericError(xmlGenericErrorContext,"%d : %s\n", i, ctxt->nameTab[i]);
+#endif
+	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
+	    ctxt->sax->endElement(ctxt->userData, ctxt->name);
+	oldname = htmlnamePop(ctxt);
+	if (oldname != NULL) {
+#ifdef DEBUG
+	    xmlGenericError(xmlGenericErrorContext,"htmlAutoCloseOnEnd: popped %s\n", oldname);
 #endif
 	    xmlFree(oldname);
 	}	
@@ -737,9 +767,8 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
         }
     }
     if (newtag == NULL) {
-	htmlAutoCloseOnClose(ctxt, BAD_CAST"head");
-	htmlAutoCloseOnClose(ctxt, BAD_CAST"body");
-	htmlAutoCloseOnClose(ctxt, BAD_CAST"html");
+	htmlAutoCloseOnEnd(ctxt);
+	return;
     }
     while ((newtag == NULL) && (ctxt->name != NULL) &&
 	   ((xmlStrEqual(ctxt->name, BAD_CAST"head")) ||
@@ -3266,10 +3295,8 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	     * Fourth : end of the resource
 	     */
 	    else if (CUR == 0) {
-		int level = ctxt->nodeNr;
-		htmlAutoClose(ctxt, NULL);
-		if (level == ctxt->nodeNr)
-		    break;
+		htmlAutoCloseOnEnd(ctxt);
+		break;
 	    }
 
 	    /*
@@ -3439,29 +3466,6 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	if (ctxt->nameNr < depth) break; 
     }	
 
-    if (!IS_CHAR(CUR)) {
-	/************
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	         "Premature end of data in tag %s\n", currentNode);
-	ctxt->wellFormed = 0;
-	 *************/
-
-	/*
-	 * end of parsing of this node.
-	 */
-	nodePop(ctxt);
-	oldname = htmlnamePop(ctxt);
-#ifdef DEBUG
-	xmlGenericError(xmlGenericErrorContext,"Premature end of tag %s : popping out %s\n", name, oldname);
-#endif
-	if (oldname != NULL)
-	    xmlFree(oldname);
-	if (currentNode != NULL)
-	    xmlFree(currentNode);
-	return;
-    }
-
     /*
      * Capture end position and add node
      */
@@ -3472,6 +3476,10 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
        node_info.node = ctxt->node;
        xmlParserAddNodeInfo(ctxt, &node_info);
     }
+    if (!IS_CHAR(CUR)) {
+	htmlAutoCloseOnEnd(ctxt);
+    }
+
     if (currentNode != NULL)
 	xmlFree(currentNode);
 }
@@ -3556,7 +3564,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
      * autoclose
      */
     if (CUR == 0)
-	htmlAutoClose(ctxt, NULL);
+	htmlAutoCloseOnEnd(ctxt);
 
 
     /*
@@ -3899,7 +3907,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	else
 	    avail = in->buf->buffer->use - (in->cur - in->base);
 	if ((avail == 0) && (terminate)) {
-	    htmlAutoClose(ctxt, NULL);
+	    htmlAutoCloseOnEnd(ctxt);
 	    if ((ctxt->nameNr == 0) && (ctxt->instate != XML_PARSER_EOF)) { 
 		/*
 		 * SAX: end of the document processing.
@@ -4077,9 +4085,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    goto done;
 		} else {
 		    ctxt->errNo = XML_ERR_DOCUMENT_END;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
-			    "Extra content at the end of the document\n");
 		    ctxt->wellFormed = 0;
 		    ctxt->instate = XML_PARSER_EOF;
 #ifdef DEBUG_PUSH
@@ -4491,7 +4496,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
     }
 done:    
     if ((avail == 0) && (terminate)) {
-	htmlAutoClose(ctxt, NULL);
+	htmlAutoCloseOnEnd(ctxt);
 	if ((ctxt->nameNr == 0) && (ctxt->instate != XML_PARSER_EOF)) { 
 	    /*
 	     * SAX: end of the document processing.
@@ -4555,9 +4560,6 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 	    (ctxt->instate != XML_PARSER_EPILOG) &&
 	    (ctxt->instate != XML_PARSER_MISC)) {
 	    ctxt->errNo = XML_ERR_DOCUMENT_END;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData,
-		    "Extra content at the end of the document\n");
 	    ctxt->wellFormed = 0;
 	} 
 	if (ctxt->instate != XML_PARSER_EOF) {

@@ -171,9 +171,7 @@ SAX.startElement(b)
 SAX.characters(Links, 5)
 SAX.error: Opening and ending tag mismatch: h4 and b
 SAX.endElement(b)
-SAX.endElement(h4)
-SAX.error: Unexpected end tag : b
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(ul)
 SAX.startElement(li)
@@ -185,11 +183,11 @@ SAX.characters(HumanInterface, 14)
 SAX.endElement(a)
 SAX.endElement(li)
 SAX.endElement(ul)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(dir)
 SAX.endElement(dir)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(ul)
 SAX.startElement(li)
@@ -201,11 +199,11 @@ SAX.characters(DataManagement.FlatFile, 23)
 SAX.endElement(a)
 SAX.endElement(li)
 SAX.endElement(ul)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(dir)
 SAX.endElement(dir)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(ul)
 SAX.startElement(li)
@@ -217,14 +215,16 @@ SAX.characters(DataManagement, 14)
 SAX.endElement(a)
 SAX.endElement(li)
 SAX.endElement(ul)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(dir)
 SAX.endElement(dir)
+SAX.characters(
+, 2)
+SAX.error: Opening and ending tag mismatch: html and h4
 SAX.ignorableWhitespace(
 , 2)
+SAX.endElement(h4)
 SAX.endElement(body)
 SAX.endElement(html)
-SAX.ignorableWhitespace(
-, 2)
 SAX.endDocument()

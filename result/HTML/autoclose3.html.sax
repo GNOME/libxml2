@@ -13,7 +13,6 @@ SAX.startElement(li)
 SAX.characters(item 2
 , 7)
 SAX.endElement(li)
-SAX.error: Opening and ending tag mismatch: body and ul
 SAX.endElement(ul)
 SAX.endElement(body)
 SAX.endElement(html)

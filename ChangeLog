@@ -1,3 +1,8 @@
+Thu Mar  2 04:45:15 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c: seems a better solution to <a>   </a> exists,
+	  will try it for a while
+
 Thu Mar  2 02:26:13 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: tried to remove the <a>   </a> generating <a/>

@@ -2101,15 +2101,17 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 	return(0);
     if (CUR != '<') return(0);
     if (ctxt->node == NULL) return(0);
+    if ((ctxt->node->childs == NULL) &&
+	(CUR == '<') && (NXT(1) == '/')) return(0);
 
     lastChild = xmlGetLastChild(ctxt->node);
     if (lastChild == NULL) {
-	if (ctxt->node->content != NULL) return(0);
+        if (ctxt->node->content != NULL) return(0);
     } else if (xmlNodeIsText(lastChild))
-	return(0);
+        return(0);
     else if ((ctxt->node->childs != NULL) &&
-	     (xmlNodeIsText(ctxt->node->childs)))
-	return(0);
+             (xmlNodeIsText(ctxt->node->childs)))
+        return(0);
     return(1);
 }
 

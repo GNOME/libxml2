@@ -913,6 +913,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 {
     xmlCharEncodingHandlerPtr handler;
 
+    if (ctxt == NULL) return(-1);
     switch (enc) {
 	case XML_CHAR_ENCODING_ERROR:
 	    __xmlErrEncoding(ctxt, XML_ERR_UNKNOWN_ENCODING,
@@ -1331,6 +1332,7 @@ xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr input,
 	            xmlCharEncoding enc) {
     xmlParserInputPtr inputStream;
 
+    if (input == NULL) return(NULL);
     if (xmlParserDebugEntities)
 	xmlGenericError(xmlGenericErrorContext, "new input from I/O\n");
     inputStream = xmlNewInputStream(ctxt);

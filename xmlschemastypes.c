@@ -749,7 +749,7 @@ xmlSchemaGetPredefinedType(const xmlChar *name, const xmlChar *ns) {
 xmlSchemaTypePtr
 xmlSchemaGetBuiltInListSimpleTypeItemType(xmlSchemaTypePtr type)
 {
-    if (type->type != XML_SCHEMA_TYPE_BASIC)
+    if ((type == NULL) || (type->type != XML_SCHEMA_TYPE_BASIC))
 	return (NULL);
     switch (type->builtInType) {
 	case XML_SCHEMAS_NMTOKENS: 

@@ -248,6 +248,7 @@ struct _xmlRelaxNGParserCtxt {
     xmlAutomataStatePtr state;  /* used to build the automata */
 
     int crng;			/* compact syntax and other flags */
+    int freedoc;		/* need to free the document */
 };
 
 #define FLAGS_IGNORABLE		1
@@ -6657,6 +6658,7 @@ xmlRelaxNGNewDocParserCtxt(xmlDocPtr doc)
     }
     memset(ret, 0, sizeof(xmlRelaxNGParserCtxt));
     ret->document = copy;
+    ret->freedoc = 1;
     ret->userData = xmlGenericErrorContext;
     return (ret);
 }
@@ -6693,6 +6695,8 @@ xmlRelaxNGFreeParserCtxt(xmlRelaxNGParserCtxtPtr ctxt)
             xmlRelaxNGFreeDefine(ctxt->defTab[i]);
         xmlFree(ctxt->defTab);
     }
+    if ((ctxt->document != NULL) && (ctxt->freedoc))
+        xmlFreeDoc(ctxt->document);
     xmlFree(ctxt);
 }
 

@@ -1,3 +1,9 @@
+Mon Nov  8 11:24:57 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: more types, more coverage
+	* parser.c parserInternals.c relaxng.c valid.c xmlIO.c
+	  xmlschemastypes.c: more problems fixed
+	  
 Mon Nov  8 10:24:28 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* gentest.py: fixed test file corruption problem

@@ -10059,6 +10059,8 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr inputStream;
     xmlParserInputBufferPtr buf;
+    
+    if (ioread == NULL) return(NULL);
 
     buf = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx, enc);
     if (buf == NULL) return(NULL);

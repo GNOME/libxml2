@@ -3436,7 +3436,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
         /*
          * Do a local lookup
          */
-        if ((ctxt->catalogs != NULL) &&
+        if ((ctxt != NULL) && (ctxt->catalogs != NULL) &&
             ((pref == XML_CATA_ALLOW_ALL) ||
              (pref == XML_CATA_ALLOW_DOCUMENT))) {
             resource = xmlCatalogLocalResolve(ctxt->catalogs,
@@ -3462,7 +3462,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
             && (!xmlSysIDExists((const char *) resource))) {
             xmlChar *tmp = NULL;
 
-            if ((ctxt->catalogs != NULL) &&
+            if ((ctxt != NULL) && (ctxt->catalogs != NULL) &&
                 ((pref == XML_CATA_ALLOW_ALL) ||
                  (pref == XML_CATA_ALLOW_DOCUMENT))) {
                 tmp = xmlCatalogLocalResolveURI(ctxt->catalogs, resource);
@@ -3624,7 +3624,7 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
 	/*
 	 * Do a local lookup
 	 */
-	if ((ctxt->catalogs != NULL) &&
+	if ((ctxt != NULL) && (ctxt->catalogs != NULL) &&
 	    ((pref == XML_CATA_ALLOW_ALL) ||
 	     (pref == XML_CATA_ALLOW_DOCUMENT))) {
 	    resource = xmlCatalogLocalResolve(ctxt->catalogs,
@@ -3649,7 +3649,7 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
 	if ((resource != NULL) && (!xmlNoNetExists((const char *)resource))) {
 	    xmlChar *tmp = NULL;
 
-	    if ((ctxt->catalogs != NULL) &&
+	    if ((ctxt != NULL) && (ctxt->catalogs != NULL) &&
 		((pref == XML_CATA_ALLOW_ALL) ||
 		 (pref == XML_CATA_ALLOW_DOCUMENT))) {
 		tmp = xmlCatalogLocalResolveURI(ctxt->catalogs, resource);

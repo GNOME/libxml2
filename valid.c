@@ -1877,7 +1877,8 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
 	                "Attribute %s of %s: invalid default value\n",
 	                elem, name, defaultValue);
 	defaultValue = NULL;
-	ctxt->valid = 0;
+	if (ctxt != NULL)
+	    ctxt->valid = 0;
     }
 #endif /* LIBXML_VALID_ENABLED */
 
@@ -1958,7 +1959,8 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
 	    xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_MULTIPLE_ID,
 	   "Element %s has too may ID attributes defined : %s\n",
 		   elem, name, NULL);
-	    ctxt->valid = 0;
+	    if (ctxt != NULL)
+		ctxt->valid = 0;
 	}
 #endif /* LIBXML_VALID_ENABLED */
 

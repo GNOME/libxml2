@@ -35,6 +35,11 @@ skipped_functions = [
 "htmlIORead", "htmlReadIO", "htmlCtxtReadIO",
 "xmlReaderNewIO", "xmlBufferDump", "xmlNanoFTPConnect",
 "xmlNanoFTPConnectTo",
+# Complex I/O APIs
+"xmlCreateIOParserCtxt", "xmlParserInputBufferCreateIO",
+"xmlRegisterInputCallbacks", "xmlReaderForIO",
+"xmlOutputBufferCreateIO", "xmlRegisterOutputCallbacks",
+"xmlSaveToIO",
 # library state cleanup, generate false leak informations and other
 # troubles, heavillyb tested otherwise.
 "xmlCleanupParser", "xmlRelaxNGCleanupTypes", "xmlSetListDoc",
@@ -64,7 +69,8 @@ skipped_memcheck = [ "xmlLoadCatalog", "xmlAddEncodingAlias",
    "xmlNanoHTTPScanProxy", "xmlResetLastError", "xmlCatalogConvert",
    "xmlCatalogRemove", "xmlLoadCatalogs", "xmlCleanupCharEncodingHandlers",
    "xmlInitCharEncodingHandlers", "xmlCatalogCleanup",
-   "htmlParseFile" # loads the catalogs
+   "xmlSchemaGetBuiltInType",
+   "htmlParseFile", # loads the catalogs
 ]
 
 #
@@ -126,6 +132,7 @@ extra_post_call = {
    "xmlCopyNamespaceList": "if (ret_val != NULL) xmlFreeNsList(ret_val);",
    "xmlNewTextWriter": "if (ret_val != NULL) out = NULL;",
    "xmlNewTextWriterPushParser": "if (ret_val != NULL) ctxt = NULL;",
+   "xmlNewIOInputStream": "if (ret_val != NULL) input = NULL;",
 }
 
 modules = []
@@ -440,17 +447,17 @@ test.write("""
 static int
 testlibxml2(void)
 {
-    int ret = 0;
+    int test_ret = 0;
 
 """)
 
 for module in modules:
-    test.write("    ret += test_%s();\n" % module)
+    test.write("    test_ret += test_%s();\n" % module)
 
 test.write("""
     printf("Total: %d functions, %d tests, %d errors\\n",
-           function_tests, call_tests, ret);
-    return(ret);
+           function_tests, call_tests, test_ret);
+    return(test_ret);
 }
 
 """)
@@ -513,7 +520,7 @@ def generate_test(module, node):
     test.write("""
 static int
 test_%s(void) {
-    int ret = 0;
+    int test_ret = 0;
 
 """ % (name))
 
@@ -521,7 +528,7 @@ test_%s(void) {
         add_missing_functions(name, module)
 	test.write("""
     /* missing type support */
-    return(ret);
+    return(test_ret);
 }
 
 """)
@@ -623,7 +630,7 @@ test_%s(void) {
 	test.write("""        if (mem_base != xmlMemBlocks()) {
             printf("Leak of %%d blocks found in %s",
 	           xmlMemBlocks() - mem_base);
-	    ret++;
+	    test_ret++;
 """ % (name));
 	for arg in t_args:
 	    (nam, type, rtype, info) = arg;
@@ -645,7 +652,7 @@ test_%s(void) {
 
     test.write("""
     function_tests++;
-    return(ret);
+    return(test_ret);
 }
 
 """)
@@ -671,7 +678,7 @@ for module in modules:
     # header
     test.write("""static int
 test_%s(void) {
-    int ret = 0;
+    int test_ret = 0;
 
     printf("Testing %s : %d of %d functions ...\\n");
 """ % (module, module, nb_tests - nb_tests_old, i))
@@ -681,13 +688,13 @@ test_%s(void) {
         name = function.xpathEval('string(@name)')
 	if is_skipped_function(name):
 	    continue
-	test.write("    ret += test_%s();\n" % (name))
+	test.write("    test_ret += test_%s();\n" % (name))
 
     # footer
     test.write("""
-    if (ret != 0)
-	printf("Module %s: %%d errors\\n", ret);
-    return(ret);
+    if (test_ret != 0)
+	printf("Module %s: %%d errors\\n", test_ret);
+    return(test_ret);
 }
 """ % (module))
 

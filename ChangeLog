@@ -1,3 +1,8 @@
+Thu Feb 24 16:37:51 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c: applied patch from Rich Salz for multithreading on
+	  Windows.
+
 Wed Feb 23 15:04:46 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c: applied a patch from Rob Richards fixing a couple

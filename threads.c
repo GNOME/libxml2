@@ -107,7 +107,11 @@ static __declspec(thread) int tlstate_inited = 0;
 static DWORD globalkey = TLS_OUT_OF_INDEXES;
 #endif /* HAVE_COMPILER_TLS */
 static DWORD mainthread;
-static int run_once_init = 1;
+static struct
+{
+    int32 done;
+    int32; control;
+} run_once = { 0, 0 };
 /* endif HAVE_WIN32_THREADS */
 #elif defined HAVE_BEOS_THREADS
 int32 globalkey = 0;
@@ -487,10 +491,7 @@ xmlGetGlobalState(void)
     xmlGlobalState *globalval;
     xmlGlobalStateCleanupHelperParams * p;
 
-    if (run_once_init) { 
-	run_once_init = 0; 
-	xmlOnceInit(); 
-    }
+    xmlOnceInit();
 #if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
     globalval = (xmlGlobalState *)TlsGetValue(globalkey);
 #else
@@ -581,12 +582,9 @@ xmlIsMainThread(void)
 #ifdef HAVE_PTHREAD_H
     pthread_once(&once_control, xmlOnceInit);
 #elif defined HAVE_WIN32_THREADS
-    if (run_once_init) { 
-	run_once_init = 0; 
-	xmlOnceInit (); 
-    }
+    xmlOnceInit (); 
 #elif defined HAVE_BEOS_THREADS
-	xmlOnceInit();
+    xmlOnceInit();
 #endif
         
 #ifdef DEBUG_THREADS
@@ -700,10 +698,22 @@ xmlOnceInit(void) {
 #endif
 
 #if defined(HAVE_WIN32_THREADS)
+    if (!run_once.done) {
+        if (InterlockedIncrement(&run_once.control) == 0)
+        {
 #if !defined(HAVE_COMPILER_TLS)
-    globalkey = TlsAlloc();
+            globalkey = TlsAlloc();
 #endif
-    mainthread = GetCurrentThreadId();
+            mainthread = GetCurrentThreadId();
+            run_once.done = 1;
+        }
+        else {
+            /* Another thread is working; give up our slice and
+             * wait until they're done. */
+            while (!run_once.done)
+                Sleep(0);
+        }
+    }
 #endif
 
 #ifdef HAVE_BEOS_THREADS

@@ -1,3 +1,7 @@
+Tue Mar 29 22:29:28 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c: fixing bug 168196, <a name=""> must be URI escaped too
+
 Sun Mar 27 13:24:24 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: cleanup of the Prop related functions and xmlNewNodeEatName

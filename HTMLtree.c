@@ -663,7 +663,9 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 		(cur->parent->ns == NULL) &&
 		((!xmlStrcasecmp(cur->name, BAD_CAST "href")) ||
 	         (!xmlStrcasecmp(cur->name, BAD_CAST "action")) ||
-		 (!xmlStrcasecmp(cur->name, BAD_CAST "src")))) {
+		 (!xmlStrcasecmp(cur->name, BAD_CAST "src")) ||
+		 ((!xmlStrcasecmp(cur->name, BAD_CAST "name")) &&
+		  (!xmlStrcasecmp(cur->parent->name, BAD_CAST "a"))))) {
 		xmlChar *escaped;
 		xmlChar *tmp = value;
 

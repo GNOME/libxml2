@@ -191,8 +191,8 @@ API:</a></h3><p>First, and like for every other module of libxml, there is an
 automatically generated <a href="html/libxml-catalog.html">API page for
 catalog support</a>.</p><p>The header for the catalog interfaces should be included as:</p><pre>#include &lt;libxml/catalog.h&gt;</pre><p>The API is voluntarily kept very simple. First it is not obvious that
 applications really need access to it since it is the default behaviour of
-libxml2 (Note: it is possible to completely override libxml2 default catalog by
-using <a href="html/libxml-parser.html">xmlSetExternalEntityLoader</a> to
+libxml2 (Note: it is possible to completely override libxml2 default catalog
+by using <a href="html/libxml-parser.html">xmlSetExternalEntityLoader</a> to
 plug an application specific resolver).</p><p>Basically libxml2 support 2 catalog lists:</p><ul><li>the default one, global shared by all the application</li>
   <li>a per-document catalog, this one is built if the document uses the
     <code>oasis-xml-catalog</code> PIs to specify its own catalog list, it is

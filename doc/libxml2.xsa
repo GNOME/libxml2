@@ -8,26 +8,26 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.5.7</version>
-    <last-release> Apr 25 2003</last-release>
+    <version>2.5.8</version>
+    <last-release> Jul 6 2003</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Relax-NG: Compiling to regexp and streaming validation on top of the
-    xmlReader interface, added to xmllint --stream
-   - xmlReader: Expand(), Next() and DOM access glue, bug fixes
-   - Support for large files: RGN validated a 4.5GB instance
-   - Thread support is now configured in by default
-   - Fixes: update of the Trio code (Bjorn), WXS Date and Duration fixes
-    (Charles Bozeman), DTD and namespaces (Brent Hendricks), HTML push parser
-    and zero bytes handling, some missing Windows file path conversions,
-    behaviour of the parser and validator in the presence of &quot;out of memory&quot;
-    error conditions
-   - extended the API to be able to plug a garbage collecting memory
-    allocator, added xmlMallocAtomic() and modified the allocations
-    accordingly.
-   - Performances: removed excessive malloc() calls, speedup of the push and
-    xmlReader interfaces, removed excessive thread locking
-   - Documentation: man page (John Fleck), xmlReader documentation
-   - Python: adding binding for xmlCatalogAddLocal (Brent M Hendricks)
+    <changes>   - bugfixes: XPath, XInclude, file/URI mapping, UTF-16 save (Mark
+    Itzcovitz), UTF-8 checking, URI saving, error printing (William Brack),
+    PI related memleak, compilation without schemas or without xpath (Joerg
+    Schmitz-Linneweber/Garry Pennington), xmlUnlinkNode problem with DTDs,
+    rpm problem on , i86_64, removed a few compilation problems from 2.5.7,
+    xmlIOParseDTD, and xmlSAXParseDTD (Malcolm Tredinnick)
+   - portability: DJGPP (MsDos) , OpenVMS (Craig A. Berry)
+   - William Brack fixed multithreading lock problems
+   - IPv6 patch for FTP and HTTP accesses (Archana Shah/Wipro)
+   - Windows fixes (Igor Zlatkovic,  Eric Zurcher), threading (St&#xE9;phane
+    Bidoul)
+   - A few W3C Schemas Structure improvements
+   - W3C Schemas Datatype improvements (Charlie Bozeman)
+   - Python bindings for thread globals (St&#xE9;phane Bidoul), and method/class
+    generator 
+   - added --nonet option to xmllint 
+   - documentation improvements (John Fleck)
 
 </changes>
   </product>

@@ -11,9 +11,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 using the XML tollkit from the C language. It is not intended to be
 extensive. I hope the automatically generated documents will provide the
 completeness required, but as a separate set of documents. The interfaces of
-the XML parser are by principle low level,
-Those interested in a higher level API should <a href="#DOM">look at
-DOM</a>.</p><p>The <a href="html/libxml-parser.html">parser interfaces for XML</a> are
+the XML parser are by principle low level, Those interested in a higher level
+API should <a href="#DOM">look at DOM</a>.</p><p>The <a href="html/libxml-parser.html">parser interfaces for XML</a> are
 separated from the <a href="html/libxml-htmlparser.html">HTML parser
 interfaces</a>.  Let's have a look at how the XML parser can be called:</p><h3><a name="Invoking" id="Invoking">Invoking the parser : the pull method</a></h3><p>Usually, the first thing to do is to read an XML input. The parser accepts
 documents either from in-memory strings or from files.  The functions are
@@ -26,8 +25,9 @@ defined in &quot;parser.h&quot;:</p><dl><dt><code>xmlDocPtr xmlParseMemory(char 
     </dd>
 </dl><p>The parser returns a pointer to the document structure (or NULL in case of
 failure).</p><h3 id="Invoking1">Invoking the parser: the push method</h3><p>In order for the application to keep the control when the document is
-being fetched (which is common for GUI based programs) libxml2 provides a push
-interface, too, as of version 1.8.3. Here are the interface functions:</p><pre>xmlParserCtxtPtr xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax,
+being fetched (which is common for GUI based programs) libxml2 provides a
+push interface, too, as of version 1.8.3. Here are the interface
+functions:</p><pre>xmlParserCtxtPtr xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax,
                                          void *user_data,
                                          const char *chunk,
                                          int size,

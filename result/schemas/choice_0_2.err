@@ -18,7 +18,5 @@ Content model of doc:
  state: FINAL 3, 1 transitions:
   trans: removed
 0 counters:
-Building content model for a
-Building content model for b
 xmlSchemaValidateCallback: a, a, a
 Element doc content check failed

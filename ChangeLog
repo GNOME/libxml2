@@ -1,3 +1,9 @@
+Thu Apr 18 16:40:42 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am xmlschemas.c: more Schemas work
+	* test/schemas/* result/schemas/*: added more tests coming
+	  from the spec.
+
 Thu Apr 18 13:52:52 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c: fixed & serialization bug introduced in 2.4.20

@@ -2676,7 +2676,7 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (IS_SCHEMA(child, "simpleContent")) {
-	subtype = xmlSchemaParseSimpleContent(ctxt, schema, child);
+	type->subtypes = xmlSchemaParseSimpleContent(ctxt, schema, child);
 	child = child->next;
     } else if (IS_SCHEMA(child, "complexContent")) {
 	type->subtypes = xmlSchemaParseComplexContent(ctxt, schema, child);
@@ -3085,17 +3085,20 @@ xmlSchemaBuildContentModel(xmlSchemaElementPtr elem,
 		           const xmlChar *name) {
     xmlAutomataStatePtr start;
 
-#ifdef DEBUG_CONTENT
-    xmlGenericError(xmlGenericErrorContext,
-	    "Building content model for %s\n", name);
-#endif
-
     if (elem->contModel != NULL)
 	return;
     if (elem->subtypes == NULL)
 	return;
     if (elem->subtypes->type != XML_SCHEMA_TYPE_COMPLEX)
 	return;
+    if (elem->subtypes->contentType == XML_SCHEMA_CONTENT_BASIC)
+	return;
+
+#ifdef DEBUG_CONTENT
+    xmlGenericError(xmlGenericErrorContext,
+	    "Building content model for %s\n", name);
+#endif
+
     ctxt->am = xmlNewAutomata();
     if (ctxt->am == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -3351,9 +3354,14 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 	}
     } 
 #ifdef DEBUG_TYPE
-    xmlGenericError(xmlGenericErrorContext,
-	    "Type of %s : %s:%d :", name, typeDecl->node->doc->URL,
-	            xmlGetLineNo(typeDecl->node));
+    if (typeDecl->node != NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Type of %s : %s:%d :", name, typeDecl->node->doc->URL,
+			xmlGetLineNo(typeDecl->node));
+    } else {
+	xmlGenericError(xmlGenericErrorContext,
+		"Type of %s :", name);
+    }
     switch (typeDecl->contentType) {
 	case XML_SCHEMA_CONTENT_SIMPLE:
 	    xmlGenericError(xmlGenericErrorContext,
@@ -4465,6 +4473,21 @@ xmlSchemaValidateComplexType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 		child = xmlSchemaSkipIgnored(ctxt, type, child);
 	    }
 	    break;
+	case XML_SCHEMA_CONTENT_BASIC: {
+	    if (type->subtypes != NULL) {
+		ctxt->type = type->subtypes;
+		xmlSchemaValidateComplexType(ctxt, node);
+	    }
+	    if (type->baseType != NULL) {
+		ctxt->type = type->baseType;
+		xmlSchemaValidateBasicType(ctxt, node);
+	    }
+	    if (type->attributes != NULL) {
+		xmlSchemaValidateAttributes(ctxt, node, type->attributes);
+	    }
+	    ctxt->type = type;
+	    break;
+        }
 	default:
 	    TODO
 	    xmlGenericError(xmlGenericErrorContext,
@@ -4813,29 +4836,29 @@ xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem) {
 #endif
     }
     xmlSchemaValidateType(ctxt, elem, elemDecl, elemDecl->subtypes);
-    ret = xmlRegExecPushString(ctxt->regexp, NULL, NULL);
+    if (elemDecl->contModel != NULL) {
+	ret = xmlRegExecPushString(ctxt->regexp, NULL, NULL);
 #ifdef DEBUG_AUTOMATA
-    xmlGenericError(xmlGenericErrorContext,
-	    "====> %s : %d\n", elem->name, ret);
-#endif
-    if (ret == 0) {
-	ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
-        if (ctxt->error != NULL)
-            ctxt->error(ctxt->userData, "Element %s content check failed\n",
-                        elem->name);
-    } else if (ret < 0) {
-	ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
-        if (ctxt->error != NULL)
-            ctxt->error(ctxt->userData, "Element %s content check failed\n",
-                        elem->name);
-#ifdef DEBUG_CONTENT
-    } else {
 	xmlGenericError(xmlGenericErrorContext,
-                        "Element %s content check succeeded\n", elem->name);
+		"====> %s : %d\n", elem->name, ret);
+#endif
+	if (ret == 0) {
+	    ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData, "Element %s content check failed\n",
+			    elem->name);
+	} else if (ret < 0) {
+	    ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData, "Element %s content check failed\n",
+			    elem->name);
+#ifdef DEBUG_CONTENT
+	} else {
+	    xmlGenericError(xmlGenericErrorContext,
+			    "Element %s content check succeeded\n", elem->name);
 
 #endif
-    }
-    if (elemDecl->contModel != NULL) {
+	}
 	xmlRegFreeExecCtxt(ctxt->regexp);
     }
     /*
@@ -4881,8 +4904,7 @@ xmlSchemaValidateDocument(xmlSchemaValidCtxtPtr ctxt, xmlDocPtr doc) {
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "Element %s not declared\n",
                         root->name);
-    }
-    if ((elemDecl->flags & XML_SCHEMAS_ELEM_TOPLEVEL) == 0) {
+    } else if ((elemDecl->flags & XML_SCHEMAS_ELEM_TOPLEVEL) == 0) {
 	ctxt->err = XML_SCHEMAS_ERR_NOTTOPLEVEL;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "Root element %s not toplevel\n",

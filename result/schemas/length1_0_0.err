@@ -1,0 +1,6 @@
+Type of nonNegativeInteger :basic
+Type of extension 2 : ./test/schemas/length1_0.xsd:5 :basic
+Type of complexContent 1 : ./test/schemas/length1_0.xsd:4 :basic
+Type of length1 : ./test/schemas/length1_0.xsd:3 :basic
+Type of extension 2 : ./test/schemas/length1_0.xsd:5 :basic
+Type of complexContent 1 : ./test/schemas/length1_0.xsd:4 :basic

@@ -34,8 +34,6 @@ Content model of doc:
   trans: counted 0, atom 1, to 4
 1 counters:
  0: min 0 max 2
-Building content model for a
-Building content model for b
 xmlSchemaValidateCallback: b, b, b
 Element doc content check succeeded
 (nil) : Freed()

@@ -14,9 +14,6 @@ Type of restriction 10 : ./test/schemas/po0_0.xsd:54 :empty
 Type of sequence 1 : ./test/schemas/po0_0.xsd:12 :elements
 Type of sequence 3 : ./test/schemas/po0_0.xsd:21 :elements
 Type of USAddress : ./test/schemas/po0_0.xsd:20 :elements
-Building content model for anonelem2
-Building content model for street
-Building content model for state
 Building content model for shipTo
 Content model of shipTo:
  regexp: '(null)' 
@@ -39,8 +36,6 @@ Content model of shipTo:
   trans: atom 4, to 5
  state: FINAL 5, 0 transitions:
 0 counters:
-Building content model for comment
-Building content model for name
 Building content model for item
 Content model of item:
  regexp: '(null)' 
@@ -66,9 +61,6 @@ Content model of item:
   trans: removed
  state: FINAL 5, 0 transitions:
 0 counters:
-Building content model for productName
-Building content model for anonelem9
-Building content model for quantity
 Building content model for purchaseOrder
 Content model of purchaseOrder:
  regexp: '(null)' 
@@ -112,8 +104,6 @@ Content model of billTo:
   trans: atom 4, to 5
  state: FINAL 5, 0 transitions:
 0 counters:
-Building content model for zip
-Building content model for USPrice
 Building content model for items
 Content model of items:
  regexp: '(null)' 
@@ -127,8 +117,6 @@ Content model of items:
   trans: removed
   trans: atom 0, to 1
 0 counters:
-Building content model for city
-Building content model for shipDate
 xmlSchemaValidateCallback: shipTo, shipTo, shipTo
 xmlSchemaValidateCallback: name, name, name
 xmlSchemaValidateCallback: street, street, street

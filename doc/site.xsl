@@ -236,6 +236,9 @@ A:link, A:visited, A:active { text-decoration: underline }
     <a href="http://www.gnome.org/"><img src="smallfootonly.gif" alt="Gnome Logo"/></a>
     <a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"/></a>
     <a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"/></a>
+    <div align="left">
+    <a href="http://xmlsoft.org/"><img src="Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo"/></a>
+    </div>
     </td>
     <td>
     <table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000">

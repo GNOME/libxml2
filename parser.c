@@ -10188,7 +10188,9 @@ void
 xmlInitParser(void) {
     if (xmlParserInitialized) return;
 
+    initGenericErrorDefaultFunc(NULL);
     xmlInitThreads();
+    xmlInitMemory();
     initGenericErrorDefaultFunc(NULL);
     xmlInitCharEncodingHandlers();
     xmlInitializePredefinedEntities();

@@ -1,3 +1,9 @@
+Sun Oct 14 05:55:01 EDT 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c parserInternals.c threads.c: debugged and fixed
+	  initialization problems which were giving troubles on SMP
+	  boxes.
+
 Sat Oct 13 16:17:13 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/Makefile.am: missing globals.h

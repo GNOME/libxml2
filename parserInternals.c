@@ -74,7 +74,7 @@ void
 xmlCheckVersion(int version) {
     int myversion = (int) LIBXML_VERSION;
 
-    xmlInitMemory();
+    xmlInitParser();
 
     if ((myversion / 10000) != (version / 10000)) {
 	xmlGenericError(xmlGenericErrorContext, 

@@ -31,6 +31,7 @@
 #include <note.h>
 #endif
 
+/* #define DEBUG_THREADS */
 
 /*
  * TODO: this module still uses malloc/free and not xmlMalloc/xmlFree
@@ -70,10 +71,13 @@ struct _xmlRMutex {
  *   - keylock protecting globalkey
  *   - keyonce to mark initialization of globalkey
  */
+
+static int initialized = 0;
 #ifdef HAVE_PTHREAD_H
-static pthread_mutex_t	keylock;
+static pthread_mutex_t	keylock  = PTHREAD_MUTEX_INITIALIZER;
 static pthread_key_t	globalkey;
 static int		keyonce = 0;
+static pthread_t	mainthread;
 #endif
 static xmlRMutexPtr	xmlLibraryLock = NULL;
 
@@ -313,8 +317,10 @@ xmlGetGlobalState(void)
 
         pthread_setspecific(globalkey, tsd);
         return (tsd);
-    } else
-        return (globalval);
+    }
+    return (globalval);
+#else
+    return(NULL);
 #endif
 }
 
@@ -326,6 +332,29 @@ xmlGetGlobalState(void)
  ************************************************************************/
 
 /**
+ * xmlIsMainThread:
+ *
+ * xmlIsMainThread() check wether the current thread is the main thread.
+ *
+ * Returns 1 if the current thread is the main thread, 0 otherwise
+ */
+int
+xmlIsMainThread(void)
+{
+    if (!initialized)
+        xmlInitThreads();
+        
+#ifdef DEBUG_THREADS
+    xmlGenericError(xmlGenericErrorContext, "xmlIsMainThread()\n");
+#endif
+#ifdef HAVE_PTHREAD_H
+    return(mainthread == pthread_self());
+#else
+    return(1);
+#endif
+}
+
+/**
  * xmlLockLibrary:
  *
  * xmlLockLibrary() is used to take out a re-entrant lock on the libxml2
@@ -334,6 +363,9 @@ xmlGetGlobalState(void)
 void
 xmlLockLibrary(void)
 {
+#ifdef DEBUG_THREADS
+    xmlGenericError(xmlGenericErrorContext, "xmlLockLibrary()\n");
+#endif
     xmlRMutexLock(xmlLibraryLock);
 }
 
@@ -346,6 +378,9 @@ xmlLockLibrary(void)
 void
 xmlUnlockLibrary(void)
 {
+#ifdef DEBUG_THREADS
+    xmlGenericError(xmlGenericErrorContext, "xmlUnlockLibrary()\n");
+#endif
     xmlRMutexUnlock(xmlLibraryLock);
 }
 
@@ -358,6 +393,18 @@ xmlUnlockLibrary(void)
 void
 xmlInitThreads(void)
 {
+    if (initialized != 0)
+        return;
+
+#ifdef DEBUG_THREADS
+    xmlGenericError(xmlGenericErrorContext, "xmlInitThreads()\n");
+#endif
+
+#ifdef HAVE_PTHREAD_H
+    mainthread = pthread_self();
+#endif
+
+    initialized = 1;
 }
 
 /**
@@ -369,4 +416,12 @@ xmlInitThreads(void)
 void
 xmlCleanupThreads(void)
 {
+    if (initialized == 0)
+        return;
+
+#ifdef DEBUG_THREADS
+    xmlGenericError(xmlGenericErrorContext, "xmlCleanupThreads()\n");
+#endif
+
+    initialized = 0;
 }

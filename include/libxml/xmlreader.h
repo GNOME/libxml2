@@ -243,6 +243,13 @@ XMLPUBFUN int XMLCALL
 						 int prop);
 XMLPUBFUN xmlNodePtr XMLCALL	
 		    xmlTextReaderCurrentNode	(xmlTextReaderPtr reader);
+
+XMLPUBFUN int XMLCALL
+            xmlTextReaderGetParserLineNumber(xmlTextReaderPtr reader);
+
+XMLPUBFUN int XMLCALL
+            xmlTextReaderGetParserColumnNumber(xmlTextReaderPtr reader);
+
 XMLPUBFUN xmlNodePtr XMLCALL	
 		    xmlTextReaderPreserve	(xmlTextReaderPtr reader);
 #ifdef LIBXML_PATTERN_ENABLED

@@ -1,3 +1,7 @@
+Mon Jan  3 13:57:21 PST 2005 Aleksey Sanin <aleksey@aleksey.com>
+
+	* Added GetLineNumber and GetColumnNumber functions for xmlReader
+
 Sun Jan  2 17:51:18 HKT 2005 William Brack <wbrack@mmm.com.hk>
 
 	Re-examined the problems of configuring a "minimal" library.

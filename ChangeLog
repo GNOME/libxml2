@@ -1,3 +1,8 @@
+Thu Aug  8 11:00:26 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* win32/dsp/libxml2.def.src win32/libxml2.def.src: added
+	new c14n function to Windows def files
+	
 Fri Aug  2 16:46:46 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* c14n.c: fixed a memory leak in c14n code

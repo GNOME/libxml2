@@ -7593,6 +7593,8 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
       if (*cur == '-') {
 	is_exponent_negative = 1;
 	cur++;
+      } else if (*cur == '+') {
+        cur++;
       }
       while ((*cur >= '0') && (*cur <= '9')) {
 	exponent = exponent * 10 + (*cur - '0');
@@ -7673,7 +7675,9 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt)
         if (CUR == '-') {
             is_exponent_negative = 1;
             NEXT;
-        }
+        } else if (CUR == '+') {
+	    NEXT;
+	}
         while ((CUR >= '0') && (CUR <= '9')) {
             exponent = exponent * 10 + (CUR - '0');
             NEXT;

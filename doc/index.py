@@ -3,6 +3,38 @@
 # imports the API description and fills up a database with
 # name relevance to modules, functions or web pages
 #
+# Operation needed:
+# =================
+#
+# install mysqld, the python wrappers for mysql and libxml2, start mysqld
+# Change the root passwd of mysql:
+#    mysqladmin -u root password new_password
+# Create the new database xmlsoft
+#    mysqladmin -p create xmlsoft
+# Create a database user 'veillard' and give him passord access
+# change veillard and abcde with the right user name and passwd
+#    mysql -p
+#    password:
+#    mysql> GRANT ALL PRIVILEGES ON xmlsoft TO veillard@localhost
+#           IDENTIFIED BY 'abcde' WITH GRANT OPTION;
+#
+# As the user check the access:
+#    mysql -p xmlsoft
+#    Enter password:
+#    Welcome to the MySQL monitor....
+#    mysql> use xmlsoft
+#    Database changed
+#    mysql> quit
+#    Bye
+#
+# Then run the script in the doc subdir, it will create the symbols and
+# word tables and populate them with informations extracted from 
+# the libxml2-api.xml API description, and make then accessible read-only
+# by nobody@loaclhost the user expected to be Apache's one
+#
+# On the Apache configuration, make sure you have php support enabled
+#
+
 import MySQLdb
 import libxml2
 import sys

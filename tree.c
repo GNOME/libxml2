@@ -7208,7 +7208,7 @@ xmlElemDump(FILE * f, xmlDocPtr doc, xmlNodePtr cur)
 #ifdef LIBXML_HTML_ENABLED
         htmlNodeDumpOutput(outbuf, doc, cur, NULL);
 #else
-	xmlSaveErr(XML_ERR_INTERNAL_ERROR, "HTML support not compiled in\n");
+	xmlSaveErr(XML_ERR_INTERNAL_ERROR, cur, "HTML support not compiled in\n");
 #endif /* LIBXML_HTML_ENABLED */
     } else
         xmlNodeDumpOutput(outbuf, doc, cur, 0, 1, NULL);

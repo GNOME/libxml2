@@ -1,3 +1,7 @@
+Tue Oct 21 02:07:22 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: last minute patch from Eric Zurcher making it into 2.6.0
+
 Tue Oct 21 02:03:03 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in NEWS doc/libxml2.xsa: preparing libxml2-2.6.0

@@ -1,3 +1,9 @@
+Tue Jul  3 18:35:48 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* example/Makefile.am: fixed the include path to add srcdir/include
+	* Makefile.am configure.in: fix from Albert Chin for iconv detection
+	  and some cleanup
+
 Tue Jul  3 10:12:03 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c include/libxml/xpath.h include/libxml/xpathInternals.h:

@@ -5,7 +5,7 @@
 
 SUBDIRS = include . doc example
 
-INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @Z_CFLAGS@ @CORBA_CFLAGS@ 
+INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @Z_CFLAGS@ 
 
 noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook testCatalog
 

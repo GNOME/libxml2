@@ -93,17 +93,6 @@ fi
 
 AC_SUBST(HTML_DIR)
 
-AC_ARG_ENABLE(corba,
-[  --enable-corba           Add Corba support (default)])
-
-dnl
-dnl Corba is enabled by default
-dnl
-if test "$enable_corba" = "no" ; then
-   CORBA_CFLAGS="-DWITHOUT_CORBA"
-fi
-AC_SUBST(CORBA_CFLAGS)
-
 dnl Checks for library functions.
 AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(strdup strndup strerror)
@@ -324,7 +313,7 @@ fi
 AC_SUBST(WITH_CATALOG)
 AC_SUBST(CATALOG_OBJ)
 
-AC_ARG_WITH(docbook, [  --with-docbook         Add Docbook SGML support (on)])
+AC_ARG_WITH(docbook, [  --with-docbook          Add Docbook SGML support (on)])
 if test "$with_docbook" = "no" ; then
     echo Disabling Docbook support
     WITH_DOCB=0
@@ -375,21 +364,45 @@ fi
 AC_SUBST(WITH_XINCLUDE)
 AC_SUBST(XINCLUDE_OBJ)
 
-AC_ARG_WITH(iconv, [  --with-iconv            Add the ICONV support (on)])
+WITH_ICONV=0
+AC_ARG_WITH(iconv, [  --with-iconv[=DIR]      Add ICONV support (on)])
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support
-    WITH_ICONV=0
 else
-    AC_CHECK_HEADER(iconv.h, 
-	AC_CHECK_FUNC(iconv, ,
-	    AC_CHECK_LIB(iconv, iconv, ICONV_LIBS="-liconv")))
-    if test "$have_iconv" != "" ; then
-        echo Iconv support not found
-        WITH_ICONV=0
-    else
-        WITH_ICONV=1
+    if test "$with_iconv" != "yes" ; then
+	CPPFLAGS="${CPPFLAGS} -I$with_iconv/include"
+	ICONV_LIBS="-L$with_iconv/lib"
     fi
-fi  
+
+    AC_CHECK_HEADER(iconv.h,
+	AC_MSG_CHECKING(for iconv)
+	AC_TRY_LINK([#include <stdlib.h>
+#include <iconv.h>],[
+iconv_t cd = iconv_open ("","");
+iconv (cd, NULL, NULL, NULL, NULL);],[
+	    AC_MSG_RESULT(yes)
+	    WITH_ICONV=1],[
+	    AC_MSG_RESULT(no)
+	    AC_MSG_CHECKING(for iconv in -liconv)
+
+	    _ldflags="${LDFLAGS}"
+	    _libs="${LIBS}"
+	    LDFLAGS="${LDFLAGS} ${ICONV_LIBS}"
+	    LIBS="${LIBS} -liconv"
+
+	    AC_TRY_LINK([#include <stdlib.h>
+#include <iconv.h>],[
+iconv_t cd = iconv_open ("","");
+iconv (cd, NULL, NULL, NULL, NULL);],[
+		AC_MSG_RESULT(yes)
+		WITH_ICONV=1
+		ICONV_LIBS="${ICONV_LIBS} -liconv"
+		LIBS="${_libs}"
+		LDFLAGS="${_ldflags}"],[
+		AC_MSG_RESULT(no)
+		LIBS="${_libs}"
+		LDFLAGS="${_ldflags}"])]))
+fi
 XML_LIBS="-lxml2 $Z_LIBS $ICONV_LIBS -lm $LIBS"
 AC_SUBST(WITH_ICONV)
 

@@ -51,6 +51,8 @@ int		xmlParseURIReference	(xmlURIPtr uri,
 xmlChar *	xmlSaveUri		(xmlURIPtr uri);
 void		xmlPrintURI		(FILE *stream,
 					 xmlURIPtr uri);
+xmlChar *       xmlURIEscapeStr         (const xmlChar *str,
+ 					 const xmlChar *list);
 char *		xmlURIUnescapeString	(const char *str,
 					 int len,
 					 char *target);

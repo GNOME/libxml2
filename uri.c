@@ -977,23 +977,20 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
 }
 
 /**
- * xmlURIEscape:
- * @str:  the string of the URI to escape
+ * xmlURIEscapeStr:
+ * @str:  string to escape
+ * @list: exception list string of chars not to escape
  *
- * Escaping routine, does not do validity checks !
- * It will try to escape the chars needing this, but this is heuristic
- * based it's impossible to be sure.
+ * This routine escapes a string to hex, ignoring reserved characters (a-z)
+ * and the characters in the exception list.
  *
- * TODO: make the proper implementation of this function by calling
- *       xmlParseURIReference() and escaping each section accordingly
- *       to the rules (c.f. bug 51876)
- *
- * Returns an copy of the string, but escaped
+ * Returns a new escaped string or NULL in case of error.
  */
 xmlChar *
-xmlURIEscape(const xmlChar *str) {
-    xmlChar *ret;
+xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
+    xmlChar *ret, ch;
     const xmlChar *in;
+
     unsigned int len, out;
 
     if (str == NULL)
@@ -1020,16 +1017,18 @@ xmlURIEscape(const xmlChar *str) {
 		return(NULL);
 	    }
 	}
-	if ((!IS_UNRESERVED(*in)) && (*in != ':') && (*in != '/') &&
-	    (*in != '?') && (*in != '#')) {
+
+	ch = *in;
+
+	if ( (!IS_UNRESERVED(ch)) && (!xmlStrchr(list, ch)) ) {
 	    unsigned char val;
 	    ret[out++] = '%';
-	    val = *in >> 4;
+	    val = ch >> 4;
 	    if (val <= 9)
 		ret[out++] = '0' + val;
 	    else
 		ret[out++] = 'A' + val - 0xA;
-	    val = *in & 0xF;
+	    val = ch & 0xF;
 	    if (val <= 9)
 		ret[out++] = '0' + val;
 	    else
@@ -1038,8 +1037,32 @@ xmlURIEscape(const xmlChar *str) {
 	} else {
 	    ret[out++] = *in++;
 	}
+
     }
     ret[out] = 0;
+    return(ret);
+}
+
+/**
+ * xmlURIEscape:
+ * @str:  the string of the URI to escape
+ *
+ * Escaping routine, does not do validity checks !
+ * It will try to escape the chars needing this, but this is heuristic
+ * based it's impossible to be sure.
+ *
+ * TODO: make the proper implementation of this function by calling
+ *       xmlParseURIReference() and escaping each section accordingly
+ *       to the rules (c.f. bug 51876)
+ *
+ * Returns an copy of the string, but escaped
+ */
+xmlChar *
+xmlURIEscape(const xmlChar *str) {
+    xmlChar *ret;
+
+    ret = xmlURIEscapeStr(str, BAD_CAST "#");
+
     return(ret);
 }
 

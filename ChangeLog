@@ -1,3 +1,8 @@
+Wed May 23 12:27:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* uri.[ch]: applied a patch from Carl Douglas for URI escaping,
+	  related to bug #51876
+
 Tue May 22 18:46:56 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: fixed a gross mistake in base computation, xml:base is

@@ -565,6 +565,17 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	xmlBufferWriteCHAR(buf, cur->name);
 	xmlBufferWriteChar(buf, ">");
     }
+#if 0
+    if (!htmlIsAutoClosed(doc, cur)) {
+	xmlBufferWriteChar(buf, "</");
+	xmlBufferWriteCHAR(buf, cur->name);
+	xmlBufferWriteChar(buf, ">");
+    }
+#else
+    xmlBufferWriteChar(buf, "</");
+    xmlBufferWriteCHAR(buf, cur->name);
+    xmlBufferWriteChar(buf, ">");
+#endif
     if (cur->next != NULL) {
         if ((cur->next->type != HTML_TEXT_NODE) &&
 	    (cur->next->type != HTML_ENTITY_REF_NODE))
@@ -667,6 +678,7 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  * htmlDtdDump:
  * @buf:  the HTML buffer output
  * @doc:  the document
+ * @encoding:  the encoding string
  * 
  * Dump the HTML document DTD, if any.
  */
@@ -700,6 +712,7 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, const char *encoding) {
  * @buf:  the HTML buffer output
  * @doc:  the document
  * @cur:  the attribute pointer
+ * @encoding:  the encoding string
  *
  * Dump an HTML attribute
  */
@@ -731,6 +744,7 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur, const 
  * @buf:  the HTML buffer output
  * @doc:  the document
  * @cur:  the first attribute pointer
+ * @encoding:  the encoding string
  *
  * Dump a list of HTML attributes
  */
@@ -756,6 +770,7 @@ void htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @buf:  the HTML buffer output
  * @doc:  the document
  * @cur:  the first node
+ * @encoding:  the encoding string
  *
  * Dump an HTML node list, recursive behaviour,children are printed too.
  */
@@ -773,10 +788,11 @@ htmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, co
 }
 
 /**
- * htmlNodeDump:
+ * htmlNodeDumpOutput:
  * @buf:  the HTML buffer output
  * @doc:  the document
  * @cur:  the current node
+ * @encoding:  the encoding string
  *
  * Dump an HTML node, recursive behaviour,children are printed too.
  */
@@ -911,11 +927,17 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
 	    (cur->children != cur->last))
 	    xmlOutputBufferWriteString(buf, "\n");
     }
+#if 0
     if (!htmlIsAutoClosed(doc, cur)) {
 	xmlOutputBufferWriteString(buf, "</");
 	xmlOutputBufferWriteString(buf, (const char *)cur->name);
 	xmlOutputBufferWriteString(buf, ">");
     }
+#else
+    xmlOutputBufferWriteString(buf, "</");
+    xmlOutputBufferWriteString(buf, (const char *)cur->name);
+    xmlOutputBufferWriteString(buf, ">");
+#endif
     if (cur->next != NULL) {
         if ((cur->next->type != HTML_TEXT_NODE) &&
 	    (cur->next->type != HTML_ENTITY_REF_NODE))
@@ -927,6 +949,7 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
  * htmlDocContentDump:
  * @buf:  the HTML buffer output
  * @cur:  the document
+ * @encoding:  the encoding string
  *
  * Dump an HTML document.
  */

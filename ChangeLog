@@ -1,3 +1,11 @@
+Thu Feb 15 15:57:14 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: applied patch from Daniel van Balen for OpenBSD
+	  and bumped version to 2.3.1
+	* HTMLtree.c result/HTML/doc3.htm result/HTML/wired.html: the
+	  attempt to find autoclosing was simply broken, removed it,
+	  updated the examples, this is better
+
 Wed Feb 14 11:35:39 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* hash.[ch]: added Paolo Casarini patch to provide Delete from

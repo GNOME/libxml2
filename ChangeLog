@@ -1,3 +1,19 @@
+Wed Sep 24 23:17:59 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: adding repeated parsing and validating tests
+	* SAX2.c parser.c tree.c include/libxml/parser.h: make the new
+	  DOM tree building interfaces use the dictionary from the 
+	  parsing context to build the element and attributes names
+	  as well as formatting spaces and short text nodes
+	* include/libxml/dict.h dict.c: added some reference counting
+	  for xmlDictPtr because they can be shared by documents and
+	  a parser context.
+	* xmlreader.c: a bit of cleanup, remove the specific tree freeing
+	  functions and use the standard ones now.
+	* xmllint.c: add --nodict
+	* python/libxml.c: fix a stupid bug so that ns() works on 
+	  attribute nodes.
+
 Tue Sep 23 23:07:45 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/parser.h: adding a new set of

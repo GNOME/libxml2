@@ -802,6 +802,8 @@ xmlSAX2StartDocument(void *ctx)
 	    ctxt->disableSAX = 1;
 	    return;
 	}
+	if ((ctxt->dictNames) && (doc != NULL))
+	    doc->dict = ctxt->dict;
     }
     if ((ctxt->myDoc != NULL) && (ctxt->myDoc->URL == NULL) &&
 	(ctxt->input != NULL) && (ctxt->input->filename != NULL)) {
@@ -1564,6 +1566,7 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
     nodePop(ctxt);
 }
 
+int nb_interned = 0;
 /*
  * xmlSAX2TextNode:
  * @ctxt:  the parser context
@@ -1577,21 +1580,17 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
 static xmlNodePtr
 xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     xmlNodePtr ret;
+    const xmlChar *intern = NULL;
 
+    /*
+     * Allocate
+     */
     if (ctxt->freeElems != NULL) {
 	ret = ctxt->freeElems;
 	ctxt->freeElems = ret->next;
 	ctxt->freeElemsNr--;
-	memset(ret, 0, sizeof(xmlNode));
-	ret->type = XML_TEXT_NODE;
-
-	ret->name = xmlStringText;
-	ret->content = xmlStrndup(str, len);
-
-	if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
-	    xmlRegisterNodeDefaultValue(ret);
     } else {
-	ret = xmlNewTextLen(str, len);
+	ret = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     }
     if (ret == NULL) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -1602,6 +1601,36 @@ xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 	ctxt->disableSAX = 1;
 	return(NULL);
     }
+    /*
+     * intern the formatting blanks found between tags, or the
+     * very short strings
+     */
+    if (ctxt->dictNames) {
+        xmlChar cur = str[len];
+
+	if ((len <= 3) && ((cur == '"') || (cur == '\'') || (cur == '<'))) {
+	    intern = xmlDictLookup(ctxt->dict, str, len);
+	} else if (IS_BLANK(*str) && (len < 60) && (cur == '<')) {
+	    int i;
+
+	    for (i = 1;i < len;i++) {
+		if (!IS_BLANK(*str)) goto skip;
+	    }
+	    intern = xmlDictLookup(ctxt->dict, str, len);
+	}
+    }
+skip:
+    memset(ret, 0, sizeof(xmlNode));
+    ret->type = XML_TEXT_NODE;
+
+    ret->name = xmlStringText;
+    if (intern == NULL)
+	ret->content = xmlStrndup(str, len);
+    else
+	ret->content = (xmlChar *) intern;
+
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
+	xmlRegisterNodeDefaultValue(ret);
     return(ret);
 }
 

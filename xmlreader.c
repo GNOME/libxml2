@@ -1246,7 +1246,7 @@ get_next_node:
             (reader->node->prev->type != XML_DTD_NODE)) {
 	    xmlNodePtr tmp = reader->node->prev;
 	    xmlUnlinkNode(tmp);
-	    xmlTextReaderFreeNode(reader, tmp);
+	    xmlFreeNode(tmp);
 	}
 
 	goto node_found;
@@ -1279,7 +1279,7 @@ get_next_node:
 	 */
 	if (oldnode->type != XML_DTD_NODE) {
 	    xmlUnlinkNode(oldnode);
-	    xmlTextReaderFreeNode(reader, oldnode);
+	    xmlFreeNode(oldnode);
 	}
 
 	goto node_end;
@@ -1677,16 +1677,17 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
     }
 #endif
     if (reader->ctxt != NULL) {
-	if (reader->ctxt->myDoc != NULL) {
-	    xmlTextReaderFreeDoc(reader, reader->ctxt->myDoc);
-	    reader->ctxt->myDoc = NULL;
-	}
 	if ((reader->ctxt->vctxt.vstateTab != NULL) &&
 	    (reader->ctxt->vctxt.vstateMax > 0)){
 	    xmlFree(reader->ctxt->vctxt.vstateTab);
 	    reader->ctxt->vctxt.vstateTab = 0;
 	    reader->ctxt->vctxt.vstateMax = 0;
 	}
+	if (reader->ctxt->myDoc != NULL) {
+	    xmlFreeDoc(reader->ctxt->myDoc);
+	    reader->ctxt->myDoc = NULL;
+	}
+	reader->ctxt->dict = NULL;
 	if (reader->allocs & XML_TEXTREADER_CTXT)
 	    xmlFreeParserCtxt(reader->ctxt);
     }

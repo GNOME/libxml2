@@ -59,6 +59,8 @@ struct _xmlDictStrings {
  * The entire dictionnary
  */
 struct _xmlDict {
+    int ref_counter;
+
     struct _xmlDictEntry *dict;
     int size;
     int nbElems;
@@ -277,6 +279,8 @@ xmlDictCreate(void) {
   
     dict = xmlMalloc(sizeof(xmlDict));
     if (dict) {
+        dict->ref_counter = 1;
+
         dict->size = MIN_DICT_SIZE;
 	dict->nbElems = 0;
         dict->dict = xmlMalloc(MIN_DICT_SIZE * sizeof(xmlDictEntry));
@@ -288,6 +292,21 @@ xmlDictCreate(void) {
         xmlFree(dict);
     }
     return(NULL);
+}
+
+/**
+ * xmlDictReference:
+ * @dict: the dictionnary
+ *
+ * Increment the reference counter of a dictionary
+ *
+ * Returns 0 in case of success and -1 in case of error
+ */
+int
+xmlDictReference(xmlDictPtr dict) {
+    if (dict == NULL) return -1;
+    dict->ref_counter++;
+    return(0);
 }
 
 /**
@@ -401,6 +420,11 @@ xmlDictFree(xmlDictPtr dict) {
 
     if (dict == NULL)
 	return;
+
+    /* decrement the counter, it may be shared by a parser and docs */
+    dict->ref_counter--;
+    if (dict->ref_counter > 0) return;
+
     if (dict->dict) {
 	for(i = 0; ((i < dict->size) && (dict->nbElems > 0)); i++) {
 	    iter = &(dict->dict[i]);
@@ -595,6 +619,7 @@ xmlDictOwns(xmlDictPtr dict, const xmlChar *str) {
     }
     return(0);
 }
+
 /**
  * xmlDictSize:
  * @dict: the dictionnary

@@ -720,7 +720,7 @@ static void streamFile(char *filename) {
  * 			Tree Test processing				*
  * 									*
  ************************************************************************/
-static void parseAndPrintFile(char *filename) {
+static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
     xmlDocPtr doc = NULL, tmp;
 
     if ((timing) && (!repeat))
@@ -811,17 +811,26 @@ static void parseAndPrintFile(char *filename) {
 	        FILE *f;
 
 		f = fopen(filename, "r");
-		if (f != NULL)
-		    doc = xmlReadIO((xmlInputReadCallback) myRead,
-		                    (xmlInputCloseCallback) myClose, f,
-				    NULL, options);
-		else
+		if (f != NULL) {
+		    if (rectxt == NULL)
+			doc = xmlReadIO((xmlInputReadCallback) myRead,
+					(xmlInputCloseCallback) myClose, f,
+					NULL, options);
+		    else
+			doc = xmlCtxtReadIO(rectxt,
+			                (xmlInputReadCallback) myRead,
+					(xmlInputCloseCallback) myClose, f,
+					NULL, options);
+		} else
 		    doc = NULL;
 	    }
 	} else if (htmlout) {
 	    xmlParserCtxtPtr ctxt;
 
-	    ctxt = xmlNewParserCtxt();
+	    if (rectxt == NULL)
+		ctxt = xmlNewParserCtxt();
+	    else
+	        ctxt = rectxt;
 	    if (ctxt == NULL) {	      
 	        doc = NULL;
 	    } else {
@@ -832,7 +841,8 @@ static void parseAndPrintFile(char *filename) {
 
 		doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
 
-	        xmlFreeParserCtxt(ctxt);
+		if (rectxt == NULL)
+		    xmlFreeParserCtxt(ctxt);
 	    }
 #ifdef HAVE_SYS_MMAN_H
 	} else if (memory) {
@@ -847,13 +857,21 @@ static void parseAndPrintFile(char *filename) {
 	    if (base == (void *) MAP_FAILED)
 	        return;
 
-	    doc = xmlReadMemory((char *) base, info.st_size, NULL, options);
+	    if (rectxt == NULL)
+		doc = xmlReadMemory((char *) base, info.st_size, NULL, options);
+	    else
+		doc = xmlCtxtReadMemory(rectxt,
+			       (char *) base, info.st_size, NULL, options);
+	        
 	    munmap((char *) base, info.st_size);
 #endif
 	} else if (valid) {
-	    xmlParserCtxtPtr ctxt;
+	    xmlParserCtxtPtr ctxt = NULL;
 
-	    ctxt = xmlNewParserCtxt();
+	    if (rectxt == NULL)
+		ctxt = xmlNewParserCtxt();
+	    else
+	        ctxt = rectxt;
 	    if (ctxt == NULL) {	      
 	        doc = NULL;
 	    } else {
@@ -861,10 +879,14 @@ static void parseAndPrintFile(char *filename) {
 
 		if (ctxt->valid == 0)
 		    progresult = 4;
-	        xmlFreeParserCtxt(ctxt);
+		if (rectxt == NULL)
+		    xmlFreeParserCtxt(ctxt);
 	    }
 	} else {
-	    doc = xmlReadFile(filename, NULL, options);
+	    if (rectxt != NULL)
+	        doc = xmlCtxtReadFile(rectxt, filename, NULL, options);
+	    else
+		doc = xmlReadFile(filename, NULL, options);
 	}
     }
 
@@ -1347,6 +1369,9 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--noent"))) {
 	    noent++;
 	    options |= XML_PARSE_NOENT;
+	} else if ((!strcmp(argv[i], "-nodict")) ||
+	         (!strcmp(argv[i], "--nodict"))) {
+	    options |= XML_PARSE_NODICT;
 	} else if ((!strcmp(argv[i], "-version")) ||
 	         (!strcmp(argv[i], "--version"))) {
 	    showVersion(argv[0]);
@@ -1660,16 +1685,24 @@ main(int argc, char **argv) {
 	/* Remember file names.  "-" means stdin.  <sven@zen.org> */
 	if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
 	    if (repeat) {
-		for (acount = 0;acount < repeat;acount++)
+		xmlParserCtxtPtr ctxt = NULL;
+
+		for (acount = 0;acount < repeat;acount++) {
 		    if (stream != 0)
 			streamFile(argv[i]);
-		    else
-			parseAndPrintFile(argv[i]);
+		    else {
+		        if (ctxt == NULL)
+			    ctxt = xmlNewParserCtxt();
+			parseAndPrintFile(argv[i], ctxt);
+		    }
+		}
+		if (ctxt != NULL)
+		    xmlFreeParserCtxt(ctxt);
 	    } else {
 		if (stream != 0)
 		    streamFile(argv[i]);
 		else
-		    parseAndPrintFile(argv[i]);
+		    parseAndPrintFile(argv[i], NULL);
 	    }
 	    files ++;
 	    if ((timing) && (repeat)) {
@@ -1678,7 +1711,7 @@ main(int argc, char **argv) {
 	}
     }
     if (generate) 
-	parseAndPrintFile(NULL);
+	parseAndPrintFile(NULL, NULL);
     if ((htmlout) && (!nowrap)) {
 	xmlGenericError(xmlGenericErrorContext, "</body></html>\n");
     }

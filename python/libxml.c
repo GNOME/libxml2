@@ -2288,7 +2288,9 @@ libxml_xmlNodeGetNs(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
         return (NULL);
     node = (xmlNodePtr) PyxmlNode_Get(pyobj_node);
 
-    if ((node == NULL) || (node->type != XML_ELEMENT_NODE)) {
+    if ((node == NULL) ||
+        ((node->type != XML_ELEMENT_NODE) &&
+	 (node->type != XML_ATTRIBUTE_NODE))) {
         Py_INCREF(Py_None);
         return (Py_None);
     }

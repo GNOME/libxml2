@@ -724,8 +724,10 @@ Timingtests: $(srcdir)/dba100000.xml
 	@echo "##"
 	@echo "## Timing tests to try to detect performance"
 	@echo "## as well a memory usage breakage when streaming"
-	@echo "## first when using the file interface"
-	@echo "## then when using the memory interface"
+	@echo "## 1/ using the file interface"
+	@echo "## 2/ using the memory interface"
+	@echo "## 3/ repeated DOM parsing"
+	@echo "## 4/ repeated DOM validation"
 	@echo "##"
 	-@(xmllint --stream --timing $(srcdir)/dba100000.xml; \
 	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
@@ -733,6 +735,16 @@ Timingtests: $(srcdir)/dba100000.xml
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	   exit 0)
 	-@(xmllint --stream --timing --memory $(srcdir)/dba100000.xml; \
+	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
+	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
+	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	   exit 0)
+	-@(xmllint --noout --timing --repeat $(srcdir)/test/valid/REC-xml-19980210.xml; \
+	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
+	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
+	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	   exit 0)
+	-@(xmllint --noout --timing --valid --repeat $(srcdir)/test/valid/REC-xml-19980210.xml; \
 	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
 	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\

@@ -914,6 +914,18 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
 }
 
 /**
+ * DICT_FREE:
+ * @str:  a string
+ *
+ * Free a string if it is not owned by the "dict" dictionnary in the
+ * current scope
+ */
+#define DICT_FREE(str)						\
+	if ((str) && ((!dict) || 				\
+	    (xmlDictOwns(dict, (const xmlChar *)(str)) == 0)))	\
+	    xmlFree((char *)(str));
+
+/**
  * xmlFreeDtd:
  * @cur:  the DTD structure to free up
  *
@@ -921,13 +933,12 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
  */
 void
 xmlFreeDtd(xmlDtdPtr cur) {
+    xmlDictPtr dict = NULL;
+
     if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlFreeDtd : DTD == NULL\n");
-#endif
 	return;
     }
+    if (cur->doc != NULL) dict = cur->doc->dict;
 
     if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 	xmlDeregisterNodeDefaultValue((xmlNodePtr)cur);
@@ -948,9 +959,9 @@ xmlFreeDtd(xmlDtdPtr cur) {
 	    c = next;
 	}
     }
-    if (cur->name != NULL) xmlFree((char *) cur->name);
-    if (cur->SystemID != NULL) xmlFree((char *) cur->SystemID);
-    if (cur->ExternalID != NULL) xmlFree((char *) cur->ExternalID);
+    DICT_FREE(cur->name)
+    DICT_FREE(cur->SystemID)
+    DICT_FREE(cur->ExternalID)
     /* TODO !!! */
     if (cur->notations != NULL)
         xmlFreeNotationTable((xmlNotationTablePtr) cur->notations);
@@ -1019,6 +1030,7 @@ xmlNewDoc(const xmlChar *version) {
 void
 xmlFreeDoc(xmlDocPtr cur) {
     xmlDtdPtr extSubset, intSubset;
+    xmlDictPtr dict = NULL;
 
     if (cur == NULL) {
 #ifdef DEBUG_TREE
@@ -1027,6 +1039,7 @@ xmlFreeDoc(xmlDocPtr cur) {
 #endif
 	return;
     }
+    if (cur != NULL) dict = cur->dict;
 
     if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 	xmlDeregisterNodeDefaultValue((xmlNodePtr)cur);
@@ -1054,13 +1067,14 @@ xmlFreeDoc(xmlDocPtr cur) {
     }
 
     if (cur->children != NULL) xmlFreeNodeList(cur->children);
-
-    if (cur->version != NULL) xmlFree((char *) cur->version);
-    if (cur->name != NULL) xmlFree((char *) cur->name);
-    if (cur->encoding != NULL) xmlFree((char *) cur->encoding);
     if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
-    if (cur->URL != NULL) xmlFree((char *) cur->URL);
+
+    DICT_FREE(cur->version)
+    DICT_FREE(cur->name)
+    DICT_FREE(cur->encoding)
+    DICT_FREE(cur->URL)
     xmlFree(cur);
+    if (dict) xmlDictFree(dict);
 }
 
 /**
@@ -1915,13 +1929,7 @@ xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value) {
 void
 xmlFreePropList(xmlAttrPtr cur) {
     xmlAttrPtr next;
-    if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlFreePropList : property == NULL\n");
-#endif
-	return;
-    }
+    if (cur == NULL) return;
     while (cur != NULL) {
         next = cur->next;
         xmlFreeProp(cur);
@@ -1937,13 +1945,10 @@ xmlFreePropList(xmlAttrPtr cur) {
  */
 void
 xmlFreeProp(xmlAttrPtr cur) {
-    if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlFreeProp : property == NULL\n");
-#endif
-	return;
-    }
+    xmlDictPtr dict = NULL;
+    if (cur == NULL) return;
+
+    if (cur->doc != NULL) dict = cur->doc->dict;
 
     if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 	xmlDeregisterNodeDefaultValue((xmlNodePtr)cur);
@@ -1955,8 +1960,8 @@ xmlFreeProp(xmlAttrPtr cur) {
         if (xmlIsID(cur->parent->doc, cur->parent, cur))
 	    xmlRemoveID(cur->parent->doc, cur);
     }
-    if (cur->name != NULL) xmlFree((char *) cur->name);
     if (cur->children != NULL) xmlFreeNodeList(cur->children);
+    DICT_FREE(cur->name)
     xmlFree(cur);
 }
 
@@ -3187,13 +3192,9 @@ xmlGetLastChild(xmlNodePtr parent) {
 void
 xmlFreeNodeList(xmlNodePtr cur) {
     xmlNodePtr next;
-    if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlFreeNodeList : node == NULL\n");
-#endif
-	return;
-    }
+    xmlDictPtr dict = NULL;
+
+    if (cur == NULL) return;
     if (cur->type == XML_NAMESPACE_DECL) {
 	xmlFreeNsList((xmlNsPtr) cur);
 	return;
@@ -3206,9 +3207,9 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	xmlFreeDoc((xmlDocPtr) cur);
 	return;
     }
+    if (cur->doc != NULL) dict = cur->doc->dict;
     while (cur != NULL) {
         next = cur->next;
-	/* unroll to speed up freeing the document */
 	if (cur->type != XML_DTD_NODE) {
 
 	    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
@@ -3226,7 +3227,7 @@ xmlFreeNodeList(xmlNodePtr cur) {
 		(cur->type != XML_XINCLUDE_START) &&
 		(cur->type != XML_XINCLUDE_END) &&
 		(cur->type != XML_ENTITY_REF_NODE)) {
-		if (cur->content != NULL) xmlFree(cur->content);
+		DICT_FREE(cur->content)
 	    }
 	    if (((cur->type == XML_ELEMENT_NODE) ||
 	         (cur->type == XML_XINCLUDE_START) ||
@@ -3237,28 +3238,13 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	    /*
 	     * When a node is a text node or a comment, it uses a global static
 	     * variable for the name of the node.
-	     *
-	     * The xmlStrEqual comparisons need to be done when (happened with
-	     * XML::libXML and XML::libXSLT) the library is included twice
-	     * statically in the binary and a tree allocated by one occurrence
-	     * of the lib gets freed by the other occurrence, in this case
-	     * the string addresses compare are not sufficient.
+	     * Otherwise the node name might come from the document's
+	     * dictionnary
 	     */
 	    if ((cur->name != NULL) &&
-		(cur->name != xmlStringText) &&
-		(cur->name != xmlStringTextNoenc) &&
-		(cur->name != xmlStringComment)) {
-		if (cur->type == XML_TEXT_NODE) {
-		    if ((!xmlStrEqual(cur->name, xmlStringText)) &&
-			(!xmlStrEqual(cur->name, xmlStringTextNoenc)))
-			xmlFree((char *) cur->name);
-		} else if (cur->type == XML_COMMENT_NODE) {
-		    if (!xmlStrEqual(cur->name, xmlStringComment))
-			xmlFree((char *) cur->name);
-		} else
-		    xmlFree((char *) cur->name);
-	    }
-	    /* TODO : derecursivate this function */
+		(cur->type != XML_TEXT_NODE) &&
+		(cur->type != XML_COMMENT_NODE))
+		DICT_FREE(cur->name)
 	    xmlFree(cur);
 	}
 	cur = next;
@@ -3274,13 +3260,9 @@ xmlFreeNodeList(xmlNodePtr cur) {
  */
 void
 xmlFreeNode(xmlNodePtr cur) {
-    if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlFreeNode : node == NULL\n");
-#endif
-	return;
-    }
+    xmlDictPtr dict = NULL;
+
+    if (cur == NULL) return;
 
     /* use xmlFreeDtd for DTD nodes */
     if (cur->type == XML_DTD_NODE) {
@@ -3299,6 +3281,8 @@ xmlFreeNode(xmlNodePtr cur) {
     if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 	xmlDeregisterNodeDefaultValue(cur);
 
+    if (cur->doc != NULL) dict = cur->doc->dict;
+
     if ((cur->children != NULL) &&
 	(cur->type != XML_ENTITY_REF_NODE))
 	xmlFreeNodeList(cur->children);
@@ -3312,33 +3296,18 @@ xmlFreeNode(xmlNodePtr cur) {
 	(cur->type != XML_ENTITY_REF_NODE) &&
 	(cur->type != XML_XINCLUDE_END) &&
 	(cur->type != XML_XINCLUDE_START)) {
-	xmlFree(cur->content);
+	DICT_FREE(cur->content)
     }
 
     /*
      * When a node is a text node or a comment, it uses a global static
      * variable for the name of the node.
-     *
-     * The xmlStrEqual comparisons need to be done when (happened with
-     * XML::libXML and XML::libXSLT) the library is included twice statically
-     * in the binary and a tree allocated by one occurence of the lib gets
-     * freed by the other occurrence, in this case the string addresses compare
-     * are not sufficient.
+     * Otherwise the node name might come from the document's dictionnary
      */
     if ((cur->name != NULL) &&
-	(cur->name != xmlStringText) &&
-	(cur->name != xmlStringTextNoenc) &&
-	(cur->name != xmlStringComment)) {
-	if (cur->type == XML_TEXT_NODE) {
-            if ((!xmlStrEqual(cur->name, xmlStringText)) &&
-		(!xmlStrEqual(cur->name, xmlStringTextNoenc)))
-		xmlFree((char *) cur->name);
-	} else if (cur->type == XML_COMMENT_NODE) {
-            if (!xmlStrEqual(cur->name, xmlStringComment))
-		xmlFree((char *) cur->name);
-	} else
-	    xmlFree((char *) cur->name);
-    }
+        (cur->type != XML_TEXT_NODE) &&
+        (cur->type != XML_COMMENT_NODE))
+	DICT_FREE(cur->name)
 
     if (((cur->type == XML_ELEMENT_NODE) ||
 	 (cur->type == XML_XINCLUDE_START) ||

@@ -1044,7 +1044,8 @@ typedef enum {
     XML_PARSE_NOBLANKS	= 1<<8,	/* remove blank nodes */
     XML_PARSE_SAX1	= 1<<9,	/* use the SAX1 interface internally */
     XML_PARSE_XINCLUDE	= 1<<10,/* Implement XInclude substitition  */
-    XML_PARSE_NONET	= 1<<11 /* Forbid network access */
+    XML_PARSE_NONET	= 1<<11,/* Forbid network access */
+    XML_PARSE_NODICT	= 1<<12 /* Do not reuse the context dictionnary */
 } xmlParserOption;
 
 XMLPUBFUN void XMLCALL

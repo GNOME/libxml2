@@ -11926,6 +11926,18 @@ xmlCleanupParser(void) {
  ************************************************************************/
 
 /**
+ * DICT_FREE:
+ * @str:  a string
+ *
+ * Free a string if it is not owned by the "dict" dictionnary in the
+ * current scope
+ */
+#define DICT_FREE(str)						\
+	if ((str) && ((!dict) || 				\
+	    (xmlDictOwns(dict, (const xmlChar *)(str)) == 0)))	\
+	    xmlFree((char *)(str));
+
+/**
  * xmlCtxtReset:
  * @ctxt: an XML parser context
  *
@@ -11935,6 +11947,7 @@ void
 xmlCtxtReset(xmlParserCtxtPtr ctxt)
 {
     xmlParserInputPtr input;
+    xmlDictPtr dict = ctxt->dict;
 
     while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
         xmlFreeInputStream(input);
@@ -11953,8 +11966,20 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
     ctxt->nameNr = 0;
     ctxt->name = NULL;
 
+    DICT_FREE(ctxt->version);
     ctxt->version = NULL;
+    DICT_FREE(ctxt->encoding);
     ctxt->encoding = NULL;
+    DICT_FREE(ctxt->directory);
+    ctxt->directory = NULL;
+    DICT_FREE(ctxt->extSubURI);
+    ctxt->extSubURI = NULL;
+    DICT_FREE(ctxt->extSubSystem);
+    ctxt->extSubSystem = NULL;
+    if (ctxt->myDoc != NULL)
+        xmlFreeDoc(ctxt->myDoc);
+    ctxt->myDoc = NULL;
+
     ctxt->standalone = -1;
     ctxt->hasExternalSubset = 0;
     ctxt->hasPErefs = 0;
@@ -11962,9 +11987,7 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
     ctxt->external = 0;
     ctxt->instate = XML_PARSER_START;
     ctxt->token = 0;
-    ctxt->directory = NULL;
 
-    ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
     ctxt->nsWellFormed = 1;
     ctxt->valid = 1;
@@ -12064,6 +12087,12 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
         ctxt->sax->initialized = 1;
         options -= XML_PARSE_SAX1;
     }
+    if (options & XML_PARSE_NODICT) {
+        ctxt->dictNames = 0;
+        options -= XML_PARSE_NODICT;
+    } else {
+        ctxt->dictNames = 1;
+    }
     return (options);
 }
 
@@ -12096,11 +12125,25 @@ xmlDoRead(xmlParserCtxtPtr ctxt, const char *encoding, int options, int reuse)
         ret = ctxt->myDoc;
     else {
         ret = NULL;
-        xmlFreeDoc(ctxt->myDoc);
-        ctxt->myDoc = NULL;
+	if (ctxt->myDoc != NULL) {
+	    ctxt->myDoc->dict = NULL;
+	    xmlFreeDoc(ctxt->myDoc);
+	}
     }
-    if (!reuse)
+    ctxt->myDoc = NULL;
+    if (!reuse) {
+        if ((ctxt->dictNames) &&
+	    (ret != NULL) &&
+	    (ret->dict == ctxt->dict))
+	    ctxt->dict = NULL;
 	xmlFreeParserCtxt(ctxt);
+    } else {
+        /* Must duplicate the reference to the dictionary */
+        if ((ctxt->dictNames) &&
+	    (ret != NULL) &&
+	    (ret->dict == ctxt->dict))
+	    xmlDictReference(ctxt->dict);
+    }
 
     return (ret);
 }

@@ -1,3 +1,10 @@
+Fri Dec 24 16:31:22 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* python/generator.py: added most required entires to
+	  foreign encoding table, plus some additional logic to
+	  assure only the 1st param uses the 't#' format.  Fixes
+	  bug #152286, but may still have some other UTF-16 problems.
+
 Thu Dec 23 23:44:08 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* Makefile.am, gentest.py: enhanced for enabling build in

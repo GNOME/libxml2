@@ -300,7 +300,17 @@ py_return_types = {
 unknown_types = {}
 
 foreign_encoding_args = (
+    'htmlCreateMemoryParserCtxt',
+    'htmlCtxtReadMemory',
+    'htmlParseChunk',
+    'htmlReadMemory',
     'xmlCreateMemoryParserCtxt',
+    'xmlCtxtReadMemory',
+    'xmlCtxtResetPush',
+    'xmlParseChunk',
+    'xmlParseMemory',
+    'xmlReadMemory',
+    'xmlRecoverMemory',
 )
 
 #######################################################################
@@ -399,11 +409,8 @@ def print_function_wrapper(name, output, export, include):
         c_args = c_args + "    %s %s;\n" % (arg[1], arg[0])
         if py_types.has_key(arg[1]):
             (f, t, n, c) = py_types[arg[1]]
-	    if name == 'xmlCreateMemoryParserCtxt':
-	        print "processing special case"
-	    if (f == 'z') and (name in foreign_encoding_args):
+	    if (f == 'z') and (name in foreign_encoding_args) and (num_bufs == 0):
 	        f = 't#'
-		print "changed 'f'"
             if f != None:
                 format = format + f
             if t != None:

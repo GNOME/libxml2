@@ -1,3 +1,7 @@
+Tue May 15 12:49:50 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.h: two nodeset access macros from Thomas Broyer
+
 Tue May 15 11:42:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c xpath.h xpathInternals.h: apply an XPath API cleanup

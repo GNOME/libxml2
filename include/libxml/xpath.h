@@ -266,6 +266,16 @@ typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
 /**
  * Objects and Nodesets handling
  */
+
+/* These macros may later turn into functions */
+#define xmlXPathNodeSetGetLength(ns) ((ns) ? (ns)->nodeNr : 0)
+#define xmlXPathNodeSetItem(ns, index)				\
+		((((ns) != NULL) && 				\
+		  ((index) > 0) && ((index) <= (ns)->nodeNr)) ?	\
+		 (ns)->nodeTab[(index)]				\
+		 : NULL)
+
+
 void		   xmlXPathFreeObject		(xmlXPathObjectPtr obj);
 xmlNodeSetPtr	   xmlXPathNodeSetCreate	(xmlNodePtr val);
 void		   xmlXPathFreeNodeSetList	(xmlXPathObjectPtr obj);

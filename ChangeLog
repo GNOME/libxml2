@@ -1,3 +1,9 @@
+Mon Oct  4 16:09:07 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in debugXML.c include/libxml/xmlversion.h.in
+	  include/libxml/xmlwin32version.h.in: revamped the XML debugging
+	  module and prepare for a new checking mode
+
 Mon Oct  4 13:53:24 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: applied patch from Malcolm Tredinnick fixing bug #152426

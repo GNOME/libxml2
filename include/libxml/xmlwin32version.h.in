@@ -202,6 +202,15 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_DEBUG_RUNTIME:
+ *
+ * Whether the runtime debugging is configured in
+ */
+#if 0
+#define LIBXML_DEBUG_RUNTIME
+#endif
+
+/**
  * LIBXML_DLL_IMPORT:
  *
  * Used on Windows (MS C compiler only) to declare a variable as 

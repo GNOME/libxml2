@@ -295,6 +295,15 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_DEBUG_RUNTIME:
+ *
+ * Whether the runtime debugging is configured in
+ */
+#if @WITH_MEM_DEBUG@
+#define LIBXML_DEBUG_RUNTIME
+#endif
+
+/**
  * LIBXML_UNICODE_ENABLED:
  *
  * Whether the Unicode related interfaces are compiled in

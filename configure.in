@@ -440,6 +440,7 @@ if [[ "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ]] || \
     then
 	if test "${with_mem_debug}" = "" ; then
 	    with_mem_debug="yes"
+	    with_run_debug="yes"
 	fi
 	if test "${with_docbook}" = "" ; then
 	    with_docbook="yes"
@@ -1031,6 +1032,19 @@ else
 fi
 AC_SUBST(WITH_MEM_DEBUG)
 
+AC_ARG_WITH(run_debug,
+[  --with-run-debug        add the runtime debugging module (off)])
+if test "$with_minimum" = "yes" -a "$with_run_debug" = ""
+then
+    with_run_debug=no
+fi
+if test "$with_run_debug" = "yes" ; then
+    echo Enabling runtime debug support
+    WITH_RUN_DEBUG=1
+else    
+    WITH_RUN_DEBUG=0
+fi
+AC_SUBST(WITH_RUN_DEBUG)
 
 WIN32_EXTRA_LIBADD=
 WIN32_EXTRA_LDFLAGS=

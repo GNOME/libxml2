@@ -1,3 +1,8 @@
+Tue Jun 15 14:24:19 1999  Raph Levien  <raph@acm.org>
+
+	* parser.c: fixed a buffer overrun for when you have a very long
+	attribute with no entities in it.
+
 Mon Jun 14 00:17:50 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* added example directory

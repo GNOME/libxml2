@@ -459,6 +459,12 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
 	} else {
 	    /*  TODO: invalid for UTF-8 , use COPY(out); */
 	    *out++ = CUR;
+	    if (out - buffer > buffer_size - 100) {
+	      int index = out - buffer;
+	      
+	      growBuffer(buffer);
+	      out = &buffer[index];
+	    }
 	    NEXT;
 	}
     }

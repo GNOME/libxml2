@@ -1,3 +1,8 @@
+Thu Jan 27 18:23:50 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixed xmlCopyDoc to also copy the doc->URL as pointed
+	  by Martijn Faassen
+
 Thu Jan 27 13:39:04 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 	* xmlschemas.c include/libxml/schemasInternals.h:
 	  Added an initial skeleton for indentity-constraints. This is all

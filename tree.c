@@ -4164,6 +4164,8 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
         ret->name = xmlMemStrdup(doc->name);
     if (doc->encoding != NULL)
         ret->encoding = xmlStrdup(doc->encoding);
+    if (doc->URL != NULL)
+        ret->URL = xmlStrdup(doc->URL);
     ret->charset = doc->charset;
     ret->compression = doc->compression;
     ret->standalone = doc->standalone;

@@ -51,13 +51,20 @@ extern void xmlCheckVersion(int version);
  */
 #define LIBXML_TEST_VERSION xmlCheckVersion(@LIBXML_VERSION_NUMBER@);
 
+#if 0
 /**
  * WITH_TRIO:
  *
- * Whether the trio support need to be configured in
+ * defined if the trio support need to be configured in
  */
-#if 0
 #define WITH_TRIO
+#else
+/**
+ * WITHOUT_TRIO:
+ *
+ * defined if the trio support should not be configured in
+ */
+#define WITHOUT_TRIO
 #endif
 
 /**

@@ -16,7 +16,7 @@
 #include <libxml/xmlversion.h>
 #endif
 
-#ifdef WITHOUT_TRIO
+#ifndef WITH_TRIO
 #include <stdio.h>
 #else
 /**

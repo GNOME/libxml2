@@ -1,3 +1,9 @@
+Mon Sep 10 22:14:42 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.h include/libxml/xmlversion.h.in
+	  include/libxml/xmlwin32version.h include/libxml/xmlwin32version.h.in:
+	  Tried to close bug #60131
+
 Mon Sep 10 20:46:03 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: fixed a bug in the HTML parser introduced Sep  9

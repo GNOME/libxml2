@@ -42,8 +42,8 @@
 #endif
 #endif
 
+#include <libxml/globals.h>	/* must come before xmlmemory.h */
 #include <libxml/xmlmemory.h>
-#include <libxml/globals.h>
 #include <libxml/xmlerror.h>
 #include <libxml/threads.h>
 
@@ -60,7 +60,7 @@ void xmlMallocBreakpoint(void);
  *									*
  ************************************************************************/
 
-
+#if !defined(LIBXML_THREAD_ENABLED) && !defined(LIBXML_THREAD_ALLOC_ENABLED)
 #ifdef xmlMalloc
 #undef xmlMalloc
 #endif
@@ -70,7 +70,7 @@ void xmlMallocBreakpoint(void);
 #ifdef xmlMemStrdup
 #undef xmlMemStrdup
 #endif
-
+#endif
 
 /*
  * Each of the blocks allocated begin with a header containing informations

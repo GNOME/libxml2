@@ -476,6 +476,7 @@ struct _xmlNode {
 #define XML_GET_LINE(n)						\
     ((n)->type == XML_ELEMENT_NODE ? (int) (n)->content : 0)
 
+
 /**
  * xmlDoc:
  *
@@ -507,6 +508,7 @@ struct _xmlDoc {
     const xmlChar  *URL;	/* The URI for that document */
     int             charset;    /* encoding of the in-memory content
 				   actually an xmlCharEncoding */
+    struct _xmlDict *dict;      /* dict used to allocate names or NULL */
 };
 
 /**

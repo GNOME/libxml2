@@ -1,3 +1,12 @@
+Wed Sep  3 15:24:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: when creating a DOCTYPE use "html" lowercase
+	  by default instead of "HTML"
+	* parser.c xmlreader.c: optimization, gain a few % parsing speed by
+	  avoiding calls to "areBlanks" when not needed.
+	* include/libxml/parser.h include/libxml/tree.h: some structure
+	  extensions for future work on using per-document dictionaries.
+
 Wed Sep  3 15:08:06 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am results/*.sax SAXResult/*: removing the SAXresults

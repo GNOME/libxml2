@@ -1125,6 +1125,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->sax->endElement = xmlTextReaderEndElement;
     ret->characters = ret->sax->characters;
     ret->sax->characters = xmlTextReaderCharacters;
+    ret->sax->ignorableWhitespace = xmlTextReaderCharacters;
     ret->cdataBlock = ret->sax->cdataBlock;
     ret->sax->cdataBlock = xmlTextReaderCDataBlock;
 
@@ -1152,6 +1153,10 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->ctxt->_private = ret;
     ret->ctxt->linenumbers = 1;
     ret->allocs = XML_TEXTREADER_CTXT;
+    /*
+     * use the parser dictionnary to allocate all elements and attributes names
+     */
+    ret->ctxt->docdict = 1;
     return(ret);
 }
 

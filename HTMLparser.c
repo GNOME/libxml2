@@ -2137,7 +2137,7 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->_private = NULL;
     if ((ExternalID != NULL) ||
 	(URI != NULL))
-	xmlCreateIntSubset(cur, BAD_CAST "HTML", ExternalID, URI);
+	xmlCreateIntSubset(cur, BAD_CAST "html", ExternalID, URI);
     return(cur);
 }
 
@@ -4002,7 +4002,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
 	dtd = xmlGetIntSubset(ctxt->myDoc);
 	if (dtd == NULL)
 	    ctxt->myDoc->intSubset = 
-		xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "HTML", 
+		xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "html", 
 		    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
 		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
     }
@@ -5058,7 +5058,7 @@ done:
 	dtd = xmlGetIntSubset(ctxt->myDoc);
 	if (dtd == NULL)
 	    ctxt->myDoc->intSubset = 
-		xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "HTML", 
+		xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "html", 
 		    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
 		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
     }

@@ -399,6 +399,8 @@ xmlFileClose (void * context) {
 	return(0);
     if (fil == stdout)
 	return(0);
+    if (fil == stderr)
+	return(0);
     return ( ( fclose((FILE *) context) == EOF ) ? -1 : 0 );
 }
 

@@ -642,7 +642,8 @@ xmlMemoryDump(void)
     FILE *dump;
 
     dump = fopen(".memdump", "w");
-    if (dump == NULL) xmlMemoryDumpFile = stdout;
+    if (dump == NULL)
+	xmlMemoryDumpFile = stderr;
     else xmlMemoryDumpFile = dump;
 
     xmlMemDisplay(xmlMemoryDumpFile);

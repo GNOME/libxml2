@@ -314,7 +314,7 @@ xmlDebugDumpAttrDecl(FILE *output, xmlAttributePtr attr, int depth) {
 	xmlDebugDumpString(output, attr->defaultValue);
 	fprintf(output, "\"");
     }
-    printf("\n");
+    fprintf(output, "\n");
 
     /*
      * Do a bit of checking
@@ -388,7 +388,7 @@ xmlDebugDumpElemDecl(FILE *output, xmlElementPtr elem, int depth) {
 	buf[5000] = 0;
 	fprintf(output, "%s", buf);
     }
-    printf("\n");
+    fprintf(output, "\n");
 
     /*
      * Do a bit of checking
@@ -1529,9 +1529,9 @@ xmlShellBase(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
     base = xmlNodeGetBase(node->doc, node);
 
     if (base == NULL) {
-        printf(" No base found !!!\n");
+        fprintf(stdout, " No base found !!!\n");
     } else {
-        printf("%s\n", base);
+        fprintf(stdout, "%s\n", base);
         xmlFree(base);
     }
     return (0);
@@ -1599,7 +1599,7 @@ xmlShellCat(xmlShellCtxtPtr ctxt, char *arg ATTRIBUTE_UNUSED,
         else
             xmlElemDump(stdout, ctxt->doc, node);
     }
-    printf("\n");
+    fprintf(stdout, "\n");
     return (0);
 }
 
@@ -1630,7 +1630,7 @@ xmlShellLoad(xmlShellCtxtPtr ctxt, char *filename,
 #ifdef LIBXML_HTML_ENABLED
         doc = htmlParseFile(filename, NULL);
 #else
-        printf("HTML support not compiled in\n");
+        fprintf(stdout, "HTML support not compiled in\n");
         doc = NULL;
 #endif /* LIBXML_HTML_ENABLED */
     } else {
@@ -1850,11 +1850,11 @@ xmlShellDu(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
     while (node != NULL) {
         if ((node->type == XML_DOCUMENT_NODE) ||
             (node->type == XML_HTML_DOCUMENT_NODE)) {
-            printf("/\n");
+            fprintf(stdout, "/\n");
         } else if (node->type == XML_ELEMENT_NODE) {
             for (i = 0; i < indent; i++)
-                printf("  ");
-            printf("%s\n", node->name);
+                fprintf(stdout, "  ");
+            fprintf(stdout, "%s\n", node->name);
         } else {
         }
 
@@ -2053,22 +2053,22 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
         if (!strcmp(command, "bye"))
             break;
 		if (!strcmp(command, "help")) {
-		  printf("\tbase         display XML base of the node\n");
-		  printf("\tbye          leave shell\n");
-		  printf("\tcat [node]   display node or current node\n");
-		  printf("\tcd [path]    change directory to path or to root\n");
-		  printf("\tdir [path]   dumps informations about the node (namespace, attributes, content)\n");
-		  printf("\tdu [path]    show the structure of the subtree under path or the current node\n");
-		  printf("\texit         leave shell\n");
-		  printf("\thelp         display this help\n");
-		  printf("\tfree         display memory usage\n");
-		  printf("\tload [name]  load a new document with name\n");
-		  printf("\tls [path]    list contents of path or the current directory\n");
-		  printf("\tpwd          display current working directory\n");
-		  printf("\tquit         leave shell\n");
-		  printf("\tsave [name]  save this document to name or the original name\n");
-		  printf("\tvalidate     check the document for errors\n");
-		  printf("\twrite [name] write the current node to the filename\n");
+		  fprintf(stdout, "\tbase         display XML base of the node\n");
+		  fprintf(stdout, "\tbye          leave shell\n");
+		  fprintf(stdout, "\tcat [node]   display node or current node\n");
+		  fprintf(stdout, "\tcd [path]    change directory to path or to root\n");
+		  fprintf(stdout, "\tdir [path]   dumps informations about the node (namespace, attributes, content)\n");
+		  fprintf(stdout, "\tdu [path]    show the structure of the subtree under path or the current node\n");
+		  fprintf(stdout, "\texit         leave shell\n");
+		  fprintf(stdout, "\thelp         display this help\n");
+		  fprintf(stdout, "\tfree         display memory usage\n");
+		  fprintf(stdout, "\tload [name]  load a new document with name\n");
+		  fprintf(stdout, "\tls [path]    list contents of path or the current directory\n");
+		  fprintf(stdout, "\tpwd          display current working directory\n");
+		  fprintf(stdout, "\tquit         leave shell\n");
+		  fprintf(stdout, "\tsave [name]  save this document to name or the original name\n");
+		  fprintf(stdout, "\tvalidate     check the document for errors\n");
+		  fprintf(stdout, "\twrite [name] write the current node to the filename\n");
         } else if (!strcmp(command, "validate")) {
             xmlShellValidate(ctxt, arg, NULL, NULL);
         } else if (!strcmp(command, "load")) {
@@ -2090,7 +2090,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
             char dir[500];
 
             if (!xmlShellPwd(ctxt, dir, ctxt->node, NULL))
-                printf("%s\n", dir);
+                fprintf(stdout, "%s\n", dir);
         } else if (!strcmp(command, "du")) {
             xmlShellDu(ctxt, NULL, ctxt->node, NULL);
         } else if (!strcmp(command, "base")) {
@@ -2280,7 +2280,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
                                      indx < list->nodesetval->nodeNr;
                                      indx++) {
                                     if (i > 0)
-                                        printf(" -------\n");
+                                        fprintf(stdout, " -------\n");
                                     xmlShellCat(ctxt, NULL,
                                                 list->nodesetval->
                                                 nodeTab[indx], NULL);

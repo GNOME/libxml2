@@ -4929,7 +4929,8 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
 #endif
 	return(0);
     }
-    if (file == NULL) file = stdout;
+    if (file == NULL)
+	file = stdout;
     ret = fwrite(buf->content, sizeof(xmlChar), buf->use, file);
     return(ret);
 }

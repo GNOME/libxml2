@@ -1,3 +1,8 @@
+Thu Nov 22 19:19:10 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c tree.c xmlIO.c xmlmemory.c: some cleanups when chasing
+	  unappropriate stdout output.
+
 Thu Nov 22 13:58:14 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/tree.h: Fixed a couple of macro errors pointed out

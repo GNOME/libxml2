@@ -204,6 +204,8 @@ int	isolat1ToUTF8			(unsigned char *out,
 					 int *outlen,
 					 const unsigned char *in,
 					 int *inlen);
+int	xmlGetUTF8Char			(const unsigned char *utf,
+					 int *len);
 /*
  * exports additional "UTF-8 aware" string routines which are.
  */

@@ -1,3 +1,7 @@
+Tue Oct 22 16:27:31 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/encoding.h encoding.c: made xmlGetUTF8Char public
+
 Tue Oct 22 16:25:18 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: adding a grep command to --shell in xmllint

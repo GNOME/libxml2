@@ -135,7 +135,7 @@ xmlUTF8Strlen(const xmlChar *utf) {
  * Returns the char value or -1 in case of error and update @len with the
  *        number of bytes used
  */
-static int
+int
 xmlGetUTF8Char(const unsigned char *utf, int *len) {
     unsigned int c;
 

@@ -662,34 +662,77 @@ htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
  * htmlDocDumpMemory:
  * @cur:  the document
  * @mem:  OUT: the memory pointer
- * @size:  OUT: the memory lenght
+ * @size:  OUT: the memory length
  *
  * Dump an HTML document in memory and return the xmlChar * and it's size.
  * It's up to the caller to free the memory.
  */
 void
 htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
-    xmlBufferPtr buf;
+    xmlOutputBufferPtr buf;
+    xmlCharEncodingHandlerPtr handler = NULL;
+    const char *encoding;
 
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"htmlxmlDocDumpMemory : document == NULL\n");
+		"htmlDocDumpMemory : document == NULL\n");
 #endif
 	*mem = NULL;
 	*size = 0;
 	return;
     }
-    buf = xmlBufferCreate();
+
+    encoding = (const char *) htmlGetMetaEncoding(cur);
+
+    if (encoding != NULL) {
+	xmlCharEncoding enc;
+
+	enc = xmlParseCharEncoding(encoding);
+	if (enc != cur->charset) {
+	    if (cur->charset != XML_CHAR_ENCODING_UTF8) {
+		/*
+		 * Not supported yet
+		 */
+		*mem = NULL;
+		*size = 0;
+		return;
+	    }
+
+	    handler = xmlFindCharEncodingHandler(encoding);
+	    if (handler == NULL) {
+		*mem = NULL;
+		*size = 0;
+		return;
+	    }
+	}
+    }
+
+    /*
+     * Fallback to HTML or ASCII when the encoding is unspecified
+     */
+    if (handler == NULL)
+	handler = xmlFindCharEncodingHandler("HTML");
+    if (handler == NULL)
+	handler = xmlFindCharEncodingHandler("ascii");
+
+    buf = xmlAllocOutputBuffer(handler);
     if (buf == NULL) {
 	*mem = NULL;
 	*size = 0;
 	return;
     }
-    htmlDocContentDump(buf, cur);
-    *mem = buf->content;
-    *size = buf->use;
-    xmlFree(buf);
+
+    htmlDocContentDumpOutput(buf, cur, NULL);
+    xmlOutputBufferFlush(buf);
+    if (buf->conv != NULL) {
+	*size = buf->conv->use;
+	*mem = xmlStrndup(buf->conv->content, *size);
+    } else {
+	*size = buf->buffer->use;
+	*mem = xmlStrndup(buf->buffer->content, *size);
+    }
+    (void)xmlOutputBufferClose(buf);
 }
 
 

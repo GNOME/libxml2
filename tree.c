@@ -3308,6 +3308,7 @@ xmlNodeGetContent(xmlNodePtr cur) {
 	    while (tmp != NULL) {
 		switch (tmp->type) {
 		    case XML_ELEMENT_NODE: 
+		    case XML_CDATA_SECTION_NODE:
 		    case XML_TEXT_NODE:
 			if (tmp->content != NULL)
 #ifndef XML_USE_BUFFER_CONTENT

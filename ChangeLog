@@ -1,3 +1,9 @@
+Wed May 30 20:30:47 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.c: applied patch from Jaroslaw Kolakowski to close bug
+	  #55380
+	* tree.c: patch to xmlNodeGetContent() to get CDATA section content
+
 Mon May 28 12:56:29 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* TODO: updated

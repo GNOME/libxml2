@@ -429,29 +429,22 @@ AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)
 
 dnl
-dnl cleanup any remaining symlinks if any for include/libxml
+dnl cleanup any remaining symlinks if any for include/libxml, this
+dnl is only needed for the people using CVS and transitionning
 dnl
-if test -L $srcdir/include/libxml
+if test -d $srcdir/include/CVS
 then
-    if test -d $srcdir/include/CVS
+    if test -L $srcdir/include/libxml
     then
-	rm -rf $srcdir/include/libxml
-	echo The CVS repository changed a bit
-	echo 'please run "cvs update -d" and rerun the configuration script'
-	exit 1
-    else
-        echo  $srcdir/include/libxml should not be a symlink anymore
-	exit 1
+	    rm -rf $srcdir/include/libxml
+	    echo The CVS repository changed a bit
+	    echo 'please run "cvs update -d" and rerun the configuration script'
+	    exit 1
     fi
-fi
-if test -e $srcdir/xmlversion.h
-then
-    rm -f $srcdir/xmlversion.h
-fi
-if test ! -r libxml
-then
-    rm -rf libxml
-    ln -s $srcdir/include/libxml libxml
+    if test -e $srcdir/xmlversion.h
+    then
+	rm -f $srcdir/xmlversion.h
+    fi
 fi
 
 AC_OUTPUT(libxml.spec Makefile include/Makefile include/libxml/Makefile doc/Makefile example/Makefile include/libxml/xmlversion.h include/libxml/xmlwin32version.h xml2-config libxml-2.0.pc xml2Conf.sh)

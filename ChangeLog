@@ -1,3 +1,9 @@
+Wed Jun 27 13:09:51 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: moved the symlinks detection within a CVS
+	  check, this is not portable and will be removed soon.
+	* xpath.c: small cleanup/speedup
+
 Tue Jun 26 18:05:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in doc/xml.html include/libxml/xmlwin32version.h:

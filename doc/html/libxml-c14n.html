@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>c14n</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
@@ -74,15 +73,20 @@ Dumps the canonized image of given XML document into the provided buffer.
 For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or
 &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>nodes</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>exclusive</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>inclusive_ns_prefixes</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>with_comments</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td> 		the XML document for canonization
+</td></tr><tr><td><span class="term"><i><tt>nodes</tt></i> :</span></td><td> 		the nodes set to be included in the canonized image
+     		or NULL if all document nodes should be included
+</td></tr><tr><td><span class="term"><i><tt>exclusive</tt></i> :</span></td><td>		the exclusive flag (0 - non-exclusive canonicalization;
+		otherwise - exclusive canonicalization)
+</td></tr><tr><td><span class="term"><i><tt>inclusive_ns_prefixes</tt></i> :</span></td><td> the list of inclusive namespace prefixes 
+		ended with a NULL or NULL if there is no
+		inclusive namespaces (only for exclusive 
+		canonicalization, ignored otherwise)
+</td></tr><tr><td><span class="term"><i><tt>with_comments</tt></i> :</span></td><td> 	include comments in the result (!=0) or not (==0)
+</td></tr><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td> 		the output buffer to store canonical XML; this 
+		buffer MUST have encoder==NULL because C14N requires
+		UTF-8 output
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>non-negative value on success or a negative value on fail  
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlC14NDocDumpMemory"></a>xmlC14NDocDumpMemory ()</h3><pre class="programlisting">int         xmlC14NDocDumpMemory            (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> nodes,
                                              int exclusive,
@@ -93,15 +97,20 @@ Dumps the canonized image of given XML document into memory.
 For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or
 &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>nodes</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>exclusive</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>inclusive_ns_prefixes</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>with_comments</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>doc_txt_ptr</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td> 		the XML document for canonization
+</td></tr><tr><td><span class="term"><i><tt>nodes</tt></i> :</span></td><td> 		the nodes set to be included in the canonized image
+     		or NULL if all document nodes should be included
+</td></tr><tr><td><span class="term"><i><tt>exclusive</tt></i> :</span></td><td>		the exclusive flag (0 - non-exclusive canonicalization;
+		otherwise - exclusive canonicalization)
+</td></tr><tr><td><span class="term"><i><tt>inclusive_ns_prefixes</tt></i> :</span></td><td> the list of inclusive namespace prefixes 
+		ended with a NULL or NULL if there is no
+		inclusive namespaces (only for exclusive 
+		canonicalization, ignored otherwise)
+</td></tr><tr><td><span class="term"><i><tt>with_comments</tt></i> :</span></td><td> 	include comments in the result (!=0) or not (==0)
+</td></tr><tr><td><span class="term"><i><tt>doc_txt_ptr</tt></i> :</span></td><td> 	the memory pointer for allocated canonical XML text;
+		the caller of this functions is responsible for calling
+		<a href="libxml-globals.html#xmlFree">xmlFree</a>() to free allocated memory 
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of bytes written on success or a negative value on fail  
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlC14NDocSave"></a>xmlC14NDocSave ()</h3><pre class="programlisting">int         xmlC14NDocSave                  (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> nodes,
                                              int exclusive,
@@ -113,16 +122,22 @@ Dumps the canonized image of given XML document into the file.
 For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or
 &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>nodes</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>exclusive</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>inclusive_ns_prefixes</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>with_comments</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>compression</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td> 		the XML document for canonization
+</td></tr><tr><td><span class="term"><i><tt>nodes</tt></i> :</span></td><td> 		the nodes set to be included in the canonized image
+     		or NULL if all document nodes should be included
+</td></tr><tr><td><span class="term"><i><tt>exclusive</tt></i> :</span></td><td>		the exclusive flag (0 - non-exclusive canonicalization;
+		otherwise - exclusive canonicalization)
+</td></tr><tr><td><span class="term"><i><tt>inclusive_ns_prefixes</tt></i> :</span></td><td> the list of inclusive namespace prefixes 
+		ended with a NULL or NULL if there is no
+		inclusive namespaces (only for exclusive 
+		canonicalization, ignored otherwise)
+</td></tr><tr><td><span class="term"><i><tt>with_comments</tt></i> :</span></td><td> 	include comments in the result (!=0) or not (==0)
+</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td> 		the filename to store canonical XML image
+</td></tr><tr><td><span class="term"><i><tt>compression</tt></i> :</span></td><td>	the compression level (zlib requred): 
+			-1 - libxml default,
+			 0 - uncompressed, 
+			&gt;0 - compression level
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of bytes written success or a negative value on fail  
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlC14NIsVisibleCallback"></a>xmlC14NIsVisibleCallback ()</h3><pre class="programlisting">int         (*xmlC14NIsVisibleCallback)     (void *user_data,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> parent);</pre><p>
@@ -144,14 +159,20 @@ Dumps the canonized image of given XML document into the provided buffer.
 For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or
 &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>is_visible_callback</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>exclusive</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>inclusive_ns_prefixes</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>with_comments</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td> 		the XML document for canonization
+</td></tr><tr><td><span class="term"><i><tt>is_visible_callback</tt></i> :</span></td><td>the function to use to determine is node visible 
+		or not
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td> 		the first parameter for <i><tt>is_visible_callback</tt></i> function
+		(in most cases, it is nodes set)
+</td></tr><tr><td><span class="term"><i><tt>exclusive</tt></i> :</span></td><td>		the exclusive flag (0 - non-exclusive canonicalization;
+		otherwise - exclusive canonicalization)
+</td></tr><tr><td><span class="term"><i><tt>inclusive_ns_prefixes</tt></i> :</span></td><td> the list of inclusive namespace prefixes 
+		ended with a NULL or NULL if there is no
+		inclusive namespaces (only for exclusive 
+		canonicalization, ignored otherwise)
+</td></tr><tr><td><span class="term"><i><tt>with_comments</tt></i> :</span></td><td> 	include comments in the result (!=0) or not (==0)
+</td></tr><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td> 		the output buffer to store canonical XML; this 
+		buffer MUST have encoder==NULL because C14N requires
+		UTF-8 output
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>non-negative value on success or a negative value on fail  
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-catalog.html"><b>&lt;&lt; catalog</b></a></td><td align="right"><a accesskey="n" href="libxml-threads.html"><b>threads &gt;&gt;</b></a></td></tr></table></body></html>

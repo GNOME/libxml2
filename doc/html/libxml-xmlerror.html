@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlerror</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
@@ -194,11 +193,9 @@ void        <a href="libxml-xmlerror.html#xmlParserPrintFileContext">xmlParserPr
 Signature of the function to use when there is an error and
 no parsing or validity context available .</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  a parsing context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  the extra arguments of the varags to format the message
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSetGenericErrorFunc"></a>xmlSetGenericErrorFunc ()</h3><pre class="programlisting">void        xmlSetGenericErrorFunc          (void *ctx,
                                              <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);</pre><p>
 Function to reset the handler and the error context for out of
@@ -209,71 +206,55 @@ be passed as first argument to <i><tt>handler</tt></i>
 One can simply force messages to be emitted to another FILE * than
 stderr by setting <i><tt>ctx</tt></i> to this file handle and <i><tt>handler</tt></i> to NULL.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the new error handling context
+</td></tr><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>  the new handler function
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="initGenericErrorDefaultFunc"></a>initGenericErrorDefaultFunc ()</h3><pre class="programlisting">void        initGenericErrorDefaultFunc     (<a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> *handler);</pre><p>
 Set or reset (if NULL) the default handler for generic errors
 to the builtin error function.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>  the handler
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserError"></a>xmlParserError ()</h3><pre class="programlisting">void        xmlParserError                  (void *ctx,
                                              const char *msg,
                                              ...);</pre><p>
 Display and format an error messages, gives file, line, position and
 extra parameters.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserWarning"></a>xmlParserWarning ()</h3><pre class="programlisting">void        xmlParserWarning                (void *ctx,
                                              const char *msg,
                                              ...);</pre><p>
 Display and format a warning messages, gives file, line, position and
 extra parameters.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserValidityError"></a>xmlParserValidityError ()</h3><pre class="programlisting">void        xmlParserValidityError          (void *ctx,
                                              const char *msg,
                                              ...);</pre><p>
 Display and format an validity error messages, gives file,
 line, position and extra parameters.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserValidityWarning"></a>xmlParserValidityWarning ()</h3><pre class="programlisting">void        xmlParserValidityWarning        (void *ctx,
                                              const char *msg,
                                              ...);</pre><p>
 Display and format a validity warning messages, gives file, line,
 position and extra parameters.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserPrintFileInfo"></a>xmlParserPrintFileInfo ()</h3><pre class="programlisting">void        xmlParserPrintFileInfo          (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);</pre><p>
 Displays the associated file and line informations for the current input</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  an xmlParserInputPtr input
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserPrintFileContext"></a>xmlParserPrintFileContext ()</h3><pre class="programlisting">void        xmlParserPrintFileContext       (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);</pre><p>
 Displays current context within the input content for error tracking</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  an xmlParserInputPtr input
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-uri.html"><b>&lt;&lt; uri</b></a></td><td align="right"><a accesskey="n" href="libxml-HTMLparser.html"><b>HTMLparser &gt;&gt;</b></a></td></tr></table></body></html>

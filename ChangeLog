@@ -1,3 +1,9 @@
+Fri Jun 13 14:27:19 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/Makefile.am doc/html/*: reverted back patch for #113521,
+	  due to #115104 and while fixing #115101 . HTML URLs must not
+	  be version dependant.
+
 Fri Jun 13 12:03:30 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* entities.c: do not generate &quot; for " outside of attributes

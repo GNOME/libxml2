@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>threads</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
@@ -56,66 +55,52 @@ void        <a href="libxml-threads.html#xmlCleanupThreads">xmlCleanupThreads</a
 
 </p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="xmlMutex"></a>struct xmlMutex</h3><pre class="programlisting">struct xmlMutex;</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMutexPtr"></a>xmlMutexPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMutexPtr"></a>xmlMutexPtr</h3><pre class="programlisting">typedef xmlMutex *xmlMutexPtr;
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRMutex"></a>struct xmlRMutex</h3><pre class="programlisting">struct xmlRMutex;</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRMutexPtr"></a>xmlRMutexPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRMutexPtr"></a>xmlRMutexPtr</h3><pre class="programlisting">typedef xmlRMutex *xmlRMutexPtr;
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewMutex"></a>xmlNewMutex ()</h3><pre class="programlisting"><a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> xmlNewMutex                     (void);</pre><p>
 <a href="libxml-threads.html#xmlNewMutex">xmlNewMutex</a>() is used to allocate a libxml2 token struct for use in
 synchronizing access to data.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new simple mutex pointer or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMutexLock"></a>xmlMutexLock ()</h3><pre class="programlisting">void        xmlMutexLock                    (<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok);</pre><p>
 <a href="libxml-threads.html#xmlMutexLock">xmlMutexLock</a>() is used to lock a libxml2 token.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the simple mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMutexUnlock"></a>xmlMutexUnlock ()</h3><pre class="programlisting">void        xmlMutexUnlock                  (<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok);</pre><p>
 <a href="libxml-threads.html#xmlMutexUnlock">xmlMutexUnlock</a>() is used to unlock a libxml2 token.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the simple mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeMutex"></a>xmlFreeMutex ()</h3><pre class="programlisting">void        xmlFreeMutex                    (<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok);</pre><p>
 <a href="libxml-threads.html#xmlFreeMutex">xmlFreeMutex</a>() is used to reclaim resources associated with a libxml2 token
 struct.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the simple mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewRMutex"></a>xmlNewRMutex ()</h3><pre class="programlisting"><a href="libxml-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> xmlNewRMutex                   (void);</pre><p>
 <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xmlRNewMutex">xmlRNewMutex</GTKDOCLINK>() is used to allocate a reentrant mutex for use in
 synchronizing access to data. token_r is a re-entrant lock and thus useful
 for synchronizing access to data structures that may be manipulated in a
 recursive fashion.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new reentrant mutex pointer or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRMutexLock"></a>xmlRMutexLock ()</h3><pre class="programlisting">void        xmlRMutexLock                   (<a href="libxml-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);</pre><p>
 <a href="libxml-threads.html#xmlRMutexLock">xmlRMutexLock</a>() is used to lock a libxml2 token_r.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the reentrant mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRMutexUnlock"></a>xmlRMutexUnlock ()</h3><pre class="programlisting">void        xmlRMutexUnlock                 (<a href="libxml-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);</pre><p>
 <a href="libxml-threads.html#xmlRMutexUnlock">xmlRMutexUnlock</a>() is used to unlock a libxml2 token_r.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the reentrant mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeRMutex"></a>xmlFreeRMutex ()</h3><pre class="programlisting">void        xmlFreeRMutex                   (<a href="libxml-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);</pre><p>
 <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xmlRFreeMutex">xmlRFreeMutex</GTKDOCLINK>() is used to reclaim resources associated with a
 reentrant mutex.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the reentrant mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInitThreads"></a>xmlInitThreads ()</h3><pre class="programlisting">void        xmlInitThreads                  (void);</pre><p>
 <a href="libxml-threads.html#xmlInitThreads">xmlInitThreads</a>() is used to to initialize all the thread related
 data of the libxml2 library.</p><p>
@@ -131,15 +116,11 @@ library.</p><p>
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetThreadId"></a>xmlGetThreadId ()</h3><pre class="programlisting">int         xmlGetThreadId                  (void);</pre><p>
 <a href="libxml-threads.html#xmlGetThreadId">xmlGetThreadId</a>() find the current thread ID number</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the current thread ID number
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsMainThread"></a>xmlIsMainThread ()</h3><pre class="programlisting">int         xmlIsMainThread                 (void);</pre><p>
 <a href="libxml-threads.html#xmlIsMainThread">xmlIsMainThread</a>() check whether the current thread is the main thread.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if the current thread is the main thread, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCleanupThreads"></a>xmlCleanupThreads ()</h3><pre class="programlisting">void        xmlCleanupThreads               (void);</pre><p>
 <a href="libxml-threads.html#xmlCleanupThreads">xmlCleanupThreads</a>() is used to to cleanup all the thread related
 data of the libxml2 library once processing has ended.</p><p>
@@ -147,7 +128,5 @@ data of the libxml2 library once processing has ended.</p><p>
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetGlobalState"></a>xmlGetGlobalState ()</h3><pre class="programlisting"><a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> xmlGetGlobalState         (void);</pre><p>
 <a href="libxml-threads.html#xmlGetGlobalState">xmlGetGlobalState</a>() is called to retrieve the global state for a thread.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the thread global state or NULL in case of error
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-c14n.html"><b>&lt;&lt; c14n</b></a></td><td align="right"><a accesskey="n" href="libxml-globals.html"><b>globals &gt;&gt;</b></a></td></tr></table></body></html>

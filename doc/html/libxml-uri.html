@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>uri</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
@@ -71,14 +70,13 @@ void        <a href="libxml-uri.html#xmlFreeURI">xmlFreeURI</a>                 
 A parsed URI reference. This is a struct containing the various fields
 as described in RFC 2396 but separated for further processing.</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlURIPtr"></a>xmlURIPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlURIPtr"></a>xmlURIPtr</h3><pre class="programlisting">typedef xmlURI *xmlURIPtr;
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCreateURI"></a>xmlCreateURI ()</h3><pre class="programlisting"><a href="libxml-uri.html#xmlURIPtr">xmlURIPtr</a>   xmlCreateURI                    (void);</pre><p>
 Simply creates an empty xmlURI</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new structure or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlBuildURI"></a>xmlBuildURI ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlBuildURI                     (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *URI,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *base);</pre><p>
 Computes he final URI of the reference done by checking that
@@ -88,20 +86,17 @@ RFC 2396
 </p><p>
 5.2. Resolving Relative References to Absolute Form</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>base</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>  the URI instance found in the document
+</td></tr><tr><td><span class="term"><i><tt>base</tt></i> :</span></td><td>  the base value
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new URI string (to be freed by the caller) or NULL in case
+        of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseURI"></a>xmlParseURI ()</h3><pre class="programlisting"><a href="libxml-uri.html#xmlURIPtr">xmlURIPtr</a>   xmlParseURI                     (const char *str);</pre><p>
 Parse an URI 
 </p><p>
 URI-reference = [ absoluteURI | relativeURI ] [ &quot;#&quot; fragment ]</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the URI string to analyze
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a newly build xmlURIPtr or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseURIReference"></a>xmlParseURIReference ()</h3><pre class="programlisting">int         xmlParseURIReference            (<a href="libxml-uri.html#xmlURIPtr">xmlURIPtr</a> uri,
                                              const char *str);</pre><p>
 Parse an URI reference string and fills in the appropriate fields
@@ -109,78 +104,68 @@ of the <i><tt>uri</tt></i> structure
 </p><p>
 URI-reference = [ absoluteURI | relativeURI ] [ &quot;#&quot; fragment ]</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>uri</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>uri</tt></i> :</span></td><td>  pointer to an URI structure
+</td></tr><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the string to analyze
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or the error code
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSaveUri"></a>xmlSaveUri ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlSaveUri                      (<a href="libxml-uri.html#xmlURIPtr">xmlURIPtr</a> uri);</pre><p>
 Save the URI as an escaped string</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>uri</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>uri</tt></i> :</span></td><td>  pointer to an xmlURI
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new string (to be deallocated by caller)
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlPrintURI"></a>xmlPrintURI ()</h3><pre class="programlisting">void        xmlPrintURI                     (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *stream,
                                              <a href="libxml-uri.html#xmlURIPtr">xmlURIPtr</a> uri);</pre><p>
 Prints the URI in the stream <i><tt>steam</tt></i>.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>stream</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>uri</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>stream</tt></i> :</span></td><td>  a FILE* for the output
+</td></tr><tr><td><span class="term"><i><tt>uri</tt></i> :</span></td><td>  pointer to an xmlURI
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlURIEscapeStr"></a>xmlURIEscapeStr ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlURIEscapeStr                 (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *list);</pre><p>
 This routine escapes a string to hex, ignoring reserved characters (a-z)
 and the characters in the exception list.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>list</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  string to escape
+</td></tr><tr><td><span class="term"><i><tt>list</tt></i> :</span></td><td> exception list string of chars not to escape
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new escaped string or NULL in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlURIUnescapeString"></a>xmlURIUnescapeString ()</h3><pre class="programlisting">char*       xmlURIUnescapeString            (const char *str,
                                              int len,
                                              char *target);</pre><p>
 Unescaping routine, does not do validity checks !
 Output is direct unsigned char translation of <tt>XX</tt> values (no encoding)</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>target</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the string to unescape
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>   the length in bytes to unescape (or &lt;= 0 to indicate full string)
+</td></tr><tr><td><span class="term"><i><tt>target</tt></i> :</span></td><td>  optional destination buffer
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>an copy of the string, but unescaped
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNormalizeURIPath"></a>xmlNormalizeURIPath ()</h3><pre class="programlisting">int         xmlNormalizeURIPath             (char *path);</pre><p>
 Applies the 5 normalization steps to a path string--that is, RFC 2396
 Section 5.2, steps 6.c through 6.g.
 </p><p>
 Normalization occurs directly on the string, no new allocation is done</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>path</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>path</tt></i> :</span></td><td>  pointer to the path string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or an error code
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlURIEscape"></a>xmlURIEscape ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlURIEscape                    (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str);</pre><p>
 Escaping routine, does not do validity checks !
 It will try to escape the chars needing this, but this is heuristic
 based it's impossible to be sure.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the string of the URI to escape
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>an copy of the string, but escaped
 
-
+25 May 2001
+Uses xmlParseURI and xmlURIEscapeStr to try to escape correctly
+according to RFC2396.
+  - Carl Douglas
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeURI"></a>xmlFreeURI ()</h3><pre class="programlisting">void        xmlFreeURI                      (<a href="libxml-uri.html#xmlURIPtr">xmlURIPtr</a> uri);</pre><p>
 Free up the xmlURI struct</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>uri</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>uri</tt></i> :</span></td><td>  pointer to an xmlURI
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCanonicPath"></a>xmlCanonicPath ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlCanonicPath                  (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *path);</pre><p>
 Constructs a canonic path from the specified path.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>path</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>path</tt></i> :</span></td><td>  the resource locator in a filesystem notation
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new canonic path, or a duplicate of the path parameter if the 
+construction fails. The caller is responsible for freeing the memory occupied
+by the returned string. If there is insufficient memory available, or the 
+argument is NULL, the function returns NULL.
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-relaxng.html"><b>&lt;&lt; relaxng</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlerror.html"><b>xmlerror &gt;&gt;</b></a></td></tr></table></body></html>

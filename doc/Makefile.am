@@ -56,14 +56,14 @@ xmlcatalog.1: xmlcatalog_man.xml
 	-@(xsltproc --nonet xmlcatalog_man.xml)
 
 scan:
-	-gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h win32config.h trio.h triostr.h triop.h config-mac.h XMLTestPrefix2.h  XMLTestPrefix.h triodef.h trionan.h xlink.h libxml.h libxml2-py.h libxml_wrap.h"
+	-gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h win32config.h trio.h triostr.h triop.h config-mac.h XMLTestPrefix2.h  XMLTestPrefix.h triodef.h trionan.h xlink.h libxml.h libxml2-py.h libxml_wrap.h"
 
 templates: scan
-	-gtkdoc-mktmpl --module=$(DOC_MODULE)
+	-gtkdoc-mktmpl --module=libxml
 
 xml: templates
-	if test -d xml ; then rm xml/* ; else mkdir xml ; fi
-	-gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --main-sgml-file=$(DOC_MAIN_XML_FILE)
+	if test -d xml ; then rm -f xml/* ; else mkdir xml ; fi
+	-gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --main-sgml-file=$(DOC_MAIN_XML_FILE)
 
 
 libxml2-api.xml: apibuild.py ../include/libxml/*.h
@@ -93,7 +93,7 @@ install-data-local:
 	-@INSTALL@ -m 0644 $(srcdir)/xml.html $(srcdir)/encoding.html $(srcdir)/FAQ.html $(srcdir)/structure.gif $(srcdir)/DOM.gif $(srcdir)/smallfootonly.gif $(srcdir)/redhat.gif $(srcdir)/libxml.gif $(srcdir)/w3c.png $(srcdir)/Libxml2-Logo-180x168.gif $(srcdir)/Libxml2-Logo-90x34.gif $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/html/*.html $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR)
-	-(cd $(DESTDIR); gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR))
+	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
 	-@(tar cf - tutorial | (cd $(DESTDIR)$(TARGET_DIR) && tar xvf -))
 
 .PHONY : html xml templates scan

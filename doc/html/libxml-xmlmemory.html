@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlmemory</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
@@ -84,7 +83,8 @@ char*       <a href="libxml-xmlmemory.html#xmlMemStrdupLoc">xmlMemStrdupLoc</a> 
                                              int line);
 </pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
 
-</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="DEBUG-MEMORY-CAPS"></a>DEBUG_MEMORY</h3><pre class="programlisting">#define     DEBUG_MEMORY</pre><p>
+</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="DEBUG-MEMORY-CAPS"></a>DEBUG_MEMORY</h3><pre class="programlisting">#define DEBUG_MEMORY
+</pre><p>
 DEBUG_MEMORY replaces the allocator with a collect and debug
 shell to the libc allocator.
 DEBUG_MEMORY should only be activated when debugging 
@@ -93,30 +93,22 @@ libxml i.e. if libxml has been configured with --with-debug-mem too.</p><p>
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeFunc"></a>xmlFreeFunc ()</h3><pre class="programlisting">void        (*xmlFreeFunc)                  (void *mem);</pre><p>
 Signature for a <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="free">free</GTKDOCLINK>() implementation.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>mem</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>mem</tt></i> :</span></td><td> an already allocated block of memory
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMallocFunc"></a>xmlMallocFunc ()</h3><pre class="programlisting">void*       (*xmlMallocFunc)                (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="size-t">size_t</GTKDOCLINK> size);</pre><p>
 Signature for a <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() implementation.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size requested in bytes
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlReallocFunc"></a>xmlReallocFunc ()</h3><pre class="programlisting">void*       (*xmlReallocFunc)               (void *mem,
                                              <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="size-t">size_t</GTKDOCLINK> size);</pre><p>
 Signature for a <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="realloc">realloc</GTKDOCLINK>() implementation.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>mem</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>mem</tt></i> :</span></td><td> an already allocated block of memory
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the new size requested in bytes
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrdupFunc"></a>xmlStrdupFunc ()</h3><pre class="programlisting">char*       (*xmlStrdupFunc)                (const char *str);</pre><p>
 Signature for an <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="strdup">strdup</GTKDOCLINK>() implementation.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td> a zero terminated string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the copy of the string or NULL in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemSetup"></a>xmlMemSetup ()</h3><pre class="programlisting">int         xmlMemSetup                     (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> freeFunc,
                                              <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocFunc,
                                              <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> reallocFunc,
@@ -127,26 +119,22 @@ This has to be called before any other libxml routines !
 Should this be blocked if there was already some allocations
 done ?</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i> :</span></td><td> the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="free">free</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i> :</span></td><td> the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i> :</span></td><td> the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="realloc">realloc</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i> :</span></td><td> the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="strdup">strdup</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 on success
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemGet"></a>xmlMemGet ()</h3><pre class="programlisting">int         xmlMemGet                       (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> *freeFunc,
                                              <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> *mallocFunc,
                                              <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> *reallocFunc,
                                              <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> *strdupFunc);</pre><p>
 Provides the memory access functions set currently in use</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i> :</span></td><td> place to save the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="free">free</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i> :</span></td><td> place to save the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i> :</span></td><td> place to save the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="realloc">realloc</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i> :</span></td><td> place to save the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="strdup">strdup</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 on success
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGcMemSetup"></a>xmlGcMemSetup ()</h3><pre class="programlisting">int         xmlGcMemSetup                   (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> freeFunc,
                                              <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocFunc,
                                              <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocAtomicFunc,
@@ -160,14 +148,12 @@ allocations (i.e. of areas  useful for garbage collected memory allocators
 Should this be blocked if there was already some allocations
 done ?</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>mallocAtomicFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i> :</span></td><td> the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="free">free</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i> :</span></td><td> the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>mallocAtomicFunc</tt></i> :</span></td><td> the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function to use for atomic allocations
+</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i> :</span></td><td> the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="realloc">realloc</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i> :</span></td><td> the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="strdup">strdup</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 on success
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGcMemGet"></a>xmlGcMemGet ()</h3><pre class="programlisting">int         xmlGcMemGet                     (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> *freeFunc,
                                              <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> *mallocFunc,
                                              <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> *mallocAtomicFunc,
@@ -177,128 +163,97 @@ Provides the memory access functions set currently in use
 The mallocAtomicFunc is specialized for atomic block
 allocations (i.e. of areas  useful for garbage collected memory allocators</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>mallocAtomicFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i> :</span></td><td> place to save the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="free">free</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i> :</span></td><td> place to save the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>mallocAtomicFunc</tt></i> :</span></td><td> place to save the atomic <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i> :</span></td><td> place to save the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="realloc">realloc</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i> :</span></td><td> place to save the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="strdup">strdup</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 on success
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInitMemory"></a>xmlInitMemory ()</h3><pre class="programlisting">int         xmlInitMemory                   (void);</pre><p>
 Initialize the memory layer.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 on success
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemUsed"></a>xmlMemUsed ()</h3><pre class="programlisting">int         xmlMemUsed                      (void);</pre><p>
 Provides the amount of memory currently allocated</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>an int representing the amount of memory allocated.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemDisplay"></a>xmlMemDisplay ()</h3><pre class="programlisting">void        xmlMemDisplay                   (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *fp);</pre><p>
 show in-extenso the memory blocks allocated</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>fp</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>fp</tt></i> :</span></td><td>  a FILE descriptor used as the output file, if NULL, the result is
+      written to the file .memorylist
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemShow"></a>xmlMemShow ()</h3><pre class="programlisting">void        xmlMemShow                      (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *fp,
                                              int nr);</pre><p>
 show a show display of the memory allocated, and dump
 the <i><tt>nr</tt></i> last allocated areas which were not freed</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>fp</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>nr</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>fp</tt></i> :</span></td><td>  a FILE descriptor used as the output file
+</td></tr><tr><td><span class="term"><i><tt>nr</tt></i> :</span></td><td>  number of entries to dump
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemoryDump"></a>xmlMemoryDump ()</h3><pre class="programlisting">void        xmlMemoryDump                   (void);</pre><p>
 Dump in-extenso the memory blocks allocated to the file .memorylist</p><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemMalloc"></a>xmlMemMalloc ()</h3><pre class="programlisting">void*       xmlMemMalloc                    (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="size-t">size_t</GTKDOCLINK> size);</pre><p>
 a <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  an int specifying the size in byte to allocate.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemRealloc"></a>xmlMemRealloc ()</h3><pre class="programlisting">void*       xmlMemRealloc                   (void *ptr,
                                              <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="size-t">size_t</GTKDOCLINK> size);</pre><p>
 a <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="realloc">realloc</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i> :</span></td><td>  the initial memory block pointer
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  an int specifying the size in byte to allocate.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemFree"></a>xmlMemFree ()</h3><pre class="programlisting">void        xmlMemFree                      (void *ptr);</pre><p>
 a <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="free">free</GTKDOCLINK>() equivalent, with error checking.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i> :</span></td><td>  the memory block pointer
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemoryStrdup"></a>xmlMemoryStrdup ()</h3><pre class="programlisting">char*       xmlMemoryStrdup                 (const char *str);</pre><p>
 a <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="strdup">strdup</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the initial string pointer
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a pointer to the new string or NULL if allocation error occurred.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMalloc"></a>xmlMalloc()</h3><pre class="programlisting">#define     xmlMalloc(size)</pre><p>
 Wrapper for the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function used in the XML library.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  number of bytes to allocate
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMallocAtomic"></a>xmlMallocAtomic()</h3><pre class="programlisting">#define     xmlMallocAtomic(size)</pre><p>
 Wrapper for the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function used in the XML library for allocation
 of block not containing pointers to other areas.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  number of bytes to allocate
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRealloc"></a>xmlRealloc()</h3><pre class="programlisting">#define     xmlRealloc(ptr, size)</pre><p>
 Wrapper for the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="realloc">realloc</GTKDOCLINK>() function used in the XML library.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i> :</span></td><td>  pointer to the existing allocated area
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  number of bytes to allocate
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemStrdup"></a>xmlMemStrdup()</h3><pre class="programlisting">#define     xmlMemStrdup(str)</pre><p>
 Wrapper for the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="strdup">strdup</GTKDOCLINK>() function, <a href="libxml-parser.html#xmlStrdup">xmlStrdup</a>() is usually preferred.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  pointer to the existing string
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMallocLoc"></a>xmlMallocLoc ()</h3><pre class="programlisting">void*       xmlMallocLoc                    (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="size-t">size_t</GTKDOCLINK> size,
                                              const char *file,
                                              int line);</pre><p>
 a <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>file</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>line</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  an int specifying the size in byte to allocate.
+</td></tr><tr><td><span class="term"><i><tt>file</tt></i> :</span></td><td>  the file name or NULL
+</td></tr><tr><td><span class="term"><i><tt>line</tt></i> :</span></td><td>  the line number
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlReallocLoc"></a>xmlReallocLoc ()</h3><pre class="programlisting">void*       xmlReallocLoc                   (void *ptr,
                                              <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="size-t">size_t</GTKDOCLINK> size,
                                              const char *file,
                                              int line);</pre><p>
 a <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="realloc">realloc</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>file</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>line</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i> :</span></td><td>  the initial memory block pointer
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  an int specifying the size in byte to allocate.
+</td></tr><tr><td><span class="term"><i><tt>file</tt></i> :</span></td><td>  the file name or NULL
+</td></tr><tr><td><span class="term"><i><tt>line</tt></i> :</span></td><td>  the line number
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemStrdupLoc"></a>xmlMemStrdupLoc ()</h3><pre class="programlisting">char*       xmlMemStrdupLoc                 (const char *str,
                                              const char *file,
                                              int line);</pre><p>
 a <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="strdup">strdup</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>file</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>line</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the initial string pointer
+</td></tr><tr><td><span class="term"><i><tt>file</tt></i> :</span></td><td>  the file name or NULL
+</td></tr><tr><td><span class="term"><i><tt>line</tt></i> :</span></td><td>  the line number
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a pointer to the new string or NULL if allocation error occurred.
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-debugXML.html"><b>&lt;&lt; debugXML</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlregexp.html"><b>xmlregexp &gt;&gt;</b></a></td></tr></table></body></html>

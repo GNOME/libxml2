@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>catalog</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
@@ -117,41 +116,34 @@ The specific XML Catalog Processing Instuction name.</p><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalog"></a>struct xmlCatalog</h3><pre class="programlisting">struct xmlCatalog;</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogPtr"></a>xmlCatalogPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogPtr"></a>xmlCatalogPtr</h3><pre class="programlisting">typedef xmlCatalog *xmlCatalogPtr;
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewCatalog"></a>xmlNewCatalog ()</h3><pre class="programlisting"><a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> xmlNewCatalog                 (int sgml);</pre><p>
 create a new Catalog.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sgml</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sgml</tt></i> :</span></td><td>  should this create an SGML catalog
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlCatalogPtr or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlLoadACatalog"></a>xmlLoadACatalog ()</h3><pre class="programlisting"><a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> xmlLoadACatalog               (const char *filename);</pre><p>
 Load the catalog and build the associated data structures.
 This can be either an XML Catalog or an SGML Catalog
 It will recurse in SGML CATALOG entries. On the other hand XML
 Catalogs are not handled recursively.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  a file path
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the catalog parsed or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlLoadSGMLSuperCatalog"></a>xmlLoadSGMLSuperCatalog ()</h3><pre class="programlisting"><a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> xmlLoadSGMLSuperCatalog       (const char *filename);</pre><p>
 Load an SGML super catalog. It won't expand CATALOG or DELEGATE
 references. This is only needed for manipulating SGML Super Catalogs
 like adding and removing CATALOG or DELEGATE entries.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  a file path
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the catalog parsed or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlConvertSGMLCatalog"></a>xmlConvertSGMLCatalog ()</h3><pre class="programlisting">int         xmlConvertSGMLCatalog           (<a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal);</pre><p>
 Convert all the SGML catalog entries as XML ones</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td> the catalog
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of entries converted if successful, -1 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlACatalogAdd"></a>xmlACatalogAdd ()</h3><pre class="programlisting">int         xmlACatalogAdd                  (<a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *type,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *orig,
@@ -159,81 +151,67 @@ Convert all the SGML catalog entries as XML ones</p><p>
 Add an entry in the catalog, it may overwrite existing but
 different entries.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>orig</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>replace</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>  a Catalog
+</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the type of record to add to the catalog
+</td></tr><tr><td><span class="term"><i><tt>orig</tt></i> :</span></td><td>  the system, public or prefix to match 
+</td></tr><tr><td><span class="term"><i><tt>replace</tt></i> :</span></td><td>  the replacement value for the match
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if successful, -1 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlACatalogRemove"></a>xmlACatalogRemove ()</h3><pre class="programlisting">int         xmlACatalogRemove               (<a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
 Remove an entry from the catalog</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>  a Catalog
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the value to remove
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of entries removed if successful, -1 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlACatalogResolve"></a>xmlACatalogResolve ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlACatalogResolve              (<a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubID,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysID);</pre><p>
 Do a complete resolution lookup of an External Identifier</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>  a Catalog
+</td></tr><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>  the public ID string
+</td></tr><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>  the system ID string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the URI of the resource or NULL if not found, it must be freed
+     by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlACatalogResolveSystem"></a>xmlACatalogResolveSystem ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlACatalogResolveSystem        (<a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysID);</pre><p>
 Try to lookup the catalog resource for a system ID</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>  a Catalog
+</td></tr><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>  the public ID string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the system ID if found or NULL otherwise, the value returned
+     must be freed by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlACatalogResolvePublic"></a>xmlACatalogResolvePublic ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlACatalogResolvePublic        (<a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubID);</pre><p>
 Try to lookup the system ID associated to a public ID in that catalog</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>  a Catalog
+</td></tr><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>  the public ID string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the system ID if found or NULL otherwise, the value returned
+     must be freed by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlACatalogResolveURI"></a>xmlACatalogResolveURI ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlACatalogResolveURI           (<a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *URI);</pre><p>
 Do a complete resolution lookup of an URI</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>  a Catalog
+</td></tr><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>  the URI
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the URI of the resource or NULL if not found, it must be freed
+     by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlACatalogDump"></a>xmlACatalogDump ()</h3><pre class="programlisting">void        xmlACatalogDump                 (<a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal,
                                              <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *out);</pre><p>
 Free up all the memory associated with catalogs</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>  a Catalog
+</td></tr><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  the file.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeCatalog"></a>xmlFreeCatalog ()</h3><pre class="programlisting">void        xmlFreeCatalog                  (<a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal);</pre><p>
 Free the memory allocated to a Catalog</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>  a Catalog entry
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogIsEmpty"></a>xmlCatalogIsEmpty ()</h3><pre class="programlisting">int         xmlCatalogIsEmpty               (<a href="libxml-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal);</pre><p>
 Check is a catalog is empty</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catal</tt></i> :</span></td><td>  should this create an SGML catalog
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if the catalog is empty, 0 if not, amd -1 in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInitializeCatalog"></a>xmlInitializeCatalog ()</h3><pre class="programlisting">void        xmlInitializeCatalog            (void);</pre><p>
 Do the catalog initialization.
 this function is not thread safe, catalog initialization should
@@ -245,10 +223,8 @@ external entity loader. It will recurse in SGML CATALOG entries.
 this function is not thread safe, catalog initialization should
 preferably be done once at startup</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  a file path
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of success -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlLoadCatalogs"></a>xmlLoadCatalogs ()</h3><pre class="programlisting">void        xmlLoadCatalogs                 (const char *paths);</pre><p>
 Load the catalogs and makes their definitions effective for the default
 external entity loader.
@@ -264,39 +240,33 @@ Free up all the memory associated with catalogs</p><p>
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogDump"></a>xmlCatalogDump ()</h3><pre class="programlisting">void        xmlCatalogDump                  (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *out);</pre><p>
 Free up all the memory associated with catalogs</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  the file.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogResolve"></a>xmlCatalogResolve ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlCatalogResolve               (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubID,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysID);</pre><p>
 Do a complete resolution lookup of an External Identifier</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>  the public ID string
+</td></tr><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>  the system ID string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the URI of the resource or NULL if not found, it must be freed
+     by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogResolveSystem"></a>xmlCatalogResolveSystem ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlCatalogResolveSystem         (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysID);</pre><p>
 Try to lookup the catalog resource for a system ID</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>  the public ID string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the system ID if found or NULL otherwise, the value returned
+     must be freed by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogResolvePublic"></a>xmlCatalogResolvePublic ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlCatalogResolvePublic         (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubID);</pre><p>
 Try to lookup the system ID associated to a public ID</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>  the public ID string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the system ID if found or NULL otherwise, the value returned
+     must be freed by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogResolveURI"></a>xmlCatalogResolveURI ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlCatalogResolveURI            (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *URI);</pre><p>
 Do a complete resolution lookup of an URI</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>  the URI
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the URI of the resource or NULL if not found, it must be freed
+     by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogAdd"></a>xmlCatalogAdd ()</h3><pre class="programlisting">int         xmlCatalogAdd                   (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *type,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *orig,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *replace);</pre><p>
@@ -305,114 +275,88 @@ different entries.
 If called before any other catalog routine, allows to override the
 default shared catalog put in place by <a href="libxml-catalog.html#xmlInitializeCatalog">xmlInitializeCatalog</a>();</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>orig</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>replace</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the type of record to add to the catalog
+</td></tr><tr><td><span class="term"><i><tt>orig</tt></i> :</span></td><td>  the system, public or prefix to match 
+</td></tr><tr><td><span class="term"><i><tt>replace</tt></i> :</span></td><td>  the replacement value for the match
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if successful, -1 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogRemove"></a>xmlCatalogRemove ()</h3><pre class="programlisting">int         xmlCatalogRemove                (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
 Remove an entry from the catalog</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the value to remove
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of entries removed if successful, -1 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseCatalogFile"></a>xmlParseCatalogFile ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlParseCatalogFile             (const char *filename);</pre><p>
 parse an XML file and build a tree. It's like <a href="libxml-parser.html#xmlParseFile">xmlParseFile</a>()
 except it bypass all catalog lookups.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogConvert"></a>xmlCatalogConvert ()</h3><pre class="programlisting">int         xmlCatalogConvert               (void);</pre><p>
 Convert all the SGML catalog entries as XML ones</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of entries converted if successful, -1 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogFreeLocal"></a>xmlCatalogFreeLocal ()</h3><pre class="programlisting">void        xmlCatalogFreeLocal             (void *catalogs);</pre><p>
 Free up the memory associated to the catalog list</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catalogs</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catalogs</tt></i> :</span></td><td>  a document's list of catalogs
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogAddLocal"></a>xmlCatalogAddLocal ()</h3><pre class="programlisting">void*       xmlCatalogAddLocal              (void *catalogs,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *URL);</pre><p>
 Add the new entry to the catalog list</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catalogs</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catalogs</tt></i> :</span></td><td>  a document's list of catalogs
+</td></tr><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  the URL to a new local catalog
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogLocalResolve"></a>xmlCatalogLocalResolve ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlCatalogLocalResolve          (void *catalogs,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubID,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysID);</pre><p>
 Do a complete resolution lookup of an External Identifier using a 
 document's private catalog list</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catalogs</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catalogs</tt></i> :</span></td><td>  a document's list of catalogs
+</td></tr><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>  the public ID string
+</td></tr><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>  the system ID string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the URI of the resource or NULL if not found, it must be freed
+     by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogLocalResolveURI"></a>xmlCatalogLocalResolveURI ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlCatalogLocalResolveURI       (void *catalogs,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *URI);</pre><p>
 Do a complete resolution lookup of an URI using a 
 document's private catalog list</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catalogs</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>catalogs</tt></i> :</span></td><td>  a document's list of catalogs
+</td></tr><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>  the URI
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the URI of the resource or NULL if not found, it must be freed
+     by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogSetDebug"></a>xmlCatalogSetDebug ()</h3><pre class="programlisting">int         xmlCatalogSetDebug              (int level);</pre><p>
 Used to set the debug level for catalog operation, 0 disable
 debugging, 1 enable it</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>level</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>level</tt></i> :</span></td><td>  the debug level of catalogs required
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the previous value of the catalog debugging level
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogSetDefaultPrefer"></a>xmlCatalogSetDefaultPrefer ()</h3><pre class="programlisting"><a href="libxml-catalog.html#xmlCatalogPrefer">xmlCatalogPrefer</a> xmlCatalogSetDefaultPrefer (<a href="libxml-catalog.html#xmlCatalogPrefer">xmlCatalogPrefer</a> prefer);</pre><p>
 Allows to set the preference between public and system for deletion
 in XML Catalog resolution. C.f. section 4.1.1 of the spec
 Values accepted are XML_CATA_PREFER_PUBLIC or XML_CATA_PREFER_SYSTEM</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>prefer</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>prefer</tt></i> :</span></td><td>  the default preference for delegation
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the previous value of the default preference for delegation
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogSetDefaults"></a>xmlCatalogSetDefaults ()</h3><pre class="programlisting">void        xmlCatalogSetDefaults           (<a href="libxml-catalog.html#xmlCatalogAllow">xmlCatalogAllow</a> allow);</pre><p>
 Used to set the user preference w.r.t. to what catalogs should
 be accepted</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>allow</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>allow</tt></i> :</span></td><td>  what catalogs should be accepted
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogGetDefaults"></a>xmlCatalogGetDefaults ()</h3><pre class="programlisting"><a href="libxml-catalog.html#xmlCatalogAllow">xmlCatalogAllow</a> xmlCatalogGetDefaults       (void);</pre><p>
 Used to get the user preference w.r.t. to what catalogs should
 be accepted</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the current xmlCatalogAllow value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogGetSystem"></a>xmlCatalogGetSystem ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* xmlCatalogGetSystem          (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysID);</pre><p>
 Try to lookup the system ID associated to a public ID
 DEPRECATED, use <a href="libxml-catalog.html#xmlCatalogResolveSystem">xmlCatalogResolveSystem</a>()</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sysID</tt></i> :</span></td><td>  the system ID string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the system ID if found or NULL otherwise.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCatalogGetPublic"></a>xmlCatalogGetPublic ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* xmlCatalogGetPublic          (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubID);</pre><p>
 Try to lookup the system ID associated to a public ID
 DEPRECATED, use <a href="libxml-catalog.html#xmlCatalogResolvePublic">xmlCatalogResolvePublic</a>()</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>pubID</tt></i> :</span></td><td>  the public ID string
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the system ID if found or NULL otherwise.
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlIO.html"><b>&lt;&lt; xmlIO</b></a></td><td align="right"><a accesskey="n" href="libxml-c14n.html"><b>c14n &gt;&gt;</b></a></td></tr></table></body></html>

@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>parser</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
@@ -298,15 +297,14 @@ void        <a href="libxml-parser.html#xmlSetExternalEntityLoader">xmlSetExtern
                                              <a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 </pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
 
-</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="XML-DEFAULT-VERSION-CAPS"></a>XML_DEFAULT_VERSION</h3><pre class="programlisting">#define     XML_DEFAULT_VERSION</pre><p>
+</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="XML-DEFAULT-VERSION-CAPS"></a>XML_DEFAULT_VERSION</h3><pre class="programlisting">#define XML_DEFAULT_VERSION	&quot;1.0&quot;
+</pre><p>
 The default version of XML used: 1.0</p><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputDeallocate"></a>xmlParserInputDeallocate ()</h3><pre class="programlisting">void        (*xmlParserInputDeallocate)     (<a href="libxml-tree.html#xmlChar">xmlChar</a> *str);</pre><p>
 Callback for freeing some parser input allocations.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the string to deallocate
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInput"></a>struct xmlParserInput</h3><pre class="programlisting">struct xmlParserInput {
     /* Input buffer */
     xmlParserInputBufferPtr buf;      /* UTF-8 encoded buffer */
@@ -351,7 +349,8 @@ The parser can be asked to collect Node informations, i.e. at what
 place in the file they were detected. 
 NOTE: This is off by default and not very well tested.</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserNodeInfoPtr"></a>xmlParserNodeInfoPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserNodeInfoPtr"></a>xmlParserNodeInfoPtr</h3><pre class="programlisting">typedef xmlParserNodeInfo *xmlParserNodeInfoPtr;
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserNodeInfoSeq"></a>struct xmlParserNodeInfoSeq</h3><pre class="programlisting">struct xmlParserNodeInfoSeq {
   unsigned long maximum;
@@ -360,7 +359,8 @@ NOTE: This is off by default and not very well tested.</p><p>
 };
 </pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserNodeInfoSeqPtr"></a>xmlParserNodeInfoSeqPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserNodeInfoSeqPtr"></a>xmlParserNodeInfoSeqPtr</h3><pre class="programlisting">typedef xmlParserNodeInfoSeq *xmlParserNodeInfoSeqPtr;
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputState"></a>enum xmlParserInputState</h3><pre class="programlisting">typedef enum {
     XML_PARSER_EOF = -1,	/* nothing is to be parsed */
@@ -386,16 +386,19 @@ NOTE: This is off by default and not very well tested.</p><p>
 The parser is now working also as a state based parser.
 The recursive one use the state info for entities processing.</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-DETECT-IDS-CAPS"></a>XML_DETECT_IDS</h3><pre class="programlisting">#define     XML_DETECT_IDS</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-DETECT-IDS-CAPS"></a>XML_DETECT_IDS</h3><pre class="programlisting">#define XML_DETECT_IDS		2
+</pre><p>
 Bit in the loadsubset context field to tell to do ID/REFs lookups.
 Use it to initialize xmlLoadExtDtdDefaultValue.</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-COMPLETE-ATTRS-CAPS"></a>XML_COMPLETE_ATTRS</h3><pre class="programlisting">#define     XML_COMPLETE_ATTRS</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-COMPLETE-ATTRS-CAPS"></a>XML_COMPLETE_ATTRS</h3><pre class="programlisting">#define XML_COMPLETE_ATTRS	4
+</pre><p>
 Bit in the loadsubset context field to tell to do complete the
 elements attributes lists with the ones defaulted from the DTDs.
 Use it to initialize xmlLoadExtDtdDefaultValue.</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SKIP-IDS-CAPS"></a>XML_SKIP_IDS</h3><pre class="programlisting">#define     XML_SKIP_IDS</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SKIP-IDS-CAPS"></a>XML_SKIP_IDS</h3><pre class="programlisting">#define XML_SKIP_IDS		8
+</pre><p>
 Bit in the loadsubset context field to tell to not do ID/REFs registration.
 Used to initialize xmlLoadExtDtdDefaultValue in some special cases.</p><p>
 
@@ -505,54 +508,44 @@ the application can either:
    - or better use the <a href="libxml-parser.html#xmlSetExternalEntityLoader">xmlSetExternalEntityLoader</a>() function to
      set up it's own entity resolution routine</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>publicId</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>systemId</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>publicId</tt></i> :</span></td><td> The public ID of the entity
+</td></tr><tr><td><span class="term"><i><tt>systemId</tt></i> :</span></td><td> The system ID of the entity
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlParserInputPtr if inlined or NULL for DOM behaviour.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="internalSubsetSAXFunc"></a>internalSubsetSAXFunc ()</h3><pre class="programlisting">void        (*internalSubsetSAXFunc)        (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ExternalID,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *SystemID);</pre><p>
 Callback on internal subset declaration.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the root element name
+</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>  the external ID
+</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>  the SYSTEM ID (e.g. filename or URL)
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="externalSubsetSAXFunc"></a>externalSubsetSAXFunc ()</h3><pre class="programlisting">void        (*externalSubsetSAXFunc)        (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ExternalID,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *SystemID);</pre><p>
 Callback on external subset declaration.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the root element name
+</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>  the external ID
+</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>  the SYSTEM ID (e.g. filename or URL)
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="getEntitySAXFunc"></a>getEntitySAXFunc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> (*getEntitySAXFunc)            (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Get an entity by name.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td> The entity name
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlEntityPtr if found.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="getParameterEntitySAXFunc"></a>getParameterEntitySAXFunc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> (*getParameterEntitySAXFunc)   (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Get a parameter entity by name.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td> The entity name
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlEntityPtr if found.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="entityDeclSAXFunc"></a>entityDeclSAXFunc ()</h3><pre class="programlisting">void        (*entityDeclSAXFunc)            (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              int type,
@@ -561,26 +554,22 @@ Get a parameter entity by name.</p><p>
                                              <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
 An entity definition has been parsed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>publicId</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>systemId</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>content</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the entity name 
+</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the entity type 
+</td></tr><tr><td><span class="term"><i><tt>publicId</tt></i> :</span></td><td> The public ID of the entity
+</td></tr><tr><td><span class="term"><i><tt>systemId</tt></i> :</span></td><td> The system ID of the entity
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i> :</span></td><td> the entity value (without processing).
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="notationDeclSAXFunc"></a>notationDeclSAXFunc ()</h3><pre class="programlisting">void        (*notationDeclSAXFunc)          (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *publicId,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *systemId);</pre><p>
 What to do when a notation declaration has been parsed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>publicId</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>systemId</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td> The name of the notation
+</td></tr><tr><td><span class="term"><i><tt>publicId</tt></i> :</span></td><td> The public ID of the entity
+</td></tr><tr><td><span class="term"><i><tt>systemId</tt></i> :</span></td><td> The system ID of the entity
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="attributeDeclSAXFunc"></a>attributeDeclSAXFunc ()</h3><pre class="programlisting">void        (*attributeDeclSAXFunc)         (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *elem,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *fullname,
@@ -590,27 +579,23 @@ What to do when a notation declaration has been parsed.</p><p>
                                              <a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> tree);</pre><p>
 An attribute definition has been parsed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>fullname</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>def</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>defaultValue</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>tree</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  the name of the element
+</td></tr><tr><td><span class="term"><i><tt>fullname</tt></i> :</span></td><td>  the attribute name 
+</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the attribute type 
+</td></tr><tr><td><span class="term"><i><tt>def</tt></i> :</span></td><td>  the type of default value
+</td></tr><tr><td><span class="term"><i><tt>defaultValue</tt></i> :</span></td><td> the attribute default value
+</td></tr><tr><td><span class="term"><i><tt>tree</tt></i> :</span></td><td>  the tree of enumerated value set
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="elementDeclSAXFunc"></a>elementDeclSAXFunc ()</h3><pre class="programlisting">void        (*elementDeclSAXFunc)           (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              int type,
                                              <a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> content);</pre><p>
 An element definition has been parsed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>content</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the element name 
+</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the element type 
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i> :</span></td><td> the element value tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="unparsedEntityDeclSAXFunc"></a>unparsedEntityDeclSAXFunc ()</h3><pre class="programlisting">void        (*unparsedEntityDeclSAXFunc)    (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *publicId,
@@ -618,52 +603,40 @@ An element definition has been parsed.</p><p>
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *notationName);</pre><p>
 What to do when an unparsed entity declaration is parsed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>publicId</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>systemId</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>notationName</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td> The name of the entity
+</td></tr><tr><td><span class="term"><i><tt>publicId</tt></i> :</span></td><td> The public ID of the entity
+</td></tr><tr><td><span class="term"><i><tt>systemId</tt></i> :</span></td><td> The system ID of the entity
+</td></tr><tr><td><span class="term"><i><tt>notationName</tt></i> :</span></td><td> the name of the notation
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="setDocumentLocatorSAXFunc"></a>setDocumentLocatorSAXFunc ()</h3><pre class="programlisting">void        (*setDocumentLocatorSAXFunc)    (void *ctx,
                                              <a href="libxml-tree.html#xmlSAXLocatorPtr">xmlSAXLocatorPtr</a> loc);</pre><p>
 Receive the document locator at startup, actually xmlDefaultSAXLocator.
 Everything is available on the context, so this is useless in our case.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>loc</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>loc</tt></i> :</span></td><td> A SAX Locator
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="startDocumentSAXFunc"></a>startDocumentSAXFunc ()</h3><pre class="programlisting">void        (*startDocumentSAXFunc)         (void *ctx);</pre><p>
 Called when the document start being processed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="endDocumentSAXFunc"></a>endDocumentSAXFunc ()</h3><pre class="programlisting">void        (*endDocumentSAXFunc)           (void *ctx);</pre><p>
 Called when the document end has been detected.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="startElementSAXFunc"></a>startElementSAXFunc ()</h3><pre class="programlisting">void        (*startElementSAXFunc)          (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> **atts);</pre><p>
 Called when an opening tag has been processed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>atts</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  The element name, including namespace prefix
+</td></tr><tr><td><span class="term"><i><tt>atts</tt></i> :</span></td><td>  An array of name/value attributes pairs, NULL terminated
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="endElementSAXFunc"></a>endElementSAXFunc ()</h3><pre class="programlisting">void        (*endElementSAXFunc)            (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Called when the end of an element has been detected.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  The element name
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="attributeSAXFunc"></a>attributeSAXFunc ()</h3><pre class="programlisting">void        (*attributeSAXFunc)             (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
@@ -672,88 +645,70 @@ The default handling is to convert the attribute into an
 DOM subtree and past it in a new xmlAttr element added to
 the element.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  The attribute name, including namespace prefix
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  The attribute value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="referenceSAXFunc"></a>referenceSAXFunc ()</h3><pre class="programlisting">void        (*referenceSAXFunc)             (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Called when an entity reference is detected.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  The entity name
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="charactersSAXFunc"></a>charactersSAXFunc ()</h3><pre class="programlisting">void        (*charactersSAXFunc)            (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ch,
                                              int len);</pre><p>
 Receiving some chars from the parser.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ch</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>ch</tt></i> :</span></td><td>  a xmlChar string
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td> the number of xmlChar
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="ignorableWhitespaceSAXFunc"></a>ignorableWhitespaceSAXFunc ()</h3><pre class="programlisting">void        (*ignorableWhitespaceSAXFunc)   (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ch,
                                              int len);</pre><p>
 Receiving some ignorable whitespaces from the parser.
 UNUSED: by default the DOM building will use characters.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ch</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>ch</tt></i> :</span></td><td>  a xmlChar string
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td> the number of xmlChar
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="processingInstructionSAXFunc"></a>processingInstructionSAXFunc ()</h3><pre class="programlisting">void        (*processingInstructionSAXFunc) (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *target,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *data);</pre><p>
 A processing instruction has been parsed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>target</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>target</tt></i> :</span></td><td>  the target name
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td> the PI data's
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="commentSAXFunc"></a>commentSAXFunc ()</h3><pre class="programlisting">void        (*commentSAXFunc)               (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
 A comment has been parsed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the comment content
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="cdataBlockSAXFunc"></a>cdataBlockSAXFunc ()</h3><pre class="programlisting">void        (*cdataBlockSAXFunc)            (void *ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
                                              int len);</pre><p>
 Called when a pcdata block has been parsed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  The pcdata content
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the block length
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="warningSAXFunc"></a>warningSAXFunc ()</h3><pre class="programlisting">void        (*warningSAXFunc)               (void *ctx,
                                              const char *msg,
                                              ...);</pre><p>
 Display and format a warning messages, callback.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="errorSAXFunc"></a>errorSAXFunc ()</h3><pre class="programlisting">void        (*errorSAXFunc)                 (void *ctx,
                                              const char *msg,
                                              ...);</pre><p>
 Display and format an error messages, callback.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="fatalErrorSAXFunc"></a>fatalErrorSAXFunc ()</h3><pre class="programlisting">void        (*fatalErrorSAXFunc)            (void *ctx,
                                              const char *msg,
                                              ...);</pre><p>
@@ -761,32 +716,24 @@ Display and format fatal error messages, callback.
 Note: so far <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="fatalError">fatalError</GTKDOCLINK>() SAX callbacks are not used, <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="error">error</GTKDOCLINK>()
       get all the callbacks for errors.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="isStandaloneSAXFunc"></a>isStandaloneSAXFunc ()</h3><pre class="programlisting">int         (*isStandaloneSAXFunc)          (void *ctx);</pre><p>
 Is this document tagged standalone?</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if true
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="hasInternalSubsetSAXFunc"></a>hasInternalSubsetSAXFunc ()</h3><pre class="programlisting">int         (*hasInternalSubsetSAXFunc)     (void *ctx);</pre><p>
 Does this document has an internal subset.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if true
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="hasExternalSubsetSAXFunc"></a>hasExternalSubsetSAXFunc ()</h3><pre class="programlisting">int         (*hasExternalSubsetSAXFunc)     (void *ctx);</pre><p>
 Does this document has an external subset?</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the user data (XML parser context)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if true
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSAXHandler"></a>struct xmlSAXHandler</h3><pre class="programlisting">struct xmlSAXHandler {
     internalSubsetSAXFunc internalSubset;
     isStandaloneSAXFunc isStandalone;
@@ -827,12 +774,10 @@ of the input generate data or structure informations.</p><p>
                                              <a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> context);</pre><p>
 External entity loaders types.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td> The System ID of the resource requested
+</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td> The Public ID of the resource requested
+</td></tr><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td> the XML parser context 
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the entity input parser.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInitParser"></a>xmlInitParser ()</h3><pre class="programlisting">void        xmlInitParser                   (void);</pre><p>
 Initialization function for the XML parser.
 This is not reentrant. Call once before processing in case of
@@ -851,197 +796,159 @@ finished using the library or XML document built with it.</p><p>
 This function refresh the input for the parser. It doesn't try to
 preserve pointers to the input buffer, and discard already read data</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  an XML parser input
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  an indicative size for the lookahead
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of xmlChars read, or -1 in case of error, 0 indicate the
+end of this entity
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputGrow"></a>xmlParserInputGrow ()</h3><pre class="programlisting">int         xmlParserInputGrow              (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> in,
                                              int len);</pre><p>
 This function increase the input for the parser. It tries to
 preserve pointers to the input buffer, and keep already read data</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  an XML parser input
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  an indicative size for the lookahead
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of xmlChars read, or -1 in case of error, 0 indicate the
+end of this entity
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrdup"></a>xmlStrdup ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlStrdup                       (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *cur);</pre><p>
 a strdup for array of xmlChar's. Since they are supposed to be
 encoded in UTF-8 or an encoding with 8bit based chars, we assume
 a termination mark of '0'.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the input xmlChar *
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new xmlChar * or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrndup"></a>xmlStrndup ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlStrndup                      (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *cur,
                                              int len);</pre><p>
 a strndup for array of xmlChar's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the input xmlChar *
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the len of <i><tt>cur</tt></i>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new xmlChar * or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCharStrndup"></a>xmlCharStrndup ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlCharStrndup                  (const char *cur,
                                              int len);</pre><p>
 a strndup for char's to xmlChar's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the input char *
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the len of <i><tt>cur</tt></i>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new xmlChar * or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCharStrdup"></a>xmlCharStrdup ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlCharStrdup                   (const char *cur);</pre><p>
 a strdup for char's to xmlChar's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the input char *
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new xmlChar * or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrsub"></a>xmlStrsub ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlStrsub                       (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str,
                                              int start,
                                              int len);</pre><p>
 Extract a substring of a given string</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the xmlChar * array (haystack)
+</td></tr><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>  the index of the first char (zero based)
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the length of the substring
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlChar * for the first occurrence or NULL.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrchr"></a>xmlStrchr ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* xmlStrchr                    (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str,
                                              <a href="libxml-tree.html#xmlChar">xmlChar</a> val);</pre><p>
 a strchr for xmlChar's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the xmlChar * array
+</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the xmlChar to search
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlChar * for the first occurrence or NULL.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrstr"></a>xmlStrstr ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* xmlStrstr                    (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *val);</pre><p>
 a strstr for xmlChar's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the xmlChar * array (haystack)
+</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the xmlChar to search (needle)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlChar * for the first occurrence or NULL.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrcasestr"></a>xmlStrcasestr ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* xmlStrcasestr                (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str,
                                              <a href="libxml-tree.html#xmlChar">xmlChar</a> *val);</pre><p>
 a case-ignoring strstr for xmlChar's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the xmlChar * array (haystack)
+</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the xmlChar to search (needle)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlChar * for the first occurrence or NULL.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrcmp"></a>xmlStrcmp ()</h3><pre class="programlisting">int         xmlStrcmp                       (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str1,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str2);</pre><p>
 a strcmp for xmlChar's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str1</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>str2</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str1</tt></i> :</span></td><td>  the first xmlChar *
+</td></tr><tr><td><span class="term"><i><tt>str2</tt></i> :</span></td><td>  the second xmlChar *
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the integer result of the comparison
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrncmp"></a>xmlStrncmp ()</h3><pre class="programlisting">int         xmlStrncmp                      (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str1,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str2,
                                              int len);</pre><p>
 a strncmp for xmlChar's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str1</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>str2</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str1</tt></i> :</span></td><td>  the first xmlChar *
+</td></tr><tr><td><span class="term"><i><tt>str2</tt></i> :</span></td><td>  the second xmlChar *
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the max comparison length
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the integer result of the comparison
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrcasecmp"></a>xmlStrcasecmp ()</h3><pre class="programlisting">int         xmlStrcasecmp                   (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str1,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str2);</pre><p>
 a strcasecmp for xmlChar's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str1</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>str2</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str1</tt></i> :</span></td><td>  the first xmlChar *
+</td></tr><tr><td><span class="term"><i><tt>str2</tt></i> :</span></td><td>  the second xmlChar *
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the integer result of the comparison
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrncasecmp"></a>xmlStrncasecmp ()</h3><pre class="programlisting">int         xmlStrncasecmp                  (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str1,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str2,
                                              int len);</pre><p>
 a strncasecmp for xmlChar's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str1</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>str2</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str1</tt></i> :</span></td><td>  the first xmlChar *
+</td></tr><tr><td><span class="term"><i><tt>str2</tt></i> :</span></td><td>  the second xmlChar *
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the max comparison length
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the integer result of the comparison
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrEqual"></a>xmlStrEqual ()</h3><pre class="programlisting">int         xmlStrEqual                     (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str1,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str2);</pre><p>
 Check if both string are equal of have same content
 Should be a bit more readable and faster than <a href="libxml-parser.html#xmlStrEqual">xmlStrEqual</a>()</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str1</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>str2</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str1</tt></i> :</span></td><td>  the first xmlChar *
+</td></tr><tr><td><span class="term"><i><tt>str2</tt></i> :</span></td><td>  the second xmlChar *
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if they are equal, 0 if they are different
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrlen"></a>xmlStrlen ()</h3><pre class="programlisting">int         xmlStrlen                       (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str);</pre><p>
 length of a xmlChar's string</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the xmlChar * array
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of xmlChar contained in the ARRAY.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrcat"></a>xmlStrcat ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlStrcat                       (<a href="libxml-tree.html#xmlChar">xmlChar</a> *cur,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *add);</pre><p>
 a strcat for array of xmlChar's. Since they are supposed to be
 encoded in UTF-8 or an encoding with 8bit based chars, we assume
 a termination mark of '0'.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>add</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the original xmlChar * array
+</td></tr><tr><td><span class="term"><i><tt>add</tt></i> :</span></td><td>  the xmlChar * array added
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new xmlChar * containing the concatenated string.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStrncat"></a>xmlStrncat ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlStrncat                      (<a href="libxml-tree.html#xmlChar">xmlChar</a> *cur,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *add,
                                              int len);</pre><p>
 a strncat for array of xmlChar's, it will extend <i><tt>cur</tt></i> with the len
 first bytes of <i><tt>add</tt></i>.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>add</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the original xmlChar * array
+</td></tr><tr><td><span class="term"><i><tt>add</tt></i> :</span></td><td>  the xmlChar * array added
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the length of <i><tt>add</tt></i>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new xmlChar *, the original <i><tt>cur</tt></i> is reallocated if needed
+and should not be freed
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseDoc"></a>xmlParseDoc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlParseDoc                     (<a href="libxml-tree.html#xmlChar">xmlChar</a> *cur);</pre><p>
 parse an XML in-memory document and build a tree.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  a pointer to an array of xmlChar
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseMemory"></a>xmlParseMemory ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlParseMemory                  (const char *buffer,
                                              int size);</pre><p>
 parse an XML in-memory block and build a tree.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  an pointer to a char array
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size of the array
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseFile"></a>xmlParseFile ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlParseFile                    (const char *filename);</pre><p>
 parse an XML file and build a tree. Automatic support for ZLIB/Compress
 compressed document is provided by default if found at compile-time.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree if the file was wellformed,
+NULL otherwise.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSubstituteEntitiesDefault"></a>xmlSubstituteEntitiesDefault ()</h3><pre class="programlisting">int         xmlSubstituteEntitiesDefault    (int val);</pre><p>
 Set and return the previous value for default entity support.
 Initially the parser always keep entity references instead of substituting
@@ -1050,10 +957,8 @@ default parser behavior
 SAX::<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="substituteEntities">substituteEntities</GTKDOCLINK>() has to be used for changing that on a file by
 file basis.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  int 0 or 1 
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the last value for 0 for no substitution, 1 for substitution.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlKeepBlanksDefault"></a>xmlKeepBlanksDefault ()</h3><pre class="programlisting">int         xmlKeepBlanksDefault            (int val);</pre><p>
 Set and return the previous value for default blanks text nodes support.
 The 1.x version of the parser used an heuristic to try to detect
@@ -1072,58 +977,44 @@ nodes generated.
 This value also affect autogeneration of indentation when saving code
 if blanks sections are kept, indentation is not generated.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  int 0 or 1 
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the last value for 0 for no substitution, 1 for substitution.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStopParser"></a>xmlStopParser ()</h3><pre class="programlisting">void        xmlStopParser                   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 Blocks further parser processing</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlPedanticParserDefault"></a>xmlPedanticParserDefault ()</h3><pre class="programlisting">int         xmlPedanticParserDefault        (int val);</pre><p>
 Set and return the previous value for enabling pedantic warnings.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  int 0 or 1 
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the last value for 0 for no substitution, 1 for substitution.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlLineNumbersDefault"></a>xmlLineNumbersDefault ()</h3><pre class="programlisting">int         xmlLineNumbersDefault           (int val);</pre><p>
 Set and return the previous value for enabling line numbers in elements
 contents. This may break on old application and is turned off by default.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  int 0 or 1 
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the last value for 0 for no substitution, 1 for substitution.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRecoverDoc"></a>xmlRecoverDoc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlRecoverDoc                   (<a href="libxml-tree.html#xmlChar">xmlChar</a> *cur);</pre><p>
 parse an XML in-memory document and build a tree.
 In the case the document is not Well Formed, a tree is built anyway</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  a pointer to an array of xmlChar
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRecoverMemory"></a>xmlRecoverMemory ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlRecoverMemory                (const char *buffer,
                                              int size);</pre><p>
 parse an XML in-memory block and build a tree.
 In the case the document is not Well Formed, a tree is built anyway</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  an pointer to a char array
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size of the array
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRecoverFile"></a>xmlRecoverFile ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlRecoverFile                  (const char *filename);</pre><p>
 parse an XML file and build a tree. Automatic support for ZLIB/Compress
 compressed document is provided by default if found at compile-time.
 In the case the document is not Well Formed, a tree is built anyway</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseDocument"></a>xmlParseDocument ()</h3><pre class="programlisting">int         xmlParseDocument                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 parse an XML document (and build a tree if using the standard SAX
 interface).
@@ -1132,10 +1023,9 @@ interface).
 </p><p>
 [22] prolog ::= XMLDecl? Misc* (doctypedecl Misc*)?</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0, -1 in case of error. the parser context is augmented
+               as a result of the parsing.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseExtParsedEnt"></a>xmlParseExtParsedEnt ()</h3><pre class="programlisting">int         xmlParseExtParsedEnt            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 parse a general parsed entity
 An external general parsed entity is well-formed if it matches the
@@ -1143,10 +1033,9 @@ production labeled extParsedEnt.
 </p><p>
 [78] extParsedEnt ::= TextDecl? content</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0, -1 in case of error. the parser context is augmented
+               as a result of the parsing.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSAXParseDoc"></a>xmlSAXParseDoc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlSAXParseDoc                  (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              <a href="libxml-tree.html#xmlChar">xmlChar</a> *cur,
                                              int recovery);</pre><p>
@@ -1154,24 +1043,21 @@ parse an XML in-memory document and build a tree.
 It use the given SAX function block to handle the parsing callback.
 If sax is NULL, fallback to the default DOM tree building routines.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>recovery</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block
+</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  a pointer to an array of xmlChar
+</td></tr><tr><td><span class="term"><i><tt>recovery</tt></i> :</span></td><td>  work in recovery mode, i.e. tries to read no Well Formed
+            documents
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSAXUserParseFile"></a>xmlSAXUserParseFile ()</h3><pre class="programlisting">int         xmlSAXUserParseFile             (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              void *user_data,
                                              const char *filename);</pre><p>
 parse an XML file and call the given SAX handler routines.
 Automatic support for ZLIB/Compress compressed document is provided</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  a SAX handler
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>  The user data returned on SAX callbacks
+</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  a file name
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of success or a error number otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSAXUserParseMemory"></a>xmlSAXUserParseMemory ()</h3><pre class="programlisting">int         xmlSAXUserParseMemory           (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              void *user_data,
                                              const char *buffer,
@@ -1179,13 +1065,11 @@ Automatic support for ZLIB/Compress compressed document is provided</p><p>
 A better SAX parsing routine.
 parse an XML in-memory buffer and call the given SAX handler routines.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  a SAX handler
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>  The user data returned on SAX callbacks
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  an in-memory XML document input
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the length of the XML document in bytes
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of success or a error number otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSAXParseMemory"></a>xmlSAXParseMemory ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlSAXParseMemory               (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              const char *buffer,
                                              int size,
@@ -1194,13 +1078,12 @@ parse an XML in-memory block and use the given SAX function block
 to handle the parsing callback. If sax is NULL, fallback to the default
 DOM tree building routines.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>recovery</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  an pointer to a char array
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size of the array
+</td></tr><tr><td><span class="term"><i><tt>recovery</tt></i> :</span></td><td>  work in recovery mode, i.e. tries to read not Well Formed
+            documents
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSAXParseMemoryWithData"></a>xmlSAXParseMemoryWithData ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlSAXParseMemoryWithData       (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              const char *buffer,
                                              int size,
@@ -1213,14 +1096,13 @@ DOM tree building routines.
 User data (void *) is stored within the parser context in the
 context's _private member, so it is available nearly everywhere in libxml</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>recovery</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  an pointer to a char array
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size of the array
+</td></tr><tr><td><span class="term"><i><tt>recovery</tt></i> :</span></td><td>  work in recovery mode, i.e. tries to read no Well Formed
+            documents
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td>  the userdata
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSAXParseFile"></a>xmlSAXParseFile ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlSAXParseFile                 (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              const char *filename,
                                              int recovery);</pre><p>
@@ -1229,12 +1111,11 @@ compressed document is provided by default if found at compile-time.
 It use the given SAX function block to handle the parsing callback.
 If sax is NULL, fallback to the default DOM tree building routines.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>recovery</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block
+</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><i><tt>recovery</tt></i> :</span></td><td>  work in recovery mode, i.e. tries to read no Well Formed
+            documents
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSAXParseFileWithData"></a>xmlSAXParseFileWithData ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlSAXParseFileWithData         (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              const char *filename,
                                              int recovery,
@@ -1247,13 +1128,12 @@ If sax is NULL, fallback to the default DOM tree building routines.
 User data (void *) is stored within the parser context in the
 context's _private member, so it is available nearly everywhere in libxml</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>recovery</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block
+</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><i><tt>recovery</tt></i> :</span></td><td>  work in recovery mode, i.e. tries to read no Well Formed
+            documents
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td>  the userdata
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSAXParseEntity"></a>xmlSAXParseEntity ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlSAXParseEntity               (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              const char *filename);</pre><p>
 parse an XML external entity out of context and build a tree.
@@ -1264,11 +1144,9 @@ If sax is NULL, fallback to the default DOM tree building routines.
 </p><p>
 This correspond to a &quot;Well Balanced&quot; chunk</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block
+</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEntity"></a>xmlParseEntity ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlParseEntity                  (const char *filename);</pre><p>
 parse an XML external entity out of context and build a tree.
 </p><p>
@@ -1276,41 +1154,34 @@ parse an XML external entity out of context and build a tree.
 </p><p>
 This correspond to a &quot;Well Balanced&quot; chunk</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseDTD"></a>xmlParseDTD ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a>   xmlParseDTD                     (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ExternalID,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *SystemID);</pre><p>
 Load and parse an external subset.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>  a NAME* containing the External ID of the DTD
+</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>  a NAME* containing the URL to the DTD
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting xmlDtdPtr or NULL in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSAXParseDTD"></a>xmlSAXParseDTD ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a>   xmlSAXParseDTD                  (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ExternalID,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *SystemID);</pre><p>
 Load and parse an external subset.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block
+</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>  a NAME* containing the External ID of the DTD
+</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>  a NAME* containing the URL to the DTD
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting xmlDtdPtr or NULL in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIOParseDTD"></a>xmlIOParseDTD ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a>   xmlIOParseDTD                   (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              <a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> input,
                                              <a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);</pre><p>
 Load and parse a DTD</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block or NULL
+</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  an Input Buffer
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting xmlDtdPtr or NULL in case of error.
+<i><tt>input</tt></i> will be freed at parsing end.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseBalancedChunkMemory"></a>xmlParseBalancedChunkMemory ()</h3><pre class="programlisting">int         xmlParseBalancedChunkMemory     (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              void *user_data,
@@ -1324,15 +1195,14 @@ the content production in the XML grammar:
 </p><p>
 [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>string</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>lst</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document the chunk pertains to
+</td></tr><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler bloc (possibly NULL)
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>  The user data returned on SAX callbacks (possibly NULL)
+</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>  Used for loop detection, use 0
+</td></tr><tr><td><span class="term"><i><tt>string</tt></i> :</span></td><td>  the input string in UTF8 or ISO-Latin (zero terminated)
+</td></tr><tr><td><span class="term"><i><tt>lst</tt></i> :</span></td><td>  the return value for the set of parsed nodes
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if the chunk is well balanced, -1 in case of args problem and
+   the parser error code otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseBalancedChunkMemoryRecover"></a>xmlParseBalancedChunkMemoryRecover ()</h3><pre class="programlisting">int         xmlParseBalancedChunkMemoryRecover
                                             (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
@@ -1348,16 +1218,18 @@ the content production in the XML grammar:
 </p><p>
 [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>string</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>lst</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>recover</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document the chunk pertains to
+</td></tr><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler bloc (possibly NULL)
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>  The user data returned on SAX callbacks (possibly NULL)
+</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>  Used for loop detection, use 0
+</td></tr><tr><td><span class="term"><i><tt>string</tt></i> :</span></td><td>  the input string in UTF8 or ISO-Latin (zero terminated)
+</td></tr><tr><td><span class="term"><i><tt>lst</tt></i> :</span></td><td>  the return value for the set of parsed nodes
+</td></tr><tr><td><span class="term"><i><tt>recover</tt></i> :</span></td><td> return nodes even if the data is broken (use 0)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if the chunk is well balanced, -1 in case of args problem and
+   the parser error code otherwise
+   
+In case recover is set to 1, the nodelist will not be empty even if
+the parsed chunk is not well balanced. 
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseExternalEntity"></a>xmlParseExternalEntity ()</h3><pre class="programlisting">int         xmlParseExternalEntity          (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              void *user_data,
@@ -1371,16 +1243,15 @@ production labeled extParsedEnt.
 </p><p>
 [78] extParsedEnt ::= TextDecl? content</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>lst</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document the chunk pertains to
+</td></tr><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler bloc (possibly NULL)
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>  The user data returned on SAX callbacks (possibly NULL)
+</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>  Used for loop detection, use 0
+</td></tr><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  the URL for the entity to load
+</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>  the System ID for the entity to load
+</td></tr><tr><td><span class="term"><i><tt>lst</tt></i> :</span></td><td>  the return value for the set of parsed nodes
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if the entity is well formed, -1 in case of args problem and
+   the parser error code otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseCtxtExternalEntity"></a>xmlParseCtxtExternalEntity ()</h3><pre class="programlisting">int         xmlParseCtxtExternalEntity      (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctx,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *URL,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ID,
@@ -1391,33 +1262,26 @@ production labeled extParsedEnt.
 </p><p>
 [78] extParsedEnt ::= TextDecl? content</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>lst</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the existing parsing context
+</td></tr><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  the URL for the entity to load
+</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>  the System ID for the entity to load
+</td></tr><tr><td><span class="term"><i><tt>lst</tt></i> :</span></td><td>  the return value for the set of parsed nodes
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if the entity is well formed, -1 in case of args problem and
+   the parser error code otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInitParserCtxt"></a>xmlInitParserCtxt ()</h3><pre class="programlisting">int         xmlInitParserCtxt               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 Initialize a parser context</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of success and -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlClearParserCtxt"></a>xmlClearParserCtxt ()</h3><pre class="programlisting">void        xmlClearParserCtxt              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 Clear (release owned resources) and reinitialize a parser context</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeParserCtxt"></a>xmlFreeParserCtxt ()</h3><pre class="programlisting">void        xmlFreeParserCtxt               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 Free all the memory used by a parser context. However the parsed
 document in ctxt-&gt;myDoc is not freed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSetupParserForBuffer"></a>xmlSetupParserForBuffer ()</h3><pre class="programlisting">void        xmlSetupParserForBuffer         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *buffer,
                                              const char *filename);</pre><p>
@@ -1425,49 +1289,41 @@ Setup the parser context to parse a new buffer; Clears any prior
 contents from the parser context. The buffer parameter must not be
 NULL, but the filename parameter can be</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  a xmlChar * buffer
+</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  a file name
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCreateDocParserCtxt"></a>xmlCreateDocParserCtxt ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> xmlCreateDocParserCtxt     (<a href="libxml-tree.html#xmlChar">xmlChar</a> *cur);</pre><p>
 Creates a parser context for an XML in-memory document.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  a pointer to an array of xmlChar
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser context or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetFeaturesList"></a>xmlGetFeaturesList ()</h3><pre class="programlisting">int         xmlGetFeaturesList              (int *len,
                                              const char **result);</pre><p>
 Copy at most *<i><tt>len</tt></i> feature names into the <i><tt>result</tt></i> array</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>result</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the length of the features name array (input/output)
+</td></tr><tr><td><span class="term"><i><tt>result</tt></i> :</span></td><td>  an array of string to be filled with the features name.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 in case or error, or the total number of features,
+           len is updated with the number of strings copied,
+           strings must not be deallocated
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetFeature"></a>xmlGetFeature ()</h3><pre class="programlisting">int         xmlGetFeature                   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
                                              const char *name,
                                              void *result);</pre><p>
 Read the current value of one feature of this parser instance</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>result</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML/HTML parser context
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the feature name
+</td></tr><tr><td><span class="term"><i><tt>result</tt></i> :</span></td><td>  location to store the result
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 in case or error, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSetFeature"></a>xmlSetFeature ()</h3><pre class="programlisting">int         xmlSetFeature                   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
                                              const char *name,
                                              void *value);</pre><p>
 Change the current value of one feature of this parser instance</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML/HTML parser context
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the feature name
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  pointer to the location of the new value
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 in case or error, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCreatePushParserCtxt"></a>xmlCreatePushParserCtxt ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> xmlCreatePushParserCtxt    (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              void *user_data,
                                              const char *chunk,
@@ -1481,27 +1337,23 @@ To allow content encoding detection, <i><tt>size</tt></i> should be &gt;= 4
 The value of <i><tt>filename</tt></i> is used for fetching external entities
 and error/warning reports.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>chunk</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  a SAX handler
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>  The user data returned on SAX callbacks
+</td></tr><tr><td><span class="term"><i><tt>chunk</tt></i> :</span></td><td>  a pointer to an array of chars
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  number of chars in the array
+</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  an optional file name or URI
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser context or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseChunk"></a>xmlParseChunk ()</h3><pre class="programlisting">int         xmlParseChunk                   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
                                              const char *chunk,
                                              int size,
                                              int terminate);</pre><p>
 Parse a Chunk of memory</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>chunk</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>terminate</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>chunk</tt></i> :</span></td><td>  an char array
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size in byte of the chunk
+</td></tr><tr><td><span class="term"><i><tt>terminate</tt></i> :</span></td><td>  last chunk indicator
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>zero if no error, the xmlParserErrors otherwise.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCreateIOParserCtxt"></a>xmlCreateIOParserCtxt ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> xmlCreateIOParserCtxt      (<a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
                                              void *user_data,
                                              <a href="libxml-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread,
@@ -1511,81 +1363,63 @@ Parse a Chunk of memory</p><p>
 Create a parser context for using the XML parser with an existing
 I/O stream</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ioread</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ioclose</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ioctx</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  a SAX handler
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>  The user data returned on SAX callbacks
+</td></tr><tr><td><span class="term"><i><tt>ioread</tt></i> :</span></td><td>  an I/O read function
+</td></tr><tr><td><span class="term"><i><tt>ioclose</tt></i> :</span></td><td>  an I/O close function
+</td></tr><tr><td><span class="term"><i><tt>ioctx</tt></i> :</span></td><td>  an I/O handler
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser context or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewIOInputStream"></a>xmlNewIOInputStream ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> xmlNewIOInputStream       (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> input,
                                              <a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);</pre><p>
 Create a new input stream structure encapsulating the <i><tt>input</tt></i> into
 a stream suitable for the parser.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  an I/O Input
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new input stream or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserFindNodeInfo"></a>xmlParserFindNodeInfo ()</h3><pre class="programlisting">const <a href="libxml-parser.html#xmlParserNodeInfo">xmlParserNodeInfo</a>* xmlParserFindNodeInfo
                                             (const <a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
                                              const <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
 Find the parser node info struct for a given node</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  an XML node within the tree
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>an xmlParserNodeInfo block pointer or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInitNodeInfoSeq"></a>xmlInitNodeInfoSeq ()</h3><pre class="programlisting">void        xmlInitNodeInfoSeq              (<a href="libxml-parser.html#xmlParserNodeInfoSeqPtr">xmlParserNodeInfoSeqPtr</a> seq);</pre><p>
 -- Initialize (set to initial state) node info sequence</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>seq</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>seq</tt></i> :</span></td><td>  a node info sequence pointer
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlClearNodeInfoSeq"></a>xmlClearNodeInfoSeq ()</h3><pre class="programlisting">void        xmlClearNodeInfoSeq             (<a href="libxml-parser.html#xmlParserNodeInfoSeqPtr">xmlParserNodeInfoSeqPtr</a> seq);</pre><p>
 -- Clear (release memory and reinitialize) node
   info sequence</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>seq</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>seq</tt></i> :</span></td><td>  a node info sequence pointer
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserFindNodeInfoIndex"></a>xmlParserFindNodeInfoIndex ()</h3><pre class="programlisting">unsigned <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="long">long</GTKDOCLINK> xmlParserFindNodeInfoIndex    (const <a href="libxml-parser.html#xmlParserNodeInfoSeqPtr">xmlParserNodeInfoSeqPtr</a> seq,
                                              const <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
 xmlParserFindNodeInfoIndex : Find the index that the info record for
   the given node is or should be at in a sorted sequence</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>seq</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>seq</tt></i> :</span></td><td>  a node info sequence pointer
+</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  an XML node pointer
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a long indicating the position of the record
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserAddNodeInfo"></a>xmlParserAddNodeInfo ()</h3><pre class="programlisting">void        xmlParserAddNodeInfo            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
                                              const <a href="libxml-parser.html#xmlParserNodeInfoPtr">xmlParserNodeInfoPtr</a> info);</pre><p>
 Insert node info record into the sorted sequence</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>info</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>info</tt></i> :</span></td><td>  a node info sequence pointer
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSetExternalEntityLoader"></a>xmlSetExternalEntityLoader ()</h3><pre class="programlisting">void        xmlSetExternalEntityLoader      (<a href="libxml-parser.html#xmlExternalEntityLoader">xmlExternalEntityLoader</a> f);</pre><p>
 Changes the defaultexternal entity resolver function for the application</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>f</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>f</tt></i> :</span></td><td>  the new entity resolver function
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetExternalEntityLoader"></a>xmlGetExternalEntityLoader ()</h3><pre class="programlisting"><a href="libxml-parser.html#xmlExternalEntityLoader">xmlExternalEntityLoader</a> xmlGetExternalEntityLoader
                                             (void);</pre><p>
 Get the default external entity resolver function for the application</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlExternalEntityLoader function pointer
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlLoadExternalEntity"></a>xmlLoadExternalEntity ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> xmlLoadExternalEntity     (const char *URL,
                                              const char *ID,
                                              <a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
@@ -1593,10 +1427,8 @@ Load an external entity, note that the use of this function for
 unparsed entities may generate problems
 TODO: a more generic External entity API must be designed</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  the URL for the entity to load
+</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>  the Public ID for the entity to load
+</td></tr><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the context in which the entity is called or NULL
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlParserInputPtr or NULL
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-lib.html"><b>&lt;&lt; Libxml Library Reference</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlreader.html"><b>xmlreader &gt;&gt;</b></a></td></tr></table></body></html>

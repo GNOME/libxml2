@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>schemasInternals</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
@@ -122,7 +121,8 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaVal"></a>struct xmlSchemaVal</h3><pre class="programlisting">struct xmlSchemaVal;</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValPtr"></a>xmlSchemaValPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValPtr"></a>xmlSchemaValPtr</h3><pre class="programlisting">typedef xmlSchemaVal *xmlSchemaValPtr;
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaType"></a>struct xmlSchemaType</h3><pre class="programlisting">struct xmlSchemaType {
     xmlSchemaTypeType type;	/* The kind of type */
@@ -147,7 +147,8 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
 };
 </pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaTypePtr"></a>xmlSchemaTypePtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaTypePtr"></a>xmlSchemaTypePtr</h3><pre class="programlisting">typedef xmlSchemaType *xmlSchemaTypePtr;
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFacet"></a>struct xmlSchemaFacet</h3><pre class="programlisting">struct xmlSchemaFacet {
     xmlSchemaTypeType type;	/* The kind of type */
@@ -163,7 +164,8 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
 };
 </pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFacetPtr"></a>xmlSchemaFacetPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFacetPtr"></a>xmlSchemaFacetPtr</h3><pre class="programlisting">typedef xmlSchemaFacet *xmlSchemaFacetPtr;
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAnnot"></a>struct xmlSchemaAnnot</h3><pre class="programlisting">struct xmlSchemaAnnot {
     struct _xmlSchemaAnnot *next;
@@ -171,13 +173,17 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
 };
 </pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAnnotPtr"></a>xmlSchemaAnnotPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAnnotPtr"></a>xmlSchemaAnnotPtr</h3><pre class="programlisting">typedef xmlSchemaAnnot *xmlSchemaAnnotPtr;
+</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ANYATTR-SKIP-CAPS"></a>XML_SCHEMAS_ANYATTR_SKIP</h3><pre class="programlisting">#define     XML_SCHEMAS_ANYATTR_SKIP</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ANYATTR-SKIP-CAPS"></a>XML_SCHEMAS_ANYATTR_SKIP</h3><pre class="programlisting">#define XML_SCHEMAS_ANYATTR_SKIP	1
+</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ANYATTR-LAX-CAPS"></a>XML_SCHEMAS_ANYATTR_LAX</h3><pre class="programlisting">#define     XML_SCHEMAS_ANYATTR_LAX</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ANYATTR-LAX-CAPS"></a>XML_SCHEMAS_ANYATTR_LAX</h3><pre class="programlisting">#define XML_SCHEMAS_ANYATTR_LAX		2
+</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ANYATTR-STRICT-CAPS"></a>XML_SCHEMAS_ANYATTR_STRICT</h3><pre class="programlisting">#define     XML_SCHEMAS_ANYATTR_STRICT</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ANYATTR-STRICT-CAPS"></a>XML_SCHEMAS_ANYATTR_STRICT</h3><pre class="programlisting">#define XML_SCHEMAS_ANYATTR_STRICT	3
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAttribute"></a>struct xmlSchemaAttribute</h3><pre class="programlisting">struct xmlSchemaAttribute {
     xmlSchemaTypeType type;	/* The kind of type */
@@ -194,10 +200,12 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
     int occurs;
     xmlChar *defValue;
     xmlSchemaTypePtr subtypes;
+    xmlNodePtr node;
 };
 </pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAttributePtr"></a>xmlSchemaAttributePtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAttributePtr"></a>xmlSchemaAttributePtr</h3><pre class="programlisting">typedef xmlSchemaAttribute *xmlSchemaAttributePtr;
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAttributeGroup"></a>struct xmlSchemaAttributeGroup</h3><pre class="programlisting">struct xmlSchemaAttributeGroup {
     xmlSchemaTypeType type;	/* The kind of type */
@@ -209,33 +217,43 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
     xmlSchemaAnnotPtr annot;
 
     xmlSchemaAttributePtr attributes;
+    xmlNodePtr node;
 };
 </pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAttributeGroupPtr"></a>xmlSchemaAttributeGroupPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAttributeGroupPtr"></a>xmlSchemaAttributeGroupPtr</h3><pre class="programlisting">typedef xmlSchemaAttributeGroup *xmlSchemaAttributeGroupPtr;
+</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-TYPE-MIXED-CAPS"></a>XML_SCHEMAS_TYPE_MIXED</h3><pre class="programlisting">#define     XML_SCHEMAS_TYPE_MIXED</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-TYPE-MIXED-CAPS"></a>XML_SCHEMAS_TYPE_MIXED</h3><pre class="programlisting">#define XML_SCHEMAS_TYPE_MIXED		1 &lt;&lt; 0
+</pre><p>
 the element content type is mixed</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-NILLABLE-CAPS"></a>XML_SCHEMAS_ELEM_NILLABLE</h3><pre class="programlisting">#define     XML_SCHEMAS_ELEM_NILLABLE</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-NILLABLE-CAPS"></a>XML_SCHEMAS_ELEM_NILLABLE</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_NILLABLE	1 &lt;&lt; 0
+</pre><p>
 the element is nillable</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-GLOBAL-CAPS"></a>XML_SCHEMAS_ELEM_GLOBAL</h3><pre class="programlisting">#define     XML_SCHEMAS_ELEM_GLOBAL</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-GLOBAL-CAPS"></a>XML_SCHEMAS_ELEM_GLOBAL</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_GLOBAL		1 &lt;&lt; 1
+</pre><p>
 the element is global</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-DEFAULT-CAPS"></a>XML_SCHEMAS_ELEM_DEFAULT</h3><pre class="programlisting">#define     XML_SCHEMAS_ELEM_DEFAULT</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-DEFAULT-CAPS"></a>XML_SCHEMAS_ELEM_DEFAULT</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_DEFAULT	1 &lt;&lt; 2
+</pre><p>
 the element has a default value</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-FIXED-CAPS"></a>XML_SCHEMAS_ELEM_FIXED</h3><pre class="programlisting">#define     XML_SCHEMAS_ELEM_FIXED</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-FIXED-CAPS"></a>XML_SCHEMAS_ELEM_FIXED</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_FIXED		1 &lt;&lt; 3
+</pre><p>
 the element has a fixed value</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-ABSTRACT-CAPS"></a>XML_SCHEMAS_ELEM_ABSTRACT</h3><pre class="programlisting">#define     XML_SCHEMAS_ELEM_ABSTRACT</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-ABSTRACT-CAPS"></a>XML_SCHEMAS_ELEM_ABSTRACT</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_ABSTRACT	1 &lt;&lt; 4
+</pre><p>
 the element is abstract</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-TOPLEVEL-CAPS"></a>XML_SCHEMAS_ELEM_TOPLEVEL</h3><pre class="programlisting">#define     XML_SCHEMAS_ELEM_TOPLEVEL</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-TOPLEVEL-CAPS"></a>XML_SCHEMAS_ELEM_TOPLEVEL</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_TOPLEVEL	1 &lt;&lt; 5
+</pre><p>
 the element is top level</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-REF-CAPS"></a>XML_SCHEMAS_ELEM_REF</h3><pre class="programlisting">#define     XML_SCHEMAS_ELEM_REF</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-ELEM-REF-CAPS"></a>XML_SCHEMAS_ELEM_REF</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_REF		1 &lt;&lt; 6
+</pre><p>
 the element is a reference to a type</p><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaElement"></a>struct xmlSchemaElement</h3><pre class="programlisting">struct xmlSchemaElement {
@@ -268,15 +286,20 @@ the element is a reference to a type</p><p>
 xmlSchemaType, xmlSchemaFacet and xmlSchemaElement start of
 structures must be kept similar</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaElementPtr"></a>xmlSchemaElementPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaElementPtr"></a>xmlSchemaElementPtr</h3><pre class="programlisting">typedef xmlSchemaElement *xmlSchemaElementPtr;
+</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-FACET-UNKNOWN-CAPS"></a>XML_SCHEMAS_FACET_UNKNOWN</h3><pre class="programlisting">#define     XML_SCHEMAS_FACET_UNKNOWN</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-FACET-UNKNOWN-CAPS"></a>XML_SCHEMAS_FACET_UNKNOWN</h3><pre class="programlisting">#define XML_SCHEMAS_FACET_UNKNOWN	0
+</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-FACET-PRESERVE-CAPS"></a>XML_SCHEMAS_FACET_PRESERVE</h3><pre class="programlisting">#define     XML_SCHEMAS_FACET_PRESERVE</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-FACET-PRESERVE-CAPS"></a>XML_SCHEMAS_FACET_PRESERVE</h3><pre class="programlisting">#define XML_SCHEMAS_FACET_PRESERVE	1
+</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-FACET-REPLACE-CAPS"></a>XML_SCHEMAS_FACET_REPLACE</h3><pre class="programlisting">#define     XML_SCHEMAS_FACET_REPLACE</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-FACET-REPLACE-CAPS"></a>XML_SCHEMAS_FACET_REPLACE</h3><pre class="programlisting">#define XML_SCHEMAS_FACET_REPLACE	2
+</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-FACET-COLLAPSE-CAPS"></a>XML_SCHEMAS_FACET_COLLAPSE</h3><pre class="programlisting">#define     XML_SCHEMAS_FACET_COLLAPSE</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-FACET-COLLAPSE-CAPS"></a>XML_SCHEMAS_FACET_COLLAPSE</h3><pre class="programlisting">#define XML_SCHEMAS_FACET_COLLAPSE	3
+</pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaNotation"></a>struct xmlSchemaNotation</h3><pre class="programlisting">struct xmlSchemaNotation {
     xmlSchemaTypeType type;	/* The kind of type */
@@ -286,12 +309,15 @@ structures must be kept similar</p><p>
 };
 </pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaNotationPtr"></a>xmlSchemaNotationPtr</h3><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaNotationPtr"></a>xmlSchemaNotationPtr</h3><pre class="programlisting">typedef xmlSchemaNotation *xmlSchemaNotationPtr;
+</pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-QUALIF-ELEM-CAPS"></a>XML_SCHEMAS_QUALIF_ELEM</h3><pre class="programlisting">#define     XML_SCHEMAS_QUALIF_ELEM</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-QUALIF-ELEM-CAPS"></a>XML_SCHEMAS_QUALIF_ELEM</h3><pre class="programlisting">#define XML_SCHEMAS_QUALIF_ELEM		1 &lt;&lt; 0
+</pre><p>
 the shemas requires qualified elements</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-QUALIF-ATTR-CAPS"></a>XML_SCHEMAS_QUALIF_ATTR</h3><pre class="programlisting">#define     XML_SCHEMAS_QUALIF_ATTR</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SCHEMAS-QUALIF-ATTR-CAPS"></a>XML_SCHEMAS_QUALIF_ATTR</h3><pre class="programlisting">#define XML_SCHEMAS_QUALIF_ATTR		1 &lt;&lt; 1
+</pre><p>
 the shemas requires qualified attributes</p><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchema"></a>struct xmlSchema</h3><pre class="programlisting">struct xmlSchema {
@@ -312,13 +338,12 @@ the shemas requires qualified attributes</p><p>
     xmlHashTablePtr schemasImports;
 
     void *_private;	/* unused by the library for users or bindings */
+    xmlHashTablePtr groupDecl;
 };
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFreeType"></a>xmlSchemaFreeType ()</h3><pre class="programlisting">void        xmlSchemaFreeType               (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type);</pre><p>
 Deallocate a Schema Type structure.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>
-
-
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  a schema type structure
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlschemastypes.html"><b>&lt;&lt; xmlschemastypes</b></a></td><td align="right"></td></tr></table></body></html>

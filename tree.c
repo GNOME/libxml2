@@ -2736,6 +2736,23 @@ xmlCopyNode(xmlNodePtr node, int recursive) {
 }
 
 /**
+ * xmlDocCopyNode:
+ * @node:  the node
+ * @recursive:  if 1 do a recursive copy.
+ *
+ * Do a copy of the node to a given document.
+ *
+ * Returns: a new xmlNodePtr, or NULL in case of error.
+ */
+xmlNodePtr
+xmlDocCopyNode(xmlNodePtr node, xmlDocPtr doc, int recursive) {
+    xmlNodePtr ret;
+
+    ret = xmlStaticCopyNode(node, doc, NULL, recursive);
+    return(ret);
+}
+
+/**
  * xmlCopyNodeList:
  * @node:  the first node in the list.
  *

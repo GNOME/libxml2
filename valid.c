@@ -760,6 +760,8 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     xmlAttributePtr ret, cur;
     xmlAttributeTablePtr table;
     xmlElementPtr elemDef;
+    xmlChar *rname;
+    xmlChar *ns;
     int i;
 
     if (dtd == NULL) {
@@ -821,12 +823,20 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     }
 
     /*
+     * Split the full name into a namespace prefix and the tag name
+     */
+    rname = xmlSplitQName(name, &ns);
+
+    /*
      * Validity Check:
      * Search the DTD for previous declarations of the ATTLIST
      */
     for (i = 0;i < table->nb_attributes;i++) {
         cur = table->table[i];
-	if ((!xmlStrcmp(cur->name, name)) && (!xmlStrcmp(cur->elem, elem))) {
+	if ((ns != NULL) && (cur->prefix == NULL)) continue;
+	if ((ns == NULL) && (cur->prefix != NULL)) continue;
+	if ((!xmlStrcmp(cur->name, rname)) && (!xmlStrcmp(cur->elem, elem)) &&
+	    ((ns == NULL) || (!xmlStrcmp(cur->prefix, ns)))) {
 	    /*
 	     * The attribute is already defined in this Dtd.
 	     */
@@ -862,7 +872,8 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
      * fill the structure.
      */
     ret->type = type;
-    ret->name = xmlStrdup(name);
+    ret->name = rname;
+    ret->prefix = ns;
     ret->elem = xmlStrdup(elem);
     ret->def = def;
     ret->tree = tree;
@@ -902,6 +913,8 @@ xmlFreeAttribute(xmlAttributePtr attr) {
 	xmlFree((xmlChar *) attr->name);
     if (attr->defaultValue != NULL)
 	xmlFree((xmlChar *) attr->defaultValue);
+    if (attr->prefix != NULL)
+	xmlFree((xmlChar *) attr->prefix);
     memset(attr, -1, sizeof(xmlAttribute));
     xmlFree(attr);
 }

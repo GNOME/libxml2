@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
+#include "xlink.h"
 
 #ifndef __XML_SAX_H__
 #define __XML_SAX_H__

@@ -38,6 +38,7 @@
 #include "debugXML.h"
 
 static int debug = 0;
+static int debugent = 0;
 static int copy = 0;
 static int recovery = 0;
 static int noent = 0;
@@ -177,6 +178,8 @@ void parseAndPrintFile(char *filename) {
 	} else
 	    xmlDebugDumpDocument(stdout, doc);
     }
+    if (debugent)	
+	xmlDebugDumpEntities(stdout, doc);
 
     /*
      * free it.
@@ -214,6 +217,8 @@ void parseAndPrintBuffer(xmlChar *buf) {
 	    xmlDocDump(stdout, doc);
     } else
         xmlDebugDumpDocument(stdout, doc);
+    if (debugent)	
+        xmlDebugDumpEntities(stdout, doc);
 
     /*
      * free it.
@@ -228,6 +233,8 @@ int main(int argc, char **argv) {
     for (i = 1; i < argc ; i++) {
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
+	if ((!strcmp(argv[i], "-debugent")) || (!strcmp(argv[i], "--debugent")))
+	    debugent++;
 	else if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
 	    copy++;
 	else if ((!strcmp(argv[i], "-recover")) ||
@@ -267,10 +274,11 @@ int main(int argc, char **argv) {
 	}
     }
     if (files == 0) {
-	printf("Usage : %s [--debug] [--copy] [--recover] [--noent] [--noout] [--valid] [--repeat] XMLfiles ...\n",
+	printf("Usage : %s [--debug] [--debugent] [--copy] [--recover] [--noent] [--noout] [--valid] [--repeat] XMLfiles ...\n",
 	       argv[0]);
 	printf("\tParse the XML files and output the result of the parsing\n");
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
+	printf("\t--debugent : debug the entities defined in the document\n");
 	printf("\t--copy : used to test the internal copy implementation\n");
 	printf("\t--recover : output what is parsable on broken XmL documents\n");
 	printf("\t--noent : substitute entity references by their value\n");

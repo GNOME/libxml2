@@ -112,6 +112,7 @@ typedef struct xmlAttribute {
     xmlAttributeDefault    def;		/* the default */
     const xmlChar         *defaultValue;/* or the default value */
     xmlEnumerationPtr      tree;        /* or the enumeration tree if any */
+    const xmlChar         *prefix;      /* the namespace prefix if any */
 } xmlAttribute;
 typedef xmlAttribute *xmlAttributePtr;
 
@@ -462,6 +463,9 @@ xmlAttrPtr	xmlSetProp		(xmlNodePtr node,
 					 const xmlChar *value);
 xmlChar *	xmlGetProp		(xmlNodePtr node,
 					 const xmlChar *name);
+xmlChar *	xmlGetNsProp		(xmlNodePtr node,
+					 const xmlChar *name,
+					 const xmlChar *namespace);
 xmlNodePtr	xmlStringGetNodeList	(xmlDocPtr doc,
 					 const xmlChar *value);
 xmlNodePtr	xmlStringLenGetNodeList	(xmlDocPtr doc,
@@ -484,6 +488,8 @@ xmlChar *	xmlNodeGetContent	(xmlNodePtr cur);
 xmlChar *	xmlNodeGetLang		(xmlNodePtr cur);
 void		xmlNodeSetLang		(xmlNodePtr cur,
 					 const xmlChar *lang);
+xmlChar *	xmlNodeGetBase		(xmlDocPtr doc,
+					 xmlNodePtr cur);
 
 /*
  * Removing content.

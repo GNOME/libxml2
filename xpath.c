@@ -1774,6 +1774,7 @@ xmlXPathNextNamespace(xmlXPathParserContextPtr ctxt, xmlAttrPtr cur) {
  * @cur:  the current attribute in the traversal
  *
  * Traversal function for the "attribute" direction
+ * TODO: support DTD inherited default attributes
  *
  * Returns the next element following that axis
  */

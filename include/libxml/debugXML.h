@@ -16,4 +16,5 @@ extern void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth);
 extern void xmlDebugDumpNode(FILE *output, xmlNodePtr node, int depth);
 extern void xmlDebugDumpNodeList(FILE *output, xmlNodePtr node, int depth);
 extern void xmlDebugDumpDocument(FILE *output, xmlDocPtr doc);
+extern void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc);
 #endif /* __DEBUG_XML__ */

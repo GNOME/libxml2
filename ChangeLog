@@ -1,3 +1,25 @@
+Sun Dec 12 13:08:15 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in, doc/xml.html : bumped to 1.8.0
+	* xlink.[ch], Makefile.am : added framework for link detection
+	* parser.h: added nbChars to parser context, needed for cleanup.
+	* xmlmemory.c: removed a nasty bug when out of mem
+	* valid.[ch]: adding namespace support for attribute decl
+	* tester.c: added --debugent option
+	* debugXML.[ch]: added xmlDebugDumpEntities()
+	* parser.c: cleanup, avoiding use of CUR_PTR like plague, using
+	  buffers instead, this was really needed, validation was breaking
+	  in strange ways due to that. Added xmlParseStringPEReference()
+	  and other parsing from strings functions. Entities processing
+	  modified again, but PERef are still not handled correcly but
+	  unless you're Eve Maller you won't notice :-)
+	* HTMLparser.c: large changes toward reliability, and switched to
+	  lowercase internal tags, XHTML is lowercase, so it will help
+	  that output is closer to next version.
+	* doc/* : regenerated the documentation, it is now hosted at
+	  http://xmlsoft.org/ (same bits I just bought the domain :-)
+	
+	
 Fri Dec  3 13:46:32 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* SAX.h, SAX.c, makefile.am: added SAX.h mostly useful for the

@@ -140,8 +140,9 @@ xmlMallocLoc(int size, const char * file, int line)
     p = (MEMHDR *) malloc(RESERVE_SIZE+size);
 
     if (!p) {
-     fprintf(stderr, "xmlMalloc : Out of free space\n");
-     xmlMemoryDump();
+	fprintf(stderr, "xmlMalloc : Out of free space\n");
+	xmlMemoryDump();
+	return(NULL);
     }   
     p->mh_tag = MEMTAG;
     p->mh_number = ++block;

@@ -37,6 +37,7 @@ int xmlIndentTreeOutput = 1;
 xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
 
 static int xmlCompressMode = 0;
+static int xmlCheckDTD = 1;
 
 #define UPDATE_LAST_CHILD(n) if ((n) != NULL) {				\
     xmlNodePtr ulccur = (n)->childs;					\
@@ -1632,12 +1633,12 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     xmlNodePtr prev;
 
     if (parent == NULL) {
-        fprintf(stderr, "xmladdChild : parent == NULL\n");
+        fprintf(stderr, "xmlAddChild : parent == NULL\n");
 	return(NULL);
     }
 
     if (cur == NULL) {
-        fprintf(stderr, "xmladdChild : child == NULL\n");
+        fprintf(stderr, "xmlAddChild : child == NULL\n");
 	return(NULL);
     }
 
@@ -2192,6 +2193,59 @@ xmlNodeGetLang(xmlNodePtr cur) {
 }
  
 /**
+ * xmlNodeGetBase:
+ * @doc:  the document the node pertains to
+ * @cur:  the node being checked
+ *
+ * Searches for the BASE URL. The code should work on both XML
+ * and HTML document even if base mechanisms are completely different.
+ *
+ * Returns a pointer to the base URL, or NULL if not found
+ *     It's up to the caller to free the memory.
+ */
+xmlChar *
+xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
+    xmlChar *base;
+
+    if ((cur == NULL) && (doc == NULL)) 
+        return(NULL);
+    if (doc == NULL) doc = cur->doc;	
+    if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE)) {
+        cur = doc->root;
+	while ((cur != NULL) && (cur->name != NULL)) {
+	    if (cur->type != XML_ELEMENT_NODE) {
+	        cur = cur->next;
+		continue;
+	    }
+	    if ((!xmlStrcmp(cur->name, BAD_CAST "html")) ||
+	        (!xmlStrcmp(cur->name, BAD_CAST "HTML"))) {
+	        cur = cur->childs;
+		continue;
+	    }
+	    if ((!xmlStrcmp(cur->name, BAD_CAST "head")) ||
+	        (!xmlStrcmp(cur->name, BAD_CAST "HEAD"))) {
+	        cur = cur->childs;
+		continue;
+	    }
+	    if ((!xmlStrcmp(cur->name, BAD_CAST "base")) ||
+	        (!xmlStrcmp(cur->name, BAD_CAST "BASE"))) {
+                base = xmlGetProp(cur, BAD_CAST "href");
+		if (base != NULL) return(base);
+                return(xmlGetProp(cur, BAD_CAST "HREF"));
+	    }
+	}
+	return(NULL);
+    }
+    while (cur != NULL) {
+        base = xmlGetProp(cur, BAD_CAST "xml:base");
+	if (base != NULL)
+	    return(base);
+	cur = cur->parent;
+    }
+    return(NULL);
+}
+ 
+/**
  * xmlNodeGetContent:
  * @cur:  the node being read
  *
@@ -2565,6 +2619,7 @@ xmlNsPtr
 xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
     xmlNsPtr cur;
 
+    if ((node == NULL) || (nameSpace == NULL)) return(NULL);
     while (node != NULL) {
 	cur = node->nsDef;
 	while (cur != NULL) {
@@ -2577,6 +2632,8 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 	}
 	node = node->parent;
     }
+#if 0    
+    /* Removed support for old namespaces */
     if (doc != NULL) {
         cur = doc->oldNs;
 	while (cur != NULL) {
@@ -2586,6 +2643,7 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 	    cur = cur->next;
 	}
     }
+#endif    
     return(NULL);
 }
 
@@ -2603,6 +2661,7 @@ xmlNsPtr
 xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
     xmlNsPtr cur;
 
+    if ((node == NULL) || (href == NULL)) return(NULL);
     while (node != NULL) {
 	cur = node->nsDef;
 	while (cur != NULL) {
@@ -2613,6 +2672,8 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
 	}
 	node = node->parent;
     }
+#if 0    
+    /* Removed support for old namespaces */
     if (doc != NULL) {
         cur = doc->oldNs;
 	while (cur != NULL) {
@@ -2622,6 +2683,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
 	    cur = cur->next;
 	}
     }
+#endif    
     return(NULL);
 }
 
@@ -2632,13 +2694,22 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
  *
  * Search and get the value of an attribute associated to a node
  * This does the entity substitution.
+ * This function looks in DTD attribute declaration for #FIXED or
+ * default declaration values unless DTD use has been turned off.
+ *
  * Returns the attribute value or NULL if not found.
  *     It's up to the caller to free the memory.
  */
 xmlChar *
 xmlGetProp(xmlNodePtr node, const xmlChar *name) {
-    xmlAttrPtr prop = node->properties;
+    xmlAttrPtr prop;
+    xmlDocPtr doc;
 
+    if ((node == NULL) || (name == NULL)) return(NULL);
+    /*
+     * Check on the properties attached to the node
+     */
+    prop = node->properties;
     while (prop != NULL) {
         if (!xmlStrcmp(prop->name, name))  {
 	    xmlChar *ret;
@@ -2648,6 +2719,83 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
 	    return(ret);
         }
 	prop = prop->next;
+    }
+    if (!xmlCheckDTD) return(NULL);
+
+    /*
+     * Check if there is a default declaration in the internal
+     * or external subsets
+     */
+    doc =  node->doc;
+    if (doc != NULL) {
+        xmlAttributePtr attrDecl;
+        if (doc->intSubset != NULL) {
+	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
+	    return(xmlStrdup(attrDecl->defaultValue));
+	}
+    }
+    return(NULL);
+}
+
+/**
+ * xmlGetNsProp:
+ * @node:  the node
+ * @name:  the attribute name
+ * @namespace:  the URI of the namespace
+ *
+ * Search and get the value of an attribute associated to a node
+ * This attribute has to be anchored in the namespace specified.
+ * This does the entity substitution.
+ * This function looks in DTD attribute declaration for #FIXED or
+ * default declaration values unless DTD use has been turned off.
+ *
+ * Returns the attribute value or NULL if not found.
+ *     It's up to the caller to free the memory.
+ */
+xmlChar *
+xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
+    xmlAttrPtr prop = node->properties;
+    xmlDocPtr doc;
+    xmlNsPtr ns;
+
+    if (namespace == NULL)
+	return(xmlGetProp(node, name));
+    while (prop != NULL) {
+        if ((!xmlStrcmp(prop->name, name)) &&
+	    (prop->ns != NULL) && (!xmlStrcmp(prop->ns->href, namespace)))  {
+	    xmlChar *ret;
+
+	    ret = xmlNodeListGetString(node->doc, prop->val, 1);
+	    if (ret == NULL) return(xmlStrdup((xmlChar *)""));
+	    return(ret);
+        }
+	prop = prop->next;
+    }
+    if (!xmlCheckDTD) return(NULL);
+
+    /*
+     * Check if there is a default declaration in the internal
+     * or external subsets
+     */
+    doc =  node->doc;
+    if (doc != NULL) {
+        xmlAttributePtr attrDecl;
+        if (doc->intSubset != NULL) {
+	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
+		
+	    if (attrDecl->prefix != NULL) {
+	        /*
+		 * The DTD declaration only allows a prefix search
+		 */
+		ns = xmlSearchNs(doc, node, attrDecl->prefix);
+		if ((ns != NULL) && (!xmlStrcmp(ns->href, namespace)))
+		    return(xmlStrdup(attrDecl->defaultValue));
+	    }
+	}
     }
     return(NULL);
 }
@@ -2748,6 +2896,7 @@ xmlBufferCreate(void) {
     }
     ret->use = 0;
     ret->size = BASE_BUFFER_SIZE;
+    ret->alloc = xmlBufferAllocScheme;
     ret->content = (xmlChar *) xmlMalloc(ret->size * sizeof(xmlChar));
     if (ret->content == NULL) {
 	fprintf(stderr, "xmlBufferCreate : out of memory!\n");
@@ -2775,8 +2924,9 @@ xmlBufferCreateSize(size_t size) {
         return(NULL);
     }
     ret->use = 0;
+    ret->alloc = xmlBufferAllocScheme;
     ret->size = (size ? size+2 : 0);         /* +1 for ending null */
-    if(ret->size){
+    if (ret->size){
         ret->content = (xmlChar *) xmlMalloc(ret->size * sizeof(xmlChar));
         if (ret->content == NULL) {
             fprintf(stderr, "xmlBufferCreate : out of memory!\n");
@@ -2973,7 +3123,8 @@ xmlBufferResize(xmlBufferPtr buf, int size)
  * @str:  the xmlChar string
  * @len:  the number of xmlChar to add
  *
- * Add a string range to an XML buffer.
+ * Add a string range to an XML buffer. if len == -1, the lenght of
+ * str is recomputed.
  */
 void
 xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
@@ -2983,6 +3134,11 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
         fprintf(stderr, "xmlBufferAdd: str == NULL\n");
 	return;
     }
+    if (len < -1) {
+        fprintf(stderr, "xmlBufferAdd: len < 0\n");
+	return;
+    }
+    if (len == 0) return;
 
     /* CJN What's this for??? */
     l = xmlStrlen(str);
@@ -3655,7 +3811,10 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     if (zoutput == NULL) {
 #endif
         output = fopen(filename, "w");
-	if (output == NULL) return(-1);
+	if (output == NULL) {
+	    xmlBufferFree(buf);
+	    return(-1);
+	}
 #ifdef HAVE_ZLIB_H
     }
 

@@ -28,7 +28,8 @@ libxml_la_SOURCES = \
 		xmlIO.c \
 		xmlmemory.c \
 		nanohttp.c \
-		valid.c
+		valid.c \
+		xlink.c
 
 xmlincdir = $(includedir)/gnome-xml
 xmlinc_HEADERS = \
@@ -46,7 +47,8 @@ xmlinc_HEADERS = \
 		xmlIO.h \
 		xmlmemory.h \
 		nanohttp.h \
-		valid.h
+		valid.h \
+		xlink.h
 
 DEPS = $(top_builddir)/libxml.la
 LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@

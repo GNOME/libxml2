@@ -50,7 +50,12 @@
 const char *xmlParserVersion = LIBXML_VERSION;
 
 static int xmlUseNewParserDefault = 0;
+
+/* a few of the old parser 1.8.11 entry points needed */
 int xmlOldParseDocument(xmlParserCtxtPtr ctxt);
+void xmlOldParseExternalSubset(xmlParserCtxtPtr ctxt,
+	const xmlChar *ExternalID, const xmlChar *SystemID);
+
 
 /*
  * List of XML prefixed PI allowed by W3C specs
@@ -6298,6 +6303,10 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 void
 xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
                        const xmlChar *SystemID) {
+    if (!ctxt->pedantic) {
+	xmlOldParseExternalSubset(ctxt, ExternalID, SystemID);
+	return;
+    }
     GROW;
     if ((RAW == '<') && (NXT(1) == '?') &&
         (NXT(2) == 'x') && (NXT(3) == 'm') &&
@@ -8640,6 +8649,9 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 
     xmlInitParser();
     
+    if (!xmlUseNewParserDefault)
+	return(xmlOldParseDocument(ctxt));
+
     ctxt->pedantic = 1; /* we run the 2.3.5 parser */
 
     GROW;
@@ -9889,11 +9901,7 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, xmlChar *cur, int recovery) {
         ctxt->userData = NULL;
     }
 
-    xmlInitParser();
-    if (xmlUseNewParserDefault)
-	xmlParseDocument(ctxt);
-    else
-	xmlOldParseDocument(ctxt);
+    xmlParseDocument(ctxt);
 
     if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
     else {
@@ -10570,11 +10578,7 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
     if ((ctxt->directory == NULL) && (directory != NULL))
         ctxt->directory = (char *) xmlStrdup((xmlChar *) directory); /* !!!!!!! */
 
-    xmlInitParser();
-    if (xmlUseNewParserDefault)
-	xmlParseDocument(ctxt);
-    else
-	xmlOldParseDocument(ctxt);
+    xmlParseDocument(ctxt);
 
     if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
     else {
@@ -10695,11 +10699,7 @@ xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size, int recovery) {
         ctxt->userData = NULL;
     }
 
-    xmlInitParser();
-    if (xmlUseNewParserDefault)
-	xmlParseDocument(ctxt);
-    else
-	xmlOldParseDocument(ctxt);
+    xmlParseDocument(ctxt);
 
     if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
     else {
@@ -10800,11 +10800,7 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
     if (user_data != NULL)
 	ctxt->userData = user_data;
     
-    xmlInitParser();
-    if (xmlUseNewParserDefault)
-	xmlParseDocument(ctxt);
-    else
-	xmlOldParseDocument(ctxt);
+    xmlParseDocument(ctxt);
     
     if (ctxt->wellFormed)
 	ret = 0;
@@ -10843,11 +10839,7 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
     ctxt->sax = sax;
     ctxt->userData = user_data;
     
-    xmlInitParser();
-    if (xmlUseNewParserDefault)
-	xmlParseDocument(ctxt);
-    else
-	xmlOldParseDocument(ctxt);
+    xmlParseDocument(ctxt);
     
     if (ctxt->wellFormed)
 	ret = 0;

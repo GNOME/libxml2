@@ -1,3 +1,7 @@
+Sun Mar 25 16:07:08 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: cleanup and make sure scrollkeeper won't have problems
+
 Sun Mar 25 01:40:24 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: initialization code must be run before deciding

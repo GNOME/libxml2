@@ -1,3 +1,10 @@
+Mon Dec 29 11:29:31 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: issue validation status on stderr, not stdout as suggested
+	  by Pawel Palucha
+	* result/relaxng/*: this change slightly all the output from RNG 
+	  regressions.
+
 Mon Dec 28 10:47:32 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemas.c: edited a couple of comments in accordance with

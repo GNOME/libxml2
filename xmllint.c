@@ -727,10 +727,10 @@ static void streamFile(char *filename) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 	if (relaxng != NULL) {
 	    if (xmlTextReaderIsValid(reader) != 1) {
-		printf("%s fails to validate\n", filename);
+		fprintf(stderr, "%s fails to validate\n", filename);
 		progresult = 3;
 	    } else {
-		printf("%s validates\n", filename);
+		fprintf(stderr, "%s validates\n", filename);
 	    }
 	}
 #endif
@@ -739,7 +739,7 @@ static void streamFile(char *filename) {
 	 */
 	xmlFreeTextReader(reader);
 	if (ret != 0) {
-	    printf("%s : failed to parse\n", filename);
+	    fprintf(stderr, "%s : failed to parse\n", filename);
 	    progresult = 1;
 	}
     } else {
@@ -779,7 +779,7 @@ static void walkDoc(xmlDocPtr doc) {
 	}
 	xmlFreeTextReader(reader);
 	if (ret != 0) {
-	    printf("failed to walk through the doc\n");
+	    fprintf(stderr, "failed to walk through the doc\n");
 	    progresult = 1;
 	}
     } else {
@@ -1045,14 +1045,14 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    if (node != NULL) {
 		nb = xmlValidGetValidElements(node->last, NULL, list, 256);
 		if (nb < 0) {
-		    printf("could not get valid list of elements\n");
+		    fprintf(stderr, "could not get valid list of elements\n");
 		} else if (nb == 0) {
-		    printf("No element can be inserted under root\n");
+		    fprintf(stderr, "No element can be inserted under root\n");
 		} else {
-		    printf("%d element types can be inserted under root:\n",
+		    fprintf(stderr, "%d element types can be inserted under root:\n",
 		           nb);
 		    for (i = 0;i < nb;i++) {
-			 printf("%s\n", (char *) list[i]);
+			 fprintf(stderr, "%s\n", (char *) list[i]);
 		    }
 		}
 	    }
@@ -1308,11 +1308,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		stderr);
 	ret = xmlRelaxNGValidateDoc(ctxt, doc);
 	if (ret == 0) {
-	    printf("%s validates\n", filename);
+	    fprintf(stderr, "%s validates\n", filename);
 	} else if (ret > 0) {
-	    printf("%s fails to validate\n", filename);
+	    fprintf(stderr, "%s fails to validate\n", filename);
 	} else {
-	    printf("%s validation generated an internal error\n",
+	    fprintf(stderr, "%s validation generated an internal error\n",
 		   filename);
 	}
 	xmlRelaxNGFreeValidCtxt(ctxt);
@@ -1334,11 +1334,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		stderr);
 	ret = xmlSchemaValidateDoc(ctxt, doc);
 	if (ret == 0) {
-	    printf("%s validates\n", filename);
+	    fprintf(stderr, "%s validates\n", filename);
 	} else if (ret > 0) {
-	    printf("%s fails to validate\n", filename);
+	    fprintf(stderr, "%s fails to validate\n", filename);
 	} else {
-	    printf("%s validation generated an internal error\n",
+	    fprintf(stderr, "%s validation generated an internal error\n",
 		   filename);
 	}
 	xmlSchemaFreeValidCtxt(ctxt);

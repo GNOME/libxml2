@@ -46,7 +46,7 @@ typedef struct xmlEntity {
 typedef struct xmlEntitiesTable {
     int nb_entities;		/* number of elements stored */
     int max_entities;		/* maximum number of elements */
-    xmlEntityPtr table;		/* the table of entities */
+    xmlEntityPtr table;	        /* the table of entities */
 } xmlEntitiesTable, *xmlEntitiesTablePtr;
 
 
@@ -63,10 +63,12 @@ extern xmlEntityPtr xmlGetDocEntity(xmlDocPtr doc, const CHAR *name);
 extern xmlEntityPtr xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name);
 extern CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input);
 extern xmlEntitiesTablePtr xmlCreateEntitiesTable(void);
+extern xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
 extern void xmlFreeEntitiesTable(xmlEntitiesTablePtr table);
 extern void xmlDumpEntitiesTable(xmlEntitiesTablePtr table);
 extern xmlParserInputPtr xmlNewEntityInputStream(xmlParserCtxtPtr ctxt,
                                                  xmlEntityPtr entity);
+extern xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
 
 #ifdef __cplusplus
 }

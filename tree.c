@@ -133,7 +133,7 @@ xmlNewGlobalNs(xmlDocPtr doc, const CHAR *href, const CHAR *prefix) {
      */
     cur = (xmlNsPtr) malloc(sizeof(xmlNs));
     if (cur == NULL) {
-        fprintf(stderr, "xmlNewNs : malloc failed\n");
+        fprintf(stderr, "xmlNewGlobalNs : malloc failed\n");
 	return(NULL);
     }
 
@@ -234,7 +234,7 @@ xmlNewDtd(xmlDocPtr doc, const CHAR *name,
                     const CHAR *ExternalID, const CHAR *SystemID) {
     xmlDtdPtr cur;
 
-    if (doc->dtd != NULL) {
+    if ((doc != NULL) && (doc->dtd != NULL)) {
         fprintf(stderr, "xmlNewDtd(%s): document %s already have a DTD %s\n",
 	/* !!! */ (char *) name, doc->name, /* !!! */ (char *)doc->dtd->name);
     }
@@ -244,7 +244,7 @@ xmlNewDtd(xmlDocPtr doc, const CHAR *name,
      */
     cur = (xmlDtdPtr) malloc(sizeof(xmlDtd));
     if (cur == NULL) {
-        fprintf(stderr, "xmlNewNs : malloc failed\n");
+        fprintf(stderr, "xmlNewDtd : malloc failed\n");
 	return(NULL);
     }
 
@@ -262,7 +262,8 @@ xmlNewDtd(xmlDocPtr doc, const CHAR *name,
         cur->SystemID = NULL;
     cur->elements = NULL;
     cur->entities = NULL;
-    doc->dtd = cur;
+    if (doc != NULL)
+	doc->dtd = cur;
 
     return(cur);
 }
@@ -349,6 +350,7 @@ xmlFreeDoc(xmlDocPtr cur) {
     if (cur->encoding != NULL) free((char *) cur->encoding);
     if (cur->root != NULL) xmlFreeNode(cur->root);
     if (cur->dtd != NULL) xmlFreeDtd(cur->dtd);
+    if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
     if (cur->entities != NULL)
         xmlFreeEntitiesTable((xmlEntitiesTablePtr) cur->entities);
     memset(cur, -1, sizeof(xmlDoc));
@@ -1268,6 +1270,347 @@ xmlUnlinkNode(xmlNodePtr cur) {
         cur->prev->next = cur->next;
     cur->next = cur->prev = NULL;
     cur->parent = NULL;
+}
+
+/************************************************************************
+ *									*
+ *		Copy operations						*
+ *									*
+ ************************************************************************/
+ 
+/**
+ * xmlCopyNamespace:
+ * @cur:  the namespace
+ *
+ * Do a copy of the namespace.
+ *
+ * Returns: a new xmlNsPtr, or NULL in case of error.
+ */
+xmlNsPtr
+xmlCopyNamespace(xmlNsPtr cur) {
+    xmlNsPtr ret;
+
+    if (cur == NULL) return(NULL);
+    switch (cur->type) {
+        case XML_GLOBAL_NAMESPACE:
+	    ret = xmlNewGlobalNs(NULL, cur->href, cur->prefix);
+	    break;
+	case XML_LOCAL_NAMESPACE:
+	    ret = xmlNewNs(NULL, cur->href, cur->prefix);
+	    break;
+	default:
+	    fprintf(stderr, "xmlCopyNamespace: unknown type %d\n", cur->type);
+	    return(NULL);
+    }
+    return(ret);
+}
+
+/**
+ * xmlCopyNamespaceList:
+ * @cur:  the first namespace
+ *
+ * Do a copy of an namespace list.
+ *
+ * Returns: a new xmlNsPtr, or NULL in case of error.
+ */
+xmlNsPtr
+xmlCopyNamespaceList(xmlNsPtr cur) {
+    xmlNsPtr ret = NULL;
+    xmlNsPtr p = NULL,q;
+
+    while (cur != NULL) {
+        q = xmlCopyNamespace(cur);
+	if (p == NULL) {
+	    ret = p = q;
+	} else {
+	    p->next = q;
+	    p = q;
+	}
+	cur = cur->next;
+    }
+    return(ret);
+}
+
+/**
+ * xmlCopyProp:
+ * @cur:  the attribute
+ *
+ * Do a copy of the attribute.
+ *
+ * Returns: a new xmlAttrPtr, or NULL in case of error.
+ */
+xmlAttrPtr
+xmlCopyProp(xmlAttrPtr cur) {
+    xmlAttrPtr ret;
+
+    if (cur == NULL) return(NULL);
+    if (cur->val != NULL)
+	ret = xmlNewDocProp(cur->val->doc, cur->name, NULL);
+    else
+	ret = xmlNewDocProp(NULL, cur->name, NULL);
+    if (ret == NULL) return(NULL);
+    if (cur->val != NULL)
+	ret->val = xmlCopyNodeList(cur->val);
+    return(ret);
+}
+
+/**
+ * xmlCopyPropList:
+ * @cur:  the first attribute
+ *
+ * Do a copy of an attribute list.
+ *
+ * Returns: a new xmlAttrPtr, or NULL in case of error.
+ */
+xmlAttrPtr
+xmlCopyPropList(xmlAttrPtr cur) {
+    xmlAttrPtr ret = NULL;
+    xmlAttrPtr p = NULL,q;
+
+    while (cur != NULL) {
+        q = xmlCopyProp(cur);
+	if (p == NULL) {
+	    ret = p = q;
+	} else {
+	    p->next = q;
+	    p = q;
+	}
+	cur = cur->next;
+    }
+    return(ret);
+}
+
+/*
+ * NOTE about the CopyNode operations !
+ *
+ * They are splitted into external and internal parts for one
+ * tricky reason: namespaces. Doing a direct copy of a node
+ * say RPM:Copyright without changing the namespace pointer to
+ * something else can produce stale links. One way to do it is
+ * to keep a reference counter but this doesn't work as soon
+ * as one move the element or the subtree out of the scope of
+ * the existing namespace. The actual solution seems to add
+ * a copy of the namespace at the top of the copied tree if
+ * not available in the subtree.
+ * Hence two functions, the public front-end call the inner ones
+ */
+
+static xmlNodePtr
+xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent);
+
+static xmlNodePtr
+xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
+                  int recursive) {
+    xmlNodePtr ret;
+
+    if (node == NULL) return(NULL);
+    /*
+     * Allocate a new node and fill the fields.
+     */
+    ret = (xmlNodePtr) malloc(sizeof(xmlNode));
+    if (ret == NULL) {
+        fprintf(stderr, "xmlStaticCopyNode : malloc failed\n");
+	return(NULL);
+    }
+
+    ret->type = node->type;
+    ret->doc = doc;
+    ret->parent = parent; 
+    ret->next = NULL;
+    ret->prev = NULL;
+    ret->childs = NULL;
+    ret->properties = NULL;
+    if (node->name != NULL)
+	ret->name = xmlStrdup(node->name);
+    else
+        ret->name = NULL;
+    ret->ns = NULL;
+    ret->nsDef = NULL;
+    if ((node->content != NULL) && (node->type != XML_ENTITY_REF_NODE))
+	ret->content = xmlStrdup(node->content);
+    else
+	ret->content = NULL;
+#ifndef WITHOUT_CORBA
+    ret->_private = NULL;
+    ret->vepv = NULL;
+#endif
+    if (parent != NULL)
+        xmlAddChild(parent, ret);
+    
+    if (!recursive) return(ret);
+    if (node->properties != NULL)
+        ret->properties = xmlCopyPropList(node->properties);
+    if (node->nsDef != NULL)
+        ret->nsDef = xmlCopyNamespaceList(node->nsDef);
+
+    if (node->ns != NULL) {
+        xmlNsPtr ns;
+
+	ns = xmlSearchNs(doc, ret, node->ns->prefix);
+	if (ns == NULL) {
+	    /*
+	     * Humm, we are copying an element whose namespace is defined
+	     * out of the new tree scope. Search it in the original tree
+	     * and add it at the top of the new tree
+	     */
+	    ns = xmlSearchNs(node->doc, node, node->ns->prefix);
+	    if (ns != NULL) {
+	        xmlNodePtr root = ret;
+
+		while (root->parent != NULL) root = root->parent;
+		xmlNewNs(root, ns->href, ns->prefix);
+	    }
+	} else {
+	    /*
+	     * reference the existing namespace definition in our own tree.
+	     */
+	    ret->ns = ns;
+	}
+    }
+    if (node->childs != NULL)
+        ret->childs = xmlStaticCopyNodeList(node->childs, doc, ret);
+    return(ret);
+}
+
+static xmlNodePtr
+xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
+    xmlNodePtr ret = NULL;
+    xmlNodePtr p = NULL,q;
+
+    while (node != NULL) {
+        q = xmlStaticCopyNode(node, doc, parent, 1);
+	if (parent == NULL) {
+	    if (ret == NULL) ret = q;
+	} else {
+	    if (ret == NULL) {
+		q->prev = NULL;
+		ret = p = q;
+	    } else {
+		p->next = q;
+		q->prev = p;
+		p = q;
+	    }
+	}
+	node = node->next;
+    }
+    return(ret);
+}
+
+/**
+ * xmlCopyNode:
+ * @node:  the node
+ * @recursive:  if 1 do a recursive copy.
+ *
+ * Do a copy of the node.
+ *
+ * Returns: a new xmlNodePtr, or NULL in case of error.
+ */
+xmlNodePtr
+xmlCopyNode(xmlNodePtr node, int recursive) {
+    xmlNodePtr ret;
+
+    ret = xmlStaticCopyNode(node, NULL, NULL, recursive);
+    return(ret);
+}
+
+/**
+ * xmlCopyNodeList:
+ * @node:  the first node in the list.
+ *
+ * Do a recursive copy of the node list.
+ *
+ * Returns: a new xmlNodePtr, or NULL in case of error.
+ */
+xmlNodePtr xmlCopyNodeList(xmlNodePtr node) {
+    xmlNodePtr ret = xmlStaticCopyNodeList(node, NULL, NULL);
+    return(ret);
+}
+
+/**
+ * xmlCopyElement:
+ * @elem:  the element
+ *
+ * Do a copy of the element definition.
+ *
+ * Returns: a new xmlElementPtr, or NULL in case of error.
+xmlElementPtr
+xmlCopyElement(xmlElementPtr elem) {
+    xmlElementPtr ret;
+
+    if (elem == NULL) return(NULL);
+    ret = xmlNewDocElement(elem->doc, elem->ns, elem->name, elem->content);
+    if (ret == NULL) return(NULL);
+    if (!recursive) return(ret);
+    if (elem->properties != NULL)
+        ret->properties = xmlCopyPropList(elem->properties);
+    
+    if (elem->nsDef != NULL)
+        ret->nsDef = xmlCopyNamespaceList(elem->nsDef);
+    if (elem->childs != NULL)
+        ret->childs = xmlCopyElementList(elem->childs);
+    return(ret);
+}
+ */
+
+/**
+ * xmlCopyDtd:
+ * @dtd:  the dtd
+ *
+ * Do a copy of the dtd.
+ *
+ * Returns: a new xmlDtdPtr, or NULL in case of error.
+ */
+xmlDtdPtr
+xmlCopyDtd(xmlDtdPtr dtd) {
+    xmlDtdPtr ret;
+
+    if (dtd == NULL) return(NULL);
+    ret = xmlNewDtd(NULL, dtd->name, dtd->ExternalID, dtd->SystemID);
+    if (ret == NULL) return(NULL);
+    if (dtd->entities != NULL)
+        ret->entities = (void *) xmlCopyEntitiesTable(
+	                    (xmlEntitiesTablePtr) dtd->entities);
+    /*
+     * TODO: support for Element definitions.
+     */
+    return(ret);
+}
+
+/**
+ * xmlCopyDoc:
+ * @doc:  the document
+ * @recursive:  if 1 do a recursive copy.
+ *
+ * Do a copy of the document info. If recursive, the content tree will
+ * be copied too as well as Dtd, namespaces and entities.
+ *
+ * Returns: a new xmlDocPtr, or NULL in case of error.
+ */
+xmlDocPtr
+xmlCopyDoc(xmlDocPtr doc, int recursive) {
+    xmlDocPtr ret;
+
+    if (doc == NULL) return(NULL);
+    ret = xmlNewDoc(doc->version);
+    if (ret == NULL) return(NULL);
+    if (doc->name != NULL)
+        ret->name = strdup(doc->name);
+    if (doc->encoding != NULL)
+        ret->encoding = xmlStrdup(doc->encoding);
+    ret->compression = doc->compression;
+    ret->standalone = doc->standalone;
+    if (!recursive) return(ret);
+
+    if (doc->dtd != NULL)
+        ret->dtd = xmlCopyDtd(doc->dtd);
+    if (doc->entities != NULL)
+        ret->entities = (void *) xmlCopyEntitiesTable(
+	                    (xmlEntitiesTablePtr) doc->entities);
+    if (doc->oldNs != NULL)
+        ret->oldNs = xmlCopyNamespaceList(doc->oldNs);
+    if (doc->root != NULL)
+        ret->root = xmlStaticCopyNodeList(doc->root, ret, NULL);
+    return(ret);
 }
 
 /************************************************************************

@@ -155,7 +155,7 @@ typedef struct xmlDoc {
     int             standalone; /* standalone document (no external refs) */
     struct xmlDtd  *dtd;	/* the document DTD if available */
     struct xmlNs   *oldNs;	/* Global namespace, the old way */
-    void          *entities;    /* Hash table for general entities if any */
+    void           *entities;   /* Hash table for general entities if any */
     struct xmlNode *root;	/* the document tree */
 } xmlDoc, *xmlDocPtr;
 
@@ -183,6 +183,10 @@ extern xmlAttrPtr xmlNewProp(xmlNodePtr node, const CHAR *name,
                              const CHAR *value);
 extern void xmlFreePropList(xmlAttrPtr cur);
 extern void xmlFreeProp(xmlAttrPtr cur);
+extern xmlAttrPtr xmlCopyProp(xmlAttrPtr cur);
+extern xmlAttrPtr xmlCopyPropList(xmlAttrPtr cur);
+extern xmlDtdPtr xmlCopyDtd(xmlDtdPtr dtd);
+extern xmlDocPtr xmlCopyDoc(xmlDocPtr doc, int recursive);
 
 /*
  * Creating new nodes
@@ -199,6 +203,8 @@ extern xmlNodePtr xmlNewTextLen(const CHAR *content, int len);
 extern xmlNodePtr xmlNewDocComment(xmlDocPtr doc, CHAR *content);
 extern xmlNodePtr xmlNewComment(CHAR *content);
 extern xmlNodePtr xmlNewReference(xmlDocPtr doc, const CHAR *name);
+extern xmlNodePtr xmlCopyNode(xmlNodePtr node, int recursive);
+extern xmlNodePtr xmlCopyNodeList(xmlNodePtr node);
 
 /*
  * Navigating
@@ -226,6 +232,8 @@ extern xmlNsPtr xmlSearchNs(xmlDocPtr doc, xmlNodePtr node,
 extern xmlNsPtr xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node,
                                   const CHAR *href);
 extern void xmlSetNs(xmlNodePtr node, xmlNsPtr ns);
+extern xmlNsPtr xmlCopyNamespace(xmlNsPtr cur);
+extern xmlNsPtr xmlCopyNamespaceList(xmlNsPtr cur);
 
 /*
  * Changing the content.

@@ -31,6 +31,9 @@ xmlEntitiesTablePtr xmlPredefinedEntities = NULL;
 
 /*
  * A buffer used for converting entities to their equivalent and back.
+ *
+ * TODO: remove this, this helps performances but forbid reentrancy in a 
+ *       stupid way.
  */
 static int buffer_size = 0;
 static CHAR *buffer = NULL;
@@ -47,7 +50,6 @@ void growBuffer(void) {
 /*
  * xmlFreeEntity : clean-up an entity record.
  */
-
 void xmlFreeEntity(xmlEntityPtr entity) {
     if (entity == NULL) return;
 
@@ -63,12 +65,13 @@ void xmlFreeEntity(xmlEntityPtr entity) {
 }
 
 /*
- * xmlAddDocEntity : register a new entity for an entities table.
+ * xmlAddEntity : register a new entity for an entities table.
  *
  * TODO !!! We should check here that the combination of type
  *          ExternalID and SystemID is valid.
  */
-static void xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
+static void
+xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
               const CHAR *ExternalID, const CHAR *SystemID, CHAR *content) {
     int i;
     xmlEntityPtr cur;
@@ -116,8 +119,10 @@ static void xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
     table->nb_entities++;
 }
 
-/*
- * Set up xmlPredefinedEntities from xmlPredefinedEntityValues.
+/**
+ * xmlInitializePredefinedEntities:
+ *
+ * Set up the predefined entities.
  */
 void xmlInitializePredefinedEntities(void) {
     int i;
@@ -165,12 +170,19 @@ xmlGetPredefinedEntity(const CHAR *name) {
     return(NULL);
 }
 
-
-
-/*
- * xmlAddDtdEntity : register a new entity for this DTD.
+/**
+ * xmlAddDtdEntity:
+ * @doc:  the document
+ * @name:  the entity name
+ * @type:  the entity type XML_xxx_yyy_ENTITY
+ * @ExternalID:  the entity external ID if available
+ * @SystemID:  the entity system ID if available
+ * @content:  the entity content
+ *
+ * Register a new entity for this document DTD.
  */
-void xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
+void
+xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
               const CHAR *ExternalID, const CHAR *SystemID, CHAR *content) {
     xmlEntitiesTablePtr table;
 
@@ -186,10 +198,19 @@ void xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
     xmlAddEntity(table, name, type, ExternalID, SystemID, content);
 }
 
-/*
- * xmlAddDocEntity : register a new entity for this document.
+/**
+ * xmlAddDocEntity:
+ * @doc:  the document
+ * @name:  the entity name
+ * @type:  the entity type XML_xxx_yyy_ENTITY
+ * @ExternalID:  the entity external ID if available
+ * @SystemID:  the entity system ID if available
+ * @content:  the entity content
+ *
+ * Register a new entity for this document.
  */
-void xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
+void
+xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
               const CHAR *ExternalID, const CHAR *SystemID, CHAR *content) {
     xmlEntitiesTablePtr table;
 
@@ -201,11 +222,18 @@ void xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
     xmlAddEntity(doc->entities, name, type, ExternalID, SystemID, content);
 }
 
-/*
- * xmlGetDtdEntity : do an entity lookup in the Dtd entity hash table and
- *       returns the corrsponding entity, if found, NULL otherwise.
+/**
+ * xmlGetDtdEntity:
+ * @doc:  the document referencing the entity
+ * @name:  the entity name
+ *
+ * Do an entity lookup in the Dtd entity hash table and
+ * returns the corresponding entity, if found.
+ * 
+ * return values: A pointer to the entity structure or NULL if not found.
  */
-xmlEntityPtr xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name) {
+xmlEntityPtr
+xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name) {
     int i;
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
@@ -220,12 +248,19 @@ xmlEntityPtr xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name) {
     return(NULL);
 }
 
-/*
- * xmlGetDocEntity : do an entity lookup in the document entity hash table and
- *       returns the corrsponding entity, otherwise a lookup is done
- *       in the predefined entities too.
+/**
+ * xmlGetDocEntity:
+ * @doc:  the document referencing the entity
+ * @name:  the entity name
+ *
+ * Do an entity lookup in the document entity hash table and
+ * returns the corrsponding entity, otherwise a lookup is done
+ * in the predefined entities too.
+ * 
+ * return values: A pointer to the entity structure or NULL if not found.
  */
-xmlEntityPtr xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
+xmlEntityPtr
+xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
     int i;
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
@@ -257,15 +292,24 @@ xmlEntityPtr xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
     (((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) ||			\
      (((c) >= 0x20) && ((c) != 0xFFFE) && ((c) != 0xFFFF)))
 
-/*
- * xmlEncodeEntities : do a global encoding of a string, replacing the
- *                     predefined entities and non ASCII values with their
- *                     entities and CharRef counterparts.
+/**
+ * xmlEncodeEntities:
+ * @doc:  the document containing the string
+ * @input:  A string to convert to XML.
+ *
+ * Do a global encoding of a string, replacing the predefined entities
+ * and non ASCII values with their entities and CharRef counterparts.
+ *
  * TODO !!!! Once moved to UTF-8 internal encoding, the encoding of non-ascii
  *           get erroneous.
+ *
+ * TODO This routine is not reentrant and this will be changed, the interface
+ *      should not be modified though.
+ * 
+ * return values: A newly allocated string with the substitution done.
  */
-
-CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
+CHAR *
+xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
     const CHAR *cur = input;
     CHAR *out = buffer;
 
@@ -363,10 +407,15 @@ CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
     return(buffer);
 }
 
-/*
- * xmlCreateEntitiesTable : create and initialize an enmpty hash table
+/**
+ * xmlCreateEntitiesTable:
+ *
+ * create and initialize an empty entities hash table.
+ *
+ * return values: the xmlEntitiesTablePtr just created or NULL in case of error.
  */
-xmlEntitiesTablePtr xmlCreateEntitiesTable(void) {
+xmlEntitiesTablePtr
+xmlCreateEntitiesTable(void) {
     xmlEntitiesTablePtr ret;
 
     ret = (xmlEntitiesTablePtr) 
@@ -389,10 +438,14 @@ xmlEntitiesTablePtr xmlCreateEntitiesTable(void) {
     return(ret);
 }
 
-/*
- * xmlFreeEntitiesTable : clean up and free an entities hash table.
+/**
+ * xmlFreeEntitiesTable:
+ * @table:  An entity table
+ *
+ * Deallocate the memory used by an entities hash table.
  */
-void xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
+void
+xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
     int i;
 
     if (table == NULL) return;
@@ -404,10 +457,70 @@ void xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
     free(table);
 }
 
-/*
- * Dump the content of an entity table to the document output.
+/**
+ * xmlCopyEntitiesTable:
+ * @table:  An entity table
+ *
+ * Build a copy of an entity table.
+ * 
+ * return values: the new xmlEntitiesTablePtr or NULL in case of error.
  */
-void xmlDumpEntitiesTable(xmlEntitiesTablePtr table) {
+xmlEntitiesTablePtr
+xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
+    xmlEntitiesTablePtr ret;
+    xmlEntityPtr cur, ent;
+    int i;
+
+    ret = (xmlEntitiesTablePtr) malloc(sizeof(xmlEntitiesTable));
+    if (ret == NULL) {
+        fprintf(stderr, "xmlCopyEntitiesTable: out of memory !\n");
+	return(NULL);
+    }
+    ret->table = (xmlEntityPtr) malloc(table->max_entities *
+                                         sizeof(xmlEntity));
+    if (ret->table == NULL) {
+        fprintf(stderr, "xmlCopyEntitiesTable: out of memory !\n");
+	free(ret);
+	return(NULL);
+    }
+    ret->max_entities = table->max_entities;
+    ret->nb_entities = table->nb_entities;
+    for (i = 0;i < ret->nb_entities;i++) {
+	cur = &ret->table[i];
+	ent = &table->table[i];
+	cur->len = ent->len;
+	cur->type = ent->type;
+	if (ent->name != NULL)
+	    cur->name = xmlStrdup(ent->name);
+	else
+	    cur->name = NULL;
+	if (ent->ExternalID != NULL)
+	    cur->ExternalID = xmlStrdup(ent->ExternalID);
+	else
+	    cur->ExternalID = NULL;
+	if (ent->SystemID != NULL)
+	    cur->SystemID = xmlStrdup(ent->SystemID);
+	else
+	    cur->SystemID = NULL;
+	if (ent->content != NULL)
+	    cur->content = xmlStrdup(ent->content);
+	else
+	    cur->content = NULL;
+    }
+    return(ret);
+}
+
+/**
+ * xmlDumpEntitiesTable:
+ * @table:  An entity table
+ *
+ * This will dump the content of the entity table as an XML DTD definition
+ *
+ * NOTE: TODO an extra parameter allowing a reentant implementation will
+ *       be added.
+ */
+void
+xmlDumpEntitiesTable(xmlEntitiesTablePtr table) {
     int i;
     xmlEntityPtr cur;
 

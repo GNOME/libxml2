@@ -31,6 +31,7 @@
 #include "debugXML.h"
 
 static int debug = 0;
+static int copy = 0;
 
 /*
  * Note: there is a couple of errors introduced on purpose.
@@ -63,12 +64,12 @@ static CHAR buffer[] =
  ************************************************************************/
 
 int treeTest(void) {
+    xmlDocPtr doc, tmp;
+    xmlNodePtr tree, subtree;
+
     /*
      * build a fake XML document
      */
-    xmlDocPtr doc;
-    xmlNodePtr tree, subtree;
-
     doc = xmlNewDoc("1.0");
     doc->root = xmlNewDocNode(doc, NULL, "EXAMPLE", NULL);
     xmlSetProp(doc->root, "prop1", "gnome is great");
@@ -80,6 +81,15 @@ int treeTest(void) {
     subtree = xmlNewChild(tree, NULL, "p", "bla bla bla ...");
     subtree = xmlNewChild(tree, NULL, "image", NULL);
     xmlSetProp(subtree, "href", "linus.gif");
+
+    /*
+     * test intermediate copy if needed.
+     */
+    if (copy) {
+        tmp = doc;
+	doc = xmlCopyDoc(doc, 1);
+	xmlFreeDoc(tmp);
+    }
 
     /*
      * print it.
@@ -94,12 +104,21 @@ int treeTest(void) {
 }
 
 void parseAndPrintFile(char *filename) {
-    xmlDocPtr doc;
+    xmlDocPtr doc, tmp;
 
     /*
      * build an XML tree from a string;
      */
     doc = xmlParseFile(filename);
+
+    /*
+     * test intermediate copy if needed.
+     */
+    if (copy) {
+        tmp = doc;
+	doc = xmlCopyDoc(doc, 1);
+	xmlFreeDoc(tmp);
+    }
 
     /*
      * print it.
@@ -116,12 +135,21 @@ void parseAndPrintFile(char *filename) {
 }
 
 void parseAndPrintBuffer(CHAR *buf) {
-    xmlDocPtr doc;
+    xmlDocPtr doc, tmp;
 
     /*
      * build an XML tree from a string;
      */
     doc = xmlParseDoc(buf);
+
+    /*
+     * test intermediate copy if needed.
+     */
+    if (copy) {
+        tmp = doc;
+	doc = xmlCopyDoc(doc, 1);
+	xmlFreeDoc(tmp);
+    }
 
     /*
      * print it.
@@ -139,15 +167,21 @@ void parseAndPrintBuffer(CHAR *buf) {
 
 int main(int argc, char **argv) {
     int i;
+    int files = 0;
 
-    if (argc > 1) {
-        for (i = 1; i < argc ; i++) {
-	    if ((strcmp(argv[i], "-debug")) && (strcmp(argv[i], "--debug")))
-		parseAndPrintFile(argv[i]);
-	    else
-	        debug++;
+    for (i = 1; i < argc ; i++) {
+	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
+	    debug++;
+	else if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
+	    copy++;
+    }
+    for (i = 1; i < argc ; i++) {
+	if (argv[i][0] != '-') {
+	    parseAndPrintFile(argv[i]);
+	    files ++;
 	}
-    } else {
+    }
+    if (files == 0) {
 	printf("\nFirst test for the parser, with errors\n");
         parseAndPrintBuffer(buffer);
 	printf("\nBuilding a tree from scratch and printing it\n");

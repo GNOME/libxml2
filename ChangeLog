@@ -1,3 +1,9 @@
+Fri Nov 27 01:36:54 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* entities.[ch], tree.[ch], tester.c: added copy interfaces
+	  for node/trees/documents/... Biggest problem is namespace
+	  support when copying subtrees.
+
 Sun Nov 15 19:59:47 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c, entities.c: improve entities and char ref encoding,

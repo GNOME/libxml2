@@ -1,3 +1,14 @@
+Fri Jul 16 18:36:33 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* python/generator.py: added a check on the argument for some
+	  classes (e.g. xmlDoc and xmlNode) to prevent a segfault (as
+	  reported on the list).  Further enhancement should be done
+	  to auto-create the appropriate object.
+	* python/libxml.c: minor fix for a warning message; added a
+	  routine, currently not used, to report the description of a
+	  PyCObject.
+	* python/libxml2class.txt: regenerated
+
 Fri Jul 16 11:01:40 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c test/catalogs/white* result/catalogs/white*:

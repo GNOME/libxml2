@@ -1016,6 +1016,13 @@ def buildWrappers():
 		classes.write("class %s(%s):\n" % (classname,
 			      classes_ancestor[classname]))
 		classes.write("    def __init__(self, _obj=None):\n")
+		if classes_ancestor[classname] == "xmlCore" or \
+		   classes_ancestor[classname] == "xmlNode":
+		    classes.write("        if type(_obj).__name__ != ")
+		    classes.write("'PyCObject':\n")
+		    classes.write("            raise TypeError, ")
+		    classes.write("'%s needs a PyCObject argument'\n" % \
+		                classname)
 		if reference_keepers.has_key(classname):
 		    rlist = reference_keepers[classname]
 		    for ref in rlist:

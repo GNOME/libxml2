@@ -95,7 +95,8 @@ static void
 libxml_xmlErrorInitialize(void); /* forward declare */
 
 PyObject *
-libxml_xmlMemoryUsed(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
+libxml_xmlMemoryUsed(PyObject * self ATTRIBUTE_UNUSED, 
+        PyObject * args ATTRIBUTE_UNUSED)
 {
     long ret;
     PyObject *py_retval;
@@ -107,7 +108,7 @@ libxml_xmlMemoryUsed(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 }
 
 PyObject *
-libxml_xmlDebugMemory(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
+libxml_xmlDebugMemory(PyObject * self ATTRIBUTE_UNUSED, PyObject * args)
 {
     int activate;
     PyObject *py_retval;
@@ -3242,7 +3243,17 @@ libxml_C14NDocSaveTo(ATTRIBUTE_UNUSED PyObject * self,
 #endif
 #endif
 
+static PyObject *
+libxml_getObjDesc(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
 
+    PyObject *obj;
+    char *str;
+
+    if (!PyArg_ParseTuple(args, (char *)"O:getObjDesc", &obj))
+        return NULL;
+    str = PyCObject_GetDesc(obj);
+    return Py_BuildValue((char *)"s", str);
+}
 
 /************************************************************************
  *									*
@@ -3289,6 +3300,7 @@ static PyMethodDef libxmlMethods[] = {
     {(char *)"xmlC14NDocSaveTo", libxml_C14NDocSaveTo, METH_VARARGS, NULL},
 #endif
 #endif
+    {(char *) "getObjDesc", libxml_getObjDesc, METH_VARARGS, NULL},
     {NULL, NULL, 0, NULL}
 };
 

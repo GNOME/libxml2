@@ -1,3 +1,10 @@
+Tue Oct  8 23:24:20 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: applied patch from Mark Vakoc except the API
+	  change, preserved it.
+	* doc/*: updated the docs to point to the search engine for
+	  information lookup or before bug/help reports.
+
 Tue Oct  8 18:53:31 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/index.py doc/search.php: added mailing-list archives

@@ -152,6 +152,17 @@ def checkTables(db):
         if not tables.has_key(table):
 	    print "table %s missing" % (table)
 	    createTable(db, table)
+	try:
+	    ret = c.execute("SELECT count(*) from %s" % table);
+	    row = c.fetchone()
+	    print "Table %s contains %d records" % (table, row[0])
+	except:
+	    print "Troubles with table %s : repairing" % (table)
+	    ret = c.execute("repair table %s" % table);
+	    print "repairing returned %d" % (ret)
+	    ret = c.execute("SELECT count(*) from %s" % table);
+	    row = c.fetchone()
+	    print "Table %s contains %d records" % (table, row[0])
     print "checkTables finished"
 
     # make sure apache can access the tables read-only
@@ -1118,7 +1129,7 @@ def analyzeArchives(t = None, force = 0):
 
     print "Found %d associations in HTML pages" % (i)
 
-def analyzeHTML():
+def analyzeHTMLTop():
     global wordsDictHTML
 
     ret = analyzeHTMLPages()
@@ -1138,8 +1149,9 @@ def analyzeHTML():
 
     print "Found %d associations in HTML pages" % (i)
 
-def analyzeAPI():
+def analyzeAPITop():
     global wordsDict
+    global API
 
     try:
 	doc = loadAPI(API)
@@ -1205,9 +1217,9 @@ def main():
 		    print "Failed to index month archive:"
 		    print sys.exc_type, sys.exc_value
 	    elif args[i] == '--API':
-	        analyzeAPI()
+	        analyzeAPITop()
 	    elif args[i] == '--docs':
-	        analyzeHTML()
+	        analyzeHTMLTop()
 	    else:
 	        usage()
 	    i = i + 1

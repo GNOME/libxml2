@@ -416,6 +416,8 @@ xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
 
 <p>There are several on-line resources related to using libxml:</p>
 <ol>
+  <li>Use the <a href="search.php">search engine</a> to lookup
+  informations.</li>
   <li>Check the <a href="FAQ.html">FAQ.</a></li>
   <li>Check the <a href="http://xmlsoft.org/html/libxml-lib.html">extensive
     documentation</a> automatically extracted from code comments (using <a
@@ -462,7 +464,8 @@ follow the instructions. <strong>Do not send code, I won't debug it</strong>
 <p>Check the following <strong><span style="color: #FF0000">before
 posting</span></strong>:</p>
 <ul>
-  <li>Read the <a href="FAQ.html">FAQ</a>.</li>
+  <li>Read the <a href="FAQ.html">FAQ</a> and <a href="search.php">use the
+    search engine</a> to get informations related to your problem.</li>
   <li>Make sure you are <a href="ftp://xmlsoft.org/">using a recent
     version</a>, and that the problem still shows up in a recent version.</li>
   <li>Check the <a href="http://mail.gnome.org/archives/xml/">list
@@ -526,7 +529,7 @@ as a <a href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.4/">source
 archive</a><!-- commenting this out because they seem to have disappeared or <a
 href="ftp://ftp.gnome.org/pub/GNOME/stable/redhat/i386/libxml/">RPM
 packages</a> -->
-, Antonin Sprinzl also provide <a href="ftp://gd.tuwien.ac.at/pub/libxml/">a
+ , Antonin Sprinzl also provide <a href="ftp://gd.tuwien.ac.at/pub/libxml/">a
 mirror in Austria</a>. (NOTE that you need both the <a
 href="http://rpmfind.net/linux/RPM/libxml2.html">libxml(2)</a> and <a
 href="http://rpmfind.net/linux/RPM/libxml2-devel.html">libxml(2)-devel</a>
@@ -590,7 +593,7 @@ to test those</p>
   <li>Better handling of Windows file paths, improvement of Makefiles (Igor,
     Daniel Gehriger, Mark Vakoc)</li>
   <li>Improved the python I/O bindings, the tests, added resolver and regexp
-    APIs </li>
+    APIs</li>
   <li>New logos from Marc Liyanage</li>
   <li>Tutorial improvements: John Fleck, Christopher Harris</li>
   <li>Makefile: Fixes for AMD x86_64 (Mandrake), DESTDIR (Christophe
@@ -2670,6 +2673,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

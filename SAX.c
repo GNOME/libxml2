@@ -1721,7 +1721,7 @@ xmlSAXHandler docbDefaultSAXHandler = {
     endDocument,
     startElement,
     endElement,
-    NULL,
+    reference,
     characters,
     ignorableWhitespace,
     NULL,
@@ -1760,7 +1760,7 @@ docbDefaultSAXHandlerInit(void)
     docbDefaultSAXHandler.endDocument = endDocument;
     docbDefaultSAXHandler.startElement = startElement;
     docbDefaultSAXHandler.endElement = endElement;
-    docbDefaultSAXHandler.reference = NULL;
+    docbDefaultSAXHandler.reference = reference;
     docbDefaultSAXHandler.characters = characters;
     docbDefaultSAXHandler.cdataBlock = NULL;
     docbDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;

@@ -1,3 +1,8 @@
+Wed Apr 25 21:05:31 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* DOCBparser.c SAX.c: a bit more work on entities processing.
+	  Still Need to cleanup XML output and references in attributes
+
 Wed Apr 25 17:52:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* DOCBparser.c include/Makefile.am: two patches from  László Kovács

@@ -69,6 +69,7 @@ static int             docbParseCharRef(docbParserCtxtPtr ctxt);
 static xmlEntityPtr    docbParseEntityRef(docbParserCtxtPtr ctxt,
                                         xmlChar **str);
 static void            docbParseElement(docbParserCtxtPtr ctxt);
+static void            docbParseContent(docbParserCtxtPtr ctxt);
 
 /*
  * Internal description of an SGML element
@@ -3880,16 +3881,9 @@ docbParseReference(docbParserCtxtPtr ctxt) {
 	 */
        xent = docbParseEntityRef(ctxt, &name);
        if (xent != NULL) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->reference != NULL) &&
-		(ctxt->replaceEntities == 0) && (!ctxt->disableSAX)) {
-		/*
-		 * Create a node.
-		 */
-		ctxt->sax->reference(ctxt->userData, xent->name);
-		return;
-	    } else if (ctxt->replaceEntities) {
-		if ((xent->children == NULL) &&
-		    (xent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)) {
+	    if (((ctxt->replaceEntities) || (ctxt->loadsubset)) &&
+		((xent->children == NULL) &&
+		(xent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY))) {
 		    /*
 		     * we really need to fetch and parse the external entity
 		     */
@@ -3899,7 +3893,8 @@ docbParseReference(docbParserCtxtPtr ctxt) {
 		    parse = docbParseCtxtExternalEntity(ctxt,
 			       xent->SystemID, xent->ExternalID, &children);
 		    xmlAddChildList((xmlNodePtr) xent, children);
-		}
+	    }
+	    if (ctxt->replaceEntities) {
 		if ((ctxt->node != NULL) && (xent->children != NULL)) {
 		    /*
 		     * Seems we are generating the DOM content, do
@@ -3915,6 +3910,14 @@ docbParseReference(docbParserCtxtPtr ctxt) {
 		     */
 		    ctxt->nodemem = 0;
 		    ctxt->nodelen = 0;
+		}
+	    } else {
+		if ((ctxt->sax != NULL) && (ctxt->sax->reference != NULL) &&
+		    (ctxt->replaceEntities == 0) && (!ctxt->disableSAX)) {
+		    /*
+		     * Create a node.
+		     */
+		    ctxt->sax->reference(ctxt->userData, xent->name);
 		}
 	    }
        } else if (name != NULL) {
@@ -4795,7 +4798,7 @@ docbParseDocument(docbParserCtxtPtr ctxt) {
  ************************************************************************/
 
 /**
- * xmlInitParserCtxt:
+ * docbInitParserCtxt:
  * @ctxt:  an SGML parser context
  *
  * Initialize a parser context
@@ -4877,14 +4880,14 @@ docbFreeParserCtxt(docbParserCtxtPtr ctxt)
 /**
  * docbCreateDocParserCtxt :
  * @cur:  a pointer to an array of xmlChar
- * @encoding:  a free form C string describing the SGML document encoding, or NULL
+ * @encoding: the SGML document encoding, or NULL
  *
  * Create a parser context for an SGML document.
  *
  * Returns the new parser context or NULL
  */
 static docbParserCtxtPtr
-docbCreateDocParserCtxt(xmlChar *cur, const char *encoding) {
+docbCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
     docbParserCtxtPtr ctxt;
     docbParserInputPtr input;
     /* sgmlCharEncoding enc; */
@@ -5870,7 +5873,7 @@ docbParseDoc(xmlChar *cur, const char *encoding) {
 /**
  * docbCreateFileParserCtxt :
  * @filename:  the filename
- * @encoding:  a free form C string describing the SGML document encoding, or NULL
+ * @encoding:  the SGML document encoding, or NULL
  *
  * Create a parser context for a file content. 
  * Automatic support for ZLIB/Compress compressed document is provided
@@ -5879,7 +5882,8 @@ docbParseDoc(xmlChar *cur, const char *encoding) {
  * Returns the new parser context or NULL
  */
 docbParserCtxtPtr
-docbCreateFileParserCtxt(const char *filename, const char *encoding)
+docbCreateFileParserCtxt(const char *filename,
+	                 const char *encoding ATTRIBUTE_UNUSED)
 {
     docbParserCtxtPtr ctxt;
     docbParserInputPtr inputStream;

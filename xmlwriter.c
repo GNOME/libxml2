@@ -2565,7 +2565,7 @@ xmlTextWriterWriteVFormatDTD(xmlTextWriterPtr writer,
  * @name:  the name of the DTD
  * @pubid:  the public identifier, which is an alternative to the system identifier
  * @sysid:  the system identifier, which is the URI of the DTD
- * @format:  format string (see printf)
+ * @subset:  string content of the DTD
  *
  * Write a DTD.
  *

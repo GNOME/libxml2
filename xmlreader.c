@@ -1725,7 +1725,7 @@ found_node:
 }
 
 /**
- * xmlTextReaderNextTree:
+ * xmlTextReaderNextSibling:
  * @reader:  the xmlTextReaderPtr used
  *
  * Skip to the node following the current one in document order while

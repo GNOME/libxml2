@@ -541,12 +541,17 @@ for f in fkeys:
  * %s:
  * @ch:  character to validate
  *
- * This function is DEPRECATED.  Use %s_ch
- * or %sQ instead
+ * This function is DEPRECATED.
+""" % f);
+    if max(Functs[f][0]) > 0:
+        output.write(" * Use %s_ch or %sQ instead" % (f, f))
+    else:
+        output.write(" * Use %sQ instead" % f)
+    output.write("""
  *
  * Returns true if argument valid, false otherwise
  */
-""" % (f, f, f))
+""")
     output.write("int\n%s(unsigned int ch) {\n    return(%sQ(ch));\n}\n\n" % (f,f))
     header.write("XMLPUBFUN int XMLCALL\n\t\t%s(unsigned int ch);\n" % f);
 #

@@ -432,6 +432,12 @@ static CRITICAL_SECTION cleanup_helpers_cs;
 #endif /* HAVE_WIN32_THREADS */
 
 #if defined HAVE_BEOS_THREADS
+/**
+ * xmlGlobalStateCleanup:
+ * @data: unused parameter
+ *
+ * Used for Beos only
+ */
 void xmlGlobalStateCleanup(void *data)
 {
 	void *globalval = tls_get(globalkey);

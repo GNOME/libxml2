@@ -679,7 +679,7 @@ class CParser:
 		 i = i + 1
 	     if i >= nbargs:
 		 if not quiet:
-		     print "Uname to find arg %s from function comment for %s" % (
+		     print "Unable to find arg %s from function comment for %s" % (
 		        arg, name)
 	 while len(lines) > 0 and lines[0] == '*':
 	     del lines[0]

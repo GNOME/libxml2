@@ -1,3 +1,11 @@
+Tue Nov 18 14:28:32 HKT 2003 William Brack <mmm.com.hk>
+
+	* genChRanges.py, chvalid.c, include/libxml/chvalid.h: minor
+	  enhancement to prevent comment with unreferenced variable.
+	* threads.c xmlreader.c xmlwriter.c: edited some comments to
+	  improve auto-generation of documentation
+	* apibuild.py: minor change to an error message
+
 Mon Nov 17 17:55:51 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/apibuild.py doc/libxml2-api.xml doc/newapi.xsl: more cleanup,

@@ -10,6 +10,7 @@ DOCS = TODO libxml2class.txt
 
 EXTRA_DIST = 			\
 	libxml.c		\
+	types.c			\
 	generator.py		\
 	libxml_wrap.h		\
 	libxml.py		\
@@ -22,14 +23,17 @@ all: _libxml.so libxml2.py
 libxml2.py: $(srcdir)/libxml.py libxml2class.py
 	cat $(srcdir)/libxml.py libxml2class.py > libxml2.py
 
-_libxml.so: libxml.o libxml2-py.o
-	$(CC) $(LINK_FLAGS) libxml2-py.o libxml.o $(LIBS) -o _libxml.so
+_libxml.so: libxml.o libxml2-py.o types.o
+	$(CC) $(LINK_FLAGS) libxml.o libxml2-py.o types.o $(LIBS) -o _libxml.so
 else
 all: 
 endif
 
 libxml.o: libxml.c libxml2-export.c libxml_wrap.h
 	$(CC) $(SHCFLAGS) -c -o libxml.o $(srcdir)/libxml.c
+
+types.o: types.c libxml_wrap.h
+	$(CC) $(SHCFLAGS) -c -o types.o $(srcdir)/types.c
 
 libxml2-py.o: libxml2-py.c libxml2-py.h libxml_wrap.h
 	$(CC) $(SHCFLAGS) -c -o libxml2-py.o $(srcdir)/libxml2-py.c
@@ -44,9 +48,7 @@ GENERATED= $(srcdir)/libxml2class.py \
 $(GENERATED): $(srcdir)/$(GENERATE) $(API_DESC)
 	cd $(srcdir) && $(PYTHON) $(GENERATE)
 
-dummy:
-
-tests: dummy
+tests: all
 	cd tests && $(MAKE) tests
 
 clean:

@@ -20,5 +20,18 @@
       <arg name='f' type='pythonObject' info='the python function'/>
       <arg name='ctx' type='pythonObject' info='a context for the callback'/>
     </function>
+    <function name='xmlCreatePushParser' file='python'>
+      <info>Create a progressive parser context to build either an event flow if the SAX object is not None, or a DOM tree otherwise.</info>
+      <return type='xmlParserCtxtPtr' info="the parser context or None in case of error"/>
+      <arg name='SAX' type='pythonObject' info='the SAX callback object or None'/>
+      <arg name='chunk' type='xmlChar *' info='the initial data'/>
+      <arg name='size' type='int' info='the size of the initial data'/>
+      <arg name='URI' type='xmlChar *' info='The URI used for base computations'/>
+    </function>
+    <function name='xmlParserGetDoc' file='python_accessor'>
+      <info>Get the document tree from a parser context.</info>
+      <return type='xmlDocPtr' info="the document tree" field="myDoc"/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the SAX callback object or None'/>
+    </function>
   </symbols>
 </api>

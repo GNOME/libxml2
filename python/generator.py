@@ -129,10 +129,13 @@ class docParser:
 	    if self.in_function == 1:
 	        self.function_return_type = None
 	        self.function_return_info = None
+	        self.function_return_field = None
 		if attrs.has_key('type'):
 		    self.function_return_type = attrs['type']
 		if attrs.has_key('info'):
 		    self.function_return_info = attrs['info']
+		if attrs.has_key('field'):
+		    self.function_return_field = attrs['field']
 
 
     def end(self, tag):
@@ -152,7 +155,8 @@ class docParser:
 	elif tag == 'return':
 	    if self.in_function == 1:
 	        self.function_return = [self.function_return_type,
-		                        self.function_return_info]
+		                        self.function_return_info,
+					self.function_return_field]
 	elif tag == 'info':
 	    str = ''
 	    for c in self._data:
@@ -186,8 +190,6 @@ skipped_types = {
     'int *': "usually a return type",
     'xmlSAXHandlerPtr': "not the proper interface for SAX",
     'htmlSAXHandlerPtr': "not the proper interface for SAX",
-    'xmlParserCtxtPtr': "not the proper interface for the parser",
-    'htmlParserCtxtPtr': "not the proper interface for the parser",
     'xmlRMutexPtr': "thread specific, skipped",
     'xmlMutexPtr': "thread specific, skipped",
     'xmlGlobalStatePtr': "thread specific, skipped",
@@ -257,6 +259,10 @@ py_types = {
     'const htmlNode *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
     'xmlXPathContextPtr':  ('O', "xmlXPathContext", "xmlXPathContextPtr", "xmlXPathContextPtr"),
     'xmlXPathContext *':  ('O', "xpathContext", "xmlXPathContextPtr", "xmlXPathContextPtr"),
+    'xmlParserCtxtPtr': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
+    'xmlParserCtxt *': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
+    'htmlParserCtxtPtr': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
+    'htmlParserCtxt *': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
 }
 
 py_return_types = {
@@ -340,7 +346,10 @@ def print_function_wrapper(name, output, export, include):
     elif py_types.has_key(ret[0]):
 	(f, t, n, c) = py_types[ret[0]]
 	c_return = "    %s c_retval;\n" % (ret[0])
-        c_call = "\n    c_retval = %s(%s);\n" % (name, c_call);
+	if file == "python_accessor":
+	    c_call = "\n    c_retval = %s->%s;\n" % (args[0][0], ret[2])
+	else:
+	    c_call = "\n    c_retval = %s(%s);\n" % (name, c_call);
 	ret_convert = "    py_retval = libxml_%sWrap((%s) c_retval);\n" % (n,c)
 	ret_convert = ret_convert + "    return(py_retval);\n"
     elif py_return_types.has_key(ret[0]):
@@ -476,6 +485,8 @@ classes_type = {
     "xmlAttributePtr": ("._o", "xmlAttribute(_obj=%s)", "xmlAttribute"),
     "xmlAttribute *": ("._o", "xmlAttribute(_obj=%s)", "xmlAttribute"),
     "xmlXPathContextPtr": ("._o", "xpathContext(_obj=%s)", "xpathContext"),
+    "xmlParserCtxtPtr": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
+    "xmlParserCtxt *": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
 }
 
 converter_type = {
@@ -496,6 +507,7 @@ classes_ancestor = {
 }
 classes_destructors = {
     "xpathContext": "xmlXPathFreeContext",
+    "parserCtxt": "xmlFreeParserCtxt",
 }
 
 function_classes = {}
@@ -530,13 +542,16 @@ for type in classes_type.keys():
     ctypes.append(type)
     ctypes_processed[type] = ()
 
-def nameFixup(function, classe, type):
+def nameFixup(function, classe, type, file):
     listname = classe + "List"
     ll = len(listname)
     l = len(classe)
     if name[0:l] == listname:
 	func = name[l:]
 	func = string.lower(func[0:1]) + func[1:]
+    elif name[0:12] == "xmlParserGet" and file == "python_accessor":
+        func = name[12:]
+        func = string.lower(func[0:1]) + func[1:]
     elif name[0:l] == classe:
 	func = name[l:]
 	func = string.lower(func[0:1]) + func[1:]
@@ -573,22 +588,22 @@ for name in functions.keys():
 
 	if name[0:3] == "xml" and len(args) >= 1 and args[0][1] == type:
 	    found = 1
-	    func = nameFixup(name, classe, type)
+	    func = nameFixup(name, classe, type, file)
 	    info = (0, func, name, ret, args, file)
 	    function_classes[classe].append(info)
 	elif name[0:3] == "xml" and len(args) >= 2 and args[1][1] == type:
 	    found = 1
-	    func = nameFixup(name, classe, type)
+	    func = nameFixup(name, classe, type, file)
 	    info = (1, func, name, ret, args, file)
 	    function_classes[classe].append(info)
 	elif name[0:4] == "html" and len(args) >= 1 and args[0][1] == type:
 	    found = 1
-	    func = nameFixup(name, classe, type)
+	    func = nameFixup(name, classe, type, file)
 	    info = (0, func, name, ret, args, file)
 	    function_classes[classe].append(info)
 	elif name[0:4] == "html" and len(args) >= 2 and args[1][1] == type:
 	    found = 1
-	    func = nameFixup(name, classe, type)
+	    func = nameFixup(name, classe, type, file)
 	    info = (1, func, name, ret, args, file)
 	    function_classes[classe].append(info)
 	if found == 1:
@@ -601,7 +616,7 @@ for name in functions.keys():
         continue
     if name[0:10] == "xmlCharStr":
         continue
-    func = nameFixup(name, "None", file)
+    func = nameFixup(name, "None", file, file)
     info = (0, func, name, ret, args, file)
     function_classes['None'].append(info)
 
@@ -612,6 +627,10 @@ txt.write("          Generated Classes for libxml2-python\n\n")
 def functionCompare(info1, info2):
     (index1, func1, name1, ret1, args1, file1) = info1
     (index2, func2, name2, ret2, args2, file2) = info2
+    if file1 == "python_accessor":
+        return -1
+    if file2 == "python_accessor":
+        return 1
     if file1 < file2:
         return -1
     if file1 > file2:
@@ -701,6 +720,12 @@ for classname in classes_list:
 	    classes.write("        self._o = None\n")
 	    classes.write("        %s.__init__(self, _obj=_obj)\n\n" % (
 	                  classes_ancestor[classname]))
+	    if classes_ancestor[classname] == "xmlCore" or \
+	       classes_ancestor[classname] == "xmlNode":
+		classes.write("    def __repr__(self):\n")
+		format = "%s:%%s" % (classname)
+		classes.write("        return \"%s\" %% (self.name)\n\n" % (
+			      format))
 	else:
 	    txt.write("Class %s()\n" % (classname))
 	    classes.write("class %s:\n" % (classname))
@@ -713,21 +738,21 @@ for classname in classes_list:
 	    classes.write("            _libxml.%s(self._o)\n" %
 	                  classes_destructors[classname]);
 	    classes.write("        self._o = None\n\n");
-	classes.write("    def __repr__(self):\n")
-	format = "%s:%%s" % (classname)
-	classes.write("        return \"%s\" %% (self.name)\n\n" % (
-	              format))
 	flist = function_classes[classname]
 	flist.sort(functionCompare)
 	oldfile = ""
 	for info in flist:
 	    (index, func, name, ret, args, file) = info
 	    if file != oldfile:
-		classes.write("    #\n")
-		classes.write("    # %s functions from module %s\n" % (
-		              classname, file))
-		txt.write("\n    # functions from module %s\n" % file)
-		classes.write("    #\n\n")
+	        if file == "python_accessor":
+		    classes.write("    # accessors for %s\n" % (classname))
+		    txt.write("    # accessors\n")
+		else:
+		    classes.write("    #\n")
+		    classes.write("    # %s functions from module %s\n" % (
+				  classname, file))
+		    txt.write("\n    # functions from module %s\n" % file)
+		    classes.write("    #\n\n")
 	    oldfile = file
 	    classes.write("    def %s(self" % func)
 	    txt.write("    %s()\n" % func);

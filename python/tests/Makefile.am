@@ -4,6 +4,7 @@ TESTS=		\
     tst.py	\
     tstxpath.py	\
     xpathext.py	\
+    push.py	\
     error.py	\
     xpath.py
 
@@ -19,6 +20,9 @@ tests: $(TESTS)
 else
 tests:
 endif
+
+clean:
+	rm -f *.pyc core
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(EXAMPLE_DIR)

@@ -148,14 +148,6 @@ def registerXPathFunction(ctxt, name, ns_uri, f):
     ret = _libxml.xmlRegisterXPathFunction(ctxt, name, ns_uri, f)
 
 #
-# A parser context
-#
-class parserCtxt:
-    def __init__(self, _obj=None):
-        self._o = _obj
-    
-
-#
 # Everything below this point is automatically generated
 #
 

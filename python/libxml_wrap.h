@@ -1,3 +1,4 @@
+#include <Python.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -27,6 +28,12 @@ typedef struct {
     xmlXPathContextPtr obj;
 } PyxmlXPathContext_Object;
 
+#define PyparserCtxt_Get(v) (((PyparserCtxt_Object *)(v))->obj)
+typedef struct {
+    PyObject_HEAD
+    xmlParserCtxtPtr obj;
+} PyparserCtxt_Object;
+
 PyObject * libxml_intWrap(int val);
 PyObject * libxml_xmlCharPtrWrap(xmlChar *str);
 PyObject * libxml_constxmlCharPtrWrap(const xmlChar *str);
@@ -40,5 +47,7 @@ PyObject * libxml_xmlAttributePtrWrap(xmlAttributePtr ns);
 PyObject * libxml_xmlElementPtrWrap(xmlElementPtr ns);
 PyObject * libxml_doubleWrap(double val);
 PyObject * libxml_xmlXPathContextPtrWrap(xmlXPathContextPtr ctxt);
+PyObject * libxml_xmlParserCtxtPtrWrap(xmlParserCtxtPtr ctxt);
 PyObject * libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj);
 
+xmlXPathObjectPtr libxml_xmlXPathObjectPtrConvert(PyObject * obj);

@@ -1,3 +1,14 @@
+Sun Feb  3 16:03:55 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am python/types.c: cleanup
+	* python/libxml.c python/libxml.py python/libxml_wrap.h
+	  python/generator.py python/libxml2-python-api.xml 
+	  python/libxml2class.txt: added class for parser context, added
+	  first cut for push mode support. Added a framework to generate
+	  accessors functions.
+	* python/tests/Makefile.am python/tests/push.py: added a push
+	  test
+
 Sun Feb  3 00:17:26 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am python/TODO python/libxml.py: fixed a small

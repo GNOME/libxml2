@@ -368,8 +368,19 @@ startElementDebug(void *ctx, const xmlChar *name, const xmlChar **atts)
     if (atts != NULL) {
         for (i = 0;(atts[i] != NULL);i++) {
 	    fprintf(stdout, ", %s", atts[i++]);
-	    if (atts[i] != NULL)
-	        fprintf(stdout, "='%s'", atts[i]);
+	    if (atts[i] != NULL) {
+		unsigned char output[40];
+		const unsigned char *att = atts[i];
+		int outlen, attlen;
+	        fprintf(stdout, "='");
+		while ((attlen = strlen((char*)att)) > 0) {
+		    outlen = sizeof output - 1;
+		    htmlEncodeEntities(output, &outlen, att, &attlen, '\'');
+		    fprintf(stdout, "%.*s", outlen, output);
+		    att += attlen;
+		}
+		fprintf(stdout, "'");
+	    }
 	}
     }
     fprintf(stdout, ")\n");
@@ -400,12 +411,11 @@ endElementDebug(void *ctx, const xmlChar *name)
 void
 charactersDebug(void *ctx, const xmlChar *ch, int len)
 {
-    char output[40];
-    int i;
+    unsigned char output[40];
+    int outlen = 30;
 
-    for (i = 0;(i<len) && (i < 30);i++)
-	output[i] = ch[i];
-    output[i] = 0;
+    htmlEncodeEntities(output, &outlen, ch, &len, 0);
+    output[outlen] = 0;
 
     fprintf(stdout, "SAX.characters(%s, %d)\n", output, len);
 }

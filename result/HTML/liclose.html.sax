@@ -8,25 +8,18 @@ SAX.characters(
 , 1)
 SAX.endElement(p)
 SAX.startElement(head)
-SAX.endElement(head)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
   , 3)
-SAX.endElement(p)
 SAX.startElement(title)
 SAX.endElement(title)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.error: Unexpected end tag : head
-SAX.characters(
+SAX.endElement(head)
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(body)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(ul)
 SAX.characters(
 , 1)
@@ -35,14 +28,12 @@ SAX.characters(First item
 , 11)
 SAX.endElement(li)
 SAX.startElement(li)
-SAX.characters(Second item, closes the first , 34)
+SAX.characters(Second item, closes the first , 30)
 SAX.endElement(li)
 SAX.endElement(ul)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
-SAX.endElement(p)
 SAX.endElement(body)
 SAX.endElement(body)
 SAX.endElement(html)

@@ -86,6 +86,10 @@ int			UTF8ToHtml	(unsigned char* out,
 					 int *outlen,
 					 const unsigned char* in,
 					 int *inlen);
+int			htmlEncodeEntities(unsigned char* out,
+					 int *outlen,
+					 const unsigned char* in,
+					 int *inlen, int quoteChar);
 
 /**
  * Interfaces for the Push mode

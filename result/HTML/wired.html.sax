@@ -4,15 +4,13 @@ SAX.comment( Vignette StoryServer 4 Fri Oct 15 11:37:12 1999 )
 SAX.startElement(html)
 SAX.startElement(head)
 SAX.startElement(title)
-SAX.characters(Top Stories News from Wired Ne, 32)
+SAX.characters(Top Stories News from Wired Ne, 30)
 SAX.endElement(title)
 SAX.endElement(head)
 SAX.startElement(body, bgcolor='#FFFFFF', text='#000000', link='#333399', vlink='#660066', alink='#666699')
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
-SAX.endElement(p)
 SAX.startElement(table, border='0', width='600', cellspacing='0', cellpadding='0')
 SAX.characters(
   , 3)
@@ -27,7 +25,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(form, METHOD='GET', ACTION='http://nsads.hotwired.com/event.ng/Type=click&ProfileID=9688&RunID=14074&AdID=22584&GroupID=1&FamilyID=2684&TagValues=8.25.156.159.166.171.172.174.179.180.181.182.183.196.197.199.208.389.412.436.2041.6750.78456.79630.81880&Redirect=http://www.springstreet.com/aa/citysearch.htm', id='form1', name='form1')
+SAX.startElement(form, METHOD='GET', ACTION='http://nsads.hotwired.com/event.ng/Type=click&amp;ProfileID=9688&amp;RunID=14074&amp;AdID=22584&amp;GroupID=1&amp;FamilyID=2684&amp;TagValues=8.25.156.159.166.171.172.174.179.180.181.182.183.196.197.199.208.389.412.436.2041.6750.78456.79630.81880&amp;Redirect=http://www.springstreet.com/aa/citysearch.htm', id='form1', name='form1')
 SAX.characters(
 , 2)
 SAX.startElement(tr)
@@ -306,7 +304,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(a, href='http://nsads.hotwired.com/event.ng/Type=click&ProfileID=5597&RunID=17167&AdID=22588&GroupID=1&FamilyID=3228&TagValues=8.25.159.171.172.174.179.180.181.182.183.196.197.199.208.241.389.412.436.2035.6749.6750.70367.78456.79630.81880&Redirect=http:%2F%2Fwww.hp.com%2Fgo%2Foriginal%20', TARGET='_top')
+SAX.startElement(a, href='http://nsads.hotwired.com/event.ng/Type=click&amp;ProfileID=5597&amp;RunID=17167&amp;AdID=22588&amp;GroupID=1&amp;FamilyID=3228&amp;TagValues=8.25.159.171.172.174.179.180.181.182.183.196.197.199.208.241.389.412.436.2035.6749.6750.70367.78456.79630.81880&amp;Redirect=http:%2F%2Fwww.hp.com%2Fgo%2Foriginal%20', TARGET='_top')
 SAX.startElement(img, src='http://static.wired.com/advertising/blipverts/hp_colorinkjet/hp_970c_120x60_6.gif', BORDER='1', height='60', width='120', alt='True to the Original')
 SAX.endElement(img)
 SAX.endElement(a)
@@ -317,22 +315,20 @@ SAX.endElement(tr)
 SAX.characters(
 , 1)
 SAX.endElement(table)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
 SAX.comment( WIRED NEWS header )
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
 SAX.comment( CMD_HOST = scoop.hotwired.com )
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
 SAX.startElement(a, name='#')
 SAX.endElement(a)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(table, border='0', width='600', cellspacing='0', cellpadding='0')
 SAX.characters(
 
@@ -379,13 +375,13 @@ SAX.endElement(img)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, size='1', face='Verdana, Arial, Geneva, sans-serif', color='#FFFFFF')
-SAX.characters( , 2)
-SAX.characters( , 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
+SAX.characters(&nbsp;, 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(b)
 SAX.characters(updated 10:15 a.m., 18)
-SAX.characters( , 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(15.Oct.99.PDT, 13)
 SAX.endElement(b)
 SAX.endElement(font)
@@ -446,7 +442,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?Action=FilterSearch&Filter=docs_filter.hts&ResultTemplate=vignette.hts&Collection=vignette&QueryMode=Internet&Query=', selected)
+SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?Action=FilterSearch&amp;Filter=docs_filter.hts&amp;ResultTemplate=vignette.hts&amp;Collection=vignette&amp;QueryMode=Internet&amp;Query=', selected)
 SAX.characters(Wired News, 10)
 SAX.endElement(option)
 SAX.characters(
@@ -456,7 +452,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?Action=FilterSearch&Filter=docs_filter.hts&ResultTemplate=webmonkey.hts&Collection=webmonkey&QueryMode=Internet&Query=')
+SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?Action=FilterSearch&amp;Filter=docs_filter.hts&amp;ResultTemplate=webmonkey.hts&amp;Collection=webmonkey&amp;QueryMode=Internet&amp;Query=')
 SAX.characters(Webmonkey, 9)
 SAX.endElement(option)
 SAX.characters(
@@ -466,7 +462,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?collection=webmonkey_guides&Action=FilterSearch&filter=docs_filter.hts&ResultTemplate=webmonkey_guides.hts&QueryMode=Internet&Query=')
+SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?collection=webmonkey_guides&amp;Action=FilterSearch&amp;filter=docs_filter.hts&amp;ResultTemplate=webmonkey_guides.hts&amp;QueryMode=Internet&amp;Query=')
 SAX.characters(Webmonkey Guides, 16)
 SAX.endElement(option)
 SAX.characters(
@@ -476,7 +472,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?collection=hotwired&Action=FilterSearch&filter=docs_filter.hts&ResultTemplate=hotwired_archive.hts&QueryMode=Internet&Query=')
+SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?collection=hotwired&amp;Action=FilterSearch&amp;filter=docs_filter.hts&amp;ResultTemplate=hotwired_archive.hts&amp;QueryMode=Internet&amp;Query=')
 SAX.characters(HotWired Archives, 17)
 SAX.endElement(option)
 SAX.characters(
@@ -486,7 +482,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?Action=FilterSearch&Filter=docs_filter.hts&ResultTemplate=magazine.hts&Collection=magazine&QueryMode=Internet&Query=')
+SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?Action=FilterSearch&amp;Filter=docs_filter.hts&amp;ResultTemplate=magazine.hts&amp;Collection=magazine&amp;QueryMode=Internet&amp;Query=')
 SAX.characters(Wired Magazine, 14)
 SAX.endElement(option)
 SAX.characters(
@@ -496,7 +492,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?Action=FilterSearch&Filter=docs_filter.hts&ResultTemplate=animation.hts&Collection=animation&QueryMode=Internet&Query=')
+SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?Action=FilterSearch&amp;Filter=docs_filter.hts&amp;ResultTemplate=animation.hts&amp;Collection=animation&amp;QueryMode=Internet&amp;Query=')
 SAX.characters(Animation Express, 17)
 SAX.endElement(option)
 SAX.characters( 
@@ -506,7 +502,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?collection=suck&Action=FilterSearch&filter=docs_filter.hts&ResultTemplate=suck.hts&QueryMode=Internet&Query=')
+SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?collection=suck&amp;Action=FilterSearch&amp;filter=docs_filter.hts&amp;ResultTemplate=suck.hts&amp;QueryMode=Internet&amp;Query=')
 SAX.characters(Suck.com, 8)
 SAX.endElement(option)
 SAX.characters(
@@ -516,7 +512,7 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?collection=uber_hotwired&Action=FilterSearch&filter=docs_filter.hts&ResultTemplate=uber_hotwired.hts&QueryMode=Internet&Query=')
+SAX.startElement(option, value='http://search.hotwired.com/search97/s97.vts?collection=uber_hotwired&amp;Action=FilterSearch&amp;filter=docs_filter.hts&amp;ResultTemplate=uber_hotwired.hts&amp;QueryMode=Internet&amp;Query=')
 SAX.characters(All of HotWired, 15)
 SAX.endElement(option)
 SAX.characters(
@@ -529,8 +525,8 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(option, value='http://www.hotbot.com/?SM=MC&DV=0&LG=any&RD=RG&DC=10&DE=2&_v=2&OPs=MDRTP&MT=')
-SAX.characters(The Web -> HotBot, 17)
+SAX.startElement(option, value='http://www.hotbot.com/?SM=MC&amp;DV=0&amp;LG=any&amp;RD=RG&amp;DC=10&amp;DE=2&amp;_v=2&amp;OPs=MDRTP&amp;MT=')
+SAX.characters(The Web -&gt; HotBot, 17)
 SAX.endElement(option)
 SAX.characters(
 , 1)
@@ -578,18 +574,16 @@ SAX.comment(
 SAX.characters(
 , 1)
 SAX.endElement(table)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
 SAX.comment( end WIRED NEWS header )
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
 SAX.comment( begin upper left side Navigation )
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
-SAX.endElement(p)
 SAX.startElement(table, border='0', cellpadding='3', cellspacing='0', align='LEFT', bgcolor='#FFFFFF')
 SAX.characters(
   , 3)
@@ -781,7 +775,7 @@ SAX.characters(
 , 3)
 SAX.startElement(input, type='TEXT', name='from', size='10', value='enter email')
 SAX.endElement(input)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(
 , 1)
 SAX.error: Opening and ending tag mismatch: td and form
@@ -851,7 +845,7 @@ SAX.startElement(td, bgcolor='#99FF99', marginwidth='0', marginheight='0')
 SAX.startElement(form, method='get', action='http://r.wired.com/r/10020/http://stocks.wired.com/stocks_quotes.asp')
 SAX.startElement(input, type='TEXT', name='Symbol', size='12')
 SAX.endElement(input)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(input, type='SUBMIT', name='submit', value='GO')
 SAX.endElement(input)
 SAX.endElement(form)
@@ -906,7 +900,7 @@ SAX.startElement(area, SHAPE='RECT', ALT='internet.com Index Fund', COORDS='73,3
 SAX.endElement(area)
 SAX.characters(
         , 9)
-SAX.startElement(area, SHAPE='RECT', ALT='GetSmart's MortgageFinder', COORDS='0,31,69,55', HREF='http://r.wired.com/r/294/http://www.getsmartinc.com/mortgage/HomeBanner?BANNERNAME=www.getsmartinc.com/mwired001m6075x25')
+SAX.startElement(area, SHAPE='RECT', ALT='GetSmart&apos;s MortgageFinder', COORDS='0,31,69,55', HREF='http://r.wired.com/r/294/http://www.getsmartinc.com/mortgage/HomeBanner?BANNERNAME=www.getsmartinc.com/mwired001m6075x25')
 SAX.endElement(area)
 SAX.endElement(map)
 SAX.characters(
@@ -1057,7 +1051,7 @@ SAX.characters( Web Business
   , 16)
 SAX.startElement(option, value='2800')
 SAX.characters( Bargain Books
-               , 40)
+               , 30)
 SAX.startElement(option, value='4')
 SAX.characters(Other 
 
@@ -1099,7 +1093,7 @@ SAX.characters(
 
 , 2)
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(img, SRC='http://barnesandnoble.bfast.com/booklink/serve?sourceid=383471&is_search=Y', border='0', align='top')
+SAX.startElement(img, SRC='http://barnesandnoble.bfast.com/booklink/serve?sourceid=383471&amp;is_search=Y', border='0', align='top')
 SAX.endElement(img)
 SAX.characters(
 , 1)
@@ -1111,7 +1105,7 @@ SAX.characters(
 SAX.endElement(td)
 SAX.characters(
                  
-           , 35)
+           , 30)
 SAX.endElement(tr)
 SAX.characters(
                 , 17)
@@ -1471,18 +1465,16 @@ SAX.characters(
 
 , 2)
 SAX.endElement(table)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
 SAX.comment( end lower left side Navigation )
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
 SAX.comment( CONTENT TABLE )
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
-SAX.endElement(p)
 SAX.startElement(table, border='0', width='447', cellspacing='0', cellpadding='0', bordercolor='#66FF00')
 SAX.characters(
  , 2)
@@ -1540,9 +1532,9 @@ SAX.endElement(br)
 SAX.startElement(font, size='1', face='Verdana, Arial, Geneva, sans-serif', color='#FF0000')
 SAX.characters(8:15 a.m., 9)
 SAX.endElement(font)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(font, face='Verdana, Arial, Geneva, sans-serif', size='2')
-SAX.characters(The city council approves a pl, 180)
+SAX.characters(The city council approves a pl, 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -1550,7 +1542,7 @@ SAX.startElement(font, face='Verdana, Arial, Helvetica, sans-serif', size='1')
 SAX.startElement(i)
 SAX.startElement(a, href='/news/politics/0,1283,,00.html')
 SAX.characters(in, 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(Politics, 8)
 SAX.endElement(a)
 SAX.endElement(i)
@@ -1567,7 +1559,7 @@ SAX.startElement(tr)
 SAX.characters(
           , 11)
 SAX.startElement(td, bgcolor='#000000')
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.endElement(td)
 SAX.characters(
           , 11)
@@ -1575,7 +1567,7 @@ SAX.startElement(td, bgcolor='#000000')
 SAX.startElement(font, size='1', face='Verdana, Arial, Helvetica, sans-serif', color='#FFFFFF')
 SAX.startElement(b)
 SAX.characters(HITS , 5)
-SAX.characters(&, 1)
+SAX.characters(&amp;, 1)
 SAX.characters( MISC., 6)
 SAX.endElement(b)
 SAX.endElement(font)
@@ -1589,7 +1581,7 @@ SAX.startElement(tr)
 SAX.characters(
           , 11)
 SAX.startElement(td)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.endElement(td)
 SAX.characters(
           , 11)
@@ -1623,7 +1615,7 @@ SAX.startElement(b)
 SAX.startElement(a, href='/news/commentarySection/0,1292,31926,00.html')
 SAX.characters(Rants , 6)
 SAX.error: htmlParseEntityRef: no name
-SAX.characters(&, 1)
+SAX.characters(&amp;, 1)
 SAX.characters( Raves, 6)
 SAX.endElement(a)
 SAX.endElement(b)
@@ -1632,7 +1624,7 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, size='2', face='Arial, Helvetica, sans-serif')
 SAX.startElement(font, size='1', face='Arial, Geneva, sans-serif', color='#000000')
-SAX.characters(Readers on Apple's G4 ... AOL', 59)
+SAX.characters(Readers on Apple's G4 ... AOL', 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -1656,7 +1648,7 @@ SAX.startElement(tr)
 SAX.characters( 
 , 2)
 SAX.startElement(td, align='left', bgcolor='#000000')
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.endElement(td)
 SAX.characters( 
 , 2)
@@ -1677,7 +1669,7 @@ SAX.startElement(tr)
 SAX.characters( 
 , 2)
 SAX.startElement(td)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.endElement(td)
 SAX.characters(
 , 1)
@@ -1962,8 +1954,8 @@ SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.startElement(a, href='http://r.wired.com/r/wn_is_r_ssec/http://ad.doubleclick.net/clk;653163;3599571;s?http://www.sprintbiz.com/s
-ervlet/appservlet?from=/wired/sprint/&template=/security/security.html&SITE=
-wired.com&BANNER=Sprint', style='text-decoration:none')
+ervlet/appservlet?from=/wired/sprint/&amp;template=/security/security.html&amp;SITE=
+wired.com&amp;BANNER=Sprint', style='text-decoration:none')
 SAX.startElement(font, color='#000000')
 SAX.characters(Sprint, 6)
 SAX.error: Opening and ending tag mismatch: a and font
@@ -2011,7 +2003,7 @@ SAX.endElement(b)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(
@@ -2046,7 +2038,7 @@ SAX.startElement(tr)
 SAX.characters( 
                   , 20)
 SAX.startElement(td, bgcolor='#000000')
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.endElement(td)
 SAX.characters(
           , 11)
@@ -2067,7 +2059,7 @@ SAX.startElement(tr)
 SAX.characters( 
           , 12)
 SAX.startElement(td)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.endElement(td)
 SAX.characters(
           , 11)
@@ -2087,7 +2079,7 @@ SAX.characters(
 , 1)
 SAX.startElement(font, size='2', face='Arial, Helvetica, sans-serif', color='#000000')
 SAX.startElement(b)
-SAX.characters(Führer Furor, 13)
+SAX.characters(F&uuml;hrer Furor, 13)
 SAX.endElement(b)
 SAX.endElement(font)
 SAX.startElement(br)
@@ -2095,14 +2087,14 @@ SAX.endElement(br)
 SAX.startElement(font, size='1', face='Arial, Geneva, sans-serif', color='#000000')
 SAX.startElement(p)
 SAX.characters(
-Contruction workers in Berli, 637)
+Contruction workers in Berli, 30)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.endElement(p)
 SAX.startElement(li)
 SAX.characters(More from , 10)
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(a, href='http://www.lycos.com/news/flash/hitlerbunker.html?v=wn1015&lpv=1')
+SAX.startElement(a, href='http://www.lycos.com/news/flash/hitlerbunker.html?v=wn1015&amp;lpv=1')
 SAX.characters(Lycos, 5)
 SAX.endElement(a)
 SAX.endElement(li)
@@ -2128,7 +2120,7 @@ SAX.characters(
 
 , 3)
 SAX.startElement(font, size='1')
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.endElement(font)
@@ -2174,9 +2166,9 @@ SAX.endElement(br)
 SAX.startElement(font, color='#ff0000', face='Verdana, Arial, Geneva, sans-serif', size='1')
 SAX.characters(10:15 a.m., 10)
 SAX.endElement(font)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(font, face='Verdana, Arial, Geneva, sans-serif', size='2')
-SAX.characters(The Dow and Nasdaq suffer size, 180)
+SAX.characters(The Dow and Nasdaq suffer size, 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2184,7 +2176,7 @@ SAX.startElement(font, face='Verdana, Arial, Helvetica, sans-serif', size='1')
 SAX.startElement(i)
 SAX.startElement(a, href='/news/reuters/0,1349,,00.html')
 SAX.characters(in, 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(Reuters, 7)
 SAX.endElement(a)
 SAX.endElement(i)
@@ -2206,9 +2198,9 @@ SAX.endElement(br)
 SAX.startElement(font, color='#ff0000', face='Verdana, Arial, Geneva, sans-serif', size='1')
 SAX.characters(9:10 a.m., 9)
 SAX.endElement(font)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(font, face='Verdana, Arial, Geneva, sans-serif', size='2')
-SAX.characters(The bulls and the bears are in, 128)
+SAX.characters(The bulls and the bears are in, 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2216,7 +2208,7 @@ SAX.startElement(font, face='Verdana, Arial, Helvetica, sans-serif', size='1')
 SAX.startElement(i)
 SAX.startElement(a, href='/news/reuters/0,1349,,00.html')
 SAX.characters(in, 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(Reuters, 7)
 SAX.endElement(a)
 SAX.endElement(i)
@@ -2229,7 +2221,7 @@ SAX.comment( IBD_SUBJECT:'Want a Loan? What's Your Race?' )
 SAX.startElement(font, face='Arial, Helvetica, sans-serif', size='3')
 SAX.startElement(b)
 SAX.startElement(a, href='/news/politics/0,1283,31533,00.html')
-SAX.characters('Want a Loan? What's Your Race, 32)
+SAX.characters('Want a Loan? What's Your Race, 30)
 SAX.endElement(a)
 SAX.endElement(b)
 SAX.endElement(font)
@@ -2238,9 +2230,9 @@ SAX.endElement(br)
 SAX.startElement(font, color='#ff0000', face='Verdana, Arial, Geneva, sans-serif', size='1')
 SAX.characters(3:00 a.m., 9)
 SAX.endElement(font)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(font, face='Verdana, Arial, Geneva, sans-serif', size='2')
-SAX.characters(The Federal Reserve is in the , 184)
+SAX.characters(The Federal Reserve is in the , 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2248,7 +2240,7 @@ SAX.startElement(font, face='Verdana, Arial, Helvetica, sans-serif', size='1')
 SAX.startElement(i)
 SAX.startElement(a, href='/news/politics/0,1283,,00.html')
 SAX.characters(in, 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(Politics, 8)
 SAX.endElement(a)
 SAX.endElement(i)
@@ -2270,9 +2262,9 @@ SAX.endElement(br)
 SAX.startElement(font, color='#ff0000', face='Verdana, Arial, Geneva, sans-serif', size='1')
 SAX.characters(3:00 a.m., 9)
 SAX.endElement(font)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(font, face='Verdana, Arial, Geneva, sans-serif', size='2')
-SAX.characters(The struggle to come up with a, 171)
+SAX.characters(The struggle to come up with a, 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2280,7 +2272,7 @@ SAX.startElement(font, face='Verdana, Arial, Helvetica, sans-serif', size='1')
 SAX.startElement(i)
 SAX.startElement(a, href='/news/business/0,1367,,00.html')
 SAX.characters(in, 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(Business, 8)
 SAX.endElement(a)
 SAX.endElement(i)
@@ -2302,9 +2294,9 @@ SAX.endElement(br)
 SAX.startElement(font, color='#ff0000', face='Verdana, Arial, Geneva, sans-serif', size='1')
 SAX.characters(3:00 a.m., 9)
 SAX.endElement(font)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(font, face='Verdana, Arial, Geneva, sans-serif', size='2')
-SAX.characters(High-tech companies are notori, 186)
+SAX.characters(High-tech companies are notori, 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2312,7 +2304,7 @@ SAX.startElement(font, face='Verdana, Arial, Helvetica, sans-serif', size='1')
 SAX.startElement(i)
 SAX.startElement(a, href='/news/technology/0,1282,,00.html')
 SAX.characters(in, 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(Technology, 10)
 SAX.endElement(a)
 SAX.endElement(i)
@@ -2334,9 +2326,9 @@ SAX.endElement(br)
 SAX.startElement(font, color='#ff0000', face='Verdana, Arial, Geneva, sans-serif', size='1')
 SAX.characters(3:00 a.m., 9)
 SAX.endElement(font)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(font, face='Verdana, Arial, Geneva, sans-serif', size='2')
-SAX.characters(Windows NT sales remain strong, 165)
+SAX.characters(Windows NT sales remain strong, 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2344,7 +2336,7 @@ SAX.startElement(font, face='Verdana, Arial, Helvetica, sans-serif', size='1')
 SAX.startElement(i)
 SAX.startElement(a, href='/news/business/0,1367,,00.html')
 SAX.characters(in, 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(Business, 8)
 SAX.endElement(a)
 SAX.endElement(i)
@@ -2371,9 +2363,9 @@ SAX.endElement(br)
 SAX.startElement(font, color='#ff0000', face='Verdana, Arial, Geneva, sans-serif', size='1')
 SAX.characters(3:00 a.m., 9)
 SAX.endElement(font)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(font, face='Verdana, Arial, Geneva, sans-serif', size='2')
-SAX.characters(Different cancer patients need, 207)
+SAX.characters(Different cancer patients need, 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2381,7 +2373,7 @@ SAX.startElement(font, face='Verdana, Arial, Helvetica, sans-serif', size='1')
 SAX.startElement(i)
 SAX.startElement(a, href='/news/technology/0,1282,,00.html')
 SAX.characters(in, 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(Technology, 10)
 SAX.endElement(a)
 SAX.endElement(i)
@@ -2403,9 +2395,9 @@ SAX.endElement(br)
 SAX.startElement(font, color='#ff0000', face='Verdana, Arial, Geneva, sans-serif', size='1')
 SAX.characters(3:00 a.m., 9)
 SAX.endElement(font)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(font, face='Verdana, Arial, Geneva, sans-serif', size='2')
-SAX.characters(It's not just another round of, 196)
+SAX.characters(It's not just another round of, 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2413,7 +2405,7 @@ SAX.startElement(font, face='Verdana, Arial, Helvetica, sans-serif', size='1')
 SAX.startElement(i)
 SAX.startElement(a, href='/news/business/0,1367,,00.html')
 SAX.characters(in, 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(Business, 8)
 SAX.endElement(a)
 SAX.endElement(i)
@@ -2435,9 +2427,9 @@ SAX.endElement(br)
 SAX.startElement(font, color='#ff0000', face='Verdana, Arial, Geneva, sans-serif', size='1')
 SAX.characters(3:00 a.m., 9)
 SAX.endElement(font)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(font, face='Verdana, Arial, Geneva, sans-serif', size='2')
-SAX.characters(The far-flung databases on glo, 196)
+SAX.characters(The far-flung databases on glo, 30)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2445,7 +2437,7 @@ SAX.startElement(font, face='Verdana, Arial, Helvetica, sans-serif', size='1')
 SAX.startElement(i)
 SAX.startElement(a, href='/news/technology/0,1282,,00.html')
 SAX.characters(in, 2)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(Technology, 10)
 SAX.endElement(a)
 SAX.endElement(i)
@@ -2509,7 +2501,7 @@ SAX.endElement(br)
 SAX.startElement(font, face='helvetica, arial', size='3')
 SAX.startElement(b)
 SAX.startElement(a, href='http://news.lycos.com/stories/TopNews/19991014RTNEWS-ARMS-TREATY.asp')
-SAX.characters(White House Lashes Out on Trea, 32)
+SAX.characters(White House Lashes Out on Trea, 30)
 SAX.endElement(a)
 SAX.endElement(b)
 SAX.endElement(font)
@@ -2559,7 +2551,7 @@ SAX.endElement(br)
 SAX.startElement(font, face='helvetica, arial', size='3')
 SAX.startElement(b)
 SAX.startElement(a, href='http://www.nytimes.com/library/tech/99/10/biztech/articles/14free.html')
-SAX.characters(Much Is Free in the Wired Worl, 31)
+SAX.characters(Much Is Free in the Wired Worl, 30)
 SAX.endElement(a)
 SAX.endElement(b)
 SAX.endElement(font)
@@ -2596,7 +2588,7 @@ SAX.endElement(br)
 SAX.startElement(font, face='helvetica, arial', size='3')
 SAX.startElement(b)
 SAX.startElement(a, href='http://www.msnbc.com/news/322926.asp')
-SAX.characters(Domain Owners Surrender Privac, 31)
+SAX.characters(Domain Owners Surrender Privac, 30)
 SAX.endElement(a)
 SAX.endElement(b)
 SAX.endElement(font)
@@ -2723,9 +2715,9 @@ SAX.characters(Send us feedback, 16)
 SAX.endElement(a)
 SAX.characters(
 , 1)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(
 , 1)
 SAX.startElement(a, href='http://www.hotwired.com/jobs/')
@@ -2733,9 +2725,9 @@ SAX.characters(Work at Wired Digital, 21)
 SAX.endElement(a)
 SAX.characters(
 , 1)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(
 , 1)
 SAX.startElement(a, href='http://home.wired.com/advertising/')
@@ -2752,9 +2744,9 @@ SAX.characters(About Wired Digital, 19)
 SAX.endElement(a)
 SAX.characters(
 , 1)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.characters(
 , 1)
 SAX.startElement(a, href='http://www.wired.com/home/digital/privacy/')
@@ -2772,8 +2764,8 @@ SAX.startElement(a, href='http://www.wired.com/home/copyright.html')
 SAX.characters(Copyright, 9)
 SAX.endElement(a)
 SAX.characters( , 1)
-SAX.characters(©, 2)
-SAX.characters( 1994-99 Wired Digital Inc. Al, 48)
+SAX.characters(&copy;, 2)
+SAX.characters( 1994-99 Wired Digital Inc. Al, 30)
 SAX.endElement(font)
 SAX.characters(
 
@@ -2840,16 +2832,14 @@ SAX.endElement(tr)
 SAX.characters(
 , 1)
 SAX.endElement(table)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 
 
 , 3)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.endElement(body)
 SAX.startElement(body)
 SAX.startElement(p)

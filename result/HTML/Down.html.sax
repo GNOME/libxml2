@@ -7,46 +7,35 @@ SAX.characters(
 , 1)
 SAX.endElement(p)
 SAX.startElement(head)
-SAX.endElement(head)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
   , 3)
-SAX.endElement(p)
 SAX.startElement(title)
 SAX.characters(This service is temporary down, 30)
 SAX.endElement(title)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.error: Unexpected end tag : head
-SAX.characters(
+SAX.endElement(head)
+SAX.ignorableWhitespace(
 
 , 2)
-SAX.endElement(p)
 SAX.startElement(body, bgcolor='#FFFFFF')
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(h1, align='center')
-SAX.characters(Sorry, this service is tempora, 37)
+SAX.characters(Sorry, this service is tempora, 30)
 SAX.endElement(h1)
 SAX.startElement(p)
 SAX.characters(
-We are doing our best to get , 48)
+We are doing our best to get , 30)
 SAX.endElement(p)
 SAX.startElement(p)
 SAX.characters(The W3C system administrators, 29)
 SAX.endElement(p)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.endElement(body)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(

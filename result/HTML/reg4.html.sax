@@ -7,33 +7,24 @@ SAX.characters(
 , 1)
 SAX.endElement(p)
 SAX.startElement(head)
-SAX.endElement(head)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(title)
 SAX.characters(Regression test 4, 17)
 SAX.endElement(title)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.error: Unexpected end tag : head
-SAX.characters(
+SAX.endElement(head)
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(body)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(h1)
 SAX.characters(Regression test 4, 17)
 SAX.endElement(h1)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(p)
 SAX.characters(
 Wrong close of tag P
@@ -41,19 +32,14 @@ Wrong close of tag P
 SAX.endElement(p)
 SAX.startElement(hr)
 SAX.endElement(hr)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
-SAX.startElement(p)
-SAX.characters(
+SAX.error: Unexpected end tag : p
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.endElement(body)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(

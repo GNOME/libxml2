@@ -1341,7 +1341,7 @@ UTF8ToHtml(unsigned char* out, int *outlen,
 
 	/* assertion: c is a single UTF-4 value */
 	if (c < 0x80) {
-	    if (out >= outend)
+	    if (out + 1 >= outend)
 		break;
 	    *out++ = c;
 	} else {
@@ -1360,7 +1360,7 @@ UTF8ToHtml(unsigned char* out, int *outlen,
 		return(-2);
 	    }
 	    len = strlen(ent->name);
-	    if (out + 2 + len > outend)
+	    if (out + 2 + len >= outend)
 		break;
 	    *out++ = '&';
 	    memcpy(out, ent->name, len);
@@ -1374,6 +1374,99 @@ UTF8ToHtml(unsigned char* out, int *outlen,
     return(0);
 }
 
+/**
+ * htmlEncodeEntities:
+ * @out:  a pointer to an array of bytes to store the result
+ * @outlen:  the length of @out
+ * @in:  a pointer to an array of UTF-8 chars
+ * @inlen:  the length of @in
+ * @quoteChar: the quote character to escape (' or ") or zero.
+ *
+ * Take a block of UTF-8 chars in and try to convert it to an ASCII
+ * plus HTML entities block of chars out.
+ *
+ * Returns 0 if success, -2 if the transcoding fails, or -1 otherwise
+ * The value of @inlen after return is the number of octets consumed
+ *     as the return value is positive, else unpredictiable.
+ * The value of @outlen after return is the number of octets consumed.
+ */
+int
+htmlEncodeEntities(unsigned char* out, int *outlen,
+		   const unsigned char* in, int *inlen, int quoteChar) {
+    const unsigned char* processed = in;
+    const unsigned char* outend = out + (*outlen);
+    const unsigned char* outstart = out;
+    const unsigned char* instart = in;
+    const unsigned char* inend = in + (*inlen);
+    unsigned int c, d;
+    int trailing;
+
+    while (in < inend) {
+	d = *in++;
+	if      (d < 0x80)  { c= d; trailing= 0; }
+	else if (d < 0xC0) {
+	    /* trailing byte in leading position */
+	    *outlen = out - outstart;
+	    *inlen = processed - instart;
+	    return(-2);
+        } else if (d < 0xE0)  { c= d & 0x1F; trailing= 1; }
+        else if (d < 0xF0)  { c= d & 0x0F; trailing= 2; }
+        else if (d < 0xF8)  { c= d & 0x07; trailing= 3; }
+	else {
+	    /* no chance for this in Ascii */
+	    *outlen = out - outstart;
+	    *inlen = processed - instart;
+	    return(-2);
+	}
+
+	if (inend - in < trailing)
+	    break;
+
+	while (trailing--) {
+	    if (((d= *in++) & 0xC0) != 0x80) {
+		*outlen = out - outstart;
+		*inlen = processed - instart;
+		return(-2);
+	    }
+	    c <<= 6;
+	    c |= d & 0x3F;
+	}
+
+	/* assertion: c is a single UTF-4 value */
+	if (c < 0x80 && c != quoteChar && c != '&' && c != '<' && c != '>') {
+	    if (out >= outend)
+		break;
+	    *out++ = c;
+	} else {
+	    htmlEntityDescPtr ent;
+	    const char *cp;
+	    char nbuf[16];
+	    int len;
+
+	    /*
+	     * Try to lookup a predefined HTML entity for it
+	     */
+	    ent = htmlEntityValueLookup(c);
+	    if (ent == NULL) {
+		sprintf(nbuf, "#%u", c);
+		cp = nbuf;
+	    }
+	    else
+		cp = ent->name;
+	    len = strlen(cp);
+	    if (out + 2 + len > outend)
+		break;
+	    *out++ = '&';
+	    memcpy(out, cp, len);
+	    out += len;
+	    *out++ = ';';
+	}
+	processed = in;
+    }
+    *outlen = out - outstart;
+    *inlen = processed - instart;
+    return(0);
+}
 
 /**
  * htmlDecodeEntities:
@@ -1555,6 +1648,12 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 
     if (CUR == 0) return(1);
     if (CUR != '<') return(0);
+    if (ctxt->name == NULL)
+	return(1);
+    if (!xmlStrcmp(ctxt->name, BAD_CAST"head"))
+	return(1);
+    if (!xmlStrcmp(ctxt->name, BAD_CAST"body"))
+	return(1);
     if (ctxt->node == NULL) return(0);
     lastChild = xmlGetLastChild(ctxt->node);
     if (lastChild == NULL) {

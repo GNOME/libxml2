@@ -9,40 +9,34 @@ SAX.characters(
 , 2)
 SAX.endElement(p)
 SAX.startElement(head)
-SAX.endElement(head)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
 SAX.startElement(meta, name='GENERATOR', content='Microsoft FrontPage 4.0')
 SAX.endElement(meta)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(title)
-SAX.characters(README - Microsoft FrontPage 2, 51)
+SAX.characters(README - Microsoft FrontPage 2, 30)
 SAX.endElement(title)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
 SAX.startElement(meta, name='Microsoft Theme', content='none')
 SAX.endElement(meta)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.error: Unexpected end tag : head
-SAX.characters(
+SAX.endElement(head)
+SAX.ignorableWhitespace(
 
 , 2)
-SAX.endElement(p)
 SAX.startElement(body)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
 SAX.startElement(font, face='Verdana')
 SAX.characters(
 , 1)
 SAX.startElement(h1)
 SAX.startElement(a, name='top')
-SAX.characters(Microsoft FrontPage 2000 Serve, 48)
+SAX.characters(Microsoft FrontPage 2000 Serve, 30)
 SAX.endElement(a)
 SAX.endElement(h1)
 SAX.characters(
@@ -50,8 +44,8 @@ SAX.characters(
 , 2)
 SAX.startElement(font, size='2')
 SAX.startElement(i)
-SAX.characters(© Copyright Microsoft Corpora, 40)
-SAX.characters( , 2)
+SAX.characters(&copy; Copyright Microsoft Cor, 26)
+SAX.characters(&nbsp;, 2)
 SAX.endElement(i)
 SAX.endElement(font)
 SAX.characters(
@@ -59,7 +53,7 @@ SAX.characters(
 
 , 3)
 SAX.startElement(p)
-SAX.characters(The FrontPage Server Extension, 88)
+SAX.characters(The FrontPage Server Extension, 30)
 SAX.endElement(p)
 SAX.startElement(ul)
 SAX.characters(
@@ -75,7 +69,7 @@ SAX.endElement(li)
 SAX.characters(
   , 3)
 SAX.startElement(li)
-SAX.characters(Browse-time FrontPage web func, 39)
+SAX.characters(Browse-time FrontPage web func, 30)
 SAX.endElement(li)
 SAX.characters(
 , 1)
@@ -86,7 +80,7 @@ SAX.characters(
 , 3)
 SAX.startElement(h2)
 SAX.characters(Contents, 8)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.endElement(h2)
 SAX.characters(
 
@@ -104,7 +98,7 @@ SAX.endElement(a)
 SAX.characters(
 , 1)
 SAX.startElement(p)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.endElement(p)
 SAX.characters(
 , 1)
@@ -121,7 +115,7 @@ SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(This section provides compleme, 136)
+SAX.characters(This section provides compleme, 30)
 SAX.endElement(p)
 SAX.characters(
 
@@ -135,14 +129,14 @@ SAX.endElement(br)
 SAX.characters(
 , 1)
 SAX.startElement(a, href='#upgrading')
-SAX.characters(Upgrading from previous versio, 62)
+SAX.characters(Upgrading from previous versio, 30)
 SAX.endElement(a)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(
 , 1)
 SAX.startElement(a, href='#executables')
-SAX.characters(Uploading files into executabl, 39)
+SAX.characters(Uploading files into executabl, 30)
 SAX.endElement(a)
 SAX.endElement(p)
 SAX.characters(
@@ -169,23 +163,22 @@ SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(You need to take some special , 360)
+SAX.characters(You need to take some special , 30)
 SAX.endElement(p)
 SAX.characters(
 
 
 , 3)
 SAX.endElement(font)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(blockquote)
 SAX.characters(
   , 3)
 SAX.startElement(font, face='Courier New')
 SAX.characters(
 ResourceConfig /dev/null, 25)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(
@@ -194,8 +187,7 @@ SAX.endElement(font)
 SAX.characters(
 , 1)
 SAX.endElement(blockquote)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
 SAX.startElement(font, face='Verdana')
 SAX.characters(
@@ -203,13 +195,13 @@ SAX.characters(
 
 , 3)
 SAX.startElement(p)
-SAX.characters(If you have some settings stor, 90)
+SAX.characters(If you have some settings stor, 30)
 SAX.endElement(p)
 SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(You must stop and restart the , 86)
+SAX.characters(You must stop and restart the , 30)
 SAX.endElement(p)
 SAX.characters(
 
@@ -230,26 +222,26 @@ SAX.characters(
 , 4)
 SAX.startElement(h3)
 SAX.startElement(a, name='upgrading')
-SAX.characters(Upgrading from previous versio, 62)
+SAX.characters(Upgrading from previous versio, 30)
 SAX.endElement(a)
 SAX.endElement(h3)
 SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(Custom entries in frontpage.cn, 67)
+SAX.characters(Custom entries in frontpage.cn, 30)
 SAX.endElement(p)
 SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(When you install FrontPage 200, 359)
+SAX.characters(When you install FrontPage 200, 30)
 SAX.endElement(p)
 SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(Do not overwrite the FrontPage, 141)
+SAX.characters(Do not overwrite the FrontPage, 30)
 SAX.endElement(p)
 SAX.characters(
 
@@ -270,7 +262,7 @@ SAX.characters(
 , 4)
 SAX.startElement(h3)
 SAX.startElement(a, name='executables')
-SAX.characters(Uploading files into executabl, 39)
+SAX.characters(Uploading files into executabl, 30)
 SAX.endElement(a)
 SAX.endElement(h3)
 SAX.characters(
@@ -278,15 +270,15 @@ SAX.characters(
 
 , 3)
 SAX.startElement(p)
-SAX.characters(After upgrading to FrontPage 2, 385)
+SAX.characters(After upgrading to FrontPage 2, 30)
 SAX.endElement(p)
 SAX.characters( 
 
 , 3)
 SAX.startElement(p)
-SAX.characters(To allow FrontPage authors to , 249)
+SAX.characters(To allow FrontPage authors to , 30)
 SAX.startElement(a, href='http://officeupdate.microsoft.com/frontpage/wpp/serk/')
-SAX.characters(http://officeupdate.microsoft., 53)
+SAX.characters(http://officeupdate.microsoft., 30)
 SAX.endElement(a)
 SAX.characters(., 1)
 SAX.endElement(p)
@@ -323,7 +315,7 @@ SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(This section lists sources of , 85)
+SAX.characters(This section lists sources of , 30)
 SAX.endElement(p)
 SAX.characters(
 
@@ -337,7 +329,7 @@ SAX.endElement(br)
 SAX.characters(
 , 1)
 SAX.startElement(a, href='#serkupdate')
-SAX.characters(Server Extensions Resource Kit, 37)
+SAX.characters(Server Extensions Resource Kit, 30)
 SAX.endElement(a)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -371,13 +363,13 @@ SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(The FrontPage 2000 Server Exte, 339)
+SAX.characters(The FrontPage 2000 Server Exte, 30)
 SAX.endElement(p)
 SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(The Server Extensions Resource, 312)
+SAX.characters(The Server Extensions Resource, 30)
 SAX.endElement(p)
 SAX.characters(
 
@@ -395,16 +387,16 @@ SAX.characters(
 , 3)
 SAX.startElement(h3)
 SAX.startElement(a, name='serkupdate')
-SAX.characters(Server Extensions Resource Kit, 37)
+SAX.characters(Server Extensions Resource Kit, 30)
 SAX.endElement(a)
 SAX.endElement(h3)
 SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(For updated information about , 157)
+SAX.characters(For updated information about , 30)
 SAX.startElement(a, href='http://officeupdate.microsoft.com/frontpage/wpp/serk/')
-SAX.characters(http://officeupdate.microsoft., 53)
+SAX.characters(http://officeupdate.microsoft., 30)
 SAX.endElement(a)
 SAX.characters(., 1)
 SAX.endElement(p)
@@ -432,13 +424,13 @@ SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(For further technical informat, 254)
+SAX.characters(For further technical informat, 30)
 SAX.error: htmlParseEntityRef: no name
-SAX.characters(&, 1)
+SAX.characters(&amp;, 1)
 SAX.characters( troubleshooters to find 
-fast, 302)
+fast, 30)
 SAX.startElement(a, href='http://support.microsoft.com/support/')
-SAX.characters(http://support.microsoft.com/s, 37)
+SAX.characters(http://support.microsoft.com/s, 30)
 SAX.endElement(a)
 SAX.characters(., 1)
 SAX.endElement(p)
@@ -457,20 +449,17 @@ SAX.characters(
 
 , 3)
 SAX.startElement(p)
-SAX.characters( , 2)
+SAX.characters(&nbsp;, 2)
 SAX.endElement(p)
 SAX.characters(  
 
 , 4)
 SAX.endElement(font)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.endElement(body)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(

@@ -1,3 +1,13 @@
+Mon Aug 28 11:58:12 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.[ch] testHTML.c: applied the second set of
+	  patches from Wayne Davison <wayned@blorf.net>, adding 
+	  htmlEncodeEntities()
+	* HTMLparser.c: fixed an ignorable white space detection bug
+	  occuring when parsing with SAX only
+	* result/HTML/*.sax: updated since the output is now HTML
+	  encoded...
+
 Mon Aug 28 00:38:31 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.[ch]: applied some of Wayne Davison <wayned@blorf.net>

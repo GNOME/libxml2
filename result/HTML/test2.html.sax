@@ -3,25 +3,20 @@ SAX.startDocument()
 SAX.internalSubset(HTML, -//W3C//DTD HTML 4.0 Transitional//EN, http://www.w3.org/TR/REC-html40/loose.dtd)
 SAX.startElement(html)
 SAX.startElement(head)
-SAX.endElement(head)
-SAX.startElement(body)
-SAX.startElement(p)
-SAX.characters( , 1)
-SAX.endElement(p)
+SAX.ignorableWhitespace( , 1)
 SAX.startElement(title)
 SAX.characters(Linux Today, 11)
 SAX.endElement(title)
-SAX.error: Unexpected end tag : head
+SAX.endElement(head)
+SAX.startElement(body)
 SAX.startElement(p)
 SAX.characters(
 , 1)
 SAX.endElement(p)
 SAX.startElement(body, bgcolor='White', link='Blue', text='Black', VLINK='Black', ALINK='Red')
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
-SAX.endElement(p)
 SAX.startElement(center)
 SAX.characters(
 , 1)
@@ -138,19 +133,15 @@ SAX.endElement(font)
 SAX.characters(
 , 1)
 SAX.endElement(center)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(p)
 SAX.characters(
 , 1)
 SAX.endElement(p)
 SAX.endElement(body)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(

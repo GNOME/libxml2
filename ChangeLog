@@ -1,3 +1,8 @@
+Fri Jul  9 14:02:54 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.h uri.c: fixed a couple of problems in the new
+	  elfgcchack.h trick pointed by Peter Breitenlohner
+
 Wed Jul  7 00:45:48 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* elfgcchack.h doc/apibuild.py doc/libxml2-api.xml: fixed a bug

@@ -52,8 +52,10 @@ void __xmlLoaderErr(void *ctx, const char *msg, const char *filename);
 
 #ifdef IN_LIBXML
 #ifdef __GNUC__
+#ifdef PIC
 #ifdef linux
 #include "elfgcchack.h"
+#endif
 #endif
 #endif
 #endif

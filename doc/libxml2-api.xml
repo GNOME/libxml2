@@ -6518,16 +6518,16 @@ actually an xmlCharEncoding'/>
       <arg name='sysID' type='const xmlChar *' info='the system ID string'/>
     </function>
     <function name='xmlACatalogResolvePublic' file='catalog'>
-      <info>Try to lookup the system ID associated to a public ID in that catalog</info>
-      <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
+      <info>Try to lookup the catalog local reference associated to a public ID in that catalog</info>
+      <return type='xmlChar *' info='the local resource if found or NULL otherwise, the value returned must be freed by the caller.'/>
       <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
       <arg name='pubID' type='const xmlChar *' info='the public ID string'/>
     </function>
     <function name='xmlACatalogResolveSystem' file='catalog'>
       <info>Try to lookup the catalog resource for a system ID</info>
-      <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
+      <return type='xmlChar *' info='the resource if found or NULL otherwise, the value returned must be freed by the caller.'/>
       <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
-      <arg name='sysID' type='const xmlChar *' info='the public ID string'/>
+      <arg name='sysID' type='const xmlChar *' info='the system ID string'/>
     </function>
     <function name='xmlACatalogResolveURI' file='catalog'>
       <info>Do a complete resolution lookup of an URI</info>
@@ -6654,7 +6654,7 @@ actually an xmlCharEncoding'/>
       <arg name='buf' type='xmlBufferPtr' info='the XML buffer output'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='attr' type='xmlAttrPtr' info='the attribute node'/>
-      <arg name='string' type='const xmlChar *' info=''/>
+      <arg name='string' type='const xmlChar *' info='the text content'/>
     </function>
     <function name='xmlAutomataCompile' file='xmlautomata'>
       <info>Compile the automata into a Reg Exp ready for being executed. The automata should be free after this point.</info>
@@ -6984,13 +6984,13 @@ actually an xmlCharEncoding'/>
       <return type='xmlCatalogAllow' info='the current xmlCatalogAllow value'/>
     </function>
     <function name='xmlCatalogGetPublic' file='catalog'>
-      <info>Try to lookup the system ID associated to a public ID DEPRECATED, use xmlCatalogResolvePublic()</info>
-      <return type='const xmlChar *' info='the system ID if found or NULL otherwise.'/>
+      <info>Try to lookup the catalog reference associated to a public ID DEPRECATED, use xmlCatalogResolvePublic()</info>
+      <return type='const xmlChar *' info='the resource if found or NULL otherwise.'/>
       <arg name='pubID' type='const xmlChar *' info='the public ID string'/>
     </function>
     <function name='xmlCatalogGetSystem' file='catalog'>
-      <info>Try to lookup the system ID associated to a public ID DEPRECATED, use xmlCatalogResolveSystem()</info>
-      <return type='const xmlChar *' info='the system ID if found or NULL otherwise.'/>
+      <info>Try to lookup the catalog reference associated to a system ID DEPRECATED, use xmlCatalogResolveSystem()</info>
+      <return type='const xmlChar *' info='the resource if found or NULL otherwise.'/>
       <arg name='sysID' type='const xmlChar *' info='the system ID string'/>
     </function>
     <function name='xmlCatalogIsEmpty' file='catalog'>
@@ -7023,14 +7023,14 @@ actually an xmlCharEncoding'/>
       <arg name='sysID' type='const xmlChar *' info='the system ID string'/>
     </function>
     <function name='xmlCatalogResolvePublic' file='catalog'>
-      <info>Try to lookup the system ID associated to a public ID</info>
-      <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
+      <info>Try to lookup the catalog reference associated to a public ID</info>
+      <return type='xmlChar *' info='the resource if found or NULL otherwise, the value returned must be freed by the caller.'/>
       <arg name='pubID' type='const xmlChar *' info='the public ID string'/>
     </function>
     <function name='xmlCatalogResolveSystem' file='catalog'>
       <info>Try to lookup the catalog resource for a system ID</info>
-      <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
-      <arg name='sysID' type='const xmlChar *' info='the public ID string'/>
+      <return type='xmlChar *' info='the resource if found or NULL otherwise, the value returned must be freed by the caller.'/>
+      <arg name='sysID' type='const xmlChar *' info='the system ID string'/>
     </function>
     <function name='xmlCatalogResolveURI' file='catalog'>
       <info>Do a complete resolution lookup of an URI</info>
@@ -7773,7 +7773,7 @@ actually an xmlCharEncoding'/>
     <function name='xmlFreeCatalog' file='catalog'>
       <info>Free the memory allocated to a Catalog</info>
       <return type='void'/>
-      <arg name='catal' type='xmlCatalogPtr' info='a Catalog entry'/>
+      <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
     </function>
     <function name='xmlFreeDoc' file='tree'>
       <info>Free up all the structures used by a document, tree included.</info>

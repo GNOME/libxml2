@@ -901,6 +901,15 @@ rpm: cleanup cleantar
 ## the value NONE in configure if the user doesn't specify them (this
 ## is an autoconf feature, not a bug).
 
+xml2Conf.sh: xml2Conf.sh.in Makefile
+## Use sed and then mv to avoid problems if the user interrupts.
+	sed -e 's?\@XML_LIBDIR\@?$(XML_LIBDIR)?g' \
+	    -e 's?\@XML_INCLUDEDIR\@?$(XML_INCLUDEDIR)?g' \
+	    -e 's?\@VERSION\@?$(VERSION)?g' \
+	    -e 's?\@XML_LIBS\@?$(XML_LIBS)?g' \
+	       < $(srcdir)/xml2Conf.sh.in > xml2Conf.tmp \
+	&& mv xml2Conf.tmp xml2Conf.sh
+
 CLEANFILES=xml2Conf.sh
 
 confexecdir=$(libdir)

@@ -18832,7 +18832,6 @@
           <ref name='xmlCatalogAdd'/>
           <ref name='xmlCatalogAddLocal'/>
           <ref name='xmlCatalogRemove'/>
-          <ref name='xmlFreeCatalog'/>
           <ref name='xmlHashUpdateEntry'/>
           <ref name='xmlHashUpdateEntry2'/>
           <ref name='xmlHashUpdateEntry3'/>
@@ -21032,34 +21031,6 @@
           <ref name='XML_COMPLETE_ATTRS'/>
           <ref name='XML_DETECT_IDS'/>
           <ref name='XML_SKIP_IDS'/>
-        </word>
-        <word name='local'>
-          <ref name='_xmlNs'/>
-          <ref name='endElementNsSAX2Func'/>
-          <ref name='startElementNsSAX2Func'/>
-          <ref name='xmlCatalogAddLocal'/>
-          <ref name='xmlNamespaceParseQName'/>
-          <ref name='xmlNoNetExternalEntityLoader'/>
-          <ref name='xmlOutputBufferCreateFilename'/>
-          <ref name='xmlSAX2EndElementNs'/>
-          <ref name='xmlSAX2StartElementNs'/>
-          <ref name='xmlSplitQName'/>
-          <ref name='xmlSplitQName2'/>
-          <ref name='xmlTextReaderConstLocalName'/>
-          <ref name='xmlTextReaderConstName'/>
-          <ref name='xmlTextReaderGetAttributeNs'/>
-          <ref name='xmlTextReaderLocalName'/>
-          <ref name='xmlTextReaderMoveToAttributeNs'/>
-          <ref name='xmlTextReaderName'/>
-          <ref name='xmlTextWriterStartAttributeNS'/>
-          <ref name='xmlTextWriterStartElementNS'/>
-          <ref name='xmlTextWriterWriteAttributeNS'/>
-          <ref name='xmlTextWriterWriteElementNS'/>
-          <ref name='xmlTextWriterWriteFormatAttributeNS'/>
-          <ref name='xmlTextWriterWriteFormatElementNS'/>
-          <ref name='xmlTextWriterWriteVFormatAttributeNS'/>
-          <ref name='xmlTextWriterWriteVFormatElementNS'/>
-          <ref name='xmlXPathLocalNameFunction'/>
         </word>
         <word name='local-name'>
           <ref name='xmlXPathLocalNameFunction'/>

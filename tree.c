@@ -7007,7 +7007,7 @@ xmlSaveErr(int code, xmlNodePtr node, const char *extra)
  * @buf:  the XML buffer output
  * @doc:  the document
  * @attr: the attribute node
- * @value: the text content
+ * @string: the text content
  *
  * Serialize text attribute values to an xml simple buffer
  */

@@ -1,3 +1,10 @@
+Wed Feb 25 13:57:25 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am catalog.c configure.in: applied a cleanup patch
+	  from Peter Breitenlohner
+	* tree.c: removed a doc build warning by fixing a param comment
+	* doc/* : rebuilt the docs
+
 Wed Feb 25 13:33:07 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c HTMLparser.c: avoid ID error message if using

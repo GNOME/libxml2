@@ -1,3 +1,8 @@
+Tue Apr  3 20:20:51 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* testXPath.c : added a --tree option allowing to display the
+	  tree dump of the XPath expression
+
 Mon Apr  2 17:13:51 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: fixed a memleak when comparing nodesets

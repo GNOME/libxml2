@@ -50,6 +50,7 @@ static int xptr = 0;
 static int debug = 0;
 static int valid = 0;
 static int expr = 0;
+static int tree = 0;
 static xmlDocPtr document = NULL;
 
 /*
@@ -102,8 +103,19 @@ testXPath(const char *str) {
 	ctxt->node = xmlDocGetRootElement(document);
 	if (expr)
 	    res = xmlXPathEvalExpression(BAD_CAST str, ctxt);
-	else
-	    res = xmlXPathEval(BAD_CAST str, ctxt);
+	else {
+	    /* res = xmlXPathEval(BAD_CAST str, ctxt); */
+	    xmlXPathCompExprPtr comp;
+
+	    comp = xmlXPathCompile(BAD_CAST str);
+	    if (comp != NULL) {
+		if (tree) 
+		    xmlXPathDebugDumpCompExpr(stdout, comp, 0);
+
+		res = xmlXPathCompiledEval(comp, ctxt);
+	    } else
+		res = NULL;
+	}
 #if defined(LIBXML_XPTR_ENABLED)
     }
 #endif
@@ -157,6 +169,8 @@ int main(int argc, char **argv) {
 	    valid++;
 	if ((!strcmp(argv[i], "-expr")) || (!strcmp(argv[i], "--expr")))
 	    expr++;
+	if ((!strcmp(argv[i], "-tree")) || (!strcmp(argv[i], "--tree")))
+	    tree++;
 	if ((!strcmp(argv[i], "-i")) || (!strcmp(argv[i], "--input")))
 	    filename = argv[++i];
 	if ((!strcmp(argv[i], "-f")) || (!strcmp(argv[i], "--file")))
@@ -191,6 +205,7 @@ int main(int argc, char **argv) {
 	printf("\t--xptr : expressions are XPointer expressions\n");
 #endif
 	printf("\t--expr : debug XPath expressions only\n");
+	printf("\t--tree : show the compiled XPath tree\n");
 	printf("\t--input filename : or\n");
 	printf("\t-i filename      : read the document from filename\n");
 	printf("\t--file : or\n");

@@ -703,7 +703,7 @@ def link(id):
     else:
 	target = string.upper(id)
     if hash.has_key(id):
-        module = string.lower(hash[id])
+        module = hash[id]
     else:
         module = 'index'
     file = 'html/libxml-' + module + '.html';

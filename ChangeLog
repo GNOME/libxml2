@@ -1,3 +1,8 @@
+Sat Aug 16 22:53:42 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* doc/parsedecl.py, doc/libxml2-refs.xml, doc/API*.html:
+	  fixed part (2) of bug 119535 (wrong alpha case on filenames)
+	  
 Sat Aug 16 20:35:28 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* doc/API*.html, doc/html/*: regenerated API documentation

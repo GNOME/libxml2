@@ -4019,7 +4019,7 @@ xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader,
  * @reader:  an XML reader
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  * @reuse:  keep the context for reuse
  *
  * Setup an XML reader with new options
@@ -4253,10 +4253,10 @@ xmlReaderWalker(xmlDocPtr doc)
  * @cur:  a pointer to a zero terminated string
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * Create an xmltextReader for an XML in-memory document.
- * The parsing flags @options are a combination of xmlParserOption(s).
+ * The parsing flags @options are a combination of xmlParserOption.
  * 
  * Returns the new reader or NULL in case of error.
  */
@@ -4278,10 +4278,10 @@ xmlReaderForDoc(const xmlChar * cur, const char *URL, const char *encoding,
  * xmlReaderForFile:
  * @filename:  a file or URL
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML file from the filesystem or the network.
- * The parsing flags @options are a combination of xmlParserOption(s).
+ * The parsing flags @options are a combination of xmlParserOption.
  * 
  * Returns the new reader or NULL in case of error.
  */
@@ -4303,10 +4303,10 @@ xmlReaderForFile(const char *filename, const char *encoding, int options)
  * @size:  the size of the array
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * Create an xmltextReader for an XML in-memory document.
- * The parsing flags @options are a combination of xmlParserOption(s).
+ * The parsing flags @options are a combination of xmlParserOption.
  * 
  * Returns the new reader or NULL in case of error.
  */
@@ -4338,10 +4338,10 @@ xmlReaderForMemory(const char *buffer, int size, const char *URL,
  * @fd:  an open file descriptor
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * Create an xmltextReader for an XML from a file descriptor.
- * The parsing flags @options are a combination of xmlParserOption(s).
+ * The parsing flags @options are a combination of xmlParserOption.
  * 
  * Returns the new reader or NULL in case of error.
  */
@@ -4374,10 +4374,10 @@ xmlReaderForFd(int fd, const char *URL, const char *encoding, int options)
  * @ioctx:  an I/O handler
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * Create an xmltextReader for an XML document from I/O functions and source.
- * The parsing flags @options are a combination of xmlParserOption(s).
+ * The parsing flags @options are a combination of xmlParserOption.
  * 
  * Returns the new reader or NULL in case of error.
  */
@@ -4453,10 +4453,10 @@ xmlReaderNewWalker(xmlTextReaderPtr reader, xmlDocPtr doc)
  * @cur:  a pointer to a zero terminated string
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * Setup an xmltextReader to parse an XML in-memory document.
- * The parsing flags @options are a combination of xmlParserOption(s).
+ * The parsing flags @options are a combination of xmlParserOption.
  * This reuses the existing @reader xmlTextReader.
  * 
  * Returns 0 in case of success and -1 in case of error
@@ -4483,10 +4483,10 @@ xmlReaderNewDoc(xmlTextReaderPtr reader, const xmlChar * cur,
  * @reader:  an XML reader
  * @filename:  a file or URL
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML file from the filesystem or the network.
- * The parsing flags @options are a combination of xmlParserOption(s).
+ * The parsing flags @options are a combination of xmlParserOption.
  * This reuses the existing @reader xmlTextReader.
  * 
  * Returns 0 in case of success and -1 in case of error
@@ -4517,10 +4517,10 @@ xmlReaderNewFile(xmlTextReaderPtr reader, const char *filename,
  * @size:  the size of the array
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * Setup an xmltextReader to parse an XML in-memory document.
- * The parsing flags @options are a combination of xmlParserOption(s).
+ * The parsing flags @options are a combination of xmlParserOption.
  * This reuses the existing @reader xmlTextReader.
  * 
  * Returns 0 in case of success and -1 in case of error
@@ -4550,10 +4550,10 @@ xmlReaderNewMemory(xmlTextReaderPtr reader, const char *buffer, int size,
  * @fd:  an open file descriptor
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * Setup an xmltextReader to parse an XML from a file descriptor.
- * The parsing flags @options are a combination of xmlParserOption(s).
+ * The parsing flags @options are a combination of xmlParserOption.
  * This reuses the existing @reader xmlTextReader.
  * 
  * Returns 0 in case of success and -1 in case of error
@@ -4583,11 +4583,11 @@ xmlReaderNewFd(xmlTextReaderPtr reader, int fd,
  * @ioctx:  an I/O handler
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * Setup an xmltextReader to parse an XML document from I/O functions
  * and source.
- * The parsing flags @options are a combination of xmlParserOption(s).
+ * The parsing flags @options are a combination of xmlParserOption.
  * This reuses the existing @reader xmlTextReader.
  * 
  * Returns 0 in case of success and -1 in case of error

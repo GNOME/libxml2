@@ -576,6 +576,7 @@ class xmlTextReaderCore:
             # assert f is _xmlTextReaderErrorFunc
             return arg
 
+
 # WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
 #
 # Everything before this line comes from libxml.py 

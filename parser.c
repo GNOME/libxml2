@@ -11059,6 +11059,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     oldsax = ctxt->sax;
     ctxt->sax = oldctxt->sax;
     xmlDetectSAX2(ctxt);
+    ctxt->replaceEntities = oldctxt->replaceEntities;
+    ctxt->options = oldctxt->options;
     
     ctxt->_private = oldctxt->_private;
     if (oldctxt->myDoc == NULL) {
@@ -11438,7 +11440,7 @@ xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
 /**
  * xmlCreateURLParserCtxt:
  * @filename:  the filename or URL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * Create a parser context for a file or URL content. 
  * Automatic support for ZLIB/Compress compressed document is provided
@@ -12324,7 +12326,7 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
 /**
  * xmlCtxtUseOptions:
  * @ctxt: an XML parser context
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * Applies the options to the parser context
  *
@@ -12420,7 +12422,7 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
  * @ctxt:  an XML parser context
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  * @reuse:  keep the context for reuse
  *
  * Common front-end for the xmlRead functions
@@ -12479,7 +12481,7 @@ xmlDoRead(xmlParserCtxtPtr ctxt, const char *URL, const char *encoding,
  * @cur:  a pointer to a zero terminated string
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML in-memory document and build a tree.
  * 
@@ -12503,7 +12505,7 @@ xmlReadDoc(const xmlChar * cur, const char *URL, const char *encoding, int optio
  * xmlReadFile:
  * @filename:  a file or URL
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML file from the filesystem or the network.
  * 
@@ -12526,7 +12528,7 @@ xmlReadFile(const char *filename, const char *encoding, int options)
  * @size:  the size of the array
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML in-memory document and build a tree.
  * 
@@ -12548,7 +12550,7 @@ xmlReadMemory(const char *buffer, int size, const char *URL, const char *encodin
  * @fd:  an open file descriptor
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML from a file descriptor and build a tree.
  * 
@@ -12589,7 +12591,7 @@ xmlReadFd(int fd, const char *URL, const char *encoding, int options)
  * @ioctx:  an I/O handler
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML document from I/O functions and source and build a tree.
  * 
@@ -12631,7 +12633,7 @@ xmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
  * @cur:  a pointer to a zero terminated string
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML in-memory document and build a tree.
  * This reuses the existing @ctxt parser context
@@ -12664,7 +12666,7 @@ xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar * cur,
  * @ctxt:  an XML parser context
  * @filename:  a file or URL
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML file from the filesystem or the network.
  * This reuses the existing @ctxt parser context
@@ -12699,7 +12701,7 @@ xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
  * @size:  the size of the array
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML in-memory document and build a tree.
  * This reuses the existing @ctxt parser context
@@ -12741,7 +12743,7 @@ xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
  * @fd:  an open file descriptor
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML from a file descriptor and build a tree.
  * This reuses the existing @ctxt parser context
@@ -12783,7 +12785,7 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
  * @ioctx:  an I/O handler
  * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
- * @options:  a combination of xmlParserOption(s)
+ * @options:  a combination of xmlParserOption
  *
  * parse an XML document from I/O functions and source and build a tree.
  * This reuses the existing @ctxt parser context

@@ -1,3 +1,9 @@
+Sun Dec 21 13:59:54 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed bug #129489, propagation of parsing flags 
+	  in entities.
+	* parser.c xmlreader.c: improved the comments of parsing options
+
 Sun Dec 21 18:14:04 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* python/Makefile.am, python/tests/Makefile.am,

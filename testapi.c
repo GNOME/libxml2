@@ -16,8 +16,7 @@ static int testlibxml2(void);
 static int generic_errors = 0;
 static int call_tests = 0;
 
-static xmlChar chartab[1024] = "  chartab
-";
+static xmlChar chartab[1024] = "  chartab\n";
 
 static void
 structured_errors(void *userData ATTRIBUTE_UNUSED,

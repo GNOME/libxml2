@@ -140,6 +140,10 @@ class MSTestCase:
             #
             dirs = self.schema_Folder.split("/")
             self.combineName = dirs[len(dirs) -1]
+	    if self.test_Folder == testFolderMS:
+	        if self.combineName == "group":		    
+	            self.schema_Folder = "Group"
+		    self.instance_Folder = "Group"
         elif self.test_Folder == testFolderNIST:
             #
             # NIST files are named in the following form: 
@@ -260,9 +264,8 @@ class MSTestCase:
             else:
                 self.fail(msgSchemaValidButShouldNot)
         else:
+	    self.debugMsg("schema result is OK")
             return schema
-            self.debugMsg("schema result is OK")
-        self.debugMsg("after checking schema result")
 
     def processInstance(self, filePath, schema):
         global msgInstanceNotValidButShould, msgInstanceValidButShouldNot
@@ -292,7 +295,9 @@ class MSTestCase:
                 #
                 # Validate the instance.
                 #
+		
                 validation_Ctxt = schema.schemaNewValidCtxt()
+		#validation_Ctxt = libxml2.schemaNewValidCtxt(None)
                 if (validation_Ctxt is None):
                     self.failCritical("Could not create the validation context.")
                     return

@@ -1,3 +1,33 @@
+Wed Sep 29 15:00:11 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c include/libxml/xmlerror.h include/libxml/xmlschemas.h
+	  include/libxml/schemasInternals.h: Parsing of <complexContent>
+	  - handle attribute 'mixed', catch illegal attributes.
+	  Parsing of <complexType> - handle attributes 'abstract',
+	  'final' and 'block', catch illegal attributes.
+	  Validation of complex types - handle abstract types.
+	  Added handling of default/fixed attributes and element values.
+	  Per validation option attribute nodes/text nodes are created
+	  on the instance.
+	  Added the corresponding constraints for fixed/default.
+	  Added xmlSchemaSetValidOptions, xmlSchemaGetValidOptions
+	  to the external API.
+	  Extended element declaration constraints.  
+	  Got rid of perseverative creation of temporery validation/parser 
+	  contexts.
+	  Added handling of xsi:schemaLocation and
+	  xsi:noNamespaceSchemaLocation.
+	  Fixed xsi:type component resolution if using non-prefixed
+	  QNames.
+	* xmlregexp.c xmlschemas.c include/libxml/xmlautomata.h:
+	  Enabled namespace awareness of the content model if using the
+	  model group "all".
+	* test/schemas/bug152470_1.xsd: Removed an "abstract" attribute,
+	  which broke the test.
+	* xstc/xstc.py:  Workaround to accomodate case insensitive
+	  test definitions in ms-test.def.xml (was missing in a previous
+	  commit).
+
 Wed Sep 29 11:03:10 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/drv_libxml2.py: another patch from Malcolm Tredinnick

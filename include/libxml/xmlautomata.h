@@ -73,12 +73,30 @@ XMLPUBFUN xmlAutomataStatePtr XMLCALL
 						 int max,
 						 void *data);
 XMLPUBFUN xmlAutomataStatePtr XMLCALL	
+		    xmlAutomataNewCountTrans2	(xmlAutomataPtr am,
+						 xmlAutomataStatePtr from,
+						 xmlAutomataStatePtr to,
+						 const xmlChar *token,
+						 const xmlChar *token2,
+						 int min,
+						 int max,
+						 void *data);
+XMLPUBFUN xmlAutomataStatePtr XMLCALL	
 		    xmlAutomataNewOnceTrans	(xmlAutomataPtr am,
 						 xmlAutomataStatePtr from,
 						 xmlAutomataStatePtr to,
 						 const xmlChar *token,
 						 int min,
 						 int max,
+						 void *data);
+XMLPUBFUN xmlAutomataStatePtr XMLCALL
+		    xmlAutomataNewOnceTrans2	(xmlAutomataPtr am, 
+						 xmlAutomataStatePtr from,
+						 xmlAutomataStatePtr to, 
+						 const xmlChar *token,
+						 const xmlChar *token2,
+						 int min, 
+						 int max, 
 						 void *data);
 XMLPUBFUN xmlAutomataStatePtr XMLCALL	
 		    xmlAutomataNewAllTrans	(xmlAutomataPtr am,

@@ -216,7 +216,7 @@ struct _xmlSchemaAnnot {
  */
 #define XML_SCHEMAS_ATTR_NSDEFAULT        1 << 7
 /**
- * XML_SCHEMAS_ATTR_NSDEFAULT:
+ * XML_SCHEMAS_ATTR_INTERNAL_RESOLVED:
  *
  * this is set when the "type" and "ref" references
  * have been resolved.
@@ -255,6 +255,8 @@ struct _xmlSchemaAttribute {
     const xmlChar *targetNamespace;
     int flags;
     const xmlChar *refPrefix;
+    xmlSchemaValPtr defVal;
+    xmlSchemaAttributePtr refDecl;
 };
 
 /**
@@ -470,6 +472,31 @@ struct _xmlSchemaFacetLink {
  * Marks the item as marked; used for circular checks.
  */
 #define XML_SCHEMAS_TYPE_MARKED        1 << 16
+/**
+ * XML_SCHEMAS_TYPE_BLOCK_DEFAULT:
+ *
+ * the complexType did not specify 'block' so use the default of the
+ * <schema> item.
+ */
+#define XML_SCHEMAS_TYPE_BLOCK_DEFAULT    1 << 17
+/**
+ * XML_SCHEMAS_TYPE_BLOCK_EXTENSION:
+ *
+ * the complexType has a 'block' of "extension".
+ */
+#define XML_SCHEMAS_TYPE_BLOCK_EXTENSION    1 << 18
+/**
+ * XML_SCHEMAS_TYPE_FINAL_RESTRICTION:
+ *
+ * the complexType has a 'block' of "restriction".
+ */
+#define XML_SCHEMAS_TYPE_BLOCK_RESTRICTION    1 << 19
+/**
+ * XML_SCHEMAS_TYPE_ABSTRACT:
+ *
+ * the simple/complexType is abstract.
+ */
+#define XML_SCHEMAS_TYPE_ABSTRACT    1 << 20
 
 /**
  * _xmlSchemaType:
@@ -650,6 +677,7 @@ struct _xmlSchemaElement {
     xmlRegexpPtr contModel;
     xmlSchemaContentType contentType;
     const xmlChar *refPrefix;
+    xmlSchemaValPtr defVal;
 };
 
 /*
@@ -792,6 +820,7 @@ struct _xmlSchema {
     xmlDictPtr      dict;
     void *includes;     /* the includes, this is opaque for now */
     int preserve;        /* whether to free the document */
+    int counter; /* used to give ononymous components unique names */
 };
 
 XMLPUBFUN void XMLCALL         xmlSchemaFreeType        (xmlSchemaTypePtr type);

@@ -17,7 +17,7 @@
   </choice>
 </complexType>
 
-<complexType name="KeyIdentifier" abstract="true"/>
+<complexType name="KeyIdentifier" /> <!-- removed: abstract="true" -->
 
 <complexType name="X509SPKIHash">
   <complexContent>

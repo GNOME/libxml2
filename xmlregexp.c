@@ -4406,6 +4406,94 @@ xmlAutomataNewTransition2(xmlAutomataPtr am, xmlAutomataStatePtr from,
 }
 
 /**
+ * xmlAutomataNewCountTrans2:
+ * @am: an automata
+ * @from: the starting point of the transition
+ * @to: the target point of the transition or NULL
+ * @token: the input string associated to that transition
+ * @token2: the second input string associated to that transition
+ * @min:  the minimum successive occurences of token
+ * @max:  the maximum successive occurences of token
+ * @data:  data associated to the transition
+ *
+ * If @to is NULL, this creates first a new target state in the automata
+ * and then adds a transition from the @from state to the target state
+ * activated by a succession of input of value @token and @token2 and 
+ * whose number is between @min and @max
+ *
+ * Returns the target state or NULL in case of error
+ */
+xmlAutomataStatePtr
+xmlAutomataNewCountTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
+			 xmlAutomataStatePtr to, const xmlChar *token,
+			 const xmlChar *token2,
+			 int min, int max, void *data) {
+    xmlRegAtomPtr atom;
+    int counter;
+
+    if ((am == NULL) || (from == NULL) || (token == NULL))
+	return(NULL);
+    if (min < 0)
+	return(NULL);
+    if ((max < min) || (max < 1))
+	return(NULL);
+    atom = xmlRegNewAtom(am, XML_REGEXP_STRING);
+    if (atom == NULL)
+	return(NULL);
+    if ((token2 == NULL) || (*token2 == 0)) {
+	atom->valuep = xmlStrdup(token);
+    } else {
+	int lenn, lenp;
+	xmlChar *str;
+
+	lenn = strlen((char *) token2);
+	lenp = strlen((char *) token);
+
+	str = (xmlChar *) xmlMallocAtomic(lenn + lenp + 2);
+	if (str == NULL) {
+	    xmlRegFreeAtom(atom);
+	    return(NULL);
+	}
+	memcpy(&str[0], token, lenp);
+	str[lenp] = '|';
+	memcpy(&str[lenp + 1], token2, lenn);
+	str[lenn + lenp + 1] = 0;
+
+	atom->valuep = str;
+    }
+    atom->data = data;
+    if (min == 0)
+	atom->min = 1;
+    else
+	atom->min = min;
+    atom->max = max;
+
+    /*
+     * associate a counter to the transition.
+     */
+    counter = xmlRegGetCounter(am);
+    am->counters[counter].min = min;
+    am->counters[counter].max = max;
+
+    /* xmlFAGenerateTransitions(am, from, to, atom); */
+    if (to == NULL) {
+        to = xmlRegNewState(am);
+	xmlRegStatePush(am, to);
+    }
+    xmlRegStateAddTrans(am, from, atom, to, counter, -1);
+    xmlRegAtomPush(am, atom);
+    am->state = to;
+
+    if (to == NULL)
+	to = am->state;
+    if (to == NULL)
+	return(NULL);
+    if (min == 0)
+	xmlFAGenerateEpsilonTransition(am, from, to);
+    return(to);
+}
+
+/**
  * xmlAutomataNewCountTrans:
  * @am: an automata
  * @from: the starting point of the transition
@@ -4470,6 +4558,90 @@ xmlAutomataNewCountTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 	xmlFAGenerateEpsilonTransition(am, from, to);
     return(to);
 }
+
+/**
+ * xmlAutomataNewOnceTrans2:
+ * @am: an automata
+ * @from: the starting point of the transition
+ * @to: the target point of the transition or NULL
+ * @token: the input string associated to that transition
+ * @token2: the second input string associated to that transition
+ * @min:  the minimum successive occurences of token
+ * @max:  the maximum successive occurences of token
+ * @data:  data associated to the transition
+ *
+ * If @to is NULL, this creates first a new target state in the automata
+ * and then adds a transition from the @from state to the target state
+ * activated by a succession of input of value @token and @token2 and whose 
+ * number is between @min and @max, moreover that transition can only be 
+ * crossed once.
+ *
+ * Returns the target state or NULL in case of error
+ */
+xmlAutomataStatePtr
+xmlAutomataNewOnceTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
+			 xmlAutomataStatePtr to, const xmlChar *token,
+			 const xmlChar *token2,
+			 int min, int max, void *data) {
+    xmlRegAtomPtr atom;
+    int counter;
+
+    if ((am == NULL) || (from == NULL) || (token == NULL))
+	return(NULL);
+    if (min < 1)
+	return(NULL);
+    if ((max < min) || (max < 1))
+	return(NULL);
+    atom = xmlRegNewAtom(am, XML_REGEXP_STRING);
+    if (atom == NULL)
+	return(NULL);
+    if ((token2 == NULL) || (*token2 == 0)) {
+	atom->valuep = xmlStrdup(token);
+    } else {
+	int lenn, lenp;
+	xmlChar *str;
+
+	lenn = strlen((char *) token2);
+	lenp = strlen((char *) token);
+
+	str = (xmlChar *) xmlMallocAtomic(lenn + lenp + 2);
+	if (str == NULL) {
+	    xmlRegFreeAtom(atom);
+	    return(NULL);
+	}
+	memcpy(&str[0], token, lenp);
+	str[lenp] = '|';
+	memcpy(&str[lenp + 1], token2, lenn);
+	str[lenn + lenp + 1] = 0;
+
+	atom->valuep = str;
+    }    
+    atom->data = data;
+    atom->quant = XML_REGEXP_QUANT_ONCEONLY;
+    if (min == 0)
+	atom->min = 1;
+    else
+	atom->min = min;
+    atom->max = max;
+    /*
+     * associate a counter to the transition.
+     */
+    counter = xmlRegGetCounter(am);
+    am->counters[counter].min = 1;
+    am->counters[counter].max = 1;
+
+    /* xmlFAGenerateTransitions(am, from, to, atom); */
+    if (to == NULL) {
+	to = xmlRegNewState(am);
+	xmlRegStatePush(am, to);
+    }
+    xmlRegStateAddTrans(am, from, atom, to, counter, -1);
+    xmlRegAtomPush(am, atom);
+    am->state = to;
+    return(to);
+}
+
+    
 
 /**
  * xmlAutomataNewOnceTrans:

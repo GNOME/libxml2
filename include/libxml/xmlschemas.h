@@ -54,6 +54,29 @@ typedef enum {
     XML_SCHEMAS_ERR_XXX
 } xmlSchemaValidError;
 
+/*
+* ATTENTION: Change xmlSchemaSetValidOptions's check
+* for invalid values, if adding to the validation 
+* options below.
+*/
+/**
+ * xmlSchemaValidOption:
+ *
+ * This is the set of XML Schema validation options.
+ */
+typedef enum {
+    XML_SCHEMA_VAL_VC_I_CREATE			= 1<<0
+	/* Default/fixed: create an attribute node
+	* or an element's text node on the instance.
+	*/
+} xmlSchemaValidOption;
+
+/*
+    XML_SCHEMA_VAL_XSI_ASSEMBLE			= 1<<1,
+	* assemble schemata using
+	* xsi:schemaLocation and
+	* xsi:noNamespaceSchemaLocation
+*/
 
 /**
  * The schemas related types are kept internal
@@ -113,10 +136,15 @@ XMLPUBFUN void XMLCALL
 					 xmlSchemaValidityWarningFunc warn,
 					 void *ctx);
 XMLPUBFUN int XMLCALL
-		xmlSchemaGetValidErrors (xmlSchemaValidCtxtPtr ctxt,
-					xmlSchemaValidityErrorFunc *err,
-					xmlSchemaValidityWarningFunc *warn,
-					void **ctx);
+	    xmlSchemaGetValidErrors	(xmlSchemaValidCtxtPtr ctxt,
+					 xmlSchemaValidityErrorFunc *err,
+					 xmlSchemaValidityWarningFunc *warn,
+					 void **ctx);
+XMLPUBFUN int XMLCALL
+	    xmlSchemaSetValidOptions	(xmlSchemaValidCtxtPtr ctxt,
+					 int options);
+XMLPUBFUN int XMLCALL
+	    xmlSchemaValidCtxtGetOptions(xmlSchemaValidCtxtPtr ctxt);
 
 XMLPUBFUN xmlSchemaValidCtxtPtr XMLCALL	
 	    xmlSchemaNewValidCtxt	(xmlSchemaPtr schema);

@@ -774,6 +774,9 @@ xmlNormalizeURIPath(char *path) {
 	 */
 	if ((cur[0] == '.') && (cur[1] == '/')) {
 	    cur += 2;
+	    /* '//' normalization should be done at this point too */
+	    while (cur[0] == '/')
+		cur++;
 	    continue;
 	}
 
@@ -790,6 +793,10 @@ xmlNormalizeURIPath(char *path) {
               goto done_cd;
 	    (out++)[0] = (cur++)[0];
 	}
+	/* nomalize // */
+	while ((cur[0] == '/') && (cur[1] == '/'))
+	    cur++;
+
         (out++)[0] = (cur++)[0];
     }
  done_cd:

@@ -1,3 +1,7 @@
+Tue Jun 26 09:46:29 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* uri.c: fixed 2 uri normalization bugs on '//' reduction
+
 Mon Jun 25 18:06:23 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* include/libxml/Makefile.am: Laszlo Peter pointed out that

@@ -1,3 +1,9 @@
+Sun May 16 01:07:16 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/ChangeLog.awk doc/ChangeLog.xsl: fixed escaping
+	  handling and added direct links to bugzilla report for
+	  bug numbers.
+
 Sun May 16 11:11:13 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* error.c: modified to assure proper user data is sent to

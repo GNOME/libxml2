@@ -39,8 +39,13 @@
     </ul>
   </xsl:variable>
 
+  <xsl:template match="bug">
+    <a href="http://bugzilla.gnome.org/show_bug.cgi?id={@number}">
+    <xsl:value-of select="@number"/></a>
+  </xsl:template>
+  
   <xsl:template match="item">
-    <li><xsl:value-of select="."/></li>
+    <li><xsl:apply-templates/></li>
   </xsl:template>
 
   <xsl:template match="entry">

@@ -417,6 +417,13 @@ Class xmlNode(xmlCore)
     xpathNextPrecedingSibling()
     xpathNextSelf()
 
+    # functions from module xpointer
+    xpointerNewCollapsedRange()
+    xpointerNewContext()
+    xpointerNewLocationSetNodes()
+    xpointerNewRange()
+    xpointerNewRangeNodes()
+
 
 Class xmlDoc(xmlNode)
 
@@ -527,6 +534,9 @@ Class xpathContext()
     xpathRegisteredVariablesCleanup()
     xpathVariableLookup()
     xpathVariableLookupNS()
+
+    # functions from module xpointer
+    xpointerEval()
 
 
 Class xmlAttribute(xmlNode)
@@ -663,6 +673,10 @@ Class xpathParserContext()
     xpathTrueFunction()
     xpathValueFlipSign()
     xpatherror()
+
+    # functions from module xpointer
+    xpointerEvalRangePredicate()
+    xpointerRangeToFunction()
 
 
 Class parserCtxt(parserCtxtCore)

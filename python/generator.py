@@ -185,7 +185,7 @@ skipped_modules = {
     'hash': None,
     'list': None,
     'threads': None,
-    'xpointer': None,
+#    'xpointer': None,
 }
 skipped_types = {
     'int *': "usually a return type",

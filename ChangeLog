@@ -1,3 +1,8 @@
+Thu Jan 23 17:41:37 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py: seems there is no good reasons to
+	  not generate bindings for XPointer
+
 Tue Jan 21 13:19:35 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c doc/apibuild.py: applied a new patch from

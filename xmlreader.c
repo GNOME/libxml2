@@ -91,6 +91,7 @@ struct _xmlTextReader {
     xmlNodePtr			curnode;/* current attribute node */
     int				depth;  /* depth of the current node */
     xmlNodePtr			faketext;/* fake xmlNs chld */
+    int				wasempty;/* was the last node empty */
 };
 
 #ifdef DEBUG_READER
@@ -174,9 +175,9 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
 	}
     }
     if (reader->state == XML_TEXTREADER_ELEMENT)
-	reader->state = XML_TEXTREADER_EMPTY;
+	reader->wasempty = 1;
     else
-	reader->state = XML_TEXTREADER_END;
+	reader->wasempty = 0;
 }
 
 /**
@@ -335,7 +336,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
  */
 int
 xmlTextReaderRead(xmlTextReaderPtr reader) {
-    int val, olddepth;
+    int val, olddepth, wasempty;
     xmlTextReaderState oldstate;
     xmlNodePtr oldnode;
 
@@ -373,6 +374,9 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     oldstate = reader->state;
     olddepth = reader->ctxt->nodeNr;
     oldnode = reader->node;
+    wasempty = ((reader->wasempty == 1) && (reader->ctxt->node != NULL) &&
+	        (reader->ctxt->node->last == reader->node));
+
     /*
      * If we are not backtracking on ancestors or examined nodes,
      * that the parser didn't finished or that we arent at the end
@@ -397,16 +401,15 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    (reader->node->type != XML_DTD_NODE)) {
 	    reader->node = reader->node->children;
 	    reader->depth++;
-	    if ((reader->state != XML_TEXTREADER_ELEMENT) &&
-		(reader->state != XML_TEXTREADER_EMPTY))
-		reader->state = XML_TEXTREADER_ELEMENT;
+	    reader->state = XML_TEXTREADER_ELEMENT;
 	    DUMP_READER
 	    return(1);
 	}
     }
     if (reader->node->next != NULL) {
 	if ((oldstate == XML_TEXTREADER_ELEMENT) &&
-            (reader->node->type == XML_ELEMENT_NODE)) {
+            (reader->node->type == XML_ELEMENT_NODE) &&
+	    (wasempty == 0)) {
 	    reader->state = XML_TEXTREADER_END;
 	    DUMP_READER
 	    return(1);
@@ -1410,10 +1413,15 @@ int
 xmlTextReaderIsEmptyElement(xmlTextReaderPtr reader) {
     if ((reader == NULL) || (reader->node == NULL))
 	return(-1);
+    if (reader->node->type != XML_ELEMENT_NODE)
+	return(0);
     if (reader->node->children != NULL)
 	return(0);
-    if ((reader->state == XML_TEXTREADER_EMPTY) ||
-	(reader->state == XML_TEXTREADER_BACKTRACK))
+    if (reader->node != reader->ctxt->node)
+	return(1);
+    if ((reader->ctxt->node != NULL) &&
+	(reader->node == reader->ctxt->node->last) &&
+	(reader->wasempty == 1))
 	return(1);
     return(0);
 }

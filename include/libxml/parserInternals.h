@@ -18,6 +18,26 @@ extern "C" {
 /**
  * A few macros needed to help building the parser.
  */
+/* #define UNICODE */
+
+#ifdef UNICODE
+typedef unsigned long CHARVAL;
+
+#define NEXTCHARVAL(p) (unsigned long)					\
+   ((*(p) == 0) ? (unsigned long) 0 :							\
+    ((*(p) < 0x80) ? (unsigned long) (*(p)++) :						\
+      (*(p) < 0xC0) ? (unsigned long) 0 :						\
+       (*(p) < 0xE0) ? ((((unsigned long) *(p)++) << 6) + (*(p)++ & 0x3F)) :		\
+        (*(p) < 0xF0) ? (((((unsigned long) *(p)++) << 6) + (*(p)++ & 0x3F)) << 6 +	\
+	              (*(p)++ & 0x3F)) :				\
+         (*(p) < 0xF8) ? ((((((unsigned long) *(p)++) << 6) + (*(p)++ & 0x3F)) << 6 +	\
+	                (*(p)++ & 0x3F)) << 6 + (*(p)++ & 0x3F)) : 0))
+#else
+typedef unsigned char CHARVAL;
+
+#define NEXTCHARVAL(p) (unsigned long) *(p);
+#define SKIPCHARVAL(p) (p)++;
+#endif
 
 #ifdef UNICODE
 /************************************************************************
@@ -402,7 +422,6 @@ extern "C" {
 #define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))
 
 #else
-#ifndef USE_UTF_8
 /************************************************************************
  *									*
  * 8bits / ISO-Latin version of the macros.				*
@@ -453,15 +472,6 @@ extern "C" {
  */
 #define IS_EXTENDER(c) ((c) == 0xb7)
 
-#else /* USE_UTF_8 */
-/************************************************************************
- *									*
- * 8bits / UTF-8 version of the macros.					*
- *									*
- ************************************************************************/
-
-TODO !!!
-#endif /* USE_UTF_8 */
 #endif /* !UNICODE */
 
 /*
@@ -513,6 +523,10 @@ xmlParserCtxtPtr
 xmlCreateMemoryParserCtxt(char *buffer, int size);
 void
 xmlFreeParserCtxt(xmlParserCtxtPtr ctxt);
+xmlParserCtxtPtr
+xmlNewParserCtxt();
+void
+xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc);
 
 /**
  * Entities
@@ -553,6 +567,8 @@ xmlParseNamespace(xmlParserCtxtPtr ctxt);
 /**
  * Generic production rules
  */
+CHAR *
+xmlScanName(xmlParserCtxtPtr ctxt);
 CHAR *
 xmlParseName(xmlParserCtxtPtr ctxt);
 CHAR *
@@ -638,6 +654,9 @@ void
 xmlParseXMLDecl(xmlParserCtxtPtr ctxt);
 void
 xmlParseMisc(xmlParserCtxtPtr ctxt);
+void
+xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const CHAR *ExternalID,
+                       const CHAR *SystemID);
 
 /*
  * Entities substitution

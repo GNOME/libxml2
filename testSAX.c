@@ -61,6 +61,7 @@ xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* xmlParserWarning */
     NULL, /* xmlParserError */
     NULL, /* xmlParserError */
+    NULL, /* getParameterEntity */
 };
 
 xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
@@ -156,7 +157,10 @@ internalSubsetDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
             name, ExternalID, SystemID);
 
     if ((ExternalID != NULL) || (SystemID != NULL)) {
-        externalSubset = xmlSAXParseDTD(debugSAXHandler, ExternalID, SystemID);
+        externalSubset = xmlParseDTD(ExternalID, SystemID);
+	if (externalSubset != NULL) {
+	    xmlFreeDtd(externalSubset);
+	}
     }
 }
 
@@ -206,6 +210,22 @@ xmlEntityPtr
 getEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
 {
     fprintf(stdout, "SAX.getEntity(%s)\n", name);
+    return(NULL);
+}
+
+/**
+ * getParameterEntityDebug:
+ * @ctxt:  An XML parser context
+ * @name: The entity name
+ *
+ * Get a parameter entity by name
+ *
+ * Returns the xmlParserInputPtr
+ */
+xmlEntityPtr
+getParameterEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
+{
+    fprintf(stdout, "SAX.getParameterEntity(%s)\n", name);
     return(NULL);
 }
 
@@ -541,6 +561,7 @@ xmlSAXHandler debugSAXHandlerStruct = {
     warningDebug,
     errorDebug,
     fatalErrorDebug,
+    getParameterEntityDebug,
 };
 
 xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;

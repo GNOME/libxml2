@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN4093"
+NAME="AEN4184"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN4093"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN4096"
+NAME="AEN4187"
 ></A
 ><H2
 >Synopsis</H2
@@ -138,6 +138,30 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+void        (<A
+HREF="gnome-xml-valid.html#XMLVALIDITYERRORFUNC"
+>*xmlValidityErrorFunc</A
+>)         (void *ctx,
+                                             const char *msg,
+                                             ...);
+void        (<A
+HREF="gnome-xml-valid.html#XMLVALIDITYWARNINGFUNC"
+>*xmlValidityWarningFunc</A
+>)       (void *ctx,
+                                             const char *msg,
+                                             ...);
+void        <A
+HREF="gnome-xml-valid.html#XMLPARSERVALIDITYERROR"
+>xmlParserValidityError</A
+>          (void *ctx,
+                                             const char *msg,
+                                             ...);
+void        <A
+HREF="gnome-xml-valid.html#XMLPARSERVALIDITYWARNING"
+>xmlParserValidityWarning</A
+>        (void *ctx,
+                                             const char *msg,
+                                             ...);
 #define     <A
 HREF="gnome-xml-valid.html#XML-MIN-NOTATION-TABLE"
 >XML_MIN_NOTATION_TABLE</A
@@ -168,7 +192,11 @@ HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
 > <A
 HREF="gnome-xml-valid.html#XMLADDNOTATIONDECL"
 >xmlAddNotationDecl</A
->           (<A
+>           (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
@@ -246,7 +274,11 @@ HREF="gnome-xml-tree.html#XMLELEMENTPTR"
 > <A
 HREF="gnome-xml-valid.html#XMLADDELEMENTDECL"
 >xmlAddElementDecl</A
->             (<A
+>             (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
@@ -320,7 +352,11 @@ HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
 > <A
 HREF="gnome-xml-valid.html#XMLADDATTRIBUTEDECL"
 >xmlAddAttributeDecl</A
->         (<A
+>         (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
@@ -369,7 +405,153 @@ HREF="gnome-xml-tree.html#XMLBUFFERPTR"
                                              <A
 HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
 >xmlAttributeTablePtr</A
-> table);</PRE
+> table);
+int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATEROOT"
+>xmlValidateRoot</A
+>                 (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);
+int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATEELEMENTDECL"
+>xmlValidateElementDecl</A
+>          (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTPTR"
+>xmlElementPtr</A
+> elem);
+int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATEATTRIBUTEDECL"
+>xmlValidateAttributeDecl</A
+>        (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
+>xmlAttributePtr</A
+> attr);
+int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATENOTATIONDECL"
+>xmlValidateNotationDecl</A
+>         (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
+>xmlNotationPtr</A
+> nota);
+int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATEDTD"
+>xmlValidateDtd</A
+>                  (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd);
+int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATEDOCUMENT"
+>xmlValidateDocument</A
+>             (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);
+int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATEELEMENT"
+>xmlValidateElement</A
+>              (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> elem);
+int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATEONEELEMENT"
+>xmlValidateOneElement</A
+>           (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> elem);
+int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATEONEATTRIBUTE"
+>xmlValidateOneAttribute</A
+>         (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> elem,
+                                             <A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> attr,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);
+int         <A
+HREF="gnome-xml-valid.html#XMLISMIXEDELEMENT"
+>xmlIsMixedElement</A
+>               (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -377,7 +559,7 @@ HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4163"
+NAME="AEN4300"
 ></A
 ><H2
 >Description</H2
@@ -387,14 +569,396 @@ NAME="AEN4163"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4166"
+NAME="AEN4303"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4168"
+NAME="AEN4305"
+></A
+><H3
+><A
+NAME="XMLVALIDITYERRORFUNC"
+></A
+>xmlValidityErrorFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlValidityErrorFunc)         (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4327"
+></A
+><H3
+><A
+NAME="XMLVALIDITYWARNINGFUNC"
+></A
+>xmlValidityWarningFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlValidityWarningFunc)       (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4349"
+></A
+><H3
+><A
+NAME="XMLPARSERVALIDITYERROR"
+></A
+>xmlParserValidityError ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserValidityError          (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Display and format an validity error messages, gives file,
+line, position and extra parameters.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4372"
+></A
+><H3
+><A
+NAME="XMLPARSERVALIDITYWARNING"
+></A
+>xmlParserValidityWarning ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserValidityWarning        (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Display and format a validity warning messages, gives file, line,
+position and extra parameters.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4395"
 ></A
 ><H3
 ><A
@@ -410,7 +974,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XML_MIN_NOTATION_TABLE	32</PRE
+>#define     XML_MIN_NOTATION_TABLE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -420,33 +984,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4173"
+NAME="AEN4400"
 ></A
 ><H3
 ><A
 NAME="XMLNOTATIONTABLEPTR"
 ></A
 >xmlNotationTablePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlNotationTable *xmlNotationTablePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4178"
+NAME="AEN4404"
 ></A
 ><H3
 ><A
@@ -462,7 +1013,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XML_MIN_ELEMENT_TABLE	32</PRE
+>#define     XML_MIN_ELEMENT_TABLE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -472,33 +1023,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4183"
+NAME="AEN4409"
 ></A
 ><H3
 ><A
 NAME="XMLELEMENTTABLEPTR"
 ></A
 >xmlElementTablePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlElementTable *xmlElementTablePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4188"
+NAME="AEN4413"
 ></A
 ><H3
 ><A
@@ -514,7 +1052,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XML_MIN_ATTRIBUTE_TABLE	32</PRE
+>#define     XML_MIN_ATTRIBUTE_TABLE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -524,33 +1062,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4193"
+NAME="AEN4418"
 ></A
 ><H3
 ><A
 NAME="XMLATTRIBUTETABLEPTR"
 ></A
 >xmlAttributeTablePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlAttributeTable *xmlAttributeTablePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4198"
+NAME="AEN4422"
 ></A
 ><H3
 ><A
@@ -569,7 +1094,11 @@ CLASS="PROGRAMLISTING"
 ><A
 HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
 >xmlNotationPtr</A
-> xmlAddNotationDecl           (<A
+> xmlAddNotationDecl           (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
@@ -611,6 +1140,23 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
 >dtd</I
 ></TT
 >&nbsp;:</TD
@@ -618,7 +1164,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the DTD</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -635,7 +1181,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the entity name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -652,7 +1198,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the public identifier or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -669,7 +1215,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the system identifier or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -684,7 +1230,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not, othervise the entity</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -694,7 +1240,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4234"
+NAME="AEN4463"
 ></A
 ><H3
 ><A
@@ -750,7 +1296,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  A notation table</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -765,7 +1311,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new xmlNotationTablePtr or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -775,7 +1321,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4255"
+NAME="AEN4484"
 ></A
 ><H3
 ><A
@@ -828,7 +1374,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An notation table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -838,7 +1384,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4271"
+NAME="AEN4500"
 ></A
 ><H3
 ><A
@@ -895,7 +1441,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -912,7 +1458,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  A notation table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -922,7 +1468,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4292"
+NAME="AEN4521"
 ></A
 ><H3
 ><A
@@ -979,7 +1525,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the subelement name or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -996,7 +1542,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the type of element content decl</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1011,7 +1557,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not, othervise the new element content structure</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1021,7 +1567,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4317"
+NAME="AEN4546"
 ></A
 ><H3
 ><A
@@ -1077,7 +1623,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An element content pointer.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1092,7 +1638,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new xmlElementContentPtr or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1102,7 +1648,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4338"
+NAME="AEN4567"
 ></A
 ><H3
 ><A
@@ -1155,7 +1701,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element content tree to free</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1165,7 +1711,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4354"
+NAME="AEN4583"
 ></A
 ><H3
 ><A
@@ -1184,7 +1730,11 @@ CLASS="PROGRAMLISTING"
 ><A
 HREF="gnome-xml-tree.html#XMLELEMENTPTR"
 >xmlElementPtr</A
-> xmlAddElementDecl             (<A
+> xmlAddElementDecl             (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
@@ -1223,6 +1773,23 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
 >dtd</I
 ></TT
 >&nbsp;:</TD
@@ -1230,7 +1797,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the DTD</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1247,7 +1814,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the entity name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1264,7 +1831,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element type</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1281,7 +1848,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element content tree or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1296,7 +1863,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not, othervise the entity</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1306,7 +1873,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4389"
+NAME="AEN4623"
 ></A
 ><H3
 ><A
@@ -1362,7 +1929,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An element table</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1377,7 +1944,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new xmlElementTablePtr or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1387,7 +1954,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4410"
+NAME="AEN4644"
 ></A
 ><H3
 ><A
@@ -1440,7 +2007,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An element table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1450,7 +2017,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4426"
+NAME="AEN4660"
 ></A
 ><H3
 ><A
@@ -1507,7 +2074,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1524,7 +2091,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An element table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1534,7 +2101,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4447"
+NAME="AEN4681"
 ></A
 ><H3
 ><A
@@ -1590,7 +2157,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the enumeration name or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1605,8 +2172,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlEnumerationPtr just created or NULL in case
-of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1616,7 +2182,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4468"
+NAME="AEN4702"
 ></A
 ><H3
 ><A
@@ -1669,7 +2235,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the tree to free.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1679,7 +2245,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4484"
+NAME="AEN4718"
 ></A
 ><H3
 ><A
@@ -1735,7 +2301,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the tree to copy.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1750,8 +2316,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlEnumerationPtr just created or NULL in case
-of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1761,7 +2326,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4505"
+NAME="AEN4739"
 ></A
 ><H3
 ><A
@@ -1780,7 +2345,11 @@ CLASS="PROGRAMLISTING"
 ><A
 HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
 >xmlAttributePtr</A
-> xmlAddAttributeDecl         (<A
+> xmlAddAttributeDecl         (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
@@ -1828,6 +2397,23 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
 >dtd</I
 ></TT
 >&nbsp;:</TD
@@ -1835,7 +2421,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the DTD</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1852,7 +2438,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1869,7 +2455,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1886,7 +2472,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute type</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1903,7 +2489,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute default type</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1920,7 +2506,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute default value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1937,7 +2523,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  if it's an enumeration, the associated list</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1952,7 +2538,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not, othervise the entity</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1962,7 +2548,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4554"
+NAME="AEN4793"
 ></A
 ><H3
 ><A
@@ -2018,7 +2604,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An attribute table</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2033,7 +2619,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new xmlAttributeTablePtr or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2043,7 +2629,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4575"
+NAME="AEN4814"
 ></A
 ><H3
 ><A
@@ -2096,7 +2682,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An attribute table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2106,7 +2692,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4591"
+NAME="AEN4830"
 ></A
 ><H3
 ><A
@@ -2163,7 +2749,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2180,7 +2766,1235 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An attribute table</TD
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4851"
+></A
+><H3
+><A
+NAME="XMLVALIDATEROOT"
+></A
+>xmlValidateRoot ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateRoot                 (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to validate a the root element
+basically it does the following check as described by the
+XML-1.0 recommendation:
+- [ VC: Root Element Type ]
+it doesn't try to recurse or apply other check to the element</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4876"
+></A
+><H3
+><A
+NAME="XMLVALIDATEELEMENTDECL"
+></A
+>xmlValidateElementDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateElementDecl          (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTPTR"
+>xmlElementPtr</A
+> elem);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to validate a single element definition
+basically it does the following checks as described by the
+XML-1.0 recommendation:
+- [ VC: One ID per Element Type ]
+- [ VC: No Duplicate Types ]
+- [ VC: Unique Element Type Declaration ]</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>elem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4906"
+></A
+><H3
+><A
+NAME="XMLVALIDATEATTRIBUTEDECL"
+></A
+>xmlValidateAttributeDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateAttributeDecl        (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
+>xmlAttributePtr</A
+> attr);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to validate a single attribute definition
+basically it does the following checks as described by the
+XML-1.0 recommendation:
+- [ VC: Attribute Default Legal ]
+- [ VC: Enumeration ]
+- [ VC: ID Attribute Default ]</P
+><P
+>The ID/IDREF uniqueness and matching are done separately</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>attr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4937"
+></A
+><H3
+><A
+NAME="XMLVALIDATENOTATIONDECL"
+></A
+>xmlValidateNotationDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateNotationDecl         (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
+>xmlNotationPtr</A
+> nota);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to validate a single notation definition
+basically it does the following checks as described by the
+XML-1.0 recommendation:
+- it seems that no validity constraing exist on notation declarations
+But this function get called anyway ...</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nota</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4967"
+></A
+><H3
+><A
+NAME="XMLVALIDATEDTD"
+></A
+>xmlValidateDtd ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateDtd                  (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to validate the dtd instance</P
+><P
+>basically it does check all the definitions in the DtD.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>dtd</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4998"
+></A
+><H3
+><A
+NAME="XMLVALIDATEDOCUMENT"
+></A
+>xmlValidateDocument ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateDocument             (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to validate the document instance</P
+><P
+>basically it does the all the checks described by the
+i.e. validates the internal and external subset (if present)
+and validate the document tree.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5024"
+></A
+><H3
+><A
+NAME="XMLVALIDATEELEMENT"
+></A
+>xmlValidateElement ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateElement              (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> elem);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to validate the subtree under an element</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>elem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5054"
+></A
+><H3
+><A
+NAME="XMLVALIDATEONEELEMENT"
+></A
+>xmlValidateOneElement ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateOneElement           (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> elem);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to validate a single element and it's attributes,
+basically it does the following checks as described by the
+XML-1.0 recommendation:
+- [ VC: Element Valid ]
+- [ VC: Required Attribute ]
+Then call <A
+HREF="gnome-xml-valid.html#XMLVALIDATEONEATTRIBUTE"
+>xmlValidateOneAttribute</A
+>() for each attribute present.</P
+><P
+>The ID/IDREF checkings are done separately</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>elem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5086"
+></A
+><H3
+><A
+NAME="XMLVALIDATEONEATTRIBUTE"
+></A
+>xmlValidateOneAttribute ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateOneAttribute         (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> elem,
+                                             <A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> attr,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to validate a single attribute for an element
+basically it * does the following checks as described by the
+XML-1.0 recommendation:
+- [ VC: Attribute Value Type ]
+- [ VC: Fixed Attribute Default ]
+- [ VC: Entity Name ]
+- [ VC: Name Token ]
+- [ VC: ID ]
+- [ VC: IDREF ]
+- [ VC: Entity Name ]
+- [ VC: Notation Attributes ]</P
+><P
+>The ID/IDREF uniqueness and matching are done separately</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>elem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>attr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5127"
+></A
+><H3
+><A
+NAME="XMLISMIXEDELEMENT"
+></A
+>xmlIsMixedElement ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsMixedElement               (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Search in the DtDs whether an element accept Mixed content (or ANY)
+basically if it is supposed to accept text childs</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P

@@ -35,6 +35,10 @@ static int copy = 0;
 static int recovery = 0;
 static int noent = 0;
 static int noout = 0;
+static int valid = 0;
+static int repeat = 0;
+
+extern int xmlDoValidityCheckingDefaultValue;
 
 /*
  * Note: there is a couple of errors introduced on purpose.
@@ -178,7 +182,7 @@ void parseAndPrintBuffer(CHAR *buf) {
 }
 
 int main(int argc, char **argv) {
-    int i;
+    int i, count;
     int files = 0;
 
     for (i = 1; i < argc ; i++) {
@@ -195,11 +199,22 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-noout")) ||
 	         (!strcmp(argv[i], "--noout")))
 	    noout++;
+	else if ((!strcmp(argv[i], "-valid")) ||
+	         (!strcmp(argv[i], "--valid")))
+	    valid++;
+	else if ((!strcmp(argv[i], "-repeat")) ||
+	         (!strcmp(argv[i], "--repeat")))
+	    repeat++;
     }
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
+    if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {
-	    parseAndPrintFile(argv[i]);
+	    if (repeat) {
+		for (count = 0;count < 100 * repeat;count++)
+		    parseAndPrintFile(argv[i]);
+	    } else
+		parseAndPrintFile(argv[i]);
 	    files ++;
 	}
     }
@@ -212,6 +227,7 @@ int main(int argc, char **argv) {
 	printf("\t--recover : output what is parsable on broken XmL documents\n");
 	printf("\t--noent : substitute entity references by their value\n");
 	printf("\t--noout : don't output the result\n");
+	printf("\t--repeat : parse the file 100 times, for timing or profiling\n");
     }
 
     return(0);

@@ -1,3 +1,14 @@
+Tue Aug 10 20:28:09 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in: upgraded to version 1.4.0
+	* valid.[ch], SAX.c, parser.[ch] parserInternals.h ...
+	  Big update, added a large part of the validation process,
+	  it should be usable, but some parts are missing
+	* xpath.c: improved the implementation w.r.t. root.
+	* Makefile.am: added more tests
+	* test and result trees: added a lot of tests
+	* libxml.spec.in: export libxml.so.0 and libxml.so.1
+
 Tue Aug 10 11:33:41 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Added an HACKING file

@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<!DOCTYPE diagram [
+<!ELEMENT diagram (diagramdata, (layer)*) >
+
+<!ELEMENT diagramdata (attribute)* >
+
+<!ELEMENT layer (object | group)*>
+<!ATTLIST layer
+   name CDATA #REQUIRED
+   visible (true|false) #REQUIRED >
+
+<!ELEMENT object ((attribute)*, connections?)>
+<!ATTLIST object
+   type CDATA #REQUIRED
+   version NMTOKEN #REQUIRED
+   id ID #REQUIRED >
+
+<!ELEMENT connections (connection)*>
+
+<!ELEMENT connection EMPTY>
+<!ATTLIST connection
+   handle NMTOKEN #REQUIRED
+   to IDREF #REQUIRED
+   connection NMTOKEN #REQUIRED>
+
+<!ELEMENT group (object | group)*>
+
+<!ELEMENT attribute (composite | int | enum | real | boolean |
+                     color | point | rectangle | string | font)*>
+<!ATTLIST attribute  name CDATA #REQUIRED >
+
+<!ELEMENT composite (attribute)*>
+<!ATTLIST composite  type CDATA #IMPLIED>
+
+<!ELEMENT int EMPTY>
+<!ATTLIST int  val NMTOKEN #REQUIRED>
+
+<!ELEMENT enum EMPTY>
+<!ATTLIST enum  val NMTOKEN #REQUIRED>
+
+<!ELEMENT real EMPTY>
+<!ATTLIST real  val CDATA #REQUIRED>
+
+<!ELEMENT boolean EMPTY>
+<!ATTLIST boolean  val (true|false) #REQUIRED>
+
+<!ELEMENT color EMPTY>
+<!ATTLIST color  val CDATA #REQUIRED>
+
+<!ELEMENT point EMPTY>
+<!ATTLIST point  val CDATA #REQUIRED>
+
+<!ELEMENT rectangle EMPTY>
+<!ATTLIST rectangle  val CDATA #REQUIRED>
+
+<!ELEMENT string EMPTY>
+<!ATTLIST string  val CDATA #IMPLIED>
+
+<!ELEMENT font EMPTY>
+<!ATTLIST font name CDATA #REQUIRED>
+]>
+
+<dia:diagram xmlns:dia="http://www.lysator.liu.se/~alla/dia/">
+  <dia:diagramdata>
+    <dia:attribute name="background">
+      <dia:color val="#ffffff"/>
+    </dia:attribute>
+  </dia:diagramdata>
+  <dia:layer name="Background" visible="true">
+    <dia:object type="Standard - Line" version="0" id="O0">
+      <dia:attribute name="obj_pos">
+        <dia:point val="1.95,6.85"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="1.9,6.8;11,8.55"/>
+      </dia:attribute>
+      <dia:attribute name="conn_endpoints">
+        <dia:point val="1.95,6.85"/>
+        <dia:point val="10.95,8.5"/>
+      </dia:attribute>
+      <dia:attribute name="line_color">
+        <dia:color val="#000000"/>
+      </dia:attribute>
+      <dia:attribute name="line_width">
+        <dia:real val="0.1"/>
+      </dia:attribute>
+      <dia:attribute name="line_style">
+        <dia:enum val="0"/>
+      </dia:attribute>
+      <dia:attribute name="start_arrow">
+        <dia:enum val="0"/>
+      </dia:attribute>
+      <dia:attribute name="end_arrow">
+        <dia:enum val="0"/>
+      </dia:attribute>
+      <dia:connections>
+        <dia:connection handle="1" to="O2" connection="3"/>
+      </dia:connections>
+    </dia:object>
+    <dia:object type="Standard - Text" version="0" id="O1">
+      <dia:attribute name="obj_pos">
+        <dia:point val="4.8,4.75"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="2.579,3.96359;7.021,4.96359"/>
+      </dia:attribute>
+      <dia:attribute name="text">
+        <dia:composite type="text">
+          <dia:attribute name="string">
+            <dia:string val="sdfsdfg"/>
+          </dia:attribute>
+          <dia:attribute name="font">
+            <dia:font name="Courier"/>
+          </dia:attribute>
+          <dia:attribute name="height">
+            <dia:real val="1"/>
+          </dia:attribute>
+          <dia:attribute name="pos">
+            <dia:point val="4.8,4.75"/>
+          </dia:attribute>
+          <dia:attribute name="color">
+            <dia:color val="#000000"/>
+          </dia:attribute>
+          <dia:attribute name="alignment">
+            <dia:enum val="1"/>
+          </dia:attribute>
+        </dia:composite>
+      </dia:attribute>
+    </dia:object>
+    <dia:object type="Standard - Box" version="0" id="O2">
+      <dia:attribute name="obj_pos">
+        <dia:point val="10.95,7.5"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="10.9,7.45;13.05,9.55"/>
+      </dia:attribute>
+      <dia:attribute name="elem_corner">
+        <dia:point val="10.95,7.5"/>
+      </dia:attribute>
+      <dia:attribute name="elem_width">
+        <dia:real val="2.05"/>
+      </dia:attribute>
+      <dia:attribute name="elem_height">
+        <dia:real val="2"/>
+      </dia:attribute>
+      <dia:attribute name="border_width">
+        <dia:real val="0.1"/>
+      </dia:attribute>
+      <dia:attribute name="border_color">
+        <dia:color val="#000000"/>
+      </dia:attribute>
+      <dia:attribute name="inner_color">
+        <dia:color val="#ffffff"/>
+      </dia:attribute>
+      <dia:attribute name="line_style">
+        <dia:enum val="0"/>
+      </dia:attribute>
+    </dia:object>
+  </dia:layer>
+</dia:diagram>

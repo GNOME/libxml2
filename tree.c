@@ -1127,6 +1127,46 @@ xmlNewComment(const CHAR *content) {
 }
 
 /**
+ * xmlNewCDataBlock:
+ * @doc:  the document
+ * @content:  the CData block content content
+ * @len:  the length of the block
+ *
+ * Creation of a new node containing a CData block.
+ * Returns a pointer to the new node object.
+ */
+xmlNodePtr
+xmlNewCDataBlock(xmlDocPtr doc, const CHAR *content, int len) {
+    xmlNodePtr cur;
+
+    /*
+     * Allocate a new node and fill the fields.
+     */
+    cur = (xmlNodePtr) malloc(sizeof(xmlNode));
+    if (cur == NULL) {
+        fprintf(stderr, "xmlNewCDataBlock : malloc failed\n");
+	return(NULL);
+    }
+
+    cur->type = XML_CDATA_SECTION_NODE;
+    cur->doc = NULL; 
+    cur->parent = NULL; 
+    cur->prev = NULL; 
+    cur->next = NULL; 
+    cur->childs = NULL; 
+    cur->last = NULL; 
+    cur->properties = NULL; 
+    cur->name = xmlStrdup(xmlStringText);
+    cur->ns = NULL;
+    cur->nsDef = NULL;
+    if ((content != NULL) && (len > 0)) {
+	cur->content = xmlStrndup(content, len);
+    } else 
+	cur->content = NULL;
+    return(cur);
+}
+
+/**
  * xmlNewDocComment:
  * @doc:  the document
  * @content:  the comment content
@@ -1725,7 +1765,6 @@ xmlNodeGetContent(xmlNodePtr cur) {
             return(xmlNodeListGetString(cur->doc, cur->childs, 1));
 	    break;
         case XML_ATTRIBUTE_NODE:
-        case XML_CDATA_SECTION_NODE:
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
@@ -1734,6 +1773,7 @@ xmlNodeGetContent(xmlNodePtr cur) {
         case XML_DOCUMENT_TYPE_NODE:
         case XML_NOTATION_NODE:
 	    return(NULL);
+        case XML_CDATA_SECTION_NODE:
         case XML_TEXT_NODE:
 	    if (cur->content != NULL)
 		return(xmlStrdup(cur->content));
@@ -2637,6 +2677,13 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
         xmlBufferWriteChar(buf, ";");
 	return;
     }
+    if (cur->type == XML_CDATA_SECTION_NODE) {
+        xmlBufferWriteChar(buf, "<![CDATA[");
+	if (cur->content != NULL)
+	    xmlBufferWriteCHAR(buf, cur->content);
+        xmlBufferWriteChar(buf, "]]>");
+	return;
+    }
     if (xmlIndentTreeOutput)
 	for (i = 0;i < level;i++)
 	    xmlBufferWriteChar(buf, "  ");
@@ -2747,10 +2794,9 @@ xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
 	return;
     }
     xmlDocContentDump(buf, cur);
-    *mem = buf->content;
+    *mem = xmlStrndup(buf->content, buf->use);
     *size = buf->use;
-    memset(buf, -1, sizeof(xmlBuffer));
-    free(buf);
+    xmlBufferFree(buf);
 }
 
 /**

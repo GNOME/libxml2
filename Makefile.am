@@ -44,7 +44,7 @@ xmlinc_HEADERS = \
 		valid.h
 
 DEPS = $(top_builddir)/libxml.la
-LDADDS = $(top_builddir)/libxml.la @Z_LIBS@
+LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@
 
 tester_SOURCES=tester.c
 tester_LDFLAGS = 
@@ -68,108 +68,167 @@ testXPath_LDADD= $(LDADDS)
 
 check-local: tests
 
-testall : tests SVGtests SAXtests XPathtests
+testall : tests SVGtests SAXtests XPathtests XMLenttests
 
-tests: HTMLtests XMLtests
+tests: XMLtests HTMLtests Validtests
+
 HTMLtests : testHTML
-	@(DIR=`pwd`; cd $(srcdir) ;  \
-	  for i in test/HTML/* ; do \
+	@echo "##"
+	@echo "## HTML regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/HTML/* ; do \
+	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
-	  if [ ! -f result/HTML/`basename $$i` ] ; then \
-	      echo New test file `basename $$i` ; \
-	      $$DIR/testHTML $$i > result/HTML/`basename $$i` ; \
+	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
+	      echo New test file $$name ; \
+	      testHTML $$i > $(srcdir)/result/HTML/$$name ; \
 	  else \
-	      echo Testing `basename $$i` ; \
-	      $$DIR/testHTML $$i > result.`basename $$i` ; \
-	      diff result/HTML/`basename $$i` result.`basename $$i` ; \
-	      $$DIR/testHTML result.`basename $$i` > result2.`basename $$i` ; \
-	      diff result.`basename $$i` result2.`basename $$i` ; \
-	      rm result.`basename $$i` result2.`basename $$i` ; \
+	      echo Testing $$name ; \
+	      testHTML $$i > result.$$name ; \
+	      diff $(srcdir)/result/HTML/$$name result.$$name ; \
+	      testHTML result.$$name > result2.$$name ; \
+	      diff result.$$name result2.$$name ; \
+	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
 XMLtests : tester
-	@(DIR=`pwd`; cd $(srcdir) ;  \
-	  for i in test/* ; do \
+	@echo "##"
+	@echo "## XML regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/* ; do \
+	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
-	  if [ ! -f result/`basename $$i` ] ; then \
-	      echo New test file `basename $$i` ; \
-	      $$DIR/tester $$i > result/`basename $$i` ; \
+	  if [ ! -f $(srcdir)/result/$$name ] ; then \
+	      echo New test file $$name ; \
+	      tester $$i > $(srcdir)/result/$$name ; \
 	  else \
-	      echo Testing `basename $$i` ; \
-	      $$DIR/tester $$i > result.`basename $$i` ; \
-	      diff result/`basename $$i` result.`basename $$i` ; \
-	      $$DIR/tester result.`basename $$i` > result2.`basename $$i` ; \
-	      diff result.`basename $$i` result2.`basename $$i` ; \
-	      rm result.`basename $$i` result2.`basename $$i` ; \
+	      echo Testing $$name ; \
+	      tester $$i > result.$$name ; \
+	      diff $(srcdir)/result/$$name result.$$name ; \
+	      tester result.$$name > result2.$$name ; \
+	      diff result.$$name result2.$$name ; \
+	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
-SVGtests : tester
-	@(DIR=`pwd`; cd $(srcdir) ;  \
-	  for i in test/SVG/* ; do \
+XMLenttests : tester
+	@echo "##"
+	@echo "## XML entity subst regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/* ; do \
+	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
-	  if [ ! -f result/SVG/`basename $$i` ] ; then \
-	      echo New test file `basename $$i` ; \
-	      $$DIR/tester $$i > result/SVG/`basename $$i` ; \
+	  if [ ! -f $(srcdir)/result/noent/$$name ] ; then \
+	      echo New test file $$name ; \
+	      tester --noent $$i > $(srcdir)/result/noent/$$name ; \
 	  else \
-	      echo Testing `basename $$i` ; \
-	      $$DIR/tester $$i > result.`basename $$i` ; \
-	      diff result/SVG/`basename $$i` result.`basename $$i` ; \
-	      $$DIR/tester result.`basename $$i` > result2.`basename $$i` ; \
-	      diff result.`basename $$i` result2.`basename $$i` ; \
-	      rm result.`basename $$i` result2.`basename $$i` ; \
+	      echo Testing $$name ; \
+	      tester --noent $$i > result.$$name ; \
+	      diff $(srcdir)/result/noent/$$name result.$$name ; \
+	      tester --noent result.$$name > result2.$$name ; \
+	      diff result.$$name result2.$$name ; \
+	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
 XPathtests : testXPath
-	@(DIR=`pwd`; cd $(srcdir) ;  \
-	  for i in test/XPath/expr/* ; do \
-	  if [ ! -d $$i ] ; then \
-	  if [ ! -f result/XPath/expr/`basename $$i` ] ; then \
-	      echo New test file `basename $$i` ; \
-	      $$DIR/testXPath -f --expr $$i > result/XPath/expr/`basename $$i` ; \
-	  else \
-	      echo Testing `basename $$i` ; \
-	      $$DIR/testXPath -f --expr $$i > result.`basename $$i` ; \
-	      diff result/XPath/expr/`basename $$i` result.`basename $$i` ; \
-	      rm result.`basename $$i` ; \
-	  fi ; fi ; done)
-	@(DIR=`pwd`; cd $(srcdir) ;  \
-	  for i in test/XPath/docs/* ; do \
-	  if [ ! -d $$i ] ; then \
+	@echo "##"
+	@echo "## XPath regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/XPath/expr/* ; do \
 	  name=`basename $$i`; \
-	  for j in test/XPath/tests/$$name* ; do \
-	  if [ ! -d $$j ] ; then \
-	  if [ ! -f result/XPath/tests/`basename $$j` ] ; then \
-	      echo New test file `basename $$i` ; \
-	      $$DIR/testXPath -f -i $$i $$j > result/XPath/tests/`basename $$j` ; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/XPath/expr/$$name ] ; then \
+	      echo New test file $$name ; \
+	      testXPath -f --expr $$i > $(srcdir)/result/XPath/expr/$$name ; \
 	  else \
-	      echo Testing `basename $$j` ; \
-	      $$DIR/testXPath -f -i $$i $$j > result.`basename $$j` ; \
-	      diff result/XPath/tests/`basename $$j` result.`basename $$j` ; \
-	      rm result.`basename $$j` ; \
+	      echo Testing $$name ; \
+	      testXPath -f --expr $$i > result.$$name ; \
+	      diff $(srcdir)/result/XPath/expr/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
+	@(for i in $(srcdir)/test/XPath/docs/* ; do \
+	  if [ ! -d $$i ] ; then \
+	  doc=`basename $$i`; \
+	  for j in $(srcdir)/test/XPath/tests/$$doc* ; do \
+	  name=`basename $$j`; \
+	  if [ ! -d $$j ] ; then \
+	  if [ ! -f $(srcdir)/result/XPath/tests/$$name ] ; then \
+	      echo New test file $$name ; \
+	      testXPath -f -i $$i $$j > $(srcdir)/result/XPath/tests/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      testXPath -f -i $$i $$j > result.$$name ; \
+	      diff $(srcdir)/result/XPath/tests/$$name result.$$name ; \
+	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)
 
-SAXtests : testSAX
-	@(DIR=`pwd`; cd $(srcdir) ;  \
-	  for i in test/* ; do \
+SVGtests : tester
+	@echo "##"
+	@echo "## SVG parsing regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/SVG/* ; do \
+	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
-	  if [ ! -f SAXresult/`basename $$i` ] ; then \
-	      echo New test file `basename $$i` ; \
-	      $$DIR/testSAX $$i > SAXresult/`basename $$i` ; \
+	  if [ ! -f $(srcdir)/result/SVG/$$name ] ; then \
+	      echo New test file $$name ; \
+	      tester $$i > $(srcdir)/result/SVG/$$name ; \
 	  else \
-	      echo Testing `basename $$i` ; \
-	      $$DIR/testSAX $$i > result.`basename $$i` ; \
-	      diff SAXresult/`basename $$i` result.`basename $$i` ; \
-	      rm result.`basename $$i` ; \
+	      echo Testing $$name ; \
+	      tester $$i > result.$$name ; \
+	      diff $(srcdir)/result/SVG/$$name result.$$name ; \
+	      tester result.$$name > result2.$$name ; \
+	      diff result.$$name result2.$$name ; \
+	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
-## Put `exec' in the name because this should be installed by
-## `install-exec', not `install-data'.
+SAXtests : testSAX
+	@echo "##"
+	@echo "## SAX callbacks regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/SAXresult/$$name ] ; then \
+	      echo New test file $$name ; \
+	      testSAX $$i > $(srcdir)/SAXresult/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      testSAX $$i > result.$$name ; \
+	      diff $(srcdir)/SAXresult/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
 
-confexecdir=$(libdir)
-confexec_DATA = xmlConf.sh
 
-EXTRA_DIST = xmlConf.sh.in libxml.spec.in test result SAXresult example/Makefile.am \
-             example/gjobread.c example/gjobs.xml
+Validtests : tester
+	@echo "##"
+	@echo "## Validity checking regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/VC/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/VC/$$name ] ; then \
+	      echo New test file $$name ; \
+	      tester --noout --valid $$i 2> $(srcdir)/result/VC/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      tester --noout --valid $$i 2> result.$$name ; \
+	      diff $(srcdir)/result/VC/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
+	@echo "##"
+	@echo "## Valid documents regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/valid/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/valid/$$name ] ; then \
+	      echo New test file $$name ; \
+	      tester --valid $$i > $(srcdir)/result/valid/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      tester --valid $$i > result.$$name ; \
+	      diff $(srcdir)/result/valid/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
 
 dist-hook:
 	cp libxml.spec $(distdir)

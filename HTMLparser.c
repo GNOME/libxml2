@@ -515,13 +515,11 @@ htmlEntityDesc  html40EntitiesTable[] = {
 { 180,	"acute","acute accent = spacing acute, U+00B4 ISOdia" },
 { 181,	"micro","micro sign, U+00B5 ISOnum" },
 { 182,	"para",	"pilcrow sign = paragraph sign, U+00B6 ISOnum" },
-{ 183,	"middot","middle dot = Georgian comma
-                                  = Greek middle dot, U+00B7 ISOnum" },
+{ 183,	"middot","middle dot = Georgian comma Greek middle dot, U+00B7 ISOnum" },
 { 184,	"cedil","cedilla = spacing cedilla, U+00B8 ISOdia" },
 { 185,	"sup1",	"superscript one = superscript digit one, U+00B9 ISOnum" },
 { 186,	"ordm",	"masculine ordinal indicator, U+00BA ISOnum" },
-{ 187,	"raquo","right-pointing double angle quotation mark
-                                  = right pointing guillemet, U+00BB ISOnum" },
+{ 187,	"raquo","right-pointing double angle quotation mark right pointing guillemet, U+00BB ISOnum" },
 { 188,	"frac14","vulgar fraction one quarter = fraction one quarter, U+00BC ISOnum" },
 { 189,	"frac12","vulgar fraction one half = fraction one half, U+00BD ISOnum" },
 { 190,	"frac34","vulgar fraction three quarters = fraction three quarters, U+00BE ISOnum" },
@@ -550,7 +548,7 @@ htmlEntityDesc  html40EntitiesTable[] = {
 { 213,	"Otilde","latin capital letter O with tilde, U+00D5 ISOlat1" },
 { 214,	"Ouml",	"latin capital letter O with diaeresis, U+00D6 ISOlat1" },
 { 215,	"times","multiplication sign, U+00D7 ISOnum" },
-{ 216,	"Oslash","latin capital letter O with stroke = latin capital letter O slash, U+00D8 ISOlat1" },
+{ 216,	"Oslash","latin capital letter O with stroke latin capital letter O slash, U+00D8 ISOlat1" },
 { 217,	"Ugrave","latin capital letter U with grave, U+00D9 ISOlat1" },
 { 218,	"Uacute","latin capital letter U with acute, U+00DA ISOlat1" },
 { 219,	"Ucirc","latin capital letter U with circumflex, U+00DB ISOlat1" },
@@ -657,8 +655,7 @@ htmlEntityDesc  html40EntitiesTable[] = {
 { 8254,	"oline","overline = spacing overscore, U+203E NEW" },
 { 8260,	"frasl","fraction slash, U+2044 NEW" },
 
-{ 8472,	"weierp","script capital P = power set
-                                     = Weierstrass p, U+2118 ISOamso" },
+{ 8472,	"weierp","script capital P = power set = Weierstrass p, U+2118 ISOamso" },
 { 8465,	"image","blackletter capital I = imaginary part, U+2111 ISOamso" },
 { 8476,	"real",	"blackletter capital R = real part symbol, U+211C ISOamso" },
 { 8482,	"trade","trade mark sign, U+2122 ISOnum" },
@@ -754,8 +751,7 @@ htmlEntityDesc  html40EntitiesTable[] = {
 { 8225,	"Dagger","double dagger, U+2021 ISOpub" },
 { 8240,	"permil","per mille sign, U+2030 ISOtech" },
 { 8249,	"lsaquo","single left-pointing angle quotation mark, U+2039 ISO proposed" },
-{ 8250,	"rsaquo","single right-pointing angle quotation mark,
-                                    U+203A ISO proposed" },
+{ 8250,	"rsaquo","single right-pointing angle quotation mark, U+203A ISO proposed" },
 { 8364,	"euro",	"euro sign, U+20AC NEW" }
 };
 

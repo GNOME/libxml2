@@ -97,6 +97,7 @@ typedef xmlEnumeration *xmlEnumerationPtr;
 typedef struct xmlAttribute {
     const CHAR            *elem;	/* Element holding the attribute */
     const CHAR            *name;	/* Attribute name */
+    struct xmlAttribute   *next;        /* list of attributes of an element */
     xmlAttributeType       type;	/* The type */
     xmlAttributeDefault    def;		/* the default */
     const CHAR            *defaultValue;/* or the default value */
@@ -138,9 +139,10 @@ typedef enum {
 } xmlElementTypeVal;
 
 typedef struct xmlElement {
-    const CHAR          *name;		/* Element name */
-    xmlElementTypeVal    type;		/* The type */
+    const CHAR             *name;	/* Element name */
+    xmlElementTypeVal       type;	/* The type */
     xmlElementContentPtr content;	/* the allowed element content */
+    xmlAttributePtr   attributes;	/* List of the declared attributes */
 } xmlElement;
 typedef xmlElement *xmlElementPtr;
 
@@ -188,7 +190,7 @@ typedef struct xmlAttr {
 #endif
     xmlElementType  type;       /* XML_ATTRIBUTE_NODE, must be third ! */
     struct xmlNode *node;	/* attr->node link */
-    struct xmlAttr *next;	/* parent->childs link */
+    struct xmlAttr *next;	/* attribute list link */
     const CHAR     *name;       /* the name of the property */
     struct xmlNode *val;        /* the value of the property */
 } xmlAttr;
@@ -310,6 +312,7 @@ xmlNodePtr xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len);
 xmlNodePtr xmlNewTextLen(const CHAR *content, int len);
 xmlNodePtr xmlNewDocComment(xmlDocPtr doc, const CHAR *content);
 xmlNodePtr xmlNewComment(const CHAR *content);
+xmlNodePtr xmlNewCDataBlock(xmlDocPtr doc, const CHAR *content, int len);
 xmlNodePtr xmlNewReference(xmlDocPtr doc, const CHAR *name);
 xmlNodePtr xmlCopyNode(xmlNodePtr node, int recursive);
 xmlNodePtr xmlCopyNodeList(xmlNodePtr node);

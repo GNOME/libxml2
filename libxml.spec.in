@@ -12,6 +12,7 @@ Copyright: LGPL
 Group: X11/Libraries
 Source: ftp://ftp.gnome.org/pub/GNOME/sources/libxml/libxml-%{ver}.tar.gz
 BuildRoot: /var/tmp/libxml-%{PACKAGE_VERSION}-root
+Provides: libxml.so.0
 
 URL: http://www.gnome.org
 Prereq: /sbin/install-info
@@ -76,6 +77,14 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 make prefix=$RPM_BUILD_ROOT%{prefix} install
+#
+# hack to get libxml.so.0 too !
+# Get rid of it once deps to libxml.so.0 have disapeared.
+#
+if [ -f $RPM_BUILD_ROOT/%{prefix}/lib/libxml.so.@VERSION@ ]
+then
+    (cd $RPM_BUILD_ROOT/%{prefix}/lib/ ; cp libxml.so.@VERSION@ libxml.so.0.99.0 ; ln -sf libxml.so.0.99.0 libxml.so.0)
+fi
 
 
 %clean
@@ -97,5 +106,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %{prefix}/lib/lib*.so
 %{prefix}/lib/*a
-%{prefix}/lib/*.sh
 %{prefix}/include/*

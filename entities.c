@@ -68,7 +68,17 @@ xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
 	     * The entity is already defined in this Dtd, the spec says to NOT
 	     * override it ... Is it worth a Warning ??? !!!
 	     */
-	    return;
+	    if (((type == XML_INTERNAL_PARAMETER_ENTITY) ||
+	         (type == XML_EXTERNAL_PARAMETER_ENTITY)) &&
+	        ((cur->type == XML_INTERNAL_PARAMETER_ENTITY) ||
+	         (cur->type == XML_EXTERNAL_PARAMETER_ENTITY)))
+		return;
+	    else
+	    if (((type != XML_INTERNAL_PARAMETER_ENTITY) &&
+	         (type != XML_EXTERNAL_PARAMETER_ENTITY)) &&
+	        ((cur->type != XML_INTERNAL_PARAMETER_ENTITY) &&
+	         (cur->type != XML_EXTERNAL_PARAMETER_ENTITY)))
+		return;
 	}
     }
     if (table->nb_entities >= table->max_entities) {
@@ -78,9 +88,9 @@ xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
 	table->max_entities *= 2;
 	table->table = (xmlEntityPtr) 
 	    realloc(table->table, table->max_entities * sizeof(xmlEntity));
-	if (table->table) {
+	if (table->table == NULL) {
 	    perror("realloc failed");
-	    exit(1);
+	    return;
 	}
     }
     cur = &table->table[table->nb_entities];
@@ -219,6 +229,43 @@ xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
 }
 
 /**
+ * xmlGetParameterEntity:
+ * @doc:  the document referencing the entity
+ * @name:  the entity name
+ *
+ * Do an entity lookup in the internal and external subsets and
+ * returns the corresponding parameter entity, if found.
+ * 
+ * Returns A pointer to the entity structure or NULL if not found.
+ */
+xmlEntityPtr
+xmlGetParameterEntity(xmlDocPtr doc, const CHAR *name) {
+    int i;
+    xmlEntityPtr cur;
+    xmlEntitiesTablePtr table;
+
+    if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
+	table = (xmlEntitiesTablePtr) doc->intSubset->entities;
+	for (i = 0;i < table->nb_entities;i++) {
+	    cur = &table->table[i];
+	    if (((cur->type ==  XML_INTERNAL_PARAMETER_ENTITY) ||
+	         (cur->type ==  XML_EXTERNAL_PARAMETER_ENTITY)) &&
+		(!xmlStrcmp(cur->name, name))) return(cur);
+	}
+    }
+    if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
+	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
+	for (i = 0;i < table->nb_entities;i++) {
+	    cur = &table->table[i];
+	    if (((cur->type ==  XML_INTERNAL_PARAMETER_ENTITY) ||
+	         (cur->type ==  XML_EXTERNAL_PARAMETER_ENTITY)) &&
+		(!xmlStrcmp(cur->name, name))) return(cur);
+	}
+    }
+    return(NULL);
+}
+
+/**
  * xmlGetDtdEntity:
  * @doc:  the document referencing the entity
  * @name:  the entity name
@@ -238,7 +285,9 @@ xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name) {
 	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
 	for (i = 0;i < table->nb_entities;i++) {
 	    cur = &table->table[i];
-	    if (!xmlStrcmp(cur->name, name)) return(cur);
+	    if ((cur->type !=  XML_INTERNAL_PARAMETER_ENTITY) &&
+	        (cur->type !=  XML_EXTERNAL_PARAMETER_ENTITY) &&
+	        (!xmlStrcmp(cur->name, name))) return(cur);
 	}
     }
     return(NULL);
@@ -265,7 +314,9 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
 	table = (xmlEntitiesTablePtr) doc->intSubset->entities;
 	for (i = 0;i < table->nb_entities;i++) {
 	    cur = &table->table[i];
-	    if (!xmlStrcmp(cur->name, name)) return(cur);
+	    if ((cur->type !=  XML_INTERNAL_PARAMETER_ENTITY) &&
+	        (cur->type !=  XML_EXTERNAL_PARAMETER_ENTITY) &&
+	        (!xmlStrcmp(cur->name, name))) return(cur);
 	}
     }
     if (xmlPredefinedEntities == NULL)
@@ -273,7 +324,9 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
     table = xmlPredefinedEntities;
     for (i = 0;i < table->nb_entities;i++) {
 	cur = &table->table[i];
-	if (!xmlStrcmp(cur->name, name)) return(cur);
+	if ((cur->type !=  XML_INTERNAL_PARAMETER_ENTITY) &&
+	    (cur->type !=  XML_EXTERNAL_PARAMETER_ENTITY) &&
+	    (!xmlStrcmp(cur->name, name))) return(cur);
     }
 
     return(NULL);
@@ -291,8 +344,7 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
 /*
  * A buffer used for converting entities to their equivalent and back.
  *
- * TODO: remove this, this helps performances but forbid reentrancy in a 
- *       stupid way.
+ * TODO: remove this, once we are not afraid of breaking binary compatibility
  */
 static int buffer_size = 0;
 static CHAR *buffer = NULL;
@@ -315,13 +367,10 @@ void growBuffer(void) {
  * Do a global encoding of a string, replacing the predefined entities
  * and non ASCII values with their entities and CharRef counterparts.
  *
- * TODO !!!! Once moved to UTF-8 internal encoding, the encoding of non-ascii
- *           get erroneous.
- *
- * TODO This routine is not reentrant, the interface
- *      should not be modified though.
+ * TODO: remove this, once we are not afraid of breaking binary compatibility
  *
  * People must migrate their code to xmlEncodeEntitiesReentrant !
+ * This routine will issue a warning when encountered.
  * 
  * Returns A newly allocated string with the substitution done.
  */
@@ -329,6 +378,13 @@ const CHAR *
 xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
     const CHAR *cur = input;
     CHAR *out = buffer;
+    static int warning = 1;
+
+    if (warning) {
+    fprintf(stderr, "Deprecated API xmlEncodeEntities() used\n");
+    fprintf(stderr, "   change code to use xmlEncodeEntitiesReentrant()\n");
+    warning = 0;
+    }
 
     if (input == NULL) return(NULL);
     if (buffer == NULL) {

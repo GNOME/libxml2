@@ -132,7 +132,7 @@ hasExternalSubset(void *ctx)
 }
 
 /**
- * hasInternalSubset:
+ * internalSubset:
  * @ctx: the user data (XML parser context)
  *
  * Does this document has an internal subset
@@ -141,15 +141,72 @@ void
 internalSubset(void *ctx, const CHAR *name,
 	       const CHAR *ExternalID, const CHAR *SystemID)
 {
-    xmlDtdPtr externalSubset;
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.internalSubset(%s, %s, %s)\n",
             name, ExternalID, SystemID);
 #endif
     xmlCreateIntSubset(ctxt->myDoc, name, ExternalID, SystemID);
-    if ((ExternalID != NULL) || (SystemID != NULL)) {
-        externalSubset = xmlParseDTD(ExternalID, SystemID);
+    if (((ExternalID != NULL) || (SystemID != NULL)) &&
+        (ctxt->validate && ctxt->wellFormed && ctxt->myDoc)) {
+	/*
+	 * Try to fetch and parse the external subset.
+	 */
+	xmlDtdPtr ret = NULL;
+	xmlParserCtxtPtr dtdCtxt;
+	xmlParserInputPtr input = NULL;
+	xmlCharEncoding enc;
+
+	dtdCtxt = xmlNewParserCtxt();
+	if (dtdCtxt == NULL) return;
+
+	/*
+	 * Ask the Entity resolver to load the damn thing
+	 */
+	if ((ctxt->directory != NULL) && (dtdCtxt->directory == NULL))
+	    dtdCtxt->directory = xmlStrdup(ctxt->directory);
+
+	if ((dtdCtxt->sax != NULL) && (dtdCtxt->sax->resolveEntity != NULL))
+	    input = dtdCtxt->sax->resolveEntity(dtdCtxt->userData, ExternalID,
+	                                        SystemID);
+	if (input == NULL) {
+	    xmlFreeParserCtxt(dtdCtxt);
+	    return;
+	}
+
+	/*
+	 * plug some encoding conversion routines here. !!!
+	 */
+	xmlPushInput(dtdCtxt, input);
+	enc = xmlDetectCharEncoding(dtdCtxt->input->cur);
+	xmlSwitchEncoding(dtdCtxt, enc);
+
+	if (input->filename == NULL)
+	    input->filename = xmlStrdup(SystemID);
+	input->line = 1;
+	input->col = 1;
+	input->base = dtdCtxt->input->cur;
+	input->cur = dtdCtxt->input->cur;
+	input->free = NULL;
+
+	/*
+	 * let's parse that entity knowing it's an external subset.
+	 */
+	xmlParseExternalSubset(dtdCtxt, ExternalID, SystemID);
+
+	if (dtdCtxt->myDoc != NULL) {
+	    if (dtdCtxt->wellFormed) {
+		ret = dtdCtxt->myDoc->intSubset;
+		dtdCtxt->myDoc->intSubset = NULL;
+	    } else {
+		ret = NULL;
+	    }
+	    xmlFreeDoc(dtdCtxt->myDoc);
+	    dtdCtxt->myDoc = NULL;
+	}
+	xmlFreeParserCtxt(dtdCtxt);
+	
+	ctxt->myDoc->extSubset = ret;
     }
 }
 
@@ -214,6 +271,29 @@ getEntity(void *ctx, const CHAR *name)
     return(ret);
 }
 
+/**
+ * getParameterEntity:
+ * @ctx: the user data (XML parser context)
+ * @name: The entity name
+ *
+ * Get a parameter entity by name
+ *
+ * Returns the xmlEntityPtr if found.
+ */
+xmlEntityPtr
+getParameterEntity(void *ctx, const CHAR *name)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlEntityPtr ret;
+
+#ifdef DEBUG_SAX
+    fprintf(stderr, "SAX.getParameterEntity(%s)\n", name);
+#endif
+
+    ret = xmlGetParameterEntity(ctxt->myDoc, name);
+    return(ret);
+}
+
 
 /**
  * entityDecl:
@@ -256,13 +336,19 @@ attributeDecl(void *ctx, const CHAR *elem, const CHAR *name,
 	      xmlEnumerationPtr tree)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlAttributePtr attr;
 
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.attributeDecl(%s, %s, %d, %d, %s, ...)\n",
             elem, name, type, def, defaultValue);
 #endif
-    xmlAddAttributeDecl(ctxt->myDoc->intSubset, elem, name, type, def,
-                        defaultValue, tree);
+    attr = xmlAddAttributeDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, elem,
+                               name, type, def, defaultValue, tree);
+    if (attr == 0) ctxt->valid = 0;
+    if (ctxt->validate && ctxt->wellFormed &&
+        ctxt->myDoc && ctxt->myDoc->intSubset)
+	ctxt->valid &= xmlValidateAttributeDecl(&ctxt->vctxt, ctxt->myDoc,
+	                                        attr);
 }
 
 /**
@@ -281,12 +367,19 @@ elementDecl(void *ctx, const CHAR *name, int type,
 	    xmlElementContentPtr content)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlElementPtr elem;
 
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.elementDecl(%s, %d, ...)\n",
             name, type);
 #endif
-    xmlAddElementDecl(ctxt->myDoc->intSubset, name, type, content);
+    
+    elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->intSubset,
+                             name, type, content);
+    if (elem == 0) ctxt->valid = 0;
+    if (ctxt->validate && ctxt->wellFormed &&
+        ctxt->myDoc && ctxt->myDoc->intSubset)
+	ctxt->valid &= xmlValidateElementDecl(&ctxt->vctxt, ctxt->myDoc, elem);
 }
 
 /**
@@ -304,10 +397,19 @@ notationDecl(void *ctx, const CHAR *name,
 	     const CHAR *publicId, const CHAR *systemId)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlNotationPtr nota;
+
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.notationDecl(%s, %s, %s)\n", name, publicId, systemId);
 #endif
-    xmlAddNotationDecl(ctxt->myDoc->intSubset, name, publicId, systemId);
+
+    nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, name,
+                              publicId, systemId);
+    if (nota == 0) ctxt->valid = 0;
+    if (ctxt->validate && ctxt->wellFormed &&
+        ctxt->myDoc && ctxt->myDoc->intSubset)
+	ctxt->valid &= xmlValidateNotationDecl(&ctxt->vctxt, ctxt->myDoc,
+	                                       nota);
 }
 
 /**
@@ -442,8 +544,15 @@ attribute(void *ctx, const CHAR *fullname, const CHAR *value)
     }
 
     ret = xmlNewProp(ctxt->node, name, NULL);
+
     if ((ret != NULL) && (ctxt->replaceEntities == 0))
 	ret->val = xmlStringGetNodeList(ctxt->myDoc, value);
+
+    if (ctxt->validate && ctxt->wellFormed &&
+        ctxt->myDoc && ctxt->myDoc->intSubset)
+        ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt, ctxt->myDoc,
+					       ctxt->node, ret, value);
+
     if (name != NULL) 
 	free(name);
     if (ns != NULL) 
@@ -569,6 +678,12 @@ endElement(void *ctx, const CHAR *name)
       xmlParserAddNodeInfo(ctxt, &node_info);
     }
 
+    if (ctxt->validate && ctxt->wellFormed &&
+        ctxt->myDoc && ctxt->myDoc->intSubset)
+        ctxt->valid &= xmlValidateOneElement(&ctxt->vctxt, ctxt->myDoc,
+					     cur);
+
+    
     /*
      * end of parsing of this node.
      */
@@ -821,6 +936,29 @@ comment(void *ctx, const CHAR *value)
 #endif
     ret = xmlNewDocComment(ctxt->myDoc, value);
     xmlAddChild(ctxt->node, ret);
+    /* !!!!! merges */
+}
+
+/**
+ * cdataBlock:
+ * @ctx: the user data (XML parser context)
+ * @value:  The pcdata content
+ * @len:  the block length
+ *
+ * called when a pcdata block has been parsed
+ */
+void
+cdataBlock(void *ctx, const CHAR *value, int len)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlNodePtr ret;
+
+#ifdef DEBUG_SAX
+    fprintf(stderr, "SAX.pcdata(%s, %d)\n", name, len);
+#endif
+    ret = xmlNewCDataBlock(ctxt->myDoc, value, len);
+    xmlAddChild(ctxt->node, ret);
+    /* !!!!! merges */
 }
 
 /*
@@ -851,6 +989,8 @@ xmlSAXHandler xmlDefaultSAXHandler = {
     xmlParserWarning,
     xmlParserError,
     xmlParserError,
+    getParameterEntity,
+    cdataBlock,
 };
 
 /**
@@ -867,6 +1007,7 @@ xmlDefaultSAXHandlerInit(void)
     xmlDefaultSAXHandler.hasExternalSubset = hasExternalSubset;
     xmlDefaultSAXHandler.resolveEntity = resolveEntity;
     xmlDefaultSAXHandler.getEntity = getEntity;
+    xmlDefaultSAXHandler.getParameterEntity = getParameterEntity;
     xmlDefaultSAXHandler.entityDecl = entityDecl;
     xmlDefaultSAXHandler.attributeDecl = attributeDecl;
     xmlDefaultSAXHandler.elementDecl = elementDecl;
@@ -879,6 +1020,7 @@ xmlDefaultSAXHandlerInit(void)
     xmlDefaultSAXHandler.endElement = endElement;
     xmlDefaultSAXHandler.reference = reference;
     xmlDefaultSAXHandler.characters = characters;
+    xmlDefaultSAXHandler.cdataBlock = cdataBlock;
     xmlDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
     xmlDefaultSAXHandler.processingInstruction = processingInstruction;
     xmlDefaultSAXHandler.comment = comment;
@@ -915,6 +1057,8 @@ xmlSAXHandler htmlDefaultSAXHandler = {
     xmlParserWarning,
     xmlParserError,
     xmlParserError,
+    getParameterEntity,
+    NULL,
 };
 
 /**
@@ -931,6 +1075,7 @@ htmlDefaultSAXHandlerInit(void)
     htmlDefaultSAXHandler.hasExternalSubset = NULL;
     htmlDefaultSAXHandler.resolveEntity = NULL;
     htmlDefaultSAXHandler.getEntity = getEntity;
+    htmlDefaultSAXHandler.getParameterEntity = NULL;
     htmlDefaultSAXHandler.entityDecl = NULL;
     htmlDefaultSAXHandler.attributeDecl = NULL;
     htmlDefaultSAXHandler.elementDecl = NULL;
@@ -943,6 +1088,7 @@ htmlDefaultSAXHandlerInit(void)
     htmlDefaultSAXHandler.endElement = endElement;
     htmlDefaultSAXHandler.reference = NULL;
     htmlDefaultSAXHandler.characters = characters;
+    htmlDefaultSAXHandler.cdataBlock = NULL;
     htmlDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
     htmlDefaultSAXHandler.processingInstruction = NULL;
     htmlDefaultSAXHandler.comment = comment;

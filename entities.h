@@ -66,6 +66,7 @@ void xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
 xmlEntityPtr xmlGetPredefinedEntity(const CHAR *name);
 xmlEntityPtr xmlGetDocEntity(xmlDocPtr doc, const CHAR *name);
 xmlEntityPtr xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name);
+xmlEntityPtr xmlGetParameterEntity(xmlDocPtr doc, const CHAR *name);
 const CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input);
 CHAR *xmlEncodeEntitiesReentrant(xmlDocPtr doc, const CHAR *input);
 xmlEntitiesTablePtr xmlCreateEntitiesTable(void);

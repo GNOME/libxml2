@@ -1,5 +1,5 @@
 /*
- * parser.h : constants and stuff related to the XML parser.
+ * parser.h : Interfaces, constants and types related to the XML parser.
  *
  * See Copyright for the status of this software.
  *
@@ -10,6 +10,7 @@
 #define __XML_PARSER_H__
 
 #include "tree.h"
+#include "valid.h"
 #include "xmlIO.h"
 
 #ifdef __cplusplus
@@ -21,12 +22,22 @@ extern "C" {
  */
 #define XML_DEFAULT_VERSION	"1.0"
 
+/**
+ * an xmlParserInput is an input flow for the XML processor.
+ * Each entity parsed is associated an xmlParserInput (except the
+ * few predefined ones). This is the case both for internal entities
+ * - in which case the flow is already completely in memory - or
+ * external entities - in which case we use the buf structure for
+ * progressive reading and I18N conversions to the internal UTF-8 format.
+ */
+
 typedef void (* xmlParserInputDeallocate)(CHAR *);
 typedef struct xmlParserInput {
     /* Input buffer */
     xmlParserInputBufferPtr buf;      /* UTF-8 encoded buffer */
 
     const char *filename;             /* The file analyzed, if any */
+    const char *directory;            /* the directory/base of teh file */
     const CHAR *base;                 /* Base of the array to parse */
     const CHAR *cur;                  /* Current char being parsed */
     int line;                         /* Current line */
@@ -36,6 +47,11 @@ typedef struct xmlParserInput {
 } xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
 
+/**
+ * the parser can be asked to collect Node informations, i.e. at what
+ * place in the file they were detected. 
+ * NOTE: This is off by default and not very well tested.
+ */
 typedef struct _xmlParserNodeInfo {
   const struct xmlNode* node;
   /* Position & line # that text that created the node begins & ends on */
@@ -54,24 +70,63 @@ typedef struct xmlParserNodeInfoSeq {
 typedef _xmlParserNodeInfoSeq xmlParserNodeInfoSeq;
 typedef xmlParserNodeInfoSeq *xmlParserNodeInfoSeqPtr;
 
+/**
+ * The parser is not a state based parser, but we need to maintain
+ * minimum state informations, especially for entities processing.
+ */
+typedef enum xmlParserInputState {
+    XML_PARSER_EOF = 0,
+    XML_PARSER_PROLOG,
+    XML_PARSER_CONTENT,
+    XML_PARSER_ENTITY_DECL,
+    XML_PARSER_ENTITY_VALUE,
+    XML_PARSER_ATTRIBUTE_VALUE,
+    XML_PARSER_DTD,
+    XML_PARSER_EPILOG,
+    XML_PARSER_COMMENT,
+    XML_PARSER_CDATA_SECTION,
+} xmlParserInputState;
+
+/**
+ * The parser context.
+ * NOTE This doesn't completely defines the parser state, the (current ?)
+ *      design of the parser uses recursive function calls since this allow
+ *      and easy mapping from the production rules of the specification
+ *      to the actual code. The drawback is that the actual function call
+ *      also reflect the parser state. However most of the parsing routines
+ *      takes as the only argument the parser context pointer, so migrating
+ *      to a state based parser for progressive parsing shouldn't be too hard.
+ */
 typedef struct _xmlParserCtxt {
     struct xmlSAXHandler *sax;        /* The SAX handler */
     void            *userData;        /* the document being built */
     xmlDocPtr           myDoc;        /* the document being built */
-    int            wellFormed;        /* is the document well formed */
     int       replaceEntities;        /* shall we replace entities ? */
-    const CHAR     *version;	      /* the XML version string */
-    const CHAR     *encoding;         /* encoding, if any */
-    int             standalone;       /* standalone document */
-    int                   html;       /* are we parsing an HTML document */
+    const CHAR       *version;        /* the XML version string */
+    const CHAR      *encoding;        /* encoding, if any */
+    int            standalone;        /* standalone document */
+    int     hasExternalSubset;        /* reference and external subset */
+    int             hasPErefs;        /* the internal subset has PE refs */
+    int                  html;        /* are we parsing an HTML document */
+    int              external;        /* are we parsing an external entity */
 
+    int            wellFormed;        /* is the document well formed */
+    int                 valid;        /* is the document valid */
+    int              validate;        /* shall we try to validate ? */
+    xmlValidCtxt        vctxt;        /* The validity context */
+
+    xmlParserInputState instate;      /* current type of input */
+    int                 token;        /* next char look-ahead */    
+
+    char           *directory;        /* the data directory */
+    
     /* Input stream stack */
     xmlParserInputPtr  input;         /* Current input stream */
     int                inputNr;       /* Number of current input streams */
     int                inputMax;      /* Max number of input streams */
     xmlParserInputPtr *inputTab;      /* stack of inputs */
 
-    /* Node analysis stack */
+    /* Node analysis stack only used for DOM building */
     xmlNodePtr         node;          /* Current parsed Node */
     int                nodeNr;        /* Depth of the parsing stack */
     int                nodeMax;       /* Max depth of the parsing stack */
@@ -83,10 +138,9 @@ typedef struct _xmlParserCtxt {
 typedef _xmlParserCtxt xmlParserCtxt;
 typedef xmlParserCtxt *xmlParserCtxtPtr;
 
-/*
+/**
  * a SAX Locator.
  */
-
 typedef struct xmlSAXLocator {
     const CHAR *(*getPublicId)(void *ctx);
     const CHAR *(*getSystemId)(void *ctx);
@@ -96,8 +150,9 @@ typedef struct xmlSAXLocator {
 typedef _xmlSAXLocator xmlSAXLocator;
 typedef xmlSAXLocator *xmlSAXLocatorPtr;
 
-/*
- * a SAX Exception.
+/**
+ * a SAX handler is bunch of callbacks called by the parser when processing
+ * of the input generate data or structure informations.
  */
 
 #include "entities.h"
@@ -107,6 +162,8 @@ typedef xmlParserInputPtr (*resolveEntitySAXFunc) (void *ctx,
 typedef void (*internalSubsetSAXFunc) (void *ctx, const CHAR *name,
                             const CHAR *ExternalID, const CHAR *SystemID);
 typedef xmlEntityPtr (*getEntitySAXFunc) (void *ctx,
+                            const CHAR *name);
+typedef xmlEntityPtr (*getParameterEntitySAXFunc) (void *ctx,
                             const CHAR *name);
 typedef void (*entityDeclSAXFunc) (void *ctx,
                             const CHAR *name, int type, const CHAR *publicId,
@@ -138,6 +195,7 @@ typedef void (*ignorableWhitespaceSAXFunc) (void *ctx,
 typedef void (*processingInstructionSAXFunc) (void *ctx,
                             const CHAR *target, const CHAR *data);
 typedef void (*commentSAXFunc) (void *ctx, const CHAR *value);
+typedef void (*cdataBlockSAXFunc) (void *ctx, const CHAR *value, int len);
 typedef void (*warningSAXFunc) (void *ctx, const char *msg, ...);
 typedef void (*errorSAXFunc) (void *ctx, const char *msg, ...);
 typedef void (*fatalErrorSAXFunc) (void *ctx, const char *msg, ...);
@@ -170,12 +228,13 @@ typedef struct xmlSAXHandler {
     warningSAXFunc warning;
     errorSAXFunc error;
     fatalErrorSAXFunc fatalError;
+    getParameterEntitySAXFunc getParameterEntity;
+    cdataBlockSAXFunc cdataBlock;
 } xmlSAXHandler;
 typedef xmlSAXHandler *xmlSAXHandlerPtr;
 
-/*
- * Global variables: just the SAX interface tables we are looking for full
- *      reentrancy of the code and version infos.
+/**
+ * Global variables: just the default SAX interface tables and XML version infos.
  */
 extern const char *xmlParserVersion;
 
@@ -186,14 +245,14 @@ extern xmlSAXHandler htmlDefaultSAXHandler;
 #include "entities.h"
 #include "xml-error.h"
 
-/*
+/**
  * Input functions
  */
 
 int xmlParserInputRead(xmlParserInputPtr in, int len);
 int xmlParserInputGrow(xmlParserInputPtr in, int len);
 
-/*
+/**
  * CHAR handling
  */
 CHAR *xmlStrdup(const CHAR *cur);
@@ -207,23 +266,23 @@ int xmlStrlen(const CHAR *str);
 CHAR *xmlStrcat(CHAR *cur, const CHAR *add);
 CHAR *xmlStrncat(CHAR *cur, const CHAR *add, int len);
 
-/*
- * Interfaces
+/**
+ * Basic parsing Interfaces
  */
 xmlDocPtr xmlParseDoc(CHAR *cur);
 xmlDocPtr xmlParseMemory(char *buffer, int size);
 xmlDocPtr xmlParseFile(const char *filename);
 int xmlSubstituteEntitiesDefault(int val);
 
-/*
+/**
  * Recovery mode 
  */
 xmlDocPtr xmlRecoverDoc(CHAR *cur);
 xmlDocPtr xmlRecoverMemory(char *buffer, int size);
 xmlDocPtr xmlRecoverFile(const char *filename);
 
-/*
- * Internal routines
+/**
+ * Less common routines and SAX interfaces
  */
 int xmlParseDocument(xmlParserCtxtPtr ctxt);
 xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery);

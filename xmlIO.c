@@ -6,6 +6,10 @@
  * Daniel.Veillard@w3.org
  */
 
+/*
+ * TODO: plug-in a generic transfer library, like libwww if available
+ */
+
 #include "config.h"
 
 #include <sys/types.h>
@@ -18,6 +22,7 @@
 #ifdef HAVE_ZLIB_H
 #include <zlib.h>
 #endif
+#include <string.h>
 
 #include "xmlIO.h"
 
@@ -317,5 +322,45 @@ int
 xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
     /* xmlBufferEmpty(in->buffer); */
     return(xmlParserInputBufferGrow(in, len));
+}
+
+/*
+ * xmlParserGetDirectory:
+ * @filename:  the path to a file
+ *
+ * lookup the directory for that file
+ *
+ * Returns a new allocated string containing the directory, or NULL.
+ */
+char *
+xmlParserGetDirectory(const char *filename) {
+    char *ret = NULL;
+    char dir[1024];
+    char *cur;
+    char sep = '/';
+
+    if (filename == NULL) return(NULL);
+#ifdef WIN32
+    sep = '\\';
+#endif
+
+    strncpy(dir, filename, 1023);
+    dir[1023] = 0;
+    cur = &dir[strlen(dir)];
+    while (cur > dir) {
+         if (*cur == sep) break;
+	 cur --;
+    }
+    if (*cur == sep) {
+        if (cur == dir) dir[1] = 0;
+	else *cur = 0;
+	ret = strdup(dir);
+    } else {
+        if (getcwd(dir, 1024) != NULL) {
+	    dir[1023] = 0;
+	    ret = strdup(dir);
+	}
+    }
+    return(ret);
 }
 

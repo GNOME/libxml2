@@ -1,6 +1,8 @@
 
            TODO for the XML parser:
 
+- use libunicode !
+- finish XPath, then XPointer, Xlink
 - Support for UTF-8 and UTF-16 encoding (Urgent !!!).
 - progressive parsing. The entity support is a first step toward
   asbtraction of an input stream. A large part of the context is still

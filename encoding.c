@@ -23,7 +23,13 @@
 #include <string.h>
 #include <stdio.h>
 #include "encoding.h"
+#ifdef HAVE_UNICODE_H
+#include <unicode.h>
+#endif
 
+#ifdef HAVE_UNICODE_H
+
+#else /* ! HAVE_UNICODE_H */
 /*
  * From rfc2044: encoding of the Unicode values on UTF-8:
  *
@@ -206,6 +212,7 @@ UTF8ToUTF16(unsigned short* out, int outlen, unsigned char* in, int inlen)
     return out-outstart;
 }
 
+#endif /* ! HAVE_UNICODE_H */
 
 /**
  * xmlDetectCharEncoding:
@@ -407,8 +414,11 @@ xmlInitCharEncodingHandlers(void) {
 	return;
     }
     xmlNewCharEncodingHandler("UTF-8", NULL, NULL);
+#ifdef HAVE_UNICODE_H
+#else
     xmlNewCharEncodingHandler("UTF-16", UTF16ToUTF8, UTF8ToUTF16);
     xmlNewCharEncodingHandler("ISO-8859-1", isolat1ToUTF8, UTF8Toisolat1);
+#endif
 }
 
 /**

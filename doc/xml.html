@@ -1,23 +1,54 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-   "http://www.w3.org/TR/REC-html40/loose.dtd">
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-<title>The XML library for Gnome</title>
-<meta name="GENERATOR" content="amaya V1.3b">
+  <title>The XML library for Gnome</title>
+  <meta name="GENERATOR" content="amaya V2.1">
 </head>
-<body bgcolor="#ffffff">
 
+<body bgcolor="#ffffff">
 <h1 align="center">The XML library for Gnome</h1>
-<p>
-This document describes the <a href="http://www.w3.org/XML/">XML</a> library
-provideed in the <a href="http://www.gnome.org/">Gnome</a> framework. XML is a
-standard to build tag based structured documents. The internal document
-repesentation is as close as possible to the <a
-href="http://www.w3.org/DOM/">DOM</a> interfaces.</p>
+
+<p>This document describes the <a href="http://www.w3.org/XML/">XML</a>
+library provideed in the <a href="http://www.gnome.org/">Gnome</a> framework.
+XML is a standard to build tag based structured documents/data. </p>
+
+<p>The internal document repesentation is as close as possible to the <a
+href="http://www.w3.org/DOM/">DOM</a> interfaces. </p>
+
+<p>Libxml also has a <a href="http://www.megginson.com/SAX/index.html">SAX
+interface</a>, <a href="mailto:james@daa.com.au">James Henstridge</a> made <a
+href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">a nice
+documentation</a> expaining how to use it. The interface is as compatible as
+possible with <a href="http://www.jclark.com/xml/expat.html">Expat</a>
+one.</p>
+
+<p>The code is commented in a <a href=""></a>way which allow <a
+href="http://rpmfind.net/veillard/XML/libxml.html">extensive documentation</a>
+to be automatically extracted.</p>
+
+<p>There is also a mailing-list <a
+href="xml@rufus.w3.org">xml@rufus.w3.org</a> for libxml, with an <a
+href="http://rpmfind.net/veillard/XML/messages">on-line archive</a>. To
+subscribe to this majordomo based list, send a mail to <a
+href="majordomo@rufus.w3.org">majordomo@rufus.w3.org</a> with "subscribe xml"
+in the <strong>content</strong> of the message.</p>
+
+<p>This library is released both under the W3C Copyright and the GNU LGP,
+basically everybody should be happy, if not, drop me a mail.</p>
+
+<p>People are invited to use the <a
+href="http://cvs.gnome.org/lxr/source/gdome/">gdome Gnome module to</a> get a
+full DOM interface, thanks to <a href="mailto:raph@levien.com">Raph
+Levien</a>, check his <a
+href="http://www.levien.com/gnome/domination.html">DOMination paper</a>. He
+uses it for his implementation of <a
+href="http://www.w3.org/Graphics/SVG/">SVG</a> called <a
+href="http://www.levien.com/svg/">gill</a>.</p>
 
 <h2>xml</h2>
-<p>
-XML is a standard for markup based structured documents, here is <a
+
+<p>XML is a standard for markup based structured documents, here is <a
 name="example">an example</a>:</p>
 <pre>&lt;?xml version="1.0"?>
 &lt;EXAMPLE prop1="gnome is great" prop2="&amp;amp; linux too">
@@ -31,17 +62,17 @@ name="example">an example</a>:</p>
    &lt;p>...&lt;/p>
   &lt;/chapter>
 &lt;/EXAMPLE></pre>
-<p>
-The first line specify that it's an XML document and gives useful informations
-about it's encoding. Then the document is a text format whose structure is
-specified by tags between brackets. <strong>Each tag opened have to be
-closed</strong> XML is pedantic about this, not that for example the image
-tag has no content (just an attribute) and is closed by ending up the tag
-with <code>/></code>.</p>
+
+<p>The first line specify that it's an XML document and gives useful
+informations about it's encoding. Then the document is a text format whose
+structure is specified by tags between brackets. <strong>Each tag opened have
+to be closed</strong> XML is pedantic about this, not that for example the
+image tag has no content (just an attribute) and is closed by ending up the
+tag with <code>/></code>.</p>
 
 <h2>The tree output</h2>
-<p>
-The parser returns a tree built during the document analysis. The value
+
+<p>The parser returns a tree built during the document analysis. The value
 returned is an <strong>xmlDocPtr</strong> (i.e. a pointer to an
 <strong>xmlDoc</strong> structure). This structure contains informations like
 the file  name, the document type, and a <strong>root</strong> pointer which
@@ -50,13 +81,13 @@ which is the document). The tree is made of <strong>xmlNode</strong>s, chained
 in double linked lists of siblings and with childs&lt;->parent relationship.
 An xmlNode can also carry properties (a chain of xmlAttr structures). An
 attribute may have a value which is a list of TEXT or ENTITY_REF nodes.</p>
-<p>
-Here is an example (erroneous w.r.t. the XML spec since there should be only
-one ELEMENT under the root):</p>
-<p>
-<img src="structure.gif" alt=" structure.gif "></p>
-<p>
-In the source package there is a small program (not installed by default)
+
+<p>Here is an example (erroneous w.r.t. the XML spec since there should be
+only one ELEMENT under the root):</p>
+
+<p><img src="structure.gif" alt=" structure.gif "></p>
+
+<p>In the source package there is a small program (not installed by default)
 called <strong>tester</strong> which parses XML files given as argument and
 prints them back as parsed, this is useful to detect errors both in XML code
 and in the XML parser itself. It has an option <strong>--debug</strong> which
@@ -91,12 +122,12 @@ standalone=true
       ELEMENT p
         TEXT
         content=...</pre>
-<p>
-This should be useful to learn the internal representation model.</p>
+
+<p>This should be useful to learn the internal representation model.</p>
 
 <h2>The XML library interfaces</h2>
-<p>
-This section is directly intended to help programmers getting bootstrapped
+
+<p>This section is directly intended to help programmers getting bootstrapped
 using the XML library from the C language. It doesn't intent to be extensive,
 I hope the automatically generated docs will provide the completeness
 required, but as a separated set of documents. The interfaces of the XML
@@ -105,35 +136,33 @@ interested in a higher level API should <a href="#DOM">look at DOM</a>
 (unfortunately not completed).</p>
 
 <h3>Invoking the parser</h3>
-<p>
-Usually, the first thing to do is to read an XML input, the parser accepts to
-parse both memory mapped documents or direct files. The functions are defined
-in "parser.h":</p>
+
+<p>Usually, the first thing to do is to read an XML input, the parser accepts
+to parse both memory mapped documents or direct files. The functions are
+defined in "parser.h":</p>
 <dl>
-<dt><code>xmlDocPtr xmlParseMemory(char *buffer, int size);</code></dt>
-<dd><p>
-parse a zero terminated string containing the document</p>
-</dd>
+  <dt><code>xmlDocPtr xmlParseMemory(char *buffer, int size);</code></dt>
+    <dd><p>parse a zero terminated string containing the document</p>
+    </dd>
 </dl>
 <dl>
-<dt><code>xmlDocPtr xmlParseFile(const char *filename);</code></dt>
-<dd><p>
-parse an XML document contained in a file (possibly compressed)</p>
-</dd>
+  <dt><code>xmlDocPtr xmlParseFile(const char *filename);</code></dt>
+    <dd><p>parse an XML document contained in a file (possibly compressed)</p>
+    </dd>
 </dl>
-<p>
-This returns a pointer to the document structure (or NULL in case of
+
+<p>This returns a pointer to the document structure (or NULL in case of
 failure).</p>
-<p>
-A couple of comments can be made, first this mean that the parser is
+
+<p>A couple of comments can be made, first this mean that the parser is
 memory-hungry, first to load the document in memory, second to build the tree.
 Reading a document without building the tree will be possible in the future by
 pluggin the code to the SAX interface (see SAX.c).</p>
 
 <h3>Building a tree from scratch</h3>
-<p>
-The other way to get an XML tree in memory is by building it. Basically there
-is a set of functions dedicated to building new elements, those are also
+
+<p>The other way to get an XML tree in memory is by building it. Basically
+there is a set of functions dedicated to building new elements, those are also
 described in "tree.h", here is for example the piece of code producing the
 example used before:</p>
 <pre>    xmlDocPtr doc;
@@ -150,129 +179,120 @@ example used before:</p>
     subtree = xmlNewChild(tree, NULL, "p", "bla bla bla ...");
     subtree = xmlNewChild(tree, NULL, "image", NULL);
     xmlSetProp(subtree, "href", "linus.gif");</pre>
-<p>
-Not really rocket science ...</p>
+
+<p>Not really rocket science ...</p>
 
 <h3>Traversing the tree</h3>
-<p>
-Basically by including "tree.h" your code has access to the internal structure
-of all the element of the tree. The names should be somewhat simple like
-<strong>parent</strong>, <strong>childs</strong>, <strong>next</strong>,
+
+<p>Basically by including "tree.h" your code has access to the internal
+structure of all the element of the tree. The names should be somewhat simple
+like <strong>parent</strong>, <strong>childs</strong>, <strong>next</strong>,
 <strong>prev</strong>, <strong>properties</strong>, etc... For example still
 with the previous example:</p>
 <pre><code>doc->root->childs->childs</code></pre>
-<p>
-points to the title element,</p>
+
+<p>points to the title element,</p>
 <pre>doc->root->childs->next->child->child</pre>
-<p>
-points to the text node containing the chapter titlle "The Linux adventure"
+
+<p>points to the text node containing the chapter titlle "The Linux adventure"
 and</p>
 <pre>doc->root->properties->next->val</pre>
-<p>
-points to the entity reference containing the value of "&amp;linux" at the
+
+<p>points to the entity reference containing the value of "&amp;linux" at the
 beginning of the second attribute of the root element "EXAMPLE".</p>
 
 <h3>Modifying the tree</h3>
-<p>
-functions are provided to read and write the document content:</p>
+
+<p>functions are provided to read and write the document content:</p>
 <dl>
-<dt><code>xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name, const CHAR
-*value);</code></dt>
-<dd><p>
-This set (or change) an attribute carried by an ELEMENT node the value can be
-NULL</p>
-</dd>
+  <dt><code>xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name, const
+  CHAR *value);</code></dt>
+    <dd><p>This set (or change) an attribute carried by an ELEMENT node the
+      value can be NULL</p>
+    </dd>
 </dl>
 <dl>
-<dt><code>const CHAR *xmlGetProp(xmlNodePtr node, const CHAR
-*name);</code></dt>
-<dd><p>
-This function returns a pointer to the property content, note that no extra
-copy is made</p>
-</dd>
+  <dt><code>const CHAR *xmlGetProp(xmlNodePtr node, const CHAR
+  *name);</code></dt>
+    <dd><p>This function returns a pointer to the property content, note that
+      no extra copy is made</p>
+    </dd>
 </dl>
-<p>
-Two functions must be used to read an write the text associated to
+
+<p>Two functions must be used to read an write the text associated to
 elements:</p>
 <dl>
-<dt><code>xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const CHAR
-*value);</code></dt>
-<dd><p>
-This function takes an "external" string and convert it to one text node or
-possibly to a list of entity and text nodes. All non-predefined entity
-references like &amp;Gnome; will be stored internally as an entity node, hence
-the result of the function may not be a single node.</p>
-</dd>
+  <dt><code>xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const CHAR
+  *value);</code></dt>
+    <dd><p>This function takes an "external" string and convert it to one text
+      node or possibly to a list of entity and text nodes. All non-predefined
+      entity references like &amp;Gnome; will be stored internally as an
+      entity node, hence the result of the function may not be a single
+      node.</p>
+    </dd>
 </dl>
 <dl>
-<dt><code>CHAR *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int
-inLine);</code></dt>
-<dd><p>
-this is the dual function, which generate a new string containing the content
-of the text and entity nodes. Note the extra argument inLine, if set to 1
-instead of returning the &amp;Gnome; XML encoding in the string it will
-substitute it with it's value say "GNU Network Object Model Environment". Set
-it if you want to use the string for non XML usage like User Interface.</p>
-</dd>
+  <dt><code>CHAR *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int
+  inLine);</code></dt>
+    <dd><p>this is the dual function, which generate a new string containing
+      the content of the text and entity nodes. Note the extra argument
+      inLine, if set to 1 instead of returning the &amp;Gnome; XML encoding in
+      the string it will substitute it with it's value say "GNU Network Object
+      Model Environment". Set it if you want to use the string for non XML
+      usage like User Interface.</p>
+    </dd>
 </dl>
 
 <h3>Saving a tree</h3>
-<p>
-Basically 3 options are possible:</p>
+
+<p>Basically 3 options are possible:</p>
 <dl>
-<dt><code>void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int
-*size);</code></dt>
-<dd><p>
-returns a buffer where the document has been saved</p>
-</dd>
+  <dt><code>void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int
+  *size);</code></dt>
+    <dd><p>returns a buffer where the document has been saved</p>
+    </dd>
 </dl>
 <dl>
-<dt><code>extern void xmlDocDump(FILE *f, xmlDocPtr doc);</code></dt>
-<dd><p>
-dumps a buffer to an open file descriptor</p>
-</dd>
+  <dt><code>extern void xmlDocDump(FILE *f, xmlDocPtr doc);</code></dt>
+    <dd><p>dumps a buffer to an open file descriptor</p>
+    </dd>
 </dl>
 <dl>
-<dt><code>int xmlSaveFile(const char *filename, xmlDocPtr cur);</code></dt>
-<dd><p>
-save the document ot a file. In that case the compression interface is
-triggered if turned on</p>
-</dd>
+  <dt><code>int xmlSaveFile(const char *filename, xmlDocPtr cur);</code></dt>
+    <dd><p>save the document ot a file. In that case the compression interface
+      is triggered if turned on</p>
+    </dd>
 </dl>
 
 <h3>Compression</h3>
-<p>
-The library handle transparently compression when doing file based accesses,
-the level of compression on saves can be tuned either globally or individually
-for one file:</p>
+
+<p>The library handle transparently compression when doing file based
+accesses, the level of compression on saves can be tuned either globally or
+individually for one file:</p>
 <dl>
-<dt><code>int  xmlGetDocCompressMode (xmlDocPtr doc);</code></dt>
-<dd><p>
-Get the document compression ratio (0-9)</p>
-</dd>
+  <dt><code>int  xmlGetDocCompressMode (xmlDocPtr doc);</code></dt>
+    <dd><p>Get the document compression ratio (0-9)</p>
+    </dd>
 </dl>
 <dl>
-<dt><code>void xmlSetDocCompressMode (xmlDocPtr doc, int mode);</code></dt>
-<dd><p>
-Set the document compression ratio</p>
-</dd>
+  <dt><code>void xmlSetDocCompressMode (xmlDocPtr doc, int mode);</code></dt>
+    <dd><p>Set the document compression ratio</p>
+    </dd>
 </dl>
 <dl>
-<dt><code>int  xmlGetCompressMode(void);</code></dt>
-<dd><p>
-Get the default compression ratio</p>
-</dd>
+  <dt><code>int  xmlGetCompressMode(void);</code></dt>
+    <dd><p>Get the default compression ratio</p>
+    </dd>
 </dl>
 <dl>
-<dt><code>void xmlSetCompressMode(int mode);</code></dt>
-<dd><p>
-set the default compression ratio</p>
-</dd>
+  <dt><code>void xmlSetCompressMode(int mode);</code></dt>
+    <dd><p>set the default compression ratio</p>
+    </dd>
 </dl>
 
 <h2><a name="DOM">DOM Principles</a></h2>
-<p>
-<a href="http://www.w3.org/DOM/">DOM</a> stands for the <em>Document Object
+
+<p><a href="http://www.w3.org/DOM/">DOM</a> stands for the <em>Document Object
 Model</em> this is an API for accessing XML or HTML structured documents.
 Native support for DOM in Gnome is on the way (module gnome-dom), and it will
 be based on gnome-xml. This will be a far cleaner interface to manipulate XML
@@ -280,20 +300,20 @@ files within Gnome since it won't expose the internal structure. DOM defiles a
 set of IDL (or Java) interfaces allowing to traverse and manipulate a
 document. The DOM library will allow accessing and modifying "live" documents
 presents on other programs like this:</p>
-<p>
-<img src="DOM.gif" alt=" DOM.gif "></p>
-<p>
-This should help greatly doing things like modifying a gnumeric spreadsheet
+
+<p><img src="DOM.gif" alt=" DOM.gif "></p>
+
+<p>This should help greatly doing things like modifying a gnumeric spreadsheet
 embedded in a GWP document for example.</p>
 
 <h3><a name="Example">A real example</a></h3>
-<p>
-Here is a real size example, where the actual content of the application data
-is not kept in the DOM tree but uses internal structures. It is based on
+
+<p>Here is a real size example, where the actual content of the application
+data is not kept in the DOM tree but uses internal structures. It is based on
 a proposal to keep a database of jobs related to Gnome, with an XML based
-storage structure. Here is an <a href="gjobs.xml">XML encoded jobs base</a>:
-<pre>
-&lt;?xml version="1.0"?>
+storage structure. Here is an <a href="gjobs.xml">XML encoded jobs
+base</a>:</p>
+<pre>&lt;?xml version="1.0"?>
 &lt;gjob:Helping xmlns:gjob="http://www.gnome.org/some-location">
   &lt;gjob:Jobs>
 
@@ -303,8 +323,8 @@ storage structure. Here is an <a href="gjobs.xml">XML encoded jobs base</a>:
       &lt;gjob:Category>Development&lt;/gjob:Category>
 
       &lt;gjob:Update>
-	&lt;gjob:Status>Open&lt;/gjob:Status>
-	&lt;gjob:Modified>Mon, 07 Jun 1999 20:27:45 -0400 MET DST&lt;/gjob:Modified>
+        &lt;gjob:Status>Open&lt;/gjob:Status>
+        &lt;gjob:Modified>Mon, 07 Jun 1999 20:27:45 -0400 MET DST&lt;/gjob:Modified>
         &lt;gjob:Salary>USD 0.00&lt;/gjob:Salary>
       &lt;/gjob:Update>
 
@@ -315,17 +335,17 @@ storage structure. Here is an <a href="gjobs.xml">XML encoded jobs base</a>:
 
       &lt;gjob:Contact>
         &lt;gjob:Person>Nathan Clemons&lt;/gjob:Person>
-	&lt;gjob:Email>nathan@windsofstorm.net&lt;/gjob:Email>
+        &lt;gjob:Email>nathan@windsofstorm.net&lt;/gjob:Email>
         &lt;gjob:Company>
-	&lt;/gjob:Company>
+        &lt;/gjob:Company>
         &lt;gjob:Organisation>
-	&lt;/gjob:Organisation>
+        &lt;/gjob:Organisation>
         &lt;gjob:Webpage>
-	&lt;/gjob:Webpage>
-	&lt;gjob:Snailmail>
-	&lt;/gjob:Snailmail>
-	&lt;gjob:Phone>
-	&lt;/gjob:Phone>
+        &lt;/gjob:Webpage>
+        &lt;gjob:Snailmail>
+        &lt;/gjob:Snailmail>
+        &lt;gjob:Phone>
+        &lt;/gjob:Phone>
       &lt;/gjob:Contact>
 
       &lt;gjob:Requirements>
@@ -349,23 +369,18 @@ storage structure. Here is an <a href="gjobs.xml">XML encoded jobs base</a>:
 
   &lt;/gjob:Jobs>
 &lt;/gjob:Helping>
-
 </pre>
-<p>
-While loading the XML file into an internal DOM tree is a matter of calling
-only a couple of functions, browsing the tree to gather the informations
-and generate the internals structures is harder, and more error prone. 
-</p>
-<p>
-The suggested principle is to be tolerant with respect to the input
-structure. For example the ordering of the attributes is not significant,
-Cthe XML specification is clear about it. It's also usually a good idea
-to not be dependant of the orders of the childs of a given node, unless it
-really makes things harder. Here is some code to parse the informations
-for a person:
-</p>
-<pre>
-/*
+
+<p>While loading the XML file into an internal DOM tree is a matter of calling
+only a couple of functions, browsing the tree to gather the informations and
+generate the internals structures is harder, and more error prone.</p>
+
+<p>The suggested principle is to be tolerant with respect to the input
+structure. For example the ordering of the attributes is not significant, Cthe
+XML specification is clear about it. It's also usually a good idea to not be
+dependant of the orders of the childs of a given node, unless it really makes
+things harder. Here is some code to parse the informations for a person:</p>
+<pre>/*
  * A person record
  */
 typedef struct person {
@@ -391,7 +406,7 @@ DEBUG("parsePerson\n");
     ret = (personPtr) malloc(sizeof(person));
     if (ret == NULL) {
         fprintf(stderr,"out of memory\n");
-	return(NULL);
+        return(NULL);
     }
     memset(ret, 0, sizeof(person));
 
@@ -399,38 +414,36 @@ DEBUG("parsePerson\n");
     cur = cur->childs;
     while (cur != NULL) {
         if ((!strcmp(cur->name, "Person")) &amp;&amp; (cur->ns == ns))
-	    ret->name = xmlNodeListGetString(doc, cur->childs, 1);
+            ret->name = xmlNodeListGetString(doc, cur->childs, 1);
         if ((!strcmp(cur->name, "Email")) &amp;&amp; (cur->ns == ns))
-	    ret->email = xmlNodeListGetString(doc, cur->childs, 1);
-	cur = cur->next;
+            ret->email = xmlNodeListGetString(doc, cur->childs, 1);
+        cur = cur->next;
     }
 
     return(ret);
-}
-</pre>
-<p>
-Here is a couple of things to notice:</p>
+}</pre>
+
+<p>Here is a couple of things to notice:</p>
 <ul>
-<li> Usually a recursive parsing style is the more convenient one,
-XML data being by nature subject to repetitive constructs and usualy exibit
-highly stuctured patterns.
-<li> The two arguments of type <em>xmlDocPtr</em> and <em>xmlNsPtr</em>, i.e.
-the pointer to the global XML document and the namespace reserved to the
-application. Document wide information are needed for example to decode
-entities and it's a good coding practice to define a namespace for your
-application set of data and test that the element and attributes you're
-analyzing actually pertains to your application space. This is done by a simple
-equality test (cur->ns == ns).
-<li> To retrieve text and attributes value, it is suggested to use
-the function <em>xmlNodeListGetString</em> to gather all the text and
-entity reference nodes generated by the DOM output and produce an
-single text string.
+  <li>Usually a recursive parsing style is the more convenient one, XML data
+    being by nature subject to repetitive constructs and usualy exibit highly
+    stuctured patterns.</li>
+  <li>The two arguments of type <em>xmlDocPtr</em> and <em>xmlNsPtr</em>, i.e.
+    the pointer to the global XML document and the namespace reserved to the
+    application. Document wide information are needed for example to decode
+    entities and it's a good coding practice to define a namespace for your
+    application set of data and test that the element and attributes you're
+    analyzing actually pertains to your application space. This is done by a
+    simple equality test (cur->ns == ns).</li>
+  <li>To retrieve text and attributes value, it is suggested to use the
+    function <em>xmlNodeListGetString</em> to gather all the text and entity
+    reference nodes generated by the DOM output and produce an single text
+    string.</li>
 </ul>
-<p>
-Here is another piece of code used to parse another level of the structure:
-</p>
-<pre>
-/*
+
+<p>Here is another piece of code used to parse another level of the
+structure:</p>
+<pre>/*
  * a Description for a Job
  */
 typedef struct job {
@@ -455,7 +468,7 @@ DEBUG("parseJob\n");
     ret = (jobPtr) malloc(sizeof(job));
     if (ret == NULL) {
         fprintf(stderr,"out of memory\n");
-	return(NULL);
+        return(NULL);
     }
     memset(ret, 0, sizeof(job));
 
@@ -464,34 +477,32 @@ DEBUG("parseJob\n");
     while (cur != NULL) {
         
         if ((!strcmp(cur->name, "Project")) &amp;&amp; (cur->ns == ns)) {
-	    ret->projectID = xmlGetProp(cur, "ID");
-	    if (ret->projectID == NULL) {
-		fprintf(stderr, "Project has no ID\n");
-	    }
-	}
+            ret->projectID = xmlGetProp(cur, "ID");
+            if (ret->projectID == NULL) {
+                fprintf(stderr, "Project has no ID\n");
+            }
+        }
         if ((!strcmp(cur->name, "Application")) &amp;&amp; (cur->ns == ns))
-	    ret->application = xmlNodeListGetString(doc, cur->childs, 1);
+            ret->application = xmlNodeListGetString(doc, cur->childs, 1);
         if ((!strcmp(cur->name, "Category")) &amp;&amp; (cur->ns == ns))
-	    ret->category = xmlNodeListGetString(doc, cur->childs, 1);
+            ret->category = xmlNodeListGetString(doc, cur->childs, 1);
         if ((!strcmp(cur->name, "Contact")) &amp;&amp; (cur->ns == ns))
-	    ret->contact = parsePerson(doc, ns, cur);
-	cur = cur->next;
+            ret->contact = parsePerson(doc, ns, cur);
+        cur = cur->next;
     }
 
     return(ret);
-}
-</pre>
-<p>
-One can notice that once used to it, writing this kind of code
-is quite simple, but boring. Ultimately, it could be possble to write
-stubbers taking either C data structure definitions, a set of XML examples
-or an XML DTD and produce the code needed to import and export the
-content between C data and XML storage. This is left as an exercise to
-the reader :-)</p>
-<p>
-Feel free to use <a href="gjobread.c">the code for the full C parsing
-example</a> as a template,
+}</pre>
 
-<a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a>
+<p>One can notice that once used to it, writing this kind of code is quite
+simple, but boring. Ultimately, it could be possble to write stubbers taking
+either C data structure definitions, a set of XML examples or an XML DTD and
+produce the code needed to import and export the content between C data and
+XML storage. This is left as an exercise to the reader :-)</p>
+
+<p>Feel free to use <a href="gjobread.c">the code for the full C parsing
+example</a> as a template,</p>
+
+<p> <a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 </body>
 </html>

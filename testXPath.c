@@ -81,7 +81,12 @@ void xmlXPAthDebugDumpNodeSet(FILE *output, xmlNodeSetPtr cur) {
     fprintf(output, "Set contains %d nodes:\n", cur->nodeNr);
     for (i = 0;i < cur->nodeNr;i++) {
         fprintf(output, "%d", i + 1);
-	xmlDebugDumpOneNode(output, cur->nodeTab[i], 2);
+	if (cur->nodeTab[i] == NULL)
+	    fprintf(output, " NULL\n");
+	else if (cur->nodeTab[i]->type == XML_DOCUMENT_NODE)
+	    fprintf(output, " /\n");
+	else
+	    xmlDebugDumpOneNode(output, cur->nodeTab[i], 2);
     }
 }
 

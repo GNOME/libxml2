@@ -9,6 +9,30 @@
 #undef PACKAGE
 #undef VERSION
 #undef HAVE_LIBZ
+#undef HAVE_LIBM
+#undef HAVE_ISINF
+#undef HAVE_ISNAN
+
+/* Define if you have the class function.  */
+#undef HAVE_CLASS
+
+/* Define if you have the finite function.  */
+#undef HAVE_FINITE
+
+/* Define if you have the fp_class function.  */
+#undef HAVE_FP_CLASS
+
+/* Define if you have the fpclass function.  */
+#undef HAVE_FPCLASS
+
+/* Define if you have the isinf function.  */
+#undef HAVE_ISINF
+
+/* Define if you have the isnan function.  */
+#undef HAVE_ISNAN
+
+/* Define if you have the isnand function.  */
+#undef HAVE_ISNAND
 
 /* Define if you have the snprintf function.  */
 #undef HAVE_SNPRINTF
@@ -34,8 +58,23 @@
 /* Define if you have the <fcntl.h> header file.  */
 #undef HAVE_FCNTL_H
 
+/* Define if you have the <float.h> header file.  */
+#undef HAVE_FLOAT_H
+
+/* Define if you have the <fp_class.h> header file.  */
+#undef HAVE_FP_CLASS_H
+
+/* Define if you have the <ieeefp.h> header file.  */
+#undef HAVE_IEEEFP_H
+
 /* Define if you have the <malloc.h> header file.  */
 #undef HAVE_MALLOC_H
+
+/* Define if you have the <math.h> header file.  */
+#undef HAVE_MATH_H
+
+/* Define if you have the <nan.h> header file.  */
+#undef HAVE_NAN_H
 
 /* Define if you have the <ndir.h> header file.  */
 #undef HAVE_NDIR_H

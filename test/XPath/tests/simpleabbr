@@ -1,4 +1,6 @@
-/chapter[1]
+/EXAMPLE
+/EXAMPLE/chapter
+/EXAMPLE/chapter[1]
 //p
 //chapter/image
 //p/text()

@@ -555,6 +555,8 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 static void
 xmlSchemaCheckDefaults(xmlSchemaTypePtr typeDecl,
                        xmlSchemaParserCtxtPtr ctxt, const xmlChar * name);
+static void
+xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt);
 
 /************************************************************************
  *									*
@@ -12695,9 +12697,11 @@ xmlSchemaCheckCVCSimpleType(xmlSchemaValidCtxtPtr ctxt,
 static int
 xmlSchemaCreatePCtxtOnVCtxt(xmlSchemaValidCtxtPtr vctxt)
 {
-   if (vctxt->pctxt == NULL) {
-        vctxt->pctxt =xmlSchemaNewParserCtxtUseDict("*", vctxt->schema->dict);
-	/* vctxt->pctxt = xmlSchemaNewParserCtxt("*"); */
+    if (vctxt->pctxt == NULL) {
+        if (vctxt->schema != NULL)
+	    vctxt->pctxt = xmlSchemaNewParserCtxtUseDict("*", vctxt->schema->dict);
+	else
+	    vctxt->pctxt = xmlSchemaNewParserCtxt("*");
 	if (vctxt->pctxt == NULL) {
 	    xmlSchemaVErr(vctxt, NULL,
 		XML_SCHEMAV_INTERNAL,
@@ -20143,41 +20147,35 @@ exit:
 }
 
 /**
- * xmlSchemaValidateElement:
+ * xmlSchemaStartValidation:
  * @ctxt:  a schema validation context
- * @elem:  an element
  *
- * Validate an element in a tree
+ * The starting point of the validation, called by 
+ * xmlSchemaValidateDocument and xmlSchemaValidateOneElement.
  *
  * Returns 0 if the element is schemas valid, a positive error code
  *     number otherwise and -1 in case of internal or API error.
  */
 static int
-xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt)
+xmlSchemaStartValidation(xmlSchemaValidCtxtPtr ctxt)
 {
     xmlSchemaElementPtr elemDecl;    
     int ret = 0;
 
-    /* 
-    * This one is called by xmlSchemaValidateDocument and
-    * xmlSchemaValidateOneElement.
-    */  
+    ctxt->err = 0;
+    ctxt->nberrors = 0;     
     if (ctxt->schema == NULL) {
 	/*
 	* No schema was specified at time of creation of the validation
 	* context. Use xsi:schemaLocation and xsi:noNamespaceSchemaLocation
 	* of the instance to build a schema.
 	*/
-	if (ctxt->pctxt == NULL) 
-	    ctxt->pctxt = xmlSchemaNewParserCtxt("*");
 	if (ctxt->pctxt == NULL)
-	    return (-1);
+	    if (xmlSchemaCreatePCtxtOnVCtxt(ctxt) == -1)
+		return (-1);
 	ctxt->schema = xmlSchemaNewSchema(ctxt->pctxt);
 	if (ctxt->schema == NULL)
 	    return (-1);
-	/* TODO: assign user data. */
-	ctxt->pctxt->error = ctxt->error;
-	ctxt->pctxt->warning = ctxt->warning;	
 	ctxt->xsiAssemble = 1;
     } else
 	ctxt->xsiAssemble = 0;
@@ -20212,7 +20210,6 @@ xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt)
 		"No matching global declaration available", NULL);
 	    ret = XML_SCHEMAV_CVC_ELT_1;
 	} else { 
-#ifdef IDC_ENABLED
 	    /*
 	    * Augment the IDC definitions.
 	    */
@@ -20220,15 +20217,10 @@ xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt)
 		xmlHashScan(ctxt->schema->idcDef, 
 		    (xmlHashScanner) xmlSchemaAugmentIDC, ctxt);
 	    }
-#endif
-#ifdef ELEM_INFO_ENABLED
 	    ctxt->depth = -1;
 	    xmlSchemaBeginElement(ctxt);
-#endif
 	    ret = xmlSchemaValidateElementByDeclaration(ctxt, elemDecl);    
-#ifdef ELEM_INFO_ENABLED
 	    xmlSchemaEndElement(ctxt);
-#endif
 	    if (ret < 0) {
 		xmlSchemaVCustomErr(ctxt,
 		    XML_SCHEMAV_INTERNAL, ctxt->node, NULL,
@@ -20237,13 +20229,14 @@ xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt)
 	    }
 	}
     }
-    /* ctxt->xsiAssemble = 0; */
+
     if (ctxt->xsiAssemble) {
 	if (ctxt->schema != NULL) {
 	    xmlSchemaFree(ctxt->schema);
 	    ctxt->schema = NULL;
 	}
     }
+    xmlSchemaClearValidCtxt(ctxt);
     return (ret);   
 }
 
@@ -20264,7 +20257,7 @@ xmlSchemaValidateOneElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem)
     if ((ctxt == NULL) || (elem == NULL) || (elem->type != XML_ELEMENT_NODE))
 	return (-1);
 
-     if (ctxt->schema == NULL) {
+    if (ctxt->schema == NULL) {
 	xmlSchemaVErr(ctxt, NULL,
 	    XML_SCHEMAV_INTERNAL,
 	    "API error: xmlSchemaValidateOneElement, "
@@ -20273,45 +20266,9 @@ xmlSchemaValidateOneElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem)
     }
 
     ctxt->doc = elem->doc;
-    ctxt->err = 0;
-    ctxt->nberrors = 0;
     ctxt->node = elem;
     ctxt->validationRoot = elem;
-    return (xmlSchemaValidateElement(ctxt));
-}
-
-/**
- * xmlSchemaValidateDocument:
- * @ctxt:  a schema validation context
- * @doc:  a parsed document tree
- * @xsiAssemble: should schemata be added if requested by the instance?
- *
- * Validate a document tree in memory.
- *
- * Returns 0 if the document is schemas valid, a positive error code
- *     number otherwise and -1 in case of internal or API error.
- */
-static int
-xmlSchemaValidateDocument(xmlSchemaValidCtxtPtr ctxt, xmlDocPtr doc)
-{
-    xmlNodePtr root;
-     
-    root = xmlDocGetRootElement(doc);
-    if (root == NULL) {
-        xmlSchemaVCustomErr(ctxt, 
-	    XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING,
-	    (xmlNodePtr) doc, NULL,
-	    "The document has no document element", NULL);
-        return (ctxt->err);
-    }    
-    /*
-     * Okay, start the recursive validation
-     */
-    ctxt->node = root;
-    ctxt->validationRoot = root;
-    xmlSchemaValidateElement(ctxt);
-
-    return (ctxt->err);
+    return (xmlSchemaStartValidation(ctxt));
 }
 
 /************************************************************************
@@ -20330,7 +20287,7 @@ xmlSchemaValidateDocument(xmlSchemaValidCtxtPtr ctxt, xmlDocPtr doc)
  * xmlSchemaNewValidCtxt:
  * @schema:  a precompiled XML Schemas
  *
- * Create an XML Schemas validation context based on the given schema
+ * Create an XML Schemas validation context based on the given schema.
  *
  * Returns the validation context or NULL in case of error
  */
@@ -20346,9 +20303,90 @@ xmlSchemaNewValidCtxt(xmlSchemaPtr schema)
     }
     memset(ret, 0, sizeof(xmlSchemaValidCtxt));
     ret->schema = schema;    
-    ret->attrTop = NULL;
-    ret->attr = NULL;
     return (ret);
+}
+
+/**
+ * xmlSchemaClearValidCtxt:
+ * @ctxt: the schema validation context
+ *
+ * Free the resources associated to the schema validation context;
+ * leaves some fields alive intended for reuse of the context.
+ */
+static void
+xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt)
+{
+    if (vctxt == NULL)
+        return;
+
+    vctxt->validationRoot = NULL;
+    if (vctxt->attr != NULL) {
+        xmlSchemaFreeAttributeStates(vctxt->attr);
+	vctxt->attr = NULL;
+    }
+    if (vctxt->value != NULL) {
+        xmlSchemaFreeValue(vctxt->value);
+	vctxt->value = NULL;
+    }
+    /*
+    * Augmented IDC information.
+    */
+    if (vctxt->aidcs != NULL) {
+	xmlSchemaIDCAugPtr cur = vctxt->aidcs, next;
+	do {
+	    next = cur->next;
+	    xmlFree(cur);
+	    cur = next;
+	} while (cur != NULL);
+	vctxt->aidcs = NULL;
+    }
+    if (vctxt->idcNodes != NULL) {
+	int i;
+	xmlSchemaPSVIIDCNodePtr item;
+
+	for (i = 0; i < vctxt->nbIdcNodes; i++) {
+	    item = vctxt->idcNodes[i];	    
+	    xmlFree(item->keys);
+	    xmlFree(item);
+	}
+	xmlFree(vctxt->idcNodes);
+	vctxt->idcNodes = NULL;
+    }
+    /* 
+    * Note that we won't delete the XPath state pool here.
+    */
+    if (vctxt->xpathStates != NULL) {
+	xmlSchemaFreeIDCStateObjList(vctxt->xpathStates);
+	vctxt->xpathStates = NULL;
+    }
+    if (vctxt->attrInfo != NULL) {
+	if (vctxt->attrInfo->value != NULL) {
+	    xmlSchemaFreeValue(vctxt->attrInfo->value);	    
+	}
+	memset(vctxt->attrInfo, 0, sizeof(xmlSchemaNodeInfo));
+    }
+    if (vctxt->elemInfos != NULL) {
+	int i;
+	xmlSchemaNodeInfoPtr info;
+	
+	for (i = 0; i < vctxt->sizeElemInfos; i++) {
+	    info = vctxt->elemInfos[i];
+	    if (info == NULL)
+		break;
+	    if (info->value != NULL) {
+		xmlSchemaFreeValue(info->value);
+		info->value = NULL;
+	    }
+	    if (info->idcMatchers != NULL) {
+		xmlSchemaIDCFreeMatcherList(info->idcMatchers);
+		info->idcMatchers = NULL;
+	    }
+	    if (info->idcTable != NULL) {
+		xmlSchemaIDCFreeIDCTable(info->idcTable);
+		info->idcTable = NULL;
+	    }
+	}
+    }
 }
 
 /**
@@ -20366,11 +20404,8 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
         xmlSchemaFreeAttributeStates(ctxt->attr);
     if (ctxt->value != NULL)
         xmlSchemaFreeValue(ctxt->value);
-    if (ctxt->pctxt != NULL) {
+    if (ctxt->pctxt != NULL)
 	xmlSchemaFreeParserCtxt(ctxt->pctxt);
-    }
-
-#ifdef IDC_ENABLED
     if (ctxt->idcNodes != NULL) {
 	int i;
 	xmlSchemaPSVIIDCNodePtr item;
@@ -20382,7 +20417,6 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
 	}
 	xmlFree(ctxt->idcNodes);
     }
-
     if (ctxt->idcKeys != NULL) {
 	int i;
 	for (i = 0; i < ctxt->nbIdcKeys; i++)
@@ -20406,8 +20440,6 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
 	    cur = next;
 	} while (cur != NULL);
     }
-#endif /* IDC_ENABLED */
-#ifdef ELEM_INFO_ENABLED
     if (ctxt->attrInfo != NULL) {
 	if (ctxt->attrInfo->value != NULL)
 	    xmlSchemaFreeValue(ctxt->attrInfo->value);
@@ -20420,27 +20452,25 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
 	for (i = 0; i < ctxt->sizeElemInfos; i++) {
 	    info = ctxt->elemInfos[i];
 	    if (info == NULL)
-		continue;
+		break;
 	    if (info->value != NULL)
 		xmlSchemaFreeValue(info->value);
-#ifdef IDC_ENABLED
 	    if (info->idcMatchers != NULL)
 		xmlSchemaIDCFreeMatcherList(info->idcMatchers);
-#endif
+	    if (info->idcTable != NULL)
+		xmlSchemaIDCFreeIDCTable(info->idcTable);
 	    /*
-	    *  TODO: Free the IDC table if still existent.
-	    */
-
-	    /*
-	    xmlFree(info->localName);
-	    if (info->namespaceName != NULL)
-		xmlFree(info->namespaceName);
+	    * TODO: Don't know if those will have to be freed if in streaming
+	    * mode.
+	    *
+	    * xmlFree(info->localName);
+	    * if (info->namespaceName != NULL)
+	    *	xmlFree(info->namespaceName);
 	    */
 	    xmlFree(info);
 	}
 	xmlFree(ctxt->elemInfos);
     }
-#endif
     xmlFree(ctxt);
 }
 
@@ -20565,28 +20595,22 @@ xmlSchemaValidCtxtGetOptions(xmlSchemaValidCtxtPtr ctxt)
 int
 xmlSchemaValidateDoc(xmlSchemaValidCtxtPtr ctxt, xmlDocPtr doc)
 {
-    int ret;
-
     if ((ctxt == NULL) || (doc == NULL))
         return (-1);
 
-    ctxt->doc = doc;
-    ctxt->err = 0; 
-    ctxt->nberrors = 0;
-    
-    /*
-    if (ctxt->schema == NULL) {
-	xmlSchemaVErr(ctxt, NULL,
-	    XML_SCHEMAV_INTERNAL,
-	    "API error: xmlSchemaValidateDoc, "
-	    "no schema specified and assembling of schemata "
-	    "using xsi:schemaLocation and xsi:noNamespaceSchemaLocation "
-	    "is not enabled.\n", NULL, NULL);
-	return (-1);
-    }
-    */
-    ret = xmlSchemaValidateDocument(ctxt, doc);
-    return (ret);
+    ctxt->doc = doc;      
+    ctxt->node = xmlDocGetRootElement(doc);
+    if (ctxt->node == NULL) {
+        xmlSchemaVCustomErr(ctxt, 
+	    XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING,
+	    (xmlNodePtr) doc, NULL,
+	    "The document has no document element", NULL);
+        return (ctxt->err);
+    }    
+    ctxt->validationRoot = ctxt->node;
+    xmlSchemaStartValidation(ctxt);
+
+    return (ctxt->err);
 }
 
 /**

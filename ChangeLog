@@ -1,3 +1,10 @@
+Mon Mar  7 18:34:00 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Tiny restructuring of the validation start-up
+	  functions. Added cleanup of the validation context at the
+	  end of validation. This takes care of the validation context
+	  being reused.
+
 Mon Mar  7 12:12:01 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemastypes.c: Tiny changes in the comparison functions

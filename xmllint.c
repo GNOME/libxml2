@@ -168,6 +168,9 @@ static int dropdtd = 0;
 static int catalogs = 0;
 static int nocatalogs = 0;
 #endif
+#ifdef LIBXML_C14N_ENABLED
+static int canonical = 0;
+#endif
 #ifdef LIBXML_READER_ENABLED
 static int stream = 0;
 static int walker = 0;
@@ -1209,6 +1212,21 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		}
 	    } else
 #endif
+#ifdef LIBXML_C14N_ENABLED
+            if (canonical) {
+	        xmlChar *result = NULL;
+		int size;
+
+		size = xmlC14NDocDumpMemory(doc, NULL, 0, NULL, 1, &result);
+		if (size >= 0) {
+		    write(1, result, size);
+		    xmlFree(result);
+		} else {
+		    fprintf(stderr, "Failed to canonicalize\n");
+		    progresult = XMLLINT_ERR_OUT;
+		}
+	    } else
+#endif
 #ifdef HAVE_SYS_MMAN_H
 	    if (memory) {
 		xmlChar *result;
@@ -1228,6 +1246,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		}
 		if (result == NULL) {
 		    fprintf(stderr, "Failed to save\n");
+		    progresult = XMLLINT_ERR_OUT;
 		} else {
 		    write(1, result, len);
 		    xmlFree(result);
@@ -1579,6 +1598,9 @@ static void usage(const char *name) {
     printf("\t--encode encoding : output in the given encoding\n");
     printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
 #endif /* LIBXML_OUTPUT_ENABLED */
+    printf("\t--c14n: save in W3C canonical format (with comments)\n");
+#ifdef LIBXML_C14N_ENABLED
+#endif /* LIBXML_C14N_ENABLED */
     printf("\t--nsclean : remove redundant namespace declarations\n");
     printf("\t--testIO : test user I/O support\n");
 #ifdef LIBXML_CATALOG_ENABLED
@@ -1804,6 +1826,13 @@ main(int argc, char **argv) {
 		 (!strcmp(argv[i], "--debugent"))) {
 	    debugent++;
 	    xmlParserDebugEntities = 1;
+	} 
+#endif
+#ifdef LIBXML_C14N_ENABLED
+	else if ((!strcmp(argv[i], "-c14n")) ||
+		 (!strcmp(argv[i], "--c14n"))) {
+	    canonical++;
+	    options |= XML_PARSE_NOENT | XML_PARSE_DTDATTR | XML_PARSE_DTDLOAD;
 	} 
 #endif
 #ifdef LIBXML_CATALOG_ENABLED

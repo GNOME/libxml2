@@ -1,3 +1,8 @@
+Sun Aug 15 00:41:12 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: added a --c14n option to canonicalize the output
+	  should close the RFE #143226
+
 Sat Aug 14 23:50:10 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: Dodji pointed out a bug in xmlGetNodePath()

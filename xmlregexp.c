@@ -1555,14 +1555,14 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
     for (statenr = 0;statenr < ctxt->nbStates;statenr++) {
 	state = ctxt->states[statenr];
 	if (state != NULL)
-	    state->reached = 0;
+	    state->reached = XML_REGEXP_MARK_NORMAL;
     }
     state = ctxt->states[0];
     if (state != NULL)
-	state->reached = 1;
+	state->reached = XML_REGEXP_MARK_START;
     while (state != NULL) {
 	xmlRegStatePtr target = NULL;
-	state->reached = 2;
+	state->reached = XML_REGEXP_MARK_VISITED;
 	/*
 	 * Mark all state reachable from the current reachable state
 	 */
@@ -1574,8 +1574,8 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 
 		if (ctxt->states[newto] == NULL)
 		    continue;
-		if (ctxt->states[newto]->reached == 0) {
-		    ctxt->states[newto]->reached = 1;
+		if (ctxt->states[newto]->reached == XML_REGEXP_MARK_NORMAL) {
+		    ctxt->states[newto]->reached = XML_REGEXP_MARK_START;
 		    target = ctxt->states[newto];
 		}
 	    }
@@ -1586,7 +1586,8 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 	if (target == NULL) {
 	    for (statenr = 1;statenr < ctxt->nbStates;statenr++) {
 		state = ctxt->states[statenr];
-		if ((state != NULL) && (state->reached == 1)) {
+		if ((state != NULL) && (state->reached ==
+			XML_REGEXP_MARK_START)) {
 		    target = state;
 		    break;
 		}
@@ -1596,7 +1597,7 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
     }
     for (statenr = 0;statenr < ctxt->nbStates;statenr++) {
 	state = ctxt->states[statenr];
-	if ((state != NULL) && (state->reached == 0)) {
+	if ((state != NULL) && (state->reached == XML_REGEXP_MARK_NORMAL)) {
 #ifdef DEBUG_REGEXP_GRAPH
 	    printf("Removed unreachable state %d\n", statenr);
 #endif
@@ -3074,7 +3075,7 @@ xmlFAIsChar(xmlRegParserCtxtPtr ctxt) {
 static void
 xmlFAParseCharProp(xmlRegParserCtxtPtr ctxt) {
     int cur;
-    xmlRegAtomType type = 0;
+    xmlRegAtomType type = (xmlRegAtomType) 0;
     xmlChar *blockName = NULL;
     
     cur = CUR;

@@ -344,7 +344,7 @@ static int
 xmlTextReaderPushData(xmlTextReaderPtr reader) {
     xmlBufferPtr inbuf;
     int val, s;
-    int oldstate;
+    xmlTextReaderState oldstate;
 
     if ((reader->input == NULL) || (reader->input->buffer == NULL))
 	return(-1);

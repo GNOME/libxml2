@@ -8906,7 +8906,7 @@ xmlRelaxNGNodeMatchesList(xmlNodePtr node, xmlRelaxNGDefinePtr *list) {
 static int
 xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt, 
 	                     xmlRelaxNGDefinePtr define) {
-    int ret = 0, i, nbgroups, left;
+    int ret = 0, i, nbgroups;
     int errNr = ctxt->errNr;
     int oldflags;
 
@@ -8919,7 +8919,6 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
     if (define->data != NULL) {
 	partitions = (xmlRelaxNGPartitionPtr) define->data;
 	nbgroups = partitions->nbgroups;
-	left = nbgroups;
     } else {
 	VALID_ERR(XML_RELAXNG_ERR_INTERNODATA);
 	return(-1);

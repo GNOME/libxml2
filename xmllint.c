@@ -381,14 +381,12 @@ xmlHTMLError(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input;
-    xmlParserInputPtr cur = NULL;
     va_list args;
     int len;
 
     buffer[0] = 0;
     input = ctxt->input;
     if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
-	cur = input;
         input = ctxt->inputTab[ctxt->inputNr - 2];
     }
         
@@ -420,14 +418,12 @@ xmlHTMLWarning(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input;
-    xmlParserInputPtr cur = NULL;
     va_list args;
     int len;
 
     buffer[0] = 0;
     input = ctxt->input;
     if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
-	cur = input;
         input = ctxt->inputTab[ctxt->inputNr - 2];
     }
         
@@ -586,9 +582,6 @@ static void myClose(FILE *f) {
  * 			Stream Test processing				*
  * 									*
  ************************************************************************/
-static int count = 0;
-static int elem, attrs;
-
 static void processNode(xmlTextReaderPtr reader) {
     xmlChar *name, *value;
 
@@ -616,11 +609,6 @@ static void processNode(xmlTextReaderPtr reader) {
 static void streamFile(char *filename) {
     xmlTextReaderPtr reader;
     int ret;
-
-    if (count) {
-	elem = 0;
-	attrs = 0;
-    }
 
     reader = xmlNewTextReaderFilename(filename);
     if (reader != NULL) {
@@ -739,7 +727,7 @@ static void parseAndPrintFile(char *filename) {
 	    res = fread(chars, 1, 4, f);
 	    if (res > 0) {
 		ctxt = docbCreatePushParserCtxt(NULL, NULL,
-			    chars, res, filename, 0);
+			    chars, res, filename, XML_CHAR_ENCODING_NONE); 
 		while ((res = fread(chars, 1, size, f)) > 0) {
 		    docbParseChunk(ctxt, chars, res, 0);
 		}

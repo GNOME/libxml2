@@ -1,3 +1,16 @@
+Fri Aug 1 23:55:23 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	Coninuing work on bug 118559
+	* DOCBparser.c: removed 2 unsed vars
+	* xmlregexp.c: changed some numeric const to their enum symbols
+	* xmlreader.c: changed one var define from int to enum
+	  (a little more to be done, awaiting co-ordination)
+	* relaxng.c: deleted one unused var
+	* xmllint.c: deleted some unused vars, changed one arg
+	  val from int to enum
+	* testHTML.c, testDocbook.c: changed some arg vals to enum const
+	* xmlIO.c: fixed typo from last night (small warning msg)
+
 Thu Jul 31 22:44:33 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	Working on bug 118559

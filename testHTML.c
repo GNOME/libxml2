@@ -626,7 +626,7 @@ parseSAXFile(char *filename) {
 	    res = fread(chars, 1, 4, f);
 	    if (res > 0) {
 		ctxt = htmlCreatePushParserCtxt(emptySAXHandler, NULL,
-			    chars, res, filename, 0);
+			    chars, res, filename, XML_CHAR_ENCODING_NONE);
 		while ((res = fread(chars, 1, size, f)) > 0) {
 		    htmlParseChunk(ctxt, chars, res, 0);
 		}
@@ -652,7 +652,7 @@ parseSAXFile(char *filename) {
 		res = fread(chars, 1, 4, f);
 		if (res > 0) {
 		    ctxt = htmlCreatePushParserCtxt(debugSAXHandler, NULL,
-				chars, res, filename, 0);
+				chars, res, filename, XML_CHAR_ENCODING_NONE);
 		    while ((res = fread(chars, 1, size, f)) > 0) {
 			htmlParseChunk(ctxt, chars, res, 0);
 		    }
@@ -708,7 +708,7 @@ parseAndPrintFile(char *filename) {
 	    res = fread(chars, 1, 4, f);
 	    if (res > 0) {
 		ctxt = htmlCreatePushParserCtxt(NULL, NULL,
-			    chars, res, filename, 0);
+			    chars, res, filename, XML_CHAR_ENCODING_NONE);
 		while ((res = fread(chars, 1, size, f)) > 0) {
 		    htmlParseChunk(ctxt, chars, res, 0);
 		}

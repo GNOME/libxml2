@@ -2675,7 +2675,6 @@ docbParseSGMLAttribute(docbParserCtxtPtr ctxt, const xmlChar stop) {
     xmlChar *name = NULL;
 
     xmlChar *cur = NULL;
-    xmlEntityPtr xent;
     docbEntityDescPtr ent;
 
     /*
@@ -2714,7 +2713,7 @@ docbParseSGMLAttribute(docbParserCtxtPtr ctxt, const xmlChar stop) {
                    *out++  = ((c >> bits) & 0x3F) | 0x80;
                }
            } else {
-               xent = docbParseEntityRef(ctxt, &name);
+               docbParseEntityRef(ctxt, &name);
                if (name == NULL) {
                    *out++ = '&';
                    if (out - buffer > buffer_size - 100) {
@@ -3993,10 +3992,9 @@ docbParseReference(docbParserCtxtPtr ctxt) {
 		    /*
 		     * we really need to fetch and parse the external entity
 		     */
-		    int parse;
 		    xmlNodePtr children = NULL;
 
-		    parse = docbParseCtxtExternalEntity(ctxt,
+		    docbParseCtxtExternalEntity(ctxt,
 			       xent->SystemID, xent->ExternalID, &children);
 		    xmlAddChildList((xmlNodePtr) xent, children);
 	    }

@@ -737,7 +737,7 @@ xmlFreeZMemBuff( xmlZMemBuffPtr buff ) {
 			z_err );
 #else
     deflateEnd( &buff->zctrl );
-#endif;
+#endif
 
     xmlFree( buff );
     return;

@@ -2642,7 +2642,7 @@ xmlNsPtr
 xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
     xmlNsPtr cur;
 
-    if ((node == NULL) || (nameSpace == NULL)) return(NULL);
+    if (node == NULL) return(NULL);
     while (node != NULL) {
 	cur = node->nsDef;
 	while (cur != NULL) {

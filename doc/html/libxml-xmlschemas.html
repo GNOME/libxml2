@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xmlwriter.html" title="xmlwriter"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlwriter.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th></tr></table><div class="refentry"><a name="libxml-xmlschemas"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlschemas</h2><p>xmlschemas &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2695119"></a>Synopsis</h1></h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xmlwriter.html" title="xmlwriter"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlwriter.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th></tr></table><div class="refentry"><a name="libxml-xmlschemas"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlschemas</h2><p>xmlschemas &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2677437"></a>Synopsis</h1></h2><pre class="synopsis">
 
 
 
@@ -45,6 +45,35 @@ struct      <a href="libxml-xmlschemas.html#xmlSchemaParserCtxt">xmlSchemaParser
 typedef     <a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a>;
 struct      <a href="libxml-xmlschemas.html#xmlSchemaValidCtxt">xmlSchemaValidCtxt</a>;
 typedef     <a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a>;
+<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> <a href="libxml-xmlschemas.html#xmlSchemaNewParserCtxt">xmlSchemaNewParserCtxt</a>
+                                            (const char *URL);
+<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> <a href="libxml-xmlschemas.html#xmlSchemaNewMemParserCtxt">xmlSchemaNewMemParserCtxt</a>
+                                            (const char *buffer,
+                                             int size);
+<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> <a href="libxml-xmlschemas.html#xmlSchemaNewDocParserCtxt">xmlSchemaNewDocParserCtxt</a>
+                                            (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+void        <a href="libxml-xmlschemas.html#xmlSchemaFreeParserCtxt">xmlSchemaFreeParserCtxt</a>         (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt);
+void        <a href="libxml-xmlschemas.html#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a>        (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn,
+                                             void *ctx);
+<a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> <a href="libxml-xmlschemas.html#xmlSchemaParse">xmlSchemaParse</a>                 (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt);
+void        <a href="libxml-xmlschemas.html#xmlSchemaFree">xmlSchemaFree</a>                   (<a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
+void        <a href="libxml-xmlschemas.html#xmlSchemaDump">xmlSchemaDump</a>                   (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
+void        <a href="libxml-xmlschemas.html#xmlSchemaSetValidErrors">xmlSchemaSetValidErrors</a>         (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn,
+                                             void *ctx);
+<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> <a href="libxml-xmlschemas.html#xmlSchemaNewValidCtxt">xmlSchemaNewValidCtxt</a> (<a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
+void        <a href="libxml-xmlschemas.html#xmlSchemaFreeValidCtxt">xmlSchemaFreeValidCtxt</a>          (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt);
+int         <a href="libxml-xmlschemas.html#xmlSchemaValidateDoc">xmlSchemaValidateDoc</a>            (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> instance);
+int         <a href="libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a>         (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> input,
+                                             <a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc,
+                                             <a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
+                                             void *user_data);
 </pre></div><div class="refsect1"><h2>Description</h2><p>
 
 </p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlSchemaValidError"></a>enum xmlSchemaValidError</h3><pre class="programlisting">typedef enum {
@@ -132,4 +161,100 @@ A Schemas validation context</p><p>
 </p></div><hr><div class="refsect2"><h3><a name="xmlSchemaValidCtxtPtr"></a>xmlSchemaValidCtxtPtr</h3><pre class="programlisting">typedef xmlSchemaValidCtxt *xmlSchemaValidCtxtPtr;
 </pre><p>
 
-</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlwriter.html"><b>&lt;&lt; xmlwriter</b></a></td><td align="right"></td></tr></table></body></html>
+</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaNewParserCtxt"></a>xmlSchemaNewParserCtxt ()</h3><pre class="programlisting"><a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> xmlSchemaNewParserCtxt
+                                            (const char *URL);</pre><p>
+Create an XML Schemas parse context for that file/resource expected
+to contain an XML Schemas file.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>URL</tt></i>:</span></td><td>  the location of the schema
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaNewMemParserCtxt"></a>xmlSchemaNewMemParserCtxt ()</h3><pre class="programlisting"><a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> xmlSchemaNewMemParserCtxt
+                                            (const char *buffer,
+                                             int size);</pre><p>
+Create an XML Schemas parse context for that memory buffer expected
+to contain an XML Schemas file.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>buffer</tt></i>:</span></td><td>  a pointer to a char array containing the schemas
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>  the size of the array
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaNewDocParserCtxt"></a>xmlSchemaNewDocParserCtxt ()</h3><pre class="programlisting"><a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> xmlSchemaNewDocParserCtxt
+                                            (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
+Create an XML Schemas parse context for that document.
+NB. The document may be modified during the parsing process.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>  a preparsed document tree
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaFreeParserCtxt"></a>xmlSchemaFreeParserCtxt ()</h3><pre class="programlisting">void        xmlSchemaFreeParserCtxt         (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt);</pre><p>
+Free the resources associated to the schema parser context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  the schema parser context
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaSetParserErrors"></a>xmlSchemaSetParserErrors ()</h3><pre class="programlisting">void        xmlSchemaSetParserErrors        (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn,
+                                             void *ctx);</pre><p>
+Set the callback functions used to handle errors for a validation context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a schema validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>  the error callback
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td>  the warning callback
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>  contextual data for the callbacks
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaParse"></a>xmlSchemaParse ()</h3><pre class="programlisting"><a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> xmlSchemaParse                 (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt);</pre><p>
+parse a schema definition resource and build an internal
+XML Shema struture which can be used to validate instances.
+*WARNING* this interface is highly subject to change</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a schema validation context
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the internal XML Schema structure built from the resource or
+        NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaFree"></a>xmlSchemaFree ()</h3><pre class="programlisting">void        xmlSchemaFree                   (<a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);</pre><p>
+Deallocate a Schema structure.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>schema</tt></i>:</span></td><td>  a schema structure
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaDump"></a>xmlSchemaDump ()</h3><pre class="programlisting">void        xmlSchemaDump                   (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);</pre><p>
+Dump a Schema structure.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>output</tt></i>:</span></td><td>  the file output
+</td></tr><tr><td><span class="term"><i><tt>schema</tt></i>:</span></td><td>  a schema structure
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaSetValidErrors"></a>xmlSchemaSetValidErrors ()</h3><pre class="programlisting">void        xmlSchemaSetValidErrors         (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn,
+                                             void *ctx);</pre><p>
+Set the error and warning callback informations</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a schema validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>  the error function
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td> the warning function
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td> the functions context
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaNewValidCtxt"></a>xmlSchemaNewValidCtxt ()</h3><pre class="programlisting"><a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> xmlSchemaNewValidCtxt (<a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);</pre><p>
+Create an XML Schemas validation context based on the given schema</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>schema</tt></i>:</span></td><td>  a precompiled XML Schemas
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the validation context or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaFreeValidCtxt"></a>xmlSchemaFreeValidCtxt ()</h3><pre class="programlisting">void        xmlSchemaFreeValidCtxt          (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt);</pre><p>
+Free the resources associated to the schema validation context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  the schema validation context
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaValidateDoc"></a>xmlSchemaValidateDoc ()</h3><pre class="programlisting">int         xmlSchemaValidateDoc            (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> instance);</pre><p>
+Validate a document tree in memory.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a schema validation context
+</td></tr><tr><td><span class="term"><i><tt>instance</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 if the document is schemas valid, a positive error code
+    number otherwise and -1 in case of internal or API error.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaValidateStream"></a>xmlSchemaValidateStream ()</h3><pre class="programlisting">int         xmlSchemaValidateStream         (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> input,
+                                             <a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc,
+                                             <a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
+                                             void *user_data);</pre><p>
+Validate a document tree in memory.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a schema validation context
+</td></tr><tr><td><span class="term"><i><tt>input</tt></i>:</span></td><td>  the input to use for reading the data
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i>:</span></td><td>  an optional encoding information
+</td></tr><tr><td><span class="term"><i><tt>sax</tt></i>:</span></td><td>  a SAX handler for the resulting events
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i>:</span></td><td>  the context to provide to the SAX handler.
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 if the document is schemas valid, a positive error code
+    number otherwise and -1 in case of internal or API error.
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlwriter.html"><b>&lt;&lt; xmlwriter</b></a></td><td align="right"></td></tr></table></body></html>

@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xmlversion.html" title="xmlversion"><link rel="next" href="libxml-HTMLtree.html" title="HTMLtree"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlversion.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-HTMLtree.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-list"></a><div class="titlepage"></div><div class="refnamediv"><h2>list</h2><p>list &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2701070"></a>Synopsis</h1></h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xmlversion.html" title="xmlversion"><link rel="next" href="libxml-HTMLtree.html" title="HTMLtree"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlversion.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-HTMLtree.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-list"></a><div class="titlepage"></div><div class="refnamediv"><h2>list</h2><p>list &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2635080"></a>Synopsis</h1></h2><pre class="synopsis">
 
 
 
@@ -41,6 +41,48 @@ int         (<a href="libxml-list.html#xmlListDataCompare">*xmlListDataCompare</
                                              const void *data1);
 int         (<a href="libxml-list.html#xmlListWalker">*xmlListWalker</a>)                (const void *data,
                                              const void *user);
+<a href="libxml-list.html#xmlListPtr">xmlListPtr</a>  <a href="libxml-list.html#xmlListCreate">xmlListCreate</a>                   (<a href="libxml-list.html#xmlListDeallocator">xmlListDeallocator</a> deallocator,
+                                             <a href="libxml-list.html#xmlListDataCompare">xmlListDataCompare</a> compare);
+void        <a href="libxml-list.html#xmlListDelete">xmlListDelete</a>                   (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);
+void*       <a href="libxml-list.html#xmlListSearch">xmlListSearch</a>                   (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);
+void*       <a href="libxml-list.html#xmlListReverseSearch">xmlListReverseSearch</a>            (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);
+int         <a href="libxml-list.html#xmlListInsert">xmlListInsert</a>                   (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);
+int         <a href="libxml-list.html#xmlListAppend">xmlListAppend</a>                   (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);
+int         <a href="libxml-list.html#xmlListRemoveFirst">xmlListRemoveFirst</a>              (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);
+int         <a href="libxml-list.html#xmlListRemoveLast">xmlListRemoveLast</a>               (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);
+int         <a href="libxml-list.html#xmlListRemoveAll">xmlListRemoveAll</a>                (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);
+void        <a href="libxml-list.html#xmlListClear">xmlListClear</a>                    (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);
+int         <a href="libxml-list.html#xmlListEmpty">xmlListEmpty</a>                    (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);
+<a href="libxml-list.html#xmlLinkPtr">xmlLinkPtr</a>  <a href="libxml-list.html#xmlListFront">xmlListFront</a>                    (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);
+<a href="libxml-list.html#xmlLinkPtr">xmlLinkPtr</a>  <a href="libxml-list.html#xmlListEnd">xmlListEnd</a>                      (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);
+int         <a href="libxml-list.html#xmlListSize">xmlListSize</a>                     (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);
+void        <a href="libxml-list.html#xmlListPopFront">xmlListPopFront</a>                 (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);
+void        <a href="libxml-list.html#xmlListPopBack">xmlListPopBack</a>                  (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);
+int         <a href="libxml-list.html#xmlListPushFront">xmlListPushFront</a>                (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);
+int         <a href="libxml-list.html#xmlListPushBack">xmlListPushBack</a>                 (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);
+void        <a href="libxml-list.html#xmlListReverse">xmlListReverse</a>                  (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);
+void        <a href="libxml-list.html#xmlListSort">xmlListSort</a>                     (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);
+void        <a href="libxml-list.html#xmlListWalk">xmlListWalk</a>                     (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             <a href="libxml-list.html#xmlListWalker">xmlListWalker</a> walker,
+                                             const void *user);
+void        <a href="libxml-list.html#xmlListReverseWalk">xmlListReverseWalk</a>              (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             <a href="libxml-list.html#xmlListWalker">xmlListWalker</a> walker,
+                                             const void *user);
+void        <a href="libxml-list.html#xmlListMerge">xmlListMerge</a>                    (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l1,
+                                             <a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l2);
+<a href="libxml-list.html#xmlListPtr">xmlListPtr</a>  <a href="libxml-list.html#xmlListDup">xmlListDup</a>                      (const <a href="libxml-list.html#xmlListPtr">xmlListPtr</a> old);
+int         <a href="libxml-list.html#xmlListCopy">xmlListCopy</a>                     (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> cur,
+                                             const <a href="libxml-list.html#xmlListPtr">xmlListPtr</a> old);
+void*       <a href="libxml-list.html#xmlLinkGetData">xmlLinkGetData</a>                  (<a href="libxml-list.html#xmlLinkPtr">xmlLinkPtr</a> lk);
 </pre></div><div class="refsect1"><h2>Description</h2><p>
 
 </p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlLink"></a>struct xmlLink</h3><pre class="programlisting">struct xmlLink;</pre><p>
@@ -66,9 +108,162 @@ Callback function used to compare 2 data.</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 is equality, -1 or 1 otherwise depending on the ordering.
 </td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListWalker"></a>xmlListWalker ()</h3><pre class="programlisting">int         (*xmlListWalker)                (const void *data,
                                              const void *user);</pre><p>
-Callback function used when walking a list with <GTKDOCLINK HREF="xmlListWalk">xmlListWalk</GTKDOCLINK>().</p><p>
+Callback function used when walking a list with <a href="libxml-list.html#xmlListWalk">xmlListWalk</a>().</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td> the data found in the list
 </td></tr><tr><td><span class="term"><i><tt>user</tt></i>:</span></td><td> extra user provided data to the walker
 </td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 to stop walking the list, 1 otherwise.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListCreate"></a>xmlListCreate ()</h3><pre class="programlisting"><a href="libxml-list.html#xmlListPtr">xmlListPtr</a>  xmlListCreate                   (<a href="libxml-list.html#xmlListDeallocator">xmlListDeallocator</a> deallocator,
+                                             <a href="libxml-list.html#xmlListDataCompare">xmlListDataCompare</a> compare);</pre><p>
+Create a new list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>deallocator</tt></i>:</span></td><td>  an optional deallocator function
+</td></tr><tr><td><span class="term"><i><tt>compare</tt></i>:</span></td><td>  an optional comparison function
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the new list or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListDelete"></a>xmlListDelete ()</h3><pre class="programlisting">void        xmlListDelete                   (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);</pre><p>
+Deletes the list and its associated data</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListSearch"></a>xmlListSearch ()</h3><pre class="programlisting">void*       xmlListSearch                   (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);</pre><p>
+Search the list for an existing value of <i><tt>data</tt></i></p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>  a search value
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListReverseSearch"></a>xmlListReverseSearch ()</h3><pre class="programlisting">void*       xmlListReverseSearch            (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);</pre><p>
+Search the list in reverse order for an existing value of <i><tt>data</tt></i></p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>  a search value
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListInsert"></a>xmlListInsert ()</h3><pre class="programlisting">int         xmlListInsert                   (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);</pre><p>
+Insert data in the ordered list at the beginning for this value</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>  the data
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 in case of success, 1 in case of failure
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListAppend"></a>xmlListAppend ()</h3><pre class="programlisting">int         xmlListAppend                   (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);</pre><p>
+Insert data in the ordered list at the end for this value</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>  the data
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 in case of success, 1 in case of failure
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListRemoveFirst"></a>xmlListRemoveFirst ()</h3><pre class="programlisting">int         xmlListRemoveFirst              (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);</pre><p>
+Remove the first instance associated to data in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>  list data
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if a deallocation occured, or 0 if not found
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListRemoveLast"></a>xmlListRemoveLast ()</h3><pre class="programlisting">int         xmlListRemoveLast               (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);</pre><p>
+Remove the last instance associated to data in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>  list data
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if a deallocation occured, or 0 if not found
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListRemoveAll"></a>xmlListRemoveAll ()</h3><pre class="programlisting">int         xmlListRemoveAll                (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);</pre><p>
+Remove the all instance associated to data in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>  list data
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the number of deallocation, or 0 if not found
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListClear"></a>xmlListClear ()</h3><pre class="programlisting">void        xmlListClear                    (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);</pre><p>
+Remove the all data in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListEmpty"></a>xmlListEmpty ()</h3><pre class="programlisting">int         xmlListEmpty                    (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);</pre><p>
+Is the list empty ?</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if the list is empty, 0 otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListFront"></a>xmlListFront ()</h3><pre class="programlisting"><a href="libxml-list.html#xmlLinkPtr">xmlLinkPtr</a>  xmlListFront                    (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);</pre><p>
+Get the first element in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the first element in the list, or NULL
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListEnd"></a>xmlListEnd ()</h3><pre class="programlisting"><a href="libxml-list.html#xmlLinkPtr">xmlLinkPtr</a>  xmlListEnd                      (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);</pre><p>
+Get the last element in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the last element in the list, or NULL
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListSize"></a>xmlListSize ()</h3><pre class="programlisting">int         xmlListSize                     (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);</pre><p>
+Get the number of elements in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the number of elements in the list
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListPopFront"></a>xmlListPopFront ()</h3><pre class="programlisting">void        xmlListPopFront                 (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);</pre><p>
+Removes the first element in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListPopBack"></a>xmlListPopBack ()</h3><pre class="programlisting">void        xmlListPopBack                  (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);</pre><p>
+Removes the last element in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListPushFront"></a>xmlListPushFront ()</h3><pre class="programlisting">int         xmlListPushFront                (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);</pre><p>
+add the new data at the beginning of the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>  new data
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if successful, 0 otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListPushBack"></a>xmlListPushBack ()</h3><pre class="programlisting">int         xmlListPushBack                 (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             void *data);</pre><p>
+add the new data at the end of the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>  new data
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if successful, 0 otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListReverse"></a>xmlListReverse ()</h3><pre class="programlisting">void        xmlListReverse                  (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);</pre><p>
+Reverse the order of the elements in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListSort"></a>xmlListSort ()</h3><pre class="programlisting">void        xmlListSort                     (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l);</pre><p>
+Sort all the elements in the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListWalk"></a>xmlListWalk ()</h3><pre class="programlisting">void        xmlListWalk                     (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             <a href="libxml-list.html#xmlListWalker">xmlListWalker</a> walker,
+                                             const void *user);</pre><p>
+Walk all the element of the first from first to last and
+apply the walker function to it</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>walker</tt></i>:</span></td><td>  a processing function
+</td></tr><tr><td><span class="term"><i><tt>user</tt></i>:</span></td><td>  a user parameter passed to the walker function
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListReverseWalk"></a>xmlListReverseWalk ()</h3><pre class="programlisting">void        xmlListReverseWalk              (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l,
+                                             <a href="libxml-list.html#xmlListWalker">xmlListWalker</a> walker,
+                                             const void *user);</pre><p>
+Walk all the element of the list in reverse order and
+apply the walker function to it</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l</tt></i>:</span></td><td>  a list
+</td></tr><tr><td><span class="term"><i><tt>walker</tt></i>:</span></td><td>  a processing function
+</td></tr><tr><td><span class="term"><i><tt>user</tt></i>:</span></td><td>  a user parameter passed to the walker function
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListMerge"></a>xmlListMerge ()</h3><pre class="programlisting">void        xmlListMerge                    (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l1,
+                                             <a href="libxml-list.html#xmlListPtr">xmlListPtr</a> l2);</pre><p>
+include all the elements of the second list in the first one and
+clear the second list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>l1</tt></i>:</span></td><td>  the original list
+</td></tr><tr><td><span class="term"><i><tt>l2</tt></i>:</span></td><td>  the new list
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListDup"></a>xmlListDup ()</h3><pre class="programlisting"><a href="libxml-list.html#xmlListPtr">xmlListPtr</a>  xmlListDup                      (const <a href="libxml-list.html#xmlListPtr">xmlListPtr</a> old);</pre><p>
+Duplicate the list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>old</tt></i>:</span></td><td>  the list
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>a new copy of the list or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListCopy"></a>xmlListCopy ()</h3><pre class="programlisting">int         xmlListCopy                     (<a href="libxml-list.html#xmlListPtr">xmlListPtr</a> cur,
+                                             const <a href="libxml-list.html#xmlListPtr">xmlListPtr</a> old);</pre><p>
+Move all the element from the old list in the new list</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>cur</tt></i>:</span></td><td>  the new list
+</td></tr><tr><td><span class="term"><i><tt>old</tt></i>:</span></td><td>  the old list
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 in case of success 1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlLinkGetData"></a>xmlLinkGetData ()</h3><pre class="programlisting">void*       xmlLinkGetData                  (<a href="libxml-list.html#xmlLinkPtr">xmlLinkPtr</a> lk);</pre><p>
+See Returns.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>lk</tt></i>:</span></td><td>  a link
 </td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlversion.html"><b>&lt;&lt; xmlversion</b></a></td><td align="right"><a accesskey="n" href="libxml-HTMLtree.html"><b>HTMLtree &gt;&gt;</b></a></td></tr></table></body></html>

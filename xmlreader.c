@@ -438,7 +438,7 @@ xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur) {
  *
  * Deallocate the memory used by an ID hash table.
  */
-void
+static void
 xmlTextReaderFreeIDTable(xmlIDTablePtr table) {
     xmlHashFree(table, (xmlHashDeallocator) xmlFreeID);
 }

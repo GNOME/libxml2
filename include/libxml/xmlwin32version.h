@@ -223,7 +223,7 @@ extern void xmlCheckVersion(int version);
 #define ATTRIBUTE_UNUSED
 #endif
 
-/**
+/*
  * #pragma comment(lib, "iconv.lib")
  *
  * pragma understood my MS compiler which enables a conditional link with

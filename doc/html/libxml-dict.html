@@ -28,12 +28,24 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-DOCBparser.html" title="DOCBparser"><link rel="next" href="libxml-xmlautomata.html" title="xmlautomata"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-DOCBparser.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-xmlautomata.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-dict"></a><div class="titlepage"></div><div class="refnamediv"><h2>dict</h2><p>dict &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2682251"></a>Synopsis</h1></h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-DOCBparser.html" title="DOCBparser"><link rel="next" href="libxml-xmlautomata.html" title="xmlautomata"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-DOCBparser.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xmlautomata.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-dict"></a><div class="titlepage"></div><div class="refnamediv"><h2>dict</h2><p>dict &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2644652"></a>Synopsis</h1></h2><pre class="synopsis">
 
 
 
 struct      <a href="libxml-dict.html#xmlDict">xmlDict</a>;
 typedef     <a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a>;
+<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a>  <a href="libxml-dict.html#xmlDictCreate">xmlDictCreate</a>                   (void);
+int         <a href="libxml-dict.html#xmlDictReference">xmlDictReference</a>                (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
+void        <a href="libxml-dict.html#xmlDictFree">xmlDictFree</a>                     (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
+const <a href="libxml-tree.html#xmlChar">xmlChar</a>* <a href="libxml-dict.html#xmlDictLookup">xmlDictLookup</a>                (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             int len);
+const <a href="libxml-tree.html#xmlChar">xmlChar</a>* <a href="libxml-dict.html#xmlDictQLookup">xmlDictQLookup</a>               (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);
+int         <a href="libxml-dict.html#xmlDictOwns">xmlDictOwns</a>                     (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str);
+int         <a href="libxml-dict.html#xmlDictSize">xmlDictSize</a>                     (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
 </pre></div><div class="refsect1"><h2>Description</h2><p>
 
 </p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlDict"></a>struct xmlDict</h3><pre class="programlisting">struct xmlDict;</pre><p>
@@ -41,4 +53,50 @@ typedef     <a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a>;
 </p></div><hr><div class="refsect2"><h3><a name="xmlDictPtr"></a>xmlDictPtr</h3><pre class="programlisting">typedef xmlDict *xmlDictPtr;
 </pre><p>
 
-</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-DOCBparser.html"><b>&lt;&lt; DOCBparser</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlautomata.html"><b>xmlautomata &gt;&gt;</b></a></td></tr></table></body></html>
+</p></div><hr><div class="refsect2"><h3><a name="xmlDictCreate"></a>xmlDictCreate ()</h3><pre class="programlisting"><a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a>  xmlDictCreate                   (void);</pre><p>
+Create a new dictionary</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the newly created object, or NULL if an error occured.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlDictReference"></a>xmlDictReference ()</h3><pre class="programlisting">int         xmlDictReference                (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict);</pre><p>
+Increment the reference counter of a dictionary</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>dict</tt></i>:</span></td><td> the dictionnary
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 in case of success and -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlDictFree"></a>xmlDictFree ()</h3><pre class="programlisting">void        xmlDictFree                     (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict);</pre><p>
+Free the hash <i><tt>dict</tt></i> and its contents. The userdata is
+deallocated with <i><tt>f</tt></i> if provided.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>dict</tt></i>:</span></td><td> the dictionnary
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlDictLookup"></a>xmlDictLookup ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* xmlDictLookup                (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             int len);</pre><p>
+Add the <i><tt>name</tt></i> to the hash <i><tt>dict</tt></i> if not present.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>dict</tt></i>:</span></td><td> the dictionnary
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td> the name of the userdata
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td> the length of the name, if -1 it is recomputed
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the internal copy of the name or NULL in case of internal error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlDictQLookup"></a>xmlDictQLookup ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* xmlDictQLookup               (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
+Add the QName <i><tt>prefix</tt></i>:<i><tt>name</tt></i> to the hash <i><tt>dict</tt></i> if not present.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>dict</tt></i>:</span></td><td> the dictionnary
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i>:</span></td><td> the prefix 
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td> the name
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the internal copy of the QName or NULL in case of internal error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlDictOwns"></a>xmlDictOwns ()</h3><pre class="programlisting">int         xmlDictOwns                     (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str);</pre><p>
+check if a string is owned by the disctionary</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>dict</tt></i>:</span></td><td> the dictionnary
+</td></tr><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td> the string
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if true, 0 if false and -1 in case of error
+-1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlDictSize"></a>xmlDictSize ()</h3><pre class="programlisting">int         xmlDictSize                     (<a href="libxml-dict.html#xmlDictPtr">xmlDictPtr</a> dict);</pre><p>
+Query the number of elements installed in the hash <i><tt>dict</tt></i>.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>dict</tt></i>:</span></td><td> the dictionnary
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the number of elements in the dictionnary or
+-1 in case of error
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-DOCBparser.html"><b>&lt;&lt; DOCBparser</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlautomata.html"><b>xmlautomata &gt;&gt;</b></a></td></tr></table></body></html>

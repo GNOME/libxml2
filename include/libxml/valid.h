@@ -53,7 +53,7 @@ typedef void (*xmlValidityWarningFunc) (void *ctx,
 			       const char *msg,
 			       ...);
 
-/**
+/*
  * xmlValidCtxt:
  * An xmlValidCtxt is used for error reporting when validating.
  */

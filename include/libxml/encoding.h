@@ -30,7 +30,7 @@
 extern "C" {
 #endif
 
-/**
+/*
  * xmlCharEncoding:
  *
  * Predefined values for some standard encodings.

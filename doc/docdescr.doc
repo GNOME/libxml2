@@ -54,6 +54,7 @@ NOTE:  Steps 1 through 5 are performed with the command "make rebuild";
        Steps 7 and 8 are performed with the command "make web"
 
 1) Generate libxml-decl.txt, libxml-decl-list.txt and libxml-sections.txt:
+       make scan, or,
        gtkdoc-scan --module=libxml --source-dir=../ \
          --ignore-headers="acconfig.h config.h win32config.h trio.h triostr.h 
                            triop.h config-m ac.h XMLTestPrefix2.h  XMLTestPrefix.h
@@ -63,9 +64,11 @@ NOTE:  Steps 1 through 5 are performed with the command "make rebuild";
    These three files are used by the gdk-doc routines in the following steps.
 
 2) Generate the sgml documentation in the subdirectory "tmpl":
+       make templates, or,
        gtkdoc-mktmpl --module=libxml
 
 3) Generate the xml documentation in the subdirectory "xml":
+       make xml, or,
        gtkdoc-mkdb --module=libxml --source-dir=../ --output-format=xml \
          --main-sgml-file=gnome-xml.xml
 
@@ -75,6 +78,7 @@ NOTE:  Steps 1 through 5 are performed with the command "make rebuild";
     titles.
 
 4) Generate the main html documentation in the subdirectory "html":
+       make html, or,
        cd html
        gtkdoc-mkhtml libxml ../gnome-xml.xml
        cd ../
@@ -101,7 +105,7 @@ NOTE:  Steps 1 through 5 are performed with the command "make rebuild";
     information on the api's in the file "libxml2-api.xml", but that step is
     now being done by a separate script.
 
-7) Generate the site's main page:
+7) Generate the site's main pages:
        xsltproc --nonet --html --output index.html site.xsl xml.html
 
     All of the "top-level" pages (except xmlreader.html and guidelines.html)
@@ -114,6 +118,7 @@ NOTE:  Steps 1 through 5 are performed with the command "make rebuild";
        xsltproc --nonet --output ../NEWS news.xsl news.html
 
 10)Generate the XML Software Autoupdate file libxml2.xsa:
+       make libxml2.xsa, or,
        xsltproc --nonet --output libxml2.xsa xsa.xsl news.html
 
 11)Manually generate xmlcatalog.1 and xmllint.1 using manpages/docbook.xsl

@@ -28,17 +28,257 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-debugXML.html" title="debugXML"><link rel="next" href="libxml-xmlschemas.html" title="xmlschemas"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-debugXML.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-xmlschemas.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-xmlwriter"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlwriter</h2><p>xmlwriter &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2721958"></a>Synopsis</h1></h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-debugXML.html" title="debugXML"><link rel="next" href="libxml-xmlschemas.html" title="xmlschemas"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-debugXML.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xmlschemas.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-xmlwriter"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlwriter</h2><p>xmlwriter &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2771402"></a>Synopsis</h1></h2><pre class="synopsis">
 
 
 
 struct      <a href="libxml-xmlwriter.html#xmlTextWriter">xmlTextWriter</a>;
 typedef     <a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a>;
+<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> <a href="libxml-xmlwriter.html#xmlNewTextWriter">xmlNewTextWriter</a>           (<a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out);
+<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> <a href="libxml-xmlwriter.html#xmlNewTextWriterFilename">xmlNewTextWriterFilename</a>   (const char *uri,
+                                             int compression);
+<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> <a href="libxml-xmlwriter.html#xmlNewTextWriterMemory">xmlNewTextWriterMemory</a>     (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
+                                             int compression);
+void        <a href="libxml-xmlwriter.html#xmlFreeTextWriter">xmlFreeTextWriter</a>               (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartDocument">xmlTextWriterStartDocument</a>      (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *version,
+                                             const char *encoding,
+                                             const char *standalone);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterEndDocument">xmlTextWriterEndDocument</a>        (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatComment">xmlTextWriterWriteFormatComment</a> (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatComment">xmlTextWriterWriteVFormatComment</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteComment">xmlTextWriterWriteComment</a>       (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartElement">xmlTextWriterStartElement</a>       (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartElementNS">xmlTextWriterStartElementNS</a>     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterEndElement">xmlTextWriterEndElement</a>         (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterFullEndElement">xmlTextWriterFullEndElement</a>     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatElement">xmlTextWriterWriteFormatElement</a> (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatElement">xmlTextWriterWriteVFormatElement</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteElement">xmlTextWriterWriteElement</a>       (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatElementNS">xmlTextWriterWriteFormatElementNS</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatElementNS">xmlTextWriterWriteVFormatElementNS</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteElementNS">xmlTextWriterWriteElementNS</a>     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatRaw">xmlTextWriterWriteFormatRaw</a>     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatRaw">xmlTextWriterWriteVFormatRaw</a>    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteRawLen">xmlTextWriterWriteRawLen</a>        (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content,
+                                             int len);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteRaw">xmlTextWriterWriteRaw</a>           (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatString">xmlTextWriterWriteFormatString</a>  (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatString">xmlTextWriterWriteVFormatString</a> (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteString">xmlTextWriterWriteString</a>        (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteBase64">xmlTextWriterWriteBase64</a>        (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *data,
+                                             int start,
+                                             int len);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteBinHex">xmlTextWriterWriteBinHex</a>        (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *data,
+                                             int start,
+                                             int len);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartAttribute">xmlTextWriterStartAttribute</a>     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartAttributeNS">xmlTextWriterStartAttributeNS</a>   (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterEndAttribute">xmlTextWriterEndAttribute</a>       (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatAttribute">xmlTextWriterWriteFormatAttribute</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatAttribute">xmlTextWriterWriteVFormatAttribute</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteAttribute">xmlTextWriterWriteAttribute</a>     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatAttributeNS">xmlTextWriterWriteFormatAttributeNS</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatAttributeNS">xmlTextWriterWriteVFormatAttributeNS</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteAttributeNS">xmlTextWriterWriteAttributeNS</a>   (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartPI">xmlTextWriterStartPI</a>            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *target);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterEndPI">xmlTextWriterEndPI</a>              (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatPI">xmlTextWriterWriteFormatPI</a>      (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *target,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatPI">xmlTextWriterWriteVFormatPI</a>     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *target,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWritePI">xmlTextWriterWritePI</a>            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *target,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
 #define     <a href="libxml-xmlwriter.html#xmlTextWriterWriteProcessingInstruction">xmlTextWriterWriteProcessingInstruction</a>
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartCDATA">xmlTextWriterStartCDATA</a>         (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterEndCDATA">xmlTextWriterEndCDATA</a>           (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatCDATA">xmlTextWriterWriteFormatCDATA</a>   (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatCDATA">xmlTextWriterWriteVFormatCDATA</a>  (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteCDATA">xmlTextWriterWriteCDATA</a>         (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartDTD">xmlTextWriterStartDTD</a>           (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterEndDTD">xmlTextWriterEndDTD</a>             (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatDTD">xmlTextWriterWriteFormatDTD</a>     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatDTD">xmlTextWriterWriteVFormatDTD</a>    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteDTD">xmlTextWriterWriteDTD</a>           (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *subset);
 #define     <a href="libxml-xmlwriter.html#xmlTextWriterWriteDocType">xmlTextWriterWriteDocType</a>
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartDTDElement">xmlTextWriterStartDTDElement</a>    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);
 #define     <a href="libxml-xmlwriter.html#xmlTextWriterEndDTDElement">xmlTextWriterEndDTDElement</a>
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatDTDElement">xmlTextWriterWriteFormatDTDElement</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatDTDElement">xmlTextWriterWriteVFormatDTDElement</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteDTDElement">xmlTextWriterWriteDTDElement</a>    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartDTDAttlist">xmlTextWriterStartDTDAttlist</a>    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);
 #define     <a href="libxml-xmlwriter.html#xmlTextWriterEndDTDAttlist">xmlTextWriterEndDTDAttlist</a>
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatDTDAttlist">xmlTextWriterWriteFormatDTDAttlist</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatDTDAttlist">xmlTextWriterWriteVFormatDTDAttlist</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteDTDAttlist">xmlTextWriterWriteDTDAttlist</a>    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterStartDTDEntity">xmlTextWriterStartDTDEntity</a>     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);
 #define     <a href="libxml-xmlwriter.html#xmlTextWriterEndDTDEntity">xmlTextWriterEndDTDEntity</a>
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteFormatDTDInternalEntity">xmlTextWriterWriteFormatDTDInternalEntity</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             ...);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteVFormatDTDInternalEntity">xmlTextWriterWriteVFormatDTDInternalEntity</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             va_list argptr);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteDTDInternalEntity">xmlTextWriterWriteDTDInternalEntity</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteDTDExternalEntity">xmlTextWriterWriteDTDExternalEntity</a>
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ndataid);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteDTDEntity">xmlTextWriterWriteDTDEntity</a>     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ndataid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterWriteDTDNotation">xmlTextWriterWriteDTDNotation</a>   (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid);
+int         <a href="libxml-xmlwriter.html#xmlTextWriterFlush">xmlTextWriterFlush</a>              (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
 </pre></div><div class="refsect1"><h2>Description</h2><p>
 
 </p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlTextWriter"></a>struct xmlTextWriter</h3><pre class="programlisting">struct xmlTextWriter;</pre><p>
@@ -46,19 +286,703 @@ typedef     <a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a
 </p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterPtr"></a>xmlTextWriterPtr</h3><pre class="programlisting">typedef xmlTextWriter *xmlTextWriterPtr;
 </pre><p>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteProcessingInstruction"></a>xmlTextWriterWriteProcessingInstruction</h3><pre class="programlisting">#define xmlTextWriterWriteProcessingInstruction xmlTextWriterWritePI
+</p></div><hr><div class="refsect2"><h3><a name="xmlNewTextWriter"></a>xmlNewTextWriter ()</h3><pre class="programlisting"><a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> xmlNewTextWriter           (<a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out);</pre><p>
+Create a new xmlNewTextWriter structure using an xmlOutputBufferPtr</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>out</tt></i>:</span></td><td>  an xmlOutputBufferPtr
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the new xmlTextWriterPtr or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlNewTextWriterFilename"></a>xmlNewTextWriterFilename ()</h3><pre class="programlisting"><a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> xmlNewTextWriterFilename   (const char *uri,
+                                             int compression);</pre><p>
+Create a new xmlNewTextWriter structure with <i><tt>uri</tt></i> as output</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>uri</tt></i>:</span></td><td>  the URI of the resource for the output
+</td></tr><tr><td><span class="term"><i><tt>compression</tt></i>:</span></td><td>  compress the output?
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the new xmlTextWriterPtr or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlNewTextWriterMemory"></a>xmlNewTextWriterMemory ()</h3><pre class="programlisting"><a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> xmlNewTextWriterMemory     (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
+                                             int compression);</pre><p>
+Create a new xmlNewTextWriter structure with <i><tt>buf</tt></i> as output
+TODO: handle compression</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>buf</tt></i>:</span></td><td>  xmlBufferPtr
+</td></tr><tr><td><span class="term"><i><tt>compression</tt></i>:</span></td><td>  compress the output?
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the new xmlTextWriterPtr or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlFreeTextWriter"></a>xmlFreeTextWriter ()</h3><pre class="programlisting">void        xmlFreeTextWriter               (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);</pre><p>
+Deallocate all the resources associated to the writer</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartDocument"></a>xmlTextWriterStartDocument ()</h3><pre class="programlisting">int         xmlTextWriterStartDocument      (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *version,
+                                             const char *encoding,
+                                             const char *standalone);</pre><p>
+Start a new xml document</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>version</tt></i>:</span></td><td>  the xml version ("1.0") or NULL for default ("1.0")
+</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i>:</span></td><td>  the encoding or NULL for default
+</td></tr><tr><td><span class="term"><i><tt>standalone</tt></i>:</span></td><td> "yes" or "no" or NULL for default
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndDocument"></a>xmlTextWriterEndDocument ()</h3><pre class="programlisting">int         xmlTextWriterEndDocument        (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);</pre><p>
+End an xml document. All open elements are closed</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatComment"></a>xmlTextWriterWriteFormatComment ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatComment (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             ...);</pre><p>
+Write an xml comment.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatComment"></a>xmlTextWriterWriteVFormatComment ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatComment
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+Write an xml comment.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>  pointer to the first member of the variable argument list.
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteComment"></a>xmlTextWriterWriteComment ()</h3><pre class="programlisting">int         xmlTextWriterWriteComment       (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+Write an xml comment.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>  comment string
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartElement"></a>xmlTextWriterStartElement ()</h3><pre class="programlisting">int         xmlTextWriterStartElement       (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
+Start an xml element.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  element name
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartElementNS"></a>xmlTextWriterStartElementNS ()</h3><pre class="programlisting">int         xmlTextWriterStartElementNS     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI);</pre><p>
+Start an xml element with namespace support.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i>:</span></td><td>  namespace prefix or NULL
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  element local name
+</td></tr><tr><td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td><td>  namespace URI or NULL
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndElement"></a>xmlTextWriterEndElement ()</h3><pre class="programlisting">int         xmlTextWriterEndElement         (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);</pre><p>
+End the current xml element.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterFullEndElement"></a>xmlTextWriterFullEndElement ()</h3><pre class="programlisting">int         xmlTextWriterFullEndElement     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);</pre><p>
+End the current xml element. Writes an end tag even if the element is empty</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatElement"></a>xmlTextWriterWriteFormatElement ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatElement (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             ...);</pre><p>
+Write a formatted xml element.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  element name
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatElement"></a>xmlTextWriterWriteVFormatElement ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatElement
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+Write a formatted xml element.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  element name
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>  pointer to the first member of the variable argument list.
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteElement"></a>xmlTextWriterWriteElement ()</h3><pre class="programlisting">int         xmlTextWriterWriteElement       (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+Write an xml element.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  element name
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>  element content
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatElementNS"></a>xmlTextWriterWriteFormatElementNS ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatElementNS
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const char *format,
+                                             ...);</pre><p>
+Write a formatted xml element with namespace support.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i>:</span></td><td>  namespace prefix
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  element local name
+</td></tr><tr><td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td><td>  namespace URI
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatElementNS"></a>xmlTextWriterWriteVFormatElementNS ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatElementNS
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+Write a formatted xml element with namespace support.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i>:</span></td><td>  namespace prefix
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  element local name
+</td></tr><tr><td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td><td>  namespace URI
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>  pointer to the first member of the variable argument list.
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteElementNS"></a>xmlTextWriterWriteElementNS ()</h3><pre class="programlisting">int         xmlTextWriterWriteElementNS     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+Write an xml element with namespace support.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i>:</span></td><td>  namespace prefix
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  element local name
+</td></tr><tr><td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td><td>  namespace URI
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>  element content
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatRaw"></a>xmlTextWriterWriteFormatRaw ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatRaw     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             ...);</pre><p>
+Write a formatted raw xml text.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatRaw"></a>xmlTextWriterWriteVFormatRaw ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatRaw    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+Write a formatted raw xml text.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>  pointer to the first member of the variable argument list.
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteRawLen"></a>xmlTextWriterWriteRawLen ()</h3><pre class="programlisting">int         xmlTextWriterWriteRawLen        (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content,
+                                             int len);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteRaw"></a>xmlTextWriterWriteRaw ()</h3><pre class="programlisting">int         xmlTextWriterWriteRaw           (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+Write a raw xml text.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>  text string
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatString"></a>xmlTextWriterWriteFormatString ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatString  (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             ...);</pre><p>
+Write a formatted xml text.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatString"></a>xmlTextWriterWriteVFormatString ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatString (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+Write a formatted xml text.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>  pointer to the first member of the variable argument list.
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteString"></a>xmlTextWriterWriteString ()</h3><pre class="programlisting">int         xmlTextWriterWriteString        (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+Write an xml text.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>  text string
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteBase64"></a>xmlTextWriterWriteBase64 ()</h3><pre class="programlisting">int         xmlTextWriterWriteBase64        (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *data,
+                                             int start,
+                                             int len);</pre><p>
+Write an base64 encoded xml text.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td> the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>   binary data
+</td></tr><tr><td><span class="term"><i><tt>start</tt></i>:</span></td><td>  the position within the data of the first byte to encode
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>  the number of bytes to encode
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteBinHex"></a>xmlTextWriterWriteBinHex ()</h3><pre class="programlisting">int         xmlTextWriterWriteBinHex        (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *data,
+                                             int start,
+                                             int len);</pre><p>
+Write a BinHex encoded xml text.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td> the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>   binary data
+</td></tr><tr><td><span class="term"><i><tt>start</tt></i>:</span></td><td>  the position within the data of the first byte to encode
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>  the number of bytes to encode
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartAttribute"></a>xmlTextWriterStartAttribute ()</h3><pre class="programlisting">int         xmlTextWriterStartAttribute     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
+Start an xml attribute.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  element name
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartAttributeNS"></a>xmlTextWriterStartAttributeNS ()</h3><pre class="programlisting">int         xmlTextWriterStartAttributeNS   (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI);</pre><p>
+Start an xml attribute with namespace support.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i>:</span></td><td>  namespace prefix or NULL
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  element local name
+</td></tr><tr><td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td><td>  namespace URI or NULL
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndAttribute"></a>xmlTextWriterEndAttribute ()</h3><pre class="programlisting">int         xmlTextWriterEndAttribute       (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);</pre><p>
+End the current xml element.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatAttribute"></a>xmlTextWriterWriteFormatAttribute ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatAttribute
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             ...);</pre><p>
+Write a formatted xml attribute.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  attribute name
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatAttribute"></a>xmlTextWriterWriteVFormatAttribute ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatAttribute
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+Write a formatted xml attribute.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  attribute name
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>  pointer to the first member of the variable argument list.
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteAttribute"></a>xmlTextWriterWriteAttribute ()</h3><pre class="programlisting">int         xmlTextWriterWriteAttribute     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+Write an xml attribute.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  attribute name
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>  attribute content
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatAttributeNS"></a>xmlTextWriterWriteFormatAttributeNS ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatAttributeNS
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const char *format,
+                                             ...);</pre><p>
+Write a formatted xml attribute.with namespace support</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i>:</span></td><td>  namespace prefix
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  attribute local name
+</td></tr><tr><td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td><td>  namespace URI
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatAttributeNS"></a>xmlTextWriterWriteVFormatAttributeNS ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatAttributeNS
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+Write a formatted xml attribute.with namespace support</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i>:</span></td><td>  namespace prefix
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  attribute local name
+</td></tr><tr><td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td><td>  namespace URI
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>  pointer to the first member of the variable argument list.
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteAttributeNS"></a>xmlTextWriterWriteAttributeNS ()</h3><pre class="programlisting">int         xmlTextWriterWriteAttributeNS   (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *namespaceURI,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+Write an xml attribute.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i>:</span></td><td>  namespace prefix
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  attribute local name
+</td></tr><tr><td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td><td>  namespace URI
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>  attribute content
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartPI"></a>xmlTextWriterStartPI ()</h3><pre class="programlisting">int         xmlTextWriterStartPI            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *target);</pre><p>
+Start an xml PI.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>target</tt></i>:</span></td><td>  PI target
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndPI"></a>xmlTextWriterEndPI ()</h3><pre class="programlisting">int         xmlTextWriterEndPI              (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);</pre><p>
+End the current xml PI.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatPI"></a>xmlTextWriterWriteFormatPI ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatPI      (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *target,
+                                             const char *format,
+                                             ...);</pre><p>
+Write a formatted PI.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>target</tt></i>:</span></td><td>  PI target
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatPI"></a>xmlTextWriterWriteVFormatPI ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatPI     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *target,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+Write a formatted xml PI.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>target</tt></i>:</span></td><td>  PI target
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWritePI"></a>xmlTextWriterWritePI ()</h3><pre class="programlisting">int         xmlTextWriterWritePI            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *target,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+Write an xml PI.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>target</tt></i>:</span></td><td>  PI target
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>  PI content
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteProcessingInstruction"></a>xmlTextWriterWriteProcessingInstruction</h3><pre class="programlisting">#define xmlTextWriterWriteProcessingInstruction xmlTextWriterWritePI
 </pre><p>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteDocType"></a>xmlTextWriterWriteDocType</h3><pre class="programlisting">#define xmlTextWriterWriteDocType xmlTextWriterWriteDTD
+</p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartCDATA"></a>xmlTextWriterStartCDATA ()</h3><pre class="programlisting">int         xmlTextWriterStartCDATA         (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);</pre><p>
+Start an xml CDATA section.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndCDATA"></a>xmlTextWriterEndCDATA ()</h3><pre class="programlisting">int         xmlTextWriterEndCDATA           (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);</pre><p>
+End an xml CDATA section.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatCDATA"></a>xmlTextWriterWriteFormatCDATA ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatCDATA   (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             ...);</pre><p>
+Write a formatted xml CDATA.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatCDATA"></a>xmlTextWriterWriteVFormatCDATA ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatCDATA  (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+Write a formatted xml CDATA.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteCDATA"></a>xmlTextWriterWriteCDATA ()</h3><pre class="programlisting">int         xmlTextWriterWriteCDATA         (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+Write an xml CDATA.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>  CDATA content
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartDTD"></a>xmlTextWriterStartDTD ()</h3><pre class="programlisting">int         xmlTextWriterStartDTD           (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid);</pre><p>
+Start an xml DTD.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  the name of the DTD
+</td></tr><tr><td><span class="term"><i><tt>pubid</tt></i>:</span></td><td>  the public identifier, which is an alternative to the system identifier
+</td></tr><tr><td><span class="term"><i><tt>sysid</tt></i>:</span></td><td>  the system identifier, which is the URI of the DTD
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndDTD"></a>xmlTextWriterEndDTD ()</h3><pre class="programlisting">int         xmlTextWriterEndDTD             (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);</pre><p>
+End an xml DTD.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatDTD"></a>xmlTextWriterWriteFormatDTD ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatDTD     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid,
+                                             const char *format,
+                                             ...);</pre><p>
+Write a DTD with a formatted markup declarations part.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  the name of the DTD
+</td></tr><tr><td><span class="term"><i><tt>pubid</tt></i>:</span></td><td>  the public identifier, which is an alternative to the system identifier
+</td></tr><tr><td><span class="term"><i><tt>sysid</tt></i>:</span></td><td>  the system identifier, which is the URI of the DTD
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatDTD"></a>xmlTextWriterWriteVFormatDTD ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatDTD    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+Write a DTD with a formatted markup declarations part.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  the name of the DTD
+</td></tr><tr><td><span class="term"><i><tt>pubid</tt></i>:</span></td><td>  the public identifier, which is an alternative to the system identifier
+</td></tr><tr><td><span class="term"><i><tt>sysid</tt></i>:</span></td><td>  the system identifier, which is the URI of the DTD
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>  format string (see printf)
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteDTD"></a>xmlTextWriterWriteDTD ()</h3><pre class="programlisting">int         xmlTextWriterWriteDTD           (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *subset);</pre><p>
+Write a DTD.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>  the name of the DTD
+</td></tr><tr><td><span class="term"><i><tt>pubid</tt></i>:</span></td><td>  the public identifier, which is an alternative to the system identifier
+</td></tr><tr><td><span class="term"><i><tt>sysid</tt></i>:</span></td><td>  the system identifier, which is the URI of the DTD
+</td></tr><tr><td><span class="term"><i><tt>subset</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteDocType"></a>xmlTextWriterWriteDocType</h3><pre class="programlisting">#define xmlTextWriterWriteDocType xmlTextWriterWriteDTD
 </pre><p>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndDTDElement"></a>xmlTextWriterEndDTDElement</h3><pre class="programlisting">#define xmlTextWriterEndDTDElement xmlTextWriterEndDTD
+</p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartDTDElement"></a>xmlTextWriterStartDTDElement ()</h3><pre class="programlisting">int         xmlTextWriterStartDTDElement    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndDTDElement"></a>xmlTextWriterEndDTDElement</h3><pre class="programlisting">#define xmlTextWriterEndDTDElement xmlTextWriterEndDTD
 </pre><p>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndDTDAttlist"></a>xmlTextWriterEndDTDAttlist</h3><pre class="programlisting">#define xmlTextWriterEndDTDAttlist xmlTextWriterEndDTD
+</p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatDTDElement"></a>xmlTextWriterWriteFormatDTDElement ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatDTDElement
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             ...);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatDTDElement"></a>xmlTextWriterWriteVFormatDTDElement ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatDTDElement
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteDTDElement"></a>xmlTextWriterWriteDTDElement ()</h3><pre class="programlisting">int         xmlTextWriterWriteDTDElement    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartDTDAttlist"></a>xmlTextWriterStartDTDAttlist ()</h3><pre class="programlisting">int         xmlTextWriterStartDTDAttlist    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndDTDAttlist"></a>xmlTextWriterEndDTDAttlist</h3><pre class="programlisting">#define xmlTextWriterEndDTDAttlist xmlTextWriterEndDTD
 </pre><p>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndDTDEntity"></a>xmlTextWriterEndDTDEntity</h3><pre class="programlisting">#define xmlTextWriterEndDTDEntity xmlTextWriterEndDTD
+</p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatDTDAttlist"></a>xmlTextWriterWriteFormatDTDAttlist ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatDTDAttlist
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             ...);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatDTDAttlist"></a>xmlTextWriterWriteVFormatDTDAttlist ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatDTDAttlist
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteDTDAttlist"></a>xmlTextWriterWriteDTDAttlist ()</h3><pre class="programlisting">int         xmlTextWriterWriteDTDAttlist    (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterStartDTDEntity"></a>xmlTextWriterStartDTDEntity ()</h3><pre class="programlisting">int         xmlTextWriterStartDTDEntity     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>pe</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterEndDTDEntity"></a>xmlTextWriterEndDTDEntity</h3><pre class="programlisting">#define xmlTextWriterEndDTDEntity xmlTextWriterEndDTD
 </pre><p>
 
-</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-debugXML.html"><b>&lt;&lt; debugXML</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlschemas.html"><b>xmlschemas &gt;&gt;</b></a></td></tr></table></body></html>
+</p></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteFormatDTDInternalEntity"></a>xmlTextWriterWriteFormatDTDInternalEntity ()</h3><pre class="programlisting">int         xmlTextWriterWriteFormatDTDInternalEntity
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             ...);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>pe</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteVFormatDTDInternalEntity"></a>xmlTextWriterWriteVFormatDTDInternalEntity ()</h3><pre class="programlisting">int         xmlTextWriterWriteVFormatDTDInternalEntity
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const char *format,
+                                             va_list argptr);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>pe</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>format</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>argptr</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteDTDInternalEntity"></a>xmlTextWriterWriteDTDInternalEntity ()</h3><pre class="programlisting">int         xmlTextWriterWriteDTDInternalEntity
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>pe</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteDTDExternalEntity"></a>xmlTextWriterWriteDTDExternalEntity ()</h3><pre class="programlisting">int         xmlTextWriterWriteDTDExternalEntity
+                                            (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ndataid);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>pe</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>pubid</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>sysid</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>ndataid</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteDTDEntity"></a>xmlTextWriterWriteDTDEntity ()</h3><pre class="programlisting">int         xmlTextWriterWriteDTDEntity     (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             int pe,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ndataid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>pe</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>pubid</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>sysid</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>ndataid</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterWriteDTDNotation"></a>xmlTextWriterWriteDTDNotation ()</h3><pre class="programlisting">int         xmlTextWriterWriteDTDNotation   (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *pubid,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *sysid);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>pubid</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>sysid</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTextWriterFlush"></a>xmlTextWriterFlush ()</h3><pre class="programlisting">int         xmlTextWriterFlush              (<a href="libxml-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);</pre><p>
+Flush the output buffer.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>writer</tt></i>:</span></td><td>  the xmlTextWriterPtr
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the bytes written (may be 0 because of buffering) or -1 in case of error
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-debugXML.html"><b>&lt;&lt; debugXML</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlschemas.html"><b>xmlschemas &gt;&gt;</b></a></td></tr></table></body></html>

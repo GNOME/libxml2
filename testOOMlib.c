@@ -34,12 +34,13 @@ static int n_failures_this_failure = 0;
 static int n_blocks_outstanding = 0;
 
 /**
+ * set_fail_alloc_counter:
+ * @until_next_fail: number of successful allocs before one fails
+ *
  * Sets the number of allocations until we simulate a failed
  * allocation. If set to 0, the next allocation to run
  * fails; if set to 1, one succeeds then the next fails; etc.
  * Set to _TEST_INT_MAX to not fail anything. 
- *
- * @param until_next_fail number of successful allocs before one fails
  */
 static void
 set_fail_alloc_counter (int until_next_fail)
@@ -48,10 +49,10 @@ set_fail_alloc_counter (int until_next_fail)
 }
 
 /**
- * Gets the number of successful allocs until we'll simulate
- * a failed alloc.
+ * get_fail_alloc_counter:
  *
- * @returns current counter value
+ * Returns the number of successful allocs until we'll simulate
+ * a failed alloc.
  */
 static int
 get_fail_alloc_counter (void)
@@ -60,10 +61,12 @@ get_fail_alloc_counter (void)
 }
 
 /**
+ * set_fail_alloc_failures:
+ * @failures_per_failure: number to fail
+ *
  * Sets how many mallocs to fail when the fail alloc counter reaches
  * 0.
  *
- * @param number to fail
  */
 static void
 set_fail_alloc_failures (int failures_per_failure)
@@ -72,12 +75,14 @@ set_fail_alloc_failures (int failures_per_failure)
 }
 
 /**
+ * decrement_fail_alloc_counter:
+ *
  * Called when about to alloc some memory; if
  * it returns #TRUE, then the allocation should
  * fail. If it returns #FALSE, then the allocation
  * should not fail.
  *
- * @returns #TRUE if this alloc should fail
+ * returns #TRUE if this alloc should fail
  */
 static int
 decrement_fail_alloc_counter (void)
@@ -102,9 +107,11 @@ decrement_fail_alloc_counter (void)
 }
 
 /**
+ * test_get_malloc_blocks_outstanding:
+ *
  * Get the number of outstanding malloc()'d blocks.
  *
- * @returns number of blocks
+ * Returns number of blocks
  */
 int
 test_get_malloc_blocks_outstanding (void)
@@ -216,6 +223,10 @@ run_failing_each_malloc (int                n_mallocs,
 }
 
 /**
+ * test_oom_handling:
+ * @func: function to call
+ * @data: data to pass to function
+ *
  * Tests how well the given function responds to out-of-memory
  * situations. Calls the function repeatedly, failing a different
  * call to malloc() each time. If the function ever returns #FALSE,
@@ -223,9 +234,7 @@ run_failing_each_malloc (int                n_mallocs,
  * valid (such as returning an error, or succeeding) occurs, and #FALSE
  * if it gets confused in some way.
  *
- * @param func function to call
- * @param data data to pass to function
- * @returns #TRUE if the function never returns FALSE
+ * Returns #TRUE if the function never returns FALSE
  */
 int
 test_oom_handling (TestMemoryFunction  func,

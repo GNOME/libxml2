@@ -23,7 +23,7 @@ extern "C" {
  *									*
  ************************************************************************/
 
-/**
+/*
  * Many of these macros may later turn into functions. They
  * shouldn't be used in #ifdef's preprocessor instructions.
  */

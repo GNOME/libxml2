@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xpath.html" title="xpath"><link rel="next" href="libxml-uri.html" title="uri"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xpath.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-uri.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-chvalid"></a><div class="titlepage"></div><div class="refnamediv"><h2>chvalid</h2><p>chvalid &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2587244"></a>Synopsis</h1></h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-SAX.html" title="SAX"><link rel="next" href="libxml-uri.html" title="uri"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-SAX.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-uri.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-chvalid"></a><div class="titlepage"></div><div class="refnamediv"><h2>chvalid</h2><p>chvalid &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2654349"></a>Synopsis</h1></h2><pre class="synopsis">
 
 
 
@@ -38,6 +38,8 @@ struct      <a href="libxml-chvalid.html#xmlChLRange">xmlChLRange</a>;
 typedef     <a href="libxml-chvalid.html#xmlChLRangePtr">xmlChLRangePtr</a>;
 struct      <a href="libxml-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a>;
 typedef     <a href="libxml-chvalid.html#xmlChRangeGroupPtr">xmlChRangeGroupPtr</a>;
+int         <a href="libxml-chvalid.html#xmlCharInRange">xmlCharInRange</a>                  (unsigned int val,
+                                             const <a href="libxml-chvalid.html#xmlChRangeGroupPtr">xmlChRangeGroupPtr</a> group);
 #define     <a href="libxml-chvalid.html#xmlIsBaseChar-ch">xmlIsBaseChar_ch</a>                (c)
 #define     <a href="libxml-chvalid.html#xmlIsBaseCharQ">xmlIsBaseCharQ</a>                  (c)
 extern      xmlChRangeGroup <a href="libxml-chvalid.html#xmlIsBaseCharGroup">xmlIsBaseCharGroup</a>;
@@ -58,6 +60,14 @@ extern      xmlChRangeGroup <a href="libxml-chvalid.html#xmlIsExtenderGroup">xml
 extern      xmlChRangeGroup <a href="libxml-chvalid.html#xmlIsIdeographicGroup">xmlIsIdeographicGroup</a>;
 #define     <a href="libxml-chvalid.html#xmlIsPubidChar-ch">xmlIsPubidChar_ch</a>               (c)
 #define     <a href="libxml-chvalid.html#xmlIsPubidCharQ">xmlIsPubidCharQ</a>                 (c)
+int         <a href="libxml-chvalid.html#xmlIsBaseChar">xmlIsBaseChar</a>                   (unsigned int ch);
+int         <a href="libxml-chvalid.html#xmlIsBlank">xmlIsBlank</a>                      (unsigned int ch);
+int         <a href="libxml-chvalid.html#xmlIsChar">xmlIsChar</a>                       (unsigned int ch);
+int         <a href="libxml-chvalid.html#xmlIsCombining">xmlIsCombining</a>                  (unsigned int ch);
+int         <a href="libxml-chvalid.html#xmlIsDigit">xmlIsDigit</a>                      (unsigned int ch);
+int         <a href="libxml-chvalid.html#xmlIsExtender">xmlIsExtender</a>                   (unsigned int ch);
+int         <a href="libxml-chvalid.html#xmlIsIdeographic">xmlIsIdeographic</a>                (unsigned int ch);
+int         <a href="libxml-chvalid.html#xmlIsPubidChar">xmlIsPubidChar</a>                  (unsigned int ch);
 </pre></div><div class="refsect1"><h2>Description</h2><p>
 
 </p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlChSRange"></a>struct xmlChSRange</h3><pre class="programlisting">struct xmlChSRange {
@@ -92,7 +102,15 @@ extern      xmlChRangeGroup <a href="libxml-chvalid.html#xmlIsIdeographicGroup">
 </p></div><hr><div class="refsect2"><h3><a name="xmlChRangeGroupPtr"></a>xmlChRangeGroupPtr</h3><pre class="programlisting">typedef xmlChRangeGroup *xmlChRangeGroupPtr;
 </pre><p>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlIsBaseChar-ch"></a>xmlIsBaseChar_ch()</h3><pre class="programlisting">#define     xmlIsBaseChar_ch(c)</pre><p>
+</p></div><hr><div class="refsect2"><h3><a name="xmlCharInRange"></a>xmlCharInRange ()</h3><pre class="programlisting">int         xmlCharInRange                  (unsigned int val,
+                                             const <a href="libxml-chvalid.html#xmlChRangeGroupPtr">xmlChRangeGroupPtr</a> group);</pre><p>
+Does a binary search of the range table to determine if char
+is valid</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td> character to be validated
+</td></tr><tr><td><span class="term"><i><tt>group</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td> true if character valid, false otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsBaseChar-ch"></a>xmlIsBaseChar_ch()</h3><pre class="programlisting">#define     xmlIsBaseChar_ch(c)</pre><p>
 Automatically generated by genChRanges.py</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
@@ -169,4 +187,52 @@ Automatically generated by genChRanges.py</p><p>
 Automatically generated by genChRanges.py</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xpath.html"><b>&lt;&lt; xpath</b></a></td><td align="right"><a accesskey="n" href="libxml-uri.html"><b>uri &gt;&gt;</b></a></td></tr></table></body></html>
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsBaseChar"></a>xmlIsBaseChar ()</h3><pre class="programlisting">int         xmlIsBaseChar                   (unsigned int ch);</pre><p>
+This function is DEPRECATED.  Use xmlIsBaseChar_ch
+or xmlIsBaseCharQ instead</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ch</tt></i>:</span></td><td>  character to validate
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>true if argument valid, false otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsBlank"></a>xmlIsBlank ()</h3><pre class="programlisting">int         xmlIsBlank                      (unsigned int ch);</pre><p>
+This function is DEPRECATED.  Use xmlIsBlank_ch
+or xmlIsBlankQ instead</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ch</tt></i>:</span></td><td>  character to validate
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>true if argument valid, false otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsChar"></a>xmlIsChar ()</h3><pre class="programlisting">int         xmlIsChar                       (unsigned int ch);</pre><p>
+This function is DEPRECATED.  Use xmlIsChar_ch
+or xmlIsCharQ instead</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ch</tt></i>:</span></td><td>  character to validate
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>true if argument valid, false otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsCombining"></a>xmlIsCombining ()</h3><pre class="programlisting">int         xmlIsCombining                  (unsigned int ch);</pre><p>
+This function is DEPRECATED.  Use xmlIsCombining_ch
+or xmlIsCombiningQ instead</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ch</tt></i>:</span></td><td>  character to validate
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>true if argument valid, false otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsDigit"></a>xmlIsDigit ()</h3><pre class="programlisting">int         xmlIsDigit                      (unsigned int ch);</pre><p>
+This function is DEPRECATED.  Use xmlIsDigit_ch
+or xmlIsDigitQ instead</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ch</tt></i>:</span></td><td>  character to validate
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>true if argument valid, false otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsExtender"></a>xmlIsExtender ()</h3><pre class="programlisting">int         xmlIsExtender                   (unsigned int ch);</pre><p>
+This function is DEPRECATED.  Use xmlIsExtender_ch
+or xmlIsExtenderQ instead</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ch</tt></i>:</span></td><td>  character to validate
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>true if argument valid, false otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsIdeographic"></a>xmlIsIdeographic ()</h3><pre class="programlisting">int         xmlIsIdeographic                (unsigned int ch);</pre><p>
+This function is DEPRECATED.  Use xmlIsIdeographic_ch
+or xmlIsIdeographicQ instead</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ch</tt></i>:</span></td><td>  character to validate
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>true if argument valid, false otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsPubidChar"></a>xmlIsPubidChar ()</h3><pre class="programlisting">int         xmlIsPubidChar                  (unsigned int ch);</pre><p>
+This function is DEPRECATED.  Use xmlIsPubidChar_ch
+or xmlIsPubidCharQ instead</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ch</tt></i>:</span></td><td>  character to validate
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>true if argument valid, false otherwise
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-SAX.html"><b>&lt;&lt; SAX</b></a></td><td align="right"><a accesskey="n" href="libxml-uri.html"><b>uri &gt;&gt;</b></a></td></tr></table></body></html>

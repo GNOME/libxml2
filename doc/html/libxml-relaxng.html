@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-hash.html" title="hash"><link rel="next" href="libxml-xpathInternals.html" title="xpathInternals"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-hash.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-xpathInternals.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-relaxng"></a><div class="titlepage"></div><div class="refnamediv"><h2>relaxng</h2><p>relaxng &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2633488"></a>Synopsis</h1></h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-nanohttp.html" title="nanohttp"><link rel="next" href="libxml-xpathInternals.html" title="xpathInternals"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-nanohttp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xpathInternals.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-relaxng"></a><div class="titlepage"></div><div class="refnamediv"><h2>relaxng</h2><p>relaxng &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2670900"></a>Synopsis</h1></h2><pre class="synopsis">
 
 
 
@@ -46,6 +46,54 @@ typedef     <a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGPars
 struct      <a href="libxml-relaxng.html#xmlRelaxNGValidCtxt">xmlRelaxNGValidCtxt</a>;
 typedef     <a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a>;
 enum        <a href="libxml-relaxng.html#xmlRelaxNGValidErr">xmlRelaxNGValidErr</a>;
+<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGNewParserCtxt">xmlRelaxNGNewParserCtxt</a>
+                                            (const char *URL);
+<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGNewMemParserCtxt">xmlRelaxNGNewMemParserCtxt</a>
+                                            (const char *buffer,
+                                             int size);
+<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGNewDocParserCtxt">xmlRelaxNGNewDocParserCtxt</a>
+                                            (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+void        <a href="libxml-relaxng.html#xmlRelaxNGFreeParserCtxt">xmlRelaxNGFreeParserCtxt</a>        (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);
+void        <a href="libxml-relaxng.html#xmlRelaxNGSetParserErrors">xmlRelaxNGSetParserErrors</a>       (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn,
+                                             void *ctx);
+int         <a href="libxml-relaxng.html#xmlRelaxNGGetParserErrors">xmlRelaxNGGetParserErrors</a>       (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> *err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> *warn,
+                                             void **ctx);
+<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGParse">xmlRelaxNGParse</a>               (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);
+void        <a href="libxml-relaxng.html#xmlRelaxNGFree">xmlRelaxNGFree</a>                  (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
+void        <a href="libxml-relaxng.html#xmlRelaxNGDump">xmlRelaxNGDump</a>                  (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
+void        <a href="libxml-relaxng.html#xmlRelaxNGDumpTree">xmlRelaxNGDumpTree</a>              (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
+void        <a href="libxml-relaxng.html#xmlRelaxNGSetValidErrors">xmlRelaxNGSetValidErrors</a>        (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn,
+                                             void *ctx);
+int         <a href="libxml-relaxng.html#xmlRelaxNGGetValidErrors">xmlRelaxNGGetValidErrors</a>        (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> *err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> *warn,
+                                             void **ctx);
+<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGNewValidCtxt">xmlRelaxNGNewValidCtxt</a>
+                                            (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
+void        <a href="libxml-relaxng.html#xmlRelaxNGFreeValidCtxt">xmlRelaxNGFreeValidCtxt</a>         (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt);
+int         <a href="libxml-relaxng.html#xmlRelaxNGValidateDoc">xmlRelaxNGValidateDoc</a>           (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+void        <a href="libxml-relaxng.html#xmlRelaxNGCleanupTypes">xmlRelaxNGCleanupTypes</a>          (void);
+int         <a href="libxml-relaxng.html#xmlRelaxNGValidatePushElement">xmlRelaxNGValidatePushElement</a>   (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
+int         <a href="libxml-relaxng.html#xmlRelaxNGValidatePushCData">xmlRelaxNGValidatePushCData</a>     (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *data,
+                                             int len);
+int         <a href="libxml-relaxng.html#xmlRelaxNGValidatePopElement">xmlRelaxNGValidatePopElement</a>    (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
+int         <a href="libxml-relaxng.html#xmlRelaxNGValidateFullElement">xmlRelaxNGValidateFullElement</a>   (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
 </pre></div><div class="refsect1"><h2>Description</h2><p>
 
 </p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlRelaxNG"></a>struct xmlRelaxNG</h3><pre class="programlisting">struct xmlRelaxNG;</pre><p>
@@ -127,4 +175,157 @@ A RelaxNGs validation context</p><p>
 } xmlRelaxNGValidErr;
 </pre><p>
 
-</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-hash.html"><b>&lt;&lt; hash</b></a></td><td align="right"><a accesskey="n" href="libxml-xpathInternals.html"><b>xpathInternals &gt;&gt;</b></a></td></tr></table></body></html>
+</p></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGNewParserCtxt"></a>xmlRelaxNGNewParserCtxt ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> xmlRelaxNGNewParserCtxt
+                                            (const char *URL);</pre><p>
+Create an XML RelaxNGs parse context for that file/resource expected
+to contain an XML RelaxNGs file.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>URL</tt></i>:</span></td><td>  the location of the schema
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGNewMemParserCtxt"></a>xmlRelaxNGNewMemParserCtxt ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> xmlRelaxNGNewMemParserCtxt
+                                            (const char *buffer,
+                                             int size);</pre><p>
+Create an XML RelaxNGs parse context for that memory buffer expected
+to contain an XML RelaxNGs file.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>buffer</tt></i>:</span></td><td>  a pointer to a char array containing the schemas
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>  the size of the array
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGNewDocParserCtxt"></a>xmlRelaxNGNewDocParserCtxt ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> xmlRelaxNGNewDocParserCtxt
+                                            (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
+Create an XML RelaxNGs parser context for that document.
+Note: since the process of compiling a RelaxNG schemas modifies the
+      document, the <i><tt>doc</tt></i> parameter is duplicated internally.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>  a preparsed document tree
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGFreeParserCtxt"></a>xmlRelaxNGFreeParserCtxt ()</h3><pre class="programlisting">void        xmlRelaxNGFreeParserCtxt        (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);</pre><p>
+Free the resources associated to the schema parser context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  the schema parser context
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGSetParserErrors"></a>xmlRelaxNGSetParserErrors ()</h3><pre class="programlisting">void        xmlRelaxNGSetParserErrors       (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn,
+                                             void *ctx);</pre><p>
+Set the callback functions used to handle errors for a validation context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a Relax-NG validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>  the error callback
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td>  the warning callback
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>  contextual data for the callbacks
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGGetParserErrors"></a>xmlRelaxNGGetParserErrors ()</h3><pre class="programlisting">int         xmlRelaxNGGetParserErrors       (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> *err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> *warn,
+                                             void **ctx);</pre><p>
+Get the callback information used to handle errors for a validation context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a Relax-NG validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>  the error callback result
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td>  the warning callback result
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>  contextual data for the callbacks result
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>-1 in case of failure, 0 otherwise.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGParse"></a>xmlRelaxNGParse ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> xmlRelaxNGParse               (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);</pre><p>
+parse a schema definition resource and build an internal
+XML Shema struture which can be used to validate instances.
+*WARNING* this interface is highly subject to change</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a Relax-NG parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the internal XML RelaxNG structure built from the resource or
+        NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGFree"></a>xmlRelaxNGFree ()</h3><pre class="programlisting">void        xmlRelaxNGFree                  (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);</pre><p>
+Deallocate a RelaxNG structure.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>schema</tt></i>:</span></td><td>  a schema structure
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGDump"></a>xmlRelaxNGDump ()</h3><pre class="programlisting">void        xmlRelaxNGDump                  (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);</pre><p>
+Dump a RelaxNG structure back</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>output</tt></i>:</span></td><td>  the file output
+</td></tr><tr><td><span class="term"><i><tt>schema</tt></i>:</span></td><td>  a schema structure
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGDumpTree"></a>xmlRelaxNGDumpTree ()</h3><pre class="programlisting">void        xmlRelaxNGDumpTree              (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);</pre><p>
+Dump the transformed RelaxNG tree.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>output</tt></i>:</span></td><td>  the file output
+</td></tr><tr><td><span class="term"><i><tt>schema</tt></i>:</span></td><td>  a schema structure
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGSetValidErrors"></a>xmlRelaxNGSetValidErrors ()</h3><pre class="programlisting">void        xmlRelaxNGSetValidErrors        (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn,
+                                             void *ctx);</pre><p>
+Set the error and warning callback informations</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a Relax-NG validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>  the error function
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td> the warning function
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td> the functions context
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGGetValidErrors"></a>xmlRelaxNGGetValidErrors ()</h3><pre class="programlisting">int         xmlRelaxNGGetValidErrors        (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> *err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> *warn,
+                                             void **ctx);</pre><p>
+Get the error and warning callback informations</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a Relax-NG validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>  the error function result
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i>:</span></td><td> the warning function result
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td> the functions context result
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>-1 in case of error and 0 otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGNewValidCtxt"></a>xmlRelaxNGNewValidCtxt ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> xmlRelaxNGNewValidCtxt
+                                            (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);</pre><p>
+Create an XML RelaxNGs validation context based on the given schema</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>schema</tt></i>:</span></td><td>  a precompiled XML RelaxNGs
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the validation context or NULL in case of error
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGFreeValidCtxt"></a>xmlRelaxNGFreeValidCtxt ()</h3><pre class="programlisting">void        xmlRelaxNGFreeValidCtxt         (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt);</pre><p>
+Free the resources associated to the schema validation context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  the schema validation context
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGValidateDoc"></a>xmlRelaxNGValidateDoc ()</h3><pre class="programlisting">int         xmlRelaxNGValidateDoc           (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
+Validate a document tree in memory.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a Relax-NG validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>  a parsed document tree
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 if the document is valid, a positive error code
+    number otherwise and -1 in case of internal or API error.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGCleanupTypes"></a>xmlRelaxNGCleanupTypes ()</h3><pre class="programlisting">void        xmlRelaxNGCleanupTypes          (void);</pre><p>
+Cleanup the default Schemas type library associated to RelaxNG</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGValidatePushElement"></a>xmlRelaxNGValidatePushElement ()</h3><pre class="programlisting">int         xmlRelaxNGValidatePushElement   (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);</pre><p>
+Push a new element start on the RelaxNG validation stack.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i>:</span></td><td>  an element instance
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if no validation problem was found or 0 if validating the
+        element requires a full node, and -1 in case of error.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGValidatePushCData"></a>xmlRelaxNGValidatePushCData ()</h3><pre class="programlisting">int         xmlRelaxNGValidatePushCData     (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *data,
+                                             int len);</pre><p>
+check the CData parsed for validation in the current stack</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  the RelaxNG validation context
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>  some character data read
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>  the lenght of the data
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if no validation problem was found or -1 otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGValidatePopElement"></a>xmlRelaxNGValidatePopElement ()</h3><pre class="programlisting">int         xmlRelaxNGValidatePopElement    (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);</pre><p>
+Pop the element end from the RelaxNG validation stack.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  the RelaxNG validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i>:</span></td><td>  an element instance
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if no validation problem was found or 0 otherwise
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRelaxNGValidateFullElement"></a>xmlRelaxNGValidateFullElement ()</h3><pre class="programlisting">int         xmlRelaxNGValidateFullElement   (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);</pre><p>
+Validate a full subtree when <a href="libxml-relaxng.html#xmlRelaxNGValidatePushElement">xmlRelaxNGValidatePushElement</a>() returned
+0 and the content of the node has been expanded.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i>:</span></td><td>  an element instance
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if no validation problem was found or -1 in case of error.
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-nanohttp.html"><b>&lt;&lt; nanohttp</b></a></td><td align="right"><a accesskey="n" href="libxml-xpathInternals.html"><b>xpathInternals &gt;&gt;</b></a></td></tr></table></body></html>

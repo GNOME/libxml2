@@ -25,7 +25,7 @@
  * Prints the names of the all the xml elements
  * that are siblings or children of a given xml node.
  */
-void
+static void
 print_element_names(xmlNode * a_node)
 {
     xmlNode *cur_node = NULL;

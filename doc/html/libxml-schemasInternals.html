@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-nanoftp.html" title="nanoftp"><link rel="next" href="libxml-threads.html" title="threads"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-nanoftp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-threads.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-schemasInternals"></a><div class="titlepage"></div><div class="refnamediv"><h2>schemasInternals</h2><p>schemasInternals &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2655300"></a>Synopsis</h1></h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-nanoftp.html" title="nanoftp"><link rel="next" href="libxml-threads.html" title="threads"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-nanoftp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-threads.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-schemasInternals"></a><div class="titlepage"></div><div class="refnamediv"><h2>schemasInternals</h2><p>schemasInternals &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2624369"></a>Synopsis</h1></h2><pre class="synopsis">
 
 
 
@@ -68,6 +68,7 @@ typedef     <a href="libxml-schemasInternals.html#xmlSchemaNotationPtr">xmlSchem
 #define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-QUALIF-ELEM-CAPS">XML_SCHEMAS_QUALIF_ELEM</a>
 #define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-QUALIF-ATTR-CAPS">XML_SCHEMAS_QUALIF_ATTR</a>
 struct      <a href="libxml-schemasInternals.html#xmlSchema">xmlSchema</a>;
+void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFreeType</a>               (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type);
 </pre></div><div class="refsect1"><h2>Description</h2><p>
 
 </p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlSchemaTypeType"></a>enum xmlSchemaTypeType</h3><pre class="programlisting">typedef enum {
@@ -288,8 +289,6 @@ the element is a reference to a type</p><p>
     xmlSchemaContentType contentType;
 };
 </pre><p>
-xmlSchemaType, xmlSchemaFacet and xmlSchemaElement start of
-structures must be kept similar</p><p>
 
 </p></div><hr><div class="refsect2"><h3><a name="xmlSchemaElementPtr"></a>xmlSchemaElementPtr</h3><pre class="programlisting">typedef xmlSchemaElement *xmlSchemaElementPtr;
 </pre><p>
@@ -349,4 +348,8 @@ the shemas requires qualified attributes</p><p>
 };
 </pre><p>
 
-</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-nanoftp.html"><b>&lt;&lt; nanoftp</b></a></td><td align="right"><a accesskey="n" href="libxml-threads.html"><b>threads &gt;&gt;</b></a></td></tr></table></body></html>
+</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaFreeType"></a>xmlSchemaFreeType ()</h3><pre class="programlisting">void        xmlSchemaFreeType               (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type);</pre><p>
+Deallocate a Schema Type structure.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>type</tt></i>:</span></td><td>  a schema type structure
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-nanoftp.html"><b>&lt;&lt; nanoftp</b></a></td><td align="right"><a accesskey="n" href="libxml-threads.html"><b>threads &gt;&gt;</b></a></td></tr></table></body></html>

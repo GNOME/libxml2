@@ -175,7 +175,7 @@ struct _xmlSchemaType {
     xmlSchemaFacetPtr facets;
 };
 
-/**
+/*
  * xmlSchemaElement:
  * An element definition.
  *

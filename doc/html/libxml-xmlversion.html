@@ -28,10 +28,11 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xpathInternals.html" title="xpathInternals"><link rel="next" href="libxml-list.html" title="list"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xpathInternals.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-list.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-xmlversion"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlversion</h2><p>xmlversion &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2693440"></a>Synopsis</h1></h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xpathInternals.html" title="xpathInternals"><link rel="next" href="libxml-list.html" title="list"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xpathInternals.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-list.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-xmlversion"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlversion</h2><p>xmlversion &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2772164"></a>Synopsis</h1></h2><pre class="synopsis">
 
 
 
+void        <a href="libxml-xmlwin32version.html#xmlCheckVersion">xmlCheckVersion</a>                 (int version);
 #define     <a href="libxml-xmlwin32version.html#LIBXML-DOTTED-VERSION-CAPS">LIBXML_DOTTED_VERSION</a>
 #define     <a href="libxml-xmlwin32version.html#LIBXML-VERSION-CAPS">LIBXML_VERSION</a>
 #define     <a href="libxml-xmlwin32version.html#LIBXML-VERSION-STRING-CAPS">LIBXML_VERSION_STRING</a>
@@ -67,7 +68,14 @@
 #define     <a href="libxml-xmlwin32version.html#ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</a>
 </pre></div><div class="refsect1"><h2>Description</h2><p>
 
-</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="LIBXML-DOTTED-VERSION-CAPS"></a>LIBXML_DOTTED_VERSION</h3><pre class="programlisting">#define     LIBXML_DOTTED_VERSION</pre><p>
+</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlCheckVersion"></a>xmlCheckVersion ()</h3><pre class="programlisting">void        xmlCheckVersion                 (int version);</pre><p>
+check the compiled lib version against the include one.
+This can warn or immediately kill the application</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>version</tt></i>:</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="LIBXML-DOTTED-VERSION-CAPS"></a>LIBXML_DOTTED_VERSION</h3><pre class="programlisting">#define     LIBXML_DOTTED_VERSION</pre><p>
 the version string like "1.2.3"</p><p>
 
 </p></div><hr><div class="refsect2"><h3><a name="LIBXML-VERSION-CAPS"></a>LIBXML_VERSION</h3><pre class="programlisting">#define     LIBXML_VERSION</pre><p>

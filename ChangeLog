@@ -1,3 +1,20 @@
+Sun Nov 16 14:00:08 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* doc/html/*.html: Finally - found the problem with the
+	  page generation (XMLPUBFUN not recognized by gtkdoc).
+	  Re-created the pages using a temporary version of
+	  include/libxml/*.h.
+	* testOOMlib.c,include/libxml/encoding.h,
+	  include/libxml/schemasInternals.h,include/libxml/valid.h,
+	  include/libxml/xlink.h,include/libxml/xmlwin32version.h,
+	  include/libxml/xmlwin32version.h.in,
+	  include/libxml/xpathInternals.h: minor edit of comments
+	  to help automatic documentation generation
+	* doc/docdescr.doc: small elaboration
+	* doc/examples/test1.c,doc/examples/Makefile.am: re-commit
+	  (messed up on last try)
+	* xmlreader.c: minor change to clear warning.
+
 Sat Nov 15 19:20:32 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Copyright: fixed some wording

@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xmlregexp.html" title="xmlregexp"><link rel="next" href="libxml-xmlIO.html" title="xmlIO"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlregexp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-xmlIO.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-xmlmemory"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlmemory</h2><p>xmlmemory &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2620782"></a>Synopsis</h1></h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xmlregexp.html" title="xmlregexp"><link rel="next" href="libxml-xmlIO.html" title="xmlIO"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlregexp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xmlIO.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-xmlmemory"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlmemory</h2><p>xmlmemory &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2645690"></a>Synopsis</h1></h2><pre class="synopsis">
 
 
 
@@ -38,6 +38,48 @@ void*       (<a href="libxml-xmlmemory.html#xmlMallocFunc">*xmlMallocFunc</a>)  
 void*       (<a href="libxml-xmlmemory.html#xmlReallocFunc">*xmlReallocFunc</a>)               (void *mem,
                                              <GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size);
 char*       (<a href="libxml-xmlmemory.html#xmlStrdupFunc">*xmlStrdupFunc</a>)                (const char *str);
+int         <a href="libxml-xmlmemory.html#xmlMemSetup">xmlMemSetup</a>                     (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> freeFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> reallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> strdupFunc);
+int         <a href="libxml-xmlmemory.html#xmlMemGet">xmlMemGet</a>                       (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> *freeFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> *mallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> *reallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> *strdupFunc);
+int         <a href="libxml-xmlmemory.html#xmlGcMemSetup">xmlGcMemSetup</a>                   (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> freeFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocAtomicFunc,
+                                             <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> reallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> strdupFunc);
+int         <a href="libxml-xmlmemory.html#xmlGcMemGet">xmlGcMemGet</a>                     (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> *freeFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> *mallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> *mallocAtomicFunc,
+                                             <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> *reallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> *strdupFunc);
+int         <a href="libxml-xmlmemory.html#xmlInitMemory">xmlInitMemory</a>                   (void);
+int         <a href="libxml-xmlmemory.html#xmlMemUsed">xmlMemUsed</a>                      (void);
+void        <a href="libxml-xmlmemory.html#xmlMemDisplay">xmlMemDisplay</a>                   (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *fp);
+void        <a href="libxml-xmlmemory.html#xmlMemShow">xmlMemShow</a>                      (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *fp,
+                                             int nr);
+void        <a href="libxml-xmlmemory.html#xmlMemoryDump">xmlMemoryDump</a>                   (void);
+void*       <a href="libxml-xmlmemory.html#xmlMemMalloc">xmlMemMalloc</a>                    (<GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size);
+void*       <a href="libxml-xmlmemory.html#xmlMemRealloc">xmlMemRealloc</a>                   (void *ptr,
+                                             <GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size);
+void        <a href="libxml-xmlmemory.html#xmlMemFree">xmlMemFree</a>                      (void *ptr);
+char*       <a href="libxml-xmlmemory.html#xmlMemoryStrdup">xmlMemoryStrdup</a>                 (const char *str);
+void*       <a href="libxml-xmlmemory.html#xmlMallocLoc">xmlMallocLoc</a>                    (<GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size,
+                                             const char *file,
+                                             int line);
+void*       <a href="libxml-xmlmemory.html#xmlReallocLoc">xmlReallocLoc</a>                   (void *ptr,
+                                             <GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size,
+                                             const char *file,
+                                             int line);
+void*       <a href="libxml-xmlmemory.html#xmlMallocAtomicLoc">xmlMallocAtomicLoc</a>              (<GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size,
+                                             const char *file,
+                                             int line);
+char*       <a href="libxml-xmlmemory.html#xmlMemStrdupLoc">xmlMemStrdupLoc</a>                 (const char *str,
+                                             const char *file,
+                                             int line);
 #define     <a href="libxml-xmlmemory.html#xmlMalloc">xmlMalloc</a>                       (size)
 #define     <a href="libxml-xmlmemory.html#xmlMallocAtomic">xmlMallocAtomic</a>                 (size)
 #define     <a href="libxml-xmlmemory.html#xmlRealloc">xmlRealloc</a>                      (ptr, size)
@@ -70,6 +112,143 @@ Signature for an <GTKDOCLINK HREF="strdup">strdup</GTKDOCLINK>() implementation.
 
 </p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td> a zero terminated string
 </td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the copy of the string or NULL in case of error.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemSetup"></a>xmlMemSetup ()</h3><pre class="programlisting">int         xmlMemSetup                     (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> freeFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> reallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> strdupFunc);</pre><p>
+Override the default memory access functions with a new set
+This has to be called before any other libxml routines !
+</p><p>
+Should this be blocked if there was already some allocations
+done ?</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i>:</span></td><td> the <GTKDOCLINK HREF="free">free</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i>:</span></td><td> the <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i>:</span></td><td> the <GTKDOCLINK HREF="realloc">realloc</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i>:</span></td><td> the <GTKDOCLINK HREF="strdup">strdup</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 on success
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemGet"></a>xmlMemGet ()</h3><pre class="programlisting">int         xmlMemGet                       (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> *freeFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> *mallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> *reallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> *strdupFunc);</pre><p>
+Provides the memory access functions set currently in use</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i>:</span></td><td> place to save the <GTKDOCLINK HREF="free">free</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i>:</span></td><td> place to save the <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i>:</span></td><td> place to save the <GTKDOCLINK HREF="realloc">realloc</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i>:</span></td><td> place to save the <GTKDOCLINK HREF="strdup">strdup</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 on success
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlGcMemSetup"></a>xmlGcMemSetup ()</h3><pre class="programlisting">int         xmlGcMemSetup                   (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> freeFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocAtomicFunc,
+                                             <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> reallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> strdupFunc);</pre><p>
+Override the default memory access functions with a new set
+This has to be called before any other libxml routines !
+The mallocAtomicFunc is specialized for atomic block
+allocations (i.e. of areas  useful for garbage collected memory allocators
+</p><p>
+Should this be blocked if there was already some allocations
+done ?</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i>:</span></td><td> the <GTKDOCLINK HREF="free">free</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i>:</span></td><td> the <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>mallocAtomicFunc</tt></i>:</span></td><td> the <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() function to use for atomic allocations
+</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i>:</span></td><td> the <GTKDOCLINK HREF="realloc">realloc</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i>:</span></td><td> the <GTKDOCLINK HREF="strdup">strdup</GTKDOCLINK>() function to use
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 on success
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlGcMemGet"></a>xmlGcMemGet ()</h3><pre class="programlisting">int         xmlGcMemGet                     (<a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> *freeFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> *mallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> *mallocAtomicFunc,
+                                             <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> *reallocFunc,
+                                             <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> *strdupFunc);</pre><p>
+Provides the memory access functions set currently in use
+The mallocAtomicFunc is specialized for atomic block
+allocations (i.e. of areas  useful for garbage collected memory allocators</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>freeFunc</tt></i>:</span></td><td> place to save the <GTKDOCLINK HREF="free">free</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>mallocFunc</tt></i>:</span></td><td> place to save the <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>mallocAtomicFunc</tt></i>:</span></td><td> place to save the atomic <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>reallocFunc</tt></i>:</span></td><td> place to save the <GTKDOCLINK HREF="realloc">realloc</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><i><tt>strdupFunc</tt></i>:</span></td><td> place to save the <GTKDOCLINK HREF="strdup">strdup</GTKDOCLINK>() function in use
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 on success
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlInitMemory"></a>xmlInitMemory ()</h3><pre class="programlisting">int         xmlInitMemory                   (void);</pre><p>
+Initialize the memory layer.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 on success
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemUsed"></a>xmlMemUsed ()</h3><pre class="programlisting">int         xmlMemUsed                      (void);</pre><p>
+Provides the amount of memory currently allocated</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>an int representing the amount of memory allocated.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemDisplay"></a>xmlMemDisplay ()</h3><pre class="programlisting">void        xmlMemDisplay                   (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *fp);</pre><p>
+show in-extenso the memory blocks allocated</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>fp</tt></i>:</span></td><td>  a FILE descriptor used as the output file, if NULL, the result is
+      written to the file .memorylist
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemShow"></a>xmlMemShow ()</h3><pre class="programlisting">void        xmlMemShow                      (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *fp,
+                                             int nr);</pre><p>
+show a show display of the memory allocated, and dump
+the <i><tt>nr</tt></i> last allocated areas which were not freed</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>fp</tt></i>:</span></td><td>  a FILE descriptor used as the output file
+</td></tr><tr><td><span class="term"><i><tt>nr</tt></i>:</span></td><td>  number of entries to dump
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemoryDump"></a>xmlMemoryDump ()</h3><pre class="programlisting">void        xmlMemoryDump                   (void);</pre><p>
+Dump in-extenso the memory blocks allocated to the file .memorylist</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlMemMalloc"></a>xmlMemMalloc ()</h3><pre class="programlisting">void*       xmlMemMalloc                    (<GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size);</pre><p>
+a <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>  an int specifying the size in byte to allocate.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemRealloc"></a>xmlMemRealloc ()</h3><pre class="programlisting">void*       xmlMemRealloc                   (void *ptr,
+                                             <GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size);</pre><p>
+a <GTKDOCLINK HREF="realloc">realloc</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i>:</span></td><td>  the initial memory block pointer
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>  an int specifying the size in byte to allocate.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemFree"></a>xmlMemFree ()</h3><pre class="programlisting">void        xmlMemFree                      (void *ptr);</pre><p>
+a <GTKDOCLINK HREF="free">free</GTKDOCLINK>() equivalent, with error checking.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i>:</span></td><td>  the memory block pointer
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemoryStrdup"></a>xmlMemoryStrdup ()</h3><pre class="programlisting">char*       xmlMemoryStrdup                 (const char *str);</pre><p>
+a <GTKDOCLINK HREF="strdup">strdup</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>  the initial string pointer
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>a pointer to the new string or NULL if allocation error occurred.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMallocLoc"></a>xmlMallocLoc ()</h3><pre class="programlisting">void*       xmlMallocLoc                    (<GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size,
+                                             const char *file,
+                                             int line);</pre><p>
+a <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>  an int specifying the size in byte to allocate.
+</td></tr><tr><td><span class="term"><i><tt>file</tt></i>:</span></td><td>  the file name or NULL
+</td></tr><tr><td><span class="term"><i><tt>line</tt></i>:</span></td><td>  the line number
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlReallocLoc"></a>xmlReallocLoc ()</h3><pre class="programlisting">void*       xmlReallocLoc                   (void *ptr,
+                                             <GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size,
+                                             const char *file,
+                                             int line);</pre><p>
+a <GTKDOCLINK HREF="realloc">realloc</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i>:</span></td><td>  the initial memory block pointer
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>  an int specifying the size in byte to allocate.
+</td></tr><tr><td><span class="term"><i><tt>file</tt></i>:</span></td><td>  the file name or NULL
+</td></tr><tr><td><span class="term"><i><tt>line</tt></i>:</span></td><td>  the line number
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMallocAtomicLoc"></a>xmlMallocAtomicLoc ()</h3><pre class="programlisting">void*       xmlMallocAtomicLoc              (<GTKDOCLINK HREF="size-t">size_t</GTKDOCLINK> size,
+                                             const char *file,
+                                             int line);</pre><p>
+a <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>  an int specifying the size in byte to allocate.
+</td></tr><tr><td><span class="term"><i><tt>file</tt></i>:</span></td><td>  the file name or NULL
+</td></tr><tr><td><span class="term"><i><tt>line</tt></i>:</span></td><td>  the line number
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemStrdupLoc"></a>xmlMemStrdupLoc ()</h3><pre class="programlisting">char*       xmlMemStrdupLoc                 (const char *str,
+                                             const char *file,
+                                             int line);</pre><p>
+a <GTKDOCLINK HREF="strdup">strdup</GTKDOCLINK>() equivalent, with logging of the allocation info.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>  the initial string pointer
+</td></tr><tr><td><span class="term"><i><tt>file</tt></i>:</span></td><td>  the file name or NULL
+</td></tr><tr><td><span class="term"><i><tt>line</tt></i>:</span></td><td>  the line number
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>a pointer to the new string or NULL if allocation error occurred.
 </td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMalloc"></a>xmlMalloc()</h3><pre class="programlisting">#define     xmlMalloc(size)</pre><p>
 Wrapper for the <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() function used in the XML library.</p><p>
 
@@ -85,7 +264,7 @@ Wrapper for the <GTKDOCLINK HREF="realloc">realloc</GTKDOCLINK>() function used 
 </p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i>:</span></td><td>  pointer to the existing allocated area
 </td></tr><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>  number of bytes to allocate
 </td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMemStrdup"></a>xmlMemStrdup()</h3><pre class="programlisting">#define     xmlMemStrdup(str)</pre><p>
-Wrapper for the <GTKDOCLINK HREF="strdup">strdup</GTKDOCLINK>() function, <GTKDOCLINK HREF="xmlStrdup">xmlStrdup</GTKDOCLINK>() is usually preferred.</p><p>
+Wrapper for the <GTKDOCLINK HREF="strdup">strdup</GTKDOCLINK>() function, <a href="libxml-parser.html#xmlStrdup">xmlStrdup</a>() is usually preferred.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>  pointer to the existing string
 </td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlregexp.html"><b>&lt;&lt; xmlregexp</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlIO.html"><b>xmlIO &gt;&gt;</b></a></td></tr></table></body></html>

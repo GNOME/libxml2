@@ -1,3 +1,8 @@
+Mon Nov  8 17:25:27 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: more coverage
+	* debugXML.c parser.c xmlregexp.c xpath.c: more fixes
+
 Mon Nov  8 15:02:39 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: more coverage

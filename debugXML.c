@@ -1151,6 +1151,7 @@ xmlCtxtDumpDocHead(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
 static void
 xmlCtxtDumpDocumentHead(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
 {
+    if (doc == NULL) return;
     xmlCtxtDumpDocHead(ctxt, doc);
     if (!ctxt->check) {
         if (doc->name != NULL) {
@@ -1258,6 +1259,7 @@ xmlCtxtDumpEntityCallback(xmlEntityPtr cur, xmlDebugCtxtPtr ctxt)
 static void
 xmlCtxtDumpEntities(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
 {
+    if (doc == NULL) return;
     xmlCtxtDumpDocHead(ctxt, doc);
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
         xmlEntitiesTablePtr table = (xmlEntitiesTablePtr)
@@ -1354,6 +1356,7 @@ void
 xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
     xmlDebugCtxt ctxt;
 
+    if (output == NULL) return;
     xmlCtxtDumpInitCtxt(&ctxt);
     ctxt.output = output;
     ctxt.depth = depth;
@@ -1374,6 +1377,7 @@ xmlDebugDumpEntities(FILE * output, xmlDocPtr doc)
 {
     xmlDebugCtxt ctxt;
 
+    if (output == NULL) return;
     xmlCtxtDumpInitCtxt(&ctxt);
     ctxt.output = output;
     xmlCtxtDumpEntities(&ctxt, doc);
@@ -1393,6 +1397,7 @@ xmlDebugDumpAttrList(FILE * output, xmlAttrPtr attr, int depth)
 {
     xmlDebugCtxt ctxt;
 
+    if (output == NULL) return;
     xmlCtxtDumpInitCtxt(&ctxt);
     ctxt.output = output;
     ctxt.depth = depth;
@@ -1413,6 +1418,7 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
 {
     xmlDebugCtxt ctxt;
 
+    if (output == NULL) return;
     xmlCtxtDumpInitCtxt(&ctxt);
     ctxt.output = output;
     ctxt.depth = depth;
@@ -1628,6 +1634,7 @@ xmlLsCountNode(xmlNodePtr node) {
  */
 void
 xmlLsOneNode(FILE *output, xmlNodePtr node) {
+    if (output == NULL) return;
     if (node == NULL) {
 	fprintf(output, "NULL\n");
 	return;
@@ -1834,9 +1841,11 @@ xmlShellPrintXPathError(int errorType, const char *arg)
                             "%s is an XSLT value tree\n", arg);
             break;
     }
+#if 0
     xmlGenericError(xmlGenericErrorContext,
                     "Try casting the result string function (xpath builtin)\n",
                     arg);
+#endif
 }
 
 
@@ -2391,6 +2400,7 @@ xmlShellLoad(xmlShellCtxtPtr ctxt, char *filename,
     xmlDocPtr doc;
     int html = 0;
 
+    if ((ctxt == NULL) || (filename == NULL)) return(-1);
     if (ctxt->doc != NULL)
         html = (ctxt->doc->type == XML_HTML_DOCUMENT_NODE);
 
@@ -2445,8 +2455,6 @@ xmlShellWrite(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
     if (node == NULL)
         return (-1);
     if ((filename == NULL) || (filename[0] == 0)) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "Write command requires a filename argument\n");
         return (-1);
     }
 #ifdef W_OK
@@ -2512,10 +2520,12 @@ xmlShellSave(xmlShellCtxtPtr ctxt, char *filename,
              xmlNodePtr node ATTRIBUTE_UNUSED,
              xmlNodePtr node2 ATTRIBUTE_UNUSED)
 {
-    if (ctxt->doc == NULL)
+    if ((ctxt == NULL) || (ctxt->doc == NULL))
         return (-1);
     if ((filename == NULL) || (filename[0] == 0))
         filename = ctxt->filename;
+    if (filename == NULL)
+        return (-1);
 #ifdef W_OK
     if (access((char *) filename, W_OK)) {
         xmlGenericError(xmlGenericErrorContext,
@@ -2575,6 +2585,7 @@ xmlShellValidate(xmlShellCtxtPtr ctxt, char *dtd,
     xmlValidCtxt vctxt;
     int res = -1;
 
+    if ((ctxt == NULL) || (ctxt->doc == NULL)) return(-1);
     vctxt.userData = stderr;
     vctxt.error = (xmlValidityErrorFunc) fprintf;
     vctxt.warning = (xmlValidityWarningFunc) fprintf;
@@ -2697,7 +2708,7 @@ xmlShellPwd(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *buffer,
 {
     xmlChar *path;
 
-    if (node == NULL)
+    if ((node == NULL) || (buffer == NULL))
         return (-1);
 
     path = xmlGetNodePath(node);
@@ -2873,7 +2884,11 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
         } else if (!strcmp(command, "save")) {
             xmlShellSave(ctxt, arg, NULL, NULL);
         } else if (!strcmp(command, "write")) {
-            xmlShellWrite(ctxt, arg, NULL, NULL);
+	    if ((arg == NULL) || (arg[0] == 0))
+		xmlGenericError(xmlGenericErrorContext,
+                        "Write command requires a filename argument\n");
+	    else
+		xmlShellWrite(ctxt, arg, NULL, NULL);
 #endif /* LIBXML_OUTPUT_ENABLED */
         } else if (!strcmp(command, "grep")) {
             xmlShellGrep(ctxt, arg, ctxt->node, NULL);

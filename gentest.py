@@ -15,12 +15,9 @@ except:
 # Modules we don't want skip in API test
 #
 skipped_modules = [ "SAX", "xlink", "threads", "globals",
-  "xpathInternals", "xmlmemory",
-  "xmlversion", "debugXML", "xmlexports", "DOCBparser",
-
-  # temporary
-  "xmlautomata", "xmlregexp", "c14n",
-  
+  "xmlmemory", "xmlversion", "xmlexports",
+  #deprecated
+  "DOCBparser",
 ]
 
 #
@@ -46,6 +43,7 @@ skipped_functions = [
 "xmlSetTreeDoc", "xmlUnlinkNode",
 # hard to avoid leaks in the tests
 "xmlStrcat", "xmlStrncat", "xmlCatalogAddLocal", "xmlNewTextWriterDoc",
+"xmlXPathNewValueTree", "xmlXPathWrapString",
 # unimplemented
 "xmlTextReaderReadInnerXml", "xmlTextReaderReadOuterXml",
 "xmlTextReaderReadString",
@@ -57,10 +55,11 @@ skipped_functions = [
 "xmlNamespaceParseNSDef", "xmlNamespaceParseQName",
 "xmlParseNamespace", "xmlParseQuotedString", "xmlParserHandleReference",
 "xmlScanName",
+"xmlDecodeEntities", 
 # allocators
 "xmlMemFree",
 # verbosity
-"xmlCatalogSetDebug",
+"xmlCatalogSetDebug", "xmlShellPrintXPathError", "xmlShellPrintNode",
 # Internal functions, no user space should really call them
 "xmlParseAttribute", "xmlParseAttributeListDecl", "xmlParseName",
 "xmlParseNmtoken", "xmlParseEntityValue", "xmlParseAttValue",
@@ -277,6 +276,8 @@ def type_convert(str, name, info, module, function, pos):
         res = 'const_xmlChar_ptr_ptr'
     if res == 'const_char_ptr*':
         res = 'const_char_ptr_ptr'
+    if res == 'FILE_ptr' and module == 'debugXML':
+        res = 'debug_FILE_ptr';
         
     return res
 

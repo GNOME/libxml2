@@ -1420,7 +1420,7 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
  */
 xmlChar
 xmlPopInput(xmlParserCtxtPtr ctxt) {
-    if (ctxt->inputNr <= 1) return(0); /* End of main Input */
+    if ((ctxt == NULL) || (ctxt->inputNr <= 1)) return(0);
     if (xmlParserDebugEntities)
 	xmlGenericError(xmlGenericErrorContext,
 		"Popping input %d\n", ctxt->inputNr);
@@ -1934,7 +1934,7 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
     int c,l;
     int nbchars = 0;
 
-    if ((str == NULL) || (len < 0))
+    if ((ctxt == NULL) || (str == NULL) || (len < 0))
 	return(NULL);
     last = str + len;
 
@@ -2076,6 +2076,7 @@ mem_error:
 xmlChar *
 xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
 		        xmlChar end, xmlChar  end2, xmlChar end3) {
+    if ((ctxt == NULL) || (str == NULL)) return(NULL);
     return(xmlStringLenDecodeEntities(ctxt, str, xmlStrlen(str), what,
            end, end2, end3));
 }

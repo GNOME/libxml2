@@ -40,7 +40,7 @@ extern "C" {
  */
 #define xmlXPathSetError(ctxt, err)					\
     { xmlXPatherror((ctxt), __FILE__, __LINE__, (err));			\
-      (ctxt)->error = (err); }
+      if ((ctxt) != NULL) (ctxt)->error = (err); }
 
 /**
  * xmlXPathSetArityError:
@@ -294,6 +294,7 @@ XMLPUBFUN void * XMLCALL
  * Macro to check that the number of args passed to an XPath function matches.
  */
 #define CHECK_ARITY(x)							\
+    if (ctxt == NULL) return;						\
     if (nargs != (x))							\
         XP_ERROR(XPATH_INVALID_ARITY);
 

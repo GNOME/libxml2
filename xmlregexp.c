@@ -4062,6 +4062,8 @@ void
 xmlRegexpPrint(FILE *output, xmlRegexpPtr regexp) {
     int i;
 
+    if (output == NULL)
+        return;
     fprintf(output, " regexp: ");
     if (regexp == NULL) {
 	fprintf(output, "NULL\n");

@@ -10671,6 +10671,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     ctxt->dictNames = ctx->dictNames;
     ctxt->attsDefault = ctx->attsDefault;
     ctxt->attsSpecial = ctx->attsSpecial;
+    xmlDetectSAX2(ctxt); /* update the ctxt->str_* */
 
     xmlParseContent(ctxt);
    
@@ -11012,6 +11013,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	ctxt->userData = ctxt;
     if (ctxt->dict != NULL) xmlDictFree(ctxt->dict);
     ctxt->dict = oldctxt->dict;
+    xmlDetectSAX2(ctxt); /* update the ctxt->str_* */
 
     oldsax = ctxt->sax;
     ctxt->sax = oldctxt->sax;

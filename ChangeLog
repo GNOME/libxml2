@@ -1,3 +1,8 @@
+Thu Oct 30 23:10:46 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: side effect of #123105 patch, namespace resolution
+	  would fail when defined in internal entities, fixes #125823
+
 Thu Oct 30 14:10:42 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: be more defensive in the xmlReader python bindings

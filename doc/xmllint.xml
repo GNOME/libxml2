@@ -76,6 +76,7 @@
 	<arg>--dropdtd</arg>
 	<arg>--stream</arg>
 	<arg>--chkregister</arg>
+	<arg>--relaxng</arg>
       </group>
       <arg><option><replaceable>xmlfile</replaceable></option></arg>
   </cmdsynopsis>
@@ -428,6 +429,13 @@
 	<listitem>
 	  <simpara>Turn on node registration. Useful for developeres testing
 	  libxml2 node tracking code.</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>--relaxng</option> <replaceable>schema</replaceable></term>
+	<listitem>
+	  <simpara>Use RelaxNG file named <replaceable>schema</replaceable> for
+	  validation.</simpara>
 	</listitem>
       </varlistentry>
     </variablelist>

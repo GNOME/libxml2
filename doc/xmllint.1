@@ -31,7 +31,7 @@ xmllint \- command line XML tool
         | \fB--noblanks\fR | \fB--format\fR | \fB--testIO\fR | \fB--encode \fIencoding\fR\fR
         | \fB--catalogs\fR | \fB--nocatalogs\fR | \fB--auto\fR | \fB--xinclude\fR
         | \fB--loaddtd\fR | \fB--dtdattr\fR | \fB--dropdtd\fR | \fB--stream\fR
-        | \fB--chkregister\fR] [\fB\fIxmlfile\fR\fR]
+        | \fB--chkregister\fR | \fB--relaxng\fR] [\fB\fIxmlfile\fR\fR]
 .fi
 
 .SH "INTRODUCTION"
@@ -183,6 +183,10 @@ Use streaming API - useful for validation of files that are too large to be held
 .TP
 \fB--chkregister\fR
 Turn on node registration\&. Useful for developeres testing libxml2 node tracking code\&.
+
+.TP
+\fB--relaxng\fR \fIschema\fR
+Use RelaxNG file named \fIschema\fR for validation\&.
 
 .SH "SHELL"
 

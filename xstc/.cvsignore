@@ -2,4 +2,7 @@ XSTC-20020116.tar.gz
 msxsdtest
 nisttest
 suntest
-
+ms-test.py
+nist-test.py
+sun-test.py
+test.log

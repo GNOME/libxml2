@@ -40,13 +40,13 @@ $(TESTDIRS):
 
 pytests: $(PYSCRIPTS) $(TESTDIRS)
 	-@(if [ -x nist-test.py -a -d nisttest ] ; then 		\
-	   echo "# Running NIST Schemas tests";				\
+	   echo "## Running NIST Schemas tests";			\
 	   ./nist-test.py -s -b $(srcdir) ; fi)
 	-@(if [ -x sun-test.py -a -d suntest ] ; then 			\
-	   echo "# Running Sun Schemas tests";				\
+	   echo "## Running Sun Schemas tests";				\
 	   ./sun-test.py -s -b $(srcdir) ; fi)
 	-@(if [ -x ms-test.py -a -d msxsdtest ] ; then 			\
-	   echo "# Running Microsoft Schemas tests";			\
+	   echo "## Running Microsoft Schemas tests";			\
 	   ./ms-test.py -s -b $(srcdir) ; fi)
 
 tests:
@@ -54,7 +54,7 @@ tests:
 	   $(MAKE) MAKEFLAGS+=--silent pytests ; fi);
 
 clean:
-	rm -f $(PYSCRIPTS)
+	rm -f $(PYSCRIPTS) test.log
 
 distclean:
-	rm -rf $(PYSCRIPTS) $(TESTDIRS)
+	rm -rf $(PYSCRIPTS) $(TESTDIRS) test.log

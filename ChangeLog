@@ -1,3 +1,8 @@
+Mon Sep  6 14:54:39 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xstc/Makefile.am xstc/xstc-to-python.xsl xstc/xstc.py Makefile.am:
+	  more cleanup in integrating the xstc testsuite
+
 Mon Sep  6 13:56:28 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am configure.in xstc/.cvsignore xstc/Makefile.am:

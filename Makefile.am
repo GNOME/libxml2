@@ -126,7 +126,7 @@ tests: XMLtests XMLenttests NStests IDtests Errtests @READER_TEST@ @TEST_SAX@ @T
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; \
 	    $(MAKE) MAKEFLAGS+=--silent tests ; fi)
 	@(cd doc/examples ; $(MAKE) MAKEFLAGS+=--silent tests)
-	@(cd xstc ; $(MAKE) MAKEFLAGS+=--silent tests)
+	@(if [ -x $(PYTHON) ] ; then cd xstc ; $(MAKE) MAKEFLAGS+=--silent pytests ; fi)
 
 valgrind:
 	@echo '## Running the regression tests under Valgrind'

@@ -1,3 +1,8 @@
+Wed Jan 21 10:59:55 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlwriter.c: applied patch from Alfred Mickautsch fixing a memory
+	  leak reported on the list.
+
 Thu Jan 15 00:48:46 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/tests/tstLastError.py: applied

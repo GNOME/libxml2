@@ -65,6 +65,7 @@ struct _xmlTextWriter {
     int doindent;	    /* internal indent flag */
     xmlChar *ichar;            /* indent character */
     char qchar;             /* character used for quoting attribute values */
+    xmlParserCtxtPtr ctxt;
 };
 
 static void xmlFreeTextWriterStackEntry(xmlLinkPtr lk);
@@ -249,6 +250,8 @@ xmlNewTextWriterPushParser(xmlParserCtxtPtr ctxt,
         return NULL;
     }
 
+    ret->ctxt = ctxt;
+
     return ret;
 }
 
@@ -372,6 +375,9 @@ xmlFreeTextWriter(xmlTextWriterPtr writer)
 
     if (writer->nsstack != NULL)
         xmlListDelete(writer->nsstack);
+
+    if (writer->ctxt != NULL)
+        xmlFreeParserCtxt(writer->ctxt);
 
     xmlFree(writer);
 }

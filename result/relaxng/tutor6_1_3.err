@@ -1,4 +1,2 @@
 RNG validity error: file ./test/relaxng/tutor6_1_3.xml line 1 element card
 Element card failed to validate attributes
-RNG validity error: file ./test/relaxng/tutor6_1_3.xml line 1 element card
-Invalid attribute preferredFormat for element card

@@ -4,5 +4,3 @@ RNG validity error: file ./test/relaxng/tutor7_3_4.xml line 1 element text
 Error validating list
 RNG validity error: file ./test/relaxng/tutor7_3_4.xml line 1 element text
 Element path failed to validate content
-RNG validity error: file ./test/relaxng/tutor7_3_4.xml line 1 element text
-Element path has extra content: text

@@ -1,2 +1,2 @@
 RNG validity error: file ./test/relaxng/tutor11_2_3.xml line 3 element card
-Invalid attribute b for element card
+Invalid attribute foo for element card

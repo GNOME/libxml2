@@ -1,0 +1,779 @@
+<testSuite>
+<author>Daniel Veillard</author>
+<email>daniel@veillard.com</email>
+<documentation>For libxml2 implementation of Relax NG spec.</documentation>
+<testSuite>
+<documentation>Test of indeterminism</documentation>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <zeroOrMore>
+    <element name="bar">
+      <empty/>
+    </element>
+  </zeroOrMore>
+  <element name="baz">
+    <empty/>
+  </element>
+</element>
+</correct>
+<invalid>
+<foo/>
+</invalid>
+<valid>
+<foo>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+  <baz/>
+</foo>
+</valid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <zeroOrMore>
+    <element name="bar">
+      <empty/>
+    </element>
+  </zeroOrMore>
+  <element name="bar">
+    <empty/>
+  </element>
+</element>
+</correct>
+<invalid>
+<foo/>
+</invalid>
+<valid>
+<foo>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <group>
+    <zeroOrMore>
+      <element name="bar">
+        <empty/>
+      </element>
+    </zeroOrMore>
+    <element name="baz">
+      <empty/>
+    </element>
+  </group>
+</element>
+</correct>
+<invalid>
+<foo/>
+</invalid>
+<valid>
+<foo>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+  <baz/>
+</foo>
+</valid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <group>
+    <zeroOrMore>
+      <element name="bar">
+        <empty/>
+      </element>
+    </zeroOrMore>
+    <element name="bar">
+      <empty/>
+    </element>
+  </group>
+</element>
+</correct>
+<invalid>
+<foo/>
+</invalid>
+<valid>
+<foo>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <choice>
+    <zeroOrMore>
+      <element name="bar">
+        <empty/>
+      </element>
+    </zeroOrMore>
+    <element name="baz">
+      <empty/>
+    </element>
+  </choice>
+</element>
+</correct>
+<valid>
+<foo/>
+</valid>
+<valid>
+<foo>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+<invalid>
+<foo>
+  <bar/>
+  <baz/>
+</foo>
+</invalid>
+<invalid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+  <bar/>
+  <baz/>
+</foo>
+</invalid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <choice>
+    <zeroOrMore>
+      <element name="bar">
+        <empty/>
+      </element>
+    </zeroOrMore>
+    <element name="baz">
+      <empty/>
+    </element>
+  </choice>
+  <element name="baz">
+    <empty/>
+  </element>
+</element>
+</correct>
+<invalid>
+<foo/>
+</invalid>
+<valid>
+<foo>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <baz/>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+  <baz/>
+</foo>
+</valid>
+<invalid>
+<foo>
+  <bar/>
+  <baz/>
+  <baz/>
+</foo>
+</invalid>
+<invalid>
+<foo>
+  <baz/>
+  <bar/>
+  <baz/>
+</foo>
+</invalid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <choice>
+    <zeroOrMore>
+      <element name="bar">
+        <empty/>
+      </element>
+    </zeroOrMore>
+    <element name="bar">
+      <empty/>
+    </element>
+  </choice>
+</element>
+</correct>
+<valid>
+<foo/>
+</valid>
+<valid>
+<foo>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <choice>
+    <zeroOrMore>
+      <choice>
+        <element name="bar">
+          <empty/>
+        </element>
+        <element name="baz">
+          <empty/>
+        </element>
+      </choice>
+    </zeroOrMore>
+    <element name="bar">
+      <empty/>
+    </element>
+  </choice>
+</element>
+</correct>
+<valid>
+<foo/>
+</valid>
+<valid>
+<foo>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <baz/>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <baz/>
+  <baz/>
+  <baz/>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <baz/>
+  <bar/>
+  <baz/>
+  <bar/>
+</foo>
+</valid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <optional>
+    <element name="bar">
+      <empty/>
+    </element>
+  </optional>
+  <element name="baz">
+    <empty/>
+  </element>
+</element>
+</correct>
+<invalid>
+<foo/>
+</invalid>
+<valid>
+<foo>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <baz/>
+</foo>
+</valid>
+<invalid>
+<foo>
+  <bar/>
+  <bar/>
+  <baz/>
+</foo>
+</invalid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <optional>
+    <element name="bar">
+      <empty/>
+    </element>
+  </optional>
+  <element name="bar">
+    <empty/>
+  </element>
+</element>
+</correct>
+<invalid>
+<foo/>
+</invalid>
+<valid>
+<foo>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+<invalid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+</foo>
+</invalid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <optional>
+    <oneOrMore>
+      <element name="bar">
+        <empty/>
+      </element>
+    </oneOrMore>
+  </optional>
+  <element name="baz">
+    <empty/>
+  </element>
+</element>
+</correct>
+<invalid>
+<foo/>
+</invalid>
+<valid>
+<foo>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <baz/>
+</foo>
+</valid>
+<invalid>
+<foo>
+  <bar/>
+  <bar/>
+</foo>
+</invalid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <optional>
+    <oneOrMore>
+      <element name="bar">
+        <empty/>
+      </element>
+    </oneOrMore>
+  </optional>
+  <element name="bar">
+    <empty/>
+  </element>
+</element>
+</correct>
+<invalid>
+<foo/>
+</invalid>
+<valid>
+<foo>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+</testCase>
+<testCase>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+  <group>
+    <zeroOrMore>
+      <choice>
+        <element name="bar">
+          <empty/>
+        </element>
+        <element name="baz">
+          <empty/>
+        </element>
+      </choice>
+    </zeroOrMore>
+    <element name="bar">
+      <empty/>
+    </element>
+  </group>
+</element>
+</correct>
+<invalid>
+<foo/>
+</invalid>
+<valid>
+<foo>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <baz/>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <bar/>
+  <bar/>
+  <bar/>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <baz/>
+  <baz/>
+  <baz/>
+  <bar/>
+</foo>
+</valid>
+<valid>
+<foo>
+  <baz/>
+  <bar/>
+  <baz/>
+  <bar/>
+</foo>
+</valid>
+<invalid>
+<foo>
+  <bar/>
+  <baz/>
+  <bar/>
+  <baz/>
+</foo>
+</invalid>
+</testCase>
+<testCase>
+<correct>
+<element name="list" xmlns="http://relaxng.org/ns/structure/1.0">
+  <oneOrMore>
+    <element name="label">
+      <empty/>
+    </element>
+    <optional>
+      <element name="opt">
+        <empty/>
+      </element>
+    </optional>
+    <element name="item">
+      <empty/>
+    </element>
+  </oneOrMore>
+</element>
+</correct>
+<invalid>
+<list>
+</list>
+</invalid>
+<valid>
+<list>
+  <label/>
+  <item/>
+</list>
+</valid>
+<valid>
+<list>
+  <label/>
+  <item/>
+  <label/>
+  <item/>
+</list>
+</valid>
+<valid>
+<list>
+  <label/>
+  <opt/>
+  <item/>
+  <label/>
+  <opt/>
+  <item/>
+</list>
+</valid>
+<invalid>
+<list>
+  <label/>
+  <item/>
+  <label/>
+  <opt/>
+  <opt/>
+  <item/>
+</list>
+</invalid>
+</testCase>
+<testCase>
+<correct>
+<element name="list" xmlns="http://relaxng.org/ns/structure/1.0">
+  <oneOrMore>
+    <element name="label">
+      <empty/>
+    </element>
+    <zeroOrMore>
+      <element name="opt">
+        <empty/>
+      </element>
+    </zeroOrMore>
+    <element name="item">
+      <empty/>
+    </element>
+  </oneOrMore>
+</element>
+</correct>
+<invalid>
+<list>
+</list>
+</invalid>
+<valid>
+<list>
+  <label/>
+  <item/>
+</list>
+</valid>
+<valid>
+<list>
+  <label/>
+  <item/>
+  <label/>
+  <item/>
+</list>
+</valid>
+<valid>
+<list>
+  <label/>
+  <opt/>
+  <item/>
+  <label/>
+  <opt/>
+  <item/>
+</list>
+</valid>
+<valid>
+<list>
+  <label/>
+  <item/>
+  <label/>
+  <opt/>
+  <opt/>
+  <item/>
+</list>
+</valid>
+</testCase>
+<testCase>
+<correct>
+<element name="list" xmlns="http://relaxng.org/ns/structure/1.0">
+  <oneOrMore>
+    <element name="label">
+      <empty/>
+    </element>
+    <zeroOrMore>
+      <element name="opt">
+        <empty/>
+      </element>
+      <element name="opt2">
+        <empty/>
+      </element>
+    </zeroOrMore>
+    <element name="item">
+      <empty/>
+    </element>
+  </oneOrMore>
+</element>
+</correct>
+<invalid>
+<list>
+</list>
+</invalid>
+<valid>
+<list>
+  <label/>
+  <item/>
+</list>
+</valid>
+<valid>
+<list>
+  <label/>
+  <item/>
+  <label/>
+  <item/>
+</list>
+</valid>
+<valid>
+<list>
+  <label/>
+  <opt/>
+  <opt2/>
+  <item/>
+  <label/>
+  <opt/>
+  <opt2/>
+  <item/>
+</list>
+</valid>
+<valid>
+<list>
+  <label/>
+  <item/>
+  <label/>
+  <opt/>
+  <opt2/>
+  <opt/>
+  <opt2/>
+  <item/>
+</list>
+</valid>
+<invalid>
+<list>
+  <label/>
+  <opt/>
+  <item/>
+  <label/>
+  <item/>
+</list>
+</invalid>
+<invalid>
+<list>
+  <label/>
+  <item/>
+  <label/>
+  <opt2/>
+  <opt/>
+  <item/>
+</list>
+</invalid>
+<invalid>
+<list>
+  <label/>
+  <item/>
+  <label/>
+  <opt/>
+  <opt2/>
+  <opt/>
+  <item/>
+</list>
+</invalid>
+</testCase>
+</testSuite>
+</testSuite>

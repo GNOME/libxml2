@@ -1,10 +1,6 @@
 RNG validity error: file ./test/relaxng/tutor6_2_4.xml line 4 element text
 Error validating value 
 RNG validity error: file ./test/relaxng/tutor6_2_4.xml line 4 element text
-Error validating value 
-RNG validity error: file ./test/relaxng/tutor6_2_4.xml line 4 element text
 Element preferredFormat failed to validate content
-RNG validity error: file ./test/relaxng/tutor6_2_4.xml line 4 element text
-Element preferredFormat has extra content: text
 RNG validity error: file ./test/relaxng/tutor6_2_4.xml line 1 element card
 Element card failed to validate content

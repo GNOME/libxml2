@@ -1,3 +1,12 @@
+Sun Mar 16 18:45:50 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: switched back to the previous Relax-NG code base,
+	  the derivation algorithm need severe constraining code to avoid
+	  combinatorial explosion. Fixed the problem with Sebastian Rahtz
+	  TEI based example and other bugs
+	* result/relaxng/*err: updated the results
+	* test/relaxng/testsuite.xml: started a new test suite 
+
 Sat Mar 15 22:26:46 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c include/libxml/relaxng.h: After coming to the conclusion

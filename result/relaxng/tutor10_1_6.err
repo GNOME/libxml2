@@ -1,4 +1,2 @@
 RNG validity error: file ./test/relaxng/tutor10_1_6.xml line 1 element foo
 Element foo has wrong namespace: expecting http://www.example.com
-RNG validity error: file ./test/relaxng/tutor10_1_6.xml line 1 element foo
-Extra data in the document

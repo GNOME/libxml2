@@ -1,6 +1,4 @@
-RNG validity error: file ./test/relaxng/tutor8_2_6.xml line 4 element base
+RNG validity error
 Extra element base in interleave
 RNG validity error: file ./test/relaxng/tutor8_2_6.xml line 4 element base
 Element head failed to validate content
-RNG validity error: file ./test/relaxng/tutor8_2_6.xml line 4 element base
-Element head has extra content: base

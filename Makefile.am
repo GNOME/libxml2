@@ -419,6 +419,40 @@ Catatests : xmlcatalog
 	      diff $(srcdir)/result/catalogs/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
+	@(for i in $(srcdir)/test/catalogs/*.script ; do \
+	  name=`basename $$i .script`; \
+	  sgml=$(srcdir)/test/catalogs/`basename $$i .script`.sgml; \
+	  if [ -f $$sgml ] ; then \
+	  if [ ! -f $(srcdir)/result/catalogs/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(top_builddir)/xmlcatalog --shell $$sgml < $$i > $(srcdir)/result/catalogs/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      $(top_builddir)/xmlcatalog --shell $$sgml < $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/catalogs/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
+	@echo "Add and del operations on XML Catalogs"
+	@(xmlcatalog --create --noout result/catalogs/mycatalog; \
+	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	xmlcatalog --noout --add public Pubid sysid result/catalogs/mycatalog; \
+	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	xmlcatalog --noout --add public Pubid2 sysid2 result/catalogs/mycatalog; \
+	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	xmlcatalog --noout --add public Pubid3 sysid3 result/catalogs/mycatalog; \
+	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	diff result/catalogs/mycatalog.full result/catalogs/mycatalog; \
+	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	xmlcatalog --noout --del sysid result/catalogs/mycatalog; \
+	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	xmlcatalog --noout --del sysid3 result/catalogs/mycatalog; \
+	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	xmlcatalog --noout --del sysid2 result/catalogs/mycatalog; \
+	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	diff result/catalogs/mycatalog.empty result/catalogs/mycatalog; \
+	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	rm -f result/catalogs/mycatalog)
 
 SVGtests : xmllint
 	@echo "##"

@@ -27,21 +27,21 @@ extern void xmlCheckVersion(int version);
  *
  * the version string like "1.2.3"
  */
-#define LIBXML_DOTTED_VERSION "2.4.8"
+#define LIBXML_DOTTED_VERSION "2.4.9"
 
 /**
  * LIBXML_VERSION:
  *
  * the version number: 1.2.3 value is 1002003
  */
-#define LIBXML_VERSION 20408
+#define LIBXML_VERSION 20409
 
 /**
  * LIBXML_VERSION_STRING:
  *
  * the version number string, 1.2.3 value is "1002003"
  */
-#define LIBXML_VERSION_STRING "20408"
+#define LIBXML_VERSION_STRING "20409"
 
 /**
  * LIBXML_TEST_VERSION:
@@ -49,7 +49,7 @@ extern void xmlCheckVersion(int version);
  * Macro to check that the libxml version in use is compatible with
  * the version the software has been compiled against
  */
-#define LIBXML_TEST_VERSION xmlCheckVersion(20408);
+#define LIBXML_TEST_VERSION xmlCheckVersion(20409);
 
 #if 0
 /**

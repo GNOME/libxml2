@@ -1,3 +1,12 @@
+Tue Nov  6 16:21:33 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in include/libxml/xmlwin32version.h: releasing 2.4.9
+	  fixing catalog breakages
+	* Makefile.am catalog.c result/catalogs/catal 
+	  result/catalogs/mycatalog.* test/catalogs/catal*:
+	  fixed more problems in catalog support, added more regression tests
+	  for both XML and SGML catalog handling
+
 Mon Nov  5 20:26:41 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: applied an improvement to xmlGetLineNo() from

@@ -1,3 +1,9 @@
+1999-07-26  Michael Meeks  <michael@edenproject.org>
+
+	* tree.h: Add const to 'content' in xmlNewDocNode, xmlNewChild
+
+	* tree.c: Ditto.
+
 Thu Jul 15 16:17:16 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: upgraded to version 1.4.0

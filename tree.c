@@ -906,7 +906,7 @@ xmlNewNode(xmlNsPtr ns, const CHAR *name) {
  */
 xmlNodePtr
 xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
-                         const CHAR *name, CHAR *content) {
+                         const CHAR *name, const CHAR *content) {
     xmlNodePtr cur;
 
     cur = xmlNewNode(ns, name);
@@ -1158,7 +1158,7 @@ xmlNewDocComment(xmlDocPtr doc, const CHAR *content) {
  */
 xmlNodePtr
 xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
-                       const CHAR *name, CHAR *content) {
+                       const CHAR *name, const CHAR *content) {
     xmlNodePtr cur, prev;
 
     if (parent == NULL) {

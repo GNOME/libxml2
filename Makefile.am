@@ -167,7 +167,8 @@ SAXtests : testSAX
 confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
 
-EXTRA_DIST = xmlConf.sh.in libxml.spec.in test result SAXresult
+EXTRA_DIST = xmlConf.sh.in libxml.spec.in test result SAXresult example/Makefile.am \
+             example/gjobread.c example/gjobs.xml
 
 dist-hook:
 	cp libxml.spec $(distdir)

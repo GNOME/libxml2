@@ -298,10 +298,10 @@ xmlDocPtr xmlCopyDoc(xmlDocPtr doc, int recursive);
  * Creating new nodes
  */
 xmlNodePtr xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
-                             const CHAR *name, CHAR *content);
+                             const CHAR *name, const CHAR *content);
 xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name);
 xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
-                              const CHAR *name, CHAR *content);
+                              const CHAR *name, const CHAR *content);
 xmlNodePtr xmlNewDocText(xmlDocPtr doc, const CHAR *content);
 xmlNodePtr xmlNewText(const CHAR *content);
 xmlNodePtr xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len);

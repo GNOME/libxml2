@@ -434,6 +434,7 @@ loaded:
 	 */
 	xmlXPathObjectPtr xptr;
 	xmlXPathContextPtr xptrctxt;
+	xmlNodeSetPtr set;
 
 	if (doc == NULL) {
 	    xptrctxt = xmlXPtrNewContext(ctxt->doc, ctxt->incTab[nr], NULL);
@@ -456,6 +457,75 @@ loaded:
 	    xmlFree(URL);
 	    xmlFree(fragment);
 	    return;
+	}
+	switch (xptr->type) {
+	    case XPATH_UNDEFINED:
+	    case XPATH_BOOLEAN:
+	    case XPATH_NUMBER:
+	    case XPATH_STRING:
+	    case XPATH_POINT:
+	    case XPATH_USERS:
+	    case XPATH_XSLT_TREE:
+		xmlGenericError(xmlGenericErrorContext,
+			"XInclude: XPointer is not a range: #%s\n",
+			        fragment);
+		xmlXPathFreeContext(xptrctxt);
+		xmlFree(URL);
+		xmlFree(fragment);
+		return;
+	    case XPATH_NODESET:
+	    case XPATH_RANGE:
+	    case XPATH_LOCATIONSET:
+		break;
+	}
+	set = xptr->nodesetval;
+	if (set != NULL) {
+	    for (i = 0;i < set->nodeNr;i++) {
+		if (set->nodeTab[i] == NULL)
+		    continue;
+		switch (set->nodeTab[i]->type) {
+		    case XML_TEXT_NODE:
+		    case XML_CDATA_SECTION_NODE:
+		    case XML_ELEMENT_NODE:
+		    case XML_ENTITY_REF_NODE:
+		    case XML_ENTITY_NODE:
+		    case XML_PI_NODE:
+		    case XML_COMMENT_NODE:
+		    case XML_DOCUMENT_NODE:
+		    case XML_HTML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+		    case XML_DOCB_DOCUMENT_NODE:
+#endif
+			continue;
+		    case XML_ATTRIBUTE_NODE:
+			xmlGenericError(xmlGenericErrorContext,
+			"XInclude: XPointer selects an attribute: #%s\n",
+					fragment);
+			set->nodeTab[i] = NULL;
+			continue;
+		    case XML_NAMESPACE_DECL:
+			xmlGenericError(xmlGenericErrorContext,
+			"XInclude: XPointer selects a namespace: #%s\n",
+					fragment);
+			set->nodeTab[i] = NULL;
+			continue;
+		    case XML_DOCUMENT_TYPE_NODE:
+		    case XML_DOCUMENT_FRAG_NODE:
+		    case XML_NOTATION_NODE:
+		    case XML_DTD_NODE:
+		    case XML_ELEMENT_DECL:
+		    case XML_ATTRIBUTE_DECL:
+		    case XML_ENTITY_DECL:
+		    case XML_XINCLUDE_START:
+		    case XML_XINCLUDE_END:
+			xmlGenericError(xmlGenericErrorContext,
+			"XInclude: XPointer selects unexpected nodes: #%s\n",
+					fragment);
+			set->nodeTab[i] = NULL;
+			set->nodeTab[i] = NULL;
+			continue; /* for */
+		}
+	    }
 	}
 	ctxt->repTab[nr] = xmlXPtrBuildNodeList(xptr);
 	xmlXPathFreeObject(xptr);

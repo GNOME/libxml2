@@ -1,3 +1,9 @@
+Tue Jun 19 20:03:40 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c xinclude.c xpointer.c: bug #56402 exposed a number of
+	  weakness in the node copy the XPointer and the XInclude
+	  implementations. Serious cleanup.
+
 Tue Jun 19 14:50:18 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am: Kjartan Maraas provided a small patch to

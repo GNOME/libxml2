@@ -8,11 +8,12 @@ DOCS_DIR = $(prefix)/share/doc/libxml2-python-$(LIBXML_VERSION)
 
 DOCS = TODO libxml2class.txt
 
-EXTRA_DIST = \
-	libxml.c	\
-	generator.py	\
-	libxml_wrap.h	\
-	libxml.py	\
+EXTRA_DIST = 			\
+	libxml.c		\
+	generator.py		\
+	libxml_wrap.h		\
+	libxml.py		\
+	libxml2-python-api.xml	\
 	$(DOCS)
 
 if WITH_PYTHON

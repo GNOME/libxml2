@@ -29,6 +29,9 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#ifdef HAVE_SYS_MMAN_H
+#include <sys/mman.h>
+#endif
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
@@ -66,6 +69,9 @@ static int compress = 0;
 static int html = 0;
 static int htmlout = 0;
 static int push = 0;
+#ifdef HAVE_SYS_MMAN_H
+static int memory = 0;
+#endif
 static int noblanks = 0;
 static int testIO = 0;
 static char *encoding = NULL;
@@ -445,6 +451,22 @@ void parseAndPrintFile(char *filename) {
 		xmlFreeDoc(doc);
 		doc = NULL;
 	    }
+#ifdef HAVE_SYS_MMAN_H
+	} else if (memory) {
+	    int fd;
+	    struct stat info;
+	    const char *base;
+	    if (stat(filename, &info) < 0) 
+		return;
+	    if ((fd = open(filename, O_RDONLY)) < 0)
+		return;
+	    base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
+	    if (base == MAP_FAILED)
+	        return;
+
+	    doc = xmlParseMemory((char *) base, info.st_size);
+	    munmap((char *) base, info.st_size);
+#endif
 	} else
 	    doc = xmlParseFile(filename);
 #ifdef LIBXML_HTML_ENABLED
@@ -585,6 +607,11 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-push")) ||
 	         (!strcmp(argv[i], "--push")))
 	    push++;
+#ifdef HAVE_SYS_MMAN_H
+	else if ((!strcmp(argv[i], "-memory")) ||
+	         (!strcmp(argv[i], "--memory")))
+	    memory++;
+#endif
 	else if ((!strcmp(argv[i], "-testIO")) ||
 	         (!strcmp(argv[i], "--testIO")))
 	    testIO++;
@@ -663,6 +690,9 @@ int main(int argc, char **argv) {
 	printf("\t--html : use the HTML parser\n");
 #endif
 	printf("\t--push : use the push mode of the parser\n");
+#ifdef HAVE_SYS_MMAN_H
+	printf("\t--memory : parse from memory\n");
+#endif
 	printf("\t--nowarning : do not emit warnings from parser/validator\n");
 	printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
 	printf("\t--testIO : test user I/O support\n");

@@ -1,3 +1,10 @@
+Sat Jul 22 05:59:05 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c xmlIO.[ch]: fixed the problem of encoding support
+	  when using in memory parsing. Need some cleanup.
+	* xmllint.c configure.in: added a --memory flag to test memory
+	  parsing
+	
 Fri Jul 21 17:09:57 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanohttp.c: fixed socklen_t replacement to unsigned int

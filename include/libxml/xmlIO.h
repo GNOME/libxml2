@@ -84,6 +84,9 @@ xmlParserInputBufferPtr
 	xmlParserInputBufferCreateFd		(int fd,
 	                                         xmlCharEncoding enc);
 xmlParserInputBufferPtr
+	xmlParserInputBufferCreateMem		(const char *mem, int size,
+	                                         xmlCharEncoding enc);
+xmlParserInputBufferPtr
 	xmlParserInputBufferCreateIO		(xmlInputReadCallback   ioread,
 						 xmlInputCloseCallback  ioclose,
 						 void *ioctx,

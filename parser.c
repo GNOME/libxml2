@@ -2555,7 +2555,7 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		}
 		return(0);
 	    } else {
-	        if (ctxt->input->length == 0) {
+	        if ((ctxt->input->length == 0) || (ctxt->input->buf == NULL)) {
 		    /*
 		     * When parsing a static memory array one must know the
 		     * size to be able to convert the buffer.
@@ -2572,9 +2572,10 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		     * Move it as the raw buffer and create a new input buffer
 		     */
 		    processed = ctxt->input->cur - ctxt->input->base;
+
 		    ctxt->input->buf->raw = xmlBufferCreate();
 		    xmlBufferAdd(ctxt->input->buf->raw, ctxt->input->cur,
-		                 ctxt->input->length - processed);
+				 ctxt->input->length - processed);
 		    ctxt->input->buf->buffer = xmlBufferCreate();
 
 		    /*
@@ -10575,6 +10576,7 @@ xmlParserCtxtPtr
 xmlCreateMemoryParserCtxt(char *buffer, int size) {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
+    xmlParserInputBufferPtr buf;
 
     if (buffer[size] != 0)
 	return(NULL);
@@ -10583,6 +10585,9 @@ xmlCreateMemoryParserCtxt(char *buffer, int size) {
     if (ctxt == NULL)
 	return(NULL);
 
+    buf = xmlParserInputBufferCreateMem(buffer, size, XML_CHAR_ENCODING_NONE);
+    if (buf == NULL) return(NULL);
+
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
 	xmlFreeParserCtxt(ctxt);
@@ -10590,14 +10595,9 @@ xmlCreateMemoryParserCtxt(char *buffer, int size) {
     }
 
     input->filename = NULL;
-    input->line = 1;
-    input->col = 1;
-    input->buf = NULL;
-    input->consumed = 0;
-
-    input->base = BAD_CAST buffer;
-    input->cur = BAD_CAST buffer;
-    input->free = NULL;
+    input->buf = buf;
+    input->base = input->buf->buffer->content;
+    input->cur = input->buf->buffer->content;
 
     inputPush(ctxt, input);
     return(ctxt);

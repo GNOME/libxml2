@@ -34,9 +34,15 @@ struct _xmlLocationSet {
  * Handling of location sets
  */
 
+xmlLocationSetPtr	xmlXPtrLocationSetCreate(xmlXPathObjectPtr val);
 void			xmlXPtrFreeLocationSet	(xmlLocationSetPtr obj);
 xmlLocationSetPtr	xmlXPtrLocationSetMerge	(xmlLocationSetPtr val1,
 						 xmlLocationSetPtr val2);
+xmlXPathObjectPtr	xmlXPtrNewRangeNodeObject(xmlNodePtr start,
+						 xmlXPathObjectPtr end);
+void			xmlXPtrLocationSetAdd	(xmlLocationSetPtr cur,
+						 xmlXPathObjectPtr val);
+xmlXPathObjectPtr	xmlXPtrWrapLocationSet	(xmlLocationSetPtr val);
 
 /*
  * Functions

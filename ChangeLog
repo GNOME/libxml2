@@ -1,3 +1,16 @@
+Mon Mar 19 00:11:18 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am: detect XPath memleaks in regreson tests
+	* error.c: fixed and error w.r.t. error reporting still using
+	  stderr
+	* hash.c: added new line at end of file
+	* tree.h: minor cleanup
+	* xpath.[ch] xpointer.[ch]: Major changes ! Separated XPath
+	  expression parsing from evaluation, resulted in a number of
+	  changes internally, and in XPointer. Likely to break stuff
+	  using xpathInternals.h but should remain binary compatible,
+	  new interfaces will be added.
+
 Wed Mar 14 20:34:02 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: fixed a couple of problems reported by 

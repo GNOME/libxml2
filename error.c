@@ -214,7 +214,8 @@ xmlParserError(void *ctx, const char *msg, ...)
     str = xmlGetVarStr(msg, args);
     va_end(args);
     xmlGenericError(xmlGenericErrorContext, str);
-    xmlFree(str);
+    if (str != NULL)
+	xmlFree(str);
 
     if (ctxt != NULL) {
 	xmlParserPrintFileContext(input);
@@ -259,7 +260,8 @@ xmlParserWarning(void *ctx, const char *msg, ...)
     str = xmlGetVarStr(msg, args);
     va_end(args);
     xmlGenericError(xmlGenericErrorContext, str);
-    xmlFree(str);
+    if (str != NULL)
+	xmlFree(str);
 
     if (ctxt != NULL) {
 	xmlParserPrintFileContext(input);
@@ -291,6 +293,7 @@ xmlParserValidityError(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input = NULL;
+    char * str;
     va_list args;
 
     if (ctxt != NULL) {
@@ -303,8 +306,11 @@ xmlParserValidityError(void *ctx, const char *msg, ...)
 
     xmlGenericError(xmlGenericErrorContext, "validity error: ");
     va_start(args, msg);
-    vfprintf(xmlGenericErrorContext, msg, args);
+    str = xmlGetVarStr(msg, args);
     va_end(args);
+    xmlGenericError(xmlGenericErrorContext, str);
+    if (str != NULL)
+	xmlFree(str);
 
     if (ctxt != NULL) {
 	xmlParserPrintFileContext(input);
@@ -325,6 +331,7 @@ xmlParserValidityWarning(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input = NULL;
+    char * str;
     va_list args;
 
     if (ctxt != NULL) {
@@ -337,8 +344,11 @@ xmlParserValidityWarning(void *ctx, const char *msg, ...)
         
     xmlGenericError(xmlGenericErrorContext, "validity warning: ");
     va_start(args, msg);
-    vfprintf(xmlGenericErrorContext, msg, args);
+    str = xmlGetVarStr(msg, args);
     va_end(args);
+    xmlGenericError(xmlGenericErrorContext, str);
+    if (str != NULL)
+	xmlFree(str);
 
     if (ctxt != NULL) {
 	xmlParserPrintFileContext(input);

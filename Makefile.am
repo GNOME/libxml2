@@ -253,6 +253,7 @@ URItests : testURI
 	  fi ; fi ; done)
 
 XPathtests : testXPath
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## XPath regression tests"
 	@echo "##"
@@ -262,9 +263,11 @@ XPathtests : testXPath
 	  if [ ! -f $(srcdir)/result/XPath/expr/$$name ] ; then \
 	      echo New test file $$name ; \
 	      $(top_builddir)/testXPath -f --expr $$i > $(srcdir)/result/XPath/expr/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/testXPath -f --expr $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XPath/expr/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
@@ -278,9 +281,11 @@ XPathtests : testXPath
 	  if [ ! -f $(srcdir)/result/XPath/tests/$$name ] ; then \
 	      echo New test file $$name ; \
 	      $(top_builddir)/testXPath -f -i $$i $$j > $(srcdir)/result/XPath/tests/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/testXPath -f -i $$i $$j > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XPath/tests/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)

@@ -221,6 +221,13 @@ struct _xmlXPathContext {
 };
 
 /*
+ * The structure of a compiled expression form is not public
+ */
+
+typedef struct _xmlXPathCompExpr xmlXPathCompExpr;
+typedef xmlXPathCompExpr *xmlXPathCompExprPtr;
+
+/*
  * An XPath parser context, it contains pure parsing informations,
  * an xmlXPathContext, and the stack of objects.
  */
@@ -229,6 +236,8 @@ struct _xmlXPathParserContext {
     const xmlChar *base;			/* the full expression */
 
     int error;				/* error code */
+
+    xmlXPathCompExprPtr comp;		/* the precompiled expression */
 
     xmlXPathContextPtr  context;	/* the evaluation context */
     xmlXPathObjectPtr     value;	/* the current value */

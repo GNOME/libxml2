@@ -981,8 +981,8 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	const xmlChar *left = CUR_PTR;
 
 	CUR_PTR = buffer;
-	xmlXPathRoot(ctxt);
 	xmlXPathEvalExpr(ctxt);
+	xmlXPathRunEval(ctxt);
 	CUR_PTR=left;
 #ifdef XPTR_XMLNS_SCHEME
     } else if (xmlStrEqual(name, (xmlChar *) "xmlns")) {
@@ -1174,6 +1174,20 @@ xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name) {
  */
 void
 xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
+    if (ctxt->valueTab == NULL) {
+	/* Allocate the value stack */
+	ctxt->valueTab = (xmlXPathObjectPtr *) 
+			 xmlMalloc(10 * sizeof(xmlXPathObjectPtr));
+	if (ctxt->valueTab == NULL) {
+	    xmlFree(ctxt);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPathRunEval: out of memory\n");
+	    return;
+	}
+	ctxt->valueNr = 0;
+	ctxt->valueMax = 10;
+	ctxt->value = NULL;
+    }
     SKIP_BLANKS;
     if (CUR == '/') {
 	xmlXPathRoot(ctxt);
@@ -1279,12 +1293,6 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 	return(NULL);
 
     ctxt = xmlXPathNewParserContext(str, ctx);
-    /* TAG:9999
-    if (ctx->node != NULL) {
-	init = xmlXPathNewNodeSet(ctx->node);
-	valuePush(ctxt, init);
-    }
-     */
     xmlXPtrEvalXPointer(ctxt);
 
     if ((ctxt->value != NULL) &&

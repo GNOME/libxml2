@@ -618,3 +618,4 @@ int xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
 		return(-1);
 	}
 }
+

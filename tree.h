@@ -83,7 +83,7 @@ typedef unsigned char xmlChar;
 typedef struct _xmlNotation xmlNotation;
 typedef xmlNotation *xmlNotationPtr;
 struct _xmlNotation {
-    const xmlChar               *name;	/* Notation name */
+    const xmlChar               *name;	        /* Notation name */
     const xmlChar               *PublicID;	/* Public identifier, if any */
     const xmlChar               *SystemID;	/* System identifier, if any */
 };

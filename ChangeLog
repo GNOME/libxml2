@@ -1,3 +1,10 @@
+Sun Oct 12 18:42:18 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* genChRanges.py, chvalid.c, include/libxml/chvalid.h: fixed
+	  a bug in the range search; enhanced range generation (inline code
+	  if a small number of intervals); enhanced the readability of the
+	  output files.
+
 Sun Oct 12 00:52:14 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* chvalid.def chvalid.c include/libxml/chvalid.h: rebuilt 

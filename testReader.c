@@ -39,12 +39,14 @@ int dump = 0;
 int noent = 0;
 int count = 0;
 int valid = 0;
+int consumed = 0;
 
 static void usage(const char *progname) {
     printf("Usage : %s [options] XMLfiles ...\n", progname);
     printf("\tParse the XML files using the xmlTextReader API\n");
     printf("\t --count: count the number of attribute and elements\n");
     printf("\t --valid: validate the document\n");
+    printf("\t --consumed: count the number of bytes consumed\n");
     exit(1);
 }
 static int elem, attrs;
@@ -87,6 +89,8 @@ static void handleFile(const char *filename) {
 	/*
 	 * Done, cleanup and status
 	 */
+	if (consumed)
+		printf("%ld bytes consumed by parser\n", xmlTextReaderByteConsumed(reader));
 	xmlFreeTextReader(reader);
 	if (ret != 0) {
 	    printf("%s : failed to parse\n", filename);
@@ -113,6 +117,8 @@ int main(int argc, char **argv) {
 	    dump++;
 	else if ((!strcmp(argv[i], "-count")) || (!strcmp(argv[i], "--count")))
 	    count++;
+	else if ((!strcmp(argv[i], "-consumed")) || (!strcmp(argv[i], "--consumed")))
+	    consumed++;
 	else if ((!strcmp(argv[i], "-valid")) || (!strcmp(argv[i], "--valid")))
 	    valid++;
 	else if ((!strcmp(argv[i], "-noent")) ||

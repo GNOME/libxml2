@@ -281,6 +281,13 @@ XMLPUBFUN const xmlChar * XMLCALL
 XMLPUBFUN int XMLCALL
 		    xmlTextReaderStandalone     (xmlTextReaderPtr reader);
 
+
+/*
+ * Index lookup
+ */
+XMLPUBFUN long XMLCALL
+		xmlTextReaderByteConsumed	(xmlTextReaderPtr reader);
+
 /*
  * New more complete APIs for simpler creation and reuse of readers
  */

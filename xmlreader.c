@@ -4517,6 +4517,27 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 }
 
 /**
+ * xmlTextReaderByteConsumed:
+ * @reader: an XML reader
+ *
+ * This function provides the current index of the parser used
+ * by the reader, relative to the start of the current entity.
+ * This function actually just wraps a call to xmlBytesConsumed()
+ * for the parser context associated with the reader.
+ * See xmlBytesConsumed() for more information.
+ *
+ * Returns the index in bytes from the beginning of the entity or -1
+ *         in case the index could not be computed.
+ */
+long
+xmlTextReaderByteConsumed(xmlTextReaderPtr reader) {
+    if ((reader == NULL) || (reader->ctxt == NULL))
+        return(-1);
+    return(xmlByteConsumed(reader->ctxt));
+}
+ 
+
+/**
  * xmlReaderWalker:
  * @doc:  a preparsed document
  *

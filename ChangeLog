@@ -1,3 +1,10 @@
+Fri Feb 18 20:34:03 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c include/libxml/xmlreader.h: applied patch from
+	  Aron Stansvik to add xmlTextReaderByteConsumed()
+	* testReader.c: added a test option
+	* xmlschemastypes.c: fix a lack of pointer checking in APIs
+
 Fri Feb 18 12:41:10 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* test/schemas/bug167754_0*: Added the regression test of Frans

@@ -4212,6 +4212,8 @@ int
 xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
     xmlSchemaWhitespaceValueType xws, yws;
 
+    if ((x == NULL) || (y == NULL))
+        return(-2);
     if (x->type == XML_SCHEMAS_STRING)
 	xws = XML_SCHEMA_WHITESPACE_PRESERVE;
     else if (x->type == XML_SCHEMAS_NORMSTRING)

@@ -1,3 +1,8 @@
+Sun Jun 17 16:47:40 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: fixed xmlHasNsProp() accordingly to bug #55683
+	* doc/xml.html: updated with 2.3.11
+
 Sun Jun 17 12:24:11 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* TODO: updated adding cleanup of generated doc

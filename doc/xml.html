@@ -1,5 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <title>The XML C library for Gnome</title>
@@ -247,6 +245,23 @@ you want to test those</p>
     href="http://www.w3.org/TR/xinclude">XInclude</a></li>
   <li>(seeems working but delayed from release) parsing/import of Docbook SGML
     docs</li>
+</ul>
+
+<h3>2.3.11: June 17 2001</h3>
+<ul>
+  <li>updates to trio, Makefiles and configure should fix some portability
+    problems (alpha)</li>
+  <li>fixed some HTML serialization problems (pre, script, and block/inline
+    handling), added encoding aware APIs, cleanup of this code</li>
+  <li>added xmlHasNsProp()</li>
+  <li>implemented a specific PI for encoding support in the DocBook SGML
+    parser</li>
+  <li>some XPath fixes (-Infinity, / as a function parameter and namespaces
+    node selection)</li>
+  <li>fixed a performance problem and an error in the validation code</li>
+  <li>fixed XInclude routine to implement the recursive behaviour</li>
+  <li>fixed xmlFreeNode problem when libxml is included statically twice</li>
+  <li>added --version to xmllint for bug reports</li>
 </ul>
 
 <h3>2.3.10: June 1 2001</h3>
@@ -1560,6 +1575,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@imag.fr">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.86 2001/06/05 20:57:42 veillard Exp $</p>
+<p>$Id: xml.html,v 1.87 2001/06/09 16:58:47 veillard Exp $</p>
 </body>
 </html>

@@ -4300,11 +4300,8 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
 	 *         no namespace on the attribute and the element carrying it
 	 */
         if ((xmlStrEqual(prop->name, name)) &&
-	    (((prop->ns == NULL) && (node->ns != NULL) &&
-	      (xmlStrEqual(node->ns->href, nameSpace))) ||
-	     ((prop->ns != NULL) &&
-	      (xmlStrEqual(prop->ns->href, nameSpace))))) {
-	  return(prop);
+	    ((prop->ns != NULL) && (xmlStrEqual(prop->ns->href, nameSpace)))) {
+	    return(prop);
         }
 	prop = prop->next;
     }

@@ -51,8 +51,11 @@ GENERATE = generator.py
 API_DESC = $(top_srcdir)/doc/libxml2-api.xml $(srcdir)/libxml2-python-api.xml
 GENERATED= $(srcdir)/libxml2class.py \
            $(srcdir)/libxml2-export.c \
+           $(srcdir)/libxml2class.txt \
 	   $(srcdir)/libxml2-py.c \
 	   $(srcdir)/libxml2-py.h
+
+CLEANFILES= $(GENERATED) gen_prog libxml2.py
 
 $(GENERATED): gen_prog
 
@@ -67,7 +70,4 @@ all:
 endif
 tests test: all
 	cd tests && $(MAKE) tests
-
-clean:
-	rm -f $(GENERATED) *.o _libxml.so *.pyc libxml2.py gen_prog
 

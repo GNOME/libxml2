@@ -1265,6 +1265,8 @@ xmlSaveToIO(xmlOutputWriteCallback iowrite,
  * @doc:  a document
  *
  * Save a full document to a saving context
+ * TODO: The function is not fully implemented yet as it does not return the
+ * byte count but 0 instead
  *
  * Returns the number of byte written or -1 in case of error
  */
@@ -1274,7 +1276,6 @@ xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
     long ret = 0;
 
     xmlDocContentDumpOutput(ctxt, doc);
-    TODO /* compute ret */
     return(ret);
 }
 
@@ -1284,6 +1285,8 @@ xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
  * @node:  a document
  *
  * Save a subtree starting at the node parameter to a saving context
+ * TODO: The function is not fully implemented yet as it does not return the
+ * byte count but 0 instead
  *
  * Returns the number of byte written or -1 in case of error
  */
@@ -1293,7 +1296,6 @@ xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr node)
     long ret = 0;
 
     xmlNodeDumpOutputInternal(ctxt, node);
-    TODO /* compute ret */
     return(ret);
 }
 

@@ -1,3 +1,12 @@
+Fri Apr 16 18:22:25 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c: move the TODO as comments as the function while not
+	  finished are usable as-is
+	* xmlschemas.c include/libxml/xmlerror.h: patch from Kasimier Buchcik
+	  implementing union
+	* test/schemas/union_0_0.x* result/schemas/union_0_0*: added example
+	* python/Makefile.am: applied fix from Mike Hommey
+
 Fri Apr 16 23:58:42 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* parser.c: fixed problem with detecting external dtd

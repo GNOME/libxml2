@@ -2279,7 +2279,7 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (type == NULL)
         return (NULL);
     type->node = node;
-    type->type = XML_SCHEMA_TYPE_LIST;
+    type->type = XML_SCHEMA_TYPE_UNION;
     type->id = xmlSchemaGetProp(ctxt, node, "id");
     type->ref = xmlSchemaGetProp(ctxt, node, "memberTypes");
 
@@ -4358,6 +4358,57 @@ xmlSchemaRefFixupCallback(xmlSchemaElementPtr elem,
     }
 }
 
+static void
+xmlSchemaParseUnionRefCheck(xmlSchemaTypePtr typeDecl,
+                   xmlSchemaParserCtxtPtr ctxt)
+{
+    const xmlChar *cur, *end, *prefix, *ncName, *namespace;
+    xmlChar *tmp;
+    xmlSchemaTypePtr subtype;
+    xmlNsPtr ns;
+    int len;
+
+     if ((typeDecl->type != XML_SCHEMA_TYPE_UNION) || (typeDecl->ref == NULL))
+        return;
+
+    cur = typeDecl->ref;
+    do {
+        while (IS_BLANK_CH(*cur))
+            cur++;
+        end = cur;
+        while ((*end != 0) && (!(IS_BLANK_CH(*end))))
+            end++;
+        if (end == cur)
+            break;
+        tmp = xmlStrndup(cur, end - cur);
+        ncName = xmlSplitQName3(tmp, &len);
+        if (ncName != NULL) {
+            prefix = xmlDictLookup(ctxt->dict, tmp, len);
+        } else {
+            prefix = NULL;
+            ncName = tmp;
+        }
+        ns = xmlSearchNs(typeDecl->node->doc, typeDecl->node, prefix);
+        if (ns == NULL) {
+            xmlSchemaPErr(ctxt, typeDecl->node, XML_SCHEMAP_PREFIX_UNDEFINED,
+                  "Union %s: the namespace of member type %s is undefined\n",
+                  typeDecl->name, (const char *) tmp);                        
+        } else {
+            namespace = xmlDictLookup(ctxt->dict, ns->href, -1);
+        }
+        /* Lookup the referenced type */
+        subtype = xmlSchemaGetType(ctxt->schema, ncName, namespace);
+        if (subtype == NULL) {
+            xmlSchemaPErr(ctxt, typeDecl->node, XML_SCHEMAP_UNKNOWN_MEMBER_TYPE,
+                       "Union %s references an unknown member type >%s<\n",
+                       typeDecl->name,  (const char *) tmp);
+        } 
+	 xmlFree(tmp);
+        cur = end;
+    } while (*cur != 0);
+    
+}
+
 /**
  * xmlSchemaTypeFixup:
  * @typeDecl:  the schema type definition
@@ -4553,6 +4604,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
             case XML_SCHEMA_TYPE_NOTATION:
             case XML_SCHEMA_TYPE_LIST:
             case XML_SCHEMA_TYPE_UNION:
+                xmlSchemaParseUnionRefCheck(typeDecl, ctxt);
             case XML_SCHEMA_FACET_MININCLUSIVE:
             case XML_SCHEMA_FACET_MINEXCLUSIVE:
             case XML_SCHEMA_FACET_MAXINCLUSIVE:
@@ -5077,6 +5129,28 @@ xmlSchemaValidateFacets(xmlSchemaValidCtxtPtr ctxt,
                         xmlSchemaTypePtr base,
                         xmlSchemaFacetPtr facets, const xmlChar * value)
 {
+    return(xmlSchemaValidateFacetsInternal(ctxt, base, facets, value, 1));
+}
+
+/**
+ * xmlSchemaValidateFacetsInternal:
+ * @ctxt:  a schema validation context
+ * @base:  the base type
+ * @facets:  the list of facets to check
+ * @value:  the lexical repr of the value to validate
+ * @val:  the precomputed value
+ * @fireErrors:  if 0, only internal errors will be fired; otherwise all errors will be fired.
+ *
+ * Check a value against all facet conditions
+ *
+ * Returns 0 if the element is schemas valid, a positive error code
+ *     number otherwise and -1 in case of internal or API error.
+ */
+static int
+xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
+                        xmlSchemaTypePtr base,
+                        xmlSchemaFacetPtr facets, const xmlChar * value, int fireErrors)
+{
     int ret = 0;
     int tmp = 0;
     xmlSchemaTypeType type;
@@ -5101,7 +5175,8 @@ xmlSchemaValidateFacets(xmlSchemaValidCtxtPtr ctxt,
 
         if (tmp != 0) {
             ret = tmp;
-            xmlSchemaVErr(ctxt, ctxt->cur, XML_SCHEMAS_ERR_FACET, "Failed to validate type with facet %s\n", (const xmlChar *) xmlSchemaFacetTypeToString(type), NULL);
+            if (fireErrors)
+                xmlSchemaVErr(ctxt, ctxt->cur, XML_SCHEMAS_ERR_FACET, "Failed to validate type with facet %s\n", (const xmlChar *) xmlSchemaFacetTypeToString(type), NULL);
         }
         if (facet != NULL)
             facet = facet->next;
@@ -5114,6 +5189,76 @@ xmlSchemaValidateFacets(xmlSchemaValidCtxtPtr ctxt,
  * 			Simple type validation				*
  * 									*
  ************************************************************************/
+
+/**
+ * xmlSchemaValidateSimpleValueUnion:
+ * @ctxt:  a schema validation context
+ * @type:  the type declaration
+ * @value:  the value to validate
+ *
+ * Validates a value against a union.
+ *
+ * Returns 0 if the value is valid, a positive error code
+ *     number otherwise and -1 in case of internal or API error.
+ */
+static int
+xmlSchemaValidateSimpleValueUnion(xmlSchemaValidCtxtPtr ctxt,
+                             xmlSchemaTypePtr type, const xmlChar * value)
+{
+    int ret = 0;
+    const xmlChar *cur, *end, *prefix, *ncName;
+    xmlChar *tmp;
+    xmlSchemaTypePtr subtype;
+    xmlNsPtr ns;
+    int len;
+   
+
+    /* Process referenced memberTypes. */
+    cur = type->ref;
+    do {
+        while (IS_BLANK_CH(*cur))
+            cur++;
+        end = cur;
+        while ((*end != 0) && (!(IS_BLANK_CH(*end))))
+            end++;
+        if (end == cur)
+            break;
+        tmp = xmlStrndup(cur, end - cur);
+         ncName = xmlSplitQName3(tmp, &len);
+        if (ncName != NULL) {
+            prefix = xmlStrndup(tmp, len);
+            /* prefix = xmlDictLookup(ctxt->doc->dict, tmp, len); */
+        } else {
+            prefix = NULL;
+            ncName = tmp;
+        }
+        /* We won't do additional checks here, since they have been performed during parsing. */
+        ns = xmlSearchNs(type->node->doc, type->node, prefix);
+        /* namespace = xmlDictLookup(ctxt->doc->dict, ns->href, -1); */
+        subtype = xmlSchemaGetType(ctxt->schema, ncName, ns->href);
+	if (tmp != NULL)
+	    xmlFree(tmp);
+	if (prefix != NULL)
+	    xmlFree(prefix);
+        ret = xmlSchemaValidateSimpleValueInternal(ctxt, subtype, value, 0);
+        if ((ret == 0) || (ret == -1)) {
+            return (ret);
+        }
+        cur = end;
+    } while (*cur != 0);
+
+    if (type->subtypes != NULL) {
+        subtype = type->subtypes;
+        do {
+            ret = xmlSchemaValidateSimpleValueInternal(ctxt, subtype, value, 0);
+            if ((ret == 0) || (ret == -1)) {
+                return (ret);
+            }
+            subtype = subtype->next;
+        } while (subtype != NULL);
+    }
+    return (ret);
+}
 
 /**
  * xmlSchemaValidateSimpleValue:
@@ -5129,6 +5274,25 @@ xmlSchemaValidateFacets(xmlSchemaValidCtxtPtr ctxt,
 static int
 xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
                              xmlSchemaTypePtr type, const xmlChar * value)
+{
+  return (xmlSchemaValidateSimpleValueInternal(ctxt, type, value, 1));
+}
+
+/**
+ * xmlSchemaValidateSimpleValue:
+ * @ctxt:  a schema validation context
+ * @type:  the type declaration
+ * @value:  the value to validate
+ * @fireErrors:  if 0, only internal errors will be fired; otherwise all errors will be fired.
+ *
+ * Validate a value against a simple type
+ *
+ * Returns 0 if the value is valid, a positive error code
+ *     number otherwise and -1 in case of internal or API error.
+ */
+static int
+xmlSchemaValidateSimpleValueInternal(xmlSchemaValidCtxtPtr ctxt,
+                             xmlSchemaTypePtr type, const xmlChar * value, int fireErrors)
 {
     int ret = 0;
 
@@ -5147,7 +5311,7 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
         }
         ret = xmlSchemaValPredefTypeNode(type, value, &(ctxt->value),
                                          ctxt->cur);
-        if (ret != 0) {
+        if ((fireErrors) && (ret != 0)) {
             xmlSchemaVErr(ctxt, ctxt->cur, XML_SCHEMAS_ERR_VALUE, "Failed to validate basic type %s\n", type->name, NULL);
         }
     } else if (type->type == XML_SCHEMA_TYPE_RESTRICTION) {
@@ -5156,7 +5320,7 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
 
         base = type->baseType;
         if (base != NULL) {
-            ret = xmlSchemaValidateSimpleValue(ctxt, base, value);
+            ret = xmlSchemaValidateSimpleValueInternal(ctxt, base, value, fireErrors);
         } else if (type->subtypes != NULL) {
 	    TODO
         }
@@ -5168,7 +5332,7 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
         if (ctxt->schema != NULL) {
             if (ret == 0) {
                 facet = type->facets;
-                ret = xmlSchemaValidateFacets(ctxt, base, facet, value);
+                ret = xmlSchemaValidateFacetsInternal(ctxt, base, facet, value, fireErrors);
             }
         }
     } else if (type->type == XML_SCHEMA_TYPE_SIMPLE) {
@@ -5176,7 +5340,7 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
 
         base = type->subtypes;
         if (base != NULL) {
-            ret = xmlSchemaValidateSimpleValue(ctxt, base, value);
+            ret = xmlSchemaValidateSimpleValueInternal(ctxt, base, value, fireErrors);
         } else {
         TODO}
     } else if (type->type == XML_SCHEMA_TYPE_LIST) {
@@ -5202,12 +5366,17 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
             if (end == cur)
                 break;
             tmp = xmlStrndup(cur, end - cur);
-            ret2 = xmlSchemaValidateSimpleValue(ctxt, base, tmp);
+            ret2 = xmlSchemaValidateSimpleValueInternal(ctxt, base, tmp, fireErrors);
 	    xmlFree(tmp);
             if (ret2 != 0)
                 ret = 1;
             cur = end;
         } while (*cur != 0);
+    }  else if (type->type == XML_SCHEMA_TYPE_UNION) {
+        ret = xmlSchemaValidateSimpleValueUnion(ctxt, type, value);
+        if ((fireErrors) && (ret != 0)) {
+            xmlSchemaVErr(ctxt, ctxt->cur, XML_SCHEMAS_ERR_VALUE, "Failed to validate type %s\n", type->name, NULL);
+        }
     } else {
         TODO
     }

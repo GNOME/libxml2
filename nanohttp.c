@@ -1588,6 +1588,7 @@ xmlNanoHTTPSave(void *ctxt, const char *filename) {
     }
 
     xmlNanoHTTPClose(ctxt);
+    close(fd);
     return(0);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */

@@ -1,3 +1,8 @@
+Wed Mar 17 16:37:22 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* nanohttp.c: added a close for the local file descriptor
+	  (bug 137474)
+
 Mon Mar 15 15:46:59 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: switched the output routines to use the new context.

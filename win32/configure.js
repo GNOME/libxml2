@@ -25,6 +25,8 @@ var verMajor;
 var verMinor;
 var verMicro;
 var verMicroSuffix;
+var verCvs;
+var useCvsVer = true;
 /* Libxml features. */
 var withTrio = false;
 var withThreads = "native";
@@ -162,8 +164,23 @@ function usage()
    file included by our makefile. */
 function discoverVersion()
 {
-	var fso, cf, vf, ln, s;
+	var fso, cf, vf, ln, s, iDot, iSlash;
 	fso = new ActiveXObject("Scripting.FileSystemObject");
+	verCvs = "";
+	if (useCvsVer && fso.FileExists("..\\CVS\\Entries")) {
+		cf = fso.OpenTextFile("..\\CVS\\Entries", 1);
+		while (cf.AtEndOfStream != true) {
+			ln = cf.ReadLine();
+			s = new String(ln);
+			if (s.search(/^\/ChangeLog\//) != -1) {
+				iDot = s.indexOf(".");
+				iSlash = s.indexOf("/", iDot);
+				verCvs = "CVS" + s.substring(iDot + 1, iSlash);
+				break;
+			}
+		}
+		cf.Close();
+	}
 	cf = fso.OpenTextFile(configFile, 1);
 	if (compiler == "msvc")
 		versionFile = ".\\config.msvc";
@@ -263,6 +280,8 @@ function configureLibxml()
 		} else if (s.search(/\@LIBXML_VERSION_NUMBER\@/) != -1) {
 			of.WriteLine(s.replace(/\@LIBXML_VERSION_NUMBER\@/, 
 				verMajor*10000 + verMinor*100 + verMicro*1));
+		} else if (s.search(/\@LIBXML_VERSION_EXTRA\@/) != -1) {
+			of.WriteLine(s.replace(/\@LIBXML_VERSION_EXTRA\@/, verCvs));
 		} else if (s.search(/\@WITH_TRIO\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_TRIO\@/, withTrio? "1" : "0"));
 		} else if (s.search(/\@WITH_THREADS\@/) != -1) {
@@ -482,6 +501,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildInclude = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "lib")
 			buildLib = arg.substring(opt.length + 1, arg.length);
+		else if (opt == "release")
+			useCvsVer = false;
 		else
 			error = 1;
 	} else if (i == 0) {
@@ -525,7 +546,12 @@ if (error != 0) {
 	WScript.Quit(error);
 }
 
-WScript.Echo(baseName + " version: " + verMajor + "." + verMinor + "." + verMicro);
+var outVerString = baseName + " version: " + verMajor + "." + verMinor + "." + verMicro;
+if (verMicroSuffix && verMicroSuffix != "")
+	outVerString += "-" + verMicroSuffix;
+if (verCvs && verCvs != "")
+	outVerString += "-" + verCvs;
+WScript.Echo(outVerString);
 
 // Configure libxml.
 configureLibxml();

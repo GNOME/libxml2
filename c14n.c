@@ -64,6 +64,9 @@ typedef struct _xmlC14NCtx {
     /* exclusive canonicalization */
     int exclusive;
     xmlChar **inclusive_ns_prefixes;
+
+    /* error number */
+    int error;
 } xmlC14NCtx, *xmlC14NCtxPtr;
 
 static xmlC14NVisibleNsStackPtr	xmlC14NVisibleNsStackCreate	(void);
@@ -113,6 +116,50 @@ static xmlChar *xmlC11NNormalizeString(const xmlChar * input,
      (((ctx)->is_visible_callback != NULL) ? \
 	(ctx)->is_visible_callback((ctx)->user_data, \
 		(xmlNodePtr)(node), (xmlNodePtr)(parent)) : 1)
+
+/************************************************************************
+ *									*
+ * 		Some factorized error routines				*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlC14NErrMemory:
+ * @extra:  extra informations
+ *
+ * Handle a redefinition of attribute error
+ */
+static void
+xmlC14NErrMemory(const char *extra)
+{
+    __xmlRaiseError(NULL, NULL, NULL, NULL, XML_FROM_C14N,
+		    XML_ERR_NO_MEMORY, XML_ERR_ERROR, NULL, 0, extra,
+		    NULL, NULL, 0, 0,
+		    "Memory allocation failed : %s\n", extra);
+}
+
+/**
+ * xmlC14NErr:
+ * @ctxt:  a C14N evaluation context
+ * @node:  the context node
+ * @error:  the erorr code
+ * @msg:  the message
+ * @extra:  extra informations
+ *
+ * Handle a redefinition of attribute error
+ */
+static void
+xmlC14NErr(xmlC14NCtxPtr ctxt, xmlNodePtr node, int error,
+           const char * msg)
+{
+    if (ctxt != NULL)
+        ctxt->error = error;
+    __xmlRaiseError(NULL, NULL,
+		    ctxt, node, XML_FROM_C14N, error,
+		    XML_ERR_ERROR, NULL, 0,
+		    NULL, NULL, NULL, 0, 0, msg);
+}
+
 /************************************************************************
  *									*
  *		The implementation internals				*
@@ -147,8 +194,7 @@ xmlC14NVisibleNsStackCreate(void) {
 
     ret = (xmlC14NVisibleNsStackPtr) xmlMalloc(sizeof(xmlC14NVisibleNsStack));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlC14NVisibleNsStackCreate: out of memory\n");
+        xmlC14NErrMemory("creating stack");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlC14NVisibleNsStack));
@@ -193,8 +239,7 @@ xmlC14NVisibleNsStackAdd(xmlC14NVisibleNsStackPtr cur, xmlNsPtr ns, xmlNodePtr n
         cur->nsTab = (xmlNsPtr*) xmlMalloc(XML_NAMESPACES_DEFAULT * sizeof(xmlNsPtr));
         cur->nodeTab = (xmlNodePtr*) xmlMalloc(XML_NAMESPACES_DEFAULT * sizeof(xmlNodePtr));
 	if ((cur->nsTab == NULL) || (cur->nodeTab == NULL)) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlC14NVisibleNsStackAdd: out of memory\n");
+	    xmlC14NErrMemory("adding node to stack");
 	    return;
 	}
 	memset(cur->nsTab, 0 , XML_NAMESPACES_DEFAULT * sizeof(xmlNsPtr));
@@ -207,16 +252,14 @@ xmlC14NVisibleNsStackAdd(xmlC14NVisibleNsStackPtr cur, xmlNsPtr ns, xmlNodePtr n
 	tmpSize = 2 * cur->nsMax;
 	tmp = xmlRealloc(cur->nsTab, tmpSize * sizeof(xmlNsPtr));
 	if (tmp == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlC14NVisibleNsStackAdd: out of memory\n");
+	    xmlC14NErrMemory("adding node to stack");
 	    return;
 	}
 	cur->nsTab = (xmlNsPtr*)tmp;
 
 	tmp = xmlRealloc(cur->nodeTab, tmpSize * sizeof(xmlNodePtr));
 	if (tmp == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlC14NVisibleNsStackAdd: out of memory\n");
+	    xmlC14NErrMemory("adding node to stack");
 	    return;
 	}
 	cur->nodeTab = (xmlNodePtr*)tmp;
@@ -1326,20 +1369,20 @@ xmlC14NProcessNode(xmlC14NCtxPtr ctx, xmlNodePtr cur)
             break;
 
         case XML_ATTRIBUTE_NODE:
-            xmlGenericError(xmlGenericErrorContext,
-                            "xmlC14NProcessNode: XML_ATTRIBUTE_NODE is illegal here\n");
+	    xmlC14NErr(ctx, cur, XML_C14N_INVALID_NODE,
+		"xmlC14NProcessNode: XML_ATTRIBUTE_NODE is illegal here\n");
             return (-1);
         case XML_NAMESPACE_DECL:
-            xmlGenericError(xmlGenericErrorContext,
-                            "xmlC14NProcessNode: XML_NAMESPACE_DECL is illegal here\n");
+	    xmlC14NErr(ctx, cur, XML_C14N_INVALID_NODE,
+		"xmlC14NProcessNode: XML_NAMESPACE_DECL is illegal here\n");
             return (-1);
         case XML_ENTITY_REF_NODE:
-            xmlGenericError(xmlGenericErrorContext,
-                            "xmlC14NProcessNode: XML_ENTITY_REF_NODE is illegal here\n");
+	    xmlC14NErr(ctx, cur, XML_C14N_INVALID_NODE,
+		"xmlC14NProcessNode: XML_ENTITY_REF_NODE is illegal here\n");
             return (-1);
         case XML_ENTITY_NODE:
-            xmlGenericError(xmlGenericErrorContext,
-                            "xmlC14NProcessNode: XML_ENTITY_NODE is illegal here\n");
+	    xmlC14NErr(ctx, cur, XML_C14N_INVALID_NODE,
+		"xmlC14NProcessNode: XML_ENTITY_NODE is illegal here\n");
             return (-1);
 
         case XML_DOCUMENT_TYPE_NODE:
@@ -1461,8 +1504,8 @@ xmlC14NNewCtx(xmlDocPtr doc,
      *  Validate the encoding output buffer encoding
      */
     if (buf->encoder != NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlC14NNewCtx: output buffer encoder != NULL but C14N requires UTF8 output\n");
+        xmlC14NErr(ctx, (xmlNodePtr) doc, XML_C14N_REQUIRES_UTF8,
+"xmlC14NNewCtx: output buffer encoder != NULL but C14N requires UTF8 output\n");
         return (NULL);
     }
 
@@ -1470,8 +1513,8 @@ xmlC14NNewCtx(xmlDocPtr doc,
      *  Validate the XML document encoding value, if provided.
      */
     if (doc->charset != XML_CHAR_ENCODING_UTF8) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlC14NNewCtx: source document not in UTF8\n");
+        xmlC14NErr(ctx, (xmlNodePtr) doc, XML_C14N_REQUIRES_UTF8,
+		   "xmlC14NNewCtx: source document not in UTF8\n");
         return (NULL);
     }
 
@@ -1480,8 +1523,7 @@ xmlC14NNewCtx(xmlDocPtr doc,
      */
     ctx = (xmlC14NCtxPtr) xmlMalloc(sizeof(xmlC14NCtx));
     if (ctx == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlC14NNewCtx: malloc failed\n");
+	xmlC14NErrMemory("creating context");
         return (NULL);
     }
     memset(ctx, 0, sizeof(xmlC14NCtx));
@@ -1499,8 +1541,8 @@ xmlC14NNewCtx(xmlDocPtr doc,
     ctx->ns_rendered = xmlC14NVisibleNsStackCreate();
 
     if(ctx->ns_rendered == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlC14NNewCtx: xmlC14NVisibleNsStackCreate failed\n");
+        xmlC14NErr(ctx, (xmlNodePtr) doc, XML_C14N_CREATE_STACK,
+		   "xmlC14NNewCtx: xmlC14NVisibleNsStackCreate failed\n");
 	xmlC14NFreeCtx(ctx);
         return (NULL);
     }
@@ -1560,8 +1602,8 @@ xmlC14NExecute(xmlDocPtr doc, xmlC14NIsVisibleCallback is_visible_callback,
      *  Validate the encoding output buffer encoding
      */
     if (buf->encoder != NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlC14NExecute: output buffer encoder != NULL but C14N requires UTF8 output\n");
+        xmlC14NErr(NULL, (xmlNodePtr) doc, XML_C14N_REQUIRES_UTF8,
+"xmlC14NExecute: output buffer encoder != NULL but C14N requires UTF8 output\n");
         return (-1);
     }
 
@@ -1569,8 +1611,8 @@ xmlC14NExecute(xmlDocPtr doc, xmlC14NIsVisibleCallback is_visible_callback,
 			exclusive, inclusive_ns_prefixes,
                         with_comments, buf);
     if (ctx == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlC14NExecute: unable to create C14N context\n");
+        xmlC14NErr(NULL, (xmlNodePtr) doc, XML_C14N_CREATE_CTXT,
+		   "xmlC14NExecute: unable to create C14N context\n");
         return (-1);
     }
 
@@ -1822,7 +1864,7 @@ xmlC14NDocSave(xmlDocPtr doc, xmlNodeSetPtr nodes,
     buffer = (xmlChar *)						\
     		xmlRealloc(buffer, buffer_size * sizeof(xmlChar));	\
     if (buffer == NULL) {						\
-	xmlGenericError(xmlGenericErrorContext, "realloc failed");	\
+	xmlC14NErrMemory("growing buffer");				\
 	return(NULL);							\
     }									\
 }
@@ -1857,7 +1899,7 @@ xmlC11NNormalizeString(const xmlChar * input,
     buffer_size = 1000;
     buffer = (xmlChar *) xmlMallocAtomic(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
-        xmlGenericError(xmlGenericErrorContext, "malloc failed");
+	xmlC14NErrMemory("allocating buffer");
         return (NULL);
     }
     out = buffer;

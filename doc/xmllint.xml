@@ -333,7 +333,7 @@
 	  <simpara>
 	   Reformat and reindent the output. The $XMLLINT_INDENT
 	   environment variable controls the indentation (default 
-	   value is two spaces &quot;&nbsp;&nbsp;&quot;).
+	   value is two spaces &quot;  &quot;).
 	  </simpara>
 	</listitem>
       </varlistentry>

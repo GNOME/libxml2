@@ -1,3 +1,8 @@
+Fri Apr 25 12:37:33 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmllint.*: trying to fix #110541 where &nbsp; generated
+	  character preventing rendering by the man command.
+
 Fri Apr 25 01:09:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS configure.in: preparing release 2.5.7

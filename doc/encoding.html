@@ -91,11 +91,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <ol>
 <li><a href="encoding.html#What">What does internationalization support
     mean ?</a></li>
-<li><a href="encoding.html#internal">The internal encoding, how and
+  <li><a href="encoding.html#internal">The internal encoding, how and
   why</a></li>
-<li><a href="encoding.html#implemente">How is it implemented ?</a></li>
-<li><a href="encoding.html#Default">Default supported encodings</a></li>
-<li><a href="encoding.html#extend">How to extend the existing
+  <li><a href="encoding.html#implemente">How is it implemented ?</a></li>
+  <li><a href="encoding.html#Default">Default supported encodings</a></li>
+  <li><a href="encoding.html#extend">How to extend the existing
   support</a></li>
 </ol>
 <h3><a name="What">What does internationalization support mean ?</a></h3>
@@ -116,10 +116,10 @@ likes for both markup and content:</p>
 <p>Having internationalization support in libxml means the following:</p>
 <ul>
 <li>the document is properly parsed</li>
-<li>informations about it's encoding are saved</li>
-<li>it can be modified</li>
-<li>it can be saved in its original encoding</li>
-<li>it can also be saved in another encoding supported by libxml (for
+  <li>informations about it's encoding are saved</li>
+  <li>it can be modified</li>
+  <li>it can be saved in its original encoding</li>
+  <li>it can also be saved in another encoding supported by libxml (for
     example straight UTF8 or even an ASCII form)</li>
 </ul>
 <p>Another very important point is that the whole libxml API, with the
@@ -150,7 +150,7 @@ rationale for those choices:</p>
     client code would have to check it before hand, make sure it's conformant
     to the encoding, etc ... Very hard in practice, though in some specific
     cases this may make sense.</li>
-<li>the second decision was which encoding. From the XML spec only UTF8 and
+  <li>the second decision was which encoding. From the XML spec only UTF8 and
     UTF16 really makes sense as being the two only encodings for which there
     is mandatory support. UCS-4 (32 bits fixed size encoding) could be
     considered an intelligent choice too since it's a direct Unicode mapping
@@ -167,16 +167,16 @@ rationale for those choices:</p>
         caches (main memory/external caches/internal caches) and my take is
         that this harms the system far more than the CPU requirements needed
         for the conversion to UTF-8</li>
-<li>Most of libxml version 1 users were using it with straight ASCII
+      <li>Most of libxml version 1 users were using it with straight ASCII
         most of the time, doing the conversion with an internal encoding
         requiring all their code to be rewritten was a serious show-stopper
         for using UTF-16 or UCS-4.</li>
-<li>UTF-8 is being used as the de-facto internal encoding standard for
+      <li>UTF-8 is being used as the de-facto internal encoding standard for
         related code like the <a href="http://www.pango.org/">pango</a>
         upcoming Gnome text widget, and a lot of Unix code (yep another place
         where Unix programmer base takes a different approach from Microsoft
         - they are using UTF-16)</li>
-</ul>
+    </ul>
 </li>
 </ul>
 <p>What does this mean in practice for the libxml user:</p>
@@ -184,7 +184,7 @@ rationale for those choices:</p>
 <li>xmlChar, the libxml data type is a byte, those bytes must be assembled
     as UTF-8 valid strings. The proper way to terminate an xmlChar * string
     is simply to append 0 byte, as usual.</li>
-<li>One just need to make sure that when using chars outside the ASCII set,
+  <li>One just need to make sure that when using chars outside the ASCII set,
     the values has been properly converted to UTF-8</li>
 </ul>
 <h3><a name="implemente">How is it implemented ?</a></h3>
@@ -196,10 +196,10 @@ sequence:</p>
 <li>when a document is processed, we usually don't know the encoding, a
     simple heuristic allows to detect UTF-18 and UCS-4 from whose where the
     ASCII range (0-0x7F) maps with ASCII</li>
-<li>the xml declaration if available is parsed, including the encoding
+  <li>the xml declaration if available is parsed, including the encoding
     declaration. At that point, if the autodetected encoding is different
     from the one declared a call to xmlSwitchEncoding() is issued.</li>
-<li>If there is no encoding declaration, then the input has to be in either
+  <li>If there is no encoding declaration, then the input has to be in either
     UTF-8 or UTF-16, if it is not then at some point when processing the
     input, the converter/checker of UTF-8 form will raise an encoding error.
     You may end-up with a garbled document, or no document at all ! Example:
@@ -210,8 +210,8 @@ err.xml:1: error: Input is not proper UTF-8, indicate encoding !
 err.xml:1: error: Bytes: 0xE8 0x73 0x3E 0x6C
 &lt;très&gt;là&lt;/très&gt;
    ^</pre>
-</li>
-<li>xmlSwitchEncoding() does an encoding name lookup, canonicalize it, and
+  </li>
+  <li>xmlSwitchEncoding() does an encoding name lookup, canonicalize it, and
     then search the default registered encoding converters for that encoding.
     If it's not within the default set and iconv() support has been compiled
     it, it will ask iconv for such an encoder. If this fails then the parser
@@ -220,15 +220,15 @@ err.xml:1: error: Bytes: 0xE8 0x73 0x3E 0x6C
 err2.xml:1: error: Unsupported encoding UnsupportedEnc
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UnsupportedEnc&quot;?&gt;
                                              ^</pre>
-</li>
-<li>From that point the encoder processes progressively the input (it is
+  </li>
+  <li>From that point the encoder processes progressively the input (it is
     plugged as a front-end to the I/O module) for that entity. It captures
     and convert on-the-fly the document to be parsed to UTF-8. The parser
     itself just does UTF-8 checking of this input and process it
     transparently. The only difference is that the encoding information has
     been added to the parsing context (more precisely to the input
     corresponding to this entity).</li>
-<li>The result (when using DOM) is an internal form completely in UTF-8
+  <li>The result (when using DOM) is an internal form completely in UTF-8
     with just an encoding information on the document node.</li>
 </ol>
 <p>Ok then what happens when saving the document (assuming you
@@ -241,16 +241,16 @@ encoding:</p>
     associated to the document and if it exists will try to save to that
     encoding,
     <p>otherwise everything is written in the internal form, i.e. UTF-8</p>
-</li>
-<li>so if an encoding was specified, either at the API level or on the
+  </li>
+  <li>so if an encoding was specified, either at the API level or on the
     document, libxml will again canonicalize the encoding name, lookup for a
     converter in the registered set or through iconv. If not found the
     function will return an error code</li>
-<li>the converter is placed before the I/O buffer layer, as another kind of
+  <li>the converter is placed before the I/O buffer layer, as another kind of
     buffer, then libxml will simply push the UTF-8 serialization to through
     that buffer, which will then progressively be converted and pushed onto
     the I/O layer.</li>
-<li>It is possible that the converter code fails on some input, for example
+  <li>It is possible that the converter code fails on some input, for example
     trying to push an UTF-8 encoded Chinese character through the UTF-8 to
     ISO-8859-1 converter won't work. Since the encoders are progressive they
     will just report the error and the number of bytes converted, at that
@@ -283,10 +283,10 @@ detecting such a tag on input. Except for that the processing is the same
 (located in encoding.c):</p>
 <ol>
 <li>UTF-8 is supported by default (null handlers)</li>
-<li>UTF-16, both little and big endian</li>
-<li>ISO-Latin-1 (ISO-8859-1) covering most western languages</li>
-<li>ASCII, useful mostly for saving</li>
-<li>HTML, a specific handler for the conversion of UTF-8 to ASCII with HTML
+  <li>UTF-16, both little and big endian</li>
+  <li>ISO-Latin-1 (ISO-8859-1) covering most western languages</li>
+  <li>ASCII, useful mostly for saving</li>
+  <li>HTML, a specific handler for the conversion of UTF-8 to ASCII with HTML
     predefined entities like &amp;copy; for the Copyright sign.</li>
 </ol>
 <p>More over when compiled on an Unix platform with iconv support the full
@@ -303,9 +303,9 @@ existing encodings. Once registered libxml will automatically lookup the
 aliases when handling a document:</p>
 <ul>
 <li>int xmlAddEncodingAlias(const char *name, const char *alias);</li>
-<li>int xmlDelEncodingAlias(const char *alias);</li>
-<li>const char * xmlGetEncodingAlias(const char *alias);</li>
-<li>void xmlCleanupEncodingAliases(void);</li>
+  <li>int xmlDelEncodingAlias(const char *alias);</li>
+  <li>const char * xmlGetEncodingAlias(const char *alias);</li>
+  <li>void xmlCleanupEncodingAliases(void);</li>
 </ul>
 <h3><a name="extend">How to extend the existing support</a></h3>
 <p>Well adding support for new encoding, or overriding one of the encoders

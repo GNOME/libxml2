@@ -91,79 +91,79 @@ A:link, A:visited, A:active { text-decoration: underline }
 <p>Libxml is the XML C library developed for the Gnome project.  XML itself
 is a metalanguage to design markup languages, i.e. text language where
 semantic and structure are added to the content using extra &quot;markup&quot;
-information enclosed between angle bracket. HTML is the most well-known
+information enclosed between angle brackets. HTML is the most well-known
 markup language. Though the library is written in C <a href="python.html">a
-variety of language binding</a> makes it available in other environments.</p>
+variety of language bindings</a> make it available in other environments.</p>
 <p>Libxml2 implements a number of existing standards related to markup
 languages:</p>
 <ul>
 <li>the XML standard: <a href="http://www.w3.org/TR/REC-xml">http://www.w3.org/TR/REC-xml</a>
 </li>
-<li>Namespaces in XML: <a href="http://www.w3.org/TR/REC-xml-names/">http://www.w3.org/TR/REC-xml-names/</a>
+  <li>Namespaces in XML: <a href="http://www.w3.org/TR/REC-xml-names/">http://www.w3.org/TR/REC-xml-names/</a>
 </li>
-<li>XML Base: <a href="http://www.w3.org/TR/xmlbase/">http://www.w3.org/TR/xmlbase/</a>
+  <li>XML Base: <a href="http://www.w3.org/TR/xmlbase/">http://www.w3.org/TR/xmlbase/</a>
 </li>
-<li>
+  <li>
 <a href="http://www.cis.ohio-state.edu/rfc/rfc2396.txt">RFC 2396</a> :
     Uniform Resource Identifiers <a href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a>
 </li>
-<li>XML Path Language (XPath) 1.0: <a href="http://www.w3.org/TR/xpath">http://www.w3.org/TR/xpath</a>
+  <li>XML Path Language (XPath) 1.0: <a href="http://www.w3.org/TR/xpath">http://www.w3.org/TR/xpath</a>
 </li>
-<li>HTML4 parser: <a href="http://www.w3.org/TR/html401/">http://www.w3.org/TR/html401/</a>
+  <li>HTML4 parser: <a href="http://www.w3.org/TR/html401/">http://www.w3.org/TR/html401/</a>
 </li>
-<li>most of XML Pointer Language (XPointer) Version 1.0: <a href="http://www.w3.org/TR/xptr">http://www.w3.org/TR/xptr</a>
+  <li>most of XML Pointer Language (XPointer) Version 1.0: <a href="http://www.w3.org/TR/xptr">http://www.w3.org/TR/xptr</a>
 </li>
-<li>XML Inclusions (XInclude) Version 1.0: <a href="http://www.w3.org/TR/xinclude/">http://www.w3.org/TR/xinclude/</a>
+  <li>XML Inclusions (XInclude) Version 1.0: <a href="http://www.w3.org/TR/xinclude/">http://www.w3.org/TR/xinclude/</a>
 </li>
-<li>[ISO-8859-1], <a href="http://www.cis.ohio-state.edu/rfc/rfc2044.txt">rfc2044</a> [UTF-8]
+  <li>[ISO-8859-1], <a href="http://www.cis.ohio-state.edu/rfc/rfc2044.txt">rfc2044</a> [UTF-8]
     and <a href="http://www.cis.ohio-state.edu/rfc/rfc2781.txt">rfc2781</a>
     [UTF-16] core encodings</li>
-<li>part of SGML Open Technical Resolution TR9401:1997</li>
-<li>XML Catalogs Working Draft 06 August 2001: <a href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">http://www.oasis-open.org/committees/entity/spec-2001-08-06.html</a>
+  <li>part of SGML Open Technical Resolution TR9401:1997</li>
+  <li>XML Catalogs Working Draft 06 August 2001: <a href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">http://www.oasis-open.org/committees/entity/spec-2001-08-06.html</a>
 </li>
-<li>Canonical XML Version 1.0: <a href="http://www.w3.org/TR/xml-c14n">http://www.w3.org/TR/xml-c14n</a>
+  <li>Canonical XML Version 1.0: <a href="http://www.w3.org/TR/xml-c14n">http://www.w3.org/TR/xml-c14n</a>
     and the Exclusive XML Canonicalization CR draft <a href="http://www.w3.org/TR/xml-exc-c14n">http://www.w3.org/TR/xml-exc-c14n</a>
 </li>
 </ul>
 <p>In most cases libxml tries to implement the specifications in a relatively
-strict way. As of release 2.4.16, libxml2 passes all 1800+ tests from the <a href="http://www.oasis-open.org/committees/xml-conformance/">OASIS XML Tests
+strictly compliant way. As of release 2.4.16, libxml2 passes all 1800+ tests from the <a href="http://www.oasis-open.org/committees/xml-conformance/">OASIS XML Tests
 Suite</a>.</p>
-<p>To some extent libxml2 provide some support for the following other
-specification but don't claim to implement them:</p>
+<p>To some extent libxml2 provides support for the following additional
+specifications but doesn't claim to implement them completely:</p>
 <ul>
 <li>Document Object Model (DOM) <a href="http://www.w3.org/TR/DOM-Level-2-Core/">http://www.w3.org/TR/DOM-Level-2-Core/</a>
-    it doesn't implement the API itself, gdome2 does this in top of
+    it doesn't implement the API itself, gdome2 does this on top of
   libxml2</li>
-<li>
+  <li>
 <a href="http://www.cis.ohio-state.edu/rfc/rfc959.txt">RFC 959</a> :
     libxml implements a basic FTP client code</li>
-<li>
+  <li>
 <a href="http://www.cis.ohio-state.edu/rfc/rfc1945.txt">RFC 1945</a> :
     HTTP/1.0, again a basic HTTP client code</li>
-<li>SAX: a minimal SAX implementation compatible with early expat
+  <li>SAX: a minimal SAX implementation compatible with early expat
   versions</li>
-<li>DocBook SGML v4: libxml2 includes a hackish parser to transition to
+  <li>DocBook SGML v4: libxml2 includes a hackish parser to transition to
   XML</li>
 </ul>
 <p>XML Schemas is being worked on but it would be far too early to make any
 conformance statement about it at the moment.</p>
 <p>Libxml2 is known to be very portable, the library should build and work
 without serious troubles on a variety of systems (Linux, Unix, Windows,
-CygWin, MacOs, MacOsX, RISC Os, OS/2, VMS, QNX, MVS, ...)</p>
+CygWin, MacOS, MacOS X, RISC Os, OS/2, VMS, QNX, MVS, ...)</p>
 <p>Separate documents:</p>
 <ul>
 <li>
 <a href="http://xmlsoft.org/XSLT/">the libxslt page</a> providing an
     implementation of XSLT 1.0 and common extensions like EXSLT for
   libxml2</li>
-<li>
+  <li>
 <a href="http://www.cs.unibo.it/~casarini/gdome2/">the gdome2 page</a>
     : a standard DOM2 implementation for libxml2</li>
-<li>
+  <li>
 <a href="http://www.aleksey.com/xmlsec/">the XMLSec page</a>: an
     implementation of <a href="http://www.w3.org/TR/xmldsig-core/">W3C XML
     Digital Signature</a> for libxml2</li>
-<li>also check the related links section below for more related and active
+  <li>also check the related links section below for more related and active
     projects.</li>
 </ul>
 <p><a href="bugs.html">Daniel Veillard</a></p>

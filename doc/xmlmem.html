@@ -90,10 +90,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <p>Table of Content:</p>
 <ol>
 <li><a href="#General3">General overview</a></li>
-<li><a href="#setting">Setting libxml set of memory routines</a></li>
-<li><a href="#cleanup">Cleaning up after parsing</a></li>
-<li><a href="#Debugging">Debugging routines</a></li>
-<li><a href="#General4">General memory requirements</a></li>
+  <li><a href="#setting">Setting libxml set of memory routines</a></li>
+  <li><a href="#cleanup">Cleaning up after parsing</a></li>
+  <li><a href="#Debugging">Debugging routines</a></li>
+  <li><a href="#General4">General memory requirements</a></li>
 </ol>
 <h3><a name="General3">General overview</a></h3>
 <p>The module <code><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlmemory.h</a></code>
@@ -101,9 +101,9 @@ provides the interfaces to the libxml memory system:</p>
 <ul>
 <li>libxml does not use the libc memory allocator directly but xmlFree(),
     xmlMalloc() and xmlRealloc()</li>
-<li>those routines can be reallocated to a specific set of routine, by
+  <li>those routines can be reallocated to a specific set of routine, by
     default the libc ones i.e. free(), malloc() and realloc()</li>
-<li>the xmlmemory.c module includes a set of debugging routine</li>
+  <li>the xmlmemory.c module includes a set of debugging routine</li>
 </ul>
 <h3><a name="setting">Setting libxml set of memory routines</a></h3>
 <p>It is sometimes useful to not use the default memory allocator, either for
@@ -113,7 +113,7 @@ debugging, analysis or to implement a specific behaviour on memory management
 <li>
 <a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemGet
     ()</a> which return the current set of functions in use by the parser</li>
-<li>
+  <li>
 <a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemSetup()</a>
     which allow to set up a new set of memory allocation functions</li>
 </ul>
@@ -132,7 +132,7 @@ reuse the parser immediately:</p>
     ()</a> is a centralized routine to free the parsing states. Note that it
     won't deallocate any produced tree if any (use the xmlFreeDoc() and
     related routines for this).</li>
-<li>
+  <li>
 <a href="http://xmlsoft.org/html/libxml-parser.html">xmlInitParser
     ()</a> is the dual routine allowing to preallocate the parsing state
     which can be useful for example to avoid initialization reentrancy
@@ -149,10 +149,11 @@ other debugging routines allow to dump the memory allocated infos to a file
 or call a specific routine when a given block number is allocated:</p>
 <ul>
 <li>
-<a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMallocLoc()</a><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlReallocLoc()</a>
+<a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMallocLoc()</a>
+    <a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlReallocLoc()</a>
     and <a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemStrdupLoc()</a>
     are the memory debugging replacement allocation routines</li>
-<li>
+  <li>
 <a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemoryDump
     ()</a> dumps all the informations about the allocated memory block lefts
     in the <code>.memdump</code> file</li>
@@ -170,15 +171,15 @@ but not always. Assuming the allocation problem is reproducible, it is
 possible to find more easily:</p>
 <ol>
 <li>write down the block number xxxx not allocated</li>
-<li>export the environment variable XML_MEM_BREAKPOINT=xxxx , the easiest
+  <li>export the environment variable XML_MEM_BREAKPOINT=xxxx , the easiest
     when using GDB is to simply give the command
     <p><code>set environment XML_MEM_BREAKPOINT xxxx</code></p>
-<p>before running the program.</p>
-</li>
-<li>run the program under a debugger and set a breakpoint on
+    <p>before running the program.</p>
+  </li>
+  <li>run the program under a debugger and set a breakpoint on
     xmlMallocBreakpoint() a specific function called when this precise block
     is allocated</li>
-<li>when the breakpoint is reached you can then do a fine analysis of the
+  <li>when the breakpoint is reached you can then do a fine analysis of the
     allocation an step  to see the condition resulting in the missing
     deallocation.</li>
 </ol>
@@ -197,7 +198,7 @@ of a number of things:</p>
     The I/O and encoding handlers will probably account for a few KBytes.
     This is true for both the XML and HTML parser (though the HTML parser
     need more state).</li>
-<li>If you are generating the DOM tree then memory requirements will grow
+  <li>If you are generating the DOM tree then memory requirements will grow
     nearly linear with the size of the data. In general for a balanced
     textual document the internal memory requirement is about 4 times the
     size of the UTF8 serialization of this document (example the XML-1.0
@@ -205,7 +206,7 @@ of a number of things:</p>
     memory when parsed). Validation will add a amount of memory required for
     maintaining the external Dtd state which should be linear with the
     complexity of the content model defined by the Dtd</li>
-<li>If you don't care about the advanced features of libxml like
+  <li>If you don't care about the advanced features of libxml like
     validation, DOM, XPath or XPointer, but really need to work fixed memory
     requirements, then the SAX interface should be used.</li>
 </ul>

@@ -94,10 +94,10 @@ incompatible changes. The main goals were:</p>
 <li>a general cleanup. A number of mistakes inherited from the very early
     versions couldn't be changed due to compatibility constraints. Example
     the &quot;childs&quot; element in the nodes.</li>
-<li>Uniformization of the various nodes, at least for their header and link
+  <li>Uniformization of the various nodes, at least for their header and link
     parts (doc, parent, children, prev, next), the goal is a simpler
     programming model and simplifying the task of the DOM implementors.</li>
-<li>better conformances to the XML specification, for example version 1.x
+  <li>better conformances to the XML specification, for example version 1.x
     had an heuristic to try to detect ignorable white spaces. As a result the
     SAX event generated were ignorableWhitespace() while the spec requires
     character() in that case. This also mean that a number of DOM node
@@ -108,16 +108,16 @@ incompatible changes. The main goals were:</p>
 <p>So client code of libxml designed to run with version 1.x may have to be
 changed to compile against version 2.x of libxml. Here is a list of changes
 that I have collected, they may not be sufficient, so in case you find other
-change which are required, <a href="mailto:Daniel.Ïeillardw3.org">drop me a
+change which are required, <a href="mailto:Daniel.%C3%8Feillardw3.org">drop me a
 mail</a>:</p>
 <ol>
 <li>The package name have changed from libxml to libxml2, the library name
     is now -lxml2 . There is a new xml2-config script which should be used to
     select the right parameters libxml2</li>
-<li>Node <strong>childs</strong> field has been renamed
+  <li>Node <strong>childs</strong> field has been renamed
     <strong>children</strong> so s/childs/children/g should be  applied
     (probability of having &quot;childs&quot; anywhere else is close to 0+</li>
-<li>The document don't have anymore a <strong>root</strong> element it has
+  <li>The document don't have anymore a <strong>root</strong> element it has
     been replaced by <strong>children</strong> and usually you will get a
     list of element here. For example a Dtd element for the internal subset
     and it's declaration may be found in that list, as well as processing
@@ -126,7 +126,7 @@ mail</a>:</p>
     a document. Alternatively if you are sure to not reference DTDs nor have
     PIs or comments before or after the root element
     s/-&gt;root/-&gt;children/g will probably do it.</li>
-<li>The white space issue, this one is more complex, unless special case of
+  <li>The white space issue, this one is more complex, unless special case of
     validating parsing, the line breaks and spaces usually used for indenting
     and formatting the document content becomes significant. So they are
     reported by SAX and if your using the DOM tree, corresponding nodes are
@@ -137,25 +137,25 @@ mail</a>:</p>
         relying on a special (and possibly broken) set of heuristics of
         libxml to detect ignorable blanks. Don't complain if it breaks or
         make your application not 100% clean w.r.t. to it's input.</li>
-<li>the Right Way: change you code to accept possibly insignificant
+      <li>the Right Way: change you code to accept possibly insignificant
         blanks characters, or have your tree populated with weird blank text
         nodes. You can spot them using the commodity function
         <strong>xmlIsBlankNode(node)</strong> returning 1 for such blank
         nodes.</li>
-</ol>
+    </ol>
 <p>Note also that with the new default the output functions don't add any
     extra indentation when saving a tree in order to be able to round trip
     (read and save) without inflating the document with extra formatting
     chars.</p>
-</li>
-<li>The include path has changed to $prefix/libxml/ and the includes
+  </li>
+  <li>The include path has changed to $prefix/libxml/ and the includes
     themselves uses this new prefix in includes instructions... If you are
     using (as expected) the
     <pre>xml2-config --cflags</pre>
-<p>output to generate you compile commands this will probably work out of
+    <p>output to generate you compile commands this will probably work out of
     the box</p>
-</li>
-<li>xmlDetectCharEncoding takes an extra argument indicating the length in
+  </li>
+  <li>xmlDetectCharEncoding takes an extra argument indicating the length in
     byte of the head of the document available for character detection.</li>
 </ol>
 <h3>Ensuring both libxml-1.x and libxml-2.x compatibility</h3>
@@ -165,35 +165,35 @@ compatibility. They offers the following:</p>
 <ol>
 <li>similar include naming, one should use
     <strong>#include&lt;libxml/...&gt;</strong> in both cases.</li>
-<li>similar identifiers defined via macros for the child and root fields:
+  <li>similar identifiers defined via macros for the child and root fields:
     respectively <strong>xmlChildrenNode</strong> and
     <strong>xmlRootNode</strong>
 </li>
-<li>a new macro <strong>LIBXML_TEST_VERSION</strong> which should be
+  <li>a new macro <strong>LIBXML_TEST_VERSION</strong> which should be
     inserted once in the client code</li>
 </ol>
 <p>So the roadmap to upgrade your existing libxml applications is the
 following:</p>
 <ol>
 <li>install the  libxml-1.8.8 (and libxml-devel-1.8.8) packages</li>
-<li>find all occurrences where the xmlDoc <strong>root</strong> field is
+  <li>find all occurrences where the xmlDoc <strong>root</strong> field is
     used and change it to <strong>xmlRootNode</strong>
 </li>
-<li>similarly find all occurrences where the xmlNode
+  <li>similarly find all occurrences where the xmlNode
     <strong>childs</strong> field is used and change it to
     <strong>xmlChildrenNode</strong>
 </li>
-<li>add a <strong>LIBXML_TEST_VERSION</strong> macro somewhere in your
+  <li>add a <strong>LIBXML_TEST_VERSION</strong> macro somewhere in your
     <strong>main()</strong> or in the library init entry point</li>
-<li>Recompile, check compatibility, it should still work</li>
-<li>Change your configure script to look first for xml2-config and fall
+  <li>Recompile, check compatibility, it should still work</li>
+  <li>Change your configure script to look first for xml2-config and fall
     back using xml-config . Use the --cflags and --libs output of the command
     as the Include and Linking parameters needed to use libxml.</li>
-<li>install libxml2-2.3.x and  libxml2-devel-2.3.x (libxml-1.8.y and
+  <li>install libxml2-2.3.x and  libxml2-devel-2.3.x (libxml-1.8.y and
     libxml-devel-1.8.y can be kept simultaneously)</li>
-<li>remove your config.cache, relaunch your configuration mechanism, and
+  <li>remove your config.cache, relaunch your configuration mechanism, and
     recompile, if steps 2 and 3 were done right it should compile as-is</li>
-<li>Test that your application is still running correctly, if not this may
+  <li>Test that your application is still running correctly, if not this may
     be due to extra empty nodes due to formating spaces being kept in libxml2
     contrary to libxml1, in that case insert xmlKeepBlanksDefault(1) in your
     code before calling the parser (next to

@@ -1,4 +1,10 @@
+Thu Jul 25 01:33:47 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xml.html doc/*.html: applied syntax patch from Rick Jones
+	  and rebuilt the web site.
+
 Mon Jul 22 11:04:48 PDT 2002  Aleksey Sanin <aleksey@aleksey.com>
+
 	* include/libxml/tree.h: added _private member to xmlNs struct
 
 Sun Jul 21 17:48:47 CEST 2002 Daniel Veillard <daniel@veillard.com>

@@ -92,7 +92,7 @@ threads can safely work in parallel parsing different documents. There is
 however a couple of things to do to ensure it:</p>
 <ul>
 <li>configure the library accordingly using the --with-threads options</li>
-<li>call xmlInitParser() in the &quot;main&quot; thread before using any of the
+  <li>call xmlInitParser() in the &quot;main&quot; thread before using any of the
     libxml API (except possibly selecting a different memory allocator)</li>
 </ul>
 <p>Note that the thread safety cannot be ensured for multiple threads sharing
@@ -101,13 +101,13 @@ exports a basic mutex and reentrant mutexes API in &lt;libxml/threads.h&gt;.
 The parts of the library checked for thread safety are:</p>
 <ul>
 <li>concurrent loading</li>
-<li>file access resolution</li>
-<li>catalog access</li>
-<li>catalog building</li>
-<li>entities lookup/accesses</li>
-<li>validation</li>
-<li>global variables per-thread override</li>
-<li>memory handling</li>
+  <li>file access resolution</li>
+  <li>catalog access</li>
+  <li>catalog building</li>
+  <li>entities lookup/accesses</li>
+  <li>validation</li>
+  <li>global variables per-thread override</li>
+  <li>memory handling</li>
 </ul>
 <p>XPath is supposed to be thread safe now, but this wasn't tested
 seriously.</p>

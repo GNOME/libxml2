@@ -20,9 +20,9 @@ site</a></h1>
 <p>Libxml is the XML C library developed for the Gnome project.  XML itself
 is a metalanguage to design markup languages, i.e. text language where
 semantic and structure are added to the content using extra "markup"
-information enclosed between angle bracket. HTML is the most well-known
+information enclosed between angle brackets. HTML is the most well-known
 markup language. Though the library is written in C <a href="python.html">a
-variety of language binding</a> makes it available in other environments.</p>
+variety of language bindings</a> make it available in other environments.</p>
 
 <p>Libxml2 implements a number of existing standards related to markup
 languages:</p>
@@ -58,16 +58,16 @@ languages:</p>
 </ul>
 
 <p>In most cases libxml tries to implement the specifications in a relatively
-strict way. As of release 2.4.16, libxml2 passes all 1800+ tests from the <a
+strictly compliant way. As of release 2.4.16, libxml2 passes all 1800+ tests from the <a
 href="http://www.oasis-open.org/committees/xml-conformance/">OASIS XML Tests
 Suite</a>.</p>
 
-<p>To some extent libxml2 provide some support for the following other
-specification but don't claim to implement them:</p>
+<p>To some extent libxml2 provides support for the following additional
+specifications but doesn't claim to implement them completely:</p>
 <ul>
   <li>Document Object Model (DOM) <a
     href="http://www.w3.org/TR/DOM-Level-2-Core/">http://www.w3.org/TR/DOM-Level-2-Core/</a>
-    it doesn't implement the API itself, gdome2 does this in top of
+    it doesn't implement the API itself, gdome2 does this on top of
   libxml2</li>
   <li><a href="http://www.cis.ohio-state.edu/rfc/rfc959.txt">RFC 959</a> :
     libxml implements a basic FTP client code</li>
@@ -84,7 +84,7 @@ conformance statement about it at the moment.</p>
 
 <p>Libxml2 is known to be very portable, the library should build and work
 without serious troubles on a variety of systems (Linux, Unix, Windows,
-CygWin, MacOs, MacOsX, RISC Os, OS/2, VMS, QNX, MVS, ...)</p>
+CygWin, MacOS, MacOS X, RISC Os, OS/2, VMS, QNX, MVS, ...)</p>
 
 <p>Separate documents:</p>
 <ul>
@@ -122,7 +122,7 @@ structured documents/data.</p>
     sticking closely to ANSI C/POSIX for easy embedding. Works on
     Linux/Unix/Windows, ported to a number of other platforms.</li>
   <li>Basic support for HTTP and FTP client allowing applications to fetch
-    remote resources</li>
+    remote resources.</li>
   <li>The design is modular, most of the extensions can be compiled out.</li>
   <li>The internal document representation is as close as possible to the <a
     href="http://www.w3.org/DOM/">DOM</a> interfaces.</li>
@@ -131,7 +131,7 @@ structured documents/data.</p>
     href="http://www.jclark.com/xml/expat.html">Expat</a>.</li>
   <li>This library is released under the <a
     href="http://www.opensource.org/licenses/mit-license.html">MIT
-    License</a> see the Copyright file in the distribution for the precise
+    License</a>. See the Copyright file in the distribution for the precise
     wording.</li>
 </ul>
 
@@ -142,7 +142,7 @@ libxml2</p>
 
 <h2><a name="FAQ">FAQ</a></h2>
 
-<p>Table of Content:</p>
+<p>Table of Contents:</p>
 <ul>
   <li><a href="FAQ.html#License">License(s)</a></li>
   <li><a href="FAQ.html#Installati">Installation</a></li>
@@ -155,14 +155,14 @@ libxml2</p>
   <li><em>Licensing Terms for libxml</em>
     <p>libxml is released under the <a
     href="http://www.opensource.org/licenses/mit-license.html">MIT
-    License</a>, see the file Copyright in the distribution for the precise
+    License</a>; see the file Copyright in the distribution for the precise
     wording</p>
   </li>
   <li><em>Can I embed libxml in a proprietary application ?</em>
-    <p>Yes. The MIT License allows you to also keep proprietary the changes
-    you made to libxml, but it would be graceful to provide back bug fixes
+    <p>Yes. The MIT License allows you to keep proprietary the changes
+    you made to libxml, but it would be graceful to send-back bug fixes
     and improvements as patches for possible incorporation in the main
-    development tree</p>
+    development tree.</p>
   </li>
 </ol>
 
@@ -176,19 +176,19 @@ libxml2</p>
     href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> or <a
     href="ftp://ftp.gnome.org/pub/GNOME/stable/sources/libxml/">gnome.org</a></p>
     <p>Most Linux and BSD distributions include libxml, this is probably the
-    safer way for end-users</p>
+    safer way for end-users to use libxml.</p>
     <p>David Doolin provides precompiled Windows versions at <a
     href="http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/         ">http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/</a></p>
   </li>
   <li><em>I see libxml and libxml2 releases, which one should I install ?</em>
     <ul>
-      <li>If you are not concerned by any existing backward compatibility
-        with existing application, install libxml2 only</li>
+      <li>If you are not constrained by backward compatibility issues
+        with existing applications, install libxml2 only</li>
       <li>If you are not doing development, you can safely install both.
-        usually the packages <a
+        Usually the packages <a
         href="http://rpmfind.net/linux/RPM/libxml.html">libxml</a> and <a
         href="http://rpmfind.net/linux/RPM/libxml2.html">libxml2</a> are
-        compatible (this is not the case for development packages)</li>
+        compatible (this is not the case for development packages).</li>
       <li>If you are a developer and your system provides separate packaging
         for shared libraries and the development components, it is possible
         to install libxml and libxml2, and also <a
@@ -200,20 +200,20 @@ libxml2</p>
         libxml2(-devel)</li>
     </ul>
   </li>
-  <li><em>I can't install the libxml package it conflicts with libxml0</em>
+  <li><em>I can't install the libxml package, it conflicts with libxml0</em>
     <p>You probably have an old libxml0 package used to provide the shared
-    library for libxml.so.0, you can probably safely remove it. Anyway the
+    library for libxml.so.0, you can probably safely remove it. The
     libxml packages provided on <a
-    href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> provides
+    href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> provide
     libxml.so.0</p>
   </li>
   <li><em>I can't install the libxml(2) RPM package due to failed
     dependencies</em>
     <p>The most generic solution is to re-fetch the latest src.rpm , and
     rebuild it locally with</p>
-    <p><code>rpm --rebuild libxml(2)-xxx.src.rpm</code></p>
-    <p>if everything goes well it will generate two binary rpm (one providing
-    the shared libs and xmllint, and the other one, the -devel package
+    <p><code>rpm --rebuild libxml(2)-xxx.src.rpm</code>.</p>
+    <p>If everything goes well it will generate two binary rpm packages (one providing
+    the shared libs and xmllint, and the other one, the -devel package,
     providing includes, static libraries and scripts needed to build
     applications with libxml(2)) that you can install locally.</p>
   </li>
@@ -230,21 +230,21 @@ libxml2</p>
     <p><code>./configure [possible options]</code></p>
     <p><code>make</code></p>
     <p><code>make install</code></p>
-    <p>At that point you may have to rerun ldconfig or similar utility to
+    <p>At that point you may have to rerun ldconfig or a similar utility to
     update your list of installed shared libs.</p>
   </li>
   <li><em>What other libraries are needed to compile/install libxml ?</em>
-    <p>Libxml does not requires any other library, the normal C ANSI API
+    <p>Libxml does not require any other library, the normal C ANSI API
     should be sufficient (please report any violation to this rule you may
     find).</p>
     <p>However if found at configuration time libxml will detect and use the
     following libs:</p>
     <ul>
       <li><a href="http://www.info-zip.org/pub/infozip/zlib/">libz</a> : a
-        highly portable and available widely compression library</li>
-      <li>iconv: a powerful character encoding conversion library. It's
-        included by default on recent glibc libraries, so it doesn't need to
-        be installed specifically on Linux. It seems it's now <a
+        highly portable and available widely compression library.</li>
+      <li>iconv: a powerful character encoding conversion library. It is
+        included by default in recent glibc libraries, so it doesn't need to
+        be installed specifically on Linux. It now seems a <a
         href="http://www.opennc.org/onlinepubs/7908799/xsh/iconv.html">part
         of the official UNIX</a> specification. Here is one <a
         href="http://clisp.cons.org/~haible/packages-libiconv.html">implementation
@@ -252,40 +252,40 @@ libxml2</p>
         href="ftp://ftp.ilog.fr/pub/Users/haible/gnu/">here</a>.</li>
     </ul>
   </li>
-  <li><em>make check fails on some platforms</em>
-    <p>Sometime the regression tests results don't completely match the value
+  <li><em>Make check fails on some platforms</em>
+    <p>Sometimes the regression tests' results don't completely match the value
     produced by the parser, and the makefile uses diff to print the delta. On
-    some platforms the diff return breaks the compilation process, if the
+    some platforms the diff return breaks the compilation process; if the
     diff is small this is probably not a serious problem.</p>
-    <p>Sometimes (especially on Solaris) make checks fails due to limitations
+    <p>Sometimes (especially on Solaris) make checks fail due to limitations
     in make. Try using GNU-make instead.</p>
   </li>
   <li><em>I use the CVS version and there is no configure script</em>
-    <p>The configure (and other Makefiles) are generated. Use the autogen.sh
-    script to regenerate the configure and Makefiles, like:</p>
+    <p>The configure script (and other Makefiles) are generated. Use the autogen.sh
+    script to regenerate the configure script and Makefiles, like:</p>
     <p><code>./autogen.sh --prefix=/usr --disable-shared</code></p>
   </li>
   <li><em>I have troubles when running make tests with gcc-3.0</em>
     <p>It seems the initial release of gcc-3.0 has a problem with the
     optimizer which miscompiles the URI module. Please use another
-    compiler</p>
+    compiler.</p>
   </li>
 </ol>
 
 <h3><a name="Developer">Developer</a> corner</h3>
 <ol>
-  <li><em>xmlDocDump() generates output on one line</em>
-    <p>libxml will not <strong>invent</strong> spaces in the content of a
+  <li><em>xmlDocDump() generates output on one line.</em>
+    <p>Libxml will not <strong>invent</strong> spaces in the content of a
     document since <strong>all spaces in the content of a document are
     significant</strong>. If you build a tree from the API and want
     indentation:</p>
     <ol>
-      <li>the correct way is to generate those yourself too</li>
+      <li>the correct way is to generate those yourself too.</li>
       <li>the dangerous way is to ask libxml to add those blanks to your
         content <strong>modifying the content of your document in the
         process</strong>. The result may not be what you expect. There is
         <strong>NO</strong> way to guarantee that such a modification won't
-        impact other part of the content of your document. See <a
+        affect other parts of the content of your document. See <a
         href="http://xmlsoft.org/html/libxml-parser.html#XMLKEEPBLANKSDEFAULT">xmlKeepBlanksDefault
         ()</a> and <a
         href="http://xmlsoft.org/html/libxml-tree.html#XMLSAVEFORMATFILE">xmlSaveFormatFile
@@ -317,11 +317,11 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     to forget. There is a function <a
     href="http://xmlsoft.org/html/libxml-parser.html">xmlKeepBlanksDefault
     ()</a>  to remove those at parse time, but that's an heuristic, and its
-    use should be limited to case where you are sure there is no
+    use should be limited to cases where you are certain there is no
     mixed-content in the document.</p>
   </li>
   <li><em>I get compilation errors of existing code like when accessing
-    <strong>root</strong> or <strong>childs fields</strong> of nodes</em>
+    <strong>root</strong> or <strong>child fields</strong> of nodes.</em>
     <p>You are compiling code developed for libxml version 1 and using a
     libxml2 development environment. Either switch back to libxml v1 devel or
     even better fix the code to compile with libxml2 (or both) by <a
@@ -329,31 +329,31 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
   </li>
   <li><em>I get compilation errors about non existing
     <strong>xmlRootNode</strong> or <strong>xmlChildrenNode</strong>
-    fields</em>
+    fields.</em>
     <p>The source code you are using has been <a
     href="upgrade.html">upgraded</a> to be able to compile with both libxml
     and libxml2, but you need to install a more recent version:
     libxml(-devel) &gt;= 1.8.8 or libxml2(-devel) &gt;= 2.1.0</p>
   </li>
   <li><em>XPath implementation looks seriously broken</em>
-    <p>XPath implementation prior to 2.3.0 was really incomplete, upgrade to
-    a recent version, there is no known bug in the current version.</p>
+    <p>XPath implementation prior to 2.3.0 was really incomplete. Upgrade to
+    a recent version, there are no known bugs in the current version.</p>
   </li>
-  <li><em>The example provided in the web page does not compile</em>
+  <li><em>The example provided in the web page does not compile.</em>
     <p>It's hard to maintain the documentation in sync with the code
     &lt;grin/&gt; ...</p>
-    <p>Check the previous points 1/ and 2/ raised before, and send
+    <p>Check the previous points 1/ and 2/ raised before, and please send
     patches.</p>
   </li>
-  <li><em>Where can I get more examples and informations than in the web
-    page</em>
+  <li><em>Where can I get more examples and information than privoded on the web
+    page?</em>
     <p>Ideally a libxml book would be nice. I have no such plan ... But you
     can:</p>
     <ul>
       <li>check more deeply the <a href="html/libxml-lib.html">existing
         generated doc</a></li>
-      <li>looks for examples of use for libxml function using the Gnome code
-        for example the following will query the full Gnome CVS base for the
+      <li>look for examples of use for libxml function using the Gnome code.
+        For example the following will query the full Gnome CVS base for the
         use of the <strong>xmlAddChild()</strong> function:
         <p><a
         href="http://cvs.gnome.org/lxr/search?string=xmlAddChild">http://cvs.gnome.org/lxr/search?string=xmlAddChild</a></p>
@@ -363,16 +363,16 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
       <li><a
         href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Browse
         the libxml source</a> , I try to write code as clean and documented
-        as possible, so looking at it may be helpful. Especially the code of
-        xmllint.c and of the various testXXX.c tests programs should provide
-        good example on how to do things with the library.</li>
+        as possible, so looking at it may be helpful. In particular the code of
+        xmllint.c and of the various testXXX.c test programs should provide
+        good examples of how to do things with the library.</li>
     </ul>
   </li>
   <li>What about C++ ?
     <p>libxml is written in pure C in order to allow easy reuse on a number
     of platforms, including embedded systems. I don't intend to convert to
     C++.</p>
-    <p>There is however a few C++ wrappers which may fulfill your needs:</p>
+    <p>There are however a few C++ wrappers which may fulfill your needs:</p>
     <ul>
       <li>by Ari Johnson &lt;ari@btigate.com&gt;:
         <p>Website: <a
@@ -388,13 +388,14 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
   </li>
   <li>How to validate a document a posteriori ?
     <p>It is possible to validate documents which had not been validated at
-    initial parsing time or documents who have been built from scratch using
+    initial parsing time or documents which have been built from scratch using
     the API. Use the <a
     href="http://xmlsoft.org/html/libxml-valid.html#XMLVALIDATEDTD">xmlValidateDtd()</a>
     function. It is also possible to simply add a DTD to an existing
     document:</p>
     <pre>xmlDocPtr doc; /* your existing document */
-        xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
+xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
+
         dtd-&gt;name = xmlStrDup((xmlChar*)"root_name"); /* use the given root */
 
         doc-&gt;intSubset = dtd;
@@ -409,18 +410,18 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
 
 <h2><a name="Documentat">Documentation</a></h2>
 
-<p>There are some on-line resources about using libxml:</p>
+<p>There are several on-line resources related to using libxml:</p>
 <ol>
-  <li>Check the <a href="FAQ.html">FAQ</a></li>
+  <li>Check the <a href="FAQ.html">FAQ.</a></li>
   <li>Check the <a href="http://xmlsoft.org/html/libxml-lib.html">extensive
     documentation</a> automatically extracted from code comments (using <a
     href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gtk-doc">gtk
     doc</a>).</li>
   <li>Look at the documentation about <a href="encoding.html">libxml
-    internationalization support</a></li>
+    internationalization support</a>.</li>
   <li>This page provides a global overview and <a href="example.html">some
     examples</a> on how to use libxml.</li>
-  <li>John Fleck's <a href="tutorial/index.html">libxml tutorial</a></li>
+  <li>John Fleck's <a href="tutorial/index.html">libxml tutorial</a>.</li>
   <li><a href="mailto:james@daa.com.au">James Henstridge</a> wrote <a
     href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">some nice
     documentation</a> explaining how to use the libxml SAX interface.</li>
@@ -428,8 +429,8 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     href="http://www-4.ibm.com/software/developer/library/gnome3/">an article
     for IBM developerWorks</a> about using libxml.</li>
   <li>Check <a href="http://cvs.gnome.org/lxr/source/gnome-xml/TODO">the TODO
-    file</a></li>
-  <li>Read the <a href="upgrade.html">1.x to 2.x upgrade path</a>. If you are
+    file</a>.</li>
+  <li>Read the <a href="upgrade.html">1.x to 2.x upgrade path</a> description. If you are
     starting a new project using libxml you should really use the 2.x
   version.</li>
   <li>And don't forget to look at the <a
@@ -457,32 +458,32 @@ follow the instructions. <strong>Do not send code, I won't debug it</strong>
 <p>Check the following <strong><span style="color: #FF0000">before
 posting</span></strong>:</p>
 <ul>
-  <li>read the <a href="FAQ.html">FAQ</a></li>
-  <li>make sure you are <a href="ftp://xmlsoft.org/">using a recent
-    version</a>, and that the problem still shows up in those</li>
-  <li>check the <a href="http://mail.gnome.org/archives/xml/">list
-    archives</a> to see if the problem was reported already, in this case
+  <li>Read the <a href="FAQ.html">FAQ</a>.</li>
+  <li>Make sure you are <a href="ftp://xmlsoft.org/">using a recent
+    version</a>, and that the problem still shows up in a recent version.</li>
+  <li>Check the <a href="http://mail.gnome.org/archives/xml/">list
+    archives</a> to see if the problem was reported already. In this case
     there is probably a fix available, similarly check the <a
     href="http://bugzilla.gnome.org/buglist.cgi?product=libxml">registered
-    open bugs</a></li>
-  <li>make sure you can reproduce the bug with xmllint or one of the test
-    programs found in source in the distribution</li>
+    open bugs</a>.</li>
+  <li>Make sure you can reproduce the bug with xmllint or one of the test
+    programs found in source in the distribution.</li>
   <li>Please send the command showing the error as well as the input (as an
     attachment)</li>
 </ul>
 
 <p>Then send the bug with associated informations to reproduce it to the <a
 href="mailto:xml@gnome.org">xml@gnome.org</a> list; if it's really libxml
-related I will approve it.. Please do not send me mail directly, it makes
-things really harder to track and in some cases I'm not the best person to
-answer a given question, ask the list instead.</p>
+related I will approve it.. Please do not send mail to me directly, it makes
+things really hard to track and in some cases I am not the best person to
+answer a given question. Ask the list instead.</p>
 
 <p>Of course, bugs reported with a suggested patch for fixing them will
-probably be processed faster.</p>
+probably be processed faster than those without.</p>
 
 <p>If you're looking for help, a quick look at <a
 href="http://mail.gnome.org/archives/xml/">the list archive</a> may actually
-provide the answer, I usually send source samples when answering libxml usage
+provide the answer. I usually send source samples when answering libxml usage
 questions. The <a href="http://xmlsoft.org/html/book1.html">auto-generated
 documentation</a> is not as polished as I would like (i need to learn more
 about DocBook), but it's a good starting point.</p>
@@ -493,17 +494,17 @@ about DocBook), but it's a good starting point.</p>
 subscribe to the mailing-list as explained before, check the <a
 href="http://mail.gnome.org/archives/xml/">archives </a>and the <a
 href="http://bugzilla.gnome.org/buglist.cgi?product=libxml">Gnome bug
-database:</a>:</p>
+database</a>:</p>
 <ol>
-  <li>provide patches when you find problems</li>
-  <li>provide the diffs when you port libxml to a new platform. They may not
+  <li>Provide patches when you find problems.</li>
+  <li>Provide the diffs when you port libxml to a new platform. They may not
     be integrated in all cases but help pinpointing portability problems
   and</li>
-  <li>provide documentation fixes (either as patches to the code comments or
+  <li>Provide documentation fixes (either as patches to the code comments or
     as HTML diffs).</li>
-  <li>provide new documentations pieces (translations, examples, etc ...)</li>
-  <li>Check the TODO file and try to close one of the items</li>
-  <li>take one of the points raised in the archive or the bug database and
+  <li>Provide new documentations pieces (translations, examples, etc ...).</li>
+  <li>Check the TODO file and try to close one of the items.</li>
+  <li>Take one of the points raised in the archive or the bug database and
     provide a fix. <a href="mailto:daniel@veillard.com">Get in touch with me
     </a>before to avoid synchronization problems and check that the suggested
     fix will fit in nicely :-)</li>
@@ -535,9 +536,9 @@ binaries</a>. <a href="mailto:Steve.Ball@zveno.com">Steve Ball</a> provides <a h
 <p><a name="Snapshot">Snapshot:</a></p>
 <ul>
   <li>Code from the W3C cvs base libxml <a
-    href="ftp://xmlsoft.org/cvs-snapshot.tar.gz">cvs-snapshot.tar.gz</a></li>
+    href="ftp://xmlsoft.org/cvs-snapshot.tar.gz">cvs-snapshot.tar.gz</a>.</li>
   <li>Docs, content of the web site, the list archive included <a
-    href="ftp://xmlsoft.org/libxml-docs.tar.gz">libxml-docs.tar.gz</a></li>
+    href="ftp://xmlsoft.org/libxml-docs.tar.gz">libxml-docs.tar.gz</a>.</li>
 </ul>
 
 <p><a name="Contribs">Contributions:</a></p>
@@ -1368,8 +1369,8 @@ document</a>:</p>
   &lt;/chapter&gt;
 &lt;/EXAMPLE&gt;</pre>
 
-<p>The first line specifies that it's an XML document and gives useful
-information about its encoding. Then the document is a text format whose
+<p>The first line specifies that it is an XML document and gives useful
+information about its encoding.  Then the rest of the document is a text format whose
 structure is specified by tags between brackets. <strong>Each tag opened has
 to be closed</strong>. XML is pedantic about this. However, if a tag is empty
 (no content), a single tag can serve as both the opening and closing tag if
@@ -1377,7 +1378,7 @@ it ends with <code>/&gt;</code> rather than with <code>&gt;</code>. Note
 that, for example, the image tag has no content (just an attribute) and is
 closed by ending the tag with <code>/&gt;</code>.</p>
 
-<p>XML can be applied successfully to a wide range of uses, from long term
+<p>XML can be applied successfully to a wide range of tasks, ranging from long term
 structured document maintenance (where it follows the steps of SGML) to
 simple data encoding mechanisms like configuration file formatting (glade),
 spreadsheets (gnumeric), or even shorter lived documents such as WebDAV where
@@ -1391,18 +1392,18 @@ it is used to encode remote calls between a client and a server.</p>
 language for transforming XML documents into other XML documents (or
 HTML/textual output).</p>
 
-<p>A separate library called libxslt is being built on top of libxml2. This
-module "libxslt" can be found in the Gnome CVS base too.</p>
+<p>A separate library called libxslt is being developed on top of libxml2. This
+module "libxslt" too can be found in the Gnome CVS base.</p>
 
 <p>You can check the <a
 href="http://cvs.gnome.org/lxr/source/libxslt/FEATURES">features</a>
 supported and the progresses on the <a
 href="http://cvs.gnome.org/lxr/source/libxslt/ChangeLog"
-name="Changelog">Changelog</a></p>
+name="Changelog">Changelog</a>.</p>
 
 <h2><a name="Python">Python and bindings</a></h2>
 
-<p>There is a number of language bindings and wrappers available for libxml2,
+<p>There are a number of language bindings and wrappers available for libxml2,
 the list below is not exhaustive. Please contact the <a
 href="http://mail.gnome.org/mailman/listinfo/xml-bindings">xml-bindings@gnome.org</a>
 (<a href="http://mail.gnome.org/archives/xml-bindings/">archives</a>) in
@@ -1416,7 +1417,7 @@ or libxslt wrappers or bindings:</p>
     Download: <a
     href="http://lusis.org/~ari/xml++/libxml++.tar.gz">http://lusis.org/~ari/xml++/libxml++.tar.gz</a></li>
   <li>There is another <a href="http://libgdome-cpp.berlios.de/">C++ wrapper
-    based on the gdome2 </a>bindings maintained by Tobias Peters.</li>
+    based on the gdome2 bindings</a> maintained by Tobias Peters.</li>
   <li>and a third C++ wrapper by Peter Jones &lt;pjones@pmade.org&gt;
     <p>Website: <a
     href="http://pmade.org/pjones/software/xmlwrapp/">http://pmade.org/pjones/software/xmlwrapp/</a></p>
@@ -1426,19 +1427,19 @@ or libxslt wrappers or bindings:</p>
     Sergeant</a> developed <a
     href="http://axkit.org/download/">XML::LibXSLT</a>, a Perl wrapper for
     libxml2/libxslt as part of the <a href="http://axkit.com/">AxKit XML
-    application server</a></li>
+    application server</a>.</li>
   <li><a href="mailto:dkuhlman@cutter.rexx.com">Dave Kuhlman</a> provides an
     earlier version of the libxml/libxslt <a
-    href="http://www.rexx.com/~dkuhlman">wrappers for Python</a></li>
+    href="http://www.rexx.com/~dkuhlman">wrappers for Python</a>.</li>
   <li>Gopal.V and Peter Minten develop <a
     href="http://savannah.gnu.org/projects/libxmlsharp">libxml#</a>, a set of
-    C# libxml2 bindings</li>
+    C# libxml2 bindings.</li>
   <li>Petr Kozelka provides <a
     href="http://sourceforge.net/projects/libxml2-pas">Pascal units to glue
-    libxml2</a> with Kylix, Delphi and other Pascal compilers</li>
+    libxml2</a> with Kylix, Delphi and other Pascal compilers.</li>
   <li>Uwe Fechner also provides <a
     href="http://sourceforge.net/projects/idom2-pas/">idom2</a>, a DOM2
-    implementation for Kylix2/D5/D6 from Borland</li>
+    implementation for Kylix2/D5/D6 from Borland.</li>
   <li>Wai-Sun "Squidster" Chia provides <a
     href="http://www.rubycolor.org/arc/redist/">bindings for Ruby</a>  and
     libxml2 bindings are also available in Ruby through the <a
@@ -1446,7 +1447,7 @@ or libxslt wrappers or bindings:</p>
     maintained by Tobias Peters.</li>
   <li>Steve Ball and contributors maintains <a
     href="http://tclxml.sourceforge.net/">libxml2 and libxslt bindings for
-    Tcl</a></li>
+    Tcl</a>.</li>
   <li>There is support for libxml2 in the DOM module of PHP.</li>
 </ul>
 
@@ -1470,7 +1471,7 @@ interface have not yet reached the maturity of the C API.</p>
 
 <p>The distribution includes a set of examples and regression tests for the
 python bindings in the <code>python/tests</code> directory. Here are some
-excepts from those tests:</p>
+excerpts from those tests:</p>
 
 <h3>tst.py:</h3>
 
@@ -1491,7 +1492,7 @@ if child.name != "foo":
     sys.exit(1)
 doc.freeDoc()</pre>
 
-<p>The Python module is called libxml2, parseFile is the equivalent of
+<p>The Python module is called libxml2; parseFile is the equivalent of
 xmlParseFile (most of the bindings are automatically generated, and the xml
 prefix is removed and the casing convention are kept). All node seen at the
 binding level share the same subset of accessors:</p>
@@ -1885,19 +1886,19 @@ interface.</p>
 
 <p>DTD is the acronym for Document Type Definition. This is a description of
 the content for a family of XML files. This is part of the XML 1.0
-specification, and allows to describe and check that a given document
-instance conforms to a set of rules detailing its structure and content.</p>
+specification, and allows one to describe and verify that a given document
+instance conforms to the set of rules detailing its structure and content.</p>
 
 <p>Validation is the process of checking a document against a DTD (more
 generally against a set of construction rules).</p>
 
 <p>The validation process and building DTDs are the two most difficult parts
-of the XML life cycle. Briefly a DTD defines all the possibles element to be
+of the XML life cycle. Briefly a DTD defines all the possible elements to be
 found within your document, what is the formal shape of your document tree
-(by defining the allowed content of an element, either text, a regular
+(by defining the allowed content of an element; either text, a regular
 expression for the allowed list of children, or mixed content i.e. both text
-and children). The DTD also defines the allowed attributes for all elements
-and the types of the attributes.</p>
+and children). The DTD also defines the valid attributes for all elements
+and the types of those attributes.</p>
 
 <h3><a name="definition1">The definition</a></h3>
 
@@ -1916,9 +1917,9 @@ ancient...</p>
 
 <h3><a name="Simple1">Simple rules</a></h3>
 
-<p>Writing DTD can be done in multiple ways, the rules to build them if you
-need something fixed or something which can evolve over time can be radically
-different. Really complex DTD like DocBook ones are flexible but quite harder
+<p>Writing DTDs can be done in many ways. The rules to build them if you
+need something permanent or something which can evolve over time can be radically
+different. Really complex DTDs like DocBook ones are flexible but quite harder
 to design. I will just focus on DTDs for a formats with a fixed simple
 structure. It is just a set of basic rules, and definitely not exhaustive nor
 usable for complex DTD design.</p>
@@ -1933,14 +1934,14 @@ is placed in the file <code>mydtd</code> in the subdirectory
 
 <p>Notes:</p>
 <ul>
-  <li>the system string is actually an URI-Reference (as defined in <a
+  <li>The system string is actually an URI-Reference (as defined in <a
     href="http://www.ietf.org/rfc/rfc2396.txt">RFC 2396</a>) so you can use a
-    full URL string indicating the location of your DTD on the Web, this is a
-    really good thing to do if you want others to validate your document</li>
-  <li>it is also possible to associate a <code>PUBLIC</code> identifier (a
+    full URL string indicating the location of your DTD on the Web. This is a
+    really good thing to do if you want others to validate your document.</li>
+  <li>It is also possible to associate a <code>PUBLIC</code> identifier (a
     magic string) so that the DTD is looked up in catalogs on the client side
-    without having to locate it on the web</li>
-  <li>a dtd contains a set of elements and attributes declarations, but they
+    without having to locate it on the web.</li>
+  <li>A DTD contains a set of element and attribute declarations, but they
     don't define what the root of the document should be. This is explicitly
     told to the parser/validator as the first element of the
     <code>DOCTYPE</code> declaration.</li>
@@ -1952,7 +1953,7 @@ is placed in the file <code>mydtd</code> in the subdirectory
 
 <p><code>&lt;!ELEMENT spec (front, body, back?)&gt;</code></p>
 
-<p>it also expresses that the spec element contains one <code>front</code>,
+<p>It also expresses that the spec element contains one <code>front</code>,
 one <code>body</code> and one optional <code>back</code> children elements in
 this order. The declaration of one element of the structure and its content
 are done in a single declaration. Similarly the following declares
@@ -1960,7 +1961,7 @@ are done in a single declaration. Similarly the following declares
 
 <p><code>&lt;!ELEMENT div1 (head, (p | list | note)*, div2?)&gt;</code></p>
 
-<p>means div1 contains one <code>head</code> then a series of optional
+<p>which means div1 contains one <code>head</code> then a series of optional
 <code>p</code>, <code>list</code>s and <code>note</code>s and then an
 optional <code>div2</code>. And last but not least an element can contain
 text:</p>
@@ -1978,7 +1979,7 @@ order.</p>
 
 <h4><a name="Declaring1">Declaring attributes</a>:</h4>
 
-<p>again the attributes declaration includes their content definition:</p>
+<p>Again the attributes declaration includes their content definition:</p>
 
 <p><code>&lt;!ATTLIST termdef name CDATA #IMPLIED&gt;</code></p>
 
@@ -2012,36 +2013,36 @@ meaning that it is optional, or the default value (possibly prefixed by
 
 <p>Notes:</p>
 <ul>
-  <li>usually the attributes pertaining to a given element are declared in a
+  <li>Usually the attributes pertaining to a given element are declared in a
     single expression, but it is just a convention adopted by a lot of DTD
     writers:
     <pre>&lt;!ATTLIST termdef
           id      ID      #REQUIRED
           name    CDATA   #IMPLIED&gt;</pre>
     <p>The previous construct defines both <code>id</code> and
-    <code>name</code> attributes for the element <code>termdef</code></p>
+    <code>name</code> attributes for the element <code>termdef</code>.</p>
   </li>
 </ul>
 
 <h3><a name="Some1">Some examples</a></h3>
 
 <p>The directory <code>test/valid/dtds/</code> in the libxml distribution
-contains some complex DTD examples. The  <code>test/valid/dia.xml</code>
-example shows an XML file where the simple DTD is directly included within
+contains some complex DTD examples. The example in the file <code>test/valid/dia.xml</code>
+shows an XML file where the simple DTD is directly included within
 the document.</p>
 
 <h3><a name="validate1">How to validate</a></h3>
 
-<p>The simplest is to use the xmllint program coming with libxml. The
-<code>--valid</code> option turn on validation of the files given as input,
-for example the following validates a copy of the first revision of the XML
+<p>The simplest way is to use the xmllint program included with libxml. The
+<code>--valid</code> option turns-on validation of the files given as input.
+For example the following validates a copy of the first revision of the XML
 1.0 specification:</p>
 
 <p><code>xmllint --valid --noout test/valid/REC-xml-19980210.xml</code></p>
 
-<p>the -- noout is used to not output the resulting tree.</p>
+<p>the -- noout is used to disable output of the resulting tree.</p>
 
-<p>The <code>--dtdvalid dtd</code> allows to validate the document(s) against
+<p>The <code>--dtdvalid dtd</code> allows validation of the document(s) against
 a given DTD.</p>
 
 <p>Libxml exports an API to handle DTDs and validation, check the <a

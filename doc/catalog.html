@@ -90,15 +90,15 @@ A:link, A:visited, A:active { text-decoration: underline }
 <p>Table of Content:</p>
 <ol>
 <li><a href="General2">General overview</a></li>
-<li><a href="#definition">The definition</a></li>
-<li><a href="#Simple">Using catalogs</a></li>
-<li><a href="#Some">Some examples</a></li>
-<li><a href="#reference">How to tune  catalog usage</a></li>
-<li><a href="#validate">How to debug catalog processing</a></li>
-<li><a href="#Declaring">How to create and maintain catalogs</a></li>
-<li><a href="#implemento">The implementor corner quick review of the
+  <li><a href="#definition">The definition</a></li>
+  <li><a href="#Simple">Using catalogs</a></li>
+  <li><a href="#Some">Some examples</a></li>
+  <li><a href="#reference">How to tune  catalog usage</a></li>
+  <li><a href="#validate">How to debug catalog processing</a></li>
+  <li><a href="#Declaring">How to create and maintain catalogs</a></li>
+  <li><a href="#implemento">The implementor corner quick review of the
   API</a></li>
-<li><a href="#Other">Other resources</a></li>
+  <li><a href="#Other">Other resources</a></li>
 </ol>
 <h3><a name="General2">General overview</a></h3>
 <p>What is a catalog? Basically it's a lookup mechanism used when an entity
@@ -113,17 +113,17 @@ started.</p>
     concrete name usable for download (and URI). For example it can associate
     the logical name
     <p>&quot;-//OASIS//DTD DocBook XML V4.1.2//EN&quot;</p>
-<p>of the DocBook 4.1.2 XML DTD with the actual URL where it can be
+    <p>of the DocBook 4.1.2 XML DTD with the actual URL where it can be
     downloaded</p>
-<p>http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd</p>
-</li>
-<li>remapping from a given URL to another one, like an HTTP indirection
+    <p>http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd</p>
+  </li>
+  <li>remapping from a given URL to another one, like an HTTP indirection
     saying that
     <p>&quot;http://www.oasis-open.org/committes/tr.xsl&quot;</p>
-<p>should really be looked at</p>
-<p>&quot;http://www.oasis-open.org/committes/entity/stylesheets/base/tr.xsl&quot;</p>
-</li>
-<li>providing a local cache mechanism allowing to load the entities
+    <p>should really be looked at</p>
+    <p>&quot;http://www.oasis-open.org/committes/entity/stylesheets/base/tr.xsl&quot;</p>
+  </li>
+  <li>providing a local cache mechanism allowing to load the entities
     associated to public identifiers or remote resources, this is a really
     important feature for any significant deployment of XML or SGML since it
     allows to avoid the aleas and delays associated to fetching remote
@@ -136,7 +136,7 @@ started.</p>
     Resolution TR9401:1997, but is better understood by reading <a href="http://www.jclark.com/sp/catalog.htm">the SP Catalog page</a> from
     James Clark. This is relatively old and not the preferred mode of
     operation of libxml.</li>
-<li>
+  <li>
 <a href="http://www.oasis-open.org/committees/entity/spec.html">XML
     Catalogs</a> is far more flexible, more recent, uses an XML syntax and
     should scale quite better. This is the default option of libxml.</li>
@@ -334,7 +334,7 @@ plug an application specific resolver).</p>
 <p>Basically libxml support 2 catalog lists:</p>
 <ul>
 <li>the default one, global shared by all the application</li>
-<li>a per-document catalog, this one is built if the document uses the
+  <li>a per-document catalog, this one is built if the document uses the
     <code>oasis-xml-catalog</code> PIs to specify its own catalog list, it is
     associated to the parser context and destroyed when the parsing context
     is destroyed.</li>
@@ -390,28 +390,28 @@ literature to point at:</p>
     I don't agree with everything presented. Norm also wrote a more recent
     article <a href="http://wwws.sun.com/software/xml/developers/resolver/article/">XML
     entities and URI resolvers</a> describing them.</li>
-<li>An <a href="http://home.ccil.org/~cowan/XML/XCatalog.html">old XML
+  <li>An <a href="http://home.ccil.org/~cowan/XML/XCatalog.html">old XML
     catalog proposal</a> from John Cowan</li>
-<li>The <a href="http://www.rddl.org/">Resource Directory Description
+  <li>The <a href="http://www.rddl.org/">Resource Directory Description
     Language</a> (RDDL) another catalog system but more oriented toward
     providing metadata for XML namespaces.</li>
-<li>the page from the OASIS Technical <a href="http://www.oasis-open.org/committees/entity/">Committee on Entity
+  <li>the page from the OASIS Technical <a href="http://www.oasis-open.org/committees/entity/">Committee on Entity
     Resolution</a> who maintains XML Catalog, you will find pointers to the
     specification update, some background and pointers to others tools
     providing XML Catalog support</li>
-<li>Here is a <a href="buildDocBookCatalog">shell script</a> to generate
+  <li>Here is a <a href="buildDocBookCatalog">shell script</a> to generate
     XML Catalogs for DocBook 4.1.2 . If it can write to the /etc/xml/
     directory, it will set-up /etc/xml/catalog and /etc/xml/docbook based on
     the resources found on the system. Otherwise it will just create
     ~/xmlcatalog and ~/dbkxmlcatalog and doing:
     <p><code>export XMLCATALOG=$HOME/xmlcatalog</code></p>
-<p>should allow to process DocBook documentations without requiring
+    <p>should allow to process DocBook documentations without requiring
     network accesses for the DTD or stylesheets</p>
-</li>
-<li>I have uploaded <a href="ftp://xmlsoft.org/test/dbk412catalog.tar.gz">a
+  </li>
+  <li>I have uploaded <a href="ftp://xmlsoft.org/test/dbk412catalog.tar.gz">a
     small tarball</a> containing XML Catalogs for DocBook 4.1.2 which seems
     to work fine for me too</li>
-<li>The <a href="http://www.xmlsoft.org/xmlcatalog_man.html">xmlcatalog
+  <li>The <a href="http://www.xmlsoft.org/xmlcatalog_man.html">xmlcatalog
     manual page</a>
 </li>
 </ul>

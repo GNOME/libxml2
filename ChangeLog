@@ -1,3 +1,9 @@
+Tue Feb 11 19:01:02 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* check-xinclude-test-suite.py xinclude.c: Work on the W3C/NIST
+	  regression tests for XInclude, improved the script, improving
+	  XInclude error reporting mechanism
+
 Mon Feb 10 17:19:14 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS doc/* configure.in: preparing release 2.5.3

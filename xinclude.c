@@ -83,6 +83,8 @@ struct _xmlXIncludeCtxt {
     int                txtMax; /* size of unparsed documents tab */
     xmlNodePtr        *txtTab; /* array of unparsed text nodes */
     xmlURL         *txturlTab; /* array of unparsed txtuments URLs */
+
+    int              nbErrors; /* the number of errors detected */
 };
 
 static int
@@ -152,6 +154,7 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
         if (ctxt->incTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "malloc failed !\n");
+	    ctxt->nbErrors++;
 	    xmlXIncludeFreeRef(ret);
 	    return(NULL);
 	}
@@ -197,6 +200,7 @@ xmlXIncludeNewContext(xmlDocPtr doc) {
     ret->incBase = 0;
     ret->incMax = 0;
     ret->incTab = NULL;
+    ret->nbErrors = 0;
     return(ret);
 }
 
@@ -268,6 +272,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 	href = xmlGetProp(cur, XINCLUDE_HREF);
 	if (href == NULL) {
 	    xmlGenericError(xmlGenericErrorContext, "XInclude: no href\n");
+	    ctxt->nbErrors++;
 	    return(-1);
 	}
     }
@@ -284,6 +289,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value %s for %s\n",
 		            parse, XINCLUDE_PARSE);
+	    ctxt->nbErrors++;
 	    if (href != NULL)
 		xmlFree(href);
 	    if (parse != NULL)
@@ -323,6 +329,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlFree(base);
     if (URI == NULL) {
 	xmlGenericError(xmlGenericErrorContext, "XInclude: failed build URL\n");
+	ctxt->nbErrors++;
 	return(-1);
     }
 
@@ -333,6 +340,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     if (uri == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", URI);
+	ctxt->nbErrors++;
 	return(-1);
     }
     if (uri->fragment != NULL) {
@@ -345,6 +353,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     if (URL == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", URI);
+	ctxt->nbErrors++;
 	if (fragment != NULL)
 	    xmlFree(fragment);
 	return(-1);
@@ -395,6 +404,7 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
         if (newctxt->incTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "malloc failed !\n");
+	    ctxt->nbErrors++;
 	    xmlFree(newctxt);
 	    return;
 	}
@@ -440,6 +450,7 @@ xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const xmlURL url) {
         if (ctxt->txtTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "malloc failed !\n");
+	    ctxt->nbErrors++;
 	    return;
 	}
         ctxt->txturlTab = (xmlURL *) xmlMalloc(ctxt->txtMax *
@@ -447,6 +458,7 @@ xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const xmlURL url) {
         if (ctxt->txturlTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "malloc failed !\n");
+	    ctxt->nbErrors++;
 	    return;
 	}
     }
@@ -457,6 +469,7 @@ xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const xmlURL url) {
         if (ctxt->txtTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "realloc failed !\n");
+	    ctxt->nbErrors++;
 	    return;
 	}
         ctxt->txturlTab = (xmlURL *) xmlRealloc(ctxt->txturlTab,
@@ -464,6 +477,7 @@ xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const xmlURL url) {
         if (ctxt->txturlTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "realloc failed !\n");
+	    ctxt->nbErrors++;
 	    return;
 	}
     }
@@ -945,6 +959,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     if (uri == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", url);
+	ctxt->nbErrors++;
 	return(-1);
     }
     if (uri->fragment != NULL) {
@@ -956,6 +971,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     if (URL == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", url);
+	ctxt->nbErrors++;
 	if (fragment != NULL)
 	    xmlFree(fragment);
 	return(-1);
@@ -1051,6 +1067,7 @@ loaded:
 	if (xptrctxt == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 			"XInclude: could create XPointer context\n");
+	    ctxt->nbErrors++;
 	    xmlFree(URL);
 	    xmlFree(fragment);
 	    return(-1);
@@ -1060,6 +1077,7 @@ loaded:
 	    xmlGenericError(xmlGenericErrorContext,
 			"XInclude: XPointer evaluation failed: #%s\n",
 			fragment);
+	    ctxt->nbErrors++;
 	    xmlXPathFreeContext(xptrctxt);
 	    xmlFree(URL);
 	    xmlFree(fragment);
@@ -1076,6 +1094,7 @@ loaded:
 		xmlGenericError(xmlGenericErrorContext,
 			"XInclude: XPointer is not a range: #%s\n",
 			        fragment);
+		ctxt->nbErrors++;
 		xmlXPathFreeContext(xptrctxt);
 		xmlFree(URL);
 		xmlFree(fragment);
@@ -1108,12 +1127,14 @@ loaded:
 			xmlGenericError(xmlGenericErrorContext,
 			"XInclude: XPointer selects an attribute: #%s\n",
 					fragment);
+			ctxt->nbErrors++;
 			set->nodeTab[i] = NULL;
 			continue;
 		    case XML_NAMESPACE_DECL:
 			xmlGenericError(xmlGenericErrorContext,
 			"XInclude: XPointer selects a namespace: #%s\n",
 					fragment);
+			ctxt->nbErrors++;
 			set->nodeTab[i] = NULL;
 			continue;
 		    case XML_DOCUMENT_TYPE_NODE:
@@ -1128,6 +1149,7 @@ loaded:
 			xmlGenericError(xmlGenericErrorContext,
 			"XInclude: XPointer selects unexpected nodes: #%s\n",
 					fragment);
+			ctxt->nbErrors++;
 			set->nodeTab[i] = NULL;
 			set->nodeTab[i] = NULL;
 			continue; /* for */
@@ -1193,12 +1215,14 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     if (uri == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", url);
+	ctxt->nbErrors++;
 	return(-1);
     }
     if (uri->fragment != NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"XInclude: fragment identifier forbidden for text: %s\n",
 		uri->fragment);
+	ctxt->nbErrors++;
 	xmlFreeURI(uri);
 	return(-1);
     }
@@ -1207,6 +1231,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     if (URL == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", url);
+	ctxt->nbErrors++;
 	return(-1);
     }
 
@@ -1217,6 +1242,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     if (URL[0] == 0) {
 	xmlGenericError(xmlGenericErrorContext,
 		"XInclude: text serialization of document not available\n");
+	ctxt->nbErrors++;
 	xmlFree(URL);
 	return(-1);
     }
@@ -1247,6 +1273,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	if (enc == XML_CHAR_ENCODING_ERROR) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: encoding %s not supported\n", encoding);
+	    ctxt->nbErrors++;
 	    xmlFree(encoding);
 	    xmlFree(URL);
 	    return(-1);
@@ -1281,6 +1308,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	    if (!IS_CHAR(cur)) {
 		xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: %s contains invalid char %d\n", URL, cur);
+		ctxt->nbErrors++;
 	    } else {
 		xmlNodeAddContentLen(node, &content[i], l);
 	    }
@@ -1437,6 +1465,7 @@ xmlXIncludePreloadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	xmlFree(base);
     if (URI == NULL) {
 	xmlGenericError(xmlGenericErrorContext, "XInclude: failed build URL\n");
+	ctxt->nbErrors++;
 	return(-1);
     }
 
@@ -1447,6 +1476,7 @@ xmlXIncludePreloadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     if (uri == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", URI);
+	ctxt->nbErrors++;
 	xmlFree(URI);
 	return(-1);
     }
@@ -1459,6 +1489,7 @@ xmlXIncludePreloadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     if (URL == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", URI);
+	ctxt->nbErrors++;
 	if (fragment != NULL)
 	    xmlFree(fragment);
 	xmlFree(URI);
@@ -1517,6 +1548,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	href = xmlGetProp(cur, XINCLUDE_HREF);
 	if (href == NULL) {
 	    xmlGenericError(xmlGenericErrorContext, "XInclude: no href\n");
+	    ctxt->nbErrors++;
 	    return(-1);
 	}
     }
@@ -1533,6 +1565,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value %s for %s\n",
 		            parse, XINCLUDE_PARSE);
+	    ctxt->nbErrors++;
 	    if (href != NULL)
 		xmlFree(href);
 	    if (parse != NULL)
@@ -1566,6 +1599,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     }
     if (URI == NULL) {
 	xmlGenericError(xmlGenericErrorContext, "XInclude: failed build URL\n");
+	ctxt->nbErrors++;
 	if (parse != NULL)
 	    xmlFree(parse);
 	if (href != NULL)
@@ -1615,6 +1649,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: could not load %s, and no fallback was found\n",
 		        URI);
+	ctxt->nbErrors++;
     }
 
     /*
@@ -1661,6 +1696,7 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     if (end == NULL) {
 	xmlGenericError(xmlGenericErrorContext, 
 		"XInclude: failed to build node\n");
+	ctxt->nbErrors++;
 	return(-1);
     }
     end->type = XML_XINCLUDE_END;
@@ -1791,6 +1827,8 @@ xmlXIncludeProcess(xmlDocPtr doc) {
     if (ctxt == NULL)
 	return(-1);
     ret = xmlXIncludeDoProcess(ctxt, doc);
+    if ((ret >= 0) && (ctxt->nbErrors > 0))
+	ret = -1;
 
     xmlXIncludeFreeContext(ctxt);
     return(ret);

@@ -14,11 +14,16 @@ LOG="check-xinclude-test-suite.log"
 
 log = open(LOG, "w")
 
+test_nr = 0
+test_succeed = 0
+test_failed = 0
+test_error = 0
 #
 # Error and warning handlers
 #
 error_nr = 0
 error_msg = ''
+
 def errorHandler(ctx, str):
     global error_nr
     global error_msg
@@ -44,10 +49,6 @@ def testXInclude(filename, id):
     print "testXInclude(%s, %s)" % (filename, id)
     return 1
 
-test_nr = 0
-test_succeed = 0
-test_failed = 0
-test_error = 0
 def runTest(test, basedir):
     global test_nr
     global test_failed
@@ -56,6 +57,7 @@ def runTest(test, basedir):
     global error_msg
     global log
 
+    fatal_error = 0
     uri = test.prop('href')
     id = test.prop('id')
     if uri == None:
@@ -72,26 +74,76 @@ def runTest(test, basedir):
         print "Test %s missing: base %s uri %s" % (URI, basedir, uri)
 	return -1
 
-    # output =
+    output = test.xpathEval('string(output)')
+    expected = None
+    if output == 'No output file.':
+        output = None
+    if output == '':
+        output = None
+    if output != None:
+        if basedir != None:
+	    output = basedir + "/" + output
+	if os.access(output, os.R_OK) == 0:
+	    print "Result for %s missing: %s" % (id, output)
+	    output = None
+	else:
+	    try:
+		f = open(output)
+		expected = f.read()
+	    except:
+	        print "Result for %s unreadable: %s" % (id, output)
+
+    description = test.xpathEval('string(description)')
+    if string.find(description, 'fatal error') != -1:
+        fatal_error = 1
+
+    try:
+        # print "testing %s" % (URI)
+	doc = libxml2.parseFile(URI)
+    except:
+        doc = None
+    if doc != None:
+        res = doc.xincludeProcess()
+	if expected != None and fatal_error != 0:
+	    result = doc.serialize()
+	    if result != expected:
+	        print "Result for %s differs" % (id)
+
+	doc.freeDoc()
+    else:
+        print "Failed to parse %s" % (URI)
+	res = -1
+
+    
 
     test_nr = test_nr + 1
-    if res > 0:
-	test_succeed = test_succeed + 1
-    elif res == 0:
-	test_failed = test_failed + 1
-    elif res < 0:
-	test_error = test_error + 1
+    if fatal_error == 0 and output != None:
+	if res > 0:
+	    test_succeed = test_succeed + 1
+	elif res == 0:
+	    test_failed = test_failed + 1
+	    print "Test %s: no substitution done ???" % (id)
+	elif res < 0:
+	    test_error = test_error + 1
+	    print "Test %s: failed valid XInclude processing" % (id)
+    else:
+	if res > 0:
+	    test_error = test_error + 1
+	    print "Test %s: failed to detect invalid XInclude processing" % (id)
+	elif res == 0:
+	    test_failed = test_failed + 1
+	    print "Test %s: Invalid but no substitution done" % (id)
+	elif res < 0:
+	    test_succeed = test_succeed + 1
 
     # Log the ontext
     if res != 1:
+	log.write("Test ID %s\n" % (id))
 	log.write("   File: %s\n" % (URI))
 	content = string.strip(test.content)
 	while content[-1] == '\n':
 	    content = content[0:-1]
-	if extra != None:
-	    log.write("   %s:%s:%s\n" % (type, extra, content))
-	else:
-	    log.write("   %s:%s\n\n" % (type, content))
+	log.write("   %s:%s\n\n" % (type, content))
 	if error_msg != '':
 	    log.write("   ----\n%s   ----\n" % (error_msg))
 	    error_msg = ''
@@ -134,11 +186,6 @@ start = time.time()
 
 case = testsuite.children
 while case != None:
-    global test_nr
-    global test_succeed
-    global test_failed
-    global test_error
-
     if case.name == 'testcases':
 	old_test_nr = test_nr
 	old_test_succeed = test_succeed

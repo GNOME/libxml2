@@ -373,6 +373,13 @@ def registerXPathFunction(ctxt, name, ns_uri, f):
 
     
 #
+# For the xmlTextReader parser configuration
+#
+PARSER_LOADDTD=1
+PARSER_DEFAULTATTRS=2
+PARSER_VALIDATE=3
+
+#
 # Everything below this point is automatically generated
 #
 

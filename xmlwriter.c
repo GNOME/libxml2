@@ -39,7 +39,8 @@ typedef enum {
     XML_TEXTWRITER_DTD_TEXT,
     XML_TEXTWRITER_DTD_ELEM,
     XML_TEXTWRITER_DTD_ATTL,
-    XML_TEXTWRITER_DTD_ENTY
+    XML_TEXTWRITER_DTD_ENTY,
+    XML_TEXTWRITER_COMMENT
 } xmlTextWriterState;
 
 typedef struct _xmlTextWriterStackEntry xmlTextWriterStackEntry;
@@ -57,14 +58,14 @@ struct _xmlTextWriterNsStackEntry {
 };
 
 struct _xmlTextWriter {
-    xmlOutputBufferPtr out; /* output buffer */
-    xmlListPtr nodes;       /* element name stack */
-    xmlListPtr nsstack;     /* name spaces stack */
+    xmlOutputBufferPtr out;     /* output buffer */
+    xmlListPtr nodes;           /* element name stack */
+    xmlListPtr nsstack;         /* name spaces stack */
     int level;
-    int indent;             /* enable indent */
-    int doindent;	    /* internal indent flag */
-    xmlChar *ichar;            /* indent character */
-    char qchar;             /* character used for quoting attribute values */
+    int indent;                 /* enable indent */
+    int doindent;               /* internal indent flag */
+    xmlChar *ichar;             /* indent character */
+    char qchar;                 /* character used for quoting attribute values */
     xmlParserCtxtPtr ctxt;
 };
 
@@ -85,7 +86,7 @@ static xmlChar *xmlTextWriterVSprintf(const char *format, va_list argptr);
 static int xmlOutputBufferWriteBase64(xmlOutputBufferPtr out, int len,
                                       const unsigned char *data);
 static void xmlTextWriterStartDocumentCallback(void *ctx);
-static int xmlTextWriterWriteIndent (xmlTextWriterPtr writer);
+static int xmlTextWriterWriteIndent(xmlTextWriterPtr writer);
 
 /**
  * xmlNewTextWriter:
@@ -132,11 +133,12 @@ xmlNewTextWriter(xmlOutputBufferPtr out)
     }
 
     ret->out = out;
-    ret->ichar = xmlStrdup (BAD_CAST " ");
+    ret->ichar = xmlStrdup(BAD_CAST " ");
     ret->qchar = '"';
 
-    if (!ret->ichar) return NULL;
-  
+    if (!ret->ichar)
+        return NULL;
+
     return ret;
 }
 
@@ -551,17 +553,151 @@ xmlTextWriterEndDocument(xmlTextWriterPtr writer)
                     return -1;
                 sum += count;
                 break;
+            case XML_TEXTWRITER_COMMENT:
+                count = xmlTextWriterEndComment(writer);
+                if (count < 0)
+                    return -1;
+                sum += count;
+                break;
             default:
-		break;
+                break;
         }
     }
 
     if (!writer->indent) {
-    count = xmlOutputBufferWriteString(writer->out, "\n");
-    if(count < 0)
+        count = xmlOutputBufferWriteString(writer->out, "\n");
+        if (count < 0)
+            return -1;
+        sum += count;
+    }
+    return sum;
+}
+
+
+
+
+
+
+/**
+ * xmlTextWriterStartComment:
+ * @writer:  the xmlTextWriterPtr
+ *
+ * Start an xml comment.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
+int
+xmlTextWriterStartComment(xmlTextWriterPtr writer)
+{
+    int count;
+    int sum;
+    xmlLinkPtr lk;
+    xmlTextWriterStackEntry *p;
+
+    if (writer == NULL)
+        return -1;
+
+    sum = 0;
+    lk = xmlListFront(writer->nodes);
+    if (lk != 0) {
+        p = (xmlTextWriterStackEntry *) xmlLinkGetData(lk);
+        if (p != 0) {
+            switch (p->state) {
+                case XML_TEXTWRITER_TEXT:
+                case XML_TEXTWRITER_NONE:
+                    break;
+                case XML_TEXTWRITER_NAME:
+                    count = xmlOutputBufferWriteString(writer->out, ">");
+                    if (count < 0)
+                        return -1;
+                    sum += count;
+                    p->state = XML_TEXTWRITER_TEXT;
+                    break;
+                default:
+                    return -1;
+            }
+        }
+    }
+
+    p = (xmlTextWriterStackEntry *)
+        xmlMalloc(sizeof(xmlTextWriterStackEntry));
+    if (p == 0) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlTextWriterStartElement : out of memory!\n");
+        return -1;
+    }
+
+    p->name = 0;
+    p->state = XML_TEXTWRITER_COMMENT;
+
+    xmlListPushFront(writer->nodes, p);
+
+    if (writer->indent) {
+        count = xmlOutputBufferWriteString(writer->out, "\n");
+        if (count < 0)
+            return -1;
+        sum += count;
+        count = xmlTextWriterWriteIndent(writer);
+        if (count < 0)
+            return -1;
+        sum += count;
+    }
+
+    count = xmlOutputBufferWriteString(writer->out, "<!--");
+    if (count < 0)
         return -1;
     sum += count;
+
+    return sum;
+}
+
+/**
+ * xmlTextWriterEndComment:
+ * @writer:  the xmlTextWriterPtr
+ *
+ * End the current xml coment.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
+int
+xmlTextWriterEndComment(xmlTextWriterPtr writer)
+{
+    int count;
+    int sum;
+    xmlLinkPtr lk;
+    xmlTextWriterStackEntry *p;
+
+    if (writer == NULL)
+        return -1;
+
+    lk = xmlListFront(writer->nodes);
+    if (lk == 0)
+        return -1;
+
+    p = (xmlTextWriterStackEntry *) xmlLinkGetData(lk);
+    if (p == 0)
+        return -1;
+
+    sum = 0;
+    switch (p->state) {
+        case XML_TEXTWRITER_COMMENT:
+            count = xmlOutputBufferWriteString(writer->out, "-->");
+            if (count < 0)
+                return -1;
+            sum += count;
+            break;
+        default:
+            return -1;
     }
+
+    if (writer->indent) {
+        count = xmlOutputBufferWriteString(writer->out, "\n");
+        if (count < 0)
+            return -1;
+        sum += count;
+    }
+
+    xmlListPopFront(writer->nodes);
     return sum;
 }
 
@@ -634,63 +770,20 @@ xmlTextWriterWriteComment(xmlTextWriterPtr writer, const xmlChar * content)
 {
     int count;
     int sum;
-    xmlLinkPtr lk;
-    xmlTextWriterStackEntry *p;
-
-    if ((writer == NULL) || (writer->out == NULL))
-        return -1;
-
-    if (content == NULL)
-        return 0;
 
     sum = 0;
-    lk = xmlListFront(writer->nodes);
-    if (lk != 0) {
-        p = (xmlTextWriterStackEntry *) xmlLinkGetData(lk);
-        if (p != 0) {
-            switch (p->state) {
-                case XML_TEXTWRITER_PI:
-                case XML_TEXTWRITER_PI_TEXT:
-                    return -1;
-                case XML_TEXTWRITER_NONE:
-                case XML_TEXTWRITER_TEXT:
-                    break;
-                case XML_TEXTWRITER_NAME:
-                    count = xmlOutputBufferWriteString(writer->out, ">");
-                    if (count < 0)
-                        return -1;
-                    sum += count;
-                    p->state = XML_TEXTWRITER_TEXT;
-                    break;
-		default:
-		    break;
-            }
-        }
-    }
-
-    if (writer->indent) {
-      count = xmlOutputBufferWriteString (writer->out, "\n");
-      sum += count;
-    }
-    
-    count = xmlOutputBufferWriteString(writer->out, "<!--");
+    count = xmlTextWriterStartComment(writer);
     if (count < 0)
         return -1;
     sum += count;
-    count = xmlOutputBufferWriteString(writer->out,
-                                       (const char *) content);
+    count = xmlTextWriterWriteString(writer, content);
     if (count < 0)
         return -1;
     sum += count;
-    count = xmlOutputBufferWriteString(writer->out, "-->");
+    count = xmlTextWriterEndComment(writer);
     if (count < 0)
         return -1;
     sum += count;
-
-    if (writer->indent) {
-      count = xmlOutputBufferWriteString (writer->out, "\n");
-      sum += count;
-    }
 
     return sum;
 }
@@ -731,12 +824,13 @@ xmlTextWriterStartElement(xmlTextWriterPtr writer, const xmlChar * name)
                     if (count < 0)
                         return -1;
                     sum += count;
-		    if (writer->indent)
-		      count = xmlOutputBufferWriteString (writer->out, "\n");
+                    if (writer->indent)
+                        count =
+                            xmlOutputBufferWriteString(writer->out, "\n");
                     p->state = XML_TEXTWRITER_TEXT;
                     break;
-		default:
-		    break;
+                default:
+                    break;
             }
         }
     }
@@ -760,9 +854,9 @@ xmlTextWriterStartElement(xmlTextWriterPtr writer, const xmlChar * name)
 
     xmlListPushFront(writer->nodes, p);
 
-    if (writer->indent) { 
-      count = xmlTextWriterWriteIndent (writer);
-      sum += count;
+    if (writer->indent) {
+        count = xmlTextWriterWriteIndent(writer);
+        sum += count;
     }
 
     count = xmlOutputBufferWriteString(writer->out, "<");
@@ -868,25 +962,26 @@ xmlTextWriterEndElement(xmlTextWriterPtr writer)
             sum += count;
             /* fallthrough */
         case XML_TEXTWRITER_NAME:
-	    if (writer->indent)		/* next element needs indent */
-	        writer->doindent = 1;
+            if (writer->indent) /* next element needs indent */
+                writer->doindent = 1;
             count = xmlOutputBufferWriteString(writer->out, "/>");
             if (count < 0)
                 return -1;
             sum += count;
             break;
         case XML_TEXTWRITER_TEXT:
-	    if ((writer->indent) && (writer->doindent)) {
-	      count = xmlTextWriterWriteIndent (writer);
-	      sum += count;
-	      writer->doindent = 1;
-	    } else writer->doindent = 1;
+            if ((writer->indent) && (writer->doindent)) {
+                count = xmlTextWriterWriteIndent(writer);
+                sum += count;
+                writer->doindent = 1;
+            } else
+                writer->doindent = 1;
             count = xmlOutputBufferWriteString(writer->out, "</");
             if (count < 0)
                 return -1;
             sum += count;
             count = xmlOutputBufferWriteString(writer->out,
-	                                       (const char *)p->name);
+                                               (const char *) p->name);
             if (count < 0)
                 return -1;
             sum += count;
@@ -900,8 +995,8 @@ xmlTextWriterEndElement(xmlTextWriterPtr writer)
     }
 
     if (writer->indent) {
-      count = xmlOutputBufferWriteString (writer->out, "\n");
-      sum += count;
+        count = xmlOutputBufferWriteString(writer->out, "\n");
+        sum += count;
     }
 
     xmlListPopFront(writer->nodes);
@@ -955,7 +1050,7 @@ xmlTextWriterFullEndElement(xmlTextWriterPtr writer)
                 return -1;
             sum += count;
             count = xmlOutputBufferWriteString(writer->out,
-	                                       (const char *) p->name);
+                                               (const char *) p->name);
             if (count < 0)
                 return -1;
             sum += count;
@@ -1177,11 +1272,11 @@ xmlTextWriterWriteVFormatString(xmlTextWriterPtr writer,
 int
 xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
 {
-    int count=0;
+    int count = 0;
     int sum;
     xmlLinkPtr lk;
     xmlTextWriterStackEntry *p;
-    xmlChar *buf=NULL;
+    xmlChar *buf = NULL;
 
     if (writer == NULL)
         return -1;
@@ -1216,13 +1311,13 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
         case XML_TEXTWRITER_TEXT:
           encode:
             buf = xmlEncodeSpecialChars(NULL, content);
-	    if (buf == NULL)
-	        count = -1;
+            if (buf == NULL)
+                count = -1;
             break;
         case XML_TEXTWRITER_ATTRIBUTE:
-	    xmlAttrSerializeTxtContent(writer->out->buffer, NULL,
-	    		NULL, content);
-	    break;
+            xmlAttrSerializeTxtContent(writer->out->buffer, NULL,
+                                       NULL, content);
+            break;
         case XML_TEXTWRITER_DTD:
             count = xmlOutputBufferWriteString(writer->out, " [");
             if (count < 0)
@@ -1233,16 +1328,17 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
         case XML_TEXTWRITER_DTD_TEXT:
         case XML_TEXTWRITER_DTD_ELEM:
         case XML_TEXTWRITER_CDATA:
+        case XML_TEXTWRITER_COMMENT:
             buf = xmlStrdup(content);
-	    if (buf == NULL)
-	        count = -1;
+            if (buf == NULL)
+                count = -1;
             break;
-	default:
-	    break;
+        default:
+            break;
     }
 
     if (writer->indent)
-      writer->doindent = 0;
+        writer->doindent = 0;
 
     if (buf != 0) {
         count =
@@ -1327,11 +1423,6 @@ xmlOutputBufferWriteBase64(xmlOutputBufferPtr out, int len,
             break;
     }
 
-    count = xmlOutputBufferWrite(out, 2, B64CRLF);
-    if (count == -1)
-        return -1;
-    sum += count;
-
     return sum;
 }
 
@@ -1347,7 +1438,7 @@ xmlOutputBufferWriteBase64(xmlOutputBufferPtr out, int len,
  * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
  */
 int
-xmlTextWriterWriteBase64(xmlTextWriterPtr writer, const char * data,
+xmlTextWriterWriteBase64(xmlTextWriterPtr writer, const char *data,
                          int start, int len)
 {
     int count;
@@ -1394,6 +1485,9 @@ xmlTextWriterWriteBase64(xmlTextWriterPtr writer, const char * data,
         default:
             break;
     }
+
+    if (writer->indent)
+        writer->doindent = 0;
 
     count =
         xmlOutputBufferWriteBase64(writer->out, len,
@@ -1417,11 +1511,35 @@ xmlTextWriterWriteBase64(xmlTextWriterPtr writer, const char * data,
  * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
  */
 static int
-xmlOutputBufferWriteBinHex(xmlOutputBufferPtr out ATTRIBUTE_UNUSED,
-                           int len ATTRIBUTE_UNUSED,
-                           const unsigned char *data ATTRIBUTE_UNUSED)
+xmlOutputBufferWriteBinHex(xmlOutputBufferPtr out,
+                           int len, const unsigned char *data)
 {
-    return -1;
+    int count;
+    int sum;
+    static char hex[] = "0123456789ABCDEF";
+    int i;
+
+    if ((out == NULL) || ((data == 0) && (len != 0))) {
+        return -1;
+    }
+
+    sum = 0;
+    for (i = 0; i < len; i++) {
+        count =
+            xmlOutputBufferWrite(out, 1,
+                                 (const char *) &hex[data[i] >> 4]);
+        if (count == -1)
+            return -1;
+        sum += count;
+        count =
+            xmlOutputBufferWrite(out, 1,
+                                 (const char *) &hex[data[i] & 0xF]);
+        if (count == -1)
+            return -1;
+        sum += count;
+    }
+
+    return sum;
 }
 
 /**
@@ -1436,7 +1554,7 @@ xmlOutputBufferWriteBinHex(xmlOutputBufferPtr out ATTRIBUTE_UNUSED,
  * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
  */
 int
-xmlTextWriterWriteBinHex(xmlTextWriterPtr writer, const char * data,
+xmlTextWriterWriteBinHex(xmlTextWriterPtr writer, const char *data,
                          int start, int len)
 {
     int count;
@@ -1483,6 +1601,9 @@ xmlTextWriterWriteBinHex(xmlTextWriterPtr writer, const char * data,
         default:
             break;
     }
+
+    if (writer->indent)
+        writer->doindent = 0;
 
     count =
         xmlOutputBufferWriteBinHex(writer->out, len,
@@ -2163,10 +2284,10 @@ xmlTextWriterStartPI(xmlTextWriterPtr writer, const xmlChar * target)
                     sum += count;
                     p->state = XML_TEXTWRITER_TEXT;
                     break;
-		case XML_TEXTWRITER_NONE:
-		case XML_TEXTWRITER_TEXT:
-		case XML_TEXTWRITER_DTD:
-		    break;
+                case XML_TEXTWRITER_NONE:
+                case XML_TEXTWRITER_TEXT:
+                case XML_TEXTWRITER_DTD:
+                    break;
                 case XML_TEXTWRITER_PI:
                 case XML_TEXTWRITER_PI_TEXT:
                     xmlGenericError(xmlGenericErrorContext,
@@ -2579,7 +2700,7 @@ xmlTextWriterStartDTD(xmlTextWriterPtr writer,
 
     sum = 0;
     lk = xmlListFront(writer->nodes);
-    if (lk != 0) {
+    if ((lk != NULL) && (xmlLinkGetData(lk) != NULL)) {
         xmlGenericError(xmlGenericErrorContext,
                         "xmlTextWriterStartDTD : DTD allowed only in prolog!\n");
         return -1;
@@ -3081,7 +3202,7 @@ xmlTextWriterStartDTDAttlist(xmlTextWriterPtr writer, const xmlChar * name)
     if (count < 0)
         return -1;
     sum += count;
-    count = xmlOutputBufferWriteString(writer->out, (const char *)name);
+    count = xmlOutputBufferWriteString(writer->out, (const char *) name);
     if (count < 0)
         return -1;
     sum += count;
@@ -3276,7 +3397,7 @@ xmlTextWriterStartDTDEntity(xmlTextWriterPtr writer,
         sum += count;
     }
 
-    count = xmlOutputBufferWriteString(writer->out, (const char *)name);
+    count = xmlOutputBufferWriteString(writer->out, (const char *) name);
     if (count < 0)
         return -1;
     sum += count;
@@ -4018,15 +4139,15 @@ xmlTextWriterStartDocumentCallback(void *ctx)
  * Returns -1 on error or 0 otherwise.
  */
 int
-xmlTextWriterSetIndent (xmlTextWriterPtr writer, int indent)
+xmlTextWriterSetIndent(xmlTextWriterPtr writer, int indent)
 {
-  if (indent < 0) 
-    return -1;
+    if (indent < 0)
+        return -1;
 
-  writer->indent = indent;
-  writer->doindent = 1;
+    writer->indent = indent;
+    writer->doindent = 1;
 
-  return 0;
+    return 0;
 }
 
 /**
@@ -4039,20 +4160,20 @@ xmlTextWriterSetIndent (xmlTextWriterPtr writer, int indent)
  * Returns -1 on error or 0 otherwise.
  */
 int
-xmlTextWriterSetIndentString (xmlTextWriterPtr writer, xmlChar *str)
+xmlTextWriterSetIndentString(xmlTextWriterPtr writer, const xmlChar * str)
 {
 
-  if (!str)
-    return -1;
+    if (!str)
+        return -1;
 
-  if (writer->ichar != NULL)
-      xmlFree(writer->ichar);
-  writer->ichar = xmlStrdup (str);
-  
-  if (!writer->ichar)
-    return -1;
-  else
-    return 0;
+    if (writer->ichar != NULL)
+        xmlFree(writer->ichar);
+    writer->ichar = xmlStrdup(str);
+
+    if (!writer->ichar)
+        return -1;
+    else
+        return 0;
 }
 
 /**
@@ -4062,25 +4183,25 @@ xmlTextWriterSetIndentString (xmlTextWriterPtr writer, xmlChar *str)
  * Write indent string.
  *
  * Returns -1 on error or the number of strings written.
- */  
+ */
 static int
-xmlTextWriterWriteIndent (xmlTextWriterPtr writer)
+xmlTextWriterWriteIndent(xmlTextWriterPtr writer)
 {
-  int lksize;
-  int i;
-  int ret;
-  
-  lksize = xmlListSize (writer->nodes);
-  if (lksize < 1)
-      return (-1);	/* list is empty */
-  for (i = 0; i < (lksize-1); i++) {
-    ret = xmlOutputBufferWriteString (writer->out, 
-            (const char *)writer->ichar);
-    if (ret == -1)
-      return (-1);
-  }
+    int lksize;
+    int i;
+    int ret;
 
-  return (lksize - 1);
+    lksize = xmlListSize(writer->nodes);
+    if (lksize < 1)
+        return (-1);            /* list is empty */
+    for (i = 0; i < (lksize - 1); i++) {
+        ret = xmlOutputBufferWriteString(writer->out,
+                                         (const char *) writer->ichar);
+        if (ret == -1)
+            return (-1);
+    }
+
+    return (lksize - 1);
 }
 
 #endif

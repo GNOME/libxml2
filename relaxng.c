@@ -3751,15 +3751,15 @@ xmlRelaxNGCompareNameClasses(xmlRelaxNGDefinePtr def1,
         } else {
             node.name = invalidName;
         }
-        node.ns = &ns;
         if (def1->ns != NULL) {
             if (def1->ns[0] == 0) {
                 node.ns = NULL;
             } else {
+	        node.ns = &ns;
                 ns.href = def1->ns;
             }
         } else {
-            ns.href = invalidName;
+            node.ns = NULL;
         }
         if (xmlRelaxNGElementMatch(&ctxt, def2, &node)) {
             if (def1->nameClass != NULL) {

@@ -1,3 +1,8 @@
+Fri Apr  2 22:02:24 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* relaxng.c: fixed problem in xmlRelaxNGCompareNameClasses
+	  which was causing check-relaxng-test-suite.py test 351 to fail.
+	  
 Fri Apr  2 17:03:48 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* nanohttp.c: implemented fix for M$ IIS redirect provided

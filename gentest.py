@@ -11,6 +11,11 @@ except:
     print "libxml2 python bindings not available, skipping testapi.c generation"
     sys.exit(0)
 
+if len(sys.argv) > 1:
+    srcPref = sys.argv[1] + '/'
+else:
+    srcPref = ''
+
 #
 # Modules we want to skip in API test
 #
@@ -425,17 +430,26 @@ def is_known_return_type(name):
 # Copy the beginning of the C test program result
 #
 
-input = open("testapi.c", "r")
+try:
+    input = open("testapi.c", "r")
+except:
+    input = open(srcPref + "testapi.c", "r")
 test = open('testapi.c.new', 'w')
 
 def compare_and_save():
     global test
 
     test.close()
-    input = open("testapi.c", "r").read()
+    try:
+        input = open("testapi.c", "r").read()
+    except:
+        input = ''
     test = open('testapi.c.new', "r").read()
     if input != test:
-        os.system("rm testapi.c ; mv testapi.c.new testapi.c")
+        try:
+            os.system("rm testapi.c; mv testapi.c.new testapi.c")
+        except:
+	    os.system("mv testapi.c.new testapi.c")
         print("Updated testapi.c")
     else:
         print("Generated testapi.c is identical")
@@ -467,7 +481,7 @@ test.write("/* CUT HERE: everything below that line is generated */\n")
 #
 # Open the input API description
 #
-doc = libxml2.readFile('doc/libxml2-api.xml', None, 0)
+doc = libxml2.readFile(srcPref + 'doc/libxml2-api.xml', None, 0)
 if doc == None:
     print "Failed to load doc/libxml2-api.xml"
     sys.exit(1)

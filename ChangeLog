@@ -1,3 +1,18 @@
+Thu Dec 23 23:44:08 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* Makefile.am, gentest.py: enhanced for enabling build in
+	  a different directory.  Added (optional) param to gentest.py
+	  to specify the source directory (bug #155468)
+	* doc/Makefile.am: changed destination of NEWS from (top_srcdir)
+	  to (top_builddir) (bug #155468)
+	* python/Makefile.am, python/generator.py: enhanced for enabling
+	  build in a different directory(bug #155468).  Added (optional)
+	  param to generator.py to specify the source directory.  Added
+	  a new table of functions which have possible "foreign" encodings
+	  (e.g. UTF16), and code to use python 't' format instead of
+	  'z' format (mostly solving bug #152286, but still need to
+	  populate the table).
+	  
 Tue Dec 21 08:10:44 MST 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/site.xsl, doc/xml.html, plus rebuilt all the html pages

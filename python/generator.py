@@ -9,6 +9,11 @@ enums = {} # { enumType: { enumConstant: enumValue } }
 import sys
 import string
 
+if len(sys.argv) > 1:
+    srcPref = sys.argv[1] + '/'
+else:
+    srcPref = ''
+
 #######################################################################
 #
 #  That part if purely the API acquisition phase from the
@@ -294,6 +299,10 @@ py_return_types = {
 
 unknown_types = {}
 
+foreign_encoding_args = (
+    'xmlCreateMemoryParserCtxt',
+)
+
 #######################################################################
 #
 #  This part writes the C <-> Python stubs libxml2-py.[ch] and
@@ -382,6 +391,7 @@ def print_function_wrapper(name, output, export, include):
     c_args=""
     c_return=""
     c_convert=""
+    num_bufs=0
     for arg in args:
         # This should be correct
         if arg[1][0:6] == "const ":
@@ -389,6 +399,11 @@ def print_function_wrapper(name, output, export, include):
         c_args = c_args + "    %s %s;\n" % (arg[1], arg[0])
         if py_types.has_key(arg[1]):
             (f, t, n, c) = py_types[arg[1]]
+	    if name == 'xmlCreateMemoryParserCtxt':
+	        print "processing special case"
+	    if (f == 'z') and (name in foreign_encoding_args):
+	        f = 't#'
+		print "changed 'f'"
             if f != None:
                 format = format + f
             if t != None:
@@ -399,6 +414,10 @@ def print_function_wrapper(name, output, export, include):
                    arg[1], t, arg[0]);
             else:
                 format_args = format_args + ", &%s" % (arg[0])
+	    if f == 't#':
+	        format_args = format_args + ", &py_buffsize%d" % num_bufs
+	        c_args = c_args + "    int py_buffsize%d;\n" % num_bufs
+		num_bufs = num_bufs + 1
             if c_call != "":
                 c_call = c_call + ", ";
             c_call = c_call + "%s" % (arg[0])
@@ -570,14 +589,14 @@ def buildStubs():
     global unknown_types
 
     try:
-	f = open("libxml2-api.xml")
+	f = open(srcPref + "libxml2-api.xml")
 	data = f.read()
 	(parser, target)  = getparser()
 	parser.feed(data)
 	parser.close()
     except IOError, msg:
 	try:
-	    f = open("../doc/libxml2-api.xml")
+	    f = open(srcPref + "../doc/libxml2-api.xml")
 	    data = f.read()
 	    (parser, target)  = getparser()
 	    parser.feed(data)
@@ -591,7 +610,7 @@ def buildStubs():
 
     py_types['pythonObject'] = ('O', "pythonObject", "pythonObject", "pythonObject")
     try:
-	f = open("libxml2-python-api.xml")
+	f = open(srcPref + "libxml2-python-api.xml")
 	data = f.read()
 	(parser, target)  = getparser()
 	parser.feed(data)

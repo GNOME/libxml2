@@ -26,7 +26,7 @@ EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
 
 man_MANS = xmllint.1 xmlcatalog.1
 
-all: web $(top_srcdir)/NEWS libxml2.xsa $(man_MANS)
+all: web $(top_builddir)/NEWS libxml2.xsa $(man_MANS)
 
 api: libxml2-api.xml libxml2-refs.xml $(APIPAGES) $(srcdir)/html/index.html $(WIN32_DIR)/libxml2.def.src ../elfgcchack.h
 
@@ -49,9 +49,9 @@ $(PAGES): xml.html site.xsl
 	  echo "Validating the HTML Web pages" ; \
 	  $(XMLLINT) --nonet --valid --noout $(PAGES) ; fi );
 
-$(top_srcdir)/NEWS: $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html
+$(top_builddir)/NEWS: $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html
 	-@(if [ -x $(XSLTPROC) ] ; then \
-	  $(XSLTPROC) --nonet $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html > $(top_srcdir)/NEWS ; fi );
+	  $(XSLTPROC) --nonet $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html > $(top_builddir)/NEWS ; fi );
 
 libxml2.xsa: $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html
 	-@(if [ -x $(XSLTPROC) ] ; then \

@@ -114,7 +114,8 @@ testReader_DEPENDENCIES = $(DEPS)
 testReader_LDADD= $(LDADDS)
 
 testapi.c: gentest.py doc/libxml2-api.xml
-	-@(if [ "$(PYTHON)" != "" ] ; then $(PYTHON) $(srcdir)/gentest.py ; fi )
+	-@(if [ "$(PYTHON)" != "" ] ; then \
+	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
 
 testapi_SOURCES=testapi.c
 testapi_LDFLAGS = 

@@ -6,7 +6,8 @@ SUBDIRS= . tests
 INCLUDES = \
 	-I$(PYTHON_INCLUDES) \
 	-I$(top_srcdir)/include	\
-	-I$(top_builddir)/include
+	-I$(top_builddir)/include \
+	-I$(top_builddir)/$(subdir)
 
 DOCS_DIR = $(datadir)/doc/libxml2-python-$(LIBXML_VERSION)
 # libxml2class.txt is generated
@@ -37,8 +38,8 @@ python_LTLIBRARIES = libxml2mod.la
 libxml2mod_la_SOURCES = libxml.c types.c libxml2-py.c
 libxml2mod_la_LIBADD = $(mylibs) @CYGWIN_EXTRA_PYTHON_LIBADD@
 
-libxml2.py: $(srcdir)/libxml.py $(srcdir)/libxml2class.py
-	cat $(srcdir)/libxml.py $(srcdir)/libxml2class.py > libxml2.py
+libxml2.py: $(srcdir)/libxml.py libxml2class.py
+	cat $(srcdir)/libxml.py libxml2class.py > libxml2.py
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(pythondir)
@@ -50,18 +51,18 @@ install-data-local:
 
 GENERATE = generator.py
 API_DESC = $(top_srcdir)/doc/libxml2-api.xml $(srcdir)/libxml2-python-api.xml
-GENERATED= $(srcdir)/libxml2class.py \
-           $(srcdir)/libxml2-export.c \
-           $(srcdir)/libxml2class.txt \
-	   $(srcdir)/libxml2-py.c \
-	   $(srcdir)/libxml2-py.h
+GENERATED= libxml2class.py \
+           libxml2-export.c \
+           libxml2class.txt \
+	   libxml2-py.c \
+	   libxml2-py.h
 
 CLEANFILES= $(GENERATED) gen_prog libxml2.py
 
 $(GENERATED): gen_prog
 
 gen_prog: $(srcdir)/$(GENERATE) $(API_DESC)
-	cd $(srcdir) && $(PYTHON) $(GENERATE)
+	$(PYTHON) $(srcdir)/$(GENERATE) $(srcdir)
 	touch gen_prog
 
 $(libxml2mod_la_OBJECTS): $(GENERATED)

@@ -1841,10 +1841,9 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
      */
     href = xmlXIncludeGetProp(ctxt, cur, XINCLUDE_HREF);
     if (href == NULL) {
-        /* @@@@ */
-	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 
-		       XML_XINCLUDE_NO_HREF, "no href\n", NULL);
-	return(-1);
+	href = xmlStrdup(BAD_CAST ""); /* @@@@ href is now optional */
+	if (href == NULL) 
+	    return(-1);
     }
     parse = xmlXIncludeGetProp(ctxt, cur, XINCLUDE_PARSE);
     if (parse != NULL) {

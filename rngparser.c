@@ -1,6 +1,11 @@
 /**
  * rngparser.c: parser for the Relax-NG compact syntax.
  *
+ * Based on:
+ *   RELAX NG Compact Syntax
+ *   Committee Specification 21 November 2002
+ *   http://www.oasis-open.org/committees/relax-ng/compact-20021121.html
+ *
  * See Copyright for the status of this software.
  *
  * Daniel Veillard <veillard@redhat.com>
@@ -1417,17 +1422,18 @@ xmlParseCRNG_topLevel(xmlCRelaxNGParserCtxtPtr ctxt)
 }
 
 /**
- * xmlParseCRNG:
+ * xmlConvertCRNG:
  * @schemas:  pointer to the text of the compact schemas
  * @len:  length of the schemas in bytes (or 0)
+ * @encoding:  encoding indicated by the context or NULL
  *
  * Compiles the schemas into the equivalent Relax-NG XML structure
  *
  * Returns the xmlDocPtr resulting from the compilation or
  *         NULL in case of error
  */
-static xmlDocPtr
-xmlParseCRNG(const xmlChar *schemas, int len) {
+xmlDocPtr
+xmlConvertCRNG(const char *schemas, int len, const char *encoding) {
     struct _xmlCRelaxNGParserCtxt ctxt;
     xmlDocPtr ret = NULL;
 
@@ -1484,8 +1490,8 @@ xmlParseCRNG(const xmlChar *schemas, int len) {
     ctxt.key_ref = xmlDictLookup(ctxt.dict, BAD_CAST "ref", 3);
     ctxt.key_define = xmlDictLookup(ctxt.dict, BAD_CAST "define", 6);
 
-    /* xmlParseCRNGTokenize(&ctxt); */
-    xmlParseCRNG_topLevel(&ctxt);
+    /* xmlConvertCRNGTokenize(&ctxt); */
+    xmlConvertCRNG_topLevel(&ctxt);
 
     xmlDictFree(ctxt.dict);
 
@@ -1493,6 +1499,21 @@ xmlParseCRNG(const xmlChar *schemas, int len) {
     return(ret);
 }
 
+/**
+ * xmlConvertCRNGFile:
+ * @URL: URL or filename for the resource
+ * @encoding:  encoding indicated by the context or NULL
+ *
+ * Compiles the schemas into the equivalent Relax-NG XML structure
+ *
+ * Returns the xmlDocPtr resulting from the compilation or
+ *         NULL in case of error
+ */
+xmlDocPtr
+xmlConvertCRNG(const char *URL, const char *encoding) {
+}
+
+#ifdef STANDALONE
 const xmlChar *schemas = 
 "# RELAX NG XML syntax specified in compact syntax.\n\
 \n\
@@ -1562,10 +1583,11 @@ anyAttribute = attribute * { text }\n\
 int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     xmlDocPtr res;
 
-    res = xmlParseCRNG(schemas, -1);
+    res = xmlConvertCRNG(schemas, -1);
     if (res != NULL) {
         xmlDocFormatDump(stdout, res, 1);
 	xmlFreeDoc(res);
     }
     return(0);
 }
+#endif

@@ -246,6 +246,8 @@ struct _xmlRelaxNGParserCtxt {
     /* used to compile content models */
     xmlAutomataPtr am;          /* the automata */
     xmlAutomataStatePtr state;  /* used to build the automata */
+
+    int crng;			/* compact syntax and other flags */
 };
 
 #define FLAGS_IGNORABLE		1
@@ -1382,7 +1384,39 @@ xmlRelaxNGFreeValidState(xmlRelaxNGValidCtxtPtr ctxt,
 
 /************************************************************************
  * 									*
- * 			Document functions					*
+ * 			Semi internal functions				*
+ * 									*
+ ************************************************************************/
+
+/**
+ * xmlRelaxParserSetFlag:
+ * @ctxt: a RelaxNG parser context
+ * @flags: a set of flags values
+ *
+ * Semi private function used to pass informations to a parser context
+ * which are a combination of xmlRelaxNGParserFlag .
+ *
+ * Returns 0 if success and -1 in case of error
+ */
+int
+xmlRelaxParserSetFlag(xmlRelaxNGParserCtxtPtr ctxt, int flags)
+{
+    if (ctxt == NULL) return(-1);
+    if (flags & XML_RELAXNGP_FREE_DOC) {
+        ctxt->crng |= XML_RELAXNGP_FREE_DOC;
+	flags -= XML_RELAXNGP_FREE_DOC;
+    }
+    if (flags & XML_RELAXNGP_CRNG) {
+        ctxt->crng |= XML_RELAXNGP_CRNG;
+	flags -= XML_RELAXNGP_CRNG;
+    }
+    if (flags != 0) return(-1);
+    return(0);
+}
+
+/************************************************************************
+ * 									*
+ * 			Document functions				*
  * 									*
  ************************************************************************/
 static xmlDocPtr xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt,

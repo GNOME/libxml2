@@ -83,6 +83,16 @@ typedef enum {
 } xmlRelaxNGValidErr;
 
 /*
+ * xmlRelaxNGParserFlags:
+ *
+ * List of possible Relax NG Parser flags
+ */
+typedef enum {
+    XML_RELAXNGP_NONE = 0,
+    XML_RELAXNGP_FREE_DOC = 1,
+    XML_RELAXNGP_CRNG = 2
+} xmlRelaxNGParserFlag;
+/*
  * Interfaces for parsing.
  */
 XMLPUBFUN xmlRelaxNGParserCtxtPtr XMLCALL 
@@ -92,6 +102,10 @@ XMLPUBFUN xmlRelaxNGParserCtxtPtr XMLCALL
 						 int size);
 XMLPUBFUN xmlRelaxNGParserCtxtPtr XMLCALL   
 		    xmlRelaxNGNewDocParserCtxt	(xmlDocPtr doc);
+
+XMLPUBFUN int XMLCALL
+		    xmlRelaxParserSetFlag	(xmlRelaxNGParserCtxtPtr ctxt,
+		    				 int flag);
 
 XMLPUBFUN void XMLCALL		
 		    xmlRelaxNGFreeParserCtxt	(xmlRelaxNGParserCtxtPtr ctxt);

@@ -1,3 +1,10 @@
+Sun Jan 25 20:52:09 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: fixing #130453 XInclude element with no href attribute
+	* relaxng.c rngparser.c include/libxml2/relaxng.h: fully integrating 
+	  the compact syntax will require more work, postponed for the
+	  2.6.5 release.
+
 Sat Jan 24 09:30:22 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/schemasInternals.h xmlschemas.c: applied patch from

@@ -34,6 +34,10 @@ void		internalSubset			(void *ctx,
 						 const xmlChar *name,
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID);
+void		externalSubset			(void *ctx,
+						 const xmlChar *name,
+						 const xmlChar *ExternalID,
+						 const xmlChar *SystemID);
 xmlEntityPtr	getEntity			(void *ctx,
 						 const xmlChar *name);
 xmlEntityPtr	getParameterEntity		(void *ctx,

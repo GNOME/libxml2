@@ -1,3 +1,11 @@
+Fri Nov 22 13:13:00 HKT 2002 William Brack <wbrack@mmm.com.hk>
+
+	* threads.c: fixed initialization problem in xmlNewGlobalState
+	  which was causing crash.
+	* globals.c: removed duplicate call to initxmlDefaultSAXHandler
+	  in xmlInitializeGlobalState.
+	* parserInternals.c: cleaned up ctxt->sax initialisation.
+	
 Thu Nov 21 15:05:45 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c include/libxml/tree.h: modified the existing APIs

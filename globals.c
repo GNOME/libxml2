@@ -409,7 +409,7 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     /*
      * Perform initialization as required by libxml
      */
-    initxmlDefaultSAXHandler(&gs->xmlDefaultSAXHandler, 1);
+
 #ifdef LIBXML_DOCB_ENABLED
     initdocbDefaultSAXHandler(&gs->docbDefaultSAXHandler);
 #endif

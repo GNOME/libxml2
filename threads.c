@@ -315,7 +315,7 @@ xmlNewGlobalState(void)
     if (gs == NULL)
 	return(NULL);
 
-    memset(gs, 0, sizeof(gs));
+    memset(gs, 0, sizeof(xmlGlobalState));
     xmlInitializeGlobalState(gs);
     return (gs);
 }

@@ -2146,8 +2146,6 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
 void
 xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 {
-    xmlSAXHandler *sax;
-
     if(ctxt==NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlInitParserCtxt: NULL context given\n");
@@ -2156,13 +2154,13 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 
     xmlDefaultSAXHandlerInit();
 
-    sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
-    if (sax == NULL) {
+    ctxt->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
+    if (ctxt->sax == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlInitParserCtxt: out of memory\n");
     }
     else
-        memset(sax, 0, sizeof(xmlSAXHandler));
+        memcpy(ctxt->sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
 
     /* Allocate the Input stack */
     ctxt->inputTab = (xmlParserInputPtr *)
@@ -2250,10 +2248,6 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->spaceMax = 10;
     ctxt->spaceTab[0] = -1;
     ctxt->space = &ctxt->spaceTab[0];
-
-    ctxt->sax = sax;
-    memcpy(sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
-
     ctxt->userData = ctxt;
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
@@ -2264,7 +2258,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->linenumbers = xmlLineNumbersDefaultValue;
     ctxt->keepBlanks = xmlKeepBlanksDefaultValue;
     if (ctxt->keepBlanks == 0)
-	sax->ignorableWhitespace = ignorableWhitespace;
+	ctxt->sax->ignorableWhitespace = ignorableWhitespace;
 
     ctxt->vctxt.userData = ctxt;
     ctxt->vctxt.error = xmlParserValidityError;

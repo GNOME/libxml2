@@ -4493,6 +4493,12 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	}
         if (avail < 1)
 	    goto done;
+	cur = in->cur[0];
+	if (cur == 0) {
+	    SKIP(1);
+	    continue;
+	}
+
         switch (ctxt->instate) {
             case XML_PARSER_EOF:
 	        /*

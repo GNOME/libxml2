@@ -1,3 +1,8 @@
+Tue Apr 22 15:18:01 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: tried to fix #98879 again in a more solid
+	  way.
+	 
 Tue Apr 22 13:58:43 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/libxml2.def.src: added more exports from the relaxng and

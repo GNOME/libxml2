@@ -33,7 +33,8 @@ skipped_functions = [
 "xmlReaderNewFd", "xmlReaderForFd",
 "xmlIORead", "xmlReadIO", "xmlCtxtReadIO",
 "htmlIORead", "htmlReadIO", "htmlCtxtReadIO",
-"xmlReaderNewIO", "xmlBufferDump",
+"xmlReaderNewIO", "xmlBufferDump", "xmlNanoFTPConnect",
+"xmlNanoFTPConnectTo",
 # library state cleanup, generate false leak informations and other
 # troubles, heavillyb tested otherwise.
 "xmlCleanupParser", "xmlRelaxNGCleanupTypes", "xmlSetListDoc",
@@ -44,7 +45,7 @@ skipped_functions = [
 "xmlTextReaderReadInnerXml", "xmlTextReaderReadOuterXml",
 "xmlTextReaderReadString",
 # destructor
-"xmlListDelete", "xmlOutputBufferClose",
+"xmlListDelete", "xmlOutputBufferClose", "xmlNanoFTPClose",
 # deprecated
 "xmlCatalogGetPublic", "xmlCatalogGetSystem", "xmlEncodeEntities",
 # allocators
@@ -203,6 +204,9 @@ def type_convert(str, name, info, module, function, pos):
 	    return('xmlNodePtr_in');
     if res == 'const xmlBufferPtr':
         res = 'xmlBufferPtr';
+    if res == 'xmlChar_ptr' and name == 'name' and \
+       string.find(function, "EatName") != -1:
+        return('eaten_name')
         
     return res
 

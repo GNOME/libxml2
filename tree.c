@@ -6328,10 +6328,11 @@ xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
  */
 int
 xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
-    xmlAttrPtr prop = node->properties, prev = NULL;;
+    xmlAttrPtr prop, prev = NULL;;
 
     if ((node == NULL) || (name == NULL))
 	return(-1);
+    prop = node->properties;
     if (ns == NULL)
 	return(xmlUnsetProp(node, name));
     if (ns->href == NULL)

@@ -27,8 +27,10 @@ static unsigned long longtab[1024];
 #endif
 
 static xmlDocPtr api_doc = NULL;
+static xmlDtdPtr api_dtd = NULL;
 static xmlNodePtr api_root = NULL;
 static xmlAttrPtr api_attr = NULL;
+static xmlNsPtr api_ns = NULL;
 
 static void
 structured_errors(void *userData ATTRIBUTE_UNUSED,
@@ -40,18 +42,31 @@ static void
 free_api_doc(void) {
     xmlFreeDoc(api_doc);
     api_doc = NULL;
+    api_dtd = NULL;
     api_root = NULL;
     api_attr = NULL;
+    api_ns = NULL;
 }
 
 static xmlDocPtr
 get_api_doc(void) {
     if (api_doc == NULL) {
-        api_doc = xmlReadMemory("<root xmlns:h='http://example.com/' h:foo='bar'/>", 49, "root_test", NULL, 0);
+        api_doc = xmlReadMemory("<!DOCTYPE root [<!ELEMENT root EMPTY>]><root xmlns:h='http://example.com/' h:foo='bar'/>", 88, "root_test", NULL, 0);
 	api_root = NULL;
 	api_attr = NULL;
     }
     return(api_doc);
+}
+
+static xmlDtdPtr
+get_api_dtd(void) {
+    if ((api_dtd == NULL) || (api_dtd->type != XML_DTD_NODE)) {
+        get_api_doc();
+	if ((api_doc != NULL) && (api_doc->children != NULL) &&
+	    (api_doc->children->type == XML_DTD_NODE))
+	    api_dtd = api_doc->children;
+    }
+    return(api_dtd);
 }
 
 static xmlNodePtr
@@ -59,10 +74,19 @@ get_api_root(void) {
     if ((api_root == NULL) || (api_root->type != XML_ELEMENT_NODE)) {
         get_api_doc();
 	if ((api_doc != NULL) && (api_doc->children != NULL) &&
-	    (api_doc->children->type == XML_ELEMENT_NODE))
-	    api_root = api_doc->children;
+	    (api_doc->children->next != NULL) &&
+	    (api_doc->children->next->type == XML_ELEMENT_NODE))
+	    api_root = api_doc->children->next;
     }
     return(api_root);
+}
+
+static xmlNsPtr
+get_api_ns(void) {
+    get_api_root();
+    if (api_root != NULL)
+        api_ns = api_root->nsDef;
+    return(api_ns);
 }
 
 static xmlAttrPtr
@@ -304,6 +328,15 @@ static const char *gen_filepath(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_filepath(int no ATTRIBUTE_UNUSED, const char *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#define gen_nb_eaten_name 2
+
+static xmlChar *gen_eaten_name(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(xmlStrdup("eaten"));
+    return(NULL);
+}
+static void des_eaten_name(int no ATTRIBUTE_UNUSED, xmlChar *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
 #define gen_nb_fileoutput 6
 
 static const char *gen_fileoutput(int no, int nr ATTRIBUTE_UNUSED) {
@@ -398,12 +431,35 @@ static xmlNodePtr gen_xmlNodePtr(int no, int nr ATTRIBUTE_UNUSED) {
     return(NULL);
 /*     if (no == 2) return((xmlNodePtr) get_api_doc()); */
 }
-static void des_xmlNodePtr(int no ATTRIBUTE_UNUSED, xmlNodePtr val, int nr ATTRIBUTE_UNUSED) {
+static void des_xmlNodePtr(int no, xmlNodePtr val, int nr ATTRIBUTE_UNUSED) {
     if (no == 1) free_api_doc();
     else if (val != NULL) {
         xmlUnlinkNode(val);
         xmlFreeNode(val);
     }
+}
+
+#define gen_nb_xmlDtdPtr 3
+static xmlDtdPtr gen_xmlDtdPtr(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(xmlNewDtd(NULL, BAD_CAST "dtd", "foo", "bar"));
+    if (no == 1) return(get_api_dtd());
+    return(NULL);
+}
+static void des_xmlDtdPtr(int no, xmlDtdPtr val, int nr ATTRIBUTE_UNUSED) {
+    if (no == 1) free_api_doc();
+    else if (val != NULL) {
+        xmlUnlinkNode(val);
+        xmlFreeNode(val);
+    }
+}
+
+#define gen_nb_xmlNsPtr 2
+static xmlNsPtr gen_xmlNsPtr(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(get_api_ns());
+    return(NULL);
+}
+static void des_xmlNsPtr(int no, xmlNsPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) free_api_doc();
 }
 
 #define gen_nb_xmlNodePtr_in 3
@@ -494,6 +550,26 @@ static void des_xmlOutputBufferPtr(int no ATTRIBUTE_UNUSED, xmlOutputBufferPtr v
     if (val != NULL) {
         xmlOutputBufferClose(val);
     }
+}
+
+#define gen_nb_xmlNanoFTPCtxtPtr 4
+static void *gen_xmlNanoFTPCtxtPtr(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(xmlNanoFTPNewCtxt("ftp://example.com/"));
+    if (no == 1) return(xmlNanoFTPNewCtxt("http://example.com/"));
+    if (no == 2) return(xmlNanoFTPNewCtxt("foo"));
+    return(NULL);
+}
+static void des_xmlNanoFTPCtxtPtr(int no ATTRIBUTE_UNUSED, void *val, int nr ATTRIBUTE_UNUSED) {
+    if (val != NULL) {
+        xmlNanoFTPFreeCtxt(val);
+    }
+}
+
+#define gen_nb_xmlNanoHTTPCtxtPtr 1
+static void *gen_xmlNanoHTTPCtxtPtr(int no, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_xmlNanoHTTPCtxtPtr(int no ATTRIBUTE_UNUSED, void *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
 #define gen_nb_xmlCharEncoding 4
@@ -5731,8 +5807,32 @@ static int
 test_xmlNanoFTPCheckResponse(void) {
     int ret = 0;
 
+#ifdef LIBXML_FTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* an FTP context */
+    int n_ctx;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoFTPCtxtPtr;n_ctx++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoFTPCtxtPtr(n_ctx, 0);
+
+        ret_val = xmlNanoFTPCheckResponse(ctx);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoFTPCtxtPtr(n_ctx, ctx, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoFTPCheckResponse",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -5763,68 +5863,31 @@ test_xmlNanoFTPCleanup(void) {
 
 
 static int
-test_xmlNanoFTPClose(void) {
-    int ret = 0;
-
-
-    /* missing type support */
-    return(ret);
-}
-
-
-static int
 test_xmlNanoFTPCloseConnection(void) {
-    int ret = 0;
-
-
-    /* missing type support */
-    return(ret);
-}
-
-
-static int
-test_xmlNanoFTPConnect(void) {
-    int ret = 0;
-
-
-    /* missing type support */
-    return(ret);
-}
-
-
-static int
-test_xmlNanoFTPConnectTo(void) {
     int ret = 0;
 
 #ifdef LIBXML_FTP_ENABLED
     int mem_base;
-    void * ret_val;
-    const char * server; /* an FTP server name */
-    int n_server;
-    int port; /* the port (use 21 if 0) */
-    int n_port;
+    int ret_val;
+    void * ctx; /* an FTP context */
+    int n_ctx;
 
-    for (n_server = 0;n_server < gen_nb_const_char_ptr;n_server++) {
-    for (n_port = 0;n_port < gen_nb_int;n_port++) {
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoFTPCtxtPtr;n_ctx++) {
         mem_base = xmlMemBlocks();
-        server = gen_const_char_ptr(n_server, 0);
-        port = gen_int(n_port, 1);
+        ctx = gen_xmlNanoFTPCtxtPtr(n_ctx, 0);
 
-        ret_val = xmlNanoFTPConnectTo(server, port);
-        desret_void_ptr(ret_val);
+        ret_val = xmlNanoFTPCloseConnection(ctx);
+        desret_int(ret_val);
         call_tests++;
-        des_const_char_ptr(n_server, server, 0);
-        des_int(n_port, port, 1);
+        des_xmlNanoFTPCtxtPtr(n_ctx, ctx, 0);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNanoFTPConnectTo",
+            printf("Leak of %d blocks found in xmlNanoFTPCloseConnection",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
-            printf(" %d", n_server);
-            printf(" %d", n_port);
+            printf(" %d", n_ctx);
             printf("\n");
         }
-    }
     }
 #endif
 
@@ -5837,8 +5900,39 @@ static int
 test_xmlNanoFTPCwd(void) {
     int ret = 0;
 
+#ifdef LIBXML_FTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* an FTP context */
+    int n_ctx;
+    const char * directory; /* a directory on the server */
+    int n_directory;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoFTPCtxtPtr;n_ctx++) {
+    for (n_directory = 0;n_directory < gen_nb_const_char_ptr;n_directory++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoFTPCtxtPtr(n_ctx, 0);
+        directory = gen_const_char_ptr(n_directory, 1);
+
+        ret_val = xmlNanoFTPCwd(ctx, directory);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoFTPCtxtPtr(n_ctx, ctx, 0);
+        des_const_char_ptr(n_directory, directory, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoFTPCwd",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf(" %d", n_directory);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -5847,8 +5941,39 @@ static int
 test_xmlNanoFTPDele(void) {
     int ret = 0;
 
+#ifdef LIBXML_FTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* an FTP context */
+    int n_ctx;
+    const char * file; /* a file or directory on the server */
+    int n_file;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoFTPCtxtPtr;n_ctx++) {
+    for (n_file = 0;n_file < gen_nb_filepath;n_file++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoFTPCtxtPtr(n_ctx, 0);
+        file = gen_filepath(n_file, 1);
+
+        ret_val = xmlNanoFTPDele(ctx, file);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoFTPCtxtPtr(n_ctx, ctx, 0);
+        des_filepath(n_file, file, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoFTPDele",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf(" %d", n_file);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -5867,8 +5992,32 @@ static int
 test_xmlNanoFTPGetConnection(void) {
     int ret = 0;
 
+#ifdef LIBXML_FTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* an FTP context */
+    int n_ctx;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoFTPCtxtPtr;n_ctx++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoFTPCtxtPtr(n_ctx, 0);
+
+        ret_val = xmlNanoFTPGetConnection(ctx);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoFTPCtxtPtr(n_ctx, ctx, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoFTPGetConnection",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -5877,8 +6026,32 @@ static int
 test_xmlNanoFTPGetResponse(void) {
     int ret = 0;
 
+#ifdef LIBXML_FTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* an FTP context */
+    int n_ctx;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoFTPCtxtPtr;n_ctx++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoFTPCtxtPtr(n_ctx, 0);
+
+        ret_val = xmlNanoFTPGetResponse(ctx);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoFTPCtxtPtr(n_ctx, ctx, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoFTPGetResponse",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -5887,8 +6060,39 @@ static int
 test_xmlNanoFTPGetSocket(void) {
     int ret = 0;
 
+#ifdef LIBXML_FTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* an FTP context */
+    int n_ctx;
+    const char * filename; /* the file to retrieve (or NULL if path is in context). */
+    int n_filename;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoFTPCtxtPtr;n_ctx++) {
+    for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoFTPCtxtPtr(n_ctx, 0);
+        filename = gen_filepath(n_filename, 1);
+
+        ret_val = xmlNanoFTPGetSocket(ctx, filename);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoFTPCtxtPtr(n_ctx, ctx, 0);
+        des_filepath(n_filename, filename, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoFTPGetSocket",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf(" %d", n_filename);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6023,8 +6227,32 @@ static int
 test_xmlNanoFTPQuit(void) {
     int ret = 0;
 
+#ifdef LIBXML_FTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* an FTP context */
+    int n_ctx;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoFTPCtxtPtr;n_ctx++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoFTPCtxtPtr(n_ctx, 0);
+
+        ret_val = xmlNanoFTPQuit(ctx);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoFTPCtxtPtr(n_ctx, ctx, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoFTPQuit",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6033,8 +6261,46 @@ static int
 test_xmlNanoFTPRead(void) {
     int ret = 0;
 
+#ifdef LIBXML_FTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* the FTP context */
+    int n_ctx;
+    void * dest; /* a buffer */
+    int n_dest;
+    int len; /* the buffer length */
+    int n_len;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoFTPCtxtPtr;n_ctx++) {
+    for (n_dest = 0;n_dest < gen_nb_void_ptr;n_dest++) {
+    for (n_len = 0;n_len < gen_nb_int;n_len++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoFTPCtxtPtr(n_ctx, 0);
+        dest = gen_void_ptr(n_dest, 1);
+        len = gen_int(n_len, 2);
+
+        ret_val = xmlNanoFTPRead(ctx, dest, len);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoFTPCtxtPtr(n_ctx, ctx, 0);
+        des_void_ptr(n_dest, dest, 1);
+        des_int(n_len, len, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoFTPRead",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf(" %d", n_dest);
+            printf(" %d", n_len);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6066,8 +6332,39 @@ static int
 test_xmlNanoFTPUpdateURL(void) {
     int ret = 0;
 
+#ifdef LIBXML_FTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* an FTP context */
+    int n_ctx;
+    const char * URL; /* The URL used to update the context */
+    int n_URL;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoFTPCtxtPtr;n_ctx++) {
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoFTPCtxtPtr(n_ctx, 0);
+        URL = gen_filepath(n_URL, 1);
+
+        ret_val = xmlNanoFTPUpdateURL(ctx, URL);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoFTPCtxtPtr(n_ctx, ctx, 0);
+        des_filepath(n_URL, URL, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoFTPUpdateURL",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf(" %d", n_URL);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6075,13 +6372,10 @@ static int
 test_nanoftp(void) {
     int ret = 0;
 
-    printf("Testing nanoftp : 6 of 22 functions ...\n");
+    printf("Testing nanoftp : 15 of 22 functions ...\n");
     ret += test_xmlNanoFTPCheckResponse();
     ret += test_xmlNanoFTPCleanup();
-    ret += test_xmlNanoFTPClose();
     ret += test_xmlNanoFTPCloseConnection();
-    ret += test_xmlNanoFTPConnect();
-    ret += test_xmlNanoFTPConnectTo();
     ret += test_xmlNanoFTPCwd();
     ret += test_xmlNanoFTPDele();
     ret += test_xmlNanoFTPGet();
@@ -6107,8 +6401,32 @@ static int
 test_xmlNanoHTTPAuthHeader(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTTP_ENABLED
+    int mem_base;
+    const char * ret_val;
+    void * ctx; /* the HTTP context */
+    int n_ctx;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoHTTPCtxtPtr;n_ctx++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoHTTPCtxtPtr(n_ctx, 0);
+
+        ret_val = xmlNanoHTTPAuthHeader(ctx);
+        desret_const_char_ptr(ret_val);
+        call_tests++;
+        des_xmlNanoHTTPCtxtPtr(n_ctx, ctx, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoHTTPAuthHeader",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6142,8 +6460,30 @@ static int
 test_xmlNanoHTTPClose(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTTP_ENABLED
+    int mem_base;
+    void * ctx; /* the HTTP context */
+    int n_ctx;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoHTTPCtxtPtr;n_ctx++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoHTTPCtxtPtr(n_ctx, 0);
+
+        xmlNanoHTTPClose(ctx);
+        call_tests++;
+        des_xmlNanoHTTPCtxtPtr(n_ctx, ctx, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoHTTPClose",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6152,8 +6492,32 @@ static int
 test_xmlNanoHTTPContentLength(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* the HTTP context */
+    int n_ctx;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoHTTPCtxtPtr;n_ctx++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoHTTPCtxtPtr(n_ctx, 0);
+
+        ret_val = xmlNanoHTTPContentLength(ctx);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoHTTPCtxtPtr(n_ctx, ctx, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoHTTPContentLength",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6162,8 +6526,32 @@ static int
 test_xmlNanoHTTPEncoding(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTTP_ENABLED
+    int mem_base;
+    const char * ret_val;
+    void * ctx; /* the HTTP context */
+    int n_ctx;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoHTTPCtxtPtr;n_ctx++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoHTTPCtxtPtr(n_ctx, 0);
+
+        ret_val = xmlNanoHTTPEncoding(ctx);
+        desret_const_char_ptr(ret_val);
+        call_tests++;
+        des_xmlNanoHTTPCtxtPtr(n_ctx, ctx, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoHTTPEncoding",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6227,8 +6615,32 @@ static int
 test_xmlNanoHTTPMimeType(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTTP_ENABLED
+    int mem_base;
+    const char * ret_val;
+    void * ctx; /* the HTTP context */
+    int n_ctx;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoHTTPCtxtPtr;n_ctx++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoHTTPCtxtPtr(n_ctx, 0);
+
+        ret_val = xmlNanoHTTPMimeType(ctx);
+        desret_const_char_ptr(ret_val);
+        call_tests++;
+        des_xmlNanoHTTPCtxtPtr(n_ctx, ctx, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoHTTPMimeType",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6257,8 +6669,46 @@ static int
 test_xmlNanoHTTPRead(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* the HTTP context */
+    int n_ctx;
+    void * dest; /* a buffer */
+    int n_dest;
+    int len; /* the buffer length */
+    int n_len;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoHTTPCtxtPtr;n_ctx++) {
+    for (n_dest = 0;n_dest < gen_nb_void_ptr;n_dest++) {
+    for (n_len = 0;n_len < gen_nb_int;n_len++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoHTTPCtxtPtr(n_ctx, 0);
+        dest = gen_void_ptr(n_dest, 1);
+        len = gen_int(n_len, 2);
+
+        ret_val = xmlNanoHTTPRead(ctx, dest, len);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoHTTPCtxtPtr(n_ctx, ctx, 0);
+        des_void_ptr(n_dest, dest, 1);
+        des_int(n_len, len, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoHTTPRead",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf(" %d", n_dest);
+            printf(" %d", n_len);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6277,8 +6727,32 @@ static int
 test_xmlNanoHTTPReturnCode(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTTP_ENABLED
+    int mem_base;
+    int ret_val;
+    void * ctx; /* the HTTP context */
+    int n_ctx;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoHTTPCtxtPtr;n_ctx++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_xmlNanoHTTPCtxtPtr(n_ctx, 0);
+
+        ret_val = xmlNanoHTTPReturnCode(ctx);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNanoHTTPCtxtPtr(n_ctx, ctx, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoHTTPReturnCode",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctx);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -6352,7 +6826,7 @@ static int
 test_nanohttp(void) {
     int ret = 0;
 
-    printf("Testing nanohttp : 4 of 17 functions ...\n");
+    printf("Testing nanohttp : 11 of 17 functions ...\n");
     ret += test_xmlNanoHTTPAuthHeader();
     ret += test_xmlNanoHTTPCleanup();
     ret += test_xmlNanoHTTPClose();
@@ -9624,8 +10098,32 @@ static int
 test_xmlCopyDtd(void) {
     int ret = 0;
 
+#ifdef LIBXML_TREE_ENABLED
+    int mem_base;
+    xmlDtdPtr ret_val;
+    xmlDtdPtr dtd; /* the dtd */
+    int n_dtd;
 
-    /* missing type support */
+    for (n_dtd = 0;n_dtd < gen_nb_xmlDtdPtr;n_dtd++) {
+        mem_base = xmlMemBlocks();
+        dtd = gen_xmlDtdPtr(n_dtd, 0);
+
+        ret_val = xmlCopyDtd(dtd);
+        desret_xmlDtdPtr(ret_val);
+        call_tests++;
+        des_xmlDtdPtr(n_dtd, dtd, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCopyDtd",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_dtd);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -10523,8 +11021,51 @@ static int
 test_xmlNewChild(void) {
     int ret = 0;
 
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlNodePtr parent; /* the parent node */
+    int n_parent;
+    xmlNsPtr ns; /* a namespace if any */
+    int n_ns;
+    const xmlChar * name; /* the name of the child */
+    int n_name;
+    const xmlChar * content; /* the XML content of the child if any. */
+    int n_content;
 
-    /* missing type support */
+    for (n_parent = 0;n_parent < gen_nb_xmlNodePtr;n_parent++) {
+    for (n_ns = 0;n_ns < gen_nb_xmlNsPtr;n_ns++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        parent = gen_xmlNodePtr(n_parent, 0);
+        ns = gen_xmlNsPtr(n_ns, 1);
+        name = gen_const_xmlChar_ptr(n_name, 2);
+        content = gen_const_xmlChar_ptr(n_content, 3);
+
+        ret_val = xmlNewChild(parent, ns, name, content);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlNodePtr(n_parent, parent, 0);
+        des_xmlNsPtr(n_ns, ns, 1);
+        des_const_xmlChar_ptr(n_name, name, 2);
+        des_const_xmlChar_ptr(n_content, content, 3);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewChild",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_parent);
+            printf(" %d", n_ns);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -10670,8 +11211,51 @@ static int
 test_xmlNewDocNode(void) {
     int ret = 0;
 
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlNsPtr ns; /* namespace if any */
+    int n_ns;
+    const xmlChar * name; /* the node name */
+    int n_name;
+    const xmlChar * content; /* the XML text content if any */
+    int n_content;
 
-    /* missing type support */
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_ns = 0;n_ns < gen_nb_xmlNsPtr;n_ns++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        ns = gen_xmlNsPtr(n_ns, 1);
+        name = gen_const_xmlChar_ptr(n_name, 2);
+        content = gen_const_xmlChar_ptr(n_content, 3);
+
+        ret_val = xmlNewDocNode(doc, ns, name, content);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_xmlNsPtr(n_ns, ns, 1);
+        des_const_xmlChar_ptr(n_name, name, 2);
+        des_const_xmlChar_ptr(n_content, content, 3);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewDocNode",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_ns);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -10680,8 +11264,51 @@ static int
 test_xmlNewDocNodeEatName(void) {
     int ret = 0;
 
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlNsPtr ns; /* namespace if any */
+    int n_ns;
+    xmlChar * name; /* the node name */
+    int n_name;
+    const xmlChar * content; /* the XML text content if any */
+    int n_content;
 
-    /* missing type support */
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_ns = 0;n_ns < gen_nb_xmlNsPtr;n_ns++) {
+    for (n_name = 0;n_name < gen_nb_eaten_name;n_name++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        ns = gen_xmlNsPtr(n_ns, 1);
+        name = gen_eaten_name(n_name, 2);
+        content = gen_const_xmlChar_ptr(n_content, 3);
+
+        ret_val = xmlNewDocNodeEatName(doc, ns, name, content);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_xmlNsPtr(n_ns, ns, 1);
+        des_eaten_name(n_name, name, 2);
+        des_const_xmlChar_ptr(n_content, content, 3);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewDocNodeEatName",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_ns);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -10746,8 +11373,51 @@ static int
 test_xmlNewDocRawNode(void) {
     int ret = 0;
 
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlNsPtr ns; /* namespace if any */
+    int n_ns;
+    const xmlChar * name; /* the node name */
+    int n_name;
+    const xmlChar * content; /* the text content if any */
+    int n_content;
 
-    /* missing type support */
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_ns = 0;n_ns < gen_nb_xmlNsPtr;n_ns++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        ns = gen_xmlNsPtr(n_ns, 1);
+        name = gen_const_xmlChar_ptr(n_name, 2);
+        content = gen_const_xmlChar_ptr(n_content, 3);
+
+        ret_val = xmlNewDocRawNode(doc, ns, name, content);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_xmlNsPtr(n_ns, ns, 1);
+        des_const_xmlChar_ptr(n_name, name, 2);
+        des_const_xmlChar_ptr(n_content, content, 3);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewDocRawNode",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_ns);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -10904,8 +11574,37 @@ static int
 test_xmlNewNode(void) {
     int ret = 0;
 
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlNsPtr ns; /* namespace if any */
+    int n_ns;
+    const xmlChar * name; /* the node name */
+    int n_name;
 
-    /* missing type support */
+    for (n_ns = 0;n_ns < gen_nb_xmlNsPtr;n_ns++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+        mem_base = xmlMemBlocks();
+        ns = gen_xmlNsPtr(n_ns, 0);
+        name = gen_const_xmlChar_ptr(n_name, 1);
+
+        ret_val = xmlNewNode(ns, name);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlNsPtr(n_ns, ns, 0);
+        des_const_xmlChar_ptr(n_name, name, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewNode",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ns);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -10914,8 +11613,37 @@ static int
 test_xmlNewNodeEatName(void) {
     int ret = 0;
 
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlNsPtr ns; /* namespace if any */
+    int n_ns;
+    xmlChar * name; /* the node name */
+    int n_name;
 
-    /* missing type support */
+    for (n_ns = 0;n_ns < gen_nb_xmlNsPtr;n_ns++) {
+    for (n_name = 0;n_name < gen_nb_eaten_name;n_name++) {
+        mem_base = xmlMemBlocks();
+        ns = gen_xmlNsPtr(n_ns, 0);
+        name = gen_eaten_name(n_name, 1);
+
+        ret_val = xmlNewNodeEatName(ns, name);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlNsPtr(n_ns, ns, 0);
+        des_eaten_name(n_name, name, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewNodeEatName",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ns);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -11074,8 +11802,51 @@ static int
 test_xmlNewTextChild(void) {
     int ret = 0;
 
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlNodePtr parent; /* the parent node */
+    int n_parent;
+    xmlNsPtr ns; /* a namespace if any */
+    int n_ns;
+    const xmlChar * name; /* the name of the child */
+    int n_name;
+    const xmlChar * content; /* the text content of the child if any. */
+    int n_content;
 
-    /* missing type support */
+    for (n_parent = 0;n_parent < gen_nb_xmlNodePtr;n_parent++) {
+    for (n_ns = 0;n_ns < gen_nb_xmlNsPtr;n_ns++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        parent = gen_xmlNodePtr(n_parent, 0);
+        ns = gen_xmlNsPtr(n_ns, 1);
+        name = gen_const_xmlChar_ptr(n_name, 2);
+        content = gen_const_xmlChar_ptr(n_content, 3);
+
+        ret_val = xmlNewTextChild(parent, ns, name, content);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlNodePtr(n_parent, parent, 0);
+        des_xmlNsPtr(n_ns, ns, 1);
+        des_const_xmlChar_ptr(n_name, name, 2);
+        des_const_xmlChar_ptr(n_content, content, 3);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewTextChild",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_parent);
+            printf(" %d", n_ns);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -12388,8 +13159,35 @@ static int
 test_xmlSetNs(void) {
     int ret = 0;
 
+    int mem_base;
+    xmlNodePtr node; /* a node in the document */
+    int n_node;
+    xmlNsPtr ns; /* a namespace pointer */
+    int n_ns;
 
-    /* missing type support */
+    for (n_node = 0;n_node < gen_nb_xmlNodePtr;n_node++) {
+    for (n_ns = 0;n_ns < gen_nb_xmlNsPtr;n_ns++) {
+        mem_base = xmlMemBlocks();
+        node = gen_xmlNodePtr(n_node, 0);
+        ns = gen_xmlNsPtr(n_ns, 1);
+
+        xmlSetNs(node, ns);
+        call_tests++;
+        des_xmlNodePtr(n_node, node, 0);
+        des_xmlNsPtr(n_ns, ns, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlSetNs",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_node);
+            printf(" %d", n_ns);
+            printf("\n");
+        }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -12640,8 +13438,46 @@ static int
 test_xmlUnsetNsProp(void) {
     int ret = 0;
 
+#ifdef LIBXML_TREE_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlNodePtr node; /* the node */
+    int n_node;
+    xmlNsPtr ns; /* the namespace definition */
+    int n_ns;
+    const xmlChar * name; /* the attribute name */
+    int n_name;
 
-    /* missing type support */
+    for (n_node = 0;n_node < gen_nb_xmlNodePtr;n_node++) {
+    for (n_ns = 0;n_ns < gen_nb_xmlNsPtr;n_ns++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+        mem_base = xmlMemBlocks();
+        node = gen_xmlNodePtr(n_node, 0);
+        ns = gen_xmlNsPtr(n_ns, 1);
+        name = gen_const_xmlChar_ptr(n_name, 2);
+
+        ret_val = xmlUnsetNsProp(node, ns, name);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlNodePtr(n_node, node, 0);
+        des_xmlNsPtr(n_ns, ns, 1);
+        des_const_xmlChar_ptr(n_name, name, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUnsetNsProp",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_node);
+            printf(" %d", n_ns);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -12846,7 +13682,7 @@ static int
 test_tree(void) {
     int ret = 0;
 
-    printf("Testing tree : 89 of 146 functions ...\n");
+    printf("Testing tree : 99 of 146 functions ...\n");
     ret += test_xmlAddChild();
     ret += test_xmlAddChildList();
     ret += test_xmlAddNextSibling();
@@ -14001,8 +14837,46 @@ static int
 test_xmlValidateDtd(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
+    xmlDtdPtr dtd; /* a dtd instance */
+    int n_dtd;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_dtd = 0;n_dtd < gen_nb_xmlDtdPtr;n_dtd++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt, 0);
+        doc = gen_xmlDocPtr(n_doc, 1);
+        dtd = gen_xmlDtdPtr(n_dtd, 2);
+
+        ret_val = xmlValidateDtd(ctxt, doc, dtd);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlDocPtr(n_doc, doc, 1);
+        des_xmlDtdPtr(n_dtd, dtd, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidateDtd",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf(" %d", n_dtd);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -14414,8 +15288,67 @@ static int
 test_xmlValidateOneNamespace(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
+    xmlNodePtr elem; /* an element instance */
+    int n_elem;
+    const xmlChar * prefix; /* the namespace prefix */
+    int n_prefix;
+    xmlNsPtr ns; /* an namespace declaration instance */
+    int n_ns;
+    const xmlChar * value; /* the attribute value (without entities processing) */
+    int n_value;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_prefix = 0;n_prefix < gen_nb_const_xmlChar_ptr;n_prefix++) {
+    for (n_ns = 0;n_ns < gen_nb_xmlNsPtr;n_ns++) {
+    for (n_value = 0;n_value < gen_nb_const_xmlChar_ptr;n_value++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt, 0);
+        doc = gen_xmlDocPtr(n_doc, 1);
+        elem = gen_xmlNodePtr(n_elem, 2);
+        prefix = gen_const_xmlChar_ptr(n_prefix, 3);
+        ns = gen_xmlNsPtr(n_ns, 4);
+        value = gen_const_xmlChar_ptr(n_value, 5);
+
+        ret_val = xmlValidateOneNamespace(ctxt, doc, elem, prefix, ns, value);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlDocPtr(n_doc, doc, 1);
+        des_xmlNodePtr(n_elem, elem, 2);
+        des_const_xmlChar_ptr(n_prefix, prefix, 3);
+        des_xmlNsPtr(n_ns, ns, 4);
+        des_const_xmlChar_ptr(n_value, value, 5);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidateOneNamespace",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf(" %d", n_elem);
+            printf(" %d", n_prefix);
+            printf(" %d", n_ns);
+            printf(" %d", n_value);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -14622,7 +15555,7 @@ static int
 test_valid(void) {
     int ret = 0;
 
-    printf("Testing valid : 22 of 67 functions ...\n");
+    printf("Testing valid : 24 of 67 functions ...\n");
     ret += test_xmlAddAttributeDecl();
     ret += test_xmlAddElementDecl();
     ret += test_xmlAddID();

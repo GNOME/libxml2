@@ -30,6 +30,10 @@ Libraries, include files, etc you can use to develop libxml applications.
 
 %changelog
 
+* Sun Oct  4 10:49:04 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+- Added xml-config to the package
+
 * Thu Sep 24 1998 Michael Fulbright <msf@redhat.com>
 
 - Built release 0.30

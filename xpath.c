@@ -7617,19 +7617,21 @@ xmlXPathCompFunctionCall(xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
 
     ctxt->comp->last = -1;
-    while (CUR != ')') {
-	int op1 = ctxt->comp->last;
-	ctxt->comp->last = -1;
-        xmlXPathCompileExpr(ctxt);
-	CHECK_ERROR;
-	PUSH_BINARY_EXPR(XPATH_OP_ARG, op1, ctxt->comp->last, 0, 0);
-	nbargs++;
-	if (CUR == ')') break;
-	if (CUR != ',') {
-	    XP_ERROR(XPATH_EXPR_ERROR);
+    if (CUR != ')') {
+	while (CUR != 0) {
+	    int op1 = ctxt->comp->last;
+	    ctxt->comp->last = -1;
+	    xmlXPathCompileExpr(ctxt);
+	    CHECK_ERROR;
+	    PUSH_BINARY_EXPR(XPATH_OP_ARG, op1, ctxt->comp->last, 0, 0);
+	    nbargs++;
+	    if (CUR == ')') break;
+	    if (CUR != ',') {
+		XP_ERROR(XPATH_EXPR_ERROR);
+	    }
+	    NEXT;
+	    SKIP_BLANKS;
 	}
-	NEXT;
-	SKIP_BLANKS;
     }
     PUSH_LONG_EXPR(XPATH_OP_FUNCTION, nbargs, 0, 0,
 	           name, prefix);

@@ -1,3 +1,8 @@
+Tue Jan 14 17:00:08 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: Alexey Efimov pointed out that concat('a', 'b', )
+	  should raise a syntax error
+
 Tue Jan 14 15:39:14 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: cleanup patch from Stéphane Bidoul

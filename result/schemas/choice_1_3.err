@@ -1,1 +1,1 @@
-./test/schemas/choice_3.xml:1: element doc: Schemas validity error : Element 'doc' [CT local]: The element content is not valid.
+./test/schemas/choice_3.xml:3: element a: Schemas validity error : Element 'a': This element is not expected.

@@ -1,1 +1,1 @@
-./test/schemas/vdv-first4_1.xml:14: element born: Schemas validity error : Element 'born' [ST 'date']: The character content is not valid.
+./test/schemas/vdv-first4_1.xml:14: element born: Schemas validity error : Element 'born' [simple type 'date']: The character content is not valid.

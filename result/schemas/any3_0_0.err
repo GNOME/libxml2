@@ -1,1 +1,3 @@
-./test/schemas/any3_0.xml:10: element foo: Schemas validity error : Element 'foo:foo' [CT local]: The element content is not valid.
+./test/schemas/any3_0.xml:12: element bar.A: Schemas validity error : Element 'bar.A': This element is not expected.
+./test/schemas/any3_0.xml:13: element bar.B: Schemas validity error : Element 'foo:bar.B': This element is not expected.
+./test/schemas/any3_0.xml:14: element bar.C: Schemas validity error : Element 'bar:bar.C': This element is not expected.

@@ -1,1 +1,1 @@
-./test/schemas/facet-unionST-err1_0.xml:3: element foo: Schemas validity error : Element 'foo' [ST 'fooType.B']: The character content is not valid.
+./test/schemas/facet-unionST-err1_0.xml:3: element foo: Schemas validity error : Element 'foo' [simple type 'fooType.B']: The character content is not valid.

@@ -1,1 +1,1 @@
-./test/schemas/list0_0.xml:1: element test: Schemas validity error : Element 'test' [CT local]: The element content is not valid.
+./test/schemas/list0_0.xml:5: element string: Schemas validity error : Element 'string': This element is not expected.

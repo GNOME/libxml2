@@ -1,1 +1,1 @@
-./test/schemas/cos-st-restricts-1-2-err_0.xml:3: element foo: Schemas validity error : Element 'foo' [ST 'type.A', facet 'length']: The value has a length of '2'; this differs from the allowed length of '3'.
+./test/schemas/cos-st-restricts-1-2-err_0.xml:3: element foo: Schemas validity error : Element 'foo' [simple type 'type.A', facet 'length']: The value has a length of '2'; this differs from the allowed length of '3'.

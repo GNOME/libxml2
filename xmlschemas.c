@@ -76,9 +76,9 @@ static const xmlChar *xmlSchemaElemDesAttrDecl = (const xmlChar *)
 static const xmlChar *xmlSchemaElemDesAttrRef = (const xmlChar *)
     "Attribute ref.";
 static const xmlChar *xmlSchemaElemDesST = (const xmlChar *)
-    "ST";
+    "simple type";
 static const xmlChar *xmlSchemaElemDesCT = (const xmlChar *)
-    "CT";
+    "complex type";
 
 #define IS_SCHEMA(node, type)						\
    ((node != NULL) && (node->ns != NULL) &&				\
@@ -764,7 +764,9 @@ xmlSchemaFormatItemForReport(xmlChar **buf,
 		*buf = xmlStrcat(*buf, BAD_CAST "'");
 	    } else {
 		*buf = xmlStrdup(xmlSchemaElemDesST);
-		*buf = xmlStrcat(*buf, BAD_CAST " local");
+		/* Local types will get to name
+		*buf = xmlStrcat(*buf, BAD_CAST " ");
+		*/
 	    }
 	} else if (item->type == XML_SCHEMA_TYPE_COMPLEX) {
 	    if (item->flags & XML_SCHEMAS_TYPE_GLOBAL) {
@@ -774,7 +776,9 @@ xmlSchemaFormatItemForReport(xmlChar **buf,
 		*buf = xmlStrcat(*buf, BAD_CAST "'");
 	    } else {
 		*buf = xmlStrdup(xmlSchemaElemDesCT);
-		*buf = xmlStrcat(*buf, BAD_CAST " local");
+		/* Local types will get to name 
+		*buf = xmlStrcat(*buf, BAD_CAST " ");
+		*/
 	    }
 	} else if (item->type == XML_SCHEMA_TYPE_ATTRIBUTE) {
 	    xmlSchemaAttributePtr attr;
@@ -1068,7 +1072,8 @@ xmlSchemaVComplexTypeErr(xmlSchemaValidCtxtPtr ctxt,
     xmlChar *str = NULL, *msg = NULL;
     
     xmlSchemaFormatItemForReport(&msg, NULL,  NULL, node, 0);
-    if (type != NULL) {
+    /* Specify the complex type only if it is global. */
+    if ((type != NULL) && (type->flags & XML_SCHEMAS_TYPE_GLOBAL)) {
 	msg = xmlStrcat(msg, BAD_CAST " [");
 	msg = xmlStrcat(msg, xmlSchemaFormatItemForReport(&str, NULL, type, NULL, 0));
 	msg = xmlStrcat(msg, BAD_CAST "]");
@@ -1647,6 +1652,34 @@ xmlSchemaVIllegalAttrErr(xmlSchemaValidCtxtPtr ctxt,
     FREE_AND_NULL(strA)
 }
 
+
+static int
+xmlSchemaIsGlobalItem(xmlSchemaTypePtr item)
+{
+    switch (item->type) {
+	case XML_SCHEMA_TYPE_COMPLEX:
+	case XML_SCHEMA_TYPE_SIMPLE:
+	case XML_SCHEMA_TYPE_GROUP:
+	    if (item->flags & XML_SCHEMAS_TYPE_GLOBAL)
+		return(1);
+	    break;
+	case XML_SCHEMA_TYPE_ELEMENT:
+	    if ( ((xmlSchemaElementPtr) item)->flags & 
+		XML_SCHEMAS_ELEM_GLOBAL)
+		return(1);
+	    break;
+	case XML_SCHEMA_TYPE_ATTRIBUTE:
+	    if ( ((xmlSchemaAttributePtr) item)->flags & 
+		XML_SCHEMAS_ATTR_GLOBAL)
+		return(1);
+	    break;
+	/* Note that attribute groups are always global. */
+	default:
+	    return(1);
+    }
+    return (0);
+}
+
 /**
  * xmlSchemaVCustomErr:
  * @ctxt: the schema validation context
@@ -1678,7 +1711,7 @@ xmlSchemaVCustomErr(xmlSchemaValidCtxtPtr ctxt,
     /* TODO: Are the HTML and DOCB doc nodes expected here? */
     if (node->type != XML_DOCUMENT_NODE) {
 	xmlSchemaFormatItemForReport(&msg, NULL, NULL, node, 0);
-	if (type != NULL) {
+	if ((type != NULL) && (xmlSchemaIsGlobalItem(type))) {
 	    msg = xmlStrcat(msg, BAD_CAST " [");
 	    msg = xmlStrcat(msg, xmlSchemaFormatItemForReport(&str, NULL, type, NULL, 0));
 	    msg = xmlStrcat(msg, BAD_CAST "]");
@@ -1737,7 +1770,7 @@ xmlSchemaVWildcardErr(xmlSchemaValidCtxtPtr ctxt,
     xmlSchemaFormatItemForReport(&des, NULL, NULL, node, 0);
     msg = xmlStrdup(BAD_CAST "%s, [");
     msg = xmlStrcat(msg, BAD_CAST xmlSchemaWildcardPCToString(wild->processContents));
-    msg = xmlStrcat(msg, BAD_CAST " WC]: ");
+    msg = xmlStrcat(msg, BAD_CAST " wildcard]: ");
     msg = xmlStrcat(msg, (const xmlChar *) message);
     msg = xmlStrcat(msg, BAD_CAST ".\n");
     xmlSchemaVErr(ctxt, node, error, (const char *) msg, BAD_CAST des, NULL);
@@ -15237,10 +15270,10 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
     * the spec.
     */
     if (actualType == NULL) {
-    	xmlSchemaVComplexTypeErr(ctxt, 
+    	xmlSchemaVCustomErr(ctxt, 
     	    XML_SCHEMAV_CVC_TYPE_1,
     	    elem, (xmlSchemaTypePtr) elemDecl, 
-    	    "The type definition is absent");
+    	    "The type definition is absent", NULL);
     	return (XML_SCHEMAV_CVC_TYPE_1);
     }
     
@@ -15814,7 +15847,7 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 		    else
 			nsUri = NULL;
 		    ret = xmlRegExecPushString2(ctxt->regexp,
-			child->name, nsUri, child);
+			child->name, nsUri, child);		    
 		    /*
 		    * URGENT TODO: Could we anchor an error report
 		    * here to notify of invalid elements?
@@ -15827,6 +15860,13 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 			xmlGenericError(xmlGenericErrorContext,
 			"  --> %s\n", child->name);
 #endif
+		    if (ret < 0) {
+			xmlSchemaVComplexTypeErr(ctxt, 
+			    XML_SCHEMAV_ELEMENT_CONTENT,
+			    child, NULL/* type */, 
+			    "This element is not expected");
+			ret = 1;
+		    }
 		} else if ((type->contentType == XML_SCHEMA_CONTENT_ELEMENTS) && 
 		    /* 
 		    * TODO: Ask Daniel if this are all character nodes.
@@ -15846,7 +15886,8 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 			XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3,
 			elem, type, 
 			"Character content is not allowed, "
-			"because the content type is element-only");		    
+			"because the content type is element-only");
+		    ret = 1;
 		    break;
 		}
 		child = child->next;		    
@@ -15855,24 +15896,29 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 	    * Content model check finalization.
 	    */
        	    if (type->contModel != NULL) {
-		ret = xmlRegExecPushString(ctxt->regexp, NULL, NULL);
+		if (ret != 1) {
+		    ret = xmlRegExecPushString(ctxt->regexp, NULL, NULL);
 #ifdef DEBUG_AUTOMATA
-		xmlGenericError(xmlGenericErrorContext,
-		    "====> %s : %d\n", elem->name, ret);
-#endif
-		if (ret == 0) {
-		    xmlSchemaVCustomErr(ctxt, XML_SCHEMAV_ELEMENT_CONTENT,
-			elem, type, "The element content is not valid", NULL);
-		} else if (ret < 0) {
-		    xmlSchemaVCustomErr(ctxt, XML_SCHEMAV_ELEMENT_CONTENT,
-			elem, type, "The element content is not valid", NULL);
-#ifdef DEBUG_CONTENT
-		} else {
 		    xmlGenericError(xmlGenericErrorContext,
-			"Element %s content check succeeded\n",
-			elem->name);
-		    
+			"====> %s : %d\n", elem->name, ret);
 #endif
+		    if (ret == 0) {
+			/* TODO: Hmm, can this one really happen? */
+			xmlSchemaVComplexTypeErr(ctxt, 
+			    XML_SCHEMAV_ELEMENT_CONTENT,
+			    elem, type, "Missing child element(s)");
+		    } else if (ret < 0) {
+			xmlSchemaVComplexTypeErr(ctxt, 
+			    XML_SCHEMAV_ELEMENT_CONTENT,
+			    elem, type, "Missing child element(s)");
+#ifdef DEBUG_CONTENT
+		    } else {
+			xmlGenericError(xmlGenericErrorContext,
+			    "Element %s content check succeeded\n",
+			    elem->name);
+			
+#endif
+		    }
 		}
 		xmlRegFreeExecCtxt(ctxt->regexp);
 		ctxt->regexp = oldregexp;
@@ -16043,18 +16089,18 @@ xmlSchemaValidateElementByType(xmlSchemaValidCtxtPtr ctxt,
     * procedures for the given type.
     */        
     if (type == NULL) {
-    	xmlSchemaVComplexTypeErr(ctxt, 
+    	xmlSchemaVCustomErr(ctxt, 
     	    XML_SCHEMAV_CVC_TYPE_1,
     	    ctxt->node, NULL, 
-    	    "The type definition is absent");
+    	    "The type definition is absent", NULL);
     	return (XML_SCHEMAV_CVC_TYPE_1);
     }
     
     if (type->flags & XML_SCHEMAS_TYPE_ABSTRACT) {
-    	xmlSchemaVComplexTypeErr(ctxt, 
+    	xmlSchemaVCustomErr(ctxt, 
     	    XML_SCHEMAV_CVC_TYPE_2,
     	    ctxt->node, type, 
-    	    "The type definition is abstract");
+    	    "The type definition is abstract", NULL);
     	return (XML_SCHEMAV_CVC_TYPE_2);
     }
 

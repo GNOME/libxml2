@@ -1,3 +1,16 @@
+Wed Nov 17 13:54:37 CET 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: tiny enhancement for content model error reports (#157190, #143948).
+	  Removed abbreviations: CT, ST and WC (#157190, reported by Frans  Englich).
+	  Initial: no report of local components.
+	* result/schemas/all* result/schemas/any3_0_0.err result/schemas/choice*
+	  result/schemas/cos-st-restricts-1-2-err_0_0.err result/schemas/derivation-ok-extension-err_0_0.err
+	  result/schemas/derivation-ok-extension_0_0.err result/schemas/derivation-ok-restriction-2-1-1_0_0.err
+	  result/schemas/derivation-ok-restriction-4-1-err_0_0.err result/schemas/deter0_0_0.err
+	  result/schemas/extension1_0_2.err result/schemas/facet-unionST-err1_0_0.err
+	  result/schemas/hexbinary_0_1.err result/schemas/list* result/schemas/restriction-attr1_0_0.err
+	  result/schemas/vdv-first4_0_1.err result/schemas/vdv-first4_0_2.err: Adapted output.
+
 Mon Nov 15 13:04:28 CET 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Moved execution of xmlSchemaCheckDefaults to

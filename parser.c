@@ -5599,10 +5599,13 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			cur = ent->children;
 			while (cur != NULL) {
 			    new = xmlCopyNode(cur, 1);
-			    if (firstChild == NULL){
-			      firstChild = new;
+			    if (new != NULL) {
+				new->_private = cur->_private;
+				if (firstChild == NULL){
+				    firstChild = new;
+				}
+				xmlAddChild(ctxt->node, new);
 			    }
-			    xmlAddChild(ctxt->node, new);
 			    if (cur == ent->last)
 				break;
 			    cur = cur->next;

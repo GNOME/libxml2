@@ -105,6 +105,41 @@ if ret != 0:
     sys.exit(1)
 
 #
+# third test, crazy stuff about empty element in external parsed entities
+#
+s = """<!DOCTYPE struct [
+<!ENTITY simplestruct2.ent SYSTEM "simplestruct2.ent">
+]>
+<struct>&simplestruct2.ent;</struct>
+"""
+expect="""10 struct 0 0
+1 struct 0 0
+1 descr 1 1
+15 struct 0 0
+"""
+res=""
+simplestruct2_ent="""<descr/>"""
+
+def myResolver(URL, ID, ctxt):
+    if URL == "simplestruct2.ent":
+        return(StringIO.StringIO(simplestruct2_ent))
+    return None
+
+libxml2.setEntityLoader(myResolver)
+
+input = libxml2.inputBuffer(StringIO.StringIO(s))
+reader = input.newTextReader("test3")
+reader.SetParserProp(libxml2.PARSER_SUBST_ENTITIES,1)
+while reader.Read() == 1:
+    res = res + "%s %s %d %d\n" % (reader.NodeType(),reader.Name(),
+                                   reader.Depth(),reader.IsEmptyElement())
+
+if res != expect:
+    print "test3 failed: unexpected output"
+    print res
+    sys.exit(1)
+
+#
 # cleanup
 #
 del f

@@ -1,3 +1,9 @@
+Fri Jan 10 00:16:49 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: one more IsEmptyElement crazyness, that time in
+	  external parsed entities if substitution is asked.
+	* python/tests/reader3.py: added a specific test.
+
 Thu Jan  9 22:35:31 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/drv_libxml2.py: update from Stéphane Bidoul: python 2.1

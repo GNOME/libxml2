@@ -1,6 +1,11 @@
 #!/bin/sh
 # Run this to generate all the initial makefiles, etc.
 
+srcdir=`dirname $0`
+test -z "$srcdir" && srcdir=. 
+
+THEDIR=`pwd`
+cd $srcdir
 DIE=0
 
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
@@ -45,13 +50,11 @@ libtoolize --copy --force
 aclocal                                                                       
 automake --add-missing
 autoconf
-if [ -z "$OBJ_DIR" ]; then
-	./configure "$@"
-else
-	mkdir -p "$OBJ_DIR"
-	cd "$OBJ_DIR"
-	../configure "$@"
-fi
+
+cd $THEDIR
+mkdir -p "$OBJ_DIR"
+cd "$OBJ_DIR"
+$srcdir/configure "$@"
 
 echo 
 echo "Now type 'make' to compile gnome-xml."

@@ -2226,7 +2226,45 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
  */
 
 xmlChar *
+xmlParseAttValueComplex(xmlParserCtxtPtr ctxt);
+
+xmlChar *
 xmlParseAttValue(xmlParserCtxtPtr ctxt) {
+    xmlChar limit = 0;
+    xmlChar *buf = NULL;
+    xmlChar *in = NULL;
+    xmlChar *ret = NULL;
+    SHRINK;
+    GROW;
+    in = CUR_PTR;
+    if (*in != '"' && *in != '\'') {
+      ctxt->errNo = XML_ERR_ATTRIBUTE_NOT_STARTED;
+      if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+          ctxt->sax->error(ctxt->userData, "AttValue: \" or ' expected\n");
+      ctxt->wellFormed = 0;
+      ctxt->disableSAX = 1;
+      return(NULL);
+    } 
+    ctxt->instate = XML_PARSER_ATTRIBUTE_VALUE;
+    limit = *in;
+    ++in;
+    
+    while (*in != limit && *in >= 0x20 && *in <= 0x7f && 
+      *in != '&' && *in != '<'
+    ) {
+      ++in;
+    }
+    if (*in != limit) {
+      return xmlParseAttValueComplex(ctxt);
+    }
+    ++in;
+    ret = xmlStrndup (CUR_PTR + 1, in - CUR_PTR - 2);
+    CUR_PTR = in;
+    return ret;
+}
+
+xmlChar *
+xmlParseAttValueComplex(xmlParserCtxtPtr ctxt) {
     xmlChar limit = 0;
     xmlChar *buf = NULL;
     int len = 0;

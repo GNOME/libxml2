@@ -1,3 +1,8 @@
+Fri May 31 11:47:12 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: another peroformance patch from Peter Jacobi, that
+	  time on parsing attribute values.
+
 Thu May 30 23:34:27 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* Makefile.am result/c14n/* test/c14n/*: C14N tests integrated

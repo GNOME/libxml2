@@ -560,38 +560,37 @@ isolat1ToUTF8(unsigned char* out, int *outlen,
               const unsigned char* in, int *inlen) {
     unsigned char* outstart = out;
     const unsigned char* base = in;
-    const unsigned char* processed = in;
     unsigned char* outend = out + *outlen;
     const unsigned char* inend;
-    unsigned int c;
+    const unsigned char* instop;
+    xmlChar c = *in;
 
     inend = in + (*inlen);
-    while (in < inend) {
-	c = *in++;
-
-        if (out >= outend)
-	    break;
-
-        if (c < 0x80) {
-	    *out++ =  c;
-	    processed++;
-	    continue;
-	} else {
-	    /*
-	     * make sure there is 2 chars left in advance
-	     */
-            if (out + 1 >= outend) {
-		break;
-	    }
+    instop = inend;
+    
+    while (in < inend && out < outend - 1) {
+    	if (c >= 0x80) {
 	    *out++= ((c >>  6) & 0x1F) | 0xC0;
             *out++= (c & 0x3F) | 0x80;
-	    processed++;
-        }
+	    ++in;
+	    c = *in;
+	}
+	if (instop - in > outend - out) instop = in + (outend - out); 
+	while (c < 0x80 && in < instop) {
+	    *out++ =  c;
+	    ++in;
+	    c = *in;
+	}
+    }	
+    if (in < inend && out < outend && c < 0x80) {
+        *out++ =  c;
+	++in;
     }
     *outlen = out - outstart;
-    *inlen = processed - base;
+    *inlen = in - base;
     return(0);
 }
+
 
 /**
  * UTF8Toisolat1:

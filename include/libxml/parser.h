@@ -825,7 +825,7 @@ XMLPUBFUN int XMLCALL
  */
 #ifdef LIBXML_SAX1_ENABLED
 XMLPUBFUN xmlDocPtr XMLCALL	
-		xmlParseDoc		(xmlChar *cur);
+		xmlParseDoc		(const xmlChar *cur);
 XMLPUBFUN xmlDocPtr XMLCALL	
 		xmlParseFile		(const char *filename);
 XMLPUBFUN xmlDocPtr XMLCALL	
@@ -877,7 +877,7 @@ XMLPUBFUN int XMLCALL
 					 int size);
 XMLPUBFUN xmlDocPtr XMLCALL	
 		xmlSAXParseDoc		(xmlSAXHandlerPtr sax,
-					 xmlChar *cur,
+					 const xmlChar *cur,
 					 int recovery);
 XMLPUBFUN xmlDocPtr XMLCALL	
 		xmlSAXParseMemory	(xmlSAXHandlerPtr sax,

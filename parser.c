@@ -12212,7 +12212,7 @@ xmlCreateDocParserCtxt(const xmlChar *cur) {
  */
 
 xmlDocPtr
-xmlSAXParseDoc(xmlSAXHandlerPtr sax, xmlChar *cur, int recovery) {
+xmlSAXParseDoc(xmlSAXHandlerPtr sax, const xmlChar *cur, int recovery) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     xmlSAXHandlerPtr oldsax = NULL;
@@ -12253,7 +12253,7 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, xmlChar *cur, int recovery) {
  */
 
 xmlDocPtr
-xmlParseDoc(xmlChar *cur) {
+xmlParseDoc(const xmlChar *cur) {
     return(xmlSAXParseDoc(NULL, cur, 0));
 }
 #endif /* LIBXML_SAX1_ENABLED */

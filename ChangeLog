@@ -1,3 +1,9 @@
+Thu Mar 31 16:57:18 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: fixed #172260 redundant assignment.
+	* parser.c include/libxml/parser.h: fixed xmlSAXParseDoc() and 
+	  xmlParseDoc() signatures #172257.
+
 Thu Mar 31 16:11:10 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix potential crash if ctxt->sax->ignorableWhitespace

@@ -116,7 +116,6 @@ inithtmlDefaultSAXHandler(xmlSAXHandlerV1 *hdlr)
     hdlr->cdataBlock = xmlSAX2CDataBlock;
     hdlr->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
     hdlr->processingInstruction = xmlSAX2ProcessingInstruction;
-    hdlr->processingInstruction = NULL;
     hdlr->comment = xmlSAX2Comment;
     hdlr->warning = xmlParserWarning;
     hdlr->error = xmlParserError;

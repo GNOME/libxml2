@@ -27,6 +27,7 @@ typedef enum {
 typedef enum {
     XML_FROM_NONE = 0,
     XML_FROM_PARSER,	/* The XML parser */
+    XML_FROM_TREE,	/* The tree module */
     XML_FROM_NAMESPACE,	/* The XML Namespace module */
     XML_FROM_DTD,	/* The XML DTD validation */
     XML_FROM_HTML,	/* The HTML parser */
@@ -397,7 +398,13 @@ typedef enum {
     XML_XPTR_SUB_RESOURCE_ERROR,
     XML_XPATH_UNDEF_PREFIX_ERROR,
     XML_XPATH_ENCODING_ERROR,
-    XML_XPATH_INVALID_CHAR_ERROR
+    XML_XPATH_INVALID_CHAR_ERROR,
+    XML_TREE_INVALID_HEX = 1300,
+    XML_TREE_INVALID_DEC,
+    XML_TREE_UNTERMINATED_ENTITY,
+    XML_SAVE_NOT_UTF8 = 1400,
+    XML_SAVE_CHAR_INVALID,
+    XML_SAVE_UNKNOWN_ENCODING
 } xmlParserErrors;
 
 /**
@@ -495,6 +502,12 @@ XMLPUBFUN void XMLCALL
 				 int int2,
 				 const char *msg,
 				 ...);
+XMLPUBFUN void XMLCALL 
+    __xmlSimpleError		(int domain,
+    				 int code,
+				 xmlNodePtr node,
+				 const char *msg,
+				 const char *extra);
 #endif
 #ifdef __cplusplus
 }

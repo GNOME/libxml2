@@ -518,6 +518,36 @@ __xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
 }
 
 /**
+ * __xmlSimpleError:
+ * @domain: where the error comes from
+ * @code: the error code
+ * @node: the context node
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+void
+__xmlSimpleError(int domain, int code, xmlNodePtr node,
+                 const char *msg, const char *extra)
+{
+
+    if (code == XML_ERR_NO_MEMORY) {
+	if (extra)
+	    __xmlRaiseError(NULL, NULL, NULL, node, domain,
+			    XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
+			    NULL, NULL, 0, 0,
+			    "Memory allocation failed : %s\n", extra);
+	else
+	    __xmlRaiseError(NULL, NULL, NULL, node, domain,
+			    XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, NULL,
+			    NULL, NULL, 0, 0, "Memory allocation failed\n");
+    } else {
+	__xmlRaiseError(NULL, NULL, NULL, node, domain,
+			code, XML_ERR_ERROR, NULL, 0, extra,
+			NULL, NULL, 0, 0, msg, extra);
+    }
+}
+/**
  * xmlParserError:
  * @ctx:  an XML parser context
  * @msg:  the message to display/transmit

@@ -44,6 +44,51 @@ xmlNsPtr xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
 
 /************************************************************************
  *									*
+ * 		Tree memory error handler				*
+ *									*
+ ************************************************************************/
+/**
+ * xmlTreeErrMemory:
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+static void
+xmlTreeErrMemory(const char *extra)
+{
+    __xmlSimpleError(XML_FROM_TREE, XML_ERR_NO_MEMORY, NULL, NULL, extra);
+}
+
+/**
+ * xmlTreeErr:
+ * @code:  the error number
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+static void
+xmlTreeErr(int code, xmlNodePtr node, const char *extra)
+{
+    const char *msg = NULL;
+
+    switch(code) {
+        case XML_TREE_INVALID_HEX:
+	    msg = "invalid hexadecimal character value";
+	    break;
+	case XML_TREE_INVALID_DEC:
+	    msg = "invalid decimal character value";
+	    break;
+	case XML_TREE_UNTERMINATED_ENTITY:
+	    msg = "unterminated entity reference %15s";
+	    break;
+	default:
+	    msg = "unexpected error number";
+    }
+    __xmlSimpleError(XML_FROM_TREE, code, node, msg, extra);
+}
+
+/************************************************************************
+ *									*
  * 		A few static variables and macros			*
  *									*
  ************************************************************************/
@@ -161,7 +206,10 @@ xmlBuildQName(const xmlChar *ncname, const xmlChar *prefix,
 
     if ((memory == NULL) || (len < lenn + lenp + 2)) {
 	ret = (xmlChar *) xmlMallocAtomic(lenn + lenp + 2);
-	if (ret == NULL) return(NULL);
+	if (ret == NULL) {
+	    xmlTreeErrMemory("building QName");
+	    return(NULL);
+	}
     } else {
 	ret = memory;
     }
@@ -220,14 +268,12 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
 
     *prefix = xmlStrndup(name, len);
     if (*prefix == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlSplitQName2 : out of memory!\n");
+	xmlTreeErrMemory("QName split");
 	return(NULL);
     }
     ret = xmlStrdup(&name[len + 1]);
     if (ret == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlSplitQName2 : out of memory!\n");
+	xmlTreeErrMemory("QName split");
 	if (*prefix != NULL) {
 	    xmlFree(*prefix);
 	    *prefix = NULL;
@@ -650,8 +696,7 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
      */
     cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewNs : malloc failed\n");
+	xmlTreeErrMemory("building namespace");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNs));
@@ -785,8 +830,7 @@ xmlNewDtd(xmlDocPtr doc, const xmlChar *name,
      */
     cur = (xmlDtdPtr) xmlMalloc(sizeof(xmlDtd));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewDtd : malloc failed\n");
+	xmlTreeErrMemory("building DTD");
 	return(NULL);
     }
     memset(cur, 0 , sizeof(xmlDtd));
@@ -860,8 +904,7 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
      */
     cur = (xmlDtdPtr) xmlMalloc(sizeof(xmlDtd));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlCreateIntSubset : malloc failed\n");
+	xmlTreeErrMemory("building internal subset");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlDtd));
@@ -1002,8 +1045,7 @@ xmlNewDoc(const xmlChar *version) {
      */
     cur = (xmlDocPtr) xmlMalloc(sizeof(xmlDoc));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewDoc : malloc failed\n");
+	xmlTreeErrMemory("building doc");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlDoc));
@@ -1141,8 +1183,8 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 		    else if ((tmp >= 'A') && (tmp <= 'F'))
 			charval = charval * 16 + (tmp - 'A') + 10;
 		    else {
-			xmlGenericError(xmlGenericErrorContext,
-		    "xmlStringGetNodeList: invalid hexadecimal charvalue\n");
+			xmlTreeErr(XML_TREE_INVALID_HEX, (xmlNodePtr) doc,
+			           NULL);
 			charval = 0;
 			break;
 		    }
@@ -1165,8 +1207,8 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 		    if ((tmp >= '0') && (tmp <= '9')) 
 			charval = charval * 10 + (tmp - '0');
 		    else {
-			xmlGenericError(xmlGenericErrorContext,
-		    "xmlStringGetNodeList: invalid decimal charvalue\n");
+			xmlTreeErr(XML_TREE_INVALID_DEC, (xmlNodePtr) doc,
+			           NULL);
 			charval = 0;
 			break;
 		    }
@@ -1187,10 +1229,8 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 		q = cur;
 		while ((cur < end) && (*cur != 0) && (*cur != ';')) cur++;
 		if ((cur >= end) || (*cur == 0)) {
-#ifdef DEBUG_TREE
-		    xmlGenericError(xmlGenericErrorContext,
-			    "xmlStringGetNodeList: unterminated entity %30s\n", q);
-#endif
+		    xmlTreeErr(XML_TREE_UNTERMINATED_ENTITY, (xmlNodePtr) doc,
+		               (const char *) q);
 		    return(ret);
 		}
 		if (cur != q) {
@@ -1336,8 +1376,8 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 		    else if ((tmp >= 'A') && (tmp <= 'F'))
 			charval = charval * 16 + (tmp - 'A') + 10;
 		    else {
-			xmlGenericError(xmlGenericErrorContext,
-		    "xmlStringGetNodeList: invalid hexadecimal charvalue\n");
+			xmlTreeErr(XML_TREE_INVALID_HEX, (xmlNodePtr) doc,
+			           NULL);
 			charval = 0;
 			break;
 		    }
@@ -1354,8 +1394,8 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 		    if ((tmp >= '0') && (tmp <= '9')) 
 			charval = charval * 10 + (tmp - '0');
 		    else {
-			xmlGenericError(xmlGenericErrorContext,
-		    "xmlStringGetNodeList: invalid decimal charvalue\n");
+			xmlTreeErr(XML_TREE_INVALID_DEC, (xmlNodePtr) doc,
+			           NULL);
 			charval = 0;
 			break;
 		    }
@@ -1373,10 +1413,8 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 		q = cur;
 		while ((*cur != 0) && (*cur != ';')) cur++;
 		if (*cur == 0) {
-#ifdef DEBUG_TREE
-		    xmlGenericError(xmlGenericErrorContext,
-			    "xmlStringGetNodeList: unterminated entity %30s\n", q);
-#endif
+		    xmlTreeErr(XML_TREE_UNTERMINATED_ENTITY,
+		               (xmlNodePtr) doc, (const char *) q);
 		    return(ret);
 		}
 		if (cur != q) {
@@ -1661,8 +1699,7 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
      */
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewProp : malloc failed\n");
+	xmlTreeErrMemory("building attribute");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttr));
@@ -1742,8 +1779,7 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
      */
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewNsProp : malloc failed\n");
+	xmlTreeErrMemory("building attribute");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttr));
@@ -1822,8 +1858,7 @@ xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
      */
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewNsPropEatName : malloc failed\n");
+	xmlTreeErrMemory("building attribute");
         xmlFree(name);
 	return(NULL);
     }
@@ -1900,8 +1935,7 @@ xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value) {
      */
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewDocProp : malloc failed\n");
+	xmlTreeErrMemory("building attribute");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttr));
@@ -2050,8 +2084,7 @@ xmlNewPI(const xmlChar *name, const xmlChar *content) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewPI : malloc failed\n");
+	xmlTreeErrMemory("building PI");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -2093,8 +2126,7 @@ xmlNewNode(xmlNsPtr ns, const xmlChar *name) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewNode : malloc failed\n");
+	xmlTreeErrMemory("building node");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -2134,8 +2166,7 @@ xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewNode : malloc failed\n");
+	xmlTreeErrMemory("building node");
         xmlFree(name);
 	return(NULL);
     }
@@ -2260,8 +2291,7 @@ xmlNewDocFragment(xmlDocPtr doc) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewDocFragment : malloc failed\n");
+	xmlTreeErrMemory("building fragment");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -2291,8 +2321,7 @@ xmlNewText(const xmlChar *content) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewText : malloc failed\n");
+	xmlTreeErrMemory("building text");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -2389,8 +2418,7 @@ xmlNewCharRef(xmlDocPtr doc, const xmlChar *name) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewCharRef : malloc failed\n");
+	xmlTreeErrMemory("building character reference");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -2431,8 +2459,7 @@ xmlNewReference(xmlDocPtr doc, const xmlChar *name) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewReference : malloc failed\n");
+	xmlTreeErrMemory("building reference");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -2501,8 +2528,7 @@ xmlNewTextLen(const xmlChar *content, int len) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewTextLen : malloc failed\n");
+	xmlTreeErrMemory("building text");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -2553,8 +2579,7 @@ xmlNewComment(const xmlChar *content) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewComment : malloc failed\n");
+	xmlTreeErrMemory("building comment");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -2588,8 +2613,7 @@ xmlNewCDataBlock(xmlDocPtr doc, const xmlChar *content, int len) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewCDataBlock : malloc failed\n");
+	xmlTreeErrMemory("building CDATA");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -3700,8 +3724,7 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
      */
     ret = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlStaticCopyNode : malloc failed\n");
+	xmlTreeErrMemory("copying node");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlNode));
@@ -4088,10 +4111,13 @@ xmlGetNodePath(xmlNodePtr node)
 
     buf_len = 500;
     buffer = (xmlChar *) xmlMallocAtomic(buf_len * sizeof(xmlChar));
-    if (buffer == NULL)
+    if (buffer == NULL) {
+	xmlTreeErrMemory("getting node path");
         return (NULL);
+    }
     buf = (xmlChar *) xmlMallocAtomic(buf_len * sizeof(xmlChar));
     if (buf == NULL) {
+	xmlTreeErrMemory("getting node path");
         xmlFree(buffer);
         return (NULL);
     }
@@ -4243,6 +4269,7 @@ xmlGetNodePath(xmlNodePtr node)
                 2 * buf_len + xmlStrlen(buffer) + sizeof(nametemp) + 20;
             temp = (xmlChar *) xmlRealloc(buffer, buf_len);
             if (temp == NULL) {
+		xmlTreeErrMemory("getting node path");
                 xmlFree(buf);
                 xmlFree(buffer);
                 return (NULL);
@@ -4250,6 +4277,7 @@ xmlGetNodePath(xmlNodePtr node)
             buffer = temp;
             temp = (xmlChar *) xmlRealloc(buf, buf_len);
             if (temp == NULL) {
+		xmlTreeErrMemory("getting node path");
                 xmlFree(buf);
                 xmlFree(buffer);
                 return (NULL);
@@ -5144,8 +5172,7 @@ xmlGetNsList(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node)
                         (xmlNsPtr *) xmlMalloc((maxns + 1) *
                                                sizeof(xmlNsPtr));
                     if (ret == NULL) {
-                        xmlGenericError(xmlGenericErrorContext,
-                                        "xmlGetNsList : out of memory!\n");
+			xmlTreeErrMemory("getting namespace list");
                         return (NULL);
                     }
                     ret[nbns] = NULL;
@@ -5163,8 +5190,7 @@ xmlGetNsList(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node)
                                                        1) *
                                                       sizeof(xmlNsPtr));
                         if (ret == NULL) {
-                            xmlGenericError(xmlGenericErrorContext,
-                                            "xmlGetNsList : realloc failed!\n");
+			    xmlTreeErrMemory("getting namespace list");
                             return (NULL);
                         }
                     }
@@ -5212,8 +5238,7 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 	     */
 	    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
 	    if (cur == NULL) {
-		xmlGenericError(xmlGenericErrorContext,
-			"xmlSearchNs : malloc failed\n");
+		xmlTreeErrMemory("searching namespace");
 		return(NULL);
 	    }
 	    memset(cur, 0, sizeof(xmlNs));
@@ -5230,8 +5255,7 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 	     */
 	    doc->oldNs = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
 	    if (doc->oldNs == NULL) {
-		xmlGenericError(xmlGenericErrorContext,
-			"xmlSearchNs : malloc failed\n");
+		xmlTreeErrMemory("searching namespace");
 		return(NULL);
 	    }
 	    memset(doc->oldNs, 0, sizeof(xmlNs));
@@ -5348,8 +5372,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
              */
             cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
             if (cur == NULL) {
-                xmlGenericError(xmlGenericErrorContext,
-                                "xmlSearchNs : malloc failed\n");
+		xmlTreeErrMemory("searching namespace");
                 return (NULL);
             }
             memset(cur, 0, sizeof(xmlNs));
@@ -5366,8 +5389,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
              */
             doc->oldNs = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
             if (doc->oldNs == NULL) {
-                xmlGenericError(xmlGenericErrorContext,
-                                "xmlSearchNsByHref : malloc failed\n");
+		xmlTreeErrMemory("searching namespace");
                 return (NULL);
             }
             memset(doc->oldNs, 0, sizeof(xmlNs));
@@ -5513,15 +5535,13 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 		oldNs = (xmlNsPtr *) xmlMalloc(sizeCache *
 					       sizeof(xmlNsPtr));
 		if (oldNs == NULL) {
-		    xmlGenericError(xmlGenericErrorContext,
-			    "xmlReconciliateNs : memory pbm\n");
+		    xmlTreeErrMemory("fixing namespaces");
 		    return(-1);
 		}
 		newNs = (xmlNsPtr *) xmlMalloc(sizeCache *
 					       sizeof(xmlNsPtr));
 		if (newNs == NULL) {
-		    xmlGenericError(xmlGenericErrorContext,
-			    "xmlReconciliateNs : memory pbm\n");
+		    xmlTreeErrMemory("fixing namespaces");
 		    xmlFree(oldNs);
 		    return(-1);
 		}
@@ -5546,16 +5566,14 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 			oldNs = (xmlNsPtr *) xmlRealloc(oldNs, sizeCache *
 			                               sizeof(xmlNsPtr));
 		        if (oldNs == NULL) {
-			    xmlGenericError(xmlGenericErrorContext,
-				    "xmlReconciliateNs : memory pbm\n");
+			    xmlTreeErrMemory("fixing namespaces");
 			    xmlFree(newNs);
 			    return(-1);
 			}
 			newNs = (xmlNsPtr *) xmlRealloc(newNs, sizeCache *
 			                               sizeof(xmlNsPtr));
 		        if (newNs == NULL) {
-			    xmlGenericError(xmlGenericErrorContext,
-				    "xmlReconciliateNs : memory pbm\n");
+			    xmlTreeErrMemory("fixing namespaces");
 			    xmlFree(oldNs);
 			    return(-1);
 			}
@@ -5580,15 +5598,13 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 		    oldNs = (xmlNsPtr *) xmlMalloc(sizeCache *
 						   sizeof(xmlNsPtr));
 		    if (oldNs == NULL) {
-			xmlGenericError(xmlGenericErrorContext,
-				"xmlReconciliateNs : memory pbm\n");
+			xmlTreeErrMemory("fixing namespaces");
 			return(-1);
 		    }
 		    newNs = (xmlNsPtr *) xmlMalloc(sizeCache *
 						   sizeof(xmlNsPtr));
 		    if (newNs == NULL) {
-			xmlGenericError(xmlGenericErrorContext,
-				"xmlReconciliateNs : memory pbm\n");
+			xmlTreeErrMemory("fixing namespaces");
 			xmlFree(oldNs);
 			return(-1);
 		    }
@@ -5613,16 +5629,14 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 			    oldNs = (xmlNsPtr *) xmlRealloc(oldNs, sizeCache *
 							   sizeof(xmlNsPtr));
 			    if (oldNs == NULL) {
-				xmlGenericError(xmlGenericErrorContext,
-				        "xmlReconciliateNs : memory pbm\n");
+				xmlTreeErrMemory("fixing namespaces");
 				xmlFree(newNs);
 				return(-1);
 			    }
 			    newNs = (xmlNsPtr *) xmlRealloc(newNs, sizeCache *
 							   sizeof(xmlNsPtr));
 			    if (newNs == NULL) {
-				xmlGenericError(xmlGenericErrorContext,
-				        "xmlReconciliateNs : memory pbm\n");
+				xmlTreeErrMemory("fixing namespaces");
 				xmlFree(oldNs);
 				return(-1);
 			    }
@@ -6272,8 +6286,7 @@ xmlBufferCreate(void) {
 
     ret = (xmlBufferPtr) xmlMalloc(sizeof(xmlBuffer));
     if (ret == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlBufferCreate : out of memory!\n");
+	xmlTreeErrMemory("creating buffer");
         return(NULL);
     }
     ret->use = 0;
@@ -6281,8 +6294,7 @@ xmlBufferCreate(void) {
     ret->alloc = xmlBufferAllocScheme;
     ret->content = (xmlChar *) xmlMallocAtomic(ret->size * sizeof(xmlChar));
     if (ret->content == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlBufferCreate : out of memory!\n");
+	xmlTreeErrMemory("creating buffer");
 	xmlFree(ret);
         return(NULL);
     }
@@ -6303,8 +6315,7 @@ xmlBufferCreateSize(size_t size) {
 
     ret = (xmlBufferPtr) xmlMalloc(sizeof(xmlBuffer));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlBufferCreate : out of memory!\n");
+	xmlTreeErrMemory("creating buffer");
         return(NULL);
     }
     ret->use = 0;
@@ -6313,8 +6324,7 @@ xmlBufferCreateSize(size_t size) {
     if (ret->size){
         ret->content = (xmlChar *) xmlMallocAtomic(ret->size * sizeof(xmlChar));
         if (ret->content == NULL) {
-            xmlGenericError(xmlGenericErrorContext,
-		    "xmlBufferCreate : out of memory!\n");
+	    xmlTreeErrMemory("creating buffer");
             xmlFree(ret);
             return(NULL);
         }
@@ -6344,8 +6354,7 @@ xmlBufferCreateStatic(void *mem, size_t size) {
 
     ret = (xmlBufferPtr) xmlMalloc(sizeof(xmlBuffer));
     if (ret == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlBufferCreate : out of memory!\n");
+	xmlTreeErrMemory("creating buffer");
         return(NULL);
     }
     ret->use = size;
@@ -6462,7 +6471,10 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
     size = buf->use + len + 100;
 
     newbuf = (xmlChar *) xmlRealloc(buf->content, size);
-    if (newbuf == NULL) return(-1);
+    if (newbuf == NULL) {
+	xmlTreeErrMemory("growing buffer");
+        return(-1);
+    }
     buf->content = newbuf;
     buf->size = size;
     return(buf->size - buf->use);
@@ -6592,8 +6604,7 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 	rebuf[buf->use] = 0;
     }
     if (rebuf == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlBufferResize : out of memory!\n");
+	xmlTreeErrMemory("growing buffer");
         return 0;
     }
     buf->content = rebuf;
@@ -6640,8 +6651,7 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
     needSize = buf->use + len + 2;
     if (needSize > buf->size){
         if (!xmlBufferResize(buf, needSize)){
-            xmlGenericError(xmlGenericErrorContext,
-		    "xmlBufferAdd : out of memory!\n");
+	    xmlTreeErrMemory("growing buffer");
             return;
         }
     }
@@ -6689,8 +6699,7 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
     needSize = buf->use + len + 2;
     if (needSize > buf->size){
         if (!xmlBufferResize(buf, needSize)){
-            xmlGenericError(xmlGenericErrorContext,
-		    "xmlBufferAddHead : out of memory!\n");
+	    xmlTreeErrMemory("growing buffer");
             return;
         }
     }
@@ -6737,8 +6746,7 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
     for (cur = str;*cur != 0;cur++) {
         if (buf->use  + 10 >= buf->size) {
             if (!xmlBufferResize(buf, buf->use+10)){
-                xmlGenericError(xmlGenericErrorContext,
-			"xmlBufferCCat : out of memory!\n");
+		xmlTreeErrMemory("growing buffer");
                 return;
             }
         }
@@ -6829,6 +6837,51 @@ xmlBufferWriteQuotedString(xmlBufferPtr buf, const xmlChar *string) {
 #ifdef LIBXML_OUTPUT_ENABLED
 /************************************************************************
  *									*
+ * 		Output memory error handler				*
+ *									*
+ ************************************************************************/
+/**
+ * xmlSaveErrMemory:
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+static void
+xmlSaveErrMemory(const char *extra)
+{
+    __xmlSimpleError(XML_FROM_OUTPUT, XML_ERR_NO_MEMORY, NULL, NULL, extra);
+}
+
+/**
+ * xmlSaveErr:
+ * @code:  the error number
+ * @node:  the location of the error.
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+static void
+xmlSaveErr(int code, xmlNodePtr node, const char *extra)
+{
+    const char *msg = NULL;
+
+    switch(code) {
+        case XML_SAVE_NOT_UTF8:
+	    msg = "string is not in UTF-8";
+	    break;
+	case XML_SAVE_CHAR_INVALID:
+	    msg = "invalid character value";
+	    break;
+	case XML_SAVE_UNKNOWN_ENCODING:
+	    msg = "unknown encoding %s";
+	    break;
+	default:
+	    msg = "unexpected error number";
+    }
+    __xmlSimpleError(XML_FROM_TREE, code, node, msg, extra);
+}
+/************************************************************************
+ *									*
  *   		Dumping XML tree content to a simple buffer		*
  *									*
  ************************************************************************/
@@ -6915,8 +6968,8 @@ xmlAttrSerializeContent(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr attr)
                         if (base != cur)
                             xmlBufferAdd(buf, base, cur - base);
                         if (*cur < 0xC0) {
-                            xmlGenericError(xmlGenericErrorContext,
-			    "xmlAttrSerializeContent : input not UTF-8\n");
+			    xmlSaveErr(XML_SAVE_NOT_UTF8, (xmlNodePtr) attr,
+			               NULL);
                             if (doc != NULL)
                                 doc->encoding =
                                     xmlStrdup(BAD_CAST "ISO-8859-1");
@@ -6949,8 +7002,8 @@ xmlAttrSerializeContent(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr attr)
                             l = 4;
                         }
                         if ((l == 1) || (!IS_CHAR(val))) {
-                            xmlGenericError(xmlGenericErrorContext,
-			    "xmlAttrSerializeContent : char out of range\n");
+			    xmlSaveErr(XML_SAVE_CHAR_INVALID, (xmlNodePtr) attr,
+			               NULL);
                             if (doc != NULL)
                                 doc->encoding =
                                     xmlStrdup(BAD_CAST "ISO-8859-1");
@@ -7031,8 +7084,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     }
     outbuf = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
     if (outbuf == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlNodeDump: out of memory!\n");
+        xmlSaveErrMemory("creating buffer");
         return (-1);
     }
     memset(outbuf, 0, (size_t) sizeof(xmlOutputBuffer));
@@ -7086,8 +7138,7 @@ xmlElemDump(FILE * f, xmlDocPtr doc, xmlNodePtr cur)
 #ifdef LIBXML_HTML_ENABLED
         htmlNodeDumpOutput(outbuf, doc, cur, NULL);
 #else
-        xmlGenericError(xmlGenericErrorContext,
-                        "HTML support not compiled in\n");
+	xmlSaveErr(XML_ERR_INTERNAL_ERROR, "HTML support not compiled in\n");
 #endif /* LIBXML_HTML_ENABLED */
     } else
         xmlNodeDumpOutput(outbuf, doc, cur, 0, 1, NULL);
@@ -8139,8 +8190,6 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 
     if (doc_txt_ptr == NULL) {
         *doc_txt_len = 0;
-        xmlGenericError(xmlGenericErrorContext,
-                    "xmlDocDumpFormatMemoryEnc:  Null return buffer pointer.");
         return;
     }
 
@@ -8149,8 +8198,6 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 
     if (out_doc == NULL) {
         /*  No document, no output  */
-        xmlGenericError(xmlGenericErrorContext,
-                "xmlDocDumpFormatMemoryEnc:  Null DOM tree document pointer.\n");
         return;
     }
 
@@ -8164,19 +8211,14 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     if (txt_encoding != NULL) {
 		conv_hdlr = xmlFindCharEncodingHandler(txt_encoding);
             if ( conv_hdlr == NULL ) {
-                xmlGenericError(xmlGenericErrorContext,
-                                "%s:  %s %s '%s'\n",
-                                "xmlDocDumpFormatMemoryEnc",
-                                "Failed to identify encoding handler for",
-                                "character set",
-                                txt_encoding);
+		xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, (xmlNodePtr) out_doc,
+		           txt_encoding);
                 return;
             }
         }
 
     if ((out_buff = xmlAllocOutputBuffer(conv_hdlr)) == NULL ) {
-        xmlGenericError(xmlGenericErrorContext,
-	    "xmlDocDumpFormatMemoryEnc: Failed to allocate output buffer.\n");
+        xmlSaveErrMemory("creating buffer");
         return;
     }
 
@@ -8193,9 +8235,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 
     if ((*doc_txt_ptr == NULL) && (*doc_txt_len > 0)) {
         *doc_txt_len = 0;
-        xmlGenericError(xmlGenericErrorContext,
-                "xmlDocDumpFormatMemoryEnc:  %s\n",
-                "Failed to allocate memory for document text representation.");
+        xmlSaveErrMemory("creating output");
     }
 
     return;

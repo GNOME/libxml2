@@ -1,3 +1,9 @@
+Wed Oct  8 01:09:05 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: converting the tree module too
+	* error.c include/libxml/xmlerror.h: created a simpler internal
+	  error reporting function.
+
 Tue Oct  7 23:19:39 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* error.c include/libxml/xmlerror.h include/libxml/xpath.h

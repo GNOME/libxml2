@@ -1,3 +1,7 @@
+Fri Apr 19 17:14:24 CEST 2002 Bjorn Reese <breese@users.sourceforge.net>
+
+	* trionan.c: fixed crash on OSF/1
+
 Fri Apr 19 09:00:56 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: more Schemas work

@@ -324,7 +324,7 @@ trio_nan(void)
   if (result == 0.0) {
     
 #if defined(TRIO_COMPILER_SUPPORTS_C99)
-    result = nan(NULL);
+    result = nan("");
 
 #elif defined(NAN) && defined(__STDC_IEC_559__)
     result = (double)NAN;

@@ -244,9 +244,13 @@ xmlFileOpen (const char *filename) {
 
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
-    else if (!strncmp(filename, "file:///", 8))
+    else if (!strncmp(filename, "file:///", 8)) {
+#ifdef _WIN32
+	path = &filename[8];
+#else
 	path = &filename[7];
-    else 
+#endif
+    } else 
 	path = filename;
 
     if (path == NULL)
@@ -283,9 +287,13 @@ xmlFileOpenW (const char *filename) {
 
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
-    else if (!strncmp(filename, "file:///", 8))
+    else if (!strncmp(filename, "file:///", 8)) {
+#ifdef _WIN32
+	path = &filename[8];
+#else
 	path = &filename[7];
-    else 
+#endif
+    } else 
 	path = filename;
 
     if (path == NULL)
@@ -387,9 +395,13 @@ xmlGzfileOpen (const char *filename) {
 
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
-    else if (!strncmp(filename, "file:///", 8))
+    else if (!strncmp(filename, "file:///", 8)) {
+#ifdef _WIN32
+	path = &filename[8];
+#else
 	path = &filename[7];
-    else 
+#endif
+    } else 
 	path = filename;
 
     if (path == NULL)
@@ -425,9 +437,13 @@ xmlGzfileOpenW (const char *filename, int compression) {
 
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
-    else if (!strncmp(filename, "file:///", 8))
+    else if (!strncmp(filename, "file:///", 8)) {
+#ifdef _WIN32
+	path = &filename[8];
+#else
 	path = &filename[7];
-    else 
+#endif
+    } else 
 	path = filename;
 
     if (path == NULL)

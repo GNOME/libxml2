@@ -5193,8 +5193,27 @@ xmlXPathCountFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 
     if ((cur == NULL) || (cur->nodesetval == NULL))
 	valuePush(ctxt, xmlXPathNewFloat((double) 0));
-    else
+    else if (cur->type == XPATH_NODESET) {
 	valuePush(ctxt, xmlXPathNewFloat((double) cur->nodesetval->nodeNr));
+    } else {
+	if ((cur->nodesetval->nodeNr != 1) ||
+	    (cur->nodesetval->nodeTab == NULL)) {
+	    valuePush(ctxt, xmlXPathNewFloat((double) 0));
+	} else {
+	    xmlNodePtr tmp;
+	    int i = 0;
+
+	    tmp = cur->nodesetval->nodeTab[0];
+	    if (tmp != NULL) {
+		tmp = tmp->children;
+		while (tmp != NULL) {
+		    tmp = tmp->next;
+		    i++;
+		}
+	    }
+	    valuePush(ctxt, xmlXPathNewFloat((double) i));
+	}
+    }
     xmlXPathFreeObject(cur);
 }
 

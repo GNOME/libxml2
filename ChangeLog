@@ -1,3 +1,8 @@
+Tue Aug 14 14:16:24 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: count() was broken on Result Value Tree
+	* xmlIO.c: fixed file:/// accesses on _WIN32
+
 Mon Aug 13 13:22:53 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.m4: s/LIBXML_VERSION_NUMBER/LIBXML_VERSION/ seems the

@@ -1,3 +1,10 @@
+Wed Sep 19 08:42:20 CEST 2001 Jens Finke <jens@gnome.org>
+
+	* Makfefile.am (dist-hook): Don't copy libxml.spec, it's already
+	included due to listing in EXTRA_DIST.
+
+	* libxml.spec.in: Updated.
+	
 Mon Sep 17 18:52:37 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: Joe Orton provided a patch fixing a problem

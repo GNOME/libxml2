@@ -1994,6 +1994,8 @@ static int
 xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
     if (node == NULL)
 	return(0);
+    if (node->type != XML_ELEMENT_NODE)
+	return(0);
     if (node->ns == NULL)
 	return(0);
     if (xmlStrEqual(node->ns->href, XINCLUDE_NS)) {
@@ -2079,7 +2081,9 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc) {
     while (cur != NULL) {
 	/* TODO: need to work on entities -> stack */
 	if ((cur->children != NULL) &&
-	    (cur->children->type != XML_ENTITY_DECL)) {
+	    (cur->children->type != XML_ENTITY_DECL) &&
+	    (cur->children->type != XML_XINCLUDE_START) &&
+	    (cur->children->type != XML_XINCLUDE_END)) {
 	    cur = cur->children;
 	    if (xmlXIncludeTestNode(ctxt, cur))
 		xmlXIncludePreProcessNode(ctxt, cur);

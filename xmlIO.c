@@ -400,11 +400,11 @@ xmlGzfileOpen (const char *filename) {
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
     else if (!strncmp(filename, "file:///", 8))
-	path = &filename[8];
+	path = &filename[7];
     else 
 	path = filename;
 
-    fd = gzopen(filename, "rb");
+    fd = gzopen(path, "rb");
     return((void *) fd);
 }
 

@@ -1,3 +1,8 @@
+Thu Jan 18 16:19:47 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmlIO.c: Gary Pennington <Gary.Pennington@uk.sun.com> fix
+	  for xmlGzfileOpen() bug
+
 Thu Jan 18 13:11:50 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: removed an error found by XSLT usage

@@ -1,3 +1,8 @@
+Thu Aug  1 14:50:28 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: trying to fix a problem in namespaced attribute handling
+	  raised by Christian Glahn
+
 Thu Aug  1 12:17:30 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c include/libxml/encoding.h: Opening the interface

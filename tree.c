@@ -5261,9 +5261,7 @@ xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
 	return(-1);
     while (prop != NULL) {
         if ((xmlStrEqual(prop->name, name)) &&
-	    (((prop->ns == NULL) && (node->ns != NULL) &&
-	      (xmlStrEqual(node->ns->href, ns->href))) ||
-	     ((prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))))) {
+	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))) {
 	    if (prev == NULL)
 		node->properties = prop->next;
 	    else

@@ -690,7 +690,9 @@ xmlRegPrintTrans(FILE *output, xmlRegTransPtr trans) {
     if (trans->counter >= 0) {
 	fprintf(output, "counted %d, ", trans->counter);
     }
-    if (trans->count >= 0) {
+    if (trans->count == REGEXP_ALL_COUNTER) {
+	fprintf(output, "all transition, ");
+    } else if (trans->count >= 0) {
 	fprintf(output, "count based %d, ", trans->count);
     }
     if (trans->atom == NULL) {
@@ -907,7 +909,9 @@ xmlRegStateAddTrans(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
     }
 #ifdef DEBUG_REGEXP_GRAPH
     printf("Add trans from %d to %d ", state->no, target->no);
-    if (count >= 0)
+    if (count == REGEXP_ALL_COUNTER)
+	printf("all transition");
+    else (count >= 0)
 	printf("count based %d", count);
     else if (counter >= 0)
 	printf("counted %d", counter);
@@ -2023,7 +2027,32 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		continue;
 	    atom = trans->atom;
 	    ret = 0;
-	    if (trans->count >= 0) {
+	    if (trans->count == REGEXP_ALL_COUNTER) {
+		int i;
+		int count;
+		xmlRegTransPtr t;
+		xmlRegCounterPtr counter;
+
+		ret = 1;
+
+#ifdef DEBUG_PUSH
+		printf("testing all %d\n", trans->count);
+#endif
+		/*
+		 * Check all counted transitions from the current state
+		 */
+		for (i = 0;i < exec->state->nbTrans;i++) {
+                    t = &exec->state->trans[i];
+		    if ((t->counter < 0) || (t == trans))
+			continue;
+                    counter = &exec->comp->counters[t->counter];
+		    count = exec->counts[t->counter];
+		    if ((count < counter->min) || (count > counter->max)) {
+			ret = 0;
+			break;
+		    }
+		}
+	    } else if (trans->count >= 0) {
 		int count;
 		xmlRegCounterPtr counter;
 

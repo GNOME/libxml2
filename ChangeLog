@@ -1,3 +1,9 @@
+Sat Apr 20 09:22:50 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: first implementation of the all particle, this
+	  may need to be revisited for case where not all transitions
+	  must be crossed.
+
 Fri Apr 19 18:26:04 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: another entity processing update from Markus Henke

@@ -1,3 +1,9 @@
+Tue Jan 22 00:12:58 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/libxml2-api.xml doc/parsedecl.py: improved the script to
+	  extracts comments from the gtk-doc DocBook output (a bit
+	  convoluted but seems to work).
+
 Mon Jan 21 18:29:19 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am doc/Makefile.am doc/libxml2-api.xml doc/parsedecl.py:

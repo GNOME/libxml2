@@ -8,12 +8,13 @@
 import sys
 import string
 
-macros = []
-structs = []
-typedefs = []
+macros = {}
+variables = {}
+structs = {}
+typedefs = {}
 enums = {}
 functions = {}
-private_functions = {}
+user_functions = {}
 ret_types = {}
 types = {}
 
@@ -22,6 +23,11 @@ files = {}
 identifiers_file = {}
 identifiers_type = {}
 
+##################################################################
+#
+#          Parsing: libxml-decl.txt
+#
+##################################################################
 def mormalizeTypeSpaces(raw, function):
     global types
 
@@ -96,15 +102,23 @@ def extractTypes(raw, function):
 def parseMacro():
     global input
     global macros
+    global variables
 
+    var = 1
     line = input.readline()[:-1]
     while line != "</MACRO>":
         if line[0:6] == "<NAME>" and line[-7:] == "</NAME>":
 	    name = line[6:-7]
+	elif string.find(line, "#define") >= 0:
+	    var = 0
 	line = input.readline()[:-1]
 
-    macros.append(name)
-    identifiers_type[name] = "macro"
+    if var == 1:
+	variables[name] = ''
+	identifiers_type[name] = "variable"
+    else:
+	macros[name] = ''
+	identifiers_type[name] = "macro"
 
 def parseStruct():
     global input
@@ -116,7 +130,7 @@ def parseStruct():
 	    name = line[6:-7]
 	line = input.readline()[:-1]
 
-    structs.append(name)
+    structs[name] = ''
     identifiers_type[name] = "struct"
 
 def parseTypedef():
@@ -129,7 +143,7 @@ def parseTypedef():
 	    name = line[6:-7]
 	line = input.readline()[:-1]
 
-    typedefs.append(name)
+    typedefs[name] = ''
     identifiers_type[name] = "typedef"
 
 def parseEnum():
@@ -164,12 +178,12 @@ def parseEnum():
 			identifiers_type[token] = "const"
 	line = input.readline()[:-1]
         
-    enums[name] = consts
+    enums[name] = [consts, '']
     identifiers_type[name] = "enum"
 
 def parseStaticFunction():
     global input
-    global private_functions
+    global user_functions
 
     line = input.readline()[:-1]
     type = None
@@ -184,8 +198,8 @@ def parseStaticFunction():
 	line = input.readline()[:-1]
 
     args = extractArgs(signature, name)
-    private_functions[name] = (type , args)
-    identifiers_type[name] = "private_func"
+    user_functions[name] = [type , args, '']
+    identifiers_type[name] = "functype"
 
 def parseFunction():
     global input
@@ -204,34 +218,8 @@ def parseFunction():
 	line = input.readline()[:-1]
 
     args = extractArgs(signature, name)
-    functions[name] = (type , args)
+    functions[name] = [type , args, '']
     identifiers_type[name] = "function"
-
-def parseSection():
-    global input
-    global sections
-    global files
-    global identifiers_file
-
-    tokens = []
-    line = input.readline()[:-1]
-    while line != "</SECTION>":
-        if line[0:6] == "<FILE>" and line[-7:] == "</FILE>":
-	    name = line[6:-7]
-	elif len(line) > 0:
-	    tokens.append(line)
-	line = input.readline()[:-1]
-
-    sections.append(name)
-    files[name] = tokens
-    for token in tokens:
-        identifiers_file[token] = name
-	#
-	# Small transitivity for enum values
-	#
-	if enums.has_key(token):
-	    for const in enums[token]:
-	        identifiers_file[const] = name
 
 print "Parsing: libxml-decl.txt"
 input = open('libxml-decl.txt')
@@ -256,15 +244,48 @@ while 1:
         print "unhandled %s" % (line)
 
 print "Parsed: %d macros. %d structs, %d typedefs, %d enums" % (
-          len(macros), len(structs), len(typedefs), len(enums))
+          len(macros.keys()), len(structs.keys()), len(typedefs.keys()),
+	  len(enums))
 c = 0
 for enum in enums.keys():
-    consts = enums[enum]
+    consts = enums[enum][0]
     c = c + len(consts)
-print "        %d constants, %d functions and %d private functions" % (
-          c, len(functions.keys()), len(private_functions.keys()))
+print "        %d variables, %d constants, %d functions and %d functypes" % (
+          len(variables.keys()), c, len(functions.keys()),
+	  len(user_functions.keys()))
 print "The functions manipulates %d different types" % (len(types.keys()))
 print "The functions returns %d different types" % (len(ret_types.keys()))
+
+##################################################################
+#
+#          Parsing: libxml-decl-list.txt
+#
+##################################################################
+def parseSection():
+    global input
+    global sections
+    global files
+    global identifiers_file
+
+    tokens = []
+    line = input.readline()[:-1]
+    while line != "</SECTION>":
+        if line[0:6] == "<FILE>" and line[-7:] == "</FILE>":
+	    name = line[6:-7]
+	elif len(line) > 0:
+	    tokens.append(line)
+	line = input.readline()[:-1]
+
+    sections.append(name)
+    files[name] = tokens
+    for token in tokens:
+        identifiers_file[token] = name
+	#
+	# Small transitivity for enum values
+	#
+	if enums.has_key(token):
+	    for const in enums[token][0]:
+	        identifiers_file[const] = name
 
 print "Parsing: libxml-decl-list.txt"
 input = open('libxml-decl-list.txt')
@@ -279,6 +300,200 @@ while 1:
         print "unhandled %s" % (line)
 
 print "Parsed: %d files %d identifiers" % (len(files), len(identifiers_file.keys()))
+##################################################################
+#
+#          Parsing: xml/*.xml
+#          To enrich the existing info with extracted comments
+#
+##################################################################
+
+nbcomments = 0
+
+def insertComment(name, title, value):
+    global nbcomments
+
+    if functions.has_key(name):
+        functions[name][2] = value
+    elif typedefs.has_key(name):
+        typedefs[name] = value
+    elif macros.has_key(name):
+        macros[name] = value
+    elif variables.has_key(name):
+        variables[name] = value
+    elif structs.has_key(name):
+        structs[name] = value
+    elif enums.has_key(name):
+        enums[name][1] = value
+    elif user_functions.has_key(name):
+        user_functions[name] = value
+    else:
+        print "lost comment %s: %s" % (name, value)
+	return
+    nbcomments = nbcomments + 1
+
+import os
+import xmllib
+try:
+    import sgmlop
+except ImportError:
+    sgmlop = None # accelerator not available
+
+debug = 0
+
+if sgmlop:
+    class FastParser:
+	"""sgmlop based XML parser.  this is typically 15x faster
+	   than SlowParser..."""
+
+	def __init__(self, target):
+
+	    # setup callbacks
+	    self.finish_starttag = target.start
+	    self.finish_endtag = target.end
+	    self.handle_data = target.data
+
+	    # activate parser
+	    self.parser = sgmlop.XMLParser()
+	    self.parser.register(self)
+	    self.feed = self.parser.feed
+	    self.entity = {
+		"amp": "&", "gt": ">", "lt": "<",
+		"apos": "'", "quot": '"'
+		}
+
+	def close(self):
+	    try:
+		self.parser.close()
+	    finally:
+		self.parser = self.feed = None # nuke circular reference
+
+	def handle_entityref(self, entity):
+	    # <string> entity
+	    try:
+		self.handle_data(self.entity[entity])
+	    except KeyError:
+		self.handle_data("&%s;" % entity)
+
+else:
+    FastParser = None
+
+
+class SlowParser(xmllib.XMLParser):
+    """slow but safe standard parser, based on the XML parser in
+       Python's standard library."""
+
+    def __init__(self, target):
+	self.unknown_starttag = target.start
+	self.handle_data = target.data
+	self.unknown_endtag = target.end
+	xmllib.XMLParser.__init__(self)
+
+def getparser(target = None):
+    # get the fastest available parser, and attach it to an
+    # unmarshalling object.  return both objects.
+    if target == None:
+	target = docParser()
+    if FastParser:
+	return FastParser(target), target
+    return SlowParser(target), target
+
+class docParser:
+    def __init__(self):
+        self._methodname = None
+	self._data = []
+	self.id = None
+	self.title = None
+	self.descr = None
+	self.string = None
+
+    def close(self):
+        if debug:
+	    print "close"
+
+    def getmethodname(self):
+        return self._methodname
+
+    def data(self, text):
+        if debug:
+	    print "data %s" % text
+        self._data.append(text)
+
+    def start(self, tag, attrs):
+        if debug:
+	    print "start %s, %s" % (tag, attrs)
+	if tag == 'refsect2':
+	    self.id = None
+	    self.title = None
+	    self.descr = None
+	    self.string = None
+	elif tag == 'para':
+	    self._data = []
+	elif tag == 'title':
+	    self._data = []
+	elif tag == 'anchor' and self.id == None:
+	    if attrs.has_key('id'):
+	        self.id = attrs['id']
+		self.id = string.replace(self.id, '-CAPS', '')
+		self.id = string.replace(self.id, '-', '_')
+
+    def end(self, tag):
+        if debug:
+	    print "end %s" % tag
+	if tag == 'refsect2':
+	    insertComment(self.id, self.title, self.string)
+	elif tag == 'para':
+	    if self.string == None:
+		str = ''
+		for c in self._data:
+		    str = str + c
+		str = string.replace(str, '\n', ' ')
+		str = string.replace(str, '\r', ' ')
+		str = string.replace(str, '    ', ' ')
+		str = string.replace(str, '   ', ' ')
+		str = string.replace(str, '  ', ' ')
+		while len(str) >= 1 and str[0] == ' ':
+		    str=str[1:]
+		self.string = str
+	    self._data = []
+	elif tag == 'title':
+	    str = ''
+	    for c in self._data:
+	        str = str + c
+	    str = string.replace(str, '\n', ' ')
+	    str = string.replace(str, '\r', ' ')
+	    str = string.replace(str, '    ', ' ')
+	    str = string.replace(str, '   ', ' ')
+	    str = string.replace(str, '  ', ' ')
+	    while len(str) >= 1 and str[0] == ' ':
+		str=str[1:]
+	    self.title = str
+
+xmlfiles = 0
+filenames = os.listdir("xml")
+for filename in filenames:
+    try:
+        f = open("xml/" + filename, 'r')
+    except IOError, msg:
+        print file, ":", msg
+	continue
+    data = f.read()
+    (parser, target)  = getparser()
+    parser.feed(data)
+    parser.close()
+    xmlfiles = xmlfiles + 1
+
+print "Parsed: %d XML files collexting %d comments" % (xmlfiles, nbcomments)
+
+##################################################################
+#
+#          Saving: libxml2-api.xml
+#
+##################################################################
+
+def escape(raw):
+    raw = string.replace(raw, '<', '&lt;')
+    raw = string.replace(raw, '>', '&gt;')
+    return raw
 
 print "Saving XML description libxml2-api.xml"
 output = open("libxml2-api.xml", "w")
@@ -292,14 +507,16 @@ for file in files.keys():
 output.write("  </files>\n")
 
 output.write("  <symbols>\n")
-symbols=macros
-for i in structs: symbols.append(i)
-for i in typedefs: symbols.append(i)
+symbols=macros.keys()
+for i in structs.keys(): symbols.append(i)
+for i in variables.keys(): variables.append(i)
+for i in typedefs.keys(): symbols.append(i)
 for i in enums.keys():
     symbols.append(i)
-    for j in enums[i]:
+    for j in enums[i][0]:
         symbols.append(j)
 for i in functions.keys(): symbols.append(i)
+for i in user_functions.keys(): symbols.append(i)
 symbols.sort()
 prev = None
 for i in symbols:
@@ -321,12 +538,39 @@ for i in symbols:
 	    output.write(" file='%s'" % (file))
 	if type == "function":
 	   output.write(">\n");
-	   (ret, args) = functions[i]
+	   (ret, args, doc) = functions[i]
+	   if doc != None and doc != '':
+	       output.write("      <info>%s</info>\n" % (escape(doc)))
 	   output.write("      <return type='%s'/>\n" % (ret))
 	   for arg in args:
 	       output.write("      <arg name='%s' type='%s'/>\n" % (
 	                    arg[1], arg[0]))
 	   output.write("    </%s>\n" % (type));
+	elif type == 'macro':
+	   if macros[i] != None and macros[i] != '':
+	       output.write(" info='%s'/>\n" % (escape(macros[i])))
+	   else:
+	       output.write("/>\n");
+	elif type == 'struct':
+	   if structs[i] != None and structs[i] != '':
+	       output.write(" info='%s'/>\n" % (escape(structs[i])))
+	   else:
+	       output.write("/>\n");
+	elif type == 'functype':
+	   if user_functions[i] != None and user_functions[i] != '':
+	       output.write(" info='%s'/>\n" % (escape(user_functions[i])))
+	   else:
+	       output.write("/>\n");
+	elif type == 'variable':
+	   if variables[i] != None and variables[i] != '':
+	       output.write(" info='%s'/>\n" % (escape(variables[i])))
+	   else:
+	       output.write("/>\n");
+	elif type == 'typedef':
+	   if typedefs[i] != None and typedefs[i] != '':
+	       output.write(" info='%s'/>\n" % (escape(typedefs[i])))
+	   else:
+	       output.write("/>\n");
 	else:
 	   output.write("/>\n");
     else:

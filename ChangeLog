@@ -1,3 +1,7 @@
+Thu Jul 26 11:38:37 EDT 2001 <Daniel.Veillard@imag.fr>
+
+	* parser.c: fixes bug #57652 reported by Morus Walter
+
 Thu Jul 26 10:24:34 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* nanohttp.c: John Kroll provided a small fix to xmlNanoHTTPSave

@@ -4898,7 +4898,7 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
     ctxt->external = 1;
     while (((RAW == '<') && (NXT(1) == '?')) ||
            ((RAW == '<') && (NXT(1) == '!')) ||
-           IS_BLANK(CUR)) {
+	   (RAW == '%') || IS_BLANK(CUR)) {
 	const xmlChar *check = CUR_PTR;
 	int cons = ctxt->input->consumed;
 	int tok = ctxt->token;

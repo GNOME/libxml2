@@ -23,6 +23,9 @@
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
+#ifdef HAVE_TIME_H
+#include <time.h>
+#endif
 #endif /* _WIN32 */
 
 
@@ -113,12 +116,114 @@ static int progresult = 0;
 static int timing = 0;
 static int generate = 0;
 static int dropdtd = 0;
-static struct timeval begin, end;
 #ifdef LIBXML_CATALOG_ENABLED
 static int catalogs = 0;
 static int nocatalogs = 0;
 #endif
 
+/*
+ * Internal timing routines to remove the necessity to have unix-specific
+ * function calls
+ */
+
+#if defined(HAVE_GETTIMEOFDAY)
+static struct timeval begin, end;
+
+/*
+ * startTimer: call where you want to start timing
+ */
+static void
+startTimer(void)
+{
+    gettimeofday(&begin, NULL);
+}
+
+/*
+ * endTimer: call where you want to stop timing and to print out a
+ *           message about the timing performed; format is a printf
+ *           type argument
+ */
+static void
+endTimer(const char *format, ...)
+{
+    long msec;
+    va_list ap;
+
+    gettimeofday(&end, NULL);
+    msec = end.tv_sec - begin.tv_sec;
+    msec *= 1000;
+    msec += (end.tv_usec - begin.tv_usec) / 1000;
+
+#ifndef HAVE_STDARG_H
+#error "endTimer required stdarg functions"
+#endif
+    va_start(ap, format);
+    vfprintf(stderr, format, ap);
+    va_end(ap);
+
+    fprintf(stderr, " took %ld ms\n", msec);
+}
+#elif defined(HAVE_TIME_H)
+
+/*
+ * No gettimeofday function, so we have to make do with calling clock.
+ * This is obviously less accurate, but there's little we can do about
+ * that.
+ */
+
+static clock_t begin, end;
+static void
+startTimer(void)
+{
+    begin = clock();
+}
+static void
+endTimer(const char *fmt, ...)
+{
+    long msec;
+    va_list ap;
+
+    end = clock();
+    msec = ((end - begin) * 1000) / CLOCKS_PER_SEC;
+
+#ifndef HAVE_STDARG_H
+#error "endTimer required stdarg functions"
+#endif
+    va_start(ap, fmt);
+    vfprintf(stderr, fmt, ap);
+    va_end(ap);
+    fprintf(stderr, " took %ld ms\n", msec);
+}
+#else
+
+/*
+ * We don't have a gettimeofday or time.h, so we just don't do timing
+ */
+static void
+startTimer(void)
+{
+    /*
+     * Do nothing
+     */
+}
+static void
+endTimer(char *format, ...)
+{
+    /*
+     * We cannot do anything because we don't have a timing function
+     */
+#ifdef HAVE_STDARG_H
+    va_start(ap, format);
+    vfprintf(stderr, format, ap);
+    va_end(ap);
+    fprintf(stderr, " was not timed\n", msec);
+#else
+    /* We don't have gettimeofday, time or stdarg.h, what crazy world is
+     * this ?!
+     */
+#endif
+}
+#endif
 /************************************************************************
  * 									*
  * 			HTML ouput					*
@@ -415,7 +520,7 @@ static void parseAndPrintFile(char *filename) {
     xmlDocPtr doc = NULL, tmp;
 
     if ((timing) && (!repeat))
-	gettimeofday(&begin, NULL);
+	startTimer();
     
 
     if (filename == NULL) {
@@ -601,12 +706,7 @@ static void parseAndPrintFile(char *filename) {
     }
 
     if ((timing) && (!repeat)) {
-	long msec;
-	gettimeofday(&end, NULL);
-	msec = end.tv_sec - begin.tv_sec;
-	msec *= 1000;
-	msec += (end.tv_usec - begin.tv_usec) / 1000;
-	fprintf(stderr, "Parsing took %ld ms\n", msec);
+	endTimer("Parsing");
     }
 
     /*
@@ -625,16 +725,11 @@ static void parseAndPrintFile(char *filename) {
 #ifdef LIBXML_XINCLUDE_ENABLED
     if (xinclude) {
 	if ((timing) && (!repeat)) {
-	    gettimeofday(&begin, NULL);
+	    startTimer();
 	}
 	xmlXIncludeProcess(doc);
 	if ((timing) && (!repeat)) {
-	    long msec;
-	    gettimeofday(&end, NULL);
-	    msec = end.tv_sec - begin.tv_sec;
-	    msec *= 1000;
-	    msec += (end.tv_usec - begin.tv_usec) / 1000;
-	    fprintf(stderr, "Xinclude processing took %ld ms\n", msec);
+	    endTimer("Xinclude processing");
 	}
     }
 #endif
@@ -687,7 +782,7 @@ static void parseAndPrintFile(char *filename) {
 	if (!debug) {
 #endif
 	    if ((timing) && (!repeat)) {
-		gettimeofday(&begin, NULL);
+		startTimer();
 	    }
 #ifdef HAVE_SYS_MMAN_H
 	    if (memory) {
@@ -729,12 +824,7 @@ static void parseAndPrintFile(char *filename) {
 	    else
 		xmlDocDump(stdout, doc);
 	    if ((timing) && (!repeat)) {
-		long msec;
-		gettimeofday(&end, NULL);
-		msec = end.tv_sec - begin.tv_sec;
-		msec *= 1000;
-		msec += (end.tv_usec - begin.tv_usec) / 1000;
-		fprintf(stderr, "Saving took %ld ms\n", msec);
+		endTimer("Saving");
 	    }
 #ifdef LIBXML_DEBUG_ENABLED
 	} else {
@@ -750,16 +840,11 @@ static void parseAndPrintFile(char *filename) {
 	xmlDtdPtr dtd;
 
 	if ((timing) && (!repeat)) {
-	    gettimeofday(&begin, NULL);
+	    startTimer();
 	}
 	dtd = xmlParseDTD(NULL, (const xmlChar *)dtdvalid); 
 	if ((timing) && (!repeat)) {
-	    long msec;
-	    gettimeofday(&end, NULL);
-	    msec = end.tv_sec - begin.tv_sec;
-	    msec *= 1000;
-	    msec += (end.tv_usec - begin.tv_usec) / 1000;
-	    fprintf(stderr, "Parsing DTD took %ld ms\n", msec);
+	    endTimer("Parsing DTD");
 	}
 	if (dtd == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
@@ -768,9 +853,11 @@ static void parseAndPrintFile(char *filename) {
 	} else {
 	    xmlValidCtxt cvp;
 	    if ((timing) && (!repeat)) {
-		gettimeofday(&begin, NULL);
+		startTimer();
 	    }
-	    cvp.userData = (void *) stderr;                                                 cvp.error    = (xmlValidityErrorFunc) fprintf;                                  cvp.warning  = (xmlValidityWarningFunc) fprintf;
+	    cvp.userData = (void *) stderr;
+	    cvp.error    = (xmlValidityErrorFunc) fprintf;
+	    cvp.warning  = (xmlValidityWarningFunc) fprintf;
 	    if (!xmlValidateDtd(&cvp, doc, dtd)) {
 		xmlGenericError(xmlGenericErrorContext,
 			"Document %s does not validate against %s\n",
@@ -778,19 +865,14 @@ static void parseAndPrintFile(char *filename) {
 		progresult = 3;
 	    }
 	    if ((timing) && (!repeat)) {
-		long msec;
-		gettimeofday(&end, NULL);
-		msec = end.tv_sec - begin.tv_sec;
-		msec *= 1000;
-		msec += (end.tv_usec - begin.tv_usec) / 1000;
-		fprintf(stderr, "Validating against DTD took %ld ms\n", msec);
+		endTimer("Validating against DTD");
 	    }
 	    xmlFreeDtd(dtd);
 	}
     } else if (postvalid) {
 	xmlValidCtxt cvp;
 	if ((timing) && (!repeat)) {
-	    gettimeofday(&begin, NULL);
+	    startTimer();
 	}
 	cvp.userData = (void *) stderr;
 	cvp.error    = (xmlValidityErrorFunc) fprintf;
@@ -801,12 +883,7 @@ static void parseAndPrintFile(char *filename) {
 	    progresult = 3;
 	}
 	if ((timing) && (!repeat)) {
-	    long msec;
-	    gettimeofday(&end, NULL);
-	    msec = end.tv_sec - begin.tv_sec;
-	    msec *= 1000;
-	    msec += (end.tv_usec - begin.tv_usec) / 1000;
-	    fprintf(stderr, "Validating took %ld ms\n", msec);
+	    endTimer("Validating");
 	}
     }
 
@@ -819,16 +896,11 @@ static void parseAndPrintFile(char *filename) {
      * free it.
      */
     if ((timing) && (!repeat)) {
-	gettimeofday(&begin, NULL);
+	startTimer();
     }
     xmlFreeDoc(doc);
     if ((timing) && (!repeat)) {
-	long msec;
-	gettimeofday(&end, NULL);
-	msec = end.tv_sec - begin.tv_sec;
-	msec *= 1000;
-	msec += (end.tv_usec - begin.tv_usec) / 1000;
-	fprintf(stderr, "Freeing took %ld ms\n", msec);
+	endTimer("Freeing");
     }
 }
 
@@ -1100,7 +1172,7 @@ main(int argc, char **argv) {
 	    continue;
         }
 	if ((timing) && (repeat))
-	    gettimeofday(&begin, NULL);
+	    startTimer();
 	/* Remember file names.  "-" means stding.  <sven@zen.org> */
 	if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
 	    if (repeat) {
@@ -1110,12 +1182,7 @@ main(int argc, char **argv) {
 		parseAndPrintFile(argv[i]);
 	    files ++;
 	    if ((timing) && (repeat)) {
-		long msec;
-		gettimeofday(&end, NULL);
-		msec = end.tv_sec - begin.tv_sec;
-		msec *= 1000;
-		msec += (end.tv_usec - begin.tv_usec) / 1000;
-		fprintf(stderr, "100 iterations took %ld ms\n", msec);
+		endTimer("100 iterations");
 	    }
 	}
     }

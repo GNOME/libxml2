@@ -83,12 +83,12 @@ HTMLtests : testHTML
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
 	      echo New test file $$name ; \
-	      testHTML $$i > $(srcdir)/result/HTML/$$name ; \
+	      $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      testHTML $$i > result.$$name ; \
+	      $(top_builddir)/testHTML $$i > result.$$name ; \
 	      diff $(srcdir)/result/HTML/$$name result.$$name ; \
-	      testHTML result.$$name > result2.$$name ; \
+	      $(top_builddir)/testHTML result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
@@ -102,12 +102,12 @@ XMLtests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/$$name ] ; then \
 	      echo New test file $$name ; \
-	      tester $$i > $(srcdir)/result/$$name ; \
+	      $(top_builddir)/tester $$i > $(srcdir)/result/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      tester $$i > result.$$name ; \
+	      $(top_builddir)/tester $$i > result.$$name ; \
 	      diff $(srcdir)/result/$$name result.$$name ; \
-	      tester result.$$name > result2.$$name ; \
+	      $(top_builddir)/tester result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
@@ -121,12 +121,12 @@ XMLenttests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/noent/$$name ] ; then \
 	      echo New test file $$name ; \
-	      tester --noent $$i > $(srcdir)/result/noent/$$name ; \
+	      $(top_builddir)/tester --noent $$i > $(srcdir)/result/noent/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      tester --noent $$i > result.$$name ; \
+	      $(top_builddir)/tester --noent $$i > result.$$name ; \
 	      diff $(srcdir)/result/noent/$$name result.$$name ; \
-	      tester --noent result.$$name > result2.$$name ; \
+	      $(top_builddir)/tester --noent result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
@@ -140,10 +140,10 @@ XPathtests : testXPath
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/XPath/expr/$$name ] ; then \
 	      echo New test file $$name ; \
-	      testXPath -f --expr $$i > $(srcdir)/result/XPath/expr/$$name ; \
+	      $(top_builddir)/testXPath -f --expr $$i > $(srcdir)/result/XPath/expr/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      testXPath -f --expr $$i > result.$$name ; \
+	      $(top_builddir)/testXPath -f --expr $$i > result.$$name ; \
 	      diff $(srcdir)/result/XPath/expr/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
@@ -155,10 +155,10 @@ XPathtests : testXPath
 	  if [ ! -d $$j ] ; then \
 	  if [ ! -f $(srcdir)/result/XPath/tests/$$name ] ; then \
 	      echo New test file $$name ; \
-	      testXPath -f -i $$i $$j > $(srcdir)/result/XPath/tests/$$name ; \
+	      $(top_builddir)/testXPath -f -i $$i $$j > $(srcdir)/result/XPath/tests/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      testXPath -f -i $$i $$j > result.$$name ; \
+	      $(top_builddir)/testXPath -f -i $$i $$j > result.$$name ; \
 	      diff $(srcdir)/result/XPath/tests/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)
@@ -172,12 +172,12 @@ SVGtests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/SVG/$$name ] ; then \
 	      echo New test file $$name ; \
-	      tester $$i > $(srcdir)/result/SVG/$$name ; \
+	      $(top_builddir)/tester $$i > $(srcdir)/result/SVG/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      tester $$i > result.$$name ; \
+	      $(top_builddir)/tester $$i > result.$$name ; \
 	      diff $(srcdir)/result/SVG/$$name result.$$name ; \
-	      tester result.$$name > result2.$$name ; \
+	      $(top_builddir)/tester result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
@@ -191,10 +191,10 @@ SAXtests : testSAX
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/SAXresult/$$name ] ; then \
 	      echo New test file $$name ; \
-	      testSAX $$i > $(srcdir)/SAXresult/$$name ; \
+	      $(top_builddir)/testSAX $$i > $(srcdir)/SAXresult/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      testSAX $$i > result.$$name ; \
+	      $(top_builddir)/testSAX $$i > result.$$name ; \
 	      diff $(srcdir)/SAXresult/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
@@ -209,10 +209,10 @@ Validtests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/VC/$$name ] ; then \
 	      echo New test file $$name ; \
-	      tester --noout --valid $$i 2> $(srcdir)/result/VC/$$name ; \
+	      $(top_builddir)/tester --noout --valid $$i 2> $(srcdir)/result/VC/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      tester --noout --valid $$i 2> result.$$name ; \
+	      $(top_builddir)/tester --noout --valid $$i 2> result.$$name ; \
 	      diff $(srcdir)/result/VC/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
@@ -224,10 +224,10 @@ Validtests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/valid/$$name ] ; then \
 	      echo New test file $$name ; \
-	      tester --valid $$i > $(srcdir)/result/valid/$$name ; \
+	      $(top_builddir)/tester --valid $$i > $(srcdir)/result/valid/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      tester --valid $$i > result.$$name ; \
+	      $(top_builddir)/tester --valid $$i > result.$$name ; \
 	      diff $(srcdir)/result/valid/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)

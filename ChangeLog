@@ -1,3 +1,8 @@
+Sat Sep  4 22:20:07 CEST 1999 Timur Bakeyev <mc@bat.ru>
+
+	* Makefile.am: prepend all the test* calls with $(top_builddir) -
+	to make 'check' works, when builddir != srcdir.
+
 Sat Sep  4 20:25:46 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xml.html : updated the documentation

@@ -2081,6 +2081,19 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 }
 
 /**
+ * endOfInput:
+ *
+ * When reading from an Input channel indicated end of file or error
+ * don't reread from it again.
+ */
+static int
+endOfInput (void * context ATTRIBUTE_UNUSED,
+	    char * buffer ATTRIBUTE_UNUSED,
+	    int len ATTRIBUTE_UNUSED) {
+    return(0);
+}
+
+/**
  * xmlParserInputBufferGrow:
  * @in:  a buffered parser input
  * @len:  indicative value of the amount of chars to read
@@ -2125,6 +2138,8 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
      */
     if (in->readcallback != NULL) {
 	res = in->readcallback(in->context, &buffer[0], len);
+	if (res <= 0)
+	    in->readcallback = endOfInput;
     } else {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlParserInputBufferGrow : no input !\n");

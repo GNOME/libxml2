@@ -105,6 +105,9 @@ xmlCheckVersion(int version) {
 void
 xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra)
 {
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
     if (ctxt != NULL) {
         ctxt->errNo = XML_ERR_NO_MEMORY;
         ctxt->instate = XML_PARSER_EOF;
@@ -135,6 +138,9 @@ void
 __xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                  const char *msg, const xmlChar * str1, const xmlChar * str2)
 {
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
     if (ctxt != NULL)
         ctxt->errNo = error;
     __xmlRaiseError(NULL, NULL, NULL,
@@ -159,6 +165,9 @@ __xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 static void
 xmlErrInternal(xmlParserCtxtPtr ctxt, const char *msg, const xmlChar * str)
 {
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
     if (ctxt != NULL)
         ctxt->errNo = XML_ERR_INTERNAL_ERROR;
     __xmlRaiseError(NULL, NULL, NULL,
@@ -185,6 +194,9 @@ static void
 xmlErrEncodingInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                   const char *msg, int val)
 {
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
     if (ctxt != NULL)
         ctxt->errNo = error;
     __xmlRaiseError(NULL, NULL, NULL,

@@ -1,3 +1,10 @@
+Fri Oct 31 11:33:18 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: previous fix for #124044 was broken, correct
+	  fix provided.
+	* HTMLparser.c parser.c parserInternals.c xmlIO.c: fix xmlStopParser()
+	  and the error handlers to address #125877
+
 Thu Oct 30 23:10:46 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: side effect of #123105 patch, namespace resolution

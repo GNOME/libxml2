@@ -73,6 +73,9 @@ static void htmlParseComment(htmlParserCtxtPtr ctxt);
 static void
 htmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra)
 {
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
     if (ctxt != NULL) {
         ctxt->errNo = XML_ERR_NO_MEMORY;
         ctxt->instate = XML_PARSER_EOF;
@@ -103,6 +106,9 @@ static void
 htmlParseErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
              const char *msg, const xmlChar *str1, const xmlChar *str2)
 {
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
     ctxt->errNo = error;
     __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_HTML, error,
                     XML_ERR_ERROR, NULL, 0,
@@ -125,6 +131,9 @@ static void
 htmlParseErrInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
              const char *msg, int val)
 {
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
     ctxt->errNo = error;
     __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_HTML, error,
                     XML_ERR_ERROR, NULL, 0, NULL, NULL,

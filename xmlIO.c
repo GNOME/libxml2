@@ -409,6 +409,9 @@ __xmlLoaderErr(void *ctx, const char *msg, const char *filename)
     void *data = NULL;
     xmlErrorLevel level = XML_ERR_ERROR;
 
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
     if ((ctxt != NULL) && (ctxt->sax != NULL)) {
         if (ctxt->validate) {
 	    channel = ctxt->sax->error;

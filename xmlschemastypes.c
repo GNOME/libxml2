@@ -668,7 +668,7 @@ _xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
  *         and -1 in case of internal or API error.
  */
 static int
-xmlSchemaValidateDates (ATTRIBUTE_UNUSED xmlSchemaTypePtr type,
+xmlSchemaValidateDates (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 	                const xmlChar *dateTime, xmlSchemaValPtr *val) {
     xmlSchemaValPtr dt;
     int ret;
@@ -827,7 +827,7 @@ error:
  *         and -1 in case of internal or API error.
  */
 static int
-xmlSchemaValidateDuration (ATTRIBUTE_UNUSED xmlSchemaTypePtr type,
+xmlSchemaValidateDuration (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 	                   const xmlChar *duration, xmlSchemaValPtr *val) {
     const xmlChar  *cur = duration;
     xmlSchemaValPtr dur;
@@ -1792,7 +1792,7 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
  *     number otherwise and -1 in case of internal or API error.
  */
 int
-xmlSchemaValidateFacet(ATTRIBUTE_UNUSED xmlSchemaTypePtr base,
+xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
 	               xmlSchemaFacetPtr facet,
 	               const xmlChar *value, xmlSchemaValPtr val)
 {

@@ -491,9 +491,9 @@ xmlSchemaErrorContext(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  */
 static void
 xmlSchemaElementDump(xmlSchemaElementPtr elem, FILE * output,
-		     ATTRIBUTE_UNUSED const xmlChar *name,
-		     ATTRIBUTE_UNUSED const xmlChar *context,
-		     ATTRIBUTE_UNUSED const xmlChar *namespace)
+		     const xmlChar *name ATTRIBUTE_UNUSED,
+		     const xmlChar *context ATTRIBUTE_UNUSED,
+		     const xmlChar *namespace ATTRIBUTE_UNUSED)
 {
     if (elem == NULL)
         return;
@@ -3292,8 +3292,8 @@ static void
 xmlSchemaRefFixupCallback(xmlSchemaElementPtr elem,
 		     xmlSchemaParserCtxtPtr ctxt,
 		     const xmlChar *name,
-		     ATTRIBUTE_UNUSED const xmlChar *context,
-		     ATTRIBUTE_UNUSED const xmlChar *namespace)
+		     const xmlChar *context ATTRIBUTE_UNUSED,
+		     const xmlChar *namespace ATTRIBUTE_UNUSED)
 {
     if ((ctxt == NULL) || (elem == NULL))
 	return;
@@ -4170,7 +4170,7 @@ xmlSchemaCheckAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
  */
 static int
 xmlSchemaValidateSimpleContent(xmlSchemaValidCtxtPtr ctxt,
-	                       ATTRIBUTE_UNUSED xmlNodePtr node) {
+	                       xmlNodePtr node ATTRIBUTE_UNUSED) {
     xmlNodePtr child;
     xmlSchemaTypePtr type, base;
     xmlChar *value;
@@ -4253,7 +4253,7 @@ xmlSchemaValidateCheckNodeList(xmlNodePtr nodelist) {
  *     number otherwise and -1 in case of internal or API error.
  */
 static xmlNodePtr
-xmlSchemaSkipIgnored(ATTRIBUTE_UNUSED xmlSchemaValidCtxtPtr ctxt,
+xmlSchemaSkipIgnored(xmlSchemaValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	             xmlSchemaTypePtr type,
 	             xmlNodePtr node) {
     int mixed = 0;
@@ -4284,7 +4284,7 @@ xmlSchemaSkipIgnored(ATTRIBUTE_UNUSED xmlSchemaValidCtxtPtr ctxt,
  */
 static void
 xmlSchemaValidateCallback(xmlSchemaValidCtxtPtr ctxt,
-	                  ATTRIBUTE_UNUSED const xmlChar *name,
+	                  const xmlChar *name ATTRIBUTE_UNUSED,
 			  xmlSchemaTypePtr type,
 			  xmlNodePtr node) {
     xmlSchemaTypePtr oldtype = ctxt->type;

@@ -370,7 +370,7 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
  */
 static void
 xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
-	              ATTRIBUTE_UNUSED const xmlURL url) {
+	              const xmlURL url ATTRIBUTE_UNUSED) {
     xmlXIncludeCtxtPtr newctxt;
     int i;
 

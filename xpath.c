@@ -1284,8 +1284,8 @@ static const char *xmlXPathErrorMessages[] = {
  * Formats an error message.
  */
 void
-xmlXPatherror(xmlXPathParserContextPtr ctxt, ATTRIBUTE_UNUSED const char *file,
-              ATTRIBUTE_UNUSED int line, int no) {
+xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file ATTRIBUTE_UNUSED,
+              int line ATTRIBUTE_UNUSED, int no) {
     int n;
     const xmlChar *cur;
     const xmlChar *base;

@@ -400,6 +400,7 @@ AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscan
 dnl Checks for inet libraries:
 AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
 AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
+AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(net, setsockopt))
 AC_CHECK_FUNC(connect, , AC_CHECK_LIB(inet, connect))
 
 dnl Determine what socket length (socklen_t) data type is
@@ -702,6 +703,9 @@ else
        *mingw32*) WITH_THREADS="1"
            THREADS_W32="Win32"
 	   THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"
+       ;;
+       *beos*) WITH_THREADS="1"
+	   THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_BEOS_THREADS"
        ;;
     esac
     if test "$WITH_THREADS" = "1" ; then
@@ -1036,6 +1040,8 @@ iconv (cd, NULL, NULL, NULL, NULL);],[
 fi
 case "$host" in
 	*mingw*) M_LIBS=""
+	;;
+	*beos*) M_LIBS=""
 	;;
 	*) M_LIBS="-lm"
 	;;

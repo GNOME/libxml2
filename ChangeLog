@@ -1,3 +1,8 @@
+Tue Feb 17 21:08:11 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: fixed problem with numbers having > 19
+	  fractional places (bug 133921)
+
 Tue Feb 17 12:47:20 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: applied optimization patch from Petr Pajas

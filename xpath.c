@@ -7488,13 +7488,18 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
 
 #define MAX_FRAC 20
 
-static double my_pow10[MAX_FRAC] = {
+/*
+ * These are used as divisors for the fractional part of a number.
+ * Since the table includes 1.0 (representing '0' fractional digits),
+ * it must be dimensioned at MAX_FRAC+1 (bug 133921)
+ */
+static double my_pow10[MAX_FRAC+1] = {
     1.0, 10.0, 100.0, 1000.0, 10000.0,
     100000.0, 1000000.0, 10000000.0, 100000000.0, 1000000000.0,
     10000000000.0, 100000000000.0, 1000000000000.0, 10000000000000.0,
     100000000000000.0,
     1000000000000000.0, 10000000000000000.0, 100000000000000000.0,
-    1000000000000000000.0, 10000000000000000000.0
+    1000000000000000000.0, 10000000000000000000.0, 100000000000000000000.0
 };
 
 /**

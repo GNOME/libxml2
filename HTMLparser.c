@@ -5574,12 +5574,6 @@ htmlDoRead(htmlParserCtxtPtr ctxt, const char *URL, const char *encoding,
 	    (ret->dict == ctxt->dict))
 	    ctxt->dict = NULL;
 	xmlFreeParserCtxt(ctxt);
-    } else {
-        /* Must duplicate the reference to the dictionary */
-        if ((ctxt->dictNames) &&
-	    (ret != NULL) &&
-	    (ret->dict == ctxt->dict))
-	    xmlDictReference(ctxt->dict);
     }
     return (ret);
 }

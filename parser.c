@@ -9949,7 +9949,7 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
 	if (ctxt->sax != NULL)
 	    xmlFree(ctxt->sax);
         ctxt->sax = sax;
-        ctxt->userData = NULL;
+        ctxt->userData = ctxt;
     }
     xmlDetectSAX2(ctxt);
 
@@ -12025,25 +12025,12 @@ xmlDoRead(xmlParserCtxtPtr ctxt, const char *URL, const char *encoding,
     else {
         ret = NULL;
 	if (ctxt->myDoc != NULL) {
-	    if ((ctxt->dictNames) &&
-		(ctxt->myDoc->dict == ctxt->dict))
-		xmlDictReference(ctxt->dict);
 	    xmlFreeDoc(ctxt->myDoc);
 	}
     }
     ctxt->myDoc = NULL;
     if (!reuse) {
-        if ((ctxt->dictNames) &&
-	    (ret != NULL) &&
-	    (ret->dict == ctxt->dict))
-	    ctxt->dict = NULL;
 	xmlFreeParserCtxt(ctxt);
-    } else {
-        /* Must duplicate the reference to the dictionary */
-        if ((ctxt->dictNames) &&
-	    (ret != NULL) &&
-	    (ret->dict == ctxt->dict))
-	    xmlDictReference(ctxt->dict);
     }
 
     return (ret);

@@ -374,8 +374,8 @@ xmlSchemaNewSchema(xmlSchemaParserCtxtPtr ctxt)
         return (NULL);
     }
     memset(ret, 0, sizeof(xmlSchema));
-    xmlDictReference(ctxt->dict);
     ret->dict = ctxt->dict;
+    xmlDictReference(ret->dict);
 
     return (ret);
 }

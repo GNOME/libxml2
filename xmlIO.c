@@ -785,11 +785,13 @@ xmlFileClose (void * context) {
     int ret;
 
     fil = (FILE *) context;
+    if ((fil == stdout) || (fil == stderr)) {
+        ret = fflush(fil);
+	if (ret < 0)
+	    xmlIOErr(0, "fflush()");
+	return(0);
+    }
     if (fil == stdin)
-	return(0);
-    if (fil == stdout)
-	return(0);
-    if (fil == stderr)
 	return(0);
     ret = ( fclose((FILE *) context) == EOF ) ? -1 : 0;
     if (ret < 0)

@@ -1,3 +1,14 @@
+Mon Mar 22 16:16:18 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlwriter.c include/libxml/xmlwriter.h doc/* : applied patch from
+	  Alfred Mickautsch for better DTD support.
+	* SAX2.c HTMLparser.c parser.c xinclude.c xmllint.c xmlreader.c
+	  xmlschemas.c: fixed bug #137867 i.e. fixed properly the way
+	  reference counting is handled in the XML parser which had the
+	  side effect of removing a lot of hazardous cruft added to try
+	  to fix the problems associated as they popped up.
+	* xmlIO.c: FILE * close fixup for stderr/stdout
+
 Sun Mar 21 19:19:41 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* relaxng.c: added an error message when an element is not

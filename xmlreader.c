@@ -496,6 +496,7 @@ xmlTextReaderFreeDoc(xmlTextReaderPtr reader, xmlDocPtr cur) {
     if (cur->encoding != NULL) xmlFree((char *) cur->encoding);
     if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
     if (cur->URL != NULL) xmlFree((char *) cur->URL);
+    if (cur->dict != NULL) xmlDictFree(cur->dict);
     xmlFree(cur);
 }
 
@@ -3649,9 +3650,6 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
 	return(NULL);
     
     reader->preserve = 1;
-    if ((reader->ctxt->myDoc->dict != NULL) &&
-	(reader->ctxt->myDoc->dict == reader->ctxt->dict))
-	xmlDictReference(reader->ctxt->dict);
     return(reader->ctxt->myDoc);
 }
 
@@ -4178,8 +4176,6 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 	    xmlParserInputBufferPtr buf;
 	    xmlCharEncoding enc = XML_CHAR_ENCODING_NONE;
 
-	    if (reader->ctxt->myDoc != NULL)
-	        xmlDictReference(reader->ctxt->myDoc->dict);
 	    xmlCtxtReset(reader->ctxt);
 	    buf = xmlAllocParserInputBuffer(enc);
 	    if (buf == NULL) return(-1);

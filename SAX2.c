@@ -839,8 +839,10 @@ xmlSAX2StartDocument(void *ctx)
 	    ctxt->disableSAX = 1;
 	    return;
 	}
-	if ((ctxt->dictNames) && (doc != NULL))
+	if ((ctxt->dictNames) && (doc != NULL)) {
 	    doc->dict = ctxt->dict;
+	    xmlDictReference(doc->dict);
+	}
     }
     if ((ctxt->myDoc != NULL) && (ctxt->myDoc->URL == NULL) &&
 	(ctxt->input != NULL) && (ctxt->input->filename != NULL)) {

@@ -453,19 +453,11 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 
     if (pctxt->wellFormed) {
         ret = pctxt->myDoc;
-	xmlDictReference(pctxt->dict);
     }
     else {
         ret = NULL;
-	if (pctxt->myDoc != NULL) {
-	    if ((ctxt->doc != NULL) && (ctxt->doc->dict != NULL) &&
-	        (pctxt->myDoc->dict == ctxt->doc->dict))
-		xmlDictReference(ctxt->doc->dict);
-	    else if ((pctxt->dict != NULL) &&
-	             (pctxt->dict == pctxt->myDoc->dict))
-		xmlDictReference(pctxt->dict);
+	if (pctxt->myDoc != NULL)
 	    xmlFreeDoc(pctxt->myDoc);
-	}
         pctxt->myDoc = NULL;
     }
     xmlFreeParserCtxt(pctxt);

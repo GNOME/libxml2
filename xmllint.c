@@ -874,6 +874,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		if (res > 0) {
 		    ctxt = xmlCreatePushParserCtxt(NULL, NULL,
 		                chars, res, filename);
+		    xmlCtxtUseOptions(ctxt, options);
 		    while ((res = fread(chars, 1, size, f)) > 0) {
 			xmlParseChunk(ctxt, chars, res, 0);
 		    }

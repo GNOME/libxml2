@@ -1450,12 +1450,20 @@ xmlSAXParseMemoryWithData
 xmlSAXUserParseFile
 xmlSAXUserParseMemory
 xmlSAXVersion
+xmlSaveClose
+xmlSaveDoc
 xmlSaveFile
 xmlSaveFileEnc
 xmlSaveFileTo
+xmlSaveFlush
 xmlSaveFormatFile
 xmlSaveFormatFileEnc
 xmlSaveFormatFileTo
+xmlSaveToBuffer
+xmlSaveToFd
+xmlSaveToFilename
+xmlSaveToIO
+xmlSaveTree
 xmlSaveUri
 xmlScanName
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1692,6 +1700,9 @@ xmlTextWriterEndAttribute
 xmlTextWriterEndCDATA
 xmlTextWriterEndComment
 xmlTextWriterEndDTD
+xmlTextWriterEndDTDAttlist
+xmlTextWriterEndDTDElement
+xmlTextWriterEndDTDEntity
 xmlTextWriterEndDocument
 xmlTextWriterEndElement
 xmlTextWriterEndPI
@@ -1722,6 +1733,7 @@ xmlTextWriterWriteDTDAttlist
 xmlTextWriterWriteDTDElement
 xmlTextWriterWriteDTDEntity
 xmlTextWriterWriteDTDExternalEntity
+xmlTextWriterWriteDTDExternalEntityContents
 xmlTextWriterWriteDTDInternalEntity
 xmlTextWriterWriteDTDNotation
 xmlTextWriterWriteElement

@@ -18,7 +18,7 @@ href="http://xmlsoft.org/xmlio.html">http://xmlsoft.org/xmlio.html</a></p>
 <p>Mailing-list archive:  <a
 href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
 
-<p>Version: $Revision: 1.1 $</p>
+<p>Version: $Revision: 1.2 $</p>
 
 <p>Table of Content:</p>
 <ol>
@@ -26,6 +26,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
   <li><a href="#basic">The basic buffer type</a></li>
   <li><a href="#Input">Input I/O handlers</a></li>
   <li><a href="#Output">Output I/O handlers</a></li>
+  <li><a href="#entities">The entities loader</a></li>
   <li><a href="#Example">Example of customized I/O</a></li>
 </ol>
 
@@ -33,9 +34,16 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
 
 <p>The module <code><a
 href="http://xmlsoft.org/html/gnome-xml-xmlio.html">xmlIO.h</a></code>
-provides the interfaces to the libxml I/O system. This consists of 3 main
+provides the interfaces to the libxml I/O system. This consists of 4 main
 parts:</p>
 <ul>
+  <li>Entities loader, this is a routine which tries to fetch the entities
+    (files) based on their PUBLIC and SYSTEM identifiers. The default loader
+    don't look at the public identifier since libxml do not maintain a
+    catalog. You can redefine you own entity loader by using
+    <code>xmlGetExternalEntityLoader()</code> and
+    <code>xmlSetExternalEntityLoader()</code>. <a href="#entities">Check the
+    example</a>.</li>
   <li>Input I/O buffers which are a commodity structure used by the parser(s)
     input layer to handle fetching the informations to feed the parser. This
     provides buffering and is also a placeholder where the encoding convertors
@@ -49,12 +57,14 @@ parts:</p>
   </li>
 </ul>
 
-<p> The general mechanism used when loading http://rpmfind.net/xml.html for
+<p>The general mechanism used when loading http://rpmfind.net/xml.html for
 example in the HTML parser is the following:</p>
 <ol>
+  <li>The default entity loader calls <code>xmlNewInputFromFile()</code> with
+    the parsing context and the URI string.</li>
   <li>the URI string is checked against the existing registered handlers using
     their match() callback function, if the HTTP module was compiled in, it is
-    registered and its macth() function will succeed</li>
+    registered and its match() function will succeeds</li>
   <li>the open() function of the handler is called and if successful will
     return an I/O Input buffer</li>
   <li>the parser will the start reading from this buffer and progressively
@@ -98,6 +108,48 @@ needed.</p>
 <p>An Output handler <code>xmlOutputBuffer</code> is completely similar to an
 Input one except the callbacks are write() and close().</p>
 
+<h2><a name="entities">The entities loader</a></h2>
+
+<p>The entity loader resolves requests for new entities and create inputs for
+the parser. Creating an input from a filename or an URI string is done through
+the xmlNewInputFromFile() routine.  The default entity loader do not handle
+the PUBLIC identifier associated with an entity (if any). So it just calls
+xmlNewInputFromFile() with the SYSTEM identifier (which is mandatory in
+XML).</p>
+
+<p>If you want to hook up a catalog mechanism then you simply need to override
+the default entity loader, here is an example:</p>
+<pre>#include &lt;libxml/xmlIO.h&gt;
+
+xmlExternalEntityLoader defaultLoader = NULL;
+
+xmlParserInputPtr
+xmlMyExternalEntityLoader(const char *URL, const char *ID,
+                               xmlParserCtxtPtr ctxt) {
+    xmlParserInputPtr ret;
+    const char *fileID = NULL;
+    /* lookup for the fileID depending on ID */
+
+    ret = xmlNewInputFromFile(ctxt, fileID);
+    if (ret != NULL)
+        return(ret);
+    if (defaultLoader != NULL)
+        ret = defaultLoader(URL, ID, ctxt);
+    return(ret);
+}
+
+int main(..) {
+    ...
+
+    /*
+     * Install our own entity loader
+     */
+    defaultLoader = xmlGetExternalEntityLoader();
+    xmlSetExternalEntityLoader(xmlMyExternalEntityLoader);
+
+    ...
+}</pre>
+
 <h2><a name="Example">Example of customized I/O</a></h2>
 
 <p>This example come from <a href="http://xmlsoft.org/messages/0708.html">a
@@ -123,6 +175,8 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
+
 } </pre>
   </li>
   <li>And then use it to save the document:
@@ -142,6 +196,6 @@ res = xmlSaveFileTo(output, doc, NULL);
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xmlio.html,v 1.1 2000/08/31 13:50:12 veillard Exp $</p>
+<p>$Id: xmlio.html,v 1.2 2000/08/31 14:19:54 veillard Exp $</p>
 </body>
 </html>

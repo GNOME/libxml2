@@ -1,3 +1,8 @@
+Thu Aug 31 16:55:55 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/xmlio.html: added doc and example for entity loader
+	  redefinition.
+
 Thu Aug 31 14:59:28 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xmlio.html doc/xml.html: added a doc on the I/O mechanism

@@ -309,6 +309,28 @@ xmlValidStateDebug(xmlValidCtxtPtr ctxt) {
 
 /* TODO: use hash table for accesses to elem and attribute definitions */
 
+#define VECTXT(ctxt, node)					\
+   if ((ctxt != NULL) && (ctxt->error != NULL) &&		\
+       (node != NULL) && (node->type == XML_ELEMENT_NODE)) {	\
+       if ((node->doc != NULL) && (node->doc->URL != NULL))	\
+	   ctxt->error(ctxt->userData, "%s:%d:", node->doc->URL,\
+		       (int) node->content);			\
+       else							\
+	   ctxt->error(ctxt->userData, ":%d:", 			\
+		       (int) node->content);			\
+   }
+
+#define VWCTXT(ctxt, node)					\
+   if ((ctxt != NULL) && (ctxt->warning != NULL) &&		\
+       (node != NULL) && (node->type == XML_ELEMENT_NODE)) {	\
+       if ((node->doc != NULL) && (node->doc->URL != NULL))	\
+	   ctxt->warning(ctxt->userData, "%s:%d:", node->doc->URL,\
+		       (int) node->content);			\
+       else							\
+	   ctxt->warning(ctxt->userData, ":%d:", 		\
+		       (int) node->content);			\
+   }
+
 #define VERROR							\
    if ((ctxt != NULL) && (ctxt->error != NULL)) ctxt->error
 
@@ -3444,6 +3466,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     /* Validity Constraint: Attribute Value Type */
     if (attrDecl == NULL) {
+	VECTXT(ctxt, elem);
 	VERROR(ctxt->userData,
 	       "No declaration for attribute %s of element %s\n",
 	       attr->name, elem->name);
@@ -3453,6 +3476,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     val = xmlValidateAttributeValue(attrDecl->atype, value);
     if (val == 0) {
+	VECTXT(ctxt, elem);
 	VERROR(ctxt->userData, 
 	   "Syntax of value for attribute %s of %s is not valid\n",
 	       attr->name, elem->name);
@@ -3462,6 +3486,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     /* Validity constraint: Fixed Attribute Default */
     if (attrDecl->def == XML_ATTRIBUTE_FIXED) {
 	if (!xmlStrEqual(value, attrDecl->defaultValue)) {
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, 
 	   "Value for attribute %s of %s is different from default \"%s\"\n",
 		   attr->name, elem->name, attrDecl->defaultValue);
@@ -3492,6 +3517,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    nota = xmlGetDtdNotationDesc(doc->extSubset, value);
 	
 	if (nota == NULL) {
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, 
        "Value \"%s\" for attribute %s of %s is not a declared Notation\n",
 		   value, attr->name, elem->name);
@@ -3504,6 +3530,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    tree = tree->next;
 	}
 	if (tree == NULL) {
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, 
 "Value \"%s\" for attribute %s of %s is not among the enumerated notations\n",
 		   value, attr->name, elem->name);
@@ -3519,6 +3546,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    tree = tree->next;
 	}
 	if (tree == NULL) {
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, 
        "Value \"%s\" for attribute %s of %s is not among the enumerated set\n",
 		   value, attr->name, elem->name);
@@ -3529,6 +3557,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     /* Fixed Attribute Default */
     if ((attrDecl->def == XML_ATTRIBUTE_FIXED) &&
         (!xmlStrEqual(attrDecl->defaultValue, value))) {
+	VECTXT(ctxt, elem);
 	VERROR(ctxt->userData, 
 	   "Value for attribute %s of %s must be \"%s\"\n",
 	       attr->name, elem->name, attrDecl->defaultValue);
@@ -4036,6 +4065,7 @@ xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
  * @child:  the child list
  * @elemDecl:  pointer to the element declaration
  * @warn:  emit the error message
+ * @parent: the parent element (for error reporting)
  *
  * Try to validate the content model of an element
  *
@@ -4044,7 +4074,7 @@ xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
 
 static int
 xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
-       xmlElementPtr elemDecl, int warn) {
+       xmlElementPtr elemDecl, int warn, xmlNodePtr parent) {
     int ret;
     xmlNodePtr repl = NULL, last = NULL, cur, tmp;
     xmlElementContentPtr cont;
@@ -4184,20 +4214,24 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 		xmlSnprintfElements(list, 5000, child, 1);
 
 	    if (name != NULL) {
+		if (parent != NULL) VECTXT(ctxt, parent);
 		VERROR(ctxt->userData,
 	   "Element %s content does not follow the DTD\nExpecting %s, got %s\n",
 		       name, expr, list);
 	    } else {
+		if (parent != NULL) VECTXT(ctxt, parent);
 		VERROR(ctxt->userData,
 	   "Element content does not follow the DTD\nExpecting %s, got %s\n",
 		       expr, list);
 	    }
 	} else {
 	    if (name != NULL) {
+		if (parent != NULL) VECTXT(ctxt, parent);
 		VERROR(ctxt->userData,
 		       "Element %s content does not follow the DTD\n",
 		       name);
 	    } else {
+		if (parent != NULL) VECTXT(ctxt, parent);
 		VERROR(ctxt->userData,
 		       "Element content does not follow the DTD\n");
 	    }
@@ -4333,28 +4367,34 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if (elem == NULL) return(0);
     switch (elem->type) {
         case XML_ATTRIBUTE_NODE:
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, 
 		   "Attribute element not expected here\n");
 	    return(0);
         case XML_TEXT_NODE:
 	    if (elem->children != NULL) {
+		VECTXT(ctxt, elem);
 		VERROR(ctxt->userData, "Text element has childs !\n");
 		return(0);
 	    }
 	    if (elem->properties != NULL) {
+		VECTXT(ctxt, elem);
 		VERROR(ctxt->userData, "Text element has attributes !\n");
 		return(0);
 	    }
 	    if (elem->ns != NULL) {
+		VECTXT(ctxt, elem);
 		VERROR(ctxt->userData, "Text element has namespace !\n");
 		return(0);
 	    }
 	    if (elem->nsDef != NULL) {
+		VECTXT(ctxt, elem);
 		VERROR(ctxt->userData, 
 		       "Text element carries namespace definitions !\n");
 		return(0);
 	    }
 	    if (elem->content == NULL) {
+		VECTXT(ctxt, elem);
 		VERROR(ctxt->userData, 
 		       "Text element has no content !\n");
 		return(0);
@@ -4369,26 +4409,31 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
         case XML_COMMENT_NODE:
 	    return(1);
         case XML_ENTITY_NODE:
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, 
 		   "Entity element not expected here\n");
 	    return(0);
         case XML_NOTATION_NODE:
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, 
 		   "Notation element not expected here\n");
 	    return(0);
         case XML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
         case XML_DOCUMENT_FRAG_NODE:
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, 
 		   "Document element not expected here\n");
 	    return(0);
         case XML_HTML_DOCUMENT_NODE:
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, 
 		   "\n");
 	    return(0);
         case XML_ELEMENT_NODE:
 	    break;
 	default:
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, 
 		   "unknown element type %d\n", elem->type);
 	    return(0);
@@ -4426,6 +4471,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	}
     }
     if (elemDecl == NULL) {
+	VECTXT(ctxt, elem);
 	VERROR(ctxt->userData, "No declaration for element %s\n",
 	       elem->name);
 	return(0);
@@ -4434,11 +4480,13 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     /* Check that the element content matches the definition */
     switch (elemDecl->etype) {
         case XML_ELEMENT_TYPE_UNDEFINED:
+	    VECTXT(ctxt, elem);
 	    VERROR(ctxt->userData, "No declaration for element %s\n",
 		   elem->name);
 	    return(0);
         case XML_ELEMENT_TYPE_EMPTY:
 	    if (elem->children != NULL) {
+		VECTXT(ctxt, elem);
 		VERROR(ctxt->userData,
 	       "Element %s was declared EMPTY this one has content\n",
 	               elem->name);
@@ -4455,6 +4503,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		(elemDecl->content->type == XML_ELEMENT_CONTENT_PCDATA)) {
 		ret = xmlValidateOneCdataElement(ctxt, doc, elem);
 		if (!ret) {
+		    VECTXT(ctxt, elem);
 		    VERROR(ctxt->userData,
 	       "Element %s was declared #PCDATA but contains non text nodes\n",
 			   elem->name);
@@ -4511,6 +4560,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 			cont = cont->c2;
 		    }
 		    if (cont == NULL) {
+			VECTXT(ctxt, elem);
 			VERROR(ctxt->userData,
 	       "Element %s is not declared in %s list of possible children\n",
 			       name, elem->name);
@@ -4536,6 +4586,7 @@ child_ok:
 			while (IS_BLANK(*content))
 			    content++;
 			if (*content == 0) {
+			    VECTXT(ctxt, elem);
 			    VERROR(ctxt->userData,
 "standalone: %s declared in the external subset contains white spaces nodes\n",
 				   elem->name);
@@ -4548,7 +4599,7 @@ child_ok:
 	    }
 	    child = elem->children;
 	    cont = elemDecl->content;
-	    tmp = xmlValidateElementContent(ctxt, child, elemDecl, 1);
+	    tmp = xmlValidateElementContent(ctxt, child, elemDecl, 1, elem);
 	    if (tmp <= 0)
 		ret = tmp;
 	    break;
@@ -4619,11 +4670,13 @@ child_ok:
 	    }
 	    if (qualified == -1) {
 		if (attr->prefix == NULL) {
+		    VECTXT(ctxt, elem);
 		    VERROR(ctxt->userData,
 		       "Element %s does not carry attribute %s\n",
 			   elem->name, attr->name);
 		    ret = 0;
 	        } else {
+		    VECTXT(ctxt, elem);
 		    VERROR(ctxt->userData,
 		       "Element %s does not carry attribute %s:%s\n",
 			   elem->name, attr->prefix,attr->name);
@@ -4652,6 +4705,7 @@ child_ok:
 		while (ns != NULL) {
 		    if (ns->prefix == NULL) {
 			if (!xmlStrEqual(attr->defaultValue, ns->href)) {
+			    VECTXT(ctxt, elem);
 			    VERROR(ctxt->userData,
    "Element %s namespace name for default namespace does not match the DTD\n",
 				   elem->name);
@@ -4668,6 +4722,7 @@ child_ok:
 		while (ns != NULL) {
 		    if (xmlStrEqual(attr->name, ns->prefix)) {
 			if (!xmlStrEqual(attr->defaultValue, ns->href)) {
+			    VECTXT(ctxt, elem);
 			    VERROR(ctxt->userData,
 		   "Element %s namespace name for %s does not match the DTD\n",
 				   elem->name, ns->prefix);

@@ -1,3 +1,8 @@
+Thu Sep  5 12:57:38 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: try to provide file and line informations, not all
+	  messages are covered, but it's a (good) start
+
 Thu Sep  5 12:49:35 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: reimplemented a large part of the XInclude

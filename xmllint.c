@@ -1293,6 +1293,8 @@ static void usage(const char *name) {
 #endif
     printf("\t--nowarning : do not emit warnings from parser/validator\n");
     printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
+    printf("\t--nocdata : replace cdata section with text nodes\n");
+    printf("\t--nsclean : remove redundant namespace declarations\n");
     printf("\t--format : reformat/reindent the input\n");
     printf("\t--testIO : test user I/O support\n");
     printf("\t--encode encoding : output in the given encoding\n");
@@ -1370,6 +1372,12 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--noent"))) {
 	    noent++;
 	    options |= XML_PARSE_NOENT;
+	} else if ((!strcmp(argv[i], "-nsclean")) ||
+	         (!strcmp(argv[i], "--nsclean"))) {
+	    options |= XML_PARSE_NSCLEAN;
+	} else if ((!strcmp(argv[i], "-nocdata")) ||
+	         (!strcmp(argv[i], "--nocdata"))) {
+	    options |= XML_PARSE_NOCDATA;
 	} else if ((!strcmp(argv[i], "-nodict")) ||
 	         (!strcmp(argv[i], "--nodict"))) {
 	    options |= XML_PARSE_NODICT;

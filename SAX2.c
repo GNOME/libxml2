@@ -1608,9 +1608,11 @@ xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     if (ctxt->dictNames) {
         xmlChar cur = str[len];
 
-	if ((len <= 3) && ((cur == '"') || (cur == '\'') || (cur == '<'))) {
+	if ((len <= 3) && ((cur == '"') || (cur == '\'') ||
+	    ((cur == '<') && (str[len + 1] != '!')))) {
 	    intern = xmlDictLookup(ctxt->dict, str, len);
-	} else if (IS_BLANK(*str) && (len < 60) && (cur == '<')) {
+	} else if (IS_BLANK(*str) && (len < 60) && (cur == '<') &&
+	           (str[len + 1] != '!')) {
 	    int i;
 
 	    for (i = 1;i < len;i++) {

@@ -236,6 +236,27 @@ htmlCreateMemoryParserCtxt
 htmlCreatePushParserCtxt
 #endif
 #ifdef LIBXML_HTML_ENABLED
+htmlCtxtReadDoc
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlCtxtReadFd
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlCtxtReadFile
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlCtxtReadIO
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlCtxtReadMemory
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlCtxtReset
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlCtxtUseOptions
+#endif
+#ifdef LIBXML_HTML_ENABLED
 htmlDefaultSAXHandlerInit
 #endif
 #ifdef LIBXML_HTML_ENABLED
@@ -330,6 +351,21 @@ htmlParseEntityRef
 #endif
 #ifdef LIBXML_HTML_ENABLED
 htmlParseFile
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlReadDoc
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlReadFd
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlReadFile
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlReadIO
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlReadMemory
 #endif
 #ifdef LIBXML_HTML_ENABLED
 htmlSAXParseDoc

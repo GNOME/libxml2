@@ -1,3 +1,11 @@
+Fri Sep 26 15:50:44 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/libxml2-api.xml: rebuilt the API
+	* xmllint.c doc/xmllint.1 doc/xmllint.xml: added the new options
+	  --nocdata and --nsclean to remove CDATA section and surperfluous
+	  namespace declarations
+	* parser.c SAX2.c: implementation of the 2 new options
+
 Fri Sep 26 14:41:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c testHTML.c xmllint.c include/libxml/HTMLparser.h:

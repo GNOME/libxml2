@@ -675,11 +675,24 @@ xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
  *
  * Pushes a new parser namespace on top of the ns stack
  *
- * Returns -1 in case of error, the index in the stack otherwise
+ * Returns -1 in case of error, the index in the stack otherwise,
+ *         and -2 if the namespace should be discarded.
  */
 static int
 nsPush(xmlParserCtxtPtr ctxt, const xmlChar *prefix, const xmlChar *URL)
 {
+    if (ctxt->options & XML_PARSE_NSCLEAN) {
+        int i;
+	for (i = 0;i < ctxt->nsNr;i += 2) {
+	    if (ctxt->nsTab[i] == prefix) {
+		/* in scope */
+	        if (ctxt->nsTab[i + 1] == URL)
+		    return(-2);
+		/* out of scope keep it */
+		break;
+	    }
+	}
+    }
     if ((ctxt->nsMax == 0) || (ctxt->nsTab == NULL)) {
 	ctxt->nsMax = 10;
 	ctxt->nsNr = 0;
@@ -12095,6 +12108,14 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
         options -= XML_PARSE_NODICT;
     } else {
         ctxt->dictNames = 1;
+    }
+    if (options & XML_PARSE_NOCDATA) {
+        ctxt->sax->cdataBlock = NULL;
+        options -= XML_PARSE_NOCDATA;
+    }
+    if (options & XML_PARSE_NSCLEAN) {
+	ctxt->options |= XML_PARSE_NSCLEAN;
+        options -= XML_PARSE_NSCLEAN;
     }
     return (options);
 }

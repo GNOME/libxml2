@@ -986,6 +986,11 @@
      <exports symbol='HTML_DEPRECATED'/>
      <exports symbol='HTML_INVALID'/>
      <exports symbol='HTML_NA'/>
+     <exports symbol='HTML_PARSE_NOBLANKS'/>
+     <exports symbol='HTML_PARSE_NOERROR'/>
+     <exports symbol='HTML_PARSE_NONET'/>
+     <exports symbol='HTML_PARSE_NOWARNING'/>
+     <exports symbol='HTML_PARSE_PEDANTIC'/>
      <exports symbol='HTML_REQUIRED'/>
      <exports symbol='HTML_VALID'/>
      <exports symbol='UTF8ToHtml'/>
@@ -995,6 +1000,13 @@
      <exports symbol='htmlAutoCloseTag'/>
      <exports symbol='htmlCreateMemoryParserCtxt'/>
      <exports symbol='htmlCreatePushParserCtxt'/>
+     <exports symbol='htmlCtxtReadDoc'/>
+     <exports symbol='htmlCtxtReadFd'/>
+     <exports symbol='htmlCtxtReadFile'/>
+     <exports symbol='htmlCtxtReadIO'/>
+     <exports symbol='htmlCtxtReadMemory'/>
+     <exports symbol='htmlCtxtReset'/>
+     <exports symbol='htmlCtxtUseOptions'/>
      <exports symbol='htmlDefaultSubelement'/>
      <exports symbol='htmlDocPtr'/>
      <exports symbol='htmlElemDesc'/>
@@ -1025,6 +1037,12 @@
      <exports symbol='htmlParserInput'/>
      <exports symbol='htmlParserInputPtr'/>
      <exports symbol='htmlParserNodeInfo'/>
+     <exports symbol='htmlParserOption'/>
+     <exports symbol='htmlReadDoc'/>
+     <exports symbol='htmlReadFd'/>
+     <exports symbol='htmlReadFile'/>
+     <exports symbol='htmlReadIO'/>
+     <exports symbol='htmlReadMemory'/>
      <exports symbol='htmlRequiredAttrs'/>
      <exports symbol='htmlSAXHandler'/>
      <exports symbol='htmlSAXHandlerPtr'/>
@@ -1059,11 +1077,13 @@
      <exports symbol='XML_PARSE_DTDLOAD'/>
      <exports symbol='XML_PARSE_DTDVALID'/>
      <exports symbol='XML_PARSE_NOBLANKS'/>
+     <exports symbol='XML_PARSE_NOCDATA'/>
      <exports symbol='XML_PARSE_NODICT'/>
      <exports symbol='XML_PARSE_NOENT'/>
      <exports symbol='XML_PARSE_NOERROR'/>
      <exports symbol='XML_PARSE_NONET'/>
      <exports symbol='XML_PARSE_NOWARNING'/>
+     <exports symbol='XML_PARSE_NSCLEAN'/>
      <exports symbol='XML_PARSE_PEDANTIC'/>
      <exports symbol='XML_PARSE_RECOVER'/>
      <exports symbol='XML_PARSE_SAX1'/>
@@ -2687,6 +2707,11 @@
     <enum name='HTML_DEPRECATED' file='HTMLparser' value='2' type='htmlStatus'/>
     <enum name='HTML_INVALID' file='HTMLparser' value='1' type='htmlStatus'/>
     <enum name='HTML_NA' file='HTMLparser' value='0' type='htmlStatus' info='something we don&apos;t check at all'/>
+    <enum name='HTML_PARSE_NOBLANKS' file='HTMLparser' value='256' type='htmlParserOption' info='remove blank nodes'/>
+    <enum name='HTML_PARSE_NOERROR' file='HTMLparser' value='32' type='htmlParserOption' info='suppress error reports'/>
+    <enum name='HTML_PARSE_NONET' file='HTMLparser' value='2048' type='htmlParserOption' info=' Forbid network access'/>
+    <enum name='HTML_PARSE_NOWARNING' file='HTMLparser' value='64' type='htmlParserOption' info='suppress warning reports'/>
+    <enum name='HTML_PARSE_PEDANTIC' file='HTMLparser' value='128' type='htmlParserOption' info='pedantic error reporting'/>
     <enum name='HTML_REQUIRED' file='HTMLparser' value='12' type='htmlStatus' info=' VALID bit set so ( &amp; HTML_VALID ) is TRUE'/>
     <enum name='HTML_VALID' file='HTMLparser' value='4' type='htmlStatus'/>
     <enum name='XLINK_ACTUATE_AUTO' file='xlink' value='1' type='xlinkActuate'/>
@@ -2913,11 +2938,13 @@
     <enum name='XML_PARSE_DTDLOAD' file='parser' value='4' type='xmlParserOption' info='load the external subset'/>
     <enum name='XML_PARSE_DTDVALID' file='parser' value='16' type='xmlParserOption' info='validate with the DTD'/>
     <enum name='XML_PARSE_NOBLANKS' file='parser' value='256' type='xmlParserOption' info='remove blank nodes'/>
-    <enum name='XML_PARSE_NODICT' file='parser' value='4096' type='xmlParserOption' info=' Do not reuse the context dictionnary'/>
+    <enum name='XML_PARSE_NOCDATA' file='parser' value='16384' type='xmlParserOption' info=' merge CDATA as text nodes'/>
+    <enum name='XML_PARSE_NODICT' file='parser' value='4096' type='xmlParserOption' info='Do not reuse the context dictionnary'/>
     <enum name='XML_PARSE_NOENT' file='parser' value='2' type='xmlParserOption' info='substitute entities'/>
     <enum name='XML_PARSE_NOERROR' file='parser' value='32' type='xmlParserOption' info='suppress error reports'/>
     <enum name='XML_PARSE_NONET' file='parser' value='2048' type='xmlParserOption' info='Forbid network access'/>
     <enum name='XML_PARSE_NOWARNING' file='parser' value='64' type='xmlParserOption' info='suppress warning reports'/>
+    <enum name='XML_PARSE_NSCLEAN' file='parser' value='8192' type='xmlParserOption' info='remove redundant namespaces declarations'/>
     <enum name='XML_PARSE_PEDANTIC' file='parser' value='128' type='xmlParserOption' info='pedantic error reporting'/>
     <enum name='XML_PARSE_RECOVER' file='parser' value='1' type='xmlParserOption' info='recover on errors'/>
     <enum name='XML_PARSE_SAX1' file='parser' value='512' type='xmlParserOption' info='use the SAX1 interface internally'/>
@@ -3131,6 +3158,7 @@ if necessary or NULL'/>
     <typedef name='htmlParserInput' file='HTMLparser' type='xmlParserInput'/>
     <typedef name='htmlParserInputPtr' file='HTMLparser' type='xmlParserInputPtr'/>
     <typedef name='htmlParserNodeInfo' file='HTMLparser' type='xmlParserNodeInfo'/>
+    <typedef name='htmlParserOption' file='HTMLparser' type='enum'/>
     <typedef name='htmlSAXHandler' file='HTMLparser' type='xmlSAXHandler'/>
     <typedef name='htmlSAXHandlerPtr' file='HTMLparser' type='xmlSAXHandlerPtr'/>
     <typedef name='htmlStatus' file='HTMLparser' type='enum'/>
@@ -3498,7 +3526,8 @@ actually an xmlCharEncoding'/>
       <field name='pushTab' type='void * *' info=' array of data for push'/>
       <field name='attsDefault' type='xmlHashTablePtr' info=' defaulted attributes if any'/>
       <field name='attsSpecial' type='xmlHashTablePtr' info=' non-CDATA attributes if any'/>
-      <field name='nsWellFormed' type='int' info='* Those fields are needed only for treaming parsing so far
+      <field name='nsWellFormed' type='int' info=' is the document XML Nanespace okay'/>
+      <field name='options' type='int' info='* Those fields are needed only for treaming parsing so far
 *'/>
       <field name='dictNames' type='int' info=' Use dictionary names for the tree'/>
       <field name='freeElemsNr' type='int' info=' number of freed element nodes'/>
@@ -4353,6 +4382,64 @@ actually an xmlCharEncoding'/>
       <arg name='filename' type='const char *' info='an optional file name or URI'/>
       <arg name='enc' type='xmlCharEncoding' info='an optional encoding'/>
     </function>
+    <function name='htmlCtxtReadDoc' file='HTMLparser'>
+      <info>parse an XML in-memory document and build a tree. This reuses the existing @ctxt parser context</info>
+      <return type='htmlDocPtr' info='the resulting document tree'/>
+      <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
+      <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
+    </function>
+    <function name='htmlCtxtReadFd' file='HTMLparser'>
+      <info>parse an XML from a file descriptor and build a tree. This reuses the existing @ctxt parser context</info>
+      <return type='htmlDocPtr' info='the resulting document tree'/>
+      <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
+      <arg name='fd' type='int' info='an open file descriptor'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
+    </function>
+    <function name='htmlCtxtReadFile' file='HTMLparser'>
+      <info>parse an XML file from the filesystem or the network. This reuses the existing @ctxt parser context</info>
+      <return type='htmlDocPtr' info='the resulting document tree'/>
+      <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
+      <arg name='filename' type='const char *' info='a file or URL'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
+    </function>
+    <function name='htmlCtxtReadIO' file='HTMLparser'>
+      <info>parse an HTML document from I/O functions and source and build a tree. This reuses the existing @ctxt parser context</info>
+      <return type='htmlDocPtr' info='the resulting document tree'/>
+      <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
+      <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
+      <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
+      <arg name='ioctx' type='void *' info='an I/O handler'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
+    </function>
+    <function name='htmlCtxtReadMemory' file='HTMLparser'>
+      <info>parse an XML in-memory document and build a tree. This reuses the existing @ctxt parser context</info>
+      <return type='htmlDocPtr' info='the resulting document tree'/>
+      <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
+      <arg name='buffer' type='const char *' info='a pointer to a char array'/>
+      <arg name='size' type='int' info='the size of the array'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
+    </function>
+    <function name='htmlCtxtReset' file='HTMLparser'>
+      <info>Reset a parser context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='htmlParserCtxtPtr' info='an XML parser context'/>
+    </function>
+    <function name='htmlCtxtUseOptions' file='HTMLparser'>
+      <info>Applies the options to the parser context</info>
+      <return type='int' info='0 in case of success, the set of unknown or unimplemented options in case of error.'/>
+      <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
+    </function>
     <function name='htmlDefaultSAXHandlerInit' file='SAX2'>
       <info>Initialize the default SAX handler</info>
       <return type='void'/>
@@ -4549,6 +4636,48 @@ actually an xmlCharEncoding'/>
       <return type='htmlDocPtr' info='the resulting document tree'/>
       <arg name='filename' type='const char *' info='the filename'/>
       <arg name='encoding' type='const char *' info='a free form C string describing the HTML document encoding, or NULL'/>
+    </function>
+    <function name='htmlReadDoc' file='HTMLparser'>
+      <info>parse an XML in-memory document and build a tree.</info>
+      <return type='htmlDocPtr' info='the resulting document tree'/>
+      <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
+    </function>
+    <function name='htmlReadFd' file='HTMLparser'>
+      <info>parse an XML from a file descriptor and build a tree.</info>
+      <return type='htmlDocPtr' info='the resulting document tree'/>
+      <arg name='fd' type='int' info='an open file descriptor'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
+    </function>
+    <function name='htmlReadFile' file='HTMLparser'>
+      <info>parse an XML file from the filesystem or the network.</info>
+      <return type='htmlDocPtr' info='the resulting document tree'/>
+      <arg name='filename' type='const char *' info='a file or URL'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
+    </function>
+    <function name='htmlReadIO' file='HTMLparser'>
+      <info>parse an HTML document from I/O functions and source and build a tree.</info>
+      <return type='htmlDocPtr' info='the resulting document tree'/>
+      <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
+      <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
+      <arg name='ioctx' type='void *' info='an I/O handler'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
+    </function>
+    <function name='htmlReadMemory' file='HTMLparser'>
+      <info>parse an XML in-memory document and build a tree.</info>
+      <return type='htmlDocPtr' info='the resulting document tree'/>
+      <arg name='buffer' type='const char *' info='a pointer to a char array'/>
+      <arg name='size' type='int' info='the size of the array'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
     </function>
     <function name='htmlSAXParseDoc' file='HTMLparser'>
       <info>Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks to handle parse events. If sax is NULL, fallback to the default DOM behavior and return a tree.</info>

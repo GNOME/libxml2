@@ -11,6 +11,10 @@ htmlHandleOmittedElem()
 htmlIsScriptAttribute()
 htmlParseDoc()
 htmlParseFile()
+htmlReadDoc()
+htmlReadFd()
+htmlReadFile()
+htmlReadMemory()
 
 # functions from module HTMLtree
 htmlIsBooleanAttr()
@@ -812,6 +816,12 @@ Class parserCtxt(parserCtxtCore)
     wellFormed()
 
     # functions from module HTMLparser
+    htmlCtxtReadDoc()
+    htmlCtxtReadFd()
+    htmlCtxtReadFile()
+    htmlCtxtReadMemory()
+    htmlCtxtReset()
+    htmlCtxtUseOptions()
     htmlFreeParserCtxt()
     htmlParseCharRef()
     htmlParseChunk()

@@ -50,6 +50,8 @@
 	<arg>--copy</arg>
 	<arg>--recover</arg>
 	<arg>--noent</arg>
+	<arg>--nocdata</arg>
+	<arg>--nsclean</arg>
 	<arg>--noout</arg>
 	<arg>--htmlout</arg>
 	<arg>--nowrap</arg>
@@ -169,6 +171,24 @@
 	    Substitute entity values for entity
 	    references. By default, <application>xmllint</application> leaves entity
 	    references in place.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+   
+      <varlistentry>
+	<term><option>--nocdata</option></term>
+	<listitem>
+	  <simpara>
+	    Substitute CDATA section by equivalent text nodes.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+   
+      <varlistentry>
+	<term><option>--nsclean</option></term>
+	<listitem>
+	  <simpara>
+	    Remove redundant namespace declarations.
 	  </simpara>
 	</listitem>
       </varlistentry>

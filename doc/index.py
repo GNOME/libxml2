@@ -717,6 +717,15 @@ def analyzeAPI(doc):
 
 import glob
 
+def analyzeHTMLText(doc, resource, p, section, id):
+    words = 0
+    try:
+	content = p.content
+	words = words + addStringHTML(content, resource, id, section, 5)
+    except:
+        return -1
+    return words
+
 def analyzeHTMLPara(doc, resource, p, section, id):
     words = 0
     try:
@@ -735,6 +744,15 @@ def analyzeHTMLPre(doc, resource, p, section, id):
         return -1
     return words
 
+def analyzeHTML(doc, resource, p, section, id):
+    words = 0
+    try:
+	content = p.content
+	words = words + addStringHTML(content, resource, id, section, 5)
+    except:
+        return -1
+    return words
+
 def analyzeHTML(doc, resource):
     para = 0;
     ctxt = doc.xpathNewContext()
@@ -745,7 +763,7 @@ def analyzeHTML(doc, resource):
         title = "Page %s" % (resource)
     addPage(resource, title)
     try:
-	items = ctxt.xpathEval("//h1 | //h2 | //h3 | //p | //pre")
+	items = ctxt.xpathEval("//h1 | //h2 | //h3 | //text()")
 	section = title
 	id = ""
 	for item in items:
@@ -755,7 +773,10 @@ def analyzeHTML(doc, resource):
 		    id = item.prop("id")
 		elif item.prop("name"):
 		    id = item.prop("name")
-	    elif item.name == 'p':
+	    elif item.type == 'text':
+	        analyzeHTMLText(doc, resource, item, section, id)
+		para = para + 1
+	    elif item.name == 'text':
 	        analyzeHTMLPara(doc, resource, item, section, id)
 		para = para + 1
 	    elif item.name == 'pre':

@@ -1,3 +1,8 @@
+Mon Oct  7 13:12:03 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/index.py: improved HTML indexing
+	* doc/search.php: make the queries also lookup the HTML based indexes
+
 Sun Oct  6 23:50:29 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/index.py: added HTML page indexing 

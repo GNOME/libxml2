@@ -135,6 +135,20 @@ simply provide a set of keywords:
 	}
 	return array($result, $j);
     }
+    function queryHTMLWord($word) {
+        $result = NULL;
+	$j = 0;
+        if ($word) {
+	    $result = mysql_query ("SELECT relevance, name, id, resource, section FROM wordsHTML WHERE name='$word' ORDER BY relevance DESC");
+	    if ($result) {
+		$j = mysql_num_rows($result);
+		if ($j == 0) 
+		    mysql_free_result($result);
+	    }
+	    logQueryWord($word);
+	}
+	return array($result, $j);
+    }
     function resSort ($a, $b) {
 	list($ra,$ta,$ma,$na,$da) = $a;
 	list($rb,$tb,$mb,$nb,$db) = $b;
@@ -162,17 +176,39 @@ simply provide a set of keywords:
 			$module = mysql_result($result, $i, 3);
 			$desc = mysql_result($result, $i, 4);
 			if (array_key_exists($name, $results)) {
-			    list($r,$t,$m,$n, $d) = $results[$name];
+			    list($r,$t,$m,$d,$w,$u) = $results[$name];
 			    $results[$name] = array($r + $relevance + 40,
-			                            $t,$m,$n,$d);
+			                            $t,$m,$d,$w,$u);
 			} else {
+			    $id = strtoupper($name);
+			    $m = strtolower($module);
+			    $url = "html/libxml-$m.html#$id";
 			    $results[$name] = array($relevance,$type,
-						    $module, $name, $desc);
+					    $module, $desc, $name, $url);
 			}
 		    }
 		    mysql_free_result($result);
-		} else {
-		    echo "<p> No symbol found for $word\n";
+		}
+		list($result, $k) = queryHTMLWord($word);
+		if ($k > 0) {
+		    for ($i = 0; $i < $k; $i++) {
+			$relevance = mysql_result($result, $i, 0);
+			$name = mysql_result($result, $i, 1);
+			$id = mysql_result($result, $i, 2);
+			$module = mysql_result($result, $i, 3);
+			$desc = mysql_result($result, $i, 4);
+			$url = $module;
+			if ($id != "") {
+			    $url = $url + "#$id";
+			}
+			$results[$name + "_html_" + $number+ "_" + $i ] =
+			                  array($relevance, "documentation",
+						$module, $desc, $word, $url);
+		    }
+		    mysql_free_result($result);
+		}
+		if (($j <= 0) && ($k <= 0)) {
+		    echo "<p> No result found for $word\n";
 		}
 	    }
 	    mysql_close($link);
@@ -184,11 +220,8 @@ simply provide a set of keywords:
 		printf("<table><tbody>\n");
 		printf("<tr><td>Quality</td><td>Symbol</td><td>Type</td><td>module</td><td>Description</td></tr>\n");
 		while (list ($name, $val) = each ($results)) {
-		    list($r,$t,$m,$n,$d) = $val;
-		    $upper = strtoupper($n);
-		    $module = strtolower($m);
-		    $url = "html/libxml-$module.html#$upper";
-		    echo "<tr><td>$r</td><td><a href='$url'>$n</a></td><td>$t</td><td>$m</td><td>$d</td></tr>";
+		    list($r,$t,$m,$d,$s,$u) = $val;
+		    echo "<tr><td>$r</td><td><a href='$u'>$s</a></td><td>$t</td><td>$m</td><td>$d</td></tr>";
 		}
 		printf("</tbody></table>\n");
 	    }

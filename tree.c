@@ -2412,11 +2412,31 @@ xmlFreeNode(xmlNodePtr cur) {
 #else
     	if (cur->content != NULL) xmlBufferFree(cur->content);
 #endif
+    /*
+     * When a node is a text node or a comment, it uses a global static
+     * variable for the name of the node.
+     *
+     * The xmlStrEqual comparisons need to be done when (happened with
+     * XML::libXML and XML::libXSLT) the library is included twice statically
+     * in the binary and a tree allocated by one occurent of the lib gets
+     * freed by the other occurence, in this case the string addresses compare
+     * are not sufficient.
+     */
     if ((cur->name != NULL) &&
 	(cur->name != xmlStringText) &&
 	(cur->name != xmlStringTextNoenc) &&
-	(cur->name != xmlStringComment))
-	xmlFree((char *) cur->name);
+	(cur->name != xmlStringComment)) {
+	if (cur->type == XML_TEXT_NODE) {
+            if ((!xmlStrEqual(cur->name, xmlStringText)) &&
+		(!xmlStrEqual(cur->name, xmlStringTextNoenc)))
+		xmlFree((char *) cur->name);
+	} else if (cur->type == XML_COMMENT_NODE) {
+            if (!xmlStrEqual(cur->name, xmlStringComment))
+		xmlFree((char *) cur->name);
+	} else
+	    xmlFree((char *) cur->name);
+    }
+
     if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
     xmlFree(cur);
 }

@@ -1,3 +1,9 @@
+Sat Jun  9 19:16:00 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: patched xmlFreeNode() to avoid freeing() a static
+	  memory block in a strange case where libxml is linked twice
+	  in the binary.
+
 Sat Jun  9 18:39:03 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: (a? , b? , c? , ... , z?) was storing/restauring

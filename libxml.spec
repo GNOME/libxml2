@@ -70,6 +70,7 @@ make prefix=$RPM_BUILD_ROOT%{prefix} install
 
 %doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
 %{prefix}/lib/lib*.so.*
+%{prefix}/bin/xml-config
 
 %files devel
 %defattr(-, root, root)

@@ -660,7 +660,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		buf[sizeof(buf) - 1] = 0;
 		ptr = buf;
 		while (*ptr != 0) *out++ = *ptr++;
-	    } else if ((doc->encoding != NULL) &&
+	    } else if ((doc != NULL) && (doc->encoding != NULL) &&
 		       (xmlStrEqual(doc->encoding, "UTF-8"))) {
 		/*
 		 * We assume we have UTF-8 input.
@@ -671,7 +671,6 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		if (*cur < 0xC0) {
 		    fprintf(stderr,
 			    "xmlEncodeEntitiesReentrant : input not UTF-8\n");
-		    doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
 #ifdef HAVE_SNPRINTF
 		    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else
@@ -706,7 +705,6 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		if ((l == 1) || (!IS_CHAR(val))) {
 		    fprintf(stderr,
 			"xmlEncodeEntitiesReentrant : char out of range\n");
-		    doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
 #ifdef HAVE_SNPRINTF
 		    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else

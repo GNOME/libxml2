@@ -1,3 +1,9 @@
+Sat May  5 18:32:22 CEST 2001 <Daniel.Veillard@imag.fr>
+
+	* entities.c: fixed a possible NULL pointer deref introduced on
+	  the last change (Gediminas Paulauskas) and clean up a couple other
+	  mistakes
+
 Sat May  5 11:38:44 CEST 2001 <Daniel.Veillard@imag.fr>
 
 	* entities.c tree.c parser.c: fix a problem raised after 1.8.12

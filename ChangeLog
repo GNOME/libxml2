@@ -1,3 +1,16 @@
+Wed Mar 20 20:20:57 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* testSAX.c: I wanted to see the real speed at the SAX interface
+	  after a little too many Ximianer started complaining about the
+	  parser speed.
+	  added a --quiet option:
+	  paphio:~/XML -> ls -l db100000.xml 
+	  -rw-rw-r--    1 veillard www      20182040 Mar 20 10:30 db100000.xml
+	  paphio:~/XML -> time ./testSAX --quiet db100000.xml 
+	  3200006 callbacks generated
+	  real	0m1.270s
+	  Which means 16MBytes/s and 3Mcallback/s
+
 Tue Mar 19 19:33:57 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: valgrind spotted another error that time when running

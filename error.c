@@ -146,102 +146,62 @@ xmlParserPrintFileInfo(xmlParserInputPtr input) {
  */
 
 void
-xmlParserPrintFileContext(xmlParserInputPtr input) {
-    const xmlChar *cur, *base;
+xmlParserPrintFileContext(xmlParserInputPtr input)
+{
+    const xmlChar *cur, *base, *end;
     int n;
-    xmlChar  content[81];
+    xmlChar content[81];
     xmlChar *ctnt;
 
-    if (input == NULL) return;
+    if (input == NULL)
+        return;
     cur = input->cur;
     base = input->base;
+    end = input->end;
     /* skip backwards over any end-of-lines */
-    while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
-	cur--;
+    while ((cur > base) && (cur < end)
+           && ((*cur == '\n') || (*cur == '\r'))) {
+        cur--;
     }
     n = 0;
     /* search backwards for beginning-of-line maximum 80 characters */
-    while ((n++ < 80) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
+    while ((n++ < 80) && (cur > base) && (cur < end) && (*cur != '\n')
+           && (*cur != '\r'))
         cur--;
-    if ((*cur == '\n') || (*cur == '\r')) cur++;
-	/* search forward for end-of-line maximum 80 characters */
+    if ((cur > base) && (cur < end) && ((*cur == '\n') || (*cur == '\r')))
+        cur++;
+    /* search forward for end-of-line maximum 80 characters */
     n = 0;
     ctnt = content;
-    while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < 79)) {
-		*ctnt++ = *cur++;
-	n++;
+    while ((cur < end) && (*cur != 0) && (*cur != '\n') && (*cur != '\r')
+           && (n < 79)) {
+        *ctnt++ = *cur++;
+        n++;
     }
     *ctnt = 0;
-    xmlGenericError(xmlGenericErrorContext,"%s\n", content);
+    xmlGenericError(xmlGenericErrorContext, "%s\n", content);
     /* create blank line with problem pointer */
     cur = input->cur;
-    while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
-		cur--;
-	}
+    while ((cur > base) && (cur < end)
+           && ((*cur == '\n') || (*cur == '\r'))) {
+        cur--;
+    }
     n = 0;
     ctnt = content;
-    while ((n++ < 79) && (cur > base) && (*cur != '\n') && (*cur != '\r')) {
-	*ctnt++ = ' ';
-	cur--;
+    while ((n++ < 79) && (cur > base) && (cur < end) && (*cur != '\n')
+           && (*cur != '\r')) {
+        *ctnt++ = ' ';
+        cur--;
     }
     if (ctnt > content) {
-	*(--ctnt) = '^';
-	*(++ctnt) = 0;
+        *(--ctnt) = '^';
+        *(++ctnt) = 0;
     } else {
-	*ctnt = '^';
-	*(++ctnt) = 0;
+        *ctnt = '^';
+        *(++ctnt) = 0;
     }
-    xmlGenericError(xmlGenericErrorContext,"%s\n", content);
+    xmlGenericError(xmlGenericErrorContext, "%s\n", content);
 }
-
-#if 0
-/**
- * xmlGetVarStr:
- * @msg:  the message format
- * @args:  a va_list argument list
- *
- * SGS contribution
- * Get an arbitrary-sized string for an error argument
- * The caller must free() the returned string
- */
-static char *
-xmlGetVarStr(const char * msg, va_list args) {
-    int       size;
-    int       length;
-    int       chars, left;
-    char      *str, *larger;
-    va_list   ap;
-
-    str = (char *) xmlMalloc(150);
-    if (str == NULL)
-      return(NULL);
-
-    size = 150;
-    length = 0;
-
-    while (1) {
-	left = size - length;
-		    /* Try to print in the allocated space. */
-	va_start(msg, ap);
-  	chars = vsnprintf(str + length, left, msg, ap);
-	va_end(ap);
-			  /* If that worked, we're done. */
-	if ((chars > -1) && (chars < left ))
-	    break;
-			  /* Else try again with more space. */
-	if (chars > -1)         /* glibc 2.1 */
-	    size += chars + 1;  /* precisely what is needed */
-	else                    /* glibc 2.0 */
-	    size += 100;
-	if ((larger = (char *) xmlRealloc(str, size)) == NULL) {
-	    xmlFree(str);
-	    return(NULL);
-	}
-	str = larger;
-    }
-    return(str);
-}
-#endif
 
 /**
  * xmlParserError:

@@ -33,6 +33,14 @@
 #include <zlib.h>
 #endif
 
+#ifdef HAVE_SYS_MMAN_H
+#include <sys/mman.h>
+/* seems needed for Solaris */
+#ifndef MAP_FAILED
+#define MAP_FAILED ((void *) -1)
+#endif
+#endif
+
 /* Figure a portable way to know if a file is a directory. */
 #ifndef HAVE_STAT
 #  ifdef HAVE__STAT
@@ -1947,6 +1955,84 @@ xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
     return(ret);
 }
 
+#ifdef HAVE_SYS_MMAN_H
+typedef struct _xmlMMapContext xmlMMapContext;
+typedef xmlMMapContext *xmlMMapContextPtr;
+struct _xmlMMapContext {
+    int fd;
+    const char *mem;
+    size_t size;
+};
+
+/**
+ * xmlParserInputBufferCloseMMapFile:
+ * @ctxt:  the mmaped context
+ *
+ * Free up the resources associated to the mmaped file
+ */
+static void
+xmlParserInputBufferCloseMMapFile(xmlMMapContextPtr ctxt) {
+    if (ctxt == NULL)
+	return;
+    if (ctxt->mem != (void *) MAP_FAILED)
+	munmap((char *) ctxt->mem, ctxt->size);
+    if (ctxt->fd >= 0)
+	close(ctxt->fd);
+    xmlFree(ctxt);
+}
+
+/**
+ * xmlParserInputBufferCreateMMapFile:
+ * @fd:  the descriptor associated to the mmaped file.
+ * @base:  the mmaped start
+ * @size:  the length of the memory block
+ * @enc:  the charset encoding if known
+ *
+ * Create a buffered parser input for the progressive parsing for the input
+ * from a memory area.
+ *
+ * Returns the new parser input or NULL
+ */
+static xmlParserInputBufferPtr
+xmlParserInputBufferCreateMMapFile(int fd, const char *mem, size_t size,
+	                           xmlCharEncoding enc) {
+    xmlParserInputBufferPtr ret;
+    xmlMMapContextPtr ctxt;
+
+    if (fd < 0) return(NULL);
+    if (size <= 0) return(NULL);
+    if (mem == NULL) return(NULL);
+
+    ctxt = (xmlMMapContextPtr) xmlMalloc(sizeof(xmlMMapContext));
+    if (ctxt == NULL)
+	return(NULL);
+    ctxt->fd = fd;
+    ctxt->mem = mem;
+    ctxt->size = size;
+
+
+    ret = xmlAllocParserInputBuffer(enc);
+    if (ret != NULL) {
+        ret->context = (void *) ctxt;
+	ret->readcallback = (xmlInputReadCallback) xmlNop;
+	ret->closecallback = (xmlInputCloseCallback)
+	                       xmlParserInputBufferCloseMMapFile;
+	if (ret->buffer->content != NULL) {
+	    xmlFree(ret->buffer->content);
+	}
+	ret->buffer->alloc = XML_BUFFER_ALLOC_UNMUTABLE;
+	ret->buffer->content = (xmlChar *) mem;
+	ret->buffer->size = size;
+	ret->buffer->use = size;
+    } else {
+	xmlFree(ctxt);
+	return(NULL);
+    }
+
+    return(ret);
+}
+#endif
+
 /**
  * xmlOutputBufferCreateFd:
  * @fd:  a file descriptor number
@@ -2433,8 +2519,7 @@ xmlParserGetDirectory(const char *filename) {
  *								*
  ****************************************************************/
 
-#ifdef LIBXML_CATALOG_ENABLED
-static int xmlSysIDExists(const char *URL) {
+static const char * xmlSysIDExists(const char *URL, size_t *size) {
 #ifdef HAVE_STAT
     int ret;
     struct stat info;
@@ -2454,12 +2539,16 @@ static int xmlSysIDExists(const char *URL) {
     } else 
 	path = URL;
     ret = stat(path, &info);
-    if (ret == 0)
-	return(1);
+    if (ret == 0) {
+	if (size)
+	    *size = info.st_size;
+	return(path);
+    }
 #endif
-    return(0);
+    if (size)
+	*size = -1;
+    return(NULL);
 }
-#endif
 
 /**
  * xmlDefaultExternalEntityLoader:
@@ -2480,7 +2569,57 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 #ifdef LIBXML_CATALOG_ENABLED
     xmlCatalogAllow pref;
 #endif
+    const char *exist;
+    size_t length;
 
+    exist = xmlSysIDExists(URL, &length);
+#ifdef HAVE_SYS_MMAN_H
+    /*
+     * Shortcut, if asked for a file, the file is present, mmap it !
+     */
+    if ((exist != NULL) && (length > 0)) {
+	int fd = -1;
+	const char *base = NULL;
+	xmlParserInputBufferPtr buf = NULL;
+
+	if ((fd = open(exist, O_RDONLY)) >= 0) {
+	    /*
+	     * Magic test: don't drop back native compressed content support
+	     */
+	    char tmpbuf[2];
+	    if (read(fd, tmpbuf, 2) != 2)
+		goto failed;
+	    if ((tmpbuf[0] == 0x1F) && (tmpbuf[1] == 0x8B))
+		goto failed;
+
+	    base = mmap(NULL, length, PROT_READ, MAP_SHARED, fd, 0);
+	    if (base != (void *) MAP_FAILED) {
+		buf = xmlParserInputBufferCreateMMapFile(fd, base, length,
+			                 XML_CHAR_ENCODING_NONE);
+		if (buf != NULL) {
+		    ret = xmlNewInputStream(ctxt);
+		    if (ret != NULL) {
+			ret->filename = (const char *) xmlCharStrdup(exist);
+			ret->directory = (const char *)
+			                  xmlParserGetDirectory(exist);
+			ret->buf = buf;
+			ret->base = ret->buf->buffer->content;
+			ret->cur = ret->buf->buffer->content;
+			ret->end = &ret->base[ret->buf->buffer->use];
+			return(ret);
+		    }
+		}
+	    }
+	}
+failed:
+	if (buf != NULL)
+	    xmlFreeParserInputBuffer(buf);
+	if (base != (void *) MAP_FAILED)
+	    munmap((char *) base, length);
+	if (fd >= 0)
+	    close(fd);
+    }
+#endif
 #ifdef DEBUG_EXTERNAL_ENTITIES
     xmlGenericError(xmlGenericErrorContext,
 	    "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
@@ -2492,7 +2631,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
      */
     pref = xmlCatalogGetDefaults();
 
-    if ((pref != XML_CATA_ALLOW_NONE) && (!xmlSysIDExists(URL))) {
+    if ((pref != XML_CATA_ALLOW_NONE) && (exist == NULL)) {
 	/*
 	 * Do a local lookup
 	 */
@@ -2518,7 +2657,8 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 	/*
 	 * TODO: do an URI lookup on the reference
 	 */
-	if ((resource != NULL) && (!xmlSysIDExists((const char *)resource))) {
+	exist = xmlSysIDExists(URL, &length);
+	if ((resource != NULL) && (exist == NULL)) {
 	    xmlChar *tmp = NULL;
 
 	    if ((ctxt->catalogs != NULL) &&

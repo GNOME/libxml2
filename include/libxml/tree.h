@@ -402,7 +402,8 @@ struct _xmlRef {
 
 typedef enum {
     XML_BUFFER_ALLOC_DOUBLEIT,
-    XML_BUFFER_ALLOC_EXACT
+    XML_BUFFER_ALLOC_EXACT,
+    XML_BUFFER_ALLOC_UNMUTABLE
 } xmlBufferAllocationScheme;
 
 /**

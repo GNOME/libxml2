@@ -147,11 +147,12 @@ PUSH_AND_POP(static, xmlChar*, name)
 
 /* Inported from XML */
 
-/* #define CUR (ctxt->token ? ctxt->token : (int) (*ctxt->input->cur)) */
-#define CUR ((int) (*ctxt->input->cur))
+#define CUR ((ctxt->input->cur < ctxt->input->end) ? (*ctxt->input->cur) : 0)
 #define NEXT xmlNextChar(ctxt),ctxt->nbChars++
+#define AVAIL (ctxt->input->end - ctxt->input->cur)
 
-#define RAW (ctxt->token ? -1 : (*ctxt->input->cur))
+#define RAW (ctxt->token ? -1 : 					\
+	     (ctxt->input->cur < ctxt->input->end) ? (*ctxt->input->cur) : 0)
 #define NXT(val) ctxt->input->cur[(val)]
 #define CUR_PTR ctxt->input->cur
 
@@ -3047,8 +3048,8 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	else {
 	    /* Dump the bogus attribute string up to the next blank or
 	     * the end of the tag. */
-	    while ((IS_CHAR(CUR)) && !(IS_BLANK(CUR)) && (CUR != '>')
-	     && ((CUR != '/') || (NXT(1) != '>')))
+	    while ((AVAIL > 0) && (IS_CHAR(CUR)) && !(IS_BLANK(CUR)) &&
+		   (CUR != '>') && ((CUR != '/') || (NXT(1) != '>')))
 		NEXT;
 	}
 
@@ -4670,6 +4671,8 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 	xmlParserInputBufferPush(ctxt->input->buf, size, chunk);	      
 	ctxt->input->base = ctxt->input->buf->buffer->content + base;
 	ctxt->input->cur = ctxt->input->base + cur;
+	ctxt->input->end = ctxt->input->buf->buffer->content +
+	                   ctxt->input->buf->buffer->use;
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "HPP: pushed %d\n", size);
 #endif

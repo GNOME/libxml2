@@ -1,3 +1,2 @@
-<?XML version="1.0"?>
-<?namespace href="http://www.ietf.org/standards/dav/" AS = "D"?>
-<D:href>http://www.ics.uci.edu/~ejw/contact.html</D:href>
+<?xml version="1.0"?>
+<D:href xmlns:D="http://www.ietf.org/standards/dav/">http://www.ics.uci.edu/~ejw/contact.html</D:href>

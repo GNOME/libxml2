@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<svg xmlns="http://www.w3.org/Graphics/SVG/svg-19990412.dtd" width="4in" height="3in">
+  <desc>This example uses the switch element to provide a 
+  fallback graphical representation of an equation, if 
+  MathML is not supported.
+  </desc>
+  <switch>
+    <foreignobject system-required="http://www.w3.org/TR/REC-MathML-19980407" width="100" height="50"/>
+    <g>
+      <rect style="fill: red"/>
+      <text>Formula goes here</text>
+    </g>
+  </switch>
+</svg>

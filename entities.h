@@ -34,6 +34,7 @@ typedef struct xmlEntity {
     const CHAR    *ExternalID;	/* External identifier for PUBLIC Entity */
     const CHAR    *SystemID;	/* URI for a SYSTEM or PUBLIC Entity */
     CHAR *content;		/* The entity content or ndata if unparsed */
+    CHAR *orig;			/* The entity cont without ref substitution */
 } xmlEntity;
 typedef xmlEntity *xmlEntityPtr;
 
@@ -70,8 +71,6 @@ xmlEntitiesTablePtr xmlCreateEntitiesTable(void);
 xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
 void xmlFreeEntitiesTable(xmlEntitiesTablePtr table);
 void xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table);
-xmlParserInputPtr xmlNewEntityInputStream(xmlParserCtxtPtr ctxt,
-                                                 xmlEntityPtr entity);
 xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
 
 #ifdef __cplusplus

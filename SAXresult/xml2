@@ -1,0 +1,21 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.internalSubset(test, (null), (null))
+SAX.elementDecl(test, 3, ...)
+SAX.entityDecl(xx, 4, (null), (null), %zz;)
+SAX.getEntity(xx)
+SAX.entityDecl(zz, 4, (null), (null), <!ENTITY tricky "error-prone" >)
+SAX.getEntity(zz)
+SAX.getEntity(xx)
+SAX.warning: xmlParsePEReference: %xx; not found
+SAX.startElement(test)
+SAX.characters(This sample shows a &tricky; m, 20)
+SAX.getEntity(tricky)
+SAX.isStandalone()
+SAX.hasInternalSubset()
+SAX.hasExternalSubset()
+SAX.error: Entity 'tricky' not defined
+SAX.characters( method.</test>
+, 8)
+SAX.endElement(test)
+SAX.endDocument()

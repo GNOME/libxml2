@@ -1,0 +1,21 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.internalSubset(EXAMPLE, (null), example.dtd)
+SAX.resolveEntity((null), example.dtd)
+SAX.entityDecl(xml, 1, (null), (null), Extensible Markup Language)
+SAX.getEntity(xml)
+SAX.startElement(EXAMPLE)
+SAX.characters(
+  Test of &amp;amp; behaviour, 11)
+SAX.getEntity(amp)
+SAX.characters(&, 1)
+SAX.characters(amp; behaviour a&amp;b .
+</EXA, 16)
+SAX.getEntity(amp)
+SAX.characters(&, 1)
+SAX.characters(b .
+</EXAMPLE>
+
+, 4)
+SAX.endElement(EXAMPLE)
+SAX.endDocument()

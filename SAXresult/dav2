@@ -1,0 +1,104 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(S:multistatus, xmlns:S='http://www.ietf.org/standards/dav/', xmlns:R='http://www.foo.bar/boxschema/')
+SAX.characters(
+  <S:response>
+    <S:href>ht, 3)
+SAX.startElement(S:response)
+SAX.characters(
+    <S:href>http://www.foo.ba, 5)
+SAX.startElement(S:href)
+SAX.characters(http://www.foo.bar/container/<, 29)
+SAX.endElement(S:href)
+SAX.characters(
+    <S:prop>
+      <R:bigbox>, 5)
+SAX.startElement(S:prop)
+SAX.characters(
+      <R:bigbox>
+        <R:B, 7)
+SAX.startElement(R:bigbox)
+SAX.characters(
+        <R:BoxType>Box type A, 9)
+SAX.startElement(R:BoxType)
+SAX.characters(Box type A</R:BoxType>
+      <, 10)
+SAX.endElement(R:BoxType)
+SAX.characters(
+      </R:bigbox>
+      <R:au, 7)
+SAX.endElement(R:bigbox)
+SAX.characters(
+      <R:author>
+        <R:N, 7)
+SAX.startElement(R:author)
+SAX.characters(
+        <R:Name>Hadrian</R:Na, 9)
+SAX.startElement(R:Name)
+SAX.characters(Hadrian</R:Name>
+      </R:aut, 7)
+SAX.endElement(R:Name)
+SAX.characters(
+      </R:author>
+    </S:pro, 7)
+SAX.endElement(R:author)
+SAX.characters(
+    </S:prop>
+    <S:status>H, 5)
+SAX.endElement(S:prop)
+SAX.characters(
+    <S:status>HTTP 1.1 200 OK, 5)
+SAX.startElement(S:status)
+SAX.characters(HTTP 1.1 200 OK</S:status>
+  <, 15)
+SAX.endElement(S:status)
+SAX.characters(
+  </S:response>
+  <S:response, 3)
+SAX.endElement(S:response)
+SAX.characters(
+  <S:response>
+    <S:href>ht, 3)
+SAX.startElement(S:response)
+SAX.characters(
+    <S:href>http://www.foo.ba, 5)
+SAX.startElement(S:href)
+SAX.characters(http://www.foo.bar/container/i, 39)
+SAX.endElement(S:href)
+SAX.characters(
+    <S:prop>
+      <R:bigbox>, 5)
+SAX.startElement(S:prop)
+SAX.characters(
+      <R:bigbox>
+        <R:B, 7)
+SAX.startElement(R:bigbox)
+SAX.characters(
+        <R:BoxType>Box type B, 9)
+SAX.startElement(R:BoxType)
+SAX.characters(Box type B</R:BoxType>
+      <, 10)
+SAX.endElement(R:BoxType)
+SAX.characters(
+      </R:bigbox>
+    </S:pro, 7)
+SAX.endElement(R:bigbox)
+SAX.characters(
+    </S:prop>
+    <S:status>H, 5)
+SAX.endElement(S:prop)
+SAX.characters(
+    <S:status>HTTP 1.1 200 OK, 5)
+SAX.startElement(S:status)
+SAX.characters(HTTP 1.1 200 OK</S:status>
+  <, 15)
+SAX.endElement(S:status)
+SAX.characters(
+  </S:response>
+</S:multistat, 3)
+SAX.endElement(S:response)
+SAX.characters(
+</S:multistatus>
+, 1)
+SAX.endElement(S:multistatus)
+SAX.endDocument()

@@ -394,12 +394,10 @@ xmlCopyElementTable(xmlElementTablePtr table) {
 
 /**
  * xmlDumpElementTable:
+ * @buf:  the XML buffer output
  * @table:  An element table
  *
  * This will dump the content of the element table as an XML DTD definition
- *
- * NOTE: TODO an extra parameter allowing a reentant implementation will
- *       be added.
  */
 void
 xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table) {
@@ -755,12 +753,10 @@ xmlCopyAttributeTable(xmlAttributeTablePtr table) {
 
 /**
  * xmlDumpAttributeTable:
+ * @buf:  the XML buffer output
  * @table:  An attribute table
  *
  * This will dump the content of the attribute table as an XML DTD definition
- *
- * NOTE: TODO an extra parameter allowing a reentant implementation will
- *       be added.
  */
 void
 xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
@@ -820,15 +816,13 @@ xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
             case XML_ATTRIBUTE_IMPLIED:
 		xmlBufferWriteChar(buf, " #IMPLIED");
 		if (cur->defaultValue != NULL) {
-		    xmlBufferWriteChar(buf, " \"");
-		    xmlBufferWriteCHAR(buf, cur->defaultValue);
-		    xmlBufferWriteChar(buf, "\"");
+		    xmlBufferWriteChar(buf, " ");
+		    xmlBufferWriteQuotedString(buf, cur->defaultValue);
 		}
                 break;
             case XML_ATTRIBUTE_FIXED:
-		xmlBufferWriteChar(buf, " #FIXED \"");
-		xmlBufferWriteCHAR(buf, cur->defaultValue);
-		xmlBufferWriteChar(buf, "\"");
+		xmlBufferWriteChar(buf, " #FIXED ");
+		xmlBufferWriteQuotedString(buf, cur->defaultValue);
                 break;
 	    default:
 	        fprintf(stderr,
@@ -1053,12 +1047,10 @@ xmlCopyNotationTable(xmlNotationTablePtr table) {
 
 /**
  * xmlDumpNotationTable:
+ * @buf:  the XML buffer output
  * @table:  A notation table
  *
  * This will dump the content of the notation table as an XML DTD definition
- *
- * NOTE: TODO an extra parameter allowing a reentant implementation will
- *       be added.
  */
 void
 xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
@@ -1072,9 +1064,8 @@ xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
 	xmlBufferWriteChar(buf, "<!NOTATION ");
 	xmlBufferWriteCHAR(buf, cur->name);
 	if (cur->PublicID != NULL) {
-	    xmlBufferWriteChar(buf, " PUBLIC \"");
-	    xmlBufferWriteCHAR(buf, cur->PublicID);
-	    xmlBufferWriteChar(buf, "\"");
+	    xmlBufferWriteChar(buf, " PUBLIC ");
+	    xmlBufferWriteQuotedString(buf, cur->PublicID);
 	    if (cur->SystemID != NULL) {
 		xmlBufferWriteChar(buf, " ");
 		xmlBufferWriteCHAR(buf, cur->SystemID);

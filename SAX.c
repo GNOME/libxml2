@@ -19,7 +19,7 @@
 
 /**
  * getPublicId:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
  * Return the public ID e.g. "-//SGMLSOURCE//DTD DEMO//EN"
  *
@@ -34,9 +34,9 @@ getPublicId(void *ctx)
 
 /**
  * getSystemId:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
- * Return the system ID, basically URI or filename e.g.
+ * Return the system ID, basically URL or filename e.g.
  * http://www.sgmlsource.com/dtds/memo.dtd
  *
  * Returns a CHAR *
@@ -50,7 +50,7 @@ getSystemId(void *ctx)
 
 /**
  * getLineNumber:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
  * Return the line number of the current parsing point.
  *
@@ -65,7 +65,7 @@ getLineNumber(void *ctx)
 
 /**
  * getColumnNumber:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
  * Return the column number of the current parsing point.
  *
@@ -88,7 +88,7 @@ xmlSAXLocator xmlDefaultSAXLocator = {
 
 /**
  * isStandalone:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
  * Is this document tagged standalone ?
  *
@@ -103,7 +103,7 @@ isStandalone(void *ctx)
 
 /**
  * hasInternalSubset:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
  * Does this document has an internal subset
  *
@@ -118,7 +118,7 @@ hasInternalSubset(void *ctx)
 
 /**
  * hasExternalSubset:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
  * Does this document has an external subset
  *
@@ -133,7 +133,7 @@ hasExternalSubset(void *ctx)
 
 /**
  * hasInternalSubset:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
  * Does this document has an internal subset
  */
@@ -141,17 +141,21 @@ void
 internalSubset(void *ctx, const CHAR *name,
 	       const CHAR *ExternalID, const CHAR *SystemID)
 {
+    xmlDtdPtr externalSubset;
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.internalSubset(%s, %s, %s)\n",
             name, ExternalID, SystemID);
 #endif
     xmlCreateIntSubset(ctxt->myDoc, name, ExternalID, SystemID);
+    if ((ExternalID != NULL) || (SystemID != NULL)) {
+        externalSubset = xmlParseDTD(ExternalID, SystemID);
+    }
 }
 
 /**
  * resolveEntity:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @publicId: The public ID of the entity
  * @systemId: The system ID of the entity
  *
@@ -166,7 +170,7 @@ internalSubset(void *ctx, const CHAR *name,
 xmlParserInputPtr
 resolveEntity(void *ctx, const CHAR *publicId, const CHAR *systemId)
 {
-    /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.resolveEntity(%s, %s)\n", publicId, systemId);
@@ -175,17 +179,20 @@ resolveEntity(void *ctx, const CHAR *publicId, const CHAR *systemId)
     /*
      * TODO : not 100% sure that the appropriate handling in that case.
      */
+    if (systemId != NULL) {
+        return(xmlNewInputFromFile(ctxt, systemId));
+    }
     return(NULL);
 }
 
 /**
  * getEntity:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name: The entity name
  *
  * Get an entity by name
  *
- * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
+ * Returns the xmlEntityPtr if found.
  */
 xmlEntityPtr
 getEntity(void *ctx, const CHAR *name)
@@ -204,7 +211,7 @@ getEntity(void *ctx, const CHAR *name)
 
 /**
  * entityDecl:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name:  the entity name 
  * @type:  the entity type 
  * @publicId: The public ID of the entity
@@ -228,7 +235,7 @@ entityDecl(void *ctx, const CHAR *name, int type,
 
 /**
  * attributeDecl:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name:  the attribute name 
  * @type:  the attribute type 
  * @publicId: The public ID of the attribute
@@ -254,7 +261,7 @@ attributeDecl(void *ctx, const CHAR *elem, const CHAR *name,
 
 /**
  * elementDecl:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name:  the element name 
  * @type:  the element type 
  * @publicId: The public ID of the element
@@ -278,7 +285,7 @@ elementDecl(void *ctx, const CHAR *name, int type,
 
 /**
  * notationDecl:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name: The name of the notation
  * @publicId: The public ID of the entity
  * @systemId: The system ID of the entity
@@ -299,7 +306,7 @@ notationDecl(void *ctx, const CHAR *name,
 
 /**
  * unparsedEntityDecl:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name: The name of the entity
  * @publicId: The public ID of the entity
  * @systemId: The system ID of the entity
@@ -322,7 +329,7 @@ unparsedEntityDecl(void *ctx, const CHAR *name,
 
 /**
  * setDocumentLocator:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @loc: A SAX Locator
  *
  * Receive the document locator at startup, actually xmlDefaultSAXLocator
@@ -339,7 +346,7 @@ setDocumentLocator(void *ctx, xmlSAXLocatorPtr loc)
 
 /**
  * startDocument:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
  * called when the document start being processed.
  */
@@ -364,7 +371,7 @@ startDocument(void *ctx)
 
 /**
  * endDocument:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
  * called when the document end has been detected.
  */
@@ -379,7 +386,7 @@ endDocument(void *ctx)
 
 /**
  * attribute:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name:  The attribute name
  * @value:  The attribute value
  *
@@ -429,7 +436,7 @@ attribute(void *ctx, const CHAR *fullname, const CHAR *value)
     }
 
     ret = xmlNewProp(ctxt->node, name, NULL);
-    if (ret != NULL)
+    if ((ret != NULL) && (ctxt->replaceEntities == 0))
 	ret->val = xmlStringGetNodeList(ctxt->myDoc, value);
     if (name != NULL) 
 	free(name);
@@ -439,7 +446,7 @@ attribute(void *ctx, const CHAR *fullname, const CHAR *value)
 
 /**
  * startElement:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name:  The element name
  * @atts:  An array of name/value attributes pairs, NULL terminated
  *
@@ -529,7 +536,7 @@ startElement(void *ctx, const CHAR *fullname, const CHAR **atts)
 
 /**
  * endElement:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name:  The element name
  *
  * called when the end of an element has been detected.
@@ -564,7 +571,7 @@ endElement(void *ctx, const CHAR *name)
 
 /**
  * reference:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name:  The entity name
  *
  * called when an entity reference is detected. 
@@ -584,7 +591,7 @@ reference(void *ctx, const CHAR *name)
 
 /**
  * characters:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @ch:  a CHAR string
  * @len: the number of CHAR
  *
@@ -621,7 +628,7 @@ characters(void *ctx, const CHAR *ch, int len)
 
 /**
  * ignorableWhitespace:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @ch:  a CHAR string
  * @len: the number of CHAR
  *
@@ -639,7 +646,7 @@ ignorableWhitespace(void *ctx, const CHAR *ch, int len)
 
 /**
  * processingInstruction:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @target:  the target name
  * @data: the PI data's
  * @len: the number of CHAR
@@ -658,7 +665,7 @@ processingInstruction(void *ctx, const CHAR *target,
 
 /**
  * globalNamespace:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @href:  the namespace associated URN
  * @prefix: the namespace prefix
  *
@@ -676,7 +683,7 @@ globalNamespace(void *ctx, const CHAR *href, const CHAR *prefix)
 
 /**
  * setNamespace:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @name:  the namespace prefix
  *
  * Set the current element namespace.
@@ -704,7 +711,7 @@ setNamespace(void *ctx, const CHAR *name)
 
 /**
  * getNamespace:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  *
  * Get the current element namespace.
  */
@@ -723,7 +730,7 @@ getNamespace(void *ctx)
 
 /**
  * checkNamespace:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @namespace: the namespace to check against
  *
  * Check that the current element namespace is the same as the
@@ -771,7 +778,7 @@ checkNamespace(void *ctx, CHAR *namespace)
 
 /**
  * namespaceDecl:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @href:  the namespace associated URN
  * @prefix: the namespace prefix
  *
@@ -792,7 +799,7 @@ namespaceDecl(void *ctx, const CHAR *href, const CHAR *prefix)
 
 /**
  * comment:
- * @ctxt:  An XML parser context
+ * @ctx: the user data (XML parser context)
  * @value:  the comment content
  *
  * A comment has been parsed.

@@ -478,7 +478,7 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
 	    while ((*cur != 0) && (cur - value < len) && (*cur != ';')) cur++;
 	    if ((*cur == 0) || (cur - value >= len)) {
 	        fprintf(stderr,
-		        "xmlStringGetNodeList: unterminated entity %30s\n", q);
+		    "xmlStringLenGetNodeList: unterminated entity %30s\n", q);
 	        return(ret);
 	    }
             if (cur != q) {
@@ -2292,7 +2292,7 @@ xmlBufferWriteCHAR(xmlBufferPtr buf, const CHAR *string) {
 
 /**
  * xmlBufferWriteChar:
- * @buf:  the XML buffer
+ * @buf:  the XML buffer output
  * @string:  the string to add
  *
  * routine which manage and grows an output buffer. This one add
@@ -2305,7 +2305,38 @@ xmlBufferWriteChar(xmlBufferPtr buf, const char *string) {
 
 
 /**
+ * xmlBufferWriteQuotedString:
+ * @buf:  the XML buffer output
+ * @string:  the string to add
+ *
+ * routine which manage and grows an output buffer. This one writes
+ * a quoted or double quoted CHAR string, checking first if it holds
+ * quote or double-quotes internally
+ */
+void
+xmlBufferWriteQuotedString(xmlBufferPtr buf, const CHAR *string) {
+    /*
+     * TODO: fix strchr by xmlStrchr to work coreectly on UTF-8 !!!
+     */
+    if (strchr(string, '"')) {
+        if (strchr(string, '\'')) {
+	    fprintf(stderr,
+ "xmlBufferWriteQuotedString: string contains quote and double-quotes !\n");
+	}
+        xmlBufferCCat(buf, "'");
+        xmlBufferCat(buf, string);
+        xmlBufferCCat(buf, "'");
+    } else {
+        xmlBufferCCat(buf, "\"");
+        xmlBufferCat(buf, string);
+        xmlBufferCCat(buf, "\"");
+    }
+}
+
+
+/**
  * xmlGlobalNsDump:
+ * @buf:  the XML buffer output
  * @cur:  a namespace
  *
  * Dump a global Namespace, this is the old version based on PIs.
@@ -2319,14 +2350,12 @@ xmlGlobalNsDump(xmlBufferPtr buf, xmlNsPtr cur) {
     if (cur->type == XML_GLOBAL_NAMESPACE) {
 	xmlBufferWriteChar(buf, "<?namespace");
 	if (cur->href != NULL) {
-	    xmlBufferWriteChar(buf, " href=\"");
-	    xmlBufferWriteCHAR(buf, cur->href);
-	    xmlBufferWriteChar(buf, "\"");
+	    xmlBufferWriteChar(buf, " href=");
+	    xmlBufferWriteQuotedString(buf, cur->href);
 	}
 	if (cur->prefix != NULL) {
-	    xmlBufferWriteChar(buf, " AS=\"");
-	    xmlBufferWriteCHAR(buf, cur->prefix);
-	    xmlBufferWriteChar(buf, "\"");
+	    xmlBufferWriteChar(buf, " AS=");
+	    xmlBufferWriteQuotedString(buf, cur->prefix);
 	}
 	xmlBufferWriteChar(buf, "?>\n");
     }
@@ -2334,6 +2363,7 @@ xmlGlobalNsDump(xmlBufferPtr buf, xmlNsPtr cur) {
 
 /**
  * xmlGlobalNsListDump:
+ * @buf:  the XML buffer output
  * @cur:  the first namespace
  *
  * Dump a list of global Namespace, this is the old version based on PIs.
@@ -2348,6 +2378,7 @@ xmlGlobalNsListDump(xmlBufferPtr buf, xmlNsPtr cur) {
 
 /**
  * xmlNsDump:
+ * @buf:  the XML buffer output
  * @cur:  a namespace
  *
  * Dump a local Namespace definition.
@@ -2366,14 +2397,14 @@ xmlNsDump(xmlBufferPtr buf, xmlNsPtr cur) {
 	    xmlBufferWriteCHAR(buf, cur->prefix);
 	} else
 	    xmlBufferWriteChar(buf, " xmlns");
-	xmlBufferWriteChar(buf, "=\"");
-	xmlBufferWriteCHAR(buf, cur->href);
-	xmlBufferWriteChar(buf, "\"");
+	xmlBufferWriteChar(buf, "=");
+	xmlBufferWriteQuotedString(buf, cur->href);
     }
 }
 
 /**
  * xmlNsListDump:
+ * @buf:  the XML buffer output
  * @cur:  the first namespace
  *
  * Dump a list of local Namespace definitions.
@@ -2389,6 +2420,7 @@ xmlNsListDump(xmlBufferPtr buf, xmlNsPtr cur) {
 
 /**
  * xmlDtdDump:
+ * @buf:  the XML buffer output
  * @doc:  the document
  * 
  * Dump the XML document DTD, if any.
@@ -2404,15 +2436,13 @@ xmlDtdDump(xmlBufferPtr buf, xmlDocPtr doc) {
     xmlBufferWriteChar(buf, "<!DOCTYPE ");
     xmlBufferWriteCHAR(buf, cur->name);
     if (cur->ExternalID != NULL) {
-	xmlBufferWriteChar(buf, " PUBLIC \"");
-	xmlBufferWriteCHAR(buf, cur->ExternalID);
-	xmlBufferWriteChar(buf, "\" \"");
-	xmlBufferWriteCHAR(buf, cur->SystemID);
-	xmlBufferWriteChar(buf, "\"");
+	xmlBufferWriteChar(buf, " PUBLIC ");
+	xmlBufferWriteQuotedString(buf, cur->ExternalID);
+	xmlBufferWriteChar(buf, " ");
+	xmlBufferWriteQuotedString(buf, cur->SystemID);
     }  else if (cur->SystemID != NULL) {
-	xmlBufferWriteChar(buf, " SYSTEM \"");
-	xmlBufferWriteCHAR(buf, cur->SystemID);
-	xmlBufferWriteChar(buf, "\"");
+	xmlBufferWriteChar(buf, " SYSTEM ");
+	xmlBufferWriteQuotedString(buf, cur->SystemID);
     }
     if ((cur->entities == NULL) && (cur->elements == NULL) &&
         (cur->attributes == NULL) && (cur->notations == NULL)) {
@@ -2436,6 +2466,7 @@ xmlDtdDump(xmlBufferPtr buf, xmlDocPtr doc) {
 
 /**
  * xmlAttrDump:
+ * @buf:  the XML buffer output
  * @doc:  the document
  * @cur:  the attribute pointer
  *
@@ -2453,9 +2484,8 @@ xmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     xmlBufferWriteCHAR(buf, cur->name);
     value = xmlNodeListGetString(doc, cur->val, 0);
     if (value) {
-	xmlBufferWriteChar(buf, "=\"");
-	xmlBufferWriteCHAR(buf, value);
-	xmlBufferWriteChar(buf, "\"");
+	xmlBufferWriteChar(buf, "=");
+	xmlBufferWriteQuotedString(buf, value);
 	free(value);
     } else  {
 	xmlBufferWriteChar(buf, "=\"\"");
@@ -2464,6 +2494,7 @@ xmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 
 /**
  * xmlAttrListDump:
+ * @buf:  the XML buffer output
  * @doc:  the document
  * @cur:  the first attribute pointer
  *
@@ -2486,6 +2517,7 @@ static void
 xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level);
 /**
  * xmlNodeListDump:
+ * @buf:  the XML buffer output
  * @doc:  the document
  * @cur:  the first node
  * @level: the imbrication level for indenting
@@ -2518,6 +2550,7 @@ xmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 
 /**
  * xmlNodeDump:
+ * @buf:  the XML buffer output
  * @doc:  the document
  * @cur:  the current node
  * @level: the imbrication level for indenting
@@ -2589,6 +2622,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 
 /**
  * xmlDocContentDump:
+ * @buf:  the XML buffer output
  * @cur:  the document
  *
  * Dump an XML document.
@@ -2596,15 +2630,13 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 static void
 xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
     if (oldXMLWDcompatibility)
-	xmlBufferWriteChar(buf, "<?XML version=\"");
+	xmlBufferWriteChar(buf, "<?XML version=");
     else 
-	xmlBufferWriteChar(buf, "<?xml version=\"");
-    xmlBufferWriteCHAR(buf, cur->version);
-    xmlBufferWriteChar(buf, "\"");
+	xmlBufferWriteChar(buf, "<?xml version=");
+    xmlBufferWriteQuotedString(buf, cur->version);
     if (cur->encoding != NULL) {
-        xmlBufferWriteChar(buf, " encoding=\"");
-	xmlBufferWriteCHAR(buf, cur->encoding);
-	xmlBufferWriteChar(buf, "\"");
+        xmlBufferWriteChar(buf, " encoding=");
+	xmlBufferWriteQuotedString(buf, cur->encoding);
     }
     switch (cur->standalone) {
         case 0:

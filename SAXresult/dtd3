@@ -1,0 +1,8 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.internalSubset(doc, (null), (null))
+SAX.elementDecl(doc, 2, ...)
+SAX.startElement(doc)
+SAX.characters(This is a valid document !</do, 26)
+SAX.endElement(doc)
+SAX.endDocument()

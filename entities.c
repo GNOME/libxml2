@@ -30,22 +30,17 @@ struct xmlPredefinedEntityValue xmlPredefinedEntityValues[] = {
 xmlEntitiesTablePtr xmlPredefinedEntities = NULL;
 
 /*
- * A buffer used for converting entities to their equivalent and back.
- *
- * TODO: remove this, this helps performances but forbid reentrancy in a 
- *       stupid way.
+ * Macro used to grow the current buffer.
  */
-static int buffer_size = 0;
-static CHAR *buffer = NULL;
-
-void growBuffer(void) {
-    buffer_size *= 2;
-    buffer = (CHAR *) realloc(buffer, buffer_size * sizeof(CHAR));
-    if (buffer == NULL) {
-	perror("realloc failed");
-	exit(1);
-    }
+#define growBuffer() {							\
+    buffer_size *= 2;							\
+    buffer = (CHAR *) realloc(buffer, buffer_size * sizeof(CHAR));	\
+    if (buffer == NULL) {						\
+	perror("realloc failed");					\
+	exit(1);							\
+    }									\
 }
+
 
 /*
  * xmlFreeEntity : clean-up an entity record.
@@ -61,6 +56,8 @@ void xmlFreeEntity(xmlEntityPtr entity) {
         free((char *) entity->SystemID);
     if (entity->content != NULL)
         free((char *) entity->content);
+    if (entity->orig != NULL)
+        free((char *) entity->orig);
     memset(entity, -1, sizeof(xmlEntity));
 }
 
@@ -116,6 +113,7 @@ xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
 	cur->content = xmlStrdup(content);
     else
         cur->content = NULL;
+    cur->orig = NULL;
     table->nb_entities++;
 }
 
@@ -314,26 +312,28 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
  * TODO !!!! Once moved to UTF-8 internal encoding, the encoding of non-ascii
  *           get erroneous.
  *
- * TODO This routine is not reentrant and this will be changed, the interface
- *      should not be modified though.
- * 
  * Returns A newly allocated string with the substitution done.
  */
 CHAR *
 xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
     const CHAR *cur = input;
-    CHAR *out = buffer;
+    CHAR *buffer = NULL;
+    CHAR *out = NULL;
+    int buffer_size = 0;
 
     if (input == NULL) return(NULL);
+
+    /*
+     * allocate an translation buffer.
+     */
+    buffer_size = 1000;
+    buffer = (CHAR *) malloc(buffer_size * sizeof(CHAR));
     if (buffer == NULL) {
-        buffer_size = 1000;
-        buffer = (CHAR *) malloc(buffer_size * sizeof(CHAR));
-	if (buffer == NULL) {
-	    perror("malloc failed");
-            exit(1);
-	}
-	out = buffer;
+	perror("malloc failed");
+	exit(1);
     }
+    out = buffer;
+
     while (*cur != '\0') {
         if (out - buffer > buffer_size - 100) {
 	    int index = out - buffer;
@@ -517,6 +517,10 @@ xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
 	    cur->content = xmlStrdup(ent->content);
 	else
 	    cur->content = NULL;
+	if (ent->orig != NULL)
+	    cur->orig = xmlStrdup(ent->orig);
+	else
+	    cur->orig = NULL;
     }
     return(ret);
 }
@@ -541,23 +545,24 @@ xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table) {
 	    case XML_INTERNAL_GENERAL_ENTITY:
 	        xmlBufferWriteChar(buf, "<!ENTITY ");
 		xmlBufferWriteCHAR(buf, cur->name);
-		xmlBufferWriteChar(buf, " \"");
-		xmlBufferWriteCHAR(buf, cur->content);
-		xmlBufferWriteChar(buf, "\">\n");
+		xmlBufferWriteChar(buf, " ");
+		if (cur->orig != NULL)
+		    xmlBufferWriteQuotedString(buf, cur->orig);
+		else
+		    xmlBufferWriteQuotedString(buf, cur->content);
+		xmlBufferWriteChar(buf, ">\n");
 	        break;
 	    case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
 	        xmlBufferWriteChar(buf, "<!ENTITY ");
 		xmlBufferWriteCHAR(buf, cur->name);
 		if (cur->ExternalID != NULL) {
-		     xmlBufferWriteChar(buf, " PUBLIC \"");
-		     xmlBufferWriteCHAR(buf, cur->ExternalID);
-		     xmlBufferWriteChar(buf, "\" \"");
-		     xmlBufferWriteCHAR(buf, cur->SystemID);
-		     xmlBufferWriteChar(buf, "\"");
+		     xmlBufferWriteChar(buf, " PUBLIC ");
+		     xmlBufferWriteQuotedString(buf, cur->ExternalID);
+		     xmlBufferWriteChar(buf, " ");
+		     xmlBufferWriteQuotedString(buf, cur->SystemID);
 		} else {
-		     xmlBufferWriteChar(buf, " SYSTEM \"");
-		     xmlBufferWriteCHAR(buf, cur->SystemID);
-		     xmlBufferWriteChar(buf, "\"");
+		     xmlBufferWriteChar(buf, " SYSTEM ");
+		     xmlBufferWriteQuotedString(buf, cur->SystemID);
 		}
 		xmlBufferWriteChar(buf, ">\n");
 	        break;
@@ -565,42 +570,44 @@ xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table) {
 	        xmlBufferWriteChar(buf, "<!ENTITY ");
 		xmlBufferWriteCHAR(buf, cur->name);
 		if (cur->ExternalID != NULL) {
-		     xmlBufferWriteChar(buf, " PUBLIC \"");
-		     xmlBufferWriteCHAR(buf, cur->ExternalID);
-		     xmlBufferWriteChar(buf, "\" \"");
-		     xmlBufferWriteCHAR(buf, cur->SystemID);
-		     xmlBufferWriteChar(buf, "\"");
+		     xmlBufferWriteChar(buf, " PUBLIC ");
+		     xmlBufferWriteQuotedString(buf, cur->ExternalID);
+		     xmlBufferWriteChar(buf, " ");
+		     xmlBufferWriteQuotedString(buf, cur->SystemID);
 		} else {
-		     xmlBufferWriteChar(buf, " SYSTEM \"");
-		     xmlBufferWriteCHAR(buf, cur->SystemID);
-		     xmlBufferWriteChar(buf, "\"");
+		     xmlBufferWriteChar(buf, " SYSTEM ");
+		     xmlBufferWriteQuotedString(buf, cur->SystemID);
 		}
 		if (cur->content != NULL) { /* Should be true ! */
 		    xmlBufferWriteChar(buf, " NDATA ");
-		    xmlBufferWriteCHAR(buf, cur->content);
+		    if (cur->orig != NULL)
+			xmlBufferWriteCHAR(buf, cur->orig);
+		    else
+			xmlBufferWriteCHAR(buf, cur->content);
 		}
 		xmlBufferWriteChar(buf, ">\n");
 	        break;
 	    case XML_INTERNAL_PARAMETER_ENTITY:
 	        xmlBufferWriteChar(buf, "<!ENTITY % ");
 		xmlBufferWriteCHAR(buf, cur->name);
-		xmlBufferWriteChar(buf, " \"");
-		xmlBufferWriteCHAR(buf, cur->content);
-		xmlBufferWriteChar(buf, "\">\n");
+		xmlBufferWriteChar(buf, " ");
+		if (cur->orig == NULL)
+		    xmlBufferWriteQuotedString(buf, cur->content);
+		else
+		    xmlBufferWriteQuotedString(buf, cur->orig);
+		xmlBufferWriteChar(buf, ">\n");
 	        break;
 	    case XML_EXTERNAL_PARAMETER_ENTITY:
 	        xmlBufferWriteChar(buf, "<!ENTITY % ");
 		xmlBufferWriteCHAR(buf, cur->name);
 		if (cur->ExternalID != NULL) {
-		     xmlBufferWriteChar(buf, " PUBLIC \"");
-		     xmlBufferWriteCHAR(buf, cur->ExternalID);
-		     xmlBufferWriteChar(buf, "\" \"");
-		     xmlBufferWriteCHAR(buf, cur->SystemID);
-		     xmlBufferWriteChar(buf, "\"");
+		     xmlBufferWriteChar(buf, " PUBLIC ");
+		     xmlBufferWriteQuotedString(buf, cur->ExternalID);
+		     xmlBufferWriteChar(buf, " ");
+		     xmlBufferWriteQuotedString(buf, cur->SystemID);
 		} else {
-		     xmlBufferWriteChar(buf, " SYSTEM \"");
-		     xmlBufferWriteCHAR(buf, cur->SystemID);
-		     xmlBufferWriteChar(buf, "\"");
+		     xmlBufferWriteChar(buf, " SYSTEM ");
+		     xmlBufferWriteQuotedString(buf, cur->SystemID);
 		}
 		xmlBufferWriteChar(buf, ">\n");
 	        break;

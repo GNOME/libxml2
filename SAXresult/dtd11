@@ -1,0 +1,8 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.internalSubset(doc, (null), (null))
+SAX.elementDecl(doc, 3, ...)
+SAX.attributeDecl(doc, val, 1, 3, (null), ...)
+SAX.startElement(doc, val='v1')
+SAX.endElement(doc)
+SAX.endDocument()

@@ -28,6 +28,7 @@
 #include <stdarg.h>
 
 #include "parser.h"
+#include "parserInternals.h" /* only for xmlNewInputFromFile() */
 #include "tree.h"
 #include "debugXML.h"
 
@@ -63,6 +64,7 @@ xmlSAXHandler emptySAXHandlerStruct = {
 };
 
 xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
+extern xmlSAXHandlerPtr debugSAXHandler;
 
 /*
  * Note: there is a couple of errors introduced on purpose.
@@ -148,8 +150,14 @@ void
 internalSubsetDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
 	       const CHAR *ExternalID, const CHAR *SystemID)
 {
+    xmlDtdPtr externalSubset;
+
     fprintf(stdout, "SAX.internalSubset(%s, %s, %s)\n",
             name, ExternalID, SystemID);
+
+    if ((ExternalID != NULL) || (SystemID != NULL)) {
+        externalSubset = xmlSAXParseDTD(debugSAXHandler, ExternalID, SystemID);
+    }
 }
 
 /**
@@ -171,6 +179,9 @@ resolveEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *syst
 {
     fprintf(stdout, "SAX.resolveEntity(%s, %s)\n",
             (char *)publicId, (char *)systemId);
+    if (systemId != NULL) {
+        return(xmlNewInputFromFile(ctxt, systemId));
+    }
     return(NULL);
 }
 

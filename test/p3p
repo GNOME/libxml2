@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<?xml:namespace ns="http//www.w3.org/TR/1998/WD-P3P10-syntax#proposal.DTD" prefix="p3p"?>
-<?xml:namespace ns="http://www.w3.org/TR/WD-rdf-syntax#" prefix="RDF"?>
-<RDF:RDF><PROP realm="http://www.CoolCatalog.com/catalogue/" 
+<RDF:RDF xmlsn:p3p="http//www.w3.org/TR/1998/WD-P3P10-syntax#proposal.DTD"
+         xmlns:RDF="http://www.w3.org/TR/WD-rdf-syntax#">
+<PROP realm="http://www.CoolCatalog.com/catalogue/" 
  entity="CoolCatalog" agreeID="94df1293a3e519bb"
  assurance="http://www.TrustUs.org">
   <USES>
@@ -15,7 +15,7 @@
   </STATEMENT>
   </USES>
   <USES>
-  <STATEMENT action="read&write" purp="0" recpnt="0" id="1">
+  <STATEMENT action="read&amp;write" purp="0" recpnt="0" id="1">
     <REF name="User.Shipping."/>
   </STATEMENT>
   </USES>

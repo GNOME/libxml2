@@ -33,6 +33,7 @@
 static int debug = 0;
 static int copy = 0;
 static int recovery = 0;
+static int noent = 0;
 
 /*
  * Note: there is a couple of errors introduced on purpose.
@@ -184,7 +185,11 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-recover")) ||
 	         (!strcmp(argv[i], "--recover")))
 	    recovery++;
+	else if ((!strcmp(argv[i], "-noent")) ||
+	         (!strcmp(argv[i], "--noent")))
+	    noent++;
     }
+    if (noent != 0) xmlSubstituteEntitiesDefault(1);
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {
 	    parseAndPrintFile(argv[i]);

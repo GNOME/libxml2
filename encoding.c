@@ -216,7 +216,7 @@ UTF8ToUTF16(unsigned short* out, int outlen, unsigned char* in, int inlen)
  * Returns one of the XML_CHAR_ENCODING_... values.
  */
 xmlCharEncoding
-xmlDetectCharEncoding(unsigned char* in)
+xmlDetectCharEncoding(const unsigned char* in)
 {
     if ((in[0] == 0x00) && (in[1] == 0x00) &&
         (in[2] == 0x00) && (in[3] == 0x3C))
@@ -255,7 +255,7 @@ xmlDetectCharEncoding(unsigned char* in)
  * if not recognized.
  */
 xmlCharEncoding
-xmlParseCharEncoding(char* name)
+xmlParseCharEncoding(const char* name)
 {
     char upper[500];
     int i;

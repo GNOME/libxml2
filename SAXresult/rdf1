@@ -1,0 +1,223 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(RDF:RDF, xmlns:RPM='http://www.rpm.org/', xmlns:RDF='http://www.w3.org/TR/WD-rdf-syntax#')
+SAX.characters(
+  <RDF:Description HREF="ftp:, 3)
+SAX.startElement(RDF:Description, HREF='ftp://rufus.w3.org/linux/redhat/redhat-5.1/i386/RedHat/RPMS/rpm-2.5-2.i386.rpm')
+SAX.characters(
+    <RPM:Name>rpm</RPM:Name>
+, 5)
+SAX.startElement(RPM:Name)
+SAX.characters(rpm</RPM:Name>
+    <RPM:Versio, 3)
+SAX.endElement(RPM:Name)
+SAX.characters(
+    <RPM:Version>2.5</RPM:Ver, 5)
+SAX.startElement(RPM:Version)
+SAX.characters(2.5</RPM:Version>
+    <RPM:Rel, 3)
+SAX.endElement(RPM:Version)
+SAX.characters(
+    <RPM:Release>2</RPM:Relea, 5)
+SAX.startElement(RPM:Release)
+SAX.characters(2</RPM:Release>
+    <RPM:Arch>, 1)
+SAX.endElement(RPM:Release)
+SAX.characters(
+    <RPM:Arch>i386</RPM:Arch>, 5)
+SAX.startElement(RPM:Arch)
+SAX.characters(i386</RPM:Arch>
+    <RPM:Os>Li, 4)
+SAX.endElement(RPM:Arch)
+SAX.characters(
+    <RPM:Os>Linux</RPM:Os>
+  , 5)
+SAX.startElement(RPM:Os)
+SAX.characters(Linux</RPM:Os>
+    <RPM:Distri, 5)
+SAX.endElement(RPM:Os)
+SAX.characters(
+    <RPM:Distribution>Manhatt, 5)
+SAX.startElement(RPM:Distribution)
+SAX.characters(Manhattan </RPM:Distribution>
+, 10)
+SAX.endElement(RPM:Distribution)
+SAX.characters(
+    <RPM:Vendor>Red Hat Softw, 5)
+SAX.startElement(RPM:Vendor)
+SAX.characters(Red Hat Software</RPM:Vendor>
+, 16)
+SAX.endElement(RPM:Vendor)
+SAX.characters(
+    <RPM:Packager>Red Hat Sof, 5)
+SAX.startElement(RPM:Packager)
+SAX.characters(Red Hat Software &lt;bugs@redh, 17)
+SAX.getEntity(lt)
+SAX.characters(<, 1)
+SAX.characters(bugs@redhat.com&gt;</RPM:Packa, 15)
+SAX.getEntity(gt)
+SAX.characters(>, 1)
+SAX.endElement(RPM:Packager)
+SAX.characters(
+    <RPM:Group>Utilities/Syst, 5)
+SAX.startElement(RPM:Group)
+SAX.characters(Utilities/System</RPM:Group>
+ , 16)
+SAX.endElement(RPM:Group)
+SAX.characters(
+    <RPM:Summary>Red Hat Pack, 5)
+SAX.startElement(RPM:Summary)
+SAX.characters(Red Hat Package Manager</RPM:S, 23)
+SAX.endElement(RPM:Summary)
+SAX.characters(
+    <RPM:Description>RPM is a, 5)
+SAX.startElement(RPM:Description)
+SAX.characters(RPM is a powerful package mana, 248)
+SAX.endElement(RPM:Description)
+SAX.characters(
+    <RPM:Copyright>GPL</RPM:C, 5)
+SAX.startElement(RPM:Copyright)
+SAX.characters(GPL</RPM:Copyright>
+    <RPM:C, 3)
+SAX.endElement(RPM:Copyright)
+SAX.characters(
+    <RPM:Changelog>* Sun May , 5)
+SAX.startElement(RPM:Changelog)
+SAX.characters(* Sun May 10 1998 Prospector S, 36)
+SAX.getEntity(lt)
+SAX.characters(<, 1)
+SAX.characters(bugs@redhat.com&gt;
+  - transl, 15)
+SAX.getEntity(gt)
+SAX.characters(>, 1)
+SAX.characters(
+  - translations modified for, 42)
+SAX.endElement(RPM:Changelog)
+SAX.characters(
+    <RPM:Sources>rpm-2.5-2.sr, 5)
+SAX.startElement(RPM:Sources)
+SAX.characters(rpm-2.5-2.src.rpm</RPM:Sources, 17)
+SAX.endElement(RPM:Sources)
+SAX.characters(
+    <RPM:SourcesFtp>ftp://ftp, 5)
+SAX.startElement(RPM:SourcesFtp)
+SAX.characters(ftp://ftp.redhat.com/pub/redha, 48)
+SAX.endElement(RPM:SourcesFtp)
+SAX.characters(
+    <RPM:BuildDate>Sun May 10, 5)
+SAX.startElement(RPM:BuildDate)
+SAX.characters(Sun May 10 14:52:32 1998</RPM:, 24)
+SAX.endElement(RPM:BuildDate)
+SAX.characters(
+    <RPM:Date>894826352</RPM:, 5)
+SAX.startElement(RPM:Date)
+SAX.characters(894826352</RPM:Date>
+    <RPM:, 9)
+SAX.endElement(RPM:Date)
+SAX.characters(
+    <RPM:Size>850599</RPM:Siz, 5)
+SAX.startElement(RPM:Size)
+SAX.characters(850599</RPM:Size>
+    <RPM:Bui, 6)
+SAX.endElement(RPM:Size)
+SAX.characters(
+    <RPM:BuildHost>porky.redh, 5)
+SAX.startElement(RPM:BuildHost)
+SAX.characters(porky.redhat.com</RPM:BuildHos, 16)
+SAX.endElement(RPM:BuildHost)
+SAX.characters(
+    <RPM:Provides>
+      <RDF, 5)
+SAX.startElement(RPM:Provides)
+SAX.characters(
+      <RDF:Bag>
+        <RPM:, 7)
+SAX.startElement(RDF:Bag)
+SAX.characters(
+        <RPM:Resource>rpm</RP, 9)
+SAX.startElement(RPM:Resource)
+SAX.characters(rpm</RPM:Resource>
+      </RDF, 3)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+      </RDF:Bag>
+    </RPM:Pr, 7)
+SAX.endElement(RDF:Bag)
+SAX.characters(
+    </RPM:Provides>
+    <RPM:, 5)
+SAX.endElement(RPM:Provides)
+SAX.characters(
+    <RPM:Requires>
+      <RDF, 5)
+SAX.startElement(RPM:Requires)
+SAX.characters(
+      <RDF:Bag>
+        <RPM:, 7)
+SAX.startElement(RDF:Bag)
+SAX.characters(
+        <RPM:Resource>/bin/sh, 9)
+SAX.startElement(RPM:Resource)
+SAX.characters(/bin/sh</RPM:Resource>
+       , 7)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource>ld-linu, 9)
+SAX.startElement(RPM:Resource)
+SAX.characters(ld-linux.so.2</RPM:Resource>
+ , 13)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource>libc.so, 9)
+SAX.startElement(RPM:Resource)
+SAX.characters(libc.so.6</RPM:Resource>
+     , 9)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource>libdb.s, 9)
+SAX.startElement(RPM:Resource)
+SAX.characters(libdb.so.2</RPM:Resource>
+    , 10)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource>libz.so, 9)
+SAX.startElement(RPM:Resource)
+SAX.characters(libz.so.1</RPM:Resource>
+     , 9)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource>/bin/ba, 9)
+SAX.startElement(RPM:Resource)
+SAX.characters(/bin/bash</RPM:Resource>
+     , 9)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource>/bin/sh, 9)
+SAX.startElement(RPM:Resource)
+SAX.characters(/bin/sh</RPM:Resource>
+      <, 7)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+      </RDF:Bag>
+    </RPM:Re, 7)
+SAX.endElement(RDF:Bag)
+SAX.characters(
+    </RPM:Requires>
+    <RPM:, 5)
+SAX.endElement(RPM:Requires)
+SAX.characters(
+    <RPM:Files>/bin/rpm
+/usr/, 5)
+SAX.startElement(RPM:Files)
+SAX.characters(/bin/rpm
+/usr/bin/find-provide, 885)
+SAX.endElement(RPM:Files)
+SAX.characters(
+  </RDF:Description>
+</RDF:RD, 3)
+SAX.endElement(RDF:Description)
+SAX.characters(
+</RDF:RDF>
+, 1)
+SAX.endElement(RDF:RDF)
+SAX.endDocument()

@@ -10,5 +10,12 @@ A mailing-list has been set-up, to subscribe:
 The list archive is at:
     http://rufus.w3.org/veillard/XML/messages/
 
+NOTE: I use a second CVS server for experimental version of the XML code,
+      this mean that if you commit without a Changelog or without sending
+      the patch to me or the list, it may well get lost. I usually check
+      before copying over the Gnome directory, but it may happen.
+
+    People interested in the bleeding edge or what I'm up to can check
+    at http://dev.w3.org/cgi-bin/cvsweb/XML/
 
 Daniel.Veillard@w3.org

@@ -362,6 +362,7 @@ CHAR *xmlNodeGetContent(xmlNodePtr cur);
  */
 void xmlBufferWriteCHAR(xmlBufferPtr buf, const CHAR *string);
 void xmlBufferWriteChar(xmlBufferPtr buf, const char *string);
+void xmlBufferWriteQuotedString(xmlBufferPtr buf, const CHAR *string);
 
 /*
  * Saving

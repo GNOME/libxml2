@@ -1,0 +1,77 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(D:prop, xmlns:D='http://www.ietf.org/standards/dav/')
+SAX.characters(
+  <D:lockdiscovery>
+    <D:ac, 3)
+SAX.startElement(D:lockdiscovery)
+SAX.characters(
+    <D:activelock>
+      <D:l, 5)
+SAX.startElement(D:activelock)
+SAX.characters(
+      <D:locktype>write</D:lo, 7)
+SAX.startElement(D:locktype)
+SAX.characters(write</D:locktype>
+      <D:lo, 5)
+SAX.endElement(D:locktype)
+SAX.characters(
+      <D:lockscope>exclusive<, 7)
+SAX.startElement(D:lockscope)
+SAX.characters(exclusive</D:lockscope>
+      , 9)
+SAX.endElement(D:lockscope)
+SAX.characters(
+      <D:addlocks/>
+      <D:, 7)
+SAX.startElement(D:addlocks)
+SAX.endElement((null))
+SAX.characters(
+      <D:owner>
+        <D:hr, 7)
+SAX.startElement(D:owner)
+SAX.characters(
+        <D:href>
+		http://www, 9)
+SAX.startElement(D:href)
+SAX.characters(
+		http://www.ics.uci.edu/~ejw, 46)
+SAX.endElement(D:href)
+SAX.characters(
+      </D:owner>
+      <D:tim, 7)
+SAX.endElement(D:owner)
+SAX.characters(
+      <D:timeout>Second-60480, 7)
+SAX.startElement(D:timeout)
+SAX.characters(Second-604800</D:timeout>
+    , 13)
+SAX.endElement(D:timeout)
+SAX.characters(
+      <D:locktoken>
+        <, 7)
+SAX.startElement(D:locktoken)
+SAX.characters(
+        <D:href>
+	   opaquelo, 9)
+SAX.startElement(D:href)
+SAX.characters(
+	   opaquelocktoken:xyz122393, 59)
+SAX.endElement(D:href)
+SAX.characters(
+      </D:locktoken>
+    </D:, 7)
+SAX.endElement(D:locktoken)
+SAX.characters(
+    </D:activelock>
+  </D:loc, 5)
+SAX.endElement(D:activelock)
+SAX.characters(
+  </D:lockdiscovery>
+</D:prop, 3)
+SAX.endElement(D:lockdiscovery)
+SAX.characters(
+</D:prop>
+, 1)
+SAX.endElement(D:prop)
+SAX.endDocument()

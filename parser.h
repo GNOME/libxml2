@@ -54,6 +54,7 @@ typedef struct _xmlParserCtxt {
     void            *userData;        /* the document being built */
     xmlDocPtr           myDoc;        /* the document being built */
     int            wellFormed;        /* is the document well formed */
+    int       replaceEntities;        /* shall we replace entities ? */
     const CHAR     *version;	      /* the XML version string */
     const CHAR     *encoding;         /* encoding, if any */
     int             standalone;       /* standalone document */
@@ -194,6 +195,7 @@ CHAR *xmlStrncat(CHAR *cur, const CHAR *add, int len);
 xmlDocPtr xmlParseDoc(CHAR *cur);
 xmlDocPtr xmlParseMemory(char *buffer, int size);
 xmlDocPtr xmlParseFile(const char *filename);
+int xmlSubstituteEntitiesDefault(int val);
 
 /*
  * Recovery mode 
@@ -211,6 +213,9 @@ xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer,
                                    int size, int recovery);
 xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
                                  int recovery);
+xmlDtdPtr xmlParseDTD(const CHAR *ExternalID, const CHAR *SystemID);
+xmlDtdPtr xmlSAXParseDTD(xmlSAXHandlerPtr sax, const CHAR *ExternalID,
+                         const CHAR *SystemID);
 void xmlInitParserCtxt(xmlParserCtxtPtr ctxt);
 void xmlClearParserCtxt(xmlParserCtxtPtr ctxt);
 void xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const CHAR* buffer,

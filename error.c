@@ -12,7 +12,7 @@
 
 /**
  * xmlParserError:
- * @ctxt:  an XML parser context
+ * @ctx:  an XML parser context
  * @msg:  the message to display/transmit
  * @...:  extra parameters for the message display
  * 
@@ -66,7 +66,7 @@ xmlParserError(void *ctx, const char *msg, ...)
 
 /**
  * xmlParserWarning:
- * @ctxt:  an XML parser context
+ * @ctx:  an XML parser context
  * @msg:  the message to display/transmit
  * @...:  extra parameters for the message display
  * 

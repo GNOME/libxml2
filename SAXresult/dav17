@@ -1,0 +1,99 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(D:multistatus, xmlns:D='http://www.ietf.org/standards/dav/')
+SAX.characters(
+  <D:response>
+    <D:prop>
+ , 3)
+SAX.startElement(D:response)
+SAX.characters(
+    <D:prop>
+      <D:lockdis, 5)
+SAX.startElement(D:prop)
+SAX.characters(
+      <D:lockdiscovery>
+     , 7)
+SAX.startElement(D:lockdiscovery)
+SAX.characters(
+        <D:activelock>
+      , 9)
+SAX.startElement(D:activelock)
+SAX.characters(
+          <D:locktype>write</, 11)
+SAX.startElement(D:locktype)
+SAX.characters(write</D:locktype>
+          <, 5)
+SAX.endElement(D:locktype)
+SAX.characters(
+          <D:lockscope>exclus, 11)
+SAX.startElement(D:lockscope)
+SAX.characters(exclusive</D:lockscope>
+      , 9)
+SAX.endElement(D:lockscope)
+SAX.characters(
+          <D:addlocks>
+      , 11)
+SAX.startElement(D:addlocks)
+SAX.characters(
+            <D:href>http://fo, 13)
+SAX.startElement(D:href)
+SAX.characters(http://foo.com/doc/</D:href>
+ , 19)
+SAX.endElement(D:href)
+SAX.characters(
+          </D:addlocks>
+     , 11)
+SAX.endElement(D:addlocks)
+SAX.characters(
+          <D:owner>Jane Smith, 11)
+SAX.startElement(D:owner)
+SAX.characters(Jane Smith</D:owner>
+         , 10)
+SAX.endElement(D:owner)
+SAX.characters(
+          <D:timeout>Infinite, 11)
+SAX.startElement(D:timeout)
+SAX.characters(Infinite</D:timeout>
+         , 8)
+SAX.endElement(D:timeout)
+SAX.characters(
+          <D:locktoken>
+     , 11)
+SAX.startElement(D:locktoken)
+SAX.characters(
+            <D:href>iamuri:un, 13)
+SAX.startElement(D:href)
+SAX.characters(iamuri:unique!!!!!</D:href>
+  , 18)
+SAX.endElement(D:href)
+SAX.characters(
+          </D:locktoken>
+    , 11)
+SAX.endElement(D:locktoken)
+SAX.characters(
+        </D:activelock>
+     , 9)
+SAX.endElement(D:activelock)
+SAX.characters(
+      </D:lockdiscovery>
+    , 7)
+SAX.endElement(D:lockdiscovery)
+SAX.characters(
+    </D:prop>
+    <D:status>H, 5)
+SAX.endElement(D:prop)
+SAX.characters(
+    <D:status>HTTP/1.1 200 OK, 5)
+SAX.startElement(D:status)
+SAX.characters(HTTP/1.1 200 OK</D:status>
+  <, 15)
+SAX.endElement(D:status)
+SAX.characters(
+  </D:response>
+</D:multistat, 3)
+SAX.endElement(D:response)
+SAX.characters(
+</D:multistatus>
+, 1)
+SAX.endElement(D:multistatus)
+SAX.endDocument()

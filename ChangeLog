@@ -1,3 +1,10 @@
+Wed Jun  2 19:40:58 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Release of libxml-1.1, nearly everything has been touched for
+	  this.
+	* Added more regression tests
+	* Updated the documentation
+
 Sat May 29 13:34:42 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.[ch]: unified the XML_NO_CORBA defines.

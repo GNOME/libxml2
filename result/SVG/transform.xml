@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG April 1999//EN" "http://www.w3.org/Graphics/SVG/svg-19990412.dtd">
+<svg width="4in" height="3in">
+  <desc>Demonstration of coordinate transforms
+  </desc>
+  <text style="font-size: 12">This prints 12 pixels high.</text>
+  <text style="font-size: 12px">This prints 12 pixels high.</text>
+  <g style="transform: scale(2)">
+    <text style="font-size: 12">This prints 24 pixels high.</text>
+    <text style="font-size: 12px">This prints 12 pixels high.</text>
+  </g>
+</svg>

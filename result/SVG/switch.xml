@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="yes"?>
+<smil>
+  <body>
+    <switch>
+      <ref system-required="http://www.w3.org/Graphics/SVG/svg-19990412.dtd" type="image/svg" src="drawing.svg"/>
+      <img src="alternate_image.jpg"/>
+    </switch>
+  </body>
+</smil>

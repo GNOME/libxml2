@@ -137,10 +137,7 @@ HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
 > (<A
 HREF="gnome-xml-parser.html#RESOLVEENTITYSAXFUNC"
 >*resolveEntitySAXFunc</A
->)   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)   (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -152,10 +149,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#INTERNALSUBSETSAXFUNC"
 >*internalSubsetSAXFunc</A
->)        (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)        (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -174,10 +168,7 @@ HREF="gnome-xml-entities.html#XMLENTITYPTR"
 > (<A
 HREF="gnome-xml-parser.html#GETENTITYSAXFUNC"
 >*getEntitySAXFunc</A
->)            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)            (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -185,10 +176,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#ENTITYDECLSAXFUNC"
 >*entityDeclSAXFunc</A
->)            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)            (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -209,10 +197,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#NOTATIONDECLSAXFUNC"
 >*notationDeclSAXFunc</A
->)          (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)          (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -228,10 +213,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#ATTRIBUTEDECLSAXFUNC"
 >*attributeDeclSAXFunc</A
->)         (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)         (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -253,10 +235,7 @@ HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
 void        (<A
 HREF="gnome-xml-parser.html#ELEMENTDECLSAXFUNC"
 >*elementDeclSAXFunc</A
->)           (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)           (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -269,10 +248,7 @@ HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
 void        (<A
 HREF="gnome-xml-parser.html#UNPARSEDENTITYDECLSAXFUNC"
 >*unparsedEntityDeclSAXFunc</A
->)    (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)    (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -292,10 +268,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#SETDOCUMENTLOCATORSAXFUNC"
 >*setDocumentLocatorSAXFunc</A
->)    (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)    (void *ctx,
                                              <A
 HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
 >xmlSAXLocatorPtr</A
@@ -303,24 +276,15 @@ HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
 void        (<A
 HREF="gnome-xml-parser.html#STARTDOCUMENTSAXFUNC"
 >*startDocumentSAXFunc</A
->)         (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);
+>)         (void *ctx);
 void        (<A
 HREF="gnome-xml-parser.html#ENDDOCUMENTSAXFUNC"
 >*endDocumentSAXFunc</A
->)           (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);
+>)           (void *ctx);
 void        (<A
 HREF="gnome-xml-parser.html#STARTELEMENTSAXFUNC"
 >*startElementSAXFunc</A
->)          (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)          (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -332,10 +296,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#ENDELEMENTSAXFUNC"
 >*endElementSAXFunc</A
->)            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)            (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -343,10 +304,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#ATTRIBUTESAXFUNC"
 >*attributeSAXFunc</A
->)             (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)             (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -358,10 +316,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#REFERENCESAXFUNC"
 >*referenceSAXFunc</A
->)             (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)             (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -369,10 +324,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#CHARACTERSSAXFUNC"
 >*charactersSAXFunc</A
->)            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)            (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -381,10 +333,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#IGNORABLEWHITESPACESAXFUNC"
 >*ignorableWhitespaceSAXFunc</A
->)   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)   (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -393,10 +342,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#PROCESSINGINSTRUCTIONSAXFUNC"
 >*processingInstructionSAXFunc</A
->) (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>) (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -408,10 +354,7 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#COMMENTSAXFUNC"
 >*commentSAXFunc</A
->)               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)               (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -419,51 +362,33 @@ HREF="gnome-xml-tree.html#CHAR"
 void        (<A
 HREF="gnome-xml-parser.html#WARNINGSAXFUNC"
 >*warningSAXFunc</A
->)               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)               (void *ctx,
                                              const char *msg,
                                              ...);
 void        (<A
 HREF="gnome-xml-parser.html#ERRORSAXFUNC"
 >*errorSAXFunc</A
->)                 (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)                 (void *ctx,
                                              const char *msg,
                                              ...);
 void        (<A
 HREF="gnome-xml-parser.html#FATALERRORSAXFUNC"
 >*fatalErrorSAXFunc</A
->)            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>)            (void *ctx,
                                              const char *msg,
                                              ...);
 int         (<A
 HREF="gnome-xml-parser.html#ISSTANDALONESAXFUNC"
 >*isStandaloneSAXFunc</A
->)          (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);
+>)          (void *ctx);
 int         (<A
 HREF="gnome-xml-parser.html#HASINTERNALSUBSETSAXFUNC"
 >*hasInternalSubsetSAXFunc</A
->)     (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);
+>)     (void *ctx);
 int         (<A
 HREF="gnome-xml-parser.html#HASEXTERNALSUBSETSAXFUNC"
 >*hasExternalSubsetSAXFunc</A
->)     (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);
+>)     (void *ctx);
 typedef     <A
 HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
@@ -587,6 +512,10 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 HREF="gnome-xml-parser.html#XMLPARSEFILE"
 >xmlParseFile</A
 >                    (const char *filename);
+int         <A
+HREF="gnome-xml-parser.html#XMLSUBSTITUTEENTITIESDEFAULT"
+>xmlSubstituteEntitiesDefault</A
+>    (int val);
 <A
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
@@ -659,6 +588,38 @@ HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
 > sax,
                                              const char *filename,
                                              int recovery);
+<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLPARSEDTD"
+>xmlParseDTD</A
+>                     (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID);
+<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLSAXPARSEDTD"
+>xmlSAXParseDTD</A
+>                  (<A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+> sax,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID);
 void        <A
 HREF="gnome-xml-parser.html#XMLINITPARSERCTXT"
 >xmlInitParserCtxt</A
@@ -750,7 +711,7 @@ HREF="gnome-xml-parser.html#XMLDEFAULTSAXHANDLERINIT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN191"
+NAME="AEN176"
 ></A
 ><H2
 >Description</H2
@@ -760,14 +721,14 @@ NAME="AEN191"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN194"
+NAME="AEN179"
 ></A
 ><H2
 >Details</H2
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN196"
+NAME="AEN181"
 ></A
 ><H3
 ><A
@@ -793,7 +754,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN201"
+NAME="AEN186"
 ></A
 ><H3
 ><A
@@ -854,7 +815,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN216"
+NAME="AEN201"
 ></A
 ><H3
 ><A
@@ -880,7 +841,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN221"
+NAME="AEN206"
 ></A
 ><H3
 ><A
@@ -906,7 +867,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN226"
+NAME="AEN211"
 ></A
 ><H3
 ><A
@@ -932,7 +893,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN231"
+NAME="AEN216"
 ></A
 ><H3
 ><A
@@ -958,7 +919,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN236"
+NAME="AEN221"
 ></A
 ><H3
 ><A
@@ -984,7 +945,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN241"
+NAME="AEN226"
 ></A
 ><H3
 ><A
@@ -1010,7 +971,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN246"
+NAME="AEN231"
 ></A
 ><H3
 ><A
@@ -1036,7 +997,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN251"
+NAME="AEN236"
 ></A
 ><H3
 ><A
@@ -1062,7 +1023,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN256"
+NAME="AEN241"
 ></A
 ><H3
 ><A
@@ -1081,10 +1042,7 @@ CLASS="PROGRAMLISTING"
 ><A
 HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
-> (*resolveEntitySAXFunc)   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+> (*resolveEntitySAXFunc)   (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -1117,7 +1075,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1183,7 +1141,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN286"
+NAME="AEN270"
 ></A
 ><H3
 ><A
@@ -1199,10 +1157,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*internalSubsetSAXFunc)        (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*internalSubsetSAXFunc)        (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -1239,7 +1194,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1307,7 +1262,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN316"
+NAME="AEN299"
 ></A
 ><H3
 ><A
@@ -1326,10 +1281,7 @@ CLASS="PROGRAMLISTING"
 ><A
 HREF="gnome-xml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
-> (*getEntitySAXFunc)            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+> (*getEntitySAXFunc)            (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -1358,7 +1310,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1407,7 +1359,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN341"
+NAME="AEN323"
 ></A
 ><H3
 ><A
@@ -1423,10 +1375,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*entityDeclSAXFunc)            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*entityDeclSAXFunc)            (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -1468,7 +1417,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1570,7 +1519,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN380"
+NAME="AEN361"
 ></A
 ><H3
 ><A
@@ -1586,10 +1535,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*notationDeclSAXFunc)          (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*notationDeclSAXFunc)          (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -1626,7 +1572,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1694,7 +1640,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN410"
+NAME="AEN390"
 ></A
 ><H3
 ><A
@@ -1710,10 +1656,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*attributeDeclSAXFunc)         (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*attributeDeclSAXFunc)         (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -1756,7 +1699,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1875,7 +1818,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN453"
+NAME="AEN432"
 ></A
 ><H3
 ><A
@@ -1891,10 +1834,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*elementDeclSAXFunc)           (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*elementDeclSAXFunc)           (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -1928,7 +1868,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1996,7 +1936,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN482"
+NAME="AEN460"
 ></A
 ><H3
 ><A
@@ -2012,10 +1952,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*unparsedEntityDeclSAXFunc)    (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*unparsedEntityDeclSAXFunc)    (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -2056,7 +1993,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2141,7 +2078,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN517"
+NAME="AEN494"
 ></A
 ><H3
 ><A
@@ -2157,10 +2094,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*setDocumentLocatorSAXFunc)    (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*setDocumentLocatorSAXFunc)    (void *ctx,
                                              <A
 HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
 >xmlSAXLocatorPtr</A
@@ -2189,7 +2123,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2223,7 +2157,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN537"
+NAME="AEN513"
 ></A
 ><H3
 ><A
@@ -2239,10 +2173,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*startDocumentSAXFunc)         (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);</PRE
+>void        (*startDocumentSAXFunc)         (void *ctx);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -2267,7 +2198,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2284,7 +2215,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN552"
+NAME="AEN527"
 ></A
 ><H3
 ><A
@@ -2300,10 +2231,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*endDocumentSAXFunc)           (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);</PRE
+>void        (*endDocumentSAXFunc)           (void *ctx);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -2328,7 +2256,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2345,7 +2273,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN567"
+NAME="AEN541"
 ></A
 ><H3
 ><A
@@ -2361,10 +2289,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*startElementSAXFunc)          (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*startElementSAXFunc)          (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -2397,7 +2322,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2448,7 +2373,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN592"
+NAME="AEN565"
 ></A
 ><H3
 ><A
@@ -2464,10 +2389,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*endElementSAXFunc)            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*endElementSAXFunc)            (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -2496,7 +2418,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2530,7 +2452,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN612"
+NAME="AEN584"
 ></A
 ><H3
 ><A
@@ -2546,10 +2468,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*attributeSAXFunc)             (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*attributeSAXFunc)             (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -2582,7 +2501,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2633,7 +2552,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN637"
+NAME="AEN608"
 ></A
 ><H3
 ><A
@@ -2649,10 +2568,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*referenceSAXFunc)             (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*referenceSAXFunc)             (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -2681,7 +2597,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2715,7 +2631,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN657"
+NAME="AEN627"
 ></A
 ><H3
 ><A
@@ -2731,10 +2647,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*charactersSAXFunc)            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*charactersSAXFunc)            (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -2764,7 +2677,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2815,7 +2728,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN681"
+NAME="AEN650"
 ></A
 ><H3
 ><A
@@ -2831,10 +2744,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*ignorableWhitespaceSAXFunc)   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*ignorableWhitespaceSAXFunc)   (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -2864,7 +2774,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2915,7 +2825,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN705"
+NAME="AEN673"
 ></A
 ><H3
 ><A
@@ -2931,10 +2841,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*processingInstructionSAXFunc) (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*processingInstructionSAXFunc) (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -2967,7 +2874,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -3018,7 +2925,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN730"
+NAME="AEN697"
 ></A
 ><H3
 ><A
@@ -3034,10 +2941,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*commentSAXFunc)               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*commentSAXFunc)               (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
@@ -3066,7 +2970,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -3100,7 +3004,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN750"
+NAME="AEN716"
 ></A
 ><H3
 ><A
@@ -3116,10 +3020,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*warningSAXFunc)               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*warningSAXFunc)               (void *ctx,
                                              const char *msg,
                                              ...);</PRE
 ></TD
@@ -3146,7 +3047,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -3197,7 +3098,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN773"
+NAME="AEN738"
 ></A
 ><H3
 ><A
@@ -3213,10 +3114,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*errorSAXFunc)                 (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*errorSAXFunc)                 (void *ctx,
                                              const char *msg,
                                              ...);</PRE
 ></TD
@@ -3243,7 +3141,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -3294,7 +3192,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN796"
+NAME="AEN760"
 ></A
 ><H3
 ><A
@@ -3310,10 +3208,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*fatalErrorSAXFunc)            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
+>void        (*fatalErrorSAXFunc)            (void *ctx,
                                              const char *msg,
                                              ...);</PRE
 ></TD
@@ -3340,7 +3235,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -3391,7 +3286,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN819"
+NAME="AEN782"
 ></A
 ><H3
 ><A
@@ -3407,10 +3302,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         (*isStandaloneSAXFunc)          (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);</PRE
+>int         (*isStandaloneSAXFunc)          (void *ctx);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -3435,7 +3327,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -3467,7 +3359,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN838"
+NAME="AEN800"
 ></A
 ><H3
 ><A
@@ -3483,10 +3375,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         (*hasInternalSubsetSAXFunc)     (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);</PRE
+>int         (*hasInternalSubsetSAXFunc)     (void *ctx);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -3511,7 +3400,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -3543,7 +3432,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN857"
+NAME="AEN818"
 ></A
 ><H3
 ><A
@@ -3559,10 +3448,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         (*hasExternalSubsetSAXFunc)     (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);</PRE
+>int         (*hasExternalSubsetSAXFunc)     (void *ctx);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -3587,7 +3473,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>ctx</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -3619,7 +3505,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN876"
+NAME="AEN836"
 ></A
 ><H3
 ><A
@@ -3645,7 +3531,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN881"
+NAME="AEN841"
 ></A
 ><H3
 ><A
@@ -3726,7 +3612,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN902"
+NAME="AEN862"
 ></A
 ><H3
 ><A
@@ -3830,7 +3716,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN928"
+NAME="AEN888"
 ></A
 ><H3
 ><A
@@ -3932,7 +3818,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN954"
+NAME="AEN914"
 ></A
 ><H3
 ><A
@@ -4031,7 +3917,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN979"
+NAME="AEN939"
 ></A
 ><H3
 ><A
@@ -4148,7 +4034,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1008"
+NAME="AEN968"
 ></A
 ><H3
 ><A
@@ -4226,7 +4112,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1028"
+NAME="AEN988"
 ></A
 ><H3
 ><A
@@ -4328,7 +4214,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1054"
+NAME="AEN1014"
 ></A
 ><H3
 ><A
@@ -4453,7 +4339,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1085"
+NAME="AEN1045"
 ></A
 ><H3
 ><A
@@ -4534,7 +4420,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1106"
+NAME="AEN1066"
 ></A
 ><H3
 ><A
@@ -4630,7 +4516,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1130"
+NAME="AEN1090"
 ></A
 ><H3
 ><A
@@ -4709,7 +4595,90 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1150"
+NAME="AEN1110"
+></A
+><H3
+><A
+NAME="XMLSUBSTITUTEENTITIESDEFAULT"
+></A
+>xmlSubstituteEntitiesDefault()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSubstituteEntitiesDefault    (int val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Set and return the previous value for default entity support.
+Initially the parser always keep entity references instead of substituting
+entity values in the output. This function has to be used to change the
+default parser behaviour
+SAX::<GTKDOCLINK
+HREF="SUBTITUTEENTITIES"
+>subtituteEntities</GTKDOCLINK
+>() has to be used for changing that on a file by
+file basis.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  int 0 or 1 </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the last value for 0 for no substitution, 1 for substitution.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1130"
 ></A
 ><H3
 ><A
@@ -4791,7 +4760,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1171"
+NAME="AEN1151"
 ></A
 ><H3
 ><A
@@ -4888,7 +4857,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1195"
+NAME="AEN1175"
 ></A
 ><H3
 ><A
@@ -4968,7 +4937,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1215"
+NAME="AEN1195"
 ></A
 ><H3
 ><A
@@ -5052,7 +5021,7 @@ as a result of the parsing.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1237"
+NAME="AEN1217"
 ></A
 ><H3
 ><A
@@ -5175,7 +5144,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1267"
+NAME="AEN1247"
 ></A
 ><H3
 ><A
@@ -5208,8 +5177,6 @@ HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
 >parse an XML in-memory block and use the given SAX function block
 to handle the parsing callback. If sax is NULL, fallback to the default
 DOM tree building routines.</P
-><P
->TODO : plug some encoding conversion routines here. !!!</P
 ><P
 ></P
 ><DIV
@@ -5315,7 +5282,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1301"
+NAME="AEN1280"
 ></A
 ><H3
 ><A
@@ -5436,7 +5403,232 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1330"
+NAME="AEN1309"
+></A
+><H3
+><A
+NAME="XMLPARSEDTD"
+></A
+>xmlParseDTD()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>   xmlParseDTD                     (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Load and parse an external subset.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ExternalID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a NAME* containing the External ID of the DTD</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>SystemID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a NAME* containing the URL to the DTD</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting xmlDtdPtr or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1335"
+></A
+><H3
+><A
+NAME="XMLSAXPARSEDTD"
+></A
+>xmlSAXParseDTD()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>   xmlSAXParseDTD                  (<A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+> sax,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Load and parse an external subset.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>sax</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the SAX handler block</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ExternalID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a NAME* containing the External ID of the DTD</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>SystemID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a NAME* containing the URL to the DTD</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting xmlDtdPtr or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1366"
 ></A
 ><H3
 ><A
@@ -5499,7 +5691,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1346"
+NAME="AEN1382"
 ></A
 ><H3
 ><A
@@ -5562,7 +5754,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1362"
+NAME="AEN1398"
 ></A
 ><H3
 ><A
@@ -5666,7 +5858,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1387"
+NAME="AEN1423"
 ></A
 ><H3
 ><A
@@ -5769,7 +5961,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1413"
+NAME="AEN1449"
 ></A
 ><H3
 ><A
@@ -5832,7 +6024,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1429"
+NAME="AEN1465"
 ></A
 ><H3
 ><A
@@ -5896,7 +6088,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1445"
+NAME="AEN1481"
 ></A
 ><H3
 ><A
@@ -5999,7 +6191,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1471"
+NAME="AEN1507"
 ></A
 ><H3
 ><A
@@ -6083,7 +6275,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1492"
+NAME="AEN1528"
 ></A
 ><H3
 ><A

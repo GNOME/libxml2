@@ -1,0 +1,193 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(RDF:RDF, xmlns:RDF='http://www.w3.org/TR/WD-rdf-syntax#', xmlns:RPM='http://www.rpm.org/')
+SAX.characters(
+  <RDF:Description about="ftp, 3)
+SAX.startElement(RDF:Description, about='ftp://rufus.w3.org/linux/dld/5.4/i386/RPMS/i386/ncurses4-4.2-3.i386.rpm')
+SAX.characters(
+    <RPM:Name>ncurses4</RPM:N, 5)
+SAX.startElement(RPM:Name)
+SAX.characters(ncurses4</RPM:Name>
+    <RPM:V, 8)
+SAX.endElement(RPM:Name)
+SAX.characters(
+    <RPM:Version>4.2</RPM:Ver, 5)
+SAX.startElement(RPM:Version)
+SAX.characters(4.2</RPM:Version>
+    <RPM:Rel, 3)
+SAX.endElement(RPM:Version)
+SAX.characters(
+    <RPM:Release>3</RPM:Relea, 5)
+SAX.startElement(RPM:Release)
+SAX.characters(3</RPM:Release>
+    <RPM:Arch>, 1)
+SAX.endElement(RPM:Release)
+SAX.characters(
+    <RPM:Arch>i386</RPM:Arch>, 5)
+SAX.startElement(RPM:Arch)
+SAX.characters(i386</RPM:Arch>
+    <RPM:Os>Li, 4)
+SAX.endElement(RPM:Arch)
+SAX.characters(
+    <RPM:Os>Linux</RPM:Os>
+  , 5)
+SAX.startElement(RPM:Os)
+SAX.characters(Linux</RPM:Os>
+    <RPM:Distri, 5)
+SAX.endElement(RPM:Os)
+SAX.characters(
+    <RPM:Distribution>DLD</RP, 5)
+SAX.startElement(RPM:Distribution)
+SAX.characters(DLD</RPM:Distribution>
+    <RP, 3)
+SAX.endElement(RPM:Distribution)
+SAX.characters(
+    <RPM:Vendor>delix Compute, 5)
+SAX.startElement(RPM:Vendor)
+SAX.characters(delix Computer GmbH</RPM:Vendo, 19)
+SAX.endElement(RPM:Vendor)
+SAX.characters(
+    <RPM:Packager>Till Bubeck, 5)
+SAX.startElement(RPM:Packager)
+SAX.characters(Till Bubeck &lt;bubeck@delix.d, 12)
+SAX.getEntity(lt)
+SAX.characters(<, 1)
+SAX.characters(bubeck@delix.de&gt;, Ngo Than , 15)
+SAX.getEntity(gt)
+SAX.characters(>, 1)
+SAX.characters(, Ngo Than &lt;than@delix.de&g, 11)
+SAX.getEntity(lt)
+SAX.characters(<, 1)
+SAX.characters(than@delix.de&gt;</RPM:Package, 13)
+SAX.getEntity(gt)
+SAX.characters(>, 1)
+SAX.endElement(RPM:Packager)
+SAX.characters(
+    <RPM:Group>Libraries</RPM, 5)
+SAX.startElement(RPM:Group)
+SAX.characters(Libraries</RPM:Group>
+    <RPM, 9)
+SAX.endElement(RPM:Group)
+SAX.characters(
+    <RPM:Summary>Bibliothek z, 5)
+SAX.startElement(RPM:Summary)
+SAX.characters(Bibliothek zur Ansteuerung von, 40)
+SAX.endElement(RPM:Summary)
+SAX.characters(
+    <RPM:Description>Diese Li, 5)
+SAX.startElement(RPM:Description)
+SAX.characters(Diese Library stellt dem Progr, 57)
+SAX.characters(ä, 1)
+SAX.characters(ngige
+Routinen zur Ansteuerung, 57)
+SAX.characters(ü, 1)
+SAX.characters(gung, die
+speziell optimiert s, 57)
+SAX.getEntity(apos)
+SAX.characters(', 1)
+SAX.characters(new curses&apos; (ncurses) Var, 10)
+SAX.getEntity(apos)
+SAX.characters(', 1)
+SAX.characters( (ncurses) Variante und ist de, 51)
+SAX.characters(ü, 1)
+SAX.characters(r die klassische Curses-Librar, 70)
+SAX.endElement(RPM:Description)
+SAX.characters(
+    <RPM:Copyright>GPL</RPM:C, 5)
+SAX.startElement(RPM:Copyright)
+SAX.characters(GPL</RPM:Copyright>
+    <RPM:S, 3)
+SAX.endElement(RPM:Copyright)
+SAX.characters(
+    <RPM:Sources>ncurses4-4.2, 5)
+SAX.startElement(RPM:Sources)
+SAX.characters(ncurses4-4.2-3.src.rpm</RPM:So, 22)
+SAX.endElement(RPM:Sources)
+SAX.characters(
+    <RPM:BuildDate>Tue May 12, 5)
+SAX.startElement(RPM:BuildDate)
+SAX.characters(Tue May 12 19:30:26 1998</RPM:, 24)
+SAX.endElement(RPM:BuildDate)
+SAX.characters(
+    <RPM:Date>895015826</RPM:, 5)
+SAX.startElement(RPM:Date)
+SAX.characters(895015826</RPM:Date>
+    <RPM:, 9)
+SAX.endElement(RPM:Date)
+SAX.characters(
+    <RPM:Size>1373513</RPM:Si, 5)
+SAX.startElement(RPM:Size)
+SAX.characters(1373513</RPM:Size>
+    <RPM:Bu, 7)
+SAX.endElement(RPM:Size)
+SAX.characters(
+    <RPM:BuildHost>erdbeere.d, 5)
+SAX.startElement(RPM:BuildHost)
+SAX.characters(erdbeere.delix.de</RPM:BuildHo, 17)
+SAX.endElement(RPM:BuildHost)
+SAX.characters(
+    <RPM:Provides>
+      <RDF, 5)
+SAX.startElement(RPM:Provides)
+SAX.characters(
+      <RDF:Bag>
+        <RPM:, 7)
+SAX.startElement(RDF:Bag)
+SAX.characters(
+        <RPM:Resource href="., 9)
+SAX.startElement(RPM:Resource, href='../../../../../resources/ncurses4.rdf')
+SAX.characters(ncurses4</RPM:Resource>
+      , 8)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource href="., 9)
+SAX.startElement(RPM:Resource, href='../../../../../resources/libpanel.so.4.rdf')
+SAX.characters(libpanel.so.4</RPM:Resource>
+ , 13)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource href="., 9)
+SAX.startElement(RPM:Resource, href='../../../../../resources/libncurses.so.4.rdf')
+SAX.characters(libncurses.so.4</RPM:Resource>, 15)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource href="., 9)
+SAX.startElement(RPM:Resource, href='../../../../../resources/libmenu.so.4.rdf')
+SAX.characters(libmenu.so.4</RPM:Resource>
+  , 12)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource href="., 9)
+SAX.startElement(RPM:Resource, href='../../../../../resources/libform.so.4.rdf')
+SAX.characters(libform.so.4</RPM:Resource>
+  , 12)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+        <RPM:Resource href="., 9)
+SAX.startElement(RPM:Resource, href='../../../../../resources/ncurses.rdf')
+SAX.characters(ncurses</RPM:Resource>
+      <, 7)
+SAX.endElement(RPM:Resource)
+SAX.characters(
+      </RDF:Bag>
+    </RPM:Pr, 7)
+SAX.endElement(RDF:Bag)
+SAX.characters(
+    </RPM:Provides>
+    <RPM:, 5)
+SAX.endElement(RPM:Provides)
+SAX.characters(
+    <RPM:Files>/lib/libncurse, 5)
+SAX.startElement(RPM:Files)
+SAX.characters(/lib/libncurses.so.4
+/lib/libn, 72915)
+SAX.endElement(RPM:Files)
+SAX.characters(
+  </RDF:Description>
+</RDF:RD, 3)
+SAX.endElement(RDF:Description)
+SAX.characters(
+</RDF:RDF>
+, 1)
+SAX.endElement(RDF:RDF)
+SAX.endDocument()

@@ -1,0 +1,77 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(d:multistatus, xmlns:d='http://www.ietf.org/standards/dav/')
+SAX.characters(
+  <d:response>
+    <d:href>ht, 3)
+SAX.startElement(d:response)
+SAX.characters(
+    <d:href>http://www.foo.ba, 5)
+SAX.startElement(d:href)
+SAX.characters(http://www.foo.bar/container/r, 38)
+SAX.endElement(d:href)
+SAX.characters(
+    <d:href>http://www.foo.ba, 5)
+SAX.startElement(d:href)
+SAX.characters(http://www.foo.bar/container/r, 38)
+SAX.endElement(d:href)
+SAX.characters(
+    <d:href>http://www.foo.ba, 5)
+SAX.startElement(d:href)
+SAX.characters(http://www.foo.bar/container/<, 29)
+SAX.endElement(d:href)
+SAX.characters(
+    <d:href>http://www.foo.ba, 5)
+SAX.startElement(d:href)
+SAX.characters(http://www.foo.bar/container/C, 34)
+SAX.endElement(d:href)
+SAX.characters(
+    <d:status>HTTP/1.1 201 Cr, 5)
+SAX.startElement(d:status)
+SAX.characters(HTTP/1.1 201 Created</d:status, 20)
+SAX.endElement(d:status)
+SAX.characters(
+  </d:response>
+  <d:response, 3)
+SAX.endElement(d:response)
+SAX.characters(
+  <d:response>
+    <d:href>ht, 3)
+SAX.startElement(d:response)
+SAX.characters(
+    <d:href>http://www.foo.ba, 5)
+SAX.startElement(d:href)
+SAX.characters(http://www.foo.bar/container/C, 31)
+SAX.endElement(d:href)
+SAX.characters(
+    <d:status>HTTP/1.1 420 Me, 5)
+SAX.startElement(d:status)
+SAX.characters(HTTP/1.1 420 Method Failure</d, 27)
+SAX.endElement(d:status)
+SAX.characters(
+  </d:response>
+  <d:response, 3)
+SAX.endElement(d:response)
+SAX.characters(
+  <d:response>
+    <d:href>ht, 3)
+SAX.startElement(d:response)
+SAX.characters(
+    <d:href>http://www.foo.ba, 5)
+SAX.startElement(d:href)
+SAX.characters(http://www.foo.bar/othercontai, 36)
+SAX.endElement(d:href)
+SAX.characters(
+    <d:status>HTTP/1.1 409 Co, 5)
+SAX.startElement(d:status)
+SAX.characters(HTTP/1.1 409 Conflict</d:statu, 21)
+SAX.endElement(d:status)
+SAX.characters(
+  </d:response>
+</d:multistat, 3)
+SAX.endElement(d:response)
+SAX.characters(
+</d:multistatus>
+, 1)
+SAX.endElement(d:multistatus)
+SAX.endDocument()

@@ -4,7 +4,7 @@ SUBDIRS = doc
 
 INCLUDES = -I@srcdir@ @CORBA_CFLAGS@
 
-noinst_PROGRAMS=tester
+noinst_PROGRAMS=tester testSAX
 
 bin_SCRIPTS=xml-config
 
@@ -39,21 +39,74 @@ tester_LDFLAGS =
 tester_DEPENDENCIES = $(DEPS)
 tester_LDADD= $(LDADDS)
 
+testSAX_SOURCES=testSAX.c
+testSAX_LDFLAGS = 
+testSAX_DEPENDENCIES = $(DEPS)
+testSAX_LDADD= $(LDADDS)
+
 check-local: tests
 
+testall : tests SVGtests SAXtests
+
 tests : tester
-	@(for i in $(srcdir)/test/* ; do \
+	@(DIR=`pwd`; cd $(srcdir) ;  \
+	  for i in test/* ; do \
 	  if [ ! -d $$i ] ; then \
-	  j=`echo $$i | sed -e 's,^.*/,,'`; \
-	  if [ ! -f $(srcdir)/result/$$j ] ; then \
-	      echo New test file $$j ; \
-	      ./tester $$i > $(srcdir)/result/$$j ; \
+	  if [ ! -f result/`basename $$i` ] ; then \
+	      echo New test file `basename $$i` ; \
+	      $$DIR/tester $$i > result/`basename $$i` ; \
 	  else \
-	      echo Testing $$j ; \
-	      ./tester $$i > result.$$j ; \
-	      diff $(srcdir)/result/$$j result.$$j ; \
-	      rm result.$$j ; \
+	      echo Testing `basename $$i` ; \
+	      $$DIR/tester $$i > result.`basename $$i` ; \
+	      diff result/`basename $$i` result.`basename $$i` ; \
+	      $$DIR/tester result.`basename $$i` > result2.`basename $$i` ; \
+	      diff result.`basename $$i` result2.`basename $$i` ; \
+	      rm result.`basename $$i` result2.`basename $$i` ; \
 	  fi ; fi ; done)
+
+SVGtests : tester
+	@(DIR=`pwd`; cd $(srcdir) ;  \
+	  for i in test/SVG/* ; do \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f result/SVG/`basename $$i` ] ; then \
+	      echo New test file `basename $$i` ; \
+	      $$DIR/tester $$i > result/SVG/`basename $$i` ; \
+	  else \
+	      echo Testing `basename $$i` ; \
+	      $$DIR/tester $$i > result.`basename $$i` ; \
+	      diff result/SVG/`basename $$i` result.`basename $$i` ; \
+	      $$DIR/tester result.`basename $$i` > result2.`basename $$i` ; \
+	      diff result.`basename $$i` result2.`basename $$i` ; \
+	      rm result.`basename $$i` result2.`basename $$i` ; \
+	  fi ; fi ; done)
+
+SAXtests : testSAX
+	@(DIR=`pwd`; cd $(srcdir) ;  \
+	  for i in test/* ; do \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f SAXresult/`basename $$i` ] ; then \
+	      echo New test file `basename $$i` ; \
+	      $$DIR/testSAX $$i > SAXresult/`basename $$i` ; \
+	  else \
+	      echo Testing `basename $$i` ; \
+	      $$DIR/testSAX $$i > result.`basename $$i` ; \
+	      diff SAXresult/`basename $$i` result.`basename $$i` ; \
+	      rm result.`basename $$i` ; \
+	  fi ; fi ; done)
+
+#tests : tester
+#	@(for i in $(srcdir)/test/* ; do \
+#	  if [ ! -d $$i ] ; then \
+#	  j=`echo $$i | sed -e 's,^.*/,,'`; \
+#	  if [ ! -f $(srcdir)/result/$$j ] ; then \
+#	      echo New test file $$j ; \
+#	      ./tester $$i > $(srcdir)/result/$$j ; \
+#	  else \
+#	      echo Testing $$j ; \
+#	      ./tester $$i > result.$$j ; \
+#	      diff $(srcdir)/result/$$j result.$$j ; \
+#	      rm result.$$j ; \
+#	  fi ; fi ; done)
 
 ## Put `exec' in the name because this should be installed by
 ## `install-exec', not `install-data'.
@@ -61,7 +114,7 @@ tests : tester
 confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
 
-EXTRA_DIST = xmlConf.sh.in libxml.spec.in test result
+EXTRA_DIST = xmlConf.sh.in libxml.spec.in test result SAXresult
 
 dist-hook:
 	cp libxml.spec $(distdir)

@@ -30,6 +30,11 @@ Libraries, include files, etc you can use to develop libxml applications.
 
 %changelog
 
+* Wed Jun  2 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+- Switched to version 1.1: SAX extensions, better entities support, lots of
+  bug fixes.
+
 * Sun Oct  4 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 - Added xml-config to the package

@@ -51,8 +51,8 @@ typedef enum {
     XML_CHAR_ENCODING_EUC_JP=   21,/* EUC-JP */
 } xmlCharEncoding;
 
-extern xmlCharEncoding xmlDetectCharEncoding(unsigned char* in);
-extern xmlCharEncoding xmlParseCharEncoding(char* name);
+extern xmlCharEncoding xmlDetectCharEncoding(const unsigned char* in);
+extern xmlCharEncoding xmlParseCharEncoding(const char* name);
 
 #ifdef __cplusplus
 }

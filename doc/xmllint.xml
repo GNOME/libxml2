@@ -18,6 +18,11 @@
       <surname>Sherwin</surname>
     </author>
     <address><email>sherwin@nlm.nih.gov</email></address>
+    <author>
+      <firstname>Heiko</firstname>
+      <surname>Rupp</surname>
+    </author>
+    <address><email>hwr@pilhuhn.de</email></address>
     <legalnotice id="legalnotice">
       <para>Permission is granted to copy, distribute and/or modify this document
 	under the terms of the <ulink type="help" url="gnome-help:fdl"><citetitle>GNU Free Documentation
@@ -128,7 +133,8 @@
 	<term><option>--shell</option></term>
 	<listitem>
 	  <simpara>
-	    Run a navigating shell.
+	    Run a navigating shell. Details on available commands in shell mode
+	    are below.
 	  </simpara>
 	</listitem>
       </varlistentry>
@@ -412,6 +418,149 @@
 	</listitem>
       </varlistentry>
 
+    </variablelist>
+  </refsect1>
+
+  <refsect1 id="shell">
+    <title>Shell</title>
+    <para>
+      <application>xmllint</application> offers an interactive shell mode
+      invoked with the <option>--shell</option> command. Available commands in
+      shell mode include:
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><option>base</option></term>
+	<listitem>
+	  <simpara>
+	    display XML base of the node
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>bye</option></term>
+	<listitem>
+	  <simpara>
+	    leave shell
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>cat <replaceable>node</replaceable></option></term>
+	<listitem>
+	  <simpara>
+	    Display node if given or current node.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>cd <replaceable>path</replaceable></option></term>
+	<listitem>
+	  <simpara>
+	    Change the current node to <replaceable>path</replaceable> (if given
+	    and unique) or root if no argument given.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>dir <replaceable>path</replaceable></option></term>
+	<listitem>
+	  <simpara>
+	    Dumps information about the node (namespace, attributes, content).
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>du <replaceable>path</replaceable></option></term>
+	<listitem>
+	  <simpara>
+	    Show the structure of the subtree under path or the current node.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>exit</option></term>
+	<listitem>
+	  <simpara>
+	    Leave the shell.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>help</option></term>
+	<listitem>
+	  <simpara>
+	    Show this help.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>free</option></term>
+	<listitem>
+	  <simpara>
+	    Display memory usage.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>load <replaceable>name</replaceable></option></term>
+	<listitem>
+	  <simpara>
+	    Load a new document with the given name.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>ls <replaceable>path</replaceable></option></term>
+	<listitem>
+	  <simpara>
+	    List contents of <replaceable>path</replaceable> (if given) or the
+	    current directory.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>pwd</option></term>
+	<listitem>
+	  <simpara>
+	    Display the path to the current node.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>quit</option></term>
+	<listitem>
+	  <simpara>
+	    Leave the shell.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>save <replaceable>name</replaceable></option></term>
+	<listitem>
+	  <simpara>
+	    Saves the current document to <replaceable>name</replaceable> if
+	    given or to the original name.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>validate</option></term>
+	<listitem>
+	  <simpara>
+	    Check the document for error.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>write <replaceable>name</replaceable></option></term>
+	<listitem>
+	  <simpara>
+	    Write the current node to the given filename.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      
     </variablelist>
   </refsect1>
 </refentry>

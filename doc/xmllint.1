@@ -45,7 +45,7 @@ Parse a file and output an annotated tree of the in-memory version of the docume
 .TP
 \fB--shell\fR
 
-Run a navigating shell.
+Run a navigating shell. Details on available commands in shell mode are below.
 
 .TP
 \fB--debugent\fR
@@ -192,10 +192,95 @@ Fetch external DTD.
 
 Fetch external DTD and populate the tree with inherited attributes.
 
+.SH "SHELL"
+
+.PP
+xmllint offers an interactive shell mode invoked with the \fB--shell\fR command. Available commands in shell mode include:
+
+.TP
+\fBbase\fR
+
+display XML base of the node
+
+.TP
+\fBbye\fR
+
+leave shell
+
+.TP
+\fBcat \fInode\fR\fR
+
+Display node if given or current node.
+
+.TP
+\fBcd \fIpath\fR\fR
+
+Change the current node to \fIpath\fR (if given and unique) or root if no argument given.
+
+.TP
+\fBdir \fIpath\fR\fR
+
+Dumps information about the node (namespace, attributes, content).
+
+.TP
+\fBdu \fIpath\fR\fR
+
+Show the structure of the subtree under path or the current node.
+
+.TP
+\fBexit\fR
+
+Leave the shell.
+
+.TP
+\fBhelp\fR
+
+Show this help.
+
+.TP
+\fBfree\fR
+
+Display memory usage.
+
+.TP
+\fBload \fIname\fR\fR
+
+Load a new document with the given name.
+
+.TP
+\fBls \fIpath\fR\fR
+
+List contents of \fIpath\fR (if given) or the current directory.
+
+.TP
+\fBpwd\fR
+
+Display the path to the current node.
+
+.TP
+\fBquit\fR
+
+Leave the shell.
+
+.TP
+\fBsave \fIname\fR\fR
+
+Saves the current document to \fIname\fR if given or to the original name.
+
+.TP
+\fBvalidate\fR
+
+Check the document for error.
+
+.TP
+\fBwrite \fIname\fR\fR
+
+Write the current node to the given filename.
+
 .SH AUTHOR
 Copyright 2001
 .Sp
-John Fleck  <jfleck@inkstain.net>Ziying Sherwin  <sherwin@nlm.nih.gov>
+John Fleck  <jfleck@inkstain.net>Ziying Sherwin  <sherwin@nlm.nih.gov>Heiko Rupp  <hwr@pilhuhn.de>
 .PP
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License: \fIgnome-help:fdl\fR, Version 1.1 or any later version published by the Free Software Foundation with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found here: \fIgnome-help:fdl\fR.
 

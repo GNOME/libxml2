@@ -20,7 +20,7 @@ static int generic_errors = 0;
 static int call_tests = 0;
 static int function_tests = 0;
 
-static xmlChar chartab[1024] = "  chartab\n";
+static xmlChar chartab[1024];
 static int inttab[1024];
 static unsigned long longtab[1024];
 
@@ -109,6 +109,11 @@ get_api_attr(void) {
 int main(int argc, char **argv) {
     int ret;
     int blocks, mem;
+
+    memset(chartab, 0, sizeof(chartab));
+    strncpy(chartab, "  chartab\n", 20);
+    memset(inttab, 0, sizeof(inttab));
+    memset(longtab, 0, sizeof(longtab));
 
     xmlInitParser();
 #ifdef LIBXML_SCHEMAS_ENABLED

@@ -9978,7 +9978,11 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	    xmlFreeParserCtxt(ctxt);
 	    return(NULL);
 	}
-	memcpy(ctxt->sax, sax, sizeof(xmlSAXHandler));
+	memset(ctxt->sax, 0, sizeof(xmlSAXHandler));
+	if (sax->initialized == XML_SAX2_MAGIC)
+	    memcpy(ctxt->sax, sax, sizeof(xmlSAXHandler));
+	else
+	    memcpy(ctxt->sax, sax, sizeof(xmlSAXHandlerV1));
 	if (user_data != NULL)
 	    ctxt->userData = user_data;
     }	
@@ -10081,7 +10085,11 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	    xmlFree(ctxt);
 	    return(NULL);
 	}
-	memcpy(ctxt->sax, sax, sizeof(xmlSAXHandler));
+	memset(ctxt->sax, 0, sizeof(xmlSAXHandler));
+	if (sax->initialized == XML_SAX2_MAGIC)
+	    memcpy(ctxt->sax, sax, sizeof(xmlSAXHandler));
+	else
+	    memcpy(ctxt->sax, sax, sizeof(xmlSAXHandlerV1));
 	if (user_data != NULL)
 	    ctxt->userData = user_data;
     }	

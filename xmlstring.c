@@ -92,8 +92,10 @@ xmlCharStrndup(const char *cur, int len) {
         xmlErrMemory(NULL, NULL);
         return(NULL);
     }
-    for (i = 0;i < len;i++)
+    for (i = 0;i < len;i++) {
         ret[i] = (xmlChar) cur[i];
+        if (ret[i] == 0) return(ret);
+    }
     ret[len] = 0;
     return(ret);
 }
@@ -809,6 +811,7 @@ xmlCheckUTF8(const unsigned char *utf)
  * @len:  the number of characters in the array
  *
  * storage size of an UTF8 string
+ * the behaviour is not garanteed if the input string is not UTF-8
  *
  * Returns the storage size of
  * the first 'len' characters of ARRAY
@@ -829,8 +832,10 @@ xmlUTF8Strsize(const xmlChar *utf, int len) {
         if ( !*ptr )
             break;
         if ( (ch = *ptr++) & 0x80)
-            while ( (ch<<=1) & 0x80 )
+            while ((ch<<=1) & 0x80 ) {
                 ptr++;
+		if (*ptr == 0) break;
+	    }
     }
     return (ptr - utf);
 }

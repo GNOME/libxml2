@@ -420,7 +420,8 @@ __xmlLoaderErr(void *ctx, const char *msg, const char *filename)
 	    channel = ctxt->sax->warning;
 	    level = XML_ERR_WARNING;
 	}
-	schannel = ctxt->sax->serror;
+	if (ctxt->sax->initialized == XML_SAX2_MAGIC)
+	    schannel = ctxt->sax->serror;
 	data = ctxt->userData;
     }
     __xmlRaiseError(schannel, channel, data, ctxt, NULL, XML_FROM_IO,
@@ -1549,6 +1550,7 @@ xmlIOHTTPDfltOpenW( const char * post_uri ) {
  */
 int 
 xmlIOHTTPRead(void * context, char * buffer, int len) {
+    if ((buffer == NULL) || (len < 0)) return(-1);
     return(xmlNanoHTTPRead(context, &buffer[0], len));
 }
 
@@ -1827,6 +1829,7 @@ xmlIOFTPOpen (const char *filename) {
  */
 int 
 xmlIOFTPRead(void * context, char * buffer, int len) {
+    if ((buffer == NULL) || (len < 0)) return(-1);
     return(xmlNanoFTPRead(context, &buffer[0], len));
 }
 

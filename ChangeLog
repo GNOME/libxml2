@@ -1,3 +1,7 @@
+Tue Apr 10 16:30:20 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: Bill Brack pointer an error in detecting a null nodeset
+
 Sun Apr  8 15:07:16 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: finally released 2.3.6

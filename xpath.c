@@ -7423,7 +7423,7 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
 	    return(res->floatval == ctxt->context->proximityPosition);
         case XPATH_NODESET:
         case XPATH_XSLT_TREE:
-	    if (res->nodesetval)
+	    if (res->nodesetval == NULL)
 		return(0);
 	    return(res->nodesetval->nodeNr != 0);
         case XPATH_STRING:

@@ -811,6 +811,12 @@ characters(void *ctx, const xmlChar *ch, int len)
      * concatenate it, else create a new node of type text.
      */
 
+    if (ctxt->node == NULL) {
+#ifdef DEBUG_SAX_TREE
+	fprintf(stderr, "add chars: ctxt->node == NULL !\n");
+#endif
+        return;
+    }
     lastChild = xmlGetLastChild(ctxt->node);
 #ifdef DEBUG_SAX_TREE
     fprintf(stderr, "add chars to %s \n", ctxt->node->name);

@@ -744,6 +744,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
     int val = 0;
 
     if (ctxt->token != 0) {
+fprintf(stderr, "xmlParseCharRef : ctxt->token != 0\n");    
 	val = ctxt->token;
         ctxt->token = 0;
         return(val);
@@ -770,7 +771,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	    NEXT;
 	}
 	if (CUR == ';')
-	    NEXT;
+	    SKIP(1); /* on purpose to avoid reentrancy problems with NEXT */
     } else if  ((CUR == '&') && (NXT(1) == '#')) {
 	SKIP(2);
 	while (CUR != ';') {
@@ -788,7 +789,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	    NEXT;
 	}
 	if (CUR == ';')
-	    NEXT;
+	    SKIP(1); /* on purpose to avoid reentrancy problems with NEXT */
     } else {
 	ctxt->errNo = XML_ERR_INVALID_CHARREF;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -843,7 +844,10 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
     xmlChar *name;
     xmlEntityPtr ent = NULL;
 
-    if (ctxt->token != 0) return;
+    if (ctxt->token != 0) {
+fprintf(stderr, "xmlParserHandleReference : ctxt->token != 0\n");
+        return;
+    }	
     if (CUR != '&') return;
     GROW;
     if ((CUR == '&') && (NXT(1) == '#')) {
@@ -1063,7 +1067,10 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
     xmlEntityPtr entity = NULL;
     xmlParserInputPtr input;
 
-    if (ctxt->token != 0) return;
+    if (ctxt->token != 0) {
+fprintf(stderr, "xmlParserHandlePEReference : ctxt->token != 0\n");
+        return;
+    }	
     if (CUR != '%') return;
     switch(ctxt->instate) {
 	case XML_PARSER_CDATA_SECTION:

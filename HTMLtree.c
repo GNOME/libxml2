@@ -250,7 +250,7 @@ htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
     if (cur->intSubset != NULL)
         htmlDtdDump(buf, cur);
     if (cur->root != NULL) {
-        htmlNodeDump(buf, cur, cur->root);
+        htmlNodeListDump(buf, cur, cur->root);
     }
     xmlBufferWriteChar(buf, "\n");
 }

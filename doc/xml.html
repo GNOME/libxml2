@@ -82,7 +82,7 @@ addition to SGML Docbook and HTML.</p>
 
 <h2><a name="News">News</a></h2>
 
-<p>Latest version is 1.7.1, you can find it on <a
+<p>Latest version is 1.7.3, you can find it on <a
 href="ftp://rpmfind.net/pub/veillard/">rpmfind.net</a> or on the <a
 href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> either
 as a <a href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml/">source
@@ -90,9 +90,20 @@ archive</a> or <a href="ftp://ftp.gnome.org/pub/GNOME/contrib/rpms/">RPMs
 packages</a>.</p>
 
 <h3>CVS only</h3>
+
+<h3>1.7.4: Oct 25 1999</h3>
 <ul>
+  <li>Lots of HTML improvement</li>
+  <li>Fixed some errors when saving both XML and HTML</li>
+  <li>More examples, the regression tests should now look clean</li>
+  <li>Fixed a bug with contiguous charref</li>
+</ul>
+
+<h3>1.7.3: Sep 29 1999</h3>
+<ul>
+  <li>portability problems fixed</li>
   <li>snprintf was used unconditionnally, leading to link problems on system
-    were it's not available, fixed </li>
+    were it's not available, fixed</li>
 </ul>
 
 <h3>1.7.1: Sep 24 1999</h3>
@@ -443,8 +454,7 @@ the beginning). Example:</p>
 4 ]>
 5 &lt;EXAMPLE>
 6    &amp;xml;
-7 &lt;/EXAMPLE>
-</pre>
+7 &lt;/EXAMPLE></pre>
 
 <p>Line 3 declares the xml entity. Line 6 uses the xml entity, by prefixing
 it's name with '&amp;' and following it by ';' without any spaces added. There
@@ -587,7 +597,7 @@ core.</p>
 
 <p>@@interfaces@@</p>
 
-<h2><a name="DOM"><a name="Principles">DOM Principles</a></a></h2>
+<h2><a name="DOM"></a><a name="Principles">DOM Principles</a></h2>
 
 <p><a href="http://www.w3.org/DOM/">DOM</a> stands for the <em>Document Object
 Model</em> this is an API for accessing XML or HTML structured documents.
@@ -610,7 +620,7 @@ Levien</a>.</p>
 
 <p>The gnome-dom module in the Gnome CVS base is obsolete</p>
 
-<h2><a name="Example"><a name="real">A real example</a></a></h2>
+<h2><a name="Example"></a><a name="real">A real example</a></h2>
 
 <p>Here is a real size example, where the actual content of the application
 data is not kept in the DOM tree but uses internal structures. It is based on
@@ -811,6 +821,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.9 1999/09/23 22:19:20 veillard Exp $</p>
+<p>$Id: xml.html,v 1.10 1999/09/24 14:03:48 veillard Exp $</p>
 </body>
 </html>

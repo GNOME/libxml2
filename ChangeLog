@@ -1,3 +1,17 @@
+Mon Oct 25 12:13:25 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c: closed bug #2784 a one line fix, but worth pushing
+	            a new release out
+        * HTMLparser.c: fixed auto-close bugs on list items, zeroing
+	            some structures, comments before and after the
+		    main element, and other nastyness
+	* HTMLtree.c tree.c: accomodate the extended HTML supported	    
+	* configure.in: pushing 1.7.4
+	* test/ent8 and related outputs : added a new test for bug #2784
+	* test/HTML/wired.html and related output: a nasty HTML example
+	* Makefile.am: improved the test scripts
+	* docs/* : reran the documentation extractor, updated xml.html
+
 Thu Oct 14 10:29:56 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c, HTMLtree.c, tree.h: completely revamped the

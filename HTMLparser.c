@@ -318,8 +318,10 @@ char *htmlStartClose[] = {
 "BLOCKQUOTE",	"P", "HEAD", NULL,
 "DL",		"P", "DT", "MENU", "DIR", "ADDRESS", "PRE", "LISTING",
 		"XMP", "HEAD", NULL,
-"DT",		"P", "MENU", "DIR", "ADDRESS", "PRE", "LISTING", "XMP", "HEAD", NULL,
-"DD",		"P", "MENU", "DIR", "ADDRESS", "PRE", "LISTING", "XMP", "HEAD", NULL,
+"DT",		"P", "MENU", "DIR", "ADDRESS", "PRE", "LISTING", "XMP",
+                "HEAD", "DD", NULL,
+"DD",		"P", "MENU", "DIR", "ADDRESS", "PRE", "LISTING", "XMP",
+                "HEAD", "DT", NULL,
 "UL",		"P", "HEAD", "OL", "MENU", "DIR", "ADDRESS", "PRE",
 		"LISTING", "XMP", NULL,
 "OL",		"P", "HEAD", "UL", NULL,
@@ -1687,12 +1689,6 @@ htmlParseComment(htmlParserCtxtPtr ctxt, int create) {
     while (IS_CHAR(CUR) &&
            ((CUR == ':') || (CUR != '>') ||
 	    (*r != '-') || (*q != '-'))) {
-	if ((*r == '-') && (*q == '-')) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData,
-	       "Comment must not contain '--' (double-hyphen)`\n");
-	    ctxt->wellFormed = 0;
-	}
         NEXT;r++;q++;
     }
     if (!IS_CHAR(CUR)) {
@@ -2259,10 +2255,12 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	}
 
 	if (test == CUR_PTR) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData,
-		     "detected an error in element content\n");
-	    ctxt->wellFormed = 0;
+	    if (ctxt->node != NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+			 "detected an error in element content\n");
+		ctxt->wellFormed = 0;
+	    }
             break;
 	}
 
@@ -2470,19 +2468,22 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     /*
      * Wipe out everything which is before the first '<'
      */
-    if (IS_BLANK(CUR)) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	    "Extra spaces at the beginning of the document are not allowed\n");
-	ctxt->wellFormed = 0;
-	SKIP_BLANKS;
-    }
-
+    SKIP_BLANKS;
     if (CUR == 0) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, "Document is empty\n");
 	ctxt->wellFormed = 0;
     }
+
+    /*
+     * Parse possible comments before any content
+     */
+    while ((CUR == '<') && (NXT(1) == '!') &&
+           (NXT(2) == '-') && (NXT(3) == '-')) {
+        ctxt->myDoc = htmlNewDoc(NULL, NULL);
+        htmlParseComment(ctxt, 1);	   
+	SKIP_BLANKS;
+    }	   
 
 
     /*
@@ -2508,7 +2509,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     /*
      * Time to start parsing the tree itself
      */
-    htmlParseElement(ctxt);
+    htmlParseContent(ctxt);
 
     /*
      * SAX: end of the document processing.
@@ -2537,6 +2538,9 @@ void
 htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
 {
     htmlSAXHandler *sax;
+
+    if (ctxt == NULL) return;
+    memset(ctxt, 0, sizeof(htmlParserCtxt));
 
     sax = (htmlSAXHandler *) xmlMalloc(sizeof(htmlSAXHandler));
     if (sax == NULL) {
@@ -2580,6 +2584,7 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->replaceEntities = 0;
     ctxt->html = 1;
     ctxt->record_info = 0;
+    ctxt->validate = 0;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
 }
 
@@ -2758,6 +2763,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     inputStream->line = 1;
     inputStream->col = 1;
     inputStream->buf = buf;
+    inputStream->directory = NULL;
 
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;

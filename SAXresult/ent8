@@ -1,0 +1,37 @@
+xmlSAXUserParseFile returned error 26
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.internalSubset(doc, (null), (null))
+SAX.entityDecl(test1, 1, (null), (null), test 1)
+SAX.getEntity(test1)
+SAX.entityDecl(test2, 1, (null), (null), test 2)
+SAX.getEntity(test2)
+SAX.startElement(doc)
+SAX.characters(
+   , 4)
+SAX.startElement(Content)
+SAX.characters(Retenç, 6)
+SAX.characters(ã, 1)
+SAX.characters(o, 1)
+SAX.endElement(Content)
+SAX.characters(
+   , 4)
+SAX.startElement(Content)
+SAX.getEntity(lt)
+SAX.characters(<, 1)
+SAX.getEntity(gt)
+SAX.characters(>, 1)
+SAX.endElement(Content)
+SAX.characters(
+   , 4)
+SAX.startElement(Content)
+SAX.getEntity(test1)
+SAX.error: Entity 'test1' not defined
+SAX.getEntity(test2)
+SAX.error: Entity 'test2' not defined
+SAX.endElement(Content)
+SAX.characters(
+, 1)
+SAX.endElement(doc)
+SAX.endDocument()
+xmlSAXUserParseFile returned error 26

@@ -85,14 +85,13 @@ HTMLtests : testHTML
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name ; \
 	      $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(top_builddir)/testHTML $$i > result.$$name 2>error.$$name ; \
+	      $(top_builddir)/testHTML $$i > result.$$name 2> error.$$name ; \
 	      diff $(srcdir)/result/HTML/$$name result.$$name ; \
 	      diff $(srcdir)/result/HTML/$$name.err error.$$name ; \
-	      $(top_builddir)/testHTML result.$$name > result2.$$name ; \
+	      $(top_builddir)/testHTML result.$$name > result2.$$name 2>error.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name error.$$name ; \
 	  fi ; fi ; done)
@@ -228,12 +227,13 @@ Validtests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/valid/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(top_builddir)/tester --valid $$i > $(srcdir)/result/valid/$$name ; \
+	      $(top_builddir)/tester --valid $$i > $(srcdir)/result/valid/$$name 2>$(srcdir)/result/valid/$$name.err ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(top_builddir)/tester --valid $$i > result.$$name ; \
+	      $(top_builddir)/tester --valid $$i > result.$$name 2>error.$$name ; \
 	      diff $(srcdir)/result/valid/$$name result.$$name ; \
-	      rm result.$$name ; \
+	      diff $(srcdir)/result/valid/$$name.err error.$$name ; \
+	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)
 
 dist-hook: libxml.spec
@@ -253,8 +253,11 @@ EXTRA_DIST = xmlConf.sh.in
 
 confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
-EXTRA_DIST = xmlConf.sh.in libxml.spec.in test result SAXresult \
+EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec \
              example/Makefile.am example/gjobread.c example/gjobs.xml
+
+dist-hook:
+	(cd $(srcdir) ; tar -cf - --exclude CVS test result SAXresult ) | (cd $(distdir); tar xf -)
 
 xmlConf.sh: xmlConf.sh.in Makefile
 ## Use sed and then mv to avoid problems if the user interrupts.

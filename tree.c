@@ -684,7 +684,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
 
     while (node != NULL) {
         if (node->type == XML_TEXT_NODE) {
-	    if (inLine)
+	    if ((inLine) || (doc->type == XML_HTML_DOCUMENT_NODE))
 		ret = xmlStrcat(ret, node->content);
 	    else {
 	        xmlChar *buffer;

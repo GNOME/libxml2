@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>Libxml Frequently Asked Questions</title>
-  <meta name="GENERATOR" content="amaya V4.1">
+  <meta name="GENERATOR" content="amaya V5.0">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -43,8 +43,8 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
   <li><em>Can I embed libxml in a proprietary application ?</em>
     <p>Yes. The W3C IPR allows you to also keep proprietary the changes you
     made to libxml, but it would be graceful to provide back bugfixes and
-    improvements as patches for possible incorporation in the main development
-    tree</p>
+    improvements as patches for possible incorporation in the main
+    development tree</p>
   </li>
 </ol>
 
@@ -53,7 +53,8 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
   <li>Unless you are forced to because your application links with a Gnome
     library requiring it,  <strong><span style="background-color: #FF0000">Do
     Not Use libxml1</span></strong>, use libxml2</li>
-  <li><em>Where can I get libxml</em> ?
+  <li><em>Where can I get libxml</em>
+     ?
     <p>The original distribution comes from <a
     href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> or <a
     href="ftp://ftp.gnome.org/pub/GNOME/stable/sources/libxml/">gnome.org</a></p>
@@ -64,16 +65,16 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
   </li>
   <li><em>I see libxml and libxml2 releases, which one should I install ?</em>
     <ul>
-      <li>If you are not concerned by any existing backward compatibility with
-        existing application, install libxml2 only</li>
+      <li>If you are not concerned by any existing backward compatibility
+        with existing application, install libxml2 only</li>
       <li>If you are not doing development, you can safely install both.
         usually the packages <a
         href="http://rpmfind.net/linux/RPM/libxml.html">libxml</a> and <a
         href="http://rpmfind.net/linux/RPM/libxml2.html">libxml2</a> are
         compatible (this is not the case for development packages)</li>
       <li>If you are a developer and your system provides separate packaging
-        for shared libraries and the development components, it is possible to
-        install libxml and libxml2, and also <a
+        for shared libraries and the development components, it is possible
+        to install libxml and libxml2, and also <a
         href="http://rpmfind.net/linux/RPM/libxml-devel.html">libxml-devel</a>
         and <a
         href="http://rpmfind.net/linux/RPM/libxml2-devel.html">libxml2-devel</a>
@@ -122,13 +123,13 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     <p>However if found at configuration time libxml will detect and use the
     following libs:</p>
     <ul>
-      <li><a href="http://www.info-zip.org/pub/infozip/zlib/">libz</a>: a
-        highly portable and available widely compression library</li>
+      <li><a href="http://www.info-zip.org/pub/infozip/zlib/">libz</a>
+         : a highly portable and available widely compression library</li>
       <li>iconv: a powerful character encoding conversion library. It's
         included by default on recent glibc libraries, so it doesn't need to
         be installed specifically on linux. It seems it's now <a
-        href="http://www.opennc.org/onlinepubs/7908799/xsh/iconv.html">part of
-        the official UNIX</a> specification. Here is one <a
+        href="http://www.opennc.org/onlinepubs/7908799/xsh/iconv.html">part
+        of the official UNIX</a> specification. Here is one <a
         href="http://clisp.cons.org/~haible/packages-libiconv.html">implementation
         of the library</a> which source can be found <a
         href="ftp://ftp.ilog.fr/pub/Users/haible/gnu/">here</a>.</li>
@@ -145,8 +146,8 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
   <li><em>make check fails on some platforms</em>
     <p>Sometime the regression tests results don't completely match the value
     produced by the parser, and the makefile uses diff to print the delta. On
-    some platforms the diff return breaks the compilation process, if the diff
-    is small this is probably not a serious problem</p>
+    some platforms the diff return breaks the compilation process, if the
+    diff is small this is probably not a serious problem</p>
   </li>
   <li><em>I use the CVS version and there is no configure script</em>
     <p>The configure (and other Makefiles) are generated. Use the autogen.sh
@@ -162,6 +163,24 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
 
 <h2><a name="Developer">Developer</a> corner</h2>
 <ol>
+  <li><em>xmlDocDump() generates output on one line</em>
+    <p>libxml will not <strong>invent</strong> spaces in the content of a
+    document since <strong>all spaces in the content of a document are
+    significant</strong>. If you build a tree from the API and want
+    indentation:</p>
+    <ol>
+      <li>the correct way is to generate those yourself too</li>
+      <li>the dangerous way is to ask libxml to add those blanks to your
+        content <strong>modifying the content of your document in the
+        process</strong>. The result may not be what you expect. There is
+        <strong>NO</strong> way to guarantee that such a modification won't
+        impact other part of the content of your document. See <a
+        href="http://xmlsoft.org/html/libxml-parser.html#XMLKEEPBLANKSDEFAULT">xmlKeepBlanksDefault
+        ()</a> and <a
+        href="http://xmlsoft.org/html/libxml-tree.html#XMLSAVEFORMATFILE">xmlSaveFormatFile
+        ()</a></li>
+    </ol>
+  </li>
   <li>Extra nodes in the document:
     <p><em>For a XML file as below:</em></p>
     <pre>&lt;?xml version="1.0"?&gt;
@@ -187,8 +206,8 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     to forget. There is a function <a
     href="http://xmlsoft.org/html/libxml-parser.html">xmlKeepBlanksDefault
     ()</a>  to remove those at parse time, but that's an heuristic, and its
-    use should be limited to case where you are sure there is no mixed-content
-    in the document.</p>
+    use should be limited to case where you are sure there is no
+    mixed-content in the document.</p>
   </li>
   <li><em>I get compilation errors of existing code like when accessing
     <strong>root</strong> or <strong>childs fields</strong> of nodes</em>
@@ -202,12 +221,12 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     fields</em>
     <p>The source code you are using has been <a
     href="upgrade.html">upgraded</a> to be able to compile with both libxml
-    and libxml2, but you need to install a more recent version: libxml(-devel)
-    &gt;= 1.8.8 or libxml2(-devel) &gt;= 2.1.0</p>
+    and libxml2, but you need to install a more recent version:
+    libxml(-devel) &gt;= 1.8.8 or libxml2(-devel) &gt;= 2.1.0</p>
   </li>
   <li><em>XPath implementation looks seriously broken</em>
-    <p>XPath implementation prior to 2.3.0 was really incomplete, upgrade to a
-    recent version, the implementation and debug of libxslt generated fixes
+    <p>XPath implementation prior to 2.3.0 was really incomplete, upgrade to
+    a recent version, the implementation and debug of libxslt generated fixes
     for most obvious problems.</p>
   </li>
   <li><em>The example provided in the web page does not compile</em>
@@ -233,13 +252,14 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
       </li>
       <li><a
         href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Browse
-        the libxml source</a>, I try to write code as clean and documented as
-        possible, so looking at it may be helpful</li>
+        the libxml source</a>
+         , I try to write code as clean and documented as possible, so
+        looking at it may be helpful</li>
     </ul>
   </li>
   <li>What about C++ ?
-    <p>libxml is written in pure C in order to allow easy reuse on a number of
-    platforms, including embedded systems. I don't intend to convert to
+    <p>libxml is written in pure C in order to allow easy reuse on a number
+    of platforms, including embedded systems. I don't intend to convert to
     C++.</p>
     <p>There is however a C++ wrapper provided by Ari Johnson
     &lt;ari@btigate.com&gt; which may fullfill your needs:</p>

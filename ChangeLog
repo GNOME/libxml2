@@ -1,3 +1,8 @@
+Wed Nov 26 21:33:14 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/tree.h: stefan on IRC pointed out that XML_GET_LINE
+	  is broken on 2.6.x
+
 Tue Nov 25 18:39:44 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* entities.c: fixed #127877, never output &quot; in element content

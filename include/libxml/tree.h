@@ -477,11 +477,9 @@ struct _xmlNode {
  * XML_GET_LINE:
  *
  * Macro to extract the line number of an element node. 
- * This will work only if line numbering is activated by
- * calling xmlLineNumbersDefault(1) before parsing.
  */
 #define XML_GET_LINE(n)						\
-    ((n)->type == XML_ELEMENT_NODE ? (int) (n)->content : 0)
+    (xmlGetLineNo(n))
 
 
 /**

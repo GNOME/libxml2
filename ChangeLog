@@ -1,3 +1,20 @@
+Sun Feb 13 16:15:03 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	This change started out as a simple desire to speed up the
+	execution time of testapi.c, which was being delayed by
+	nameserver requests for non-existent URL's.  From there it
+	just sort of grew, and grew....
+	* nanohttp.c, nanoftp.c: changed the processing of URL's
+	  to use the uri.c routines instead of custom code.
+	* include/libxml/xmlerror.h: added code XML_FTP_URL_SYNTAX
+	* uri.c: added accepting ipV6 addresses, in accordance with
+	  RFC's 2732 and 2373 (TODO: allow ipV4 within ipV6)
+	* gentest.py, testapi.c: fixed a few problems with the
+	  testing of the nanoftp and nanohttp routines.
+	* include/libxml/xmlversion.h: minor change to fix a
+	  warning on the docs generation
+	* regenerated the docs
+
 Sat Feb 12 09:07:11 HKT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: fixed xmlXIncludeParseFile to prevent

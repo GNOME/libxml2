@@ -268,12 +268,10 @@ xmlNanoHTTPCleanup(void) {
 
 static void
 xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
-    const char *cur = URL;
-    char buf[4096];
-    int indx = 0;
-    const int indxMax = 4096 - 1;
-    int port = 0;
-
+    xmlURIPtr uri;
+    /*
+     * Clear any existing data from the context
+     */
     if (ctxt->protocol != NULL) { 
         xmlFree(ctxt->protocol);
 	ctxt->protocol = NULL;
@@ -287,92 +285,26 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
 	ctxt->path = NULL;
     }
     if (URL == NULL) return;
-    buf[indx] = 0;
-    while ((*cur != 0) && (indx < indxMax)) {
-        if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
-	    buf[indx] = 0;
-	    ctxt->protocol = xmlMemStrdup(buf);
-	    indx = 0;
-            cur += 3;
-	    break;
-	}
-	buf[indx++] = *cur++;
+
+    uri = xmlParseURI(URL);
+    if (uri == NULL)
+	return;
+
+    if ((uri->scheme == NULL) || (uri->server == NULL)) {
+	xmlFreeURI(uri);
+	return;
     }
-    if (*cur == 0) return;
-
-    buf[indx] = 0;
-    while (indx < indxMax) {
-	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
-		(!strchr (cur, '[') && strchr (cur, ']'))) {
-	    __xmlIOErr(XML_FROM_HTTP, XML_HTTP_URL_SYNTAX, 
-	               "Syntax Error\n");
-	    return;
-	}
-
-	if (cur[0] == '[') {
-	    cur++;
-	    while ((cur[0] != ']') && (indx < indxMax))
-		buf[indx++] = *cur++;
     
-	    if (!strchr (buf, ':')) {
-		__xmlIOErr(XML_FROM_HTTP, XML_HTTP_USE_IP,
-			"Use [IPv6]/IPv4 format\n");
-		return;
-	    }
+    ctxt->protocol = xmlMemStrdup(uri->scheme);
+    ctxt->hostname = xmlMemStrdup(uri->server);
+    if (uri->path != NULL)
+	ctxt->path = xmlMemStrdup(uri->path);
+    else
+	ctxt->path = xmlMemStrdup("/");
+    if (uri->port != 0)
+	ctxt->port = uri->port;
 
-	    buf[indx] = 0;
-	    ctxt->hostname = xmlMemStrdup (buf);
-	    indx = 0;
-	    cur += 1;
-	    if (cur[0] == ':') {
-		cur++;
-		while (*cur >= '0' && *cur <= '9') {
-		    port *= 10;
-		    port += *cur - '0';
-		    cur++;
-		}
-
-		if (port != 0) ctxt->port = port;
-		while ((cur[0] != '/') && (*cur != 0))
-		    cur++;
-	    }
-	    break;
-        }
-	else {
-	    if (cur[0] == ':') {
-		buf[indx] = 0;
-		ctxt->hostname = xmlMemStrdup (buf);
-		indx = 0;
-		cur += 1;
-		while ((*cur >= '0') && (*cur <= '9')) {
-		    port *= 10;
-		    port += *cur - '0';
-		    cur++;
-		}
-		if (port != 0) ctxt->port = port;
-		while ((cur[0] != '/') && (*cur != 0)) 
-		    cur++;
-		break;
-	    }
-	    if ((*cur == '/') || (*cur == 0)) {
-		buf[indx] = 0;
-		ctxt->hostname = xmlMemStrdup (buf);
-		indx = 0;
-		break;
-	    }
-	}
-	buf[indx++] = *cur++;
-    }
-    if (*cur == 0) 
-        ctxt->path = xmlMemStrdup("/");
-    else {
-        indx = 0;
-        buf[indx] = 0;
-	while ((*cur != 0) && (indx < indxMax))
-	    buf[indx++] = *cur++;
-	buf[indx] = 0;
-	ctxt->path = xmlMemStrdup(buf);
-    }	
+    xmlFreeURI(uri);
 }
 
 /**
@@ -387,19 +319,14 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
 
 void
 xmlNanoHTTPScanProxy(const char *URL) {
-    const char *cur = URL;
-    char buf[4096];
-    int indx = 0;
-    const int indxMax = 4096 - 1;
-    int port = 0;
+    xmlURIPtr uri;
 
     if (proxy != NULL) { 
         xmlFree(proxy);
 	proxy = NULL;
     }
-    if (proxyPort != 0) { 
-	proxyPort = 0;
-    }
+    proxyPort = 0;
+
 #ifdef DEBUG_HTTP
     if (URL == NULL)
 	xmlGenericError(xmlGenericErrorContext,
@@ -409,80 +336,21 @@ xmlNanoHTTPScanProxy(const char *URL) {
 		"Using HTTP proxy %s\n", URL);
 #endif
     if (URL == NULL) return;
-    buf[indx] = 0;
-    while ((*cur != 0) && (indx < indxMax)) {
-        if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
-	    buf[indx] = 0;
-	    indx = 0;
-            cur += 3;
-	    break;
-	}
-	buf[indx++] = *cur++;
+
+    uri = xmlParseURI(URL);
+    if ((uri == NULL) || (uri->scheme == NULL) ||
+	(strcmp(uri->scheme, "http")) || (uri->server == NULL)) {
+	__xmlIOErr(XML_FROM_HTTP, XML_HTTP_URL_SYNTAX, "Syntax Error\n");
+	if (uri != NULL)
+	    xmlFreeURI(uri);
+	return;
     }
-    if (*cur == 0) return;
+    
+    proxy = xmlMemStrdup(uri->server);
+    if (uri->port != 0)
+	proxyPort = uri->port;
 
-    buf[indx] = 0;
-    while (indx < indxMax) {
-	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
-		(!strchr (cur, '[') && strchr (cur, ']'))) {
-	    __xmlIOErr(XML_FROM_HTTP, XML_HTTP_URL_SYNTAX, "Syntax Error\n");
-	    return;
-	}
-
-	if (cur[0] == '[') {
-	    cur++;
-	    while ((cur[0] != ']') && (indx < indxMax))
-		buf[indx++] = *cur++;
-
-	    if (!strchr (buf, ':')) {
-		__xmlIOErr(XML_FROM_HTTP, XML_HTTP_USE_IP,
-			"Use [IPv6]/IPv4 format\n");
-		return;
-	    }
-
-	    buf[indx] = 0;
-	    proxy = xmlMemStrdup (buf);
-	    indx = 0;
-	    cur += 1;
-	    if (cur[0] == ':') {
-	        cur++;
-		while (*cur >= '0' && *cur <= '9') {
-		    port *= 10;
-		    port += *cur - '0';
-		    cur++;
-		}
-
-		if (port != 0) proxyPort = port;
-		while ((cur[0] != '/') && (*cur != 0))
-		    cur ++;
-	    }
-	    break;
-	}
-	else {
-	    if (cur[0] == ':') {
-		buf[indx] = 0;
-		proxy = xmlMemStrdup (buf);
-		indx = 0;
-		cur += 1;
-		while ((*cur >= '0') && (*cur <= '9')) {
-		    port *= 10;
-		    port += *cur - '0';
-		    cur++;
-		}
-		if (port != 0) proxyPort = port;
-		while ((cur[0] != '/') && (*cur != 0)) 
-		    cur++;
-		break;
-	    }
-	    if ((*cur == '/') || (*cur == 0)) {
-		buf[indx] = 0;
-		proxy = xmlMemStrdup (buf);
-		indx = 0;
-		break;
-	    }
-	}
-	buf[indx++] = *cur++;
-    }
+    xmlFreeURI(uri);
 }
 
 /**
@@ -1551,6 +1419,7 @@ xmlNanoHTTPFetch(const char *URL, const char *filename, char **contentType) {
     int fd;
     int len;
     
+    if (filename == NULL) return(-1);
     ctxt = xmlNanoHTTPOpen(URL, contentType);
     if (ctxt == NULL) return(-1);
 
@@ -1595,7 +1464,7 @@ xmlNanoHTTPSave(void *ctxt, const char *filename) {
     int fd;
     int len;
     
-    if (ctxt == NULL) return(-1);
+    if ((ctxt == NULL) || (filename == NULL)) return(-1);
 
     if (!strcmp(filename, "-")) 
         fd = 0;

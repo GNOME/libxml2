@@ -1563,6 +1563,12 @@ extern __typeof (xmlFreeRefTable) xmlFreeRefTable__internal_alias __attribute((v
 extern __typeof (xmlFreeRefTable) xmlFreeRefTable __attribute((alias("xmlFreeRefTable__internal_alias")));
 #define xmlFreeRefTable xmlFreeRefTable__internal_alias
 
+#if defined(LIBXML_PATTERN_ENABLED)
+extern __typeof (xmlFreeStreamCtxt) xmlFreeStreamCtxt__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlFreeStreamCtxt) xmlFreeStreamCtxt __attribute((alias("xmlFreeStreamCtxt__internal_alias")));
+#define xmlFreeStreamCtxt xmlFreeStreamCtxt__internal_alias
+#endif
+
 #if defined(LIBXML_READER_ENABLED)
 extern __typeof (xmlFreeTextReader) xmlFreeTextReader__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlFreeTextReader) xmlFreeTextReader __attribute((alias("xmlFreeTextReader__internal_alias")));
@@ -3276,6 +3282,12 @@ extern __typeof (xmlParserWarning) xmlParserWarning __attribute((alias("xmlParse
 #define xmlParserWarning xmlParserWarning__internal_alias
 
 #if defined(LIBXML_PATTERN_ENABLED)
+extern __typeof (xmlPatternGetStreamCtxt) xmlPatternGetStreamCtxt__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlPatternGetStreamCtxt) xmlPatternGetStreamCtxt __attribute((alias("xmlPatternGetStreamCtxt__internal_alias")));
+#define xmlPatternGetStreamCtxt xmlPatternGetStreamCtxt__internal_alias
+#endif
+
+#if defined(LIBXML_PATTERN_ENABLED)
 extern __typeof (xmlPatternMatch) xmlPatternMatch__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlPatternMatch) xmlPatternMatch __attribute((alias("xmlPatternMatch__internal_alias")));
 #define xmlPatternMatch xmlPatternMatch__internal_alias
@@ -4468,6 +4480,18 @@ extern __typeof (xmlStrcmp) xmlStrcmp __attribute((alias("xmlStrcmp__internal_al
 extern __typeof (xmlStrdup) xmlStrdup__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlStrdup) xmlStrdup __attribute((alias("xmlStrdup__internal_alias")));
 #define xmlStrdup xmlStrdup__internal_alias
+
+#if defined(LIBXML_PATTERN_ENABLED)
+extern __typeof (xmlStreamPop) xmlStreamPop__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlStreamPop) xmlStreamPop __attribute((alias("xmlStreamPop__internal_alias")));
+#define xmlStreamPop xmlStreamPop__internal_alias
+#endif
+
+#if defined(LIBXML_PATTERN_ENABLED)
+extern __typeof (xmlStreamPush) xmlStreamPush__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlStreamPush) xmlStreamPush __attribute((alias("xmlStreamPush__internal_alias")));
+#define xmlStreamPush xmlStreamPush__internal_alias
+#endif
 
 extern __typeof (xmlStringCurrentChar) xmlStringCurrentChar__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlStringCurrentChar) xmlStringCurrentChar __attribute((alias("xmlStringCurrentChar__internal_alias")));

@@ -805,6 +805,7 @@ xmlFreeProp
 xmlFreePropList
 xmlFreeRMutex
 xmlFreeRefTable
+xmlFreeStreamCtxt
 xmlFreeTextReader
 xmlFreeTextWriter
 xmlFreeURI
@@ -1296,6 +1297,7 @@ xmlParserPrintFileInfo
 xmlParserValidityError
 xmlParserValidityWarning
 xmlParserWarning
+xmlPatternGetStreamCtxt
 xmlPatternMatch
 xmlPatterncompile
 xmlPedanticParserDefault
@@ -1695,6 +1697,8 @@ xmlStrcat
 xmlStrchr
 xmlStrcmp
 xmlStrdup
+xmlStreamPop
+xmlStreamPush
 xmlStringCurrentChar
 xmlStringDecodeEntities
 xmlStringGetNodeList

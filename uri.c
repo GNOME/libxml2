@@ -1,7 +1,7 @@
 /**
  * uri.c: set of generic URI related routines 
  *
- * Reference: RFC 2396
+ * Reference: RFCs 2396, 2732 and 2373
  *
  * See Copyright for the status of this software.
  *
@@ -78,12 +78,14 @@
 
 
 /*
- * reserved = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" | "$" | ","
+ * reserved = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" | "$" | "," |
+ * 	      "[" | "]"
  */
 
 #define IS_RESERVED(x) (((x) == ';') || ((x) == '/') || ((x) == '?') ||	\
         ((x) == ':') || ((x) == '@') || ((x) == '&') || ((x) == '=') ||	\
-	((x) == '+') || ((x) == '$') || ((x) == ','))
+	((x) == '+') || ((x) == '$') || ((x) == ',') || ((x) == '[') || \
+	((x) == ']'))
 
 /*
  * unreserved = alphanum | mark
@@ -159,7 +161,7 @@
 	            (IS_RESERVED(*(p))))
 
 /*                                                                              
-* unwise = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
+* unwise = "{" | "}" | "|" | "\" | "^" | "`"
 */                                                                             
 
 #define IS_UNWISE(p)                                                    \
@@ -1199,11 +1201,16 @@ xmlParseURIOpaquePart(xmlURIPtr uri, const char **str)
  * userinfo      = *( unreserved | escaped |
  *                       ";" | ":" | "&" | "=" | "+" | "$" | "," )
  * hostport      = host [ ":" port ]
- * host          = hostname | IPv4address
+ * host          = hostname | IPv4address | IPv6reference
  * hostname      = *( domainlabel "." ) toplabel [ "." ]
  * domainlabel   = alphanum | alphanum *( alphanum | "-" ) alphanum
  * toplabel      = alpha | alpha *( alphanum | "-" ) alphanum
- * IPv4address   = 1*digit "." 1*digit "." 1*digit "." 1*digit
+ * IPv6reference = "[" IPv6address "]"
+ * IPv6address   = hexpart [ ":" IPv4address ]
+ * IPv4address   = 1*3digit "." 1*3digit "." 1*3digit "." 1*3digit
+ * hexpart       = hexseq | hexseq "::" [ hexseq ]| "::" [ hexseq ]
+ * hexseq        = hex4 *( ":" hex4)
+ * hex4          = 1*4hexdig
  * port          = *digit
  *
  * Returns 0 or the error code
@@ -1212,7 +1219,8 @@ static int
 xmlParseURIServer(xmlURIPtr uri, const char **str) {
     const char *cur;
     const char *host, *tmp;
-    const int IPmax = 4;
+    const int IPV4max = 4;
+    const int IPV6max = 8;
     int oct;
 
     if (str == NULL)
@@ -1221,7 +1229,7 @@ xmlParseURIServer(xmlURIPtr uri, const char **str) {
     cur = *str;
 
     /*
-     * is there an userinfo ?
+     * is there a userinfo ?
      */
     while (IS_USERINFO(cur)) NEXT(cur);
     if (*cur == '@') {
@@ -1252,21 +1260,60 @@ xmlParseURIServer(xmlURIPtr uri, const char **str) {
 	return(0);
     }
     /*
-     * host part of hostport can derive either an IPV4 address
-     * or an unresolved name. Check the IP first, it easier to detect
-     * errors if wrong one
+     * host part of hostport can denote an IPV4 address, an IPV6 address
+     * or an unresolved name. Check the IP first, its easier to detect
+     * errors if wrong one.
+     * An IPV6 address must start with a '[' and end with a ']'.
      */
-    for (oct = 0; oct < IPmax; ++oct) {
-        if (*cur == '.')
-            return(3); /* e.g. http://.xml/ or http://18.29..30/ */
-        while(IS_DIGIT(*cur)) cur++;
-        if (oct == (IPmax-1))
-            continue;
-        if (*cur != '.')
-	    break;
-        cur++;
+    if (*cur == '[') {
+	int compress=0;
+	cur++;
+	for (oct = 0; oct < IPV6max; ++oct) {
+	    if (*cur == ':') {
+		if (compress)
+		    return(3);	/* multiple compression attempted */
+		if (!oct) { 	/* initial char is compression */
+		    if (*++cur != ':')
+			return(3);
+		}
+		compress = 1;	/* set compression-encountered flag */
+		cur++;		/* skip over the second ':' */
+		continue;
+	    }
+	    while(IS_HEX(*cur)) cur++;
+	    if (oct == (IPV6max-1))
+		continue;
+	    if (*cur != ':')
+		break;
+	    cur++;
+	}
+	if ((!compress) && (oct != IPV6max))
+	    return(3);
+	if (*cur != ']')
+	    return(3);
+	if (uri != NULL) {
+	    if (uri->server != NULL) xmlFree(uri->server);
+	    uri->server = (char *)xmlStrndup((xmlChar *)host+1,
+			(cur-host)-1);
+	}
+	cur++;
+    } else {
+	/*
+	 * Not IPV6, maybe IPV4
+	 */
+	for (oct = 0; oct < IPV4max; ++oct) {
+            if (*cur == '.') 
+                return(3); /* e.g. http://.xml/ or http://18.29..30/ */
+            while(IS_DIGIT(*cur)) cur++;
+            if (oct == (IPV4max-1))
+                continue;
+            if (*cur != '.')
+	        break;
+            cur++;
+	}
     }
-    if (oct < IPmax || (*cur == '.' && cur++) || IS_ALPHA(*cur)) {
+    if ((host[0] != '[') && (oct < IPV4max || (*cur == '.' && cur++) ||
+			     IS_ALPHA(*cur))) {
         /* maybe host_name */
         if (!IS_ALPHANUM(*cur))
             return(4); /* e.g. http://xml.$oft */
@@ -1300,8 +1347,10 @@ xmlParseURIServer(xmlURIPtr uri, const char **str) {
     if (uri != NULL) {
 	if (uri->authority != NULL) xmlFree(uri->authority);
 	uri->authority = NULL;
-	if (uri->server != NULL) xmlFree(uri->server);
-	uri->server = xmlURIUnescapeString(host, cur - host, NULL);
+	if (host[0] != '[') {	/* it's not an IPV6 addr */
+	    if (uri->server != NULL) xmlFree(uri->server);
+	    uri->server = xmlURIUnescapeString(host, cur - host, NULL);
+	}
     }
     /*
      * finish by checking for a port presence.

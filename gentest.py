@@ -112,12 +112,12 @@ skipped_functions = [
 "xmlIORead", "xmlReadIO", "xmlCtxtReadIO",
 "htmlIORead", "htmlReadIO", "htmlCtxtReadIO",
 "xmlReaderNewIO", "xmlBufferDump", "xmlNanoFTPConnect",
-"xmlNanoFTPConnectTo",
+"xmlNanoFTPConnectTo", "xmlNanoHTTPMethod", "xmlNanoHTTPMethodRedir",
 # Complex I/O APIs
 "xmlCreateIOParserCtxt", "xmlParserInputBufferCreateIO",
 "xmlRegisterInputCallbacks", "xmlReaderForIO",
 "xmlOutputBufferCreateIO", "xmlRegisterOutputCallbacks",
-"xmlSaveToIO",
+"xmlSaveToIO", "xmlIOHTTPOpenW",
 # library state cleanup, generate false leak informations and other
 # troubles, heavillyb tested otherwise.
 "xmlCleanupParser", "xmlRelaxNGCleanupTypes", "xmlSetListDoc",
@@ -129,7 +129,7 @@ skipped_functions = [
 "xmlTextReaderReadInnerXml", "xmlTextReaderReadOuterXml",
 "xmlTextReaderReadString",
 # destructor
-"xmlListDelete", "xmlOutputBufferClose", "xmlNanoFTPClose",
+"xmlListDelete", "xmlOutputBufferClose", "xmlNanoFTPClose", "xmlNanoHTTPClose",
 # deprecated
 "xmlCatalogGetPublic", "xmlCatalogGetSystem", "xmlEncodeEntities",
 "xmlNewGlobalNs", "xmlHandleEntity", "xmlNamespaceParseNCName",
@@ -326,17 +326,25 @@ def type_convert(str, name, info, module, function, pos):
            string.find(info, "URL") != -1:
 	    if string.find(function, "Save") != -1 or \
 	       string.find(function, "Create") != -1 or \
-	       string.find(function, "Write") != -1:
+	       string.find(function, "Write") != -1 or \
+	       string.find(function, "Fetch") != -1:
 	        return('fileoutput')
 	    return('filepath')
     if res == 'void_ptr':
         if module == 'nanoftp' and name == 'ctx':
 	    return('xmlNanoFTPCtxtPtr')
-        if function == 'xmlNanoFTPNewCtxt':
+        if function == 'xmlNanoFTPNewCtxt' or \
+	   function == 'xmlNanoFTPConnectTo' or \
+	   function == 'xmlNanoFTPOpen':
 	    return('xmlNanoFTPCtxtPtr')
         if module == 'nanohttp' and name == 'ctx':
 	    return('xmlNanoHTTPCtxtPtr')
-        if function == 'xmlIOHTTPOpenW':
+	if function == 'xmlNanoHTTPMethod' or \
+	   function == 'xmlNanoHTTPMethodRedir' or \
+	   function == 'xmlNanoHTTPOpen' or \
+	   function == 'xmlNanoHTTPOpenRedir':
+	    return('xmlNanoHTTPCtxtPtr');
+        if function == 'xmlIOHTTPOpen':
 	    return('xmlNanoHTTPCtxtPtr')
 	if string.find(name, "data") != -1:
 	    return('userdata')

@@ -193,6 +193,14 @@ int main(int argc, char **argv) {
 */
 void xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra);
 
+/*
+ We need some "remote" addresses, but want to avoid getting into
+ name resolution delays, so we use these
+*/
+#define	REMOTE1GOOD	"http://localhost/"
+#define	REMOTE1BAD	"http://missing. example.org/"
+#define	REMOTE2GOOD	"ftp://localhost/foo"
+
 #define gen_nb_void_ptr 2
 
 static void *gen_void_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -392,8 +400,8 @@ static const char *gen_filepath(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 2) return("test/ent2");
     if (no == 3) return("test/valid/REC-xml-19980210.xml");
     if (no == 4) return("test/valid/dtds/xhtml1-strict.dtd");
-    if (no == 5) return("http://missing.example.org/");
-    if (no == 6) return("http://missing. example.org/");
+    if (no == 5) return(REMOTE1GOOD);
+    if (no == 6) return(REMOTE1BAD);
     return(NULL);
 }
 static void des_filepath(int no ATTRIBUTE_UNUSED, const char *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -413,9 +421,9 @@ static void des_eaten_name(int no ATTRIBUTE_UNUSED, xmlChar *val ATTRIBUTE_UNUSE
 static const char *gen_fileoutput(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return("/missing.xml");
     if (no == 1) return("<foo/>");
-    if (no == 2) return("ftp://missing.example.org/foo");
-    if (no == 3) return("http://missing.example.org/");
-    if (no == 4) return("http://missing. example.org/");
+    if (no == 2) return(REMOTE2GOOD);
+    if (no == 3) return(REMOTE1GOOD);
+    if (no == 4) return(REMOTE1BAD);
     return(NULL);
 }
 static void des_fileoutput(int no ATTRIBUTE_UNUSED, const char *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -464,8 +472,8 @@ static xmlParserInputBufferPtr gen_xmlParserInputBufferPtr(int no, int nr ATTRIB
     if (no == 2) return(xmlParserInputBufferCreateFilename("test/ent2", XML_CHAR_ENCODING_NONE));
     if (no == 3) return(xmlParserInputBufferCreateFilename("test/valid/REC-xml-19980210.xml", XML_CHAR_ENCODING_NONE));
     if (no == 4) return(xmlParserInputBufferCreateFilename("test/valid/dtds/xhtml1-strict.dtd", XML_CHAR_ENCODING_NONE));
-    if (no == 5) return(xmlParserInputBufferCreateFilename("http://missing.example.org/", XML_CHAR_ENCODING_NONE));
-    if (no == 6) return(xmlParserInputBufferCreateFilename("http://missing. example.org/", XML_CHAR_ENCODING_NONE));
+    if (no == 5) return(xmlParserInputBufferCreateFilename(REMOTE1GOOD, XML_CHAR_ENCODING_NONE));
+    if (no == 6) return(xmlParserInputBufferCreateFilename(REMOTE1BAD, XML_CHAR_ENCODING_NONE));
     return(NULL);
 }
 static void des_xmlParserInputBufferPtr(int no ATTRIBUTE_UNUSED, xmlParserInputBufferPtr val, int nr ATTRIBUTE_UNUSED) {
@@ -642,8 +650,8 @@ static void des_xmlOutputBufferPtr(int no ATTRIBUTE_UNUSED, xmlOutputBufferPtr v
 #ifdef LIBXML_FTP_ENABLED
 #define gen_nb_xmlNanoFTPCtxtPtr 4
 static void *gen_xmlNanoFTPCtxtPtr(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 0) return(xmlNanoFTPNewCtxt("ftp://example.com/"));
-    if (no == 1) return(xmlNanoFTPNewCtxt("http://example.com/"));
+    if (no == 0) return(xmlNanoFTPNewCtxt(REMOTE2GOOD));
+    if (no == 1) return(xmlNanoFTPNewCtxt(REMOTE1GOOD));
     if (no == 2) return(xmlNanoFTPNewCtxt("foo"));
     return(NULL);
 }
@@ -656,10 +664,16 @@ static void des_xmlNanoFTPCtxtPtr(int no ATTRIBUTE_UNUSED, void *val, int nr ATT
 
 #ifdef LIBXML_HTTP_ENABLED
 #define gen_nb_xmlNanoHTTPCtxtPtr 1
-static void *gen_xmlNanoHTTPCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+static void *gen_xmlNanoHTTPCtxtPtr(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(xmlNanoHTTPOpen(REMOTE1GOOD, NULL));
+    if (no == 1) return(xmlNanoHTTPOpen(REMOTE2GOOD, NULL));
+    if (no == 2) return(xmlNanoHTTPOpen(REMOTE1BAD, NULL));
     return(NULL);
 }
-static void des_xmlNanoHTTPCtxtPtr(int no ATTRIBUTE_UNUSED, void *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+static void des_xmlNanoHTTPCtxtPtr(int no ATTRIBUTE_UNUSED, void *val, int nr ATTRIBUTE_UNUSED) {
+    if (val != NULL) {
+	xmlNanoHTTPClose(val);
+    }
 }
 #endif
 
@@ -667,7 +681,7 @@ static void des_xmlNanoHTTPCtxtPtr(int no ATTRIBUTE_UNUSED, void *val ATTRIBUTE_
 static xmlCharEncoding gen_xmlCharEncoding(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(XML_CHAR_ENCODING_UTF8);
     if (no == 1) return(XML_CHAR_ENCODING_NONE);
-    if (no == 0) return(XML_CHAR_ENCODING_8859_1);
+    if (no == 2) return(XML_CHAR_ENCODING_8859_1);
     return(XML_CHAR_ENCODING_ERROR);
 }
 static void des_xmlCharEncoding(int no ATTRIBUTE_UNUSED, xmlCharEncoding val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -800,8 +814,15 @@ static void desret_xmlRelaxNGParserCtxtPtr(xmlRelaxNGParserCtxtPtr val) {
 #ifdef LIBXML_HTML_ENABLED
 static void desret_const_htmlEntityDesc_ptr(const htmlEntityDesc * val ATTRIBUTE_UNUSED) {
 }
+static void desret_xmlNanoHTTPCtxtPtr(void *val) {
+    xmlNanoHTTPClose(val);
+}
 #endif
-
+#ifdef LIBXML_FTP_ENABLED
+static void desret_xmlNanoFTPCtxtPtr(void *val) {
+    xmlNanoFTPClose(val);
+}
+#endif
 /* cut and pasted from autogenerated to avoid troubles */
 #define gen_nb_const_xmlChar_ptr_ptr 1
 static xmlChar ** gen_const_xmlChar_ptr_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -11527,8 +11548,32 @@ static int
 test_xmlNanoFTPNewCtxt(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_FTP_ENABLED)
+    int mem_base;
+    void * ret_val;
+    const char * URL; /* The URL used to initialize the context */
+    int n_URL;
 
-    /* missing type support */
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+        mem_base = xmlMemBlocks();
+        URL = gen_filepath(n_URL, 0);
+
+        ret_val = xmlNanoFTPNewCtxt(URL);
+        desret_xmlNanoFTPCtxtPtr(ret_val);
+        call_tests++;
+        des_filepath(n_URL, URL, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNanoFTPNewCtxt",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_URL);
+            printf("\n");
+        }
+    }
+    function_tests++;
+#endif
+
     return(test_ret);
 }
 
@@ -11548,7 +11593,7 @@ test_xmlNanoFTPOpen(void) {
         URL = gen_filepath(n_URL, 0);
 
         ret_val = xmlNanoFTPOpen(URL);
-        desret_void_ptr(ret_val);
+        desret_xmlNanoFTPCtxtPtr(ret_val);
         call_tests++;
         des_filepath(n_URL, URL, 0);
         xmlResetLastError();
@@ -11763,7 +11808,7 @@ static int
 test_nanoftp(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing nanoftp : 15 of 22 functions ...\n");
+    if (quiet == 0) printf("Testing nanoftp : 16 of 22 functions ...\n");
     test_ret += test_xmlNanoFTPCheckResponse();
     test_ret += test_xmlNanoFTPCleanup();
     test_ret += test_xmlNanoFTPCloseConnection();
@@ -11840,38 +11885,6 @@ test_xmlNanoHTTPCleanup(void) {
 	    test_ret++;
             printf("\n");
         }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlNanoHTTPClose(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_HTTP_ENABLED)
-    int mem_base;
-    void * ctx; /* the HTTP context */
-    int n_ctx;
-
-    for (n_ctx = 0;n_ctx < gen_nb_xmlNanoHTTPCtxtPtr;n_ctx++) {
-        mem_base = xmlMemBlocks();
-        ctx = gen_xmlNanoHTTPCtxtPtr(n_ctx, 0);
-
-        xmlNanoHTTPClose(ctx);
-        call_tests++;
-        des_xmlNanoHTTPCtxtPtr(n_ctx, ctx, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNanoHTTPClose",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_ctx);
-            printf("\n");
-        }
-    }
     function_tests++;
 #endif
 
@@ -11968,19 +11981,19 @@ test_xmlNanoHTTPFetch(void) {
     char ** contentType; /* if available the Content-Type information will be returned at that location */
     int n_contentType;
 
-    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
-    for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
+    for (n_URL = 0;n_URL < gen_nb_fileoutput;n_URL++) {
+    for (n_filename = 0;n_filename < gen_nb_fileoutput;n_filename++) {
     for (n_contentType = 0;n_contentType < gen_nb_char_ptr_ptr;n_contentType++) {
         mem_base = xmlMemBlocks();
-        URL = gen_filepath(n_URL, 0);
-        filename = gen_filepath(n_filename, 1);
+        URL = gen_fileoutput(n_URL, 0);
+        filename = gen_fileoutput(n_filename, 1);
         contentType = gen_char_ptr_ptr(n_contentType, 2);
 
         ret_val = xmlNanoHTTPFetch(URL, filename, contentType);
         desret_int(ret_val);
         call_tests++;
-        des_filepath(n_URL, URL, 0);
-        des_filepath(n_filename, filename, 1);
+        des_fileoutput(n_URL, URL, 0);
+        des_fileoutput(n_filename, filename, 1);
         des_char_ptr_ptr(n_contentType, contentType, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
@@ -12020,151 +12033,6 @@ test_xmlNanoHTTPInit(void) {
 	    test_ret++;
             printf("\n");
         }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlNanoHTTPMethod(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_HTTP_ENABLED)
-    int mem_base;
-    void * ret_val;
-    const char * URL; /* The URL to load */
-    int n_URL;
-    char * method; /* the HTTP method to use */
-    int n_method;
-    char * input; /* the input string if any */
-    int n_input;
-    char ** contentType; /* the Content-Type information IN and OUT */
-    int n_contentType;
-    char * headers; /* the extra headers */
-    int n_headers;
-    int ilen; /* input length */
-    int n_ilen;
-
-    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
-    for (n_method = 0;n_method < gen_nb_const_char_ptr;n_method++) {
-    for (n_input = 0;n_input < gen_nb_const_char_ptr;n_input++) {
-    for (n_contentType = 0;n_contentType < gen_nb_char_ptr_ptr;n_contentType++) {
-    for (n_headers = 0;n_headers < gen_nb_const_char_ptr;n_headers++) {
-    for (n_ilen = 0;n_ilen < gen_nb_int;n_ilen++) {
-        mem_base = xmlMemBlocks();
-        URL = gen_filepath(n_URL, 0);
-        method = gen_const_char_ptr(n_method, 1);
-        input = gen_const_char_ptr(n_input, 2);
-        contentType = gen_char_ptr_ptr(n_contentType, 3);
-        headers = gen_const_char_ptr(n_headers, 4);
-        ilen = gen_int(n_ilen, 5);
-
-        ret_val = xmlNanoHTTPMethod(URL, (const char *)method, (const char *)input, contentType, (const char *)headers, ilen);
-        desret_void_ptr(ret_val);
-        call_tests++;
-        des_filepath(n_URL, URL, 0);
-        des_const_char_ptr(n_method, (const char *)method, 1);
-        des_const_char_ptr(n_input, (const char *)input, 2);
-        des_char_ptr_ptr(n_contentType, contentType, 3);
-        des_const_char_ptr(n_headers, (const char *)headers, 4);
-        des_int(n_ilen, ilen, 5);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNanoHTTPMethod",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_URL);
-            printf(" %d", n_method);
-            printf(" %d", n_input);
-            printf(" %d", n_contentType);
-            printf(" %d", n_headers);
-            printf(" %d", n_ilen);
-            printf("\n");
-        }
-    }
-    }
-    }
-    }
-    }
-    }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlNanoHTTPMethodRedir(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_HTTP_ENABLED)
-    int mem_base;
-    void * ret_val;
-    const char * URL; /* The URL to load */
-    int n_URL;
-    char * method; /* the HTTP method to use */
-    int n_method;
-    char * input; /* the input string if any */
-    int n_input;
-    char ** contentType; /* the Content-Type information IN and OUT */
-    int n_contentType;
-    char ** redir; /* the redirected URL OUT */
-    int n_redir;
-    char * headers; /* the extra headers */
-    int n_headers;
-    int ilen; /* input length */
-    int n_ilen;
-
-    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
-    for (n_method = 0;n_method < gen_nb_const_char_ptr;n_method++) {
-    for (n_input = 0;n_input < gen_nb_const_char_ptr;n_input++) {
-    for (n_contentType = 0;n_contentType < gen_nb_char_ptr_ptr;n_contentType++) {
-    for (n_redir = 0;n_redir < gen_nb_char_ptr_ptr;n_redir++) {
-    for (n_headers = 0;n_headers < gen_nb_const_char_ptr;n_headers++) {
-    for (n_ilen = 0;n_ilen < gen_nb_int;n_ilen++) {
-        mem_base = xmlMemBlocks();
-        URL = gen_filepath(n_URL, 0);
-        method = gen_const_char_ptr(n_method, 1);
-        input = gen_const_char_ptr(n_input, 2);
-        contentType = gen_char_ptr_ptr(n_contentType, 3);
-        redir = gen_char_ptr_ptr(n_redir, 4);
-        headers = gen_const_char_ptr(n_headers, 5);
-        ilen = gen_int(n_ilen, 6);
-
-        ret_val = xmlNanoHTTPMethodRedir(URL, (const char *)method, (const char *)input, contentType, redir, (const char *)headers, ilen);
-        desret_void_ptr(ret_val);
-        call_tests++;
-        des_filepath(n_URL, URL, 0);
-        des_const_char_ptr(n_method, (const char *)method, 1);
-        des_const_char_ptr(n_input, (const char *)input, 2);
-        des_char_ptr_ptr(n_contentType, contentType, 3);
-        des_char_ptr_ptr(n_redir, redir, 4);
-        des_const_char_ptr(n_headers, (const char *)headers, 5);
-        des_int(n_ilen, ilen, 6);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNanoHTTPMethodRedir",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_URL);
-            printf(" %d", n_method);
-            printf(" %d", n_input);
-            printf(" %d", n_contentType);
-            printf(" %d", n_redir);
-            printf(" %d", n_headers);
-            printf(" %d", n_ilen);
-            printf("\n");
-        }
-    }
-    }
-    }
-    }
-    }
-    }
-    }
     function_tests++;
 #endif
 
@@ -12225,7 +12093,7 @@ test_xmlNanoHTTPOpen(void) {
         contentType = gen_char_ptr_ptr(n_contentType, 1);
 
         ret_val = xmlNanoHTTPOpen(URL, contentType);
-        desret_void_ptr(ret_val);
+        desret_xmlNanoHTTPCtxtPtr(ret_val);
         call_tests++;
         des_filepath(n_URL, URL, 0);
         des_char_ptr_ptr(n_contentType, contentType, 1);
@@ -12270,7 +12138,7 @@ test_xmlNanoHTTPOpenRedir(void) {
         redir = gen_char_ptr_ptr(n_redir, 2);
 
         ret_val = xmlNanoHTTPOpenRedir(URL, contentType, redir);
-        desret_void_ptr(ret_val);
+        desret_xmlNanoHTTPCtxtPtr(ret_val);
         call_tests++;
         des_filepath(n_URL, URL, 0);
         des_char_ptr_ptr(n_contentType, contentType, 1);
@@ -12454,16 +12322,13 @@ static int
 test_nanohttp(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing nanohttp : 16 of 17 functions ...\n");
+    if (quiet == 0) printf("Testing nanohttp : 13 of 17 functions ...\n");
     test_ret += test_xmlNanoHTTPAuthHeader();
     test_ret += test_xmlNanoHTTPCleanup();
-    test_ret += test_xmlNanoHTTPClose();
     test_ret += test_xmlNanoHTTPContentLength();
     test_ret += test_xmlNanoHTTPEncoding();
     test_ret += test_xmlNanoHTTPFetch();
     test_ret += test_xmlNanoHTTPInit();
-    test_ret += test_xmlNanoHTTPMethod();
-    test_ret += test_xmlNanoHTTPMethodRedir();
     test_ret += test_xmlNanoHTTPMimeType();
     test_ret += test_xmlNanoHTTPOpen();
     test_ret += test_xmlNanoHTTPOpenRedir();
@@ -26899,7 +26764,7 @@ test_xmlIOHTTPOpen(void) {
         filename = gen_filepath(n_filename, 0);
 
         ret_val = xmlIOHTTPOpen(filename);
-        desret_void_ptr(ret_val);
+        desret_xmlNanoHTTPCtxtPtr(ret_val);
         call_tests++;
         des_filepath(n_filename, filename, 0);
         xmlResetLastError();
@@ -26914,16 +26779,6 @@ test_xmlIOHTTPOpen(void) {
     function_tests++;
 #endif
 
-    return(test_ret);
-}
-
-
-static int
-test_xmlIOHTTPOpenW(void) {
-    int test_ret = 0;
-
-
-    /* missing type support */
     return(test_ret);
 }
 
@@ -27780,7 +27635,6 @@ test_xmlIO(void) {
     test_ret += test_xmlIOHTTPClose();
     test_ret += test_xmlIOHTTPMatch();
     test_ret += test_xmlIOHTTPOpen();
-    test_ret += test_xmlIOHTTPOpenW();
     test_ret += test_xmlIOHTTPRead();
     test_ret += test_xmlNoNetExternalEntityLoader();
     test_ret += test_xmlNormalizeWindowsPath();

@@ -421,6 +421,7 @@
     <reference name='XML_FTP_ACCNT' href='html/libxml-xmlerror.html#XML_FTP_ACCNT'/>
     <reference name='XML_FTP_EPSV_ANSWER' href='html/libxml-xmlerror.html#XML_FTP_EPSV_ANSWER'/>
     <reference name='XML_FTP_PASV_ANSWER' href='html/libxml-xmlerror.html#XML_FTP_PASV_ANSWER'/>
+    <reference name='XML_FTP_URL_SYNTAX' href='html/libxml-xmlerror.html#XML_FTP_URL_SYNTAX'/>
     <reference name='XML_GET_CONTENT' href='html/libxml-tree.html#XML_GET_CONTENT'/>
     <reference name='XML_GET_LINE' href='html/libxml-tree.html#XML_GET_LINE'/>
     <reference name='XML_HTML_DOCUMENT_NODE' href='html/libxml-tree.html#XML_HTML_DOCUMENT_NODE'/>
@@ -3716,6 +3717,7 @@
       <ref name='XML_FTP_ACCNT'/>
       <ref name='XML_FTP_EPSV_ANSWER'/>
       <ref name='XML_FTP_PASV_ANSWER'/>
+      <ref name='XML_FTP_URL_SYNTAX'/>
       <ref name='XML_GET_CONTENT'/>
       <ref name='XML_GET_LINE'/>
       <ref name='XML_HTML_DOCUMENT_NODE'/>
@@ -11781,6 +11783,7 @@
       <ref name='XML_FTP_ACCNT'/>
       <ref name='XML_FTP_EPSV_ANSWER'/>
       <ref name='XML_FTP_PASV_ANSWER'/>
+      <ref name='XML_FTP_URL_SYNTAX'/>
       <ref name='XML_HTML_STRUCURE_ERROR'/>
       <ref name='XML_HTML_UNKNOWN_TAG'/>
       <ref name='XML_HTTP_UNKNOWN_HOST'/>
@@ -17663,8 +17666,6 @@
           <ref name='xmlBuildQName'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlNewMutex'/>
           <ref name='xmlNewRMutex'/>
           <ref name='xmlReallocLoc'/>
@@ -17675,10 +17676,7 @@
           <ref name='xmlGetBufferAllocationScheme'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlNormalizeURIPath'/>
           <ref name='xmlReallocLoc'/>
           <ref name='xmlSetBufferAllocationScheme'/>
@@ -17974,8 +17972,6 @@
           <ref name='xmlBufferCreateStatic'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlParserInputBufferCreateMem'/>
           <ref name='xmlParserInputBufferCreateStatic'/>
           <ref name='xmlReallocLoc'/>
@@ -18679,7 +18675,6 @@
           <ref name='xlinkIsLink'/>
           <ref name='xmlBufferWriteQuotedString'/>
           <ref name='xmlBuildURI'/>
-          <ref name='xmlMemFree'/>
           <ref name='xmlUTF8Strlen'/>
         </word>
         <word name='checkings'>
@@ -20641,11 +20636,7 @@
         <word name='equivalent'>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemFree'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlNodeListGetRawString'/>
           <ref name='xmlNodeListGetString'/>
           <ref name='xmlReallocLoc'/>
@@ -20887,6 +20878,7 @@
           <ref name='xmlXPtrLocationSetMerge'/>
         </word>
         <word name='extension'>
+          <ref name='LIBXML_MODULE_EXTENSION'/>
           <ref name='XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION'/>
           <ref name='XML_SCHEMAS_ELEM_FINAL_EXTENSION'/>
           <ref name='XML_SCHEMAS_FINAL_DEFAULT_EXTENSION'/>
@@ -22172,10 +22164,7 @@
           <ref name='xmlInitNodeInfoSeq'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlNanoFTPList'/>
           <ref name='xmlParserAddNodeInfo'/>
           <ref name='xmlParserFindNodeInfo'/>
@@ -22258,9 +22247,7 @@
           <ref name='xmlAutomataGetInitState'/>
           <ref name='xmlBufferCreateSize'/>
           <ref name='xmlInitNodeInfoSeq'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlReallocLoc'/>
           <ref name='xmlShell'/>
           <ref name='xmlXPathNodeSetAdd'/>
@@ -22634,8 +22621,6 @@
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlReallocLoc'/>
         </word>
         <word name='lang'>
@@ -22973,10 +22958,7 @@
         <word name='logging'>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlReallocLoc'/>
         </word>
         <word name='long'>
@@ -23077,7 +23059,6 @@
           <ref name='xmlMallocFunc'/>
           <ref name='xmlMallocLoc'/>
           <ref name='xmlMemGet'/>
-          <ref name='xmlMemMalloc'/>
           <ref name='xmlMemSetup'/>
         </word>
         <word name='mallocAtomicFunc'>
@@ -23383,6 +23364,9 @@
           <ref name='xmlModuleSymbol'/>
           <ref name='xmlOutputMatchCallback'/>
           <ref name='xmlStructuredErrorFunc'/>
+        </word>
+        <word name='modules'>
+          <ref name='LIBXML_MODULE_EXTENSION'/>
         </word>
         <word name='month'>
           <ref name='ftpListCallback'/>
@@ -23894,7 +23878,6 @@
         </word>
         <word name='occurred'>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
         </word>
         <word name='occurrence'>
           <ref name='xmlStrcasestr'/>
@@ -25141,7 +25124,6 @@
           <ref name='xmlGcMemGet'/>
           <ref name='xmlGcMemSetup'/>
           <ref name='xmlMemGet'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemSetup'/>
           <ref name='xmlReallocFunc'/>
           <ref name='xmlReallocLoc'/>
@@ -26467,8 +26449,6 @@
         <word name='specifying'>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlReallocLoc'/>
         </word>
         <word name='speed'>
@@ -26684,7 +26664,6 @@
           <ref name='xmlMemGet'/>
           <ref name='xmlMemSetup'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlStrdup'/>
           <ref name='xmlStrdupFunc'/>
         </word>

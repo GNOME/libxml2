@@ -2065,6 +2065,7 @@
      <exports symbol='XML_DTD_LOAD_ERROR' type='enum'/>
      <exports symbol='XML_DTD_ENTITY_TYPE' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_SIMPLE_TYPE_4' type='enum'/>
+     <exports symbol='XML_FTP_URL_SYNTAX' type='enum'/>
      <exports symbol='XML_ERR_NONE' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_COMPLEXTYPE_CHILD' type='enum'/>
      <exports symbol='XML_XPATH_NUMBER_ERROR' type='enum'/>
@@ -3690,6 +3691,7 @@
       <info>Whether the module interfaces are compiled in</info>
     </macro>
     <macro name='LIBXML_MODULE_EXTENSION' file='xmlversion'>
+      <info>The file extension for the modules</info>
     </macro>
     <macro name='LIBXML_OUTPUT_ENABLED' file='xmlversion'>
       <info>Whether the serialization/saving support is configured in</info>
@@ -4552,7 +4554,7 @@
     <enum name='XML_FROM_DTD' file='xmlerror' value='4' type='xmlErrorDomain' info='The XML DTD validation with parser contex'/>
     <enum name='XML_FROM_FTP' file='xmlerror' value='9' type='xmlErrorDomain' info='The FTP module'/>
     <enum name='XML_FROM_HTML' file='xmlerror' value='5' type='xmlErrorDomain' info='The HTML parser'/>
-    <enum name='XML_FROM_HTTP' file='xmlerror' value='10' type='xmlErrorDomain' info='The FTP module'/>
+    <enum name='XML_FROM_HTTP' file='xmlerror' value='10' type='xmlErrorDomain' info='The HTTP module'/>
     <enum name='XML_FROM_IO' file='xmlerror' value='8' type='xmlErrorDomain' info='The Input/Output stack'/>
     <enum name='XML_FROM_MEMORY' file='xmlerror' value='6' type='xmlErrorDomain' info='The memory allocator'/>
     <enum name='XML_FROM_MODULE' file='xmlerror' value='26' type='xmlErrorDomain' info=' The dynamically loaded module modul'/>
@@ -4575,6 +4577,7 @@
     <enum name='XML_FTP_ACCNT' file='xmlerror' value='2002' type='xmlParserErrors' info='2002'/>
     <enum name='XML_FTP_EPSV_ANSWER' file='xmlerror' value='2001' type='xmlParserErrors' info='2001'/>
     <enum name='XML_FTP_PASV_ANSWER' file='xmlerror' value='2000' type='xmlParserErrors'/>
+    <enum name='XML_FTP_URL_SYNTAX' file='xmlerror' value='2003' type='xmlParserErrors' info='2003'/>
     <enum name='XML_HTML_DOCUMENT_NODE' file='tree' value='13' type='xmlElementType'/>
     <enum name='XML_HTML_STRUCURE_ERROR' file='xmlerror' value='800' type='xmlParserErrors'/>
     <enum name='XML_HTML_UNKNOWN_TAG' file='xmlerror' value='801' type='xmlParserErrors' info='801'/>
@@ -10069,9 +10072,9 @@ actually an xmlCharEncoding'/>
       <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist'/>
     </function>
     <function name='xmlMemFree' file='xmlmemory'>
-      <info>a free() equivalent, with error checking.</info>
+      <info></info>
       <return type='void'/>
-      <arg name='ptr' type='void *' info='the memory block pointer'/>
+      <arg name='ptr' type='void *' info=''/>
     </function>
     <function name='xmlMemGet' file='xmlmemory'>
       <info>Provides the memory access functions set currently in use</info>
@@ -10082,15 +10085,15 @@ actually an xmlCharEncoding'/>
       <arg name='strdupFunc' type='xmlStrdupFunc *' info='place to save the strdup() function in use'/>
     </function>
     <function name='xmlMemMalloc' file='xmlmemory'>
-      <info>a malloc() equivalent, with logging of the allocation info.</info>
-      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
-      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
+      <info></info>
+      <return type='void *' info=''/>
+      <arg name='size' type='size_t' info=''/>
     </function>
     <function name='xmlMemRealloc' file='xmlmemory'>
-      <info>a realloc() equivalent, with logging of the allocation info.</info>
-      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
-      <arg name='ptr' type='void *' info='the initial memory block pointer'/>
-      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
+      <info></info>
+      <return type='void *' info=''/>
+      <arg name='ptr' type='void *' info=''/>
+      <arg name='size' type='size_t' info=''/>
     </function>
     <function name='xmlMemSetup' file='xmlmemory'>
       <info>Override the default memory access functions with a new set This has to be called before any other libxml routines !  Should this be blocked if there was already some allocations done ?</info>
@@ -10122,9 +10125,9 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='xmlMemoryStrdup' file='xmlmemory'>
-      <info>a strdup() equivalent, with logging of the allocation info.</info>
-      <return type='char *' info='a pointer to the new string or NULL if allocation error occurred.'/>
-      <arg name='str' type='const char *' info='the initial string pointer'/>
+      <info></info>
+      <return type='char *' info=''/>
+      <arg name='str' type='const char *' info=''/>
     </function>
     <function name='xmlModuleClose' file='xmlmodule'>
       <cond>defined(LIBXML_MODULES_ENABLED)</cond>

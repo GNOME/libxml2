@@ -44,7 +44,7 @@ typedef enum {
     XML_FROM_OUTPUT,	/* The serialization code */
     XML_FROM_IO,	/* The Input/Output stack */
     XML_FROM_FTP,	/* The FTP module */
-    XML_FROM_HTTP,	/* The FTP module */
+    XML_FROM_HTTP,	/* The HTTP module */
     XML_FROM_XINCLUDE,	/* The XInclude processing */
     XML_FROM_XPATH,	/* The XPath module */
     XML_FROM_XPOINTER,	/* The XPointer module */
@@ -665,6 +665,7 @@ typedef enum {
     XML_FTP_PASV_ANSWER = 2000,
     XML_FTP_EPSV_ANSWER, /* 2001 */
     XML_FTP_ACCNT, /* 2002 */
+    XML_FTP_URL_SYNTAX, /* 2003 */
     XML_HTTP_URL_SYNTAX = 2020,
     XML_HTTP_USE_IP, /* 2021 */
     XML_HTTP_UNKNOWN_HOST, /* 2022 */

@@ -1,3 +1,12 @@
+Wed Jan  3 14:22:33 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmllint.c: Made is so if the file name is "-" is will read form
+	  standard input. Sven Heinicke  <sven@zen.org>
+	* tree.c: fixed a problem when growing buffer
+	* tree.h: fixed the comment of the node types following andersca
+	  comment
+	* TODO: updated
+
 Wed Dec 27 12:35:49 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.[ch]: added a way to avoid adding automatically

@@ -34,7 +34,8 @@ TODO:
   data, close last element, etc
 - htmlParseDoc has parameter encoding which is not used.
   Function htmlCreateDocParserCtxt ignore it.
-
+- bug reported by Michael Meallin on validation problems
+- solve the problems related to post-validating of XInclude results.
 
 TODO:
 =====

@@ -4347,7 +4347,7 @@ xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
 /**
  * xmlBufferGrow:
  * @buf:  the buffer
- * @len:  the minimum free sie to allocate
+ * @len:  the minimum free size to allocate
  *
  * Grow the available space of an XML buffer.
  *
@@ -4358,7 +4358,7 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
     int size;
     xmlChar *newbuf;
 
-    if (len <= buf->use) return(0);
+    if (len + buf->use < buf->size) return(0);
 
     size = buf->use + len + 100;
 

@@ -25,6 +25,9 @@ extern "C" {
  *
  * NOTE: This is synchronized with DOM Level1 values
  *       See http://www.w3.org/TR/REC-DOM-Level-1/
+ *
+ * Actually this had diverged a bit, and now XML_DOCUMENT_TYPE_NODE should
+ * be deprecated to use an XML_DTD_NODE.
  */
 typedef enum {
     XML_ELEMENT_NODE=		1,

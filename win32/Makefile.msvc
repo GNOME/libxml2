@@ -76,7 +76,7 @@ CPPFLAGS = $(CPPFLAGS) /D "_REENTRANT"
 # The compiler and its options.
 CC = cl.exe
 CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W3 /MD
-CFLAGS = $(CFLAGS) /I$(XML_SRCDIR) /I$(XML_SRCDIR)\include 
+CFLAGS = $(CFLAGS) /I$(XML_SRCDIR) /I$(XML_SRCDIR)\include /I$(INCPREFIX)
 !if "$(WITH_THREADS)" == "1"
 CFLAGS = $(CFLAGS) /D "_REENTRANT"
 !endif
@@ -84,7 +84,7 @@ CFLAGS = $(CFLAGS) /D "_REENTRANT"
 # The linker and its options.
 LD = link.exe
 LDFLAGS = /nologo /VERSION:$(LIBXML_MAJOR_VERSION).$(LIBXML_MINOR_VERSION)
-LDFLAGS = $(LDFLAGS) /LIBPATH:$(BINDIR)
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(BINDIR) /LIBPATH:$(LIBPREFIX)
 LIBS = 
 !if "$(WITH_FTP)" == "1" || "$(WITH_HTTP)" == "1"
 LIBS = $(LIBS) wsock32.lib

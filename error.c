@@ -132,7 +132,7 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
 		cur--;
 	}
     n = 0;
-	ctnt = content;
+    ctnt = content;
     while ((n++ < 79) && (cur > base) && (*cur != '\n') && (*cur != '\r')) {
 	*ctnt++ = ' ';
 	cur--;

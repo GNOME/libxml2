@@ -3286,7 +3286,7 @@ xmlValidateElementType(xmlValidCtxtPtr ctxt) {
 	return(1);
     }
     if (CONT == NULL) return(-1);
-    if (NODE->type == XML_ENTITY_REF_NODE)
+    if ((NODE != NULL) && (NODE->type == XML_ENTITY_REF_NODE))
 	return(-2);
 
     /*
@@ -3643,7 +3643,7 @@ xmlSprintfElements(char *buf, xmlNodePtr node, int glob) {
 
 static int
 xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
-		   xmlElementContentPtr cont, int warn) {
+		   xmlElementContentPtr cont, int warn, const xmlChar *name) {
     int ret;
     xmlNodePtr repl = NULL, last = NULL, cur, tmp;
 
@@ -3757,10 +3757,10 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 	else
 	    xmlSprintfElements(list, child, 1);
 
-	if ((child->parent != NULL) && (child->parent->name != NULL)) {
+	if (name != NULL) {
 	    VERROR(ctxt->userData,
    "Element %s content doesn't follow the Dtd\nExpecting %s, got %s\n",
-	       child->parent->name, expr, list);
+	       name, expr, list);
 	} else {
 	    VERROR(ctxt->userData,
        "Element content doesn't follow the Dtd\nExpecting %s, got %s\n",
@@ -3996,7 +3996,7 @@ child_ok:
         case XML_ELEMENT_TYPE_ELEMENT:
 	    child = elem->children;
 	    cont = elemDecl->content;
-	    ret = xmlValidateElementContent(ctxt, child, cont, 1);
+	    ret = xmlValidateElementContent(ctxt, child, cont, 1, elem->name);
 	    break;
     }
 

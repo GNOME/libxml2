@@ -23,6 +23,7 @@ extern "C" {
 #define HTML_ENTITY_REF_NODE	XML_ENTITY_REF_NODE
 #define HTML_COMMENT_NODE	XML_COMMENT_NODE
 #define HTML_PRESERVE_NODE	XML_CDATA_SECTION_NODE
+#define HTML_PI_NODE		XML_PI_NODE
 
 htmlDocPtr	htmlNewDoc		(const xmlChar *URI,
 					 const xmlChar *ExternalID);

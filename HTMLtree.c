@@ -515,6 +515,18 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	}
 	return;
     }
+    if (cur->type == HTML_PI_NODE) {
+	if (cur->content != NULL) {
+	    xmlBufferWriteChar(buf, "<?");
+#ifndef XML_USE_BUFFER_CONTENT
+	    xmlBufferWriteCHAR(buf, cur->content);
+#else
+	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
+#endif
+	    xmlBufferWriteChar(buf, ">");
+	}
+	return;
+    }
     if (cur->type == HTML_ENTITY_REF_NODE) {
         xmlBufferWriteChar(buf, "&");
 	xmlBufferWriteCHAR(buf, cur->name);
@@ -864,6 +876,19 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 		                       xmlBufferContent(cur->content));
 #endif
 	    xmlOutputBufferWriteString(buf, "-->");
+	}
+	return;
+    }
+    if (cur->type == HTML_PI_NODE) {
+	if (cur->content != NULL) {
+	    xmlOutputBufferWriteString(buf, "<?");
+#ifndef XML_USE_BUFFER_CONTENT
+	    xmlOutputBufferWriteString(buf, (const char *)cur->content);
+#else
+	    xmlOutputBufferWriteString(buf, (const char *)
+		                       xmlBufferContent(cur->content));
+#endif
+	    xmlOutputBufferWriteString(buf, ">");
 	}
 	return;
     }

@@ -1,3 +1,10 @@
+Tue Apr 24 17:36:35 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.c HTMLtree.h : closing #53402 i.e. output of
+	  PIs when using xsl:output
+	* valid.c: closing #53537 some case generate segfaults if there
+	  is validity errors
+
 Tue Apr 24 15:19:53 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* SAX.c testDocbook.c DOCBparser.c: more work on the support

@@ -43,6 +43,8 @@ extern "C" {
  *    ctxt->replaceEntities = 1;
  *    ...
  */
+
+
 int 		xmlC14NDocSaveTo	(xmlDocPtr doc,
 					 xmlNodeSetPtr nodes,
 					 int exclusive,
@@ -65,6 +67,21 @@ int 		xmlC14NDocSave		(xmlDocPtr doc,
 					 const char* filename,
 					 int compression);
 
+
+/**
+ * This is the core C14N function
+ */
+typedef int (*xmlC14NIsVisibleCallback)	(void* user_data, 
+					 xmlNodePtr node,
+					 xmlNodePtr parent);
+
+int 		xmlC14NExecute		(xmlDocPtr doc,
+					 xmlC14NIsVisibleCallback is_visible_callback,
+					 void* user_data,				 
+					 int exclusive,
+					 xmlChar **inclusive_ns_prefixes,
+					 int with_comments, 
+					 xmlOutputBufferPtr buf);
 
 #ifdef __cplusplus
 }

@@ -1,3 +1,10 @@
+Wed Jul 31 23:27:42 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* c14n.c include/libxml/c14n.h: fixed one more c14n + namespaces
+	corner case from new Merlin's test suite and added a callback
+	that will be used to improve xmlsec performance
+	
+
 Mon Jul 29 18:22:00 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c: trying to fix the <style> escaping problem in

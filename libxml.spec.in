@@ -118,7 +118,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README Copyright TODO
 %doc %{_mandir}/man1/xmllint.1*
 %doc %{_mandir}/man1/xmlcatalog.1*
-%doc %{_mandir}/man4/libxml.4*
+%doc %{_mandir}/man3/libxml.3*
 
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/xmllint

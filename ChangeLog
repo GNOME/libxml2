@@ -1,3 +1,8 @@
+Wed Mar  6 19:40:57 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am libxml.3 libxml.4 libxml.spec.in: Fixed bug #72570
+	  moved the libxml man page to section 3
+
 Wed Mar  6 18:34:07 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fix bug #72490

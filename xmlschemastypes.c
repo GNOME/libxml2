@@ -1477,8 +1477,27 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
             goto error;
         case XML_SCHEMAS_STRING:
             goto return0;
-        case XML_SCHEMAS_NORMSTRING:
-            TODO goto return0;
+        case XML_SCHEMAS_NORMSTRING:{
+                const xmlChar *cur = value;
+
+                while (*cur != 0) {
+                    if ((*cur == 0xd) || (*cur == 0xa) || (*cur == 0x9)) {
+                        goto return1;
+                    } else {
+                        cur++;
+                    }
+                }
+                if (val != NULL) {
+                    v = xmlSchemaNewValue(XML_SCHEMAS_NORMSTRING);
+                    if (v != NULL) {
+                        v->value.str = xmlStrdup(value);
+                        *val = v;
+                    } else {
+                        goto error;
+                    }
+                }
+                goto return0;
+            }
         case XML_SCHEMAS_DECIMAL:{
                 const xmlChar *cur = value, *tmp;
                 unsigned int frac = 0, len, neg = 0;

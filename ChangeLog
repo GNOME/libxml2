@@ -1,3 +1,8 @@
+Thu Jan 22 08:26:20 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: applied patch from John Belmonte for
+	  normalizedString datatype support.
+
 Thu Jan 22 10:43:22 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: fixed problem with union when last() is used

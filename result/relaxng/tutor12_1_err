@@ -1,2 +1,150 @@
-error detected at relaxng.c:7141
-extra data on the document
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element element, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element attribute, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element group, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element interleave, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element choice, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element optional, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element zeroOrMore, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element oneOrMore, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element list, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element mixed, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element ref, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element parentRef, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element empty, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element text, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element value, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element data, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element notAllowed, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element externalRef, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting an element grammar, got nothing
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 4 element documentation
+Invalid sequence in interleave
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 4 element documentation
+Element element failed to validate content
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 4 element documentation
+Element element has extra content: documentation
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element attribute, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element group, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element interleave, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element choice, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element optional, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element zeroOrMore, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element oneOrMore, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element list, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element mixed, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element ref, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element parentRef, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element empty, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element text, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element value, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element data, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element notAllowed, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element externalRef, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 3 element element
+Expecting element grammar, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Invalid sequence in interleave
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Element zeroOrMore failed to validate content
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element oneOrMore, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element list, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element mixed, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element ref, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element parentRef, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element empty, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element text, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element value, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element data, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element notAllowed, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element externalRef, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 2 element zeroOrMore
+Expecting element grammar, got zeroOrMore
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Invalid sequence in interleave
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Element element failed to validate content
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element attribute, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element group, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element interleave, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element choice, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element optional, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element zeroOrMore, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element oneOrMore, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element list, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element mixed, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element ref, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element parentRef, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element empty, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element text, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element value, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element data, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element notAllowed, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element externalRef, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Expecting element grammar, got element
+RNG validity error: file ./test/relaxng/tutor12_1.rng line 1 element element
+Extra data in the document

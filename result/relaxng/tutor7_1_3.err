@@ -1,6 +1,8 @@
-error detected at relaxng.c:6053
+RNG validity error: file ./test/relaxng/tutor7_1_3.xml line 1 element text
 Extra data in list: 5.6
-error detected at relaxng.c:7073
-error validating list
-error detected at relaxng.c:6770
-Extra content for element vector: text
+RNG validity error: file ./test/relaxng/tutor7_1_3.xml line 1 element text
+Error validating list
+RNG validity error: file ./test/relaxng/tutor7_1_3.xml line 1 element text
+Element vector failed to validate content
+RNG validity error: file ./test/relaxng/tutor7_1_3.xml line 1 element text
+Element vector has extra content: text

@@ -1,2 +1,4 @@
-error detected at relaxng.c:6783
+RNG validity error: file ./test/relaxng/tutor6_3_1.xml line 1 element card
+Element card failed to validate attributes
+RNG validity error: file ./test/relaxng/tutor6_3_1.xml line 1 element card
 Invalid attribute preferredFormat for element card

@@ -1,4 +1,6 @@
-error detected at relaxng.c:6468
+RNG validity error: file ./test/relaxng/tutor8_2_4.xml line 5 element title
 Extra element title in interleave
-error detected at relaxng.c:6770
-Extra content for element head: title
+RNG validity error: file ./test/relaxng/tutor8_2_4.xml line 5 element title
+Element head failed to validate content
+RNG validity error: file ./test/relaxng/tutor8_2_4.xml line 5 element title
+Element head has extra content: title

@@ -1,3 +1,12 @@
+Fri Mar  7 19:29:40 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* test/xsdtest/xsdtest.xml uri.c: after and exchange with James
+	  Clark it appeared I had bug in URI parsing code ...
+	* relaxng.c include/libxml/relaxng.h: completely revamped error
+	  reporting to not loose message from optional parts.
+	* xmllint.c: added timing for RNG validation steps
+	* result/relaxng/*: updated the result, all error messages changed
+
 Fri Mar  7 15:18:32 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fix bug #107804, the algorithm used for document order

@@ -1,4 +1,6 @@
-error detected at relaxng.c:6709
-Expecting an element, got empty
-error detected at relaxng.c:6479
+RNG validity error: file ./test/relaxng/tutor8_2_5.xml line 1 element head
+Expecting an element title, got nothing
+RNG validity error: file ./test/relaxng/tutor8_2_5.xml line 1 element head
 Invalid sequence in interleave
+RNG validity error: file ./test/relaxng/tutor8_2_5.xml line 1 element head
+Element head failed to validate content

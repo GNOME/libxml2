@@ -1,2 +1,2 @@
-error detected at relaxng.c:6783
+RNG validity error: file ./test/relaxng/tutor11_2_2.xml line 3 element card
 Invalid attribute foo for element card

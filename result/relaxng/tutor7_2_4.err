@@ -1,4 +1,6 @@
-error detected at relaxng.c:5813
-Internal: failed to validate type double
-error detected at relaxng.c:7073
-error validating list
+RNG validity error: file ./test/relaxng/tutor7_2_4.xml line 1 element vector
+failed to validate type double
+RNG validity error: file ./test/relaxng/tutor7_2_4.xml line 1 element vector
+Error validating list
+RNG validity error: file ./test/relaxng/tutor7_2_4.xml line 1 element vector
+Element vector failed to validate content

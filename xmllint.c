@@ -1066,6 +1066,10 @@ static void parseAndPrintFile(char *filename) {
 	xmlRelaxNGValidCtxtPtr ctxt;
 	int ret;
 
+	if ((timing) && (!repeat)) {
+	    startTimer();
+	}
+
 	ctxt = xmlRelaxNGNewValidCtxt(relaxngschemas);
 	xmlRelaxNGSetValidErrors(ctxt,
 		(xmlRelaxNGValidityErrorFunc) fprintf,
@@ -1081,6 +1085,9 @@ static void parseAndPrintFile(char *filename) {
 		   filename);
 	}
 	xmlRelaxNGFreeValidCtxt(ctxt);
+	if ((timing) && (!repeat)) {
+	    endTimer("Validating");
+	}
 #endif
     }
 
@@ -1470,6 +1477,9 @@ main(int argc, char **argv) {
     if (relaxng != NULL) {
 	xmlRelaxNGParserCtxtPtr ctxt;
 
+	if (timing) {
+	    startTimer();
+	}
 	ctxt = xmlRelaxNGNewParserCtxt(relaxng);
 	xmlRelaxNGSetParserErrors(ctxt,
 		(xmlRelaxNGValidityErrorFunc) fprintf,
@@ -1477,6 +1487,9 @@ main(int argc, char **argv) {
 		stderr);
 	relaxngschemas = xmlRelaxNGParse(ctxt);
 	xmlRelaxNGFreeParserCtxt(ctxt);
+	if (timing) {
+	    endTimer("Compiling the schemas");
+	}
     }
 #endif
     for (i = 1; i < argc ; i++) {

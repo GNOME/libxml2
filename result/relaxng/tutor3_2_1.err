@@ -1,4 +1,6 @@
-error detected at relaxng.c:6549
+RNG validity error: file ./test/relaxng/tutor3_2_1.xml line 1 element email
 Expecting element name, got email
-error detected at relaxng.c:6770
-Extra content for element card: email
+RNG validity error: file ./test/relaxng/tutor3_2_1.xml line 1 element email
+Element card failed to validate content
+RNG validity error: file ./test/relaxng/tutor3_2_1.xml line 1 element email
+Element card has extra content: email

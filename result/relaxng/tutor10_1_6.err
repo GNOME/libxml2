@@ -1,4 +1,4 @@
-error detected at relaxng.c:6562
-Expecting element foo has wrong namespace: expecting http://www.example.com
-error detected at relaxng.c:7141
-extra data on the document
+RNG validity error: file ./test/relaxng/tutor10_1_6.xml line 1 element foo
+Element foo has wrong namespace: expecting http://www.example.com
+RNG validity error: file ./test/relaxng/tutor10_1_6.xml line 1 element foo
+Extra data in the document

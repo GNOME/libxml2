@@ -1,2 +1,4 @@
-error detected at relaxng.c:6770
-Extra content for element addressBook: card
+RNG validity error: file ./test/relaxng/tutor9_6_3.xml line 2 element card
+Invalid attribute error for element card
+RNG validity error: file ./test/relaxng/tutor9_6_3.xml line 2 element card
+Element addressBook has extra content: card

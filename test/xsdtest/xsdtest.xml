@@ -22,10 +22,10 @@
 <valid>foobar</valid>
 <valid>http://www.example.com</valid>
 <valid>http://ji%6d@www.example.com</valid>
+<valid>http://www.example.co%6d</valid>
 <valid>nosuchscheme:stuff</valid>
 <invalid>foo$bar:stuff</invalid>
 <invalid>f%oobar</invalid>
-<invalid>http://www.example.co%6d</invalid>
 </datatype>
 <datatype name="integer">
 <valid>10</valid>

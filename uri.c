@@ -1463,8 +1463,10 @@ xmlParseURIAuthority(xmlURIPtr uri, const char **str) {
      * try first to parse it as a server string.
      */
     ret = xmlParseURIServer(uri, str);
-    if (ret == 0)
+    if ((ret == 0) && (*str != NULL) &&
+	((**str == 0) || (**str == '/') || (**str == '?')))
         return(0);
+    *str = cur;
 
     /*
      * failed, fallback to reg_name
@@ -2020,7 +2022,7 @@ xmlCanonicPath(const xmlChar *path)
 	p++;
     }
 #else
-    uri->path = (char *) xmlStrdup((const char *) path);
+    uri->path = (char *) xmlStrdup((const xmlChar *) path);
 #endif
     
     ret = xmlSaveUri(uri);

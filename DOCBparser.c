@@ -5918,7 +5918,8 @@ docbCreatePushParserCtxt(docbSAXHandlerPtr sax, void *user_data,
     if (filename == NULL)
        inputStream->filename = NULL;
     else
-       inputStream->filename = xmlCanonicPath(filename);
+       inputStream->filename = (char *)
+            xmlCanonicPath((const xmlChar *)filename);
     inputStream->buf = buf;
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;

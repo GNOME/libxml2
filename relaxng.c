@@ -6552,7 +6552,7 @@ xmlRelaxNGFreeParserCtxt(xmlRelaxNGParserCtxtPtr ctxt) {
     if (ctxt->URL != NULL)
 	xmlFree(ctxt->URL);
     if (ctxt->doc != NULL)
-	xmlFreeDoc(ctxt->doc);
+	xmlRelaxNGFreeDocument(ctxt->doc);
     if (ctxt->interleaves != NULL)
         xmlHashFree(ctxt->interleaves, NULL);
     if (ctxt->documents != NULL)
@@ -7751,7 +7751,7 @@ xmlRelaxNGValidateProgressiveCallback(xmlRegExecCtxtPtr exec ATTRIBUTE_UNUSED,
     xmlRelaxNGDefinePtr define = (xmlRelaxNGDefinePtr) transdata;
     xmlRelaxNGValidStatePtr state, oldstate;
     xmlNodePtr node = ctxt->pnode;
-    int ret, oldflags;
+    int ret = 0, oldflags;
 
 #ifdef DEBUG_PROGRESSIVE
     xmlGenericError(xmlGenericErrorContext,

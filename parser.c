@@ -10751,7 +10751,7 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
   
     xmlClearParserCtxt(ctxt);
     if (filename != NULL)
-        input->filename = xmlCanonicPath(filename);
+        input->filename = (char *) xmlCanonicPath((const xmlChar *)filename);
     input->base = buffer;
     input->cur = buffer;
     input->end = &buffer[xmlStrlen(buffer)];

@@ -267,6 +267,9 @@ xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
 
+    if (doc == NULL)
+	return(NULL);
+
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->intSubset->entities;
 	for (i = 0;i < table->nb_entities;i++) {
@@ -313,6 +316,9 @@ xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
 
+    if (doc == NULL)
+	return(NULL);
+
     if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
 	for (i = 0;i < table->nb_entities;i++) {
@@ -341,6 +347,9 @@ xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
     int i;
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
+
+    if (doc == NULL)
+	return(NULL);
 
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->intSubset->entities;

@@ -1,3 +1,7 @@
+Thu Jun 28 18:19:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/xml.html: added 1.8.14 and 2.3.13 releases
+
 Thu Jun 28 18:16:28 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in include/libxml/xmlwin32version.h: released 2.3.13

@@ -81,7 +81,7 @@ $(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
 api: libxml2-api.xml libxml2-refs.xml $(WIN32_DIR)/libxml2.def.src
 
 html:
-	if test -n -d html ; then mkdir html ; fi
+	if test ! -d html ; then mkdir html ; fi
 	-cd html && gtkdoc-mkhtml libxml ../$(DOC_MAIN_XML_FILE)
 
 clean-local:

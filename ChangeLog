@@ -1,3 +1,14 @@
+Sat Nov 15 18:23:48 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* doc/Makefile.am doc/*.html doc/html/*.html: rebuilt the
+	  generated pages (again), manually restored doc/html/index.html
+	  and manually edited generated file doc/gnome-xml.xml to put
+	  in appropriate headings.
+	* doc/docdescr.doc: new file to describe details of the
+	  document generation (helps my memory for the next time)
+	* genChRanges.py,chvalid.c,include/libxml/chvalid.h: minor
+	  enhancement to please the automatic documentation generation.
+
 Fri Nov 14 23:47:31 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* catalog.c,relaxng.c,testAutomata.c,xpointer.c,genChRanges.py,

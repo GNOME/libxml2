@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>debugXML</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>debugXML</title><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="generator" content="GTK-Doc V1.1 (XML mode)"><style type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,38 +28,10 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-hash.html" title="hash"><link rel="next" href="libxml-xmlmemory.html" title="xmlmemory"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-hash.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xmlmemory.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-debugXML"></a><div class="titlepage"></div><div class="refnamediv"><h2>debugXML</h2><p>debugXML &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xmlreader.html" title="xmlreader"><link rel="next" href="libxml-xmlwriter.html" title="xmlwriter"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlreader.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-xmlwriter.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-debugXML"></a><div class="titlepage"></div><div class="refnamediv"><h2>debugXML</h2><p>debugXML &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2590102"></a>Synopsis</h1></h2><pre class="synopsis">
 
 
 
-void        <a href="libxml-debugXML.html#xmlDebugDumpString">xmlDebugDumpString</a>              (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str);
-void        <a href="libxml-debugXML.html#xmlDebugDumpAttr">xmlDebugDumpAttr</a>                (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr,
-                                             int depth);
-void        <a href="libxml-debugXML.html#xmlDebugDumpAttrList">xmlDebugDumpAttrList</a>            (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr,
-                                             int depth);
-void        <a href="libxml-debugXML.html#xmlDebugDumpOneNode">xmlDebugDumpOneNode</a>             (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             int depth);
-void        <a href="libxml-debugXML.html#xmlDebugDumpNode">xmlDebugDumpNode</a>                (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             int depth);
-void        <a href="libxml-debugXML.html#xmlDebugDumpNodeList">xmlDebugDumpNodeList</a>            (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             int depth);
-void        <a href="libxml-debugXML.html#xmlDebugDumpDocumentHead">xmlDebugDumpDocumentHead</a>        (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
-void        <a href="libxml-debugXML.html#xmlDebugDumpDocument">xmlDebugDumpDocument</a>            (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
-void        <a href="libxml-debugXML.html#xmlDebugDumpDTD">xmlDebugDumpDTD</a>                 (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd);
-void        <a href="libxml-debugXML.html#xmlDebugDumpEntities">xmlDebugDumpEntities</a>            (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
-void        <a href="libxml-debugXML.html#xmlLsOneNode">xmlLsOneNode</a>                    (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);
-int         <a href="libxml-debugXML.html#xmlLsCountNode">xmlLsCountNode</a>                  (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 char*       (<a href="libxml-debugXML.html#xmlShellReadlineFunc">*xmlShellReadlineFunc</a>)         (char *prompt);
 struct      <a href="libxml-debugXML.html#xmlShellCtxt">xmlShellCtxt</a>;
 typedef     <a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a>;
@@ -67,143 +39,15 @@ int         (<a href="libxml-debugXML.html#xmlShellCmd">*xmlShellCmd</a>)       
                                              char *arg,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-void        <a href="libxml-debugXML.html#xmlShellPrintXPathError">xmlShellPrintXPathError</a>         (int errorType,
-                                             const char *arg);
-void        <a href="libxml-debugXML.html#xmlShellPrintNode">xmlShellPrintNode</a>               (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);
-void        <a href="libxml-debugXML.html#xmlShellPrintXPathResult">xmlShellPrintXPathResult</a>        (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> list);
-int         <a href="libxml-debugXML.html#xmlShellList">xmlShellList</a>                    (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *arg,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-int         <a href="libxml-debugXML.html#xmlShellBase">xmlShellBase</a>                    (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *arg,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-int         <a href="libxml-debugXML.html#xmlShellDir">xmlShellDir</a>                     (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *arg,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-int         <a href="libxml-debugXML.html#xmlShellCat">xmlShellCat</a>                     (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *arg,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-int         <a href="libxml-debugXML.html#xmlShellLoad">xmlShellLoad</a>                    (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *filename,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-int         <a href="libxml-debugXML.html#xmlShellWrite">xmlShellWrite</a>                   (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *filename,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-int         <a href="libxml-debugXML.html#xmlShellSave">xmlShellSave</a>                    (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *filename,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-int         <a href="libxml-debugXML.html#xmlShellValidate">xmlShellValidate</a>                (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *dtd,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-int         <a href="libxml-debugXML.html#xmlShellDu">xmlShellDu</a>                      (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *arg,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> tree,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-int         <a href="libxml-debugXML.html#xmlShellPwd">xmlShellPwd</a>                     (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *buffer,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
-void        <a href="libxml-debugXML.html#xmlShell">xmlShell</a>                        (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
-                                             char *filename,
-                                             <a href="libxml-debugXML.html#xmlShellReadlineFunc">xmlShellReadlineFunc</a> input,
-                                             <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output);
-</pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
+</pre></div><div class="refsect1"><h2>Description</h2><p>
 
-</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="xmlDebugDumpString"></a>xmlDebugDumpString ()</h3><pre class="programlisting">void        xmlDebugDumpString              (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str);</pre><p>
-Dumps informations about the string, shorten it if necessary</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the string
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDebugDumpAttr"></a>xmlDebugDumpAttr ()</h3><pre class="programlisting">void        xmlDebugDumpAttr                (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr,
-                                             int depth);</pre><p>
-Dumps debug information for the attribute</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  the attribute
-</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>  the indentation level.
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDebugDumpAttrList"></a>xmlDebugDumpAttrList ()</h3><pre class="programlisting">void        xmlDebugDumpAttrList            (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr,
-                                             int depth);</pre><p>
-Dumps debug information for the attribute list</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  the attribute list
-</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>  the indentation level.
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDebugDumpOneNode"></a>xmlDebugDumpOneNode ()</h3><pre class="programlisting">void        xmlDebugDumpOneNode             (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             int depth);</pre><p>
-Dumps debug information for the element node, it is not recursive</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  the node
-</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>  the indentation level.
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDebugDumpNode"></a>xmlDebugDumpNode ()</h3><pre class="programlisting">void        xmlDebugDumpNode                (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             int depth);</pre><p>
-Dumps debug information for the element node, it is recursive</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  the node
-</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>  the indentation level.
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDebugDumpNodeList"></a>xmlDebugDumpNodeList ()</h3><pre class="programlisting">void        xmlDebugDumpNodeList            (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             int depth);</pre><p>
-Dumps debug information for the list of element node, it is recursive</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  the node list
-</td></tr><tr><td><span class="term"><i><tt>depth</tt></i> :</span></td><td>  the indentation level.
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDebugDumpDocumentHead"></a>xmlDebugDumpDocumentHead ()</h3><pre class="programlisting">void        xmlDebugDumpDocumentHead        (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
-Dumps debug information cncerning the document, not recursive</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDebugDumpDocument"></a>xmlDebugDumpDocument ()</h3><pre class="programlisting">void        xmlDebugDumpDocument            (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
-Dumps debug information for the document, it's recursive</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDebugDumpDTD"></a>xmlDebugDumpDTD ()</h3><pre class="programlisting">void        xmlDebugDumpDTD                 (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd);</pre><p>
-Dumps debug information for the DTD</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  the DTD
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDebugDumpEntities"></a>xmlDebugDumpEntities ()</h3><pre class="programlisting">void        xmlDebugDumpEntities            (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
-Dumps debug information for all the entities in use by the document</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlLsOneNode"></a>xmlLsOneNode ()</h3><pre class="programlisting">void        xmlLsOneNode                    (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
-Dump to <i><tt>output</tt></i> the type and name of <i><tt>node</tt></i>.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the FILE * for the output
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  the node to dump
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlLsCountNode"></a>xmlLsCountNode ()</h3><pre class="programlisting">int         xmlLsCountNode                  (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
-Count the children of <i><tt>node</tt></i>.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  the node to count
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of children of <i><tt>node</tt></i>.
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellReadlineFunc"></a>xmlShellReadlineFunc ()</h3><pre class="programlisting">char*       (*xmlShellReadlineFunc)         (char *prompt);</pre><p>
+</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlShellReadlineFunc"></a>xmlShellReadlineFunc ()</h3><pre class="programlisting">char*       (*xmlShellReadlineFunc)         (char *prompt);</pre><p>
 This is a generic signature for the XML shell input function.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>prompt</tt></i> :</span></td><td>  a string prompt
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a string which will be freed by the Shell.
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellCtxt"></a>struct xmlShellCtxt</h3><pre class="programlisting">struct xmlShellCtxt {
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>prompt</tt></i>:</span></td><td>  a string prompt
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>a string which will be freed by the Shell.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlShellCtxt"></a>struct xmlShellCtxt</h3><pre class="programlisting">struct xmlShellCtxt {
+
     char *filename;
     xmlDocPtr doc;
     xmlNodePtr node;
@@ -216,169 +60,18 @@ This is a generic signature for the XML shell input function.</p><p>
 A debugging shell context.
 TODO: add the defined function tables.</p><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellCtxtPtr"></a>xmlShellCtxtPtr</h3><pre class="programlisting">typedef xmlShellCtxt *xmlShellCtxtPtr;
+</p></div><hr><div class="refsect2"><h3><a name="xmlShellCtxtPtr"></a>xmlShellCtxtPtr</h3><pre class="programlisting">typedef xmlShellCtxt *xmlShellCtxtPtr;
 </pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellCmd"></a>xmlShellCmd ()</h3><pre class="programlisting">int         (*xmlShellCmd)                  (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
+</p></div><hr><div class="refsect2"><h3><a name="xmlShellCmd"></a>xmlShellCmd ()</h3><pre class="programlisting">int         (*xmlShellCmd)                  (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
                                              char *arg,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
 This is a generic signature for the XML shell functions.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a shell context
-</td></tr><tr><td><span class="term"><i><tt>arg</tt></i> :</span></td><td>  a string argument
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  a first node
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  a second node
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>an int, negative returns indicating errors.
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellPrintXPathError"></a>xmlShellPrintXPathError ()</h3><pre class="programlisting">void        xmlShellPrintXPathError         (int errorType,
-                                             const char *arg);</pre><p>
-Print the xpath error to libxml default error channel</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>errorType</tt></i> :</span></td><td> valid xpath error id
-</td></tr><tr><td><span class="term"><i><tt>arg</tt></i> :</span></td><td> the argument that cause xpath to fail
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellPrintNode"></a>xmlShellPrintNode ()</h3><pre class="programlisting">void        xmlShellPrintNode               (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
-Print node to the output FILE</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td> a non-null node to print to the output FILE
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellPrintXPathResult"></a>xmlShellPrintXPathResult ()</h3><pre class="programlisting">void        xmlShellPrintXPathResult        (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> list);</pre><p>
-Prints result to the output FILE</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>list</tt></i> :</span></td><td> a valid result generated by an xpath evaluation
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellList"></a>xmlShellList ()</h3><pre class="programlisting">int         xmlShellList                    (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *arg,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function "ls"
-Does an Unix like listing of the given node (like a directory)</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
-</td></tr><tr><td><span class="term"><i><tt>arg</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  a node
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellBase"></a>xmlShellBase ()</h3><pre class="programlisting">int         xmlShellBase                    (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *arg,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function "base"
-dumps the current XML base of the node</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
-</td></tr><tr><td><span class="term"><i><tt>arg</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  a node
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellDir"></a>xmlShellDir ()</h3><pre class="programlisting">int         xmlShellDir                     (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *arg,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function "dir"
-dumps informations about the node (namespace, attributes, content).</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
-</td></tr><tr><td><span class="term"><i><tt>arg</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  a node
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellCat"></a>xmlShellCat ()</h3><pre class="programlisting">int         xmlShellCat                     (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *arg,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function "cat"
-dumps the serialization node content (XML or HTML).</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
-</td></tr><tr><td><span class="term"><i><tt>arg</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  a node
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellLoad"></a>xmlShellLoad ()</h3><pre class="programlisting">int         xmlShellLoad                    (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *filename,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function "load"
-loads a new document specified by the filename</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the file name
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or -1 if loading failed
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellWrite"></a>xmlShellWrite ()</h3><pre class="programlisting">int         xmlShellWrite                   (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *filename,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function "write"
-Write the current node to the filename, it saves the serialization
-of the subtree under the <i><tt>node</tt></i> specified</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the file name
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  a node in the tree
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or -1 in case of error
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellSave"></a>xmlShellSave ()</h3><pre class="programlisting">int         xmlShellSave                    (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *filename,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function "save"
-Write the current document to the filename, or it's original name</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the file name (optional)
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or -1 in case of error
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellValidate"></a>xmlShellValidate ()</h3><pre class="programlisting">int         xmlShellValidate                (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *dtd,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function "validate"
-Validate the document, if a DTD path is provided, then the validation
-is done against the given DTD.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
-</td></tr><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  the DTD URI (optional)
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or -1 in case of error
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellDu"></a>xmlShellDu ()</h3><pre class="programlisting">int         xmlShellDu                      (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *arg,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> tree,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function "du"
-show the structure of the subtree under node <i><tt>tree</tt></i>
-If <i><tt>tree</tt></i> is null, the command works on the current node.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
-</td></tr><tr><td><span class="term"><i><tt>arg</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><i><tt>tree</tt></i> :</span></td><td>  a node defining a subtree
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or -1 in case of error
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShellPwd"></a>xmlShellPwd ()</h3><pre class="programlisting">int         xmlShellPwd                     (<a href="libxml-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt,
-                                             char *buffer,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function "pwd"
-Show the full path from the root to the node, if needed building
-thumblers when similar elements exists at a given ancestor level.
-The output is compatible with XPath commands.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
-</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  the output buffer
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  a node 
-</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  unused
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or -1 in case of error
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlShell"></a>xmlShell ()</h3><pre class="programlisting">void        xmlShell                        (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
-                                             char *filename,
-                                             <a href="libxml-debugXML.html#xmlShellReadlineFunc">xmlShellReadlineFunc</a> input,
-                                             <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output);</pre><p>
-Implements the XML shell 
-This allow to load, validate, view, modify and save a document
-using a environment similar to a UNIX commandline.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the initial document
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the output buffer
-</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  the line reading function
-</td></tr><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the output FILE*, defaults to stdout if NULL
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-hash.html"><b>&lt;&lt; hash</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlmemory.html"><b>xmlmemory &gt;&gt;</b></a></td></tr></table></body></html>
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  a shell context
+</td></tr><tr><td><span class="term"><i><tt>arg</tt></i>:</span></td><td>  a string argument
+</td></tr><tr><td><span class="term"><i><tt>node</tt></i>:</span></td><td>  a first node
+</td></tr><tr><td><span class="term"><i><tt>node2</tt></i>:</span></td><td>  a second node
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>an int, negative returns indicating errors.
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlreader.html"><b>&lt;&lt; xmlreader</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlwriter.html"><b>xmlwriter &gt;&gt;</b></a></td></tr></table></body></html>

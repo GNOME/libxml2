@@ -31,24 +31,42 @@ The content of this structure is not made public by the API.
 </pre><pre class="programlisting">Typedef <a href="libxml-schemasInternals.html#xmlSchemaVal">xmlSchemaVal</a> * <a name="xmlSchemaValPtr" id="xmlSchemaValPtr">xmlSchemaValPtr</a>
 </pre><pre class="programlisting">void	<a href="#xmlSchemaFreeType">xmlSchemaFreeType</a>		(<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type)</pre>
 <h2>Description</h2>
-<h3><a name="XML_SCHEMAS_FACET_UNKNOWN" id="XML_SCHEMAS_FACET_UNKNOWN"></a>Macro: XML_SCHEMAS_FACET_UNKNOWN</h3><pre>#define XML_SCHEMAS_FACET_UNKNOWN</pre><p>unknown facet handling</p>
 <h3><a name="XML_SCHEMAS_ANYATTR_LAX" id="XML_SCHEMAS_ANYATTR_LAX"></a>Macro: XML_SCHEMAS_ANYATTR_LAX</h3><pre>#define XML_SCHEMAS_ANYATTR_LAX</pre><p></p>
-<h3><a name="XML_SCHEMAS_ELEM_TOPLEVEL" id="XML_SCHEMAS_ELEM_TOPLEVEL"></a>Macro: XML_SCHEMAS_ELEM_TOPLEVEL</h3><pre>#define XML_SCHEMAS_ELEM_TOPLEVEL</pre><p>the element is top level</p>
-<h3><a name="XML_SCHEMAS_ELEM_ABSTRACT" id="XML_SCHEMAS_ELEM_ABSTRACT"></a>Macro: XML_SCHEMAS_ELEM_ABSTRACT</h3><pre>#define XML_SCHEMAS_ELEM_ABSTRACT</pre><p>the element is abstract</p>
-<h3><a name="XML_SCHEMAS_ANYATTR_STRICT" id="XML_SCHEMAS_ANYATTR_STRICT"></a>Macro: XML_SCHEMAS_ANYATTR_STRICT</h3><pre>#define XML_SCHEMAS_ANYATTR_STRICT</pre><p></p>
-<h3><a name="XML_SCHEMAS_QUALIF_ATTR" id="XML_SCHEMAS_QUALIF_ATTR"></a>Macro: XML_SCHEMAS_QUALIF_ATTR</h3><pre>#define XML_SCHEMAS_QUALIF_ATTR</pre><p>the shemas requires qualified attributes</p>
-<h3><a name="XML_SCHEMAS_ELEM_FIXED" id="XML_SCHEMAS_ELEM_FIXED"></a>Macro: XML_SCHEMAS_ELEM_FIXED</h3><pre>#define XML_SCHEMAS_ELEM_FIXED</pre><p>the element has a fixed value</p>
-<h3><a name="XML_SCHEMAS_FACET_COLLAPSE" id="XML_SCHEMAS_FACET_COLLAPSE"></a>Macro: XML_SCHEMAS_FACET_COLLAPSE</h3><pre>#define XML_SCHEMAS_FACET_COLLAPSE</pre><p>collapse the types of the facet</p>
-<h3><a name="XML_SCHEMAS_QUALIF_ELEM" id="XML_SCHEMAS_QUALIF_ELEM"></a>Macro: XML_SCHEMAS_QUALIF_ELEM</h3><pre>#define XML_SCHEMAS_QUALIF_ELEM</pre><p>the shemas requires qualified elements</p>
-<h3><a name="XML_SCHEMAS_ELEM_GLOBAL" id="XML_SCHEMAS_ELEM_GLOBAL"></a>Macro: XML_SCHEMAS_ELEM_GLOBAL</h3><pre>#define XML_SCHEMAS_ELEM_GLOBAL</pre><p>the element is global</p>
-<h3><a name="XML_SCHEMAS_TYPE_MIXED" id="XML_SCHEMAS_TYPE_MIXED"></a>Macro: XML_SCHEMAS_TYPE_MIXED</h3><pre>#define XML_SCHEMAS_TYPE_MIXED</pre><p>the element content type is mixed</p>
 <h3><a name="XML_SCHEMAS_ANYATTR_SKIP" id="XML_SCHEMAS_ANYATTR_SKIP"></a>Macro: XML_SCHEMAS_ANYATTR_SKIP</h3><pre>#define XML_SCHEMAS_ANYATTR_SKIP</pre><p></p>
+<h3><a name="XML_SCHEMAS_ANYATTR_STRICT" id="XML_SCHEMAS_ANYATTR_STRICT"></a>Macro: XML_SCHEMAS_ANYATTR_STRICT</h3><pre>#define XML_SCHEMAS_ANYATTR_STRICT</pre><p></p>
+<h3><a name="XML_SCHEMAS_ELEM_ABSTRACT" id="XML_SCHEMAS_ELEM_ABSTRACT"></a>Macro: XML_SCHEMAS_ELEM_ABSTRACT</h3><pre>#define XML_SCHEMAS_ELEM_ABSTRACT</pre><p>the element is abstract</p>
 <h3><a name="XML_SCHEMAS_ELEM_DEFAULT" id="XML_SCHEMAS_ELEM_DEFAULT"></a>Macro: XML_SCHEMAS_ELEM_DEFAULT</h3><pre>#define XML_SCHEMAS_ELEM_DEFAULT</pre><p>the element has a default value</p>
-<h3><a name="XML_SCHEMAS_FACET_REPLACE" id="XML_SCHEMAS_FACET_REPLACE"></a>Macro: XML_SCHEMAS_FACET_REPLACE</h3><pre>#define XML_SCHEMAS_FACET_REPLACE</pre><p>replace the type of the facet</p>
-<h3><a name="XML_SCHEMAS_FACET_PRESERVE" id="XML_SCHEMAS_FACET_PRESERVE"></a>Macro: XML_SCHEMAS_FACET_PRESERVE</h3><pre>#define XML_SCHEMAS_FACET_PRESERVE</pre><p>preserve the type of the facet</p>
-<h3><a name="XML_SCHEMAS_ELEM_REF" id="XML_SCHEMAS_ELEM_REF"></a>Macro: XML_SCHEMAS_ELEM_REF</h3><pre>#define XML_SCHEMAS_ELEM_REF</pre><p>the element is a <a href="libxml-SAX.html#reference">reference</a> to a type</p>
+<h3><a name="XML_SCHEMAS_ELEM_FIXED" id="XML_SCHEMAS_ELEM_FIXED"></a>Macro: XML_SCHEMAS_ELEM_FIXED</h3><pre>#define XML_SCHEMAS_ELEM_FIXED</pre><p>the element has a fixed value</p>
+<h3><a name="XML_SCHEMAS_ELEM_GLOBAL" id="XML_SCHEMAS_ELEM_GLOBAL"></a>Macro: XML_SCHEMAS_ELEM_GLOBAL</h3><pre>#define XML_SCHEMAS_ELEM_GLOBAL</pre><p>the element is global</p>
 <h3><a name="XML_SCHEMAS_ELEM_NILLABLE" id="XML_SCHEMAS_ELEM_NILLABLE"></a>Macro: XML_SCHEMAS_ELEM_NILLABLE</h3><pre>#define XML_SCHEMAS_ELEM_NILLABLE</pre><p>the element is nillable</p>
-<h3><a name="xmlSchemaAttributeGroup" id="xmlSchemaAttributeGroup">Structure xmlSchemaAttributeGroup</a></h3><pre class="programlisting">Structure xmlSchemaAttributeGroup<br />struct _xmlSchemaAttributeGroup {
+<h3><a name="XML_SCHEMAS_ELEM_REF" id="XML_SCHEMAS_ELEM_REF"></a>Macro: XML_SCHEMAS_ELEM_REF</h3><pre>#define XML_SCHEMAS_ELEM_REF</pre><p>the element is a <a href="libxml-SAX.html#reference">reference</a> to a type</p>
+<h3><a name="XML_SCHEMAS_ELEM_TOPLEVEL" id="XML_SCHEMAS_ELEM_TOPLEVEL"></a>Macro: XML_SCHEMAS_ELEM_TOPLEVEL</h3><pre>#define XML_SCHEMAS_ELEM_TOPLEVEL</pre><p>the element is top level</p>
+<h3><a name="XML_SCHEMAS_FACET_COLLAPSE" id="XML_SCHEMAS_FACET_COLLAPSE"></a>Macro: XML_SCHEMAS_FACET_COLLAPSE</h3><pre>#define XML_SCHEMAS_FACET_COLLAPSE</pre><p>collapse the types of the facet</p>
+<h3><a name="XML_SCHEMAS_FACET_PRESERVE" id="XML_SCHEMAS_FACET_PRESERVE"></a>Macro: XML_SCHEMAS_FACET_PRESERVE</h3><pre>#define XML_SCHEMAS_FACET_PRESERVE</pre><p>preserve the type of the facet</p>
+<h3><a name="XML_SCHEMAS_FACET_REPLACE" id="XML_SCHEMAS_FACET_REPLACE"></a>Macro: XML_SCHEMAS_FACET_REPLACE</h3><pre>#define XML_SCHEMAS_FACET_REPLACE</pre><p>replace the type of the facet</p>
+<h3><a name="XML_SCHEMAS_FACET_UNKNOWN" id="XML_SCHEMAS_FACET_UNKNOWN"></a>Macro: XML_SCHEMAS_FACET_UNKNOWN</h3><pre>#define XML_SCHEMAS_FACET_UNKNOWN</pre><p>unknown facet handling</p>
+<h3><a name="XML_SCHEMAS_QUALIF_ATTR" id="XML_SCHEMAS_QUALIF_ATTR"></a>Macro: XML_SCHEMAS_QUALIF_ATTR</h3><pre>#define XML_SCHEMAS_QUALIF_ATTR</pre><p>the shemas requires qualified attributes</p>
+<h3><a name="XML_SCHEMAS_QUALIF_ELEM" id="XML_SCHEMAS_QUALIF_ELEM"></a>Macro: XML_SCHEMAS_QUALIF_ELEM</h3><pre>#define XML_SCHEMAS_QUALIF_ELEM</pre><p>the shemas requires qualified elements</p>
+<h3><a name="XML_SCHEMAS_TYPE_MIXED" id="XML_SCHEMAS_TYPE_MIXED"></a>Macro: XML_SCHEMAS_TYPE_MIXED</h3><pre>#define XML_SCHEMAS_TYPE_MIXED</pre><p>the element content type is mixed</p>
+<h3><a name="xmlSchemaAnnot" id="xmlSchemaAnnot">Structure xmlSchemaAnnot</a></h3><pre class="programlisting">Structure xmlSchemaAnnot<br />struct _xmlSchemaAnnot {
+    struct _xmlSchemaAnnot *	next
+    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	content	: the annotation
+}</pre><h3><a name="xmlSchemaAttribute" id="xmlSchemaAttribute">Structure xmlSchemaAttribute</a></h3><pre class="programlisting">Structure xmlSchemaAttribute<br />struct _xmlSchemaAttribute {
+    <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
+    struct _xmlSchemaAttribute *	next	: the next <a href="libxml-SAX.html#attribute">attribute</a> if in a group ...
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	ref
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	refNs
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	typeName
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	typeNs
+    <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
+    <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	base
+    int	occurs
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	defValue
+    <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	subtypes
+    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
+}</pre><h3><a name="xmlSchemaAttributeGroup" id="xmlSchemaAttributeGroup">Structure xmlSchemaAttributeGroup</a></h3><pre class="programlisting">Structure xmlSchemaAttributeGroup<br />struct _xmlSchemaAttributeGroup {
     <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
     struct _xmlSchemaAttribute *	next	: the next <a href="libxml-SAX.html#attribute">attribute</a> if in a group ...
     <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
@@ -58,7 +76,17 @@ The content of this structure is not made public by the API.
     <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
     <a href="libxml-schemasInternals.html#xmlSchemaAttributePtr">xmlSchemaAttributePtr</a>	attributes
     <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
-}</pre><h3><a name="xmlSchemaElement" id="xmlSchemaElement">Structure xmlSchemaElement</a></h3><pre class="programlisting">Structure xmlSchemaElement<br />struct _xmlSchemaElement {
+}</pre><h3>Enum <a name="xmlSchemaContentType" id="xmlSchemaContentType">xmlSchemaContentType</a></h3><pre class="programlisting">Enum xmlSchemaContentType {
+    <a name="XML_SCHEMA_CONTENT_UNKNOWN" id="XML_SCHEMA_CONTENT_UNKNOWN">XML_SCHEMA_CONTENT_UNKNOWN</a> = 0
+    <a name="XML_SCHEMA_CONTENT_EMPTY" id="XML_SCHEMA_CONTENT_EMPTY">XML_SCHEMA_CONTENT_EMPTY</a> = 1
+    <a name="XML_SCHEMA_CONTENT_ELEMENTS" id="XML_SCHEMA_CONTENT_ELEMENTS">XML_SCHEMA_CONTENT_ELEMENTS</a> = 2
+    <a name="XML_SCHEMA_CONTENT_MIXED" id="XML_SCHEMA_CONTENT_MIXED">XML_SCHEMA_CONTENT_MIXED</a> = 3
+    <a name="XML_SCHEMA_CONTENT_SIMPLE" id="XML_SCHEMA_CONTENT_SIMPLE">XML_SCHEMA_CONTENT_SIMPLE</a> = 4
+    <a name="XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS" id="XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS">XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS</a> = 5
+    <a name="XML_SCHEMA_CONTENT_BASIC" id="XML_SCHEMA_CONTENT_BASIC">XML_SCHEMA_CONTENT_BASIC</a> = 6
+    <a name="XML_SCHEMA_CONTENT_ANY" id="XML_SCHEMA_CONTENT_ANY">XML_SCHEMA_CONTENT_ANY</a> = 7
+}
+</pre><h3><a name="xmlSchemaElement" id="xmlSchemaElement">Structure xmlSchemaElement</a></h3><pre class="programlisting">Structure xmlSchemaElement<br />struct _xmlSchemaElement {
     <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
     struct _xmlSchemaType *	next	: the next type if in a sequence ...
     <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
@@ -93,6 +121,11 @@ The content of this structure is not made public by the API.
     int	whitespace
     <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a>	val
     <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>	regexp
+}</pre><h3><a name="xmlSchemaNotation" id="xmlSchemaNotation">Structure xmlSchemaNotation</a></h3><pre class="programlisting">Structure xmlSchemaNotation<br />struct _xmlSchemaNotation {
+    <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	identifier
 }</pre><h3><a name="xmlSchemaType" id="xmlSchemaType">Structure xmlSchemaType</a></h3><pre class="programlisting">Structure xmlSchemaType<br />struct _xmlSchemaType {
     <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
     struct _xmlSchemaType *	next	: the next type if in a sequence ...
@@ -112,17 +145,7 @@ The content of this structure is not made public by the API.
     <a href="libxml-tree.html#xmlChar">xmlChar</a> *	baseNs
     <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	baseType
     <a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a>	facets
-}</pre><h3><a name="xmlSchemaContentType" id="xmlSchemaContentType">xmlSchemaContentType</a></h3><pre class="programlisting">Enum xmlSchemaContentType {
-    <a name="XML_SCHEMA_CONTENT_UNKNOWN" id="XML_SCHEMA_CONTENT_UNKNOWN">XML_SCHEMA_CONTENT_UNKNOWN</a> = 0
-    <a name="XML_SCHEMA_CONTENT_EMPTY" id="XML_SCHEMA_CONTENT_EMPTY">XML_SCHEMA_CONTENT_EMPTY</a> = 1
-    <a name="XML_SCHEMA_CONTENT_ELEMENTS" id="XML_SCHEMA_CONTENT_ELEMENTS">XML_SCHEMA_CONTENT_ELEMENTS</a> = 2
-    <a name="XML_SCHEMA_CONTENT_MIXED" id="XML_SCHEMA_CONTENT_MIXED">XML_SCHEMA_CONTENT_MIXED</a> = 3
-    <a name="XML_SCHEMA_CONTENT_SIMPLE" id="XML_SCHEMA_CONTENT_SIMPLE">XML_SCHEMA_CONTENT_SIMPLE</a> = 4
-    <a name="XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS" id="XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS">XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS</a> = 5
-    <a name="XML_SCHEMA_CONTENT_BASIC" id="XML_SCHEMA_CONTENT_BASIC">XML_SCHEMA_CONTENT_BASIC</a> = 6
-    <a name="XML_SCHEMA_CONTENT_ANY" id="XML_SCHEMA_CONTENT_ANY">XML_SCHEMA_CONTENT_ANY</a> = 7
-}
-</pre><h3><a name="xmlSchemaTypeType" id="xmlSchemaTypeType">xmlSchemaTypeType</a></h3><pre class="programlisting">Enum xmlSchemaTypeType {
+}</pre><h3>Enum <a name="xmlSchemaTypeType" id="xmlSchemaTypeType">xmlSchemaTypeType</a></h3><pre class="programlisting">Enum xmlSchemaTypeType {
     <a name="XML_SCHEMA_TYPE_BASIC" id="XML_SCHEMA_TYPE_BASIC">XML_SCHEMA_TYPE_BASIC</a> = 1
     <a name="XML_SCHEMA_TYPE_ANY" id="XML_SCHEMA_TYPE_ANY">XML_SCHEMA_TYPE_ANY</a> = 2
     <a name="XML_SCHEMA_TYPE_FACET" id="XML_SCHEMA_TYPE_FACET">XML_SCHEMA_TYPE_FACET</a> = 3
@@ -156,30 +179,7 @@ The content of this structure is not made public by the API.
     <a name="XML_SCHEMA_FACET_MAXLENGTH" id="XML_SCHEMA_FACET_MAXLENGTH">XML_SCHEMA_FACET_MAXLENGTH</a> = 1010
     <a name="XML_SCHEMA_FACET_MINLENGTH" id="XML_SCHEMA_FACET_MINLENGTH">XML_SCHEMA_FACET_MINLENGTH</a> = 1011
 }
-</pre><h3><a name="xmlSchemaAttribute" id="xmlSchemaAttribute">Structure xmlSchemaAttribute</a></h3><pre class="programlisting">Structure xmlSchemaAttribute<br />struct _xmlSchemaAttribute {
-    <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
-    struct _xmlSchemaAttribute *	next	: the next <a href="libxml-SAX.html#attribute">attribute</a> if in a group ...
-    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
-    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
-    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	ref
-    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	refNs
-    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	typeName
-    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	typeNs
-    <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
-    <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	base
-    int	occurs
-    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	defValue
-    <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	subtypes
-    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
-}</pre><h3><a name="xmlSchemaNotation" id="xmlSchemaNotation">Structure xmlSchemaNotation</a></h3><pre class="programlisting">Structure xmlSchemaNotation<br />struct _xmlSchemaNotation {
-    <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
-    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
-    <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
-    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	identifier
-}</pre><h3><a name="xmlSchemaAnnot" id="xmlSchemaAnnot">Structure xmlSchemaAnnot</a></h3><pre class="programlisting">Structure xmlSchemaAnnot<br />struct _xmlSchemaAnnot {
-    struct _xmlSchemaAnnot *	next
-    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	content	: the annotation
-}</pre><h3><a name="xmlSchemaVal" id="xmlSchemaVal">Structure xmlSchemaVal</a></h3><pre class="programlisting">Structure xmlSchemaVal<br />struct _xmlSchemaVal {
+</pre><h3><a name="xmlSchemaVal" id="xmlSchemaVal">Structure xmlSchemaVal</a></h3><pre class="programlisting">Structure xmlSchemaVal<br />struct _xmlSchemaVal {
 The content of this structure is not made public by the API.
 }</pre><h3><a name="xmlSchemaFreeType" id="xmlSchemaFreeType"></a>Function: xmlSchemaFreeType</h3><pre class="programlisting">void	xmlSchemaFreeType		(<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type)<br />
 </pre><p>Deallocate a Schema Type structure.</p>

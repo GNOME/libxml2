@@ -1,3 +1,8 @@
+Wed Nov 19 17:50:47 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* doc/newapi.xsl: improve the sort sequence for page content
+	* doc/html/*.html: regenerate the web pages
+
 Wed Nov 19 00:48:56 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: do not package cvs versioning temp files.

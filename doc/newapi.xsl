@@ -207,7 +207,7 @@
 
   <xsl:template match="typedef[@type = 'enum']">
     <xsl:variable name="name" select="string(@name)"/>
-    <h3><a name="{$name}"><xsl:value-of select="$name"/></a></h3>
+    <h3>Enum <a name="{$name}"><xsl:value-of select="$name"/></a></h3>
     <pre class="programlisting">
       <xsl:text>Enum </xsl:text>
       <xsl:value-of select="$name"/>
@@ -555,6 +555,25 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template name="docomponents">
+    <xsl:param name="mode"/>
+    <xsl:apply-templates select="exports[@type='macro']" mode="$mode">
+      <xsl:sort select='@symbol'/>
+    </xsl:apply-templates>
+    <xsl:apply-templates select="exports[@type='enum']" mode="$mode">
+      <xsl:sort select='@symbol'/>
+    </xsl:apply-templates>
+    <xsl:apply-templates select="exports[@type='typedef']" mode="$mode">
+      <xsl:sort select='@symbol'/>
+    </xsl:apply-templates>
+    <xsl:apply-templates select="exports[@type='struct']" mode="$mode">
+      <xsl:sort select='@symbol'/>
+    </xsl:apply-templates>
+    <xsl:apply-templates select="exports[@type='function']" mode="$mode">
+      <xsl:sort select='@symbol'/>
+    </xsl:apply-templates>
+  </xsl:template>
+  
   <xsl:template match="file">
     <xsl:variable name="name" select="@name"/>
     <xsl:variable name="title">Module <xsl:value-of select="$name"/> from <xsl:value-of select="/api/@name"/></xsl:variable>
@@ -622,7 +641,21 @@
 		<h2>Description</h2>
 		<xsl:text>
 </xsl:text>
-		<xsl:apply-templates select="exports"/>
+		<xsl:apply-templates select="exports[@type='macro']">
+		  <xsl:sort select='@symbol'/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="exports[@type='enum']">
+		  <xsl:sort select='@symbol'/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="exports[@type='typedef']">
+		  <xsl:sort select='@symbol'/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="exports[@type='struct']">
+		  <xsl:sort select='@symbol'/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="exports[@type='function']">
+		  <xsl:sort select='@symbol'/>
+		</xsl:apply-templates>
 	      </xsl:otherwise>
 	    </xsl:choose>
 					<p><a href="{$href_base}bugs.html">Daniel Veillard</a></p>

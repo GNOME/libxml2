@@ -37,13 +37,53 @@ void	<a href="#xmlGenericErrorFunc">xmlGenericErrorFunc</a>		(void * ctx, <br />
 void	<a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userData, <br />					 <a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> error)
 </pre>
 <h2>Description</h2>
-<h3><a name="xmlErrorLevel" id="xmlErrorLevel">xmlErrorLevel</a></h3><pre class="programlisting">Enum xmlErrorLevel {
+<h3><a name="xmlError" id="xmlError">Structure xmlError</a></h3><pre class="programlisting">Structure xmlError<br />struct _xmlError {
+    int	domain	: What part of the library raised this er
+    int	code	: The error code, e.g. an <a href="libxml-xmlerror.html#xmlParserError">xmlParserError</a>
+    char *	message	: human-readable informative error messag
+    <a href="libxml-xmlerror.html#xmlErrorLevel">xmlErrorLevel</a>	level	: how consequent is the error
+    char *	file	: the filename
+    int	line	: the line number if available
+    char *	str1	: extra string information
+    char *	str2	: extra string information
+    char *	str3	: extra string information
+    int	int1	: extra number information
+    int	int2	: extra number information
+    void *	ctxt	: the parser context if available
+    void *	node	: the node in the tree
+}</pre><h3>Enum <a name="xmlErrorDomain" id="xmlErrorDomain">xmlErrorDomain</a></h3><pre class="programlisting">Enum xmlErrorDomain {
+    <a name="XML_FROM_NONE" id="XML_FROM_NONE">XML_FROM_NONE</a> = 0
+    <a name="XML_FROM_PARSER" id="XML_FROM_PARSER">XML_FROM_PARSER</a> = 1 : The XML parser
+    <a name="XML_FROM_TREE" id="XML_FROM_TREE">XML_FROM_TREE</a> = 2 : The tree module
+    <a name="XML_FROM_NAMESPACE" id="XML_FROM_NAMESPACE">XML_FROM_NAMESPACE</a> = 3 : The XML Namespace module
+    <a name="XML_FROM_DTD" id="XML_FROM_DTD">XML_FROM_DTD</a> = 4 : The XML DTD validation with parser contex
+    <a name="XML_FROM_HTML" id="XML_FROM_HTML">XML_FROM_HTML</a> = 5 : The HTML parser
+    <a name="XML_FROM_MEMORY" id="XML_FROM_MEMORY">XML_FROM_MEMORY</a> = 6 : The memory allocator
+    <a name="XML_FROM_OUTPUT" id="XML_FROM_OUTPUT">XML_FROM_OUTPUT</a> = 7 : The serialization code
+    <a name="XML_FROM_IO" id="XML_FROM_IO">XML_FROM_IO</a> = 8 : The Input/Output stack
+    <a name="XML_FROM_FTP" id="XML_FROM_FTP">XML_FROM_FTP</a> = 9 : The FTP module
+    <a name="XML_FROM_HTTP" id="XML_FROM_HTTP">XML_FROM_HTTP</a> = 10 : The FTP module
+    <a name="XML_FROM_XINCLUDE" id="XML_FROM_XINCLUDE">XML_FROM_XINCLUDE</a> = 11 : The XInclude processing
+    <a name="XML_FROM_XPATH" id="XML_FROM_XPATH">XML_FROM_XPATH</a> = 12 : The XPath module
+    <a name="XML_FROM_XPOINTER" id="XML_FROM_XPOINTER">XML_FROM_XPOINTER</a> = 13 : The XPointer module
+    <a name="XML_FROM_REGEXP" id="XML_FROM_REGEXP">XML_FROM_REGEXP</a> = 14 : The regular expressions module
+    <a name="XML_FROM_DATATYPE" id="XML_FROM_DATATYPE">XML_FROM_DATATYPE</a> = 15 : The W3C XML Schemas Datatype module
+    <a name="XML_FROM_SCHEMASP" id="XML_FROM_SCHEMASP">XML_FROM_SCHEMASP</a> = 16 : The W3C XML Schemas parser module
+    <a name="XML_FROM_SCHEMASV" id="XML_FROM_SCHEMASV">XML_FROM_SCHEMASV</a> = 17 : The W3C XML Schemas validation module
+    <a name="XML_FROM_RELAXNGP" id="XML_FROM_RELAXNGP">XML_FROM_RELAXNGP</a> = 18 : The Relax-NG parser module
+    <a name="XML_FROM_RELAXNGV" id="XML_FROM_RELAXNGV">XML_FROM_RELAXNGV</a> = 19 : The Relax-NG validator module
+    <a name="XML_FROM_CATALOG" id="XML_FROM_CATALOG">XML_FROM_CATALOG</a> = 20 : The Catalog module
+    <a name="XML_FROM_C14N" id="XML_FROM_C14N">XML_FROM_C14N</a> = 21 : The Canonicalization module
+    <a name="XML_FROM_XSLT" id="XML_FROM_XSLT">XML_FROM_XSLT</a> = 22 : The XSLT engine from libxslt
+    <a name="XML_FROM_VALID" id="XML_FROM_VALID">XML_FROM_VALID</a> = 23 : The XML DTD validation with valid context
+}
+</pre><h3>Enum <a name="xmlErrorLevel" id="xmlErrorLevel">xmlErrorLevel</a></h3><pre class="programlisting">Enum xmlErrorLevel {
     <a name="XML_ERR_NONE" id="XML_ERR_NONE">XML_ERR_NONE</a> = 0
     <a name="XML_ERR_WARNING" id="XML_ERR_WARNING">XML_ERR_WARNING</a> = 1 : A simple warning
     <a name="XML_ERR_ERROR" id="XML_ERR_ERROR">XML_ERR_ERROR</a> = 2 : A recoverable error
     <a name="XML_ERR_FATAL" id="XML_ERR_FATAL">XML_ERR_FATAL</a> = 3 : A fatal error
 }
-</pre><h3><a name="xmlParserErrors" id="xmlParserErrors">xmlParserErrors</a></h3><pre class="programlisting">Enum xmlParserErrors {
+</pre><h3>Enum <a name="xmlParserErrors" id="xmlParserErrors">xmlParserErrors</a></h3><pre class="programlisting">Enum xmlParserErrors {
     <a name="XML_ERR_OK" id="XML_ERR_OK">XML_ERR_OK</a> = 0
     <a name="XML_ERR_INTERNAL_ERROR" id="XML_ERR_INTERNAL_ERROR">XML_ERR_INTERNAL_ERROR</a> = 1 : 1
     <a name="XML_ERR_NO_MEMORY" id="XML_ERR_NO_MEMORY">XML_ERR_NO_MEMORY</a> = 2 : 2
@@ -527,80 +567,40 @@ void	<a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userD
     <a name="XML_HTTP_USE_IP" id="XML_HTTP_USE_IP">XML_HTTP_USE_IP</a> = 2021 : 2021
     <a name="XML_HTTP_UNKNOWN_HOST" id="XML_HTTP_UNKNOWN_HOST">XML_HTTP_UNKNOWN_HOST</a> = 2022 : 2022
 }
-</pre><h3><a name="xmlErrorDomain" id="xmlErrorDomain">xmlErrorDomain</a></h3><pre class="programlisting">Enum xmlErrorDomain {
-    <a name="XML_FROM_NONE" id="XML_FROM_NONE">XML_FROM_NONE</a> = 0
-    <a name="XML_FROM_PARSER" id="XML_FROM_PARSER">XML_FROM_PARSER</a> = 1 : The XML parser
-    <a name="XML_FROM_TREE" id="XML_FROM_TREE">XML_FROM_TREE</a> = 2 : The tree module
-    <a name="XML_FROM_NAMESPACE" id="XML_FROM_NAMESPACE">XML_FROM_NAMESPACE</a> = 3 : The XML Namespace module
-    <a name="XML_FROM_DTD" id="XML_FROM_DTD">XML_FROM_DTD</a> = 4 : The XML DTD validation with parser contex
-    <a name="XML_FROM_HTML" id="XML_FROM_HTML">XML_FROM_HTML</a> = 5 : The HTML parser
-    <a name="XML_FROM_MEMORY" id="XML_FROM_MEMORY">XML_FROM_MEMORY</a> = 6 : The memory allocator
-    <a name="XML_FROM_OUTPUT" id="XML_FROM_OUTPUT">XML_FROM_OUTPUT</a> = 7 : The serialization code
-    <a name="XML_FROM_IO" id="XML_FROM_IO">XML_FROM_IO</a> = 8 : The Input/Output stack
-    <a name="XML_FROM_FTP" id="XML_FROM_FTP">XML_FROM_FTP</a> = 9 : The FTP module
-    <a name="XML_FROM_HTTP" id="XML_FROM_HTTP">XML_FROM_HTTP</a> = 10 : The FTP module
-    <a name="XML_FROM_XINCLUDE" id="XML_FROM_XINCLUDE">XML_FROM_XINCLUDE</a> = 11 : The XInclude processing
-    <a name="XML_FROM_XPATH" id="XML_FROM_XPATH">XML_FROM_XPATH</a> = 12 : The XPath module
-    <a name="XML_FROM_XPOINTER" id="XML_FROM_XPOINTER">XML_FROM_XPOINTER</a> = 13 : The XPointer module
-    <a name="XML_FROM_REGEXP" id="XML_FROM_REGEXP">XML_FROM_REGEXP</a> = 14 : The regular expressions module
-    <a name="XML_FROM_DATATYPE" id="XML_FROM_DATATYPE">XML_FROM_DATATYPE</a> = 15 : The W3C XML Schemas Datatype module
-    <a name="XML_FROM_SCHEMASP" id="XML_FROM_SCHEMASP">XML_FROM_SCHEMASP</a> = 16 : The W3C XML Schemas parser module
-    <a name="XML_FROM_SCHEMASV" id="XML_FROM_SCHEMASV">XML_FROM_SCHEMASV</a> = 17 : The W3C XML Schemas validation module
-    <a name="XML_FROM_RELAXNGP" id="XML_FROM_RELAXNGP">XML_FROM_RELAXNGP</a> = 18 : The Relax-NG parser module
-    <a name="XML_FROM_RELAXNGV" id="XML_FROM_RELAXNGV">XML_FROM_RELAXNGV</a> = 19 : The Relax-NG validator module
-    <a name="XML_FROM_CATALOG" id="XML_FROM_CATALOG">XML_FROM_CATALOG</a> = 20 : The Catalog module
-    <a name="XML_FROM_C14N" id="XML_FROM_C14N">XML_FROM_C14N</a> = 21 : The Canonicalization module
-    <a name="XML_FROM_XSLT" id="XML_FROM_XSLT">XML_FROM_XSLT</a> = 22 : The XSLT engine from libxslt
-    <a name="XML_FROM_VALID" id="XML_FROM_VALID">XML_FROM_VALID</a> = 23 : The XML DTD validation with valid context
-}
-</pre><h3><a name="xmlError" id="xmlError">Structure xmlError</a></h3><pre class="programlisting">Structure xmlError<br />struct _xmlError {
-    int	domain	: What part of the library raised this er
-    int	code	: The error code, e.g. an <a href="libxml-xmlerror.html#xmlParserError">xmlParserError</a>
-    char *	message	: human-readable informative error messag
-    <a href="libxml-xmlerror.html#xmlErrorLevel">xmlErrorLevel</a>	level	: how consequent is the error
-    char *	file	: the filename
-    int	line	: the line number if available
-    char *	str1	: extra string information
-    char *	str2	: extra string information
-    char *	str3	: extra string information
-    int	int1	: extra number information
-    int	int2	: extra number information
-    void *	ctxt	: the parser context if available
-    void *	node	: the node in the tree
-}</pre><h3><a name="xmlParserValidityError" id="xmlParserValidityError"></a>Function: xmlParserValidityError</h3><pre class="programlisting">void	xmlParserValidityError		(void * ctx, <br />					 const char * msg, <br />					 ... ...)<br />
-</pre><p>Display and format an validity error messages, gives file, line, position and extra parameters.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message to display/transmit</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra parameters for the message display</td></tr></tbody></table></div><h3><a name="xmlGenericErrorFunc" id="xmlGenericErrorFunc"></a>Function type: xmlGenericErrorFunc</h3><pre class="programlisting">Function type: xmlGenericErrorFunc
-void	xmlGenericErrorFunc		(void * ctx, <br />					 const char * msg, <br />					 ... ...)
-</pre><p>Signature of the function to use when there is an error and no parsing or validity context available .</p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>a parsing context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>the extra arguments of the varags to format the message</td></tr></tbody></table></div><br />
-<h3><a name="xmlSetGenericErrorFunc" id="xmlSetGenericErrorFunc"></a>Function: xmlSetGenericErrorFunc</h3><pre class="programlisting">void	xmlSetGenericErrorFunc		(void * ctx, <br />					 <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler)<br />
-</pre><p>Function to reset the handler and the error context for out of context error messages. This simply means that @handler will be called for subsequent error messages while not parsing nor validating. And @ctx will be passed as first argument to @handler One can simply force messages to be emitted to another FILE * than stderr by setting @ctx to this file handle and @handler to NULL.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the new error handling context</td></tr><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td>the new handler function</td></tr></tbody></table></div><h3><a name="xmlParserPrintFileInfo" id="xmlParserPrintFileInfo"></a>Function: xmlParserPrintFileInfo</h3><pre class="programlisting">void	xmlParserPrintFileInfo		(<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input)<br />
-</pre><p>Displays the associated file and line informations for the current input</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>input</tt></i>:</span></td><td>an <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input</td></tr></tbody></table></div><h3><a name="xmlCtxtResetLastError" id="xmlCtxtResetLastError"></a>Function: xmlCtxtResetLastError</h3><pre class="programlisting">void	xmlCtxtResetLastError		(void * ctx)<br />
-</pre><p>Cleanup the last global error registered. For parsing error this does not change the well-formedness result.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr></tbody></table></div><h3><a name="xmlResetLastError" id="xmlResetLastError"></a>Function: xmlResetLastError</h3><pre class="programlisting">void	xmlResetLastError		(void)<br />
-</pre><p>Cleanup the last global error registered. For parsing error this does not change the well-formedness result.</p>
-<h3><a name="initGenericErrorDefaultFunc" id="initGenericErrorDefaultFunc"></a>Function: initGenericErrorDefaultFunc</h3><pre class="programlisting">void	initGenericErrorDefaultFunc	(<a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> * handler)<br />
+</pre><h3><a name="initGenericErrorDefaultFunc" id="initGenericErrorDefaultFunc"></a>Function: initGenericErrorDefaultFunc</h3><pre class="programlisting">void	initGenericErrorDefaultFunc	(<a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> * handler)<br />
 </pre><p>Set or reset (if NULL) the default handler for generic errors to the builtin error function.</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td>the handler</td></tr></tbody></table></div><h3><a name="xmlCopyError" id="xmlCopyError"></a>Function: xmlCopyError</h3><pre class="programlisting">int	xmlCopyError			(<a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> from, <br />					 <a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> to)<br />
 </pre><p>Save the original error to the new place.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>from</tt></i>:</span></td><td>a source error</td></tr><tr><td><span class="term"><i><tt>to</tt></i>:</span></td><td>a target error</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 in case of success and -1 in case of error.</td></tr></tbody></table></div><h3><a name="xmlParserValidityWarning" id="xmlParserValidityWarning"></a>Function: xmlParserValidityWarning</h3><pre class="programlisting">void	xmlParserValidityWarning	(void * ctx, <br />					 const char * msg, <br />					 ... ...)<br />
-</pre><p>Display and format a validity warning messages, gives file, line, position and extra parameters.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>from</tt></i>:</span></td><td>a source error</td></tr><tr><td><span class="term"><i><tt>to</tt></i>:</span></td><td>a target error</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 in case of success and -1 in case of error.</td></tr></tbody></table></div><h3><a name="xmlCtxtGetLastError" id="xmlCtxtGetLastError"></a>Function: xmlCtxtGetLastError</h3><pre class="programlisting"><a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	xmlCtxtGetLastError	(void * ctx)<br />
+</pre><p>Get the last parsing error registered.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if no error occured or a pointer to the error</td></tr></tbody></table></div><h3><a name="xmlCtxtResetLastError" id="xmlCtxtResetLastError"></a>Function: xmlCtxtResetLastError</h3><pre class="programlisting">void	xmlCtxtResetLastError		(void * ctx)<br />
+</pre><p>Cleanup the last global error registered. For parsing error this does not change the well-formedness result.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr></tbody></table></div><h3><a name="xmlGenericErrorFunc" id="xmlGenericErrorFunc"></a>Function type: xmlGenericErrorFunc</h3><pre class="programlisting">Function type: xmlGenericErrorFunc
+void	xmlGenericErrorFunc		(void * ctx, <br />					 const char * msg, <br />					 ... ...)
+</pre><p>Signature of the function to use when there is an error and no parsing or validity context available .</p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>a parsing context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>the extra arguments of the varags to format the message</td></tr></tbody></table></div><br />
+<h3><a name="xmlGetLastError" id="xmlGetLastError"></a>Function: xmlGetLastError</h3><pre class="programlisting"><a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	xmlGetLastError		(void)<br />
+</pre><p>Get the last global error registered. This is per thread if compiled with thread support.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if no error occured or a pointer to the error</td></tr></tbody></table></div><h3><a name="xmlParserError" id="xmlParserError"></a>Function: xmlParserError</h3><pre class="programlisting">void	xmlParserError			(void * ctx, <br />					 const char * msg, <br />					 ... ...)<br />
+</pre><p>Display and format an error messages, gives file, line, position and extra parameters.</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message to display/transmit</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra parameters for the message display</td></tr></tbody></table></div><h3><a name="xmlParserPrintFileContext" id="xmlParserPrintFileContext"></a>Function: xmlParserPrintFileContext</h3><pre class="programlisting">void	xmlParserPrintFileContext	(<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input)<br />
 </pre><p>Displays current context within the input content for error tracking</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>input</tt></i>:</span></td><td>an <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input</td></tr></tbody></table></div><h3><a name="xmlGetLastError" id="xmlGetLastError"></a>Function: xmlGetLastError</h3><pre class="programlisting"><a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	xmlGetLastError		(void)<br />
-</pre><p>Get the last global error registered. This is per thread if compiled with thread support.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if no error occured or a pointer to the error</td></tr></tbody></table></div><h3><a name="xmlParserWarning" id="xmlParserWarning"></a>Function: xmlParserWarning</h3><pre class="programlisting">void	xmlParserWarning		(void * ctx, <br />					 const char * msg, <br />					 ... ...)<br />
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>input</tt></i>:</span></td><td>an <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input</td></tr></tbody></table></div><h3><a name="xmlParserPrintFileInfo" id="xmlParserPrintFileInfo"></a>Function: xmlParserPrintFileInfo</h3><pre class="programlisting">void	xmlParserPrintFileInfo		(<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input)<br />
+</pre><p>Displays the associated file and line informations for the current input</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>input</tt></i>:</span></td><td>an <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input</td></tr></tbody></table></div><h3><a name="xmlParserValidityError" id="xmlParserValidityError"></a>Function: xmlParserValidityError</h3><pre class="programlisting">void	xmlParserValidityError		(void * ctx, <br />					 const char * msg, <br />					 ... ...)<br />
+</pre><p>Display and format an validity error messages, gives file, line, position and extra parameters.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message to display/transmit</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra parameters for the message display</td></tr></tbody></table></div><h3><a name="xmlParserValidityWarning" id="xmlParserValidityWarning"></a>Function: xmlParserValidityWarning</h3><pre class="programlisting">void	xmlParserValidityWarning	(void * ctx, <br />					 const char * msg, <br />					 ... ...)<br />
+</pre><p>Display and format a validity warning messages, gives file, line, position and extra parameters.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message to display/transmit</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra parameters for the message display</td></tr></tbody></table></div><h3><a name="xmlParserWarning" id="xmlParserWarning"></a>Function: xmlParserWarning</h3><pre class="programlisting">void	xmlParserWarning		(void * ctx, <br />					 const char * msg, <br />					 ... ...)<br />
 </pre><p>Display and format a warning messages, gives file, line, position and extra parameters.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message to display/transmit</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra parameters for the message display</td></tr></tbody></table></div><h3><a name="xmlStructuredErrorFunc" id="xmlStructuredErrorFunc"></a>Function type: xmlStructuredErrorFunc</h3><pre class="programlisting">Function type: xmlStructuredErrorFunc
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message to display/transmit</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra parameters for the message display</td></tr></tbody></table></div><h3><a name="xmlResetError" id="xmlResetError"></a>Function: xmlResetError</h3><pre class="programlisting">void	xmlResetError			(<a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> err)<br />
+</pre><p>Cleanup the error.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>pointer to the error.</td></tr></tbody></table></div><h3><a name="xmlResetLastError" id="xmlResetLastError"></a>Function: xmlResetLastError</h3><pre class="programlisting">void	xmlResetLastError		(void)<br />
+</pre><p>Cleanup the last global error registered. For parsing error this does not change the well-formedness result.</p>
+<h3><a name="xmlSetGenericErrorFunc" id="xmlSetGenericErrorFunc"></a>Function: xmlSetGenericErrorFunc</h3><pre class="programlisting">void	xmlSetGenericErrorFunc		(void * ctx, <br />					 <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler)<br />
+</pre><p>Function to reset the handler and the error context for out of context error messages. This simply means that @handler will be called for subsequent error messages while not parsing nor validating. And @ctx will be passed as first argument to @handler One can simply force messages to be emitted to another FILE * than stderr by setting @ctx to this file handle and @handler to NULL.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the new error handling context</td></tr><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td>the new handler function</td></tr></tbody></table></div><h3><a name="xmlSetStructuredErrorFunc" id="xmlSetStructuredErrorFunc"></a>Function: xmlSetStructuredErrorFunc</h3><pre class="programlisting">void	xmlSetStructuredErrorFunc	(void * ctx, <br />					 <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler)<br />
+</pre><p>Function to reset the handler and the error context for out of context structured error messages. This simply means that @handler will be called for subsequent error messages while not parsing nor validating. And @ctx will be passed as first argument to @handler</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the new error handling context</td></tr><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td>the new handler function</td></tr></tbody></table></div><h3><a name="xmlStructuredErrorFunc" id="xmlStructuredErrorFunc"></a>Function type: xmlStructuredErrorFunc</h3><pre class="programlisting">Function type: xmlStructuredErrorFunc
 void	xmlStructuredErrorFunc		(void * userData, <br />					 <a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> error)
 </pre><p>Signature of the function to use when there is an error and the module handles the new error reporting mechanism.</p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>userData</tt></i>:</span></td><td>user provided data for the error callback</td></tr><tr><td><span class="term"><i><tt>error</tt></i>:</span></td><td>the error being raised.</td></tr></tbody></table></div><br />
-<h3><a name="xmlSetStructuredErrorFunc" id="xmlSetStructuredErrorFunc"></a>Function: xmlSetStructuredErrorFunc</h3><pre class="programlisting">void	xmlSetStructuredErrorFunc	(void * ctx, <br />					 <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler)<br />
-</pre><p>Function to reset the handler and the error context for out of context structured error messages. This simply means that @handler will be called for subsequent error messages while not parsing nor validating. And @ctx will be passed as first argument to @handler</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the new error handling context</td></tr><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td>the new handler function</td></tr></tbody></table></div><h3><a name="xmlResetError" id="xmlResetError"></a>Function: xmlResetError</h3><pre class="programlisting">void	xmlResetError			(<a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> err)<br />
-</pre><p>Cleanup the error.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>err</tt></i>:</span></td><td>pointer to the error.</td></tr></tbody></table></div><h3><a name="xmlParserError" id="xmlParserError"></a>Function: xmlParserError</h3><pre class="programlisting">void	xmlParserError			(void * ctx, <br />					 const char * msg, <br />					 ... ...)<br />
-</pre><p>Display and format an error messages, gives file, line, position and extra parameters.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message to display/transmit</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra parameters for the message display</td></tr></tbody></table></div><h3><a name="xmlCtxtGetLastError" id="xmlCtxtGetLastError"></a>Function: xmlCtxtGetLastError</h3><pre class="programlisting"><a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	xmlCtxtGetLastError	(void * ctx)<br />
-</pre><p>Get the last parsing error registered.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>NULL if no error occured or a pointer to the error</td></tr></tbody></table></div><p><a href="../bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>
+<p><a href="../bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

@@ -695,6 +695,7 @@ xmlHTMLValidityError(void *ctx, const char *msg, ...)
 
     xmlHTMLPrintFileContext(input);
     xmlHTMLEncodeSend();
+    progresult = XMLLINT_ERR_VALID;
 }
 
 /**

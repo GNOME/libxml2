@@ -15,6 +15,9 @@
 
 #include <libxml/xmlmemory.h>
 
+#include <stdlib.h>
+#include <string.h>
+
 /*
  * Helpful Macro
  */

@@ -1,3 +1,8 @@
+2001-10-13  Jaka Mocnik  <jaka@gnu.org>
+
+	* globals.c: #include stdlib.h and string.h in order to have
+	protoypes of memory and str*() routines.
+
 Sat Oct 13 11:08:20 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/SAX.h include/libxml/globals.h include/libxml/parser.h

@@ -1,3 +1,15 @@
+Thu Nov  1 15:29:31 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c tree.c include/libxml/HTMLtree.h
+	  include/libxml/tree.h include/libxml/xmlIO.h: more include
+	  cleanups, export cleanly one html output + format function.
+
+Thu Nov  1 14:12:12 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: removed initGenericErrorDefaultFunc call from
+	  xmlInitParser() since it could destroy previous calls to
+	  xsltSetGenericErrorFunc() effects
+
 Thu Nov  1 09:37:13 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c include/libxml/debugXML.h: bool can be a reserved

@@ -6374,7 +6374,7 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
  * returns: the number of byte written or -1 in case of failure.
  */
 int
-xmlSaveFileTo(xmlOutputBuffer *buf, xmlDocPtr cur, const char *encoding) {
+xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
     int ret;
 
     if (buf == NULL) return(0);
@@ -6395,7 +6395,7 @@ xmlSaveFileTo(xmlOutputBuffer *buf, xmlDocPtr cur, const char *encoding) {
  * returns: the number of byte written or -1 in case of failure.
  */
 int
-xmlSaveFormatFileTo(xmlOutputBuffer *buf, xmlDocPtr cur, const char *encoding, int format) {
+xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding, int format) {
   int ret;
 
   if (buf == NULL) return(0);

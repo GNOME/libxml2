@@ -10237,7 +10237,6 @@ xmlInitParser(void) {
     initGenericErrorDefaultFunc(NULL);
     xmlInitThreads();
     xmlInitMemory();
-    initGenericErrorDefaultFunc(NULL);
     xmlInitCharEncodingHandlers();
     xmlInitializePredefinedEntities();
     xmlDefaultSAXHandlerInit();

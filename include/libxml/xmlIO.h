@@ -58,8 +58,6 @@ typedef int (*xmlOutputWriteCallback) (void * context, const char * buffer,
                                        int len);
 typedef int (*xmlOutputCloseCallback) (void * context);
 
-typedef struct _xmlOutputBuffer xmlOutputBuffer;
-typedef xmlOutputBuffer *xmlOutputBufferPtr;
 struct _xmlOutputBuffer {
     void*                   context;
     xmlOutputWriteCallback  writecallback;
@@ -168,25 +166,6 @@ void *	xmlIOHTTPOpenW			(const char * post_uri,
 void	xmlRegisterHTTPPostCallbacks	(void );
 #endif
 
-/*
- * This save function are part of tree.h and HTMLtree.h actually
- */
-int		xmlSaveFileTo		(xmlOutputBuffer *buf,
-					 xmlDocPtr cur,
-					 const char *encoding);
-int             xmlSaveFormatFileTo     (xmlOutputBuffer *buf,
-					 xmlDocPtr cur,
-				         const char *encoding,
-				         int format);
-void		xmlNodeDumpOutput	(xmlOutputBufferPtr buf,
-					 xmlDocPtr doc,
-					 xmlNodePtr cur,
-					 int level,
-					 int format,
-					 const char *encoding);
-void		htmlDocContentDumpOutput(xmlOutputBufferPtr buf,
-					 xmlDocPtr cur,
-					 const char *encoding);
 /*
  * A predefined entity loader disabling network accesses
  */

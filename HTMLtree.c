@@ -295,9 +295,6 @@ found_meta:
  *									*
  ************************************************************************/
 
-void htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
-	                xmlNodePtr cur, const char *encoding, int format);
-
 static void
 htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur, int format);
 

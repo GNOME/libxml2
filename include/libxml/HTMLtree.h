@@ -88,11 +88,18 @@ int		htmlSaveFileFormat	(const char *filename,
 					 const char *encoding,
 					 int format);
 
-/* This one is imported from xmlIO.h
+void		htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf,
+					 xmlDocPtr doc,
+					 xmlNodePtr cur,
+					 const char *encoding,
+					 int format);
 void		htmlDocContentDumpOutput(xmlOutputBufferPtr buf,
 					 xmlDocPtr cur,
 					 const char *encoding);
- */
+void		htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf,
+					 xmlDocPtr cur,
+					 const char *encoding,
+					 int format);
 #ifdef __cplusplus
 }
 #endif

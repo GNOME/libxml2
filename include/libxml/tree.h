@@ -32,6 +32,9 @@ extern "C" {
 typedef struct _xmlParserInputBuffer xmlParserInputBuffer;
 typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
 
+typedef struct _xmlOutputBuffer xmlOutputBuffer;
+typedef xmlOutputBuffer *xmlOutputBufferPtr;
+
 /* parser.h */
 typedef struct _xmlParserInput xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
@@ -810,16 +813,19 @@ void		xmlNodeDump		(xmlBufferPtr buf,
 					 int level,
 					 int format);
 
-/* These are exported from xmlIO.h
- 
-int		xmlSaveFileTo		(xmlOutputBuffer *buf,
+int		xmlSaveFileTo		(xmlOutputBufferPtr buf,
 					 xmlDocPtr cur,
 					 const char *encoding);
-int             xmlSaveFormatFileTo     (xmlOutputBuffer *buf,
-                                         xmlDocPtr cur,
-                                         const char *encoding,
-                                         int format);
- */ 					 
+int             xmlSaveFormatFileTo     (xmlOutputBufferPtr buf,
+					 xmlDocPtr cur,
+				         const char *encoding,
+				         int format);
+void		xmlNodeDumpOutput	(xmlOutputBufferPtr buf,
+					 xmlDocPtr doc,
+					 xmlNodePtr cur,
+					 int level,
+					 int format,
+					 const char *encoding);
 
 int		xmlSaveFormatFileEnc    ( const char * filename,
 					  xmlDocPtr cur,

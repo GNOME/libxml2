@@ -49,7 +49,9 @@
 
 #define XML_URN_PUBID "urn:publicid:"
 #define XML_CATAL_BREAK ((xmlChar *) -1)
+#ifndef XML_DEFAULT_CATALOG
 #define XML_DEFAULT_CATALOG "/etc/xml/catalog"
+#endif
 
 /************************************************************************
  *									*
@@ -244,6 +246,71 @@ xmlCatalogDumpEntry(xmlCatalogEntryPtr entry, FILE *out) {
 	    break;
     }
     fprintf(out, "\n");
+}
+
+/**
+ * xmlCatalogConvertEntry:
+ * @entry:  the entry
+ * @res:  pointer to te number converted
+ *
+ * Free up all the memory associated with catalogs
+ */
+static void
+xmlCatalogConvertEntry(xmlCatalogEntryPtr entry, int *res) {
+    if ((entry == NULL) || (xmlDefaultXMLCatalogList == NULL))
+	return;
+    switch (entry->type) {
+	case SGML_CATA_ENTITY:
+	    entry->type = XML_CATA_PUBLIC;
+	    break;
+	case SGML_CATA_PENTITY:
+	    entry->type = XML_CATA_PUBLIC;
+	    break;
+	case SGML_CATA_DOCTYPE:
+	    entry->type = XML_CATA_PUBLIC;
+	    break;
+	case SGML_CATA_LINKTYPE:
+	    entry->type = XML_CATA_PUBLIC;
+	    break;
+	case SGML_CATA_NOTATION:
+	    entry->type = XML_CATA_PUBLIC;
+	    break;
+	case SGML_CATA_PUBLIC:
+	    entry->type = XML_CATA_PUBLIC;
+	    break;
+	case SGML_CATA_SYSTEM:
+	    entry->type = XML_CATA_SYSTEM;
+	    break;
+	case SGML_CATA_DELEGATE:
+	    entry->type = XML_CATA_DELEGATE_PUBLIC;
+	    break;
+	case SGML_CATA_CATALOG:
+	    entry->type = XML_CATA_CATALOG;
+	    break;
+	default:
+	    xmlHashRemoveEntry(xmlDefaultCatalog, entry->name,
+		               (xmlHashDeallocator) xmlFreeCatalogEntry);
+	    return;
+    }
+    /*
+     * Conversion successful, remove from the SGML catalog
+     * and add it to the default XML one
+     */
+    xmlHashRemoveEntry(xmlDefaultCatalog, entry->name, NULL);
+    entry->parent = xmlDefaultXMLCatalogList;
+    entry->next = NULL;
+    if (xmlDefaultXMLCatalogList->children == NULL)
+	xmlDefaultXMLCatalogList->children = entry;
+    else {
+	xmlCatalogEntryPtr prev;
+
+	prev = xmlDefaultXMLCatalogList->children;
+	while (prev->next != NULL)
+	    prev = prev->next;
+	prev->next = entry;
+    }
+    if (res != NULL)
+	(*res)++;
 }
 
 /************************************************************************
@@ -1939,7 +2006,7 @@ xmlInitializeCatalog(void) {
  * @filename:  a file path
  *
  * Load the catalog and makes its definitions effective for the default
- * external entity loader. It will recuse in CATALOG entries.
+ * external entity loader. It will recurse in SGML CATALOG entries.
  * TODO: this function is not thread safe, catalog initialization should
  *       preferably be done once at startup
  *
@@ -2051,6 +2118,9 @@ xmlLoadCatalogs(const char *pathss) {
     const char *cur;
     const char *paths;
     xmlChar *path;
+
+    if (pathss == NULL)
+	return;
 
     cur = pathss;
     while ((cur != NULL) && (*cur != 0)) {
@@ -2266,13 +2336,15 @@ xmlCatalogResolve(const xmlChar *pubID, const xmlChar *sysID) {
     if (!xmlCatalogInitialized)
 	xmlInitializeCatalog();
 
-    if (xmlDebugCatalogs)
-	if (pubID != NULL)
+    if (xmlDebugCatalogs) {
+	if (pubID != NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Resolve: pubID %s\n", pubID);
-        else
+	} else {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Resolve: sysID %s\n", sysID);
+	}
+    }
 
     if (xmlDefaultXMLCatalogList != NULL) {
 	xmlChar *ret;
@@ -2378,7 +2450,8 @@ xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) 
 	typ = xmlGetSGMLCatalogEntryType(type);
 	if (type != XML_CATA_NONE) {
 	    xmlCatalogEntryPtr entry;
-	    entry = xmlNewCatalogEntry(typ, orig, replace, XML_CATA_PREFER_NONE);
+	    entry = xmlNewCatalogEntry(typ, orig, replace,
+		                       XML_CATA_PREFER_NONE);
 	    res = xmlHashAddEntry(xmlDefaultCatalog, orig, entry);
 	}
     } 
@@ -2404,6 +2477,39 @@ xmlCatalogRemove(const xmlChar *value) {
 	res = xmlDelXMLCatalog(xmlDefaultXMLCatalogList, value);
     } else if (xmlDefaultCatalog != NULL) {
 	TODO
+    } 
+    return(res);
+}
+
+/**
+ * xmlCatalogConvert:
+ *
+ * Convert all the SGML catalog entries as XML ones
+ *
+ * Returns the number of entries converted if successful, -1 otherwise
+ */
+int
+xmlCatalogConvert(void) {
+    int res = -1;
+
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+
+    if (xmlDebugCatalogs) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Converting SGML catalog to XML\n");
+    }
+
+    if (xmlDefaultXMLCatalogList == NULL) {
+	xmlDefaultXMLCatalogList = xmlNewCatalogEntry(XML_CATA_CATALOG,
+			   NULL, BAD_CAST "NewCatalog.xml",
+			   xmlCatalogDefaultPrefer);
+    }
+    if (xmlDefaultCatalog != NULL) {
+	res = 0;
+	
+	xmlHashScan(xmlDefaultCatalog,
+		    (xmlHashScanner) xmlCatalogConvertEntry, &res);
     } 
     return(res);
 }
@@ -2588,13 +2694,15 @@ xmlCatalogLocalResolve(void *catalogs, const xmlChar *pubID,
     if (!xmlCatalogInitialized)
 	xmlInitializeCatalog();
 
-    if (xmlDebugCatalogs)
-	if (pubID != NULL)
+    if (xmlDebugCatalogs) {
+	if (pubID != NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Local resolve: pubID %s\n", pubID);
-        else
+	} else {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Local resolve: sysID %s\n", sysID);
+	}
+    }
 
     catal = (xmlCatalogEntryPtr) catalogs;
     if (catal == NULL)

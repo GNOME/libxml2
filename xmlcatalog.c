@@ -29,6 +29,7 @@ static int noout = 0;
 static int create = 0;
 static int add = 0;
 static int del = 0;
+static int convert = 0;
 static int verbose = 0;
 static char *filename;
 
@@ -285,6 +286,8 @@ static void usage(const char *name) {
 }
 int main(int argc, char **argv) {
     int i;
+    int ret;
+
 
     if (argc <= 1) {
 	usage(argv[0]);
@@ -313,6 +316,9 @@ int main(int argc, char **argv) {
 	} else if ((!strcmp(argv[i], "-create")) ||
 	    (!strcmp(argv[i], "--create"))) {
 	    create++;
+	} else if ((!strcmp(argv[i], "-convert")) ||
+	    (!strcmp(argv[i], "--convert"))) {
+	    convert++;
 	} else if ((!strcmp(argv[i], "-add")) ||
 	    (!strcmp(argv[i], "--add"))) {
 	    i += 3;
@@ -340,17 +346,17 @@ int main(int argc, char **argv) {
 	} else if (argv[i][0] == '-')
 	    continue;
 	filename = argv[i];
-	if (!create) {
-	    xmlLoadCatalog(argv[i]);
-	} else {
+	ret = xmlLoadCatalog(argv[i]);
+	if ((ret < 0) && (create)) {
 	    xmlCatalogAdd(BAD_CAST "catalog", BAD_CAST argv[i], NULL);
 	}
 	break;
     }
 
-    if ((add) || (del)) {
-	int ret;
+    if (convert)
+        ret = xmlCatalogConvert();
 
+    if ((add) || (del)) {
 	for (i = 1; i < argc ; i++) {
 	    if (!strcmp(argv[i], "-"))
 		break;
@@ -404,7 +410,7 @@ int main(int argc, char **argv) {
 	    }
 	}
     }
-    if ((add) || (del) || (create)) {
+    if ((add) || (del) || (create) || (convert)) {
 	if (noout) {
 	    FILE *out;
 

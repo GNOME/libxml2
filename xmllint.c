@@ -975,7 +975,11 @@ main(int argc, char **argv) {
 	    const char *catal;
 
 	    catal = getenv("SGML_CATALOG_FILES");
-	    xmlLoadCatalogs(catal);
+	    if (catal != NULL) {
+		xmlLoadCatalogs(catal);
+	    } else {
+		fprintf(stderr, "Variable $SGML_CATALOG_FILES not set\n");
+	    }
 	}
     }
 #endif

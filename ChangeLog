@@ -1,3 +1,11 @@
+Sat Aug 25 15:30:17 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/catalog.h catalog.c xmlcatalog.c: added a 
+	  --convert option to xmlcatalog to convert SGML ones to
+	  the XML syntax.
+	* xmllint.c: small cleanup for $SGML_CATALOG_FILES support.
+
+        2.4.3 got released at that point
 Thu Aug 23 23:16:32 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c xmlIO.c: started some serious testing and fixed

@@ -1,3 +1,25 @@
+Sun Jan 26 17:37:06 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	in docs/tutorial:
+	* apa.html
+	* apb.html
+	* apc.html
+	* apd.html
+	* ape.html
+	* apf.html
+	* apg.html
+	* ar01s02.html
+	* ar01s03.html
+	* ar01s04.html
+	* ar01s05.html
+	* ar01s06.html
+	* ar01s07.html
+	* ar01s08.html
+	* index.html
+	* xmltutorial.pdf
+	* xmltutorial.xml
+	add index to tutorial
+
 Sun Jan 26 17:02:29 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* doc/xmlcatalog.1

@@ -17,29 +17,39 @@
       <email>jfleck@inkstain.net</email>
     </author>
     <copyright>
-      <year>2002</year>
+      <year>2002, 2003</year>
       <holder>John Fleck</holder>
     </copyright>
     <revhistory>
       <revision>
 	<revnumber>1</revnumber>
 	<date>June 4, 2002</date>
+	<revremark>Initial draft</revremark>
       </revision>
       <revision>
 	<revnumber>2</revnumber>
 	<date>June 12, 2002</date>
+	<revremark>retrieving attribute value added</revremark>
       </revision>
       <revision>
 	<revnumber>3</revnumber>
 	<date>Aug. 31, 2002</date>
+	<revremark>freeing memory fix</revremark>
       </revision>
       <revision>
 	<revnumber>4</revnumber>
 	<date>Nov. 10, 2002</date>
+	<revremark>encoding discussion added</revremark>
       </revision>
       <revision>
 	<revnumber>5</revnumber>
 	<date>Dec. 15, 2002</date>
+	<revremark>more memory freeing changes</revremark>
+      </revision>
+      <revision>
+	<revnumber>6</revnumber>
+	<date>Jan. 26. 2003</date>
+	<revremark>add index</revremark>
       </revision>
     </revhistory>
   </articleinfo>
@@ -97,7 +107,10 @@
     <para>
       <variablelist>
 	<varlistentry>
-	  <term><ulink
+	  <term><indexterm>
+	      <primary>xmlChar</primary>
+	    </indexterm>
+<ulink
 	  url="http://xmlsoft.org/html/libxml-tree.html#XMLCHAR">xmlChar</ulink></term>
 	  <listitem>
 	    <para>A basic replacement for char, a byte in a UTF-8 encoded
@@ -108,7 +121,9 @@
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
-	  <term>
+	  <term><indexterm>
+	      <primary>xmlDoc</primary>
+	    </indexterm>
 	    <ulink url="http://xmlsoft.org/html/libxml-tree.html#XMLDOC">xmlDoc</ulink></term>
 	  <listitem>
 	    <para>A structure containing the tree created by a parsed doc. <ulink
@@ -117,7 +132,10 @@
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
-	  <term><ulink
+	  <term><indexterm>
+	      <primary>xmlNodePtr</primary>
+	    </indexterm>
+<ulink
 	  url="http://xmlsoft.org/html/libxml-tree.html#XMLNODEPTR">xmlNodePtr</ulink>
 	    and <ulink url="http://xmlsoft.org/html/libxml-tree.html#XMLNODE">xmlNode</ulink></term>
 	  <listitem>
@@ -133,7 +151,10 @@
 
   <sect1 id="xmltutorialparsing">
     <title>Parsing the file</title>
-    <para>Parsing the file requires only the name of the file and a single
+    <para><indexterm id="fileparsing" class="startofrange">
+	<primary>file parsing</primary>
+      </indexterm>
+Parsing the file requires only the name of the file and a single
       function call, plus error checking. Full code: <xref
     linkend="keywordappendix" /></para>
     <para>
@@ -176,7 +197,10 @@
 	    was not, <application>libxml</application> will at this point
 	    register an error and stop. 
 	    <note>
-	      <para>One common example of an error at this point is improper
+	      <para><indexterm>
+		  <primary>encoding</primary>
+		</indexterm>
+One common example of an error at this point is improper
 	    handling of encoding. The <acronym>XML</acronym> standard requires
 	    documents stored with an encoding other than UTF-8 or UTF-16 to
 	    contain an explicit declaration of their encoding. If the
@@ -200,12 +224,17 @@
 	  tutorial.</para>
 	</callout>
       </calloutlist>
+      <indexterm startref="fileparsing" class="endofrange" />
     </para>
   </sect1>
 
   <sect1 id="xmltutorialgettext">
     <title>Retrieving Element Content</title>
-    <para>Retrieving the content of an element involves traversing the document
+    <para><indexterm>
+	<primary>element</primary>
+	<secondary>retrieving content</secondary>
+      </indexterm>
+Retrieving the content of an element involves traversing the document
     tree until you find what you are looking for. In this case, we are looking
     for an element called &quot;keyword&quot; contained within element called &quot;story&quot;. The
     process to find the node we are interested in involves tediously walking the
@@ -289,7 +318,11 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur) {
 
 <sect1 id="xmltutorialwritingcontent">
     <title>Writing element content</title>
-    <para>Writing element content uses many of the same steps we used above
+    <para><indexterm>
+	<primary>element</primary>
+	<secondary>writing content</secondary>
+      </indexterm>
+Writing element content uses many of the same steps we used above
     &mdash; parsing the document and walking the tree. We parse the document,
     then traverse the tree to find the place we want to insert our element. For
     this example, we want to again find the &quot;storyinfo&quot; element and
@@ -335,7 +368,11 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
 
   <sect1 id="xmltutorialwritingattribute">
     <title>Writing Attribute</title>
-    <para>Writing an attribute is similar to writing text to a new element. In
+    <para><indexterm>
+	<primary>attribute</primary>
+	<secondary>writing</secondary>
+      </indexterm>
+Writing an attribute is similar to writing text to a new element. In
       this case, we'll add a reference <acronym>URI</acronym> to our
       document. Full code:<xref linkend="addattributeappendix" />.</para>
     <para>
@@ -378,7 +415,11 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
 
   <sect1 id="xmltutorialattribute">
     <title>Retrieving Attributes</title>
-    <para>Retrieving the value of an attribute is similar to the previous
+    <para><indexterm>
+	<primary>attribute</primary>
+	<secondary>retrieving value</secondary>
+      </indexterm>
+Retrieving the value of an attribute is similar to the previous
     example in which we retrieved a node's text contents. In this case we'll
       extract the value of the <acronym>URI</acronym> we added in the previous
       section. Full code: <xref linkend="getattributeappendix" />.</para>
@@ -428,12 +469,15 @@ getReference (xmlDocPtr doc, xmlNodePtr cur) {
   <sect1 id="xmltutorialconvert">
     <title>Encoding Conversion</title>
 
-    <para>Data encoding compatibility problems are one of the most common
+    <para><indexterm>
+	<primary>encoding</primary>
+      </indexterm>
+Data encoding compatibility problems are one of the most common
       difficulties encountered by programmers new to <acronym>XML</acronym> in
       general and <application>libxml</application> in particular. Thinking
       through the design of your application in light of this issue will help
       avoid difficulties later. Internally, <application>libxml</application>
-      stores and manipulates date in the UTF-8 format. Data used by your program
+      stores and manipulates data in the UTF-8 format. Data used by your program
       in other formats, such as the commonly used ISO-8859-1 encoding, must be
       converted to UTF-8 before passing it to <application>libxml</application>
       functions. If you want your program's output in an encoding other than
@@ -559,11 +603,13 @@ getReference (xmlDocPtr doc, xmlNodePtr cur) {
       <programlisting>&CONVERT;</programlisting>
     </para>
   </appendix>
+  <index>
+  </index>
   <appendix>
     <title>Acknowledgements</title>
     <para>A number of people have generously offered feedback, code and
     suggested improvements to this tutorial. In no particular order:
-      <simplelist>
+      <simplelist type="inline">
 	<member>Daniel Veillard</member>
 	<member>Marcus Labib Iskander</member>
 	<member>Christopher R. Harris</member>

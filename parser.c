@@ -5643,7 +5643,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 
 			cur = ent->children;
 			while (cur != NULL) {
-			    nw = xmlCopyNode(cur, 1);
+			    nw = xmlDocCopyNode(cur, ctxt->myDoc, 1);
 			    if (nw != NULL) {
 				if (nw->_private == NULL)
 				    nw->_private = cur->_private;
@@ -5687,7 +5687,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			    next = cur->next;
 			    cur->next = NULL;
 			    cur->parent = NULL;
-			    nw = xmlCopyNode(cur, 1);
+			    nw = xmlDocCopyNode(cur, ctxt->myDoc, 1);
 			    if (nw != NULL) {
 				if (nw->_private == NULL)
 				    nw->_private = cur->_private;
@@ -9937,6 +9937,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
+    ctxt->dictNames = 1;
     ctxt->pushTab = (void **) xmlMalloc(ctxt->nameMax * 3 * sizeof(xmlChar *));
     if (ctxt->pushTab == NULL) {
         xmlErrMemory(ctxt, NULL);
@@ -10385,6 +10386,10 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	xmlFreeParserCtxt(ctxt);
 	return(-1);
     }
+    if (ctx->myDoc->dict) {
+	newDoc->dict = ctx->myDoc->dict;
+	xmlDictReference(newDoc->dict);
+    }
     if (ctx->myDoc != NULL) {
 	newDoc->intSubset = ctx->myDoc->intSubset;
 	newDoc->extSubset = ctx->myDoc->extSubset;
@@ -10596,7 +10601,12 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     if (doc != NULL) {
 	newDoc->intSubset = doc->intSubset;
 	newDoc->extSubset = doc->extSubset;
+	newDoc->dict = doc->dict;
+    } else if (oldctxt != NULL) {
+	newDoc->dict = oldctxt->dict;
     }
+    xmlDictReference(newDoc->dict);
+
     if (doc->URL != NULL) {
 	newDoc->URL = xmlStrdup(doc->URL);
     }
@@ -10827,6 +10837,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	    xmlFreeParserCtxt(ctxt);
 	    return(XML_ERR_INTERNAL_ERROR);
 	}
+	newDoc->dict = ctxt->dict;
+	xmlDictReference(newDoc->dict);
 	ctxt->myDoc = newDoc;
     } else {
 	ctxt->myDoc = oldctxt->myDoc;
@@ -10838,8 +10850,9 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	ctxt->sax = oldsax;
 	ctxt->dict = NULL;
 	xmlFreeParserCtxt(ctxt);
-	if (newDoc != NULL)
+	if (newDoc != NULL) {
 	    xmlFreeDoc(newDoc);
+	}
 	return(XML_ERR_INTERNAL_ERROR);
     }
     ctxt->myDoc->children = NULL;
@@ -10913,8 +10926,9 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     ctxt->attsDefault = NULL;
     ctxt->attsSpecial = NULL;
     xmlFreeParserCtxt(ctxt);
-    if (newDoc != NULL)
+    if (newDoc != NULL) {
 	xmlFreeDoc(newDoc);
+    }
     
     return(ret);
 }
@@ -11179,6 +11193,8 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	xmlFreeParserCtxt(ctxt);
 	return(-1);
     }
+    newDoc->dict = ctxt->dict;
+    xmlDictReference(newDoc->dict);
     if (doc != NULL) {
 	newDoc->intSubset = doc->intSubset;
 	newDoc->extSubset = doc->extSubset;

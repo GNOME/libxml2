@@ -724,6 +724,10 @@ XMLPUBFUN xmlNodePtr XMLCALL
 XMLPUBFUN xmlNodePtr XMLCALL	
 		xmlNewText		(const xmlChar *content);
 XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewDocPI		(xmlDocPtr doc,
+					 const xmlChar *name,
+					 const xmlChar *content);
+XMLPUBFUN xmlNodePtr XMLCALL	
 		xmlNewPI		(const xmlChar *name,
 					 const xmlChar *content);
 XMLPUBFUN xmlNodePtr XMLCALL	
@@ -755,6 +759,9 @@ XMLPUBFUN xmlNodePtr XMLCALL
 		xmlDocCopyNode		(const xmlNodePtr node,
 					 xmlDocPtr doc,
 					 int recursive);
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlDocCopyNodeList	(xmlDocPtr doc,
+					 const xmlNodePtr node);
 XMLPUBFUN xmlNodePtr XMLCALL	
 		xmlCopyNodeList		(const xmlNodePtr node);
 #ifdef LIBXML_TREE_ENABLED

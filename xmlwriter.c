@@ -304,6 +304,11 @@ xmlNewTextWriterDoc(xmlDocPtr * doc, int compression)
                         "xmlNewTextWriterDoc : error at xmlCreatePushParserCtxt!\n");
         return NULL;
     }
+    /*
+     * For some reason this seems to completely break if node names
+     * are interned.
+     */
+    ctxt->dictNames = 0;
 
     ctxt->myDoc = xmlNewDoc(BAD_CAST XML_DEFAULT_VERSION);
     if (ctxt->myDoc == NULL) {
@@ -364,6 +369,11 @@ xmlNewTextWriterTree(xmlDocPtr doc, xmlNodePtr node, int compression)
                         "xmlNewTextWriterDoc : error at xmlCreatePushParserCtxt!\n");
         return NULL;
     }
+    /*
+     * For some reason this seems to completely break if node names
+     * are interned.
+     */
+    ctxt->dictNames = 0;
 
     ret = xmlNewTextWriterPushParser(ctxt, compression);
     if (ret == NULL) {

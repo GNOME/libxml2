@@ -1872,7 +1872,8 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	    ret = 0;	/* xmlXIncludeDoProcess can return +ve number */
 	xmlXIncludeFreeContext(newctxt);
 
-	ctxt->incTab[nr]->inc = xmlCopyNodeList(fallback->children);
+	ctxt->incTab[nr]->inc = xmlDocCopyNodeList(ctxt->doc,
+	                                           fallback->children);
     } else {
         ctxt->incTab[nr]->inc = NULL;
 	ctxt->incTab[nr]->emptyFb = 1;	/* flag empty callback */
@@ -2134,7 +2135,7 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	 * XInclude end one
 	 */
 	cur->type = XML_XINCLUDE_START;
-	end = xmlNewNode(cur->ns, cur->name);
+	end = xmlNewDocNode(cur->doc, cur->ns, cur->name, NULL);
 	if (end == NULL) {
 	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
 	                   XML_XINCLUDE_BUILD_FAILED,

@@ -42,8 +42,10 @@ struct _xmlDebugCtxt {
     int depth;                  /* current depth */
     xmlDocPtr doc;              /* current document */
     xmlNodePtr node;		/* current node */
+    xmlDictPtr dict;		/* the doc dictionnary */
     int check;                  /* do just checkings */
     int errors;                 /* number of errors found */
+    int nodict;			/* if the document has no dictionnary */
 };
 
 static void xmlCtxtDumpNodeList(xmlDebugCtxtPtr ctxt, xmlNodePtr node);
@@ -57,6 +59,9 @@ xmlCtxtDumpInitCtxt(xmlDebugCtxtPtr ctxt)
     ctxt->check = 0;
     ctxt->errors = 0;
     ctxt->output = stdout;
+    ctxt->doc = NULL;
+    ctxt->node = NULL;
+    ctxt->dict = NULL;
     for (i = 0; i < 100; i++)
         ctxt->shift[i] = ' ';
     ctxt->shift[100] = 0;
@@ -222,20 +227,69 @@ xmlCtxtCheckString(xmlDebugCtxtPtr ctxt, const xmlChar * str)
     if (str == NULL) return;
     if (ctxt->check) {
         if (!xmlCheckUTF8(str)) {
-	    xmlDebugErr3(ctxt, XML_CHECK_NOT_DTD,
+	    xmlDebugErr3(ctxt, XML_CHECK_NOT_UTF8,
 			 "String is not UTF-8 %s", (const char *) str);
+	}
+    }
+}
+
+/**
+ * xmlCtxtCheckName:
+ * @ctxt: the debug context
+ * @name: the name
+ *
+ * Do debugging on the name, for example the dictionnary status and
+ * conformance to the Name production.
+ */
+static void
+xmlCtxtCheckName(xmlDebugCtxtPtr ctxt, const xmlChar * name)
+{
+    if (ctxt->check) {
+	if (name == NULL) {
+	    xmlDebugErr(ctxt, XML_CHECK_NO_NAME, "Name is NULL");
+	    return;
+	}
+        if (xmlValidateName(name, 0)) {
+	    xmlDebugErr3(ctxt, XML_CHECK_NOT_NCNAME,
+			 "Name is not an NCName '%s'", (const char *) name);
+	}
+	if ((ctxt->dict != NULL) &&
+	    (!xmlDictOwns(ctxt->dict, name))) {
+	    xmlDebugErr3(ctxt, XML_CHECK_OUTSIDE_DICT,
+			 "Name is not from the document dictionnary '%s'",
+			 (const char *) name);
 	}
     }
 }
 
 static void
 xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
+    xmlDocPtr doc;
+    xmlDictPtr dict;
+
+    doc = node->doc;
+
     if (node->parent == NULL)
         xmlDebugErr(ctxt, XML_CHECK_NO_PARENT,
 	            "Node has no parent\n");
-    if (node->doc == NULL)
+    if (node->doc == NULL) {
         xmlDebugErr(ctxt, XML_CHECK_NO_DOC,
 	            "Node has no doc\n");
+        dict = NULL;
+    } else {
+	dict = doc->dict;
+	if ((dict == NULL) && (ctxt->nodict == 0)) {
+	    xmlDebugErr(ctxt, XML_CHECK_NO_DICT,
+			"Document has no dictionnary\n");
+	    ctxt->nodict = 1;
+	}
+	if (ctxt->doc == NULL)
+	    ctxt->doc = doc;
+
+	if (ctxt->dict == NULL) {
+	    ctxt->dict = dict;
+	}
+    }
     if ((node->parent != NULL) && (node->doc != node->parent->doc) &&
         (!xmlStrEqual(node->name, BAD_CAST "pseudoroot")))
         xmlDebugErr(ctxt, XML_CHECK_WRONG_DOC,
@@ -291,6 +345,60 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
 	(node->type != XML_DOCUMENT_NODE)) {
 	if (node->content != NULL)
 	    xmlCtxtCheckString(ctxt, (const xmlChar *) node->content);
+    }
+    switch (node->type) {
+        case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE:
+	    xmlCtxtCheckName(ctxt, node->name);
+	    break;
+        case XML_TEXT_NODE:
+	    if ((node->name == xmlStringText) ||
+	        (node->name == xmlStringTextNoenc))
+		break;
+	    /* some case of entity substitution can lead to this */
+	    if ((ctxt->dict != NULL) &&
+	        (node->name == xmlDictLookup(ctxt->dict, "nbktext", 7)))
+		break;
+
+	    xmlDebugErr3(ctxt, XML_CHECK_WRONG_NAME,
+			 "Text node has wrong name '%s'",
+			 (const char *) node->name);
+	    break;
+        case XML_COMMENT_NODE:
+	    if (node->name == xmlStringComment)
+		break;
+	    xmlDebugErr3(ctxt, XML_CHECK_WRONG_NAME,
+			 "Comment node has wrong name '%s'",
+			 (const char *) node->name);
+	    break;
+        case XML_PI_NODE:
+	    xmlCtxtCheckName(ctxt, node->name);
+	    break;
+        case XML_CDATA_SECTION_NODE:
+	    if (node->name == NULL)
+		break;
+	    xmlDebugErr3(ctxt, XML_CHECK_NAME_NOT_NULL,
+			 "CData section has non NULL name '%s'",
+			 (const char *) node->name);
+	    break;
+        case XML_ENTITY_REF_NODE:
+        case XML_ENTITY_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_NOTATION_NODE:
+        case XML_DTD_NODE:
+        case XML_ELEMENT_DECL:
+        case XML_ATTRIBUTE_DECL:
+        case XML_ENTITY_DECL:
+        case XML_NAMESPACE_DECL:
+        case XML_XINCLUDE_START:
+        case XML_XINCLUDE_END:
+#ifdef LIBXML_DOCB_ENABLED
+        case XML_DOCB_DOCUMENT_NODE:
+#endif
+        case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+	    break;
     }
 }
 

@@ -912,6 +912,7 @@ xmlParseCatalogFile(const char *filename) {
     ctxt->validate = 0;
     ctxt->loadsubset = 0;
     ctxt->pedantic = 0;
+    ctxt->dictNames = 1;
 
     xmlParseDocument(ctxt);
 

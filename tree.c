@@ -329,7 +329,7 @@ xmlSplitQName3(const xmlChar *name, int *len) {
  
 #define CUR_SCHAR(s, l) xmlStringCurrentChar(NULL, s, &l)
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED)
 /**
  * xmlValidateNCName:
  * @value: the value to check
@@ -1749,7 +1749,10 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	doc = node->doc;
 	cur->doc = doc;
     }
-    cur->name = xmlStrdup(name);
+    if ((doc != NULL) && (doc->dict != NULL))
+        cur->name = (xmlChar *) xmlDictLookup(doc->dict, name, -1);
+    else
+	cur->name = xmlStrdup(name);
     if (value != NULL) {
 	xmlChar *buffer;
 	xmlNodePtr tmp;
@@ -1830,7 +1833,10 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 	cur->doc = doc;
     }
     cur->ns = ns;
-    cur->name = xmlStrdup(name);
+    if ((doc != NULL) && (doc->dict != NULL))
+	cur->name = xmlDictLookup(doc->dict, name, -1);
+    else
+	cur->name = xmlStrdup(name);
     if (value != NULL) {
 	xmlChar *buffer;
 	xmlNodePtr tmp;
@@ -1979,7 +1985,10 @@ xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value) {
     memset(cur, 0, sizeof(xmlAttr));
     cur->type = XML_ATTRIBUTE_NODE;
 
-    cur->name = xmlStrdup(name);
+    if ((doc != NULL) && (doc->dict != NULL))
+	cur->name = xmlDictLookup(doc->dict, name, -1);
+    else
+	cur->name = xmlStrdup(name);
     cur->doc = doc; 
     if (value != NULL) {
 	xmlNodePtr tmp;
@@ -2098,7 +2107,8 @@ xmlRemoveProp(xmlAttrPtr cur) {
 #endif /* LIBXML_TREE_ENABLED */
 
 /**
- * xmlNewPI:
+ * xmlNewDocPI:
+ * @doc:  the target document
  * @name:  the processing instruction name
  * @content:  the PI content
  *
@@ -2106,7 +2116,7 @@ xmlRemoveProp(xmlAttrPtr cur) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewPI(const xmlChar *name, const xmlChar *content) {
+xmlNewDocPI(xmlDocPtr doc, const xmlChar *name, const xmlChar *content) {
     xmlNodePtr cur;
 
     if (name == NULL) {
@@ -2128,7 +2138,10 @@ xmlNewPI(const xmlChar *name, const xmlChar *content) {
     memset(cur, 0, sizeof(xmlNode));
     cur->type = XML_PI_NODE;
 
-    cur->name = xmlStrdup(name);
+    if ((doc != NULL) && (doc->dict != NULL))
+        cur->name = xmlDictLookup(doc->dict, name, -1);
+    else
+	cur->name = xmlStrdup(name);
     if (content != NULL) {
 	cur->content = xmlStrdup(content);
     }
@@ -2136,6 +2149,21 @@ xmlNewPI(const xmlChar *name, const xmlChar *content) {
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
+}
+
+/**
+ * xmlNewPI:
+ * @name:  the processing instruction name
+ * @content:  the PI content
+ *
+ * Creation of a processing instruction element.
+ * Use xmlDocNewPI preferably to get string interning
+ *
+ * Returns a pointer to the new node object.
+ */
+xmlNodePtr
+xmlNewPI(const xmlChar *name, const xmlChar *content) {
+    return(xmlNewDocPI(NULL, name, content));
 }
 
 /**
@@ -2242,7 +2270,11 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
               const xmlChar *name, const xmlChar *content) {
     xmlNodePtr cur;
 
-    cur = xmlNewNode(ns, name);
+    if (doc->dict != NULL)
+        cur = xmlNewNodeEatName(ns, (xmlChar *)
+	                        xmlDictLookup(doc->dict, name, -1));
+    else
+	cur = xmlNewNode(ns, name);
     if (cur != NULL) {
         cur->doc = doc;
 	if (content != NULL) {
@@ -3804,8 +3836,12 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	ret->name = xmlStringTextNoenc;
     else if (node->name == xmlStringComment)
 	ret->name = xmlStringComment;
-    else if (node->name != NULL)
-	ret->name = xmlStrdup(node->name);
+    else if (node->name != NULL) {
+        if ((doc != NULL) && (doc->dict != NULL))
+	    ret->name = xmlDictLookup(doc->dict, node->name, -1);
+	else
+	    ret->name = xmlStrdup(node->name);
+    }
     if ((node->type != XML_ELEMENT_NODE) &&
 	(node->content != NULL) &&
 	(node->type != XML_ENTITY_REF_NODE) &&
@@ -3969,10 +4005,25 @@ xmlDocCopyNode(const xmlNodePtr node, xmlDocPtr doc, int extended) {
 }
 
 /**
+ * xmlDocCopyNodeList:
+ * @doc: the target document
+ * @node:  the first node in the list.
+ *
+ * Do a recursive copy of the node list.
+ *
+ * Returns: a new #xmlNodePtr, or NULL in case of error.
+ */
+xmlNodePtr xmlDocCopyNodeList(xmlDocPtr doc, const xmlNodePtr node) {
+    xmlNodePtr ret = xmlStaticCopyNodeList(node, doc, NULL);
+    return(ret);
+}
+
+/**
  * xmlCopyNodeList:
  * @node:  the first node in the list.
  *
  * Do a recursive copy of the node list.
+ * Use xmlDocCopyNodeList() if possible to ensure string interning.
  *
  * Returns: a new #xmlNodePtr, or NULL in case of error.
  */

@@ -277,7 +277,7 @@ NStests : xmllint$(EXEEXT)
 	      log=`$(CHECKER) $(top_builddir)/xmllint $$i 2> error.$$name > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	      diff $(srcdir)/result/namespaces/$$name result.$$name ; \
-	      diff $(srcdir)/result/namespaces/$$name.err error.$$name` ; \
+	      diff $(srcdir)/result/namespaces/$$name.err error.$$name`; \
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)

@@ -7024,7 +7024,8 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                         } else {
                             xmlNodePtr node;
 
-                            node = xmlNewNode(cur->ns, BAD_CAST "name");
+                            node = xmlNewDocNode(cur->doc, cur->ns,
+			                         BAD_CAST "name", NULL);
                             if (node != NULL) {
                                 xmlAddPrevSibling(cur->children, node);
                                 text = xmlNewText(name);

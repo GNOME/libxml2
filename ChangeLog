@@ -1,3 +1,8 @@
+Fri Jun 13 12:03:30 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* entities.c: do not generate &quot; for " outside of attributes
+	* result//*: this changes the output of some tests
+
 Mon Jun  9 12:28:58 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c xmlIO.c: trying to fix #114277 about when file

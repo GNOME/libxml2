@@ -632,6 +632,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	    *out++ = 'm';
 	    *out++ = 'p';
 	    *out++ = ';';
+#if 0
 	} else if (*cur == '"') {
 	    *out++ = '&';
 	    *out++ = 'q';
@@ -639,7 +640,6 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	    *out++ = 'o';
 	    *out++ = 't';
 	    *out++ = ';';
-#if 0
 	} else if ((*cur == '\'') && (!html)) {
 	    *out++ = '&';
 	    *out++ = 'a';

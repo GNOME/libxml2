@@ -81,8 +81,8 @@
 #define _WINSOCKAPI_
 #include <wsockcompat.h>
 #include <winsock2.h>
-#undef SOCKLEN_T
-#define SOCKLEN_T unsigned int
+#undef XML_SOCKLEN_T
+#define XML_SOCKLEN_T unsigned int
 #endif
 
 /**
@@ -95,7 +95,7 @@
 #define SOCKET int
 #endif
 #if defined(VMS) || defined(__VMS)
-#define SOCKLEN_T unsigned int
+#define XML_SOCKLEN_T unsigned int
 #endif
 
 #ifdef __BEOS__
@@ -1372,7 +1372,7 @@ xmlNanoFTPGetConnection(void *ctx) {
 #else
     struct sockaddr_in dataAddr;
 #endif
-    SOCKLEN_T dataAddrLen;
+    XML_SOCKLEN_T dataAddrLen;
 
     if (ctxt == NULL) return(-1);
 

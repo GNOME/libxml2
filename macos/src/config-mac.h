@@ -16,7 +16,7 @@
 #undef HAVE_LIBHISTORY
 #undef HAVE_LIBREADLINE
 
-#define SOCKLEN_T socklen_t
+#define XML_SOCKLEN_T socklen_t
 #define HAVE_LIBPTHREAD
 #define HAVE_PTHREAD_H
 #define LIBXML_THREAD_ENABLED

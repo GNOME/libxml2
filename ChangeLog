@@ -1,3 +1,9 @@
+Thu Mar 31 12:22:54 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* config.h.in configure.in nanoftp.c nanohttp.c xmllint.c
+	  macos/src/config-mac.h: use XML_SOCKLEN_T instead of SOCKLEN_T
+	  since apparently IBM can't avoid breaking common defines #166922
+
 Thu Mar 31 10:41:45 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: fix unitinialized variable in not frequently used

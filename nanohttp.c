@@ -69,7 +69,7 @@
 
 #ifdef VMS
 #include <stropts>
-#define SOCKLEN_T unsigned int
+#define XML_SOCKLEN_T unsigned int
 #define SOCKET int
 #endif
 
@@ -78,8 +78,8 @@
 #define _WINSOCKAPI_
 #include <wsockcompat.h>
 #include <winsock2.h>
-#undef SOCKLEN_T
-#define SOCKLEN_T unsigned int
+#undef XML_SOCKLEN_T
+#define XML_SOCKLEN_T unsigned int
 #endif
 
 
@@ -107,8 +107,8 @@
 #endif
 #endif
 
-#ifndef SOCKLEN_T
-#define SOCKLEN_T unsigned int
+#ifndef XML_SOCKLEN_T
+#define XML_SOCKLEN_T unsigned int
 #endif
 #ifndef SOCKET
 #define SOCKET int
@@ -861,7 +861,7 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
                            || FD_ISSET(s, &xfd)
 #endif
                                                 ) {
-	SOCKLEN_T len;
+	XML_SOCKLEN_T len;
 	len = sizeof(status);
 #ifdef SO_ERROR
 	if (getsockopt(s, SOL_SOCKET, SO_ERROR, (char*)&status, &len) < 0 ) {

@@ -273,9 +273,6 @@
 /* Define to 1 if the C compiler supports function prototypes. */
 #undef PROTOTYPES
 
-/* Determine what socket length (socklen_t) data type is */
-#undef SOCKLEN_T
-
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
@@ -284,6 +281,9 @@
 
 /* Version number of package */
 #undef VERSION
+
+/* Determine what socket length (socklen_t) data type is */
+#undef XML_SOCKLEN_T
 
 /* Using the Win32 Socket implementation */
 #undef _WINSOCKAPI_

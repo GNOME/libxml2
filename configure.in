@@ -419,24 +419,24 @@ AC_TRY_COMPILE2([
 #include <sys/socket.h>],[
 (void)getsockopt (1, 1, 1, NULL, (socklen_t *)NULL)],[
   AC_MSG_RESULT(socklen_t *)
-  SOCKLEN_T=socklen_t],[
+  XML_SOCKLEN_T=socklen_t],[
   AC_TRY_COMPILE2([
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/socket.h>],[
 (void)getsockopt (1, 1, 1, NULL, (size_t *)NULL)],[
     AC_MSG_RESULT(size_t *)
-    SOCKLEN_T=size_t],[
+    XML_SOCKLEN_T=size_t],[
     AC_TRY_COMPILE2([
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/socket.h>],[
 (void)getsockopt (1, 1, 1, NULL, (int *)NULL)],[
       AC_MSG_RESULT(int *)
-      SOCKLEN_T=int],[
+      XML_SOCKLEN_T=int],[
       AC_MSG_WARN(could not determine)
-      SOCKLEN_T="int"])])])
-AC_DEFINE_UNQUOTED(SOCKLEN_T, $SOCKLEN_T, [Determine what socket length (socklen_t) data type is])
+      XML_SOCKLEN_T="int"])])])
+AC_DEFINE_UNQUOTED(XML_SOCKLEN_T, $XML_SOCKLEN_T, [Determine what socket length (socklen_t) data type is])
 
 dnl ***********************Checking for availability of IPv6*******************
 

@@ -1,6 +1,7 @@
 Fri Jul  6 00:47:41 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/html/*: rebuilt the docs for the release
+	* doc/xml.html: added 2.3.14 release.
 
 Thu Jul  5 22:01:31 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 

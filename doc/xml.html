@@ -1,5 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <title>The XML C library for Gnome</title>
@@ -156,8 +154,8 @@ debug it</strong> (but patches are really appreciated!).</p>
     version</a>, and that the problem still shows up in those</li>
   <li>check the <a href="http://mail.gnome.org/archives/xml/">list
     archives</a> to see if the problem was reported already, in this case
-    there is probably a fix available, similary check the <a
-    href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&product=libxslt&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=NEEDINFO&bug_status=REOPENED&bug_status=RESOLVED&bug_status=VERIFIED&email1=&emailtype1=substring&emailassigned_to1=1&emailreporter1=1&emailcc1=1&emaillongdesc1=1&email2=&emailtype2=substring&emailassigned_to2=1&emailreporter2=1&emailcc2=1&emaillongdesc2=1&changedin=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&bug_file_loc=&bug_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&keywords=&keywords_type=anywords&op_sys_details=&op_sys_details_type=substring&version_details=&version_details_type=substring&cmdtype=doit&newqueryname=&order=Reuse+same+sort+as+last+time&form_name=query">registered open bugs</a></li>
+    there is probably a fix available, similary check the <a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxslt&amp;bug_status=UNCONFIRMED&amp;bug_status=NEW&amp;bug_status=ASSIGNED&amp;bug_status=NEEDINFO&amp;bug_status=REOPENED&amp;bug_status=RESOLVED&amp;bug_status=VERIFIED&amp;email1=&amp;emailtype1=substring&amp;emailassigned_to1=1&amp;emailreporter1=1&amp;emailcc1=1&amp;emaillongdesc1=1&amp;email2=&amp;emailtype2=substring&amp;emailassigned_to2=1&amp;emailreporter2=1&amp;emailcc2=1&amp;emaillongdesc2=1&amp;changedin=&amp;chfieldfrom=&amp;chfieldto=Now&amp;chfieldvalue=&amp;short_desc=&amp;short_desc_type=substring&amp;long_desc=&amp;long_desc_type=substring&amp;bug_file_loc=&amp;bug_file_loc_type=substring&amp;status_whiteboard=&amp;status_whiteboard_type=substring&amp;keywords=&amp;keywords_type=anywords&amp;op_sys_details=&amp;op_sys_details_type=substring&amp;version_details=&amp;version_details_type=substring&amp;cmdtype=doit&amp;newqueryname=&amp;order=Reuse+same+sort+as+last+time&amp;form_name=query">registered open
+    bugs</a></li>
   <li>make sure you can reproduce the bug with xmllint or one of the test
     programs found in source in the distribution</li>
   <li>Please send the command showing the error as well as the input (as an
@@ -257,6 +255,18 @@ you want to test those</p>
     href="http://www.w3.org/TR/xinclude">XInclude</a></li>
   <li>(seeems working but delayed from release) parsing/import of Docbook SGML
     docs</li>
+</ul>
+
+<h3>2.3.14: July 5 2001</h3>
+<ul>
+  <li>fixed some entities problems and reduce mem requirement when substituing
+    them</li>
+  <li>lots of improvements in the XPath queries interpreter can be
+    substancially faster</li>
+  <li>Makefiles and configure cleanups</li>
+  <li>Fixes to XPath variable eval, and compare on empty node set</li>
+  <li>HTML tag closing bug fixed</li>
+  <li>Fixed an URI reference computating problem when validating</li>
 </ul>
 
 <h3>2.3.13: June 28 2001</h3>
@@ -1618,6 +1628,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@imag.fr">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.97 2001/06/28 16:20:36 veillard Exp $</p>
+<p>$Id: xml.html,v 1.98 2001/07/05 09:46:10 veillard Exp $</p>
 </body>
 </html>

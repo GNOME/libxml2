@@ -5541,4 +5541,529 @@ htmlNodeStatus(const htmlNodePtr node, int legacy) {
     default: return HTML_NA ;
   }
 }
+/************************************************************************
+ *									*
+ *	New set (2.6.0) of simpler and more flexible APIs		*
+ *									*
+ ************************************************************************/
+/**
+ * DICT_FREE:
+ * @str:  a string
+ *
+ * Free a string if it is not owned by the "dict" dictionnary in the
+ * current scope
+ */
+#define DICT_FREE(str)						\
+	if ((str) && ((!dict) || 				\
+	    (xmlDictOwns(dict, (const xmlChar *)(str)) == 0)))	\
+	    xmlFree((char *)(str));
+
+/**
+ * htmlCtxtReset:
+ * @ctxt: an XML parser context
+ *
+ * Reset a parser context
+ */
+void
+htmlCtxtReset(htmlParserCtxtPtr ctxt)
+{
+    xmlParserInputPtr input;
+    xmlDictPtr dict = ctxt->dict;
+
+    while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
+        xmlFreeInputStream(input);
+    }
+    ctxt->inputNr = 0;
+    ctxt->input = NULL;
+
+    ctxt->spaceNr = 0;
+    ctxt->spaceTab[0] = -1;
+    ctxt->space = &ctxt->spaceTab[0];
+
+
+    ctxt->nodeNr = 0;
+    ctxt->node = NULL;
+
+    ctxt->nameNr = 0;
+    ctxt->name = NULL;
+
+    DICT_FREE(ctxt->version);
+    ctxt->version = NULL;
+    DICT_FREE(ctxt->encoding);
+    ctxt->encoding = NULL;
+    DICT_FREE(ctxt->directory);
+    ctxt->directory = NULL;
+    DICT_FREE(ctxt->extSubURI);
+    ctxt->extSubURI = NULL;
+    DICT_FREE(ctxt->extSubSystem);
+    ctxt->extSubSystem = NULL;
+    if (ctxt->myDoc != NULL)
+        xmlFreeDoc(ctxt->myDoc);
+    ctxt->myDoc = NULL;
+
+    ctxt->standalone = -1;
+    ctxt->hasExternalSubset = 0;
+    ctxt->hasPErefs = 0;
+    ctxt->html = 1;
+    ctxt->external = 0;
+    ctxt->instate = XML_PARSER_START;
+    ctxt->token = 0;
+
+    ctxt->wellFormed = 1;
+    ctxt->nsWellFormed = 1;
+    ctxt->valid = 1;
+    ctxt->vctxt.userData = ctxt;
+    ctxt->vctxt.error = xmlParserValidityError;
+    ctxt->vctxt.warning = xmlParserValidityWarning;
+    ctxt->record_info = 0;
+    ctxt->nbChars = 0;
+    ctxt->checkIndex = 0;
+    ctxt->inSubset = 0;
+    ctxt->errNo = XML_ERR_OK;
+    ctxt->depth = 0;
+    ctxt->charset = XML_CHAR_ENCODING_UTF8;
+    ctxt->catalogs = NULL;
+    xmlInitNodeInfoSeq(&ctxt->node_seq);
+
+    if (ctxt->attsDefault != NULL) {
+        xmlHashFree(ctxt->attsDefault, (xmlHashDeallocator) xmlFree);
+        ctxt->attsDefault = NULL;
+    }
+    if (ctxt->attsSpecial != NULL) {
+        xmlHashFree(ctxt->attsSpecial, NULL);
+        ctxt->attsSpecial = NULL;
+    }
+}
+
+/**
+ * htmlCtxtUseOptions:
+ * @ctxt: an HTML parser context
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * Applies the options to the parser context
+ *
+ * Returns 0 in case of success, the set of unknown or unimplemented options
+ *         in case of error.
+ */
+int
+htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
+{
+    if (options & HTML_PARSE_NOWARNING) {
+        ctxt->sax->warning = NULL;
+        options -= XML_PARSE_NOWARNING;
+    }
+    if (options & HTML_PARSE_NOERROR) {
+        ctxt->sax->error = NULL;
+        ctxt->sax->fatalError = NULL;
+        options -= XML_PARSE_NOERROR;
+    }
+    if (options & HTML_PARSE_PEDANTIC) {
+        ctxt->pedantic = 1;
+        options -= XML_PARSE_PEDANTIC;
+    } else
+        ctxt->pedantic = 0;
+    if (options & XML_PARSE_NOBLANKS) {
+        ctxt->keepBlanks = 0;
+        ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
+        options -= XML_PARSE_NOBLANKS;
+    } else
+        ctxt->keepBlanks = 1;
+    ctxt->dictNames = 0;
+    return (options);
+}
+
+/**
+ * htmlDoRead:
+ * @ctxt:  an HTML parser context
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ * @reuse:  keep the context for reuse
+ *
+ * Common front-end for the htmlRead functions
+ * 
+ * Returns the resulting document tree or NULL
+ */
+static htmlDocPtr
+htmlDoRead(htmlParserCtxtPtr ctxt, const char *URL, const char *encoding,
+          int options, int reuse)
+{
+    htmlDocPtr ret;
+    
+    htmlCtxtUseOptions(ctxt, options);
+    ctxt->html = 1;
+    if (encoding != NULL) {
+        xmlCharEncodingHandlerPtr hdlr;
+
+	hdlr = xmlFindCharEncodingHandler(encoding);
+	if (hdlr != NULL)
+	    xmlSwitchToEncoding(ctxt, hdlr);
+    }
+    if ((URL != NULL) && (ctxt->input != NULL) &&
+        (ctxt->input->filename == NULL))
+        ctxt->input->filename = (char *) xmlStrdup((const xmlChar *) URL);
+    htmlParseDocument(ctxt);
+    ret = ctxt->myDoc;
+    ctxt->myDoc = NULL;
+    if (!reuse) {
+        if ((ctxt->dictNames) &&
+	    (ret != NULL) &&
+	    (ret->dict == ctxt->dict))
+	    ctxt->dict = NULL;
+	xmlFreeParserCtxt(ctxt);
+    } else {
+        /* Must duplicate the reference to the dictionary */
+        if ((ctxt->dictNames) &&
+	    (ret != NULL) &&
+	    (ret->dict == ctxt->dict))
+	    xmlDictReference(ctxt->dict);
+    }
+    return (ret);
+}
+
+/**
+ * htmlReadDoc:
+ * @cur:  a pointer to a zero terminated string
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * parse an XML in-memory document and build a tree.
+ * 
+ * Returns the resulting document tree
+ */
+htmlDocPtr
+htmlReadDoc(const xmlChar * cur, const char *URL, const char *encoding, int options)
+{
+    htmlParserCtxtPtr ctxt;
+
+    if (cur == NULL)
+        return (NULL);
+
+    ctxt = xmlCreateDocParserCtxt(cur);
+    if (ctxt == NULL)
+        return (NULL);
+    return (htmlDoRead(ctxt, URL, encoding, options, 0));
+}
+
+/**
+ * htmlReadFile:
+ * @filename:  a file or URL
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * parse an XML file from the filesystem or the network.
+ * 
+ * Returns the resulting document tree
+ */
+htmlDocPtr
+htmlReadFile(const char *filename, const char *encoding, int options)
+{
+    htmlParserCtxtPtr ctxt;
+
+    ctxt = htmlCreateFileParserCtxt(filename, encoding);
+    if (ctxt == NULL)
+        return (NULL);
+    return (htmlDoRead(ctxt, NULL, NULL, options, 0));
+}
+
+/**
+ * htmlReadMemory:
+ * @buffer:  a pointer to a char array
+ * @size:  the size of the array
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * parse an XML in-memory document and build a tree.
+ * 
+ * Returns the resulting document tree
+ */
+htmlDocPtr
+htmlReadMemory(const char *buffer, int size, const char *URL, const char *encoding, int options)
+{
+    htmlParserCtxtPtr ctxt;
+
+    ctxt = xmlCreateMemoryParserCtxt(buffer, size);
+    if (ctxt == NULL)
+        return (NULL);
+    return (htmlDoRead(ctxt, URL, encoding, options, 0));
+}
+
+/**
+ * htmlReadFd:
+ * @fd:  an open file descriptor
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * parse an XML from a file descriptor and build a tree.
+ * 
+ * Returns the resulting document tree
+ */
+htmlDocPtr
+htmlReadFd(int fd, const char *URL, const char *encoding, int options)
+{
+    htmlParserCtxtPtr ctxt;
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (fd < 0)
+        return (NULL);
+
+    input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (NULL);
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (NULL);
+    }
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+	xmlFreeParserCtxt(ctxt);
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (htmlDoRead(ctxt, URL, encoding, options, 0));
+}
+
+/**
+ * htmlReadIO:
+ * @ioread:  an I/O read function
+ * @ioclose:  an I/O close function
+ * @ioctx:  an I/O handler
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * parse an HTML document from I/O functions and source and build a tree.
+ * 
+ * Returns the resulting document tree
+ */
+htmlDocPtr
+htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
+          void *ioctx, const char *URL, const char *encoding, int options)
+{
+    htmlParserCtxtPtr ctxt;
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (ioread == NULL)
+        return (NULL);
+
+    input = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx,
+                                         XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (NULL);
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (NULL);
+    }
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+	xmlFreeParserCtxt(ctxt);
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (htmlDoRead(ctxt, URL, encoding, options, 0));
+}
+
+/**
+ * htmlCtxtReadDoc:
+ * @ctxt:  an HTML parser context
+ * @cur:  a pointer to a zero terminated string
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * parse an XML in-memory document and build a tree.
+ * This reuses the existing @ctxt parser context
+ * 
+ * Returns the resulting document tree
+ */
+htmlDocPtr
+htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar * cur,
+               const char *URL, const char *encoding, int options)
+{
+    xmlParserInputPtr stream;
+
+    if (cur == NULL)
+        return (NULL);
+    if (ctxt == NULL)
+        return (NULL);
+
+    htmlCtxtReset(ctxt);
+
+    stream = xmlNewStringInputStream(ctxt, cur);
+    if (stream == NULL) {
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (htmlDoRead(ctxt, URL, encoding, options, 1));
+}
+
+/**
+ * htmlCtxtReadFile:
+ * @ctxt:  an HTML parser context
+ * @filename:  a file or URL
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * parse an XML file from the filesystem or the network.
+ * This reuses the existing @ctxt parser context
+ * 
+ * Returns the resulting document tree
+ */
+htmlDocPtr
+htmlCtxtReadFile(htmlParserCtxtPtr ctxt, const char *filename,
+                const char *encoding, int options)
+{
+    xmlParserInputPtr stream;
+
+    if (filename == NULL)
+        return (NULL);
+    if (ctxt == NULL)
+        return (NULL);
+
+    htmlCtxtReset(ctxt);
+
+    stream = xmlNewInputFromFile(ctxt, filename);
+    if (stream == NULL) {
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (htmlDoRead(ctxt, NULL, encoding, options, 1));
+}
+
+/**
+ * htmlCtxtReadMemory:
+ * @ctxt:  an HTML parser context
+ * @buffer:  a pointer to a char array
+ * @size:  the size of the array
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * parse an XML in-memory document and build a tree.
+ * This reuses the existing @ctxt parser context
+ * 
+ * Returns the resulting document tree
+ */
+htmlDocPtr
+htmlCtxtReadMemory(htmlParserCtxtPtr ctxt, const char *buffer, int size,
+                  const char *URL, const char *encoding, int options)
+{
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (ctxt == NULL)
+        return (NULL);
+    if (buffer == NULL)
+        return (NULL);
+
+    htmlCtxtReset(ctxt);
+
+    input = xmlParserInputBufferCreateMem(buffer, size, XML_CHAR_ENCODING_NONE);
+    if (input == NULL) {
+	return(NULL);
+    }
+
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+	xmlFreeParserInputBuffer(input);
+	return(NULL);
+    }
+
+    inputPush(ctxt, stream);
+    return (htmlDoRead(ctxt, URL, encoding, options, 1));
+}
+
+/**
+ * htmlCtxtReadFd:
+ * @ctxt:  an HTML parser context
+ * @fd:  an open file descriptor
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * parse an XML from a file descriptor and build a tree.
+ * This reuses the existing @ctxt parser context
+ * 
+ * Returns the resulting document tree
+ */
+htmlDocPtr
+htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
+              const char *URL, const char *encoding, int options)
+{
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (fd < 0)
+        return (NULL);
+    if (ctxt == NULL)
+        return (NULL);
+
+    htmlCtxtReset(ctxt);
+
+
+    input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (NULL);
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (htmlDoRead(ctxt, URL, encoding, options, 1));
+}
+
+/**
+ * htmlCtxtReadIO:
+ * @ctxt:  an HTML parser context
+ * @ioread:  an I/O read function
+ * @ioclose:  an I/O close function
+ * @ioctx:  an I/O handler
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of htmlParserOption(s)
+ *
+ * parse an HTML document from I/O functions and source and build a tree.
+ * This reuses the existing @ctxt parser context
+ * 
+ * Returns the resulting document tree
+ */
+htmlDocPtr
+htmlCtxtReadIO(htmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
+              xmlInputCloseCallback ioclose, void *ioctx,
+	      const char *URL,
+              const char *encoding, int options)
+{
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (ioread == NULL)
+        return (NULL);
+    if (ctxt == NULL)
+        return (NULL);
+
+    htmlCtxtReset(ctxt);
+
+    input = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx,
+                                         XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (NULL);
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (htmlDoRead(ctxt, URL, encoding, options, 1));
+}
+
 #endif /* LIBXML_HTML_ENABLED */

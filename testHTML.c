@@ -46,6 +46,7 @@ static int repeat = 0;
 static int noout = 0;
 static int push = 0;
 static char *encoding = NULL;
+static int options = 0;
 
 xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* internalSubset */
@@ -725,7 +726,7 @@ parseAndPrintFile(char *filename) {
 	    fclose(f);
 	}
     } else {	
-	doc = htmlParseFile(filename, NULL);
+	doc = htmlReadFile(filename, NULL, options);
     }
     if (doc == NULL) {
         xmlGenericError(xmlGenericErrorContext,

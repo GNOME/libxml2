@@ -1,3 +1,14 @@
+Fri Sep 26 14:41:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c testHTML.c xmllint.c include/libxml/HTMLparser.h:
+	  added the same htmlRead APIs than their XML counterparts
+	* include/libxml/parser.h: new parser options, not yet implemented,
+	  added an options field to the context.
+	* tree.c: patch from Shaun McCance to fix bug #123238 when ]]>
+	  is found within a cdata section.
+	* result/noent/cdata2 result/cdata2 result/cdata2.rdr
+	  result/cdata2.sax test/cdata2: add one more cdata test
+	  
 Thu Sep 25 23:03:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c xmllint.c doc/libxml2-api.xml include/libxml/parser.h:

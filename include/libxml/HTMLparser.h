@@ -154,6 +154,88 @@ XMLPUBFUN int XMLCALL
 						 int size,
 						 int terminate);
 
+/*
+ * New set of simpler/more flexible APIs
+ */
+/**
+ * xmlParserOption:
+ *
+ * This is the set of XML parser options that can be passed down
+ * to the xmlReadDoc() and similar calls.
+ */
+typedef enum {
+    HTML_PARSE_NOERROR	= 1<<5,	/* suppress error reports */
+    HTML_PARSE_NOWARNING= 1<<6,	/* suppress warning reports */
+    HTML_PARSE_PEDANTIC	= 1<<7,	/* pedantic error reporting */
+    HTML_PARSE_NOBLANKS	= 1<<8,	/* remove blank nodes */
+    HTML_PARSE_NONET	= 1<<11 /* Forbid network access */
+} htmlParserOption;
+
+XMLPUBFUN void XMLCALL
+		htmlCtxtReset		(htmlParserCtxtPtr ctxt);
+XMLPUBFUN int XMLCALL
+		htmlCtxtUseOptions	(htmlParserCtxtPtr ctxt,
+					 int options);
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlReadDoc		(const xmlChar *cur,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlReadFile		(const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlReadMemory		(const char *buffer,
+					 int size,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlReadFd		(int fd,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlReadIO		(xmlInputReadCallback ioread,
+					 xmlInputCloseCallback ioclose,
+					 void *ioctx,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlCtxtReadDoc		(xmlParserCtxtPtr ctxt,
+					 const xmlChar *cur,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlCtxtReadFile		(xmlParserCtxtPtr ctxt,
+					 const char *filename,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlCtxtReadMemory		(xmlParserCtxtPtr ctxt,
+					 const char *buffer,
+					 int size,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlCtxtReadFd		(xmlParserCtxtPtr ctxt,
+					 int fd,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlCtxtReadIO		(xmlParserCtxtPtr ctxt,
+					 xmlInputReadCallback ioread,
+					 xmlInputCloseCallback ioclose,
+					 void *ioctx,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+
 /* NRK/Jan2003: further knowledge of HTML structure
  */
 typedef enum {

@@ -764,7 +764,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
         }
     }
     else if (html) {
-	doc = htmlParseFile(filename, NULL);
+	doc = htmlReadFile(filename, NULL, options);
     }
 #endif /* LIBXML_HTML_ENABLED */
     else {

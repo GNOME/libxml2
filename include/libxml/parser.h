@@ -262,15 +262,16 @@ struct _xmlParserCtxt {
     xmlHashTablePtr    attsDefault;   /* defaulted attributes if any */
     xmlHashTablePtr    attsSpecial;   /* non-CDATA attributes if any */
     int                nsWellFormed;  /* is the document XML Nanespace okay */
+    int                options;       /* Extra options */
 
     /*
      * Those fields are needed only for treaming parsing so far
      */
-     int               dictNames;    /* Use dictionary names for the tree */
-     int               freeElemsNr;  /* number of freed element nodes */
-     xmlNodePtr        freeElems;    /* List of freed element nodes */
-     int               freeAttrsNr;  /* number of freed attributes nodes */
-     xmlAttrPtr        freeAttrs;    /* List of freed attributes nodes */
+    int               dictNames;    /* Use dictionary names for the tree */
+    int               freeElemsNr;  /* number of freed element nodes */
+    xmlNodePtr        freeElems;    /* List of freed element nodes */
+    int               freeAttrsNr;  /* number of freed attributes nodes */
+    xmlAttrPtr        freeAttrs;    /* List of freed attributes nodes */
 };
 
 /**
@@ -1045,7 +1046,9 @@ typedef enum {
     XML_PARSE_SAX1	= 1<<9,	/* use the SAX1 interface internally */
     XML_PARSE_XINCLUDE	= 1<<10,/* Implement XInclude substitition  */
     XML_PARSE_NONET	= 1<<11,/* Forbid network access */
-    XML_PARSE_NODICT	= 1<<12 /* Do not reuse the context dictionnary */
+    XML_PARSE_NODICT	= 1<<12,/* Do not reuse the context dictionnary */
+    XML_PARSE_NSCLEAN	= 1<<13,/* remove redundant namespaces declarations */
+    XML_PARSE_NOCDATA	= 1<<14 /* merge CDATA as text nodes */
 } xmlParserOption;
 
 XMLPUBFUN void XMLCALL

@@ -3,6 +3,7 @@
 
 #define HAVE_CTYPE_H
 #define HAVE_STDLIB_H
+#define HAVE_STDARG_H
 #define HAVE_MALLOC_H
 #define HAVE_TIME_H
 #define HAVE_FCNTL_H

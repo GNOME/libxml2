@@ -1,3 +1,9 @@
+Mon Nov 10 23:47:03 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* genUnicode.py, xmlunicode.c, include/libxml/xmlunicode.h:
+	  fixed missing '-' in block names, enhanced the hack for
+	  ABI aliasing.
+
 Sun Nov  9 20:28:21 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* genUnicode.py, xmlunicode.c, include/libxml/xmlunicode.h,

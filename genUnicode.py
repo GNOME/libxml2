@@ -6,9 +6,8 @@
 #
 # NOTE: there is an 'alias' facility for blocks which are not present in
 #	the current release, but are needed for ABI compatibility.  This
-#	must be accomplished MANUALLY!  Define the alias in the variable
-#	'blockAliases', then MANUALLY provide a function to return the
-#	appropriate value.
+#	must be accomplished MANUALLY!  Please see the comments below under
+#     'blockAliases'
 #
 import sys
 import string
@@ -17,7 +16,15 @@ import time
 webpage = "http://www.unicode.org/Public/4.0-Update1/UCD-4.0.1d5b.html"
 sources = "Blocks-4.0.1d1b.txt UnicodeData-4.0.1d1b.txt"
 
-blockAliases = "CombiningMarksforSymbols Greek PrivateUse"
+#
+# blockAliases is a small hack - it is used for mapping block names which
+# were were used in the 3.1 release, but are missing or changed in the current
+# release.  The format is "OldBlockName:NewBlockName1[,NewBlockName2[,...]]"
+blockAliases = []
+blockAliases.append("CombiningMarksforSymbols:CombiningDiacriticalMarksforSymbols")
+blockAliases.append("Greek:GreekandCoptic")
+blockAliases.append("PrivateUse:PrivateUseArea,SupplementaryPrivateUseArea-A," + 
+	"SupplementaryPrivateUseArea-B")
 
 # minTableSize gives the minimum number of ranges which must be present
 # before a range table is produced.  If there are less than this
@@ -26,24 +33,13 @@ minTableSize = 8
 
 (blockfile, catfile) = string.split(sources)
 
-#
-# First create a dictionary for the block names
-#
-BlockNames = {}
-
-#
-# Next put in aliases for blocks not currently present, but needed
-# for ABI compatibility (THIS IS A HORRIBLE HACK!)
-#
-aliases = string.split(blockAliases, ' ')
-for name in aliases:
-    BlockNames[name] = []
 
 #
 # Now process the "blocks" file, reducing it to a dictionary
 # indexed by blockname, containing a tuple with the applicable
 # block range
 #
+BlockNames = {}
 try:
     blocks = open(blockfile, "r")
 except:
@@ -65,9 +61,27 @@ for line in blocks.readlines():
     except:
         print "Failed to process line: %s" % (line)
         continue
-    BlockNames[name] = ("0x"+start, "0x"+end)
+    start = "0x" + start
+    end = "0x" + end
+    try:
+        BlockNames[name].append((start, end))
+    except:
+        BlockNames[name] = [(start, end)]
 blocks.close()
 print "Parsed %d blocks descriptions" % (len(BlockNames.keys()))
+
+for block in blockAliases:
+    alias = string.split(block,':')
+    alist = string.split(alias[1],',')
+    for comp in alist:
+        if BlockNames.has_key(comp):
+            if alias[0] not in BlockNames:
+                BlockNames[alias[0]] = []
+            for r in BlockNames[comp]:
+                BlockNames[alias[0]].append(r)
+        else:
+            print "Alias %s: %s not in Blocks" % (alias[0], comp)
+            continue
 
 #
 # Next process the Categories file. This is more complex, since
@@ -267,7 +281,7 @@ for block in bkeys:
         output.write(',\n')
     else:
         flag = 1
-    output.write('  {"%s", xmlUCSIs%s}' % (name, name))
+    output.write('  {"%s", xmlUCSIs%s}' % (block, name))
 output.write('};\n\n')
 
 output.write('static xmlUnicodeRange xmlUnicodeCats[] = {\n')
@@ -355,16 +369,19 @@ static xmlIntFunc
 for block in bkeys:
     name = string.replace(block, '-', '')
     header.write("XMLPUBFUN int XMLCALL xmlUCSIs%s\t(int code);\n" % name)
-    if len(BlockNames[block]) == 0:	# ignore aliases
-        continue
-    (start, end) = BlockNames[block]
     output.write("/**\n * xmlUCSIs%s:\n * @code: UCS code point\n" % (name))
     output.write(" *\n * Check whether the character is part of %s UCS Block\n"%
                  (block))
     output.write(" *\n * Returns 1 if true 0 otherwise\n */\n");
-    output.write("int\nxmlUCSIs%s(int code) {\n" % name)
-    output.write("    return((code >= %s) && (code <= %s));\n" % (start, end))
-    output.write("}\n\n")
+    output.write("int\nxmlUCSIs%s(int code) {\n    return(" % name)
+    flag = 0
+    for (start, end) in BlockNames[block]:
+        if flag:
+            output.write(" ||\n           ")
+        else:
+            flag = 1
+        output.write("((code >= %s) && (code <= %s))" % (start, end))
+    output.write(");\n}\n\n")
 
 header.write("\nXMLPUBFUN int XMLCALL xmlUCSIsBlock\t(int code, const char *block);\n\n")
 output.write(
@@ -435,56 +452,6 @@ xmlUCSIsCat(int code, const char *cat) {
     if (func == NULL)
 	return (-1);
     return (func(code));
-}
-
-/*
-    The following routines are an UGLY HACK to provide aliases for block
-    names which are not in the current release, but are needed for ABI
-    compatibility.
-*/
-
-/**
- * xmlUCSIsCombiningMarksforSymbols:
- * @code: UCS code point
- *
- * Check whether the character is part of CombiningMarksforSymbols UCS Block
- *
- * Returns 1 if true 0 otherwise
- */
-int
-xmlUCSIsCombiningMarksforSymbols(int code) {
-    return((code >= 0x20D0) && (code <= 0x20FF));
-}
-
-/**
- * xmlUCSIsGreek:
- * @code: UCS code point
- *
- * Check whether the character is part of Greek UCS Block
- *
- * Returns 1 if true 0 otherwise
- */
-int
-xmlUCSIsGreek(int code) {
-    return((code >= 0x370) && (code <= 0x3FF));
-}
-
-/**
- * xmlUCSIsPrivateUse:
- * @code: UCS code point
- *
- * Check whether the character is part of PrivateUse UCS Block
- *
- * Returns 1 if true 0 otherwise
- */
-int
-xmlUCSIsPrivateUse(int code) {
-    if ( ((code >= 0xE000)  && (code <= 0xF8FF)) ||
-	 ((code >= 0xF0000) && (code <= 0xFFFFD))||
-	 ((code >= 0x100000)&& (code <= 0x10FFFD)) )
-	return (1);
-    else
-	return (0);
 }
 
 

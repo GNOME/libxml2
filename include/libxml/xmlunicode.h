@@ -6,7 +6,7 @@
  * http://www.unicode.org/Public/4.0-Update1/UCD-4.0.1d5b.html
  * using the genUnicode.py Python script.
  *
- * Generation date: Sun Nov  9 20:13:11 2003
+ * Generation date: Mon Nov 10 22:35:10 2003
  * Sources: Blocks-4.0.1d1b.txt UnicodeData-4.0.1d1b.txt
  * Daniel Veillard <veillard@redhat.com>
  */

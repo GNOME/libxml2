@@ -6,7 +6,7 @@
  * http://www.unicode.org/Public/4.0-Update1/UCD-4.0.1d5b.html
  * using the genUnicode.py Python script.
  *
- * Generation date: Sun Nov  9 20:13:11 2003
+ * Generation date: Mon Nov 10 22:35:10 2003
  * Sources: Blocks-4.0.1d1b.txt UnicodeData-4.0.1d1b.txt
  * Daniel Veillard <veillard@redhat.com>
  */
@@ -40,8 +40,8 @@ static xmlUnicodeRange xmlUnicodeBlocks[] = {
   {"AegeanNumbers", xmlUCSIsAegeanNumbers},
   {"AlphabeticPresentationForms", xmlUCSIsAlphabeticPresentationForms},
   {"Arabic", xmlUCSIsArabic},
-  {"ArabicPresentationFormsA", xmlUCSIsArabicPresentationFormsA},
-  {"ArabicPresentationFormsB", xmlUCSIsArabicPresentationFormsB},
+  {"ArabicPresentationForms-A", xmlUCSIsArabicPresentationFormsA},
+  {"ArabicPresentationForms-B", xmlUCSIsArabicPresentationFormsB},
   {"Armenian", xmlUCSIsArmenian},
   {"Arrows", xmlUCSIsArrows},
   {"BasicLatin", xmlUCSIsBasicLatin},
@@ -106,9 +106,9 @@ static xmlUnicodeRange xmlUnicodeBlocks[] = {
   {"Khmer", xmlUCSIsKhmer},
   {"KhmerSymbols", xmlUCSIsKhmerSymbols},
   {"Lao", xmlUCSIsLao},
-  {"Latin1Supplement", xmlUCSIsLatin1Supplement},
-  {"LatinExtendedA", xmlUCSIsLatinExtendedA},
-  {"LatinExtendedB", xmlUCSIsLatinExtendedB},
+  {"Latin-1Supplement", xmlUCSIsLatin1Supplement},
+  {"LatinExtended-A", xmlUCSIsLatinExtendedA},
+  {"LatinExtended-B", xmlUCSIsLatinExtendedB},
   {"LatinExtendedAdditional", xmlUCSIsLatinExtendedAdditional},
   {"LetterlikeSymbols", xmlUCSIsLetterlikeSymbols},
   {"Limbu", xmlUCSIsLimbu},
@@ -118,8 +118,8 @@ static xmlUnicodeRange xmlUnicodeBlocks[] = {
   {"Malayalam", xmlUCSIsMalayalam},
   {"MathematicalAlphanumericSymbols", xmlUCSIsMathematicalAlphanumericSymbols},
   {"MathematicalOperators", xmlUCSIsMathematicalOperators},
-  {"MiscellaneousMathematicalSymbolsA", xmlUCSIsMiscellaneousMathematicalSymbolsA},
-  {"MiscellaneousMathematicalSymbolsB", xmlUCSIsMiscellaneousMathematicalSymbolsB},
+  {"MiscellaneousMathematicalSymbols-A", xmlUCSIsMiscellaneousMathematicalSymbolsA},
+  {"MiscellaneousMathematicalSymbols-B", xmlUCSIsMiscellaneousMathematicalSymbolsB},
   {"MiscellaneousSymbols", xmlUCSIsMiscellaneousSymbols},
   {"MiscellaneousSymbolsandArrows", xmlUCSIsMiscellaneousSymbolsandArrows},
   {"MiscellaneousTechnical", xmlUCSIsMiscellaneousTechnical},
@@ -142,11 +142,11 @@ static xmlUnicodeRange xmlUnicodeBlocks[] = {
   {"SpacingModifierLetters", xmlUCSIsSpacingModifierLetters},
   {"Specials", xmlUCSIsSpecials},
   {"SuperscriptsandSubscripts", xmlUCSIsSuperscriptsandSubscripts},
-  {"SupplementalArrowsA", xmlUCSIsSupplementalArrowsA},
-  {"SupplementalArrowsB", xmlUCSIsSupplementalArrowsB},
+  {"SupplementalArrows-A", xmlUCSIsSupplementalArrowsA},
+  {"SupplementalArrows-B", xmlUCSIsSupplementalArrowsB},
   {"SupplementalMathematicalOperators", xmlUCSIsSupplementalMathematicalOperators},
-  {"SupplementaryPrivateUseAreaA", xmlUCSIsSupplementaryPrivateUseAreaA},
-  {"SupplementaryPrivateUseAreaB", xmlUCSIsSupplementaryPrivateUseAreaB},
+  {"SupplementaryPrivateUseArea-A", xmlUCSIsSupplementaryPrivateUseAreaA},
+  {"SupplementaryPrivateUseArea-B", xmlUCSIsSupplementaryPrivateUseAreaB},
   {"Syriac", xmlUCSIsSyriac},
   {"Tagalog", xmlUCSIsTagalog},
   {"Tagbanwa", xmlUCSIsTagbanwa},
@@ -968,7 +968,7 @@ static xmlIntFunc
  */
 int
 xmlUCSIsAegeanNumbers(int code) {
-    return((code >= 0x10100) && (code <= 0x1013F));
+    return(((code >= 0x10100) && (code <= 0x1013F)));
 }
 
 /**
@@ -981,7 +981,7 @@ xmlUCSIsAegeanNumbers(int code) {
  */
 int
 xmlUCSIsAlphabeticPresentationForms(int code) {
-    return((code >= 0xFB00) && (code <= 0xFB4F));
+    return(((code >= 0xFB00) && (code <= 0xFB4F)));
 }
 
 /**
@@ -994,7 +994,7 @@ xmlUCSIsAlphabeticPresentationForms(int code) {
  */
 int
 xmlUCSIsArabic(int code) {
-    return((code >= 0x0600) && (code <= 0x06FF));
+    return(((code >= 0x0600) && (code <= 0x06FF)));
 }
 
 /**
@@ -1007,7 +1007,7 @@ xmlUCSIsArabic(int code) {
  */
 int
 xmlUCSIsArabicPresentationFormsA(int code) {
-    return((code >= 0xFB50) && (code <= 0xFDFF));
+    return(((code >= 0xFB50) && (code <= 0xFDFF)));
 }
 
 /**
@@ -1020,7 +1020,7 @@ xmlUCSIsArabicPresentationFormsA(int code) {
  */
 int
 xmlUCSIsArabicPresentationFormsB(int code) {
-    return((code >= 0xFE70) && (code <= 0xFEFF));
+    return(((code >= 0xFE70) && (code <= 0xFEFF)));
 }
 
 /**
@@ -1033,7 +1033,7 @@ xmlUCSIsArabicPresentationFormsB(int code) {
  */
 int
 xmlUCSIsArmenian(int code) {
-    return((code >= 0x0530) && (code <= 0x058F));
+    return(((code >= 0x0530) && (code <= 0x058F)));
 }
 
 /**
@@ -1046,7 +1046,7 @@ xmlUCSIsArmenian(int code) {
  */
 int
 xmlUCSIsArrows(int code) {
-    return((code >= 0x2190) && (code <= 0x21FF));
+    return(((code >= 0x2190) && (code <= 0x21FF)));
 }
 
 /**
@@ -1059,7 +1059,7 @@ xmlUCSIsArrows(int code) {
  */
 int
 xmlUCSIsBasicLatin(int code) {
-    return((code >= 0x0000) && (code <= 0x007F));
+    return(((code >= 0x0000) && (code <= 0x007F)));
 }
 
 /**
@@ -1072,7 +1072,7 @@ xmlUCSIsBasicLatin(int code) {
  */
 int
 xmlUCSIsBengali(int code) {
-    return((code >= 0x0980) && (code <= 0x09FF));
+    return(((code >= 0x0980) && (code <= 0x09FF)));
 }
 
 /**
@@ -1085,7 +1085,7 @@ xmlUCSIsBengali(int code) {
  */
 int
 xmlUCSIsBlockElements(int code) {
-    return((code >= 0x2580) && (code <= 0x259F));
+    return(((code >= 0x2580) && (code <= 0x259F)));
 }
 
 /**
@@ -1098,7 +1098,7 @@ xmlUCSIsBlockElements(int code) {
  */
 int
 xmlUCSIsBopomofo(int code) {
-    return((code >= 0x3100) && (code <= 0x312F));
+    return(((code >= 0x3100) && (code <= 0x312F)));
 }
 
 /**
@@ -1111,7 +1111,7 @@ xmlUCSIsBopomofo(int code) {
  */
 int
 xmlUCSIsBopomofoExtended(int code) {
-    return((code >= 0x31A0) && (code <= 0x31BF));
+    return(((code >= 0x31A0) && (code <= 0x31BF)));
 }
 
 /**
@@ -1124,7 +1124,7 @@ xmlUCSIsBopomofoExtended(int code) {
  */
 int
 xmlUCSIsBoxDrawing(int code) {
-    return((code >= 0x2500) && (code <= 0x257F));
+    return(((code >= 0x2500) && (code <= 0x257F)));
 }
 
 /**
@@ -1137,7 +1137,7 @@ xmlUCSIsBoxDrawing(int code) {
  */
 int
 xmlUCSIsBraillePatterns(int code) {
-    return((code >= 0x2800) && (code <= 0x28FF));
+    return(((code >= 0x2800) && (code <= 0x28FF)));
 }
 
 /**
@@ -1150,7 +1150,7 @@ xmlUCSIsBraillePatterns(int code) {
  */
 int
 xmlUCSIsBuhid(int code) {
-    return((code >= 0x1740) && (code <= 0x175F));
+    return(((code >= 0x1740) && (code <= 0x175F)));
 }
 
 /**
@@ -1163,7 +1163,7 @@ xmlUCSIsBuhid(int code) {
  */
 int
 xmlUCSIsByzantineMusicalSymbols(int code) {
-    return((code >= 0x1D000) && (code <= 0x1D0FF));
+    return(((code >= 0x1D000) && (code <= 0x1D0FF)));
 }
 
 /**
@@ -1176,7 +1176,7 @@ xmlUCSIsByzantineMusicalSymbols(int code) {
  */
 int
 xmlUCSIsCJKCompatibility(int code) {
-    return((code >= 0x3300) && (code <= 0x33FF));
+    return(((code >= 0x3300) && (code <= 0x33FF)));
 }
 
 /**
@@ -1189,7 +1189,7 @@ xmlUCSIsCJKCompatibility(int code) {
  */
 int
 xmlUCSIsCJKCompatibilityForms(int code) {
-    return((code >= 0xFE30) && (code <= 0xFE4F));
+    return(((code >= 0xFE30) && (code <= 0xFE4F)));
 }
 
 /**
@@ -1202,7 +1202,7 @@ xmlUCSIsCJKCompatibilityForms(int code) {
  */
 int
 xmlUCSIsCJKCompatibilityIdeographs(int code) {
-    return((code >= 0xF900) && (code <= 0xFAFF));
+    return(((code >= 0xF900) && (code <= 0xFAFF)));
 }
 
 /**
@@ -1215,7 +1215,7 @@ xmlUCSIsCJKCompatibilityIdeographs(int code) {
  */
 int
 xmlUCSIsCJKCompatibilityIdeographsSupplement(int code) {
-    return((code >= 0x2F800) && (code <= 0x2FA1F));
+    return(((code >= 0x2F800) && (code <= 0x2FA1F)));
 }
 
 /**
@@ -1228,7 +1228,7 @@ xmlUCSIsCJKCompatibilityIdeographsSupplement(int code) {
  */
 int
 xmlUCSIsCJKRadicalsSupplement(int code) {
-    return((code >= 0x2E80) && (code <= 0x2EFF));
+    return(((code >= 0x2E80) && (code <= 0x2EFF)));
 }
 
 /**
@@ -1241,7 +1241,7 @@ xmlUCSIsCJKRadicalsSupplement(int code) {
  */
 int
 xmlUCSIsCJKSymbolsandPunctuation(int code) {
-    return((code >= 0x3000) && (code <= 0x303F));
+    return(((code >= 0x3000) && (code <= 0x303F)));
 }
 
 /**
@@ -1254,7 +1254,7 @@ xmlUCSIsCJKSymbolsandPunctuation(int code) {
  */
 int
 xmlUCSIsCJKUnifiedIdeographs(int code) {
-    return((code >= 0x4E00) && (code <= 0x9FFF));
+    return(((code >= 0x4E00) && (code <= 0x9FFF)));
 }
 
 /**
@@ -1267,7 +1267,7 @@ xmlUCSIsCJKUnifiedIdeographs(int code) {
  */
 int
 xmlUCSIsCJKUnifiedIdeographsExtensionA(int code) {
-    return((code >= 0x3400) && (code <= 0x4DBF));
+    return(((code >= 0x3400) && (code <= 0x4DBF)));
 }
 
 /**
@@ -1280,7 +1280,7 @@ xmlUCSIsCJKUnifiedIdeographsExtensionA(int code) {
  */
 int
 xmlUCSIsCJKUnifiedIdeographsExtensionB(int code) {
-    return((code >= 0x20000) && (code <= 0x2A6DF));
+    return(((code >= 0x20000) && (code <= 0x2A6DF)));
 }
 
 /**
@@ -1293,7 +1293,7 @@ xmlUCSIsCJKUnifiedIdeographsExtensionB(int code) {
  */
 int
 xmlUCSIsCherokee(int code) {
-    return((code >= 0x13A0) && (code <= 0x13FF));
+    return(((code >= 0x13A0) && (code <= 0x13FF)));
 }
 
 /**
@@ -1306,7 +1306,7 @@ xmlUCSIsCherokee(int code) {
  */
 int
 xmlUCSIsCombiningDiacriticalMarks(int code) {
-    return((code >= 0x0300) && (code <= 0x036F));
+    return(((code >= 0x0300) && (code <= 0x036F)));
 }
 
 /**
@@ -1319,7 +1319,7 @@ xmlUCSIsCombiningDiacriticalMarks(int code) {
  */
 int
 xmlUCSIsCombiningDiacriticalMarksforSymbols(int code) {
-    return((code >= 0x20D0) && (code <= 0x20FF));
+    return(((code >= 0x20D0) && (code <= 0x20FF)));
 }
 
 /**
@@ -1332,7 +1332,20 @@ xmlUCSIsCombiningDiacriticalMarksforSymbols(int code) {
  */
 int
 xmlUCSIsCombiningHalfMarks(int code) {
-    return((code >= 0xFE20) && (code <= 0xFE2F));
+    return(((code >= 0xFE20) && (code <= 0xFE2F)));
+}
+
+/**
+ * xmlUCSIsCombiningMarksforSymbols:
+ * @code: UCS code point
+ *
+ * Check whether the character is part of CombiningMarksforSymbols UCS Block
+ *
+ * Returns 1 if true 0 otherwise
+ */
+int
+xmlUCSIsCombiningMarksforSymbols(int code) {
+    return(((code >= 0x20D0) && (code <= 0x20FF)));
 }
 
 /**
@@ -1345,7 +1358,7 @@ xmlUCSIsCombiningHalfMarks(int code) {
  */
 int
 xmlUCSIsControlPictures(int code) {
-    return((code >= 0x2400) && (code <= 0x243F));
+    return(((code >= 0x2400) && (code <= 0x243F)));
 }
 
 /**
@@ -1358,7 +1371,7 @@ xmlUCSIsControlPictures(int code) {
  */
 int
 xmlUCSIsCurrencySymbols(int code) {
-    return((code >= 0x20A0) && (code <= 0x20CF));
+    return(((code >= 0x20A0) && (code <= 0x20CF)));
 }
 
 /**
@@ -1371,7 +1384,7 @@ xmlUCSIsCurrencySymbols(int code) {
  */
 int
 xmlUCSIsCypriotSyllabary(int code) {
-    return((code >= 0x10800) && (code <= 0x1083F));
+    return(((code >= 0x10800) && (code <= 0x1083F)));
 }
 
 /**
@@ -1384,7 +1397,7 @@ xmlUCSIsCypriotSyllabary(int code) {
  */
 int
 xmlUCSIsCyrillic(int code) {
-    return((code >= 0x0400) && (code <= 0x04FF));
+    return(((code >= 0x0400) && (code <= 0x04FF)));
 }
 
 /**
@@ -1397,7 +1410,7 @@ xmlUCSIsCyrillic(int code) {
  */
 int
 xmlUCSIsCyrillicSupplement(int code) {
-    return((code >= 0x0500) && (code <= 0x052F));
+    return(((code >= 0x0500) && (code <= 0x052F)));
 }
 
 /**
@@ -1410,7 +1423,7 @@ xmlUCSIsCyrillicSupplement(int code) {
  */
 int
 xmlUCSIsDeseret(int code) {
-    return((code >= 0x10400) && (code <= 0x1044F));
+    return(((code >= 0x10400) && (code <= 0x1044F)));
 }
 
 /**
@@ -1423,7 +1436,7 @@ xmlUCSIsDeseret(int code) {
  */
 int
 xmlUCSIsDevanagari(int code) {
-    return((code >= 0x0900) && (code <= 0x097F));
+    return(((code >= 0x0900) && (code <= 0x097F)));
 }
 
 /**
@@ -1436,7 +1449,7 @@ xmlUCSIsDevanagari(int code) {
  */
 int
 xmlUCSIsDingbats(int code) {
-    return((code >= 0x2700) && (code <= 0x27BF));
+    return(((code >= 0x2700) && (code <= 0x27BF)));
 }
 
 /**
@@ -1449,7 +1462,7 @@ xmlUCSIsDingbats(int code) {
  */
 int
 xmlUCSIsEnclosedAlphanumerics(int code) {
-    return((code >= 0x2460) && (code <= 0x24FF));
+    return(((code >= 0x2460) && (code <= 0x24FF)));
 }
 
 /**
@@ -1462,7 +1475,7 @@ xmlUCSIsEnclosedAlphanumerics(int code) {
  */
 int
 xmlUCSIsEnclosedCJKLettersandMonths(int code) {
-    return((code >= 0x3200) && (code <= 0x32FF));
+    return(((code >= 0x3200) && (code <= 0x32FF)));
 }
 
 /**
@@ -1475,7 +1488,7 @@ xmlUCSIsEnclosedCJKLettersandMonths(int code) {
  */
 int
 xmlUCSIsEthiopic(int code) {
-    return((code >= 0x1200) && (code <= 0x137F));
+    return(((code >= 0x1200) && (code <= 0x137F)));
 }
 
 /**
@@ -1488,7 +1501,7 @@ xmlUCSIsEthiopic(int code) {
  */
 int
 xmlUCSIsGeneralPunctuation(int code) {
-    return((code >= 0x2000) && (code <= 0x206F));
+    return(((code >= 0x2000) && (code <= 0x206F)));
 }
 
 /**
@@ -1501,7 +1514,7 @@ xmlUCSIsGeneralPunctuation(int code) {
  */
 int
 xmlUCSIsGeometricShapes(int code) {
-    return((code >= 0x25A0) && (code <= 0x25FF));
+    return(((code >= 0x25A0) && (code <= 0x25FF)));
 }
 
 /**
@@ -1514,7 +1527,7 @@ xmlUCSIsGeometricShapes(int code) {
  */
 int
 xmlUCSIsGeorgian(int code) {
-    return((code >= 0x10A0) && (code <= 0x10FF));
+    return(((code >= 0x10A0) && (code <= 0x10FF)));
 }
 
 /**
@@ -1527,7 +1540,20 @@ xmlUCSIsGeorgian(int code) {
  */
 int
 xmlUCSIsGothic(int code) {
-    return((code >= 0x10330) && (code <= 0x1034F));
+    return(((code >= 0x10330) && (code <= 0x1034F)));
+}
+
+/**
+ * xmlUCSIsGreek:
+ * @code: UCS code point
+ *
+ * Check whether the character is part of Greek UCS Block
+ *
+ * Returns 1 if true 0 otherwise
+ */
+int
+xmlUCSIsGreek(int code) {
+    return(((code >= 0x0370) && (code <= 0x03FF)));
 }
 
 /**
@@ -1540,7 +1566,7 @@ xmlUCSIsGothic(int code) {
  */
 int
 xmlUCSIsGreekExtended(int code) {
-    return((code >= 0x1F00) && (code <= 0x1FFF));
+    return(((code >= 0x1F00) && (code <= 0x1FFF)));
 }
 
 /**
@@ -1553,7 +1579,7 @@ xmlUCSIsGreekExtended(int code) {
  */
 int
 xmlUCSIsGreekandCoptic(int code) {
-    return((code >= 0x0370) && (code <= 0x03FF));
+    return(((code >= 0x0370) && (code <= 0x03FF)));
 }
 
 /**
@@ -1566,7 +1592,7 @@ xmlUCSIsGreekandCoptic(int code) {
  */
 int
 xmlUCSIsGujarati(int code) {
-    return((code >= 0x0A80) && (code <= 0x0AFF));
+    return(((code >= 0x0A80) && (code <= 0x0AFF)));
 }
 
 /**
@@ -1579,7 +1605,7 @@ xmlUCSIsGujarati(int code) {
  */
 int
 xmlUCSIsGurmukhi(int code) {
-    return((code >= 0x0A00) && (code <= 0x0A7F));
+    return(((code >= 0x0A00) && (code <= 0x0A7F)));
 }
 
 /**
@@ -1592,7 +1618,7 @@ xmlUCSIsGurmukhi(int code) {
  */
 int
 xmlUCSIsHalfwidthandFullwidthForms(int code) {
-    return((code >= 0xFF00) && (code <= 0xFFEF));
+    return(((code >= 0xFF00) && (code <= 0xFFEF)));
 }
 
 /**
@@ -1605,7 +1631,7 @@ xmlUCSIsHalfwidthandFullwidthForms(int code) {
  */
 int
 xmlUCSIsHangulCompatibilityJamo(int code) {
-    return((code >= 0x3130) && (code <= 0x318F));
+    return(((code >= 0x3130) && (code <= 0x318F)));
 }
 
 /**
@@ -1618,7 +1644,7 @@ xmlUCSIsHangulCompatibilityJamo(int code) {
  */
 int
 xmlUCSIsHangulJamo(int code) {
-    return((code >= 0x1100) && (code <= 0x11FF));
+    return(((code >= 0x1100) && (code <= 0x11FF)));
 }
 
 /**
@@ -1631,7 +1657,7 @@ xmlUCSIsHangulJamo(int code) {
  */
 int
 xmlUCSIsHangulSyllables(int code) {
-    return((code >= 0xAC00) && (code <= 0xD7AF));
+    return(((code >= 0xAC00) && (code <= 0xD7AF)));
 }
 
 /**
@@ -1644,7 +1670,7 @@ xmlUCSIsHangulSyllables(int code) {
  */
 int
 xmlUCSIsHanunoo(int code) {
-    return((code >= 0x1720) && (code <= 0x173F));
+    return(((code >= 0x1720) && (code <= 0x173F)));
 }
 
 /**
@@ -1657,7 +1683,7 @@ xmlUCSIsHanunoo(int code) {
  */
 int
 xmlUCSIsHebrew(int code) {
-    return((code >= 0x0590) && (code <= 0x05FF));
+    return(((code >= 0x0590) && (code <= 0x05FF)));
 }
 
 /**
@@ -1670,7 +1696,7 @@ xmlUCSIsHebrew(int code) {
  */
 int
 xmlUCSIsHighPrivateUseSurrogates(int code) {
-    return((code >= 0xDB80) && (code <= 0xDBFF));
+    return(((code >= 0xDB80) && (code <= 0xDBFF)));
 }
 
 /**
@@ -1683,7 +1709,7 @@ xmlUCSIsHighPrivateUseSurrogates(int code) {
  */
 int
 xmlUCSIsHighSurrogates(int code) {
-    return((code >= 0xD800) && (code <= 0xDB7F));
+    return(((code >= 0xD800) && (code <= 0xDB7F)));
 }
 
 /**
@@ -1696,7 +1722,7 @@ xmlUCSIsHighSurrogates(int code) {
  */
 int
 xmlUCSIsHiragana(int code) {
-    return((code >= 0x3040) && (code <= 0x309F));
+    return(((code >= 0x3040) && (code <= 0x309F)));
 }
 
 /**
@@ -1709,7 +1735,7 @@ xmlUCSIsHiragana(int code) {
  */
 int
 xmlUCSIsIPAExtensions(int code) {
-    return((code >= 0x0250) && (code <= 0x02AF));
+    return(((code >= 0x0250) && (code <= 0x02AF)));
 }
 
 /**
@@ -1722,7 +1748,7 @@ xmlUCSIsIPAExtensions(int code) {
  */
 int
 xmlUCSIsIdeographicDescriptionCharacters(int code) {
-    return((code >= 0x2FF0) && (code <= 0x2FFF));
+    return(((code >= 0x2FF0) && (code <= 0x2FFF)));
 }
 
 /**
@@ -1735,7 +1761,7 @@ xmlUCSIsIdeographicDescriptionCharacters(int code) {
  */
 int
 xmlUCSIsKanbun(int code) {
-    return((code >= 0x3190) && (code <= 0x319F));
+    return(((code >= 0x3190) && (code <= 0x319F)));
 }
 
 /**
@@ -1748,7 +1774,7 @@ xmlUCSIsKanbun(int code) {
  */
 int
 xmlUCSIsKangxiRadicals(int code) {
-    return((code >= 0x2F00) && (code <= 0x2FDF));
+    return(((code >= 0x2F00) && (code <= 0x2FDF)));
 }
 
 /**
@@ -1761,7 +1787,7 @@ xmlUCSIsKangxiRadicals(int code) {
  */
 int
 xmlUCSIsKannada(int code) {
-    return((code >= 0x0C80) && (code <= 0x0CFF));
+    return(((code >= 0x0C80) && (code <= 0x0CFF)));
 }
 
 /**
@@ -1774,7 +1800,7 @@ xmlUCSIsKannada(int code) {
  */
 int
 xmlUCSIsKatakana(int code) {
-    return((code >= 0x30A0) && (code <= 0x30FF));
+    return(((code >= 0x30A0) && (code <= 0x30FF)));
 }
 
 /**
@@ -1787,7 +1813,7 @@ xmlUCSIsKatakana(int code) {
  */
 int
 xmlUCSIsKatakanaPhoneticExtensions(int code) {
-    return((code >= 0x31F0) && (code <= 0x31FF));
+    return(((code >= 0x31F0) && (code <= 0x31FF)));
 }
 
 /**
@@ -1800,7 +1826,7 @@ xmlUCSIsKatakanaPhoneticExtensions(int code) {
  */
 int
 xmlUCSIsKhmer(int code) {
-    return((code >= 0x1780) && (code <= 0x17FF));
+    return(((code >= 0x1780) && (code <= 0x17FF)));
 }
 
 /**
@@ -1813,7 +1839,7 @@ xmlUCSIsKhmer(int code) {
  */
 int
 xmlUCSIsKhmerSymbols(int code) {
-    return((code >= 0x19E0) && (code <= 0x19FF));
+    return(((code >= 0x19E0) && (code <= 0x19FF)));
 }
 
 /**
@@ -1826,7 +1852,7 @@ xmlUCSIsKhmerSymbols(int code) {
  */
 int
 xmlUCSIsLao(int code) {
-    return((code >= 0x0E80) && (code <= 0x0EFF));
+    return(((code >= 0x0E80) && (code <= 0x0EFF)));
 }
 
 /**
@@ -1839,7 +1865,7 @@ xmlUCSIsLao(int code) {
  */
 int
 xmlUCSIsLatin1Supplement(int code) {
-    return((code >= 0x0080) && (code <= 0x00FF));
+    return(((code >= 0x0080) && (code <= 0x00FF)));
 }
 
 /**
@@ -1852,7 +1878,7 @@ xmlUCSIsLatin1Supplement(int code) {
  */
 int
 xmlUCSIsLatinExtendedA(int code) {
-    return((code >= 0x0100) && (code <= 0x017F));
+    return(((code >= 0x0100) && (code <= 0x017F)));
 }
 
 /**
@@ -1865,7 +1891,7 @@ xmlUCSIsLatinExtendedA(int code) {
  */
 int
 xmlUCSIsLatinExtendedB(int code) {
-    return((code >= 0x0180) && (code <= 0x024F));
+    return(((code >= 0x0180) && (code <= 0x024F)));
 }
 
 /**
@@ -1878,7 +1904,7 @@ xmlUCSIsLatinExtendedB(int code) {
  */
 int
 xmlUCSIsLatinExtendedAdditional(int code) {
-    return((code >= 0x1E00) && (code <= 0x1EFF));
+    return(((code >= 0x1E00) && (code <= 0x1EFF)));
 }
 
 /**
@@ -1891,7 +1917,7 @@ xmlUCSIsLatinExtendedAdditional(int code) {
  */
 int
 xmlUCSIsLetterlikeSymbols(int code) {
-    return((code >= 0x2100) && (code <= 0x214F));
+    return(((code >= 0x2100) && (code <= 0x214F)));
 }
 
 /**
@@ -1904,7 +1930,7 @@ xmlUCSIsLetterlikeSymbols(int code) {
  */
 int
 xmlUCSIsLimbu(int code) {
-    return((code >= 0x1900) && (code <= 0x194F));
+    return(((code >= 0x1900) && (code <= 0x194F)));
 }
 
 /**
@@ -1917,7 +1943,7 @@ xmlUCSIsLimbu(int code) {
  */
 int
 xmlUCSIsLinearBIdeograms(int code) {
-    return((code >= 0x10080) && (code <= 0x100FF));
+    return(((code >= 0x10080) && (code <= 0x100FF)));
 }
 
 /**
@@ -1930,7 +1956,7 @@ xmlUCSIsLinearBIdeograms(int code) {
  */
 int
 xmlUCSIsLinearBSyllabary(int code) {
-    return((code >= 0x10000) && (code <= 0x1007F));
+    return(((code >= 0x10000) && (code <= 0x1007F)));
 }
 
 /**
@@ -1943,7 +1969,7 @@ xmlUCSIsLinearBSyllabary(int code) {
  */
 int
 xmlUCSIsLowSurrogates(int code) {
-    return((code >= 0xDC00) && (code <= 0xDFFF));
+    return(((code >= 0xDC00) && (code <= 0xDFFF)));
 }
 
 /**
@@ -1956,7 +1982,7 @@ xmlUCSIsLowSurrogates(int code) {
  */
 int
 xmlUCSIsMalayalam(int code) {
-    return((code >= 0x0D00) && (code <= 0x0D7F));
+    return(((code >= 0x0D00) && (code <= 0x0D7F)));
 }
 
 /**
@@ -1969,7 +1995,7 @@ xmlUCSIsMalayalam(int code) {
  */
 int
 xmlUCSIsMathematicalAlphanumericSymbols(int code) {
-    return((code >= 0x1D400) && (code <= 0x1D7FF));
+    return(((code >= 0x1D400) && (code <= 0x1D7FF)));
 }
 
 /**
@@ -1982,7 +2008,7 @@ xmlUCSIsMathematicalAlphanumericSymbols(int code) {
  */
 int
 xmlUCSIsMathematicalOperators(int code) {
-    return((code >= 0x2200) && (code <= 0x22FF));
+    return(((code >= 0x2200) && (code <= 0x22FF)));
 }
 
 /**
@@ -1995,7 +2021,7 @@ xmlUCSIsMathematicalOperators(int code) {
  */
 int
 xmlUCSIsMiscellaneousMathematicalSymbolsA(int code) {
-    return((code >= 0x27C0) && (code <= 0x27EF));
+    return(((code >= 0x27C0) && (code <= 0x27EF)));
 }
 
 /**
@@ -2008,7 +2034,7 @@ xmlUCSIsMiscellaneousMathematicalSymbolsA(int code) {
  */
 int
 xmlUCSIsMiscellaneousMathematicalSymbolsB(int code) {
-    return((code >= 0x2980) && (code <= 0x29FF));
+    return(((code >= 0x2980) && (code <= 0x29FF)));
 }
 
 /**
@@ -2021,7 +2047,7 @@ xmlUCSIsMiscellaneousMathematicalSymbolsB(int code) {
  */
 int
 xmlUCSIsMiscellaneousSymbols(int code) {
-    return((code >= 0x2600) && (code <= 0x26FF));
+    return(((code >= 0x2600) && (code <= 0x26FF)));
 }
 
 /**
@@ -2034,7 +2060,7 @@ xmlUCSIsMiscellaneousSymbols(int code) {
  */
 int
 xmlUCSIsMiscellaneousSymbolsandArrows(int code) {
-    return((code >= 0x2B00) && (code <= 0x2BFF));
+    return(((code >= 0x2B00) && (code <= 0x2BFF)));
 }
 
 /**
@@ -2047,7 +2073,7 @@ xmlUCSIsMiscellaneousSymbolsandArrows(int code) {
  */
 int
 xmlUCSIsMiscellaneousTechnical(int code) {
-    return((code >= 0x2300) && (code <= 0x23FF));
+    return(((code >= 0x2300) && (code <= 0x23FF)));
 }
 
 /**
@@ -2060,7 +2086,7 @@ xmlUCSIsMiscellaneousTechnical(int code) {
  */
 int
 xmlUCSIsMongolian(int code) {
-    return((code >= 0x1800) && (code <= 0x18AF));
+    return(((code >= 0x1800) && (code <= 0x18AF)));
 }
 
 /**
@@ -2073,7 +2099,7 @@ xmlUCSIsMongolian(int code) {
  */
 int
 xmlUCSIsMusicalSymbols(int code) {
-    return((code >= 0x1D100) && (code <= 0x1D1FF));
+    return(((code >= 0x1D100) && (code <= 0x1D1FF)));
 }
 
 /**
@@ -2086,7 +2112,7 @@ xmlUCSIsMusicalSymbols(int code) {
  */
 int
 xmlUCSIsMyanmar(int code) {
-    return((code >= 0x1000) && (code <= 0x109F));
+    return(((code >= 0x1000) && (code <= 0x109F)));
 }
 
 /**
@@ -2099,7 +2125,7 @@ xmlUCSIsMyanmar(int code) {
  */
 int
 xmlUCSIsNumberForms(int code) {
-    return((code >= 0x2150) && (code <= 0x218F));
+    return(((code >= 0x2150) && (code <= 0x218F)));
 }
 
 /**
@@ -2112,7 +2138,7 @@ xmlUCSIsNumberForms(int code) {
  */
 int
 xmlUCSIsOgham(int code) {
-    return((code >= 0x1680) && (code <= 0x169F));
+    return(((code >= 0x1680) && (code <= 0x169F)));
 }
 
 /**
@@ -2125,7 +2151,7 @@ xmlUCSIsOgham(int code) {
  */
 int
 xmlUCSIsOldItalic(int code) {
-    return((code >= 0x10300) && (code <= 0x1032F));
+    return(((code >= 0x10300) && (code <= 0x1032F)));
 }
 
 /**
@@ -2138,7 +2164,7 @@ xmlUCSIsOldItalic(int code) {
  */
 int
 xmlUCSIsOpticalCharacterRecognition(int code) {
-    return((code >= 0x2440) && (code <= 0x245F));
+    return(((code >= 0x2440) && (code <= 0x245F)));
 }
 
 /**
@@ -2151,7 +2177,7 @@ xmlUCSIsOpticalCharacterRecognition(int code) {
  */
 int
 xmlUCSIsOriya(int code) {
-    return((code >= 0x0B00) && (code <= 0x0B7F));
+    return(((code >= 0x0B00) && (code <= 0x0B7F)));
 }
 
 /**
@@ -2164,7 +2190,7 @@ xmlUCSIsOriya(int code) {
  */
 int
 xmlUCSIsOsmanya(int code) {
-    return((code >= 0x10480) && (code <= 0x104AF));
+    return(((code >= 0x10480) && (code <= 0x104AF)));
 }
 
 /**
@@ -2177,7 +2203,22 @@ xmlUCSIsOsmanya(int code) {
  */
 int
 xmlUCSIsPhoneticExtensions(int code) {
-    return((code >= 0x1D00) && (code <= 0x1D7F));
+    return(((code >= 0x1D00) && (code <= 0x1D7F)));
+}
+
+/**
+ * xmlUCSIsPrivateUse:
+ * @code: UCS code point
+ *
+ * Check whether the character is part of PrivateUse UCS Block
+ *
+ * Returns 1 if true 0 otherwise
+ */
+int
+xmlUCSIsPrivateUse(int code) {
+    return(((code >= 0xE000) && (code <= 0xF8FF)) ||
+           ((code >= 0xF0000) && (code <= 0xFFFFF)) ||
+           ((code >= 0x100000) && (code <= 0x10FFFF)));
 }
 
 /**
@@ -2190,7 +2231,7 @@ xmlUCSIsPhoneticExtensions(int code) {
  */
 int
 xmlUCSIsPrivateUseArea(int code) {
-    return((code >= 0xE000) && (code <= 0xF8FF));
+    return(((code >= 0xE000) && (code <= 0xF8FF)));
 }
 
 /**
@@ -2203,7 +2244,7 @@ xmlUCSIsPrivateUseArea(int code) {
  */
 int
 xmlUCSIsRunic(int code) {
-    return((code >= 0x16A0) && (code <= 0x16FF));
+    return(((code >= 0x16A0) && (code <= 0x16FF)));
 }
 
 /**
@@ -2216,7 +2257,7 @@ xmlUCSIsRunic(int code) {
  */
 int
 xmlUCSIsShavian(int code) {
-    return((code >= 0x10450) && (code <= 0x1047F));
+    return(((code >= 0x10450) && (code <= 0x1047F)));
 }
 
 /**
@@ -2229,7 +2270,7 @@ xmlUCSIsShavian(int code) {
  */
 int
 xmlUCSIsSinhala(int code) {
-    return((code >= 0x0D80) && (code <= 0x0DFF));
+    return(((code >= 0x0D80) && (code <= 0x0DFF)));
 }
 
 /**
@@ -2242,7 +2283,7 @@ xmlUCSIsSinhala(int code) {
  */
 int
 xmlUCSIsSmallFormVariants(int code) {
-    return((code >= 0xFE50) && (code <= 0xFE6F));
+    return(((code >= 0xFE50) && (code <= 0xFE6F)));
 }
 
 /**
@@ -2255,7 +2296,7 @@ xmlUCSIsSmallFormVariants(int code) {
  */
 int
 xmlUCSIsSpacingModifierLetters(int code) {
-    return((code >= 0x02B0) && (code <= 0x02FF));
+    return(((code >= 0x02B0) && (code <= 0x02FF)));
 }
 
 /**
@@ -2268,7 +2309,7 @@ xmlUCSIsSpacingModifierLetters(int code) {
  */
 int
 xmlUCSIsSpecials(int code) {
-    return((code >= 0xFFF0) && (code <= 0xFFFF));
+    return(((code >= 0xFFF0) && (code <= 0xFFFF)));
 }
 
 /**
@@ -2281,7 +2322,7 @@ xmlUCSIsSpecials(int code) {
  */
 int
 xmlUCSIsSuperscriptsandSubscripts(int code) {
-    return((code >= 0x2070) && (code <= 0x209F));
+    return(((code >= 0x2070) && (code <= 0x209F)));
 }
 
 /**
@@ -2294,7 +2335,7 @@ xmlUCSIsSuperscriptsandSubscripts(int code) {
  */
 int
 xmlUCSIsSupplementalArrowsA(int code) {
-    return((code >= 0x27F0) && (code <= 0x27FF));
+    return(((code >= 0x27F0) && (code <= 0x27FF)));
 }
 
 /**
@@ -2307,7 +2348,7 @@ xmlUCSIsSupplementalArrowsA(int code) {
  */
 int
 xmlUCSIsSupplementalArrowsB(int code) {
-    return((code >= 0x2900) && (code <= 0x297F));
+    return(((code >= 0x2900) && (code <= 0x297F)));
 }
 
 /**
@@ -2320,7 +2361,7 @@ xmlUCSIsSupplementalArrowsB(int code) {
  */
 int
 xmlUCSIsSupplementalMathematicalOperators(int code) {
-    return((code >= 0x2A00) && (code <= 0x2AFF));
+    return(((code >= 0x2A00) && (code <= 0x2AFF)));
 }
 
 /**
@@ -2333,7 +2374,7 @@ xmlUCSIsSupplementalMathematicalOperators(int code) {
  */
 int
 xmlUCSIsSupplementaryPrivateUseAreaA(int code) {
-    return((code >= 0xF0000) && (code <= 0xFFFFF));
+    return(((code >= 0xF0000) && (code <= 0xFFFFF)));
 }
 
 /**
@@ -2346,7 +2387,7 @@ xmlUCSIsSupplementaryPrivateUseAreaA(int code) {
  */
 int
 xmlUCSIsSupplementaryPrivateUseAreaB(int code) {
-    return((code >= 0x100000) && (code <= 0x10FFFF));
+    return(((code >= 0x100000) && (code <= 0x10FFFF)));
 }
 
 /**
@@ -2359,7 +2400,7 @@ xmlUCSIsSupplementaryPrivateUseAreaB(int code) {
  */
 int
 xmlUCSIsSyriac(int code) {
-    return((code >= 0x0700) && (code <= 0x074F));
+    return(((code >= 0x0700) && (code <= 0x074F)));
 }
 
 /**
@@ -2372,7 +2413,7 @@ xmlUCSIsSyriac(int code) {
  */
 int
 xmlUCSIsTagalog(int code) {
-    return((code >= 0x1700) && (code <= 0x171F));
+    return(((code >= 0x1700) && (code <= 0x171F)));
 }
 
 /**
@@ -2385,7 +2426,7 @@ xmlUCSIsTagalog(int code) {
  */
 int
 xmlUCSIsTagbanwa(int code) {
-    return((code >= 0x1760) && (code <= 0x177F));
+    return(((code >= 0x1760) && (code <= 0x177F)));
 }
 
 /**
@@ -2398,7 +2439,7 @@ xmlUCSIsTagbanwa(int code) {
  */
 int
 xmlUCSIsTags(int code) {
-    return((code >= 0xE0000) && (code <= 0xE007F));
+    return(((code >= 0xE0000) && (code <= 0xE007F)));
 }
 
 /**
@@ -2411,7 +2452,7 @@ xmlUCSIsTags(int code) {
  */
 int
 xmlUCSIsTaiLe(int code) {
-    return((code >= 0x1950) && (code <= 0x197F));
+    return(((code >= 0x1950) && (code <= 0x197F)));
 }
 
 /**
@@ -2424,7 +2465,7 @@ xmlUCSIsTaiLe(int code) {
  */
 int
 xmlUCSIsTaiXuanJingSymbols(int code) {
-    return((code >= 0x1D300) && (code <= 0x1D35F));
+    return(((code >= 0x1D300) && (code <= 0x1D35F)));
 }
 
 /**
@@ -2437,7 +2478,7 @@ xmlUCSIsTaiXuanJingSymbols(int code) {
  */
 int
 xmlUCSIsTamil(int code) {
-    return((code >= 0x0B80) && (code <= 0x0BFF));
+    return(((code >= 0x0B80) && (code <= 0x0BFF)));
 }
 
 /**
@@ -2450,7 +2491,7 @@ xmlUCSIsTamil(int code) {
  */
 int
 xmlUCSIsTelugu(int code) {
-    return((code >= 0x0C00) && (code <= 0x0C7F));
+    return(((code >= 0x0C00) && (code <= 0x0C7F)));
 }
 
 /**
@@ -2463,7 +2504,7 @@ xmlUCSIsTelugu(int code) {
  */
 int
 xmlUCSIsThaana(int code) {
-    return((code >= 0x0780) && (code <= 0x07BF));
+    return(((code >= 0x0780) && (code <= 0x07BF)));
 }
 
 /**
@@ -2476,7 +2517,7 @@ xmlUCSIsThaana(int code) {
  */
 int
 xmlUCSIsThai(int code) {
-    return((code >= 0x0E00) && (code <= 0x0E7F));
+    return(((code >= 0x0E00) && (code <= 0x0E7F)));
 }
 
 /**
@@ -2489,7 +2530,7 @@ xmlUCSIsThai(int code) {
  */
 int
 xmlUCSIsTibetan(int code) {
-    return((code >= 0x0F00) && (code <= 0x0FFF));
+    return(((code >= 0x0F00) && (code <= 0x0FFF)));
 }
 
 /**
@@ -2502,7 +2543,7 @@ xmlUCSIsTibetan(int code) {
  */
 int
 xmlUCSIsUgaritic(int code) {
-    return((code >= 0x10380) && (code <= 0x1039F));
+    return(((code >= 0x10380) && (code <= 0x1039F)));
 }
 
 /**
@@ -2515,7 +2556,7 @@ xmlUCSIsUgaritic(int code) {
  */
 int
 xmlUCSIsUnifiedCanadianAboriginalSyllabics(int code) {
-    return((code >= 0x1400) && (code <= 0x167F));
+    return(((code >= 0x1400) && (code <= 0x167F)));
 }
 
 /**
@@ -2528,7 +2569,7 @@ xmlUCSIsUnifiedCanadianAboriginalSyllabics(int code) {
  */
 int
 xmlUCSIsVariationSelectors(int code) {
-    return((code >= 0xFE00) && (code <= 0xFE0F));
+    return(((code >= 0xFE00) && (code <= 0xFE0F)));
 }
 
 /**
@@ -2541,7 +2582,7 @@ xmlUCSIsVariationSelectors(int code) {
  */
 int
 xmlUCSIsVariationSelectorsSupplement(int code) {
-    return((code >= 0xE0100) && (code <= 0xE01EF));
+    return(((code >= 0xE0100) && (code <= 0xE01EF)));
 }
 
 /**
@@ -2554,7 +2595,7 @@ xmlUCSIsVariationSelectorsSupplement(int code) {
  */
 int
 xmlUCSIsYiRadicals(int code) {
-    return((code >= 0xA490) && (code <= 0xA4CF));
+    return(((code >= 0xA490) && (code <= 0xA4CF)));
 }
 
 /**
@@ -2567,7 +2608,7 @@ xmlUCSIsYiRadicals(int code) {
  */
 int
 xmlUCSIsYiSyllables(int code) {
-    return((code >= 0xA000) && (code <= 0xA48F));
+    return(((code >= 0xA000) && (code <= 0xA48F)));
 }
 
 /**
@@ -2580,7 +2621,7 @@ xmlUCSIsYiSyllables(int code) {
  */
 int
 xmlUCSIsYijingHexagramSymbols(int code) {
-    return((code >= 0x4DC0) && (code <= 0x4DFF));
+    return(((code >= 0x4DC0) && (code <= 0x4DFF)));
 }
 
 /**
@@ -3125,56 +3166,6 @@ xmlUCSIsCat(int code, const char *cat) {
     if (func == NULL)
 	return (-1);
     return (func(code));
-}
-
-/*
-    The following routines are an UGLY HACK to provide aliases for block
-    names which are not in the current release, but are needed for ABI
-    compatibility.
-*/
-
-/**
- * xmlUCSIsCombiningMarksforSymbols:
- * @code: UCS code point
- *
- * Check whether the character is part of CombiningMarksforSymbols UCS Block
- *
- * Returns 1 if true 0 otherwise
- */
-int
-xmlUCSIsCombiningMarksforSymbols(int code) {
-    return((code >= 0x20D0) && (code <= 0x20FF));
-}
-
-/**
- * xmlUCSIsGreek:
- * @code: UCS code point
- *
- * Check whether the character is part of Greek UCS Block
- *
- * Returns 1 if true 0 otherwise
- */
-int
-xmlUCSIsGreek(int code) {
-    return((code >= 0x370) && (code <= 0x3FF));
-}
-
-/**
- * xmlUCSIsPrivateUse:
- * @code: UCS code point
- *
- * Check whether the character is part of PrivateUse UCS Block
- *
- * Returns 1 if true 0 otherwise
- */
-int
-xmlUCSIsPrivateUse(int code) {
-    if ( ((code >= 0xE000)  && (code <= 0xF8FF)) ||
-	 ((code >= 0xF0000) && (code <= 0xFFFFD))||
-	 ((code >= 0x100000)&& (code <= 0x10FFFD)) )
-	return (1);
-    else
-	return (0);
 }
 
 

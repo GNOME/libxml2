@@ -1,3 +1,7 @@
+Wed Nov 26 21:54:01 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/Makefile.bcb: applied patch from Eric
+
 Wed Nov 26 21:33:14 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/tree.h: stefan on IRC pointed out that XML_GET_LINE

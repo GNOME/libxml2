@@ -145,7 +145,7 @@ simply provide a set of keywords:
 			$desc = mysql_result($result, $i, 4);
 			if (array_key_exists($name, $results)) {
 			    list($r,$t,$m,$n, $d) = $results[$name];
-			    $results[$name] = array($r + $relevance,
+			    $results[$name] = array($r + $relevance + 40,
 			                            $t,$m,$n,$d);
 			} else {
 			    $results[$name] = array($relevance,$type,

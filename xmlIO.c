@@ -453,7 +453,11 @@ xmlFileRead (void * context, char * buffer, int len) {
  */
 static int
 xmlFileWrite (void * context, const char * buffer, int len) {
-    return(fwrite(&buffer[0], 1,  len, (FILE *) context));
+    int items;
+
+    items = fwrite(&buffer[0], len, 1, (FILE *) context);
+
+    return(items * len);
 }
 
 /**

@@ -1,3 +1,8 @@
+Tue Dec 17 19:31:07 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: applied a patch for VMS following the report by
+	  Nigel Hall
+
 Tue Dec 17 11:29:41 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: the parseStartTag bug fix wasn't complete.

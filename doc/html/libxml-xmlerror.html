@@ -1,0 +1,1203 @@
+<HTML
+><HEAD
+><TITLE
+>xmlerror</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Libxml Library Reference"
+HREF="libxml-lib.html"><LINK
+REL="PREVIOUS"
+TITLE="uri"
+HREF="libxml-uri.html"><LINK
+REL="NEXT"
+TITLE="HTMLparser"
+HREF="libxml-htmlparser.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>Gnome XML Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="libxml-uri.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="libxml-htmlparser.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="LIBXML-XMLERROR"
+>xmlerror</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN9873"
+></A
+><H2
+>Name</H2
+>xmlerror&nbsp;--&nbsp;</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN9876"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+enum        <A
+HREF="libxml-xmlerror.html#XMLPARSERERRORS"
+>xmlParserErrors</A
+>;
+void        (<A
+HREF="libxml-xmlerror.html#XMLGENERICERRORFUNC"
+>*xmlGenericErrorFunc</A
+>)          (void *ctx,
+                                             const char *msg,
+                                             ...);
+void        <A
+HREF="libxml-xmlerror.html#XMLSETGENERICERRORFUNC"
+>xmlSetGenericErrorFunc</A
+>          (void *ctx,
+                                             <A
+HREF="libxml-xmlerror.html#XMLGENERICERRORFUNC"
+>xmlGenericErrorFunc</A
+> handler);
+void        <A
+HREF="libxml-xmlerror.html#XMLPARSERERROR"
+>xmlParserError</A
+>                  (void *ctx,
+                                             const char *msg,
+                                             ...);
+void        <A
+HREF="libxml-xmlerror.html#XMLPARSERWARNING"
+>xmlParserWarning</A
+>                (void *ctx,
+                                             const char *msg,
+                                             ...);
+void        <A
+HREF="libxml-xmlerror.html#XMLPARSERVALIDITYERROR"
+>xmlParserValidityError</A
+>          (void *ctx,
+                                             const char *msg,
+                                             ...);
+void        <A
+HREF="libxml-xmlerror.html#XMLPARSERVALIDITYWARNING"
+>xmlParserValidityWarning</A
+>        (void *ctx,
+                                             const char *msg,
+                                             ...);
+void        <A
+HREF="libxml-xmlerror.html#XMLPARSERPRINTFILEINFO"
+>xmlParserPrintFileInfo</A
+>          (<A
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> input);
+void        <A
+HREF="libxml-xmlerror.html#XMLPARSERPRINTFILECONTEXT"
+>xmlParserPrintFileContext</A
+>       (<A
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> input);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN9891"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN9894"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9896"
+></A
+><H3
+><A
+NAME="XMLPARSERERRORS"
+></A
+>enum xmlParserErrors</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    XML_ERR_OK = 0,
+    XML_ERR_INTERNAL_ERROR,
+    XML_ERR_NO_MEMORY,
+    
+    XML_ERR_DOCUMENT_START, /* 3 */
+    XML_ERR_DOCUMENT_EMPTY,
+    XML_ERR_DOCUMENT_END,
+
+    XML_ERR_INVALID_HEX_CHARREF, /* 6 */
+    XML_ERR_INVALID_DEC_CHARREF,
+    XML_ERR_INVALID_CHARREF,
+    XML_ERR_INVALID_CHAR,
+
+    XML_ERR_CHARREF_AT_EOF, /* 10 */
+    XML_ERR_CHARREF_IN_PROLOG,
+    XML_ERR_CHARREF_IN_EPILOG,
+    XML_ERR_CHARREF_IN_DTD,
+    XML_ERR_ENTITYREF_AT_EOF,
+    XML_ERR_ENTITYREF_IN_PROLOG,
+    XML_ERR_ENTITYREF_IN_EPILOG,
+    XML_ERR_ENTITYREF_IN_DTD,
+    XML_ERR_PEREF_AT_EOF,
+    XML_ERR_PEREF_IN_PROLOG,
+    XML_ERR_PEREF_IN_EPILOG,
+    XML_ERR_PEREF_IN_INT_SUBSET,
+
+    XML_ERR_ENTITYREF_NO_NAME, /* 22 */
+    XML_ERR_ENTITYREF_SEMICOL_MISSING,
+
+    XML_ERR_PEREF_NO_NAME, /* 24 */
+    XML_ERR_PEREF_SEMICOL_MISSING,
+
+    XML_ERR_UNDECLARED_ENTITY, /* 26 */
+    XML_WAR_UNDECLARED_ENTITY,
+    XML_ERR_UNPARSED_ENTITY,
+    XML_ERR_ENTITY_IS_EXTERNAL,
+    XML_ERR_ENTITY_IS_PARAMETER,
+
+    XML_ERR_UNKNOWN_ENCODING, /* 31 */
+    XML_ERR_UNSUPPORTED_ENCODING,
+
+    XML_ERR_STRING_NOT_STARTED, /* 33 */
+    XML_ERR_STRING_NOT_CLOSED,
+    XML_ERR_NS_DECL_ERROR,
+
+    XML_ERR_ENTITY_NOT_STARTED, /* 36 */
+    XML_ERR_ENTITY_NOT_FINISHED,
+    
+    XML_ERR_LT_IN_ATTRIBUTE, /* 38 */
+    XML_ERR_ATTRIBUTE_NOT_STARTED,
+    XML_ERR_ATTRIBUTE_NOT_FINISHED,
+    XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
+    XML_ERR_ATTRIBUTE_REDEFINED,
+
+    XML_ERR_LITERAL_NOT_STARTED, /* 43 */
+    XML_ERR_LITERAL_NOT_FINISHED,
+    
+    XML_ERR_COMMENT_NOT_FINISHED, /* 45 */
+
+    XML_ERR_PI_NOT_STARTED, /* 47 */
+    XML_ERR_PI_NOT_FINISHED,
+
+    XML_ERR_NOTATION_NOT_STARTED, /* 49 */
+    XML_ERR_NOTATION_NOT_FINISHED,
+
+    XML_ERR_ATTLIST_NOT_STARTED, /* 51 */
+    XML_ERR_ATTLIST_NOT_FINISHED,
+
+    XML_ERR_MIXED_NOT_STARTED, /* 53 */
+    XML_ERR_MIXED_NOT_FINISHED,
+
+    XML_ERR_ELEMCONTENT_NOT_STARTED, /* 55 */
+    XML_ERR_ELEMCONTENT_NOT_FINISHED,
+
+    XML_ERR_XMLDECL_NOT_STARTED, /* 57 */
+    XML_ERR_XMLDECL_NOT_FINISHED,
+
+    XML_ERR_CONDSEC_NOT_STARTED, /* 59 */
+    XML_ERR_CONDSEC_NOT_FINISHED,
+
+    XML_ERR_EXT_SUBSET_NOT_FINISHED, /* 61 */
+
+    XML_ERR_DOCTYPE_NOT_FINISHED, /* 62 */
+
+    XML_ERR_MISPLACED_CDATA_END, /* 63 */
+    XML_ERR_CDATA_NOT_FINISHED,
+
+    XML_ERR_RESERVED_XML_NAME, /* 65 */
+
+    XML_ERR_SPACE_REQUIRED, /* 66 */
+    XML_ERR_SEPARATOR_REQUIRED,
+    XML_ERR_NMTOKEN_REQUIRED,
+    XML_ERR_NAME_REQUIRED,
+    XML_ERR_PCDATA_REQUIRED,
+    XML_ERR_URI_REQUIRED,
+    XML_ERR_PUBID_REQUIRED,
+    XML_ERR_LT_REQUIRED,
+    XML_ERR_GT_REQUIRED,
+    XML_ERR_LTSLASH_REQUIRED,
+    XML_ERR_EQUAL_REQUIRED,
+
+    XML_ERR_TAG_NAME_MISMATCH, /* 77 */
+    XML_ERR_TAG_NOT_FINISED,
+
+    XML_ERR_STANDALONE_VALUE, /* 79 */
+
+    XML_ERR_ENCODING_NAME, /* 80 */
+
+    XML_ERR_HYPHEN_IN_COMMENT, /* 81 */
+
+    XML_ERR_INVALID_ENCODING, /* 82 */
+
+    XML_ERR_EXT_ENTITY_STANDALONE, /* 83 */
+
+    XML_ERR_CONDSEC_INVALID, /* 84 */
+
+    XML_ERR_VALUE_REQUIRED, /* 85 */
+
+    XML_ERR_NOT_WELL_BALANCED, /* 86 */
+    XML_ERR_EXTRA_CONTENT, /* 87 */
+    XML_ERR_ENTITY_CHAR_ERROR, /* 88 */
+    XML_ERR_ENTITY_PE_INTERNAL, /* 88 */
+    XML_ERR_ENTITY_LOOP, /* 89 */
+    XML_ERR_ENTITY_BOUNDARY, /* 90 */
+    XML_ERR_INVALID_URI, /* 91 */
+    XML_ERR_URI_FRAGMENT /* 92 */
+}xmlParserErrors;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9901"
+></A
+><H3
+><A
+NAME="XMLGENERICERRORFUNC"
+></A
+>xmlGenericErrorFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlGenericErrorFunc)          (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9923"
+></A
+><H3
+><A
+NAME="XMLSETGENERICERRORFUNC"
+></A
+>xmlSetGenericErrorFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSetGenericErrorFunc          (void *ctx,
+                                             <A
+HREF="libxml-xmlerror.html#XMLGENERICERRORFUNC"
+>xmlGenericErrorFunc</A
+> handler);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Function to reset the handler and the error context for out of
+context error messages.
+This simply means that <TT
+CLASS="PARAMETER"
+><I
+>handler</I
+></TT
+> will be called for subsequent
+error messages while not parsing nor validating. And <TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+> will
+be passed as first argument to <TT
+CLASS="PARAMETER"
+><I
+>handler</I
+></TT
+>
+One can simply force messages to be emitted to another FILE * than
+stderr by setting <TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+> to this file handle and <TT
+CLASS="PARAMETER"
+><I
+>handler</I
+></TT
+> to NULL.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the new error handling context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>handler</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the new handler function</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9948"
+></A
+><H3
+><A
+NAME="XMLPARSERERROR"
+></A
+>xmlParserError ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserError                  (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Display and format an error messages, gives file, line, position and
+extra parameters.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the message to display/transmit</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  extra parameters for the message display</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9971"
+></A
+><H3
+><A
+NAME="XMLPARSERWARNING"
+></A
+>xmlParserWarning ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserWarning                (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Display and format a warning messages, gives file, line, position and
+extra parameters.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the message to display/transmit</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  extra parameters for the message display</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9994"
+></A
+><H3
+><A
+NAME="XMLPARSERVALIDITYERROR"
+></A
+>xmlParserValidityError ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserValidityError          (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Display and format an validity error messages, gives file,
+line, position and extra parameters.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the message to display/transmit</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  extra parameters for the message display</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10017"
+></A
+><H3
+><A
+NAME="XMLPARSERVALIDITYWARNING"
+></A
+>xmlParserValidityWarning ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserValidityWarning        (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Display and format a validity warning messages, gives file, line,
+position and extra parameters.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the message to display/transmit</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  extra parameters for the message display</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10040"
+></A
+><H3
+><A
+NAME="XMLPARSERPRINTFILEINFO"
+></A
+>xmlParserPrintFileInfo ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserPrintFileInfo          (<A
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> input);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Displays the associated file and line informations for the current input</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an xmlParserInputPtr input</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10056"
+></A
+><H3
+><A
+NAME="XMLPARSERPRINTFILECONTEXT"
+></A
+>xmlParserPrintFileContext ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserPrintFileContext       (<A
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> input);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Displays current context within the input content for error tracking</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an xmlParserInputPtr input</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="libxml-uri.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="libxml-htmlparser.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>uri</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>HTMLparser</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

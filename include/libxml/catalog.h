@@ -21,9 +21,11 @@
 extern "C" {
 #endif
 
-int	xmlLoadCatalog		(const char *URL);
-void	xmlCatalogCleanup	(void);
-void	xmlCatalogDump		(FILE *out);
+int		xmlLoadCatalog		(const char *URL);
+void		xmlCatalogCleanup	(void);
+void		xmlCatalogDump		(FILE *out);
+const xmlChar *	xmlCatalogGetSystem	(const xmlChar *sysID);
+const xmlChar *	xmlCatalogGetPublic	(const xmlChar *pubID);
 
 #ifdef __cplusplus
 }

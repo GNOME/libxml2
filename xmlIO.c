@@ -65,6 +65,9 @@
 #include <libxml/nanohttp.h>
 #include <libxml/nanoftp.h>
 #include <libxml/xmlerror.h>
+#ifdef LIBXML_CATALOG_ENABLED
+#include <libxml/catalog.h>
+#endif
 
 #ifdef VMS
 #define xmlRegisterDefaultInputCallbacks xmlRegisterDefInputCallbacks
@@ -1587,12 +1590,26 @@ xmlParserInputPtr
 xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
                                xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr ret = NULL;
+    const xmlChar *resource = NULL;
 
 #ifdef DEBUG_EXTERNAL_ENTITIES
     xmlGenericError(xmlGenericErrorContext,
 	    "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
 #endif
-    if (URL == NULL) {
+#ifdef LIBXML_CATALOG_ENABLED
+    /*
+     * Try to load it from the resource pointed in the catalog
+     */
+    if (ID != NULL)
+	resource = xmlCatalogGetPublic((const xmlChar *)ID);
+    if ((resource == NULL) && (URL != NULL))
+	resource = xmlCatalogGetSystem((const xmlChar *)URL);
+#endif
+
+    if (resource == NULL)
+	resource = (const xmlChar *)URL;
+
+    if (resource == NULL) {
 	if ((ctxt->validate) && (ctxt->sax != NULL) && 
             (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt,
@@ -1602,15 +1619,15 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 		    "failed to load external entity \"%s\"\n", ID);
         return(NULL);
     }
-    ret = xmlNewInputFromFile(ctxt, URL);
+    ret = xmlNewInputFromFile(ctxt, (const char *)resource);
     if (ret == NULL) {
 	if ((ctxt->validate) && (ctxt->sax != NULL) && 
             (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt,
-		    "failed to load external entity \"%s\"\n", URL);
+		    "failed to load external entity \"%s\"\n", resource);
 	else if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 	    ctxt->sax->warning(ctxt,
-		    "failed to load external entity \"%s\"\n", URL);
+		    "failed to load external entity \"%s\"\n", resource);
     }
     return(ret);
 }

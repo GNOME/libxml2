@@ -97,6 +97,79 @@ xmlFreeCatalogEntry(xmlCatalogEntryPtr ret) {
     xmlFree(ret);
 }
 
+/**
+ * xmlCatalogDumpEntry:
+ * @entry:  the 
+ * @out:  the file.
+ *
+ * Free up all the memory associated with catalogs
+ */
+static void
+xmlCatalogDumpEntry(xmlCatalogEntryPtr entry, FILE *out) {
+    if ((entry == NULL) || (out == NULL))
+	return;
+    switch (entry->type) {
+	case XML_CATA_ENTITY:
+	    fprintf(out, "ENTITY "); break;
+	case XML_CATA_PENTITY:
+	    fprintf(out, "ENTITY %%"); break;
+	case XML_CATA_DOCTYPE:
+	    fprintf(out, "DOCTYPE "); break;
+	case XML_CATA_LINKTYPE:
+	    fprintf(out, "LINKTYPE "); break;
+	case XML_CATA_NOTATION:
+	    fprintf(out, "NOTATION "); break;
+	case XML_CATA_PUBLIC:
+	    fprintf(out, "PUBLIC "); break;
+	case XML_CATA_SYSTEM:
+	    fprintf(out, "SYSTEM "); break;
+	case XML_CATA_DELEGATE:
+	    fprintf(out, "DELEGATE "); break;
+	case XML_CATA_BASE:
+	    fprintf(out, "BASE "); break;
+	case XML_CATA_CATALOG:
+	    fprintf(out, "CATALOG "); break;
+	case XML_CATA_DOCUMENT:
+	    fprintf(out, "DOCUMENT "); break;
+	case XML_CATA_SGMLDECL:
+	    fprintf(out, "SGMLDECL "); break;
+	default:
+	    return;
+    }
+    switch (entry->type) {
+	case XML_CATA_ENTITY:
+	case XML_CATA_PENTITY:
+	case XML_CATA_DOCTYPE:
+	case XML_CATA_LINKTYPE:
+	case XML_CATA_NOTATION:
+	    fprintf(out, "%s", entry->name); break;
+	case XML_CATA_PUBLIC:
+	case XML_CATA_SYSTEM:
+	case XML_CATA_SGMLDECL:
+	case XML_CATA_DOCUMENT:
+	case XML_CATA_CATALOG:
+	case XML_CATA_BASE:
+	case XML_CATA_DELEGATE:
+	    fprintf(out, "\"%s\"", entry->name); break;
+	default:
+	    break;
+    }
+    switch (entry->type) {
+	case XML_CATA_ENTITY:
+	case XML_CATA_PENTITY:
+	case XML_CATA_DOCTYPE:
+	case XML_CATA_LINKTYPE:
+	case XML_CATA_NOTATION:
+	case XML_CATA_PUBLIC:
+	case XML_CATA_SYSTEM:
+	case XML_CATA_DELEGATE:
+	    fprintf(out, " \"%s\"", entry->value); break;
+	default:
+	    break;
+    }
+    fprintf(out, "\n");
+}
+
 /************************************************************************
  *									*
  *			The parser					*
@@ -441,78 +514,48 @@ xmlCatalogCleanup(void) {
 }
 
 /**
- * xmlCatalogDumpEntry:
- * @entry:  the 
- * @out:  the file.
+ * xmlCatalogGetSystem:
+ * @sysId:  the system ID string
  *
- * Free up all the memory associated with catalogs
+ * Try to lookup the resource associated to a system ID
+ *
+ * Returns the resource name if found or NULL otherwise.
  */
-static void
-xmlCatalogDumpEntry(xmlCatalogEntryPtr entry, FILE *out) {
-    if ((entry == NULL) || (out == NULL))
-	return;
-    switch (entry->type) {
-	case XML_CATA_ENTITY:
-	    fprintf(out, "ENTITY "); break;
-	case XML_CATA_PENTITY:
-	    fprintf(out, "ENTITY %%"); break;
-	case XML_CATA_DOCTYPE:
-	    fprintf(out, "DOCTYPE "); break;
-	case XML_CATA_LINKTYPE:
-	    fprintf(out, "LINKTYPE "); break;
-	case XML_CATA_NOTATION:
-	    fprintf(out, "NOTATION "); break;
-	case XML_CATA_PUBLIC:
-	    fprintf(out, "PUBLIC "); break;
-	case XML_CATA_SYSTEM:
-	    fprintf(out, "SYSTEM "); break;
-	case XML_CATA_DELEGATE:
-	    fprintf(out, "DELEGATE "); break;
-	case XML_CATA_BASE:
-	    fprintf(out, "BASE "); break;
-	case XML_CATA_CATALOG:
-	    fprintf(out, "CATALOG "); break;
-	case XML_CATA_DOCUMENT:
-	    fprintf(out, "DOCUMENT "); break;
-	case XML_CATA_SGMLDECL:
-	    fprintf(out, "SGMLDECL "); break;
-	default:
-	    return;
-    }
-    switch (entry->type) {
-	case XML_CATA_ENTITY:
-	case XML_CATA_PENTITY:
-	case XML_CATA_DOCTYPE:
-	case XML_CATA_LINKTYPE:
-	case XML_CATA_NOTATION:
-	    fprintf(out, "%s", entry->name); break;
-	case XML_CATA_PUBLIC:
-	case XML_CATA_SYSTEM:
-	case XML_CATA_SGMLDECL:
-	case XML_CATA_DOCUMENT:
-	case XML_CATA_CATALOG:
-	case XML_CATA_BASE:
-	case XML_CATA_DELEGATE:
-	    fprintf(out, "\"%s\"", entry->name); break;
-	default:
-	    break;
-    }
-    switch (entry->type) {
-	case XML_CATA_ENTITY:
-	case XML_CATA_PENTITY:
-	case XML_CATA_DOCTYPE:
-	case XML_CATA_LINKTYPE:
-	case XML_CATA_NOTATION:
-	case XML_CATA_PUBLIC:
-	case XML_CATA_SYSTEM:
-	case XML_CATA_DELEGATE:
-	    fprintf(out, " \"%s\"", entry->value); break;
-	default:
-	    break;
-    }
-    fprintf(out, "\n");
+const xmlChar *
+xmlCatalogGetSystem(const xmlChar *sysID) {
+    xmlCatalogEntryPtr entry;
+
+    if ((sysID == NULL) || (xmlDefaultCatalog == NULL))
+	return(NULL);
+    entry = (xmlCatalogEntryPtr) xmlHashLookup(xmlDefaultCatalog, sysID);
+    if (entry == NULL)
+	return(NULL);
+    if (entry->type == XML_CATA_SYSTEM)
+	return(entry->value);
+    return(NULL);
 }
 
+/**
+ * xmlCatalogGetPublic:
+ * @pubId:  the public ID string
+ *
+ * Try to lookup the system ID associated to a public ID
+ *
+ * Returns the system ID if found or NULL otherwise.
+ */
+const xmlChar *
+xmlCatalogGetPublic(const xmlChar *pubID) {
+    xmlCatalogEntryPtr entry;
+
+    if ((pubID == NULL) || (xmlDefaultCatalog == NULL))
+	return(NULL);
+    entry = (xmlCatalogEntryPtr) xmlHashLookup(xmlDefaultCatalog, pubID);
+    if (entry == NULL)
+	return(NULL);
+    if (entry->type == XML_CATA_PUBLIC)
+	return(entry->value);
+    return(NULL);
+}
 /**
  * xmlCatalogDump:
  * @out:  the file.

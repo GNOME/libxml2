@@ -1,3 +1,8 @@
+Thu Mar  7 12:19:36 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in xmllint.c: trying to fix #71457 for timing
+	  precision when gettimeofday() is not availble but ftime() is
+
 Thu Mar  7 11:24:02 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in doc/Makefile.am: Fixed #73408 missing images

@@ -37,7 +37,7 @@
 #include <libxml/parserInternals.h>
 #include <libxml/pattern.h>
 
-#ifdef LIBXML_PATTERN_ENABLED
+/* #ifdef LIBXML_PATTERN_ENABLED */
 
 #define DEBUG_STREAMING
 

@@ -1,6 +1,7 @@
 # Note that this is NOT a relocatable package
 %define ver      @VERSION@
 %define prefix   /usr
+%define datadir  %{prefix}/share
 
 Summary: Library providing XML and HTML support
 Name: libxml2
@@ -12,7 +13,7 @@ Source: ftp://xmlsoft.org/libxml2-%{ver}.tar.gz
 BuildRoot: /var/tmp/libxml2-%{PACKAGE_VERSION}-root
 
 URL: http://xmlsoft.org/
-Docdir: %{prefix}/doc
+Docdir: %{datadir}/doc
 
 %description
 This library allows to manipulate XML files. It includes support 
@@ -45,6 +46,13 @@ URI library.
 
 %changelog
 
+* Thu Apr 26 2001 Toshio Kuratomi <badger@prtr-13.ucsc.edu>
+
+[2.3.7]
+- Added libxml.m4 to the distribution file list
+- Moved the man pages from /usr/man to /usr/share/man to conform to FHS2.0
+- Moved programmer documentation into the devel package
+
 * Thu Sep 23 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 - corrected the spec file alpha stuff
@@ -72,15 +80,15 @@ URI library.
 # Needed for snapshot releases.
 if [ ! -f configure ]; then
 %ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc"
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
 %else
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc"
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
 %endif
 else
 %ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc"
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
 %else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc"
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
 %endif
 fi
 
@@ -94,9 +102,9 @@ fi
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/usr/man/man1
-install -d $RPM_BUILD_ROOT/usr/man/man4
-make prefix=$RPM_BUILD_ROOT%{prefix} install
+install -d $RPM_BUILD_ROOT%{datadir}/man/man1
+install -d $RPM_BUILD_ROOT%{datadir}/man/man4
+make prefix=$RPM_BUILD_ROOT%{prefix} mandir=$RPM_BUILD_ROOT%{datadir}/man install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -109,10 +117,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
-%doc /usr/man/man1/xmllint.1*
-%doc /usr/man/man1/xml2-config.1*
-%doc /usr/man/man4/libxml.4*
-%doc doc/*.html doc/html
+%doc /usr/share/man/man1/xmllint.1*
+%doc /usr/share/man/man4/libxml.4*
 
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/xmllint
@@ -120,8 +126,14 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-, root, root)
 
+%doc /usr/share/man/man1/xml2-config.1*
+%doc doc/*.html doc/html
+
 %{prefix}/lib/lib*.so
 %{prefix}/lib/*a
 %{prefix}/lib/*.sh
 %{prefix}/include/*
 %{prefix}/bin/xml2-config
+%{prefix}/share/aclocal/libxml.m4
+# I'm not certain if this should be included in the distribution or not.
+#%{prefix}/lib/pkgconfig/libxml-2.0.pc

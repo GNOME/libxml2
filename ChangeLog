@@ -1,3 +1,7 @@
+Mon Sep  6 16:42:59 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xstc/xstc.py: Changed to finally validate instance documents.
+
 Mon Sep  6 16:04:01 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xstc/Makefile.am Makefile.am: integrated to "make valgrind",

@@ -258,6 +258,7 @@ class MSTestCase:
             else:
                 self.fail(msgSchemaValidButShouldNot)
         else:
+	    return schema
             self.debugMsg("schema result is OK")
         self.debugMsg("after checking schema result")
 
@@ -265,7 +266,7 @@ class MSTestCase:
         global msgInstanceNotValidButShould, msgInstanceValidButShouldNot
         
         instance = None
-        self.debugMsg("loading instance: %s" % file)            
+        self.debugMsg("loading instance: %s" % filePath)            
         instance_parserCtxt = libxml2.newParserCtxt()
         if (instance_parserCtxt is None):
             # TODO: Is this one necessary, or will an exception 
@@ -273,7 +274,7 @@ class MSTestCase:
             raise Exception("Could not create the instance parser context.")
         try:
             try:
-                instance = instance_parserCtxt.ctxtReadFile(file, None, libxml2.XML_PARSE_NOWARNING)
+                instance = instance_parserCtxt.ctxtReadFile(filePath, None, libxml2.XML_PARSE_NOWARNING)
             except:
                 # Suppress exceptions.
                 pass
@@ -324,13 +325,13 @@ class MSTestCase:
             schema = self.processSchema(filePath)
             try:
                 if self.instance_Exists and (schema is not None) and (not self.failed):
-                    file = "%s/%s/%s/%s" % (options.baseDir, self.test_Folder, self.instance_Folder, self.instance_File)
-                    processInstance(filePath, schema)
+                    filePath = "%s/%s/%s/%s" % (options.baseDir, self.test_Folder, self.instance_Folder, self.instance_File)
+                    self.processInstance(filePath, schema)
             finally:
                 if schema is not None:
                    del schema
 
-        except Exception, e:
+        except (Exception, libxml2.parserError, libxml2.treeError), e:
             self.failExcept(e)
 
             

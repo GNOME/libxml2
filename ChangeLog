@@ -1,3 +1,8 @@
+Sat Jul 10 14:19:11 CEST 1999 Tomasz K³oczko  <kloczek@pld.org.pl>
+
+        * doc/Makefile.am:
+        - fix which allow "make install DESTDIR=</install/prefix>".
+
 Fri Jul  9 12:10:24 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c parser.c: applied patch from John Ellson <ellson@lucent.com>

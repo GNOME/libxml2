@@ -1,3 +1,7 @@
+Mon Jun 25 17:07:37 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/html.xml: warn against sending code to exhibit bugs.
+
 Sun Jun 24 23:31:56 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: patch to xmlXPathFormatNumber for the optimizer on

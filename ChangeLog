@@ -1,3 +1,7 @@
+Mon Nov 29 14:07:18 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixed a memory leak on errors in some circumstances #159812
+
 Fri Nov 26 23:20:48 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlIO.c: added a check within xmlOutputBufferWriteEscape to prevent

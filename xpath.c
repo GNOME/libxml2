@@ -3917,9 +3917,12 @@ xmlXPathNewContext(xmlDocPtr doc) {
  */
 void
 xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
+    if (ctxt == NULL) return;
+
     xmlXPathRegisteredNsCleanup(ctxt);
     xmlXPathRegisteredFuncsCleanup(ctxt);
     xmlXPathRegisteredVariablesCleanup(ctxt);
+    xmlResetError(&ctxt->lastError);
     xmlFree(ctxt);
 }
 

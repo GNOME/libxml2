@@ -1116,8 +1116,10 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	    }
 	    break;
 	}
+#ifdef LIBXML_XPTR_ENABLED
 	case XPATH_RANGE:
 	    return(xmlXIncludeCopyRange(ctxt, target, source, obj));
+#endif
 	case XPATH_POINT:
 	    /* points are ignored in XInclude */
 	    break;
@@ -1406,7 +1408,9 @@ loaded:
 	    ctxt->incTab[nr]->inc = xmlXIncludeCopyNodeList(ctxt, ctxt->doc,
 		                                       doc, doc->children);
 	}
-    } else {
+    } 
+#ifdef LIBXML_XPTR_ENABLED
+    else {
 	/*
 	 * Computes the XPointer expression and make a copy used
 	 * as the replacement copy.
@@ -1530,6 +1534,7 @@ loaded:
 	xmlXPathFreeContext(xptrctxt);
 	xmlFree(fragment);
     }
+#endif
 
     /*
      * Do the xml:base fixup if needed

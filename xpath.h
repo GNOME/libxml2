@@ -276,6 +276,23 @@ int		   xmlXPathCmpNodes		(xmlNodePtr node1,
 /**
  * Conversion functions to basic types
  */
+int		   xmlXPathCastNumberToBoolean	(double val);
+int		   xmlXPathCastStringToBoolean	(const xmlChar * val);
+int		   xmlXPathCastNodeToBoolean	(xmlNodeSetPtr ns);
+int		   xmlXPathCastToBoolean	(xmlXPathObjectPtr val);
+
+double		   xmlXPathCastBooleanToNumber	(int val);
+double		   xmlXPathCastStringToNumber	(const xmlChar * val);
+double		   xmlXPathCastNodeToNumber	(xmlNodePtr node);
+double		   xmlXPathCastNodeSetToNumber	(xmlNodeSetPtr ns);
+double		   xmlXPathCastToNumber		(xmlXPathObjectPtr val);
+
+xmlChar *	   xmlXPathCastBooleanToString	(int val);
+xmlChar *	   xmlXPathCastNumberToString	(double val);
+xmlChar *	   xmlXPathCastNodeToString	(xmlNodePtr node);
+xmlChar *	   xmlXPathCastNodeSetToString	(xmlNodeSetPtr ns);
+xmlChar *	   xmlXPathCastToString		(xmlXPathObjectPtr val);
+
 xmlXPathObjectPtr  xmlXPathConvertBoolean	(xmlXPathObjectPtr val);
 xmlXPathObjectPtr  xmlXPathConvertNumber	(xmlXPathObjectPtr val);
 xmlXPathObjectPtr  xmlXPathConvertString	(xmlXPathObjectPtr val);

@@ -135,6 +135,8 @@ int		  valuePush			(xmlXPathParserContextPtr ctxt,
 
 xmlXPathObjectPtr xmlXPathNewString		(const xmlChar *val);
 xmlXPathObjectPtr xmlXPathNewCString		(const char *val);
+xmlXPathObjectPtr xmlXPathWrapString		(xmlChar *val);
+xmlXPathObjectPtr xmlXPathWrapCString		(char *val);
 xmlXPathObjectPtr xmlXPathNewFloat		(double val);
 xmlXPathObjectPtr xmlXPathNewBoolean		(int val);
 xmlXPathObjectPtr xmlXPathNewNodeSet		(xmlNodePtr val);

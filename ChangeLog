@@ -1,3 +1,8 @@
+Tue May 15 11:42:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c xpath.h xpathInternals.h: apply an XPath API cleanup
+	  patch from Thomas Broyer
+
 Tue May 15 10:52:19 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c test/VCM/v2[34].xml: Fixed bug #54631 added specific test

@@ -724,6 +724,7 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
         } else if (info->endTag == 3) {
 #ifdef DEBUG
 	    xmlGenericError(xmlGenericErrorContext,"End of tag %s: expecting %s\n", newtag, ctxt->name);
+
 #endif
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
@@ -4335,8 +4336,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			ctxt->token = 0;
 			ctxt->checkIndex = 0;
 			NEXT;
+			break;
 		    }
-		    break;
 		}
 		if (avail < 2)
 		    goto done;

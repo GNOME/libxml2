@@ -1,3 +1,7 @@
+Fri Oct  5 23:35:00 HKT 2001 William Brack <wbrack@mmm.com.hk>
+
+	* HTMLparser: repaired another loop problem
+
 Fri Oct  5 11:16:21 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: applied fix from Mathias Hasselmann about a bug in URI

@@ -373,6 +373,7 @@ struct _xmlAttr {
     struct _xmlDoc  *doc;	/* the containing document */
     xmlNs           *ns;        /* pointer to the associated namespace */
     xmlAttributeType atype;     /* the attribute type if validating */
+    void            *psvi;	/* for type/PSVI informations */
 };
 
 /**
@@ -457,6 +458,7 @@ struct _xmlNode {
     xmlChar         *content;   /* the content */
     struct _xmlAttr *properties;/* properties list */
     xmlNs           *nsDef;     /* namespace definitions on this node */
+    void            *psvi;	/* for type/PSVI informations */
 };
 
 /**
@@ -510,6 +512,7 @@ struct _xmlDoc {
     int             charset;    /* encoding of the in-memory content
 				   actually an xmlCharEncoding */
     struct _xmlDict *dict;      /* dict used to allocate names or NULL */
+    void           *psvi;	/* for type/PSVI informations */
 };
 
 /**

@@ -1,3 +1,8 @@
+Fri Oct 10 16:19:17 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/tree.h: make room in Doc, Element, Attributes
+	  for PSVI type informations.
+
 Fri Oct 10 16:08:02 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c c14n.c catalog.c error.c globals.c parser.c

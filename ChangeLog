@@ -1,3 +1,8 @@
+2002-10-31  John Fleck  <jfleck@inkstain.net>
+
+	* doc/xml.html (and, by implication, FAQ.html)
+	added UTF-8 conversaion FAQ from Marcus Labib Iskander
+
 Tue Oct 29 18:32:33 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* configure.in: removed xmlwin32version.h

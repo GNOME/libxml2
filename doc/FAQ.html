@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
 <link rel="SHORTCUT ICON" href="/favicon.ico">
 <style type="text/css"><!--
 TD {font-family: Verdana,Arial,Helvetica}
@@ -357,6 +357,13 @@ xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
         else xmlAddPrevSibling(doc-&gt;children, (xmlNodePtr)dtd);
           </pre>
   </li>
+      <li>So what is this funky &quot;xmlChar&quot; used all the time?
+    <p>It is a null terminated sequence of utf-8 characters. And only utf-8! You
+    need to convert strings encoded in different ways to utf-8 before passing
+    them to the API.  This can be accomplished with the iconv library for
+    instance.</p>
+  </li>
+
   <li>etc ...</li>
 </ol>
 <p>

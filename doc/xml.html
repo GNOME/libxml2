@@ -407,6 +407,13 @@ xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
         else xmlAddPrevSibling(doc-&gt;children, (xmlNodePtr)dtd);
           </pre>
   </li>
+      <li>So what is this funky "xmlChar" used all the time?
+    <p>It is a null terminated sequence of utf-8 characters. And only utf-8! You
+    need to convert strings encoded in different ways to utf-8 before passing
+    them to the API.  This can be accomplished with the iconv library for
+    instance.</p>
+  </li>
+
   <li>etc ...</li>
 </ol>
 

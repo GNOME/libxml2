@@ -1,3 +1,7 @@
+Tue Aug 14 16:12:00 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: adding a --format option
+
 Tue Aug 14 14:16:24 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: count() was broken on Result Value Tree

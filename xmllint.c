@@ -92,6 +92,7 @@ static int push = 0;
 static int memory = 0;
 #endif
 static int noblanks = 0;
+static int format = 0;
 static int testIO = 0;
 static char *encoding = NULL;
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -630,7 +631,10 @@ static void parseAndPrintFile(char *filename) {
 		if (encoding != NULL) {
 		    xmlDocDumpMemoryEnc(doc, &result, &len, encoding);
 		} else {
-		    xmlDocDumpMemory(doc, &result, &len);
+		    if (format)
+			xmlDocDumpFormatMemory(doc, &result, &len, 1);
+		    else
+			xmlDocDumpMemory(doc, &result, &len);
 		}
 		if (result == NULL) {
 		    fprintf(stderr, "Failed to save\n");
@@ -644,6 +648,8 @@ static void parseAndPrintFile(char *filename) {
 		xmlSaveFile("-", doc);
 	    else if (encoding != NULL)
 	        xmlSaveFileEnc("-", doc, encoding);
+	    else if (format)
+		xmlSaveFormatFile("-", doc, 1);
 	    else
 		xmlDocDump(stdout, doc);
 	    if ((timing) && (!repeat)) {
@@ -785,6 +791,7 @@ static void usage(const char *name) {
 #endif
     printf("\t--nowarning : do not emit warnings from parser/validator\n");
     printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
+    printf("\t--format : reformat/reindent the input\n");
     printf("\t--testIO : test user I/O support\n");
     printf("\t--encode encoding : output in the given encoding\n");
 #ifdef LIBXML_CATALOG_ENABLED
@@ -944,6 +951,12 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-noblanks")) ||
 	         (!strcmp(argv[i], "--noblanks"))) {
 	     noblanks++;
+	     xmlKeepBlanksDefault(0);
+        }
+	else if ((!strcmp(argv[i], "-format")) ||
+	         (!strcmp(argv[i], "--format"))) {
+	     noblanks++;
+	     format++;
 	     xmlKeepBlanksDefault(0);
 	} else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);

@@ -42,70 +42,70 @@
 
 <h2><a name="Introducti">Introduction</a></h2>
 
-<p>This document describes the <a href="http://www.w3.org/XML/">XML</a>
-library provideed in the <a href="http://www.gnome.org/">Gnome</a> framework.
-XML is a standard to build tag based structured documents/data.</p>
+<p>This document describes libxml, the <a href="http://www.w3.org/XML/">XML</a>
+library provided in the <a href="http://www.gnome.org/">Gnome</a> framework.
+XML is a standard for building tag-based structured documents/data.</p>
 
 <p>Here are some key points about libxml:</p>
 <ul>
   <li>The internal document repesentation is as close as possible to the <a
     href="http://www.w3.org/DOM/">DOM</a> interfaces.</li>
   <li>Libxml also has a <a href="http://www.megginson.com/SAX/index.html">SAX
-    like interface</a>, the interface is designed to be compatible with <a
-    href="http://www.jclark.com/xml/expat.html">Expat</a> one.</li>
+    like interface</a>; the interface is designed to be compatible with <a
+    href="http://www.jclark.com/xml/expat.html">Expat</a>.</li>
   <li>Libxml now include a nearly complete <a
     href="http://www.w3.org/TR/xpath">XPath</a> implementation.</li>
-  <li>Libxml export Push and Pull type parser interface for both XML and
+  <li>Libxml exports Push and Pull type parser interfaces for both XML and
   HTML.</li>
-  <li>This library is released both under the W3C Copyright and the GNU LGPL,
-    basically everybody should be happy, if not, drop me a mail.</li>
+  <li>This library is released both under the W3C Copyright and the GNU LGPL.
+    Basically, everybody should be happy; if not, drop me a mail.</li>
 </ul>
 
 <h2><a name="Documentat">Documentation</a></h2>
 
-<p>There is some on-line resources about using libxml :</p>
+<p>There are some on-line resources about using libxml:</p>
 <ol>
-  <li>The code is commented in a way which allow <a
+  <li>The code is commented in a way which allows <a
     href="http://xmlsoft.org/libxml.html">extensive documentation</a> to be
     automatically extracted.</li>
   <li>This page provides a global overview and <a href="#real">some
-    examples</a> on how to use libxml</li>
-  <li><a href="mailto:james@daa.com.au">James Henstridge</a> made <a
-    href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">a nice
-    documentation</a> expaining how to use the SAX interface of libxml</li>
+    examples</a> on how to use libxml.</li>
+  <li><a href="mailto:james@daa.com.au">James Henstridge</a> wrote <a
+    href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">some nice
+    documentation</a> explaining how to use the libxml SAX interface.</li>
   <li>George Lebl wrote <a
     href="http://www-4.ibm.com/software/developer/library/gnome3/">an article
-    for IBM developperWorks</a> about using libxml</li>
+    for IBM developerWorks</a> about using libxml.</li>
   <li>It is also a good idea to check to <a href="mailto:raph@levien.com">Raph
     Levien</a> <a href="http://levien.com/gnome/">web site</a> since he is
     building the <a href="http://levien.com/gnome/gdome.html">DOM interface
-    gdome</a> on top of libxml result tree and  an implementation of <a
+    gdome</a> on top of libxml result tree and an implementation of <a
     href="http://www.w3.org/Graphics/SVG/">SVG</a> called <a
     href="http://www.levien.com/svg/">gill</a>. Check his <a
     href="http://www.levien.com/gnome/domination.html">DOMination
   paper</a>.</li>
   <li>And don't forget to look at the <a href="/messages/">mailing-list
-    archive</a> too.</li>
+    archive</a>, too.</li>
 </ol>
 
 <h3>Reporting bugs and getting help</h3>
 
-<p>Well bugs or missing features are always possible, and I will make a point
-of fixing them in a timely fashion. The best way it to <a
+<p>Well, bugs or missing features are always possible, and I will make a point
+of fixing them in a timely fashion. The best way to report a bug is to <a
 href="http://bugs.gnome.org/db/pa/lgnome-xml.html">use the Gnome bug tracking
-database</a>. I look at reports there regulary and it's good to have a
+database</a>. I look at reports there regularly and it's good to have a
 reminder when a bug is still open. Check the <a
 href="http://bugs.gnome.org/Reporting.html">instructions on reporting bugs</a>
-and be sure to specify thatthe bug is for the package gnome-xml.</p>
+and be sure to specify that the bug is for the package gnome-xml.</p>
 
 <p>There is also a mailing-list <a
 href="mailto:xml@rufus.w3.org">xml@rufus.w3.org</a> for libxml, with an <a
 href="http://xmlsoft.org/messages">on-line archive</a>. To subscribe to this
-majordomo based list, send a mail to <a
+majordomo based list, send a mail message to <a
 href="mailto:majordomo@rufus.w3.org">majordomo@rufus.w3.org</a> with
 "subscribe xml" in the <strong>content</strong> of the message.</p>
 
-<p>Alternately you can just send the bug to the <a
+<p>Alternatively, you can just send the bug to the <a
 href="mailto:xml@rufus.w3.org">xml@rufus.w3.org</a> list.</p>
 
 <h2><a name="Downloads">Downloads</a></h2>
@@ -120,21 +120,21 @@ href="http://rpmfind.net/linux/RPM/libxml.html">libxml</a> and <a
 href="http://rpmfind.net/linux/RPM/libxml-devel.html">libxml-devel</a>
 packages installed to compile applications using libxml).</p>
 
-<p>Libxml is also available from 2 CVs bases:</p>
+<p>Libxml is also available from 2 CVS bases:</p>
 <ul>
   <li><p>The <a href="http://dev.w3.org/cvsweb/XML/">W3C CVS base</a>,
     available read-only using the CVS pserver authentification (I tend to use
-    this base for my own developements so it's updated more regulary, but
-    content may not be as stable):</p>
+    this base for my own development, so it's updated more regularly, but
+    the content may not be as stable):</p>
     <pre>CVSROOT=:pserver:anonymous@dev.w3.org:/sources/public
 password: anonymous
 module: XML</pre>
   </li>
   <li><p>The <a
     href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Gnome
-    CVS base</a>, Check the <a
-    href="http://developer.gnome.org/tools/cvs.html">Gnome CVS Tools</a> page,
-    the CVS module is <b>gnome-xml</b></p>
+    CVS base</a>. Check the <a
+    href="http://developer.gnome.org/tools/cvs.html">Gnome CVS Tools</a> page;
+    the CVS module is <b>gnome-xml</b>.</p>
   </li>
 </ul>
 
@@ -148,7 +148,7 @@ for really accurate description</h3>
     if you want to test those.</li>
   <li>there is some kind of roadmap to libxml-2.0: fix I18N, and <a
     href="http://rpmfind.net/tools/gdome/messages/0039.html">change structures
-    to accomodate DOM</a></li>
+    to accommodate DOM</a></li>
 </ul>
 
 <h3>1.8.6: Jan 31 2000</h3>
@@ -270,8 +270,9 @@ for really accurate description</h3>
 
 <h2><a name="XML">XML</a></h2>
 
-<p><a href="http://www.w3.org/TR/REC-xml">XML is a standard</a> for markup
-based structured documents, here is <a name="example">an example</a>:</p>
+<p><a href="http://www.w3.org/TR/REC-xml">XML is a standard</a> for
+markup-based structured documents. Here is <a name="example">an example
+XML document</a>:</p>
 <pre>&lt;?xml version="1.0"?>
 &lt;EXAMPLE prop1="gnome is great" prop2="&amp;amp; linux too">
   &lt;head>
@@ -285,25 +286,28 @@ based structured documents, here is <a name="example">an example</a>:</p>
   &lt;/chapter>
 &lt;/EXAMPLE></pre>
 
-<p>The first line specify that it's an XML document and gives useful
-informations about it's encoding. Then the document is a text format whose
-structure is specified by tags between brackets. <strong>Each tag opened have
-to be closed</strong> XML is pedantic about this, not that for example the
-image tag has no content (just an attribute) and is closed by ending up the
+<p>The first line specifies that it's an XML document and gives useful
+information about its encoding. Then the document is a text format whose
+structure is specified by tags between brackets. <strong>Each tag opened has
+to be closed</strong>. XML is pedantic about this. However, if a tag is
+empty (no content), a single tag can serve as both the opening and closing
+tag if it ends with <code>/></code> rather than with <code>></code>.
+Note that, for example, the
+image tag has no content (just an attribute) and is closed by ending the
 tag with <code>/></code>.</p>
 
-<p>XML can be applied sucessfully to a wide range or usage from long term
-structured document maintenance where it follows the steps of SGML to simple
-data encoding mechanism like configuration file format (glade), spreadsheets
-(gnumeric), or even shorter lived document like in WebDAV where it is used to
-encode remote call between a client and a server.</p>
+<p>XML can be applied sucessfully to a wide range of uses, from long term
+structured document maintenance (where it follows the steps of SGML) to simple
+data encoding mechanisms like configuration file formatting (glade), spreadsheets
+(gnumeric), or even shorter lived documents such as WebDAV where it is used to
+encode remote calls between a client and a server.</p>
 
 <h2><a name="tree">The tree output</a></h2>
 
 <p>The parser returns a tree built during the document analysis. The value
-returned is an <strong>xmlDocPtr</strong> (i.e. a pointer to an
-<strong>xmlDoc</strong> structure). This structure contains informations like
-the file  name, the document type, and a <strong>root</strong> pointer which
+returned is an <strong>xmlDocPtr</strong> (i.e., a pointer to an
+<strong>xmlDoc</strong> structure). This structure contains information such as
+the file name, the document type, and a <strong>root</strong> pointer which
 is the root of the document (or more exactly the first child under the root
 which is the document). The tree is made of <strong>xmlNode</strong>s, chained
 in double linked lists of siblings and with childs&lt;->parent relationship.
@@ -317,7 +321,7 @@ only one ELEMENT under the root):</p>
 
 <p>In the source package there is a small program (not installed by default)
 called <strong>tester</strong> which parses XML files given as argument and
-prints them back as parsed, this is useful to detect errors both in XML code
+prints them back as parsed. This is useful to detect errors both in XML code
 and in the XML parser itself. It has an option <strong>--debug</strong> which
 prints the actual in-memory structure of the document, here is the result with
 the <a href="#example">example</a> given before:</p>
@@ -332,6 +336,7 @@ standalone=true
       ENTITY_REF
       TEXT
       content= linux too 
+    ELEMENT head
       ELEMENT title
         TEXT
         content=Welcome to Gnome
@@ -354,23 +359,23 @@ standalone=true
 
 <h2><a name="interface">The SAX interface</a></h2>
 
-<p>Sometimes the DOM tree output is just to large to fit reasonably into
+<p>Sometimes the DOM tree output is just too large to fit reasonably into
 memory. In that case and if you don't expect to save back the XML document
 loaded using libxml, it's better to use the SAX interface of libxml. SAX is a
-<strong>callback based interface</strong> to the parser. Before parsing, the
-application layer register a customized set of callbacks which will be called
+<strong>callback-based interface</strong> to the parser. Before parsing, the
+application layer registers a customized set of callbacks which are called
 by the library as it progresses through the XML input.</p>
 
 <p>To get a more detailed step-by-step guidance on using the SAX interface of
-libxml, <a href="mailto:james@daa.com.au">James Henstridge</a> made <a
-href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">a nice
+libxml, <a href="mailto:james@daa.com.au">James Henstridge</a> has written <a
+href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">some nice
 documentation.</a></p>
 
 <p>You can debug the SAX behaviour by using the <strong>testSAX</strong>
 program located in the gnome-xml module (it's usually not shipped in the
 binary packages of libxml, but you can also find it in the tar source
-distribution). Here is the sequence of callback that would be generated when
-parsing the example given before as reported by testSAX:</p>
+distribution). Here is the sequence of callbacks that would be reported by
+testSAX when parsing the example given before:</p>
 <pre>SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.getEntity(amp)
@@ -406,9 +411,9 @@ SAX.characters( , 1)
 SAX.endElement(EXAMPLE)
 SAX.endDocument()</pre>
 
-<p>Most of the other functionnalities of libxml are based on the DOM tree
-building facility, so nearly everything up to the end of this document
-presuppose the use of the standard DOM tree build. Note that the DOM tree
+<p>Most of the other functionalities of libxml are based on the DOM
+tree-building facility, so nearly everything up to the end of this document
+presupposes the use of the standard DOM tree build. Note that the DOM tree
 itself is built by a set of registered default callbacks, without internal
 specific interface.</p>
 
@@ -1010,6 +1015,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.23 2000/01/25 18:31:22 veillard Exp $</p>
+<p>$Id: xml.html,v 1.24 2000/01/30 20:00:06 veillard Exp $</p>
 </body>
 </html>

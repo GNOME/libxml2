@@ -1,3 +1,7 @@
+Tue Feb 29 23:55:13 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/xml.html : applied patch from Paul DuBois
+
 Thu Feb  3 16:36:39 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c HTMLparser.c: do a bit of bufferization in push mode.

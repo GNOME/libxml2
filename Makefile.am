@@ -118,7 +118,7 @@ testReader_LDADD= $(LDADDS)
 #testOOM_DEPENDENCIES = $(DEPS)
 #testOOM_LDADD= $(LDADDS)
 
-check-local: tests
+check-local: all tests
 
 testall : tests SVGtests SAXtests
 

@@ -1,3 +1,7 @@
+Sun May  9 14:07:21 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: fix for a pedantic make check without make all request
+
 Sat May  8 22:56:22 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c xmlIO.c: fixing some problems in URI unescaping

@@ -122,7 +122,7 @@ NAME="LIBXML-NANOHTTP"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN15637"
+NAME="AEN16454"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN15637"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN15640"
+NAME="AEN16457"
 ></A
 ><H2
 >Synopsis</H2
@@ -170,7 +170,8 @@ HREF="libxml-nanohttp.html#XMLNANOHTTPMETHOD"
                                              const char *method,
                                              const char *input,
                                              char **contentType,
-                                             const char *headers);
+                                             const char *headers,
+                                             int ilen);
 void*       <A
 HREF="libxml-nanohttp.html#XMLNANOHTTPMETHODREDIR"
 >xmlNanoHTTPMethodRedir</A
@@ -179,7 +180,8 @@ HREF="libxml-nanohttp.html#XMLNANOHTTPMETHODREDIR"
                                              const char *input,
                                              char **contentType,
                                              char **redir,
-                                             const char *headers);
+                                             const char *headers,
+                                             int ilen);
 void*       <A
 HREF="libxml-nanohttp.html#XMLNANOHTTPOPEN"
 >xmlNanoHTTPOpen</A
@@ -221,7 +223,7 @@ HREF="libxml-nanohttp.html#XMLNANOHTTPCLOSE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN15656"
+NAME="AEN16473"
 ></A
 ><H2
 >Description</H2
@@ -231,14 +233,14 @@ NAME="AEN15656"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN15659"
+NAME="AEN16476"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15661"
+NAME="AEN16478"
 ></A
 ><H3
 ><A
@@ -267,7 +269,7 @@ Currently it just checks for proxy informations</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15667"
+NAME="AEN16484"
 ></A
 ><H3
 ><A
@@ -288,12 +290,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Cleanup the HTTP protocol layer.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15672"
+NAME="AEN16490"
 ></A
 ><H3
 ><A
@@ -323,7 +327,7 @@ A NULL URL cleans up proxy informations.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15678"
+NAME="AEN16496"
 ></A
 ><P
 ></P
@@ -350,7 +354,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The proxy URL used to initialize the proxy context</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -361,7 +365,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15687"
+NAME="AEN16505"
 ></A
 ><H3
 ><A
@@ -391,7 +395,7 @@ and save it's content in the file.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15693"
+NAME="AEN16511"
 ></A
 ><P
 ></P
@@ -418,7 +422,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The URL to load</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -435,7 +439,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename where the content should be saved</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -452,8 +456,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  if available the Content-Type information will be
-returned at that location</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -468,8 +471,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->-1 in case of failure, 0 incase of success. The contentType,
-if provided must be freed by the caller</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -480,7 +482,7 @@ if provided must be freed by the caller</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15714"
+NAME="AEN16532"
 ></A
 ><H3
 ><A
@@ -500,7 +502,8 @@ CLASS="PROGRAMLISTING"
                                              const char *method,
                                              const char *input,
                                              char **contentType,
-                                             const char *headers);</PRE
+                                             const char *headers,
+                                             int ilen);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -518,7 +521,7 @@ and the input buffer for the request content.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15721"
+NAME="AEN16539"
 ></A
 ><P
 ></P
@@ -545,7 +548,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The URL to load</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -562,7 +565,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the HTTP method to use</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -579,7 +582,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the input string if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -596,7 +599,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the Content-Type information IN and OUT</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -613,7 +616,24 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the extra headers</TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ilen</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -624,7 +644,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15746"
+NAME="AEN16568"
 ></A
 ><H3
 ><A
@@ -645,7 +665,8 @@ CLASS="PROGRAMLISTING"
                                              const char *input,
                                              char **contentType,
                                              char **redir,
-                                             const char *headers);</PRE
+                                             const char *headers,
+                                             int ilen);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -663,7 +684,7 @@ and the input buffer for the request content.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15753"
+NAME="AEN16575"
 ></A
 ><P
 ></P
@@ -690,7 +711,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The URL to load</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -707,7 +728,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the HTTP method to use</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -724,7 +745,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the input string if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -741,7 +762,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the Content-Type information IN and OUT</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -758,7 +779,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the redirected URL OUT</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -775,7 +796,24 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the extra headers</TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ilen</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -786,7 +824,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15782"
+NAME="AEN16608"
 ></A
 ><H3
 ><A
@@ -815,7 +853,7 @@ via HTTP GET.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15788"
+NAME="AEN16614"
 ></A
 ><P
 ></P
@@ -842,7 +880,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The URL to load</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -859,8 +897,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  if available the Content-Type information will be
-returned at that location</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -871,7 +908,7 @@ returned at that location</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15801"
+NAME="AEN16627"
 ></A
 ><H3
 ><A
@@ -901,7 +938,7 @@ via HTTP GET.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15807"
+NAME="AEN16633"
 ></A
 ><P
 ></P
@@ -928,7 +965,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The URL to load</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -945,8 +982,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  if available the Content-Type information will be
-returned at that location</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -963,7 +999,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> if availble the redirected URL will be returned</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -974,7 +1010,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15824"
+NAME="AEN16650"
 ></A
 ><H3
 ><A
@@ -1001,7 +1037,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15830"
+NAME="AEN16656"
 ></A
 ><P
 ></P
@@ -1028,7 +1064,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the HTTP context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1043,7 +1079,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the HTTP return code for the request.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1054,7 +1090,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15843"
+NAME="AEN16669"
 ></A
 ><H3
 ><A
@@ -1081,7 +1117,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15849"
+NAME="AEN16675"
 ></A
 ><P
 ></P
@@ -1108,7 +1144,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the HTTP context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1123,8 +1159,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the stashed value of the WWW-Authenticate or Proxy-Authenticate
-header.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1135,7 +1170,7 @@ header.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15862"
+NAME="AEN16688"
 ></A
 ><H3
 ><A
@@ -1175,7 +1210,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15870"
+NAME="AEN16696"
 ></A
 ><P
 ></P
@@ -1202,7 +1237,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the HTTP context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1219,7 +1254,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a buffer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1236,7 +1271,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer length</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1251,8 +1286,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of byte read. 0 is an indication of an end of connection.
--1 indicates a parameter error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1263,7 +1297,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15891"
+NAME="AEN16717"
 ></A
 ><H3
 ><A
@@ -1292,7 +1326,7 @@ It closes and free the context at the end</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15897"
+NAME="AEN16723"
 ></A
 ><P
 ></P
@@ -1319,7 +1353,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the HTTP context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1336,7 +1370,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename where the content should be saved</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1351,7 +1385,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->-1 in case of failure, 0 incase of success.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1362,7 +1396,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15914"
+NAME="AEN16740"
 ></A
 ><H3
 ><A
@@ -1390,7 +1424,7 @@ free all data related to it.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15920"
+NAME="AEN16746"
 ></A
 ><P
 ></P
@@ -1417,7 +1451,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the HTTP context</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE

@@ -29,13 +29,15 @@ void *	xmlNanoHTTPMethod	(const char *URL,
 				 const char *method,
 				 const char *input,
 				 char **contentType,
-				 const char *headers);
+				 const char *headers,
+				 int   ilen);
 void *	xmlNanoHTTPMethodRedir	(const char *URL,
 				 const char *method,
 				 const char *input,
 				 char **contentType,
 				 char **redir,
-				 const char *headers);
+				 const char *headers,
+				 int   ilen);
 void *	xmlNanoHTTPOpen		(const char *URL,
 				 char **contentType);
 void *	xmlNanoHTTPOpenRedir	(const char *URL,

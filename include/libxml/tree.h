@@ -805,6 +805,11 @@ int             xmlSaveFormatFileTo     (xmlOutputBuffer *buf,
                                          int format);
  */ 					 
 
+int		xmlSaveFormatFileEnc    ( const char * filename,
+					  xmlDocPtr cur,
+					  const char * encoding,
+					  int format );
+
 int		xmlSaveFileEnc		(const char *filename,
 					 xmlDocPtr cur,
 					 const char *encoding);

@@ -6,7 +6,7 @@ AC_CANONICAL_HOST
 
 LIBXML_MAJOR_VERSION=2
 LIBXML_MINOR_VERSION=4
-LIBXML_MICRO_VERSION=0
+LIBXML_MICRO_VERSION=1
 LIBXML_VERSION=$LIBXML_MAJOR_VERSION.$LIBXML_MINOR_VERSION.$LIBXML_MICRO_VERSION
 LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML_MICRO_VERSION:$LIBXML_MINOR_VERSION
 
@@ -206,30 +206,6 @@ AC_ARG_WITH(readline,
   fi
 ])
 
-dnl check for terminal library. this is a very cool solution
-dnl from octave's configure.in
-unset tcap
-for termlib in ncurses curses termcap terminfo termlib; do
-    AC_CHECK_LIB(${termlib}, tputs, [tcap="-l$termlib"])
-    test -n "$tcap" && break
-done
-
-AC_CHECK_HEADER(readline/history.h,
-    AC_CHECK_LIB(history, append_history,[
-       RDL_LIBS="-lhistory"
-       AC_DEFINE(HAVE_LIBHISTORY)]))
-AC_CHECK_HEADER(readline/readline.h,
-    AC_CHECK_LIB(readline, readline,[
-       RDL_LIBS="-lreadline $RDL_LIBS $tcap"
-       AC_DEFINE(HAVE_LIBREADLINE)], , $tcap))
-if test -n "$RDL_DIR" -a -n "$RDL_LIBS"; then
-    CPPFLAGS="$CPPFLAGS -I${RDL_DIR}/include"
-    RDL_LIBS="-L${RDL_DIR}/lib $RDL_LIBS"
-else
-    CPPFLAGS=${_cppflags}
-fi
-LDFLAGS=${_ldflags}
-
 dnl
 dnl specific tests to setup DV's devel environment with debug etc ...
 dnl (-Wunreachable-code)
@@ -265,6 +241,36 @@ dnl
 dnl Aloow to disable various pieces
 dnl
 
+AC_ARG_WITH(history, [  --with-history        Add history support to xmllint shell(off)])
+if test "$with_ftp" = "yes" ; then
+    echo Enabling xmllint shell history
+    dnl check for terminal library. this is a very cool solution
+    dnl from octave's configure.in
+    unset tcap
+    for termlib in ncurses curses termcap terminfo termlib; do
+	AC_CHECK_LIB(${termlib}, tputs, [tcap="-l$termlib"])
+	test -n "$tcap" && break
+    done
+
+    AC_CHECK_HEADER(readline/history.h,
+	AC_CHECK_LIB(history, append_history,[
+	   RDL_LIBS="-lhistory"
+	   AC_DEFINE(HAVE_LIBHISTORY)]))
+    AC_CHECK_HEADER(readline/readline.h,
+	AC_CHECK_LIB(readline, readline,[
+	   RDL_LIBS="-lreadline $RDL_LIBS $tcap"
+	   AC_DEFINE(HAVE_LIBREADLINE)], , $tcap))
+    if test -n "$RDL_DIR" -a -n "$RDL_LIBS"; then
+	CPPFLAGS="$CPPFLAGS -I${RDL_DIR}/include"
+	RDL_LIBS="-L${RDL_DIR}/lib $RDL_LIBS"
+    else
+	CPPFLAGS=${_cppflags}
+    fi
+    LDFLAGS=${_ldflags}
+fi
+
+AC_SUBST(WITH_FTP)
+AC_SUBST(FTP_OBJ)
 AC_ARG_WITH(ftp, [  --with-ftp              Add the FTP support (on)])
 if test "$with_ftp" = "no" ; then
     echo Disabling FTP support

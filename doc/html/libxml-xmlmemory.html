@@ -110,7 +110,7 @@ NAME="LIBXML-XMLMEMORY"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN21938"
+NAME="AEN22715"
 ></A
 ><H2
 >Name</H2
@@ -118,7 +118,7 @@ NAME="AEN21938"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN21941"
+NAME="AEN22718"
 ></A
 ><H2
 >Synopsis</H2
@@ -148,12 +148,18 @@ HREF="libxml-xmlmemory.html#XMLFREEFUNC"
 void*       (<A
 HREF="libxml-xmlmemory.html#XMLMALLOCFUNC"
 >*xmlMallocFunc</A
->)                (...);
+>)                (<GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+>);
 void*       (<A
 HREF="libxml-xmlmemory.html#XMLREALLOCFUNC"
 >*xmlReallocFunc</A
 >)               (void*,
-                                             ...);
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+>);
 char*       (<A
 HREF="libxml-xmlmemory.html#XMLSTRDUPFUNC"
 >*xmlStrdupFunc</A
@@ -226,26 +232,32 @@ HREF="libxml-xmlmemory.html#XMLMEMORYDUMP"
 #define     <A
 HREF="libxml-xmlmemory.html#XMLMALLOC"
 >xmlMalloc</A
->                       (x)
+>                       (size)
 #define     <A
 HREF="libxml-xmlmemory.html#XMLREALLOC"
 >xmlRealloc</A
->                      (p, x)
+>                      (ptr, size)
 #define     <A
 HREF="libxml-xmlmemory.html#XMLMEMSTRDUP"
 >xmlMemStrdup</A
->                    (x)
+>                    (str)
 void*       <A
 HREF="libxml-xmlmemory.html#XMLMALLOCLOC"
 >xmlMallocLoc</A
->                    (int size,
+>                    (<GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size,
                                              const char *file,
                                              int line);
 void*       <A
 HREF="libxml-xmlmemory.html#XMLREALLOCLOC"
 >xmlReallocLoc</A
 >                   (void *ptr,
-                                             int size,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size,
                                              const char *file,
                                              int line);
 char*       <A
@@ -261,7 +273,7 @@ HREF="libxml-xmlmemory.html#XMLMEMSTRDUPLOC"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN21973"
+NAME="AEN22754"
 ></A
 ><H2
 >Description</H2
@@ -271,14 +283,14 @@ NAME="AEN21973"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN21976"
+NAME="AEN22757"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21978"
+NAME="AEN22759"
 ></A
 ><H3
 ><A
@@ -299,17 +311,12 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->should be activated only done when debugging libxml. It replaces the
-allocator with a collect and debug shell to the libc allocator.
-DEBUG_MEMORY should be activated only when debugging 
-libxml i.e. if libxml has been configured with --with-debug-mem too</P
-><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21984"
+NAME="AEN22764"
 ></A
 ><H3
 ><A
@@ -335,7 +342,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21989"
+NAME="AEN22769"
 ></A
 ><H3
 ><A
@@ -360,7 +367,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21994"
+NAME="AEN22774"
 ></A
 ><P
 ></P
@@ -398,7 +405,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22003"
+NAME="AEN22783"
 ></A
 ><H3
 ><A
@@ -414,7 +421,10 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void*       (*xmlMallocFunc)                (...);</PRE
+>void*       (*xmlMallocFunc)                (<GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+>);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -423,7 +433,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22008"
+NAME="AEN22789"
 ></A
 ><P
 ></P
@@ -443,7 +453,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->...</I
+>Param1</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -461,7 +471,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22017"
+NAME="AEN22798"
 ></A
 ><H3
 ><A
@@ -478,7 +488,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void*       (*xmlReallocFunc)               (void*,
-                                             ...);</PRE
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+>);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -487,7 +500,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22022"
+NAME="AEN22804"
 ></A
 ><P
 ></P
@@ -524,7 +537,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->...</I
+>Param2</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -542,7 +555,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22035"
+NAME="AEN22817"
 ></A
 ><H3
 ><A
@@ -567,7 +580,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22040"
+NAME="AEN22822"
 ></A
 ><P
 ></P
@@ -620,7 +633,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22053"
+NAME="AEN22835"
 ></A
 ><H3
 ><A
@@ -666,7 +679,7 @@ done ?</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22064"
+NAME="AEN22846"
 ></A
 ><P
 ></P
@@ -782,7 +795,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22093"
+NAME="AEN22875"
 ></A
 ><H3
 ><A
@@ -824,7 +837,7 @@ HREF="libxml-xmlmemory.html#XMLSTRDUPFUNC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22103"
+NAME="AEN22885"
 ></A
 ><P
 ></P
@@ -940,7 +953,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22132"
+NAME="AEN22914"
 ></A
 ><H3
 ><A
@@ -967,7 +980,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22138"
+NAME="AEN22920"
 ></A
 ><P
 ></P
@@ -1003,7 +1016,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22147"
+NAME="AEN22929"
 ></A
 ><H3
 ><A
@@ -1030,7 +1043,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22153"
+NAME="AEN22935"
 ></A
 ><P
 ></P
@@ -1066,7 +1079,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22162"
+NAME="AEN22944"
 ></A
 ><H3
 ><A
@@ -1096,7 +1109,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22169"
+NAME="AEN22951"
 ></A
 ><P
 ></P
@@ -1135,7 +1148,7 @@ written to the file .memorylist</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22178"
+NAME="AEN22960"
 ></A
 ><H3
 ><A
@@ -1172,7 +1185,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22186"
+NAME="AEN22968"
 ></A
 ><P
 ></P
@@ -1227,7 +1240,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22199"
+NAME="AEN22981"
 ></A
 ><H3
 ><A
@@ -1255,7 +1268,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22205"
+NAME="AEN22987"
 ></A
 ><H3
 ><A
@@ -1271,7 +1284,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define xmlMalloc(x) xmlMallocLoc((x), __FILE__, __LINE__)</PRE
+>#define xmlMalloc(size) xmlMallocLoc((size), __FILE__, __LINE__)</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1280,7 +1293,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22210"
+NAME="AEN22992"
 ></A
 ><P
 ></P
@@ -1300,7 +1313,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->x</I
+>size</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1318,7 +1331,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22219"
+NAME="AEN23001"
 ></A
 ><H3
 ><A
@@ -1334,7 +1347,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define xmlRealloc(p, x) xmlReallocLoc((p), (x), __FILE__, __LINE__)</PRE
+>#define xmlRealloc(ptr, size) xmlReallocLoc((ptr), (size), __FILE__, __LINE__)</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1343,7 +1356,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22224"
+NAME="AEN23006"
 ></A
 ><P
 ></P
@@ -1363,7 +1376,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->p</I
+>ptr</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1380,7 +1393,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->x</I
+>size</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1398,7 +1411,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22237"
+NAME="AEN23019"
 ></A
 ><H3
 ><A
@@ -1414,7 +1427,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define xmlMemStrdup(x) xmlMemStrdupLoc((x), __FILE__, __LINE__)</PRE
+>#define xmlMemStrdup(str) xmlMemStrdupLoc((str), __FILE__, __LINE__)</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1423,7 +1436,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22242"
+NAME="AEN23024"
 ></A
 ><P
 ></P
@@ -1443,7 +1456,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->x</I
+>str</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1461,7 +1474,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22251"
+NAME="AEN23033"
 ></A
 ><H3
 ><A
@@ -1477,7 +1490,10 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void*       xmlMallocLoc                    (int size,
+>void*       xmlMallocLoc                    (<GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size,
                                              const char *file,
                                              int line);</PRE
 ></TD
@@ -1493,7 +1509,7 @@ HREF="MALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22258"
+NAME="AEN23041"
 ></A
 ><P
 ></P
@@ -1565,7 +1581,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22275"
+NAME="AEN23058"
 ></A
 ><H3
 ><A
@@ -1582,7 +1598,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void*       xmlReallocLoc                   (void *ptr,
-                                             int size,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size,
                                              const char *file,
                                              int line);</PRE
 ></TD
@@ -1598,7 +1617,7 @@ HREF="REALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22282"
+NAME="AEN23066"
 ></A
 ><P
 ></P
@@ -1687,7 +1706,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22303"
+NAME="AEN23087"
 ></A
 ><H3
 ><A
@@ -1719,7 +1738,7 @@ HREF="STRDUP"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22310"
+NAME="AEN23094"
 ></A
 ><P
 ></P

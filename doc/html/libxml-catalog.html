@@ -122,7 +122,7 @@ NAME="LIBXML-CATALOG"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN17484"
+NAME="AEN18337"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN17484"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN17487"
+NAME="AEN18340"
 ></A
 ><H2
 >Synopsis</H2
@@ -152,7 +152,7 @@ HREF="libxml-catalog.html#XML-CATALOGS-NAMESPACE-CAPS"
 int         <A
 HREF="libxml-catalog.html#XMLLOADCATALOG"
 >xmlLoadCatalog</A
->                  (const char *URL);
+>                  (const char *filename);
 void        <A
 HREF="libxml-catalog.html#XMLLOADCATALOGS"
 >xmlLoadCatalogs</A
@@ -195,7 +195,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN17502"
+NAME="AEN18355"
 ></A
 ><H2
 >Description</H2
@@ -205,14 +205,14 @@ NAME="AEN17502"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN17505"
+NAME="AEN18358"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17507"
+NAME="AEN18360"
 ></A
 ><H3
 ><A
@@ -233,14 +233,12 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->The namespace for the XML Catalogs elements</P
-><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17513"
+NAME="AEN18365"
 ></A
 ><H3
 ><A
@@ -256,16 +254,21 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlLoadCatalog                  (const char *URL);</PRE
+>int         xmlLoadCatalog                  (const char *filename);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Load the catalog and makes its definitions effective for the default
+external entity loader. It will recuse in CATALOG entries.
+TODO: this function is not thread safe, catalog initialization should
+be done once at startup</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17518"
+NAME="AEN18371"
 ></A
 ><P
 ></P
@@ -285,14 +288,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->URL</I
+>filename</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a file path</TD
 ></TR
 ><TR
 ><TD
@@ -307,7 +310,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 in case of success -1 in case of error</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -318,7 +321,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17531"
+NAME="AEN18384"
 ></A
 ><H3
 ><A
@@ -339,11 +342,16 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Load the catalogs and makes their definitions effective for the default
+external entity loader.
+TODO: this function is not thread safe, catalog initialization should
+be done once at startup</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17536"
+NAME="AEN18390"
 ></A
 ><P
 ></P
@@ -370,7 +378,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a list of file path separated by ':' or spaces</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -381,7 +389,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17545"
+NAME="AEN18399"
 ></A
 ><H3
 ><A
@@ -409,7 +417,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17551"
+NAME="AEN18405"
 ></A
 ><H3
 ><A
@@ -439,7 +447,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17558"
+NAME="AEN18412"
 ></A
 ><P
 ></P
@@ -477,7 +485,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17567"
+NAME="AEN18421"
 ></A
 ><H3
 ><A
@@ -510,7 +518,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17575"
+NAME="AEN18429"
 ></A
 ><P
 ></P
@@ -563,7 +571,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17588"
+NAME="AEN18442"
 ></A
 ><H3
 ><A
@@ -596,7 +604,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17596"
+NAME="AEN18450"
 ></A
 ><P
 ></P

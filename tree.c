@@ -6408,17 +6408,15 @@ xmlSaveFormatFileTo(xmlOutputBuffer *buf, xmlDocPtr cur, const char *encoding, i
 }
 
 /**
- * xmlSaveFileEnc:
- * @filename:  the filename (or URL)
- * @cur:  the document
- * @encoding:  the name of an encoding (or NULL)
- *
- * Dump an XML document, converting it to the given encoding
- *
- * returns: the number of byte written or -1 in case of failure.
+ * xmlSaveFormatFileEnc
+ * @filename:  the filename or URL to output
+ * @cur:  the document being saved
+ * @encoding:  the name of the encoding to use or NULL.
+ * @format:  should formatting spaces be added.
  */
 int
-xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
+xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
+			const char * encoding, int format ) {
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler = NULL;
     xmlCharEncoding enc;
@@ -6439,16 +6437,35 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
 	}
     }
 
+#ifdef HAVE_ZLIB_H
+    if (cur->compression < 0) cur->compression = xmlCompressMode;
+#endif
     /* 
      * save the content to a temp buffer.
      */
-    buf = xmlOutputBufferCreateFilename(filename, handler, 0);
+    buf = xmlOutputBufferCreateFilename(filename, handler, cur->compression);
     if (buf == NULL) return(-1);
 
-    xmlDocContentDumpOutput(buf, cur, encoding, 0);
+    xmlDocContentDumpOutput(buf, cur, encoding, format);
 
     ret = xmlOutputBufferClose(buf);
     return(ret);
+}
+
+
+/**
+ * xmlSaveFileEnc:
+ * @filename:  the filename (or URL)
+ * @cur:  the document
+ * @encoding:  the name of an encoding (or NULL)
+ *
+ * Dump an XML document, converting it to the given encoding
+ *
+ * returns: the number of byte written or -1 in case of failure.
+ */
+int
+xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
+    return ( xmlSaveFormatFileEnc( filename, cur, encoding, 0 ) );
 }
 
 /**
@@ -6465,47 +6482,7 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
  */
 int
 xmlSaveFormatFile(const char *filename, xmlDocPtr cur, int format) {
-    xmlOutputBufferPtr buf;
-    const char *encoding;
-    xmlCharEncodingHandlerPtr handler = NULL;
-    int ret;
-
-    if (cur == NULL)
-	return(-1);
-    encoding = (const char *) cur->encoding;
-
-    /* 
-     * save the content to a temp buffer.
-     */
-#ifdef HAVE_ZLIB_H
-    if (cur->compression < 0) cur->compression = xmlCompressMode;
-#endif
-    if (encoding != NULL) {
-	xmlCharEncoding enc;
-
-	enc = xmlParseCharEncoding(encoding);
-
-	if (cur->charset != XML_CHAR_ENCODING_UTF8) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlSaveFile: document not in UTF8\n");
-	    return(-1);
-	}
-	if (enc != XML_CHAR_ENCODING_UTF8) {
-	    handler = xmlFindCharEncodingHandler(encoding);
-	    if (handler == NULL) {
-		xmlFree((char *) cur->encoding);
-		cur->encoding = NULL;
-	    }
-	}
-    }
-
-    buf = xmlOutputBufferCreateFilename(filename, handler, cur->compression);
-    if (buf == NULL) return(-1);
-
-    xmlDocContentDumpOutput(buf, cur, NULL, format);
-
-    ret = xmlOutputBufferClose(buf);
-    return(ret);
+    return ( xmlSaveFormatFileEnc( filename, cur, NULL, format ) );
 }
 
 /**
@@ -6520,6 +6497,6 @@ xmlSaveFormatFile(const char *filename, xmlDocPtr cur, int format) {
  */
 int
 xmlSaveFile(const char *filename, xmlDocPtr cur) {
-    return(xmlSaveFormatFile(filename, cur, 0));
+    return(xmlSaveFormatFileEnc(filename, cur, NULL, 0));
 }
 

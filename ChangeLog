@@ -1,3 +1,13 @@
+Tue Jul 24 15:06:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: get rid of the readline and libhistory
+	  dependancies by default, release 2.4.1 with IA64 fix
+	* nanohttp.c tree.c xmlIO.c include/libxml/nanohttp.h
+	  include/libxml/tree.h include/libxml/xmlIO.h: incorporated
+	  John Kroll fixes to allow saving to HTTP via PUT (or
+	  POST of needed).
+	* doc/html/*.html: regenerated the docs
+
 Sun Jul 22 05:56:16 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
 
 	* hash.c include/libxml/hash.h: added xmlHashScannerFull,

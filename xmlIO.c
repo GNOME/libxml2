@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Daniel.Veillard@w3.org
  *
  * 14 Nov 2000 ht - for VMS, truncated name of long functions to under 32 char
  */
@@ -75,6 +75,7 @@
 #define xmlRegisterDefaultOutputCallbacks xmlRegisterDefOutputCallbacks
 #endif
 
+/* #define VERBOSE_FAILURE */
 /* #define DEBUG_EXTERNAL_ENTITIES */
 /* #define DEBUG_INPUT */
 
@@ -197,10 +198,12 @@ xmlFdWrite (void * context, const char * buffer, int len) {
  * @context:  the I/O context
  *
  * Close an I/O channel
+ *
+ * Returns 0 in case of success and error code otherwise
  */
-static void
+static int
 xmlFdClose (void * context) {
-    close((int) (long) context);
+    return ( close((int) (long) context) );
 }
 
 /**
@@ -324,9 +327,9 @@ xmlFileWrite (void * context, const char * buffer, int len) {
  *
  * Close an I/O channel
  */
-static void
+static int
 xmlFileClose (void * context) {
-    fclose((FILE *) context);
+    return ( ( fclose((FILE *) context) == EOF ) ? -1 : 0 );
 }
 
 /**
@@ -335,9 +338,9 @@ xmlFileClose (void * context) {
  *
  * Flush an I/O channel
  */
-static void
+static int
 xmlFileFlush (void * context) {
-    fflush((FILE *) context);
+    return ( ( fflush((FILE *) context) == EOF ) ? -1 : 0 );
 }
 
 #ifdef HAVE_ZLIB_H
@@ -466,9 +469,9 @@ xmlGzfileWrite (void * context, const char * buffer, int len) {
  *
  * Close a compressed I/O channel
  */
-static void
+static int
 xmlGzfileClose (void * context) {
-    gzclose((gzFile) context);
+    return ( ( gzclose((gzFile) context) == Z_OK ) ? 0 : -1 );
 }
 #endif /* HAVE_ZLIB_H */
 
@@ -478,6 +481,369 @@ xmlGzfileClose (void * context) {
  *			I/O for HTTP file accesses			*
  *									*
  ************************************************************************/
+
+typedef struct xmlIOHTTPWriteCtxt_
+{
+    int			compression;
+
+    char *		uri;
+
+    void *		doc_buff;
+
+} xmlIOHTTPWriteCtxt, *xmlIOHTTPWriteCtxtPtr;
+
+#ifdef HAVE_ZLIB_H
+
+#define DFLT_WBITS		( -15 )
+#define DFLT_MEM_LVL		( 8 )
+#define GZ_MAGIC1		( 0x1f )
+#define GZ_MAGIC2		( 0x8b )
+#define LXML_ZLIB_OS_CODE	( 0x03 )
+#define INIT_HTTP_BUFF_SIZE	( 32768 )
+#define DFLT_ZLIB_RATIO		( 5 )
+
+/*
+**  Data structure and functions to work with sending compressed data
+**  via HTTP.
+*/
+
+typedef struct xmlZMemBuff_
+{
+   unsigned long	size;
+   unsigned long	crc;
+
+   unsigned char *	zbuff;
+   z_stream		zctrl;
+
+} xmlZMemBuff, *xmlZMemBuffPtr;
+
+/**
+ * append_reverse_ulong
+ * @buff:  Compressed memory buffer
+ * @data:  Unsigned long to append
+ *
+ * Append a unsigned long in reverse byte order to the end of the
+ * memory buffer.
+ */
+static void
+append_reverse_ulong( xmlZMemBuff * buff, unsigned long data ) {
+
+    int		idx;
+
+    if ( buff == NULL )
+	return;
+
+    /*
+    **  This is plagiarized from putLong in gzio.c (zlib source) where
+    **  the number "4" is hardcoded.  If zlib is ever patched to 
+    **  support 64 bit file sizes, this code would need to be patched
+    **  as well.
+    */
+
+    for ( idx = 0; idx < 4; idx++ ) {
+	*buff->zctrl.next_out = ( data & 0xff );
+	data >>= 8;
+	buff->zctrl.next_out++;
+    }
+
+    return;
+}
+
+/**
+ *
+ * xmlFreeZMemBuff
+ * @buff:  The memory buffer context to clear
+ *
+ * Release all the resources associated with the compressed memory buffer.
+ */
+static void
+xmlFreeZMemBuff( xmlZMemBuffPtr buff ) {
+    
+    int z_err;
+
+    if ( buff == NULL )
+	return;
+
+    xmlFree( buff->zbuff );
+    z_err = deflateEnd( &buff->zctrl );
+#ifdef DEBUG_HTTP
+    if ( z_err != Z_OK )
+	xmlGenericError( xmlGenericErrorContext,
+			"xmlFreeZMemBuff:  Error releasing zlib context:  %d\n",
+			z_err );
+#endif
+
+    xmlFree( buff );
+    return;
+}
+
+/**
+ * xmlCreateZMemBuff
+ *@compression:	Compression value to use
+ *
+ * Create a memory buffer to hold the compressed XML document.  The
+ * compressed document in memory will end up being identical to what
+ * would be created if gzopen/gzwrite/gzclose were being used to 
+ * write the document to disk.  The code for the header/trailer data to
+ * the compression is plagiarized from the zlib source files.
+ */
+static void *
+xmlCreateZMemBuff( int compression ) {
+
+    int			z_err;
+    int			hdr_lgth;
+    xmlZMemBuffPtr	buff = NULL;
+
+    if ( ( compression < 1 ) || ( compression > 9 ) )
+	return ( NULL );
+
+    /*  Create the control and data areas  */
+
+    buff = xmlMalloc( sizeof( xmlZMemBuff ) );
+    if ( buff == NULL ) {
+	xmlGenericError( xmlGenericErrorContext,
+			"xmlCreateZMemBuff:  %s\n",
+			"Failure allocating buffer context." );
+	return ( NULL );
+    }
+
+    (void)memset( buff, 0, sizeof( xmlZMemBuff ) );
+    buff->size = INIT_HTTP_BUFF_SIZE;
+    buff->zbuff = xmlMalloc( buff->size );
+    if ( buff->zbuff == NULL ) {
+	xmlFreeZMemBuff( buff );
+	xmlGenericError( xmlGenericErrorContext,
+			"xmlCreateZMemBuff:  %s\n",
+			"Failure allocating data buffer." );
+	return ( NULL );
+    }
+
+    z_err = deflateInit2( &buff->zctrl, compression, Z_DEFLATED,
+			    DFLT_WBITS, DFLT_MEM_LVL, Z_DEFAULT_STRATEGY );
+    if ( z_err != Z_OK ) {
+	xmlFreeZMemBuff( buff );
+	buff = NULL;
+	xmlGenericError( xmlGenericErrorContext,
+			"xmlCreateZMemBuff:  %s %d\n",
+			"Error initializing compression context.  ZLIB error:",
+			z_err );
+	return ( NULL );
+    }
+
+    /*  Set the header data.  The CRC will be needed for the trailer  */
+
+    buff->crc = crc32( 0L, Z_NULL, 0 );
+    hdr_lgth = sprintf( (char *)buff->zbuff, "%c%c%c%c%c%c%c%c%c%c",
+			GZ_MAGIC1, GZ_MAGIC2, Z_DEFLATED, 
+			0, 0, 0, 0, 0, 0, LXML_ZLIB_OS_CODE );
+    buff->zctrl.next_out  = buff->zbuff + hdr_lgth;
+    buff->zctrl.avail_out = buff->size - hdr_lgth;
+
+    return ( buff );
+}
+
+/**
+ * xmlZMemBuffExtend
+ * @buff:  Buffer used to compress and consolidate data.
+ * @ext_amt:   Number of bytes to extend the buffer.
+ *
+ * Extend the internal buffer used to store the compressed data by the
+ * specified amount.
+ *
+ * Returns 0 on success or -1 on failure to extend the buffer.  On failure
+ * the original buffer still exists at the original size.
+ */
+static int
+xmlZMemBuffExtend( xmlZMemBuffPtr buff, size_t ext_amt ) {
+
+    int			rc = -1;
+    size_t		new_size;
+    size_t		cur_used;
+
+    unsigned char *	tmp_ptr = NULL;
+
+    if ( buff == NULL )
+	return ( -1 );
+
+    else if ( ext_amt == 0 )
+	return ( 0 );
+
+    cur_used = buff->zctrl.next_out - buff->zbuff;
+    new_size = buff->size + ext_amt;
+
+#ifdef DEBUG_HTTP
+    if ( cur_used > new_size ) 
+	xmlGenericError( xmlGenericErrorContext,
+			"xmlZMemBuffExtend:  %s\n%s %d bytes.\n",
+			"Buffer overwrite detected during compressed memory",
+			"buffer extension.  Overflowed by", 
+			(cur_used - new_size ) );
+#endif
+
+    tmp_ptr = xmlRealloc( buff->zbuff, new_size );
+    if ( tmp_ptr != NULL ) {
+	rc = 0;
+	buff->size  = new_size;
+	buff->zbuff = tmp_ptr;
+	buff->zctrl.next_out  = tmp_ptr + cur_used;
+	buff->zctrl.avail_out = new_size - cur_used;
+    }
+    else {
+	xmlGenericError( xmlGenericErrorContext,
+			"xmlZMemBuffExtend:  %s %lu bytes.\n",
+			"Allocation failure extending output buffer to",
+			new_size );
+    }
+
+    return ( rc );
+}
+
+/**
+ * xmlZMemBuffAppend
+ * @buff:  Buffer used to compress and consolidate data
+ * @src:   Uncompressed source content to append to buffer
+ * @len:   Length of source data to append to buffer
+ *
+ * Compress and append data to the internal buffer.  The data buffer
+ * will be expanded if needed to store the additional data.
+ *
+ * Returns the number of bytes appended to the buffer or -1 on error.
+ */
+static int
+xmlZMemBuffAppend( xmlZMemBuffPtr buff, const char * src, int len ) {
+
+    int		z_err;
+    size_t	min_accept;
+
+    if ( ( buff == NULL ) || ( src == NULL ) )
+	return ( -1 );
+
+    buff->zctrl.avail_in = len;
+    buff->zctrl.next_in  = (unsigned char *)src;
+    while ( buff->zctrl.avail_in > 0 ) {
+	/*
+	**  Extend the buffer prior to deflate call if a reasonable amount
+	**  of output buffer space is not available.
+	*/
+	min_accept = buff->zctrl.avail_in / DFLT_ZLIB_RATIO;
+	if ( buff->zctrl.avail_out <= min_accept ) {
+	    if ( xmlZMemBuffExtend( buff, buff->size ) == -1 )
+		return ( -1 );
+	}
+
+	z_err = deflate( &buff->zctrl, Z_NO_FLUSH );
+	if ( z_err != Z_OK ) {
+	    xmlGenericError( xmlGenericErrorContext,
+			"xmlZMemBuffAppend:  %s %d %s - %d",
+			"Compression error while appending",
+			len, "bytes to buffer.  ZLIB error", z_err );
+	    return ( -1 );
+	}
+    }
+
+    buff->crc = crc32( buff->crc, (unsigned char *)src, len );
+
+    return ( len );
+}
+
+/**
+ * xmlZMemBuffGetContent
+ * @buff:  Compressed memory content buffer
+ * @data_ref:  Pointer reference to point to compressed content
+ *
+ * Flushes the compression buffers, appends gzip file trailers and
+ * returns the compressed content and length of the compressed data.
+ * NOTE:  The gzip trailer code here is plagiarized from zlib source.
+ *
+ * Returns the length of the compressed data or -1 on error.
+ */
+static int
+xmlZMemBuffGetContent( xmlZMemBuffPtr buff, char ** data_ref ) {
+
+    int		zlgth = -1;
+    int		z_err;
+
+    if ( ( buff == NULL ) || ( data_ref == NULL ) )
+	return ( -1 );
+
+    /*  Need to loop until compression output buffers are flushed  */
+
+    do
+    {
+	z_err = deflate( &buff->zctrl, Z_FINISH );
+	if ( z_err == Z_OK ) {
+	    /*  In this case Z_OK means more buffer space needed  */
+
+	    if ( xmlZMemBuffExtend( buff, buff->size ) == -1 )
+		return ( -1 );
+	}
+    }
+    while ( z_err == Z_OK );
+
+    /*  If the compression state is not Z_STREAM_END, some error occurred  */
+
+    if ( z_err == Z_STREAM_END ) {
+
+	/*  Need to append the gzip data trailer  */
+
+	if ( buff->zctrl.avail_out < ( 2 * sizeof( unsigned long ) ) ) {
+	    if ( xmlZMemBuffExtend(buff, (2 * sizeof(unsigned long))) == -1 )
+		return ( -1 );
+	}
+
+	/*
+	**  For whatever reason, the CRC and length data are pushed out
+	**  in reverse byte order.  So a memcpy can't be used here.
+	*/
+
+	append_reverse_ulong( buff, buff->crc );
+	append_reverse_ulong( buff, buff->zctrl.total_in );
+
+	zlgth = buff->zctrl.next_out - buff->zbuff;
+	*data_ref = (char *)buff->zbuff;
+    }
+
+    else
+	xmlGenericError( xmlGenericErrorContext,
+			"xmlZMemBuffGetContent:  %s - %d\n",
+			"Error flushing zlib buffers.  Error code", z_err );
+    
+    return ( zlgth );
+}
+#endif  /*  HAVE_ZLIB_H  */
+
+/**
+ * xmlFreeHTTPWriteCtxt
+ * @ctxt:  Context to cleanup
+ *
+ * Free allocated memory and reclaim system resources.
+ *
+ * No return value.
+ */
+static void
+xmlFreeHTTPWriteCtxt( xmlIOHTTPWriteCtxtPtr ctxt )
+{
+    if ( ctxt->uri != NULL )
+	free( ctxt->uri );
+
+    if ( ctxt->doc_buff != NULL ) {
+
+#ifdef HAVE_ZLIB_H
+	if ( ctxt->compression > 0 ) {
+	    xmlFreeZMemBuff( ctxt->doc_buff );
+	}
+	else
+#endif
+	{
+	    xmlOutputBufferClose( ctxt->doc_buff );
+	}
+    }
+
+    free( ctxt );
+    return;
+}
+
+
 /**
  * xmlIOHTTPMatch:
  * @filename:  the URI for matching
@@ -507,6 +873,85 @@ xmlIOHTTPOpen (const char *filename) {
 }
 
 /**
+ * xmlIOHTTPOpenW
+ * @post_uri:  The destination URI for the document
+ * @compression:  The compression desired for the document.
+ *
+ * Open a temporary buffer to collect the document for a subsequent HTTP POST
+ * request.  Non-static as is called from the output buffer creation routine.
+ *
+ * Returns an I/O context or NULL in case of error.
+ */
+
+void *
+xmlIOHTTPOpenW( const char * post_uri, int compression ) {
+
+    xmlIOHTTPWriteCtxtPtr	ctxt = NULL;
+
+    if ( post_uri == NULL )
+	return ( NULL );
+
+    ctxt = xmlMalloc( sizeof( xmlIOHTTPWriteCtxt ) );
+    if ( ctxt == NULL ) {
+	xmlGenericError( xmlGenericErrorContext,
+		"xmlIOHTTPOpenW:  Failed to create output HTTP context.\n" );
+	return ( NULL );
+    }
+
+    (void)memset( ctxt, 0, sizeof( xmlIOHTTPWriteCtxt ) );
+
+    ctxt->uri = strdup( post_uri );
+    if ( ctxt->uri == NULL ) {
+	xmlGenericError( xmlGenericErrorContext,
+		"xmlIOHTTPOpenW:  Failed to duplicate destination URI.\n" );
+	xmlFreeHTTPWriteCtxt( ctxt );
+	return ( NULL );
+    }
+
+    /*
+    **  Since the document length is required for an HTTP post,
+    **  need to put the document into a buffer.  A memory buffer
+    **  is being used to avoid pushing the data to disk and back.
+    */
+
+#ifdef HAVE_ZLIB_H
+    if ( ( compression > 0 ) && ( compression <= 9 ) ) {
+	
+	ctxt->compression = compression;
+	ctxt->doc_buff    = xmlCreateZMemBuff( compression );
+    }
+    else
+#endif
+    {
+	/*  Any character conversions should have been done before this  */
+
+	ctxt->doc_buff = xmlAllocOutputBuffer( NULL );
+    }
+
+    if ( ctxt->doc_buff == NULL ) {
+	xmlFreeHTTPWriteCtxt( ctxt );
+	ctxt = NULL;
+    }
+
+    return ( ctxt );
+}
+				
+/**
+ * xmlIOHTTPDfltOpenW
+ * @post_uri:  The destination URI for this document.
+ *
+ * Calls xmlIOHTTPOpenW with no compression to set up for a subsequent
+ * HTTP post command.  This function should generally not be used as
+ * the open callback is short circuited in xmlOutputBufferCreateFile.
+ *
+ * Returns a pointer to the new IO context.
+ */
+static void *
+xmlIOHTTPDfltOpenW( const char * post_uri ) {
+    return ( xmlIOHTTPOpenW( post_uri, 0 ) );
+}
+
+/**
  * xmlIOHTTPRead:
  * @context:  the I/O context
  * @buffer:  where to drop data
@@ -522,15 +967,219 @@ xmlIOHTTPRead(void * context, char * buffer, int len) {
 }
 
 /**
+ * xmlIOHTTPWrite
+ * @context:  previously opened writing context
+ * @buffer:   data to output to temporary buffer
+ * @len:      bytes to output
+ *
+ * Collect data from memory buffer into a temporary file for later
+ * processing.
+ *
+ * Returns number of bytes written.
+ */
+
+static int
+xmlIOHTTPWrite( void * context, const char * buffer, int len ) { 
+
+    xmlIOHTTPWriteCtxtPtr	ctxt = context;
+
+    if ( ( ctxt == NULL ) || ( ctxt->doc_buff == NULL ) || ( buffer == NULL ) )
+	return ( -1 );
+
+    if ( len > 0 ) {
+
+	/*  Use gzwrite or fwrite as previously setup in the open call  */
+
+#ifdef HAVE_ZLIB_H
+	if ( ctxt->compression > 0 ) 
+	    len = xmlZMemBuffAppend( ctxt->doc_buff, buffer, len );
+
+	else
+#endif
+	    len = xmlOutputBufferWrite( ctxt->doc_buff, len, buffer );
+
+	if ( len < 0 ) {
+	    xmlGenericError( xmlGenericErrorContext,
+			"xmlIOHTTPWrite:  %s\n%s '%s'.\n",
+			"Error appending to internal buffer.",
+			"Error sending document to URI",
+			ctxt->uri );
+	}
+    }
+
+    return ( len );
+}
+
+
+/**
  * xmlIOHTTPClose:
  * @context:  the I/O context
  *
  * Close an HTTP I/O channel
  */
-static void
+static int
 xmlIOHTTPClose (void * context) {
     xmlNanoHTTPClose(context);
+    return 0;
 }
+
+/**
+ * xmlIOHTTCloseWrite
+ * @context:  The I/O context
+ * @http_mthd: The HTTP method to be used when sending the data
+ *
+ * Close the transmit HTTP I/O channel and actually send the data.
+ */
+static int
+xmlIOHTTPCloseWrite( void * context, const char * http_mthd ) {
+
+    int				close_rc = -1;
+    int				http_rtn = 0;
+    int				content_lgth = 0;
+    xmlIOHTTPWriteCtxtPtr	ctxt = context;
+
+    char *			http_content = NULL;
+    char *			content_encoding = NULL;
+    char *			content_type = (char *) "text/xml";
+    void *			http_ctxt = NULL;
+
+    if ( ( ctxt == NULL ) || ( http_mthd == NULL ) )
+	return ( -1 );
+
+    /*  Retrieve the content from the appropriate buffer  */
+
+#ifdef HAVE_ZLIB_H
+
+    if ( ctxt->compression > 0 ) {
+	content_lgth = xmlZMemBuffGetContent( ctxt->doc_buff, &http_content );
+	content_encoding = (char *) "Content-Encoding: gzip";
+    }
+    else
+#endif
+    {
+	/*  Pull the data out of the memory output buffer  */
+
+	xmlOutputBufferPtr	dctxt = ctxt->doc_buff;
+	http_content = (char *)dctxt->buffer->content;
+	content_lgth = dctxt->buffer->use;
+    }
+
+    if ( http_content == NULL ) {
+	xmlGenericError( xmlGenericErrorContext,
+			"xmlIOHTTPCloseWrite:  %s '%s' %s '%s'.\n",
+			"Error retrieving content.\nUnable to",
+			http_mthd, "data to URI", ctxt->uri );
+    }
+
+    else {
+
+	http_ctxt = xmlNanoHTTPMethod( ctxt->uri, http_mthd, http_content,
+					&content_type, content_encoding, 
+					content_lgth );
+
+	if ( http_ctxt != NULL ) {
+#ifdef DEBUG_HTTP
+	    /*  If testing/debugging - dump reply with request content  */
+
+	    FILE *	tst_file = NULL;
+	    char	buffer[ 4096 ];
+	    char *	dump_name = NULL;
+	    int		avail;
+
+	    xmlGenericError( xmlGenericErrorContext,
+			"xmlNanoHTTPCloseWrite:  HTTP %s to\n%s returned %d.\n",
+			http_mthd, ctxt->uri,
+			xmlNanoHTTPReturnCode( http_ctxt ) );
+
+	    /*
+	    **  Since either content or reply may be gzipped,
+	    **  dump them to separate files instead of the 
+	    **  standard error context.
+	    */
+
+	    dump_name = tempnam( NULL, "lxml" );
+	    if ( dump_name != NULL ) {
+		(void)sprintf( buffer, "%s.content", dump_name );
+
+		tst_file = fopen( buffer, "w" );
+		if ( tst_file != NULL ) {
+		    xmlGenericError( xmlGenericErrorContext,
+			"Transmitted content saved in file:  %s\n", buffer );
+
+		    fwrite( http_content, sizeof( char ),
+					content_lgth, tst_file );
+		    fclose( tst_file );
+		}
+
+		(void)sprintf( buffer, "%s.reply", dump_name );
+		tst_file = fopen( buffer, "w" );
+		if ( tst_file != NULL ) {
+		    xmlGenericError( xmlGenericErrorContext,
+			"Reply content saved in file:  %s\n", buffer );
+
+
+		    while ( (avail = xmlNanoHTTPRead( http_ctxt,
+					buffer, sizeof( buffer ) )) > 0 ) {
+
+			fwrite( buffer, sizeof( char ), avail, tst_file );
+		    }
+
+		    fclose( tst_file );
+		}
+
+		free( dump_name );
+	    }
+#endif  /*  DEBUG_HTTP  */
+
+	    http_rtn = xmlNanoHTTPReturnCode( http_ctxt );
+	    if ( ( http_rtn >= 200 ) && ( http_rtn < 300 ) )
+		close_rc = 0;
+	    else
+		xmlGenericError( xmlGenericErrorContext,
+			    "xmlIOHTTPClose: HTTP '%s' of %d %s\n'%s' %s %d\n",
+			    http_mthd, content_lgth,
+			    "bytes to URI", ctxt->uri,
+			    "failed.  HTTP return code:", http_rtn );
+
+	    xmlNanoHTTPClose( http_ctxt );
+	    xmlFree( content_type );
+	}
+    }
+
+    /*  Final cleanups  */
+
+    xmlFreeHTTPWriteCtxt( ctxt );
+
+    return ( close_rc );
+}
+
+/**
+ * xmlIOHTTPClosePut
+ *
+ * @context:  The I/O context
+ *
+ * Close the transmit HTTP I/O channel and actually send data using a PUT
+ * HTTP method.
+ */
+static int
+xmlIOHTTPClosePut( void * ctxt ) {
+    return ( xmlIOHTTPCloseWrite( ctxt, "PUT" ) );
+}
+
+
+/**
+ * xmlIOHTTPClosePost
+ *
+ * @context:  The I/O context
+ *
+ * Close the transmit HTTP I/O channel and actually send data using a POST
+ * HTTP method.
+ */
+static int
+xmlIOHTTPClosePost( void * ctxt ) {
+    return ( xmlIOHTTPCloseWrite( ctxt, "POST" ) );
+}
+
 #endif /* LIBXML_HTTP_ENABLED */
 
 #ifdef LIBXML_FTP_ENABLED
@@ -588,9 +1237,9 @@ xmlIOFTPRead(void * context, char * buffer, int len) {
  *
  * Close an FTP I/O channel
  */
-static void
+static int
 xmlIOFTPClose (void * context) {
-    xmlNanoFTPClose(context);
+    return ( xmlNanoFTPClose(context) );
 }
 #endif /* LIBXML_FTP_ENABLED */
 
@@ -696,6 +1345,12 @@ xmlRegisterDefaultOutputCallbacks
 
     xmlRegisterOutputCallbacks(xmlFileMatch, xmlFileOpenW,
 	                      xmlFileWrite, xmlFileClose);
+
+#ifdef LIBXML_HTTP_ENABLED
+    xmlRegisterOutputCallbacks(xmlIOHTTPMatch, xmlIOHTTPDfltOpenW,
+	                       xmlIOHTTPWrite, xmlIOHTTPClosePut);
+#endif
+
 /*********************************
  No way a-priori to distinguish between gzipped files from
  uncompressed ones except opening if existing then closing
@@ -704,12 +1359,6 @@ xmlRegisterDefaultOutputCallbacks
 #ifdef HAVE_ZLIB_H
     xmlRegisterOutputCallbacks(xmlGzfileMatch, xmlGzfileOpen,
 	                       xmlGzfileWrite, xmlGzfileClose);
-#endif
- No HTTP PUT support yet, patches welcome
-
-#ifdef LIBXML_HTTP_ENABLED
-    xmlRegisterOutputCallbacks(xmlIOHTTPMatch, xmlIOHTTPOpen,
-	                       xmlIOHTTPWrite, xmlIOHTTPClose);
 #endif
 
  Nor FTP PUT ....
@@ -720,6 +1369,29 @@ xmlRegisterDefaultOutputCallbacks
  **********************************/
     xmlOutputCallbackInitialized = 1;
 }
+
+#ifdef LIBXML_HTTP_ENABLED
+/**
+ * xmlRegisterHTTPPostCallbacks
+ *
+ * By default, libxml submits HTTP output requests using the "PUT" method.
+ * Calling this method changes the HTTP output method to use the "POST"
+ * method instead.
+ *
+ */
+void
+xmlRegisterHTTPPostCallbacks( void ) {
+
+    /*  Register defaults if not done previously  */
+
+    if ( xmlOutputCallbackInitialized == 0 )
+	xmlRegisterDefaultOutputCallbacks( );
+
+    xmlRegisterOutputCallbacks(xmlIOHTTPMatch, xmlIOHTTPDfltOpenW,
+	                       xmlIOHTTPWrite, xmlIOHTTPClosePost);
+    return;
+}
+#endif
 
 /**
  * xmlAllocParserInputBuffer:
@@ -838,13 +1510,14 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
 int
 xmlOutputBufferClose(xmlOutputBufferPtr out) {
     int written;
+    int err_rc = 0;
 
     if (out == NULL)
         return(-1);
     if (out->writecallback != NULL)
 	xmlOutputBufferFlush(out);
     if (out->closecallback != NULL) {
-	out->closecallback(out->context);
+	err_rc = out->closecallback(out->context);
     }
     written = out->written;
     if (out->conv) {
@@ -860,7 +1533,7 @@ xmlOutputBufferClose(xmlOutputBufferPtr out) {
     }
 
     xmlFree(out);
-    return(written);
+    return( ( err_rc == 0 ) ? written : err_rc );
 }
 
 /**
@@ -973,13 +1646,21 @@ xmlOutputBufferCreateFilename(const char *URI,
     int i;
     void *context = NULL;
 
+    int is_http_uri = 0;	/*   Can't change if HTTP disabled  */
+
     if (xmlOutputCallbackInitialized == 0)
 	xmlRegisterDefaultOutputCallbacks();
 
     if (URI == NULL) return(NULL);
 
+#ifdef LIBXML_HTTP_ENABLED
+    /*  Need to prevent HTTP URI's from falling into zlib short circuit  */
+
+    is_http_uri = xmlIOHTTPMatch( URI );
+#endif
+
 #ifdef HAVE_ZLIB_H
-    if ((compression > 0) && (compression <= 9)) {
+    if ((compression > 0) && (compression <= 9) && (is_http_uri == 0)) {
         context = xmlGzfileOpenW(URI, compression);
 	if (context != NULL) {
 	    ret = xmlAllocOutputBuffer(encoder);
@@ -994,17 +1675,27 @@ xmlOutputBufferCreateFilename(const char *URI,
 #endif
 
     /*
-     * Try to find one of the output accept method accepting taht scheme
+     * Try to find one of the output accept method accepting that scheme
      * Go in reverse to give precedence to user defined handlers.
      */
     for (i = xmlOutputCallbackNr - 1;i >= 0;i--) {
 	if ((xmlOutputCallbackTable[i].matchcallback != NULL) &&
 	    (xmlOutputCallbackTable[i].matchcallback(URI) != 0)) {
-	    context = xmlOutputCallbackTable[i].opencallback(URI);
+
+#if ( defined( LIBXML_HTTP_ENABLED ) && defined( HAVE_ZLIB_H ) )
+	    /*  Need to pass compression parameter into HTTP open calls  */
+
+	    if ( xmlOutputCallbackTable[i].matchcallback == xmlIOHTTPMatch )
+		context = xmlIOHTTPOpenW( URI, compression );
+	    else
+#endif
+		context = xmlOutputCallbackTable[i].opencallback(URI);
+
 	    if (context != NULL)
 		break;
 	}
     }
+
     if (context == NULL) {
 	return(NULL);
     }
@@ -1624,7 +2315,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 
 #ifdef DEBUG_EXTERNAL_ENTITIES
     xmlGenericError(xmlGenericErrorContext,
-	    "xmlDefaultExternalEntityLoader(%s, %s)\n", URL, ID);
+	    "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
 #endif
 #ifdef LIBXML_CATALOG_ENABLED
     /*

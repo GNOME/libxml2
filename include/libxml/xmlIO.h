@@ -12,6 +12,7 @@
 #define __XML_IO_H__
 
 #include <stdio.h>
+#include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/encoding.h>
@@ -28,7 +29,7 @@ extern "C" {
 typedef int (*xmlInputMatchCallback) (char const *filename);
 typedef void * (*xmlInputOpenCallback) (char const *filename);
 typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
-typedef void (*xmlInputCloseCallback) (void * context);
+typedef int (*xmlInputCloseCallback) (void * context);
 
 typedef struct _xmlParserInputBuffer xmlParserInputBuffer;
 typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
@@ -53,7 +54,7 @@ typedef int (*xmlOutputMatchCallback) (char const *filename);
 typedef void * (*xmlOutputOpenCallback) (char const *filename);
 typedef int (*xmlOutputWriteCallback) (void * context, const char * buffer,
                                        int len);
-typedef void (*xmlOutputCloseCallback) (void * context);
+typedef int (*xmlOutputCloseCallback) (void * context);
 
 typedef struct _xmlOutputBuffer xmlOutputBuffer;
 typedef xmlOutputBuffer *xmlOutputBufferPtr;
@@ -155,6 +156,13 @@ int     xmlRegisterOutputCallbacks	(xmlOutputMatchCallback matchFunc,
 					 xmlOutputOpenCallback openFunc,
 					 xmlOutputWriteCallback writeFunc,
 					 xmlOutputCloseCallback closeFunc);
+
+/*  This function only exists if HTTP support built into the library  */
+#ifdef LIBXML_HTTP_ENABLED
+void *	xmlIOHTTPOpenW			(const char * post_uri,
+					 int   compression );
+void	xmlRegisterHTTPPostCallbacksI	(void );
+#endif
 
 /*
  * This save function are part of tree.h and HTMLtree.h actually

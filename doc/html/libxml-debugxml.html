@@ -122,7 +122,7 @@ NAME="LIBXML-DEBUGXML"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN21544"
+NAME="AEN22337"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN21544"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN21547"
+NAME="AEN22340"
 ></A
 ><H2
 >Synopsis</H2
@@ -248,7 +248,7 @@ HREF="FILE-CAPS"
                                              <A
 HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
-> doc);
+> dtd);
 void        <A
 HREF="libxml-debugxml.html#XMLDEBUGDUMPENTITIES"
 >xmlDebugDumpEntities</A
@@ -260,17 +260,6 @@ HREF="FILE-CAPS"
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);
-void        <A
-HREF="libxml-debugxml.html#XMLLSONENODE"
->xmlLsOneNode</A
->                    (<GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="libxml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node);
 char*       (<A
 HREF="libxml-debugxml.html#XMLSHELLREADLINEFUNC"
 >*xmlShellReadlineFunc</A
@@ -322,7 +311,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN21594"
+NAME="AEN22384"
 ></A
 ><H2
 >Description</H2
@@ -332,14 +321,14 @@ NAME="AEN21594"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN21597"
+NAME="AEN22387"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21599"
+NAME="AEN22389"
 ></A
 ><H3
 ><A
@@ -367,11 +356,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Dumps informations about the string, shorten it if necessary</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21606"
+NAME="AEN22397"
 ></A
 ><P
 ></P
@@ -398,7 +389,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE * for the output</TD
 ></TR
 ><TR
 ><TD
@@ -415,7 +406,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the string</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -426,7 +417,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21619"
+NAME="AEN22410"
 ></A
 ><H3
 ><A
@@ -455,11 +446,13 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ></TR
 ></TABLE
 ><P
+>Dumps debug information for the attribute</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21626"
+NAME="AEN22418"
 ></A
 ><P
 ></P
@@ -486,7 +479,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE * for the output</TD
 ></TR
 ><TR
 ><TD
@@ -503,7 +496,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the attribute</TD
 ></TR
 ><TR
 ><TD
@@ -520,7 +513,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the indentation level.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -531,7 +524,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21643"
+NAME="AEN22435"
 ></A
 ><H3
 ><A
@@ -560,11 +553,13 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ></TR
 ></TABLE
 ><P
+>Dumps debug information for the attribute list</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21650"
+NAME="AEN22443"
 ></A
 ><P
 ></P
@@ -591,7 +586,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE * for the output</TD
 ></TR
 ><TR
 ><TD
@@ -608,7 +603,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the attribute list</TD
 ></TR
 ><TR
 ><TD
@@ -625,7 +620,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the indentation level.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -636,7 +631,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21667"
+NAME="AEN22460"
 ></A
 ><H3
 ><A
@@ -665,11 +660,13 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
+>Dumps debug information for the element node, it is not recursive</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21674"
+NAME="AEN22468"
 ></A
 ><P
 ></P
@@ -696,7 +693,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE * for the output</TD
 ></TR
 ><TR
 ><TD
@@ -713,7 +710,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the node</TD
 ></TR
 ><TR
 ><TD
@@ -730,7 +727,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the indentation level.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -741,7 +738,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21691"
+NAME="AEN22485"
 ></A
 ><H3
 ><A
@@ -770,11 +767,13 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
+>Dumps debug information for the element node, it is recursive</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21698"
+NAME="AEN22493"
 ></A
 ><P
 ></P
@@ -801,7 +800,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE * for the output</TD
 ></TR
 ><TR
 ><TD
@@ -818,7 +817,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the node</TD
 ></TR
 ><TR
 ><TD
@@ -835,7 +834,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the indentation level.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -846,7 +845,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21715"
+NAME="AEN22510"
 ></A
 ><H3
 ><A
@@ -875,11 +874,13 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
+>Dumps debug information for the list of element node, it is recursive</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21722"
+NAME="AEN22518"
 ></A
 ><P
 ></P
@@ -906,7 +907,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE * for the output</TD
 ></TR
 ><TR
 ><TD
@@ -923,7 +924,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the node list</TD
 ></TR
 ><TR
 ><TD
@@ -940,7 +941,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the indentation level.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -951,7 +952,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21739"
+NAME="AEN22535"
 ></A
 ><H3
 ><A
@@ -979,11 +980,13 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ></TR
 ></TABLE
 ><P
+>Dumps debug information cncerning the document, not recursive</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21746"
+NAME="AEN22543"
 ></A
 ><P
 ></P
@@ -1010,7 +1013,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE * for the output</TD
 ></TR
 ><TR
 ><TD
@@ -1027,7 +1030,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1038,7 +1041,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21759"
+NAME="AEN22556"
 ></A
 ><H3
 ><A
@@ -1066,11 +1069,13 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ></TR
 ></TABLE
 ><P
+>Dumps debug information for the document, it's recursive</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21766"
+NAME="AEN22564"
 ></A
 ><P
 ></P
@@ -1097,7 +1102,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE * for the output</TD
 ></TR
 ><TR
 ><TD
@@ -1114,7 +1119,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1125,7 +1130,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21779"
+NAME="AEN22577"
 ></A
 ><H3
 ><A
@@ -1148,16 +1153,18 @@ HREF="FILE-CAPS"
                                              <A
 HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
-> doc);</PRE
+> dtd);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Dumps debug information for the DTD</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21786"
+NAME="AEN22585"
 ></A
 ><P
 ></P
@@ -1184,7 +1191,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE * for the output</TD
 ></TR
 ><TR
 ><TD
@@ -1194,14 +1201,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->doc</I
+>dtd</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the DTD</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1212,7 +1219,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21799"
+NAME="AEN22598"
 ></A
 ><H3
 ><A
@@ -1240,11 +1247,13 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ></TR
 ></TABLE
 ><P
+>Dumps debug information for all the entities in use by the document</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21806"
+NAME="AEN22606"
 ></A
 ><P
 ></P
@@ -1271,7 +1280,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE * for the output</TD
 ></TR
 ><TR
 ><TD
@@ -1288,7 +1297,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1299,94 +1308,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21819"
-></A
-><H3
-><A
-NAME="XMLLSONENODE"
-></A
->xmlLsOneNode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlLsOneNode                    (<GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="libxml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN21826"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN21839"
+NAME="AEN22619"
 ></A
 ><H3
 ><A
@@ -1407,13 +1329,11 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->This is a generic signature for the XML shell input function</P
-><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21845"
+NAME="AEN22624"
 ></A
 ><P
 ></P
@@ -1440,7 +1360,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a string prompt</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1455,7 +1375,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a string which will be freed by the Shell</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1466,7 +1386,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21858"
+NAME="AEN22637"
 ></A
 ><H3
 ><A
@@ -1495,15 +1415,12 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->A debugging shell context
-TODO: add the defined function tables.</P
-><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21864"
+NAME="AEN22642"
 ></A
 ><H3
 ><A
@@ -1529,7 +1446,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21869"
+NAME="AEN22647"
 ></A
 ><H3
 ><A
@@ -1562,13 +1479,11 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
->This is a generic signature for the XML shell functions</P
-><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21878"
+NAME="AEN22655"
 ></A
 ><P
 ></P
@@ -1595,7 +1510,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a shell context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1612,7 +1527,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a string argument</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1629,7 +1544,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a first node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1646,7 +1561,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a second node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1661,7 +1576,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->an int, negative returns indicating errors</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1672,7 +1587,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21903"
+NAME="AEN22680"
 ></A
 ><H3
 ><A
@@ -1713,7 +1628,7 @@ using a environment similar to a UNIX commandline.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21912"
+NAME="AEN22689"
 ></A
 ><P
 ></P

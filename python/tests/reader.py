@@ -377,6 +377,28 @@ if res != expect:
     print res
     sys.exit(1)
 
+doc="""<test><p></p></test>"""
+expect="""1 (test) [None] 0 0
+1 (p) [None] 0 1
+15 (p) [None] 0 1
+15 (test) [None] 0 0
+"""
+res = tst_reader(doc)
+if res != expect:
+    print "test13 failed"
+    print res
+    sys.exit(1)
+
+doc="""<p></p>"""
+expect="""1 (p) [None] 0 0
+15 (p) [None] 0 0
+"""
+res = tst_reader(doc)
+if res != expect:
+    print "test14 failed"
+    print res
+    sys.exit(1)
+
 #
 # cleanup for memory allocation counting
 #

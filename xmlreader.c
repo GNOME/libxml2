@@ -382,10 +382,16 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	} while ((reader->ctxt->node == NULL) &&
 		 (reader->mode != XML_TEXTREADER_MODE_EOF));
 	if (reader->ctxt->node == NULL) {
-	    if (reader->ctxt->myDoc != NULL)
+	    if (reader->ctxt->myDoc != NULL) {
 		reader->node = reader->ctxt->myDoc->children;
+		if ((reader->ctxt->input != NULL) &&
+		    (reader->ctxt->input->cur != NULL) &&
+		    (reader->ctxt->input->cur[-2] != '/'))
+		    reader->wasempty = -1;
+	    }
 	    if (reader->node == NULL)
 		return(-1);
+	    reader->state = XML_TEXTREADER_ELEMENT;
 	} else {
 	    reader->node = reader->ctxt->nodeTab[0];
 	}
@@ -395,7 +401,14 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     oldstate = reader->state;
     olddepth = reader->ctxt->nodeNr;
     oldnode = reader->node;
-    wasempty = (((reader->wasempty == 1) && (reader->ctxt->node != NULL) &&
+    /*
+     * the <p></p> vs. <p/> distinction at the API level royally sucks,
+     * Microsoft priviledge ...
+     */
+    if (reader->wasempty == -1)
+	wasempty = 0;
+    else
+	wasempty = (((reader->wasempty == 1) && (reader->ctxt->node != NULL) &&
 	         (reader->ctxt->node->last == reader->node)) ||
 	        (reader->node != reader->ctxt->node));
 
@@ -1447,6 +1460,10 @@ xmlTextReaderIsEmptyElement(xmlTextReaderPtr reader) {
     if (reader->curnode != NULL)
 	return(0);
     if (reader->node->children != NULL)
+	return(0);
+    if (reader->state == XML_TEXTREADER_END)
+	return(0);
+    if (reader->wasempty == -1)
 	return(0);
     if (reader->node != reader->ctxt->node)
 	return(1);

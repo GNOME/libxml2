@@ -114,7 +114,7 @@ xmlAddEntity(xmlEntitiesTablePtr table, const xmlChar *name, int type,
     hash = xmlEntityComputeHash(name);
     ret = table->table[hash];
     while (ret != NULL) {
-	if (!xmlStrcmp(ret->name, name)) {
+	if (xmlStrEqual(ret->name, name)) {
 	    /*
 	     * The entity is already defined in this Dtd, the spec says to NOT
 	     * override it ... Is it worth a Warning ??? !!!
@@ -137,7 +137,7 @@ xmlAddEntity(xmlEntitiesTablePtr table, const xmlChar *name, int type,
 #else
     for (i = 0;i < table->nb_entities;i++) {
         ret = table->table[i];
-	if (!xmlStrcmp(ret->name, name)) {
+	if (xmlStrEqual(ret->name, name)) {
 	    /*
 	     * The entity is already defined in this Dtd, the spec says to NOT
 	     * override it ... Is it worth a Warning ??? !!!
@@ -268,14 +268,14 @@ xmlGetPredefinedEntity(const xmlChar *name) {
     i = xmlEntityComputeHash(name);
     cur = xmlPredefinedEntities->table[i];
     while (cur != NULL) {
-	if (!xmlStrcmp(cur->name, name))
+	if (xmlStrEqual(cur->name, name))
 	    return(cur);
 	cur = cur->nexte;
     }
 #else
     for (i = 0;i < xmlPredefinedEntities->nb_entities;i++) {
 	cur = xmlPredefinedEntities->table[i];
-	if (!xmlStrcmp(cur->name, name)) return(cur);
+	if (xmlStrEqual(cur->name, name)) return(cur);
     }
 #endif
     return(NULL);
@@ -425,7 +425,7 @@ xmlEntityCheckReference(xmlEntityPtr ent, const xmlChar *to) {
     for (i = 0;i < ent->entNr;i++) {
 	xmlEntityPtr indir = NULL;
 
-	if (!xmlStrcmp(to, ent->entTab[i]))
+	if (xmlStrEqual(to, ent->entTab[i]))
 	    return(1);
 
 	switch (ent->etype) {
@@ -485,7 +485,7 @@ xmlEntityAddReference(xmlEntityPtr ent, const xmlChar *to) {
     }
 
     for (i = 0;i < ent->entNr;i++) {
-	if (!xmlStrcmp(to, ent->entTab[i]))
+	if (xmlStrEqual(to, ent->entTab[i]))
 	    return(0);
     }
 
@@ -552,10 +552,10 @@ xmlGetEntityFromTable(xmlEntitiesTablePtr table, const xmlChar *name,
 	switch (cur->etype) {
 	    case XML_INTERNAL_PARAMETER_ENTITY:
 	    case XML_EXTERNAL_PARAMETER_ENTITY:
-		if ((parameter) && (!xmlStrcmp(cur->name, name)))
+		if ((parameter) && (xmlStrEqual(cur->name, name)))
 		    return(cur);
 	    default:
-		if ((!parameter) && (!xmlStrcmp(cur->name, name)))
+		if ((!parameter) && (xmlStrEqual(cur->name, name)))
 		    return(cur);
 	}
 	cur = cur->nexte;
@@ -568,10 +568,10 @@ xmlGetEntityFromTable(xmlEntitiesTablePtr table, const xmlChar *name,
 	switch (cur->etype) {
 	    case XML_INTERNAL_PARAMETER_ENTITY:
 	    case XML_EXTERNAL_PARAMETER_ENTITY:
-		if ((parameter) && (!xmlStrcmp(cur->name, name)))
+		if ((parameter) && (xmlStrEqual(cur->name, name)))
 		    return(cur);
 	    default:
-		if ((!parameter) && (!xmlStrcmp(cur->name, name)))
+		if ((!parameter) && (xmlStrEqual(cur->name, name)))
 		    return(cur);
 	}
     }

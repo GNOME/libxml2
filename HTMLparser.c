@@ -612,7 +612,7 @@ htmlTagLookup(const xmlChar *tag) {
 
     for (i = 0; i < (sizeof(html40ElementTable) /
                      sizeof(html40ElementTable[0]));i++) {
-        if (!xmlStrcmp(tag, BAD_CAST html40ElementTable[i].name))
+        if (xmlStrEqual(tag, BAD_CAST html40ElementTable[i].name))
 	    return(&html40ElementTable[i]);
     }
     return(NULL);
@@ -639,13 +639,13 @@ htmlCheckAutoClose(const xmlChar *newtag, const xmlChar *oldtag) {
     for (index = 0; index < 100;index++) {
         close = htmlStartCloseIndex[index];
 	if (close == NULL) return(0);
-	if (!xmlStrcmp(BAD_CAST *close, newtag)) break;
+	if (xmlStrEqual(BAD_CAST *close, newtag)) break;
     }
 
     i = close - htmlStartClose;
     i++;
     while (htmlStartClose[i] != NULL) {
-        if (!xmlStrcmp(BAD_CAST htmlStartClose[i], oldtag)) {
+        if (xmlStrEqual(BAD_CAST htmlStartClose[i], oldtag)) {
 	    return(1);
 	}
 	i++;
@@ -673,11 +673,11 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 #endif
 
     for (i = (ctxt->nameNr - 1);i >= 0;i--) {
-        if (!xmlStrcmp(newtag, ctxt->nameTab[i])) break;
+        if (xmlStrEqual(newtag, ctxt->nameTab[i])) break;
     }
     if (i < 0) return;
 
-    while (xmlStrcmp(newtag, ctxt->name)) {
+    while (!xmlStrEqual(newtag, ctxt->name)) {
 	info = htmlTagLookup(ctxt->name);
 	if ((info == NULL) || (info->endTag == 1)) {
 #ifdef DEBUG
@@ -738,9 +738,9 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 	htmlAutoCloseOnClose(ctxt, BAD_CAST"html");
     }
     while ((newtag == NULL) && (ctxt->name != NULL) &&
-	   ((!xmlStrcmp(ctxt->name, BAD_CAST"head")) ||
-	    (!xmlStrcmp(ctxt->name, BAD_CAST"body")) ||
-	    (!xmlStrcmp(ctxt->name, BAD_CAST"html")))) {
+	   ((xmlStrEqual(ctxt->name, BAD_CAST"head")) ||
+	    (xmlStrEqual(ctxt->name, BAD_CAST"body")) ||
+	    (xmlStrEqual(ctxt->name, BAD_CAST"html")))) {
 #ifdef DEBUG
 	fprintf(stderr,"htmlAutoClose: EOF closes %s\n", ctxt->name);
 #endif
@@ -775,7 +775,7 @@ htmlAutoCloseTag(htmlDocPtr doc, const xmlChar *name, htmlNodePtr elem) {
     htmlNodePtr child;
 
     if (elem == NULL) return(1);
-    if (!xmlStrcmp(name, elem->name)) return(0);
+    if (xmlStrEqual(name, elem->name)) return(0);
     if (htmlCheckAutoClose(elem->name, name)) return(1);
     child = elem->children;
     while (child != NULL) {
@@ -820,7 +820,7 @@ htmlIsAutoClosed(htmlDocPtr doc, htmlNodePtr elem) {
  */
 void
 htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
-    if (!xmlStrcmp(newtag, BAD_CAST"html"))
+    if (xmlStrEqual(newtag, BAD_CAST"html"))
 	return;
     if (ctxt->nameNr <= 0) {
 #ifdef DEBUG
@@ -830,15 +830,15 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
 	    ctxt->sax->startElement(ctxt->userData, BAD_CAST"html", NULL);
     }
-    if ((!xmlStrcmp(newtag, BAD_CAST"body")) || (!xmlStrcmp(newtag, BAD_CAST"head")))
+    if ((xmlStrEqual(newtag, BAD_CAST"body")) || (xmlStrEqual(newtag, BAD_CAST"head")))
         return;
     if (ctxt->nameNr <= 1) {
-	if ((!xmlStrcmp(newtag, BAD_CAST"script")) ||
-	    (!xmlStrcmp(newtag, BAD_CAST"style")) ||
-	    (!xmlStrcmp(newtag, BAD_CAST"meta")) ||
-	    (!xmlStrcmp(newtag, BAD_CAST"link")) ||
-	    (!xmlStrcmp(newtag, BAD_CAST"title")) ||
-	    (!xmlStrcmp(newtag, BAD_CAST"base"))) {
+	if ((xmlStrEqual(newtag, BAD_CAST"script")) ||
+	    (xmlStrEqual(newtag, BAD_CAST"style")) ||
+	    (xmlStrEqual(newtag, BAD_CAST"meta")) ||
+	    (xmlStrEqual(newtag, BAD_CAST"link")) ||
+	    (xmlStrEqual(newtag, BAD_CAST"title")) ||
+	    (xmlStrEqual(newtag, BAD_CAST"base"))) {
 	    /* 
 	     * dropped OBJECT ... i you put it first BODY will be
 	     * assumed !
@@ -888,7 +888,7 @@ htmlCheckParagraph(htmlParserCtxtPtr ctxt) {
 	return(1);
     }
     for (i = 0; htmlNoContentElements[i] != NULL; i++) {
-	if (!xmlStrcmp(tag, BAD_CAST htmlNoContentElements[i])) {
+	if (xmlStrEqual(tag, BAD_CAST htmlNoContentElements[i])) {
 #ifdef DEBUG
 	    fprintf(stderr,"Implied element paragraph\n");
 #endif    
@@ -1227,7 +1227,7 @@ htmlEntityLookup(const xmlChar *name) {
 
     for (i = 0;i < (sizeof(html40EntitiesTable)/
                     sizeof(html40EntitiesTable[0]));i++) {
-        if (!xmlStrcmp(name, BAD_CAST html40EntitiesTable[i].name)) {
+        if (xmlStrEqual(name, BAD_CAST html40EntitiesTable[i].name)) {
 #ifdef DEBUG
             fprintf(stderr,"Found entity %s\n", name);
 #endif
@@ -1650,11 +1650,11 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     if (CUR != '<') return(0);
     if (ctxt->name == NULL)
 	return(1);
-    if (!xmlStrcmp(ctxt->name, BAD_CAST"html"))
+    if (xmlStrEqual(ctxt->name, BAD_CAST"html"))
 	return(1);
-    if (!xmlStrcmp(ctxt->name, BAD_CAST"head"))
+    if (xmlStrEqual(ctxt->name, BAD_CAST"head"))
 	return(1);
-    if (!xmlStrcmp(ctxt->name, BAD_CAST"body"))
+    if (xmlStrEqual(ctxt->name, BAD_CAST"body"))
 	return(1);
     if (ctxt->node == NULL) return(0);
     lastChild = xmlGetLastChild(ctxt->node);
@@ -2805,7 +2805,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	ctxt->wellFormed = 0;
         return;
     }
-    if (!xmlStrcmp(name, BAD_CAST"meta"))
+    if (xmlStrEqual(name, BAD_CAST"meta"))
 	meta = 1;
 
     /*
@@ -2837,7 +2837,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	     * Well formedness requires at most one declaration of an attribute
 	     */
 	    for (i = 0; i < nbatts;i += 2) {
-	        if (!xmlStrcmp(atts[i], attname)) {
+	        if (xmlStrEqual(atts[i], attname)) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			ctxt->sax->error(ctxt->userData,
 			                 "Attribute %s redefined\n",
@@ -2962,7 +2962,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt) {
      * then return, it's just an error.
      */
     for (i = (ctxt->nameNr - 1);i >= 0;i--) {
-        if (!xmlStrcmp(name, ctxt->nameTab[i])) break;
+        if (xmlStrEqual(name, ctxt->nameTab[i])) break;
     }
     if (i < 0) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -2985,12 +2985,12 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt) {
      * With the exception that the autoclose may have popped stuff out
      * of the stack.
      */
-    if (xmlStrcmp(name, ctxt->name)) {
+    if (!xmlStrEqual(name, ctxt->name)) {
 #ifdef DEBUG
 	fprintf(stderr,"End of tag %s: expecting %s\n", name, ctxt->name);
 #endif
         if ((ctxt->name != NULL) && 
-	    (xmlStrcmp(ctxt->name, name))) {
+	    (!xmlStrEqual(ctxt->name, name))) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
 		 "Opening and ending tag mismatch: %s and %s\n",
@@ -3003,7 +3003,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt) {
      * SAX: End of Tag
      */
     oldname = ctxt->name;
-    if ((oldname != NULL) && (!xmlStrcmp(oldname, name))) {
+    if ((oldname != NULL) && (xmlStrEqual(oldname, name))) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
 	oldname = htmlnamePop(ctxt);
@@ -3134,7 +3134,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	 * Has this node been popped out during parsing of
 	 * the next element
 	 */
-        if ((xmlStrcmp(currentNode, ctxt->name)) &&
+        if ((!xmlStrEqual(currentNode, ctxt->name)) &&
 	    (depth >= ctxt->nameNr)) {
 	    if (currentNode != NULL) xmlFree(currentNode);
 	    return;
@@ -3245,7 +3245,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     else	
 	fprintf(stderr, "Start of element %s, was %s\n", name, oldname);
 #endif
-    if (((depth == ctxt->nameNr) && (!xmlStrcmp(oldname, ctxt->name))) ||
+    if (((depth == ctxt->nameNr) && (xmlStrEqual(oldname, ctxt->name))) ||
         (name == NULL)) {
 	if (CUR == '>')
 	    NEXT;
@@ -3301,7 +3301,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	/*
 	 * end of parsing of this node.
 	 */
-	if (!xmlStrcmp(name, ctxt->name)) { 
+	if (xmlStrEqual(name, ctxt->name)) { 
 	    nodePop(ctxt);
 	    oldname = htmlnamePop(ctxt);
 #ifdef DEBUG
@@ -3993,7 +3993,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		            name, oldname);
 #endif
 		if (((depth == ctxt->nameNr) &&
-		     (!xmlStrcmp(oldname, ctxt->name))) ||
+		     (xmlStrEqual(oldname, ctxt->name))) ||
 		    (name == NULL)) {
 		    if (CUR == '>')
 			NEXT;
@@ -4055,7 +4055,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    /*
 		     * end of parsing of this node.
 		     */
-		    if (!xmlStrcmp(name, ctxt->name)) { 
+		    if (xmlStrEqual(name, ctxt->name)) { 
 			nodePop(ctxt);
 			oldname = htmlnamePop(ctxt);
 #ifdef DEBUG

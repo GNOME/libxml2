@@ -996,7 +996,7 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar *str) {
     ns = arg->nodesetval;
     for (i = 0;i < ns->nodeNr;i++) {
          str2 = xmlNodeGetContent(ns->nodeTab[i]);
-	 if ((str2 != NULL) && (!xmlStrcmp(str, str2))) {
+	 if ((str2 != NULL) && (xmlStrEqual(str, str2))) {
 	     xmlFree(str2);
 	     return(1);
 	 }
@@ -1215,7 +1215,7 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    ret = (arg2->boolval == ret);
 		    break;
 		case XPATH_STRING:
-		    ret = !xmlStrcmp(arg1->stringval, arg2->stringval);
+		    ret = xmlStrEqual(arg1->stringval, arg2->stringval);
 		    break;
 		case XPATH_NUMBER:
 		    valuePush(ctxt, arg1);
@@ -2099,7 +2099,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, int axis,
                 case NODE_TEST_PI:
 		    if (cur->type == XML_PI_NODE) {
 		        if ((name != NULL) &&
-			    (xmlStrcmp(name, cur->name)))
+			    (!xmlStrEqual(name, cur->name)))
 			    break;
 #ifdef DEBUG_STEP
 			n++;
@@ -2124,10 +2124,10 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, int axis,
                 case NODE_TEST_NAME:
 		    switch (cur->type) {
 		        case XML_ELEMENT_NODE:
-			    if (!xmlStrcmp(name, cur->name) && 
+			    if (xmlStrEqual(name, cur->name) && 
 				(((prefix == NULL) ||
 				  ((cur->ns != NULL) && 
-				   (!xmlStrcmp(prefix, cur->ns->href)))))) {
+				   (xmlStrEqual(prefix, cur->ns->href)))))) {
 #ifdef DEBUG_STEP
 			    n++;
 #endif
@@ -2136,7 +2136,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, int axis,
 			    break;
 		        case XML_ATTRIBUTE_NODE: {
 			    xmlAttrPtr attr = (xmlAttrPtr) cur;
-			    if (!xmlStrcmp(name, attr->name)) {
+			    if (xmlStrEqual(name, attr->name)) {
 #ifdef DEBUG_STEP
 			    n++;
 #endif
@@ -3451,79 +3451,79 @@ xmlXPathFunction
 xmlXPathIsFunction(xmlXPathParserContextPtr ctxt, const xmlChar *name) {
     switch (name[0]) {
         case 'b':
-	    if (!xmlStrcmp(name, BAD_CAST "boolean"))
+	    if (xmlStrEqual(name, BAD_CAST "boolean"))
 	        return(xmlXPathBooleanFunction);
 	    break;
         case 'c':
-	    if (!xmlStrcmp(name, BAD_CAST "ceiling"))
+	    if (xmlStrEqual(name, BAD_CAST "ceiling"))
 	        return(xmlXPathCeilingFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "count"))
+	    if (xmlStrEqual(name, BAD_CAST "count"))
 	        return(xmlXPathCountFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "concat"))
+	    if (xmlStrEqual(name, BAD_CAST "concat"))
 	        return(xmlXPathConcatFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "contains"))
+	    if (xmlStrEqual(name, BAD_CAST "contains"))
 	        return(xmlXPathContainsFunction);
 	    break;
         case 'i':
-	    if (!xmlStrcmp(name, BAD_CAST "id"))
+	    if (xmlStrEqual(name, BAD_CAST "id"))
 	        return(xmlXPathIdFunction);
 	    break;
         case 'f':
-	    if (!xmlStrcmp(name, BAD_CAST "false"))
+	    if (xmlStrEqual(name, BAD_CAST "false"))
 	        return(xmlXPathFalseFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "floor"))
+	    if (xmlStrEqual(name, BAD_CAST "floor"))
 	        return(xmlXPathFloorFunction);
 	    break;
         case 'l':
-	    if (!xmlStrcmp(name, BAD_CAST "last"))
+	    if (xmlStrEqual(name, BAD_CAST "last"))
 	        return(xmlXPathLastFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "lang"))
+	    if (xmlStrEqual(name, BAD_CAST "lang"))
 	        return(xmlXPathLangFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "local-part"))
+	    if (xmlStrEqual(name, BAD_CAST "local-part"))
 	        return(xmlXPathLocalPartFunction);
 	    break;
         case 'n':
-	    if (!xmlStrcmp(name, BAD_CAST "not"))
+	    if (xmlStrEqual(name, BAD_CAST "not"))
 	        return(xmlXPathNotFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "name"))
+	    if (xmlStrEqual(name, BAD_CAST "name"))
 	        return(xmlXPathNameFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "namespace"))
+	    if (xmlStrEqual(name, BAD_CAST "namespace"))
 	        return(xmlXPathNamespaceFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "normalize-space"))
+	    if (xmlStrEqual(name, BAD_CAST "normalize-space"))
 	        return(xmlXPathNormalizeFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "normalize"))
+	    if (xmlStrEqual(name, BAD_CAST "normalize"))
 	        return(xmlXPathNormalizeFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "number"))
+	    if (xmlStrEqual(name, BAD_CAST "number"))
 	        return(xmlXPathNumberFunction);
 	    break;
         case 'p':
-	    if (!xmlStrcmp(name, BAD_CAST "position"))
+	    if (xmlStrEqual(name, BAD_CAST "position"))
 	        return(xmlXPathPositionFunction);
 	    break;
         case 'r':
-	    if (!xmlStrcmp(name, BAD_CAST "round"))
+	    if (xmlStrEqual(name, BAD_CAST "round"))
 	        return(xmlXPathRoundFunction);
 	    break;
         case 's':
-	    if (!xmlStrcmp(name, BAD_CAST "string"))
+	    if (xmlStrEqual(name, BAD_CAST "string"))
 	        return(xmlXPathStringFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "string-length"))
+	    if (xmlStrEqual(name, BAD_CAST "string-length"))
 	        return(xmlXPathStringLengthFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "starts-with"))
+	    if (xmlStrEqual(name, BAD_CAST "starts-with"))
 	        return(xmlXPathStartsWithFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "substring"))
+	    if (xmlStrEqual(name, BAD_CAST "substring"))
 	        return(xmlXPathSubstringFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "substring-before"))
+	    if (xmlStrEqual(name, BAD_CAST "substring-before"))
 	        return(xmlXPathSubstringBeforeFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "substring-after"))
+	    if (xmlStrEqual(name, BAD_CAST "substring-after"))
 	        return(xmlXPathSubstringAfterFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "sum"))
+	    if (xmlStrEqual(name, BAD_CAST "sum"))
 	        return(xmlXPathSumFunction);
 	    break;
         case 't':
-	    if (!xmlStrcmp(name, BAD_CAST "true"))
+	    if (xmlStrEqual(name, BAD_CAST "true"))
 	        return(xmlXPathTrueFunction);
-	    if (!xmlStrcmp(name, BAD_CAST "translate"))
+	    if (xmlStrEqual(name, BAD_CAST "translate"))
 	        return(xmlXPathTranslateFunction);
 	    break;
     }
@@ -3560,43 +3560,43 @@ int
 xmlXPathGetNameType(xmlXPathParserContextPtr ctxt, const xmlChar *name) {
     switch (name[0]) {
         case 'a':
-	    if (!xmlStrcmp(name, BAD_CAST "ancestor")) return(AXIS_ANCESTOR);
-	    if (!xmlStrcmp(name, BAD_CAST "ancestor-or-self"))
+	    if (xmlStrEqual(name, BAD_CAST "ancestor")) return(AXIS_ANCESTOR);
+	    if (xmlStrEqual(name, BAD_CAST "ancestor-or-self"))
 	        return(AXIS_ANCESTOR_OR_SELF);
-            if (!xmlStrcmp(name, BAD_CAST "attribute")) return(AXIS_ATTRIBUTE);
+            if (xmlStrEqual(name, BAD_CAST "attribute")) return(AXIS_ATTRIBUTE);
 	    break;
         case 'c':
-            if (!xmlStrcmp(name, BAD_CAST "child")) return(AXIS_CHILD);
-            if (!xmlStrcmp(name, BAD_CAST "comment")) return(NODE_TYPE_COMMENT);
+            if (xmlStrEqual(name, BAD_CAST "child")) return(AXIS_CHILD);
+            if (xmlStrEqual(name, BAD_CAST "comment")) return(NODE_TYPE_COMMENT);
 	    break;
         case 'd':
-            if (!xmlStrcmp(name, BAD_CAST "descendant"))
+            if (xmlStrEqual(name, BAD_CAST "descendant"))
 	        return(AXIS_DESCENDANT);
-            if (!xmlStrcmp(name, BAD_CAST "descendant-or-self"))
+            if (xmlStrEqual(name, BAD_CAST "descendant-or-self"))
 	        return(AXIS_DESCENDANT_OR_SELF);
 	    break;
         case 'f':
-            if (!xmlStrcmp(name, BAD_CAST "following")) return(AXIS_FOLLOWING);
-            if (!xmlStrcmp(name, BAD_CAST "following-sibling"))
+            if (xmlStrEqual(name, BAD_CAST "following")) return(AXIS_FOLLOWING);
+            if (xmlStrEqual(name, BAD_CAST "following-sibling"))
 	        return(AXIS_FOLLOWING_SIBLING);
 	    break;
         case 'n':
-            if (!xmlStrcmp(name, BAD_CAST "namespace")) return(AXIS_NAMESPACE);
-            if (!xmlStrcmp(name, BAD_CAST "node")) return(NODE_TYPE_NODE);
+            if (xmlStrEqual(name, BAD_CAST "namespace")) return(AXIS_NAMESPACE);
+            if (xmlStrEqual(name, BAD_CAST "node")) return(NODE_TYPE_NODE);
 	    break;
         case 'p':
-            if (!xmlStrcmp(name, BAD_CAST "parent")) return(AXIS_PARENT);
-            if (!xmlStrcmp(name, BAD_CAST "preceding")) return(AXIS_PRECEDING);
-            if (!xmlStrcmp(name, BAD_CAST "preceding-sibling"))
+            if (xmlStrEqual(name, BAD_CAST "parent")) return(AXIS_PARENT);
+            if (xmlStrEqual(name, BAD_CAST "preceding")) return(AXIS_PRECEDING);
+            if (xmlStrEqual(name, BAD_CAST "preceding-sibling"))
 	        return(AXIS_PRECEDING_SIBLING);
-            if (!xmlStrcmp(name, BAD_CAST "processing-instruction"))
+            if (xmlStrEqual(name, BAD_CAST "processing-instruction"))
 	        return(NODE_TYPE_PI);
 	    break;
         case 's':
-            if (!xmlStrcmp(name, BAD_CAST "self")) return(AXIS_SELF);
+            if (xmlStrEqual(name, BAD_CAST "self")) return(AXIS_SELF);
 	    break;
         case 't':
-            if (!xmlStrcmp(name, BAD_CAST "text")) return(NODE_TYPE_TEXT);
+            if (xmlStrEqual(name, BAD_CAST "text")) return(NODE_TYPE_TEXT);
 	    break;
     }
     if (xmlXPathIsFunction(ctxt, name)) return(IS_FUNCTION);

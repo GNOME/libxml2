@@ -61,11 +61,11 @@ htmlGetMetaEncoding(htmlDocPtr doc) {
      */
     while (cur != NULL) {
 	if (cur->name != NULL) {
-	    if (!xmlStrcmp(cur->name, BAD_CAST"html"))
+	    if (xmlStrEqual(cur->name, BAD_CAST"html"))
 		break;
-	    if (!xmlStrcmp(cur->name, BAD_CAST"head"))
+	    if (xmlStrEqual(cur->name, BAD_CAST"head"))
 		goto found_head;
-	    if (!xmlStrcmp(cur->name, BAD_CAST"meta"))
+	    if (xmlStrEqual(cur->name, BAD_CAST"meta"))
 		goto found_meta;
 	}
 	cur = cur->next;
@@ -79,9 +79,9 @@ htmlGetMetaEncoding(htmlDocPtr doc) {
      */
     while (cur != NULL) {
 	if (cur->name != NULL) {
-	    if (!xmlStrcmp(cur->name, BAD_CAST"head"))
+	    if (xmlStrEqual(cur->name, BAD_CAST"head"))
 		break;
-	    if (!xmlStrcmp(cur->name, BAD_CAST"meta"))
+	    if (xmlStrEqual(cur->name, BAD_CAST"meta"))
 		goto found_meta;
 	}
 	cur = cur->next;
@@ -97,7 +97,7 @@ found_head:
 found_meta:
     while (cur != NULL) {
 	if (cur->name != NULL) {
-	    if (!xmlStrcmp(cur->name, BAD_CAST"meta")) {
+	    if (xmlStrEqual(cur->name, BAD_CAST"meta")) {
 		xmlAttrPtr attr = cur->properties;
 		int http;
 		const xmlChar *value;
@@ -191,9 +191,9 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
      */
     while (cur != NULL) {
 	if (cur->name != NULL) {
-	    if (!xmlStrcmp(cur->name, BAD_CAST"html"))
+	    if (xmlStrEqual(cur->name, BAD_CAST"html"))
 		break;
-	    if (!xmlStrcmp(cur->name, BAD_CAST"body")) {
+	    if (xmlStrEqual(cur->name, BAD_CAST"body")) {
 		if (encoding == NULL)
 		    return(0);
 		meta = xmlNewDocNode(doc, NULL, BAD_CAST"head", NULL);
@@ -205,9 +205,9 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
 		xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
 		return(0);
 	    }
-	    if (!xmlStrcmp(cur->name, BAD_CAST"head"))
+	    if (xmlStrEqual(cur->name, BAD_CAST"head"))
 		goto found_head;
-	    if (!xmlStrcmp(cur->name, BAD_CAST"meta"))
+	    if (xmlStrEqual(cur->name, BAD_CAST"meta"))
 		goto found_meta;
 	}
 	cur = cur->next;
@@ -221,9 +221,9 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
      */
     while (cur != NULL) {
 	if (cur->name != NULL) {
-	    if (!xmlStrcmp(cur->name, BAD_CAST"head"))
+	    if (xmlStrEqual(cur->name, BAD_CAST"head"))
 		break;
-	    if (!xmlStrcmp(cur->name, BAD_CAST"body")) {
+	    if (xmlStrEqual(cur->name, BAD_CAST"body")) {
 		if (encoding == NULL)
 		    return(0);
 		meta = xmlNewDocNode(doc, NULL, BAD_CAST"head", NULL);
@@ -235,7 +235,7 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
 		xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
 		return(0);
 	    }
-	    if (!xmlStrcmp(cur->name, BAD_CAST"meta"))
+	    if (xmlStrEqual(cur->name, BAD_CAST"meta"))
 		goto found_meta;
 	}
 	cur = cur->next;
@@ -272,7 +272,7 @@ found_meta:
      */
     while (cur != NULL) {
 	if (cur->name != NULL) {
-	    if (!xmlStrcmp(cur->name, BAD_CAST"meta")) {
+	    if (xmlStrEqual(cur->name, BAD_CAST"meta")) {
 		xmlAttrPtr attr = cur->properties;
 		int http;
 		const xmlChar *value;

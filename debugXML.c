@@ -1491,14 +1491,14 @@ xmlShellPwd(xmlShellCtxtPtr ctxt, char *buffer, xmlNodePtr node,
 	     */
 	    tmp = cur->prev;
             while (tmp != NULL) {
-	        if (!xmlStrcmp(cur->name, tmp->name))
+	        if (xmlStrEqual(cur->name, tmp->name))
 		    occur++;
 	        tmp = tmp->prev;
 	    }
 	    if (occur == 0) {
 	        tmp = cur->next;
 		while (tmp != NULL) {
-		    if (!xmlStrcmp(cur->name, tmp->name))
+		    if (xmlStrEqual(cur->name, tmp->name))
 			occur++;
 		    tmp = tmp->next;
 		}

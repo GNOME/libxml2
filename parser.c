@@ -1021,6 +1021,28 @@ xmlStrcmp(const xmlChar *str1, const xmlChar *str2) {
 }
 
 /**
+ * xmlStrEqual:
+ * @str1:  the first xmlChar *
+ * @str2:  the second xmlChar *
+ *
+ * Check if both string are equal of have same content
+ * Should be a bit more readable and faster than xmlStrEqual()
+ *
+ * Returns 1 if they are equal, 0 if they are different
+ */
+
+int
+xmlStrEqual(const xmlChar *str1, const xmlChar *str2) {
+    if (str1 == str2) return(1);
+    if (str1 == NULL) return(0);
+    if (str2 == NULL) return(0);
+    do {
+	if (*str1++ != *str2) return(0);
+    } while (*str2++);
+    return(1);
+}
+
+/**
  * xmlStrncmp:
  * @str1:  the first xmlChar *
  * @str2:  the second xmlChar *
@@ -2649,7 +2671,7 @@ xmlParsePITarget(xmlParserCtxtPtr ctxt) {
 	}
 	for (i = 0;;i++) {
 	    if (xmlW3CPIs[i] == NULL) break;
-	    if (!xmlStrcmp(name, (const xmlChar *)xmlW3CPIs[i]))
+	    if (xmlStrEqual(name, (const xmlChar *)xmlW3CPIs[i]))
 	        return(name);
 	}
 	if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL)) {
@@ -4696,7 +4718,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		 */
 		if ((value != NULL) &&
 		    (value[1] == 0) && (value[0] == '<') &&
-		    (!xmlStrcmp(ent->name, BAD_CAST "lt"))) {
+		    (xmlStrEqual(ent->name, BAD_CAST "lt"))) {
 		    /*
 		     * DONE: get definite answer on this !!!
 		     * Lots of entity decls are used to declare a single
@@ -4991,7 +5013,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		 */
 		else if ((ctxt->instate == XML_PARSER_ATTRIBUTE_VALUE) &&
 		         (ent != NULL) &&
-			 (xmlStrcmp(ent->name, BAD_CAST "lt")) &&
+			 (!xmlStrEqual(ent->name, BAD_CAST "lt")) &&
 		         (ent->content != NULL) &&
 			 (xmlStrchr(ent->content, '<'))) {
 		    ctxt->errNo = XML_ERR_LT_IN_ATTRIBUTE;
@@ -5183,7 +5205,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 		 */
 		else if ((ctxt->instate == XML_PARSER_ATTRIBUTE_VALUE) &&
 		         (ent != NULL) &&
-			 (xmlStrcmp(ent->name, BAD_CAST "lt")) &&
+			 (!xmlStrEqual(ent->name, BAD_CAST "lt")) &&
 		         (ent->content != NULL) &&
 			 (xmlStrchr(ent->content, '<'))) {
 		    ctxt->errNo = XML_ERR_LT_IN_ATTRIBUTE;
@@ -5710,7 +5732,7 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
      * No more registered as an error, just generate a warning now
      * since this was deprecated in XML second edition
      */
-    if ((ctxt->pedantic) && (!xmlStrcmp(name, BAD_CAST "xml:lang"))) {
+    if ((ctxt->pedantic) && (xmlStrEqual(name, BAD_CAST "xml:lang"))) {
 	if (!xmlCheckLanguageID(val)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 		ctxt->sax->warning(ctxt->userData,
@@ -5721,10 +5743,10 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
     /*
      * Check that xml:space conforms to the specification
      */
-    if (!xmlStrcmp(name, BAD_CAST "xml:space")) {
-	if (!xmlStrcmp(val, BAD_CAST "default"))
+    if (xmlStrEqual(name, BAD_CAST "xml:space")) {
+	if (xmlStrEqual(val, BAD_CAST "default"))
 	    *(ctxt->space) = 0;
-	else if (!xmlStrcmp(val, BAD_CAST "preserve"))
+	else if (xmlStrEqual(val, BAD_CAST "preserve"))
 	    *(ctxt->space) = 1;
 	else {
 	    ctxt->errNo = XML_ERR_ATTRIBUTE_WITHOUT_VALUE;
@@ -5815,7 +5837,7 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 	     * start-tag or empty-element tag. 
 	     */
 	    for (i = 0; i < nbatts;i += 2) {
-	        if (!xmlStrcmp(atts[i], attname)) {
+	        if (xmlStrEqual(atts[i], attname)) {
 		    ctxt->errNo = XML_ERR_ATTRIBUTE_REDEFINED;
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			ctxt->sax->error(ctxt->userData,
@@ -5952,7 +5974,7 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
      *
      */
     if ((name == NULL) || (ctxt->name == NULL) ||
-        (xmlStrcmp(name, ctxt->name))) {
+        (!xmlStrEqual(name, ctxt->name))) {
 	ctxt->errNo = XML_ERR_TAG_NAME_MISMATCH;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
 	    if ((name != NULL) && (ctxt->name != NULL)) {

@@ -164,14 +164,14 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
 	    xmlNsPtr prev = node->nsDef;
 
 	    if (((prev->prefix == NULL) && (cur->prefix == NULL)) ||
-		(!xmlStrcmp(prev->prefix, cur->prefix))) {
+		(xmlStrEqual(prev->prefix, cur->prefix))) {
 		xmlFreeNs(cur);
 		return(NULL);
 	    }    
 	    while (prev->next != NULL) {
 	        prev = prev->next;
 		if (((prev->prefix == NULL) && (cur->prefix == NULL)) ||
-		    (!xmlStrcmp(prev->prefix, cur->prefix))) {
+		    (xmlStrEqual(prev->prefix, cur->prefix))) {
 		    xmlFreeNs(cur);
 		    return(NULL);
 		}    
@@ -2687,11 +2687,11 @@ xmlNodeGetSpacePreserve(xmlNodePtr cur) {
     while (cur != NULL) {
         space = xmlGetProp(cur, BAD_CAST "xml:space");
 	if (space != NULL) {
-	    if (!xmlStrcmp(space, BAD_CAST "preserve")) {
+	    if (xmlStrEqual(space, BAD_CAST "preserve")) {
 		xmlFree(space);
 		return(1);
 	    }
-	    if (!xmlStrcmp(space, BAD_CAST "default")) {
+	    if (xmlStrEqual(space, BAD_CAST "default")) {
 		xmlFree(space);
 		return(0);
 	    }
@@ -3194,7 +3194,7 @@ xmlGetNsList(xmlDocPtr doc, xmlNodePtr node) {
 	    }
 	    for (i = 0;i < nbns;i++) {
 	        if ((cur->prefix == ret[i]->prefix) ||
-		    (!xmlStrcmp(cur->prefix, ret[i]->prefix))) break;
+		    (xmlStrEqual(cur->prefix, ret[i]->prefix))) break;
 	    }
 	    if (i >= nbns) {
 	        if (nbns >= maxns) {
@@ -3251,7 +3251,7 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 		    return(cur);
 		if ((cur->prefix != NULL) && (nameSpace != NULL) &&
 		    (cur->href != NULL) &&
-		    (!xmlStrcmp(cur->prefix, nameSpace)))
+		    (xmlStrEqual(cur->prefix, nameSpace)))
 		    return(cur);
 		cur = cur->next;
 	    }
@@ -3281,7 +3281,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
 	cur = node->nsDef;
 	while (cur != NULL) {
 	    if ((cur->href != NULL) && (href != NULL) &&
-	        (!xmlStrcmp(cur->href, href))) {
+	        (xmlStrEqual(cur->href, href))) {
 		/*
 		 * Check that the prefix is not shadowed between orig and node
 		 */
@@ -3294,7 +3294,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
 			if ((tst->prefix == NULL) && (cur->prefix == NULL))
 	                    goto shadowed;
 			if ((tst->prefix != NULL) && (cur->prefix != NULL) &&
-			    (!xmlStrcmp(tst->prefix, cur->prefix)))
+			    (xmlStrEqual(tst->prefix, cur->prefix)))
 	                    goto shadowed;
 		        tst = tst->next;
 		    }
@@ -3576,7 +3576,7 @@ xmlHasProp(xmlNodePtr node, const xmlChar *name) {
      */
     prop = node->properties;
     while (prop != NULL) {
-        if (!xmlStrcmp(prop->name, name))  {
+        if (xmlStrEqual(prop->name, name))  {
 	    return(prop);
         }
 	prop = prop->next;
@@ -3625,7 +3625,7 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
      */
     prop = node->properties;
     while (prop != NULL) {
-        if (!xmlStrcmp(prop->name, name))  {
+        if (xmlStrEqual(prop->name, name))  {
 	    xmlChar *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->children, 1);
@@ -3685,10 +3685,10 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 	 *         or
 	 *         no namespace on the attribute and the element carrying it
 	 */
-        if ((!xmlStrcmp(prop->name, name)) &&
+        if ((xmlStrEqual(prop->name, name)) &&
 	    (((prop->ns == NULL) && (node->ns != NULL) &&
-	      (!xmlStrcmp(node->ns->href, namespace))) ||
-	     ((prop->ns != NULL) && (!xmlStrcmp(prop->ns->href, namespace))))) {
+	      (xmlStrEqual(node->ns->href, namespace))) ||
+	     ((prop->ns != NULL) && (xmlStrEqual(prop->ns->href, namespace))))) {
 	    xmlChar *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->children, 1);
@@ -3716,7 +3716,7 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 		 * The DTD declaration only allows a prefix search
 		 */
 		ns = xmlSearchNs(doc, node, attrDecl->prefix);
-		if ((ns != NULL) && (!xmlStrcmp(ns->href, namespace)))
+		if ((ns != NULL) && (xmlStrEqual(ns->href, namespace)))
 		    return(xmlStrdup(attrDecl->defaultValue));
 	    }
 	}
@@ -3738,7 +3738,7 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     xmlAttrPtr prop = node->properties;
 
     while (prop != NULL) {
-        if (!xmlStrcmp(prop->name, name)) {
+        if (xmlStrEqual(prop->name, name)) {
 	    if (prop->children != NULL) 
 	        xmlFreeNodeList(prop->children);
 	    prop->children = NULL;

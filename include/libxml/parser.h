@@ -348,6 +348,8 @@ int		xmlStrcasecmp		(const xmlChar *str1,
 int		xmlStrncasecmp		(const xmlChar *str1,
 					 const xmlChar *str2,
 					 int len);
+int		xmlStrEqual		(const xmlChar *str1,
+					 const xmlChar *str2);
 int		xmlStrlen		(const xmlChar *str);
 xmlChar *	xmlStrcat		(xmlChar *cur,
 					 const xmlChar *add);

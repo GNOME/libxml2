@@ -1387,7 +1387,7 @@ checkNamespace(void *ctx, xmlChar *namespace)
 		 "End tags %s holds a prefix %s not used by the open tag\n",
 		                 cur->name, namespace);
 	    ctxt->wellFormed = 0;
-	} else if (xmlStrcmp(namespace, cur->ns->prefix)) {
+	} else if (!xmlStrEqual(namespace, cur->ns->prefix)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt, 
     "Start and End tags for %s don't use the same namespaces: %s and %s\n",

@@ -2100,12 +2100,10 @@ xmlSAX2StartElementNs(void *ctx,
 
     /*
      * Search the namespace if it wasn't already found
+     * Note that, if prefix is NULL, this searches for the default Ns
      */
     if ((URI != NULL) && (ret->ns == NULL)) {
-        if (prefix != NULL)
-	    ret->ns = xmlSearchNs(ctxt->myDoc, parent, prefix);
-	else
-	    ret->ns = xmlSearchNsByHref(ctxt->myDoc, parent, URI);
+        ret->ns = xmlSearchNs(ctxt->myDoc, parent, prefix);
 	if (ret->ns == NULL) {
 	    ns = xmlNewNs(ret, NULL, prefix);
 	    if (ns == NULL) {

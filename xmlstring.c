@@ -773,41 +773,25 @@ xmlCheckUTF8(const unsigned char *utf)
      *    11110xxx 10xxxxxx 10xxxxxx 10xxxxxx           valid 4-byte
      */
     for (ix = 0; (c = utf[ix]);) {      /* string is 0-terminated */
-        if (c & 0x80) {                 /* if it is not a single byte */
-            /*
-             * We know the first byte starts with '1', so check
-             * the following bits and bytes.
-             *
-             * if the first byte does *not* start with 1 1, or the
-             * second byte does *not* start with 1 0 it's an error
-             */
-            if (((c & 0xc0) != 0xc0) || ((utf[ix + 1] & 0xc0) != 0x80))
-                return(0);
-            /*
-             * if the first three bits are set then the 3rd byte *must* start
-             * with 1 0
-             */
-            if ((c & 0xe0) == 0xe0) {
-                if ((utf[ix + 2] & 0xc0) != 0x80)
-                    return(0);
-                /*
-                 * if the first four bits are set then the fifth bit
-                 * must not be set, and the 4th byte *must* start with 1 0
-                 */
-                if ((c & 0xf0) == 0xf0) {
-                    if ((c & 0xf8) != 0xf0 || (utf[ix + 3] & 0xc0) != 0x80)
-                        return(0);
-                    ix += 4;
-                    /* 4-byte code */
-                } else
-                    /* 3-byte code */
-                    ix += 3;
-            } else
-                /* 2-byte code */
-                ix += 2;
-        } else
-            /* 1-byte code */
+        if (c & 0x80) {			/* 1-byte code, starts with 10 */
             ix++;
+	} else if ((c & 0xe0) == 0xc0) {/* 2-byte code, starts with 110 */
+	    if ((utf[ix+1] & 0xc0 ) != 0x80)
+	        return 0;
+	    ix += 2;
+	} else if ((c & 0xf0) == 0xe0) {/* 3-byte code, starts with 1110 */
+	    if (((utf[ix+1] & 0xc0) != 0x80) ||
+	        ((utf[ix+2] & 0xc0) != 0x80))
+		    return 0;
+	    ix += 3;
+	} else if ((c & 0xf8) == 0xf0) {/* 4-byte code, starts with 11110 */
+	    if (((utf[ix+1] & 0xc0) != 0x80) ||
+	        ((utf[ix+2] & 0xc0) != 0x80) ||
+		((utf[ix+3] & 0xc0) != 0x80))
+		    return 0;
+	    ix += 4;
+	} else				/* unknown encoding */
+	    return 0;
       }
       return(1);
 }

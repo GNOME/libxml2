@@ -708,7 +708,7 @@ xmlDictOwns(xmlDictPtr dict, const xmlChar *str) {
 	return(-1);
     pool = dict->strings;
     while (pool != NULL) {
-        if ((str >= pool->array) && (str <= pool->free))
+        if ((str >= &pool->array[0]) && (str <= pool->free))
 	    return(1);
 	pool = pool->next;
     }

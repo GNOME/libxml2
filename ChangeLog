@@ -1,3 +1,13 @@
+Mon Aug 30 23:36:21 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* SAX2.c: fixed bug introduced during OOM fixup causing problems
+	  with default namespace when a named prefix with the same href
+	  was present (reported on the mailing list by Karl Eichwalder.
+	* xmlstring.c: modified xmlCheckUTF8 with suggested code from
+	  Julius Mittenzwei.
+	* dict.c: added a typecast to try to avoid problem reported by
+	  Pascal Rodes.
+
 Mon Aug 30 12:45:46 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed a bug in xmlSchemasCheckFacet, which did

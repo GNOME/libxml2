@@ -716,7 +716,9 @@ static void parseAndPrintFile(char *filename) {
 	if ((timing) && (!repeat)) {
 	    gettimeofday(&begin, NULL);
 	}
-	cvp.userData = (void *) stderr;                                                 cvp.error    = (xmlValidityErrorFunc) fprintf;                                  cvp.warning  = (xmlValidityWarningFunc) fprintf;
+	cvp.userData = (void *) stderr;
+	cvp.error    = (xmlValidityErrorFunc) fprintf;
+	cvp.warning  = (xmlValidityWarningFunc) fprintf;
 	if (!xmlValidateDocument(&cvp, doc)) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Document %s does not validate\n", filename);

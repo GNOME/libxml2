@@ -194,9 +194,16 @@ xmlXPathInit(void) {
 
     if (initialized) return;
 
+#if defined(HUGE_VAL) && defined(DBL_MAX)
+    xmlXPathPINF = (HUGE_VAL == DBL_MAX) ?
+	           xmlXPathDivideBy(1.0, 0.0) : HUGE_VAL;
+    xmlXPathNINF = -xmlXPathPINF;
+    xmlXPathNAN = xmlXPathDivideBy(xmlXPathPINF, xmlXPathPINF);
+#else
     xmlXPathNAN = xmlXPathDivideBy(0.0, 0.0);
     xmlXPathPINF = xmlXPathDivideBy(1.0, 0.0);
     xmlXPathNINF = xmlXPathDivideBy(-1.0, 0.0);
+#endif
 
     initialized = 1;
 }

@@ -1,3 +1,10 @@
+Thu Jul 26 07:16:04 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c parserInternals.c: fixed the xmlLineNumbersDefault()
+	  errors, lesson don't add new functions at 1am before a release
+	* xpath.c: integrated fix from Bjorn to avoid divide by zero
+	  from XPath initialization when possible.
+
 Tue Jul 24 15:39:11 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* result/scripts/base*: removing history/readline changed

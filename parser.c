@@ -80,21 +80,7 @@
 /*
  * Various global defaults for parsing
  */
-int xmlGetWarningsDefaultValue = 1;
 int xmlParserDebugEntities = 0;
-#ifdef VMS
-int xmlSubstituteEntitiesDefaultVal = 0;
-#define xmlSubstituteEntitiesDefaultValue xmlSubstituteEntitiesDefaultVal 
-int xmlDoValidityCheckingDefaultVal = 0;
-#define xmlDoValidityCheckingDefaultValue xmlDoValidityCheckingDefaultVal
-#else
-int xmlSubstituteEntitiesDefaultValue = 0;
-int xmlDoValidityCheckingDefaultValue = 0;
-#endif
-int xmlLoadExtDtdDefaultValue = 0;
-int xmlPedanticParserDefaultValue = 0;
-int xmlLineNumbersDefaultValue = 0;
-int xmlKeepBlanksDefaultValue = 1;
 
 /*
  * List of XML prefixed PI allowed by W3C specs
@@ -10103,95 +10089,5 @@ xmlCleanupParser(void) {
     xmlParserInitialized = 0;
     xmlCleanupCharEncodingHandlers();
     xmlCleanupPredefinedEntities();
-}
-
-/**
- * xmlPedanticParserDefault:
- * @val:  int 0 or 1 
- *
- * Set and return the previous value for enabling pedantic warnings.
- *
- * Returns the last value for 0 for no substitution, 1 for substitution.
- */
-
-int
-xmlPedanticParserDefault(int val) {
-    int old = xmlPedanticParserDefaultValue;
-
-    xmlPedanticParserDefaultValue = val;
-    return(old);
-}
-
-/**
- * xmlLineNumbersDefault:
- * @val:  int 0 or 1 
- *
- * Set and return the previous value for enabling line numbers in elements
- * contents. This may break on old application and is turned off by default.
- *
- * Returns the last value for 0 for no substitution, 1 for substitution.
- */
-
-int
-xmlLineNumbersDefault(int val) {
-    int old = xmlLineNumbersDefaultValue;
-
-    xmlLineNumbersDefaultValue = val;
-    return(old);
-}
-
-/**
- * xmlSubstituteEntitiesDefault:
- * @val:  int 0 or 1 
- *
- * Set and return the previous value for default entity support.
- * Initially the parser always keep entity references instead of substituting
- * entity values in the output. This function has to be used to change the
- * default parser behaviour
- * SAX::subtituteEntities() has to be used for changing that on a file by
- * file basis.
- *
- * Returns the last value for 0 for no substitution, 1 for substitution.
- */
-
-int
-xmlSubstituteEntitiesDefault(int val) {
-    int old = xmlSubstituteEntitiesDefaultValue;
-
-    xmlSubstituteEntitiesDefaultValue = val;
-    return(old);
-}
-
-/**
- * xmlKeepBlanksDefault:
- * @val:  int 0 or 1 
- *
- * Set and return the previous value for default blanks text nodes support.
- * The 1.x version of the parser used an heuristic to try to detect
- * ignorable white spaces. As a result the SAX callback was generating
- * ignorableWhitespace() callbacks instead of characters() one, and when
- * using the DOM output text nodes containing those blanks were not generated.
- * The 2.x and later version will switch to the XML standard way and
- * ignorableWhitespace() are only generated when running the parser in
- * validating mode and when the current element doesn't allow CDATA or
- * mixed content.
- * This function is provided as a way to force the standard behaviour 
- * on 1.X libs and to switch back to the old mode for compatibility when
- * running 1.X client code on 2.X . Upgrade of 1.X code should be done
- * by using xmlIsBlankNode() commodity function to detect the "empty"
- * nodes generated.
- * This value also affect autogeneration of indentation when saving code
- * if blanks sections are kept, indentation is not generated.
- *
- * Returns the last value for 0 for no substitution, 1 for substitution.
- */
-
-int
-xmlKeepBlanksDefault(int val) {
-    int old = xmlKeepBlanksDefaultValue;
-
-    xmlKeepBlanksDefaultValue = val;
-    xmlIndentTreeOutput = !val;
-    return(old);
 }
 

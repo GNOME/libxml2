@@ -66,16 +66,16 @@ def parse_top_comment(filename, comment):
     lines = string.split(comment, "\n")
     item = None
     for line in lines:
-        while line != "" and line[0] == ' ':
+        while line != "" and (line[0] == ' ' or line[0] == '\t'):
 	    line = line[1:]
         while line != "" and line[0] == '*':
 	    line = line[1:]
-        while line != "" and line[0] == ' ':
+        while line != "" and (line[0] == ' ' or line[0] == '\t'):
 	    line = line[1:]
 	try:
 	    (it, line) = string.split(line, ":", 1)
 	    item = it
-	    while line != "" and line[0] == ' ':
+	    while line != "" and (line[0] == ' ' or line[0] == '\t'):
 		line = line[1:]
 	    if res.has_key(item):
 	        res[item] = res[item] + " " + line
@@ -100,33 +100,38 @@ def parse(filename, output):
     output.write("  <example filename='%s'>\n" % filename)
     try:
         synopsis = info['synopsis']
-	output.write("    <synopsis>%s</synopsis>\n" % synopsis);
+	output.write("    <synopsis>%s</synopsis>\n" % escape(synopsis));
     except:
         print "Example %s lacks a synopsis description" % (filename)
     try:
         purpose = info['purpose']
-	output.write("    <purpose>%s</purpose>\n" % purpose);
+	output.write("    <purpose>%s</purpose>\n" % escape(purpose));
     except:
         print "Example %s lacks a purpose description" % (filename)
     try:
         usage = info['usage']
-	output.write("    <usage>%s</usage>\n" % usage);
-	tests.append(usage)
+	output.write("    <usage>%s</usage>\n" % escape(usage));
     except:
         print "Example %s lacks an usage description" % (filename)
     try:
+        test = info['test']
+	output.write("    <test>%s</test>\n" % escape(test));
+	tests.append(test)
+    except:
+        pass
+    try:
         author = info['author']
-	output.write("    <author>%s</author>\n" % author);
+	output.write("    <author>%s</author>\n" % escape(author));
     except:
         print "Example %s lacks an author description" % (filename)
     try:
         copy = info['copy']
-	output.write("    <copy>%s</copy>\n" % copy);
+	output.write("    <copy>%s</copy>\n" % escape(copy));
     except:
         print "Example %s lacks a copyright description" % (filename)
     try:
         section = info['section']
-	output.write("    <section>%s</section>\n" % section);
+	output.write("    <section>%s</section>\n" % escape(section));
 	if sections.has_key(section):
 	    sections[section].append(filename)
 	else:
@@ -136,9 +141,10 @@ def parse(filename, output):
     for topic in info.keys():
         if topic != "purpose" and topic != "usage" and \
 	   topic != "author" and topic != "copy" and \
-	   topic != "section" and topic != "synopsis":
+	   topic != "section" and topic != "synopsis" and topic != "test":
 	    str = info[topic]
-	    output.write("    <extra topic='%s'>%s</extra>\n" % str)
+	    output.write("    <extra topic='%s'>%s</extra>\n" % (
+	                 escape(topic), escape(str)))
     output.write("    <includes>\n")
     for include in idx.includes.keys():
         if include.find("libxml") != -1:
@@ -155,7 +161,7 @@ def parse(filename, output):
 	    # gather at most 5 references per symbols
 	    if refs > 5:
 	        continue
-	    sinfo[refs] = filename
+	    sinfo.append(filename)
 	    sinfo[0] = refs + 1
 	else:
 	    symbols[name] = [1, filename]
@@ -246,6 +252,22 @@ index.html: examples.xml examples.xsl
 	    print "Updated Makefile.am"
     except:
         print "Failed to read or save Makefile.am"
+    #
+    # Autogenerate the .cvsignore too ...
+    #
+    ignore = """.memdump
+Makefile.in
+Makefile
+"""
+    for example in examples:
+        ignore = ignore + "%s\n" % (example)
+    try:
+	old = open(".cvsignore", "r").read()
+	if old != ignore:
+	    n = open(".cvsignore", "w").write(ignore)
+	    print "Updated .cvsignore"
+    except:
+        print "Failed to read or save .cvsignore"
     
 if __name__ == "__main__":
     load_api()

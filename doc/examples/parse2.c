@@ -5,7 +5,8 @@
  *          the file, creating a tree, check the validation result
  *          and xmlFreeDoc() to free the resulting tree.
  * usage: parse2 test2.xml
- * author: Daniel veillard
+ * test: parse2 test2.xml
+ * author: Daniel Veillard
  * copy: see Copyright for the status of this software.
  */
 

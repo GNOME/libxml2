@@ -4,7 +4,8 @@
  * purpose: Demonstrate the use of xmlReadFile() to read an XML file
  *          into a tree and and xmlFreeDoc() to free the resulting tree
  * usage: parse1 test1.xml
- * author: Daniel veillard
+ * test: parse1 test1.xml
+ * author: Daniel Veillard
  * copy: see Copyright for the status of this software.
  */
 

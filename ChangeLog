@@ -1,3 +1,8 @@
+Thu Nov 13 11:35:35 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/*: added Aleksey XPath example, fixed bugs
+	  in the indexer
+
 Wed Nov 12 23:48:26 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/*: integrating the examples in the navigation menus

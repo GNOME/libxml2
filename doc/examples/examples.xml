@@ -1,9 +1,45 @@
 <examples>
+  <example filename='xpath1.c'>
+    <synopsis>Evaluate XPath expression and prints result node set.</synopsis>
+    <purpose>Shows how to evaluate XPath expression and register known namespaces in XPath context.</purpose>
+    <usage>xpath1 &lt;xml-file&gt; &lt;xpath-expr&gt; [&lt;known-ns-list&gt;]</usage>
+    <author>Aleksey Sanin</author>
+    <copy>see Copyright for the status of this software. </copy>
+    <section>XPath</section>
+    <includes>
+      <include>&lt;libxml/xpath.h&gt;</include>
+      <include>&lt;libxml/parser.h&gt;</include>
+      <include>&lt;libxml/xpathInternals.h&gt;</include>
+      <include>&lt;libxml/tree.h&gt;</include>
+    </includes>
+    <uses>
+      <typedef line='80' file='xpath' name='xmlXPathObjectPtr'/>
+      <enum line='221' file='tree' name='XML_ELEMENT_NODE'/>
+      <function line='109' file='xpath' name='xmlXPathEvalExpression'/>
+      <function line='178' file='xpathInternals' name='xmlXPathRegisterNs'/>
+      <function line='121' file='xpath' name='xmlXPathFreeObject'/>
+      <typedef line='78' file='tree' name='xmlDocPtr'/>
+      <typedef line='210' file='tree' name='xmlNsPtr'/>
+      <function line='93' file='xpath' name='xmlXPathNewContext'/>
+      <function line='45' file='parser' name='xmlCleanupParser'/>
+      <macro line='39' file='xmlversion' name='LIBXML_TEST_VERSION'/>
+      <typedef line='79' file='xpath' name='xmlXPathContextPtr'/>
+      <function line='122' file='xpath' name='xmlXPathFreeContext'/>
+      <function line='35' file='parser' name='xmlInitParser'/>
+      <function line='148' file='parser' name='xmlStrdup'/>
+      <function line='123' file='tree' name='xmlFreeDoc'/>
+      <function line='172' file='parser' name='xmlStrchr'/>
+      <typedef line='198' file='tree' name='xmlNodePtr'/>
+      <function line='86' file='parser' name='xmlParseFile'/>
+      <enum line='209' file='tree' name='XML_NAMESPACE_DECL'/>
+    </uses>
+  </example>
   <example filename='parse1.c'>
     <synopsis>Parse an XML file to a tree and free it</synopsis>
     <purpose>Demonstrate the use of xmlReadFile() to read an XML file into a tree and and xmlFreeDoc() to free the resulting tree</purpose>
     <usage>parse1 test1.xml</usage>
-    <author>Daniel veillard</author>
+    <test>parse1 test1.xml</test>
+    <author>Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>Parsing</section>
     <includes>
@@ -11,18 +47,19 @@
       <include>&lt;libxml/parser.h&gt;</include>
     </includes>
     <uses>
-      <function line='49' file='parser' name='xmlCleanupParser'/>
-      <macro line='44' file='xmlversion' name='LIBXML_TEST_VERSION'/>
-      <function line='30' file='tree' name='xmlFreeDoc'/>
-      <function line='25' file='parser' name='xmlReadFile'/>
-      <typedef line='23' file='tree' name='xmlDocPtr'/>
+      <function line='50' file='parser' name='xmlCleanupParser'/>
+      <macro line='45' file='xmlversion' name='LIBXML_TEST_VERSION'/>
+      <function line='31' file='tree' name='xmlFreeDoc'/>
+      <function line='26' file='parser' name='xmlReadFile'/>
+      <typedef line='24' file='tree' name='xmlDocPtr'/>
     </uses>
   </example>
   <example filename='parse2.c'>
     <synopsis>Parse and validate an XML file to a tree and free the result</synopsis>
     <purpose>Create a parser context for an XML file, then parse and validate the file, creating a tree, check the validation result and xmlFreeDoc() to free the resulting tree.</purpose>
     <usage>parse2 test2.xml</usage>
-    <author>Daniel veillard</author>
+    <test>parse2 test2.xml</test>
+    <author>Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>Parsing</section>
     <includes>
@@ -30,41 +67,67 @@
       <include>&lt;libxml/parser.h&gt;</include>
     </includes>
     <uses>
-      <function line='46' file='parser' name='xmlFreeParserCtxt'/>
-      <macro line='60' file='xmlversion' name='LIBXML_TEST_VERSION'/>
-      <enum line='34' file='parser' name='XML_PARSE_DTDVALID'/>
-      <function line='28' file='parser' name='xmlNewParserCtxt'/>
-      <function line='65' file='parser' name='xmlCleanupParser'/>
-      <typedef line='24' file='tree' name='xmlParserCtxtPtr'/>
-      <function line='34' file='parser' name='xmlCtxtReadFile'/>
-      <function line='43' file='tree' name='xmlFreeDoc'/>
-      <typedef line='25' file='tree' name='xmlDocPtr'/>
+      <function line='47' file='parser' name='xmlFreeParserCtxt'/>
+      <macro line='61' file='xmlversion' name='LIBXML_TEST_VERSION'/>
+      <enum line='35' file='parser' name='XML_PARSE_DTDVALID'/>
+      <function line='29' file='parser' name='xmlNewParserCtxt'/>
+      <function line='66' file='parser' name='xmlCleanupParser'/>
+      <typedef line='25' file='tree' name='xmlParserCtxtPtr'/>
+      <function line='35' file='parser' name='xmlCtxtReadFile'/>
+      <function line='44' file='tree' name='xmlFreeDoc'/>
+      <typedef line='26' file='tree' name='xmlDocPtr'/>
     </uses>
   </example>
   <symbols>
     <symbol name='LIBXML_TEST_VERSION'>
+      <ref filename='xpath1.c'/>
+      <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
+    </symbol>
+    <symbol name='XML_ELEMENT_NODE'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='XML_NAMESPACE_DECL'>
+      <ref filename='xpath1.c'/>
     </symbol>
     <symbol name='XML_PARSE_DTDVALID'>
       <ref filename='parse2.c'/>
     </symbol>
     <symbol name='xmlCleanupParser'>
+      <ref filename='xpath1.c'/>
+      <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
     </symbol>
     <symbol name='xmlCtxtReadFile'>
       <ref filename='parse2.c'/>
     </symbol>
     <symbol name='xmlDocPtr'>
+      <ref filename='xpath1.c'/>
+      <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
     </symbol>
     <symbol name='xmlFreeDoc'>
+      <ref filename='xpath1.c'/>
+      <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
     </symbol>
     <symbol name='xmlFreeParserCtxt'>
       <ref filename='parse2.c'/>
     </symbol>
+    <symbol name='xmlInitParser'>
+      <ref filename='xpath1.c'/>
+    </symbol>
     <symbol name='xmlNewParserCtxt'>
       <ref filename='parse2.c'/>
+    </symbol>
+    <symbol name='xmlNodePtr'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlNsPtr'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlParseFile'>
+      <ref filename='xpath1.c'/>
     </symbol>
     <symbol name='xmlParserCtxtPtr'>
       <ref filename='parse2.c'/>
@@ -72,11 +135,41 @@
     <symbol name='xmlReadFile'>
       <ref filename='parse1.c'/>
     </symbol>
+    <symbol name='xmlStrchr'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlStrdup'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlXPathContextPtr'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlXPathEvalExpression'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlXPathFreeContext'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlXPathFreeObject'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlXPathNewContext'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlXPathObjectPtr'>
+      <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlXPathRegisterNs'>
+      <ref filename='xpath1.c'/>
+    </symbol>
   </symbols>
   <sections>
     <section name='Parsing'>
       <example filename='parse1.c'/>
       <example filename='parse2.c'/>
+    </section>
+    <section name='XPath'>
+      <example filename='xpath1.c'/>
     </section>
   </sections>
 </examples>

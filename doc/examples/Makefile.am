@@ -13,7 +13,12 @@ index.html: examples.xml examples.xsl
 
 EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml 
 
-noinst_PROGRAMS=parse1 parse2 
+noinst_PROGRAMS=xpath1 parse1 parse2 
+
+xpath1_SOURCES=xpath1.c
+xpath1_LDFLAGS=
+xpath1_DEPENDENCIES= $(DEPS)
+xpath1_LDADD= @RDL_LIBS@ $(LDADDS)
 
 parse1_SOURCES=parse1.c
 parse1_LDFLAGS=

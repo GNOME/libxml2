@@ -1,3 +1,9 @@
+Thu Apr 22 09:12:47 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* rngparser.c: tiny path fixes the "xmlConvertCRNGFile" function name
+	  from Kasimier Buchcik
+	* xmlschemas.c: recursive xs:extension fix from taihei goi
+
 Wed Apr 21 00:19:29 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: small buffer resizing improvement from Morten Welinder

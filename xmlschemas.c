@@ -4238,7 +4238,16 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
             if (type->baseType != NULL) {
                 xmlSchemaTypePtr subtypes;
 
+		if (type->recurse) { 
+		    xmlSchemaPErr(ctxt, type->node, 
+		                  XML_SCHEMAP_UNKNOWN_BASE_TYPE, 
+			    "Schemas: extension type %s is recursive\n", 
+				  type->name, NULL); 
+		    return; 
+                }
+                type->recurse = 1; 
                 xmlSchemaBuildAContentModel(type->baseType, ctxt, name);
+            	type->recurse = 0;
                 subtypes = type->subtypes;
                 while (subtypes != NULL) {
                     xmlSchemaBuildAContentModel(subtypes, ctxt, name);

@@ -1510,7 +1510,7 @@ xmlConvertCRNG(const char *schemas, int len, const char *encoding) {
  *         NULL in case of error
  */
 xmlDocPtr
-xmlConvertCRNG(const char *URL, const char *encoding) {
+xmlConvertCRNGFile(const char *URL, const char *encoding) {
 }
 
 #ifdef STANDALONE

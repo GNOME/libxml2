@@ -1,3 +1,11 @@
+Thu Nov 14 18:41:55 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* include/win32config.h: cleanup
+	* win32/Makefile.mingw: integrated mingw in JScript configure
+	* win32/Makefile.msvc: modified to allow mingw coexistence
+	* win32/configure.js: integrated mingw
+	* win32/Readme.txt: cleanup
+
 Tue Nov 12 22:06:45 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: strengthen the guard in the Pop macros,

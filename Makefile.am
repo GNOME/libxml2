@@ -13,7 +13,8 @@ libxml_la_SOURCES = \
 		tree.c
 
 
-include_HEADERS = \
+xmlincdir = $(includedir)/gnome-xml
+xmlinc_HEADERS = \
 		entities.h \
 		parser.h \
 		tree.h

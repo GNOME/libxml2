@@ -1,3 +1,8 @@
+Thu Aug 13 19:02:34 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* Makefile.am (xmlincdir): New macro.
+	(xmlinc_HEADERS): Renamed from include_HEADERS.
+
 Thu Aug 13 00:40:14 EDT 1998  Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* applied small patch on numeric entities from

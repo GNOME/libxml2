@@ -10,6 +10,7 @@ PYTESTS=	\
     error.py	\
     validate.py	\
     tstURI.py	\
+    xpathret.py	\
     xpath.py
 
 XMLS=		\

@@ -372,10 +372,30 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj) {
 
 	for (i = 0;i < PyList_Size(obj);i++) {
 	    node = PyList_GetItem(obj, i);
-	    if ((node == NULL) || (node->ob_type == NULL) ||
-		(!PyCObject_Check(node)))
+	    if ((node == NULL) || (node->ob_type == NULL))
 		continue;
-	    cur = PyxmlNode_Get(node);
+
+	    cur = NULL;
+	    if (PyCObject_Check(node)) {
+	        printf("Got a CObject\n");
+		cur = PyxmlNode_Get(node);
+	    } else if (PyInstance_Check(node)) {
+		PyInstanceObject *inst = (PyInstanceObject *) node;
+		PyObject *name = inst->in_class->cl_name;
+		if PyString_Check(name) {
+		    char *type = PyString_AS_STRING(name);
+		    PyObject *wrapper;
+
+		    if (!strcmp(type, "xmlNode")) {
+			wrapper = PyObject_GetAttrString(node, "_o");
+			if (wrapper != NULL) {
+			    cur = PyxmlNode_Get(wrapper);
+			}
+		    }
+		}
+	    } else {
+		printf("Unknown object in Python return list\n");
+	    }
 	    if (cur != NULL) {
 		xmlXPathNodeSetAdd(set, cur);
 	    }

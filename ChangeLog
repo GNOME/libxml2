@@ -1,3 +1,10 @@
+Fri Sep 19 00:01:08 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c: fixing namespace DTD validations
+	* result/valid/ns2.xml result/valid/ns.xml: the output of defaulted
+	  namespaces is slightly different now.
+	* Makefile.am: report the memory used in Timingtests (as well as time)
+
 Thu Sep 18 15:29:46 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: add streaming on memory regression tests, found

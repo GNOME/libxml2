@@ -4,4 +4,4 @@
 <!ATTLIST a:outer xmlns:a CDATA #FIXED "urn:namespace">
 <!ATTLIST a:outer xmlns:b CDATA #FIXED "urn:namespaceb">
 ]>
-<a:outer xmlns:b="urn:namespaceb" xmlns:a="urn:namespace"/>
+<a:outer xmlns:a="urn:namespace" xmlns:b="urn:namespaceb"/>

@@ -728,9 +728,13 @@ Timingtests: $(srcdir)/dba100000.xml
 	@echo "## then when using the memory interface"
 	@echo "##"
 	-@(xmllint --stream --timing $(srcdir)/dba100000.xml; \
+	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
+	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	   exit 0)
 	-@(xmllint --stream --timing --memory $(srcdir)/dba100000.xml; \
+	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
+	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	   exit 0)
 

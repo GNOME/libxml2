@@ -1922,6 +1922,10 @@ xmlSAX2StartElementNs(void *ctx,
 	    return;
 	}
     }
+    if (ctxt->linenumbers) {
+	if (ctxt->input != NULL)
+	    ret->content = (void *) (long) ctxt->input->line;
+    }
 
     if (ctxt->myDoc->children == NULL) {
         xmlAddChild((xmlNodePtr) ctxt->myDoc, (xmlNodePtr) ret);
@@ -1950,12 +1954,13 @@ xmlSAX2StartElementNs(void *ctx,
 	    ctxt->disableSAX = 1;
 	    return;
 	}
+	if ((!ctxt->html) && ctxt->validate && ctxt->wellFormed &&
+	    ctxt->myDoc && ctxt->myDoc->intSubset) {
+	    ctxt->valid &= xmlValidateOneNamespace(&ctxt->vctxt, ctxt->myDoc,
+	                                           ret, prefix, ns, uri);
+	}
     }
     ctxt->nodemem = -1;
-    if (ctxt->linenumbers) {
-	if (ctxt->input != NULL)
-	    ret->content = (void *) (long) ctxt->input->line;
-    }
 
     /*
      * We are parsing a new node.

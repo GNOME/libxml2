@@ -196,6 +196,7 @@ xmlNewRMutex(void)
     pthread_mutex_init(&tok->lock, NULL);
     tok->held = 0;
     tok->waiters = 0;
+    pthread_cond_init(&tok->cv, NULL);
 #elif defined HAVE_WIN32_THREADS
     InitializeCriticalSection(&tok->cs);
     tok->count = 0;

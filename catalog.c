@@ -2909,8 +2909,10 @@ xmlLoadCatalog(const char *filename)
 
     if (xmlDefaultCatalog == NULL) {
 	catal = xmlLoadACatalog(filename);
-	if (catal == NULL)
+	if (catal == NULL) {
+	    xmlRMutexUnlock(xmlCatalogMutex);
 	    return(-1);
+	}
 
 	xmlDefaultCatalog = catal;
 	xmlRMutexUnlock(xmlCatalogMutex);

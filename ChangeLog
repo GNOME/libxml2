@@ -1,3 +1,14 @@
+Sat Jul 5 00:51:30 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	Fixed problem with multi-threading, shown by the test program
+	testThreads.  After fix, ran mutiple tests on various speed
+	machines (single and dual processor X86), which all seem okay.
+
+	* catalog.c: added missing xmlRMutexUnlock in xmlLoadCatalog
+
+	* threads.c: added missing initialisation for condition variable
+	  in xmlNewRMutex.
+
 Sat Jun 21 16:10:24 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
         Applying IPv6 patch from Archana Shah <archana.shah@wipro.com>

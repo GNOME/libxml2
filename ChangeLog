@@ -1,6 +1,14 @@
+Fri Nov  8 17:59:32 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* include/libxml/*.h: retired xmlwin32version.h
+	* doc/Makefile.am: retired xmlwin32version.h
+	* win32/configure.js: retired xmlwin32version.h
+
 Fri Nov  8 16:55:47 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/libxml2.def.src: exported additional symbols
+	* include/libxml/xmlmemory.h: exported the rest of the xmlMem* 
+	  sisterhood
 
 Fri Nov  8 16:08:13 CET 2002 Daniel Veillard <daniel@veillard.com>
 

@@ -1561,6 +1561,66 @@ xmlShellSetBase(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
 }
 #endif
 
+#ifdef LIBXML_XPATH_ENABLED
+/**
+ * xmlShellRegisterNamespace:
+ * @ctxt:  the shell context
+ * @arg:  a string in prefix=nsuri format
+ * @node:  unused
+ * @node2:  unused
+ *
+ * Implements the XML shell function "setns"
+ * register/unregister a prefix=namespace pair
+ * on the XPath context
+ *
+ * Returns 0 on success and a negative value otherwise.
+ */
+static int
+xmlShellRegisterNamespace(xmlShellCtxtPtr ctxt, char *arg,
+      xmlNodePtr node ATTRIBUTE_UNUSED, xmlNodePtr node2 ATTRIBUTE_UNUSED)
+{
+    xmlChar* nsListDup;
+    xmlChar* prefix;
+    xmlChar* href;
+    xmlChar* next;
+
+    nsListDup = xmlStrdup((xmlChar *) arg);
+    next = nsListDup;
+    while(next != NULL) {
+	/* skip spaces */
+	/*while((*next) == ' ') next++;*/
+	if((*next) == '\0') break;
+
+	/* find prefix */
+	prefix = next;
+	next = (xmlChar*)xmlStrchr(next, '=');
+	if(next == NULL) {
+	    fprintf(ctxt->output, "setns: prefix=[nsuri] required\n");
+	    xmlFree(nsListDup);
+	    return(-1);
+	}
+	*(next++) = '\0';
+
+	/* find href */
+	href = next;
+	next = (xmlChar*)xmlStrchr(next, ' ');
+	if(next != NULL) {
+	    *(next++) = '\0';
+	}
+
+	/* do register namespace */
+	if(xmlXPathRegisterNs(ctxt->pctxt, prefix, href) != 0) {
+	    fprintf(ctxt->output,"Error: unable to register NS with prefix=\"%s\" and href=\"%s\"\n", prefix, href);
+	    xmlFree(nsListDup);
+	    return(-1);
+	}
+    }
+
+    xmlFree(nsListDup);
+    return(0);
+}
+#endif
+
 /**
  * xmlShellGrep:
  * @ctxt:  the shell context
@@ -2246,6 +2306,8 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		  fprintf(ctxt->output, "\tls [path]    list contents of path or the current directory\n");
 #ifdef LIBXML_XPATH_ENABLED
 		  fprintf(ctxt->output, "\txpath expr   evaluate the XPath expression in that context and print the result\n");
+		  fprintf(ctxt->output, "\tsetns nsreg  register a namespace to a prefix in the XPath evaluation context\n");
+		  fprintf(ctxt->output, "\t             format for nsreg is: prefix=[nsuri] (i.e. prefix= unsets a prefix)\n");
 #endif /* LIBXML_XPATH_ENABLED */
 		  fprintf(ctxt->output, "\tpwd          display current working directory\n");
 		  fprintf(ctxt->output, "\tquit         leave shell\n");
@@ -2297,6 +2359,13 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
         } else if (!strcmp(command, "base")) {
             xmlShellBase(ctxt, NULL, ctxt->node, NULL);
 #ifdef LIBXML_XPATH_ENABLED
+        } else if (!strcmp(command, "setns")) {
+            if (arg[0] == 0) {
+		xmlGenericError(xmlGenericErrorContext,
+				"setns: prefix=[nsuri] required\n");
+            } else {
+                xmlShellRegisterNamespace(ctxt, arg, NULL, NULL);
+            }
         } else if (!strcmp(command, "xpath")) {
             if (arg[0] == 0) {
 		xmlGenericError(xmlGenericErrorContext,

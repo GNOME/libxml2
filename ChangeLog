@@ -1,3 +1,8 @@
+Wed Jun 16 16:07:10 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: applied patch from Stefano Debenedetti to register
+	  namespaces in the debug shell
+
 Mon Jun 14 21:56:31 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fix from Steve Ball and update of the comment.

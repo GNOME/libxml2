@@ -1,3 +1,7 @@
+Fri Oct 22 15:20:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c: fixed nasty bug #156087
+
 Fri Oct 22 21:04:20 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: fixed a problem occuring only in x86_64 when

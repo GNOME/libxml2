@@ -16,6 +16,9 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
+#ifdef HAVE_STRING_H
+#include <string.h>
+#endif
 #include "xmlmemory.h"
 #include "tree.h"
 #include "parser.h"
@@ -677,7 +680,7 @@ xmlShellCat(xmlShellCtxtPtr ctxt, char *arg, xmlNodePtr node,
 	if (node->type == XML_HTML_DOCUMENT_NODE)
 	    htmlDocDump(stdout, (htmlDocPtr) node);
 	else
-	    htmlNodeDump(stdout, ctxt->doc, node);
+	    htmlNodeDumpFile(stdout, ctxt->doc, node);
     } else {
 	if (node->type == XML_DOCUMENT_NODE)
 	    xmlDocDump(stdout, (xmlDocPtr) node);

@@ -685,8 +685,13 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->valid = 1;
     ctxt->validate = xmlDoValidityCheckingDefaultValue;
     ctxt->vctxt.userData = ctxt;
-    ctxt->vctxt.error = xmlParserValidityError;
-    ctxt->vctxt.warning = xmlParserValidityWarning;
+    if (ctxt->validate) {
+	ctxt->vctxt.error = xmlParserValidityError;
+	ctxt->vctxt.warning = xmlParserValidityWarning;
+    } else {
+	ctxt->vctxt.error = NULL;
+	ctxt->vctxt.warning = NULL;
+    }
     ctxt->replaceEntities = xmlSubstituteEntitiesDefaultValue;
     ctxt->record_info = 0;
     ctxt->nbChars = 0;

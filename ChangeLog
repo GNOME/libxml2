@@ -1,3 +1,10 @@
+Thu Feb  3 15:59:37 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanoftp.c nanohttp.c tree.c HTMLtree.[ch] debugXML.c xpath.c: Fixed
+	  compilation warnings on various platforms.
+	* parser.c: Fixed #5281 validity error callbacks are now desactived
+	  by default if not validating.
+
 Thu Feb  3 13:46:14 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.c, win32config.h.in: patches to compile on WIN32

@@ -56,6 +56,9 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 
 #include "xmlmemory.h"
 #include "nanoftp.h"
@@ -1039,7 +1042,7 @@ xmlNanoFTPConnect(void *ctx) {
     res = xmlNanoFTPGetResponse(ctxt);
     switch (res) {
 	case 2:
-	    return(0);
+	    break;
 	case 3:
 	    fprintf(stderr, "FTP server asking for ACCNT on anonymous\n");
 	case 1:

@@ -266,6 +266,25 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 /**
+ * htmlNodeDumpFile:
+ * @out:  the FILE pointer
+ * @doc:  the document
+ * @cur:  the current node
+ *
+ * Dump an HTML node, recursive behaviour,children are printed too.
+ */
+void
+htmlNodeDumpFile(FILE *out, xmlDocPtr doc, xmlNodePtr cur) {
+    xmlBufferPtr buf;
+
+    buf = xmlBufferCreate();
+    if (buf == NULL) return;
+    htmlNodeDump(buf, doc, cur);
+    xmlBufferDump(out, buf);
+    xmlBufferFree(buf);
+}
+
+/**
  * htmlDocContentDump:
  * @buf:  the HTML buffer output
  * @cur:  the document

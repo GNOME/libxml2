@@ -71,8 +71,6 @@ int isinf(double d) {
 	    return(-1);
 	case FP_PINF:
 	    return(1);
-	default:
-	    return(0);
     }
     return(0);
 }

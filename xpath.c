@@ -60,8 +60,6 @@
 /* #define DEBUG_EXPR */
 /* #define DEBUG_EVAL_COUNTS */
 
-void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
-double xmlXPathStringEvalNumber(const xmlChar *str);
 double xmlXPathDivideBy(double f, double fzero);
 
 static xmlNs xmlXPathXMLNamespaceStruct = {
@@ -517,7 +515,6 @@ xmlXPathDebugDumpValueTree(FILE *output, xmlNodeSetPtr cur, int depth) {
     xmlXPathDebugDumpNodeList(output, cur->nodeTab[0]->children, depth + 1);
 }
 #if defined(LIBXML_XPTR_ENABLED)
-void xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth);
 static void
 xmlXPathDebugDumpLocationSet(FILE *output, xmlLocationSetPtr cur, int depth) {
     int i;

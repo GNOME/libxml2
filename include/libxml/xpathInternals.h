@@ -480,48 +480,24 @@ void              xmlXPathNodeSetAddUnique	(xmlNodeSetPtr cur,
 						 xmlNodePtr val);
 void              xmlXPathNodeSetSort		(xmlNodeSetPtr set);
 
-void		  xmlXPathIdFunction		(xmlXPathParserContextPtr ctxt,
-					 	int nargs);
 void		  xmlXPathRoot			(xmlXPathParserContextPtr ctxt);
 void		  xmlXPathEvalExpr		(xmlXPathParserContextPtr ctxt);
 xmlChar *	  xmlXPathParseName		(xmlXPathParserContextPtr ctxt);
 xmlChar *	  xmlXPathParseNCName		(xmlXPathParserContextPtr ctxt);
 
 /*
- * Debug
- */
-#ifdef LIBXML_DEBUG_ENABLED
-void xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth);
-#endif
-/*
  * Existing functions
  */
 double xmlXPathStringEvalNumber(const xmlChar *str);
 int xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt, 
                                     xmlXPathObjectPtr res);
-void xmlXPathInit(void);
-void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt);
-xmlNodeSetPtr xmlXPathNodeSetCreate(xmlNodePtr val);
-void xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val);
 xmlNodeSetPtr xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2);
 void xmlXPathNodeSetDel(xmlNodeSetPtr cur, xmlNodePtr val);
 void xmlXPathNodeSetRemove(xmlNodeSetPtr cur, int val);
-void xmlXPathFreeNodeSet(xmlNodeSetPtr obj);
-xmlXPathObjectPtr xmlXPathNewNodeSet(xmlNodePtr val);
 xmlXPathObjectPtr xmlXPathNewNodeSetList(xmlNodeSetPtr val);
 xmlXPathObjectPtr xmlXPathWrapNodeSet(xmlNodeSetPtr val);
 xmlXPathObjectPtr xmlXPathWrapExternal(void *val);
-void xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj);
-
-
-xmlXPathObjectPtr xmlXPathNewFloat(double val);
-xmlXPathObjectPtr xmlXPathNewBoolean(int val);
-xmlXPathObjectPtr xmlXPathNewString(const xmlChar *val);
-xmlXPathObjectPtr xmlXPathNewCString(const char *val);
-void xmlXPathFreeObject(xmlXPathObjectPtr obj);
-xmlXPathContextPtr xmlXPathNewContext(xmlDocPtr doc);
-void xmlXPathFreeContext(xmlXPathContextPtr ctxt);
 
 int xmlXPathEqualValues(xmlXPathParserContextPtr ctxt);
 int xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict);
@@ -566,7 +542,6 @@ xmlNodePtr xmlXPathNextPrecedingSibling(xmlXPathParserContextPtr ctxt,
 /*
  * The official core of XPath functions
  */
-void xmlXPathRoot(xmlXPathParserContextPtr ctxt);
 void xmlXPathLastFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathPositionFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathCountFunction(xmlXPathParserContextPtr ctxt, int nargs);

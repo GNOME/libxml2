@@ -189,7 +189,6 @@ int			xmlIsPubidChar	(int c);
 int			xmlIsLetter	(int c);
 int			xmlIsDigit	(int c);
 int			xmlIsIdeographic(int c);
-int			xmlIsCombining	(int c);
 int			xmlIsExtender	(int c);
 int			xmlIsCombining	(int c);
 int			xmlIsChar	(int c);
@@ -208,7 +207,6 @@ int			xmlSwitchEncoding	(xmlParserCtxtPtr ctxt,
 						 xmlCharEncoding enc);
 int			xmlSwitchToEncoding	(xmlParserCtxtPtr ctxt,
 					     xmlCharEncodingHandlerPtr handler);
-void			xmlFreeParserCtxt	(xmlParserCtxtPtr ctxt);
 
 /**
  * Entities

@@ -1212,7 +1212,6 @@ xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
  *									*
  ************************************************************************/
 
-void xmlXPtrRangeToFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPtrEndPointFunction(xmlXPathParserContextPtr ctxt, int nargs);

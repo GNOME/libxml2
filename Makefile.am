@@ -85,6 +85,7 @@ check-local: tests
 testall : tests SVGtests SAXtests
 
 tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests Scripttests Catatests @TEST_THREADS@
+	@(cd python ; $(MAKE) tests)
 
 HTMLtests : testHTML$(EXEEXT)
 	@(echo > .memdump)

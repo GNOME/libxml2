@@ -2907,9 +2907,6 @@ xmlCopyPropList(xmlNodePtr target, xmlAttrPtr cur) {
  */
 
 static xmlNodePtr
-xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent);
-
-static xmlNodePtr
 xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
                   int recursive) {
     xmlNodePtr ret;
@@ -5695,9 +5692,6 @@ xmlBufferWriteQuotedString(xmlBufferPtr buf, const xmlChar *string) {
  *									*
  ************************************************************************/
 
-void
-xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
-            int format);
 static void
 xmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
                 int format);
@@ -6121,9 +6115,6 @@ xmlElemDump(FILE *f, xmlDocPtr doc, xmlNodePtr cur) {
  *									*
  ************************************************************************/
 
-void
-xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
-                  int level, int format, const char *encoding);
 static void
 xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
                   int level, int format, const char *encoding);

@@ -89,7 +89,6 @@ static const char *xmlW3CPIs[] = {
 };
 
 /* DEPR void xmlParserHandleReference(xmlParserCtxtPtr ctxt); */
-void xmlParserHandlePEReference(xmlParserCtxtPtr ctxt);
 xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
                                        const xmlChar **str);
 
@@ -1530,12 +1529,6 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
         return(0);
     return(1);
 }
-
-/*
- * Forward definition for recursive behavior.
- */
-void xmlParsePEReference(xmlParserCtxtPtr ctxt);
-void xmlParseReference(xmlParserCtxtPtr ctxt);
 
 /************************************************************************
  *									*

@@ -66,7 +66,6 @@ if __name__ == "__main__":
         fields = string.split(line, ",")
         # Update the header file
         writeline(global_functions_hdr)
-        writeline(global_functions_hdr, "#ifdef LIBXML_THREAD_ENABLED")
         global_functions_hdr.write("extern "+fields[0]+" *")
         if len(fields) == 3:
             global_functions_hdr.write("(*")
@@ -74,6 +73,7 @@ if __name__ == "__main__":
         if len(fields) == 3:
             global_functions_hdr.write(")"+fields[2])
         writeline(global_functions_hdr,";")
+        writeline(global_functions_hdr, "#ifdef LIBXML_THREAD_ENABLED")
         writeline(global_functions_hdr,"#define "+fields[1]+" \\")
         writeline(global_functions_hdr,"(*(__"+fields[1]+"()))")
         writeline(global_functions_hdr,"#else")
@@ -84,7 +84,7 @@ if __name__ == "__main__":
         writeline(global_functions_hdr,"#endif")
         # Update the implementation file
         writeline(global_functions_impl)
-        writeline(global_functions_impl, "extern "+fields[0]+" "+fields[1]+";")
+#        writeline(global_functions_impl, "extern "+fields[0]+" "+fields[1]+";")
         writeline(global_functions_impl, "#undef\t"+fields[1])
         writeline(global_functions_impl, fields[0]+" *")
         if len(fields) == 3:

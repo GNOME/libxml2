@@ -315,7 +315,6 @@ xmlValidStateDebug(xmlValidCtxtPtr ctxt) {
    else if ((doc->intSubset == NULL) &&				\
 	    (doc->extSubset == NULL)) return(0)
 
-xmlElementPtr xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name);
 static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
 	                           int create);
 xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem);

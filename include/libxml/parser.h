@@ -617,12 +617,16 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader) (const char *URL,
  * Global variables: just the default SAX interface tables and XML
  * version infos.
  */
+#if 0
 LIBXML_DLL_IMPORT extern const char *xmlParserVersion;
+#endif
 
+/*
 LIBXML_DLL_IMPORT extern xmlSAXLocator xmlDefaultSAXLocator;
 LIBXML_DLL_IMPORT extern xmlSAXHandler xmlDefaultSAXHandler;
 LIBXML_DLL_IMPORT extern xmlSAXHandler htmlDefaultSAXHandler;
 LIBXML_DLL_IMPORT extern xmlSAXHandler docbDefaultSAXHandler;
+ */
 
 /*
  * entity substitution default behavior.
@@ -636,10 +640,11 @@ LIBXML_DLL_IMPORT extern xmlSAXHandler docbDefaultSAXHandler;
  */
 LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultVal;
 #define xmlSubstituteEntitiesDefaultValue xmlSubstituteEntitiesDefaultVal
-#else
-LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
 #endif
+#if 0
+LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;
+#endif
 
 
 /*
@@ -768,12 +773,6 @@ int		xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx,
 					 const xmlChar *URL,
 					 const xmlChar *ID,
 					 xmlNodePtr *lst);
-
-/*
- * SAX initialization routines
- */
-void		xmlDefaultSAXHandlerInit(void);
-void		htmlDefaultSAXHandlerInit(void);
 
 /*
  * Parser contexts handling.

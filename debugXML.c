@@ -27,6 +27,7 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/xmlerror.h>
 #include <libxml/globals.h>
+#include <libxml/xpathInternals.h>
 
 /**
  * xmlDebugDumpString:

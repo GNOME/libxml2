@@ -146,7 +146,7 @@ xmlFreeMutex(xmlMutexPtr tok)
  * xmlMutexLock() is used to lock a libxml2 token.
  */
 void
-xmlMutexLock(xmlMutexPtr tok)
+xmlMutexLock(xmlMutexPtr tok ATTRIBUTE_UNUSED)
 {
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_lock(&tok->lock);
@@ -163,7 +163,7 @@ xmlMutexLock(xmlMutexPtr tok)
  * xmlMutexUnlock() is used to unlock a libxml2 token.
  */
 void
-xmlMutexUnlock(xmlMutexPtr tok)
+xmlMutexUnlock(xmlMutexPtr tok ATTRIBUTE_UNUSED)
 {
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_unlock(&tok->lock);
@@ -208,7 +208,7 @@ xmlNewRMutex(void)
  * reentrant mutex.
  */
 void
-xmlFreeRMutex(xmlRMutexPtr tok)
+xmlFreeRMutex(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
 {
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_destroy(&tok->lock);
@@ -225,7 +225,7 @@ xmlFreeRMutex(xmlRMutexPtr tok)
  * xmlRMutexLock() is used to lock a libxml2 token_r.
  */
 void
-xmlRMutexLock(xmlRMutexPtr tok)
+xmlRMutexLock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
 {
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_lock(&tok->lock);
@@ -257,7 +257,7 @@ xmlRMutexLock(xmlRMutexPtr tok)
  * xmlRMutexUnlock() is used to unlock a libxml2 token_r.
  */
 void
-xmlRMutexUnlock(xmlRMutexPtr tok)
+xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
 {
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_lock(&tok->lock);

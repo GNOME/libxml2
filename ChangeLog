@@ -1,3 +1,14 @@
+Sun Feb 10 14:13:34 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c Makefile.am build_glob.py configure.in debugXML.c
+	  globals.c parser.c threads.c tree.c valid.c xmlmemory.c
+	  xpath.c xpointer.c include/libxml/globals.h include/libxml/parser.h
+	  include/libxml/parserInternals.h include/libxml/tree.h
+	  include/libxml/xmlmemory.h include/libxml/xpathInternals.h:
+	  Tentatively fixed #69655 , make compiling with -Wredundant-decls
+	  clean.
+        * python/libxml.c: fixed a warning.
+
 Sun Feb 10 12:02:59 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c valid.c xinclude.c: fix #68882, cleanup the XInclude

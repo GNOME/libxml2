@@ -1360,7 +1360,7 @@ static PyMethodDef libxmlMethods[] = {
     { "parent", libxml_parent, METH_VARARGS, NULL },
     { "type", libxml_type, METH_VARARGS, NULL },
     { "doc", libxml_doc, METH_VARARGS, NULL },
-    { NULL, NULL, NULL, NULL}
+    { NULL }
 };
 
 void initlibxml2mod(void) {

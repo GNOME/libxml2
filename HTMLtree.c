@@ -788,9 +788,6 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  *									*
  ************************************************************************/
 
-void
-htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
-	                       const char *encoding, int format);
 /**
  * htmlDtdDumpOutput:
  * @buf:  the HTML buffer output

@@ -11,15 +11,19 @@
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif
+
 #ifdef HAVE_TIME_H
 #include <time.h>
 #endif
+
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#else
 #ifdef HAVE_MALLOC_H
 #include <malloc.h>
 #endif
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
 #endif
+
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif
@@ -40,7 +44,6 @@
 
 void xmlMallocBreakpoint(void);
 void * xmlMemMalloc(size_t size);
-void * xmlMallocLoc(size_t size, const char * file, int line);
 void * xmlMemRealloc(void *ptr,size_t size);
 void xmlMemFree(void *ptr);
 char * xmlMemoryStrdup(const char *str);

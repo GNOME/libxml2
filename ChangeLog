@@ -1,3 +1,8 @@
+Thu Jan  6 17:35:41 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: fixed problem with xmlXPathErr when error number
+	  subscript was out of range (bug 163055)
+
 Thu Jan  6 09:57:03 HKT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* uri.c: fixed problem with xmlURIEscape when query part was

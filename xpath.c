@@ -208,10 +208,11 @@ static const char *xmlXPathErrorMessages[] = {
     "Undefined namespace prefix\n",
     "Encoding error\n",
     "Char out of XML range\n",
-    "Invalid or inclomplete context\n"
+    "Invalid or incomplete context\n",
+    "?? Unknown error ??\n"	/* Must be last in the list! */
 };
-
-
+#define MAXERRNO ((int)(sizeof(xmlXPathErrorMessages) /	\
+		   sizeof(xmlXPathErrorMessages[0])) - 1)
 /**
  * xmlXPathErrMemory:
  * @ctxt:  an XPath context
@@ -276,11 +277,13 @@ xmlXPathPErrMemory(xmlXPathParserContextPtr ctxt, const char *extra)
  * @ctxt:  a XPath parser context
  * @error:  the error code
  *
- * Handle a Relax NG Parsing error
+ * Handle an XPath error
  */
 void
 xmlXPathErr(xmlXPathParserContextPtr ctxt, int error)
 {
+    if ((error < 0) || (error > MAXERRNO))
+	error = MAXERRNO;
     if (ctxt == NULL) {
 	__xmlRaiseError(NULL, NULL, NULL,
 			NULL, NULL, XML_FROM_XPATH,

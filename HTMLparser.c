@@ -4273,7 +4273,7 @@ htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
 
 	if (ctxt->input->encoding != NULL)
 	    xmlFree((xmlChar *) ctxt->input->encoding);
-	ctxt->input->encoding = (const xmlChar *) encoding;
+	ctxt->input->encoding = xmlStrdup((const xmlChar *) encoding);
 
 	enc = xmlParseCharEncoding(encoding);
 	/*
@@ -4285,7 +4285,6 @@ htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
 			 "Unsupported encoding %s\n", encoding);
-		ctxt->input->encoding = NULL;
 	    }
 	} else {
 	    /*

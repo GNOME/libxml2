@@ -129,5 +129,5 @@ possible, and there is also a chance that support exists for IDEs
 which I have never seen.
 
 
-November 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+November 2002, Igor Zlatkovic <igor@zlatkovic.com>
 

@@ -10,7 +10,7 @@
 #                 a 'nmake clean' and then a 'nmake all'.
 # nmake install   to install the library and its header files.
 #
-# March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+# March 2002, Igor Zlatkovic <igor@zlatkovic.com>
 
 AUTOCONF = .\config.msvc
 

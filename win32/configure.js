@@ -4,7 +4,7 @@
  * Run it with an 'help', or an invalid option and it will tell you what options
  * it accepts.
  *
- * March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+ * March 2002, Igor Zlatkovic <igor@zlatkovic.com>
  */
 
 /* The source directory, relative to the one where this file resides. */
@@ -330,7 +330,7 @@ function genReadme(bname, ver, file)
 	f.WriteLine("a cheer of joy, a comment or a suggestion, feel free to contact me using");
 	f.WriteLine("the address below.");
 	f.WriteBlankLines(1);
-	f.WriteLine("                              Igor Zlatkovic (igor@stud.fh-frankfurt.de)");
+	f.WriteLine("                              Igor Zlatkovic (igor@zlatkovic.com)");
 	f.Close();
 }
 

@@ -13,7 +13,7 @@
    from the libxml2.dll, its name is most certainly missing here.
    Add the name of the offending function to this file and rebuild.
 
-   21.03.2001, Igor Zlatkovic (igor@stud.fh-frankfurt.de)
+   21.03.2001, Igor Zlatkovic (igor@zlatkovic.com)
 */
 
 #define LIBXML2_COMPILING_MSCCDEF

@@ -153,7 +153,7 @@
       <li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li>
       <li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li>
       <li><a href="ftp://xmlsoft.org/">FTP</a></li>
-      <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
+      <li><a href="http://ww.zlatkovic.com/projects/libxml/">Windows binaries</a></li>
       <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
       <li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li>
       <li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li>

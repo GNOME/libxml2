@@ -1,3 +1,10 @@
+Wed Dec 18 15:51:22 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c include/libxml/xmlreader.h doc/libxml2-api.xml: more
+	  work on the xml reader interfaces.
+	* AUTHORS MAINTAINERS doc/* win32/*: updated Igor's mail and the
+	  Web page for the Windows binaries.
+
 Tue Dec 17 19:31:07 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: applied a patch for VMS following the report by

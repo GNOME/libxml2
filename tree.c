@@ -6603,10 +6603,10 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
             (cur->type == XML_ELEMENT_NODE) &&
             (xmlStrEqual(cur->name, BAD_CAST "html"))) {
             if (encoding != NULL)
-                htmlSetMetaEncoding((htmlDocPtr) cur,
+                htmlSetMetaEncoding((htmlDocPtr) doc,
                                     (const xmlChar *) encoding);
             else
-                htmlSetMetaEncoding((htmlDocPtr) cur, BAD_CAST "UTF-8");
+                htmlSetMetaEncoding((htmlDocPtr) doc, BAD_CAST "UTF-8");
         }
     }
 

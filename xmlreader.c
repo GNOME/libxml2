@@ -87,6 +87,7 @@ struct _xmlTextReader {
     xmlNodePtr			node;	/* current node */
     xmlNodePtr			curnode;/* current attribute node */
     int				depth;  /* depth of the current node */
+    xmlNodePtr			faketext;/* fake xmlNs chld */
 };
 
 #ifdef DEBUG_READER
@@ -436,6 +437,62 @@ xmlTextReaderReadString(xmlTextReaderPtr reader) {
     return(NULL);
 }
 
+/**
+ * xmlTextReaderReadBase64:
+ * @reader:  the xmlTextReaderPtr used
+ * @array:  a byte array to store the content.
+ * @offset:  the zero-based index into array where the method should
+ *           begin to write.
+ * @len:  the number of bytes to write.
+ *
+ * Reads and decodes the Base64 encoded contents of an element and
+ * stores the result in a byte buffer.
+ *
+ * Returns the number of bytes written to array, or zero if the current
+ *         instance is not positioned on an element or -1 in case of error.
+ */
+int
+xmlTextReaderReadBase64(xmlTextReaderPtr reader, unsigned char *array,
+	                int offset, int len) {
+    if ((reader == NULL) || (reader->ctxt == NULL))
+	return(-1);
+    if (reader->ctxt->wellFormed != 1)
+	return(-1);
+
+    if ((reader->node == NULL) || (reader->node->type == XML_ELEMENT_NODE))
+	return(0);
+    TODO
+    return(0);
+}
+
+/**
+ * xmlTextReaderReadBinHex:
+ * @reader:  the xmlTextReaderPtr used
+ * @array:  a byte array to store the content.
+ * @offset:  the zero-based index into array where the method should
+ *           begin to write.
+ * @len:  the number of bytes to write.
+ *
+ * Reads and decodes the BinHex encoded contents of an element and
+ * stores the result in a byte buffer.
+ *
+ * Returns the number of bytes written to array, or zero if the current
+ *         instance is not positioned on an element or -1 in case of error.
+ */
+int
+xmlTextReaderReadBinHex(xmlTextReaderPtr reader, unsigned char *array,
+	                int offset, int len) {
+    if ((reader == NULL) || (reader->ctxt == NULL))
+	return(-1);
+    if (reader->ctxt->wellFormed != 1)
+	return(-1);
+
+    if ((reader->node == NULL) || (reader->node->type == XML_ELEMENT_NODE))
+	return(0);
+    TODO
+    return(0);
+}
+
 /************************************************************************
  *									*
  *			Constructor and destructors			*
@@ -544,6 +601,9 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
 	xmlFree(reader->sax);
     if ((reader->input != NULL)  && (reader->allocs & XML_TEXTREADER_INPUT))
 	xmlFreeParserInputBuffer(reader->input);
+    if (reader->faketext != NULL) {
+	xmlFreeNode(reader->faketext);
+    }
     xmlFree(reader);
 }
 
@@ -1082,6 +1142,48 @@ xmlTextReaderMoveToElement(xmlTextReaderPtr reader) {
     return(0);
 }
 
+/**
+ * xmlTextReaderReadAttributeValue:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Parses an attribute value into one or more Text and EntityReference nodes.
+ *
+ * Returns 1 in case of success, 0 if the reader was not positionned on an
+ *         ttribute node or all the attribute values have been read, or -1
+ *         in case of error.
+ */
+int
+xmlTextReaderReadAttributeValue(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(-1);
+    if (reader->node == NULL)
+	return(-1);
+    if (reader->curnode == NULL)
+	return(0);
+    if (reader->curnode->type == XML_ATTRIBUTE_NODE) {
+	if (reader->curnode->children == NULL)
+	    return(0);
+	reader->curnode = reader->curnode->children;
+    } else if (reader->curnode->type == XML_NAMESPACE_DECL) {
+	xmlNsPtr ns = (xmlNsPtr) reader->curnode;
+
+	if (reader->faketext == NULL) {
+	    reader->faketext = xmlNewDocText(reader->node->doc, 
+		                             ns->href);
+	} else {
+            if (reader->faketext->content != NULL)
+		xmlFree(reader->faketext->content);
+	    reader->faketext->content = xmlStrdup(ns->href);
+	}
+	reader->curnode = reader->faketext;
+    } else {
+	if (reader->curnode->next == NULL)
+	    return(0);
+	reader->curnode = reader->curnode->next;
+    }
+    return(1);
+}
+
 /************************************************************************
  *									*
  *			Acces API to the current node			*
@@ -1412,6 +1514,12 @@ xmlTextReaderDepth(xmlTextReaderPtr reader) {
     if (reader->node == NULL)
 	return(0);
 
+    if (reader->curnode != NULL) {
+	if ((reader->curnode->type == XML_ATTRIBUTE_NODE) ||
+	    (reader->curnode->type == XML_NAMESPACE_DECL))
+	    return(reader->depth + 1);
+	return(reader->depth + 2);
+    }
     return(reader->depth);
 }
 
@@ -1589,3 +1697,272 @@ xmlTextReaderNormalization(xmlTextReaderPtr reader) {
     return(1);
 }
 
+/************************************************************************
+ *									*
+ *			Extensions to the base APIs			*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlTextReaderSetParserProp:
+ * @reader:  the xmlTextReaderPtr used
+ * @prop:  the xmlParserProperties to set
+ * @value:  usually 0 or 1 to (de)activate it
+ *
+ * Change the parser processing behaviour by changing some of its internal
+ * properties. Note that some properties can only be changed before any
+ * read has been done.
+ *
+ * Returns 0 if the call was successful, or -1 in case of error
+ */
+int
+xmlTextReaderSetParserProp(xmlTextReaderPtr reader, int prop, int value) {
+    xmlParserProperties p = (xmlParserProperties) prop;
+    xmlParserCtxtPtr ctxt;
+
+    if ((reader == NULL) || (reader->ctxt == NULL))
+	return(-1);
+    ctxt = reader->ctxt;
+
+    switch (p) {
+        case XML_PARSER_LOADDTD:
+	    if (value != 0) {
+		if (ctxt->loadsubset == 0) {
+		    if (reader->mode != XML_TEXTREADER_MODE_INITIAL)
+			return(-1);
+		    ctxt->loadsubset = XML_DETECT_IDS;
+		}
+	    } else {
+		ctxt->loadsubset = 0;
+	    }
+	    return(0);
+        case XML_PARSER_DEFAULTATTRS:
+	    if (value != 0) {
+		ctxt->loadsubset |= XML_COMPLETE_ATTRS;
+	    } else {
+		if (ctxt->loadsubset & XML_COMPLETE_ATTRS)
+		    ctxt->loadsubset -= XML_COMPLETE_ATTRS;
+	    }
+	    return(0);
+        case XML_PARSER_VALIDATE:
+	    if (value != 0) {
+		ctxt->validate = 1;
+	    } else {
+		ctxt->validate = 0;
+	    }
+	    return(0);
+    }
+    return(-1);
+}
+
+/**
+ * xmlTextReaderGetParserProp:
+ * @reader:  the xmlTextReaderPtr used
+ * @prop:  the xmlParserProperties to get
+ *
+ * Read the parser internal property.
+ *
+ * Returns the value, usually 0 or 1, or -1 in case of error.
+ */
+int
+xmlTextReaderGetParserProp(xmlTextReaderPtr reader, int prop) {
+    xmlParserProperties p = (xmlParserProperties) prop;
+    xmlParserCtxtPtr ctxt;
+
+    if ((reader == NULL) || (reader->ctxt == NULL))
+	return(-1);
+    ctxt = reader->ctxt;
+
+    switch (p) {
+        case XML_PARSER_LOADDTD:
+	    if ((ctxt->loadsubset != 0) || (ctxt->validate != 0))
+		return(1);
+	    return(0);
+        case XML_PARSER_DEFAULTATTRS:
+	    if (ctxt->loadsubset & XML_COMPLETE_ATTRS)
+		return(1);
+	    return(0);
+        case XML_PARSER_VALIDATE:
+	    return(ctxt->validate);
+    }
+    return(-1);
+}
+
+/************************************************************************
+ *									*
+ *			Utilities					*
+ *									*
+ ************************************************************************/
+/**
+ * xmlBase64Decode:
+ * @in:  the input buffer
+ * @inlen:  the size of the input (in), the size read from it (out)
+ * @to:  the output buffer
+ * @tolen:  the size of the output (in), the size written to (out)
+ *
+ * Base64 decoder, reads from @in and save in @to
+ *
+ * Returns 0 if all the input was consumer, 1 if the Base64 end was reached,
+ *         2 if there wasn't enough space on the output or -1 in case of error.
+ */
+static int
+xmlBase64Decode(const unsigned char *in, unsigned long *inlen,
+	        unsigned char *to, unsigned long *tolen) {
+    unsigned long incur;		/* current index in in[] */
+    unsigned long inblk;		/* last block index in in[] */
+    unsigned long outcur;		/* current index in out[] */
+    unsigned long inmax;		/* size of in[] */
+    unsigned long outmax;		/* size of out[] */
+    unsigned char cur;			/* the current value read from in[] */
+    unsigned char intmp[3], outtmp[4];	/* temporary buffers for the convert */
+    int nbintmp;			/* number of byte in intmp[] */
+    int is_ignore;			/* cur should be ignored */
+    int is_end = 0;			/* the end of the base64 was found */
+    int retval = 1;
+    int i;
+
+    if ((in == NULL) || (inlen == NULL) || (to == NULL) || (tolen == NULL))
+	return(-1);
+
+    incur = 0;
+    inblk = 0;
+    outcur = 0;
+    inmax = *inlen;
+    outmax = *tolen;
+    nbintmp = 0;
+
+    while (1) {
+        if (incur >= inmax)
+            break;
+        cur = in[incur++];
+        is_ignore = 0;
+        if ((cur >= 'A') && (cur <= 'Z'))
+            cur = cur - 'A';
+        else if ((cur >= 'a') && (cur <= 'z'))
+            cur = cur - 'a' + 26;
+        else if ((cur >= '0') && (cur <= '9'))
+            cur = cur - '0' + 52;
+        else if (cur == '+')
+            cur = 62;
+        else if (cur == '/')
+            cur = 63;
+        else if (cur == '.')
+            cur = 0;
+        else if (cur == '=') /*no op , end of the base64 stream */
+            is_end = 1;
+        else {
+            is_ignore = 1;
+	    if (nbintmp == 0)
+		inblk = incur;
+	}
+
+        if (!is_ignore) {
+            int nbouttmp = 3;
+            int is_break = 0;
+
+            if (is_end) {
+                if (nbintmp == 0)
+                    break;
+                if ((nbintmp == 1) || (nbintmp == 2))
+                    nbouttmp = 1;
+                else
+                    nbouttmp = 2;
+                nbintmp = 3;
+                is_break = 1;
+            }
+            intmp[nbintmp++] = cur;
+	    /*
+	     * if intmp is full, push the 4byte sequence as a 3 byte
+	     * sequence out
+	     */
+            if (nbintmp == 4) {
+                nbintmp = 0;
+                outtmp[0] = (intmp[0] << 2) | ((intmp[1] & 0x30) >> 4);
+                outtmp[1] =
+                    ((intmp[1] & 0x0F) << 4) | ((intmp[2] & 0x3C) >> 2);
+                outtmp[2] = ((intmp[2] & 0x03) << 6) | (intmp[3] & 0x3F);
+		if (outcur + 3 >= outmax) {
+		    retval = 2;
+		    break;
+		}
+
+                for (i = 0; i < nbouttmp; i++)
+		    to[outcur++] = outtmp[i];
+		inblk = incur;
+            }
+
+            if (is_break) {
+		retval = 0;
+                break;
+	    }
+        }
+    }
+
+    *tolen = outcur;
+    *inlen = inblk;
+    return (retval);
+}
+
+/*
+ * Test routine for the xmlBase64Decode function
+ */
+#if 0
+int main(int argc, char **argv) {
+    char *input = "  VW4 gcGV0        \n      aXQgdGVzdCAuCg== ";
+    char output[100];
+    char output2[100];
+    char output3[100];
+    unsigned long inlen = strlen(input);
+    unsigned long outlen = 100;
+    int ret;
+    unsigned long cons, tmp, tmp2, prod;
+
+    /*
+     * Direct
+     */
+    ret = xmlBase64Decode(input, &inlen, output, &outlen);
+
+    output[outlen] = 0;
+    printf("ret: %d, inlen: %ld , outlen: %ld, output: '%s'\n", ret, inlen, outlen, output);
+    
+    /*
+     * output chunking
+     */
+    cons = 0;
+    prod = 0;
+    while (cons < inlen) {
+	tmp = 5;
+	tmp2 = inlen - cons;
+
+	printf("%ld %ld\n", cons, prod);
+	ret = xmlBase64Decode(&input[cons], &tmp2, &output2[prod], &tmp);
+	cons += tmp2;
+	prod += tmp;
+	printf("%ld %ld\n", cons, prod);
+    }
+    output2[outlen] = 0;
+    printf("ret: %d, cons: %ld , prod: %ld, output: '%s'\n", ret, cons, prod, output2);
+
+    /*
+     * input chunking
+     */
+    cons = 0;
+    prod = 0;
+    while (cons < inlen) {
+	tmp = 100 - prod;
+	tmp2 = inlen - cons;
+	if (tmp2 > 5)
+	    tmp2 = 5;
+
+	printf("%ld %ld\n", cons, prod);
+	ret = xmlBase64Decode(&input[cons], &tmp2, &output3[prod], &tmp);
+	cons += tmp2;
+	prod += tmp;
+	printf("%ld %ld\n", cons, prod);
+    }
+    output3[outlen] = 0;
+    printf("ret: %d, cons: %ld , prod: %ld, output: '%s'\n", ret, cons, prod, output3);
+    return(0);
+
+}
+#endif

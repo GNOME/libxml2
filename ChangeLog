@@ -1,3 +1,9 @@
+Thu Sep  5 13:10:57 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: try to make the copy function work for node of
+	  type XML_DOCUMENT_FRAG_NODE, they are only created by the
+	  DOM layers though, not libxml2 itself.
+
 Thu Sep  5 12:57:38 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: try to provide file and line informations, not all

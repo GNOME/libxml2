@@ -32,9 +32,9 @@
              href="{$href_base}examples/index.html">Code Examples</a></li>
       <li><a style="font-weight:bold"
              href="index.html">API Menu</a></li>
-      <li><a href="libxml-parser.html">Parser API</a></li>
-      <li><a href="libxml-tree.html">Tree API</a></li>
-      <li><a href="libxml-xmlreader.html">Reader API</a></li>
+      <li><a href="html/libxml-parser.html">Parser API</a></li>
+      <li><a href="html/libxml-tree.html">Tree API</a></li>
+      <li><a href="html/libxml-xmlreader.html">Reader API</a></li>
       <li><a href="{$href_base}guidelines.html">XML Guidelines</a></li>
     </ul>
   </xsl:variable>

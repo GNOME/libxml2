@@ -12506,6 +12506,10 @@
         </word>
         <word name='API'>
           <ref name='LIBXML_TREE_ENABLED'/>
+          <ref name='xmlBufferAdd'/>
+          <ref name='xmlBufferAddHead'/>
+          <ref name='xmlBufferCCat'/>
+          <ref name='xmlBufferCat'/>
           <ref name='xmlInputCloseCallback'/>
           <ref name='xmlInputMatchCallback'/>
           <ref name='xmlInputOpenCallback'/>
@@ -16706,6 +16710,7 @@
           <ref name='xmlACatalogAdd'/>
           <ref name='xmlBufferAdd'/>
           <ref name='xmlBufferAddHead'/>
+          <ref name='xmlBufferCat'/>
           <ref name='xmlBufferWriteCHAR'/>
           <ref name='xmlBufferWriteChar'/>
           <ref name='xmlBufferWriteQuotedString'/>
@@ -19445,7 +19450,6 @@
         <word name='dump'>
           <ref name='xmlBufferAdd'/>
           <ref name='xmlBufferCCat'/>
-          <ref name='xmlBufferCat'/>
           <ref name='xmlBufferDump'/>
           <ref name='xmlBufferShrink'/>
           <ref name='xmlDumpAttributeDecl'/>
@@ -23518,6 +23522,10 @@
           <ref name='docbEncodeEntities'/>
           <ref name='htmlEncodeEntities'/>
           <ref name='isolat1ToUTF8'/>
+          <ref name='xmlBufferAdd'/>
+          <ref name='xmlBufferAddHead'/>
+          <ref name='xmlBufferCCat'/>
+          <ref name='xmlBufferCat'/>
           <ref name='xmlCharEncodingInputFunc'/>
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlRelaxNGValidateDoc'/>
@@ -25897,6 +25905,10 @@
         <word name='successful'>
           <ref name='xmlACatalogAdd'/>
           <ref name='xmlACatalogRemove'/>
+          <ref name='xmlBufferAdd'/>
+          <ref name='xmlBufferAddHead'/>
+          <ref name='xmlBufferCCat'/>
+          <ref name='xmlBufferCat'/>
           <ref name='xmlCatalogAdd'/>
           <ref name='xmlCatalogConvert'/>
           <ref name='xmlCatalogRemove'/>

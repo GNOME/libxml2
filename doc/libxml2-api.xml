@@ -7415,28 +7415,28 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlBufferAdd' file='tree'>
       <info>Add a string range to an XML buffer. if len == -1, the length of str is recomputed.</info>
-      <return type='void'/>
+      <return type='int' info='0 successful, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to dump'/>
       <arg name='str' type='const xmlChar *' info='the #xmlChar string'/>
       <arg name='len' type='int' info='the number of #xmlChar to add'/>
     </function>
     <function name='xmlBufferAddHead' file='tree'>
       <info>Add a string range to the beginning of an XML buffer. if len == -1, the length of @str is recomputed.</info>
-      <return type='void'/>
+      <return type='int' info='0 successful, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer'/>
       <arg name='str' type='const xmlChar *' info='the #xmlChar string'/>
       <arg name='len' type='int' info='the number of #xmlChar to add'/>
     </function>
     <function name='xmlBufferCCat' file='tree'>
       <info>Append a zero terminated C string to an XML buffer.</info>
-      <return type='void'/>
+      <return type='int' info='0 successful, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to dump'/>
       <arg name='str' type='const char *' info='the C char string'/>
     </function>
     <function name='xmlBufferCat' file='tree'>
       <info>Append a zero terminated string to an XML buffer.</info>
-      <return type='void'/>
-      <arg name='buf' type='xmlBufferPtr' info='the buffer to dump'/>
+      <return type='int' info='0 successful, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='buf' type='xmlBufferPtr' info='the buffer to add to'/>
       <arg name='str' type='const xmlChar *' info='the #xmlChar string'/>
     </function>
     <function name='xmlBufferContent' file='tree'>

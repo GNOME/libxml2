@@ -1,3 +1,8 @@
+Tue Aug  3 23:59:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/ChangeLog.xsl doc/downloads.html doc/xml.html doc/*:
+	  fixes documetation glitches raised by Oliver Stoeneberg
+
 Tue Aug  3 09:42:31 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* tree.c: fixed problem with memory leak on text nodes in DTD

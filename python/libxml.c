@@ -1730,8 +1730,13 @@ extern void initlibxsltmod(void);
 #endif
 
 void initlibxml2mod(void) {
+    static int initialized = 0;
     PyObject *m;
+
+    if (initialized != 0)
+	return;
     m = Py_InitModule("libxml2mod", libxmlMethods);
+    initialized = 1;
     libxml_xmlErrorInitialize();
 
 #ifdef MERGED_MODULES

@@ -3475,7 +3475,7 @@ xmlXPathConvertBoolean(xmlXPathObjectPtr val) {
  *
  * Create a new xmlXPathContext
  *
- * Returns the xmlXPathContext just allocated.
+ * Returns the xmlXPathContext just allocated. The caller will need to free it.
  */
 xmlXPathContextPtr
 xmlXPathNewContext(xmlDocPtr doc) {

@@ -123,7 +123,7 @@ NAME="LIBXML-ENCODING"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN23695"
+NAME="AEN23861"
 ></A
 ><H2
 >Name</H2
@@ -131,7 +131,7 @@ NAME="AEN23695"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN23698"
+NAME="AEN23864"
 ></A
 ><H2
 >Synopsis</H2
@@ -382,7 +382,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN23758"
+NAME="AEN23924"
 ></A
 ><H2
 >Description</H2
@@ -392,20 +392,20 @@ NAME="AEN23758"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN23761"
+NAME="AEN23927"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23763"
+NAME="AEN23929"
 ></A
 ><H3
 ><A
 NAME="XMLCHARENCODING"
 ></A
->&#62;enum xmlCharEncoding</H3
+>enum xmlCharEncoding</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -465,13 +465,13 @@ support needed.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23770"
+NAME="AEN23936"
 ></A
 ><H3
 ><A
 NAME="XMLCHARENCODINGINPUTFUNC"
 ></A
->&#62;xmlCharEncodingInputFunc ()</H3
+>xmlCharEncodingInputFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -496,7 +496,7 @@ it to an UTF-8 block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23776"
+NAME="AEN23942"
 ></A
 ><P
 ></P
@@ -600,14 +600,14 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the number of byte written, or -1 by lack of space, or -2
-    if the transcoding failed.
+if the transcoding failed.
 The value of <TT
 CLASS="PARAMETER"
 ><I
 >inlen</I
 ></TT
 > after return is the number of octets consumed
-    as the return value is positive, else unpredictiable.
+as the return value is positive, else unpredictiable.
 The value of <TT
 CLASS="PARAMETER"
 ><I
@@ -624,13 +624,13 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23805"
+NAME="AEN23971"
 ></A
 ><H3
 ><A
 NAME="XMLCHARENCODINGOUTPUTFUNC"
 ></A
->&#62;xmlCharEncodingOutputFunc ()</H3
+>xmlCharEncodingOutputFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -657,7 +657,7 @@ in = NULL. If stateful this should also initialize the encoder state</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23811"
+NAME="AEN23977"
 ></A
 ><P
 ></P
@@ -761,14 +761,14 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the number of byte written, or -1 by lack of space, or -2
-    if the transcoding failed.
+if the transcoding failed.
 The value of <TT
 CLASS="PARAMETER"
 ><I
 >inlen</I
 ></TT
 > after return is the number of octets consumed
-    as the return value is positive, else unpredictiable.
+as the return value is positive, else unpredictiable.
 The value of <TT
 CLASS="PARAMETER"
 ><I
@@ -785,13 +785,13 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23840"
+NAME="AEN24006"
 ></A
 ><H3
 ><A
 NAME="XMLCHARENCODINGHANDLER"
 ></A
->&#62;struct xmlCharEncodingHandler</H3
+>struct xmlCharEncodingHandler</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -819,13 +819,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23845"
+NAME="AEN24011"
 ></A
 ><H3
 ><A
 NAME="XMLCHARENCODINGHANDLERPTR"
 ></A
->&#62;xmlCharEncodingHandlerPtr</H3
+>xmlCharEncodingHandlerPtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -845,13 +845,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23850"
+NAME="AEN24016"
 ></A
 ><H3
 ><A
 NAME="XMLINITCHARENCODINGHANDLERS"
 ></A
->&#62;xmlInitCharEncodingHandlers ()</H3
+>xmlInitCharEncodingHandlers ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -869,20 +869,20 @@ CLASS="PROGRAMLISTING"
 >Initialize the char encoding support, it registers the default
 encoding supported.
 NOTE: while public, this function usually doesn't need to be called
-      in normal processing.</P
+in normal processing.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23856"
+NAME="AEN24022"
 ></A
 ><H3
 ><A
 NAME="XMLCLEANUPCHARENCODINGHANDLERS"
 ></A
->&#62;xmlCleanupCharEncodingHandlers ()</H3
+>xmlCleanupCharEncodingHandlers ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -905,13 +905,13 @@ unregisters all the encoding handlers and the aliases.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23862"
+NAME="AEN24028"
 ></A
 ><H3
 ><A
 NAME="XMLREGISTERCHARENCODINGHANDLER"
 ></A
->&#62;xmlRegisterCharEncodingHandler ()</H3
+>xmlRegisterCharEncodingHandler ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -935,7 +935,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23869"
+NAME="AEN24035"
 ></A
 ><P
 ></P
@@ -973,13 +973,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23878"
+NAME="AEN24044"
 ></A
 ><H3
 ><A
 NAME="XMLGETCHARENCODINGHANDLER"
 ></A
->&#62;xmlGetCharEncodingHandler ()</H3
+>xmlGetCharEncodingHandler ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1007,7 +1007,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23886"
+NAME="AEN24052"
 ></A
 ><P
 ></P
@@ -1060,13 +1060,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23899"
+NAME="AEN24065"
 ></A
 ><H3
 ><A
 NAME="XMLFINDCHARENCODINGHANDLER"
 ></A
->&#62;xmlFindCharEncodingHandler ()</H3
+>xmlFindCharEncodingHandler ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1091,7 +1091,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23906"
+NAME="AEN24072"
 ></A
 ><P
 ></P
@@ -1144,13 +1144,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23919"
+NAME="AEN24085"
 ></A
 ><H3
 ><A
 NAME="XMLADDENCODINGALIAS"
 ></A
->&#62;xmlAddEncodingAlias ()</H3
+>xmlAddEncodingAlias ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1183,7 +1183,7 @@ will be overwritten.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23927"
+NAME="AEN24093"
 ></A
 ><P
 ></P
@@ -1253,13 +1253,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23944"
+NAME="AEN24110"
 ></A
 ><H3
 ><A
 NAME="XMLDELENCODINGALIAS"
 ></A
->&#62;xmlDelEncodingAlias ()</H3
+>xmlDelEncodingAlias ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1285,7 +1285,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23951"
+NAME="AEN24117"
 ></A
 ><P
 ></P
@@ -1338,13 +1338,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23964"
+NAME="AEN24130"
 ></A
 ><H3
 ><A
 NAME="XMLGETENCODINGALIAS"
 ></A
->&#62;xmlGetEncodingAlias ()</H3
+>xmlGetEncodingAlias ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1365,7 +1365,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23970"
+NAME="AEN24136"
 ></A
 ><P
 ></P
@@ -1418,13 +1418,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23983"
+NAME="AEN24149"
 ></A
 ><H3
 ><A
 NAME="XMLCLEANUPENCODINGALIASES"
 ></A
->&#62;xmlCleanupEncodingAliases ()</H3
+>xmlCleanupEncodingAliases ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1446,13 +1446,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23989"
+NAME="AEN24155"
 ></A
 ><H3
 ><A
 NAME="XMLPARSECHARENCODING"
 ></A
->&#62;xmlParseCharEncoding ()</H3
+>xmlParseCharEncoding ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1478,7 +1478,7 @@ that the comparison is case insensitive accordingly to the section
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23996"
+NAME="AEN24162"
 ></A
 ><P
 ></P
@@ -1532,13 +1532,13 @@ if not recognized.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24009"
+NAME="AEN24175"
 ></A
 ><H3
 ><A
 NAME="XMLGETCHARENCODINGNAME"
 ></A
->&#62;xmlGetCharEncodingName ()</H3
+>xmlGetCharEncodingName ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1567,7 +1567,7 @@ Section 4.3.3  Character Encoding in Entities</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24017"
+NAME="AEN24183"
 ></A
 ><P
 ></P
@@ -1620,13 +1620,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24030"
+NAME="AEN24196"
 ></A
 ><H3
 ><A
 NAME="XMLDETECTCHARENCODING"
 ></A
->&#62;xmlDetectCharEncoding ()</H3
+>xmlDetectCharEncoding ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1652,7 +1652,7 @@ accordingly of the non-normative appendix F of the XML-1.0 recommendation.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24037"
+NAME="AEN24203"
 ></A
 ><P
 ></P
@@ -1680,7 +1680,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >  a pointer to the first bytes of the XML entity, must be at least
-      4 bytes long.</TD
+4 bytes long.</TD
 ></TR
 ><TR
 ><TD
@@ -1723,13 +1723,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24054"
+NAME="AEN24220"
 ></A
 ><H3
 ><A
 NAME="XMLCHARENCOUTFUNC"
 ></A
->&#62;xmlCharEncOutFunc ()</H3
+>xmlCharEncOutFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1771,7 +1771,7 @@ the content will be automatically remapped to a CharRef sequence.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24064"
+NAME="AEN24230"
 ></A
 ><P
 ></P
@@ -1848,9 +1848,9 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the number of byte written if success, or 
-    -1 general error
-    -2 if the transcoding fails (for *in is not valid utf8 string or
-       the result of transformation can't fit into the encoding we want), or</TD
+-1 general error
+-2 if the transcoding fails (for *in is not valid utf8 string or
+the result of transformation can't fit into the encoding we want), or</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1861,13 +1861,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24085"
+NAME="AEN24251"
 ></A
 ><H3
 ><A
 NAME="XMLCHARENCINFUNC"
 ></A
->&#62;xmlCharEncInFunc ()</H3
+>xmlCharEncInFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1899,7 +1899,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24094"
+NAME="AEN24260"
 ></A
 ><P
 ></P
@@ -1976,9 +1976,9 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the number of byte written if success, or 
-    -1 general error
-    -2 if the transcoding fails (for *in is not valid utf8 string or
-       the result of transformation can't fit into the encoding we want), or</TD
+-1 general error
+-2 if the transcoding fails (for *in is not valid utf8 string or
+the result of transformation can't fit into the encoding we want), or</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1989,13 +1989,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24115"
+NAME="AEN24281"
 ></A
 ><H3
 ><A
 NAME="XMLCHARENCFIRSTLINE"
 ></A
->&#62;xmlCharEncFirstLine ()</H3
+>xmlCharEncFirstLine ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2028,7 +2028,7 @@ the very first line, i.e. limit itself to 45 chars.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24124"
+NAME="AEN24290"
 ></A
 ><P
 ></P
@@ -2105,9 +2105,9 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the number of byte written if success, or 
-    -1 general error
-    -2 if the transcoding fails (for *in is not valid utf8 string or
-       the result of transformation can't fit into the encoding we want), or</TD
+-1 general error
+-2 if the transcoding fails (for *in is not valid utf8 string or
+the result of transformation can't fit into the encoding we want), or</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2118,13 +2118,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24145"
+NAME="AEN24311"
 ></A
 ><H3
 ><A
 NAME="XMLCHARENCCLOSEFUNC"
 ></A
->&#62;xmlCharEncCloseFunc ()</H3
+>xmlCharEncCloseFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2148,7 +2148,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24152"
+NAME="AEN24318"
 ></A
 ><P
 ></P
@@ -2201,13 +2201,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24165"
+NAME="AEN24331"
 ></A
 ><H3
 ><A
 NAME="UTF8TOISOLAT1"
 ></A
->&#62;UTF8Toisolat1 ()</H3
+>UTF8Toisolat1 ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2232,7 +2232,7 @@ block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24171"
+NAME="AEN24337"
 ></A
 ><P
 ></P
@@ -2342,7 +2342,7 @@ CLASS="PARAMETER"
 >inlen</I
 ></TT
 > after return is the number of octets consumed
-    as the return value is positive, else unpredictable.
+as the return value is positive, else unpredictable.
 The value of <TT
 CLASS="PARAMETER"
 ><I
@@ -2359,13 +2359,13 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24200"
+NAME="AEN24366"
 ></A
 ><H3
 ><A
 NAME="ISOLAT1TOUTF8"
 ></A
->&#62;isolat1ToUTF8 ()</H3
+>isolat1ToUTF8 ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2390,7 +2390,7 @@ block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24206"
+NAME="AEN24372"
 ></A
 ><P
 ></P
@@ -2500,7 +2500,7 @@ CLASS="PARAMETER"
 >inlen</I
 ></TT
 > after return is the number of octets consumed
-    as the return value is positive, else unpredictable.
+as the return value is positive, else unpredictable.
 The value of <TT
 CLASS="PARAMETER"
 ><I
@@ -2517,13 +2517,13 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24235"
+NAME="AEN24401"
 ></A
 ><H3
 ><A
 NAME="XMLCHECKUTF8"
 ></A
->&#62;xmlCheckUTF8 ()</H3
+>xmlCheckUTF8 ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2559,7 +2559,7 @@ routine checks for the 4-byte maximum size, but does not check for
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24243"
+NAME="AEN24409"
 ></A
 ><P
 ></P
@@ -2617,13 +2617,13 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24257"
+NAME="AEN24423"
 ></A
 ><H3
 ><A
 NAME="XMLUTF8STRSIZE"
 ></A
->&#62;xmlUTF8Strsize ()</H3
+>xmlUTF8Strsize ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2648,7 +2648,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24264"
+NAME="AEN24430"
 ></A
 ><P
 ></P
@@ -2719,13 +2719,13 @@ the first 'len' characters of ARRAY&#13;</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24281"
+NAME="AEN24447"
 ></A
 ><H3
 ><A
 NAME="XMLUTF8STRNDUP"
 ></A
->&#62;xmlUTF8Strndup ()</H3
+>xmlUTF8Strndup ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2753,7 +2753,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24289"
+NAME="AEN24455"
 ></A
 ><P
 ></P
@@ -2828,13 +2828,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24307"
+NAME="AEN24473"
 ></A
 ><H3
 ><A
 NAME="XMLUTF8STRPOS"
 ></A
->&#62;xmlUTF8Strpos ()</H3
+>xmlUTF8Strpos ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2863,7 +2863,7 @@ character from a string array</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24315"
+NAME="AEN24481"
 ></A
 ><P
 ></P
@@ -2933,13 +2933,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24332"
+NAME="AEN24498"
 ></A
 ><H3
 ><A
 NAME="XMLUTF8STRLOC"
 ></A
->&#62;xmlUTF8Strloc ()</H3
+>xmlUTF8Strloc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2967,7 +2967,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24340"
+NAME="AEN24506"
 ></A
 ><P
 ></P
@@ -3038,13 +3038,13 @@ or -1 if not found</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24357"
+NAME="AEN24523"
 ></A
 ><H3
 ><A
 NAME="XMLUTF8STRSUB"
 ></A
->&#62;xmlUTF8Strsub ()</H3
+>xmlUTF8Strsub ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3073,7 +3073,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24365"
+NAME="AEN24531"
 ></A
 ><P
 ></P
@@ -3161,13 +3161,13 @@ or NULL if any problem</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24386"
+NAME="AEN24552"
 ></A
 ><H3
 ><A
 NAME="XMLUTF8STRLEN"
 ></A
->&#62;xmlUTF8Strlen ()</H3
+>xmlUTF8Strlen ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3192,7 +3192,7 @@ checking of the content of the string.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24393"
+NAME="AEN24559"
 ></A
 ><P
 ></P

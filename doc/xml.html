@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML C library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V5.0">
+  <meta name="GENERATOR" content="amaya 5.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -32,8 +32,8 @@ languages:</p>
     href="http://www.w3.org/TR/REC-xml-names/">http://www.w3.org/TR/REC-xml-names/</a></li>
   <li>XML Base: <a
     href="http://www.w3.org/TR/xmlbase/">http://www.w3.org/TR/xmlbase/</a></li>
-  <li><a href="http://www.cis.ohio-state.edu/rfc/rfc2396.txt">RFC 2396</a>
-     : Uniform Resource Identifiers <a
+  <li><a href="http://www.cis.ohio-state.edu/rfc/rfc2396.txt">RFC 2396</a> :
+    Uniform Resource Identifiers <a
     href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a></li>
   <li>XML Path Language (XPath) 1.0: <a
     href="http://www.w3.org/TR/xpath">http://www.w3.org/TR/xpath</a></li>
@@ -64,10 +64,10 @@ specification but don't claim to implement them:</p>
     href="http://www.w3.org/TR/DOM-Level-2-Core/">http://www.w3.org/TR/DOM-Level-2-Core/</a>
     it doesn't implement the API itself, gdome2 does this in top of
   libxml2</li>
-  <li><a href="http://www.cis.ohio-state.edu/rfc/rfc959.txt">RFC 959</a>
-     : libxml implements a basic FTP client code</li>
-  <li><a href="http://www.cis.ohio-state.edu/rfc/rfc1945.txt">RFC 1945</a>
-     : HTTP/1.0, again a basic HTTP client code</li>
+  <li><a href="http://www.cis.ohio-state.edu/rfc/rfc959.txt">RFC 959</a> :
+    libxml implements a basic FTP client code</li>
+  <li><a href="http://www.cis.ohio-state.edu/rfc/rfc1945.txt">RFC 1945</a> :
+    HTTP/1.0, again a basic HTTP client code</li>
   <li>SAX: a minimal SAX implementation compatible with early expat
   versions</li>
   <li>DocBook SGML v4: libxml2 includes a hackish parser to transition to
@@ -80,11 +80,10 @@ MacOs, MacOsX, RISC Os, OS/2, VMS, QNX, MVS, ...)</p>
 
 <p>Separate documents:</p>
 <ul>
-  <li><a href="http://xmlsoft.org/XSLT/">the libxslt page</a>
-     providing an implementation of XSLT 1.0 and extensions on top of
-  libxml2</li>
+  <li><a href="http://xmlsoft.org/XSLT/">the libxslt page</a> providing an
+    implementation of XSLT 1.0 and extensions on top of libxml2</li>
   <li><a href="http://www.cs.unibo.it/~casarini/gdome2/">the gdome2 page</a>
-     : a standard DOM2 implementation based on libxml2</li>
+    : a standard DOM2 implementation based on libxml2</li>
 </ul>
 
 <h2><a name="Introducti">Introduction</a></h2>
@@ -158,8 +157,7 @@ libxml2</p>
   <li>Unless you are forced to because your application links with a Gnome
     library requiring it,  <strong><span style="background-color: #FF0000">Do
     Not Use libxml1</span></strong>, use libxml2</li>
-  <li><em>Where can I get libxml</em>
-     ?
+  <li><em>Where can I get libxml</em> ?
     <p>The original distribution comes from <a
     href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> or <a
     href="ftp://ftp.gnome.org/pub/GNOME/stable/sources/libxml/">gnome.org</a></p>
@@ -228,8 +226,8 @@ libxml2</p>
     <p>However if found at configuration time libxml will detect and use the
     following libs:</p>
     <ul>
-      <li><a href="http://www.info-zip.org/pub/infozip/zlib/">libz</a>
-         : a highly portable and available widely compression library</li>
+      <li><a href="http://www.info-zip.org/pub/infozip/zlib/">libz</a> : a
+        highly portable and available widely compression library</li>
       <li>iconv: a powerful character encoding conversion library. It's
         included by default on recent glibc libraries, so it doesn't need to
         be installed specifically on linux. It seems it's now <a
@@ -351,9 +349,8 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
       </li>
       <li><a
         href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Browse
-        the libxml source</a>
-         , I try to write code as clean and documented as possible, so
-        looking at it may be helpful</li>
+        the libxml source</a> , I try to write code as clean and documented
+        as possible, so looking at it may be helpful</li>
     </ul>
   </li>
   <li>What about C++ ?
@@ -401,8 +398,7 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     internationalization support</a></li>
   <li>This page provides a global overview and <a href="example.html">some
     examples</a> on how to use libxml.</li>
-  <li><a href="mailto:james@daa.com.au">James Henstridge</a>
-     wrote <a
+  <li><a href="mailto:james@daa.com.au">James Henstridge</a> wrote <a
     href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">some nice
     documentation</a> explaining how to use the libxml SAX interface.</li>
   <li>George Lebl wrote <a
@@ -546,12 +542,17 @@ for a really accurate description</h3>
 <p>Items floating around but not actively worked on, get in touch with me if
 you want to test those</p>
 <ul>
-  <li>Implementing <a href="http://xmlsoft.org/XSLT">XSLT</a>, this is done
-    as a separate C library on top of libxml called libxslt</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xptr">XPointer</a> and <a
     href="http://www.w3.org/TR/xinclude">XInclude</a></li>
-  <li>(seeems working but delayed from release) parsing/import of Docbook
-    SGML docs</li>
+</ul>
+
+<h3>2.4.17: Mar 8 2002</h3>
+<ul>
+  <li>a lot of bug fixes, including "namespace nodes have no parents in
+  XPath"</li>
+  <li>fixed/improved the Python wrappers, added more examples and more
+    regression tests, XPath extension functions can now return node-sets</li>
+  <li>added the XML Canonalization support from Aleksey Sanin</li>
 </ul>
 
 <h3>2.4.16: Feb 20 2002</h3>
@@ -1314,8 +1315,8 @@ href="http://mail.gnome.org/mailman/listinfo/xml-bindings">xml-bindings@gnome.or
 order to get updates to this list or to discuss the specific topic of libxml2
 or libxslt wrappers or bindings:</p>
 <ul>
-  <li><a href="mailto:ari@lusis.org">Ari Johnson</a>
-     provides a  C++ wrapper for libxml:<br>
+  <li><a href="mailto:ari@lusis.org">Ari Johnson</a> provides a  C++ wrapper
+    for libxml:<br>
     Website: <a
     href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a><br>
     Download: <a
@@ -1324,12 +1325,12 @@ or libxslt wrappers or bindings:</p>
     based on the gdome2 </a>bindings maintained by Tobias Peters.</li>
   <li><a
     href="http://mail.gnome.org/archives/xml/2001-March/msg00014.html">Matt
-    Sergeant</a>
-     developped <a href="http://axkit.org/download/">XML::LibXSLT</a>, a perl
-    wrapper for libxml2/libxslt as part of the <a
-    href="http://axkit.com/">AxKit XML application server</a></li>
-  <li><a href="mailto:dkuhlman@cutter.rexx.com">Dave Kuhlman</a>
-     provides and earlier version of the libxml/libxslt <a
+    Sergeant</a> developped <a
+    href="http://axkit.org/download/">XML::LibXSLT</a>, a perl wrapper for
+    libxml2/libxslt as part of the <a href="http://axkit.com/">AxKit XML
+    application server</a></li>
+  <li><a href="mailto:dkuhlman@cutter.rexx.com">Dave Kuhlman</a> provides and
+    earlier version of the libxml/libxslt <a
     href="http://www.rexx.com/~dkuhlman">wrappers for Python</a></li>
   <li>Petr Kozelka provides <a
     href="http://sourceforge.net/projects/libxml2-pas">Pascal units to glue
@@ -1339,31 +1340,33 @@ or libxslt wrappers or bindings:</p>
     libxml2 bindings are also available in Ruby through the <a
     href="http://libgdome-ruby.berlios.de/">libgdome-ruby</a> module
     maintained by Tobias Peters.</li>
-  <li>Steve Ball and contributors maintains
-    <a href="http://tclxml.sourceforge.net/">libxml2 and libxslt bindings for
-    Tcl</a>
-  <li>There is support for libxml2 in the DOM module of PHP.
+  <li>Steve Ball and contributors maintains <a
+    href="http://tclxml.sourceforge.net/">libxml2 and libxslt bindings for
+    Tcl</a></li>
+  <li>There is support for libxml2 in the DOM module of PHP.</li>
 </ul>
 
 <p>The distribution includes a set of Python bindings, which are garanteed to
 be maintained as part of the library in the future, though the Python
 interface have not yet reached the maturity of the C API.</p>
-<p>To install the Python bindings there are 2 options:
+
+<p>To install the Python bindings there are 2 options:</p>
 <ul>
-<li> If you use an RPM based distribution, simply install the
-<a href="http://rpmfind.net/linux/rpm2html/search.php?query=libxml2-python"
->libxml2-python RPM</a> (and if needed the
-<a href="http://rpmfind.net/linux/rpm2html/search.php?query=libxslt-python"
->libxslt-python RPM</a>).
-<li> Otherwise use the <a href="ftp://xmlsoft.org/python/">libxml2-python
-module distribution</a> corresponding to your installed version of libxml2
-and libxslt. Note that to install it you will need both libxml2 and libxslt
-installed and run "python setup.py build install" in the module tree.
+  <li>If you use an RPM based distribution, simply install the <a
+    href="http://rpmfind.net/linux/rpm2html/search.php?query=libxml2-python">libxml2-python
+    RPM</a> (and if needed the <a
+    href="http://rpmfind.net/linux/rpm2html/search.php?query=libxslt-python">libxslt-python
+    RPM</a>).</li>
+  <li>Otherwise use the <a href="ftp://xmlsoft.org/python/">libxml2-python
+    module distribution</a> corresponding to your installed version of
+    libxml2 and libxslt. Note that to install it you will need both libxml2
+    and libxslt installed and run "python setup.py build install" in the
+    module tree.</li>
 </ul>
-<p>The distribution
-includes a set of examples and regression tests for the python bindings in
-the <code>python/tests</code> directory. Here are some excepts from those
-tests:</p>
+
+<p>The distribution includes a set of examples and regression tests for the
+python bindings in the <code>python/tests</code> directory. Here are some
+excepts from those tests:</p>
 
 <h3>tst.py:</h3>
 
@@ -1389,18 +1392,15 @@ xmlParseFile (most of the bindings are automatically generated, and the xml
 prefix is removed and the casing convention are kept). All node seen at the
 binding level share the same subset of accesors:</p>
 <ul>
-  <li><code>name</code>
-    : returns the node name</li>
-  <li><code>type</code>
-    : returns a string indicating the node typ<code>e</code></li>
-  <li><code>content</code>
-    : returns the content of the node, it is based on xmlNodeGetContent() and
-    hence is recursive.</li>
-  <li><code>parent</code>
-    , <code>children</code>, <code>last</code>, <code>next</code>,
-    <code>prev</code>, <code>doc</code>, <code>properties</code>: pointing to
-    the associated element in the tree, those may return None in case no such
-    link exists.</li>
+  <li><code>name</code> : returns the node name</li>
+  <li><code>type</code> : returns a string indicating the node
+    typ<code>e</code></li>
+  <li><code>content</code> : returns the content of the node, it is based on
+    xmlNodeGetContent() and hence is recursive.</li>
+  <li><code>parent</code> , <code>children</code>, <code>last</code>,
+    <code>next</code>, <code>prev</code>, <code>doc</code>,
+    <code>properties</code>: pointing to the associated element in the tree,
+    those may return None in case no such link exists.</li>
 </ul>
 
 <p>Also note the need to explicitely deallocate documents with freeDoc() .
@@ -1600,8 +1600,7 @@ evaluation point.</p>
 
 <p>last but not least, all tests starts with the following prologue:</p>
 <pre>#memory debug specific
-libxml2.debugMemory(1)
-</pre>
+libxml2.debugMemory(1)</pre>
 
 <p>and ends with the following epilogue:</p>
 <pre>#memory debug specific
@@ -1990,11 +1989,11 @@ provides the interfaces to the libxml memory system:</p>
 debugging, analysis or to implement a specific behaviour on memory management
 (like on embedded systems). Two function calls are available to do so:</p>
 <ul>
-  <li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemGet ()</a>
-     which return the current set of functions in use by the parser</li>
+  <li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemGet
+    ()</a> which return the current set of functions in use by the parser</li>
   <li><a
     href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemSetup()</a>
-     which allow to set up a new set of memory allocation functions</li>
+    which allow to set up a new set of memory allocation functions</li>
 </ul>
 
 <p>Of course a call to xmlMemSetup() should probably be done before calling
@@ -2010,15 +2009,13 @@ amount of memory (a few hundred bytes) which can be recollected if you don't
 reuse the parser immediately:</p>
 <ul>
   <li><a href="http://xmlsoft.org/html/libxml-parser.html">xmlCleanupParser
-    ()</a>
-     is a centralized routine to free the parsing states. Note that it won't
-    deallocate any produced tree if any (use the xmlFreeDoc() and related
-    routines for this).</li>
+    ()</a> is a centralized routine to free the parsing states. Note that it
+    won't deallocate any produced tree if any (use the xmlFreeDoc() and
+    related routines for this).</li>
   <li><a href="http://xmlsoft.org/html/libxml-parser.html">xmlInitParser
-    ()</a>
-     is the dual routine allowing to preallocate the parsing state which can
-    be useful for example to avoid initialization reentrancy problems when
-    using libxml in multithreaded applications</li>
+    ()</a> is the dual routine allowing to preallocate the parsing state
+    which can be useful for example to avoid initialization reentrancy
+    problems when using libxml in multithreaded applications</li>
 </ul>
 
 <p>Generally xmlCleanupParser() is safe, if needed the state will be rebuild
@@ -2035,15 +2032,14 @@ or call a specific routine when a given block number is allocated:</p>
 <ul>
   <li><a
     href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMallocLoc()</a>
-     <a
+    <a
     href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlReallocLoc()</a>
     and <a
     href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemStrdupLoc()</a>
     are the memory debugging replacement allocation routines</li>
   <li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemoryDump
-    ()</a>
-     dumps all the informations about the allocated memory block lefts in the
-    <code>.memdump</code> file</li>
+    ()</a> dumps all the informations about the allocated memory block lefts
+    in the <code>.memdump</code> file</li>
 </ul>
 
 <p>When developping libxml memory debug is enabled, the tests programs call
@@ -2548,6 +2544,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
 
 
 
+
 } </pre>
   </li>
   <li>And then use it to save the document:
@@ -2623,9 +2620,8 @@ started.</p>
     James Clark. This is relatively old and not the preferred mode of
     operation of libxml.</li>
   <li><a href="http://www.oasis-open.org/committees/entity/spec.html">XML
-    Catalogs</a>
-     is far more flexible, more recent, uses an XML syntax and should scale
-    quite better. This is the default option of libxml.</li>
+    Catalogs</a> is far more flexible, more recent, uses an XML syntax and
+    should scale quite better. This is the default option of libxml.</li>
 </ul>
 
 <p></p>
@@ -3674,38 +3670,36 @@ Gnome CVS base under gnome-xml/example</p>
     patches, Gary Pennington worked on the validation API, threading support
     and Solaris port.</li>
   <li>John Fleck helps maintaining the documentation and man pages.</li>
-  <li><a href="mailto:ari@lusis.org">Ari Johnson</a>
-     provides a  C++ wrapper for libxml:<br>
+  <li><a href="mailto:ari@lusis.org">Ari Johnson</a> provides a  C++ wrapper
+    for libxml:<br>
     Website: <a
     href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a><br>
     Download: <a
     href="http://lusis.org/~ari/xml++/libxml++.tar.gz">http://lusis.org/~ari/xml++/libxml++.tar.gz</a></li>
-  <li><a href="mailto:izlatkovic@daenet.de">Igor  Zlatkovic</a>
-     is now the maintainer of the Windows port, <a
+  <li><a href="mailto:izlatkovic@daenet.de">Igor  Zlatkovic</a> is now the
+    maintainer of the Windows port, <a
     href="http://www.fh-frankfurt.de/~igor/projects/libxml/index.html">he
     provides binaries</a></li>
-  <li><a href="mailto:Gary.Pennington@sun.com">Gary Pennington</a>
-     provides <a href="http://garypennington.net/libxml2/">Solaris
-    binaries</a></li>
+  <li><a href="mailto:Gary.Pennington@sun.com">Gary Pennington</a> provides
+    <a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
   <li><a
     href="http://mail.gnome.org/archives/xml/2001-March/msg00014.html">Matt
-    Sergeant</a>
-     developped <a href="http://axkit.org/download/">XML::LibXSLT</a>, a perl
-    wrapper for libxml2/libxslt as part of the <a
-    href="http://axkit.com/">AxKit XML application server</a></li>
-  <li><a href="mailto:fnatter@gmx.net">Felix Natter</a>
-     and <a href="mailto:geertk@ai.rug.nl">Geert Kloosterman</a> provide <a
+    Sergeant</a> developped <a
+    href="http://axkit.org/download/">XML::LibXSLT</a>, a perl wrapper for
+    libxml2/libxslt as part of the <a href="http://axkit.com/">AxKit XML
+    application server</a></li>
+  <li><a href="mailto:fnatter@gmx.net">Felix Natter</a> and <a
+    href="mailto:geertk@ai.rug.nl">Geert Kloosterman</a> provide <a
     href="libxml-doc.el">an emacs module</a> to lookup libxml(2) functions
     documentation</li>
-  <li><a href="mailto:sherwin@nlm.nih.gov">Ziying Sherwin</a>
-     provided <a href="http://xmlsoft.org/messages/0488.html">man
-  pages</a></li>
+  <li><a href="mailto:sherwin@nlm.nih.gov">Ziying Sherwin</a> provided <a
+    href="http://xmlsoft.org/messages/0488.html">man pages</a></li>
   <li>there is a module for <a
     href="http://acs-misc.sourceforge.net/nsxml.html">libxml/libxslt support
     in OpenNSD/AOLServer</a></li>
-  <li><a href="mailto:dkuhlman@cutter.rexx.com">Dave Kuhlman</a>
-     provides libxml/libxslt <a href="http://www.rexx.com/~dkuhlman">wrappers
-    for Python</a></li>
+  <li><a href="mailto:dkuhlman@cutter.rexx.com">Dave Kuhlman</a> provides
+    libxml/libxslt <a href="http://www.rexx.com/~dkuhlman">wrappers for
+    Python</a></li>
   <li>Petr Kozelka provides <a
     href="http://sourceforge.net/projects/libxml2-pas">Pascal units to glue
     libxml2</a> with Kylix and Delphi and other Pascal compilers</li>

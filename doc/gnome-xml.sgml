@@ -16,6 +16,7 @@
 <!entity xinclude SYSTEM "sgml/xinclude.sgml">
 <!entity xmlIO SYSTEM "sgml/xmlIO.sgml">
 <!entity catalog SYSTEM "sgml/catalog.sgml">
+<!entity c14n SYSTEM "sgml/c14n.sgml">
 <!entity DOCBparser SYSTEM "sgml/DOCBparser.sgml">
 <!entity xmlmemory SYSTEM "sgml/xmlmemory.sgml">
 <!entity nanohttp SYSTEM "sgml/nanohttp.sgml">
@@ -100,6 +101,7 @@
     &nanoftp;
     &xmlIO;
     &catalog;
+    &c14n;
     &threads;
     &globals;
     &global_functions;

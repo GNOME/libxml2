@@ -90,8 +90,8 @@ order to get updates to this list or to discuss the specific topic of libxml2
 or libxslt wrappers or bindings:</p>
 <ul>
 <li>
-<a href="mailto:ari@lusis.org">Ari Johnson</a>
-     provides a  C++ wrapper for libxml:<br>
+<a href="mailto:ari@lusis.org">Ari Johnson</a> provides a  C++ wrapper
+    for libxml:<br>
     Website: <a href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a><br>
     Download: <a href="http://lusis.org/~ari/xml++/libxml++.tar.gz">http://lusis.org/~ari/xml++/libxml++.tar.gz</a>
 </li>
@@ -99,46 +99,41 @@ or libxslt wrappers or bindings:</p>
     based on the gdome2 </a>bindings maintained by Tobias Peters.</li>
 <li>
 <a href="http://mail.gnome.org/archives/xml/2001-March/msg00014.html">Matt
-    Sergeant</a>
-     developped <a href="http://axkit.org/download/">XML::LibXSLT</a>, a perl
-    wrapper for libxml2/libxslt as part of the <a href="http://axkit.com/">AxKit XML application server</a>
+    Sergeant</a> developped <a href="http://axkit.org/download/">XML::LibXSLT</a>, a perl wrapper for
+    libxml2/libxslt as part of the <a href="http://axkit.com/">AxKit XML
+    application server</a>
 </li>
 <li>
-<a href="mailto:dkuhlman@cutter.rexx.com">Dave Kuhlman</a>
-     provides and earlier version of the libxml/libxslt <a href="http://www.rexx.com/~dkuhlman">wrappers for Python</a>
+<a href="mailto:dkuhlman@cutter.rexx.com">Dave Kuhlman</a> provides and
+    earlier version of the libxml/libxslt <a href="http://www.rexx.com/~dkuhlman">wrappers for Python</a>
 </li>
 <li>Petr Kozelka provides <a href="http://sourceforge.net/projects/libxml2-pas">Pascal units to glue
     libxml2</a> with Kylix, Delphi and other Pascal compilers</li>
 <li>Wai-Sun &quot;Squidster&quot; Chia provides <a href="http://www.rubycolor.org/arc/redist/">bindings for Ruby</a>  and
     libxml2 bindings are also available in Ruby through the <a href="http://libgdome-ruby.berlios.de/">libgdome-ruby</a> module
     maintained by Tobias Peters.</li>
-<li>Steve Ball and contributors maintains
-    <a href="http://tclxml.sourceforge.net/">libxml2 and libxslt bindings for
+<li>Steve Ball and contributors maintains <a href="http://tclxml.sourceforge.net/">libxml2 and libxslt bindings for
     Tcl</a>
 </li>
-<li>There is support for libxml2 in the DOM module of PHP.
-</li>
+<li>There is support for libxml2 in the DOM module of PHP.</li>
 </ul>
 <p>The distribution includes a set of Python bindings, which are garanteed to
 be maintained as part of the library in the future, though the Python
 interface have not yet reached the maturity of the C API.</p>
-<p>To install the Python bindings there are 2 options:
-</p>
+<p>To install the Python bindings there are 2 options:</p>
 <ul>
-<li> If you use an RPM based distribution, simply install the
-<a href="http://rpmfind.net/linux/rpm2html/search.php?query=libxml2-python">libxml2-python RPM</a> (and if needed the
-<a href="http://rpmfind.net/linux/rpm2html/search.php?query=libxslt-python">libxslt-python RPM</a>).
-</li>
-<li> Otherwise use the <a href="ftp://xmlsoft.org/python/">libxml2-python
-module distribution</a> corresponding to your installed version of libxml2
-and libxslt. Note that to install it you will need both libxml2 and libxslt
-installed and run &quot;python setup.py build install&quot; in the module tree.
-</li>
+<li>If you use an RPM based distribution, simply install the <a href="http://rpmfind.net/linux/rpm2html/search.php?query=libxml2-python">libxml2-python
+    RPM</a> (and if needed the <a href="http://rpmfind.net/linux/rpm2html/search.php?query=libxslt-python">libxslt-python
+    RPM</a>).</li>
+<li>Otherwise use the <a href="ftp://xmlsoft.org/python/">libxml2-python
+    module distribution</a> corresponding to your installed version of
+    libxml2 and libxslt. Note that to install it you will need both libxml2
+    and libxslt installed and run &quot;python setup.py build install&quot; in the
+    module tree.</li>
 </ul>
-<p>The distribution
-includes a set of examples and regression tests for the python bindings in
-the <code>python/tests</code> directory. Here are some excepts from those
-tests:</p>
+<p>The distribution includes a set of examples and regression tests for the
+python bindings in the <code>python/tests</code> directory. Here are some
+excepts from those tests:</p>
 <h3>tst.py:</h3>
 <p>This is a basic test of the file interface and DOM navigation:</p>
 <pre>import libxml2
@@ -162,22 +157,19 @@ prefix is removed and the casing convention are kept). All node seen at the
 binding level share the same subset of accesors:</p>
 <ul>
 <li>
-<code>name</code>
-    : returns the node name</li>
+<code>name</code> : returns the node name</li>
 <li>
-<code>type</code>
-    : returns a string indicating the node typ<code>e</code>
+<code>type</code> : returns a string indicating the node
+    typ<code>e</code>
 </li>
 <li>
-<code>content</code>
-    : returns the content of the node, it is based on xmlNodeGetContent() and
-    hence is recursive.</li>
+<code>content</code> : returns the content of the node, it is based on
+    xmlNodeGetContent() and hence is recursive.</li>
 <li>
-<code>parent</code>
-    , <code>children</code>, <code>last</code>, <code>next</code>,
-    <code>prev</code>, <code>doc</code>, <code>properties</code>: pointing to
-    the associated element in the tree, those may return None in case no such
-    link exists.</li>
+<code>parent</code> , <code>children</code>, <code>last</code>,
+    <code>next</code>, <code>prev</code>, <code>doc</code>,
+    <code>properties</code>: pointing to the associated element in the tree,
+    those may return None in case no such link exists.</li>
 </ul>
 <p>Also note the need to explicitely deallocate documents with freeDoc() .
 Reference counting for libxml2 trees would need quite a lot of work to
@@ -352,8 +344,7 @@ evaluation point.</p>
 <h3>Memory debugging:</h3>
 <p>last but not least, all tests starts with the following prologue:</p>
 <pre>#memory debug specific
-libxml2.debugMemory(1)
-</pre>
+libxml2.debugMemory(1)</pre>
 <p>and ends with the following epilogue:</p>
 <pre>#memory debug specific
 libxml2.cleanupParser()

@@ -690,6 +690,11 @@
      <exports symbol='htmlDocContentDumpOutput'/>
      <exports symbol='htmlDocContentDumpFormatOutput'/>
     </file>
+    <file name='c14n'>
+     <exports symbol='xmlC14NDocSaveTo'/>
+     <exports symbol='xmlC14NDocDumpMemory'/>
+     <exports symbol='xmlC14NDocSave'/>
+    </file>
     <file name='xpathInternals'>
      <exports symbol='xmlXPathSetError'/>
      <exports symbol='xmlXPathSetArityError'/>
@@ -1094,6 +1099,7 @@
      <exports symbol='LIBXML_FTP_ENABLED'/>
      <exports symbol='LIBXML_HTTP_ENABLED'/>
      <exports symbol='LIBXML_HTML_ENABLED'/>
+     <exports symbol='LIBXML_C14N_ENABLED'/>
      <exports symbol='LIBXML_CATALOG_ENABLED'/>
      <exports symbol='LIBXML_DOCB_ENABLED'/>
      <exports symbol='LIBXML_XPATH_ENABLED'/>
@@ -1335,6 +1341,9 @@
     <macro name='IS_PUBIDCHAR' file='parserInternals'>
       <info>Macro to check the following production in the XML spec </info>
       <arg name='c' info='an UNICODE value (int) '/>
+    </macro>
+    <macro name='LIBXML_C14N_ENABLED' file='xmlversion'>
+      <info>Whether the Canonicalization support is configured in</info>
     </macro>
     <macro name='LIBXML_CATALOG_ENABLED' file='xmlversion'>
       <info>Whether the Catalog support is configured in</info>
@@ -1972,7 +1981,7 @@
       <arg name='attrib' type='const char *' info='the attribute string '/>
       <arg name='owner' type='const char *' info='the owner string '/>
       <arg name='group' type='const char *' info='the group string '/>
-      <arg name='size' type='unsigned long'/>
+      <arg name='size' type='unsigned long' info='the file size '/>
       <arg name='links' type='int' info='the link count '/>
       <arg name='year' type='int' info='the year '/>
       <arg name='month' type='const char *' info='the month '/>
@@ -2836,6 +2845,37 @@
       <arg name='URI' type='const xmlChar *' info='the URI instance found in the document '/>
       <arg name='base' type='const xmlChar *' info='the base value '/>
     </function>
+    <function name='xmlC14NDocDumpMemory' file='c14n'>
+      <info>Dumps the canonized image of given XML document into memory. For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</info>
+      <return type='int' info='the number of bytes written on success or a negative value on fail '/>
+      <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
+      <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image or NULL if all document nodes should be included '/>
+      <arg name='exclusive' type='int' info='inclusive_ns_prefixe the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **'/>
+      <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
+      <arg name='doc_txt_ptr' type='xmlChar **' info='	the memory pointer for allocated canonical XML text; the caller of this functions is responsible for calling xmlFree() to free allocated memory '/>
+    </function>
+    <function name='xmlC14NDocSave' file='c14n'>
+      <info>Dumps the canonized image of given XML document into the file. For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</info>
+      <return type='int' info='the number of bytes written success or a negative value on fail '/>
+      <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
+      <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image or NULL if all document nodes should be included '/>
+      <arg name='exclusive' type='int' info='inclusive_ns_prefixe the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **'/>
+      <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
+      <arg name='filename' type='const char*' info='		the filename to store canonical XML image '/>
+      <arg name='compression' type='int' info='	the compression level (zlib requred): -1 - libxml default, 0 - uncompressed, &gt;0 - compression level '/>
+    </function>
+    <function name='xmlC14NDocSaveTo' file='c14n'>
+      <info>Dumps the canonized image of given XML document into the provided buffer. For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</info>
+      <return type='int' info='non-negative value on success or a negative value on fail '/>
+      <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
+      <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image or NULL if all document nodes should be included '/>
+      <arg name='exclusive' type='int' info='inclusive_ns_prefixe the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **'/>
+      <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
+      <arg name='buf' type='xmlOutputBufferPtr' info='		the output buffer to store canonical XML; this buffer MUST have encoder==NULL because C14N requires UTF-8 output '/>
+    </function>
     <struct name='xmlCatalog' file='catalog'/>
     <function name='xmlCatalogAdd' file='catalog'>
       <info>Add an entry in the catalog, it may overwrite existing but different entries. If called before any other catalog routine, allows to override the default shared catalog put in place by xmlInitializeCatalog();</info>
@@ -3623,7 +3663,7 @@
       <arg name='' type='...'/>
     </functype>
     <function name='xmlGetBufferAllocationScheme' file='tree'>
-      <info>Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed,  improves performance</info>
+      <info>Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed, improves performance</info>
       <return type='xmlBufferAllocationScheme' info='the current allocation scheme '/>
     </function>
     <function name='xmlGetCharEncodingHandler' file='encoding'>
@@ -4100,7 +4140,7 @@
       <arg name='c' type='int' info='an unicode character (int) '/>
     </function>
     <function name='xmlIsExtender' file='parserInternals'>
-      <info>Check whether the character is allowed by the production [89] Extender ::= x00B7 | x02D0 | x02D1 | x0387 | x0640 |  x0E46 | x0EC6 | x3005 | [x3031-x3035] |  [x309D-x309E] | [x30FC-x30FE]</info>
+      <info>Check whether the character is allowed by the production [89] Extender ::= x00B7 | x02D0 | x02D1 | x0387 | x0640 | x0E46 | x0EC6 | x3005 | [x3031-x3035] | [x309D-x309E] | [x30FC-x30FE]</info>
       <return type='int' info='0 if not, non-zero otherwise '/>
       <arg name='c' type='int' info='an unicode character (int) '/>
     </function>
@@ -5195,12 +5235,12 @@
     </function>
     <function name='xmlParseElementChildrenContentD' file='parserInternals'>
       <info>VMS version of xmlParseElementChildrenContentDecl()</info>
-      <return type='xmlElementContentPtr' info='the tree of xmlElementContentPtr describing the element  hierarchy. '/>
+      <return type='xmlElementContentPtr' info='the tree of xmlElementContentPtr describing the element hierarchy. '/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
     </function>
     <function name='xmlParseElementChildrenContentDecl' file='parserInternals'>
       <info>parse the declaration for a Mixed Element content The leading &apos;(&apos; and spaces have been skipped in xmlParseElementContentDecl </info>
-      <return type='xmlElementContentPtr' info='the tree of xmlElementContentPtr describing the element  hierarchy. '/>
+      <return type='xmlElementContentPtr' info='the tree of xmlElementContentPtr describing the element hierarchy. '/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
       <arg name='inputchk' type='xmlParserInputPtr'/>
     </function>
@@ -5862,7 +5902,7 @@
       <arg name='href' type='const xmlChar *' info='the namespace value '/>
     </function>
     <function name='xmlSetBufferAllocationScheme' file='tree'>
-      <info>Set the buffer allocation method. Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed,  improves performance</info>
+      <info>Set the buffer allocation method. Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed, improves performance</info>
       <return type='void'/>
       <arg name='scheme' type='xmlBufferAllocationScheme' info='allocation method to use '/>
     </function>
@@ -6896,7 +6936,7 @@
     </function>
     <function name='xmlXPathNewContext' file='xpath'>
       <info>Create a new xmlXPathContext</info>
-      <return type='xmlXPathContextPtr' info='the xmlXPathContext just allocated. '/>
+      <return type='xmlXPathContextPtr' info='the xmlXPathContext just allocated. The caller will need to free it. '/>
       <arg name='doc' type='xmlDocPtr' info='the XML document '/>
     </function>
     <function name='xmlXPathNewFloat' file='xpathInternals'>
@@ -7503,7 +7543,7 @@
       <return type='xmlXPathContextPtr' info='the xmlXPathContext just allocated. '/>
       <arg name='doc' type='xmlDocPtr' info='the XML document '/>
       <arg name='here' type='xmlNodePtr' info='the node that directly contains the XPointer being evaluated or NULL '/>
-      <arg name='origin' type='xmlNodePtr' info='the element from which a user or program initiated traversal of  the link, or NULL. '/>
+      <arg name='origin' type='xmlNodePtr' info='the element from which a user or program initiated traversal of the link, or NULL. '/>
     </function>
     <function name='xmlXPtrNewLocationSetNodeSet' file='xpointer'>
       <info>Create a new xmlXPathObjectPtr of type LocationSet and initialize it with all the nodes from set</info>

@@ -1,3 +1,10 @@
+Fri Mar  8 15:49:10 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: preparing 2.4.17 release
+	* doc/*: updated and rebuilt the docs
+	* xpath.c: fixed a comment
+	* python/libxml.c: fixed a possible reentrancy problem
+
 Thu Mar  7 23:19:28 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c python/tests/Makefile.am python/tests/attribs.py:

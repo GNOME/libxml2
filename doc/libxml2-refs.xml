@@ -29,6 +29,7 @@
     <reference name='IS_IDEOGRAPHIC' href='html/libxml-parserinternals.html#IS-IDEOGRAPHIC-CAPS'/>
     <reference name='IS_LETTER' href='html/libxml-parserinternals.html#IS-LETTER-CAPS'/>
     <reference name='IS_PUBIDCHAR' href='html/libxml-parserinternals.html#IS-PUBIDCHAR-CAPS'/>
+    <reference name='LIBXML_C14N_ENABLED' href='html/libxml-xmlversion.html#LIBXML-C14N-ENABLED-CAPS'/>
     <reference name='LIBXML_CATALOG_ENABLED' href='html/libxml-xmlversion.html#LIBXML-CATALOG-ENABLED-CAPS'/>
     <reference name='LIBXML_DEBUG_ENABLED' href='html/libxml-xmlversion.html#LIBXML-DEBUG-ENABLED-CAPS'/>
     <reference name='LIBXML_DLL_IMPORT' href='html/libxml-xmlversion.html#LIBXML-DLL-IMPORT-CAPS'/>
@@ -302,6 +303,9 @@
     <reference name='xmlBufferWriteQuotedString' href='html/libxml-tree.html#XMLBUFFERWRITEQUOTEDSTRING'/>
     <reference name='xmlBufferWriteXmlCHAR' href='html/libxml-tree.html#XMLBUFFERWRITEXMLCHAR'/>
     <reference name='xmlBuildURI' href='html/libxml-uri.html#XMLBUILDURI'/>
+    <reference name='xmlC14NDocDumpMemory' href='html/libxml-c14n.html#XMLC14NDOCDUMPMEMORY'/>
+    <reference name='xmlC14NDocSave' href='html/libxml-c14n.html#XMLC14NDOCSAVE'/>
+    <reference name='xmlC14NDocSaveTo' href='html/libxml-c14n.html#XMLC14NDOCSAVETO'/>
     <reference name='xmlCatalog' href='html/libxml-catalog.html#XMLCATALOG'/>
     <reference name='xmlCatalogAdd' href='html/libxml-catalog.html#XMLCATALOGADD'/>
     <reference name='xmlCatalogAddLocal' href='html/libxml-catalog.html#XMLCATALOGADDLOCAL'/>
@@ -1248,6 +1252,7 @@
     <ref name='IS_PUBIDCHAR'/>
     </letter>
     <letter name='L'>
+    <ref name='LIBXML_C14N_ENABLED'/>
     <ref name='LIBXML_CATALOG_ENABLED'/>
     <ref name='LIBXML_DEBUG_ENABLED'/>
     <ref name='LIBXML_DLL_IMPORT'/>
@@ -1569,6 +1574,9 @@
     <ref name='xmlBufferWriteQuotedString'/>
     <ref name='xmlBufferWriteXmlCHAR'/>
     <ref name='xmlBuildURI'/>
+    <ref name='xmlC14NDocDumpMemory'/>
+    <ref name='xmlC14NDocSave'/>
+    <ref name='xmlC14NDocSaveTo'/>
     <ref name='xmlCatalog'/>
     <ref name='xmlCatalogAdd'/>
     <ref name='xmlCatalogAddLocal'/>
@@ -3017,6 +3025,9 @@
     <type name='const char **'>
       <ref name='xmlGetFeaturesList'/>
     </type>
+    <type name='const char*'>
+      <ref name='xmlC14NDocSave'/>
+    </type>
     <type name='const unsigned char *'>
       <ref name='docbEncodeEntities'/>
       <ref name='UTF8ToHtml'/>
@@ -3791,6 +3802,10 @@
       <ref name='xmlDocDumpMemoryEnc'/>
       <ref name='xmlDocDumpFormatMemoryEnc'/>
       <ref name='xmlSplitQName2'/>
+      <ref name='xmlC14NDocSaveTo'/>
+      <ref name='xmlC14NDocDumpMemory'/>
+      <ref name='xmlC14NDocDumpMemory'/>
+      <ref name='xmlC14NDocSave'/>
     </type>
     <type name='xmlCharEncoding'>
       <ref name='docbCreatePushParserCtxt'/>
@@ -3922,6 +3937,9 @@
       <ref name='xmlXIncludeProcess'/>
       <ref name='xmlXPathNewContext'/>
       <ref name='xmlXPtrNewContext'/>
+      <ref name='xmlC14NDocSaveTo'/>
+      <ref name='xmlC14NDocDumpMemory'/>
+      <ref name='xmlC14NDocSave'/>
     </type>
     <type name='xmlDtdPtr'>
       <ref name='xmlDebugDumpDTD'/>
@@ -4324,6 +4342,9 @@
       <ref name='xmlXPathNewNodeSetList'/>
       <ref name='xmlXPathWrapNodeSet'/>
       <ref name='xmlXPtrNewLocationSetNodeSet'/>
+      <ref name='xmlC14NDocSaveTo'/>
+      <ref name='xmlC14NDocDumpMemory'/>
+      <ref name='xmlC14NDocSave'/>
     </type>
     <type name='xmlNotationPtr'>
       <ref name='xmlDumpNotationDecl'/>
@@ -4360,6 +4381,7 @@
       <ref name='xmlOutputBufferWriteString'/>
       <ref name='xmlOutputBufferFlush'/>
       <ref name='xmlOutputBufferClose'/>
+      <ref name='xmlC14NDocSaveTo'/>
     </type>
     <type name='xmlOutputCloseCallback'>
       <ref name='xmlOutputBufferCreateIO'/>
@@ -4835,6 +4857,11 @@
       <ref name='xmlDefaultSAXHandlerInit'/>
       <ref name='htmlDefaultSAXHandlerInit'/>
       <ref name='docbDefaultSAXHandlerInit'/>
+    </file>
+    <file name='c14n'>
+      <ref name='xmlC14NDocSaveTo'/>
+      <ref name='xmlC14NDocDumpMemory'/>
+      <ref name='xmlC14NDocSave'/>
     </file>
     <file name='catalog'>
       <ref name='XML_CATALOGS_NAMESPACE'/>
@@ -5709,6 +5736,7 @@
       <ref name='LIBXML_FTP_ENABLED'/>
       <ref name='LIBXML_HTTP_ENABLED'/>
       <ref name='LIBXML_HTML_ENABLED'/>
+      <ref name='LIBXML_C14N_ENABLED'/>
       <ref name='LIBXML_CATALOG_ENABLED'/>
       <ref name='LIBXML_DOCB_ENABLED'/>
       <ref name='LIBXML_XPATH_ENABLED'/>
@@ -6140,6 +6168,9 @@
         </word>
       </letter>
       <letter name='C'>
+        <word name='C14N'>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
         <word name='CATALOG'>
           <ref name='xmlLoadACatalog'/>
           <ref name='xmlLoadCatalog'/>
@@ -6191,6 +6222,17 @@
         <word name='Calling'>
           <ref name='xmlCleanupParser'/>
           <ref name='xmlRegisterHTTPPostCallbacks'/>
+        </word>
+        <word name='Canonical'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
+        <word name='Canonicalization'>
+          <ref name='LIBXML_C14N_ENABLED'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
         </word>
         <word name='Carl'>
           <ref name='xmlURIEscape'/>
@@ -6608,6 +6650,9 @@
         </word>
         <word name='Dumps'>
           <ref name='xmlBufferDump'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlDebugDumpAttr'/>
           <ref name='xmlDebugDumpAttrList'/>
           <ref name='xmlDebugDumpDTD'/>
@@ -6734,6 +6779,11 @@
         <word name='Everything'>
           <ref name='setDocumentLocator'/>
           <ref name='setDocumentLocatorSAXFunc'/>
+        </word>
+        <word name='Exclusive'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
         </word>
         <word name='Existing'>
           <ref name='xmlAddEncodingAlias'/>
@@ -6867,6 +6917,9 @@
         <word name='For'>
           <ref name='LIBXML_DLL_IMPORT'/>
           <ref name='xmlBufferWriteXmlCHAR'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlParseComment'/>
           <ref name='xmlXPathSubstringAfterFunction'/>
           <ref name='xmlXPathSubstringBeforeFunction'/>
@@ -7237,6 +7290,9 @@
       <letter name='M'>
         <word name='META'>
           <ref name='htmlSetMetaEncoding'/>
+        </word>
+        <word name='MUST'>
+          <ref name='xmlC14NDocSaveTo'/>
         </word>
         <word name='Macro'>
           <ref name='ATTRIBUTE_UNUSED'/>
@@ -8186,6 +8242,7 @@
         </word>
         <word name='Whether'>
           <ref name='DEBUG_MEMORY_LOCATION'/>
+          <ref name='LIBXML_C14N_ENABLED'/>
           <ref name='LIBXML_CATALOG_ENABLED'/>
           <ref name='LIBXML_DEBUG_ENABLED'/>
           <ref name='LIBXML_DOCB_ENABLED'/>
@@ -8889,6 +8946,7 @@
           <ref name='xmlSubstituteEntitiesDefault'/>
         </word>
         <word name='because'>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlXPathTranslateFunction'/>
         </word>
         <word name='becomes'>
@@ -9218,6 +9276,7 @@
         </word>
         <word name='calling'>
           <ref name='XML_GET_LINE'/>
+          <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlGetLineNo'/>
           <ref name='xmlXPathAddValues'/>
           <ref name='xmlXPathDivValues'/>
@@ -9260,7 +9319,25 @@
           <ref name='xmlSetupParserForBuffer'/>
         </word>
         <word name='canonical'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlGetCharEncodingName'/>
+        </word>
+        <word name='canonicalization'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
+        <word name='canonization'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
+        <word name='canonized'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
         </word>
         <word name='capable'>
           <ref name='xmlCheckUTF8'/>
@@ -9569,6 +9646,9 @@
           <ref name='xmlParseComment'/>
         </word>
         <word name='comments'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlDocGetRootElement'/>
           <ref name='xmlDocSetRootElement'/>
           <ref name='xmlParseComment'/>
@@ -9683,6 +9763,7 @@
           <ref name='xmlSAXUserParseFile'/>
         </word>
         <word name='compression'>
+          <ref name='xmlC14NDocSave'/>
           <ref name='xmlGetCompressMode'/>
           <ref name='xmlGetDocCompressMode'/>
           <ref name='xmlIOHTTPOpenW'/>
@@ -9710,6 +9791,7 @@
         <word name='configured'>
           <ref name='DEBUG_MEMORY'/>
           <ref name='DEBUG_MEMORY_LOCATION'/>
+          <ref name='LIBXML_C14N_ENABLED'/>
           <ref name='LIBXML_CATALOG_ENABLED'/>
           <ref name='LIBXML_DEBUG_ENABLED'/>
           <ref name='LIBXML_DOCB_ENABLED'/>
@@ -10289,6 +10371,11 @@
           <ref name='xmlAddNextSibling'/>
           <ref name='xmlAddPrevSibling'/>
         </word>
+        <word name='details'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
         <word name='detect'>
           <ref name='xmlInputMatchCallback'/>
           <ref name='xmlKeepBlanksDefault'/>
@@ -10653,6 +10740,9 @@
           <ref name='xmlCharEncOutFunc'/>
           <ref name='xmlCharEncodingOutputFunc'/>
         </word>
+        <word name='encoder==NULL'>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
         <word name='encodings'>
           <ref name='xmlCharEncoding'/>
         </word>
@@ -10665,6 +10755,9 @@
           <ref name='xmlParseReference'/>
         </word>
         <word name='ended'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlCleanupThreads'/>
         </word>
         <word name='ending'>
@@ -10858,6 +10951,11 @@
           <ref name='xmlXPathNextFollowing'/>
           <ref name='xmlXPathNextPreceding'/>
         </word>
+        <word name='exclusive'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
         <word name='exist'>
           <ref name='xmlXPtrLocationSetAdd'/>
         </word>
@@ -10921,6 +11019,9 @@
     <chunk name='chunk11'>
       <letter name='f'>
         <word name='fail'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlShellPrintXPathError'/>
         </word>
         <word name='failed'>
@@ -11222,6 +11323,7 @@
           <ref name='xmlXPathNodeSetItem'/>
         </word>
         <word name='functions'>
+          <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlMemGet'/>
           <ref name='xmlMemSetup'/>
           <ref name='xmlShellCmd'/>
@@ -11415,6 +11517,7 @@
         <word name='have'>
           <ref name='INPUT_CHUNK'/>
           <ref name='htmlParseEntityRef'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlIsID'/>
           <ref name='xmlIsRef'/>
           <ref name='xmlKeepBlanksDefaultValue'/>
@@ -11522,6 +11625,9 @@
         </word>
         <word name='http:'>
           <ref name='getSystemId'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlGetCharEncodingName'/>
           <ref name='xmlNanoHTTPScanProxy'/>
           <ref name='xmlXPathIsInf'/>
@@ -11545,8 +11651,18 @@
         <word name='ignorableWhitespace'>
           <ref name='xmlKeepBlanksDefault'/>
         </word>
+        <word name='ignored'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
         <word name='ignoring'>
           <ref name='xmlURIEscapeStr'/>
+        </word>
+        <word name='image'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
         </word>
         <word name='imbrication'>
           <ref name='xmlNodeDump'/>
@@ -11622,10 +11738,16 @@
           <ref name='xmlNanoHTTPSave'/>
         </word>
         <word name='include'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlCheckVersion'/>
           <ref name='xmlListMerge'/>
         </word>
         <word name='included'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlFreeDoc'/>
         </word>
         <word name='includes'>
@@ -11640,6 +11762,16 @@
           <ref name='startElement'/>
           <ref name='startElementSAXFunc'/>
           <ref name='xmlXPathStringFunction'/>
+        </word>
+        <word name='inclusive'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
+        <word name='inclusive_ns_prefixe'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
         </word>
         <word name='incompatible'>
           <ref name='xmlXPathContext'/>
@@ -11951,6 +12083,9 @@
           <ref name='xmlAddChild'/>
           <ref name='xmlAddNextSibling'/>
           <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlCharEncFirstLine'/>
           <ref name='xmlCharEncInFunc'/>
           <ref name='xmlCharEncOutFunc'/>
@@ -12164,6 +12299,7 @@
           <ref name='xmlXPathSubstringFunction'/>
         </word>
         <word name='level'>
+          <ref name='xmlC14NDocSave'/>
           <ref name='xmlCatalogSetDebug'/>
           <ref name='xmlDebugDumpAttr'/>
           <ref name='xmlDebugDumpAttrList'/>
@@ -12202,6 +12338,7 @@
           <ref name='DEBUG_MEMORY'/>
           <ref name='LIBXML_DLL_IMPORT'/>
           <ref name='LIBXML_TEST_VERSION'/>
+          <ref name='xmlC14NDocSave'/>
           <ref name='xmlFree'/>
           <ref name='xmlMemSetup'/>
           <ref name='xmlRegisterHTTPPostCallbacks'/>
@@ -12712,6 +12849,9 @@
           <ref name='xmlXPathNamespaceURIFunction'/>
         </word>
         <word name='namespaces'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlCopyDoc'/>
           <ref name='xmlFreeNsList'/>
           <ref name='xmlReconciliateNs'/>
@@ -12743,6 +12883,7 @@
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlXPathContext'/>
+          <ref name='xmlXPathNewContext'/>
         </word>
         <word name='needed'>
           <ref name='xmlGetBufferAllocationScheme'/>
@@ -12771,6 +12912,9 @@
           <ref name='xmlStrstr'/>
         </word>
         <word name='negative'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlShellCmd'/>
           <ref name='xmlXPathBooleanFunction'/>
           <ref name='xmlXPathCeilingFunction'/>
@@ -12850,6 +12994,9 @@
         </word>
         <word name='non-empty'>
           <ref name='xmlXPathBooleanFunction'/>
+        </word>
+        <word name='non-negative'>
+          <ref name='xmlC14NDocSaveTo'/>
         </word>
         <word name='non-normative'>
           <ref name='xmlDetectCharEncoding'/>
@@ -13090,6 +13237,9 @@
           <ref name='XML_GET_LINE'/>
           <ref name='ftpListCallback'/>
           <ref name='xmlBufferWriteXmlCHAR'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlCharEncFirstLine'/>
           <ref name='xmlIsBlankNode'/>
           <ref name='xmlKeepBlanksDefault'/>
@@ -13190,6 +13340,9 @@
           <ref name='xmlListDataCompare'/>
         </word>
         <word name='org'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlGetCharEncodingName'/>
         </word>
         <word name='oriented'>
@@ -13606,6 +13759,11 @@
           <ref name='xmlXPathNsLookup'/>
           <ref name='xmlXPathRegisterNs'/>
         </word>
+        <word name='prefixes'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
         <word name='prepend'>
           <ref name='xmlValidGetValidElements'/>
         </word>
@@ -13845,6 +14003,7 @@
           <ref name='htmlParseFile'/>
           <ref name='htmlSAXParseDoc'/>
           <ref name='htmlSAXParseFile'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlCreateEntityParserCtxt'/>
           <ref name='xmlCreateFileParserCtxt'/>
           <ref name='xmlHashFree'/>
@@ -14359,7 +14518,11 @@
           <ref name='xmlXPathStringFunction'/>
         </word>
         <word name='requires'>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlGetLineNo'/>
+        </word>
+        <word name='requred'>
+          <ref name='xmlC14NDocSave'/>
         </word>
         <word name='reserved'>
           <ref name='xmlURIEscapeStr'/>
@@ -14435,6 +14598,9 @@
         <word name='response'>
           <ref name='xmlNanoFTPCheckResponse'/>
           <ref name='xmlNanoFTPGetResponse'/>
+        </word>
+        <word name='responsible'>
+          <ref name='xmlC14NDocDumpMemory'/>
         </word>
         <word name='restrict'>
           <ref name='xmlParseExternalID'/>
@@ -14735,6 +14901,9 @@
           <ref name='xmlNodeGetBase'/>
         </word>
         <word name='see'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlIsBaseChar'/>
           <ref name='xmlIsCombining'/>
           <ref name='xmlIsDigit'/>
@@ -15186,6 +15355,8 @@
           <ref name='htmlEncodeEntities'/>
           <ref name='htmlParseEntityRef'/>
           <ref name='isolat1ToUTF8'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlCharEncodingInputFunc'/>
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlGetFeature'/>
@@ -15410,6 +15581,9 @@
         <word name='success'>
           <ref name='htmlSetMetaEncoding'/>
           <ref name='xmlAddEncodingAlias'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlCharEncCloseFunc'/>
           <ref name='xmlCharEncFirstLine'/>
           <ref name='xmlCharEncInFunc'/>
@@ -15632,6 +15806,9 @@
           <ref name='xmlAddChild'/>
           <ref name='xmlAddNextSibling'/>
           <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlEnumeration'/>
           <ref name='xmlGenericErrorFunc'/>
           <ref name='xmlNanoFTPCheckResponse'/>
@@ -15949,6 +16126,7 @@
           <ref name='xmlXPathValueFlipSign'/>
         </word>
         <word name='uncompressed'>
+          <ref name='xmlC14NDocSave'/>
           <ref name='xmlGetCompressMode'/>
           <ref name='xmlGetDocCompressMode'/>
           <ref name='xmlSetCompressMode'/>
@@ -16552,6 +16730,8 @@
           <ref name='htmlSaveFileEnc'/>
           <ref name='htmlSaveFileFormat'/>
           <ref name='xmlBufferDump'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
           <ref name='xmlCharEncFirstLine'/>
           <ref name='xmlCharEncInFunc'/>
           <ref name='xmlCharEncOutFunc'/>
@@ -16573,9 +16753,14 @@
         </word>
         <word name='www'>
           <ref name='getSystemId'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlGetCharEncodingName'/>
         </word>
       </letter>
+    </chunk>
+    <chunk name='chunk22'>
       <letter name='x'>
         <word name='x00B7'>
           <ref name='xmlIsExtender'/>
@@ -16637,6 +16822,16 @@
         </word>
         <word name='xml'>
           <ref name='xmlSetEntityReferenceFunc'/>
+        </word>
+        <word name='xml-c14n'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
+        </word>
+        <word name='xml-exc-c14n'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
         </word>
         <word name='xml:'>
           <ref name='XML_XML_NAMESPACE'/>
@@ -16757,6 +16952,9 @@
         </word>
         <word name='xmlExternalEntityLoader'>
           <ref name='xmlGetExternalEntityLoader'/>
+        </word>
+        <word name='xmlFree'>
+          <ref name='xmlC14NDocDumpMemory'/>
         </word>
         <word name='xmlFreeMutex'>
           <ref name='xmlFreeMutex'/>
@@ -17063,7 +17261,7 @@
         </word>
       </letter>
     </chunk>
-    <chunk name='chunk22'>
+    <chunk name='chunk23'>
       <letter name='y'>
         <word name='year'>
           <ref name='ftpListCallback'/>
@@ -17099,6 +17297,9 @@
         <word name='zeros'>
           <ref name='xmlXPathStringFunction'/>
         </word>
+        <word name='zlib'>
+          <ref name='xmlC14NDocSave'/>
+        </word>
       </letter>
     </chunk>
     <chunks>
@@ -17123,7 +17324,8 @@
       <chunk name='chunk18' start='s' end='s'/>
       <chunk name='chunk19' start='t' end='t'/>
       <chunk name='chunk20' start='u' end='v'/>
-      <chunk name='chunk21' start='w' end='x'/>
+      <chunk name='chunk21' start='w' end='w'/>
+      <chunk name='chunk22' start='x' end='x'/>
     </chunks>
   </index>
 </apirefs>

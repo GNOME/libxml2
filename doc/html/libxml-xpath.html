@@ -615,7 +615,7 @@ NAME="AEN12094"
 ><A
 NAME="XMLXPATHCONTEXT"
 ></A
->&#62;struct xmlXPathContext</H3
+>struct xmlXPathContext</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -685,11 +685,11 @@ CLASS="PROGRAMLISTING"
 ><P
 >Expression evaluation occurs with respect to a context.
 he context consists of:
-   - a node (the context node) 
-   - a node list (the context node list) 
-   - a set of variable bindings 
-   - a function library 
-   - the set of namespace declarations in scope for the expression 
+- a node (the context node) 
+- a node list (the context node list) 
+- a set of variable bindings 
+- a function library 
+- the set of namespace declarations in scope for the expression 
 Following the switch to hash tables, this need to be trimmed up at
 the next binary incompatible release.</P
 ><P
@@ -704,7 +704,7 @@ NAME="AEN12100"
 ><A
 NAME="XMLXPATHCONTEXTPTR"
 ></A
->&#62;xmlXPathContextPtr</H3
+>xmlXPathContextPtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -730,7 +730,7 @@ NAME="AEN12105"
 ><A
 NAME="XMLXPATHPARSERCONTEXT"
 ></A
->&#62;struct xmlXPathParserContext</H3
+>struct xmlXPathParserContext</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -774,7 +774,7 @@ NAME="AEN12111"
 ><A
 NAME="XMLXPATHPARSERCONTEXTPTR"
 ></A
->&#62;xmlXPathParserContextPtr</H3
+>xmlXPathParserContextPtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -800,7 +800,7 @@ NAME="AEN12116"
 ><A
 NAME="XMLXPATHERROR"
 ></A
->&#62;enum xmlXPathError</H3
+>enum xmlXPathError</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -849,7 +849,7 @@ NAME="AEN12121"
 ><A
 NAME="XMLNODESET"
 ></A
->&#62;struct xmlNodeSet</H3
+>struct xmlNodeSet</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -863,6 +863,7 @@ CLASS="PROGRAMLISTING"
     int nodeNr;			/* number of nodes in the set */
     int nodeMax;		/* size of the array as allocated */
     xmlNodePtr *nodeTab;	/* array of nodes in no particular order */
+    /* @@ with_ns to check wether namespace nodes should be looked at @@ */
 };</PRE
 ></TD
 ></TR
@@ -879,7 +880,7 @@ NAME="AEN12126"
 ><A
 NAME="XMLNODESETPTR"
 ></A
->&#62;xmlNodeSetPtr</H3
+>xmlNodeSetPtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -905,7 +906,7 @@ NAME="AEN12131"
 ><A
 NAME="XMLXPATHOBJECTTYPE"
 ></A
->&#62;enum xmlXPathObjectType</H3
+>enum xmlXPathObjectType</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -942,7 +943,7 @@ NAME="AEN12136"
 ><A
 NAME="XMLXPATHOBJECT"
 ></A
->&#62;struct xmlXPathObject</H3
+>struct xmlXPathObject</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -978,7 +979,7 @@ NAME="AEN12141"
 ><A
 NAME="XMLXPATHOBJECTPTR"
 ></A
->&#62;xmlXPathObjectPtr</H3
+>xmlXPathObjectPtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1004,7 +1005,7 @@ NAME="AEN12146"
 ><A
 NAME="XMLXPATHCONVERTFUNC"
 ></A
->&#62;xmlXPathConvertFunc ()</H3
+>xmlXPathConvertFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1106,7 +1107,7 @@ NAME="AEN12170"
 ><A
 NAME="XMLXPATHTYPE"
 ></A
->&#62;struct xmlXPathType</H3
+>struct xmlXPathType</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1135,7 +1136,7 @@ NAME="AEN12175"
 ><A
 NAME="XMLXPATHTYPEPTR"
 ></A
->&#62;xmlXPathTypePtr</H3
+>xmlXPathTypePtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1161,7 +1162,7 @@ NAME="AEN12180"
 ><A
 NAME="XMLXPATHVARIABLE"
 ></A
->&#62;struct xmlXPathVariable</H3
+>struct xmlXPathVariable</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1190,7 +1191,7 @@ NAME="AEN12185"
 ><A
 NAME="XMLXPATHVARIABLEPTR"
 ></A
->&#62;xmlXPathVariablePtr</H3
+>xmlXPathVariablePtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1216,7 +1217,7 @@ NAME="AEN12190"
 ><A
 NAME="XMLXPATHEVALFUNC"
 ></A
->&#62;xmlXPathEvalFunc ()</H3
+>xmlXPathEvalFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1302,7 +1303,7 @@ NAME="AEN12210"
 ><A
 NAME="XMLXPATHFUNCT"
 ></A
->&#62;struct xmlXPathFunct</H3
+>struct xmlXPathFunct</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1331,7 +1332,7 @@ NAME="AEN12215"
 ><A
 NAME="XMLXPATHFUNCPTR"
 ></A
->&#62;xmlXPathFuncPtr</H3
+>xmlXPathFuncPtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1357,7 +1358,7 @@ NAME="AEN12220"
 ><A
 NAME="XMLXPATHAXISFUNC"
 ></A
->&#62;xmlXPathAxisFunc ()</H3
+>xmlXPathAxisFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1466,7 +1467,7 @@ NAME="AEN12246"
 ><A
 NAME="XMLXPATHAXIS"
 ></A
->&#62;struct xmlXPathAxis</H3
+>struct xmlXPathAxis</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1495,7 +1496,7 @@ NAME="AEN12251"
 ><A
 NAME="XMLXPATHAXISPTR"
 ></A
->&#62;xmlXPathAxisPtr</H3
+>xmlXPathAxisPtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1521,7 +1522,7 @@ NAME="AEN12256"
 ><A
 NAME="XMLXPATHCOMPEXPR"
 ></A
->&#62;struct xmlXPathCompExpr</H3
+>struct xmlXPathCompExpr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1537,8 +1538,8 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 >[14]   Expr ::=   OrExpr 
- [21]   OrExpr ::=   AndExpr 
-                | OrExpr 'or' AndExpr </P
+[21]   OrExpr ::=   AndExpr 
+| OrExpr 'or' AndExpr </P
 ><P
 >Parse and compile an expression</P
 ><P
@@ -1553,7 +1554,7 @@ NAME="AEN12263"
 ><A
 NAME="XMLXPATHCOMPEXPRPTR"
 ></A
->&#62;xmlXPathCompExprPtr</H3
+>xmlXPathCompExprPtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1579,7 +1580,7 @@ NAME="AEN12268"
 ><A
 NAME="XMLXPATHFUNCTION"
 ></A
->&#62;xmlXPathFunction ()</H3
+>xmlXPathFunction ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1667,7 +1668,7 @@ NAME="AEN12288"
 ><A
 NAME="XMLXPATHISNAN"
 ></A
->&#62;xmlXPathIsNaN ()</H3
+>xmlXPathIsNaN ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1755,7 +1756,7 @@ NAME="AEN12309"
 ><A
 NAME="XMLXPATHISINF"
 ></A
->&#62;xmlXPathIsInf ()</H3
+>xmlXPathIsInf ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1843,7 +1844,7 @@ NAME="AEN12330"
 ><A
 NAME="XMLXPATHNODESETGETLENGTH"
 ></A
->&#62;xmlXPathNodeSetGetLength()</H3
+>xmlXPathNodeSetGetLength()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1908,7 +1909,7 @@ NAME="AEN12345"
 ><A
 NAME="XMLXPATHNODESETITEM"
 ></A
->&#62;xmlXPathNodeSetItem()</H3
+>xmlXPathNodeSetItem()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1993,7 +1994,7 @@ NAME="AEN12365"
 ><A
 NAME="XMLXPATHNODESETISEMPTY"
 ></A
->&#62;xmlXPathNodeSetIsEmpty()</H3
+>xmlXPathNodeSetIsEmpty()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2063,7 +2064,7 @@ NAME="AEN12381"
 ><A
 NAME="XMLXPATHFREEOBJECT"
 ></A
->&#62;xmlXPathFreeObject ()</H3
+>xmlXPathFreeObject ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2131,7 +2132,7 @@ NAME="AEN12397"
 ><A
 NAME="XMLXPATHNODESETCREATE"
 ></A
->&#62;xmlXPathNodeSetCreate ()</H3
+>xmlXPathNodeSetCreate ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2222,7 +2223,7 @@ NAME="AEN12419"
 ><A
 NAME="XMLXPATHFREENODESETLIST"
 ></A
->&#62;xmlXPathFreeNodeSetList ()</H3
+>xmlXPathFreeNodeSetList ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2299,7 +2300,7 @@ NAME="AEN12437"
 ><A
 NAME="XMLXPATHFREENODESET"
 ></A
->&#62;xmlXPathFreeNodeSet ()</H3
+>xmlXPathFreeNodeSet ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2367,7 +2368,7 @@ NAME="AEN12453"
 ><A
 NAME="XMLXPATHOBJECTCOPY"
 ></A
->&#62;xmlXPathObjectCopy ()</H3
+>xmlXPathObjectCopy ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2453,7 +2454,7 @@ NAME="AEN12474"
 ><A
 NAME="XMLXPATHCMPNODES"
 ></A
->&#62;xmlXPathCmpNodes ()</H3
+>xmlXPathCmpNodes ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2541,7 +2542,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >-2 in case of error 1 if first point &lt; second point, 0 if
-        that's the same node, -1 otherwise</TD
+that's the same node, -1 otherwise</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2558,7 +2559,7 @@ NAME="AEN12499"
 ><A
 NAME="XMLXPATHCASTNUMBERTOBOOLEAN"
 ></A
->&#62;xmlXPathCastNumberToBoolean ()</H3
+>xmlXPathCastNumberToBoolean ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2641,7 +2642,7 @@ NAME="AEN12519"
 ><A
 NAME="XMLXPATHCASTSTRINGTOBOOLEAN"
 ></A
->&#62;xmlXPathCastStringToBoolean ()</H3
+>xmlXPathCastStringToBoolean ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2724,7 +2725,7 @@ NAME="AEN12539"
 ><A
 NAME="XMLXPATHCASTNODESETTOBOOLEAN"
 ></A
->&#62;xmlXPathCastNodeSetToBoolean ()</H3
+>xmlXPathCastNodeSetToBoolean ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2807,7 +2808,7 @@ NAME="AEN12559"
 ><A
 NAME="XMLXPATHCASTTOBOOLEAN"
 ></A
->&#62;xmlXPathCastToBoolean ()</H3
+>xmlXPathCastToBoolean ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2890,7 +2891,7 @@ NAME="AEN12579"
 ><A
 NAME="XMLXPATHCASTBOOLEANTONUMBER"
 ></A
->&#62;xmlXPathCastBooleanToNumber ()</H3
+>xmlXPathCastBooleanToNumber ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2973,7 +2974,7 @@ NAME="AEN12599"
 ><A
 NAME="XMLXPATHCASTSTRINGTONUMBER"
 ></A
->&#62;xmlXPathCastStringToNumber ()</H3
+>xmlXPathCastStringToNumber ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3059,7 +3060,7 @@ NAME="AEN12620"
 ><A
 NAME="XMLXPATHCASTNODETONUMBER"
 ></A
->&#62;xmlXPathCastNodeToNumber ()</H3
+>xmlXPathCastNodeToNumber ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3145,7 +3146,7 @@ NAME="AEN12641"
 ><A
 NAME="XMLXPATHCASTNODESETTONUMBER"
 ></A
->&#62;xmlXPathCastNodeSetToNumber ()</H3
+>xmlXPathCastNodeSetToNumber ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3231,7 +3232,7 @@ NAME="AEN12662"
 ><A
 NAME="XMLXPATHCASTTONUMBER"
 ></A
->&#62;xmlXPathCastToNumber ()</H3
+>xmlXPathCastToNumber ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3317,7 +3318,7 @@ NAME="AEN12683"
 ><A
 NAME="XMLXPATHCASTBOOLEANTOSTRING"
 ></A
->&#62;xmlXPathCastBooleanToString ()</H3
+>xmlXPathCastBooleanToString ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3400,7 +3401,7 @@ NAME="AEN12703"
 ><A
 NAME="XMLXPATHCASTNUMBERTOSTRING"
 ></A
->&#62;xmlXPathCastNumberToString ()</H3
+>xmlXPathCastNumberToString ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3486,7 +3487,7 @@ NAME="AEN12724"
 ><A
 NAME="XMLXPATHCASTNODETOSTRING"
 ></A
->&#62;xmlXPathCastNodeToString ()</H3
+>xmlXPathCastNodeToString ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3572,7 +3573,7 @@ NAME="AEN12745"
 ><A
 NAME="XMLXPATHCASTNODESETTOSTRING"
 ></A
->&#62;xmlXPathCastNodeSetToString ()</H3
+>xmlXPathCastNodeSetToString ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3658,7 +3659,7 @@ NAME="AEN12766"
 ><A
 NAME="XMLXPATHCASTTOSTRING"
 ></A
->&#62;xmlXPathCastToString ()</H3
+>xmlXPathCastToString ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3731,13 +3732,13 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the string value of the object, NULL in case of error.
-        A new string is allocated only if needed (<TT
+A new string is allocated only if needed (<TT
 CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
 > isn't a
-        string object).</TD
+string object).</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3754,7 +3755,7 @@ NAME="AEN12789"
 ><A
 NAME="XMLXPATHCONVERTBOOLEAN"
 ></A
->&#62;xmlXPathConvertBoolean ()</H3
+>xmlXPathConvertBoolean ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3827,7 +3828,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the new object, the old one is freed (or the operation
-        is done directly on <TT
+is done directly on <TT
 CLASS="PARAMETER"
 ><I
 >val</I
@@ -3849,7 +3850,7 @@ NAME="AEN12812"
 ><A
 NAME="XMLXPATHCONVERTNUMBER"
 ></A
->&#62;xmlXPathConvertNumber ()</H3
+>xmlXPathConvertNumber ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3922,7 +3923,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the new object, the old one is freed (or the operation
-        is done directly on <TT
+is done directly on <TT
 CLASS="PARAMETER"
 ><I
 >val</I
@@ -3944,7 +3945,7 @@ NAME="AEN12835"
 ><A
 NAME="XMLXPATHCONVERTSTRING"
 ></A
->&#62;xmlXPathConvertString ()</H3
+>xmlXPathConvertString ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4017,7 +4018,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the new object, the old one is freed (or the operation
-        is done directly on <TT
+is done directly on <TT
 CLASS="PARAMETER"
 ><I
 >val</I
@@ -4039,7 +4040,7 @@ NAME="AEN12858"
 ><A
 NAME="XMLXPATHINIT"
 ></A
->&#62;xmlXPathInit ()</H3
+>xmlXPathInit ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4067,7 +4068,7 @@ NAME="AEN12864"
 ><A
 NAME="XMLXPATHNEWCONTEXT"
 ></A
->&#62;xmlXPathNewContext ()</H3
+>xmlXPathNewContext ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4136,7 +4137,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlXPathContext just allocated.</TD
+>the xmlXPathContext just allocated. The caller will need to free it.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4153,7 +4154,7 @@ NAME="AEN12885"
 ><A
 NAME="XMLXPATHFREECONTEXT"
 ></A
->&#62;xmlXPathFreeContext ()</H3
+>xmlXPathFreeContext ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4221,7 +4222,7 @@ NAME="AEN12901"
 ><A
 NAME="XMLXPATHEVAL"
 ></A
->&#62;xmlXPathEval ()</H3
+>xmlXPathEval ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4312,7 +4313,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the xmlXPathObjectPtr resulting from the evaluation or NULL.
-        the caller has to free the object.</TD
+the caller has to free the object.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4329,7 +4330,7 @@ NAME="AEN12927"
 ><A
 NAME="XMLXPATHEVALEXPRESSION"
 ></A
->&#62;xmlXPathEvalExpression ()</H3
+>xmlXPathEvalExpression ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4420,7 +4421,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the xmlXPathObjectPtr resulting from the evaluation or NULL.
-        the caller has to free the object.</TD
+the caller has to free the object.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4437,7 +4438,7 @@ NAME="AEN12953"
 ><A
 NAME="XMLXPATHEVALPREDICATE"
 ></A
->&#62;xmlXPathEvalPredicate ()</H3
+>xmlXPathEvalPredicate ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4548,7 +4549,7 @@ NAME="AEN12978"
 ><A
 NAME="XMLXPATHCOMPILE"
 ></A
->&#62;xmlXPathCompile ()</H3
+>xmlXPathCompile ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4618,7 +4619,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the xmlXPathObjectPtr resulting from the evaluation or NULL.
-        the caller has to free the object.</TD
+the caller has to free the object.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4635,7 +4636,7 @@ NAME="AEN12999"
 ><A
 NAME="XMLXPATHCOMPILEDEVAL"
 ></A
->&#62;xmlXPathCompiledEval ()</H3
+>xmlXPathCompiledEval ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4726,7 +4727,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the xmlXPathObjectPtr resulting from the evaluation or NULL.
-        the caller has to free the object.</TD
+the caller has to free the object.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4743,7 +4744,7 @@ NAME="AEN13025"
 ><A
 NAME="XMLXPATHFREECOMPEXPR"
 ></A
->&#62;xmlXPathFreeCompExpr ()</H3
+>xmlXPathFreeCompExpr ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"

@@ -107,11 +107,11 @@ debugging, analysis or to implement a specific behaviour on memory management
 (like on embedded systems). Two function calls are available to do so:</p>
 <ul>
 <li>
-<a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemGet ()</a>
-     which return the current set of functions in use by the parser</li>
+<a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemGet
+    ()</a> which return the current set of functions in use by the parser</li>
 <li>
 <a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemSetup()</a>
-     which allow to set up a new set of memory allocation functions</li>
+    which allow to set up a new set of memory allocation functions</li>
 </ul>
 <p>Of course a call to xmlMemSetup() should probably be done before calling
 any other libxml routines (unless you are sure your allocations routines are
@@ -125,16 +125,14 @@ reuse the parser immediately:</p>
 <ul>
 <li>
 <a href="http://xmlsoft.org/html/libxml-parser.html">xmlCleanupParser
-    ()</a>
-     is a centralized routine to free the parsing states. Note that it won't
-    deallocate any produced tree if any (use the xmlFreeDoc() and related
-    routines for this).</li>
+    ()</a> is a centralized routine to free the parsing states. Note that it
+    won't deallocate any produced tree if any (use the xmlFreeDoc() and
+    related routines for this).</li>
 <li>
 <a href="http://xmlsoft.org/html/libxml-parser.html">xmlInitParser
-    ()</a>
-     is the dual routine allowing to preallocate the parsing state which can
-    be useful for example to avoid initialization reentrancy problems when
-    using libxml in multithreaded applications</li>
+    ()</a> is the dual routine allowing to preallocate the parsing state
+    which can be useful for example to avoid initialization reentrancy
+    problems when using libxml in multithreaded applications</li>
 </ul>
 <p>Generally xmlCleanupParser() is safe, if needed the state will be rebuild
 at the next invocation of parser routines, but be careful of the consequences
@@ -152,9 +150,8 @@ or call a specific routine when a given block number is allocated:</p>
     are the memory debugging replacement allocation routines</li>
 <li>
 <a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemoryDump
-    ()</a>
-     dumps all the informations about the allocated memory block lefts in the
-    <code>.memdump</code> file</li>
+    ()</a> dumps all the informations about the allocated memory block lefts
+    in the <code>.memdump</code> file</li>
 </ul>
 <p>When developping libxml memory debug is enabled, the tests programs call
 xmlMemoryDump () and the &quot;make test&quot; regression tests will check for any

@@ -1808,6 +1808,9 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 
     if ((buf == NULL) || (cur == NULL)) return;
 
+    if (encoding == NULL)
+        encoding = "UTF-8";
+
     memset(&ctxt, 0, sizeof(ctxt));
     ctxt.doc = doc;
     ctxt.buf = buf;

@@ -1,3 +1,10 @@
+Thu Mar 31 17:20:32 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c: fixed bug reported by Petr Pajas, in the absence of
+	  encoding UTF-8 should really be assumed. This may break if 
+	  the HTTP headers indicates for example ISO-8859-1 since this
+	  then becomes a well formedness error.
+
 Thu Mar 31 16:57:18 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: fixed #172260 redundant assignment.

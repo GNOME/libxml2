@@ -1,3 +1,8 @@
+Tue Mar 26 08:55:53 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in nanohttp.c: applied patch from Allan Clark for
+	  UnixWare/OpenServer
+
 Mon Mar 25 17:45:44 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing 2.4.19

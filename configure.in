@@ -87,7 +87,7 @@ AC_CHECK_HEADERS(stdarg.h sys/stat.h sys/types.h time.h ansidecl.h)
 AC_CHECK_HEADERS(ieeefp.h nan.h math.h fp_class.h float.h)
 AC_CHECK_HEADERS(stdlib.h sys/socket.h netinet/in.h arpa/inet.h)
 AC_CHECK_HEADERS(netdb.h sys/time.h sys/select.h sys/mman.h)
-AC_CHECK_HEADERS(sys/timeb.h signal.h resolv.h)
+AC_CHECK_HEADERS(sys/timeb.h signal.h arpa/nameser.h resolv.h)
 
 dnl Specific dir for HTML output ?
 if test "x$with_html_dir" = "x" ; then

@@ -1,3 +1,8 @@
+Fri Oct  5 20:37:51 MDT 2001 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmlcatalog.1 updated using a new stylesheet to address, in
+	part, https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=54392
+
 Fri Oct  5 23:35:00 HKT 2001 William Brack <wbrack@mmm.com.hk>
 
 	* HTMLparser: repaired another loop problem

@@ -1624,28 +1624,58 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
     if (prefix != NULL)
 	namespace = xmlSearchNs(ctxt->myDoc, ctxt->node, prefix);
 
-    ret = xmlNewNsProp(ctxt->node, namespace, localname, NULL);
+    /*
+     * allocate the node
+     */
+    if (ctxt->freeAttrs != NULL) {
+        ret = ctxt->freeAttrs;
+	ctxt->freeAttrs = ret->next;
+	memset(ret, 0, sizeof(xmlAttr));
+	ret->type = XML_ATTRIBUTE_NODE;
 
-    if (ret != NULL) {
-        if ((ctxt->replaceEntities == 0) && (!ctxt->html)) {
-	    xmlNodePtr tmp;
+	ret->parent = ctxt->node; 
+	ret->doc = ctxt->myDoc;
+	ret->ns = namespace;
 
-	    ret->children = xmlStringLenGetNodeList(ctxt->myDoc, value,
-	                                            valueend - value);
-	    tmp = ret->children;
-	    while (tmp != NULL) {
-		tmp->parent = (xmlNodePtr) ret;
-		if (tmp->next == NULL)
-		    ret->last = tmp;
-		tmp = tmp->next;
-	    }
-	} else if (value != NULL) {
-	    ret->children = xmlNewDocTextLen(ctxt->myDoc, value,
-	                                     valueend - value);
-	    ret->last = ret->children;
-	    if (ret->children != NULL)
-		ret->children->parent = (xmlNodePtr) ret;
+	if (ctxt->dictNames)
+	    ret->name = localname;
+	else
+	    ret->name = xmlStrdup(localname);
+
+	if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
+	    xmlRegisterNodeDefaultValue((xmlNodePtr)ret);
+    } else {
+	if (ctxt->dictNames)
+	    ret = xmlNewNsPropEatName(ctxt->node, namespace, 
+	                              (xmlChar *) localname, NULL);
+	else
+	    ret = xmlNewNsProp(ctxt->node, namespace, localname, NULL);
+	if (ret == NULL) {
+	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    ctxt->instate = XML_PARSER_EOF;
+	    ctxt->disableSAX = 1;
+	    return;
 	}
+    }
+
+    if ((ctxt->replaceEntities == 0) && (!ctxt->html)) {
+	xmlNodePtr tmp;
+
+	ret->children = xmlStringLenGetNodeList(ctxt->myDoc, value,
+						valueend - value);
+	tmp = ret->children;
+	while (tmp != NULL) {
+	    tmp->parent = (xmlNodePtr) ret;
+	    if (tmp->next == NULL)
+		ret->last = tmp;
+	    tmp = tmp->next;
+	}
+    } else if (value != NULL) {
+	ret->children = xmlNewDocTextLen(ctxt->myDoc, value,
+					 valueend - value);
+	ret->last = ret->children;
+	if (ret->children != NULL)
+	    ret->children->parent = (xmlNodePtr) ret;
     }
 
     if ((!ctxt->html) && ctxt->validate && ctxt->wellFormed &&
@@ -1790,13 +1820,36 @@ xmlSAX2StartElementNs(void *ctx,
 	ctxt->errNo = XML_ERR_NO_DTD;
     }
 
-    ret = xmlNewDocNode(ctxt->myDoc, NULL, localname, NULL);
-    if (ret == NULL) {
-	ctxt->errNo = XML_ERR_NO_MEMORY;
-	ctxt->instate = XML_PARSER_EOF;
-	ctxt->disableSAX = 1;
-        return;
+    /*
+     * allocate the node
+     */
+    if (ctxt->freeElems != NULL) {
+        ret = ctxt->freeElems;
+	ctxt->freeElems = ret->next;
+	memset(ret, 0, sizeof(xmlNode));
+	ret->type = XML_ELEMENT_NODE;
+
+	if (ctxt->dictNames)
+	    ret->name = localname;
+	else
+	    ret->name = xmlStrdup(localname);
+
+	if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
+	    xmlRegisterNodeDefaultValue(ret);
+    } else {
+	if (ctxt->dictNames)
+	    ret = xmlNewDocNodeEatName(ctxt->myDoc, NULL, 
+	                               (xmlChar *) localname, NULL);
+	else
+	    ret = xmlNewDocNode(ctxt->myDoc, NULL, localname, NULL);
+	if (ret == NULL) {
+	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    ctxt->instate = XML_PARSER_EOF;
+	    ctxt->disableSAX = 1;
+	    return;
+	}
     }
+
     if (ctxt->myDoc->children == NULL) {
         xmlAddChild((xmlNodePtr) ctxt->myDoc, (xmlNodePtr) ret);
     } else if (parent == NULL) {

@@ -1,3 +1,12 @@
+Mon Sep 15 16:46:28 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c include/libxml/parser.h: starting work on reusing the
+	  parser dictionary for the element and attribute tag names.
+	  Add pools for Element and Attributes in the parser context,
+	  which should help speeding up the reader.
+	* Makefile.am result/*.rdr : adding non-python reader regression
+	  tests.
+
 Mon Sep 15 14:54:42 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c parser.c valid.c: starting to cleanup some of the

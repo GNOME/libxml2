@@ -262,6 +262,13 @@ struct _xmlParserCtxt {
     xmlHashTablePtr    attsDefault;   /* defaulted attributes if any */
     xmlHashTablePtr    attsSpecial;   /* non-CDATA attributes if any */
     int                nsWellFormed;  /* is the document XML Nanespace okay */
+
+    /*
+     * Those fields are needed only for treaming parsing so far
+     */
+     int               dictNames;    /* Use dictionary names for the tree */
+     xmlNodePtr        freeElems;    /* List of freed element nodes */
+     xmlAttrPtr        freeAttrs;    /* List of freed attributes nodes */
 };
 
 /**

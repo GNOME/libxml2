@@ -8,6 +8,7 @@ libxml_la_SOURCES = \
 		SAX.c \
 		entities.c \
 		error.c \
+		error.h \
 		parser.c \
 		tester.c \
 		tree.c

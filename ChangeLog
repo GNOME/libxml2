@@ -1,3 +1,11 @@
+Wed Mar 16 17:20:25 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c xmlschemastypes.c include/libxml/xmlschemastypes.h:
+	  Hopefully finished validation against facets to use the normalized
+	  value of both, the facets and instance values. Added 
+	  xmlSchemaValidateLengthFacetWhtsp(), xmlSchemaValidateFacetWhtsp()
+	  and xmlSchemaGetValType() to the schema API.
+
 Wed Mar 16 13:55:31 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in: do not package .la files

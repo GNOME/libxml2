@@ -562,6 +562,15 @@ xmlSchemaCheckDefaults(xmlSchemaTypePtr typeDecl,
                        xmlSchemaParserCtxtPtr ctxt, const xmlChar * name);
 static void
 xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt);
+static int
+xmlSchemaPostCreateVal(xmlSchemaValidCtxtPtr vctxt,
+		       xmlSchemaTypePtr type,
+		       const xmlChar *value,
+		       xmlSchemaValPtr *val);
+static xmlSchemaTypePtr
+xmlSchemaGetSimpleContentType(xmlSchemaTypePtr complexType);
+static int
+xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type);
 
 /************************************************************************
  *									*
@@ -1192,6 +1201,56 @@ xmlSchemaPRequestItemDes(xmlChar **buf,
 }
 
 /**
+ * xmlSchemaGetCanonValueWhtsp:
+ * @val: the precomputed value
+ * @retValue: the returned value
+ * @ws: the whitespace type of the value
+ *
+ * Get a the cononical representation of the value.
+ * The caller has to free the returned retValue.
+ *
+ * Returns 0 if the value could be built and -1 in case of
+ *         API errors or if the value type is not supported yet.
+ */
+static int
+xmlSchemaGetCanonValueWhtsp(const xmlChar *value,
+			    xmlSchemaValPtr val,
+			    xmlSchemaWhitespaceValueType ws,
+			    const xmlChar **retValue)
+{
+    xmlSchemaValType valType;
+
+    if ((retValue == NULL) || (value == NULL) || (val == NULL))
+	return (-1);
+    *retValue = NULL;
+    valType = xmlSchemaGetValType(val);    
+    switch (valType) {
+	case XML_SCHEMAS_STRING:
+	    if (value == NULL)
+		*retValue = BAD_CAST xmlStrdup(BAD_CAST "");
+	    else
+		*retValue = 
+		    BAD_CAST xmlStrdup(value);
+	    break;
+	case XML_SCHEMAS_NORMSTRING:
+	    if (value == NULL)
+		*retValue = BAD_CAST xmlStrdup(BAD_CAST "");
+	    else {
+		if (ws == XML_SCHEMA_WHITESPACE_COLLAPSE)
+		    *retValue = xmlSchemaCollapseString(value);
+		else
+		    *retValue = xmlSchemaWhiteSpaceReplace(value);
+		if ((*retValue) == NULL)
+		    *retValue = BAD_CAST xmlStrdup(value);
+	    }
+	    break;
+	default:
+	    return (xmlSchemaGetCanonValue(val, retValue));
+    }    
+    return (0);
+}
+
+/**
  * xmlSchemaFormatFacetEnumSet:
  * @buf: the string buffer
  * @type: the type holding the enumeration facets
@@ -1203,11 +1262,61 @@ xmlSchemaPRequestItemDes(xmlChar **buf,
 static const xmlChar *
 xmlSchemaFormatFacetEnumSet(xmlChar **buf, xmlSchemaTypePtr type)
 {
-    xmlSchemaFacetLinkPtr link;
+    xmlSchemaFacetPtr facet;
+    xmlSchemaWhitespaceValueType ws;
+    const xmlChar *value;
+    int res;
 
     if (*buf != NULL)
 	xmlFree(*buf);    
     *buf = NULL;
+
+    do {
+	/*
+	* Use the whitespace type of the base type.
+	*/
+	if (type->type == XML_SCHEMA_TYPE_COMPLEX)
+	    /* TODO: Get rid of this case. */
+	    ws = (xmlSchemaWhitespaceValueType)
+		xmlSchemaGetWhiteSpaceFacetValue(
+		xmlSchemaGetSimpleContentType(type));
+	else
+	    ws = (xmlSchemaWhitespaceValueType)
+		xmlSchemaGetWhiteSpaceFacetValue(type->baseType);
+	for (facet = type->facets; facet != NULL; facet = facet->next) {
+	    if (facet->type != XML_SCHEMA_FACET_ENUMERATION)
+		continue;
+	    res = xmlSchemaGetCanonValueWhtsp(facet->value, facet->val,
+		ws, &value);
+	    if (res == -1) {
+		xmlSchemaVErr(NULL, NULL,
+		    XML_SCHEMAV_INTERNAL,
+		    "Internal error: xmlSchemaFormatFacetEnumSet, failed to "
+		    "compute the canonical lexical representation.\n",
+		    NULL, NULL);
+		if (*buf != NULL)
+		    xmlFree(*buf);
+		*buf = NULL;
+		return (NULL);
+	    }
+	    if (*buf == NULL) {
+		*buf = xmlStrdup(BAD_CAST "'");
+		*buf = xmlStrcat(*buf, value);
+		*buf = xmlStrcat(*buf, BAD_CAST "'");
+	    } else {
+		*buf = xmlStrcat(*buf, BAD_CAST ", '");
+		*buf = xmlStrcat(*buf, value);
+		*buf = xmlStrcat(*buf, BAD_CAST "'");
+	    }
+	}
+	if (type->type == XML_SCHEMA_TYPE_COMPLEX)
+	    /* TODO: Get rid of this case. */
+	    type = xmlSchemaGetSimpleContentType(type);
+	else
+	    type = type->baseType;
+    } while ((type != NULL) && (type->type != XML_SCHEMA_TYPE_BASIC));
+
+#if 0
     for (link = type->facetSet; link != NULL; link = link->next) {
 	if (link->facet->type == XML_SCHEMA_FACET_ENUMERATION) {
 	    if (*buf == NULL) {
@@ -1221,6 +1330,7 @@ xmlSchemaFormatFacetEnumSet(xmlChar **buf, xmlSchemaTypePtr type)
 	    }
 	}
     }
+#endif
     return ((const xmlChar *) *buf);
 }
 
@@ -8350,15 +8460,9 @@ xmlSchemaParseInclude(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		*/
 		if (xmlStrEqual(schema->targetNamespace,
 		    include->targetNamespace)) {
-		    fprintf(stderr, "already included chameleon '%s', TNS '%s'\n",
-			include->schemaLocation,
-			include->origTargetNamespace);
 		    goto check_targetNamespace;
 		}
 	    } else {
-		fprintf(stderr, "already included '%s', TNS '%s'\n",
-		    include->schemaLocation,
-		    include->origTargetNamespace);
 		goto check_targetNamespace;
 	    }
 	}
@@ -10738,6 +10842,9 @@ xmlSchemaGetPrimitiveType(xmlSchemaTypePtr type)
 static xmlSchemaTypePtr
 xmlSchemaGetBuiltInTypeAncestor(xmlSchemaTypePtr type)
 {
+    if ((type->flags & XML_SCHEMAS_TYPE_VARIETY_LIST) ||
+	(type->flags & XML_SCHEMAS_TYPE_VARIETY_UNION))
+	return (0);
     while (type != NULL) {
 	if (type->type == XML_SCHEMA_TYPE_BASIC)
 	    return (type);
@@ -10747,7 +10854,6 @@ xmlSchemaGetBuiltInTypeAncestor(xmlSchemaTypePtr type)
     return (NULL);
 }
 #endif
-
 
 /**
  * xmlSchemaBuildAttributeUsesOwned:
@@ -13403,7 +13509,7 @@ xmlSchemaComputeContentType(xmlSchemaParserCtxtPtr ctxt,
 	xmlSchemaPCustomErr(ctxt,
 	    XML_SCHEMAP_INTERNAL,
 	    NULL, type, NULL,
-	    "Internal error: xmlSchemaGetContentType, "
+	    "Internal error: xmlSchemaComputeContentType, "
 	    "the complex type '%s' has no base type", type->name);
 	return (-1);
     }   
@@ -13453,7 +13559,7 @@ xmlSchemaComputeContentType(xmlSchemaParserCtxtPtr ctxt,
 			xmlSchemaPCustomErr(ctxt,
 			    XML_SCHEMAP_INTERNAL,
 			    NULL, type, NULL,
-			    "Internal error: xmlSchemaGetContentType, "
+			    "Internal error: xmlSchemaComputeContentType, "
 			    "CT '%s' (restricting): <simpleContent> has no "
 			    "<restriction>",
 			    type->name);
@@ -13465,7 +13571,7 @@ xmlSchemaComputeContentType(xmlSchemaParserCtxtPtr ctxt,
 			xmlSchemaPCustomErr(ctxt,
 			    XML_SCHEMAP_INTERNAL,
 			    NULL, type, NULL,
-			    "Internal error: xmlSchemaGetContentType, "
+			    "Internal error: xmlSchemaComputeContentType, "
 			    "CT '%s' (restricting): <restriction> has no "
 			    "mandatory <simpleType>",
 			    type->name);
@@ -13477,7 +13583,7 @@ xmlSchemaComputeContentType(xmlSchemaParserCtxtPtr ctxt,
 			xmlSchemaPCustomErr(ctxt,
 			    XML_SCHEMAP_INTERNAL,
 			    NULL, type, NULL,
-			    "Internal error: xmlSchemaGetContentType, "
+			    "Internal error: xmlSchemaComputeContentType, "
 			    "CT '%s' (restricting), the base type has no "
 			    "content type", type->name);
 			return (-1);
@@ -13494,7 +13600,7 @@ xmlSchemaComputeContentType(xmlSchemaParserCtxtPtr ctxt,
 			    xmlSchemaPCustomErr(ctxt,
 				XML_SCHEMAP_INTERNAL,
 				NULL, type, NULL,
-				"Internal error: xmlSchemaGetContentType, "
+				"Internal error: xmlSchemaComputeContentType, "
 				"CT '%s' (restricting): <simpleType> has no "
 				"<restriction>", type->name);
 			    return (-1);
@@ -13538,7 +13644,7 @@ xmlSchemaComputeContentType(xmlSchemaParserCtxtPtr ctxt,
 		    xmlSchemaPCustomErr(ctxt,
 			XML_SCHEMAP_INTERNAL,
 			NULL, type, NULL,
-			"Internal error: xmlSchemaGetContentType, "
+			"Internal error: xmlSchemaComputeContentType, "
 			"CT '%s' (extending), the base type has no content "
 			"type", type->name);
 		    return (-1);
@@ -13547,7 +13653,7 @@ xmlSchemaComputeContentType(xmlSchemaParserCtxtPtr ctxt,
 		    xmlSchemaPCustomErr(ctxt,
 			XML_SCHEMAP_INTERNAL,
 			NULL, type, NULL,
-			"Internal error: xmlSchemaGetContentType, "
+			"Internal error: xmlSchemaComputeContentType, "
 			"CT '%s' (extending), the content type of the "
 			"base is not a simple type", type->name);
 		    return (-1);
@@ -13568,7 +13674,7 @@ xmlSchemaComputeContentType(xmlSchemaParserCtxtPtr ctxt,
 	    xmlSchemaPCustomErr(ctxt,
 		XML_SCHEMAP_INTERNAL,
 		NULL, type, NULL,
-		"Internal error: xmlSchemaGetContentType, "
+		"Internal error: xmlSchemaComputeContentType, "
 		"'%s', the content type could not be determined", 
 		type->name);
 	    return (-1);
@@ -14179,8 +14285,9 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 		*/
 		/*
 		* This function is intended to deliver a compiled value
-		* on the facet. In XML Schemas the type holding a facet, 
-		* cannot be a built-in type. Thus to ensure that other API
+		* on the facet. In this implementation of XML Schemata the
+		* type holding a facet, won't be a built-in type. 
+		* Thus to ensure that other API
 		* calls (relaxng) do work, if the given type is a built-in 
 		* type, we will assume that the given built-in type *is
 		* already* the base type.		
@@ -14231,21 +14338,23 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 		* of the facet.
 		*/
 		ret = xmlSchemaValidateSimpleTypeValue(vctxt, base, 
-		    facet->value, 0, 1, 1, 0);
-		facet->val = vctxt->value;
-		vctxt->value = NULL;		
+		    facet->value, 0, 1, 1, 0);				
                 if (ret > 0) {
                     /* error code */
                     if (ctxt != NULL) {
-                        xmlSchemaPErrExt(ctxt, facet->node,
-			    XML_SCHEMAP_INVALID_FACET, 
-			    NULL, NULL, NULL,
-			    "Type definition '%s': The value '%s' of the "
-			    "facet '%s' is not valid.\n",
-			    name, facet->value, 
-			    xmlSchemaFacetTypeToString(facet->type), 
-			    NULL, NULL);
+			xmlChar *str = NULL;
+
+                        xmlSchemaPCustomErrExt(ctxt,
+			    XML_SCHEMAP_INVALID_FACET_VALUE,
+			    NULL, (xmlSchemaTypePtr) facet, facet->node,
+			    "The value '%s' of the facet does not validate "
+			    "against the base type '%s'",
+			    facet->value, 
+			    xmlSchemaFormatQName(&str, 
+				base->targetNamespace, base->name), NULL);
+			FREE_AND_NULL(str)
                     }
+		    /* xmlSchemaFacetTypeToString(facet->type), */
                     ret = -1;
                 } else if (ret < 0) {
 		    xmlSchemaPErrExt(ctxt, facet->node,
@@ -14258,7 +14367,30 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 			xmlSchemaFacetTypeToString(facet->type),
 			base->name, NULL, NULL); 
 		    ret = -1;
-		}   
+		} else {
+		    if (vctxt->value != NULL) {
+			facet->val = vctxt->value;
+			vctxt->value = NULL;
+		    } else {			
+			xmlChar *str;
+			/*
+			* Ensure computed values even for type string.
+			* TODO OPTIMIZE MEMORY: The value will be hold twice,
+			* by the facet->value and by the computed value.
+			*/
+			str = xmlStrdup(facet->value);
+			if (xmlSchemaPostCreateVal(vctxt, typeDecl,
+			    BAD_CAST str, &(facet->val)) == -1) {
+			    FREE_AND_NULL(str)
+			    xmlSchemaPErr(ctxt, typeDecl->node,
+				XML_SCHEMAP_INTERNAL,
+				"Internal error: xmlSchemaCheckFacet, "
+				"post-creating a computed value.\n",
+				NULL, NULL);
+			    /* Note that we don't return a failure yet.*/
+			}
+		    }
+		}		
 		if (reuseValCtxt == 0)
 		    xmlSchemaFreeValidCtxt(vctxt);
                 break;
@@ -14288,14 +14420,11 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
                 if (tmp != 0) {
                     /* error code */
                     if (ctxt != NULL) {
-                        xmlSchemaPErrExt(ctxt, facet->node,
+                        xmlSchemaPCustomErr(ctxt,
 			    XML_SCHEMAP_INVALID_FACET_VALUE,
-			    NULL, NULL, NULL,
-			    "Type definition '%s': The value '%s' of the "
-			    "facet '%s' is not valid.\n",
-			    name, facet->value, 
-			    xmlSchemaFacetTypeToString(facet->type),
-			    NULL, NULL);
+			    NULL, (xmlSchemaTypePtr)  facet, facet->node,
+			    "The value '%s' of the facet is not a valid "
+			    "nonNegativeInteger", facet->value);
                     }
                     ret = -1;
                 }
@@ -14310,11 +14439,12 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
                     facet->whitespace = XML_SCHEMAS_FACET_COLLAPSE;
                 } else {
                     if (ctxt != NULL) {
-                        xmlSchemaPErr(ctxt, facet->node,
-			    XML_SCHEMAP_INVALID_WHITE_SPACE,
-			    "Type definition '%s': The value '%s' of the "
-			    "facet 'whiteSpace' is not valid.\n",
-			    name, facet->value);
+			/* error was previously: XML_SCHEMAP_INVALID_WHITE_SPACE */
+			xmlSchemaPCustomErr(ctxt,
+			    XML_SCHEMAP_INVALID_FACET_VALUE,
+			    NULL, (xmlSchemaTypePtr) facet, facet->node,
+			    "The value '%s' of the facet is not a valid",
+			    facet->value);
                     }
                     ret = -1;
                 }
@@ -15301,8 +15431,8 @@ xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type)
 	    * by ·restriction· from it) the value of whiteSpace is fixed to 
 	    * collapse
 	    */
-	    if ((anc->type == XML_SCHEMA_TYPE_BASIC) &&
-		(anc->builtInType == XML_SCHEMAS_STRING)) {
+	    if ((anc->builtInType == XML_SCHEMAS_STRING) || 
+		(anc->builtInType == XML_SCHEMAS_NORMSTRING)) {
 		
 		lin = type->facetSet;
 		do {
@@ -15311,8 +15441,11 @@ xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type)
 			break;
 		    }
 		    lin = lin->next;
-		} while (lin != NULL);	
-		break;
+		} while (lin != NULL);
+		if (anc->builtInType == XML_SCHEMAS_NORMSTRING)
+		    return (XML_SCHEMAS_FACET_REPLACE);
+		else
+		    return (XML_SCHEMAS_FACET_PRESERVE);
 	    }
 	    anc = anc->baseType;
 	} while (anc != anyST);
@@ -15345,12 +15478,24 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 {
     int ret = 0;
     xmlNodePtr node;
-    xmlSchemaTypePtr  biType; /* The build-in type. */
+    xmlSchemaTypePtr biType; /* The build-in type. */
     xmlSchemaTypePtr tmpType;
     xmlSchemaFacetLinkPtr facetLink;
     int retFacet;
     xmlSchemaFacetPtr facet;
     unsigned long len = 0;
+    xmlSchemaWhitespaceValueType ws;
+    
+    if (type->type == XML_SCHEMA_TYPE_COMPLEX) {
+	xmlSchemaTypePtr tp;
+	/*
+	* TODO: Get rid of this case: the complex type still holds facets in some
+	* cases.
+	*/
+	tp = xmlSchemaGetSimpleContentType(type);
+	ws = (xmlSchemaWhitespaceValueType) xmlSchemaGetWhiteSpaceFacetValue(tp);
+    } else
+	ws = (xmlSchemaWhitespaceValueType) xmlSchemaGetWhiteSpaceFacetValue(type);
 
 #ifdef DEBUG_UNION_VALIDATION
     printf("Facets of type: '%s'\n", (const char *) type->name);
@@ -15393,15 +15538,20 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 		case XML_SCHEMA_FACET_MAXLENGTH: 
 		    if (type->flags & XML_SCHEMAS_TYPE_VARIETY_LIST) {
 			ret = xmlSchemaValidateListSimpleTypeFacet(facet,
-			    value, length, 0);
+			    value, length, NULL);
 			len = length;
 		    } else
-			ret = xmlSchemaValidateLengthFacet(biType, facet,
-			    value, ctxt->value, &len);
+			ret = xmlSchemaValidateLengthFacetWhtsp(facet,
+			    (xmlSchemaValType) biType->builtInType,
+			    value, ctxt->value, &len, ws);
 		    break;
 		default:
-		    ret = xmlSchemaValidateFacet(biType, facet, value, 
-			ctxt->value);
+		    ret = xmlSchemaValidateFacetWhtsp(facet, ws,
+			biType->builtInType, value, ctxt->value, ws);
+		    /*
+		    * ret = xmlSchemaValidateFacet(biType, facet, value, 
+		    *	ctxt->value);
+		    */
 	    }
 	    if (ret < 0) {
 		xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
@@ -15416,35 +15566,64 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 
 	    facetLink = facetLink->next;
 	}
-	if (ret >= 0) {
-	    /*
-	    * Process enumerations.
-	    */
-	    retFacet = 0;
-	    facetLink = type->facetSet;
-	    while (facetLink != NULL) {
-		if (facetLink->facet->type == XML_SCHEMA_FACET_ENUMERATION) {
-		    retFacet = xmlSchemaValidateFacet(biType, facetLink->facet, 
-			value, ctxt->value);		
-		    if (retFacet <= 0)
-			break;
-		}
-		facetLink = facetLink->next;
-	    }
-	    if (retFacet > 0) {
-		ret = XML_SCHEMAV_CVC_ENUMERATION_VALID;
-		if (fireErrors)
-		    xmlSchemaVFacetErr(ctxt, ret, node,
-			value, 0, type, NULL, NULL, NULL, NULL, NULL);
-	    } else if (retFacet < 0) {
-		xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
-		    "Internal error: xmlSchemaValidateFacetsInternal, "
-		    "validating facet of type '%s'.\n",
-		    BAD_CAST "enumeration", NULL);
-		    ret = -1;		
-	    }		
-	}
+	
     }
+    if (ret >= 0) {
+	xmlSchemaWhitespaceValueType fws;
+	/*
+	* Process enumerations. Facet values are in the value space
+	* of the defining type's base type. This seems to be a bug in the
+	* XML Schema 1.0 spec. For use, the normalized value is only
+	* significant for enumerations. We need to localize the base type for eatch
+	* enumeration facet, thus walk the ancestor type axis.
+	*/
+	tmpType = type;	
+	do {
+	    /*
+	    * Use the whitespace type of the base type.
+	    */
+	    if (tmpType->type == XML_SCHEMA_TYPE_COMPLEX)
+		/* TODO: Get rid of this case. */
+		fws = (xmlSchemaWhitespaceValueType)
+		    xmlSchemaGetWhiteSpaceFacetValue(
+			xmlSchemaGetSimpleContentType(tmpType));
+	    else
+		fws = (xmlSchemaWhitespaceValueType)
+		    xmlSchemaGetWhiteSpaceFacetValue(tmpType->baseType);
+	    retFacet = 0;
+	    for (facet = tmpType->facets; facet != NULL; facet = facet->next) {
+		if (facet->type != XML_SCHEMA_FACET_ENUMERATION)
+		    continue;		
+		retFacet = xmlSchemaValidateFacetWhtsp(facet, fws,
+		    biType->builtInType, value, ctxt->value, ws);
+		if (retFacet == 0) 
+		    break;
+		else if (retFacet < 0) {
+		    xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
+			"Internal error: xmlSchemaValidateFacetsInternal, "
+			"validating enumeration facet '%s' of type '%s'.\n",
+			facet->value, tmpType->name);
+		    ret = -1;
+		    break;
+		}
+	    }
+	    if (retFacet <= 0)
+		break;
+	    if (tmpType->type == XML_SCHEMA_TYPE_COMPLEX)
+		/* TODO: Get rid of this case. */
+		tmpType = xmlSchemaGetSimpleContentType(tmpType);
+	    else
+		tmpType = tmpType->baseType;
+	} while ((tmpType != NULL) && (tmpType->type != XML_SCHEMA_TYPE_BASIC));
+	if (retFacet > 0) {
+	    ret = XML_SCHEMAV_CVC_PATTERN_VALID;
+	    if (fireErrors) {
+		xmlSchemaVFacetErr(ctxt, ret, node, value, 0, type, NULL, 
+		    NULL, NULL, NULL, NULL);
+	    }
+	}		
+    }
+
     if (ret >= 0) {
 	/*
 	* Process patters. Pattern facets are ORed at type level 
@@ -15474,8 +15653,12 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 		    facet = facetLink->facet;
 	    }
 	    if (retFacet != 0)
-		break;		    
-	    tmpType = tmpType->baseType;
+		break;
+	    if (tmpType->type == XML_SCHEMA_TYPE_COMPLEX)
+		/* TODO: Get rid of this case. */
+		tmpType = xmlSchemaGetSimpleContentType(tmpType);
+	    else
+		tmpType = tmpType->baseType;
 	} while ((tmpType != NULL) && (tmpType->type != XML_SCHEMA_TYPE_BASIC));
 	if (retFacet > 0) {
 	    ret = XML_SCHEMAV_CVC_PATTERN_VALID;
@@ -16179,6 +16362,34 @@ xmlSchemaValidateNotation(xmlSchemaValidCtxtPtr vctxt,
     return (ret);
 }
 
+static xmlSchemaTypePtr
+xmlSchemaGetSimpleContentType(xmlSchemaTypePtr complexType)
+{
+    xmlSchemaTypePtr ret;
+
+    if (complexType->type != XML_SCHEMA_TYPE_COMPLEX)
+	return (NULL);
+    if (complexType->contentTypeDef != NULL)
+	return (complexType->contentTypeDef);
+    /*
+    * TODO: This is only a workaround until the simple content
+    * type is computed for complex types with simple content.
+    */
+    ret = complexType->baseType;
+    while (ret != NULL) {
+	if (IS_SIMPLE_TYPE(ret))
+	    return (ret);
+	if (ret->builtInType == XML_SCHEMAS_ANYTYPE)
+	    return (NULL);
+	if ((ret->type == XML_SCHEMA_TYPE_COMPLEX) &&
+	    (ret->contentTypeDef != NULL))
+	    ret = ret->contentTypeDef;
+	else
+	    ret = ret->baseType;
+    }
+    return (ret);
+}
+
 /**
  * xmlSchemaValidateSimpleTypeValue:
  * @ctxt:  a schema validation context
@@ -16289,18 +16500,20 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
     }
 
     if (type->type == XML_SCHEMA_TYPE_COMPLEX) {
-	xmlSchemaTypePtr base, anyType;
+	xmlSchemaTypePtr simpType, anyType;
 
 	anyType = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYTYPE);
 
-	base = type->baseType;
-	while ((base != NULL) && 
-	    (base->type != XML_SCHEMA_TYPE_SIMPLE) &&
-	    (base->type != XML_SCHEMA_TYPE_BASIC) &&
-	    (base != anyType)) {
-	    base = base->baseType;
+	simpType = xmlSchemaGetSimpleContentType(type);
+	if (simpType == NULL) {
+	    xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
+		"Internal error: xmlSchemaValidateSimpleTypeValue, "
+		"failed to obtain the simple content type of the complex "
+		"type '%s'\n",
+		type->name, NULL);
+	    return (-1);
 	}
-	ret = xmlSchemaValidateSimpleTypeValue(ctxt, base, value, 1, 0, 1, 0);
+	ret = xmlSchemaValidateSimpleTypeValue(ctxt, simpType, value, 1, 0, 1, 0);
 	if (ret < 0) {
 	    xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
 		"Internal error: xmlSchemaValidateSimpleTypeValue, "
@@ -16309,15 +16522,14 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 	} else if ((ret == 0) && (applyFacets) && (type->facetSet != NULL)) {
 	    /* 
 	    * Check facets.
-	    */	    
-	    /*
-	    * This is somehow not nice, since if an error occurs
+	    *
+	    * TODO: This is somehow not nice, since if an error occurs
 	    * the reported type will be the complex type; the spec
 	    * wants a simple type to be created on the complex type
 	    * if it has a simple content. For now we have to live with
 	    * it.
-	    */
-	    ret = xmlSchemaValidateFacetsInternal(ctxt, type, 
+	    */	    
+	    ret = xmlSchemaValidateFacetsInternal(ctxt, type,		
 		value, 0, fireErrors);
 	    if (ret < 0) {
 		xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
@@ -16393,8 +16605,8 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 	} else if ((applyFacets) && (type->facetSet != NULL)) {
 	    /* 
 	    * Check facets.
-	    */	    	    	    
-	    ret = xmlSchemaValidateFacetsInternal(ctxt, type, 
+	    */	    	   	    
+	    ret = xmlSchemaValidateFacetsInternal(ctxt, type,
 		value, 0, fireErrors);
 	    if (ret < 0) {
 		xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
@@ -16461,7 +16673,7 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 		"validating list simple type '%s'\n",
 		type->name, NULL);
 	} else if ((ret == 0) && (applyFacets)) {
-	    ret = xmlSchemaValidateFacetsInternal(ctxt, type, 
+	    ret = xmlSchemaValidateFacetsInternal(ctxt, type,
 		value, len, fireErrors);
 	    if (ret < 0) {
 		xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
@@ -16555,7 +16767,7 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 		    value = (const xmlChar *) normValue;
 	    }
 
-	    ret = xmlSchemaValidateFacetsInternal(ctxt, type, 
+	    ret = xmlSchemaValidateFacetsInternal(ctxt, type,
 		value, 0, fireErrors);
 	    if (ret < 0) {
 		xmlSchemaVErr(ctxt, node, XML_SCHEMAV_INTERNAL,
@@ -19539,7 +19751,12 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 		    ctxt->type = oldtype;
 		    return (-1);
 		}
-	    }	    
+	    }
+#if 0
+	    /* 
+	    * REMOVED since handled by xmlSchemaValidateSimpleTypeValue
+	    * already. 
+	    */
 	    if (ret == 0) {
 		/* 
 		* Apply facets of the complexType. Be sure to pass the 
@@ -19571,6 +19788,7 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 		    return (-1);
 		}
 	    }
+#endif
 	    if (value != NULL)
 		xmlFree(value);
 
@@ -19660,13 +19878,14 @@ xmlSchemaValidateElementByType(xmlSchemaValidCtxtPtr ctxt,
 
 static int
 xmlSchemaPostCreateVal(xmlSchemaValidCtxtPtr vctxt,
+		       xmlSchemaTypePtr type,
 		       const xmlChar *value,
 		       xmlSchemaValPtr *val)
 {
     xmlSchemaTypePtr prim;
 
     if (val == NULL) {
-	xmlSchemaVErr(vctxt, vctxt->nodeInfo->node, 
+	xmlSchemaVErr(vctxt, NULL, 
 	    XML_SCHEMAV_INTERNAL,
 	    "Internal error: xmlSchemaPostCreateVal, "
 	    "bad arguments", NULL, NULL);
@@ -19675,13 +19894,10 @@ xmlSchemaPostCreateVal(xmlSchemaValidCtxtPtr vctxt,
     /*
     * Only string or anySimpleType values are expected to be post-created.
     */
-    prim = xmlSchemaGetPrimitiveType(vctxt->nodeInfo->typeDef);
+    prim = xmlSchemaGetPrimitiveType(type);
     if ((prim->builtInType == XML_SCHEMAS_STRING) || 
 	(prim->builtInType == XML_SCHEMAS_ANYSIMPLETYPE))
     {
-#if 0
-	builtIn = xmlSchemaGetBuiltInTypeAncestor(vctxt->nodeInfo->typeDef);
-#endif
 	if (value == NULL)
 	    /* TODO: Can this happen at all? */
 	    *val = xmlSchemaNewStringValue(XML_SCHEMAS_STRING,
@@ -19689,7 +19905,7 @@ xmlSchemaPostCreateVal(xmlSchemaValidCtxtPtr vctxt,
 	else
 	    *val = xmlSchemaNewStringValue(XML_SCHEMAS_STRING, value);
 	if ((*val) == NULL) {
-	    xmlSchemaVErr(vctxt, vctxt->nodeInfo->node, 
+	    xmlSchemaVErr(vctxt, NULL, 
 		XML_SCHEMAV_INTERNAL,
 		"Internal error: xmlSchemaPostCreateVal, "
 		"failed to create the value", NULL, NULL);
@@ -19697,7 +19913,7 @@ xmlSchemaPostCreateVal(xmlSchemaValidCtxtPtr vctxt,
 	}
 	return (0);
     }
-    xmlSchemaVErr(vctxt, vctxt->nodeInfo->node, 
+    xmlSchemaVErr(vctxt, NULL, 
 	XML_SCHEMAV_INTERNAL,
 	"Internal error: xmlSchemaPostCreateVal, "
 	"the given type is not supported", NULL, NULL);
@@ -19771,7 +19987,8 @@ xmlSchemaCheckAttrLocallyValid(xmlSchemaValidCtxtPtr vctxt,
 		/*
 		* Post-create the value.
 		*/
-		if (xmlSchemaPostCreateVal(vctxt, value, &(vctxt->value)) == -1) {
+		if (xmlSchemaPostCreateVal(vctxt, vctxt->attrInfo->typeDef,
+		    value, &(vctxt->value)) == -1) {
 		    ret = -1;
 		    goto exit;
 		}
@@ -19787,7 +20004,8 @@ xmlSchemaCheckAttrLocallyValid(xmlSchemaValidCtxtPtr vctxt,
 		    str = xmlStrdup(BAD_CAST "");
 		else
 		    str = xmlStrdup(defValue);
-		if (xmlSchemaPostCreateVal(vctxt, str, &defVal) == -1) {
+		if (xmlSchemaPostCreateVal(vctxt, vctxt->attrInfo->typeDef,
+		    str, &defVal) == -1) {
 		    ret = -1;
 		    FREE_AND_NULL(str)
 		    goto exit;
@@ -20296,6 +20514,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 			xmlChar *str = xmlStrdup(attrDecl->defValue);
 
 			if (xmlSchemaPostCreateVal(ctxt,
+			    ctxt->attrInfo->typeDef,
 			    str,
 			    &(attrDecl->defVal)) == -1) {
 			    FREE_AND_NULL(str)

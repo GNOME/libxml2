@@ -51,15 +51,13 @@ XMLPUBFUN int XMLCALL
 						 xmlSchemaFacetPtr facet,
 						 const xmlChar *value,
 						 xmlSchemaValPtr val);
-#if 0
 XMLPUBFUN int XMLCALL
 		xmlSchemaValidateFacetWhtsp	(xmlSchemaFacetPtr facet,
 						 xmlSchemaWhitespaceValueType fws,
-						 xmlSchemaValType valType,
-						 xmlSchemaValPtr val,
+						 xmlSchemaValType valType,						 
 						 const xmlChar *value,
+						 xmlSchemaValPtr val,
 						 xmlSchemaWhitespaceValueType ws);
-#endif
 XMLPUBFUN void XMLCALL		
 		xmlSchemaFreeValue		(xmlSchemaValPtr val);
 XMLPUBFUN xmlSchemaFacetPtr XMLCALL 
@@ -97,7 +95,14 @@ XMLPUBFUN int XMLCALL
 						 xmlSchemaFacetPtr facet,
 						 const xmlChar *value,
 						 xmlSchemaValPtr val,
-						 unsigned long *length) ;
+						 unsigned long *length);
+XMLPUBFUN int XMLCALL
+		xmlSchemaValidateLengthFacetWhtsp(xmlSchemaFacetPtr facet,
+						  xmlSchemaValType valType,
+						  const xmlChar *value,
+						  xmlSchemaValPtr val,						  
+						  unsigned long *length,
+						  xmlSchemaWhitespaceValueType ws);
 XMLPUBFUN int XMLCALL
 		xmlSchemaValPredefTypeNodeNoNorm(xmlSchemaTypePtr type, 
 						 const xmlChar *value,
@@ -120,6 +125,8 @@ XMLPUBFUN int XMLCALL
 						 xmlSchemaWhitespaceValueType yws);
 XMLPUBFUN xmlSchemaValPtr XMLCALL
 		xmlSchemaCopyValue		(xmlSchemaValPtr val);
+XMLPUBFUN xmlSchemaValType XMLCALL
+		xmlSchemaGetValType		(xmlSchemaValPtr val);
 
 #ifdef __cplusplus
 }

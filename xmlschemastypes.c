@@ -1343,6 +1343,42 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	    }
 	}
 	return(0);
+    } else if (type == xmlSchemaTypeIntegerDef) {
+	const xmlChar *cur = value;
+	unsigned long base = 0;
+	int total = 0;
+	int sign = 0;
+	if (cur == NULL)
+	    return(1);
+	if (*cur == '-') {
+	    sign = 1;
+	    cur++;
+	} else if (*cur == '+')
+	    cur++;
+	while (*cur == '0') {
+	    total++;
+	    cur++;
+	}
+	while ((*cur >= '0') && (*cur <= '9')) {
+	    base = base * 10 + (*cur - '0');
+	    total++;
+	    cur++;
+	}
+	if (*cur != 0)
+	    return(1);
+	if ((sign == 1) && (total == 0))
+	    return(1);
+	if (val != NULL) {
+	    v = xmlSchemaNewValue(XML_SCHEMAS_INTEGER);
+	    if (v != NULL) {
+		v->value.decimal.base = base;
+		v->value.decimal.sign = sign;
+		v->value.decimal.frac = 0;
+		v->value.decimal.total = total;
+		*val = v;
+	    }
+	}
+	return(0);
     } else if ((type == xmlSchemaTypeFloatDef) ||
 	       (type == xmlSchemaTypeDoubleDef)) {
 	const xmlChar *cur = value;
@@ -1526,22 +1562,15 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	if ((ret == 0) && (node != NULL) &&
 	    (node->type == XML_ATTRIBUTE_NODE)) {
 	    xmlAttrPtr attr = (xmlAttrPtr) node;
+	    xmlChar *strip;
 
-	    /*
-	     * NOTE: the REFness might have already be declared in the DTD
-	     */
-	    if ((attr->atype != XML_ATTRIBUTE_IDREF) &&
-		(attr->atype != XML_ATTRIBUTE_IDREFS)) {
-		xmlChar *strip;
-
-		strip = xmlSchemaStrip(value);
-		if (strip != NULL) {
-		    xmlAddRef(NULL, node->doc, strip, attr);
-		    xmlFree(strip);
-		} else
-		    xmlAddRef(NULL, node->doc, value, attr);
-		attr->atype = XML_ATTRIBUTE_IDREF;
-	    }
+	    strip = xmlSchemaStrip(value);
+	    if (strip != NULL) {
+		xmlAddRef(NULL, node->doc, strip, attr);
+		xmlFree(strip);
+	    } else
+		xmlAddRef(NULL, node->doc, value, attr);
+	    attr->atype = XML_ATTRIBUTE_IDREF;
 	}
 	return(ret);
     } else if (type == xmlSchemaTypeIdrefsDef) {

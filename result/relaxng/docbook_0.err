@@ -1,4 +1,3 @@
 ./test/relaxng/docbook_0.xml:1864: error: Entity 'copy' not defined
              <sgmltag>&amp;copy;</sgmltag> &mdash; copyright sign (&copy;)
                                                                          ^
-Unimplemented block at xmlschemastypes.c:1636

@@ -1,3 +1,9 @@
+Thu Mar 20 17:22:00 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: added integer and fixed one of the
+	  IDREFS regression tests pbm
+	* result/relaxng/docbook_0.err: updated
+
 Wed Mar 19 21:58:47 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c xmlschemastypes.c: attempt to cope with ID/IDREF(S)

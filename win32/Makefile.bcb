@@ -129,6 +129,7 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\nanohttp.obj\
 	$(XML_INTDIR)\parser.obj\
 	$(XML_INTDIR)\parserInternals.obj\
+	$(XML_INTDIR)\pattern.obj\
 	$(XML_INTDIR)\relaxng.obj\
 	$(XML_INTDIR)\SAX.obj\
 	$(XML_INTDIR)\SAX2.obj\
@@ -169,6 +170,7 @@ XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
 	$(XML_INTDIR_A)\nanohttp.obj\
 	$(XML_INTDIR_A)\parser.obj\
 	$(XML_INTDIR_A)\parserInternals.obj\
+	$(XML_INTDIR_A)\pattern.obj\
 	$(XML_INTDIR_A)\relaxng.obj\
 	$(XML_INTDIR_A)\SAX.obj\
 	$(XML_INTDIR_A)\SAX2.obj\

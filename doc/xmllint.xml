@@ -536,8 +536,8 @@
       <option>--c14n</option></term>
 	<listitem>
 	  <simpara>Use the W3C XML Canonicalisation (C14N) to
-serialize the result of parsing to stdout, it keeps comments in
-teh result.</simpara>
+serialize the result of parsing to stdout. It keeps comments in
+the result.</simpara>
 	</listitem>
       </varlistentry>
     </variablelist>

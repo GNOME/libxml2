@@ -1,3 +1,7 @@
+Fri Sep 26 18:03:42 PDT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* parser.c: fixed small problem with missing entities (test/ent2)
+
 Sat Sep 27 01:25:39 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: William's change allowed to spot a nasty bug in xmlDoRead

@@ -5828,7 +5828,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			    xmlFreeNodeList(list);
 			    list = NULL;
 			}
-		    } else if (ret > 0) {
+		    } else if ((ret != XML_ERR_OK) &&
+		               (ret != XML_WAR_UNDECLARED_ENTITY)) {
 			xmlFatalErr(ctxt, ret, NULL);
 		    } else if (list != NULL) {
 			xmlFreeNodeList(list);
@@ -10666,7 +10667,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 
 
     ctxt = xmlCreateEntityParserCtxt(URL, ID, NULL);
-    if (ctxt == NULL) return(-1);
+    if (ctxt == NULL) return(XML_WAR_UNDECLARED_ENTITY);
     ctxt->userData = ctxt;
     if (oldctxt != NULL) {
 	ctxt->_private = oldctxt->_private;

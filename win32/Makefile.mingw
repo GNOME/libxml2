@@ -243,17 +243,7 @@ distclean : clean
 
 rebuild : clean all
 
-install : all
-	cmd.exe /C if not exist $(INCPREFIX)\libxml mkdir $(INCPREFIX)\libxml
-	cmd.exe /C if not exist $(BINPREFIX) mkdir $(BINPREFIX)
-	cmd.exe /C if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
-	cmd.exe /C copy $(XML_SRCDIR)\include\libxml\*.h $(INCPREFIX)\libxml
-	cmd.exe /C copy $(BINDIR)\$(XML_SO) $(SOPREFIX)
-	cmd.exe /C copy $(BINDIR)\$(XML_A) $(LIBPREFIX)
-	cmd.exe /C copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)
-	cmd.exe /C copy $(BINDIR)\*.exe $(BINPREFIX)
-
-install-bindist : all
+install-libs : all
 	cmd.exe /C if not exist $(INCPREFIX)\libxml mkdir $(INCPREFIX)\libxml
 	cmd.exe /C if not exist $(BINPREFIX) mkdir $(BINPREFIX)
 	cmd.exe /C if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
@@ -263,12 +253,18 @@ install-bindist : all
 	cmd.exe /C copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)
 	cmd.exe /C copy $(BINDIR)\xml*.exe $(BINPREFIX)
 
+install : install-libs
+	cmd.exe /C copy $(BINDIR)\*.exe $(BINPREFIX)
+
+install-dist : install-libs
+	cmd.exe /C copy $(BINDIR)\xml*.exe $(BINPREFIX)
+
 # This is a target for me, to make a binary distribution. Not for the public use,
 # keep your hands off :-)
 BDVERSION = $(LIBXML_MAJOR_VERSION).$(LIBXML_MINOR_VERSION).$(LIBXML_MICRO_VERSION)
 BDPREFIX = $(XML_BASENAME)-$(BDVERSION).win32
 bindist : all
-	$(MAKE) PREFIX=$(BDPREFIX) SOPREFIX=$(BDPREFIX)/bin install-bindist
+	$(MAKE) PREFIX=$(BDPREFIX) SOPREFIX=$(BDPREFIX)/bin install-dist
 	cscript //NoLogo configure.js genreadme $(XML_BASENAME) $(BDVERSION) $(BDPREFIX)\readme.txt
 
 

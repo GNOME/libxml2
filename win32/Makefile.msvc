@@ -220,7 +220,7 @@ distclean : clean
 
 rebuild : clean all
 
-install : all
+install-libs : all
 	if not exist $(INCPREFIX)\libxml mkdir $(INCPREFIX)\libxml
 	if not exist $(BINPREFIX) mkdir $(BINPREFIX)
 	if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
@@ -229,26 +229,21 @@ install : all
 	copy $(BINDIR)\$(XML_SO) $(SOPREFIX)
 	copy $(BINDIR)\$(XML_A) $(LIBPREFIX)
 	copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)
+
+install : install-libs 
 	copy $(BINDIR)\*.exe $(BINPREFIX)
 	-copy $(BINDIR)\*.pdb $(BINPREFIX)
 
-install-bindist : all
-	if not exist $(INCPREFIX)\libxml mkdir $(INCPREFIX)\libxml
-	if not exist $(BINPREFIX) mkdir $(BINPREFIX)
-	if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
-	if not exist $(SOPREFIX) mkdir $(SOPREFIX)
-	copy $(XML_SRCDIR)\include\libxml\*.h $(INCPREFIX)\libxml
-	copy $(BINDIR)\$(XML_SO) $(SOPREFIX)
-	copy $(BINDIR)\$(XML_A) $(LIBPREFIX)
-	copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)
+install-dist : install-libs 
 	copy $(BINDIR)\xml*.exe $(BINPREFIX)
+	-copy $(BINDIR)\xml*.pdb $(BINPREFIX)
 
 # This is a target for me, to make a binary distribution. Not for the public use,
 # keep your hands off :-)
 BDVERSION = $(LIBXML_MAJOR_VERSION).$(LIBXML_MINOR_VERSION).$(LIBXML_MICRO_VERSION)
 BDPREFIX = $(XML_BASENAME)-$(BDVERSION).win32
 bindist : all
-	$(MAKE) /nologo PREFIX=$(BDPREFIX) SOPREFIX=$(BDPREFIX)\bin install-bindist
+	$(MAKE) /nologo PREFIX=$(BDPREFIX) SOPREFIX=$(BDPREFIX)\bin install-dist
 	cscript //NoLogo configure.js genreadme $(XML_BASENAME) $(BDVERSION) $(BDPREFIX)\readme.txt
 
 

@@ -1,0 +1,231 @@
+# Makefile for libxml2, specific for Windows, MSVC and NMAKE.
+#
+# Take a look at the beginning and modify the variables to suit your 
+# environment. Having done that, you can do a
+#
+# nmake [all]     to build the libxml and the accompanying utilities.
+# nmake clean     to remove all compiler output files and return to a
+#                 clean state.
+# nmake rebuild   to rebuild everything from scratch. This basically does
+#                 a 'nmake clean' and then a 'nmake all'.
+# nmake install   to install the library and its header files.
+#
+# March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+AUTOCONF = .\configure.txt
+
+# If you cannot run the configuration script, which would take the burden of
+# editing this file from your back, then remove the following line...
+!include $(AUTOCONF)
+# ...and enable the following lines and adapt them to your environment.
+#XML_SRCDIR = ..
+#UTILS_SRCDIR = ..
+#BINDIR = binaries
+#LIBXML_MAJOR_VERSION = 0 # set this to the right value.
+#LIBXML_MINOR_VERSION = 0 # set this to the right value.
+#LIBXML_MICRO_VERSION = 0 # set this to the right value.
+#WITH_TRIO = 0
+#WITH_THREADS = 0
+#WITH_FTP = 1
+#WITH_HTTP = 1
+#WITH_HTML = 1
+#WITH_C14N = 1
+#WITH_CATALOG = 1
+#WITH_DOCB = 1
+#WITH_XPATH = 1
+#WITH_XPTR = 1
+#WITH_XINCLUDE = 1
+#WITH_ICONV = 1
+#WITH_DEBUG = 1
+#WITH_MEM_DEBUG = 0
+#DEBUG = 0
+#STATIC = 0
+#PREFIX = . # set this to the right value.
+#BINPREFIX = $(PREFIX)\bin
+#INCPREFIX = $(PREFIX)\include
+#LIBPREFIX = $(PREFIX)\lib
+#SOPREFIX = $(PREFIX)\lib
+#INCLUDE = $(INCLUDE);$(INCPREFIX)
+#LIB = $(LIB);$(LIBPREFIX) 
+
+
+# There should never be a need to modify anything below this line.
+# ----------------------------------------------------------------
+
+
+# Names of various input and output components.
+XML_NAME = xml2
+XML_BASENAME = lib$(XML_NAME)
+XML_SO = $(XML_BASENAME).dll
+XML_IMP = $(XML_BASENAME).lib
+XML_DEF = $(XML_BASENAME).def
+XML_A = $(XML_BASENAME)_a.lib
+
+# Place where we let the compiler put its intermediate trash.
+XML_INTDIR = $(XML_BASENAME).int
+UTILS_INTDIR = utils.int
+
+# The preprocessor and its options.
+CPP = cl.exe /EP
+CPPFLAGS = /nologo /I$(XML_SRCDIR)\include
+
+# The compiler and its options.
+CC = cl.exe
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W3 /MD
+CFLAGS = $(CFLAGS) /I$(XML_SRCDIR) /I$(XML_SRCDIR)\include 
+!if "$(WITH_THREADS)" == "1"
+CFLAGS = $(CFLAGS) /D "_REENTRANT"
+!endif
+
+# The linker and its options.
+LD = link.exe
+LDFLAGS = /nologo /VERSION:$(LIBXML_MAJOR_VERSION).$(LIBXML_MINOR_VERSION)
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(BINDIR)
+LIBS = 
+!if "$(WITH_FTP)" == "1" || "$(WITH_HTTP)" == "1"
+LIBS = $(LIBS) wsock32.lib
+!endif 
+!if "$(WITH_ICONV)" == "1"
+!if "$(STATIC)" == "1"
+LIBS = $(LIBS) iconv_a.lib
+!else
+LIBS = $(LIBS) iconv.lib
+!endif 
+!endif 
+
+# The archiver and its options.
+AR = lib.exe
+ARFLAGS = /nologo
+
+# Optimisation and debug symbols.
+!if "$(DEBUG)" == "1"
+CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Z7
+LDFLAGS = $(LDFLAGS) /DEBUG
+!else
+CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 
+LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
+!endif
+
+# Libxml object files.
+XML_OBJS = $(XML_INTDIR)\c14n.obj\
+	$(XML_INTDIR)\catalog.obj\
+	$(XML_INTDIR)\debugXML.obj\
+	$(XML_INTDIR)\DOCBparser.obj\
+	$(XML_INTDIR)\encoding.obj\
+	$(XML_INTDIR)\entities.obj\
+	$(XML_INTDIR)\error.obj\
+	$(XML_INTDIR)\globals.obj\
+	$(XML_INTDIR)\hash.obj\
+	$(XML_INTDIR)\HTMLparser.obj\
+	$(XML_INTDIR)\HTMLtree.obj\
+	$(XML_INTDIR)\list.obj\
+	$(XML_INTDIR)\nanoftp.obj\
+	$(XML_INTDIR)\nanohttp.obj\
+	$(XML_INTDIR)\parser.obj\
+	$(XML_INTDIR)\parserInternals.obj\
+	$(XML_INTDIR)\SAX.obj\
+	$(XML_INTDIR)\threads.obj\
+	$(XML_INTDIR)\tree.obj\
+	$(XML_INTDIR)\uri.obj\
+	$(XML_INTDIR)\valid.obj\
+	$(XML_INTDIR)\xinclude.obj\
+	$(XML_INTDIR)\xlink.obj\
+	$(XML_INTDIR)\xmlIO.obj\
+	$(XML_INTDIR)\xmlmemory.obj\
+	$(XML_INTDIR)\xpath.obj\
+	$(XML_INTDIR)\xpointer.obj
+
+# Xmllint and friends executables.
+UTILS = $(BINDIR)\xmllint.exe\
+	$(BINDIR)\xmlcatalog.exe\
+	$(BINDIR)\testC14N.exe\
+	$(BINDIR)\testDocbook.exe\
+	$(BINDIR)\testHTML.exe\
+	$(BINDIR)\testSAX.exe\
+	$(BINDIR)\testURI.exe\
+	$(BINDIR)\testXPath.exe
+
+all : libxml utils
+
+libxml : $(BINDIR)\$(XML_SO) $(BINDIR)\$(XML_A)
+
+utils : $(UTILS)
+
+clean :
+	if exist $(XML_INTDIR) rmdir /S /Q $(XML_INTDIR)
+	if exist $(UTILS_INTDIR) rmdir /S /Q $(UTILS_INTDIR)
+	if exist $(BINDIR) rmdir /S /Q $(BINDIR)
+
+rebuild : clean all
+
+install : all
+	if not exist $(INCPREFIX)\libxml mkdir $(INCPREFIX)\libxml
+	if not exist $(BINPREFIX) mkdir $(BINPREFIX)
+	if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
+	copy $(XML_SRCDIR)\include\libxml\*.h $(INCPREFIX)\libxml
+	copy $(BINDIR)\$(XML_SO) $(SOPREFIX)
+	copy $(BINDIR)\$(XML_A) $(LIBPREFIX)
+	copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)
+	copy $(BINDIR)\*.exe $(BINPREFIX)
+
+# This is a target for me, to make a binary distribution. Not for the public use,
+# keep your hands off :-)
+BDVERSION = $(LIBXML_MAJOR_VERSION).$(LIBXML_MINOR_VERSION).$(LIBXML_MICRO_VERSION)
+BDPREFIX = $(XML_BASENAME)-$(BDVERSION).win32
+bindist : all
+	$(MAKE) /nologo PREFIX=$(BDPREFIX) BINPREFIX=$(BDPREFIX)\util install
+	cscript //NoLogo configure.js genreadme $(XML_BASENAME) $(BDVERSION) $(BDPREFIX)\readme.txt
+
+
+# Makes the output directory.
+$(BINDIR) :
+	if not exist $(BINDIR) mkdir $(BINDIR)
+
+
+# Makes the libxml intermediate directory.
+$(XML_INTDIR) :
+	if not exist $(XML_INTDIR) mkdir $(XML_INTDIR)
+
+# An implicit rule for libxml compilation.
+{$(XML_SRCDIR)}.c{$(XML_INTDIR)}.obj::
+	$(CC) $(CFLAGS) /Fo$(XML_INTDIR)\ /c $<
+
+# Compiles libxml source. Uses the implicit rule for commands.
+$(XML_OBJS) : $(XML_INTDIR) 
+
+# Creates the export definition file (DEF) for libxml.
+$(XML_INTDIR)\$(XML_DEF) : $(XML_INTDIR) $(XML_DEF).src
+	$(CPP) $(CPPFLAGS) $(XML_DEF).src > $(XML_INTDIR)\$(XML_DEF)
+
+# Creates the libxml shared object.
+$(BINDIR)\$(XML_SO) : $(BINDIR) $(XML_OBJS) $(XML_INTDIR)\$(XML_DEF)
+	$(LD) $(LDFLAGS) /DLL /DEF:$(XML_INTDIR)\$(XML_DEF) \
+		/IMPLIB:$(BINDIR)\$(XML_IMP) /OUT:$(BINDIR)\$(XML_SO) $(XML_OBJS) $(LIBS)
+
+# Creates the libxml archive.
+$(BINDIR)\$(XML_A) : $(BINDIR) $(XML_OBJS)
+	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XML_A) $(XML_OBJS)
+
+
+# Makes the utils intermediate directory.
+$(UTILS_INTDIR) :
+	if not exist $(UTILS_INTDIR) mkdir $(UTILS_INTDIR)
+
+# An implicit rule for xmllint and friends.
+!if "$(STATIC)" == "1"
+{$(UTILS_SRCDIR)}.c{$(BINDIR)}.exe:
+	$(CC) /D "LIBXML_STATIC" $(CFLAGS) /Fo$(UTILS_INTDIR)\ /c $< 
+	$(LD) $(LDFLAGS) /OUT:$@ $(XML_A) $(LIBS) $(UTILS_INTDIR)\$(<B).obj
+!else
+{$(UTILS_SRCDIR)}.c{$(BINDIR)}.exe:
+	$(CC) $(CFLAGS) /Fo$(UTILS_INTDIR)\ /c $< 
+	$(LD) $(LDFLAGS) /OUT:$@ $(XML_IMP) $(UTILS_INTDIR)\$(<B).obj
+!endif
+
+# Builds xmllint and friends. Uses the implicit rule for commands.
+$(UTILS) : $(UTILS_INTDIR) $(BINDIR) libxml
+
+
+# Source dependences should be autogenerated somehow here, but how to
+# do it? I have no clue.
+

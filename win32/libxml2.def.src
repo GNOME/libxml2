@@ -1,0 +1,1338 @@
+/* win32/libxml2.def.src
+   Pseudo-source used to create a .DEF file for proper dynamic linkage. 
+   
+   Assuming you use Microsoft's C compiler, you run a
+   
+       cl /EP libxml2.def.src > libxml2.def
+       
+   in order to get the right .DEF file. Basically, all you do is
+   preprocess this file using a C/C++ preprocessor and the right
+   .DEF file should come out. 
+   
+   Should you need a function which does not seem to be exported
+   from the libxml2.dll, its name is most certainly missing here.
+   Add the name of the offending function to this file and rebuild.
+
+   21.03.2001, Igor Zlatkovic (igor@stud.fh-frankfurt.de)
+*/
+
+#define LIBXML2_COMPILING_MSCCDEF
+#include "../include/libxml/xmlversion.h"
+
+LIBRARY libxml2
+EXPORTS
+
+
+/* c14n.h
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_C14N_ENABLED
+	xmlC14NDocSaveTo
+	xmlC14NDocDumpMemory
+	xmlC14NDocSave
+#endif /* LIBXML_C14N_ENABLED */
+
+
+/* catalog.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_CATALOG_ENABLED
+	/* Operations on a given catalog */
+	xmlNewCatalog
+	xmlLoadACatalog
+	xmlLoadSGMLSuperCatalog
+	xmlConvertSGMLCatalog
+	xmlACatalogAdd
+	xmlACatalogRemove
+	xmlACatalogResolve
+	xmlACatalogResolveSystem
+	xmlACatalogResolvePublic
+	xmlACatalogResolveURI
+	xmlACatalogDump
+	xmlFreeCatalog
+	xmlCatalogIsEmpty
+	
+	/* Global operations */
+	xmlInitializeCatalog
+	xmlLoadCatalog
+	xmlLoadCatalogs
+	xmlCatalogCleanup
+	xmlCatalogDump
+	xmlCatalogResolve
+	xmlCatalogResolveSystem
+	xmlCatalogResolvePublic
+	xmlCatalogResolveURI
+	xmlCatalogAdd
+	xmlCatalogRemove
+	xmlParseCatalogFile
+	xmlCatalogConvert
+
+	/* Strictly minimal interfaces for per-document catalogs used by the parser. */
+	xmlCatalogFreeLocal
+	xmlCatalogAddLocal
+	xmlCatalogLocalResolve
+	xmlCatalogLocalResolveURI
+	
+	/* Preference settings */
+	xmlCatalogSetDebug
+	xmlCatalogSetDefaultPrefer
+	xmlCatalogSetDefaults
+	xmlCatalogGetDefaults
+	
+	/* DEPRECATED interfaces */
+	xmlCatalogGetSystem
+	xmlCatalogGetPublic
+#endif /* LIBXML_CATALOG_ENABLED */
+
+
+/* debugXML.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_DEBUG_ENABLED
+	/* The standard Dump routines */
+	xmlDebugDumpString
+	xmlDebugDumpAttr
+	xmlDebugDumpAttrList
+	xmlDebugDumpOneNode
+	xmlDebugDumpNode
+	xmlDebugDumpNodeList
+	xmlDebugDumpDocumentHead
+	xmlDebugDumpDocument
+	xmlDebugDumpDTD
+	xmlDebugDumpEntities
+	xmlLsOneNode
+	xmlLsCountNode
+	xmlBoolToText
+	
+	/* ??? */
+	xmlShellPrintXPathError
+	xmlShellPrintNode
+	xmlShellPrintXPathResult
+	xmlShellList
+	xmlShellBase
+	xmlShellDir
+	xmlShellCat
+	xmlShellLoad
+	xmlShellWrite
+	xmlShellSave
+	xmlShellValidate
+	xmlShellDu
+	xmlShellPwd
+
+	/* The Shell interface. */
+	xmlShell
+#endif /* LIBXML_DEBUG_ENABLED */
+
+
+/* DOCBParser.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_DOCB_ENABLED
+	/* There is only few public functions. */
+	docbEncodeEntities
+	docbSAXParseDoc
+	docbParseDoc
+	docbSAXParseFile
+	docbParseFile
+
+	/* Interfaces for the Push mode */
+	docbFreeParserCtxt
+	docbCreatePushParserCtxt
+	docbParseChunk
+	docbCreateFileParserCtxt
+	docbParseDocument
+#endif /* LIBXML_DOCB_ENABLED */
+
+
+/* encoding.h 
+   --------------------------------------------------------------------- */
+	/* Interfaces for encoding handlers */
+	xmlInitCharEncodingHandlers
+	xmlCleanupCharEncodingHandlers
+	xmlRegisterCharEncodingHandler
+	xmlGetCharEncodingHandler
+	xmlFindCharEncodingHandler
+
+	/* Interfaces for encoding names and aliases */
+	xmlAddEncodingAlias
+	xmlDelEncodingAlias
+	xmlGetEncodingAlias
+	xmlCleanupEncodingAliases
+	xmlParseCharEncoding
+	xmlGetCharEncodingName
+
+	/* Interfaces directly used by the parsers. */
+	xmlDetectCharEncoding
+	xmlCharEncOutFunc
+	xmlCharEncInFunc
+	xmlCharEncFirstLine
+	xmlCharEncCloseFunc
+
+	/* Export a few useful functions */
+	UTF8Toisolat1
+	isolat1ToUTF8
+
+	/* exports additional "UTF-8 aware" string routines which are */
+	xmlCheckUTF8
+	xmlUTF8Strsize
+	xmlUTF8Strndup
+	xmlUTF8Strpos
+	xmlUTF8Strloc
+	xmlUTF8Strsub
+	xmlUTF8Strlen
+
+
+/* entities.h 
+   --------------------------------------------------------------------- */
+	xmlInitializePredefinedEntities
+	xmlAddDocEntity
+	xmlAddDtdEntity
+	xmlGetPredefinedEntity
+	xmlGetDocEntity
+	xmlGetDtdEntity
+	xmlGetParameterEntity
+	xmlEncodeEntities
+	xmlEncodeEntitiesReentrant
+	xmlEncodeSpecialChars
+	xmlCreateEntitiesTable
+	xmlCopyEntitiesTable
+	xmlFreeEntitiesTable
+	xmlDumpEntitiesTable
+	xmlDumpEntityDecl
+	xmlCleanupPredefinedEntities
+
+
+/* globals.h 
+   --------------------------------------------------------------------- */
+	xmlInitializeGlobalState
+
+	/* Memory */
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+#ifdef LIBXML_THREAD_ENABLED
+	__xmlMalloc
+	__xmlRealloc
+	__xmlFree
+	__xmlMemStrdup
+#else
+	xmlMalloc DATA
+	xmlRealloc DATA
+	xmlFree DATA
+	xmlMemStrdup DATA
+#endif
+#else /* !LIBXML_THREAD_ALLOC_ENABLED */
+	xmlMalloc DATA
+	xmlRealloc DATA
+	xmlFree DATA
+	xmlMemStrdup DATA
+#endif /* LIBXML_THREAD_ALLOC_ENABLED */
+	
+	/* Autogenerated (not here, but in the globals.h) */
+#ifdef LIBXML_THREAD_ENABLED
+	#ifdef LIBXML_DOCB_ENABLED
+		__docbDefaultSAXHandler
+	#endif
+	#ifdef LIBXML_HTML_ENABLED
+		__htmlDefaultSAXHandler
+	#endif
+	__oldXMLWDcompatibility
+	__xmlBufferAllocScheme
+	__xmlDefaultBufferSize
+	__xmlDefaultSAXHandler
+	__xmlDefaultSAXLocator
+	__xmlDoValidityCheckingDefaultValue
+	__xmlGenericError
+	__xmlGenericErrorContext
+	__xmlGetWarningsDefaultValue
+	__xmlIndentTreeOutput
+	__xmlKeepBlanksDefaultValue
+	__xmlLineNumbersDefaultValue
+	__xmlLoadExtDtdDefaultValue
+	__xmlParserDebugEntities
+	__xmlParserVersion
+	__xmlPedanticParserDefaultValue
+	__xmlSaveNoEmptyTags
+	__xmlSubstituteEntitiesDefaultValue
+#else /* LIBXML_THREAD_ENABLED */
+	#ifdef LIBXML_DOCB_ENABLED
+		docbDefaultSAXHandler DATA
+	#endif
+	#ifdef LIBXML_HTML_ENABLED
+		htmlDefaultSAXHandler DATA
+	#endif
+	oldXMLWDcompatibility DATA
+	xmlBufferAllocScheme DATA
+	xmlDefaultBufferSize DATA
+	xmlDefaultSAXHandler DATA
+	xmlDefaultSAXLocator DATA
+	xmlDoValidityCheckingDefaultValue DATA
+	xmlGenericError DATA
+	xmlGenericErrorContext DATA
+	xmlGetWarningsDefaultValue DATA
+	xmlIndentTreeOutput DATA
+	xmlKeepBlanksDefaultValue DATA
+	xmlLineNumbersDefaultValue DATA
+	xmlLoadExtDtdDefaultValue DATA
+	xmlParserDebugEntities DATA
+	xmlParserVersion DATA
+	xmlPedanticParserDefaultValue DATA
+	xmlSaveNoEmptyTags DATA
+	xmlSubstituteEntitiesDefaultValue DATA
+#endif /* LIBXML_THREAD_ENABLED */
+
+
+/* hash.h 
+   --------------------------------------------------------------------- */
+	/* Constructor and destructor */
+	xmlHashCreate
+	xmlHashFree
+	
+	/* Add a new entry to the hash table */
+	xmlHashAddEntry
+	xmlHashUpdateEntry
+	xmlHashAddEntry2
+	xmlHashUpdateEntry2
+	xmlHashAddEntry3
+	xmlHashUpdateEntry3
+
+	/* Remove an entry from the hash table */
+	xmlHashRemoveEntry
+	xmlHashRemoveEntry2
+	xmlHashRemoveEntry3
+
+	/* Retrieve the userdata */
+	xmlHashLookup
+	xmlHashLookup2
+	xmlHashLookup3
+
+	/* Helpers */
+	xmlHashCopy
+	xmlHashSize
+	xmlHashScan
+	xmlHashScan3
+	xmlHashScanFull
+	xmlHashScanFull3
+
+
+/* HTMLparser.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_HTML_ENABLED
+	/* There is only few public functions. */
+	htmlTagLookup
+	htmlEntityLookup
+	htmlEntityValueLookup
+	htmlIsAutoClosed
+	htmlAutoCloseTag
+	htmlParseEntityRef
+	htmlParseCharRef
+	htmlParseElement
+	htmlSAXParseDoc
+	htmlParseDoc
+	htmlSAXParseFile
+	htmlParseFile
+	UTF8ToHtml
+	htmlEncodeEntities
+	htmlIsScriptAttribute
+	htmlHandleOmittedElem
+
+	/* Interfaces for the Push mode */
+	htmlFreeParserCtxt
+	htmlCreatePushParserCtxt
+	htmlParseChunk
+#endif /* LIBXML_HTML_ENABLED */
+
+
+/* HTMLtree.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_HTML_ENABLED
+	htmlNewDoc
+	htmlNewDocNoDtD
+	htmlGetMetaEncoding
+	htmlSetMetaEncoding
+	htmlDocDumpMemory
+	htmlDocDump
+	htmlSaveFile
+	htmlNodeDump
+	htmlNodeDumpFile
+	htmlNodeDumpFileFormat
+	htmlSaveFileEnc
+	htmlSaveFileFormat
+	htmlNodeDumpFormatOutput
+	htmlDocContentDumpOutput
+	htmlDocContentDumpFormatOutput
+#endif /* LIBXML_HTML_ENABLED */
+
+
+/* list.h 
+   --------------------------------------------------------------------- */
+	/* Creation/Deletion */
+	xmlListCreate
+	xmlListDelete
+	
+	/* Basic Operators */
+	xmlListSearch
+	xmlListReverseSearch
+	xmlListInsert
+	xmlListAppend
+	xmlListRemoveFirst
+	xmlListRemoveLast
+	xmlListRemoveAll
+	xmlListClear
+	xmlListEmpty
+	xmlListFront
+	xmlListEnd
+	xmlListSize
+	xmlListPopFront
+	xmlListPopBack
+	xmlListPushFront
+	xmlListPushBack
+
+	/* Advanced Operators */
+	xmlListReverse
+	xmlListSort
+	xmlListWalk
+	xmlListReverseWalk
+	xmlListMerge
+	xmlListDup
+	xmlListCopy
+	xmlLinkGetData
+
+
+/* nanoftp.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_FTP_ENABLED
+	/* Init */
+	xmlNanoFTPInit
+	xmlNanoFTPCleanup
+	
+	/* Creating/freeing contexts */
+	xmlNanoFTPNewCtxt
+	xmlNanoFTPFreeCtxt
+	xmlNanoFTPConnectTo
+
+	/* Opening/closing session connections */
+	xmlNanoFTPOpen
+	xmlNanoFTPConnect
+	xmlNanoFTPClose
+	xmlNanoFTPQuit
+	xmlNanoFTPScanProxy
+	xmlNanoFTPProxy
+	xmlNanoFTPUpdateURL
+
+	/* Rathern internal commands */
+	xmlNanoFTPGetResponse
+	xmlNanoFTPCheckResponse
+
+	/* CD/DIR/GET handlers */
+	xmlNanoFTPCwd
+	xmlNanoFTPGetConnection
+	xmlNanoFTPCloseConnection
+	xmlNanoFTPList
+	xmlNanoFTPGetSocket
+	xmlNanoFTPGet
+	xmlNanoFTPRead
+#endif /* LIBXML_FTP_ENABLED */
+
+
+/* nanohttp.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_HTTP_ENABLED
+	xmlNanoHTTPInit
+	xmlNanoHTTPCleanup
+	xmlNanoHTTPScanProxy
+	xmlNanoHTTPFetch
+	xmlNanoHTTPMethod
+	xmlNanoHTTPMethodRedir
+	xmlNanoHTTPOpen
+	xmlNanoHTTPOpenRedir
+	xmlNanoHTTPReturnCode
+	xmlNanoHTTPAuthHeader
+	xmlNanoHTTPRead
+	xmlNanoHTTPSave
+	xmlNanoHTTPClose
+#endif /* LIBXML_HTTP_ENABLED */
+
+
+/* parser.h  
+   --------------------------------------------------------------------- */
+	// xmlParserVersion DATA <-- moved to the globals.h section
+	// xmlDefaultSAXLocator DATA <-- moved to the globals.h section
+	// xmlDefaultSAXHandler DATA <-- moved to the globals.h section
+	//#ifdef LIBXML_HTML_ENABLED <-- moved to the globals.h section
+	//	htmlDefaultSAXHandler DATA <-- moved to the globals.h section
+	//#endif <-- moved to globals.h section
+	//#ifdef LIBXML_DOCB_ENABLED <-- moved to the globals.h section
+	//	docbDefaultSAXHandler DATA <-- moved to the globals.h section
+	//#endif <-- moved to globals.h section
+	// xmlSubstituteEntitiesDefaultValue DATA <-- moved to globals.h section
+	// xmlGetWarningsDefaultValue DATA <-- moved to globals.h section
+
+	/* Init/Cleanup */
+	xmlInitParser
+	xmlCleanupParser
+	
+	/* Input functions */
+	xmlParserInputRead
+	xmlParserInputGrow
+
+	/* xmlChar handling */
+	xmlStrdup
+	xmlStrndup
+	xmlCharStrndup
+	xmlCharStrdup
+	xmlStrsub
+	xmlStrchr
+	xmlStrstr
+	xmlStrcasestr
+	xmlStrcmp
+	xmlStrncmp
+	xmlStrcasecmp
+	xmlStrncasecmp
+	xmlStrEqual
+	xmlStrlen
+	xmlStrcat
+	xmlStrncat
+
+	/* Basic parsing Interfaces */
+	xmlParseDoc
+	xmlParseMemory
+	xmlParseFile
+	xmlSubstituteEntitiesDefault
+	xmlKeepBlanksDefault
+	xmlStopParser
+	xmlPedanticParserDefault
+	xmlLineNumbersDefault
+
+	/* Recovery mode */
+	xmlRecoverDoc
+	xmlRecoverMemory
+	xmlRecoverFile
+
+	/* Less common routines and SAX interfaces */
+	xmlParseDocument
+	xmlParseExtParsedEnt
+	xmlSAXParseDoc
+	xmlSAXUserParseFile
+	xmlSAXUserParseMemory
+	xmlSAXParseMemory
+	xmlSAXParseFile
+	xmlSAXParseFileWithData
+	xmlSAXParseEntity
+	xmlParseEntity
+	xmlParseDTD
+	xmlSAXParseDTD
+	xmlIOParseDTD
+	xmlParseBalancedChunkMemory
+	xmlParseExternalEntity
+	xmlParseCtxtExternalEntity
+
+	/* SAX initialization routines */
+	xmlDefaultSAXHandlerInit
+	#ifdef LIBXML_HTML_ENABLED
+		htmlDefaultSAXHandlerInit
+	#endif /* LIBXML_HTML_ENABLED */
+	
+	/* Parser contexts handling. */
+	xmlInitParserCtxt
+	xmlClearParserCtxt
+	xmlFreeParserCtxt
+	xmlSetupParserForBuffer
+	xmlCreateDocParserCtxt
+
+	/* Reading/setting optional parsing features. */
+	xmlGetFeaturesList
+	xmlGetFeature
+	xmlSetFeature
+
+	/* Interfaces for the Push mode */
+	xmlCreatePushParserCtxt
+	xmlParseChunk
+
+	/* Special I/O mode */
+	xmlCreateIOParserCtxt
+	xmlNewIOInputStream
+
+	/* Node infos */
+	xmlParserFindNodeInfo
+	xmlInitNodeInfoSeq
+	xmlClearNodeInfoSeq
+	xmlParserFindNodeInfoIndex
+	xmlParserAddNodeInfo
+
+	/* External entities handling actually implemented in xmlIO */
+	xmlSetExternalEntityLoader
+	xmlGetExternalEntityLoader
+	xmlLoadExternalEntity
+
+
+/* parserinternals.h 
+   --------------------------------------------------------------------- */
+	/* Global variables used for predefined strings */
+	xmlStringText DATA
+	xmlStringTextNoenc DATA
+	xmlStringComment DATA
+
+	/* Function to finish the work of the macros where needed */
+	xmlIsBaseChar
+	xmlIsBlank
+	xmlIsPubidChar
+	xmlIsLetter
+	xmlIsDigit
+	xmlIsIdeographic
+	xmlIsCombining
+	xmlIsExtender
+	xmlIsCombining
+	xmlIsChar
+
+	/* Parser context */
+	xmlCreateDocParserCtxt
+	xmlCreateFileParserCtxt
+	xmlCreateMemoryParserCtxt
+	xmlNewParserCtxt
+	xmlCreateEntityParserCtxt
+	xmlSwitchEncoding
+	xmlSwitchToEncoding
+	xmlFreeParserCtxt
+
+	/* Entities */
+	xmlHandleEntity
+
+	/* Input Streams */
+	xmlNewStringInputStream
+	xmlNewEntityInputStream
+	xmlPushInput
+	xmlPopInput
+	xmlFreeInputStream
+	xmlNewInputFromFile
+	xmlNewInputStream
+
+	/* Namespaces. */
+	xmlSplitQName
+	xmlNamespaceParseNCName
+	xmlNamespaceParseQName
+	xmlNamespaceParseNSDef
+	xmlParseQuotedString
+	xmlParseNamespace
+
+	/* Generic production rules */
+	xmlScanName
+	xmlParseName
+	xmlParseNmtoken
+	xmlParseEntityValue
+	xmlParseAttValue
+	xmlParseSystemLiteral
+	xmlParsePubidLiteral
+	xmlParseCharData
+	xmlParseExternalID
+	xmlParseComment
+	xmlParsePITarget
+	xmlParsePI
+	xmlParseNotationDecl
+	xmlParseEntityDecl
+	xmlParseDefaultDecl
+	xmlParseNotationType
+	xmlParseEnumerationType
+	xmlParseEnumeratedType
+	xmlParseAttributeType
+	xmlParseAttributeListDecl
+	xmlParseElementMixedContentDecl
+	xmlParseElementChildrenContentDecl
+	xmlParseElementContentDecl
+	xmlParseElementDecl
+	xmlParseMarkupDecl
+	xmlParseCharRef
+	xmlParseEntityRef
+	xmlParseReference
+	xmlParsePEReference
+	xmlParseDocTypeDecl
+	xmlParseAttribute
+	xmlParseStartTag
+	xmlParseEndTag
+	xmlParseCDSect
+	xmlParseContent
+	xmlParseElement
+	xmlParseVersionNum
+	xmlParseVersionInfo
+	xmlParseEncName
+	xmlParseEncodingDecl
+	xmlParseSDDecl
+	xmlParseXMLDecl
+	xmlParseTextDecl
+	xmlParseMisc
+	xmlParseExternalSubset
+
+	xmlDecodeEntities
+	xmlStringDecodeEntities
+
+	/* Generated by MACROS on top of parser.c c.f. PUSH_AND_POP */
+	nodePush
+	nodePop
+	inputPush
+	inputPop
+	namePop
+	namePush
+
+	/* other comodities shared between parser.c and parserInternals */
+	xmlSkipBlankChars
+	xmlStringCurrentChar
+	xmlParserHandlePEReference
+	xmlParserHandleReference
+	xmlCheckLanguageID
+
+	/* Really core function shared with HTML parser */
+	xmlCurrentChar
+	xmlCopyCharMultiByte
+	xmlCopyChar
+	xmlNextChar
+	xmlParserInputShrink
+	
+	/* Actually comes from the HTML parser but launched from the init stuff */
+	#ifdef LIBXML_HTML_ENABLED
+		htmlInitAutoClose
+		htmlCreateFileParserCtxt
+	#endif /* LIBXML_HTML_ENABLED */
+
+
+/* SAX.h
+   --------------------------------------------------------------------- */
+	getPublicId
+	getSystemId
+	setDocumentLocator
+	getLineNumber
+	getColumnNumber
+	isStandalone
+	hasInternalSubset
+	hasExternalSubset
+	internalSubset
+	externalSubset
+	getEntity
+	getParameterEntity
+	resolveEntity
+	entityDecl
+	attributeDecl
+	elementDecl
+	notationDecl
+	unparsedEntityDecl
+	startDocument
+	endDocument
+	attribute
+	startElement
+	endElement
+	reference
+	characters
+	ignorableWhitespace
+	processingInstruction
+	globalNamespace
+	setNamespace
+	getNamespace
+	checkNamespace
+	namespaceDecl
+	comment
+	cdataBlock
+	initxmlDefaultSAXHandler
+	xmlDefaultSAXHandlerInit
+	#ifdef LIBXML_HTML_ENABLED
+		htmlDefaultSAXHandlerInit
+		inithtmlDefaultSAXHandler
+	#endif /* LIBXML_HTML_ENABLED */
+	#ifdef LIBXML_DOCB_ENABLED
+		docbDefaultSAXHandlerInit
+		initdocbDefaultSAXHandler
+	#endif /* LIBXML_DOCB_ENABLED */
+
+
+/* tree.h 
+   --------------------------------------------------------------------- */
+	/* Variables. */
+	// baseDTD DATA <-- has been removed from the code
+	// oldXMLWDcompatibility DATA <-- moved to the globals.h section
+	// xmlIndentTreeOutput DATA <-- moved to the globals.h section
+	// xmlBufferAllocScheme DATA <-- moved to the globals.h section
+	// xmlSaveNoEmptyTags DATA <-- moved to the globals.h section
+	// xmlDefaultBufferSize DATA <-- moved to the globals.h section
+	
+	/* handling buffers */	
+	xmlSetBufferAllocationScheme
+	xmlGetBufferAllocationScheme
+	xmlBufferCreate
+	xmlBufferCreateSize
+	xmlBufferResize
+	xmlBufferFree
+	xmlBufferDump
+	xmlBufferAdd
+	xmlBufferAddHead
+	xmlBufferCat
+	xmlBufferCCat
+	xmlBufferShrink
+	xmlBufferGrow
+	xmlBufferEmpty
+	xmlBufferContent
+	xmlBufferSetAllocationScheme
+	xmlBufferLength
+
+	/* Creating/freeing new structures */
+	xmlCreateIntSubset
+	xmlNewDtd
+	xmlGetIntSubset
+	xmlFreeDtd
+	xmlNewGlobalNs
+	xmlNewNs
+	xmlFreeNs
+	xmlFreeNsList
+	xmlNewDoc
+	xmlFreeDoc
+	xmlNewDocProp
+	xmlNewProp
+	xmlNewNsProp
+	xmlFreePropList
+	xmlFreeProp
+	xmlCopyProp
+	xmlCopyPropList
+	xmlCopyDtd
+	xmlCopyDoc
+	
+	/* Creating new nodes */
+	xmlNewDocNode
+	xmlNewDocRawNode
+	xmlNewNode
+	xmlNewChild
+	xmlNewTextChild
+	xmlNewDocText
+	xmlNewText
+	xmlNewPI
+	xmlNewDocTextLen
+	xmlNewTextLen
+	xmlNewDocComment
+	xmlNewComment
+	xmlNewCDataBlock
+	xmlNewCharRef
+	xmlNewReference
+	xmlCopyNode
+	xmlDocCopyNode
+	xmlCopyNodeList
+	xmlNewDocFragment
+	
+	/* Navigating */
+	xmlGetLineNo
+	xmlGetNodePath
+	xmlDocGetRootElement
+	xmlGetLastChild
+	xmlNodeIsText
+	xmlIsBlankNode
+	
+	/* Changing the structure */
+	xmlDocSetRootElement
+	xmlNodeSetName
+	xmlAddChild
+	xmlAddChildList
+	xmlReplaceNode
+	xmlAddSibling
+	xmlAddPrevSibling
+	xmlAddNextSibling
+	xmlUnlinkNode
+	xmlTextMerge
+	xmlTextConcat
+	xmlFreeNodeList
+	xmlFreeNode
+	xmlSetTreeDoc
+	xmlSetListDoc
+	
+	/* Namespaces */
+	xmlSearchNs
+	xmlSearchNsByHref
+	xmlGetNsList
+	xmlSetNs
+	xmlCopyNamespace
+	xmlCopyNamespaceList
+	
+	/* Changing the content. */
+	xmlSetProp
+	xmlGetProp
+	xmlHasProp
+	xmlHasNsProp
+	xmlSetNsProp
+	xmlGetNsProp
+	xmlStringGetNodeList
+	xmlStringLenGetNodeList
+	xmlNodeListGetString
+	xmlNodeListGetRawString
+	xmlNodeSetContent
+	xmlNodeSetContentLen
+	xmlNodeAddContent
+	xmlNodeAddContentLen
+	xmlNodeGetContent
+	xmlNodeGetLang
+	xmlNodeSetLang
+	xmlNodeGetSpacePreserve
+	xmlNodeSetSpacePreserve
+	xmlNodeGetBase
+	xmlNodeSetBase
+	
+	/* Removing content. */
+	xmlRemoveProp
+	xmlUnsetProp
+	xmlUnsetNsProp
+
+	/* Internal, don't use */
+	xmlBufferWriteCHAR
+	xmlBufferWriteChar
+	xmlBufferWriteQuotedString
+
+	/* Namespace handling */
+	xmlReconciliateNs
+
+	/* Saving */
+	xmlDocDumpFormatMemory
+	xmlDocDumpMemory
+	xmlDocDumpMemoryEnc
+	xmlDocDumpFormatMemoryEnc
+	xmlDocDump
+	xmlElemDump
+	xmlSaveFile
+	xmlSaveFormatFile
+	xmlNodeDump
+	xmlSaveFileTo
+	xmlSaveFormatFileTo
+	xmlNodeDumpOutput
+	xmlSaveFormatFileEnc
+	xmlSaveFileEnc
+
+	/* Compression */
+	xmlGetDocCompressMode
+	xmlSetDocCompressMode
+	xmlGetCompressMode
+	xmlSetCompressMode
+
+
+/* uri.h
+   --------------------------------------------------------------------- */
+	xmlCreateURI
+	xmlBuildURI
+	xmlParseURI
+	xmlParseURIReference
+	xmlSaveUri
+	xmlPrintURI
+	xmlURIEscapeStr
+	xmlURIUnescapeString
+	xmlNormalizeURIPath
+	xmlURIEscape
+	xmlFreeURI
+
+
+/* valid.h
+   --------------------------------------------------------------------- */
+	/* helper */
+	xmlSplitQName2
+
+	/* Notation */
+	xmlAddNotationDecl
+	xmlCopyNotationTable
+	xmlFreeNotationTable
+	xmlDumpNotationDecl
+	xmlDumpNotationTable
+
+	/* Element Content */
+	xmlNewElementContent
+	xmlCopyElementContent
+	xmlFreeElementContent
+	xmlSnprintfElementContent
+	
+	/* DEPRECATED */
+	xmlSprintfElementContent
+	
+	/* Element */
+	xmlAddElementDecl
+	xmlCopyElementTable
+	xmlFreeElementTable
+	xmlDumpElementTable
+	xmlDumpElementDecl
+
+	/* Enumeration */
+	xmlCreateEnumeration
+	xmlFreeEnumeration
+	xmlCopyEnumeration
+
+	/* Attribute */
+	xmlAddAttributeDecl
+	xmlCopyAttributeTable
+	xmlFreeAttributeTable
+	xmlDumpAttributeTable
+	xmlDumpAttributeDecl
+	
+	/* IDs */
+	xmlAddID
+	xmlFreeIDTable
+	xmlGetID
+	xmlIsID
+	xmlRemoveID
+
+	/* IDREFs */
+	xmlAddRef
+	xmlFreeRefTable
+	xmlIsRef
+	xmlRemoveRef
+	xmlGetRefs
+
+	/* The public function calls related to validity checking */
+	xmlValidateRoot
+	xmlValidateElementDecl
+	xmlValidNormalizeAttributeValue
+	xmlValidateAttributeDecl
+	xmlValidateAttributeValue
+	xmlValidateNotationDecl
+	xmlValidateDtd
+	xmlValidateDtdFinal
+	xmlValidateDocument
+	xmlValidateElement
+	xmlValidateOneElement
+	xmlValidateOneAttribute
+	xmlValidateDocumentFinal
+	xmlValidateNotationUse
+	xmlIsMixedElement
+	xmlGetDtdAttrDesc
+	xmlGetDtdQAttrDesc
+	xmlGetDtdNotationDesc
+	xmlGetDtdQElementDesc
+	xmlGetDtdElementDesc
+	xmlValidGetValidElements
+	xmlValidGetPotentialChildren
+
+
+/* xinclude.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_XINCLUDE_ENABLED
+	xmlXIncludeProcess
+#endif /* LIBXML_XINCLUDE_ENABLED */
+
+
+/* xlink.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_XLINK_INCLUDED
+	xlinkGetDefaultDetect
+	xlinkSetDefaultDetect
+	xlinkGetDefaultHandler
+	xlinkSetDefaultHandler
+	xlinkIsLink
+#endif
+
+
+/* xmlerror.h 
+   --------------------------------------------------------------------- */
+	xmlSetGenericErrorFunc
+	initGenericErrorDefaultFunc
+	xmlParserError
+	xmlParserWarning
+	xmlParserValidityError
+	xmlParserValidityWarning
+	xmlParserPrintFileInfo
+	xmlParserPrintFileContext
+	// xmlGenericError DATA <-- moved to the globals.h section
+	// xmlGenericErrorContext DATA <-- moved to the globals.h section
+
+
+/* xmlIO.h 
+   --------------------------------------------------------------------- */
+	/* Interfaces for input */
+	xmlCleanupInputCallbacks
+	xmlCleanupOutputCallbacks
+	xmlRegisterDefaultInputCallbacks
+	xmlAllocParserInputBuffer
+	xmlParserInputBufferCreateFilename
+	xmlParserInputBufferCreateFile
+	xmlParserInputBufferCreateFd
+	xmlParserInputBufferCreateMem
+	xmlParserInputBufferCreateIO
+	xmlParserInputBufferRead
+	xmlParserInputBufferGrow
+	xmlParserInputBufferPush
+	xmlFreeParserInputBuffer
+	xmlParserGetDirectory
+	xmlRegisterInputCallbacks
+
+	/* Interfaces for output */
+	xmlRegisterDefaultOutputCallbacks
+	xmlAllocOutputBuffer
+	xmlOutputBufferCreateFilename
+	xmlOutputBufferCreateFile
+	xmlOutputBufferCreateFd
+	xmlOutputBufferCreateIO
+	xmlOutputBufferWrite
+	xmlOutputBufferWriteString
+	xmlOutputBufferFlush
+	xmlOutputBufferClose
+	xmlRegisterOutputCallbacks
+	#ifdef LIBXML_HTTP_ENABLED
+		xmlIOHTTPOpenW
+		xmlRegisterHTTPPostCallbacks
+	#endif /* LIBXML_HTTP_ENABLED */
+	xmlNoNetExternalEntityLoader
+
+
+/* xmlmemory.h 
+   --------------------------------------------------------------------- */
+	// xmlFree DATA <-- moved to the globals.h section
+	// xmlMalloc DATA <-- moved to the globals.h section
+	// xmlRealloc DATA <-- moved to the globals.h section
+	// xmlMemStrdup DATA <-- moved to the globals.h section
+	xmlMemSetup
+	xmlMemGet
+	xmlInitMemory
+	xmlMemUsed
+	xmlMemDisplay
+	xmlMemShow
+	xmlMemoryDump
+	#ifdef DEBUG_MEMORY_LOCATION
+		xmlMallocLoc
+		xmlReallocLoc
+		xmlMemStrdupLoc
+	#endif /* DEBUG_MEMORY_LOCATION */
+
+
+/* xmlversion.h 
+   --------------------------------------------------------------------- */
+	xmlCheckVersion
+
+
+/* xpath.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_XPATH_ENABLED
+	/* Objects and Nodesets handling */
+	xmlXPathNAN DATA
+	xmlXPathPINF DATA
+	xmlXPathNINF DATA
+	xmlXPathIsNaN
+	xmlXPathIsInf
+	
+	xmlXPathFreeObject
+	xmlXPathNodeSetCreate
+	xmlXPathFreeNodeSetList
+	xmlXPathFreeNodeSet
+	xmlXPathObjectCopy
+	xmlXPathCmpNodes
+
+	/* Conversion functions to basic types */
+	xmlXPathCastNumberToBoolean
+	xmlXPathCastStringToBoolean
+	xmlXPathCastNodeSetToBoolean
+	xmlXPathCastToBoolean
+	xmlXPathCastBooleanToNumber
+	xmlXPathCastStringToNumber
+	xmlXPathCastNodeToNumber
+	xmlXPathCastNodeSetToNumber
+	xmlXPathCastToNumber
+	xmlXPathCastBooleanToString
+	xmlXPathCastNumberToString
+	xmlXPathCastNodeToString
+	xmlXPathCastNodeSetToString
+	xmlXPathCastToString
+	xmlXPathConvertBoolean
+	xmlXPathConvertNumber
+	xmlXPathConvertString
+
+	/* Context handling */
+	xmlXPathInit
+	xmlXPathNewContext
+	xmlXPathFreeContext
+	
+	/* Evaluation functions. */
+	xmlXPathEval
+	xmlXPathEvalExpression
+	xmlXPathEvalPredicate
+
+	/* Separate compilation/evaluation entry points */
+	xmlXPathCompile
+	xmlXPathCompiledEval
+	xmlXPathFreeCompExpr
+#endif /* LIBXML_XPATH_ENABLED */
+
+
+/* xpathinternals.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_XPATH_ENABLED
+	xmlXPathPopBoolean
+	xmlXPathPopNumber
+	xmlXPathPopString
+	xmlXPathPopNodeSet
+	xmlXPathPopExternal
+
+	/* Variable Lookup forwarding */
+	xmlXPathRegisterVariableLookup
+
+	/* Function Lookup forwarding */
+	xmlXPathRegisterFuncLookup
+
+	/* Error reporting */
+	xmlXPatherror
+	xmlXPathDebugDumpObject
+	xmlXPathDebugDumpCompExpr
+
+	/* NodeSet handling */
+	xmlXPathNodeSetContains
+	xmlXPathDifference
+	xmlXPathIntersection
+	xmlXPathDistinctSorted
+	xmlXPathDistinct
+	xmlXPathHasSameNodes
+	xmlXPathNodeLeadingSorted
+	xmlXPathLeadingSorted
+	xmlXPathNodeLeading
+	xmlXPathLeading
+	xmlXPathNodeTrailingSorted
+	xmlXPathTrailingSorted
+	xmlXPathNodeTrailing
+	xmlXPathTrailing
+
+	/* Extending a context */
+	xmlXPathRegisterNs
+	xmlXPathNsLookup
+	xmlXPathRegisteredNsCleanup
+	xmlXPathRegisterFunc
+	xmlXPathRegisterFuncNS
+	xmlXPathRegisterVariable
+	xmlXPathRegisterVariableNS
+	xmlXPathFunctionLookup
+	xmlXPathFunctionLookupNS
+	xmlXPathRegisteredFuncsCleanup
+	xmlXPathVariableLookup
+	xmlXPathVariableLookupNS
+	xmlXPathRegisteredVariablesCleanup
+
+	/* Utilities to extend XPath */
+	xmlXPathNewParserContext
+	xmlXPathFreeParserContext
+
+	/* TODO: remap to xmlXPathValuePop and Push */
+	valuePop
+	valuePush
+
+	xmlXPathNewString
+	xmlXPathNewCString
+	xmlXPathWrapString
+	xmlXPathWrapCString
+	xmlXPathNewFloat
+	xmlXPathNewBoolean
+	xmlXPathNewNodeSet
+	xmlXPathNewValueTree
+	xmlXPathNodeSetAdd
+	xmlXPathNodeSetAddUnique
+	xmlXPathNodeSetSort
+	xmlXPathIdFunction
+	xmlXPathRoot
+	xmlXPathEvalExpr
+	xmlXPathParseName
+	xmlXPathParseNCName
+
+	/* Debug */
+	#ifdef LIBXML_DEBUG_ENABLED
+		xmlXPathDebugDumpObject
+		xmlXPathDebugDumpCompExpr
+	#endif /* LIBXML_DEBUG_ENABLED */
+
+	/* Existing functions */
+	xmlXPathStringEvalNumber
+	xmlXPathEvaluatePredicateResult
+	xmlXPathInit
+	xmlXPathStringFunction
+	xmlXPathRegisterAllFunctions
+	xmlXPathNodeSetCreate
+	xmlXPathNodeSetAdd
+	xmlXPathNodeSetMerge
+	xmlXPathNodeSetDel
+	xmlXPathNodeSetRemove
+	xmlXPathFreeNodeSet
+	xmlXPathNewNodeSet
+	xmlXPathNewNodeSetList
+	xmlXPathWrapNodeSet
+	xmlXPathWrapExternal
+	xmlXPathFreeNodeSetList
+
+	xmlXPathNewFloat
+	xmlXPathNewBoolean
+	xmlXPathNewString
+	xmlXPathNewCString
+	xmlXPathFreeObject
+	xmlXPathNewContext
+	xmlXPathFreeContext
+
+	xmlXPathEqualValues
+	xmlXPathCompareValues
+	xmlXPathValueFlipSign
+	xmlXPathAddValues
+	xmlXPathSubValues
+	xmlXPathMultValues
+	xmlXPathDivValues
+	xmlXPathModValues
+
+	xmlXPathIsNodeType
+
+	/* Some of the axis navigation routines */
+	xmlXPathNextSelf
+	xmlXPathNextChild
+	xmlXPathNextDescendant
+	xmlXPathNextDescendantOrSelf
+	xmlXPathNextParent
+	xmlXPathNextAncestorOrSelf
+	xmlXPathNextFollowingSibling
+	xmlXPathNextFollowing
+	xmlXPathNextNamespace
+	xmlXPathNextAttribute
+	xmlXPathNextPreceding
+	xmlXPathNextAncestor
+	xmlXPathNextPrecedingSibling
+
+	/* The official core of XPath functions */
+	xmlXPathRoot
+	xmlXPathLastFunction
+	xmlXPathPositionFunction
+	xmlXPathCountFunction
+	xmlXPathIdFunction
+	xmlXPathLocalNameFunction
+	xmlXPathNamespaceURIFunction
+	xmlXPathStringFunction
+	xmlXPathStringLengthFunction
+	xmlXPathConcatFunction
+	xmlXPathContainsFunction
+	xmlXPathStartsWithFunction
+	xmlXPathSubstringFunction
+	xmlXPathSubstringBeforeFunction
+	xmlXPathSubstringAfterFunction
+	xmlXPathNormalizeFunction
+	xmlXPathTranslateFunction
+	xmlXPathNotFunction
+	xmlXPathTrueFunction
+	xmlXPathFalseFunction
+	xmlXPathLangFunction
+	xmlXPathNumberFunction
+	xmlXPathSumFunction
+	xmlXPathFloorFunction
+	xmlXPathCeilingFunction
+	xmlXPathRoundFunction
+	xmlXPathBooleanFunction
+#endif /* LIBXML_XPATH_ENABLED */
+
+
+/* xpointer.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_XPTR_ENABLED
+	/* Handling of location sets */
+	xmlXPtrLocationSetCreate
+	xmlXPtrFreeLocationSet
+	xmlXPtrLocationSetMerge
+	xmlXPtrNewRange
+	xmlXPtrNewRangePoints
+	xmlXPtrNewRangeNodePoint
+	xmlXPtrNewRangePointNode
+	xmlXPtrNewRangeNodes
+	xmlXPtrNewLocationSetNodes
+	xmlXPtrNewLocationSetNodeSet
+	xmlXPtrNewRangeNodeObject
+	xmlXPtrNewCollapsedRange
+	xmlXPtrLocationSetAdd
+	xmlXPtrWrapLocationSet
+	xmlXPtrLocationSetDel
+	xmlXPtrLocationSetRemove
+
+	/* Functions */
+	xmlXPtrNewContext
+	xmlXPtrEval
+	xmlXPtrRangeToFunction
+	xmlXPtrBuildNodeList
+	xmlXPtrEvalRangePredicate
+#endif /* LIBXML_XPTR_ENABLED */
+
+

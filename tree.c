@@ -2486,6 +2486,14 @@ xmlUnlinkNode(xmlNodePtr cur) {
 #endif
 	return;
     }
+    if (cur->type == XML_DTD_NODE) {
+	xmlDocPtr doc;
+	doc = cur->doc;
+	if (doc->intSubset == (xmlDtdPtr) cur)
+	    doc->intSubset = NULL;
+	if (doc->extSubset == (xmlDtdPtr) cur)
+	    doc->extSubset = NULL;
+    }
     if ((cur->parent != NULL) && (cur->parent->children == cur))
         cur->parent->children = cur->next;
     if ((cur->parent != NULL) && (cur->parent->last == cur))

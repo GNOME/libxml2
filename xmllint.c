@@ -112,6 +112,7 @@ static int loaddtd = 0;
 static int progresult = 0;
 static int timing = 0;
 static int generate = 0;
+static int dropdtd = 0;
 static struct timeval begin, end;
 #ifdef LIBXML_CATALOG_ENABLED
 static int catalogs = 0;
@@ -373,13 +374,20 @@ xmlShellReadline(char *prompt) {
     return (line_read);
 #else
     char line_read[501];
+    char *ret;
+    int len;
 
     if (prompt != NULL)
 	fprintf(stdout, "%s", prompt);
     if (!fgets(line_read, 500, stdin))
         return(NULL);
     line_read[500] = 0;
-    return((char *) xmlStrdup((xmlChar *) line_read));
+    len = strlen(line_read);
+    ret = (char *) malloc(len + 1);
+    if (ret != NULL) {
+	memcpy (ret, line_read, len + 1);
+    }
+    return(ret);
 #endif
 }
 
@@ -599,6 +607,19 @@ static void parseAndPrintFile(char *filename) {
 	msec *= 1000;
 	msec += (end.tv_usec - begin.tv_usec) / 1000;
 	fprintf(stderr, "Parsing took %ld ms\n", msec);
+    }
+
+    /*
+     * Remove DOCTYPE nodes
+     */
+    if (dropdtd) {
+	xmlDtdPtr dtd;
+
+	dtd = xmlGetIntSubset(doc);
+	if (dtd != NULL) {
+	    xmlUnlinkNode((xmlNodePtr)dtd);
+	    xmlFreeDtd(dtd);
+	}
     }
 
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -866,6 +887,7 @@ static void usage(const char *name) {
 #endif
     printf("\t--loaddtd : fetch external Dtd\n");
     printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
+    printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
 }
 int
 main(int argc, char **argv) {
@@ -945,6 +967,9 @@ main(int argc, char **argv) {
 	    dtdvalid = argv[i];
 	    loaddtd++;
         }
+	else if ((!strcmp(argv[i], "-dropdtd")) ||
+	         (!strcmp(argv[i], "--dropdtd")))
+	    dropdtd++;
 	else if ((!strcmp(argv[i], "-insert")) ||
 	         (!strcmp(argv[i], "--insert")))
 	    insert++;

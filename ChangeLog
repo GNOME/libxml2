@@ -1,3 +1,7 @@
+Mon Jan 21 14:34:37 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: Adam Lounds pointed out a bug in xmlSearchNs()
+	  
 Mon Jan 21 09:55:21 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c include/libxml/xpathInternals.h: the change made to

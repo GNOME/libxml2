@@ -4070,6 +4070,8 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
     if (node == NULL) return(NULL);
     if ((nameSpace != NULL) &&
 	(xmlStrEqual(nameSpace, (const xmlChar *)"xml"))) {
+	if (doc == NULL)
+	    return(NULL);
 	if (doc->oldNs == NULL) {
 	    /*
 	     * Allocate a new Namespace and fill the fields.

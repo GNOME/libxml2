@@ -825,7 +825,6 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
 	in->buffer = NULL;
     }
 
-    MEM_CLEANUP(in, (size_t) sizeof(xmlParserInputBuffer));
     xmlFree(in);
 }
 
@@ -862,7 +861,6 @@ xmlOutputBufferClose(xmlOutputBufferPtr out) {
 	out->buffer = NULL;
     }
 
-    MEM_CLEANUP(out, (size_t) sizeof(xmlOutputBuffer));
     xmlFree(out);
     return(written);
 }

@@ -1512,18 +1512,10 @@ xmlShellPwd(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *buffer, xmlNodePtr node
 	    next = cur->parent;
 	}
 	if (occur == 0)
-#ifdef HAVE_SNPRINTF
 	    snprintf(buf, sizeof(buf), "%c%s%s", sep, name, buffer);
-#else
-	    sprintf(buf, "%c%s%s", sep, name, buffer);
-#endif
         else
-#ifdef HAVE_SNPRINTF
 	    snprintf(buf, sizeof(buf), "%c%s[%d]%s",
                     sep, name, occur, buffer);
-#else
-	    sprintf(buf, "%c%s[%d]%s", sep, name, occur, buffer);
-#endif
         buf[sizeof(buf) - 1] = 0;
         /*
          * This test prevents buffer overflow, because this routine
@@ -1593,11 +1585,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
         if (ctxt->node == (xmlNodePtr) ctxt->doc)
 	    sprintf(prompt, "%s > ", "/");
 	else if (ctxt->node->name)
-#ifdef HAVE_SNPRINTF
 	    snprintf(prompt, sizeof(prompt), "%s > ", ctxt->node->name);
-#else
-	    sprintf(prompt, "%s > ", ctxt->node->name);
-#endif
         else
 	    sprintf(prompt, "? > ");
         prompt[sizeof(prompt) - 1] = 0;

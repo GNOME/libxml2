@@ -163,21 +163,17 @@ xmlGetVarStr(const char * msg, va_list args) {
     int       chars, left;
     char      *str, *larger;
 
-    str = (char *) xmlMalloc(100);
+    str = (char *) xmlMalloc(150);
     if (str == NULL)
       return(NULL);
 
-    size = 100;
+    size = 150;
     length = 0;
 
     while (1) {
 	left = size - length;
 		    /* Try to print in the allocated space. */
-#ifdef HAVE_VSNPRINTF
   	chars = vsnprintf(str + length, left, msg, args);
-#else
-	chars = vsprintf(str + length, msg, args);
-#endif
 			  /* If that worked, we're done. */
 	if ((chars > -1) && (chars < left ))
 	    break;

@@ -26,6 +26,7 @@
 
 #ifdef DEBUG_MEMORY_LOCATION
 #define MEM_LIST /* keep a list of all the allocated memory blocks */
+#define DEBUG_MEMORY_FREED
 #endif
 
 #ifdef DEBUG_MEMORY_FREED

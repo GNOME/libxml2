@@ -213,7 +213,6 @@ xmlFreeNs(xmlNsPtr cur) {
     }
     if (cur->href != NULL) xmlFree((char *) cur->href);
     if (cur->prefix != NULL) xmlFree((char *) cur->prefix);
-    MEM_CLEANUP(cur, sizeof(xmlNs));
     xmlFree(cur);
 }
 
@@ -446,7 +445,6 @@ xmlFreeDtd(xmlDtdPtr cur) {
     if (cur->pentities != NULL)
         xmlFreeEntitiesTable((xmlEntitiesTablePtr) cur->pentities);
 
-    MEM_CLEANUP(cur, sizeof(xmlDtd));
     xmlFree(cur);
 }
 
@@ -508,7 +506,6 @@ xmlFreeDoc(xmlDocPtr cur) {
     if (cur->ids != NULL) xmlFreeIDTable((xmlIDTablePtr) cur->ids);
     if (cur->refs != NULL) xmlFreeRefTable((xmlRefTablePtr) cur->refs);
     if (cur->URL != NULL) xmlFree((char *) cur->URL);
-    MEM_CLEANUP(cur, sizeof(xmlDoc));
     xmlFree(cur);
 }
 
@@ -1133,7 +1130,6 @@ xmlFreeProp(xmlAttrPtr cur) {
         xmlRemoveID(cur->parent->doc, cur);
     if (cur->name != NULL) xmlFree((char *) cur->name);
     if (cur->children != NULL) xmlFreeNodeList(cur->children);
-    MEM_CLEANUP(cur, sizeof(xmlAttr));
     xmlFree(cur);
 }
 
@@ -2329,7 +2325,6 @@ xmlFreeNode(xmlNodePtr cur) {
 	(cur->name != xmlStringComment))
 	xmlFree((char *) cur->name);
     if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
-    MEM_CLEANUP(cur, sizeof(xmlNode));
     xmlFree(cur);
 }
 
@@ -4511,14 +4506,8 @@ xmlBufferFree(xmlBufferPtr buf) {
 	return;
     }
     if (buf->content != NULL) {
-#ifndef XML_USE_BUFFER_CONTENT
-        MEM_CLEANUP(buf->content, BASE_BUFFER_SIZE);
-#else
-        MEM_CLEANUP(buf->content, buf->size);
-#endif
         xmlFree(buf->content);
     }
-    MEM_CLEANUP(buf, sizeof(xmlBuffer));
     xmlFree(buf);
 }
 
@@ -4532,7 +4521,7 @@ void
 xmlBufferEmpty(xmlBufferPtr buf) {
     if (buf->content == NULL) return;
     buf->use = 0;
-    MEM_CLEANUP(buf->content, buf->size);
+    memset(buf->content, 0, buf->size);
 }
 
 /**

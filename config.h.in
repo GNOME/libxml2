@@ -31,14 +31,26 @@
 /* Define if you have the fpclass function.  */
 #undef HAVE_FPCLASS
 
+/* Define if you have the fprintf function.  */
+#undef HAVE_FPRINTF
+
 /* Define if you have the isnand function.  */
 #undef HAVE_ISNAND
 
 /* Define if you have the localtime function.  */
 #undef HAVE_LOCALTIME
 
+/* Define if you have the printf function.  */
+#undef HAVE_PRINTF
+
 /* Define if you have the snprintf function.  */
 #undef HAVE_SNPRINTF
+
+/* Define if you have the sprintf function.  */
+#undef HAVE_SPRINTF
+
+/* Define if you have the sscanf function.  */
+#undef HAVE_SSCANF
 
 /* Define if you have the stat function.  */
 #undef HAVE_STAT
@@ -55,8 +67,14 @@
 /* Define if you have the strndup function.  */
 #undef HAVE_STRNDUP
 
+/* Define if you have the vfprintf function.  */
+#undef HAVE_VFPRINTF
+
 /* Define if you have the vsnprintf function.  */
 #undef HAVE_VSNPRINTF
+
+/* Define if you have the vsprintf function.  */
+#undef HAVE_VSPRINTF
 
 /* Define if you have the <arpa/inet.h> header file.  */
 #undef HAVE_ARPA_INET_H

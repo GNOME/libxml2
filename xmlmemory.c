@@ -283,8 +283,11 @@ void
 xmlMemFree(void *ptr)
 {
     MEMHDR *p;
+    char *target;
 
     TEST_POINT
+
+    target = (char *) ptr;
 
     p = CLIENT_2_HDR(ptr);
     if (p->mh_tag != MEMTAG) {
@@ -293,6 +296,7 @@ xmlMemFree(void *ptr)
     }
     p->mh_tag = ~MEMTAG;
     debugMemSize -= p->mh_size;
+    memset(target, -1, p->mh_size);
 
 #ifdef MEM_LIST
     debugmem_list_delete(p);

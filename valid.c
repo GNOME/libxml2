@@ -321,7 +321,6 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
     if (cur->c1 != NULL) xmlFreeElementContent(cur->c1);
     if (cur->c2 != NULL) xmlFreeElementContent(cur->c2);
     if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
-    MEM_CLEANUP(cur, sizeof(xmlElementContent));
     xmlFree(cur);
 }
 
@@ -486,7 +485,6 @@ xmlFreeElement(xmlElementPtr elem) {
 	xmlFree((xmlChar *) elem->name);
     if (elem->prefix != NULL)
 	xmlFree((xmlChar *) elem->prefix);
-    MEM_CLEANUP(elem, sizeof(xmlElement));
     xmlFree(elem);
 }
 
@@ -781,7 +779,6 @@ xmlFreeEnumeration(xmlEnumerationPtr cur) {
     if (cur->next != NULL) xmlFreeEnumeration(cur->next);
 
     if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
-    MEM_CLEANUP(cur, sizeof(xmlEnumeration));
     xmlFree(cur);
 }
 
@@ -941,7 +938,6 @@ xmlFreeAttribute(xmlAttributePtr attr) {
 	xmlFree((xmlChar *) attr->defaultValue);
     if (attr->prefix != NULL)
 	xmlFree((xmlChar *) attr->prefix);
-    MEM_CLEANUP(attr, sizeof(xmlAttribute));
     xmlFree(attr);
 }
 
@@ -1289,7 +1285,6 @@ xmlFreeNotation(xmlNotationPtr nota) {
 	xmlFree((xmlChar *) nota->PublicID);
     if (nota->SystemID != NULL)
 	xmlFree((xmlChar *) nota->SystemID);
-    MEM_CLEANUP(nota, sizeof(xmlNotation));
     xmlFree(nota);
 }
 
@@ -1494,7 +1489,6 @@ xmlFreeID(xmlIDPtr id) {
     if (id == NULL) return;
     if (id->value != NULL)
 	xmlFree((xmlChar *) id->value);
-    MEM_CLEANUP(id, sizeof(xmlID));
     xmlFree(id);
 }
 
@@ -1732,7 +1726,6 @@ xmlFreeRef(xmlLinkPtr lk) {
 	if (ref == NULL) return;
 	if (ref->value != NULL)
 		xmlFree((xmlChar *)ref->value);
-	MEM_CLEANUP(ref, sizeof(xmlRef));
 	xmlFree(ref);
 }
 
@@ -2580,12 +2573,8 @@ xmlValidNormalizeAttributeValue(xmlDocPtr doc, xmlNodePtr elem,
 
     if ((elem->ns != NULL) && (elem->ns->prefix != NULL)) {
 	xmlChar qname[500];
-#ifdef HAVE_SNPRINTF
 	snprintf((char *) qname, sizeof(qname), "%s:%s",
 		 elem->ns->prefix, elem->name);
-#else
-	sprintf((char *) qname, "%s:%s", elem->ns->prefix, elem->name);
-#endif
         qname[sizeof(qname) - 1] = 0;
 	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, qname, name);
 	if ((attrDecl == NULL) && (doc->extSubset != NULL))
@@ -2857,12 +2846,8 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     if ((elem->ns != NULL) && (elem->ns->prefix != NULL)) {
 	xmlChar qname[500];
-#ifdef HAVE_SNPRINTF
 	snprintf((char *) qname, sizeof(qname), "%s:%s",
 		 elem->ns->prefix, elem->name);
-#else
-	sprintf((char *) qname, "%s:%s", elem->ns->prefix, elem->name);
-#endif
         qname[sizeof(qname) - 1] = 0;
 	if (attr->ns != NULL) {
 	    attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, qname,
@@ -3460,13 +3445,8 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		    name = child->name;
 		    if ((child->ns != NULL) && (child->ns->prefix != NULL)) {
 			xmlChar qname[500];
-#ifdef HAVE_SNPRINTF
 			snprintf((char *) qname, sizeof(qname), "%s:%s",
 				 child->ns->prefix, child->name);
-#else
-			sprintf((char *) qname, "%s:%s",
-                                 child->ns->prefix, child->name);
-#endif
                         qname[sizeof(qname) - 1] = 0;
 			cont = elemDecl->content;
 			while (cont != NULL) {
@@ -3649,12 +3629,8 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 	if (!xmlStrEqual(doc->intSubset->name, root->name)) {
 	    if ((root->ns != NULL) && (root->ns->prefix != NULL)) {
 		xmlChar qname[500];
-#ifdef HAVE_SNPRINTF
 		snprintf((char *) qname, sizeof(qname), "%s:%s",
 			 root->ns->prefix, root->name);
-#else
-		sprintf((char *) qname, "%s:%s", root->ns->prefix, root->name);
-#endif
 		qname[sizeof(qname) - 1] = 0;
 		if (xmlStrEqual(doc->intSubset->name, qname))
 		    goto name_ok;

@@ -100,10 +100,14 @@ AC_SUBST(CORBA_CFLAGS)
 
 dnl Checks for library functions.
 AC_FUNC_STRFTIME
-AC_CHECK_FUNCS(strdup strndup strerror snprintf vsnprintf)
+AC_CHECK_FUNCS(strdup strndup strerror)
 AC_CHECK_FUNCS(finite isnand fp_class class fpclass)
 AC_CHECK_FUNCS(strftime localtime)
 AC_CHECK_FUNCS(stat _stat)
+
+dnl Checking the standard string functions availability
+AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf,,
+               NEED_TRIO=1)
 
 dnl Checks for inet libraries:
 AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
@@ -240,6 +244,19 @@ dnl    fi
     CFLAGS="-Wall -g -O -pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline "
 dnl -Wcast-qual -ansi
 fi
+
+dnl
+dnl Check for trio string functions
+dnl
+
+if test "${NEED_TRIO}" = "1" ; then
+    echo Adding trio library for string functions
+    WITH_TRIO=1
+else    
+    WITH_TRIO=0
+fi
+AC_SUBST(WITH_TRIO)
+
 dnl
 dnl Aloow to disable various pieces
 dnl

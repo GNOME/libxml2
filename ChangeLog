@@ -1,3 +1,21 @@
+Tue Mar 27 14:32:06 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in Makefile.am config.h.in xmlversion.h.in: detect if
+	  we need string functions
+	* trio.[ch] strio.[ch]: embedded the Trio-0.23 string functions
+	  to be able to use them where needed. Applied some changes
+	  to reduce name linking pollution and compile in only what's
+	  needed.
+	* HTMLtree.c debugXML.c entities.c error.c nanoftp.c valid.c
+	  xlink.c xmlversion.h.in xpath.c: got rid of the #ifdef 
+	  for the string manipulation functions
+	* xmlmemory.[ch]: removed DEBUG_MEMORY_FREED and added it automatically
+	  to the free() function of xmlmemory.c
+	* entities.c HTMLtree.c parserInternals.c tree.c uri.c valid.c
+	  xinclude.c xmlIO.c xpath.c xpointer.c: removed the MEM_CLEANUP
+	  usage.
+
+
 Tue Mar 27 02:30:23 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* error.c: applied the context output patch of the error

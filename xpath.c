@@ -327,10 +327,8 @@ xmlXPathFreeCompExpr(xmlXPathCompExprPtr comp) {
 	    xmlFree(op->value5);
     }
     if (comp->steps != NULL) {
-	MEM_CLEANUP(comp->steps, sizeof(xmlXPathStepOp));
 	xmlFree(comp->steps);
     }
-    MEM_CLEANUP(comp, sizeof(xmlXPathCompExpr));
     xmlFree(comp);
 }
 
@@ -1488,10 +1486,8 @@ void
 xmlXPathFreeNodeSet(xmlNodeSetPtr obj) {
     if (obj == NULL) return;
     if (obj->nodeTab != NULL) {
-	MEM_CLEANUP(obj->nodeTab, (size_t) sizeof(xmlNodePtr) * obj->nodeMax);
 	xmlFree(obj->nodeTab);
     }
-    MEM_CLEANUP(obj, (size_t) sizeof(xmlNodeSet));
     xmlFree(obj);
 }
 
@@ -1512,10 +1508,8 @@ xmlXPathFreeValueTree(xmlNodeSetPtr obj) {
 	    xmlFreeNodeList(obj->nodeTab[i]);
 
     if (obj->nodeTab != NULL) {
-	MEM_CLEANUP(obj->nodeTab, (size_t) sizeof(xmlNodePtr) * obj->nodeMax);
 	xmlFree(obj->nodeTab);
     }
-    MEM_CLEANUP(obj, (size_t) sizeof(xmlNodeSet));
     xmlFree(obj);
 }
 
@@ -1673,7 +1667,6 @@ xmlXPathWrapNodeSet(xmlNodeSetPtr val) {
 void
 xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj) {
     if (obj == NULL) return;
-    MEM_CLEANUP(obj, (size_t) sizeof(xmlXPathObject));
     xmlFree(obj);
 }
 
@@ -2190,7 +2183,6 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
 	    xmlXPathFreeValueTree(obj->nodesetval);
     }
 
-    MEM_CLEANUP(obj, (size_t) sizeof(xmlXPathObject));
     xmlFree(obj);
 }
 
@@ -2256,7 +2248,6 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
     xmlXPathRegisteredNsCleanup(ctxt);
     xmlXPathRegisteredFuncsCleanup(ctxt);
     xmlXPathRegisteredVariablesCleanup(ctxt);
-    MEM_CLEANUP(ctxt, (size_t) sizeof(xmlXPathContext));
     xmlFree(ctxt);
 }
 
@@ -2374,12 +2365,10 @@ xmlXPathCompParserContext(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctxt) {
 void
 xmlXPathFreeParserContext(xmlXPathParserContextPtr ctxt) {
     if (ctxt->valueTab != NULL) {
-        MEM_CLEANUP(ctxt->valueTab, 10 * (size_t) sizeof(xmlXPathObjectPtr));
         xmlFree(ctxt->valueTab);
     }
     if (ctxt->comp)
 	xmlXPathFreeCompExpr(ctxt->comp);
-    MEM_CLEANUP(ctxt, (size_t) sizeof(xmlXPathParserContext));
     xmlFree(ctxt);
 }
 
@@ -4430,15 +4419,9 @@ xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    
 	    else {
 		char name[2000];
-#ifdef HAVE_SNPRINTF
 		snprintf(name, sizeof(name), "%s:%s", 
 			 (char *) cur->nodesetval->nodeTab[i]->ns->prefix,
 			 (char *) cur->nodesetval->nodeTab[i]->name);
-#else
-		sprintf(name, "%s:%s", 
-			(char *) cur->nodesetval->nodeTab[i]->ns->prefix,
-			(char *) cur->nodesetval->nodeTab[i]->name);
-#endif
 		name[sizeof(name) - 1] = 0;
 		valuePush(ctxt, xmlXPathNewCString(name));
 	    }

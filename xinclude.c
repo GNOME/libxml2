@@ -281,7 +281,6 @@ xmlXIncludeFreeContext(xmlXIncludeCtxtPtr ctxt) {
 	xmlFree(ctxt->txtTab);
     if (ctxt->txturlTab != NULL)
 	xmlFree(ctxt->txturlTab);
-    MEM_CLEANUP(ctxt, sizeof(xmlXIncludeCtxt));
     xmlFree(ctxt);
 }
 

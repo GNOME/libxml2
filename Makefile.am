@@ -15,29 +15,11 @@ libxml2_la_LIBADD = @Z_LIBS@ -lm
 
 libxml2_la_LDFLAGS = -version-info @LIBXML_VERSION_INFO@
 
-libxml2_la_SOURCES = \
-		SAX.c \
-		entities.c \
-		encoding.c \
-		error.c \
-		parserInternals.c \
-		parser.c \
-		tree.c \
-		hash.c \
-		list.c \
-		xmlIO.c \
-		xmlmemory.c \
-		uri.c \
-		valid.c \
-		xlink.c \
-		HTMLparser.c \
-		HTMLtree.c \
-		debugXML.c \
-		xpath.c \
-		xpointer.c \
-		xinclude.c \
-		nanohttp.c \
-		nanoftp.c
+libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
+		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
+		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
+		xpointer.c xinclude.c nanohttp.c nanoftp.c  \
+		trio.c strio.c
 
 DEPS = $(top_builddir)/libxml2.la
 LDADDS = $(top_builddir)/libxml2.la @Z_LIBS@ -lm
@@ -428,7 +410,8 @@ EXTRA_DIST = xml2Conf.sh.in libxml.spec.in libxml.spec libxml.m4 \
 	     $(man_MANS) libxml-2.0.pc.in xmlversion.h.in \
 	     win32/README.MSDev win32/Makefile.mingw \
 	     win32/libxml2/libxml2.dsp win32/libxml2/libxml2_so.dsp \
-	     win32/libxml2/libxml2_a.dsp vms/build_libxml.com vms/config.vms
+	     win32/libxml2/libxml2_a.dsp vms/build_libxml.com vms/config.vms \
+             trio.h strio.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc

@@ -715,11 +715,8 @@ xmlXPtrFreeLocationSet(xmlLocationSetPtr obj) {
 	for (i = 0;i < obj->locNr; i++) {
             xmlXPathFreeObject(obj->locTab[i]);
 	}
-	MEM_CLEANUP(obj->locTab,
-	       (size_t) sizeof(xmlXPathObjectPtr) * obj->locMax);
 	xmlFree(obj->locTab);
     }
-    MEM_CLEANUP(obj, (size_t) sizeof(xmlLocationSet));
     xmlFree(obj);
 }
 

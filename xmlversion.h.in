@@ -24,6 +24,15 @@ extern void xmlCheckVersion(int version);
 #define LIBXML_TEST_VERSION xmlCheckVersion(@LIBXML_VERSION_NUMBER@);
 
 /*
+ * Whether the trio support need to be configured in
+ */
+#if @WITH_TRIO@
+#define WITH_TRIO
+#else
+#define WITHOUT_TRIO
+#endif
+
+/*
  * Whether the FTP support is configured in
  */
 #if @WITH_FTP@

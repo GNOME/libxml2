@@ -177,12 +177,8 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
 	return(-1);
 
     if (encoding != NULL) {
-#ifdef HAVE_SNPRINTF
 	snprintf(newcontent, sizeof(newcontent), "text/html; charset=%s",
                 encoding);
-#else
-	sprintf(newcontent, "text/html; charset=%s", encoding);
-#endif
 	newcontent[sizeof(newcontent) - 1] = 0;
     }
 
@@ -663,7 +659,6 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
     htmlDocContentDump(buf, cur);
     *mem = buf->content;
     *size = buf->use;
-    MEM_CLEANUP(buf, sizeof(xmlBuffer));
     xmlFree(buf);
 }
 

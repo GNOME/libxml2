@@ -1877,7 +1877,6 @@ xmlFreeInputStream(xmlParserInputPtr input) {
         input->free((xmlChar *) input->base);
     if (input->buf != NULL) 
         xmlFreeParserInputBuffer(input->buf);
-    MEM_CLEANUP(input, sizeof(xmlParserInput));
     xmlFree(input);
 }
 

@@ -52,6 +52,8 @@ const char *xmlParserVersion = LIBXML_VERSION;
 static int xmlUseNewParserDefault = 0;
 
 /* a few of the old parser 1.8.11 entry points needed */
+int xmlOldParseChunk (xmlParserCtxtPtr ctxt, const char *chunk, int size,
+                      int terminate);
 int xmlOldParseDocument(xmlParserCtxtPtr ctxt);
 void xmlOldParseExternalSubset(xmlParserCtxtPtr ctxt,
 	const xmlChar *ExternalID, const xmlChar *SystemID);
@@ -9841,6 +9843,9 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 int
 xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
+	if (!xmlUseNewParserDefault)
+		return xmlOldParseChunk (ctxt, chunk, size, terminate);
+
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
 	int base = ctxt->input->base - ctxt->input->buf->buffer->content;

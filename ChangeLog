@@ -1,3 +1,15 @@
+2001-06-21  Zbigniew Chyla  <cyba@gnome.pl>
+
+	Made xmlParseChunk behaving the same way as xmlParseFile
+	(no matter if it's the correct behaviour or not ;-)
+
+	* parser.c
+	(xmlParseChunk): Use the old parser if xmlUseNewParserDefault is not
+	set.
+	Added xmlOldParseChunk declaration.
+
+	* oldparser.c (xmlOldParseChunk): Made non-static.
+
 Mon May 14 12:35:30 CEST 2001 <Daniel.Veillard@imag.fr>
 
 	* configure.in: releasing 1.8.13 fixing the two previous bugs

@@ -7084,7 +7084,7 @@ done:
  *
  * Returns zero if no error, the xmlParserErrors otherwise.
  */
-static int
+int
 xmlOldParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&

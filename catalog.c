@@ -2946,6 +2946,8 @@ xmlLoadCatalogs(const char *pathss) {
 		xmlFree(path);
 	    }
 	}
+	while (*cur == ':')
+	    cur++;
     }
 }
 

@@ -1,3 +1,7 @@
+Thu Nov 20 22:58:00 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: applied two parsing fixes from James Bursa
+
 Thu Nov 20 19:20:46 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/*: added two xmlReader examples

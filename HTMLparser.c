@@ -2880,7 +2880,7 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
     int val = 0;
 
     if ((CUR == '&') && (NXT(1) == '#') &&
-        (NXT(2) == 'x')) {
+        ((NXT(2) == 'x') || NXT(2) == 'X')) {
 	SKIP(3);
 	while (CUR != ';') {
 	    if ((CUR >= '0') && (CUR <= '9')) 
@@ -3253,6 +3253,8 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 		htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
 		             "htmlParseStartTag: misplaced <body> tag\n",
 			     name, NULL);
+		while ((IS_CHAR_CH(CUR)) && (CUR != '>'))
+		    NEXT;
 		return;
 	    }
 	}

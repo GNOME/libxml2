@@ -1014,7 +1014,10 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 	    }
 	    else {
 		/* Use regular notation */
-		integer_place = 1 + (int)log10(absolute_value);
+		if (absolute_value > 0.0)
+		    integer_place = 1 + (int)log10(absolute_value);
+		else
+		    integer_place = 1 - HUGE_VAL;
 		fraction_place = (integer_place > 0)
 		    ? DBL_DIG - integer_place
 		    : DBL_DIG;

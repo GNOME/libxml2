@@ -1,3 +1,8 @@
+Sun Jun 24 23:31:56 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: patch to xmlXPathFormatNumber for the optimizer on
+	  Tru64 from Thomas Leitner
+
 Sun Jun 24 14:05:54 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* AUTHORS: added William and Bjorn

@@ -2537,7 +2537,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	}
 	if (tree == NULL) {
 	    VERROR(ctxt->userData, 
-       "Value \"%s\" for attribute %s on %s is among the enumerated set\n",
+       "Value \"%s\" for attribute %s on %s is not among the enumerated set\n",
 		   value, attr->name, elem->name);
 	    ret = 0;
 	}
@@ -2686,6 +2686,12 @@ xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
     switch (cont->ocur) {
 	case XML_ELEMENT_CONTENT_ONCE:
 	    if (ret == 1) {
+		/* skip ignorable elems */
+		while ((*child != NULL) &&
+		       (((*child)->type == XML_PI_NODE) ||
+			((*child)->type == XML_COMMENT_NODE))) {
+			*child = (*child)->next;
+		}
 		return(1);
 	    }
 	    *child = cur;

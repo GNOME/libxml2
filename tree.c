@@ -1214,8 +1214,8 @@ int xmlSaveFile(const char *filename, xmlDocPtr cur) {
     int ret;
 
 #ifdef HAVE_ZLIB_H
-    if ((xmlCompressMode > 0) && (xmlCompressMode <= 9)) {
-        sprintf(mode, "w%d", xmlCompressMode);
+    if ((cur->compression > 0) && (cur->compression <= 9)) {
+        sprintf(mode, "w%d", cur->compression);
 	zoutput = gzopen(filename, mode);
     }
     if (zoutput == NULL) {

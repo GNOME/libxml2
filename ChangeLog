@@ -1,3 +1,9 @@
+Tue Apr 16 19:46:55 CEST 2002 Igor Zlatkovic <izlatkovic@stud.fh-frankfurt.de>
+
+	* win32/Makefile.msvc: Update for XML Schema support
+	* win32/configure.js: Update for XML Schema support
+	* win32/libxml2.def.src: Update for XML Schema support
+
 Tue Apr 16 17:46:43 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am TODO_SCHEMAS configure.in genUnicode.py testAutomata.c

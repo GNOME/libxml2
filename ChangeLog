@@ -1,3 +1,12 @@
+Tue Dec 16 20:40:40 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* tree.c
+	* doc/*
+	Elaborate in documentation discussion of xmlNewChild
+	and xmlNewTextChild. Thanks to Steve Lenti for pointing
+	out the usefulness of a more explicit explanation of the
+	reserved character escaping issue.
+
 Fri Dec 12 15:55:15 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlcatalog.c: applied patch from Stefan Kost

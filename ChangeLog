@@ -1,3 +1,10 @@
+2001-07-13  Peter Williams  <peterw@ximian.com>
+
+	* config.h.in: add #undef HAVE_DLFCN_H
+
+	* example/Makefile.am (INCLUDES): Compile fix when srcdir !=
+	builddir.
+
 Fri Jul 13 11:09:56 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* win32/libxml2/libxml2.def.src: added a couple of exported entries

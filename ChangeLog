@@ -1,3 +1,17 @@
+Mon Oct 20 19:02:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am configure.in xmldwalk.c xmlreader.c
+	  include/libxml/Makefile.am include/libxml/xmldwalk.h
+	  include/libxml/xmlversion.h.in: removing xmldwalk module
+	  since it got merged with the xmlreader.
+	* parser.c: cleanup
+	* win32/libxml2.def.src python/libxml2class.txt doc/libxml2-api.xml:
+	  rebuilt the API
+	* python/tests/Makefile.am python/tests/reader7.py
+	  python/tests/walker.py: adding regression testing for the
+	  new xmlreader APIs, new APIs for reader creation, including
+	  makeing reader "walker" operating on preparsed document trees.
+
 Sun Oct 20 22:37:03 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* entities.c, valid.c: fixed problem reported on the mailing

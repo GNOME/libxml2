@@ -80,6 +80,13 @@ __xmlIndentTreeOutput
 #else
 xmlIndentTreeOutput DATA
 #endif
+xmlIsBaseCharGroup DATA
+xmlIsCharGroup DATA
+xmlIsCombiningGroup DATA
+xmlIsDigitGroup DATA
+xmlIsExtenderGroup DATA
+xmlIsIdeographicGroup DATA
+xmlIsPubidChar_tab DATA
 #ifdef LIBXML_THREAD_ENABLED
 __xmlKeepBlanksDefaultValue
 #else
@@ -619,9 +626,11 @@ xmlCharEncCloseFunc
 xmlCharEncFirstLine
 xmlCharEncInFunc
 xmlCharEncOutFunc
+xmlCharInRange
 xmlCharStrdup
 xmlCharStrndup
 xmlCheckFilename
+xmlCheckHTTPInput
 xmlCheckLanguageID
 xmlCheckUTF8
 xmlCheckVersion
@@ -902,11 +911,19 @@ xmlInitializeCatalog
 #endif
 xmlInitializeGlobalState
 xmlInitializePredefinedEntities
+xmlIsBaseChar
+xmlIsBlank
 xmlIsBlankNode
+xmlIsChar
+xmlIsCombining
+xmlIsDigit
+xmlIsExtender
 xmlIsID
+xmlIsIdeographic
 xmlIsLetter
 xmlIsMainThread
 xmlIsMixedElement
+xmlIsPubidChar
 xmlIsRef
 #ifdef LIBXML_HTML_ENABLED
 xmlIsXHTML
@@ -1059,6 +1076,9 @@ xmlNanoHTTPCleanup
 xmlNanoHTTPClose
 #endif
 #ifdef LIBXML_HTTP_ENABLED
+xmlNanoHTTPEncoding
+#endif
+#ifdef LIBXML_HTTP_ENABLED
 xmlNanoHTTPFetch
 #endif
 #ifdef LIBXML_HTTP_ENABLED
@@ -1071,6 +1091,9 @@ xmlNanoHTTPMethod
 xmlNanoHTTPMethodRedir
 #endif
 #ifdef LIBXML_HTTP_ENABLED
+xmlNanoHTTPMimeType
+#endif
+#ifdef LIBXML_HTTP_ENABLED
 xmlNanoHTTPOpen
 #endif
 #ifdef LIBXML_HTTP_ENABLED
@@ -1078,6 +1101,9 @@ xmlNanoHTTPOpenRedir
 #endif
 #ifdef LIBXML_HTTP_ENABLED
 xmlNanoHTTPRead
+#endif
+#ifdef LIBXML_HTTP_ENABLED
+xmlNanoHTTPRedir
 #endif
 #ifdef LIBXML_HTTP_ENABLED
 xmlNanoHTTPReturnCode
@@ -1138,6 +1164,7 @@ xmlNextChar
 xmlNoNetExternalEntityLoader
 xmlNodeAddContent
 xmlNodeAddContentLen
+xmlNodeBufGetContent
 xmlNodeDump
 xmlNodeDumpOutput
 xmlNodeGetBase
@@ -1272,6 +1299,8 @@ xmlReaderNewFd
 xmlReaderNewFile
 xmlReaderNewIO
 xmlReaderNewMemory
+xmlReaderNewWalker
+xmlReaderWalker
 #ifdef DEBUG_MEMORY_LOCATION
 xmlReallocLoc
 #endif
@@ -1596,6 +1625,7 @@ xmlStrstr
 xmlStrsub
 xmlSubstituteEntitiesDefault
 xmlSwitchEncoding
+xmlSwitchInputEncoding
 xmlSwitchToEncoding
 xmlTextConcat
 xmlTextMerge
@@ -1608,6 +1638,7 @@ xmlTextReaderConstName
 xmlTextReaderConstNamespaceUri
 xmlTextReaderConstPrefix
 xmlTextReaderConstString
+xmlTextReaderConstValue
 xmlTextReaderConstXmlLang
 xmlTextReaderCurrentDoc
 xmlTextReaderCurrentNode
@@ -1637,6 +1668,7 @@ xmlTextReaderMoveToNextAttribute
 xmlTextReaderName
 xmlTextReaderNamespaceUri
 xmlTextReaderNext
+xmlTextReaderNextSibling
 xmlTextReaderNodeType
 xmlTextReaderNormalization
 xmlTextReaderPrefix

@@ -599,13 +599,13 @@ static void myClose(FILE *f) {
  * 									*
  ************************************************************************/
 static void processNode(xmlTextReaderPtr reader) {
-    xmlChar *name, *value;
+    const xmlChar *name, *value;
 
-    name = xmlTextReaderName(reader);
+    name = xmlTextReaderConstName(reader);
     if (name == NULL)
 	name = xmlStrdup(BAD_CAST "--");
 
-    value = xmlTextReaderValue(reader);
+    value = xmlTextReaderConstValue(reader);
 
     printf("%d %d %s %d %d", 
 	    xmlTextReaderDepth(reader),
@@ -613,12 +613,10 @@ static void processNode(xmlTextReaderPtr reader) {
 	    name,
 	    xmlTextReaderIsEmptyElement(reader),
 	    xmlTextReaderHasValue(reader));
-    xmlFree(name);
     if (value == NULL)
 	printf("\n");
     else {
 	printf(" %s\n", value);
-	xmlFree(value);
     }
 }
 
@@ -1803,12 +1801,15 @@ main(int argc, char **argv) {
 	if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
 	    if (repeat) {
 		xmlParserCtxtPtr ctxt = NULL;
+#ifdef LIBXML_READER_ENABLED
+                xmlTextReaderPtr reader = NULL;
+#endif /* LIBXML_READER_ENABLED */
 
 		for (acount = 0;acount < repeat;acount++) {
 #ifdef LIBXML_READER_ENABLED
-		    if (stream != 0)
+		    if (stream != 0) {
 			streamFile(argv[i]);
-		    else {
+		    } else {
 #endif /* LIBXML_READER_ENABLED */
 		        if (ctxt == NULL)
 			    ctxt = xmlNewParserCtxt();

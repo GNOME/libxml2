@@ -9241,7 +9241,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
     }
 #endif
 
-    if (ctxt->input->cur - ctxt->input->base > 4096) {
+    if ((ctxt->input != NULL) &&
+        (ctxt->input->cur - ctxt->input->base > 4096)) {
 	xmlSHRINK(ctxt);
 	ctxt->checkIndex = 0;
     }
@@ -9258,7 +9259,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	while ((RAW == 0) && (ctxt->inputNr > 1))
 	    xmlPopInput(ctxt);
 
-	if (ctxt->input ==NULL) break;
+	if (ctxt->input == NULL) break;
 	if (ctxt->input->buf == NULL)
 	    avail = ctxt->input->length -
 	            (ctxt->input->cur - ctxt->input->base);

@@ -1438,7 +1438,9 @@
      <exports symbol='xmlReaderNewFile'/>
      <exports symbol='xmlReaderNewIO'/>
      <exports symbol='xmlReaderNewMemory'/>
+     <exports symbol='xmlReaderNewWalker'/>
      <exports symbol='xmlReaderTypes'/>
+     <exports symbol='xmlReaderWalker'/>
      <exports symbol='xmlTextReader'/>
      <exports symbol='xmlTextReaderAttributeCount'/>
      <exports symbol='xmlTextReaderBaseUri'/>
@@ -1449,6 +1451,7 @@
      <exports symbol='xmlTextReaderConstNamespaceUri'/>
      <exports symbol='xmlTextReaderConstPrefix'/>
      <exports symbol='xmlTextReaderConstString'/>
+     <exports symbol='xmlTextReaderConstValue'/>
      <exports symbol='xmlTextReaderConstXmlLang'/>
      <exports symbol='xmlTextReaderCurrentDoc'/>
      <exports symbol='xmlTextReaderCurrentNode'/>
@@ -1480,6 +1483,7 @@
      <exports symbol='xmlTextReaderName'/>
      <exports symbol='xmlTextReaderNamespaceUri'/>
      <exports symbol='xmlTextReaderNext'/>
+     <exports symbol='xmlTextReaderNextSibling'/>
      <exports symbol='xmlTextReaderNodeType'/>
      <exports symbol='xmlTextReaderNormalization'/>
      <exports symbol='xmlTextReaderPrefix'/>
@@ -7283,9 +7287,9 @@ actually an xmlCharEncoding'/>
       <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
     </function>
     <function name='xmlDocWalkerBaseUri' file='xmldwalk'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
-      <arg name='iter' type='xmlDocWalkerPtr' info=''/>
+      <info>The base URI of the node.</info>
+      <return type='xmlChar *' info='the base URI or NULL if not available'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
     </function>
     <function name='xmlDocWalkerCurrentDoc' file='xmldwalk'>
       <info>Hacking interface allowing to get the xmlDocPtr correponding to the current document being accessed by the xmlDocWalker.</info>
@@ -9900,7 +9904,7 @@ actually an xmlCharEncoding'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlReaderForDoc' file='xmlreader'>
-      <info>Create an xmltextReader for an XML in-memory document.</info>
+      <info>Create an xmltextReader for an XML in-memory document. The parsing flags @options are a combination of xmlParserOption(s).</info>
       <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
@@ -9908,7 +9912,7 @@ actually an xmlCharEncoding'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlReaderForFd' file='xmlreader'>
-      <info>Create an xmltextReader for an XML from a file descriptor.</info>
+      <info>Create an xmltextReader for an XML from a file descriptor. The parsing flags @options are a combination of xmlParserOption(s).</info>
       <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
       <arg name='fd' type='int' info='an open file descriptor'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
@@ -9916,14 +9920,14 @@ actually an xmlCharEncoding'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlReaderForFile' file='xmlreader'>
-      <info>parse an XML file from the filesystem or the network.</info>
+      <info>parse an XML file from the filesystem or the network. The parsing flags @options are a combination of xmlParserOption(s).</info>
       <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
       <arg name='filename' type='const char *' info='a file or URL'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlReaderForIO' file='xmlreader'>
-      <info>Create an xmltextReader for an XML document from I/O functions and source.</info>
+      <info>Create an xmltextReader for an XML document from I/O functions and source. The parsing flags @options are a combination of xmlParserOption(s).</info>
       <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
       <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
       <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
@@ -9933,7 +9937,7 @@ actually an xmlCharEncoding'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlReaderForMemory' file='xmlreader'>
-      <info>Create an xmltextReader for an XML in-memory document.</info>
+      <info>Create an xmltextReader for an XML in-memory document. The parsing flags @options are a combination of xmlParserOption(s).</info>
       <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
       <arg name='buffer' type='const char *' info='a pointer to a char array'/>
       <arg name='size' type='int' info='the size of the array'/>
@@ -9942,7 +9946,7 @@ actually an xmlCharEncoding'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlReaderNewDoc' file='xmlreader'>
-      <info>Setup an xmltextReader to parse an XML in-memory document. This reuses the existing @reader xmlTextReader.</info>
+      <info>Setup an xmltextReader to parse an XML in-memory document. The parsing flags @options are a combination of xmlParserOption(s). This reuses the existing @reader xmlTextReader.</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
@@ -9951,7 +9955,7 @@ actually an xmlCharEncoding'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlReaderNewFd' file='xmlreader'>
-      <info>Setup an xmltextReader to parse an XML from a file descriptor. This reuses the existing @reader xmlTextReader.</info>
+      <info>Setup an xmltextReader to parse an XML from a file descriptor. The parsing flags @options are a combination of xmlParserOption(s). This reuses the existing @reader xmlTextReader.</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='fd' type='int' info='an open file descriptor'/>
@@ -9960,7 +9964,7 @@ actually an xmlCharEncoding'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlReaderNewFile' file='xmlreader'>
-      <info>parse an XML file from the filesystem or the network. This reuses the existing @reader xmlTextReader.</info>
+      <info>parse an XML file from the filesystem or the network. The parsing flags @options are a combination of xmlParserOption(s). This reuses the existing @reader xmlTextReader.</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='filename' type='const char *' info='a file or URL'/>
@@ -9968,7 +9972,7 @@ actually an xmlCharEncoding'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlReaderNewIO' file='xmlreader'>
-      <info>Setup an xmltextReader to parse an XML document from I/O functions and source. This reuses the existing @reader xmlTextReader.</info>
+      <info>Setup an xmltextReader to parse an XML document from I/O functions and source. The parsing flags @options are a combination of xmlParserOption(s). This reuses the existing @reader xmlTextReader.</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
@@ -9979,7 +9983,7 @@ actually an xmlCharEncoding'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlReaderNewMemory' file='xmlreader'>
-      <info>Setup an xmltextReader to parse an XML in-memory document. This reuses the existing @reader xmlTextReader.</info>
+      <info>Setup an xmltextReader to parse an XML in-memory document. The parsing flags @options are a combination of xmlParserOption(s). This reuses the existing @reader xmlTextReader.</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='buffer' type='const char *' info='a pointer to a char array'/>
@@ -9987,6 +9991,17 @@ actually an xmlCharEncoding'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderNewWalker' file='xmlreader'>
+      <info>Setup an xmltextReader to parse a preparsed XML document. This reuses the existing @reader xmlTextReader.</info>
+      <return type='int' info='0 in case of success and -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
+      <arg name='doc' type='xmlDocPtr' info='a preparsed document'/>
+    </function>
+    <function name='xmlReaderWalker' file='xmlreader'>
+      <info>Create an xmltextReader for a preparsed document.</info>
+      <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
+      <arg name='doc' type='xmlDocPtr' info='a preparsed document'/>
     </function>
     <functype name='xmlReallocFunc' file='xmlmemory'>
       <info>Signature for a realloc() implementation.</info>
@@ -11335,6 +11350,11 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='str' type='const xmlChar *' info='the string to intern.'/>
     </function>
+    <function name='xmlTextReaderConstValue' file='xmlreader'>
+      <info>Provides the text value of the node if present</info>
+      <return type='const xmlChar *' info='the string or NULL if not available. The result will be deallocated on the next Read() operation.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
     <function name='xmlTextReaderConstXmlLang' file='xmlreader'>
       <info>The xml:lang scope within which the node resides.</info>
       <return type='const xmlChar *' info='the xml:lang value or NULL if none exists.'/>
@@ -11500,6 +11520,11 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if the node was read successfully, 0 if there is no more nodes to read, or -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
+    <function name='xmlTextReaderNextSibling' file='xmlreader'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='reader' type='xmlTextReaderPtr' info=''/>
+    </function>
     <function name='xmlTextReaderNodeType' file='xmlreader'>
       <info>Get the node type of the current node Reference: http://dotgnu.org/pnetlib-doc/System/Xml/XmlNodeType.html</info>
       <return type='int' info='the xmlNodeType of the current node or -1 in case of error'/>
@@ -11583,7 +11608,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlTextReaderValue' file='xmlreader'>
       <info>Provides the text value of the node if present</info>
-      <return type='xmlChar *' info='the string or NULL if not available. The retsult must be deallocated with xmlFree()'/>
+      <return type='xmlChar *' info='the string or NULL if not available. The result must be deallocated with xmlFree()'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderXmlLang' file='xmlreader'>

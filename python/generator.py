@@ -303,6 +303,24 @@ def skip_function(name):
     # the next function is defined in libxml.c
     if name == "xmlRelaxNGFreeValidCtxt":
         return 1
+#
+# Those are skipped because the Const version is used of the bindings
+# instead.
+#
+    if name == "xmlTextReaderBaseUri":
+        return 1
+    if name == "xmlTextReaderLocalName":
+        return 1
+    if name == "xmlTextReaderName":
+        return 1
+    if name == "xmlTextReaderNamespaceUri":
+        return 1
+    if name == "xmlTextReaderPrefix":
+        return 1
+    if name == "xmlTextReaderXmlLang":
+        return 1
+    if name == "xmlTextReaderValue":
+        return 1
     return 0
 
 def print_function_wrapper(name, output, export, include):
@@ -718,8 +736,12 @@ def nameFixup(name, classe, type, file):
         func = "regexp" + name[6:]
     elif name[0:20] == "xmlTextReaderLocator" and file == "xmlreader":
         func = name[20:]
+    elif name[0:18] == "xmlTextReaderConst" and file == "xmlreader":
+        func = name[18:]
     elif name[0:13] == "xmlTextReader" and file == "xmlreader":
         func = name[13:]
+    elif name[0:12] == "xmlReaderNew" and file == "xmlreader":
+        func = name[9:]
     elif name[0:11] == "xmlACatalog":
         func = name[11:]
         func = string.lower(func[0:1]) + func[1:]

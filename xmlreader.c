@@ -1181,9 +1181,10 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     xmlTextReaderState oldstate = XML_TEXTREADER_START;
     xmlNodePtr oldnode = NULL;
 
-    
+   
     if (reader == NULL)
 	return(-1);
+    reader->curnode = NULL;
     if (reader->doc != NULL)
         return(xmlTextReaderReadTree(reader));
     if (reader->ctxt == NULL)
@@ -1195,7 +1196,6 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     fprintf(stderr, "\nREAD ");
     DUMP_READER
 #endif
-    reader->curnode = NULL;
     if (reader->mode == XML_TEXTREADER_MODE_INITIAL) {
 	reader->mode = XML_TEXTREADER_MODE_INTERACTIVE;
 	/*

@@ -1,3 +1,8 @@
+Thu Jul 22 10:14:48 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlreader.c: fixed problem with reader state after
+	  processing attributes (bug 147993)
+
 Wed Jul 21 17:04:27 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* configure.in, Makefile.am: put in an auto* check for the

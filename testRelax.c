@@ -48,6 +48,7 @@
 static int debug = 0;
 #endif
 static int noout = 0;
+static int tree = 0;
 #ifdef HAVE_SYS_MMAN_H
 static int memory = 0;
 #endif
@@ -71,6 +72,9 @@ int main(int argc, char **argv) {
 #endif
 	if ((!strcmp(argv[i], "-noout")) || (!strcmp(argv[i], "--noout"))) {
 	    noout++;
+        } else
+	if ((!strcmp(argv[i], "-tree")) || (!strcmp(argv[i], "--tree"))) {
+	    tree++;
         }
     }
     xmlLineNumbersDefault(1);
@@ -123,6 +127,8 @@ int main(int argc, char **argv) {
 		if (debug)
 		    xmlRelaxNGDump(stdout, schema);
 #endif
+		if (tree)
+		    xmlRelaxNGDumpTree(stdout, schema);
 	    } else {
 		xmlDocPtr doc;
 
@@ -165,6 +171,7 @@ int main(int argc, char **argv) {
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
 #endif
 	printf("\t--noout : do not print the result\n");
+	printf("\t--tree : print the intermediate Relax-NG document tree\n");
 #ifdef HAVE_SYS_MMAN_H
 	printf("\t--memory : test the schemas in memory parsing\n");
 #endif

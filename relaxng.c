@@ -2312,6 +2312,89 @@ xmlRelaxNGParseDefine(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 }
 
 /**
+ * xmlRelaxNGProcessExternalRef:
+ * @ctxt: the parser context
+ * @node:  the externlRef node
+ *
+ * Process and compile an externlRef node
+ *
+ * Returns the xmlRelaxNGDefinePtr or NULL in case of error
+ */
+static xmlRelaxNGDefinePtr
+xmlRelaxNGProcessExternalRef(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
+    xmlRelaxNGDocumentPtr docu;
+    xmlNodePtr root, tmp;
+    xmlChar *ns;
+    int newNs = 0;
+    xmlRelaxNGDefinePtr def;
+
+    docu = node->_private;
+    if (docu != NULL) {
+	def = xmlRelaxNGNewDefine(ctxt, node);
+	if (def == NULL)
+	    return(NULL);
+	def->type = XML_RELAXNG_EXTERNALREF;
+	
+	if (docu->content == NULL) {
+	    /*
+	     * Then do the parsing for good
+	     */
+	    root = xmlDocGetRootElement(docu->doc);
+	    if (root == NULL) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+			    "xmlRelaxNGParse: %s is empty\n",
+				ctxt->URL);
+		ctxt->nbErrors++;
+		return (NULL);
+	    }
+	    /*
+	     * ns transmission rules
+	     */
+	    ns = xmlGetProp(root, BAD_CAST "ns");
+	    if (ns == NULL) {
+		tmp = node;
+		while ((tmp != NULL) &&
+		       (tmp->type == XML_ELEMENT_NODE)) {
+		    ns = xmlGetProp(tmp, BAD_CAST "ns");
+		    if (ns != NULL) {
+			break;
+		    }
+		    tmp = tmp->parent;
+		}
+		if (ns != NULL) {
+		    xmlSetProp(root, BAD_CAST "ns", ns);
+		    newNs = 1;
+		    xmlFree(ns);
+		}
+	    } else {
+		xmlFree(ns);
+	    }
+
+	    /*
+	     * Parsing to get a precompiled schemas.
+	     */
+	    docu->schema = xmlRelaxNGParseDocument(ctxt, root);
+	    if ((docu->schema != NULL) &&
+		(docu->schema->topgrammar != NULL)) {
+		docu->content = docu->schema->topgrammar->start;
+	    }
+
+	    /*
+	     * the externalRef may be reused in a different ns context
+	     */
+	    if (newNs == 1) {
+		xmlUnsetProp(root, BAD_CAST "ns");
+	    }
+	}
+	def->content = docu->content;
+    } else {
+	def = NULL;
+    }
+    return(def);
+}
+
+/**
  * xmlRelaxNGParsePattern:
  * @ctxt:  a Relax-NG parser context
  * @node:  the pattern node.
@@ -2470,10 +2553,16 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		prev = (xmlRelaxNGDefinePtr)
 		      xmlHashLookup(ctxt->grammar->refs, def->name);
 		if (prev == NULL) {
-		    if (ctxt->error != NULL)
-			ctxt->error(ctxt->userData,
-			    "Internal error refs definitions '%s'\n",
-				    def->name);
+		    if (def->name != NULL) {
+			if (ctxt->error != NULL)
+			    ctxt->error(ctxt->userData,
+				"Error refs definitions '%s'\n",
+					def->name);
+		    } else {
+			if (ctxt->error != NULL)
+			    ctxt->error(ctxt->userData,
+				"Error refs definitions\n");
+		    }
 		    ctxt->nbErrors++;
 		    def = NULL;
 		} else {
@@ -2507,39 +2596,7 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     } else if (IS_RELAXNG(node, "interleave")) {
 	def = xmlRelaxNGParseInterleave(ctxt, node);
     } else if (IS_RELAXNG(node, "externalRef")) {
-	xmlRelaxNGDocumentPtr docu;
-	xmlNodePtr root;
-
-	docu = node->_private;
-	if (docu != NULL) {
-	    def = xmlRelaxNGNewDefine(ctxt, node);
-	    if (def == NULL)
-		return(NULL);
-	    def->type = XML_RELAXNG_EXTERNALREF;
-	    
-	    if (docu->content == NULL) {
-		/*
-		 * Then do the parsing for good
-		 */
-		root = xmlDocGetRootElement(docu->doc);
-		if (root == NULL) {
-		    if (ctxt->error != NULL)
-			ctxt->error(ctxt->userData,
-				"xmlRelaxNGParse: %s is empty\n",
-				    ctxt->URL);
-		    ctxt->nbErrors++;
-		    return (NULL);
-		}
-		docu->schema = xmlRelaxNGParseDocument(ctxt, root);
-		if ((docu->schema != NULL) &&
-		    (docu->schema->topgrammar != NULL)) {
-		    docu->content = docu->schema->topgrammar->start;
-		}
-	    }
-	    def->content = docu->content;
-	} else {
-	    def = NULL;
-	}
+	def = xmlRelaxNGProcessExternalRef(ctxt, node);
     } else if (IS_RELAXNG(node, "notAllowed")) {
 	def = xmlRelaxNGNewDefine(ctxt, node);
 	if (def == NULL)
@@ -3934,7 +3991,7 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
 		    cur->_private = incl;
 		} else if ((xmlStrEqual(cur->name, BAD_CAST "element")) ||
 	            (xmlStrEqual(cur->name, BAD_CAST "attribute"))) {
-		    xmlChar *name;
+		    xmlChar *name, *ns;
 		    xmlNodePtr text = NULL;
 		    
 		    /*
@@ -3956,20 +4013,23 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
 				text = node;
 			    }
 			}
+			if (text == NULL) {
+			    if (ctxt->error != NULL)
+				ctxt->error(ctxt->userData,
+				"Failed to create a name %s element\n", name);
+			    ctxt->nbErrors++;
+			}
 			xmlUnsetProp(cur, BAD_CAST "name");
 			xmlFree(name);
-		    }
-		    if (xmlStrEqual(cur->name, BAD_CAST "attribute")) {
-			if (text == NULL) {
-			    text = cur->children;
-			    while (text != NULL) {
-				if ((text->type == XML_ELEMENT_NODE) &&
-			            (xmlStrEqual(text->name, BAD_CAST "name")))
-				    break;
-				text = text->next;
+			ns = xmlGetProp(cur, BAD_CAST "ns");
+			if (ns != NULL) {
+			    if (text != NULL) {
+				xmlSetProp(text, BAD_CAST "ns", ns);
+				/* xmlUnsetProp(cur, BAD_CAST "ns"); */
 			    }
-			}
-			if (text != NULL) {
+			    xmlFree(ns);
+			} else if (xmlStrEqual(cur->name,
+				   BAD_CAST "attribute")) {
 			    xmlSetProp(text, BAD_CAST "ns", BAD_CAST "");
 			}
 		    }
@@ -4451,6 +4511,27 @@ xmlRelaxNGDump(FILE * output, xmlRelaxNGPtr schema)
 	return;
     }
     xmlRelaxNGDumpGrammar(output, schema->topgrammar, 1);
+}
+
+/**
+ * xmlRelaxNGDumpTree:
+ * @output:  the file output
+ * @schema:  a schema structure
+ *
+ * Dump the transformed RelaxNG tree.
+ */
+void
+xmlRelaxNGDumpTree(FILE * output, xmlRelaxNGPtr schema)
+{
+    if (schema == NULL) {
+	fprintf(output, "RelaxNG empty or failed to compile\n");
+	return;
+    }
+    if (schema->doc == NULL) {
+	fprintf(output, "no document\n");
+    } else {
+	xmlDocDump(output, schema->doc); 
+    }
 }
 
 /************************************************************************

@@ -42,6 +42,8 @@ xmlRelaxNGPtr	xmlRelaxNGParse		(xmlRelaxNGParserCtxtPtr ctxt);
 void		xmlRelaxNGFree		(xmlRelaxNGPtr schema);
 void		xmlRelaxNGDump		(FILE *output,
 					 xmlRelaxNGPtr schema);
+void		xmlRelaxNGDumpTree	(FILE * output,
+					 xmlRelaxNGPtr schema);
 /*
  * Interfaces for validating
  */

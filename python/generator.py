@@ -1089,7 +1089,7 @@ def buildWrappers():
 			if reference_keepers.has_key(tclass):
 			    list = reference_keepers[tclass]
 			    for pref in list:
-				if pref[0] == ref[0]:
+				if pref[0] == classname:
 				    classes.write("        __tmp.%s = self\n" %
 						  pref[1])
 			#

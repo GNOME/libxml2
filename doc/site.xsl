@@ -213,11 +213,11 @@
  -->
   <xsl:template name="style">
     <style type="text/css"><xsl:text disable-output-escaping="yes">&lt;!--</xsl:text>
-TD {font-size: 14pt; font-family: Verdana,Arial,Helvetica}
-BODY {font-size: 14pt; font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
-H1 {font-size: 20pt; font-family: Verdana,Arial,Helvetica}
-H2 {font-size: 18pt; font-family: Verdana,Arial,Helvetica}
-H3 {font-size: 16pt; font-family: Verdana,Arial,Helvetica}
+TD {font-family: Verdana,Arial,Helvetica}
+BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
+H1 {font-family: Verdana,Arial,Helvetica}
+H2 {font-family: Verdana,Arial,Helvetica}
+H3 {font-family: Verdana,Arial,Helvetica}
 A:link, A:visited, A:active { text-decoration: underline }
 <xsl:text disable-output-escaping="yes">--&gt;</xsl:text></style>
   </xsl:template>

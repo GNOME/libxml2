@@ -36,6 +36,7 @@
 #endif
 
 
+#include <libxml/xml-error.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h> /* only for xmlNewInputFromFile() */
 #include <libxml/tree.h>

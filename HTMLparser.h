@@ -81,6 +81,10 @@ htmlDocPtr		htmlSAXParseFile(const char *filename,
 					 void *userData);
 htmlDocPtr		htmlParseFile	(const char *filename,
 					 const char *encoding);
+int			UTF8ToHtml	(unsigned char* out,
+					 int *outlen,
+					 const unsigned char* in,
+					 int *inlen);
 
 /**
  * Interfaces for the Push mode

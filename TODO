@@ -6,8 +6,6 @@
 TODO:
 =====
 
-- If the internal encoding is not UTF8 saving to a given encoding doesn't
-  work
 - problem when parsing hrefs with & with the HTML parser (IRC ac)
 - DOM needs
   xmlAttrPtr xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value)
@@ -26,11 +24,8 @@ TODO:
   http://www.w3.org/XML/xml-19980210-errata ... bummmer 
 - Handle undefined namespaces in entity contents better ... at least
   issue a warning
-- Issue warning when using non-absolute namespaces URI.
 - fix --disable-corba configure switch handling, and use XML_WITHOUT_CORBA
   not WITHOUT_CORBA flag
-- the html parser should add <head> and <body> if they don't exist
-  started, not finished.
 
 TODO:
 =====
@@ -96,8 +91,16 @@ EXTENSIONS:
 Done:
 =====
 
+- If the internal encoding is not UTF8 saving to a given encoding doesn't
+  work => fix to force UTF8 encoding ...
+  done, added documentation too
+- Add an ASCII I/O encoder (asciiToUTF8 and UTF8Toascii)
+- Issue warning when using non-absolute namespaces URI.
+- the html parser should add <head> and <body> if they don't exist
+  started, not finished.
+  Done, the automatic closing is added and 3 testcases were inserted
 - Command to force the parser to stop parsing and ignore the rest of the file.
-  xmlStopParser() should allow this
+  xmlStopParser() should allow this, mostly untested
 - support for HTML empty attributes like <hr noshade>
 - plugged iconv() in for support of a large set of encodings.
 - xmlSwitchToEncoding() rewrite done

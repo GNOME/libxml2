@@ -14,13 +14,14 @@
 #endif
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 #include <libxml/valid.h>
 #include <libxml/entities.h>
-#include "xml-error.h"
+#include <libxml/xml-error.h>
 #include <libxml/debugXML.h>
 #include <libxml/xmlIO.h>
 #include <libxml/SAX.h>
@@ -206,7 +207,7 @@ externalSubset(void *ctx, const xmlChar *name,
 	int oldwellFormed;
 	xmlParserInputPtr input = NULL;
 	xmlCharEncoding enc;
-	xmlCharEncoding oldcharset;
+	int oldcharset;
 
 	/*
 	 * Ask the Entity resolver to load the damn thing
@@ -426,10 +427,12 @@ attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
     name = xmlSplitQName(ctxt, fullname, &prefix);
     if (ctxt->inSubset == 1)
 	attr = xmlAddAttributeDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, elem,
-                               name, prefix, type, def, defaultValue, tree);
+	       name, prefix, (xmlAttributeType) type,
+	       (xmlAttributeDefault) def, defaultValue, tree);
     else if (ctxt->inSubset == 2)
 	attr = xmlAddAttributeDecl(&ctxt->vctxt, ctxt->myDoc->extSubset, elem,
-                               name, prefix, type, def, defaultValue, tree);
+	   name, prefix, (xmlAttributeType) type, 
+	   (xmlAttributeDefault) def, defaultValue, tree);
     else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, 
@@ -470,10 +473,10 @@ elementDecl(void *ctx, const xmlChar *name, int type,
     
     if (ctxt->inSubset == 1)
 	elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->intSubset,
-                             name, type, content);
+                             name, (xmlElementTypeVal) type, content);
     else if (ctxt->inSubset == 2)
 	elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->extSubset,
-                             name, type, content);
+                             name, (xmlElementTypeVal) type, content);
     else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, 

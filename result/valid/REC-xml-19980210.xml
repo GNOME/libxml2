@@ -2574,7 +2574,7 @@ For example, given the following declarations:
 &#xA9; 1947 %pub;. &rights;" >]]></eg>
 then the replacement text for the entity &quot;<code>book</code>&quot; is:
 <eg>La Peste: Albert Camus, 
-Â© 1947 Ã‰ditions Gallimard. &amp;rights;</eg>
+© 1947 Éditions Gallimard. &amp;rights;</eg>
 The general-entity reference &quot;<code>&amp;rights;</code>&quot; would be expanded
 should the reference &quot;<code>&amp;book;</code>&quot; appear in the document's
 content or an attribute value.</p>

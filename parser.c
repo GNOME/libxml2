@@ -13,7 +13,7 @@
 #endif
 
 #include <stdio.h>
-#include <string.h> /* for memset() only */
+#include <string.h>
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif
@@ -306,7 +306,7 @@ xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
 scope int name##Push(xmlParserCtxtPtr ctxt, type value) {		\
     if (ctxt->name##Nr >= ctxt->name##Max) {				\
 	ctxt->name##Max *= 2;						\
-        ctxt->name##Tab = (void *) xmlRealloc(ctxt->name##Tab,		\
+        ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
 	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
         if (ctxt->name##Tab == NULL) {					\
 	    fprintf(stderr, "realloc failed !\n");			\
@@ -337,7 +337,7 @@ PUSH_AND_POP(extern, xmlChar*, name)
 int spacePush(xmlParserCtxtPtr ctxt, int val) {
     if (ctxt->spaceNr >= ctxt->spaceMax) {
 	ctxt->spaceMax *= 2;
-        ctxt->spaceTab = (void *) xmlRealloc(ctxt->spaceTab,
+        ctxt->spaceTab = (int *) xmlRealloc(ctxt->spaceTab,
 	             ctxt->spaceMax * sizeof(ctxt->spaceTab[0]));
         if (ctxt->spaceTab == NULL) {
 	    fprintf(stderr, "realloc failed !\n");
@@ -449,7 +449,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt) {
      *   the single character #xA. 
      */
     if (ctxt->token != 0) ctxt->token = 0;
-    else {
+    else if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
 	if ((*ctxt->input->cur == 0) &&
 	    (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0) &&
 	    (ctxt->instate != XML_PARSER_COMMENT)) {
@@ -540,9 +540,16 @@ xmlNextChar(xmlParserCtxtPtr ctxt) {
 	    if (*ctxt->input->cur == 0)
 		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
 	}
+    } else {
+	ctxt->input->cur++;
+	ctxt->nbChars++;
+	if (*ctxt->input->cur == 0)
+	    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
     }
-    if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);
-    if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt);
+    if ((*ctxt->input->cur == '%') && (!ctxt->html))
+	xmlParserHandlePEReference(ctxt);
+    if ((*ctxt->input->cur == '&')&& (!ctxt->html))
+	xmlParserHandleReference(ctxt);
     if ((*ctxt->input->cur == 0) &&
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
 	    xmlPopInput(ctxt);
@@ -2373,6 +2380,10 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		/* let's assume it's UTF-8 without the XML decl */
 		ctxt->charset = XML_CHAR_ENCODING_UTF8;
 		return(0);
+	    case XML_CHAR_ENCODING_ASCII:
+		/* default encoding, no conversion should be needed */
+		ctxt->charset = XML_CHAR_ENCODING_UTF8;
+		return(0);
 	    case XML_CHAR_ENCODING_UTF8:
 		/* default encoding, no conversion should be needed */
 		ctxt->charset = XML_CHAR_ENCODING_UTF8;
@@ -2427,7 +2438,10 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	    case XML_CHAR_ENCODING_8859_8:
 	    case XML_CHAR_ENCODING_8859_9:
 		/*
-		 * Keep the internal content in the document encoding
+		 * We used to keep the internal content in the
+		 * document encoding however this turns being unmaintainable
+		 * So xmlGetCharEncodingHandler() will return non-null
+		 * values for this now.
 		 */
 		if ((ctxt->inputNr == 1) &&
 		    (ctxt->encoding == NULL) &&
@@ -2625,7 +2639,7 @@ xmlStrndup(const xmlChar *cur, int len) {
     xmlChar *ret;
     
     if ((cur == NULL) || (len < 0)) return(NULL);
-    ret = xmlMalloc((len + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlMalloc((len + 1) * sizeof(xmlChar));
     if (ret == NULL) {
         fprintf(stderr, "malloc of %ld byte failed\n",
 	        (len + 1) * (long)sizeof(xmlChar));
@@ -2671,7 +2685,7 @@ xmlCharStrndup(const char *cur, int len) {
     xmlChar *ret;
     
     if ((cur == NULL) || (len < 0)) return(NULL);
-    ret = xmlMalloc((len + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlMalloc((len + 1) * sizeof(xmlChar));
     if (ret == NULL) {
         fprintf(stderr, "malloc of %ld byte failed\n",
 	        (len + 1) * (long)sizeof(xmlChar));
@@ -2872,7 +2886,7 @@ xmlStrncat(xmlChar *cur, const xmlChar *add, int len) {
         return(xmlStrndup(add, len));
 
     size = xmlStrlen(cur);
-    ret = xmlRealloc(cur, (size + len + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlRealloc(cur, (size + len + 1) * sizeof(xmlChar));
     if (ret == NULL) {
         fprintf(stderr, "xmlStrncat: realloc of %ld byte failed\n",
 	        (size + len + 1) * (long)sizeof(xmlChar));
@@ -3113,7 +3127,7 @@ xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, xmlChar **prefix) {
  * @name:  an XML parser context
  * @prefix:  a xmlChar ** 
  *
- * parse an XML qualified name string
+ * parse an UTF8 encoded XML qualified name string
  *
  * [NS 5] QName ::= (Prefix ':')? LocalPart
  *
@@ -3131,7 +3145,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
     int len = 0;
     xmlChar *ret = NULL;
     const xmlChar *cur = name;
-    int c,l;
+    int c;
 
     *prefix = NULL;
 
@@ -3144,36 +3158,23 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
     if (cur[0] == ':')
 	return(xmlStrdup(name));
 
-    c = CUR_SCHAR(cur, l);
-    if (!IS_LETTER(c) && (c != '_')) return(NULL);
-
-    while ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-           (c == '.') || (c == '-') ||
-	   (c == '_') ||
-	   (IS_COMBINING(c)) ||
-	   (IS_EXTENDER(c))) {
-	COPY_BUF(l,buf,len,c);
-	cur += l;
-	c = CUR_SCHAR(cur, l);
+    c = *cur++;
+    while ((c != 0) && (c != ':')) {
+	buf[len++] = c;
+	c = *cur++;
     }
     
     ret = xmlStrndup(buf, len);
 
     if (c == ':') {
-	cur += l;
-	c = CUR_SCHAR(cur, l);
-	if (!IS_LETTER(c) && (c != '_')) return(ret);
+	c = *cur++;
+	if (c == 0) return(ret);
         *prefix = ret;
 	len = 0;
 
-	while ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-	       (c == '.') || (c == '-') ||
-	       (c == '_') ||
-	       (IS_COMBINING(c)) ||
-	       (IS_EXTENDER(c))) {
-	    COPY_BUF(l,buf,len,c);
-	    cur += l;
-	    c = CUR_SCHAR(cur, l);
+	while (c != 0) {
+	    buf[len++] = c;
+	    c = *cur++;
 	}
 	
 	ret = xmlStrndup(buf, len);
@@ -3181,6 +3182,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 
     return(ret);
 }
+
 /**
  * xmlNamespaceParseNSDef:
  * @ctxt:  an XML parser context
@@ -3237,7 +3239,7 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
 	while (IS_CHAR(c) && (c != '"')) {
 	    if (len + 5 >= size) {
 		size *= 2;
-		buf = xmlRealloc(buf, size * sizeof(xmlChar));
+		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 		if (buf == NULL) {
 		    fprintf(stderr, "realloc of %d byte failed\n", size);
 		    return(NULL);
@@ -3263,7 +3265,7 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
 	while (IS_CHAR(c) && (c != '\'')) {
 	    if (len + 1 >= size) {
 		size *= 2;
-		buf = xmlRealloc(buf, size * sizeof(xmlChar));
+		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 		if (buf == NULL) {
 		    fprintf(stderr, "realloc of %d byte failed\n", size);
 		    return(NULL);
@@ -3675,7 +3677,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
     while (IS_CHAR(c) && ((c != stop) || (ctxt->input != input))) {
 	if (len + 5 >= size) {
 	    size *= 2;
-	    buf = xmlRealloc(buf, size * sizeof(xmlChar));
+	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
 		fprintf(stderr, "realloc of %d byte failed\n", size);
 		return(NULL);
@@ -3841,7 +3843,18 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
     c = CUR_CHAR(l);
     while (((NXT(0) != limit) && (c != '<')) || (ctxt->token != 0)) {
 	if (c == 0) break;
-        if ((c == '&') && (NXT(1) == '#')) {
+	if (ctxt->token == '&') {
+	    static xmlChar buffer[6] = "&#38;";
+
+	    if (len > buf_size - 10) {
+		growBuffer(buf);
+	    }
+	    current = &buffer[0];
+	    while (*current != 0) {
+		buf[len++] = *current++;
+	    }
+	    ctxt->token = 0;
+	} else if ((c == '&') && (NXT(1) == '#')) {
 	    int val = xmlParseCharRef(ctxt);
 	    COPY_BUF(l,buf,len,val);
 	    NEXTL(l);
@@ -3978,10 +3991,10 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
     while ((IS_CHAR(cur)) && (cur != stop)) {
 	if (len + 5 >= size) {
 	    size *= 2;
-	    buf = xmlRealloc(buf, size * sizeof(xmlChar));
+	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
 		fprintf(stderr, "realloc of %d byte failed\n", size);
-		ctxt->instate = state;
+		ctxt->instate = (xmlParserInputState) state;
 		return(NULL);
 	    }
 	}
@@ -3995,7 +4008,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
 	}
     }
     buf[len] = 0;
-    ctxt->instate = state;
+    ctxt->instate = (xmlParserInputState) state;
     if (!IS_CHAR(cur)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, "Unfinished SystemLiteral\n");
@@ -4052,7 +4065,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     while ((IS_PUBIDCHAR(cur)) && (cur != stop)) {
 	if (len + 1 >= size) {
 	    size *= 2;
-	    buf = xmlRealloc(buf, size * sizeof(xmlChar));
+	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
 		fprintf(stderr, "realloc of %d byte failed\n", size);
 		return(NULL);
@@ -4324,7 +4337,7 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
 	}
 	if (len + 5 >= size) {
 	    size *= 2;
-	    buf = xmlRealloc(buf, size * sizeof(xmlChar));
+	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
 		fprintf(stderr, "realloc of %d byte failed\n", size);
 		ctxt->instate = state;
@@ -4502,7 +4515,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		   ((cur != '?') || (NXT(1) != '>'))) {
 		if (len + 5 >= size) {
 		    size *= 2;
-		    buf = xmlRealloc(buf, size * sizeof(xmlChar));
+		    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 		    if (buf == NULL) {
 			fprintf(stderr, "realloc of %d byte failed\n", size);
 			ctxt->instate = state;
@@ -7774,7 +7787,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
            ((r != ']') || (s != ']') || (cur != '>'))) {
 	if (len + 5 >= size) {
 	    size *= 2;
-	    buf = xmlRealloc(buf, size * sizeof(xmlChar));
+	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
 		fprintf(stderr, "realloc of %d byte failed\n", size);
 		return;
@@ -8099,7 +8112,7 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
 	   (cur == ':') || (cur == '-')) {
 	if (len + 1 >= size) {
 	    size *= 2;
-	    buf = xmlRealloc(buf, size * sizeof(xmlChar));
+	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
 		fprintf(stderr, "realloc of %d byte failed\n", size);
 		return(NULL);
@@ -8222,7 +8235,7 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
 	       (cur == '-')) {
 	    if (len + 1 >= size) {
 		size *= 2;
-		buf = xmlRealloc(buf, size * sizeof(xmlChar));
+		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 		if (buf == NULL) {
 		    fprintf(stderr, "realloc of %d byte failed\n", size);
 		    return(NULL);
@@ -8345,7 +8358,9 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 		    xmlSwitchToEncoding(ctxt, handler);
 		} else {
 		    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		    xmlFree(encoding);
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData,
+			     "Unsupported encoding %s\n", encoding);
 		    return(NULL);
 		}
 	    }

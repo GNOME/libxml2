@@ -207,7 +207,7 @@ xmlSaveUri(xmlURIPtr uri) {
 
 
     max = 80;
-    ret = xmlMalloc((max + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlMalloc((max + 1) * sizeof(xmlChar));
     if (ret == NULL) {
 	fprintf(stderr, "xmlSaveUri: out of memory\n");
 	return(NULL);
@@ -219,7 +219,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	while (*p != 0) {
 	    if (len >= max) {
 		max *= 2;
-		ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		if (ret == NULL) {
 		    fprintf(stderr, "xmlSaveUri: out of memory\n");
 		    return(NULL);
@@ -229,7 +229,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	}
 	if (len >= max) {
 	    max *= 2;
-	    ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+	    ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 	    if (ret == NULL) {
 		fprintf(stderr, "xmlSaveUri: out of memory\n");
 		return(NULL);
@@ -242,7 +242,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	while (*p != 0) {
 	    if (len + 3 >= max) {
 		max *= 2;
-		ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		if (ret == NULL) {
 		    fprintf(stderr, "xmlSaveUri: out of memory\n");
 		    return(NULL);
@@ -278,7 +278,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	}
 	if (len >= max) {
 	    max *= 2;
-	    ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+	    ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 	    if (ret == NULL) {
 		fprintf(stderr, "xmlSaveUri: out of memory\n");
 		return(NULL);
@@ -289,7 +289,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	if (uri->server != NULL) {
 	    if (len + 3 >= max) {
 		max *= 2;
-		ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		if (ret == NULL) {
 		    fprintf(stderr, "xmlSaveUri: out of memory\n");
 		    return(NULL);
@@ -302,7 +302,7 @@ xmlSaveUri(xmlURIPtr uri) {
 		while (*p != 0) {
 		    if (len + 3 >= max) {
 			max *= 2;
-			ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+			ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 			if (ret == NULL) {
 			    fprintf(stderr, "xmlSaveUri: out of memory\n");
 			    return(NULL);
@@ -338,7 +338,7 @@ xmlSaveUri(xmlURIPtr uri) {
 		}
 		if (len + 3 >= max) {
 		    max *= 2;
-		    ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		    ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		    if (ret == NULL) {
 			fprintf(stderr, "xmlSaveUri: out of memory\n");
 			return(NULL);
@@ -350,7 +350,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	    while (*p != 0) {
 		if (len >= max) {
 		    max *= 2;
-		    ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		    ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		    if (ret == NULL) {
 			fprintf(stderr, "xmlSaveUri: out of memory\n");
 			return(NULL);
@@ -361,7 +361,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	    if (uri->port > 0) {
 		if (len + 10 >= max) {
 		    max *= 2;
-		    ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		    ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		    if (ret == NULL) {
 			fprintf(stderr, "xmlSaveUri: out of memory\n");
 			return(NULL);
@@ -372,7 +372,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	} else if (uri->authority != NULL) {
 	    if (len + 3 >= max) {
 		max *= 2;
-		ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		if (ret == NULL) {
 		    fprintf(stderr, "xmlSaveUri: out of memory\n");
 		    return(NULL);
@@ -384,7 +384,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	    while (*p != 0) {
 		if (len + 3 >= max) {
 		    max *= 2;
-		    ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		    ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		    if (ret == NULL) {
 			fprintf(stderr, "xmlSaveUri: out of memory\n");
 			return(NULL);
@@ -424,7 +424,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	    while (*p != 0) {
 		if (len + 3 >= max) {
 		    max *= 2;
-		    ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		    ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		    if (ret == NULL) {
 			fprintf(stderr, "xmlSaveUri: out of memory\n");
 			return(NULL);
@@ -462,7 +462,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	if (uri->query != NULL) {
 	    if (len + 3 >= max) {
 		max *= 2;
-		ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		if (ret == NULL) {
 		    fprintf(stderr, "xmlSaveUri: out of memory\n");
 		    return(NULL);
@@ -473,7 +473,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	    while (*p != 0) {
 		if (len + 3 >= max) {
 		    max *= 2;
-		    ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		    ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		    if (ret == NULL) {
 			fprintf(stderr, "xmlSaveUri: out of memory\n");
 			return(NULL);
@@ -508,7 +508,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	if (uri->fragment != NULL) {
 	    if (len + 3 >= max) {
 		max *= 2;
-		ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		if (ret == NULL) {
 		    fprintf(stderr, "xmlSaveUri: out of memory\n");
 		    return(NULL);
@@ -519,7 +519,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	    while (*p != 0) {
 		if (len + 3 >= max) {
 		    max *= 2;
-		    ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		    ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 		    if (ret == NULL) {
 			fprintf(stderr, "xmlSaveUri: out of memory\n");
 			return(NULL);
@@ -553,7 +553,7 @@ xmlSaveUri(xmlURIPtr uri) {
 	}
 	if (len >= max) {
 	    max *= 2;
-	    ret = xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+	    ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
 	    if (ret == NULL) {
 		fprintf(stderr, "xmlSaveUri: out of memory\n");
 		return(NULL);

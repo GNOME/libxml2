@@ -572,6 +572,16 @@ int			inputPush		(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr value);
 xmlParserInputPtr	inputPop		(xmlParserCtxtPtr ctxt);
 
+/*
+ * Really core function shared with HTML parser
+ */
+int			xmlCurrentChar		(xmlParserCtxtPtr ctxt,
+						 int *len);
+int			xmlCopyChar		(int len,
+						 xmlChar *out,
+						 int val);
+void			xmlNextChar		(xmlParserCtxtPtr ctxt);
+void			xmlParserInputShrink	(xmlParserInputPtr in);
 #ifdef __cplusplus
 }
 #endif

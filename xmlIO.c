@@ -1207,7 +1207,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     if (len > buffree) 
         len = buffree;
 
-    buffer = xmlMalloc((len + 1) * sizeof(char));
+    buffer = (char *) xmlMalloc((len + 1) * sizeof(char));
     if (buffer == NULL) {
         fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
 	return(-1);

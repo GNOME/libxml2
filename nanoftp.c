@@ -4,12 +4,22 @@
  *  Reference: RFC 959
  */
 
+#ifdef TESTING
+#define STANDALONE
+#define HAVE_STDLIB_H
+#define HAVE_UNISTD_H
+#define HAVE_SYS_SOCKET_H
+#define HAVE_NETINET_IN_H
+#define HAVE_NETDB_H
+#define HAVE_SYS_TIME_H
+#else /* STANDALONE */
 #ifdef WIN32
 #define INCLUDE_WINSOCK
 #include "win32config.h"
 #else
 #include "config.h"
 #endif
+#endif /* STANDALONE */
 
 #include "xmlversion.h"
 

@@ -2984,7 +2984,7 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE: {
-	    xmlNodePtr last = NULL, new;
+	    xmlNodePtr last = NULL, newNode;
 
 	    if (cur->children != NULL) {
 		last = cur->last;
@@ -3006,11 +3006,11 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 		    last = cur->last;
 		}
 	    }
-	    new = xmlNewTextLen(content, len);
-	    if (new != NULL) {
-		xmlAddChild(cur, new);
-	        if ((last != NULL) && (last->next == new)) {
-		    xmlTextMerge(last, new);
+	    newNode = xmlNewTextLen(content, len);
+	    if (newNode != NULL) {
+		xmlAddChild(cur, newNode);
+	        if ((last != NULL) && (last->next == newNode)) {
+		    xmlTextMerge(last, newNode);
 		}
 	    }
 	    break;
@@ -3470,6 +3470,54 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 }
 
 /**
+ * xmlHasProp:
+ * @node:  the node
+ * @name:  the attribute name
+ *
+ * Search an attribute associated to a node
+ * This function also looks in DTD attribute declaration for #FIXED or
+ * default declaration values unless DTD use has been turned off.
+ *
+ * Returns the attribute or the attribute declaration or NULL if 
+ *         neither was found.
+ */
+xmlAttrPtr
+xmlHasProp(xmlNodePtr node, const xmlChar *name) {
+    xmlAttrPtr prop;
+    xmlDocPtr doc;
+
+    if ((node == NULL) || (name == NULL)) return(NULL);
+    /*
+     * Check on the properties attached to the node
+     */
+    prop = node->properties;
+    while (prop != NULL) {
+        if (!xmlStrcmp(prop->name, name))  {
+	    return(prop);
+        }
+	prop = prop->next;
+    }
+    if (!xmlCheckDTD) return(NULL);
+
+    /*
+     * Check if there is a default declaration in the internal
+     * or external subsets
+     */
+    doc =  node->doc;
+    if (doc != NULL) {
+        xmlAttributePtr attrDecl;
+        if (doc->intSubset != NULL) {
+	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
+	    if (attrDecl != NULL)
+		return((xmlAttrPtr) attrDecl);
+	}
+    }
+    return(NULL);
+}
+
+/**
  * xmlGetProp:
  * @node:  the node
  * @name:  the attribute name
@@ -3652,7 +3700,9 @@ xmlNodeIsText(xmlNodePtr node) {
  * xmlIsBlankNode:
  * @node:  the node
  * 
- * Is this node a Text node ?
+ * Checks whether this node is an empty or whitespace only
+ * (and possibly ignorable) text-node.
+ *
  * Returns 1 yes, 0 no
  */
 int
@@ -3863,7 +3913,7 @@ xmlBufferGrow(xmlBufferPtr buf, int len) {
 
     size = buf->use + len + 100;
 
-    newbuf = xmlRealloc(buf->content, size);
+    newbuf = (xmlChar *) xmlRealloc(buf->content, size);
     if (newbuf == NULL) return(-1);
     buf->content = newbuf;
     buf->size = size;
@@ -5099,7 +5149,7 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 	if (cur->encoding != NULL)
 	    encoding = (const char *) cur->encoding;
 	else if (cur->charset != XML_CHAR_ENCODING_UTF8)
-	    encoding = xmlGetCharEncodingName(cur->charset);
+	    encoding = xmlGetCharEncodingName((xmlCharEncoding) cur->charset);
     }
     if (encoding != NULL) {
         xmlOutputBufferWriteString(buf, " encoding=");
@@ -5224,91 +5274,6 @@ xmlSetCompressMode(int mode) {
     else xmlCompressMode = mode;
 }
 
-#if 0
-/**
- * xmlDocDump:
- * @f:  the FILE*
- * @cur:  the document
- *
- * Dump an XML document to an open FILE.
- */
-void
-xmlDocDump(FILE *f, xmlDocPtr cur) {
-    xmlBufferPtr buf;
-
-    if (cur == NULL) {
-#ifdef DEBUG_TREE
-        fprintf(stderr, "xmlDocDump : document == NULL\n");
-#endif
-	return;
-    }
-    buf = xmlBufferCreate();
-    if (buf == NULL) return;
-    xmlDocContentDump(buf, cur);
-    xmlBufferDump(f, buf);
-    xmlBufferFree(buf);
-}
-
-/**
- * xmlSaveFile:
- * @filename:  the filename
- * @cur:  the document
- *
- * Dump an XML document to a file. Will use compression if
- * compiled in and enabled. If @filename is "-" the stdout file is
- * used.
- * returns: the number of file written or -1 in case of failure.
- */
-int
-xmlSaveFile(const char *filename, xmlDocPtr cur) {
-    xmlBufferPtr buf;
-#ifdef HAVE_ZLIB_H
-    gzFile zoutput = NULL;
-    char mode[15];
-#endif
-    FILE *output = NULL;
-    int ret;
-
-    /* 
-     * save the content to a temp buffer.
-     */
-    buf = xmlBufferCreate();
-    if (buf == NULL) return(0);
-    xmlDocContentDump(buf, cur);
-
-#ifdef HAVE_ZLIB_H
-    if (cur->compression < 0) cur->compression = xmlCompressMode;
-    if ((cur->compression > 0) && (cur->compression <= 9)) {
-        sprintf(mode, "w%d", cur->compression);
-	if (!strcmp(filename, "-")) 
-	    zoutput = gzdopen(1, mode);
-	else
-	    zoutput = gzopen(filename, mode);
-    }
-    if (zoutput == NULL) {
-#endif
-        output = fopen(filename, "w");
-	if (output == NULL) {
-	    xmlBufferFree(buf);
-	    return(-1);
-	}
-#ifdef HAVE_ZLIB_H
-    }
-
-    if (zoutput != NULL) {
-        ret = gzwrite(zoutput, buf->content, sizeof(xmlChar) * buf->use);
-	gzclose(zoutput);
-    } else {
-#endif
-        ret = xmlBufferDump(output, buf);
-	fclose(output);
-#ifdef HAVE_ZLIB_H
-    }
-#endif
-    xmlBufferFree(buf);
-    return(ret * sizeof(xmlChar));
-}
-#else
 /**
  * xmlDocDump:
  * @f:  the FILE*
@@ -5316,11 +5281,13 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
  *
  * Dump an XML document to an open FILE.
  *
- * returns: the number of file written or -1 in case of failure.
+ * returns: the number of byte written or -1 in case of failure.
  */
 int
 xmlDocDump(FILE *f, xmlDocPtr cur) {
     xmlOutputBufferPtr buf;
+    const char * encoding;
+    xmlCharEncodingHandlerPtr handler = NULL;
     int ret;
 
     if (cur == NULL) {
@@ -5329,38 +5296,27 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
 #endif
 	return(-1);
     }
-    buf = xmlOutputBufferCreateFile(f, NULL);
+    encoding = (const char *) cur->encoding;
+
+    if (encoding != NULL) {
+	xmlCharEncoding enc;
+
+	enc = xmlParseCharEncoding(encoding);
+
+	if (cur->charset != XML_CHAR_ENCODING_UTF8) {
+	    fprintf(stderr, "xmlDocDump: document not in UTF8\n");
+	    return(-1);
+	}
+	if (enc != XML_CHAR_ENCODING_UTF8) {
+	    handler = xmlFindCharEncodingHandler(encoding);
+	    if (handler == NULL) {
+		xmlFree((char *) cur->encoding);
+		cur->encoding = NULL;
+	    }
+	}
+    }
+    buf = xmlOutputBufferCreateFile(f, handler);
     if (buf == NULL) return(-1);
-    xmlDocContentDumpOutput(buf, cur, NULL);
-
-    ret = xmlOutputBufferClose(buf);
-    return(ret);
-}
-
-/**
- * xmlSaveFile:
- * @filename:  the filename (or URL)
- * @cur:  the document
- *
- * Dump an XML document to a file. Will use compression if
- * compiled in and enabled. If @filename is "-" the stdout file is
- * used.
- * returns: the number of file written or -1 in case of failure.
- */
-int
-xmlSaveFile(const char *filename, xmlDocPtr cur) {
-    xmlOutputBufferPtr buf;
-    int ret;
-
-    /* 
-     * save the content to a temp buffer.
-     */
-#ifdef HAVE_ZLIB_H
-    if (cur->compression < 0) cur->compression = xmlCompressMode;
-#endif
-    buf = xmlOutputBufferCreateFilename(filename, NULL, cur->compression);
-    if (buf == NULL) return(0);
-
     xmlDocContentDumpOutput(buf, cur, NULL);
 
     ret = xmlOutputBufferClose(buf);
@@ -5375,7 +5331,7 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
  *
  * Dump an XML document to an I/O buffer.
  *
- * returns: the number of file written or -1 in case of failure.
+ * returns: the number of byte written or -1 in case of failure.
  */
 int
 xmlSaveFileTo(xmlOutputBuffer *buf, xmlDocPtr cur, const char *encoding) {
@@ -5395,7 +5351,7 @@ xmlSaveFileTo(xmlOutputBuffer *buf, xmlDocPtr cur, const char *encoding) {
  *
  * Dump an XML document, converting it to the given encoding
  *
- * returns: the number of file written or -1 in case of failure.
+ * returns: the number of byte written or -1 in case of failure.
  */
 int
 xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
@@ -5407,17 +5363,15 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
 	xmlCharEncoding enc;
 
 	enc = xmlParseCharEncoding(encoding);
-	if (enc != cur->charset) {
-	    if (cur->charset != XML_CHAR_ENCODING_UTF8) {
-		/*
-		 * Not supported yet
-		 */
+	if (cur->charset != XML_CHAR_ENCODING_UTF8) {
+	    fprintf(stderr, "xmlSaveFileEnc: document not in UTF8\n");
+	    return(-1);
+	}
+	if (enc != XML_CHAR_ENCODING_UTF8) {
+	    handler = xmlFindCharEncodingHandler(encoding);
+	    if (handler == NULL) {
 		return(-1);
 	    }
-
-	    handler = xmlFindCharEncodingHandler(encoding);
-	    if (handler == NULL)
-		return(-1);
 	}
     }
 
@@ -5432,4 +5386,58 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
     ret = xmlOutputBufferClose(buf);
     return(ret);
 }
+
+/**
+ * xmlSaveFile:
+ * @filename:  the filename (or URL)
+ * @cur:  the document
+ *
+ * Dump an XML document to a file. Will use compression if
+ * compiled in and enabled. If @filename is "-" the stdout file is
+ * used.
+ * returns: the number of byte written or -1 in case of failure.
+ */
+int
+xmlSaveFile(const char *filename, xmlDocPtr cur) {
+    xmlOutputBufferPtr buf;
+    const char *encoding;
+    xmlCharEncodingHandlerPtr handler = NULL;
+    int ret;
+
+    if (cur == NULL)
+	return(-1);
+    encoding = (const char *) cur->encoding;
+
+    /* 
+     * save the content to a temp buffer.
+     */
+#ifdef HAVE_ZLIB_H
+    if (cur->compression < 0) cur->compression = xmlCompressMode;
 #endif
+    if (encoding != NULL) {
+	xmlCharEncoding enc;
+
+	enc = xmlParseCharEncoding(encoding);
+
+	if (cur->charset != XML_CHAR_ENCODING_UTF8) {
+	    fprintf(stderr, "xmlSaveFile: document not in UTF8\n");
+	    return(-1);
+	}
+	if (enc != XML_CHAR_ENCODING_UTF8) {
+	    handler = xmlFindCharEncodingHandler(encoding);
+	    if (handler == NULL) {
+		xmlFree((char *) cur->encoding);
+		cur->encoding = NULL;
+	    }
+	}
+    }
+
+    buf = xmlOutputBufferCreateFilename(filename, handler, cur->compression);
+    if (buf == NULL) return(0);
+
+    xmlDocContentDumpOutput(buf, cur, NULL);
+
+    ret = xmlOutputBufferClose(buf);
+    return(ret);
+}
+

@@ -17,6 +17,7 @@
 #ifdef LIBXML_DEBUG_ENABLED
 
 #include <stdio.h>
+#include <string.h>
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
@@ -39,6 +40,8 @@ void xmlDebugDumpString(FILE *output, const xmlChar *str) {
     for (i = 0;i < 40;i++)
         if (str[i] == 0) return;
 	else if (IS_BLANK(str[i])) fputc(' ', output);
+	else if (str[i] >= 0x80)
+	     fprintf(output, "#%X", str[i]);
 	else fputc(str[i], output);
     fprintf(output, "...");
 }
@@ -221,9 +224,11 @@ void xmlDebugDumpElemDecl(FILE *output, xmlElementPtr elem, int depth) {
 	fprintf(output, "PBM: not a Elem\n");
 	return;
     }
-    if (elem->name != NULL)
-	fprintf(output, "ELEMDECL(%s)", elem->name);
-    else
+    if (elem->name != NULL) {
+	fprintf(output, "ELEMDECL(");
+	xmlDebugDumpString(output, elem->name);
+	fprintf(output, ")");
+    } else
 	fprintf(output, "PBM ELEMDECL noname!!!");
     switch (elem->etype) {
 	case XML_ELEMENT_TYPE_EMPTY: 
@@ -288,9 +293,11 @@ void xmlDebugDumpEntityDecl(FILE *output, xmlEntityPtr ent, int depth) {
 	fprintf(output, "PBM: not a Entity decl\n");
 	return;
     }
-    if (ent->name != NULL)
-	fprintf(output, "ENTITYDECL(%s)", ent->name);
-    else
+    if (ent->name != NULL) {
+	fprintf(output, "ENTITYDECL(");
+	xmlDebugDumpString(output, ent->name);
+	fprintf(output, ")");
+    } else
 	fprintf(output, "PBM ENTITYDECL noname!!!");
     switch (ent->etype) {
 	case XML_INTERNAL_GENERAL_ENTITY: 
@@ -434,7 +441,9 @@ void xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
 
     fprintf(output, shift);
 
-    fprintf(output, "ATTRIBUTE %s\n", attr->name);
+    fprintf(output, "ATTRIBUTE ");
+    xmlDebugDumpString(output, attr->name);
+    fprintf(output, "\n");
     if (attr->children != NULL) 
         xmlDebugDumpNodeList(output, attr->children, depth + 1);
 
@@ -479,10 +488,12 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	case XML_ELEMENT_NODE:
 	    fprintf(output, shift);
 	    fprintf(output, "ELEMENT ");
-	    if (node->ns != NULL)
-	        fprintf(output, "%s:%s\n", node->ns->prefix, node->name);
-	    else
-	        fprintf(output, "%s\n", node->name);
+	    if (node->ns != NULL) {
+		xmlDebugDumpString(output, node->ns->prefix);
+	        fprintf(output, ":");
+	    }
+	    xmlDebugDumpString(output, node->name);
+	    fprintf(output, "\n");
 	    break;
 	case XML_ATTRIBUTE_NODE:
 	    fprintf(output, shift);

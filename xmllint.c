@@ -666,6 +666,7 @@ int main(int argc, char **argv) {
 	printf("\t--nowarning : do not emit warnings from parser/validator\n");
 	printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
 	printf("\t--testIO : test user I/O support\n");
+	printf("\t--encode encoding : output in the given encoding\n");
     }
     xmlCleanupParser();
     xmlMemoryDump();

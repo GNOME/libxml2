@@ -325,7 +325,7 @@ xmlMemStrdupLoc(const char *str, const char *file, int line)
 #ifdef MEM_LIST
     debugmem_list_add(p);
 #endif
-    s = HDR_2_CLIENT(p);
+    s = (char *) HDR_2_CLIENT(p);
     
     if (xmlMemStopAtBlock == block) xmlMallocBreakpoint();
 
@@ -382,7 +382,7 @@ void
 xmlMemContentShow(FILE *fp, MEMHDR *p)
 {
     int i,j,len = p->mh_size;
-    const char *buf = HDR_2_CLIENT(p);
+    const char *buf = (const char *) HDR_2_CLIENT(p);
 
     for (i = 0;i < len;i++) {
         if (buf[i] == 0) break;

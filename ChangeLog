@@ -1,3 +1,23 @@
+Fri Jul 14 16:12:20 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/encoding.html doc/xml.html: added I18N doc
+	* encoding.[ch] HTMLtree.[ch] parser.c HTMLparser.c: I18N encoding
+	  improvements, both parser and filters, added ASCII & HTML,
+	  fixed the ISO-Latin-1 one
+	* xmllint.c testHTML.c: added/made visible --encode
+	* debugXML.c : cleanup
+	* most .c files: applied patches due to warning on Windows and
+	  when using Sun Pro cc compiler
+	* xpath.c : cleanup memleaks
+	* nanoftp.c : added a TESTING preprocessor flag for standalong
+	  compile so that people can report bugs more easilly
+	* nanohttp.c : ditched socklen_t which was a portability mess
+	  and replaced it with unsigned int.
+	* tree.[ch]: added xmlHasProp()
+	* TODO: updated
+	* test/ : added more test for entities, NS, encoding, HTML, wap
+	* configure.in: preparing for 2.2.0 release
+
 Mon Jul 10 16:17:18 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.c: fixed the way the control connection is handled

@@ -16,7 +16,7 @@
 #include <libxml/tree.h>
 
 #ifdef __cplusplus
-#define extern "C" {
+extern "C" {
 #endif
 /**
  * Various defines for the various Link properties.

@@ -183,7 +183,7 @@ void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
 extern int name##Push(xmlXPathParserContextPtr ctxt, type value) {	\
     if (ctxt->name##Nr >= ctxt->name##Max) {				\
 	ctxt->name##Max *= 2;						\
-        ctxt->name##Tab = (void *) xmlRealloc(ctxt->name##Tab,		\
+        ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
 	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
         if (ctxt->name##Tab == NULL) {					\
 	    fprintf(xmlXPathDebug, "realloc failed !\n");		\
@@ -849,10 +849,8 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
     if (ctxt->namespaces != NULL)
         xmlFree(ctxt->namespaces);
 
- /***********   
     if (ctxt->nodelist != NULL) 
         xmlXPathFreeNodeSet(ctxt->nodelist);
-  ***********/  
 #ifdef DEBUG
     memset(ctxt, 0xB , (size_t) sizeof(xmlXPathContext));
 #endif
@@ -2548,7 +2546,7 @@ xmlXPathStringLengthFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathConcatFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-    xmlXPathObjectPtr cur, new;
+    xmlXPathObjectPtr cur, newobj;
     xmlChar *tmp;
 
     if (nargs < 2) {
@@ -2563,17 +2561,17 @@ xmlXPathConcatFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     nargs--;
 
     while (nargs > 0) {
-	new = valuePop(ctxt);
-	if ((new == NULL) || (new->type != XPATH_STRING)) {
-	    xmlXPathFreeObject(new);
+	newobj = valuePop(ctxt);
+	if ((newobj == NULL) || (newobj->type != XPATH_STRING)) {
+	    xmlXPathFreeObject(newobj);
 	    xmlXPathFreeObject(cur);
 	    XP_ERROR(XPATH_INVALID_TYPE);
 	}
-	tmp = xmlStrcat(new->stringval, cur->stringval);
-	new->stringval = cur->stringval;
+	tmp = xmlStrcat(newobj->stringval, cur->stringval);
+	newobj->stringval = cur->stringval;
 	cur->stringval = tmp;
 
-	xmlXPathFreeObject(new);
+	xmlXPathFreeObject(newobj);
 	nargs--;
     }
     valuePush(ctxt, cur);

@@ -33,7 +33,7 @@
 scope int name##VPush(xmlValidCtxtPtr ctxt, type value) {		\
     if (ctxt->name##Nr >= ctxt->name##Max) {				\
 	ctxt->name##Max *= 2;						\
-        ctxt->name##Tab = (void *) xmlRealloc(ctxt->name##Tab,		\
+        ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
 	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
         if (ctxt->name##Tab == NULL) {					\
 	    fprintf(stderr, "realloc failed !\n");			\
@@ -538,9 +538,11 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     /*
      * Create the Element table if needed.
      */
-    table = dtd->elements;
-    if (table == NULL) 
-        table = dtd->elements = xmlCreateElementTable();
+    table = (xmlElementTablePtr) dtd->elements;
+    if (table == NULL) {
+        table = xmlCreateElementTable();
+	dtd->elements = (void *) table;
+    }
     if (table == NULL) {
 	fprintf(stderr, "xmlAddElementDecl: Table creation failed!\n");
         return(NULL);
@@ -909,7 +911,7 @@ xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
         fprintf(stderr, "xmlScanAttributeDecl: elem == NULL\n");
 	return(NULL);
     }
-    table = dtd->attributes;
+    table = (xmlAttributeTablePtr) dtd->attributes;
     if (table == NULL) 
         return(NULL);
 
@@ -1029,9 +1031,11 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     /*
      * Create the Attribute table if needed.
      */
-    table = dtd->attributes;
-    if (table == NULL) 
-        table = dtd->attributes = xmlCreateAttributeTable();
+    table = (xmlAttributeTablePtr) dtd->attributes;
+    if (table == NULL) {
+        table = xmlCreateAttributeTable();
+	dtd->attributes = (void *) table;
+    }
     if (table == NULL) {
 	fprintf(stderr, "xmlAddAttributeDecl: Table creation failed!\n");
         return(NULL);
@@ -1388,9 +1392,9 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     /*
      * Create the Notation table if needed.
      */
-    table = dtd->notations;
+    table = (xmlNotationTablePtr) dtd->notations;
     if (table == NULL) 
-        table = dtd->notations = xmlCreateNotationTable();
+        dtd->notations = table = xmlCreateNotationTable();
     if (table == NULL) {
 	fprintf(stderr, "xmlAddNotationDecl: Table creation failed!\n");
         return(NULL);
@@ -1657,9 +1661,9 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     /*
      * Create the ID table if needed.
      */
-    table = doc->ids;
+    table = (xmlIDTablePtr) doc->ids;
     if (table == NULL) 
-        table = doc->ids = xmlCreateIDTable();
+        doc->ids = table = xmlCreateIDTable();
     if (table == NULL) {
 	fprintf(stderr, "xmlAddID: Table creation failed!\n");
         return(NULL);
@@ -1804,7 +1808,7 @@ xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
 
     if (doc == NULL) return(-1);
     if (attr == NULL) return(-1);
-    table = doc->ids;
+    table = (xmlIDTablePtr) doc->ids;
     if (table == NULL) 
         return(-1);
 
@@ -1848,7 +1852,7 @@ xmlGetID(xmlDocPtr doc, const xmlChar *ID) {
 	return(NULL);
     }
 
-    table = doc->ids;
+    table = (xmlIDTablePtr) doc->ids;
     if (table == NULL) 
         return(NULL);
 
@@ -1935,9 +1939,9 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     /*
      * Create the Ref table if needed.
      */
-    table = doc->refs;
+    table = (xmlRefTablePtr) doc->refs;
     if (table == NULL) 
-        table = doc->refs = xmlCreateRefTable();
+        doc->refs = table = xmlCreateRefTable();
     if (table == NULL) {
 	fprintf(stderr, "xmlAddRef: Table creation failed!\n");
         return(NULL);
@@ -2065,7 +2069,7 @@ xmlRemoveRef(xmlDocPtr doc, xmlAttrPtr attr) {
 
     if (doc == NULL) return(-1);
     if (attr == NULL) return(-1);
-    table = doc->refs;
+    table = (xmlRefTablePtr) doc->refs;
     if (table == NULL) 
         return(-1);
 
@@ -2109,7 +2113,7 @@ xmlGetRef(xmlDocPtr doc, const xmlChar *Ref) {
 	return(NULL);
     }
 
-    table = doc->refs;
+    table = (xmlRefTablePtr) doc->refs;
     if (table == NULL) 
         return(NULL);
 
@@ -2150,7 +2154,7 @@ xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
 
     if (dtd == NULL) return(NULL);
     if (dtd->elements == NULL) return(NULL);
-    table = dtd->elements;
+    table = (xmlElementTablePtr) dtd->elements;
 
     for (i = 0;i < table->nb_elements;i++) {
         cur = table->table[i];
@@ -2200,7 +2204,7 @@ xmlGetDtdQElementDesc(xmlDtdPtr dtd, const xmlChar *name,
 
     if (dtd == NULL) return(NULL);
     if (dtd->elements == NULL) return(NULL);
-    table = dtd->elements;
+    table = (xmlElementTablePtr) dtd->elements;
 
     for (i = 0;i < table->nb_elements;i++) {
         cur = table->table[i];
@@ -2234,7 +2238,7 @@ xmlGetDtdAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name) {
 
     if (dtd == NULL) return(NULL);
     if (dtd->attributes == NULL) return(NULL);
-    table = dtd->attributes;
+    table = (xmlAttributeTablePtr) dtd->attributes;
 
     for (i = 0;i < table->nb_attributes;i++) {
         cur = table->table[i];
@@ -2288,7 +2292,7 @@ xmlGetDtdQAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name,
 
     if (dtd == NULL) return(NULL);
     if (dtd->attributes == NULL) return(NULL);
-    table = dtd->attributes;
+    table = (xmlAttributeTablePtr) dtd->attributes;
 
     for (i = 0;i < table->nb_attributes;i++) {
         cur = table->table[i];
@@ -2320,7 +2324,7 @@ xmlGetDtdNotationDesc(xmlDtdPtr dtd, const xmlChar *name) {
 
     if (dtd == NULL) return(NULL);
     if (dtd->notations == NULL) return(NULL);
-    table = dtd->notations;
+    table = (xmlNotationTablePtr) dtd->notations;
 
     for (i = 0;i < table->nb_notations;i++) {
         cur = table->table[i];
@@ -2890,7 +2894,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	     * element in the external subset.
 	     */
 	    nbId = 0;
-	    table = doc->intSubset->attributes;
+	    table = (xmlAttributeTablePtr) doc->intSubset->attributes;
 	    if (table != NULL) {
 		for (i = 0;i < table->nb_attributes;i++) {
 		    if ((table->table[i]->atype == XML_ATTRIBUTE_ID) &&
@@ -3902,7 +3906,7 @@ xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     /*
      * Check all the IDREF/IDREFS attributes definition for validity
      */
-    table = doc->refs;
+    table = (xmlRefTablePtr) doc->refs;
     if (table != NULL) {
         for (i = 0; i < table->nb_refs; i++) {
 	    if (table->table[i]->attr->atype == XML_ATTRIBUTE_IDREF) {
@@ -4008,7 +4012,7 @@ xmlValidateDtdFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 	return(0);
     dtd = doc->intSubset;
     if ((dtd != NULL) && (dtd->attributes != NULL)) {
-	table = dtd->attributes;
+	table = (xmlAttributeTablePtr) dtd->attributes;
 
 	for (i = 0;i < table->nb_attributes;i++) {
 	    cur = table->table[i];
@@ -4041,7 +4045,7 @@ xmlValidateDtdFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     }
     dtd = doc->extSubset;
     if ((dtd != NULL) && (dtd->attributes != NULL)) {
-	table = dtd->attributes;
+	table = (xmlAttributeTablePtr) dtd->attributes;
 
 	for (i = 0;i < table->nb_attributes;i++) {
 	    cur = table->table[i];

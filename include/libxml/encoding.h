@@ -70,7 +70,8 @@ typedef enum {
     XML_CHAR_ENCODING_8859_9=	18,/* ISO-8859-9 */
     XML_CHAR_ENCODING_2022_JP=  19,/* ISO-2022-JP */
     XML_CHAR_ENCODING_SHIFT_JIS=20,/* Shift_JIS */
-    XML_CHAR_ENCODING_EUC_JP=   21 /* EUC-JP */
+    XML_CHAR_ENCODING_EUC_JP=   21,/* EUC-JP */
+    XML_CHAR_ENCODING_ASCII=    22 /* pure ASCII */
 } xmlCharEncoding;
 
 /**

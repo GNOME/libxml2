@@ -128,7 +128,7 @@ xmlAddEntity(xmlEntitiesTablePtr table, const xmlChar *name, int type,
      * fill the structure.
      */
     ret->name = xmlStrdup(name);
-    ret->etype = type;
+    ret->etype = (xmlEntityType) type;
     if (ExternalID != NULL)
 	ret->ExternalID = xmlStrdup(ExternalID);
     if (SystemID != NULL)
@@ -754,9 +754,6 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
  * Contrary to xmlEncodeEntities, this routine is reentrant, and result
  * must be deallocated.
  *
- * TODO !!!! Once moved to UTF-8 internal encoding, the encoding of non-ascii
- *           get erroneous.
- *
  * Returns A newly allocated string with the substitution done.
  */
 xmlChar *
@@ -832,20 +829,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	     */
 	    *out++ = *cur;
 	} else if (*cur >= 0x80) {
-	    if (html) {
-		char buf[15], *ptr;
-
-		/*
-		 * TODO: improve by searching in html40EntitiesTable
-		 */
-#ifdef HAVE_SNPRINTF
-		snprintf(buf, 9, "&#%d;", *cur);
-#else
-		sprintf(buf, "&#%d;", *cur);
-#endif
-		ptr = buf;
-		while (*ptr != 0) *out++ = *ptr++;
-	    } else if (doc->encoding != NULL) {
+	    if ((doc->encoding != NULL) || (html)) {
 		/*
 		 * TODO !!!
 		 */
@@ -900,6 +884,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 #else
 		    sprintf(buf, "&#%d;", *cur);
 #endif
+		    buf[9] = 0;
 		    ptr = buf;
 		    while (*ptr != 0) *out++ = *ptr++;
 		    cur++;
@@ -909,11 +894,11 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		 * We could do multiple things here. Just save as a char ref
 		 */
 #ifdef HAVE_SNPRINTF
-		snprintf(buf, 14, "&#x%X;", val);
+		snprintf(buf, 9, "&#x%X;", val);
 #else
 		sprintf(buf, "&#x%X;", val);
 #endif
-		buf[14] = 0;
+		buf[9] = 0;
 		ptr = buf;
 		while (*ptr != 0) *out++ = *ptr++;
 		cur += l;
@@ -927,6 +912,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 #else
 	    sprintf(buf, "&#%d;", *cur);
 #endif
+	    buf[9] = 0;
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 	}

@@ -49,6 +49,7 @@ static int sax = 0;
 static int repeat = 0;
 static int noout = 0;
 static int push = 0;
+static char *encoding = NULL;
 
 xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* internalSubset */
@@ -638,12 +639,18 @@ void parseAndPrintFile(char *filename) {
      */
     if (!noout) { 
 #ifdef LIBXML_DEBUG_ENABLED
-	if (!debug)
-	    htmlDocDump(stdout, doc);
-	else
+	if (!debug) {
+	    if (encoding)
+		htmlSaveFileEnc("-", doc, encoding);
+	    else
+		htmlDocDump(stdout, doc);
+	} else
 	    xmlDebugDumpDocument(stdout, doc);
 #else
-	htmlDocDump(stdout, doc);
+	if (encoding)
+	    htmlSaveFileEnc("-", doc, encoding);
+	else
+	    htmlDocDump(stdout, doc);
 #endif
     }	
 
@@ -674,8 +681,18 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-repeat")) ||
 	         (!strcmp(argv[i], "--repeat")))
 	    repeat++;
+	else if ((!strcmp(argv[i], "-encode")) ||
+	         (!strcmp(argv[i], "--encode"))) {
+	    i++;
+	    encoding = argv[i];
+        }
     }
     for (i = 1; i < argc ; i++) {
+	if ((!strcmp(argv[i], "-encode")) ||
+	         (!strcmp(argv[i], "--encode"))) {
+	    i++;
+	    continue;
+        }
 	if (argv[i][0] != '-') {
 	    if (repeat) {
 		for (count = 0;count < 100 * repeat;count++) {
@@ -705,6 +722,7 @@ int main(int argc, char **argv) {
 	printf("\t--repeat : parse the file 100 times, for timing\n");
 	printf("\t--noout : do not print the result\n");
 	printf("\t--push : use the push mode parser\n");
+	printf("\t--encode encoding : output in the given encoding\n");
     }
     xmlCleanupParser();
     xmlMemoryDump();

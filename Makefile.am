@@ -8,7 +8,7 @@ DIST_SUBDIRS = include . doc example python
 INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 
 noinst_PROGRAMS=testSchemas testSAX testHTML testXPath testURI testDocbook \
-                testThreads testC14N testAutomata testRegexp
+                testThreads testC14N testAutomata testRegexp testReader
 
 bin_PROGRAMS = xmllint xmlcatalog
 
@@ -26,14 +26,15 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
 		catalog.c globals.c threads.c c14n.c \
 		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
-		triostr.c trio.c
+		triostr.c trio.c xmlreader.c
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
 		catalog.c globals.c threads.c c14n.c \
-		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c
+		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
+		xmlreader.c
 endif
 
 DEPS = $(top_builddir)/libxml2.la
@@ -103,6 +104,11 @@ testSchemas_SOURCES=testSchemas.c
 testSchemas_LDFLAGS = 
 testSchemas_DEPENDENCIES = $(DEPS)
 testSchemas_LDADD= $(LDADDS)
+
+testReader_SOURCES=testReader.c
+testReader_LDFLAGS = 
+testReader_DEPENDENCIES = $(DEPS)
+testReader_LDADD= $(LDADDS)
 
 check-local: tests
 

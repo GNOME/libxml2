@@ -2714,7 +2714,7 @@
     </function>
     <function name='htmlNodeDump' file='HTMLtree'>
       <info>Dump an HTML node, recursive behaviour,children are printed too, and formatting returns are added.</info>
-      <return type='void'/>
+      <return type='int' info='the number of byte written or -1 in case of error '/>
       <arg name='buf' type='xmlBufferPtr' info='the HTML buffer output '/>
       <arg name='doc' type='xmlDocPtr' info='the document '/>
       <arg name='cur' type='xmlNodePtr' info='the current node '/>

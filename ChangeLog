@@ -1,3 +1,12 @@
+Mon Dec  9 15:08:17 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am xmlreader.c include/libxml/Makefile.am
+	  include/libxml/xmlreader.h:  Adding a new set of APIs based on
+	  the C# TextXmlReader API but converted to C. Allow to parse
+	  in constant memory usage, far simpler to program and explain
+	  than the SAX like APIs, unfinished but working.
+	* testReader.c: test program
+
 Sun Dec  8 18:36:01 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/libxml2.def.src: applied YALDSP from Mark Vakoc

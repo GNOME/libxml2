@@ -2589,7 +2589,8 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	    if ((cur->children != NULL) &&
 		(cur->type != XML_ENTITY_REF_NODE))
 		xmlFreeNodeList(cur->children);
-	    if (cur->properties != NULL)
+	    if ((cur->type == XML_ELEMENT_NODE) &&
+		(cur->properties != NULL))
 		xmlFreePropList(cur->properties);
 	    if ((cur->type != XML_ELEMENT_NODE) &&
 		(cur->type != XML_XINCLUDE_START) &&
@@ -2666,7 +2667,7 @@ xmlFreeNode(xmlNodePtr cur) {
     if ((cur->children != NULL) &&
 	(cur->type != XML_ENTITY_REF_NODE))
 	xmlFreeNodeList(cur->children);
-    if (cur->properties != NULL)
+    if ((cur->type == XML_ELEMENT_NODE) && (cur->properties != NULL))
 	xmlFreePropList(cur->properties);
     if ((cur->type != XML_ELEMENT_NODE) &&
 	(cur->content != NULL) &&
@@ -2701,7 +2702,11 @@ xmlFreeNode(xmlNodePtr cur) {
 	    xmlFree((char *) cur->name);
     }
 
-    if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
+    if (((cur->type == XML_ELEMENT_NODE) ||
+	 (cur->type == XML_XINCLUDE_START) ||
+	 (cur->type == XML_XINCLUDE_END)) &&
+	(cur->nsDef != NULL))
+	xmlFreeNsList(cur->nsDef);
     xmlFree(cur);
 }
 

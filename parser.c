@@ -9871,6 +9871,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 
     oldsax = ctxt->sax;
     ctxt->sax = oldctxt->sax;
+    ctxt->_private = oldctxt->_private;
     if (oldctxt->myDoc == NULL) {
 	newDoc = xmlNewDoc(BAD_CAST "1.0");
 	if (newDoc == NULL) {

@@ -37,7 +37,8 @@ xmlinc_HEADERS = \
 		xmlschemas.h \
 		schemasInternals.h \
 		xmlschemastypes.h \
-		xmlunicode.h
+		xmlunicode.h \
+		xmlreader.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)

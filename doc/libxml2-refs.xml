@@ -13322,6 +13322,7 @@
         <word name='byte'>
           <ref name='docbParseChunk'/>
           <ref name='htmlDocDump'/>
+          <ref name='htmlNodeDump'/>
           <ref name='htmlNodeDumpFileFormat'/>
           <ref name='htmlParseChunk'/>
           <ref name='htmlSaveFile'/>

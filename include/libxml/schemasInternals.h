@@ -379,6 +379,7 @@ struct _xmlSchema {
     xmlHashTablePtr groupDecl;
     xmlDictPtr      dict;
     void *includes;     /* the includes, this is opaque for now */
+    int preserve;	/* whether to free the document */
 };
 
 XMLPUBFUN void XMLCALL 	xmlSchemaFreeType	(xmlSchemaTypePtr type);

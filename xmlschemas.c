@@ -85,6 +85,7 @@ struct _xmlSchemaParserCtxt {
 
     const xmlChar *URL;
     xmlDocPtr doc;
+    int preserve;		/* Whether the doc should be freed  */
 
     const char *buffer;
     int size;
@@ -650,7 +651,7 @@ xmlSchemaFree(xmlSchemaPtr schema)
     }
     if (schema->annot != NULL)
         xmlSchemaFreeAnnot(schema->annot);
-    if (schema->doc != NULL)
+    if (schema->doc != NULL && !schema->preserve)
         xmlFreeDoc(schema->doc);
     xmlDictFree(schema->dict);
 
@@ -3840,6 +3841,8 @@ xmlSchemaNewDocParserCtxt(xmlDocPtr doc)
     memset(ret, 0, sizeof(xmlSchemaParserCtxt));
     ret->doc = doc;
     ret->dict = xmlDictCreate();
+    /* The application has responsibility for the document */
+    ret->preserve = 1;
 
     return (ret);
 }
@@ -3855,7 +3858,7 @@ xmlSchemaFreeParserCtxt(xmlSchemaParserCtxtPtr ctxt)
 {
     if (ctxt == NULL)
         return;
-    if (ctxt->doc != NULL)
+    if (ctxt->doc != NULL && !ctxt->preserve)
         xmlFreeDoc(ctxt->doc);
     xmlDictFree(ctxt->dict);
     xmlFree(ctxt);
@@ -4862,6 +4865,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     xmlDocPtr doc;
     xmlNodePtr root;
     int nberrors;
+    int preserve = 0;
 
     xmlSchemaInitTypes();
 
@@ -4900,6 +4904,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
         ctxt->URL = xmlDictLookup(ctxt->dict, BAD_CAST "in_memory_buffer", -1);
     } else if (ctxt->doc != NULL) {
         doc = ctxt->doc;
+	preserve = 1;
     } else {
 	xmlSchemaPErr(ctxt, NULL,
 		      XML_SCHEMAP_NOTHING_TO_PARSE,
@@ -4916,7 +4921,9 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
 	xmlSchemaPErr(ctxt, (xmlNodePtr) doc,
 		      XML_SCHEMAP_NOROOT,
 		      "schemas has no root", NULL, NULL);
-	xmlFreeDoc(doc);
+	if (!preserve) {
+	    xmlFreeDoc(doc);
+	}
         return (NULL);
     }
 
@@ -4930,10 +4937,13 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
      */
     ret = xmlSchemaParseSchema(ctxt, root);
     if (ret == NULL) {
-	xmlFreeDoc(doc);
+        if (!preserve) {
+	    xmlFreeDoc(doc);
+	}
         return (NULL);
     }
     ret->doc = doc;
+    ret->preserve = preserve;
 
     /*
      * Then fix all the references.

@@ -1,3 +1,8 @@
+Sat Jan 24 09:30:22 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/schemasInternals.h xmlschemas.c: applied patch from
+	  Steve Ball to avoid a double-free.
+
 Fri Jan 23 14:03:21 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/*: added io1.c an example ox xmlIO usage and io1.res

@@ -7268,6 +7268,7 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	    if (enc != XML_CHAR_ENCODING_ERROR) {
 		xmlSwitchEncoding(ctxt, enc);
 		if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+		    ctxt->input->encoding = NULL;
 		    xmlFree(encoding);
 		    return(NULL);
 		}

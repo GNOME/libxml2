@@ -128,8 +128,8 @@ A:link, A:visited, A:active { text-decoration: underline }
         content <strong>modifying the content of your document in the
         process</strong>. The result may not be what you expect. There is
         <strong>NO</strong> way to guarantee that such a modification won't
-        affect other parts of the content of your document. See <a href="http://xmlsoft.org/html/libxml-parser.html#XMLKEEPBLANKSDEFAULT">xmlKeepBlanksDefault
-        ()</a> and <a href="http://xmlsoft.org/html/libxml-tree.html#XMLSAVEFORMATFILE">xmlSaveFormatFile
+        affect other parts of the content of your document. See <a href="http://xmlsoft.org/html/libxml-parser.html#xmlKeepBlanksDefault">xmlKeepBlanksDefault
+        ()</a> and <a href="http://xmlsoft.org/html/libxml-tree.html#xmlSaveFormatFile">xmlSaveFormatFile
         ()</a></li>
     </ol></li>
   <li>Extra nodes in the document:
@@ -217,7 +217,7 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
   <li>How to validate a document a posteriori ?
     <p>It is possible to validate documents which had not been validated at
     initial parsing time or documents which have been built from scratch
-    using the API. Use the <a href="http://xmlsoft.org/html/libxml-valid.html#XMLVALIDATEDTD">xmlValidateDtd()</a>
+    using the API. Use the <a href="http://xmlsoft.org/html/libxml-valid.html#xmlValidateDtd">xmlValidateDtd()</a>
     function. It is also possible to simply add a DTD to an existing
     document:</p>
     <pre>xmlDocPtr doc; /* your existing document */

@@ -1,3 +1,9 @@
+Wed Feb 13 14:05:24 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: Fixing #71342 serializing '\n' in attribute values
+	* result/noent/att3 result/att3 test/att3: added a specific
+	  test.
+
 Tue Feb 12 14:45:32 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: couple of bug fixes

@@ -5791,6 +5791,147 @@ xmlDtdDump(xmlBufferPtr buf, xmlDtdPtr dtd) {
 }
 
 /**
+ * xmlAttrSerializeContent:
+ * @buf:  the XML buffer output
+ * @doc:  the document
+ * @attr:  the attribute pointer
+ *
+ * Serialize the attribute in the buffer
+ */
+static void
+xmlAttrSerializeContent(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr attr) {
+    const xmlChar *cur, *base;
+    xmlNodePtr children;
+
+    children = attr->children;
+    while (children != NULL) {
+	switch (children->type) {
+	    case XML_TEXT_NODE:
+		base = cur = children->content;
+		while (*cur != 0) {
+		    if (*cur == '\n') {
+			if (base != cur)
+			    xmlBufferAdd(buf, base, cur - base);
+			xmlBufferAdd(buf, BAD_CAST "&#10;", 5);
+			cur++;
+			base = cur;
+#if 0
+		    } else if (*cur == '\'') {
+			if (base != cur)
+			    xmlBufferAdd(buf, base, cur - base);
+			xmlBufferAdd(buf, BAD_CAST "&apos;", 6);
+			cur++;
+			base = cur;
+#endif
+		    } else if (*cur == '"') {
+			if (base != cur)
+			    xmlBufferAdd(buf, base, cur - base);
+			xmlBufferAdd(buf, BAD_CAST "&quot;", 6);
+			cur++;
+			base = cur;
+		    } else if (*cur == '<') {
+			if (base != cur)
+			    xmlBufferAdd(buf, base, cur - base);
+			xmlBufferAdd(buf, BAD_CAST "&lt;", 4);
+			cur++;
+			base = cur;
+		    } else if (*cur == '>') {
+			if (base != cur)
+			    xmlBufferAdd(buf, base, cur - base);
+			xmlBufferAdd(buf, BAD_CAST "&gt;", 4);
+			cur++;
+			base = cur;
+		    } else if (*cur == '&') {
+			if (base != cur)
+			    xmlBufferAdd(buf, base, cur - base);
+			xmlBufferAdd(buf, BAD_CAST "&amp;", 5);
+			cur++;
+			base = cur;
+		    } else if ((*cur >= 0x80) && ((doc == NULL) ||
+			       (doc->encoding == NULL))) {
+			/*
+			 * We assume we have UTF-8 content.
+			 */
+			char tmp[10];
+			int val = 0, l = 1;
+
+			if (base != cur)
+			    xmlBufferAdd(buf, base, cur - base);
+			if (*cur < 0xC0) {
+			    xmlGenericError(xmlGenericErrorContext,
+			    "xmlAttrSerializeContent : input not UTF-8\n");
+			    if (doc != NULL)
+				doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
+			    snprintf(tmp, sizeof(tmp), "&#%d;", *cur);
+			    tmp[sizeof(tmp) - 1] = 0;
+			    xmlBufferAdd(buf, (xmlChar *) tmp, -1);
+			    cur++;
+			    base = cur;
+			    continue;
+			} else if (*cur < 0xE0) {
+			    val = (cur[0]) & 0x1F;
+			    val <<= 6;
+			    val |= (cur[1]) & 0x3F;
+			    l = 2;
+			} else if (*cur < 0xF0) {
+			    val = (cur[0]) & 0x0F;
+			    val <<= 6;
+			    val |= (cur[1]) & 0x3F;
+			    val <<= 6;
+			    val |= (cur[2]) & 0x3F;
+			    l = 3;
+			} else if (*cur < 0xF8) {
+			    val = (cur[0]) & 0x07;
+			    val <<= 6;
+			    val |= (cur[1]) & 0x3F;
+			    val <<= 6;
+			    val |= (cur[2]) & 0x3F;
+			    val <<= 6;
+			    val |= (cur[3]) & 0x3F;
+			    l = 4;
+			}
+			if ((l == 1) || (!IS_CHAR(val))) {
+			    xmlGenericError(xmlGenericErrorContext,
+				"xmlAttrSerializeContent : char out of range\n");
+			    if (doc != NULL)
+				doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
+			    snprintf(tmp, sizeof(tmp), "&#%d;", *cur);
+			    tmp[sizeof(tmp) - 1] = 0;
+			    xmlBufferAdd(buf, (xmlChar *) tmp, -1);
+			    cur++;
+			    base = cur;
+			    continue;
+			}
+			/*
+			 * We could do multiple things here. Just save
+			 * as a char ref
+			 */
+			snprintf(tmp, sizeof(tmp), "&#x%X;", val);
+			tmp[sizeof(tmp) - 1] = 0;
+			xmlBufferAdd(buf, (xmlChar *) tmp, -1);
+			cur += l;
+			base = cur;
+	            } else {
+			cur++;
+		    }
+		}
+		if (base != cur)
+		    xmlBufferAdd(buf, base, cur - base);
+		break;
+	    case XML_ENTITY_REF_NODE:
+		xmlBufferAdd(buf, BAD_CAST "&", 1);
+		xmlBufferAdd(buf, children->name, xmlStrlen(children->name));
+		xmlBufferAdd(buf, BAD_CAST ";", 1);
+		break;
+	    default:
+		/* should not happen unless we have a badly built tree */
+		break;
+	}
+	children = children->next;
+    }
+}
+
+/**
  * xmlAttrDump:
  * @buf:  the XML buffer output
  * @doc:  the document
@@ -5800,8 +5941,6 @@ xmlDtdDump(xmlBufferPtr buf, xmlDtdPtr dtd) {
  */
 static void
 xmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
-    xmlChar *value;
-
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
@@ -5815,14 +5954,9 @@ xmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 	xmlBufferWriteChar(buf, ":");
     }
     xmlBufferWriteCHAR(buf, cur->name);
-    value = xmlNodeListGetString(doc, cur->children, 0);
-    if (value != NULL) {
-	xmlBufferWriteChar(buf, "=");
-	xmlBufferWriteQuotedString(buf, value);
-	xmlFree(value);
-    } else  {
-	xmlBufferWriteChar(buf, "=\"\"");
-    }
+    xmlBufferWriteChar(buf, "=\"");
+    xmlAttrSerializeContent(buf, doc, cur);
+    xmlBufferWriteChar(buf, "\"");
 }
 
 /**
@@ -6213,8 +6347,6 @@ xmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDtdPtr dtd, const char *encoding) {
 static void
 xmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 	          const char *encoding ATTRIBUTE_UNUSED) {
-    xmlChar *value;
-
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
@@ -6228,14 +6360,9 @@ xmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 	xmlOutputBufferWriteString(buf, ":");
     }
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
-    value = xmlNodeListGetString(doc, cur->children, 0);
-    if (value) {
-	xmlOutputBufferWriteString(buf, "=");
-	xmlBufferWriteQuotedString(buf->buffer, value);
-	xmlFree(value);
-    } else  {
-	xmlOutputBufferWriteString(buf, "=\"\"");
-    }
+    xmlOutputBufferWriteString(buf, "=\"");
+    xmlAttrSerializeContent(buf->buffer, doc, cur);
+    xmlOutputBufferWriteString(buf, "\"");
 }
 
 /**

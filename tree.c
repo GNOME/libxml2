@@ -2307,7 +2307,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	        xmlNodePtr root = ret;
 
 		while (root->parent != NULL) root = root->parent;
-		xmlNewNs(root, ns->href, ns->prefix);
+		ret->ns = xmlNewNs(root, ns->href, ns->prefix);
 	    }
 	} else {
 	    /*

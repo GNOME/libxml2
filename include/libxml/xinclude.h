@@ -19,11 +19,35 @@
 extern "C" {
 #endif
 
-XMLPUBFUN int XMLCALL	
-		xmlXIncludeProcess	    (xmlDocPtr doc);
-XMLPUBFUN int XMLCALL	
-		xmlXIncludeProcessTree	    (xmlNodePtr tree);
+#define XINCLUDE_NS (const xmlChar *) "http://www.w3.org/2001/XInclude"
+#define XINCLUDE_NODE (const xmlChar *) "include"
+#define XINCLUDE_FALLBACK (const xmlChar *) "fallback"
+#define XINCLUDE_HREF (const xmlChar *) "href"
+#define XINCLUDE_PARSE (const xmlChar *) "parse"
+#define XINCLUDE_PARSE_XML (const xmlChar *) "xml"
+#define XINCLUDE_PARSE_TEXT (const xmlChar *) "text"
+#define XINCLUDE_PARSE_ENCODING (const xmlChar *) "encoding"
 
+typedef struct _xmlXIncludeCtxt xmlXIncludeCtxt;
+typedef xmlXIncludeCtxt *xmlXIncludeCtxtPtr;
+
+/*
+ * standalone processing
+ */
+XMLPUBFUN int XMLCALL	
+		xmlXIncludeProcess	(xmlDocPtr doc);
+XMLPUBFUN int XMLCALL	
+		xmlXIncludeProcessTree	(xmlNodePtr tree);
+/*
+ * contextual processing
+ */
+XMLPUBFUN xmlXIncludeCtxtPtr XMLCALL
+		xmlXIncludeNewContext	(xmlDocPtr doc);
+XMLPUBFUN void XMLCALL
+		xmlXIncludeFreeContext	(xmlXIncludeCtxtPtr ctxt);
+XMLPUBFUN int XMLCALL
+		xmlXIncludeProcessNode	(xmlXIncludeCtxtPtr ctxt,
+					 xmlNodePtr tree);
 #ifdef __cplusplus
 }
 #endif

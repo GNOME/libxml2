@@ -153,6 +153,7 @@ static int nocatalogs = 0;
 #endif
 #ifdef LIBXML_READER_ENABLED
 static int stream = 0;
+static int walker = 0;
 #endif /* LIBXML_READER_ENABLED */
 static int chkregister = 0;
 #ifdef LIBXML_SAX1_ENABLED
@@ -603,7 +604,7 @@ static void processNode(xmlTextReaderPtr reader) {
 
     name = xmlTextReaderConstName(reader);
     if (name == NULL)
-	name = xmlStrdup(BAD_CAST "--");
+	name = BAD_CAST "--";
 
     value = xmlTextReaderConstValue(reader);
 
@@ -638,12 +639,12 @@ static void streamFile(char *filename) {
 	if (base == (void *) MAP_FAILED)
 	    return;
 
-	input = xmlParserInputBufferCreateStatic((char *) base, info.st_size,
-	                                      XML_CHAR_ENCODING_NONE);
-	reader = xmlNewTextReader(input, filename);
+	reader = xmlReaderForMemory(base, info.st_size, filename,
+	                            NULL, options);
     } else
 #endif
-	reader = xmlNewTextReaderFilename(filename);
+	reader = xmlReaderForFile(filename, NULL, options);
+
 
     if (reader != NULL) {
 #ifdef LIBXML_VALID_ENABLED
@@ -733,6 +734,35 @@ static void streamFile(char *filename) {
 	close(fd);
     }
 #endif
+}
+
+static void walkDoc(xmlDocPtr doc) {
+    xmlTextReaderPtr reader;
+    int ret;
+
+    reader = xmlReaderWalker(doc);
+    if (reader != NULL) {
+	if ((timing) && (!repeat)) {
+	    startTimer();
+	}
+	ret = xmlTextReaderRead(reader);
+	while (ret == 1) {
+	    if (debug)
+		processNode(reader);
+	    ret = xmlTextReaderRead(reader);
+	}
+	if ((timing) && (!repeat)) {
+	    endTimer("walking through the doc");
+	}
+	xmlFreeTextReader(reader);
+	if (ret != 0) {
+	    printf("failed to walk through the doc\n");
+	    progresult = 1;
+	}
+    } else {
+	fprintf(stderr, "Failed to crate a reader from the document\n");
+	progresult = 1;
+    }
 }
 #endif /* LIBXML_READER_ENABLED */
 
@@ -1006,6 +1036,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	}    
     }else
 #endif /* LIBXML_VALID_ENABLED */
+#ifdef LIBXML_READER_ENABLED
+    if (walker) {
+        walkDoc(doc);
+    }
+#endif /* LIBXML_READER_ENABLED */
 #ifdef LIBXML_OUTPUT_ENABLED
     if (noout == 0) {
 	/*
@@ -1386,6 +1421,7 @@ static void usage(const char *name) {
     printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
 #ifdef LIBXML_READER_ENABLED
     printf("\t--stream : use the streaming interface to process very large files\n");
+    printf("\t--walker : create a reader and walk though the resulting doc\n");
 #endif /* LIBXML_READER_ENABLED */
     printf("\t--chkregister : verify the node registration code\n");
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1553,7 +1589,7 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-xinclude")) ||
 	         (!strcmp(argv[i], "--xinclude"))) {
 	    xinclude++;
-	    /* options |= XML_PARSE_XINCLUDE; */
+	    options |= XML_PARSE_XINCLUDE;
 	}
 #endif
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -1619,6 +1655,11 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-stream")) ||
 	         (!strcmp(argv[i], "--stream"))) {
 	     stream++;
+	}
+	else if ((!strcmp(argv[i], "-walker")) ||
+	         (!strcmp(argv[i], "--walker"))) {
+	     walker++;
+             noout++;
 	}
 #endif /* LIBXML_READER_ENABLED */
 #ifdef LIBXML_SAX1_ENABLED

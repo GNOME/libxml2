@@ -26,14 +26,6 @@
 #ifdef LIBXML_XINCLUDE_ENABLED
 #include <libxml/xinclude.h>
 
-#define XINCLUDE_NS (const xmlChar *) "http://www.w3.org/2001/XInclude"
-#define XINCLUDE_NODE (const xmlChar *) "include"
-#define XINCLUDE_FALLBACK (const xmlChar *) "fallback"
-#define XINCLUDE_HREF (const xmlChar *) "href"
-#define XINCLUDE_PARSE (const xmlChar *) "parse"
-#define XINCLUDE_PARSE_XML (const xmlChar *) "xml"
-#define XINCLUDE_PARSE_TEXT (const xmlChar *) "text"
-#define XINCLUDE_PARSE_ENCODING (const xmlChar *) "encoding"
 
 #define XINCLUDE_MAX_DEPTH 40
 
@@ -68,8 +60,6 @@ struct _xmlXIncludeRef {
     xmlXPathObjectPtr    xptr; /* the xpointer if needed */
 };
 
-typedef struct _xmlXIncludeCtxt xmlXIncludeCtxt;
-typedef xmlXIncludeCtxt *xmlXIncludeCtxtPtr;
 struct _xmlXIncludeCtxt {
     xmlDocPtr             doc; /* the source document */
     int               incBase; /* the first include for this document */
@@ -232,7 +222,7 @@ xmlXIncludeNewRef(xmlXIncludeCtxtPtr ctxt, const xmlChar *URI,
  *
  * Returns the new set
  */
-static xmlXIncludeCtxtPtr
+xmlXIncludeCtxtPtr
 xmlXIncludeNewContext(xmlDocPtr doc) {
     xmlXIncludeCtxtPtr ret;
 
@@ -330,7 +320,7 @@ xmlXIncludeURLPop(xmlXIncludeCtxtPtr ctxt)
  *
  * Free an XInclude context
  */
-static void
+void
 xmlXIncludeFreeContext(xmlXIncludeCtxtPtr ctxt) {
     int i;
 
@@ -2115,6 +2105,29 @@ xmlXIncludeProcessTree(xmlNodePtr tree) {
 	ret = -1;
 
     xmlXIncludeFreeContext(ctxt);
+    return(ret);
+}
+
+/**
+ * xmlXIncludeProcessNode:
+ * @ctxt: an existing XInclude context
+ * @node: a node in an XML document
+ *
+ * Implement the XInclude substitution for the given subtree reusing
+ * the informations and data coming from the given context.
+ *
+ * Returns 0 if no substitution were done, -1 if some processing failed
+ *    or the number of substitutions done.
+ */
+int
+xmlXIncludeProcessNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
+    int ret = 0;
+
+    if ((node == NULL) || (node->doc == NULL) || (ctxt == NULL))
+	return(-1);
+    ret = xmlXIncludeDoProcess(ctxt, node->doc, node);
+    if ((ret >= 0) && (ctxt->nbErrors > 0))
+	ret = -1;
     return(ret);
 }
 

@@ -2,4 +2,4 @@
 <!ELEMENT doc (#PCDATA)>
 <!ATTLIST doc val CDATA #IMPLIED>
 ]>
-<doc val="v1"></doc>
+<doc val="v1"/>

@@ -38,6 +38,9 @@
 #include <libxml/parserInternals.h>
 #include <libxml/relaxng.h>
 #include <libxml/uri.h>
+#ifdef LIBXML_XINCLUDE_ENABLED
+#include <libxml/xinclude.h>
+#endif
 
 /* #define DEBUG_CALLBACKS */
 /* #define DEBUG_READER */
@@ -132,10 +135,17 @@ struct _xmlTextReader {
 
 #ifdef LIBXML_SCHEMAS_ENABLED
     /* Handling of RelaxNG validation */
-    xmlRelaxNGPtr          rngSchemas;   /* The Relax NG schemas */
-    xmlRelaxNGValidCtxtPtr rngValidCtxt; /* The Relax NG validation context */
-    int                  rngValidErrors; /* The number of errors detected */
-    xmlNodePtr             rngFullNode;  /* the node if RNG not progressive */
+    xmlRelaxNGPtr          rngSchemas;	/* The Relax NG schemas */
+    xmlRelaxNGValidCtxtPtr rngValidCtxt;/* The Relax NG validation context */
+    int                  rngValidErrors;/* The number of errors detected */
+    xmlNodePtr             rngFullNode;	/* the node if RNG not progressive */
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
+    /* Handling of XInclude processing */
+    int                xinclude;	/* is xinclude asked for */
+    const xmlChar *    xinclude_name;	/* the xinclude name from dict */
+    xmlXIncludeCtxtPtr xincctxt;	/* the xinclude context */
+    int                in_xinclude;	/* counts for xinclude */
 #endif
 };
 
@@ -1155,6 +1165,7 @@ get_next_node:
     if (oldstate != XML_TEXTREADER_BACKTRACK) {
 	if ((reader->node->children != NULL) &&
 	    (reader->node->type != XML_ENTITY_REF_NODE) &&
+	    (reader->node->type != XML_XINCLUDE_START) &&
 	    (reader->node->type != XML_DTD_NODE)) {
 	    reader->node = reader->node->children;
 	    reader->depth++;
@@ -1166,7 +1177,8 @@ get_next_node:
 	if ((oldstate == XML_TEXTREADER_ELEMENT) &&
             (reader->node->type == XML_ELEMENT_NODE) &&
 	    (reader->node->children == NULL) &&
-	    ((reader->node->extra & NODE_IS_EMPTY) == 0)) {
+	    ((reader->node->extra & NODE_IS_EMPTY) == 0) &&
+	    (reader->in_xinclude <= 0)) {
 	    reader->state = XML_TEXTREADER_END;
 	    goto node_found;
 	}
@@ -1246,6 +1258,32 @@ node_found:
             xmlTextReaderExpand(reader);
     }
 
+#ifdef LIBXML_XINCLUDE_ENABLED
+    /*
+     * Handle XInclude if asked for
+     */
+    if ((reader->xinclude) && (reader->node != NULL) &&
+	(reader->node->type == XML_ELEMENT_NODE) &&
+	(reader->node->ns != NULL) &&
+	(xmlStrEqual(reader->node->ns->href, XINCLUDE_NS))) {
+	if (reader->xincctxt == NULL) {
+	    reader->xincctxt = xmlXIncludeNewContext(reader->ctxt->myDoc);
+	}
+	/*
+	 * expand that node and process it
+	 */
+	xmlTextReaderExpand(reader);
+	xmlXIncludeProcessNode(reader->xincctxt, reader->node);
+    }
+    if (reader->node->type == XML_XINCLUDE_START) {
+        reader->in_xinclude++;
+	goto get_next_node;
+    } 
+    if (reader->node->type == XML_XINCLUDE_END) {
+        reader->in_xinclude--;
+	goto get_next_node;
+    }
+#endif
     /*
      * Handle entities enter and exit when in entity replacement mode
      */
@@ -1491,14 +1529,14 @@ xmlTextReaderReadBinHex(xmlTextReaderPtr reader,
 static int
 xmlTextReaderNextTree(xmlTextReaderPtr reader)
 {
-    if (reader == 0)
+    if (reader == NULL)
         return(-1);
 
     if (reader->state == XML_TEXTREADER_END)
         return(0);
 
-    if (reader->node == 0) {
-        if (reader->doc->children == 0) {
+    if (reader->node == NULL) {
+        if (reader->doc->children == NULL) {
             reader->state = XML_TEXTREADER_END;
             return(0);
         }
@@ -1561,6 +1599,7 @@ xmlTextReaderReadTree(xmlTextReaderPtr reader) {
     if (reader->state == XML_TEXTREADER_END)
         return(0);
 
+next_node:
     if (reader->node == NULL) {
         if (reader->doc->children == NULL) {
             reader->state = XML_TEXTREADER_END;
@@ -1569,31 +1608,33 @@ xmlTextReaderReadTree(xmlTextReaderPtr reader) {
 
         reader->node = reader->doc->children;
         reader->state = XML_TEXTREADER_START;
-        return(1);
+        goto found_node;
     }
 
-    if (reader->state != XML_TEXTREADER_BACKTRACK) {
-        if (reader->node->children != 0) {
+    if ((reader->state != XML_TEXTREADER_BACKTRACK) &&
+        (reader->node->type != XML_DTD_NODE) &&
+        (reader->node->type != XML_XINCLUDE_START) &&
+	(reader->node->type != XML_ENTITY_REF_NODE)) {
+        if (reader->node->children != NULL) {
             reader->node = reader->node->children;
             reader->depth++;
             reader->state = XML_TEXTREADER_START;
-            return(1);
+            goto found_node;
         }
 
-        if ((reader->node->type == XML_ELEMENT_NODE) ||
-            (reader->node->type == XML_ATTRIBUTE_NODE)) {
+        if (reader->node->type == XML_ATTRIBUTE_NODE) {
             reader->state = XML_TEXTREADER_BACKTRACK;
-            return(1);
+            goto found_node;
         }
     }
 
-    if (reader->node->next != 0) {
+    if (reader->node->next != NULL) {
         reader->node = reader->node->next;
         reader->state = XML_TEXTREADER_START;
-        return(1);
+        goto found_node;
     }
 
-    if (reader->node->parent != 0) {
+    if (reader->node->parent != NULL) {
         if ((reader->node->parent->type == XML_DOCUMENT_NODE) ||
 	    (reader->node->parent->type == XML_HTML_DOCUMENT_NODE)) {
             reader->state = XML_TEXTREADER_END;
@@ -1603,10 +1644,15 @@ xmlTextReaderReadTree(xmlTextReaderPtr reader) {
         reader->node = reader->node->parent;
         reader->depth--;
         reader->state = XML_TEXTREADER_BACKTRACK;
-        return(1);
+        goto found_node;
     }
 
     reader->state = XML_TEXTREADER_END;
+
+found_node:
+    if ((reader->node->type == XML_XINCLUDE_START) ||
+        (reader->node->type == XML_XINCLUDE_END))
+	goto next_node;
 
     return(1);
 }
@@ -1634,10 +1680,10 @@ xmlTextReaderNextSibling(xmlTextReaderPtr reader) {
     if (reader->state == XML_TEXTREADER_END)
         return(0);
 
-    if (reader->node == 0)
+    if (reader->node == NULL)
         return(xmlTextReaderNextTree(reader));
 
-    if (reader->node->next != 0) {
+    if (reader->node->next != NULL) {
         reader->node = reader->node->next;
         reader->state = XML_TEXTREADER_START;
         return(1);
@@ -1742,6 +1788,9 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
      */
     ret->ctxt->docdict = 1;
     ret->dict = ret->ctxt->dict;
+#ifdef LIBXML_XINCLUDE_ENABLED
+    ret->xinclude = 0;
+#endif
     return(ret);
 }
 
@@ -1796,6 +1845,10 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
 	xmlRelaxNGFreeValidCtxt(reader->rngValidCtxt);
 	reader->rngValidCtxt = NULL;
     }
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
+    if (reader->xincctxt != NULL)
+	xmlXIncludeFreeContext(reader->xincctxt);
 #endif
     if (reader->ctxt != NULL) {
         if (reader->dict == reader->ctxt->dict)
@@ -2552,6 +2605,10 @@ xmlTextReaderIsEmptyElement(xmlTextReaderPtr reader) {
 	return(0);
     if (reader->state == XML_TEXTREADER_END)
 	return(0);
+    if (reader->doc != NULL)
+        return(1);
+    if (reader->in_xinclude > 0)
+        return(1);
     return((reader->node->extra & NODE_IS_EMPTY) != 0);
 }
 
@@ -3916,6 +3973,19 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
      */
     reader->ctxt->docdict = 1;
 
+#ifdef LIBXML_XINCLUDE_ENABLED
+    if (reader->xincctxt != NULL) {
+	xmlXIncludeFreeContext(reader->xincctxt);
+	reader->xincctxt = NULL;
+    }
+    if (options & XML_PARSE_XINCLUDE) {
+        reader->xinclude = 1;
+	reader->xinclude_name = xmlDictLookup(reader->dict, XINCLUDE_NODE, -1);
+	options -= XML_PARSE_XINCLUDE;
+    } else
+        reader->xinclude = 0;
+    reader->in_xinclude = 0;
+#endif
     xmlCtxtUseOptions(reader->ctxt, options);
     if (encoding != NULL) {
         xmlCharEncodingHandlerPtr hdlr;

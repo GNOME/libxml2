@@ -1,3 +1,15 @@
+Mon Nov  3 13:26:32 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c xmlreader.c include/libxml/xinclude.h: adding XInclude
+	  support to the reader interface. Lot of testing of the walker,
+	  various bug fixes.
+	* xmllint.c: added --walker and made sure --xinclude --stream --debug
+	  works as expected
+	* Makefile.am result/dtd11.rdr result/ent6.rdr test/dtd11 test/ent6
+	  result/XInclude/*.rdr: added regression tests for the walker and
+	  XInclude xmlReader support, had to slightly change a couple of tests
+	  because the walker can't distinguish <foo/> from <foo></foo>
+
 Sat Nov  1 17:42:27 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c nanohttp.c threads.c: second BeOS patch from 

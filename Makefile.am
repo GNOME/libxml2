@@ -414,6 +414,22 @@ XIncludetests : xmllint$(EXEEXT)
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
+	@(echo > .memdump)
+	@echo "## XInclude xmlReader regression tests"
+	-@(for i in $(srcdir)/test/XInclude/docs/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/XInclude/$$name.rdr ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --walker --debug $$i > $(srcdir)/result/XInclude/$$name.rdr ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	  else \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i 2>&1 > result.$$name | grep -v 'failed to load external entity' ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/XInclude/$$name.rdr result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
 
 Scripttests : xmllint$(EXEEXT)
 	@(echo > .memdump)
@@ -547,7 +563,22 @@ Readertests : xmllint$(EXEEXT)
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
-
+	@(echo > .memdump)
+	@echo "## Walker regression tests"
+	-@(for i in $(srcdir)/test/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/$$name.rdr ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --nonet --debug --walker $$i > $(srcdir)/result/$$name.rdr 2>/dev/null ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	  else \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --nonet --debug --walker $$i > result.$$name 2>/dev/null ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/$$name.rdr result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
 SAXtests : testSAX$(EXEEXT)
 	@(echo > .memdump)
 	@echo "## SAX callbacks regression tests"

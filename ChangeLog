@@ -1,3 +1,8 @@
+Sat Sep 27 12:19:38 PDT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* encoding.c, parser.c, relaxng.c: further (final?) minor
+	  changes for compilation warnings. No change to logic.
+
 Fri Sep 26 18:03:42 PDT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* parser.c: fixed small problem with missing entities (test/ent2)

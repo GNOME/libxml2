@@ -675,8 +675,8 @@ xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
  *
  * Pushes a new parser namespace on top of the ns stack
  *
- * Returns -1 in case of error, the index in the stack otherwise,
- *         and -2 if the namespace should be discarded.
+ * Returns -1 in case of error, -2 if the namespace should be discarded
+ *	   and the index in the stack otherwise.
  */
 static int
 nsPush(xmlParserCtxtPtr ctxt, const xmlChar *prefix, const xmlChar *URL)
@@ -4371,7 +4371,7 @@ xmlParseDefaultDecl(xmlParserCtxtPtr ctxt, xmlChar **value) {
     ret = xmlParseAttValue(ctxt);
     ctxt->instate = XML_PARSER_DTD;
     if (ret == NULL) {
-	xmlFatalErrMsg(ctxt, ctxt->errNo,
+	xmlFatalErrMsg(ctxt, (xmlParserErrors)ctxt->errNo,
 		       "Attribute default value declaration error\n");
     } else
         *value = ret;
@@ -10773,7 +10773,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
         if (ctxt->errNo == 0)
 	    ret = XML_ERR_INTERNAL_ERROR;
 	else
-	    ret = ctxt->errNo;
+	    ret = (xmlParserErrors)ctxt->errNo;
     } else {
 	if (list != NULL) {
 	    xmlNodePtr cur;
@@ -10901,12 +10901,12 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     if (lst != NULL)
         *lst = NULL;
     if (string == NULL)
-        return(-1);
+        return(XML_ERR_INTERNAL_ERROR);
 
     size = xmlStrlen(string);
 
     ctxt = xmlCreateMemoryParserCtxt((char *) string, size);
-    if (ctxt == NULL) return(-1);
+    if (ctxt == NULL) return(XML_WAR_UNDECLARED_ENTITY);
     if (user_data != NULL)
 	ctxt->userData = user_data;
     else
@@ -10925,7 +10925,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	    ctxt->sax = oldsax;
 	    ctxt->dict = NULL;
 	    xmlFreeParserCtxt(ctxt);
-	    return(-1);
+	    return(XML_ERR_INTERNAL_ERROR);
 	}
 	ctxt->myDoc = newDoc;
     } else {
@@ -10940,7 +10940,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	xmlFreeParserCtxt(ctxt);
 	if (newDoc != NULL)
 	    xmlFreeDoc(newDoc);
-	return(-1);
+	return(XML_ERR_INTERNAL_ERROR);
     }
     nodePush(ctxt, ctxt->myDoc->children);
     ctxt->instate = XML_PARSER_CONTENT;
@@ -10970,12 +10970,12 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
         if (ctxt->errNo == 0)
 	    ret = XML_ERR_INTERNAL_ERROR;
 	else
-	    ret = ctxt->errNo;
+	    ret = (xmlParserErrors)ctxt->errNo;
     } else {
-      ret = 0;
+      ret = XML_ERR_OK;
     }
     
-    if ((lst != NULL) && (ret == 0)) {
+    if ((lst != NULL) && (ret == XML_ERR_OK)) {
 	xmlNodePtr cur;
 
 	/*

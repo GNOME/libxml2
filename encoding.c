@@ -2475,7 +2475,6 @@ static int
 UTF8ToISO8859x(unsigned char* out, int *outlen,
               const unsigned char* in, int *inlen,
               unsigned char const *xlattable) {
-    const unsigned char* outend;
     const unsigned char* outstart = out;
     const unsigned char* inend;
     const unsigned char* instart = in;
@@ -2489,7 +2488,6 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
         return(0);
     }
     inend = in + (*inlen);
-    outend = out + (*outlen);
     while (in < inend) {
         unsigned char d = *in++;
         if  (d < 0x80)  {

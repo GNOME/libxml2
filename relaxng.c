@@ -6085,7 +6085,7 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
 	    } else if (cur->depth == -4) {
 		ret = XML_RELAXNG_CONTENT_COMPLEX;
 	    } else {
-		ret = (xmlRelaxNGContentType) cur->depth + 15;
+		ret = (xmlRelaxNGContentType) (cur->depth + 15);
 	    }
 	} else if (cur->type == XML_RELAXNG_ELEMENT) {
 	    /*

@@ -1186,6 +1186,20 @@ xmlCleanupPredefinedEntities
 	xmlTextReaderQuoteChar
 	xmlTextReaderValue
 	xmlTextReaderXmlLang
+	/* Methods of the XmlTextReader */
+	xmlTextReaderClose
+	xmlTextReaderGetAttributeNo
+	xmlTextReaderGetAttribute
+	xmlTextReaderGetAttributeNs
+	xmlTextReaderGetRemainder
+	xmlTextReaderLookupNamespace
+	xmlTextReaderMoveToAttributeNo
+	xmlTextReaderMoveToAttribute
+	xmlTextReaderMoveToAttributeNs
+	xmlTextReaderMoveToFirstAttribute
+	xmlTextReaderMoveToNextAttribute
+	xmlTextReaderMoveToElement
+
 
 
 /* xmlregexp.h 

@@ -1,3 +1,12 @@
+Mon May 28 12:56:29 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* TODO: updated
+	* nanohttp.[ch] : started adding APIs to get the redirected URL
+	  when this occurs (needed for further base computation
+	* tree.h: cleanup
+	* encoding.c: cleanup
+	* SAX.c: minor change around ctxt->loadsubset
+
 Fri May 25 09:36:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am include/Makefile.am: small change to have

@@ -814,7 +814,28 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 void*
 xmlNanoHTTPOpen(const char *URL, char **contentType) {
     if (contentType != NULL) *contentType = NULL;
-    return xmlNanoHTTPMethod(URL, NULL, NULL, contentType, NULL);
+    return(xmlNanoHTTPMethod(URL, NULL, NULL, contentType, NULL));
+}
+
+/**
+ * xmlNanoHTTPOpenRedir:
+ * @URL:  The URL to load
+ * @contentType:  if available the Content-Type information will be
+ *                returned at that location
+ * @redir: if availble the redirected URL will be returned
+ *
+ * This function try to open a connection to the indicated resource
+ * via HTTP GET.
+ *
+ * Returns NULL in case of failure, otherwise a request handler.
+ *     The contentType, if provided must be freed by the caller
+ */
+
+void*
+xmlNanoHTTPOpenRedir(const char *URL, char **contentType, char **redir) {
+    if (contentType != NULL) *contentType = NULL;
+    if (redir != NULL) *redir = NULL;
+    return(xmlNanoHTTPMethodRedir(URL, NULL, NULL, contentType, redir, NULL));
 }
 
 /**
@@ -864,11 +885,12 @@ xmlNanoHTTPClose(void *ctx) {
 }
 
 /**
- * xmlNanoHTTPMethod:
+ * xmlNanoHTTPMethodRedir:
  * @URL:  The URL to load
  * @method:  the HTTP method to use
  * @input:  the input string if any
  * @contentType:  the Content-Type information IN and OUT
+ * @redir:  the redirected URL OUT
  * @headers:  the extra headers
  *
  * This function try to open a connection to the indicated resource
@@ -876,12 +898,12 @@ xmlNanoHTTPClose(void *ctx) {
  * and the input buffer for the request content.
  *
  * Returns NULL in case of failure, otherwise a request handler.
- *     The contentType, if provided must be freed by the caller
+ *     The contentType, or redir, if provided must be freed by the caller
  */
 
 void*
-xmlNanoHTTPMethod(const char *URL, const char *method, const char *input,
-                  char **contentType, const char *headers) {
+xmlNanoHTTPMethodRedir(const char *URL, const char *method, const char *input,
+                  char **contentType, char **redir, const char *headers) {
     xmlNanoHTTPCtxtPtr ctxt;
     char *bp, *p;
     int blen, ilen, ret;
@@ -898,8 +920,6 @@ retry:
 	ctxt = xmlNanoHTTPNewCtxt(URL);
     else {
 	ctxt = xmlNanoHTTPNewCtxt(redirURL);
-	xmlFree(redirURL);
-	redirURL = NULL;
     }
 
     if ((ctxt->protocol == NULL) || (strcmp(ctxt->protocol, "http"))) {
@@ -909,6 +929,7 @@ retry:
     }
     if (ctxt->hostname == NULL) {
         xmlNanoHTTPFreeCtxt(ctxt);
+	if (redirURL != NULL) xmlFree(redirURL);
         return(NULL);
     }
     if (proxy) {
@@ -921,6 +942,7 @@ retry:
     }
     if (ret < 0) {
         xmlNanoHTTPFreeCtxt(ctxt);
+	if (redirURL != NULL) xmlFree(redirURL);
         return(NULL);
     }
     ctxt->fd = ret;
@@ -999,11 +1021,14 @@ retry:
 	while (xmlNanoHTTPRecv(ctxt)) ;
         if (nbRedirects < XML_NANO_HTTP_MAX_REDIR) {
 	    nbRedirects++;
+	    if (redirURL != NULL)
+		xmlFree(redirURL);
 	    redirURL = xmlMemStrdup(ctxt->location);
 	    xmlNanoHTTPFreeCtxt(ctxt);
 	    goto retry;
 	}
 	xmlNanoHTTPFreeCtxt(ctxt);
+	if (redirURL != NULL) xmlFree(redirURL);
 #ifdef DEBUG_HTTP
 	xmlGenericError(xmlGenericErrorContext,
 		"Too many redirects, aborting ...\n");
@@ -1019,6 +1044,15 @@ retry:
 	    *contentType = NULL;
     }
 
+    if ((redir != NULL) && (redirURL != NULL)) {
+	*redir = redirURL;
+    } else {
+	if (redirURL != NULL)
+	    xmlFree(redirURL);
+	if (redir != NULL)
+	    *redir = NULL;
+    }
+
 #ifdef DEBUG_HTTP
     if (ctxt->contentType != NULL)
 	xmlGenericError(xmlGenericErrorContext,
@@ -1031,6 +1065,29 @@ retry:
 #endif
 
     return((void *) ctxt);
+}
+
+/**
+ * xmlNanoHTTPMethod:
+ * @URL:  The URL to load
+ * @method:  the HTTP method to use
+ * @input:  the input string if any
+ * @contentType:  the Content-Type information IN and OUT
+ * @headers:  the extra headers
+ *
+ * This function try to open a connection to the indicated resource
+ * via HTTP using the given @method, adding the given extra headers
+ * and the input buffer for the request content.
+ *
+ * Returns NULL in case of failure, otherwise a request handler.
+ *     The contentType, if provided must be freed by the caller
+ */
+
+void*
+xmlNanoHTTPMethod(const char *URL, const char *method, const char *input,
+                  char **contentType, const char *headers) {
+    return(xmlNanoHTTPMethodRedir(URL, method, input, contentType,
+		                  NULL, headers));
 }
 
 /**

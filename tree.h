@@ -675,8 +675,6 @@ xmlAttrPtr	xmlSetProp		(xmlNodePtr node,
 					 const xmlChar *value);
 xmlChar *	xmlGetProp		(xmlNodePtr node,
 					 const xmlChar *name);
-int		xmlUnsetProp		(xmlNodePtr node,
-					 const xmlChar *name);
 xmlAttrPtr	xmlHasProp		(xmlNodePtr node,
 					 const xmlChar *name);
 xmlAttrPtr	xmlSetNsProp		(xmlNodePtr node,
@@ -686,9 +684,6 @@ xmlAttrPtr	xmlSetNsProp		(xmlNodePtr node,
 xmlChar *	xmlGetNsProp		(xmlNodePtr node,
 					 const xmlChar *name,
 					 const xmlChar *nameSpace);
-int		xmlUnsetNsProp		(xmlNodePtr node,
-					 xmlNsPtr ns,
-					 const xmlChar *name);
 xmlNodePtr	xmlStringGetNodeList	(xmlDocPtr doc,
 					 const xmlChar *value);
 xmlNodePtr	xmlStringLenGetNodeList	(xmlDocPtr doc,
@@ -727,6 +722,11 @@ void		xmlNodeSetBase		(xmlNodePtr cur,
  */
 int		xmlRemoveProp		(xmlAttrPtr attr);
 int		xmlRemoveNode		(xmlNodePtr node); /* TODO */
+int		xmlUnsetProp		(xmlNodePtr node,
+					 const xmlChar *name);
+int		xmlUnsetNsProp		(xmlNodePtr node,
+					 xmlNsPtr ns,
+					 const xmlChar *name);
 
 /*
  * Internal, don't use

@@ -1690,43 +1690,43 @@ xmlFindCharEncodingHandler(const char *name) {
  */
 static int
 xmlIconvWrapper(iconv_t cd,
-	unsigned char *out, int *outlen,
-	const unsigned char *in, int *inlen) {
+    unsigned char *out, int *outlen,
+    const unsigned char *in, int *inlen) {
 
-	size_t icv_inlen = *inlen, icv_outlen = *outlen;
-	const char *icv_in = (const char *) in;
-	char *icv_out = (char *) out;
-	int ret;
+    size_t icv_inlen = *inlen, icv_outlen = *outlen;
+    const char *icv_in = (const char *) in;
+    char *icv_out = (char *) out;
+    int ret;
 
-	ret = iconv(cd, &icv_in, &icv_inlen, &icv_out, &icv_outlen);
-	if (in != NULL) {
-	    *inlen -= icv_inlen;
-	    *outlen -= icv_outlen;
-	} else {
-	    *inlen = 0;
-	    *outlen = 0;
-	}
-	if ((icv_inlen != 0) || (ret == -1)) {
+    ret = iconv(cd, &icv_in, &icv_inlen, &icv_out, &icv_outlen);
+    if (in != NULL) {
+        *inlen -= icv_inlen;
+        *outlen -= icv_outlen;
+    } else {
+        *inlen = 0;
+        *outlen = 0;
+    }
+    if ((icv_inlen != 0) || (ret == -1)) {
 #ifdef EILSEQ
-		if (errno == EILSEQ) {
-			return -2;
-		} else
+        if (errno == EILSEQ) {
+            return -2;
+        } else
 #endif
 #ifdef E2BIG
-		if (errno == E2BIG) {
-			return -1;
-		} else
+        if (errno == E2BIG) {
+            return -1;
+        } else
 #endif
 #ifdef EINVAL
-		if (errno == EINVAL) {
-			return -3;
-		} else
+        if (errno == EINVAL) {
+            return -3;
+        } else
 #endif
-		{
-			return -3;
-		}
-	}
-	return 0;
+        {
+            return -3;
+        }
+    }
+    return 0;
 }
 #endif /* LIBXML_ICONV_ENABLED */
 

@@ -201,7 +201,7 @@ externalSubset(void *ctx, const xmlChar *name,
             name, ExternalID, SystemID);
 #endif
     if (((ExternalID != NULL) || (SystemID != NULL)) &&
-        (((ctxt->validate) || (ctxt->loadsubset)) &&
+        (((ctxt->validate) || (ctxt->loadsubset != 0)) &&
 	 (ctxt->wellFormed && ctxt->myDoc))) {
 	/*
 	 * Try to fetch and parse the external subset.

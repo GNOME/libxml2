@@ -11,8 +11,6 @@ TODO:
 
 - Computation of base when HTTP redirect occurs, might affect HTTP
   interfaces.
-- DOM needs
-  int xmlPruneProp(xmlNodePtr node, xmlAtttrPtr attr);
 - listing all attributes in a node.
 - Correct standalone checking/emitting (hard)
   2.9 Standalone Document Declaration
@@ -107,6 +105,10 @@ EXTENSIONS:
 
 Done:
 =====
+
+- DOM needs
+  int xmlPruneProp(xmlNodePtr node, xmlAtttrPtr attr);
+  => done it's actually xmlRemoveProp xmlUnsetProp xmlUnsetNsProp
 
 - HTML: handling of Script and style data elements, need special code in
   the parser and saving functions (handling of < > " ' ...):

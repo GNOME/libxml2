@@ -1,3 +1,7 @@
+Tue Jan 14 14:41:18 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: fixing bug #103100 with a dummy UTF8ToUTF8 copy
+
 Tue Jan 14 12:40:29 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/libxml.py

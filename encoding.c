@@ -591,6 +591,43 @@ isolat1ToUTF8(unsigned char* out, int *outlen,
     return(0);
 }
 
+/**
+ * UTF8ToUTF8:
+ * @out:  a pointer to an array of bytes to store the result
+ * @outlen:  the length of @out
+ * @inb:  a pointer to an array of UTF-8 chars
+ * @inlenb:  the length of @in in UTF-8 chars
+ *
+ * No op copy operation for UTF8 handling.
+ *
+ * Returns the number of byte written, or -1 by lack of space, or -2
+ *     if the transcoding fails (for *in is not valid utf16 string)
+ *     The value of *inlen after return is the number of octets consumed
+ *     as the return value is positive, else unpredictable.
+ */
+static int
+UTF8ToUTF8(unsigned char* out, int *outlen,
+           const unsigned char* inb, int *inlenb)
+{
+    int len;
+
+    if ((out == NULL) || (inb == NULL) || (outlen == NULL) || (inlenb == NULL))
+	return(-1);
+    if (*outlen > *inlenb) {
+	len = *inlenb;
+    } else {
+	len = *outlen;
+    }
+    if (len < 0)
+	return(-1);
+
+    memcpy(out, inb, len);
+
+    *outlen = len;
+    *inlenb = len;
+    return(0);
+}
+
 
 /**
  * UTF8Toisolat1:
@@ -1579,7 +1616,7 @@ xmlInitCharEncodingHandlers(void) {
 		"xmlInitCharEncodingHandlers : out of memory !\n");
 	return;
     }
-    xmlNewCharEncodingHandler("UTF-8", NULL, NULL);
+    xmlNewCharEncodingHandler("UTF-8", UTF8ToUTF8, UTF8ToUTF8);
     xmlUTF16LEHandler = 
           xmlNewCharEncodingHandler("UTF-16LE", UTF16LEToUTF8, UTF8ToUTF16LE);
     xmlUTF16BEHandler = 

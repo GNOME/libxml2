@@ -787,6 +787,7 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
 {
     int ret;
     int ns_rendered_pos = 0;
+    int parent_is_doc = 0;
 
     if ((ctx == NULL) || (cur == NULL) || (cur->type != XML_ELEMENT_NODE)) {
 #ifdef DEBUG_C14N
@@ -818,8 +819,11 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
         ns_rendered_pos = ctx->ns_rendered->nodeNr;
     }
 
-    if (visible) {
+    if (visible) {	
         if (ctx->parent_is_doc) {
+	    /* save this flag into the stack */
+	    parent_is_doc = ctx->parent_is_doc;
+	    ctx->parent_is_doc = 0;
             ctx->pos = XMLC14N_INSIDE_DOCUMENT_ELEMENT;
         }
         xmlOutputBufferWriteString(ctx->buf, "<");
@@ -874,8 +878,10 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
         }
         xmlOutputBufferWriteString(ctx->buf, (const char *) cur->name);
         xmlOutputBufferWriteString(ctx->buf, ">");
-        if (ctx->parent_is_doc) {
-            ctx->pos = XMLC14N_AFTER_DOCUMENT_ELEMENT;
+        if (parent_is_doc) {
+	    /* restore this flag from the stack for next node */
+            ctx->parent_is_doc = parent_is_doc;
+	    ctx->pos = XMLC14N_AFTER_DOCUMENT_ELEMENT;
         }
     }
 

@@ -1,3 +1,7 @@
+Fri Mar 15 10:41:50 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* c14n.c: another patch from Aleksey Sanin
+
 Fri Mar 15 08:55:55 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* c14n.c: applied patch from Aleksey Sanin fixing a problem in the

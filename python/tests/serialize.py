@@ -24,7 +24,7 @@ if str != """<?xml version="1.0" encoding="iso-8859-1"?>
 str = doc.serialize(format=1)
 if str != """<?xml version="1.0"?>
 <root>
-<foo>hello</foo>
+  <foo>hello</foo>
 </root>
 """:
    print "error serializing XML document 3"
@@ -32,7 +32,7 @@ if str != """<?xml version="1.0"?>
 str = doc.serialize("iso-8859-1", 1)
 if str != """<?xml version="1.0" encoding="iso-8859-1"?>
 <root>
-<foo>hello</foo>
+  <foo>hello</foo>
 </root>
 """:
    print "error serializing XML document 4"
@@ -52,13 +52,13 @@ if str != """<root><foo>hello</foo></root>""":
    sys.exit(1)
 str = root.serialize(format=1)
 if str != """<root>
-<foo>hello</foo>
+  <foo>hello</foo>
 </root>""":
    print "error serializing XML root 3"
    sys.exit(1)
 str = root.serialize("iso-8859-1", 1)
 if str != """<root>
-<foo>hello</foo>
+  <foo>hello</foo>
 </root>""":
    print "error serializing XML root 4"
    sys.exit(1)

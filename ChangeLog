@@ -1,3 +1,8 @@
+Mon Aug 12 14:11:59 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/tests/serialize.py: fixed the test results, indenting
+	  behaviour changed slightly
+
 Thu Aug  8 11:00:26 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* win32/dsp/libxml2.def.src win32/libxml2.def.src: added

@@ -9,7 +9,7 @@ DOC_MAIN_SGML_FILE=gnome-xml.sgml
 # The directory containing the source code (if it contains documentation).
 DOC_SOURCE_DIR=..
 
-HTML_DIR=$(prefix)/doc
+HTML_DIR=@HTML_DIR@
 
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)/html
 

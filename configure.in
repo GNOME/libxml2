@@ -80,7 +80,7 @@ AC_CHECK_HEADERS(netdb.h sys/time.h sys/select.h sys/mman.h)
 
 dnl Specific dir for HTML output ?
 if test "x$with_html_dir" = "x" ; then
-  HTML_DIR='${datadir}/gtk-doc/html'
+  HTML_DIR='$(prefix)/doc'
 else
   HTML_DIR=$with_html_dir
 fi

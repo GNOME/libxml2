@@ -1,3 +1,9 @@
+Wed Mar 14 20:13:54 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/Makefile.am configure.in: yearke@eng.buffalo.edu suggested
+	  a fix for --with-html-dir= configure support. I hope it won't
+	  break rpm generation
+
 Wed Mar 14 17:28:49 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlIO.c: one function comment cleanup.

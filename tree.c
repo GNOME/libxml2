@@ -37,8 +37,10 @@
 #include <libxml/valid.h>
 #include <libxml/xmlerror.h>
 
-static xmlChar xmlStringText[] = { 't', 'e', 'x', 't', 0 };
-static xmlChar xmlStringComment[] = { 'c', 'o', 'm', 'm', 'e', 'n', 't', 0 };
+xmlChar xmlStringText[] = { 't', 'e', 'x', 't', 0 };
+xmlChar xmlStringTextNoenc[] =
+              { 't', 'e', 'x', 't', 'n', 'o', 'e', 'n', 'c', 0 };
+xmlChar xmlStringComment[] = { 'c', 'o', 'm', 'm', 'e', 'n', 't', 0 };
 int oldXMLWDcompatibility = 0;
 int xmlIndentTreeOutput = 0;
 xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
@@ -1347,7 +1349,7 @@ xmlNewText(const xmlChar *content) {
     memset(cur, 0, sizeof(xmlNode));
     cur->type = XML_TEXT_NODE;
 
-    cur->name = xmlStrdup(xmlStringText);
+    cur->name = xmlStringText;
     if (content != NULL) {
 #ifndef XML_USE_BUFFER_CONTENT
 	cur->content = xmlStrdup(content);
@@ -1566,7 +1568,7 @@ xmlNewTextLen(const xmlChar *content, int len) {
     memset(cur, 0, sizeof(xmlNode));
     cur->type = XML_TEXT_NODE;
 
-    cur->name = xmlStrdup(xmlStringText);
+    cur->name = xmlStringText;
     if (content != NULL) {
 #ifndef XML_USE_BUFFER_CONTENT
 	cur->content = xmlStrndup(content, len);
@@ -1622,7 +1624,7 @@ xmlNewComment(const xmlChar *content) {
     memset(cur, 0, sizeof(xmlNode));
     cur->type = XML_COMMENT_NODE;
 
-    cur->name = xmlStrdup(xmlStringComment);
+    cur->name = xmlStringComment;
     if (content != NULL) {
 #ifndef XML_USE_BUFFER_CONTENT
 	cur->content = xmlStrdup(content);
@@ -2286,7 +2288,11 @@ xmlFreeNode(xmlNodePtr cur) {
 #else
     	if (cur->content != NULL) xmlBufferFree(cur->content);
 #endif
-    if (cur->name != NULL) xmlFree((char *) cur->name);
+    if ((cur->name != NULL) &&
+	(cur->name != xmlStringText) &&
+	(cur->name != xmlStringTextNoenc) &&
+	(cur->name != xmlStringComment))
+	xmlFree((char *) cur->name);
     if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
     memset(cur, -1, sizeof(xmlNode));
     xmlFree(cur);
@@ -5006,17 +5012,29 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     }
     if (cur->type == XML_TEXT_NODE) {
 	if (cur->content != NULL) {
-            xmlChar *buffer;
+	    if ((cur->name == xmlStringText) ||
+		(cur->name != xmlStringTextNoenc)) {
+		xmlChar *buffer;
 
 #ifndef XML_USE_BUFFER_CONTENT
-            buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+		buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 #else
-	    buffer = xmlEncodeEntitiesReentrant(doc, 
-					    xmlBufferContent(cur->content));
+		buffer = xmlEncodeEntitiesReentrant(doc, 
+						xmlBufferContent(cur->content));
 #endif
-	    if (buffer != NULL) {
-		xmlBufferWriteCHAR(buf, buffer);
-		xmlFree(buffer);
+		if (buffer != NULL) {
+		    xmlBufferWriteCHAR(buf, buffer);
+		    xmlFree(buffer);
+		}
+	    } else {
+		/*
+		 * Disable escaping, needed for XSLT
+		 */
+#ifndef XML_USE_BUFFER_CONTENT
+		xmlBufferWriteCHAR(buf, cur->content);
+#else
+		xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
+#endif
 	    }
 	}
 	return;

@@ -4326,7 +4326,7 @@ xmlXPathParseQName(xmlXPathParserContextPtr ctxt, xmlChar **prefix) {
 
 /**
  * xmlXPathParseName:
- * @ctxt:  the XPointer Parser context
+ * @ctxt:  the XPath Parser context
  *
  * parse an XML name
  *
@@ -4863,7 +4863,8 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 		    lc = 1;
 		    break;
 		} else {
-		    XP_ERROR(XPATH_EXPR_ERROR);
+		    lc = 1;
+		    break;
 		}
 		len++;
 	    }

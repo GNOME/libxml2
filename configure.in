@@ -222,6 +222,21 @@ LDFLAGS=${_ldflags}
 AC_SUBST(RDL_LIBS)
 
 dnl
+dnl specific tests to setup DV's devel environment with debug etc ...
+dnl
+if test "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ; then
+    if test "${with_mem_debug}" = "" ; then
+        with_mem_debug="yes"
+    fi
+dnl    if test "${with_docbook}" = "" ; then
+dnl        with_docbook="yes"
+dnl    fi
+    if test "${with_xptr}" = "" ; then
+        with_xptr="yes"
+    fi
+    CFLAGS="-Wall -g -pedantic"
+fi
+dnl
 dnl Aloow to disable various pieces
 dnl
 

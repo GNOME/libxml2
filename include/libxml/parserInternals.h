@@ -112,6 +112,9 @@ LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlDoValidityCheckingDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlPedanticParserDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlKeepBlanksDefaultValue;
+LIBXML_DLL_IMPORT extern xmlChar xmlStringText[];
+LIBXML_DLL_IMPORT extern xmlChar xmlStringTextNoenc[];
+LIBXML_DLL_IMPORT extern xmlChar xmlStringComment[];
 
 /*
  * Function to finish teh work of the macros where needed

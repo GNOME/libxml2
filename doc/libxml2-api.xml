@@ -837,27 +837,6 @@
      <exports symbol='WITH_TRIO'/>
      <exports symbol='xmlCheckVersion'/>
     </file>
-    <file name='threads'>
-     <exports symbol='xmlCleanupThreads'/>
-     <exports symbol='xmlFreeMutex'/>
-     <exports symbol='xmlFreeRMutex'/>
-     <exports symbol='xmlGetGlobalState'/>
-     <exports symbol='xmlGetThreadId'/>
-     <exports symbol='xmlInitThreads'/>
-     <exports symbol='xmlIsMainThread'/>
-     <exports symbol='xmlLockLibrary'/>
-     <exports symbol='xmlMutex'/>
-     <exports symbol='xmlMutexLock'/>
-     <exports symbol='xmlMutexPtr'/>
-     <exports symbol='xmlMutexUnlock'/>
-     <exports symbol='xmlNewMutex'/>
-     <exports symbol='xmlNewRMutex'/>
-     <exports symbol='xmlRMutex'/>
-     <exports symbol='xmlRMutexLock'/>
-     <exports symbol='xmlRMutexPtr'/>
-     <exports symbol='xmlRMutexUnlock'/>
-     <exports symbol='xmlUnlockLibrary'/>
-    </file>
     <file name='valid'>
      <exports symbol='_xmlValidCtxt'/>
      <exports symbol='xmlAddAttributeDecl'/>
@@ -993,15 +972,142 @@
      <exports symbol='htmlStatus'/>
      <exports symbol='htmlTagLookup'/>
     </file>
-    <file name='testOOMlib'>
-     <exports symbol='TEST_OOM_LIB_H'/>
-     <exports symbol='TestMemoryFunction'/>
-     <exports symbol='test_free'/>
-     <exports symbol='test_get_malloc_blocks_outstanding'/>
-     <exports symbol='test_malloc'/>
-     <exports symbol='test_oom_handling'/>
-     <exports symbol='test_realloc'/>
-     <exports symbol='test_strdup'/>
+    <file name='parser'>
+     <exports symbol='XML_COMPLETE_ATTRS'/>
+     <exports symbol='XML_DEFAULT_VERSION'/>
+     <exports symbol='XML_DETECT_IDS'/>
+     <exports symbol='XML_PARSER_ATTRIBUTE_VALUE'/>
+     <exports symbol='XML_PARSER_CDATA_SECTION'/>
+     <exports symbol='XML_PARSER_COMMENT'/>
+     <exports symbol='XML_PARSER_CONTENT'/>
+     <exports symbol='XML_PARSER_DTD'/>
+     <exports symbol='XML_PARSER_END_TAG'/>
+     <exports symbol='XML_PARSER_ENTITY_DECL'/>
+     <exports symbol='XML_PARSER_ENTITY_VALUE'/>
+     <exports symbol='XML_PARSER_EOF'/>
+     <exports symbol='XML_PARSER_EPILOG'/>
+     <exports symbol='XML_PARSER_IGNORE'/>
+     <exports symbol='XML_PARSER_MISC'/>
+     <exports symbol='XML_PARSER_PI'/>
+     <exports symbol='XML_PARSER_PROLOG'/>
+     <exports symbol='XML_PARSER_PUBLIC_LITERAL'/>
+     <exports symbol='XML_PARSER_START'/>
+     <exports symbol='XML_PARSER_START_TAG'/>
+     <exports symbol='XML_PARSER_SYSTEM_LITERAL'/>
+     <exports symbol='XML_SKIP_IDS'/>
+     <exports symbol='_xmlParserCtxt'/>
+     <exports symbol='_xmlParserInput'/>
+     <exports symbol='_xmlParserNodeInfo'/>
+     <exports symbol='_xmlParserNodeInfoSeq'/>
+     <exports symbol='_xmlSAXHandler'/>
+     <exports symbol='_xmlSAXLocator'/>
+     <exports symbol='attributeDeclSAXFunc'/>
+     <exports symbol='attributeSAXFunc'/>
+     <exports symbol='cdataBlockSAXFunc'/>
+     <exports symbol='charactersSAXFunc'/>
+     <exports symbol='commentSAXFunc'/>
+     <exports symbol='elementDeclSAXFunc'/>
+     <exports symbol='endDocumentSAXFunc'/>
+     <exports symbol='endElementSAXFunc'/>
+     <exports symbol='entityDeclSAXFunc'/>
+     <exports symbol='errorSAXFunc'/>
+     <exports symbol='externalSubsetSAXFunc'/>
+     <exports symbol='fatalErrorSAXFunc'/>
+     <exports symbol='getEntitySAXFunc'/>
+     <exports symbol='getParameterEntitySAXFunc'/>
+     <exports symbol='hasExternalSubsetSAXFunc'/>
+     <exports symbol='hasInternalSubsetSAXFunc'/>
+     <exports symbol='ignorableWhitespaceSAXFunc'/>
+     <exports symbol='internalSubsetSAXFunc'/>
+     <exports symbol='isStandaloneSAXFunc'/>
+     <exports symbol='notationDeclSAXFunc'/>
+     <exports symbol='processingInstructionSAXFunc'/>
+     <exports symbol='referenceSAXFunc'/>
+     <exports symbol='resolveEntitySAXFunc'/>
+     <exports symbol='setDocumentLocatorSAXFunc'/>
+     <exports symbol='startDocumentSAXFunc'/>
+     <exports symbol='startElementSAXFunc'/>
+     <exports symbol='unparsedEntityDeclSAXFunc'/>
+     <exports symbol='warningSAXFunc'/>
+     <exports symbol='xmlCharStrdup'/>
+     <exports symbol='xmlCharStrndup'/>
+     <exports symbol='xmlCleanupParser'/>
+     <exports symbol='xmlClearNodeInfoSeq'/>
+     <exports symbol='xmlClearParserCtxt'/>
+     <exports symbol='xmlCreateDocParserCtxt'/>
+     <exports symbol='xmlCreateIOParserCtxt'/>
+     <exports symbol='xmlCreatePushParserCtxt'/>
+     <exports symbol='xmlExternalEntityLoader'/>
+     <exports symbol='xmlFreeParserCtxt'/>
+     <exports symbol='xmlGetExternalEntityLoader'/>
+     <exports symbol='xmlGetFeature'/>
+     <exports symbol='xmlGetFeaturesList'/>
+     <exports symbol='xmlGetWarningsDefaultValue'/>
+     <exports symbol='xmlIOParseDTD'/>
+     <exports symbol='xmlInitNodeInfoSeq'/>
+     <exports symbol='xmlInitParser'/>
+     <exports symbol='xmlInitParserCtxt'/>
+     <exports symbol='xmlKeepBlanksDefault'/>
+     <exports symbol='xmlLineNumbersDefault'/>
+     <exports symbol='xmlLoadExternalEntity'/>
+     <exports symbol='xmlNewIOInputStream'/>
+     <exports symbol='xmlParseBalancedChunkMemory'/>
+     <exports symbol='xmlParseBalancedChunkMemoryRecover'/>
+     <exports symbol='xmlParseChunk'/>
+     <exports symbol='xmlParseCtxtExternalEntity'/>
+     <exports symbol='xmlParseDTD'/>
+     <exports symbol='xmlParseDoc'/>
+     <exports symbol='xmlParseDocument'/>
+     <exports symbol='xmlParseEntity'/>
+     <exports symbol='xmlParseExtParsedEnt'/>
+     <exports symbol='xmlParseExternalEntity'/>
+     <exports symbol='xmlParseFile'/>
+     <exports symbol='xmlParseMemory'/>
+     <exports symbol='xmlParserAddNodeInfo'/>
+     <exports symbol='xmlParserFindNodeInfo'/>
+     <exports symbol='xmlParserFindNodeInfoIndex'/>
+     <exports symbol='xmlParserInputDeallocate'/>
+     <exports symbol='xmlParserInputGrow'/>
+     <exports symbol='xmlParserInputRead'/>
+     <exports symbol='xmlParserInputState'/>
+     <exports symbol='xmlParserNodeInfo'/>
+     <exports symbol='xmlParserNodeInfoPtr'/>
+     <exports symbol='xmlParserNodeInfoSeq'/>
+     <exports symbol='xmlParserNodeInfoSeqPtr'/>
+     <exports symbol='xmlParserVersion'/>
+     <exports symbol='xmlPedanticParserDefault'/>
+     <exports symbol='xmlRecoverDoc'/>
+     <exports symbol='xmlRecoverFile'/>
+     <exports symbol='xmlRecoverMemory'/>
+     <exports symbol='xmlSAXParseDTD'/>
+     <exports symbol='xmlSAXParseDoc'/>
+     <exports symbol='xmlSAXParseEntity'/>
+     <exports symbol='xmlSAXParseFile'/>
+     <exports symbol='xmlSAXParseFileWithData'/>
+     <exports symbol='xmlSAXParseMemory'/>
+     <exports symbol='xmlSAXParseMemoryWithData'/>
+     <exports symbol='xmlSAXUserParseFile'/>
+     <exports symbol='xmlSAXUserParseMemory'/>
+     <exports symbol='xmlSetExternalEntityLoader'/>
+     <exports symbol='xmlSetFeature'/>
+     <exports symbol='xmlSetupParserForBuffer'/>
+     <exports symbol='xmlStopParser'/>
+     <exports symbol='xmlStrEqual'/>
+     <exports symbol='xmlStrcasecmp'/>
+     <exports symbol='xmlStrcasestr'/>
+     <exports symbol='xmlStrcat'/>
+     <exports symbol='xmlStrchr'/>
+     <exports symbol='xmlStrcmp'/>
+     <exports symbol='xmlStrdup'/>
+     <exports symbol='xmlStrlen'/>
+     <exports symbol='xmlStrncasecmp'/>
+     <exports symbol='xmlStrncat'/>
+     <exports symbol='xmlStrncmp'/>
+     <exports symbol='xmlStrndup'/>
+     <exports symbol='xmlStrstr'/>
+     <exports symbol='xmlStrsub'/>
+     <exports symbol='xmlSubstituteEntitiesDefault'/>
+     <exports symbol='xmlSubstituteEntitiesDefaultValue'/>
     </file>
     <file name='xmlreader'>
      <exports symbol='XML_PARSER_DEFAULTATTRS'/>
@@ -1204,142 +1310,26 @@
      <exports symbol='xmlTreeIndentString'/>
      <exports symbol='xmlTreeIndentString'/>
     </file>
-    <file name='parser'>
-     <exports symbol='XML_COMPLETE_ATTRS'/>
-     <exports symbol='XML_DEFAULT_VERSION'/>
-     <exports symbol='XML_DETECT_IDS'/>
-     <exports symbol='XML_PARSER_ATTRIBUTE_VALUE'/>
-     <exports symbol='XML_PARSER_CDATA_SECTION'/>
-     <exports symbol='XML_PARSER_COMMENT'/>
-     <exports symbol='XML_PARSER_CONTENT'/>
-     <exports symbol='XML_PARSER_DTD'/>
-     <exports symbol='XML_PARSER_END_TAG'/>
-     <exports symbol='XML_PARSER_ENTITY_DECL'/>
-     <exports symbol='XML_PARSER_ENTITY_VALUE'/>
-     <exports symbol='XML_PARSER_EOF'/>
-     <exports symbol='XML_PARSER_EPILOG'/>
-     <exports symbol='XML_PARSER_IGNORE'/>
-     <exports symbol='XML_PARSER_MISC'/>
-     <exports symbol='XML_PARSER_PI'/>
-     <exports symbol='XML_PARSER_PROLOG'/>
-     <exports symbol='XML_PARSER_PUBLIC_LITERAL'/>
-     <exports symbol='XML_PARSER_START'/>
-     <exports symbol='XML_PARSER_START_TAG'/>
-     <exports symbol='XML_PARSER_SYSTEM_LITERAL'/>
-     <exports symbol='XML_SKIP_IDS'/>
-     <exports symbol='_xmlParserCtxt'/>
-     <exports symbol='_xmlParserInput'/>
-     <exports symbol='_xmlParserNodeInfo'/>
-     <exports symbol='_xmlParserNodeInfoSeq'/>
-     <exports symbol='_xmlSAXHandler'/>
-     <exports symbol='_xmlSAXLocator'/>
-     <exports symbol='attributeDeclSAXFunc'/>
-     <exports symbol='attributeSAXFunc'/>
-     <exports symbol='cdataBlockSAXFunc'/>
-     <exports symbol='charactersSAXFunc'/>
-     <exports symbol='commentSAXFunc'/>
-     <exports symbol='elementDeclSAXFunc'/>
-     <exports symbol='endDocumentSAXFunc'/>
-     <exports symbol='endElementSAXFunc'/>
-     <exports symbol='entityDeclSAXFunc'/>
-     <exports symbol='errorSAXFunc'/>
-     <exports symbol='externalSubsetSAXFunc'/>
-     <exports symbol='fatalErrorSAXFunc'/>
-     <exports symbol='getEntitySAXFunc'/>
-     <exports symbol='getParameterEntitySAXFunc'/>
-     <exports symbol='hasExternalSubsetSAXFunc'/>
-     <exports symbol='hasInternalSubsetSAXFunc'/>
-     <exports symbol='ignorableWhitespaceSAXFunc'/>
-     <exports symbol='internalSubsetSAXFunc'/>
-     <exports symbol='isStandaloneSAXFunc'/>
-     <exports symbol='notationDeclSAXFunc'/>
-     <exports symbol='processingInstructionSAXFunc'/>
-     <exports symbol='referenceSAXFunc'/>
-     <exports symbol='resolveEntitySAXFunc'/>
-     <exports symbol='setDocumentLocatorSAXFunc'/>
-     <exports symbol='startDocumentSAXFunc'/>
-     <exports symbol='startElementSAXFunc'/>
-     <exports symbol='unparsedEntityDeclSAXFunc'/>
-     <exports symbol='warningSAXFunc'/>
-     <exports symbol='xmlCharStrdup'/>
-     <exports symbol='xmlCharStrndup'/>
-     <exports symbol='xmlCleanupParser'/>
-     <exports symbol='xmlClearNodeInfoSeq'/>
-     <exports symbol='xmlClearParserCtxt'/>
-     <exports symbol='xmlCreateDocParserCtxt'/>
-     <exports symbol='xmlCreateIOParserCtxt'/>
-     <exports symbol='xmlCreatePushParserCtxt'/>
-     <exports symbol='xmlExternalEntityLoader'/>
-     <exports symbol='xmlFreeParserCtxt'/>
-     <exports symbol='xmlGetExternalEntityLoader'/>
-     <exports symbol='xmlGetFeature'/>
-     <exports symbol='xmlGetFeaturesList'/>
-     <exports symbol='xmlGetWarningsDefaultValue'/>
-     <exports symbol='xmlIOParseDTD'/>
-     <exports symbol='xmlInitNodeInfoSeq'/>
-     <exports symbol='xmlInitParser'/>
-     <exports symbol='xmlInitParserCtxt'/>
-     <exports symbol='xmlKeepBlanksDefault'/>
-     <exports symbol='xmlLineNumbersDefault'/>
-     <exports symbol='xmlLoadExternalEntity'/>
-     <exports symbol='xmlNewIOInputStream'/>
-     <exports symbol='xmlParseBalancedChunkMemory'/>
-     <exports symbol='xmlParseBalancedChunkMemoryRecover'/>
-     <exports symbol='xmlParseChunk'/>
-     <exports symbol='xmlParseCtxtExternalEntity'/>
-     <exports symbol='xmlParseDTD'/>
-     <exports symbol='xmlParseDoc'/>
-     <exports symbol='xmlParseDocument'/>
-     <exports symbol='xmlParseEntity'/>
-     <exports symbol='xmlParseExtParsedEnt'/>
-     <exports symbol='xmlParseExternalEntity'/>
-     <exports symbol='xmlParseFile'/>
-     <exports symbol='xmlParseMemory'/>
-     <exports symbol='xmlParserAddNodeInfo'/>
-     <exports symbol='xmlParserFindNodeInfo'/>
-     <exports symbol='xmlParserFindNodeInfoIndex'/>
-     <exports symbol='xmlParserInputDeallocate'/>
-     <exports symbol='xmlParserInputGrow'/>
-     <exports symbol='xmlParserInputRead'/>
-     <exports symbol='xmlParserInputState'/>
-     <exports symbol='xmlParserNodeInfo'/>
-     <exports symbol='xmlParserNodeInfoPtr'/>
-     <exports symbol='xmlParserNodeInfoSeq'/>
-     <exports symbol='xmlParserNodeInfoSeqPtr'/>
-     <exports symbol='xmlParserVersion'/>
-     <exports symbol='xmlPedanticParserDefault'/>
-     <exports symbol='xmlRecoverDoc'/>
-     <exports symbol='xmlRecoverFile'/>
-     <exports symbol='xmlRecoverMemory'/>
-     <exports symbol='xmlSAXParseDTD'/>
-     <exports symbol='xmlSAXParseDoc'/>
-     <exports symbol='xmlSAXParseEntity'/>
-     <exports symbol='xmlSAXParseFile'/>
-     <exports symbol='xmlSAXParseFileWithData'/>
-     <exports symbol='xmlSAXParseMemory'/>
-     <exports symbol='xmlSAXParseMemoryWithData'/>
-     <exports symbol='xmlSAXUserParseFile'/>
-     <exports symbol='xmlSAXUserParseMemory'/>
-     <exports symbol='xmlSetExternalEntityLoader'/>
-     <exports symbol='xmlSetFeature'/>
-     <exports symbol='xmlSetupParserForBuffer'/>
-     <exports symbol='xmlStopParser'/>
-     <exports symbol='xmlStrEqual'/>
-     <exports symbol='xmlStrcasecmp'/>
-     <exports symbol='xmlStrcasestr'/>
-     <exports symbol='xmlStrcat'/>
-     <exports symbol='xmlStrchr'/>
-     <exports symbol='xmlStrcmp'/>
-     <exports symbol='xmlStrdup'/>
-     <exports symbol='xmlStrlen'/>
-     <exports symbol='xmlStrncasecmp'/>
-     <exports symbol='xmlStrncat'/>
-     <exports symbol='xmlStrncmp'/>
-     <exports symbol='xmlStrndup'/>
-     <exports symbol='xmlStrstr'/>
-     <exports symbol='xmlStrsub'/>
-     <exports symbol='xmlSubstituteEntitiesDefault'/>
-     <exports symbol='xmlSubstituteEntitiesDefaultValue'/>
+    <file name='threads'>
+     <exports symbol='xmlCleanupThreads'/>
+     <exports symbol='xmlFreeMutex'/>
+     <exports symbol='xmlFreeRMutex'/>
+     <exports symbol='xmlGetGlobalState'/>
+     <exports symbol='xmlGetThreadId'/>
+     <exports symbol='xmlInitThreads'/>
+     <exports symbol='xmlIsMainThread'/>
+     <exports symbol='xmlLockLibrary'/>
+     <exports symbol='xmlMutex'/>
+     <exports symbol='xmlMutexLock'/>
+     <exports symbol='xmlMutexPtr'/>
+     <exports symbol='xmlMutexUnlock'/>
+     <exports symbol='xmlNewMutex'/>
+     <exports symbol='xmlNewRMutex'/>
+     <exports symbol='xmlRMutex'/>
+     <exports symbol='xmlRMutexLock'/>
+     <exports symbol='xmlRMutexPtr'/>
+     <exports symbol='xmlRMutexUnlock'/>
+     <exports symbol='xmlUnlockLibrary'/>
     </file>
     <file name='hash'>
      <exports symbol='xmlHashAddEntry'/>
@@ -2154,8 +2144,6 @@
     <macro name='SKIP_EOL' file='parserInternals'>
       <info>Skips the end of line chars.</info>
       <arg name='p' info='and UTF8 string pointer'/>
-    </macro>
-    <macro name='TEST_OOM_LIB_H' file='testOOMlib'>
     </macro>
     <macro name='WITHOUT_TRIO' file='xmlversion'>
       <info>defined if the trio support should not be configured in</info>
@@ -3272,7 +3260,7 @@ actually an xmlCharEncoding'/>
     <variable name='xmlFree' file='globals' type='xmlFreeFunc'/>
     <variable name='xmlGenericError' file='globals' type='xmlGenericErrorFunc'/>
     <variable name='xmlGenericErrorContext' file='globals' type='void *'/>
-    <variable name='xmlGetWarningsDefaultValue' file='globals' type='int'/>
+    <variable name='xmlGetWarningsDefaultValue' file='parser' type='int'/>
     <variable name='xmlIndentTreeOutput' file='globals' type='int'/>
     <variable name='xmlKeepBlanksDefaultValue' file='globals' type='int'/>
     <variable name='xmlLineNumbersDefaultValue' file='globals' type='int'/>
@@ -3281,7 +3269,7 @@ actually an xmlCharEncoding'/>
     <variable name='xmlMallocAtomic' file='globals' type='xmlMallocFunc'/>
     <variable name='xmlMemStrdup' file='globals' type='xmlStrdupFunc'/>
     <variable name='xmlParserDebugEntities' file='globals' type='int'/>
-    <variable name='xmlParserVersion' file='globals' type='const char *'/>
+    <variable name='xmlParserVersion' file='parser' type='const char *'/>
     <variable name='xmlPedanticParserDefaultValue' file='globals' type='int'/>
     <variable name='xmlRealloc' file='globals' type='xmlReallocFunc'/>
     <variable name='xmlRegisterNodeDefaultValue' file='globals' type='xmlRegisterNodeFunc'/>
@@ -3289,16 +3277,11 @@ actually an xmlCharEncoding'/>
     <variable name='xmlStringComment' file='parserInternals' type='const xmlCharxmlStringComment[]'/>
     <variable name='xmlStringText' file='parserInternals' type='const xmlCharxmlStringText[]'/>
     <variable name='xmlStringTextNoenc' file='parserInternals' type='const xmlCharxmlStringTextNoenc[]'/>
-    <variable name='xmlSubstituteEntitiesDefaultValue' file='globals' type='int'/>
+    <variable name='xmlSubstituteEntitiesDefaultValue' file='parser' type='int'/>
     <variable name='xmlTreeIndentString' file='globals' type='const char *'/>
     <variable name='xmlXPathNAN' file='xpath' type='double'/>
     <variable name='xmlXPathNINF' file='xpath' type='double'/>
     <variable name='xmlXPathPINF' file='xpath' type='double'/>
-    <functype name='TestMemoryFunction' file='testOOMlib'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='data' type='void *' info=''/>
-    </functype>
     <function name='UTF8ToHtml' file='HTMLparser'>
       <info>Take a block of UTF-8 chars in and try to convert it to an ASCII plus HTML entities block of chars out.</info>
       <return type='int' info='0 if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed as the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.'/>
@@ -4147,37 +4130,6 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='The element name, including namespace prefix'/>
       <arg name='atts' type='const xmlChar **' info='An array of name/value attributes pairs, NULL terminated'/>
     </functype>
-    <function name='test_free' file='testOOMlib'>
-      <info></info>
-      <return type='void'/>
-      <arg name='memory' type='void *' info=''/>
-    </function>
-    <function name='test_get_malloc_blocks_outstanding' file='testOOMlib'>
-      <info></info>
-      <return type='int' info=''/>
-    </function>
-    <function name='test_malloc' file='testOOMlib'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='bytes' type='size_t' info=''/>
-    </function>
-    <function name='test_oom_handling' file='testOOMlib'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='func' type='TestMemoryFunction' info=''/>
-      <arg name='data' type='void *' info=''/>
-    </function>
-    <function name='test_realloc' file='testOOMlib'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='memory' type='void *' info=''/>
-      <arg name='bytes' type='size_t' info=''/>
-    </function>
-    <function name='test_strdup' file='testOOMlib'>
-      <info></info>
-      <return type='char *' info=''/>
-      <arg name='str' type='const char *' info=''/>
-    </function>
     <function name='unparsedEntityDecl' file='SAX'>
       <info>What to do when an unparsed entity declaration is parsed</info>
       <return type='void'/>

@@ -8,18 +8,26 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.5.6</version>
-    <last-release> Apr 1 2003</last-release>
+    <version>2.5.7</version>
+    <last-release> Apr 25 2003</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Fixed W3C XML Schemas datatype, should be compliant now except for
-    binHex and base64 which are not supported yet.
-   - bug fixes: non-ASCII IDs, HTML output, XInclude on large docs and
-    XInclude entities handling, encoding detection on external subsets, XML
-    Schemas bugs and memory leaks, HTML parser (James Bursa)
-   - portability: python/trio (Albert Chin), Sun compiler warnings
-   - documentation: added --relaxng option to xmllint man page (John)
-   - improved error reporting: xml:space, start/end tag mismatches, Relax NG
-    errors
+    <changes>   - Relax-NG: Compiling to regexp and streaming validation on top of the
+    xmlReader interface, added to xmllint --stream
+   - xmlReader: Expand(), Next() and DOM access glue, bug fixes
+   - Support for large files: RGN validated a 4.5GB instance
+   - Thread support is now configured in by default
+   - Fixes: update of the Trio code (Bjorn), WXS Date and Duration fixes
+    (Charles Bozeman), DTD and namespaces (Brent Hendricks), HTML push parser
+    and zero bytes handling, some missing Windows file path conversions,
+    behaviour of the parser and validator in the presence of &quot;out of memory&quot;
+    error conditions 
+   - extended the API to be able to plug a garbage collecting memory
+    allocator, added xmlMallocAtomic() and modified the allocations
+    accordingly.
+   - Performances: removed excessive malloc() calls, speedup of the push and
+    xmlReader interfaces, removed excessive thread locking
+   - Documentation: man page (John Fleck), xmlReader documentation
+   - Python: adding binding for xmlCatalogAddLocal (Brent M Hendricks)
 
 </changes>
   </product>

@@ -22,9 +22,9 @@ ignored_files = {
   "acconfig.h": "generated portability layer",
   "config.h": "generated portability layer",
   "libxml.h": "internal only",
-  "testOOM.c": "out of memory tester"
-  "testOOMlib.h": "out of memory tester"
-  "testOOMlib.c": "out of memory tester"
+  "testOOM.c": "out of memory tester",
+  "testOOMlib.h": "out of memory tester",
+  "testOOMlib.c": "out of memory tester",
 }
 
 ignored_words = {

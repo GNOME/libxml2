@@ -1,3 +1,13 @@
+Sun Feb  3 17:50:46 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/TODO python/generator.py python/libxml2-python-api.xml
+	  python/libxml2class.txt: more accessor classes for the parser
+	  context, allow to switch on and check validity
+	* python/tests/Makefile.am python/tests/error.py
+	  python/tests/invalid.xml python/tests/valid.xml
+	  python/tests/validate.py: attded more test and and added error.py
+	  which I forgot to commit in the last step
+
 Sun Feb  3 16:03:55 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am python/types.c: cleanup

@@ -41,5 +41,7 @@ Done:
   found.
 - error redirections and preformat
 - handling of node.content
+- access to xmlParserCtxt and push mode
+   - needed for SAX too
 
 Daniel Veillard

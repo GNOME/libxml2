@@ -333,6 +333,13 @@ Class xmlElement(xmlNode)
 Class parserCtxt()
     # accessors
     doc()
+    isValid()
+    lineNumbers()
+    loadSubset()
+    pedantic()
+    replaceEntities()
+    validate()
+    wellFormed()
 
     # functions from module parser
     clearParserCtxt()

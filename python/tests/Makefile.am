@@ -6,10 +6,13 @@ TESTS=		\
     xpathext.py	\
     push.py	\
     error.py	\
+    validate.py	\
     xpath.py
 
 XMLS=		\
-    tst.xml
+    tst.xml	\
+    valid.xml	\
+    invalid.xml
 
 EXTRA_DIST = $(TESTS) $(XMLS)
 

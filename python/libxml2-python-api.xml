@@ -31,7 +31,47 @@
     <function name='xmlParserGetDoc' file='python_accessor'>
       <info>Get the document tree from a parser context.</info>
       <return type='xmlDocPtr' info="the document tree" field="myDoc"/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='the SAX callback object or None'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
+    </function>
+    <function name='xmlParserGetWellFormed' file='python_accessor'>
+      <info>Get the well formed information from a parser context.</info>
+      <return type='int' info="the wellFormed field" field="wellFormed"/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
+    </function>
+    <function name='xmlParserGetIsValid' file='python_accessor'>
+      <info>Get the validity information from a parser context.</info>
+      <return type='int' info="the valid field" field="valid"/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
+    </function>
+    <function name='xmlParserSetValidate' file='python_accessor'>
+      <info>Switch the parser to validation mode.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
+      <arg name='validate' type='int' info='1 to activate validation'/>
+    </function>
+    <function name='xmlParserSetReplaceEntities' file='python_accessor'>
+      <info>Switch the parser to replace entities.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
+      <arg name='replaceEntities' type='int' info='1 to replace entities'/>
+    </function>
+    <function name='xmlParserSetPedantic' file='python_accessor'>
+      <info>Switch the parser to be pedantic.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
+      <arg name='pedantic' type='int' info='1 to run in pedantic mode'/>
+    </function>
+    <function name='xmlParserSetLoadSubset' file='python_accessor'>
+      <info>Switch the parser to load the DTD without validating.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
+      <arg name='loadsubset' type='int' info='1 to load the DTD'/>
+    </function>
+    <function name='xmlParserSetLineNumbers' file='python_accessor'>
+      <info>Switch on the generation of line number for elements nodes.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
+      <arg name='linenumbers' type='int' info='1 to save line numbers'/>
     </function>
   </symbols>
 </api>

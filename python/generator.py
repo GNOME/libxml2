@@ -341,7 +341,11 @@ def print_function_wrapper(name, output, export, include):
         format = format + ":%s" % (name)
 
     if ret[0] == 'void':
-        c_call = "\n    %s(%s);\n" % (name, c_call);
+	if file == "python_accessor":
+	    c_call = "\n    %s->%s = %s;\n" % (args[0][0], args[1][0],
+	                                       args[1][0])
+	else:
+	    c_call = "\n    %s(%s);\n" % (name, c_call);
 	ret_convert = "    Py_INCREF(Py_None);\n    return(Py_None);\n"
     elif py_types.has_key(ret[0]):
 	(f, t, n, c) = py_types[ret[0]]
@@ -552,6 +556,9 @@ def nameFixup(function, classe, type, file):
     elif name[0:12] == "xmlParserGet" and file == "python_accessor":
         func = name[12:]
         func = string.lower(func[0:1]) + func[1:]
+    elif name[0:12] == "xmlParserSet" and file == "python_accessor":
+        func = name[12:]
+        func = string.lower(func[0:1]) + func[1:]
     elif name[0:l] == classe:
 	func = name[l:]
 	func = string.lower(func[0:1]) + func[1:]
@@ -627,6 +634,11 @@ txt.write("          Generated Classes for libxml2-python\n\n")
 def functionCompare(info1, info2):
     (index1, func1, name1, ret1, args1, file1) = info1
     (index2, func2, name2, ret2, args2, file2) = info2
+    if file1 == file2:
+	if func1 < func2:
+	    return -1
+	if func1 > func2:
+	    return 1
     if file1 == "python_accessor":
         return -1
     if file2 == "python_accessor":
@@ -634,10 +646,6 @@ def functionCompare(info1, info2):
     if file1 < file2:
         return -1
     if file1 > file2:
-        return 1
-    if func1 < func2:
-        return -1
-    if func1 > func2:
         return 1
     return 0
 

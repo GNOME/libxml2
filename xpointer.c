@@ -21,7 +21,6 @@
  * TODO: Access into entities references are not supported now ...
  *       need a start to be able to pop out of entities refs since
  *       parent is the endity declaration, not the ref.
- * TODO: some functions are still missing !
  */
 
 #include <stdio.h>
@@ -1302,6 +1301,45 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     return(res);
 }
 
+/**
+ * xmlXPtrBuildNodeList:
+ * @obj:  the XPointer result from the evaluation.
+ *
+ * Build a node list copy of the XPointer result.
+ *
+ * Returns an xmlNodePtr list or NULL.
+ *         the caller has to free the node list.
+ */
+xmlNodePtr
+xmlXPtrBuildNodeList(xmlXPathObjectPtr obj) {
+    xmlNodePtr list = NULL, last = NULL;
+    int i;
+
+    if (obj == NULL)
+	return(NULL);
+    switch (obj->type) {
+        case XPATH_NODESET: {
+	    xmlNodeSetPtr set = obj->nodesetval;
+	    if (set == NULL)
+		return(NULL);
+	    for (i = 0;i < set->nodeNr;i++) {
+		if (last == NULL)
+		    list = last = xmlCopyNode(set->nodeTab[i], 1);
+		else {
+		    xmlAddNextSibling(last, xmlCopyNode(set->nodeTab[i], 1));
+		    if (last->next != NULL)
+			last = last->next;
+		}
+	    }
+	    break;
+	}
+	case XPATH_LOCATIONSET:
+	    break;
+	default:
+	    break;
+    }
+    return(list);
+}
 
 /************************************************************************
  *									*

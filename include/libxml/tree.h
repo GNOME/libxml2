@@ -374,11 +374,11 @@ struct _xmlDoc {
 /*
  * Variables.
  */
-extern xmlNsPtr baseDTD;
-extern int oldXMLWDcompatibility;/* maintain compatibility with old WD */
-extern int xmlIndentTreeOutput;  /* try to indent the tree dumps */
-extern xmlBufferAllocationScheme xmlBufferAllocScheme; /* alloc scheme to use */
-extern int xmlSaveNoEmptyTags;   /* save empty tags as <empty></empty> */
+LIBXML_DLL_IMPORT extern xmlNsPtr baseDTD;
+LIBXML_DLL_IMPORT extern int oldXMLWDcompatibility;/* maintain compatibility with old WD */
+LIBXML_DLL_IMPORT extern int xmlIndentTreeOutput;  /* try to indent the tree dumps */
+LIBXML_DLL_IMPORT extern xmlBufferAllocationScheme xmlBufferAllocScheme; /* alloc scheme to use */
+LIBXML_DLL_IMPORT extern int xmlSaveNoEmptyTags;   /* save empty tags as <empty></empty> */
 
 /*
  * Handling Buffers.
@@ -533,6 +533,10 @@ void		xmlTextConcat		(xmlNodePtr node,
 					 int len);
 void		xmlFreeNodeList		(xmlNodePtr cur);
 void		xmlFreeNode		(xmlNodePtr cur);
+void		xmlSetTreeDoc		(xmlNodePtr tree,
+					 xmlDocPtr doc);
+void		xmlSetListDoc		(xmlNodePtr list,
+					 xmlDocPtr doc);
 
 /*
  * Namespaces

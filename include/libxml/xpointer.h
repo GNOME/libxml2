@@ -48,6 +48,7 @@ xmlXPathObjectPtr	xmlXPtrEval		(const xmlChar *str,
 						 xmlXPathContextPtr ctx);
 void			xmlXPtrRangeToFunction	(xmlXPathParserContextPtr ctxt,
        						 int nargs);
+xmlNodePtr		xmlXPtrBuildNodeList	(xmlXPathObjectPtr obj);
 
 #ifdef __cplusplus
 }

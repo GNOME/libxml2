@@ -106,6 +106,7 @@ typedef struct xmlNanoHTTPCtxt {
     int returnValue;	/* the protocol return value */
     char *contentType;	/* the MIME type for the input */
     char *location;	/* the new URL in case of redirect */
+    char *authHeader;	/* contents of {WWW,Proxy}-Authenticate header */
 } xmlNanoHTTPCtxt, *xmlNanoHTTPCtxtPtr;
 
 static int initialized = 0;
@@ -390,6 +391,7 @@ xmlNanoHTTPFreeCtxt(xmlNanoHTTPCtxtPtr ctxt) {
     if (ctxt->in != NULL) xmlFree(ctxt->in);
     if (ctxt->contentType != NULL) xmlFree(ctxt->contentType);
     if (ctxt->location != NULL) xmlFree(ctxt->location);
+    if (ctxt->authHeader != NULL) xmlFree(ctxt->authHeader);
     ctxt->state = XML_NANO_HTTP_NONE;
     if (ctxt->fd >= 0) closesocket(ctxt->fd);
     ctxt->fd = -1;
@@ -607,6 +609,18 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
 	if (ctxt->location != NULL)
 	    xmlFree(ctxt->location);
 	ctxt->location = xmlMemStrdup(cur);
+    } else if (!xmlStrncasecmp(BAD_CAST line, BAD_CAST"WWW-Authenticate:", 17)) {
+        cur += 17;
+	while ((*cur == ' ') || (*cur == '\t')) cur++;
+	if (ctxt->authHeader != NULL)
+	    xmlFree(ctxt->authHeader);
+	ctxt->authHeader = xmlMemStrdup(cur);
+    } else if (!xmlStrncasecmp(BAD_CAST line, BAD_CAST"Proxy-Authenticate:", 19)) {
+        cur += 19;
+	while ((*cur == ' ') || (*cur == '\t')) cur++;
+	if (ctxt->authHeader != NULL)
+	    xmlFree(ctxt->authHeader);
+	ctxt->authHeader = xmlMemStrdup(cur);
     }
 }
 
@@ -1103,6 +1117,22 @@ xmlNanoHTTPReturnCode(void *ctx) {
     if (ctxt == NULL) return(-1);
 
     return(ctxt->returnValue);
+}
+
+/**
+ * xmlNanoHTTPAuthHeader:
+ * @ctx:  the HTTP context
+ *
+ * Returns the stashed value of the WWW-Authenticate or Proxy-Authenticate
+ * header.
+ */
+const char *
+xmlNanoHTTPAuthHeader(void *ctx) {
+    xmlNanoHTTPCtxtPtr ctxt = (xmlNanoHTTPCtxtPtr) ctx;
+
+    if (ctxt == NULL) return(NULL);
+
+    return(ctxt->authHeader);
 }
 
 #ifdef STANDALONE

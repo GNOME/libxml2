@@ -256,12 +256,31 @@ xmlXIncludeNewContext(xmlDocPtr doc) {
  */
 void
 xmlXIncludeFreeContext(xmlXIncludeCtxtPtr ctxt) {
+    int i;
+
     if (ctxt == NULL)
 	return;
+    for (i = 0;i < ctxt->docNr;i++) {
+	xmlFreeDoc(ctxt->docTab[i]);
+	if (ctxt->urlTab[i] != NULL)
+	    xmlFree(ctxt->urlTab[i]);
+    }
+    for (i = 0;i < ctxt->txtNr;i++) {
+	if (ctxt->txturlTab[i] != NULL)
+	    xmlFree(ctxt->txturlTab[i]);
+    }
     if (ctxt->incTab != NULL)
 	xmlFree(ctxt->incTab);
     if (ctxt->repTab != NULL)
 	xmlFree(ctxt->repTab);
+    if (ctxt->urlTab != NULL)
+	xmlFree(ctxt->urlTab);
+    if (ctxt->docTab != NULL)
+	xmlFree(ctxt->docTab);
+    if (ctxt->txtTab != NULL)
+	xmlFree(ctxt->txtTab);
+    if (ctxt->txturlTab != NULL)
+	xmlFree(ctxt->txturlTab);
     memset(ctxt, 0xeb, sizeof(xmlXIncludeCtxt));
     xmlFree(ctxt);
 }
@@ -285,6 +304,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     xmlDocPtr doc;
     xmlURIPtr uri;
     xmlChar *URL;
+    xmlChar *fragment = NULL;
     int i;
     /*
      * Check the URL and remove any fragment identifier
@@ -296,14 +316,16 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	return;
     }
     if (uri->fragment != NULL) {
-	xmlFree(uri->fragment);
-	uri->fragment = NULL; /* TODO: kkep it for later processing */
+	fragment = (xmlChar *) uri->fragment;
+	uri->fragment = NULL;
     }
     URL = xmlSaveUri(uri);
     xmlFreeURI(uri);
     if (URL == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", url);
+	if (fragment != NULL)
+	    xmlFree(fragment);
 	return;
     }
 
@@ -311,9 +333,9 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
      * Handling of references to the local document are done
      * directly through ctxt->doc.
      */
-    if (URL[0] == 0) {
-	xmlFree(URL);
-	return;
+    if ((URL[0] == 0) || (URL[0] == '#')) {
+	doc = NULL;
+        goto loaded;
     }
 
     /*
@@ -333,15 +355,56 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: could not load %s\n", URL);
 	xmlFree(URL);
+	if (fragment != NULL)
+	    xmlFree(fragment);
 	return;
     }
     xmlXIncludeAddDoc(ctxt, doc, URL);
 
 loaded:
-    /*
-     * Add the top children list as the replacement copy.
-     */
-    ctxt->repTab[nr] = xmlCopyNodeList(doc->children);
+    if (fragment == NULL) {
+	/*
+	 * Add the top children list as the replacement copy.
+	 * ISSUE: seems we should scrap DTD info from the copied list.
+	 */
+	if (doc == NULL)
+	    ctxt->repTab[nr] = xmlCopyNodeList(ctxt->doc->children);
+	else
+	    ctxt->repTab[nr] = xmlCopyNodeList(doc->children);
+    } else {
+	/*
+	 * Computes the XPointer expression and make a copy used
+	 * as the replacement copy.
+	 */
+	xmlXPathObjectPtr xptr;
+	xmlXPathContextPtr xptrctxt;
+
+	if (doc == NULL) {
+	    xptrctxt = xmlXPtrNewContext(ctxt->doc, ctxt->incTab[nr], NULL);
+	} else {
+	    xptrctxt = xmlXPtrNewContext(doc, NULL, NULL);
+	}
+	if (xptrctxt == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+			"XInclude: could create XPointer context\n");
+	    xmlFree(URL);
+	    xmlFree(fragment);
+	    return;
+	}
+	xptr = xmlXPtrEval(fragment, xptrctxt);
+	if (xptr == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+			"XInclude: XPointer evaluation failed: #%s\n",
+			fragment);
+	    xmlFree(URL);
+	    xmlFree(fragment);
+	    return;
+	}
+	ctxt->repTab[nr] = xmlXPtrBuildNodeList(xptr);
+	xmlXPathFreeObject(xptr);
+	xmlXPathFreeContext(xptrctxt);
+	xmlFree(fragment);
+    }
     xmlFree(URL);
 }
 
@@ -370,9 +433,10 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	return;
     }
     if (uri->fragment != NULL) {
-	xmlFreeURI(uri);
 	xmlGenericError(xmlGenericErrorContext,
-		    "XInclude: fragment identifier forbidden for text\n");
+		"XInclude: fragment identifier forbidden for text: %s\n",
+		uri->fragment);
+	xmlFreeURI(uri);
 	return;
     }
     URL = xmlSaveUri(uri);

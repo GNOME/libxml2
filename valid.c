@@ -3503,10 +3503,12 @@ child_ok:
 		    VERROR(ctxt->userData,
 		       "Element %s doesn't carry attribute %s\n",
 			   elem->name, attr->name);
+		    ret = 0;
 	        } else {
 		    VERROR(ctxt->userData,
 		       "Element %s doesn't carry attribute %s:%s\n",
 			   elem->name, attr->prefix,attr->name);
+		    ret = 0;
 		}
 	    } else if (qualified == 0) {
 		VWARNING(ctxt->userData,

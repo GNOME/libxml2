@@ -17,6 +17,12 @@
  * Author: bjorn.reese@systematic.dk
  */
 
+#ifdef WIN32
+#include "win32config.h"
+#else
+#include "config.h"
+#endif
+
 #include <string.h>
 #include <libxml/hash.h>
 #include <libxml/xmlmemory.h>

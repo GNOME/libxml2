@@ -146,8 +146,8 @@ typedef void (*xmlGenericErrorFunc) (void *ctx, const char *msg, ...);
  * when when there is an error and no parsing or validity context available
  */
 
-extern xmlGenericErrorFunc xmlGenericError;
-extern void *xmlGenericErrorContext;
+LIBXML_DLL_IMPORT extern xmlGenericErrorFunc xmlGenericError;
+LIBXML_DLL_IMPORT extern void *xmlGenericErrorContext;
 
 /*
  * Use the following function to reset the two previous global variables.

@@ -1,3 +1,17 @@
+Tue Nov  7 15:11:34 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanohttp.[ch]: applied Wayne Davison patches to access
+	  the WWW-Authorization header.
+	* parser.c: Closed Bug#30847: Problems when switching encoding
+	  in short files by applying Simon Berg's patch.
+	* valid.c: fixed a validation problem
+	* hash.c parser.h parserInternals.h testHTML.c testSAX.c tree.h
+	  xmlerror.h xmlmemory.h xmlversion.h.in: applied a DLL patch from
+	  Wayne Davison
+	* xpointer.[ch]: added first version of xmlXPtrBuildNodeList()
+	  need to be extended to non full nodes selections.
+	* xinclude.c: starts to work decently
+
 Mon Nov  6 17:22:46 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.[ch] xinclude.[ch] xmllint.c configure.in valid.c

@@ -101,13 +101,13 @@ extern "C" {
  * Global vaiables affecting the default parser behaviour.
  */
 
-extern int xmlParserDebugEntities;
-extern int xmlGetWarningsDefaultValue;
-extern int xmlParserDebugEntities;
-extern int xmlSubstituteEntitiesDefaultValue;
-extern int xmlDoValidityCheckingDefaultValue;
-extern int xmlPedanticParserDefaultValue;
-extern int xmlKeepBlanksDefaultValue;
+LIBXML_DLL_IMPORT extern int xmlParserDebugEntities;
+LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;
+LIBXML_DLL_IMPORT extern int xmlParserDebugEntities;
+LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
+LIBXML_DLL_IMPORT extern int xmlDoValidityCheckingDefaultValue;
+LIBXML_DLL_IMPORT extern int xmlPedanticParserDefaultValue;
+LIBXML_DLL_IMPORT extern int xmlKeepBlanksDefaultValue;
 
 /*
  * Function to finish teh work of the macros where needed

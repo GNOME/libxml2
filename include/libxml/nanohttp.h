@@ -29,6 +29,7 @@ void *	xmlNanoHTTPMethod	(const char *URL,
 void *	xmlNanoHTTPOpen		(const char *URL,
 				 char **contentType);
 int	xmlNanoHTTPReturnCode	(void *ctx);
+const char * xmlNanoHTTPAuthHeader(void *ctx);
 int	xmlNanoHTTPRead		(void *ctx,
 				 void *dest,
 				 int len);

@@ -8,6 +8,7 @@
 
 #ifdef WIN32
 #include "win32config.h"
+#undef LIBXML_DLL_IMPORT
 #else
 #include "config.h"
 #endif

@@ -294,19 +294,19 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader)(const char *URL,
  * Global variables: just the default SAX interface tables and XML
  * version infos.
  */
-extern const char *xmlParserVersion;
+LIBXML_DLL_IMPORT extern const char *xmlParserVersion;
 
-extern xmlSAXLocator xmlDefaultSAXLocator;
-extern xmlSAXHandler xmlDefaultSAXHandler;
-extern xmlSAXHandler htmlDefaultSAXHandler;
-extern xmlSAXHandler sgmlDefaultSAXHandler;
+LIBXML_DLL_IMPORT extern xmlSAXLocator xmlDefaultSAXLocator;
+LIBXML_DLL_IMPORT extern xmlSAXHandler xmlDefaultSAXHandler;
+LIBXML_DLL_IMPORT extern xmlSAXHandler htmlDefaultSAXHandler;
+LIBXML_DLL_IMPORT extern xmlSAXHandler sgmlDefaultSAXHandler;
 
 /**
  * entity substitution default behaviour.
  */
 
-extern int xmlSubstituteEntitiesDefaultValue;
-extern int xmlGetWarningsDefaultValue;
+LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
+LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;
 
 
 /**

@@ -2396,6 +2396,12 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
 		    ctxt->sax->characters(ctxt->userData, buf, nbchar);
 	    }
 	}
+    } else {
+	/*
+	 * Loop detection
+	 */
+	if (cur == 0)
+	    ctxt->instate = XML_PARSER_EOF;
     }
 }
 

@@ -1,3 +1,7 @@
+Wed Oct 17 17:41:41 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: try to get rid of parser loops for good.
+
 Wed Oct 17 13:29:02 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: fixed some bugs in CFLAGS passing.

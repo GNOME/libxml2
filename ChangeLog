@@ -1,3 +1,12 @@
+Wed Apr 16 01:28:15 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c xmlreader.c xmllint.c include/libxml/relaxng.h
+	  include/libxml/xmlreader.h: implemented streaming of
+	  RelaxNG (when possible) on top of the xmlReader interface,
+	  provided it as xmllint --stream --relaxng .rng .xml
+	  This seems to mostly work.
+	* Makefile.am: updated to test RelaxNG streaming
+
 Mon Apr 14 18:08:33 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c include/libxml/relaxng.h: integrated the regexp

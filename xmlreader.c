@@ -12,7 +12,6 @@
 
 /*
  * TODOs:
- *   - provide an API to expand part of the tree
  *   - provide an API to preserve part of the tree
  *   - Streaming XInclude support
  *   - validation against a provided DTD
@@ -36,6 +35,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlIO.h>
 #include <libxml/xmlreader.h>
+#include <libxml/relaxng.h>
 
 /* #define DEBUG_CALLBACKS */
 /* #define DEBUG_READER */
@@ -85,8 +85,15 @@ typedef enum {
     XML_TEXTREADER_DONE= 5
 } xmlTextReaderState;
 
+typedef enum {
+    XML_TEXTREADER_NOT_VALIDATE = 0,
+    XML_TEXTREADER_VALIDATE_DTD = 1,
+    XML_TEXTREADER_VALIDATE_RNG = 2
+} xmlTextReaderValidate;
+
 struct _xmlTextReader {
     int				mode;	/* the parsing mode */
+    xmlTextReaderValidate       validate;/* is there any validation */
     int				allocs;	/* what structure were deallocated */
     xmlTextReaderState		state;
     xmlParserCtxtPtr		ctxt;	/* the parser context */
@@ -112,6 +119,14 @@ struct _xmlTextReader {
     /* error handling */
     xmlTextReaderErrorFunc errorFunc;    /* callback function */
     void                  *errorFuncArg; /* callback function user argument */
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+    /* Handling of RelaxNG validation */
+    xmlRelaxNGPtr          rngSchemas;   /* The Relax NG schemas */
+    xmlRelaxNGValidCtxtPtr rngValidCtxt; /* The Relax NG validation context */
+    int                  rngValidErrors; /* The number of errors detected */
+    xmlNodePtr             rngFullNode;  /* the node if RNG not progressive */
+#endif
 };
 
 static const char *xmlTextReaderIsEmpty = "This element is empty";
@@ -425,22 +440,84 @@ xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
 #ifdef LIBXML_REGEXP_ENABLED
     xmlNodePtr node = reader->node;
 
-    if ((node->ns == NULL) || (node->ns->prefix == NULL)) {
-	reader->ctxt->valid &= xmlValidatePushElement(&reader->ctxt->vctxt,
-				reader->ctxt->myDoc, node, node->name);
-    } else {
-	xmlChar *qname;
+    if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
+        (reader->ctxt != NULL) && (reader->ctxt->validate == 1)) {
+	if ((node->ns == NULL) || (node->ns->prefix == NULL)) {
+	    reader->ctxt->valid &= xmlValidatePushElement(&reader->ctxt->vctxt,
+				    reader->ctxt->myDoc, node, node->name);
+	} else {
+	    /* TODO use the BuildQName interface */
+	    xmlChar *qname;
 
-	qname = xmlStrdup(node->ns->prefix);
-	qname = xmlStrcat(qname, BAD_CAST ":");
-	qname = xmlStrcat(qname, node->name);
-	reader->ctxt->valid &= xmlValidatePushElement(&reader->ctxt->vctxt,
-				reader->ctxt->myDoc, node, qname);
-	if (qname != NULL)
-	    xmlFree(qname);
+	    qname = xmlStrdup(node->ns->prefix);
+	    qname = xmlStrcat(qname, BAD_CAST ":");
+	    qname = xmlStrcat(qname, node->name);
+	    reader->ctxt->valid &= xmlValidatePushElement(&reader->ctxt->vctxt,
+				    reader->ctxt->myDoc, node, qname);
+	    if (qname != NULL)
+		xmlFree(qname);
+	}
+#ifdef LIBXML_SCHEMAS_ENABLED
+    } else if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
+               (reader->rngValidCtxt != NULL)) {
+	int ret;
+
+	if (reader->rngFullNode != NULL) return;
+	ret = xmlRelaxNGValidatePushElement(reader->rngValidCtxt,
+	                                    reader->ctxt->myDoc,
+					    node);
+	if (ret == 0) {
+	    /*
+	     * this element requires a full tree
+	     */
+	    node = xmlTextReaderExpand(reader);
+	    if (node == NULL) {
+printf("Expand failed !\n");
+	        ret = -1;
+	    } else {
+		ret = xmlRelaxNGValidateFullElement(reader->rngValidCtxt,
+						    reader->ctxt->myDoc,
+						    node);
+		reader->rngFullNode = node;
+	    }
+	}
+	if (ret != 1)
+	    reader->rngValidErrors++;
+#endif
     }
 #endif /* LIBXML_REGEXP_ENABLED */
 }
+
+/**
+ * xmlTextReaderValidateCData:
+ * @reader:  the xmlTextReaderPtr used
+ * @data:  pointer to the CData
+ * @len:  lenght of the CData block in bytes.
+ *
+ * Push some CData for validation
+ */
+static void
+xmlTextReaderValidateCData(xmlTextReaderPtr reader,
+                           const xmlChar *data, int len) {
+#ifdef LIBXML_REGEXP_ENABLED
+    if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
+        (reader->ctxt != NULL) && (reader->ctxt->validate == 1)) {
+	reader->ctxt->valid &= xmlValidatePushCData(&reader->ctxt->vctxt,
+	                                            data, len);
+#ifdef LIBXML_SCHEMAS_ENABLED
+    } else if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
+               (reader->rngValidCtxt != NULL)) {
+	int ret;
+
+	if (reader->rngFullNode != NULL) return;
+	ret = xmlRelaxNGValidatePushCData(reader->rngValidCtxt, data, len);
+	if (ret != 1)
+	    reader->rngValidErrors++;
+#endif
+    }
+#endif /* LIBXML_REGEXP_ENABLED */
+}
+
 /**
  * xmlTextReaderValidatePop:
  * @reader:  the xmlTextReaderPtr used
@@ -452,19 +529,39 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 #ifdef LIBXML_REGEXP_ENABLED
     xmlNodePtr node = reader->node;
 
-    if ((node->ns == NULL) || (node->ns->prefix == NULL)) {
-	reader->ctxt->valid &= xmlValidatePopElement(&reader->ctxt->vctxt,
-				reader->ctxt->myDoc, node, node->name);
-    } else {
-	xmlChar *qname;
+    if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
+        (reader->ctxt != NULL) && (reader->ctxt->validate == 1)) {
+	if ((node->ns == NULL) || (node->ns->prefix == NULL)) {
+	    reader->ctxt->valid &= xmlValidatePopElement(&reader->ctxt->vctxt,
+				    reader->ctxt->myDoc, node, node->name);
+	} else {
+	    /* TODO use the BuildQName interface */
+	    xmlChar *qname;
 
-	qname = xmlStrdup(node->ns->prefix);
-	qname = xmlStrcat(qname, BAD_CAST ":");
-	qname = xmlStrcat(qname, node->name);
-	reader->ctxt->valid &= xmlValidatePopElement(&reader->ctxt->vctxt,
-				reader->ctxt->myDoc, node, qname);
-	if (qname != NULL)
-	    xmlFree(qname);
+	    qname = xmlStrdup(node->ns->prefix);
+	    qname = xmlStrcat(qname, BAD_CAST ":");
+	    qname = xmlStrcat(qname, node->name);
+	    reader->ctxt->valid &= xmlValidatePopElement(&reader->ctxt->vctxt,
+				    reader->ctxt->myDoc, node, qname);
+	    if (qname != NULL)
+		xmlFree(qname);
+	}
+#ifdef LIBXML_SCHEMAS_ENABLED
+    } else if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
+               (reader->rngValidCtxt != NULL)) {
+	int ret;
+
+	if (reader->rngFullNode != NULL) {
+	    if (node == reader->rngFullNode) 
+	        reader->rngFullNode = NULL;
+	    return;
+	}
+	ret = xmlRelaxNGValidatePopElement(reader->rngValidCtxt,
+	                                   reader->ctxt->myDoc,
+					   node);
+	if (ret != 1)
+	    reader->rngValidErrors++;
+#endif
     }
 #endif /* LIBXML_REGEXP_ENABLED */
 }
@@ -514,8 +611,8 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 	    xmlTextReaderValidatePush(reader);
 	} else if ((node->type == XML_TEXT_NODE) ||
 		   (node->type == XML_CDATA_SECTION_NODE)) {
-	    ctxt->valid &= xmlValidatePushCData(&ctxt->vctxt,
-			      node->content, xmlStrlen(node->content));
+            xmlTextReaderValidateCData(reader, node->content,
+	                               xmlStrlen(node->content));
 	}
 
 	/*
@@ -745,7 +842,7 @@ get_next_node:
 	    reader->state = XML_TEXTREADER_END;
 	    goto node_found;
 	}
-	if ((reader->ctxt->validate) &&
+	if ((reader->validate) &&
 	    (reader->node->type == XML_ELEMENT_NODE))
 	    xmlTextReaderValidatePop(reader);
 	reader->node = reader->node->next;
@@ -770,7 +867,7 @@ get_next_node:
 	reader->state = XML_TEXTREADER_END;
 	goto node_found;
     }
-    if ((reader->ctxt->validate) && (reader->node->type == XML_ELEMENT_NODE))
+    if ((reader->validate) && (reader->node->type == XML_ELEMENT_NODE))
 	xmlTextReaderValidatePop(reader);
     reader->node = reader->node->parent;
     if ((reader->node == NULL) ||
@@ -826,7 +923,7 @@ node_found:
 	}
     } else if ((reader->node != NULL) &&
 	       (reader->node->type == XML_ENTITY_REF_NODE) &&
-	       (reader->ctxt != NULL) && (reader->ctxt->validate == 1)) {
+	       (reader->ctxt != NULL) && (reader->validate)) {
 	xmlTextReaderValidateEntity(reader);
     }
     if ((reader->node != NULL) &&
@@ -837,9 +934,8 @@ node_found:
         goto get_next_node;
     }
 #ifdef LIBXML_REGEXP_ENABLED
-    if ((reader->ctxt->validate) && (reader->node != NULL)) {
+    if ((reader->validate) && (reader->node != NULL)) {
 	xmlNodePtr node = reader->node;
-	xmlParserCtxtPtr ctxt = reader->ctxt;
 
 	if ((node->type == XML_ELEMENT_NODE) && 
             ((reader->state != XML_TEXTREADER_END) &&
@@ -847,8 +943,8 @@ node_found:
 	    xmlTextReaderValidatePush(reader);
 	} else if ((node->type == XML_TEXT_NODE) ||
 		   (node->type == XML_CDATA_SECTION_NODE)) {
-	    ctxt->valid &= xmlValidatePushCData(&ctxt->vctxt,
-			      node->content, xmlStrlen(node->content));
+            xmlTextReaderValidateCData(reader, node->content,
+	                               xmlStrlen(node->content));
 	}
     }
 #endif /* LIBXML_REGEXP_ENABLED */
@@ -1140,6 +1236,14 @@ void
 xmlFreeTextReader(xmlTextReaderPtr reader) {
     if (reader == NULL)
 	return;
+    if (reader->rngSchemas != NULL) {
+	xmlRelaxNGFree(reader->rngSchemas);
+	reader->rngSchemas = NULL;
+    }
+    if (reader->rngValidCtxt != NULL) {
+	xmlRelaxNGFreeValidCtxt(reader->rngValidCtxt);
+	reader->rngValidCtxt = NULL;
+    }
     if (reader->ctxt != NULL) {
 	if (reader->ctxt->myDoc != NULL) {
 	    xmlFreeDoc(reader->ctxt->myDoc);
@@ -2308,6 +2412,7 @@ xmlTextReaderSetParserProp(xmlTextReaderPtr reader, int prop, int value) {
         case XML_PARSER_VALIDATE:
 	    if (value != 0) {
 		ctxt->validate = 1;
+		reader->validate = XML_TEXTREADER_VALIDATE_DTD;
 	    } else {
 		ctxt->validate = 0;
 	    }
@@ -2351,7 +2456,7 @@ xmlTextReaderGetParserProp(xmlTextReaderPtr reader, int prop) {
 		return(1);
 	    return(0);
         case XML_PARSER_VALIDATE:
-	    return(ctxt->validate);
+	    return(reader->validate);
 	case XML_PARSER_SUBST_ENTITIES:
 	    return(ctxt->replaceEntities);
     }
@@ -2394,6 +2499,64 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
 	return(NULL);
     
     return(reader->ctxt->myDoc);
+}
+
+/**
+ * xmlTextReaderRelaxNGValidate:
+ * @reader:  the xmlTextReaderPtr used
+ * @rng:  the path to a RelaxNG schema or NULL
+ *
+ * Use RelaxNG to validate the document as it is processed.
+ * Activation is only possible before the first Read().
+ * if @rng is NULL, then RelaxNG validation is desactivated.
+ *
+ * Returns 0 in case the RelaxNG validation could be (des)activated and
+ *         -1 in case of error.
+ */
+int
+xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
+    xmlRelaxNGParserCtxtPtr ctxt;
+
+    if (reader == NULL)
+        return(-1);
+    
+    if (rng == NULL) {
+        if (reader->rngSchemas != NULL) {
+	    xmlRelaxNGFree(reader->rngSchemas);
+	    reader->rngSchemas = NULL;
+	}
+        if (reader->rngValidCtxt != NULL) {
+	    xmlRelaxNGFreeValidCtxt(reader->rngValidCtxt);
+	    reader->rngValidCtxt = NULL;
+        }
+	return(0);
+    }
+    if (reader->mode != XML_TEXTREADER_MODE_INITIAL)
+	return(-1);
+    ctxt = xmlRelaxNGNewParserCtxt(rng);
+    if (reader->errorFunc != NULL) {
+	xmlRelaxNGSetParserErrors(ctxt,
+			 (xmlRelaxNGValidityErrorFunc) reader->errorFunc,
+			 (xmlRelaxNGValidityWarningFunc) reader->errorFunc,
+			 reader->errorFuncArg);
+    }
+    reader->rngSchemas = xmlRelaxNGParse(ctxt);
+    xmlRelaxNGFreeParserCtxt(ctxt);
+    if (reader->rngSchemas == NULL)
+        return(-1);
+    reader->rngValidCtxt = xmlRelaxNGNewValidCtxt(reader->rngSchemas);
+    if (reader->rngValidCtxt == NULL)
+        return(-1);
+    if (reader->errorFunc != NULL) {
+	xmlRelaxNGSetValidErrors(reader->rngValidCtxt,
+			 (xmlRelaxNGValidityErrorFunc)reader->errorFunc,
+			 (xmlRelaxNGValidityWarningFunc) reader->errorFunc,
+			 reader->errorFuncArg);
+    }
+    reader->rngValidErrors = 0;
+    reader->rngFullNode = NULL;
+    reader->validate = XML_TEXTREADER_VALIDATE_RNG;
+    return(0);
 }
 
 /************************************************************************
@@ -2621,8 +2784,15 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
  */
 int
 xmlTextReaderIsValid(xmlTextReaderPtr reader) {
-    if ((reader == NULL) || (reader->ctxt == NULL)) return(-1);
-    return(reader->ctxt->valid);
+    if (reader == NULL) return(-1);
+#ifdef LIBXML_SCHEMAS_ENABLED
+    if (reader->validate == XML_TEXTREADER_VALIDATE_RNG)
+        return(reader->rngValidErrors == 0);
+#endif
+    if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
+        (reader->ctxt != NULL))
+	return(reader->ctxt->valid);
+    return(0);
 }
 
 /**

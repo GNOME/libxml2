@@ -57,8 +57,8 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
 /* #define DEBUG_INCLUDE */
 /* #define DEBUG_ERROR 1 */
 /* #define DEBUG_COMPILE 1 */
+/* #define DEBUG_PROGRESSIVE 1 */
 
-#define UNBOUNDED (1 << 30)
 #define MAX_ERROR 5
 
 #define TODO 								\
@@ -356,6 +356,17 @@ struct _xmlRelaxNGValidCtxt {
     int                     freeStatesNr;
     int                     freeStatesMax;
     xmlRelaxNGStatesPtr    *freeStates; /* the pool of free state groups */
+
+    /*
+     * This is used for "progressive" validation
+     */
+    xmlRegExecCtxtPtr       elem;	/* the current element regexp */
+    int                     elemNr;	/* the number of element validated */
+    int                     elemMax;	/* the max depth of elements */
+    xmlRegExecCtxtPtr      *elemTab;	/* the stack of regexp runtime */
+    int                     pstate;	/* progressive state */
+    xmlNodePtr              pnode;	/* the current node */
+    xmlRelaxNGDefinePtr     pdef;	/* the non-streamable definition */
 };
 
 /**
@@ -7095,8 +7106,19 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
     /*
      * try to compile (parts of) the schemas
      */
-    if (ctxt->grammar != NULL)
+    if ((ctxt->grammar != NULL) && (ctxt->grammar->start != NULL)) {
+        if (ctxt->grammar->start->type != XML_RELAXNG_START) {
+	    xmlRelaxNGDefinePtr def;
+
+	    def = xmlRelaxNGNewDefine(ctxt, NULL);
+	    if (def != NULL) {
+		def->type = XML_RELAXNG_START;
+		def->content = ctxt->grammar->start;
+		ctxt->grammar->start = def;
+	    }
+	}
 	xmlRelaxNGTryCompile(ctxt, ctxt->grammar->start);
+    }
 
     /*
      * Transfer the pointer for cleanup at the schema level.
@@ -7485,7 +7507,7 @@ xmlRelaxNGValidateCompiledContent(xmlRelaxNGValidCtxtPtr ctxt,
 	ctxt->state->seq = NULL;
     } else if (ret == 0) {
         /*
-	 * TODO: get soem of the names needed to exit the current state of exec
+	 * TODO: get some of the names needed to exit the current state of exec
 	 */
 	VALID_ERR2(XML_RELAXNG_ERR_NOELEM, BAD_CAST "");
 	ret = -1;
@@ -7503,6 +7525,381 @@ xmlRelaxNGValidateCompiledContent(xmlRelaxNGValidCtxtPtr ctxt,
  * 		Progressive validation of when possible			*
  * 									*
  ************************************************************************/
+static int xmlRelaxNGValidateAttributeList(xmlRelaxNGValidCtxtPtr ctxt, 
+					   xmlRelaxNGDefinePtr defines);
+static int xmlRelaxNGValidateElementEnd(xmlRelaxNGValidCtxtPtr ctxt);
+
+/**
+ * xmlRelaxNGElemPush:
+ * @ctxt:  the validation context
+ * @exec:  the regexp runtime for the new content model
+ *
+ * Push a new regexp for the current node content model on the stack
+ *
+ * Returns 0 in case of success and -1 in case of error.
+ */
+static int
+xmlRelaxNGElemPush(xmlRelaxNGValidCtxtPtr ctxt, xmlRegExecCtxtPtr exec) {
+    if (ctxt->elemTab == NULL) {
+	ctxt->elemMax = 10;
+	ctxt->elemTab = (xmlRegExecCtxtPtr *) xmlMalloc(ctxt->elemMax *
+		              sizeof(xmlRegExecCtxtPtr));
+        if (ctxt->elemTab == NULL) {
+	    VALID_ERR(XML_RELAXNG_ERR_MEMORY);
+	    return(-1);
+	}
+    }
+    if (ctxt->elemNr >= ctxt->elemMax) {
+	ctxt->elemMax *= 2;
+        ctxt->elemTab = (xmlRegExecCtxtPtr *) xmlRealloc(ctxt->elemTab,
+	             ctxt->elemMax * sizeof(xmlRegExecCtxtPtr));
+        if (ctxt->elemTab == NULL) {
+	    VALID_ERR(XML_RELAXNG_ERR_MEMORY);
+	    return(-1);
+	}
+    }
+    ctxt->elemTab[ctxt->elemNr++] = exec;
+    ctxt->elem = exec;
+    return(0);
+}
+
+/**
+ * xmlRelaxNGElemPop:
+ * @ctxt:  the validation context
+ *
+ * Pop the regexp of the current node content model from the stack
+ *
+ * Returns the exec or NULL if empty
+ */
+static xmlRegExecCtxtPtr
+xmlRelaxNGElemPop(xmlRelaxNGValidCtxtPtr ctxt) {
+    xmlRegExecCtxtPtr ret;
+
+    if (ctxt->elemNr <= 0) return(NULL);
+    ctxt->elemNr--;
+    ret = ctxt->elemTab[ctxt->elemNr];
+    ctxt->elemTab[ctxt->elemNr] = NULL;
+    if (ctxt->elemNr > 0) 
+        ctxt->elem = ctxt->elemTab[ctxt->elemNr - 1];
+    else
+	ctxt->elem = NULL;
+    return(ret);
+}
+
+/**
+ * xmlRelaxNGValidateProgressiveCallback:
+ * @exec:  the regular expression instance
+ * @token:  the token which matched
+ * @transdata:  callback data, the define for the subelement if available
+ @ @inputdata:  callback data, the Relax NG validation context
+ *
+ * Handle the callback and if needed validate the element children.
+ * some of the in/out informations are passed via the context in @inputdata.
+ */
+static void 
+xmlRelaxNGValidateProgressiveCallback(xmlRegExecCtxtPtr exec ATTRIBUTE_UNUSED,
+	                           const xmlChar *token,
+				   void *transdata,
+				   void *inputdata) {
+    xmlRelaxNGValidCtxtPtr ctxt = (xmlRelaxNGValidCtxtPtr) inputdata;
+    xmlRelaxNGDefinePtr define = (xmlRelaxNGDefinePtr) transdata;
+    xmlRelaxNGValidStatePtr state;
+    xmlNodePtr node = ctxt->pnode;
+    int ret;
+
+#ifdef DEBUG_PROGRESSIVE
+    xmlGenericError(xmlGenericErrorContext,
+		    "Progressive callback for: '%s'\n", token);
+#endif
+    if (ctxt == NULL) {
+	fprintf(stderr, "callback on %s missing context\n", token);
+	return;
+    }
+    ctxt->pstate = 1;
+    if (define == NULL) {
+        if (token[0] == '#')
+	    return;
+	fprintf(stderr, "callback on %s missing define\n", token);
+	if ((ctxt != NULL) && (ctxt->errNo == XML_RELAXNG_OK))
+	    ctxt->errNo = XML_RELAXNG_ERR_INTERNAL;
+	ctxt->pstate = -1;
+	return;
+    }
+    if ((ctxt == NULL) || (define == NULL)) {
+	fprintf(stderr, "callback on %s missing info\n", token);
+	if ((ctxt != NULL) && (ctxt->errNo == XML_RELAXNG_OK))
+	    ctxt->errNo = XML_RELAXNG_ERR_INTERNAL;
+	ctxt->pstate = -1;
+	return;
+    } else if (define->type != XML_RELAXNG_ELEMENT) {
+	fprintf(stderr, "callback on %s define is not element\n", token);
+	if (ctxt->errNo == XML_RELAXNG_OK)
+	    ctxt->errNo = XML_RELAXNG_ERR_INTERNAL;
+	ctxt->pstate = -1;
+	return;
+    }
+    if (node->type != XML_ELEMENT_NODE) {
+	VALID_ERR(XML_RELAXNG_ERR_NOTELEM);
+	if ((ctxt->flags & FLAGS_IGNORABLE) == 0)
+	    xmlRelaxNGDumpValidError(ctxt);
+	ctxt->pstate = -1;
+	return;
+    }
+    if (define->contModel == NULL) {
+        /*
+	 * this node cannot be validated in a streamable fashion
+	 */
+#ifdef DEBUG_PROGRESSIVE
+	xmlGenericError(xmlGenericErrorContext,
+		    "Element '%s' validation is not streamable\n", token);
+#endif
+	ctxt->pstate = 0;
+	ctxt->pdef = define;
+	return;
+    }
+    exec = xmlRegNewExecCtxt(define->contModel,
+			     xmlRelaxNGValidateProgressiveCallback,
+			     ctxt);
+    if (exec == NULL) {
+	ctxt->pstate = -1;
+	return;
+    }
+    xmlRelaxNGElemPush(ctxt, exec);
+
+    /*
+     * Validate the attributes part of the content.
+     */
+    state = xmlRelaxNGNewValidState(ctxt, node);
+    if (state == NULL) {
+	ctxt->pstate = -1;
+	return;
+    }
+    ctxt->state = state;
+    if (define->attrs != NULL) {
+	ret = xmlRelaxNGValidateAttributeList(ctxt, define->attrs);
+	if (ret != 0) {
+	    ctxt->pstate = -1;
+	    VALID_ERR2(XML_RELAXNG_ERR_ATTRVALID, node->name);
+	}
+    }
+    ctxt->state->seq = NULL;
+    ret = xmlRelaxNGValidateElementEnd(ctxt);
+    if (ret != 0) {
+        ctxt->pstate = -1;
+    }
+    xmlRelaxNGFreeValidState(ctxt, state);
+    ctxt->state = NULL;
+}
+
+/**
+ * xmlRelaxNGValidatePushElement:
+ * @ctxt:  the validation context
+ * @doc:  a document instance
+ * @elem:  an element instance
+ *
+ * Push a new element start on the RelaxNG validation stack.
+ *
+ * returns 1 if no validation problem was found or 0 if validating the
+ *         element requires a full node, and -1 in case of error.
+ */
+int
+xmlRelaxNGValidatePushElement(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc,
+                              xmlNodePtr elem)
+{
+    int ret = 1;
+
+    if ((ctxt == NULL) || (elem == NULL))
+        return (-1);
+
+#ifdef DEBUG_PROGRESSIVE
+    xmlGenericError(xmlGenericErrorContext, "PushElem %s\n", elem->name);
+#endif
+    if (ctxt->elem == 0) {
+        xmlRelaxNGPtr schema;
+        xmlRelaxNGGrammarPtr grammar;
+        xmlRegExecCtxtPtr exec;
+        xmlRelaxNGDefinePtr define;
+
+        schema = ctxt->schema;
+        if (schema == NULL) {
+            VALID_ERR(XML_RELAXNG_ERR_NOGRAMMAR);
+            return (-1);
+        }
+        grammar = schema->topgrammar;
+        if ((grammar == NULL) || (grammar->start == NULL)) {
+            VALID_ERR(XML_RELAXNG_ERR_NOGRAMMAR);
+            return (-1);
+        }
+        define = grammar->start;
+        if (define->contModel == NULL) {
+	    ctxt->pdef = define;
+            return (0);
+        }
+        exec = xmlRegNewExecCtxt(define->contModel,
+                                 xmlRelaxNGValidateProgressiveCallback,
+                                 ctxt);
+        if (exec == NULL) {
+            return (-1);
+        }
+        xmlRelaxNGElemPush(ctxt, exec);
+    }
+    ctxt->pnode = elem;
+    ctxt->pstate = 0;
+    if (elem->ns != NULL) {
+        ret =
+            xmlRegExecPushString2(ctxt->elem, elem->name, elem->ns->href,
+                                  ctxt);
+    } else {
+        ret = xmlRegExecPushString(ctxt->elem, elem->name, ctxt);
+    }
+    if (ret < 0) {
+        VALID_ERR2(XML_RELAXNG_ERR_ELEMWRONG, elem->name);
+    } else {
+        if (ctxt->pstate == 0)
+	    ret = 0;
+        else if (ctxt->pstate < 0)
+	    ret = -1;
+	else
+	    ret = 1;
+    }
+#ifdef DEBUG_PROGRESSIVE
+    if (ret < 0)
+	xmlGenericError(xmlGenericErrorContext, "PushElem %s failed\n",
+	                elem->name);
+#endif
+    return (ret);
+}
+
+/**
+ * xmlRelaxNGValidatePushCData:
+ * @ctxt:  the RelaxNG validation context
+ * @data:  some character data read
+ * @len:  the lenght of the data
+ *
+ * check the CData parsed for validation in the current stack
+ *
+ * returns 1 if no validation problem was found or -1 otherwise
+ */
+int
+xmlRelaxNGValidatePushCData(xmlRelaxNGValidCtxtPtr ctxt,
+                            const xmlChar * data, int len)
+{
+    int ret = 1;
+
+    if ((ctxt == NULL) || (ctxt->elem == NULL) || (data == NULL))
+        return (-1);
+
+#ifdef DEBUG_PROGRESSIVE
+    xmlGenericError(xmlGenericErrorContext, "CDATA %s %d\n", data, len);
+#endif
+
+    while (*data != 0) {
+        if (!IS_BLANK(*data))
+            break;
+        data++;
+    }
+    if (*data == 0)
+        return(1);
+
+    ret = xmlRegExecPushString(ctxt->elem, BAD_CAST "#text", ctxt);
+    if (ret < 0) {
+        VALID_ERR2(XML_RELAXNG_ERR_TEXTWRONG, " TODO ");
+#ifdef DEBUG_PROGRESSIVE
+	xmlGenericError(xmlGenericErrorContext, "CDATA failed\n");
+#endif
+
+        return(-1);
+    }
+    return(1);
+}
+
+/**
+ * xmlRelaxNGValidatePopElement:
+ * @ctxt:  the RelaxNG validation context
+ * @doc:  a document instance
+ * @elem:  an element instance
+ *
+ * Pop the element end from the RelaxNG validation stack.
+ *
+ * returns 1 if no validation problem was found or 0 otherwise
+ */
+int
+xmlRelaxNGValidatePopElement(xmlRelaxNGValidCtxtPtr ctxt,
+                             xmlDocPtr doc ATTRIBUTE_UNUSED,
+                             xmlNodePtr elem) {
+    int ret;
+    xmlRegExecCtxtPtr exec;
+
+    if ((ctxt == NULL) || (ctxt->elem == NULL) || (elem == NULL)) return(-1);
+#ifdef DEBUG_PROGRESSIVE
+    xmlGenericError(xmlGenericErrorContext, "PopElem %s\n", elem->name);
+#endif
+    /*
+     * verify that we reached a terminal state of the content model.
+     */
+    exec = xmlRelaxNGElemPop(ctxt);
+    ret = xmlRegExecPushString(exec, NULL, NULL);
+    if (ret == 0) {
+        /*
+	 * TODO: get some of the names needed to exit the current state of exec
+	 */
+	VALID_ERR2(XML_RELAXNG_ERR_NOELEM, BAD_CAST "");
+	ret = -1;
+    } else if (ret < 0) {
+        ret = -1;
+    } else {
+        ret = 1;
+    }
+    xmlRegFreeExecCtxt(exec);
+#ifdef DEBUG_PROGRESSIVE
+    if (ret < 0)
+	xmlGenericError(xmlGenericErrorContext, "PopElem %s failed\n",
+	                elem->name);
+#endif
+    return(ret);
+}
+
+/**
+ * xmlRelaxNGValidateFullElement:
+ * @ctxt:  the validation context
+ * @doc:  a document instance
+ * @elem:  an element instance
+ *
+ * Validate a full subtree when xmlRelaxNGValidatePushElement() returned
+ * 0 and the content of the node has been expanded.
+ *
+ * returns 1 if no validation problem was found or -1 in case of error.
+ */
+int
+xmlRelaxNGValidateFullElement(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc,
+			      xmlNodePtr elem) {
+    int ret;
+    xmlRelaxNGValidStatePtr state;
+
+    if ((ctxt == NULL) || (ctxt->pdef == NULL) || (elem == NULL)) return(-1);
+#ifdef DEBUG_PROGRESSIVE
+    xmlGenericError(xmlGenericErrorContext, "FullElem %s\n", elem->name);
+#endif
+    state = xmlRelaxNGNewValidState(ctxt, elem->parent);
+    if (state == NULL) {
+	return(-1);
+    }
+    state->seq = elem;
+    ctxt->state = state;
+    ctxt->errNo = XML_RELAXNG_OK;
+    ret = xmlRelaxNGValidateDefinition(ctxt, ctxt->pdef);
+    if ((ret != 0) || (ctxt->errNo != XML_RELAXNG_OK)) ret = -1;
+    else ret = 1;
+    xmlRelaxNGFreeValidState(ctxt, state);
+    ctxt->state = NULL;
+#ifdef DEBUG_PROGRESSIVE
+    if (ret < 0)
+	xmlGenericError(xmlGenericErrorContext, "FullElem %s failed\n",
+	                elem->name);
+#endif
+    return(ret);
+}
+
 /************************************************************************
  * 									*
  * 		Generic interpreted validation implementation		*
@@ -9158,11 +9555,10 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
         case XML_RELAXNG_ATTRIBUTE:
             ret = xmlRelaxNGValidateAttribute(ctxt, define);
             break;
+        case XML_RELAXNG_START:
         case XML_RELAXNG_NOOP:
         case XML_RELAXNG_REF:
         case XML_RELAXNG_EXTERNALREF:
-            ret = xmlRelaxNGValidateDefinition(ctxt, define->content);
-            break;
         case XML_RELAXNG_PARENTREF:
             ret = xmlRelaxNGValidateDefinition(ctxt, define->content);
             break;
@@ -9308,7 +9704,6 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                     xmlFree(content);
                 break;
             }
-        case XML_RELAXNG_START:
         case XML_RELAXNG_EXCEPT:
         case XML_RELAXNG_PARAM:
             TODO ret = -1;
@@ -9617,6 +10012,16 @@ xmlRelaxNGFreeValidCtxt(xmlRelaxNGValidCtxtPtr ctxt) {
     }
     if (ctxt->errTab != NULL)
 	xmlFree(ctxt->errTab);
+    if (ctxt->elemTab != NULL) {
+        xmlRegExecCtxtPtr exec;
+
+	exec = xmlRelaxNGElemPop(ctxt);
+	while (exec != NULL) {
+	    xmlRegFreeExecCtxt(exec);
+	    exec = xmlRelaxNGElemPop(ctxt);
+	}
+	xmlFree(ctxt->elemTab);
+    }
     xmlFree(ctxt);
 }
 

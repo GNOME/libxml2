@@ -109,6 +109,10 @@ xmlDocPtr	xmlTextReaderCurrentDoc		(xmlTextReaderPtr reader);
 xmlNodePtr	xmlTextReaderExpand		(xmlTextReaderPtr reader);
 int		xmlTextReaderNext		(xmlTextReaderPtr reader);
 int		xmlTextReaderIsValid		(xmlTextReaderPtr reader);
+#ifdef LIBXML_SCHEMAS_ENABLED
+int		xmlTextReaderRelaxNGValidate	(xmlTextReaderPtr reader,
+						 const char *rng);
+#endif
 
 /*
  * Error handling extensions

@@ -624,6 +624,8 @@ static void streamFile(char *filename) {
     if (reader != NULL) {
 	if (valid)
 	    xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1);
+	if (relaxng != NULL)
+	    xmlTextReaderRelaxNGValidate(reader, relaxng);
 
 	/*
 	 * Process all nodes in sequence
@@ -640,6 +642,14 @@ static void streamFile(char *filename) {
 		xmlGenericError(xmlGenericErrorContext,
 			"Document %s does not validate\n", filename);
 		progresult = 3;
+	    }
+	}
+	if (relaxng != NULL) {
+	    if (xmlTextReaderIsValid(reader) != 1) {
+		printf("%s fails to validate\n", filename);
+		progresult = 3;
+	    } else {
+		printf("%s validates\n", filename);
 	    }
 	}
 	/*

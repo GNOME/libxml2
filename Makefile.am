@@ -733,6 +733,33 @@ Relaxtests: xmllint$(EXEEXT)
 	          rm res.$$name err.$$name ; \
 	       fi ; fi ; \
 	  done; done)
+	@echo "##"
+	@echo "## Relax-NG streaming regression tests"
+	@echo "##"
+	-@(for i in $(srcdir)/test/relaxng/*.rng ; do \
+	  name=`basename $$i | sed 's+\.rng++'`; \
+	  for j in $(srcdir)/test/relaxng/"$$name"_*.xml ; do \
+	      if [ -f $$j ] ; then \
+	      xno=`basename $$j | sed 's+.*_\(.*\).xml+\1+'`; \
+	      if [ ! -f $(srcdir)/result/relaxng/"$$name"_"$$xno" ]; \
+	      then \
+		  echo New test file "$$name"_"$$xno" ; \
+		  $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --relaxng $$i $$j \
+		    > $(srcdir)/result/relaxng/"$$name"_"$$xno" \
+		    2> $(srcdir)/result/relaxng/"$$name"_"$$xno".err; \
+	      else \
+		  echo Testing "$$name"_"$$xno" ; \
+	          $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --stream --relaxng $$i $$j \
+		    > res.$$name 2> err.$$name;\
+	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	          diff $(srcdir)/result/relaxng/"$$name"_"$$xno" \
+		       res.$$name;\
+	          diff $(srcdir)/result/relaxng/"$$name"_"$$xno".err \
+		       err.$$name | grep -v "error detected at";\
+		  grep Unimplemented err.$$name; \
+	          rm res.$$name err.$$name ; \
+	       fi ; fi ; \
+	  done; done)
 
 dist-hook: libxml2.spec
 	-cp libxml2.spec $(distdir)

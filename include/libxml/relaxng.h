@@ -104,4 +104,19 @@ void			xmlRelaxNGFreeValidCtxt	(xmlRelaxNGValidCtxtPtr ctxt);
 int			xmlRelaxNGValidateDoc	(xmlRelaxNGValidCtxtPtr ctxt,
 					 	 xmlDocPtr doc);
 void			xmlRelaxNGCleanupTypes	(void);
+/*
+ * Interfaces for progressive validation when possible
+ */
+int	xmlRelaxNGValidatePushElement	(xmlRelaxNGValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr elem);
+int	xmlRelaxNGValidatePushCData	(xmlRelaxNGValidCtxtPtr ctxt,
+					 const xmlChar *data,
+					 int len);
+int	xmlRelaxNGValidatePopElement	(xmlRelaxNGValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr elem);
+int	xmlRelaxNGValidateFullElement	(xmlRelaxNGValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr elem);
 #endif /* __XML_RELAX_NG__ */

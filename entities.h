@@ -57,8 +57,6 @@ typedef xmlEntitiesTable *xmlEntitiesTablePtr;
  * External functions :
  */
 
-#include "parser.h"
-
 void			xmlAddDocEntity		(xmlDocPtr doc,
 						 const xmlChar *name,
 						 int type,

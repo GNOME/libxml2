@@ -17,6 +17,7 @@
 #endif
 #include "xmlmemory.h"
 #include "entities.h"
+#include "parser.h"
 
 /*
  * The XML predefined entities.

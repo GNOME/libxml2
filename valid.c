@@ -1295,6 +1295,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 	VERROR(ctxt->userData, "Attribute %s on %s: invalid default value\n",
 	       elem, name, defaultValue);
 	defaultValue = NULL;
+	ctxt->valid = 0;
     }
 
     /*

@@ -1,3 +1,9 @@
+Mon Feb 18 23:25:08 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c valid.c: a couple of errors were reported but not
+	  saved back as such in the parsing context. Down to 1% failure rate
+	  Ran 1819 tests: 1801 suceeded, 18 failed and 0 generated an error
+
 Mon Feb 18 20:16:15 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlInternald.c: isExtender was missing a char 

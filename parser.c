@@ -5515,12 +5515,14 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 			    ctxt->sax->error(ctxt->userData, 
 				 "Entity '%s' not defined\n", name);
 			ctxt->wellFormed = 0;
+			ctxt->valid = 0;
 			ctxt->disableSAX = 1;
 		    } else {
 			ctxt->errNo = XML_WAR_UNDECLARED_ENTITY;
 			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData, 
 				 "Entity '%s' not defined\n", name);
+			ctxt->valid = 0;
 		    }
 		}
 

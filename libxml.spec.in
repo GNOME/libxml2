@@ -26,6 +26,7 @@ URI library.
 Summary: Libraries, includes, etc. to develop XML and HTML applications
 Group: Development/Libraries
 Requires: libxml2 = %{version}
+Requires: zlib-devel
 
 %description devel
 Libraries, include files, etc you can use to develop XML applications.

@@ -1,3 +1,7 @@
+Fri May 24 13:10:22 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in: fixing bug #81112
+
 Fri May 24 13:03:24 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: fixing bug #82848

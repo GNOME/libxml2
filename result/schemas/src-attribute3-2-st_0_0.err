@@ -1,0 +1,1 @@
+./test/schemas/src-attribute3-2-st_0.xsd:11: element simpleType: Schemas parser error : Attribute declaration anonattr 2 has both ("ref" or "type") and <simpleType>

@@ -1,0 +1,1 @@
+./test/schemas/src-element2-1_0.xsd:12: element element: Schemas parser error : Element declaration has both, "name" and "ref"

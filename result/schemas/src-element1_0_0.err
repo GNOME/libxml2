@@ -1,0 +1,1 @@
+./test/schemas/src-element1_0.xsd:7: element element: Schemas parser error : Element foo has both default and fixed

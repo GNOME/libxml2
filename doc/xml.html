@@ -1562,6 +1562,12 @@ or libxslt wrappers or bindings:</p>
 to be maintained as part of the library in the future, though the Python
 interface have not yet reached the maturity of the C API.</p>
 
+<p>Note to people interested in building bindings, the API is formalized as
+<a href="libxml2-api.xml">an XML API description file</a> which allows to
+automate a large part of the Python bindings, this includes function
+descriptions, enums, structures, typedefs, etc... The Python script used
+to build the bindings is python/generator.py in the source distribution.</p>
+
 <p>To install the Python bindings there are 2 options:</p>
 <ul>
   <li>If you use an RPM based distribution, simply install the <a
@@ -2736,6 +2742,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

@@ -290,6 +290,7 @@ EXPORTS
 	xmlSAXUserParseMemory
 	xmlSAXParseMemory
 	xmlSAXParseFile
+	xmlSAXParseFileWithData
 	xmlSAXParseEntity
 	xmlParseEntity
 	xmlParseDTD

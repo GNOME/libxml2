@@ -9726,23 +9726,27 @@ xmlCreateFileParserCtxt(const char *filename)
 }
 
 /**
- * xmlSAXParseFile:
+ * xmlSAXParseFileWithData:
  * @sax:  the SAX handler block
  * @filename:  the filename
  * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
  *             documents
+ * @data:  the userdata
  *
  * parse an XML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
  * It use the given SAX function block to handle the parsing callback.
  * If sax is NULL, fallback to the default DOM tree building routines.
  *
+ * User data (void *) is stored within the parser context, so it is
+ * available nearly everywhere in libxml.
+ *
  * Returns the resulting document tree
  */
 
 xmlDocPtr
-xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
-                          int recovery) {
+xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
+                        int recovery, void *data) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     char *directory = NULL;
@@ -9755,6 +9759,9 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
 	if (ctxt->sax != NULL)
 	    xmlFree(ctxt->sax);
         ctxt->sax = sax;
+    }
+    if (data!=NULL) {
+	ctxt->_private=data;
     }
 
     if ((ctxt->directory == NULL) && (directory == NULL))
@@ -9775,6 +9782,27 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
     xmlFreeParserCtxt(ctxt);
     
     return(ret);
+}
+
+/**
+ * xmlSAXParseFile:
+ * @sax:  the SAX handler block
+ * @filename:  the filename
+ * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+ *             documents
+ *
+ * parse an XML file and build a tree. Automatic support for ZLIB/Compress
+ * compressed document is provided by default if found at compile-time.
+ * It use the given SAX function block to handle the parsing callback.
+ * If sax is NULL, fallback to the default DOM tree building routines.
+ *
+ * Returns the resulting document tree
+ */
+
+xmlDocPtr
+xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
+                          int recovery) {
+    return(xmlSAXParseFileWithData(sax,filename,recovery,NULL));
 }
 
 /**

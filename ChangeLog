@@ -1,3 +1,8 @@
+Tue Oct  2 15:52:05 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* win32/dsp/libxml2.def.src include/libxml/parser.h parser.c:
+	  adding xmlSAXParseFileWithData following Marco Stipek suggestion
+
 Tue Oct  2 11:27:58 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: close bug #61550 when xml: wasn't considered a namespace

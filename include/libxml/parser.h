@@ -456,6 +456,10 @@ xmlDocPtr	xmlSAXParseMemory	(xmlSAXHandlerPtr sax,
 xmlDocPtr	xmlSAXParseFile		(xmlSAXHandlerPtr sax,
 					 const char *filename,
 					 int recovery);
+xmlDocPtr	xmlSAXParseFileWithData	(xmlSAXHandlerPtr sax,
+					 const char *filename,
+					 int recovery,
+					 void *data);
 xmlDocPtr	xmlSAXParseEntity	(xmlSAXHandlerPtr sax,
 					 const char *filename);
 xmlDocPtr	xmlParseEntity		(const char *filename);

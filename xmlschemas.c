@@ -4473,6 +4473,13 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
                 start = ctxt->state;
                 while (subtypes != NULL) {
                     ctxt->state = start;
+		    /*
+		     * the following 'if' was needed to fix bug 139897
+		     * not quite sure why it only needs to be done for
+		     * elements with a 'ref', but it seems to work ok.
+		     */
+		    if (subtypes->ref != NULL)
+		        xmlSchemaBuildAContentModel(subtypes, ctxt, name);
                     elem = (xmlSchemaElementPtr) subtypes;		    
                     /* TODO : handle the namespace too */
                     if ((elem->minOccurs == 1) && (elem->maxOccurs == 1)) {

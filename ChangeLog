@@ -1,3 +1,8 @@
+Wed May 12 22:34:03 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemas.c: added code in xmlSchemaBuildAContentModel to handle
+	  element reference within the xs:all construct (bug 139897)
+
 Wed May 12 17:27:18 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: a little further fixing of fallback processing, this

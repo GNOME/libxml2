@@ -4881,7 +4881,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     }
     memset(inputStream, 0, sizeof(htmlParserInput));
 
-    inputStream->filename = xmlMemStrdup(filename);
+    inputStream->filename = xmlNormalizeWindowsPath(filename);
     inputStream->line = 1;
     inputStream->col = 1;
     inputStream->buf = buf;

@@ -6025,7 +6025,7 @@ docbCreateFileParserCtxt(const char *filename,
     }
     memset(inputStream, 0, sizeof(docbParserInput));
 
-    inputStream->filename = xmlMemStrdup(filename);
+    inputStream->filename = xmlNormalizeWindowsPath(filename);
     inputStream->line = 1;
     inputStream->col = 1;
     inputStream->buf = buf;

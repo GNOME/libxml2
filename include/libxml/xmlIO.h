@@ -252,6 +252,7 @@ xmlParserInputPtr xmlNoNetExternalEntityLoader(const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr ctxt);
 
+xmlChar *xmlNormalizeWindowsPath	(const xmlChar *path);
 
 /**
  * Default 'file://' protocol callbacks 

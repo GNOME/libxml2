@@ -2536,6 +2536,7 @@ xmlSchemaFreeType(xmlSchemaTypePtr type)
     xmlFree(type);
 }
 
+#ifdef IDC_ENABLED
 static void
 xmlSchemaFreeIDCStateObjList(xmlSchemaIDCStateObjPtr sto)
 {
@@ -2563,7 +2564,7 @@ xmlSchemaFreeIDCStateObjList(xmlSchemaIDCStateObjPtr sto)
  *
  * Deallocates an identity-constraint definition.
  */
-void
+static void
 xmlSchemaFreeIDC(xmlSchemaIDCPtr idc)
 {
     xmlSchemaIDCSelectPtr cur, prev;
@@ -2593,6 +2594,7 @@ xmlSchemaFreeIDC(xmlSchemaIDCPtr idc)
     }
     xmlFree(idc);
 }
+#endif /* IDC_ENABLED */
 
 /**
  * xmlSchemaFreeTypeList:
@@ -2921,6 +2923,7 @@ xmlSchemaDump(FILE * output, xmlSchemaPtr schema)
                     (xmlHashScannerFull) xmlSchemaElementDump, output);
 }
 
+#ifdef IDC_ENABLED
 /**
  * xmlSchemaDebugDumpIDCTable: 
  * @vctxt: the WXS validation context
@@ -2964,13 +2967,13 @@ xmlSchemaDebugDumpIDCTable(FILE * output,
 		    if (res == 0)
 			fprintf(output, "\"%s\" ", value);
 		    else
-			fprintf(output, "CANON-VALUE-FAILED ", value);
+			fprintf(output, "CANON-VALUE-FAILED ");
 		    if (value != NULL) {
 			xmlFree(value);
 			value = NULL;
 		    }
 		} else if (key != NULL)
-		    fprintf(output, "(no val), ", key->compValue);
+		    fprintf(output, "(no val), ");
 		else
 		    fprintf(output, "(key missing), ");
 	    }
@@ -2979,6 +2982,7 @@ xmlSchemaDebugDumpIDCTable(FILE * output,
 	bind = bind->next;
     } while (bind != NULL);
 }
+#endif /* IDC_ENABLED */
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************
@@ -3510,7 +3514,7 @@ xmlSchemaAddNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 static xmlSchemaAttributePtr
 xmlSchemaAddAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                       const xmlChar * name, const xmlChar * namespace,
-		      xmlNodePtr node)
+		      xmlNodePtr node, int topLevel)
 {
     xmlSchemaAttributePtr ret = NULL;
     int val;
@@ -3540,12 +3544,45 @@ xmlSchemaAddAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     val = xmlHashAddEntry3(schema->attrDecl, name,
                            namespace, ctxt->container, ret);
     if (val != 0) {
-	xmlSchemaPCustomErr(ctxt,
-	    XML_SCHEMAP_REDEFINED_ATTR,
-	    NULL, NULL, node,
-	    "A global attribute declaration with the name '%s' does already exist", name);
-        xmlFree(ret);
-        return (NULL);
+	if (topLevel) {
+	    xmlSchemaPCustomErr(ctxt,
+		XML_SCHEMAP_REDEFINED_ATTR,
+		NULL, NULL, node,
+		"A global attribute declaration with the name '%s' does "
+		"already exist", name);
+	    xmlFree(ret);	    
+	    return (NULL);
+	} else {
+	    char buf[20];
+	    xmlChar *str;
+	    /*
+	    * Using the ctxt->container for xmlHashAddEntry3 is ambigious
+	    * in the scenario:
+	    * 1. multiple top-level complex types have different target
+	    *    namespaces but have the SAME NAME; this can happen if
+	    *	 schemata are  imported
+	    * 2. those complex types contain attributes with an equal name
+	    * 3. those attributes are in no namespace 
+	    * We will compute a new context string.
+	    */
+	    snprintf(buf, 19, "%d", ctxt->counter++ + 1);
+	    str = xmlStrdup(BAD_CAST ctxt->container);
+	    str = xmlStrcat(str, BAD_CAST buf);
+	    val = xmlHashAddEntry3(schema->attrDecl, name,
+		namespace, xmlDictLookup(ctxt->dict, str, -1), ret);
+	    FREE_AND_NULL(str)
+	    if (val != 0) {
+		xmlSchemaPCustomErr(ctxt,
+		    XML_SCHEMAP_INTERNAL,
+		    NULL, NULL, node,
+		    "Internal error: xmlSchemaAddElement, "
+		    "a dublicate element declaration with the name '%s' "
+		    "could not be added to the hash.", name);
+		xmlFree(ret);
+		return (NULL);
+	    }
+	    
+	}
     }
     if (ctxt->assemble != NULL)
 	xmlSchemaAddAssembledItem(ctxt, (xmlSchemaTypePtr) ret); 
@@ -3657,7 +3694,7 @@ xmlSchemaAddElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	} else {
 	    char buf[30]; 
 
-	    snprintf(buf, 29, "#eCont %d", ctxt->counter++ + 1);
+	    snprintf(buf, 29, "#eCont%d", ctxt->counter++ + 1);
 	    val = xmlHashAddEntry3(schema->elemDecl, name, (xmlChar *) buf,
 		namespace, ret);
 	    if (val != 0) {
@@ -5017,7 +5054,7 @@ xmlSchemaParseAny(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if ((minOccurs == 0) && (maxOccurs == 0))
 	return (NULL);
 
-    snprintf((char *) name, 30, "any %d", ctxt->counter++ + 1);
+    snprintf((char *) name, 30, "#any%d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);
     if (type == NULL)
         return (NULL);
@@ -5241,9 +5278,9 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    &refPrefix, &ref) != 0) {
 	    return (NULL);
 	}	
-        snprintf(buf, 49, "#aRef %d", ctxt->counter++ + 1);
+        snprintf(buf, 49, "#aRef%d", ctxt->counter++ + 1);
         name = (const xmlChar *) buf;	
-	ret = xmlSchemaAddAttribute(ctxt, schema, name, NULL, node);
+	ret = xmlSchemaAddAttribute(ctxt, schema, name, NULL, node, 0);
 	if (ret == NULL) {
 	    if (repName != NULL)
 		xmlFree(repName);
@@ -5342,8 +5379,8 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		}
 	    } else if (schema->flags & XML_SCHEMAS_QUALIF_ATTR)
 		ns = schema->targetNamespace;		
-	}				
-	ret = xmlSchemaAddAttribute(ctxt, schema, name, ns, node);
+	}	
+        ret = xmlSchemaAddAttribute(ctxt, schema, name, ns, node, topLevel);
 	if (ret == NULL) {
 	    if (repName != NULL)
 		xmlFree(repName);
@@ -5572,7 +5609,7 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt,
 	xmlSchemaPValAttrNodeQName(ctxt, schema,
 	    NULL, NULL, attr, &refNs, &refPrefix, &ref);
 	 
-        snprintf(buf, 49, "#aGrRef %d", ctxt->counter++ + 1);
+        snprintf(buf, 49, "#agRef%d", ctxt->counter++ + 1);
 	name = (const xmlChar *) buf;
 	if (name == NULL) {
 	    xmlSchemaPErrMemory(ctxt, "creating internal name for an "
@@ -5763,6 +5800,7 @@ xmlSchemaPValAttrBlockFinal(const xmlChar *value,
     return (ret);
 }
 
+#ifdef IDC_ENABLED
 static int
 xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt, 
 			     xmlSchemaPtr schema,
@@ -6126,6 +6164,7 @@ xmlSchemaParseIDC(xmlSchemaParserCtxtPtr ctxt,
 
     return (item);
 }
+#endif
 
 /**
  * xmlSchemaParseElement:
@@ -6204,7 +6243,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    (xmlChar **) &xmlSchemaElemDesElemRef, 
 	    NULL, attr, &refNs, &refPrefix, &ref);			
 	 
-        snprintf(buf, 49, "#eRef %d", ctxt->counter++ + 1);
+        snprintf(buf, 49, "#eRef%d", ctxt->counter++ + 1);
 	ret = xmlSchemaAddElement(ctxt, schema, (const xmlChar *) buf, NULL, node, 0);
 	if (ret == NULL) {
 	    if (repName != NULL)
@@ -6511,6 +6550,8 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    else
 		(xmlSchemaIDCPtr) ret->idcs = curIDC;
 	    lastIDC = curIDC;
+#else
+	    TODO
 #endif
 	    child = child->next;
 	}
@@ -6560,7 +6601,7 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
 
-    snprintf((char *) name, 30, "#union %d", ctxt->counter++ + 1);
+    snprintf((char *) name, 30, "#union%d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);
     if (type == NULL)
         return (NULL);
@@ -6647,7 +6688,7 @@ xmlSchemaParseList(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
 
-    snprintf((char *) name, 30, "#list %d", ctxt->counter++ + 1);
+    snprintf((char *) name, 30, "#list%d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);
     if (type == NULL)
         return (NULL);
@@ -6756,7 +6797,7 @@ xmlSchemaParseSimpleType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	/*
 	* Parse as local simple type definition.
 	*/
-        snprintf(buf, 39, "#ST %d", ctxt->counter++ + 1);
+        snprintf(buf, 39, "#ST%d", ctxt->counter++ + 1);
 	type = xmlSchemaAddType(ctxt, schema, (const xmlChar *)buf, NULL, node);
 	if (type == NULL)
 	    return (NULL);
@@ -6924,7 +6965,7 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         }
 	if (refNs == NULL)
 	    refNs = schema->targetNamespace;
-        snprintf(buf, 49, "#GrRef %d", ctxt->counter++ + 1);
+        snprintf(buf, 49, "#grRef%d", ctxt->counter++ + 1);
         name = (const xmlChar *) buf;
     }
     type = xmlSchemaAddGroup(ctxt, schema, name, ns, node);
@@ -6996,7 +7037,7 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         return (NULL);
 
 
-    snprintf((char *) name, 30, "all%d", ctxt->counter++ + 1);
+    snprintf((char *) name, 30, "#all%d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);
     if (type == NULL)
         return (NULL);
@@ -8048,7 +8089,7 @@ xmlSchemaParseChoice(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         return (NULL);
 
 
-    snprintf((char *) name, 30, "choice %d", ctxt->counter++ + 1);
+    snprintf((char *) name, 30, "#ch%d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);
     if (type == NULL)
         return (NULL);
@@ -8158,7 +8199,7 @@ xmlSchemaParseSequence(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         return (NULL);
 
     oldcontainer = ctxt->container;
-    snprintf((char *) name, 30, "#seq %d", ctxt->counter++ + 1);
+    snprintf((char *) name, 30, "#seq%d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);
     if (type == NULL)
         return (NULL);
@@ -8267,7 +8308,7 @@ xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
     oldcontainer = ctxt->container;
 
-    snprintf((char *) name, 30, "#restr %d", ctxt->counter++ + 1);
+    snprintf((char *) name, 30, "#restr%d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);
     if (type == NULL)
         return (NULL);
@@ -8489,7 +8530,7 @@ xmlSchemaParseExtension(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
     oldcontainer = ctxt->container;
 
-    snprintf((char *) name, 30, "extension %d", ctxt->counter++ + 1);
+    snprintf((char *) name, 30, "#ext%d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);    
     if (type == NULL)
         return (NULL);
@@ -8567,7 +8608,7 @@ xmlSchemaParseSimpleContent(xmlSchemaParserCtxtPtr ctxt,
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
 
-    snprintf((char *) name, 30, "simpleContent %d", ctxt->counter++ + 1);
+    snprintf((char *) name, 30, "#SC%d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);    
     if (type == NULL)
         return (NULL);
@@ -8626,7 +8667,7 @@ xmlSchemaParseComplexContent(xmlSchemaParserCtxtPtr ctxt,
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
 
-    snprintf((char *) name, 30, "#CC %d", ctxt->counter++ + 1);
+    snprintf((char *) name, 30, "#CC%d", ctxt->counter++ + 1);
     type = xmlSchemaAddType(ctxt, schema, name, NULL, node);
     if (type == NULL)
         return (NULL);
@@ -8737,7 +8778,7 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	/*
 	* Parse as local complex type definition.
 	*/
-        snprintf(buf, 39, "#CT %d", ctxt->counter++ + 1);
+        snprintf(buf, 39, "#CT%d", ctxt->counter++ + 1);
 	type = xmlSchemaAddType(ctxt, schema, (const xmlChar *)buf, NULL, node);
 	if (type == NULL)
 	    return (NULL);
@@ -13526,6 +13567,10 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr item,
 		if (item->subtypes != NULL)
 		    xmlSchemaTypeFixup(item->subtypes, ctxt, NULL);
                 break;
+	    case XML_SCHEMA_TYPE_IDC_UNIQUE:
+	    case XML_SCHEMA_TYPE_IDC_KEY:
+	    case XML_SCHEMA_TYPE_IDC_KEYREF:
+		break;
         }
     }
 #ifdef DEBUG_TYPE
@@ -14386,7 +14431,7 @@ xmlSchemaAttrFixup(xmlSchemaAttributePtr item,
 static void
 xmlSchemaResolveIDCKeyRef(xmlSchemaIDCPtr idc,
 			  xmlSchemaParserCtxtPtr ctxt, 
-			  const xmlChar * name)
+			  const xmlChar * name ATTRIBUTE_UNUSED)
 {  
     if (idc->type != XML_SCHEMA_TYPE_IDC_KEYREF)
         return;

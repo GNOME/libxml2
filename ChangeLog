@@ -1,3 +1,9 @@
+Fri Jan 28 16:51:47 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Corrected an ambigious symbol-space for
+	  local attribute declarations. IFDEFed more IDC code to
+	  surpress compiler warnings.
+
 Fri Jan 28 00:57:04 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* bakefile/Readme.txt bakefile/Bakefiles.bkgen bakefile/libxml2.bkl:
@@ -12,6 +18,7 @@ Thu Jan 27 18:23:50 CET 2005 Daniel Veillard <daniel@veillard.com>
 	  by Martijn Faassen
 
 Thu Jan 27 13:39:04 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
 	* xmlschemas.c include/libxml/schemasInternals.h:
 	  Added an initial skeleton for indentity-constraints. This is all
 	  defined out, since not complete, plus it needs support from other
@@ -415,23 +422,30 @@ Wed Nov 24 13:41:52 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 Wed Nov 17 13:54:37 CET 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
-	* xmlschemas.c: tiny enhancement for content model error reports (#157190, #143948).
-	  Removed abbreviations: CT, ST and WC (#157190, reported by Frans  Englich).
+	* xmlschemas.c: tiny enhancement for content model error reports
+	  (#157190, #143948). Removed abbreviations: CT, ST and WC 
+	  (#157190, reported by Frans  Englich).
 	  Initial: no report of local components.
-	* result/schemas/all* result/schemas/any3_0_0.err result/schemas/choice*
-	  result/schemas/cos-st-restricts-1-2-err_0_0.err result/schemas/derivation-ok-extension-err_0_0.err
-	  result/schemas/derivation-ok-extension_0_0.err result/schemas/derivation-ok-restriction-2-1-1_0_0.err
-	  result/schemas/derivation-ok-restriction-4-1-err_0_0.err result/schemas/deter0_0_0.err
-	  result/schemas/extension1_0_2.err result/schemas/facet-unionST-err1_0_0.err
-	  result/schemas/hexbinary_0_1.err result/schemas/list* result/schemas/restriction-attr1_0_0.err
-	  result/schemas/vdv-first4_0_1.err result/schemas/vdv-first4_0_2.err: Adapted output.
+	* result/schemas/all* result/schemas/any3_0_0.err
+	  result/schemas/choice*
+	  result/schemas/cos-st-restricts-1-2-err_0_0.err
+	  result/schemas/derivation-ok-extension-err_0_0.err
+	  result/schemas/derivation-ok-extension_0_0.err
+	  result/schemas/derivation-ok-restriction-2-1-1_0_0.err
+	  result/schemas/derivation-ok-restriction-4-1-err_0_0.err 
+	  result/schemas/deter0_0_0.err result/schemas/extension1_0_2.err
+	  result/schemas/facet-unionST-err1_0_0.err
+	  result/schemas/hexbinary_0_1.err
+	  result/schemas/list* result/schemas/restriction-attr1_0_0.err
+	  result/schemas/vdv-first4_0_1.err result/schemas/vdv-first4_0_2.err:
+	  Adapted output.
 
 Mon Nov 15 13:04:28 CET 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Moved execution of xmlSchemaCheckDefaults to
-	  xmlSchemaTypeFixup; this ensures facets of inherited types to be checked
-	  prior to facets of derived types - which caused a seg fault otherwise
-	  (bug #158216, reported by Frans Englich).
+	  xmlSchemaTypeFixup; this ensures facets of inherited types to be
+	  checked prior to facets of derived types - which caused a seg
+	  fault otherwise (bug #158216, reported by Frans Englich).
 
 Sun Nov 14 22:23:18 HKT 2004 William Brack <wbrack@mmm.com.hk>
 

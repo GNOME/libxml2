@@ -21,105 +21,141 @@ extern "C" {
 #endif
 XMLPUBFUN const xmlChar * XMLCALL
 		getPublicId			(void *ctx);
-XMLPUBFUN const xmlChar * XMLCALL	getSystemId			(void *ctx);
-XMLPUBFUN void XMLCALL		setDocumentLocator		(void *ctx,
+XMLPUBFUN const xmlChar * XMLCALL	
+		getSystemId			(void *ctx);
+XMLPUBFUN void XMLCALL		
+		setDocumentLocator		(void *ctx,
 						 xmlSAXLocatorPtr loc);
     
-XMLPUBFUN int XMLCALL		getLineNumber			(void *ctx);
-XMLPUBFUN int XMLCALL		getColumnNumber			(void *ctx);
+XMLPUBFUN int XMLCALL		
+		getLineNumber			(void *ctx);
+XMLPUBFUN int XMLCALL		
+		getColumnNumber			(void *ctx);
 
-XMLPUBFUN int XMLCALL		isStandalone			(void *ctx);
-XMLPUBFUN int XMLCALL		hasInternalSubset		(void *ctx);
-XMLPUBFUN int XMLCALL		hasExternalSubset		(void *ctx);
+XMLPUBFUN int XMLCALL		
+		isStandalone			(void *ctx);
+XMLPUBFUN int XMLCALL		
+		hasInternalSubset		(void *ctx);
+XMLPUBFUN int XMLCALL		
+		hasExternalSubset		(void *ctx);
 
-XMLPUBFUN void XMLCALL		internalSubset			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		internalSubset			(void *ctx,
 						 const xmlChar *name,
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID);
-XMLPUBFUN void XMLCALL		externalSubset			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		externalSubset			(void *ctx,
 						 const xmlChar *name,
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID);
-XMLPUBFUN xmlEntityPtr XMLCALL	getEntity			(void *ctx,
+XMLPUBFUN xmlEntityPtr XMLCALL	
+		getEntity			(void *ctx,
 						 const xmlChar *name);
-XMLPUBFUN xmlEntityPtr XMLCALL	getParameterEntity		(void *ctx,
+XMLPUBFUN xmlEntityPtr XMLCALL	
+		getParameterEntity		(void *ctx,
 						 const xmlChar *name);
-XMLPUBFUN xmlParserInputPtr XMLCALL resolveEntity			(void *ctx,
+XMLPUBFUN xmlParserInputPtr XMLCALL 
+		resolveEntity			(void *ctx,
 						 const xmlChar *publicId,
 						 const xmlChar *systemId);
 
-XMLPUBFUN void XMLCALL		entityDecl			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		entityDecl			(void *ctx,
 						 const xmlChar *name,
 						 int type,
 						 const xmlChar *publicId,
 						 const xmlChar *systemId,
 						 xmlChar *content);
-XMLPUBFUN void XMLCALL		attributeDecl			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		attributeDecl			(void *ctx,
 						 const xmlChar *elem,
 						 const xmlChar *fullname,
 						 int type,
 						 int def,
 						 const xmlChar *defaultValue,
 						 xmlEnumerationPtr tree);
-XMLPUBFUN void XMLCALL		elementDecl			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		elementDecl			(void *ctx,
 						 const xmlChar *name,
 						 int type,
 						 xmlElementContentPtr content);
-XMLPUBFUN void XMLCALL		notationDecl			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		notationDecl			(void *ctx,
 						 const xmlChar *name,
 						 const xmlChar *publicId,
 						 const xmlChar *systemId);
-XMLPUBFUN void XMLCALL		unparsedEntityDecl		(void *ctx,
+XMLPUBFUN void XMLCALL		
+		unparsedEntityDecl		(void *ctx,
 						 const xmlChar *name,
 						 const xmlChar *publicId,
 						 const xmlChar *systemId,
 						 const xmlChar *notationName);
 
-XMLPUBFUN void XMLCALL		startDocument			(void *ctx);
-XMLPUBFUN void XMLCALL		endDocument			(void *ctx);
-XMLPUBFUN void XMLCALL		attribute			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		startDocument			(void *ctx);
+XMLPUBFUN void XMLCALL		
+		endDocument			(void *ctx);
+XMLPUBFUN void XMLCALL		
+		attribute			(void *ctx,
 						 const xmlChar *fullname,
 						 const xmlChar *value);
-XMLPUBFUN void XMLCALL		startElement			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		startElement			(void *ctx,
 						 const xmlChar *fullname,
 						 const xmlChar **atts);
-XMLPUBFUN void XMLCALL		endElement			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		endElement			(void *ctx,
 						 const xmlChar *name);
-XMLPUBFUN void XMLCALL		reference			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		reference			(void *ctx,
 						 const xmlChar *name);
-XMLPUBFUN void XMLCALL		characters			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		characters			(void *ctx,
 						 const xmlChar *ch,
 						 int len);
-XMLPUBFUN void XMLCALL		ignorableWhitespace		(void *ctx,
+XMLPUBFUN void XMLCALL		
+		ignorableWhitespace		(void *ctx,
 						 const xmlChar *ch,
 						 int len);
-XMLPUBFUN void XMLCALL		processingInstruction		(void *ctx,
+XMLPUBFUN void XMLCALL		
+		processingInstruction		(void *ctx,
 						 const xmlChar *target,
 						 const xmlChar *data);
-XMLPUBFUN void XMLCALL		globalNamespace			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		globalNamespace			(void *ctx,
 						 const xmlChar *href,
 						 const xmlChar *prefix);
-XMLPUBFUN void XMLCALL		setNamespace			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		setNamespace			(void *ctx,
 						 const xmlChar *name);
-XMLPUBFUN xmlNsPtr XMLCALL	getNamespace			(void *ctx);
-XMLPUBFUN int XMLCALL		checkNamespace			(void *ctx,
+XMLPUBFUN xmlNsPtr XMLCALL	
+		getNamespace			(void *ctx);
+XMLPUBFUN int XMLCALL		
+		checkNamespace			(void *ctx,
 						 xmlChar *nameSpace);
-XMLPUBFUN void XMLCALL		namespaceDecl			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		namespaceDecl			(void *ctx,
 						 const xmlChar *href,
 						 const xmlChar *prefix);
-XMLPUBFUN void XMLCALL		comment				(void *ctx,
+XMLPUBFUN void XMLCALL		
+		comment				(void *ctx,
 						 const xmlChar *value);
-XMLPUBFUN void XMLCALL		cdataBlock			(void *ctx,
+XMLPUBFUN void XMLCALL		
+		cdataBlock			(void *ctx,
 						 const xmlChar *value,
 						 int len);
 
-XMLPUBFUN void XMLCALL		initxmlDefaultSAXHandler	(xmlSAXHandler *hdlr,
+XMLPUBFUN void XMLCALL		
+		initxmlDefaultSAXHandler	(xmlSAXHandler *hdlr,
 						 int warning);
 #ifdef LIBXML_HTML_ENABLED
-XMLPUBFUN void XMLCALL		inithtmlDefaultSAXHandler	(xmlSAXHandler *hdlr);
+XMLPUBFUN void XMLCALL		
+		inithtmlDefaultSAXHandler	(xmlSAXHandler *hdlr);
 #endif
 #ifdef LIBXML_DOCB_ENABLED
-XMLPUBFUN void XMLCALL		initdocbDefaultSAXHandler	(xmlSAXHandler *hdlr);
+XMLPUBFUN void XMLCALL		
+		initdocbDefaultSAXHandler	(xmlSAXHandler *hdlr);
 #endif
 #ifdef __cplusplus
 }

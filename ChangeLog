@@ -1,3 +1,7 @@
+Tue Aug 14 01:01:42 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: released 1.8.15
+
 2001-08-13  Alex Larsson  <alexl@redhat.com>
 
 	* parserold.c:

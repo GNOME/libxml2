@@ -53,7 +53,9 @@ parseDoc(char *docname) {
 		 
 	cur = cur->next;
 	}
-       
+	
+	xmlFreeDoc(doc);
+	return;
 }
 
 int

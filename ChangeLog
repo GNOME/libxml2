@@ -1,3 +1,18 @@
+Sat Aug 31 19:31:17 MDT 2002 John Fleck <jfleck@inkstain.net>
+
+	* doc/tutorial/includeaddattribute.c
+	* doc/tutorial/includeaddkeyword.c
+	* doc/tutorial/includegetattribute.c
+	* doc/tutorial/includekeyword.c
+	* doc/tutorial/xmltutorial.xml
+	* doc/tutorial/*.html
+	update tutorial to properly free memory (thanks to Christopher
+	R. Harris for pointing out that this needs to be done)
+	* doc/tutorial/images/callouts/*.png
+	added image files so the callouts are graphical, making it
+	easier to read ( use "--param callout.graphics 1" to generate
+	html with graphical callouts)
+	
 Wed Aug 28 13:44:54 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/Libxml2-Logo-180x168.gif doc/Libxml2-Logo-90x34.gif:

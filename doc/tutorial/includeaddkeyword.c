@@ -22,6 +22,7 @@ parseDoc(char *docname, char *keyword) {
 	
 	if (doc == NULL ) {
 		fprintf(stderr,"Document not parsed successfully. \n");
+		xmlFreeDoc(doc);
 		return (NULL);
 	}
 	
@@ -67,7 +68,9 @@ main(int argc, char **argv) {
 	doc = parseDoc (docname, keyword);
 	if (doc != NULL) {
 		xmlSaveFormatFile (docname, doc, 0);
+		xmlFreeDoc(doc);
 	}
+	
 	return (1);
 }
 ]]>

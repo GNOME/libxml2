@@ -47,7 +47,7 @@ parseDoc(char *docname) {
 	}
 	
 	getReference (doc, cur);
-
+	xmlFreeDoc(doc);
 	return;
 }
 

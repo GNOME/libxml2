@@ -57,6 +57,7 @@ main(int argc, char **argv) {
 	doc = parseDoc (docname, uri);
 	if (doc != NULL) {
 		xmlSaveFormatFile (docname, doc, 1);
+		xmlFreeDoc(doc);
 	}
 	return (1);
 }

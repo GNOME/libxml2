@@ -34,64 +34,105 @@ Its functions can be invoked from a single command from the command line, or it 
 
 .SH "COMMAND LINE OPTIONS"
 
+.TP
+\fB--shell\fR \fIfilename\fR
 .PP
-\fB--shell\fR \fIfilename\fR - Run a shell allowing interactive queries on catalog file \fIfilename\fR.
+Run a shell allowing interactive queries on catalog file \fIfilename\fR.
 
+.TP
+\fB--create\fR \fIfilename\fR
 .PP
-\fB--create\fR \fIfilename\fR - Create a new XML catalog. Outputs to stdout, ignoring \fIfilename\fR unless \fB--noout\fR is used, in which case it creates a new catalog file \fIfilename\fR.
+Create a new XML catalog. Outputs to stdout, ignoring \fIfilename\fR unless \fB--noout\fR is used, in which case it creates a new catalog file \fIfilename\fR.
 
+.TP
+\fB--add\fR \fI'type'\fR \fI'orig'\fR \fI'replace'\fR \fIfilename\fR
 .PP
-\fB--add\fR \fI'type'\fR \fI'orig'\fR \fI'replace'\fR \fIfilename\fR - Add an entry to catalog file \fIfilename\fR. \fItype\fR indicates the type of entry. Possible types are 'public', 'system', 'rewriteSystem', 'delegatePublic' and 'delegateSystem'. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used. The \fB-add\fR option will not overwrite \fIfilename\fR, outputing to stdout, unless \fB--noout\fR is used. The \fB--add\fR will always take three parameters even if some of the XML catalog constructs will have only a single argument.
+Add an entry to catalog file \fIfilename\fR. \fItype\fR indicates the type of entry. Possible types are 'public', 'system', 'rewriteSystem', 'delegatePublic' and 'delegateSystem'. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used. The \fB-add\fR option will not overwrite \fIfilename\fR, outputing to stdout, unless \fB--noout\fR is used. The \fB--add\fR will always take three parameters even if some of the XML catalog constructs will have only a single argument.
 
+.TP
+\fB--del\fR \fI'values'\fR \fIfilename\fR
 .PP
-\fB--del\fR \fI'values'\fR \fIfilename\fR - Remove entries from the catalog file \fIfilename\fR matching \fI'values'\fR. The \fB--del\fR option will not overwrite \fIfilename\fR, outputing to stdout, unless \fB--noout\fR is used.
+Remove entries from the catalog file \fIfilename\fR matching \fI'values'\fR. The \fB--del\fR option will not overwrite \fIfilename\fR, outputing to stdout, unless \fB--noout\fR is used.
 
+.TP
+\fB--noout\fR
 .PP
-\fB--noout\fR - Save output to the named file rather than outputing to stdout.
+Save output to the named file rather than outputing to stdout.
 
+.TP
+\fB-v\fR or \fB--verbose\fR
 .PP
-\fB-v\fR or \fB--verbose\fR - output debugging information.
+output debugging information.
 
 .SH "SHELL COMMANDS"
 
 .PP
 Invoking xmlcatalog with the \fB--shell\fR \fIfilename\fR option opens a command line shell allowing interactive access to the catalog file identified by \fIfilename\fR. Invoking the shell provides a command line prompt after which commands can be entered.
 
+.TP
+\fBpublic\fR \fI'PublicID'\fR
 .PP
-\fBpublic\fR \fI'PublicID'\fR - Execute a public identifier lookup of the catalog entry for \fI'PublicID'\fR. The corresponding entry will be output to the command line.
+Execute a public identifier lookup of the catalog entry for \fI'PublicID'\fR. The corresponding entry will be output to the command line.
 
+.TP
+\fBsystem\fR \fI'SystemID'\fR
 .PP
-\fBsystem\fR \fI'SystemID'\fR - Execute a public identifier lookup of the catalog entry for \fI'SystemID'\fR. The corresponding entry will be output to the command line.
+Execute a public identifier lookup of the catalog entry for \fI'SystemID'\fR. The corresponding entry will be output to the command line.
 
+.TP
+\fBadd \fR \fI'type'\fR \fI'orig'\fR \fI'replace'\fR
 .PP
-\fBadd \fR \fI'type'\fR \fI'orig'\fR \fI'replace'\fR - Add an entry to the catalog file. \fItype\fR indicates the type of entry. Possible types are 'public', 'system', 'rewriteSystem', 'delegatePublic' and 'delegateSystem'. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used.
+Add an entry to the catalog file. \fItype\fR indicates the type of entry. Possible types are 'public', 'system', 'rewriteSystem', 'delegatePublic' and 'delegateSystem'. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used.
 
+.TP
+\fBdel\fR \fI'values'\fR
 .PP
-\fBdel\fR \fI'values'\fR - Remove the catalog entry corresponding to \fI'values'\fR.
+Remove the catalog entry corresponding to \fI'values'\fR.
 
+.TP
+\fBdump\fR
 .PP
-\fBdump\fR - Print the current catalog.
+Print the current catalog.
 
+.TP
+\fBdebug\fR
 .PP
-\fBdebug\fR - Print debugging statements showing the steps xmlcatalog is executing.
+Print debugging statements showing the steps xmlcatalog is executing.
 
+.TP
+\fBquiet\fR
 .PP
-\fBquiet\fR - Stop printing debugging statements.
+Stop printing debugging statements.
 
+.TP
+\fBexit\fR
 .PP
-\fBexit\fR - Quit the shell.
+Quit the shell.
 
 .SH "REFERENCES"
 
-.PP
-\(bu .PP libxml web page: http://www.xmlsoft.org/: \fIhttp://www.xmlsoft.org/\fR .Sp \(bu .PP libxml catalog support web page: http://www.xmlsoft.org/catalog.html: \fIhttp://www.xmlsoft.org/catalog.html\fR .Sp \(bu .PP James Clark's SGML catalog page: http://www.jclark.com/sp/catalog.htm: \fIhttp://www.jclark.com/sp/catalog.htm\fR .Sp \(bu .PP OASIS XML catalog specification: http://www.oasis-open.org/committees/entity/spec.html: \fIhttp://www.oasis-open.org/committees/entity/spec.html\fR .Sp
-
+.TP
+libxml web page:
+	  http://www.xmlsoft.org/: \fIhttp://www.xmlsoft.org/\fR
+	  
+.TP
+libxml catalog support web page:
+	    http://www.xmlsoft.org/catalog.html: \fIhttp://www.xmlsoft.org/catalog.html\fR
+	  
+.TP
+James Clark's SGML catalog page:
+	     http://www.jclark.com/sp/catalog.htm: \fIhttp://www.jclark.com/sp/catalog.htm\fR
+	  
+.TP
+OASIS XML catalog specification:
+	     http://www.oasis-open.org/committees/entity/spec.html: \fIhttp://www.oasis-open.org/committees/entity/spec.html\fR
+	  
 .SH AUTHOR
 Copyright 2001
 .Sp
 John Fleck  <jfleck@inkstain.net>
 .PP
-Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License: \fIgnome-help:fdl\fR, Version 1.1 or any later version published by the Free Software Foundation with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found here: \fIgnome-help:fdl\fR.
+Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.1 or any later version published by the Free Software Foundation with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 
 .PP
 Many of the names used by companies to distinguish their products and services are claimed as trademarks. Where those names appear in any GNOME documentation, and those trademarks are made aware to the members of the GNOME Documentation Project, the names have been printed in caps or initial caps.

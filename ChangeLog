@@ -1,3 +1,10 @@
+Sat Oct  6 16:25:52 MDT 2001 John Fleck <jfleck@inkstain.net>
+
+	*doc/xmlcatalog_man.xml, xmlcatalog_man.html, xmlcatalog.1
+	finishing up fix to
+	https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=54392, making
+	the xmlcatalog man page display more elegantly
+
 Sat Oct  6 15:27:12 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: closing bug #61832

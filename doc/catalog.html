@@ -18,7 +18,7 @@ href="http://xmlsoft.org/catalog.html">http://xmlsoft.org/catalog.html</a></p>
 <p>Mailing-list archive:  <a
 href="http://mail.gnome.org/archives/xml/">http://mail.gnome.org/archives/xml/</a></p>
 
-<p>Version: $Revision: 1.3 $</p>
+<p>Version: $Revision: 1.4 $</p>
 
 <p>Table of Content:</p>
 <ol>
@@ -36,8 +36,8 @@ href="http://mail.gnome.org/archives/xml/">http://mail.gnome.org/archives/xml/</
 
 <h2><a name="General">General overview</a></h2>
 
-<p>What is a catalog ? Basically it's a lookup mechanism which is used when
-an entity (a file or a remote resource) reference another entity. The catalog
+<p>What is a catalog? Basically it's a lookup mechanism used when
+an entity (a file or a remote resource) references another entity. The catalog
 lookup is inserted between the moment the reference is recognized by the
 software (XML parser, stylesheet processing, or even images referenced for
 inclusion in a rendering) and the time where loading that resource is
@@ -62,7 +62,7 @@ actually started.</p>
   <li>providing a local cache mechanism allowing to load the entities
     associated to public identifiers or remote resources, this is a really
     important feature for any significant deployment of XML or SGML since it
-    allows to avoid the aleas and delays associated to fetching remore
+    allows to avoid the aleas and delays associated to fetching remote
     resources.</li>
 </ul>
 
@@ -105,9 +105,9 @@ will fetch them from the local disk.</p>
 DOCTYPE example it's a really old version, but is fine as an example.</p>
 
 <p>Libxml will check the catalog each time that it is requested to load an
-entity, this include DTD, external parsed entities, stylesheets, etc ... If
+entity, this includes DTD, external parsed entities, stylesheets, etc ... If
 your system is correctly configured all the authoring phase and processing
-should use only local files, even if your document stay portable because it
+should use only local files, even if your document stays portable because it
 uses the canonical public and system ID, referencing the remote document.</p>
 
 <h2><a name="Some">Some examples:</a></h2>
@@ -153,10 +153,10 @@ local system.</p>
 
 <p>Delegation is the core features which allows to build a tree of catalogs,
 easier to maintain than a single catalog, based on Public Identifier, System
-Identifier or URI prefixes it instruct the catalog software to lookup entries
+Identifier or URI prefixes it instructs the catalog software to look up entries
 in another resource. This feature allow to build hierarchies of catalogs, the
 set of entries presented should be sufficient to redirect the resolution of
-all DocBook references to the  specific catalog in
+all DocBook references to the specific catalog in
 <code>/usr/share/xml/docbook.xml</code> this one in turn could delegate all
 references for DocBook 4.2.1 to a specific catalog installed at the same time
 as the DocBook resources on the local machine.</p>
@@ -166,7 +166,7 @@ as the DocBook resources on the local machine.</p>
 <p>The user can change the default catalog behaviour by redirecting queries
 to its own set of catalogs, this can be done by setting the
 <code>XML_CATALOG_FILES</code> environment variable to a list of catalogs, an
-empty one should desactivate loading the default
+empty one should deactivate loading the default
 <code>/etc/xml/catalog</code> default catalog.</p>
 
 <p>@@More options are likely to be provided in the future@@</p>
@@ -230,7 +230,7 @@ http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd
 orchis:~/XML -&gt; </pre>
 
 <p>This should be sufficient for most debugging purpose, this was actually
-used heavilly to debug the XML Catalog implementation itself.</p>
+used heavily to debug the XML Catalog implementation itself.</p>
 
 <h2><a name="Declaring">How to create and maintain</a> catalogs:</h2>
 
@@ -245,7 +245,7 @@ to create a catalog the -create option provide this facility:</p>
 orchis:~/XML -&gt; </pre>
 
 <p>By default xmlcatalog does not overwrite the original catalog and save the
-result on the standard output, this can be overrident using the -noout
+result on the standard output, this can be overridden using the -noout
 option. The <code>-add</code> command allows to add entries in the
 catalog:</p>
 <pre>orchis:~/XML -&gt; ./xmlcatalog --noout --create --add "public" "-//OASIS//DTD DocBook XML V4.1.2//EN" http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd tst.xml
@@ -262,7 +262,7 @@ orchis:~/XML -&gt; </pre>
 the XML Catalog constructs (like nextCatalog) will have only a single
 argument, just pass a third empty string, it will be ignored.</p>
 
-<p>Similary the <code>-del</code> option remove matching entries from the
+<p>Similarly the <code>-del</code> option remove matching entries from the
 catalog:</p>
 <pre>orchis:~/XML -&gt; ./xmlcatalog --del "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" tst.xml
 &lt;?xml version="1.0"?&gt;
@@ -270,7 +270,7 @@ catalog:</p>
 &lt;catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"/&gt;
 orchis:~/XML -&gt; </pre>
 
-<p>The catalog is now empty. Note that the maching of <code>-del</code> is
+<p>The catalog is now empty. Note that the matching of <code>-del</code> is
 exact and would have worked in a similar fashion with the Public ID
 string.</p>
 
@@ -280,8 +280,8 @@ catalog tree of resources.</p>
 <h2><a name="implemento">The implementor corner quick review of the
 API:</a></h2>
 
-<p>First an like for every other module of libxml, there is an automatically
-generated <a href="html/libxml-catalog.html">API page  for catalog
+<p>First, and like for every other module of libxml, there is an automatically
+generated <a href="html/libxml-catalog.html">API page for catalog
 support</a>.</p>
 
 <p>The header for the catalog interfaces should be included as:</p>
@@ -356,7 +356,7 @@ provided because this functionality may be useful for client tools.</p>
 
 <p>Since the catalog tree is built progressively, some care has been taken to
 try to avoid troubles in multithreaded environments but without a
-test-and-set routine accessible from C this can't be fully garanteed, so the
+test-and-set routine accessible from C this can't be fully guaranteed, so the
 best is to use xmlGetExternalEntityLoader and set the entity loader routines
 to one of your code doing the synchronization.</p>
 
@@ -365,7 +365,7 @@ to one of your code doing the synchronization.</p>
 <h2><a name="Other">Other resources</a></h2>
 
 <p>The XML Catalog specification is relatively recent so there isn't much
-litterature to point at:</p>
+literature to point at:</p>
 <ul>
   <li>You can find an good rant from Norm Walsh about <a
     href="http://www.arbortext.com/Think_Tank/XML_Resources/Issue_Three/issue_three.html">the
@@ -384,6 +384,8 @@ litterature to point at:</p>
   <li>I have uploaded <a href="ftp://xmlsoft.org/test/dbk412catalog.tar.gz">a
     mall tarball</a> containing XML Catalogs for DocBook 4.1.2 which seems to
     work fine for me</li>
+  <li>The <a href="http://www.xmlsoft.org/xmlcatalog_man.html">xmlcatalog manual page</a></li>
+
 </ul>
 
 <p>If you have suggestions for corrections or additions, simply contact
@@ -391,6 +393,6 @@ me:</p>
 
 <p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
 
-<p>$Id: catalog.html,v 1.3 2001/08/23 15:31:19 veillard Exp $</p>
+<p>$Id: catalog.html,v 1.4 2001/08/24 12:14:55 veillard Exp $</p>
 </body>
 </html>

@@ -1,3 +1,8 @@
+Mon Sep  3 10:07:03 MDT 2001 John Fleck <jfleck@inkstain.net>
+
+	*doc/catalog.html - add link to the html version of the
+	man page, other linguistic cleanups
+
 Mon Sep  3 09:10:08 MDT 2001 John Fleck <jfleck@inkstain.net>
 
 	* doc/xmlcatalog_man.xml, xmlcatalog_man.html, xmlcatalog.1

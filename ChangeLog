@@ -1,3 +1,9 @@
+Mon Jan 14 18:56:25 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* hash.c: patch from Anthony Jones for hash.c allocation size
+	* Makefile.am: trying to work around Yet Another Libtool Madness
+	  and build the 2.4.13 release finally ...
+
 Mon Jan 14 18:27:19 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in include/libxml/xmlwin32version.h: updated to 2.4.13

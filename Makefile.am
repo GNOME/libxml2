@@ -552,7 +552,7 @@ dist-hook: libxml.spec
 cleantar:
 	@(rm -f libxslt*.tar.gz)
 
-rpm: cleantar distcheck
+rpm: cleantar dist
 	rpm -ta $(distdir).tar.gz
 
 ## We create xml2Conf.sh here and not from configure because we want

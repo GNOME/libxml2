@@ -103,9 +103,9 @@ xmlHashCreate(int size) {
     if (table) {
         table->size = size;
 	table->nbElems = 0;
-        table->table = xmlMalloc(size * sizeof(xmlHashEntry));
+        table->table = xmlMalloc(size * sizeof(xmlHashEntryPtr));
         if (table->table) {
-  	    memset(table->table, 0, size * sizeof(xmlHashEntry));
+  	    memset(table->table, 0, size * sizeof(xmlHashEntryPtr));
   	    return(table);
         }
         xmlFree(table);
@@ -144,12 +144,12 @@ xmlHashGrow(xmlHashTablePtr table, int size) {
     if (oldtable == NULL)
         return(-1);
   
-    table->table = xmlMalloc(size * sizeof(xmlHashEntry));
+    table->table = xmlMalloc(size * sizeof(xmlHashEntryPtr));
     if (table->table == NULL) {
 	table->table = oldtable;
 	return(-1);
     }
-    memset(table->table, 0, size * sizeof(xmlHashEntry));
+    memset(table->table, 0, size * sizeof(xmlHashEntryPtr));
     table->size = size;
 
     for (i = 0; i < oldsize; i++) {

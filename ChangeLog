@@ -1,3 +1,8 @@
+Sun Nov  3 10:43:44 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: switched the order of a couple of includes
+	  to fix bugs #97100
+
 Thu Oct 31 17:11:46 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* catalog.c: fixed bug #96963, reverted to the old behaviour of

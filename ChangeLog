@@ -1,3 +1,7 @@
+Tue Dec 17 11:29:41 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: the parseStartTag bug fix wasn't complete.
+	
 Mon Dec 16 23:00:05 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: Vyacheslav Pindyura managed to trigger a bug in

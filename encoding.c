@@ -86,7 +86,7 @@ static int xmlLittleEndian = 1;
  * xmlUTF8Strlen:
  * @utf:  a sequence of UTF-8 encoded bytes
  *
- * compute the lenght of an UTF8 string, it doesn't do a full UTF8
+ * compute the length of an UTF8 string, it doesn't do a full UTF8
  * checking of the content of the string.
  *
  * Returns the number of characters in the string or -1 in case of error

@@ -194,7 +194,7 @@ LIBXML_DLL_IMPORT extern const xmlChar xmlStringTextNoenc[];
 LIBXML_DLL_IMPORT extern const xmlChar xmlStringComment[];
 
 /*
- * Function to finish teh work of the macros where needed
+ * Function to finish the work of the macros where needed
  */
 int			xmlIsBaseChar	(int c);
 int			xmlIsBlank	(int c);

@@ -603,7 +603,7 @@ xmlNanoFTPGetMore(void *ctx) {
     }
 
     /*
-     * Read the amount left on teh control connection
+     * Read the amount left on the control connection
      */
     if ((len = recv(ctxt->controlFd, &ctxt->controlBuf[ctxt->controlBufIndex],
 		    size, 0)) < 0) {
@@ -1373,7 +1373,7 @@ xmlNanoFTPCloseConnection(void *ctx) {
  *
  * Parse at most one entry from the listing. 
  *
- * Returns -1 incase of error, the lenght of data parsed otherwise
+ * Returns -1 incase of error, the length of data parsed otherwise
  */
 
 static int

@@ -1317,10 +1317,10 @@ characters(void *ctx, const xmlChar *ch, int len)
 #ifndef XML_USE_BUFFER_CONTENT
 	    /*
 	     * The whole point of maintaining nodelen and nodemem,
-	     * xmlTextConcat is too costly, i.e. compute lenght,
+	     * xmlTextConcat is too costly, i.e. compute length,
 	     * reallocate a new buffer, move data, append ch. Here
 	     * We try to minimaze realloc() uses and avoid copying
-	     * and recomputing lenght over and over.
+	     * and recomputing length over and over.
 	     */
 	    if (ctxt->nodelen + len >= ctxt->nodemem) {
 		xmlChar *newbuf;

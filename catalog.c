@@ -1050,7 +1050,7 @@ xmlAddXMLCatalog(xmlCatalogEntryPtr catal, const xmlChar *type,
 /**
  * xmlDelXMLCatalog:
  * @catal:  top of an XML catalog
- * @value:  the value to remove from teh catalog
+ * @value:  the value to remove from the catalog
  *
  * Remove entries in the XML catalog where the value or the URI
  * is equal to @value

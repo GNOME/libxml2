@@ -1600,7 +1600,7 @@ xmlXPtrBuildNodeList(xmlXPathObjectPtr obj) {
  * xmlXPtrNbLocChildren:
  * @node:  an xmlNodePtr
  *
- * Count the number of location children of @node or the lenght of the
+ * Count the number of location children of @node or the length of the
  * string value in case of text/PI/Comments nodes
  *
  * Returns the number of location children

@@ -46,7 +46,7 @@ struct _xmlParserInput {
     xmlParserInputBufferPtr buf;      /* UTF-8 encoded buffer */
 
     const char *filename;             /* The file analyzed, if any */
-    const char *directory;            /* the directory/base of teh file */
+    const char *directory;            /* the directory/base of the file */
     const xmlChar *base;              /* Base of the array to parse */
     const xmlChar *cur;               /* Current char being parsed */
     const xmlChar *end;               /* end of the arry to parse */

@@ -922,7 +922,7 @@ xmlNormalizeURIPath(char *path) {
 /**
  * xmlURIUnescapeString:
  * @str:  the string to unescape
- * @len:   the lenght in bytes to unescape (or <= 0 to indicate full string)
+ * @len:   the length in bytes to unescape (or <= 0 to indicate full string)
  * @target:  optionnal destination buffer
  *
  * Unescaping routine, does not do validity checks !

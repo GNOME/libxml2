@@ -1669,7 +1669,7 @@ xmlNewDocText(xmlDocPtr doc, const xmlChar *content) {
  * @content:  the text content
  * @len:  the text len.
  *
- * Creation of a new text node with an extra parameter for the content's lenght
+ * Creation of a new text node with an extra parameter for the content's length
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
@@ -1708,7 +1708,7 @@ xmlNewTextLen(const xmlChar *content, int len) {
  * @content:  the text content
  * @len:  the text len.
  *
- * Creation of a new text node with an extra content lenght parameter. The
+ * Creation of a new text node with an extra content length parameter. The
  * text node pertain to a given document.
  * Returns a pointer to the new node object.
  */
@@ -4714,7 +4714,7 @@ xmlIsBlankNode(xmlNodePtr node) {
  * xmlTextConcat:
  * @node:  the node
  * @content:  the content
- * @len:  @content lenght
+ * @len:  @content length
  * 
  * Concat the given string at the end of the existing node content
  */
@@ -5037,7 +5037,7 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
  * @str:  the xmlChar string
  * @len:  the number of xmlChar to add
  *
- * Add a string range to an XML buffer. if len == -1, the lenght of
+ * Add a string range to an XML buffer. if len == -1, the length of
  * str is recomputed.
  */
 void
@@ -5086,7 +5086,7 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
  * @len:  the number of xmlChar to add
  *
  * Add a string range to the beginning of an XML buffer.
- * if len == -1, the lenght of @str is recomputed.
+ * if len == -1, the length of @str is recomputed.
  */
 void
 xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
@@ -6220,7 +6220,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
  * xmlDocDumpMemory:
  * @cur:  the document
  * @mem:  OUT: the memory pointer
- * @size:  OUT: the memory lenght
+ * @size:  OUT: the memory length
  *
  * Dump an XML document in memory and return the xmlChar * and it's size.
  * It's up to the caller to free the memory.
@@ -6234,7 +6234,7 @@ xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  * xmlDocDumpFormatMemory:
  * @cur:  the document
  * @mem:  OUT: the memory pointer
- * @size:  OUT: the memory lenght
+ * @size:  OUT: the memory length
  * @format:  should formatting spaces been added
  *
  *

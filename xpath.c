@@ -6277,7 +6277,7 @@ static xmlChar * xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt,
  * The current char value, if using UTF-8 this may actaully span multiple
  * bytes in the input buffer.
  *
- * Returns the current char value and its lenght
+ * Returns the current char value and its length
  */
 
 static int

@@ -228,7 +228,7 @@ PUSH_AND_POP(static, xmlChar*, name)
  * If the encoding is unspecified, in the case we find an ISO-Latin-1
  * char, then the encoding converter is plugged in automatically.
  *
- * Returns the current char value and its lenght
+ * Returns the current char value and its length
  */
 
 static int
@@ -310,7 +310,7 @@ docbCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
        }
     }
     /*
-     * Assume it's a fixed lenght encoding (1) with
+     * Assume it's a fixed length encoding (1) with
      * a compatibke encoding for the ASCII set, since
      * XML constructs only use < 128 chars
      */

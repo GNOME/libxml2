@@ -1203,7 +1203,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt) {
 		    ctxt->input->cur++;
 	    } else {
 		/*
-		 * Assume it's a fixed lenght encoding (1) with
+		 * Assume it's a fixed length encoding (1) with
 		 * a compatibke encoding for the ASCII set, since
 		 * XML constructs only use < 128 chars
 		 */
@@ -1262,7 +1262,7 @@ encoding_error:
  * This behavior can conveniently be produced by normalizing all
  * line breaks to #xA on input, before parsing.)
  *
- * Returns the current char value and its lenght
+ * Returns the current char value and its length
  */
 
 int
@@ -1355,7 +1355,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	}
     }
     /*
-     * Assume it's a fixed lenght encoding (1) with
+     * Assume it's a fixed length encoding (1) with
      * a compatibke encoding for the ASCII set, since
      * XML constructs only use < 128 chars
      */
@@ -1399,7 +1399,7 @@ encoding_error:
  * The current char value, if using UTF-8 this may actaully span multiple
  * bytes in the input buffer.
  *
- * Returns the current char value and its lenght
+ * Returns the current char value and its length
  */
 
 int
@@ -1467,7 +1467,7 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar *cur, int *len) {
 	}
     }
     /*
-     * Assume it's a fixed lenght encoding (1) with
+     * Assume it's a fixed length encoding (1) with
      * a compatibke encoding for the ASCII set, since
      * XML constructs only use < 128 chars
      */

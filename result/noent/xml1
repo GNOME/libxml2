@@ -7,5 +7,5 @@
 <test>
 <p>An ampersand (&amp;) may be escaped
  numerically (&amp;#38;) or with a general entity
-  (&amp;amp;amp;).</p>
+  (&amp;amp;).</p>
 </test>

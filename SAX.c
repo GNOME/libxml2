@@ -955,6 +955,12 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     ns = xmlSearchNs(ctxt->myDoc, ret, prefix);
     if ((ns == NULL) && (parent != NULL))
 	ns = xmlSearchNs(ctxt->myDoc, parent, prefix);
+    if ((prefix != NULL) && (ns == NULL)) {
+	ns = xmlNewNs(ret, NULL, prefix);
+	if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	    ctxt->sax->warning(ctxt->userData, 
+		 "Namespace prefix %s is not defined\n", prefix);
+    }
     xmlSetNs(ret, ns);
 
     /*
@@ -1121,7 +1127,7 @@ characters(void *ctx, const xmlChar *ch, int len)
 	}
 #endif
     } else {
-	if (xmlNodeIsText(lastChild)) {
+	if ((xmlNodeIsText(lastChild)) && (ctxt->nodemem != 0)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    /*
 	     * The whole point of maintaining nodelen and nodemem,

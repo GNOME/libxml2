@@ -3,4 +3,4 @@
 <!ENTITY YN '"Yes"'>
 <!ENTITY WhatHeSaid "He said &YN;">
 ]>
-<doc>He said &amp;YN;</doc>
+<doc>He said &quot;Yes&quot;</doc>

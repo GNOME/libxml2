@@ -37,6 +37,10 @@
 
 void xmlDebugDumpString(FILE *output, const xmlChar *str) {
     int i;
+    if (str == NULL) {
+	fprintf(output, "(NULL)");
+	return;
+    }
     for (i = 0;i < 40;i++)
         if (str[i] == 0) return;
 	else if (IS_BLANK(str[i])) fputc(' ', output);
@@ -370,13 +374,20 @@ void xmlDebugDumpNamespace(FILE *output, xmlNsPtr ns, int depth) {
     fprintf(output, shift);
     if (ns->type == XML_GLOBAL_NAMESPACE)
         fprintf(output, "old ");
-    if (ns->prefix != NULL)
-	fprintf(output, "namespace %s href=", ns->prefix);
-    else
-	fprintf(output, "default namespace href=");
+    if (ns->href == NULL) {
+	if (ns->prefix != NULL)
+	    fprintf(output, "incomplete namespace %s href=NULL\n", ns->prefix);
+	else
+	    fprintf(output, "incomplete default namespace href=NULL\n");
+    } else {
+	if (ns->prefix != NULL)
+	    fprintf(output, "namespace %s href=", ns->prefix);
+	else
+	    fprintf(output, "default namespace href=");
 
-    xmlDebugDumpString(output, ns->href);
-    fprintf(output, "\n");
+	xmlDebugDumpString(output, ns->href);
+	fprintf(output, "\n");
+    }
 }
 
 void xmlDebugDumpNamespaceList(FILE *output, xmlNsPtr ns, int depth) {

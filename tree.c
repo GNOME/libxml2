@@ -129,18 +129,13 @@ xmlUpgradeOldNs(xmlDocPtr doc) {
  * Creation of a new Namespace. This function will refuse to create
  * a namespace with a similar prefix than an existing one present on this
  * node.
+ * We use href==NULL in the case of an element creation where the namespace
+ * was not defined.
  * Returns returns a new namespace pointer or NULL
  */
 xmlNsPtr
 xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
     xmlNsPtr cur;
-
-    if (href == NULL) {
-#ifdef DEBUG_TREE
-        fprintf(stderr, "xmlNewNs: href == NULL !\n");
-#endif
-	return(NULL);
-    }
 
     /*
      * Allocate a new Namespace and fill the fields.
@@ -1244,9 +1239,8 @@ xmlNewPI(const xmlChar *name, const xmlChar *content) {
  * @ns:  namespace if any
  * @name:  the node name
  *
- * Creation of a new node element. @ns and @content are optionnal (NULL).
- * If content is non NULL, a child list containing the TEXTs and
- * ENTITY_REFs node will be created.
+ * Creation of a new node element. @ns is optionnal (NULL).
+ *
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
@@ -3217,6 +3211,10 @@ xmlGetNsList(xmlDocPtr doc, xmlNodePtr node) {
  * recurse on the parents until it finds the defined namespace
  * or return NULL otherwise.
  * @nameSpace can be NULL, this is a search for the default namespace.
+ * We don't allow to cross entities boundaries. If you don't declare
+ * the namespace within those you will be in troubles !!! A warning
+ * is generated to cover this case.
+ *
  * Returns the namespace pointer or NULL.
  */
 xmlNsPtr
@@ -3225,12 +3223,18 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 
     if (node == NULL) return(NULL);
     while (node != NULL) {
+	if ((node->type == XML_ENTITY_REF_NODE) ||
+	    (node->type == XML_ENTITY_NODE) ||
+	    (node->type == XML_ENTITY_DECL))
+	    return(NULL);
 	if (node->type == XML_ELEMENT_NODE) {
 	    cur = node->nsDef;
 	    while (cur != NULL) {
-		if ((cur->prefix == NULL) && (nameSpace == NULL))
+		if ((cur->prefix == NULL) && (nameSpace == NULL) &&
+		    (cur->href != NULL))
 		    return(cur);
 		if ((cur->prefix != NULL) && (nameSpace != NULL) &&
+		    (cur->href != NULL) &&
 		    (!xmlStrcmp(cur->prefix, nameSpace)))
 		    return(cur);
 		cur = cur->next;
@@ -4840,7 +4844,7 @@ xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
 #endif
 	return;
     }
-    if (cur->type == XML_LOCAL_NAMESPACE) {
+    if ((cur->type == XML_LOCAL_NAMESPACE) && (cur->href != NULL)) {
         /* Within the context of an element attributes */
 	if (cur->prefix != NULL) {
 	    xmlOutputBufferWriteString(buf, " xmlns:");

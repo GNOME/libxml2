@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-#define XML_MAX_NAMELEN 1000
+#define XML_MAX_NAMELEN 100
 
 /************************************************************************
  *									*

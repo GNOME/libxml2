@@ -1,6 +1,14 @@
 /*
  * parser.c : an XML 1.0 non-verifying parser
  *
+ * References:
+ *   The XML specification:
+ *     http://www.w3.org/TR/REC-xml
+ *   Original 1.0 version:
+ *     http://www.w3.org/TR/1998/REC-xml-19980210
+ *   XML second edition working draft
+ *     http://www.w3.org/TR/2000/WD-xml-2e-20000814
+ *
  * See Copyright for the status of this software.
  *
  * Daniel.Veillard@w3.org
@@ -1176,9 +1184,13 @@ int
 xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
     int cur, res = 0;
 
+    /*
+     * It's Okay to use CUR/NEXT here since all the blanks are on
+     * the ASCII range.
+     */
     do {
 	cur = CUR;
-	while (IS_BLANK(cur)) {
+	while (IS_BLANK(cur)) { /* CHECKED tstblanks.xml */
 	    NEXT;
 	    cur = CUR;
 	    res++;
@@ -1188,9 +1200,12 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 	    xmlPopInput(ctxt);
 	    cur = CUR;
 	}
+	/*
+	 * Need to handle support of entities branching here
+	 */
 	if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);
 	if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt);
-    } while (IS_BLANK(cur));
+    } while (IS_BLANK(cur)); /* CHECKED tstblanks.xml */
     return(res);
 }
 
@@ -1609,10 +1624,10 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
 
     if (ctxt == NULL) return;
 
-    while ((input = inputPop(ctxt)) != NULL) {
+    while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
         xmlFreeInputStream(input);
     }
-    while ((oldname = namePop(ctxt)) != NULL) {
+    while ((oldname = namePop(ctxt)) != NULL) { /* Non consuming */
 	xmlFree(oldname);
     }
     if (ctxt->spaceTab != NULL) xmlFree(ctxt->spaceTab);
@@ -1706,21 +1721,26 @@ xmlCheckEntity(xmlParserCtxtPtr ctxt, const xmlChar *content) {
 int
 xmlParseCharRef(xmlParserCtxtPtr ctxt) {
     int val = 0;
+    int count = 0;
 
     if (ctxt->token != 0) {
 	val = ctxt->token;
         ctxt->token = 0;
         return(val);
     }
+    /*
+     * Using RAW/CUR/NEXT is okay since we are working on ASCII range here
+     */
     if ((RAW == '&') && (NXT(1) == '#') &&
         (NXT(2) == 'x')) {
 	SKIP(3);
-	while (RAW != ';') {
-	    if ((RAW >= '0') && (RAW <= '9')) 
+	GROW;
+	while (RAW != ';') { /* loop blocked by count */
+	    if ((RAW >= '0') && (RAW <= '9') && (count < 20)) 
 	        val = val * 16 + (CUR - '0');
-	    else if ((RAW >= 'a') && (RAW <= 'f'))
+	    else if ((RAW >= 'a') && (RAW <= 'f') && (count < 20))
 	        val = val * 16 + (CUR - 'a') + 10;
-	    else if ((RAW >= 'A') && (RAW <= 'F'))
+	    else if ((RAW >= 'A') && (RAW <= 'F') && (count < 20))
 	        val = val * 16 + (CUR - 'A') + 10;
 	    else {
 		ctxt->errNo = XML_ERR_INVALID_HEX_CHARREF;
@@ -1733,6 +1753,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 		break;
 	    }
 	    NEXT;
+	    count++;
 	}
 	if (RAW == ';') {
 	    /* on purpose to avoid reentrancy problems with NEXT and SKIP */
@@ -1741,8 +1762,9 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	}
     } else if  ((RAW == '&') && (NXT(1) == '#')) {
 	SKIP(2);
-	while (RAW != ';') {
-	    if ((RAW >= '0') && (RAW <= '9')) 
+	GROW;
+	while (RAW != ';') { /* loop blocked by count */
+	    if ((RAW >= '0') && (RAW <= '9') && (count < 20)) 
 	        val = val * 10 + (CUR - '0');
 	    else {
 		ctxt->errNo = XML_ERR_INVALID_DEC_CHARREF;
@@ -1755,6 +1777,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 		break;
 	    }
 	    NEXT;
+	    count++;
 	}
 	if (RAW == ';') {
 	    /* on purpose to avoid reentrancy problems with NEXT and SKIP */
@@ -1818,7 +1841,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
     if ((cur == '&') && (ptr[1] == '#') && (ptr[2] == 'x')) {
 	ptr += 3;
 	cur = *ptr;
-	while (cur != ';') {
+	while (cur != ';') { /* Non input consuming loop */
 	    if ((cur >= '0') && (cur <= '9')) 
 	        val = val * 16 + (cur - '0');
 	    else if ((cur >= 'a') && (cur <= 'f'))
@@ -1843,7 +1866,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
     } else if  ((cur == '&') && (ptr[1] == '#')){
 	ptr += 2;
 	cur = *ptr;
-	while (cur != ';') {
+	while (cur != ';') { /* Non input consuming loops */
 	    if ((cur >= '0') && (cur <= '9')) 
 	        val = val * 10 + (cur - '0');
 	    else {
@@ -1912,6 +1935,8 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
  * A PEReference may have been detectect in the current input stream
  * the handling is done accordingly to 
  *      http://www.w3.org/TR/REC-xml#entproc
+ *
+ * TODO: the default handling part seems deprecated now ... cut it off
  */
 void
 xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
@@ -1974,7 +1999,7 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
 		 *       substitution here since we need the literal
 		 *       entity value to be able to save the internal
 		 *       subset of the document.
-		 *       This will be handled by xmlDecodeEntities
+		 *       This will be handled by xmlStringDecodeEntities
 		 */
 		return;
 	    case XML_PARSER_CONTENT:
@@ -2026,7 +2051,7 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
 	     *       substitution here since we need the literal
 	     *       entity value to be able to save the internal
 	     *       subset of the document.
-	     *       This will be handled by xmlDecodeEntities
+	     *       This will be handled by xmlStringDecodeEntities
 	     */
 	    return;
         case XML_PARSER_ATTRIBUTE_VALUE:
@@ -2036,7 +2061,7 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
 	     *       the parser is explicitely asked to substitute
 	     *       entities. The SAX callback is called with values
 	     *       without entity substitution.
-	     *       This will then be handled by xmlDecodeEntities
+	     *       This will then be handled by xmlStringDecodeEntities
 	     */
 	    return;
 	case XML_PARSER_ENTITY_DECL:
@@ -2055,6 +2080,10 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
 	    return;
     }
 
+/* TODO: this seems not reached anymore .... Verify ... */
+fprintf(stderr, "Reached deprecated section in xmlParserHandleReference()\n");
+fprintf(stderr, "Please forward the document to Daniel.Veillard@w3.org\n");
+fprintf(stderr, "indicating the version: %s, thanks !\n", xmlParserVersion);
     NEXT;
     name = xmlScanName(ctxt);
     if (name == NULL) {
@@ -2214,7 +2243,7 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 	     *       substitution here since we need the literal
 	     *       entity value to be able to save the internal
 	     *       subset of the document.
-	     *       This will be handled by xmlDecodeEntities
+	     *       This will be handled by xmlStringDecodeEntities
 	     */
 	    return;
         case XML_PARSER_DTD:
@@ -2340,6 +2369,11 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
  * @end2:  an end marker xmlChar, 0 if none
  * @end3:  an end marker xmlChar, 0 if none
  * 
+ * This function is deprecated, we now always process entities content
+ * through xmlStringDecodeEntities
+ *
+ * TODO: remove it in next major release.
+ *
  * [67] Reference ::= EntityRef | CharRef
  *
  * [69] PEReference ::= '%' Name ';'
@@ -2382,10 +2416,11 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
     /*
      * Ok loop until we reach one of the ending char or a size limit.
      */
+    GROW;
     c = CUR_CHAR(l);
-    while ((nbchars < max) && (c != end) &&
+    while ((nbchars < max) && (c != end) && /* NOTUSED */
            (c != end2) && (c != end3)) {
-
+	GROW;
 	if (c == 0) break;
         if (((c == '&') && (ctxt->token != '&')) && (NXT(1) == '#')) {
 	    int val = xmlParseCharRef(ctxt);
@@ -2399,7 +2434,7 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
 	    if ((ent != NULL) && 
 		(ctxt->replaceEntities != 0)) {
 		current = ent->content;
-		while (*current != 0) {
+		while (*current != 0) { /* non input consuming loop */
 		    buffer[nbchars++] = *current++;
 		    if (nbchars > buffer_size - XML_PARSER_BUFFER_SIZE) {
 			growBuffer(buffer);
@@ -2412,7 +2447,7 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
 		if (nbchars > buffer_size - XML_PARSER_BUFFER_SIZE) {
 		    growBuffer(buffer);
 		}
-		while (*cur != 0) {
+		while (*cur != 0) { /* non input consuming loop */
 		    buffer[nbchars++] = *cur++;
 		}
 		buffer[nbchars++] = ';';
@@ -2432,7 +2467,7 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
 	    /*
 	     * Pop-up of finished entities.
 	     */
-	    while ((RAW == 0) && (ctxt->inputNr > 1))
+	    while ((RAW == 0) && (ctxt->inputNr > 1)) /* non input consuming */
 		xmlPopInput(ctxt);
 
 	    break;
@@ -2458,6 +2493,8 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
  * @end2:  an end marker xmlChar, 0 if none
  * @end3:  an end marker xmlChar, 0 if none
  * 
+ * Takes a entity string content and process to do the adequate subtitutions.
+ *
  * [67] Reference ::= EntityRef | CharRef
  *
  * [69] PEReference ::= '%' Name ';'
@@ -2501,9 +2538,11 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
 
     /*
      * Ok loop until we reach one of the ending char or a size limit.
+     * we are operating on already parsed values.
      */
     c = CUR_SCHAR(str, l);
-    while ((c != 0) && (c != end) && (c != end2) && (c != end3)) {
+    while ((c != 0) && (c != end) && /* non input consuming loop */
+	   (c != end2) && (c != end3)) {
 
 	if (c == 0) break;
         if ((c == '&') && (str[1] == '#')) {
@@ -2516,7 +2555,8 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
 		fprintf(stderr, "String decoding Entity Reference: %.30s\n",
 			str);
 	    ent = xmlParseStringEntityRef(ctxt, &str);
-	    if ((ent != NULL) && (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
+	    if ((ent != NULL) &&
+		(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 		if (ent->content != NULL) {
 		    COPY_BUF(0,buffer,nbchars,ent->content[0]);
 		} else {
@@ -2533,7 +2573,7 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
 		ctxt->depth--;
 		if (rep != NULL) {
 		    current = rep;
-		    while (*current != 0) {
+		    while (*current != 0) { /* non input consuming loop */
 			buffer[nbchars++] = *current++;
 			if (nbchars >
 		            buffer_size - XML_PARSER_BUFFER_SIZE) {
@@ -2567,7 +2607,7 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
 		ctxt->depth--;
 		if (rep != NULL) {
 		    current = rep;
-		    while (*current != 0) {
+		    while (*current != 0) { /* non input consuming loop */
 			buffer[nbchars++] = *current++;
 			if (nbchars >
 		            buffer_size - XML_PARSER_BUFFER_SIZE) {
@@ -2603,6 +2643,9 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
  *
  * Checks that the value conforms to the LanguageID production:
  *
+ * NOTE: this is somewhat deprecated, those productions were removed from
+ *       the XML Second edition.
+ *
  * [33] LanguageID ::= Langcode ('-' Subcode)*
  * [34] Langcode ::= ISO639Code |  IanaCode |  UserCode
  * [35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z])
@@ -2624,7 +2667,7 @@ xmlCheckLanguageID(const xmlChar *lang) {
 	 * IANA code
 	 */
 	cur += 2;
-        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
+        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) || /* non input consuming */
 	       ((cur[0] >= 'a') && (cur[0] <= 'z')))
 	    cur++;
     } else if (((cur[0] == 'x') && (cur[1] == '-')) ||
@@ -2633,7 +2676,7 @@ xmlCheckLanguageID(const xmlChar *lang) {
 	 * User code
 	 */
 	cur += 2;
-        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
+        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) || /* non input consuming */
 	       ((cur[0] >= 'a') && (cur[0] <= 'z')))
 	    cur++;
     } else if (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
@@ -2649,7 +2692,7 @@ xmlCheckLanguageID(const xmlChar *lang) {
 	    return(0);
     } else
 	return(0);
-    while (cur[0] != 0) {
+    while (cur[0] != 0) { /* non input consuming */
 	if (cur[0] != '-')
 	    return(0);
 	cur++;
@@ -2658,7 +2701,7 @@ xmlCheckLanguageID(const xmlChar *lang) {
 	    cur++;
 	else
 	    return(0);
-        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
+        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) || /* non input consuming */
 	       ((cur[0] >= 'a') && (cur[0] <= 'z')))
 	    cur++;
     }
@@ -3010,7 +3053,7 @@ xmlStrdup(const xmlChar *cur) {
     const xmlChar *p = cur;
 
     if (cur == NULL) return(NULL);
-    while (*p != 0) p++;
+    while (*p != 0) p++; /* non input consuming */
     return(xmlStrndup(cur, p - cur));
 }
 
@@ -3057,7 +3100,7 @@ xmlCharStrdup(const char *cur) {
     const char *p = cur;
 
     if (cur == NULL) return(NULL);
-    while (*p != '\0') p++;
+    while (*p != '\0') p++; /* non input consuming */
     return(xmlCharStrndup(cur, p - cur));
 }
 
@@ -3081,7 +3124,7 @@ xmlStrcmp(const xmlChar *str1, const xmlChar *str2) {
     do {
         tmp = *str1++ - *str2++;
 	if (tmp != 0) return(tmp);
-    } while ((*str1 != 0) && (*str2 != 0));
+    } while ((*str1 != 0) && (*str2 != 0)); /* non input consuming */
     return (*str1 - *str2);
 }
 
@@ -3109,7 +3152,7 @@ xmlStrncmp(const xmlChar *str1, const xmlChar *str2, int len) {
 	if (tmp != 0) return(tmp);
 	len--;
         if (len <= 0) return(0);
-    } while ((*str1 != 0) && (*str2 != 0));
+    } while ((*str1 != 0) && (*str2 != 0)); /* non input consuming */
     return (*str1 - *str2);
 }
 
@@ -3126,7 +3169,7 @@ xmlStrncmp(const xmlChar *str1, const xmlChar *str2, int len) {
 const xmlChar *
 xmlStrchr(const xmlChar *str, xmlChar val) {
     if (str == NULL) return(NULL);
-    while (*str != 0) {
+    while (*str != 0) { /* non input consuming */
         if (*str == val) return((xmlChar *) str);
 	str++;
     }
@@ -3152,7 +3195,7 @@ xmlStrstr(const xmlChar *str, xmlChar *val) {
     n = xmlStrlen(val);
 
     if (n == 0) return(str);
-    while (*str != 0) {
+    while (*str != 0) { /* non input consuming */
         if (*str == *val) {
 	    if (!xmlStrncmp(str, val, n)) return((const xmlChar *) str);
 	}
@@ -3202,7 +3245,7 @@ xmlStrlen(const xmlChar *str) {
     int len = 0;
 
     if (str == NULL) return(0);
-    while (*str != 0) {
+    while (*str != 0) { /* non input consuming */
 	str++;
 	len++;
     }
@@ -3261,7 +3304,7 @@ xmlStrcat(xmlChar *cur, const xmlChar *add) {
     if (cur == NULL) 
         return(xmlStrdup(add));
 
-    while (*p != 0) p++;
+    while (*p != 0) p++; /* non input consuming */
     return(xmlStrncat(cur, add, p - add));
 }
 
@@ -3392,6 +3435,9 @@ void xmlParseReference(xmlParserCtxtPtr ctxt);
  *
  * parse an XML namespace name.
  *
+ * TODO: this seems not in use anymore, the namespace handling is done on
+ *       top of the SAX interfaces, i.e. not on raw input.
+ *
  * [NS 3] NCName ::= (Letter | '_') (NCNameChar)*
  *
  * [NS 4] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
@@ -3407,9 +3453,11 @@ xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt) {
     int cur = CUR_CHAR(l);
 
     /* load first the value of the char !!! */
+    GROW;
     if (!IS_LETTER(cur) && (cur != '_')) return(NULL);
 
-    while ((IS_LETTER(cur)) || (IS_DIGIT(cur)) ||
+fprintf(stderr, "xmlNamespaceParseNCName: reached loop 3\n");
+    while ((IS_LETTER(cur)) || (IS_DIGIT(cur)) || /* NOT REACHED */
            (cur == '.') || (cur == '-') ||
 	   (cur == '_') ||
 	   (IS_COMBINING(cur)) ||
@@ -3420,7 +3468,7 @@ xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt) {
 	if (len >= XML_MAX_NAMELEN) {
 	    fprintf(stderr, 
 	       "xmlNamespaceParseNCName: reached XML_MAX_NAMELEN limit\n");
-	    while ((IS_LETTER(cur)) || (IS_DIGIT(cur)) ||
+	    while ((IS_LETTER(cur)) || (IS_DIGIT(cur)) ||/* NOT REACHED */
 		   (cur == '.') || (cur == '-') ||
 		   (cur == '_') ||
 		   (IS_COMBINING(cur)) ||
@@ -3438,6 +3486,9 @@ xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt) {
  * xmlNamespaceParseQName:
  * @ctxt:  an XML parser context
  * @prefix:  a xmlChar ** 
+ *
+ * TODO: this seems not in use anymore, the namespace handling is done on
+ *       top of the SAX interfaces, i.e. not on raw input.
  *
  * parse an XML qualified name
  *
@@ -3467,72 +3518,13 @@ xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, xmlChar **prefix) {
 }
 
 /**
- * xmlSplitQName:
- * @ctxt:  an XML parser context
- * @name:  an XML parser context
- * @prefix:  a xmlChar ** 
- *
- * parse an UTF8 encoded XML qualified name string
- *
- * [NS 5] QName ::= (Prefix ':')? LocalPart
- *
- * [NS 6] Prefix ::= NCName
- *
- * [NS 7] LocalPart ::= NCName
- *
- * Returns the local part, and prefix is updated
- *   to get the Prefix if any.
- */
-
-xmlChar *
-xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
-    xmlChar buf[XML_MAX_NAMELEN + 5];
-    int len = 0;
-    xmlChar *ret = NULL;
-    const xmlChar *cur = name;
-    int c;
-
-    *prefix = NULL;
-
-    /* xml: prefix is not really a namespace */
-    if ((cur[0] == 'x') && (cur[1] == 'm') &&
-        (cur[2] == 'l') && (cur[3] == ':'))
-	return(xmlStrdup(name));
-
-    /* nasty but valid */
-    if (cur[0] == ':')
-	return(xmlStrdup(name));
-
-    c = *cur++;
-    while ((c != 0) && (c != ':')) {
-	buf[len++] = c;
-	c = *cur++;
-    }
-    
-    ret = xmlStrndup(buf, len);
-
-    if (c == ':') {
-	c = *cur++;
-	if (c == 0) return(ret);
-        *prefix = ret;
-	len = 0;
-
-	while (c != 0) {
-	    buf[len++] = c;
-	    c = *cur++;
-	}
-	
-	ret = xmlStrndup(buf, len);
-    }
-
-    return(ret);
-}
-
-/**
  * xmlNamespaceParseNSDef:
  * @ctxt:  an XML parser context
  *
  * parse a namespace prefix declaration
+ *
+ * TODO: this seems not in use anymore, the namespace handling is done on
+ *       top of the SAX interfaces, i.e. not on raw input.
  *
  * [NS 1] NSDef ::= PrefixDef Eq SystemLiteral
  *
@@ -3558,11 +3550,151 @@ xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt) {
 }
 
 /**
+ * xmlSplitQName:
+ * @ctxt:  an XML parser context
+ * @name:  an XML parser context
+ * @prefix:  a xmlChar ** 
+ *
+ * parse an UTF8 encoded XML qualified name string
+ *
+ * [NS 5] QName ::= (Prefix ':')? LocalPart
+ *
+ * [NS 6] Prefix ::= NCName
+ *
+ * [NS 7] LocalPart ::= NCName
+ *
+ * Returns the local part, and prefix is updated
+ *   to get the Prefix if any.
+ */
+
+xmlChar *
+xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
+    xmlChar buf[XML_MAX_NAMELEN + 5];
+    xmlChar *buffer = NULL;
+    int len = 0;
+    int max = XML_MAX_NAMELEN;
+    xmlChar *ret = NULL;
+    const xmlChar *cur = name;
+    int c;
+
+    *prefix = NULL;
+
+    /* xml: prefix is not really a namespace */
+    if ((cur[0] == 'x') && (cur[1] == 'm') &&
+        (cur[2] == 'l') && (cur[3] == ':'))
+	return(xmlStrdup(name));
+
+    /* nasty but valid */
+    if (cur[0] == ':')
+	return(xmlStrdup(name));
+
+    c = *cur++;
+    while ((c != 0) && (c != ':') && (len < max)) { /* tested bigname.xml */
+	buf[len++] = c;
+	c = *cur++;
+    }
+    if (len >= max) {
+	/*
+	 * Okay someone managed to make a huge name, so he's ready to pay
+	 * for the processing speed.
+	 */
+	max = len * 2;
+	
+	buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	if (buffer == NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData,
+				 "xmlSplitQName: out of memory\n");
+	    return(NULL);
+	}
+	memcpy(buffer, buf, len);
+	while ((c != 0) && (c != ':')) { /* tested bigname.xml */
+	    if (len + 10 > max) {
+		max *= 2;
+		buffer = (xmlChar *) xmlRealloc(buffer,
+						max * sizeof(xmlChar));
+		if (buffer == NULL) {
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData,
+					 "xmlSplitQName: out of memory\n");
+		    return(NULL);
+		}
+	    }
+	    buffer[len++] = c;
+	    c = *cur++;
+	}
+	buffer[len] = 0;
+    }
+    
+    if (buffer == NULL)
+	ret = xmlStrndup(buf, len);
+    else {
+	ret = buffer;
+	buffer = NULL;
+	max = XML_MAX_NAMELEN;
+    }
+
+
+    if (c == ':') {
+	c = *cur++;
+	if (c == 0) return(ret);
+        *prefix = ret;
+	len = 0;
+
+	while ((c != 0) && (len < max)) { /* tested bigname2.xml */
+	    buf[len++] = c;
+	    c = *cur++;
+	}
+	if (len >= max) {
+	    /*
+	     * Okay someone managed to make a huge name, so he's ready to pay
+	     * for the processing speed.
+	     */
+	    max = len * 2;
+	    
+	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    if (buffer == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+				     "xmlSplitQName: out of memory\n");
+		return(NULL);
+	    }
+	    memcpy(buffer, buf, len);
+	    while (c != 0) { /* tested bigname2.xml */
+		if (len + 10 > max) {
+		    max *= 2;
+		    buffer = (xmlChar *) xmlRealloc(buffer,
+						    max * sizeof(xmlChar));
+		    if (buffer == NULL) {
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt->userData,
+					     "xmlSplitQName: out of memory\n");
+			return(NULL);
+		    }
+		}
+		buffer[len++] = c;
+		c = *cur++;
+	    }
+	    buffer[len] = 0;
+	}
+	
+	if (buffer == NULL)
+	    ret = xmlStrndup(buf, len);
+	else {
+	    ret = buffer;
+	}
+    }
+
+    return(ret);
+}
+
+/**
  * xmlParseQuotedString:
  * @ctxt:  an XML parser context
  *
- * [OLD] Parse and return a string between quotes or doublequotes
- * To be removed at next drop of binary compatibility
+ * Parse and return a string between quotes or doublequotes
+ *
+ * TODO: Deprecated, to  be removed at next drop of binary compatibility
  *
  * Returns the string parser or NULL.
  */
@@ -3578,10 +3710,11 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
 	fprintf(stderr, "malloc of %d byte failed\n", size);
 	return(NULL);
     }
+fprintf(stderr, "xmlParseQuotedString: reached loop 4\n");
     if (RAW == '"') {
         NEXT;
 	c = CUR_CHAR(l);
-	while (IS_CHAR(c) && (c != '"')) {
+	while (IS_CHAR(c) && (c != '"')) { /* NOTUSED */
 	    if (len + 5 >= size) {
 		size *= 2;
 		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
@@ -3607,7 +3740,7 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
     } else if (RAW == '\''){
         NEXT;
 	c = CUR;
-	while (IS_CHAR(c) && (c != '\'')) {
+	while (IS_CHAR(c) && (c != '\'')) { /* NOTUSED */
 	    if (len + 1 >= size) {
 		size *= 2;
 		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
@@ -3638,11 +3771,13 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
  * xmlParseNamespace:
  * @ctxt:  an XML parser context
  *
- * [OLD] xmlParseNamespace: parse specific PI '<?namespace ...' constructs.
+ * xmlParseNamespace: parse specific PI '<?namespace ...' constructs.
  *
  * This is what the older xml-name Working Draft specified, a bunch of
  * other stuff may still rely on it, so support is still here as
  * if it was declared on the root of the Tree:-(
+ *
+ * TODO: remove from library
  *
  * To be removed at next drop of binary compatibility
  */
@@ -3658,7 +3793,8 @@ xmlParseNamespace(xmlParserCtxtPtr ctxt) {
      */
     SKIP_BLANKS;
 
-    while (IS_CHAR(RAW) && (RAW != '>')) {
+fprintf(stderr, "xmlParseNamespace: reached loop 5\n");
+    while (IS_CHAR(RAW) && (RAW != '>')) { /* NOT REACHED */
 	/*
 	 * We can have "ns" or "prefix" attributes
 	 * Old encoding as 'href' or 'AS' attributes is still supported
@@ -3755,7 +3891,10 @@ xmlParseNamespace(xmlParserCtxtPtr ctxt) {
  * @ctxt:  an XML parser context
  *
  * Trickery: parse an XML name but without consuming the input flow
- * Needed for rollback cases.
+ * Needed for rollback cases. Used only when parsing entities references.
+ *
+ * TODO: seems deprecated now, only used in the default part of
+ *       xmlParserHandleReference
  *
  * [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
  *                  CombiningChar | Extender
@@ -3778,17 +3917,20 @@ xmlScanName(xmlParserCtxtPtr ctxt) {
 	return(NULL);
     }
 
-    while ((IS_LETTER(NXT(len))) || (IS_DIGIT(NXT(len))) ||
+
+    while ((IS_LETTER(NXT(len))) || (IS_DIGIT(NXT(len))) || /* NOT REACHED */
            (NXT(len) == '.') || (NXT(len) == '-') ||
 	   (NXT(len) == '_') || (NXT(len) == ':') || 
 	   (IS_COMBINING(NXT(len))) ||
 	   (IS_EXTENDER(NXT(len)))) {
+	GROW;
 	buf[len] = NXT(len);
 	len++;
 	if (len >= XML_MAX_NAMELEN) {
 	    fprintf(stderr, 
 	       "xmlScanName: reached XML_MAX_NAMELEN limit\n");
-	    while ((IS_LETTER(NXT(len))) || (IS_DIGIT(NXT(len))) ||
+	    while ((IS_LETTER(NXT(len))) || /* NOT REACHED */
+		   (IS_DIGIT(NXT(len))) ||
 		   (NXT(len) == '.') || (NXT(len) == '-') ||
 		   (NXT(len) == '_') || (NXT(len) == ':') || 
 		   (IS_COMBINING(NXT(len))) ||
@@ -3821,6 +3963,7 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
     xmlChar buf[XML_MAX_NAMELEN + 5];
     int len = 0, l;
     int c;
+    int count = 0;
 
     GROW;
     c = CUR_CHAR(l);
@@ -3830,27 +3973,61 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
 	return(NULL);
     }
 
-    while ((c != ' ') && (c != '>') && (c != '/') && /* accelerators */
+    while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
 	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
             (c == '.') || (c == '-') ||
 	    (c == '_') || (c == ':') || 
 	    (IS_COMBINING(c)) ||
 	    (IS_EXTENDER(c)))) {
+	if (count++ > 100) {
+	    count = 0;
+	    GROW;
+	}
 	COPY_BUF(l,buf,len,c);
 	NEXTL(l);
 	c = CUR_CHAR(l);
 	if (len >= XML_MAX_NAMELEN) {
-	    fprintf(stderr, 
-	       "xmlParseName: reached XML_MAX_NAMELEN limit\n");
-	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+	    /*
+	     * Okay someone managed to make a huge name, so he's ready to pay
+	     * for the processing speed.
+	     */
+	    xmlChar *buffer;
+	    int max = len * 2;
+	    
+	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    if (buffer == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+			             "xmlParseName: out of memory\n");
+		return(NULL);
+	    }
+	    memcpy(buffer, buf, len);
+	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigname.xml */
 		   (c == '.') || (c == '-') ||
 		   (c == '_') || (c == ':') || 
 		   (IS_COMBINING(c)) ||
 		   (IS_EXTENDER(c))) {
+		if (count++ > 100) {
+		    count = 0;
+		    GROW;
+		}
+		if (len + 10 > max) {
+		    max *= 2;
+		    buffer = (xmlChar *) xmlRealloc(buffer,
+			                            max * sizeof(xmlChar));
+		    if (buffer == NULL) {
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt->userData,
+					     "xmlParseName: out of memory\n");
+			return(NULL);
+		    }
+		}
+		COPY_BUF(l,buffer,len,c);
 		NEXTL(l);
 		c = CUR_CHAR(l);
 	    }
-	    break;
+	    buffer[len] = 0;
+	    return(buffer);
 	}
     }
     return(xmlStrndup(buf, len));
@@ -3887,7 +4064,7 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 	return(NULL);
     }
 
-    while ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigentname.xml */
            (c == '.') || (c == '-') ||
 	   (c == '_') || (c == ':') || 
 	   (IS_COMBINING(c)) ||
@@ -3895,18 +4072,45 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 	COPY_BUF(l,buf,len,c);
 	cur += l;
 	c = CUR_SCHAR(cur, l);
-	if (len >= XML_MAX_NAMELEN) {
-	    fprintf(stderr, 
-	       "xmlParseName: reached XML_MAX_NAMELEN limit\n");
-	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+	if (len >= XML_MAX_NAMELEN) { /* test bigentname.xml */
+	    /*
+	     * Okay someone managed to make a huge name, so he's ready to pay
+	     * for the processing speed.
+	     */
+	    xmlChar *buffer;
+	    int max = len * 2;
+	    
+	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    if (buffer == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+			             "xmlParseStringName: out of memory\n");
+		return(NULL);
+	    }
+	    memcpy(buffer, buf, len);
+	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigentname.xml */
 		   (c == '.') || (c == '-') ||
 		   (c == '_') || (c == ':') || 
 		   (IS_COMBINING(c)) ||
 		   (IS_EXTENDER(c))) {
+		if (len + 10 > max) {
+		    max *= 2;
+		    buffer = (xmlChar *) xmlRealloc(buffer,
+			                            max * sizeof(xmlChar));
+		    if (buffer == NULL) {
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt->userData,
+				     "xmlParseStringName: out of memory\n");
+			return(NULL);
+		    }
+		}
+		COPY_BUF(l,buffer,len,c);
 		cur += l;
 		c = CUR_SCHAR(cur, l);
 	    }
-	    break;
+	    buffer[len] = 0;
+	    *str = cur;
+	    return(buffer);
 	}
     }
     *str = cur;
@@ -3928,32 +4132,68 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 
 xmlChar *
 xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
-    xmlChar buf[XML_MAX_NAMELEN];
-    int len = 0;
-    int c,l;
+    xmlChar buf[XML_MAX_NAMELEN + 5];
+    int len = 0, l;
+    int c;
+    int count = 0;
 
     GROW;
     c = CUR_CHAR(l);
-    while ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+
+    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigtoken.xml */
            (c == '.') || (c == '-') ||
 	   (c == '_') || (c == ':') || 
 	   (IS_COMBINING(c)) ||
 	   (IS_EXTENDER(c))) {
+	if (count++ > 100) {
+	    count = 0;
+	    GROW;
+	}
 	COPY_BUF(l,buf,len,c);
 	NEXTL(l);
 	c = CUR_CHAR(l);
 	if (len >= XML_MAX_NAMELEN) {
-	    fprintf(stderr, 
-	       "xmlParseNmtoken: reached XML_MAX_NAMELEN limit\n");
-	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+	    /*
+	     * Okay someone managed to make a huge token, so he's ready to pay
+	     * for the processing speed.
+	     */
+	    xmlChar *buffer;
+	    int max = len * 2;
+	    
+	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    if (buffer == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+			             "xmlParseNmtoken: out of memory\n");
+		return(NULL);
+	    }
+	    memcpy(buffer, buf, len);
+	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigtoken.xml */
 		   (c == '.') || (c == '-') ||
 		   (c == '_') || (c == ':') || 
 		   (IS_COMBINING(c)) ||
 		   (IS_EXTENDER(c))) {
+		if (count++ > 100) {
+		    count = 0;
+		    GROW;
+		}
+		if (len + 10 > max) {
+		    max *= 2;
+		    buffer = (xmlChar *) xmlRealloc(buffer,
+			                            max * sizeof(xmlChar));
+		    if (buffer == NULL) {
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt->userData,
+					     "xmlParseName: out of memory\n");
+			return(NULL);
+		    }
+		}
+		COPY_BUF(l,buffer,len,c);
 		NEXTL(l);
 		c = CUR_CHAR(l);
 	    }
-	    break;
+	    buffer[len] = 0;
+	    return(buffer);
 	}
     }
     if (len == 0)
@@ -4019,7 +4259,8 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
      * In practice it means we stop the loop only when back at parsing
      * the initial entity and the quote is found
      */
-    while (IS_CHAR(c) && ((c != stop) || (ctxt->input != input))) {
+    while ((IS_CHAR(c)) && ((c != stop) || /* checked */
+	   (ctxt->input != input))) {
 	if (len + 5 >= size) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
@@ -4033,7 +4274,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 	/*
 	 * Pop-up of finished entities.
 	 */
-	while ((RAW == 0) && (ctxt->inputNr > 1))
+	while ((RAW == 0) && (ctxt->inputNr > 1)) /* non input consuming */
 	    xmlPopInput(ctxt);
 
 	GROW;
@@ -6837,7 +7078,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    (value[1] == 0) && (value[0] == '<') &&
 		    (!xmlStrcmp(ent->name, BAD_CAST "lt"))) {
 		    /*
-		     * TODO: get definite answer on this !!!
+		     * DONE: get definite answer on this !!!
 		     * Lots of entity decls are used to declare a single
 		     * char 
 		     *    <!ENTITY lt     "<">
@@ -6852,6 +7093,11 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		     * tests, this is broken. However the XML REC uses
 		     * it. Is the XML REC not well-formed ????
 		     * This is a hack to avoid this problem
+		     *
+		     * ANSWER: since lt gt amp .. are already defined,
+		     *   this is a redefinition and hence the fact that the
+		     *   contentis not well balanced is not a Wf error, this
+		     *   is lousy but acceptable.
 		     */
 		    list = xmlNewDocText(ctxt->myDoc, value);
 		    if (list != NULL) {
@@ -6931,46 +7177,64 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		ctxt->sax->reference(ctxt->userData, ent->name);
 		return;
 	    } else if (ctxt->replaceEntities) {
-		xmlParserInputPtr input;
+		if ((ctxt->node != NULL) && (ent->children != NULL)) {
+		    /*
+		     * Seems we are generating the DOM content, do
+		     * a simple tree copy
+		     */
+		    xmlNodePtr new;
+		    new = xmlCopyNodeList(ent->children);
+		    
+		    xmlAddChildList(ctxt->node, new);
+		    /*
+		     * This is to avoid a nasty side effect, see
+		     * characters() in SAX.c
+		     */
+		    ctxt->nodemem = 0;
+		    ctxt->nodelen = 0;
+		    return;
+		} else {
+		    /*
+		     * Probably running in SAX mode
+		     */
+		    xmlParserInputPtr input;
 
-		input = xmlNewEntityInputStream(ctxt, ent);
-		xmlPushInput(ctxt, input);
-		if ((ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY) &&
-		    (RAW == '<') && (NXT(1) == '?') &&
-		    (NXT(2) == 'x') && (NXT(3) == 'm') &&
-		    (NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
-		    xmlParseTextDecl(ctxt);
-		    if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
-			/*
-			 * The XML REC instructs us to stop parsing right here
-			 */
-			ctxt->instate = XML_PARSER_EOF;
-			return;
+		    input = xmlNewEntityInputStream(ctxt, ent);
+		    xmlPushInput(ctxt, input);
+		    if ((ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY) &&
+			(RAW == '<') && (NXT(1) == '?') &&
+			(NXT(2) == 'x') && (NXT(3) == 'm') &&
+			(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
+			xmlParseTextDecl(ctxt);
+			if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+			    /*
+			     * The XML REC instructs us to stop parsing right here
+			     */
+			    ctxt->instate = XML_PARSER_EOF;
+			    return;
+			}
+			if (input->standalone == 1) {
+			    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+				ctxt->sax->error(ctxt->userData,
+				"external parsed entities cannot be standalone\n");
+			    ctxt->errNo = XML_ERR_EXT_ENTITY_STANDALONE;
+			    ctxt->wellFormed = 0;
+			    ctxt->disableSAX = 1;
+			}
 		    }
-		    if (input->standalone == 1) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
-			    "external parsed entities cannot be standalone\n");
-			ctxt->errNo = XML_ERR_EXT_ENTITY_STANDALONE;
-			ctxt->wellFormed = 0;
-			ctxt->disableSAX = 1;
-		    }
+		    return;
 		}
-		/*
-		 * !!! TODO: build the tree under the entity first
-		 * 1234
-		 */
-		return;
 	    }
+	} else {
+	    val = ent->content;
+	    if (val == NULL) return;
+	    /*
+	     * inline the entity.
+	     */
+	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL) &&
+		(!ctxt->disableSAX))
+		ctxt->sax->characters(ctxt->userData, val, xmlStrlen(val));
 	}
-	val = ent->content;
-	if (val == NULL) return;
-	/*
-	 * inline the entity.
-	 */
-	if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL) &&
-	    (!ctxt->disableSAX))
-	    ctxt->sax->characters(ctxt->userData, val, xmlStrlen(val));
     }
 }
 
@@ -7820,15 +8084,14 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
 
     /*
      * Check that xml:lang conforms to the specification
+     * No more registered as an error, just generate a warning now
+     * since this was deprecated in XML second edition
      */
     if (!xmlStrcmp(name, BAD_CAST "xml:lang")) {
 	if (!xmlCheckLanguageID(val)) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData,
-		   "Invalid value for xml:lang : %s\n", val);
-	    ctxt->errNo = XML_ERR_ATTRIBUTE_WITHOUT_VALUE;
-	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
+	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		ctxt->sax->warning(ctxt->userData,
+		   "Malformed value for xml:lang : %s\n", val);
 	}
     }
 

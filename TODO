@@ -6,9 +6,14 @@
 TODO:
 =====
 
+- cleanup the mess with URI references when composing entities.
+- performances: there is still improvements needed when parsing Docbook DTD
+  a single function to optimize/avoid.
+- Moving all deprecated functions to a different module, allow to compile
+  it out.
 - DOM needs
-  xmlAttrPtr xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value)
   int xmlPruneProp(xmlNodePtr node, xmlAtttrPtr attr);
+- listing all attributes in a node.
 - General checking of DTD validation in presence of namespaces ... hairy
   mostly done
 - Fix DTD + namespace validity problem
@@ -20,7 +25,7 @@ TODO:
 - Find way of representing PERefs in the Dtd so that %entity; can
   be saved back.
 - Go through erratas and do the cleanup.
-  http://www.w3.org/XML/xml-19980210-errata ... bummmer 
+  http://www.w3.org/XML/xml-19980210-errata ... started ...
 - Handle undefined namespaces in entity contents better ... at least
   issue a warning
 - fix --disable-corba configure switch handling, and use XML_WITHOUT_CORBA
@@ -95,6 +100,8 @@ EXTENSIONS:
 Done:
 =====
 
+- DOM needs
+  xmlAttrPtr xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value)
 - problem when parsing hrefs with & with the HTML parser (IRC ac)
 - If the internal encoding is not UTF8 saving to a given encoding doesn't
   work => fix to force UTF8 encoding ...

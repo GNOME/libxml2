@@ -1,3 +1,19 @@
+Sun Aug 27 22:14:01 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* SAX.c tree.c debugXML.c: fixed bogus behaviour when an
+	  undeclared namespace prefix was used, added a warning.
+	  Cleaned up support w.r.t. entities, spilling out a warning
+	  and being pedantic on lookups.
+	* test/warning/ent9 : added testcase for previous example.
+	* TODO: updated
+	* parserInternals.h parser.c: changed the way names are parsed
+	  now allow infinite size and decrease penalty for normal use
+	* parser.c: Started a big cleanup/check of the parser code,
+	  fixed some of the most tortuous entity code, spotted code
+	  unused anymore
+	* test/*: added tests for very long names and related nasty
+	  things.
+
 Sat Aug 26 23:31:04 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/encoding.html: added encoding aliases doc

@@ -1,3 +1,9 @@
+Wed May 30 21:12:45 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c encoding.[ch]: William M. Brack provided a set of UTF8
+	  string oriented functions and started cleaning the related areas
+	  in xpath.c which needed fixing in this respect
+
 Wed May 30 20:30:47 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLtree.c: applied patch from Jaroslaw Kolakowski to close bug

@@ -191,8 +191,25 @@ int	isolat1ToUTF8			(unsigned char* out,
 					 int *outlen,
 					 const unsigned char* in,
 					 int *inlen);
+/*
+ * exports additional "UTF-8 aware" string routines which are
+ */
+
 int	xmlCheckUTF8			(const unsigned char *utf);
-int	xmlUTF8Strlen			(const unsigned char *utf);
+
+int	xmlUTF8Strsize			(const xmlChar *utf,
+					 int len);
+xmlChar * xmlUTF8Strndup		(const xmlChar *utf,
+					 int len);
+xmlChar * xmlUTF8Strpos			(const xmlChar *utf,
+					 int pos);
+int	xmlUTF8Strloc			(const xmlChar *utf,
+					 const xmlChar *utfchar);
+xmlChar * xmlUTF8Strsub			(const xmlChar *utf,
+					 int start,
+					 int len);
+
+int	xmlUTF8Strlen			(const xmlChar *utf);
 
 #ifdef __cplusplus
 }

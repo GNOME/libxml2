@@ -4840,28 +4840,27 @@ xmlXPathStartsWithFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 void
 xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr str, start, len;
-    double le, in;
-    int i, l;
+    double le=0, in;
+    int i, l, m;
     xmlChar *ret;
 
-    /* 
-     * TODO: need to be converted to UTF8 strings
-     */
     if (nargs < 2) {
 	CHECK_ARITY(2);
     }
     if (nargs > 3) {
 	CHECK_ARITY(3);
     }
+    /*
+     * take care of possible last (position) argument
+    */
     if (nargs == 3) {
 	CAST_TO_NUMBER;
 	CHECK_TYPE(XPATH_NUMBER);
 	len = valuePop(ctxt);
 	le = len->floatval;
         xmlXPathFreeObject(len);
-    } else {
-	le = 2000000000;
     }
+
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
     start = valuePop(ctxt);
@@ -4870,38 +4869,49 @@ xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CAST_TO_STRING;
     CHECK_TYPE(XPATH_STRING);
     str = valuePop(ctxt);
-    le += in;
+    m = xmlUTF8Strlen((const unsigned char *)str->stringval);
 
-    /* integer index of the first char */
+    /*
+     * If last pos not present, calculate last position
+    */
+    if (nargs != 3)
+	le = m;
+
+    /*
+     * To meet our requirements, initial index calculations
+     * must be done before we convert to integer format
+     *
+     * First we normalize indices
+     */
+    in -= 1.0;
+    le += in;
+    if (in < 0.0)
+	in = 0.0;
+    if (le > (double)m)
+	le = (double)m;
+
+    /*
+     * Now we go to integer form, rounding up
+     */
     i = (int) in;
     if (((double)i) != in) i++;
     
-    /* integer index of the last char */
     l = (int) le;
     if (((double)l) != le) l++;
 
-    /* back to a zero based len */
-    i--;
-    l--;
-
-    /* check against the string len */
-    if (l > 1024) {
-        l = xmlStrlen(str->stringval);
-    }
-    if (i < 0) {
-        i = 0;
-    }
+    if (l > m) l=m;
 
     /* number of chars to copy */
     l -= i;
 
-    ret = xmlStrsub(str->stringval, i, l);
+    ret = xmlUTF8Strsub(str->stringval, i, l);
     if (ret == NULL)
 	valuePush(ctxt, xmlXPathNewCString(""));
     else {
 	valuePush(ctxt, xmlXPathNewString(ret));
 	xmlFree(ret);
     }
+
     xmlXPathFreeObject(str);
 }
 
@@ -5037,7 +5047,7 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     blank = 0;
     while (*source) {
       if (IS_BLANK(*source)) {
-	blank = *source;
+	blank = 0x20;
       } else {
 	if (blank) {
 	  xmlBufferAdd(target, &blank, 1);
@@ -5081,13 +5091,11 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr from;
     xmlXPathObjectPtr to;
     xmlBufferPtr target;
-    int i, offset, max;
+    int offset, max;
     xmlChar ch;
-    const xmlChar *point;
+    xmlChar *point;
+    xmlChar *cptr;
 
-    /* 
-     * TODO: need to be converted to UTF8 strings
-     */
     CHECK_ARITY(3);
 
     CAST_TO_STRING;
@@ -5099,15 +5107,37 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 
     target = xmlBufferCreate();
     if (target) {
-	max = xmlStrlen(to->stringval);
-	for (i = 0; (ch = str->stringval[i]); i++) {
-	    point = xmlStrchr(from->stringval, ch);
-	    if (point) {
-		offset = (int)(point - from->stringval);
-		if (offset < max)
-		    xmlBufferAdd(target, &to->stringval[offset], 1);
-		} else
-		    xmlBufferAdd(target, &ch, 1);
+	max = xmlUTF8Strlen(to->stringval);
+	for (cptr = str->stringval; (ch=*cptr); ) {
+	    offset = xmlUTF8Strloc(from->stringval, cptr);
+	    if (offset >= 0) {
+		if (offset < max) {
+		    point = xmlUTF8Strpos(to->stringval, offset);
+		    if (point)
+			xmlBufferAdd(target, point, xmlUTF8Strsize(point, 1));
+		}
+	    } else
+		xmlBufferAdd(target, cptr, xmlUTF8Strsize(cptr, 1));
+
+	    /* Step to next character in input */
+	    cptr++;
+	    if ( ch & 0x80 ) {
+		/* if not simple ascii, verify proper format */
+		if ( (ch & 0xc0) != 0xc0 ) {
+		    xmlGenericError(xmlGenericErrorContext,
+			"xmlXPathTranslateFunction: Invalid UTF8 string\n");
+		    break;
+		}
+		/* then skip over remaining bytes for this char */
+		while ( (ch <<= 1) & 0x80 )
+		    if ( (*cptr++ & 0xc0) != 0x80 ) {
+			xmlGenericError(xmlGenericErrorContext,
+			    "xmlXPathTranslateFunction: Invalid UTF8 string\n");
+			break;
+		    }
+		if (ch & 0x80) /* must have had error encountered */
+		    break;
+	    }
 	}
     }
     valuePush(ctxt, xmlXPathNewString(xmlBufferContent(target)));

@@ -1019,7 +1019,10 @@ def analyzeHTMLPages():
 	if html == "xml.html":
 	    continue
 	try:
+	    doc = libxml2.parseFile(html)
+	except:
 	    doc = libxml2.htmlParseFile(html, None)
+	try:
 	    res = analyzeHTML(doc, html)
 	    print "Parsed %s : %d paragraphs" % (html, res)
 	    ret = ret + 1

@@ -118,47 +118,43 @@
      <exports symbol='xmlEntityReferenceFunc'/>
      <exports symbol='xmlSetEntityReferenceFunc'/>
     </file>
-    <file name='SAX'>
-     <exports symbol='getPublicId'/>
-     <exports symbol='getSystemId'/>
-     <exports symbol='setDocumentLocator'/>
-     <exports symbol='getLineNumber'/>
-     <exports symbol='getColumnNumber'/>
-     <exports symbol='isStandalone'/>
-     <exports symbol='hasInternalSubset'/>
-     <exports symbol='hasExternalSubset'/>
-     <exports symbol='internalSubset'/>
-     <exports symbol='externalSubset'/>
-     <exports symbol='getEntity'/>
-     <exports symbol='getParameterEntity'/>
-     <exports symbol='resolveEntity'/>
-     <exports symbol='entityDecl'/>
-     <exports symbol='attributeDecl'/>
-     <exports symbol='elementDecl'/>
-     <exports symbol='notationDecl'/>
-     <exports symbol='unparsedEntityDecl'/>
-     <exports symbol='startDocument'/>
-     <exports symbol='endDocument'/>
-     <exports symbol='attribute'/>
-     <exports symbol='startElement'/>
-     <exports symbol='endElement'/>
-     <exports symbol='reference'/>
-     <exports symbol='characters'/>
-     <exports symbol='ignorableWhitespace'/>
-     <exports symbol='processingInstruction'/>
-     <exports symbol='globalNamespace'/>
-     <exports symbol='setNamespace'/>
-     <exports symbol='getNamespace'/>
-     <exports symbol='checkNamespace'/>
-     <exports symbol='namespaceDecl'/>
-     <exports symbol='comment'/>
-     <exports symbol='cdataBlock'/>
-     <exports symbol='initxmlDefaultSAXHandler'/>
-     <exports symbol='inithtmlDefaultSAXHandler'/>
-     <exports symbol='initdocbDefaultSAXHandler'/>
-     <exports symbol='xmlDefaultSAXHandlerInit'/>
-     <exports symbol='htmlDefaultSAXHandlerInit'/>
-     <exports symbol='docbDefaultSAXHandlerInit'/>
+    <file name='wsockcompat'>
+     <exports symbol='SOCKLEN_T'/>
+     <exports symbol='EWOULDBLOCK'/>
+     <exports symbol='EINPROGRESS'/>
+     <exports symbol='EALREADY'/>
+     <exports symbol='ENOTSOCK'/>
+     <exports symbol='EDESTADDRREQ'/>
+     <exports symbol='EMSGSIZE'/>
+     <exports symbol='EPROTOTYPE'/>
+     <exports symbol='ENOPROTOOPT'/>
+     <exports symbol='EPROTONOSUPPORT'/>
+     <exports symbol='ESOCKTNOSUPPORT'/>
+     <exports symbol='EOPNOTSUPP'/>
+     <exports symbol='EPFNOSUPPORT'/>
+     <exports symbol='EAFNOSUPPORT'/>
+     <exports symbol='EADDRINUSE'/>
+     <exports symbol='EADDRNOTAVAIL'/>
+     <exports symbol='ENETDOWN'/>
+     <exports symbol='ENETUNREACH'/>
+     <exports symbol='ENETRESET'/>
+     <exports symbol='ECONNABORTED'/>
+     <exports symbol='ECONNRESET'/>
+     <exports symbol='ENOBUFS'/>
+     <exports symbol='EISCONN'/>
+     <exports symbol='ENOTCONN'/>
+     <exports symbol='ESHUTDOWN'/>
+     <exports symbol='ETOOMANYREFS'/>
+     <exports symbol='ETIMEDOUT'/>
+     <exports symbol='ECONNREFUSED'/>
+     <exports symbol='ELOOP'/>
+     <exports symbol='EHOSTDOWN'/>
+     <exports symbol='EHOSTUNREACH'/>
+     <exports symbol='EPROCLIM'/>
+     <exports symbol='EUSERS'/>
+     <exports symbol='EDQUOT'/>
+     <exports symbol='ESTALE'/>
+     <exports symbol='EREMOTE'/>
     </file>
     <file name='DOCBparser'>
      <exports symbol='docbParserCtxt'/>
@@ -1316,6 +1312,48 @@
      <exports symbol='xmlGetExternalEntityLoader'/>
      <exports symbol='xmlLoadExternalEntity'/>
     </file>
+    <file name='SAX'>
+     <exports symbol='getPublicId'/>
+     <exports symbol='getSystemId'/>
+     <exports symbol='setDocumentLocator'/>
+     <exports symbol='getLineNumber'/>
+     <exports symbol='getColumnNumber'/>
+     <exports symbol='isStandalone'/>
+     <exports symbol='hasInternalSubset'/>
+     <exports symbol='hasExternalSubset'/>
+     <exports symbol='internalSubset'/>
+     <exports symbol='externalSubset'/>
+     <exports symbol='getEntity'/>
+     <exports symbol='getParameterEntity'/>
+     <exports symbol='resolveEntity'/>
+     <exports symbol='entityDecl'/>
+     <exports symbol='attributeDecl'/>
+     <exports symbol='elementDecl'/>
+     <exports symbol='notationDecl'/>
+     <exports symbol='unparsedEntityDecl'/>
+     <exports symbol='startDocument'/>
+     <exports symbol='endDocument'/>
+     <exports symbol='attribute'/>
+     <exports symbol='startElement'/>
+     <exports symbol='endElement'/>
+     <exports symbol='reference'/>
+     <exports symbol='characters'/>
+     <exports symbol='ignorableWhitespace'/>
+     <exports symbol='processingInstruction'/>
+     <exports symbol='globalNamespace'/>
+     <exports symbol='setNamespace'/>
+     <exports symbol='getNamespace'/>
+     <exports symbol='checkNamespace'/>
+     <exports symbol='namespaceDecl'/>
+     <exports symbol='comment'/>
+     <exports symbol='cdataBlock'/>
+     <exports symbol='initxmlDefaultSAXHandler'/>
+     <exports symbol='inithtmlDefaultSAXHandler'/>
+     <exports symbol='initdocbDefaultSAXHandler'/>
+     <exports symbol='xmlDefaultSAXHandlerInit'/>
+     <exports symbol='htmlDefaultSAXHandlerInit'/>
+     <exports symbol='docbDefaultSAXHandlerInit'/>
+    </file>
     <file name='xmlautomata'>
      <exports symbol='xmlAutomata'/>
      <exports symbol='xmlAutomataPtr'/>
@@ -1536,6 +1574,76 @@
     <macro name='DEBUG_MEMORY_LOCATION' file='xmlversion'>
       <info>Whether the memory debugging is configured in</info>
     </macro>
+    <macro name='EADDRINUSE' file='wsockcompat'>
+    </macro>
+    <macro name='EADDRNOTAVAIL' file='wsockcompat'>
+    </macro>
+    <macro name='EAFNOSUPPORT' file='wsockcompat'>
+    </macro>
+    <macro name='EALREADY' file='wsockcompat'>
+    </macro>
+    <macro name='ECONNABORTED' file='wsockcompat'>
+    </macro>
+    <macro name='ECONNREFUSED' file='wsockcompat'>
+    </macro>
+    <macro name='ECONNRESET' file='wsockcompat'>
+    </macro>
+    <macro name='EDESTADDRREQ' file='wsockcompat'>
+    </macro>
+    <macro name='EDQUOT' file='wsockcompat'>
+    </macro>
+    <macro name='EHOSTDOWN' file='wsockcompat'>
+    </macro>
+    <macro name='EHOSTUNREACH' file='wsockcompat'>
+    </macro>
+    <macro name='EINPROGRESS' file='wsockcompat'>
+    </macro>
+    <macro name='EISCONN' file='wsockcompat'>
+    </macro>
+    <macro name='ELOOP' file='wsockcompat'>
+    </macro>
+    <macro name='EMSGSIZE' file='wsockcompat'>
+    </macro>
+    <macro name='ENETDOWN' file='wsockcompat'>
+    </macro>
+    <macro name='ENETRESET' file='wsockcompat'>
+    </macro>
+    <macro name='ENETUNREACH' file='wsockcompat'>
+    </macro>
+    <macro name='ENOBUFS' file='wsockcompat'>
+    </macro>
+    <macro name='ENOPROTOOPT' file='wsockcompat'>
+    </macro>
+    <macro name='ENOTCONN' file='wsockcompat'>
+    </macro>
+    <macro name='ENOTSOCK' file='wsockcompat'>
+    </macro>
+    <macro name='EOPNOTSUPP' file='wsockcompat'>
+    </macro>
+    <macro name='EPFNOSUPPORT' file='wsockcompat'>
+    </macro>
+    <macro name='EPROCLIM' file='wsockcompat'>
+    </macro>
+    <macro name='EPROTONOSUPPORT' file='wsockcompat'>
+    </macro>
+    <macro name='EPROTOTYPE' file='wsockcompat'>
+    </macro>
+    <macro name='EREMOTE' file='wsockcompat'>
+    </macro>
+    <macro name='ESHUTDOWN' file='wsockcompat'>
+    </macro>
+    <macro name='ESOCKTNOSUPPORT' file='wsockcompat'>
+    </macro>
+    <macro name='ESTALE' file='wsockcompat'>
+    </macro>
+    <macro name='ETIMEDOUT' file='wsockcompat'>
+    </macro>
+    <macro name='ETOOMANYREFS' file='wsockcompat'>
+    </macro>
+    <macro name='EUSERS' file='wsockcompat'>
+    </macro>
+    <macro name='EWOULDBLOCK' file='wsockcompat'>
+    </macro>
     <macro name='HTML_COMMENT_NODE' file='HTMLtree'>
       <info>Macro. A comment in a HTML document is really implemented the same way as a comment in an XML document.</info>
     </macro>
@@ -1664,6 +1772,8 @@
     <macro name='SKIP_EOL' file='parserInternals'>
       <info>Skips the end of line chars.</info>
       <arg name='p' info='and UTF8 string pointer '/>
+    </macro>
+    <macro name='SOCKLEN_T' file='wsockcompat'>
     </macro>
     <function name='UTF8ToHtml' file='HTMLparser'>
       <info>Take a block of UTF-8 chars in and try to convert it to an ASCII plus HTML entities block of chars out.</info>
@@ -4681,7 +4791,7 @@
       <arg name='c' type='int' info='an unicode character (int) '/>
     </function>
     <function name='xmlIsID' file='valid'>
-      <info>Determine whether an attribute is of type ID. In case we have DTD(s) then this is simple, otherwise we use an heuristic: name ID (upper or lowercase).</info>
+      <info>Determine whether an attribute is of type ID. In case we have DTD(s) then this is done if DTD loading has been requested. In the case of HTML documents parsed with the HTML parser, then ID detection is done systematically.</info>
       <return type='int' info='0 or 1 depending on the lookup result '/>
       <arg name='doc' type='xmlDocPtr' info='the document '/>
       <arg name='elem' type='xmlNodePtr' info='the element carrying the attribute '/>
@@ -4915,7 +5025,7 @@
     <function name='xmlLoadCatalogs' file='catalog'>
       <info>Load the catalogs and makes their definitions effective for the default external entity loader. this function is not thread safe, catalog initialization should preferably be done once at startup</info>
       <return type='void'/>
-      <arg name='paths' type='const char *' info='a list of file path separated by &apos;:&apos; or spaces '/>
+      <arg name='paths' type='const char *' info='a space-separated list of catalog files. '/>
     </function>
     <macro name='xmlLoadExtDtdDefaultValue' file='globals'>
       <info>Global setting, indicate that the parser should load DTD while not validating. Disabled by default.</info>

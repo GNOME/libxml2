@@ -28,6 +28,9 @@
 <!entity xmlregexp SYSTEM "sgml/xmlregexp.sgml">
 <!entity xmlautomata SYSTEM "sgml/xmlautomata.sgml">
 <!entity xmlunicode SYSTEM "sgml/xmlunicode.sgml">
+<!entity xmlschemas SYSTEM "sgml/xmlschemas.sgml">
+<!entity xmlschemastypes SYSTEM "sgml/xmlschemastypes.sgml">
+<!entity schemasInternals SYSTEM "sgml/schemasInternals.sgml">
 ]>
 
 <book>
@@ -116,6 +119,9 @@
     &xmlregexp;
     &xmlautomata;
     &xmlunicode;
+    &xmlschemas;
+    &xmlschemastypes;
+    &schemasInternals;
   </chapter>
 </book>
 

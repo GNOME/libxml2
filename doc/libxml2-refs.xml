@@ -14,6 +14,41 @@
     <reference name='CHECK_TYPE0' href='html/libxml-xpathinternals.html#CHECK-TYPE0-CAPS'/>
     <reference name='DEBUG_MEMORY' href='html/libxml-xmlmemory.html#DEBUG-MEMORY-CAPS'/>
     <reference name='DEBUG_MEMORY_LOCATION' href='html/libxml-xmlversion.html#DEBUG-MEMORY-LOCATION-CAPS'/>
+    <reference name='EADDRINUSE' href='html/libxml-wsockcompat.html#EADDRINUSE-CAPS'/>
+    <reference name='EADDRNOTAVAIL' href='html/libxml-wsockcompat.html#EADDRNOTAVAIL-CAPS'/>
+    <reference name='EAFNOSUPPORT' href='html/libxml-wsockcompat.html#EAFNOSUPPORT-CAPS'/>
+    <reference name='EALREADY' href='html/libxml-wsockcompat.html#EALREADY-CAPS'/>
+    <reference name='ECONNABORTED' href='html/libxml-wsockcompat.html#ECONNABORTED-CAPS'/>
+    <reference name='ECONNREFUSED' href='html/libxml-wsockcompat.html#ECONNREFUSED-CAPS'/>
+    <reference name='ECONNRESET' href='html/libxml-wsockcompat.html#ECONNRESET-CAPS'/>
+    <reference name='EDESTADDRREQ' href='html/libxml-wsockcompat.html#EDESTADDRREQ-CAPS'/>
+    <reference name='EDQUOT' href='html/libxml-wsockcompat.html#EDQUOT-CAPS'/>
+    <reference name='EHOSTDOWN' href='html/libxml-wsockcompat.html#EHOSTDOWN-CAPS'/>
+    <reference name='EHOSTUNREACH' href='html/libxml-wsockcompat.html#EHOSTUNREACH-CAPS'/>
+    <reference name='EINPROGRESS' href='html/libxml-wsockcompat.html#EINPROGRESS-CAPS'/>
+    <reference name='EISCONN' href='html/libxml-wsockcompat.html#EISCONN-CAPS'/>
+    <reference name='ELOOP' href='html/libxml-wsockcompat.html#ELOOP-CAPS'/>
+    <reference name='EMSGSIZE' href='html/libxml-wsockcompat.html#EMSGSIZE-CAPS'/>
+    <reference name='ENETDOWN' href='html/libxml-wsockcompat.html#ENETDOWN-CAPS'/>
+    <reference name='ENETRESET' href='html/libxml-wsockcompat.html#ENETRESET-CAPS'/>
+    <reference name='ENETUNREACH' href='html/libxml-wsockcompat.html#ENETUNREACH-CAPS'/>
+    <reference name='ENOBUFS' href='html/libxml-wsockcompat.html#ENOBUFS-CAPS'/>
+    <reference name='ENOPROTOOPT' href='html/libxml-wsockcompat.html#ENOPROTOOPT-CAPS'/>
+    <reference name='ENOTCONN' href='html/libxml-wsockcompat.html#ENOTCONN-CAPS'/>
+    <reference name='ENOTSOCK' href='html/libxml-wsockcompat.html#ENOTSOCK-CAPS'/>
+    <reference name='EOPNOTSUPP' href='html/libxml-wsockcompat.html#EOPNOTSUPP-CAPS'/>
+    <reference name='EPFNOSUPPORT' href='html/libxml-wsockcompat.html#EPFNOSUPPORT-CAPS'/>
+    <reference name='EPROCLIM' href='html/libxml-wsockcompat.html#EPROCLIM-CAPS'/>
+    <reference name='EPROTONOSUPPORT' href='html/libxml-wsockcompat.html#EPROTONOSUPPORT-CAPS'/>
+    <reference name='EPROTOTYPE' href='html/libxml-wsockcompat.html#EPROTOTYPE-CAPS'/>
+    <reference name='EREMOTE' href='html/libxml-wsockcompat.html#EREMOTE-CAPS'/>
+    <reference name='ESHUTDOWN' href='html/libxml-wsockcompat.html#ESHUTDOWN-CAPS'/>
+    <reference name='ESOCKTNOSUPPORT' href='html/libxml-wsockcompat.html#ESOCKTNOSUPPORT-CAPS'/>
+    <reference name='ESTALE' href='html/libxml-wsockcompat.html#ESTALE-CAPS'/>
+    <reference name='ETIMEDOUT' href='html/libxml-wsockcompat.html#ETIMEDOUT-CAPS'/>
+    <reference name='ETOOMANYREFS' href='html/libxml-wsockcompat.html#ETOOMANYREFS-CAPS'/>
+    <reference name='EUSERS' href='html/libxml-wsockcompat.html#EUSERS-CAPS'/>
+    <reference name='EWOULDBLOCK' href='html/libxml-wsockcompat.html#EWOULDBLOCK-CAPS'/>
     <reference name='HTML_COMMENT_NODE' href='html/libxml-htmltree.html#HTML-COMMENT-NODE-CAPS'/>
     <reference name='HTML_ENTITY_REF_NODE' href='html/libxml-htmltree.html#HTML-ENTITY-REF-NODE-CAPS'/>
     <reference name='HTML_PI_NODE' href='html/libxml-htmltree.html#HTML-PI-NODE-CAPS'/>
@@ -64,6 +99,7 @@
     <reference name='PyxmlXPathParserContext_Get' href='html/libxml-index.html#PYXMLXPATHPARSERCONTEXT-GET'/>
     <reference name='PyxmlXPathParserContext_Object' href='html/libxml-index.html#PYXMLXPATHPARSERCONTEXT-OBJECT'/>
     <reference name='SKIP_EOL' href='html/libxml-parserinternals.html#SKIP-EOL-CAPS'/>
+    <reference name='SOCKLEN_T' href='html/libxml-wsockcompat.html#SOCKLEN-T-CAPS'/>
     <reference name='UTF8ToHtml' href='html/libxml-htmlparser.html#UTF8TOHTML'/>
     <reference name='UTF8Toisolat1' href='html/libxml-encoding.html#UTF8TOISOLAT1'/>
     <reference name='WITHOUT_TRIO' href='html/libxml-xmlversion.html#WITHOUT-TRIO-CAPS'/>
@@ -1497,6 +1533,43 @@
     <ref name='DEBUG_MEMORY'/>
     <ref name='DEBUG_MEMORY_LOCATION'/>
     </letter>
+    <letter name='E'>
+    <ref name='EADDRINUSE'/>
+    <ref name='EADDRNOTAVAIL'/>
+    <ref name='EAFNOSUPPORT'/>
+    <ref name='EALREADY'/>
+    <ref name='ECONNABORTED'/>
+    <ref name='ECONNREFUSED'/>
+    <ref name='ECONNRESET'/>
+    <ref name='EDESTADDRREQ'/>
+    <ref name='EDQUOT'/>
+    <ref name='EHOSTDOWN'/>
+    <ref name='EHOSTUNREACH'/>
+    <ref name='EINPROGRESS'/>
+    <ref name='EISCONN'/>
+    <ref name='ELOOP'/>
+    <ref name='EMSGSIZE'/>
+    <ref name='ENETDOWN'/>
+    <ref name='ENETRESET'/>
+    <ref name='ENETUNREACH'/>
+    <ref name='ENOBUFS'/>
+    <ref name='ENOPROTOOPT'/>
+    <ref name='ENOTCONN'/>
+    <ref name='ENOTSOCK'/>
+    <ref name='EOPNOTSUPP'/>
+    <ref name='EPFNOSUPPORT'/>
+    <ref name='EPROCLIM'/>
+    <ref name='EPROTONOSUPPORT'/>
+    <ref name='EPROTOTYPE'/>
+    <ref name='EREMOTE'/>
+    <ref name='ESHUTDOWN'/>
+    <ref name='ESOCKTNOSUPPORT'/>
+    <ref name='ESTALE'/>
+    <ref name='ETIMEDOUT'/>
+    <ref name='ETOOMANYREFS'/>
+    <ref name='EUSERS'/>
+    <ref name='EWOULDBLOCK'/>
+    </letter>
     <letter name='H'>
     <ref name='HTML_COMMENT_NODE'/>
     <ref name='HTML_ENTITY_REF_NODE'/>
@@ -1558,6 +1631,7 @@
     </letter>
     <letter name='S'>
     <ref name='SKIP_EOL'/>
+    <ref name='SOCKLEN_T'/>
     </letter>
     <letter name='U'>
     <ref name='UTF8ToHtml'/>
@@ -6388,6 +6462,44 @@
       <ref name='xmlValidateNmtokenValue'/>
       <ref name='xmlValidateNmtokensValue'/>
       <ref name='xmlValidBuildContentModel'/>
+    </file>
+    <file name='wsockcompat'>
+      <ref name='SOCKLEN_T'/>
+      <ref name='EWOULDBLOCK'/>
+      <ref name='EINPROGRESS'/>
+      <ref name='EALREADY'/>
+      <ref name='ENOTSOCK'/>
+      <ref name='EDESTADDRREQ'/>
+      <ref name='EMSGSIZE'/>
+      <ref name='EPROTOTYPE'/>
+      <ref name='ENOPROTOOPT'/>
+      <ref name='EPROTONOSUPPORT'/>
+      <ref name='ESOCKTNOSUPPORT'/>
+      <ref name='EOPNOTSUPP'/>
+      <ref name='EPFNOSUPPORT'/>
+      <ref name='EAFNOSUPPORT'/>
+      <ref name='EADDRINUSE'/>
+      <ref name='EADDRNOTAVAIL'/>
+      <ref name='ENETDOWN'/>
+      <ref name='ENETUNREACH'/>
+      <ref name='ENETRESET'/>
+      <ref name='ECONNABORTED'/>
+      <ref name='ECONNRESET'/>
+      <ref name='ENOBUFS'/>
+      <ref name='EISCONN'/>
+      <ref name='ENOTCONN'/>
+      <ref name='ESHUTDOWN'/>
+      <ref name='ETOOMANYREFS'/>
+      <ref name='ETIMEDOUT'/>
+      <ref name='ECONNREFUSED'/>
+      <ref name='ELOOP'/>
+      <ref name='EHOSTDOWN'/>
+      <ref name='EHOSTUNREACH'/>
+      <ref name='EPROCLIM'/>
+      <ref name='EUSERS'/>
+      <ref name='EDQUOT'/>
+      <ref name='ESTALE'/>
+      <ref name='EREMOTE'/>
     </file>
     <file name='xinclude'>
       <ref name='xmlXIncludeProcess'/>
@@ -11810,6 +11922,7 @@
           <ref name='docbCreatePushParserCtxt'/>
           <ref name='htmlCreatePushParserCtxt'/>
           <ref name='xmlCreatePushParserCtxt'/>
+          <ref name='xmlIsID'/>
           <ref name='xmlParseBalancedChunkMemory'/>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseExternalEntity'/>
@@ -11921,6 +12034,7 @@
           <ref name='xmlDocSetRootElement'/>
         </word>
         <word name='documents'>
+          <ref name='xmlIsID'/>
           <ref name='xmlSAXParseDoc'/>
           <ref name='xmlSAXParseFile'/>
           <ref name='xmlSAXParseFileWithData'/>
@@ -11973,6 +12087,7 @@
           <ref name='xmlEncodeSpecialChars'/>
           <ref name='xmlGetDocEntity'/>
           <ref name='xmlInitializeCatalog'/>
+          <ref name='xmlIsID'/>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
@@ -12600,6 +12715,7 @@
           <ref name='xmlURI'/>
         </word>
         <word name='files'>
+          <ref name='xmlLoadCatalogs'/>
           <ref name='xmlNanoFTPList'/>
         </word>
         <word name='filled'>
@@ -13054,7 +13170,6 @@
           <ref name='xmlURIEscape'/>
         </word>
         <word name='heuristic:'>
-          <ref name='xmlIsID'/>
           <ref name='xmlIsRef'/>
         </word>
         <word name='hex'>
@@ -13990,6 +14105,7 @@
         <word name='loading'>
           <ref name='resolveEntity'/>
           <ref name='resolveEntitySAXFunc'/>
+          <ref name='xmlIsID'/>
           <ref name='xmlShellLoad'/>
         </word>
         <word name='loads'>
@@ -14074,7 +14190,6 @@
         </word>
         <word name='lowercase'>
           <ref name='htmlTagLookup'/>
-          <ref name='xmlIsID'/>
           <ref name='xmlIsRef'/>
         </word>
         <word name='luckily'>
@@ -15137,7 +15252,6 @@
           <ref name='xmlGetNodePath'/>
           <ref name='xmlLoadACatalog'/>
           <ref name='xmlLoadCatalog'/>
-          <ref name='xmlLoadCatalogs'/>
           <ref name='xmlLoadSGMLSuperCatalog'/>
           <ref name='xmlNanoFTPGetSocket'/>
           <ref name='xmlNanoFTPUpdateURL'/>
@@ -16100,6 +16214,7 @@
         </word>
         <word name='requested'>
           <ref name='xmlExternalEntityLoader'/>
+          <ref name='xmlIsID'/>
           <ref name='xmlMallocFunc'/>
           <ref name='xmlReallocFunc'/>
         </word>
@@ -16549,7 +16664,6 @@
           <ref name='xmlXPathNodeSetFreeNs'/>
         </word>
         <word name='separated'>
-          <ref name='xmlLoadCatalogs'/>
           <ref name='xmlURI'/>
         </word>
         <word name='sequence'>
@@ -16713,7 +16827,6 @@
         <word name='simple'>
           <ref name='xmlFreeMutex'/>
           <ref name='xmlHashScanner'/>
-          <ref name='xmlIsID'/>
           <ref name='xmlIsRef'/>
           <ref name='xmlMutexLock'/>
           <ref name='xmlMutexUnlock'/>
@@ -16803,6 +16916,9 @@
           <ref name='xmlSkipBlankChars'/>
           <ref name='xmlXPathNormalizeFunction'/>
         </word>
+        <word name='space-separated'>
+          <ref name='xmlLoadCatalogs'/>
+        </word>
         <word name='spaces'>
           <ref name='htmlDocContentDumpFormatOutput'/>
           <ref name='htmlDocContentDumpOutput'/>
@@ -16814,7 +16930,6 @@
           <ref name='xmlDocDumpFormatMemoryEnc'/>
           <ref name='xmlDocFormatDump'/>
           <ref name='xmlKeepBlanksDefault'/>
-          <ref name='xmlLoadCatalogs'/>
           <ref name='xmlParseElementChildrenContentDecl'/>
           <ref name='xmlParseElementMixedContentDecl'/>
           <ref name='xmlSaveFormatFile'/>
@@ -17301,6 +17416,9 @@
         </word>
         <word name='synchronizing'>
           <ref name='xmlMutexPtr'/>
+        </word>
+        <word name='systematically'>
+          <ref name='xmlIsID'/>
         </word>
       </letter>
     </chunk>
@@ -17926,7 +18044,6 @@
           <ref name='checkNamespace'/>
         </word>
         <word name='upper'>
-          <ref name='xmlIsID'/>
           <ref name='xmlIsRef'/>
         </word>
         <word name='uri'>

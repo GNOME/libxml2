@@ -1,0 +1,2582 @@
+<HTML
+><HEAD
+><TITLE
+>xmlautomata</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Libxml Library Reference"
+HREF="libxml-lib.html"><LINK
+REL="PREVIOUS"
+TITLE="xmlregexp"
+HREF="libxml-xmlregexp.html"><LINK
+REL="NEXT"
+TITLE="xmlunicode"
+HREF="libxml-xmlunicode.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>Gnome XML Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="libxml-xmlregexp.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="libxml-xmlunicode.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="LIBXML-XMLAUTOMATA">xmlautomata</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN27945"
+></A
+><H2
+>Name</H2
+>xmlautomata&nbsp;--&nbsp;</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN27948"><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+struct      <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATA"
+>xmlAutomata</A
+>;
+typedef     <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+>;
+struct      <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATE"
+>xmlAutomataState</A
+>;
+typedef     <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+>;
+<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLNEWAUTOMATA"
+>xmlNewAutomata</A
+>               (void);
+void        <A
+HREF="libxml-xmlautomata.html#XMLFREEAUTOMATA"
+>xmlFreeAutomata</A
+>                 (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am);
+<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAGETINITSTATE"
+>xmlAutomataGetInitState</A
+> (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am);
+int         <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASETFINALSTATE"
+>xmlAutomataSetFinalState</A
+>        (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> state);
+<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATANEWSTATE"
+>xmlAutomataNewState</A
+>     (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am);
+<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATANEWTRANSITION"
+>xmlAutomataNewTransition</A
+>
+                                            (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *token,
+                                             void *data);
+<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTTRANS"
+>xmlAutomataNewCountTrans</A
+>
+                                            (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *token,
+                                             int min,
+                                             int max,
+                                             void *data);
+<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATANEWONCETRANS"
+>xmlAutomataNewOnceTrans</A
+> (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *token,
+                                             int min,
+                                             int max,
+                                             void *data);
+<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATANEWALLTRANS"
+>xmlAutomataNewAllTrans</A
+>  (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             int lax);
+<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATANEWEPSILON"
+>xmlAutomataNewEpsilon</A
+>   (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to);
+<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTEDTRANS"
+>xmlAutomataNewCountedTrans</A
+>
+                                            (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             int counter);
+<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTERTRANS"
+>xmlAutomataNewCounterTrans</A
+>
+                                            (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             int counter);
+int         <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTER"
+>xmlAutomataNewCounter</A
+>           (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             int min,
+                                             int max);
+<A
+HREF="libxml-xmlregexp.html#XMLREGEXPPTR"
+>xmlRegexpPtr</A
+> <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATACOMPILE"
+>xmlAutomataCompile</A
+>             (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am);
+int         <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAISDETERMINIST"
+>xmlAutomataIsDeterminist</A
+>        (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN28013"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN28016"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28018"
+></A
+><H3
+><A
+NAME="XMLAUTOMATA"
+></A
+>struct xmlAutomata</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlAutomata;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28023"
+></A
+><H3
+><A
+NAME="XMLAUTOMATAPTR"
+></A
+>xmlAutomataPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlAutomata *xmlAutomataPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+>A libxml automata description, It can be compiled into a regexp</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28029"
+></A
+><H3
+><A
+NAME="XMLAUTOMATASTATE"
+></A
+>struct xmlAutomataState</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlAutomataState;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28034"
+></A
+><H3
+><A
+NAME="XMLAUTOMATASTATEPTR"
+></A
+>xmlAutomataStatePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlAutomataState *xmlAutomataStatePtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+>A state int the automata description,</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28040"
+></A
+><H3
+><A
+NAME="XMLNEWAUTOMATA"
+></A
+>xmlNewAutomata ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> xmlNewAutomata               (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new automata</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28047"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new object or NULL in case of failure</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28056"
+></A
+><H3
+><A
+NAME="XMLFREEAUTOMATA"
+></A
+>xmlFreeAutomata ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeAutomata                 (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free an automata</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28063"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28072"
+></A
+><H3
+><A
+NAME="XMLAUTOMATAGETINITSTATE"
+></A
+>xmlAutomataGetInitState ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> xmlAutomataGetInitState (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28080"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the initial state of the automata</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28093"
+></A
+><H3
+><A
+NAME="XMLAUTOMATASETFINALSTATE"
+></A
+>xmlAutomataSetFinalState ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlAutomataSetFinalState        (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> state);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Makes that state a final state</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28101"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>state</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> a state in this automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 or -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28118"
+></A
+><H3
+><A
+NAME="XMLAUTOMATANEWSTATE"
+></A
+>xmlAutomataNewState ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> xmlAutomataNewState     (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new disconnected state in the automata</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28126"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new state or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28139"
+></A
+><H3
+><A
+NAME="XMLAUTOMATANEWTRANSITION"
+></A
+>xmlAutomataNewTransition ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> xmlAutomataNewTransition
+                                            (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *token,
+                                             void *data);</PRE
+></TD
+></TR
+></TABLE
+><P
+>If <TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+> is NULL, this create first a new target state in the automata
+and then adds a an epsilon transition from the <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> state to the
+target state</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28152"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the starting point of the transition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the target point of the transition or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>token</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the target state or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28181"
+></A
+><H3
+><A
+NAME="XMLAUTOMATANEWCOUNTTRANS"
+></A
+>xmlAutomataNewCountTrans ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> xmlAutomataNewCountTrans
+                                            (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *token,
+                                             int min,
+                                             int max,
+                                             void *data);</PRE
+></TD
+></TR
+></TABLE
+><P
+>If <TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+> is NULL, this create first a new target state in the automata
+and then adds a transition from the <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> state to the target state
+activated by a succession of input of value <TT
+CLASS="PARAMETER"
+><I
+>token</I
+></TT
+> and whose number
+is between <TT
+CLASS="PARAMETER"
+><I
+>min</I
+></TT
+> and <TT
+CLASS="PARAMETER"
+><I
+>max</I
+></TT
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28197"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the starting point of the transition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the target point of the transition or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>token</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the input string associated to that transition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>min</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the minimum successive occurences of token</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>max</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the target state or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28234"
+></A
+><H3
+><A
+NAME="XMLAUTOMATANEWONCETRANS"
+></A
+>xmlAutomataNewOnceTrans ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> xmlAutomataNewOnceTrans (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *token,
+                                             int min,
+                                             int max,
+                                             void *data);</PRE
+></TD
+></TR
+></TABLE
+><P
+>If <TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+> is NULL, this create first a new target state in the automata
+and then adds a transition from the <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> state to the target state
+activated by a succession of input of value <TT
+CLASS="PARAMETER"
+><I
+>token</I
+></TT
+> and whose number
+is between <TT
+CLASS="PARAMETER"
+><I
+>min</I
+></TT
+> and <TT
+CLASS="PARAMETER"
+><I
+>max</I
+></TT
+>, moreover that transistion can only be crossed
+once.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28250"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the starting point of the transition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the target point of the transition or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>token</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the input string associated to that transition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>min</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the minimum successive occurences of token</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>max</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the target state or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28287"
+></A
+><H3
+><A
+NAME="XMLAUTOMATANEWALLTRANS"
+></A
+>xmlAutomataNewAllTrans ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> xmlAutomataNewAllTrans  (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             int lax);</PRE
+></TD
+></TR
+></TABLE
+><P
+>If <TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+> is NULL, this create first a new target state in the automata
+and then adds a an ALL transition from the <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> state to the
+target state. That transition is an epsilon transition allowed only when
+all transitions from the <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> node have been activated.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28300"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the starting point of the transition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the target point of the transition or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>lax</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the target state or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28325"
+></A
+><H3
+><A
+NAME="XMLAUTOMATANEWEPSILON"
+></A
+>xmlAutomataNewEpsilon ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> xmlAutomataNewEpsilon   (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28334"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28355"
+></A
+><H3
+><A
+NAME="XMLAUTOMATANEWCOUNTEDTRANS"
+></A
+>xmlAutomataNewCountedTrans ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> xmlAutomataNewCountedTrans
+                                            (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             int counter);</PRE
+></TD
+></TR
+></TABLE
+><P
+>If <TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+> is NULL, this create first a new target state in the automata
+and then adds an epsilon transition from the <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> state to the target state
+which will increment the counter provided</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28367"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the starting point of the transition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the target point of the transition or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>counter</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the counter associated to that transition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the target state or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28392"
+></A
+><H3
+><A
+NAME="XMLAUTOMATANEWCOUNTERTRANS"
+></A
+>xmlAutomataNewCounterTrans ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> xmlAutomataNewCounterTrans
+                                            (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> from,
+                                             <A
+HREF="libxml-xmlautomata.html#XMLAUTOMATASTATEPTR"
+>xmlAutomataStatePtr</A
+> to,
+                                             int counter);</PRE
+></TD
+></TR
+></TABLE
+><P
+>If <TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+> is NULL, this create first a new target state in the automata
+and then adds an epsilon transition from the <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> state to the target state
+which will be allowed only if the counter is within the right range.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28404"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the starting point of the transition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the target point of the transition or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>counter</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the counter associated to that transition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the target state or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28429"
+></A
+><H3
+><A
+NAME="XMLAUTOMATANEWCOUNTER"
+></A
+>xmlAutomataNewCounter ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlAutomataNewCounter           (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am,
+                                             int min,
+                                             int max);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new counter</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28436"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>min</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the minimal value on the counter</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>max</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the maximal value on the counter</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the counter number or -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28457"
+></A
+><H3
+><A
+NAME="XMLAUTOMATACOMPILE"
+></A
+>xmlAutomataCompile ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlregexp.html#XMLREGEXPPTR"
+>xmlRegexpPtr</A
+> xmlAutomataCompile             (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Compile the automata into a Reg Exp ready for being executed.
+The automata should be free after this point.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28465"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the compiled regexp or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN28478"
+></A
+><H3
+><A
+NAME="XMLAUTOMATAISDETERMINIST"
+></A
+>xmlAutomataIsDeterminist ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlAutomataIsDeterminist        (<A
+HREF="libxml-xmlautomata.html#XMLAUTOMATAPTR"
+>xmlAutomataPtr</A
+> am);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Checks if an automata is determinist.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN28485"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>am</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an automata</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if true, 0 if not, and -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="libxml-xmlregexp.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="libxml-xmlunicode.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>xmlregexp</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>xmlunicode</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

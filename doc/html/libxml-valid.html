@@ -4326,8 +4326,9 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ></TABLE
 ><P
 >Determine whether an attribute is of type ID. In case we have DTD(s)
-then this is simple, otherwise we use an heuristic: name ID (upper
-or lowercase).</P
+then this is done if DTD loading has been requested. In the case
+of HTML documents parsed with the HTML parser, then ID detection is
+done systematically.</P
 ><P
 ></P
 ><DIV

@@ -2613,7 +2613,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlAttribute {
-    void           *_private;	        /* for Corba, must be first ! */
+    void           *_private;	        /* application data */
     xmlElementType          type;       /* XML_ATTRIBUTE_DECL, must be second ! */
     const xmlChar          *name;	/* Attribute name */
     struct _xmlNode    *children;	/* NULL */
@@ -2848,7 +2848,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlElement {
-    void           *_private;	        /* for Corba, must be first ! */
+    void           *_private;	        /* application data */
     xmlElementType          type;       /* XML_ELEMENT_DECL, must be second ! */
     const xmlChar          *name;	/* Element name */
     struct _xmlNode    *children;	/* NULL */
@@ -3034,7 +3034,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlDtd {
-    void           *_private;	/* for Corba, must be first ! */
+    void           *_private;	/* application data */
     xmlElementType  type;       /* XML_DTD_NODE, must be second ! */
     const xmlChar *name;	/* Name of the DTD */
     struct _xmlNode *children;	/* the value of the property link */
@@ -3108,7 +3108,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlAttr {
-    void           *_private;	/* for Corba, must be first ! */
+    void           *_private;	/* application data */
     xmlElementType   type;      /* XML_ATTRIBUTE_NODE, must be second ! */
     const xmlChar   *name;      /* the name of the property */
     struct _xmlNode *children;	/* the value of the property */
@@ -3381,7 +3381,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlNode {
-    void           *_private;	/* for Corba, must be first ! */
+    void           *_private;	/* application data */
     xmlElementType   type;	/* type number, must be second ! */
     const xmlChar   *name;      /* the name of the node, or the entity */
     struct _xmlNode *children;	/* parent-&gt;childs link */
@@ -3524,7 +3524,9 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->macro to extract the line number of an element node</P
+>macro to extract the line number of an element node. 
+This will work only if line numbering is activated by
+calling xmlLineNumbersDefault(1) before parsing</P
 ><P
 ></P
 ><DIV
@@ -3585,7 +3587,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlDoc {
-    void           *_private;	/* for Corba, must be first ! */
+    void           *_private;	/* application data */
     xmlElementType  type;       /* XML_DOCUMENT_NODE, must be second ! */
     char           *name;	/* name/filename/URI of the document */
     struct _xmlNode *children;	/* the document tree */

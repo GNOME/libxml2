@@ -1,3 +1,7 @@
+Sat Sep 21 14:56:37 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: fixed a breakage raised by Jacob
+
 Fri Sep 20 20:08:18 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* include/win32config.h: added HAVE_ERRNO_H definition for parts

@@ -3,6 +3,8 @@
 
 SUBDIRS = include . doc example @PYTHON_SUBDIR@
 
+DIST_SUBDIRS = include . doc example python
+
 INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 
 noinst_PROGRAMS=testSchemas testSAX testHTML testXPath testURI testDocbook \

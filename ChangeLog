@@ -1,3 +1,7 @@
+Sun Mar 14 13:19:20 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: applied patch from John Belmonte for anyURI.
+
 Wed Mar 10 17:22:48 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix bug reported by Holger Rauch

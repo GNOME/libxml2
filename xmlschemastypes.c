@@ -2001,15 +2001,20 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 goto done;
             }
         case XML_SCHEMAS_ANYURI:{
-                xmlURIPtr uri;
-
-                uri = xmlParseURI((const char *) value);
-                if (uri == NULL)
-                    goto return1;
-                if (val != NULL) {
-                    TODO;
+                if (*value != 0) {
+                    xmlURIPtr uri = xmlParseURI((const char *) value);
+                    if (uri == NULL)
+                        goto return1;
+                    xmlFreeURI(uri);
                 }
-                xmlFreeURI(uri);
+
+                if (val != NULL) {
+                    v = xmlSchemaNewValue(XML_SCHEMAS_ANYURI);
+                    if (v == NULL)
+                        goto error;
+                    v->value.str = xmlStrdup(value);
+                    *val = v;
+                }
                 goto return0;
             }
         case XML_SCHEMAS_HEXBINARY:{

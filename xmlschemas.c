@@ -2119,7 +2119,7 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (type == NULL)
         return (NULL);
     type->node = node;
-    type->type = XML_SCHEMA_TYPE_SEQUENCE;
+    type->type = XML_SCHEMA_TYPE_ALL;
     type->id = xmlGetProp(node, BAD_CAST "id");
     type->minOccurs = xmlGetMinOccurs(ctxt, node);
     type->maxOccurs = xmlGetMaxOccurs(ctxt, node);
@@ -3037,6 +3037,26 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 	    break;
 	}
 	case XML_SCHEMA_TYPE_ALL: {
+	    xmlAutomataStatePtr end;
+	    xmlAutomataStatePtr start;
+	    xmlSchemaTypePtr subtypes;
+	    xmlSchemaElementPtr elem = (xmlSchemaElementPtr) type;
+
+	    subtypes = type->subtypes;
+	    if (subtypes == NULL)
+		break;
+	    start = ctxt->state;
+	    while (subtypes != NULL) {
+		ctxt->state = start;
+		elem = (xmlSchemaElementPtr) subtypes;
+
+		/* TODO : handle the namespace too */
+		xmlAutomataNewOnceTrans(ctxt->am, ctxt->state, ctxt->state,
+			        elem->name, elem->minOccurs, elem->maxOccurs,
+				subtypes);
+		subtypes = subtypes->next;
+	    }
+	    ctxt->state = xmlAutomataNewAllTrans(ctxt->am, ctxt->state, NULL);
 	    TODO
 	    break;
 	}

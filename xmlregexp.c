@@ -109,6 +109,8 @@ typedef enum {
     XML_REGEXP_QUANT_OPT,
     XML_REGEXP_QUANT_MULT,
     XML_REGEXP_QUANT_PLUS,
+    XML_REGEXP_QUANT_ONCEONLY,
+    XML_REGEXP_QUANT_ALL,
     XML_REGEXP_QUANT_RANGE
 } xmlRegQuantType;
 
@@ -278,6 +280,8 @@ struct _xmlRegExecCtxt {
     xmlRegInputTokenPtr inputStack;/* when operating on strings */
 
 };
+
+#define REGEXP_ALL_COUNTER 0x123456
 
 static void xmlFAParseRegExp(xmlRegParserCtxtPtr ctxt, int top);
 
@@ -630,6 +634,10 @@ xmlRegPrintQuantType(FILE *output, xmlRegQuantType type) {
 	    fprintf(output, "+ "); break;
 	case XML_REGEXP_QUANT_RANGE:
 	    fprintf(output, "range "); break;
+	case XML_REGEXP_QUANT_ONCEONLY:
+	    fprintf(output, "onceonly "); break;
+	case XML_REGEXP_QUANT_ALL:
+	    fprintf(output, "all "); break;
     }
 }
 static void
@@ -940,6 +948,24 @@ xmlRegStatePush(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state) {
     }
     state->no = ctxt->nbStates;
     ctxt->states[ctxt->nbStates++] = state;
+}
+
+/**
+ * xmlFAGenerateAllTransition:
+ * ctxt:  a regexp parser context
+ * from:  the from state
+ * to:  the target state or NULL for building a new one
+ *
+ */
+static void
+xmlFAGenerateAllTransition(xmlRegParserCtxtPtr ctxt,
+			   xmlRegStatePtr from, xmlRegStatePtr to) {
+    if (to == NULL) {
+	to = xmlRegNewState(ctxt);
+	xmlRegStatePush(ctxt, to);
+	ctxt->state = to;
+    }
+    xmlRegStateAddTrans(ctxt, from, NULL, to, -1, REGEXP_ALL_COUNTER);
 }
 
 /**
@@ -3424,6 +3450,69 @@ xmlAutomataNewCountTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 }
 
 /**
+ * xmlAutomataNewOnceTrans:
+ * @am: an automata
+ * @from: the starting point of the transition
+ * @to: the target point of the transition or NULL
+ * @token: the input string associated to that transition
+ * @min:  the minimum successive occurences of token
+ * @min:  the maximum successive occurences of token
+ *
+ * If @to is NULL, this create first a new target state in the automata
+ * and then adds a transition from the @from state to the target state
+ * activated by a succession of input of value @token and whose number
+ * is between @min and @max, moreover that transistion can only be crossed
+ * once.
+ *
+ * Returns the target state or NULL in case of error
+ */
+xmlAutomataStatePtr
+xmlAutomataNewOnceTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
+			 xmlAutomataStatePtr to, const xmlChar *token,
+			 int min, int max, void *data) {
+    xmlRegAtomPtr atom;
+    int counter;
+
+    if ((am == NULL) || (from == NULL) || (token == NULL))
+	return(NULL);
+    if (min < 1)
+	return(NULL);
+    if ((max < min) || (max < 1))
+	return(NULL);
+    atom = xmlRegNewAtom(am, XML_REGEXP_STRING);
+    if (atom == NULL)
+	return(NULL);
+    atom->valuep = xmlStrdup(token);
+    atom->data = data;
+    atom->quant = XML_REGEXP_QUANT_ONCEONLY;
+    if (min == 0)
+	atom->min = 1;
+    else
+	atom->min = min;
+    atom->max = max;
+    /*
+     * associate a counter to the transition.
+     */
+    counter = xmlRegGetCounter(am);
+    am->counters[counter].min = 1;
+    am->counters[counter].max = 1;
+
+    /* xmlFAGenerateTransitions(am, from, to, atom); */
+    if (to == NULL) {
+	to = xmlRegNewState(am);
+	xmlRegStatePush(am, to);
+    }
+    xmlRegStateAddTrans(am, from, atom, to, counter, -1);
+    xmlRegAtomPush(am, atom);
+    am->state = to;
+    if (to == NULL)
+	to = am->state;
+    if (to == NULL)
+	return(NULL);
+    return(to);
+}
+
+/**
  * xmlAutomataNewState:
  * @am: an automata
  *
@@ -3460,6 +3549,30 @@ xmlAutomataNewEpsilon(xmlAutomataPtr am, xmlAutomataStatePtr from,
     if ((am == NULL) || (from == NULL))
 	return(NULL);
     xmlFAGenerateEpsilonTransition(am, from, to);
+    if (to == NULL)
+	return(am->state);
+    return(to);
+}
+
+/**
+ * xmlAutomataNewAllTrans:
+ * @am: an automata
+ * @from: the starting point of the transition
+ * @to: the target point of the transition or NULL
+ *
+ * If @to is NULL, this create first a new target state in the automata
+ * and then adds a an ALL transition from the @from state to the
+ * target state. That transition is an epsilon transition allowed only when
+ * all transitions from the @from node have been activated.
+ *
+ * Returns the target state or NULL in case of error
+ */
+xmlAutomataStatePtr
+xmlAutomataNewAllTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
+		      xmlAutomataStatePtr to) {
+    if ((am == NULL) || (from == NULL))
+	return(NULL);
+    xmlFAGenerateAllTransition(am, from, to);
     if (to == NULL)
 	return(am->state);
     return(to);

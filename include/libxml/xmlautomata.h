@@ -60,6 +60,16 @@ xmlAutomataStatePtr	xmlAutomataNewCountTrans(xmlAutomataPtr am,
 						 int min,
 						 int max,
 						 void *data);
+xmlAutomataStatePtr	xmlAutomataNewOnceTrans	(xmlAutomataPtr am,
+						 xmlAutomataStatePtr from,
+						 xmlAutomataStatePtr to,
+						 const xmlChar *token,
+						 int min,
+						 int max,
+						 void *data);
+xmlAutomataStatePtr	xmlAutomataNewAllTrans	(xmlAutomataPtr am,
+						 xmlAutomataStatePtr from,
+						 xmlAutomataStatePtr to);
 xmlAutomataStatePtr	xmlAutomataNewEpsilon	(xmlAutomataPtr am,
 						 xmlAutomataStatePtr from,
 						 xmlAutomataStatePtr to);

@@ -1,3 +1,7 @@
+Fri Apr 19 18:26:04 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: another entity processing update from Markus Henke
+
 Fri Apr 19 17:14:24 CEST 2002 Bjorn Reese <breese@users.sourceforge.net>
 
 	* trionan.c: fixed crash on OSF/1

@@ -902,56 +902,73 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
  * Returns a pointer to the string copy, the caller must free it.
  */
 xmlChar *
-xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
+xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine)
+{
     xmlNodePtr node = list;
     xmlChar *ret = NULL;
     xmlEntityPtr ent;
 
-    if (list == NULL) return(NULL);
+    if (list == NULL)
+        return (NULL);
 
     while (node != NULL) {
         if ((node->type == XML_TEXT_NODE) ||
-	    (node->type == XML_CDATA_SECTION_NODE)) {
-	    if (inLine) {
-		ret = xmlStrcat(ret, node->content);
-	    } else {
-	        xmlChar *buffer;
-
-		buffer = xmlEncodeEntitiesReentrant(doc, node->content);
-		if (buffer != NULL) {
-		    ret = xmlStrcat(ret, buffer);
-		    xmlFree(buffer);
-		}
-            }
-	} else if (node->type == XML_ENTITY_REF_NODE) {
-	    if (inLine) {
-		ent = xmlGetDocEntity(doc, node->name);
-		if (ent != NULL)
-		    ret = xmlStrcat(ret, ent->content);
-		else {
-		    ret = xmlStrcat(ret, node->content);
-		}    
+            (node->type == XML_CDATA_SECTION_NODE)) {
+            if (inLine) {
+                ret = xmlStrcat(ret, node->content);
             } else {
-	        xmlChar buf[2];
-		buf[0] = '&'; buf[1] = 0;
-		ret = xmlStrncat(ret, buf, 1);
-		ret = xmlStrcat(ret, node->name);
-		buf[0] = ';'; buf[1] = 0;
-		ret = xmlStrncat(ret, buf, 1);
-	    }
-	}
-#if 0
-	else {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlGetNodeListString : invalid node type %d\n",
-	            node->type);
-	}
-#endif
-	node = node->next;
-    }
-    return(ret);
-}
+                xmlChar *buffer;
 
+                buffer = xmlEncodeEntitiesReentrant(doc, node->content);
+                if (buffer != NULL) {
+                    ret = xmlStrcat(ret, buffer);
+                    xmlFree(buffer);
+                }
+            }
+        } else if (node->type == XML_ENTITY_REF_NODE) {
+            if (inLine) {
+                ent = xmlGetDocEntity(doc, node->name);
+                if (ent != NULL) {
+                    xmlChar *buffer;
+
+                    /* an entity content can be any "well balanced chunk",
+                     * i.e. the result of the content [43] production:
+                     * http://www.w3.org/TR/REC-xml#NT-content.
+                     * So it can contain text, CDATA section or nested
+                     * entity reference nodes (among others).
+                     * -> we recursive  call xmlNodeListGetString()
+                     * which handles these types */
+                    buffer = xmlNodeListGetString(doc, ent->children, 1);
+                    if (buffer != NULL) {
+                        ret = xmlStrcat(ret, buffer);
+                        xmlFree(buffer);
+                    }
+                } else {
+                    ret = xmlStrcat(ret, node->content);
+                }
+            } else {
+                xmlChar buf[2];
+
+                buf[0] = '&';
+                buf[1] = 0;
+                ret = xmlStrncat(ret, buf, 1);
+                ret = xmlStrcat(ret, node->name);
+                buf[0] = ';';
+                buf[1] = 0;
+                ret = xmlStrncat(ret, buf, 1);
+            }
+        }
+#if 0
+        else {
+            xmlGenericError(xmlGenericErrorContext,
+                            "xmlGetNodeListString : invalid node type %d\n",
+                            node->type);
+        }
+#endif
+        node = node->next;
+    }
+    return (ret);
+}
 /**
  * xmlNodeListGetRawString:
  * @doc:  the document
@@ -965,54 +982,73 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
  * Returns a pointer to the string copy, the caller must free it.
  */
 xmlChar *
-xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
+xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine)
+{
     xmlNodePtr node = list;
     xmlChar *ret = NULL;
     xmlEntityPtr ent;
 
-    if (list == NULL) return(NULL);
+    if (list == NULL)
+        return (NULL);
 
     while (node != NULL) {
         if ((node->type == XML_TEXT_NODE) ||
-	    (node->type == XML_CDATA_SECTION_NODE)) {
-	    if (inLine) {
-		ret = xmlStrcat(ret, node->content);
-	    } else {
-	        xmlChar *buffer;
-
-		buffer = xmlEncodeSpecialChars(doc, node->content);
-		if (buffer != NULL) {
-		    ret = xmlStrcat(ret, buffer);
-		    xmlFree(buffer);
-		}
-            }
-	} else if (node->type == XML_ENTITY_REF_NODE) {
-	    if (inLine) {
-		ent = xmlGetDocEntity(doc, node->name);
-		if (ent != NULL)
-		    ret = xmlStrcat(ret, ent->content);
-		else {
-		    ret = xmlStrcat(ret, node->content);
-		}    
+            (node->type == XML_CDATA_SECTION_NODE)) {
+            if (inLine) {
+                ret = xmlStrcat(ret, node->content);
             } else {
-	        xmlChar buf[2];
-		buf[0] = '&'; buf[1] = 0;
-		ret = xmlStrncat(ret, buf, 1);
-		ret = xmlStrcat(ret, node->name);
-		buf[0] = ';'; buf[1] = 0;
-		ret = xmlStrncat(ret, buf, 1);
-	    }
-	}
+                xmlChar *buffer;
+
+                buffer = xmlEncodeSpecialChars(doc, node->content);
+                if (buffer != NULL) {
+                    ret = xmlStrcat(ret, buffer);
+                    xmlFree(buffer);
+                }
+            }
+        } else if (node->type == XML_ENTITY_REF_NODE) {
+            if (inLine) {
+                ent = xmlGetDocEntity(doc, node->name);
+                if (ent != NULL) {
+                    xmlChar *buffer;
+
+                    /* an entity content can be any "well balanced chunk",
+                     * i.e. the result of the content [43] production:
+                     * http://www.w3.org/TR/REC-xml#NT-content.
+                     * So it can contain text, CDATA section or nested
+                     * entity reference nodes (among others).
+                     * -> we recursive  call xmlNodeListGetRawString()
+                     * which handles these types */
+                    buffer =
+                        xmlNodeListGetRawString(doc, ent->children, 1);
+                    if (buffer != NULL) {
+                        ret = xmlStrcat(ret, buffer);
+                        xmlFree(buffer);
+                    }
+                } else {
+                    ret = xmlStrcat(ret, node->content);
+                }
+            } else {
+                xmlChar buf[2];
+
+                buf[0] = '&';
+                buf[1] = 0;
+                ret = xmlStrncat(ret, buf, 1);
+                ret = xmlStrcat(ret, node->name);
+                buf[0] = ';';
+                buf[1] = 0;
+                ret = xmlStrncat(ret, buf, 1);
+            }
+        }
 #if 0
-	else {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlGetNodeListString : invalid node type %d\n",
-	            node->type);
-	}
+        else {
+            xmlGenericError(xmlGenericErrorContext,
+                            "xmlGetNodeListString : invalid node type %d\n",
+                            node->type);
+        }
 #endif
-	node = node->next;
+        node = node->next;
     }
-    return(ret);
+    return (ret);
 }
 
 /**
@@ -3763,122 +3799,159 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
  *     It's up to the caller to free the memory.
  */
 xmlChar *
-xmlNodeGetContent(xmlNodePtr cur) {
-    if (cur == NULL) return(NULL);
+xmlNodeGetContent(xmlNodePtr cur)
+{
+    if (cur == NULL)
+        return (NULL);
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
-        case XML_ELEMENT_NODE: {
-	    xmlNodePtr tmp = cur;
-	    xmlBufferPtr buffer;
-	    xmlChar *ret;
+        case XML_ELEMENT_NODE:{
+                xmlNodePtr tmp = cur;
+                xmlBufferPtr buffer;
+                xmlChar *ret;
 
-            buffer = xmlBufferCreate();
-	    if (buffer == NULL)
-		return(NULL);
-	    while (tmp != NULL) {
-		switch (tmp->type) {
-		    case XML_CDATA_SECTION_NODE:
-		    case XML_TEXT_NODE:
-			if (tmp->content != NULL)
-			    xmlBufferCat(buffer, tmp->content);
-			break;
-		    case XML_ENTITY_REF_NODE: {
-		        xmlEntityPtr ent;
+                buffer = xmlBufferCreate();
+                if (buffer == NULL)
+                    return (NULL);
+                while (tmp != NULL) {
+                    switch (tmp->type) {
+                        case XML_CDATA_SECTION_NODE:
+                        case XML_TEXT_NODE:
+                            if (tmp->content != NULL)
+                                xmlBufferCat(buffer, tmp->content);
+                            break;
+                        case XML_ENTITY_REF_NODE:{
+                                /* recursive substitution of entity references */
+                                xmlChar *cont = xmlNodeGetContent(tmp);
 
-			ent = xmlGetDocEntity(cur->doc, tmp->name);
-			if (ent != NULL)
-			    xmlBufferCat(buffer, ent->content);
-		    }
-		    default:
-			break;
-		}
-		/*
-		 * Skip to next node
-		 */
-		if (tmp->children != NULL) {
-		    if (tmp->children->type != XML_ENTITY_DECL) {
-			tmp = tmp->children;
-			continue;
-		    }
-		}
-		if (tmp == cur)
-		    break;
+                                if (cont) {
+                                    xmlBufferCat(buffer,
+                                                 (const xmlChar *) cont);
+                                    xmlFree(cont);
+                                }
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                    /*
+                     * Skip to next node
+                     */
+                    if (tmp->children != NULL) {
+                        if (tmp->children->type != XML_ENTITY_DECL) {
+                            tmp = tmp->children;
+                            continue;
+                        }
+                    }
+                    if (tmp == cur)
+                        break;
 
-		if (tmp->next != NULL) {
-		    tmp = tmp->next;
-		    continue;
-		}
-		
-		do {
-		    tmp = tmp->parent;
-		    if (tmp == NULL)
-			break;
-		    if (tmp == cur) {
-			tmp = NULL;
-			break;
-		    }
-		    if (tmp->next != NULL) {
-			tmp = tmp->next;
-			break;
-		    }
-		} while (tmp != NULL);
-	    }
-	    ret = buffer->content;
-	    buffer->content = NULL;
-	    xmlBufferFree(buffer);
-	    return(ret);
-        }
-        case XML_ATTRIBUTE_NODE: {
-	    xmlAttrPtr attr = (xmlAttrPtr) cur;
-	    if (attr->parent != NULL)
-		return(xmlNodeListGetString(attr->parent->doc, attr->children, 1));
-	    else
-		return(xmlNodeListGetString(NULL, attr->children, 1));
-	    break;
-	}
+                    if (tmp->next != NULL) {
+                        tmp = tmp->next;
+                        continue;
+                    }
+
+                    do {
+                        tmp = tmp->parent;
+                        if (tmp == NULL)
+                            break;
+                        if (tmp == cur) {
+                            tmp = NULL;
+                            break;
+                        }
+                        if (tmp->next != NULL) {
+                            tmp = tmp->next;
+                            break;
+                        }
+                    } while (tmp != NULL);
+                }
+                ret = buffer->content;
+                buffer->content = NULL;
+                xmlBufferFree(buffer);
+                return (ret);
+            }
+        case XML_ATTRIBUTE_NODE:{
+                xmlAttrPtr attr = (xmlAttrPtr) cur;
+
+                if (attr->parent != NULL)
+                    return (xmlNodeListGetString
+                            (attr->parent->doc, attr->children, 1));
+                else
+                    return (xmlNodeListGetString(NULL, attr->children, 1));
+                break;
+            }
         case XML_COMMENT_NODE:
         case XML_PI_NODE:
-	    if (cur->content != NULL)
-	        return(xmlStrdup(cur->content));
-	    return(NULL);
-        case XML_ENTITY_REF_NODE:
-	    /*
-	     * Locate the entity, and get it's content
-	     * @@@
-	     */
-            return(NULL);
+            if (cur->content != NULL)
+                return (xmlStrdup(cur->content));
+            return (NULL);
+        case XML_ENTITY_REF_NODE:{
+                xmlEntityPtr ent;
+                xmlNodePtr tmp;
+                xmlBufferPtr buffer;
+                xmlChar *ret;
+
+                /* lookup entity declaration */
+                ent = xmlGetDocEntity(cur->doc, cur->name);
+                if (ent == NULL)
+                    return (NULL);
+
+                buffer = xmlBufferCreate();
+                if (buffer == NULL)
+                    return (NULL);
+
+                /* an entity content can be any "well balanced chunk",
+                 * i.e. the result of the content [43] production:
+                 * http://www.w3.org/TR/REC-xml#NT-content
+                 * -> we iterate through child nodes and recursive call
+                 * xmlNodeGetContent() which handles all possible node types */
+                tmp = ent->children;
+                while (tmp) {
+                    xmlChar *cont = xmlNodeGetContent(tmp);
+
+                    if (cont) {
+                        xmlBufferCat(buffer, (const xmlChar *) cont);
+                        xmlFree(cont);
+                    }
+                    tmp = tmp->next;
+                }
+
+                ret = buffer->content;
+                buffer->content = NULL;
+                xmlBufferFree(buffer);
+                return (ret);
+            }
         case XML_ENTITY_NODE:
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
         case XML_NOTATION_NODE:
         case XML_DTD_NODE:
-	case XML_XINCLUDE_START:
-	case XML_XINCLUDE_END:
+        case XML_XINCLUDE_START:
+        case XML_XINCLUDE_END:
 #ifdef LIBXML_DOCB_ENABLED
-	case XML_DOCB_DOCUMENT_NODE:
+        case XML_DOCB_DOCUMENT_NODE:
 #endif
-	    return(NULL);
-	case XML_NAMESPACE_DECL:
-	    return(xmlStrdup(((xmlNsPtr)cur)->href));
+            return (NULL);
+        case XML_NAMESPACE_DECL:
+            return (xmlStrdup(((xmlNsPtr) cur)->href));
         case XML_ELEMENT_DECL:
-	    /* TODO !!! */
-	    return(NULL);
+            /* TODO !!! */
+            return (NULL);
         case XML_ATTRIBUTE_DECL:
-	    /* TODO !!! */
-	    return(NULL);
+            /* TODO !!! */
+            return (NULL);
         case XML_ENTITY_DECL:
-	    /* TODO !!! */
-	    return(NULL);
+            /* TODO !!! */
+            return (NULL);
         case XML_CDATA_SECTION_NODE:
         case XML_TEXT_NODE:
-	    if (cur->content != NULL)
-	        return(xmlStrdup(cur->content));
-            return(NULL);
+            if (cur->content != NULL)
+                return (xmlStrdup(cur->content));
+            return (NULL);
     }
-    return(NULL);
+    return (NULL);
 }
- 
 /**
  * xmlNodeSetContent:
  * @cur:  the node being modified

@@ -6,7 +6,7 @@ License: MIT
 Group: Development/Libraries
 Source: ftp://xmlsoft.org/libxml2-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
-BuildRequires: python python-devel
+BuildRequires: python python-devel zlib-devel
 URL: http://xmlsoft.org/
 Prefix: %{_prefix}
 Docdir: %{_docdir}

@@ -3572,7 +3572,7 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 	return;
     }
     cur = CUR;
-    if (cur != '-') {
+    if ((cur != '-') || (NXT(1) == ']')) {
         xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,
 		              XML_REGEXP_CHARVAL, start, end, NULL);
 	return;
@@ -3650,15 +3650,11 @@ xmlFAParseCharGroup(xmlRegParserCtxtPtr ctxt) {
 	    ctxt->neg = !ctxt->neg;
 	    xmlFAParsePosCharGroup(ctxt);
 	    ctxt->neg = neg;
-	} else if (CUR == '-') {
+	} else if ((CUR == '-') && (NXT(1) == '[')) {
 	    int neg = ctxt->neg;
-	    NEXT;
 	    ctxt->neg = 2;
-	    if (CUR != '[') {
-		ERROR("charClassExpr: '[' expected");
-		break;
-	    }
-	    NEXT;
+	    NEXT;	/* eat the '-' */
+	    NEXT;	/* eat the '[' */
 	    xmlFAParseCharGroup(ctxt);
 	    if (CUR == ']') {
 		NEXT;

@@ -1,3 +1,8 @@
+Sat Mar 20 22:25:18 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlregexp.c: enhanced the logic of parsing char groups to
+	  better handle initial or ending '-' (bug 135972)
+
 Sat Mar 20 19:26:03 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* relaxng.c: added check for external reference in 

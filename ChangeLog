@@ -1,3 +1,8 @@
+Tue Feb 16 17:27:29 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Makefile.am, spec, doc/Makefile.am : upgrading to 0.99.8, fixing
+	  the tar and spec file to include the beginning of the doc.
+
 1999-02-13  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
 
 	* doc/.cvsignore: Added this file.

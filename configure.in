@@ -2,7 +2,9 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.2)
 AC_INIT(entities.h)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(libxml, 0.99.5)
+AM_INIT_AUTOMAKE(libxml, 0.99.8)
+
+AC_ARG_WITH(html-dir, [  --with-html-dir=PATH path to installed docs ])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -28,6 +30,15 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h unistd.h ctype.h dirent.h errno.h malloc.h)
 AC_CHECK_HEADERS(stdarg.h sys/stat.h sys/types.h time.h zlib.h)
 
+dnl Specific dir for HTML output ?
+if test "x$with_html_dir" = "x" ; then
+  HTML_DIR='${datadir}/gtk-doc/html'
+else
+  HTML_DIR=$with_html_dir
+fi
+
+AC_SUBST(HTML_DIR)
+
 XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}'
 XML_LIBS="-lxml $Z_LIBS"
@@ -35,6 +46,7 @@ XML_LIBS="-lxml $Z_LIBS"
 AC_SUBST(XML_LIBDIR)
 AC_SUBST(XML_LIBS)
 AC_SUBST(XML_INCLUDEDIR)
+AC_SUBST(HTML_DIR)
 
 AC_ARG_ENABLE(corba,    [  --enable-corba           Add Corba support (default)])
 

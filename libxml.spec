@@ -1,5 +1,5 @@
 # Note that this is NOT a relocatable package
-%define ver      0.99.5
+%define ver      0.99.8
 %define rel      SNAP
 %define prefix   /usr
 
@@ -73,7 +73,6 @@ make prefix=$RPM_BUILD_ROOT%{prefix} install
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
-%doc doc/DOM.gif doc/structure.gif doc/xml.html
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/xml-config
 

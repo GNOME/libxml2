@@ -4677,6 +4677,7 @@ xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
  * 
  * xmlParserFindNodeInfoIndex : Find the index that the info record for
  *   the given node is or should be at in a sorted sequence
+ *
  * return values: a long indicating the position of the record
  */
 unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeq* seq,

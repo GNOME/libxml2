@@ -1,3 +1,8 @@
+Tue Mar 13 10:28:49 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* README.cvs-commits: added, pointing to HACKING
+	* HACKING: updated
+
 Mon Mar 12 22:09:40 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: and Matt Sergeant found one in the XML push

@@ -3,32 +3,30 @@ NOTE:
     with the old libxml-1 headers. I posted on gnome-hackers a recipe to
     change your code to compile with both, check it out ! Also read
     http://xmlsoft.org/upgrade.html
-  - in the meantime the old 1.x code has been tagged with LIB_XML_1_X
+  - in the meantime the old 1.x code has been tagged with LIB_XML_1_BRANCH
     extract this version and drop me a mail if you want me to take care of
     the update of your module to libxml-2 <veillard@w3.org>
+  - the 1.x branch has a separate commit policy, please check the HACKING
+    file for this branch
 
      Rules for commits on the gnome-xml module
      =========================================
 
 If what you are patching is a non-compilation issue either at compile
 time or linking time on one of the main Linux platforms, then feel free
-to patch first and send mail afterward.
+to patch first and send mail afterward as long as the change is limited.
+Please keep in mind that a large part of my user base is on Windows, so
+be careful with potential portability problems there.
 
-Otherwise, send me (Daniel.Veillard@w3.org) a mail and if it's a bug
-issue, register it at bugs.gnome.org. I check both my mail and the
-bug database everyday. if you don't get an answer within 3 days
-(which is highly unprobable) then commit your changes. This simply
-mean that I'm on holliday or on the road.
-
-The reasons I'm asking for an ask before commit policy is that I'm
-using a separate CVS base for unstable developments and if you commit
-a patch I didn't get, I may loose your change by mistake (it happened
-already once) and seriously complicates my job of merging both bases.
-(The second base is at http://dev.w3.org/ under the XML module).
+Otherwise, send me (veillard@redhat.com) a mail and if it's a bug
+issue, register it at bugzilla.gnome.org (module libxml). I check both
+my mail and the bug database on a regular basis. If you don't get an
+answer within a week (which is highly unprobable) then commit your changes.
+This simply mean that I'm on holliday or on the road.
 
   thanks in advance for following the rule,
 
 Daniel
 
-P.S.: Raph Levien get an exception for the send before commit rule :-)
+P.S.: Bjorn Reese get an exception for the send before commit rule
 

@@ -1,3 +1,10 @@
+Fri Apr 18 16:37:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: switched to have thread support enabled by default,
+	  didn't got troubles with ABI compatibility on Linux, hope it
+	  won't break on strange OSes, if yes, report the system ID
+	* doc/libxml2-api.xml: just rebuilt the API
+
 Fri Apr 18 14:31:15 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.h include/libxml/parser.h parser.c xmlIO.c DOCBparser.c: 

@@ -3009,8 +3009,11 @@ actually an xmlCharEncoding'/>
       <field name='end' type='const xmlChar *' info=' end of the array to parse'/>
       <field name='length' type='int' info=' length if known'/>
       <field name='line' type='int' info=' Current line'/>
-      <field name='col' type='int' info=' Current column'/>
-      <field name='consumed' type='int' info=' How many xmlChars already consumed'/>
+      <field name='col' type='int' info='* NOTE: consumed is only tested for equality in the parser code,
+*       so even if there is an overflow this should not give troubles
+*       for parsing very large instances.
+*'/>
+      <field name='consumed' type='unsigned long' info=' How many xmlChars already consumed'/>
       <field name='free' type='xmlParserInputDeallocate' info=' function to deallocate the base'/>
       <field name='encoding' type='const xmlChar *' info=' the encoding string for entity'/>
       <field name='version' type='const xmlChar *' info=' the version string for entity'/>

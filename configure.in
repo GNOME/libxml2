@@ -364,7 +364,9 @@ THREAD_CFLAGS=""
 TEST_THREADS=""
 
 AC_ARG_WITH(threads, [  --with-threads          Add multithread support(off)])
-if test "$with_threads" = "yes" ; then
+if test "$with_threads" = "no" ; then
+    echo Disabling multithreaded support
+else
     echo Enabling multithreaded support
 
     AC_CHECK_HEADER(pthread.h,

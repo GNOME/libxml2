@@ -3814,6 +3814,74 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
 }
 
 /**
+ * htmlNewParserCtxt:
+ *
+ * Allocate and initialize a new parser context.
+ *
+ * Returns the xmlParserCtxtPtr or NULL
+ */
+
+static htmlParserCtxtPtr
+htmlNewParserCtxt(void)
+{
+    xmlParserCtxtPtr ctxt;
+
+    ctxt = (xmlParserCtxtPtr) xmlMalloc(sizeof(xmlParserCtxt));
+    if (ctxt == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewParserCtxt : cannot allocate context\n");
+        perror("malloc");
+	return(NULL);
+    }
+    memset(ctxt, 0, sizeof(xmlParserCtxt));
+    htmlInitParserCtxt(ctxt);
+    return(ctxt);
+}
+
+/**
+ * htmlCreateMemoryParserCtxt:
+ * @buffer:  a pointer to a char array
+ * @size:  the size of the array
+ *
+ * Create a parser context for an HTML in-memory document.
+ *
+ * Returns the new parser context or NULL
+ */
+static htmlParserCtxtPtr
+htmlCreateMemoryParserCtxt(const char *buffer, int size) {
+    xmlParserCtxtPtr ctxt;
+    xmlParserInputPtr input;
+    xmlParserInputBufferPtr buf;
+
+    if (buffer == NULL)
+	return(NULL);
+    if (size <= 0)
+	return(NULL);
+
+    ctxt = htmlNewParserCtxt();
+    if (ctxt == NULL)
+	return(NULL);
+
+    buf = xmlParserInputBufferCreateMem(buffer, size, XML_CHAR_ENCODING_NONE);
+    if (buf == NULL) return(NULL);
+
+    input = xmlNewInputStream(ctxt);
+    if (input == NULL) {
+	xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
+
+    input->filename = NULL;
+    input->buf = buf;
+    input->base = input->buf->buffer->content;
+    input->cur = input->buf->buffer->content;
+    input->end = &input->buf->buffer->content[input->buf->buffer->use];
+
+    inputPush(ctxt, input);
+    return(ctxt);
+}
+
+/**
  * htmlCreateDocParserCtxt :
  * @cur:  a pointer to an array of xmlChar
  * @encoding:  a free form C string describing the HTML document encoding, or NULL
@@ -3826,31 +3894,12 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
  */
 static htmlParserCtxtPtr
 htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
-    htmlParserCtxtPtr ctxt;
-    htmlParserInputPtr input;
-    /* htmlCharEncoding enc; */
+    int len;
 
-    ctxt = (htmlParserCtxtPtr) xmlMalloc(sizeof(htmlParserCtxt));
-    if (ctxt == NULL) {
-        perror("malloc");
+    if (cur == NULL)
 	return(NULL);
-    }
-    htmlInitParserCtxt(ctxt);
-    input = (htmlParserInputPtr) xmlMalloc(sizeof(htmlParserInput));
-    if (input == NULL) {
-        perror("malloc");
-	xmlFree(ctxt);
-	return(NULL);
-    }
-    memset(input, 0, sizeof(htmlParserInput));
-
-    input->line = 1;
-    input->col = 1;
-    input->base = cur;
-    input->cur = cur;
-
-    inputPush(ctxt, input);
-    return(ctxt);
+    len = xmlStrlen(cur);
+    return(htmlCreateMemoryParserCtxt((char *)cur, len));
 }
 
 /************************************************************************

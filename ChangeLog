@@ -1,3 +1,8 @@
+Sun Jul 21 17:48:47 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fixing bug #84876 based on the xml working
+	  code.
+
 Sun Jul 21 19:15:00 HKT 2002 William Brack <wbrack@mmm.com.hk>
 
 	* python/Makefile.am: enhanced to fix bug 72012 (errors

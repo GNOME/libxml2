@@ -4050,11 +4050,12 @@ xmlTextWriterWriteIndent (xmlTextWriterPtr writer)
 {
   int lksize;
   int i;
-  int ret;
+  int ret = -1;		/* just in case of an empty list */
   
   lksize = xmlListSize (writer->nodes);
   for (i = 0; i < (lksize-1); i++) {
-    ret = xmlOutputBufferWriteString (writer->out, writer->ichar);
+    ret = xmlOutputBufferWriteString (writer->out, 
+            (const char *)writer->ichar);
     if (ret == -1)
       break;
   }

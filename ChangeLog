@@ -1,3 +1,8 @@
+Tue Jan  6 23:18:11 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* configure.in: fixed Bug130593
+	* xmlwriter.c: fixed compilation warning
+
 Tue Jan  6 15:15:23 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlstring.h: fixed the comment in the header

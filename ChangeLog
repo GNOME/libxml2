@@ -1,3 +1,7 @@
+Tue Apr 20 23:40:14 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: last version of the fix for MSC version 1200
+
 Tue Apr 20 19:40:37 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: killing the strncmp vs. memcmp controversy and #140593

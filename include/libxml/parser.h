@@ -13,9 +13,6 @@
 #include <libxml/valid.h>
 #include <libxml/xmlIO.h>
 #include <libxml/entities.h>
-#if defined(_REENTRANT) || (_POSIX_C_SOURCE - 0 >= 199506L)
-#include <pthread.h>
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -578,6 +575,8 @@ xmlParserInputPtr
 #ifdef __cplusplus
 }
 #endif
+
+#include <libxml/globals.h>
 
 #endif /* __XML_PARSER_H__ */
 

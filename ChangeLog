@@ -1,3 +1,10 @@
+Mon Oct 15 14:30:11 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/globals.h configure.in global.data: make
+	  the allocation be per-thread a configure option
+	* encoding.c include/libxml/parser.h: fixed compilation
+	  errors
+
 Mon Oct 15 12:45:03 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/parser.h: Norm reported that a few lines

@@ -59,25 +59,36 @@ typedef enum {
 #endif
 } xmlElementType;
 
-/*
- * Size of an internal character representation.
+/**
+ * xmlChar:
  *
- * We use 8bit chars internal representation for memory efficiency,
- * Note that with 8 bits wide xmlChars one can still use UTF-8 to handle
- * correctly non ISO-Latin input.
+ * This is a basic byte in an UTF-8 encoded string.
+ * It's unsigned allowing to pinpoint case where char * are assigned
+ * to xmlChar * (possibly making serialization back impossible).
  */
 
 typedef unsigned char xmlChar;
 
+/*
+ * Removed in 2.3.9 ... nobody should still use this
+ *
 #ifndef WIN32
 #ifndef CHAR
 #define CHAR xmlChar
 #endif
 #endif
+ */
 
+/**
+ * BAD_CAST:
+ *
+ * Macro to cast a string to an xmlChar * when one know its safe.
+ */
 #define BAD_CAST (xmlChar *)
 
-/*
+/**
+ * xmlNotation:
+ *
  * a DTD Notation definition
  */
 
@@ -89,8 +100,10 @@ struct _xmlNotation {
     const xmlChar               *SystemID;	/* System identifier, if any */
 };
 
-/*
- * a DTD Attribute definition
+/**
+ * xmlAttributeType:
+ *
+ * a DTD Attribute type definition
  */
 
 typedef enum {
@@ -106,6 +119,12 @@ typedef enum {
     XML_ATTRIBUTE_NOTATION
 } xmlAttributeType;
 
+/**
+ * xmlAttributeDefault:
+ *
+ * a DTD Attribute default definition
+ */
+
 typedef enum {
     XML_ATTRIBUTE_NONE = 1,
     XML_ATTRIBUTE_REQUIRED,
@@ -113,12 +132,24 @@ typedef enum {
     XML_ATTRIBUTE_FIXED
 } xmlAttributeDefault;
 
+/**
+ * xmlEnumeration:
+ *
+ * list structure used when there is an enumeration in DTDs
+ */
+
 typedef struct _xmlEnumeration xmlEnumeration;
 typedef xmlEnumeration *xmlEnumerationPtr;
 struct _xmlEnumeration {
     struct _xmlEnumeration    *next;	/* next one */
     const xmlChar            *name;	/* Enumeration name */
 };
+
+/**
+ * xmlAttribute:
+ *
+ * an Attribute declaration in a DTD
+ */
 
 typedef struct _xmlAttribute xmlAttribute;
 typedef xmlAttribute *xmlAttributePtr;
@@ -144,8 +175,10 @@ struct _xmlAttribute {
     const xmlChar          *elem;	/* Element holding the attribute */
 };
 
-/*
- * a DTD Element definition.
+/**
+ * xmlElementContentType:
+ *
+ * Possible definitions of element content types
  */
 typedef enum {
     XML_ELEMENT_CONTENT_PCDATA = 1,
@@ -154,12 +187,24 @@ typedef enum {
     XML_ELEMENT_CONTENT_OR
 } xmlElementContentType;
 
+/**
+ * xmlElementContentOccur:
+ *
+ * Possible definitions of element content occurences
+ */
 typedef enum {
     XML_ELEMENT_CONTENT_ONCE = 1,
     XML_ELEMENT_CONTENT_OPT,
     XML_ELEMENT_CONTENT_MULT,
     XML_ELEMENT_CONTENT_PLUS
 } xmlElementContentOccur;
+
+/**
+ * xmlElementContent:
+ *
+ * an XML Element content as stored after parsing an element definition
+ * in a DTD.
+ */
 
 typedef struct _xmlElementContent xmlElementContent;
 typedef xmlElementContent *xmlElementContentPtr;
@@ -172,6 +217,12 @@ struct _xmlElementContent {
     struct _xmlElementContent *parent;	/* parent */
 };
 
+/**
+ * xmlElementTypeVal:
+ *
+ * the differnt possibility for an element content type
+ */
+
 typedef enum {
     XML_ELEMENT_TYPE_UNDEFINED = 0,
     XML_ELEMENT_TYPE_EMPTY = 1,
@@ -179,6 +230,12 @@ typedef enum {
     XML_ELEMENT_TYPE_MIXED,
     XML_ELEMENT_TYPE_ELEMENT
 } xmlElementTypeVal;
+
+/**
+ * xmlElement:
+ *
+ * an XML Element declaration from a DTD
+ */
 
 typedef struct _xmlElement xmlElement;
 typedef xmlElement *xmlElementPtr;
@@ -201,7 +258,13 @@ struct _xmlElement {
     const xmlChar        *prefix;	/* the namespace prefix if any */
 };
 
-/*
+
+#define XML_LOCAL_NAMESPACE XML_NAMESPACE_DECL
+typedef xmlElementType xmlNsType;
+
+/**
+ * xmlNs:
+ *
  * An XML namespace.
  * Note that prefix == NULL is valid, it defines the default namespace
  * within the subtree (until overriden).
@@ -209,9 +272,6 @@ struct _xmlElement {
  * XML_GLOBAL_NAMESPACE is now deprecated for good
  * xmlNsType is unified with xmlElementType
  */
-
-#define XML_LOCAL_NAMESPACE XML_NAMESPACE_DECL
-typedef xmlElementType xmlNsType;
 
 typedef struct _xmlNs xmlNs;
 typedef xmlNs *xmlNsPtr;
@@ -222,8 +282,11 @@ struct _xmlNs {
     const xmlChar *prefix;	/* prefix for the namespace */
 };
 
-/*
- * An XML DtD, as defined by <!DOCTYPE.
+/**
+ * xmlDtd:
+ *
+ * An XML DtD, as defined by <!DOCTYPE ... There is actually one for
+ * the internal subset and for the external subset
  */
 typedef struct _xmlDtd xmlDtd;
 typedef xmlDtd *xmlDtdPtr;
@@ -250,8 +313,10 @@ struct _xmlDtd {
     void          *pentities;   /* Hash table for param entities if any */
 };
 
-/*
- * A attribute of an XML node.
+/**
+ * xmlAttr:
+ *
+ * A attribute on an XML node.
  */
 typedef struct _xmlAttr xmlAttr;
 typedef xmlAttr *xmlAttrPtr;
@@ -271,7 +336,9 @@ struct _xmlAttr {
     xmlAttributeType atype;     /* the attribute type if validating */
 };
 
-/*
+/**
+ * xmlID:
+ *
  * An XML ID instance.
  */
 
@@ -283,7 +350,9 @@ struct _xmlID {
     xmlAttrPtr        attr;	/* The attribut holding it */
 };
 
-/*
+/**
+ * xmlRef:
+ *
  * An XML IDREF instance.
  */
 
@@ -295,8 +364,11 @@ struct _xmlRef {
     xmlAttrPtr        attr;	/* The attribut holding it */
 };
 
-/*
- * A buffer structure
+/**
+ * xmlBufferAllocationScheme:
+ *
+ * A buffer allocation scheme can be defined to either match exactly the
+ * need or double it's allocated size each time it is found too small
  */
 
 typedef enum {
@@ -304,6 +376,11 @@ typedef enum {
     XML_BUFFER_ALLOC_EXACT
 } xmlBufferAllocationScheme;
 
+/**
+ * xmlBuffer:
+ *
+ * A buffer structure
+ */
 typedef struct _xmlBuffer xmlBuffer;
 typedef xmlBuffer *xmlBufferPtr;
 struct _xmlBuffer {
@@ -344,7 +421,9 @@ struct _xmlNode {
     xmlNs           *nsDef;     /* namespace definitions on this node */
 };
 
-/*
+/**
+ * xmlDoc:
+ *
  * An XML document.
  */
 typedef struct _xmlDoc xmlDoc;
@@ -377,11 +456,21 @@ struct _xmlDoc {
 				   actually an xmlCharEncoding */
 };
 
-/*
- * Compatibility naming layer with libxml1
+/**
+ * xmlChildrenNode:
+ *
+ * Macro for compatibility naming layer with libxml1
  */
 #ifndef xmlChildrenNode
 #define xmlChildrenNode children
+#endif
+
+/**
+ * xmlRootNode:
+ *
+ * Macro for compatibility naming layer with libxml1
+ */
+#ifndef xmlRootNode
 #define xmlRootNode children
 #endif
 

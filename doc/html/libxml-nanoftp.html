@@ -4,7 +4,7 @@
 >nanoftp</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.59"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -18,6 +18,7 @@ REL="NEXT"
 TITLE="xmlIO"
 HREF="libxml-xmlio.html"></HEAD
 ><BODY
+CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
 LINK="#0000FF"
@@ -121,7 +122,7 @@ NAME="LIBXML-NANOFTP"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN15191"
+NAME="AEN15701"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +130,7 @@ NAME="AEN15191"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN15194"
+NAME="AEN15704"
 ></A
 ><H2
 >Synopsis</H2
@@ -281,7 +282,7 @@ HREF="libxml-nanoftp.html#XMLNANOFTPREAD"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN15223"
+NAME="AEN15733"
 ></A
 ><H2
 >Description</H2
@@ -291,14 +292,14 @@ NAME="AEN15223"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN15226"
+NAME="AEN15736"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15228"
+NAME="AEN15738"
 ></A
 ><H3
 ><A
@@ -333,9 +334,15 @@ HREF="LONG"
 ></TR
 ></TABLE
 ><P
+>A callback for the xmlNanoFTPList command
+Note that only one of year and day:minute are specified</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15745"
+></A
 ><P
 ></P
 ><TABLE
@@ -345,6 +352,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -360,7 +368,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  user provided data for the callback</TD
 ></TR
 ><TR
 ><TD
@@ -377,7 +385,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the file name (including "-&gt;" when links are shown)</TD
 ></TR
 ><TR
 ><TD
@@ -394,7 +402,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the attribute string</TD
 ></TR
 ><TR
 ><TD
@@ -411,7 +419,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the owner string</TD
 ></TR
 ><TR
 ><TD
@@ -428,7 +436,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the group string</TD
 ></TR
 ><TR
 ><TD
@@ -445,7 +453,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the file size</TD
 ></TR
 ><TR
 ><TD
@@ -462,7 +470,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the link count</TD
 ></TR
 ><TR
 ><TD
@@ -479,7 +487,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the year</TD
 ></TR
 ><TR
 ><TD
@@ -496,7 +504,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the month</TD
 ></TR
 ><TR
 ><TD
@@ -513,7 +521,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the day</TD
 ></TR
 ><TR
 ><TD
@@ -530,7 +538,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the hour</TD
 ></TR
 ><TR
 ><TD
@@ -547,8 +555,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the minute</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -557,7 +566,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15287"
+NAME="AEN15798"
 ></A
 ><H3
 ><A
@@ -580,9 +589,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>A callback for the xmlNanoFTPGet command</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15804"
+></A
 ><P
 ></P
 ><TABLE
@@ -592,6 +606,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -607,7 +622,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user provided context</TD
 ></TR
 ><TR
 ><TD
@@ -624,7 +639,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the data received</TD
 ></TR
 ><TR
 ><TD
@@ -641,8 +656,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+> its size in bytes</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -651,7 +667,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15309"
+NAME="AEN15821"
 ></A
 ><H3
 ><A
@@ -681,7 +697,7 @@ and get the hostname</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15315"
+NAME="AEN15827"
 ></A
 ><H3
 ><A
@@ -709,7 +725,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15321"
+NAME="AEN15833"
 ></A
 ><H3
 ><A
@@ -735,6 +751,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15839"
+></A
 ><P
 ></P
 ><TABLE
@@ -744,6 +763,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -761,6 +781,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  The URL used to initialize the context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -769,7 +790,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15336"
+NAME="AEN15848"
 ></A
 ><H3
 ><A
@@ -795,6 +816,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15854"
+></A
 ><P
 ></P
 ><TABLE
@@ -804,6 +828,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -821,6 +846,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an FTP context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -829,7 +855,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15351"
+NAME="AEN15863"
 ></A
 ><H3
 ><A
@@ -856,6 +882,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15869"
+></A
 ><P
 ></P
 ><TABLE
@@ -865,6 +894,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -899,6 +929,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the port (use 21 if 0)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -907,7 +938,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15370"
+NAME="AEN15882"
 ></A
 ><H3
 ><A
@@ -933,6 +964,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15888"
+></A
 ><P
 ></P
 ><TABLE
@@ -942,6 +976,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -959,6 +994,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 > the URL to the resource</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -967,7 +1003,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15385"
+NAME="AEN15897"
 ></A
 ><H3
 ><A
@@ -993,6 +1029,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15903"
+></A
 ><P
 ></P
 ><TABLE
@@ -1002,6 +1041,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1034,6 +1074,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >-1 in case of error, 0 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1042,7 +1083,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15404"
+NAME="AEN15916"
 ></A
 ><H3
 ><A
@@ -1068,6 +1109,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15922"
+></A
 ><P
 ></P
 ><TABLE
@@ -1077,6 +1121,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1109,6 +1154,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >-1 incase of error, 0 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1117,7 +1163,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15423"
+NAME="AEN15935"
 ></A
 ><H3
 ><A
@@ -1143,6 +1189,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15941"
+></A
 ><P
 ></P
 ><TABLE
@@ -1152,6 +1201,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1184,6 +1234,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >-1 in case of error, 0 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1192,7 +1243,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15442"
+NAME="AEN15954"
 ></A
 ><H3
 ><A
@@ -1221,6 +1272,9 @@ A NULL URL cleans up proxy informations.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15960"
+></A
 ><P
 ></P
 ><TABLE
@@ -1230,6 +1284,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1247,6 +1302,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  The proxy URL used to initialize the proxy context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1255,7 +1311,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15457"
+NAME="AEN15969"
 ></A
 ><H3
 ><A
@@ -1287,6 +1343,9 @@ ftp_proxy_password environment variables.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN15975"
+></A
 ><P
 ></P
 ><TABLE
@@ -1296,6 +1355,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1386,6 +1446,7 @@ CLASS="PARAMETER"
 ></TT
 ></TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1394,7 +1455,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15489"
+NAME="AEN16001"
 ></A
 ><H3
 ><A
@@ -1425,6 +1486,9 @@ be established.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN16007"
+></A
 ><P
 ></P
 ><TABLE
@@ -1434,6 +1498,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1483,6 +1548,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 if Ok, -1 in case of error (other host).</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1491,7 +1557,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15512"
+NAME="AEN16024"
 ></A
 ><H3
 ><A
@@ -1517,6 +1583,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN16030"
+></A
 ><P
 ></P
 ><TABLE
@@ -1526,6 +1595,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1558,6 +1628,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the code number</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1566,7 +1637,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15531"
+NAME="AEN16043"
 ></A
 ><H3
 ><A
@@ -1592,6 +1663,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN16049"
+></A
 ><P
 ></P
 ><TABLE
@@ -1601,6 +1675,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1633,6 +1708,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the code number, or 0</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1641,7 +1717,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15550"
+NAME="AEN16062"
 ></A
 ><H3
 ><A
@@ -1668,6 +1744,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN16068"
+></A
 ><P
 ></P
 ><TABLE
@@ -1677,6 +1756,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1726,6 +1806,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >-1 incase of error, 1 if CWD worked, 0 if it failed</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1734,7 +1815,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15573"
+NAME="AEN16085"
 ></A
 ><H3
 ><A
@@ -1761,6 +1842,9 @@ passive mode is supported.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN16091"
+></A
 ><P
 ></P
 ><TABLE
@@ -1770,6 +1854,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1802,6 +1887,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >-1 incase of error, 0 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1810,7 +1896,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15592"
+NAME="AEN16104"
 ></A
 ><H3
 ><A
@@ -1836,6 +1922,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN16110"
+></A
 ><P
 ></P
 ><TABLE
@@ -1845,6 +1934,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1877,6 +1967,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >-1 incase of error, 0 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1885,7 +1976,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15611"
+NAME="AEN16123"
 ></A
 ><H3
 ><A
@@ -1918,6 +2009,9 @@ in the callbacks.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN16130"
+></A
 ><P
 ></P
 ><TABLE
@@ -1927,6 +2021,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2010,6 +2105,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >-1 incase of error, 0 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2018,7 +2114,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15643"
+NAME="AEN16155"
 ></A
 ><H3
 ><A
@@ -2045,6 +2141,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN16161"
+></A
 ><P
 ></P
 ><TABLE
@@ -2054,6 +2153,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2103,6 +2203,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the socket for the data connection, or &lt;0 in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2111,7 +2212,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15666"
+NAME="AEN16178"
 ></A
 ><H3
 ><A
@@ -2144,6 +2245,9 @@ in the callbacks. The last callback has a size of 0 block.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN16185"
+></A
 ><P
 ></P
 ><TABLE
@@ -2153,6 +2257,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2236,6 +2341,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >-1 incase of error, 0 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2244,7 +2350,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15698"
+NAME="AEN16210"
 ></A
 ><H3
 ><A
@@ -2283,6 +2389,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN16218"
+></A
 ><P
 ></P
 ><TABLE
@@ -2292,6 +2401,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2359,6 +2469,7 @@ VALIGN="TOP"
 >the number of byte read. 0 is an indication of an end of connection.
 -1 indicates a parameter error.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P

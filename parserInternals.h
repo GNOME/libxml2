@@ -20,13 +20,17 @@
 extern "C" {
 #endif
 
- /* 
+ /**
+  * XML_MAX_NAMELEN:
+  *
   * Identifiers can be longer, but this will be more costly
   * at runtime.
   */
 #define XML_MAX_NAMELEN 100
 
-/*
+/**
+ * INPUT_CHUNK:
+ *
  * The parser tries to always have that amount of input ready
  * one of the point is providing context when reporting errors
  */
@@ -37,7 +41,12 @@ extern "C" {
  * UNICODE version of the macros.      					*
  *									*
  ************************************************************************/
-/*
+/**
+ * IS_CHAR:
+ * @c:  an UNICODE value (int)
+ *
+ * Macro to check the following production in the XML spec
+ *
  * [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD]
  *                  | [#x10000-#x10FFFF]
  * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
@@ -48,57 +57,119 @@ extern "C" {
      (((c) >= 0xE000) && ((c) <= 0xFFFD)) ||				\
      (((c) >= 0x10000) && ((c) <= 0x10FFFF)))
 
-/*
+/**
+ * IS_BLANK:
+ * @c:  an UNICODE value (int)
+ *
+ * Macro to check the following production in the XML spec
+ *
  * [3] S ::= (#x20 | #x9 | #xD | #xA)+
  */
 #define IS_BLANK(c) (((c) == 0x20) || ((c) == 0x09) || ((c) == 0xA) ||	\
                      ((c) == 0x0D))
 
-/*
+/**
+ * IS_BASECHAR:
+ * @c:  an UNICODE value (int)
+ *
+ * Macro to check the following production in the XML spec
+ *
  * [85] BaseChar ::= ... long list see REC ...
  */
 #define IS_BASECHAR(c) xmlIsBaseChar(c)
 
-/*
+/**
+ * IS_DIGIT:
+ * @c:  an UNICODE value (int)
+ *
+ * Macro to check the following production in the XML spec
+ *
  * [88] Digit ::= ... long list see REC ...
  */
 #define IS_DIGIT(c) xmlIsDigit(c)
 
-/*
+/**
+ * IS_COMBINING:
+ * @c:  an UNICODE value (int)
+ *
+ * Macro to check the following production in the XML spec
+ *
  * [87] CombiningChar ::= ... long list see REC ...
  */
 #define IS_COMBINING(c) xmlIsCombining(c)
 
-/*
+/**
+ * IS_EXTENDER:
+ * @c:  an UNICODE value (int)
+ *
+ * Macro to check the following production in the XML spec
+ *
+ *
  * [89] Extender ::= #x00B7 | #x02D0 | #x02D1 | #x0387 | #x0640 |
  *                   #x0E46 | #x0EC6 | #x3005 | [#x3031-#x3035] |
  *                   [#x309D-#x309E] | [#x30FC-#x30FE]
  */
 #define IS_EXTENDER(c) xmlIsExtender(c)
 
-/*
+/**
+ * IS_IDEOGRAPHIC:
+ * @c:  an UNICODE value (int)
+ *
+ * Macro to check the following production in the XML spec
+ *
+ *
  * [86] Ideographic ::= [#x4E00-#x9FA5] | #x3007 | [#x3021-#x3029]
  */
 #define IS_IDEOGRAPHIC(c) xmlIsIdeographic(c)
 
-/*
+/**
+ * IS_LETTER:
+ * @c:  an UNICODE value (int)
+ *
+ * Macro to check the following production in the XML spec
+ *
+ *
  * [84] Letter ::= BaseChar | Ideographic 
  */
 #define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))
 
 
-/*
+/**
+ * IS_PUBIDCHAR:
+ * @c:  an UNICODE value (int)
+ *
+ * Macro to check the following production in the XML spec
+ *
+ *
  * [13] PubidChar ::= #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
  */
 #define IS_PUBIDCHAR(c)	xmlIsPubidChar(c)
 
+/**
+ * SKIP_EOL:
+ * @p:  and UTF8 string pointer
+ *
+ * Skips the end of line chars
+ */
 #define SKIP_EOL(p) 							\
     if (*(p) == 0x13) { p++ ; if (*(p) == 0x10) p++; }			\
     if (*(p) == 0x10) { p++ ; if (*(p) == 0x13) p++; }
 
+/**
+ * MOVETO_ENDTAG:
+ * @p:  and UTF8 string pointer
+ *
+ * Skips to the next '>' char
+ */
 #define MOVETO_ENDTAG(p)						\
     while ((*p) && (*(p) != '>')) (p)++
 
+/**
+ * MOVETO_STARTTAG:
+ * @p:  and UTF8 string pointer
+ *
+ * Skips to the next '<' char
+ */
 #define MOVETO_STARTTAG(p)						\
     while ((*p) && (*(p) != '<')) (p)++
 

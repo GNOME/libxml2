@@ -4,7 +4,7 @@
 >uri</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.59"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -18,6 +18,7 @@ REL="NEXT"
 TITLE="xmlerror"
 HREF="libxml-xmlerror.html"></HEAD
 ><BODY
+CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
 LINK="#0000FF"
@@ -121,7 +122,7 @@ NAME="LIBXML-URI"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN9602"
+NAME="AEN9689"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +130,7 @@ NAME="AEN9602"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN9605"
+NAME="AEN9692"
 ></A
 ><H2
 >Synopsis</H2
@@ -243,7 +244,7 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9633"
+NAME="AEN9720"
 ></A
 ><H2
 >Description</H2
@@ -253,14 +254,14 @@ NAME="AEN9633"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9636"
+NAME="AEN9723"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9638"
+NAME="AEN9725"
 ></A
 ><H3
 ><A
@@ -277,26 +278,29 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlURI {
-    char *scheme;
-    char *opaque;
-    char *authority;
-    char *server;
-    char *user;
-    int port;
-    char *path;
-    char *query;
-    char *fragment;
+    char *scheme;	/* the URI scheme */
+    char *opaque;	/* opaque part */
+    char *authority;	/* the authority part */
+    char *server;	/* the server part */
+    char *user;		/* the user part */
+    int port;		/* the port number */
+    char *path;		/* the path string */
+    char *query;	/* the query string */
+    char *fragment;	/* the fragment identifier */
 };</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>A parsed URI reference. This is a struct containing the various fields
+as described in RFC 2396 but separated for further processing</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9643"
+NAME="AEN9731"
 ></A
 ><H3
 ><A
@@ -322,7 +326,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9648"
+NAME="AEN9736"
 ></A
 ><H3
 ><A
@@ -351,6 +355,9 @@ HREF="libxml-uri.html#XMLURIPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN9743"
+></A
 ><P
 ></P
 ><TABLE
@@ -360,6 +367,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -375,6 +383,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the new structure or NULL in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -383,7 +392,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9664"
+NAME="AEN9752"
 ></A
 ><H3
 ><A
@@ -424,6 +433,9 @@ RFC 2396</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN9762"
+></A
 ><P
 ></P
 ><TABLE
@@ -433,6 +445,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -483,6 +496,7 @@ VALIGN="TOP"
 >a new URI string (to be freed by the caller) or NULL in case
 of error.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -491,7 +505,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9691"
+NAME="AEN9779"
 ></A
 ><H3
 ><A
@@ -522,6 +536,9 @@ HREF="libxml-uri.html#XMLURIPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN9787"
+></A
 ><P
 ></P
 ><TABLE
@@ -531,6 +548,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -563,6 +581,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >a newly build xmlURIPtr or NULL in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -571,7 +590,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9712"
+NAME="AEN9800"
 ></A
 ><H3
 ><A
@@ -609,6 +628,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN9809"
+></A
 ><P
 ></P
 ><TABLE
@@ -618,6 +640,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -667,6 +690,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 or the error code</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -675,7 +699,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9738"
+NAME="AEN9826"
 ></A
 ><H3
 ><A
@@ -707,6 +731,9 @@ HREF="libxml-uri.html#XMLURIPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN9834"
+></A
 ><P
 ></P
 ><TABLE
@@ -716,6 +743,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -748,6 +776,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >a new string (to be deallocated by caller)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -756,7 +785,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9759"
+NAME="AEN9847"
 ></A
 ><H3
 ><A
@@ -794,6 +823,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN9856"
+></A
 ><P
 ></P
 ><TABLE
@@ -803,6 +835,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -837,6 +870,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  pointer to an xmlURI</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -845,7 +879,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9781"
+NAME="AEN9869"
 ></A
 ><H3
 ><A
@@ -877,6 +911,9 @@ CLASS="LITERAL"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN9876"
+></A
 ><P
 ></P
 ><TABLE
@@ -886,6 +923,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -952,6 +990,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >an copy of the string, but unescaped</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -960,7 +999,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9809"
+NAME="AEN9897"
 ></A
 ><H3
 ><A
@@ -989,6 +1028,9 @@ Section 5.2, steps 6.c through 6.g.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN9904"
+></A
 ><P
 ></P
 ><TABLE
@@ -998,6 +1040,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1030,6 +1073,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 or an error code</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1038,7 +1082,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9829"
+NAME="AEN9917"
 ></A
 ><H3
 ><A
@@ -1079,6 +1123,9 @@ to the rules (c.f. bug 51876)</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN9927"
+></A
 ><P
 ></P
 ><TABLE
@@ -1088,6 +1135,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1120,6 +1168,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >an copy of the string, but escaped</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1128,7 +1177,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9852"
+NAME="AEN9940"
 ></A
 ><H3
 ><A
@@ -1157,6 +1206,9 @@ HREF="libxml-uri.html#XMLURIPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN9947"
+></A
 ><P
 ></P
 ><TABLE
@@ -1166,6 +1218,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1183,6 +1236,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  pointer to an xmlURI</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P

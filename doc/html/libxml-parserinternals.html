@@ -4,7 +4,7 @@
 >parserInternals</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.59"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -18,6 +18,7 @@ REL="NEXT"
 TITLE="encoding"
 HREF="libxml-encoding.html"></HEAD
 ><BODY
+CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
 LINK="#0000FF"
@@ -121,7 +122,7 @@ NAME="LIBXML-PARSERINTERNALS"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN17232"
+NAME="AEN17744"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +130,7 @@ NAME="AEN17232"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN17235"
+NAME="AEN17747"
 ></A
 ><H2
 >Synopsis</H2
@@ -259,7 +260,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 > <A
 HREF="libxml-parserinternals.html#XMLCREATEMEMORYPARSERCTXT"
 >xmlCreateMemoryParserCtxt</A
->  (char *buffer,
+>  (const char *buffer,
                                              int size);
 <A
 HREF="libxml-parser.html#XMLPARSERCTXTPTR"
@@ -1130,7 +1131,7 @@ HREF="libxml-parserinternals.html#HTMLCREATEFILEPARSERCTXT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN17510"
+NAME="AEN18022"
 ></A
 ><H2
 >Description</H2
@@ -1140,14 +1141,14 @@ NAME="AEN17510"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN17513"
+NAME="AEN18025"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17515"
+NAME="AEN18027"
 ></A
 ><H3
 ><A
@@ -1168,12 +1169,15 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Identifiers can be longer, but this will be more costly
+at runtime.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17520"
+NAME="AEN18033"
 ></A
 ><H3
 ><A
@@ -1194,12 +1198,15 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The parser tries to always have that amount of input ready
+one of the point is providing context when reporting errors</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17525"
+NAME="AEN18039"
 ></A
 ><H3
 ><A
@@ -1220,9 +1227,45 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check the following production in the XML spec</P
+><P
+>[2] Char ::= <GTKDOCLINK
+HREF="X9"
+>x9</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XA"
+>xA</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XD"
+>xD</GTKDOCLINK
+> | [<GTKDOCLINK
+HREF="X20-"
+>x20-</GTKDOCLINK
+><GTKDOCLINK
+HREF="XD7FF"
+>xD7FF</GTKDOCLINK
+>] | [<GTKDOCLINK
+HREF="XE000-"
+>xE000-</GTKDOCLINK
+><GTKDOCLINK
+HREF="XFFFD"
+>xFFFD</GTKDOCLINK
+>]
+| [<GTKDOCLINK
+HREF="X10000-"
+>x10000-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X10FFFF"
+>x10FFFF</GTKDOCLINK
+>]
+any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18055"
+></A
 ><P
 ></P
 ><TABLE
@@ -1232,6 +1275,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1247,8 +1291,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  an UNICODE value (int)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1257,7 +1302,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17539"
+NAME="AEN18064"
 ></A
 ><H3
 ><A
@@ -1278,9 +1323,28 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check the following production in the XML spec</P
+><P
+>[3] S ::= (<GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X9"
+>x9</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XD"
+>xD</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XA"
+>xA</GTKDOCLINK
+>)+</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18075"
+></A
 ><P
 ></P
 ><TABLE
@@ -1290,6 +1354,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1305,8 +1370,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  an UNICODE value (int)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1315,7 +1381,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17553"
+NAME="AEN18084"
 ></A
 ><H3
 ><A
@@ -1336,9 +1402,16 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check the following production in the XML spec</P
+><P
+>[85] BaseChar ::= ... long list see REC ...</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18091"
+></A
 ><P
 ></P
 ><TABLE
@@ -1348,6 +1421,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1363,8 +1437,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  an UNICODE value (int)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1373,7 +1448,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17567"
+NAME="AEN18100"
 ></A
 ><H3
 ><A
@@ -1394,9 +1469,16 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check the following production in the XML spec</P
+><P
+>[88] Digit ::= ... long list see REC ...</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18107"
+></A
 ><P
 ></P
 ><TABLE
@@ -1406,6 +1488,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1421,8 +1504,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  an UNICODE value (int)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1431,7 +1515,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17581"
+NAME="AEN18116"
 ></A
 ><H3
 ><A
@@ -1452,9 +1536,16 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check the following production in the XML spec</P
+><P
+>[87] CombiningChar ::= ... long list see REC ...</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18123"
+></A
 ><P
 ></P
 ><TABLE
@@ -1464,6 +1555,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1479,8 +1571,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  an UNICODE value (int)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1489,7 +1582,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17595"
+NAME="AEN18132"
 ></A
 ><H3
 ><A
@@ -1510,9 +1603,60 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check the following production in the XML spec</P
+><P
+>[89] Extender ::= <GTKDOCLINK
+HREF="X00B7"
+>x00B7</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X02D0"
+>x02D0</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X02D1"
+>x02D1</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X0387"
+>x0387</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X0640"
+>x0640</GTKDOCLINK
+> |
+<GTKDOCLINK
+HREF="X0E46"
+>x0E46</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X0EC6"
+>x0EC6</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X3005"
+>x3005</GTKDOCLINK
+> | [<GTKDOCLINK
+HREF="X3031-"
+>x3031-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X3035"
+>x3035</GTKDOCLINK
+>] |
+[<GTKDOCLINK
+HREF="X309D-"
+>x309D-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X309E"
+>x309E</GTKDOCLINK
+>] | [<GTKDOCLINK
+HREF="X30FC-"
+>x30FC-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X30FE"
+>x30FE</GTKDOCLINK
+>]</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18153"
+></A
 ><P
 ></P
 ><TABLE
@@ -1522,6 +1666,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1537,8 +1682,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  an UNICODE value (int)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1547,7 +1693,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17609"
+NAME="AEN18162"
 ></A
 ><H3
 ><A
@@ -1568,9 +1714,31 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check the following production in the XML spec</P
+><P
+>[86] Ideographic ::= [<GTKDOCLINK
+HREF="X4E00-"
+>x4E00-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X9FA5"
+>x9FA5</GTKDOCLINK
+>] | <GTKDOCLINK
+HREF="X3007"
+>x3007</GTKDOCLINK
+> | [<GTKDOCLINK
+HREF="X3021-"
+>x3021-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X3029"
+>x3029</GTKDOCLINK
+>]</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18174"
+></A
 ><P
 ></P
 ><TABLE
@@ -1580,6 +1748,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1595,8 +1764,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  an UNICODE value (int)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1605,7 +1775,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17623"
+NAME="AEN18183"
 ></A
 ><H3
 ><A
@@ -1626,9 +1796,16 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check the following production in the XML spec</P
+><P
+>[84] Letter ::= BaseChar | Ideographic</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18190"
+></A
 ><P
 ></P
 ><TABLE
@@ -1638,6 +1815,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1653,8 +1831,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  an UNICODE value (int)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1663,7 +1842,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17637"
+NAME="AEN18199"
 ></A
 ><H3
 ><A
@@ -1684,9 +1863,25 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check the following production in the XML spec</P
+><P
+>[13] PubidChar ::= <GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XD"
+>xD</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XA"
+>xA</GTKDOCLINK
+> | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18209"
+></A
 ><P
 ></P
 ><TABLE
@@ -1696,6 +1891,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1711,8 +1907,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  an UNICODE value (int)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1721,7 +1918,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17651"
+NAME="AEN18218"
 ></A
 ><H3
 ><A
@@ -1742,9 +1939,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Skips the end of line chars</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18224"
+></A
 ><P
 ></P
 ><TABLE
@@ -1754,6 +1956,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1769,8 +1972,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  and UTF8 string pointer</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1779,7 +1983,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17665"
+NAME="AEN18233"
 ></A
 ><H3
 ><A
@@ -1800,9 +2004,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Skips to the next '&gt;' char</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18239"
+></A
 ><P
 ></P
 ><TABLE
@@ -1812,6 +2021,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1827,8 +2037,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  and UTF8 string pointer</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1837,7 +2048,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17679"
+NAME="AEN18248"
 ></A
 ><H3
 ><A
@@ -1858,9 +2069,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Skips to the next '&lt;' char</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18254"
+></A
 ><P
 ></P
 ><TABLE
@@ -1870,6 +2086,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1885,8 +2102,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  and UTF8 string pointer</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1895,7 +2113,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17693"
+NAME="AEN18263"
 ></A
 ><H3
 ><A
@@ -1936,6 +2154,9 @@ HREF="X"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18273"
+></A
 ><P
 ></P
 ><TABLE
@@ -1945,6 +2166,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1977,6 +2199,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 if not, non-zero otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1985,7 +2208,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17716"
+NAME="AEN18286"
 ></A
 ><H3
 ><A
@@ -2028,6 +2251,9 @@ HREF="libxml-parserinternals.html#IS-BLANK-CAPS"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18297"
+></A
 ><P
 ></P
 ><TABLE
@@ -2037,6 +2263,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2069,6 +2296,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 if not, non-zero otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2077,7 +2305,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17740"
+NAME="AEN18310"
 ></A
 ><H3
 ><A
@@ -2113,6 +2341,9 @@ HREF="XA"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18319"
+></A
 ><P
 ></P
 ><TABLE
@@ -2122,6 +2353,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2154,6 +2386,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 if not, non-zero otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2162,7 +2395,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17762"
+NAME="AEN18332"
 ></A
 ><H3
 ><A
@@ -2189,6 +2422,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18338"
+></A
 ><P
 ></P
 ><TABLE
@@ -2198,6 +2434,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2230,6 +2467,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 if not, non-zero otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2238,7 +2476,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17781"
+NAME="AEN18351"
 ></A
 ><H3
 ><A
@@ -2265,6 +2503,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18357"
+></A
 ><P
 ></P
 ><TABLE
@@ -2274,6 +2515,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2306,6 +2548,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 if not, non-zero otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2314,7 +2557,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17800"
+NAME="AEN18370"
 ></A
 ><H3
 ><A
@@ -2356,6 +2599,9 @@ HREF="X3029"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18381"
+></A
 ><P
 ></P
 ><TABLE
@@ -2365,6 +2611,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2397,6 +2644,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 if not, non-zero otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2405,7 +2653,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17824"
+NAME="AEN18394"
 ></A
 ><H3
 ><A
@@ -2432,6 +2680,9 @@ CLASS="PROGRAMLISTING"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18400"
+></A
 ><P
 ></P
 ><TABLE
@@ -2441,6 +2692,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2473,6 +2725,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 if not, non-zero otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2481,7 +2734,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17843"
+NAME="AEN18413"
 ></A
 ><H3
 ><A
@@ -2552,6 +2805,9 @@ HREF="X30FE"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18433"
+></A
 ><P
 ></P
 ><TABLE
@@ -2561,6 +2817,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2593,6 +2850,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 if not, non-zero otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2601,7 +2859,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17876"
+NAME="AEN18446"
 ></A
 ><H3
 ><A
@@ -2661,6 +2919,9 @@ HREF="libxml-parserinternals.html#IS-CHAR-CAPS"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18462"
+></A
 ><P
 ></P
 ><TABLE
@@ -2670,6 +2931,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2702,6 +2964,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 if not, non-zero otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2710,7 +2973,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17905"
+NAME="AEN18475"
 ></A
 ><H3
 ><A
@@ -2742,6 +3005,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18483"
+></A
 ><P
 ></P
 ><TABLE
@@ -2751,6 +3017,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2781,8 +3048,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2791,7 +3059,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17926"
+NAME="AEN18496"
 ></A
 ><H3
 ><A
@@ -2822,6 +3090,9 @@ by default if found at compile-time.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18503"
+></A
 ><P
 ></P
 ><TABLE
@@ -2831,6 +3102,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2863,6 +3135,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the new parser context or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2871,7 +3144,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17946"
+NAME="AEN18516"
 ></A
 ><H3
 ><A
@@ -2890,7 +3163,7 @@ CLASS="PROGRAMLISTING"
 ><A
 HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
-> xmlCreateMemoryParserCtxt  (char *buffer,
+> xmlCreateMemoryParserCtxt  (const char *buffer,
                                              int size);</PRE
 ></TD
 ></TR
@@ -2901,6 +3174,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18523"
+></A
 ><P
 ></P
 ><TABLE
@@ -2910,6 +3186,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2959,6 +3236,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the new parser context or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2967,7 +3245,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17970"
+NAME="AEN18540"
 ></A
 ><H3
 ><A
@@ -2996,6 +3274,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18547"
+></A
 ><P
 ></P
 ><TABLE
@@ -3005,6 +3286,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3020,6 +3302,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the xmlParserCtxtPtr or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3028,7 +3311,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17986"
+NAME="AEN18556"
 ></A
 ><H3
 ><A
@@ -3070,6 +3353,9 @@ by default if found at compile-time.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18566"
+></A
 ><P
 ></P
 ><TABLE
@@ -3079,6 +3365,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3145,6 +3432,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the new parser context or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3153,7 +3441,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18017"
+NAME="AEN18587"
 ></A
 ><H3
 ><A
@@ -3187,6 +3475,9 @@ of a given entity.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18595"
+></A
 ><P
 ></P
 ><TABLE
@@ -3196,6 +3487,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3245,6 +3537,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 in case of success, -1 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3253,7 +3546,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18042"
+NAME="AEN18612"
 ></A
 ><H3
 ><A
@@ -3287,6 +3580,9 @@ of a given entity.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18620"
+></A
 ><P
 ></P
 ><TABLE
@@ -3296,6 +3592,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3345,6 +3642,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 in case of success, -1 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3353,7 +3651,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18067"
+NAME="AEN18637"
 ></A
 ><H3
 ><A
@@ -3383,6 +3681,9 @@ document in ctxt-&gt;myDoc is not freed.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18644"
+></A
 ><P
 ></P
 ><TABLE
@@ -3392,6 +3693,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3407,8 +3709,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3417,7 +3720,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18083"
+NAME="AEN18653"
 ></A
 ><H3
 ><A
@@ -3453,6 +3756,9 @@ stream ? When do we just handle that as a set of chars ?</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18662"
+></A
 ><P
 ></P
 ><TABLE
@@ -3462,6 +3768,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3496,6 +3803,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML entity pointer.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3504,7 +3812,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18105"
+NAME="AEN18675"
 ></A
 ><H3
 ><A
@@ -3540,6 +3848,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18684"
+></A
 ><P
 ></P
 ><TABLE
@@ -3549,6 +3860,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3598,6 +3910,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the new input stream</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3606,7 +3919,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18131"
+NAME="AEN18701"
 ></A
 ><H3
 ><A
@@ -3642,6 +3955,9 @@ HREF="libxml-entities.html#XMLENTITYPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18710"
+></A
 ><P
 ></P
 ><TABLE
@@ -3651,6 +3967,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3700,6 +4017,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the new input stream or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3708,7 +4026,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18157"
+NAME="AEN18727"
 ></A
 ><H3
 ><A
@@ -3742,6 +4060,9 @@ of the previous one(s).</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18735"
+></A
 ><P
 ></P
 ><TABLE
@@ -3751,6 +4072,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3785,6 +4107,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser input fragment (entity, XML fragment ...).</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3793,7 +4116,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18178"
+NAME="AEN18748"
 ></A
 ><H3
 ><A
@@ -3826,6 +4149,9 @@ pop it and return the next char.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18756"
+></A
 ><P
 ></P
 ><TABLE
@@ -3835,6 +4161,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3867,6 +4194,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the current xmlChar in the parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3875,7 +4203,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18199"
+NAME="AEN18769"
 ></A
 ><H3
 ><A
@@ -3904,6 +4232,9 @@ HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18776"
+></A
 ><P
 ></P
 ><TABLE
@@ -3913,6 +4244,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3930,6 +4262,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an xmlParserInputPtr</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3938,7 +4271,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18215"
+NAME="AEN18785"
 ></A
 ><H3
 ><A
@@ -3971,6 +4304,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18793"
+></A
 ><P
 ></P
 ><TABLE
@@ -3980,6 +4316,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4029,6 +4366,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the new input stream or NULL in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4037,7 +4375,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18240"
+NAME="AEN18810"
 ></A
 ><H3
 ><A
@@ -4069,6 +4407,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18818"
+></A
 ><P
 ></P
 ><TABLE
@@ -4078,6 +4419,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4110,6 +4452,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the new input stream or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4118,7 +4461,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18261"
+NAME="AEN18831"
 ></A
 ><H3
 ><A
@@ -4164,6 +4507,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18844"
+></A
 ><P
 ></P
 ><TABLE
@@ -4173,6 +4519,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4240,6 +4587,7 @@ VALIGN="TOP"
 >the local part, and prefix is updated
 to get the Prefix if any.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4248,7 +4596,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18295"
+NAME="AEN18865"
 ></A
 ><H3
 ><A
@@ -4288,6 +4636,9 @@ CombiningChar | Extender</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18876"
+></A
 ><P
 ></P
 ><TABLE
@@ -4297,6 +4648,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4329,6 +4681,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the namespace name or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4337,7 +4690,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18319"
+NAME="AEN18889"
 ></A
 ><H3
 ><A
@@ -4382,6 +4735,9 @@ top of the SAX interfaces, i.e. not on raw input.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18902"
+></A
 ><P
 ></P
 ><TABLE
@@ -4391,6 +4747,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4441,6 +4798,7 @@ VALIGN="TOP"
 >the local part, and prefix is updated
 to get the Prefix if any.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4449,7 +4807,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18349"
+NAME="AEN18919"
 ></A
 ><H3
 ><A
@@ -4488,6 +4846,9 @@ top of the SAX interfaces, i.e. not on raw input.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18930"
+></A
 ><P
 ></P
 ><TABLE
@@ -4497,6 +4858,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4529,6 +4891,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the namespace name</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4537,7 +4900,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18373"
+NAME="AEN18943"
 ></A
 ><H3
 ><A
@@ -4571,6 +4934,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18952"
+></A
 ><P
 ></P
 ><TABLE
@@ -4580,6 +4946,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4612,6 +4979,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the string parser or NULL.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4620,7 +4988,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18395"
+NAME="AEN18965"
 ></A
 ><H3
 ><A
@@ -4657,6 +5025,9 @@ if it was declared on the root of the Tree:-(</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18975"
+></A
 ><P
 ></P
 ><TABLE
@@ -4666,6 +5037,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4683,6 +5055,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4691,7 +5064,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18414"
+NAME="AEN18984"
 ></A
 ><H3
 ><A
@@ -4734,6 +5107,9 @@ CombiningChar | Extender</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN18996"
+></A
 ><P
 ></P
 ><TABLE
@@ -4743,6 +5119,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4775,6 +5152,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the Name parsed or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4783,7 +5161,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18439"
+NAME="AEN19009"
 ></A
 ><H3
 ><A
@@ -4822,6 +5200,9 @@ CombiningChar | Extender</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19020"
+></A
 ><P
 ></P
 ><TABLE
@@ -4831,6 +5212,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4863,6 +5245,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the Name parsed or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4871,7 +5254,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18463"
+NAME="AEN19033"
 ></A
 ><H3
 ><A
@@ -4907,6 +5290,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19043"
+></A
 ><P
 ></P
 ><TABLE
@@ -4916,6 +5302,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4948,6 +5335,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the Nmtoken parsed or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4956,7 +5344,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18486"
+NAME="AEN19056"
 ></A
 ><H3
 ><A
@@ -4995,6 +5383,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19066"
+></A
 ><P
 ></P
 ><TABLE
@@ -5004,6 +5395,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5053,6 +5445,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the EntityValue parsed with reference substitued or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5061,7 +5454,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18513"
+NAME="AEN19083"
 ></A
 ><H3
 ><A
@@ -5150,6 +5543,9 @@ by a non-validating parser as if declared CDATA.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19104"
+></A
 ><P
 ></P
 ><TABLE
@@ -5159,6 +5555,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5191,6 +5588,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the AttValue parsed or NULL. The value has to be freed by the caller.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5199,7 +5597,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18547"
+NAME="AEN19117"
 ></A
 ><H3
 ><A
@@ -5233,6 +5631,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19126"
+></A
 ><P
 ></P
 ><TABLE
@@ -5242,6 +5643,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5274,6 +5676,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the SystemLiteral parsed or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5282,7 +5685,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18569"
+NAME="AEN19139"
 ></A
 ><H3
 ><A
@@ -5316,6 +5719,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19148"
+></A
 ><P
 ></P
 ><TABLE
@@ -5325,6 +5731,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5357,6 +5764,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the PubidLiteral parsed or NULL.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5365,7 +5773,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18591"
+NAME="AEN19161"
 ></A
 ><H3
 ><A
@@ -5403,6 +5811,9 @@ string is not marking the end of a CDATA section. </P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19170"
+></A
 ><P
 ></P
 ><TABLE
@@ -5412,6 +5823,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5446,6 +5858,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  int indicating whether we are within a CDATA section</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5454,7 +5867,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18613"
+NAME="AEN19183"
 ></A
 ><H3
 ><A
@@ -5499,6 +5912,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19195"
+></A
 ><P
 ></P
 ><TABLE
@@ -5508,6 +5924,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5577,6 +5994,7 @@ VALIGN="TOP"
 case publicID receives PubidLiteral, is strict is off
 it is possible to return NULL and have publicID set.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5585,7 +6003,7 @@ it is possible to return NULL and have publicID set.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18646"
+NAME="AEN19216"
 ></A
 ><H3
 ><A
@@ -5618,6 +6036,9 @@ must not occur within comments. "</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19224"
+></A
 ><P
 ></P
 ><TABLE
@@ -5627,6 +6048,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5644,6 +6066,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5652,7 +6075,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18663"
+NAME="AEN19233"
 ></A
 ><H3
 ><A
@@ -5686,6 +6109,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19242"
+></A
 ><P
 ></P
 ><TABLE
@@ -5695,6 +6121,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5727,6 +6154,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the PITarget name or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5735,7 +6163,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18685"
+NAME="AEN19255"
 ></A
 ><H3
 ><A
@@ -5768,6 +6196,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19264"
+></A
 ><P
 ></P
 ><TABLE
@@ -5777,6 +6208,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5794,6 +6226,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5802,7 +6235,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18703"
+NAME="AEN19273"
 ></A
 ><H3
 ><A
@@ -5843,6 +6276,9 @@ HREF="libxml-parserinternals.html#XMLPARSEEXTERNALID"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19284"
+></A
 ><P
 ></P
 ><TABLE
@@ -5852,6 +6288,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5869,6 +6306,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5877,7 +6315,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18723"
+NAME="AEN19293"
 ></A
 ><H3
 ><A
@@ -5921,6 +6359,9 @@ The Name must match the declared name of a notation.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19307"
+></A
 ><P
 ></P
 ><TABLE
@@ -5930,6 +6371,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5947,6 +6389,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5955,7 +6398,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18746"
+NAME="AEN19316"
 ></A
 ><H3
 ><A
@@ -6027,6 +6470,9 @@ HREF="libxml-parserinternals.html#XMLPARSEATTVALUE"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19336"
+></A
 ><P
 ></P
 ><TABLE
@@ -6036,6 +6482,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6086,6 +6533,7 @@ VALIGN="TOP"
 > XML_ATTRIBUTE_NONE, XML_ATTRIBUTE_REQUIRED, XML_ATTRIBUTE_IMPLIED
 or XML_ATTRIBUTE_FIXED. </TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6094,7 +6542,7 @@ or XML_ATTRIBUTE_FIXED. </TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18783"
+NAME="AEN19353"
 ></A
 ><H3
 ><A
@@ -6134,6 +6582,9 @@ in the declaration; all notation names in the declaration must be declared.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19364"
+></A
 ><P
 ></P
 ><TABLE
@@ -6143,6 +6594,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6175,6 +6627,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 > the notation attribute tree built while parsing</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6183,7 +6636,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18807"
+NAME="AEN19377"
 ></A
 ><H3
 ><A
@@ -6221,6 +6674,9 @@ the declaration</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19387"
+></A
 ><P
 ></P
 ><TABLE
@@ -6230,6 +6686,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6262,6 +6719,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 > the enumeration attribute tree built while parsing</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6270,7 +6728,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18830"
+NAME="AEN19400"
 ></A
 ><H3
 ><A
@@ -6307,6 +6765,9 @@ HREF="libxml-tree.html#XMLENUMERATIONPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19410"
+></A
 ><P
 ></P
 ><TABLE
@@ -6316,6 +6777,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6365,6 +6827,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 > XML_ATTRIBUTE_ENUMERATION or XML_ATTRIBUTE_NOTATION</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6373,7 +6836,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18857"
+NAME="AEN19427"
 ></A
 ><H3
 ><A
@@ -6451,6 +6914,9 @@ of type NMTOKENS must match Nmtokens.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19448"
+></A
 ><P
 ></P
 ><TABLE
@@ -6460,6 +6926,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6509,6 +6976,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the attribute type</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6517,7 +6985,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18895"
+NAME="AEN19465"
 ></A
 ><H3
 ><A
@@ -6550,6 +7018,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19474"
+></A
 ><P
 ></P
 ><TABLE
@@ -6559,6 +7030,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6576,6 +7048,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6584,7 +7057,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18913"
+NAME="AEN19483"
 ></A
 ><H3
 ><A
@@ -6633,6 +7106,9 @@ mixed-content declaration.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19496"
+></A
 ><P
 ></P
 ><TABLE
@@ -6642,6 +7118,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6674,6 +7151,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 > the list of the xmlElementContentPtr describing the element choices</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6682,7 +7160,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18939"
+NAME="AEN19509"
 ></A
 ><H3
 ><A
@@ -6713,6 +7191,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19516"
+></A
 ><P
 ></P
 ><TABLE
@@ -6722,6 +7203,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6752,8 +7234,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6762,7 +7245,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18959"
+NAME="AEN19529"
 ></A
 ><H3
 ><A
@@ -6815,6 +7298,9 @@ the replacement text should be a connector (| or ,).</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19542"
+></A
 ><P
 ></P
 ><TABLE
@@ -6824,6 +7310,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6857,6 +7344,7 @@ VALIGN="TOP"
 > the tree of xmlElementContentPtr describing the element 
 hierarchy.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6865,7 +7353,7 @@ hierarchy.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18985"
+NAME="AEN19555"
 ></A
 ><H3
 ><A
@@ -6905,6 +7393,9 @@ the cases EMPTY and ANY are handled directly in xmlParseElementDecl</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19565"
+></A
 ><P
 ></P
 ><TABLE
@@ -6914,6 +7405,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6980,6 +7472,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 > the type of element content XML_ELEMENT_TYPE_xxx</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6988,7 +7481,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19016"
+NAME="AEN19586"
 ></A
 ><H3
 ><A
@@ -7022,6 +7515,9 @@ No element type may be declared more than once</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19595"
+></A
 ><P
 ></P
 ><TABLE
@@ -7031,6 +7527,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7063,6 +7560,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the type of the element, or -1 in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7071,7 +7569,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19038"
+NAME="AEN19608"
 ></A
 ><H3
 ><A
@@ -7116,6 +7614,9 @@ entities or to the external subset.)</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19618"
+></A
 ><P
 ></P
 ><TABLE
@@ -7125,6 +7626,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7142,6 +7644,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7150,7 +7653,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19057"
+NAME="AEN19627"
 ></A
 ><H3
 ><A
@@ -7189,6 +7692,9 @@ production for Char.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19637"
+></A
 ><P
 ></P
 ><TABLE
@@ -7198,6 +7704,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7230,6 +7737,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the value parsed (as an int), 0 in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7238,7 +7746,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19080"
+NAME="AEN19650"
 ></A
 ><H3
 ><A
@@ -7290,6 +7798,9 @@ An entity reference must not contain the name of an unparsed entity</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19661"
+></A
 ><P
 ></P
 ><TABLE
@@ -7299,6 +7810,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7331,6 +7843,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the xmlEntityPtr if found, or NULL otherwise.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7339,7 +7852,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19104"
+NAME="AEN19674"
 ></A
 ><H3
 ><A
@@ -7379,6 +7892,9 @@ or if the parser was asked to switch to that mode.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19684"
+></A
 ><P
 ></P
 ><TABLE
@@ -7388,6 +7904,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7405,6 +7922,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7413,7 +7931,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19123"
+NAME="AEN19693"
 ></A
 ><H3
 ><A
@@ -7465,6 +7983,9 @@ NOTE: misleading but this is handled.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19705"
+></A
 ><P
 ></P
 ><TABLE
@@ -7474,6 +7995,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7491,6 +8013,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7499,7 +8022,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19144"
+NAME="AEN19714"
 ></A
 ><H3
 ><A
@@ -7535,6 +8058,9 @@ type of the root element.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19723"
+></A
 ><P
 ></P
 ><TABLE
@@ -7544,6 +8070,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7561,6 +8088,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7569,7 +8097,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19162"
+NAME="AEN19732"
 ></A
 ><H3
 ><A
@@ -7628,6 +8156,9 @@ definition.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19749"
+></A
 ><P
 ></P
 ><TABLE
@@ -7637,6 +8168,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7686,6 +8218,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the attribute name, and the value in *value.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7694,7 +8227,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19196"
+NAME="AEN19766"
 ></A
 ><H3
 ><A
@@ -7745,6 +8278,9 @@ empty-element tag. </P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19781"
+></A
 ><P
 ></P
 ><TABLE
@@ -7754,6 +8290,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7786,6 +8323,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the element name parsed</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7794,7 +8332,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19224"
+NAME="AEN19794"
 ></A
 ><H3
 ><A
@@ -7829,6 +8367,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19804"
+></A
 ><P
 ></P
 ><TABLE
@@ -7838,6 +8379,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7855,6 +8397,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7863,7 +8406,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19243"
+NAME="AEN19813"
 ></A
 ><H3
 ><A
@@ -7900,6 +8443,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19824"
+></A
 ><P
 ></P
 ><TABLE
@@ -7909,6 +8455,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7926,6 +8473,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7934,7 +8482,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19263"
+NAME="AEN19833"
 ></A
 ><H3
 ><A
@@ -7965,6 +8513,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19841"
+></A
 ><P
 ></P
 ><TABLE
@@ -7974,6 +8525,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7991,6 +8543,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7999,7 +8552,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19280"
+NAME="AEN19850"
 ></A
 ><H3
 ><A
@@ -8047,6 +8600,9 @@ been declared.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19860"
+></A
 ><P
 ></P
 ><TABLE
@@ -8056,6 +8612,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8073,6 +8630,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8081,7 +8639,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19299"
+NAME="AEN19869"
 ></A
 ><H3
 ><A
@@ -8115,6 +8673,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19878"
+></A
 ><P
 ></P
 ><TABLE
@@ -8124,6 +8685,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8156,6 +8718,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the string giving the XML version number, or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8164,7 +8727,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19321"
+NAME="AEN19891"
 ></A
 ><H3
 ><A
@@ -8200,6 +8763,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19901"
+></A
 ><P
 ></P
 ><TABLE
@@ -8209,6 +8775,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8241,6 +8808,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the version string, e.g. "1.0"</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8249,7 +8817,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19344"
+NAME="AEN19914"
 ></A
 ><H3
 ><A
@@ -8283,6 +8851,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19923"
+></A
 ><P
 ></P
 ><TABLE
@@ -8292,6 +8863,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8324,6 +8896,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the encoding name value or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8332,7 +8905,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19366"
+NAME="AEN19936"
 ></A
 ><H3
 ><A
@@ -8368,6 +8941,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19946"
+></A
 ><P
 ></P
 ><TABLE
@@ -8377,6 +8953,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8409,6 +8986,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the encoding value or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8417,7 +8995,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19389"
+NAME="AEN19959"
 ></A
 ><H3
 ><A
@@ -8463,6 +9041,9 @@ within any instance of those types.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19968"
+></A
 ><P
 ></P
 ><TABLE
@@ -8472,6 +9053,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8504,6 +9086,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >1 if standalone, 0 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8512,7 +9095,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19411"
+NAME="AEN19981"
 ></A
 ><H3
 ><A
@@ -8543,6 +9126,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN19989"
+></A
 ><P
 ></P
 ><TABLE
@@ -8552,6 +9138,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8569,6 +9156,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8577,7 +9165,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19428"
+NAME="AEN19998"
 ></A
 ><H3
 ><A
@@ -8610,6 +9198,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20007"
+></A
 ><P
 ></P
 ><TABLE
@@ -8619,6 +9210,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8636,6 +9228,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8644,7 +9237,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19446"
+NAME="AEN20016"
 ></A
 ><H3
 ><A
@@ -8675,6 +9268,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20024"
+></A
 ><P
 ></P
 ><TABLE
@@ -8684,6 +9280,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8701,6 +9298,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8709,7 +9307,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19463"
+NAME="AEN20033"
 ></A
 ><H3
 ><A
@@ -8750,6 +9348,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20044"
+></A
 ><P
 ></P
 ><TABLE
@@ -8759,6 +9360,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8810,6 +9412,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 > the system identifier (or URL)</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8818,7 +9421,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19491"
+NAME="AEN20061"
 ></A
 ><H3
 ><A
@@ -8844,7 +9447,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19496"
+NAME="AEN20066"
 ></A
 ><H3
 ><A
@@ -8870,7 +9473,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19501"
+NAME="AEN20071"
 ></A
 ><H3
 ><A
@@ -8896,7 +9499,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19506"
+NAME="AEN20076"
 ></A
 ><H3
 ><A
@@ -8922,7 +9525,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19511"
+NAME="AEN20081"
 ></A
 ><H3
 ><A
@@ -8975,6 +9578,9 @@ through xmlStringDecodeEntities</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20095"
+></A
 ><P
 ></P
 ><TABLE
@@ -8984,6 +9590,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9102,6 +9709,7 @@ VALIGN="TOP"
 >A newly allocated string with the substitution done. The caller
 must deallocate it !</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9110,7 +9718,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19558"
+NAME="AEN20128"
 ></A
 ><H3
 ><A
@@ -9163,6 +9771,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20142"
+></A
 ><P
 ></P
 ><TABLE
@@ -9172,6 +9783,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9290,6 +9902,7 @@ VALIGN="TOP"
 >A newly allocated string with the substitution done. The caller
 must deallocate it !</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9298,7 +9911,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19605"
+NAME="AEN20175"
 ></A
 ><H3
 ><A
@@ -9329,6 +9942,9 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20182"
+></A
 ><P
 ></P
 ><TABLE
@@ -9338,6 +9954,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9385,8 +10002,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9395,7 +10013,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19629"
+NAME="AEN20199"
 ></A
 ><H3
 ><A
@@ -9425,6 +10043,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20206"
+></A
 ><P
 ></P
 ><TABLE
@@ -9434,6 +10055,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9464,8 +10086,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9474,7 +10097,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19649"
+NAME="AEN20219"
 ></A
 ><H3
 ><A
@@ -9505,6 +10128,9 @@ HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20226"
+></A
 ><P
 ></P
 ><TABLE
@@ -9514,6 +10140,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9561,8 +10188,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9571,7 +10199,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19673"
+NAME="AEN20243"
 ></A
 ><H3
 ><A
@@ -9601,6 +10229,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20250"
+></A
 ><P
 ></P
 ><TABLE
@@ -9610,6 +10241,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9640,8 +10272,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9650,7 +10283,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19693"
+NAME="AEN20263"
 ></A
 ><H3
 ><A
@@ -9680,6 +10313,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20270"
+></A
 ><P
 ></P
 ><TABLE
@@ -9689,6 +10325,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9719,8 +10356,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9729,7 +10367,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19713"
+NAME="AEN20283"
 ></A
 ><H3
 ><A
@@ -9760,6 +10398,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20290"
+></A
 ><P
 ></P
 ><TABLE
@@ -9769,6 +10410,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9816,8 +10458,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9826,7 +10469,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19737"
+NAME="AEN20307"
 ></A
 ><H3
 ><A
@@ -9856,6 +10499,9 @@ It pops up finished entities in the process if allowable at that point.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20314"
+></A
 ><P
 ></P
 ><TABLE
@@ -9865,6 +10511,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9897,6 +10544,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the number of space chars skipped</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9905,7 +10553,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19757"
+NAME="AEN20327"
 ></A
 ><H3
 ><A
@@ -9940,6 +10588,9 @@ bytes in the input buffer.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20335"
+></A
 ><P
 ></P
 ><TABLE
@@ -9949,6 +10600,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10015,6 +10667,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the current char value and its lenght</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10023,7 +10676,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19786"
+NAME="AEN20356"
 ></A
 ><H3
 ><A
@@ -10081,6 +10734,9 @@ i.e.
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20369"
+></A
 ><P
 ></P
 ><TABLE
@@ -10090,6 +10746,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10107,6 +10764,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10115,7 +10773,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19808"
+NAME="AEN20378"
 ></A
 ><H3
 ><A
@@ -10171,6 +10829,9 @@ HREF="ENTPROC"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20393"
+></A
 ><P
 ></P
 ><TABLE
@@ -10180,6 +10841,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10197,6 +10859,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10205,7 +10868,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19832"
+NAME="AEN20402"
 ></A
 ><H3
 ><A
@@ -10232,6 +10895,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20408"
+></A
 ><P
 ></P
 ><TABLE
@@ -10241,6 +10907,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10271,8 +10938,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10281,7 +10949,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19851"
+NAME="AEN20421"
 ></A
 ><H3
 ><A
@@ -10334,6 +11002,9 @@ HREF="XA"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20433"
+></A
 ><P
 ></P
 ><TABLE
@@ -10343,6 +11014,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10392,6 +11064,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the current char value and its lenght</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10400,7 +11073,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19880"
+NAME="AEN20450"
 ></A
 ><H3
 ><A
@@ -10430,6 +11103,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20457"
+></A
 ><P
 ></P
 ><TABLE
@@ -10439,6 +11115,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10488,6 +11165,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the number of xmlChar written</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10496,7 +11174,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19904"
+NAME="AEN20474"
 ></A
 ><H3
 ><A
@@ -10527,6 +11205,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20481"
+></A
 ><P
 ></P
 ><TABLE
@@ -10536,6 +11217,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10602,6 +11284,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the number of xmlChar written</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10610,7 +11293,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19932"
+NAME="AEN20502"
 ></A
 ><H3
 ><A
@@ -10639,6 +11322,9 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20509"
+></A
 ><P
 ></P
 ><TABLE
@@ -10648,6 +11334,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10665,6 +11352,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XML parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10673,7 +11361,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19948"
+NAME="AEN20518"
 ></A
 ><H3
 ><A
@@ -10702,6 +11390,9 @@ HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20525"
+></A
 ><P
 ></P
 ><TABLE
@@ -10711,6 +11402,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10728,6 +11420,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an XML parser input</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10736,7 +11429,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19964"
+NAME="AEN20534"
 ></A
 ><H3
 ><A
@@ -10769,7 +11462,7 @@ case of use in multithreaded programs.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19971"
+NAME="AEN20541"
 ></A
 ><H3
 ><A
@@ -10801,6 +11494,9 @@ by default if found at compile-time.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN20548"
+></A
 ><P
 ></P
 ><TABLE
@@ -10810,6 +11506,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10859,6 +11556,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the new parser context or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P

@@ -1,3 +1,11 @@
+Sat May 19 16:50:47 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.h debugXML.h parserInternals.h tree.h valid.c
+	  xmlversion.h.in xpathInternals.h xpath.h: some cleanup for gtk-doc
+	* doc/html/* : rebuilt the docs
+	* valid.c: small patch which may improve some case when
+	  validating.
+
 Sat May 19 15:20:03 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c: Closed bug #54891

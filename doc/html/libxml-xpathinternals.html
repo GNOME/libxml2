@@ -4,7 +4,7 @@
 >xpathInternals</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.59"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -18,6 +18,7 @@ REL="NEXT"
 TITLE="xpointer"
 HREF="libxml-xpointer.html"></HEAD
 ><BODY
+CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
 LINK="#0000FF"
@@ -121,7 +122,7 @@ NAME="LIBXML-XPATHINTERNALS"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN11755"
+NAME="AEN12209"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +130,7 @@ NAME="AEN11755"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN11758"
+NAME="AEN12212"
 ></A
 ><H2
 >Synopsis</H2
@@ -476,6 +477,23 @@ HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 HREF="libxml-xpathinternals.html#XMLXPATHNEWCSTRING"
 >xmlXPathNewCString</A
 >        (const char *val);
+<A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> <A
+HREF="libxml-xpathinternals.html#XMLXPATHWRAPSTRING"
+>xmlXPathWrapString</A
+>        (<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *val);
+<A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> <A
+HREF="libxml-xpathinternals.html#XMLXPATHWRAPCSTRING"
+>xmlXPathWrapCString</A
+>       (char *val);
 <A
 HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
@@ -1171,7 +1189,7 @@ HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN12039"
+NAME="AEN12498"
 ></A
 ><H2
 >Description</H2
@@ -1181,14 +1199,14 @@ NAME="AEN12039"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN12042"
+NAME="AEN12501"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12044"
+NAME="AEN12503"
 ></A
 ><H3
 ><A
@@ -1209,12 +1227,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>macro to return from the function if an XPath error was detected</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12049"
+NAME="AEN12509"
 ></A
 ><H3
 ><A
@@ -1235,12 +1255,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>macro to return 0 from the function if an XPath error was detected</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12054"
+NAME="AEN12515"
 ></A
 ><H3
 ><A
@@ -1261,9 +1283,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to raise an XPath error and return</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12521"
+></A
 ><P
 ></P
 ><TABLE
@@ -1273,6 +1300,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1288,8 +1316,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the error code</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1298,7 +1327,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12068"
+NAME="AEN12530"
 ></A
 ><H3
 ><A
@@ -1319,9 +1348,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to raise an XPath error and return 0</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12536"
+></A
 ><P
 ></P
 ><TABLE
@@ -1331,6 +1365,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1346,8 +1381,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the error code</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1356,7 +1392,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12082"
+NAME="AEN12545"
 ></A
 ><H3
 ><A
@@ -1377,9 +1413,15 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check that the value on top of the XPath stack is of a given
+type.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12551"
+></A
 ><P
 ></P
 ><TABLE
@@ -1389,6 +1431,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1404,8 +1447,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the XPath type</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1414,7 +1458,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12096"
+NAME="AEN12560"
 ></A
 ><H3
 ><A
@@ -1435,9 +1479,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to check that the number of args passed to an XPath function matches</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12566"
+></A
 ><P
 ></P
 ><TABLE
@@ -1447,6 +1496,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1462,8 +1512,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of expected args</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1472,7 +1523,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12110"
+NAME="AEN12575"
 ></A
 ><H3
 ><A
@@ -1493,12 +1544,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to try to cast the value on the top of the XPath stack to a string</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12115"
+NAME="AEN12581"
 ></A
 ><H3
 ><A
@@ -1519,12 +1572,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to try to cast the value on the top of the XPath stack to a number</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12120"
+NAME="AEN12587"
 ></A
 ><H3
 ><A
@@ -1545,12 +1600,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Macro to try to cast the value on the top of the XPath stack to a boolean</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12125"
+NAME="AEN12593"
 ></A
 ><H3
 ><A
@@ -1577,6 +1634,9 @@ HREF="TYPEDEF"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12599"
+></A
 ><P
 ></P
 ><TABLE
@@ -1586,6 +1646,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1599,8 +1660,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1609,7 +1671,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12140"
+NAME="AEN12608"
 ></A
 ><H3
 ><A
@@ -1643,6 +1705,9 @@ HREF="XMLXPATHVARIABLELOOKUPFUNC"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12616"
+></A
 ><P
 ></P
 ><TABLE
@@ -1652,6 +1717,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1701,8 +1767,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1711,7 +1778,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12165"
+NAME="AEN12633"
 ></A
 ><H3
 ><A
@@ -1741,6 +1808,9 @@ HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12639"
+></A
 ><P
 ></P
 ><TABLE
@@ -1750,6 +1820,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1816,8 +1887,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1826,7 +1898,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12192"
+NAME="AEN12660"
 ></A
 ><H3
 ><A
@@ -1860,6 +1932,9 @@ HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12668"
+></A
 ><P
 ></P
 ><TABLE
@@ -1869,6 +1944,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -1920,6 +1996,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  indentation level</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -1928,7 +2005,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12217"
+NAME="AEN12685"
 ></A
 ><H3
 ><A
@@ -1960,6 +2037,9 @@ HREF="libxml-xpath.html#XMLXPATHCOMPEXPRPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12692"
+></A
 ><P
 ></P
 ><TABLE
@@ -1969,6 +2049,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2018,8 +2099,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2028,7 +2110,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12241"
+NAME="AEN12709"
 ></A
 ><H3
 ><A
@@ -2071,6 +2153,9 @@ the namespace</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12719"
+></A
 ><P
 ></P
 ><TABLE
@@ -2080,6 +2165,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2146,6 +2232,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 in case of success, -1 in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2154,7 +2241,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12272"
+NAME="AEN12740"
 ></A
 ><H3
 ><A
@@ -2191,6 +2278,9 @@ namespace name associated to the given prefix</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12749"
+></A
 ><P
 ></P
 ><TABLE
@@ -2200,6 +2290,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2249,6 +2340,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the value or NULL if not found</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2257,7 +2349,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12298"
+NAME="AEN12766"
 ></A
 ><H3
 ><A
@@ -2284,6 +2376,9 @@ HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12772"
+></A
 ><P
 ></P
 ><TABLE
@@ -2293,6 +2388,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2308,8 +2404,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2318,7 +2415,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12313"
+NAME="AEN12781"
 ></A
 ><H3
 ><A
@@ -2360,6 +2457,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12791"
+></A
 ><P
 ></P
 ><TABLE
@@ -2369,6 +2469,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2435,6 +2536,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 in case of success, -1 in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2443,7 +2545,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12344"
+NAME="AEN12812"
 ></A
 ><H3
 ><A
@@ -2489,6 +2591,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12823"
+></A
 ><P
 ></P
 ><TABLE
@@ -2498,6 +2603,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2581,6 +2687,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 in case of success, -1 in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2589,7 +2696,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12380"
+NAME="AEN12848"
 ></A
 ><H3
 ><A
@@ -2632,6 +2739,9 @@ the variable</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12858"
+></A
 ><P
 ></P
 ><TABLE
@@ -2641,6 +2751,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2707,6 +2818,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 in case of success, -1 in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2715,7 +2827,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12411"
+NAME="AEN12879"
 ></A
 ><H3
 ><A
@@ -2762,6 +2874,9 @@ the variable</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12890"
+></A
 ><P
 ></P
 ><TABLE
@@ -2771,6 +2886,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2854,6 +2970,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 in case of success, -1 in case of error</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2862,7 +2979,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12447"
+NAME="AEN12915"
 ></A
 ><H3
 ><A
@@ -2899,6 +3016,9 @@ function.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12924"
+></A
 ><P
 ></P
 ><TABLE
@@ -2908,6 +3028,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -2957,6 +3078,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the xmlXPathFunction or NULL if not found</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -2965,7 +3087,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12473"
+NAME="AEN12941"
 ></A
 ><H3
 ><A
@@ -3006,6 +3128,9 @@ function.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12951"
+></A
 ><P
 ></P
 ><TABLE
@@ -3015,6 +3140,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3081,6 +3207,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the xmlXPathFunction or NULL if not found</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3089,7 +3216,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12504"
+NAME="AEN12972"
 ></A
 ><H3
 ><A
@@ -3118,6 +3245,9 @@ HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12979"
+></A
 ><P
 ></P
 ><TABLE
@@ -3127,6 +3257,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3144,6 +3275,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3152,7 +3284,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12520"
+NAME="AEN12988"
 ></A
 ><H3
 ><A
@@ -3189,6 +3321,9 @@ variable value.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN12997"
+></A
 ><P
 ></P
 ><TABLE
@@ -3198,6 +3333,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3247,6 +3383,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the value or NULL if not found</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3255,7 +3392,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12546"
+NAME="AEN13014"
 ></A
 ><H3
 ><A
@@ -3296,6 +3433,9 @@ variable value.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13024"
+></A
 ><P
 ></P
 ><TABLE
@@ -3305,6 +3445,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3371,6 +3512,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the value or NULL if not found</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3379,7 +3521,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12577"
+NAME="AEN13045"
 ></A
 ><H3
 ><A
@@ -3409,6 +3551,9 @@ HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13052"
+></A
 ><P
 ></P
 ><TABLE
@@ -3418,6 +3563,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3435,6 +3581,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3443,7 +3590,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12593"
+NAME="AEN13061"
 ></A
 ><H3
 ><A
@@ -3480,6 +3627,9 @@ HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13070"
+></A
 ><P
 ></P
 ><TABLE
@@ -3489,6 +3639,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3538,6 +3689,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the xmlXPathParserContext just allocated.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3546,7 +3698,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12619"
+NAME="AEN13087"
 ></A
 ><H3
 ><A
@@ -3575,6 +3727,9 @@ HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13094"
+></A
 ><P
 ></P
 ><TABLE
@@ -3584,6 +3739,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3601,6 +3757,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the context to free</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3609,7 +3766,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12635"
+NAME="AEN13103"
 ></A
 ><H3
 ><A
@@ -3639,6 +3796,9 @@ HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13110"
+></A
 ><P
 ></P
 ><TABLE
@@ -3648,6 +3808,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3678,8 +3839,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3688,7 +3850,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12655"
+NAME="AEN13123"
 ></A
 ><H3
 ><A
@@ -3719,6 +3881,9 @@ HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13130"
+></A
 ><P
 ></P
 ><TABLE
@@ -3728,6 +3893,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3775,8 +3941,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3785,7 +3952,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12679"
+NAME="AEN13147"
 ></A
 ><H3
 ><A
@@ -3822,6 +3989,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13156"
+></A
 ><P
 ></P
 ><TABLE
@@ -3831,6 +4001,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3863,6 +4034,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the newly created object.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3871,7 +4043,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12701"
+NAME="AEN13169"
 ></A
 ><H3
 ><A
@@ -3905,6 +4077,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13177"
+></A
 ><P
 ></P
 ><TABLE
@@ -3914,6 +4089,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -3946,6 +4122,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the newly created object.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -3954,7 +4131,181 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12722"
+NAME="AEN13190"
+></A
+><H3
+><A
+NAME="XMLXPATHWRAPSTRING"
+></A
+>xmlXPathWrapString ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> xmlXPathWrapString        (<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Wraps the <TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+> string into an XPath object.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN13199"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlChar * value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the newly created object.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13212"
+></A
+><H3
+><A
+NAME="XMLXPATHWRAPCSTRING"
+></A
+>xmlXPathWrapCString ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> xmlXPathWrapCString       (char *val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Wraps a string into an XPath object.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN13219"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the char * value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the newly created object.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13232"
 ></A
 ><H3
 ><A
@@ -3991,6 +4342,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13241"
+></A
 ><P
 ></P
 ><TABLE
@@ -4000,6 +4354,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4032,6 +4387,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the newly created object.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4040,7 +4396,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12744"
+NAME="AEN13254"
 ></A
 ><H3
 ><A
@@ -4074,6 +4430,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13262"
+></A
 ><P
 ></P
 ><TABLE
@@ -4083,6 +4442,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4115,6 +4475,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the newly created object.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4123,7 +4484,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12765"
+NAME="AEN13275"
 ></A
 ><H3
 ><A
@@ -4161,6 +4522,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13284"
+></A
 ><P
 ></P
 ><TABLE
@@ -4170,6 +4534,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4202,6 +4567,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the newly created object.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4210,7 +4576,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12787"
+NAME="AEN13297"
 ></A
 ><H3
 ><A
@@ -4248,6 +4614,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13306"
+></A
 ><P
 ></P
 ><TABLE
@@ -4257,6 +4626,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4289,6 +4659,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the newly created object.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4297,7 +4668,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12809"
+NAME="AEN13319"
 ></A
 ><H3
 ><A
@@ -4330,6 +4701,9 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13327"
+></A
 ><P
 ></P
 ><TABLE
@@ -4339,6 +4713,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4373,6 +4748,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  a new xmlNodePtr</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4381,7 +4757,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12830"
+NAME="AEN13340"
 ></A
 ><H3
 ><A
@@ -4415,6 +4791,9 @@ when we are sure the node is not already in the set.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13348"
+></A
 ><P
 ></P
 ><TABLE
@@ -4424,6 +4803,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4458,6 +4838,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  a new xmlNodePtr</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4466,7 +4847,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12851"
+NAME="AEN13361"
 ></A
 ><H3
 ><A
@@ -4495,6 +4876,9 @@ HREF="libxml-xpath.html#XMLNODESETPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13368"
+></A
 ><P
 ></P
 ><TABLE
@@ -4504,6 +4888,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4521,6 +4906,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the node set</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4529,7 +4915,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12867"
+NAME="AEN13377"
 ></A
 ><H3
 ><A
@@ -4573,6 +4959,9 @@ have a unique ID equal to any of the tokens in the list.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13385"
+></A
 ><P
 ></P
 ><TABLE
@@ -4582,6 +4971,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4616,6 +5006,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4624,7 +5015,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12888"
+NAME="AEN13398"
 ></A
 ><H3
 ><A
@@ -4653,6 +5044,9 @@ HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13405"
+></A
 ><P
 ></P
 ><TABLE
@@ -4662,6 +5056,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4679,6 +5074,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath Parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4687,7 +5083,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12904"
+NAME="AEN13414"
 ></A
 ><H3
 ><A
@@ -4717,6 +5113,9 @@ then push the result on the context stack</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13421"
+></A
 ><P
 ></P
 ><TABLE
@@ -4726,6 +5125,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4743,6 +5143,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath Parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4751,7 +5152,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12920"
+NAME="AEN13430"
 ></A
 ><H3
 ><A
@@ -4788,6 +5189,9 @@ CombiningChar | Extender</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13440"
+></A
 ><P
 ></P
 ><TABLE
@@ -4797,6 +5201,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4829,6 +5234,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the namespace name or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4837,7 +5243,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12943"
+NAME="AEN13453"
 ></A
 ><H3
 ><A
@@ -4874,6 +5280,9 @@ CombiningChar | Extender</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13463"
+></A
 ><P
 ></P
 ><TABLE
@@ -4883,6 +5292,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -4915,6 +5325,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the namespace name or NULL</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -4923,7 +5334,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12966"
+NAME="AEN13476"
 ></A
 ><H3
 ><A
@@ -4963,6 +5374,9 @@ negative values : '-' Number.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13486"
+></A
 ><P
 ></P
 ><TABLE
@@ -4972,6 +5386,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5004,6 +5419,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the double value.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5012,7 +5428,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12989"
+NAME="AEN13499"
 ></A
 ><H3
 ><A
@@ -5054,6 +5470,9 @@ to the boolean function. </P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13508"
+></A
 ><P
 ></P
 ><TABLE
@@ -5063,6 +5482,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5110,8 +5530,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5120,7 +5541,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13015"
+NAME="AEN13525"
 ></A
 ><H3
 ><A
@@ -5148,7 +5569,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13021"
+NAME="AEN13531"
 ></A
 ><H3
 ><A
@@ -5210,6 +5631,9 @@ context node as its only member.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13540"
+></A
 ><P
 ></P
 ><TABLE
@@ -5219,6 +5643,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5253,6 +5678,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5261,7 +5687,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13043"
+NAME="AEN13553"
 ></A
 ><H3
 ><A
@@ -5290,6 +5716,9 @@ HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13560"
+></A
 ><P
 ></P
 ><TABLE
@@ -5299,6 +5728,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5316,6 +5746,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5324,7 +5755,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13059"
+NAME="AEN13569"
 ></A
 ><H3
 ><A
@@ -5361,6 +5792,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13578"
+></A
 ><P
 ></P
 ><TABLE
@@ -5370,6 +5804,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5400,8 +5835,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5410,7 +5846,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13081"
+NAME="AEN13591"
 ></A
 ><H3
 ><A
@@ -5467,6 +5903,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13604"
+></A
 ><P
 ></P
 ><TABLE
@@ -5476,6 +5915,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5525,6 +5965,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >val1 once extended or NULL in case of error.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5533,7 +5974,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13111"
+NAME="AEN13621"
 ></A
 ><H3
 ><A
@@ -5566,6 +6007,9 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13629"
+></A
 ><P
 ></P
 ><TABLE
@@ -5575,6 +6019,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5609,6 +6054,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  an xmlNodePtr</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5617,7 +6063,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13132"
+NAME="AEN13642"
 ></A
 ><H3
 ><A
@@ -5647,6 +6093,9 @@ HREF="libxml-xpath.html#XMLNODESETPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13649"
+></A
 ><P
 ></P
 ><TABLE
@@ -5656,6 +6105,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5690,6 +6140,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the index to remove</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5698,7 +6149,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13152"
+NAME="AEN13662"
 ></A
 ><H3
 ><A
@@ -5727,6 +6178,9 @@ HREF="libxml-xpath.html#XMLNODESETPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13669"
+></A
 ><P
 ></P
 ><TABLE
@@ -5736,6 +6190,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5751,8 +6206,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5761,7 +6217,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13168"
+NAME="AEN13678"
 ></A
 ><H3
 ><A
@@ -5799,6 +6255,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13687"
+></A
 ><P
 ></P
 ><TABLE
@@ -5808,6 +6267,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5840,6 +6300,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the newly created object.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5848,7 +6309,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13190"
+NAME="AEN13700"
 ></A
 ><H3
 ><A
@@ -5885,6 +6346,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13709"
+></A
 ><P
 ></P
 ><TABLE
@@ -5894,6 +6358,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5926,6 +6391,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the newly created object.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -5934,7 +6400,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13212"
+NAME="AEN13722"
 ></A
 ><H3
 ><A
@@ -5972,6 +6438,9 @@ HREF="libxml-xpath.html#XMLXPATHFREEOBJECT"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13731"
+></A
 ><P
 ></P
 ><TABLE
@@ -5981,6 +6450,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -5996,8 +6466,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6006,7 +6477,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13230"
+NAME="AEN13740"
 ></A
 ><H3
 ><A
@@ -6035,6 +6506,9 @@ HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13747"
+></A
 ><P
 ></P
 ><TABLE
@@ -6044,6 +6518,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6059,8 +6534,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6069,7 +6545,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13246"
+NAME="AEN13756"
 ></A
 ><H3
 ><A
@@ -6101,6 +6577,9 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13764"
+></A
 ><P
 ></P
 ><TABLE
@@ -6110,6 +6589,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6140,8 +6620,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6150,7 +6631,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13267"
+NAME="AEN13777"
 ></A
 ><H3
 ><A
@@ -6179,6 +6660,9 @@ HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13784"
+></A
 ><P
 ></P
 ><TABLE
@@ -6188,6 +6672,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6203,8 +6688,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>&nbsp;</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6213,7 +6699,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13283"
+NAME="AEN13793"
 ></A
 ><H3
 ><A
@@ -6252,6 +6738,9 @@ CLASS="PARAMETER"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13802"
+></A
 ><P
 ></P
 ><TABLE
@@ -6261,6 +6750,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6293,6 +6783,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >0 or 1 depending on the results of the test.</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6301,7 +6792,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13305"
+NAME="AEN13815"
 ></A
 ><H3
 ><A
@@ -6386,6 +6877,9 @@ is greater than or equal to the second number.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13831"
+></A
 ><P
 ></P
 ><TABLE
@@ -6395,6 +6889,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6461,6 +6956,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >1 if the comparaison succeeded, 0 if it failed</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6469,7 +6965,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13342"
+NAME="AEN13852"
 ></A
 ><H3
 ><A
@@ -6500,6 +6996,9 @@ by calling the number function.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13859"
+></A
 ><P
 ></P
 ><TABLE
@@ -6509,6 +7008,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6526,6 +7026,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath Parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6534,7 +7035,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13358"
+NAME="AEN13868"
 ></A
 ><H3
 ><A
@@ -6565,6 +7066,9 @@ by calling the number function.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13875"
+></A
 ><P
 ></P
 ><TABLE
@@ -6574,6 +7078,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6591,6 +7096,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath Parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6599,7 +7105,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13374"
+NAME="AEN13884"
 ></A
 ><H3
 ><A
@@ -6630,6 +7136,9 @@ by calling the number function.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13891"
+></A
 ><P
 ></P
 ><TABLE
@@ -6639,6 +7148,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6656,6 +7166,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath Parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6664,7 +7175,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13390"
+NAME="AEN13900"
 ></A
 ><H3
 ><A
@@ -6695,6 +7206,9 @@ by calling the number function.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13907"
+></A
 ><P
 ></P
 ><TABLE
@@ -6704,6 +7218,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6721,6 +7236,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath Parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6729,7 +7245,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13406"
+NAME="AEN13916"
 ></A
 ><H3
 ><A
@@ -6770,6 +7286,9 @@ by calling the number function.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13925"
+></A
 ><P
 ></P
 ><TABLE
@@ -6779,6 +7298,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6796,6 +7316,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath Parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6804,7 +7325,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13424"
+NAME="AEN13934"
 ></A
 ><H3
 ><A
@@ -6845,6 +7366,9 @@ by calling the number function.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13943"
+></A
 ><P
 ></P
 ><TABLE
@@ -6854,6 +7378,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6871,6 +7396,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the XPath Parser context</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6879,7 +7405,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13442"
+NAME="AEN13952"
 ></A
 ><H3
 ><A
@@ -6913,6 +7439,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13960"
+></A
 ><P
 ></P
 ><TABLE
@@ -6922,6 +7451,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -6954,6 +7484,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >1 if true 0 otherwise</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -6962,7 +7493,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13463"
+NAME="AEN13973"
 ></A
 ><H3
 ><A
@@ -6999,6 +7530,9 @@ The self axis contains just the context node itself</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN13982"
+></A
 ><P
 ></P
 ><TABLE
@@ -7008,6 +7542,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7057,6 +7592,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7065,7 +7601,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13489"
+NAME="AEN13999"
 ></A
 ><H3
 ><A
@@ -7102,6 +7638,9 @@ The child axis contains the children of the context node in document order.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14008"
+></A
 ><P
 ></P
 ><TABLE
@@ -7111,6 +7650,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7160,6 +7700,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7168,7 +7709,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13515"
+NAME="AEN14025"
 ></A
 ><H3
 ><A
@@ -7206,6 +7747,9 @@ order; a descendant is a child or a child of a child and so on.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14034"
+></A
 ><P
 ></P
 ><TABLE
@@ -7215,6 +7759,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7264,6 +7809,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7272,7 +7818,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13541"
+NAME="AEN14051"
 ></A
 ><H3
 ><A
@@ -7312,6 +7858,9 @@ on the axis</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14060"
+></A
 ><P
 ></P
 ><TABLE
@@ -7321,6 +7870,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7370,6 +7920,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7378,7 +7929,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13567"
+NAME="AEN14077"
 ></A
 ><H3
 ><A
@@ -7415,6 +7966,9 @@ The parent axis contains the parent of the context node, if there is one.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14086"
+></A
 ><P
 ></P
 ><TABLE
@@ -7424,6 +7978,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7473,6 +8028,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7481,7 +8037,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13593"
+NAME="AEN14103"
 ></A
 ><H3
 ><A
@@ -7521,6 +8077,9 @@ parent here is defined the same as with the parent axis.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14112"
+></A
 ><P
 ></P
 ><TABLE
@@ -7530,6 +8089,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7579,6 +8139,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7587,7 +8148,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13619"
+NAME="AEN14129"
 ></A
 ><H3
 ><A
@@ -7625,6 +8186,9 @@ node in document order.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14138"
+></A
 ><P
 ></P
 ><TABLE
@@ -7634,6 +8198,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7683,6 +8248,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7691,7 +8257,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13645"
+NAME="AEN14155"
 ></A
 ><H3
 ><A
@@ -7731,6 +8297,9 @@ are ordered in document order</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14164"
+></A
 ><P
 ></P
 ><TABLE
@@ -7740,6 +8309,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7789,6 +8359,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7797,7 +8368,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13671"
+NAME="AEN14181"
 ></A
 ><H3
 ><A
@@ -7836,6 +8407,9 @@ be empty unless the context node is an element</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14190"
+></A
 ><P
 ></P
 ><TABLE
@@ -7845,6 +8419,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7894,6 +8469,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -7902,7 +8478,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13697"
+NAME="AEN14207"
 ></A
 ><H3
 ><A
@@ -7939,6 +8515,9 @@ TODO: support DTD inherited default attributes</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14216"
+></A
 ><P
 ></P
 ><TABLE
@@ -7948,6 +8527,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -7997,6 +8577,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8005,7 +8586,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13723"
+NAME="AEN14233"
 ></A
 ><H3
 ><A
@@ -8045,6 +8626,9 @@ ordered in reverse document order</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14242"
+></A
 ><P
 ></P
 ><TABLE
@@ -8054,6 +8638,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8103,6 +8688,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8111,7 +8697,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13749"
+NAME="AEN14259"
 ></A
 ><H3
 ><A
@@ -8152,6 +8738,9 @@ node on the axis</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14268"
+></A
 ><P
 ></P
 ><TABLE
@@ -8161,6 +8750,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8210,6 +8800,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8218,7 +8809,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13775"
+NAME="AEN14285"
 ></A
 ><H3
 ><A
@@ -8257,6 +8848,9 @@ axis; the sibling preceding that node is the second on the axis and so on.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14294"
+></A
 ><P
 ></P
 ><TABLE
@@ -8266,6 +8860,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8315,6 +8910,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >the next element following that axis</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8323,7 +8919,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13801"
+NAME="AEN14311"
 ></A
 ><H3
 ><A
@@ -8361,6 +8957,9 @@ The last function returns the number of nodes in the context node list.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14320"
+></A
 ><P
 ></P
 ><TABLE
@@ -8370,6 +8969,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8404,6 +9004,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8412,7 +9013,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13823"
+NAME="AEN14333"
 ></A
 ><H3
 ><A
@@ -8455,6 +9056,9 @@ HREF="LAST"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14343"
+></A
 ><P
 ></P
 ><TABLE
@@ -8464,6 +9068,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8498,6 +9103,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8506,7 +9112,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13846"
+NAME="AEN14356"
 ></A
 ><H3
 ><A
@@ -8540,6 +9146,9 @@ number count(node-set)</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14364"
+></A
 ><P
 ></P
 ><TABLE
@@ -8549,6 +9158,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8583,6 +9193,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8591,7 +9202,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13867"
+NAME="AEN14377"
 ></A
 ><H3
 ><A
@@ -8630,6 +9241,9 @@ defaults to the context node.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14385"
+></A
 ><P
 ></P
 ><TABLE
@@ -8639,6 +9253,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8673,6 +9288,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8681,7 +9297,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13888"
+NAME="AEN14398"
 ></A
 ><H3
 ><A
@@ -8721,6 +9337,9 @@ defaults to the context node.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14406"
+></A
 ><P
 ></P
 ><TABLE
@@ -8730,6 +9349,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8764,6 +9384,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8772,7 +9393,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13909"
+NAME="AEN14419"
 ></A
 ><H3
 ><A
@@ -8810,6 +9431,9 @@ of the context node.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14427"
+></A
 ><P
 ></P
 ><TABLE
@@ -8819,6 +9443,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8853,6 +9478,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8861,7 +9487,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13930"
+NAME="AEN14440"
 ></A
 ><H3
 ><A
@@ -8896,6 +9522,9 @@ The concat function returns the concatenation of its arguments.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14448"
+></A
 ><P
 ></P
 ><TABLE
@@ -8905,6 +9534,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -8939,6 +9569,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -8947,7 +9578,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13951"
+NAME="AEN14461"
 ></A
 ><H3
 ><A
@@ -8983,6 +9614,9 @@ contains the second argument string, and otherwise returns false.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14469"
+></A
 ><P
 ></P
 ><TABLE
@@ -8992,6 +9626,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9026,6 +9661,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9034,7 +9670,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13972"
+NAME="AEN14482"
 ></A
 ><H3
 ><A
@@ -9070,6 +9706,9 @@ starts with the second argument string, and otherwise returns false.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14490"
+></A
 ><P
 ></P
 ><TABLE
@@ -9079,6 +9718,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9113,6 +9753,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9121,7 +9762,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13993"
+NAME="AEN14503"
 ></A
 ><H3
 ><A
@@ -9175,6 +9816,9 @@ and addition used for the above follow the standard IEEE 754 rules. Thus:
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14511"
+></A
 ><P
 ></P
 ><TABLE
@@ -9184,6 +9828,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9218,6 +9863,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9226,7 +9872,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14014"
+NAME="AEN14524"
 ></A
 ><H3
 ><A
@@ -9265,6 +9911,9 @@ string. For example, substring-before("1999/04/01","/") returns 1999.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14532"
+></A
 ><P
 ></P
 ><TABLE
@@ -9274,6 +9923,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9308,6 +9958,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9316,7 +9967,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14035"
+NAME="AEN14545"
 ></A
 ><H3
 ><A
@@ -9356,6 +10007,9 @@ and substring-after("1999/04/01","19") returns 99/04/01.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14553"
+></A
 ><P
 ></P
 ><TABLE
@@ -9365,6 +10019,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9399,6 +10054,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9407,7 +10063,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14056"
+NAME="AEN14566"
 ></A
 ><H3
 ><A
@@ -9447,6 +10103,9 @@ node converted to a string, in other words the value of the context node.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14574"
+></A
 ><P
 ></P
 ><TABLE
@@ -9456,6 +10115,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9490,6 +10150,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9498,7 +10159,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14077"
+NAME="AEN14587"
 ></A
 ><H3
 ><A
@@ -9541,6 +10202,9 @@ string are removed. For example, translate("--aaa--","abc-","ABC")</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14595"
+></A
 ><P
 ></P
 ><TABLE
@@ -9550,6 +10214,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9584,6 +10249,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9592,7 +10258,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14098"
+NAME="AEN14608"
 ></A
 ><H3
 ><A
@@ -9628,6 +10294,9 @@ and false otherwise.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14616"
+></A
 ><P
 ></P
 ><TABLE
@@ -9637,6 +10306,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9671,6 +10341,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9679,7 +10350,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14119"
+NAME="AEN14629"
 ></A
 ><H3
 ><A
@@ -9716,6 +10387,9 @@ HREF="TRUE"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14638"
+></A
 ><P
 ></P
 ><TABLE
@@ -9725,6 +10399,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9759,6 +10434,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9767,7 +10443,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14141"
+NAME="AEN14651"
 ></A
 ><H3
 ><A
@@ -9804,6 +10480,9 @@ HREF="FALSE"
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14660"
+></A
 ><P
 ></P
 ><TABLE
@@ -9813,6 +10492,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9847,6 +10527,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9855,7 +10536,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14163"
+NAME="AEN14673"
 ></A
 ><H3
 ><A
@@ -9897,6 +10578,9 @@ has an xml:lang attribute. If there is no such attribute, then lang</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14681"
+></A
 ><P
 ></P
 ><TABLE
@@ -9906,6 +10590,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -9940,6 +10625,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -9948,7 +10634,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14184"
+NAME="AEN14694"
 ></A
 ><H3
 ><A
@@ -9982,6 +10668,9 @@ number number(object?)</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14702"
+></A
 ><P
 ></P
 ><TABLE
@@ -9991,6 +10680,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10025,6 +10715,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10033,7 +10724,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14205"
+NAME="AEN14715"
 ></A
 ><H3
 ><A
@@ -10069,6 +10760,9 @@ the argument node-set.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14723"
+></A
 ><P
 ></P
 ><TABLE
@@ -10078,6 +10772,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10112,6 +10807,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10120,7 +10816,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14226"
+NAME="AEN14736"
 ></A
 ><H3
 ><A
@@ -10156,6 +10852,9 @@ number that is not greater than the argument and that is an integer.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14744"
+></A
 ><P
 ></P
 ><TABLE
@@ -10165,6 +10864,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10199,6 +10899,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10207,7 +10908,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14247"
+NAME="AEN14757"
 ></A
 ><H3
 ><A
@@ -10243,6 +10944,9 @@ number that is not less than the argument and that is an integer.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14765"
+></A
 ><P
 ></P
 ><TABLE
@@ -10252,6 +10956,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10286,6 +10991,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10294,7 +11000,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14268"
+NAME="AEN14778"
 ></A
 ><H3
 ><A
@@ -10331,6 +11037,9 @@ then the one that is even is returned.</P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14786"
+></A
 ><P
 ></P
 ><TABLE
@@ -10340,6 +11049,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10374,6 +11084,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P
@@ -10382,7 +11093,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14289"
+NAME="AEN14799"
 ></A
 ><H3
 ><A
@@ -10421,6 +11132,9 @@ negative zero nor NaN
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
+><A
+NAME="AEN14807"
+></A
 ><P
 ></P
 ><TABLE
@@ -10430,6 +11144,7 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TBODY
 ><TR
 ><TD
 WIDTH="20%"
@@ -10464,6 +11179,7 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the number of arguments</TD
 ></TR
+></TBODY
 ></TABLE
 ><P
 ></P

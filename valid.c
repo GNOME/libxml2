@@ -105,6 +105,8 @@ static int
 vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
 	    xmlNodePtr node, unsigned char depth, long occurs,
 	    unsigned char state) {
+    int i = ctxt->vstateNr - 1;
+
     if (ctxt->vstateNr >= ctxt->vstateMax) {
 	ctxt->vstateMax *= 2;
         ctxt->vstateTab = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
@@ -116,6 +118,15 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
 	}
 	ctxt->vstate = &ctxt->vstateTab[0];
     }
+    /*
+     * Don't push on the stack a state already here
+     */
+    if ((i >= 0) && (ctxt->vstateTab[i].cont == cont) &&
+	(ctxt->vstateTab[i].node == node) &&
+	(ctxt->vstateTab[i].depth == depth) &&
+	(ctxt->vstateTab[i].occurs == occurs) &&
+	(ctxt->vstateTab[i].state == state))
+	return(ctxt->vstateNr);
     ctxt->vstateTab[ctxt->vstateNr].cont = cont;
     ctxt->vstateTab[ctxt->vstateNr].node = node;
     ctxt->vstateTab[ctxt->vstateNr].depth = depth;

@@ -65,8 +65,10 @@ void	xmlLsOneNode		(FILE *output,
  */
 typedef char * (* xmlShellReadlineFunc)(char *prompt);
 
-/*
- * The shell context itself
+/**
+ * xmlShellCtxt:
+ *
+ * A debugging shell context
  * TODO: add the defined function tables.
  */
 typedef struct _xmlShellCtxt xmlShellCtxt;

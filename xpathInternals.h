@@ -22,36 +22,86 @@ extern "C" {
  *									*
  ************************************************************************/
 
+/**
+ * CHECK_ERROR:
+ *
+ * macro to return from the function if an XPath error was detected
+ */
 #define CHECK_ERROR							\
     if (ctxt->error != XPATH_EXPRESSION_OK) return
 
+/**
+ * CHECK_ERROR0:
+ *
+ * macro to return 0 from the function if an XPath error was detected
+ */
 #define CHECK_ERROR0							\
     if (ctxt->error != XPATH_EXPRESSION_OK) return(0)
 
+/**
+ * XP_ERROR:
+ * @X:  the error code
+ *
+ * Macro to raise an XPath error and return
+ */
 #define XP_ERROR(X)							\
     { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
       ctxt->error = (X); return; }
 
+/**
+ * XP_ERROR0:
+ * @X:  the error code
+ *
+ * Macro to raise an XPath error and return 0
+ */
 #define XP_ERROR0(X)							\
     { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
       ctxt->error = (X); return(0); }
 
+/**
+ * CHECK_TYPE:
+ * @typeval:  the XPath type
+ *
+ * Macro to check that the value on top of the XPath stack is of a given
+ * type.
+ */
 #define CHECK_TYPE(typeval)						\
     if ((ctxt->value == NULL) || (ctxt->value->type != typeval))	\
         XP_ERROR(XPATH_INVALID_TYPE)
 
+/**
+ * CHECK_ARITY:
+ * @x:  the number of expected args
+ *
+ * Macro to check that the number of args passed to an XPath function matches
+ */
 #define CHECK_ARITY(x)							\
     if (nargs != (x))							\
         XP_ERROR(XPATH_INVALID_ARITY);
 
+/**
+ * CAST_TO_STRING:
+ *
+ * Macro to try to cast the value on the top of the XPath stack to a string
+ */
 #define CAST_TO_STRING							\
     if ((ctxt->value != NULL) && (ctxt->value->type != XPATH_STRING))	\
         xmlXPathStringFunction(ctxt, 1);
 
+/**
+ * CAST_TO_NUMBER:
+ *
+ * Macro to try to cast the value on the top of the XPath stack to a number
+ */
 #define CAST_TO_NUMBER							\
     if ((ctxt->value != NULL) && (ctxt->value->type != XPATH_NUMBER))	\
         xmlXPathNumberFunction(ctxt, 1);
 
+/**
+ * CAST_TO_BOOLEAN:
+ *
+ * Macro to try to cast the value on the top of the XPath stack to a boolean
+ */
 #define CAST_TO_BOOLEAN							\
     if ((ctxt->value != NULL) && (ctxt->value->type != XPATH_BOOLEAN))	\
         xmlXPathBooleanFunction(ctxt, 1);

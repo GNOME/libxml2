@@ -167,7 +167,9 @@ struct _xmlXPathAxis {
     xmlXPathAxisFunc func;		/* the search function */
 };
 
-/* 
+/**
+ * xmlXPathContext:
+ *
  * Expression evaluation occurs with respect to a context.
  * he context consists of:
  *    - a node (the context node) 
@@ -229,7 +231,9 @@ struct _xmlXPathContext {
 typedef struct _xmlXPathCompExpr xmlXPathCompExpr;
 typedef xmlXPathCompExpr *xmlXPathCompExprPtr;
 
-/*
+/**
+ * xmlXPathParserContext:
+ *
  * An XPath parser context, it contains pure parsing informations,
  * an xmlXPathContext, and the stack of objects.
  */
@@ -249,7 +253,9 @@ struct _xmlXPathParserContext {
     int xptr;				/* it this an XPointer expression */
 };
 
-/*
+/**
+ * xmlXPathFunction:
+ *
  * An XPath function
  * The arguments (if any) are popped out of the context stack
  * and the result is pushed on the stack.
@@ -288,7 +294,7 @@ int		   xmlXPathCmpNodes		(xmlNodePtr node1,
  */
 int		   xmlXPathCastNumberToBoolean	(double val);
 int		   xmlXPathCastStringToBoolean	(const xmlChar * val);
-int		   xmlXPathCastNodeToBoolean	(xmlNodeSetPtr ns);
+int		   xmlXPathCastNodeSetToBoolean	(xmlNodeSetPtr ns);
 int		   xmlXPathCastToBoolean	(xmlXPathObjectPtr val);
 
 double		   xmlXPathCastBooleanToNumber	(int val);

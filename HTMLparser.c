@@ -559,7 +559,6 @@ static char *htmlNoContentElements[] = {
     NULL
 };
 
-
 static char** htmlStartCloseIndex[100];
 static int htmlStartCloseIndexinitialized = 0;
 
@@ -1863,7 +1862,7 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
     /*
      * allocate a translation buffer.
      */
-    buffer_size = HTML_PARSER_BIG_BUFFER_SIZE;
+    buffer_size = HTML_PARSER_BUFFER_SIZE;
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
 	perror("htmlParseHTMLAttribute: malloc failed");
@@ -2208,6 +2207,71 @@ htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
     
     return(ret);
 }
+
+/**
+ * htmlParseScript:
+ * @ctxt:  an HTML parser context
+ *
+ * parse the content of an HTML SCRIPT or STYLE element
+ * http://www.w3.org/TR/html4/sgml/dtd.html#Script
+ * http://www.w3.org/TR/html4/sgml/dtd.html#StyleSheet
+ * http://www.w3.org/TR/html4/types.html#type-script
+ * http://www.w3.org/TR/html4/types.html#h-6.15
+ * http://www.w3.org/TR/html4/appendix/notes.html#h-B.3.2.1
+ *
+ * Script data ( %Script; in the DTD) can be the content of the SCRIPT
+ * element and the value of intrinsic event attributes. User agents must
+ * not evaluate script data as HTML markup but instead must pass it on as
+ * data to a script engine.
+ * NOTES:
+ * - The content is passed like CDATA
+ * - the attributes for style and scripting "onXXX" are also described
+ *   as CDATA but SGML allows entities references in attributes so their
+ *   processing is identical as other attributes
+ */
+void
+htmlParseScript(htmlParserCtxtPtr ctxt) {
+    xmlChar buf[HTML_PARSER_BIG_BUFFER_SIZE + 1];
+    int nbchar = 0;
+    xmlChar cur;
+
+    SHRINK;
+    cur = CUR;
+    while (IS_CHAR(cur)) {
+	if ((cur == '<') && (NXT(1) == '/')) {
+	    /*
+	     * One should break here, the specification is clear:
+	     * Authors should therefore escape "</" within the content.
+	     * Escape mechanisms are specific to each scripting or
+	     * style sheet language.
+	     */
+	    if (((NXT(2) >= 'A') && (NXT(2) <= 'Z')) ||
+	        ((NXT(2) >= 'a') && (NXT(2) <= 'z')))
+		break; /* while */
+	}
+	buf[nbchar++] = cur;
+	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
+	    if (ctxt->sax->cdataBlock!= NULL) {
+		/*
+		 * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
+		 */
+		ctxt->sax->cdataBlock(ctxt->userData, buf, nbchar);
+	    }
+	    nbchar = 0;
+	}
+	NEXT;
+	cur = CUR;
+    }
+    if ((nbchar != 0) && (ctxt->sax != NULL) && (!ctxt->disableSAX)) {
+	if (ctxt->sax->cdataBlock!= NULL) {
+	    /*
+	     * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
+	     */
+	    ctxt->sax->cdataBlock(ctxt->userData, buf, nbchar);
+	}
+    }
+}
+
 
 /**
  * htmlParseCharData:
@@ -3112,68 +3176,75 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	    return;
 	}
 
-	/*
-	 * Sometimes DOCTYPE arrives in the middle of the document
-	 */
-	if ((CUR == '<') && (NXT(1) == '!') &&
-	    (UPP(2) == 'D') && (UPP(3) == 'O') &&
-	    (UPP(4) == 'C') && (UPP(5) == 'T') &&
-	    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
-	    (UPP(8) == 'E')) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData,
-		     "Misplaced DOCTYPE declaration\n");
-	    ctxt->wellFormed = 0;
-	    htmlParseDocTypeDecl(ctxt);
-	}
-
-	/*
-	 * First case :  a comment
-	 */
-	if ((CUR == '<') && (NXT(1) == '!') &&
-		 (NXT(2) == '-') && (NXT(3) == '-')) {
-	    htmlParseComment(ctxt);
-	}
-
-	/*
-	 * Second case :  a sub-element.
-	 */
-	else if (CUR == '<') {
-	    htmlParseElement(ctxt);
-	}
-
-	/*
-	 * Third case : a reference. If if has not been resolved,
-	 *    parsing returns it's Name, create the node 
-	 */
-	else if (CUR == '&') {
-	    htmlParseReference(ctxt);
-	}
-
-	/*
-	 * Fourth : end of the resource
-	 */
-	else if (CUR == 0) {
-	    htmlAutoClose(ctxt, NULL);
-	}
-
-	/*
-	 * Last case, text. Note that References are handled directly.
-	 */
-	else {
-	    htmlParseCharData(ctxt, 0);
-	}
-
-	if (cons == ctxt->nbChars) {
-	    if (ctxt->node != NULL) {
+	if ((xmlStrEqual(currentNode, BAD_CAST"script")) ||
+	    (xmlStrEqual(currentNode, BAD_CAST"style"))) {
+	    /*
+	     * Handle SCRIPT/STYLE separately
+	     */
+	    htmlParseScript(ctxt);
+	} else {
+	    /*
+	     * Sometimes DOCTYPE arrives in the middle of the document
+	     */
+	    if ((CUR == '<') && (NXT(1) == '!') &&
+		(UPP(2) == 'D') && (UPP(3) == 'O') &&
+		(UPP(4) == 'C') && (UPP(5) == 'T') &&
+		(UPP(6) == 'Y') && (UPP(7) == 'P') &&
+		(UPP(8) == 'E')) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
-			 "detected an error in element content\n");
+				     "Misplaced DOCTYPE declaration\n");
 		ctxt->wellFormed = 0;
+		htmlParseDocTypeDecl(ctxt);
 	    }
-            break;
-	}
 
+	    /*
+	     * First case :  a comment
+	     */
+	    if ((CUR == '<') && (NXT(1) == '!') &&
+		(NXT(2) == '-') && (NXT(3) == '-')) {
+		htmlParseComment(ctxt);
+	    }
+
+	    /*
+	     * Second case :  a sub-element.
+	     */
+	    else if (CUR == '<') {
+		htmlParseElement(ctxt);
+	    }
+
+	    /*
+	     * Third case : a reference. If if has not been resolved,
+	     *    parsing returns it's Name, create the node 
+	     */
+	    else if (CUR == '&') {
+		htmlParseReference(ctxt);
+	    }
+
+	    /*
+	     * Fourth : end of the resource
+	     */
+	    else if (CUR == 0) {
+		htmlAutoClose(ctxt, NULL);
+	    }
+
+	    /*
+	     * Last case, text. Note that References are handled directly.
+	     */
+	    else {
+		htmlParseCharData(ctxt, 0);
+	    }
+
+	    if (cons == ctxt->nbChars) {
+		if (ctxt->node != NULL) {
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData,
+					 "detected an error in element content\n");
+		    ctxt->wellFormed = 0;
+		}
+		break;
+	    }
+	}
         GROW;
     }
     if (currentNode != NULL) xmlFree(currentNode);
@@ -3739,6 +3810,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	    fprintf(stderr, "HPP: try EPILOG\n");break;
 	case XML_PARSER_PI:
 	    fprintf(stderr, "HPP: try PI\n");break;
+	case XML_PARSER_SYSTEM_LITERAL:
+	    fprintf(stderr, "HPP: try SYSTEM_LITERAL\n");break;
     }
 #endif
 
@@ -4105,75 +4178,94 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		cur = in->cur[0];
 		next = in->cur[1];
 		cons = ctxt->nbChars;
-		/*
-		 * Sometimes DOCTYPE arrives in the middle of the document
-		 */
-		if ((cur == '<') && (next == '!') &&
-		    (UPP(2) == 'D') && (UPP(3) == 'O') &&
-		    (UPP(4) == 'C') && (UPP(5) == 'T') &&
-		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
-		    (UPP(8) == 'E')) {
-		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
-			goto done;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
-			     "Misplaced DOCTYPE declaration\n");
-		    ctxt->wellFormed = 0;
-		    htmlParseDocTypeDecl(ctxt);
-		} else if ((cur == '<') && (next == '!') &&
-		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
-			goto done;
-#ifdef DEBUG_PUSH
-		    fprintf(stderr, "HPP: Parsing Comment\n");
-#endif
-		    htmlParseComment(ctxt);
-		    ctxt->instate = XML_PARSER_CONTENT;
-	        } else if ((cur == '<') && (next == '!') && (avail < 4)) {
-		    goto done;
-		} else if ((cur == '<') && (next == '/')) {
-		    ctxt->instate = XML_PARSER_END_TAG;
-		    ctxt->checkIndex = 0;
-#ifdef DEBUG_PUSH
-		    fprintf(stderr, "HPP: entering END_TAG\n");
-#endif
-		    break;
-		} else if (cur == '<') {
-		    ctxt->instate = XML_PARSER_START_TAG;
-		    ctxt->checkIndex = 0;
-#ifdef DEBUG_PUSH
-		    fprintf(stderr, "HPP: entering START_TAG\n");
-#endif
-		    break;
-		} else if (cur == '&') {
-		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, ';', 0, 0) < 0))
-			goto done;
-#ifdef DEBUG_PUSH
-		    fprintf(stderr, "HPP: Parsing Reference\n");
-#endif
-		    /* TODO: check generation of subtrees if noent !!! */
-		    htmlParseReference(ctxt);
-		} else {
-		    /* TODO Avoid the extra copy, handle directly !!!!!! */
+		if ((xmlStrEqual(ctxt->name, BAD_CAST"script")) ||
+		    (xmlStrEqual(ctxt->name, BAD_CAST"style"))) {
 		    /*
-		     * Goal of the following test is :
-		     *  - minimize calls to the SAX 'character' callback
-		     *    when they are mergeable
+		     * Handle SCRIPT/STYLE separately
 		     */
-		    if ((ctxt->inputNr == 1) &&
-		        (avail < HTML_PARSER_BIG_BUFFER_SIZE)) {
-			if ((!terminate) &&
-			    (htmlParseLookupSequence(ctxt, '<', 0, 0) < 0))
-			    goto done;
-                    }
-		    ctxt->checkIndex = 0;
+		    if ((!terminate) &&
+		        (htmlParseLookupSequence(ctxt, '<', '/', 0) < 0))
+			goto done;
+		    htmlParseScript(ctxt);
+		    if ((cur == '<') && (next == '/')) {
+			ctxt->instate = XML_PARSER_END_TAG;
+			ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH
-		    fprintf(stderr, "HPP: Parsing char data\n");
+			fprintf(stderr, "HPP: entering END_TAG\n");
 #endif
-		    htmlParseCharData(ctxt, 0);
+			break;
+		    }
+		} else {
+		    /*
+		     * Sometimes DOCTYPE arrives in the middle of the document
+		     */
+		    if ((cur == '<') && (next == '!') &&
+			(UPP(2) == 'D') && (UPP(3) == 'O') &&
+			(UPP(4) == 'C') && (UPP(5) == 'T') &&
+			(UPP(6) == 'Y') && (UPP(7) == 'P') &&
+			(UPP(8) == 'E')) {
+			if ((!terminate) &&
+			    (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+			    goto done;
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt->userData,
+				 "Misplaced DOCTYPE declaration\n");
+			ctxt->wellFormed = 0;
+			htmlParseDocTypeDecl(ctxt);
+		    } else if ((cur == '<') && (next == '!') &&
+			(in->cur[2] == '-') && (in->cur[3] == '-')) {
+			if ((!terminate) &&
+			    (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
+			    goto done;
+#ifdef DEBUG_PUSH
+			fprintf(stderr, "HPP: Parsing Comment\n");
+#endif
+			htmlParseComment(ctxt);
+			ctxt->instate = XML_PARSER_CONTENT;
+		    } else if ((cur == '<') && (next == '!') && (avail < 4)) {
+			goto done;
+		    } else if ((cur == '<') && (next == '/')) {
+			ctxt->instate = XML_PARSER_END_TAG;
+			ctxt->checkIndex = 0;
+#ifdef DEBUG_PUSH
+			fprintf(stderr, "HPP: entering END_TAG\n");
+#endif
+			break;
+		    } else if (cur == '<') {
+			ctxt->instate = XML_PARSER_START_TAG;
+			ctxt->checkIndex = 0;
+#ifdef DEBUG_PUSH
+			fprintf(stderr, "HPP: entering START_TAG\n");
+#endif
+			break;
+		    } else if (cur == '&') {
+			if ((!terminate) &&
+			    (htmlParseLookupSequence(ctxt, ';', 0, 0) < 0))
+			    goto done;
+#ifdef DEBUG_PUSH
+			fprintf(stderr, "HPP: Parsing Reference\n");
+#endif
+			/* TODO: check generation of subtrees if noent !!! */
+			htmlParseReference(ctxt);
+		    } else {
+			/* TODO Avoid the extra copy, handle directly !!!!!! */
+			/*
+			 * Goal of the following test is :
+			 *  - minimize calls to the SAX 'character' callback
+			 *    when they are mergeable
+			 */
+			if ((ctxt->inputNr == 1) &&
+			    (avail < HTML_PARSER_BIG_BUFFER_SIZE)) {
+			    if ((!terminate) &&
+				(htmlParseLookupSequence(ctxt, '<', 0, 0) < 0))
+				goto done;
+			}
+			ctxt->checkIndex = 0;
+#ifdef DEBUG_PUSH
+			fprintf(stderr, "HPP: Parsing char data\n");
+#endif
+			htmlParseCharData(ctxt, 0);
+		    }
 		}
 		if (cons == ctxt->nbChars) {
 		    if (ctxt->node != NULL) {

@@ -818,6 +818,16 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
         xmlOutputBufferWriteString(buf, ";");
 	return;
     }
+    if (cur->type == HTML_PRESERVE_NODE) {
+	if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
+	    xmlOutputBufferWriteString(buf, (const char *)cur->content);
+#else
+	    xmlOutputBufferWriteString(buf, xmlBufferContent(cur->content));
+#endif
+	}
+	return;
+    }
 
     /*
      * Get specific HTmL info for taht node.

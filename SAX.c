@@ -1600,7 +1600,7 @@ xmlSAXHandler htmlDefaultSAXHandler = {
     xmlParserError,
     xmlParserError,
     getParameterEntity,
-    NULL,
+    cdataBlock,
     NULL,
 };
 
@@ -1632,7 +1632,7 @@ htmlDefaultSAXHandlerInit(void)
     htmlDefaultSAXHandler.endElement = endElement;
     htmlDefaultSAXHandler.reference = NULL;
     htmlDefaultSAXHandler.characters = characters;
-    htmlDefaultSAXHandler.cdataBlock = NULL;
+    xmlDefaultSAXHandler.cdataBlock = cdataBlock;
     htmlDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
     htmlDefaultSAXHandler.processingInstruction = NULL;
     htmlDefaultSAXHandler.comment = comment;

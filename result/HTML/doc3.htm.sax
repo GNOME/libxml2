@@ -11,7 +11,7 @@ SAX.endElement(title)
 SAX.ignorableWhitespace(
 , 2)
 SAX.startElement(script, language='javascript')
-SAX.characters(
+SAX.cdata(
           NS_ActualOpen=wind, 199)
 SAX.endElement(script)
 SAX.ignorableWhitespace(
@@ -31,38 +31,15 @@ SAX.endElement(meta)
 SAX.ignorableWhitespace(
 , 2)
 SAX.startElement(style, type='text/css')
-SAX.characters(A.nav {
+SAX.cdata(A.nav {
 	COLOR: #003399; TEXT, 115)
 SAX.endElement(style)
 SAX.ignorableWhitespace(
 
 , 4)
 SAX.startElement(script, language='JavaScript')
-SAX.characters(
-, 1)
-SAX.comment( Idea by:  Nic Wolfe (Nic@TimelapseProductions.com) )
-SAX.characters(
-, 1)
-SAX.comment( Web URL:  http://fineline.xs.mw )
-SAX.characters(
-
-, 2)
-SAX.comment( This script and many more are available free online at )
-SAX.characters(
-, 1)
-SAX.comment( The JavaScript Source!! http://javascript.internet.com )
-SAX.characters(
-
-, 2)
-SAX.comment( Begin
-function popUp(URL) {
-day = new Date();
-id = day.getTime();
-eval("page" + id + " = window.open(URL, '" + id + "', 'toolbars=0, scrollbars=0, location=0, statusbars=0, menubars=0, resizable=0, width=145, height=250');");
-}
-// End )
-SAX.characters(
-, 1)
+SAX.cdata(
+&lt;!-- Idea by:  Nic Wolfe (, 476)
 SAX.endElement(script)
 SAX.ignorableWhitespace(
 
@@ -2717,38 +2694,20 @@ SAX.comment( BEGIN GoTo.com Search Box )
 SAX.characters(
             , 14)
 SAX.startElement(script, language='javascript', type='text/javascript')
-SAX.characters(
-							, 9)
-SAX.comment(
-							if ((parseInt(navigator.appVersion) >= 3)
-							&& (navigator.appName != "Netscape")) {
-							document.write("<IFRAME marginheight=0 frameborder=0 ");
-							document.write("marginwidth=0 scrolling=no width=100 height");
-							document.write("=90 ");
-							document.write("SRC=http://www.goto.com/d/ssn/dynconsole/?t");
-							document.write("ype=html&size=100x90&url=http://www.goto.co");
-							document.write("m/d/search/ssn/&target=_blank&Partner=SSN80");
-							document.write("42DF8478957377></IFRAME>");
-							} else if ((parseInt(navigator.appVersion) > 3)
-							&& (navigator.appName == "Netscape")) {
-							document.write("<SCRIPT language=javascript type=text/javas");
-							document.write("cript ");
-							document.write("SRC=http://www.goto.com/d/ssn/dynconsole/?t");
-							document.write("ype=js&size=100x90&url=http://www.goto.com/");
-							document.write("d/search/ssn/&target=_blank&Partner=SSN8042");
-							document.write("DF8478957377></SC");
-							document.write("RIPT>");
-							} else {
-							document.write("<A TARGET=_blank ");
-							document.write("HREF=http://www.goto.com/d/search/ssn/?from");
-							document.write("GIF=true>");
-							document.write("<IMG ismap ");
-							document.write("SRC=http://www.goto.com/d/ssn/dynconsole/?t");
-							document.write("ype=gif&size=100x90></A>");
+SAX.cdata(
+							&lt;!--
+							if ((, 532)
+SAX.error: Unexpected end tag : iframe
+SAX.cdata(");
+							} else if ((parseI, 463)
+SAX.error: End tag : expected '>'
+SAX.error: Unexpected end tag : sc
+SAX.cdata(");
+							document.write("RI, 361)
+SAX.error: Unexpected end tag : a
+SAX.cdata(");
 							}
-							// )
-SAX.characters(
-							, 9)
+							// --, 37)
 SAX.endElement(script)
 SAX.characters(
             , 14)
@@ -2916,7 +2875,7 @@ SAX.endElement(div)
 SAX.ignorableWhitespace(
 , 2)
 SAX.startElement(script)
-SAX.characters( window.open=NS_ActualOpen; , 28)
+SAX.cdata( window.open=NS_ActualOpen; , 28)
 SAX.endElement(script)
 SAX.ignorableWhitespace(
 , 2)

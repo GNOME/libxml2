@@ -495,12 +495,8 @@ xmlDocPtr
 xmlNewDoc(const xmlChar *version) {
     xmlDocPtr cur;
 
-    if (version == NULL) {
-#ifdef DEBUG_TREE
-        fprintf(stderr, "xmlNewDoc : version == NULL\n");
-#endif
-	return(NULL);
-    }
+    if (version == NULL)
+	version = (const xmlChar *) "1.0";
 
     /*
      * Allocate a new document and fill the fields.

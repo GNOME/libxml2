@@ -11,7 +11,7 @@ SAX.endElement(title)
 SAX.ignorableWhitespace(
 , 1)
 SAX.startElement(script, language='javascript')
-SAX.characters(
+SAX.cdata(
           NS_ActualOpen=windo, 194)
 SAX.endElement(script)
 SAX.ignorableWhitespace(

@@ -1,3 +1,10 @@
+Sun Oct 15 01:34:37 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c HTMLtree.[ch] SAX.c testHTML.c tree.c: fixed HTML
+	  support for SCRIPT and STYLE with help from Bjorn Reese
+	* test/HTML/* result/HTML/*: added simple testcase and updated
+	  the existing ones.
+	  
 Fri Oct 13 18:24:31 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.c xpointer.c: XPointer reorder of ranges start/end and

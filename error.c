@@ -13,6 +13,16 @@
 #include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>
 
+#if defined(__STDC__) && defined(__STDC_VERSION__)
+# if (__STDC_VERSION__ >= 199901L)
+#  define HAVE_VA_COPY
+# endif
+#endif
+#if !defined(HAVE_VA_COPY)
+# include <string.h>
+# define va_copy(x,y) memcpy((x),(y),sizeof(va_list))
+#endif
+
 /************************************************************************
  * 									*
  * 			Handling of out of context errors		*
@@ -162,6 +172,7 @@ xmlGetVarStr(const char * msg, va_list args) {
     int       length;
     int       chars, left;
     char      *str, *larger;
+    va_list   argscopy;
 
     str = (char *) xmlMalloc(150);
     if (str == NULL)
@@ -173,7 +184,8 @@ xmlGetVarStr(const char * msg, va_list args) {
     while (1) {
 	left = size - length;
 		    /* Try to print in the allocated space. */
-  	chars = vsnprintf(str + length, left, msg, args);
+	va_copy(argscopy, args);
+  	chars = vsnprintf(str + length, left, msg, argscopy);
 			  /* If that worked, we're done. */
 	if ((chars > -1) && (chars < left ))
 	    break;

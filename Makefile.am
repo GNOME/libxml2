@@ -7,7 +7,7 @@ SUBDIRS = include . doc example
 
 INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 
-noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook
+noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook testThreads
 
 bin_PROGRAMS = xmllint xmlcatalog
 
@@ -72,6 +72,11 @@ testXPath_LDFLAGS =
 testXPath_DEPENDENCIES = $(DEPS)
 testXPath_LDADD= $(LDADDS)
 
+testThreads_SOURCES=testThreads.c
+testThreads_LDFLAGS = 
+testThreads_DEPENDENCIES = $(DEPS)
+testThreads_LDADD= $(LDADDS)
+
 testURI_SOURCES=testURI.c
 testURI_LDFLAGS = 
 testURI_DEPENDENCIES = $(DEPS)
@@ -81,7 +86,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests Scripttests Catatests
+tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests Scripttests Catatests @TEST_THREADS@
 
 HTMLtests : testHTML
 	@(echo > .memdump)
@@ -416,6 +421,12 @@ SVGtests : xmllint
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
+
+Threadtests : testThreads
+	@echo "##"
+	@echo "## Threaded regression tests"
+	@echo "##"
+	testThreads
 
 SAXtests : testSAX
 	@(echo > .memdump)

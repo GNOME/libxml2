@@ -249,6 +249,7 @@ dnl
 THREAD_LIBS=""
 WITH_THREADS=0
 THREAD_CFLAGS=""
+TEST_THREADS=""
 
 AC_ARG_WITH(threads, [  --with-threads          Add multithread support(off)])
 if test "$with_threads" = "yes" ; then
@@ -259,20 +260,22 @@ if test "$with_threads" = "yes" ; then
 	   THREAD_LIBS="-lpthread"
 	   AC_DEFINE(HAVE_LIBPTHREAD)
 	   AC_DEFINE(HAVE_PTHREAD_H)
-	   WITH_THREADS=1]))
+	   WITH_THREADS="1"]))
 
     if test "$WITH_THREADS" = "1" ; then
-        THREAD_CFLAGS="$XML_CFLAGS -D_REENTRANT"
+	THREAD_CFLAGS="$THREAD_CFLAGS -D_REENTRANT"
+	TEST_THREADS="Threadtests"
     fi
 fi
 AC_ARG_WITH(thread-alloc, [  --with-thread-alloc     Add per-thread memory(off)])
-if test "$with_threads" = "yes" -a "$WITH_THREADS" = "1" ; then
-    THREAD_CFLAGS="$XML_CFLAGS -DLIBXML_THREAD_ALLOC_ENABLED"
+if test "$with_threads_alloc" = "yes" -a "$WITH_THREADS" = "1" ; then
+    THREAD_CFLAGS="$THREAD_CFLAGS -DLIBXML_THREAD_ALLOC_ENABLED"
 fi
 
 AC_SUBST(THREAD_LIBS)
 AC_SUBST(WITH_THREADS)
 AC_SUBST(THREAD_CFLAGS)
+AC_SUBST(TEST_THREADS)
 
 AC_ARG_WITH(history, [  --with-history          Add history support to xmllint shell(off)])
 if test "$with_history" = "yes" ; then

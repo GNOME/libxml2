@@ -1,3 +1,9 @@
+Wed Oct 17 13:29:02 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: fixed some bugs in CFLAGS passing.
+	* test/threads Makefile.am testThreads.c: added a specific
+	  threaded test case (really nasty, guaranteed).
+
 Tue Oct 16 23:01:49 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: serious cleanup on the management of the

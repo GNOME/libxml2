@@ -1,3 +1,9 @@
+Thu Oct 12 01:37:53 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* config.h.in configure.in nanoftp.c nanohttp.c xmlversion.h.in :
+	  patch for socklen_t detection by
+	  Albert Chin-A-Young <china@thewrittenword.com>
+
 Wed Oct 11 17:53:57 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.c valid.c xmllint.c: Fixed a few postvalidation bugs

@@ -153,3 +153,5 @@
 /* Define if compiler has function prototypes */
 #undef PROTOTYPES
 
+/* Type of socket length (socklen_t) */
+#undef SOCKLEN_T

@@ -87,7 +87,8 @@ fi
 
 AC_SUBST(HTML_DIR)
 
-AC_ARG_ENABLE(corba,    [  --enable-corba           Add Corba support (default)])
+AC_ARG_ENABLE(corba,
+[  --enable-corba           Add Corba support (default)])
 
 dnl
 dnl Corba is enabled by default
@@ -107,6 +108,32 @@ dnl Checks for inet libraries:
 AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
 AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
 AC_CHECK_FUNC(connect, , AC_CHECK_LIB(inet, connect))
+
+dnl Determine what socket length (socklen_t) data type is
+AC_MSG_CHECKING([for type of socket length (socklen_t)])
+AC_TRY_COMPILE2([
+#include <stddef.h>
+#include <sys/types.h>
+#include <sys/socket.h>],[
+(void)getsockopt (1, 1, 1, NULL, (socklen_t *)NULL)],[
+  AC_MSG_RESULT(socklen_t *)
+  SOCKLEN_T=socklen_t],[
+  AC_TRY_COMPILE2([
+#include <stddef.h>
+#include <sys/types.h>
+#include <sys/socket.h>],[
+(void)getsockopt (1, 1, 1, NULL, (size_t *)NULL)],[
+    AC_MSG_RESULT(size_t *)
+    SOCKLEN_T=size_t],[
+    AC_TRY_COMPILE2([
+#include <stddef.h>
+#include <sys/types.h>
+#include <sys/socket.h>],[
+(void)getsockopt (1, 1, 1, NULL, (int *)NULL)],[
+      AC_MSG_RESULT(int *)
+      SOCKLEN_T=int],[
+      AC_MSG_WARN(could not determine)])])])
+AC_DEFINE_UNQUOTED(SOCKLEN_T, $SOCKLEN_T)
 
 dnl Checks for isnan in libm if not in libc
 AC_CHECK_FUNC(isnan, , AC_CHECK_LIB(m, isnan,
@@ -135,11 +162,12 @@ if test "${GCC}" != "yes" ; then
 	       ;;
     esac
 fi
-case $host in
-*-*-solaris*)
+case ${host} in
+    *-*-solaris*)
         XML_LIBDIR="${XML_LIBDIR} -R${libdir}"
         ;;
 esac
+
 
 
 dnl

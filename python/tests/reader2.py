@@ -14,13 +14,13 @@ libxml2.debugMemory(1)
 err=""
 expect="""../../test/valid/rss.xml:172: validity error: Element rss does not carry attribute version
 </rss>
-      ^
+     ^
 ../../test/valid/xlink.xml:450: validity error: ID dt-arc already defined
-	<p><termdef id="dt-arc" term="Arc">
+	<p><termdef id="dt-arc" term="Arc">An <term>arc</term> is contained within an 
                                    ^
-../../test/valid/xlink.xml:529: validity error: attribute def line 199 references an unknown ID "dt-xlg"
-<?Pub *0000052575?>
-                   ^
+../../test/valid/xlink.xml:530: validity error: attribute def line 199 references an unknown ID "dt-xlg"
+
+^
 """
 def callback(ctx, str):
     global err
@@ -61,7 +61,8 @@ s = """
     <b>bbb</b>
 </test>
 """
-expect="""1,test
+expect="""10,test
+1,test
 3,#text
 1,x
 1,c
@@ -110,7 +111,8 @@ s = """<!DOCTYPE test [
 </test>
 """
 tst_ent = """<x>hello</x>"""
-expect="""1 test
+expect="""10 test
+1 test
 3 #text
 1 x
 3 #text
@@ -161,7 +163,8 @@ s = """<!DOCTYPE test [
   &x;
   &x;
 </test>"""
-expect="""1 test 0
+expect="""10 test 0
+1 test 0
 3 #text 1
 1 x 1
 1 y 2
@@ -213,7 +216,8 @@ s = """<!DOCTYPE test [
   &x;
   &x;
 </test>"""
-expect="""1 test 0
+expect="""10 test 0
+1 test 0
 3 #text 1
 5 x 1
 3 #text 1

@@ -1,6 +1,6 @@
 #!/usr/bin/python -u
 #
-# this tests the validation with the XmlTextReader interface
+# this tests the entities substitutions with the XmlTextReader interface
 #
 import sys
 import StringIO
@@ -22,6 +22,11 @@ f = StringIO.StringIO(docstr)
 input = libxml2.inputBuffer(f)
 reader = input.newTextReader("test_noent")
 ret = reader.Read()
+if ret != 1:
+    print "Error reading to root"
+    sys.exit(1)
+if reader.Name() == "doc" or reader.NodeType() == 10:
+    ret = reader.Read()
 if ret != 1:
     print "Error reading to root"
     sys.exit(1)
@@ -55,6 +60,11 @@ input = libxml2.inputBuffer(f)
 reader = input.newTextReader("test_noent")
 reader.SetParserProp(libxml2.PARSER_SUBST_ENTITIES, 1)
 ret = reader.Read()
+if ret != 1:
+    print "Error reading to root"
+    sys.exit(1)
+if reader.Name() == "doc" or reader.NodeType() == 10:
+    ret = reader.Read()
 if ret != 1:
     print "Error reading to root"
     sys.exit(1)

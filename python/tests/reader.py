@@ -14,56 +14,56 @@ input = libxml2.inputBuffer(f)
 reader = input.newTextReader("test1")
 ret = reader.Read()
 if ret != 1:
-    print "Error reading to first element"
+    print "test1: Error reading to first element"
     sys.exit(1)
 if reader.Name() != "a" or reader.IsEmptyElement() != 0 or \
    reader.NodeType() != 1 or reader.HasAttributes() != 0:
-    print "Error reading the first element"
+    print "test1: Error reading the first element"
     sys.exit(1)
 ret = reader.Read()
 if ret != 1:
-    print "Error reading to second element"
+    print "test1: Error reading to second element"
     sys.exit(1)
 if reader.Name() != "b" or reader.IsEmptyElement() != 1 or \
    reader.NodeType() != 1 or reader.HasAttributes() != 1:
-    print "Error reading the second element"
+    print "test1: Error reading the second element"
     sys.exit(1)
 ret = reader.Read()
 if ret != 1:
-    print "Error reading to third element"
+    print "test1: Error reading to third element"
     sys.exit(1)
 if reader.Name() != "c" or reader.IsEmptyElement() != 0 or \
    reader.NodeType() != 1 or reader.HasAttributes() != 0:
-    print "Error reading the third element"
+    print "test1: Error reading the third element"
     sys.exit(1)
 ret = reader.Read()
 if ret != 1:
-    print "Error reading to text node"
+    print "test1: Error reading to text node"
     sys.exit(1)
 if reader.Name() != "#text" or reader.IsEmptyElement() != 0 or \
    reader.NodeType() != 3 or reader.HasAttributes() != 0 or \
    reader.Value() != "content of c":
-    print "Error reading the text node"
+    print "test1: Error reading the text node"
     sys.exit(1)
 ret = reader.Read()
 if ret != 1:
-    print "Error reading to end of third element"
+    print "test1: Error reading to end of third element"
     sys.exit(1)
 if reader.Name() != "c" or reader.IsEmptyElement() != 0 or \
    reader.NodeType() != 15 or reader.HasAttributes() != 0:
-    print "Error reading the end of third element"
+    print "test1: Error reading the end of third element"
     sys.exit(1)
 ret = reader.Read()
 if ret != 1:
-    print "Error reading to end of first element"
+    print "test1: Error reading to end of first element"
     sys.exit(1)
 if reader.Name() != "a" or reader.IsEmptyElement() != 0 or \
    reader.NodeType() != 15 or reader.HasAttributes() != 0:
-    print "Error reading the end of first element"
+    print "test1: Error reading the end of first element"
     sys.exit(1)
 ret = reader.Read()
 if ret != 0:
-    print "Error reading to end of document"
+    print "test1: Error reading to end of document"
     sys.exit(1)
 
 #
@@ -239,7 +239,7 @@ if reader.MoveToNextAttribute() != 0:
 #
 # a couple of tests for namespace nodes
 #
-f = StringIO.StringIO("""<a xmlns="http://example.com/foo">""")
+f = StringIO.StringIO("""<a xmlns="http://example.com/foo"/>""")
 input = libxml2.inputBuffer(f)
 reader = input.newTextReader("test6")
 ret = reader.Read()
@@ -256,7 +256,7 @@ if reader.NamespaceUri() != "http://www.w3.org/2000/xmlns/" or \
     print "test6: failed to read the namespace node"
     sys.exit(1)
 
-f = StringIO.StringIO("""<a xmlns:prefix="http://example.com/foo">""")
+f = StringIO.StringIO("""<a xmlns:prefix="http://example.com/foo"/>""")
 input = libxml2.inputBuffer(f)
 reader = input.newTextReader("test7")
 ret = reader.Read()

@@ -15,6 +15,8 @@
  *   - provide an API to expand part of the tree
  *   - provide an API to preserve part of the tree
  *   - Streaming XInclude support
+ *   - validation against a provided DTD
+ *   - XML Schemas validation
  *   - setting(s) for NoBlanks
  *   - performances and tuning ...
  */
@@ -99,7 +101,6 @@ struct _xmlTextReader {
     xmlNodePtr			curnode;/* current attribute node */
     int				depth;  /* depth of the current node */
     xmlNodePtr			faketext;/* fake xmlNs chld */
-    int				wasempty;/* was the last node empty */
 
     /* entity stack when traversing entities content */
     xmlNodePtr         ent;          /* Current Entity Ref Node */
@@ -107,6 +108,8 @@ struct _xmlTextReader {
     int                entMax;       /* Max depth of the entities stack */
     xmlNodePtr        *entTab;       /* array of entities */
 };
+
+static const char *xmlTextReaderIsEmpty = "This element is empty";
 
 #ifdef DEBUG_READER
 static void
@@ -222,13 +225,10 @@ xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
 	 */
 	origctxt = reader->ctxt;
 	reader->startElement(ctx, fullname, atts);
-#if 0
-	123
-	if (origctxt->validate) {
-	    ctxt->valid &= xmlValidatePushElement(&origctxt->vctxt,
-				 ctxt->myDoc, ctxt->node, fullname);
-	}
-#endif
+	if ((ctxt->node != NULL) && (ctxt->input != NULL) &&
+	    (ctxt->input->cur != NULL) && (ctxt->input->cur[0] == '/') &&
+	    (ctxt->input->cur[1] == '>'))
+	    ctxt->node->_private = (void *) xmlTextReaderIsEmpty;
     }
     if (reader != NULL)
 	reader->state = XML_TEXTREADER_ELEMENT;
@@ -258,12 +258,6 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
 
 	reader->endElement(ctx, fullname);
     }
-    if (reader != NULL) {
-	if (reader->state == XML_TEXTREADER_ELEMENT)
-	    reader->wasempty = 1;
-	else
-	    reader->wasempty = 0;
-    }
 }
 
 /**
@@ -290,13 +284,6 @@ xmlTextReaderCharacters(void *ctx, const xmlChar *ch, int len)
 	 * when processing an entity, the context may have been changed
 	 */
 	origctxt = reader->ctxt;
-
-#if 0
-	123
-	if (origctxt->validate) {
-	    ctxt->valid &= xmlValidatePushCData(&origctxt->vctxt, ch, len);
-	}
-#endif
     }
 }
 
@@ -319,10 +306,6 @@ xmlTextReaderCDataBlock(void *ctx, const xmlChar *ch, int len)
 #endif
     if ((reader != NULL) && (reader->cdataBlock != NULL)) {
 	reader->cdataBlock(ctx, ch, len);
-
-	if (ctxt->validate) {
-	    ctxt->valid &= xmlValidatePushCData(&ctxt->vctxt, ch, len);
-	}
     }
 }
 
@@ -365,8 +348,12 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	    } else 
 		break;
 	}
-	if (inbuf->content[cur] == '>') {
-	    cur = cur + 1;
+	/*
+	 * parse by block of 512 bytes
+	 */
+	if ((cur >= reader->cur + 512) || (cur >= inbuf->use)) {
+	    if (cur < inbuf->use)
+		cur = cur + 1;
 	    val = xmlParseChunk(reader->ctxt,
 		          (const char *) &inbuf->content[reader->cur],
 			  cur - reader->cur, 0);
@@ -412,7 +399,9 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
     if (reader->mode == XML_TEXTREADER_MODE_EOF) {
 	if (reader->mode != XML_TEXTREADER_DONE) {
 	    val = xmlParseChunk(reader->ctxt,
-		    (const char *) &inbuf->content[reader->cur], 0, 1);
+		    (const char *) &inbuf->content[reader->cur], 
+		    cur - reader->cur, 1);
+	    reader->cur = cur;
 	    reader->mode = XML_TEXTREADER_DONE;
 	}
     }
@@ -564,7 +553,7 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
  */
 int
 xmlTextReaderRead(xmlTextReaderPtr reader) {
-    int val, olddepth = 0, wasempty = 0;
+    int val, olddepth = 0;
     xmlTextReaderState oldstate = 0;
     xmlNodePtr oldnode = NULL;
 
@@ -588,14 +577,11 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    if (val < 0)
 		return(-1);
 	} while ((reader->ctxt->node == NULL) &&
-		 (reader->mode != XML_TEXTREADER_MODE_EOF));
+		 ((reader->mode != XML_TEXTREADER_MODE_EOF) &&
+		  (reader->mode != XML_TEXTREADER_DONE)));
 	if (reader->ctxt->node == NULL) {
 	    if (reader->ctxt->myDoc != NULL) {
 		reader->node = reader->ctxt->myDoc->children;
-		if ((reader->ctxt->input != NULL) &&
-		    (reader->ctxt->input->cur != NULL) &&
-		    (reader->ctxt->input->cur[-2] != '/'))
-		    reader->wasempty = -1;
 	    }
 	    if (reader->node == NULL)
 		return(-1);
@@ -610,16 +596,6 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     oldstate = reader->state;
     olddepth = reader->ctxt->nodeNr;
     oldnode = reader->node;
-    /*
-     * the <p></p> vs. <p/> distinction at the API level royally sucks,
-     * Microsoft priviledge ...
-     */
-    if (reader->wasempty == -1)
-	wasempty = 0;
-    else
-	wasempty = (((reader->wasempty == 1) && (reader->ctxt->node != NULL) &&
-	         (reader->ctxt->node->last == reader->node)) ||
-	        (reader->node != reader->ctxt->node));
 
 get_next_node:
     /*
@@ -653,7 +629,8 @@ get_next_node:
     if (reader->node->next != NULL) {
 	if ((oldstate == XML_TEXTREADER_ELEMENT) &&
             (reader->node->type == XML_ELEMENT_NODE) &&
-	    (wasempty == 0)) {
+	    (reader->node->children == NULL) &&
+	    (reader->node->_private != (void *)xmlTextReaderIsEmpty)) {
 	    reader->state = XML_TEXTREADER_END;
 	    goto node_found;
 	}
@@ -675,7 +652,8 @@ get_next_node:
     }
     if ((oldstate == XML_TEXTREADER_ELEMENT) &&
 	(reader->node->type == XML_ELEMENT_NODE) &&
-	(wasempty == 0)) {
+	(reader->node->children == NULL) &&
+	(reader->node->_private != (void *)xmlTextReaderIsEmpty)) {
 	reader->state = XML_TEXTREADER_END;
 	goto node_found;
     }
@@ -1733,15 +1711,7 @@ xmlTextReaderIsEmptyElement(xmlTextReaderPtr reader) {
 	return(0);
     if (reader->state == XML_TEXTREADER_END)
 	return(0);
-    if (reader->wasempty == -1)
-	return(0);
-    if (reader->node != reader->ctxt->node)
-	return(1);
-    if ((reader->ctxt->node != NULL) &&
-	(reader->node == reader->ctxt->node->last) &&
-	(reader->wasempty == 1))
-	return(1);
-    return(0);
+    return(reader->node->_private == (void *)xmlTextReaderIsEmpty);
 }
 
 /**

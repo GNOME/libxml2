@@ -1,3 +1,8 @@
+Mon Nov 26 11:31:36 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in include/libxml/xmlwin32version.h: preparing 2.4.11
+	* xmllint.c: better --catalogs description
+
 Sun Nov 25 11:34:24 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed a couple of problems in xmlSetProp()

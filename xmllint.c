@@ -853,8 +853,9 @@ static void usage(const char *name) {
     printf("\t--testIO : test user I/O support\n");
     printf("\t--encode encoding : output in the given encoding\n");
 #ifdef LIBXML_CATALOG_ENABLED
-    printf("\t--catalogs : use the catalogs from $SGML_CATALOG_FILES\n");
-    printf("\t         otherwise /etc/xml/catalog is activated by default\n");
+    printf("\t--catalogs : use SGML catalogs from $SGML_CATALOG_FILES\n");
+    printf("\t             otherwise XML Catalogs starting from \n");
+    printf("\t         file:///etc/xml/catalog are activated by default\n");
     printf("\t--nocatalogs: deactivate all catalogs\n");
 #endif
     printf("\t--auto : generate a small doc on the fly\n");

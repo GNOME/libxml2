@@ -1,3 +1,8 @@
+Wed Nov  7 14:32:55 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: Heiko Rupp pointed that the shell would crash
+	  on empty nodesets returns.
+
 Wed Nov  7 13:52:36 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: Weiqi Gao pointed out that xmlcatalog

@@ -2038,6 +2038,9 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
                         case XPATH_NODESET:{
                                 int indx;
 
+				if (list->nodesetval == NULL)
+				    break;
+
                                 for (indx = 0;
                                      indx < list->nodesetval->nodeNr;
                                      indx++) {
@@ -2112,13 +2115,18 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
                                             "%s: no such node\n", arg);
                             break;
                         case XPATH_NODESET:
-                            if (list->nodesetval->nodeNr == 1) {
-                                ctxt->node = list->nodesetval->nodeTab[0];
+                            if (list->nodesetval != NULL) {
+				if (list->nodesetval->nodeNr == 1) {
+				    ctxt->node = list->nodesetval->nodeTab[0];
+				} else
+				    xmlGenericError(xmlGenericErrorContext,
+						    "%s is a %d Node Set\n",
+						    arg,
+						    list->nodesetval->nodeNr);
                             } else
                                 xmlGenericError(xmlGenericErrorContext,
-                                                "%s is a %d Node Set\n",
-                                                arg,
-                                                list->nodesetval->nodeNr);
+                                                "%s is an empty Node Set\n",
+                                                arg);
                             break;
                         case XPATH_BOOLEAN:
                             xmlGenericError(xmlGenericErrorContext,
@@ -2182,6 +2190,9 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
                             break;
                         case XPATH_NODESET:{
                                 int indx;
+
+				if (list->nodesetval == NULL)
+				    break;
 
                                 for (indx = 0;
                                      indx < list->nodesetval->nodeNr;

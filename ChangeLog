@@ -1,3 +1,9 @@
+Mon Jul 10 16:08:05 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in: 1.8.9
+	* config.spec.in: more spec and dependances fixes
+	* nanoftp.c: fixed a the way the control connection was handled
+
 Sun Jul  2 20:27:34 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* config.spec.in: fixed bug #7419, devel with same %ver

@@ -1,6 +1,5 @@
-/**
- * ftp.c: basic handling of an FTP command connection to check for
- *        directory availability. No transfer is needed.
+/*
+ * nanoftp.c: basic FTP client support
  *
  *  Reference: RFC 959
  */
@@ -15,16 +14,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef HAVE_CTYPE_H
-#include <ctype.h>
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
 #endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
-
-#include <sys/types.h>
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
 #endif
 #ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
@@ -50,12 +44,6 @@
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif
-#ifdef HAVE_RESOLV_H
-#include <resolv.h>
-#endif
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
-#endif
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif
@@ -75,6 +63,7 @@ static char hostname[100];
 #define FTP_COMMAND_OK		200
 #define FTP_SYNTAX_ERROR	500
 #define FTP_GET_PASSWD		331
+#define FTP_BUF_SIZE		512
 
 typedef struct xmlNanoFTPCtxt {
     char *protocol;	/* the protocol name */
@@ -89,6 +78,11 @@ typedef struct xmlNanoFTPCtxt {
     int dataFd;		/* the file descriptor for the data socket */
     int state;		/* WRITE / READ / CLOSED */
     int returnValue;	/* the protocol return value */
+    /* buffer for data received from the control connection */
+    char controlBuf[FTP_BUF_SIZE + 1];
+    int controlBufIndex;
+    int controlBufUsed;
+    int controlBufAnswer;
 } xmlNanoFTPCtxt, *xmlNanoFTPCtxtPtr;
 
 static int initialized = 0;
@@ -446,7 +440,7 @@ xmlNanoFTPScanProxy(const char *URL) {
  * Returns an FTP context or NULL in case of error.
  */
 
-void *
+void*
 xmlNanoFTPNewCtxt(const char *URL) {
     xmlNanoFTPCtxtPtr ret;
 
@@ -457,6 +451,8 @@ xmlNanoFTPNewCtxt(const char *URL) {
     ret->port = 21;
     ret->passive = 1;
     ret->returnValue = 0;
+    ret->controlBufIndex = 0;
+    ret->controlBufUsed = 0;
 
     if (URL != NULL)
 	xmlNanoFTPScanURL(ret, URL);
@@ -481,12 +477,20 @@ xmlNanoFTPFreeCtxt(void * ctx) {
     ctxt->passive = 1;
     if (ctxt->controlFd >= 0) close(ctxt->controlFd);
     ctxt->controlFd = -1;
+    ctxt->controlBufIndex = -1;
+    ctxt->controlBufUsed = -1;
     xmlFree(ctxt);
 }
 
 /**
+ * xmlNanoFTPParseResponse:
+ * @ctx:  the FTP connection context
+ * @buf:  the buffer containing the response
+ * @len:  the buffer length
+ * 
  * Parsing of the server answer, we just extract the code.
- * return 0 for errors
+ *
+ * returns 0 for errors
  *     +XXX for last line of response
  *     -XXX for response to be continued
  */
@@ -516,59 +520,136 @@ xmlNanoFTPParseResponse(void *ctx, char *buf, int len) {
 }
 
 /**
+ * xmlNanoFTPGetMore:
+ * @ctx:  an FTP context
+ *
+ * Read more information from the FTP control connection
+ * Returns the number of bytes read, < 0 indicates an error
+ */
+static int
+xmlNanoFTPGetMore(void *ctx) {
+    xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
+    int len;
+    int size;
+
+    if ((ctxt->controlBufIndex < 0) || (ctxt->controlBufIndex > FTP_BUF_SIZE)) {
+#ifdef DEBUG_FTP
+        printf("xmlNanoFTPGetMore : controlBufIndex = %d\n",
+		ctxt->controlBufIndex);
+#endif
+	return(-1);
+    }
+
+    if ((ctxt->controlBufUsed < 0) || (ctxt->controlBufUsed > FTP_BUF_SIZE)) {
+#ifdef DEBUG_FTP
+        printf("xmlNanoFTPGetMore : controlBufUsed = %d\n",
+		ctxt->controlBufUsed);
+#endif
+	return(-1);
+    }
+    if (ctxt->controlBufIndex > ctxt->controlBufUsed) {
+#ifdef DEBUG_FTP
+        printf("xmlNanoFTPGetMore : controlBufIndex > controlBufUsed %d > %d\n",
+	       ctxt->controlBufIndex, ctxt->controlBufUsed);
+#endif
+	return(-1);
+    }
+
+    /*
+     * First pack the control buffer
+     */
+    if (ctxt->controlBufIndex > 0) {
+	memmove(&ctxt->controlBuf[0], &ctxt->controlBuf[ctxt->controlBufIndex],
+		ctxt->controlBufUsed - ctxt->controlBufIndex);
+	ctxt->controlBufUsed -= ctxt->controlBufIndex;
+	ctxt->controlBufIndex = 0;
+    }
+    size = FTP_BUF_SIZE - ctxt->controlBufUsed;
+    if (size == 0) {
+#ifdef DEBUG_FTP
+        printf("xmlNanoFTPGetMore : buffer full %d \n", ctxt->controlBufUsed);
+#endif
+	return(0);
+    }
+
+    /*
+     * Read the amount left on teh control connection
+     */
+    if ((len = recv(ctxt->controlFd, &ctxt->controlBuf[ctxt->controlBufIndex],
+		    size, 0)) < 0) {
+	close(ctxt->controlFd); ctxt->controlFd = -1;
+        ctxt->controlFd = -1;
+        return(-1);
+    }
+#ifdef DEBUG_FTP
+    printf("xmlNanoFTPGetMore : read %d [%d - %d]\n", len,
+	   ctxt->controlBufUsed, ctxt->controlBufUsed + len);
+#endif
+    ctxt->controlBufUsed += len;
+    ctxt->controlBuf[ctxt->controlBufUsed] = 0;
+
+    return(len);
+}
+
+/**
  * xmlNanoFTPReadResponse:
  * @ctx:  an FTP context
- * @buf:  buffer to read in
- * @size:  buffer length
  *
  * Read the response from the FTP server after a command.
  * Returns the code number
  */
 static int
-xmlNanoFTPReadResponse(void *ctx, char *buf, int size) {
+xmlNanoFTPReadResponse(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char *ptr, *end;
     int len;
-    int res = -1;
-
-    if (size <= 0) return(-1);
+    int res = -1, cur = -1;
 
 get_more:
-    if ((len = recv(ctxt->controlFd, buf, size - 1, 0)) < 0) {
-	close(ctxt->controlFd); ctxt->controlFd = -1;
-        ctxt->controlFd = -1;
+    /*
+     * Assumes everything up to controlBuf[controlBufIndex] has been read
+     * and analyzed.
+     */
+    len = xmlNanoFTPGetMore(ctx);
+    if ((ctxt->controlBufUsed == 0) && (len == 0)) {
         return(-1);
     }
-    if (len == 0) {
-        return(-1);
-    }
+    ptr = &ctxt->controlBuf[ctxt->controlBufIndex];
+    end = &ctxt->controlBuf[ctxt->controlBufUsed];
 
-    end = &buf[len];
-    *end = 0;
 #ifdef DEBUG_FTP
-    printf(buf);
+    printf("\n<<<\n%s\n--\n", ptr);
 #endif
-    ptr = buf;
     while (ptr < end) {
-        res = xmlNanoFTPParseResponse(ctxt, ptr, end - ptr);
-	if (res > 0) break;
-	if (res == 0) {
-#ifdef DEBUG_FTP
-	    fprintf(stderr, "xmlNanoFTPReadResponse failed: %s\n", ptr);
-#endif
-	    return(-1);
+        cur = xmlNanoFTPParseResponse(ctxt, ptr, end - ptr);
+	if (cur > 0) {
+	    /*
+	     * Successfully scanned the control code, scratch
+	     * till the end of the line, but keep the index to be
+	     * able to analyze the result if needed.
+	     */
+	    res = cur;
+	    ptr += 3;
+	    ctxt->controlBufAnswer = ptr - ctxt->controlBuf;
+	    while ((ptr < end) && (*ptr != '\n')) ptr++;
+	    if (*ptr == '\n') ptr++;
+	    if (*ptr == '\r') ptr++;
+	    break;
 	}
 	while ((ptr < end) && (*ptr != '\n')) ptr++;
 	if (ptr >= end) {
-#ifdef DEBUG_FTP
-	    fprintf(stderr, "xmlNanoFTPReadResponse: unexpected end %s\n", buf);
-#endif
-	    return((-res) / 100);
+	    ctxt->controlBufIndex = ctxt->controlBufUsed;
+	    goto get_more;
 	}
 	if (*ptr != '\r') ptr++;
     }
 
     if (res < 0) goto get_more;
+    ctxt->controlBufIndex = ptr - ctxt->controlBuf;
+#ifdef DEBUG_FTP
+    ptr = &ctxt->controlBuf[ctxt->controlBufIndex];
+    printf("\n---\n%s\n--\n", ptr);
+#endif
 
 #ifdef DEBUG_FTP
     printf("Got %d\n", res);
@@ -586,22 +667,11 @@ get_more:
 
 int
 xmlNanoFTPGetResponse(void *ctx) {
-    char buf[16 * 1024 + 1];
-
-/**************
-    fd_set rfd;
-    struct timeval tv;
     int res;
 
-    tv.tv_sec = 10;
-    tv.tv_usec = 0;
-    FD_ZERO(&rfd);
-    FD_SET(ctxt->controlFd, &rfd);
-    res = select(ctxt->controlFd + 1, &rfd, NULL, NULL, &tv);
-    if (res <= 0) return(res);
- **************/
+    res = xmlNanoFTPReadResponse(ctx);
 
-    return(xmlNanoFTPReadResponse(ctx, buf, 16 * 1024));
+    return(res);
 }
 
 /**
@@ -615,7 +685,6 @@ xmlNanoFTPGetResponse(void *ctx) {
 int
 xmlNanoFTPCheckResponse(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
-    char buf[1024 + 1];
     fd_set rfd;
     struct timeval tv;
 
@@ -634,7 +703,7 @@ xmlNanoFTPCheckResponse(void *ctx) {
 			
     }
 
-    return(xmlNanoFTPReadResponse(ctx, buf, 1024));
+    return(xmlNanoFTPReadResponse(ctx));
 }
 
 /**
@@ -869,10 +938,11 @@ xmlNanoFTPConnect(void *ctx) {
 		    else
 #ifndef HAVE_SNPRINTF
 			len = sprintf(buf, "PASS libxml@%s\r\n",
+			               hostname);
 #else /* HAVE_SNPRINTF */
 			len = snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n",
-#endif /* HAVE_SNPRINTF */
 			               hostname);
+#endif /* HAVE_SNPRINTF */
 #ifdef DEBUG_FTP
 		    printf(buf);
 #endif
@@ -1061,15 +1131,14 @@ xmlNanoFTPConnect(void *ctx) {
 /**
  * xmlNanoFTPConnectTo:
  * @server:  an FTP server name
- * @directory:  the port (use 21 if 0)
+ * @port:  the port (use 21 if 0)
  *
  * Tries to open a control connection to the given server/port
  *
- * Returns and fTP context or NULL if it failed
+ * Returns an fTP context or NULL if it failed
  */
 
-
-void *
+void*
 xmlNanoFTPConnectTo(const char *server, int port) {
     xmlNanoFTPCtxtPtr ctxt;
     int res;
@@ -1077,7 +1146,7 @@ xmlNanoFTPConnectTo(const char *server, int port) {
     xmlNanoFTPInit();
     if (server == NULL) 
 	return(NULL);
-    ctxt = xmlNanoFTPNewCtxt(NULL);
+    ctxt = (xmlNanoFTPCtxtPtr) xmlNanoFTPNewCtxt(NULL);
     ctxt->hostname = xmlMemStrdup(server);
     if (port != 0)
 	ctxt->port = port;
@@ -1090,7 +1159,7 @@ xmlNanoFTPConnectTo(const char *server, int port) {
 }
 
 /**
- * xmlNanoFTPGetConnection:
+ * xmlNanoFTPCwd:
  * @ctx:  an FTP context
  * @directory:  a directory on the server
  *
@@ -1177,7 +1246,7 @@ xmlNanoFTPGetConnection(void *ctx) {
 	    close(ctxt->dataFd); ctxt->dataFd = -1;
 	    return(res);
 	}
-        res = xmlNanoFTPReadResponse(ctx, buf, sizeof(buf) -1);
+        res = xmlNanoFTPReadResponse(ctx);
 	if (res != 2) {
 	    if (res == 5) {
 	        close(ctxt->dataFd); ctxt->dataFd = -1;
@@ -1190,12 +1259,14 @@ xmlNanoFTPGetConnection(void *ctx) {
 	        ctxt->passive = 0;
 	    }
 	}
-	cur = &buf[4];
+	cur = &ctxt->controlBuf[ctxt->controlBufAnswer]; 
 	while (((*cur < '0') || (*cur > '9')) && *cur != '\0') cur++;
 	if (sscanf(cur, "%d,%d,%d,%d,%d,%d", &temp[0], &temp[1], &temp[2],
 	            &temp[3], &temp[4], &temp[5]) != 6) {
 	    fprintf(stderr, "Invalid answer to PASV\n");
-	    close(ctxt->dataFd); ctxt->dataFd = -1;
+	    if (ctxt->dataFd != -1) {
+		close(ctxt->dataFd); ctxt->dataFd = -1;
+	    }
 	    return(-1);
 	}
 	for (i=0; i<6; i++) ad[i] = (unsigned char) (temp[i] & 0xff);
@@ -1226,11 +1297,13 @@ xmlNanoFTPGetConnection(void *ctx) {
 	portp = (unsigned char *) &dataAddr.sin_port;
 #ifndef HAVE_SNPRINTF
 	len = sprintf(buf, "PORT %d,%d,%d,%d,%d,%d\r\n",
+	       adp[0] & 0xff, adp[1] & 0xff, adp[2] & 0xff, adp[3] & 0xff,
+	       portp[0] & 0xff, portp[1] & 0xff);
 #else /* HAVE_SNPRINTF */
 	len = snprintf(buf, sizeof(buf), "PORT %d,%d,%d,%d,%d,%d\r\n",
+	       adp[0] & 0xff, adp[1] & 0xff, adp[2] & 0xff, adp[3] & 0xff,
+	       portp[0] & 0xff, portp[1] & 0xff);
 #endif /* HAVE_SNPRINTF */
-	               adp[0] & 0xff, adp[1] & 0xff, adp[2] & 0xff, adp[3] & 0xff,
-		       portp[0] & 0xff, portp[1] & 0xff);
         buf[sizeof(buf) - 1] = 0;
 #ifdef DEBUG_FTP
 	printf(buf);
@@ -1264,12 +1337,33 @@ int
 xmlNanoFTPCloseConnection(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     int res;
+    fd_set rfd, efd;
+    struct timeval tv;
 
     close(ctxt->dataFd); ctxt->dataFd = -1;
-    res = xmlNanoFTPGetResponse(ctxt);
-    if (res != 2) {
+    tv.tv_sec = 15;
+    tv.tv_usec = 0;
+    FD_ZERO(&rfd);
+    FD_SET(ctxt->controlFd, &rfd);
+    FD_ZERO(&efd);
+    FD_SET(ctxt->controlFd, &efd);
+    res = select(ctxt->controlFd + 1, &rfd, NULL, &efd, &tv);
+    if (res < 0) {
+#ifdef DEBUG_FTP
+	perror("select");
+#endif
 	close(ctxt->controlFd); ctxt->controlFd = -1;
 	return(-1);
+    }
+    if (res == 0) {
+	fprintf(stderr, "xmlNanoFTPCloseConnection: timeout\n");
+	close(ctxt->controlFd); ctxt->controlFd = -1;
+    } else {
+	res = xmlNanoFTPGetResponse(ctxt);
+	if (res != 2) {
+	    close(ctxt->controlFd); ctxt->controlFd = -1;
+	    return(-1);
+	}
     }
     return(0);
 }
@@ -1427,6 +1521,8 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
         if (xmlNanoFTPCwd(ctxt, ctxt->path) < 1)
 	    return(-1);
 	ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
+	if (ctxt->dataFd == -1)
+	    return(-1);
 #ifndef HAVE_SNPRINTF
 	len = sprintf(buf, "LIST -L\r\n");
 #else /* HAVE_SNPRINTF */
@@ -1438,6 +1534,8 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
 		return(-1);
 	}
 	ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
+	if (ctxt->dataFd == -1)
+	    return(-1);
 #ifndef HAVE_SNPRINTF
 	len = sprintf(buf, "LIST -L %s\r\n", filename);
 #else /* HAVE_SNPRINTF */
@@ -1452,7 +1550,7 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
 	close(ctxt->dataFd); ctxt->dataFd = -1;
 	return(res);
     }
-    res = xmlNanoFTPReadResponse(ctxt, buf, sizeof(buf) -1);
+    res = xmlNanoFTPReadResponse(ctxt);
     if (res != 1) {
 	close(ctxt->dataFd); ctxt->dataFd = -1;
 	return(-res);
@@ -1533,6 +1631,8 @@ xmlNanoFTPGetSocket(void *ctx, const char *filename) {
     if ((filename == NULL) && (ctxt->path == NULL))
 	return(-1);
     ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
+    if (ctxt->dataFd == -1)
+	return(-1);
 
 #ifndef HAVE_SNPRINTF
     len = sprintf(buf, "TYPE I\r\n");
@@ -1547,7 +1647,7 @@ xmlNanoFTPGetSocket(void *ctx, const char *filename) {
 	close(ctxt->dataFd); ctxt->dataFd = -1;
 	return(res);
     }
-    res = xmlNanoFTPReadResponse(ctxt, buf, sizeof(buf) -1);
+    res = xmlNanoFTPReadResponse(ctxt);
     if (res != 2) {
 	close(ctxt->dataFd); ctxt->dataFd = -1;
 	return(-res);
@@ -1572,7 +1672,7 @@ xmlNanoFTPGetSocket(void *ctx, const char *filename) {
 	close(ctxt->dataFd); ctxt->dataFd = -1;
 	return(res);
     }
-    res = xmlNanoFTPReadResponse(ctxt, buf, sizeof(buf) -1);
+    res = xmlNanoFTPReadResponse(ctxt);
     if (res != 1) {
 	close(ctxt->dataFd); ctxt->dataFd = -1;
 	return(-res);
@@ -1687,7 +1787,7 @@ xmlNanoFTPRead(void *ctx, void *dest, int len) {
  * Returns an FTP context, or NULL 
  */
 
-void *
+void*
 xmlNanoFTPOpen(const char *URL) {
     xmlNanoFTPCtxtPtr ctxt;
     int sock;
@@ -1696,7 +1796,7 @@ xmlNanoFTPOpen(const char *URL) {
     if (URL == NULL) return(NULL);
     if (strncmp("ftp://", URL, 6)) return(NULL);
 
-    ctxt = xmlNanoFTPNewCtxt(URL);
+    ctxt = (xmlNanoFTPCtxtPtr) xmlNanoFTPNewCtxt(URL);
     if (ctxt == NULL) return(NULL);
     if (xmlNanoFTPConnect(ctxt) < 0) {
 	xmlNanoFTPFreeCtxt(ctxt);

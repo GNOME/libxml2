@@ -180,6 +180,17 @@ int	xmlCharEncFirstLine		(xmlCharEncodingHandler *handler,
 					 xmlBufferPtr in);
 int	xmlCharEncCloseFunc		(xmlCharEncodingHandler *handler);
 
+/*
+ * Export a few useful functions
+ */
+int	UTF8Toisolat1			(unsigned char* out,
+					 int *outlen,
+					 const unsigned char* in,
+					 int *inlen);
+int	isolat1ToUTF8			(unsigned char* out,
+					 int *outlen,
+					 const unsigned char* in,
+					 int *inlen);
 #ifdef __cplusplus
 }
 #endif

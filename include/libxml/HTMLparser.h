@@ -49,7 +49,7 @@ struct _htmlElemDesc {
 typedef struct _htmlEntityDesc htmlEntityDesc;
 typedef htmlEntityDesc *htmlEntityDescPtr;
 struct _htmlEntityDesc {
-    int value;		/* the UNICODE value for the character */
+    unsigned int value;	/* the UNICODE value for the character */
     const char *name;	/* The entity name */
     const char *desc;   /* the description */
 };
@@ -59,7 +59,7 @@ struct _htmlEntityDesc {
  */
 htmlElemDescPtr		htmlTagLookup	(const xmlChar *tag);
 htmlEntityDescPtr	htmlEntityLookup(const xmlChar *name);
-htmlEntityDescPtr	htmlEntityValueLookup(int value);
+htmlEntityDescPtr	htmlEntityValueLookup(unsigned int value);
 
 int			htmlIsAutoClosed(htmlDocPtr doc,
 					 htmlNodePtr elem);

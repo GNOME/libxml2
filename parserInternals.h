@@ -14,6 +14,7 @@
 #define __XML_PARSER_INTERNALS_H__
 
 #include <libxml/parser.h>
+#include <libxml/HTMLparser.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -157,6 +158,8 @@ void			xmlHandleEntity		(xmlParserCtxtPtr ctxt,
 /**
  * Input Streams
  */
+xmlParserInputPtr	xmlNewStringInputStream	(xmlParserCtxtPtr ctxt,
+						 const xmlChar *buffer);
 xmlParserInputPtr	xmlNewEntityInputStream	(xmlParserCtxtPtr ctxt,
 						 xmlEntityPtr entity);
 void			xmlPushInput		(xmlParserCtxtPtr ctxt,
@@ -278,6 +281,9 @@ xmlNodePtr		nodePop			(xmlParserCtxtPtr ctxt);
 int			inputPush		(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr value);
 xmlParserInputPtr	inputPop		(xmlParserCtxtPtr ctxt);
+xmlChar                *namePop			(xmlParserCtxtPtr ctxt);
+int			namePush		(xmlParserCtxtPtr ctxt,
+						 xmlChar *value);
 
 /*
  * other comodities shared between parser.c and parserInternals
@@ -288,7 +294,6 @@ int			xmlStringCurrentChar	(xmlParserCtxtPtr ctxt,
 						 int *len);
 void			xmlParserHandlePEReference(xmlParserCtxtPtr ctxt);
 void			xmlParserHandleReference(xmlParserCtxtPtr ctxt);
-xmlChar                *namePop			(xmlParserCtxtPtr ctxt);
 int			xmlCheckLanguageID	(const xmlChar *lang);
 
 /*
@@ -296,6 +301,8 @@ int			xmlCheckLanguageID	(const xmlChar *lang);
  */
 int			xmlCurrentChar		(xmlParserCtxtPtr ctxt,
 						 int *len);
+int			xmlCopyCharMultiByte	(xmlChar *out,
+						 int val);
 int			xmlCopyChar		(int len,
 						 xmlChar *out,
 						 int val);
@@ -307,6 +314,8 @@ void			xmlParserInputShrink	(xmlParserInputPtr in);
  * Actually comes from the HTML parser but launched from the init stuff
  */
 void			htmlInitAutoClose	(void);
+htmlParserCtxtPtr	htmlCreateFileParserCtxt(const char *filename,
+	                                         const char *encoding);
 #endif
 #ifdef __cplusplus
 }

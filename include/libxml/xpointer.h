@@ -38,11 +38,31 @@ xmlLocationSetPtr	xmlXPtrLocationSetCreate(xmlXPathObjectPtr val);
 void			xmlXPtrFreeLocationSet	(xmlLocationSetPtr obj);
 xmlLocationSetPtr	xmlXPtrLocationSetMerge	(xmlLocationSetPtr val1,
 						 xmlLocationSetPtr val2);
+xmlXPathObjectPtr	xmlXPtrNewRange		(xmlNodePtr start,
+						 int startindex,
+						 xmlNodePtr end,
+						 int endindex);
+xmlXPathObjectPtr	xmlXPtrNewRangePoints	(xmlXPathObjectPtr start,
+						 xmlXPathObjectPtr end);
+xmlXPathObjectPtr	xmlXPtrNewRangeNodePoint(xmlNodePtr start,
+						 xmlXPathObjectPtr end);
+xmlXPathObjectPtr	xmlXPtrNewRangePointNode(xmlXPathObjectPtr start,
+						 xmlNodePtr end);
+xmlXPathObjectPtr	xmlXPtrNewRangeNodes	(xmlNodePtr start,
+						 xmlNodePtr end);
+xmlXPathObjectPtr	xmlXPtrNewLocationSetNodes(xmlNodePtr start,
+						 xmlNodePtr end);
+xmlXPathObjectPtr	xmlXPtrNewLocationSetNodeSet(xmlNodeSetPtr set);
 xmlXPathObjectPtr	xmlXPtrNewRangeNodeObject(xmlNodePtr start,
 						 xmlXPathObjectPtr end);
+xmlXPathObjectPtr	xmlXPtrNewCollapsedRange(xmlNodePtr start);
 void			xmlXPtrLocationSetAdd	(xmlLocationSetPtr cur,
 						 xmlXPathObjectPtr val);
 xmlXPathObjectPtr	xmlXPtrWrapLocationSet	(xmlLocationSetPtr val);
+void			xmlXPtrLocationSetDel	(xmlLocationSetPtr cur,
+						 xmlXPathObjectPtr val);
+void			xmlXPtrLocationSetRemove(xmlLocationSetPtr cur,
+						 int val);
 
 /*
  * Functions

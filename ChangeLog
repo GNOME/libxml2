@@ -1,3 +1,22 @@
+Sat Mar 24 17:45:36 CET 2001
+        Huge cleanup, I switched to compile with
+	-Wall -g -O -ansi -pedantic -W -Wunused -Wimplicit
+	-Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat
+	-Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow
+	-Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return
+	-Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline
+	* HTMLparser.[ch] HTMLtree.c SAX.c debugXML.c encoding.[ch]
+	  encoding.h entities.c error.c list.[ch] nanoftp.c
+	  nanohttp.c parser.[ch] parserInternals.[ch] testHTML.c
+	  testSAX.c testURI.c testXPath.c tree.[ch] uri.c
+	  valid.[ch] xinclude.c xmlIO.[ch] xmllint.c xmlmemory.c
+	  xpath.c xpathInternals.h xpointer.[ch] example/gjobread.c:
+	  Cleanup, staticfied a number of non-exported functions,
+	  detected and cleaned up a dozen of problem found this way,
+	  avoided a lot of public function name/typedef/system names clashes
+	* doc/xml.html: updated
+	* configure.in: switched private flags to the really pedantic ones.
+
 Thu Mar 22 22:44:15 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: 2.3.5

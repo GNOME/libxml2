@@ -11,6 +11,7 @@
 #define __XML_VALID_H__
 
 #include <libxml/tree.h>
+#include <libxml/list.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -167,6 +168,8 @@ int		xmlIsRef	(xmlDocPtr doc,
 				 xmlNodePtr elem,
 				 xmlAttrPtr attr);
 int		xmlRemoveRef	(xmlDocPtr doc, xmlAttrPtr attr);
+xmlListPtr	xmlGetRefs	(xmlDocPtr doc,
+				 const xmlChar *ID);
 
 /**
  * The public function calls related to validity checking

@@ -37,6 +37,26 @@
 #include <libxml/valid.h>
 #include <libxml/xmlerror.h>
 
+/************************************************************************
+ *									*
+ * 		When running GCC in vaacum cleaner mode			*
+ *									*
+ ************************************************************************/
+
+#ifdef __GNUC__
+#define UNUSED __attribute__((__unused__))
+#else
+#define UNUSED
+#endif
+
+xmlNsPtr xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
+
+/************************************************************************
+ *									*
+ * 		A few static variables and macros			*
+ *									*
+ ************************************************************************/
+
 xmlChar xmlStringText[] = { 't', 'e', 'x', 't', 0 };
 xmlChar xmlStringTextNoenc[] =
               { 't', 'e', 'x', 't', 'n', 'o', 'e', 'n', 'c', 0 };
@@ -99,7 +119,7 @@ xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme) {
  * Returns the current allocation scheme
  */
 xmlBufferAllocationScheme
-xmlGetBufferAllocationScheme() {
+xmlGetBufferAllocationScheme(void) {
     return xmlBufferAllocScheme;
 }
 
@@ -1686,6 +1706,7 @@ xmlNewCDataBlock(xmlDocPtr doc, const xmlChar *content, int len) {
     }
     memset(cur, 0, sizeof(xmlNode));
     cur->type = XML_CDATA_SECTION_NODE;
+    cur->doc = doc;
 
     if (content != NULL) {
 #ifndef XML_USE_BUFFER_CONTENT
@@ -3080,34 +3101,6 @@ xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
 }
 
 /**
- * xmlDocumentGetBase:
- * @doc:  the document
- *
- * Searches for the Document BASE URL. The code should work on both XML
- * and HTML document.
- * It returns the base as defined in RFC 2396 section
- * 5.1.3. Base URI from the Retrieval URI
- * However it does not return the computed base (5.1.1 and 5.1.2), use
- * xmlNodeGetBase() for this
- *
- * Returns a pointer to the base URL, or NULL if not found
- *     It's up to the caller to free the memory.
- */
-xmlChar *
-xmlDocumentGetBase(xmlDocPtr doc) {
-    if (doc == NULL)
-        return(NULL);
-    if (doc->type == XML_HTML_DOCUMENT_NODE) {
-	if (doc->URL != NULL)
-	    return(xmlStrdup(doc->URL));
-	return(NULL);
-    }
-    if (doc->URL != NULL)
-	return(xmlStrdup(doc->URL));
-    return(NULL);
-}
-
-/**
  * xmlNodeGetBase:
  * @doc:  the document the node pertains to
  * @cur:  the node being checked
@@ -3627,7 +3620,7 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
  *         namespace if defined
  */
 xmlNsPtr *
-xmlGetNsList(xmlDocPtr doc, xmlNodePtr node) {
+xmlGetNsList(xmlDocPtr doc UNUSED, xmlNodePtr node) {
     xmlNsPtr cur;
     xmlNsPtr *ret = NULL;
     int nbns = 0;
@@ -5448,7 +5441,7 @@ xmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDtdPtr dtd, const char *encoding) {
  */
 static void
 xmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
-	          const char *encoding) {
+	          const char *encoding UNUSED) {
     xmlChar *value;
 
     if (cur == NULL) {
@@ -5804,7 +5797,8 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 
 void
 xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
-		int * doc_txt_len, const char * txt_encoding, int format) {
+		int * doc_txt_len, const char * txt_encoding,
+		int format UNUSED) {
     int                         dummy = 0;
 
     xmlCharEncoding             doc_charset;

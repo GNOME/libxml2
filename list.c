@@ -155,7 +155,7 @@ xmlListLinkSearch(xmlListPtr l, void *data)
  *
  * Returns the link containing the data or NULL
  */
-xmlLinkPtr 
+static xmlLinkPtr 
 xmlListLinkReverseSearch(xmlListPtr l, void *data) 
 {
     xmlLinkPtr lk;

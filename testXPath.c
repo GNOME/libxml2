@@ -87,7 +87,8 @@ static xmlChar buffer[] =
 ";
 
 
-void testXPath(const char *str) {
+static void
+testXPath(const char *str) {
     xmlXPathObjectPtr res;
     xmlXPathContextPtr ctxt;
     
@@ -111,9 +112,10 @@ void testXPath(const char *str) {
     xmlXPathFreeContext(ctxt);
 }
 
-void testXPathFile(const char *filename) {
+static void
+testXPathFile(const char *filename) {
     FILE *input;
-    char expr[5000];
+    char expression[5000];
     int len;
 
     input = fopen(filename, "r");
@@ -122,16 +124,16 @@ void testXPathFile(const char *filename) {
 		"Cannot open %s for reading\n", filename);
 	return;
     }
-    while (fgets(expr, 4500, input) != NULL) {
-	len = strlen(expr);
+    while (fgets(expression, 4500, input) != NULL) {
+	len = strlen(expression);
 	len--;
 	while ((len >= 0) && 
-	       ((expr[len] == '\n') || (expr[len] == '\t') ||
-		(expr[len] == '\r') || (expr[len] == ' '))) len--;
-	expr[len + 1] = 0;      
+	       ((expression[len] == '\n') || (expression[len] == '\t') ||
+		(expression[len] == '\r') || (expression[len] == ' '))) len--;
+	expression[len + 1] = 0;      
 	if (len >= 0) {
-	    printf("\n========================\nExpression: %s\n", expr) ;
-	    testXPath(expr);
+	    printf("\n========================\nExpression: %s\n", expression) ;
+	    testXPath(expression);
 	}
     }
 

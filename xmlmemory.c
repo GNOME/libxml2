@@ -33,6 +33,32 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlerror.h>
 
+/************************************************************************
+ *									*
+ * 		When running GCC in vaacum cleaner mode			*
+ *									*
+ ************************************************************************/
+
+#ifdef __GNUC__
+#define UNUSED __attribute__((__unused__))
+#else
+#define UNUSED
+#endif
+
+void xmlMallocBreakpoint(void);
+void * xmlMemMalloc(int size);
+void * xmlMallocLoc(int size, const char * file, int line);
+void * xmlMemRealloc(void *ptr,int size);
+void xmlMemFree(void *ptr);
+char * xmlMemoryStrdup(const char *str);
+
+/************************************************************************
+ *									*
+ * 		Macros, variables and associated types			*
+ *									*
+ ************************************************************************/
+
+
 #ifdef xmlMalloc
 #undef xmlMalloc
 #endif
@@ -384,7 +410,7 @@ xmlMemUsed(void) {
  * tries to show some content from the memory block
  */
 
-void
+static void
 xmlMemContentShow(FILE *fp, MEMHDR *p)
 {
     int i,j,len = p->mh_size;
@@ -498,7 +524,7 @@ xmlMemDisplay(FILE *fp)
 
     currentTime = time(NULL);
     tstruct = localtime(&currentTime);
-    strftime(buf, sizeof(buf) - 1, "%c", tstruct);
+    strftime(buf, sizeof(buf) - 1, "%I:%M:%S %p", tstruct);
     fprintf(fp,"      %s\n\n", buf);
 #endif
 

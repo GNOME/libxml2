@@ -126,7 +126,7 @@ static unsigned int timeout = 60;/* the select() timeout in seconds */
 /**
  * A portability function
  */
-int socket_errno(void) {
+static int socket_errno(void) {
 #ifdef _WINSOCKAPI_
     return(WSAGetLastError());
 #else
@@ -195,19 +195,6 @@ xmlNanoHTTPCleanup(void) {
 }
 
 /**
- * xmlNanoHTTPTimeout:
- * @delay:  the delay in seconds
- *
- * Set the HTTP timeout, (default is 60secs).  0 means immediate
- * return, while -1 infinite.
- */
-
-void
-xmlNanoHTTPTimeout(int delay) {
-    timeout = (unsigned int) delay;
-}
-
-/**
  * xmlNanoHTTPScanURL:
  * @ctxt:  an HTTP context
  * @URL:  The URL used to initialize the context
@@ -220,7 +207,7 @@ static void
 xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
     const char *cur = URL;
     char buf[4096];
-    int index = 0;
+    int indx = 0;
     int port = 0;
 
     if (ctxt->protocol != NULL) { 
@@ -236,25 +223,25 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
 	ctxt->path = NULL;
     }
     if (URL == NULL) return;
-    buf[index] = 0;
+    buf[indx] = 0;
     while (*cur != 0) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    ctxt->protocol = xmlMemStrdup(buf);
-	    index = 0;
+	    indx = 0;
             cur += 3;
 	    break;
 	}
-	buf[index++] = *cur++;
+	buf[indx++] = *cur++;
     }
     if (*cur == 0) return;
 
-    buf[index] = 0;
+    buf[indx] = 0;
     while (1) {
         if (cur[0] == ':') {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    ctxt->hostname = xmlMemStrdup(buf);
-	    index = 0;
+	    indx = 0;
 	    cur += 1;
 	    while ((*cur >= '0') && (*cur <= '9')) {
 	        port *= 10;
@@ -267,21 +254,21 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
 	    break;
 	}
         if ((*cur == '/') || (*cur == 0)) {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    ctxt->hostname = xmlMemStrdup(buf);
-	    index = 0;
+	    indx = 0;
 	    break;
 	}
-	buf[index++] = *cur++;
+	buf[indx++] = *cur++;
     }
     if (*cur == 0) 
         ctxt->path = xmlMemStrdup("/");
     else {
-        index = 0;
-        buf[index] = 0;
+        indx = 0;
+        buf[indx] = 0;
 	while (*cur != 0)
-	    buf[index++] = *cur++;
-	buf[index] = 0;
+	    buf[indx++] = *cur++;
+	buf[indx] = 0;
 	ctxt->path = xmlMemStrdup(buf);
     }	
 }
@@ -300,7 +287,7 @@ void
 xmlNanoHTTPScanProxy(const char *URL) {
     const char *cur = URL;
     char buf[4096];
-    int index = 0;
+    int indx = 0;
     int port = 0;
 
     if (proxy != NULL) { 
@@ -319,24 +306,24 @@ xmlNanoHTTPScanProxy(const char *URL) {
 		"Using HTTP proxy %s\n", URL);
 #endif
     if (URL == NULL) return;
-    buf[index] = 0;
+    buf[indx] = 0;
     while (*cur != 0) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
-	    buf[index] = 0;
-	    index = 0;
+	    buf[indx] = 0;
+	    indx = 0;
             cur += 3;
 	    break;
 	}
-	buf[index++] = *cur++;
+	buf[indx++] = *cur++;
     }
     if (*cur == 0) return;
 
-    buf[index] = 0;
+    buf[indx] = 0;
     while (1) {
         if (cur[0] == ':') {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    proxy = xmlMemStrdup(buf);
-	    index = 0;
+	    indx = 0;
 	    cur += 1;
 	    while ((*cur >= '0') && (*cur <= '9')) {
 	        port *= 10;
@@ -349,12 +336,12 @@ xmlNanoHTTPScanProxy(const char *URL) {
 	    break;
 	}
         if ((*cur == '/') || (*cur == 0)) {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    proxy = xmlMemStrdup(buf);
-	    index = 0;
+	    indx = 0;
 	    break;
 	}
-	buf[index++] = *cur++;
+	buf[indx++] = *cur++;
     }
 }
 
@@ -418,14 +405,13 @@ xmlNanoHTTPFreeCtxt(xmlNanoHTTPCtxtPtr ctxt) {
 static void
 xmlNanoHTTPSend(xmlNanoHTTPCtxtPtr ctxt) {
     if (ctxt->state & XML_NANO_HTTP_WRITE) {
-        int total_sent = 0;
+        unsigned int total_sent = 0;
         while (total_sent <strlen(ctxt->outptr)) {
-            int nsent = send(ctxt->fd, ctxt->outptr+total_sent,
-                             strlen(ctxt->outptr)-total_sent, 0);
+            unsigned int nsent = send(ctxt->fd, ctxt->outptr+total_sent,
+                                      strlen(ctxt->outptr)-total_sent, 0);
             if (nsent>0)
                 total_sent += nsent;
-}
-
+	}
         ctxt->last = total_sent;
     }
 }
@@ -636,8 +622,7 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
 
 /**
  * xmlNanoHTTPConnectAttempt:
- * @ia:  an internet adress structure
- * @port:  the port number
+ * @addr:  a socket adress structure
  *
  * Attempt a connection to the given IP:port endpoint. It forces
  * non-blocking semantic on the socket, and allow 60 seconds for
@@ -647,7 +632,7 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
  */
 
 static int
-xmlNanoHTTPConnectAttempt(struct sockaddr *addr, int port)
+xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 {
     SOCKET s = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     fd_set wfd;
@@ -765,10 +750,10 @@ xmlNanoHTTPConnectHost(const char *host, int port)
     struct hostent *h;
     struct sockaddr *addr;
     struct in_addr ia;
-    struct sockaddr_in sin;
+    struct sockaddr_in sockin;
 #ifdef SUPPORT_IP6
     struct in6_addr ia6;
-    struct sockaddr_in6 sin6;
+    struct sockaddr_in6 sockin6;
 #endif
     int i;
     int s;
@@ -792,23 +777,23 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 	if (h->h_addrtype == AF_INET) {
 	    /* A records (IPv4) */
 	    memcpy(&ia, h->h_addr_list[i], h->h_length);
-	    sin.sin_family = h->h_addrtype;
-	    sin.sin_addr   = ia;
-	    sin.sin_port   = htons(port);
-	    addr = (struct sockaddr *)&sin;
+	    sockin.sin_family = h->h_addrtype;
+	    sockin.sin_addr   = ia;
+	    sockin.sin_port   = htons(port);
+	    addr = (struct sockaddr *)&sockin;
 #ifdef SUPPORT_IP6
 	} else if (h->h_addrtype == AF_INET6) {
 	    /* AAAA records (IPv6) */
 	    memcpy(&ia6, h->h_addr_list[i], h->h_length);
-	    sin6.sin_family = h->h_addrtype;
-	    sin6.sin_addr   = ia6;
-	    sin6.sin_port   = htons(port);
-	    addr = (struct sockaddr *)&sin6;
+	    sockin6.sin_family = h->h_addrtype;
+	    sockin6.sin_addr   = ia6;
+	    sockin6.sin_port   = htons(port);
+	    addr = (struct sockaddr *)&sockin6;
 #endif
 	} else
 	    break; /* for */
 	
-	s = xmlNanoHTTPConnectAttempt(addr, port);
+	s = xmlNanoHTTPConnectAttempt(addr);
 	if (s != -1)
 	    return(s);
     }

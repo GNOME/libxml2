@@ -112,10 +112,10 @@ int	xmlParserInputBufferPush		(xmlParserInputBufferPtr in,
 void	xmlFreeParserInputBuffer		(xmlParserInputBufferPtr in);
 char *	xmlParserGetDirectory			(const char *filename);
 
-int     xmlRegisterInputCallbacks		(xmlInputMatchCallback match,
-						 xmlInputOpenCallback open,
-						 xmlInputReadCallback read,
-						 xmlInputCloseCallback close);
+int     xmlRegisterInputCallbacks		(xmlInputMatchCallback matchFunc,
+						 xmlInputOpenCallback openFunc,
+						 xmlInputReadCallback readFunc,
+						 xmlInputCloseCallback closeFunc);
 /*
  * Interfaces for output
  */
@@ -151,10 +151,10 @@ int	xmlOutputBufferWriteString	(xmlOutputBufferPtr out,
 int	xmlOutputBufferFlush		(xmlOutputBufferPtr out);
 int	xmlOutputBufferClose		(xmlOutputBufferPtr out);
 
-int     xmlRegisterOutputCallbacks	(xmlOutputMatchCallback match,
-					 xmlOutputOpenCallback open,
-					 xmlOutputWriteCallback write,
-					 xmlOutputCloseCallback close);
+int     xmlRegisterOutputCallbacks	(xmlOutputMatchCallback matchFunc,
+					 xmlOutputOpenCallback openFunc,
+					 xmlOutputWriteCallback writeFunc,
+					 xmlOutputCloseCallback closeFunc);
 
 /*
  * This save function are part of tree.h and HTMLtree.h actually

@@ -160,7 +160,7 @@ PUSH_AND_POP(extern, xmlParserInputPtr, input)
 PUSH_AND_POP(extern, xmlNodePtr, node)
 PUSH_AND_POP(extern, xmlChar*, name)
 
-int spacePush(xmlParserCtxtPtr ctxt, int val) {
+static int spacePush(xmlParserCtxtPtr ctxt, int val) {
     if (ctxt->spaceNr >= ctxt->spaceMax) {
 	ctxt->spaceMax *= 2;
         ctxt->spaceTab = (int *) xmlRealloc(ctxt->spaceTab,
@@ -176,7 +176,7 @@ int spacePush(xmlParserCtxtPtr ctxt, int val) {
     return(ctxt->spaceNr++);
 }
 
-int spacePop(xmlParserCtxtPtr ctxt) {
+static int spacePop(xmlParserCtxtPtr ctxt) {
     int ret;
     if (ctxt->spaceNr <= 0) return(0);
     ctxt->spaceNr--;
@@ -274,7 +274,7 @@ int spacePop(xmlParserCtxtPtr ctxt) {
 
 #define COPY_BUF(l,b,i,v)						\
     if (l == 1) b[i++] = (xmlChar) v;					\
-    else i += xmlCopyChar(l,&b[i],v)
+    else i += xmlCopyCharMultiByte(&b[i],v)
 
 /**
  * xmlSkipBlankChars:
@@ -493,7 +493,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
  * Returns the value parsed (as an int), 0 in case of error, str will be
  *         updated to the current value of the index
  */
-int
+static int
 xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
     const xmlChar *ptr;
     xmlChar cur;
@@ -1741,7 +1741,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
  * is updated to the current location in the string.
  */
 
-xmlChar *
+static xmlChar *
 xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
     xmlChar buf[XML_MAX_NAMELEN + 5];
     const xmlChar *cur = *str;
@@ -4253,7 +4253,7 @@ xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, xmlChar *name,
 	ctxt->errNo = XML_ERR_ELEMCONTENT_NOT_STARTED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, 
-		"xmlParseElementContentDecl : '(' expected\n");
+		"xmlParseElementContentDecl : %s '(' expected\n", name);
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
 	return(-1);
@@ -4566,7 +4566,7 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
  * [65] Ignore ::= Char* - (Char* ('<![' | ']]>') Char*)
  */
 
-void
+static void
 xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
     SKIP(3);
     SKIP_BLANKS;
@@ -4824,7 +4824,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	int i = 0;
 	xmlChar out[10];
 	int hex = NXT(2);
-	int val = xmlParseCharRef(ctxt);
+	int value = xmlParseCharRef(ctxt);
 	
 	if (ctxt->charset != XML_CHAR_ENCODING_UTF8) {
 	    /*
@@ -4832,17 +4832,17 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	     * Check that the char fit on 8bits, if not
 	     * generate a CharRef.
 	     */
-	    if (val <= 0xFF) {
-		out[0] = val;
+	    if (value <= 0xFF) {
+		out[0] = value;
 		out[1] = 0;
 		if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL) &&
 		    (!ctxt->disableSAX))
 		    ctxt->sax->characters(ctxt->userData, out, 1);
 	    } else {
 		if ((hex == 'x') || (hex == 'X'))
-		    sprintf((char *)out, "#x%X", val);
+		    sprintf((char *)out, "#x%X", value);
 		else
-		    sprintf((char *)out, "#%d", val);
+		    sprintf((char *)out, "#%d", value);
 		if ((ctxt->sax != NULL) && (ctxt->sax->reference != NULL) &&
 		    (!ctxt->disableSAX))
 		    ctxt->sax->reference(ctxt->userData, out);
@@ -4851,7 +4851,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	    /*
 	     * Just encode the value in UTF-8
 	     */
-	    COPY_BUF(0 ,out, i, val);
+	    COPY_BUF(0 ,out, i, value);
 	    out[i] = 0;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL) &&
 		(!ctxt->disableSAX))
@@ -5765,7 +5765,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
  * [28 end] ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
  */
 
-void
+static void
 xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
     /*
      * Is there any DTD definition ?
@@ -7381,7 +7381,7 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
  * Returns the index to the current parsing point if the full sequence
  *      is available, -1 otherwise.
  */
-int
+static int
 xmlParseLookupSequence(xmlParserCtxtPtr ctxt, xmlChar first,
                        xmlChar next, xmlChar third) {
     int base, len;
@@ -7454,7 +7454,7 @@ xmlParseLookupSequence(xmlParserCtxtPtr ctxt, xmlChar first,
  *
  * Returns zero if no parsing was possible
  */
-int
+static int
 xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
     int ret = 0;
     int avail;
@@ -7932,12 +7932,12 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		 * Handle preparsed entities and charRef
 		 */
 		if (ctxt->token != 0) {
-		    xmlChar cur[2] = { 0 , 0 } ;
+		    xmlChar current[2] = { 0 , 0 } ;
 
-		    cur[0] = (xmlChar) ctxt->token;
+		    current[0] = (xmlChar) ctxt->token;
 		    if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
 			(ctxt->sax->characters != NULL))
-			ctxt->sax->characters(ctxt->userData, cur, 1);
+			ctxt->sax->characters(ctxt->userData, current, 1);
 		    ctxt->token = 0;
 		}
 		if ((avail < 2) && (ctxt->inputNr == 1))
@@ -8249,19 +8249,6 @@ done:
     xmlGenericError(xmlGenericErrorContext, "PP: done %d\n", ret);
 #endif
     return(ret);
-}
-
-/**
- * xmlParseTry:
- * @ctxt:  an XML parser context
- *
- * Try to progress on parsing
- *
- * Returns zero if no parsing was possible
- */
-int
-xmlParseTry(xmlParserCtxtPtr ctxt) {
-    return(xmlParseTryOrFinish(ctxt, 0));
 }
 
 /**
@@ -8694,78 +8681,6 @@ xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
  * 		Front ends when parsing an Entity			*
  *									*
  ************************************************************************/
-
-/**
- * xmlSAXParseBalancedChunk:
- * @ctx:  an XML parser context (possibly NULL)
- * @sax:  the SAX handler bloc (possibly NULL)
- * @user_data:  The user data returned on SAX callbacks (possibly NULL)
- * @input:  a parser input stream
- * @enc:  the encoding
- *
- * Parse a well-balanced chunk of an XML document
- * The user has to provide SAX callback block whose routines will be
- * called by the parser
- * The allowed sequence for the Well Balanced Chunk is the one defined by
- * the content production in the XML grammar:
- *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
- *
- * Returns 0 if the chunk is well balanced, -1 in case of args problem and
- *    the error code otherwise
- */
-
-int
-xmlSAXParseBalancedChunk(xmlParserCtxtPtr ctx, xmlSAXHandlerPtr sax,
-                         void *user_data, xmlParserInputPtr input,
-			 xmlCharEncoding enc) {
-    xmlParserCtxtPtr ctxt;
-    int ret;
-
-    if (input == NULL) return(-1);
-
-    if (ctx != NULL)
-        ctxt = ctx;
-    else {	
-	ctxt = xmlNewParserCtxt();
-	if (ctxt == NULL)
-	    return(-1);
-        if (sax == NULL)
-	    ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
-    }	
-
-    /*
-     * Set-up the SAX context
-     */
-    if (sax != NULL) {
-	if (ctxt->sax != NULL)
-	    xmlFree(ctxt->sax);
-	ctxt->sax = sax;
-	ctxt->userData = user_data;
-    }
-
-    /*
-     * plug some encoding conversion routines here.
-     */
-    xmlPushInput(ctxt, input);
-    if (enc != XML_CHAR_ENCODING_NONE)
-	xmlSwitchEncoding(ctxt, enc);
-
-    /*
-     * let's parse that entity knowing it's an external subset.
-     */
-    xmlParseContent(ctxt);
-    ret = ctxt->errNo;
-
-    if (ctx == NULL) {
-	if (sax != NULL) 
-	    ctxt->sax = NULL;
-	else
-	    xmlFreeDoc(ctxt->myDoc);
-	xmlFreeParserCtxt(ctxt);
-    }
-    return(ret);
-}
 
 /**
  * xmlParseCtxtExternalEntity:

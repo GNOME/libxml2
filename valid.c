@@ -28,6 +28,18 @@
 #include <libxml/xmlerror.h>
 #include <libxml/list.h>
 
+/************************************************************************
+ *									*
+ * 		When running GCC in vaacum cleaner mode			*
+ *									*
+ ************************************************************************/
+
+#ifdef __GNUC__
+#define UNUSED __attribute__((__unused__))
+#else
+#define UNUSED
+#endif
+
 /*
  * Generic function for accessing stacks in the Validity Context
  */
@@ -333,7 +345,7 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
  *
  * This will dump the content of the element table as an XML DTD definition
  */
-void
+static void
 xmlDumpElementContent(xmlBufferPtr buf, xmlElementContentPtr content, int glob) {
     if (content == NULL) return;
 
@@ -466,7 +478,7 @@ xmlSprintfElementContent(char *buf, xmlElementContentPtr content, int glob) {
  *
  * Returns the xmlElementTablePtr just created or NULL in case of error.
  */
-xmlElementTablePtr
+static xmlElementTablePtr
 xmlCreateElementTable(void) {
     return(xmlHashCreate(0));
 }
@@ -477,7 +489,7 @@ xmlCreateElementTable(void) {
  *
  * Deallocate the memory used by an element definition
  */
-void
+static void
 xmlFreeElement(xmlElementPtr elem) {
     if (elem == NULL) return;
     xmlUnlinkNode((xmlNodePtr) elem);
@@ -646,7 +658,7 @@ xmlFreeElementTable(xmlElementTablePtr table) {
  * 
  * Returns the new xmlElementPtr or NULL in case of error.
  */
-xmlElementPtr
+static xmlElementPtr
 xmlCopyElement(xmlElementPtr elem) {
     xmlElementPtr cur;
 
@@ -814,7 +826,7 @@ xmlCopyEnumeration(xmlEnumerationPtr cur) {
  *
  * This will dump the content of the enumeration
  */
-void
+static void
 xmlDumpEnumeration(xmlBufferPtr buf, xmlEnumerationPtr cur) {
     if (cur == NULL)  return;
     
@@ -835,7 +847,7 @@ xmlDumpEnumeration(xmlBufferPtr buf, xmlEnumerationPtr cur) {
  * Returns the xmlAttributeTablePtr just created or NULL in case
  *                of error.
  */
-xmlAttributeTablePtr
+static xmlAttributeTablePtr
 xmlCreateAttributeTable(void) {
     return(xmlHashCreate(0));
 }
@@ -848,9 +860,9 @@ xmlCreateAttributeTable(void) {
  * Callback called by xmlScanAttributeDecl when a new attribute
  * has to be entered in the list.
  */
-void
+static void
 xmlScanAttributeDeclCallback(xmlAttributePtr attr, xmlAttributePtr *list,
-	                     const xmlChar* name) {
+	                     const xmlChar* name UNUSED) {
     attr->nexth = *list;
     *list = attr;
 }
@@ -901,7 +913,7 @@ xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
  *
  * Returns the number of ID attributes found.
  */
-int
+static int
 xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     xmlAttributePtr cur;
     int ret = 0;
@@ -927,7 +939,7 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
  *
  * Deallocate the memory used by an attribute definition
  */
-void
+static void
 xmlFreeAttribute(xmlAttributePtr attr) {
     if (attr == NULL) return;
     xmlUnlinkNode((xmlNodePtr) attr);
@@ -1127,7 +1139,7 @@ xmlFreeAttributeTable(xmlAttributeTablePtr table) {
  * 
  * Returns the new xmlAttributePtr or NULL in case of error.
  */
-xmlAttributePtr
+static xmlAttributePtr
 xmlCopyAttribute(xmlAttributePtr attr) {
     xmlAttributePtr cur;
 
@@ -1269,7 +1281,7 @@ xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
  * Returns the xmlNotationTablePtr just created or NULL in case
  *                of error.
  */
-xmlNotationTablePtr
+static xmlNotationTablePtr
 xmlCreateNotationTable(void) {
     return(xmlHashCreate(0));
 }
@@ -1280,7 +1292,7 @@ xmlCreateNotationTable(void) {
  *
  * Deallocate the memory used by an notation definition
  */
-void
+static void
 xmlFreeNotation(xmlNotationPtr nota) {
     if (nota == NULL) return;
     if (nota->name != NULL)
@@ -1307,7 +1319,8 @@ xmlFreeNotation(xmlNotationPtr nota) {
  * Returns NULL if not, othervise the entity
  */
 xmlNotationPtr
-xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
+xmlAddNotationDecl(xmlValidCtxtPtr ctxt UNUSED, xmlDtdPtr dtd,
+	           const xmlChar *name,
                    const xmlChar *PublicID, const xmlChar *SystemID) {
     xmlNotationPtr ret;
     xmlNotationTablePtr table;
@@ -1388,7 +1401,7 @@ xmlFreeNotationTable(xmlNotationTablePtr table) {
  * 
  * Returns the new xmlNotationPtr or NULL in case of error.
  */
-xmlNotationPtr
+static xmlNotationPtr
 xmlCopyNotation(xmlNotationPtr nota) {
     xmlNotationPtr cur;
 
@@ -1477,7 +1490,7 @@ xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
  * Returns the xmlIDTablePtr just created or NULL in case
  *                of error.
  */
-xmlIDTablePtr
+static xmlIDTablePtr
 xmlCreateIDTable(void) {
     return(xmlHashCreate(0));
 }
@@ -1488,7 +1501,7 @@ xmlCreateIDTable(void) {
  *
  * Deallocate the memory used by an id definition
  */
-void
+static void
 xmlFreeID(xmlIDPtr id) {
     if (id == NULL) return;
     if (id->value != NULL)
@@ -1714,7 +1727,7 @@ typedef xmlValidateMemo *xmlValidateMemoPtr;
  * Returns the xmlRefTablePtr just created or NULL in case
  *                of error.
  */
-xmlRefTablePtr
+static xmlRefTablePtr
 xmlCreateRefTable(void) {
     return(xmlHashCreate(0));
 }
@@ -1780,7 +1793,7 @@ xmlWalkRemoveRef(const void *data, const void *user)
  * Returns NULL if not, othervise the new xmlRefPtr
  */
 xmlRefPtr 
-xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
+xmlAddRef(xmlValidCtxtPtr ctxt UNUSED, xmlDocPtr doc, const xmlChar *value,
     xmlAttrPtr attr) {
 	xmlRefPtr ret;
 	xmlRefTablePtr table;
@@ -2029,7 +2042,7 @@ xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
  * returns the xmlElementPtr if found or NULL
  */
 
-xmlElementPtr
+static xmlElementPtr
 xmlGetDtdQElementDesc(xmlDtdPtr dtd, const xmlChar *name,
 	              const xmlChar *prefix) {
     xmlElementTablePtr table;
@@ -2090,7 +2103,7 @@ xmlGetDtdAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name) {
  * returns the xmlAttributePtr if found or NULL
  */
 
-xmlAttributePtr
+static xmlAttributePtr
 xmlGetDtdQAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name,
 	          const xmlChar *prefix) {
     xmlAttributeTablePtr table;
@@ -2198,7 +2211,7 @@ xmlIsMixedElement(xmlDocPtr doc, const xmlChar *name) {
  * returns 1 if valid or 0 otherwise
  */
 
-int
+static int
 xmlValidateNameValue(const xmlChar *value) {
     const xmlChar *cur;
 
@@ -2231,7 +2244,7 @@ xmlValidateNameValue(const xmlChar *value) {
  * returns 1 if valid or 0 otherwise
  */
 
-int
+static int
 xmlValidateNamesValue(const xmlChar *value) {
     const xmlChar *cur;
 
@@ -2282,7 +2295,7 @@ xmlValidateNamesValue(const xmlChar *value) {
  * returns 1 if valid or 0 otherwise
  */
 
-int
+static int
 xmlValidateNmtokenValue(const xmlChar *value) {
     const xmlChar *cur;
 
@@ -2319,7 +2332,7 @@ xmlValidateNmtokenValue(const xmlChar *value) {
  * returns 1 if valid or 0 otherwise
  */
 
-int
+static int
 xmlValidateNmtokensValue(const xmlChar *value) {
     const xmlChar *cur;
 
@@ -2381,8 +2394,8 @@ xmlValidateNmtokensValue(const xmlChar *value) {
  */
 
 int
-xmlValidateNotationDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
-                         xmlNotationPtr nota) {
+xmlValidateNotationDecl(xmlValidCtxtPtr ctxt UNUSED, xmlDocPtr doc UNUSED,
+                         xmlNotationPtr nota UNUSED) {
     int ret = 1;
 
     return(ret);
@@ -2464,7 +2477,7 @@ xmlValidateAttributeValue(xmlAttributeType type, const xmlChar *value) {
  * returns 1 if valid or 0 otherwise
  */
 
-int
+static int
 xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
       const xmlChar *name, xmlAttributeType type, const xmlChar *value) {
     int ret = 1;
@@ -2618,9 +2631,9 @@ xmlValidNormalizeAttributeValue(xmlDocPtr doc, xmlNodePtr elem,
     return(ret);
 }
 
-void
+static void
 xmlValidateAttributeIdCallback(xmlAttributePtr attr, int *count,
-	                       const xmlChar* name) {
+	                       const xmlChar* name UNUSED) {
     if (attr->atype == XML_ATTRIBUTE_ID) (*count)++;
 }
 
@@ -3066,7 +3079,7 @@ int xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
  *         also update child value in-situ.
  */
 
-int
+static int
 xmlValidateElementTypeExpr(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 			   xmlElementContentPtr cont) {
     xmlNodePtr cur;
@@ -3262,7 +3275,7 @@ xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
  * This will dump the list of childs to the buffer
  * Intended just for the debug routine
  */
-void
+static void
 xmlSprintfElementChilds(char *buf, xmlNodePtr node, int glob) {
     xmlNodePtr cur;
 
@@ -3728,7 +3741,7 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
  * @name:  Name of ID we are searching for
  *
  */
-void
+static void
 xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	                   const xmlChar *name) {
     xmlAttrPtr id;
@@ -3896,9 +3909,9 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
     return(ret);
 }
 
-void
+static void
 xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
-	                    const xmlChar *name) {
+	                    const xmlChar *name UNUSED) {
     if (cur == NULL)
 	return;
     switch (cur->atype) {

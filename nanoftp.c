@@ -237,7 +237,7 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     const char *cur = URL;
     char buf[4096];
-    int index = 0;
+    int indx = 0;
     int port = 0;
 
     if (ctxt->protocol != NULL) { 
@@ -253,25 +253,25 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
 	ctxt->path = NULL;
     }
     if (URL == NULL) return;
-    buf[index] = 0;
+    buf[indx] = 0;
     while (*cur != 0) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    ctxt->protocol = xmlMemStrdup(buf);
-	    index = 0;
+	    indx = 0;
             cur += 3;
 	    break;
 	}
-	buf[index++] = *cur++;
+	buf[indx++] = *cur++;
     }
     if (*cur == 0) return;
 
-    buf[index] = 0;
+    buf[indx] = 0;
     while (1) {
         if (cur[0] == ':') {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    ctxt->hostname = xmlMemStrdup(buf);
-	    index = 0;
+	    indx = 0;
 	    cur += 1;
 	    while ((*cur >= '0') && (*cur <= '9')) {
 	        port *= 10;
@@ -284,21 +284,21 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
 	    break;
 	}
         if ((*cur == '/') || (*cur == 0)) {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    ctxt->hostname = xmlMemStrdup(buf);
-	    index = 0;
+	    indx = 0;
 	    break;
 	}
-	buf[index++] = *cur++;
+	buf[indx++] = *cur++;
     }
     if (*cur == 0) 
         ctxt->path = xmlMemStrdup("/");
     else {
-        index = 0;
-        buf[index] = 0;
+        indx = 0;
+        buf[indx] = 0;
 	while (*cur != 0)
-	    buf[index++] = *cur++;
-	buf[index] = 0;
+	    buf[indx++] = *cur++;
+	buf[indx] = 0;
 	ctxt->path = xmlMemStrdup(buf);
     }	
 }
@@ -322,7 +322,7 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     const char *cur = URL;
     char buf[4096];
-    int index = 0;
+    int indx = 0;
     int port = 0;
 
     if (URL == NULL)
@@ -333,28 +333,28 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
 	return(-1);
     if (ctxt->hostname == NULL)
 	return(-1);
-    buf[index] = 0;
+    buf[indx] = 0;
     while (*cur != 0) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    if (strcmp(ctxt->protocol, buf))
 		return(-1);
-	    index = 0;
+	    indx = 0;
             cur += 3;
 	    break;
 	}
-	buf[index++] = *cur++;
+	buf[indx++] = *cur++;
     }
     if (*cur == 0)
 	return(-1);
 
-    buf[index] = 0;
+    buf[indx] = 0;
     while (1) {
         if (cur[0] == ':') {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    if (strcmp(ctxt->hostname, buf))
 		return(-1);
-	    index = 0;
+	    indx = 0;
 	    cur += 1;
 	    while ((*cur >= '0') && (*cur <= '9')) {
 	        port *= 10;
@@ -368,13 +368,13 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
 	    break;
 	}
         if ((*cur == '/') || (*cur == 0)) {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    if (strcmp(ctxt->hostname, buf))
 		return(-1);
-	    index = 0;
+	    indx = 0;
 	    break;
 	}
-	buf[index++] = *cur++;
+	buf[indx++] = *cur++;
     }
     if (ctxt->path != NULL) {
 	xmlFree(ctxt->path);
@@ -384,11 +384,11 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
     if (*cur == 0) 
         ctxt->path = xmlMemStrdup("/");
     else {
-        index = 0;
-        buf[index] = 0;
+        indx = 0;
+        buf[indx] = 0;
 	while (*cur != 0)
-	    buf[index++] = *cur++;
-	buf[index] = 0;
+	    buf[indx++] = *cur++;
+	buf[indx] = 0;
 	ctxt->path = xmlMemStrdup(buf);
     }	
     return(0);
@@ -408,7 +408,7 @@ void
 xmlNanoFTPScanProxy(const char *URL) {
     const char *cur = URL;
     char buf[4096];
-    int index = 0;
+    int indx = 0;
     int port = 0;
 
     if (proxy != NULL) { 
@@ -425,24 +425,24 @@ xmlNanoFTPScanProxy(const char *URL) {
 	xmlGenericError(xmlGenericErrorContext, "Using FTP proxy %s\n", URL);
 #endif
     if (URL == NULL) return;
-    buf[index] = 0;
+    buf[indx] = 0;
     while (*cur != 0) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
-	    buf[index] = 0;
-	    index = 0;
+	    buf[indx] = 0;
+	    indx = 0;
             cur += 3;
 	    break;
 	}
-	buf[index++] = *cur++;
+	buf[indx++] = *cur++;
     }
     if (*cur == 0) return;
 
-    buf[index] = 0;
+    buf[indx] = 0;
     while (1) {
         if (cur[0] == ':') {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    proxy = xmlMemStrdup(buf);
-	    index = 0;
+	    indx = 0;
 	    cur += 1;
 	    while ((*cur >= '0') && (*cur <= '9')) {
 	        port *= 10;
@@ -455,12 +455,12 @@ xmlNanoFTPScanProxy(const char *URL) {
 	    break;
 	}
         if ((*cur == '/') || (*cur == 0)) {
-	    buf[index] = 0;
+	    buf[indx] = 0;
 	    proxy = xmlMemStrdup(buf);
-	    index = 0;
+	    indx = 0;
 	    break;
 	}
-	buf[index++] = *cur++;
+	buf[indx++] = *cur++;
     }
 }
 
@@ -517,7 +517,6 @@ xmlNanoFTPFreeCtxt(void * ctx) {
 
 /**
  * xmlNanoFTPParseResponse:
- * @ctx:  the FTP connection context
  * @buf:  the buffer containing the response
  * @len:  the buffer length
  * 
@@ -528,7 +527,7 @@ xmlNanoFTPFreeCtxt(void * ctx) {
  *     -XXX for response to be continued
  */
 static int
-xmlNanoFTPParseResponse(void *ctx, char *buf, int len) {
+xmlNanoFTPParseResponse(char *buf, int len) {
     int val = 0;
 
     if (len < 3) return(-1);
@@ -663,7 +662,7 @@ get_more:
 	    "\n<<<\n%s\n--\n", ptr);
 #endif
     while (ptr < end) {
-        cur = xmlNanoFTPParseResponse(ctxt, ptr, end - ptr);
+        cur = xmlNanoFTPParseResponse(ptr, end - ptr);
 	if (cur > 0) {
 	    /*
 	     * Successfully scanned the control code, scratch
@@ -1572,7 +1571,7 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[4096 + 1];
     int len, res;
-    int index = 0, base;
+    int indx = 0, base;
     fd_set rfd, efd;
     struct timeval tv;
 
@@ -1643,7 +1642,7 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
 	    continue;
 	}
 
-	if ((len = recv(ctxt->dataFd, &buf[index], sizeof(buf) - (index + 1), 0)) < 0) {
+	if ((len = recv(ctxt->dataFd, &buf[indx], sizeof(buf) - (indx + 1), 0)) < 0) {
 #ifdef DEBUG_FTP
 	    perror("recv");
 #endif
@@ -1652,18 +1651,18 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
 	    return(-1);
 	}
 #ifdef DEBUG_FTP
-        write(1, &buf[index], len);
+        write(1, &buf[indx], len);
 #endif
-	index += len;
-	buf[index] = 0;
+	indx += len;
+	buf[indx] = 0;
 	base = 0;
 	do {
 	    res = xmlNanoFTPParseList(&buf[base], callback, userData);
 	    base += res;
 	} while (res > 0);
 
-	memmove(&buf[0], &buf[base], index - base);
-	index -= base;
+	memmove(&buf[0], &buf[base], indx - base);
+	indx -= base;
     } while (len != 0);
     xmlNanoFTPCloseConnection(ctxt);
     return(0);

@@ -15,6 +15,13 @@
  * Author: Gary.Pennington@uk.sun.com
  */
 
+#ifndef __XML_LINK_INCLUDE__
+#define __XML_LINK_INCLUDE__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct _xmlLink xmlLink;
 typedef xmlLink *xmlLinkPtr;
 
@@ -78,4 +85,8 @@ void *          xmlLinkGetData          (xmlLinkPtr lk);
 /* xmlListUnique() */
 /* xmlListSwap */
 
+#ifdef __cplusplus
+}
+#endif
 
+#endif /* __XML_LINK_INCLUDE__ */

@@ -42,7 +42,8 @@ typedef struct person {
 /*
  * And the code needed to parse it
  */
-personPtr parsePerson(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur) {
+static personPtr
+parsePerson(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur) {
     personPtr ret = NULL;
 
 DEBUG("parsePerson\n");
@@ -75,7 +76,8 @@ DEBUG("parsePerson\n");
 /*
  * and to print it
  */
-void printPerson(personPtr cur) {
+static void
+printPerson(personPtr cur) {
     if (cur == NULL) return;
     printf("------ Person\n");
     if (cur->name) printf("	name: %s\n", cur->name);
@@ -103,7 +105,8 @@ typedef struct job {
 /*
  * And the code needed to parse it
  */
-jobPtr parseJob(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur) {
+static jobPtr
+parseJob(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur) {
     jobPtr ret = NULL;
 
 DEBUG("parseJob\n");
@@ -148,7 +151,8 @@ DEBUG("parseJob\n");
 /*
  * and to print it
  */
-void printJob(jobPtr cur) {
+static void
+printJob(jobPtr cur) {
     int i;
 
     if (cur == NULL) return;
@@ -172,10 +176,11 @@ typedef struct gjob {
 } gJob, *gJobPtr;
 
 
-gJobPtr parseGjobFile(char *filename) {
+static gJobPtr
+parseGjobFile(char *filename) {
     xmlDocPtr doc;
     gJobPtr ret;
-    jobPtr job;
+    jobPtr curjob;
     xmlNsPtr ns;
     xmlNodePtr cur;
 
@@ -247,9 +252,9 @@ gJobPtr parseGjobFile(char *filename) {
     while (cur != NULL) {
         if ((!xmlStrcmp(cur->name, (const xmlChar *) "Job")) &&
 	    (cur->ns == ns)) {
-	    job = parseJob(doc, ns, cur);
-	    if (job != NULL)
-	        ret->jobs[ret->nbJobs++] = job;
+	    curjob = parseJob(doc, ns, cur);
+	    if (curjob != NULL)
+	        ret->jobs[ret->nbJobs++] = curjob;
             if (ret->nbJobs >= 500) break;
 	}
 	cur = cur->next;
@@ -258,7 +263,8 @@ gJobPtr parseGjobFile(char *filename) {
     return(ret);
 }
 
-void handleGjob(gJobPtr cur) {
+static void
+handleGjob(gJobPtr cur) {
     int i;
 
     /*

@@ -338,6 +338,9 @@ int		xmlParserInputGrow	(xmlParserInputPtr in,
 xmlChar *	xmlStrdup		(const xmlChar *cur);
 xmlChar *	xmlStrndup		(const xmlChar *cur,
 					 int len);
+xmlChar *	xmlCharStrndup		(const char *cur,
+					 int len);
+xmlChar *	xmlCharStrdup		(const char *cur);
 xmlChar *	xmlStrsub		(const xmlChar *str,
 					 int start,
 					 int len);

@@ -91,7 +91,7 @@ static int xmlLittleEndian = 1;
  * Returns the char value or -1 in case of error and update @len with the
  *        number of bytes used
  */
-int
+static int
 xmlGetUTF8Char(const unsigned char *utf, int *len) {
     unsigned int c;
 
@@ -206,7 +206,7 @@ xmlCheckUTF8(const unsigned char *utf)
  *     as the return value is positive, else unpredictiable.
  * The value of @outlen after return is the number of ocetes consumed.
  */
-int
+static int
 asciiToUTF8(unsigned char* out, int *outlen,
               const unsigned char* in, int *inlen) {
     unsigned char* outstart = out;
@@ -258,7 +258,7 @@ asciiToUTF8(unsigned char* out, int *outlen,
  *     as the return value is positive, else unpredictiable.
  * The value of @outlen after return is the number of ocetes consumed.
  */
-int
+static int
 UTF8Toascii(unsigned char* out, int *outlen,
               const unsigned char* in, int *inlen) {
     const unsigned char* processed = in;
@@ -478,7 +478,7 @@ UTF8Toisolat1(unsigned char* out, int *outlen,
  *     The value of *inlen after return is the number of octets consumed
  *     as the return value is positive, else unpredictiable.
  */
-int
+static int
 UTF16LEToUTF8(unsigned char* out, int *outlen,
             const unsigned char* inb, int *inlenb)
 {
@@ -562,7 +562,7 @@ UTF16LEToUTF8(unsigned char* out, int *outlen,
  * Returns the number of byte written, or -1 by lack of space, or -2
  *     if the transcoding failed. 
  */
-int
+static int
 UTF8ToUTF16LE(unsigned char* outb, int *outlen,
             const unsigned char* in, int *inlen)
 {
@@ -685,7 +685,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
  * The value of *inlen after return is the number of octets consumed
  *     as the return value is positive, else unpredictiable.
  */
-int
+static int
 UTF16BEToUTF8(unsigned char* out, int *outlen,
             const unsigned char* inb, int *inlenb)
 {
@@ -773,7 +773,7 @@ UTF16BEToUTF8(unsigned char* out, int *outlen,
  * Returns the number of byte written, or -1 by lack of space, or -2
  *     if the transcoding failed. 
  */
-int
+static int
 UTF8ToUTF16BE(unsigned char* outb, int *outlen,
             const unsigned char* in, int *inlen)
 {
@@ -1247,7 +1247,7 @@ static xmlCharEncodingHandlerPtr xmlDefaultCharEncodingHandler = NULL;
  * Create and registers an xmlCharEncodingHandler.
  * Returns the xmlCharEncodingHandlerPtr created (or NULL in case of error).
  */
-xmlCharEncodingHandlerPtr
+static xmlCharEncodingHandlerPtr
 xmlNewCharEncodingHandler(const char *name, 
                           xmlCharEncodingInputFunc input,
                           xmlCharEncodingOutputFunc output) {
@@ -1662,9 +1662,7 @@ xmlIconvWrapper(iconv_t cd,
 	char *icv_out = (char *) out;
 	int ret;
 
-	ret = iconv(cd,
-		&icv_in, &icv_inlen,
-		&icv_out, &icv_outlen);
+	ret = iconv(cd, &icv_in, &icv_inlen, &icv_out, &icv_outlen);
 	if (in != NULL) {
 	    *inlen -= icv_inlen;
 	    *outlen -= icv_outlen;
@@ -1672,7 +1670,7 @@ xmlIconvWrapper(iconv_t cd,
 	    *inlen = 0;
 	    *outlen = 0;
 	}
-	if (icv_inlen != 0 || ret == (size_t) -1) {
+	if ((icv_inlen != 0) || (ret == -1)) {
 #ifdef EILSEQ
 		if (errno == EILSEQ) {
 			return -2;

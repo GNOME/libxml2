@@ -36,6 +36,18 @@
 
 /************************************************************************
  *									*
+ * 		When running GCC in vaacum cleaner mode			*
+ *									*
+ ************************************************************************/
+
+#ifdef __GNUC__
+#define UNUSED __attribute__((__unused__))
+#else
+#define UNUSED
+#endif
+
+/************************************************************************
+ *									*
  *   		Getting/Setting encoding meta tags			*
  *									*
  ************************************************************************/
@@ -680,10 +692,13 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  * @doc:  the document
  * @encoding:  the encoding string
  * 
+ * TODO: check whether encoding is needed
+ *
  * Dump the HTML document DTD, if any.
  */
 static void
-htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, const char *encoding) {
+htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
+	          const char *encoding UNUSED) {
     xmlDtdPtr cur = doc->intSubset;
 
     if (cur == NULL) {
@@ -717,7 +732,8 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, const char *encoding) {
  * Dump an HTML attribute
  */
 static void
-htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur, const char *encoding) {
+htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
+	           const char *encoding UNUSED) {
     xmlChar *value;
 
     if (cur == NULL) {

@@ -79,7 +79,9 @@ void		xmlXPatherror	(xmlXPathParserContextPtr ctxt,
 void		xmlXPathDebugDumpObject	(FILE *output,
 					 xmlXPathObjectPtr cur,
 					 int depth);
-
+void		xmlXPathDebugDumpCompExpr(FILE *output,
+					 xmlXPathCompExprPtr comp,
+					 int depth);
 /**
  * Extending a context
  */
@@ -139,7 +141,9 @@ xmlXPathObjectPtr xmlXPathNewNodeSet		(xmlNodePtr val);
 xmlXPathObjectPtr xmlXPathNewValueTree		(xmlNodePtr val);
 void		  xmlXPathNodeSetAdd		(xmlNodeSetPtr cur,
 						 xmlNodePtr val);
-
+void              xmlXPathNodeSetAddUnique	(xmlNodeSetPtr cur,
+						 xmlNodePtr val);
+void              xmlXPathNodeSetSort		(xmlNodeSetPtr set);
 
 void		  xmlXPathIdFunction		(xmlXPathParserContextPtr ctxt,
 					 	int nargs);
@@ -193,13 +197,37 @@ void xmlXPathMultValues(xmlXPathParserContextPtr ctxt);
 void xmlXPathDivValues(xmlXPathParserContextPtr ctxt);
 void xmlXPathModValues(xmlXPathParserContextPtr ctxt);
 
+int xmlXPathIsNodeType(const xmlChar *name);
 
 /*
  * Some of the axis navigation routines
  */
-xmlNodePtr xmlXPathNextPreceding(xmlXPathParserContextPtr ctxt, xmlNodePtr cur);
-xmlNodePtr xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur);
-xmlNodePtr xmlXPathNextPrecedingSibling(xmlXPathParserContextPtr ctxt, xmlNodePtr cur);
+xmlNodePtr xmlXPathNextSelf(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextChild(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextDescendant(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextDescendantOrSelf(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextParent(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextAncestorOrSelf(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextFollowingSibling(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextFollowing(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextNamespace(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextAttribute(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextPreceding(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
+xmlNodePtr xmlXPathNextPrecedingSibling(xmlXPathParserContextPtr ctxt,
+			xmlNodePtr cur);
 /*
  * The official core of XPath functions
  */

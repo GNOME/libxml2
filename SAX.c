@@ -31,6 +31,16 @@
 /* #define DEBUG_SAX */
 /* #define DEBUG_SAX_TREE */
 
+#ifdef __GNUC__
+#ifndef DEBUG_SAX
+#define UNUSED __attribute__((__unused__))
+#else
+#define UNUSED
+#endif
+#else
+#define UNUSED
+#endif
+
 /**
  * getPublicId:
  * @ctx: the user data (XML parser context)
@@ -40,7 +50,7 @@
  * Returns a xmlChar *
  */
 const xmlChar *
-getPublicId(void *ctx)
+getPublicId(void *ctx UNUSED)
 {
     /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
     return(NULL);
@@ -59,7 +69,7 @@ const xmlChar *
 getSystemId(void *ctx)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    return(BAD_CAST ctxt->input->filename); 
+    return((const xmlChar *) ctxt->input->filename); 
 }
 
 /**
@@ -648,7 +658,7 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
  * Everything is available on the context, so this is useless in our case.
  */
 void
-setDocumentLocator(void *ctx, xmlSAXLocatorPtr loc)
+setDocumentLocator(void *ctx UNUSED, xmlSAXLocatorPtr loc UNUSED)
 {
     /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
 #ifdef DEBUG_SAX
@@ -693,7 +703,7 @@ startDocument(void *ctx)
     }
     if ((ctxt->myDoc != NULL) && (ctxt->myDoc->URL == NULL) &&
 	(ctxt->input != NULL) && (ctxt->input->filename != NULL)) {
-        ctxt->myDoc->URL = xmlStrdup((xmlChar *) ctxt->input->filename);
+        ctxt->myDoc->URL = xmlStrdup((const xmlChar *) ctxt->input->filename);
     }
 }
 
@@ -1082,7 +1092,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
  * called when the end of an element has been detected.
  */
 void
-endElement(void *ctx, const xmlChar *name)
+endElement(void *ctx, const xmlChar *name UNUSED)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserNodeInfo node_info;
@@ -1261,7 +1271,7 @@ characters(void *ctx, const xmlChar *ch, int len)
  * Question: how much at a time ???
  */
 void
-ignorableWhitespace(void *ctx, const xmlChar *ch, int len)
+ignorableWhitespace(void *ctx UNUSED, const xmlChar *ch UNUSED, int len UNUSED)
 {
     /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
 #ifdef DEBUG_SAX

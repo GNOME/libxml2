@@ -109,7 +109,7 @@ extern int xmlGetWarningsDefaultValue;
  ************************************************************************/
 char buffer[50000];
 
-void
+static void
 xmlHTMLEncodeSend(void) {
     char *result;
 
@@ -128,7 +128,7 @@ xmlHTMLEncodeSend(void) {
  * Displays the associated file and line informations for the current input
  */
 
-void
+static void
 xmlHTMLPrintFileInfo(xmlParserInputPtr input) {
     xmlGenericError(xmlGenericErrorContext, "<p>");
     if (input != NULL) {
@@ -149,7 +149,7 @@ xmlHTMLPrintFileInfo(xmlParserInputPtr input) {
  * Displays current context within the input content for error tracking
  */
 
-void
+static void
 xmlHTMLPrintFileContext(xmlParserInputPtr input) {
     const xmlChar *cur, *base;
     int n;
@@ -194,7 +194,7 @@ xmlHTMLPrintFileContext(xmlParserInputPtr input) {
  * Display and format an error messages, gives file, line, position and
  * extra parameters.
  */
-void
+static void
 xmlHTMLError(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -231,7 +231,7 @@ xmlHTMLError(void *ctx, const char *msg, ...)
  * Display and format a warning messages, gives file, line, position and
  * extra parameters.
  */
-void
+static void
 xmlHTMLWarning(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -269,7 +269,7 @@ xmlHTMLWarning(void *ctx, const char *msg, ...)
  * Display and format an validity error messages, gives file,
  * line, position and extra parameters.
  */
-void
+static void
 xmlHTMLValidityError(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -303,7 +303,7 @@ xmlHTMLValidityError(void *ctx, const char *msg, ...)
  * Display and format a validity warning messages, gives file, line,
  * position and extra parameters.
  */
-void
+static void
 xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -342,7 +342,7 @@ xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
  * Returns a pointer to it or NULL on EOF the caller is expected to
  *     free the returned string.
  */
-char *
+static char *
 xmlShellReadline(char *prompt) {
 #ifdef HAVE_LIBREADLINE
     char *line_read;
@@ -373,10 +373,10 @@ xmlShellReadline(char *prompt) {
  * 									*
  ************************************************************************/
 
-int myRead(FILE *f, char * buffer, int len) {
-    return(fread(buffer, 1, len, f));
+static int myRead(FILE *f, char * buf, int len) {
+    return(fread(buf, 1, len, f));
 }
-void myClose(FILE *f) {
+static void myClose(FILE *f) {
   if (f != stdin) {
     fclose(f);
   }
@@ -387,7 +387,7 @@ void myClose(FILE *f) {
  * 			Test processing					*
  * 									*
  ************************************************************************/
-void parseAndPrintFile(char *filename) {
+static void parseAndPrintFile(char *filename) {
     xmlDocPtr doc = NULL, tmp;
 
     if ((timing) && (!repeat))

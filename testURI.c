@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
     const char *base = NULL;
     xmlChar *composite;
 
-    if ((argv[arg] != NULL) &&
+    if ((argc > 1) && (argv[arg] != NULL) &&
 	((!strcmp(argv[arg], "-base")) || (!strcmp(argv[arg], "--base")))) {
 	arg++;
 	base = argv[arg];

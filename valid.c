@@ -3372,7 +3372,8 @@ cont:
 		ret = 0;
 		break;
 	    }
-	    ret = (xmlStrEqual(NODE->name, CONT->name));
+	    ret = ((NODE->type == XML_ELEMENT_NODE) &&
+		   (xmlStrEqual(NODE->name, CONT->name)));
 	    if (ret == 1) {
 		DEBUG_VALID_MSG("element found, skip to next");
 		/*

@@ -1215,7 +1215,7 @@ static void usage(const char *name) {
     printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
     printf("\t--stream : use the streaming interface to process very large files\n");
     printf("\t--chkregister : verify the node registration code\n");
-#ifdef LIBXML_XINCLUDE_ENABLED
+#ifdef LIBXML_SCHEMAS_ENABLED
     printf("\t--relaxng schema : do RelaxNG validation against the schema\n");
 #endif
     printf("\nLibxml project home page: http://xmlsoft.org/\n");

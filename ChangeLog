@@ -1,3 +1,11 @@
+Fri Feb  7 13:34:08 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in xmllint.c: I f...ed up the default configuration
+	  of schemas and --relaxng option display in xmllint, pointed by
+	  Morus Walter.
+	* xlink.c: Sean Chittenden pointed a couple of errors in the XLink
+	  detection module, fixes bug #105374.
+
 Fri Feb  7 01:43:38 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: added the boolean base type.

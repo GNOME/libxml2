@@ -3525,11 +3525,11 @@ actually an xmlCharEncoding'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </functype>
     <function name='htmlAttrAllowed' file='HTMLparser'>
-      <info></info>
-      <return type='htmlStatus' info=''/>
-      <arg name='elt' type='const htmlElemDesc *' info=''/>
-      <arg name='attr' type='const xmlChar *' info=''/>
-      <arg name='legacy' type='int' info=''/>
+      <info>Checks whether an attribute is valid for an element Has full knowledge of Required and Deprecated attributes</info>
+      <return type='htmlStatus' info='one of HTML_REQUIRED, HTML_VALID, HTML_DEPRECATED, HTML_INVALID'/>
+      <arg name='elt' type='const htmlElemDesc *' info='HTML element'/>
+      <arg name='attr' type='const xmlChar *' info='HTML attribute'/>
+      <arg name='legacy' type='int' info='whether to allow deprecated attributes'/>
     </function>
     <function name='htmlAutoCloseTag' file='HTMLparser'>
       <info>The HTML DTD allows a tag to implicitly close other tags. The list is kept in htmlStartClose array. This function checks if the element or one of it&apos;s children would autoclose the given tag.</info>
@@ -3705,8 +3705,8 @@ actually an xmlCharEncoding'/>
       <arg name='encoding' type='const char *' info='the encoding string'/>
     </function>
     <function name='htmlNodeStatus' file='HTMLparser'>
-      <info></info>
-      <return type='htmlStatus' info=''/>
+      <info>for Element nodes)  Checks whether the tree node is valid.  Experimental (the author only uses the HTML enhancements in a SAX parser)</info>
+      <return type='htmlStatus' info='for Element nodes, a return from htmlElementAllowedHere (if legacy allowed) or htmlElementStatusHere (otherwise). for Attribute nodes, a return from htmlAttrAllowed for other nodes, HTML_NA (no checks performed)'/>
       <arg name='node' type='const htmlNodePtr' info=''/>
       <arg name='legacy' type='int' info=''/>
     </function>

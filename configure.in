@@ -333,12 +333,6 @@ if test "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ; then
     if test "${with_docbook}" = "" ; then
         with_docbook="yes"
     fi
-    if test "${with_xptr}" = "" ; then
-        with_xptr="yes"
-    fi
-    if test "${with_schemas}" = "" ; then
-        with_schemas="yes"
-    fi
     CFLAGS="-g -O -pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls "
 dnl -Wcast-qual -ansi
 fi
@@ -580,15 +574,15 @@ XML_LIBS="-lxml2 $Z_LIBS $THREAD_LIBS $ICONV_LIBS $M_LIBS $LIBS"
 AC_SUBST(WITH_ICONV)
 
 AC_ARG_WITH(schemas, [  --with-schemas              Add experimental Schemas/RelaxNG support (on)])
-if test "$with_schemas" = "yes" ; then
+if test "$with_schemas" = "no" ; then
+    echo "Disabled Schemas/Relax-NG support"
+    WITH_SCHEMAS=0
+    TEST_SCHEMAS=
+else    
     echo "Enabled Schemas/Relax-NG support"
     WITH_SCHEMAS=1
     TEST_SCHEMAS="Schemastests Relaxtests"
     with_regexps=yes
-else    
-    echo "Disabled Schemas/Relax-NG support"
-    WITH_SCHEMAS=0
-    TEST_SCHEMAS=
 fi
 AC_SUBST(WITH_SCHEMAS)
 AC_SUBST(TEST_SCHEMAS)

@@ -1,3 +1,14 @@
+Thu Nov 21 15:05:45 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c include/libxml/tree.h: modified the existing APIs
+	  to handle XHTML1 serialization rules automatically, also add
+	  xmlIsXHTML() to libxml2 API. Some tweaking to make sure
+	  libxslt serialization uses it when needed without changing
+	  the library API.
+	* test/xhtml1 result/noent/xhtml1 result/valid/xhtml1.xhtml
+	  result/xhtml1: added a new test specifically for xhtml1 output
+	  and updated the result of one XHTML1 test
+
 Wed Nov 20 14:24:56 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c parserInternals.c encoding.c: fixed #99082

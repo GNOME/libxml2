@@ -1,6 +1,9 @@
 /*
  * tree.c : implementation of access function for an XML tree.
  *
+ * References:
+ *   XHTML 1.0 W3C REC: http://www.w3.org/TR/2002/REC-xhtml1-20020801/
+ *
  * See Copyright for the status of this software.
  *
  * daniel@veillard.com
@@ -31,6 +34,9 @@
 #include <libxml/xmlerror.h>
 #include <libxml/parserInternals.h>
 #include <libxml/globals.h>
+#ifdef LIBXML_HTML_ENABLED
+#include <libxml/HTMLtree.h>
+#endif
 
 xmlNsPtr xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
 
@@ -5950,8 +5956,6 @@ xmlBufferWriteQuotedString(xmlBufferPtr buf, const xmlChar *string) {
 static void
 xmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
                 int format);
-void
-htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur);
 
 /**
  * xmlNsDump:
@@ -6486,8 +6490,15 @@ xmlElemDump(FILE *f, xmlDocPtr doc, xmlNodePtr cur) {
  ************************************************************************/
 
 static void
+xhtmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
+            int level, int format, const char *encoding);
+static void
 xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
                   int level, int format, const char *encoding);
+static void
+xmlNodeDumpOutputInternal(xmlOutputBufferPtr buf, xmlDocPtr doc,
+	    xmlNodePtr cur, int level, int format, const char *encoding);
+
 /**
  * xmlNsDumpOutput:
  * @buf:  the XML buffer output
@@ -6661,7 +6672,7 @@ xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	    (cur->type == XML_ELEMENT_NODE))
 	    for (i = 0;i < level;i++)
 		xmlOutputBufferWriteString(buf, xmlTreeIndentString);
-        xmlNodeDumpOutput(buf, doc, cur, level, format, encoding);
+        xmlNodeDumpOutputInternal(buf, doc, cur, level, format, encoding);
 	if (format) {
 	    xmlOutputBufferWriteString(buf, "\n");
 	}
@@ -6670,7 +6681,7 @@ xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 }
 
 /**
- * xmlNodeDumpOutput:
+ * xmlNodeDumpOutputInternal:
  * @buf:  the XML buffer output
  * @doc:  the document
  * @cur:  the current node
@@ -6682,9 +6693,9 @@ xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
-void
-xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
-            int level, int format, const char *encoding) {
+static void
+xmlNodeDumpOutputInternal(xmlOutputBufferPtr buf, xmlDocPtr doc,
+	    xmlNodePtr cur, int level, int format, const char *encoding) {
     int i;
     xmlNodePtr tmp;
 
@@ -6837,6 +6848,47 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 }
 
 /**
+ * xmlNodeDumpOutput:
+ * @buf:  the XML buffer output
+ * @doc:  the document
+ * @cur:  the current node
+ * @level: the imbrication level for indenting
+ * @format: is formatting allowed
+ * @encoding:  an optional encoding string
+ *
+ * Dump an XML node, recursive behaviour, children are printed too.
+ * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * or xmlKeepBlanksDefault(0) was called
+ */
+void
+xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
+            int level, int format, const char *encoding) {
+#ifdef LIBXML_HTML_ENABLED
+    xmlDtdPtr dtd;
+    int is_xhtml = 0;
+
+    dtd = xmlGetIntSubset(doc);
+    if (dtd != NULL) {
+	is_xhtml = xmlIsXHTML(dtd->SystemID, dtd->ExternalID);
+	if (is_xhtml < 0) is_xhtml = 0;
+	if ((is_xhtml) && (cur->parent == (xmlNodePtr) doc) &&
+	    (cur->type == XML_ELEMENT_NODE) &&
+	    (xmlStrEqual(cur->name, BAD_CAST "html"))) {
+	    if (encoding != NULL)
+		htmlSetMetaEncoding(cur, (const xmlChar *) encoding);
+	    else
+		htmlSetMetaEncoding(cur, BAD_CAST "UTF-8");
+	}
+    }
+
+    if (is_xhtml)
+	xhtmlNodeDumpOutput(buf, doc, cur, level, format, encoding);
+    else
+#endif
+	xmlNodeDumpOutputInternal(buf, doc, cur, level, format, encoding);
+}
+
+/**
  * xmlDocContentDumpOutput:
  * @buf:  the XML buffer output
  * @cur:  the document
@@ -6850,6 +6902,11 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 static void
 xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 	                const char *encoding, int format) {
+#ifdef LIBXML_HTML_ENABLED
+    xmlDtdPtr dtd;
+    int is_xhtml = 0;
+#endif
+
     xmlOutputBufferWriteString(buf, "<?xml version=");
     if (cur->version != NULL) 
 	xmlBufferWriteQuotedString(buf->buffer, cur->version);
@@ -6874,16 +6931,477 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 	    break;
     }
     xmlOutputBufferWriteString(buf, "?>\n");
+
+#ifdef LIBXML_HTML_ENABLED
+    dtd = xmlGetIntSubset(cur);
+    if (dtd != NULL) {
+	is_xhtml = xmlIsXHTML(dtd->SystemID, dtd->ExternalID);
+	if (is_xhtml < 0) is_xhtml = 0;
+    }
+    if (is_xhtml) {
+	if (encoding != NULL)
+	    htmlSetMetaEncoding(cur, (const xmlChar *) encoding);
+	else
+	    htmlSetMetaEncoding(cur, BAD_CAST "UTF-8");
+    }
+#endif
     if (cur->children != NULL) {
         xmlNodePtr child = cur->children;
 
 	while (child != NULL) {
-	    xmlNodeDumpOutput(buf, cur, child, 0, format, encoding);
+#ifdef LIBXML_HTML_ENABLED
+	    if (is_xhtml)
+		xhtmlNodeDumpOutput(buf, cur, child, 0, format, encoding);
+	    else
+#endif
+		xmlNodeDumpOutputInternal(buf, cur, child, 0, format, encoding);
 	    xmlOutputBufferWriteString(buf, "\n");
 	    child = child->next;
 	}
     }
 }
+
+#ifdef LIBXML_HTML_ENABLED
+/************************************************************************
+ *									*
+ *		Functions specific to XHTML serialization		*
+ *									*
+ ************************************************************************/
+
+#define XHTML_STRICT_PUBLIC_ID BAD_CAST \
+   "-//W3C//DTD XHTML 1.0 Strict//EN"
+#define XHTML_STRICT_SYSTEM_ID BAD_CAST \
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+#define XHTML_FRAME_PUBLIC_ID BAD_CAST \
+   "-//W3C//DTD XHTML 1.0 Frameset//EN"
+#define XHTML_FRAME_SYSTEM_ID BAD_CAST \
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"
+#define XHTML_TRANS_PUBLIC_ID BAD_CAST \
+   "-//W3C//DTD XHTML 1.0 Transitional//EN"
+#define XHTML_TRANS_SYSTEM_ID BAD_CAST \
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+
+#define XHTML_NS_NAME BAD_CAST "http://www.w3.org/1999/xhtml"
+/**
+ * xmlIsXHTML:
+ * @systemID:  the system identifier
+ * @publicID:  the public identifier
+ *
+ * Try to find if the document correspond to an XHTML DTD
+ *
+ * Returns 1 if true, 0 if not and -1 in case of error
+ */
+int
+xmlIsXHTML(const xmlChar *systemID, const xmlChar *publicID) {
+    if ((systemID == NULL) && (publicID == NULL))
+	return(-1);
+    if (publicID != NULL) {
+	if (xmlStrEqual(publicID, XHTML_STRICT_PUBLIC_ID)) return(1);
+	if (xmlStrEqual(publicID, XHTML_FRAME_PUBLIC_ID)) return(1);
+	if (xmlStrEqual(publicID, XHTML_TRANS_PUBLIC_ID)) return(1);
+    }
+    if (systemID != NULL) {
+	if (xmlStrEqual(systemID, XHTML_STRICT_SYSTEM_ID)) return(1);
+	if (xmlStrEqual(systemID, XHTML_FRAME_SYSTEM_ID)) return(1);
+	if (xmlStrEqual(systemID, XHTML_TRANS_SYSTEM_ID)) return(1);
+    }
+    return(0);
+}
+
+/**
+ * xhtmlIsEmpty:
+ * @node:  the node
+ *
+ * Check if a node is an empty xhtml node
+ *
+ * Returns 1 if the node is an empty node, 0 if not and -1 in case of error
+ */
+static int
+xhtmlIsEmpty(xmlNodePtr node) {
+    if (node == NULL)
+	return(-1);
+    if (node->type != XML_ELEMENT_NODE)
+	return(0);
+    if ((node->ns != NULL) && (!xmlStrEqual(node->ns->href, XHTML_NS_NAME)))
+	return(0);
+    if (node->children != NULL)
+	return(0);
+    switch (node->name[0]) {
+	case 'a':
+	    if (xmlStrEqual(node->name, BAD_CAST "area"))
+		return(1);
+	    return(0);
+	case 'b':
+	    if (xmlStrEqual(node->name, BAD_CAST "br"))
+		return(1);
+	    if (xmlStrEqual(node->name, BAD_CAST "base"))
+		return(1);
+	    if (xmlStrEqual(node->name, BAD_CAST "basefont"))
+		return(1);
+	    return(0);
+	case 'c':
+	    if (xmlStrEqual(node->name, BAD_CAST "col"))
+		return(1);
+	    return(0);
+	case 'f':
+	    if (xmlStrEqual(node->name, BAD_CAST "frame"))
+		return(1);
+	    return(0);
+	case 'h':
+	    if (xmlStrEqual(node->name, BAD_CAST "hr"))
+		return(1);
+	    return(0);
+	case 'i':
+	    if (xmlStrEqual(node->name, BAD_CAST "img"))
+		return(1);
+	    if (xmlStrEqual(node->name, BAD_CAST "input"))
+		return(1);
+	    if (xmlStrEqual(node->name, BAD_CAST "isindex"))
+		return(1);
+	    return(0);
+	case 'l':
+	    if (xmlStrEqual(node->name, BAD_CAST "link"))
+		return(1);
+	    return(0);
+	case 'm':
+	    if (xmlStrEqual(node->name, BAD_CAST "meta"))
+		return(1);
+	    return(0);
+	case 'p':
+	    if (xmlStrEqual(node->name, BAD_CAST "param"))
+		return(1);
+	    return(0);
+    }
+    return(0);
+}
+
+/**
+ * xhtmlAttrListDumpOutput:
+ * @buf:  the XML buffer output
+ * @doc:  the document
+ * @cur:  the first attribute pointer
+ * @encoding:  an optional encoding string
+ *
+ * Dump a list of XML attributes
+ */
+static void
+xhtmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
+	              xmlAttrPtr cur, const char *encoding) {
+    xmlAttrPtr xml_lang = NULL;
+    xmlAttrPtr lang = NULL;
+    xmlAttrPtr name = NULL;
+    xmlAttrPtr id = NULL;
+
+    if (cur == NULL) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlAttrListDumpOutput : property == NULL\n");
+#endif
+	return;
+    }
+    while (cur != NULL) {
+	if ((cur->ns == NULL) && (xmlStrEqual(cur->name, BAD_CAST "id")))
+	    id = cur;
+	else
+	if ((cur->ns == NULL) && (xmlStrEqual(cur->name, BAD_CAST "name")))
+	    name = cur;
+	else
+	if ((cur->ns == NULL) && (xmlStrEqual(cur->name, BAD_CAST "lang")))
+	    lang = cur;
+	else
+	if ((cur->ns != NULL) && (xmlStrEqual(cur->name, BAD_CAST "lang")) &&
+	    (xmlStrEqual(cur->ns->prefix, BAD_CAST "xml")))
+	    xml_lang = cur;
+	else if ((cur->ns == NULL) && 
+		 ((cur->children == NULL) ||
+		  (cur->children->content == NULL) ||
+		  (cur->children->content[0] == 0)) &&
+		 (htmlIsBooleanAttr(cur->name))) {
+	    if (cur->children != NULL)
+		xmlFreeNode(cur->children);
+	    cur->children = xmlNewText(cur->name);
+	    if (cur->children != NULL)
+		cur->children->parent = (xmlNodePtr) cur;
+	}
+        xmlAttrDumpOutput(buf, doc, cur, encoding);
+	cur = cur->next;
+    }
+    /*
+     * C.8
+     */
+    if ((name != NULL) && (id == NULL)) {
+	xmlOutputBufferWriteString(buf, " id=\"");
+	xmlAttrSerializeContent(buf->buffer, doc, name);
+	xmlOutputBufferWriteString(buf, "\"");
+    }
+    /*
+     * C.7.
+     */
+    if ((lang != NULL) && (xml_lang == NULL)) {
+	xmlOutputBufferWriteString(buf, " xml:lang=\"");
+	xmlAttrSerializeContent(buf->buffer, doc, lang);
+	xmlOutputBufferWriteString(buf, "\"");
+    } else 
+    if ((xml_lang != NULL) && (lang == NULL)) {
+	xmlOutputBufferWriteString(buf, " lang=\"");
+	xmlAttrSerializeContent(buf->buffer, doc, xml_lang);
+	xmlOutputBufferWriteString(buf, "\"");
+    }
+}
+
+/**
+ * xhtmlNodeListDumpOutput:
+ * @buf:  the XML buffer output
+ * @doc:  the XHTML document
+ * @cur:  the first node
+ * @level: the imbrication level for indenting
+ * @format: is formatting allowed
+ * @encoding:  an optional encoding string
+ *
+ * Dump an XML node list, recursive behaviour, children are printed too.
+ * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * or xmlKeepBlanksDefault(0) was called
+ */
+static void
+xhtmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
+                xmlNodePtr cur, int level, int format, const char *encoding) {
+    int i;
+
+    if (cur == NULL) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xhtmlNodeListDumpOutput : node == NULL\n");
+#endif
+	return;
+    }
+    while (cur != NULL) {
+	if ((format) && (xmlIndentTreeOutput) &&
+	    (cur->type == XML_ELEMENT_NODE))
+	    for (i = 0;i < level;i++)
+		xmlOutputBufferWriteString(buf, xmlTreeIndentString);
+        xhtmlNodeDumpOutput(buf, doc, cur, level, format, encoding);
+	if (format) {
+	    xmlOutputBufferWriteString(buf, "\n");
+	}
+	cur = cur->next;
+    }
+}
+
+/**
+ * xhtmlNodeDumpOutput:
+ * @buf:  the XML buffer output
+ * @doc:  the XHTML document
+ * @cur:  the current node
+ * @level: the imbrication level for indenting
+ * @format: is formatting allowed
+ * @encoding:  an optional encoding string
+ *
+ * Dump an XHTML node, recursive behaviour, children are printed too.
+ * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * or xmlKeepBlanksDefault(0) was called
+ */
+static void
+xhtmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
+            int level, int format, const char *encoding) {
+    int i;
+    xmlNodePtr tmp;
+
+    if (cur == NULL) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNodeDumpOutput : node == NULL\n");
+#endif
+	return;
+    }
+    if (cur->type == XML_XINCLUDE_START)
+	return;
+    if (cur->type == XML_XINCLUDE_END)
+	return;
+    if (cur->type == XML_DTD_NODE) {
+        xmlDtdDumpOutput(buf, (xmlDtdPtr) cur, encoding);
+	return;
+    }
+    if (cur->type == XML_ELEMENT_DECL) {
+        xmlDumpElementDecl(buf->buffer, (xmlElementPtr) cur);
+	return;
+    }
+    if (cur->type == XML_ATTRIBUTE_DECL) {
+        xmlDumpAttributeDecl(buf->buffer, (xmlAttributePtr) cur);
+	return;
+    }
+    if (cur->type == XML_ENTITY_DECL) {
+        xmlDumpEntityDecl(buf->buffer, (xmlEntityPtr) cur);
+	return;
+    }
+    if (cur->type == XML_TEXT_NODE) {
+	if (cur->content != NULL) {
+	    if ((cur->name == xmlStringText) ||
+		(cur->name != xmlStringTextNoenc)) {
+		xmlChar *buffer;
+
+		if (encoding == NULL)
+		    buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+		else
+		    buffer = xmlEncodeSpecialChars(doc, cur->content);
+		if (buffer != NULL) {
+		    xmlOutputBufferWriteString(buf, (const char *)buffer);
+		    xmlFree(buffer);
+		}
+	    } else {
+		/*
+		 * Disable escaping, needed for XSLT
+		 */
+		xmlOutputBufferWriteString(buf, (const char *) cur->content);
+	    }
+	}
+
+	return;
+    }
+    if (cur->type == XML_PI_NODE) {
+	if (cur->content != NULL) {
+	    xmlOutputBufferWriteString(buf, "<?");
+	    xmlOutputBufferWriteString(buf, (const char *)cur->name);
+	    if (cur->content != NULL) {
+		xmlOutputBufferWriteString(buf, " ");
+		xmlOutputBufferWriteString(buf, (const char *)cur->content);
+	    }
+	    xmlOutputBufferWriteString(buf, "?>");
+	} else {
+	    xmlOutputBufferWriteString(buf, "<?");
+	    xmlOutputBufferWriteString(buf, (const char *)cur->name);
+	    xmlOutputBufferWriteString(buf, "?>");
+	}
+	return;
+    }
+    if (cur->type == XML_COMMENT_NODE) {
+	if (cur->content != NULL) {
+	    xmlOutputBufferWriteString(buf, "<!--");
+	    xmlOutputBufferWriteString(buf, (const char *)cur->content);
+	    xmlOutputBufferWriteString(buf, "-->");
+	}
+	return;
+    }
+    if (cur->type == XML_ENTITY_REF_NODE) {
+        xmlOutputBufferWriteString(buf, "&");
+	xmlOutputBufferWriteString(buf, (const char *)cur->name);
+        xmlOutputBufferWriteString(buf, ";");
+	return;
+    }
+    if (cur->type == XML_CDATA_SECTION_NODE) {
+        xmlOutputBufferWriteString(buf, "<![CDATA[");
+	if (cur->content != NULL)
+	    xmlOutputBufferWriteString(buf, (const char *)cur->content);
+        xmlOutputBufferWriteString(buf, "]]>");
+	return;
+    }
+
+    if (format == 1) {
+	tmp = cur->children;
+	while (tmp != NULL) {
+	    if ((tmp->type == XML_TEXT_NODE) || 
+		(tmp->type == XML_ENTITY_REF_NODE)) {
+		format = 0;
+		break;
+	    }
+	    tmp = tmp->next;
+	}
+    }
+    xmlOutputBufferWriteString(buf, "<");
+    if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+        xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
+	xmlOutputBufferWriteString(buf, ":");
+    }
+
+    xmlOutputBufferWriteString(buf, (const char *)cur->name);
+    if (cur->nsDef)
+        xmlNsListDumpOutput(buf, cur->nsDef);
+    if ((xmlStrEqual(cur->name, BAD_CAST "html") &&
+	(cur->ns == NULL) && (cur->nsDef == NULL))) {
+	/*
+	 * 3.1.1. Strictly Conforming Documents A.3.1.1 3/
+	 */
+	xmlOutputBufferWriteString(buf,
+		" xmlns=\"http://www.w3.org/1999/xhtml\"");
+    }
+    if (cur->properties != NULL)
+        xhtmlAttrListDumpOutput(buf, doc, cur->properties, encoding);
+
+    if ((cur->type == XML_ELEMENT_NODE) && (cur->children == NULL)) {
+	if (((cur->ns == NULL) || (cur->ns->prefix == NULL)) &&
+	    (xhtmlIsEmpty(cur) == 1)) {
+	    /*
+	     * C.2. Empty Elements
+	     */
+	    xmlOutputBufferWriteString(buf, " />");
+	} else {
+	    /*
+	     * C.3. Element Minimization and Empty Element Content
+	     */
+	    xmlOutputBufferWriteString(buf, "></");
+	    if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+		xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
+		xmlOutputBufferWriteString(buf, ":");
+	    }
+	    xmlOutputBufferWriteString(buf, (const char *)cur->name);
+	    xmlOutputBufferWriteString(buf, ">");
+	}
+	return;
+    }
+    xmlOutputBufferWriteString(buf, ">");
+    if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
+	xmlChar *buffer;
+
+	if (encoding == NULL)
+	    buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+	else
+	    buffer = xmlEncodeSpecialChars(doc, cur->content);
+	if (buffer != NULL) {
+	    xmlOutputBufferWriteString(buf, (const char *)buffer);
+	    xmlFree(buffer);
+	}
+    }
+
+    /*
+     * 4.8. Script and Style elements
+     */
+    if ((cur->type == XML_ELEMENT_NODE) &&
+	((xmlStrEqual(cur->name, BAD_CAST "script")) ||
+	 (xmlStrEqual(cur->name, BAD_CAST "style"))) &&
+	((cur->ns == NULL) ||
+	 (xmlStrEqual(cur->ns->href, XHTML_NS_NAME)))) {
+	xmlNodePtr child = cur->children;
+
+	while (child != NULL) {
+	    if ((child->type == XML_TEXT_NODE) ||
+		(child->type == XML_CDATA_SECTION_NODE)) {
+		xmlOutputBufferWriteString(buf, "<![CDATA[");
+		if (child->content != NULL)
+		    xmlOutputBufferWriteString(buf,
+			    (const char *)child->content);
+		xmlOutputBufferWriteString(buf, "]]>");
+	    } else {
+		xhtmlNodeDumpOutput(buf, doc, child, 0, 0, encoding);
+	    }
+	    child = child->next;
+	}
+    } else if (cur->children != NULL) {
+	if (format) xmlOutputBufferWriteString(buf, "\n");
+	xhtmlNodeListDumpOutput(buf, doc, cur->children,
+		        (level >= 0?level+1:-1), format, encoding);
+	if ((xmlIndentTreeOutput) && (format))
+	    for (i = 0;i < level;i++)
+		xmlOutputBufferWriteString(buf, xmlTreeIndentString);
+    }
+    xmlOutputBufferWriteString(buf, "</");
+    if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+        xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
+	xmlOutputBufferWriteString(buf, ":");
+    }
+
+    xmlOutputBufferWriteString(buf, (const char *)cur->name);
+    xmlOutputBufferWriteString(buf, ">");
+}
+#endif
 
 /************************************************************************
  *									*

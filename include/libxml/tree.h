@@ -869,6 +869,12 @@ int		xmlSaveFileEnc		(const char *filename,
 					 const char *encoding);
 
 /*
+ * XHTML
+ */
+int		xmlIsXHTML		(const xmlChar *systemID,
+					 const xmlChar *publicID);
+
+/*
  * Compression.
  */
 int		xmlGetDocCompressMode	(xmlDocPtr doc);

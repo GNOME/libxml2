@@ -3216,6 +3216,8 @@ xmlXPathCastNumberToString (double val) {
  */
 xmlChar *
 xmlXPathCastNodeToString (xmlNodePtr node) {
+    if ((node != NULL) && (node->type == XML_DOCUMENT_NODE))
+	node = xmlDocGetRootElement((xmlDocPtr) node);
     return(xmlNodeGetContent(node));
 }
 

@@ -1,3 +1,7 @@
+Thu Apr 18 17:49:24 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fix a problem with string() on a document node.
+
 Thu Apr 18 16:40:42 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am xmlschemas.c: more Schemas work

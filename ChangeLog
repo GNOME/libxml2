@@ -1,3 +1,7 @@
+Sun Mar 28 18:11:41 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c: optimize indentation based on the new context
+
 Sun Mar 28 14:17:10 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/xpath2.c doc/examples/xpath2.res: handle and explain

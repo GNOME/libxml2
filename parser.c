@@ -1493,6 +1493,7 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     /*
      * Look if the element is mixed content in the Dtd if available
      */
+    if (ctxt->node == NULL) return(0);
     if (ctxt->myDoc != NULL) {
 	ret = xmlIsMixedElement(ctxt->myDoc, ctxt->node->name);
         if (ret == 0) return(1);
@@ -1503,7 +1504,6 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
      * Otherwise, heuristic :-\
      */
     if (RAW != '<') return(0);
-    if (ctxt->node == NULL) return(0);
     if ((ctxt->node->children == NULL) &&
 	(RAW == '<') && (NXT(1) == '/')) return(0);
 

@@ -1,4 +1,8 @@
-Thu Jul 26 11:38:37 EDT 2001 <Daniel.Veillard@imag.fr>
+Thu Jul 26 12:40:35 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: fixed bugs #58073 reported by Greg Shtilman
+
+Thu Jul 26 11:38:37 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixes bug #57652 reported by Morus Walter
 

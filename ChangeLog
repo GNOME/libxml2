@@ -1,3 +1,12 @@
+Mon Oct 30 16:26:49 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.[ch]: added xmlIOParseDTD()
+	* xpointer.c: added support for the 2 extra parameters of
+	  string-range, fixed a stoopid error when '0' was present
+	  in XPointer expressions
+	* test/XPath/xptr/strrange2 result/XPath/xptr/strrange2: added
+	  testsuite for the above
+
 Mon Oct 30 10:26:43 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* libxml.spec.in: improved package descriptions

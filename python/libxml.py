@@ -378,6 +378,7 @@ def registerXPathFunction(ctxt, name, ns_uri, f):
 PARSER_LOADDTD=1
 PARSER_DEFAULTATTRS=2
 PARSER_VALIDATE=3
+PARSER_SUBST_ENTITIES=4
 
 #
 # Everything below this point is automatically generated

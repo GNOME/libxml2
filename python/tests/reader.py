@@ -1,4 +1,7 @@
 #!/usr/bin/python -u
+#
+# this tests the basic APIs of the XmlTextReader interface
+#
 import libxml2
 import StringIO
 import sys

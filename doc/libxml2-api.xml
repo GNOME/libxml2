@@ -1092,6 +1092,7 @@
     <file name='xmlreader'>
      <exports symbol='XML_PARSER_DEFAULTATTRS'/>
      <exports symbol='XML_PARSER_LOADDTD'/>
+     <exports symbol='XML_PARSER_SUBST_ENTITIES'/>
      <exports symbol='XML_PARSER_VALIDATE'/>
      <exports symbol='xmlFreeTextReader'/>
      <exports symbol='xmlNewTextReader'/>
@@ -1101,6 +1102,8 @@
      <exports symbol='xmlTextReaderAttributeCount'/>
      <exports symbol='xmlTextReaderBaseUri'/>
      <exports symbol='xmlTextReaderClose'/>
+     <exports symbol='xmlTextReaderCurrentDoc'/>
+     <exports symbol='xmlTextReaderCurrentNode'/>
      <exports symbol='xmlTextReaderDepth'/>
      <exports symbol='xmlTextReaderGetAttribute'/>
      <exports symbol='xmlTextReaderGetAttributeNo'/>
@@ -2382,6 +2385,7 @@
     <enum name='XML_PARSER_PUBLIC_LITERAL' file='parser' value='16' type='xmlParserInputState' info=' within a PUBLIC value'/>
     <enum name='XML_PARSER_START' file='parser' value='0' type='xmlParserInputState' info='nothing has been parsed'/>
     <enum name='XML_PARSER_START_TAG' file='parser' value='6' type='xmlParserInputState' info='within a start tag'/>
+    <enum name='XML_PARSER_SUBST_ENTITIES' file='xmlreader' value='4' type='xmlParserProperties'/>
     <enum name='XML_PARSER_SYSTEM_LITERAL' file='parser' value='13' type='xmlParserInputState' info='within a SYSTEM value'/>
     <enum name='XML_PARSER_VALIDATE' file='xmlreader' value='3' type='xmlParserProperties'/>
     <enum name='XML_PI_NODE' file='tree' value='7' type='xmlElementType'/>
@@ -7915,6 +7919,16 @@ actually an xmlCharEncoding'/>
     <function name='xmlTextReaderClose' file='xmlreader'>
       <info>This method releases any resources allocated by the current instance changes the state to Closed and close any underlying input.</info>
       <return type='int' info='0 or -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderCurrentDoc' file='xmlreader'>
+      <info>Hacking interface allowing to get the xmlDocPtr correponding to the current document being accessed by the xmlTextReader. This is dangerous because the associated node may be destroyed on the next Reads.</info>
+      <return type='xmlDocPtr' info='the xmlDocPtr or NULL in case of error.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderCurrentNode' file='xmlreader'>
+      <info>Hacking interface allowing to get the xmlNodePtr correponding to the current node being accessed by the xmlTextReader. This is dangerous because the underlying node may be destroyed on the next Reads.</info>
+      <return type='xmlNodePtr' info='the xmlNodePtr or NULL in case of error.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderDepth' file='xmlreader'>

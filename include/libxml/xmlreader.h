@@ -18,8 +18,9 @@ extern "C" {
 
 typedef enum {
     XML_PARSER_LOADDTD = 1,
-    XML_PARSER_DEFAULTATTRS,
-    XML_PARSER_VALIDATE
+    XML_PARSER_DEFAULTATTRS = 2,
+    XML_PARSER_VALIDATE = 3,
+    XML_PARSER_SUBST_ENTITIES = 4
 } xmlParserProperties;
 
 typedef struct _xmlTextReader xmlTextReader;
@@ -96,6 +97,8 @@ int		xmlTextReaderSetParserProp	(xmlTextReaderPtr reader,
 						 int value);
 int		xmlTextReaderGetParserProp	(xmlTextReaderPtr reader,
 						 int prop);
+xmlNodePtr	xmlTextReaderCurrentNode	(xmlTextReaderPtr reader);
+xmlDocPtr	xmlTextReaderCurrentDoc		(xmlTextReaderPtr reader);
 #ifdef __cplusplus
 }
 #endif

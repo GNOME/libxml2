@@ -21,7 +21,9 @@ PYTESTS=	\
     resolver.py \
     regexp.py	\
     reader.py	\
-    reader2.py
+    reader2.py	\
+    reader3.py
+
 
 XMLS=		\
     tst.xml	\

@@ -1864,6 +1864,13 @@ xmlTextReaderSetParserProp(xmlTextReaderPtr reader, int prop, int value) {
 		ctxt->validate = 0;
 	    }
 	    return(0);
+        case XML_PARSER_SUBST_ENTITIES:
+	    if (value != 0) {
+		ctxt->replaceEntities = 1;
+	    } else {
+		ctxt->replaceEntities = 0;
+	    }
+	    return(0);
     }
     return(-1);
 }
@@ -1897,8 +1904,48 @@ xmlTextReaderGetParserProp(xmlTextReaderPtr reader, int prop) {
 	    return(0);
         case XML_PARSER_VALIDATE:
 	    return(ctxt->validate);
+	case XML_PARSER_SUBST_ENTITIES:
+	    return(ctxt->replaceEntities);
     }
     return(-1);
+}
+
+/**
+ * xmlTextReaderCurrentNode:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Hacking interface allowing to get the xmlNodePtr correponding to the
+ * current node being accessed by the xmlTextReader. This is dangerous
+ * because the underlying node may be destroyed on the next Reads.
+ *
+ * Returns the xmlNodePtr or NULL in case of error.
+ */
+xmlNodePtr
+xmlTextReaderCurrentNode(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(NULL);
+    
+    if (reader->curnode != NULL)
+	return(reader->curnode);
+    return(reader->node);
+}
+
+/**
+ * xmlTextReaderCurrentDoc:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Hacking interface allowing to get the xmlDocPtr correponding to the
+ * current document being accessed by the xmlTextReader. This is dangerous
+ * because the associated node may be destroyed on the next Reads.
+ *
+ * Returns the xmlDocPtr or NULL in case of error.
+ */
+xmlDocPtr
+xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
+    if ((reader == NULL) || (reader->ctxt == NULL))
+	return(NULL);
+    
+    return(reader->ctxt->myDoc);
 }
 
 /************************************************************************

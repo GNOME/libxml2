@@ -1,6 +1,6 @@
 #!/usr/bin/python -u
 #
-# this tests the validation with the XmlTextReader interface
+# this tests the DTD validation with the XmlTextReader interface
 #
 import sys
 import glob

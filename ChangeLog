@@ -1,3 +1,14 @@
+Sat Dec 28 23:49:12 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c include/libxml/xmlreader.h doc/libxml2-api.xml:
+	  extended the XmlTextReader API a bit, addding accessors for
+	  the current doc and node, and an entity substitution mode for
+	  the parser.
+	* python/libxml.py python/libxml2class.txt: related updates
+	* python/tests/Makefile.am python/tests/reader.py 
+	  python/tests/reader2.py python/tests/reader3.py: updated a bit
+	  the old tests and added a new one to test the entities handling
+
 Sat Dec 28 22:11:57 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml2class.txt 

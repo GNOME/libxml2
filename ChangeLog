@@ -1,3 +1,13 @@
+Tue Oct 21 00:28:20 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in xmlwriter.c Makefile.am include/libxml/xmlwriter.h
+	  include/libxml/Makefile.am include/libxml/xmlversion.h.in:
+	  added the xmlWriter module contributed by Alfred Mickautsch
+	* include/libxml/tree.h: added room for line and extra information
+	* xmlreader.c python/tests/reader6.py: bugfixing some problem some
+	  of them introduced in September
+	* win32/libxml2.def.src doc/libxml2-api.xml: regenerated the API
+
 Mon Oct 20 19:02:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am configure.in xmldwalk.c xmlreader.c

@@ -43,6 +43,7 @@ xmlinc_HEADERS = \
 		dict.h \
 		SAX2.h \
 		xmlexports.h \
+		xmlwriter.h \
 		chvalid.h
 
 install-exec-hook:

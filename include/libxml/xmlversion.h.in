@@ -120,6 +120,15 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_WRITER_ENABLED:
+ *
+ * Whether the xmlWriter saving interface is configured in
+ */
+#if @WITH_WRITER@
+#define LIBXML_WRITER_ENABLED
+#endif
+
+/**
  * LIBXML_SAX1_ENABLED:
  *
  * Whether the older SAX1 interface is configured in

@@ -713,44 +713,6 @@
      <exports symbol='xlinkTitle'/>
      <exports symbol='xlinkType'/>
     </file>
-    <file name='xmldwalk'>
-     <exports symbol='XML_DWALK_BACKTRACK'/>
-     <exports symbol='XML_DWALK_END'/>
-     <exports symbol='XML_DWALK_NONE'/>
-     <exports symbol='XML_DWALK_START'/>
-     <exports symbol='xmlDocWalker'/>
-     <exports symbol='xmlDocWalkerAttributeCount'/>
-     <exports symbol='xmlDocWalkerBaseUri'/>
-     <exports symbol='xmlDocWalkerCurrentDoc'/>
-     <exports symbol='xmlDocWalkerCurrentNode'/>
-     <exports symbol='xmlDocWalkerDepth'/>
-     <exports symbol='xmlDocWalkerGetAttribute'/>
-     <exports symbol='xmlDocWalkerGetAttributeNo'/>
-     <exports symbol='xmlDocWalkerGetAttributeNs'/>
-     <exports symbol='xmlDocWalkerHasAttributes'/>
-     <exports symbol='xmlDocWalkerHasValue'/>
-     <exports symbol='xmlDocWalkerIsEmptyElement'/>
-     <exports symbol='xmlDocWalkerLocalName'/>
-     <exports symbol='xmlDocWalkerLookupNamespace'/>
-     <exports symbol='xmlDocWalkerMoveToAttribute'/>
-     <exports symbol='xmlDocWalkerMoveToAttributeNo'/>
-     <exports symbol='xmlDocWalkerMoveToAttributeNs'/>
-     <exports symbol='xmlDocWalkerMoveToElement'/>
-     <exports symbol='xmlDocWalkerMoveToFirstAttribute'/>
-     <exports symbol='xmlDocWalkerMoveToNextAttribute'/>
-     <exports symbol='xmlDocWalkerName'/>
-     <exports symbol='xmlDocWalkerNamespaceUri'/>
-     <exports symbol='xmlDocWalkerNext'/>
-     <exports symbol='xmlDocWalkerNodeType'/>
-     <exports symbol='xmlDocWalkerPrefix'/>
-     <exports symbol='xmlDocWalkerPtr'/>
-     <exports symbol='xmlDocWalkerRewind'/>
-     <exports symbol='xmlDocWalkerState'/>
-     <exports symbol='xmlDocWalkerStep'/>
-     <exports symbol='xmlDocWalkerValue'/>
-     <exports symbol='xmlFreeDocWalker'/>
-     <exports symbol='xmlNewDocWalker'/>
-    </file>
     <file name='entities'>
      <exports symbol='XML_EXTERNAL_GENERAL_PARSED_ENTITY'/>
      <exports symbol='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY'/>
@@ -976,7 +938,7 @@
      <exports symbol='LIBXML_VALID_ENABLED'/>
      <exports symbol='LIBXML_VERSION'/>
      <exports symbol='LIBXML_VERSION_STRING'/>
-     <exports symbol='LIBXML_WALKER_ENABLED'/>
+     <exports symbol='LIBXML_WRITER_ENABLED'/>
      <exports symbol='LIBXML_XINCLUDE_ENABLED'/>
      <exports symbol='LIBXML_XPATH_ENABLED'/>
      <exports symbol='LIBXML_XPTR_ENABLED'/>
@@ -1729,6 +1691,83 @@
      <exports symbol='xmlThrDefTreeIndentString'/>
      <exports symbol='xmlTreeIndentString'/>
      <exports symbol='xmlTreeIndentString'/>
+    </file>
+    <file name='xmlwriter'>
+     <exports symbol='xmlFreeTextWriter'/>
+     <exports symbol='xmlNewTextWriter'/>
+     <exports symbol='xmlNewTextWriterFilename'/>
+     <exports symbol='xmlNewTextWriterMemory'/>
+     <exports symbol='xmlTextWriter'/>
+     <exports symbol='xmlTextWriterEndAttribute'/>
+     <exports symbol='xmlTextWriterEndCDATA'/>
+     <exports symbol='xmlTextWriterEndDTD'/>
+     <exports symbol='xmlTextWriterEndDTDAttlist'/>
+     <exports symbol='xmlTextWriterEndDTDElement'/>
+     <exports symbol='xmlTextWriterEndDTDEntity'/>
+     <exports symbol='xmlTextWriterEndDocument'/>
+     <exports symbol='xmlTextWriterEndElement'/>
+     <exports symbol='xmlTextWriterEndPI'/>
+     <exports symbol='xmlTextWriterFlush'/>
+     <exports symbol='xmlTextWriterFullEndElement'/>
+     <exports symbol='xmlTextWriterPtr'/>
+     <exports symbol='xmlTextWriterStartAttribute'/>
+     <exports symbol='xmlTextWriterStartAttributeNS'/>
+     <exports symbol='xmlTextWriterStartCDATA'/>
+     <exports symbol='xmlTextWriterStartDTD'/>
+     <exports symbol='xmlTextWriterStartDTDAttlist'/>
+     <exports symbol='xmlTextWriterStartDTDElement'/>
+     <exports symbol='xmlTextWriterStartDTDEntity'/>
+     <exports symbol='xmlTextWriterStartDocument'/>
+     <exports symbol='xmlTextWriterStartElement'/>
+     <exports symbol='xmlTextWriterStartElementNS'/>
+     <exports symbol='xmlTextWriterStartPI'/>
+     <exports symbol='xmlTextWriterWriteAttribute'/>
+     <exports symbol='xmlTextWriterWriteAttributeNS'/>
+     <exports symbol='xmlTextWriterWriteBase64'/>
+     <exports symbol='xmlTextWriterWriteBinHex'/>
+     <exports symbol='xmlTextWriterWriteCDATA'/>
+     <exports symbol='xmlTextWriterWriteComment'/>
+     <exports symbol='xmlTextWriterWriteDTD'/>
+     <exports symbol='xmlTextWriterWriteDTDAttlist'/>
+     <exports symbol='xmlTextWriterWriteDTDElement'/>
+     <exports symbol='xmlTextWriterWriteDTDEntity'/>
+     <exports symbol='xmlTextWriterWriteDTDExternalEntity'/>
+     <exports symbol='xmlTextWriterWriteDTDInternalEntity'/>
+     <exports symbol='xmlTextWriterWriteDTDNotation'/>
+     <exports symbol='xmlTextWriterWriteDocType'/>
+     <exports symbol='xmlTextWriterWriteElement'/>
+     <exports symbol='xmlTextWriterWriteElementNS'/>
+     <exports symbol='xmlTextWriterWriteFormatAttribute'/>
+     <exports symbol='xmlTextWriterWriteFormatAttributeNS'/>
+     <exports symbol='xmlTextWriterWriteFormatCDATA'/>
+     <exports symbol='xmlTextWriterWriteFormatComment'/>
+     <exports symbol='xmlTextWriterWriteFormatDTD'/>
+     <exports symbol='xmlTextWriterWriteFormatDTDAttlist'/>
+     <exports symbol='xmlTextWriterWriteFormatDTDElement'/>
+     <exports symbol='xmlTextWriterWriteFormatDTDInternalEntity'/>
+     <exports symbol='xmlTextWriterWriteFormatElement'/>
+     <exports symbol='xmlTextWriterWriteFormatElementNS'/>
+     <exports symbol='xmlTextWriterWriteFormatPI'/>
+     <exports symbol='xmlTextWriterWriteFormatRaw'/>
+     <exports symbol='xmlTextWriterWriteFormatString'/>
+     <exports symbol='xmlTextWriterWritePI'/>
+     <exports symbol='xmlTextWriterWriteProcessingInstruction'/>
+     <exports symbol='xmlTextWriterWriteRaw'/>
+     <exports symbol='xmlTextWriterWriteRawLen'/>
+     <exports symbol='xmlTextWriterWriteString'/>
+     <exports symbol='xmlTextWriterWriteVFormatAttribute'/>
+     <exports symbol='xmlTextWriterWriteVFormatAttributeNS'/>
+     <exports symbol='xmlTextWriterWriteVFormatCDATA'/>
+     <exports symbol='xmlTextWriterWriteVFormatComment'/>
+     <exports symbol='xmlTextWriterWriteVFormatDTD'/>
+     <exports symbol='xmlTextWriterWriteVFormatDTDAttlist'/>
+     <exports symbol='xmlTextWriterWriteVFormatDTDElement'/>
+     <exports symbol='xmlTextWriterWriteVFormatDTDInternalEntity'/>
+     <exports symbol='xmlTextWriterWriteVFormatElement'/>
+     <exports symbol='xmlTextWriterWriteVFormatElementNS'/>
+     <exports symbol='xmlTextWriterWriteVFormatPI'/>
+     <exports symbol='xmlTextWriterWriteVFormatRaw'/>
+     <exports symbol='xmlTextWriterWriteVFormatString'/>
     </file>
     <file name='threads'>
      <exports symbol='xmlCleanupThreads'/>
@@ -3036,8 +3075,8 @@
     <macro name='LIBXML_VERSION_STRING' file='xmlversion'>
       <info>the version number string, 1.2.3 value is &quot;1002003&quot;</info>
     </macro>
-    <macro name='LIBXML_WALKER_ENABLED' file='xmlversion'>
-      <info>Whether the xmlDocWalker interface is configured in</info>
+    <macro name='LIBXML_WRITER_ENABLED' file='xmlversion'>
+      <info>Whether the xmlWriter saving interface is configured in</info>
     </macro>
     <macro name='LIBXML_XINCLUDE_ENABLED' file='xmlversion'>
       <info>Whether XInclude is configured in</info>
@@ -3252,6 +3291,16 @@
     </macro>
     <macro name='xmlRootNode' file='tree'>
       <info>Macro for compatibility naming layer with libxml1.</info>
+    </macro>
+    <macro name='xmlTextWriterEndDTDAttlist' file='xmlwriter'>
+    </macro>
+    <macro name='xmlTextWriterEndDTDElement' file='xmlwriter'>
+    </macro>
+    <macro name='xmlTextWriterEndDTDEntity' file='xmlwriter'>
+    </macro>
+    <macro name='xmlTextWriterWriteDocType' file='xmlwriter'>
+    </macro>
+    <macro name='xmlTextWriterWriteProcessingInstruction' file='xmlwriter'>
     </macro>
     <macro name='xmlXPathCheckError' file='xpathInternals'>
       <info>Check if an XPath error was raised.  Returns true if an error has been raised, false otherwise.</info>
@@ -3473,10 +3522,6 @@
     <enum name='XML_DTD_UNKNOWN_ENTITY' file='xmlerror' value='535' type='xmlParserErrors' info='535'/>
     <enum name='XML_DTD_UNKNOWN_ID' file='xmlerror' value='536' type='xmlParserErrors' info='536'/>
     <enum name='XML_DTD_UNKNOWN_NOTATION' file='xmlerror' value='537' type='xmlParserErrors' info='537'/>
-    <enum name='XML_DWALK_BACKTRACK' file='xmldwalk' value='2' type='xmlDocWalkerState'/>
-    <enum name='XML_DWALK_END' file='xmldwalk' value='3' type='xmlDocWalkerState'/>
-    <enum name='XML_DWALK_NONE' file='xmldwalk' value='0' type='xmlDocWalkerState'/>
-    <enum name='XML_DWALK_START' file='xmldwalk' value='1' type='xmlDocWalkerState'/>
     <enum name='XML_ELEMENT_CONTENT_ELEMENT' file='tree' value='2' type='xmlElementContentType'/>
     <enum name='XML_ELEMENT_CONTENT_MULT' file='tree' value='3' type='xmlElementContentOccur'/>
     <enum name='XML_ELEMENT_CONTENT_ONCE' file='tree' value='1' type='xmlElementContentOccur'/>
@@ -4338,9 +4383,6 @@ actually an xmlCharEncoding'/>
       <field name='psvi' type='void *' info=' for type/PSVI informations'/>
     </struct>
     <typedef name='xmlDocPtr' file='tree' type='xmlDoc *'/>
-    <struct name='xmlDocWalker' file='xmldwalk' type='struct _xmlDocWalker'/>
-    <typedef name='xmlDocWalkerPtr' file='xmldwalk' type='xmlDocWalker *'/>
-    <typedef name='xmlDocWalkerState' file='xmldwalk' type='enum'/>
     <struct name='xmlDtd' file='tree' type='struct _xmlDtd'>
       <field name='_private' type='void *' info=' application data'/>
       <field name='type' type='xmlElementType' info=' XML_DTD_NODE, must be second !'/>
@@ -4513,6 +4555,8 @@ actually an xmlCharEncoding'/>
       <field name='properties' type='struct _xmlAttr *' info=' properties list'/>
       <field name='nsDef' type='xmlNs *' info=' namespace definitions on this node'/>
       <field name='psvi' type='void *' info=' for type/PSVI informations'/>
+      <field name='line' type='unsigned short' info=' line number'/>
+      <field name='extra' type='unsigned short' info=' extra data for XPath/XSLT'/>
     </struct>
     <typedef name='xmlNodePtr' file='tree' type='xmlNode *'/>
     <struct name='xmlNodeSet' file='xpath' type='struct _xmlNodeSet'>
@@ -4926,6 +4970,8 @@ actually an xmlCharEncoding'/>
     <struct name='xmlTextReader' file='xmlreader' type='struct _xmlTextReader'/>
     <typedef name='xmlTextReaderLocatorPtr' file='xmlreader' type='void *'/>
     <typedef name='xmlTextReaderPtr' file='xmlreader' type='xmlTextReader *'/>
+    <struct name='xmlTextWriter' file='xmlwriter' type='struct _xmlTextWriter'/>
+    <typedef name='xmlTextWriterPtr' file='xmlwriter' type='xmlTextWriter *'/>
     <struct name='xmlURI' file='uri' type='struct _xmlURI'>
       <field name='scheme' type='char *' info=' the URI scheme'/>
       <field name='opaque' type='char *' info=' opaque part'/>
@@ -7281,150 +7327,6 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='root' type='xmlNodePtr' info='the new document root element'/>
     </function>
-    <function name='xmlDocWalkerAttributeCount' file='xmldwalk'>
-      <info>Provides the number of attributes of the current node</info>
-      <return type='int' info='0 if no attributes, -1 in case of error or the attribute count'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerBaseUri' file='xmldwalk'>
-      <info>The base URI of the node.</info>
-      <return type='xmlChar *' info='the base URI or NULL if not available'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerCurrentDoc' file='xmldwalk'>
-      <info>Hacking interface allowing to get the xmlDocPtr correponding to the current document being accessed by the xmlDocWalker.</info>
-      <return type='xmlDocPtr' info='the xmlDocPtr or NULL in case of error.'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerCurrentNode' file='xmldwalk'>
-      <info>Hacking interface allowing to get the xmlNodePtr correponding to the current node being accessed by the xmlDocWalker.</info>
-      <return type='xmlNodePtr' info='the xmlNodePtr or NULL in case of error.'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerDepth' file='xmldwalk'>
-      <info>The depth of the node in the tree.</info>
-      <return type='int' info='the depth or -1 in case of error'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerGetAttribute' file='xmldwalk'>
-      <info>Provides the value of the attribute with the specified qualified name.</info>
-      <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-      <arg name='name' type='const xmlChar *' info='the qualified name of the attribute.'/>
-    </function>
-    <function name='xmlDocWalkerGetAttributeNo' file='xmldwalk'>
-      <info>Provides the value of the attribute with the specified index relative to the containing element.</info>
-      <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-      <arg name='no' type='int' info='the zero-based index of the attribute relative to the containing element'/>
-    </function>
-    <function name='xmlDocWalkerGetAttributeNs' file='xmldwalk'>
-      <info>Provides the value of the specified attribute</info>
-      <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-      <arg name='localName' type='const xmlChar *' info='the local name of the attribute.'/>
-      <arg name='namespaceURI' type='const xmlChar *' info='the namespace URI of the attribute.'/>
-    </function>
-    <function name='xmlDocWalkerHasAttributes' file='xmldwalk'>
-      <info>Whether the node has attributes.</info>
-      <return type='int' info='1 if true, 0 if false, and -1 in case or error'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerHasValue' file='xmldwalk'>
-      <info>Whether the node can have a text value.</info>
-      <return type='int' info='1 if true, 0 if false, and -1 in case or error'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerIsEmptyElement' file='xmldwalk'>
-      <info>Check if the current node is empty</info>
-      <return type='int' info='1 if empty, 0 if not and -1 in case of error'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerLocalName' file='xmldwalk'>
-      <info>The local name of the node.</info>
-      <return type='xmlChar *' info='the local name or NULL if not available'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerLookupNamespace' file='xmldwalk'>
-      <info>Resolves a namespace prefix in the scope of the current element.</info>
-      <return type='xmlChar *' info='a string containing the namespace URI to which the prefix maps or NULL in case of error. The string must be deallocated by the caller.'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-      <arg name='prefix' type='const xmlChar *' info='the prefix whose namespace URI is to be resolved. To return the default namespace, specify NULL'/>
-    </function>
-    <function name='xmlDocWalkerMoveToAttribute' file='xmldwalk'>
-      <info>Moves the position of the current instance to the attribute with the specified qualified name.</info>
-      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-      <arg name='name' type='const xmlChar *' info='the qualified name of the attribute.'/>
-    </function>
-    <function name='xmlDocWalkerMoveToAttributeNo' file='xmldwalk'>
-      <info>Moves the position of the current instance to the attribute with the specified index relative to the containing element.</info>
-      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-      <arg name='no' type='int' info='the zero-based index of the attribute relative to the containing element.'/>
-    </function>
-    <function name='xmlDocWalkerMoveToAttributeNs' file='xmldwalk'>
-      <info>Moves the position of the current instance to the attribute with the specified local name and namespace URI.</info>
-      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-      <arg name='localName' type='const xmlChar *' info='the local name of the attribute.'/>
-      <arg name='namespaceURI' type='const xmlChar *' info='the namespace URI of the attribute.'/>
-    </function>
-    <function name='xmlDocWalkerMoveToElement' file='xmldwalk'>
-      <info>Moves the position of the current instance to the node that contains the current Attribute  node.</info>
-      <return type='int' info='1 in case of success, -1 in case of error, 0 if not moved'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerMoveToFirstAttribute' file='xmldwalk'>
-      <info>Moves the position of the current instance to the first attribute associated with the current node.</info>
-      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerMoveToNextAttribute' file='xmldwalk'>
-      <info>Moves the position of the current instance to the next attribute associated with the current node.</info>
-      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerName' file='xmldwalk'>
-      <info>The qualified name of the node, equal to Prefix :LocalName.</info>
-      <return type='xmlChar *' info='the local name or NULL if not available'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerNamespaceUri' file='xmldwalk'>
-      <info>The URI defining the namespace associated with the node.</info>
-      <return type='xmlChar *' info='the namespace URI or NULL if not available'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerNext' file='xmldwalk'>
-      <info>Step to the next sibling of the current node in document order</info>
-      <return type='int' info='1 if ok, 0 if there are no more nodes, or -1 in case of error'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerNodeType' file='xmldwalk'>
-      <info>Get the node type of the current node Reference: http://dotgnu.org/pnetlib-doc/System/Xml/XmlNodeType.html</info>
-      <return type='int' info='the xmlNodeType of the current node or -1 in case of error'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerPrefix' file='xmldwalk'>
-      <info>A shorthand reference to the namespace associated with the node.</info>
-      <return type='xmlChar *' info='the prefix or NULL if not available'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerRewind' file='xmldwalk'>
-      <info>Initializes the xmlDocWalker</info>
-      <return type='int' info='0 or -1 in case of error'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerStep' file='xmldwalk'>
-      <info>Steps through the xml tree</info>
-      <return type='int' info='0 or -1 in case of error'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
-    <function name='xmlDocWalkerValue' file='xmldwalk'>
-      <info>Provides the text value of the node if present</info>
-      <return type='xmlChar *' info='the string or NULL if not available. The retsult must be deallocated with xmlFree()'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
     <function name='xmlDumpAttributeDecl' file='valid'>
       <info>This will dump the content of the attribute declaration as an XML DTD definition</info>
       <return type='void'/>
@@ -7565,11 +7467,6 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='cur' type='xmlDocPtr' info='pointer to the document'/>
     </function>
-    <function name='xmlFreeDocWalker' file='xmldwalk'>
-      <info>Deallocate the xmlDocWalker</info>
-      <return type='void'/>
-      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
-    </function>
     <function name='xmlFreeDtd' file='tree'>
       <info>Free a DTD structure.</info>
       <return type='void'/>
@@ -7674,6 +7571,11 @@ actually an xmlCharEncoding'/>
       <info>Deallocate all the resources associated to the reader</info>
       <return type='void'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr'/>
+    </function>
+    <function name='xmlFreeTextWriter' file='xmlwriter'>
+      <info>Deallocate all the resources associated to the writer</info>
+      <return type='void'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
     </function>
     <function name='xmlFreeURI' file='uri'>
       <info>Free up the xmlURI struct</info>
@@ -8962,11 +8864,6 @@ actually an xmlCharEncoding'/>
       <arg name='content' type='const xmlChar *' info='the text content'/>
       <arg name='len' type='int' info='the text len.'/>
     </function>
-    <function name='xmlNewDocWalker' file='xmldwalk'>
-      <info>Creates a new instance of the xmlDocWalker</info>
-      <return type='xmlDocWalkerPtr' info='0 in case of error, the new allocated xmlDocWalkerPtr otherwise'/>
-      <arg name='doc' type='xmlDocPtr' info='the xmlDocPtr'/>
-    </function>
     <function name='xmlNewDtd' file='tree'>
       <info>Creation of a new DTD for the external subset. To create an internal subset, use xmlCreateIntSubset().</info>
       <return type='xmlDtdPtr' info='a pointer to the new DTD structure'/>
@@ -9113,6 +9010,23 @@ actually an xmlCharEncoding'/>
       <info>Create an xmlTextReader structure fed with the resource at @URI</info>
       <return type='xmlTextReaderPtr' info='the new xmlTextReaderPtr or NULL in case of error'/>
       <arg name='URI' type='const char *' info='the URI of the resource to process'/>
+    </function>
+    <function name='xmlNewTextWriter' file='xmlwriter'>
+      <info>Create a new xmlNewTextWriter structure using an xmlOutputBufferPtr</info>
+      <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
+      <arg name='out' type='xmlOutputBufferPtr' info='an xmlOutputBufferPtr'/>
+    </function>
+    <function name='xmlNewTextWriterFilename' file='xmlwriter'>
+      <info>Create a new xmlNewTextWriter structure with @uri as output</info>
+      <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
+      <arg name='uri' type='const char *' info='the URI of the resource for the output'/>
+      <arg name='compression' type='int' info='compress the output?'/>
+    </function>
+    <function name='xmlNewTextWriterMemory' file='xmlwriter'>
+      <info>Create a new xmlNewTextWriter structure with @buf as output TODO: handle compression</info>
+      <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
+      <arg name='buf' type='xmlBufferPtr' info='xmlBufferPtr'/>
+      <arg name='compression' type='int' info='compress the output?'/>
     </function>
     <function name='xmlNewValidCtxt' file='valid'>
       <info>Allocate a validation context structure.</info>
@@ -11615,6 +11529,480 @@ actually an xmlCharEncoding'/>
       <info>The xml:lang scope within which the node resides.</info>
       <return type='xmlChar *' info='the xml:lang value or NULL if none exists.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextWriterEndAttribute' file='xmlwriter'>
+      <info>End the current xml element.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterEndCDATA' file='xmlwriter'>
+      <info>End an xml CDATA section.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterEndDTD' file='xmlwriter'>
+      <info>End an xml DTD.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterEndDocument' file='xmlwriter'>
+      <info>End an xml document. All open elements are closed</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterEndElement' file='xmlwriter'>
+      <info>End the current xml element.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterEndPI' file='xmlwriter'>
+      <info>End the current xml PI.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterFlush' file='xmlwriter'>
+      <info>Flush the output buffer.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterFullEndElement' file='xmlwriter'>
+      <info>End the current xml element. Writes an end tag even if the element is empty</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterStartAttribute' file='xmlwriter'>
+      <info>Start an xml attribute.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='element name'/>
+    </function>
+    <function name='xmlTextWriterStartAttributeNS' file='xmlwriter'>
+      <info>Start an xml attribute with namespace support.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='prefix' type='const xmlChar *' info='namespace prefix or NULL'/>
+      <arg name='name' type='const xmlChar *' info='element local name'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='namespace URI or NULL'/>
+    </function>
+    <function name='xmlTextWriterStartCDATA' file='xmlwriter'>
+      <info>Start an xml CDATA section.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterStartDTD' file='xmlwriter'>
+      <info>Start an xml DTD.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD'/>
+      <arg name='pubid' type='const xmlChar *' info='the public identifier, which is an alternative to the system identifier'/>
+      <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
+    </function>
+    <function name='xmlTextWriterStartDTDAttlist' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlTextWriterStartDTDElement' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlTextWriterStartDTDEntity' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='pe' type='int' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlTextWriterStartDocument' file='xmlwriter'>
+      <info>Start a new xml document</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='version' type='const char *' info='the xml version (&quot;1.0&quot;) or NULL for default (&quot;1.0&quot;)'/>
+      <arg name='encoding' type='const char *' info='the encoding or NULL for default'/>
+      <arg name='standalone' type='const char *' info='&quot;yes&quot; or &quot;no&quot; or NULL for default'/>
+    </function>
+    <function name='xmlTextWriterStartElement' file='xmlwriter'>
+      <info>Start an xml element.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='element name'/>
+    </function>
+    <function name='xmlTextWriterStartElementNS' file='xmlwriter'>
+      <info>Start an xml element with namespace support.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='prefix' type='const xmlChar *' info='namespace prefix or NULL'/>
+      <arg name='name' type='const xmlChar *' info='element local name'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='namespace URI or NULL'/>
+    </function>
+    <function name='xmlTextWriterStartPI' file='xmlwriter'>
+      <info>Start an xml PI.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='target' type='const xmlChar *' info='PI target'/>
+    </function>
+    <function name='xmlTextWriterWriteAttribute' file='xmlwriter'>
+      <info>Write an xml attribute.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='attribute name'/>
+      <arg name='content' type='const xmlChar *' info='attribute content'/>
+    </function>
+    <function name='xmlTextWriterWriteAttributeNS' file='xmlwriter'>
+      <info>Write an xml attribute.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='prefix' type='const xmlChar *' info='namespace prefix'/>
+      <arg name='name' type='const xmlChar *' info='attribute local name'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='namespace URI'/>
+      <arg name='content' type='const xmlChar *' info='attribute content'/>
+    </function>
+    <function name='xmlTextWriterWriteBase64' file='xmlwriter'>
+      <info>Write an base64 encoded xml text.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='data' type='const char *' info='binary data'/>
+      <arg name='start' type='int' info='the position within the data of the first byte to encode'/>
+      <arg name='len' type='int' info='the number of bytes to encode'/>
+    </function>
+    <function name='xmlTextWriterWriteBinHex' file='xmlwriter'>
+      <info>Write a BinHex encoded xml text.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='data' type='const char *' info='binary data'/>
+      <arg name='start' type='int' info='the position within the data of the first byte to encode'/>
+      <arg name='len' type='int' info='the number of bytes to encode'/>
+    </function>
+    <function name='xmlTextWriterWriteCDATA' file='xmlwriter'>
+      <info>Write an xml CDATA.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='content' type='const xmlChar *' info='CDATA content'/>
+    </function>
+    <function name='xmlTextWriterWriteComment' file='xmlwriter'>
+      <info>Write an xml comment.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='content' type='const xmlChar *' info='comment string'/>
+    </function>
+    <function name='xmlTextWriterWriteDTD' file='xmlwriter'>
+      <info>Write a DTD.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD'/>
+      <arg name='pubid' type='const xmlChar *' info='the public identifier, which is an alternative to the system identifier'/>
+      <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
+      <arg name='subset' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteDTDAttlist' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='content' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteDTDElement' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='content' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteDTDEntity' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='pe' type='int' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='pubid' type='const xmlChar *' info=''/>
+      <arg name='sysid' type='const xmlChar *' info=''/>
+      <arg name='ndataid' type='const xmlChar *' info=''/>
+      <arg name='content' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteDTDExternalEntity' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='pe' type='int' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='pubid' type='const xmlChar *' info=''/>
+      <arg name='sysid' type='const xmlChar *' info=''/>
+      <arg name='ndataid' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteDTDInternalEntity' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='pe' type='int' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='content' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteDTDNotation' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='pubid' type='const xmlChar *' info=''/>
+      <arg name='sysid' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteElement' file='xmlwriter'>
+      <info>Write an xml element.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='element name'/>
+      <arg name='content' type='const xmlChar *' info='element content'/>
+    </function>
+    <function name='xmlTextWriterWriteElementNS' file='xmlwriter'>
+      <info>Write an xml element with namespace support.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='prefix' type='const xmlChar *' info='namespace prefix'/>
+      <arg name='name' type='const xmlChar *' info='element local name'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='namespace URI'/>
+      <arg name='content' type='const xmlChar *' info='element content'/>
+    </function>
+    <function name='xmlTextWriterWriteFormatAttribute' file='xmlwriter'>
+      <info>Write a formatted xml attribute.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='attribute name'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatAttributeNS' file='xmlwriter'>
+      <info>Write a formatted xml attribute.with namespace support</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='prefix' type='const xmlChar *' info='namespace prefix'/>
+      <arg name='name' type='const xmlChar *' info='attribute local name'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='namespace URI'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatCDATA' file='xmlwriter'>
+      <info>Write a formatted xml CDATA.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatComment' file='xmlwriter'>
+      <info>Write an xml comment.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatDTD' file='xmlwriter'>
+      <info>Write a DTD with a formatted markup declarations part.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD'/>
+      <arg name='pubid' type='const xmlChar *' info='the public identifier, which is an alternative to the system identifier'/>
+      <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatDTDAttlist' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='format' type='const char *' info=''/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatDTDElement' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='format' type='const char *' info=''/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatDTDInternalEntity' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='pe' type='int' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='format' type='const char *' info=''/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatElement' file='xmlwriter'>
+      <info>Write a formatted xml element.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='element name'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatElementNS' file='xmlwriter'>
+      <info>Write a formatted xml element with namespace support.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='prefix' type='const xmlChar *' info='namespace prefix'/>
+      <arg name='name' type='const xmlChar *' info='element local name'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='namespace URI'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatPI' file='xmlwriter'>
+      <info>Write a formatted PI.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='target' type='const xmlChar *' info='PI target'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatRaw' file='xmlwriter'>
+      <info>Write a formatted raw xml text.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteFormatString' file='xmlwriter'>
+      <info>Write a formatted xml text.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='...' type='...' info=''/>
+    </function>
+    <function name='xmlTextWriterWritePI' file='xmlwriter'>
+      <info>Write an xml PI.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='target' type='const xmlChar *' info='PI target'/>
+      <arg name='content' type='const xmlChar *' info='PI content'/>
+    </function>
+    <function name='xmlTextWriterWriteRaw' file='xmlwriter'>
+      <info>Write a raw xml text.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='content' type='const xmlChar *' info='text string'/>
+    </function>
+    <function name='xmlTextWriterWriteRawLen' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='content' type='const xmlChar *' info=''/>
+      <arg name='len' type='int' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteString' file='xmlwriter'>
+      <info>Write an xml text.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='content' type='const xmlChar *' info='text string'/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatAttribute' file='xmlwriter'>
+      <info>Write a formatted xml attribute.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='attribute name'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatAttributeNS' file='xmlwriter'>
+      <info>Write a formatted xml attribute.with namespace support</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='prefix' type='const xmlChar *' info='namespace prefix'/>
+      <arg name='name' type='const xmlChar *' info='attribute local name'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='namespace URI'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatCDATA' file='xmlwriter'>
+      <info>Write a formatted xml CDATA.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatComment' file='xmlwriter'>
+      <info>Write an xml comment.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatDTD' file='xmlwriter'>
+      <info>Write a DTD with a formatted markup declarations part.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD'/>
+      <arg name='pubid' type='const xmlChar *' info='the public identifier, which is an alternative to the system identifier'/>
+      <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatDTDAttlist' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='format' type='const char *' info=''/>
+      <arg name='argptr' type='va_list' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatDTDElement' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='format' type='const char *' info=''/>
+      <arg name='argptr' type='va_list' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatDTDInternalEntity' file='xmlwriter'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='writer' type='xmlTextWriterPtr' info=''/>
+      <arg name='pe' type='int' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='format' type='const char *' info=''/>
+      <arg name='argptr' type='va_list' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatElement' file='xmlwriter'>
+      <info>Write a formatted xml element.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='element name'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatElementNS' file='xmlwriter'>
+      <info>Write a formatted xml element with namespace support.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='prefix' type='const xmlChar *' info='namespace prefix'/>
+      <arg name='name' type='const xmlChar *' info='element local name'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='namespace URI'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatPI' file='xmlwriter'>
+      <info>Write a formatted xml PI.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='target' type='const xmlChar *' info='PI target'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info=''/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatRaw' file='xmlwriter'>
+      <info>Write a formatted raw xml text.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
+    </function>
+    <function name='xmlTextWriterWriteVFormatString' file='xmlwriter'>
+      <info>Write a formatted xml text.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
     </function>
     <function name='xmlThrDefBufferAllocScheme' file='globals'>
       <info></info>

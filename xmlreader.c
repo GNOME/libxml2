@@ -257,8 +257,11 @@ xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
 	if (cur->type != XML_DTD_NODE) {
 
 	    if ((cur->children != NULL) &&
-		(cur->type != XML_ENTITY_REF_NODE))
-		xmlTextReaderFreeNodeList(reader, cur->children);
+		(cur->type != XML_ENTITY_REF_NODE)) {
+		if (cur->children->parent == cur)
+		    xmlTextReaderFreeNodeList(reader, cur->children);
+		cur->children = NULL;
+	    }
 	    if (((cur->type == XML_ELEMENT_NODE) ||
 		 (cur->type == XML_XINCLUDE_START) ||
 		 (cur->type == XML_XINCLUDE_END)) &&
@@ -324,8 +327,11 @@ xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur) {
     }
 
     if ((cur->children != NULL) &&
-	(cur->type != XML_ENTITY_REF_NODE))
-	xmlTextReaderFreeNodeList(reader, cur->children);
+	(cur->type != XML_ENTITY_REF_NODE)) {
+	if (cur->children->parent == cur)
+	    xmlTextReaderFreeNodeList(reader, cur->children);
+	cur->children = NULL;
+    }
     if (((cur->type == XML_ELEMENT_NODE) ||
 	 (cur->type == XML_XINCLUDE_START) ||
 	 (cur->type == XML_XINCLUDE_END)) &&
@@ -973,13 +979,15 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 	    node = node->parent;
 	    if (node->type == XML_ELEMENT_NODE) {
 	        xmlNodePtr tmp;
-	        while ((tmp = node->last) != NULL) {
-		    if ((tmp->_private != xmlTextReaderIsEmptyPreserved) &&
-			(tmp->_private != xmlTextReaderIsPreserved)) {
-			xmlUnlinkNode(tmp);
-			xmlTextReaderFreeNode(reader, tmp);
-		    } else
-		        break;
+		if (reader->entNr == 0) {
+		    while ((tmp = node->last) != NULL) {
+			if ((tmp->_private != xmlTextReaderIsEmptyPreserved) &&
+			    (tmp->_private != xmlTextReaderIsPreserved)) {
+			    xmlUnlinkNode(tmp);
+			    xmlTextReaderFreeNode(reader, tmp);
+			} else
+			    break;
+		    }
 		}
 		reader->node = node;
 		xmlTextReaderValidatePop(reader);
@@ -1179,7 +1187,8 @@ get_next_node:
 	 * Cleanup of the old node
 	 */
 	if ((reader->node->prev != NULL) &&
-            (reader->node->prev->type != XML_DTD_NODE)) {
+            (reader->node->prev->type != XML_DTD_NODE) &&
+	    (reader->entNr == 0)) {
 	    xmlNodePtr tmp = reader->node->prev;
 	    if ((tmp->_private != xmlTextReaderIsEmptyPreserved) &&
 	        (tmp->_private != xmlTextReaderIsPreserved)) {
@@ -1220,7 +1229,8 @@ get_next_node:
 	 */
 	if ((oldnode->type != XML_DTD_NODE) &&
 	    (oldnode->_private != xmlTextReaderIsEmptyPreserved) &&
-	    (oldnode->_private != xmlTextReaderIsPreserved)) {
+	    (oldnode->_private != xmlTextReaderIsPreserved) &&
+	    (reader->entNr == 0)) {
 	    xmlUnlinkNode(oldnode);
 	    xmlTextReaderFreeNode(reader, oldnode);
 	}

@@ -622,6 +622,23 @@ fi
 AC_SUBST(WITH_READER)
 AC_SUBST(READER_TEST)
 
+AC_ARG_WITH(writer,
+[  --with-writer           add the xmlWriter saving interface (on)])
+if test "$with_minimum" = "yes" -a "$with_writer" = ""
+then
+    with_writer=no
+fi
+if test "$with_writer" = "no" ; then
+    echo Disabling the xmlWriter saving interface
+    WITH_WRITER=0
+#    WRITER_TEST=
+else    
+    WITH_WRITER=1
+#    WRITER_TEST=Writertests
+fi
+AC_SUBST(WITH_WRITER)
+#AC_SUBST(WRITER_TEST)
+
 AC_ARG_WITH(sax1,
 [  --with-sax1             add the older SAX1 interface (on)])
 if test "$with_minimum" = "yes" -a "$with_sax1" = ""

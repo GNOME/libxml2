@@ -10220,15 +10220,17 @@ xmlXPathRunEval(xmlXPathParserContextPtr ctxt) {
 			 xmlMalloc(10 * sizeof(xmlXPathObjectPtr));
 	if (ctxt->valueTab == NULL) {
 	    xmlFree(ctxt);
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlXPathRunEval: out of memory\n");
-	    return;
 	}
 	ctxt->valueNr = 0;
 	ctxt->valueMax = 10;
 	ctxt->value = NULL;
     }
     comp = ctxt->comp;
+    if(comp->last < 0) {
+	xmlGenericError(xmlGenericErrorContext,
+	    "xmlXPathRunEval: last is less than zero\n");
+	return;
+    }
     xmlXPathCompOpEval(ctxt, &comp->steps[comp->last]);
 }
 

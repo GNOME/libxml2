@@ -1,3 +1,6 @@
+Sat 04 May 2002 11:56:31 PM PDT Aleksey Sanin <aleksey@aleksey.com>
+	* xpath.c: fixed bug #78858
+	
 Sun May  5 08:57:08 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: modified xmlNodeSetBase to allow changing the

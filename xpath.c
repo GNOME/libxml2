@@ -1863,8 +1863,8 @@ xmlXPathCompareNodeSetString(xmlXPathParserContextPtr ctxt, int inf, int strict,
  * @ctxt:  the XPath Parser context
  * @op:  less than (-1), equal (0) or greater than (1)
  * @strict:  is the comparison strict
- * @ns1:  the fist node set
- * @ns2:  the second node set
+ * @arg1:  the fist node set object
+ * @arg2:  the second node set object
  *
  * Implement the compare operation on nodesets:
  *
@@ -1889,8 +1889,71 @@ xmlXPathCompareNodeSetString(xmlXPathParserContextPtr ctxt, int inf, int strict,
  */
 int
 xmlXPathCompareNodeSets(xmlXPathParserContextPtr ctxt, int inf, int strict,
-	                xmlXPathObjectPtr ns1, xmlXPathObjectPtr ns2) {
-    TODO /* xmlXPathCompareNodeSets */
+	                xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
+    int i, j, init = 0;
+    double val1;
+    double *values2;
+    int ret = 0;
+    xmlChar *str;
+    xmlNodeSetPtr ns1;
+    xmlNodeSetPtr ns2;
+
+    if ((arg1 == NULL) ||
+	((arg1->type != XPATH_NODESET) && (arg1->type != XPATH_XSLT_TREE)))
+        return(0);
+    if ((arg2 == NULL) ||
+	((arg2->type != XPATH_NODESET) && (arg2->type != XPATH_XSLT_TREE)))
+        return(0);
+
+    ns1 = arg1->nodesetval;
+    ns2 = arg2->nodesetval;
+
+    if (ns1->nodeNr <= 0)
+	return(0);
+    if (ns2->nodeNr <= 0)
+	return(0);
+
+    values2 = (double *) xmlMalloc(ns2->nodeNr * sizeof(double));
+    if (values2 == NULL) {
+	return(0);
+    }
+    for (i = 0;i < ns1->nodeNr;i++) {
+	str = xmlNodeGetContent(ns1->nodeTab[i]);
+	if (str == NULL)
+	    continue;
+	val1 = xmlXPathStringEvalNumber(str);
+	xmlFree(str);
+	if (isnan(val1))
+	    continue;
+	for (j = 0;j < ns2->nodeNr;j++) {
+	    if (init == 0) {
+		str = xmlNodeGetContent(ns2->nodeTab[j]);
+		if (str == NULL) {
+		    values2[j] = xmlXPathNAN;
+		} else {
+		    values2[j] = xmlXPathStringEvalNumber(str);
+		    xmlFree(str);
+		}
+	    }
+	    if (isnan(values2[j]))
+		continue;
+	    if (inf && strict) 
+		ret = (val1 < values2[j]);
+	    else if (inf && !strict)
+		ret = (val1 <= values2[j]);
+	    else if (!inf && strict)
+		ret = (val1 > values2[j]);
+	    else if (!inf && !strict)
+		ret = (val1 >= values2[j]);
+	    if (ret)
+		break;
+	}
+	if (ret)
+	    break;
+	init = 1;
+    }
+    xmlFree(values2);
+    return(ret);
     return(0);
 }
 
@@ -5231,10 +5294,18 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 	 */
 	SKIP_BLANKS;
 	name = xmlXPathScanName(ctxt);
-	if (name != NULL) {
+	if ((name != NULL) && (xmlStrstr(name, (xmlChar *) "::") != NULL)) {
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "PathExpr: Axis\n");
+#endif
+	    lc = 1;
+	    xmlFree(name);
+	} else if (name != NULL) {
 	    int len =xmlStrlen(name);
 	    int blank = 0;
 
+	    
 	    while (NXT(len) != 0) {
 		if (NXT(len) == '/') {
 		    /* element name */
@@ -6265,7 +6336,7 @@ xmlXPathEvalLocationPath(xmlXPathParserContextPtr ctxt) {
 xmlXPathObjectPtr
 xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     xmlXPathParserContextPtr ctxt;
-    xmlXPathObjectPtr res = NULL, tmp, init = NULL;
+    xmlXPathObjectPtr res, tmp, init = NULL;
     int stack = 0;
 
     xmlXPathInit();
@@ -6284,6 +6355,10 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     if (ctxt->value == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlXPathEval: evaluation failed\n");
+	res = NULL;
+    } else if (*ctxt->cur != 0) {
+	xmlXPatherror(ctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);
+	res = NULL;
     } else {
 	res = valuePop(ctxt);
     }
@@ -6296,7 +6371,7 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 	    xmlXPathFreeObject(tmp);
         }
     } while (tmp != NULL);
-    if (stack != 0) {
+    if ((stack != 0) && (res != NULL)) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlXPathEval: %d object left on the stack\n",
 	        stack);
@@ -6333,7 +6408,12 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     pctxt = xmlXPathNewParserContext(str, ctxt);
     xmlXPathEvalExpr(pctxt);
 
-    res = valuePop(pctxt);
+    if (*pctxt->cur != 0) {
+	xmlXPatherror(pctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);
+	res = NULL;
+    } else {
+	res = valuePop(pctxt);
+    }
     do {
         tmp = valuePop(pctxt);
 	if (tmp != NULL) {
@@ -6341,7 +6421,7 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
 	    stack++;
 	}
     } while (tmp != NULL);
-    if (stack != 0) {
+    if ((stack != 0) && (res != NULL)) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlXPathEvalExpression: %d object left on the stack\n",
 	        stack);

@@ -1,0 +1,52 @@
+
+========================
+Expression: 1
+Object is a number : 1
+
+========================
+Expression: 123
+Object is a number : 123
+
+========================
+Expression: 1.23
+Object is a number : 1.23
+
+========================
+Expression: 0.123
+Object is a number : 0.123
+
+========================
+Expression: 1 div 0
+Object is a number : inf
+
+========================
+Expression: -1 div 0
+Object is a number : -inf
+
+========================
+Expression: 0 div 0
+Object is a number : nan
+
+========================
+Expression: (1 div 0) > 0
+Object is a Boolean : true
+
+========================
+Expression: (1 div 0) < 0
+Object is a Boolean : false
+
+========================
+Expression: (-1 div 0) > 0
+Object is a Boolean : false
+
+========================
+Expression: (-1 div 0) < 0
+Object is a Boolean : true
+
+========================
+Expression: (0 div 0) > 0
+Object is a Boolean : false
+
+========================
+Expression: (0 div 0) < 0
+Object is a Boolean : false

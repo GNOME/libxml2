@@ -1,3 +1,9 @@
+Thu Feb 22 07:52:27 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: finally implemented xmlXPathCompareNodeSets
+	* test/XPath/expr/floats results/XPath/expr/floats: added 
+	  a test for float expressions
+
 Tue Feb 20 18:57:54 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: fixed xmlNodeGetContent, it was not recursing on child

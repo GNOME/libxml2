@@ -10974,13 +10974,20 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
 	return(XML_ERR_NO_MEMORY);
     }
     xmlAddChild(node, fake);
-        
-    xmlCtxtUseOptions(ctxt, options);
+
+    /* 
+     * Use input doc's dict if present, else assure XML_PARSE_NODICT is set.
+     * We need a dictionary for xmlDetectSAX2, so if there's no doc dict
+     * we must wait until the last moment to free the original one.
+     */
     if (doc->dict != NULL) {
-	if (ctxt->dict != NULL)
+        if (ctxt->dict != NULL)
 	    xmlDictFree(ctxt->dict);
 	ctxt->dict = doc->dict;
-    }
+    } else
+        options |= XML_PARSE_NODICT;
+
+    xmlCtxtUseOptions(ctxt, options);
     xmlDetectSAX2(ctxt);
     ctxt->myDoc = doc;
 
@@ -11070,7 +11077,9 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
         xmlFreeNodeList(*lst);
 	*lst = NULL;
     }
-	
+
+    if ((doc->dict == NULL) && (ctxt->dict != NULL))
+        xmlDictFree(ctxt->dict);
     ctxt->dict = NULL;
     xmlFreeParserCtxt(ctxt);
     

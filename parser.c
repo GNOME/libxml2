@@ -11973,15 +11973,15 @@ xmlDocPtr
 xmlSAXParseDoc(xmlSAXHandlerPtr sax, xmlChar *cur, int recovery) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
+    xmlSAXHandlerPtr oldsax = NULL;
 
-    if ((cur == NULL) || (sax == NULL)) return(NULL);
+    if (cur == NULL) return(NULL);
 
 
     ctxt = xmlCreateDocParserCtxt(cur);
     if (ctxt == NULL) return(NULL);
     if (sax != NULL) { 
-        if (ctxt->sax != NULL)
-	    xmlFree(ctxt->sax);
+        oldsax = ctxt->sax;
         ctxt->sax = sax;
         ctxt->userData = NULL;
     }
@@ -11995,7 +11995,7 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, xmlChar *cur, int recovery) {
        ctxt->myDoc = NULL;
     }
     if (sax != NULL)
-	ctxt->sax = NULL;
+	ctxt->sax = oldsax;
     xmlFreeParserCtxt(ctxt);
     
     return(ret);

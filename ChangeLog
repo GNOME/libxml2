@@ -1,6 +1,6 @@
 Thu Sep 18 12:04:50 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
-	* dict.c: valgrind found a newly introduced bug
+	* dict.c: the last patch broke unicity of returned strings, removed
 
 Thu Sep 18 00:31:02 CEST 2003 Daniel Veillard <daniel@veillard.com>
 

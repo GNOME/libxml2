@@ -1,3 +1,7 @@
+Wed Dec 11 16:58:48 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c doc/libxml2-api.xml: a bit more cleanup
+
 Wed Dec 11 14:54:47 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/apibuild.py doc/libxml2-api.xml doc/Makefile.am: new API

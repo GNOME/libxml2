@@ -4316,49 +4316,49 @@ actually an xmlCharEncoding'/>
       <arg name='title' type='const xlinkTitle' info='the link title'/>
     </functype>
     <function name='xmlACatalogAdd' file='catalog'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='catal' type='xmlCatalogPtr' info=''/>
-      <arg name='type' type='const xmlChar *' info=''/>
-      <arg name='orig' type='const xmlChar *' info=''/>
-      <arg name='replace' type='const xmlChar *' info=''/>
+      <info>Add an entry in the catalog, it may overwrite existing but different entries.</info>
+      <return type='int' info='0 if successful, -1 otherwise'/>
+      <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
+      <arg name='type' type='const xmlChar *' info='the type of record to add to the catalog'/>
+      <arg name='orig' type='const xmlChar *' info='the system, public or prefix to match'/>
+      <arg name='replace' type='const xmlChar *' info='the replacement value for the match'/>
     </function>
     <function name='xmlACatalogDump' file='catalog'>
-      <info></info>
+      <info>Free up all the memory associated with catalogs</info>
       <return type='void'/>
-      <arg name='catal' type='xmlCatalogPtr' info=''/>
-      <arg name='out' type='FILE *' info=''/>
+      <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
+      <arg name='out' type='FILE *' info='the file.'/>
     </function>
     <function name='xmlACatalogRemove' file='catalog'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='catal' type='xmlCatalogPtr' info=''/>
-      <arg name='value' type='const xmlChar *' info=''/>
+      <info>Remove an entry from the catalog</info>
+      <return type='int' info='the number of entries removed if successful, -1 otherwise'/>
+      <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
+      <arg name='value' type='const xmlChar *' info='the value to remove'/>
     </function>
     <function name='xmlACatalogResolve' file='catalog'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
-      <arg name='catal' type='xmlCatalogPtr' info=''/>
+      <info>Do a complete resolution lookup of an External Identifier</info>
+      <return type='xmlChar *' info='the URI of the resource or NULL if not found, it must be freed by the caller.'/>
+      <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
       <arg name='pubID' type='const xmlChar *' info=''/>
       <arg name='sysID' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlACatalogResolvePublic' file='catalog'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
-      <arg name='catal' type='xmlCatalogPtr' info=''/>
+      <info>Try to lookup the system ID associated to a public ID in that catalog</info>
+      <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
+      <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
       <arg name='pubID' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlACatalogResolveSystem' file='catalog'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
-      <arg name='catal' type='xmlCatalogPtr' info=''/>
+      <info>Try to lookup the catalog resource for a system ID</info>
+      <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
+      <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
       <arg name='sysID' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlACatalogResolveURI' file='catalog'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
-      <arg name='catal' type='xmlCatalogPtr' info=''/>
-      <arg name='URI' type='const xmlChar *' info=''/>
+      <info>Do a complete resolution lookup of an URI</info>
+      <return type='xmlChar *' info='the URI of the resource or NULL if not found, it must be freed by the caller.'/>
+      <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
+      <arg name='URI' type='const xmlChar *' info='the URI'/>
     </function>
     <function name='xmlAddAttributeDecl' file='valid'>
       <info>Register a new attribute declaration Note that @tree becomes the ownership of the DTD</info>
@@ -4732,108 +4732,108 @@ actually an xmlCharEncoding'/>
       <arg name='parent' type='xmlNodePtr' info=''/>
     </functype>
     <function name='xmlCatalogAdd' file='catalog'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='type' type='const xmlChar *' info=''/>
-      <arg name='orig' type='const xmlChar *' info=''/>
-      <arg name='replace' type='const xmlChar *' info=''/>
+      <info>Add an entry in the catalog, it may overwrite existing but different entries. If called before any other catalog routine, allows to override the default shared catalog put in place by xmlInitializeCatalog();</info>
+      <return type='int' info='0 if successful, -1 otherwise'/>
+      <arg name='type' type='const xmlChar *' info='the type of record to add to the catalog'/>
+      <arg name='orig' type='const xmlChar *' info='the system, public or prefix to match'/>
+      <arg name='replace' type='const xmlChar *' info='the replacement value for the match'/>
     </function>
     <function name='xmlCatalogAddLocal' file='catalog'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='catalogs' type='void *' info=''/>
-      <arg name='URL' type='const xmlChar *' info=''/>
+      <info>Add the new entry to the catalog list</info>
+      <return type='void *' info='the updated list'/>
+      <arg name='catalogs' type='void *' info='a document&apos;s list of catalogs'/>
+      <arg name='URL' type='const xmlChar *' info='the URL to a new local catalog'/>
     </function>
     <function name='xmlCatalogCleanup' file='catalog'>
-      <info></info>
+      <info>Free up all the memory associated with catalogs</info>
       <return type='void'/>
     </function>
     <function name='xmlCatalogConvert' file='catalog'>
-      <info></info>
-      <return type='int' info=''/>
+      <info>Convert all the SGML catalog entries as XML ones</info>
+      <return type='int' info='the number of entries converted if successful, -1 otherwise'/>
     </function>
     <function name='xmlCatalogDump' file='catalog'>
-      <info></info>
+      <info>Free up all the memory associated with catalogs</info>
       <return type='void'/>
-      <arg name='out' type='FILE *' info=''/>
+      <arg name='out' type='FILE *' info='the file.'/>
     </function>
     <function name='xmlCatalogFreeLocal' file='catalog'>
-      <info></info>
+      <info>Free up the memory associated to the catalog list</info>
       <return type='void'/>
-      <arg name='catalogs' type='void *' info=''/>
+      <arg name='catalogs' type='void *' info='a document&apos;s list of catalogs'/>
     </function>
     <function name='xmlCatalogGetDefaults' file='catalog'>
-      <info></info>
-      <return type='xmlCatalogAllow' info=''/>
+      <info>Used to get the user preference w.r.t. to what catalogs should be accepted</info>
+      <return type='xmlCatalogAllow' info='the current xmlCatalogAllow value'/>
     </function>
     <function name='xmlCatalogGetPublic' file='catalog'>
-      <info></info>
-      <return type='const xmlChar *' info=''/>
+      <info>Try to lookup the system ID associated to a public ID DEPRECATED, use xmlCatalogResolvePublic()</info>
+      <return type='const xmlChar *' info='the system ID if found or NULL otherwise.'/>
       <arg name='pubID' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlCatalogGetSystem' file='catalog'>
-      <info></info>
-      <return type='const xmlChar *' info=''/>
+      <info>Try to lookup the system ID associated to a public ID DEPRECATED, use xmlCatalogResolveSystem()</info>
+      <return type='const xmlChar *' info='the system ID if found or NULL otherwise.'/>
       <arg name='sysID' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlCatalogIsEmpty' file='catalog'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='catal' type='xmlCatalogPtr' info=''/>
+      <info>Check is a catalog is empty</info>
+      <return type='int' info='1 if the catalog is empty, 0 if not, amd -1 in case of error.'/>
+      <arg name='catal' type='xmlCatalogPtr' info='should this create an SGML catalog'/>
     </function>
     <function name='xmlCatalogLocalResolve' file='catalog'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
-      <arg name='catalogs' type='void *' info=''/>
+      <info>Do a complete resolution lookup of an External Identifier using a document&apos;s private catalog list</info>
+      <return type='xmlChar *' info='the URI of the resource or NULL if not found, it must be freed by the caller.'/>
+      <arg name='catalogs' type='void *' info='a document&apos;s list of catalogs'/>
       <arg name='pubID' type='const xmlChar *' info=''/>
       <arg name='sysID' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlCatalogLocalResolveURI' file='catalog'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
-      <arg name='catalogs' type='void *' info=''/>
-      <arg name='URI' type='const xmlChar *' info=''/>
+      <info>Do a complete resolution lookup of an URI using a document&apos;s private catalog list</info>
+      <return type='xmlChar *' info='the URI of the resource or NULL if not found, it must be freed by the caller.'/>
+      <arg name='catalogs' type='void *' info='a document&apos;s list of catalogs'/>
+      <arg name='URI' type='const xmlChar *' info='the URI'/>
     </function>
     <function name='xmlCatalogRemove' file='catalog'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='value' type='const xmlChar *' info=''/>
+      <info>Remove an entry from the catalog</info>
+      <return type='int' info='the number of entries removed if successful, -1 otherwise'/>
+      <arg name='value' type='const xmlChar *' info='the value to remove'/>
     </function>
     <function name='xmlCatalogResolve' file='catalog'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
+      <info>Do a complete resolution lookup of an External Identifier</info>
+      <return type='xmlChar *' info='the URI of the resource or NULL if not found, it must be freed by the caller.'/>
       <arg name='pubID' type='const xmlChar *' info=''/>
       <arg name='sysID' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlCatalogResolvePublic' file='catalog'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
+      <info>Try to lookup the system ID associated to a public ID</info>
+      <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
       <arg name='pubID' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlCatalogResolveSystem' file='catalog'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
+      <info>Try to lookup the catalog resource for a system ID</info>
+      <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
       <arg name='sysID' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlCatalogResolveURI' file='catalog'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
-      <arg name='URI' type='const xmlChar *' info=''/>
+      <info>Do a complete resolution lookup of an URI</info>
+      <return type='xmlChar *' info='the URI of the resource or NULL if not found, it must be freed by the caller.'/>
+      <arg name='URI' type='const xmlChar *' info='the URI'/>
     </function>
     <function name='xmlCatalogSetDebug' file='catalog'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='level' type='int' info=''/>
+      <info>Used to set the debug level for catalog operation, 0 disable debugging, 1 enable it</info>
+      <return type='int' info='the previous value of the catalog debugging level'/>
+      <arg name='level' type='int' info='the debug level of catalogs required'/>
     </function>
     <function name='xmlCatalogSetDefaultPrefer' file='catalog'>
-      <info></info>
-      <return type='xmlCatalogPrefer' info=''/>
-      <arg name='prefer' type='xmlCatalogPrefer' info=''/>
+      <info>Allows to set the preference between public and system for deletion in XML Catalog resolution. C.f. section 4.1.1 of the spec Values accepted are XML_CATA_PREFER_PUBLIC or XML_CATA_PREFER_SYSTEM</info>
+      <return type='xmlCatalogPrefer' info='the previous value of the default preference for delegation'/>
+      <arg name='prefer' type='xmlCatalogPrefer' info='the default preference for delegation'/>
     </function>
     <function name='xmlCatalogSetDefaults' file='catalog'>
-      <info></info>
+      <info>Used to set the user preference w.r.t. to what catalogs should be accepted</info>
       <return type='void'/>
-      <arg name='allow' type='xmlCatalogAllow' info=''/>
+      <arg name='allow' type='xmlCatalogAllow' info='what catalogs should be accepted'/>
     </function>
     <function name='xmlCharEncCloseFunc' file='encoding'>
       <info>Generic front-end for encoding handler close function</info>
@@ -5974,7 +5974,7 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='xmlInitializeCatalog' file='catalog'>
-      <info></info>
+      <info>Do the catalog initialization. this function is not thread safe, catalog initialization should preferably be done once at startup</info>
       <return type='void'/>
     </function>
     <function name='xmlInitializeGlobalState' file='globals'>
@@ -6262,19 +6262,19 @@ actually an xmlCharEncoding'/>
       <arg name='user' type='const void *' info='extra user provided data to the walker'/>
     </functype>
     <function name='xmlLoadACatalog' file='catalog'>
-      <info></info>
-      <return type='xmlCatalogPtr' info=''/>
-      <arg name='filename' type='const char *' info=''/>
+      <info>Load the catalog and build the associated data structures. This can be either an XML Catalog or an SGML Catalog It will recurse in SGML CATALOG entries. On the other hand XML Catalogs are not handled recursively.</info>
+      <return type='xmlCatalogPtr' info='the catalog parsed or NULL in case of error'/>
+      <arg name='filename' type='const char *' info='a file path'/>
     </function>
     <function name='xmlLoadCatalog' file='catalog'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='filename' type='const char *' info=''/>
+      <info>Load the catalog and makes its definitions effective for the default external entity loader. It will recurse in SGML CATALOG entries. this function is not thread safe, catalog initialization should preferably be done once at startup</info>
+      <return type='int' info='0 in case of success -1 in case of error'/>
+      <arg name='filename' type='const char *' info='a file path'/>
     </function>
     <function name='xmlLoadCatalogs' file='catalog'>
-      <info></info>
+      <info>Load the catalogs and makes their definitions effective for the default external entity loader. this function is not thread safe, catalog initialization should preferably be done once at startup</info>
       <return type='void'/>
-      <arg name='paths' type='const char *' info=''/>
+      <arg name='pathss' type='const char *' info=''/>
     </function>
     <function name='xmlLoadExternalEntity' file='parser'>
       <info>Load an external entity, note that the use of this function for unparsed entities may generate problems TODO: a more generic External entity API must be designed</info>
@@ -6284,9 +6284,9 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the context in which the entity is called or NULL'/>
     </function>
     <function name='xmlLoadSGMLSuperCatalog' file='catalog'>
-      <info></info>
-      <return type='xmlCatalogPtr' info=''/>
-      <arg name='filename' type='const char *' info=''/>
+      <info>Load an SGML super catalog. It won&apos;t expand CATALOG or DELEGATE references. This is only needed for manipulating SGML Super Catalogs like adding and removing CATALOG or DELEGATE entries.</info>
+      <return type='xmlCatalogPtr' info='the catalog parsed or NULL in case of error'/>
+      <arg name='filename' type='const char *' info='a file path'/>
     </function>
     <function name='xmlLockLibrary' file='threads'>
       <info>xmlLockLibrary() is used to take out a re-entrant lock on the libxml2 library.</info>
@@ -6633,9 +6633,9 @@ actually an xmlCharEncoding'/>
       <arg name='len' type='int' info='the length of the block'/>
     </function>
     <function name='xmlNewCatalog' file='catalog'>
-      <info></info>
-      <return type='xmlCatalogPtr' info=''/>
-      <arg name='sgml' type='int' info=''/>
+      <info>create a new Catalog.</info>
+      <return type='xmlCatalogPtr' info='the xmlCatalogPtr or NULL in case of error'/>
+      <arg name='sgml' type='int' info='should this create an SGML catalog'/>
     </function>
     <function name='xmlNewCharEncodingHandler' file='encoding'>
       <info>Create and registers an xmlCharEncodingHandler.</info>

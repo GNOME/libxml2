@@ -847,10 +847,11 @@ xmlLoadFileContent(const char *filename)
 #endif
 
 #ifdef HAVE_STAT
-    if ((fd = open(filename, O_RDONLY)) < 0) {
+    if ((fd = open(filename, O_RDONLY)) < 0)
 #else
-    if ((fd = fopen(filename, "rb")) == NULL) {
+    if ((fd = fopen(filename, "rb")) == NULL)
 #endif
+    {
         return (NULL);
     }
 #ifdef HAVE_STAT
@@ -2500,7 +2501,7 @@ xmlExpandCatalog(xmlCatalogPtr catal, const char *filename)
 /**
  * xmlACatalogResolveSystem:
  * @catal:  a Catalog
- * @sysId:  the public ID string
+ * @sysID:  the public ID string
  *
  * Try to lookup the catalog resource for a system ID
  *
@@ -2535,7 +2536,7 @@ xmlACatalogResolveSystem(xmlCatalogPtr catal, const xmlChar *sysID) {
 /**
  * xmlACatalogResolvePublic:
  * @catal:  a Catalog
- * @pubId:  the public ID string
+ * @pubID:  the public ID string
  *
  * Try to lookup the system ID associated to a public ID in that catalog
  *
@@ -2570,8 +2571,8 @@ xmlACatalogResolvePublic(xmlCatalogPtr catal, const xmlChar *pubID) {
 /**
  * xmlACatalogResolve:
  * @catal:  a Catalog
- * @pubId:  the public ID string
- * @sysId:  the system ID string
+ * @pubID:  the public ID string
+ * @sysID:  the system ID string
  *
  * Do a complete resolution lookup of an External Identifier
  *
@@ -2917,7 +2918,7 @@ xmlLoadCatalog(const char *filename)
 
 /**
  * xmlLoadCatalogs:
- * @paths:  a list of directories separated by a colon or a space.
+ * @pathss:  a list of directories separated by a colon or a space.
  *
  * Load the catalogs and makes their definitions effective for the default
  * external entity loader.
@@ -2980,7 +2981,7 @@ xmlCatalogCleanup(void) {
 
 /**
  * xmlCatalogResolveSystem:
- * @sysId:  the public ID string
+ * @sysID:  the public ID string
  *
  * Try to lookup the catalog resource for a system ID
  *
@@ -3000,7 +3001,7 @@ xmlCatalogResolveSystem(const xmlChar *sysID) {
 
 /**
  * xmlCatalogResolvePublic:
- * @pubId:  the public ID string
+ * @pubID:  the public ID string
  *
  * Try to lookup the system ID associated to a public ID
  *
@@ -3020,8 +3021,8 @@ xmlCatalogResolvePublic(const xmlChar *pubID) {
 
 /**
  * xmlCatalogResolve:
- * @pubId:  the public ID string
- * @sysId:  the system ID string
+ * @pubID:  the public ID string
+ * @sysID:  the system ID string
  *
  * Do a complete resolution lookup of an External Identifier
  *
@@ -3330,8 +3331,8 @@ xmlCatalogAddLocal(void *catalogs, const xmlChar *URL) {
 /**
  * xmlCatalogLocalResolve:
  * @catalogs:  a document's list of catalogs
- * @pubId:  the public ID string
- * @sysId:  the system ID string
+ * @pubID:  the public ID string
+ * @sysID:  the system ID string
  *
  * Do a complete resolution lookup of an External Identifier using a 
  * document's private catalog list
@@ -3412,7 +3413,7 @@ xmlCatalogLocalResolveURI(void *catalogs, const xmlChar *URI) {
  ************************************************************************/
 /**
  * xmlCatalogGetSystem:
- * @sysId:  the system ID string
+ * @sysID:  the system ID string
  *
  * Try to lookup the system ID associated to a public ID
  * DEPRECATED, use xmlCatalogResolveSystem()
@@ -3456,7 +3457,7 @@ xmlCatalogGetSystem(const xmlChar *sysID) {
 
 /**
  * xmlCatalogGetPublic:
- * @pubId:  the public ID string
+ * @pubID:  the public ID string
  *
  * Try to lookup the system ID associated to a public ID
  * DEPRECATED, use xmlCatalogResolvePublic()

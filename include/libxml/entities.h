@@ -32,8 +32,6 @@ typedef enum {
  * and the linkind data needed for the linking in the hash table.
  */
 
-typedef struct _xmlEntity xmlEntity;
-typedef xmlEntity *xmlEntityPtr;
 struct _xmlEntity {
     void           *_private;	        /* application data */
     xmlElementType          type;       /* XML_ENTITY_DECL, must be second ! */

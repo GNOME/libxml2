@@ -88,11 +88,11 @@ typedef char *(*xmlStrdupFunc)(const char *str);
 
 /*
  * The 4 interfaces used for all memory handling within libxml
- */
 LIBXML_DLL_IMPORT extern xmlFreeFunc xmlFree;
 LIBXML_DLL_IMPORT extern xmlMallocFunc xmlMalloc;
 LIBXML_DLL_IMPORT extern xmlReallocFunc xmlRealloc;
 LIBXML_DLL_IMPORT extern xmlStrdupFunc xmlMemStrdup;
+ */
 
 /*
  * The way to overload the existing functions
@@ -157,6 +157,13 @@ char *	xmlMemStrdupLoc(const char *str, const char *file, int line);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#ifndef __XML_GLOBALS_H
+#ifndef __XML_THREADS_H__
+#include <libxml/threads.h>
+#include <libxml/globals.h>
+#endif
+#endif
 
 #endif  /* _DEBUG_MEMORY_ALLOC_ */
 

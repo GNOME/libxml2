@@ -16,6 +16,7 @@
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
 #include <libxml/SAX.h>
+#include <libxml/xmlmemory.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -87,6 +88,14 @@ struct _xmlGlobalState
 	int xmlSaveNoEmptyTags;
 	int xmlIndentTreeOutput;
 };
+
+#ifdef __cplusplus
+}
+#endif
+#include <libxml/threads.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void	xmlInitializeGlobalState(xmlGlobalStatePtr gs);
 

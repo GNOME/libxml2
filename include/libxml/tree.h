@@ -19,8 +19,6 @@
 #else
 #include <libxml/xmlversion.h>
 #endif
-#include <libxml/xmlmemory.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -41,6 +39,16 @@ typedef xmlParserInput *xmlParserInputPtr;
 
 typedef struct _xmlParserCtxt xmlParserCtxt;
 typedef xmlParserCtxt *xmlParserCtxtPtr;
+
+typedef struct _xmlSAXLocator xmlSAXLocator;
+typedef xmlSAXLocator *xmlSAXLocatorPtr;
+
+typedef struct _xmlSAXHandler xmlSAXHandler;
+typedef xmlSAXHandler *xmlSAXHandlerPtr;
+
+/* entities.h */
+typedef struct _xmlEntity xmlEntity;
+typedef xmlEntity *xmlEntityPtr;
 
 /**
  * BASE_BUFFER_SIZE:
@@ -858,6 +866,9 @@ void		xmlSetCompressMode	(int mode);
 
 #ifdef __cplusplus
 }
+#endif
+#ifndef __XML_PARSER_H__
+#include <libxml/xmlmemory.h>
 #endif
 
 #endif /* __XML_TREE_H__ */

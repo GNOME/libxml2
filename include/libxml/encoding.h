@@ -29,8 +29,6 @@
 #ifdef LIBXML_ICONV_ENABLED
 #include <iconv.h>
 #endif
-#include <libxml/tree.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -138,6 +136,14 @@ struct _xmlCharEncodingHandler {
     iconv_t                    iconv_out;
 #endif /* LIBXML_ICONV_ENABLED */
 };
+
+#ifdef __cplusplus
+}
+#endif
+#include <libxml/tree.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * Interfaces for encoding handlers

@@ -12,8 +12,6 @@
 #include <libxml/tree.h>
 #include <libxml/valid.h>
 #include <libxml/entities.h>
-#include <libxml/encoding.h>
-#include <libxml/xmlIO.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -227,8 +225,6 @@ struct _xmlParserCtxt {
  *
  * a SAX Locator.
  */
-typedef struct _xmlSAXLocator xmlSAXLocator;
-typedef xmlSAXLocator *xmlSAXLocatorPtr;
 struct _xmlSAXLocator {
     const xmlChar *(*getPublicId)(void *ctx);
     const xmlChar *(*getSystemId)(void *ctx);
@@ -566,8 +562,6 @@ typedef int (*hasInternalSubsetSAXFunc) (void *ctx);
  */
 typedef int (*hasExternalSubsetSAXFunc) (void *ctx);
 
-typedef struct _xmlSAXHandler xmlSAXHandler;
-typedef xmlSAXHandler *xmlSAXHandlerPtr;
 struct _xmlSAXHandler {
     internalSubsetSAXFunc internalSubset;
     isStandaloneSAXFunc isStandalone;
@@ -644,6 +638,16 @@ LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultVal;
 #if 0
 LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+#include <libxml/encoding.h>
+#include <libxml/xmlIO.h>
+#include <libxml/globals.h>
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 
@@ -854,8 +858,5 @@ xmlParserInputPtr
 #ifdef __cplusplus
 }
 #endif
-
-#include <libxml/globals.h>
-
 #endif /* __XML_PARSER_H__ */
 

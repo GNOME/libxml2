@@ -7699,8 +7699,12 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
     xmlDtdPtr dtd;
     int is_xhtml = 0;
 #endif
+    const xmlChar *oldenc = cur->encoding;
 
     xmlInitParser();
+
+    if (encoding != NULL)
+        cur->encoding = BAD_CAST encoding;
 
     xmlOutputBufferWriteString(buf, "<?xml version=");
     if (cur->version != NULL) 
@@ -7754,6 +7758,8 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 	    child = child->next;
 	}
     }
+    if (encoding != NULL)
+        cur->encoding = oldenc;
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

@@ -1,3 +1,8 @@
+Mon Dec  8 13:09:39 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: tentative fix for #126117 character reference in
+	  attributes output problem in some cornercase.
+
 Mon Dec  8 11:08:45 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.py: tried to fix the problems reported in 

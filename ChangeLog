@@ -1,3 +1,8 @@
+Thu Jan 23 19:22:54 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: minimized the memory allocated for GetContent
+	  and a bit of cleanup.
+
 Thu Jan 23 17:41:37 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py: seems there is no good reasons to

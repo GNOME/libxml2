@@ -4170,7 +4170,7 @@ xmlNodeGetContent(xmlNodePtr cur)
                 xmlBufferPtr buffer;
                 xmlChar *ret;
 
-                buffer = xmlBufferCreate();
+                buffer = xmlBufferCreateSize(64);
                 if (buffer == NULL)
                     return (NULL);
                 while (tmp != NULL) {
@@ -5382,10 +5382,11 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
  */
 int
 xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
-    xmlAttrPtr prop = node->properties, prev = NULL;;
+    xmlAttrPtr prop, prev = NULL;;
 
     if ((node == NULL) || (name == NULL))
 	return(-1);
+    prop = node->properties;
     while (prop != NULL) {
         if ((xmlStrEqual(prop->name, name)) &&
 	    (prop->ns == NULL)) {

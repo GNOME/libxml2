@@ -1,3 +1,10 @@
+Wed Jan  1 15:42:54 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c python/tests/reader2.py: fixed another validity
+	  checking in external parsed entities raised by Stéphane Bidoul
+	  and added a specific regression test.
+	* python/tests/reader3.py: cleanup
+
 Tue Dec 31 15:44:02 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader2.py: fixed a problem with

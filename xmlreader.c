@@ -151,7 +151,8 @@ xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
 				 ctxt->myDoc, ctxt->node, fullname);
 	}
     }
-    reader->state = XML_TEXTREADER_ELEMENT;
+    if (reader != NULL)
+	reader->state = XML_TEXTREADER_ELEMENT;
 }
 
 /**
@@ -184,10 +185,12 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
 		                ctxt->myDoc, node, fullname);
 	}
     }
-    if (reader->state == XML_TEXTREADER_ELEMENT)
-	reader->wasempty = 1;
-    else
-	reader->wasempty = 0;
+    if (reader != NULL) {
+	if (reader->state == XML_TEXTREADER_ELEMENT)
+	    reader->wasempty = 1;
+	else
+	    reader->wasempty = 0;
+    }
 }
 
 /**

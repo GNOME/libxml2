@@ -95,6 +95,58 @@ if err != "":
     print err
     sys.exit(1)
 
+#
+# Another test for external entity parsing and validation
+#
+
+s = """<!DOCTYPE test [
+<!ELEMENT test (x)>
+<!ELEMENT x (#PCDATA)>
+<!ENTITY e SYSTEM "tst.ent">
+]>
+<test>
+  &e;
+</test>
+"""
+tst_ent = """<x>hello</x>"""
+expect="""1 test
+3 #text
+1 x
+3 #text
+15 x
+3 #text
+15 test
+"""
+res=""
+
+def myResolver(URL, ID, ctxt):
+    if URL == "tst.ent":
+        return(StringIO.StringIO(tst_ent))
+    return None
+
+libxml2.setEntityLoader(myResolver)
+
+input = libxml2.inputBuffer(StringIO.StringIO(s))
+reader = input.newTextReader("test3")
+reader.SetParserProp(libxml2.PARSER_LOADDTD,1)
+reader.SetParserProp(libxml2.PARSER_DEFAULTATTRS,1)
+reader.SetParserProp(libxml2.PARSER_SUBST_ENTITIES,1)
+reader.SetParserProp(libxml2.PARSER_VALIDATE,1)
+while reader.Read() == 1:
+    res = res + "%s %s\n" % (reader.NodeType(),reader.Name())
+
+if res != expect:
+    print "test3 failed: unexpected output"
+    print res
+    sys.exit(1)
+if err != "":
+    print "test3 failed: validation error found"
+    print err
+    sys.exit(1)
+
+#
+# cleanup
+#
 del input
 del reader
 

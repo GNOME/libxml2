@@ -94,6 +94,9 @@ if ret != 0:
     print "test_noent: Error detecting the end"
     sys.exit(1)
 
+#
+# cleanup
+#
 del f
 del input
 del reader

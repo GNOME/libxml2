@@ -22,6 +22,9 @@
 extern "C" {
 #endif
 
+/**
+ * This error codes are obsolete; not used any more.
+ */
 typedef enum {
     XML_SCHEMAS_ERR_OK		= 0,
     XML_SCHEMAS_ERR_NOROOT	= 1,

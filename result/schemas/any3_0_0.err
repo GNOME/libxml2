@@ -1,1 +1,1 @@
-./test/schemas/any3_0.xml:10: element foo: Schemas parser error : Element 'foo:foo': The element content is not valid.
+./test/schemas/any3_0.xml:10: element foo: Schemas validity error : Element 'foo:foo' [CT local]: The element content is not valid.

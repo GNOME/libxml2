@@ -288,7 +288,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
     }
     if (URL == NULL) return;
     buf[indx] = 0;
-    while (*cur != 0) {
+    while ((*cur != 0) && (indx < 4096)) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
 	    buf[indx] = 0;
 	    ctxt->protocol = xmlMemStrdup(buf);
@@ -301,7 +301,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
     if (*cur == 0) return;
 
     buf[indx] = 0;
-    while (1) {
+    while (indx < 4096) {
 	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
 		(!strchr (cur, '[') && strchr (cur, ']'))) {
 	    __xmlIOErr(XML_FROM_HTTP, XML_HTTP_URL_SYNTAX, 
@@ -311,7 +311,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
 
 	if (cur[0] == '[') {
 	    cur++;
-	    while (cur[0] != ']')
+	    while ((cur[0] != ']') && (indx < 4096))
 		buf[indx++] = *cur++;
     
 	    if (!strchr (buf, ':')) {
@@ -368,7 +368,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
     else {
         indx = 0;
         buf[indx] = 0;
-	while (*cur != 0)
+	while ((*cur != 0) && (indx < 4096))
 	    buf[indx++] = *cur++;
 	buf[indx] = 0;
 	ctxt->path = xmlMemStrdup(buf);

@@ -1,3 +1,7 @@
+Mon Feb  9 15:31:24 CET 2004 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* nanohttp.c: fixed buffer overflow reported by Yuuichi Teranishi
+
 Mon Feb  9 13:45:59 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: small patch from Philip Ludlam to avoid warnings.

@@ -239,14 +239,6 @@ libxml2</p>
         href="ftp://ftp.ilog.fr/pub/Users/haible/gnu/">here</a>.</li>
     </ul>
   </li>
-  <li><em>libxml does not compile with HP-UX's optional ANSI-C compiler</em>
-    <p>this is due to macro limitations. Try to add " -Wp,-H16800 -Ae" to the
-    CFLAGS</p>
-    <p>you can also install and use gcc instead or use a precompiled version
-    of libxml, both available from the <a
-    href="http://hpux.cae.wisc.edu/hppd/auto/summary_all.html">HP-UX Porting
-    and Archive Centre</a></p>
-  </li>
   <li><em>make check fails on some platforms</em>
     <p>Sometime the regression tests results don't completely match the value
     produced by the parser, and the makefile uses diff to print the delta. On
@@ -2175,6 +2167,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

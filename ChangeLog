@@ -1,3 +1,8 @@
+Thu Dec 13 15:23:04 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: removed another strdup()
+	* doc/FAQ: removed the HP/UX entry
+
 Thu Dec 13 09:44:58 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fix bug #66816 when validating.

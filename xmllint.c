@@ -379,7 +379,7 @@ xmlShellReadline(char *prompt) {
     if (!fgets(line_read, 500, stdin))
         return(NULL);
     line_read[500] = 0;
-    return(strdup(line_read));
+    return((char *) xmlStrdup((xmlChar *) line_read));
 #endif
 }
 

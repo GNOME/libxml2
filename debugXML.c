@@ -1162,14 +1162,14 @@ xmlLsOneNode(FILE *output, xmlNodePtr node) {
 
 /**
  * xmlBoolToText:
- * @bool : a bool to turn into text
+ * @boolval : a bool to turn into text
  *
  * Convenient way to turn bool into text 
 */
 const char *
-xmlBoolToText(int bool)
+xmlBoolToText(int boolval)
 {
-    if (bool)
+    if (boolval)
         return("True");
     else
         return("False");

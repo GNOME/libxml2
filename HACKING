@@ -1,26 +1,16 @@
 
-     Rules for commits on the gnome-xml module
-     =========================================
+     Rules for commits on the gnome-xml version 1 branch
+     ===================================================
 
-If what you are patching is a non-compilation issue either at compile
-time or linking time on one of the main Linux platforms, then feel free
-to patch first and send mail afterward.
+I don't use v1 much anymore, and the Gnome folks are the main
+users of this version. Feel free to patch, commit and send me mail
+when you find a bug and need it fixed.
 
-Otherwise, send me (Daniel.Veillard@w3.org) a mail and if it's a bug
-issue, register it at bugs.gnome.org. I check both my mail and the
-bug database everyday. if you don't get an answer within 3 days
-(which is highly unprobable) then commit your changes. This simply
-mean that I'm on holliday or on the road.
+  Please don't do that for the Head, and check the HACKING file
+in HEAD for related instructions,
 
-The reasons I'm asking for an ask before commit policy is that I'm
-using a separate CVS base for unstable developments and if you commit
-a patch I didn't get, I may loose your change by mistake (it happened
-already once) and seriously complicates my job of merging both bases.
-(The second base is at http://dev.w3.org/ under the XML module).
-
-  thanks in advance for following the rule,
+  thanks in advance,
 
 Daniel
 
-P.S.: Raph Levien get an exception for the send before commit rule :-)
-
+Daniel.Veillard@w3.org

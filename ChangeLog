@@ -1,3 +1,7 @@
+Sun Nov 12 21:17:19 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HACKING: updated instructions for v1
+
 Sat Nov 04 18:36:52 2000  George Lebl <jirka@5z.com>
 
 	* tree.c: When messing with the child list by adding children,

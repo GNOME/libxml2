@@ -1,3 +1,9 @@
+Tue Jul 29 16:43:48 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c python/libxml2class.txt:
+	  patch from Joachim Bauch + cleanup for Relax NG error callbacks
+	  in python
+
 Tue Jul 29 12:46:08 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c parserInternals.c tree.c: applied Peter Jacobi encoding

@@ -705,7 +705,6 @@ Class relaxNgSchema()
 Class relaxNgValidCtxt()
 
     # functions from module relaxng
-    relaxNGFreeValidCtxt()
     relaxNGValidateDoc()
     relaxNGValidateFullElement()
     relaxNGValidatePopElement()

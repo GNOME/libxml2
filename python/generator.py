@@ -300,6 +300,9 @@ def skip_function(name):
         return 1
 #    if name[0:11] == "xmlXPathNew":
 #        return 1
+    # the next function is defined in libxml.c
+    if name == "xmlRelaxNGFreeValidCtxt":
+        return 1
     return 0
 
 def print_function_wrapper(name, output, export, include):

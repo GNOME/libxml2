@@ -1,3 +1,8 @@
+Wed Jan 12 22:03:33 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* pattern.c: fixed the fixed size array structure problem reported by
+	  Patrick Streule
+
 Wed Jan 12 15:15:02 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* elfgcchack.h testapi.c doc/libxml2-api.xml doc/*: regenerated

@@ -58,10 +58,9 @@ struct _xmlPattern {
     struct _xmlPattern *next; /* siblings */
     const xmlChar *pattern;	/* the pattern */
 
-    /* TODO fix the statically allocated size steps[] */
     int nbStep;
     int maxStep;
-    xmlStepOp steps[10];        /* ops for computation */
+    xmlStepOpPtr steps;        /* ops for computation */
 };
 
 typedef struct _xmlPatParserContext xmlPatParserContext;
@@ -102,6 +101,13 @@ xmlNewPattern(void) {
     }
     memset(cur, 0, sizeof(xmlPattern));
     cur->maxStep = 10;
+    cur->steps = (xmlStepOpPtr) xmlMalloc(cur->maxStep * sizeof(xmlStepOp));
+    if (cur->steps == NULL) {
+        xmlFree(cur);
+	ERROR(NULL, NULL, NULL,
+		"xmlNewPattern : malloc failed\n");
+	return(NULL);
+    }
     return(cur);
 }
 
@@ -120,12 +126,15 @@ xmlFreePattern(xmlPatternPtr comp) {
 	return;
     if (comp->pattern != NULL)
 	xmlFree((xmlChar *)comp->pattern);
-    for (i = 0;i < comp->nbStep;i++) {
-	op = &comp->steps[i];
-	if (op->value != NULL)
-	    xmlFree((xmlChar *) op->value);
-	if (op->value2 != NULL)
-	    xmlFree((xmlChar *) op->value2);
+    if (comp->steps != NULL) {
+	for (i = 0;i < comp->nbStep;i++) {
+	    op = &comp->steps[i];
+	    if (op->value != NULL)
+		xmlFree((xmlChar *) op->value);
+	    if (op->value2 != NULL)
+		xmlFree((xmlChar *) op->value2);
+	}
+	xmlFree(comp->steps);
     }
     memset(comp, -1, sizeof(xmlPattern));
     xmlFree(comp);
@@ -217,10 +226,17 @@ xmlPatternAdd(xmlPatParserContextPtr ctxt ATTRIBUTE_UNUSED,
                 xmlPatternPtr comp,
                 xmlPatOp op, xmlChar * value, xmlChar * value2)
 {
-    if (comp->nbStep >= 10) {
-        ERROR(ctxt, NULL, NULL,
-                         "xmlPatternAdd: overflow\n");
-        return (-1);
+    if (comp->nbStep >= comp->maxStep) {
+        xmlStepOpPtr temp;
+	temp = (xmlStepOpPtr) xmlRealloc(comp->steps, comp->maxStep * 2 *
+	                                 sizeof(xmlStepOp));
+        if (temp == NULL) {
+	    ERROR(ctxt, NULL, NULL,
+			     "xmlPatternAdd: realloc failed\n");
+	    return (-1);
+	}
+	comp->steps = temp;
+	comp->maxStep *= 2;
     }
     comp->steps[comp->nbStep].op = op;
     comp->steps[comp->nbStep].value = value;
@@ -263,12 +279,26 @@ xsltSwapTopPattern(xmlPatternPtr comp) {
  * @comp:  the compiled match expression
  *
  * reverse all the stack of expressions
+ *
+ * returns 0 in case of success and -1 in case of error.
  */
-static void
+static int
 xmlReversePattern(xmlPatternPtr comp) {
     int i = 0;
     int j = comp->nbStep - 1;
 
+    if (comp->nbStep >= comp->maxStep) {
+        xmlStepOpPtr temp;
+	temp = (xmlStepOpPtr) xmlRealloc(comp->steps, comp->maxStep * 2 *
+	                                 sizeof(xmlStepOp));
+        if (temp == NULL) {
+	    ERROR(ctxt, NULL, NULL,
+			     "xmlReversePattern: realloc failed\n");
+	    return (-1);
+	}
+	comp->steps = temp;
+	comp->maxStep *= 2;
+    }
     while (j > i) {
 	register const xmlChar *tmp;
 	register xmlPatOp op;
@@ -284,7 +314,10 @@ xmlReversePattern(xmlPatternPtr comp) {
 	j--;
 	i++;
     }
+    comp->steps[comp->nbStep].value = NULL;
+    comp->steps[comp->nbStep].value2 = NULL;
     comp->steps[comp->nbStep++].op = XML_OP_END;
+    return(0);
 }
 
 /************************************************************************
@@ -905,7 +938,8 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
     xmlCompilePathPattern(ctxt);
     xmlFreePatParserContext(ctxt);
 
-    xmlReversePattern(ret);
+    if (xmlReversePattern(ret) < 0)
+        goto error;
     return(ret);
 error:
     if (ctxt != NULL) xmlFreePatParserContext(ctxt);

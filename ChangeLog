@@ -1,3 +1,8 @@
+Thu Jul  1 13:18:02 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: seems the reader buffer could be used while not
+	  allocated, fixes bug #145218
+
 Thu Jul  1 11:34:10 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py: do not provide functions used as destructor

@@ -3294,6 +3294,13 @@ xmlTextReaderConstValue(xmlTextReaderPtr reader) {
 		(attr->children->next == NULL))
 		return(attr->children->content);
 	    else {
+		if (reader->buffer == NULL)
+		    reader->buffer = xmlBufferCreateSize(100);
+		if (reader->buffer == NULL) {
+		    xmlGenericError(xmlGenericErrorContext,
+				    "xmlTextReaderSetup : malloc failed\n");
+		    return (NULL);
+		}
 	        reader->buffer->use = 0;
 	        xmlNodeBufGetContent(reader->buffer, node);
 		return(reader->buffer->content);

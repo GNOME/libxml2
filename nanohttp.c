@@ -846,83 +846,90 @@ xmlNanoHTTPConnectHost(const char *host, int port)
     struct sockaddr *addr;
     struct in_addr ia;
     struct sockaddr_in sockin;
+
 #ifdef SUPPORT_IP6
     struct in6_addr ia6;
     struct sockaddr_in6 sockin6;
 #endif
     int i;
     int s;
-    
+
 #if defined(SUPPORT_IP6) && defined(RES_USE_INET6)
     if (!(_res.options & RES_INIT))
-	res_init();
+        res_init();
     _res.options |= RES_USE_INET6;
 #endif
-    h=gethostbyname(host);
-    if (h==NULL)
-    {
-        const char *	h_err_txt = "";
-	switch ( h_errno )
-	{
-	    case HOST_NOT_FOUND:
-	        h_err_txt = "Authoritive host not found";
-		break;
-	    
-	    case TRY_AGAIN:
-		h_err_txt =
-			"Non-authoritive host not found or server failure.";
-		break;
+    h = gethostbyname(host);
+    if (h == NULL) {
+#if defined(HAVE_NETDB_H) && defined(HOST_NOT_FOUND)
+        const char *h_err_txt = "";
 
-	    case NO_RECOVERY:
-		h_err_txt =
-		    "Non-recoverable errors:  FORMERR, REFUSED, or NOTIMP.";
-		break;
+        switch (h_errno) {
+            case HOST_NOT_FOUND:
+                h_err_txt = "Authoritive host not found";
+                break;
 
-	    case NO_ADDRESS:
-		h_err_txt = "Valid name, no data record of requested type.";
-		break;
+            case TRY_AGAIN:
+                h_err_txt =
+                    "Non-authoritive host not found or server failure.";
+                break;
 
-	    default:
-	        h_err_txt = "No error text defined.";
-	        break;
-	}
-	xmlGenericError( xmlGenericErrorContext,
-			"xmlNanoHTTPConnectHost:  %s '%s' - %s",
-			"Failed to resolve host", host, h_err_txt );
-	return(-1);
-    }
-    
-    for(i=0; h->h_addr_list[i]; i++)
-    {
-	if (h->h_addrtype == AF_INET) {
-	    /* A records (IPv4) */
-	    memcpy(&ia, h->h_addr_list[i], h->h_length);
-	    sockin.sin_family = h->h_addrtype;
-	    sockin.sin_addr   = ia;
-	    sockin.sin_port   = htons(port);
-	    addr = (struct sockaddr *)&sockin;
-#ifdef SUPPORT_IP6
-	} else if (h->h_addrtype == AF_INET6) {
-	    /* AAAA records (IPv6) */
-	    memcpy(&ia6, h->h_addr_list[i], h->h_length);
-	    sockin6.sin_family = h->h_addrtype;
-	    sockin6.sin_addr   = ia6;
-	    sockin6.sin_port   = htons(port);
-	    addr = (struct sockaddr *)&sockin6;
+            case NO_RECOVERY:
+                h_err_txt =
+                    "Non-recoverable errors:  FORMERR, REFUSED, or NOTIMP.";
+                break;
+
+            case NO_ADDRESS:
+                h_err_txt =
+                    "Valid name, no data record of requested type.";
+                break;
+
+            default:
+                h_err_txt = "No error text defined.";
+                break;
+        }
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNanoHTTPConnectHost:  %s '%s' - %s",
+                        "Failed to resolve host", host, h_err_txt);
+#else
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNanoHTTPConnectHost:  %s '%s'",
+                        "Failed to resolve host", host);
 #endif
-	} else
-	    break; /* for */
-	
-	s = xmlNanoHTTPConnectAttempt(addr);
-	if (s != -1)
-	    return(s);
+        return (-1);
+    }
+
+    for (i = 0; h->h_addr_list[i]; i++) {
+        if (h->h_addrtype == AF_INET) {
+            /* A records (IPv4) */
+            memcpy(&ia, h->h_addr_list[i], h->h_length);
+            sockin.sin_family = h->h_addrtype;
+            sockin.sin_addr = ia;
+            sockin.sin_port = htons(port);
+            addr = (struct sockaddr *) &sockin;
+#ifdef SUPPORT_IP6
+        } else if (h->h_addrtype == AF_INET6) {
+            /* AAAA records (IPv6) */
+            memcpy(&ia6, h->h_addr_list[i], h->h_length);
+            sockin6.sin_family = h->h_addrtype;
+            sockin6.sin_addr = ia6;
+            sockin6.sin_port = htons(port);
+            addr = (struct sockaddr *) &sockin6;
+#endif
+        } else
+            break;              /* for */
+
+        s = xmlNanoHTTPConnectAttempt(addr);
+        if (s != -1)
+            return (s);
     }
 
 #ifdef DEBUG_HTTP
     xmlGenericError(xmlGenericErrorContext,
-	    "xmlNanoHTTPConnectHost:  unable to connect to '%s'.\n", host);
+                    "xmlNanoHTTPConnectHost:  unable to connect to '%s'.\n",
+                    host);
 #endif
-    return(-1);
+    return (-1);
 }
 
 

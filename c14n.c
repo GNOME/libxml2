@@ -266,8 +266,9 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
     xmlNsPtr ns;
     xmlListPtr list;
     xmlNodePtr visible_parent;
+    xmlNodePtr node;
     xmlNsPtr prev;
-
+    
     if ((ctx == NULL) || (cur == NULL) || (cur->type != XML_ELEMENT_NODE)) {
 #ifdef DEBUG_C14N
         xmlGenericError(xmlGenericErrorContext,
@@ -302,6 +303,7 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
      * defined in node parents). By this we need to now walk thru 
      * all namespace in current node and all invisible ancesstors
      */
+    node = cur;
     while (cur != visible_parent) {
         for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
             /* 
@@ -311,6 +313,11 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
             if ((xmlC14NIsXmlNs(ns)) || (xmlListSearch(list, ns) != NULL)) {
                 continue;
             }
+	    prev = xmlSearchNs(ctx->doc, node, ns->prefix);
+	    if(prev != ns) {
+		/* we already processed a namespace with this name */
+		continue;
+	    }
 
             /*
              * Lookup nearest namespace after visible parent having

@@ -649,7 +649,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	    *out++ = ';';
 #endif
 	} else if (((*cur >= 0x20) && (*cur < 0x80)) ||
-	    (*cur == '\n') || (*cur == '\r') || (*cur == '\t')) {
+	    (*cur == '\n') || (*cur == '\t') || ((html) && (*cur == '\r'))) {
 	    /*
 	     * default case, just copy !
 	     */

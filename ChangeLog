@@ -1,3 +1,9 @@
+Sun Feb 23 14:49:39 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: another fix for nodeinfo in entities problem
+	* tree.c entities.c: fixed bug #106788 from James Clark
+	  some spaces need to be serialized as character references.
+
 Sat Feb 22 18:28:16 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* parser.c uri.c: fixed the bug I introduced in the path

@@ -9819,6 +9819,9 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     }
     if (sax != NULL) 
 	ctxt->sax = oldsax;
+    oldctxt->node_seq.maximum = ctxt->node_seq.maximum;
+    oldctxt->node_seq.length = ctxt->node_seq.length;
+    oldctxt->node_seq.buffer = ctxt->node_seq.buffer;
     ctxt->node_seq.maximum = 0;
     ctxt->node_seq.length = 0;
     ctxt->node_seq.buffer = NULL;

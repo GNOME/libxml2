@@ -6454,6 +6454,18 @@ xmlAttrSerializeContent(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr attr)
                         xmlBufferAdd(buf, BAD_CAST "&#10;", 5);
                         cur++;
                         base = cur;
+                    } else if (*cur == '\r') {
+                        if (base != cur)
+                            xmlBufferAdd(buf, base, cur - base);
+                        xmlBufferAdd(buf, BAD_CAST "&#13;", 6);
+                        cur++;
+                        base = cur;
+                    } else if (*cur == '\t') {
+                        if (base != cur)
+                            xmlBufferAdd(buf, base, cur - base);
+                        xmlBufferAdd(buf, BAD_CAST "&#9;", 5);
+                        cur++;
+                        base = cur;
 #if 0
                     } else if (*cur == '\'') {
                         if (base != cur)

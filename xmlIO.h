@@ -18,15 +18,17 @@
 extern "C" {
 #endif
 
+typedef int (*xmlInputMatchCallback) (char const *filename);
+typedef void * (*xmlInputOpenCallback) (char const *filename);
+typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
+typedef void (*xmlInputCloseCallback) (void * context);
+
 typedef struct _xmlParserInputBuffer xmlParserInputBuffer;
 typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
 struct _xmlParserInputBuffer {
-    /* Inputs */
-    FILE          *file;    /* Input on file handler */
-    void*        gzfile;    /* Input on a compressed stream */
-    int              fd;    /* Input on a file descriptor */
-    void        *httpIO;    /* Input from an HTTP stream */
-    void         *ftpIO;    /* Input from an FTP stream */
+    void*                  context;
+    xmlInputReadCallback   readcallback;
+    xmlInputCloseCallback  closecallback;
     
     xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
     
@@ -60,6 +62,10 @@ int	xmlParserInputBufferPush		(xmlParserInputBufferPtr in,
 void	xmlFreeParserInputBuffer		(xmlParserInputBufferPtr in);
 char *	xmlParserGetDirectory			(const char *filename);
 
+int     xmlRegisterInputCallbacks		(xmlInputMatchCallback match,
+						 xmlInputOpenCallback open,
+						 xmlInputReadCallback read,
+						 xmlInputCloseCallback close);
 #ifdef __cplusplus
 }
 #endif

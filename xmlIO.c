@@ -51,6 +51,428 @@
 #define MINLEN 4000
 #endif
 
+/*
+ * Input I/O callback sets
+ */
+typedef struct _xmlInputCallback {
+    xmlInputMatchCallback matchcallback;
+    xmlInputOpenCallback opencallback;
+    xmlInputReadCallback readcallback;
+    xmlInputCloseCallback closecallback;
+} xmlInputCallback;
+
+#define MAX_INPUT_CALLBACK 15
+
+xmlInputCallback xmlInputCallbackTable[MAX_INPUT_CALLBACK];
+int xmlInputCallbackNr = 0;
+int xmlInputCallbackInitialized = 0;
+
+/************************************************************************
+ *									*
+ *		Standard I/O for file accesses				*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlFdMatch:
+ * @filename:  the URI for matching
+ *
+ * input from file descriptor
+ *
+ * Returns 1 if matches, 0 otherwise
+ */
+int
+xmlFdMatch (const char *filename) {
+    return(1);
+}
+
+/**
+ * xmlFdOpen:
+ * @filename:  the URI for matching
+ *
+ * input from file descriptor, supports compressed input
+ * if @filename is " " then the standard input is used
+ *
+ * Returns an I/O context or NULL in case of error
+ */
+void *
+xmlFdOpen (const char *filename) {
+    const char *path = NULL;
+    int fd;
+
+    if (!strcmp(filename, "-")) {
+	fd = 0;
+	return((void *) fd);
+    }
+
+    if (!strncmp(filename, "file://localhost", 16))
+	path = &filename[16];
+    else if (!strncmp(filename, "file:///", 8))
+	path = &filename[8];
+    else if (filename[0] == '/')
+	path = filename;
+    if (path == NULL)
+	return(NULL);
+
+#ifdef WIN32
+    fd = _open (filename, O_RDONLY | _O_BINARY);
+#else
+    fd = open (filename, O_RDONLY);
+#endif
+
+    return((void *) fd);
+}
+
+/**
+ * xmlFdRead:
+ * @context:  the I/O context
+ * @buffer:  where to drop data
+ * @len:  number of bytes to write
+ *
+ * Read @len bytes to @buffer from the I/O channel.
+ *
+ * Returns the number of bytes written
+ */
+int
+xmlFdRead (void * context, char * buffer, int len) {
+    return(read((int) context, &buffer[0], len));
+}
+
+/**
+ * xmlFdClose:
+ * @context:  the I/O context
+ *
+ * Close an I/O channel
+ */
+void
+xmlFdClose (void * context) {
+    close((int) context);
+}
+
+/**
+ * xmlFileMatch:
+ * @filename:  the URI for matching
+ *
+ * input from FILE *
+ *
+ * Returns 1 if matches, 0 otherwise
+ */
+int
+xmlFileMatch (const char *filename) {
+    return(1);
+}
+
+/**
+ * xmlFileOpen:
+ * @filename:  the URI for matching
+ *
+ * input from FILE *, supports compressed input
+ * if @filename is " " then the standard input is used
+ *
+ * Returns an I/O context or NULL in case of error
+ */
+void *
+xmlFileOpen (const char *filename) {
+    const char *path = NULL;
+    FILE *fd;
+
+    if (!strcmp(filename, "-")) {
+	fd = stdin;
+	return((void *) fd);
+    }
+
+    if (!strncmp(filename, "file://localhost", 16))
+	path = &filename[16];
+    else if (!strncmp(filename, "file:///", 8))
+	path = &filename[8];
+    else 
+	path = filename;
+    if (path == NULL)
+	return(NULL);
+
+#ifdef WIN32
+    fd = fopen(path, "rb");
+#else
+    fd = fopen(path, "r");
+#endif /* WIN32 */
+    return((void *) fd);
+}
+
+/**
+ * xmlFileRead:
+ * @context:  the I/O context
+ * @buffer:  where to drop data
+ * @len:  number of bytes to write
+ *
+ * Read @len bytes to @buffer from the I/O channel.
+ *
+ * Returns the number of bytes written
+ */
+int
+xmlFileRead (void * context, char * buffer, int len) {
+    return(fread(&buffer[0], 1,  len, (FILE *) context));
+}
+
+/**
+ * xmlFileClose:
+ * @context:  the I/O context
+ *
+ * Close an I/O channel
+ */
+void
+xmlFileClose (void * context) {
+    fclose((FILE *) context);
+}
+
+#ifdef HAVE_ZLIB_H
+/************************************************************************
+ *									*
+ *		I/O for compressed file accesses			*
+ *									*
+ ************************************************************************/
+/**
+ * xmlGzfileMatch:
+ * @filename:  the URI for matching
+ *
+ * input from compressed file test
+ *
+ * Returns 1 if matches, 0 otherwise
+ */
+int
+xmlGzfileMatch (const char *filename) {
+    return(1);
+}
+
+/**
+ * xmlGzfileOpen:
+ * @filename:  the URI for matching
+ *
+ * input from compressed file open
+ * if @filename is " " then the standard input is used
+ *
+ * Returns an I/O context or NULL in case of error
+ */
+void *
+xmlGzfileOpen (const char *filename) {
+    const char *path = NULL;
+    gzFile fd;
+
+    if (!strcmp(filename, "-")) {
+        fd = gzdopen (fileno(stdin), "r");
+	return((void *) fd);
+    }
+
+    if (!strncmp(filename, "file://localhost", 16))
+	path = &filename[16];
+    else if (!strncmp(filename, "file:///", 8))
+	path = &filename[8];
+    else 
+	path = filename;
+
+    fd = gzopen(filename, "r");
+    return((void *) fd);
+}
+
+/**
+ * xmlGzfileRead:
+ * @context:  the I/O context
+ * @buffer:  where to drop data
+ * @len:  number of bytes to write
+ *
+ * Read @len bytes to @buffer from the compressed I/O channel.
+ *
+ * Returns the number of bytes written
+ */
+int
+xmlGzfileRead (void * context, char * buffer, int len) {
+    return(gzread((gzFile) context, &buffer[0], len));
+}
+
+/**
+ * xmlGzfileClose:
+ * @context:  the I/O context
+ *
+ * Close a compressed I/O channel
+ */
+void
+xmlGzfileClose (void * context) {
+    gzclose((gzFile) context);
+}
+#endif /* HAVE_ZLIB_H */
+
+#ifdef LIBXML_HTTP_ENABLED
+/************************************************************************
+ *									*
+ *			I/O for HTTP file accesses			*
+ *									*
+ ************************************************************************/
+/**
+ * xmlIOHTTPMatch:
+ * @filename:  the URI for matching
+ *
+ * check if the URI matches an HTTP one
+ *
+ * Returns 1 if matches, 0 otherwise
+ */
+int
+xmlIOHTTPMatch (const char *filename) {
+    if (!strncmp(filename, "http://", 7))
+	return(1);
+    return(0);
+}
+
+/**
+ * xmlIOHTTPOpen:
+ * @filename:  the URI for matching
+ *
+ * open an HTTP I/O channel
+ *
+ * Returns an I/O context or NULL in case of error
+ */
+void *
+xmlIOHTTPOpen (const char *filename) {
+    return(xmlNanoHTTPOpen(filename, NULL));
+}
+
+/**
+ * xmlIOHTTPRead:
+ * @context:  the I/O context
+ * @buffer:  where to drop data
+ * @len:  number of bytes to write
+ *
+ * Read @len bytes to @buffer from the I/O channel.
+ *
+ * Returns the number of bytes written
+ */
+int 
+xmlIOHTTPRead(void * context, char * buffer, int len) {
+    return(xmlNanoHTTPRead(context, &buffer[0], len));
+}
+
+/**
+ * xmlIOHTTPClose:
+ * @context:  the I/O context
+ *
+ * Close an HTTP I/O channel
+ */
+void
+xmlIOHTTPClose (void * context) {
+    xmlNanoHTTPClose(context);
+}
+#endif /* LIBXML_HTTP_ENABLED */
+
+#ifdef LIBXML_FTP_ENABLED
+/************************************************************************
+ *									*
+ *			I/O for FTP file accesses			*
+ *									*
+ ************************************************************************/
+/**
+ * xmlIOFTPMatch:
+ * @filename:  the URI for matching
+ *
+ * check if the URI matches an FTP one
+ *
+ * Returns 1 if matches, 0 otherwise
+ */
+int
+xmlIOFTPMatch (const char *filename) {
+    if (!strncmp(filename, "ftp://", 6))
+	return(1);
+    return(0);
+}
+
+/**
+ * xmlIOFTPOpen:
+ * @filename:  the URI for matching
+ *
+ * open an FTP I/O channel
+ *
+ * Returns an I/O context or NULL in case of error
+ */
+void *
+xmlIOFTPOpen (const char *filename) {
+    return(xmlNanoFTPOpen(filename));
+}
+
+/**
+ * xmlIOFTPRead:
+ * @context:  the I/O context
+ * @buffer:  where to drop data
+ * @len:  number of bytes to write
+ *
+ * Read @len bytes to @buffer from the I/O channel.
+ *
+ * Returns the number of bytes written
+ */
+int 
+xmlIOFTPRead(void * context, char * buffer, int len) {
+    return(xmlNanoFTPRead(context, &buffer[0], len));
+}
+
+/**
+ * xmlIOFTPClose:
+ * @context:  the I/O context
+ *
+ * Close an FTP I/O channel
+ */
+void
+xmlIOFTPClose (void * context) {
+    xmlNanoFTPClose(context);
+}
+#endif /* LIBXML_FTP_ENABLED */
+
+
+/**
+ * xmlRegisterInputCallbacks:
+ * @match:  the xmlInputMatchCallback
+ * @open:  the xmlInputOpenCallback
+ * @read:  the xmlInputReadCallback
+ * @close:  the xmlInputCloseCallback
+ *
+ * Register a new set of I/O callback for handling parser input.
+ *
+ * Returns the registered handler number or -1 in case of error
+ */
+int
+xmlRegisterInputCallbacks(xmlInputMatchCallback match,
+	xmlInputOpenCallback open, xmlInputReadCallback read,
+	xmlInputCloseCallback close) {
+    if (xmlInputCallbackNr >= MAX_INPUT_CALLBACK) {
+	return(-1);
+    }
+    xmlInputCallbackTable[xmlInputCallbackNr].matchcallback = match;
+    xmlInputCallbackTable[xmlInputCallbackNr].opencallback = open;
+    xmlInputCallbackTable[xmlInputCallbackNr].readcallback = read;
+    xmlInputCallbackTable[xmlInputCallbackNr].closecallback = close;
+    return(xmlInputCallbackNr++);
+}
+
+/**
+ * xmlRegisterDefaultInputCallbacks:
+ *
+ * Registers the default compiled-in I/O handlers.
+ */
+void
+xmlRegisterDefaultInputCallbacks(void) {
+    xmlRegisterInputCallbacks(xmlFileMatch, xmlFileOpen,
+	                      xmlFileRead, xmlFileClose);
+#ifdef HAVE_ZLIB_H
+    xmlRegisterInputCallbacks(xmlGzfileMatch, xmlGzfileOpen,
+	                      xmlGzfileRead, xmlGzfileClose);
+#endif /* HAVE_ZLIB_H */
+
+#ifdef LIBXML_HTTP_ENABLED
+    xmlRegisterInputCallbacks(xmlIOHTTPMatch, xmlIOHTTPOpen,
+	                      xmlIOHTTPRead, xmlIOHTTPClose);
+#endif /* LIBXML_HTTP_ENABLED */
+
+#ifdef LIBXML_FTP_ENABLED
+    xmlRegisterInputCallbacks(xmlIOFTPMatch, xmlIOFTPOpen,
+	                      xmlIOFTPRead, xmlIOFTPClose);
+#endif /* LIBXML_FTP_ENABLED */
+}
+
 /**
  * xmlAllocParserInputBuffer:
  * @enc:  the charset encoding if known
@@ -76,9 +498,9 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     }
     ret->buffer->alloc = XML_BUFFER_ALLOC_DOUBLEIT;
     ret->encoder = xmlGetCharEncodingHandler(enc);
-    ret->fd = -1;
-    ret->httpIO = NULL;
-    ret->ftpIO = NULL;
+    ret->readcallback = NULL;
+    ret->closecallback = NULL;
+    ret->context = NULL;
 
     return(ret);
 }
@@ -95,27 +517,17 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
         xmlBufferFree(in->buffer);
 	in->buffer = NULL;
     }
-#ifdef HAVE_ZLIB_H
-    if (in->gzfile != NULL)
-        gzclose(in->gzfile);
-#endif
-#ifdef LIBXML_HTTP_ENABLED    
-    if (in->httpIO != NULL)
-        xmlNanoHTTPClose(in->httpIO);
-#endif    
-#ifdef LIBXML_FTP_ENABLED    
-    if (in->ftpIO != NULL)
-        xmlNanoFTPClose(in->ftpIO);
-#endif    
-    if (in->fd >= 0)
-        close(in->fd);
+    if (in->closecallback != NULL) {
+	in->closecallback(in->context);
+    }
+
     memset(in, 0xbe, (size_t) sizeof(xmlParserInputBuffer));
     xmlFree(in);
 }
 
 /**
  * xmlParserInputBufferCreateFilename:
- * @filename:  a C string containing the filename
+ * @URI:  a C string containing the URI or filename
  * @enc:  the charset encoding if known
  *
  * Create a buffered parser input for the progressive parsing of a file
@@ -127,90 +539,33 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
  * Returns the new parser input or NULL
  */
 xmlParserInputBufferPtr
-xmlParserInputBufferCreateFilename(const char *filename, xmlCharEncoding enc) {
+xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
-#ifdef HAVE_ZLIB_H
-    gzFile input = 0;
-#else
-    int input = -1;
-#endif
-    void *httpIO = NULL;
-    void *ftpIO = NULL;
+    int i;
+    void *context = NULL;
 
-    if (filename == NULL) return(NULL);
+    if (xmlInputCallbackInitialized == 0)
+	xmlRegisterDefaultInputCallbacks();
 
-#ifdef LIBXML_HTTP_ENABLED
-    if (!strncmp(filename, "http://", 7)) {
-        httpIO = xmlNanoHTTPOpen(filename, NULL);
-        if (httpIO == NULL) {
-#ifdef VERBOSE_FAILURE
-            fprintf (stderr, "Cannot read URL %s\n", filename);
-            perror ("xmlNanoHTTPOpen failed");
-#endif
-            return(NULL);
+    if (URI == NULL) return(NULL);
+
+    /*
+     * Try to find one of the input accept method accepting taht scheme
+     * Go in reverse to give precedence to user defined handlers.
+     */
+    for (i = xmlInputCallbackNr - 1;i >= 0;i--) {
+	if ((xmlInputCallbackTable[i].matchcallback != NULL) &&
+	    (xmlInputCallbackTable[i].matchcallback(URI) != 0)) {
+	    context = xmlInputCallbackTable[i].opencallback(URI);
+	    if (context != NULL)
+		break;
 	}
-    } else
-#endif /* LIBXML_HTTP_ENABLED */
-#ifdef LIBXML_FTP_ENABLED
-	if (!strncmp(filename, "ftp://", 6)) {
-        ftpIO = xmlNanoFTPOpen(filename);
-        if (ftpIO == NULL) {
-#ifdef VERBOSE_FAILURE
-            fprintf (stderr, "Cannot read URL %s\n", filename);
-            perror ("xmlNanoFTPOpen failed");
+    }
+    if (context == NULL) {
+#ifdef DEBUG_INPUT
+	fprintf(stderr, "No input filter matching \"%s\"\n", URI);
 #endif
-            return(NULL);
-	}
-    } else
-#endif	/* LIBXML_FTP_ENABLED */
-	if (!strcmp(filename, "-")) {
-#ifdef HAVE_ZLIB_H
-        input = gzdopen (fileno(stdin), "r");
-        if (input == NULL) {
-#ifdef VERBOSE_FAILURE
-            fprintf (stderr, "Cannot read from stdin\n");
-            perror ("gzdopen failed");
-#endif
-            return(NULL);
-	}
-#else
-#ifdef WIN32
-        input = -1;
-#else
-        input = fileno(stdin);
-#endif
-        if (input < 0) {
-#ifdef VERBOSE_FAILURE
-            fprintf (stderr, "Cannot read from stdin\n");
-            perror ("open failed");
-#endif
-	    return(NULL);
-	}
-#endif
-    } else {
-#ifdef HAVE_ZLIB_H
-	input = gzopen (filename, "r");
-	if (input == NULL) {
-#ifdef VERBOSE_FAILURE
-	    fprintf (stderr, "Cannot read file %s :\n", filename);
-	    perror ("gzopen failed");
-#endif
-	    return(NULL);
-	}
-#else
-#ifdef WIN32
-	input = _open (filename, O_RDONLY | _O_BINARY);
-#else
-	input = open (filename, O_RDONLY);
-#endif
-	if (input < 0) {
-#ifdef VERBOSE_FAILURE
-	    fprintf (stderr, "Cannot read file %s :\n", filename);
-	    perror ("open failed");
-#endif
-	    return(NULL);
-	}
-#endif
+	return(NULL);
     }
 
     /*
@@ -218,15 +573,10 @@ xmlParserInputBufferCreateFilename(const char *filename, xmlCharEncoding enc) {
      */
     ret = xmlAllocParserInputBuffer(enc);
     if (ret != NULL) {
-#ifdef HAVE_ZLIB_H
-        ret->gzfile = input;
-#else
-        ret->fd = input;
-#endif
-        ret->httpIO = httpIO;
-        ret->ftpIO = ftpIO;
+	ret->context = context;
+	ret->readcallback = xmlInputCallbackTable[i].readcallback;
+	ret->closecallback = xmlInputCallbackTable[i].closecallback;
     }
-
     return(ret);
 }
 
@@ -244,11 +594,17 @@ xmlParserInputBufferPtr
 xmlParserInputBufferCreateFile(FILE *file, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
 
+    if (xmlInputCallbackInitialized == 0)
+	xmlRegisterDefaultInputCallbacks();
+
     if (file == NULL) return(NULL);
 
     ret = xmlAllocParserInputBuffer(enc);
-    if (ret != NULL)
-        ret->file = file;
+    if (ret != NULL) {
+        ret->context = file;
+	ret->readcallback = xmlFileRead;
+	ret->closecallback = xmlFileClose;
+    }
 
     return(ret);
 }
@@ -270,8 +626,11 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
     if (fd < 0) return(NULL);
 
     ret = xmlAllocParserInputBuffer(enc);
-    if (ret != NULL)
-        ret->fd = fd;
+    if (ret != NULL) {
+        ret->context = (void *) fd;
+	ret->readcallback = xmlFdRead;
+	ret->closecallback = xmlFdClose;
+    }
 
     return(ret);
 }
@@ -350,9 +709,6 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in, int len, const char *buf) {
 int
 xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     char *buffer = NULL;
-#ifdef HAVE_ZLIB_H
-    gzFile input = (gzFile) in->gzfile;
-#endif
     int res = 0;
     int nbchars = 0;
     int buffree;
@@ -372,29 +728,18 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
         fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
 	return(-1);
     }
-#ifdef LIBXML_HTTP_ENABLED
-    if (in->httpIO != NULL) {
-        res = xmlNanoHTTPRead(in->httpIO, &buffer[0], len);
-    } else
-#endif
-#ifdef LIBXML_FTP_ENABLED
-	if (in->ftpIO != NULL) {
-        res = xmlNanoFTPRead(in->ftpIO, &buffer[0], len);
-    } else
-#endif
-	if (in->file != NULL) {
-	res = fread(&buffer[0], 1, len, in->file);
-#ifdef HAVE_ZLIB_H
-    } else if (in->gzfile != NULL) {
-    	res = gzread(input, &buffer[0], len);
-#endif
-    } else if (in->fd >= 0) {
-	res = read(in->fd, &buffer[0], len);
+
+    /*
+     * Call the read method for this I/O type.
+     */
+    if (in->readcallback != NULL) {
+	res = in->readcallback(in->context, &buffer[0], len);
     } else {
         fprintf(stderr, "xmlParserInputBufferGrow : no input !\n");
 	xmlFree(buffer);
 	return(-1);
     }
+
     if (res == 0) {
 	xmlFree(buffer);
         return(0);
@@ -461,11 +806,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 int
 xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
     /* xmlBufferEmpty(in->buffer); */
-    if ((in->httpIO != NULL) || (in->ftpIO != NULL) || (in->file != NULL) ||
-#ifdef HAVE_ZLIB_H
-        (in->gzfile != NULL) ||
-#endif
-        (in->fd >= 0))
+    if (in->readcallback != NULL)
 	return(xmlParserInputBufferGrow(in, len));
     else
         return(0);
@@ -485,6 +826,9 @@ xmlParserGetDirectory(const char *filename) {
     char dir[1024];
     char *cur;
     char sep = '/';
+
+    if (xmlInputCallbackInitialized == 0)
+	xmlRegisterDefaultInputCallbacks();
 
     if (filename == NULL) return(NULL);
 #ifdef WIN32

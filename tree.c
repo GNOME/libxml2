@@ -1728,13 +1728,13 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
     xmlUnlinkNode(elem);
     elem->doc = cur->doc;
     elem->parent = cur->parent;
-    elem->next = cur;
-    elem->prev = cur->prev;
-    cur->prev = elem;
-    if (elem->prev != NULL)
-	elem->prev->next = elem;
-    if ((elem->parent != NULL) && (elem->parent->children == cur))
-	elem->parent->children = elem;
+    elem->prev = cur;
+    elem->next = cur->next;
+    cur->next = elem;
+    if (elem->next != NULL)
+	elem->next->prev = elem;
+    if ((elem->parent != NULL) && (elem->parent->last == cur))
+	elem->parent->last = elem;
     return(elem);
 }
 
@@ -1767,13 +1767,13 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
     xmlUnlinkNode(elem);
     elem->doc = cur->doc;
     elem->parent = cur->parent;
-    elem->prev = cur;
-    elem->next = cur->next;
-    cur->next = elem;
-    if (elem->next != NULL)
-	elem->next->prev = elem;
-    if ((elem->parent != NULL) && (elem->parent->last == cur))
-	elem->parent->last = elem;
+    elem->next = cur;
+    elem->prev = cur->prev;
+    cur->prev = elem;
+    if (elem->prev != NULL)
+	elem->prev->next = elem;
+    if ((elem->parent != NULL) && (elem->parent->children == cur))
+	elem->parent->children = elem;
     return(elem);
 }
 

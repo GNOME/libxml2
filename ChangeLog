@@ -1,3 +1,15 @@
+Fri Apr  7 18:35:02 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xmlIO.[ch] parser.c: cleane up the xmlParserInputBuffer mess
+	  and the code at the same time. Added a clean mechanism for
+	  overload or added input methods: xmlRegisterInputCallbacks()
+	* tree.c: fixed xmlPrevSibling and xmlNextSibling per 
+	  Christophe Le Gal (Christophe.Le-Gal@imag.fr) input
+	* TODO: updated
+	* doc/* : updated/regenerated
+	* doc/Makefile.am: tweaks to avoid problem with libxml link in the
+	  source dir
+
 Wed Apr  5 21:11:35 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* testURI.c: yet another forgotten commit, I should get some sleep !

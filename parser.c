@@ -181,12 +181,7 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
 
         return(0);
     }
-    if ((in->buf->httpIO != NULL) || (in->buf->ftpIO != NULL) ||
-	(in->buf->file != NULL) ||
-#ifdef HAVE_ZLIB_H
-        (in->buf->gzfile != NULL) ||
-#endif
-        (in->buf->fd >= 0))
+    if (in->buf->readcallback != NULL)
 	ret = xmlParserInputBufferGrow(in->buf, len);
     else	
         return(0);

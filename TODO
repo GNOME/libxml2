@@ -2,13 +2,15 @@
            TODO for the XML parser and stuff:
 	   ==================================
 
-CVS:
-====
-  rename tester.c to xmllint.c
 
 TODO:
 =====
 
+- DOM needs
+  xmlAttrPtr xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value)
+  int xmlPruneProp(xmlNodePtr node, xmlAtttrPtr attr);
+- Fix DTD + namespace validity problem
+  "Not valid: root and DtD name do not match 'ROOT' and 'prefix:ROOT'"
 - add support for the trick from Henry conf/sun/valid/empty.xml
 - Correct standalone checking/emitting (hard)
   2.9 Standalone Document Declaration
@@ -36,8 +38,6 @@ TODO:
 
 - function to rebuild the ID table
 - functions to rebuild the DTD hash tables (after DTD changes).
-
-
    
 
 EXTENSIONS:
@@ -86,6 +86,8 @@ EXTENSIONS:
 Done:
 =====
 
+- Added a clean mechanism for overload or added input methods:
+  xmlRegisterInputCallbacks()
 - dynamically adapt the alloc entry point to use g_alloc()/g_free()
   if the programmer wants it: 
     - use xmlMemSetup() to reset the routines used.

@@ -341,6 +341,7 @@
       <li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li>
       <li><a href="html/index.html" style="font-weight:bold">API Menu</a></li>
       <li><a href="guidelines.html">XML Guidelines</a></li>
+      <li><a href="ChangeLog.html">ChangeLog</a></li>
     </ul>
   </xsl:variable>
   <xsl:variable name="develtoc">
@@ -355,6 +356,7 @@
       <li><a href="guidelines.html">XML Guidelines</a></li>
       <li><a href="tutorial/index.html">Tutorial</a></li>
       <li><a href="xmlreader.html">The Reader Interface</a></li>
+      <li><a href="ChangeLog.html">ChangeLog</a></li>
       <xsl:for-each select="/html/body/h2">
         <xsl:variable name="filename">
           <xsl:call-template name="docfilename">

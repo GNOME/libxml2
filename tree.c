@@ -106,7 +106,7 @@ xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme) {
  */
 xmlBufferAllocationScheme
 xmlGetBufferAllocationScheme(void) {
-    return xmlBufferAllocScheme;
+    return(xmlBufferAllocScheme);
 }
 
 /**

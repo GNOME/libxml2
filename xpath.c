@@ -4280,7 +4280,7 @@ xmlXPathStringLengthFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    xmlChar *content;
 
 	    content = xmlNodeGetContent(ctxt->context->node);
-	    valuePush(ctxt, xmlXPathNewFloat(xmlStrlen(content)));
+	    valuePush(ctxt, xmlXPathNewFloat(xmlUTF8Strlen(content)));
 	    xmlFree(content);
 	}
 	return;
@@ -4289,7 +4289,7 @@ xmlXPathStringLengthFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CAST_TO_STRING;
     CHECK_TYPE(XPATH_STRING);
     cur = valuePop(ctxt);
-    valuePush(ctxt, xmlXPathNewFloat(xmlStrlen(cur->stringval)));
+    valuePush(ctxt, xmlXPathNewFloat(xmlUTF8Strlen(cur->stringval)));
     xmlXPathFreeObject(cur);
 }
 
@@ -4441,7 +4441,7 @@ xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlChar *ret;
 
     /* 
-     * Conformance needs to be checked !!!!!
+     * TODO: need to be converted to UTF8 strings
      */
     if (nargs < 2) {
 	CHECK_ARITY(2);
@@ -4672,42 +4672,44 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-  xmlXPathObjectPtr str;
-  xmlXPathObjectPtr from;
-  xmlXPathObjectPtr to;
-  xmlBufferPtr target;
-  int i, offset, max;
-  xmlChar ch;
-  const xmlChar *point;
+    xmlXPathObjectPtr str;
+    xmlXPathObjectPtr from;
+    xmlXPathObjectPtr to;
+    xmlBufferPtr target;
+    int i, offset, max;
+    xmlChar ch;
+    const xmlChar *point;
 
-  CHECK_ARITY(3);
+    /* 
+     * TODO: need to be converted to UTF8 strings
+     */
+    CHECK_ARITY(3);
 
-  CAST_TO_STRING;
-  to = valuePop(ctxt);
-  CAST_TO_STRING;
-  from = valuePop(ctxt);
-  CAST_TO_STRING;
-  str = valuePop(ctxt);
+    CAST_TO_STRING;
+    to = valuePop(ctxt);
+    CAST_TO_STRING;
+    from = valuePop(ctxt);
+    CAST_TO_STRING;
+    str = valuePop(ctxt);
 
-  target = xmlBufferCreate();
-  if (target) {
-    max = xmlStrlen(to->stringval);
-    for (i = 0; (ch = str->stringval[i]); i++) {
-      point = xmlStrchr(from->stringval, ch);
-      if (point) {
-	/* Warning: This may not work with UTF-8 */
-	offset = (int)(point - from->stringval);
-	if (offset < max)
-	  xmlBufferAdd(target, &to->stringval[offset], 1);
-      } else
-	xmlBufferAdd(target, &ch, 1);
+    target = xmlBufferCreate();
+    if (target) {
+	max = xmlStrlen(to->stringval);
+	for (i = 0; (ch = str->stringval[i]); i++) {
+	    point = xmlStrchr(from->stringval, ch);
+	    if (point) {
+		offset = (int)(point - from->stringval);
+		if (offset < max)
+		    xmlBufferAdd(target, &to->stringval[offset], 1);
+		} else
+		    xmlBufferAdd(target, &ch, 1);
+	}
     }
-  }
-  valuePush(ctxt, xmlXPathNewString(xmlBufferContent(target)));
-  xmlBufferFree(target);
-  xmlXPathFreeObject(str);
-  xmlXPathFreeObject(from);
-  xmlXPathFreeObject(to);
+    valuePush(ctxt, xmlXPathNewString(xmlBufferContent(target)));
+    xmlBufferFree(target);
+    xmlXPathFreeObject(str);
+    xmlXPathFreeObject(from);
+    xmlXPathFreeObject(to);
 }
 
 /**
@@ -6542,6 +6544,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     xmlXPathTypeVal type = op->value3;
     const xmlChar *prefix = op->value4;
     const xmlChar *name = op->value5;
+    const xmlChar *URI = NULL;
 
 #ifdef DEBUG_STEP
     int n = 0, t = 0;
@@ -6558,6 +6561,11 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     CHECK_TYPE(XPATH_NODESET);
     obj = valuePop(ctxt);
     addNode = xmlXPathNodeSetAdd;
+    if (prefix != NULL) {
+	URI = xmlXPathNsLookup(ctxt->context, prefix);
+	if (URI == NULL)
+	    XP_ERROR(XPATH_UNDEF_PREFIX_ERROR);
+    }
 
 #ifdef DEBUG_STEP
     xmlGenericError(xmlGenericErrorContext,
@@ -6777,7 +6785,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 #endif
 				addNode(list, cur);
 			    } else if ((cur->ns != NULL) && 
-				(xmlStrEqual(prefix,
+				(xmlStrEqual(URI,
 					     cur->ns->href))) {
 #ifdef DEBUG_STEP
 				n++;
@@ -6805,7 +6813,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 				    }
 				} else {
 				    if ((cur->ns != NULL) && 
-				        (xmlStrEqual(prefix,
+				        (xmlStrEqual(URI,
 						     cur->ns->href))) {
 #ifdef DEBUG_STEP
 					n++;
@@ -6828,7 +6836,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 				    }
 				} else {
 				    if ((attr->ns != NULL) && 
-				        (xmlStrEqual(prefix,
+				        (xmlStrEqual(URI,
 						     attr->ns->href))) {
 #ifdef DEBUG_STEP
 					n++;

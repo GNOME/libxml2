@@ -166,8 +166,6 @@ xmlCharEncoding
 	xmlDetectCharEncoding		(const unsigned char* in,
 					 int len);
 
-int	xmlCheckUTF8			(const unsigned char *utf);
-
 int	xmlCharEncOutFunc		(xmlCharEncodingHandler *handler,
 					 xmlBufferPtr out,
 					 xmlBufferPtr in);
@@ -191,6 +189,9 @@ int	isolat1ToUTF8			(unsigned char* out,
 					 int *outlen,
 					 const unsigned char* in,
 					 int *inlen);
+int	xmlCheckUTF8			(const unsigned char *utf);
+int	xmlUTF8Strlen			(const unsigned char *utf);
+
 #ifdef __cplusplus
 }
 #endif

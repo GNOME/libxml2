@@ -82,6 +82,47 @@ static int xmlLittleEndian = 1;
  */
 
 /**
+ * xmlUTF8Strlen:
+ * @utf:  a sequence of UTF-8 encoded bytes
+ *
+ * compute the lenght of an UTF8 string, it doesn't do a full UTF8
+ * checking of the content of the string.
+ *
+ * Returns the number of characters in the string or -1 in case of error
+ */
+int
+xmlUTF8Strlen(const unsigned char *utf) {
+    int ret = 0;
+
+    if (utf == NULL)
+	return(-1);
+
+    while (*utf != 0) {
+	if (utf[0] & 0x80) {
+	    if ((utf[1] & 0xc0) != 0x80)
+		return(-1);
+	    if ((utf[0] & 0xe0) == 0xe0) {
+		if ((utf[2] & 0xc0) != 0x80)
+		    return(-1);
+		if ((utf[0] & 0xf0) == 0xf0) {
+		    if ((utf[0] & 0xf8) != 0xf0 || (utf[3] & 0xc0) != 0x80)
+			return(-1);
+		    utf += 4;
+		} else {
+		    utf += 3;
+		}
+	    } else {
+		utf += 2;
+	    }
+	} else {
+	    utf++;
+	}
+	ret++;
+    }
+    return(ret);
+}
+
+/**
  * xmlGetUTF8Char:
  * @utf:  a sequence of UTF-8 encoded bytes
  * @len:  a pointer to @bytes len

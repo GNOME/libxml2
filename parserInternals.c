@@ -1435,7 +1435,7 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar *cur, int *len) {
 	      /* 2-byte code */
 		*len = 2;
 		val = (cur[0] & 0x1f) << 6;
-		val |= cur[2] & 0x3f;
+		val |= cur[1] & 0x3f;
 	    }
 	    if (!IS_CHAR(val)) {
 		if ((ctxt->sax != NULL) &&

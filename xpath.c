@@ -2310,6 +2310,24 @@ xmlXPathRegisterFuncNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 }
 
 /**
+ * xmlXPathRegisterFuncLookup:
+ * @ctxt:  the XPath context
+ * @f:  the lookup function
+ * @data:  the lookup data
+ *
+ * Registers an external mecanism to do function lookup.
+ */
+void
+xmlXPathRegisterFuncLookup (xmlXPathContextPtr ctxt,
+			    xmlXPathFuncLookupFunc f,
+			    void *funcCtxt) {
+    if (ctxt == NULL)
+	return;
+    ctxt->funcLookupFunc = (void *) f;
+    ctxt->funcLookupData = funcCtxt;
+}
+
+/**
  * xmlXPathFunctionLookup:
  * @ctxt:  the XPath context
  * @name:  the function name
@@ -2321,6 +2339,17 @@ xmlXPathRegisterFuncNS(xmlXPathContextPtr ctxt, const xmlChar *name,
  */
 xmlXPathFunction
 xmlXPathFunctionLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
+    if (ctxt == NULL)
+	return (NULL);
+
+    if (ctxt->funcLookupFunc != NULL) {
+	xmlXPathFunction ret;
+
+	ret = ((xmlXPathFuncLookupFunc) ctxt->funcLookupFunc)
+	    (ctxt->funcLookupData, name, NULL);
+	if (ret != NULL)
+	    return(ret);
+    }
     return(xmlXPathFunctionLookupNS(ctxt, name, NULL));
 }
 
@@ -2340,9 +2369,19 @@ xmlXPathFunctionLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 			 const xmlChar *ns_uri) {
     if (ctxt == NULL)
 	return(NULL);
-    if (ctxt->funcHash == NULL)
-	return(NULL);
     if (name == NULL)
+	return(NULL);
+
+    if (ctxt->funcLookupFunc != NULL) {
+	xmlXPathFunction ret;
+
+	ret = ((xmlXPathFuncLookupFunc) ctxt->funcLookupFunc)
+	    (ctxt->funcLookupData, name, ns_uri);
+	if (ret != NULL)
+	    return(ret);
+    }
+
+    if (ctxt->funcHash == NULL)
 	return(NULL);
 
     return((xmlXPathFunction) xmlHashLookup2(ctxt->funcHash, name, ns_uri));

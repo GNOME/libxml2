@@ -320,6 +320,18 @@ void	xmlXPathRegisterVariableLookup	(xmlXPathContextPtr ctxt,
 					 void *varCtxt);
 
 /*
+ * Function Lookup forwarding
+ */
+typedef xmlXPathFunction
+	(*xmlXPathFuncLookupFunc)	(void *ctxt,
+					 const xmlChar *name,
+					 const xmlChar *ns_uri);
+
+void	xmlXPathRegisterFuncLookup	(xmlXPathContextPtr ctxt,
+					 xmlXPathFuncLookupFunc f,
+					 void *funcCtxt);
+
+/*
  * Error reporting
  */
 void		xmlXPatherror	(xmlXPathParserContextPtr ctxt,

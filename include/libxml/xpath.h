@@ -231,6 +231,10 @@ struct _xmlXPathContext {
     /* The function name and URI when calling a function */
     const xmlChar *function;
     const xmlChar *functionURI;
+
+    /* function lookup function and data */
+    void *funcLookupFunc;		/* function lookup func */
+    void *funcLookupData;		/* function lookup data */
 };
 
 /*

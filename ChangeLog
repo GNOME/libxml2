@@ -1,3 +1,8 @@
+Thu Jul 26 18:55:52 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
+
+	* xpath.c include/libxml/xpath{,Internals}.h: added a function
+	  lookup framework
+
 Fri Jul 27 01:50:20 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: fixed xmlCopyNode() for documents

@@ -143,6 +143,7 @@ xmlCleanupInputCallbacks(void)
         xmlInputCallbackTable[i].readcallback = NULL;
         xmlInputCallbackTable[i].closecallback = NULL;
     }
+    xmlInputCallbackInitialized = 0;
 
     xmlInputCallbackNr = 0;
     xmlInputCallbackInitialized = 0;
@@ -168,6 +169,7 @@ xmlCleanupOutputCallbacks(void)
         xmlOutputCallbackTable[i].writecallback = NULL;
         xmlOutputCallbackTable[i].closecallback = NULL;
     }
+    xmlOutputCallbackInitialized = 0;
 
     xmlOutputCallbackNr = 0;
     xmlOutputCallbackInitialized = 0;
@@ -2116,7 +2118,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     int res = 0;
     int nbchars = 0;
     int buffree;
-    int needSize;
+    unsigned int needSize;
 
     if ((len <= MINLEN) && (len != 4)) 
         len = MINLEN;

@@ -6986,16 +6986,17 @@ xmlSetCompressMode(int mode) {
 }
 
 /**
- * xmlDocDump:
+ * xmlDocFormatDump:
  * @f:  the FILE*
  * @cur:  the document
+ * @format: should formatting spaces been added
  *
  * Dump an XML document to an open FILE.
  *
  * returns: the number of bytes written or -1 in case of failure.
  */
 int
-xmlDocDump(FILE *f, xmlDocPtr cur) {
+xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     xmlOutputBufferPtr buf;
     const char * encoding;
     xmlCharEncodingHandlerPtr handler = NULL;
@@ -7030,10 +7031,24 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
     }
     buf = xmlOutputBufferCreateFile(f, handler);
     if (buf == NULL) return(-1);
-    xmlDocContentDumpOutput(buf, cur, NULL, 0);
+    xmlDocContentDumpOutput(buf, cur, NULL, format);
 
     ret = xmlOutputBufferClose(buf);
     return(ret);
+}
+
+/**
+ * xmlDocDump:
+ * @f:  the FILE*
+ * @cur:  the document
+ *
+ * Dump an XML document to an open FILE.
+ *
+ * returns: the number of bytes written or -1 in case of failure.
+ */
+int
+xmlDocDump(FILE *f, xmlDocPtr cur) {
+	return(xmlDocFormatDump (f, cur, 0));
 }
 
 /**

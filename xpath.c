@@ -6162,37 +6162,47 @@ xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     /*
      * If last pos not present, calculate last position
     */
-    if (nargs != 3)
-	le = m;
+    if (nargs != 3) {
+	le = (double)m;
+	if (in < 1.0) 
+	    in = 1.0;
+    }
 
     /* Need to check for the special cases where either 
      * the index is NaN, the length is NaN, or both
      * arguments are infinity (relying on Inf + -Inf = NaN)
      */
-    if (!xmlXPathIsNaN(in + le)) {
+    if (!xmlXPathIsNaN(in + le) && !xmlXPathIsInf(in)) {
         /*
-         * To meet our requirements, initial index calculations
-         * must be done before we convert to integer format
+         * To meet the requirements of the spec, the arguments
+	 * must be converted to integer format before 
+	 * initial index calculations are done
          *
-         * First we normalize indices
-         */
-        in -= 1.0;
-        le += in;
-        if (in < 0.0)
-            in = 0.0;
-        if (le > (double)m)
-            le = (double)m;
-
-        /*
-         * Now we go to integer form, rounding up
+         * First we go to integer form, rounding up
+	 * and checking for special cases
          */
         i = (int) in;
-        if (((double)i) != in) i++;
-    
-        l = (int) le;
-        if (((double)l) != le) l++;
+        if (((double)i)+0.5 <= in) i++;
 
-        if (l > m) l=m;
+	if (xmlXPathIsInf(le) == 1) {
+	    l = m;
+	    if (i < 1)
+		i = 1;
+	}
+	else if (xmlXPathIsInf(le) == -1 || le < 0.0)
+	    l = 0;
+	else {
+	    l = (int) le;
+	    if (((double)l)+0.5 <= le) l++;
+	}
+
+	/* Now we normalize inidices */
+        i -= 1;
+        l += i;
+        if (i < 0)
+            i = 0;
+        if (l > m)
+            l = m;
 
         /* number of chars to copy */
         l -= i;

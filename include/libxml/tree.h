@@ -822,6 +822,9 @@ void		xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc,
 					 int * doc_txt_len,
 					 const char *txt_encoding,
 					 int format);
+int		xmlDocFormatDump(FILE *f,
+					 xmlDocPtr cur,
+					 int format);
 int		xmlDocDump		(FILE *f,
 					 xmlDocPtr cur);
 void		xmlElemDump		(FILE *f,

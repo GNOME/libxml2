@@ -522,7 +522,16 @@ void xmlXPathDebugDumpLocationSet(FILE *output, xmlLocationSetPtr cur, int depth
 }
 #endif
 
-void xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
+/**
+ * xmlXPathDebugDumpObject:
+ * @output:  the FILE * to dump the output
+ * @cur:  the object to inspect
+ * @depth:  indentation level
+ *
+ * Dump the content of the object for debugging purposes
+ */
+void
+xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
     int i;
     char shift[100];
 
@@ -2297,19 +2306,6 @@ xmlXPathNewParserContext(const xmlChar *str, xmlXPathContextPtr ctxt) {
     memset(ret, 0 , (size_t) sizeof(xmlXPathParserContext));
     ret->cur = ret->base = str;
     ret->context = ctxt;
-
-    /* Allocate the value stack
-    ret->valueTab = (xmlXPathObjectPtr *) 
-                     xmlMalloc(10 * sizeof(xmlXPathObjectPtr));
-    if (ret->valueTab == NULL) {
-	xmlFree(ret);
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewParserContext: out of memory\n");
-	return(NULL);
-    }
-    ret->valueNr = 0;
-    ret->valueMax = 10;
-    ret->value = NULL; */
 
     ret->comp = xmlXPathNewCompExpr();
     if (ret->comp == NULL) {
@@ -5336,14 +5332,14 @@ xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * a couple of forward declarations since we use a recursive call based
  * implementation.
  */
-void xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt);
-void xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt);
-void xmlXPathEvalLocationPath(xmlXPathParserContextPtr ctxt);
+static void xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt);
+static void xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt);
+static void xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt);
 #ifdef VMS
-void xmlXPathEvalRelLocationPath(xmlXPathParserContextPtr ctxt);
-#define xmlXPathEvalRelativeLocationPath xmlXPathEvalRelLocationPath 
+static void xmlXPathCompRelLocationPath(xmlXPathParserContextPtr ctxt);
+#define xmlXPathCompRelativeLocationPath xmlXPathCompRelLocationPath 
 #else 
-void xmlXPathEvalRelativeLocationPath(xmlXPathParserContextPtr ctxt);
+static void xmlXPathCompRelativeLocationPath(xmlXPathParserContextPtr ctxt);
 #endif
 
 /**
@@ -5454,7 +5450,7 @@ xmlXPathParseName(xmlXPathParserContextPtr ctxt) {
  *                    | '.' Digits 
  *  [31]   Digits ::=   [0-9]+
  *
- * Parse and evaluate a Number in the string
+ * Compile a Number in the string
  * In complement of the Number expression, this function also handles
  * negative values : '-' Number.
  *
@@ -5499,18 +5495,18 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 }
 
 /**
- * xmlXPathEvalNumber:
+ * xmlXPathCompNumber:
  * @ctxt:  the XPath Parser context
  *
  *  [30]   Number ::=   Digits ('.' Digits?)?
  *                    | '.' Digits 
  *  [31]   Digits ::=   [0-9]+
  *
- * Parse and evaluate a Number, then push it on the stack
+ * Compile a Number, then push it on the stack
  *
  */
-void
-xmlXPathEvalNumber(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompNumber(xmlXPathParserContextPtr ctxt) {
     double ret = 0.0;
     double mult = 1;
     int ok = 0;
@@ -5540,7 +5536,7 @@ xmlXPathEvalNumber(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalLiteral:
+ * xmlXPathCompLiteral:
  * @ctxt:  the XPath Parser context
  *
  * Parse a Literal and push it on the stack.
@@ -5548,10 +5544,10 @@ xmlXPathEvalNumber(xmlXPathParserContextPtr ctxt) {
  *  [29]   Literal ::=   '"' [^"]* '"'
  *                    | "'" [^']* "'"
  *
- * TODO: xmlXPathEvalLiteral memory allocation could be improved.
+ * TODO: xmlXPathCompLiteral memory allocation could be improved.
  */
-void
-xmlXPathEvalLiteral(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompLiteral(xmlXPathParserContextPtr ctxt) {
     const xmlChar *q;
     xmlChar *ret = NULL;
 
@@ -5587,7 +5583,7 @@ xmlXPathEvalLiteral(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalVariableReference:
+ * xmlXPathCompVariableReference:
  * @ctxt:  the XPath Parser context
  *
  * Parse a VariableReference, evaluate it and push it on the stack.
@@ -5603,8 +5599,8 @@ xmlXPathEvalLiteral(xmlXPathParserContextPtr ctxt) {
  *
  *  [36]   VariableReference ::=   '$' QName 
  */
-void
-xmlXPathEvalVariableReference(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompVariableReference(xmlXPathParserContextPtr ctxt) {
     xmlChar *name;
     xmlChar *prefix;
 
@@ -5653,17 +5649,17 @@ xmlXPathIsNodeType(const xmlChar *name) {
 }
 
 /**
- * xmlXPathEvalFunctionCall:
+ * xmlXPathCompFunctionCall:
  * @ctxt:  the XPath Parser context
  *
  *  [16]   FunctionCall ::=   FunctionName '(' ( Argument ( ',' Argument)*)? ')'
  *  [17]   Argument ::=   Expr 
  *
- * Parse and evaluate a function call, the evaluation of all arguments are
+ * Compile a function call, the evaluation of all arguments are
  * pushed on the stack
  */
-void
-xmlXPathEvalFunctionCall(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompFunctionCall(xmlXPathParserContextPtr ctxt) {
     xmlChar *name;
     xmlChar *prefix;
     int nbargs = 0;
@@ -5692,7 +5688,7 @@ xmlXPathEvalFunctionCall(xmlXPathParserContextPtr ctxt) {
     while (CUR != ')') {
 	int op1 = ctxt->comp->last;
 	ctxt->comp->last = -1;
-        xmlXPathEvalExpr(ctxt);
+        xmlXPathCompileExpr(ctxt);
 	PUSH_BINARY_EXPR(XPATH_OP_ARG, op1, ctxt->comp->last, 0, 0);
 	nbargs++;
 	if (CUR == ')') break;
@@ -5709,7 +5705,7 @@ xmlXPathEvalFunctionCall(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalPrimaryExpr:
+ * xmlXPathCompPrimaryExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [15]   PrimaryExpr ::=   VariableReference 
@@ -5718,39 +5714,39 @@ xmlXPathEvalFunctionCall(xmlXPathParserContextPtr ctxt) {
  *                | Number 
  *                | FunctionCall 
  *
- * Parse and evaluate a primary expression, then push the result on the stack
+ * Compile a primary expression.
  */
-void
-xmlXPathEvalPrimaryExpr(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompPrimaryExpr(xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
-    if (CUR == '$') xmlXPathEvalVariableReference(ctxt);
+    if (CUR == '$') xmlXPathCompVariableReference(ctxt);
     else if (CUR == '(') {
 	NEXT;
 	SKIP_BLANKS;
-	xmlXPathEvalExpr(ctxt);
+	xmlXPathCompileExpr(ctxt);
 	if (CUR != ')') {
 	    XP_ERROR(XPATH_EXPR_ERROR);
 	}
 	NEXT;
 	SKIP_BLANKS;
     } else if (IS_DIGIT(CUR)) {
-	xmlXPathEvalNumber(ctxt);
+	xmlXPathCompNumber(ctxt);
     } else if ((CUR == '\'') || (CUR == '"')) {
-	xmlXPathEvalLiteral(ctxt);
+	xmlXPathCompLiteral(ctxt);
     } else {
-	xmlXPathEvalFunctionCall(ctxt);
+	xmlXPathCompFunctionCall(ctxt);
     }
     SKIP_BLANKS;
 }
 
 /**
- * xmlXPathEvalFilterExpr:
+ * xmlXPathCompFilterExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [20]   FilterExpr ::=   PrimaryExpr 
  *               | FilterExpr Predicate 
  *
- * Parse and evaluate a filter expression, then push the result on the stack
+ * Compile a filter expression.
  * Square brackets are used to filter expressions in the same way that
  * they are used in location paths. It is an error if the expression to
  * be filtered does not evaluate to a node-set. The context node list
@@ -5758,14 +5754,14 @@ xmlXPathEvalPrimaryExpr(xmlXPathParserContextPtr ctxt) {
  * to be filtered listed in document order.
  */
 
-void
-xmlXPathEvalFilterExpr(xmlXPathParserContextPtr ctxt) {
-    xmlXPathEvalPrimaryExpr(ctxt);
+static void
+xmlXPathCompFilterExpr(xmlXPathParserContextPtr ctxt) {
+    xmlXPathCompPrimaryExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
     
     while (CUR == '[') {
-	xmlXPathEvalPredicate(ctxt);
+	xmlXPathCompPredicate(ctxt);
 	SKIP_BLANKS;
     }
 
@@ -5823,7 +5819,7 @@ xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalPathExpr:
+ * xmlXPathCompPathExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [19]   PathExpr ::=   LocationPath 
@@ -5831,7 +5827,7 @@ xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
  *               | FilterExpr '/' RelativeLocationPath 
  *               | FilterExpr '//' RelativeLocationPath 
  *
- * Parse and evaluate a path expression, then push the result on the stack
+ * Compile a path expression.
  * The / operator and // operators combine an arbitrary expression
  * and a relative location path. It is an error if the expression
  * does not evaluate to a node-set.
@@ -5840,8 +5836,8 @@ xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
  * /descendant-or-self::node()/.
  */
 
-void
-xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompPathExpr(xmlXPathParserContextPtr ctxt) {
     int lc = 1;           /* Should we branch to LocationPath ?         */
     xmlChar *name = NULL; /* we may have to preparse a name to find out */
 
@@ -5961,9 +5957,9 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 	} else {
 	    PUSH_LEAVE_EXPR(XPATH_OP_NODE, 0, 0);
 	}
-	xmlXPathEvalLocationPath(ctxt);
+	xmlXPathCompLocationPath(ctxt);
     } else {
-	xmlXPathEvalFilterExpr(ctxt);
+	xmlXPathCompFilterExpr(ctxt);
 	CHECK_ERROR;
 	if ((CUR == '/') && (NXT(1) == '/')) {
 	    SKIP(2);
@@ -5973,27 +5969,27 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 		    NODE_TEST_TYPE, NODE_TYPE_NODE, NULL, NULL);
 	    PUSH_UNARY_EXPR(XPATH_OP_RESET, ctxt->comp->last, 1, 0);
 
-	    xmlXPathEvalRelativeLocationPath(ctxt);
+	    xmlXPathCompRelativeLocationPath(ctxt);
 	} else if (CUR == '/') {
-	    xmlXPathEvalRelativeLocationPath(ctxt);
+	    xmlXPathCompRelativeLocationPath(ctxt);
 	}
     }
     SKIP_BLANKS;
 }
 
 /**
- * xmlXPathEvalUnionExpr:
+ * xmlXPathCompUnionExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [18]   UnionExpr ::=   PathExpr 
  *               | UnionExpr '|' PathExpr 
  *
- * Parse and evaluate an union expression, then push the result on the stack
+ * Compile an union expression.
  */
 
-void
-xmlXPathEvalUnionExpr(xmlXPathParserContextPtr ctxt) {
-    xmlXPathEvalPathExpr(ctxt);
+static void
+xmlXPathCompUnionExpr(xmlXPathParserContextPtr ctxt) {
+    xmlXPathCompPathExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
     while (CUR == '|') {
@@ -6002,7 +5998,7 @@ xmlXPathEvalUnionExpr(xmlXPathParserContextPtr ctxt) {
 
 	NEXT;
 	SKIP_BLANKS;
-	xmlXPathEvalPathExpr(ctxt);
+	xmlXPathCompPathExpr(ctxt);
 
 	PUSH_BINARY_EXPR(XPATH_OP_UNION, op1, ctxt->comp->last, 0, 0);
 
@@ -6011,17 +6007,17 @@ xmlXPathEvalUnionExpr(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalUnaryExpr:
+ * xmlXPathCompUnaryExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [27]   UnaryExpr ::=   UnionExpr 
  *                   | '-' UnaryExpr 
  *
- * Parse and evaluate an unary expression, then push the result on the stack
+ * Compile an unary expression.
  */
 
-void
-xmlXPathEvalUnaryExpr(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompUnaryExpr(xmlXPathParserContextPtr ctxt) {
     int minus = 0;
     int found = 0;
 
@@ -6033,7 +6029,7 @@ xmlXPathEvalUnaryExpr(xmlXPathParserContextPtr ctxt) {
 	SKIP_BLANKS;
     }
 
-    xmlXPathEvalUnionExpr(ctxt);
+    xmlXPathCompUnionExpr(ctxt);
     CHECK_ERROR;
     if (found) {
 	if (minus)
@@ -6044,7 +6040,7 @@ xmlXPathEvalUnaryExpr(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalMultiplicativeExpr:
+ * xmlXPathCompMultiplicativeExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [26]   MultiplicativeExpr ::=   UnaryExpr 
@@ -6053,12 +6049,12 @@ xmlXPathEvalUnaryExpr(xmlXPathParserContextPtr ctxt) {
  *                   | MultiplicativeExpr 'mod' UnaryExpr 
  *  [34]   MultiplyOperator ::=   '*'
  *
- * Parse and evaluate an Additive expression, then push the result on the stack
+ * Compile an Additive expression.
  */
 
-void
-xmlXPathEvalMultiplicativeExpr(xmlXPathParserContextPtr ctxt) {
-    xmlXPathEvalUnaryExpr(ctxt);
+static void
+xmlXPathCompMultiplicativeExpr(xmlXPathParserContextPtr ctxt) {
+    xmlXPathCompUnaryExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
     while ((CUR == '*') || 
@@ -6078,7 +6074,7 @@ xmlXPathEvalMultiplicativeExpr(xmlXPathParserContextPtr ctxt) {
 	    SKIP(3);
 	}
 	SKIP_BLANKS;
-        xmlXPathEvalUnaryExpr(ctxt);
+        xmlXPathCompUnaryExpr(ctxt);
 	CHECK_ERROR;
 	PUSH_BINARY_EXPR(XPATH_OP_MULT, op1, ctxt->comp->last, op, 0);
 	SKIP_BLANKS;
@@ -6086,20 +6082,20 @@ xmlXPathEvalMultiplicativeExpr(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalAdditiveExpr:
+ * xmlXPathCompAdditiveExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [25]   AdditiveExpr ::=   MultiplicativeExpr 
  *                   | AdditiveExpr '+' MultiplicativeExpr 
  *                   | AdditiveExpr '-' MultiplicativeExpr 
  *
- * Parse and evaluate an Additive expression, then push the result on the stack
+ * Compile an Additive expression.
  */
 
-void
-xmlXPathEvalAdditiveExpr(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompAdditiveExpr(xmlXPathParserContextPtr ctxt) {
 
-    xmlXPathEvalMultiplicativeExpr(ctxt);
+    xmlXPathCompMultiplicativeExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
     while ((CUR == '+') || (CUR == '-')) {
@@ -6110,7 +6106,7 @@ xmlXPathEvalAdditiveExpr(xmlXPathParserContextPtr ctxt) {
 	else plus = 0;
 	NEXT;
 	SKIP_BLANKS;
-        xmlXPathEvalMultiplicativeExpr(ctxt);
+        xmlXPathCompMultiplicativeExpr(ctxt);
 	CHECK_ERROR;
 	PUSH_BINARY_EXPR(XPATH_OP_PLUS, op1, ctxt->comp->last, plus, 0);
 	SKIP_BLANKS;
@@ -6118,7 +6114,7 @@ xmlXPathEvalAdditiveExpr(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalRelationalExpr:
+ * xmlXPathCompRelationalExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [24]   RelationalExpr ::=   AdditiveExpr 
@@ -6131,13 +6127,13 @@ xmlXPathEvalAdditiveExpr(xmlXPathParserContextPtr ctxt) {
  *  (AdditiveExpr <= AdditiveExpr) > AdditiveExpr
  *  which is basically what got implemented.
  *
- * Parse and evaluate a Relational expression, then push the result
+ * Compile a Relational expression, then push the result
  * on the stack
  */
 
-void
-xmlXPathEvalRelationalExpr(xmlXPathParserContextPtr ctxt) {
-    xmlXPathEvalAdditiveExpr(ctxt);
+static void
+xmlXPathCompRelationalExpr(xmlXPathParserContextPtr ctxt) {
+    xmlXPathCompAdditiveExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
     while ((CUR == '<') ||
@@ -6154,7 +6150,7 @@ xmlXPathEvalRelationalExpr(xmlXPathParserContextPtr ctxt) {
 	NEXT;
 	if (!strict) NEXT;
 	SKIP_BLANKS;
-        xmlXPathEvalAdditiveExpr(ctxt);
+        xmlXPathCompAdditiveExpr(ctxt);
 	CHECK_ERROR;
 	PUSH_BINARY_EXPR(XPATH_OP_CMP, op1, ctxt->comp->last, inf, strict);
 	SKIP_BLANKS;
@@ -6162,7 +6158,7 @@ xmlXPathEvalRelationalExpr(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalEqualityExpr:
+ * xmlXPathCompEqualityExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [23]   EqualityExpr ::=   RelationalExpr 
@@ -6174,12 +6170,12 @@ xmlXPathEvalRelationalExpr(xmlXPathParserContextPtr ctxt) {
  *  (RelationalExpr != RelationalExpr) != RelationalExpr
  *  which is basically what got implemented.
  *
- * Parse and evaluate an Equality expression, then push the result on the stack
+ * Compile an Equality expression.
  *
  */
-void
-xmlXPathEvalEqualityExpr(xmlXPathParserContextPtr ctxt) {
-    xmlXPathEvalRelationalExpr(ctxt);
+static void
+xmlXPathCompEqualityExpr(xmlXPathParserContextPtr ctxt) {
+    xmlXPathCompRelationalExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
     while ((CUR == '=') || ((CUR == '!') && (NXT(1) == '='))) {
@@ -6191,7 +6187,7 @@ xmlXPathEvalEqualityExpr(xmlXPathParserContextPtr ctxt) {
 	NEXT;
 	if (!eq) NEXT;
 	SKIP_BLANKS;
-        xmlXPathEvalRelationalExpr(ctxt);
+        xmlXPathCompRelationalExpr(ctxt);
 	CHECK_ERROR;
 	PUSH_BINARY_EXPR(XPATH_OP_EQUAL, op1, ctxt->comp->last, eq, 0);
 	SKIP_BLANKS;
@@ -6199,25 +6195,25 @@ xmlXPathEvalEqualityExpr(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalAndExpr:
+ * xmlXPathCompAndExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [22]   AndExpr ::=   EqualityExpr 
  *                 | AndExpr 'and' EqualityExpr 
  *
- * Parse and evaluate an AND expression, then push the result on the stack
+ * Compile an AND expression.
  *
  */
-void
-xmlXPathEvalAndExpr(xmlXPathParserContextPtr ctxt) {
-    xmlXPathEvalEqualityExpr(ctxt);
+static void
+xmlXPathCompAndExpr(xmlXPathParserContextPtr ctxt) {
+    xmlXPathCompEqualityExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
     while ((CUR == 'a') && (NXT(1) == 'n') && (NXT(2) == 'd')) {
 	int op1 = ctxt->comp->last;
         SKIP(3);
 	SKIP_BLANKS;
-        xmlXPathEvalEqualityExpr(ctxt);
+        xmlXPathCompEqualityExpr(ctxt);
 	CHECK_ERROR;
 	PUSH_BINARY_EXPR(XPATH_OP_AND, op1, ctxt->comp->last, 0, 0);
 	SKIP_BLANKS;
@@ -6225,26 +6221,25 @@ xmlXPathEvalAndExpr(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalExpr:
+ * xmlXPathCompExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [14]   Expr ::=   OrExpr 
  *  [21]   OrExpr ::=   AndExpr 
  *                 | OrExpr 'or' AndExpr 
  *
- * Parse and evaluate an expression, then push the result on the stack
- *
+ * Parse and compile an expression
  */
-void
-xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
-    xmlXPathEvalAndExpr(ctxt);
+static void
+xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt) {
+    xmlXPathCompAndExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
     while ((CUR == 'o') && (NXT(1) == 'r')) {
 	int op1 = ctxt->comp->last;
         SKIP(2);
 	SKIP_BLANKS;
-        xmlXPathEvalAndExpr(ctxt);
+        xmlXPathCompAndExpr(ctxt);
 	CHECK_ERROR;
 	PUSH_BINARY_EXPR(XPATH_OP_OR, op1, ctxt->comp->last, 0, 0);
 	op1 = ctxt->comp->nbStep;
@@ -6257,181 +6252,16 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvaluatePredicateResult:
- * @ctxt:  the XPath Parser context
- * @res:  the Predicate Expression evaluation result
- *
- * Evaluate a predicate result for the current node.
- * A PredicateExpr is evaluated by evaluating the Expr and converting
- * the result to a boolean. If the result is a number, the result will
- * be converted to true if the number is equal to the position of the
- * context node in the context node list (as returned by the position
- * function) and will be converted to false otherwise; if the result
- * is not a number, then the result will be converted as if by a call
- * to the boolean function. 
- *
- * Return 1 if predicate is true, 0 otherwise
- */
-int
-xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt, 
-                                xmlXPathObjectPtr res) {
-    if (res == NULL) return(0);
-    switch (res->type) {
-        case XPATH_BOOLEAN:
-	    return(res->boolval);
-        case XPATH_NUMBER:
-	    return(res->floatval == ctxt->context->proximityPosition);
-        case XPATH_NODESET:
-        case XPATH_XSLT_TREE:
-	    return(res->nodesetval->nodeNr != 0);
-        case XPATH_STRING:
-	    return((res->stringval != NULL) &&
-	           (xmlStrlen(res->stringval) != 0));
-        default:
-	    STRANGE
-    }
-    return(0);
-}
-
-/**
- * xmlXPathRunPredicate:
+ * xmlXPathCompPredicate:
  * @ctxt:  the XPath Parser context
  *
  *  [8]   Predicate ::=   '[' PredicateExpr ']'
  *  [9]   PredicateExpr ::=   Expr 
  *
- * ---------------------
- * For each node in the node-set to be filtered, the PredicateExpr is
- * evaluated with that node as the context node, with the number of nodes
- * in the node-set as the context size, and with the proximity position
- * of the node in the node-set with respect to the axis as the context
- * position; if PredicateExpr evaluates to true for that node, the node
- * is included in the new node-set; otherwise, it is not included.
- * ---------------------
- *
- * Parse and evaluate a predicate for all the elements of the
- * current node list. Then refine the list by removing all
- * nodes where the predicate is false.
+ * Compile a predicate expression
  */
-void
-xmlXPathRunPredicate(xmlXPathParserContextPtr ctxt) {
-    const xmlChar *cur;
-    xmlXPathObjectPtr res;
-    xmlXPathObjectPtr obj, tmp;
-    xmlNodeSetPtr newset = NULL;
-    xmlNodeSetPtr oldset;
-    xmlNodePtr oldnode;
-    int i;
-
-    /* TODO ... */
-
-    SKIP_BLANKS;
-    if (CUR != '[') {
-	XP_ERROR(XPATH_INVALID_PREDICATE_ERROR);
-    }
-    NEXT;
-    SKIP_BLANKS;
-
-    /*
-     * Extract the old set, and then evaluate the result of the
-     * expression for all the element in the set. use it to grow
-     * up a new set.
-     */
-    CHECK_TYPE(XPATH_NODESET);
-    obj = valuePop(ctxt);
-    oldset = obj->nodesetval;
-    oldnode = ctxt->context->node;
-    ctxt->context->node = NULL;
-
-    if ((oldset == NULL) || (oldset->nodeNr == 0)) {
-	ctxt->context->contextSize = 0;
-	ctxt->context->proximityPosition = 0;
-	xmlXPathEvalExpr(ctxt);
-	res = valuePop(ctxt);
-	if (res != NULL)
-	    xmlXPathFreeObject(res);
-	valuePush(ctxt, obj);
-	CHECK_ERROR;
-    } else {
-	/*
-	 * Save the expression pointer since we will have to evaluate
-	 * it multiple times. Initialize the new set.
-	 */
-        cur = ctxt->cur;
-	newset = xmlXPathNodeSetCreate(NULL);
-	
-        for (i = 0; i < oldset->nodeNr; i++) {
-	    ctxt->cur = cur;
-
-	    /*
-	     * Run the evaluation with a node list made of a single item
-	     * in the nodeset.
-	     */
-	    ctxt->context->node = oldset->nodeTab[i];
-	    tmp = xmlXPathNewNodeSet(ctxt->context->node);
-	    valuePush(ctxt, tmp);
-	    ctxt->context->contextSize = oldset->nodeNr;
-	    ctxt->context->proximityPosition = i + 1;
-
-	    xmlXPathEvalExpr(ctxt);
-	    CHECK_ERROR;
-
-	    /*
-	     * The result of the evaluation need to be tested to
-	     * decided whether the filter succeeded or not
-	     */
-	    res = valuePop(ctxt);
-	    if (xmlXPathEvaluatePredicateResult(ctxt, res)) {
-	        xmlXPathNodeSetAdd(newset, oldset->nodeTab[i]);
-	    }
-
-	    /*
-	     * Cleanup
-	     */
-	    if (res != NULL)
-		xmlXPathFreeObject(res);
-	    if (ctxt->value == tmp) {
-		res = valuePop(ctxt);
-		xmlXPathFreeObject(res);
-	    }
-	    
-	    ctxt->context->node = NULL;
-	}
-
-	/*
-	 * The result is used as the new evaluation set.
-	 */
-	xmlXPathFreeObject(obj);
-	ctxt->context->node = NULL;
-	ctxt->context->contextSize = -1;
-	ctxt->context->proximityPosition = -1;
-	valuePush(ctxt, xmlXPathWrapNodeSet(newset));
-    }
-    if (CUR != ']') {
-	XP_ERROR(XPATH_INVALID_PREDICATE_ERROR);
-    }
-
-    PUSH_UNARY_EXPR(XPATH_OP_PREDICATE, ctxt->comp->last, 0, 0);
-
-    NEXT;
-    SKIP_BLANKS;
-#ifdef DEBUG_STEP
-    xmlGenericError(xmlGenericErrorContext, "After predicate : ");
-    xmlGenericErrorContextNodeSet(xmlGenericErrorContext,
-	    ctxt->value->nodesetval);
-#endif
-    ctxt->context->node = oldnode;
-}
-
-/**
- * xmlXPathEvalPredicate:
- * @ctxt:  the XPath Parser context
- *
- *  [8]   Predicate ::=   '[' PredicateExpr ']'
- *  [9]   PredicateExpr ::=   Expr 
- */
-void
-xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt) {
     int op1 = ctxt->comp->last;
 
     SKIP_BLANKS;
@@ -6442,7 +6272,7 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
 
     ctxt->comp->last = -1;
-    xmlXPathEvalExpr(ctxt);
+    xmlXPathCompileExpr(ctxt);
     CHECK_ERROR;
 
     if (CUR != ']') {
@@ -6456,7 +6286,7 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalNodeTest:
+ * xmlXPathCompNodeTest:
  * @ctxt:  the XPath Parser context
  * @test:  pointer to a xmlXPathTestVal
  * @type:  pointer to a xmlXPathTypeVal
@@ -6477,8 +6307,9 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
  * Returns the name found and update @test, @type and @prefix appropriately
  */
 xmlChar *
-xmlXPathEvalNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
-	             xmlXPathTypeVal *type, const xmlChar **prefix, xmlChar *name) {
+xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
+	             xmlXPathTypeVal *type, const xmlChar **prefix,
+		     xmlChar *name) {
     int blanks;
 
     if ((test == NULL) || (type == NULL) || (prefix == NULL)) {
@@ -6538,7 +6369,7 @@ xmlXPathEvalNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	    if (name != NULL)
 		xmlFree(name);
 
-	    xmlXPathEvalLiteral(ctxt);
+	    xmlXPathCompLiteral(ctxt);
 	    CHECK_ERROR 0;
 	    xmlXPathStringFunction(ctxt, 1);
 	    CHECK_ERROR0;
@@ -6655,14 +6486,15 @@ xmlXPathIsAxisName(const xmlChar *name) {
 }
 
 /**
- * xmlXPathEvalAxisSpecifier:
+ * xmlXPathCompAxisSpecifier:
  * @ctxt:  the XPath Parser context
  *
+ * Parse an axis value
  *
  * Returns the axis found
  */
 xmlXPathAxisVal
-xmlXPathEvalAxisSpecifier(xmlXPathParserContextPtr ctxt) {
+xmlXPathCompAxisSpecifier(xmlXPathParserContextPtr ctxt) {
     xmlXPathAxisVal ret = AXIS_CHILD;
     int blank = 0;
     xmlChar *name;
@@ -6689,7 +6521,7 @@ xmlXPathEvalAxisSpecifier(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathEvalStep:
+ * xmlXPathCompStep:
  * @ctxt:  the XPath Parser context
  *
  * [4] Step ::=   AxisSpecifier NodeTest Predicate*
@@ -6708,7 +6540,7 @@ xmlXPathEvalAxisSpecifier(xmlXPathParserContextPtr ctxt) {
  *                     | AbbreviatedStep
  *                     | 'range-to' '(' Expr ')' Predicate*
  *
- * Evaluate one step in a Location Path
+ * Compile one step in a Location Path
  * A location step of . is short for self::node(). This is
  * particularly useful in conjunction with //. For example, the
  * location path .//para is short for
@@ -6720,8 +6552,8 @@ xmlXPathEvalAxisSpecifier(xmlXPathParserContextPtr ctxt) {
  * and so will select the title children of the parent of the context
  * node.
  */
-void
-xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
     if ((CUR == '.') && (NXT(1) == '.')) {
 	SKIP(2);
@@ -6754,7 +6586,7 @@ xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
 		NEXT;
 		SKIP_BLANKS;
 
-		xmlXPathEvalExpr(ctxt);
+		xmlXPathCompileExpr(ctxt);
 		PUSH_BINARY_EXPR(XPATH_OP_RANGETO, op1, ctxt->comp->last, 0, 0);
 		CHECK_ERROR;
 
@@ -6793,7 +6625,7 @@ xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
 
 	CHECK_ERROR;
 
-	name = xmlXPathEvalNodeTest(ctxt, &test, &type, &prefix, name);
+	name = xmlXPathCompNodeTest(ctxt, &test, &type, &prefix, name);
 	if (test == 0)
 	    return;
 
@@ -6813,7 +6645,7 @@ xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
 eval_predicates:
 	SKIP_BLANKS;
 	while (CUR == '[') {
-	    xmlXPathEvalPredicate(ctxt);
+	    xmlXPathCompPredicate(ctxt);
 	}
     }
 #ifdef DEBUG_STEP
@@ -6824,7 +6656,7 @@ eval_predicates:
 }
 
 /**
- * xmlXPathEvalRelativeLocationPath:
+ * xmlXPathCompRelativeLocationPath:
  * @ctxt:  the XPath Parser context
  *
  *  [3]   RelativeLocationPath ::=   Step 
@@ -6832,12 +6664,13 @@ eval_predicates:
  *                     | AbbreviatedRelativeLocationPath 
  *  [11]  AbbreviatedRelativeLocationPath ::=   RelativeLocationPath '//' Step 
  *
+ * Compile a relative location path.
  */
-void
+static void
 #ifdef VMS
-xmlXPathEvalRelLocationPath
+xmlXPathCompRelLocationPath
 #else
-xmlXPathEvalRelativeLocationPath
+xmlXPathCompRelativeLocationPath
 #endif
 (xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
@@ -6850,7 +6683,7 @@ xmlXPathEvalRelativeLocationPath
 	    NEXT;
 	SKIP_BLANKS;
     }
-    xmlXPathEvalStep(ctxt);
+    xmlXPathCompStep(ctxt);
     SKIP_BLANKS;
     while (CUR == '/') {
 	if ((CUR == '/') && (NXT(1) == '/')) {
@@ -6858,18 +6691,18 @@ xmlXPathEvalRelativeLocationPath
 	    SKIP_BLANKS;
 	    PUSH_LONG_EXPR(XPATH_OP_COLLECT, AXIS_DESCENDANT_OR_SELF,
 			     NODE_TEST_TYPE, NODE_TYPE_NODE, NULL, NULL);
-	    xmlXPathEvalStep(ctxt);
+	    xmlXPathCompStep(ctxt);
 	} else if (CUR == '/') {
 	    NEXT;
 	    SKIP_BLANKS;
-	    xmlXPathEvalStep(ctxt);
+	    xmlXPathCompStep(ctxt);
 	}
 	SKIP_BLANKS;
     }
 }
 
 /**
- * xmlXPathEvalLocationPath:
+ * xmlXPathCompLocationPath:
  * @ctxt:  the XPath Parser context
  *
  *  [1]   LocationPath ::=   RelativeLocationPath 
@@ -6879,6 +6712,8 @@ xmlXPathEvalRelativeLocationPath
  *  [10]   AbbreviatedAbsoluteLocationPath ::=   
  *                           '//' RelativeLocationPath 
  *
+ * Compile a location path
+ *
  * // is short for /descendant-or-self::node()/. For example,
  * //para is short for /descendant-or-self::node()/child::para and
  * so will select any para element in the document (even a para element
@@ -6887,11 +6722,11 @@ xmlXPathEvalRelativeLocationPath
  * short for div/descendant-or-self::node()/child::para and so will
  * select all para descendants of div children.
  */
-void
-xmlXPathEvalLocationPath(xmlXPathParserContextPtr ctxt) {
+static void
+xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
     if (CUR != '/') {
-        xmlXPathEvalRelativeLocationPath(ctxt);
+        xmlXPathCompRelativeLocationPath(ctxt);
     } else {
 	while (CUR == '/') {
 	    if ((CUR == '/') && (NXT(1) == '/')) {
@@ -6899,12 +6734,12 @@ xmlXPathEvalLocationPath(xmlXPathParserContextPtr ctxt) {
 		SKIP_BLANKS;
 		PUSH_LONG_EXPR(XPATH_OP_COLLECT, AXIS_DESCENDANT_OR_SELF,
 			     NODE_TEST_TYPE, NODE_TYPE_NODE, NULL, NULL);
-		xmlXPathEvalRelativeLocationPath(ctxt);
+		xmlXPathCompRelativeLocationPath(ctxt);
 	    } else if (CUR == '/') {
 		NEXT;
 		SKIP_BLANKS;
 		if (CUR != 0)
-		    xmlXPathEvalRelativeLocationPath(ctxt);
+		    xmlXPathCompRelativeLocationPath(ctxt);
 	    }
 	}
     }
@@ -7378,6 +7213,74 @@ xmlXPathRunEval(xmlXPathParserContextPtr ctxt) {
     xmlXPathCompOpEval(ctxt, &comp->steps[comp->last]);
 }
 
+/************************************************************************
+ *									*
+ * 			Public interfaces				*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlXPathEvaluatePredicateResult:
+ * @ctxt:  the XPath Parser context
+ * @res:  the Predicate Expression evaluation result
+ *
+ * Evaluate a predicate result for the current node.
+ * A PredicateExpr is evaluated by evaluating the Expr and converting
+ * the result to a boolean. If the result is a number, the result will
+ * be converted to true if the number is equal to the position of the
+ * context node in the context node list (as returned by the position
+ * function) and will be converted to false otherwise; if the result
+ * is not a number, then the result will be converted as if by a call
+ * to the boolean function. 
+ *
+ * Return 1 if predicate is true, 0 otherwise
+ */
+int
+xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt, 
+                                xmlXPathObjectPtr res) {
+    if (res == NULL) return(0);
+    switch (res->type) {
+        case XPATH_BOOLEAN:
+	    return(res->boolval);
+        case XPATH_NUMBER:
+	    return(res->floatval == ctxt->context->proximityPosition);
+        case XPATH_NODESET:
+        case XPATH_XSLT_TREE:
+	    return(res->nodesetval->nodeNr != 0);
+        case XPATH_STRING:
+	    return((res->stringval != NULL) &&
+	           (xmlStrlen(res->stringval) != 0));
+        default:
+	    STRANGE
+    }
+    return(0);
+}
+
+/**
+ * xmlXPathCompile:
+ * @str:  the XPath expression
+ *
+ * Compile an XPath expression
+ *
+ * Returns the xmlXPathObjectPtr resulting from the eveluation or NULL.
+ *         the caller has to free the object.
+ */
+xmlXPathCompExprPtr
+xmlXPathCompile(const xmlChar *str) {
+    xmlXPathParserContextPtr ctxt;
+    xmlXPathCompExprPtr comp;
+
+    xmlXPathInit();
+
+    ctxt = xmlXPathNewParserContext(str, NULL);
+    xmlXPathCompileExpr(ctxt);
+
+    comp = ctxt->comp;
+    ctxt->comp = NULL;
+    xmlXPathFreeParserContext(ctxt);
+    return(comp);
+}
+
 /**
  * xmlXPathCompiledEval:
  * @comp:  the compiled XPath expression
@@ -7434,15 +7337,23 @@ xmlXPathCompiledEval(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctx) {
         
     xmlXPathDebugDumpCompExpr(stdout, ctxt->comp, 0);
 
+    ctxt->comp = NULL;
     xmlXPathFreeParserContext(ctxt);
     return(res);
 }
 
-/************************************************************************
- *									*
- * 			Main interfaces					*
- *									*
- ************************************************************************/
+/**
+ * xmlXPathEvalExpr:
+ * @ctxt:  the XPath Parser context
+ *
+ * Parse and evaluate an XPath expression in the given context,
+ * then push the result on the context stack
+ */
+void
+xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
+    xmlXPathCompileExpr(ctxt);
+    xmlXPathRunEval(ctxt);
+}
 
 /**
  * xmlXPathEval:
@@ -7466,8 +7377,6 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 
     ctxt = xmlXPathNewParserContext(str, ctx);
     xmlXPathEvalExpr(ctxt);
-    /* xmlXPathDebugDumpCompExpr(stdout, ctxt->comp, 0); */
-    xmlXPathRunEval(ctxt);
 
     if (ctxt->value == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -7524,7 +7433,6 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
 
     pctxt = xmlXPathNewParserContext(str, ctxt);
     xmlXPathEvalExpr(pctxt);
-    xmlXPathRunEval(pctxt);
 
     if (*pctxt->cur != 0) {
 	xmlXPatherror(pctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);

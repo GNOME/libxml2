@@ -262,18 +262,9 @@ typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
  ************************************************************************/
 
 /**
- * Evaluation functions.
+ * Objects and Nodesets handling
  */
-void		   xmlXPathInit			(void);
-xmlXPathContextPtr xmlXPathNewContext		(xmlDocPtr doc);
-void		   xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
-xmlXPathObjectPtr  xmlXPathEval			(const xmlChar *str,
-						 xmlXPathContextPtr ctxt);
-xmlXPathObjectPtr  xmlXPathEvalXPtrExpr		(const xmlChar *str,
-						 xmlXPathContextPtr ctxt);
 void		   xmlXPathFreeObject		(xmlXPathObjectPtr obj);
-xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,
-						 xmlXPathContextPtr ctxt);
 xmlNodeSetPtr	   xmlXPathNodeSetCreate	(xmlNodePtr val);
 void		   xmlXPathFreeNodeSetList	(xmlXPathObjectPtr obj);
 void		   xmlXPathFreeNodeSet		(xmlNodeSetPtr obj);
@@ -281,6 +272,28 @@ xmlXPathObjectPtr  xmlXPathObjectCopy		(xmlXPathObjectPtr val);
 int		   xmlXPathCmpNodes		(xmlNodePtr node1,
 						 xmlNodePtr node2);
 
+/**
+ * Context handling
+ */
+void		   xmlXPathInit			(void);
+xmlXPathContextPtr xmlXPathNewContext		(xmlDocPtr doc);
+void		   xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
+
+/**
+ * Evaluation functions.
+ */
+xmlXPathObjectPtr  xmlXPathEval			(const xmlChar *str,
+						 xmlXPathContextPtr ctxt);
+xmlXPathObjectPtr  xmlXPathEvalXPtrExpr		(const xmlChar *str,
+						 xmlXPathContextPtr ctxt);
+xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,
+						 xmlXPathContextPtr ctxt);
+/**
+ * Separate compilation/evaluation entry points
+ */
+xmlXPathCompExprPtr xmlXPathCompile		(const xmlChar *str);
+xmlXPathObjectPtr   xmlXPathCompiledEval	(xmlXPathCompExprPtr comp,
+						 xmlXPathContextPtr ctx);
 
 #ifdef __cplusplus
 }

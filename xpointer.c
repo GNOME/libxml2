@@ -982,7 +982,6 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 
 	CUR_PTR = buffer;
 	xmlXPathEvalExpr(ctxt);
-	xmlXPathRunEval(ctxt);
 	CUR_PTR=left;
 #ifdef XPTR_XMLNS_SCHEME
     } else if (xmlStrEqual(name, (xmlChar *) "xmlns")) {

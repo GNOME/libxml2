@@ -1,3 +1,10 @@
+Mon Mar 19 11:54:31 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.[ch] xpointer.c: restaured the Binary and API compatibility
+	  cleaned up the parser internals, refactored XPath code, added
+	  new compilation based APIs and cleanly separated public and
+	  private APIs.
+
 Mon Mar 19 00:59:25 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.h: the comp field must be added at the end to avoid

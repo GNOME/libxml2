@@ -1,3 +1,8 @@
+Thu Oct  2 13:01:13 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/libxml/parser.h parser.c: introduced xmlStrPrintf
+	function (wrapper around snprintf)
+
 Wed Oct  1 21:12:06 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* entities.c: Fix error on output of high codepoint charref like

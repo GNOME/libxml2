@@ -851,6 +851,12 @@ XMLPUBFUN xmlChar * XMLCALL
 					 const xmlChar *add,
 					 int len);
 
+XMLPUBFUN int XMLCALL	
+		xmlStrPrintf		(xmlChar *buf,
+					 int len,
+					 const xmlChar *msg,
+					 ...);
+
 /*
  * Basic parsing Interfaces
  */

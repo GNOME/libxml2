@@ -41,6 +41,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/threads.h>
 #include <libxml/globals.h>
@@ -2397,6 +2398,33 @@ xmlStrcat(xmlChar *cur, const xmlChar *add) {
 
     while (*p != 0) p++; /* non input consuming */
     return(xmlStrncat(cur, add, p - add));
+}
+
+/**
+ * xmlStrPrintf:
+ * @buf:   the result buffer.
+ * @len:   the result buffer length.
+ * @msg:   the message with printf formatting.
+ * @...:   extra parameters for the message.
+ *
+ * Formats @msg and places result into @buf.
+ *
+ * Returns the number of characters written to @buf or -1 if an error occurs.
+ */
+int 
+xmlStrPrintf(xmlChar *buf, int len, const xmlChar *msg, ...) {
+    va_list args;
+    int ret;
+    
+    if((buf == NULL) || (msg == NULL)) {
+	return(-1);
+    }
+    
+    va_start(args, msg);
+    ret = vsnprintf(BAD_CAST buf, len, BAD_CAST msg, args);
+    va_end(args);
+    
+    return(ret);
 }
 
 /************************************************************************

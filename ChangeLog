@@ -1,3 +1,10 @@
+Thu Nov 27 19:25:10 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/Makefile.* win32/configure.js: Modified to allow coexistent 
+	  build with all compilers. Added C-Runtime option for MSVC. Included
+	  xmlWriter.
+	* xmlwriter.c: Added IN_LIBXML macro
+
 Wed Nov 26 21:54:01 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/Makefile.bcb: applied patch from Eric

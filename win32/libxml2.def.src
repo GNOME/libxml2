@@ -1162,9 +1162,34 @@ xmlCleanupPredefinedEntities
 	xmlMemoryStrdup
 
 
+/* xmlreader.h 
+   --------------------------------------------------------------------- */
+	/* Constructors & Destructor */
+	xmlNewTextReader
+	xmlNewTextReaderFilename
+	xmlFreeTextReader
+	/* Iterators */
+	xmlTextReaderRead
+	/* Attributes of the node */
+	xmlTextReaderAttributeCount
+	xmlTextReaderBaseUri
+	xmlTextReaderDepth
+	xmlTextReaderHasAttributes
+	xmlTextReaderHasValue
+	xmlTextReaderIsDefault
+	xmlTextReaderIsEmptyElement
+	xmlTextReaderLocalName
+	xmlTextReaderName
+	xmlTextReaderNamespaceUri
+	xmlTextReaderNodeType
+	xmlTextReaderPrefix
+	xmlTextReaderQuoteChar
+	xmlTextReaderValue
+	xmlTextReaderXmlLang
+
+
 /* xmlregexp.h 
    --------------------------------------------------------------------- */
-
 #ifdef LIBXML_REGEXP_ENABLED
 	/* The POSIX like API */
 	xmlRegexpCompile

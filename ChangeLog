@@ -1,3 +1,9 @@
+2001-07-27  Darin Adler  <darin@bentspoon.com>
+
+	* include/libxml/.cvsignore:
+	* include/libxml/xmlwin32version.h:
+	Remove this file from CVS because it's generated.
+
 Fri Jul 27 10:03:56 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c include/libxml/parser.h: applied const patches from

@@ -1,3 +1,4 @@
 Makefile
 Makefile.in
 xmlversion.h
+xmlwin32version.h

@@ -1,3 +1,10 @@
+1999-03-05  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (check-local): Alias for `tests' target.  This will
+	cause `make check' to do the right thing.
+	(tests): Don't run tests in srcdir.  Also, replaced calls to
+	basename with a `sed' "equivalent".
+
 Fri Mar  5 07:23:53 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Renamed error.h to xml-error.h, corrected Makefile.am to list

@@ -39,17 +39,20 @@ tester_LDFLAGS =
 tester_DEPENDENCIES = $(DEPS)
 tester_LDADD= $(LDADDS)
 
+check-local: tests
+
 tests : tester
-	@(DIR=`pwd`; cd $(srcdir) ; for i in test/* ; do \
+	@(for i in $(srcdir)/test/* ; do \
 	  if [ ! -d $$i ] ; then \
-	  if [ ! -f result/`basename $$i` ] ; then \
-	      echo New test file `basename $$i` ; \
-	      $$DIR/tester $$i > result/`basename $$i` ; \
+	  j=`echo $$i | sed -e 's,^.*/,,'`; \
+	  if [ ! -f $(srcdir)/result/$$j ] ; then \
+	      echo New test file $$j ; \
+	      ./tester $$i > $(srcdir)/result/$$j ; \
 	  else \
-	      echo Testing `basename $$i` ; \
-	      $$DIR/tester $$i > result.`basename $$i` ; \
-	      diff result/`basename $$i` result.`basename $$i` ; \
-	      rm result.`basename $$i` ; \
+	      echo Testing $$j ; \
+	      ./tester $$i > result.$$j ; \
+	      diff $(srcdir)/result/$$j result.$$j ; \
+	      rm result.$$j ; \
 	  fi ; fi ; done)
 
 ## Put `exec' in the name because this should be installed by

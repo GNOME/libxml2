@@ -873,9 +873,6 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 	}
     }
     if (context == NULL) {
-#ifdef DEBUG_INPUT
-	fprintf(stderr, "No input filter matching \"%s\"\n", URI);
-#endif
 	return(NULL);
     }
 
@@ -947,9 +944,6 @@ xmlOutputBufferCreateFilename(const char *URI,
 	}
     }
     if (context == NULL) {
-#ifdef DEBUG_INPUT
-	fprintf(stderr, "No output filter matching \"%s\"\n", URI);
-#endif
 	return(NULL);
     }
 
@@ -1533,6 +1527,7 @@ xmlParserInputPtr
 xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
                                xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr ret = NULL;
+
 #ifdef DEBUG_EXTERNAL_ENTITIES
     fprintf(stderr, "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
 #endif

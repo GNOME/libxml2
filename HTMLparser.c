@@ -630,7 +630,7 @@ htmlTagLookup(const xmlChar *tag) {
 int
 htmlCheckAutoClose(const xmlChar *newtag, const xmlChar *oldtag) {
     int i, index;
-    char **close;
+    char **close = NULL;
 
     if (htmlStartCloseIndexinitialized == 0) htmlInitAutoClose();
 
@@ -3535,6 +3535,10 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
                       xmlMalloc(5 * sizeof(htmlParserInputPtr));
     if (ctxt->inputTab == NULL) {
         fprintf(stderr, "htmlInitParserCtxt: out of memory\n");
+	ctxt->inputNr = 0;
+	ctxt->inputMax = 0;
+	ctxt->input = NULL;
+	return;
     }
     ctxt->inputNr = 0;
     ctxt->inputMax = 5;
@@ -3546,12 +3550,35 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
 
     /* Allocate the Node stack */
     ctxt->nodeTab = (htmlNodePtr *) xmlMalloc(10 * sizeof(htmlNodePtr));
+    if (ctxt->nodeTab == NULL) {
+        fprintf(stderr, "htmlInitParserCtxt: out of memory\n");
+	ctxt->nodeNr = 0;
+	ctxt->nodeMax = 0;
+	ctxt->node = NULL;
+	ctxt->inputNr = 0;
+	ctxt->inputMax = 0;
+	ctxt->input = NULL;
+	return;
+    }
     ctxt->nodeNr = 0;
     ctxt->nodeMax = 10;
     ctxt->node = NULL;
 
     /* Allocate the Name stack */
     ctxt->nameTab = (xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
+    if (ctxt->nameTab == NULL) {
+        fprintf(stderr, "htmlInitParserCtxt: out of memory\n");
+	ctxt->nameNr = 0;
+	ctxt->nameMax = 10;
+	ctxt->name = NULL;
+	ctxt->nodeNr = 0;
+	ctxt->nodeMax = 0;
+	ctxt->node = NULL;
+	ctxt->inputNr = 0;
+	ctxt->inputMax = 0;
+	ctxt->input = NULL;
+	return;
+    }
     ctxt->nameNr = 0;
     ctxt->nameMax = 10;
     ctxt->name = NULL;

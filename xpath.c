@@ -2417,9 +2417,16 @@ xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    
 	else {
 	    char name[2000];
+#ifdef HAVE_SNPRINTF
+	    snprintf(name, sizeof(name), "%s:%s", 
+	            (char *) cur->nodesetval->nodeTab[i]->ns->prefix,
+	            (char *) cur->nodesetval->nodeTab[i]->name);
+#else
 	    sprintf(name, "%s:%s", 
 	            (char *) cur->nodesetval->nodeTab[i]->ns->prefix,
 	            (char *) cur->nodesetval->nodeTab[i]->name);
+#endif
+            name[sizeof(name) - 1] = 0;
 	    valuePush(ctxt, xmlXPathNewCString(name));
         }
     }

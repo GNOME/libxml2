@@ -16,8 +16,10 @@
 
 #ifdef WIN32
 #include "win32config.h"
+#define XML_DIR_SEP '\\'
 #else
 #include "config.h"
+#define XML_DIR_SEP '/'
 #endif
 
 #include <stdio.h>
@@ -307,6 +309,11 @@ xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value) {
 	    /* Allocate the Node stack */
 	    ctxt->vctxt.nodeTab = (xmlNodePtr *)
 		       xmlMalloc(4 * sizeof(xmlNodePtr));
+	    if (ctxt->vctxt.nodeTab == NULL) {
+		ctxt->vctxt.nodeMax = 0;
+		ctxt->validate = 0;
+		return(-1);
+	    }
 	    ctxt->vctxt.nodeNr = 0;
 	    ctxt->vctxt.nodeMax = 4;
 	    ctxt->vctxt.node = NULL;
@@ -1861,7 +1868,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
                 break;
             case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
             case XML_EXTERNAL_PARAMETER_ENTITY:
-		return(xmlLoadExternalEntity((char *) entity->SystemID,
+		return(xmlLoadExternalEntity((char *) entity->URI,
 		       (char *) entity->ExternalID, ctxt));
             case XML_INTERNAL_GENERAL_ENTITY:
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -1887,7 +1894,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     if (input == NULL) {
 	return(NULL);
     }
-    input->filename = (char *) entity->SystemID;
+    input->filename = (char *) entity->URI;
     input->base = entity->content;
     input->cur = entity->content;
     input->length = entity->length;
@@ -1939,49 +1946,26 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     xmlParserInputBufferPtr buf;
     xmlParserInputPtr inputStream;
     char *directory = NULL;
+    xmlChar *URI = NULL;
 
     if (xmlParserDebugEntities)
 	fprintf(stderr, "new input from file: %s\n", filename);
     if (ctxt == NULL) return(NULL);
     buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) {
-	char name[XML_PARSER_BIG_BUFFER_SIZE];
+    if (buf == NULL)
+	return(NULL);
 
-        if ((ctxt->input != NULL) && (ctxt->input->directory != NULL)) {
-#ifdef WIN32
-            sprintf(name, "%s\\%s", ctxt->input->directory, filename);
-#else
-            sprintf(name, "%s/%s", ctxt->input->directory, filename);
-#endif
-            buf = xmlParserInputBufferCreateFilename(name,
-	                                             XML_CHAR_ENCODING_NONE);
-	    if (buf != NULL)
-		directory = xmlParserGetDirectory(name);
-	}
-	if ((buf == NULL) && (ctxt->directory != NULL)) {
-#ifdef WIN32
-            sprintf(name, "%s\\%s", ctxt->directory, filename);
-#else
-            sprintf(name, "%s/%s", ctxt->directory, filename);
-#endif
-            buf = xmlParserInputBufferCreateFilename(name,
-	                                             XML_CHAR_ENCODING_NONE);
-	    if (buf != NULL)
-		directory = xmlParserGetDirectory(name);
-	}
-	if (buf == NULL)
-	    return(NULL);
-    }
-    if (directory == NULL)
-        directory = xmlParserGetDirectory(filename);
+    URI = xmlStrdup((xmlChar *) filename);
+    directory = xmlParserGetDirectory(URI);
 
     inputStream = xmlNewInputStream(ctxt);
     if (inputStream == NULL) {
 	if (directory != NULL) xmlFree((char *) directory);
+	if (URI != NULL) xmlFree((char *) URI);
 	return(NULL);
     }
 
-    inputStream->filename = xmlMemStrdup(filename);
+    inputStream->filename = URI;
     inputStream->directory = directory;
     inputStream->buf = buf;
 
@@ -2020,6 +2004,13 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 
     /* Allocate the Input stack */
     ctxt->inputTab = (xmlParserInputPtr *) xmlMalloc(5 * sizeof(xmlParserInputPtr));
+    if (ctxt->inputTab == NULL) {
+        fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+	ctxt->inputNr = 0;
+	ctxt->inputMax = 0;
+	ctxt->input = NULL;
+	return;
+    }
     ctxt->inputNr = 0;
     ctxt->inputMax = 5;
     ctxt->input = NULL;
@@ -2037,18 +2028,57 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 
     /* Allocate the Node stack */
     ctxt->nodeTab = (xmlNodePtr *) xmlMalloc(10 * sizeof(xmlNodePtr));
+    if (ctxt->nodeTab == NULL) {
+        fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+	ctxt->nodeNr = 0;
+	ctxt->nodeMax = 0;
+	ctxt->node = NULL;
+	ctxt->inputNr = 0;
+	ctxt->inputMax = 0;
+	ctxt->input = NULL;
+	return;
+    }
     ctxt->nodeNr = 0;
     ctxt->nodeMax = 10;
     ctxt->node = NULL;
 
     /* Allocate the Name stack */
     ctxt->nameTab = (xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
+    if (ctxt->nameTab == NULL) {
+        fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+	ctxt->nodeNr = 0;
+	ctxt->nodeMax = 0;
+	ctxt->node = NULL;
+	ctxt->inputNr = 0;
+	ctxt->inputMax = 0;
+	ctxt->input = NULL;
+	ctxt->nameNr = 0;
+	ctxt->nameMax = 0;
+	ctxt->name = NULL;
+	return;
+    }
     ctxt->nameNr = 0;
     ctxt->nameMax = 10;
     ctxt->name = NULL;
 
     /* Allocate the space stack */
     ctxt->spaceTab = (int *) xmlMalloc(10 * sizeof(int));
+    if (ctxt->spaceTab == NULL) {
+        fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+	ctxt->nodeNr = 0;
+	ctxt->nodeMax = 0;
+	ctxt->node = NULL;
+	ctxt->inputNr = 0;
+	ctxt->inputMax = 0;
+	ctxt->input = NULL;
+	ctxt->nameNr = 0;
+	ctxt->nameMax = 0;
+	ctxt->name = NULL;
+	ctxt->spaceNr = 0;
+	ctxt->spaceMax = 0;
+	ctxt->space = NULL;
+	return;
+    }
     ctxt->spaceNr = 1;
     ctxt->spaceMax = 10;
     ctxt->spaceTab[0] = -1;
@@ -2076,9 +2106,17 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	    ctxt->vctxt.warning = xmlParserValidityWarning;
 	/* Allocate the Node stack */
 	ctxt->vctxt.nodeTab = (xmlNodePtr *) xmlMalloc(4 * sizeof(xmlNodePtr));
-	ctxt->vctxt.nodeNr = 0;
-	ctxt->vctxt.nodeMax = 4;
-	ctxt->vctxt.node = NULL;
+	if (ctxt->vctxt.nodeTab == NULL) {
+	    fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+	    ctxt->vctxt.nodeMax = 0;
+	    ctxt->validate = 0;
+	    ctxt->vctxt.error = NULL;
+	    ctxt->vctxt.warning = NULL;
+	} else {
+	    ctxt->vctxt.nodeNr = 0;
+	    ctxt->vctxt.nodeMax = 4;
+	    ctxt->vctxt.node = NULL;
+	}
     } else {
 	ctxt->vctxt.error = NULL;
 	ctxt->vctxt.warning = NULL;
@@ -5861,7 +5899,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	 * handle the various case of definitions...
 	 */
 	if (isParameter) {
-	    if ((RAW == '"') || (RAW == '\''))
+	    if ((RAW == '"') || (RAW == '\'')) {
 	        value = xmlParseEntityValue(ctxt, &orig);
 		if (value) {
 		    if ((ctxt->sax != NULL) &&
@@ -5870,7 +5908,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		                    XML_INTERNAL_PARAMETER_ENTITY,
 				    NULL, NULL, value);
 		}
-	    else {
+	    } else {
 	        URI = xmlParseExternalID(ctxt, &literal, 1);
 		if ((URI == NULL) && (literal == NULL)) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -7648,7 +7686,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			ctxt->depth++;
 			ret = xmlParseExternalEntity(ctxt->myDoc,
 				   ctxt->sax, NULL, ctxt->depth,
-				   ent->SystemID, ent->ExternalID, &list);
+				   ent->URI, ent->ExternalID, &list);
 			ctxt->depth--;
 		    } else {
 			ret = -1;
@@ -11004,6 +11042,7 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
  * @cur:  a pointer to an array of xmlChar
  *
  * Creates a parser context for an XML in-memory document.
+ * TODO: buggy need to be converted to new I/O functions ....
  *
  * Returns the new parser context or NULL
  */
@@ -11298,7 +11337,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	return(-1);
 
 
-    ctxt = xmlCreateEntityParserCtxt(URL, ID, ctx->myDoc->URL);
+    ctxt = xmlCreateEntityParserCtxt(URL, ID, NULL);
     if (ctxt == NULL) return(-1);
     ctxt->userData = ctxt;
     oldsax = ctxt->sax;
@@ -11354,9 +11393,16 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	ctxt->vctxt.warning = ctx->vctxt.warning;
 	/* Allocate the Node stack */
 	ctxt->vctxt.nodeTab = (xmlNodePtr *) xmlMalloc(4 * sizeof(xmlNodePtr));
-	ctxt->vctxt.nodeNr = 0;
-	ctxt->vctxt.nodeMax = 4;
-	ctxt->vctxt.node = NULL;
+	if (ctxt->vctxt.nodeTab == NULL) {
+	    fprintf(stderr, "xmlParseCtxtExternalEntity: out of memory\n");
+	    ctxt->validate = 0;
+	    ctxt->vctxt.error = NULL;
+	    ctxt->vctxt.warning = NULL;
+	} else {
+	    ctxt->vctxt.nodeNr = 0;
+	    ctxt->vctxt.nodeMax = 4;
+	    ctxt->vctxt.node = NULL;
+	}
     } else {
 	ctxt->vctxt.error = NULL;
 	ctxt->vctxt.warning = NULL;
@@ -11462,7 +11508,7 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
 	return(-1);
 
 
-    ctxt = xmlCreateEntityParserCtxt(URL, ID, doc->URL);
+    ctxt = xmlCreateEntityParserCtxt(URL, ID, NULL);
     if (ctxt == NULL) return(-1);
     ctxt->userData = ctxt;
     if (sax != NULL) {
@@ -11829,10 +11875,15 @@ xmlCreateFileParserCtxt(const char *filename)
     char *directory = NULL;
 
     buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) return(NULL);
+    if (buf == NULL) {
+	return(NULL);
+    }
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
+	if (xmlDefaultSAXHandler.error != NULL) {
+	    xmlDefaultSAXHandler.error(NULL, "out of memory\n");
+	}
 	return(NULL);
     }
 
@@ -11879,7 +11930,9 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
     char *directory = NULL;
 
     ctxt = xmlCreateFileParserCtxt(filename);
-    if (ctxt == NULL) return(NULL);
+    if (ctxt == NULL) {
+	return(NULL);
+    }
     if (sax != NULL) {
 	if (ctxt->sax != NULL)
 	    xmlFree(ctxt->sax);

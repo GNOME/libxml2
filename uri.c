@@ -1637,8 +1637,8 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
 	/*
 	 * Ensure the path includes a '/'
 	 */
-	if (res->path[0] != '/' && ref->path[0] != 0 &&
-	    ref->path[index] != '/') {
+	if ((out >0) && (res->path[out -1] != '/') &&
+	    (ref->path[0] != 0) && (ref->path[index] != '/')) {
 	    res->path[out++] = '/';
 	}
 	while (ref->path[index] != 0) {
@@ -1664,7 +1664,7 @@ step_7:
 done:
     if (ref != NULL)
 	xmlFreeURI(ref);
-    if (base != NULL)
+    if (bas != NULL)
 	xmlFreeURI(bas);
     if (res != NULL)
 	xmlFreeURI(res);

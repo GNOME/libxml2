@@ -772,20 +772,21 @@ retry:
     }
     ctxt->fd = ret;
     if (proxy) {
-#ifdef HAVE_SNPRINTF
 	if (ctxt->port != 80)
+#ifdef HAVE_SNPRINTF
 	    snprintf(buf, sizeof(buf),
 		     "GET http://%s:%d%s HTTP/1.0\r\nHost: %s\r\n\r\n",
 		 ctxt->hostname, ctxt->port, ctxt->path, ctxt->hostname);
-	else 
-	    snprintf(buf, sizeof(buf),"GET http://%s%s HTTP/1.0\r\nHost: %s\r\n\r\n",
-		 ctxt->hostname, ctxt->path, ctxt->hostname);
 #else
-	if (ctxt->port != 80)
 	    sprintf(buf, 
 		     "GET http://%s:%d%s HTTP/1.0\r\nHost: %s\r\n\r\n",
 		 ctxt->hostname, ctxt->port, ctxt->path, ctxt->hostname);
+#endif
 	else 
+#ifdef HAVE_SNPRINTF
+	    snprintf(buf, sizeof(buf),"GET http://%s%s HTTP/1.0\r\nHost: %s\r\n\r\n",
+		 ctxt->hostname, ctxt->path, ctxt->hostname);
+#else
 	    sprintf(buf, "GET http://%s%s HTTP/1.0\r\nHost: %s\r\n\r\n",
 		 ctxt->hostname, ctxt->path, ctxt->hostname);
 #endif
@@ -810,6 +811,7 @@ retry:
 	       ctxt->path, ctxt->hostname);
 #endif
     }
+    buf[sizeof(buf) - 1] = 0;
     ctxt->outptr = ctxt->out = xmlMemStrdup(buf);
     ctxt->state = XML_NANO_HTTP_WRITE;
     xmlNanoHTTPSend(ctxt);
@@ -1073,6 +1075,7 @@ retry:
 	    }
 	}
     }
+    buf[sizeof(buf) - 1] = 0;
 #ifdef DEBUG_HTTP
     printf("-> %s", buf);
 #endif

@@ -37,7 +37,7 @@ struct _xmlParserInputBuffer {
     
     xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
     
-    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 or ISOLatin */
+    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 */
     xmlBufferPtr raw;       /* if encoder != NULL buffer for raw input */
 };
 

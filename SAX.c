@@ -311,13 +311,26 @@ xmlParserInputPtr
 resolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlParserInputPtr ret;
+    char *URI;
+    const char *base = NULL;
+
+    if (ctxt->input != NULL)
+	base = ctxt->input->filename;
+    if (base == NULL)
+	base = ctxt->directory;
+
+    URI = xmlBuildURI(systemId, base);
 
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.resolveEntity(%s, %s)\n", publicId, systemId);
 #endif
 
-    return(xmlLoadExternalEntity((const char *) systemId,
-				 (const char *) publicId, ctxt));
+    ret = xmlLoadExternalEntity((const char *) URI,
+				(const char *) publicId, ctxt);
+    if (URI != NULL)
+	xmlFree(URI);
+    return(ret);
 }
 
 /**
@@ -409,6 +422,18 @@ entityDecl(void *ctx, const xmlChar *name, int type,
 	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 	    ctxt->sax->warning(ctxt, 
 	     "Entity(%s) already defined in the internal subset\n", name);
+	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
+	    char *URI;
+	    const char *base = NULL;
+
+	    if (ctxt->input != NULL)
+		base = ctxt->input->filename;
+	    if (base == NULL)
+		base = ctxt->directory;
+	
+	    URI = xmlBuildURI(systemId, base);
+	    ent->URI = URI;
+	}
     } else if (ctxt->inSubset == 2) {
 	ent = xmlAddDtdEntity(ctxt->myDoc, name, type, publicId,
 		              systemId, content);
@@ -416,6 +441,18 @@ entityDecl(void *ctx, const xmlChar *name, int type,
 	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 	    ctxt->sax->warning(ctxt, 
 	     "Entity(%s) already defined in the external subset\n", name);
+	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
+	    char *URI;
+	    const char *base = NULL;
+
+	    if (ctxt->input != NULL)
+		base = ctxt->input->filename;
+	    if (base == NULL)
+		base = ctxt->directory;
+	
+	    URI = xmlBuildURI(systemId, base);
+	    ent->URI = URI;
+	}
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, 
@@ -1602,4 +1639,74 @@ htmlDefaultSAXHandlerInit(void)
     htmlDefaultSAXHandler.warning = xmlParserWarning;
     htmlDefaultSAXHandler.error = xmlParserError;
     htmlDefaultSAXHandler.fatalError = xmlParserError;
+}
+
+/*
+ * Default handler for HTML, builds the DOM tree
+ */
+xmlSAXHandler sgmlDefaultSAXHandler = {
+    internalSubset,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    getEntity,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    setDocumentLocator,
+    startDocument,
+    endDocument,
+    startElement,
+    endElement,
+    NULL,
+    characters,
+    ignorableWhitespace,
+    NULL,
+    comment,
+    xmlParserWarning,
+    xmlParserError,
+    xmlParserError,
+    getParameterEntity,
+    NULL,
+    NULL,
+};
+
+/**
+ * sgmlDefaultSAXHandlerInit:
+ *
+ * Initialize the default SAX handler
+ */
+void
+sgmlDefaultSAXHandlerInit(void)
+{
+    sgmlDefaultSAXHandler.internalSubset = internalSubset;
+    sgmlDefaultSAXHandler.externalSubset = NULL;
+    sgmlDefaultSAXHandler.isStandalone = NULL;
+    sgmlDefaultSAXHandler.hasInternalSubset = NULL;
+    sgmlDefaultSAXHandler.hasExternalSubset = NULL;
+    sgmlDefaultSAXHandler.resolveEntity = NULL;
+    sgmlDefaultSAXHandler.getEntity = getEntity;
+    sgmlDefaultSAXHandler.getParameterEntity = NULL;
+    sgmlDefaultSAXHandler.entityDecl = NULL;
+    sgmlDefaultSAXHandler.attributeDecl = NULL;
+    sgmlDefaultSAXHandler.elementDecl = NULL;
+    sgmlDefaultSAXHandler.notationDecl = NULL;
+    sgmlDefaultSAXHandler.unparsedEntityDecl = NULL;
+    sgmlDefaultSAXHandler.setDocumentLocator = setDocumentLocator;
+    sgmlDefaultSAXHandler.startDocument = startDocument;
+    sgmlDefaultSAXHandler.endDocument = endDocument;
+    sgmlDefaultSAXHandler.startElement = startElement;
+    sgmlDefaultSAXHandler.endElement = endElement;
+    sgmlDefaultSAXHandler.reference = NULL;
+    sgmlDefaultSAXHandler.characters = characters;
+    sgmlDefaultSAXHandler.cdataBlock = NULL;
+    sgmlDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
+    sgmlDefaultSAXHandler.processingInstruction = NULL;
+    sgmlDefaultSAXHandler.comment = comment;
+    sgmlDefaultSAXHandler.warning = xmlParserWarning;
+    sgmlDefaultSAXHandler.error = xmlParserError;
+    sgmlDefaultSAXHandler.fatalError = xmlParserError;
 }

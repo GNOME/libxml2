@@ -2634,12 +2634,12 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
         case XML_ELEMENT_DECL:
         case XML_ATTRIBUTE_DECL:
         case XML_ENTITY_DECL:
-	    return;
-        case XML_ELEMENT_NODE:
-        case XML_ATTRIBUTE_NODE:
         case XML_PI_NODE:
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
+	    return;
+        case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE:
 	    break;
     }
     xmlSetProp(cur, BAD_CAST "xml:lang", lang);
@@ -2757,6 +2757,9 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
     if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE)) {
         cur = doc->children;
 	while ((cur != NULL) && (cur->name != NULL)) {
+	    if (cur->type == XML_ENTITY_DECL) {
+		/* TODO: we are crossing entity boundaries */
+	    }
 	    if (cur->type != XML_ELEMENT_NODE) {
 	        cur = cur->next;
 		continue;

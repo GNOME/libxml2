@@ -249,11 +249,11 @@ void xmlDebugDumpElemDecl(FILE *output, xmlElementPtr elem, int depth) {
 	    break;
     }
     if (elem->content != NULL) {
-	char buf[1001];
+	char buf[5001];
 
 	buf[0] = 0;
 	xmlSprintfElementContent(buf, elem->content, 1);
-	buf[1000] = 0;
+	buf[5000] = 0;
 	fprintf(output, "%s", buf);
     }
     printf("\n");
@@ -325,15 +325,19 @@ void xmlDebugDumpEntityDecl(FILE *output, xmlEntityPtr ent, int depth) {
     }
     if (ent->ExternalID) {
         fprintf(output, shift);
-        fprintf(output, "ExternalID=%s\n", ent->ExternalID);
+        fprintf(output, " ExternalID=%s\n", ent->ExternalID);
     }
     if (ent->SystemID) {
         fprintf(output, shift);
-        fprintf(output, "SystemID=%s\n", ent->SystemID);
+        fprintf(output, " SystemID=%s\n", ent->SystemID);
+    }
+    if (ent->URI != NULL) {
+        fprintf(output, shift);
+        fprintf(output, " URI=%s\n", ent->URI);
     }
     if (ent->content) {
         fprintf(output, shift);
-	fprintf(output, "content=");
+	fprintf(output, " content=");
 	xmlDebugDumpString(output, ent->content);
 	fprintf(output, "\n");
     }
@@ -433,6 +437,10 @@ void xmlDebugDumpEntity(FILE *output, xmlEntityPtr ent, int depth) {
     if (ent->SystemID) {
         fprintf(output, shift);
         fprintf(output, "SystemID=%s\n", ent->SystemID);
+    }
+    if (ent->URI) {
+        fprintf(output, shift);
+        fprintf(output, "URI=%s\n", ent->URI);
     }
     if (ent->content) {
         fprintf(output, shift);
@@ -618,7 +626,7 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 
 void xmlDebugDumpNode(FILE *output, xmlNodePtr node, int depth) {
     xmlDebugDumpOneNode(output, node, depth);
-    if (node->children != NULL)
+    if ((node->children != NULL) && (node->type != XML_ENTITY_REF_NODE))
 	xmlDebugDumpNodeList(output, node->children, depth + 1);
 }
 
@@ -695,6 +703,11 @@ void xmlDebugDumpDocumentHead(FILE *output, xmlDocPtr doc) {
         xmlDebugDumpString(output, doc->encoding);
 	fprintf(output, "\n");
     }
+    if (doc->URL != NULL) {
+	fprintf(output, "URL=");
+        xmlDebugDumpString(output, doc->URL);
+	fprintf(output, "\n");
+    }
     if (doc->standalone)
         fprintf(output, "standalone=true\n");
     if (doc->oldNs != NULL) 
@@ -713,6 +726,47 @@ void xmlDebugDumpDocument(FILE *output, xmlDocPtr doc) {
         (doc->children != NULL))
         xmlDebugDumpNodeList(output, doc->children, 1);
 }    
+
+void xmlDebugDumpDTD(FILE *output, xmlDtdPtr dtd) {
+    if (dtd == NULL)
+	return;
+    if (dtd->type != XML_DTD_NODE) {
+	fprintf(output, "PBM: not a DTD\n");
+	return;
+    }
+    if (dtd->name != NULL)
+	fprintf(output, "DTD(%s)", dtd->name);
+    else
+	fprintf(output, "DTD");
+    if (dtd->ExternalID != NULL)
+	fprintf(output, ", PUBLIC %s", dtd->ExternalID);
+    if (dtd->SystemID != NULL)
+	fprintf(output, ", SYSTEM %s", dtd->SystemID);
+    fprintf(output, "\n");
+    /*
+     * Do a bit of checking
+     */
+    if ((dtd->parent != NULL) && (dtd->doc != dtd->parent->doc))
+	fprintf(output, "PBM: Dtd doc differs from parent's one\n");
+    if (dtd->prev == NULL) {
+	if ((dtd->parent != NULL) && (dtd->parent->children != (xmlNodePtr)dtd))
+	    fprintf(output, "PBM: Dtd has no prev and not first of list\n");
+    } else {
+	if (dtd->prev->next != (xmlNodePtr) dtd)
+	    fprintf(output, "PBM: Dtd prev->next : back link wrong\n");
+    }
+    if (dtd->next == NULL) {
+	if ((dtd->parent != NULL) && (dtd->parent->last != (xmlNodePtr) dtd))
+	    fprintf(output, "PBM: Dtd has no next and not last of list\n");
+    } else {
+	if (dtd->next->prev != (xmlNodePtr) dtd)
+	    fprintf(output, "PBM: Dtd next->prev : forward link wrong\n");
+    }
+    if (dtd->children == NULL)
+	fprintf(output, "    DTD is empty\n");
+    else
+        xmlDebugDumpNodeList(output, dtd->children, 1);
+}
 
 void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
     int i;
@@ -1456,9 +1510,29 @@ xmlShellPwd(xmlShellCtxtPtr ctxt, char *buffer, xmlNodePtr node,
 	    next = cur->parent;
 	}
 	if (occur == 0)
+#ifdef HAVE_SNPRINTF
+	    snprintf(buf, sizeof(buf), "%c%s%s", sep, name, buffer);
+#else
 	    sprintf(buf, "%c%s%s", sep, name, buffer);
-	else
+#endif
+        else
+#ifdef HAVE_SNPRINTF
+	    snprintf(buf, sizeof(buf), "%c%s[%d]%s",
+                    sep, name, occur, buffer);
+#else
 	    sprintf(buf, "%c%s[%d]%s", sep, name, occur, buffer);
+#endif
+        buf[sizeof(buf) - 1] = 0;
+        /*
+         * This test prevents buffer overflow, because this routine
+         * is only called by xmlShell, in which the second argument is
+         * 500 chars long.
+         * It is a dirty hack before a cleaner solution is found.
+         * Documentation should mention that the second argument must
+         * be at least 500 chars long, and could be stripped if too long.
+         */
+        if (strlen(buffer) + strlen(buf) > 499)
+           break;
 	strcpy(buffer, buf);
         cur = next;
     } while (cur != NULL);
@@ -1516,9 +1590,14 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
         if (ctxt->node == (xmlNodePtr) ctxt->doc)
 	    sprintf(prompt, "%s > ", "/");
 	else if (ctxt->node->name)
-	    sprintf(prompt, "%s > ", ctxt->node->name);
-	else
+#ifdef HAVE_SNPRINTF
+	    snprintf(prompt, sizeof(prompt), "%s > ", ctxt->node->name);
+#else
+	    sprintf(buf, "%s > ", ctxt->node->name);
+#endif
+        else
 	    sprintf(prompt, "? > ");
+        prompt[sizeof(prompt) - 1] = 0;
 
         cmdline = ctxt->input(prompt);
         if (cmdline == NULL) break;

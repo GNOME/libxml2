@@ -109,6 +109,7 @@ void		cdataBlock			(void *ctx,
 
 void		xmlDefaultSAXHandlerInit	(void);
 void		htmlDefaultSAXHandlerInit	(void);
+void		sgmlDefaultSAXHandlerInit	(void);
 #ifdef __cplusplus
 }
 #endif

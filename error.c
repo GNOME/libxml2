@@ -87,28 +87,32 @@ void
 xmlParserError(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserInputPtr input;
+    xmlParserInputPtr input = NULL;
     xmlParserInputPtr cur = NULL;
     va_list args;
 
-    input = ctxt->input;
-    if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
-	cur = input;
-        input = ctxt->inputTab[ctxt->inputNr - 2];
+    if (ctxt != NULL) {
+	input = ctxt->input;
+	if ((input != NULL) && (input->filename == NULL) &&
+	    (ctxt->inputNr > 1)) {
+	    cur = input;
+	    input = ctxt->inputTab[ctxt->inputNr - 2];
+	}
+	xmlParserPrintFileInfo(input);
     }
-        
-    xmlParserPrintFileInfo(input);
 
     fprintf(stderr, "error: ");
     va_start(args, msg);
     vfprintf(stderr, msg, args);
     va_end(args);
 
-    xmlParserPrintFileContext(input);
-    if (cur != NULL) {
-        xmlParserPrintFileInfo(cur);
-	fprintf(stderr, "\n");
-	xmlParserPrintFileContext(cur);
+    if (ctxt != NULL) {
+	xmlParserPrintFileContext(input);
+	if (cur != NULL) {
+	    xmlParserPrintFileInfo(cur);
+	    fprintf(stderr, "\n");
+	    xmlParserPrintFileContext(cur);
+	}
     }
 }
 
@@ -125,29 +129,32 @@ void
 xmlParserWarning(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserInputPtr input;
+    xmlParserInputPtr input = NULL;
     xmlParserInputPtr cur = NULL;
     va_list args;
 
-    input = ctxt->input;
-    if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
-	cur = input;
-        input = ctxt->inputTab[ctxt->inputNr - 2];
+    if (ctxt != NULL) {
+	input = ctxt->input;
+	if ((input != NULL) && (input->filename == NULL) &&
+	    (ctxt->inputNr > 1)) {
+	    cur = input;
+	    input = ctxt->inputTab[ctxt->inputNr - 2];
+	}
+	xmlParserPrintFileInfo(input);
     }
-        
-
-    xmlParserPrintFileInfo(input);
         
     fprintf(stderr, "warning: ");
     va_start(args, msg);
     vfprintf(stderr, msg, args);
     va_end(args);
 
-    xmlParserPrintFileContext(input);
-    if (cur != NULL) {
-        xmlParserPrintFileInfo(cur);
-	fprintf(stderr, "\n");
-	xmlParserPrintFileContext(cur);
+    if (ctxt != NULL) {
+	xmlParserPrintFileContext(input);
+	if (cur != NULL) {
+	    xmlParserPrintFileInfo(cur);
+	    fprintf(stderr, "\n");
+	    xmlParserPrintFileContext(cur);
+	}
     }
 }
 
@@ -164,21 +171,25 @@ void
 xmlParserValidityError(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserInputPtr input;
+    xmlParserInputPtr input = NULL;
     va_list args;
 
-    input = ctxt->input;
-    if ((input->filename == NULL) && (ctxt->inputNr > 1))
-        input = ctxt->inputTab[ctxt->inputNr - 2];
-        
-    xmlParserPrintFileInfo(input);
+    if (ctxt != NULL) {
+	input = ctxt->input;
+	if ((input->filename == NULL) && (ctxt->inputNr > 1))
+	    input = ctxt->inputTab[ctxt->inputNr - 2];
+	    
+	xmlParserPrintFileInfo(input);
+    }
 
     fprintf(stderr, "validity error: ");
     va_start(args, msg);
     vfprintf(stderr, msg, args);
     va_end(args);
 
-    xmlParserPrintFileContext(input);
+    if (ctxt != NULL) {
+	xmlParserPrintFileContext(input);
+    }
 }
 
 /**
@@ -194,20 +205,24 @@ void
 xmlParserValidityWarning(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserInputPtr input;
+    xmlParserInputPtr input = NULL;
     va_list args;
 
-    input = ctxt->input;
-    if ((input->filename == NULL) && (ctxt->inputNr > 1))
-        input = ctxt->inputTab[ctxt->inputNr - 2];
+    if (ctxt != NULL) {
+	input = ctxt->input;
+	if ((input->filename == NULL) && (ctxt->inputNr > 1))
+	    input = ctxt->inputTab[ctxt->inputNr - 2];
 
-    xmlParserPrintFileInfo(input);
+	xmlParserPrintFileInfo(input);
+    }
         
     fprintf(stderr, "validity warning: ");
     va_start(args, msg);
     vfprintf(stderr, msg, args);
     va_end(args);
 
-    xmlParserPrintFileContext(input);
+    if (ctxt != NULL) {
+	xmlParserPrintFileContext(input);
+    }
 }
 

@@ -41,7 +41,12 @@ typedef enum {
     XML_DTD_NODE=		14,
     XML_ELEMENT_DECL=		15,
     XML_ATTRIBUTE_DECL=		16,
+#ifdef LIBXML_SGML_ENABLED
+    XML_ENTITY_DECL=		17,
+    XML_SGML_DOCUMENT_NODE=	18
+#else
     XML_ENTITY_DECL=		17
+#endif
 } xmlElementType;
 
 /*

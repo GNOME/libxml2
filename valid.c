@@ -2856,8 +2856,9 @@ xmlValidNormalizeAttributeValue(xmlDocPtr doc, xmlNodePtr elem,
 	snprintf((char *) qname, sizeof(qname), "%s:%s",
 		 elem->ns->prefix, elem->name);
 #else
-	sprintf(qname, "%s:%s", elem->name, elem->ns->prefix);
+	sprintf((char *) qname, "%s:%s", elem->ns->prefix, elem->name);
 #endif
+        qname[sizeof(qname) - 1] = 0;
 	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, qname, name);
 	if ((attrDecl == NULL) && (doc->extSubset != NULL))
 	    attrDecl = xmlGetDtdAttrDesc(doc->extSubset, qname, name);
@@ -3133,8 +3134,9 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	snprintf((char *) qname, sizeof(qname), "%s:%s",
 		 elem->ns->prefix, elem->name);
 #else
-	sprintf(qname, "%s:%s", elem->name, elem->ns->prefix);
+	sprintf((char *) qname, "%s:%s", elem->ns->prefix, elem->name);
 #endif
+        qname[sizeof(qname) - 1] = 0;
 	if (attr->ns != NULL) {
 	    attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, qname,
 		                          attr->name, attr->ns->prefix);
@@ -3699,8 +3701,10 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 			snprintf((char *) qname, sizeof(qname), "%s:%s",
 				 child->ns->prefix, child->name);
 #else
-			sprintf(qname, "%s:%s", child->name, child->ns->prefix);
+			sprintf((char *) qname, "%s:%s",
+                                 child->ns->prefix, child->name);
 #endif
+                        qname[sizeof(qname) - 1] = 0;
 			cont = elemDecl->content;
 			while (cont != NULL) {
 			    if (cont->type == XML_ELEMENT_CONTENT_ELEMENT) {
@@ -3876,8 +3880,9 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 	    snprintf((char *) qname, sizeof(qname), "%s:%s",
 		     root->ns->prefix, root->name);
 #else
-	    sprintf(qname, "%s:%s", root->name, root->ns->prefix);
+	    sprintf((char *) qname, "%s:%s", root->ns->prefix, root->name);
 #endif
+            qname[sizeof(qname) - 1] = 0;
 	    if (!xmlStrcmp(doc->intSubset->name, qname))
 		goto name_ok;
 	} 

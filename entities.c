@@ -76,6 +76,8 @@ void xmlFreeEntity(xmlEntityPtr entity) {
         xmlFree((char *) entity->ExternalID);
     if (entity->SystemID != NULL)
         xmlFree((char *) entity->SystemID);
+    if (entity->URI != NULL)
+        xmlFree((char *) entity->URI);
     if (entity->content != NULL)
         xmlFree((char *) entity->content);
     if (entity->orig != NULL)
@@ -198,6 +200,8 @@ xmlAddEntity(xmlEntitiesTablePtr table, const xmlChar *name, int type,
         ret->length = 0;
         ret->content = NULL;
     }
+    ret->URI = NULL; /* to be computed by the layer knowing
+			the defining entity */
     ret->orig = NULL;
     table->nb_entities++;
 
@@ -590,8 +594,6 @@ xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
     xmlEntitiesTablePtr table;
     xmlEntityPtr ret;
 
-    if (doc == NULL)
-	return(NULL);
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->intSubset->entities;
 	ret = xmlGetEntityFromTable(table, name, 1);
@@ -619,8 +621,6 @@ xmlEntityPtr
 xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
     xmlEntitiesTablePtr table;
 
-    if (doc == NULL)
-	return(NULL);
     if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
 	return(xmlGetEntityFromTable(table, name, 0));
@@ -783,11 +783,13 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
 #ifndef USE_UTF_8
 	} else if ((sizeof(xmlChar) == 1) && (*cur >= 0x80)) {
 	    char buf[10], *ptr;
+
 #ifdef HAVE_SNPRINTF
-	    snprintf(buf, 9, "&#%d;", *cur);
+	    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else
 	    sprintf(buf, "&#%d;", *cur);
 #endif
+            buf[sizeof(buf) - 1] = 0;
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 #endif
@@ -795,10 +797,11 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
 	    char buf[10], *ptr;
 
 #ifdef HAVE_SNPRINTF
-	    snprintf(buf, 9, "&#%d;", *cur);
+	    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else
 	    sprintf(buf, "&#%d;", *cur);
 #endif
+            buf[sizeof(buf) - 1] = 0;
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 	}
@@ -918,9 +921,15 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	} else if (*cur >= 0x80) {
 	    if ((doc->encoding != NULL) || (html)) {
 		/*
-		 * TODO !!!
+		 * Bjørn Reese <br@sseusa.com> provided the patch
+	        xmlChar xc;
+	        xc = (*cur & 0x3F) << 6;
+	        if (cur[1] != 0) {
+		    xc += *(++cur) & 0x3F;
+		    *out++ = xc;
+	        } else
 		 */
-		*out++ = *cur;
+		    *out++ = *cur;
 	    } else {
 		/*
 		 * We assume we have UTF-8 input.
@@ -933,10 +942,11 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 			    "xmlEncodeEntitiesReentrant : input not UTF-8\n");
 		    doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
 #ifdef HAVE_SNPRINTF
-		    snprintf(buf, 9, "&#%d;", *cur);
+		    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else
 		    sprintf(buf, "&#%d;", *cur);
 #endif
+		    buf[sizeof(buf) - 1] = 0;
 		    ptr = buf;
 		    while (*ptr != 0) *out++ = *ptr++;
 		    continue;
@@ -967,11 +977,11 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 			"xmlEncodeEntitiesReentrant : char out of range\n");
 		    doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
 #ifdef HAVE_SNPRINTF
-		    snprintf(buf, 9, "&#%d;", *cur);
+		    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else
 		    sprintf(buf, "&#%d;", *cur);
 #endif
-		    buf[9] = 0;
+		    buf[sizeof(buf) - 1] = 0;
 		    ptr = buf;
 		    while (*ptr != 0) *out++ = *ptr++;
 		    cur++;
@@ -981,11 +991,11 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		 * We could do multiple things here. Just save as a char ref
 		 */
 #ifdef HAVE_SNPRINTF
-		snprintf(buf, 9, "&#x%X;", val);
+		snprintf(buf, sizeof(buf), "&#x%X;", val);
 #else
 		sprintf(buf, "&#x%X;", val);
 #endif
-		buf[9] = 0;
+		buf[sizeof(buf) - 1] = 0;
 		ptr = buf;
 		while (*ptr != 0) *out++ = *ptr++;
 		cur += l;
@@ -995,11 +1005,11 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	    char buf[10], *ptr;
 
 #ifdef HAVE_SNPRINTF
-	    snprintf(buf, 9, "&#%d;", *cur);
+	    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else
 	    sprintf(buf, "&#%d;", *cur);
 #endif
-	    buf[9] = 0;
+	    buf[sizeof(buf) - 1] = 0;
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 	}

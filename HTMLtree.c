@@ -181,12 +181,13 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
 	return(-1);
 
     if (encoding != NULL) {
-#ifndef HAVE_SNPRINTF
+#ifdef HAVE_SNPRINTF
+	snprintf(newcontent, sizeof(newcontent), "text/html; charset=%s",
+                encoding);
+#else
 	sprintf(newcontent, "text/html; charset=%s", encoding);
-#else /* HAVE_SNPRINTF */
-	snprintf(newcontent, 99, "text/html; charset=%s", encoding);
-#endif /* HAVE_SNPRINTF */
-	newcontent[99] = 0;
+#endif
+	newcontent[sizeof(newcontent) - 1] = 0;
     }
 
     cur = doc->children;

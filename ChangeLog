@@ -1,3 +1,17 @@
+Sun Sep 10 17:53:48 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* uri.c tree.c SAX.c parser.c entities.c debugXML.c: finished
+	  the cleanup of the computation of URI references when seeking
+	  external entities. The URI reference string and the resulting
+	  URI are both stored now.
+	* parser.c HTMLparser.c valid.c nanoftp.c nanohttp.c xpath.c:
+	  large s(n)printf checks and cleanup from Denis Barbier
+	  <barbier@imacs.polytechnique.fr>
+	* xmlversion.h.in tree.h: couple of SGML declarations for a
+	  possible docbook module.
+	* result/VC/ : a couple of test output changed due to the change
+	  of the entities URI
+
 Sun Sep 10 15:59:58 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.h: added a _private field for linking user's data

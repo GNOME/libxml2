@@ -1,3 +1,8 @@
+Tue Sep 28 13:07:37 CEST 2004 Daniel Veillard <daniel@veillard.com
+
+	* python/libxml.py: applied patch from Malcolm Tredinnick fixing
+	  python exception hierarchy #139824
+
 Sun Sep 26 16:40:24 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c TODO: applied patch from Malcolm Tredinnick fixing errata

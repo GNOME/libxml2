@@ -7611,7 +7611,7 @@ xmlRelaxNGValidateCompiledContent(xmlRelaxNGValidCtxtPtr ctxt,
                                   xmlRegexpPtr regexp, xmlNodePtr content) {
     xmlRegExecCtxtPtr exec;
     xmlNodePtr cur;
-    int ret;
+    int ret = 0;
 
     if ((ctxt == NULL) || (regexp == NULL))
         return(-1);

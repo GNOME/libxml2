@@ -1,3 +1,7 @@
+Thu Apr 17 11:35:37 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: valgrind pointed out an uninitialized variable error.
+
 Thu Apr 17 11:06:28 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/relaxng.h relaxng.c include/libxml/xmlreader.h

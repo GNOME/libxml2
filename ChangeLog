@@ -1,3 +1,8 @@
+Tue Jul 15 22:03:13 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c: add xmlThrDefMutex = NULL in xmlCleanupGlobals() 
+	  as suggested by Rob Richards
+
 Tue Jul 15 15:30:55 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* DOCBparser.c HTMLparser.c entities.c parser.c relaxng.c 

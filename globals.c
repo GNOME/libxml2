@@ -46,8 +46,10 @@ void xmlInitGlobals()
 
 void xmlCleanupGlobals()
 {
-    if (xmlThrDefMutex != NULL)
+    if (xmlThrDefMutex != NULL) {
 	xmlFreeMutex(xmlThrDefMutex);
+	xmlThrDefMutex = NULL;
+    }
 }
 
 /************************************************************************

@@ -2495,7 +2495,9 @@ _xmlSchemaDateCastYMToDays (const xmlSchemaValPtr dt)
  */
 #define TIME_TO_NUMBER(dt)                              \
     ((double)((dt->value.date.hour * SECS_PER_HOUR) +   \
-              (dt->value.date.min * SECS_PER_MIN)) + dt->value.date.sec)
+              (dt->value.date.min * SECS_PER_MIN) +	\
+              (dt->value.date.tzo * SECS_PER_MIN)) +	\
+               dt->value.date.sec)
 
 /**
  * xmlSchemaCompareDates:

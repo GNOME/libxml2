@@ -1,3 +1,9 @@
+Mon Mar 31 13:19:04 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: fixed date comparison to handle the tzo
+	  The only failures left are disagreements on Notations and
+	  '+1' not being allowed for ulong, uint, ushort and ubyte.
+
 Mon Mar 31 12:11:47 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: fixed gMonth parsing routine accordingly

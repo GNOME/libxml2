@@ -1,3 +1,7 @@
+Thu Apr 26 09:42:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* libxml.m4: added AM_PATH_XML2 provided by Toshio Kuratomi
+
 Wed Apr 25 21:05:31 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* DOCBparser.c SAX.c: a bit more work on entities processing.

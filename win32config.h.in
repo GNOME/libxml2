@@ -50,6 +50,8 @@
 #define EREMOTE                 WSAEREMOTE
 #endif /* INCLUDE_WINSOCK */
 
+#define HAVE_ISINF                                                              #define HAVE_ISNAN     
+
 #include <math.h>
 static int isinf (double d) {
     int expon = 0;

@@ -6,6 +6,7 @@
  */
 
 #ifdef WIN32
+#define INCLUDE_WINSOCK
 #include "win32config.h"
 #else
 #include "config.h"

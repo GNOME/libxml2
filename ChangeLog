@@ -1,3 +1,7 @@
+Thu Feb  3 13:46:14 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanoftp.c, win32config.h.in: patches to compile on WIN32
+
 Wed Feb  2 22:51:16 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.c: snprintf/sprintf patch courtesy George Katsirelos

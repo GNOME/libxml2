@@ -914,7 +914,8 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	 */
 	if (level < 0) {
 	    while (level < 0) {
-	        tmp2 = xmlDocCopyNode(listParent, target, 0);
+	        /* copy must include namespaces and properties */
+	        tmp2 = xmlDocCopyNode(listParent, target, 2);
 	        xmlAddChild(tmp2, list);
 	        list = tmp2;
 	        listParent = listParent->parent;
@@ -960,7 +961,8 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	    } else {	/* ending node not a text node */
 	        endLevel = level;	/* remember the level of the end node */
 		endFlag = 1;
-		tmp = xmlDocCopyNode(cur, target, 0);
+		/* last node - need to take care of properties + namespaces */
+		tmp = xmlDocCopyNode(cur, target, 2);
 		if (list == NULL) {
 		    list = tmp;
 		    listParent = cur->parent;
@@ -1007,7 +1009,11 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		last = list = tmp;
 		listParent = cur->parent;
 	    } else {		/* Not text node */
-		tmp = xmlDocCopyNode(cur, target, 0);
+	        /*
+		 * start of the range - need to take care of
+		 * properties and namespaces
+		 */
+		tmp = xmlDocCopyNode(cur, target, 2);
 		list = last = tmp;
 		listParent = cur->parent;
 		if (index1 > 1) {	/* Do we need to position? */
@@ -1040,7 +1046,11 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		    /* Humm, should not happen ! */
 		    break;
 		default:
-		    tmp = xmlDocCopyNode(cur, target, 0);
+		    /*
+		     * Middle of the range - need to take care of
+		     * properties and namespaces
+		     */
+		    tmp = xmlDocCopyNode(cur, target, 2);
 		    break;
 	    }
 	    if (tmp != NULL) {

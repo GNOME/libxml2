@@ -1,3 +1,11 @@
+Wed Mar 10 00:12:31 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* tree.c: Changed the flag to xmlDocCopyNode (and similar routines),
+	  previously used only for recursion, to use a value of '2' to
+	  indicate copy properties & namespaces, but not children.
+	* xinclude.c: changed the handling of ranges to use the above new
+	  facility.  Fixes Bug 134268.
+
 Tue Mar  9 18:48:51 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* win32/Makefile.bcb, win32/Makefile.mingw, win32/Makefile.msvc:

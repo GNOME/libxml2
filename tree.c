@@ -3702,11 +3702,15 @@ xmlCopyPropList(xmlNodePtr target, xmlAttrPtr cur) {
  * a copy of the namespace at the top of the copied tree if
  * not available in the subtree.
  * Hence two functions, the public front-end call the inner ones
+ * The argument "recursive" normally indicates a recursive copy
+ * of the node with values 0 (no) and 1 (yes).  For XInclude,
+ * however, we allow a value of 2 to indicate copy properties and
+ * namespace info, but don't recurse on children.
  */
 
 static xmlNodePtr
 xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
-                  int recursive) {
+                  int extended) {
     xmlNodePtr ret;
 
     if (node == NULL) return(NULL);
@@ -3733,7 +3737,7 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
         case XML_DOCB_DOCUMENT_NODE:
 #endif
 #ifdef LIBXML_TREE_ENABLED
-	    return((xmlNodePtr) xmlCopyDoc((xmlDocPtr) node, recursive));
+	    return((xmlNodePtr) xmlCopyDoc((xmlDocPtr) node, extended));
 #endif /* LIBXML_TREE_ENABLED */
         case XML_DOCUMENT_TYPE_NODE:
         case XML_NOTATION_NODE:
@@ -3792,7 +3796,7 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	    return(tmp);
     }
     
-    if (!recursive)
+    if (!extended)
 	goto out;
     if (node->nsDef != NULL)
         ret->nsDef = xmlCopyNamespaceList(node->nsDef);
@@ -3836,7 +3840,7 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
             ret->children = node->children;
 	}
 	ret->last = ret->children;
-    } else if (node->children != NULL) {
+    } else if ((node->children != NULL) && (extended != 2)) {
         ret->children = xmlStaticCopyNodeList(node->children, doc, ret);
 	UPDATE_LAST_CHILD_AND_PARENT(ret)
     }
@@ -3890,17 +3894,19 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
 /**
  * xmlCopyNode:
  * @node:  the node
- * @recursive:  if 1 do a recursive copy.
+ * @extended:   if 1 do a recursive copy (properties, namespaces and children
+ *			when applicable)
+ *		if 2 copy properties and namespaces (when applicable)
  *
  * Do a copy of the node.
  *
  * Returns: a new #xmlNodePtr, or NULL in case of error.
  */
 xmlNodePtr
-xmlCopyNode(const xmlNodePtr node, int recursive) {
+xmlCopyNode(const xmlNodePtr node, int extended) {
     xmlNodePtr ret;
 
-    ret = xmlStaticCopyNode(node, NULL, NULL, recursive);
+    ret = xmlStaticCopyNode(node, NULL, NULL, extended);
     return(ret);
 }
 
@@ -3908,17 +3914,19 @@ xmlCopyNode(const xmlNodePtr node, int recursive) {
  * xmlDocCopyNode:
  * @node:  the node
  * @doc:  the document
- * @recursive:  if 1 do a recursive copy.
+ * @extended:   if 1 do a recursive copy (properties, namespaces and children
+ *			when applicable)
+ *		if 2 copy properties and namespaces (when applicable)
  *
  * Do a copy of the node to a given document.
  *
  * Returns: a new #xmlNodePtr, or NULL in case of error.
  */
 xmlNodePtr
-xmlDocCopyNode(const xmlNodePtr node, xmlDocPtr doc, int recursive) {
+xmlDocCopyNode(const xmlNodePtr node, xmlDocPtr doc, int extended) {
     xmlNodePtr ret;
 
-    ret = xmlStaticCopyNode(node, doc, NULL, recursive);
+    ret = xmlStaticCopyNode(node, doc, NULL, extended);
     return(ret);
 }
 
@@ -4026,7 +4034,7 @@ xmlCopyDtd(xmlDtdPtr dtd) {
 /**
  * xmlCopyDoc:
  * @doc:  the document
- * @recursive:  if 1 do a recursive copy.
+ * @recursive:  if not zero do a recursive copy.
  *
  * Do a copy of the document info. If recursive, the content tree will
  * be copied too as well as DTD, namespaces and entities.

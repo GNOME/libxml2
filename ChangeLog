@@ -1,3 +1,11 @@
+Sat Feb 14 18:55:40 MST 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/tutorial/xmltutorial.xml
+	* doc/tutorial/xmltutorial.pdf
+	* doc/tutorial/*.html
+	Fix bug in XPath example in the tutorial, thanks to Carlos, whose
+	last name I don't know, for pointing this out
+
 Thu Feb 12 16:28:12 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS configure.in: preparing release of 2.6.6

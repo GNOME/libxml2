@@ -1,0 +1,95 @@
+# This Makefile will allow you to build the static library, a DLL, the
+# DLL-import library, and the test executables using the "mingw" gcc
+# compiler environment.  This Makefile is based on Alfred Reibenschuh's
+# version for 2.1.1, and was modified by Wayne Davison.
+
+# Set "PREFIX" to the root of the mingw installed files.
+
+PREFIX = /mingw
+
+CC=gcc
+CFLAGS=-O -Iinclude -I$(PREFIX)/include -D_WINSOCKAPI_ -fnative-struct
+LDFLAGS=-L. -L$(PREFIX)/lib
+LIBS=-lwsock32 -lz
+
+AR=ar rc
+DLLTOOL=dlltool
+DLLWRAP=dllwrap
+
+LIBSRCS=HTMLparser.c	\
+	HTMLtree.c	\
+	SAX.c		\
+	debugXML.c	\
+	encoding.c	\
+	entities.c	\
+	error.c		\
+	nanoftp.c	\
+	nanohttp.c	\
+	parser.c	\
+	parserInternals.c	\
+	tree.c		\
+	valid.c		\
+	xlink.c		\
+	xmlIO.c		\
+	xmlmemory.c	\
+	xpath.c		\
+	uri.c
+
+LIBOBJS=$(LIBSRCS:.c=.o)
+
+OBJS=$(LIBOBJS)
+
+LIBBASE=xml
+LIB=lib$(LIBBASE).a
+DLL=$(LIB:.a=.dll)
+
+OBJ1=testHTML.o
+OBJ2=testSAX.o
+OBJ3=testURI.o
+EXE1=$(OBJ1:.o=.exe)
+EXE2=$(OBJ2:.o=.exe)
+EXE3=$(OBJ3:.o=.exe)
+
+IMPBASE=$(LIBBASE)_dll
+IMP=lib$(IMPBASE).a
+
+DEF=$(DLL:.dll=.def)
+
+all: $(LIB) $(DLL) $(DEF) $(IMP) $(EXE1) $(EXE2) $(EXE3)
+
+dll: $(DLL)
+
+lib: $(LIB)
+
+$(DLL): $(LIB) $(DEF) $(IMP)
+	$(DLLWRAP) --def $(DEF) --dllname $@ --output-lib $@ $(LIB) $(LDFLAGS) $(LIBS) -mwindows
+
+$(LIB): $(LIBOBJS)
+	$(AR) $@ $^
+
+$(DEF): $(LIBOBJS)
+	$(DLLTOOL) --kill-at --export-all -D $(DLL) --output-def $@ $^
+
+$(IMP): $(DEF)
+	$(DLLTOOL) -d $< -l $@ -D $(DLL)
+
+$(EXE1): $(OBJ1) $(LIBOBJS) $(DLL)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
+	strip $@
+
+$(EXE2): $(OBJ2) $(LIBOBJS) $(DLL)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
+	strip $@
+
+$(EXE3): $(OBJ3) $(LIBOBJS) $(LIB)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(LIBBASE) $(LIBS)
+	strip $@
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@	
+
+clean:
+	rm *.o *.a *.dll *.def
+
+test: all
+	./$(EXE1)	-c $(OBJS) | xxd | head -3

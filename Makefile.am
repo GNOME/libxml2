@@ -1,8 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = doc
+SUBDIRS = include doc
 
-INCLUDES = -I@srcdir@/include @Z_CFLAGS@ @CORBA_CFLAGS@ 
+INCLUDES = -I@srcdir@/include -I./include @Z_CFLAGS@ @CORBA_CFLAGS@ 
 
 noinst_PROGRAMS=testSAX testHTML testXPath testURI
 
@@ -34,29 +34,6 @@ libxml_la_SOURCES = \
 		xpath.c \
 		nanohttp.c \
 		nanoftp.c
-
-xmlincdir = $(includedir)/libxml
-
-xmlinc_HEADERS = \
-		include/libxml/SAX.h \
-		include/libxml/entities.h \
-		include/libxml/encoding.h \
-		include/libxml/parser.h \
-		include/libxml/parserInternals.h \
-		include/libxml/xmlerror.h \
-		include/libxml/HTMLparser.h \
-		include/libxml/HTMLtree.h \
-		include/libxml/debugXML.h \
-		include/libxml/tree.h \
-		include/libxml/xpath.h \
-		include/libxml/xmlIO.h \
-		include/libxml/xmlmemory.h \
-		include/libxml/nanohttp.h \
-		include/libxml/nanoftp.h \
-		include/libxml/uri.h \
-		include/libxml/valid.h \
-		include/libxml/xlink.h \
-		include/libxml/xmlversion.h
 
 DEPS = $(top_builddir)/libxml.la
 LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@
@@ -357,8 +334,8 @@ confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
 EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec libxml.m4 \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
-	     $(man_MANS) libxml-2.0.pc.in include/libxml/*.h.in \
-	     win32/README.MSDev win32/libxml2/libxml2.dsp
+	     $(man_MANS) libxml-2.0.pc.in include/libxml/*.h xmlversion.h.in \
+	     win32/README.MSDev win32/Makefile.mingw win32/libxml2/libxml2.dsp
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc

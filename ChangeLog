@@ -1,3 +1,18 @@
+Wed Oct 11 02:53:10 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* More work toward 2.2.5, integrated a number of patches
+	* configure.in Makefile.am win32config.h.in: trying to cleanup
+	  make distcheck .... huh ...
+	* include/Makefile.am include/win32config.h: new directory
+	  for includes
+	* win32/Makefile.mingw win32/README.MSDev win32/libxml2/libxml2.dsp
+	  updated teh makefiles and instructions for WIN32
+	* xpath.c: small fixes
+	* test/XPath/ results/XPath: updated the testcases and results
+	* HTMLparser.c nanohttp.c testXPath.c: incorporated provided or
+	  suggested patches
+	* valid.c: fixed an ID bug
+
 Mon Oct  9 14:28:56 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* moved xml-error.h to xmlerror.h: seems this allowed to bypass

@@ -1823,9 +1823,7 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
     if (doc == NULL) return(0);
     if (attr == NULL) return(0);
     if ((doc->intSubset == NULL) && (doc->extSubset == NULL)) {
-        if (((attr->name[0] == 'I') || (attr->name[0] == 'i')) &&
-            ((attr->name[1] == 'D') || (attr->name[1] == 'd')) &&
-	    (attr->name[2] == 0)) return(1);
+	return(0);
     } else if (doc->type == XML_HTML_DOCUMENT_NODE) {
         if ((xmlStrEqual(BAD_CAST "id", attr->name)) ||
 	    (xmlStrEqual(BAD_CAST "name", attr->name)))

@@ -116,7 +116,7 @@ AC_CHECK_FUNC(isinf, , AC_CHECK_LIB(m, isinf,
   [M_LIBS="-lm"; AC_DEFINE(HAVE_ISINF)]))
 
 XML_LIBDIR='-L${libdir}'
-XML_INCLUDEDIR='-I${srcdir}/include -I${includedir}/libxml -I${includedir}'
+XML_INCLUDEDIR='-I${includedir}/libxml -I${includedir}'
 XML_LIBS="-lxml $Z_LIBS $M_LIBS $LIBS"
 
 dnl
@@ -299,18 +299,26 @@ dnl create the libxml and include links needed to get dependencies right
 dnl
 if test ! -d $srcdir/include/libxml
 then
-    rm -f $srcdir/include
+    rm -rf $srcdir/include
     rm -f $srcdir/libxml
-    (cd $srcdir ; ln -s . include)
-    (cd $srcdir ; ln -s . libxml)
+    mkdir $srcdir/include
+    (cd $srcdir/include ; ln -s .. libxml)
+fi
+if test ! -e $srcdir/libxml
+then
+    (cd $srcdir ; ln -s include/libxml libxml)
 fi
 if test ! -e include/libxml
 then
-    rm -f include
-    rm -f libxml
-    (ln -s $srcdir/include include)
-    (ln -s $srcdir/include/libxml libxml)
+    rm -rf include
+    mkdir include
+    (cd include ; ln -s ../libxml libxml)
+fi
+if test ! -e libxml
+then
+    rm -rf libxml
+    ln -s $srcdir/include/libxml libxml
 fi
 
-AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile include/libxml/xmlversion.h xml-config include/libxml/win32config.h libxml-2.0.pc)
+AC_OUTPUT(libxml.spec Makefile include/Makefile doc/Makefile example/Makefile libxml/xmlversion.h xml-config libxml-2.0.pc)
 

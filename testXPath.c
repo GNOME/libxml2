@@ -150,7 +150,7 @@ void xmlXPAthDebugDumpLocationSet(FILE *output, xmlLocationSetPtr cur, int depth
 
     for (i = 0;i < cur->locNr;i++) {
 	fprintf(output, shift);
-        fprintf(output, "%d :\n", i + 1);
+        fprintf(output, "%d : ", i + 1);
 	xmlXPAthDebugDumpObject(output, cur->locTab[i], depth + 1);
     }
 }
@@ -197,16 +197,18 @@ void xmlXPAthDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 	    fprintf(output, "\n");
 	    break;
 	case XPATH_RANGE:
-	    fprintf(output, "Object is a range : from ");
+	    fprintf(output, "Object is a range :\n");
+	    fprintf(output, shift);
+	    fprintf(output, "From ");
 	    if (cur->index >= 0)
 		fprintf(output, "index %d in ", cur->index);
-	    fprintf(output, "node");
+	    fprintf(output, "node\n");
 	    xmlXPAthDebugDumpNode(output, (xmlNodePtr) cur->user, depth + 1);
 	    fprintf(output, shift);
-	    fprintf(output, "                      to ");
+	    fprintf(output, "To ");
 	    if (cur->index2 >= 0)
 		fprintf(output, "index %d in ", cur->index2);
-	    fprintf(output, "node");
+	    fprintf(output, "node\n");
 	    xmlXPAthDebugDumpNode(output, (xmlNodePtr) cur->user2, depth + 1);
 	    fprintf(output, "\n");
 	    break;

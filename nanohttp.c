@@ -105,6 +105,27 @@ static char *proxy = NULL;	/* the proxy name if any */
 static int proxyPort;	/* the proxy port if any */
 
 /**
+ * A bit of portability macros and functions
+ */
+#ifdef _WINSOCKAPI_
+
+WSADATA wsaData;
+
+#else
+
+#define closesocket(s) close(s)
+
+#endif
+
+int socket_errno(void) {
+#ifdef _WINSOCKAPI_
+    return(WSAGetLastError());
+#else
+    return(errno);
+#endif
+}
+
+/**
  * xmlNanoHTTPInit:
  *
  * Initialize the HTTP protocol layer.
@@ -117,6 +138,11 @@ xmlNanoHTTPInit(void) {
 
     if (initialized)
 	return;
+
+#ifdef _WINSOCKAPI_
+    if (WSAStartup(0x0101, &wsaData) != 0)
+	WSACleanup();
+#endif
 
     if (proxy == NULL) {
 	proxyPort = 80;
@@ -149,6 +175,9 @@ xmlNanoHTTPCleanup(void) {
     if (proxy != NULL)
 	xmlFree(proxy);
     initialized = 0;
+#ifdef _WINSOCKAPI_
+    WSACleanup();
+#endif
     return;
 }
 
@@ -344,7 +373,7 @@ xmlNanoHTTPFreeCtxt(xmlNanoHTTPCtxtPtr ctxt) {
     if (ctxt->contentType != NULL) xmlFree(ctxt->contentType);
     if (ctxt->location != NULL) xmlFree(ctxt->location);
     ctxt->state = XML_NANO_HTTP_NONE;
-    if (ctxt->fd >= 0) close(ctxt->fd);
+    if (ctxt->fd >= 0) closesocket(ctxt->fd);
     ctxt->fd = -1;
     xmlFree(ctxt);
 }
@@ -359,7 +388,7 @@ xmlNanoHTTPFreeCtxt(xmlNanoHTTPCtxtPtr ctxt) {
 static void
 xmlNanoHTTPSend(xmlNanoHTTPCtxtPtr ctxt) {
     if (ctxt->state & XML_NANO_HTTP_WRITE)
-	ctxt->last = write(ctxt->fd, ctxt->outptr, strlen(ctxt->outptr));
+	ctxt->last = send(ctxt->fd, ctxt->outptr, strlen(ctxt->outptr), 0);
 }
 
 /**
@@ -412,7 +441,7 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt) {
             ctxt->content = ctxt->in + d_content;
             ctxt->inrptr = ctxt->in + d_inrptr;
 	}
-	ctxt->last = read(ctxt->fd, ctxt->inptr, XML_NANO_HTTP_CHUNK);
+	ctxt->last = recv(ctxt->fd, ctxt->inptr, XML_NANO_HTTP_CHUNK, 0);
 	if (ctxt->last > 0) {
 	    ctxt->inptr += ctxt->last;
 	    return(ctxt->last);
@@ -420,17 +449,25 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt) {
 	if (ctxt->last == 0) {
 	    return(0);
 	}
-#ifdef EWOULDBLOCK
-	if ((ctxt->last == -1) && (errno != EWOULDBLOCK)) {
-	    return(0);
-	}
+	if (ctxt->last == -1) {
+	    switch (socket_errno()) {
+		case EINPROGRESS:
+		case EWOULDBLOCK:
+#if defined(EAGAIN) && EAGAIN != EWOULDBLOCK
+		case EAGAIN:
 #endif
-	tv.tv_sec=10;
-	tv.tv_usec=0;
+		    break;
+		default:
+		    return(0);
+	    }
+	}
+
+	tv.tv_sec = 10;
+	tv.tv_usec = 0;
 	FD_ZERO(&rfd);
 	FD_SET(ctxt->fd, &rfd);
 	
-	if(select(ctxt->fd+1, &rfd, NULL, NULL, &tv)<1)
+	if (select(ctxt->fd+1, &rfd, NULL, NULL, &tv)<1)
 		return(0);
     }
     return(0);
@@ -450,10 +487,10 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt) {
 static char *
 xmlNanoHTTPReadLine(xmlNanoHTTPCtxtPtr ctxt) {
     char buf[4096];
-    char *bp=buf;
+    char *bp = buf;
     
-    while(bp - buf < 4095) {
-	if(ctxt->inrptr == ctxt->inptr) {
+    while (bp - buf < 4095) {
+	if (ctxt->inrptr == ctxt->inptr) {
 	    if (xmlNanoHTTPRecv(ctxt) == 0) {
 		if (bp == buf)
 		    return(NULL);
@@ -463,11 +500,11 @@ xmlNanoHTTPReadLine(xmlNanoHTTPCtxtPtr ctxt) {
 	    }
 	}
 	*bp = *ctxt->inrptr++;
-	if(*bp == '\n') {
+	if (*bp == '\n') {
 	    *bp = 0;
 	    return(xmlMemStrdup(buf));
 	}
-	if(*bp != '\r')
+	if (*bp != '\r')
 	    bp++;
     }
     buf[4095] = 0;
@@ -567,7 +604,7 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
     struct timeval tv;
     int status;
     
-    if(s==-1) {
+    if (s==-1) {
 #ifdef DEBUG_HTTP
 	perror("socket");
 #endif
@@ -576,9 +613,6 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
     
 #ifdef _WINSOCKAPI_
     {
-	long levents = FD_READ | FD_WRITE | FD_ACCEPT |
-		       FD_CONNECT | FD_CLOSE ;
-	int rv = 0 ;
 	u_long one = 1;
 
 	status = ioctlsocket(s, FIONBIO, &one) == SOCKET_ERROR ? -1 : 0;
@@ -590,7 +624,7 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
 	status = IOCTL(s, FIONBIO, &enable);
     }
 #else /* VMS */
-    if((status = fcntl(s, F_GETFL, 0)) != -1) {
+    if ((status = fcntl(s, F_GETFL, 0)) != -1) {
 #ifdef O_NONBLOCK
 	status |= O_NONBLOCK;
 #else /* O_NONBLOCK */
@@ -600,11 +634,11 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
 #endif /* !O_NONBLOCK */
 	status = fcntl(s, F_SETFL, status);
     }
-    if(status < 0) {
+    if (status < 0) {
 #ifdef DEBUG_HTTP
 	perror("nonblocking");
 #endif
-	close(s);
+	closesocket(s);
 	return(-1);
     }
 #endif /* !VMS */
@@ -615,10 +649,10 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
     sin.sin_addr   = ia;
     sin.sin_port   = htons(port);
     
-    if((connect(s, (struct sockaddr *)&sin, sizeof(sin))==-1) &&
-       (errno != EINPROGRESS)) {
+    if ((connect(s, (struct sockaddr *)&sin, sizeof(sin))==-1) &&
+       (socket_errno() != EINPROGRESS) && (socket_errno() != EWOULDBLOCK)) {
 	perror("connect");
-	close(s);
+	closesocket(s);
 	return(-1);
     }	
     
@@ -632,14 +666,14 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
     {
 	case 0:
 	    /* Time out */
-	    close(s);
+	    closesocket(s);
 	    return(-1);
 	case -1:
 	    /* Ermm.. ?? */
 #ifdef DEBUG_HTTP
 	    perror("select");
 #endif
-	    close(s);
+	    closesocket(s);
 	    return(-1);
     }
 
@@ -655,7 +689,7 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
 	    return (-1);
 	}
 	if ( status ) {
-	    close (s);
+	    closesocket(s);
 	    errno = status;
 	    return (-1);
 	}
@@ -686,7 +720,7 @@ xmlNanoHTTPConnectHost(const char *host, int port)
     int s;
     
     h=gethostbyname(host);
-    if(h==NULL)
+    if (h==NULL)
     {
 #ifdef DEBUG_HTTP
 	fprintf(stderr,"unable to resolve '%s'.\n", host);
@@ -699,7 +733,7 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 	struct in_addr ia;
 	memcpy(&ia, h->h_addr_list[i],4);
 	s = xmlNanoHTTPConnectAttempt(ia, port);
-	if(s != -1)
+	if (s != -1)
 	    return(s);
     }
 
@@ -839,7 +873,7 @@ retry:
 	}
 	xmlNanoHTTPFreeCtxt(ctxt);
 #ifdef DEBUG_HTTP
-	printf("Too many redirrects, aborting ...\n");
+	printf("Too many redirects, aborting ...\n");
 #endif
 	return(NULL);
 

@@ -14,7 +14,6 @@
 
 #include <libxml/xmlversion.h>
 #ifdef LIBXML_HTML_ENABLED
-
 #include <stdio.h>
 #include <string.h>
 #ifdef HAVE_CTYPE_H
@@ -1786,7 +1785,7 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
 
     while ((i < HTML_PARSER_BUFFER_SIZE) &&
            ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
-	   (CUR == ':') || (CUR == '_'))) {
+	   (CUR == ':') || (CUR == '-') || (CUR == '_'))) {
 	if ((CUR >= 'A') && (CUR <= 'Z')) loc[i] = CUR + 0x20;
         else loc[i] = CUR;
 	i++;

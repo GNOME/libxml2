@@ -4,10 +4,6 @@
 #define HAVE_TIME_H
 #define HAVE_FCNTL_H
 
-#define LIBXML_VERSION @LIBXML_VERSION_NUMBER@
-#define LIBXML_VERSION_STRING "@LIBXML_VERSION@"
-
-
 #include <io.h>
 
 #ifdef INCLUDE_WINSOCK

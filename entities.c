@@ -149,6 +149,18 @@ void xmlInitializePredefinedEntities(void) {
 }
 
 /**
+ * xmlCleanupPredefinedEntities:
+ *
+ * Cleanup up the predefined entities table.
+ */
+void xmlCleanupPredefinedEntities(void) {
+    if (xmlPredefinedEntities == NULL) return;
+
+    xmlFreeEntitiesTable(xmlPredefinedEntities);
+    xmlPredefinedEntities = NULL;
+}
+
+/**
  * xmlGetPredefinedEntity:
  * @name:  the entity name
  *

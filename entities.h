@@ -88,6 +88,7 @@ void			xmlFreeEntitiesTable	(xmlEntitiesTablePtr table);
 void			xmlDumpEntitiesTable	(xmlBufferPtr buf,
 						 xmlEntitiesTablePtr table);
 xmlEntitiesTablePtr	xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);
+void			xmlCleanupPredefinedEntities(void);
 
 #ifdef __cplusplus
 }

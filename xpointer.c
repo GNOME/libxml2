@@ -2308,6 +2308,7 @@ next:
 	    (*level)++;
 	goto found;
     }
+skip:		/* This label should only be needed if something is wrong! */
     if (cur->next != NULL) {
 	cur = cur->next;
 	goto found;
@@ -2328,11 +2329,13 @@ found:
 	(cur->type != XML_TEXT_NODE) &&
 	(cur->type != XML_DOCUMENT_NODE) &&
 	(cur->type != XML_HTML_DOCUMENT_NODE) &&
-	(cur->type != XML_CDATA_SECTION_NODE))
-	goto next;
-    if (cur->type == XML_ENTITY_REF_NODE) {
-	TODO
-    }
+	(cur->type != XML_CDATA_SECTION_NODE)) {
+	    if (cur->type == XML_ENTITY_REF_NODE) {	/* Shouldn't happen */
+		TODO
+		goto skip;
+	    }
+	    goto next;
+	}
     return(cur);
 }
 

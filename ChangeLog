@@ -1,3 +1,12 @@
+Mon Mar  8 22:33:14 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: enhanced to assure that if xpointer is called
+	  for a document, the XML_PARSE_NOENT flag is set before parsing
+	  the included document so that entities will automatically get
+	  taken care of.
+	* xpointer.c: corrected code so that, if an XML_ENTITY_REF node
+	  is encountered, it will log it and not crash (bug 135713)
+
 Sun Mar  7 19:03:48 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: modified to make sub-includes inherit the

@@ -1361,6 +1361,9 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     xmlChar *URL;
     xmlChar *fragment = NULL;
     int i = 0;
+#ifdef LIBXML_XPTR_ENABLED
+    int saveFlags;
+#endif
 
 #ifdef DEBUG_XINCLUDE
     xmlGenericError(xmlGenericErrorContext, "Loading doc %s:%d\n", url, nr);
@@ -1425,7 +1428,22 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 #ifdef DEBUG_XINCLUDE
     printf("loading %s\n", URL);
 #endif
+#ifdef LIBXML_XPTR_ENABLED
+    /*
+     * If this is an XPointer evaluation, we want to assure that
+     * all entities have been resolved prior to processing the
+     * referenced document
+     */
+    saveFlags = ctxt->parseFlags;
+    if (fragment != NULL) {	/* if this is an XPointer eval */
+	ctxt->parseFlags |= XML_PARSE_NOENT;
+    }
+#endif
+
     doc = xmlXIncludeParseFile(ctxt, (const char *)URL);
+#ifdef LIBXML_XPTR_ENABLED
+    ctxt->parseFlags = saveFlags;
+#endif
     if (doc == NULL) {
 	xmlFree(URL);
 	if (fragment != NULL)

@@ -1,3 +1,13 @@
+Sat Oct 11 23:11:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* genChRange.py, chvalid.def, chvalid.c, include/libxml/chvalid.h:
+	  new files for a different method for doing range validation
+	  of character data.
+	* Makefile.am, parserInternals.c, include/libxml/Makefile.am,
+	  include/libxml/parserInternals.h: modified for new range method.
+	* catalog.c: small enhance for warning message (using one
+	  of the new range routines)
+
 Sat Oct 11 13:24:57 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c include/libxml/valid.h: adding an serror field to

@@ -2932,11 +2932,11 @@ xmlInitializeCatalog(void) {
 	    cur = catalogs;
 	    nextent = &catal->xml;
 	    while (*cur != '\0') {
-		while (IS_BLANK(*cur)) 
+		while (xmlIsBlank_ch(*cur)) 
 		    cur++;
 		if (*cur != 0) {
 		    paths = cur;
-		    while ((*cur != 0) && (!IS_BLANK(*cur)))
+		    while ((*cur != 0) && (!xmlIsBlank_ch(*cur)))
 			cur++;
 		    path = (char *) xmlStrndup((const xmlChar *)paths, cur - paths);
 		    if (path != NULL) {
@@ -3015,10 +3015,10 @@ xmlLoadCatalogs(const char *pathss) {
 
     cur = pathss;
     while ((cur != NULL) && (*cur != 0)) {
-	while (IS_BLANK(*cur)) cur++;
+	while (xmlIsBlank_ch(*cur)) cur++;
 	if (*cur != 0) {
 	    paths = cur;
-	    while ((*cur != 0) && (*cur != ':') && (!IS_BLANK(*cur)))
+	    while ((*cur != 0) && (*cur != ':') && (!xmlIsBlank_ch(*cur)))
 		cur++;
 	    path = xmlStrndup((const xmlChar *)paths, cur - paths);
 	    if (path != NULL) {

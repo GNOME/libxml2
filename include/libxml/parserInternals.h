@@ -13,6 +13,7 @@
 #include <libxml/xmlversion.h>
 #include <libxml/parser.h>
 #include <libxml/HTMLparser.h>
+#include <libxml/chvalid.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,8 +49,7 @@ extern "C" {
  * [2] Char ::= #x9 | #xA | #xD | [#x20...]
  * any byte character in the accepted range
  */
-#define IS_BYTE_CHAR(c)							\
-    (((c) >= 0x20) || ((c) == 0x09) || ((c) == 0x0A) || ((c) == 0x0D))
+#define IS_BYTE_CHAR(c)	 xmlIsChar_ch(c)
 
 /**
  * IS_CHAR:
@@ -61,11 +61,7 @@ extern "C" {
  *                  | [#x10000-#x10FFFF]
  * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
  */
-#define IS_CHAR(c)							\
-    ((((c) >= 0x20) && ((c) <= 0xD7FF)) ||				\
-     ((c) == 0x09) || ((c) == 0x0A) || ((c) == 0x0D) ||			\
-     (((c) >= 0xE000) && ((c) <= 0xFFFD)) ||				\
-     (((c) >= 0x10000) && ((c) <= 0x10FFFF)))
+#define IS_CHAR(c)   xmlIsChar(c)
 
 /**
  * IS_BLANK:
@@ -75,8 +71,7 @@ extern "C" {
  *
  * [3] S ::= (#x20 | #x9 | #xD | #xA)+
  */
-#define IS_BLANK(c) (((c) == 0x20) || ((c) == 0x09) || ((c) == 0xA) ||	\
-                     ((c) == 0x0D))
+#define IS_BLANK(c)  xmlIsBlank(c)
 
 /**
  * IS_BASECHAR:
@@ -193,15 +188,7 @@ XMLPUBVAR const xmlChar xmlStringComment[];
 /*
  * Function to finish the work of the macros where needed.
  */
-XMLPUBFUN int XMLCALL			xmlIsBaseChar	(int c);
-XMLPUBFUN int XMLCALL			xmlIsBlank	(int c);
-XMLPUBFUN int XMLCALL			xmlIsPubidChar	(int c);
-XMLPUBFUN int XMLCALL			xmlIsLetter	(int c);
-XMLPUBFUN int XMLCALL			xmlIsDigit	(int c);
-XMLPUBFUN int XMLCALL			xmlIsIdeographic(int c);
-XMLPUBFUN int XMLCALL			xmlIsExtender	(int c);
-XMLPUBFUN int XMLCALL			xmlIsCombining	(int c);
-XMLPUBFUN int XMLCALL			xmlIsChar	(int c);
+XMLPUBFUN int XMLCALL                   xmlIsLetter     (int c);
 
 /**
  * Parser context.

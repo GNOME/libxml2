@@ -785,6 +785,14 @@ xmlNormalizeURIPath(char *path) {
     return(0);
 }
 
+static int is_hex(char c) {
+    if (((c >= '0') && (c <= '9')) ||
+        ((c >= 'a') && (c <= 'f')) ||
+        ((c >= 'A') && (c <= 'F')))
+	return(1);
+    return(0);
+}
+
 /**
  * xmlURIUnescapeString:
  * @str:  the string to unescape
@@ -818,7 +826,7 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
     in = str;
     out = ret;
     while(len > 0) {
-	if (*in == '%') {
+	if ((*in == '%') && (is_hex(in[1])) && (is_hex(in[2]))) {
 	    in++;
 	    if ((*in >= '0') && (*in <= '9')) 
 	        *out = (*in - '0');

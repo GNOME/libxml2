@@ -2217,33 +2217,38 @@ xmlOutputBufferCreateFilename(const char *URI,
                               xmlCharEncodingHandlerPtr encoder,
 			      int compression ATTRIBUTE_UNUSED) {
     xmlOutputBufferPtr ret;
+    xmlURIPtr puri;
     int i = 0;
     void *context = NULL;
-    char *unescaped;
-
-    int is_http_uri = 0;	/*   Can't change if HTTP disabled  */
+    char *unescaped = NULL;
+    int is_file_uri = 1;
 
     if (xmlOutputCallbackInitialized == 0)
 	xmlRegisterDefaultOutputCallbacks();
 
     if (URI == NULL) return(NULL);
 
-#ifdef LIBXML_HTTP_ENABLED
-    /*  Need to prevent HTTP URI's from falling into zlib short circuit  */
-
-    is_http_uri = xmlIOHTTPMatch( URI );
-#endif
-
+    puri = xmlParseURI(URI);
+    if (puri != NULL) {
+        if ((puri->scheme == NULL) ||
+	    (xmlStrEqual(BAD_CAST puri->scheme, BAD_CAST "file")))
+	    is_file_uri = 0;
+	/*
+	 * try to limit the damages of the URI unescaping code.
+	 */
+	if (puri->scheme != NULL)
+	    unescaped = xmlURIUnescapeString(URI, 0, NULL);
+	xmlFreeURI(puri);
+    }
 
     /*
      * Try to find one of the output accept method accepting that scheme
      * Go in reverse to give precedence to user defined handlers.
      * try with an unescaped version of the URI
      */
-    unescaped = xmlURIUnescapeString(URI, 0, NULL);
     if (unescaped != NULL) {
 #ifdef HAVE_ZLIB_H
-	if ((compression > 0) && (compression <= 9) && (is_http_uri == 0)) {
+	if ((compression > 0) && (compression <= 9) && (is_file_uri == 1)) {
 	    context = xmlGzfileOpenW(unescaped, compression);
 	    if (context != NULL) {
 		ret = xmlAllocOutputBuffer(encoder);
@@ -2280,7 +2285,7 @@ xmlOutputBufferCreateFilename(const char *URI,
      */
     if (context == NULL) {
 #ifdef HAVE_ZLIB_H
-	if ((compression > 0) && (compression <= 9) && (is_http_uri == 0)) {
+	if ((compression > 0) && (compression <= 9) && (is_file_uri == 1)) {
 	    context = xmlGzfileOpenW(URI, compression);
 	    if (context != NULL) {
 		ret = xmlAllocOutputBuffer(encoder);

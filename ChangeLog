@@ -1,3 +1,8 @@
+Sat May  8 22:56:22 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c xmlIO.c: fixing some problems in URI unescaping
+	  and output buffer opening, this should fix #141864
+
 Fri May  7 22:31:54 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c include/libxml/valid.h: fixes the use of 'list' as a parameter

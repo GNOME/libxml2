@@ -431,7 +431,8 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	return(1);
     }
     if ((oldstate == XML_TEXTREADER_ELEMENT) &&
-	(reader->node->type == XML_ELEMENT_NODE)) {
+	(reader->node->type == XML_ELEMENT_NODE) &&
+	(wasempty == 0)) {
 	reader->state = XML_TEXTREADER_END;
 	DUMP_READER
 	return(1);

@@ -235,34 +235,6 @@ if reader.MoveToNextAttribute() != 0:
     print "Failed to detect last attribute"
     sys.exit(1)
 
-#
-# Another test provided by Stéphane Bidoul and checked with C#
-#
-expect="""1 (a) [None]
-1 (b) [None]
--- 2 (b1) [b1]
-1 (c) [None]
-3 (#text) [content of c]
-15 (c) [None]
-15 (a) [None]
-"""
-res=""
-f = StringIO.StringIO("""<a><b b1="b1"/><c>content of c</c></a>""")
-input = libxml2.inputBuffer(f)
-reader = input.newTextReader("test5")
-
-while reader.Read():
-    res=res + "%s (%s) [%s]\n" % (reader.NodeType(),reader.Name(),
-                                  reader.Value())
-    if reader.NodeType() == 1: # Element
-	while reader.MoveToNextAttribute():
-	    res = res + "-- %s (%s) [%s]\n" % (reader.NodeType(),
-	                                       reader.Name(),reader.Value())
-
-if res != expect:
-    print "test5 failed"
-    print res
-    sys.exit(1)
     
 #
 # a couple of tests for namespace nodes
@@ -319,6 +291,49 @@ if ret != 0:
     print "test8: failed to detect the EOF"
     sys.exit(1)
 
+#
+# Another test provided by Stéphane Bidoul and checked with C#
+#
+def tst_reader(s):
+    f = StringIO.StringIO(s)
+    input = libxml2.inputBuffer(f)
+    reader = input.newTextReader("tst")
+    res = ""
+    while reader.Read():
+	res=res + "%s (%s) [%s] %d\n" % (reader.NodeType(),reader.Name(),
+				      reader.Value(), reader.IsEmptyElement())
+	if reader.NodeType() == 1: # Element
+	    while reader.MoveToNextAttribute():
+		res = res + "-- %s (%s) [%s]\n" % (reader.NodeType(),
+						   reader.Name(),reader.Value())
+    return res
+    
+doc="""<a><b b1="b1"/><c>content of c</c></a>"""
+expect="""1 (a) [None] 0
+1 (b) [None] 1
+-- 2 (b1) [b1]
+1 (c) [None] 0
+3 (#text) [content of c] 0
+15 (c) [None] 0
+15 (a) [None] 0
+"""
+res = tst_reader(doc)
+if res != expect:
+    print "test5 failed"
+    print res
+    sys.exit(1)
+
+doc="""<test><b/><c/></test>"""
+expect="""1 (test) [None] 0
+1 (b) [None] 1
+1 (c) [None] 1
+15 (test) [None] 0
+"""
+res = tst_reader(doc)
+if res != expect:
+    print "test5 failed"
+    print res
+    sys.exit(1)
 
 #
 # cleanup for memory allocation counting

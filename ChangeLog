@@ -1,3 +1,8 @@
+Mon Dec 30 13:36:50 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c python/tests/reader.py: fixed another problem
+	  pointed by Stéphane Bidoul
+
 Mon Dec 30 12:39:55 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader.py: fixed a limit case problem

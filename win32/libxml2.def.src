@@ -936,7 +936,9 @@ xmlCleanupPredefinedEntities
 	xmlSaveFileEnc
 
 	/* XHTML */
-	xmlIsXHTML
+	#ifdef LIBXML_HTML_ENABLED
+		xmlIsXHTML
+	#endif /* LIBXML_HTML_ENABLED */
 
 	/* Compression */
 	xmlGetDocCompressMode
@@ -1517,8 +1519,6 @@ xmlCleanupPredefinedEntities
 
 	/* Error reporting */
 	xmlXPatherror
-	xmlXPathDebugDumpObject
-	xmlXPathDebugDumpCompExpr
 
 	/* NodeSet handling */
 	xmlXPathNodeSetContains

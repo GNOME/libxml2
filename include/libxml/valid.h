@@ -58,6 +58,21 @@ typedef void (*xmlValidityWarningFunc) (void *ctx,
 			       const char *msg,
 			       ...);
 
+#ifdef IN_LIBXML
+/**
+ * XML_CTXT_FINISH_DTD_0:
+ *
+ * Special value for finishDtd field when embedded in an xmlParserCtxt
+ */
+#define XML_CTXT_FINISH_DTD_0 0xabcd1234
+/**
+ * XML_CTXT_FINISH_DTD_1:
+ *
+ * Special value for finishDtd field when embedded in an xmlParserCtxt
+ */
+#define XML_CTXT_FINISH_DTD_1 0xabcd1235
+#endif
+
 /*
  * xmlValidCtxt:
  * An xmlValidCtxt is used for error reporting when validating.
@@ -75,7 +90,7 @@ struct _xmlValidCtxt {
     int                nodeMax;       /* Max depth of the parsing stack */
     xmlNodePtr        *nodeTab;       /* array of nodes */
 
-    int              finishDtd;       /* finished validating the Dtd ? */
+    unsigned int     finishDtd;       /* finished validating the Dtd ? */
     xmlDocPtr              doc;       /* the document */
     int                  valid;       /* temporary validity check result */
 

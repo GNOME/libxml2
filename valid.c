@@ -59,7 +59,12 @@ xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	pctxt = ctxt->userData;
+	/* Use the special values to detect if it is part of a parsing
+	   context */
+	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
+	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	    pctxt = ctxt->userData;
+	}
     }
     if (extra)
         __xmlRaiseError(NULL, channel, data,
@@ -92,7 +97,12 @@ xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	pctxt = ctxt->userData;
+	/* Use the special values to detect if it is part of a parsing
+	   context */
+	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
+	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	    pctxt = ctxt->userData;
+	}
     }
     if (extra)
         __xmlRaiseError(NULL, channel, data,
@@ -132,7 +142,12 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt,
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	pctxt = ctxt->userData;
+	/* Use the special values to detect if it is part of a parsing
+	   context */
+	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
+	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	    pctxt = ctxt->userData;
+	}
     }
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
                     XML_ERR_ERROR, NULL, 0,
@@ -168,7 +183,12 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	pctxt = ctxt->userData;
+	/* Use the special values to detect if it is part of a parsing
+	   context */
+	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
+	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	    pctxt = ctxt->userData;
+	}
     }
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
                     XML_ERR_ERROR, NULL, 0,
@@ -202,7 +222,12 @@ xmlErrValidWarning(xmlValidCtxtPtr ctxt,
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	pctxt = ctxt->userData;
+	/* Use the special values to detect if it is part of a parsing
+	   context */
+	if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
+	    (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	    pctxt = ctxt->userData;
+	}
     }
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
                     XML_ERR_WARNING, NULL, 0,

@@ -1,3 +1,15 @@
+Fri Oct 29 14:03:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: register xmlSchemaSetValidErrors, patch from
+	  Brent Hendricks in the mailing-list
+	* include/libxml/valid.h HTMLparser.c SAX2.c valid.c
+	  parserInternals.c: fix #156626 and more generally how to find out
+	  if a validation contect is part of a parsing context or not. This
+	  can probably be improved to make 100% sure that vctxt->userData
+	  is the parser context too. It's a bit hairy because we can't 
+	  change the xmlValidCtxt structure without breaking the ABI since
+	  this change xmlParserCtxt information indexes.
+
 Wed Oct 27 19:26:20 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* ChangeLog NEWS configure.in doc/*: preparing release 2.6.15

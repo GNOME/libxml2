@@ -1076,6 +1076,7 @@ xmlRelaxNGNewValidState(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node)
 		return (ret);
 	    }
 	    ret->attrs = tmp;
+	    ret->maxAttrs = nbAttrs;
 	}
 	ret->nbAttrs = nbAttrs;
 	if (nbAttrs < MAX_ATTR) {
@@ -1153,6 +1154,7 @@ xmlRelaxNGCopyValidState(xmlRelaxNGValidCtxtPtr ctxt,
 		return (ret);
 	    }
 	    ret->maxAttrs = state->maxAttrs;
+	    ret->attrs = tmp;
 	}
 	memcpy(ret->attrs, state->attrs, state->nbAttrs * sizeof(xmlAttrPtr));
     }

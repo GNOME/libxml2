@@ -1,3 +1,11 @@
+Tue Sep  9 12:06:03 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+        BRANCH release for 2.5.x critical patches
+	* configure.in: preparing libxml2-2.5.11 release
+	* globals.c threads.c: patching crashes in multithreaded applications
+	  c.f. #121772 #121576
+	* relaxng.c: patching a possible crash in Relax-NG
+
 Fri Aug 15 02:24:20 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* News configure.in: preparing libxml2-2.5.10 release

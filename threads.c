@@ -170,8 +170,10 @@ xmlMutexLock(xmlMutexPtr tok)
  * xmlMutexUnlock() is used to unlock a libxml2 token.
  */
 void
-xmlMutexUnlock(xmlMutexPtr tok ATTRIBUTE_UNUSED)
+xmlMutexUnlock(xmlMutexPtr tok)
 {
+    if (tok == NULL)
+        return;
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_unlock(&tok->lock);
 #elif defined HAVE_WIN32_THREADS
@@ -233,8 +235,10 @@ xmlFreeRMutex(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
  * xmlRMutexLock() is used to lock a libxml2 token_r.
  */
 void
-xmlRMutexLock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
+xmlRMutexLock(xmlRMutexPtr tok)
 {
+    if (tok == NULL)
+        return;
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_lock(&tok->lock);
     if (tok->held) {
@@ -267,6 +271,8 @@ xmlRMutexLock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
 void
 xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
 {
+    if (tok == NULL)
+        return;
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_lock(&tok->lock);
     tok->held--;

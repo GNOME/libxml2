@@ -257,7 +257,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 				$results[$name] = array(($r + $relevance) * 2,
 							$t,$m,$d,$w,$u);
 			    } else {
-				$id = strtoupper($name);
+				$id = $name;
 				$m = strtolower($module);
 				$url = "html/libxml-$module.html#$id";
 				$results[$name] = array($relevance,$type,
@@ -282,7 +282,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 				$results[$name] = array(($r + $relevance) * 2,
 							$t,$m,$d,$w,$u);
 			    } else {
-				$id = strtoupper($name);
+				$id = $name;
 				$m = strtolower($module);
 				$url = "XSLT/html/libxslt-$module.html#$id";
 				$results[$name] = array($relevance,$type,
@@ -349,7 +349,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 				$results[$name] = array(($r + $relevance) * 2,
 							$t,$m,$d,$w,$u);
 			    } else {
-				$id = strtoupper($name);
+				$id = $name;
 				$m = strtolower($module);
 				$u = str_replace(
 			"http://mail.gnome.org/archives/xml/", "", $url);
@@ -375,7 +375,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 				$results[$name] = array(($r + $relevance) * 2,
 							$t,$m,$d,$w,$u);
 			    } else {
-				$id = strtoupper($name);
+				$id = $name;
 				$m = strtolower($module);
 				$u = str_replace(
 			"http://mail.gnome.org/archives/xslt/", "", $url);

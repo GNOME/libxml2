@@ -20243,15 +20243,12 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 		tmp->decl = attrDecl;
 		tmp->value = defValue;
 		tmp->next = NULL;
-		
-		if (defAttrStates == NULL) {
+		if (defAttrStatesTop == NULL)
 		    defAttrStates = tmp;
-		    defAttrStates = tmp;
-		} else {
-		    defAttrStates->next = tmp;
-		    defAttrStatesTop = tmp;
-		}				
-	    }			
+		else
+		    defAttrStatesTop->next = tmp;
+		defAttrStatesTop = tmp;
+	    }
 	}
         attrUse = attrUse->next;
     }

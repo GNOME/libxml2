@@ -1,3 +1,9 @@
+Mon Mar 21 22:58:37 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Removed a stupid bug in xmlSchemaValidateAttributes,
+	  failing to build a linked list correctly (bug #169898, reported
+	  by bing song, hmm...).
+
 Mon Mar 21 21:09:07 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed a segfault, which occured during bubbling

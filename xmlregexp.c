@@ -3533,7 +3533,7 @@ xmlFAParseCharRef(xmlRegParserCtxtPtr ctxt) {
  */
 static void
 xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
-    int cur;
+    int cur, len;
     int start = -1;
     int end = -1;
 
@@ -3560,13 +3560,14 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 		return;
 	}
 	end = start;
+        len = 1;
     } else if ((cur != 0x5B) && (cur != 0x5D)) {
-	end = start = cur;
+        end = start = CUR_SCHAR(ctxt->cur, len);
     } else {
 	ERROR("Expecting a char range");
 	return;
     }
-    NEXT;
+    NEXTL(len);
     if (start == '-') {
 	return;
     }
@@ -3593,13 +3594,14 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 		ERROR("Invalid escape value");
 		return;
 	}
+        len = 1;
     } else if ((cur != 0x5B) && (cur != 0x5D)) {
-	end = cur;
+        end = CUR_SCHAR(ctxt->cur, len);
     } else {
 	ERROR("Expecting the end of a char range");
 	return;
     }
-    NEXT;
+    NEXTL(len);
     /* TODO check that the values are acceptable character ranges for XML */
     if (end < start) {
 	ERROR("End of range is before start of range");

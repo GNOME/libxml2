@@ -1,3 +1,8 @@
+Sat Dec 27 09:53:06 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xmlregexp.c: fixed xmlFAParseCharRange for Unicode ranges
+	  with patch from Charles Bozeman.
+
 Fri Dec 26 14:03:41 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xmlregexp.c: fixed problem causing segfault on validation error

@@ -1595,6 +1595,9 @@ xmlParserInputBufferCreateFilename
 
     if (URI == NULL) return(NULL);
 
+#ifdef LIBXML_CATALOG_ENABLED
+#endif
+
     /*
      * Try to find one of the input accept method accepting taht scheme
      * Go in reverse to give precedence to user defined handlers.
@@ -2373,7 +2376,9 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
     xmlParserInputPtr ret = NULL;
     xmlChar *resource = NULL;
 #ifdef LIBXML_CATALOG_ENABLED
+#ifdef HAVE_STAT
     struct stat info;
+#endif
     xmlCatalogAllow pref;
 #endif
 
@@ -2413,7 +2418,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 					 (const xmlChar *)URL);
 	}
 	if ((resource == NULL) && (URL != NULL))
-	    resource = xmlStrdup(URL);
+	    resource = xmlStrdup((const xmlChar *) URL);
 
 	/*
 	 * TODO: do an URI lookup on the reference
@@ -2431,8 +2436,8 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 		tmp = xmlCatalogLocalResolveURI(ctxt->catalogs, resource);
 	    }
 	    if ((tmp == NULL) &&
-		(pref == XML_CATA_ALLOW_ALL) ||
-	        (pref == XML_CATA_ALLOW_GLOBAL)) {
+		((pref == XML_CATA_ALLOW_ALL) ||
+	         (pref == XML_CATA_ALLOW_GLOBAL))) {
 		tmp = xmlCatalogResolveURI(resource);
 	    }
 
@@ -2501,7 +2506,7 @@ xmlGetExternalEntityLoader(void) {
 /**
  * xmlLoadExternalEntity:
  * @URL:  the URL for the entity to load
- * @ID:  the System ID for the entity to load
+ * @ID:  the Public ID for the entity to load
  * @ctxt:  the context in which the entity is called or NULL
  *
  * Load an external entity, note that the use of this function for

@@ -1,3 +1,14 @@
+Thu Aug 23 17:26:58 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am configure.in include/libxml/xmlwin32version.h:
+	  preparing for a 2.4.3 release even if it may not be ready yet
+	* catalog.c parser.c xmlIO.c include/libxml/catalog.h: redirected
+	  all file parsing lookup to go through the entity resolver, add
+	  to add an API to bypass it (needed to load catalogs themselves),
+	  some cleanup on the catalog code too.
+	* nanoftp.c: small cleanup
+	* doc/catalog.html: small update
+
 Thu Aug 23 12:22:26 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: fixed bugi #59406 in SGML catalog parsing reported by

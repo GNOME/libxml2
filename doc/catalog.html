@@ -18,7 +18,7 @@ href="http://xmlsoft.org/catalog.html">http://xmlsoft.org/catalog.html</a></p>
 <p>Mailing-list archive:  <a
 href="http://mail.gnome.org/archives/xml/">http://mail.gnome.org/archives/xml/</a></p>
 
-<p>Version: $Revision: 1.1 $</p>
+<p>Version: $Revision: 1.2 $</p>
 
 <p>Table of Content:</p>
 <ol>
@@ -92,8 +92,7 @@ concrete example, suppose you are authoring a DocBook document, this one
 starts with the following DOCTYPE definition:</p>
 <pre>&lt;?xml version='1.0'?&gt;
 &lt;!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V3.1.4//EN"
-                         "http://nwalsh.com/docbook/xml/3.1.4/db3xml.dtd"&gt;
-</pre>
+                         "http://nwalsh.com/docbook/xml/3.1.4/db3xml.dtd"&gt;</pre>
 
 <p>When validating the document with libxml, the catalog will be
 automatically consulted to lookup the public identifier "-//Norman Walsh//DTD
@@ -349,6 +348,10 @@ catalog state, those routines are primarily designed for xmlcatalog, I'm not
 sure that exposing more complex interfaces (like navigation ones) would be
 really useful.</p>
 
+<p>The xmlParseCatalogFile() is a function used to load XML Catalog files,
+it's similar as xmlParseFile() except it bypass all catalog lookups, it's
+provided because this functionality may be useful for client tools.</p>
+
 <h3>threaded environments:</h3>
 
 <p>Since the catalog tree is built progressively, some care has been taken to
@@ -385,6 +388,6 @@ me:</p>
 
 <p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
 
-<p>$Id: catalog.html,v 1.1 2001/08/22 23:44:08 veillard Exp $</p>
+<p>$Id: catalog.html,v 1.2 2001/08/23 00:52:23 veillard Exp $</p>
 </body>
 </html>

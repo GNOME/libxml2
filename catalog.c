@@ -58,6 +58,7 @@
 typedef enum {
     XML_CATA_NONE = 0,
     XML_CATA_CATALOG,
+    XML_CATA_BROKEN_CATALOG,
     XML_CATA_NEXT_CATALOG,
     XML_CATA_PUBLIC,
     XML_CATA_SYSTEM,
@@ -309,6 +310,71 @@ xmlCatalogUnWrapURN(const xmlChar *urn) {
     result[i] = 0;
 
     return(xmlStrdup(result));
+}
+
+/**
+ * xmlParseCatalogFile:
+ * @filename:  the filename
+ *
+ * parse an XML file and build a tree. It's like xmlParseFile()
+ * except it bypass all catalog lookups.
+ *
+ * Returns the resulting document tree or NULL in case of error
+ */
+
+xmlDocPtr
+xmlParseCatalogFile(const char *filename) {
+    xmlDocPtr ret;
+    xmlParserCtxtPtr ctxt;
+    char *directory = NULL;
+    xmlParserInputPtr inputStream;
+    xmlParserInputBufferPtr buf;
+
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL) {
+	if (xmlDefaultSAXHandler.error != NULL) {
+	    xmlDefaultSAXHandler.error(NULL, "out of memory\n");
+	}
+	return(NULL);
+    }
+
+    buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
+    if (buf == NULL) {
+	xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
+
+    inputStream = xmlNewInputStream(ctxt);
+    if (inputStream == NULL) {
+	xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
+
+    inputStream->filename = xmlMemStrdup(filename);
+    inputStream->buf = buf;
+    inputStream->base = inputStream->buf->buffer->content;
+    inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->end = 
+	&inputStream->buf->buffer->content[inputStream->buf->buffer->use];
+
+    inputPush(ctxt, inputStream);
+    if ((ctxt->directory == NULL) && (directory == NULL))
+        directory = xmlParserGetDirectory(filename);
+    if ((ctxt->directory == NULL) && (directory != NULL))
+        ctxt->directory = directory;
+
+    xmlParseDocument(ctxt);
+
+    if (ctxt->wellFormed)
+	ret = ctxt->myDoc;
+    else {
+        ret = NULL;
+        xmlFreeDoc(ctxt->myDoc);
+        ctxt->myDoc = NULL;
+    }
+    xmlFreeParserCtxt(ctxt);
+    
+    return(ret);
 }
 
 /************************************************************************
@@ -585,7 +651,7 @@ xmlParseXMLCatalogFile(xmlCatalogPrefer prefer, const xmlChar *filename) {
     if (filename == NULL)
         return(NULL);
 
-    doc = xmlParseFile((const char *) filename);
+    doc = xmlParseCatalogFile((const char *) filename);
     if (doc == NULL) {
 	if (xmlDebugCatalogs)
 	    xmlGenericError(xmlGenericErrorContext,
@@ -659,8 +725,10 @@ xmlFetchXMLCatalogFile(xmlCatalogEntryPtr catal) {
      * Fetch and parse
      */
     children = xmlParseXMLCatalogFile(catal->prefer, catal->value);
-    if (children == NULL)
+    if (children == NULL) {
+	catal->type = XML_CATA_BROKEN_CATALOG;
 	return(-1);
+    }
 
     /*
      * Where a real test and set would be needed !
@@ -718,12 +786,13 @@ BAD_CAST "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd");
     cur = catal;
     while (cur != NULL) {
 	switch (cur->type) {
+	    case XML_CATA_BROKEN_CATALOG:
 	    case XML_CATA_CATALOG:
 		if (cur == catal) {
 		    cur = cur->children;
 		    continue;
 		}
-                break;
+		break;
 	    case XML_CATA_NEXT_CATALOG:
 		node = xmlNewDocNode(doc, ns, BAD_CAST "nextCatalog", NULL);
 		xmlSetProp(node, BAD_CAST "catalog", cur->value);
@@ -832,7 +901,9 @@ xmlAddXMLCatalog(xmlCatalogEntryPtr catal, const xmlChar *type,
     xmlCatalogEntryPtr cur;
     xmlCatalogEntryType typ;
 
-    if ((catal == NULL) || (catal->type != XML_CATA_CATALOG))
+    if ((catal == NULL) || 
+	((catal->type != XML_CATA_CATALOG) &&
+	 (catal->type != XML_CATA_BROKEN_CATALOG)))
 	return(-1);
     typ = xmlGetXMLCatalogEntryType(type);
     if (typ == XML_CATA_NONE) {
@@ -888,7 +959,9 @@ xmlDelXMLCatalog(xmlCatalogEntryPtr catal, const xmlChar *value) {
     xmlCatalogEntryPtr cur, prev, tmp;
     int ret = 0;
 
-    if ((catal == NULL) || (catal->type != XML_CATA_CATALOG))
+    if ((catal == NULL) || 
+	((catal->type != XML_CATA_CATALOG) &&
+	 (catal->type != XML_CATA_BROKEN_CATALOG)))
 	return(-1);
     if (value == NULL)
 	return(-1);

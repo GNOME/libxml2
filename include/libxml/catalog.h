@@ -68,6 +68,7 @@ int		xmlCatalogAdd		(const xmlChar *type,
 					 const xmlChar *orig,
 					 const xmlChar *replace);
 int		xmlCatalogRemove	(const xmlChar *value);
+xmlDocPtr	xmlParseCatalogFile	(const char *filename);
 
 /*
  * Strictly minimal interfaces for per-document catalogs used

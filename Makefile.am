@@ -509,7 +509,8 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml.spec \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     $(man_MANS) libxml-2.0.pc.in \
 	     vms/build_libxml.com vms/config.vms \
-	     strio.c strio.h trio.c trio.h triop.h libxml.h
+	     trionan.c trionan.h strio.c strio.h trio.c trio.h \
+	     triop.h triodef.h libxml.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc

@@ -9674,13 +9674,7 @@ xmlCreateFileParserCtxt(const char *filename)
 {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr inputStream;
-    xmlParserInputBufferPtr buf;
     char *directory = NULL;
-
-    buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) {
-	return(NULL);
-    }
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
@@ -9690,18 +9684,11 @@ xmlCreateFileParserCtxt(const char *filename)
 	return(NULL);
     }
 
-    inputStream = xmlNewInputStream(ctxt);
+    inputStream = xmlLoadExternalEntity(filename, NULL, ctxt);
     if (inputStream == NULL) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
-
-    inputStream->filename = xmlMemStrdup(filename);
-    inputStream->buf = buf;
-    inputStream->base = inputStream->buf->buffer->content;
-    inputStream->cur = inputStream->buf->buffer->content;
-    inputStream->end = 
-	&inputStream->buf->buffer->content[inputStream->buf->buffer->use];
 
     inputPush(ctxt, inputStream);
     if ((ctxt->directory == NULL) && (directory == NULL))

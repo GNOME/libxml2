@@ -115,10 +115,475 @@ libxml_xmlDumpMemory(PyObject *self, PyObject *args) {
  *									*
  ************************************************************************/
 
-typedef struct pySAXhandler {
-    PyObject *startDocument;
-    /* TODO !!! */
-} pySAXhandler, *pySAXhandlerPtr;
+static void
+pythonStartElement(void *user_data, const xmlChar * name,
+                   const xmlChar ** attrs)
+{
+    int i;
+    PyObject *handler;
+    PyObject *dict;
+    PyObject *attrname;
+    PyObject *attrvalue;
+    PyObject *result;
+    int type = 0;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "startElement"))
+        type = 1;
+    else if (PyObject_HasAttrString(handler, "start"))
+        type = 2;
+    if (type != 0) {
+        /*
+         * the xmllib interface always generate a dictionnary,
+         * possibly empty
+         */
+        if ((attrs == NULL) && (type == 1)) {
+            Py_XINCREF(Py_None);
+            dict = Py_None;
+        } else {
+            dict = PyDict_New();
+            for (i = 0; attrs[i] != NULL; i++) {
+                attrname = PyString_FromString(attrs[i]);
+                i++;
+                if (attrs[i] != NULL) {
+                    attrvalue = PyString_FromString(attrs[i]);
+                } else {
+                    Py_XINCREF(Py_None);
+                    attrvalue = Py_None;
+                }
+                PyDict_SetItem(dict, attrname, attrvalue);
+            }
+        }
+
+        if (type == 1)
+            result = PyObject_CallMethod(handler, "startElement",
+                                         "sO", name, dict);
+        else if (type == 2)
+            result = PyObject_CallMethod(handler, "start",
+                                         "sO", name, dict);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(dict);
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonStartDocument(void *user_data)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "startDocument")) {
+        result = PyObject_CallMethod(handler, "startDocument", NULL);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonEndDocument(void *user_data)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "endDocument")) {
+        result = PyObject_CallMethod(handler, "endDocument", NULL);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+    /*
+     * The reference to the handler is released there
+     */
+    Py_XDECREF(handler);
+}
+
+static void
+pythonEndElement(void *user_data, const xmlChar * name)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "endElement")) {
+        result = PyObject_CallMethod(handler, "endElement", "s", name);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonReference(void *user_data, const xmlChar * name)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "reference")) {
+        result = PyObject_CallMethod(handler, "reference", "s", name);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonCharacters(void *user_data, const xmlChar * ch, int len)
+{
+    PyObject *handler;
+    PyObject *result;
+    int type = 0;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "characters"))
+	type = 1;
+    else if (PyObject_HasAttrString(handler, "data"))
+	type = 2;
+    if (type != 0) {
+	if (type == 1)
+	    result = PyObject_CallMethod(handler, "characters", "s#", ch, len);
+	else if (type == 2)
+	    result = PyObject_CallMethod(handler, "data", "s#", ch, len);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonIgnorableWhitespace(void *user_data, const xmlChar * ch, int len)
+{
+    PyObject *handler;
+    PyObject *result;
+    int type = 0;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "ignorableWhitespace"))
+        type = 1;
+    else if (PyObject_HasAttrString(handler, "data"))
+        type = 2;
+    if (type != 0) {
+        if (type == 1)
+            result =
+                PyObject_CallMethod(handler, "ignorableWhitespace", "s#",
+                                    ch, len);
+        else if (type == 2)
+            result = PyObject_CallMethod(handler, "data", "s#", ch, len);
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonProcessingInstruction(void *user_data,
+                            const xmlChar * target, const xmlChar * data)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "processingInstruction")) {
+        result =
+            PyObject_CallMethod(handler,
+                                "ignorableWhitespace", "ss", target, data);
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonComment(void *user_data, const xmlChar * value)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "comment")) {
+        result = PyObject_CallMethod(handler, "comment", "s", value);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonWarning(void *user_data, const char *msg, ...)
+{
+    PyObject *handler;
+    PyObject *result;
+    va_list args;
+    char buf[1024];
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "warning")) {
+        va_start(args, msg);
+        vsnprintf(buf, 1023, msg, args);
+	va_end(args);
+	buf[1023] = 0;
+        result = PyObject_CallMethod(handler, "warning", "s", buf);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonError(void *user_data, const char *msg, ...)
+{
+    PyObject *handler;
+    PyObject *result;
+    va_list args;
+    char buf[1024];
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "error")) {
+        va_start(args, msg);
+        vsnprintf(buf, 1023, msg, args);
+	va_end(args);
+	buf[1023] = 0;
+        result = PyObject_CallMethod(handler, "error", "s", buf);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonFatalError(void *user_data, const char *msg, ...)
+{
+    PyObject *handler;
+    PyObject *result;
+    va_list args;
+    char buf[1024];
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "fatalError")) {
+        va_start(args, msg);
+        vsnprintf(buf, 1023, msg, args);
+	va_end(args);
+	buf[1023] = 0;
+        result = PyObject_CallMethod(handler, "fatalError", "s", buf);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonCdataBlock(void *user_data, const xmlChar * ch, int len)
+{
+    PyObject *handler;
+    PyObject *result;
+    int type = 0;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "cdataBlock"))
+	type = 1;
+    else if (PyObject_HasAttrString(handler, "cdata"))
+	type = 2;
+    if (type != 0) {
+	if (type == 1)
+	    result = PyObject_CallMethod(handler, "cdataBlock", "s#", ch, len);
+	else if (type == 2)
+	    result = PyObject_CallMethod(handler, "cdata", "s#", ch, len);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonExternalSubset(void *user_data,
+                     const xmlChar * name,
+                     const xmlChar * externalID, const xmlChar * systemID)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "externalSubset")) {
+        result =
+            PyObject_CallMethod(handler, "externalSubset",
+                                "sss", name, externalID, systemID);
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonEntityDecl(void *user_data,
+                 const xmlChar * name,
+                 int type,
+                 const xmlChar * publicId,
+                 const xmlChar * systemId, xmlChar * content)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "entityDecl")) {
+        result = PyObject_CallMethod(handler, "entityDecl",
+                                     "sisss", name, type, publicId,
+                                     systemId, content);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+
+
+static void
+
+pythonNotationDecl(void *user_data,
+                   const xmlChar * name,
+                   const xmlChar * publicId, const xmlChar * systemId)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "notationDecl")) {
+        result = PyObject_CallMethod(handler, "notationDecl",
+                                     "sss", name, publicId, systemId);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonAttributeDecl(void *user_data,
+                    const xmlChar * elem,
+                    const xmlChar * name,
+                    int type,
+                    int def,
+                    const xmlChar * defaultValue,
+		    xmlEnumerationPtr tree)
+{
+    PyObject *handler;
+    PyObject *nameList;
+    PyObject *newName;
+    xmlEnumerationPtr node;
+    PyObject *result;
+    int count;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "attributeDecl")) {
+        count = 0;
+        for (node = tree; node != NULL; node = node->next) {
+            count++;
+        }
+        nameList = PyList_New(count);
+        count = 0;
+        for (node = tree; node != NULL; node = node->next) {
+            newName = PyString_FromString(node->name);
+            PyList_SetItem(nameList, count, newName);
+            count++;
+        }
+        result = PyObject_CallMethod(handler, "attributeDecl",
+                                     "ssiisO", elem, name, type, def,
+                                     defaultValue, nameList);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(nameList);
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonElementDecl(void *user_data,
+                  const xmlChar * name,
+                  int type, xmlElementContentPtr content)
+{
+    PyObject *handler;
+    PyObject *obj;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "elementDecl")) {
+	/* TODO: wrap in an elementContent object */
+	printf("pythonElementDecl: xmlElementContentPtr wrapper missing !\n");
+	obj = Py_None;
+	/* Py_XINCREF(Py_None); isn't the reference just borrowed ??? */
+        result = PyObject_CallMethod(handler, "elementDecl",
+                                     "siO", name, type, obj);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonUnparsedEntityDecl(void *user_data,
+                         const xmlChar * name,
+                         const xmlChar * publicId,
+                         const xmlChar * systemId,
+                         const xmlChar * notationName)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "unparsedEntityDecl")) {
+        result = PyObject_CallMethod(handler, "unparsedEntityDecl",
+                                     "ssss", name, publicId, systemId,
+                                     notationName);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static void
+pythonInternalSubset(void *user_data, const xmlChar * name,
+                     const xmlChar * ExternalID, const xmlChar * SystemID)
+{
+    PyObject *handler;
+    PyObject *result;
+
+    handler = (PyObject *) user_data;
+    if (PyObject_HasAttrString(handler, "internalSubset")) {
+        result = PyObject_CallMethod(handler, "internalSubset",
+                                     "sss", name, ExternalID, SystemID);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    }
+}
+
+static xmlSAXHandler pythonSaxHandler = {
+    pythonInternalSubset,
+    NULL, /* TODO pythonIsStandalone, */
+    NULL, /* TODO pythonHasInternalSubset, */
+    NULL, /* TODO pythonHasExternalSubset, */
+    NULL, /* TODO pythonResolveEntity, */
+    NULL, /* TODO pythonGetEntity, */
+    pythonEntityDecl,
+    pythonNotationDecl,
+    pythonAttributeDecl,
+    pythonElementDecl,
+    pythonUnparsedEntityDecl,
+    NULL, /* OBSOLETED pythonSetDocumentLocator, */
+    pythonStartDocument,
+    pythonEndDocument,
+    pythonStartElement,
+    pythonEndElement,
+    pythonReference,
+    pythonCharacters,
+    pythonIgnorableWhitespace,
+    pythonProcessingInstruction,
+    pythonComment,
+    pythonWarning,
+    pythonError,
+    pythonFatalError,
+    NULL, /* TODO pythonGetParameterEntity, */
+    pythonCdataBlock,
+    pythonExternalSubset,
+    1
+};
 
 /************************************************************************
  *									*
@@ -131,9 +596,8 @@ libxml_xmlCreatePushParser(PyObject *self, PyObject *args) {
     xmlChar *chunk;
     int size;
     xmlChar *URI;
-    PyObject *pyobj_SAX;
+    PyObject *pyobj_SAX = NULL;
     xmlSAXHandlerPtr SAX = NULL;
-    pySAXhandlerPtr SAXdata = NULL; 
     xmlParserCtxtPtr ret;
     PyObject *pyret;
 
@@ -146,11 +610,11 @@ libxml_xmlCreatePushParser(PyObject *self, PyObject *args) {
 	   pyobj_SAX, chunk, size, URI);
 #endif
     if (pyobj_SAX != Py_None) {
-	printf("xmlCreatePushParser: event interface not supported yet !\n");
-	Py_INCREF(Py_None);
-	return(Py_None);
+	SAX = &pythonSaxHandler;
+	Py_INCREF(pyobj_SAX);
+	/* The reference is released in pythonEndDocument() */
     }
-    ret = xmlCreatePushParserCtxt(SAX, SAXdata, chunk, size, URI);
+    ret = xmlCreatePushParserCtxt(SAX, pyobj_SAX, chunk, size, URI);
     pyret = libxml_xmlParserCtxtPtrWrap(ret);
     return(pyret);
 }
@@ -160,9 +624,8 @@ libxml_htmlCreatePushParser(PyObject *self, PyObject *args) {
     xmlChar *chunk;
     int size;
     xmlChar *URI;
-    PyObject *pyobj_SAX;
+    PyObject *pyobj_SAX = NULL;
     xmlSAXHandlerPtr SAX = NULL;
-    pySAXhandlerPtr SAXdata = NULL; 
     xmlParserCtxtPtr ret;
     PyObject *pyret;
 
@@ -175,11 +638,11 @@ libxml_htmlCreatePushParser(PyObject *self, PyObject *args) {
 	   pyobj_SAX, chunk, size, URI);
 #endif
     if (pyobj_SAX != Py_None) {
-	printf("htmlCreatePushParser: event interface not supported yet !\n");
-	Py_INCREF(Py_None);
-	return(Py_None);
+	SAX = &pythonSaxHandler;
+	Py_INCREF(pyobj_SAX);
+	/* The reference is released in pythonEndDocument() */
     }
-    ret = htmlCreatePushParserCtxt(SAX, SAXdata, chunk, size, URI,
+    ret = htmlCreatePushParserCtxt(SAX, pyobj_SAX, chunk, size, URI,
 	                           XML_CHAR_ENCODING_NONE);
     pyret = libxml_xmlParserCtxtPtrWrap(ret);
     return(pyret);

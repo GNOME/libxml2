@@ -6,6 +6,7 @@ TESTS=		\
     tstxpath.py	\
     xpathext.py	\
     push.py	\
+    pushSAX.py	\
     error.py	\
     validate.py	\
     xpath.py

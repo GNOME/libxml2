@@ -1,3 +1,9 @@
+Mon Feb  4 15:05:55 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/TODO python/libxml.c: started adding SAX interfaces
+	* python/tests/Makefile.am python/tests/pushSAX.py: added a basic
+	  SAX test
+
 Mon Feb  4 01:12:42 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: hardened the addChild function

@@ -6,14 +6,18 @@ Things to do:
 -------------
 
 - SAX interfaces
+  - push is done but no generic interface
+  - elementDecl need some work
+  - need more testing and check full callbacks for xmllib/sgmlop replacement
 - enums -> libxml.py
 - access to XPath variables
 - xmlBuffer exposure
 - xpathContext, being able to set/get info and clean it up
 - add regression tests
-   - build tree
-   - saving
    - SAX flow
+- DTD element and attributes content accesses
+   - attribute handled in SAX
+   - element needed in both
 
 
 Done:
@@ -28,6 +32,8 @@ Done:
    - xpath queries
    - xpath extension
    - check memory
+   - build tree
+   - saving
 - extensions based on a python.xml description of the new specific
   interfaces
    file libxml2-python-api.xml , first entry is xmlRegisterXPathFunction
@@ -42,5 +48,8 @@ Done:
    - wrappers
    - decent interface for setting/getting behaviour
 - memory debug interfaces
+- SAX interfaces
+   - basic stuff with push is available
+   - basic xmllib replacement
 
 Daniel Veillard

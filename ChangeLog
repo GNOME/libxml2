@@ -1,3 +1,9 @@
+Sat Nov  6 20:24:07 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: augmented types supported
+	* HTMLtree.c tree.c xmlreader.c xmlwriter.c: a number of new
+	  bug fixes and documentation updates.
+
 Sat Nov  6 15:50:11 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: augmented type autogeneration for enums

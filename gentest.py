@@ -40,7 +40,7 @@ skipped_functions = [
 "xmlCleanupParser", "xmlRelaxNGCleanupTypes", "xmlSetListDoc",
 "xmlSetTreeDoc", "xmlUnlinkNode",
 # hard to avoid leaks in the tests
-"xmlStrcat", "xmlStrncat", "xmlCatalogAddLocal",
+"xmlStrcat", "xmlStrncat", "xmlCatalogAddLocal", "xmlNewTextWriterDoc",
 # unimplemented
 "xmlTextReaderReadInnerXml", "xmlTextReaderReadOuterXml",
 "xmlTextReaderReadString",
@@ -48,6 +48,7 @@ skipped_functions = [
 "xmlListDelete", "xmlOutputBufferClose", "xmlNanoFTPClose",
 # deprecated
 "xmlCatalogGetPublic", "xmlCatalogGetSystem", "xmlEncodeEntities",
+"xmlNewGlobalNs",
 # allocators
 "xmlMemFree",
 ]
@@ -76,6 +77,8 @@ extra_pre_call = {
        "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
    "xmlParseBalancedChunkMemoryRecover":
        "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
+   "xmlParserInputBufferCreateFd":
+       "if (fd >= 0) fd = -1;",
 }
 extra_post_call = {
    "xmlAddChild": 
@@ -116,6 +119,11 @@ extra_post_call = {
    "xmlSaveFormatFileTo": """buf = NULL;""",
    "xmlIOParseDTD": "input = NULL;",
    "xmlRemoveProp": "cur = NULL;",
+   "xmlNewNs": "if ((node == NULL) && (ret_val != NULL)) xmlFreeNs(ret_val);",
+   "xmlCopyNamespace": "if (ret_val != NULL) xmlFreeNs(ret_val);",
+   "xmlCopyNamespaceList": "if (ret_val != NULL) xmlFreeNsList(ret_val);",
+   "xmlNewTextWriter": "if (ret_val != NULL) out = NULL;",
+   "xmlNewTextWriterPushParser": "if (ret_val != NULL) ctxt = NULL;",
 }
 
 modules = []
@@ -174,7 +182,11 @@ def add_missing_functions(name, module):
 #
 
 def type_convert(str, name, info, module, function, pos):
+#    res = string.replace(str, "    ", " ")
+#    res = string.replace(str, "   ", " ")
+#    res = string.replace(str, "  ", " ")
     res = string.replace(str, " *", "_ptr")
+#    res = string.replace(str, "*", "_ptr")
     res = string.replace(res, " ", "_")
     res = string.replace(res, "htmlNode", "xmlNode")
     res = string.replace(res, "htmlDoc", "xmlDoc")
@@ -223,6 +235,16 @@ def type_convert(str, name, info, module, function, pos):
     if res == 'xmlChar_ptr' and name == 'name' and \
        string.find(function, "EatName") != -1:
         return('eaten_name')
+    if res == 'void_ptr*':
+        res = 'void_ptr_ptr'
+    if res == 'char_ptr*':
+        res = 'char_ptr_ptr'
+    if res == 'xmlChar_ptr*':
+        res = 'xmlChar_ptr_ptr'
+    if res == 'const_xmlChar_ptr*':
+        res = 'const_xmlChar_ptr_ptr'
+    if res == 'const_char_ptr*':
+        res = 'const_char_ptr_ptr'
         
     return res
 

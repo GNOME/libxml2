@@ -522,6 +522,8 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
 
     xmlInitParser();
 
+    if ((mem == NULL) || (size == NULL))
+        return;
     if (cur == NULL) {
 	*mem = NULL;
 	*size = 0;

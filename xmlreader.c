@@ -4213,8 +4213,8 @@ void
 xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader, 
 			     xmlTextReaderErrorFunc *f, 
 			     void **arg) {
-    *f = reader->errorFunc;
-    *arg = reader->errorFuncArg;
+    if (f != NULL) *f = reader->errorFunc;
+    if (arg != NULL) *arg = reader->errorFuncArg;
 }
 
 

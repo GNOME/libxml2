@@ -145,6 +145,8 @@ xmlWriterErrMsgInt(xmlTextWriterPtr ctxt, xmlParserErrors error,
  * @out:  an xmlOutputBufferPtr
  *
  * Create a new xmlNewTextWriter structure using an xmlOutputBufferPtr
+ * NOTE: the @out parameter will be deallocated when the writer is closed
+ *       (if the call succeed.)
  *
  * Returns the new xmlTextWriterPtr or NULL in case of error
  */
@@ -280,6 +282,8 @@ xmlNewTextWriterMemory(xmlBufferPtr buf, int compression ATTRIBUTE_UNUSED)
  * @compression:  compress the output?
  *
  * Create a new xmlNewTextWriter structure with @ctxt as output
+ * NOTE: the @ctxt context will be freed with the resulting writer
+ *       (if the call succeeds).
  * TODO: handle compression
  *
  * Returns the new xmlTextWriterPtr or NULL in case of error

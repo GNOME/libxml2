@@ -242,6 +242,7 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
     int len = 0;
     xmlChar *ret = NULL;
 
+    if (prefix == NULL) return(NULL);
     *prefix = NULL;
     if (name == NULL) return(NULL);
 

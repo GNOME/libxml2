@@ -1,3 +1,7 @@
+Tue May  8 09:30:12 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: fixed a small portability problem with AM_CONDITIONAL
+
 Mon May  7 22:44:45 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: warn when indeterminist content model is detected

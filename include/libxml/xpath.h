@@ -391,6 +391,7 @@ void		   xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
 /**
  * Evaluation functions.
  */
+long               xmlXPathOrderDocElems	(xmlDocPtr doc);
 xmlXPathObjectPtr  xmlXPathEval			(const xmlChar *str,
 						 xmlXPathContextPtr ctx);
 xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,

@@ -1,3 +1,10 @@
+Wed Mar 26 01:34:19 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c include/libxml/xpath.h: first part of the fix to
+	  performance bug #108905, adds xmlXPathOrderDocElems() providing
+	  document order for nodes.
+	* python/libxml.c: Python may require TRIO as Albert Chin pointed out
+
 Tue Mar 25 16:07:00 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: removing a warning with Sun compiler

@@ -1340,6 +1340,56 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file ATTRIBUTE_UNUSED,
  ************************************************************************/
 
 /**
+ * xmlXPathOrderDocElems:
+ * @doc:  an input document
+ *
+ * Call this routine to speed up XPath computation on static documents.
+ * This stamps all the element nodes with the document order
+ * Like for line information, the order is kept in the element->content
+ * field, the value stored is actually - the node number (startting at -1)
+ * to be able to differenciate from line numbers.
+ *
+ * Returns the number of element found in the document or -1 in case
+ *    of error.
+ */
+long
+xmlXPathOrderDocElems(xmlDocPtr doc) {
+    long count = 0;
+    xmlNodePtr cur;
+
+    if (doc == NULL)
+	return(-1);
+    cur = doc->children;
+    while (cur != NULL) {
+	if (cur->type == XML_ELEMENT_NODE) {
+	    cur->content = (void *) (-(++count));
+	    if (cur->children != NULL) {
+		cur = cur->children;
+		continue;
+	    }
+	}
+	if (cur->next != NULL) {
+	    cur = cur->next;
+	    continue;
+	}
+	do {
+	    cur = cur->parent;
+	    if (cur == NULL)
+		break;
+	    if (cur == (xmlNodePtr) doc) {
+		cur = NULL;
+		break;
+	    }
+	    if (cur->next != NULL) {
+		cur = cur->next;
+		break;
+	    }
+	} while (cur != NULL);
+    }
+    return(count);
+}
+
+/**
  * xmlXPathCmpNodes:
  * @node1:  the first node
  * @node2:  the second node
@@ -1383,25 +1433,24 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
     if (node1 == node2->next)
 	return(-1);
 
-#if 0
-    Unfortunately this does not work. Line number in entities reset
-    to 1 within the entity :-(
-
     /*
-     * Speedup using line numbers if availble.
+     * Speedup using document order if availble.
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
-	(0 != (int) node1->content) && (0 != (int) node2->content)) {
-	int l1, l2;
-	l1 = (int) node1->content;
-	l2 = (int) node2->content;
+	(0 > (long) node1->content) &&
+	(0 > (long) node2->content) &&
+	(node1->doc == node2->doc)) {
+	long l1, l2;
+
+	l1 = -((long) node1->content);
+	l2 = -((long) node2->content);
 	if (l1 < l2)
 	    return(1);
 	if (l1 > l2)
 	    return(-1);
     }
-#endif
+
     /*
      * compute depth to root
      */

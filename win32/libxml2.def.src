@@ -1170,6 +1170,10 @@ xmlCleanupPredefinedEntities
 	xmlFreeTextReader
 	/* Iterators */
 	xmlTextReaderRead
+	xmlTextReaderReadInnerXml
+	xmlTextReaderReadOuterXml
+	xmlTextReaderReadString
+	xmlTextReaderReadAttributeValue
 	/* Attributes of the node */
 	xmlTextReaderAttributeCount
 	xmlTextReaderBaseUri
@@ -1186,6 +1190,7 @@ xmlCleanupPredefinedEntities
 	xmlTextReaderQuoteChar
 	xmlTextReaderValue
 	xmlTextReaderXmlLang
+	xmlTextReaderReadState
 	/* Methods of the XmlTextReader */
 	xmlTextReaderClose
 	xmlTextReaderGetAttributeNo
@@ -1199,6 +1204,12 @@ xmlCleanupPredefinedEntities
 	xmlTextReaderMoveToFirstAttribute
 	xmlTextReaderMoveToNextAttribute
 	xmlTextReaderMoveToElement
+	xmlTextReaderNormalization
+	/* Extensions */
+	xmlTextReaderSetParserProp
+	xmlTextReaderGetParserProp
+	xmlTextReaderCurrentNode
+	xmlTextReaderCurrentDoc
 
 
 

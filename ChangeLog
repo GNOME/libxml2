@@ -1,3 +1,8 @@
+Fri Jun  8 07:20:46 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.c: when in a pre element no formatting space should
+	  be added.
+
 Wed Jun  6 18:07:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: add -mieee to CFLAGS when compiling on Linux/alpha

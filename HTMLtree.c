@@ -975,7 +975,9 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
         xmlOutputBufferWriteString(buf, ">");
 	if (cur->next != NULL) {
 	    if ((cur->next->type != HTML_TEXT_NODE) &&
-		(cur->next->type != HTML_ENTITY_REF_NODE))
+		(cur->next->type != HTML_ENTITY_REF_NODE) &&
+		(cur->parent != NULL) &&
+		(!xmlStrEqual(cur->parent->name, BAD_CAST "pre")))
 		xmlOutputBufferWriteString(buf, "\n");
 	}
 	return;
@@ -991,7 +993,9 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	}
 	if (cur->next != NULL) {
 	    if ((cur->next->type != HTML_TEXT_NODE) &&
-		(cur->next->type != HTML_ENTITY_REF_NODE))
+		(cur->next->type != HTML_ENTITY_REF_NODE) &&
+		(cur->parent != NULL) &&
+		(!xmlStrEqual(cur->parent->name, BAD_CAST "pre")))
 		xmlOutputBufferWriteString(buf, "\n");
 	}
 	return;

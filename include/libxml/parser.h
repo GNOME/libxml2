@@ -767,6 +767,13 @@ int		xmlParseBalancedChunkMemory(xmlDocPtr doc,
 					 int depth,
 					 const xmlChar *string,
 					 xmlNodePtr *lst);
+int           xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc,
+                     xmlSAXHandlerPtr sax,
+                     void *user_data,
+                     int depth,
+                     const xmlChar *string,
+                     xmlNodePtr *lst,
+                     int recover);
 int		xmlParseExternalEntity	(xmlDocPtr doc,
 					 xmlSAXHandlerPtr sax,
 					 void *user_data,

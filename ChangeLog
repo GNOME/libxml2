@@ -1,3 +1,12 @@
+Sat Aug  3 00:15:06 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c include/libxml/parser.h: adding a new API for Christian
+	  Glahn: xmlParseBalancedChunkMemoryRecover
+	* valid.c: patch from Rick Jones for some grammar cleanup in
+	  validation messages
+	* result/VC/* result/valid/*: this slightly change some of the
+	  regression tests outputs
+
 Thu Aug  1 14:50:28 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: trying to fix a problem in namespaced attribute handling

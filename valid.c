@@ -1299,7 +1299,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     }
     if ((defaultValue != NULL) && 
         (!xmlValidateAttributeValue(type, defaultValue))) {
-	VERROR(ctxt->userData, "Attribute %s on %s: invalid default value\n",
+	VERROR(ctxt->userData, "Attribute %s of %s: invalid default value\n",
 	       elem, name, defaultValue);
 	defaultValue = NULL;
 	ctxt->valid = 0;
@@ -1362,7 +1362,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 	 * The attribute is already defined in this DTD.
 	 */
 	VWARNING(ctxt->userData,
-		 "Attribute %s on %s: already defined\n",
+		 "Attribute %s of element %s: already defined\n",
 		 name, elem);
 	xmlFreeAttribute(ret);
 	return(NULL);
@@ -3203,7 +3203,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	val = xmlValidateAttributeValue(attr->atype, attr->defaultValue);
 	if (val == 0) {
 	    VERROR(ctxt->userData, 
-	       "Syntax of default value for attribute %s on %s is not valid\n",
+	       "Syntax of default value for attribute %s of %s is not valid\n",
 	           attr->name, attr->elem);
 	}
         ret &= val;
@@ -3214,7 +3214,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
         (attr->def != XML_ATTRIBUTE_IMPLIED) &&
 	(attr->def != XML_ATTRIBUTE_REQUIRED)) {
 	VERROR(ctxt->userData, 
-          "ID attribute %s on %s is not valid must be #IMPLIED or #REQUIRED\n",
+          "ID attribute %s of %s is not valid must be #IMPLIED or #REQUIRED\n",
 	       attr->name, attr->elem);
 	ret = 0;
     }
@@ -3271,7 +3271,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	}
 	if (tree == NULL) {
 	    VERROR(ctxt->userData, 
-"Default value \"%s\" for attribute %s on %s is not among the enumerated set\n",
+"Default value \"%s\" for attribute %s of %s is not among the enumerated set\n",
 		   attr->defaultValue, attr->name, attr->elem);
 	    ret = 0;
 	}
@@ -3445,7 +3445,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     /* Validity Constraint: Attribute Value Type */
     if (attrDecl == NULL) {
 	VERROR(ctxt->userData,
-	       "No declaration for attribute %s on element %s\n",
+	       "No declaration for attribute %s of element %s\n",
 	       attr->name, elem->name);
 	return(0);
     }
@@ -3454,7 +3454,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     val = xmlValidateAttributeValue(attrDecl->atype, value);
     if (val == 0) {
 	VERROR(ctxt->userData, 
-	   "Syntax of value for attribute %s on %s is not valid\n",
+	   "Syntax of value for attribute %s of %s is not valid\n",
 	       attr->name, elem->name);
         ret = 0;
     }
@@ -3463,7 +3463,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if (attrDecl->def == XML_ATTRIBUTE_FIXED) {
 	if (!xmlStrEqual(value, attrDecl->defaultValue)) {
 	    VERROR(ctxt->userData, 
-	   "Value for attribute %s on %s is different from default \"%s\"\n",
+	   "Value for attribute %s of %s is different from default \"%s\"\n",
 		   attr->name, elem->name, attrDecl->defaultValue);
 	    ret = 0;
 	}
@@ -3493,7 +3493,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	
 	if (nota == NULL) {
 	    VERROR(ctxt->userData, 
-       "Value \"%s\" for attribute %s on %s is not a declared Notation\n",
+       "Value \"%s\" for attribute %s of %s is not a declared Notation\n",
 		   value, attr->name, elem->name);
 	    ret = 0;
         }
@@ -3505,7 +3505,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	}
 	if (tree == NULL) {
 	    VERROR(ctxt->userData, 
-"Value \"%s\" for attribute %s on %s is not among the enumerated notations\n",
+"Value \"%s\" for attribute %s of %s is not among the enumerated notations\n",
 		   value, attr->name, elem->name);
 	    ret = 0;
 	}
@@ -3520,7 +3520,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	}
 	if (tree == NULL) {
 	    VERROR(ctxt->userData, 
-       "Value \"%s\" for attribute %s on %s is not among the enumerated set\n",
+       "Value \"%s\" for attribute %s of %s is not among the enumerated set\n",
 		   value, attr->name, elem->name);
 	    ret = 0;
 	}
@@ -3530,7 +3530,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if ((attrDecl->def == XML_ATTRIBUTE_FIXED) &&
         (!xmlStrEqual(attrDecl->defaultValue, value))) {
 	VERROR(ctxt->userData, 
-	   "Value for attribute %s on %s must be \"%s\"\n",
+	   "Value for attribute %s of %s must be \"%s\"\n",
 	       attr->name, elem->name, attrDecl->defaultValue);
         ret = 0;
     }
@@ -4082,7 +4082,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     ret = xmlValidateElementType(ctxt);
     if ((ret == -3) && (warn)) {
 	VWARNING(ctxt->userData,
-	   "Element %s content model is ambiguous\n", name);
+	   "Content model for Element %s is ambiguous\n", name);
     } else if (ret == -2) {
 	/*
 	 * An entities reference appeared at this level.
@@ -4185,21 +4185,21 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 
 	    if (name != NULL) {
 		VERROR(ctxt->userData,
-	   "Element %s content doesn't follow the DTD\nExpecting %s, got %s\n",
+	   "Element %s content does not follow the DTD\nExpecting %s, got %s\n",
 		       name, expr, list);
 	    } else {
 		VERROR(ctxt->userData,
-	   "Element content doesn't follow the DTD\nExpecting %s, got %s\n",
+	   "Element content does not follow the DTD\nExpecting %s, got %s\n",
 		       expr, list);
 	    }
 	} else {
 	    if (name != NULL) {
 		VERROR(ctxt->userData,
-		       "Element %s content doesn't follow the DTD\n",
+		       "Element %s content does not follow the DTD\n",
 		       name);
 	    } else {
 		VERROR(ctxt->userData,
-		       "Element content doesn't follow the DTD\n");
+		       "Element content does not follow the DTD\n");
 	    }
 	}
 	ret = 0;
@@ -4620,12 +4620,12 @@ child_ok:
 	    if (qualified == -1) {
 		if (attr->prefix == NULL) {
 		    VERROR(ctxt->userData,
-		       "Element %s doesn't carry attribute %s\n",
+		       "Element %s does not carry attribute %s\n",
 			   elem->name, attr->name);
 		    ret = 0;
 	        } else {
 		    VERROR(ctxt->userData,
-		       "Element %s doesn't carry attribute %s:%s\n",
+		       "Element %s does not carry attribute %s:%s\n",
 			   elem->name, attr->prefix,attr->name);
 		    ret = 0;
 		}
@@ -4669,7 +4669,7 @@ child_ok:
 		    if (xmlStrEqual(attr->name, ns->prefix)) {
 			if (!xmlStrEqual(attr->defaultValue, ns->href)) {
 			    VERROR(ctxt->userData,
-		   "Element %s namespace name for %s doesn't match the DTD\n",
+		   "Element %s namespace name for %s does not match the DTD\n",
 				   elem->name, ns->prefix);
 			    ret = 0;
 			}
@@ -4732,7 +4732,7 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 		(xmlStrEqual(root->name, BAD_CAST "html")))
 		goto name_ok;
 	    VERROR(ctxt->userData,
-		   "Not valid: root and DtD name do not match '%s' and '%s'\n",
+		   "Not valid: root and DTD name do not match '%s' and '%s'\n",
 		   root->name, doc->intSubset->name);
 	    return(0);
 	    
@@ -4820,7 +4820,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	id = xmlGetID(ctxt->doc, name);
 	if (id == NULL) {
 	    VERROR(ctxt->userData, 
-	       "IDREF attribute %s reference an unknown ID \"%s\"\n",
+	       "IDREF attribute %s references an unknown ID \"%s\"\n",
 		   attr->name, name);
 	    ctxt->valid = 0;
 	}
@@ -4841,7 +4841,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	    id = xmlGetID(ctxt->doc, str);
 	    if (id == NULL) {
 		VERROR(ctxt->userData, 
-	       "IDREFS attribute %s reference an unknown ID \"%s\"\n",
+	       "IDREFS attribute %s references an unknown ID \"%s\"\n",
 		       attr->name, str);
 		ctxt->valid = 0;
 	    }
@@ -5050,7 +5050,7 @@ xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
 	}
 	if (elem->etype == XML_ELEMENT_TYPE_EMPTY) {
 	    VERROR(ctxt->userData, 
-		   "NOTATION attribute %s declared on EMPTY element %s\n",
+		   "NOTATION attribute %s declared for EMPTY element %s\n",
 		   cur->name, cur->elem);
 	    ctxt->valid = 0;
 	}

@@ -32,6 +32,7 @@
 
 #define XINCLUDE_NS (const xmlChar *) "http://www.w3.org/2001/XInclude"
 #define XINCLUDE_NODE (const xmlChar *) "include"
+#define XINCLUDE_FALLBACK (const xmlChar *) "fallback"
 #define XINCLUDE_HREF (const xmlChar *) "href"
 #define XINCLUDE_PARSE (const xmlChar *) "parse"
 #define XINCLUDE_PARSE_XML (const xmlChar *) "xml"

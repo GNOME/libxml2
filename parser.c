@@ -9712,6 +9712,38 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
 int
 xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
      void *user_data, int depth, const xmlChar *string, xmlNodePtr *lst) {
+    return xmlParseBalancedChunkMemoryRecover( doc, sax, user_data,
+                                                depth, string, lst, 0 );
+}
+
+/**
+ * xmlParseBalancedChunkMemoryRecover:
+ * @doc:  the document the chunk pertains to
+ * @sax:  the SAX handler bloc (possibly NULL)
+ * @user_data:  The user data returned on SAX callbacks (possibly NULL)
+ * @depth:  Used for loop detection, use 0
+ * @string:  the input string in UTF8 or ISO-Latin (zero terminated)
+ * @lst:  the return value for the set of parsed nodes
+ * @recover: return nodes even if the data is broken (use 0)
+ *
+ *
+ * Parse a well-balanced chunk of an XML document
+ * called by the parser
+ * The allowed sequence for the Well Balanced Chunk is the one defined by
+ * the content production in the XML grammar:
+ *
+ * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+ *
+ * Returns 0 if the chunk is well balanced, -1 in case of args problem and
+ *    the parser error code otherwise
+ *    
+ * In case recover is set to 1, the nodelist will not be empty even if
+ * the parsed chunk is not well balanced. 
+ */
+int
+xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
+     void *user_data, int depth, const xmlChar *string, xmlNodePtr *lst, 
+     int recover) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
@@ -9806,8 +9838,11 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	else
 	    ret = ctxt->errNo;
     } else {
-	if (lst != NULL) {
-	    xmlNodePtr cur;
+      ret = 0;
+    }
+    
+    if (lst != NULL && (ret == 0 || recover == 1)) {
+      xmlNodePtr cur;
 
 	    /*
 	     * Return the newly created nodeset after unlinking it from
@@ -9821,8 +9856,7 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	    }
             newDoc->children->children = NULL;
 	}
-	ret = 0;
-    }
+	
     if (sax != NULL) 
 	ctxt->sax = oldsax;
     xmlFreeParserCtxt(ctxt);

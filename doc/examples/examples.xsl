@@ -19,6 +19,9 @@
       <li><a href="{$href_base}index.html">Home</a></li>
       <li><a style="font-weight:bold" 
              href="{$href_base}docs.html">Developer Menu</a></li>
+      <xsl:for-each select="/examples/sections/section">
+        <li><a href="#{@name}"><xsl:value-of select="@name"/> Examples</a></li>
+      </xsl:for-each>
       <li><a href="{$href_base}guidelines.html">XML Guidelines</a></li>
     </ul>
   </xsl:variable>

@@ -11,12 +11,22 @@ examples.xml: index.py *.c
 index.html: examples.xml examples.xsl
 	-@(xsltproc examples.xsl examples.xml && echo "Rebuilt web page" && xmllint --valid --noout index.html)
 
-EXTRA_DIST=examples.xsl index.py test1.xml examples.xml 
+EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml 
 
-noinst_PROGRAMS=parse1 
+noinst_PROGRAMS=parse1 parse2 
 
 parse1_SOURCES=parse1.c
 parse1_LDFLAGS=
 parse1_DEPENDENCIES= $(DEPS)
 parse1_LDADD= @RDL_LIBS@ $(LDADDS)
+
+parse2_SOURCES=parse2.c
+parse2_LDFLAGS=
+parse2_DEPENDENCIES= $(DEPS)
+parse2_LDADD= @RDL_LIBS@ $(LDADDS)
+
+tests: $(noinst_PROGRAMS)
+	parse1 test1.xml
+	parse2 test2.xml
+
 

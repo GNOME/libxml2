@@ -337,6 +337,7 @@
 	  </li>
 	</xsl:if>
       </xsl:for-each>
+      <li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li>
       <li><a href="guidelines.html">XML Guidelines</a></li>
     </ul>
   </xsl:variable>
@@ -348,6 +349,7 @@
     </form>
     <ul><!-- style="margin-left: -1em" -->
       <li><a href="index.html" style="font-weight:bold">Main Menu</a></li>
+      <li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li>
       <li><a href="guidelines.html">XML Guidelines</a></li>
       <li><a href="tutorial/index.html">Tutorial</a></li>
       <li><a href="xmlreader.html">The Reader Interface</a></li>

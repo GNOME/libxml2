@@ -14,6 +14,7 @@ from apibuild import CParser, escape
 
 examples = []
 extras = ['examples.xsl', 'index.py']
+tests = []
 sections = {}
 symbols = {}
 api_dict = None
@@ -110,6 +111,7 @@ def parse(filename, output):
     try:
         usage = info['usage']
 	output.write("    <usage>%s</usage>\n" % usage);
+	tests.append(usage)
     except:
         print "Example %s lacks an usage description" % (filename)
     try:
@@ -233,6 +235,10 @@ index.html: examples.xml examples.xsl
     for example in examples:
         Makefile = Makefile + "%s_SOURCES=%s.c\n%s_LDFLAGS=\n%s_DEPENDENCIES= $(DEPS)\n%s_LDADD= @RDL_LIBS@ $(LDADDS)\n\n" % (example, example, example,
 	       example, example)
+    Makefile = Makefile + "tests: $(noinst_PROGRAMS)\n"
+    for test in tests:
+        Makefile = Makefile + "\t%s\n" % (test)
+    Makefile = Makefile + "\n\n"
     try:
 	old = open("Makefile.am", "r").read()
 	if old != Makefile:

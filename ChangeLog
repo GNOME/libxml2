@@ -1,3 +1,9 @@
+Wed Nov 12 23:48:26 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/*: integrating the examples in the navigation menus
+	* doc/examples/*: added make tests, updated the navigation,
+	  added a new test, cleanups, updates.
+
 Wed Nov 12 17:50:36 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/*.html: rebuilt the generated HTML pages

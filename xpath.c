@@ -931,7 +931,7 @@ xmlXPathFreeValueTree(xmlNodeSetPtr obj) {
     if (obj == NULL) return;
     for (i = 0;i < obj->nodeNr;i++)
         if (obj->nodeTab[i] != NULL)
-	    xmlFreeNode(obj->nodeTab[i]);
+	    xmlFreeNodeList(obj->nodeTab[i]);
 
     if (obj->nodeTab != NULL) {
 #ifdef DEBUG
@@ -2441,7 +2441,7 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
 	    if (arg1->type == XPATH_NODESET) {
 		ret = xmlXPathCompareNodeSetValue(ctxt, inf, strict, arg1, arg2);
 	    } else {
-		ret = xmlXPathCompareNodeSetValue(ctxt, !inf, !strict, arg2, arg2);
+		ret = xmlXPathCompareNodeSetValue(ctxt, !inf, !strict, arg2, arg1);
 	    }
 	}
 	return(ret);

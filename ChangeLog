@@ -1,3 +1,7 @@
+Sat Feb 24 14:07:52 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: found a memleak and fixed a nasty bug
+
 Sat Feb 24 03:35:48 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmllint.[c1] : added return code errors for xmllint

@@ -1,3 +1,8 @@
+Wed Jan  1 22:05:40 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: backing out one change in the last patch which broke the
+	  regression tests
+
 Wed Jan  1 21:57:28 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* global.data globals.c tree.c include/libxml/globals.h: applied

@@ -2452,8 +2452,6 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
     /*
      * add the first element at the end of the children list.
      */
-    if (cur->parent == parent)
-	return(cur);
 
     if (parent->children == NULL) {
         parent->children = cur;

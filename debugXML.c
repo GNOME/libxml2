@@ -33,18 +33,6 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/xmlerror.h>
 
-/************************************************************************
- *									*
- * 		When running GCC in vaacum cleaner mode			*
- *									*
- ************************************************************************/
-
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
-
 #define IS_BLANK(c)							\
   (((c) == '\n') || ((c) == '\r') || ((c) == '\t') || ((c) == ' '))
 
@@ -1087,8 +1075,8 @@ void xmlLsOneNode(FILE *output, xmlNodePtr node) {
  * Returns 0
  */
 static int
-xmlShellList(xmlShellCtxtPtr ctxt UNUSED , char *arg UNUSED, xmlNodePtr node,
-                  xmlNodePtr node2 UNUSED) {
+xmlShellList(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED , char *arg ATTRIBUTE_UNUSED, xmlNodePtr node,
+                  xmlNodePtr node2 ATTRIBUTE_UNUSED) {
     xmlNodePtr cur;
 
     if ((node->type == XML_DOCUMENT_NODE) ||
@@ -1120,8 +1108,8 @@ xmlShellList(xmlShellCtxtPtr ctxt UNUSED , char *arg UNUSED, xmlNodePtr node,
  * Returns 0
  */
 static int
-xmlShellDir(xmlShellCtxtPtr ctxt UNUSED, char *arg UNUSED, xmlNodePtr node,
-                  xmlNodePtr node2 UNUSED) {
+xmlShellDir(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *arg ATTRIBUTE_UNUSED, xmlNodePtr node,
+                  xmlNodePtr node2 ATTRIBUTE_UNUSED) {
     if ((node->type == XML_DOCUMENT_NODE) ||
         (node->type == XML_HTML_DOCUMENT_NODE)) {
 	xmlDebugDumpDocumentHead(stdout, (xmlDocPtr) node);
@@ -1146,8 +1134,8 @@ xmlShellDir(xmlShellCtxtPtr ctxt UNUSED, char *arg UNUSED, xmlNodePtr node,
  * Returns 0
  */
 static int
-xmlShellCat(xmlShellCtxtPtr ctxt, char *arg UNUSED, xmlNodePtr node,
-                  xmlNodePtr node2 UNUSED) {
+xmlShellCat(xmlShellCtxtPtr ctxt, char *arg ATTRIBUTE_UNUSED, xmlNodePtr node,
+                  xmlNodePtr node2 ATTRIBUTE_UNUSED) {
     if (ctxt->doc->type == XML_HTML_DOCUMENT_NODE) {
 #ifdef LIBXML_HTML_ENABLED
 	if (node->type == XML_HTML_DOCUMENT_NODE)
@@ -1183,8 +1171,8 @@ xmlShellCat(xmlShellCtxtPtr ctxt, char *arg UNUSED, xmlNodePtr node,
  * Returns 0 or -1 if loading failed
  */
 static int
-xmlShellLoad(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node UNUSED,
-             xmlNodePtr node2 UNUSED) {
+xmlShellLoad(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node ATTRIBUTE_UNUSED,
+             xmlNodePtr node2 ATTRIBUTE_UNUSED) {
     xmlDocPtr doc;
     int html = 0;
 
@@ -1236,7 +1224,7 @@ xmlShellLoad(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node UNUSED,
  */
 static int
 xmlShellWrite(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
-                  xmlNodePtr node2 UNUSED) {
+                  xmlNodePtr node2 ATTRIBUTE_UNUSED) {
     if (node == NULL)
         return(-1);
     if ((filename == NULL) || (filename[0] == 0)) {
@@ -1303,8 +1291,8 @@ xmlShellWrite(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
  * Returns 0 or -1 in case of error
  */
 static int 
-xmlShellSave(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node UNUSED,
-             xmlNodePtr node2 UNUSED) {
+xmlShellSave(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node ATTRIBUTE_UNUSED,
+             xmlNodePtr node2 ATTRIBUTE_UNUSED) {
     if (ctxt->doc == NULL)
 	return(-1);
     if ((filename == NULL) || (filename[0] == 0))
@@ -1359,8 +1347,8 @@ xmlShellSave(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node UNUSED,
  * Returns 0 or -1 in case of error
  */
 static int 
-xmlShellValidate(xmlShellCtxtPtr ctxt, char *dtd, xmlNodePtr node UNUSED,
-                 xmlNodePtr node2 UNUSED) {
+xmlShellValidate(xmlShellCtxtPtr ctxt, char *dtd, xmlNodePtr node ATTRIBUTE_UNUSED,
+                 xmlNodePtr node2 ATTRIBUTE_UNUSED) {
     xmlValidCtxt vctxt;
     int res = -1;
 
@@ -1397,8 +1385,8 @@ xmlShellValidate(xmlShellCtxtPtr ctxt, char *dtd, xmlNodePtr node UNUSED,
  * Returns 0 or -1 in case of error
  */
 static int 
-xmlShellDu(xmlShellCtxtPtr ctxt UNUSED, char *arg UNUSED, xmlNodePtr tree,
-                  xmlNodePtr node2 UNUSED) {
+xmlShellDu(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *arg ATTRIBUTE_UNUSED, xmlNodePtr tree,
+                  xmlNodePtr node2 ATTRIBUTE_UNUSED) {
     xmlNodePtr node;
     int indent = 0,i;
 
@@ -1473,8 +1461,8 @@ xmlShellDu(xmlShellCtxtPtr ctxt UNUSED, char *arg UNUSED, xmlNodePtr tree,
  * Returns 0 or -1 in case of error
  */
 static int 
-xmlShellPwd(xmlShellCtxtPtr ctxt UNUSED, char *buffer, xmlNodePtr node,
-                  xmlNodePtr node2 UNUSED) {
+xmlShellPwd(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *buffer, xmlNodePtr node,
+                  xmlNodePtr node2 ATTRIBUTE_UNUSED) {
     xmlNodePtr cur, tmp, next;
     char buf[500];
     char sep;

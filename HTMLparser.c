@@ -56,18 +56,6 @@
 
 int htmlOmittedDefaultValue = 1;
 
-/************************************************************************
- *									*
- * 		When running GCC in vaacum cleaner mode			*
- *									*
- ************************************************************************/
-
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
-
 xmlChar * htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
 			     xmlChar end, xmlChar  end2, xmlChar end3);
 
@@ -1546,8 +1534,8 @@ htmlEncodeEntities(unsigned char* out, int *outlen,
  *      must deallocate it !
  */
 xmlChar *
-htmlDecodeEntities(htmlParserCtxtPtr ctxt UNUSED, int len UNUSED,
-	  xmlChar end UNUSED, xmlChar  end2 UNUSED, xmlChar end3 UNUSED) {
+htmlDecodeEntities(htmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUSED,
+	  xmlChar end ATTRIBUTE_UNUSED, xmlChar  end2 ATTRIBUTE_UNUSED, xmlChar end3 ATTRIBUTE_UNUSED) {
     static int deprecated = 0;
     if (!deprecated) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -3718,7 +3706,7 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
  * Returns the new parser context or NULL
  */
 static htmlParserCtxtPtr
-htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding UNUSED) {
+htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
     htmlParserCtxtPtr ctxt;
     htmlParserInputPtr input;
     /* htmlCharEncoding enc; */

@@ -18,11 +18,6 @@
 #include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>
 
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
 /************************************************************************
  * 									*
  * 			Handling of out of context errors		*
@@ -38,7 +33,7 @@
  * Default handler for out of context error messages.
  */
 static void
-xmlGenericErrorDefaultFunc(void *ctx UNUSED, const char *msg, ...) {
+xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
     va_list args;
 
     if (xmlGenericErrorContext == NULL)

@@ -33,18 +33,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlerror.h>
 
-/************************************************************************
- *									*
- * 		When running GCC in vaacum cleaner mode			*
- *									*
- ************************************************************************/
-
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
-
 void xmlMallocBreakpoint(void);
 void * xmlMemMalloc(int size);
 void * xmlMallocLoc(int size, const char * file, int line);

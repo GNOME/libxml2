@@ -15,18 +15,6 @@
 #include "config.h"
 #endif
 
-/************************************************************************
- *									*
- * 		When running GCC in vaacum cleaner mode			*
- *									*
- ************************************************************************/
-
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
-
 /**
  * TODO: better handling of error cases, the full expression should
  *       be parsed beforehand instead of a progressive evaluation

@@ -28,18 +28,6 @@
 #include <libxml/xmlerror.h>
 #include <libxml/list.h>
 
-/************************************************************************
- *									*
- * 		When running GCC in vaacum cleaner mode			*
- *									*
- ************************************************************************/
-
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
-
 /*
  * Generic function for accessing stacks in the Validity Context
  */
@@ -862,7 +850,7 @@ xmlCreateAttributeTable(void) {
  */
 static void
 xmlScanAttributeDeclCallback(xmlAttributePtr attr, xmlAttributePtr *list,
-	                     const xmlChar* name UNUSED) {
+	                     const xmlChar* name ATTRIBUTE_UNUSED) {
     attr->nexth = *list;
     *list = attr;
 }
@@ -1319,7 +1307,7 @@ xmlFreeNotation(xmlNotationPtr nota) {
  * Returns NULL if not, othervise the entity
  */
 xmlNotationPtr
-xmlAddNotationDecl(xmlValidCtxtPtr ctxt UNUSED, xmlDtdPtr dtd,
+xmlAddNotationDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDtdPtr dtd,
 	           const xmlChar *name,
                    const xmlChar *PublicID, const xmlChar *SystemID) {
     xmlNotationPtr ret;
@@ -1793,7 +1781,7 @@ xmlWalkRemoveRef(const void *data, const void *user)
  * Returns NULL if not, othervise the new xmlRefPtr
  */
 xmlRefPtr 
-xmlAddRef(xmlValidCtxtPtr ctxt UNUSED, xmlDocPtr doc, const xmlChar *value,
+xmlAddRef(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDocPtr doc, const xmlChar *value,
     xmlAttrPtr attr) {
 	xmlRefPtr ret;
 	xmlRefTablePtr table;
@@ -2394,8 +2382,8 @@ xmlValidateNmtokensValue(const xmlChar *value) {
  */
 
 int
-xmlValidateNotationDecl(xmlValidCtxtPtr ctxt UNUSED, xmlDocPtr doc UNUSED,
-                         xmlNotationPtr nota UNUSED) {
+xmlValidateNotationDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDocPtr doc ATTRIBUTE_UNUSED,
+                         xmlNotationPtr nota ATTRIBUTE_UNUSED) {
     int ret = 1;
 
     return(ret);
@@ -2633,7 +2621,7 @@ xmlValidNormalizeAttributeValue(xmlDocPtr doc, xmlNodePtr elem,
 
 static void
 xmlValidateAttributeIdCallback(xmlAttributePtr attr, int *count,
-	                       const xmlChar* name UNUSED) {
+	                       const xmlChar* name ATTRIBUTE_UNUSED) {
     if (attr->atype == XML_ATTRIBUTE_ID) (*count)++;
 }
 
@@ -3911,7 +3899,7 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
 
 static void
 xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
-	                    const xmlChar *name UNUSED) {
+	                    const xmlChar *name ATTRIBUTE_UNUSED) {
     if (cur == NULL)
 	return;
     switch (cur->atype) {

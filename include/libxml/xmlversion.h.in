@@ -121,6 +121,15 @@ extern void xmlCheckVersion(int version);
 #endif
 #endif
 
+#ifdef __GNUC__
+#include <ansidecl.h>
+#ifndef ATTRIBUTE_UNUSED
+#define ATTRIBUTE_UNUSED
+#endif
+#else
+#define ATTRIBUTE_UNUSED
+#endif
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

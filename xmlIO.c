@@ -120,18 +120,6 @@ int xmlOutputCallbackInitialized = 0;
 
 /************************************************************************
  *									*
- * 		When running GCC in vaacum cleaner mode			*
- *									*
- ************************************************************************/
-
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
-
-/************************************************************************
- *									*
  *		Standard I/O for file accesses				*
  *									*
  ************************************************************************/
@@ -226,7 +214,7 @@ xmlFdClose (void * context) {
  * Returns 1 if matches, 0 otherwise
  */
 static int
-xmlFileMatch (const char *filename UNUSED) {
+xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
     return(1);
 }
 
@@ -369,7 +357,7 @@ xmlFileFlush (void * context) {
  * Returns 1 if matches, 0 otherwise
  */
 static int
-xmlGzfileMatch (const char *filename UNUSED) {
+xmlGzfileMatch (const char *filename ATTRIBUTE_UNUSED) {
     return(1);
 }
 

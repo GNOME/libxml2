@@ -37,18 +37,6 @@
 #include <libxml/valid.h>
 #include <libxml/xmlerror.h>
 
-/************************************************************************
- *									*
- * 		When running GCC in vaacum cleaner mode			*
- *									*
- ************************************************************************/
-
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
-
 xmlNsPtr xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
 
 /************************************************************************
@@ -3620,7 +3608,7 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
  *         namespace if defined
  */
 xmlNsPtr *
-xmlGetNsList(xmlDocPtr doc UNUSED, xmlNodePtr node) {
+xmlGetNsList(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node) {
     xmlNsPtr cur;
     xmlNsPtr *ret = NULL;
     int nbns = 0;
@@ -5441,7 +5429,7 @@ xmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDtdPtr dtd, const char *encoding) {
  */
 static void
 xmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
-	          const char *encoding UNUSED) {
+	          const char *encoding ATTRIBUTE_UNUSED) {
     xmlChar *value;
 
     if (cur == NULL) {
@@ -5798,7 +5786,7 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 void
 xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 		int * doc_txt_len, const char * txt_encoding,
-		int format UNUSED) {
+		int format ATTRIBUTE_UNUSED) {
     int                         dummy = 0;
 
     xmlCharEncoding             doc_charset;

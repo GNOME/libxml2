@@ -36,18 +36,6 @@
 
 /************************************************************************
  *									*
- * 		When running GCC in vaacum cleaner mode			*
- *									*
- ************************************************************************/
-
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
-
-/************************************************************************
- *									*
  *   		Getting/Setting encoding meta tags			*
  *									*
  ************************************************************************/
@@ -698,7 +686,7 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  */
 static void
 htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
-	          const char *encoding UNUSED) {
+	          const char *encoding ATTRIBUTE_UNUSED) {
     xmlDtdPtr cur = doc->intSubset;
 
     if (cur == NULL) {
@@ -733,7 +721,7 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  */
 static void
 htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
-	           const char *encoding UNUSED) {
+	           const char *encoding ATTRIBUTE_UNUSED) {
     xmlChar *value;
 
     if (cur == NULL) {

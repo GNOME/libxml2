@@ -43,18 +43,6 @@
 #include <libxml/debugXML.h>
 #include <libxml/xmlerror.h>
 
-/************************************************************************
- *									*
- * 		When running GCC in vaacum cleaner mode			*
- *									*
- ************************************************************************/
-
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
-
 #ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;
 #endif
@@ -113,7 +101,7 @@ extern xmlSAXHandlerPtr debugSAXHandler;
  * Returns 1 if true
  */
 static int
-isStandaloneDebug(void *ctx UNUSED)
+isStandaloneDebug(void *ctx ATTRIBUTE_UNUSED)
 {
     fprintf(stdout, "SAX.isStandalone()\n");
     return(0);
@@ -128,7 +116,7 @@ isStandaloneDebug(void *ctx UNUSED)
  * Returns 1 if true
  */
 static int
-hasInternalSubsetDebug(void *ctx UNUSED)
+hasInternalSubsetDebug(void *ctx ATTRIBUTE_UNUSED)
 {
     fprintf(stdout, "SAX.hasInternalSubset()\n");
     return(0);
@@ -143,7 +131,7 @@ hasInternalSubsetDebug(void *ctx UNUSED)
  * Returns 1 if true
  */
 static int
-hasExternalSubsetDebug(void *ctx UNUSED)
+hasExternalSubsetDebug(void *ctx ATTRIBUTE_UNUSED)
 {
     fprintf(stdout, "SAX.hasExternalSubset()\n");
     return(0);
@@ -156,7 +144,7 @@ hasExternalSubsetDebug(void *ctx UNUSED)
  * Does this document has an internal subset
  */
 static void
-internalSubsetDebug(void *ctx UNUSED, const xmlChar *name,
+internalSubsetDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name,
 	       const xmlChar *ExternalID, const xmlChar *SystemID)
 {
     fprintf(stdout, "SAX.internalSubset(%s,", name);
@@ -185,7 +173,7 @@ internalSubsetDebug(void *ctx UNUSED, const xmlChar *name,
  * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 static xmlParserInputPtr
-resolveEntityDebug(void *ctx UNUSED, const xmlChar *publicId, const xmlChar *systemId)
+resolveEntityDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *publicId, const xmlChar *systemId)
 {
     /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
 
@@ -217,7 +205,7 @@ resolveEntityDebug(void *ctx UNUSED, const xmlChar *publicId, const xmlChar *sys
  * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 static xmlEntityPtr
-getEntityDebug(void *ctx UNUSED, const xmlChar *name)
+getEntityDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name)
 {
     fprintf(stdout, "SAX.getEntity(%s)\n", name);
     return(NULL);
@@ -233,7 +221,7 @@ getEntityDebug(void *ctx UNUSED, const xmlChar *name)
  * Returns the xmlParserInputPtr
  */
 static xmlEntityPtr
-getParameterEntityDebug(void *ctx UNUSED, const xmlChar *name)
+getParameterEntityDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name)
 {
     fprintf(stdout, "SAX.getParameterEntity(%s)\n", name);
     return(NULL);
@@ -252,7 +240,7 @@ getParameterEntityDebug(void *ctx UNUSED, const xmlChar *name)
  * An entity definition has been parsed
  */
 static void
-entityDeclDebug(void *ctx UNUSED, const xmlChar *name, int type,
+entityDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name, int type,
           const xmlChar *publicId, const xmlChar *systemId, xmlChar *content)
 {
     fprintf(stdout, "SAX.entityDecl(%s, %d, %s, %s, %s)\n",
@@ -268,9 +256,9 @@ entityDeclDebug(void *ctx UNUSED, const xmlChar *name, int type,
  * An attribute definition has been parsed
  */
 static void
-attributeDeclDebug(void *ctx UNUSED, const xmlChar *elem, const xmlChar *name,
+attributeDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *elem, const xmlChar *name,
               int type, int def, const xmlChar *defaultValue,
-	      xmlEnumerationPtr tree UNUSED)
+	      xmlEnumerationPtr tree ATTRIBUTE_UNUSED)
 {
     fprintf(stdout, "SAX.attributeDecl(%s, %s, %d, %d, %s, ...)\n",
             elem, name, type, def, defaultValue);
@@ -286,8 +274,8 @@ attributeDeclDebug(void *ctx UNUSED, const xmlChar *elem, const xmlChar *name,
  * An element definition has been parsed
  */
 static void
-elementDeclDebug(void *ctx UNUSED, const xmlChar *name, int type,
-	    xmlElementContentPtr content UNUSED)
+elementDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name, int type,
+	    xmlElementContentPtr content ATTRIBUTE_UNUSED)
 {
     fprintf(stdout, "SAX.elementDecl(%s, %d, ...)\n",
             name, type);
@@ -303,7 +291,7 @@ elementDeclDebug(void *ctx UNUSED, const xmlChar *name, int type,
  * What to do when a notation declaration has been parsed.
  */
 static void
-notationDeclDebug(void *ctx UNUSED, const xmlChar *name,
+notationDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name,
 	     const xmlChar *publicId, const xmlChar *systemId)
 {
     fprintf(stdout, "SAX.notationDecl(%s, %s, %s)\n",
@@ -321,7 +309,7 @@ notationDeclDebug(void *ctx UNUSED, const xmlChar *name,
  * What to do when an unparsed entity declaration is parsed
  */
 static void
-unparsedEntityDeclDebug(void *ctx UNUSED, const xmlChar *name,
+unparsedEntityDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name,
 		   const xmlChar *publicId, const xmlChar *systemId,
 		   const xmlChar *notationName)
 {
@@ -339,7 +327,7 @@ unparsedEntityDeclDebug(void *ctx UNUSED, const xmlChar *name,
  * Everything is available on the context, so this is useless in our case.
  */
 static void
-setDocumentLocatorDebug(void *ctx UNUSED, xmlSAXLocatorPtr loc UNUSED)
+setDocumentLocatorDebug(void *ctx ATTRIBUTE_UNUSED, xmlSAXLocatorPtr loc ATTRIBUTE_UNUSED)
 {
     fprintf(stdout, "SAX.setDocumentLocator()\n");
 }
@@ -351,7 +339,7 @@ setDocumentLocatorDebug(void *ctx UNUSED, xmlSAXLocatorPtr loc UNUSED)
  * called when the document start being processed.
  */
 static void
-startDocumentDebug(void *ctx UNUSED)
+startDocumentDebug(void *ctx ATTRIBUTE_UNUSED)
 {
     fprintf(stdout, "SAX.startDocument()\n");
 }
@@ -363,7 +351,7 @@ startDocumentDebug(void *ctx UNUSED)
  * called when the document end has been detected.
  */
 static void
-endDocumentDebug(void *ctx UNUSED)
+endDocumentDebug(void *ctx ATTRIBUTE_UNUSED)
 {
     fprintf(stdout, "SAX.endDocument()\n");
 }
@@ -376,7 +364,7 @@ endDocumentDebug(void *ctx UNUSED)
  * called when an opening tag has been processed.
  */
 static void
-startElementDebug(void *ctx UNUSED, const xmlChar *name, const xmlChar **atts)
+startElementDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name, const xmlChar **atts)
 {
     int i;
 
@@ -410,7 +398,7 @@ startElementDebug(void *ctx UNUSED, const xmlChar *name, const xmlChar **atts)
  * called when the end of an element has been detected.
  */
 static void
-endElementDebug(void *ctx UNUSED, const xmlChar *name)
+endElementDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name)
 {
     fprintf(stdout, "SAX.endElement(%s)\n", (char *) name);
 }
@@ -425,7 +413,7 @@ endElementDebug(void *ctx UNUSED, const xmlChar *name)
  * Question: how much at a time ???
  */
 static void
-charactersDebug(void *ctx UNUSED, const xmlChar *ch, int len)
+charactersDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch, int len)
 {
     unsigned char output[40];
     int inlen = len, outlen = 30;
@@ -446,7 +434,7 @@ charactersDebug(void *ctx UNUSED, const xmlChar *ch, int len)
  * Question: how much at a time ???
  */
 static void
-cdataDebug(void *ctx UNUSED, const xmlChar *ch, int len)
+cdataDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch, int len)
 {
     unsigned char output[40];
     int inlen = len, outlen = 30;
@@ -465,7 +453,7 @@ cdataDebug(void *ctx UNUSED, const xmlChar *ch, int len)
  * called when an entity reference is detected. 
  */
 static void
-referenceDebug(void *ctx UNUSED, const xmlChar *name)
+referenceDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name)
 {
     fprintf(stdout, "SAX.reference(%s)\n", name);
 }
@@ -481,7 +469,7 @@ referenceDebug(void *ctx UNUSED, const xmlChar *name)
  * Question: how much at a time ???
  */
 static void
-ignorableWhitespaceDebug(void *ctx UNUSED, const xmlChar *ch, int len)
+ignorableWhitespaceDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch, int len)
 {
     char output[40];
     int i;
@@ -503,7 +491,7 @@ ignorableWhitespaceDebug(void *ctx UNUSED, const xmlChar *ch, int len)
  * A processing instruction has been parsed.
  */
 static void
-processingInstructionDebug(void *ctx UNUSED, const xmlChar *target,
+processingInstructionDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *target,
                       const xmlChar *data)
 {
     fprintf(stdout, "SAX.processingInstruction(%s, %s)\n",
@@ -518,7 +506,7 @@ processingInstructionDebug(void *ctx UNUSED, const xmlChar *target,
  * A comment has been parsed.
  */
 static void
-commentDebug(void *ctx UNUSED, const xmlChar *value)
+commentDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *value)
 {
     fprintf(stdout, "SAX.comment(%s)\n", value);
 }
@@ -533,7 +521,7 @@ commentDebug(void *ctx UNUSED, const xmlChar *value)
  * extra parameters.
  */
 static void
-warningDebug(void *ctx UNUSED, const char *msg, ...)
+warningDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 {
     va_list args;
 
@@ -553,7 +541,7 @@ warningDebug(void *ctx UNUSED, const char *msg, ...)
  * extra parameters.
  */
 static void
-errorDebug(void *ctx UNUSED, const char *msg, ...)
+errorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 {
     va_list args;
 
@@ -573,7 +561,7 @@ errorDebug(void *ctx UNUSED, const char *msg, ...)
  * extra parameters.
  */
 static void
-fatalErrorDebug(void *ctx UNUSED, const char *msg, ...)
+fatalErrorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 {
     va_list args;
 

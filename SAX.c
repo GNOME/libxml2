@@ -32,13 +32,9 @@
 /* #define DEBUG_SAX_TREE */
 
 #ifdef __GNUC__
-#ifndef DEBUG_SAX
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
+#ifdef DEBUG_SAX
+#define ATTRIBUTE_UNUSED
 #endif
-#else
-#define UNUSED
 #endif
 
 /**
@@ -50,7 +46,7 @@
  * Returns a xmlChar *
  */
 const xmlChar *
-getPublicId(void *ctx UNUSED)
+getPublicId(void *ctx ATTRIBUTE_UNUSED)
 {
     /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
     return(NULL);
@@ -658,7 +654,7 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
  * Everything is available on the context, so this is useless in our case.
  */
 void
-setDocumentLocator(void *ctx UNUSED, xmlSAXLocatorPtr loc UNUSED)
+setDocumentLocator(void *ctx ATTRIBUTE_UNUSED, xmlSAXLocatorPtr loc ATTRIBUTE_UNUSED)
 {
     /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
 #ifdef DEBUG_SAX
@@ -1092,7 +1088,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
  * called when the end of an element has been detected.
  */
 void
-endElement(void *ctx, const xmlChar *name UNUSED)
+endElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserNodeInfo node_info;
@@ -1271,7 +1267,7 @@ characters(void *ctx, const xmlChar *ch, int len)
  * Question: how much at a time ???
  */
 void
-ignorableWhitespace(void *ctx UNUSED, const xmlChar *ch UNUSED, int len UNUSED)
+ignorableWhitespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUSED)
 {
     /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
 #ifdef DEBUG_SAX

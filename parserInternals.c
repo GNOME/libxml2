@@ -48,18 +48,6 @@
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
 
-/************************************************************************
- *									*
- * 		When running GCC in vaacum cleaner mode			*
- *									*
- ************************************************************************/
-
-#ifdef __GNUC__
-#define UNUSED __attribute__((__unused__))
-#else
-#define UNUSED
-#endif
-
 void xmlUpgradeOldNs(xmlDocPtr doc);
 
 /************************************************************************
@@ -1545,7 +1533,7 @@ xmlCopyCharMultiByte(xmlChar *out, int val) {
  */
 
 int
-xmlCopyChar(int len UNUSED, xmlChar *out, int val) {
+xmlCopyChar(int len ATTRIBUTE_UNUSED, xmlChar *out, int val) {
     /* the len parameter is ignored */
     if  (val >= 0x80) {
 	return(xmlCopyCharMultiByte (out, val));
@@ -2597,8 +2585,8 @@ xmlCheckLanguageID(const xmlChar *lang) {
  *      must deallocate it !
  */
 xmlChar *
-xmlDecodeEntities(xmlParserCtxtPtr ctxt UNUSED, int len UNUSED, int what UNUSED,
-	      xmlChar end UNUSED, xmlChar  end2 UNUSED, xmlChar end3 UNUSED) {
+xmlDecodeEntities(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUSED, int what ATTRIBUTE_UNUSED,
+	      xmlChar end ATTRIBUTE_UNUSED, xmlChar  end2 ATTRIBUTE_UNUSED, xmlChar end3 ATTRIBUTE_UNUSED) {
 #if 0
     xmlChar *buffer = NULL;
     unsigned int buffer_size = 0;
@@ -2731,7 +2719,7 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt UNUSED, int len UNUSED, int what UNUSED,
  */
 
 xmlChar *
-xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt UNUSED) {
+xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
 #if 0
     xmlChar buf[XML_MAX_NAMELEN + 5];
     int len = 0, l;
@@ -2800,7 +2788,7 @@ xmlGenericError(xmlGenericErrorContext,
  */
 
 xmlChar *
-xmlNamespaceParseQName(xmlParserCtxtPtr ctxt UNUSED, xmlChar **prefix UNUSED) {
+xmlNamespaceParseQName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlChar **prefix ATTRIBUTE_UNUSED) {
 
     static int deprecated = 0;
     if (!deprecated) {
@@ -2842,7 +2830,7 @@ xmlNamespaceParseQName(xmlParserCtxtPtr ctxt UNUSED, xmlChar **prefix UNUSED) {
  */
 
 xmlChar *
-xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt UNUSED) {
+xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
     static int deprecated = 0;
     if (!deprecated) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -2877,7 +2865,7 @@ xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt UNUSED) {
  * Returns the string parser or NULL.
  */
 xmlChar *
-xmlParseQuotedString(xmlParserCtxtPtr ctxt UNUSED) {
+xmlParseQuotedString(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
     static int deprecated = 0;
     if (!deprecated) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -2975,7 +2963,7 @@ xmlGenericError(xmlGenericErrorContext,
  */
 
 void
-xmlParseNamespace(xmlParserCtxtPtr ctxt UNUSED) {
+xmlParseNamespace(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
     static int deprecated = 0;
     if (!deprecated) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -3102,7 +3090,7 @@ xmlGenericError(xmlGenericErrorContext,
  */
 
 xmlChar *
-xmlScanName(xmlParserCtxtPtr ctxt UNUSED) {
+xmlScanName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
     static int deprecated = 0;
     if (!deprecated) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -3175,7 +3163,7 @@ xmlScanName(xmlParserCtxtPtr ctxt UNUSED) {
  *      http://www.w3.org/TR/REC-xml#entproc
  */
 void
-xmlParserHandleReference(xmlParserCtxtPtr ctxt UNUSED) {
+xmlParserHandleReference(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
     static int deprecated = 0;
     if (!deprecated) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -3421,7 +3409,7 @@ xmlGenericError(xmlGenericErrorContext,
  */
 
 void
-xmlHandleEntity(xmlParserCtxtPtr ctxt UNUSED, xmlEntityPtr entity UNUSED) {
+xmlHandleEntity(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlEntityPtr entity ATTRIBUTE_UNUSED) {
     static int deprecated = 0;
     if (!deprecated) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -3474,8 +3462,8 @@ handle_as_char:
  * Returns NULL this functionnality had been removed
  */
 xmlNsPtr
-xmlNewGlobalNs(xmlDocPtr doc UNUSED, const xmlChar *href UNUSED,
-	       const xmlChar *prefix UNUSED) {
+xmlNewGlobalNs(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED,
+	       const xmlChar *prefix ATTRIBUTE_UNUSED) {
     static int deprecated = 0;
     if (!deprecated) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -3536,7 +3524,7 @@ xmlNewGlobalNs(xmlDocPtr doc UNUSED, const xmlChar *href UNUSED,
  * DEPRECATED
  */
 void
-xmlUpgradeOldNs(xmlDocPtr doc UNUSED) {
+xmlUpgradeOldNs(xmlDocPtr doc ATTRIBUTE_UNUSED) {
     static int deprecated = 0;
     if (!deprecated) {
 	xmlGenericError(xmlGenericErrorContext,

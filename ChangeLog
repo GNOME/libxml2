@@ -1,3 +1,9 @@
+Wed Jun 20 15:38:59 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c: fixed a bug found when post validating an entity ref
+	* xmllint.c: added --loaddtd and sligly changed --postvalid to
+	  activate it too
+
 Tue Jun 19 20:03:40 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c xinclude.c xpointer.c: bug #56402 exposed a number of

@@ -94,6 +94,7 @@ static char *encoding = NULL;
 #ifdef LIBXML_XINCLUDE_ENABLED
 static int xinclude = 0;
 #endif
+static int loaddtd = 0;
 static int progresult = 0;
 static int timing = 0;
 static int generate = 0;
@@ -752,13 +753,70 @@ static void parseAndPrintFile(char *filename) {
     }
 }
 
+/************************************************************************
+ * 									*
+ * 			Usage and Main					*
+ * 									*
+ ************************************************************************/
+
+static void usage(const char *name) {
+    printf("Usage : %s [options] XMLfiles ...\n", name);
+    printf("\tParse the XML files and output the result of the parsing\n");
+    printf("\t--version : display the version of the XML library used\n");
+#ifdef LIBXML_DEBUG_ENABLED
+    printf("\t--debug : dump a debug tree of the in-memory document\n");
+    printf("\t--shell : run a navigating shell\n");
+    printf("\t--debugent : debug the entities defined in the document\n");
+#endif
+    printf("\t--copy : used to test the internal copy implementation\n");
+    printf("\t--recover : output what was parsable on broken XML documents\n");
+    printf("\t--noent : substitute entity references by their value\n");
+    printf("\t--noout : don't output the result tree\n");
+    printf("\t--htmlout : output results as HTML\n");
+    printf("\t--nowarp : do not put HTML doc wrapper\n");
+    printf("\t--valid : validate the document in addition to std well-formed check\n");
+    printf("\t--postvalid : do a posteriori validation, i.e after parsing\n");
+    printf("\t--dtdvalid URL : do a posteriori validation against a given DTD\n");
+    printf("\t--timing : print some timings\n");
+    printf("\t--repeat : repeat 100 times, for timing or profiling\n");
+    printf("\t--insert : ad-hoc test for valid insertions\n");
+    printf("\t--compress : turn on gzip compression of output\n");
+#ifdef LIBXML_HTML_ENABLED
+    printf("\t--html : use the HTML parser\n");
+#endif
+    printf("\t--push : use the push mode of the parser\n");
+#ifdef HAVE_SYS_MMAN_H
+    printf("\t--memory : parse from memory\n");
+#endif
+    printf("\t--nowarning : do not emit warnings from parser/validator\n");
+    printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
+    printf("\t--testIO : test user I/O support\n");
+    printf("\t--encode encoding : output in the given encoding\n");
+#ifdef LIBXML_CATALOG_ENABLED
+    printf("\t--catalogs : use the catalogs from $SGML_CATALOG_FILES\n");
+#endif
+    printf("\t--auto : generate a small doc on the fly\n");
+#ifdef LIBXML_XINCLUDE_ENABLED
+    printf("\t--xinclude : do XInclude processing\n");
+    printf("\t--loaddtd : fetch external Dtd\n");
+#endif
+}
 int
 main(int argc, char **argv) {
     int i, count;
     int files = 0;
 
+    if (argc <= 1) {
+	usage(argv[0]);
+	return(1);
+    }
     LIBXML_TEST_VERSION
     for (i = 1; i < argc ; i++) {
+	if (!strcmp(argv[i], "-"))
+	    break;
+
+	if (argv[i][0] != '-')
+	    continue;
 #ifdef LIBXML_DEBUG_ENABLED
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
@@ -795,16 +853,21 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-nowrap")) ||
 	         (!strcmp(argv[i], "--nowrap")))
 	    nowrap++;
+	else if ((!strcmp(argv[i], "-loaddtd")) ||
+	         (!strcmp(argv[i], "--loaddtd")))
+	    loaddtd++;
 	else if ((!strcmp(argv[i], "-valid")) ||
 	         (!strcmp(argv[i], "--valid")))
 	    valid++;
 	else if ((!strcmp(argv[i], "-postvalid")) ||
-	         (!strcmp(argv[i], "--postvalid")))
+	         (!strcmp(argv[i], "--postvalid"))) {
 	    postvalid++;
-	else if ((!strcmp(argv[i], "-dtdvalid")) ||
+	    loaddtd++;
+	} else if ((!strcmp(argv[i], "-dtdvalid")) ||
 	         (!strcmp(argv[i], "--dtdvalid"))) {
 	    i++;
 	    dtdvalid = argv[i];
+	    loaddtd++;
         }
 	else if ((!strcmp(argv[i], "-insert")) ||
 	         (!strcmp(argv[i], "--insert")))
@@ -882,8 +945,13 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--noblanks"))) {
 	     noblanks++;
 	     xmlKeepBlanksDefault(0);
-        }
+	} else {
+	    fprintf(stderr, "Unknown option %s\n", argv[i]);
+	    usage(argv[0]);
+	    return(1);
+	}
     }
+    if (loaddtd != 0) xmlLoadExtDtdDefaultValue = 6; /* fetch DTDs by default */
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
     if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
     if ((htmlout) && (!nowrap)) {
@@ -935,46 +1003,7 @@ main(int argc, char **argv) {
 	xmlGenericError(xmlGenericErrorContext, "</body></html>\n");
     }
     if ((files == 0) && (!generate)) {
-	printf("Usage : %s [options] XMLfiles ...\n",
-	       argv[0]);
-	printf("\tParse the XML files and output the result of the parsing\n");
-	printf("\t--version : display the version of the XML library used\n");
-#ifdef LIBXML_DEBUG_ENABLED
-	printf("\t--debug : dump a debug tree of the in-memory document\n");
-	printf("\t--shell : run a navigating shell\n");
-	printf("\t--debugent : debug the entities defined in the document\n");
-#endif
-	printf("\t--copy : used to test the internal copy implementation\n");
-	printf("\t--recover : output what was parsable on broken XML documents\n");
-	printf("\t--noent : substitute entity references by their value\n");
-	printf("\t--noout : don't output the result tree\n");
-	printf("\t--htmlout : output results as HTML\n");
-	printf("\t--nowarp : do not put HTML doc wrapper\n");
-	printf("\t--valid : validate the document in addition to std well-formed check\n");
-	printf("\t--postvalid : do a posteriori validation, i.e after parsing\n");
-	printf("\t--dtdvalid URL : do a posteriori validation against a given DTD\n");
-	printf("\t--timing : print some timings\n");
-	printf("\t--repeat : repeat 100 times, for timing or profiling\n");
-	printf("\t--insert : ad-hoc test for valid insertions\n");
-	printf("\t--compress : turn on gzip compression of output\n");
-#ifdef LIBXML_HTML_ENABLED
-	printf("\t--html : use the HTML parser\n");
-#endif
-	printf("\t--push : use the push mode of the parser\n");
-#ifdef HAVE_SYS_MMAN_H
-	printf("\t--memory : parse from memory\n");
-#endif
-	printf("\t--nowarning : do not emit warnings from parser/validator\n");
-	printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
-	printf("\t--testIO : test user I/O support\n");
-	printf("\t--encode encoding : output in the given encoding\n");
-#ifdef LIBXML_CATALOG_ENABLED
-	printf("\t--catalogs : use the catalogs from $SGML_CATALOG_FILES\n");
-#endif
-	printf("\t--auto : generate a small doc on the fly\n");
-#ifdef LIBXML_XINCLUDE_ENABLED
-	printf("\t--xinclude : do XInclude processing\n");
-#endif
+	usage(argv[0]);
     }
     xmlCleanupParser();
     xmlMemoryDump();

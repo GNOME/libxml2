@@ -4205,6 +4205,13 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
 
     CHECK_DTD;
 
+    /*
+     * Entities references have to be handled separately
+     */
+    if (elem->type == XML_ENTITY_REF_NODE) {
+	return(1);
+    }
+
     ret &= xmlValidateOneElement(ctxt, doc, elem);
     attr = elem->properties;
     while(attr != NULL) {

@@ -2527,7 +2527,9 @@ libxml_xmlNewNode(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     if (!PyArg_ParseTuple(args, (char *) "s:xmlNewNode", &name))
         return (NULL);
     node = (xmlNodePtr) xmlNewNode(NULL, name);
+#ifdef DEBUG
     printf("NewNode: %s : %p\n", name, (void *) node);
+#endif
 
     if (node == NULL) {
         Py_INCREF(Py_None);

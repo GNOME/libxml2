@@ -76,6 +76,14 @@
 #include <zlib.h>
 #endif
 
+/**
+ * MAX_DEPTH:
+ *
+ * arbitrary depth limit for the XML documents that we allow to 
+ * process. This is not a limitation of the parser but a safety 
+ * boundary feature.
+ */
+#define MAX_DEPTH 1024
 
 #define XML_PARSER_BIG_BUFFER_SIZE 300
 #define XML_PARSER_BUFFER_SIZE 100
@@ -191,6 +199,18 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
             return (0);
         }
     }
+#ifdef MAX_DEPTH
+    if (ctxt->nodeNr > MAX_DEPTH) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, 
+		 "Excessive depth in document: change MAX_DEPTH = %d\n",
+		             MAX_DEPTH);
+	ctxt->wellFormed = 0;
+	ctxt->instate = XML_PARSER_EOF;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+	return(0);
+    }
+#endif
     ctxt->nodeTab[ctxt->nodeNr] = value;
     ctxt->node = value;
     return (ctxt->nodeNr++);

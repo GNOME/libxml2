@@ -123,6 +123,7 @@ struct _xmlRelaxNGDefine {
     xmlRelaxNGDefinePtr parent;	/* the parent definition, if any */
     xmlRelaxNGDefinePtr next;	/* list within grouping sequences */
     xmlRelaxNGDefinePtr attrs;	/* list of attributes for elements */
+    xmlRelaxNGDefinePtr nameClass;/* the nameClass definition if any */
     xmlRelaxNGDefinePtr nextHash;/* next define in defs/refs hash tables */
 };
 
@@ -1562,6 +1563,9 @@ static xmlRelaxNGPtr xmlRelaxNGParseDocument(
 	      xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node);
 static int xmlRelaxNGParseGrammarContent(
 	      xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes);
+static xmlRelaxNGDefinePtr xmlRelaxNGParseNameClass(
+	      xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
+	      xmlRelaxNGDefinePtr def);
 
 
 #define IS_BLANK_NODE(n)						\
@@ -2420,7 +2424,6 @@ static xmlRelaxNGDefinePtr
 xmlRelaxNGParseAttribute(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     xmlRelaxNGDefinePtr ret, cur, last;
     xmlNodePtr child;
-    xmlChar *val;
     int old_flags;
 
     ret = xmlRelaxNGNewDefine(ctxt, node);
@@ -2438,27 +2441,10 @@ xmlRelaxNGParseAttribute(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     } 
     old_flags = ctxt->flags;
     ctxt->flags |= XML_RELAXNG_IN_ATTRIBUTE;
-    if (IS_RELAXNG(child, "name")) {
-	val = xmlNodeGetContent(child);
-	ret->name = val;
-	val = xmlGetProp(child, BAD_CAST "ns");
-	ret->ns = val;
-    } else if (IS_RELAXNG(child, "anyName")) {
-	TODO
-    } else if (IS_RELAXNG(child, "nsName")) {
-	TODO
-    } else if (IS_RELAXNG(child, "choice")) {
-	TODO
-    } else {
-	if (ctxt->error != NULL)
-	    ctxt->error(ctxt->userData,
-    "element: expecting name, anyName, nsName or choice : got %s\n",
-			child->name);
-	ctxt->nbErrors++;
-	ctxt->flags = old_flags;
-	return(ret);
-    }
-    child = child->next;
+    cur = xmlRelaxNGParseNameClass(ctxt, child, ret);
+    if (cur != NULL)
+	child = child->next;
+
     last = NULL;
     while (child != NULL) {
 	cur = xmlRelaxNGParsePattern(ctxt, child);
@@ -2515,6 +2501,75 @@ xmlRelaxNGParseAttribute(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 }
 
 /**
+ * xmlRelaxNGParseExceptNameClass:
+ * @ctxt:  a Relax-NG parser context
+ * @node:  the except node
+ *
+ * parse the content of a RelaxNG nameClass node.
+ *
+ * Returns the definition pointer or NULL in case of error.
+ */
+static xmlRelaxNGDefinePtr
+xmlRelaxNGParseExceptNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
+    TODO
+    return(NULL);
+}
+
+/**
+ * xmlRelaxNGParseNameClass:
+ * @ctxt:  a Relax-NG parser context
+ * @node:  the nameClass node
+ * @def:  the current definition
+ *
+ * parse the content of a RelaxNG nameClass node.
+ *
+ * Returns the definition pointer or NULL in case of error.
+ */
+static xmlRelaxNGDefinePtr
+xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
+	                 xmlRelaxNGDefinePtr def) {
+    xmlRelaxNGDefinePtr ret = def;
+    xmlChar *val;
+
+    if (IS_RELAXNG(node, "name")) {
+	val = xmlNodeGetContent(node);
+	ret->name = val;
+	val = xmlGetProp(node, BAD_CAST "ns");
+	ret->ns = val;
+    } else if (IS_RELAXNG(node, "anyName")) {
+	ret->name = NULL;
+	ret->ns = NULL;
+	if (node->children != NULL) {
+	    ret->nameClass =
+		xmlRelaxNGParseExceptNameClass(ctxt, node->children);
+	}
+    } else if (IS_RELAXNG(node, "nsName")) {
+	ret->name = NULL;
+	ret->ns = xmlGetProp(node, BAD_CAST "ns");
+	if (ret->ns == NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+		    "nsName has no ns attribute\n");
+	    ctxt->nbErrors++;
+	}
+	if (node->children != NULL) {
+	    ret->nameClass =
+		xmlRelaxNGParseExceptNameClass(ctxt, node->children);
+	}
+    } else if (IS_RELAXNG(node, "choice")) {
+	TODO
+    } else {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+    "expecting name, anyName, nsName or choice : got %s\n",
+			node->name);
+	ctxt->nbErrors++;
+	return(NULL);
+    }
+    return(ret);
+}
+
+/**
  * xmlRelaxNGParseElement:
  * @ctxt:  a Relax-NG parser context
  * @node:  the element node
@@ -2527,7 +2582,6 @@ static xmlRelaxNGDefinePtr
 xmlRelaxNGParseElement(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     xmlRelaxNGDefinePtr ret, cur, last;
     xmlNodePtr child;
-    xmlChar *val;
     const xmlChar *olddefine;
 
     ret = xmlRelaxNGNewDefine(ctxt, node);
@@ -2543,26 +2597,10 @@ xmlRelaxNGParseElement(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	ctxt->nbErrors++;
 	return(ret);
     } 
-    if (IS_RELAXNG(child, "name")) {
-	val = xmlNodeGetContent(child);
-	ret->name = val;
-	val = xmlGetProp(child, BAD_CAST "ns");
-	ret->ns = val;
-    } else if (IS_RELAXNG(child, "anyName")) {
-	TODO
-    } else if (IS_RELAXNG(child, "nsName")) {
-	TODO
-    } else if (IS_RELAXNG(child, "choice")) {
-	TODO
-    } else {
-	if (ctxt->error != NULL)
-	    ctxt->error(ctxt->userData,
-    "element: expecting name, anyName, nsName or choice : got %s\n",
-			child->name);
-	ctxt->nbErrors++;
-	return(ret);
-    }
-    child = child->next;
+    cur = xmlRelaxNGParseNameClass(ctxt, child, ret);
+    if (cur != NULL)
+	child = child->next;
+
     if (child == NULL) {
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
@@ -3405,12 +3443,7 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
 				text = text->next;
 			    }
 			}
-			if (text == NULL) {
-			    if (ctxt->error != NULL)
-				ctxt->error(ctxt->userData,
-			    "xmlRelaxNGParse: attribute without name\n");
-			    ctxt->nbErrors++;
-			} else {
+			if (text != NULL) {
 			    xmlSetProp(text, BAD_CAST "ns", BAD_CAST "");
 			}
 		    }
@@ -4294,8 +4327,70 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 	xmlGenericError(xmlGenericErrorContext,
                     "xmlRelaxNGValidateAttribute(%s): %d\n", define->name, ret);
 #endif
+    } else if (define->ns != NULL) {
+        for (i = 0;i < ctxt->state->nbAttrs;i++) {
+	    tmp = ctxt->state->attrs[i];
+	    if ((tmp != NULL) && (tmp->ns != NULL) &&
+		(xmlStrEqual(define->ns, tmp->ns->href))) {
+		prop = tmp;
+		break;
+	    }
+	}
+	if (prop != NULL) {
+	    value = xmlNodeListGetString(prop->doc, prop->children, 1);
+	    oldvalue = ctxt->state->value;
+	    ctxt->state->value = value;
+	    ret = xmlRelaxNGValidateValueContent(ctxt, define->content);
+	    value = ctxt->state->value;
+	    ctxt->state->value = oldvalue;
+	    if (value != NULL)
+		xmlFree(value);
+	    if (ret == 0) {
+		/*
+		 * flag the attribute as processed
+		 */
+		ctxt->state->attrs[i] = NULL;
+	    }
+	} else {
+	    ret = -1;
+	}
+#ifdef DEBUG
+	xmlGenericError(xmlGenericErrorContext,
+                    "xmlRelaxNGValidateAttribute(nsName ns = %s): %d\n",
+		        define->ns, ret);
+#endif
     } else {
-	TODO
+        for (i = 0;i < ctxt->state->nbAttrs;i++) {
+	    tmp = ctxt->state->attrs[i];
+	    if (tmp != NULL) {
+		prop = tmp;
+		break;
+	    }
+	}
+	if (prop != NULL) {
+	    value = xmlNodeListGetString(prop->doc, prop->children, 1);
+	    oldvalue = ctxt->state->value;
+	    ctxt->state->value = value;
+	    ret = xmlRelaxNGValidateValueContent(ctxt, define->content);
+	    value = ctxt->state->value;
+	    ctxt->state->value = oldvalue;
+	    if (value != NULL)
+		xmlFree(value);
+	    if (ret == 0) {
+		/*
+		 * flag the attribute as processed
+		 */
+		ctxt->state->attrs[i] = NULL;
+	    }
+	} else {
+	    ret = -1;
+	}
+#ifdef DEBUG
+	xmlGenericError(xmlGenericErrorContext,
+                    "xmlRelaxNGValidateAttribute(anyName): %d\n",
+		        ret);
+#endif
+	
     }
     
     return(ret);
@@ -4748,11 +4843,11 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 			        node->name, define->ns);
 		    return(-1);
 		}
-	    } else {
+	    } else if (define->name != NULL) {
 		if (node->ns != NULL) {
 		    VALID_CTXT();
 		    VALID_ERROR("Expecting no namespace for element %s\n",
-			        node->name);
+			        define->name);
 		    return(-1);
 		}
 	    }

@@ -1,3 +1,10 @@
+Fri Jan 30 20:45:36 MST 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/examples/examples.xml
+	* doc/examples/*.html
+	add note that reader examples need libmxl2 > 2.6, rebuild
+	html
+
 Thu Jan 29 23:51:48 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: added (void *) type override to prevent

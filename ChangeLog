@@ -1,3 +1,9 @@
+Fri Nov  8 16:08:13 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c: fixed a typo pointed out by Igor
+	* xpath.c: try to speed up node compare using line numbers
+	  if available.
+
 Thu Nov  7 15:16:02 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: make xmlFreeNode() handle attributes correctly.

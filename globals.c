@@ -42,7 +42,7 @@
 /*
  * Memory allocation routines
  */
-#if defined(DEBUG_MEMORY_LOCATION) | defined(DEBUG_MEMORY)
+#if defined(DEBUG_MEMORY_LOCATION) || defined(DEBUG_MEMORY)
 extern void xmlMemFree(void *ptr);
 extern void * xmlMemMalloc(size_t size);
 extern void * xmlMemRealloc(void *ptr,size_t size);

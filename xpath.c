@@ -1368,6 +1368,21 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
 	return(-1);
 
     /*
+     * Speedup using line numbers if availble.
+     */
+    if ((node1->type == XML_ELEMENT_NODE) &&
+	(node2->type == XML_ELEMENT_NODE) &&
+	(0 != (int) node1->content) && (0 != (int) node2->content)) {
+	int l1, l2;
+	l1 = (int) node1->content;
+	l2 = (int) node2->content;
+	if (l1 < l2)
+	    return(1);
+	if (l1 > l2)
+	    return(-1);
+    }
+
+    /*
      * compute depth to root
      */
     for (depth2 = 0, cur = node2;cur->parent != NULL;cur = cur->parent) {

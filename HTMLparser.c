@@ -2866,7 +2866,8 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
     } else {
 	ent = htmlParseEntityRef(ctxt, &name);
 	if (name == NULL) {
-	    ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
+	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
+	        ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
 	    return;
 	}
 	if ((ent == NULL) || (ent->value <= 0)) {

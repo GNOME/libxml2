@@ -146,7 +146,8 @@ internalSubsetDebug(void *ctx, const xmlChar *name,
     /* xmlDtdPtr externalSubset; */
 
     fprintf(stdout, "SAX.internalSubset(%s, %s, %s)\n",
-            name, ExternalID, SystemID);
+            name, (ExternalID == NULL) ? "(null)" : ExternalID,
+                  (SystemID   == NULL) ? "(null)" : SystemID);
 
 /***********
     if ((ExternalID != NULL) || (SystemID != NULL)) {
@@ -372,7 +373,7 @@ startElementDebug(void *ctx, const xmlChar *name, const xmlChar **atts)
     if (atts != NULL) {
         for (i = 0;(atts[i] != NULL);i++) {
 	    fprintf(stdout, ", %s='", atts[i++]);
-	    fprintf(stdout, "%s'", atts[i]);
+	    fprintf(stdout, "%s'", (atts[i] == NULL) ? "(null)" : atts[i]);
 	}
     }
     fprintf(stdout, ")\n");

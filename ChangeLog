@@ -1,3 +1,10 @@
+Mon Aug 14 11:10:20 EDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Patch from Dave Yearke <yearke@eng.buffalo.edu>:
+	* testHTML.c: fix core dump on Solaris 2.x systems
+	* HTMLparser.c: fix segfault if ctxt->sax->characters() is NULL
+	* result/HTML/*.sax: previous bug fix lead to new results
+
 Mon Aug 14 10:26:09 EDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Patch from Albert Chin-A-Young <china@thewrittenword.com>:

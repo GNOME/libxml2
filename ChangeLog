@@ -1,3 +1,10 @@
+Sat Jun 23 19:36:31 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/libxml-doc.el: a new version of libxml-doc.el. This new
+	  version works with both libxml1 and libxml2 (it autodetects
+	  the prefix of the html-files) from Felix Natter.
+	* doc/xml.html: updated doc accordingly
+
 Sat Jun 23 18:30:28 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: fixed the bug generating a template loop in libxslt

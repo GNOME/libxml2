@@ -5,7 +5,7 @@
 	* configure.in: Create the libxml-2.0.pc script from the
 	libxml-2.0.pc.in templates.
 	* Makefile.am (pkgconfig_DATA): Install the libxml-2.0.pc
-	script in `$(libexecdir)/pkgconfig'.
+	script in `$(libdir)/pkgconfig'.
 
 Mon Sep 25 16:23:41 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 

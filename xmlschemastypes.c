@@ -687,7 +687,9 @@ xmlSchemaNewValue(xmlSchemaValType type) {
  * @value:  the value
  *
  * Allocate a new simple type value. The type can be 
- * of XML_SCHEMAS_STRING.
+ * of XML_SCHEMAS_STRING. 
+ * WARNING: This one is intended to be expanded for other
+ * string based types. We need this for anySimpleType as well.
  *
  * Returns a pointer to the new value or NULL in case of error
  */
@@ -3085,12 +3087,12 @@ xmlSchemaCopyValue(xmlSchemaValPtr val)
         case XML_SCHEMAS_IDREF:
         case XML_SCHEMAS_ENTITY:
         case XML_SCHEMAS_NMTOKEN:
+	case XML_SCHEMAS_ANYURI:
             ret = xmlSchemaDupVal(val);
             if (val->value.str != NULL)
                 ret->value.str = xmlStrdup(BAD_CAST val->value.str);
             return (ret);
-        case XML_SCHEMAS_QNAME:
-        case XML_SCHEMAS_ANYURI:
+        case XML_SCHEMAS_QNAME:        
         case XML_SCHEMAS_NOTATION:
             ret = xmlSchemaDupVal(val);
             if (val->value.qname.name != NULL)
@@ -4081,7 +4083,6 @@ xmlSchemaCompareValuesInternal(xmlSchemaValPtr x,
     switch (x->type) {
 	case XML_SCHEMAS_UNKNOWN:
 	case XML_SCHEMAS_ANYTYPE:
-	case XML_SCHEMAS_ANYSIMPLETYPE:
 	    return(-2);
         case XML_SCHEMAS_INTEGER:
         case XML_SCHEMAS_NPINTEGER:
@@ -4137,6 +4138,11 @@ xmlSchemaCompareValuesInternal(xmlSchemaValPtr x,
                 (y->type == XML_SCHEMAS_GYEARMONTH))
                 return (xmlSchemaCompareDates(x, y));
             return (-2);
+	/* 
+	* Note that we will support comparison of string types against
+	* anySimpleType as well.
+	*/
+	case XML_SCHEMAS_ANYSIMPLETYPE:
 	case XML_SCHEMAS_STRING:
         case XML_SCHEMAS_NORMSTRING:		
         case XML_SCHEMAS_TOKEN:
@@ -4156,7 +4162,8 @@ xmlSchemaCompareValuesInternal(xmlSchemaValPtr x,
 		TODO
 		return (-2);
 	    }
-            if ((y->type == XML_SCHEMAS_STRING) ||
+            if ((y->type == XML_SCHEMAS_ANYSIMPLETYPE) ||
+		(y->type == XML_SCHEMAS_STRING) ||
 		(y->type == XML_SCHEMAS_NORMSTRING) ||
                 (y->type == XML_SCHEMAS_TOKEN) ||
                 (y->type == XML_SCHEMAS_LANGUAGE) ||

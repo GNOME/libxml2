@@ -26,6 +26,7 @@ var optsFile = srcDirXml + "\\include\\libxml\\xmlversion.h";
 var verMajor;
 var verMinor;
 var verMicro;
+var verMicroSuffix;
 /* Libxml features. */
 var withTrio = false;
 var withThreads = "native";

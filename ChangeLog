@@ -1,3 +1,10 @@
+Wed Nov 27 12:40:16 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c include/libxml/tree.h: refactored the XML dump of a node
+	  to a buffer API to reuse the generic dump to an OutputIO layer,
+	  this reduces code, fixes xmlNodeDump() for XHTML, also made
+	  xmlNodeDump() now return the number of byte written.
+
 Wed Nov 27 09:00:00 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/setup.py.in: another patch from Stéphane Bidoul for 

@@ -839,7 +839,7 @@ int		xmlSaveFile		(const char *filename,
 int		xmlSaveFormatFile	(const char *filename,
 					 xmlDocPtr cur,
 					 int format);
-void		xmlNodeDump		(xmlBufferPtr buf,
+int		xmlNodeDump		(xmlBufferPtr buf,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur,
 					 int level,

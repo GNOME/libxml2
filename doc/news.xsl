@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                version="1.0">
   <xsl:output method="text" encoding="ISO-8859-1"/>
 
   <xsl:template match="/">
@@ -10,26 +12,27 @@
        http://xmlsoft.org/news.html
 
 </xsl:text>
-    <xsl:apply-templates select="//h3[1]/.."/>
+    <xsl:apply-templates select="//xhtml:h3[1]/.."/>
   </xsl:template>
-  <xsl:template match="h3">
+  <xsl:template match="xhtml:h3">
     <xsl:text>
 </xsl:text>
     <xsl:apply-templates/>
-    <xsl:text>:</xsl:text>
+    <xsl:text>:
+</xsl:text>
   </xsl:template>
-  <xsl:template match="ul">
-    <xsl:apply-templates select=".//li"/>
+  <xsl:template match="xhtml:ul">
+    <xsl:apply-templates select=".//xhtml:li"/>
     <xsl:text>
 </xsl:text>
   </xsl:template>
-  <xsl:template match="li">
+  <xsl:template match="xhtml:li">
     <xsl:text>   - </xsl:text>
     <xsl:value-of select="."/>
     <xsl:text>
 </xsl:text>
   </xsl:template>
-  <xsl:template match="a">
+  <xsl:template match="xhtml:a">
     <xsl:value-of select="."/>
     <xsl:text> at 
 </xsl:text>

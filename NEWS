@@ -5,17 +5,14 @@
        http://xmlsoft.org/news.html
 
 
-
 CVS only : check the Changelog at 
 http://cvs.gnome.org/lxr/source/gnome-xml/ChangeLog
  file
 for a really accurate description:
 Items not finished and worked on, get in touch with the list if you want
-to test those
-   - More testing on RelaxNG
+to test those   - More testing on RelaxNG
    - Finishing up XML
   Schemas
-
 
 
 2.5.7: Apr 25 2003:
@@ -125,7 +122,6 @@ to test those
    - Added documentation for the XmltextReader interface and some XML guidelines
 
 
-
 2.4.30: Dec 12 2002:
    - 2.4.29 broke the python bindings, rereleasing
    - Improvement/fixes of the XML API generator, and couple of minor code
@@ -197,8 +193,7 @@ to test those
    - Better error reporting: XPath and DTD validation
    - update of the trio portability layer (Bjorn Reese)
 
-2.4.24: Aug 22 2002
-   - XPath fixes (William), xf:escape-uri() (Wesley Terpstra)
+2.4.24: Aug 22 2002   - XPath fixes (William), xf:escape-uri() (Wesley Terpstra)
    - Python binding fixes: makefiles (William), generator, rpm build, x86-64
     (fcrozat)
    - HTML <style> and boolean attributes serializer fixes
@@ -240,8 +235,7 @@ http://www.w3.org/TR/xmlschema-2/
  code, beware, all
 interfaces are likely to change, there is huge holes, it is clearly a work in
 progress and don't even think of putting this code in a production system,
-it's actually not compiled in by default. The real fixes are:
-   - a couple of bugs or limitations introduced in 2.4.20
+it's actually not compiled in by default. The real fixes are:   - a couple of bugs or limitations introduced in 2.4.20
    - patches for Borland C++ and MSC by Igor
    - some fixes on XPath strings and conformance patches by Richard
   Jinks
@@ -483,8 +477,7 @@ it's actually not compiled in by default. The real fixes are:
 
 
 2.3.9: May 19 2001:
-Lots of bugfixes, and added a basic SGML catalog support:
-   - HTML push bugfix #54891 and another patch from Jonas Borgström
+Lots of bugfixes, and added a basic SGML catalog support:   - HTML push bugfix #54891 and another patch from Jonas Borgström
    - some serious speed optimization again
    - some documentation cleanups
    - trying to get better linking on Solaris (-R)
@@ -709,7 +702,6 @@ Lots of bugfixes, and added a basic SGML catalog support:
     support
 
 
-
 1.8.9:  July 9 2000:
    - fixed the spec the RPMs should be better
    - fixed a serious bug in the FTP implementation, released 1.8.9 to solve
@@ -781,7 +773,6 @@ Lots of bugfixes, and added a basic SGML catalog support:
    - This includes a very large set of changes. From a  programmatic point
     of view applications should not have to be modified too much, check the
     upgrade page
-
    - Some interfaces may changes (especially a bit about encoding).
    - the updates includes:
     fix I18N support. ISO-Latin-x/UTF-8/UTF-16 (nearly) seems correctly
@@ -865,7 +856,6 @@ Lots of bugfixes, and added a basic SGML catalog support:
    - Tried to improve the HTML output with help from Chris Lahey
 
 
-
 1.8.1: Dec 18 1999:
    - various patches to avoid troubles when using libxml with C++ compilers
     the "namespace" keyword and C escaping in include files
@@ -924,4 +914,3 @@ Lots of bugfixes, and added a basic SGML catalog support:
 
 Daniel Veillard at 
 bugs.html
-

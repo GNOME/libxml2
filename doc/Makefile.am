@@ -34,14 +34,16 @@ web: $(PAGES) $(APIPAGES)
 $(PAGES): xml.html site.xsl
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
 	  $(bindir)/xsltproc --html $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/xml.html > index.html ; fi );
+	-@(if [ -x $(bindir)/xmllint ] ; then \
+	  $(bindir)/xmllint --valid --noout $(PAGES) ; fi );
 
 $(top_srcdir)/NEWS: $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
-	  $(bindir)/xsltproc --html $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html > $(top_srcdir)/NEWS ; fi );
+	  $(bindir)/xsltproc $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html > $(top_srcdir)/NEWS ; fi );
 
 libxml2.xsa: $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
-	  $(bindir)/xsltproc --html $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html > libxml2.xsa ; fi );
+	  $(bindir)/xsltproc $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html > libxml2.xsa ; fi );
 
 $(APIPAGES): libxml2-refs.xml site.xsl api.xsl
 	-@(if [ -x $(bindir)/xsltproc ] ; then \

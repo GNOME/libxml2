@@ -4,7 +4,8 @@
   latest News entry.
   See http://www.garshol.priv.no/download/xsa/ for a description of XSA
  -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+     xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xhtml">
   <xsl:output method="xml"
       doctype-public="-//LM Garshol//DTD XML Software Autoupdate 1.0//EN//XML"
       doctype-system="http://www.garshol.priv.no/download/xsa/xsa.dtd"
@@ -19,29 +20,29 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version><xsl:value-of select="substring-before(//h3[2], ':')"/></version>
-    <last-release><xsl:value-of select="substring-after(//h3[2], ':')"/></last-release>
+    <version><xsl:value-of select="substring-before(//xhtml:h3[2], ':')"/></version>
+    <last-release><xsl:value-of select="substring-after(//xhtml:h3[2], ':')"/></last-release>
     <info-url>http://xmlsoft.org/</info-url>
     <changes>
-    <xsl:apply-templates select="//h3[2]/following-sibling::*[1]"/>
+    <xsl:apply-templates select="//xhtml:h3[2]/following-sibling::*[1]"/>
     </changes>
   </product>
 </xsa>
   </xsl:template>
-  <xsl:template match="h3">
+  <xsl:template match="xhtml:h3">
   </xsl:template>
-  <xsl:template match="ul">
-    <xsl:apply-templates select=".//li"/>
+  <xsl:template match="xhtml:ul">
+    <xsl:apply-templates select=".//xhtml:li"/>
     <xsl:text>
 </xsl:text>
   </xsl:template>
-  <xsl:template match="li">
+  <xsl:template match="xhtml:li">
     <xsl:text>   - </xsl:text>
     <xsl:value-of select="."/>
     <xsl:text>
 </xsl:text>
   </xsl:template>
-  <xsl:template match="a">
+  <xsl:template match="xhtml:a">
     <xsl:value-of select="."/>
     <xsl:text> at 
 </xsl:text>

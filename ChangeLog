@@ -1,3 +1,9 @@
+Sun Apr 27 00:23:05 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS doc/*.xsl doc/*.html: updated the web site separated
+	  developers from common pages, made the transition to XHTML1,
+	  added validity checking to the makefile rules.
+
 Sat Apr 26 23:17:51 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix for xmlIOParseDTD same as previous and reported

@@ -371,7 +371,7 @@ libxml_xpathCallbacksInitialize(void) {
 }
 
 PyObject *
-libxml_registerXPathFunction(PyObject *self, PyObject *args) {
+libxml_xmlRegisterXPathFunction(PyObject *self, PyObject *args) {
     PyObject *py_retval;
     int c_retval = 0;
     xmlChar *name;
@@ -946,7 +946,6 @@ static PyMethodDef libxmlMethods[] = {
     { "parent", libxml_parent, METH_VARARGS },
     { "type", libxml_type, METH_VARARGS },
     { "doc", libxml_doc, METH_VARARGS },
-    { "registerXPathFunction", libxml_registerXPathFunction, METH_VARARGS }
 };
 
 void init_libxml(void) {

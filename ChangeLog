@@ -1,3 +1,8 @@
+Wed Oct 23 10:53:42 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* include/Makefile.am: added winsockcompat.h to EXTRA_DIST to
+	  fix bug #96586
+
 Tue Oct 22 21:13:06 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: Mikhail Sogrine pointed out a bug in HTML

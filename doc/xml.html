@@ -589,6 +589,13 @@ to test those</p>
     Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a></li>
 </ul>
 
+<h3>2.4.30: Dec 12 2002</h3>
+<ul>
+  <li>2.4.29 broke the python bindings, rereleasing</li>
+  <li>Improvement/fixes of the XML API generator, and couple of minor code
+    fixes.</li>
+</ul>
+
 <h3>2.4.29: Dec 11 2002</h3>
 <ul>
   <li>Windows fixes (Igor): Windows CE port, pthread linking, python bindings
@@ -2729,6 +2736,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

@@ -1,7 +1,10 @@
 Thu Dec 12 10:59:11 CET 2002 Daniel Veillard <daniel@veillard.com>
 
+	* configure.in: preparing release of 2.4.30
 	* doc/apibuild.py doc/libxml2-api.xml: fixups to the api builder,
-	  gives enum values, fix functype return type
+	  gives enum values, fix functype return type, put back fields in
+	  structs 
+	* doc/*: updated the docs rebuilt
 
 Thu Dec 12 01:09:34 CET 2002 Daniel Veillard <daniel@veillard.com>
 

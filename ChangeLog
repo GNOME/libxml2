@@ -1,3 +1,7 @@
+Mon Feb 26 09:30:23 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/xml.html: applied patch from Ankh
+
 Mon Feb 26 03:34:43 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xinclude.c: fixed a problem building on Mac

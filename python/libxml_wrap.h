@@ -60,6 +60,22 @@ typedef struct {
 
 typedef struct {
     PyObject_HEAD
+    xmlOutputBufferPtr obj;
+} PyoutputBuffer_Object;
+
+#define PyoutputBuffer_Get(v) (((v) == Py_None) ? NULL : \
+	(((PyURI_Object *)(v))->obj))
+
+typedef struct {
+    PyObject_HEAD
+    xmlParserInputBufferPtr obj;
+} PyinputBuffer_Object;
+
+#define PyinputBuffer_Get(v) (((v) == Py_None) ? NULL : \
+	(((PyURI_Object *)(v))->obj))
+
+typedef struct {
+    PyObject_HEAD
     xmlURIPtr obj;
 } PyURI_Object;
 
@@ -89,5 +105,7 @@ PyObject * libxml_xmlXPathParserContextPtrWrap(xmlXPathParserContextPtr ctxt);
 PyObject * libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj);
 PyObject * libxml_xmlCatalogPtrWrap(xmlCatalogPtr obj);
 PyObject * libxml_xmlURIPtrWrap(xmlURIPtr uri);
+PyObject * libxml_xmlOutputBufferPtrWrap(xmlOutputBufferPtr buffer);
+PyObject * libxml_xmlParserInputBufferPtrWrap(xmlParserInputBufferPtr buffer);
 
 xmlXPathObjectPtr libxml_xmlXPathObjectPtrConvert(PyObject * obj);

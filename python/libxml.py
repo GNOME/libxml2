@@ -27,6 +27,74 @@ class xpathError:
     def __str__(self):
         return self.msg
 
+class ioWrapper:
+    def __init__(self, _obj):
+        self.__io = _obj
+        self._o = None
+
+    def io_close(self):
+        if self.__io == None:
+	    return(-1)
+	self.__io.close()
+	self.__io = None
+	return(0)
+
+    def io_flush(self):
+        if self.__io == None:
+	    return(-1)
+	self.__io.flush()
+	return(0)
+
+    def io_read(self, len = -1):
+        if self.__io == None:
+	    return(-1)
+        if len < 0:
+	    return(self.__io.read())
+	return(self.__io.read(len))
+
+    def io_write(self, str, len = -1):
+        if self.__io == None:
+	    return(-1)
+        if len < 0:
+	    return(self.__io.write(str))
+	return(self.__io.write(str, len))
+
+class ioReadWrapper(ioWrapper):
+    def __init__(self, _obj, enc = ""):
+        ioWrapper.__init__(self, _obj)
+        self._o = libxml2mod.xmlCreateInputBuffer(self, enc)
+
+    def __del__(self):
+        print "__del__"
+        self.io_close()
+        if self._o != None:
+            libxml2mod.xmlFreeParserInputBuffer(self._o)
+        self._o = None
+
+    def close(self):
+        self.io_close()
+        if self._o != None:
+            libxml2mod.xmlFreeParserInputBuffer(self._o)
+        self._o = None
+
+class ioWriteWrapper(ioWrapper):
+    def __init__(self, _obj, enc = ""):
+        ioWrapper.__init__(self, _obj)
+        self._o = libxml2mod.xmlCreateOutputBuffer(self, enc)
+
+    def __del__(self):
+        print "__del__"
+        self.io_close()
+        if self._o != None:
+            libxml2mod.xmlOutputBufferClose(self._o)
+        self._o = None
+
+    def close(self):
+        self.io_close()
+        if self._o != None:
+            libxml2mod.xmlOutputBufferClose(self._o)
+        self._o = None
+
 #
 # Example of a class to handle SAX events
 #

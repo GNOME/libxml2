@@ -268,6 +268,8 @@ py_types = {
     'xmlCatalogPtr': ('O', "catalog", "xmlCatalogPtr", "xmlCatalogPtr"),
     'FILE *': ('O', "File", "FILEPtr", "FILE *"),
     'xmlURIPtr': ('O', "URI", "xmlURIPtr", "xmlURIPtr"),
+    'xmlOutputBufferPtr': ('O', "outputBuffer", "xmlOutputBufferPtr", "xmlOutputBufferPtr"),
+    'xmlParserInputBufferPtr': ('O', "inputBuffer", "xmlParserInputBufferPtr", "xmlParserInputBufferPtr"),
 }
 
 py_return_types = {
@@ -583,6 +585,8 @@ classes_type = {
     "htmlParserCtxt *": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
     "xmlCatalogPtr": ("._o", "catalog(_obj=%s)", "catalog"),
     "xmlURIPtr": ("._o", "URI(_obj=%s)", "URI"),
+    "xmlOutputBufferPtr": ("._o", "outputBuffer(_obj=%s)", "outputBuffer"),
+    "xmlParserInputBufferPtr": ("._o", "inputBuffer(_obj=%s)", "inputBuffer"),
 }
 
 converter_type = {
@@ -600,11 +604,15 @@ classes_ancestor = {
     "xmlEntity" : "xmlNode",
     "xmlElement" : "xmlNode",
     "xmlAttribute" : "xmlNode",
+    "outputBuffer": "ioWriteWrapper",
+    "inputBuffer": "ioReadWrapper",
 }
 classes_destructors = {
     "parserCtxt": "xmlFreeParserCtxt",
     "catalog": "xmlFreeCatalog",
     "URI": "xmlFreeURI",
+#    "outputBuffer": "xmlOutputBufferClose",
+    "inputBuffer": "xmlFreeParserInputBuffer",
 }
 
 functions_noexcept = {
@@ -646,6 +654,12 @@ def nameFixup(name, classe, type, file):
         func = string.lower(func[0:1]) + func[1:]
     elif name[0:11] == "xmlXPathSet" and file == "python_accessor":
         func = name[8:]
+        func = string.lower(func[0:1]) + func[1:]
+    elif name[0:15] == "xmlOutputBuffer" and file != "python":
+        func = name[15:]
+        func = string.lower(func[0:1]) + func[1:]
+    elif name[0:20] == "xmlParserInputBuffer" and file != "python":
+        func = name[20:]
         func = string.lower(func[0:1]) + func[1:]
     elif name[0:11] == "xmlACatalog":
         func = name[11:]

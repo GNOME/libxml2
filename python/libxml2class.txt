@@ -114,6 +114,8 @@ nodePush()
 
 # functions from module python
 SAXParseFile()
+createInputBuffer()
+createOutputBuffer()
 createPushParser()
 debugMemory()
 dumpMemory()
@@ -121,6 +123,7 @@ htmlCreatePushParser()
 htmlSAXParseFile()
 newNode()
 registerErrorHandler()
+setEntityLoader()
 
 # functions from module tree
 compressMode()
@@ -276,10 +279,13 @@ Class xmlDoc(xmlNode)
     htmlIsAutoClosed()
 
     # functions from module HTMLtree
+    htmlDocContentDumpFormatOutput()
+    htmlDocContentDumpOutput()
     htmlDocDump()
     htmlGetMetaEncoding()
     htmlNodeDumpFile()
     htmlNodeDumpFileFormat()
+    htmlNodeDumpFormatOutput()
     htmlSaveFile()
     htmlSaveFileEnc()
     htmlSaveFileFormat()
@@ -323,10 +329,13 @@ Class xmlDoc(xmlNode)
     newDtd()
     newGlobalNs()
     newReference()
+    nodeDumpOutput()
     saveFile()
     saveFileEnc()
+    saveFileTo()
     saveFormatFile()
     saveFormatFileEnc()
+    saveFormatFileTo()
     setDocCompressMode()
     stringGetNodeList()
     stringLenGetNodeList()
@@ -510,6 +519,15 @@ Class parserCtxt()
     stringDecodeEntities()
 
 
+Class outputBuffer(ioWriteWrapper)
+
+    # functions from module xmlIO
+    close()
+    flush()
+    write()
+    writeString()
+
+
 Class xmlElement(xmlNode)
 
 
@@ -584,3 +602,12 @@ Class xpathContext()
     xpathRegisteredVariablesCleanup()
     xpathVariableLookup()
     xpathVariableLookupNS()
+
+
+Class inputBuffer(ioReadWrapper)
+
+    # functions from module xmlIO
+    freeParserInputBuffer()
+    grow()
+    push()
+    read()

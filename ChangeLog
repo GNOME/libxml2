@@ -1,3 +1,15 @@
+Thu Sep 12 16:57:45 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c python/libxml.py
+	  python/libxml2-python-api.xml python/libxml2class.txt
+	  python/libxml_wrap.h python/types.c: updated the python
+	  bindings, added code for easier File I/O, and the ability to
+	  define a resolver from Python fixing bug #91635
+	* python/tests/Makefile.am python/tests/inbuf.py
+	  python/tests/outbuf.py python/tests/pushSAXhtml.py
+	  python/tests/resolver.py python/tests/serialize.py: updated
+	  and augmented the set of Python tests.
+
 Tue Sep 10 21:05:28 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/configure.js: added more readme info for the binary

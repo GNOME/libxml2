@@ -469,3 +469,39 @@ libxml_xmlCatalogPtrWrap(xmlCatalogPtr catal)
                                      (char *) "xmlCatalogPtr", NULL);
     return (ret);
 }
+
+PyObject *
+libxml_xmlOutputBufferPtrWrap(xmlOutputBufferPtr buffer)
+{
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlOutputBufferPtrWrap: buffer = %p\n", buffer);
+#endif
+    if (buffer == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+    ret =
+        PyCObject_FromVoidPtrAndDesc((void *) buffer,
+                                     (char *) "xmlOutputBufferPtr", NULL);
+    return (ret);
+}
+
+PyObject *
+libxml_xmlParserInputBufferPtrWrap(xmlParserInputBufferPtr buffer)
+{
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlParserInputBufferPtrWrap: buffer = %p\n", buffer);
+#endif
+    if (buffer == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+    ret =
+        PyCObject_FromVoidPtrAndDesc((void *) buffer,
+                                     (char *) "xmlParserInputBufferPtr", NULL);
+    return (ret);
+}

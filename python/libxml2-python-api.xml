@@ -50,6 +50,23 @@
       <arg name='URI' type='xmlChar *' info='The URI of the resource'/>
       <arg name='encoding' type='const char *' info='encoding or None'/>
     </function>
+    <function name='xmlCreateOutputBuffer' file='python'>
+      <info>Create a libxml2 output buffer from a Python file</info>
+      <return type='xmlOutputBufferPtr' info="the output buffer"/>
+      <arg name='file' type='pythonObject' info='the Python file'/>
+      <arg name='encoding' type='xmlChar *' info='an optionnal encoding'/>
+    </function>
+    <function name='xmlCreateInputBuffer' file='python'>
+      <info>Create a libxml2 input buffer from a Python file</info>
+      <return type='xmlParserInputBufferPtr' info="the input buffer"/>
+      <arg name='file' type='pythonObject' info='the Python file'/>
+      <arg name='encoding' type='xmlChar *' info='an optionnal encoding'/>
+    </function>
+    <function name='xmlSetEntityLoader' file='python'>
+      <info>Set the entity resolver as a python function</info>
+      <return type='int' info="0 in case of success, -1 for error"/>
+      <arg name='resolver' type='pythonObject' info='the Python function'/>
+    </function>
     <!-- xmlParserCtxtPtr accessors -->
     <function name='xmlParserGetDoc' file='python_accessor'>
       <info>Get the document tree from a parser context.</info>

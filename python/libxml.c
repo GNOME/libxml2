@@ -12,6 +12,7 @@
  * daniel@veillard.com
  */
 #include <Python.h>
+#include <fileobject.h>
 #include "config.h"
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -20,20 +21,29 @@
 #include <libxml/xmlerror.h>
 #include <libxml/xpathInternals.h>
 #include <libxml/xmlmemory.h>
+#include <libxml/xmlIO.h>
 #include "libxml_wrap.h"
 #include "libxml2-py.h"
 
 /* #define DEBUG */
-
 /* #define DEBUG_SAX */
-
 /* #define DEBUG_XPATH */
-
 /* #define DEBUG_ERROR */
-
 /* #define DEBUG_MEMORY */
+/* #define DEBUG_FILES */
+/* #define DEBUG_LOADER */
 
 void initlibxml2mod(void);
+
+/**
+ * TODO:
+ *
+ * macro to flag unimplemented blocks
+ */
+#define TODO 								\
+    xmlGenericError(xmlGenericErrorContext,				\
+	    "Unimplemented block at %s:%d\n",				\
+            __FILE__, __LINE__);
 
 /************************************************************************
  *									*
@@ -122,6 +132,363 @@ libxml_xmlDumpMemory(ATTRIBUTE_UNUSED PyObject * self,
     Py_INCREF(Py_None);
     return (Py_None);
 }
+
+/************************************************************************
+ *									*
+ *		Handling Python FILE I/O at the C level			*
+ *	The raw I/O attack diectly the File objects, while the		*
+ *	other routines address the ioWrapper instance instead		*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlPythonFileCloseUnref:
+ * @context:  the I/O context
+ *
+ * Close an I/O channel
+ */
+static int
+xmlPythonFileCloseRaw (void * context) {
+    PyObject *file, *ret;
+
+#ifdef DEBUG_FILES
+    printf("xmlPythonFileCloseUnref\n");
+#endif
+    file = (PyObject *) context;
+    if (file == NULL) return(-1);
+    ret = PyEval_CallMethod(file, "close", "()");
+    if (ret != NULL) {
+	Py_DECREF(ret);
+    }
+    Py_DECREF(file);
+    return(0);
+}
+
+/**
+ * xmlPythonFileReadRaw:
+ * @context:  the I/O context
+ * @buffer:  where to drop data
+ * @len:  number of bytes to write
+ *
+ * Read @len bytes to @buffer from the Python file in the I/O channel
+ *
+ * Returns the number of bytes read
+ */
+static int
+xmlPythonFileReadRaw (void * context, char * buffer, int len) {
+    PyObject *file;
+    PyObject *ret;
+    int lenread = -1;
+    char *data;
+
+#ifdef DEBUG_FILES
+    printf("xmlPythonFileReadRaw: %d\n", len);
+#endif
+    file = (PyObject *) context;
+    if (file == NULL) return(-1);
+    ret = PyEval_CallMethod(file, "read", "(i)", len);
+    if (ret == NULL) {
+	printf("xmlPythonFileReadRaw: result is NULL\n");
+	return(-1);
+    } else if (PyString_Check(ret)) {
+	lenread = PyString_Size(ret);
+	data = PyString_AsString(ret);
+	if (lenread > len)
+	    memcpy(buffer, data, len);
+	else
+	    memcpy(buffer, data, lenread);
+	Py_DECREF(ret);
+    } else {
+	printf("xmlPythonFileReadRaw: result is not a String\n");
+	Py_DECREF(ret);
+    }
+    return(lenread);
+}
+
+/**
+ * xmlPythonFileRead:
+ * @context:  the I/O context
+ * @buffer:  where to drop data
+ * @len:  number of bytes to write
+ *
+ * Read @len bytes to @buffer from the I/O channel.
+ *
+ * Returns the number of bytes read
+ */
+static int
+xmlPythonFileRead (void * context, char * buffer, int len) {
+    PyObject *file;
+    PyObject *ret;
+    int lenread = -1;
+    char *data;
+
+#ifdef DEBUG_FILES
+    printf("xmlPythonFileRead: %d\n", len);
+#endif
+    file = (PyObject *) context;
+    if (file == NULL) return(-1);
+    ret = PyEval_CallMethod(file, "io_read", "(i)", len);
+    if (ret == NULL) {
+	printf("xmlPythonFileRead: result is NULL\n");
+	return(-1);
+    } else if (PyString_Check(ret)) {
+	lenread = PyString_Size(ret);
+	data = PyString_AsString(ret);
+	if (lenread > len)
+	    memcpy(buffer, data, len);
+	else
+	    memcpy(buffer, data, lenread);
+	Py_DECREF(ret);
+    } else {
+	printf("xmlPythonFileRead: result is not a String\n");
+	Py_DECREF(ret);
+    }
+    return(lenread);
+}
+
+/**
+ * xmlFileWrite:
+ * @context:  the I/O context
+ * @buffer:  where to drop data
+ * @len:  number of bytes to write
+ *
+ * Write @len bytes from @buffer to the I/O channel.
+ *
+ * Returns the number of bytes written
+ */
+static int
+xmlPythonFileWrite (void * context, const char * buffer, int len) {
+    PyObject *file;
+    PyObject *string;
+    PyObject *ret;
+    int written = -1;
+
+#ifdef DEBUG_FILES
+    printf("xmlPythonFileWrite: %d\n", len);
+#endif
+    file = (PyObject *) context;
+    if (file == NULL) return(-1);
+    string = PyString_FromStringAndSize(buffer, len);
+    if (string == NULL) return(-1);
+    ret = PyEval_CallMethod(file, "io_write", "(O)", string);
+    Py_DECREF(string);
+    if (ret == NULL) {
+	printf("xmlPythonFileWrite: result is NULL\n");
+	return(-1);
+    } else if (PyInt_Check(ret)) {
+	written = (int) PyInt_AsLong(ret);
+	Py_DECREF(ret);
+    } else if (ret == Py_None) {
+	written = len;
+	Py_DECREF(ret);
+    } else {
+	printf("xmlPythonFileWrite: result is not an Int nor None\n");
+	Py_DECREF(ret);
+    }
+    return(written);
+}
+
+/**
+ * xmlPythonFileClose:
+ * @context:  the I/O context
+ *
+ * Close an I/O channel
+ */
+static int
+xmlPythonFileClose (void * context) {
+    PyObject *file, *ret;
+
+#ifdef DEBUG_FILES
+    printf("xmlPythonFileClose\n");
+#endif
+    file = (PyObject *) context;
+    if (file == NULL) return(-1);
+    ret = PyEval_CallMethod(file, "io_close", "()");
+    if (ret != NULL) {
+	Py_DECREF(ret);
+    }
+    return(0);
+}
+
+/**
+ * xmlOutputBufferCreatePythonFile:
+ * @file:  a PyFile_Type
+ * @encoder:  the encoding converter or NULL
+ *
+ * Create a buffered output for the progressive saving to a PyFile_Type
+ * buffered C I/O
+ *
+ * Returns the new parser output or NULL
+ */
+xmlOutputBufferPtr
+xmlOutputBufferCreatePythonFile(PyObject *file, 
+	                        xmlCharEncodingHandlerPtr encoder) {
+    xmlOutputBufferPtr ret;
+
+    if (file == NULL) return(NULL);
+
+    ret = xmlAllocOutputBuffer(encoder);
+    if (ret != NULL) {
+        ret->context = file;
+	/* Py_INCREF(file); */
+	ret->writecallback = xmlPythonFileWrite;
+	ret->closecallback = xmlPythonFileClose;
+    }
+
+    return(ret);
+}
+
+PyObject *
+libxml_xmlCreateOutputBuffer(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
+    PyObject *py_retval;
+    PyObject *file;
+    xmlChar  *encoding;
+    xmlCharEncodingHandlerPtr handler = NULL;
+    xmlOutputBufferPtr buffer;
+
+
+    if (!PyArg_ParseTuple(args, (char *)"Oz:xmlOutputBufferCreate",
+		&file, &encoding))
+	return(NULL);
+    if ((encoding != NULL) && (encoding[0] != 0)) {
+	handler = xmlFindCharEncodingHandler(encoding);
+    }
+    buffer = xmlOutputBufferCreatePythonFile(file, handler);
+    if (buffer == NULL)
+	printf("libxml_xmlCreateOutputBuffer: buffer == NULL\n");
+    py_retval = libxml_xmlOutputBufferPtrWrap(buffer);
+    return(py_retval);
+}
+
+
+/**
+ * xmlParserInputBufferCreatePythonFile:
+ * @file:  a PyFile_Type
+ * @encoder:  the encoding converter or NULL
+ *
+ * Create a buffered output for the progressive saving to a PyFile_Type
+ * buffered C I/O
+ *
+ * Returns the new parser output or NULL
+ */
+xmlParserInputBufferPtr
+xmlParserInputBufferCreatePythonFile(PyObject *file, 
+	                        xmlCharEncoding encoding) {
+    xmlParserInputBufferPtr ret;
+
+    if (file == NULL) return(NULL);
+
+    ret = xmlAllocParserInputBuffer(encoding);
+    if (ret != NULL) {
+        ret->context = file;
+	/* Py_INCREF(file); */
+	ret->readcallback = xmlPythonFileRead;
+	ret->closecallback = xmlPythonFileClose;
+    }
+
+    return(ret);
+}
+
+PyObject *
+libxml_xmlCreateInputBuffer(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
+    PyObject *py_retval;
+    PyObject *file;
+    xmlChar  *encoding;
+    xmlCharEncoding enc = XML_CHAR_ENCODING_NONE;
+    xmlParserInputBufferPtr buffer;
+
+
+    if (!PyArg_ParseTuple(args, (char *)"Oz:xmlParserInputBufferCreate",
+		&file, &encoding))
+	return(NULL);
+    if ((encoding != NULL) && (encoding[0] != 0)) {
+	enc = xmlParseCharEncoding(encoding);
+    }
+    buffer = xmlParserInputBufferCreatePythonFile(file, enc);
+    if (buffer == NULL)
+	printf("libxml_xmlParserInputBufferCreate: buffer == NULL\n");
+    py_retval = libxml_xmlParserInputBufferPtrWrap(buffer);
+    return(py_retval);
+}
+
+/************************************************************************
+ *									*
+ *		Providing the resolver at the Python level		*
+ *									*
+ ************************************************************************/
+
+static xmlExternalEntityLoader defaultExternalEntityLoader = NULL;
+static PyObject *pythonExternalEntityLoaderObjext;
+
+static xmlParserInputPtr
+pythonExternalEntityLoader(const char *URL, const char *ID,
+			   xmlParserCtxtPtr ctxt) {
+    xmlParserInputPtr result = NULL;
+    if (pythonExternalEntityLoaderObjext != NULL) {
+	PyObject *ret;
+	PyObject *ctxtobj;
+
+	ctxtobj = libxml_xmlParserCtxtPtrWrap(ctxt);
+#ifdef DEBUG_LOADER
+	printf("pythonExternalEntityLoader: ready to call\n");
+#endif
+
+	ret = PyObject_CallFunction(pythonExternalEntityLoaderObjext,
+		      "(ssO)", URL, ID, ctxtobj);
+#ifdef DEBUG_LOADER
+	printf("pythonExternalEntityLoader: result ");
+	PyObject_Print(ret, stdout, 0);
+	printf("\n");
+#endif
+
+	if (ret != NULL) {
+	    if (PyObject_HasAttrString(ret, "read")) {
+		xmlParserInputBufferPtr buf;
+
+		buf = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
+		if (buf != NULL) {
+		    buf->context = ret;
+		    buf->readcallback = xmlPythonFileReadRaw;
+		    buf->closecallback = xmlPythonFileCloseRaw;
+		    result = xmlNewIOInputStream(ctxt, buf,
+			                         XML_CHAR_ENCODING_NONE);
+		}
+	    } else {
+		printf("pythonExternalEntityLoader: can't read\n");
+	    }
+	    if (result == NULL) {
+		Py_DECREF(ret);
+	    }
+	}
+    }
+    if ((result == NULL) && (defaultExternalEntityLoader != NULL)) {
+	result = defaultExternalEntityLoader(URL, ID, ctxt);
+    }
+    return(result);
+}
+
+PyObject *
+libxml_xmlSetEntityLoader(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
+    PyObject *py_retval;
+    PyObject *loader;
+
+    if (!PyArg_ParseTuple(args, (char *)"O:libxml_xmlSetEntityLoader",
+		&loader))
+	return(NULL);
+
+#ifdef DEBUG_LOADER
+    printf("libxml_xmlSetEntityLoader\n");
+#endif
+    if (defaultExternalEntityLoader == NULL) 
+	defaultExternalEntityLoader = xmlGetExternalEntityLoader();
+
+    pythonExternalEntityLoaderObjext = loader;
+    xmlSetExternalEntityLoader(pythonExternalEntityLoader);
+
+    py_retval = PyInt_FromLong(0);
+    return(py_retval);
+}
+
 
 /************************************************************************
  *									*
@@ -1821,6 +2188,9 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "xmlNewNode", libxml_xmlNewNode, METH_VARARGS, NULL},
     {(char *) "serializeNode", libxml_serializeNode, METH_VARARGS, NULL},
     {(char *) "saveNodeTo", libxml_saveNodeTo, METH_VARARGS, NULL},
+    {(char *) "outputBufferCreate", libxml_xmlCreateOutputBuffer, METH_VARARGS, NULL},
+    {(char *) "inputBufferCreate", libxml_xmlCreateInputBuffer, METH_VARARGS, NULL},
+    {(char *) "setEntityLoader", libxml_xmlSetEntityLoader, METH_VARARGS, NULL},
     {NULL, NULL, 0, NULL}
 };
 
@@ -1836,6 +2206,8 @@ initlibxml2mod(void)
 
     if (initialized != 0)
         return;
+    xmlRegisterDefaultOutputCallbacks();
+    xmlRegisterDefaultInputCallbacks();
     m = Py_InitModule((char *) "libxml2mod", libxmlMethods);
     initialized = 1;
     libxml_xmlErrorInitialize();

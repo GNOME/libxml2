@@ -76,7 +76,7 @@ if str != """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http
    sys.exit(1)
 str = doc.serialize("ISO-8859-1")
 if str != """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type"><title>Hello</title></head><body><p>hello</p></body></html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Hello</title></head><body><p>hello</p></body></html>
 """:
    print "error serializing HTML document 2"
    sys.exit(1)
@@ -84,7 +84,7 @@ str = doc.serialize(format=1)
 if str != """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Hello</title>
 </head>
 <body><p>hello</p></body>
@@ -96,7 +96,7 @@ str = doc.serialize("iso-8859-1", 1)
 if str != """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Hello</title>
 </head>
 <body><p>hello</p></body>
@@ -115,13 +115,13 @@ if str != """<html><head><title>Hello</title></head><body><p>hello</p></body></h
    print "error serializing HTML root 1"
    sys.exit(1)
 str = root.serialize("ISO-8859-1")
-if str != """<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type"><title>Hello</title></head><body><p>hello</p></body></html>""":
+if str != """<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Hello</title></head><body><p>hello</p></body></html>""":
    print "error serializing HTML root 2"
    sys.exit(1)
 str = root.serialize(format=1)
 if str != """<html>
 <head>
-<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Hello</title>
 </head>
 <body><p>hello</p></body>
@@ -131,7 +131,7 @@ if str != """<html>
 str = root.serialize("iso-8859-1", 1)
 if str != """<html>
 <head>
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Hello</title>
 </head>
 <body><p>hello</p></body>

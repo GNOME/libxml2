@@ -15,7 +15,10 @@ PYTESTS=	\
     tstURI.py	\
     cutnpaste.py\
     xpathret.py	\
-    xpath.py
+    xpath.py	\
+    outbuf.py	\
+    inbuf.py	\
+    resolver.py
 
 XMLS=		\
     tst.xml	\

@@ -1,3 +1,11 @@
+Sun Oct 19 16:24:19 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fixed to not send NULL to %s printing
+	* python/tests/error.py result/HTML/doc3.htm.err
+	  result/HTML/test3.html.err result/HTML/wired.html.err
+	  result/valid/t8.xml.err result/valid/t8a.xml.err: cleaning
+	  up some of the regression tests error
+
 Sun Oct 19 15:31:43 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/nanohttp.h include/libxml/parserInternals.h 

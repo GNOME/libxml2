@@ -1132,7 +1132,7 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
         if ((info != NULL) && (info->endTag == 3)) {
             htmlParseErr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
 	                 "Opening and ending tag mismatch: %s and %s\n",
-			 NULL, NULL);
+			 newtag, ctxt->name);
         }
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, ctxt->name);

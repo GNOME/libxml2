@@ -9,7 +9,7 @@ import libxml2
 # Memory debug specific
 libxml2.debugMemory(1)
 
-expect='--> warning: --> failed to load external entity "missing.xml"\n'
+expect='--> I/O --> warning : --> failed to load external entity "missing.xml"\n'
 err=""
 def callback(ctx, str):
      global err

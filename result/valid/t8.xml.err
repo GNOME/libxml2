@@ -1,4 +1,5 @@
-Entity: line 1: parser error : internal error %defroot; 
+Entity: line 1: parser error : internal error
+ %defroot; 
           ^
 Entity: line 1: 
 &lt;!ELEMENT root (middle) >

@@ -14,7 +14,6 @@ CONF="test/relaxng/OASIS/spectest.xml"
 LOG="check-relaxng-test-suite.log"
 RES="relaxng-test-results.xml"
 
-
 log = open(LOG, "w")
 nb_schemas_tests = 0
 nb_schemas_success = 0

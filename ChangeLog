@@ -1,3 +1,7 @@
+Tue Feb 18 00:33:17 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c check-relaxng-test-suite.py: more RelaxNG bug hunting
+
 Mon Feb 17 18:23:32 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c check-relaxng-test-suite.py: more work on the

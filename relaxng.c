@@ -2786,6 +2786,16 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	    def = xmlRelaxNGParseInterleave(ctxt, node);
 	    if (def != NULL) {
 		xmlRelaxNGDefinePtr tmp;
+
+		if ((def->content != NULL) && (def->content->next != NULL)) {
+		    tmp = xmlRelaxNGNewDefine(ctxt, node);
+		    if (tmp != NULL) {
+			tmp->type = XML_RELAXNG_GROUP;
+			tmp->content = def->content;
+			def->content = tmp;
+		    }
+		}
+
 		tmp = xmlRelaxNGNewDefine(ctxt, node);
 		if (tmp == NULL)
 		    return(def);
@@ -3235,7 +3245,7 @@ xmlRelaxNGParsePatterns(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes,
 static int
 xmlRelaxNGParseStart(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes) {
     int ret = 0;
-    xmlRelaxNGDefinePtr def = NULL;
+    xmlRelaxNGDefinePtr def = NULL, last;
 
     if (nodes == NULL) {
 	if (ctxt->error != NULL)
@@ -3254,7 +3264,6 @@ xmlRelaxNGParseStart(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes) {
 		ctxt->error(ctxt->userData, "element empty is not empty\n");
 	    ctxt->nbErrors++;
 	}
-	ctxt->grammar->start = def;
     } else if (IS_RELAXNG(nodes, "notAllowed")) {
 	def = xmlRelaxNGNewDefine(ctxt, nodes);
 	if (def == NULL)
@@ -3266,9 +3275,15 @@ xmlRelaxNGParseStart(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes) {
 			"element notAllowed is not empty\n");
 	    ctxt->nbErrors++;
 	}
-	ctxt->grammar->start = def;
     } else {
 	def = xmlRelaxNGParsePatterns(ctxt, nodes, 1);
+    }
+    if (ctxt->grammar->start != NULL) {
+	last = ctxt->grammar->start;
+	while (last->next != NULL)
+	    last = last->next;
+	last->next = def;
+    } else {
 	ctxt->grammar->start = def;
     }
     nodes = nodes->next;
@@ -3528,14 +3543,24 @@ xmlRelaxNGCombineStart(xmlRelaxNGParserCtxtPtr ctxt,
     xmlChar *combine;
     int choiceOrInterleave = -1;
     int missing = 0;
-    xmlRelaxNGDefinePtr cur, last, tmp, tmp2;
+    xmlRelaxNGDefinePtr cur;
 
-    starts = grammar->startList;
-    if ((starts == NULL) || (starts->nextHash == NULL))
+    starts = grammar->start;
+    if ((starts == NULL) || (starts->next == NULL))
 	return;
     cur = starts;
     while (cur != NULL) {
-	combine = xmlGetProp(cur->node, BAD_CAST "combine");
+	if ((cur->node == NULL) || (cur->node->parent == NULL) ||
+	    (!xmlStrEqual(cur->node->parent->name, BAD_CAST "start"))) {
+	    combine = NULL;
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+		    "Internal error: start element not found\n");
+	    ctxt->nbErrors++;
+	} else {
+	    combine = xmlGetProp(cur->node->parent, BAD_CAST "combine");
+	}
+	
 	if (combine != NULL) {
 	    if (xmlStrEqual(combine, BAD_CAST "choice")) {
 		if (choiceOrInterleave == -1)
@@ -3546,7 +3571,7 @@ xmlRelaxNGCombineStart(xmlRelaxNGParserCtxtPtr ctxt,
 		    "<start> use both 'choice' and 'interleave'\n");
 		    ctxt->nbErrors++;
 		}
-	    } else if (xmlStrEqual(combine, BAD_CAST "choice")) {
+	    } else if (xmlStrEqual(combine, BAD_CAST "interleave")) {
 		if (choiceOrInterleave == -1)
 		    choiceOrInterleave = 0;
 		else if (choiceOrInterleave == 1) {
@@ -3573,7 +3598,7 @@ xmlRelaxNGCombineStart(xmlRelaxNGParserCtxtPtr ctxt,
 	    }
 	}
 
-	cur = cur->nextHash;
+	cur = cur->next;
     }
 #ifdef DEBUG
     xmlGenericError(xmlGenericErrorContext,
@@ -3586,36 +3611,31 @@ xmlRelaxNGCombineStart(xmlRelaxNGParserCtxtPtr ctxt,
     if (cur == NULL)
 	return;
     if (choiceOrInterleave == 0)
-	cur->type = XML_RELAXNG_CHOICE;
-    else
 	cur->type = XML_RELAXNG_INTERLEAVE;
-    tmp = starts;
-    last = NULL;
-    while (tmp != NULL) {
-	if (tmp->content != NULL) {
-	    if (tmp->content->next != NULL) {
-		/*
-		 * we need first to create a wrapper.
-		 */
-		tmp2 = xmlRelaxNGNewDefine(ctxt, tmp->content->node);
-		if (tmp2 == NULL)
-		    break;
-		tmp2->type = XML_RELAXNG_GROUP;
-		tmp2->content = tmp->content;
-	    } else {
-		tmp2 = tmp->content;
+    else
+	cur->type = XML_RELAXNG_CHOICE;
+    cur->content = grammar->start;
+    grammar->start = cur;
+    if (choiceOrInterleave == 0) {
+	if (ctxt->interleaves == NULL)
+	    ctxt->interleaves = xmlHashCreate(10);
+	if (ctxt->interleaves == NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+		    "Failed to create interleaves hash table\n");
+	    ctxt->nbErrors++;
+	} else {
+	    char tmpname[32];
+
+	    snprintf(tmpname, 32, "interleave%d", ctxt->nbInterleaves++);
+	    if (xmlHashAddEntry(ctxt->interleaves, BAD_CAST tmpname, cur) < 0) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+			"Failed to add %s to hash table\n", tmpname);
+		ctxt->nbErrors++;
 	    }
-	    if (last == NULL) {
-		cur->content = tmp2;
-	    } else {
-		last->next = tmp2;
-	    }
-	    last = tmp2;
-	    tmp->content = NULL;
 	}
-	tmp = tmp->nextHash;
     }
-    starts->content = cur;
 }
 
 /**
@@ -3655,6 +3675,17 @@ xmlRelaxNGParseGrammar(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes) {
     ctxt->grammar = ret;
     xmlRelaxNGParseGrammarContent(ctxt, nodes);
     ctxt->grammar = ret;
+    if (ctxt->grammar == NULL) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+	    "Failed to parse <grammar> content\n");
+	ctxt->nbErrors++;
+    } else if (ctxt->grammar->start == NULL) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+	    "Element <grammar> has no <start>\n");
+	ctxt->nbErrors++;
+    }
 
     /*
      * Apply 4.17 mergingd rules to defines and starts
@@ -3893,6 +3924,7 @@ xmlRelaxNGCleanupAttributes(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		    (!xmlStrEqual(node->name, BAD_CAST "attribute")) &&
 		    (!xmlStrEqual(node->name, BAD_CAST "ref")) &&
 		    (!xmlStrEqual(node->name, BAD_CAST "parentRef")) &&
+		    (!xmlStrEqual(node->name, BAD_CAST "param")) &&
 		    (!xmlStrEqual(node->name, BAD_CAST "define"))) {
 		    if (ctxt->error != NULL)
 			ctxt->error(ctxt->userData,

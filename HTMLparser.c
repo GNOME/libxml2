@@ -616,7 +616,7 @@ htmlInitAutoClose(void) {
  *
  * Returns the related htmlElemDescPtr or NULL if not found.
  */
-const htmlElemDescPtr
+const htmlElemDesc *
 htmlTagLookup(const xmlChar *tag) {
     unsigned int i;
 
@@ -690,7 +690,7 @@ htmlCheckAutoClose(const xmlChar *newtag, const xmlChar *oldtag) {
  */
 static void
 htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
-    htmlElemDescPtr info;
+    const htmlElemDesc * info;
     xmlChar *oldname;
     int i, priority;
 
@@ -1337,7 +1337,7 @@ static const htmlEntityDesc  html40EntitiesTable[] = {
  *
  * Returns the associated htmlEntityDescPtr if found, NULL otherwise.
  */
-const htmlEntityDescPtr
+const htmlEntityDesc *
 htmlEntityLookup(const xmlChar *name) {
     unsigned int i;
 
@@ -1363,7 +1363,7 @@ htmlEntityLookup(const xmlChar *name) {
  *
  * Returns the associated htmlEntityDescPtr if found, NULL otherwise.
  */
-const htmlEntityDescPtr
+const htmlEntityDesc *
 htmlEntityValueLookup(unsigned int value) {
     unsigned int i;
 #ifdef DEBUG
@@ -1464,7 +1464,7 @@ UTF8ToHtml(unsigned char* out, int *outlen,
 	    *out++ = c;
 	} else {
 	    int len;
-	    htmlEntityDescPtr ent;
+	    const htmlEntityDesc * ent;
 
 	    /*
 	     * Try to lookup a predefined HTML entity for it
@@ -1557,7 +1557,7 @@ htmlEncodeEntities(unsigned char* out, int *outlen,
 		break;
 	    *out++ = c;
 	} else {
-	    htmlEntityDescPtr ent;
+	    const htmlEntityDesc * ent;
 	    const char *cp;
 	    char nbuf[16];
 	    int len;
@@ -1952,7 +1952,7 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
     xmlChar *name = NULL;
 
     xmlChar *cur = NULL;
-    htmlEntityDescPtr ent;
+    const htmlEntityDesc * ent;
 
     /*
      * allocate a translation buffer.
@@ -2079,10 +2079,10 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
  * Returns the associated htmlEntityDescPtr if found, or NULL otherwise,
  *         if non-NULL *str will have to be freed by the caller.
  */
-htmlEntityDescPtr
+const htmlEntityDesc *
 htmlParseEntityRef(htmlParserCtxtPtr ctxt, xmlChar **str) {
     xmlChar *name;
-    htmlEntityDescPtr ent = NULL;
+    const htmlEntityDesc * ent = NULL;
     *str = NULL;
 
     if (CUR == '&') {
@@ -3188,7 +3188,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt) {
  */
 static void
 htmlParseReference(htmlParserCtxtPtr ctxt) {
-    htmlEntityDescPtr ent;
+    const htmlEntityDesc * ent;
     xmlChar out[6];
     xmlChar *name;
     if (CUR != '&') return;
@@ -3390,7 +3390,7 @@ void
 htmlParseElement(htmlParserCtxtPtr ctxt) {
     xmlChar *name;
     xmlChar *currentNode = NULL;
-    htmlElemDescPtr info;
+    const htmlElemDesc * info;
     htmlParserNodeInfo node_info;
     xmlChar *oldname;
     int depth = ctxt->nameNr;
@@ -4153,7 +4153,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
             case XML_PARSER_START_TAG: {
 	        xmlChar *name, *oldname;
 		int depth = ctxt->nameNr;
-		htmlElemDescPtr info;
+		const htmlElemDesc * info;
 
 		if (avail < 2)
 		    goto done;

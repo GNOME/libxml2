@@ -433,7 +433,7 @@ htmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int format) {
 void
 htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	           int format) {
-    htmlElemDescPtr info;
+    const htmlElemDesc * info;
 
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
@@ -931,7 +931,7 @@ htmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 void
 htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	                 xmlNodePtr cur, const char *encoding, int format) {
-    htmlElemDescPtr info;
+    const htmlElemDesc * info;
 
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,

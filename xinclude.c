@@ -448,15 +448,15 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 
     xmlParseDocument(pctxt);
 
-    if (pctxt->wellFormed)
+    if (pctxt->wellFormed) {
         ret = pctxt->myDoc;
+	xmlDictReference(pctxt->dict);
+    }
     else {
         ret = NULL;
         xmlFreeDoc(pctxt->myDoc);
         pctxt->myDoc = NULL;
     }
-    if ((ctxt->doc != NULL) && (pctxt->dict == ctxt->doc->dict))
-        xmlDictReference(pctxt->dict);
     xmlFreeParserCtxt(pctxt);
     
     return(ret);
@@ -1910,7 +1910,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 		((xmlStrEqual(children->ns->href, XINCLUDE_NS)) ||
 		 (xmlStrEqual(children->ns->href, XINCLUDE_OLD_NS)))) {
 		ret = xmlXIncludeLoadFallback(ctxt, children, nr);
-		if (ret == 0)
+		if (ret == 0) 
 		    break;
 	    }
 	    children = children->next;

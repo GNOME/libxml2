@@ -1,3 +1,9 @@
+Wed Dec 31 22:02:37 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: fixed problem caused by wrong dictionary
+	  reference count, reported on the list by Christopher
+	  Grayce.
+
 Wed Dec 31 15:55:55 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* python/generator.py, python/libxml2class.txt: fixed problem

@@ -1,3 +1,8 @@
+Wed Nov  6 23:51:11 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* catalog.c: completed the #96963 fix, as reported by Karl
+	  Eichwalder
+
 Wed Nov  6 16:48:44 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpointer.c: tried to fix bug #97852 reported by Nicolas Noffke

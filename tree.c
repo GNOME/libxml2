@@ -2589,7 +2589,9 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	    if ((cur->children != NULL) &&
 		(cur->type != XML_ENTITY_REF_NODE))
 		xmlFreeNodeList(cur->children);
-	    if ((cur->type == XML_ELEMENT_NODE) &&
+	    if (((cur->type == XML_ELEMENT_NODE) ||
+		 (cur->type == XML_XINCLUDE_START) ||
+		 (cur->type == XML_XINCLUDE_END)) &&
 		(cur->properties != NULL))
 		xmlFreePropList(cur->properties);
 	    if ((cur->type != XML_ELEMENT_NODE) &&
@@ -2667,7 +2669,10 @@ xmlFreeNode(xmlNodePtr cur) {
     if ((cur->children != NULL) &&
 	(cur->type != XML_ENTITY_REF_NODE))
 	xmlFreeNodeList(cur->children);
-    if ((cur->type == XML_ELEMENT_NODE) && (cur->properties != NULL))
+    if (((cur->type == XML_ELEMENT_NODE) ||
+	 (cur->type == XML_XINCLUDE_START) ||
+	 (cur->type == XML_XINCLUDE_END)) &&
+	(cur->properties != NULL))
 	xmlFreePropList(cur->properties);
     if ((cur->type != XML_ELEMENT_NODE) &&
 	(cur->content != NULL) &&
@@ -3407,7 +3412,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
  
 /**
  * xmlGetLineNo:
- * @node : valid node
+ * @node: valid node
  *
  * Get line number of node. this requires activation of this option
  * before invoking the parser by calling xmlLineNumbersDefault(1)
@@ -4695,7 +4700,7 @@ shadowed:
 }
 
 /**
- * xmlNewReconciliedNs
+ * xmlNewReconciliedNs:
  * @doc:  the document
  * @tree:  a node expected to hold the new namespace
  * @ns:  the original namespace
@@ -4761,7 +4766,7 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
 }
 
 /**
- * xmlReconciliateNs
+ * xmlReconciliateNs:
  * @doc:  the document
  * @tree:  a node defining the subtree to reconciliate
  *
@@ -7459,7 +7464,7 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding,
 }
 
 /**
- * xmlSaveFormatFileEnc
+ * xmlSaveFormatFileEnc:
  * @filename:  the filename or URL to output
  * @cur:  the document being saved
  * @encoding:  the name of the encoding to use or NULL.

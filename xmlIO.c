@@ -135,7 +135,7 @@ static int xmlOutputCallbackInitialized = 0;
 
 
 /**
- * xmlNormalizeWindowsPath
+ * xmlNormalizeWindowsPath:
  * @path:  a windows path like "C:/foo/bar"
  *
  * Normalize a Windows path to make an URL from it

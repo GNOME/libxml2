@@ -193,7 +193,7 @@ error:
 }
 
 /**
- * xmlCheckUTF8: Check utf-8 string for legality.
+ * xmlCheckUTF8:
  * @utf: Pointer to putative utf-8 encoded string.
  *
  * Checks @utf for being valid utf-8. @utf is assumed to be

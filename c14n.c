@@ -283,8 +283,8 @@ xmlC14NStrEqual(const xmlChar *str1, const xmlChar *str2) {
 
 /**
  * xmlC14NVisibleNsStackFind:
- * @ctx			the C14N context 
- * @ns			the namespace to check
+ * @ctx:		the C14N context 
+ * @ns:			the namespace to check
  *
  * Checks whether the given namespace was already rendered or not
  *

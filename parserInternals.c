@@ -412,20 +412,6 @@ xmlIsBlank(int c) {
     return(((c) == 0x20) || ((c) == 0x09) || ((c) == 0xA) || ((c) == 0x0D));
 }
 
-/**
- * xmlIsBaseChar:
- * @c:  an unicode character (int)
- *
- * Check whether the character is allowed by the production
- * [85] BaseChar ::= ... long list see REC ...
- *
- * VI is your friend !
- * :1,$ s/\[#x\([0-9A-Z]*\)-#x\([0-9A-Z]*\)\]/     (((c) >= 0x\1) \&\& ((c) <= 0x\2)) ||/
- * and 
- * :1,$ s/#x\([0-9A-Z]*\)/     ((c) == 0x\1) ||/
- *
- * Returns 0 if not, non-zero otherwise
- */
 static int xmlBaseArray[] = {
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 0x0000 - 0x000F */
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 0x0010 - 0x001F */
@@ -445,6 +431,20 @@ static int xmlBaseArray[] = {
   1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, /* 0x00F0 - 0x00FF */
 };
 
+/**
+ * xmlIsBaseChar:
+ * @c:  an unicode character (int)
+ *
+ * Check whether the character is allowed by the production
+ * [85] BaseChar ::= ... long list see REC ...
+ *
+ * VI is your friend !
+ * :1,$ s/\[#x\([0-9A-Z]*\)-#x\([0-9A-Z]*\)\]/     (((c) >= 0x\1) \&\& ((c) <= 0x\2)) ||/
+ * and 
+ * :1,$ s/#x\([0-9A-Z]*\)/     ((c) == 0x\1) ||/
+ *
+ * Returns 0 if not, non-zero otherwise
+ */
 int
 xmlIsBaseChar(int c) {
     return(
@@ -891,6 +891,7 @@ xmlIsPubidChar(int c) {
 #ifdef DEBUG_INPUT
 #define CHECK_BUFFER(in) check_buffer(in)
 
+static
 void check_buffer(xmlParserInputPtr in) {
     if (in->base != in->buf->buffer->content) {
         xmlGenericError(xmlGenericErrorContext,
@@ -2383,7 +2384,7 @@ xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
 
 /**
  * xmlParserFindNodeInfo:
- * @ctxt:  an XML parser context
+ * @ctx:  an XML parser context
  * @node:  an XML node within the tree
  *
  * Find the parser node info struct for a given node

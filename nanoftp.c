@@ -1853,12 +1853,14 @@ xmlNanoFTPClose(void *ctx) {
  * 			Basic test in Standalone mode			*
  * 									*
  ************************************************************************/
+static
 void ftpList(void *userData, const char *filename, const char* attrib,
 	     const char *owner, const char *group, unsigned long size, int links,
 	     int year, const char *month, int day, int hour, int minute) {
     xmlGenericError(xmlGenericErrorContext,
 	    "%s %s %s %ld %s\n", attrib, owner, group, size, filename);
 }
+static
 void ftpData(void *userData, const char *data, int len) {
     if (userData == NULL) return;
     if (len <= 0) {

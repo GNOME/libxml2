@@ -1781,7 +1781,7 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 
 /**
  * xmlSchemaValidateFacet:
- * @type:  the type declaration
+ * @base:  the base type
  * @facet:  the facet to check
  * @value:  the lexical repr of the value to validate
  * @val:  the precomputed value

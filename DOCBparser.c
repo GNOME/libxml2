@@ -3459,7 +3459,7 @@ docbParseCharRef(docbParserCtxtPtr ctxt) {
 
 
 /**
- * docbParseDocTypeDecl :
+ * docbParseDocTypeDecl:
  * @ctxt:  an SGML parser context
  *
  * parse a DOCTYPE declaration
@@ -4791,7 +4791,7 @@ docbParseMisc(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * docbParseDocument :
+ * docbParseDocument:
  * @ctxt:  an SGML parser context
  * 
  * parse an SGML document (and build a tree if using the standard SAX
@@ -5004,7 +5004,7 @@ docbFreeParserCtxt(docbParserCtxtPtr ctxt)
 }
 
 /**
- * docbCreateDocParserCtxt :
+ * docbCreateDocParserCtxt:
  * @cur:  a pointer to an array of xmlChar
  * @encoding: the SGML document encoding, or NULL
  *
@@ -5631,7 +5631,7 @@ docbParseTryOrFinish(docbParserCtxtPtr ctxt, int terminate) {
                } else {
                    /* TODO Avoid the extra copy, handle directly !!!!!! */
                    /*
-                    * Goal of the following test is :
+                    * Goal of the following test is:
                     *  - minimize calls to the SAX 'character' callback
                     *    when they are mergeable
                     */
@@ -5869,7 +5869,7 @@ docbParseChunk(docbParserCtxtPtr ctxt, const char *chunk, int size,
  ************************************************************************/
 
 /**
- * docbCreatePushParserCtxt :
+ * docbCreatePushParserCtxt:
  * @sax:  a SAX handler
  * @user_data:  The user data returned on SAX callbacks
  * @chunk:  a pointer to an array of chars
@@ -5949,7 +5949,7 @@ docbCreatePushParserCtxt(docbSAXHandlerPtr sax, void *user_data,
 }
 
 /**
- * docbSAXParseDoc :
+ * docbSAXParseDoc:
  * @cur:  a pointer to an array of xmlChar
  * @encoding:  a free form C string describing the SGML document encoding, or NULL
  * @sax:  the SAX handler block
@@ -5989,7 +5989,7 @@ docbSAXParseDoc(xmlChar *cur, const char *encoding, docbSAXHandlerPtr sax, void 
 }
 
 /**
- * docbParseDoc :
+ * docbParseDoc:
  * @cur:  a pointer to an array of xmlChar
  * @encoding:  a free form C string describing the SGML document encoding, or NULL
  *
@@ -6005,7 +6005,7 @@ docbParseDoc(xmlChar *cur, const char *encoding) {
 
 
 /**
- * docbCreateFileParserCtxt :
+ * docbCreateFileParserCtxt:
  * @filename:  the filename
  * @encoding:  the SGML document encoding, or NULL
  *
@@ -6058,7 +6058,7 @@ docbCreateFileParserCtxt(const char *filename,
 }
 
 /**
- * docbSAXParseFile :
+ * docbSAXParseFile:
  * @filename:  the filename
  * @encoding:  a free form C string describing the SGML document encoding, or NULL
  * @sax:  the SAX handler block
@@ -6100,7 +6100,7 @@ docbSAXParseFile(const char *filename, const char *encoding, docbSAXHandlerPtr s
 }
 
 /**
- * docbParseFile :
+ * docbParseFile:
  * @filename:  the filename
  * @encoding:  a free form C string describing document encoding, or NULL
  *

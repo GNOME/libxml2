@@ -699,7 +699,7 @@ xmlNewElementContent(xmlChar *name, xmlElementContentType type) {
 
 /**
  * xmlCopyElementContent:
- * @content:  An element content pointer.
+ * @cur:  An element content pointer.
  *
  * Build a copy of an element content description.
  * 
@@ -2226,7 +2226,7 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
 }
 
 /**
- * xmlRemoveID
+ * xmlRemoveID:
  * @doc:  the document
  * @attr:  the attribute
  *
@@ -2507,7 +2507,7 @@ xmlIsRef(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
 }
 
 /**
- * xmlRemoveRef
+ * xmlRemoveRef:
  * @doc:  the document
  * @attr:  the attribute
  *
@@ -2829,7 +2829,7 @@ xmlValidateNotationUse(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 }
 
 /**
- * xmlIsMixedElement
+ * xmlIsMixedElement:
  * @doc:  the document
  * @name:  the element name
  *
@@ -3367,7 +3367,6 @@ xmlValidCtxtNormalizeAttributeValue(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * @elem:  the parent
  * @name:  the attribute name
  * @value:  the attribute value
- * @ctxt:  the validation context or NULL
  *
  * Does the validation related extra step of the normalization of attribute
  * values:

@@ -3805,7 +3805,7 @@ xmlXPathFreeParserContext(xmlXPathParserContextPtr ctxt) {
  ************************************************************************/
 
 /**
- * xmlXPathNodeStringHash:
+ * xmlXPathNodeValHash:
  * @node:  a node pointer
  *
  * Function computing the beginning of the string value of the node,
@@ -4193,7 +4193,7 @@ xmlXPathCompareNodeSetValue(xmlXPathParserContextPtr ctxt, int inf, int strict,
 }
 
 /**
- * xmlXPathEqualNodeSetString
+ * xmlXPathEqualNodeSetString:
  * @arg:  the nodeset object argument
  * @str:  the string to compare to.
  * @neq:  flag to show whether for '=' (0) or '!=' (1)
@@ -4248,7 +4248,7 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar * str, int neq)
 }
 
 /**
- * xmlXPathEqualNodeSetFloat
+ * xmlXPathEqualNodeSetFloat:
  * @arg:  the nodeset object argument
  * @f:  the float to compare to
  * @neq:  flag to show whether to compare '=' (0) or '!=' (1)
@@ -4304,7 +4304,7 @@ xmlXPathEqualNodeSetFloat(xmlXPathParserContextPtr ctxt,
 
 
 /**
- * xmlXPathEqualNodeSets
+ * xmlXPathEqualNodeSets:
  * @arg1:  first nodeset object argument
  * @arg2:  second nodeset object argument
  * @neq:   flag to show whether to test '=' (0) or '!=' (1)
@@ -7542,7 +7542,6 @@ xmlXPathCompVariableReference(xmlXPathParserContextPtr ctxt) {
 
 /**
  * xmlXPathIsNodeType:
- * @ctxt:  the XPath Parser context
  * @name:  a name string
  *
  * Is the name given a NodeType one.

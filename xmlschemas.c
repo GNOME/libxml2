@@ -3930,9 +3930,8 @@ xmlSchemaAttrFixup(xmlSchemaAttributePtr attrDecl,
 /**
  * xmlSchemaParse:
  * @ctxt:  a schema validation context
- * @URL:  the location of the schema
  *
- * Load, XML parse a schema definition resource and build an internal
+ * parse a schema definition resource and build an internal
  * XML Shema struture which can be used to validate instances.
  * *WARNING* this interface is highly subject to change
  *
@@ -4098,16 +4097,13 @@ skip_children:
 }
  
 /**
- * xmlSchemaParse:
+ * xmlSchemaSetParserErrors:
  * @ctxt:  a schema validation context
- * @URL:  the location of the schema
+ * @err:  the error callback
+ * @warn:  the warning callback
+ * @ctx:  contextual data for the callbacks
  *
- * Load, XML parse a schema definition resource and build an internal
- * XML Shema struture which can be used to validate instances.
- * *WARNING* this interface is highly subject to change
- *
- * Returns the internal XML Schema structure built from the resource or
- *         NULL in case of error
+ * Set the callback functions used to handle errors for a validation context
  */
 void
 xmlSchemaSetParserErrors(xmlSchemaParserCtxtPtr ctxt,

@@ -1,3 +1,12 @@
+Tue Dec 10 16:16:34 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* DOCBparser.c HTMLparser.c c14n.c debugXML.c encoding.c hash.c
+	  nanoftp.c nanohttp.c parser.c parserInternals.c testC14N.c
+	  testDocbook.c threads.c tree.c valid.c xmlIO.c xmllint.c xmlmemory.c
+	  xmlreader.c xmlregexp.c xmlschemas.c xmlschemastypes.c xpath.c:
+	  code cleanup, especially the function comments.
+	* tree.c: fixed a small bug when freeing nodes which are XInclude ones.
+
 Mon Dec  9 15:08:17 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am xmlreader.c include/libxml/Makefile.am

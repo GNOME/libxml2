@@ -537,14 +537,6 @@ xmlHashLookup3(xmlHashTablePtr table, const xmlChar *name,
     return(NULL);
 }
 
-/**
- * xmlHashScan:
- * @table: the hash table
- * @f:  the scanner function for items in the hash
- * @data:  extra data passed to f
- *
- * Scan the hash @table and applied @f to each value.
- */
 typedef struct {
     xmlHashScanner hashscanner;
     void *data;
@@ -558,6 +550,14 @@ stubHashScannerFull (void *payload, void *data, const xmlChar *name,
     stubdata->hashscanner (payload, stubdata->data, (xmlChar *) name);
 }                                  
  
+/**
+ * xmlHashScan:
+ * @table: the hash table
+ * @f:  the scanner function for items in the hash
+ * @data:  extra data passed to f
+ *
+ * Scan the hash @table and applied @f to each value.
+ */
 void
 xmlHashScan(xmlHashTablePtr table, xmlHashScanner f, void *data) {
     stubData stubdata;
@@ -752,13 +752,14 @@ int xmlHashRemoveEntry(xmlHashTablePtr table, const xmlChar *name,
  *
  * Returns 0 if the removal succeeded and -1 in case of error or not found.
  */
-int xmlHashRemoveEntry2(xmlHashTablePtr table, const xmlChar *name,
+int
+xmlHashRemoveEntry2(xmlHashTablePtr table, const xmlChar *name,
 			const xmlChar *name2, xmlHashDeallocator f) {
     return(xmlHashRemoveEntry3(table, name, name2, NULL, f));
 }
 
 /**
- * xmlHashRemoveEntry3
+ * xmlHashRemoveEntry3:
  * @table: the hash table
  * @name: the name of the userdata
  * @name2: a second name of the userdata
@@ -771,7 +772,8 @@ int xmlHashRemoveEntry2(xmlHashTablePtr table, const xmlChar *name,
  *
  * Returns 0 if the removal succeeded and -1 in case of error or not found.
  */
-int xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
+int
+xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
     const xmlChar *name2, const xmlChar *name3, xmlHashDeallocator f) {
     unsigned long key;
     xmlHashEntryPtr entry;

@@ -115,10 +115,10 @@ static int xmlMemInitialized = 0;
 static MEMHDR *memlist = NULL;
 #endif
 
-void debugmem_tag_error(void *addr);
+static void debugmem_tag_error(void *addr);
 #ifdef MEM_LIST
-void  debugmem_list_add(MEMHDR *);
-void debugmem_list_delete(MEMHDR *);
+static void  debugmem_list_add(MEMHDR *);
+static void debugmem_list_delete(MEMHDR *);
 #endif
 #define Mem_Tag_Err(a) debugmem_tag_error(a);
 
@@ -412,7 +412,7 @@ error:
 
 /**
  * xmlMemoryStrdup:
- * @ptr:  the initial string pointer
+ * @str:  the initial string pointer
  *
  * a strdup() equivalent, with logging of the allocation info.
  *
@@ -599,7 +599,7 @@ xmlMemDisplay(FILE *fp)
 
 #ifdef MEM_LIST
 
-void debugmem_list_add(MEMHDR *p)
+static void debugmem_list_add(MEMHDR *p)
 {
      p->mh_next = memlist;
      p->mh_prev = NULL;
@@ -611,7 +611,7 @@ void debugmem_list_add(MEMHDR *p)
 #endif
 }
 
-void debugmem_list_delete(MEMHDR *p)
+static void debugmem_list_delete(MEMHDR *p)
 {
      if (p->mh_next)
      p->mh_next->mh_prev = p->mh_prev;
@@ -627,10 +627,12 @@ void debugmem_list_delete(MEMHDR *p)
 #endif
 
 /*
- * debugmem_tag_error : internal error function.
+ * debugmem_tag_error:
+ *
+ * internal error function.
  */
  
-void debugmem_tag_error(void *p)
+static void debugmem_tag_error(void *p)
 {
      xmlGenericError(xmlGenericErrorContext,
 	     "Memory tag error occurs :%p \n\t bye\n", p);
@@ -673,6 +675,8 @@ xmlMemoryDump(void)
  *								*
  ****************************************************************/
 
+static int xmlInitMemoryDone = 0;
+
 /**
  * xmlInitMemory:
  *
@@ -680,9 +684,6 @@ xmlMemoryDump(void)
  *
  * Returns 0 on success
  */
-
-static int xmlInitMemoryDone = 0;
-
 int
 xmlInitMemory(void)
 {

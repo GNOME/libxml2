@@ -2623,7 +2623,7 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
 
 
 /**
- * htmlParseDocTypeDecl :
+ * htmlParseDocTypeDecl:
  * @ctxt:  an HTML parser context
  *
  * parse a DOCTYPE declaration
@@ -3544,7 +3544,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 }
 
 /**
- * htmlParseDocument :
+ * htmlParseDocument:
  * @ctxt:  an HTML parser context
  * 
  * parse an HTML document (and build a tree if using the standard SAX
@@ -3833,7 +3833,7 @@ htmlCreateMemoryParserCtxt(const char *buffer, int size) {
 }
 
 /**
- * htmlCreateDocParserCtxt :
+ * htmlCreateDocParserCtxt:
  * @cur:  a pointer to an array of xmlChar
  * @encoding:  a free form C string describing the HTML document encoding, or NULL
  *
@@ -4491,7 +4491,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    } else {
 			/* TODO Avoid the extra copy, handle directly !!!!!! */
 			/*
-			 * Goal of the following test is :
+			 * Goal of the following test is:
 			 *  - minimize calls to the SAX 'character' callback
 			 *    when they are mergeable
 			 */
@@ -4727,7 +4727,7 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
  ************************************************************************/
 
 /**
- * htmlCreatePushParserCtxt :
+ * htmlCreatePushParserCtxt:
  * @sax:  a SAX handler
  * @user_data:  The user data returned on SAX callbacks
  * @chunk:  a pointer to an array of chars
@@ -4809,7 +4809,7 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 }
 
 /**
- * htmlSAXParseDoc :
+ * htmlSAXParseDoc:
  * @cur:  a pointer to an array of xmlChar
  * @encoding:  a free form C string describing the HTML document encoding, or NULL
  * @sax:  the SAX handler block
@@ -4852,7 +4852,7 @@ htmlSAXParseDoc(xmlChar *cur, const char *encoding, htmlSAXHandlerPtr sax, void 
 }
 
 /**
- * htmlParseDoc :
+ * htmlParseDoc:
  * @cur:  a pointer to an array of xmlChar
  * @encoding:  a free form C string describing the HTML document encoding, or NULL
  *
@@ -4868,7 +4868,7 @@ htmlParseDoc(xmlChar *cur, const char *encoding) {
 
 
 /**
- * htmlCreateFileParserCtxt :
+ * htmlCreateFileParserCtxt:
  * @filename:  the filename
  * @encoding:  a free form C string describing the HTML document encoding, or NULL
  *
@@ -4933,7 +4933,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
 }
 
 /**
- * htmlSAXParseFile :
+ * htmlSAXParseFile:
  * @filename:  the filename
  * @encoding:  a free form C string describing the HTML document encoding, or NULL
  * @sax:  the SAX handler block
@@ -4978,7 +4978,7 @@ htmlSAXParseFile(const char *filename, const char *encoding, htmlSAXHandlerPtr s
 }
 
 /**
- * htmlParseFile :
+ * htmlParseFile:
  * @filename:  the filename
  * @encoding:  a free form C string describing the HTML document encoding, or NULL
  *

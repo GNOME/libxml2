@@ -1234,7 +1234,6 @@ xmlCharStrndup(const char *cur, int len) {
 /**
  * xmlCharStrdup:
  * @cur:  the input char *
- * @len:  the len of @cur
  *
  * a strdup for char's to xmlChar's
  *
@@ -2390,6 +2389,16 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
     return ret;
 }
 
+/**
+ * xmlParseAttValueComplex:
+ * @ctxt:  an XML parser context
+ *
+ * parse a value for an attribute, this is the fallback function
+ * of xmlParseAttValue() when the attribute parsing requires handling
+ * of non-ASCII characters.
+ *
+ * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
+ */
 xmlChar *
 xmlParseAttValueComplex(xmlParserCtxtPtr ctxt) {
     xmlChar limit = 0;
@@ -2838,6 +2847,15 @@ get_more:
     xmlParseCharDataComplex(ctxt, cdata);
 }
 
+/**
+ * xmlParseCharDataComplex:
+ * @ctxt:  an XML parser context
+ * @cdata:  int indicating whether we are within a CDATA section
+ *
+ * parse a CharData section.this is the fallback function
+ * of xmlParseCharData() when the parsing requires handling
+ * of non-ASCII characters.
+ */
 void
 xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
     xmlChar buf[XML_PARSER_BIG_BUFFER_SIZE + 5];
@@ -10815,7 +10833,7 @@ xmlAddEntityReference(xmlEntityPtr ent, xmlNodePtr firstNode,
 
 /**
  * xmlSetEntityReferenceFunc:
- * @func : A valid function
+ * @func: A valid function
  *
  * Set the function to call call back when a xml reference has been made
  */

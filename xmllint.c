@@ -137,7 +137,7 @@ static const char *output = NULL;
 #ifdef HAVE_SYS_TIME_H
 #ifdef HAVE_FTIME
 
-int
+static int
 my_gettimeofday(struct timeval *tvp, void *tzp)
 {
 	struct timeb timebuffer;

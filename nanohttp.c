@@ -1419,7 +1419,7 @@ xmlNanoHTTPAuthHeader(void *ctx) {
 }
 
 /**
- * xmlNanoHTTPContentLength
+ * xmlNanoHTTPContentLength:
  * @ctx:  the HTTP context
  *
  * Return the specified content length from the HTTP header.  Note that
@@ -1434,7 +1434,7 @@ xmlNanoHTTPContentLength( void * ctx ) {
 }
 
 /**
- * xmlNanoHTTPFetchContent
+ * xmlNanoHTTPFetchContent:
  * @ctx:  the HTTP context
  * @ptr:  pointer to set to the content buffer.
  * @len:  integer pointer to hold the length of the content

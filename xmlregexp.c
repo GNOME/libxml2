@@ -2261,13 +2261,15 @@ progress:
  ************************************************************************/
 
 /**
- * xmlRegExecCtxtPtr:
+ * xmlRegNewExecCtxt:
  * @comp: a precompiled regular expression
  * @callback: a callback function used for handling progresses in the
  *            automata matching phase
  * @data: the context data associated to the callback in this context
  *
  * Build a context used for progressive evaluation of a regexp.
+ *
+ * Returns the new context
  */
 xmlRegExecCtxtPtr
 xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {

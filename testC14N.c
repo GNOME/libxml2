@@ -179,7 +179,8 @@ int main(int argc, char **argv) {
     }									\
 }
 
-xmlChar **parse_list(xmlChar *str) {
+static xmlChar **
+parse_list(xmlChar *str) {
     xmlChar **buffer;
     xmlChar **out = NULL;
     int buffer_size = 0;
@@ -221,7 +222,7 @@ xmlChar **parse_list(xmlChar *str) {
     return buffer;
 }
 
-xmlXPathObjectPtr
+static xmlXPathObjectPtr
 load_xpath_expr (xmlDocPtr parent_doc, const char* filename) {
     xmlXPathObjectPtr xpath; 
     xmlDocPtr doc;
@@ -312,7 +313,7 @@ load_xpath_expr (xmlDocPtr parent_doc, const char* filename) {
     return(xpath);
 }
 
-void
+static void
 print_xpath_nodes(xmlNodeSetPtr nodes) {
     xmlNodePtr cur;
     int i;

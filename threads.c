@@ -102,7 +102,7 @@ static xmlRMutexPtr	xmlLibraryLock = NULL;
 static void xmlOnceInit(void);
 
 /**
- * xmlMutexPtr:
+ * xmlNewMutex:
  *
  * xmlNewMutex() is used to allocate a libxml2 token struct for use in
  * synchronizing access to data.
@@ -176,7 +176,7 @@ xmlMutexUnlock(xmlMutexPtr tok ATTRIBUTE_UNUSED)
 }
 
 /**
- * xmlRNewMutex:
+ * xmlNewRMutex:
  *
  * xmlRNewMutex() is used to allocate a reentrant mutex for use in
  * synchronizing access to data. token_r is a re-entrant lock and thus useful
@@ -204,7 +204,7 @@ xmlNewRMutex(void)
 }
 
 /**
- * xmlRFreeMutex:
+ * xmlFreeRMutex:
  * @tok:  the reentrant mutex
  *
  * xmlRFreeMutex() is used to reclaim resources associated with a
@@ -322,14 +322,6 @@ xmlNewGlobalState(void)
 #endif /* LIBXML_THREAD_ENABLED */
 
 
-/**
- * xmlGetGlobalState:
- *
- * xmlGetGlobalState() is called to retrieve the global state for a thread.
- *
- * Returns the thread global state or NULL in case of error
- */
-
 #ifdef HAVE_WIN32_THREADS
 #if !defined(HAVE_COMPILER_TLS)
 typedef struct _xmlGlobalStateCleanupHelperParams
@@ -338,7 +330,7 @@ typedef struct _xmlGlobalStateCleanupHelperParams
     void *memory;
 } xmlGlobalStateCleanupHelperParams;
 
-void xmlGlobalStateCleanupHelper (void *p)
+static void xmlGlobalStateCleanupHelper (void *p)
 {
     xmlGlobalStateCleanupHelperParams *params = (xmlGlobalStateCleanupHelperParams *) p;
     WaitForSingleObject(params->thread, INFINITE);
@@ -350,6 +342,13 @@ void xmlGlobalStateCleanupHelper (void *p)
 #endif /* HAVE_COMPILER_TLS */
 #endif /* HAVE_WIN32_THREADS */
 
+/**
+ * xmlGetGlobalState:
+ *
+ * xmlGetGlobalState() is called to retrieve the global state for a thread.
+ *
+ * Returns the thread global state or NULL in case of error
+ */
 xmlGlobalStatePtr
 xmlGetGlobalState(void)
 {

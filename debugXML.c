@@ -2052,7 +2052,7 @@ xmlShellPwd(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *buffer,
 }
 
 /**
- * xmlShell
+ * xmlShell:
  * @doc:  the initial document
  * @filename:  the output buffer
  * @input:  the line reading function

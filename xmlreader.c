@@ -571,7 +571,7 @@ xmlTextReaderNodeType(xmlTextReaderPtr reader) {
 }
 
 /**
- * xmlTextReaderIsEmpty:
+ * xmlTextReaderIsEmptyElement:
  * @reader:  the xmlTextReaderPtr used
  *
  * Check if the current node is empty

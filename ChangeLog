@@ -1,3 +1,9 @@
+Thu Mar  7 09:34:16 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: trying to avoid bug #72150 which was apparently
+	  caused by a gcc bug (or a processor problem) as detailed
+	  at http://veillard.com/gcc.bug
+
 Thu Mar  7 01:02:37 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c python/tests/Makefile.am python/tests/cutnpaste.py:

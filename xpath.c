@@ -6779,7 +6779,7 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
 double
 xmlXPathStringEvalNumber(const xmlChar *str) {
     const xmlChar *cur = str;
-    double ret = 0.0;
+    double ret;
     double mult = 1;
     int ok = 0;
     int isneg = 0;
@@ -6787,6 +6787,7 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
     int is_exponent_negative = 0;
 #ifdef __GNUC__
     unsigned long tmp = 0;
+    double temp;
 #endif
     
     while (IS_BLANK(*cur)) cur++;
@@ -6800,15 +6801,20 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 
 #ifdef __GNUC__
     /*
-     * tmp is a workaround against a gcc compiler bug
+     * tmp/temp is a workaround against a gcc compiler bug
+     * http://veillard.com/gcc.bug
      */
+    ret = 0;
     while ((*cur >= '0') && (*cur <= '9')) {
-	tmp = tmp * 10 + (*cur - '0');
+	ret = ret * 10;
+	tmp = (*cur - '0');
 	ok = 1;
 	cur++;
+	temp = (double) tmp;
+	ret = ret + temp;
     }
-    ret = (double) tmp;
 #else
+    ret = 0;
     while ((*cur >= '0') && (*cur <= '9')) {
 	ret = ret * 10 + (*cur - '0');
 	ok = 1;
@@ -6862,23 +6868,40 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt)
 {
     double ret = 0.0;
     double mult = 1;
-    int ok = 0, tmp = 0;
+    int ok = 0;
     int exponent = 0;
     int is_exponent_negative = 0;
+#ifdef __GNUC__
+    unsigned long tmp = 0;
+    double temp;
+#endif
 
     CHECK_ERROR;
     if ((CUR != '.') && ((CUR < '0') || (CUR > '9'))) {
         XP_ERROR(XPATH_NUMBER_ERROR);
     }
+#ifdef __GNUC__
     /*
-     * Try to work around a gcc optimizer bug
+     * tmp/temp is a workaround against a gcc compiler bug
+     * http://veillard.com/gcc.bug
      */
+    ret = 0;
     while ((CUR >= '0') && (CUR <= '9')) {
-	tmp = tmp * 10 + (CUR - '0');
+	ret = ret * 10;
+	tmp = (CUR - '0');
         ok = 1;
         NEXT;
+	temp = (double) tmp;
+	ret = ret + temp;
     }
-    ret = (double) tmp;
+#else
+    ret = 0;
+    while ((CUR >= '0') && (CUR <= '9')) {
+	ret = ret * 10 + (CUR - '0');
+	ok = 1;
+	NEXT;
+    }
+#endif
     if (CUR == '.') {
         NEXT;
         if (((CUR < '0') || (CUR > '9')) && (!ok)) {

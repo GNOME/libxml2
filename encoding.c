@@ -2335,7 +2335,7 @@ ISO8859xToUTF8(unsigned char* out, int *outlen,
     unsigned int c;
 
     if ((out == NULL) || (outlen == NULL) || (inlen == NULL) ||
-        (in == NULL) || (xlattable == NULL))
+        (in == NULL) || (unicodetable == NULL))
 	return(-1);
     outend = out + *outlen;
     inend = in + *inlen;

@@ -1,3 +1,13 @@
+Mon Feb  4 01:12:42 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: hardened the addChild function
+	* python/generator.py python/libxml.c python/libxml2-python-api.xml
+	  python/libxml2class.txt python/libxml_wrap.h python/TODO:
+	  added accessors needed for xmlNode, a bit more testing and
+	  extension of interfaces
+	* python/tests/Makefile.am python/tests/build.py: added a test
+	  build from scratch/save/load/check
+
 Sun Feb  3 21:10:39 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: change a small bit in the way valididy

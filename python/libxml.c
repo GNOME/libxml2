@@ -810,6 +810,51 @@ libxml_type(PyObject *self, PyObject *args)
 
 /************************************************************************
  *									*
+ *			Specific accessor functions			*
+ *									*
+ ************************************************************************/
+PyObject *
+libxml_xmlNodeGetNsDefs(PyObject *self, PyObject *args) {
+    PyObject *py_retval;
+    xmlNsPtr c_retval;
+    xmlNodePtr node;
+    PyObject *pyobj_node;
+
+    if (!PyArg_ParseTuple(args, "O:xmlNodeGetNsDefs", &pyobj_node))
+        return(NULL);
+    node = (xmlNodePtr) PyxmlNode_Get(pyobj_node);
+
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE)) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    c_retval = node->nsDef;
+    py_retval = libxml_xmlNsPtrWrap((xmlNsPtr) c_retval);
+    return(py_retval);
+}
+
+PyObject *
+libxml_xmlNodeGetNs(PyObject *self, PyObject *args) {
+    PyObject *py_retval;
+    xmlNsPtr c_retval;
+    xmlNodePtr node;
+    PyObject *pyobj_node;
+
+    if (!PyArg_ParseTuple(args, "O:xmlNodeGetNs", &pyobj_node))
+        return(NULL);
+    node = (xmlNodePtr) PyxmlNode_Get(pyobj_node);
+
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE)) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    c_retval = node->ns;
+    py_retval = libxml_xmlNsPtrWrap((xmlNsPtr) c_retval);
+    return(py_retval);
+}
+
+/************************************************************************
+ *									*
  *			The registration stuff				*
  *									*
  ************************************************************************/

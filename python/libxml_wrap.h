@@ -15,20 +15,25 @@
 #include <libxml/xinclude.h>
 #include <libxml/xpointer.h>
 
-#define PyxmlNode_Get(v) (((PyxmlNode_Object *)(v))->obj)
+#define PyxmlNode_Get(v) (((v) == Py_None) ? NULL : \
+	(((PyxmlNode_Object *)(v))->obj))
 
 typedef struct {
     PyObject_HEAD
     xmlNodePtr obj;
 } PyxmlNode_Object;
 
-#define PyxmlXPathContext_Get(v) (((PyxmlXPathContext_Object *)(v))->obj)
+#define PyxmlXPathContext_Get(v) (((v) == Py_None) ? NULL : \
+	(((PyxmlXPathContext_Object *)(v))->obj))
+
 typedef struct {
     PyObject_HEAD
     xmlXPathContextPtr obj;
 } PyxmlXPathContext_Object;
 
-#define PyparserCtxt_Get(v) (((PyparserCtxt_Object *)(v))->obj)
+#define PyparserCtxt_Get(v) (((v) == Py_None) ? NULL : \
+        (((PyparserCtxt_Object *)(v))->obj))
+
 typedef struct {
     PyObject_HEAD
     xmlParserCtxtPtr obj;

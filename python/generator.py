@@ -350,7 +350,7 @@ def print_function_wrapper(name, output, export, include):
     elif py_types.has_key(ret[0]):
 	(f, t, n, c) = py_types[ret[0]]
 	c_return = "    %s c_retval;\n" % (ret[0])
-	if file == "python_accessor":
+	if file == "python_accessor" and ret[2] != None:
 	    c_call = "\n    c_retval = %s->%s;\n" % (args[0][0], ret[2])
 	else:
 	    c_call = "\n    c_retval = %s(%s);\n" % (name, c_call);
@@ -378,6 +378,9 @@ def print_function_wrapper(name, output, export, include):
     export.write("    { \"%s\", libxml_%s, METH_VARARGS },\n" % (name, name))
 
     if file == "python":
+        # Those have been manually generated
+	return 1
+    if file == "python_accessor" and ret[0] != "void" and ret[2] == None:
         # Those have been manually generated
 	return 1
 
@@ -559,6 +562,9 @@ def nameFixup(function, classe, type, file):
     elif name[0:12] == "xmlParserSet" and file == "python_accessor":
         func = name[12:]
         func = string.lower(func[0:1]) + func[1:]
+    elif name[0:10] == "xmlNodeGet" and file == "python_accessor":
+        func = name[10:]
+        func = string.lower(func[0:1]) + func[1:]
     elif name[0:l] == classe:
 	func = name[l:]
 	func = string.lower(func[0:1]) + func[1:]
@@ -690,6 +696,13 @@ if function_classes.has_key("None"):
 	    n = n + 1
 	classes.write("):\n")
 	writeDoc(name, args, '    ', classes);
+
+	for arg in args:
+	    if classes_type.has_key(arg[1]):
+		classes.write("    if %s == None: %s__o = None\n" %
+		              (arg[0], arg[0]))
+		classes.write("    else: %s__o = %s%s\n" %
+		              (arg[0], arg[0], classes_type[arg[1]][0]))
 	if ret[0] != "void":
 	    classes.write("    ret = ");
 	else:
@@ -701,7 +714,7 @@ if function_classes.has_key("None"):
 		classes.write(", ");
 	    classes.write("%s" % arg[0])
 	    if classes_type.has_key(arg[1]):
-		classes.write(classes_type[arg[1]][0])
+		classes.write("__o");
 	    n = n + 1
 	classes.write(")\n");
 	if ret[0] != "void":
@@ -771,6 +784,15 @@ for classname in classes_list:
 		n = n + 1
 	    classes.write("):\n")
 	    writeDoc(name, args, '        ', classes);
+	    n = 0
+	    for arg in args:
+		if classes_type.has_key(arg[1]):
+		    if n != index:
+			classes.write("        if %s == None: %s__o = None\n" %
+				      (arg[0], arg[0]))
+			classes.write("        else: %s__o = %s%s\n" %
+				      (arg[0], arg[0], classes_type[arg[1]][0]))
+		n = n + 1
 	    if ret[0] != "void":
 	        classes.write("        ret = ");
 	    else:
@@ -782,10 +804,12 @@ for classname in classes_list:
 		    classes.write(", ");
 	        if n != index:
 		    classes.write("%s" % arg[0])
+		    if classes_type.has_key(arg[1]):
+			classes.write("__o");
 		else:
 		    classes.write("self");
-		if classes_type.has_key(arg[1]):
-		    classes.write(classes_type[arg[1]][0])
+		    if classes_type.has_key(arg[1]):
+			classes.write(classes_type[arg[1]][0])
 		n = n + 1
 	    classes.write(")\n");
 	    if ret[0] != "void":

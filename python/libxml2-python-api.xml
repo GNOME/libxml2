@@ -90,5 +90,15 @@
       <info>dump the memory allocated in the file .memdump</info>
       <return type='void'/>
     </function>
+    <function name='xmlNodeGetNs' file='python_accessor'>
+      <info>Get the namespace of a node</info>
+      <return type='xmlNsPtr' info="The namespace or None"/>
+      <arg name='node' type='xmlNodePtr' info='the node'/>
+    </function>
+    <function name='xmlNodeGetNsDefs' file='python_accessor'>
+      <info>Get the namespace of a node</info>
+      <return type='xmlNsPtr' info="The namespace or None"/>
+      <arg name='node' type='xmlNodePtr' info='the node'/>
+    </function>
   </symbols>
 </api>

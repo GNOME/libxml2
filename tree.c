@@ -1950,10 +1950,20 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
     /*
      * Allocate a new node
      */
-    if (ns == NULL)
-	cur = xmlNewDocNode(parent->doc, parent->ns, name, content);
-    else
-	cur = xmlNewDocNode(parent->doc, ns, name, content);
+    if (parent->type == XML_ELEMENT_NODE) {
+	if (ns == NULL)
+	    cur = xmlNewDocNode(parent->doc, parent->ns, name, content);
+	else
+	    cur = xmlNewDocNode(parent->doc, ns, name, content);
+    } else if ((parent->type == XML_DOCUMENT_NODE) ||
+	       (parent->type == XML_HTML_DOCUMENT_NODE)) {
+	if (ns == NULL)
+	    cur = xmlNewDocNode((xmlDocPtr) parent, NULL, name, content);
+	else
+	    cur = xmlNewDocNode((xmlDocPtr) parent, ns, name, content);
+    } else {
+	return(NULL);
+    }
     if (cur == NULL) return(NULL);
 
     /*

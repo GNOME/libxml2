@@ -155,6 +155,9 @@ checkVersion()
 
 
 Class xmlNode(xmlCore)
+    # accessors
+    ns()
+    nsDefs()
 
     # functions from module debugXML
     lsCountNode()

@@ -1,3 +1,10 @@
+Thu Aug 28 23:01:36 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c: fixed a namespace error on attribute reporting bug
+	  pointed out by Tobias Reif
+	* test/p3p result/p3p result/noent/p3p: this test case was wrong
+	  using xmlsn instead of xmlns...
+
 Thu Aug 28 18:25:07 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* include/libxml/globals.h include/libxml/xmlexports.h: fixed

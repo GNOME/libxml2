@@ -1027,6 +1027,11 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
     if (ns != NULL) {
 	xmlAttrPtr prop;
 	namespace = xmlSearchNs(ctxt->myDoc, ctxt->node, ns);
+	if (namespace == NULL) {
+	    ctxt->sax->error(ctxt->userData, 
+		 "Namespace prefix %s of attribute %s is not defined\n",
+		             ns, name);
+	}
 
 	prop = ctxt->node->properties;
 	while (prop != NULL) {

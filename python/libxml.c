@@ -22,6 +22,7 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlIO.h>
+#include <libxml/c14n.h>
 #include "libxml_wrap.h"
 #include "libxml2-py.h"
 
@@ -421,7 +422,7 @@ libxml_outputBufferGetPythonFile(ATTRIBUTE_UNUSED PyObject *self,
     return(file);
 }
 
-PyObject *
+static PyObject *
 libxml_xmlOutputBufferClose(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
     PyObject *py_retval;
     int c_retval;
@@ -437,7 +438,7 @@ libxml_xmlOutputBufferClose(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
     return(py_retval);
 }
 
-PyObject *
+static PyObject *
 libxml_xmlOutputBufferFlush(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
     PyObject *py_retval;
     int c_retval;
@@ -2858,6 +2859,301 @@ libxml_xmlRelaxNGFreeValidCtxt(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) 
 
 #endif
 
+#ifdef LIBXML_C14N_ENABLED
+#ifdef LIBXML_OUTPUT_ENABLED
+
+/************************************************************************
+ *                                                                      *
+ * XML Canonicalization c14n                                            *
+ *                                                                      *
+ ************************************************************************/
+
+static int
+PyxmlNodeSet_Convert(PyObject *py_nodeset, xmlNodeSetPtr *result)
+{
+    xmlNodeSetPtr nodeSet;
+    int is_tuple = 0;
+
+    if (PyTuple_Check(py_nodeset))
+        is_tuple = 1;
+    else if (PyList_Check(py_nodeset))
+        is_tuple = 0;
+    else if (py_nodeset == Py_None) {
+        *result = NULL;
+        return 0;
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError,
+                        "must be a tuple or list of nodes.");
+        return -1;
+    }
+
+    nodeSet = (xmlNodeSetPtr) xmlMalloc(sizeof(xmlNodeSet));
+    if (nodeSet == NULL) {
+        PyErr_SetString(PyExc_MemoryError, "");
+        return -1;
+    }
+
+    nodeSet->nodeNr = 0;
+    nodeSet->nodeMax = (is_tuple
+                        ? PyTuple_GET_SIZE(py_nodeset)
+                        : PyList_GET_SIZE(py_nodeset));
+    nodeSet->nodeTab
+        = (xmlNodePtr *) xmlMalloc (nodeSet->nodeMax
+                                    * sizeof(xmlNodePtr));
+    if (nodeSet->nodeTab == NULL) {
+        xmlFree(nodeSet);
+        PyErr_SetString(PyExc_MemoryError, "");
+        return -1;
+    }
+    memset(nodeSet->nodeTab, 0 ,
+           nodeSet->nodeMax * sizeof(xmlNodePtr));
+
+    {
+        int idx;
+        for (idx=0; idx < nodeSet->nodeMax; ++idx) {
+            xmlNodePtr pynode =
+                PyxmlNode_Get (is_tuple
+                               ? PyTuple_GET_ITEM(py_nodeset, idx)
+                               : PyList_GET_ITEM(py_nodeset, idx));
+            if (pynode)
+                nodeSet->nodeTab[nodeSet->nodeNr++] = pynode;
+        }
+    }
+    *result = nodeSet;
+    return 0;
+}
+
+static int
+PystringSet_Convert(PyObject *py_strings, xmlChar *** result)
+{
+    /* NOTE: the array should be freed, but the strings are shared
+       with the python strings and so must not be freed. */
+
+    xmlChar ** strings;
+    int is_tuple = 0;
+    int count;
+    int init_index = 0;
+
+    if (PyTuple_Check(py_strings))
+        is_tuple = 1;
+    else if (PyList_Check(py_strings))
+        is_tuple = 0;
+    else if (py_strings == Py_None) {
+        *result = NULL;
+        return 0;
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError,
+                        "must be a tuple or list of strings.");
+        return -1;
+    }
+
+    count = (is_tuple
+             ? PyTuple_GET_SIZE(py_strings)
+             : PyList_GET_SIZE(py_strings));
+
+    strings = (xmlChar **) xmlMalloc(sizeof(xmlChar *) * count);
+
+    if (strings == NULL) {
+        PyErr_SetString(PyExc_MemoryError, "");
+        return -1;
+    }
+
+    memset(strings, 0 , sizeof(xmlChar *) * count);
+
+    {
+        int idx;
+        for (idx=0; idx < count; ++idx) {
+            char* s = PyString_AsString
+                (is_tuple
+                 ? PyTuple_GET_ITEM(py_strings, idx)
+                 : PyList_GET_ITEM(py_strings, idx));
+            if (s)
+                strings[init_index++] = (xmlChar *)s;
+            else {
+                xmlFree(strings);
+                PyErr_SetString(PyExc_TypeError,
+                                "must be a tuple or list of strings.");
+                return -1;
+            }
+        }
+    }
+
+    *result = strings;
+    return 0;
+}
+
+static PyObject *
+libxml_C14NDocDumpMemory(ATTRIBUTE_UNUSED PyObject * self,
+                         PyObject * args)
+{
+    PyObject *py_retval = NULL;
+
+    PyObject *pyobj_doc;
+    PyObject *pyobj_nodes;
+    int exclusive;
+    PyObject *pyobj_prefixes;
+    int with_comments;
+
+    xmlDocPtr doc;
+    xmlNodeSetPtr nodes;
+    xmlChar **prefixes = NULL;
+    xmlChar *doc_txt;
+
+    int result;
+
+    if (!PyArg_ParseTuple(args, (char *) "OOiOi:C14NDocDumpMemory",
+                          &pyobj_doc,
+                          &pyobj_nodes,
+                          &exclusive,
+                          &pyobj_prefixes,
+                          &with_comments))
+        return (NULL);
+
+    doc = (xmlDocPtr) PyxmlNode_Get(pyobj_doc);
+    if (!doc) {
+        PyErr_SetString(PyExc_TypeError, "bad document.");
+        return NULL;
+    }
+
+    result = PyxmlNodeSet_Convert(pyobj_nodes, &nodes);
+    if (result < 0) return NULL;
+
+    if (exclusive) {
+        result = PystringSet_Convert(pyobj_prefixes, &prefixes);
+        if (result < 0) {
+            if (nodes) {
+                xmlFree(nodes->nodeTab);
+                xmlFree(nodes);
+            }
+            return NULL;
+        }
+    }
+
+    result = xmlC14NDocDumpMemory(doc,
+                                  nodes,
+                                  exclusive,
+                                  prefixes,
+                                  with_comments,
+                                  &doc_txt);
+
+    if (nodes) {
+        xmlFree(nodes->nodeTab);
+        xmlFree(nodes);
+    }
+    if (prefixes) {
+        xmlChar ** idx = prefixes;
+        while (*idx) xmlFree(*(idx++));
+        xmlFree(prefixes);
+    }
+
+    if (result < 0) {
+        PyErr_SetString(PyExc_Exception,
+                        "libxml2 xmlC14NDocDumpMemory failure.");
+        return NULL;
+    }
+    else {
+        py_retval = PyString_FromStringAndSize((const char *) doc_txt,
+                                               result);
+        xmlFree(doc_txt);
+        return py_retval;
+    }
+}
+
+static PyObject *
+libxml_C14NDocSaveTo(ATTRIBUTE_UNUSED PyObject * self,
+                     PyObject * args)
+{
+    PyObject *pyobj_doc;
+    PyObject *py_file;
+    PyObject *pyobj_nodes;
+    int exclusive;
+    PyObject *pyobj_prefixes;
+    int with_comments;
+
+    xmlDocPtr doc;
+    xmlNodeSetPtr nodes;
+    xmlChar **prefixes = NULL;
+    FILE * output;
+    xmlOutputBufferPtr buf;
+
+    int result;
+    int len;
+
+    if (!PyArg_ParseTuple(args, (char *) "OOiOiO:C14NDocSaveTo",
+                          &pyobj_doc,
+                          &pyobj_nodes,
+                          &exclusive,
+                          &pyobj_prefixes,
+                          &with_comments,
+                          &py_file))
+        return (NULL);
+
+    doc = (xmlDocPtr) PyxmlNode_Get(pyobj_doc);
+    if (!doc) {
+        PyErr_SetString(PyExc_TypeError, "bad document.");
+        return NULL;
+    }
+
+    if ((py_file == NULL) || (!(PyFile_Check(py_file)))) {
+        PyErr_SetString(PyExc_TypeError, "bad file.");
+        return NULL;
+    }
+    output = PyFile_AsFile(py_file);
+    if (output == NULL) {
+        PyErr_SetString(PyExc_TypeError, "bad file.");
+        return NULL;
+    }
+    buf = xmlOutputBufferCreateFile(output, NULL);
+
+    result = PyxmlNodeSet_Convert(pyobj_nodes, &nodes);
+    if (result < 0) return NULL;
+
+    if (exclusive) {
+        result = PystringSet_Convert(pyobj_prefixes, &prefixes);
+        if (result < 0) {
+            if (nodes) {
+                xmlFree(nodes->nodeTab);
+                xmlFree(nodes);
+            }
+            return NULL;
+        }
+    }
+
+    result = xmlC14NDocSaveTo(doc,
+                              nodes,
+                              exclusive,
+                              prefixes,
+                              with_comments,
+                              buf);
+
+    if (nodes) {
+        xmlFree(nodes->nodeTab);
+        xmlFree(nodes);
+    }
+    if (prefixes) {
+        xmlChar ** idx = prefixes;
+        while (*idx) xmlFree(*(idx++));
+        xmlFree(prefixes);
+    }
+
+    len = xmlOutputBufferClose(buf);
+
+    if (result < 0) {
+        PyErr_SetString(PyExc_Exception,
+                        "libxml2 xmlC14NDocSaveTo failure.");
+        return NULL;
+    }
+    else
+        return PyInt_FromLong((long) len);
+}
+
+#endif
+#endif
+
+
+
 /************************************************************************
  *									*
  *			The registration stuff				*
@@ -2896,6 +3192,12 @@ static PyMethodDef libxmlMethods[] = {
 #ifdef LIBXML_SCHEMAS_ENABLED
     {(char *)"xmlRelaxNGSetValidErrors", libxml_xmlRelaxNGSetValidErrors, METH_VARARGS, NULL},
     {(char *)"xmlRelaxNGFreeValidCtxt", libxml_xmlRelaxNGFreeValidCtxt, METH_VARARGS, NULL},
+#endif
+#ifdef LIBXML_C14N_ENABLED
+#ifdef LIBXML_OUTPUT_ENABLED
+    {(char *)"xmlC14NDocDumpMemory", libxml_C14NDocDumpMemory, METH_VARARGS, NULL},
+    {(char *)"xmlC14NDocSaveTo", libxml_C14NDocSaveTo, METH_VARARGS, NULL},
+#endif
 #endif
     {NULL, NULL, 0, NULL}
 };

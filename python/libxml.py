@@ -349,6 +349,48 @@ class xmlCore:
         return libxml2mod.saveNodeTo(self._o, file, encoding, format)
             
     #
+    # Canonicalization routines:
+    #
+    #   nodes: the node set (tuple or list) to be included in the
+    #     canonized image or None if all document nodes should be
+    #     included.
+    #   exclusive: the exclusive flag (0 - non-exclusive
+    #     canonicalization; otherwise - exclusive canonicalization)
+    #   prefixes: the list of inclusive namespace prefixes (strings),
+    #     or None if there is no inclusive namespaces (only for
+    #     exclusive canonicalization, ignored otherwise)
+    #   with_comments: include comments in the result (!=0) or not
+    #     (==0)
+    def c14nMemory(self,
+                   nodes=None,
+                   exclusive=0,
+                   prefixes=None,
+                   with_comments=0):
+        if nodes:
+            nodes = map(lambda n: n._o, nodes)
+        return libxml2mod.xmlC14NDocDumpMemory(
+            self.get_doc()._o,
+            nodes,
+            exclusive != 0,
+            prefixes,
+            with_comments != 0)
+    def c14nSaveTo(self,
+                   file,
+                   nodes=None,
+                   exclusive=0,
+                   prefixes=None,
+                   with_comments=0):
+        if nodes:
+            nodes = map(lambda n: n._o, nodes)
+        return libxml2mod.xmlC14NDocSaveTo(
+            self.get_doc()._o,
+            nodes,
+            exclusive != 0,
+            prefixes,
+            with_comments != 0,
+            file)
+
+    #
     # Selecting nodes using XPath, a bit slow because the context
     # is allocated/freed every time but convenient.
     #

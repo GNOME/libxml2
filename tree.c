@@ -6175,17 +6175,19 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
 }
 
 /**
- * xmlSaveFile:
+ * xmlSaveFormatFile:
  * @filename:  the filename (or URL)
  * @cur:  the document
+ * @format:  should formatting spaces been added
  *
  * Dump an XML document to a file. Will use compression if
  * compiled in and enabled. If @filename is "-" the stdout file is
- * used.
+ * used. If format is set then the document will be indented on output.
+ *
  * returns: the number of byte written or -1 in case of failure.
  */
 int
-xmlSaveFile(const char *filename, xmlDocPtr cur) {
+xmlSaveFormatFile(const char *filename, xmlDocPtr cur, int format) {
     xmlOutputBufferPtr buf;
     const char *encoding;
     xmlCharEncodingHandlerPtr handler = NULL;
@@ -6223,9 +6225,24 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     buf = xmlOutputBufferCreateFilename(filename, handler, cur->compression);
     if (buf == NULL) return(-1);
 
-    xmlDocContentDumpOutput(buf, cur, NULL, 0);
+    xmlDocContentDumpOutput(buf, cur, NULL, format);
 
     ret = xmlOutputBufferClose(buf);
     return(ret);
+}
+
+/**
+ * xmlSaveFile:
+ * @filename:  the filename (or URL)
+ * @cur:  the document
+ *
+ * Dump an XML document to a file. Will use compression if
+ * compiled in and enabled. If @filename is "-" the stdout file is
+ * used.
+ * returns: the number of byte written or -1 in case of failure.
+ */
+int
+xmlSaveFile(const char *filename, xmlDocPtr cur) {
+    return(xmlSaveFormatFile(filename, cur, 0));
 }
 

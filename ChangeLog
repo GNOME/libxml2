@@ -1,3 +1,8 @@
+Thu Apr 26 20:53:48 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.[ch]: added xmlSaveFormatFile interface for saving
+	  and indenting a file.
+
 Thu Apr 26 16:35:53 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: fixed bug #53689 related to processing-instruction()

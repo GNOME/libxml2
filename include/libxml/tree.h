@@ -680,6 +680,9 @@ void		xmlElemDump		(FILE *f,
 					 xmlNodePtr cur);
 int		xmlSaveFile		(const char *filename,
 					 xmlDocPtr cur);
+int		xmlSaveFormatFile	(const char *filename,
+					 xmlDocPtr cur,
+					 int format);
 void		xmlNodeDump		(xmlBufferPtr buf,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur,

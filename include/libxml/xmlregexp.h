@@ -71,6 +71,10 @@ void			xmlRegFreeExecCtxt	(xmlRegExecCtxtPtr exec);
 int			xmlRegExecPushString	(xmlRegExecCtxtPtr exec,
 						 const xmlChar *value,
 						 void *data);
+int			xmlRegExecPushString2	(xmlRegExecCtxtPtr exec,
+						 const xmlChar *value,
+						 const xmlChar *value2,
+						 void *data);
 
 #ifdef __cplusplus
 }

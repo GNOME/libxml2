@@ -2759,6 +2759,62 @@ progress:
     return(exec->status);
 }
 
+/**
+ * xmlRegExecPushString2:
+ * @exec: a regexp execution context or NULL to indicate the end
+ * @value: the first string token input
+ * @value2: the second string token input
+ * @data: data associated to the token to reuse in callbacks
+ *
+ * Push one input token in the execution context
+ *
+ * Returns: 1 if the regexp reached a final state, 0 if non-final, and
+ *     a negative value in case of error.
+ */
+int
+xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
+                      const xmlChar *value2, void *data) {
+    xmlChar buf[150];
+    int lenn, lenp, ret;
+    xmlChar *str;
+
+    if (exec == NULL)
+	return(-1);
+    if (exec->comp == NULL)
+	return(-1);
+    if (exec->status != 0)
+	return(exec->status);
+
+    if (value2 == NULL)
+        return(xmlRegExecPushString(exec, value, data));
+
+    lenn = strlen((char *) value2);
+    lenp = strlen((char *) value);
+
+    if (150 < lenn + lenp + 2) {
+	str = (xmlChar *) xmlMalloc(lenn + lenp + 2);
+	if (str == NULL) {
+	    exec->status = -1;
+	    return(-1);
+	}
+    } else {
+	str = buf;
+    }
+    memcpy(&str[0], value, lenp);
+    str[lenp] = '|';
+    memcpy(&str[lenp + 1], value2, lenn);
+    str[lenn + lenp + 1] = 0;
+
+    if (exec->comp->compact != NULL)
+	ret = xmlRegCompactPushString(exec, exec->comp, str, data);
+    else
+        ret = xmlRegExecPushString(exec, str, data);
+
+    if (str != buf)
+        xmlFree(buf);
+    return(ret);
+}
+
 #if 0
 static int
 xmlRegExecPushChar(xmlRegExecCtxtPtr exec, int UCS) {
@@ -4015,6 +4071,61 @@ xmlAutomataNewTransition(xmlAutomataPtr am, xmlAutomataStatePtr from,
     if (atom == NULL)
 	return(NULL);
     atom->valuep = xmlStrdup(token);
+
+    xmlFAGenerateTransitions(am, from, to, atom);
+    if (to == NULL)
+	return(am->state);
+    return(to);
+}
+
+/**
+ * xmlAutomataNewTransition2:
+ * @am: an automata
+ * @from: the starting point of the transition
+ * @to: the target point of the transition or NULL
+ * @token: the first input string associated to that transition
+ * @token2: the second input string associated to that transition
+ * @data: data passed to the callback function if the transition is activated
+ *
+ * If @to is NULL, this create first a new target state in the automata
+ * and then adds a transition from the @from state to the target state
+ * activated by the value of @token
+ *
+ * Returns the target state or NULL in case of error
+ */
+xmlAutomataStatePtr
+xmlAutomataNewTransition2(xmlAutomataPtr am, xmlAutomataStatePtr from,
+			  xmlAutomataStatePtr to, const xmlChar *token,
+			  const xmlChar *token2, void *data) {
+    xmlRegAtomPtr atom;
+
+    if ((am == NULL) || (from == NULL) || (token == NULL))
+	return(NULL);
+    atom = xmlRegNewAtom(am, XML_REGEXP_STRING);
+    atom->data = data;
+    if (atom == NULL)
+	return(NULL);
+    if ((token2 == NULL) || (*token2 == 0)) {
+	atom->valuep = xmlStrdup(token);
+    } else {
+	int lenn, lenp;
+	xmlChar *str;
+
+	lenn = strlen((char *) token2);
+	lenp = strlen((char *) token);
+
+	str = (xmlChar *) xmlMalloc(lenn + lenp + 2);
+	if (str == NULL) {
+	    xmlRegFreeAtom(atom);
+	    return(NULL);
+	}
+	memcpy(&str[0], token, lenp);
+	str[lenp] = '|';
+	memcpy(&str[lenp + 1], token2, lenn);
+	str[lenn + lenp + 1] = 0;
+
+	atom->valuep = str;
+    }
 
     xmlFAGenerateTransitions(am, from, to, atom);
     if (to == NULL)

@@ -1,3 +1,11 @@
+Sun Apr 13 21:51:00 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c xmlregexp.c include/libxml/xmlautomata.h
+	  include/libxml/xmlregexp.h: Starting work precompiling
+	  parts of RelaxNG schemas. Not plugged onto validity checking
+	  yet, just the regexp building part. Needed to extend some
+	  of the automata and regexp APIs.
+
 Fri Apr 11 21:36:21 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c xmlreader.c include/libxml/xmlreader.h: make sure

@@ -50,6 +50,12 @@ xmlAutomataStatePtr	xmlAutomataNewTransition(xmlAutomataPtr am,
 						 xmlAutomataStatePtr to,
 						 const xmlChar *token,
 						 void *data);
+xmlAutomataStatePtr	xmlAutomataNewTransition2(xmlAutomataPtr am,
+						 xmlAutomataStatePtr from,
+						 xmlAutomataStatePtr to,
+						 const xmlChar *token,
+						 const xmlChar *token2,
+						 void *data);
 xmlAutomataStatePtr	xmlAutomataNewCountTrans(xmlAutomataPtr am,
 						 xmlAutomataStatePtr from,
 						 xmlAutomataStatePtr to,

@@ -130,12 +130,14 @@ typedef enum {
     XML_RELAXNG_START		/* Used to keep track of starts on grammars */
 } xmlRelaxNGType;
 
-#define IS_NULLABLE		1
-#define IS_NOT_NULLABLE		2
-#define IS_INDETERMINIST	4
-#define IS_MIXED		8
-#define IS_TRIABLE		16
-#define IS_PROCESSED		32
+#define IS_NULLABLE		(1 << 0)
+#define IS_NOT_NULLABLE		(1 << 1)
+#define IS_INDETERMINIST	(1 << 2)
+#define IS_MIXED		(1 << 3)
+#define IS_TRIABLE		(1 << 4)
+#define IS_PROCESSED		(1 << 5)
+#define IS_COMPILABLE		(1 << 6)
+#define IS_NOT_COMPILABLE	(1 << 7)
 
 struct _xmlRelaxNGDefine {
     xmlRelaxNGType type;	/* the type of definition */
@@ -152,6 +154,7 @@ struct _xmlRelaxNGDefine {
     xmlRelaxNGDefinePtr nextHash;/* next define in defs/refs hash tables */
     short           depth;       /* used for the cycle detection */
     short           dflags;      /* define related flags */
+    xmlRegexpPtr    contModel;	 /* a compiled content model if available */
 };
 
 /**
@@ -229,6 +232,10 @@ struct _xmlRelaxNGParserCtxt {
     xmlRelaxNGIncludePtr *incTab;     /* array of incs */
 
     int                   idref;      /* requires idref checking */
+
+    /* used to compile content models */
+    xmlAutomataPtr        am;         /* the automata */
+    xmlAutomataStatePtr   state;      /* used to build the automata */
 };
 
 #define FLAGS_IGNORABLE		1
@@ -806,6 +813,8 @@ xmlRelaxNGFreeDefine(xmlRelaxNGDefinePtr define)
 	xmlFree(define->ns);
     if (define->value != NULL)
 	xmlFree(define->value);
+    if (define->contModel != NULL)
+        xmlRegFreeRegexp(define->contModel);
     xmlFree(define);
 }
 
@@ -1806,7 +1815,6 @@ xmlRelaxNGLoadExternalRef(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
 #define VALID_ERR2P(a, b) xmlRelaxNGAddValidError(ctxt, a, b, NULL, 1);
 #define VALID_ERR3P(a, b, c) xmlRelaxNGAddValidError(ctxt, a, b, c, 1);
 
-#ifdef DEBUG
 static const char *
 xmlRelaxNGDefName(xmlRelaxNGDefinePtr def) {
     if (def == NULL)
@@ -1837,7 +1845,6 @@ xmlRelaxNGDefName(xmlRelaxNGDefinePtr def) {
     }
     return("unknown");
 }
-#endif
 
 /**
  * xmlRelaxNGGetErrorString:
@@ -2658,6 +2665,9 @@ xmlRelaxNGCleanupTypes(void) {
  * 									*
  ************************************************************************/
 
+static int xmlRelaxNGTryCompile(xmlRelaxNGParserCtxtPtr ctxt,
+                                xmlRelaxNGDefinePtr def);
+
 /**
  * xmlRelaxNGIsCompileable:
  * @define:  the definition to check
@@ -2668,25 +2678,48 @@ xmlRelaxNGCleanupTypes(void) {
  */
 static int
 xmlRelaxNGIsCompileable(xmlRelaxNGDefinePtr def) {
+    int ret = -1;
+
     if (def == NULL) {
 	return(-1);
     }
+    if ((def->type != XML_RELAXNG_ELEMENT) &&
+        (def->dflags & IS_COMPILABLE))
+	return(1);
+    if ((def->type != XML_RELAXNG_ELEMENT) &&
+        (def->dflags & IS_NOT_COMPILABLE))
+	return(0);
     switch(def->type) {
         case XML_RELAXNG_REF:
         case XML_RELAXNG_EXTERNALREF:
         case XML_RELAXNG_PARENTREF:
+	    if (def->depth == -20) {
+	        return(1);
+	    } else {
+	        def->depth = -20;
+		ret = xmlRelaxNGIsCompileable(def->content);
+	    }
+	    break;
         case XML_RELAXNG_NOOP:
         case XML_RELAXNG_START:
-	    return(xmlRelaxNGIsCompileable(def->content));
+	    ret = xmlRelaxNGIsCompileable(def->content);
+	    break;
         case XML_RELAXNG_TEXT:
-        case XML_RELAXNG_DATATYPE:
-        case XML_RELAXNG_LIST:
-        case XML_RELAXNG_PARAM:
-        case XML_RELAXNG_VALUE:
-
         case XML_RELAXNG_EMPTY:
+	    ret = 1;
+	    break;
         case XML_RELAXNG_ELEMENT:
-	    return(1);
+	    if (((def->dflags & IS_NOT_COMPILABLE) == 0) &&
+	        ((def->dflags & IS_COMPILABLE) == 0)) {
+		ret = xmlRelaxNGIsCompileable(def->content);
+		if (ret == 0) def->dflags |= IS_NOT_COMPILABLE;
+		if (ret == 1) def->dflags |= IS_COMPILABLE;
+	    }
+	    if ((def->nameClass != NULL) || (def->name == NULL))
+	        return(0);
+	    else
+		return(1);
+	    break;
         case XML_RELAXNG_OPTIONAL:
         case XML_RELAXNG_ZEROORMORE:
         case XML_RELAXNG_ONEORMORE:
@@ -2694,25 +2727,269 @@ xmlRelaxNGIsCompileable(xmlRelaxNGDefinePtr def) {
         case XML_RELAXNG_GROUP:
         case XML_RELAXNG_DEF: {
 	    xmlRelaxNGDefinePtr list;
-	    int ret;
 
 	    list = def->content;
 	    while (list != NULL) {
 		ret = xmlRelaxNGIsCompileable(list);
 		if (ret != 1)
-		    return(ret);
+		    break;
 		list = list->next;
 	    }
-	    return(1);
+	    break;
         }
         case XML_RELAXNG_EXCEPT:
         case XML_RELAXNG_ATTRIBUTE:
         case XML_RELAXNG_INTERLEAVE:
-	    return(0);
+        case XML_RELAXNG_DATATYPE:
+        case XML_RELAXNG_LIST:
+        case XML_RELAXNG_PARAM:
+        case XML_RELAXNG_VALUE:
+	    ret = 0;
+	    break;
         case XML_RELAXNG_NOT_ALLOWED:
-	    return(-1);
+	    ret = -1;
+	    break;
     }
-    return(-1);
+    if (ret == 0) def->dflags |= IS_NOT_COMPILABLE;
+    if (ret == 1) def->dflags |= IS_COMPILABLE;
+    return(ret);
+}
+
+/**
+ * xmlRelaxNGCompile:
+ * ctxt:  the RelaxNG parser context
+ * @define:  the definition tree to compile
+ *
+ * Compile the set of definitions, it works recursively, till the
+ * element boundaries, where it tries to compile the content if possible
+ *
+ * Returns 0 if success and -1 in case of error
+ */
+static int
+xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def) {
+    int ret = 0;
+    xmlRelaxNGDefinePtr list;
+
+    if ((ctxt == NULL) || (def == NULL)) return(-1);
+
+    switch(def->type) {
+        case XML_RELAXNG_START:
+            if ((xmlRelaxNGIsCompileable(def) == 1) && (def->depth != -25)) {
+		xmlAutomataPtr oldam = ctxt->am;
+		xmlAutomataStatePtr oldstate = ctxt->state;
+
+                def->depth = -25;
+
+		list = def->content;
+		ctxt->am = xmlNewAutomata();
+		if (ctxt->am == NULL)
+		    return(-1);
+		ctxt->state = xmlAutomataGetInitState(ctxt->am);
+		while (list != NULL) {
+		    xmlRelaxNGCompile(ctxt, list);
+		    list = list->next;
+		}
+		xmlAutomataSetFinalState(ctxt->am, ctxt->state);
+		def->contModel = xmlAutomataCompile(ctxt->am);
+		xmlRegexpIsDeterminist(def->contModel);
+
+		xmlFreeAutomata(ctxt->am);
+		ctxt->state = oldstate;
+		ctxt->am = oldam;
+	    }
+	    break;
+        case XML_RELAXNG_ELEMENT:
+	    if ((ctxt->am != NULL) && (def->name != NULL)) {
+		ctxt->state = xmlAutomataNewTransition2(ctxt->am,
+		   ctxt->state, NULL, def->name, def->ns, NULL);
+	    }
+            if ((def->dflags & IS_COMPILABLE) && (def->depth != -25)) {
+		xmlAutomataPtr oldam = ctxt->am;
+		xmlAutomataStatePtr oldstate = ctxt->state;
+
+                def->depth = -25;
+
+		list = def->content;
+		ctxt->am = xmlNewAutomata();
+		if (ctxt->am == NULL)
+		    return(-1);
+		ctxt->state = xmlAutomataGetInitState(ctxt->am);
+		while (list != NULL) {
+		    xmlRelaxNGCompile(ctxt, list);
+		    list = list->next;
+		}
+		xmlAutomataSetFinalState(ctxt->am, ctxt->state);
+		def->contModel = xmlAutomataCompile(ctxt->am);
+		xmlRegexpIsDeterminist(def->contModel);
+
+		xmlFreeAutomata(ctxt->am);
+		ctxt->state = oldstate;
+		ctxt->am = oldam;
+	    } else {
+		xmlAutomataPtr oldam = ctxt->am;
+
+	        /*
+		 * we can't build the content model for this element content
+		 * but it still might be possible to build it for some of its
+		 * children, recurse.
+		 */
+	        ret = xmlRelaxNGTryCompile(ctxt, def);
+		ctxt->am = oldam;
+	    }
+	    break;
+        case XML_RELAXNG_REF:
+        case XML_RELAXNG_EXTERNALREF:
+        case XML_RELAXNG_PARENTREF:
+        case XML_RELAXNG_NOOP:
+	    ret = xmlRelaxNGCompile(ctxt, def->content);
+	    break;
+        case XML_RELAXNG_OPTIONAL: {
+	    xmlAutomataStatePtr oldstate = ctxt->state;
+	    
+	    xmlRelaxNGCompile(ctxt, def->content);
+	    xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
+	    break;
+	}
+        case XML_RELAXNG_ZEROORMORE: {
+	    xmlAutomataStatePtr oldstate;
+
+	    ctxt->state = xmlAutomataNewEpsilon(ctxt->am, ctxt->state, NULL);
+	    oldstate = ctxt->state;
+	    xmlRelaxNGCompile(ctxt, def->content);
+	    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldstate);
+	    ctxt->state = xmlAutomataNewEpsilon(ctxt->am, oldstate, NULL);
+	    break;
+	}
+        case XML_RELAXNG_ONEORMORE: {
+	    xmlAutomataStatePtr oldstate;
+
+	    xmlRelaxNGCompile(ctxt, def->content);
+	    oldstate = ctxt->state;
+	    xmlRelaxNGCompile(ctxt, def->content);
+	    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldstate);
+	    ctxt->state = xmlAutomataNewEpsilon(ctxt->am, oldstate, NULL);
+	    break;
+	}
+        case XML_RELAXNG_CHOICE: {
+	    xmlAutomataStatePtr target = NULL;
+	    xmlAutomataStatePtr oldstate = ctxt->state;
+	    
+	    list = def->content;
+	    while (list != NULL) {
+	        ctxt->state = oldstate;
+		xmlRelaxNGCompile(ctxt, list);
+		if (target == NULL)
+		    target = ctxt->state;
+		else {
+		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, target);
+		}
+		list = list->next;
+	    }
+
+	    break;
+	}
+        case XML_RELAXNG_GROUP:
+        case XML_RELAXNG_DEF:
+	    list = def->content;
+	    while (list != NULL) {
+		xmlRelaxNGCompile(ctxt, list);
+		list = list->next;
+	    }
+	    break;
+        case XML_RELAXNG_TEXT: {
+	    xmlAutomataStatePtr oldstate;
+
+	    ctxt->state = xmlAutomataNewEpsilon(ctxt->am, ctxt->state, NULL);
+	    oldstate = ctxt->state;
+	    xmlRelaxNGCompile(ctxt, def->content);
+	    xmlAutomataNewTransition(ctxt->am, ctxt->state, ctxt->state,
+	                             BAD_CAST "#text", NULL);
+	    ctxt->state = xmlAutomataNewEpsilon(ctxt->am, oldstate, NULL);
+	    break;
+	}
+        case XML_RELAXNG_EMPTY:
+	    break;
+        case XML_RELAXNG_EXCEPT:
+        case XML_RELAXNG_ATTRIBUTE:
+        case XML_RELAXNG_INTERLEAVE:
+        case XML_RELAXNG_NOT_ALLOWED:
+        case XML_RELAXNG_DATATYPE:
+        case XML_RELAXNG_LIST:
+        case XML_RELAXNG_PARAM:
+        case XML_RELAXNG_VALUE:
+	    TODO /* This should not happen and generate an internal error */
+	    printf("trying to compile %s\n", xmlRelaxNGDefName(def));
+
+	    break;
+    }
+    return(ret);
+}
+
+/**
+ * xmlRelaxNGTryCompile:
+ * ctxt:  the RelaxNG parser context
+ * @define:  the definition tree to compile
+ *
+ * Try to compile the set of definitions, it works recursively,
+ * possibly ignoring parts which cannot be compiled.
+ *
+ * Returns 0 if success and -1 in case of error
+ */
+static int
+xmlRelaxNGTryCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def) {
+    int ret = 0;
+    xmlRelaxNGDefinePtr list;
+
+    if ((ctxt == NULL) || (def == NULL)) return(-1);
+
+    if ((def->type == XML_RELAXNG_START) ||
+        (def->type == XML_RELAXNG_ELEMENT)) {
+	ret = xmlRelaxNGIsCompileable(def);
+	if ((def->dflags & IS_COMPILABLE) && (def->depth != -25)) {
+	    ctxt->am = NULL;
+	    ret = xmlRelaxNGCompile(ctxt, def);
+	    return(ret);
+	}
+    }
+    switch(def->type) {
+        case XML_RELAXNG_REF:
+        case XML_RELAXNG_EXTERNALREF:
+        case XML_RELAXNG_PARENTREF:
+        case XML_RELAXNG_NOOP:
+        case XML_RELAXNG_START:
+	    ret = xmlRelaxNGTryCompile(ctxt, def->content);
+	    break;
+        case XML_RELAXNG_TEXT:
+        case XML_RELAXNG_DATATYPE:
+        case XML_RELAXNG_LIST:
+        case XML_RELAXNG_PARAM:
+        case XML_RELAXNG_VALUE:
+        case XML_RELAXNG_EMPTY:
+        case XML_RELAXNG_ELEMENT:
+	    ret = 0;
+	    break;
+        case XML_RELAXNG_OPTIONAL:
+        case XML_RELAXNG_ZEROORMORE:
+        case XML_RELAXNG_ONEORMORE:
+        case XML_RELAXNG_CHOICE:
+        case XML_RELAXNG_GROUP:
+        case XML_RELAXNG_DEF:
+	    list = def->content;
+	    while (list != NULL) {
+		ret = xmlRelaxNGTryCompile(ctxt, list);
+		if (ret != 0)
+		    break;
+		list = list->next;
+	    }
+	    break;
+        case XML_RELAXNG_EXCEPT:
+        case XML_RELAXNG_ATTRIBUTE:
+        case XML_RELAXNG_INTERLEAVE:
+        case XML_RELAXNG_NOT_ALLOWED:
+	    ret = 0;
+	    break;
+    }
+    return(ret);
 }
 
 /************************************************************************
@@ -6786,6 +7063,12 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
 	xmlFreeDoc(doc);
 	return(NULL);
     }
+
+    /*
+     * try to compile (parts of) the schemas
+     */
+    if (ctxt->grammar != NULL)
+	xmlRelaxNGTryCompile(ctxt, ctxt->grammar->start);
 
     /*
      * Transfer the pointer for cleanup at the schema level.

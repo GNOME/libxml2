@@ -2541,22 +2541,35 @@ xmlXPathCompareNodeSets(int inf, int strict,
     xmlNodeSetPtr ns2;
 
     if ((arg1 == NULL) ||
-	((arg1->type != XPATH_NODESET) && (arg1->type != XPATH_XSLT_TREE)))
+	((arg1->type != XPATH_NODESET) && (arg1->type != XPATH_XSLT_TREE))) {
+	xmlXPathFreeObject(arg2);
         return(0);
+    }
     if ((arg2 == NULL) ||
-	((arg2->type != XPATH_NODESET) && (arg2->type != XPATH_XSLT_TREE)))
+	((arg2->type != XPATH_NODESET) && (arg2->type != XPATH_XSLT_TREE))) {
+	xmlXPathFreeObject(arg1);
+	xmlXPathFreeObject(arg2);
         return(0);
+    }
 
     ns1 = arg1->nodesetval;
     ns2 = arg2->nodesetval;
 
-    if (ns1->nodeNr <= 0)
+    if (ns1->nodeNr <= 0) {
+	xmlXPathFreeObject(arg1);
+	xmlXPathFreeObject(arg2);
 	return(0);
-    if (ns2->nodeNr <= 0)
+    }
+    if (ns2->nodeNr <= 0) {
+	xmlXPathFreeObject(arg1);
+	xmlXPathFreeObject(arg2);
 	return(0);
+    }
 
     values2 = (double *) xmlMalloc(ns2->nodeNr * sizeof(double));
     if (values2 == NULL) {
+	xmlXPathFreeObject(arg1);
+	xmlXPathFreeObject(arg2);
 	return(0);
     }
     for (i = 0;i < ns1->nodeNr;i++) {
@@ -2595,6 +2608,8 @@ xmlXPathCompareNodeSets(int inf, int strict,
 	init = 1;
     }
     xmlFree(values2);
+    xmlXPathFreeObject(arg1);
+    xmlXPathFreeObject(arg2);
     return(ret);
     return(0);
 }

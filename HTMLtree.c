@@ -961,12 +961,15 @@ htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *enco
      */
     type = cur->type;
     cur->type = XML_HTML_DOCUMENT_NODE;
-    if (cur->intSubset != NULL)
+    if (cur->intSubset != NULL) {
         htmlDtdDumpOutput(buf, cur, NULL);
-    else {
+#if 0
+    /* Disabled for XSLT output */
+    } else {
 	/* Default to HTML-4.0 transitionnal @@@@ */
 	xmlOutputBufferWriteString(buf, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n");
 
+#endif
     }
     if (cur->children != NULL) {
         htmlNodeListDumpOutput(buf, cur, cur->children, encoding);
@@ -974,7 +977,6 @@ htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *enco
     xmlOutputBufferWriteString(buf, "\n");
     cur->type = (xmlElementType) type;
 }
-
 
 /************************************************************************
  *									*
@@ -1130,6 +1132,8 @@ htmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
 		return(-1);
             htmlSetMetaEncoding(cur, (const xmlChar *) encoding);
 	}
+    } else {
+	htmlSetMetaEncoding(cur, (const xmlChar *) "UTF-8");
     }
 
     /*

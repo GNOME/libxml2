@@ -645,6 +645,10 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 
     q = cur;
     while (*cur != 0) {
+	/* TODO: attributes can inherits &#38; ...  
+	if ((*cur == '&') && (cur[1] == '#')) {
+	    int val = 
+	} else */
 	if (*cur == '&') {
 	    /*
 	     * Save the current text.

@@ -1,3 +1,9 @@
+Mon Apr  2 17:13:51 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: fixed a memleak when comparing nodesets
+	* HTMLtree.c: don't invent the HTML doctype if not available (XSLT)
+	* tree.c: added a TODO
+
 Tue Mar 27 14:32:06 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in Makefile.am config.h.in xmlversion.h.in: detect if

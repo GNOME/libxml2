@@ -1,3 +1,11 @@
+Mon Mar 22 20:07:27 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: remove a memory leak on schemas type facets.
+	* check-relaxng-test-suite.py check-relaxng-test-suite2.py
+	  check-xsddata-test-suite.py: reduce verbosity
+	* configure.in Makefile.am: incorporated the Python regressions
+	  tests for Relax-NG and Schemas Datatype to "make tests"
+
 Mon Mar 22 16:16:18 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c include/libxml/xmlwriter.h doc/* : applied patch from

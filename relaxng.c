@@ -2501,7 +2501,7 @@ xmlRelaxNGSchemaFacetCheck(void *data ATTRIBUTE_UNUSED,
         xmlSchemaFreeFacet(facet);
         return (-1);
     }
-    facet->value = xmlStrdup(val);
+    facet->value = val;
     ret = xmlSchemaCheckFacet(facet, typ, NULL, type);
     if (ret != 0) {
         xmlSchemaFreeFacet(facet);
@@ -6871,6 +6871,7 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                     xmlChar *href, *ns, *base, *URL;
                     xmlRelaxNGDocumentPtr docu;
                     xmlNodePtr tmp;
+		    xmlURIPtr uri;
 
                     ns = xmlGetProp(cur, BAD_CAST "ns");
                     if (ns == NULL) {
@@ -6891,6 +6892,27 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                         delete = cur;
                         goto skip_children;
                     }
+		    uri = xmlParseURI((const char *) href);
+		    if (uri == NULL) {
+                        xmlRngPErr(ctxt, cur, XML_RNGP_HREF_ERROR,
+                                   "Incorrect URI for externalRef %s\n",
+                                   href, NULL);
+                        if (href != NULL)
+                            xmlFree(href);
+                        delete = cur;
+                        goto skip_children;
+		    }
+		    if (uri->fragment != NULL) {
+                        xmlRngPErr(ctxt, cur, XML_RNGP_HREF_ERROR,
+			       "Fragment forbidden in URI for externalRef %s\n",
+                                   href, NULL);
+		        xmlFreeURI(uri);
+                        if (href != NULL)
+                            xmlFree(href);
+                        delete = cur;
+                        goto skip_children;
+		    }
+		    xmlFreeURI(uri);
                     base = xmlNodeGetBase(cur->doc, cur);
                     URL = xmlBuildURI(href, base);
                     if (URL == NULL) {

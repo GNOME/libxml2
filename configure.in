@@ -326,6 +326,7 @@ PYTHON=
 PYTHON_VERSION=
 PYTHON_INCLUDES=
 PYTHON_SITE_PACKAGES=
+PYTHON_TESTS=
 pythondir=
 AC_ARG_WITH(python,
 [  --with-python[[=DIR]]     build Python bindings if found])
@@ -954,6 +955,9 @@ else
     echo "Enabled Schemas/Relax-NG support"
     WITH_SCHEMAS=1
     TEST_SCHEMAS="Schemastests Relaxtests"
+    if test "$PYTHON_INCLUDES" != "" ; then
+        PYTHON_TESTS="$PYTHON_TESTS RelaxNGPythonTests SchemasPythonTests"
+    fi
     with_regexps=yes
 fi
 AC_SUBST(WITH_SCHEMAS)
@@ -1049,6 +1053,7 @@ AC_SUBST(RDL_LIBS)
 dnl for the spec file
 RELDATE=`date +'%a %b %e %Y'`
 AC_SUBST(RELDATE)
+AC_SUBST(PYTHON_TESTS)
 
 rm -f COPYING.LIB COPYING
 ln -s Copyright COPYING

@@ -122,7 +122,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests NStests Errtests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@
+tests: XMLtests XMLenttests NStests Errtests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@ @PYTHON_TESTS@
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; $(MAKE) tests ; fi)
 	@(cd doc/examples ; $(MAKE) tests)
 
@@ -882,6 +882,20 @@ Relaxtests: xmllint$(EXEEXT)
 	          rm res.$$name err.$$name ; \
 	       fi ; fi ; \
 	  done; done)
+
+RelaxNGPythonTests:
+	@(if [ -x $(PYTHON) ] ; then \
+	    echo "## Relax-NG Python based test suite 1" ; \
+	    $(PYTHON) $(srcdir)/check-relaxng-test-suite.py ; \
+	    echo "## Relax-NG Python based test suite 2" ; \
+	    $(PYTHON) $(srcdir)/check-relaxng-test-suite2.py ; \
+	  fi)
+
+SchemasPythonTests:
+	@(if [ -x $(PYTHON) ] ; then \
+	    echo "## XML Schemas datatypes Python based test suite" ; \
+	    $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
+	  fi)
 
 cleanup:
 	-@(find . -name .\#\* -exec rm {} \;)

@@ -10,6 +10,7 @@ import libxml2
 # Memory debug specific
 libxml2.debugMemory(1)
 debug = 0
+quiet = 1
 
 #
 # the testsuite description
@@ -67,7 +68,7 @@ def handle_valid(node, schema):
 	    instance = instance + child.serialize()
 	child = child.next
 
-    mem = libxml2.debugMemory(1);
+#    mem = libxml2.debugMemory(1);
     try:
 	doc = libxml2.parseDoc(instance)
     except:
@@ -91,9 +92,9 @@ def handle_valid(node, schema):
         ret = -1
 
     doc.freeDoc()
-    if mem != libxml2.debugMemory(1):
-	print "validating instance %d line %d leaks" % (
-		  nb_instances_tests, node.lineNo())
+#    if mem != libxml2.debugMemory(1):
+#	print "validating instance %d line %d leaks" % (
+#		  nb_instances_tests, node.lineNo())
 
     if ret != 0:
         log.write("\nFailed to validate correct instance:\n-----\n")
@@ -120,7 +121,7 @@ def handle_invalid(node, schema):
 	    instance = instance + child.serialize()
 	child = child.next
 
-    mem = libxml2.debugMemory(1);
+#    mem = libxml2.debugMemory(1);
 
     try:
 	doc = libxml2.parseDoc(instance)
@@ -145,9 +146,10 @@ def handle_invalid(node, schema):
         ret = -1
 
     doc.freeDoc()
-    if mem != libxml2.debugMemory(1):
-	print "validating instance %d line %d leaks" % (
-		  nb_instances_tests, node.lineNo())
+#    mem2 = libxml2.debugMemory(1)
+#    if mem != mem2:
+#	print "validating instance %d line %d leaks %d bytes" % (
+#		  nb_instances_tests, node.lineNo(), mem2 - mem)
     
     if ret == 0:
         log.write("\nFailed to detect validation problem in instance:\n-----\n")
@@ -339,13 +341,15 @@ def handle_testSuite(node, level = 0):
 	    msg = msg + "written by "
 	    for author in authors:
 	        msg = msg + author.content + " "
-	print msg
+	if quiet == 0:
+	    print msg
     sections = node.xpathEval('section')
     if sections != [] and level <= 0:
         msg = ""
         for section in sections:
 	    msg = msg + section.content + " "
-        print "Tests for section %s" % (msg)
+	if quiet == 0:
+	    print "Tests for section %s" % (msg)
     for test in node.xpathEval('testCase'):
         handle_testCase(test)
     for test in node.xpathEval('testSuite'):
@@ -387,13 +391,19 @@ root = testsuite.getRootElement()
 if root.name != 'testSuite':
     print "%s doesn't start with a testSuite element, aborting" % (CONF)
     sys.exit(1)
-print "Running Relax NG testsuite"
+if quiet == 0:
+    print "Running Relax NG testsuite"
 handle_testSuite(root)
 
-print "\nTOTAL:\nfound %d test schemas: %d success %d failures" % (
+if quiet == 0:
+    print "\nTOTAL:\n"
+if quiet == 0 or nb_schemas_failed != 0:
+    print "found %d test schemas: %d success %d failures" % (
       nb_schemas_tests, nb_schemas_success, nb_schemas_failed)
-print "found %d test instances: %d success %d failures" % (
+if quiet == 0 or nb_instances_failed != 0:
+    print "found %d test instances: %d success %d failures" % (
       nb_instances_tests, nb_instances_success, nb_instances_failed)
+
 
 testsuite.freeDoc()
 
@@ -401,7 +411,8 @@ testsuite.freeDoc()
 libxml2.relaxNGCleanupTypes()
 libxml2.cleanupParser()
 if libxml2.debugMemory(1) == 0:
-    print "OK"
+    if quiet == 0:
+	print "OK"
 else:
     print "Memory leak %d bytes" % (libxml2.debugMemory(1))
     libxml2.dumpMemory()

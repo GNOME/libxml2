@@ -3,6 +3,91 @@
 <email>daniel@veillard.com</email>
 <documentation>For libxml2 implementation of Relax NG spec.</documentation>
 <testSuite>
+<documentation>Test of node matches</documentation>
+<testCase>
+<correct>
+<element xmlns="http://relaxng.org/ns/structure/1.0">
+  <anyName>
+    <except>
+      <nsName ns="http://example.org"/>
+    </except>
+  </anyName>
+  <empty/>
+</element>
+</correct>
+<valid>
+<foo/>
+</valid>
+<valid>
+<foo xmlns="http://example.org/"/>
+</valid>
+<valid>
+<foo xmlns="http://EXAMPLE.ORG"/>
+</valid>
+<invalid>
+<foo xmlns="http://example.org"/>
+</invalid>
+<invalid>
+<a:foo xmlns:a="http://example.org"/>
+</invalid>
+</testCase>
+<testCase>
+<correct>
+<element name="top" xmlns="http://relaxng.org/ns/structure/1.0">
+  <interleave>
+    <element name="foo" ns="http://example.org">
+      <empty/>
+    </element>
+    <element>
+      <anyName>
+	<except>
+	  <nsName ns="http://example.org"/>
+	</except>
+      </anyName>
+      <empty/>
+    </element>
+  </interleave>
+</element>
+</correct>
+<invalid>
+<top>
+<foo/>
+<bar/>
+</top>
+</invalid>
+<invalid>
+<top>
+<foo xmlns="http://example.org"/>
+<bar xmlns="http://example.org"/>
+</top>
+</invalid>
+<valid>
+<top>
+<foo xmlns="http://example.org"/>
+<bar/>
+</top>
+</valid>
+<valid>
+<top>
+<bar/>
+<foo xmlns="http://example.org"/>
+</top>
+</valid>
+<valid>
+<top>
+<foo xmlns="http://example.org"/>
+<bar xmlns="http://example.org/"/>
+</top>
+</valid>
+<valid>
+<top>
+<bar xmlns="http://example.org/"/>
+<foo xmlns="http://example.org"/>
+</top>
+</valid>
+</testCase>
+</testSuite>
+<testSuite>
 <documentation>Test of indeterminism</documentation>
 <testCase>
 <correct>

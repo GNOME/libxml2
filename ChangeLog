@@ -1,3 +1,11 @@
+Fri Mar 21 13:41:23 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed xmlRelaxNGNodeMatchesList
+	* test/relaxng/testsuite.xml: augmented the test suite
+	* result/relaxng/spec1* result/relaxng/tutor12_1*: this fixes
+	  some schemas validation tests in the presence of foreign 
+	  namespaces.
+
 Fri Mar 21 02:23:34 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: added another interleave speedup.

@@ -1,3 +1,9 @@
+Sat May  5 11:38:44 CEST 2001 <Daniel.Veillard@imag.fr>
+
+	* entities.c tree.c parser.c: fix a problem raised after 1.8.12
+	  non-utf document parsed with the old parser are not saved correctly
+	  force the UTF-8 encoding label on the new parser to detect it
+
 Fri May  4 08:53:41 CEST 2001 <Daniel.Veillard@imag.fr>
 
 	* doc/xml.html: updated
@@ -33,7 +39,8 @@ Sun Mar 25 01:40:24 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 Sun Mar 25 01:03:10 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
-	* Makefile.am parserold.c: added back the 1.8.11 parser for compatibility
+	* Makefile.am parserold.c: added back the 1.8.11 parser for
+	  compatibility
 	* README: updated
 	* SAX.c: integrate back 1.8.11 callback code and call it when
 	  we are using the old parser

@@ -649,7 +649,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	     */
 	    *out++ = *cur;
 	} else if (*cur >= 0x80) {
-	    if ((doc->encoding != NULL) || (html)) {
+	    if (html) {
 		char buf[10], *ptr;
 
 #ifdef HAVE_SNPRINTF
@@ -660,7 +660,8 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		buf[sizeof(buf) - 1] = 0;
 		ptr = buf;
 		while (*ptr != 0) *out++ = *ptr++;
-	    } else {
+	    } else if ((doc->encoding != NULL) &&
+		       (xmlStrEqual(doc->encoding, "UTF-8"))) {
 		/*
 		 * We assume we have UTF-8 input.
 		 */
@@ -730,6 +731,20 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		while (*ptr != 0) *out++ = *ptr++;
 		cur += l;
 		continue;
+	    } else {
+		/*
+		 * We are using the old parser
+		 */
+		char buf[10], *ptr;
+
+#ifdef HAVE_SNPRINTF
+		snprintf(buf, sizeof(buf), "&#%d;", *cur);
+#else
+		sprintf(buf, "&#%d;", *cur);
+#endif
+		buf[sizeof(buf) - 1] = 0;
+		ptr = buf;
+		while (*ptr != 0) *out++ = *ptr++;
 	    }
 	} else if (IS_CHAR(*cur)) {
 	    char buf[10], *ptr;

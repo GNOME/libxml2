@@ -8919,6 +8919,10 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	(!ctxt->disableSAX))
         ctxt->sax->endDocument(ctxt->userData);
 
+    if ((ctxt->myDoc != NULL) &&
+	(ctxt->myDoc->encoding == NULL))
+	ctxt->myDoc->encoding = xmlStrdup(BAD_CAST "UTF-8");
+
     if (! ctxt->wellFormed) return(-1);
     return(0);
 }
@@ -9867,6 +9871,9 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 		ctxt->sax->endDocument(ctxt->userData);
 	}
 	ctxt->instate = XML_PARSER_EOF;
+	if ((ctxt->myDoc != NULL) &&
+	    (ctxt->myDoc->encoding == NULL))
+	    ctxt->myDoc->encoding = xmlStrdup(BAD_CAST "UTF-8");
     }
     return((xmlParserErrors) ctxt->errNo);	      
 }
@@ -10212,6 +10219,11 @@ xmlSAXParseBalancedChunk(xmlParserCtxtPtr ctx, xmlSAXHandlerPtr sax,
     xmlPushInput(ctxt, input);
     if (enc != XML_CHAR_ENCODING_NONE)
 	xmlSwitchEncoding(ctxt, enc);
+    else {
+	if ((ctxt->myDoc != NULL) &&
+	    (ctxt->myDoc->encoding == NULL))
+	    ctxt->myDoc->encoding = xmlStrdup(BAD_CAST "UTF-8");
+    }
 
     /*
      * let's parse that entity knowing it's an external subset.

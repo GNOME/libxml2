@@ -4421,7 +4421,8 @@ xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
 	xmlBufferWriteQuotedString(buf, cur->version);
     else
 	xmlBufferWriteChar(buf, "\"1.0\"");
-    if (cur->encoding != NULL) {
+    if ((cur->encoding != NULL) &&
+	(!xmlStrEqual(cur->encoding, "UTF-8"))) {
         xmlBufferWriteChar(buf, " encoding=");
 	xmlBufferWriteQuotedString(buf, cur->encoding);
     }

@@ -1,3 +1,9 @@
+Tue Jan  6 00:10:33 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* rngparser.c: commiting the compact relax ng parser. It's not
+	  completely finished, it's not integrated but I want to save the
+	  current state
+
 Mon Jan  5 22:22:48 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* doc/apibuild.py, doc/APIconstructors.html, doc/libxml2-refs.xml,

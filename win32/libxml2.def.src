@@ -1325,6 +1325,12 @@ xmlRecoverDoc
 xmlRecoverFile
 xmlRecoverMemory
 #ifdef LIBXML_REGEXP_ENABLED
+xmlRegExecErrInfo
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlRegExecNextValues
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlRegExecPushString
 #endif
 #ifdef LIBXML_REGEXP_ENABLED

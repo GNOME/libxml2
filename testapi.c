@@ -31140,6 +31140,137 @@ static void des_xmlRegExecCtxtPtr(int no ATTRIBUTE_UNUSED, xmlRegExecCtxtPtr val
 
 
 static int
+test_xmlRegExecErrInfo(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_REGEXP_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlRegExecCtxtPtr exec; /* a regexp execution context generating an error */
+    int n_exec;
+    xmlChar ** string; /* return value for the error string */
+    int n_string;
+    int * nbval; /* pointer to the number of accepted values IN/OUT */
+    int n_nbval;
+    int * nbneg; /* return number of negative transitions */
+    int n_nbneg;
+    xmlChar ** values; /* pointer to the array of acceptable values */
+    int n_values;
+    int * terminal; /* return value if this was a terminal state */
+    int n_terminal;
+
+    for (n_exec = 0;n_exec < gen_nb_xmlRegExecCtxtPtr;n_exec++) {
+    for (n_string = 0;n_string < gen_nb_const_xmlChar_ptr_ptr;n_string++) {
+    for (n_nbval = 0;n_nbval < gen_nb_int_ptr;n_nbval++) {
+    for (n_nbneg = 0;n_nbneg < gen_nb_int_ptr;n_nbneg++) {
+    for (n_values = 0;n_values < gen_nb_xmlChar_ptr_ptr;n_values++) {
+    for (n_terminal = 0;n_terminal < gen_nb_int_ptr;n_terminal++) {
+        mem_base = xmlMemBlocks();
+        exec = gen_xmlRegExecCtxtPtr(n_exec, 0);
+        string = gen_const_xmlChar_ptr_ptr(n_string, 1);
+        nbval = gen_int_ptr(n_nbval, 2);
+        nbneg = gen_int_ptr(n_nbneg, 3);
+        values = gen_xmlChar_ptr_ptr(n_values, 4);
+        terminal = gen_int_ptr(n_terminal, 5);
+
+        ret_val = xmlRegExecErrInfo(exec, (const xmlChar **)string, nbval, nbneg, values, terminal);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlRegExecCtxtPtr(n_exec, exec, 0);
+        des_const_xmlChar_ptr_ptr(n_string, (const xmlChar **)string, 1);
+        des_int_ptr(n_nbval, nbval, 2);
+        des_int_ptr(n_nbneg, nbneg, 3);
+        des_xmlChar_ptr_ptr(n_values, values, 4);
+        des_int_ptr(n_terminal, terminal, 5);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlRegExecErrInfo",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_exec);
+            printf(" %d", n_string);
+            printf(" %d", n_nbval);
+            printf(" %d", n_nbneg);
+            printf(" %d", n_values);
+            printf(" %d", n_terminal);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlRegExecNextValues(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_REGEXP_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlRegExecCtxtPtr exec; /* a regexp execution context */
+    int n_exec;
+    int * nbval; /* pointer to the number of accepted values IN/OUT */
+    int n_nbval;
+    int * nbneg; /* return number of negative transitions */
+    int n_nbneg;
+    xmlChar ** values; /* pointer to the array of acceptable values */
+    int n_values;
+    int * terminal; /* return value if this was a terminal state */
+    int n_terminal;
+
+    for (n_exec = 0;n_exec < gen_nb_xmlRegExecCtxtPtr;n_exec++) {
+    for (n_nbval = 0;n_nbval < gen_nb_int_ptr;n_nbval++) {
+    for (n_nbneg = 0;n_nbneg < gen_nb_int_ptr;n_nbneg++) {
+    for (n_values = 0;n_values < gen_nb_xmlChar_ptr_ptr;n_values++) {
+    for (n_terminal = 0;n_terminal < gen_nb_int_ptr;n_terminal++) {
+        mem_base = xmlMemBlocks();
+        exec = gen_xmlRegExecCtxtPtr(n_exec, 0);
+        nbval = gen_int_ptr(n_nbval, 1);
+        nbneg = gen_int_ptr(n_nbneg, 2);
+        values = gen_xmlChar_ptr_ptr(n_values, 3);
+        terminal = gen_int_ptr(n_terminal, 4);
+
+        ret_val = xmlRegExecNextValues(exec, nbval, nbneg, values, terminal);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlRegExecCtxtPtr(n_exec, exec, 0);
+        des_int_ptr(n_nbval, nbval, 1);
+        des_int_ptr(n_nbneg, nbneg, 2);
+        des_xmlChar_ptr_ptr(n_values, values, 3);
+        des_int_ptr(n_terminal, terminal, 4);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlRegExecNextValues",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_exec);
+            printf(" %d", n_nbval);
+            printf(" %d", n_nbneg);
+            printf(" %d", n_values);
+            printf(" %d", n_terminal);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlRegExecPushString(void) {
     int test_ret = 0;
 
@@ -31389,7 +31520,9 @@ static int
 test_xmlregexp(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlregexp : 5 of 9 functions ...\n");
+    if (quiet == 0) printf("Testing xmlregexp : 7 of 11 functions ...\n");
+    test_ret += test_xmlRegExecErrInfo();
+    test_ret += test_xmlRegExecNextValues();
     test_ret += test_xmlRegExecPushString();
     test_ret += test_xmlRegExecPushString2();
     test_ret += test_xmlRegNewExecCtxt();

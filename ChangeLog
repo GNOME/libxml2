@@ -1,3 +1,9 @@
+Wed Jan 12 15:15:02 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* elfgcchack.h testapi.c doc/libxml2-api.xml doc/*: regenerated
+	  the API description, rebuilt, improved navigation in documentation
+	  a bit.
+
 Wed Jan 12 14:17:14 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlregexp.h xmlregexp.c: extended xmlRegExecErrInfo()

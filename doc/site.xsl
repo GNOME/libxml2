@@ -318,6 +318,7 @@
     </form>
     <ul><!-- style="margin-left: -1em" -->
       <li><a href="index.html">Home</a></li>
+      <li><a href="html/index.html">Reference Manual</a></li>
       <xsl:for-each select="/html/body/h2">
         <xsl:variable name="filename">
           <xsl:call-template name="tocfilename">
@@ -352,6 +353,7 @@
     </form>
     <ul><!-- style="margin-left: -1em" -->
       <li><a href="index.html" style="font-weight:bold">Main Menu</a></li>
+      <li><a href="html/index.html" style="font-weight:bold">Reference Manual</a></li>
       <li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li>
       <li><a href="guidelines.html">XML Guidelines</a></li>
       <li><a href="tutorial/index.html">Tutorial</a></li>

@@ -2350,6 +2350,8 @@
     <reference name='xmlRegExecCallbacks' href='html/libxml-xmlregexp.html#xmlRegExecCallbacks'/>
     <reference name='xmlRegExecCtxt' href='html/libxml-xmlregexp.html#xmlRegExecCtxt'/>
     <reference name='xmlRegExecCtxtPtr' href='html/libxml-xmlregexp.html#xmlRegExecCtxtPtr'/>
+    <reference name='xmlRegExecErrInfo' href='html/libxml-xmlregexp.html#xmlRegExecErrInfo'/>
+    <reference name='xmlRegExecNextValues' href='html/libxml-xmlregexp.html#xmlRegExecNextValues'/>
     <reference name='xmlRegExecPushString' href='html/libxml-xmlregexp.html#xmlRegExecPushString'/>
     <reference name='xmlRegExecPushString2' href='html/libxml-xmlregexp.html#xmlRegExecPushString2'/>
     <reference name='xmlRegFreeExecCtxt' href='html/libxml-xmlregexp.html#xmlRegFreeExecCtxt'/>
@@ -5661,6 +5663,8 @@
       <ref name='xmlRegExecCallbacks'/>
       <ref name='xmlRegExecCtxt'/>
       <ref name='xmlRegExecCtxtPtr'/>
+      <ref name='xmlRegExecErrInfo'/>
+      <ref name='xmlRegExecNextValues'/>
       <ref name='xmlRegExecPushString'/>
       <ref name='xmlRegExecPushString2'/>
       <ref name='xmlRegFreeExecCtxt'/>
@@ -7786,6 +7790,7 @@
       <ref name='xlinkExtendedLinkFunk'/>
       <ref name='xlinkExtendedLinkSetFunk'/>
       <ref name='xmlPatterncompile'/>
+      <ref name='xmlRegExecErrInfo'/>
       <ref name='xmlSAX2StartElement'/>
       <ref name='xmlSAX2StartElementNs'/>
       <ref name='xmlTextReaderPreservePattern'/>
@@ -7882,6 +7887,8 @@
       <ref name='xmlDocDumpMemoryEnc'/>
       <ref name='xmlGetFeaturesList'/>
       <ref name='xmlGetUTF8Char'/>
+      <ref name='xmlRegExecErrInfo'/>
+      <ref name='xmlRegExecNextValues'/>
       <ref name='xmlSplitQName3'/>
       <ref name='xmlStringCurrentChar'/>
       <ref name='xmlValidGetPotentialChildren'/>
@@ -8376,6 +8383,8 @@
       <ref name='xmlParseDefaultDecl'/>
       <ref name='xmlParseEntityValue'/>
       <ref name='xmlParseExternalID'/>
+      <ref name='xmlRegExecErrInfo'/>
+      <ref name='xmlRegExecNextValues'/>
       <ref name='xmlSplitQName'/>
       <ref name='xmlSplitQName2'/>
     </type>
@@ -9238,6 +9247,8 @@
     </type>
     <type name='xmlRegExecCtxtPtr'>
       <ref name='xmlRegExecCallbacks'/>
+      <ref name='xmlRegExecErrInfo'/>
+      <ref name='xmlRegExecNextValues'/>
       <ref name='xmlRegExecPushString'/>
       <ref name='xmlRegExecPushString2'/>
       <ref name='xmlRegFreeExecCtxt'/>
@@ -12403,6 +12414,8 @@
       <ref name='xmlRegExecCallbacks'/>
       <ref name='xmlRegExecCtxt'/>
       <ref name='xmlRegExecCtxtPtr'/>
+      <ref name='xmlRegExecErrInfo'/>
+      <ref name='xmlRegExecNextValues'/>
       <ref name='xmlRegExecPushString'/>
       <ref name='xmlRegExecPushString2'/>
       <ref name='xmlRegFreeExecCtxt'/>
@@ -13135,6 +13148,9 @@
         </word>
         <word name='ABC'>
           <ref name='xmlXPathTranslateFunction'/>
+        </word>
+        <word name='ABI'>
+          <ref name='_xmlError'/>
         </word>
         <word name='ALL'>
           <ref name='xmlAutomataNewAllTrans'/>
@@ -14506,6 +14522,8 @@
           <ref name='xmlParseNotationDecl'/>
         </word>
         <word name='Extract'>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlSchemaGetFacetValueAsULong'/>
           <ref name='xmlStrsub'/>
         </word>
@@ -15521,6 +15539,8 @@
         <word name='OUT'>
           <ref name='xmlNanoHTTPMethod'/>
           <ref name='xmlNanoHTTPMethodRedir'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
         </word>
         <word name='OUT:'>
           <ref name='htmlDocDumpMemory'/>
@@ -15685,7 +15705,6 @@
         </word>
         <word name='Parsing'>
           <ref name='_xmlParserCtxt'/>
-          <ref name='xmlXPathErr'/>
         </word>
         <word name='Part'>
           <ref name='xmlRegexpCompile'/>
@@ -16051,9 +16070,6 @@
         <word name='Relative'>
           <ref name='xmlBuildURI'/>
         </word>
-        <word name='Relax'>
-          <ref name='xmlXPathErr'/>
-        </word>
         <word name='Relax-NG'>
           <ref name='xmlRelaxNGGetParserErrors'/>
           <ref name='xmlRelaxNGGetValidErrors'/>
@@ -16156,6 +16172,10 @@
           <ref name='xmlXPathNodeSetItem'/>
           <ref name='xmlXPathStackIsExternal'/>
           <ref name='xmlXPathStackIsNodeSet'/>
+        </word>
+        <word name='Returns:'>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
         </word>
         <word name='Reverse'>
           <ref name='xmlListReverse'/>
@@ -17315,11 +17335,17 @@
           <ref name='xmlGetNoNsProp'/>
           <ref name='xmlIsMixedElement'/>
         </word>
+        <word name='acceptable'>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
+        </word>
         <word name='accepted'>
           <ref name='IS_BYTE_CHAR'/>
           <ref name='xmlCatalogGetDefaults'/>
           <ref name='xmlCatalogSetDefaultPrefer'/>
           <ref name='xmlCatalogSetDefaults'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlTextReaderNormalization'/>
         </word>
         <word name='accepting'>
@@ -18202,6 +18228,7 @@
           <ref name='xmlSchemaValidateOneElement'/>
         </word>
         <word name='break'>
+          <ref name='_xmlError'/>
           <ref name='xmlLineNumbersDefault'/>
         </word>
         <word name='breaking'>
@@ -18273,6 +18300,7 @@
           <ref name='xmlParseEnumeratedType'/>
           <ref name='xmlParseEnumerationType'/>
           <ref name='xmlParseNotationType'/>
+          <ref name='xmlParseURI'/>
           <ref name='xmlRecoverDoc'/>
           <ref name='xmlRecoverFile'/>
           <ref name='xmlRecoverMemory'/>
@@ -18724,6 +18752,7 @@
           <ref name='xmlLoadCatalogs'/>
         </word>
         <word name='column'>
+          <ref name='_xmlError'/>
           <ref name='getColumnNumber'/>
           <ref name='xmlSAX2GetColumnNumber'/>
           <ref name='xmlTextReaderGetParserColumnNumber'/>
@@ -19138,6 +19167,8 @@
           <ref name='xmlParseSDDecl'/>
           <ref name='xmlParserHandlePEReference'/>
           <ref name='xmlParserHandleReference'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlRelaxNGNewMemParserCtxt'/>
           <ref name='xmlRelaxNGNewParserCtxt'/>
           <ref name='xmlSchemaNewMemParserCtxt'/>
@@ -19481,6 +19512,8 @@
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlHashFree'/>
           <ref name='xmlNewTextWriter'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlSaveUri'/>
           <ref name='xmlTextReaderConstBaseUri'/>
           <ref name='xmlTextReaderConstEncoding'/>
@@ -20118,6 +20151,8 @@
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
           <ref name='xmlParseStartTag'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlSearchNs'/>
           <ref name='xmlXPathFreeNodeSetList'/>
           <ref name='xmlXPathNodeSetFreeNs'/>
@@ -20672,6 +20707,8 @@
           <ref name='xmlAutomataCompile'/>
         </word>
         <word name='execution'>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlRegExecPushString'/>
           <ref name='xmlRegExecPushString2'/>
         </word>
@@ -20919,6 +20956,7 @@
           <ref name='XML_CTXT_FINISH_DTD_1'/>
           <ref name='XML_DETECT_IDS'/>
           <ref name='XML_SKIP_IDS'/>
+          <ref name='_xmlError'/>
           <ref name='xmlParseMisc'/>
           <ref name='xmlXPathOrderDocElems'/>
         </word>
@@ -21353,6 +21391,7 @@
           <ref name='xmlDocDumpFormatMemoryEnc'/>
           <ref name='xmlDocDumpMemoryEnc'/>
           <ref name='xmlKeepBlanksDefault'/>
+          <ref name='xmlRegExecErrInfo'/>
         </word>
         <word name='generic'>
           <ref name='initGenericErrorDefaultFunc'/>
@@ -22076,6 +22115,8 @@
           <ref name='xmlNanoHTTPInit'/>
           <ref name='xmlNanoHTTPScanProxy'/>
           <ref name='xmlParserPrintFileInfo'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlRelaxNGGetValidErrors'/>
           <ref name='xmlRelaxNGSetValidErrors'/>
           <ref name='xmlRelaxParserSetFlag'/>
@@ -23353,6 +23394,10 @@
           <ref name='xmlChildrenNode'/>
           <ref name='xmlRootNode'/>
         </word>
+        <word name='nbval'>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
+        </word>
         <word name='ncname'>
           <ref name='xmlBuildQName'/>
         </word>
@@ -23387,6 +23432,8 @@
           <ref name='xmlNewTextChild'/>
           <ref name='xmlParseEntityRef'/>
           <ref name='xmlParserHandleReference'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlValidGetValidElements'/>
           <ref name='xmlXPathNewContext'/>
         </word>
@@ -23436,6 +23483,8 @@
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlC14NExecute'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlRegExecPushString'/>
           <ref name='xmlRegExecPushString2'/>
           <ref name='xmlRegexpExec'/>
@@ -24301,6 +24350,8 @@
           <ref name='xmlParserInputGrow'/>
           <ref name='xmlParserInputRead'/>
           <ref name='xmlReconciliateNs'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlValidGetValidElements'/>
         </word>
         <word name='points'>
@@ -24380,6 +24431,8 @@
           <ref name='xmlParseDefaultDecl'/>
           <ref name='xmlParseExternalID'/>
           <ref name='xmlReconciliateNs'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
           <ref name='xmlValidateDtdFinal'/>
@@ -24812,6 +24865,7 @@
           <ref name='xmlXPathEvalExpr'/>
         </word>
         <word name='pushed'>
+          <ref name='xmlRegExecErrInfo'/>
           <ref name='xmlXPathFunction'/>
         </word>
         <word name='pushing'>
@@ -25177,6 +25231,8 @@
         <word name='regexp'>
           <ref name='_xmlElement'/>
           <ref name='xmlAutomataCompile'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlRegExecPushString'/>
           <ref name='xmlRegExecPushString2'/>
           <ref name='xmlRegFreeRegexp'/>
@@ -25325,6 +25381,9 @@
         </word>
         <word name='removing'>
           <ref name='xmlLoadSGMLSuperCatalog'/>
+        </word>
+        <word name='rename'>
+          <ref name='_xmlError'/>
         </word>
         <word name='repeat'>
           <ref name='xmlXPathAxisFunc'/>
@@ -26548,6 +26607,8 @@
           <ref name='xmlDictCreateSub'/>
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlPatterncompile'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlRegexpCompile'/>
           <ref name='xmlStrncatNew'/>
         </word>
@@ -26880,6 +26941,10 @@
           <ref name='_xmlXPathContext'/>
           <ref name='xmlIOHTTPOpenW'/>
         </word>
+        <word name='terminal'>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
+        </word>
         <word name='terminated'>
           <ref name='htmlCtxtReadDoc'/>
           <ref name='htmlReadDoc'/>
@@ -26964,6 +27029,8 @@
           <ref name='xmlNanoHTTPRead'/>
           <ref name='xmlParseAttValue'/>
           <ref name='xmlParseAttributeType'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
         </word>
         <word name='there'>
           <ref name='_xmlParserCtxt'/>
@@ -27070,6 +27137,9 @@
         <word name='titles'>
           <ref name='xlinkExtendedLinkFunk'/>
           <ref name='xlinkExtendedLinkSetFunk'/>
+        </word>
+        <word name='todo:'>
+          <ref name='_xmlError'/>
         </word>
         <word name='token'>
           <ref name='xmlAutomataNewCountTrans'/>
@@ -27196,6 +27266,8 @@
         </word>
         <word name='transitions'>
           <ref name='xmlAutomataNewAllTrans'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
         </word>
         <word name='translate'>
           <ref name='xmlXPathTranslateFunction'/>
@@ -27543,6 +27615,8 @@
           <ref name='xmlCatalogAddLocal'/>
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlNamespaceParseQName'/>
+          <ref name='xmlRegExecErrInfo'/>
+          <ref name='xmlRegExecNextValues'/>
           <ref name='xmlSplitQName'/>
           <ref name='xmlSplitQName2'/>
         </word>
@@ -27972,6 +28046,7 @@
           <ref name='xmlBuildRelativeURI'/>
         </word>
         <word name='would'>
+          <ref name='_xmlError'/>
           <ref name='htmlAutoCloseTag'/>
           <ref name='xmlTextReaderGetRemainder'/>
         </word>

@@ -2741,12 +2741,14 @@
      <exports symbol='xmlRegexp' type='typedef'/>
      <exports symbol='xmlRegexpPtr' type='typedef'/>
      <exports symbol='xmlRegExecCtxt' type='typedef'/>
+     <exports symbol='xmlRegExecErrInfo' type='function'/>
      <exports symbol='xmlRegFreeExecCtxt' type='function'/>
      <exports symbol='xmlRegexpExec' type='function'/>
      <exports symbol='xmlRegExecCallbacks' type='function'/>
      <exports symbol='xmlRegNewExecCtxt' type='function'/>
      <exports symbol='xmlRegExecPushString2' type='function'/>
      <exports symbol='xmlRegFreeRegexp' type='function'/>
+     <exports symbol='xmlRegExecNextValues' type='function'/>
      <exports symbol='xmlRegexpCompile' type='function'/>
      <exports symbol='xmlRegexpIsDeterminist' type='function'/>
      <exports symbol='xmlRegExecPushString' type='function'/>
@@ -5601,7 +5603,7 @@ actually an xmlCharEncoding'/>
       <field name='str2' type='char *' info=' extra string information'/>
       <field name='str3' type='char *' info=' extra string information'/>
       <field name='int1' type='int' info=' extra number information'/>
-      <field name='int2' type='int' info=' extra number information'/>
+      <field name='int2' type='int' info=' column number of the error or 0 if N/A (todo: rename this field when we would break ABI)'/>
       <field name='ctxt' type='void *' info=' the parser context if available'/>
       <field name='node' type='void *' info=' the node in the tree'/>
     </struct>
@@ -11296,7 +11298,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlParseURI' file='uri'>
       <info>Parse an URI  URI-reference = [ absoluteURI | relativeURI ] [ &quot;#&quot; fragment ]</info>
-      <return type='xmlURIPtr' info='a newly build xmlURIPtr or NULL in case of error'/>
+      <return type='xmlURIPtr' info='a newly built xmlURIPtr or NULL in case of error'/>
       <arg name='str' type='const char *' info='the URI string to analyze'/>
     </function>
     <function name='xmlParseURIReference' file='uri'>
@@ -11515,7 +11517,7 @@ actually an xmlCharEncoding'/>
       <return type='int' info='the number of input callback registered or -1 in case of error.'/>
     </function>
     <function name='xmlPrintURI' file='uri'>
-      <info>Prints the URI in the stream @steam.</info>
+      <info>Prints the URI in the stream @stream.</info>
       <return type='void'/>
       <arg name='stream' type='FILE *' info='a FILE* for the output'/>
       <arg name='uri' type='xmlURIPtr' info='pointer to an xmlURI'/>
@@ -11739,6 +11741,27 @@ actually an xmlCharEncoding'/>
       <arg name='transdata' type='void *' info=''/>
       <arg name='inputdata' type='void *' info=''/>
     </functype>
+    <function name='xmlRegExecErrInfo' file='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED)</cond>
+      <info>Extract error informations from the regexp execution, the parameter @string will be updated with the value pushed and not accepted, the parameter @values must point to an array of @nbval string pointers on return nbval will contain the number of possible strings in that state and the @values array will be updated with them. The string values</info>
+      <return type='int' info='will be freed with the @exec context and don&apos;t need to be deallocated.  Returns: 0 in case of success or -1 in case of error.'/>
+      <arg name='exec' type='xmlRegExecCtxtPtr' info='a regexp execution context generating an error'/>
+      <arg name='string' type='const xmlChar **' info='return value for the error string'/>
+      <arg name='nbval' type='int *' info='pointer to the number of accepted values IN/OUT'/>
+      <arg name='nbneg' type='int *' info='return number of negative transitions'/>
+      <arg name='values' type='xmlChar **' info='pointer to the array of acceptable values'/>
+      <arg name='terminal' type='int *' info='return value if this was a terminal state'/>
+    </function>
+    <function name='xmlRegExecNextValues' file='xmlregexp'>
+      <cond>defined(LIBXML_REGEXP_ENABLED)</cond>
+      <info>Extract informations from the regexp execution, the parameter @values must point to an array of @nbval string pointers on return nbval will contain the number of possible strings in that state and the @values array will be updated with them. The string values</info>
+      <return type='int' info='will be freed with the @exec context and don&apos;t need to be deallocated.  Returns: 0 in case of success or -1 in case of error.'/>
+      <arg name='exec' type='xmlRegExecCtxtPtr' info='a regexp execution context'/>
+      <arg name='nbval' type='int *' info='pointer to the number of accepted values IN/OUT'/>
+      <arg name='nbneg' type='int *' info='return number of negative transitions'/>
+      <arg name='values' type='xmlChar **' info='pointer to the array of acceptable values'/>
+      <arg name='terminal' type='int *' info='return value if this was a terminal state'/>
+    </function>
     <function name='xmlRegExecPushString' file='xmlregexp'>
       <cond>defined(LIBXML_REGEXP_ENABLED)</cond>
       <info>Push one input token in the execution context</info>
@@ -16017,7 +16040,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlXPathErr' file='xpathInternals'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Handle a Relax NG Parsing error</info>
+      <info>Handle an XPath error</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='a XPath parser context'/>
       <arg name='error' type='int' info='the error code'/>

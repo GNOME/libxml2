@@ -3416,6 +3416,18 @@ extern __typeof (xmlRecoverMemory) xmlRecoverMemory __attribute((alias("xmlRecov
 #endif
 
 #if defined(LIBXML_REGEXP_ENABLED)
+extern __typeof (xmlRegExecErrInfo) xmlRegExecErrInfo__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlRegExecErrInfo) xmlRegExecErrInfo __attribute((alias("xmlRegExecErrInfo__internal_alias")));
+#define xmlRegExecErrInfo xmlRegExecErrInfo__internal_alias
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED)
+extern __typeof (xmlRegExecNextValues) xmlRegExecNextValues__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlRegExecNextValues) xmlRegExecNextValues __attribute((alias("xmlRegExecNextValues__internal_alias")));
+#define xmlRegExecNextValues xmlRegExecNextValues__internal_alias
+#endif
+
+#if defined(LIBXML_REGEXP_ENABLED)
 extern __typeof (xmlRegExecPushString) xmlRegExecPushString__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlRegExecPushString) xmlRegExecPushString __attribute((alias("xmlRegExecPushString__internal_alias")));
 #define xmlRegExecPushString xmlRegExecPushString__internal_alias

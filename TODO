@@ -15,15 +15,8 @@ TODO:
 - Correct standalone checking/emitting (hard)
   2.9 Standalone Document Declaration
 - Better checking of external parsed entities TAG 1234
-- Find way of representing PERefs in the Dtd so that %entity; can
-  be saved back.
-  => seems impossible in a structure way
 - Go through erratas and do the cleanup.
   http://www.w3.org/XML/xml-19980210-errata ... started ...
-- Handle undefined namespaces in entity contents better ... at least
-  issue a warning
-- fix --disable-corba configure switch handling, and use XML_WITHOUT_CORBA
-  not WITHOUT_CORBA flag
 - reported by Michael, update of doc node when pasting on a new document
   There can be far more than simply the doc pointer which refers to
   the old document, for example namespace declarations or entities
@@ -34,13 +27,13 @@ TODO:
   data, close last element, etc
 - htmlParseDoc has parameter encoding which is not used.
   Function htmlCreateDocParserCtxt ignore it.
-- bug reported by Michael Meallin on validation problems
-  => Actually means I need to add support (and warn) for non-deterministic
-     content model.
 - fix realloc() usage.
 - compliance to XML-Namespace checking, see section 6 of
   http://www.w3.org/TR/REC-xml-names/
 - Fix output of <tst val="x&#xA;y"/>
+- Implement OASIS XML Catalog support
+  http://www.oasis-open.org/committees/entity/
+  
 
 TODO:
 =====
@@ -106,6 +99,11 @@ EXTENSIONS:
 Done:
 =====
 
+- bug reported by Michael Meallin on validation problems
+  => Actually means I need to add support (and warn) for non-deterministic
+     content model.
+- Handle undefined namespaces in entity contents better ... at least
+  issue a warning
 - DOM needs
   int xmlPruneProp(xmlNodePtr node, xmlAtttrPtr attr);
   => done it's actually xmlRemoveProp xmlUnsetProp xmlUnsetNsProp

@@ -447,7 +447,7 @@ pythonExternalEntityLoader(const char *URL, const char *ID,
 	Py_XDECREF(ctxtobj);
 #ifdef DEBUG_LOADER
 	printf("pythonExternalEntityLoader: result ");
-	PyObject_Print(ret, stdout, 0);
+	PyObject_Print(ret, stderr, 0);
 	printf("\n");
 #endif
 
@@ -1244,7 +1244,7 @@ libxml_xmlErrorFuncHandler(ATTRIBUTE_UNUSED void *ctx, const char *msg,
 
     if (libxml_xmlPythonErrorFuncHandler == NULL) {
         va_start(ap, msg);
-        vfprintf(stdout, msg, ap);
+        vfprintf(stderr, msg, ap);
         va_end(ap);
     } else {
         va_start(ap, msg);

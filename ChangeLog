@@ -1,3 +1,8 @@
+Wed Sep 17 22:06:11 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: use stderr and not stdout for default errors
+	  in python environment bug #122552
+
 Wed Sep 17 21:33:57 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: small fix from Rob Richards for input filename

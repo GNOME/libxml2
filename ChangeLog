@@ -1,3 +1,7 @@
+Fri Feb  7 01:43:38 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: added the boolean base type.
+
 Thu Feb  6 10:23:52 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: started implementing some of the missing

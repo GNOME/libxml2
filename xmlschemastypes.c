@@ -55,6 +55,7 @@ typedef enum {
     XML_SCHEMAS_DURATION,
     XML_SCHEMAS_FLOAT,
     XML_SCHEMAS_DOUBLE,
+    XML_SCHEMAS_BOOLEAN,
     XML_SCHEMAS_INT,
     XML_SCHEMAS_,
     XML_SCHEMAS_XXX
@@ -107,6 +108,7 @@ struct _xmlSchemaVal {
         xmlSchemaValDuration    dur;
 	float			f;
 	double			d;
+	int			b;
     } value;
 };
 
@@ -131,6 +133,7 @@ static xmlSchemaTypePtr xmlSchemaTypeGMonthDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeDurationDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNmtoken = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeFloatDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeBooleanDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeDoubleDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNameDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeQNameDef = NULL;
@@ -209,6 +212,7 @@ xmlSchemaInitTypes(void) {
     xmlSchemaTypeNmtoken = xmlSchemaInitBasicType("NMTOKEN");
     xmlSchemaTypeFloatDef = xmlSchemaInitBasicType("float");
     xmlSchemaTypeDoubleDef = xmlSchemaInitBasicType("double");
+    xmlSchemaTypeBooleanDef = xmlSchemaInitBasicType("boolean");
     xmlSchemaTypeNameDef = xmlSchemaInitBasicType("Name");
     xmlSchemaTypeQNameDef = xmlSchemaInitBasicType("QName");
     xmlSchemaTypeAnyURIDef = xmlSchemaInitBasicType("anyURI");
@@ -1428,6 +1432,31 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 	    TODO;
 	}
 	xmlFreeURI(uri);
+	return(0);
+    } else if (type == xmlSchemaTypeBooleanDef) {
+	const xmlChar *cur = value;
+
+	if ((cur[0] == '0') && (cur[1] == 0))
+	    ret = 0;
+	else if ((cur[0] == '1') && (cur[1] == 0))
+	    ret = 1;
+	else if ((cur[0] == 't') && (cur[1] == 'r') && (cur[2] == 'u') &&
+	         (cur[3] == 'e') && (cur[4] == 0))
+	    ret = 1;
+	else if ((cur[0] == 'f') && (cur[1] == 'a') && (cur[2] == 'l') &&
+	         (cur[3] == 's') && (cur[4] == 'e') && (cur[5] == 0))
+	    ret = 0;
+	else 
+	    return(1);
+	if (val != NULL) {
+	    v = xmlSchemaNewValue(XML_SCHEMAS_BOOLEAN);
+	    if (v != NULL) {
+		v->value.b = ret;
+		*val = v;
+	    } else {
+		return(-1);
+	    }
+	}
 	return(0);
     } else {
 	TODO

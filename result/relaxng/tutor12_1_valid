@@ -1,1 +1,1 @@
-./test/relaxng/tutor12_1.rng validates
+./test/relaxng/tutor12_1.rng fails to validate

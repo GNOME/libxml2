@@ -1,4 +1,4 @@
-Unimplemented block at relaxng.c:6428
-Unimplemented block at relaxng.c:6428
-error detected at relaxng.c:6823
-Extra content for element head: meta
+error detected at relaxng.c:6468
+Extra element title in interleave
+error detected at relaxng.c:6770
+Extra content for element head: title

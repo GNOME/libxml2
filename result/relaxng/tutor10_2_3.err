@@ -1,4 +1,4 @@
-error detected at relaxng.c:6629
+error detected at relaxng.c:6574
 Expecting no namespace for element foo
-error detected at relaxng.c:7194
+error detected at relaxng.c:7141
 extra data on the document

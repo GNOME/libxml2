@@ -1719,6 +1719,8 @@ static xmlRelaxNGDefinePtr xmlRelaxNGParseNameClass(
 	      xmlRelaxNGDefinePtr def);
 static xmlRelaxNGGrammarPtr xmlRelaxNGParseGrammar(
 	      xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes);
+static int xmlRelaxNGElementMatch(xmlRelaxNGValidCtxtPtr ctxt, 
+	      xmlRelaxNGDefinePtr define, xmlNodePtr elem);
 
 
 #define IS_BLANK_NODE(n)						\
@@ -2106,7 +2108,6 @@ xmlRelaxNGCompareNameClasses(xmlRelaxNGDefinePtr def1,
 	    return(0);
 	return(1);
     } else if (def1->type == XML_RELAXNG_EXCEPT) {
-	xmlRelaxNGDefinePtr tmp = def1->content;
 	TODO
 	ret = 0;
     } else {

@@ -1167,6 +1167,7 @@
      <exports symbol='xmlRelaxNG'/>
      <exports symbol='xmlRelaxNGCleanupTypes'/>
      <exports symbol='xmlRelaxNGDump'/>
+     <exports symbol='xmlRelaxNGDumpTree'/>
      <exports symbol='xmlRelaxNGFree'/>
      <exports symbol='xmlRelaxNGFreeParserCtxt'/>
      <exports symbol='xmlRelaxNGFreeValidCtxt'/>
@@ -1666,6 +1667,10 @@
      <exports symbol='xmlUnlinkNode'/>
      <exports symbol='xmlUnsetNsProp'/>
      <exports symbol='xmlUnsetProp'/>
+     <exports symbol='xmlValidateNCName'/>
+     <exports symbol='xmlValidateNMToken'/>
+     <exports symbol='xmlValidateName'/>
+     <exports symbol='xmlValidateQName'/>
     </file>
     <file name='xmlregexp'>
      <exports symbol='xmlRegExecCallbacks'/>
@@ -1836,6 +1841,7 @@
     <file name='uri'>
      <exports symbol='_xmlURI'/>
      <exports symbol='xmlBuildURI'/>
+     <exports symbol='xmlCanonicPath'/>
      <exports symbol='xmlCreateURI'/>
      <exports symbol='xmlFreeURI'/>
      <exports symbol='xmlNormalizeURIPath'/>
@@ -4526,6 +4532,11 @@ actually an xmlCharEncoding'/>
       <arg name='node' type='xmlNodePtr' info=''/>
       <arg name='parent' type='xmlNodePtr' info=''/>
     </functype>
+    <function name='xmlCanonicPath' file='uri'>
+      <info>Constructs a canonic path from the specified path.</info>
+      <return type='xmlChar *' info='a new canonic path, or a duplicate of the path parameter if the construction fails. The caller is responsible for freeing the memory occupied by the returned string. If there is insufficient memory available, or the argument is NULL, the function returns NULL.'/>
+      <arg name='path' type='const xmlChar *' info='the resource locator in a filesystem notation'/>
+    </function>
     <function name='xmlCatalogAdd' file='catalog'>
       <info>Add an entry in the catalog, it may overwrite existing but different entries. If called before any other catalog routine, allows to override the default shared catalog put in place by xmlInitializeCatalog();</info>
       <return type='int' info='0 if successful, -1 otherwise'/>
@@ -6779,9 +6790,9 @@ actually an xmlCharEncoding'/>
       <arg name='path' type='char *' info='pointer to the path string'/>
     </function>
     <function name='xmlNormalizeWindowsPath' file='xmlIO'>
-      <info>Normalize a Windows path to make an URL from it</info>
-      <return type='xmlChar *' info='a new URI which must be freed by the caller or NULL in case of error'/>
-      <arg name='path' type='const xmlChar *' info='a windows path like &quot;C:/foo/bar&quot;'/>
+      <info>This function is obsolete. Please see xmlURIFromPath in uri.c for a better solution.</info>
+      <return type='xmlChar *' info=''/>
+      <arg name='path' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlOutputBufferClose' file='xmlIO'>
       <info>flushes and close the output I/O channel and free up all the associated resources</info>
@@ -7521,6 +7532,12 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlRelaxNGDump' file='relaxng'>
       <info>Dump a RelaxNG structure back</info>
+      <return type='void'/>
+      <arg name='output' type='FILE *' info='the file output'/>
+      <arg name='schema' type='xmlRelaxNGPtr' info='a schema structure'/>
+    </function>
+    <function name='xmlRelaxNGDumpTree' file='relaxng'>
+      <info>Dump the transformed RelaxNG tree.</info>
       <return type='void'/>
       <arg name='output' type='FILE *' info='the file output'/>
       <arg name='schema' type='xmlRelaxNGPtr' info='a schema structure'/>
@@ -9221,6 +9238,24 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='a document instance'/>
       <arg name='elem' type='xmlElementPtr' info='an element definition'/>
     </function>
+    <function name='xmlValidateNCName' file='tree'>
+      <info>Check that a value conforms to the lexical space of NCName</info>
+      <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='value' type='const xmlChar *' info='the value to check'/>
+      <arg name='space' type='int' info='allow spaces in front and end of the string'/>
+    </function>
+    <function name='xmlValidateNMToken' file='tree'>
+      <info>Check that a value conforms to the lexical space of NMToken</info>
+      <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='value' type='const xmlChar *' info='the value to check'/>
+      <arg name='space' type='int' info='allow spaces in front and end of the string'/>
+    </function>
+    <function name='xmlValidateName' file='tree'>
+      <info>Check that a value conforms to the lexical space of Name</info>
+      <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='value' type='const xmlChar *' info='the value to check'/>
+      <arg name='space' type='int' info='allow spaces in front and end of the string'/>
+    </function>
     <function name='xmlValidateNameValue' file='valid'>
       <info>Validate that the given value match Name production</info>
       <return type='int' info='1 if valid or 0 otherwise'/>
@@ -9303,6 +9338,12 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='a document instance'/>
       <arg name='elem' type='xmlNodePtr' info='an element instance'/>
       <arg name='qname' type='const xmlChar *' info='the qualified name as appearing in the serialization'/>
+    </function>
+    <function name='xmlValidateQName' file='tree'>
+      <info>Check that a value conforms to the lexical space of QName</info>
+      <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='value' type='const xmlChar *' info='the value to check'/>
+      <arg name='space' type='int' info='allow spaces in front and end of the string'/>
     </function>
     <function name='xmlValidateRoot' file='valid'>
       <info>Try to validate a the root element basically it does the following check as described by the XML-1.0 recommendation: - [ VC: Root Element Type ] it doesn&apos;t try to recurse or apply other check to the element</info>

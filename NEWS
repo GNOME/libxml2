@@ -18,6 +18,20 @@ to test those
 
 
 
+2.5.4: Feb 20 2003:
+   - Conformance testing and lot of fixes on Relax NG and XInclude
+    implementation
+   - Implementation of XPointer element() scheme
+   - Bug fixes: XML parser, XInclude entities merge, validity checking on
+    namespaces,
+    2 serialization bugs, node info generation problems, a DTD regexp
+    generation problem.
+  
+   - Portability: windows updates and path canonicalization (Igor)
+   - A few typo fixes (Kjartan Maraas)
+   - Python bindings generator fixes (Stephane Bidoul)
+
+
 2.5.3: Feb 10 2003:
    - RelaxNG and XML Schemas datatypes improvements, and added a first
     version of RelaxNG Python bindings

@@ -118,6 +118,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
 %doc %{prefix}/share/man/man1/xmllint.1*
+%doc %{prefix}/share/man/man1/xmlcatalog.1*
 %doc %{prefix}/share/man/man4/libxml.4*
 
 %{prefix}/lib/lib*.so.*

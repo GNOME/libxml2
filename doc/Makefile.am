@@ -13,6 +13,8 @@ HTML_DIR=@HTML_DIR@
 
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)/html
 
+man_MANS = xmlcatalog.1
+
 # htmldir = $(prefix)/html
 # html_DATA = gnome-dev-info.html
 
@@ -50,6 +52,6 @@ install-data-local:
 	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
 
 dist-hook:
-	(cd $(srcdir) ; tar cvf - *.html *.gif html/*.html html/*.sgml) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar cvf - *.1 *.html *.gif html/*.html html/*.sgml) | (cd $(distdir); tar xf -)
 
 .PHONY : html sgml templates scan

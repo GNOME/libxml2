@@ -641,6 +641,9 @@ xmlNormalizeURIPath(char *path) {
 	 */
 	if ((path[cur] == '.') && (path[cur + 1] == '/')) {
 	    cur += 2;
+	    if (path[cur] == 0) {
+		path[out++] = 0;
+	    }
 	    continue;
 	}
 

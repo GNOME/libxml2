@@ -1,3 +1,7 @@
+Fri Feb  2 09:18:53 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* uri.c: applied Marc Sanfacon's patch for xmlNormalizeURIPath
+
 Thu Feb  1 05:28:55 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: fixed a number of problems in XPATH_XSLT_TREE processing

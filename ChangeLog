@@ -1,3 +1,9 @@
+Mon Jan 22 23:42:17 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am example/Makefile.am: finally found the trick
+	  to build the example, i.e. add "." in SUBDIRS before example
+	  in the list <grin/>
+
 Mon Jan 22 16:30:37 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/xml.html: updated with an XSLT section, removed pointer to

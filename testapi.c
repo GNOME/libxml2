@@ -7938,6 +7938,29 @@ test_debugXML(void) {
 }
 
 static int
+test_xmlDictCleanup(void) {
+    int test_ret = 0;
+
+    int mem_base;
+
+        mem_base = xmlMemBlocks();
+
+        xmlDictCleanup();
+        call_tests++;
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlDictCleanup",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf("\n");
+        }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlDictCreate(void) {
     int test_ret = 0;
 
@@ -8239,7 +8262,8 @@ static int
 test_dict(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing dict : 8 of 9 functions ...\n");
+    if (quiet == 0) printf("Testing dict : 9 of 10 functions ...\n");
+    test_ret += test_xmlDictCleanup();
     test_ret += test_xmlDictCreate();
     test_ret += test_xmlDictCreateSub();
     test_ret += test_xmlDictExists();
@@ -9617,6 +9641,16 @@ test_xmlHashCreate(void) {
 
 
 static int
+test_xmlHashCreateDict(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlHashLookup(void) {
     int test_ret = 0;
 
@@ -10348,12 +10382,13 @@ static int
 test_hash(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing hash : 16 of 23 functions ...\n");
+    if (quiet == 0) printf("Testing hash : 16 of 24 functions ...\n");
     test_ret += test_xmlHashAddEntry();
     test_ret += test_xmlHashAddEntry2();
     test_ret += test_xmlHashAddEntry3();
     test_ret += test_xmlHashCopy();
     test_ret += test_xmlHashCreate();
+    test_ret += test_xmlHashCreateDict();
     test_ret += test_xmlHashLookup();
     test_ret += test_xmlHashLookup2();
     test_ret += test_xmlHashLookup3();
@@ -23591,6 +23626,45 @@ test_xmlCopyAttributeTable(void) {
 
 
 static int
+test_xmlCopyDocElementContent(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlElementContentPtr ret_val;
+    xmlDocPtr doc; /* the document owning the element declaration */
+    int n_doc;
+    xmlElementContentPtr cur; /* An element content pointer. */
+    int n_cur;
+
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_cur = 0;n_cur < gen_nb_xmlElementContentPtr;n_cur++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        cur = gen_xmlElementContentPtr(n_cur, 1);
+
+        ret_val = xmlCopyDocElementContent(doc, cur);
+        desret_xmlElementContentPtr(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_xmlElementContentPtr(n_cur, cur, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCopyDocElementContent",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_cur);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlCopyElementContent(void) {
     int test_ret = 0;
 
@@ -24294,6 +24368,52 @@ test_xmlIsRef(void) {
             printf(" %d", n_doc);
             printf(" %d", n_elem);
             printf(" %d", n_attr);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlNewDocElementContent(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlElementContentPtr ret_val;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlChar * name; /* the subelement name or NULL */
+    int n_name;
+    xmlElementContentType type; /* the type of element content decl */
+    int n_type;
+
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_type = 0;n_type < gen_nb_xmlElementContentType;n_type++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        name = gen_const_xmlChar_ptr(n_name, 1);
+        type = gen_xmlElementContentType(n_type, 2);
+
+        ret_val = xmlNewDocElementContent(doc, (const xmlChar *)name, type);
+        desret_xmlElementContentPtr(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
+        des_xmlElementContentType(n_type, type, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewDocElementContent",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_name);
+            printf(" %d", n_type);
             printf("\n");
         }
     }
@@ -25779,13 +25899,14 @@ static int
 test_valid(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing valid : 48 of 67 functions ...\n");
+    if (quiet == 0) printf("Testing valid : 50 of 70 functions ...\n");
     test_ret += test_xmlAddAttributeDecl();
     test_ret += test_xmlAddElementDecl();
     test_ret += test_xmlAddID();
     test_ret += test_xmlAddNotationDecl();
     test_ret += test_xmlAddRef();
     test_ret += test_xmlCopyAttributeTable();
+    test_ret += test_xmlCopyDocElementContent();
     test_ret += test_xmlCopyElementContent();
     test_ret += test_xmlCopyElementTable();
     test_ret += test_xmlCopyEnumeration();
@@ -25807,6 +25928,7 @@ test_valid(void) {
     test_ret += test_xmlIsID();
     test_ret += test_xmlIsMixedElement();
     test_ret += test_xmlIsRef();
+    test_ret += test_xmlNewDocElementContent();
     test_ret += test_xmlNewElementContent();
     test_ret += test_xmlNewValidCtxt();
     test_ret += test_xmlRemoveID();

@@ -1,3 +1,10 @@
+Wed Jan 26 00:43:05 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am testapi.c doc/Makefile.am: fixing the way testapi.c
+	  is generated, fixes bug #161386
+	* dict.c: fix a comment typo
+	* elfgcchack.h doc/*: regenerated
+
 Tue Jan 25 22:39:33 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: found and fixed 2 problems in the internal subset scanning

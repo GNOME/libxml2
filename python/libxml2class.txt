@@ -63,6 +63,9 @@ boolToText()
 debugDumpString()
 shellPrintXPathError()
 
+# functions from module dict
+dictCleanup()
+
 # functions from module encoding
 addEncodingAlias()
 cleanupCharEncodingHandlers()

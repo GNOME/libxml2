@@ -362,14 +362,15 @@
      <exports symbol='xmlDict' type='typedef'/>
      <exports symbol='xmlDictPtr' type='typedef'/>
      <exports symbol='xmlDictReference' type='function'/>
+     <exports symbol='xmlDictCleanup' type='function'/>
      <exports symbol='xmlDictSize' type='function'/>
      <exports symbol='xmlDictExists' type='function'/>
      <exports symbol='xmlDictOwns' type='function'/>
      <exports symbol='xmlDictQLookup' type='function'/>
      <exports symbol='xmlDictCreateSub' type='function'/>
-     <exports symbol='xmlDictCreate' type='function'/>
-     <exports symbol='xmlDictLookup' type='function'/>
      <exports symbol='xmlDictFree' type='function'/>
+     <exports symbol='xmlDictLookup' type='function'/>
+     <exports symbol='xmlDictCreate' type='function'/>
     </file>
     <file name='encoding'>
      <summary>interface for the encoding conversion functions</summary>
@@ -536,6 +537,7 @@
      <exports symbol='xmlHashScanFull' type='function'/>
      <exports symbol='xmlHashScan' type='function'/>
      <exports symbol='xmlHashScannerFull' type='function'/>
+     <exports symbol='xmlHashCreateDict' type='function'/>
      <exports symbol='xmlHashAddEntry' type='function'/>
      <exports symbol='xmlHashUpdateEntry' type='function'/>
      <exports symbol='xmlHashQLookup3' type='function'/>
@@ -1593,6 +1595,7 @@
      <exports symbol='xmlDumpNotationDecl' type='function'/>
      <exports symbol='xmlIsID' type='function'/>
      <exports symbol='xmlGetDtdQAttrDesc' type='function'/>
+     <exports symbol='xmlNewDocElementContent' type='function'/>
      <exports symbol='xmlFreeAttributeTable' type='function'/>
      <exports symbol='xmlValidityErrorFunc' type='function'/>
      <exports symbol='xmlValidateAttributeDecl' type='function'/>
@@ -1610,13 +1613,13 @@
      <exports symbol='xmlValidateOneElement' type='function'/>
      <exports symbol='xmlValidateNmtokenValue' type='function'/>
      <exports symbol='xmlDumpElementTable' type='function'/>
-     <exports symbol='xmlValidateNmtokensValue' type='function'/>
+     <exports symbol='xmlValidCtxtNormalizeAttributeValue' type='function'/>
      <exports symbol='xmlDumpElementDecl' type='function'/>
      <exports symbol='xmlFreeElementContent' type='function'/>
      <exports symbol='xmlValidateOneNamespace' type='function'/>
      <exports symbol='xmlValidatePushElement' type='function'/>
      <exports symbol='xmlIsRef' type='function'/>
-     <exports symbol='xmlRemoveRef' type='function'/>
+     <exports symbol='xmlCopyDocElementContent' type='function'/>
      <exports symbol='xmlAddID' type='function'/>
      <exports symbol='xmlFreeRefTable' type='function'/>
      <exports symbol='xmlRemoveID' type='function'/>
@@ -1626,7 +1629,7 @@
      <exports symbol='xmlCopyAttributeTable' type='function'/>
      <exports symbol='xmlCopyElementContent' type='function'/>
      <exports symbol='xmlValidateAttributeValue' type='function'/>
-     <exports symbol='xmlValidCtxtNormalizeAttributeValue' type='function'/>
+     <exports symbol='xmlRemoveRef' type='function'/>
      <exports symbol='xmlValidityWarningFunc' type='function'/>
      <exports symbol='xmlValidatePopElement' type='function'/>
      <exports symbol='xmlFreeEnumeration' type='function'/>
@@ -1647,6 +1650,8 @@
      <exports symbol='xmlGetDtdElementDesc' type='function'/>
      <exports symbol='xmlGetDtdNotationDesc' type='function'/>
      <exports symbol='xmlValidatePushCData' type='function'/>
+     <exports symbol='xmlValidateNmtokensValue' type='function'/>
+     <exports symbol='xmlFreeDocElementContent' type='function'/>
     </file>
     <file name='xinclude'>
      <summary>implementation of XInclude</summary>
@@ -8357,6 +8362,12 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='recursive' type='int' info='if not zero do a recursive copy.'/>
     </function>
+    <function name='xmlCopyDocElementContent' file='valid'>
+      <info>Build a copy of an element content description.</info>
+      <return type='xmlElementContentPtr' info='the new xmlElementContentPtr or NULL in case of error.'/>
+      <arg name='doc' type='xmlDocPtr' info='the document owning the element declaration'/>
+      <arg name='cur' type='xmlElementContentPtr' info='An element content pointer.'/>
+    </function>
     <function name='xmlCopyDtd' file='tree'>
       <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Do a copy of the dtd.</info>
@@ -8364,7 +8375,7 @@ actually an xmlCharEncoding'/>
       <arg name='dtd' type='xmlDtdPtr' info='the dtd'/>
     </function>
     <function name='xmlCopyElementContent' file='valid'>
-      <info>Build a copy of an element content description.</info>
+      <info>Build a copy of an element content description. Deprecated, use xmlCopyDocElementContent instead</info>
       <return type='xmlElementContentPtr' info='the new xmlElementContentPtr or NULL in case of error.'/>
       <arg name='cur' type='xmlElementContentPtr' info='An element content pointer.'/>
     </function>
@@ -8437,7 +8448,7 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to an array of xmlChar'/>
     </function>
     <function name='xmlCreateEntitiesTable' file='entities'>
-      <info>create and initialize an empty entities hash table.</info>
+      <info>create and initialize an empty entities hash table. This really doesn&apos;t make sense and should be deprecated</info>
       <return type='xmlEntitiesTablePtr' info='the xmlEntitiesTablePtr just created or NULL in case of error.'/>
     </function>
     <function name='xmlCreateEntityParserCtxt' file='parserInternals'>
@@ -8701,6 +8712,10 @@ actually an xmlCharEncoding'/>
       <return type='xmlCharEncoding' info='one of the XML_CHAR_ENCODING_... values.'/>
       <arg name='in' type='const unsigned char *' info='a pointer to the first bytes of the XML entity, must be at least 2 bytes long (at least 4 if encoding is UTF4 variant).'/>
       <arg name='len' type='int' info='pointer to the length of the buffer'/>
+    </function>
+    <function name='xmlDictCleanup' file='dict'>
+      <info>Free the dictionary mutex.</info>
+      <return type='void'/>
     </function>
     <function name='xmlDictCreate' file='dict'>
       <info>Create a new dictionary</info>
@@ -8982,13 +8997,19 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='cur' type='xmlDocPtr' info='pointer to the document'/>
     </function>
+    <function name='xmlFreeDocElementContent' file='valid'>
+      <info>Free an element content structure. The whole subtree is removed.</info>
+      <return type='void'/>
+      <arg name='doc' type='xmlDocPtr' info='the document owning the element declaration'/>
+      <arg name='cur' type='xmlElementContentPtr' info='the element content tree to free'/>
+    </function>
     <function name='xmlFreeDtd' file='tree'>
       <info>Free a DTD structure.</info>
       <return type='void'/>
       <arg name='cur' type='xmlDtdPtr' info='the DTD structure to free up'/>
     </function>
     <function name='xmlFreeElementContent' file='valid'>
-      <info>Free an element content structure. This is a recursive call !</info>
+      <info>Free an element content structure. The whole subtree is removed. Deprecated, use xmlFreeDocElementContent instead</info>
       <return type='void'/>
       <arg name='cur' type='xmlElementContentPtr' info='the element content tree to free'/>
     </function>
@@ -9383,6 +9404,12 @@ actually an xmlCharEncoding'/>
       <info>Create a new xmlHashTablePtr.</info>
       <return type='xmlHashTablePtr' info='the newly created object, or NULL if an error occured.'/>
       <arg name='size' type='int' info='the size of the hash table'/>
+    </function>
+    <function name='xmlHashCreateDict' file='hash'>
+      <info>Create a new xmlHashTablePtr which will use @dict as the internal dictionary</info>
+      <return type='xmlHashTablePtr' info='the newly created object, or NULL if an error occured.'/>
+      <arg name='size' type='int' info='the size of the hash table'/>
+      <arg name='dict' type='xmlDictPtr' info='a dictionary to use for the hash'/>
     </function>
     <functype name='xmlHashDeallocator' file='hash'>
       <info>Callback to free data from a hash.</info>
@@ -10449,6 +10476,13 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='content' type='const xmlChar *' info='the comment content'/>
     </function>
+    <function name='xmlNewDocElementContent' file='valid'>
+      <info>Allocate an element content structure for the document.</info>
+      <return type='xmlElementContentPtr' info='NULL if not, otherwise the new element content structure'/>
+      <arg name='doc' type='xmlDocPtr' info='the document'/>
+      <arg name='name' type='const xmlChar *' info='the subelement name or NULL'/>
+      <arg name='type' type='xmlElementContentType' info='the type of element content decl'/>
+    </function>
     <function name='xmlNewDocFragment' file='tree'>
       <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Creation of a new Fragment node.</info>
@@ -10516,7 +10550,7 @@ actually an xmlCharEncoding'/>
       <arg name='SystemID' type='const xmlChar *' info='the system ID'/>
     </function>
     <function name='xmlNewElementContent' file='valid'>
-      <info>Allocate an element content structure.</info>
+      <info>Allocate an element content structure. Deprecated in favor of xmlNewDocElementContent</info>
       <return type='xmlElementContentPtr' info='NULL if not, otherwise the new element content structure'/>
       <arg name='name' type='const xmlChar *' info='the subelement name or NULL'/>
       <arg name='type' type='xmlElementContentType' info='the type of element content decl'/>

@@ -1021,6 +1021,10 @@ extern __typeof (xmlCopyDoc) xmlCopyDoc __attribute((alias("xmlCopyDoc__internal
 #define xmlCopyDoc xmlCopyDoc__internal_alias
 #endif
 
+extern __typeof (xmlCopyDocElementContent) xmlCopyDocElementContent__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlCopyDocElementContent) xmlCopyDocElementContent __attribute((alias("xmlCopyDocElementContent__internal_alias")));
+#define xmlCopyDocElementContent xmlCopyDocElementContent__internal_alias
+
 #if defined(LIBXML_TREE_ENABLED)
 extern __typeof (xmlCopyDtd) xmlCopyDtd__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlCopyDtd) xmlCopyDtd __attribute((alias("xmlCopyDtd__internal_alias")));
@@ -1261,6 +1265,10 @@ extern __typeof (xmlDetectCharEncoding) xmlDetectCharEncoding__internal_alias __
 extern __typeof (xmlDetectCharEncoding) xmlDetectCharEncoding __attribute((alias("xmlDetectCharEncoding__internal_alias")));
 #define xmlDetectCharEncoding xmlDetectCharEncoding__internal_alias
 
+extern __typeof (xmlDictCleanup) xmlDictCleanup__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlDictCleanup) xmlDictCleanup __attribute((alias("xmlDictCleanup__internal_alias")));
+#define xmlDictCleanup xmlDictCleanup__internal_alias
+
 extern __typeof (xmlDictCreate) xmlDictCreate__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlDictCreate) xmlDictCreate __attribute((alias("xmlDictCreate__internal_alias")));
 #define xmlDictCreate xmlDictCreate__internal_alias
@@ -1462,6 +1470,10 @@ extern __typeof (xmlFreeCatalog) xmlFreeCatalog __attribute((alias("xmlFreeCatal
 extern __typeof (xmlFreeDoc) xmlFreeDoc__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlFreeDoc) xmlFreeDoc __attribute((alias("xmlFreeDoc__internal_alias")));
 #define xmlFreeDoc xmlFreeDoc__internal_alias
+
+extern __typeof (xmlFreeDocElementContent) xmlFreeDocElementContent__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlFreeDocElementContent) xmlFreeDocElementContent __attribute((alias("xmlFreeDocElementContent__internal_alias")));
+#define xmlFreeDocElementContent xmlFreeDocElementContent__internal_alias
 
 extern __typeof (xmlFreeDtd) xmlFreeDtd__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlFreeDtd) xmlFreeDtd __attribute((alias("xmlFreeDtd__internal_alias")));
@@ -1750,6 +1762,10 @@ extern __typeof (xmlHashCopy) xmlHashCopy __attribute((alias("xmlHashCopy__inter
 extern __typeof (xmlHashCreate) xmlHashCreate__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlHashCreate) xmlHashCreate __attribute((alias("xmlHashCreate__internal_alias")));
 #define xmlHashCreate xmlHashCreate__internal_alias
+
+extern __typeof (xmlHashCreateDict) xmlHashCreateDict__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlHashCreateDict) xmlHashCreateDict __attribute((alias("xmlHashCreateDict__internal_alias")));
+#define xmlHashCreateDict xmlHashCreateDict__internal_alias
 
 extern __typeof (xmlHashFree) xmlHashFree__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlHashFree) xmlHashFree __attribute((alias("xmlHashFree__internal_alias")));
@@ -2524,6 +2540,10 @@ extern __typeof (xmlNewDoc) xmlNewDoc __attribute((alias("xmlNewDoc__internal_al
 extern __typeof (xmlNewDocComment) xmlNewDocComment__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlNewDocComment) xmlNewDocComment __attribute((alias("xmlNewDocComment__internal_alias")));
 #define xmlNewDocComment xmlNewDocComment__internal_alias
+
+extern __typeof (xmlNewDocElementContent) xmlNewDocElementContent__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlNewDocElementContent) xmlNewDocElementContent __attribute((alias("xmlNewDocElementContent__internal_alias")));
+#define xmlNewDocElementContent xmlNewDocElementContent__internal_alias
 
 #if defined(LIBXML_TREE_ENABLED)
 extern __typeof (xmlNewDocFragment) xmlNewDocFragment__internal_alias __attribute((visibility("hidden")));

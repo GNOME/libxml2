@@ -82,6 +82,8 @@ $(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
 
 libxml2-api.xml libxml2-refs.xml: apibuild.py ../include/libxml/*.h ../*.c
 	-(./apibuild.py)
+	-@(cd .. ; $(MAKE) rebuild_testapi)
+
 
 xmllint.1: xmllint.xml
 	-@($(XSLTPROC) --nonet xmllint.xml)

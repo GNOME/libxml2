@@ -663,6 +663,7 @@ xmlCopyAttributeTable
 xmlCopyChar
 xmlCopyCharMultiByte
 xmlCopyDoc
+xmlCopyDocElementContent
 xmlCopyDtd
 xmlCopyElementContent
 xmlCopyElementTable
@@ -736,6 +737,7 @@ xmlDefaultSAXHandlerInit
 xmlDelEncodingAlias
 xmlDeregisterNodeDefault
 xmlDetectCharEncoding
+xmlDictCleanup
 xmlDictCreate
 xmlDictCreateSub
 xmlDictExists
@@ -781,6 +783,7 @@ xmlFreeAutomata
 xmlFreeCatalog
 #endif
 xmlFreeDoc
+xmlFreeDocElementContent
 xmlFreeDtd
 xmlFreeElementContent
 xmlFreeElementTable
@@ -848,6 +851,7 @@ xmlHashAddEntry2
 xmlHashAddEntry3
 xmlHashCopy
 xmlHashCreate
+xmlHashCreateDict
 xmlHashFree
 xmlHashLookup
 xmlHashLookup2
@@ -1130,6 +1134,7 @@ xmlNewChild
 xmlNewComment
 xmlNewDoc
 xmlNewDocComment
+xmlNewDocElementContent
 xmlNewDocFragment
 xmlNewDocNode
 xmlNewDocNodeEatName

@@ -100,7 +100,7 @@ static int xmlInitializeDict() {
 }
 
 /**
- * xmlCatalogCleanup:
+ * xmlDictCleanup:
  *
  * Free the dictionary mutex.
  */

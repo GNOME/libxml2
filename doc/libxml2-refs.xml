@@ -1685,6 +1685,7 @@
     <reference name='xmlCopyChar' href='html/libxml-parserInternals.html#xmlCopyChar'/>
     <reference name='xmlCopyCharMultiByte' href='html/libxml-parserInternals.html#xmlCopyCharMultiByte'/>
     <reference name='xmlCopyDoc' href='html/libxml-tree.html#xmlCopyDoc'/>
+    <reference name='xmlCopyDocElementContent' href='html/libxml-valid.html#xmlCopyDocElementContent'/>
     <reference name='xmlCopyDtd' href='html/libxml-tree.html#xmlCopyDtd'/>
     <reference name='xmlCopyElementContent' href='html/libxml-valid.html#xmlCopyElementContent'/>
     <reference name='xmlCopyElementTable' href='html/libxml-valid.html#xmlCopyElementTable'/>
@@ -1742,6 +1743,7 @@
     <reference name='xmlDeregisterNodeFunc' href='html/libxml-globals.html#xmlDeregisterNodeFunc'/>
     <reference name='xmlDetectCharEncoding' href='html/libxml-encoding.html#xmlDetectCharEncoding'/>
     <reference name='xmlDict' href='html/libxml-dict.html#xmlDict'/>
+    <reference name='xmlDictCleanup' href='html/libxml-dict.html#xmlDictCleanup'/>
     <reference name='xmlDictCreate' href='html/libxml-dict.html#xmlDictCreate'/>
     <reference name='xmlDictCreateSub' href='html/libxml-dict.html#xmlDictCreateSub'/>
     <reference name='xmlDictExists' href='html/libxml-dict.html#xmlDictExists'/>
@@ -1813,6 +1815,7 @@
     <reference name='xmlFreeAutomata' href='html/libxml-xmlautomata.html#xmlFreeAutomata'/>
     <reference name='xmlFreeCatalog' href='html/libxml-catalog.html#xmlFreeCatalog'/>
     <reference name='xmlFreeDoc' href='html/libxml-tree.html#xmlFreeDoc'/>
+    <reference name='xmlFreeDocElementContent' href='html/libxml-valid.html#xmlFreeDocElementContent'/>
     <reference name='xmlFreeDtd' href='html/libxml-tree.html#xmlFreeDtd'/>
     <reference name='xmlFreeElementContent' href='html/libxml-valid.html#xmlFreeElementContent'/>
     <reference name='xmlFreeElementTable' href='html/libxml-valid.html#xmlFreeElementTable'/>
@@ -1888,6 +1891,7 @@
     <reference name='xmlHashCopier' href='html/libxml-hash.html#xmlHashCopier'/>
     <reference name='xmlHashCopy' href='html/libxml-hash.html#xmlHashCopy'/>
     <reference name='xmlHashCreate' href='html/libxml-hash.html#xmlHashCreate'/>
+    <reference name='xmlHashCreateDict' href='html/libxml-hash.html#xmlHashCreateDict'/>
     <reference name='xmlHashDeallocator' href='html/libxml-hash.html#xmlHashDeallocator'/>
     <reference name='xmlHashFree' href='html/libxml-hash.html#xmlHashFree'/>
     <reference name='xmlHashLookup' href='html/libxml-hash.html#xmlHashLookup'/>
@@ -2105,6 +2109,7 @@
     <reference name='xmlNewComment' href='html/libxml-tree.html#xmlNewComment'/>
     <reference name='xmlNewDoc' href='html/libxml-tree.html#xmlNewDoc'/>
     <reference name='xmlNewDocComment' href='html/libxml-tree.html#xmlNewDocComment'/>
+    <reference name='xmlNewDocElementContent' href='html/libxml-valid.html#xmlNewDocElementContent'/>
     <reference name='xmlNewDocFragment' href='html/libxml-tree.html#xmlNewDocFragment'/>
     <reference name='xmlNewDocNode' href='html/libxml-tree.html#xmlNewDocNode'/>
     <reference name='xmlNewDocNodeEatName' href='html/libxml-tree.html#xmlNewDocNodeEatName'/>
@@ -5000,6 +5005,7 @@
       <ref name='xmlCopyChar'/>
       <ref name='xmlCopyCharMultiByte'/>
       <ref name='xmlCopyDoc'/>
+      <ref name='xmlCopyDocElementContent'/>
       <ref name='xmlCopyDtd'/>
       <ref name='xmlCopyElementContent'/>
       <ref name='xmlCopyElementTable'/>
@@ -5057,6 +5063,7 @@
       <ref name='xmlDeregisterNodeFunc'/>
       <ref name='xmlDetectCharEncoding'/>
       <ref name='xmlDict'/>
+      <ref name='xmlDictCleanup'/>
       <ref name='xmlDictCreate'/>
       <ref name='xmlDictCreateSub'/>
       <ref name='xmlDictExists'/>
@@ -5128,6 +5135,7 @@
       <ref name='xmlFreeAutomata'/>
       <ref name='xmlFreeCatalog'/>
       <ref name='xmlFreeDoc'/>
+      <ref name='xmlFreeDocElementContent'/>
       <ref name='xmlFreeDtd'/>
       <ref name='xmlFreeElementContent'/>
       <ref name='xmlFreeElementTable'/>
@@ -5203,6 +5211,7 @@
       <ref name='xmlHashCopier'/>
       <ref name='xmlHashCopy'/>
       <ref name='xmlHashCreate'/>
+      <ref name='xmlHashCreateDict'/>
       <ref name='xmlHashDeallocator'/>
       <ref name='xmlHashFree'/>
       <ref name='xmlHashLookup'/>
@@ -5420,6 +5429,7 @@
       <ref name='xmlNewComment'/>
       <ref name='xmlNewDoc'/>
       <ref name='xmlNewDocComment'/>
+      <ref name='xmlNewDocElementContent'/>
       <ref name='xmlNewDocFragment'/>
       <ref name='xmlNewDocNode'/>
       <ref name='xmlNewDocNodeEatName'/>
@@ -6925,7 +6935,9 @@
       <ref name='xmlSAXParseDTD'/>
     </type>
     <type name='xmlElementContentPtr'>
+      <ref name='xmlCopyDocElementContent'/>
       <ref name='xmlCopyElementContent'/>
+      <ref name='xmlNewDocElementContent'/>
       <ref name='xmlNewElementContent'/>
       <ref name='xmlParseElementChildrenContentDecl'/>
       <ref name='xmlParseElementMixedContentDecl'/>
@@ -6976,6 +6988,7 @@
     <type name='xmlHashTablePtr'>
       <ref name='xmlHashCopy'/>
       <ref name='xmlHashCreate'/>
+      <ref name='xmlHashCreateDict'/>
     </type>
     <type name='xmlIDPtr'>
       <ref name='xmlAddID'/>
@@ -7570,6 +7583,7 @@
       <ref name='xmlNewComment'/>
       <ref name='xmlNewDoc'/>
       <ref name='xmlNewDocComment'/>
+      <ref name='xmlNewDocElementContent'/>
       <ref name='xmlNewDocNode'/>
       <ref name='xmlNewDocNodeEatName'/>
       <ref name='xmlNewDocPI'/>
@@ -8453,6 +8467,7 @@
       <ref name='xmlDictQLookup'/>
       <ref name='xmlDictReference'/>
       <ref name='xmlDictSize'/>
+      <ref name='xmlHashCreateDict'/>
     </type>
     <type name='xmlDocPtr'>
       <ref name='htmlDocContentDumpFormatOutput'/>
@@ -8478,6 +8493,7 @@
       <ref name='xmlC14NDocSaveTo'/>
       <ref name='xmlC14NExecute'/>
       <ref name='xmlCopyDoc'/>
+      <ref name='xmlCopyDocElementContent'/>
       <ref name='xmlCreateIntSubset'/>
       <ref name='xmlDebugCheckDocument'/>
       <ref name='xmlDebugDumpDocument'/>
@@ -8498,6 +8514,7 @@
       <ref name='xmlEncodeEntitiesReentrant'/>
       <ref name='xmlEncodeSpecialChars'/>
       <ref name='xmlFreeDoc'/>
+      <ref name='xmlFreeDocElementContent'/>
       <ref name='xmlGetDocCompressMode'/>
       <ref name='xmlGetDocEntity'/>
       <ref name='xmlGetDtdEntity'/>
@@ -8512,6 +8529,7 @@
       <ref name='xmlNewCDataBlock'/>
       <ref name='xmlNewCharRef'/>
       <ref name='xmlNewDocComment'/>
+      <ref name='xmlNewDocElementContent'/>
       <ref name='xmlNewDocFragment'/>
       <ref name='xmlNewDocNode'/>
       <ref name='xmlNewDocNodeEatName'/>
@@ -8607,7 +8625,9 @@
       <ref name='elementDecl'/>
       <ref name='elementDeclSAXFunc'/>
       <ref name='xmlAddElementDecl'/>
+      <ref name='xmlCopyDocElementContent'/>
       <ref name='xmlCopyElementContent'/>
+      <ref name='xmlFreeDocElementContent'/>
       <ref name='xmlFreeElementContent'/>
       <ref name='xmlSAX2ElementDecl'/>
       <ref name='xmlSnprintfElementContent'/>
@@ -8617,6 +8637,7 @@
       <ref name='xmlParseElementContentDecl'/>
     </type>
     <type name='xmlElementContentType'>
+      <ref name='xmlNewDocElementContent'/>
       <ref name='xmlNewElementContent'/>
     </type>
     <type name='xmlElementPtr'>
@@ -10116,6 +10137,7 @@
     </file>
     <file name='dict'>
       <ref name='xmlDict'/>
+      <ref name='xmlDictCleanup'/>
       <ref name='xmlDictCreate'/>
       <ref name='xmlDictCreateSub'/>
       <ref name='xmlDictExists'/>
@@ -10281,6 +10303,7 @@
       <ref name='xmlHashCopier'/>
       <ref name='xmlHashCopy'/>
       <ref name='xmlHashCreate'/>
+      <ref name='xmlHashCreateDict'/>
       <ref name='xmlHashDeallocator'/>
       <ref name='xmlHashFree'/>
       <ref name='xmlHashLookup'/>
@@ -11280,6 +11303,7 @@
       <ref name='xmlAttributeTable'/>
       <ref name='xmlAttributeTablePtr'/>
       <ref name='xmlCopyAttributeTable'/>
+      <ref name='xmlCopyDocElementContent'/>
       <ref name='xmlCopyElementContent'/>
       <ref name='xmlCopyElementTable'/>
       <ref name='xmlCopyEnumeration'/>
@@ -11294,6 +11318,7 @@
       <ref name='xmlElementTable'/>
       <ref name='xmlElementTablePtr'/>
       <ref name='xmlFreeAttributeTable'/>
+      <ref name='xmlFreeDocElementContent'/>
       <ref name='xmlFreeElementContent'/>
       <ref name='xmlFreeElementTable'/>
       <ref name='xmlFreeEnumeration'/>
@@ -11313,6 +11338,7 @@
       <ref name='xmlIsID'/>
       <ref name='xmlIsMixedElement'/>
       <ref name='xmlIsRef'/>
+      <ref name='xmlNewDocElementContent'/>
       <ref name='xmlNewElementContent'/>
       <ref name='xmlNewValidCtxt'/>
       <ref name='xmlNotationTable'/>
@@ -13268,6 +13294,7 @@
         </word>
         <word name='Allocate'>
           <ref name='xmlNanoFTPNewCtxt'/>
+          <ref name='xmlNewDocElementContent'/>
           <ref name='xmlNewElementContent'/>
           <ref name='xmlNewParserCtxt'/>
           <ref name='xmlNewValidCtxt'/>
@@ -13500,6 +13527,7 @@
         </word>
         <word name='Build'>
           <ref name='xmlCopyAttributeTable'/>
+          <ref name='xmlCopyDocElementContent'/>
           <ref name='xmlCopyElementContent'/>
           <ref name='xmlCopyElementTable'/>
           <ref name='xmlCopyEntitiesTable'/>
@@ -14116,7 +14144,10 @@
         <word name='Deprecated'>
           <ref name='htmlAttrAllowed'/>
           <ref name='xmlCleanupPredefinedEntities'/>
+          <ref name='xmlCopyElementContent'/>
+          <ref name='xmlFreeElementContent'/>
           <ref name='xmlInitializePredefinedEntities'/>
+          <ref name='xmlNewElementContent'/>
           <ref name='xmlParseQuotedString'/>
           <ref name='xmlSprintfElementContent'/>
         </word>
@@ -18346,7 +18377,6 @@
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupPredefinedEntities'/>
-          <ref name='xmlFreeElementContent'/>
           <ref name='xmlInitializePredefinedEntities'/>
           <ref name='xmlNanoFTPRead'/>
           <ref name='xmlNanoHTTPRead'/>
@@ -19583,6 +19613,7 @@
         <word name='decl'>
           <ref name='_xmlSchemaAttribute'/>
           <ref name='xmlAddAttributeDecl'/>
+          <ref name='xmlNewDocElementContent'/>
           <ref name='xmlNewElementContent'/>
         </word>
         <word name='declarations'>
@@ -19736,6 +19767,7 @@
           <ref name='htmlElementStatusHere'/>
           <ref name='htmlNodeStatus'/>
           <ref name='xmlCheckLanguageID'/>
+          <ref name='xmlCreateEntitiesTable'/>
           <ref name='xmlDecodeEntities'/>
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlScanName'/>
@@ -19801,6 +19833,7 @@
           <ref name='_htmlElemDesc'/>
           <ref name='_htmlEntityDesc'/>
           <ref name='htmlElementAllowedHereDesc'/>
+          <ref name='xmlCopyDocElementContent'/>
           <ref name='xmlCopyElementContent'/>
           <ref name='xmlGetDtdAttrDesc'/>
           <ref name='xmlGetDtdElementDesc'/>
@@ -19917,9 +19950,11 @@
         </word>
         <word name='dictionary'>
           <ref name='_xmlParserCtxt'/>
+          <ref name='xmlDictCleanup'/>
           <ref name='xmlDictCreate'/>
           <ref name='xmlDictCreateSub'/>
           <ref name='xmlDictReference'/>
+          <ref name='xmlHashCreateDict'/>
         </word>
         <word name='dictionnary'>
           <ref name='_xmlParserCtxt'/>
@@ -20132,6 +20167,7 @@
           <ref name='_htmlElemDesc'/>
           <ref name='htmlElementAllowedHere'/>
           <ref name='xmlCleanupParser'/>
+          <ref name='xmlCreateEntitiesTable'/>
           <ref name='xmlFreeNode'/>
           <ref name='xmlInitCharEncodingHandlers'/>
           <ref name='xmlKeepBlanksDefault'/>
@@ -20931,6 +20967,9 @@
         </word>
         <word name='fatalError'>
           <ref name='fatalErrorSAXFunc'/>
+        </word>
+        <word name='favor'>
+          <ref name='xmlNewElementContent'/>
         </word>
         <word name='feature'>
           <ref name='xmlGetFeature'/>
@@ -22257,6 +22296,8 @@
           <ref name='xmlAddChild'/>
           <ref name='xmlAddNextSibling'/>
           <ref name='xmlAddPrevSibling'/>
+          <ref name='xmlCopyElementContent'/>
+          <ref name='xmlFreeElementContent'/>
           <ref name='xmlIsBaseChar'/>
           <ref name='xmlIsBlank'/>
           <ref name='xmlIsChar'/>
@@ -22956,6 +22997,7 @@
           <ref name='xmlDecodeEntities'/>
         </word>
         <word name='make'>
+          <ref name='xmlCreateEntitiesTable'/>
           <ref name='xmlNewNode'/>
           <ref name='xmlSaveClose'/>
           <ref name='xmlSaveFlush'/>
@@ -23329,6 +23371,7 @@
           <ref name='xmlInitParser'/>
         </word>
         <word name='mutex'>
+          <ref name='xmlDictCleanup'/>
           <ref name='xmlFreeMutex'/>
           <ref name='xmlFreeRMutex'/>
           <ref name='xmlMutexLock'/>
@@ -23774,6 +23817,7 @@
           <ref name='xmlDictCreateSub'/>
           <ref name='xmlGetLastError'/>
           <ref name='xmlHashCreate'/>
+          <ref name='xmlHashCreateDict'/>
           <ref name='xmlListRemoveFirst'/>
           <ref name='xmlListRemoveLast'/>
         </word>
@@ -24144,6 +24188,8 @@
           <ref name='xmlAddAttributeDecl'/>
         </word>
         <word name='owning'>
+          <ref name='xmlCopyDocElementContent'/>
+          <ref name='xmlFreeDocElementContent'/>
           <ref name='xmlNewDocFragment'/>
         </word>
         <word name='owns'>
@@ -25043,6 +25089,7 @@
           <ref name='htmlEntityLookup'/>
           <ref name='htmlEntityValueLookup'/>
           <ref name='xmlBuildRelativeURI'/>
+          <ref name='xmlCreateEntitiesTable'/>
         </word>
         <word name='reasonable'>
           <ref name='xmlBuildRelativeURI'/>
@@ -25133,7 +25180,6 @@
           <ref name='xmlDocCopyNode'/>
           <ref name='xmlDocCopyNodeList'/>
           <ref name='xmlElemDump'/>
-          <ref name='xmlFreeElementContent'/>
           <ref name='xmlFreeEnumeration'/>
           <ref name='xmlFreeNode'/>
           <ref name='xmlFreeNodeList'/>
@@ -25370,6 +25416,8 @@
           <ref name='xmlBufferShrink'/>
           <ref name='xmlCatalogRemove'/>
           <ref name='xmlCheckLanguageID'/>
+          <ref name='xmlFreeDocElementContent'/>
+          <ref name='xmlFreeElementContent'/>
           <ref name='xmlHandleEntity'/>
           <ref name='xmlHashRemoveEntry'/>
           <ref name='xmlHashRemoveEntry2'/>
@@ -25915,6 +25963,9 @@
         </word>
         <word name='semantic'>
           <ref name='xmlXPathNodeSetFreeNs'/>
+        </word>
+        <word name='sense'>
+          <ref name='xmlCreateEntitiesTable'/>
         </word>
         <word name='separated'>
           <ref name='xmlLoadCatalogs'/>
@@ -26674,6 +26725,7 @@
         <word name='subelement'>
           <ref name='_htmlElemDesc'/>
           <ref name='htmlDefaultSubelement'/>
+          <ref name='xmlNewDocElementContent'/>
           <ref name='xmlNewElementContent'/>
         </word>
         <word name='subelements'>
@@ -26755,6 +26807,8 @@
         <word name='subtree'>
           <ref name='attribute'/>
           <ref name='attributeSAXFunc'/>
+          <ref name='xmlFreeDocElementContent'/>
+          <ref name='xmlFreeElementContent'/>
           <ref name='xmlReconciliateNs'/>
           <ref name='xmlRelaxNGValidateFullElement'/>
           <ref name='xmlSaveTree'/>
@@ -27945,6 +27999,10 @@
           <ref name='ignorableWhitespaceSAXFunc'/>
           <ref name='xmlSAX2IgnorableWhitespace'/>
         </word>
+        <word name='whole'>
+          <ref name='xmlFreeDocElementContent'/>
+          <ref name='xmlFreeElementContent'/>
+        </word>
         <word name='whose'>
           <ref name='xmlAutomataNewCountTrans'/>
           <ref name='xmlAutomataNewCountTrans2'/>
@@ -28304,6 +28362,9 @@
         <word name='xmlCleanupThreads'>
           <ref name='xmlCleanupThreads'/>
         </word>
+        <word name='xmlCopyDocElementContent'>
+          <ref name='xmlCopyElementContent'/>
+        </word>
         <word name='xmlCreateIntSubset'>
           <ref name='xmlNewDtd'/>
         </word>
@@ -28334,6 +28395,7 @@
           <ref name='xmlSAXParseDTD'/>
         </word>
         <word name='xmlElementContentPtr'>
+          <ref name='xmlCopyDocElementContent'/>
           <ref name='xmlCopyElementContent'/>
           <ref name='xmlParseElementChildrenContentDecl'/>
           <ref name='xmlParseElementMixedContentDecl'/>
@@ -28398,6 +28460,9 @@
         <word name='xmlFreeDoc'>
           <ref name='xmlTextReaderCurrentDoc'/>
         </word>
+        <word name='xmlFreeDocElementContent'>
+          <ref name='xmlFreeElementContent'/>
+        </word>
         <word name='xmlFreeMutex'>
           <ref name='xmlFreeMutex'/>
         </word>
@@ -28418,6 +28483,7 @@
         </word>
         <word name='xmlHashTablePtr'>
           <ref name='xmlHashCreate'/>
+          <ref name='xmlHashCreateDict'/>
         </word>
         <word name='xmlIDPtr'>
           <ref name='xmlAddID'/>
@@ -28547,6 +28613,9 @@
         </word>
         <word name='xmlNewChild'>
           <ref name='xmlNewTextChild'/>
+        </word>
+        <word name='xmlNewDocElementContent'>
+          <ref name='xmlNewElementContent'/>
         </word>
         <word name='xmlNewDocRawNode'>
           <ref name='xmlNewDocNode'/>

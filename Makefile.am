@@ -123,7 +123,14 @@ noinst_LTLIBRARIES = testdso.la
 testdso_la_SOURCES = testdso.c
 testdso_la_LDFLAGS = -module -rpath $(libdir)
 
-testapi.c: $(srcdir)/gentest.py doc/libxml2-api.xml
+# that one forces the rebuild when "make rebuild" is run on doc/
+rebuild_testapi:
+	-@(if [ "$(PYTHON)" != "" ] ; then \
+	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
+
+# that one is just to make sure it is rebuilt if missing
+# but adding the dependances generate mess
+testapi.c:
 	-@(if [ "$(PYTHON)" != "" ] ; then \
 	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
 

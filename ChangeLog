@@ -1,3 +1,9 @@
+Thu Sep 26 00:31:46 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* trio.c trio.h triodef.h trionan.c trionan.h triop.h
+	  triostr.c triostr.h: applied a trio update patch from 
+	  Bjorn Reese which should work with MinGW
+
 Thu Sep 26 00:21:18 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: improving some documentation comments

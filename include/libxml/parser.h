@@ -402,7 +402,7 @@ int		xmlSAXUserParseFile	(xmlSAXHandlerPtr sax,
 					 const char *filename);
 int		xmlSAXUserParseMemory	(xmlSAXHandlerPtr sax,
 					 void *user_data,
-					 char *buffer,
+					 const char *buffer,
 					 int size);
 xmlDocPtr	xmlSAXParseMemory	(xmlSAXHandlerPtr sax,
 					 char *buffer,

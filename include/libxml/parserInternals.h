@@ -137,7 +137,7 @@ int			xmlIsChar	(int c);
  */
 xmlParserCtxtPtr	xmlCreateDocParserCtxt	(xmlChar *cur);
 xmlParserCtxtPtr	xmlCreateFileParserCtxt	(const char *filename);
-xmlParserCtxtPtr	xmlCreateMemoryParserCtxt(char *buffer,
+xmlParserCtxtPtr	xmlCreateMemoryParserCtxt(const char *buffer,
 						 int size);
 xmlParserCtxtPtr	xmlNewParserCtxt	(void);
 xmlParserCtxtPtr	xmlCreateEntityParserCtxt(const xmlChar *URL,

@@ -1,3 +1,9 @@
+Wed May 16 12:55:48 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c parser.h parserInternals.h: fixed a couple of
+	  interfaces for handling memory buffer input to const char *
+	  upon suggestion of JamesH.
+
 Tue May 15 17:22:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: LoTR sent a patch fixing the previous commit 

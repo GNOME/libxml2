@@ -9630,7 +9630,7 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
  * Returns the new parser context or NULL
  */
 xmlParserCtxtPtr
-xmlCreateMemoryParserCtxt(char *buffer, int size) {
+xmlCreateMemoryParserCtxt(const char *buffer, int size) {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
     xmlParserInputBufferPtr buf;
@@ -9745,7 +9745,7 @@ xmlDocPtr xmlRecoverMemory(char *buffer, int size) {
  * Returns 0 in case of success or a error number otherwise
  */
 int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
-			  char *buffer, int size) {
+			  const char *buffer, int size) {
     int ret = 0;
     xmlParserCtxtPtr ctxt;
     xmlSAXHandlerPtr oldsax = NULL;

@@ -138,5 +138,105 @@
       <return type='const xmlChar *' info="The function name URI" field="functionURI"/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
     </function>
+    <!-- xmlURIPtr accessors -->
+    <function name='xmlURIGetScheme' file='python_accessor'>
+      <info>Get the scheme part from an URI</info>
+      <return type='const char *' info="The URI scheme" field="scheme"/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+    </function>
+    <function name='xmlURISetScheme' file='python_accessor'>
+      <info>Set the scheme part of an URI.</info>
+      <return type='void'/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+      <arg name='scheme' type='char *' info='The URI scheme part'/>
+    </function>
+    <function name='xmlURIGetOpaque' file='python_accessor'>
+      <info>Get the opaque part from an URI</info>
+      <return type='const char *' info="The URI opaque" field="opaque"/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+    </function>
+    <function name='xmlURISetOpaque' file='python_accessor'>
+      <info>Set the opaque part of an URI.</info>
+      <return type='void'/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+      <arg name='opaque' type='char *' info='The URI opaque part'/>
+    </function>
+    <function name='xmlURIGetAuthority' file='python_accessor'>
+      <info>Get the authority part from an URI</info>
+      <return type='const char *' info="The URI authority" field="authority"/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+    </function>
+    <function name='xmlURISetAuthority' file='python_accessor'>
+      <info>Set the authority part of an URI.</info>
+      <return type='void'/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+      <arg name='authority' type='char *' info='The URI authority part'/>
+    </function>
+    <function name='xmlURIGetServer' file='python_accessor'>
+      <info>Get the server part from an URI</info>
+      <return type='const char *' info="The URI server" field="server"/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+    </function>
+    <function name='xmlURISetServer' file='python_accessor'>
+      <info>Set the server part of an URI.</info>
+      <return type='void'/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+      <arg name='server' type='char *' info='The URI server part'/>
+    </function>
+    <function name='xmlURIGetUser' file='python_accessor'>
+      <info>Get the user part from an URI</info>
+      <return type='const char *' info="The URI user" field="user"/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+    </function>
+    <function name='xmlURISetUser' file='python_accessor'>
+      <info>Set the user part of an URI.</info>
+      <return type='void'/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+      <arg name='user' type='char *' info='The URI user part'/>
+    </function>
+    <function name='xmlURIGetPath' file='python_accessor'>
+      <info>Get the path part from an URI</info>
+      <return type='const char *' info="The URI path" field="path"/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+    </function>
+    <function name='xmlURISetPath' file='python_accessor'>
+      <info>Set the path part of an URI.</info>
+      <return type='void'/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+      <arg name='path' type='char *' info='The URI path part'/>
+    </function>
+    <function name='xmlURIGetQuery' file='python_accessor'>
+      <info>Get the query part from an URI</info>
+      <return type='const char *' info="The URI query" field="query"/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+    </function>
+    <function name='xmlURISetQuery' file='python_accessor'>
+      <info>Set the query part of an URI.</info>
+      <return type='void'/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+      <arg name='query' type='char *' info='The URI query part'/>
+    </function>
+    <function name='xmlURIGetFragment' file='python_accessor'>
+      <info>Get the fragment part from an URI</info>
+      <return type='const char *' info="The URI fragment" field="fragment"/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+    </function>
+    <function name='xmlURISetFragment' file='python_accessor'>
+      <info>Set the fragment part of an URI.</info>
+      <return type='void'/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+      <arg name='fragment' type='char *' info='The URI fragment part'/>
+    </function>
+    <function name='xmlURIGetPort' file='python_accessor'>
+      <info>Get the port part from an URI</info>
+      <return type='int' info="The URI port" field="port"/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+    </function>
+    <function name='xmlURISetPort' file='python_accessor'>
+      <info>Set the port part of an URI.</info>
+      <return type='void'/>
+      <arg name='URI' type='xmlURIPtr' info='the URI'/>
+      <arg name='port' type='int' info='The URI port part'/>
+    </function>
   </symbols>
 </api>

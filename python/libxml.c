@@ -1422,13 +1422,14 @@ static PyMethodDef libxmlMethods[] = {
 };
 
 #ifdef MERGED_MODULES
-extern void initlibxml2mod(void);
+extern void initlibxsltmod(void);
 #endif
 
 void initlibxml2mod(void) {
     PyObject *m;
     m = Py_InitModule("libxml2mod", libxmlMethods);
     libxml_xmlErrorInitialize();
+
 #ifdef MERGED_MODULES
     initlibxsltmod();
 #endif

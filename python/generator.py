@@ -267,6 +267,7 @@ py_types = {
     'htmlParserCtxt *': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
     'xmlCatalogPtr': ('O', "catalog", "xmlCatalogPtr", "xmlCatalogPtr"),
     'FILE *': ('O', "File", "FILEPtr", "FILE *"),
+    'xmlURIPtr': ('O', "URI", "xmlURIPtr", "xmlURIPtr"),
 }
 
 py_return_types = {
@@ -346,8 +347,14 @@ def print_function_wrapper(name, output, export, include):
 
     if ret[0] == 'void':
         if file == "python_accessor":
-            c_call = "\n    %s->%s = %s;\n" % (args[0][0], args[1][0],
-                                               args[1][0])
+	    if args[1][1] == "char *" or args[1][1] == "xmlChar *":
+		c_call = "\n    if (%s->%s != NULL) xmlFree(%s->%s);\n" % (
+		                 args[0][0], args[1][0], args[0][0], args[1][0])
+		c_call = c_call + "    %s->%s = xmlStrdup(%s);\n" % (args[0][0],
+		                 args[1][0], args[1][0])
+	    else:
+		c_call = "\n    %s->%s = %s;\n" % (args[0][0], args[1][0],
+						   args[1][0])
         else:
             c_call = "\n    %s(%s);\n" % (name, c_call);
         ret_convert = "    Py_INCREF(Py_None);\n    return(Py_None);\n"
@@ -519,6 +526,7 @@ classes_type = {
     "xmlParserCtxtPtr": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
     "xmlParserCtxt *": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
     "xmlCatalogPtr": ("._o", "catalog(_obj=%s)", "catalog"),
+    "xmlURIPtr": ("._o", "URI(_obj=%s)", "URI"),
 }
 
 converter_type = {
@@ -540,6 +548,7 @@ classes_ancestor = {
 classes_destructors = {
     "parserCtxt": "xmlFreeParserCtxt",
     "catalog": "xmlFreeCatalog",
+    "URI": "xmlFreeURI",
 }
 
 function_classes = {}
@@ -561,6 +570,12 @@ def nameFixup(name, classe, type, file):
         func = string.lower(func[0:1]) + func[1:]
     elif name[0:10] == "xmlNodeGet" and file == "python_accessor":
         func = name[10:]
+        func = string.lower(func[0:1]) + func[1:]
+    elif name[0:9] == "xmlURIGet" and file == "python_accessor":
+        func = name[9:]
+        func = string.lower(func[0:1]) + func[1:]
+    elif name[0:9] == "xmlURISet" and file == "python_accessor":
+        func = name[6:]
         func = string.lower(func[0:1]) + func[1:]
     elif name[0:17] == "xmlXPathParserGet" and file == "python_accessor":
         func = name[17:]

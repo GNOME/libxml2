@@ -55,8 +55,18 @@ typedef struct {
     xmlCatalogPtr obj;
 } Pycatalog_Object;
 
+#define PyURI_Get(v) (((v) == Py_None) ? NULL : \
+	(((PyURI_Object *)(v))->obj))
+
+typedef struct {
+    PyObject_HEAD
+    xmlURIPtr obj;
+} PyURI_Object;
+
+/* FILE * have their own internal representation */
 #define PyFile_Get(v) (((v) == Py_None) ? NULL : \
 	(PyFile_Check(v) ? NULL : (PyFile_AsFile(v))))
+
 
 PyObject * libxml_intWrap(int val);
 PyObject * libxml_longWrap(long val);
@@ -78,5 +88,6 @@ PyObject * libxml_xmlParserCtxtPtrWrap(xmlParserCtxtPtr ctxt);
 PyObject * libxml_xmlXPathParserContextPtrWrap(xmlXPathParserContextPtr ctxt);
 PyObject * libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj);
 PyObject * libxml_xmlCatalogPtrWrap(xmlCatalogPtr obj);
+PyObject * libxml_xmlURIPtrWrap(xmlURIPtr uri);
 
 xmlXPathObjectPtr libxml_xmlXPathObjectPtrConvert(PyObject * obj);

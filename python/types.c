@@ -171,6 +171,21 @@ libxml_xmlNodePtrWrap(xmlNodePtr node) {
 }
 
 PyObject *
+libxml_xmlURIPtrWrap(xmlURIPtr uri) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlURIPtrWrap: uri = %p\n", uri);
+#endif
+    if (uri == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    ret = PyCObject_FromVoidPtrAndDesc((void *) uri, "xmlURIPtr", NULL);
+    return(ret);
+}
+
+PyObject *
 libxml_xmlNsPtrWrap(xmlNsPtr ns) {
     PyObject *ret;
 

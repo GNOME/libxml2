@@ -1,3 +1,12 @@
+Sat Feb 23 11:08:09 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c python/libxml2-python-api.xml
+	  python/libxml2class.txt python/libxml_wrap.h python/types.c:
+	  Added wrapper for the xmlURIPtr type, provided accessors, fixed
+	  the accessor generator for strings
+	* python/tests/Makefile.am python/tests/tstURI.py: added a specific
+	  regression test.
+
 Fri Feb 22 23:44:57 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/README python/generator.py python/libxml.c python/setup.py:

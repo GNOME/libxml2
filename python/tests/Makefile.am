@@ -9,6 +9,7 @@ PYTESTS=	\
     pushSAX.py	\
     error.py	\
     validate.py	\
+    tstURI.py	\
     xpath.py
 
 XMLS=		\

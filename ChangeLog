@@ -1,3 +1,8 @@
+Wed May 16 23:02:41 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c tree.c parser.c: speed optimizations at the parser level
+	  document tree freeing and xpath evaluation
+
 Wed May 16 12:55:48 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c parser.h parserInternals.h: fixed a couple of

@@ -490,15 +490,30 @@ xmlFreeDoc(xmlDocPtr cur) {
 #endif
 	return;
     }
+    /*
+     * Do this before freeing the children list to avoid ID lookups
+     */
+    if (cur->ids != NULL) xmlFreeIDTable((xmlIDTablePtr) cur->ids);
+    cur->ids = NULL;
+    if (cur->refs != NULL) xmlFreeRefTable((xmlRefTablePtr) cur->refs);
+    cur->refs = NULL;
+    if (cur->extSubset != NULL) {
+	xmlUnlinkNode((xmlNodePtr) cur->extSubset);
+	xmlFreeDtd(cur->extSubset);
+	cur->extSubset = NULL;
+    }
+    if (cur->intSubset != NULL) {
+	xmlUnlinkNode((xmlNodePtr) cur->intSubset);
+	xmlFreeDtd(cur->intSubset);
+	cur->intSubset = NULL;
+    }
+
+    if (cur->children != NULL) xmlFreeNodeList(cur->children);
+
     if (cur->version != NULL) xmlFree((char *) cur->version);
     if (cur->name != NULL) xmlFree((char *) cur->name);
     if (cur->encoding != NULL) xmlFree((char *) cur->encoding);
-    if (cur->children != NULL) xmlFreeNodeList(cur->children);
-    if (cur->intSubset != NULL) xmlFreeDtd(cur->intSubset);
-    if (cur->extSubset != NULL) xmlFreeDtd(cur->extSubset);
     if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
-    if (cur->ids != NULL) xmlFreeIDTable((xmlIDTablePtr) cur->ids);
-    if (cur->refs != NULL) xmlFreeRefTable((xmlRefTablePtr) cur->refs);
     if (cur->URL != NULL) xmlFree((char *) cur->URL);
     xmlFree(cur);
 }
@@ -1178,9 +1193,12 @@ xmlFreeProp(xmlAttrPtr cur) {
 	return;
     }
     /* Check for ID removal -> leading to invalid references ! */
-    if ((cur->parent != NULL) && 
-        (xmlIsID(cur->parent->doc, cur->parent, cur)))
-        xmlRemoveID(cur->parent->doc, cur);
+    if ((cur->parent != NULL) && (cur->parent->doc != NULL) &&
+	((cur->parent->doc->intSubset != NULL) ||
+	 (cur->parent->doc->extSubset != NULL))) {
+        if (xmlIsID(cur->parent->doc, cur->parent, cur))
+	    xmlRemoveID(cur->parent->doc, cur);
+    }
     if (cur->name != NULL) xmlFree((char *) cur->name);
     if (cur->children != NULL) xmlFreeNodeList(cur->children);
     xmlFree(cur);

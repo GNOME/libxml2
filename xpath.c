@@ -1926,7 +1926,7 @@ xmlXPathRegisteredVariablesCleanup(xmlXPathContextPtr ctxt) {
     if (ctxt == NULL)
 	return;
 
-    xmlHashFree(ctxt->varHash, NULL);
+    xmlHashFree(ctxt->varHash, (xmlHashDeallocator)xmlXPathFreeObject);
     ctxt->varHash = NULL;
 }
 
@@ -5603,9 +5603,10 @@ xmlXPathParseName(xmlXPathParserContextPtr ctxt) {
 	while (((*in >= 0x61) && (*in <= 0x7A)) ||
 	       ((*in >= 0x41) && (*in <= 0x5A)) ||
 	       ((*in >= 0x30) && (*in <= 0x39)) ||
-	       (*in == '_') || (*in == ':'))
+	       (*in == '_') || (*in == '-') ||
+	       (*in == ':') || (*in == '.'))
 	    in++;
-	if ((*in == ' ') || (*in == '>') || (*in == '/')) {
+	if ((*in > 0) && (*in < 0x80)) {
 	    count = in - ctxt->cur;
 	    ret = xmlStrndup(ctxt->cur, count);
 	    ctxt->cur = in;
@@ -7452,7 +7453,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 	case XPATH_OP_AND:
 	    xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    xmlXPathBooleanFunction(ctxt, 1);
-	    if (ctxt->value->boolval == 0)
+	    if ((ctxt->value == NULL) || (ctxt->value->boolval == 0))
 		return;
 	    arg2 = valuePop(ctxt);
 	    xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
@@ -7465,7 +7466,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 	case XPATH_OP_OR:
 	    xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    xmlXPathBooleanFunction(ctxt, 1);
-	    if (ctxt->value->boolval == 1)
+	    if ((ctxt->value == NULL) || (ctxt->value->boolval == 1))
 		return;
 	    arg2 = valuePop(ctxt);
 	    xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
@@ -7623,6 +7624,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 	    if (op->ch1 != -1)
 		xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    if (op->ch2 == -1)
+		return;
+	    if (ctxt->value == NULL)
 		return;
 
 	    oldnode = ctxt->context->node;

@@ -7,6 +7,7 @@ AM_INIT_AUTOMAKE(libxml, 0.10)
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
+AC_PATH_PROG(CPP, cpp, /lib/cpp)
 AC_PATH_PROG(RM, rm, /bin/rm)
 AC_PATH_PROG(MV, mv, /bin/mv)
 AC_PATH_PROG(TAR, tar, /bin/tar)

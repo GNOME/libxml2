@@ -357,7 +357,7 @@ htmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 
 		while (IS_BLANK(*tmp)) tmp++;
 
-		escaped = xmlURIEscapeStr(tmp, BAD_CAST"@/:=?;#%");
+		escaped = xmlURIEscapeStr(tmp, BAD_CAST"@/:=?;#%&");
 		if (escaped != NULL) {
 		    xmlBufferWriteQuotedString(buf, escaped);
 		    xmlFree(escaped);
@@ -844,7 +844,7 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 
 		while (IS_BLANK(*tmp)) tmp++;
 
-		escaped = xmlURIEscapeStr(tmp, BAD_CAST"@/:=?;#%");
+		escaped = xmlURIEscapeStr(tmp, BAD_CAST"@/:=?;#%&");
 		if (escaped != NULL) {
 		    xmlBufferWriteQuotedString(buf->buffer, escaped);
 		    xmlFree(escaped);

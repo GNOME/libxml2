@@ -1,3 +1,8 @@
+Thu Apr 18 13:52:52 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c: fixed & serialization bug introduced in 2.4.20
+	* result/HTML/*: this changes a few things in the results
+
 Wed Apr 17 20:34:37 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* include/libxml/tree.h: eliminated 'declaration different than

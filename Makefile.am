@@ -624,12 +624,12 @@ Schemastests: testSchemas$(EXEEXT)
 	      xno=`basename $$j | sed 's+.*_\(.*\).xml+\1+'`; \
 	      if [ ! -f $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno" ]; \
 	      then \
-		  echo New test file "$$name"_"$$xno" ; \
+		  echo New test file "$$name"_"$$sno"_"$$xno" ; \
 		  $(CHECKER) $(top_builddir)/testSchemas $$i $$j \
 		    > $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno" \
 		    2> $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno".err; \
 	      else \
-		  echo Testing "$$name"_"$$xno" ; \
+		  echo Testing "$$name"_"$$sno"_"$$xno" ; \
 	          $(CHECKER) $(top_builddir)/testSchemas $$i $$j \
 		    > res.$$name 2> err.$$name;\
 	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\

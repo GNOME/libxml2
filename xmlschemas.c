@@ -3041,7 +3041,24 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 	    break;
 	}
 	case XML_SCHEMA_TYPE_RESTRICTION:
+	    if (type->baseType != NULL) {
+		TODO
+	    } else if (type->subtypes != NULL)
+		xmlSchemaBuildAContentModel(type->subtypes, ctxt, name);
+	    break;
 	case XML_SCHEMA_TYPE_EXTENSION:
+	    if (type->baseType != NULL) {
+		xmlSchemaTypePtr subtypes;
+
+		xmlSchemaBuildAContentModel(type->baseType, ctxt, name);
+		subtypes = type->subtypes;
+		while (subtypes != NULL) {
+		    xmlSchemaBuildAContentModel(subtypes, ctxt, name);
+		    subtypes = subtypes->next;
+		}
+	    } else if (type->subtypes != NULL)
+		xmlSchemaBuildAContentModel(type->subtypes, ctxt, name);
+	    break;
 	case XML_SCHEMA_TYPE_GROUP:
 	case XML_SCHEMA_TYPE_COMPLEX:
 	case XML_SCHEMA_TYPE_COMPLEX_CONTENT:

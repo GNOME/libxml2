@@ -22,7 +22,7 @@
  */
 
 #define XMLPUBFUN
-#define XMLPUBVAR
+#define XMLPUBVAR extern
 #define XMLCALL
 
 /* Windows platform with MS compiler */

@@ -421,7 +421,7 @@ class MSTestRunner:
 		out.write(" %d leaks" % (counters[self.CNT_MEMLEAK]))
 	    out.write("\n")
 	else:
-	    out.write("all passed\n")
+	    out.write(" all passed\n")
     
     def reportCombine(self, combName):
         global options

@@ -1134,7 +1134,13 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	    ctxt->sax->warning(ctxt->userData, 
 		 "Namespace prefix %s is not defined\n", prefix);
     }
-    xmlSetNs(ret, ns);
+
+    /*
+     * set the namespace node, making sure that if the default namspace
+     * is unbound on a parent we simply kee it NULL
+     */
+    if ((ns != NULL) && (ns->href[0] != 0))
+	xmlSetNs(ret, ns);
 
     /*
      * process all the other attributes

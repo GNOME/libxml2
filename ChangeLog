@@ -1,3 +1,9 @@
+Sat Mar  3 02:10:24 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: one must report spaces even if the Dtd element
+	  content proves that this is not part of the element content.
+	* result/valid/*.xml: this changed the ouptu slightly
+
 Thu Mar  1 17:53:39 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: bumped to 2.3.3

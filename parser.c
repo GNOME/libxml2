@@ -1393,6 +1393,9 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     int i, ret;
     xmlNodePtr lastChild;
 
+    if (ctxt->keepBlanks)
+	return(0);
+
     /*
      * Check for xml:space value.
      */
@@ -1417,8 +1420,6 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     /*
      * Otherwise, heuristic :-\
      */
-    if (ctxt->keepBlanks)
-	return(0);
     if (RAW != '<') return(0);
     if (ctxt->node == NULL) return(0);
     if ((ctxt->node->children == NULL) &&
@@ -1641,7 +1642,7 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
 	    return(ret);
 	}
     }
-    xmlParseNameComplex(ctxt);
+    return(xmlParseNameComplex(ctxt));
 }
 
 xmlChar *

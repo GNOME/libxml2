@@ -643,7 +643,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	     */
 	    *out++ = *cur;
 	} else if (*cur >= 0x80) {
-	    if ((doc->encoding != NULL) || (html)) {
+	    if (((doc != NULL) && (doc->encoding != NULL)) || (html)) {
 		/*
 		 * Bjørn Reese <br@sseusa.com> provided the patch
 	        xmlChar xc;
@@ -664,7 +664,8 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		if (*cur < 0xC0) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "xmlEncodeEntitiesReentrant : input not UTF-8\n");
-		    doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
+		    if (doc != NULL)
+			doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
 		    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 		    buf[sizeof(buf) - 1] = 0;
 		    ptr = buf;
@@ -695,7 +696,8 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		if ((l == 1) || (!IS_CHAR(val))) {
 		    xmlGenericError(xmlGenericErrorContext,
 			"xmlEncodeEntitiesReentrant : char out of range\n");
-		    doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
+		    if (doc != NULL)
+			doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
 		    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 		    buf[sizeof(buf) - 1] = 0;
 		    ptr = buf;

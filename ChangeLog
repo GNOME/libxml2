@@ -1,3 +1,9 @@
+Tue Apr 24 14:10:38 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* entities.c: xmlEncodeEntitiesReentrant fixed a few accesses
+	  to doc where it wasn't checked against NULL reported by
+	  Jens Laas
+
 Tue Apr 24 13:21:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c: Jonas Borgström patch, the <td>, and <th> elements

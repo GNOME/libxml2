@@ -11,6 +11,7 @@
 
 /*
  * TODO: compute XPointers nodesets
+ * TODO: add an node intermediate API and handle recursion at this level
  */
 
 #include "libxml.h"
@@ -67,151 +68,8 @@ struct _xmlXIncludeCtxt {
     xmlURL         *txturlTab; /* array of unparsed txtuments URLs */
 };
 
-/**
- * xmlXIncludeAddNode:
- * @ctxt:  the XInclude context
- * @node:  the new node
- * 
- * Add a new node to process to an XInclude context
- */
-static void
-xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
-    if (ctxt->incMax == 0) {
-	ctxt->incMax = 4;
-        ctxt->incTab = (xmlNodePtr *) xmlMalloc(ctxt->incMax *
-		                          sizeof(ctxt->incTab[0]));
-        if (ctxt->incTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "malloc failed !\n");
-	    return;
-	}
-        ctxt->repTab = (xmlNodePtr *) xmlMalloc(ctxt->incMax *
-		                          sizeof(ctxt->repTab[0]));
-        if (ctxt->repTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "malloc failed !\n");
-	    return;
-	}
-    }
-    if (ctxt->incNr >= ctxt->incMax) {
-	ctxt->incMax *= 2;
-        ctxt->incTab = (xmlNodePtr *) xmlRealloc(ctxt->incTab,
-	             ctxt->incMax * sizeof(ctxt->incTab[0]));
-        if (ctxt->incTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "realloc failed !\n");
-	    return;
-	}
-        ctxt->repTab = (xmlNodePtr *) xmlRealloc(ctxt->repTab,
-	             ctxt->incMax * sizeof(ctxt->repTab[0]));
-        if (ctxt->repTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "realloc failed !\n");
-	    return;
-	}
-    }
-    ctxt->incTab[ctxt->incNr] = node;
-    ctxt->repTab[ctxt->incNr] = NULL;
-    ctxt->incNr++;
-}
-
-/**
- * xmlXIncludeAddDoc:
- * @ctxt:  the XInclude context
- * @doc:  the new document
- * @url:  the associated URL
- * 
- * Add a new document to the list
- */
-static void
-xmlXIncludeAddDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, const xmlURL url) {
-    if (ctxt->docMax == 0) {
-	ctxt->docMax = 4;
-        ctxt->docTab = (xmlDocPtr *) xmlMalloc(ctxt->docMax *
-		                          sizeof(ctxt->docTab[0]));
-        if (ctxt->docTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "malloc failed !\n");
-	    return;
-	}
-        ctxt->urlTab = (xmlURL *) xmlMalloc(ctxt->docMax *
-		                          sizeof(ctxt->urlTab[0]));
-        if (ctxt->urlTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "malloc failed !\n");
-	    return;
-	}
-    }
-    if (ctxt->docNr >= ctxt->docMax) {
-	ctxt->docMax *= 2;
-        ctxt->docTab = (xmlDocPtr *) xmlRealloc(ctxt->docTab,
-	             ctxt->docMax * sizeof(ctxt->docTab[0]));
-        if (ctxt->docTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "realloc failed !\n");
-	    return;
-	}
-        ctxt->urlTab = (xmlURL *) xmlRealloc(ctxt->urlTab,
-	             ctxt->docMax * sizeof(ctxt->urlTab[0]));
-        if (ctxt->urlTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "realloc failed !\n");
-	    return;
-	}
-    }
-    ctxt->docTab[ctxt->docNr] = doc;
-    ctxt->urlTab[ctxt->docNr] = xmlStrdup(url);
-    ctxt->docNr++;
-}
-
-/**
- * xmlXIncludeAddTxt:
- * @ctxt:  the XInclude context
- * @txt:  the new text node
- * @url:  the associated URL
- * 
- * Add a new txtument to the list
- */
-static void
-xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const xmlURL url) {
-    if (ctxt->txtMax == 0) {
-	ctxt->txtMax = 4;
-        ctxt->txtTab = (xmlNodePtr *) xmlMalloc(ctxt->txtMax *
-		                          sizeof(ctxt->txtTab[0]));
-        if (ctxt->txtTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "malloc failed !\n");
-	    return;
-	}
-        ctxt->txturlTab = (xmlURL *) xmlMalloc(ctxt->txtMax *
-		                          sizeof(ctxt->txturlTab[0]));
-        if (ctxt->txturlTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "malloc failed !\n");
-	    return;
-	}
-    }
-    if (ctxt->txtNr >= ctxt->txtMax) {
-	ctxt->txtMax *= 2;
-        ctxt->txtTab = (xmlNodePtr *) xmlRealloc(ctxt->txtTab,
-	             ctxt->txtMax * sizeof(ctxt->txtTab[0]));
-        if (ctxt->txtTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "realloc failed !\n");
-	    return;
-	}
-        ctxt->txturlTab = (xmlURL *) xmlRealloc(ctxt->txturlTab,
-	             ctxt->txtMax * sizeof(ctxt->urlTab[0]));
-        if (ctxt->txturlTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "realloc failed !\n");
-	    return;
-	}
-    }
-    ctxt->txtTab[ctxt->txtNr] = txt;
-    ctxt->txturlTab[ctxt->txtNr] = xmlStrdup(url);
-    ctxt->txtNr++;
-}
+static int
+xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc);
 
 /**
  * xmlXIncludeNewContext:
@@ -277,6 +135,196 @@ xmlXIncludeFreeContext(xmlXIncludeCtxtPtr ctxt) {
     if (ctxt->txturlTab != NULL)
 	xmlFree(ctxt->txturlTab);
     xmlFree(ctxt);
+}
+
+/**
+ * xmlXIncludeAddNode:
+ * @ctxt:  the XInclude context
+ * @node:  the new node
+ * 
+ * Add a new node to process to an XInclude context
+ */
+static void
+xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
+    if (ctxt->incMax == 0) {
+	ctxt->incMax = 4;
+        ctxt->incTab = (xmlNodePtr *) xmlMalloc(ctxt->incMax *
+		                          sizeof(ctxt->incTab[0]));
+        if (ctxt->incTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc failed !\n");
+	    return;
+	}
+        ctxt->repTab = (xmlNodePtr *) xmlMalloc(ctxt->incMax *
+		                          sizeof(ctxt->repTab[0]));
+        if (ctxt->repTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc failed !\n");
+	    return;
+	}
+    }
+    if (ctxt->incNr >= ctxt->incMax) {
+	ctxt->incMax *= 2;
+        ctxt->incTab = (xmlNodePtr *) xmlRealloc(ctxt->incTab,
+	             ctxt->incMax * sizeof(ctxt->incTab[0]));
+        if (ctxt->incTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "realloc failed !\n");
+	    return;
+	}
+        ctxt->repTab = (xmlNodePtr *) xmlRealloc(ctxt->repTab,
+	             ctxt->incMax * sizeof(ctxt->repTab[0]));
+        if (ctxt->repTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "realloc failed !\n");
+	    return;
+	}
+    }
+    ctxt->incTab[ctxt->incNr] = node;
+    ctxt->repTab[ctxt->incNr] = NULL;
+    ctxt->incNr++;
+}
+
+/**
+ * xmlXIncludeAddDoc:
+ * @ctxt:  the XInclude context
+ * @doc:  the new document
+ * @url:  the associated URL
+ * 
+ * Add a new document to the list. The XInclude recursive nature is handled
+ * at this point.
+ */
+static void
+xmlXIncludeAddDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, const xmlURL url) {
+    xmlXIncludeCtxtPtr newctxt;
+    int i;
+
+    if (ctxt->docMax == 0) {
+	ctxt->docMax = 4;
+        ctxt->docTab = (xmlDocPtr *) xmlMalloc(ctxt->docMax *
+		                          sizeof(ctxt->docTab[0]));
+        if (ctxt->docTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc failed !\n");
+	    return;
+	}
+        ctxt->urlTab = (xmlURL *) xmlMalloc(ctxt->docMax *
+		                          sizeof(ctxt->urlTab[0]));
+        if (ctxt->urlTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc failed !\n");
+	    return;
+	}
+    }
+    if (ctxt->docNr >= ctxt->docMax) {
+	ctxt->docMax *= 2;
+        ctxt->docTab = (xmlDocPtr *) xmlRealloc(ctxt->docTab,
+	             ctxt->docMax * sizeof(ctxt->docTab[0]));
+        if (ctxt->docTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "realloc failed !\n");
+	    return;
+	}
+        ctxt->urlTab = (xmlURL *) xmlRealloc(ctxt->urlTab,
+	             ctxt->docMax * sizeof(ctxt->urlTab[0]));
+        if (ctxt->urlTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "realloc failed !\n");
+	    return;
+	}
+    }
+    ctxt->docTab[ctxt->docNr] = doc;
+    ctxt->urlTab[ctxt->docNr] = xmlStrdup(url);
+    ctxt->docNr++;
+
+    /*
+     * Handle recursion here.
+     */
+
+    newctxt = xmlXIncludeNewContext(doc);
+    if (newctxt != NULL) {
+	/*
+	 * Copy the existing document set
+	 */
+	newctxt->docMax = ctxt->docMax;
+	newctxt->docNr = ctxt->docNr;
+        newctxt->docTab = (xmlDocPtr *) xmlMalloc(newctxt->docMax *
+		                          sizeof(newctxt->docTab[0]));
+        if (newctxt->docTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc failed !\n");
+	    xmlFree(newctxt);
+	    return;
+	}
+        newctxt->urlTab = (xmlURL *) xmlMalloc(newctxt->docMax *
+		                          sizeof(newctxt->urlTab[0]));
+        if (ctxt->urlTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc failed !\n");
+	    xmlFree(newctxt);
+	    return;
+	}
+
+	for (i = 0;i < ctxt->docNr;i++) {
+	    newctxt->docTab[i] = ctxt->docTab[i];
+	    newctxt->urlTab[i] = ctxt->urlTab[i];
+	}
+	xmlXIncludeDoProcess(newctxt, doc);
+	for (i = 0;i < ctxt->docNr;i++) {
+	    newctxt->docTab[i] = NULL;
+	    newctxt->urlTab[i] = NULL;
+	}
+	xmlXIncludeFreeContext(newctxt);
+    }
+}
+
+/**
+ * xmlXIncludeAddTxt:
+ * @ctxt:  the XInclude context
+ * @txt:  the new text node
+ * @url:  the associated URL
+ * 
+ * Add a new txtument to the list
+ */
+static void
+xmlXIncludeAddTxt(xmlXIncludeCtxtPtr ctxt, xmlNodePtr txt, const xmlURL url) {
+    if (ctxt->txtMax == 0) {
+	ctxt->txtMax = 4;
+        ctxt->txtTab = (xmlNodePtr *) xmlMalloc(ctxt->txtMax *
+		                          sizeof(ctxt->txtTab[0]));
+        if (ctxt->txtTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc failed !\n");
+	    return;
+	}
+        ctxt->txturlTab = (xmlURL *) xmlMalloc(ctxt->txtMax *
+		                          sizeof(ctxt->txturlTab[0]));
+        if (ctxt->txturlTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc failed !\n");
+	    return;
+	}
+    }
+    if (ctxt->txtNr >= ctxt->txtMax) {
+	ctxt->txtMax *= 2;
+        ctxt->txtTab = (xmlNodePtr *) xmlRealloc(ctxt->txtTab,
+	             ctxt->txtMax * sizeof(ctxt->txtTab[0]));
+        if (ctxt->txtTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "realloc failed !\n");
+	    return;
+	}
+        ctxt->txturlTab = (xmlURL *) xmlRealloc(ctxt->txturlTab,
+	             ctxt->txtMax * sizeof(ctxt->urlTab[0]));
+        if (ctxt->txturlTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "realloc failed !\n");
+	    return;
+	}
+    }
+    ctxt->txtTab[ctxt->txtNr] = txt;
+    ctxt->txturlTab[ctxt->txtNr] = xmlStrdup(url);
+    ctxt->txtNr++;
 }
 
 /************************************************************************
@@ -519,7 +567,8 @@ loaded:
  * @ctxt: an XInclude context
  * @node: an XInclude node
  *
- * Implement the infoset replacement lookup on the XML element @node
+ * Implement the XInclude preprocessing, currently just adding the element
+ * for further processing.
  *
  * Returns the result list or NULL in case of error
  */
@@ -722,7 +771,8 @@ xmlXIncludeTestNode(xmlNodePtr node) {
 }
 
 /**
- * xmlXIncludeProcess:
+ * xmlXIncludeDoProcess:
+ * @ctxt: 
  * @doc: an XML document
  *
  * Implement the XInclude substitution on the XML document @doc
@@ -730,16 +780,14 @@ xmlXIncludeTestNode(xmlNodePtr node) {
  * Returns 0 if no substition were done, -1 if some processing failed
  *    or the number of substitutions done.
  */
-int
-xmlXIncludeProcess(xmlDocPtr doc) {
-    xmlXIncludeCtxtPtr ctxt;
+static int
+xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc) {
     xmlNodePtr cur;
     int ret = 0;
     int i;
 
     if (doc == NULL)
 	return(-1);
-    ctxt = xmlXIncludeNewContext(doc);
     if (ctxt == NULL)
 	return(-1);
 
@@ -788,9 +836,30 @@ xmlXIncludeProcess(xmlDocPtr doc) {
 	xmlXIncludeIncludeNode(ctxt, i);
     }
 
-    /*
-     * Cleanup
-     */
+    return(ret);
+}
+
+/**
+ * xmlXIncludeProcess:
+ * @doc: an XML document
+ *
+ * Implement the XInclude substitution on the XML document @doc
+ *
+ * Returns 0 if no substition were done, -1 if some processing failed
+ *    or the number of substitutions done.
+ */
+int
+xmlXIncludeProcess(xmlDocPtr doc) {
+    xmlXIncludeCtxtPtr ctxt;
+    int ret = 0;
+
+    if (doc == NULL)
+	return(-1);
+    ctxt = xmlXIncludeNewContext(doc);
+    if (ctxt == NULL)
+	return(-1);
+    ret = xmlXIncludeDoProcess(ctxt, doc);
+
     xmlXIncludeFreeContext(ctxt);
     return(ret);
 }

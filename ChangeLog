@@ -1,3 +1,12 @@
+Wed May 23 15:40:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xinclude.c: fixed XInclude recursive behaviour bug #54678
+	* result/XInclude/recursive.xml test/XInclude/docs/recursive.xml
+	  test/XInclude/ents/inc.txt test/XInclude/ents/sub-inc.ent:
+	  added specific regression test
+	* parser.h: preparing for the XSLT mode where DTD inherited
+	  attributes are added to the tree.
+
 Wed May 23 13:59:19 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xinclude.[ch]: Updated the namespace for the Last Call version

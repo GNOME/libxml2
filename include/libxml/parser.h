@@ -111,6 +111,23 @@ typedef enum {
 } xmlParserInputState;
 
 /**
+ * XML_DETECT_IDS:
+ *
+ * Bit in the loadsubset context field to tell to do ID/REFs lookups
+ * Use it to initialize xmlLoadExtDtdDefaultValue
+ */
+#define XML_DETECT_IDS		2
+
+/**
+ * XML_COMPLETE_ATTRS:
+ *
+ * Bit in the loadsubset context field to tell to do complete the
+ * elements attributes lists with the ones defaulted from the DTDs
+ * Use it to initialize xmlLoadExtDtdDefaultValue
+ */
+#define XML_COMPLETE_ATTRS	4
+
+/**
  * xmlParserCtxt:
  *
  * The parser context.

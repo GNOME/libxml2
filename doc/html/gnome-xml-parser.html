@@ -4,7 +4,7 @@
 >parser</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -20,6 +20,9 @@ HREF="gnome-xml-sax.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -111,7 +114,10 @@ SIZE="3"
 ></TABLE
 ></DIV
 ><H1
->parser</H1
+><A
+NAME="GNOME-XML-PARSER"
+>parser</A
+></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
@@ -119,7 +125,7 @@ NAME="AEN31"
 ></A
 ><H2
 >Name</H2
->parser &#8212; </DIV
+>parser&nbsp;--&nbsp;</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
@@ -139,7 +145,7 @@ CLASS="SYNOPSIS"
 >&#13;
 
 #define     <A
-HREF="gnome-xml-parser.html#XML-DEFAULT-VERSION"
+HREF="gnome-xml-parser.html#XML-DEFAULT-VERSION-CAPS"
 >XML_DEFAULT_VERSION</A
 >
 void        (<A
@@ -963,7 +969,11 @@ HREF="gnome-xml-parser.html#XMLLOADEXTERNALENTITY"
                                              <A
 HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
-> context);</PRE
+> context);
+int         <A
+HREF="gnome-xml-parser.html#XMLUSENEWPARSER"
+>xmlUseNewParser</A
+>                 (int val);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -971,7 +981,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN248"
+NAME="AEN249"
 ></A
 ><H2
 >Description</H2
@@ -981,18 +991,18 @@ NAME="AEN248"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN251"
+NAME="AEN252"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN253"
+NAME="AEN254"
 ></A
 ><H3
 ><A
-NAME="XML-DEFAULT-VERSION"
+NAME="XML-DEFAULT-VERSION-CAPS"
 ></A
 >XML_DEFAULT_VERSION</H3
 ><TABLE
@@ -1014,7 +1024,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN258"
+NAME="AEN259"
 ></A
 ><H3
 ><A
@@ -1065,7 +1075,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -1075,7 +1085,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN273"
+NAME="AEN274"
 ></A
 ><H3
 ><A
@@ -1104,6 +1114,11 @@ CLASS="PROGRAMLISTING"
     int col;                          /* Current column */
     int consumed;                     /* How many xmlChars already consumed */
     xmlParserInputDeallocate free;    /* function to deallocate the base */
+    /* added after 2.3.5 integration */
+    const xmlChar *end;               /* end of the arry to parse */
+    const xmlChar *encoding;          /* the encoding string for entity */
+    const xmlChar *version;           /* the version string for entity */
+    int standalone;                   /* Was that entity marked standalone */
 };</PRE
 ></TD
 ></TR
@@ -1114,7 +1129,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN278"
+NAME="AEN279"
 ></A
 ><H3
 ><A
@@ -1140,7 +1155,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN283"
+NAME="AEN284"
 ></A
 ><H3
 ><A
@@ -1173,7 +1188,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN288"
+NAME="AEN289"
 ></A
 ><H3
 ><A
@@ -1199,7 +1214,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN293"
+NAME="AEN294"
 ></A
 ><H3
 ><A
@@ -1229,7 +1244,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN298"
+NAME="AEN299"
 ></A
 ><H3
 ><A
@@ -1255,7 +1270,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN303"
+NAME="AEN304"
 ></A
 ><H3
 ><A
@@ -1286,7 +1301,10 @@ CLASS="PROGRAMLISTING"
     XML_PARSER_ENTITY_DECL,	/* within an entity declaration */
     XML_PARSER_ENTITY_VALUE,	/* within an entity value in a decl */
     XML_PARSER_ATTRIBUTE_VALUE,	/* within an attribute value */
-    XML_PARSER_EPILOG 		/* the Misc* after the last end tag */
+    XML_PARSER_EPILOG, 		/* the Misc* after the last end tag */
+    /* added after 2.3.5 integration */
+    XML_PARSER_SYSTEM_LITERAL,	/* within a SYSTEM value */
+    XML_PARSER_IGNORE		/* within an IGNORED section */
 } xmlParserInputState;</PRE
 ></TD
 ></TR
@@ -1297,7 +1315,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN308"
+NAME="AEN309"
 ></A
 ><H3
 ><A
@@ -1363,6 +1381,31 @@ CLASS="PROGRAMLISTING"
     long               nbChars;       /* number of xmlChar processed */
     long            checkIndex;       /* used by progressive parsing lookup */
     int             keepBlanks;       /* ugly but ... */
+
+    /* Added after integration of 2.3.5 parser */
+    int             disableSAX;       /* SAX callbacks are disabled */
+    int               inSubset;       /* Parsing is in int 1/ext 2 subset */
+    xmlChar *          intSubName;    /* name of subset */
+    xmlChar *          extSubURI;     /* URI of external subset */
+    xmlChar *          extSubSystem;  /* SYSTEM ID of external subset */
+
+    /* xml:space values */
+    int *              space;         /* Should the parser preserve spaces */
+    int                spaceNr;       /* Depth of the parsing stack */
+    int                spaceMax;      /* Max depth of the parsing stack */
+    int *              spaceTab;      /* array of space infos */
+
+    int                depth;         /* to prevent entity substitution loops */
+    xmlParserInputPtr  entity;        /* used to check entities boundaries */
+    int                charset;       /* encoding of the in-memory content
+				         actually an xmlCharEncoding */
+    int                nodelen;       /* Those two fields are there to */
+    int                nodemem;       /* Speed up large node parsing */
+    int                pedantic;      /* signal pedantic warnings or loose
+					 behaviour */
+    void              *_private;      /* For user data, libxml won't touch it */
+
+    int                loadsubset;    /* should the external subset be loaded */
 };</PRE
 ></TD
 ></TR
@@ -1373,7 +1416,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN313"
+NAME="AEN314"
 ></A
 ><H3
 ><A
@@ -1399,7 +1442,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN318"
+NAME="AEN319"
 ></A
 ><H3
 ><A
@@ -1430,7 +1473,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN323"
+NAME="AEN324"
 ></A
 ><H3
 ><A
@@ -1456,7 +1499,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN328"
+NAME="AEN329"
 ></A
 ><H3
 ><A
@@ -1564,7 +1607,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -1574,7 +1617,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN357"
+NAME="AEN358"
 ></A
 ><H3
 ><A
@@ -1685,7 +1728,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -1695,7 +1738,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN386"
+NAME="AEN387"
 ></A
 ><H3
 ><A
@@ -1782,7 +1825,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -1792,7 +1835,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN410"
+NAME="AEN411"
 ></A
 ><H3
 ><A
@@ -1879,7 +1922,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -1889,7 +1932,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN434"
+NAME="AEN435"
 ></A
 ><H3
 ><A
@@ -2039,7 +2082,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -2049,7 +2092,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN472"
+NAME="AEN473"
 ></A
 ><H3
 ><A
@@ -2160,7 +2203,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -2170,7 +2213,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN501"
+NAME="AEN502"
 ></A
 ><H3
 ><A
@@ -2338,7 +2381,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -2348,7 +2391,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN543"
+NAME="AEN544"
 ></A
 ><H3
 ><A
@@ -2456,7 +2499,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -2466,7 +2509,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN571"
+NAME="AEN572"
 ></A
 ><H3
 ><A
@@ -2598,7 +2641,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -2608,7 +2651,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN605"
+NAME="AEN606"
 ></A
 ><H3
 ><A
@@ -2677,7 +2720,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -2687,7 +2730,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN624"
+NAME="AEN625"
 ></A
 ><H3
 ><A
@@ -2735,7 +2778,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -2745,7 +2788,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN638"
+NAME="AEN639"
 ></A
 ><H3
 ><A
@@ -2793,7 +2836,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -2803,7 +2846,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN652"
+NAME="AEN653"
 ></A
 ><H3
 ><A
@@ -2893,7 +2936,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -2903,7 +2946,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN676"
+NAME="AEN677"
 ></A
 ><H3
 ><A
@@ -2972,7 +3015,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -2982,7 +3025,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN695"
+NAME="AEN696"
 ></A
 ><H3
 ><A
@@ -3072,7 +3115,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3082,7 +3125,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN719"
+NAME="AEN720"
 ></A
 ><H3
 ><A
@@ -3151,7 +3194,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3161,7 +3204,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN738"
+NAME="AEN739"
 ></A
 ><H3
 ><A
@@ -3248,7 +3291,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3258,7 +3301,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN761"
+NAME="AEN762"
 ></A
 ><H3
 ><A
@@ -3345,7 +3388,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3355,7 +3398,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN784"
+NAME="AEN785"
 ></A
 ><H3
 ><A
@@ -3445,7 +3488,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3455,7 +3498,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN808"
+NAME="AEN809"
 ></A
 ><H3
 ><A
@@ -3524,7 +3567,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3534,7 +3577,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN827"
+NAME="AEN828"
 ></A
 ><H3
 ><A
@@ -3621,7 +3664,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3631,7 +3674,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN850"
+NAME="AEN851"
 ></A
 ><H3
 ><A
@@ -3715,7 +3758,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3725,7 +3768,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN872"
+NAME="AEN873"
 ></A
 ><H3
 ><A
@@ -3809,7 +3852,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3819,7 +3862,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN894"
+NAME="AEN895"
 ></A
 ><H3
 ><A
@@ -3903,7 +3946,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3913,7 +3956,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN916"
+NAME="AEN917"
 ></A
 ><H3
 ><A
@@ -3976,7 +4019,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -3986,7 +4029,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN934"
+NAME="AEN935"
 ></A
 ><H3
 ><A
@@ -4049,7 +4092,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -4059,7 +4102,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN952"
+NAME="AEN953"
 ></A
 ><H3
 ><A
@@ -4122,7 +4165,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -4132,7 +4175,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN970"
+NAME="AEN971"
 ></A
 ><H3
 ><A
@@ -4185,7 +4228,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN975"
+NAME="AEN976"
 ></A
 ><H3
 ><A
@@ -4211,7 +4254,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN980"
+NAME="AEN981"
 ></A
 ><H3
 ><A
@@ -4317,7 +4360,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -4327,7 +4370,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1008"
+NAME="AEN1009"
 ></A
 ><H3
 ><A
@@ -4353,7 +4396,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1013"
+NAME="AEN1014"
 ></A
 ><H3
 ><A
@@ -4379,7 +4422,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1018"
+NAME="AEN1019"
 ></A
 ><H3
 ><A
@@ -4405,7 +4448,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1023"
+NAME="AEN1024"
 ></A
 ><H3
 ><A
@@ -4431,7 +4474,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1028"
+NAME="AEN1029"
 ></A
 ><H3
 ><A
@@ -4457,7 +4500,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1033"
+NAME="AEN1034"
 ></A
 ><H3
 ><A
@@ -4488,7 +4531,7 @@ function should not prevent reusing the parser.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1039"
+NAME="AEN1040"
 ></A
 ><H3
 ><A
@@ -4586,7 +4629,7 @@ end of this entity</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1063"
+NAME="AEN1064"
 ></A
 ><H3
 ><A
@@ -4684,7 +4727,7 @@ end of this entity</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1087"
+NAME="AEN1088"
 ></A
 ><H3
 ><A
@@ -4765,7 +4808,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1108"
+NAME="AEN1109"
 ></A
 ><H3
 ><A
@@ -4869,7 +4912,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1134"
+NAME="AEN1135"
 ></A
 ><H3
 ><A
@@ -4986,7 +5029,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1163"
+NAME="AEN1164"
 ></A
 ><H3
 ><A
@@ -5088,7 +5131,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1189"
+NAME="AEN1190"
 ></A
 ><H3
 ><A
@@ -5190,7 +5233,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1215"
+NAME="AEN1216"
 ></A
 ><H3
 ><A
@@ -5289,7 +5332,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1240"
+NAME="AEN1241"
 ></A
 ><H3
 ><A
@@ -5406,7 +5449,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1269"
+NAME="AEN1270"
 ></A
 ><H3
 ><A
@@ -5484,7 +5527,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1289"
+NAME="AEN1290"
 ></A
 ><H3
 ><A
@@ -5586,7 +5629,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1315"
+NAME="AEN1316"
 ></A
 ><H3
 ><A
@@ -5711,7 +5754,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1346"
+NAME="AEN1347"
 ></A
 ><H3
 ><A
@@ -5792,7 +5835,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1367"
+NAME="AEN1368"
 ></A
 ><H3
 ><A
@@ -5888,7 +5931,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1391"
+NAME="AEN1392"
 ></A
 ><H3
 ><A
@@ -5967,7 +6010,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1411"
+NAME="AEN1412"
 ></A
 ><H3
 ><A
@@ -6050,7 +6093,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1431"
+NAME="AEN1432"
 ></A
 ><H3
 ><A
@@ -6152,7 +6195,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1454"
+NAME="AEN1455"
 ></A
 ><H3
 ><A
@@ -6234,7 +6277,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1475"
+NAME="AEN1476"
 ></A
 ><H3
 ><A
@@ -6331,7 +6374,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1499"
+NAME="AEN1500"
 ></A
 ><H3
 ><A
@@ -6411,7 +6454,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1519"
+NAME="AEN1520"
 ></A
 ><H3
 ><A
@@ -6495,7 +6538,7 @@ as a result of the parsing.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1541"
+NAME="AEN1542"
 ></A
 ><H3
 ><A
@@ -6618,7 +6661,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1571"
+NAME="AEN1572"
 ></A
 ><H3
 ><A
@@ -6733,7 +6776,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1599"
+NAME="AEN1600"
 ></A
 ><H3
 ><A
@@ -6866,7 +6909,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1631"
+NAME="AEN1632"
 ></A
 ><H3
 ><A
@@ -7004,7 +7047,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1664"
+NAME="AEN1665"
 ></A
 ><H3
 ><A
@@ -7125,7 +7168,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1693"
+NAME="AEN1694"
 ></A
 ><H3
 ><A
@@ -7227,7 +7270,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1719"
+NAME="AEN1720"
 ></A
 ><H3
 ><A
@@ -7350,7 +7393,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1750"
+NAME="AEN1751"
 ></A
 ><H3
 ><A
@@ -7378,7 +7421,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1756"
+NAME="AEN1757"
 ></A
 ><H3
 ><A
@@ -7406,7 +7449,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1762"
+NAME="AEN1763"
 ></A
 ><H3
 ><A
@@ -7459,7 +7502,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an HTML parser context</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -7469,7 +7512,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1778"
+NAME="AEN1779"
 ></A
 ><H3
 ><A
@@ -7532,7 +7575,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1794"
+NAME="AEN1795"
 ></A
 ><H3
 ><A
@@ -7596,7 +7639,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1810"
+NAME="AEN1811"
 ></A
 ><H3
 ><A
@@ -7700,7 +7743,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1835"
+NAME="AEN1836"
 ></A
 ><H3
 ><A
@@ -7781,7 +7824,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1856"
+NAME="AEN1857"
 ></A
 ><H3
 ><A
@@ -7947,7 +7990,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1895"
+NAME="AEN1896"
 ></A
 ><H3
 ><A
@@ -8079,7 +8122,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1927"
+NAME="AEN1928"
 ></A
 ><H3
 ><A
@@ -8182,7 +8225,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1953"
+NAME="AEN1954"
 ></A
 ><H3
 ><A
@@ -8245,7 +8288,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1969"
+NAME="AEN1970"
 ></A
 ><H3
 ><A
@@ -8309,7 +8352,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1985"
+NAME="AEN1986"
 ></A
 ><H3
 ><A
@@ -8412,7 +8455,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2011"
+NAME="AEN2012"
 ></A
 ><H3
 ><A
@@ -8496,7 +8539,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2032"
+NAME="AEN2033"
 ></A
 ><H3
 ><A
@@ -8547,7 +8590,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -8557,7 +8600,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2047"
+NAME="AEN2048"
 ></A
 ><H3
 ><A
@@ -8607,7 +8650,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -8617,7 +8660,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2062"
+NAME="AEN2063"
 ></A
 ><H3
 ><A
@@ -8722,7 +8765,87 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2091"
+></A
+><H3
+><A
+NAME="XMLUSENEWPARSER"
+></A
+>xmlUseNewParser ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlUseNewParser                 (int val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Set and return the previous value for the default XML parser to use
+The 1.x version of the parser up to 1.8.11 is horribly broken
+The 2.x and later version aim at completete compliance to the standard
+This function is provided as a way to force using the new parser
+on 1.X libs when the applications are ready to handle correct XML
+and the UTF8 character flow provided by the new parser.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  int 0 or 1 </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the last value for 0 for no substitution, 1 for substitution.</TD
 ></TR
 ></TABLE
 ><P

@@ -1,9 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-                      "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
   <title>The XML library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V2.1">
+  <meta name="GENERATOR" content="amaya V4.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -13,6 +11,12 @@
 <h2 style="text-align: center">libxml, a.k.a. gnome-xml</h2>
 
 <p></p>
+
+<p><span style="background-color: #FF0000">Note</span>: this is a GNOME 1.x
+branch of libxml, this should not be used for developping new applications
+unless forced by binary compatibility constraints. Check the <a
+href="http://xmlsoft.org/">main web page</a> to retrieve the most recent
+version.</p>
 <ul>
   <li><a href="#Introducti">Introduction</a></li>
   <li><a href="#Documentat">Documentation</a></li>
@@ -61,7 +65,7 @@ building tag-based structured documents/data.</p>
   <li>This library is released both under the W3C Copyright and the GNU LGPL.
     Basically, everybody should be happy; if not, drop me a mail.</li>
   <li>There is <a href="upgrade.html">a  first set of instruction</a>
-    concerning upgrade from libxml-1.x to libxml-2.x </li>
+    concerning upgrade from libxml-1.x to libxml-2.x</li>
 </ul>
 
 <h2><a name="Documentat">Documentation</a></h2>
@@ -184,6 +188,20 @@ for really accurate description</h3>
   </li>
 </ul>
 
+<h3>1.8.12: May 4 2001</h3>
+<ul>
+  <li>integated the new libxml2 XML parser and made it available through
+    xmlUseNewParser()</li>
+  <li>fixed a number of tests case</li>
+  <li>upgraded the tester program</li>
+  <li>a few bug fixes on the default old parser too.</li>
+</ul>
+
+<h3>1.8.10: Sep 6 2000</h3>
+<ul>
+  <li>bug fix release for some Gnome projects</li>
+</ul>
+
 <h3>1.8.7: Mar 6 2000</h3>
 <ul>
   <li>This is a bug fix release:</li>
@@ -192,8 +210,8 @@ for really accurate description</h3>
     that for adherence to XML spec, this behaviour will be disabled by default
     in 2.x . The same function will allow to keep compatibility for old
   code.</li>
-  <li>Blanks in &lt;a>  &lt;/a> constructs are not ignored anymore, avoiding
-    heuristic is really the Right Way :-\</li>
+  <li>Blanks in &lt;a&gt;  &lt;/a&gt; constructs are not ignored anymore,
+    avoiding heuristic is really the Right Way :-\</li>
   <li>The unchecked use of snprintf which was breaking libxml-1.8.6
     compilation on some platforms has been fixed</li>
   <li>nanoftp.c nanohttp.c: Fixed '#' and '?' stripping when processing
@@ -213,8 +231,8 @@ for really accurate description</h3>
     href="http://www.w3.org/TR/REC-xml#NT-content">[43] content</a> of the XML
     spec)</li>
   <li>fixed a hideous bug in xmlGetProp pointed by Rune.Djurhuus@fast.no</li>
-  <li>Jody Goldberg &lt;jgoldberg@home.com> provided another patch trying to
-    solve the zlib checks problems</li>
+  <li>Jody Goldberg &lt;jgoldberg@home.com&gt; provided another patch trying
+    to solve the zlib checks problems</li>
   <li>The current state in gnome CVS base is expected to ship as 1.8.5 with
     gnumeric soon</li>
 </ul>
@@ -321,27 +339,27 @@ for really accurate description</h3>
 <p><a href="http://www.w3.org/TR/REC-xml">XML is a standard</a> for
 markup-based structured documents. Here is <a name="example">an example XML
 document</a>:</p>
-<pre>&lt;?xml version="1.0"?>
-&lt;EXAMPLE prop1="gnome is great" prop2="&amp;amp; linux too">
-  &lt;head>
-   &lt;title>Welcome to Gnome&lt;/title>
-  &lt;/head>
-  &lt;chapter>
-   &lt;title>The Linux adventure&lt;/title>
-   &lt;p>bla bla bla ...&lt;/p>
-   &lt;image href="linus.gif"/>
-   &lt;p>...&lt;/p>
-  &lt;/chapter>
-&lt;/EXAMPLE></pre>
+<pre>&lt;?xml version="1.0"?&gt;
+&lt;EXAMPLE prop1="gnome is great" prop2="&amp;amp; linux too"&gt;
+  &lt;head&gt;
+   &lt;title&gt;Welcome to Gnome&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;chapter&gt;
+   &lt;title&gt;The Linux adventure&lt;/title&gt;
+   &lt;p&gt;bla bla bla ...&lt;/p&gt;
+   &lt;image href="linus.gif"/&gt;
+   &lt;p&gt;...&lt;/p&gt;
+  &lt;/chapter&gt;
+&lt;/EXAMPLE&gt;</pre>
 
 <p>The first line specifies that it's an XML document and gives useful
 information about its encoding. Then the document is a text format whose
 structure is specified by tags between brackets. <strong>Each tag opened has
 to be closed</strong>. XML is pedantic about this. However, if a tag is empty
 (no content), a single tag can serve as both the opening and closing tag if it
-ends with <code>/></code> rather than with <code>></code>. Note that, for
-example, the image tag has no content (just an attribute) and is closed by
-ending the tag with <code>/></code>.</p>
+ends with <code>/&gt;</code> rather than with <code>&gt;</code>. Note that,
+for example, the image tag has no content (just an attribute) and is closed by
+ending the tag with <code>/&gt;</code>.</p>
 
 <p>XML can be applied sucessfully to a wide range of uses, from long term
 structured document maintenance (where it follows the steps of SGML) to simple
@@ -357,9 +375,10 @@ returned is an <strong>xmlDocPtr</strong> (i.e., a pointer to an
 as the file name, the document type, and a <strong>root</strong> pointer which
 is the root of the document (or more exactly the first child under the root
 which is the document). The tree is made of <strong>xmlNode</strong>s, chained
-in double-linked lists of siblings and with childs&lt;->parent relationship.
-An xmlNode can also carry properties (a chain of xmlAttr structures). An
-attribute may have a value which is a list of TEXT or ENTITY_REF nodes.</p>
+in double-linked lists of siblings and with childs&lt;-&gt;parent
+relationship. An xmlNode can also carry properties (a chain of xmlAttr
+structures). An attribute may have a value which is a list of TEXT or
+ENTITY_REF nodes.</p>
 
 <p>Here is an example (erroneous with respect to the XML spec since there
 should be only one ELEMENT under the root):</p>
@@ -415,7 +434,7 @@ the library as it progresses through the XML input.</p>
 
 <p>To get more detailed step-by-step guidance on using the SAX interface of
 libxml, see the
-href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">nice
+href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html"&gt;nice
 documentation.written by <a href="mailto:james@daa.com.au">James
 Henstridge</a>.</p>
 
@@ -523,14 +542,14 @@ int              xmlParseChunk          (xmlParserCtxtPtr ctxt,
                 xmlParserCtxtPtr ctxt;
 
                 res = fread(chars, 1, 4, f);
-                if (res > 0) {
+                if (res &gt; 0) {
                     ctxt = xmlCreatePushParserCtxt(NULL, NULL,
                                 chars, res, filename);
-                    while ((res = fread(chars, 1, size, f)) > 0) {
+                    while ((res = fread(chars, 1, size, f)) &gt; 0) {
                         xmlParseChunk(ctxt, chars, res, 0);
                     }
                     xmlParseChunk(ctxt, chars, 0, 1);
-                    doc = ctxt->myDoc;
+                    doc = ctxt-&gt;myDoc;
                     xmlFreeParserCtxt(ctxt);
                 }
             }</pre>
@@ -559,12 +578,12 @@ produces the XML document used in the previous examples:</p>
     xmlNodePtr tree, subtree;
 
     doc = xmlNewDoc("1.0");
-    doc->root = xmlNewDocNode(doc, NULL, "EXAMPLE", NULL);
-    xmlSetProp(doc->root, "prop1", "gnome is great");
-    xmlSetProp(doc->root, "prop2", "&amp; linux too");
-    tree = xmlNewChild(doc->root, NULL, "head", NULL);
+    doc-&gt;root = xmlNewDocNode(doc, NULL, "EXAMPLE", NULL);
+    xmlSetProp(doc-&gt;root, "prop1", "gnome is great");
+    xmlSetProp(doc-&gt;root, "prop2", "&amp; linux too");
+    tree = xmlNewChild(doc-&gt;root, NULL, "head", NULL);
     subtree = xmlNewChild(tree, NULL, "title", "Welcome to Gnome");
-    tree = xmlNewChild(doc->root, NULL, "chapter", NULL);
+    tree = xmlNewChild(doc-&gt;root, NULL, "chapter", NULL);
     subtree = xmlNewChild(tree, NULL, "title", "The Linux adventure");
     subtree = xmlNewChild(tree, NULL, "p", "bla bla bla ...");
     subtree = xmlNewChild(tree, NULL, "image", NULL);
@@ -580,16 +599,16 @@ names should be somewhat simple like <strong>parent</strong>,
 <strong>childs</strong>, <strong>next</strong>, <strong>prev</strong>,
 <strong>properties</strong>, etc... For example, still with the previous
 example:</p>
-<pre><code>doc->root->childs->childs</code></pre>
+<pre><code>doc-&gt;root-&gt;childs-&gt;childs</code></pre>
 
 <p>points to the title element,</p>
-<pre>doc->root->childs->next->child->child</pre>
+<pre>doc-&gt;root-&gt;childs-&gt;next-&gt;child-&gt;child</pre>
 
 <p>points to the text node containing the chapter title "The Linux
 adventure".</p>
 
 <p><strong>NOTE</strong>: XML allows <em>PI</em>s and <em>comments</em> to be
-present before the document root, so <code>doc->root</code> may point to an
+present before the document root, so <code>doc-&gt;root</code> may point to an
 element which is not the document Root Element, a function
 <code>xmlDocGetRootElement()</code> was added for this purpose.</p>
 
@@ -692,20 +711,20 @@ content of your document. Entities are especially useful when a given string
 may occur frequently within a document, or to confine the change needed to a
 document to a restricted area in the internal subset of the document (at the
 beginning). Example:</p>
-<pre>1 &lt;?xml version="1.0"?>
+<pre>1 &lt;?xml version="1.0"?&gt;
 2 &lt;!DOCTYPE EXAMPLE SYSTEM "example.dtd" [
-3 &lt;!ENTITY xml "Extensible Markup Language">
-4 ]>
-5 &lt;EXAMPLE>
+3 &lt;!ENTITY xml "Extensible Markup Language"&gt;
+4 ]&gt;
+5 &lt;EXAMPLE&gt;
 6    &amp;xml;
-7 &lt;/EXAMPLE></pre>
+7 &lt;/EXAMPLE&gt;</pre>
 
 <p>Line 3 declares the xml entity. Line 6 uses the xml entity, by prefixing
 it's name with '&amp;' and following it by ';' without any spaces added. There
 are 5 predefined entities in libxml allowing you to escape charaters with
 predefined meaning in some parts of the xml document content:
 <strong>&amp;lt;</strong> for the character '&lt;', <strong>&amp;gt;</strong>
-for the character '>',  <strong>&amp;apos;</strong> for the character ''',
+for the character '&gt;',  <strong>&amp;apos;</strong> for the character ''',
 <strong>&amp;quot;</strong> for the character '"', and
 <strong>&amp;amp;</strong> for the character '&amp;'.</p>
 
@@ -722,7 +741,7 @@ substitute entities by default.</p>
 
 <p>Here is the DOM tree built by libxml for the previous document in the
 default case:</p>
-<pre>/gnome/src/gnome-xml -> ./tester --debug test/ent1
+<pre>/gnome/src/gnome-xml -&gt; ./tester --debug test/ent1
 DOCUMENT
 version=1.0
    ELEMENT EXAMPLE
@@ -735,7 +754,7 @@ version=1.0
      content=</pre>
 
 <p>And here is the result when substituting entities:</p>
-<pre>/gnome/src/gnome-xml -> ./tester --debug --noent test/ent1
+<pre>/gnome/src/gnome-xml -&gt; ./tester --debug --noent test/ent1
 DOCUMENT
 version=1.0
    ELEMENT EXAMPLE
@@ -778,10 +797,10 @@ Then when you load a file, make sure that a namespace carrying the
 version-independent prefix is installed on the root element of your document,
 and if the version information don't match something you know, warn the user
 and be liberal in what you accept as the input. Also do *not* try to base
-namespace checking on the prefix value. &lt;foo:text> may be exactly the same
-as &lt;bar:text> in another document. What really matter is the URI associated
-with the element or the attribute, not the prefix string (which is just a
-shortcut for the full URI).</p>
+namespace checking on the prefix value. &lt;foo:text&gt; may be exactly the
+same as &lt;bar:text&gt; in another document. What really matter is the URI
+associated with the element or the attribute, not the prefix string (which is
+just a shortcut for the full URI).</p>
 
 <p>@@Interfaces@@</p>
 
@@ -871,49 +890,49 @@ data is not kept in the DOM tree but uses internal structures. It is based on
 a proposal to keep a database of jobs related to Gnome, with an XML based
 storage structure. Here is an <a href="gjobs.xml">XML encoded jobs
 base</a>:</p>
-<pre>&lt;?xml version="1.0"?>
-&lt;gjob:Helping xmlns:gjob="http://www.gnome.org/some-location">
-  &lt;gjob:Jobs>
+<pre>&lt;?xml version="1.0"?&gt;
+&lt;gjob:Helping xmlns:gjob="http://www.gnome.org/some-location"&gt;
+  &lt;gjob:Jobs&gt;
 
-    &lt;gjob:Job>
-      &lt;gjob:Project ID="3"/>
-      &lt;gjob:Application>GBackup&lt;/gjob:Application>
-      &lt;gjob:Category>Development&lt;/gjob:Category>
+    &lt;gjob:Job&gt;
+      &lt;gjob:Project ID="3"/&gt;
+      &lt;gjob:Application&gt;GBackup&lt;/gjob:Application&gt;
+      &lt;gjob:Category&gt;Development&lt;/gjob:Category&gt;
 
-      &lt;gjob:Update>
-        &lt;gjob:Status>Open&lt;/gjob:Status>
-        &lt;gjob:Modified>Mon, 07 Jun 1999 20:27:45 -0400 MET DST&lt;/gjob:Modified>
-        &lt;gjob:Salary>USD 0.00&lt;/gjob:Salary>
-      &lt;/gjob:Update>
+      &lt;gjob:Update&gt;
+        &lt;gjob:Status&gt;Open&lt;/gjob:Status&gt;
+        &lt;gjob:Modified&gt;Mon, 07 Jun 1999 20:27:45 -0400 MET DST&lt;/gjob:Modified&gt;
+        &lt;gjob:Salary&gt;USD 0.00&lt;/gjob:Salary&gt;
+      &lt;/gjob:Update&gt;
 
-      &lt;gjob:Developers>
-        &lt;gjob:Developer>
-        &lt;/gjob:Developer>
-      &lt;/gjob:Developers>
+      &lt;gjob:Developers&gt;
+        &lt;gjob:Developer&gt;
+        &lt;/gjob:Developer&gt;
+      &lt;/gjob:Developers&gt;
 
-      &lt;gjob:Contact>
-        &lt;gjob:Person>Nathan Clemons&lt;/gjob:Person>
-        &lt;gjob:Email>nathan@windsofstorm.net&lt;/gjob:Email>
-        &lt;gjob:Company>
-        &lt;/gjob:Company>
-        &lt;gjob:Organisation>
-        &lt;/gjob:Organisation>
-        &lt;gjob:Webpage>
-        &lt;/gjob:Webpage>
-        &lt;gjob:Snailmail>
-        &lt;/gjob:Snailmail>
-        &lt;gjob:Phone>
-        &lt;/gjob:Phone>
-      &lt;/gjob:Contact>
+      &lt;gjob:Contact&gt;
+        &lt;gjob:Person&gt;Nathan Clemons&lt;/gjob:Person&gt;
+        &lt;gjob:Email&gt;nathan@windsofstorm.net&lt;/gjob:Email&gt;
+        &lt;gjob:Company&gt;
+        &lt;/gjob:Company&gt;
+        &lt;gjob:Organisation&gt;
+        &lt;/gjob:Organisation&gt;
+        &lt;gjob:Webpage&gt;
+        &lt;/gjob:Webpage&gt;
+        &lt;gjob:Snailmail&gt;
+        &lt;/gjob:Snailmail&gt;
+        &lt;gjob:Phone&gt;
+        &lt;/gjob:Phone&gt;
+      &lt;/gjob:Contact&gt;
 
-      &lt;gjob:Requirements>
+      &lt;gjob:Requirements&gt;
       The program should be released as free software, under the GPL.
-      &lt;/gjob:Requirements>
+      &lt;/gjob:Requirements&gt;
 
-      &lt;gjob:Skills>
-      &lt;/gjob:Skills>
+      &lt;gjob:Skills&gt;
+      &lt;/gjob:Skills&gt;
 
-      &lt;gjob:Details>
+      &lt;gjob:Details&gt;
       A GNOME based system that will allow a superuser to configure 
       compressed and uncompressed files and/or file systems to be backed 
       up with a supported media in the system.  This should be able to 
@@ -921,12 +940,12 @@ base</a>:</p>
       to tar, dd, cpio, cp, gzip, etc., to be directed to the tape machine 
       or via operations performed on the filesystem itself. Email 
       notification and GUI status display very important.
-      &lt;/gjob:Details>
+      &lt;/gjob:Details&gt;
 
-    &lt;/gjob:Job>
+    &lt;/gjob:Job&gt;
 
-  &lt;/gjob:Jobs>
-&lt;/gjob:Helping></pre>
+  &lt;/gjob:Jobs&gt;
+&lt;/gjob:Helping&gt;</pre>
 
 <p>While loading the XML file into an internal DOM tree is a matter of calling
 only a couple of functions, browsing the tree to gather the informations and
@@ -969,13 +988,13 @@ DEBUG("parsePerson\n");
     memset(ret, 0, sizeof(person));
 
     /* We don't care what the top level element name is */
-    cur = cur->childs;
+    cur = cur-&gt;childs;
     while (cur != NULL) {
-        if ((!strcmp(cur->name, "Person")) &amp;&amp; (cur->ns == ns))
-            ret->name = xmlNodeListGetString(doc, cur->childs, 1);
-        if ((!strcmp(cur->name, "Email")) &amp;&amp; (cur->ns == ns))
-            ret->email = xmlNodeListGetString(doc, cur->childs, 1);
-        cur = cur->next;
+        if ((!strcmp(cur-&gt;name, "Person")) &amp;&amp; (cur-&gt;ns == ns))
+            ret-&gt;name = xmlNodeListGetString(doc, cur-&gt;childs, 1);
+        if ((!strcmp(cur-&gt;name, "Email")) &amp;&amp; (cur-&gt;ns == ns))
+            ret-&gt;email = xmlNodeListGetString(doc, cur-&gt;childs, 1);
+        cur = cur-&gt;next;
     }
 
     return(ret);
@@ -992,7 +1011,7 @@ DEBUG("parsePerson\n");
     entities and it's a good coding practice to define a namespace for your
     application set of data and test that the element and attributes you're
     analyzing actually pertains to your application space. This is done by a
-    simple equality test (cur->ns == ns).</li>
+    simple equality test (cur-&gt;ns == ns).</li>
   <li>To retrieve text and attributes value, it is suggested to use the
     function <em>xmlNodeListGetString</em> to gather all the text and entity
     reference nodes generated by the DOM output and produce an single text
@@ -1031,22 +1050,22 @@ DEBUG("parseJob\n");
     memset(ret, 0, sizeof(job));
 
     /* We don't care what the top level element name is */
-    cur = cur->childs;
+    cur = cur-&gt;childs;
     while (cur != NULL) {
         
-        if ((!strcmp(cur->name, "Project")) &amp;&amp; (cur->ns == ns)) {
-            ret->projectID = xmlGetProp(cur, "ID");
-            if (ret->projectID == NULL) {
+        if ((!strcmp(cur-&gt;name, "Project")) &amp;&amp; (cur-&gt;ns == ns)) {
+            ret-&gt;projectID = xmlGetProp(cur, "ID");
+            if (ret-&gt;projectID == NULL) {
                 fprintf(stderr, "Project has no ID\n");
             }
         }
-        if ((!strcmp(cur->name, "Application")) &amp;&amp; (cur->ns == ns))
-            ret->application = xmlNodeListGetString(doc, cur->childs, 1);
-        if ((!strcmp(cur->name, "Category")) &amp;&amp; (cur->ns == ns))
-            ret->category = xmlNodeListGetString(doc, cur->childs, 1);
-        if ((!strcmp(cur->name, "Contact")) &amp;&amp; (cur->ns == ns))
-            ret->contact = parsePerson(doc, ns, cur);
-        cur = cur->next;
+        if ((!strcmp(cur-&gt;name, "Application")) &amp;&amp; (cur-&gt;ns == ns))
+            ret-&gt;application = xmlNodeListGetString(doc, cur-&gt;childs, 1);
+        if ((!strcmp(cur-&gt;name, "Category")) &amp;&amp; (cur-&gt;ns == ns))
+            ret-&gt;category = xmlNodeListGetString(doc, cur-&gt;childs, 1);
+        if ((!strcmp(cur-&gt;name, "Contact")) &amp;&amp; (cur-&gt;ns == ns))
+            ret-&gt;contact = parsePerson(doc, ns, cur);
+        cur = cur-&gt;next;
     }
 
     return(ret);
@@ -1066,6 +1085,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.27 2000/03/02 00:15:55 veillard Exp $</p>
+<p>$Id: xml.html,v 1.28 2000/03/06 07:41:49 veillard Exp $</p>
 </body>
 </html>

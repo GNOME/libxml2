@@ -1,3 +1,11 @@
+Sat Nov 04 18:36:52 2000  George Lebl <jirka@5z.com>
+
+	* tree.c: When messing with the child list by adding children,
+	  don't just update the last pointer, but set the parent pointers
+	  as well for all the children, during the traversal.  Also in
+	  xmlUnlinkNode, if the node is the doc->root node, set doc->root
+	  to NULL.
+
 Sat Sep 30 16:35:54 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in xml-config.in: patch from "Ben Taylor"

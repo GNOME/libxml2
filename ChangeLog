@@ -1,3 +1,8 @@
+Fri Aug 15 01:55:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixing the xmlSAXParseDTD bug #119536 raised by
+	  Malcolm Tredinnick with the patch he suggested.
+
 Fri Aug 15 01:37:10 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: allocation error #119784 raised by Oliver Stoeneberg

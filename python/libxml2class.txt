@@ -121,6 +121,7 @@ createPushParser()
 debugMemory()
 dumpMemory()
 htmlCreatePushParser()
+newNode()
 registerErrorHandler()
 
 # functions from module tree
@@ -343,7 +344,6 @@ Class xmlNs(xmlNode)
     copyNamespaceList()
     freeNs()
     freeNsList()
-    newNode()
 
 
 Class xmlDtd(xmlNode)

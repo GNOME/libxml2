@@ -1404,6 +1404,30 @@ libxml_xmlNodeGetNs(PyObject *self, PyObject *args) {
 
 /************************************************************************
  *									*
+ *			Extra stuff					*
+ *									*
+ ************************************************************************/
+PyObject *
+libxml_xmlNewNode(PyObject *self, PyObject *args) {
+    PyObject *py_retval;
+    xmlChar * name;
+    xmlNodePtr node;
+
+    if (!PyArg_ParseTuple(args, "s:xmlNewNode", &name))
+        return(NULL);
+    node = (xmlNodePtr) xmlNewNode(NULL, name);
+    printf("NewNode: %s : %p\n", name, node);
+
+    if (node == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    py_retval = libxml_xmlNodePtrWrap(node);
+    return(py_retval);
+}
+
+/************************************************************************
+ *									*
  *			The registration stuff				*
  *									*
  ************************************************************************/
@@ -1418,6 +1442,7 @@ static PyMethodDef libxmlMethods[] = {
     { "parent", libxml_parent, METH_VARARGS, NULL },
     { "type", libxml_type, METH_VARARGS, NULL },
     { "doc", libxml_doc, METH_VARARGS, NULL },
+    { "xmlNewNode", libxml_xmlNewNode, METH_VARARGS, NULL },
     { NULL }
 };
 

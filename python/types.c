@@ -346,7 +346,7 @@ libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj) {
 
 xmlXPathObjectPtr
 libxml_xmlXPathObjectPtrConvert(PyObject * obj) {
-    xmlXPathObjectPtr ret;
+    xmlXPathObjectPtr ret = NULL;
 
 #ifdef DEBUG
     printf("libxml_xmlXPathObjectPtrConvert: obj = %p\n", obj);
@@ -362,6 +362,25 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj) {
 	str = xmlStrndup((const xmlChar *)PyString_AS_STRING(obj),
 		         PyString_GET_SIZE(obj));
 	ret = xmlXPathWrapString(str);
+    } else if PyList_Check(obj) {
+	int i;
+	PyObject *node;
+	xmlNodePtr cur;
+	xmlNodeSetPtr set;
+
+	set = xmlXPathNodeSetCreate(NULL);
+
+	for (i = 0;i < PyList_Size(obj);i++) {
+	    node = PyList_GetItem(obj, i);
+	    if ((node == NULL) || (node->ob_type == NULL) ||
+		(!PyCObject_Check(node)))
+		continue;
+	    cur = PyxmlNode_Get(node);
+	    if (cur != NULL) {
+		xmlXPathNodeSetAdd(set, cur);
+	    }
+	}
+	ret = xmlXPathWrapNodeSet(set);
     } else {
 	printf("Unable to convert Python Object to XPath");
     }

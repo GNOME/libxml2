@@ -244,6 +244,8 @@ dnl
 XML_CFLAGS=""
 RDL_LIBS=""
 
+AC_ARG_WITH(fexceptions,
+[  --with-fexceptions      add GCC flag -fexceptions for C++ exceptions (off)])
 dnl
 dnl Workaround for native compilers
 dnl  HP  : http://bugs.gnome.org/db/31/3163.html
@@ -259,6 +261,15 @@ if test "${GCC}" != "yes" ; then
                ;;
     esac
 else
+    if test "$with_fexceptions" = "yes"
+    then
+        #
+	# Not activated by default because this inflates the code size
+	# Used to allow propagation of C++ exceptions through the library
+	#
+	CFLAGS="${CFLAGS} -fexceptions"
+    fi
+       
     CFLAGS="${CFLAGS} -Wall"
     case "${host}" in
           alpha*-*-linux* )

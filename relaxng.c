@@ -2709,6 +2709,9 @@ xmlRelaxNGIsCompileable(xmlRelaxNGDefinePtr def) {
 	    ret = 1;
 	    break;
         case XML_RELAXNG_ELEMENT:
+	    /*
+	     * Check if the element content is compileable
+	     */
 	    if (((def->dflags & IS_NOT_COMPILABLE) == 0) &&
 	        ((def->dflags & IS_COMPILABLE) == 0)) {
 		xmlRelaxNGDefinePtr list;
@@ -2721,12 +2724,31 @@ xmlRelaxNGIsCompileable(xmlRelaxNGDefinePtr def) {
 		}
 		if (ret == 0) def->dflags |= IS_NOT_COMPILABLE;
 		if (ret == 1) def->dflags |= IS_COMPILABLE;
+#ifdef DEBUG_COMPILE
+		if (ret == 1) {
+		    xmlGenericError(xmlGenericErrorContext,
+				"element content for %s is compilable\n",
+				def->name);
+		} else if (ret == 0) {
+		    xmlGenericError(xmlGenericErrorContext,
+				"element content for %s is not compilable\n",
+				def->name);
+		} else {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "Problem in RelaxNGIsCompileable for element %s\n",
+				def->name);
+		}
+#endif
 	    }
-	    if (ret == 1) {
-		if ((def->nameClass != NULL) || (def->name == NULL))
-		    ret = 0;
-	    }
-	    break;
+	    /*
+	     * All elements return a compileable status unless they
+	     * are generic like anyName
+	     */
+	    if ((def->nameClass != NULL) || (def->name == NULL))
+		ret = 0;
+	    else
+	        ret = 1;
+	    return(ret);
         case XML_RELAXNG_REF:
         case XML_RELAXNG_EXTERNALREF:
         case XML_RELAXNG_PARENTREF:
@@ -2778,6 +2800,21 @@ xmlRelaxNGIsCompileable(xmlRelaxNGDefinePtr def) {
     }
     if (ret == 0) def->dflags |= IS_NOT_COMPILABLE;
     if (ret == 1) def->dflags |= IS_COMPILABLE;
+#ifdef DEBUG_COMPILE
+    if (ret == 1) {
+	xmlGenericError(xmlGenericErrorContext,
+	            "RelaxNGIsCompileable %s : true\n",
+	            xmlRelaxNGDefName(def));
+    } else if (ret == 0) {
+	xmlGenericError(xmlGenericErrorContext,
+	            "RelaxNGIsCompileable %s : false\n",
+	            xmlRelaxNGDefName(def));
+    } else {
+	xmlGenericError(xmlGenericErrorContext,
+	            "Problem in RelaxNGIsCompileable %s\n",
+	            xmlRelaxNGDefName(def));
+    }
+#endif
     return(ret);
 }
 

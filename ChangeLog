@@ -1,3 +1,12 @@
+Sun Jul 27 14:30:56 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed a Relax-NG compilation/streaming bug introduced
+	  when fixing the previous Relax-NG bugs
+	* result/relaxng/*: This slightly changes the output messages of
+	  some regression tests.
+	* configure.in: added support of -with-fexceptions for nested C++
+	  support.
+
 Thu Jul 24 15:46:02 MDT 2003 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial/apa.html

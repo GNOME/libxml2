@@ -1,2 +1,4 @@
-RNG validity error: file ./test/relaxng/tutor3_5_2.xml line 2 element card
-Element addressBook has extra content: card
+RNG validity error: file ./test/relaxng/tutor3_5_2.xml line 2 element email
+Expecting element name, got email
+RNG validity error: file ./test/relaxng/tutor3_5_2.xml line 2 element email
+Element card failed to validate content

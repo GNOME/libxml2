@@ -894,6 +894,7 @@ Class parserCtxt(parserCtxtCore)
     htmlParseElement()
 
     # functions from module parser
+    byteConsumed()
     clearParserCtxt()
     ctxtReadDoc()
     ctxtReadFd()

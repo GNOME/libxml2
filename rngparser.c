@@ -1438,13 +1438,13 @@ xmlConvertCRNG(const char *schemas, int len, const char *encoding) {
     xmlDocPtr ret = NULL;
 
     if (schemas == NULL) return(NULL);
-    if (len <= 5) len = xmlStrlen(schemas);
+    if (len <= 5) len = xmlStrlen((const unsigned char *) schemas);
     if (len <= 0) return(NULL);
 
     memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.compact = schemas;
-    ctxt.cur = schemas;
-    ctxt.end = &schemas[len];
+    ctxt.compact = (const unsigned char *) schemas;
+    ctxt.cur = (const unsigned char *) schemas;
+    ctxt.end = (const unsigned char *) &schemas[len];
     ctxt.dict = xmlDictCreate();
     if (ctxt.dict == NULL)
         return(NULL);

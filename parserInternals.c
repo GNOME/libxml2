@@ -1110,6 +1110,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
          */
         if ((input->buf->buffer != NULL) && (input->buf->buffer->use > 0)) {
             int processed;
+	    unsigned int use;
 
             /*
              * Specific handling of the Byte Order Mark for 
@@ -1145,6 +1146,8 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
             xmlBufferShrink(input->buf->buffer, processed);
             input->buf->raw = input->buf->buffer;
             input->buf->buffer = xmlBufferCreate();
+	    input->buf->rawconsumed = processed;
+	    use = input->buf->raw->use;
 
             if (ctxt->html) {
                 /*
@@ -1170,6 +1173,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
                                NULL);
                 return (-1);
             }
+	    input->buf->rawconsumed += use - input->buf->raw->use;
             input->base = input->cur = input->buf->buffer->content;
             input->end = &input->base[input->buf->buffer->use];
 

@@ -1221,6 +1221,7 @@
     <reference name='xmlAllocParserInputBuffer' href='html/libxml-xmlIO.html#xmlAllocParserInputBuffer'/>
     <reference name='xmlAttr' href='html/libxml-tree.html#xmlAttr'/>
     <reference name='xmlAttrPtr' href='html/libxml-tree.html#xmlAttrPtr'/>
+    <reference name='xmlAttrSerializeTxtContent' href='html/libxml-tree.html#xmlAttrSerializeTxtContent'/>
     <reference name='xmlAttribute' href='html/libxml-tree.html#xmlAttribute'/>
     <reference name='xmlAttributeDefault' href='html/libxml-tree.html#xmlAttributeDefault'/>
     <reference name='xmlAttributePtr' href='html/libxml-tree.html#xmlAttributePtr'/>
@@ -1271,6 +1272,7 @@
     <reference name='xmlBufferWriteQuotedString' href='html/libxml-tree.html#xmlBufferWriteQuotedString'/>
     <reference name='xmlBuildQName' href='html/libxml-tree.html#xmlBuildQName'/>
     <reference name='xmlBuildURI' href='html/libxml-uri.html#xmlBuildURI'/>
+    <reference name='xmlByteConsumed' href='html/libxml-parser.html#xmlByteConsumed'/>
     <reference name='xmlC14NDocDumpMemory' href='html/libxml-c14n.html#xmlC14NDocDumpMemory'/>
     <reference name='xmlC14NDocSave' href='html/libxml-c14n.html#xmlC14NDocSave'/>
     <reference name='xmlC14NDocSaveTo' href='html/libxml-c14n.html#xmlC14NDocSaveTo'/>
@@ -2296,6 +2298,7 @@
     <reference name='xmlTextReaderRelaxNGValidate' href='html/libxml-xmlreader.html#xmlTextReaderRelaxNGValidate'/>
     <reference name='xmlTextReaderSetErrorHandler' href='html/libxml-xmlreader.html#xmlTextReaderSetErrorHandler'/>
     <reference name='xmlTextReaderSetParserProp' href='html/libxml-xmlreader.html#xmlTextReaderSetParserProp'/>
+    <reference name='xmlTextReaderSetStructuredErrorHandler' href='html/libxml-xmlreader.html#xmlTextReaderSetStructuredErrorHandler'/>
     <reference name='xmlTextReaderValue' href='html/libxml-xmlreader.html#xmlTextReaderValue'/>
     <reference name='xmlTextReaderXmlLang' href='html/libxml-xmlreader.html#xmlTextReaderXmlLang'/>
     <reference name='xmlTextWriter' href='html/libxml-xmlwriter.html#xmlTextWriter'/>
@@ -4120,6 +4123,7 @@
       <ref name='xmlAllocParserInputBuffer'/>
       <ref name='xmlAttr'/>
       <ref name='xmlAttrPtr'/>
+      <ref name='xmlAttrSerializeTxtContent'/>
       <ref name='xmlAttribute'/>
       <ref name='xmlAttributeDefault'/>
       <ref name='xmlAttributePtr'/>
@@ -4170,6 +4174,7 @@
       <ref name='xmlBufferWriteQuotedString'/>
       <ref name='xmlBuildQName'/>
       <ref name='xmlBuildURI'/>
+      <ref name='xmlByteConsumed'/>
       <ref name='xmlC14NDocDumpMemory'/>
       <ref name='xmlC14NDocSave'/>
       <ref name='xmlC14NDocSaveTo'/>
@@ -5195,6 +5200,7 @@
       <ref name='xmlTextReaderRelaxNGValidate'/>
       <ref name='xmlTextReaderSetErrorHandler'/>
       <ref name='xmlTextReaderSetParserProp'/>
+      <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlTextReaderValue'/>
       <ref name='xmlTextReaderXmlLang'/>
       <ref name='xmlTextWriter'/>
@@ -5832,6 +5838,7 @@
       <ref name='htmlNodeStatus'/>
     </type>
     <type name='long'>
+      <ref name='xmlByteConsumed'/>
       <ref name='xmlGetLineNo'/>
       <ref name='xmlXPathOrderDocElems'/>
     </type>
@@ -6618,6 +6625,7 @@
       <ref name='xmlAddID'/>
       <ref name='xmlAddNotationDecl'/>
       <ref name='xmlAddRef'/>
+      <ref name='xmlAttrSerializeTxtContent'/>
       <ref name='xmlAutomataNewCountTrans'/>
       <ref name='xmlAutomataNewOnceTrans'/>
       <ref name='xmlAutomataNewTransition'/>
@@ -7295,6 +7303,7 @@
       <ref name='xmlStructuredErrorFunc'/>
       <ref name='xmlTextReaderErrorFunc'/>
       <ref name='xmlTextReaderSetErrorHandler'/>
+      <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlThrDefSetGenericErrorFunc'/>
       <ref name='xmlThrDefSetStructuredErrorFunc'/>
       <ref name='xmlValidityErrorFunc'/>
@@ -7325,6 +7334,7 @@
     <type name='xmlAttrPtr'>
       <ref name='xmlAddID'/>
       <ref name='xmlAddRef'/>
+      <ref name='xmlAttrSerializeTxtContent'/>
       <ref name='xmlCopyProp'/>
       <ref name='xmlCopyPropList'/>
       <ref name='xmlDebugDumpAttr'/>
@@ -7389,6 +7399,7 @@
     </type>
     <type name='xmlBufferPtr'>
       <ref name='htmlNodeDump'/>
+      <ref name='xmlAttrSerializeTxtContent'/>
       <ref name='xmlBufferAdd'/>
       <ref name='xmlBufferAddHead'/>
       <ref name='xmlBufferCCat'/>
@@ -7568,6 +7579,7 @@
       <ref name='xmlAddDtdEntity'/>
       <ref name='xmlAddID'/>
       <ref name='xmlAddRef'/>
+      <ref name='xmlAttrSerializeTxtContent'/>
       <ref name='xmlC14NDocDumpMemory'/>
       <ref name='xmlC14NDocSave'/>
       <ref name='xmlC14NDocSaveTo'/>
@@ -8167,6 +8179,7 @@
       <ref name='namePush'/>
       <ref name='nodePop'/>
       <ref name='nodePush'/>
+      <ref name='xmlByteConsumed'/>
       <ref name='xmlCheckHTTPInput'/>
       <ref name='xmlClearParserCtxt'/>
       <ref name='xmlCtxtReadDoc'/>
@@ -8481,6 +8494,7 @@
     </type>
     <type name='xmlStructuredErrorFunc'>
       <ref name='xmlSetStructuredErrorFunc'/>
+      <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlThrDefSetStructuredErrorFunc'/>
     </type>
     <type name='xmlTextReaderErrorFunc'>
@@ -8556,6 +8570,7 @@
       <ref name='xmlTextReaderRelaxNGValidate'/>
       <ref name='xmlTextReaderSetErrorHandler'/>
       <ref name='xmlTextReaderSetParserProp'/>
+      <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlTextReaderValue'/>
       <ref name='xmlTextReaderXmlLang'/>
     </type>
@@ -9471,6 +9486,7 @@
       <ref name='startElementSAXFunc'/>
       <ref name='unparsedEntityDeclSAXFunc'/>
       <ref name='warningSAXFunc'/>
+      <ref name='xmlByteConsumed'/>
       <ref name='xmlCleanupParser'/>
       <ref name='xmlClearNodeInfoSeq'/>
       <ref name='xmlClearParserCtxt'/>
@@ -9942,6 +9958,7 @@
       <ref name='xmlAddSibling'/>
       <ref name='xmlAttr'/>
       <ref name='xmlAttrPtr'/>
+      <ref name='xmlAttrSerializeTxtContent'/>
       <ref name='xmlAttribute'/>
       <ref name='xmlAttributeDefault'/>
       <ref name='xmlAttributePtr'/>
@@ -11049,6 +11066,7 @@
       <ref name='xmlTextReaderRelaxNGValidate'/>
       <ref name='xmlTextReaderSetErrorHandler'/>
       <ref name='xmlTextReaderSetParserProp'/>
+      <ref name='xmlTextReaderSetStructuredErrorHandler'/>
       <ref name='xmlTextReaderValue'/>
       <ref name='xmlTextReaderXmlLang'/>
     </file>
@@ -14575,6 +14593,7 @@
           <ref name='xmlRegisterInputCallbacks'/>
           <ref name='xmlRegisterOutputCallbacks'/>
           <ref name='xmlTextReaderSetErrorHandler'/>
+          <ref name='xmlTextReaderSetStructuredErrorHandler'/>
           <ref name='xmlXPathRegisterFunc'/>
           <ref name='xmlXPathRegisterFuncNS'/>
           <ref name='xmlXPathRegisterNs'/>
@@ -14872,6 +14891,9 @@
         </word>
         <word name='Send'>
           <ref name='xmlNanoFTPQuit'/>
+        </word>
+        <word name='Serialize'>
+          <ref name='xmlAttrSerializeTxtContent'/>
         </word>
         <word name='Set'>
           <ref name='htmlHandleOmittedElem'/>
@@ -16158,6 +16180,7 @@
         </word>
         <word name='amount'>
           <ref name='INPUT_CHUNK'/>
+          <ref name='_xmlParserInputBuffer'/>
           <ref name='xmlMemUsed'/>
           <ref name='xmlParserInputBufferGrow'/>
           <ref name='xmlParserInputBufferRead'/>
@@ -16510,6 +16533,7 @@
         <word name='beginning'>
           <ref name='xmlBufferAddHead'/>
           <ref name='xmlBufferShrink'/>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlListInsert'/>
           <ref name='xmlListPushFront'/>
           <ref name='xmlStringCurrentChar'/>
@@ -16714,6 +16738,7 @@
           <ref name='_xmlParserCtxt'/>
           <ref name='xlinkIsLink'/>
           <ref name='xmlACatalogAdd'/>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlCatalogAdd'/>
           <ref name='xmlCharEncFirstLine'/>
           <ref name='xmlCheckUTF8'/>
@@ -16749,6 +16774,7 @@
           <ref name='htmlSaveFileEnc'/>
           <ref name='htmlSaveFileFormat'/>
           <ref name='xmlBufferCreateStatic'/>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlCharEncFirstLine'/>
           <ref name='xmlCharEncInFunc'/>
           <ref name='xmlCharEncOutFunc'/>
@@ -16793,6 +16819,7 @@
           <ref name='xmlTextReaderExpand'/>
           <ref name='xmlTextReaderSetErrorHandler'/>
           <ref name='xmlTextReaderSetParserProp'/>
+          <ref name='xmlTextReaderSetStructuredErrorHandler'/>
           <ref name='xmlValidateOneElement'/>
           <ref name='xmlXPathEvalPredicate'/>
           <ref name='xmlXPathEvaluatePredicateResult'/>
@@ -17454,6 +17481,7 @@
         </word>
         <word name='computed'>
           <ref name='_xmlEntity'/>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlSchemaValPredefTypeNode'/>
           <ref name='xmlSchemaValidatePredefinedType'/>
         </word>
@@ -17543,6 +17571,7 @@
         </word>
         <word name='constant'>
           <ref name='XML_SAX2_MAGIC'/>
+          <ref name='xmlByteConsumed'/>
         </word>
         <word name='constraint'>
           <ref name='xmlParseEntityRef'/>
@@ -17566,6 +17595,7 @@
           <ref name='UTF8ToHtml'/>
           <ref name='UTF8Toisolat1'/>
           <ref name='_xmlParserInput'/>
+          <ref name='_xmlParserInputBuffer'/>
           <ref name='docbEncodeEntities'/>
           <ref name='htmlEncodeEntities'/>
           <ref name='isolat1ToUTF8'/>
@@ -17777,10 +17807,15 @@
           <ref name='xmlGetParameterEntity'/>
           <ref name='xmlXPathTranslateFunction'/>
         </word>
+        <word name='cost'>
+          <ref name='xmlByteConsumed'/>
+        </word>
         <word name='costly'>
           <ref name='XML_MAX_NAMELEN'/>
+          <ref name='xmlByteConsumed'/>
         </word>
         <word name='could'>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
         </word>
@@ -19303,6 +19338,9 @@
           <ref name='xmlTextReaderCurrentDoc'/>
           <ref name='xmlTextReaderPreservePattern'/>
         </word>
+        <word name='finishing'>
+          <ref name='xmlByteConsumed'/>
+        </word>
         <word name='firs'>
           <ref name='xmlCharEncOutFunc'/>
         </word>
@@ -19785,6 +19823,7 @@
           <ref name='xmlRegisterDefaultInputCallbacks'/>
           <ref name='xmlRegisterDefaultOutputCallbacks'/>
           <ref name='xmlTextReaderSetErrorHandler'/>
+          <ref name='xmlTextReaderSetStructuredErrorHandler'/>
         </word>
         <word name='handles'>
           <ref name='xmlSaveFileTo'/>
@@ -20225,6 +20264,7 @@
           <ref name='inputPush'/>
           <ref name='namePush'/>
           <ref name='nodePush'/>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlParserFindNodeInfoIndex'/>
           <ref name='xmlStrsub'/>
           <ref name='xmlTextReaderGetAttributeNo'/>
@@ -21752,6 +21792,9 @@
           <ref name='xmlCreatePushParserCtxt'/>
           <ref name='xmlParseEntityValue'/>
         </word>
+        <word name='non-UTF-8'>
+          <ref name='xmlByteConsumed'/>
+        </word>
         <word name='non-blank'>
           <ref name='xmlParseElementChildrenContentDecl'/>
         </word>
@@ -21969,9 +22012,6 @@
           <ref name='xmlParseSDDecl'/>
           <ref name='xmlStrPrintf'/>
           <ref name='xmlStrVPrintf'/>
-        </word>
-        <word name='ocetes'>
-          <ref name='xmlCharEncodingOutputFunc'/>
         </word>
         <word name='octets'>
           <ref name='UTF8ToHtml'/>
@@ -22367,6 +22407,7 @@
           <ref name='xmlCurrentChar'/>
           <ref name='xmlRelaxParserSetFlag'/>
           <ref name='xmlTextReaderSetErrorHandler'/>
+          <ref name='xmlTextReaderSetStructuredErrorHandler'/>
         </word>
         <word name='passed'>
           <ref name='CHECK_ARITY'/>
@@ -22814,6 +22855,7 @@
           <ref name='xmlStringLenGetNodeList'/>
         </word>
         <word name='produced'>
+          <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlCurrentChar'/>
         </word>
         <word name='producing'>
@@ -22924,6 +22966,7 @@
         <word name='provides'>
           <ref name='endElementNsSAX2Func'/>
           <ref name='startElementNsSAX2Func'/>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlSAX2EndElementNs'/>
           <ref name='xmlSAX2StartElementNs'/>
         </word>
@@ -23404,6 +23447,7 @@
           <ref name='_htmlElemDesc'/>
         </word>
         <word name='relative'>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlTextReaderGetAttributeNo'/>
           <ref name='xmlTextReaderMoveToAttributeNo'/>
           <ref name='xmlUTF8Strloc'/>
@@ -23661,6 +23705,7 @@
         </word>
         <word name='restored'>
           <ref name='xmlTextReaderSetErrorHandler'/>
+          <ref name='xmlTextReaderSetStructuredErrorHandler'/>
         </word>
         <word name='restrict'>
           <ref name='xmlParseExternalID'/>
@@ -23786,6 +23831,7 @@
         </word>
         <word name='run'>
           <ref name='_xmlParserCtxt'/>
+          <ref name='xmlByteConsumed'/>
         </word>
         <word name='running'>
           <ref name='xmlKeepBlanksDefault'/>
@@ -24166,6 +24212,7 @@
         </word>
         <word name='simple'>
           <ref name='xlinkSimpleLinkFunk'/>
+          <ref name='xmlAttrSerializeTxtContent'/>
           <ref name='xmlFreeMutex'/>
           <ref name='xmlHashScanner'/>
           <ref name='xmlIsRef'/>
@@ -24437,6 +24484,7 @@
           <ref name='startDocument'/>
           <ref name='startDocumentSAXFunc'/>
           <ref name='startElementNsSAX2Func'/>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlParseStartTag'/>
           <ref name='xmlRelaxNGValidatePushElement'/>
           <ref name='xmlSAX2StartDocument'/>
@@ -24458,6 +24506,7 @@
           <ref name='xmlAutomataNewOnceTrans'/>
           <ref name='xmlAutomataNewTransition'/>
           <ref name='xmlAutomataNewTransition2'/>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlNewCharRef'/>
           <ref name='xmlNewTextWriterTree'/>
           <ref name='xmlXPathOrderDocElems'/>
@@ -25778,12 +25827,14 @@
           <ref name='xmlSchemaSetValidErrors'/>
           <ref name='xmlSearchNs'/>
           <ref name='xmlTextReaderSetErrorHandler'/>
+          <ref name='xmlTextReaderSetStructuredErrorHandler'/>
           <ref name='xmlValidityWarningFunc'/>
         </word>
         <word name='warnings'>
           <ref name='_xmlParserCtxt'/>
           <ref name='xmlPedanticParserDefault'/>
           <ref name='xmlTextReaderSetErrorHandler'/>
+          <ref name='xmlTextReaderSetStructuredErrorHandler'/>
         </word>
         <word name='way'>
           <ref name='HTML_COMMENT_NODE'/>
@@ -26959,6 +27010,7 @@
           <ref name='htmlReadDoc'/>
           <ref name='xmlBufferCCat'/>
           <ref name='xmlBufferCat'/>
+          <ref name='xmlByteConsumed'/>
           <ref name='xmlCtxtReadDoc'/>
           <ref name='xmlOutputBufferWriteString'/>
           <ref name='xmlParseBalancedChunkMemory'/>

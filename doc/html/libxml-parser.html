@@ -108,6 +108,7 @@ void	<a href="#unparsedEntityDeclSAXFunc">unparsedEntityDeclSAXFunc</a>	(void * 
 <pre class="programlisting">Function type: <a href="#warningSAXFunc">warningSAXFunc</a>
 void	<a href="#warningSAXFunc">warningSAXFunc</a>			(void * ctx, <br />					 const char * msg, <br />					 ... ...)
 </pre>
+<pre class="programlisting">long	<a href="#xmlByteConsumed">xmlByteConsumed</a>			(<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)</pre>
 <pre class="programlisting">void	<a href="#xmlCleanupParser">xmlCleanupParser</a>		(void)</pre>
 <pre class="programlisting">void	<a href="#xmlClearNodeInfoSeq">xmlClearNodeInfoSeq</a>		(<a href="libxml-parser.html#xmlParserNodeInfoSeqPtr">xmlParserNodeInfoSeqPtr</a> seq)</pre>
 <pre class="programlisting">void	<a href="#xmlClearParserCtxt">xmlClearParserCtxt</a>		(<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)</pre>
@@ -353,7 +354,9 @@ void	unparsedEntityDeclSAXFunc	(void * ctx, <br />					 const <a href="libxml-xm
 <h3><a name="warningSAXFunc" id="warningSAXFunc"></a>Function type: warningSAXFunc</h3><pre class="programlisting">Function type: warningSAXFunc
 void	warningSAXFunc			(void * ctx, <br />					 const char * msg, <br />					 ... ...)
 </pre><p>Display and format a warning messages, callback.</p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>msg</tt></i>:</span></td><td>the message to display/transmit</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>extra parameters for the message display</td></tr></tbody></table></div><br />
-<h3><a name="xmlCleanupParser" id="xmlCleanupParser"></a>Function: xmlCleanupParser</h3><pre class="programlisting">void	xmlCleanupParser		(void)<br />
+<h3><a name="xmlByteConsumed" id="xmlByteConsumed"></a>Function: xmlByteConsumed</h3><pre class="programlisting">long	xmlByteConsumed			(<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br />
+</pre><p>This function provides the current index of the parser relative to the start of the current entity. This function is computed in bytes from the beginning starting at zero and finishing at the size in byte of the file if parsing a file. The function is of constant cost if the input is UTF-8 but can be costly if run on non-UTF-8 input.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XML parser context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the index in bytes from the beginning of the entity or -1 in case the index could not be computed.</td></tr></tbody></table></div><h3><a name="xmlCleanupParser" id="xmlCleanupParser"></a>Function: xmlCleanupParser</h3><pre class="programlisting">void	xmlCleanupParser		(void)<br />
 </pre><p>Cleanup function for the XML library. It tries to reclaim all parsing related global memory allocated for the library processing. It doesn't deallocate any document related memory. Calling this function should not prevent reusing the library but one should call xmlCleanupParser() only when the process has finished using the library or XML document built with it.</p>
 <h3><a name="xmlClearNodeInfoSeq" id="xmlClearNodeInfoSeq"></a>Function: xmlClearNodeInfoSeq</h3><pre class="programlisting">void	xmlClearNodeInfoSeq		(<a href="libxml-parser.html#xmlParserNodeInfoSeqPtr">xmlParserNodeInfoSeqPtr</a> seq)<br />
 </pre><p>-- Clear (release memory and reinitialize) node info sequence</p>

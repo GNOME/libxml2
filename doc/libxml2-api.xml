@@ -726,7 +726,7 @@
      <exports symbol='xmlParseDocument' type='function'/>
      <exports symbol='xmlCreateIOParserCtxt' type='function'/>
      <exports symbol='referenceSAXFunc' type='function'/>
-     <exports symbol='xmlCtxtResetPush' type='function'/>
+     <exports symbol='getParameterEntitySAXFunc' type='function'/>
      <exports symbol='ignorableWhitespaceSAXFunc' type='function'/>
      <exports symbol='xmlSAXParseDoc' type='function'/>
      <exports symbol='xmlReadMemory' type='function'/>
@@ -736,7 +736,7 @@
      <exports symbol='endElementSAXFunc' type='function'/>
      <exports symbol='xmlCtxtReadMemory' type='function'/>
      <exports symbol='xmlParserFindNodeInfoIndex' type='function'/>
-     <exports symbol='xmlSAXParseFileWithData' type='function'/>
+     <exports symbol='xmlByteConsumed' type='function'/>
      <exports symbol='xmlCtxtReset' type='function'/>
      <exports symbol='xmlRecoverDoc' type='function'/>
      <exports symbol='xmlNewIOInputStream' type='function'/>
@@ -772,7 +772,6 @@
      <exports symbol='xmlReadIO' type='function'/>
      <exports symbol='xmlGetFeature' type='function'/>
      <exports symbol='xmlParseBalancedChunkMemoryRecover' type='function'/>
-     <exports symbol='hasExternalSubsetSAXFunc' type='function'/>
      <exports symbol='xmlIOParseDTD' type='function'/>
      <exports symbol='xmlFreeParserCtxt' type='function'/>
      <exports symbol='xmlReadDoc' type='function'/>
@@ -784,14 +783,16 @@
      <exports symbol='commentSAXFunc' type='function'/>
      <exports symbol='xmlCleanupParser' type='function'/>
      <exports symbol='attributeSAXFunc' type='function'/>
-     <exports symbol='getParameterEntitySAXFunc' type='function'/>
+     <exports symbol='hasExternalSubsetSAXFunc' type='function'/>
      <exports symbol='isStandaloneSAXFunc' type='function'/>
      <exports symbol='startDocumentSAXFunc' type='function'/>
      <exports symbol='xmlInitParserCtxt' type='function'/>
      <exports symbol='xmlClearParserCtxt' type='function'/>
      <exports symbol='xmlParserInputGrow' type='function'/>
      <exports symbol='xmlParseExternalEntity' type='function'/>
+     <exports symbol='xmlCtxtResetPush' type='function'/>
      <exports symbol='externalSubsetSAXFunc' type='function'/>
+     <exports symbol='xmlSAXParseFileWithData' type='function'/>
      <exports symbol='resolveEntitySAXFunc' type='function'/>
      <exports symbol='setDocumentLocatorSAXFunc' type='function'/>
      <exports symbol='xmlPedanticParserDefault' type='function'/>
@@ -1255,7 +1256,7 @@
      <exports symbol='_xmlElementContent' type='struct'/>
      <exports symbol='xmlNodeSetContentLen' type='function'/>
      <exports symbol='xmlDocCopyNode' type='function'/>
-     <exports symbol='xmlDocSetRootElement' type='function'/>
+     <exports symbol='xmlAddSibling' type='function'/>
      <exports symbol='xmlGetProp' type='function'/>
      <exports symbol='xmlNewNsPropEatName' type='function'/>
      <exports symbol='xmlSearchNs' type='function'/>
@@ -1273,7 +1274,7 @@
      <exports symbol='xmlUnlinkNode' type='function'/>
      <exports symbol='xmlSplitQName3' type='function'/>
      <exports symbol='xmlRemoveProp' type='function'/>
-     <exports symbol='xmlAddSibling' type='function'/>
+     <exports symbol='xmlDocSetRootElement' type='function'/>
      <exports symbol='xmlNodeSetName' type='function'/>
      <exports symbol='xmlNewDocFragment' type='function'/>
      <exports symbol='xmlDocGetRootElement' type='function'/>
@@ -1299,6 +1300,7 @@
      <exports symbol='xmlNodeListGetRawString' type='function'/>
      <exports symbol='xmlStringLenGetNodeList' type='function'/>
      <exports symbol='xmlSaveFormatFile' type='function'/>
+     <exports symbol='xmlSaveFormatFileEnc' type='function'/>
      <exports symbol='xmlGetNodePath' type='function'/>
      <exports symbol='xmlElemDump' type='function'/>
      <exports symbol='xmlCopyPropList' type='function'/>
@@ -1347,7 +1349,7 @@
      <exports symbol='xmlNewCDataBlock' type='function'/>
      <exports symbol='xmlSetCompressMode' type='function'/>
      <exports symbol='xmlSetTreeDoc' type='function'/>
-     <exports symbol='xmlSaveFormatFileEnc' type='function'/>
+     <exports symbol='xmlAttrSerializeTxtContent' type='function'/>
      <exports symbol='xmlBufferCreate' type='function'/>
      <exports symbol='xmlCopyNodeList' type='function'/>
      <exports symbol='xmlNewDocNodeEatName' type='function'/>
@@ -2304,6 +2306,7 @@
      <exports symbol='xmlReaderForDoc' type='function'/>
      <exports symbol='xmlReaderNewIO' type='function'/>
      <exports symbol='xmlTextReaderMoveToElement' type='function'/>
+     <exports symbol='xmlTextReaderSetStructuredErrorHandler' type='function'/>
      <exports symbol='xmlTextReaderClose' type='function'/>
      <exports symbol='xmlTextReaderReadInnerXml' type='function'/>
      <exports symbol='xmlReaderWalker' type='function'/>
@@ -4969,6 +4972,7 @@ actually an xmlCharEncoding'/>
       <field name='raw' type='xmlBufferPtr' info=' if encoder != NULL buffer for raw input'/>
       <field name='compressed' type='int' info=' -1=unknown, 0=not compressed, 1=compressed'/>
       <field name='error' type='int' info=''/>
+      <field name='rawconsumed' type='unsigned long' info=' amount consumed from raw'/>
     </struct>
     <typedef name='xmlParserInputBufferPtr' file='tree' type='xmlParserInputBuffer *'/>
     <typedef name='xmlParserInputPtr' file='tree' type='xmlParserInput *'/>
@@ -6642,6 +6646,14 @@ actually an xmlCharEncoding'/>
       <return type='xmlParserInputBufferPtr' info='the new parser input or NULL'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known'/>
     </function>
+    <function name='xmlAttrSerializeTxtContent' file='tree'>
+      <info>Serialize text attribute values to an xml simple buffer</info>
+      <return type='void'/>
+      <arg name='buf' type='xmlBufferPtr' info='the XML buffer output'/>
+      <arg name='doc' type='xmlDocPtr' info='the document'/>
+      <arg name='attr' type='xmlAttrPtr' info='the attribute node'/>
+      <arg name='string' type='const xmlChar *' info=''/>
+    </function>
     <function name='xmlAutomataCompile' file='xmlautomata'>
       <info>Compile the automata into a Reg Exp ready for being executed. The automata should be free after this point.</info>
       <return type='xmlRegexpPtr' info='the compiled regexp or NULL in case of error'/>
@@ -6875,6 +6887,11 @@ actually an xmlCharEncoding'/>
       <arg name='URI' type='const xmlChar *' info='the URI instance found in the document'/>
       <arg name='base' type='const xmlChar *' info='the base value'/>
     </function>
+    <function name='xmlByteConsumed' file='parser'>
+      <info>This function provides the current index of the parser relative to the start of the current entity. This function is computed in bytes from the beginning starting at zero and finishing at the size in byte of the file if parsing a file. The function is of constant cost if the input is UTF-8 but can be costly if run on non-UTF-8 input.</info>
+      <return type='long' info='the index in bytes from the beginning of the entity or -1 in case the index could not be computed.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+    </function>
     <function name='xmlC14NDocDumpMemory' file='c14n'>
       <info>Dumps the canonized image of given XML document into memory. For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</info>
       <return type='int' info='the number of bytes written on success or a negative value on fail'/>
@@ -7069,7 +7086,7 @@ actually an xmlCharEncoding'/>
     </functype>
     <functype name='xmlCharEncodingOutputFunc' file='encoding'>
       <info>Take a block of UTF-8 chars in and try to convert it to another encoding. Note: a first call designed to produce heading info is called with in = NULL. If stateful this should also initialize the encoder state.</info>
-      <return type='int' info='the number of bytes written, -1 if lack of space, or -2 if the transcoding failed. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictiable. The value of @outlen after return is the number of ocetes consumed.'/>
+      <return type='int' info='the number of bytes written, -1 if lack of space, or -2 if the transcoding failed. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictiable. The value of @outlen after return is the number of octets produced.'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
@@ -11889,6 +11906,13 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='prop' type='int' info='the xmlParserProperties to set'/>
       <arg name='value' type='int' info='usually 0 or 1 to (de)activate it'/>
+    </function>
+    <function name='xmlTextReaderSetStructuredErrorHandler' file='xmlreader'>
+      <info>Register a callback function that will be called on error and warnings.  If @f is NULL, the default error and warning handlers are restored.</info>
+      <return type='void'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='f' type='xmlStructuredErrorFunc' info='the callback function to call on error and warnings'/>
+      <arg name='arg' type='void *' info='a user argument to pass to the callback function'/>
     </function>
     <function name='xmlTextReaderValue' file='xmlreader'>
       <info>Provides the text value of the node if present</info>

@@ -483,6 +483,7 @@ xmlAddRef
 xmlAddSibling
 xmlAllocOutputBuffer
 xmlAllocParserInputBuffer
+xmlAttrSerializeTxtContent
 #ifdef LIBXML_AUTOMATA_ENABLED
 xmlAutomataCompile
 #endif
@@ -549,6 +550,7 @@ xmlBufferWriteChar
 xmlBufferWriteQuotedString
 xmlBuildQName
 xmlBuildURI
+xmlByteConsumed
 #ifdef LIBXML_C14N_ENABLED
 xmlC14NDocDumpMemory
 #endif
@@ -723,6 +725,7 @@ xmlDelEncodingAlias
 xmlDeregisterNodeDefault
 xmlDetectCharEncoding
 xmlDictCreate
+xmlDictCreateSub
 xmlDictFree
 xmlDictLookup
 xmlDictOwns
@@ -1389,6 +1392,9 @@ xmlRelaxNGValidatePushCData
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlRelaxNGValidatePushElement
 #endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxParserSetFlag
+#endif
 xmlRemoveID
 xmlRemoveProp
 xmlRemoveRef
@@ -1679,6 +1685,7 @@ xmlTextReaderRelaxNGValidate
 #endif
 xmlTextReaderSetErrorHandler
 xmlTextReaderSetParserProp
+xmlTextReaderSetStructuredErrorHandler
 xmlTextReaderValue
 xmlTextReaderXmlLang
 xmlTextWriterEndAttribute
@@ -2413,6 +2420,9 @@ xmlXPathConvertString
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 xmlXPathCountFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCtxtCompile
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 #ifdef LIBXML_DEBUG_ENABLED

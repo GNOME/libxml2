@@ -1978,6 +1978,7 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     ret->closecallback = NULL;
     ret->context = NULL;
     ret->compressed = -1;
+    ret->rawconsumed = 0;
 
     return(ret);
 }
@@ -2567,6 +2568,8 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
     if (len < 0) return(0);
     if ((in == NULL) || (in->error)) return(-1);
     if (in->encoder != NULL) {
+        unsigned int use;
+
         /*
 	 * Store the data in the incoming raw buffer
 	 */
@@ -2578,12 +2581,14 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	/*
 	 * convert as much as possible to the parser reading buffer.
 	 */
+	use = in->raw->use;
 	nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
 	if (nbchars < 0) {
 	    xmlIOErr(XML_IO_ENCODER, NULL);
 	    in->error = XML_IO_ENCODER;
 	    return(-1);
 	}
+	in->rawconsumed += (use - in->raw->use);
     } else {
 	nbchars = len;
         xmlBufferAdd(in->buffer, (xmlChar *) buf, nbchars);
@@ -2670,6 +2675,8 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     }
     len = res;
     if (in->encoder != NULL) {
+        unsigned int use;
+
         /*
 	 * Store the data in the incoming raw buffer
 	 */
@@ -2681,12 +2688,14 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	/*
 	 * convert as much as possible to the parser reading buffer.
 	 */
+	use = in->raw->use;
 	nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
 	if (nbchars < 0) {
 	    xmlIOErr(XML_IO_ENCODER, NULL);
 	    in->error = XML_IO_ENCODER;
 	    return(-1);
 	}
+	in->rawconsumed += (use - in->raw->use);
     } else {
 	nbchars = len;
     	in->buffer->use += nbchars;

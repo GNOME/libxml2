@@ -8320,7 +8320,6 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 		int * doc_txt_len, const char * txt_encoding,
 		int format) {
     int                         dummy = 0;
-
     xmlOutputBufferPtr          out_buff = NULL;
     xmlCharEncodingHandlerPtr   conv_hdlr = NULL;
 
@@ -8349,13 +8348,13 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     if (txt_encoding == NULL)
 	txt_encoding = (const char *) out_doc->encoding;
     if (txt_encoding != NULL) {
-		conv_hdlr = xmlFindCharEncodingHandler(txt_encoding);
-            if ( conv_hdlr == NULL ) {
-		xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, (xmlNodePtr) out_doc,
-		           txt_encoding);
-                return;
-            }
-        }
+	conv_hdlr = xmlFindCharEncodingHandler(txt_encoding);
+	if ( conv_hdlr == NULL ) {
+	    xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, (xmlNodePtr) out_doc,
+		       txt_encoding);
+	    return;
+	}
+    }
 
     if ((out_buff = xmlAllocOutputBuffer(conv_hdlr)) == NULL ) {
         xmlSaveErrMemory("creating buffer");

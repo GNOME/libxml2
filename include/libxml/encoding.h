@@ -115,7 +115,7 @@ typedef int (* xmlCharEncodingInputFunc)(unsigned char *out, int *outlen,
  *     if the transcoding failed.
  * The value of @inlen after return is the number of octets consumed
  *     if the return value is positive, else unpredictiable.
- * The value of @outlen after return is the number of ocetes consumed.
+ * The value of @outlen after return is the number of octets produced.
  */
 typedef int (* xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
                                           const unsigned char *in, int *inlen);

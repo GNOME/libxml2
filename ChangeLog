@@ -1,4 +1,14 @@
+Wed Feb 11 14:19:31 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c xmlIO.c encoding.c include/libxml/parser.h
+	  include/libxml/xmlIO.h: added xmlByteConsumed() interface
+	* doc/*: updated the benchmark rebuilt the docs
+	* python/tests/Makefile.am python/tests/indexes.py: added a
+	  specific regression test for xmlByteConsumed()
+	* include/libxml/encoding.h rngparser.c tree.c: small cleanups
+
 Wed Feb 11 08:13:58 HKT 2004 William Brack <wbrack@mmm.com.hk
+
 	* tree.c: fixed missing output of internal DTD param entities when
 	  nothing else present in DTD (bug 134052)
 

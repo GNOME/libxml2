@@ -1019,6 +1019,13 @@ XMLPUBFUN xmlParserInputPtr XMLCALL
 		xmlLoadExternalEntity	(const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr ctxt);
+
+/*
+ * Index lookup, actually implemented in the encoding module
+ */
+XMLPUBFUN long XMLCALL
+		xmlByteConsumed		(xmlParserCtxtPtr ctxt);
+
 /*
  * New set of simpler/more flexible APIs
  */

@@ -2100,6 +2100,81 @@ xmlCharEncCloseFunc(xmlCharEncodingHandler *handler) {
     return(ret);
 }
 
+/**
+ * xmlByteConsumed:
+ * @ctxt: an XML parser context
+ *
+ * This function provides the current index of the parser relative
+ * to the start of the current entity. This function is computed in
+ * bytes from the beginning starting at zero and finishing at the
+ * size in byte of the file if parsing a file. The function is
+ * of constant cost if the input is UTF-8 but can be costly if run
+ * on non-UTF-8 input.
+ *
+ * Returns the index in bytes from the beginning of the entity or -1
+ *         in case the index could not be computed.
+ */
+long
+xmlByteConsumed(xmlParserCtxtPtr ctxt) {
+    xmlParserInputPtr in;
+    
+    if (ctxt == NULL) return(-1);
+    in = ctxt->input;
+    if (in == NULL)  return(-1);
+    if ((in->buf != NULL) && (in->buf->encoder != NULL)) {
+        unsigned int unused = 0;
+	xmlCharEncodingHandler * handler = in->buf->encoder;
+        /*
+	 * Encoding conversion, compute the number of unused original
+	 * bytes from the input not consumed and substract that from
+	 * the raw consumed value, this is not a cheap operation
+	 */
+        if (in->end - in->cur > 0) {
+	    static unsigned char convbuf[32000];
+	    unsigned char *cur = in->cur;
+	    int toconv = in->end - in->cur, written = 32000;
+
+	    int ret;
+
+	    if (handler->output != NULL) {
+	        do {
+		    toconv = in->end - cur;
+		    written = 32000;
+		    ret = handler->output(&convbuf[0], &written,
+				      cur, &toconv);
+		    if (ret == -1) return(-1);
+		    unused += written;
+		    cur += toconv;
+		} while (ret == -2);
+#ifdef LIBXML_ICONV_ENABLED
+	    } else if (handler->iconv_out != NULL) {
+	        do {
+		    toconv = in->end - cur;
+		    written = 32000;
+		    ret = xmlIconvWrapper(handler->iconv_out, &convbuf[0],
+	                      &written, cur, &toconv);
+		    if (ret == -1) {
+		        if (written > 0)
+			    ret = -2;
+			else
+			    return(-1);
+		    }
+		    unused += written;
+		    cur += toconv;
+		} while (ret == -2);
+#endif
+            } else {
+	        /* could not find a converter */
+	        return(-1);
+	    }
+	}
+	if (in->buf->rawconsumed < unused)
+	    return(-1);
+	return(in->buf->rawconsumed - unused);
+    }
+    return(in->consumed + (in->cur - in->base));
+}
+
 #ifndef LIBXML_ICONV_ENABLED
 #ifdef LIBXML_ISO8859X_ENABLED
 

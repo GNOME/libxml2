@@ -133,6 +133,7 @@ struct _xmlParserInputBuffer {
     xmlBufferPtr raw;       /* if encoder != NULL buffer for raw input */
     int	compressed;	    /* -1=unknown, 0=not compressed, 1=compressed */
     int error;
+    unsigned long rawconsumed;/* amount consumed from raw */
 };
 
 

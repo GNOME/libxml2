@@ -85,7 +85,6 @@
 #define SOCKLEN_T unsigned int
 #endif
 
-
 /**
  * A couple portability macros
  */
@@ -105,6 +104,9 @@
 #endif
 #endif
 
+#ifdef _AIX
+#define ss_family __ss_family
+#endif
 
 #define FTP_COMMAND_OK		200
 #define FTP_SYNTAX_ERROR	500

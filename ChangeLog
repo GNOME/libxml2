@@ -1,3 +1,7 @@
+Sat Jan 15 18:18:07 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c: applied patch from Dan McNichol for compilation on AIX
+
 Sat Jan 15 13:35:19 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fixed bug #157633 in relaxng choice optimization

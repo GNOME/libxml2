@@ -821,6 +821,8 @@ xmlSchemaValidateDates (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 	    dt->type = t;					\
             if (val != NULL)                                    \
                 *val = dt;                                      \
+            else						\
+		xmlSchemaFreeValue(dt);				\
 	    return 0;						\
 	}							\
     }
@@ -943,6 +945,8 @@ xmlSchemaValidateDates (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 
     if (val != NULL)
         *val = dt;
+    else
+	xmlSchemaFreeValue(dt);
 
     return 0;
 
@@ -982,6 +986,9 @@ xmlSchemaValidateDuration (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 
     /* duration must start with 'P' (after sign) */
     if (*cur++ != 'P')
+	return 1;
+
+    if (*cur == 0)
 	return 1;
 
     dur = xmlSchemaNewValue(XML_SCHEMAS_DURATION);
@@ -1053,6 +1060,8 @@ xmlSchemaValidateDuration (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 
     if (val != NULL)
         *val = dur;
+    else
+	xmlSchemaFreeValue(dur);
 
     return 0;
 
@@ -1731,16 +1740,20 @@ xmlSchemaCompareDecimals(xmlSchemaValPtr x, xmlSchemaValPtr y)
     int order = 1;
     unsigned long tmp;
 
-    if ((x->value.decimal.sign) && (x->value.decimal.sign))
-        order = -1;
-    else if (x->value.decimal.sign)
-        return (-1);
-    else if (y->value.decimal.sign)
+    if ((x->value.decimal.sign) && (x->value.decimal.base != 0)) {
+	if ((y->value.decimal.sign) && (y->value.decimal.base != 0))
+	    order = -1;
+	else
+	    return (-1);
+    } else if ((y->value.decimal.sign) && (y->value.decimal.base != 0)) {
         return (1);
+    }
     if (x->value.decimal.frac == y->value.decimal.frac) {
         if (x->value.decimal.base < y->value.decimal.base)
-            return (-1);
-        return (x->value.decimal.base > y->value.decimal.base);
+            return (-order);
+        if (x->value.decimal.base > y->value.decimal.base)
+	    return(order);
+	return(0);
     }
     if (y->value.decimal.frac > x->value.decimal.frac) {
         swp = y;
@@ -1780,7 +1793,8 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
 {
     long carry, mon, day;
     double sec;
-    long xmon, xday, myear, lyear, minday, maxday;
+    int invert = 1;
+    long xmon, xday, myear, minday, maxday;
     static const long dayRange [2][12] = {
         { 0, 28, 59, 89, 120, 150, 181, 212, 242, 273, 303, 334, },
         { 0, 31, 62, 92, 123, 153, 184, 215, 245, 276, 306, 337} };
@@ -1824,23 +1838,31 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
     } else if ((day <= 0) && (sec <= 0.0)) {
         return -1;
     } else {
+	invert = -1;
         xmon = -mon;
         xday = day;
     }
 
     myear = xmon / 12;
-    lyear = myear / 4;
-    minday = (myear * 365) + (lyear != 0 ? lyear - 1 : 0);
-    maxday = (myear * 365) + (lyear != 0 ? lyear + 1 : 0);
-        
+    if (myear == 0) {
+	minday = 0;
+	maxday = 0;
+    } else {
+	maxday = 366 * ((myear + 3) / 4) +
+	         365 * ((myear - 1) % 4);
+	minday = maxday - 1;
+    }
+
     xmon = xmon % 12;
     minday += dayRange[0][xmon];
     maxday += dayRange[1][xmon];
 
+    if ((maxday == minday) && (maxday == xday))
+	return(0); /* can this really happen ? */
     if (maxday < xday)
-        return 1;
-    else if (minday > xday)
-        return -1;
+        return(-invert);
+    if (minday > xday)
+        return(invert);
 
     /* indeterminate */
     return 2;
@@ -2354,16 +2376,44 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
  * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
  * case of error
  */
-static int
+int
 xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
     if ((x == NULL) || (y == NULL))
 	return(-2);
 
     switch (x->type) {
-	case XML_SCHEMAS_STRING:
-	    TODO
+	case XML_SCHEMAS_UNKNOWN:
+	    return(-2);
+        case XML_SCHEMAS_INTEGER:
+        case XML_SCHEMAS_NPINTEGER:
+        case XML_SCHEMAS_NINTEGER:
+        case XML_SCHEMAS_NNINTEGER:
+        case XML_SCHEMAS_PINTEGER:
+        case XML_SCHEMAS_INT:
+        case XML_SCHEMAS_UINT:
+        case XML_SCHEMAS_LONG:
+        case XML_SCHEMAS_ULONG:
+        case XML_SCHEMAS_SHORT:
+        case XML_SCHEMAS_USHORT:
+        case XML_SCHEMAS_BYTE:
+        case XML_SCHEMAS_UBYTE:
 	case XML_SCHEMAS_DECIMAL:
-	    if (y->type == XML_SCHEMAS_DECIMAL)
+	    if (y->type == x->type)
+		return(xmlSchemaCompareDecimals(x, y));
+	    if ((y->type == XML_SCHEMAS_DECIMAL) ||
+		(y->type == XML_SCHEMAS_INTEGER) ||
+		(y->type == XML_SCHEMAS_NPINTEGER) ||
+		(y->type == XML_SCHEMAS_NINTEGER) ||
+		(y->type == XML_SCHEMAS_NNINTEGER) ||
+		(y->type == XML_SCHEMAS_PINTEGER) ||
+		(y->type == XML_SCHEMAS_INT) ||
+		(y->type == XML_SCHEMAS_UINT) ||
+		(y->type == XML_SCHEMAS_LONG) ||
+		(y->type == XML_SCHEMAS_ULONG) ||
+		(y->type == XML_SCHEMAS_SHORT) ||
+		(y->type == XML_SCHEMAS_USHORT) ||
+		(y->type == XML_SCHEMAS_BYTE) ||
+		(y->type == XML_SCHEMAS_UBYTE))
 		return(xmlSchemaCompareDecimals(x, y));
 	    return(-2);
         case XML_SCHEMAS_DURATION:
@@ -2387,9 +2437,26 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
                 (y->type == XML_SCHEMAS_DATE)      ||
                 (y->type == XML_SCHEMAS_GYEARMONTH))
                 return (xmlSchemaCompareDates(x, y));
-
             return (-2);
-	default:
+        case XML_SCHEMAS_STRING:
+        case XML_SCHEMAS_NORMSTRING:
+        case XML_SCHEMAS_FLOAT:
+        case XML_SCHEMAS_DOUBLE:
+        case XML_SCHEMAS_BOOLEAN:
+        case XML_SCHEMAS_TOKEN:
+        case XML_SCHEMAS_LANGUAGE:
+        case XML_SCHEMAS_NMTOKEN:
+        case XML_SCHEMAS_NMTOKENS:
+        case XML_SCHEMAS_NAME:
+        case XML_SCHEMAS_QNAME:
+        case XML_SCHEMAS_NCNAME:
+        case XML_SCHEMAS_ID:
+        case XML_SCHEMAS_IDREF:
+        case XML_SCHEMAS_IDREFS:
+        case XML_SCHEMAS_ENTITY:
+        case XML_SCHEMAS_ENTITIES:
+        case XML_SCHEMAS_NOTATION:
+        case XML_SCHEMAS_ANYURI:
 	    TODO
     }
     return -2;

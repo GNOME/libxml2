@@ -1,3 +1,13 @@
+Fri Mar 28 14:24:08 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: implemented comparisons for Schemas values.
+	* xmlschemastypes.c include/libxml/xmlschemastypes.h: fixed
+	  some bugs in duration handling, comparisons for durations
+	  and decimals, removed all memory leaks pointed out by James
+	  testsuite. Current status is now
+	  found 238 test schemas: 197 success 41 failures
+	  found 1035 test instances: 803 success 130 failures
+
 Fri Mar 28 00:41:55 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c include/libxml/xmlschemas.h: fixed bugs and memory

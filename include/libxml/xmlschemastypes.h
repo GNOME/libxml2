@@ -44,6 +44,8 @@ int		xmlSchemaCheckFacet		(xmlSchemaFacetPtr facet,
 						 xmlSchemaParserCtxtPtr ctxt,
 						 const xmlChar *name);
 void		xmlSchemaFreeFacet		(xmlSchemaFacetPtr facet);
+int		xmlSchemaCompareValues		(xmlSchemaValPtr x,
+						 xmlSchemaValPtr y);
 
 #ifdef __cplusplus
 }

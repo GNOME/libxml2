@@ -2305,24 +2305,68 @@ xmlRelaxNGSchemaFacetCheck (void *data ATTRIBUTE_UNUSED, const xmlChar *type,
 }
 
 /**
+ * xmlRelaxNGSchemaFreeValue:
+ * @data:  data needed for the library
+ * @value:  the value to free
+ *
+ * Function provided by a type library to free a Schemas value
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+static void
+xmlRelaxNGSchemaFreeValue (void *data ATTRIBUTE_UNUSED, void *value) {
+    xmlSchemaFreeValue(value);
+}
+
+/**
  * xmlRelaxNGSchemaTypeCompare:
  * @data:  data needed for the library
  * @type:  the type name
  * @value1:  the first value
  * @value2:  the second value
  *
- * Compare two values accordingly a type from the W3C XMLSchema
+ * Compare two values for equality accordingly a type from the W3C XMLSchema
  * Datatype library.
  *
- * Returns 1 if yes, 0 if no and -1 in case of error.
+ * Returns 1 if equal, 0 if no and -1 in case of error.
  */
 static int
 xmlRelaxNGSchemaTypeCompare(void *data ATTRIBUTE_UNUSED,
 	                    const xmlChar *type ATTRIBUTE_UNUSED,
 	                    const xmlChar *value1 ATTRIBUTE_UNUSED,
 			    const xmlChar *value2 ATTRIBUTE_UNUSED) {
-    TODO
-    return(1);
+    int ret;
+    xmlSchemaTypePtr typ;
+    xmlSchemaValPtr res1 = NULL, res2 = NULL;
+
+    if ((type == NULL) || (value1 == NULL) || (value2 == NULL))
+	return(-1);
+    typ = xmlSchemaGetPredefinedType(type, 
+	       BAD_CAST "http://www.w3.org/2001/XMLSchema");
+    if (typ == NULL)
+	return(-1);
+    ret = xmlSchemaValPredefTypeNode(typ, value1, &res1, NULL);
+    if (ret != 0)
+	return(-1);
+    if (res1 == NULL)
+	return(-1);
+    ret = xmlSchemaValPredefTypeNode(typ, value2, &res2, NULL);
+    if (ret != 0) {
+	xmlSchemaFreeValue(res1);
+	return(-1);
+    }
+    if (res1 == NULL) {
+	xmlSchemaFreeValue(res1);
+	return(-1);
+    }
+    ret = xmlSchemaCompareValues(res1, res2);
+    xmlSchemaFreeValue(res1);
+    xmlSchemaFreeValue(res2);
+    if (ret == -2)
+	return(-1);
+    if (ret == 0)
+	return(1);
+    return(0);
 }
  
 /**
@@ -2522,7 +2566,7 @@ xmlRelaxNGInitTypes(void) {
 	    xmlRelaxNGSchemaTypeCheck,
 	    xmlRelaxNGSchemaTypeCompare,
 	    xmlRelaxNGSchemaFacetCheck,
-	    (xmlRelaxNGTypeFree) xmlSchemaFreeValue);
+	    xmlRelaxNGSchemaFreeValue);
     xmlRelaxNGRegisterTypeLibrary(
 	    xmlRelaxNGNs,
 	    NULL,

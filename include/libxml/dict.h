@@ -47,6 +47,10 @@ XMLPUBFUN const xmlChar * XMLCALL
 			xmlDictLookup	(xmlDictPtr dict,
 		                         const xmlChar *name,
 		                         int len);
+XMLPUBFUN const xmlChar * XMLCALL		
+			xmlDictQLookup	(xmlDictPtr dict,
+		                         const xmlChar *prefix,
+		                         const xmlChar *name);
 XMLPUBFUN int XMLCALL
 			xmlDictOwns	(xmlDictPtr dict,
 					 const xmlChar *str);

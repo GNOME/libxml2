@@ -88,8 +88,6 @@ XMLPUBFUN int XMLCALL
  */
 XMLPUBFUN int XMLCALL		
 			xmlTextReaderAttributeCount(xmlTextReaderPtr reader);
-XMLPUBFUN xmlChar * XMLCALL	
-			xmlTextReaderBaseUri	(xmlTextReaderPtr reader);
 XMLPUBFUN int XMLCALL		
 			xmlTextReaderDepth	(xmlTextReaderPtr reader);
 XMLPUBFUN int XMLCALL		
@@ -100,25 +98,39 @@ XMLPUBFUN int XMLCALL
 			xmlTextReaderIsDefault	(xmlTextReaderPtr reader);
 XMLPUBFUN int XMLCALL		
 			xmlTextReaderIsEmptyElement(xmlTextReaderPtr reader);
+XMLPUBFUN int XMLCALL		
+			xmlTextReaderNodeType	(xmlTextReaderPtr reader);
+XMLPUBFUN int XMLCALL		
+			xmlTextReaderQuoteChar	(xmlTextReaderPtr reader);
+XMLPUBFUN int XMLCALL		
+			xmlTextReaderReadState	(xmlTextReaderPtr reader);
+XMLPUBFUN xmlChar * XMLCALL	
+			xmlTextReaderBaseUri	(xmlTextReaderPtr reader);
 XMLPUBFUN xmlChar * XMLCALL	
 			xmlTextReaderLocalName	(xmlTextReaderPtr reader);
 XMLPUBFUN xmlChar * XMLCALL	
 			xmlTextReaderName	(xmlTextReaderPtr reader);
 XMLPUBFUN xmlChar * XMLCALL	
 			xmlTextReaderNamespaceUri(xmlTextReaderPtr reader);
-XMLPUBFUN int XMLCALL		
-			xmlTextReaderNodeType	(xmlTextReaderPtr reader);
 XMLPUBFUN xmlChar * XMLCALL	
 			xmlTextReaderPrefix	(xmlTextReaderPtr reader);
-XMLPUBFUN int XMLCALL		
-			xmlTextReaderQuoteChar	(xmlTextReaderPtr reader);
-XMLPUBFUN xmlChar * XMLCALL	
-			xmlTextReaderValue	(xmlTextReaderPtr reader);
 XMLPUBFUN xmlChar * XMLCALL	
 			xmlTextReaderXmlLang	(xmlTextReaderPtr reader);
-XMLPUBFUN int XMLCALL		
-			xmlTextReaderReadState	(xmlTextReaderPtr reader);
+XMLPUBFUN xmlChar * XMLCALL	
+			xmlTextReaderValue	(xmlTextReaderPtr reader);
 
+XMLPUBFUN const xmlChar * XMLCALL	
+		    xmlTextReaderConstBaseUri	(xmlTextReaderPtr reader);
+XMLPUBFUN const xmlChar * XMLCALL	
+		    xmlTextReaderConstLocalName	(xmlTextReaderPtr reader);
+XMLPUBFUN const xmlChar * XMLCALL	
+		    xmlTextReaderConstName	(xmlTextReaderPtr reader);
+XMLPUBFUN const xmlChar * XMLCALL	
+		    xmlTextReaderConstNamespaceUri(xmlTextReaderPtr reader);
+XMLPUBFUN const xmlChar * XMLCALL	
+		    xmlTextReaderConstPrefix	(xmlTextReaderPtr reader);
+XMLPUBFUN const xmlChar * XMLCALL	
+		    xmlTextReaderConstXmlLang	(xmlTextReaderPtr reader);
 /*
  * Methods of the XmlTextReader
  */

@@ -2039,7 +2039,7 @@ xmlParserInputBufferCreateStatic(const char *mem, int size,
 	return(NULL);
     }
     memset(ret, 0, (size_t) sizeof(xmlParserInputBuffer));
-    ret->buffer = xmlBufferCreateStatic(mem, size);
+    ret->buffer = xmlBufferCreateStatic((void *)mem, (size_t) size);
     if (ret->buffer == NULL) {
         xmlFree(ret);
 	return(NULL);

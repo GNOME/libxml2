@@ -3435,20 +3435,6 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
 #endif
 	return(old);
     }
-    if ((old->type==XML_ATTRIBUTE_NODE) && (cur->type!=XML_ATTRIBUTE_NODE)) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlReplaceNode : Trying to replace attribute node with other node type\n");
-#endif
-	return(old);
-    }
-    if ((cur->type==XML_ATTRIBUTE_NODE) && (old->type!=XML_ATTRIBUTE_NODE)) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlReplaceNode : Trying to replace a non-attribute node with attribute node\n");
-#endif
-	return(old);
-    }
     xmlUnlinkNode(cur);
     cur->doc = old->doc;
     cur->parent = old->parent;
@@ -6420,7 +6406,7 @@ xmlBufferEmpty(xmlBufferPtr buf) {
     if (buf->content == NULL) return;
     buf->use = 0;
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) {
-        buf->content="";
+        buf->content = "";
     } else {
 	memset(buf->content, 0, buf->size);
     }

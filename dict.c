@@ -115,6 +115,66 @@ found_pool:
 }
 
 /*
+ * xmlDictAddQString:
+ * @dict: the dictionnary
+ * @prefix: the prefix of the userdata
+ * @name: the name of the userdata
+ * @len: the length of the name, if -1 it is recomputed
+ *
+ * Add the QName to the array[s]
+ *
+ * Returns the pointer of the local string, or NULL in case of error.
+ */
+static const xmlChar *
+xmlDictAddQString(xmlDictPtr dict, const xmlChar *prefix,
+                 const xmlChar *name, int namelen)
+{
+    xmlDictStringsPtr pool;
+    const xmlChar *ret;
+    int size = 0; /* + sizeof(_xmlDictStrings) == 1024 */
+    int plen;
+
+    if (prefix == NULL) return(xmlDictAddString(dict, name, namelen));
+    plen = xmlStrlen(prefix);
+
+    pool = dict->strings;
+    while (pool != NULL) {
+	if (pool->end - pool->free > namelen)
+	    goto found_pool;
+	if (pool->size > size) size = pool->size;
+	pool = pool->next;
+    }
+    /*
+     * Not found, need to allocate
+     */
+    if (pool == NULL) {
+        if (size == 0) size = 1000;
+	else size *= 4; /* exponential growth */
+        if (size < 4 * namelen) 
+	    size = 4 * namelen; /* just in case ! */
+	pool = (xmlDictStringsPtr) xmlMalloc(sizeof(xmlDictStrings) + size);
+	if (pool == NULL)
+	    return(NULL);
+	pool->size = size;
+	pool->nbStrings = 0;
+	pool->free = &pool->array[0];
+	pool->end = &pool->array[size];
+	pool->next = dict->strings;
+	dict->strings = pool;
+    }
+found_pool:
+    ret = pool->free;
+    memcpy(pool->free, prefix, plen);
+    pool->free += plen;
+    *(pool->free++) = ':';
+    namelen -= plen + 1;
+    memcpy(pool->free, name, namelen);
+    pool->free += namelen;
+    *(pool->free++) = 0;
+    return(ret);
+}
+
+/*
  * xmlDictComputeKey:
  * Calculate the hash key
  */
@@ -141,16 +201,66 @@ xmlDictComputeKey(xmlDictPtr dict, const xmlChar *name, int namelen) {
         case 1: value += name[0];
         default: break;
     }
-#if 0
-    while ((len++ < namelen) && ((ch = *name++) != 0)) {
-	value += (unsigned long)ch;
+    return (value % dict->size);
+}
+
+/*
+ * xmlDictComputeQKey:
+ * Calculate the hash key
+ */
+static unsigned long
+xmlDictComputeQKey(xmlDictPtr dict, const xmlChar *prefix,
+                   const xmlChar *name, int len)
+{
+    unsigned long value = 0L;
+    int plen;
+    
+    if (prefix == NULL)
+        return(xmlDictComputeKey(dict, name, len));
+
+    plen = xmlStrlen(prefix);
+    if (plen == 0)
+	value += 30 * (unsigned long) ':';
+    else
+	value += 30 * (*prefix);
+    
+    if (len > 10) {
+        value += name[len - (plen + 1 + 1)];
+        len = 10;
+	if (plen > 10)
+	    plen = 10;
     }
-#endif
-#if 0
-    while ((len++ < namelen) && ((ch = *name++) != 0)) {
-	value = value ^ ((value << 5) + (value >> 3) + (unsigned long)ch);
+    switch (plen) {
+        case 10: value += prefix[9];
+        case 9: value += prefix[8];
+        case 8: value += prefix[7];
+        case 7: value += prefix[6];
+        case 6: value += prefix[5];
+        case 5: value += prefix[4];
+        case 4: value += prefix[3];
+        case 3: value += prefix[2];
+        case 2: value += prefix[1];
+        case 1: value += prefix[0];
+        default: break;
     }
-#endif
+    len -= plen;
+    if (len > 0) {
+        value += (unsigned long) ':';
+	len--;
+    }
+    switch (len) {
+        case 10: value += name[9];
+        case 9: value += name[8];
+        case 8: value += name[7];
+        case 7: value += name[6];
+        case 6: value += name[5];
+        case 5: value += name[4];
+        case 4: value += name[3];
+        case 3: value += name[2];
+        case 2: value += name[1];
+        case 1: value += name[0];
+        default: break;
+    }
     return (value % dict->size);
 }
 
@@ -375,6 +485,78 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
     entry->next = NULL;
     entry->valid = 1;
 
+
+    if (insert != NULL) 
+	insert->next = entry;
+
+    dict->nbElems++;
+
+    if ((nbi > MAX_HASH_LEN) &&
+        (dict->size <= ((MAX_DICT_HASH / 2) / MAX_HASH_LEN)))
+	xmlDictGrow(dict, MAX_HASH_LEN * 2 * dict->size);
+    /* Note that entry may have been freed at this point by xmlDictGrow */
+
+    return(ret);
+}
+
+/**
+ * xmlDictQLookup:
+ * @dict: the dictionnary
+ * @prefix: the prefix 
+ * @name: the name
+ *
+ * Add the QName @prefix:@name to the hash @dict if not present.
+ *
+ * Returns the internal copy of the QName or NULL in case of internal error
+ */
+const xmlChar *
+xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
+    unsigned long key, nbi = 0;
+    xmlDictEntryPtr entry;
+    xmlDictEntryPtr insert;
+    const xmlChar *ret;
+    int len;
+
+    if ((dict == NULL) || (name == NULL))
+	return(NULL);
+
+    len = xmlStrlen(name);
+    if (prefix != NULL)
+        len += 1 + xmlStrlen(prefix);
+
+    /*
+     * Check for duplicate and insertion location.
+     */
+    key = xmlDictComputeQKey(dict, prefix, name, len);
+    if (dict->dict[key].valid == 0) {
+	insert = NULL;
+    } else {
+	for (insert = &(dict->dict[key]); insert->next != NULL;
+	     insert = insert->next) {
+	    if ((insert->len == len) &&
+	        (xmlStrQEqual(prefix, name, insert->name)))
+		return(insert->name);
+	    nbi++;
+	}
+	if ((insert->len == len) &&
+	    (xmlStrQEqual(prefix, name, insert->name)))
+	    return(insert->name);
+    }
+
+    ret = xmlDictAddQString(dict, prefix, name, len);
+    if (ret == NULL)
+        return(NULL);
+    if (insert == NULL) {
+	entry = &(dict->dict[key]);
+    } else {
+	entry = xmlMalloc(sizeof(xmlDictEntry));
+	if (entry == NULL)
+	     return(NULL);
+    }
+    entry->name = ret;
+    entry->len = len;
+    entry->next = NULL;
+    entry->valid = 1;
 
     if (insert != NULL) 
 	insert->next = entry;

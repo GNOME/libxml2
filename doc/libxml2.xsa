@@ -20,7 +20,7 @@
     (Charles Bozeman), DTD and namespaces (Brent Hendricks), HTML push parser
     and zero bytes handling, some missing Windows file path conversions,
     behaviour of the parser and validator in the presence of &quot;out of memory&quot;
-    error conditions 
+    error conditions
    - extended the API to be able to plug a garbage collecting memory
     allocator, added xmlMallocAtomic() and modified the allocations
     accordingly.

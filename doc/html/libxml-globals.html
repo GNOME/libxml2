@@ -123,25 +123,30 @@ void        <a href="libxml-globals.html#xmlInitializeGlobalState">xmlInitialize
 };
 </pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGlobalStatePtr"></a>xmlGlobalStatePtr</h3><pre class="programlisting">typedef xmlGlobalState *xmlGlobalStatePtr;
-</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGlobalStatePtr"></a>xmlGlobalStatePtr</h3><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInitializeGlobalState"></a>xmlInitializeGlobalState ()</h3><pre class="programlisting">void        xmlInitializeGlobalState        (<a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> gs);</pre><p>
 <a href="libxml-globals.html#xmlInitializeGlobalState">xmlInitializeGlobalState</a>() initialize a global state with all the
 default values of the library.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>gs</tt></i> :</span></td><td> a pointer to a newly allocated global state
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>gs</tt></i> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegisterNodeDefault"></a>xmlRegisterNodeDefault ()</h3><pre class="programlisting"><a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> xmlRegisterNodeDefault  (<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);</pre><p>
 Registers a callback for node creation</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>func</tt></i> :</span></td><td> function pointer to the new RegisterNodeFunc
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the old value of the registration function
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>func</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDeregisterNodeDefault"></a>xmlDeregisterNodeDefault ()</h3><pre class="programlisting"><a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> xmlDeregisterNodeDefault
                                             (<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);</pre><p>
 Registers a callback for node destruction</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>func</tt></i> :</span></td><td> function pointer to the new DeregisterNodeFunc
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the previous value of the deregistration function
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>func</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMalloc"></a>xmlMalloc()</h3><pre class="programlisting">#define     xmlMalloc(size)</pre><p>
 Wrapper for the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function used in the XML library.</p><p>
 

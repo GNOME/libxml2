@@ -21,8 +21,8 @@ APIPAGES=APIconstructors.html APIfiles.html APIfunctions.html \
 EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
            tutorial/images/*.png tutorial/images/callouts/*.png \
 	   API*.html *.1 *.xsl *.html *.gif w3c.png html/*.html \
-	   html/*.sgml libxml2-api.xml parsedecl.py index.py search.php \
-	   apibuild.py libxml2.xsa
+	   html/*.png libxml2-api.xml parsedecl.py index.py search.php \
+	   apibuild.py libxml2.xsa xmllint.xml xmlcatalog_man.xml
 
 
 man_MANS = xmllint.1 xmlcatalog.1
@@ -61,11 +61,10 @@ scan:
 templates: scan
 	-gtkdoc-mktmpl --module=libxml
 
-sgml: templates
+xml: templates
+	if test -d xml ; then rm xml/* ; else mkdir xml ; fi
 	-gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --main-sgml-file=$(DOC_MAIN_XML_FILE)
 
-xml: sgml 
-	if test -d xml ; then rm xml/* ; else mkdir xml ; fi
 
 libxml2-api.xml: apibuild.py ../include/libxml/*.h
 	-(./apibuild.py)
@@ -80,14 +79,14 @@ clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
 
 maintainer-clean-local: clean
-	rm -rf sgml html libxml-decl-list.txt libxml-decl.txt 
+	rm -rf libxml-decl-list.txt libxml-decl.txt 
 
 libxml-decl-list.txt libxml-decl.txt : templates
 
 libxml-sections.txt : scan
 	cp libxml-decl-list.txt libxml-sections.txt
 
-rebuild: libxml-sections.txt templates sgml html api
+rebuild: libxml-sections.txt templates xml html api
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
@@ -97,4 +96,4 @@ install-data-local:
 	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
 	-@(tar cf - tutorial | (cd $(DESTDIR)$(TARGET_DIR) && tar xvf -))
 
-.PHONY : html sgml templates scan
+.PHONY : html xml templates scan

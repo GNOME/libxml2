@@ -148,15 +148,13 @@ support needed.</p><p>
 Take a block of chars in the original encoding and try to convert
 it to an UTF-8 block of chars out.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  a pointer to an array of bytes to store the UTF-8 result
-</td></tr><tr><td><span class="term"><i><tt>outlen</tt></i> :</span></td><td>  the length of <i><tt>out</tt></i>
-</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a pointer to an array of chars in the original encoding
-</td></tr><tr><td><span class="term"><i><tt>inlen</tt></i> :</span></td><td>  the length of <i><tt>in</tt></i>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of byte written, or -1 by lack of space, or -2
-    if the transcoding failed.
-The value of <i><tt>inlen</tt></i> after return is the number of octets consumed
-    as the return value is positive, else unpredictiable.
-The value of <i><tt>outlen</tt></i> after return is the number of octets consumed.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>outlen</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>inlen</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCharEncodingOutputFunc"></a>xmlCharEncodingOutputFunc ()</h3><pre class="programlisting">int         (*xmlCharEncodingOutputFunc)    (unsigned char *out,
                                              int *outlen,
                                              unsigned char *in,
@@ -166,15 +164,13 @@ encoding.
 Note: a first call designed to produce heading info is called with
 in = NULL. If stateful this should also initialize the encoder state.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  a pointer to an array of bytes to store the result
-</td></tr><tr><td><span class="term"><i><tt>outlen</tt></i> :</span></td><td>  the length of <i><tt>out</tt></i>
-</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a pointer to an array of UTF-8 chars
-</td></tr><tr><td><span class="term"><i><tt>inlen</tt></i> :</span></td><td>  the length of <i><tt>in</tt></i>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of byte written, or -1 by lack of space, or -2
-    if the transcoding failed.
-The value of <i><tt>inlen</tt></i> after return is the number of octets consumed
-    as the return value is positive, else unpredictiable.
-The value of <i><tt>outlen</tt></i> after return is the number of ocetes consumed.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>outlen</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>inlen</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCharEncodingHandler"></a>struct xmlCharEncodingHandler</h3><pre class="programlisting">struct xmlCharEncodingHandler {
     char                       *name;
     xmlCharEncodingInputFunc   input;
@@ -186,8 +182,7 @@ The value of <i><tt>outlen</tt></i> after return is the number of ocetes consume
 };
 </pre><p>
 
-</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCharEncodingHandlerPtr"></a>xmlCharEncodingHandlerPtr</h3><pre class="programlisting">typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
-</pre><p>
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCharEncodingHandlerPtr"></a>xmlCharEncodingHandlerPtr</h3><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInitCharEncodingHandlers"></a>xmlInitCharEncodingHandlers ()</h3><pre class="programlisting">void        xmlInitCharEncodingHandlers     (void);</pre><p>
 Initialize the char encoding support, it registers the default
@@ -202,47 +197,61 @@ unregisters all the encoding handlers and the aliases.</p><p>
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegisterCharEncodingHandler"></a>xmlRegisterCharEncodingHandler ()</h3><pre class="programlisting">void        xmlRegisterCharEncodingHandler  (<a href="libxml-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler);</pre><p>
 Register the char encoding handler, surprising, isn't it ?</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>  the xmlCharEncodingHandlerPtr handler block
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetCharEncodingHandler"></a>xmlGetCharEncodingHandler ()</h3><pre class="programlisting"><a href="libxml-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> xmlGetCharEncodingHandler
                                             (<a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);</pre><p>
 Search in the registered set the handler able to read/write that encoding.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  an xmlCharEncoding value.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the handler or NULL if not found
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFindCharEncodingHandler"></a>xmlFindCharEncodingHandler ()</h3><pre class="programlisting"><a href="libxml-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> xmlFindCharEncodingHandler
                                             (const char *name);</pre><p>
 Search in the registered set the handler able to read/write that encoding.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  a string describing the char encoding.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the handler or NULL if not found
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewCharEncodingHandler"></a>xmlNewCharEncodingHandler ()</h3><pre class="programlisting"><a href="libxml-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> xmlNewCharEncodingHandler
                                             (const char *name,
                                              <a href="libxml-encoding.html#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a> input,
                                              <a href="libxml-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> output);</pre><p>
 Create and registers an xmlCharEncodingHandler.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the encoding name, in UTF-8 format (ASCII actually)
-</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  the xmlCharEncodingInputFunc to read that encoding
-</td></tr><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the xmlCharEncodingOutputFunc to write that encoding
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlCharEncodingHandlerPtr created (or NULL in case of error).
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlAddEncodingAlias"></a>xmlAddEncodingAlias ()</h3><pre class="programlisting">int         xmlAddEncodingAlias             (const char *name,
                                              const char *alias);</pre><p>
 Registers and alias <i><tt>alias</tt></i> for an encoding named <i><tt>name</tt></i>. Existing alias
 will be overwritten.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the encoding name as parsed, in UTF-8 format (ASCII actually)
-</td></tr><tr><td><span class="term"><i><tt>alias</tt></i> :</span></td><td>  the alias name as parsed, in UTF-8 format (ASCII actually)
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of success, -1 in case of error
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>alias</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDelEncodingAlias"></a>xmlDelEncodingAlias ()</h3><pre class="programlisting">int         xmlDelEncodingAlias             (const char *alias);</pre><p>
 Unregisters an encoding alias <i><tt>alias</tt></i></p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>alias</tt></i> :</span></td><td>  the alias name as parsed, in UTF-8 format (ASCII actually)
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of success, -1 in case of error
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>alias</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetEncodingAlias"></a>xmlGetEncodingAlias ()</h3><pre class="programlisting">const char* xmlGetEncodingAlias             (const char *alias);</pre><p>
 Lookup an encoding name for the given alias.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>alias</tt></i> :</span></td><td>  the alias name as parsed, in UTF-8 format (ASCII actually)
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not found the original name otherwise
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>alias</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCleanupEncodingAliases"></a>xmlCleanupEncodingAliases ()</h3><pre class="programlisting">void        xmlCleanupEncodingAliases       (void);</pre><p>
 Unregisters all aliases</p><p>
 
@@ -251,25 +260,29 @@ Compare the string to the known encoding schemes already known. Note
 that the comparison is case insensitive accordingly to the section
 [XML] 4.3.3 Character Encoding in Entities.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the encoding name as parsed, in UTF-8 format (ASCII actually)
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>one of the XML_CHAR_ENCODING_... values or XML_CHAR_ENCODING_NONE
-if not recognized.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetCharEncodingName"></a>xmlGetCharEncodingName ()</h3><pre class="programlisting">const char* xmlGetCharEncodingName          (<a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);</pre><p>
 The &quot;canonical&quot; name for XML encoding.
 C.f. http://www.w3.org/TR/REC-xml<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="charencoding">charencoding</GTKDOCLINK>
 Section 4.3.3  Character Encoding in Entities</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the encoding
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the canonical name for the given encoding
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDetectCharEncoding"></a>xmlDetectCharEncoding ()</h3><pre class="programlisting"><a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> xmlDetectCharEncoding       (unsigned char *in,
                                              int len);</pre><p>
 Guess the encoding of the entity using the first bytes of the entity content
 accordingly of the non-normative appendix F of the XML-1.0 recommendation.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a pointer to the first bytes of the XML entity, must be at least
-      4 bytes long.
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  pointer to the length of the buffer
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>one of the XML_CHAR_ENCODING_... values.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCharEncOutFunc"></a>xmlCharEncOutFunc ()</h3><pre class="programlisting">int         xmlCharEncOutFunc               (<a href="libxml-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> *handler,
                                              <a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> out,
                                              <a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);</pre><p>
@@ -280,43 +293,42 @@ state or the output (like the BOM in UTF16).
 In case of UTF8 sequence conversion errors for the given encoder,
 the content will be automatically remapped to a CharRef sequence.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>	char enconding transformation data structure
-</td></tr><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  an xmlBuffer for the output.
-</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  an xmlBuffer for the input
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of byte written if success, or 
-    -1 general error
-    -2 if the transcoding fails (for *in is not valid utf8 string or
-       the result of transformation can't fit into the encoding we want), or
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCharEncInFunc"></a>xmlCharEncInFunc ()</h3><pre class="programlisting">int         xmlCharEncInFunc                (<a href="libxml-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> *handler,
                                              <a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> out,
                                              <a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);</pre><p>
 Generic front-end for the encoding handler input function</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>	char encoding transformation data structure
-</td></tr><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  an xmlBuffer for the output.
-</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  an xmlBuffer for the input
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of byte written if success, or 
-    -1 general error
-    -2 if the transcoding fails (for *in is not valid utf8 string or
-       the result of transformation can't fit into the encoding we want), or
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCharEncFirstLine"></a>xmlCharEncFirstLine ()</h3><pre class="programlisting">int         xmlCharEncFirstLine             (<a href="libxml-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> *handler,
                                              <a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> out,
                                              <a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);</pre><p>
 Front-end for the encoding handler input function, but handle only
 the very first line, i.e. limit itself to 45 chars.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>	char enconding transformation data structure
-</td></tr><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  an xmlBuffer for the output.
-</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  an xmlBuffer for the input
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of byte written if success, or 
-    -1 general error
-    -2 if the transcoding fails (for *in is not valid utf8 string or
-       the result of transformation can't fit into the encoding we want), or
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCharEncCloseFunc"></a>xmlCharEncCloseFunc ()</h3><pre class="programlisting">int         xmlCharEncCloseFunc             (<a href="libxml-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> *handler);</pre><p>
 Generic front-end for encoding handler close function</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>	char enconding transformation data structure
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if success, or -1 in case of error
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="UTF8Toisolat1"></a>UTF8Toisolat1 ()</h3><pre class="programlisting">int         UTF8Toisolat1                   (unsigned char *out,
                                              int *outlen,
                                              unsigned char *in,
@@ -324,14 +336,13 @@ Generic front-end for encoding handler close function</p><p>
 Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1
 block of chars out.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  a pointer to an array of bytes to store the result
-</td></tr><tr><td><span class="term"><i><tt>outlen</tt></i> :</span></td><td>  the length of <i><tt>out</tt></i>
-</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a pointer to an array of UTF-8 chars
-</td></tr><tr><td><span class="term"><i><tt>inlen</tt></i> :</span></td><td>  the length of <i><tt>in</tt></i>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if success, -2 if the transcoding fails, or -1 otherwise
-The value of <i><tt>inlen</tt></i> after return is the number of octets consumed
-    as the return value is positive, else unpredictable.
-The value of <i><tt>outlen</tt></i> after return is the number of ocetes consumed.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>outlen</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>inlen</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="isolat1ToUTF8"></a>isolat1ToUTF8 ()</h3><pre class="programlisting">int         isolat1ToUTF8                   (unsigned char *out,
                                              int *outlen,
                                              unsigned char *in,
@@ -339,22 +350,22 @@ The value of <i><tt>outlen</tt></i> after return is the number of ocetes consume
 Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8
 block of chars out.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  a pointer to an array of bytes to store the result
-</td></tr><tr><td><span class="term"><i><tt>outlen</tt></i> :</span></td><td>  the length of <i><tt>out</tt></i>
-</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a pointer to an array of ISO Latin 1 chars
-</td></tr><tr><td><span class="term"><i><tt>inlen</tt></i> :</span></td><td>  the length of <i><tt>in</tt></i>
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if success, or -1 otherwise
-The value of <i><tt>inlen</tt></i> after return is the number of octets consumed
-    as the return value is positive, else unpredictable.
-The value of <i><tt>outlen</tt></i> after return is the number of ocetes consumed.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>outlen</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>inlen</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetUTF8Char"></a>xmlGetUTF8Char ()</h3><pre class="programlisting">int         xmlGetUTF8Char                  (unsigned char *utf,
                                              int *len);</pre><p>
 Read one UTF8 Char from <i><tt>utf</tt></i></p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>  a sequence of UTF-8 encoded bytes
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  a pointer to <i><tt>bytes</tt></i> len
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the char value or -1 in case of error and update <i><tt>len</tt></i> with the
-       number of bytes used
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCheckUTF8"></a>xmlCheckUTF8 ()</h3><pre class="programlisting">int         xmlCheckUTF8                    (unsigned char *utf);</pre><p>
 Checks <i><tt>utf</tt></i> for being valid utf-8. <i><tt>utf</tt></i> is assumed to be
 null-terminated. This function is not super-strict, as it will
@@ -363,54 +374,64 @@ capable of producing these sequences if provoked. Also note, this
 routine checks for the 4-byte maximum size, but does not check for
 0x10ffff maximum value.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td> Pointer to putative utf-8 encoded string.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> true if <i><tt>utf</tt></i> is valid.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlUTF8Strsize"></a>xmlUTF8Strsize ()</h3><pre class="programlisting">int         xmlUTF8Strsize                  (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf,
                                              int len);</pre><p>
 storage size of an UTF8 string</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>  a sequence of UTF-8 encoded bytes
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the number of characters in the array
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the storage size of
-the first 'len' characters of ARRAY
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
 
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlUTF8Strndup"></a>xmlUTF8Strndup ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlUTF8Strndup                  (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf,
                                              int len);</pre><p>
 a strndup for array of UTF8's</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>  the input UTF8 *
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the len of <i><tt>utf</tt></i> (in chars)
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new UTF8 * or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlUTF8Strpos"></a>xmlUTF8Strpos ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlUTF8Strpos                   (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf,
                                              int pos);</pre><p>
 a function to provide the equivalent of fetching a
 character from a string array</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>  the input UTF8 *
-</td></tr><tr><td><span class="term"><i><tt>pos</tt></i> :</span></td><td>  the position of the desired UTF8 char (in chars)
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a pointer to the UTF8 character or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>pos</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlUTF8Strloc"></a>xmlUTF8Strloc ()</h3><pre class="programlisting">int         xmlUTF8Strloc                   (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utfchar);</pre><p>
 a function to provide relative location of a UTF8 char</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>  the input UTF8 *
-</td></tr><tr><td><span class="term"><i><tt>utfchar</tt></i> :</span></td><td>  the UTF8 character to be found
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the relative character position of the desired char
-or -1 if not found
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>utfchar</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlUTF8Strsub"></a>xmlUTF8Strsub ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlUTF8Strsub                   (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf,
                                              int start,
                                              int len);</pre><p>
 Note:  positions are given in units of UTF-8 chars</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>  a sequence of UTF-8 encoded bytes
-</td></tr><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td> relative pos of first char
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>   total number to copy
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a pointer to a newly created string
-or NULL if any problem
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlUTF8Strlen"></a>xmlUTF8Strlen ()</h3><pre class="programlisting">int         xmlUTF8Strlen                   (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf);</pre><p>
 compute the length of an UTF8 string, it doesn't do a full UTF8
 checking of the content of the string.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>  a sequence of UTF-8 encoded bytes
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of characters in the string or -1 in case of error
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>
+
+
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-parserInternals.html"><b>&lt;&lt; parserInternals</b></a></td><td align="right"><a accesskey="n" href="libxml-hash.html"><b>hash &gt;&gt;</b></a></td></tr></table></body></html>

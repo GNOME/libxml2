@@ -106,7 +106,20 @@ A:link, A:visited, A:active { text-decoration: underline }
     optimizer which miscompiles the URI module. Please use another
     compiler.</p>
   </li>
-</ol><h3><a name="Developer" id="Developer">Developer</a> corner</h3><ol><li><em>xmlDocDump() generates output on one line.</em>
+</ol><h3><a name="Developer" id="Developer">Developer</a> corner</h3><ol><li><em>Troubles compiling or linking programs using libxml2</em>
+    <p>Usually the problem comes from the fact that the compiler doesn't get
+    the right compilation or linking flags. There is a small shell script
+    <code>xml2-config</code> which is installed as part of libxml2 usual
+    install process which provides those flags. Use </p>
+    <p><code>xml2-config --cflags</code></p>
+    <p>to get the compilation flags and</p>
+    <p><code>xml2-config --libs</code></p>
+    <p>to get the linker flags. Usually this is done directly from the
+    Makefile as:</p>
+    <p><code>CFLAGS=`xml2-config --cflags`</code></p>
+    <p><code>LIBS=`xml2-config --libs`</code></p>
+  </li>
+  <li><em>xmlDocDump() generates output on one line.</em>
     <p>Libxml will not <strong>invent</strong> spaces in the content of a
     document since <strong>all spaces in the content of a document are
     significant</strong>. If you build a tree from the API and want

@@ -1,3 +1,8 @@
+Sun Feb 18 17:52:37 MET 2001 Bjorn Reese <breese@users.sourceforge.net>
+
+	* xpath.c: fixed whitespace handling in xmlXPathStringEvalNumber,
+	  and optimized xmlXPathNodeSetSort
+
 Sat Feb 17 14:18:42 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: bug fix when context size is 0

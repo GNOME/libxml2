@@ -1,0 +1,3 @@
+./test/VC/Enumeration:5: validity error: Value "v4" for attribute val on doc is among the enumerated set
+<doc val="v4"></doc>
+             ^

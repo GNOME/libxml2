@@ -27,9 +27,10 @@
 #ifdef HAVE_PTHREAD_H
 #include <pthread.h>
 #endif
+
 #ifdef HAVE_WIN32_THREADS
 #include <windows.h>
-#ifndef _MSC_VER
+#ifndef HAVE_COMPILER_TLS
 #include <process.h>
 #endif
 #endif
@@ -53,7 +54,7 @@ struct _xmlMutex {
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_t lock;
 #elif defined HAVE_WIN32_THREADS
-	HANDLE mutex;
+    HANDLE mutex;
 #else
     int empty;
 #endif
@@ -70,8 +71,8 @@ struct _xmlRMutex {
     pthread_t       tid;
     pthread_cond_t  cv;
 #elif defined HAVE_WIN32_THREADS
-	CRITICAL_SECTION cs;
-	unsigned int count;
+    CRITICAL_SECTION cs;
+    unsigned int count;
 #else
     int empty;
 #endif
@@ -87,15 +88,16 @@ static pthread_key_t	globalkey;
 static pthread_t	mainthread;
 static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 #elif defined HAVE_WIN32_THREADS
-#if defined(_MSC_VER) || defined(__BORLANDC__)
-static __declspec (thread) xmlGlobalState tlstate;
-static __declspec (thread) int tlstate_inited = 0;
-#else
+#if defined(HAVE_COMPILER_TLS)
+static __declspec(thread) xmlGlobalState tlstate;
+static __declspec(thread) int tlstate_inited = 0;
+#else /* HAVE_COMPILER_TLS */
 static DWORD globalkey;
-#endif /* _MSC_VER */
+#endif /* HAVE_COMPILER_TLS */
 static DWORD mainthread;
 static int run_once_init = 1;
 #endif /* HAVE_WIN32_THREADS */
+
 static xmlRMutexPtr	xmlLibraryLock = NULL;
 static void xmlOnceInit(void);
 
@@ -117,7 +119,7 @@ xmlNewMutex(void)
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_init(&tok->lock, NULL);
 #elif defined HAVE_WIN32_THREADS
-	tok->mutex = CreateMutex (NULL, FALSE, NULL);
+    tok->mutex = CreateMutex(NULL, FALSE, NULL);
 #endif
     return (tok);
 }
@@ -135,7 +137,7 @@ xmlFreeMutex(xmlMutexPtr tok)
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_destroy(&tok->lock);
 #elif defined HAVE_WIN32_THREADS
-	CloseHandle (tok->mutex);
+    CloseHandle(tok->mutex);
 #endif
     free(tok);
 }
@@ -152,7 +154,7 @@ xmlMutexLock(xmlMutexPtr tok ATTRIBUTE_UNUSED)
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_lock(&tok->lock);
 #elif defined HAVE_WIN32_THREADS
-	WaitForSingleObject (tok->mutex, INFINITE);
+    WaitForSingleObject(tok->mutex, INFINITE);
 #endif
 
 }
@@ -169,7 +171,7 @@ xmlMutexUnlock(xmlMutexPtr tok ATTRIBUTE_UNUSED)
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_unlock(&tok->lock);
 #elif defined HAVE_WIN32_THREADS
-	ReleaseMutex (tok->mutex);
+    ReleaseMutex(tok->mutex);
 #endif
 }
 
@@ -195,8 +197,8 @@ xmlNewRMutex(void)
     tok->held = 0;
     tok->waiters = 0;
 #elif defined HAVE_WIN32_THREADS
-	InitializeCriticalSection (&tok->cs);
-	tok->count = 0;
+    InitializeCriticalSection(&tok->cs);
+    tok->count = 0;
 #endif
     return (tok);
 }
@@ -214,7 +216,7 @@ xmlFreeRMutex(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_destroy(&tok->lock);
 #elif defined HAVE_WIN32_THREADS
-	DeleteCriticalSection (&tok->cs);
+    DeleteCriticalSection(&tok->cs);
 #endif
     free(tok);
 }
@@ -246,8 +248,8 @@ xmlRMutexLock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
     tok->held = 1;
     pthread_mutex_unlock(&tok->lock);
 #elif defined HAVE_WIN32_THREADS
-	EnterCriticalSection (&tok->cs);
-	++tok->count;
+    EnterCriticalSection(&tok->cs);
+    ++tok->count;
 #endif
 }
 
@@ -270,7 +272,8 @@ xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
     }
     pthread_mutex_unlock(&tok->lock);
 #elif defined HAVE_WIN32_THREADS
-	if (!--tok->count) LeaveCriticalSection (&tok->cs);
+    if (!--tok->count) 
+	LeaveCriticalSection(&tok->cs);
 #endif
 }
 
@@ -281,7 +284,6 @@ xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
  ************************************************************************/
 
 #ifdef LIBXML_THREAD_ENABLED
-#ifndef _MSC_VER
 /**
  * xmlFreeGlobalState:
  * @state:  a thread global state
@@ -317,7 +319,6 @@ xmlNewGlobalState(void)
     xmlInitializeGlobalState(gs);
     return (gs);
 }
-#endif /* _MSC_VER */
 #endif /* LIBXML_THREAD_ENABLED */
 
 
@@ -330,23 +331,23 @@ xmlNewGlobalState(void)
  */
 
 #ifdef HAVE_WIN32_THREADS
-#if !defined(_MSC_VER) && !defined(__BORLANDC__)
+#if !defined(HAVE_COMPILER_TLS)
 typedef struct _xmlGlobalStateCleanupHelperParams
 {
-	HANDLE thread;
-	void *memory;
+    HANDLE thread;
+    void *memory;
 } xmlGlobalStateCleanupHelperParams;
 
-void __cdecl xmlGlobalStateCleanupHelper (void *p)
+void xmlGlobalStateCleanupHelper (void *p)
 {
-	xmlGlobalStateCleanupHelperParams *params = (xmlGlobalStateCleanupHelperParams *) p;
-	WaitForSingleObject (params->thread, INFINITE);
-	CloseHandle (params->thread);
-	xmlFreeGlobalState (params->memory);
-	free (params);
-	_endthread ();
+    xmlGlobalStateCleanupHelperParams *params = (xmlGlobalStateCleanupHelperParams *) p;
+    WaitForSingleObject(params->thread, INFINITE);
+    CloseHandle(params->thread);
+    xmlFreeGlobalState(params->memory);
+    free(params);
+    _endthread();
 }
-#endif /* _MSC_VER */
+#endif /* HAVE_COMPILER_TLS */
 #endif /* HAVE_WIN32_THREADS */
 
 xmlGlobalStatePtr
@@ -358,7 +359,7 @@ xmlGetGlobalState(void)
     pthread_once(&once_control, xmlOnceInit);
 
     if ((globalval = (xmlGlobalState *)
-         pthread_getspecific(globalkey)) == NULL) {
+		pthread_getspecific(globalkey)) == NULL) {
         xmlGlobalState *tsd = xmlNewGlobalState();
 
         pthread_setspecific(globalkey, tsd);
@@ -366,34 +367,33 @@ xmlGetGlobalState(void)
     }
     return (globalval);
 #elif defined HAVE_WIN32_THREADS
-#if defined(_MSC_VER) || defined(__BORLANDC__)
-	if (!tlstate_inited)
-	{
-		tlstate_inited = 1;
-		xmlInitializeGlobalState (&tlstate);
-	}
+#if defined(HAVE_COMPILER_TLS)
+    if (!tlstate_inited) {
+	tlstate_inited = 1;
+	xmlInitializeGlobalState(&tlstate);
+    }
+    return &tlstate;
+#else /* HAVE_COMPILER_TLS */
+    xmlGlobalState *globalval;
 
-	return &tlstate;
-#else /* !_MSC_VER */
-	xmlGlobalState *globalval;
+    if (run_once_init) { 
+	run_once_init = 0; 
+	xmlOnceInit(); 
+    }
+    if ((globalval = (xmlGlobalState *) TlsGetValue(globalkey)) == NULL) {
+	xmlGlobalState *tsd = xmlNewGlobalState();
+	xmlGlobalStateCleanupHelperParams *p = 
+	    (xmlGlobalStateCleanupHelperParams *) malloc(sizeof(xmlGlobalStateCleanupHelperParams));
+	p->memory = tsd;
+	DuplicateHandle(GetCurrentProcess(), GetCurrentThread(), 
+		GetCurrentProcess(), &p->thread, 0, TRUE, DUPLICATE_SAME_ACCESS);
+	TlsSetValue(globalkey, tsd);
+	_beginthread(xmlGlobalStateCleanupHelper, 0, p);
 
-	if (run_once_init) { run_once_init = 0; xmlOnceInit (); }
-
-	if ((globalval = (xmlGlobalState *) TlsGetValue (globalkey)) == NULL)
-	{
-		xmlGlobalState *tsd = xmlNewGlobalState();
-		xmlGlobalStateCleanupHelperParams *p = (xmlGlobalStateCleanupHelperParams *) malloc (sizeof (xmlGlobalStateCleanupHelperParams));
-
-		p->memory = tsd;
-		DuplicateHandle (GetCurrentProcess (), GetCurrentThread (), GetCurrentProcess (), &p->thread, 0, TRUE, DUPLICATE_SAME_ACCESS);
-
-		TlsSetValue (globalkey, tsd);
-		_beginthread (xmlGlobalStateCleanupHelper, 0, p);
-
-		return (tsd);
-	}
-	return (globalval);
-#endif /* _MSC_VER */
+	return (tsd);
+    }
+    return (globalval);
+#endif /* HAVE_COMPILER_TLS */
 #else
     return(NULL);
 #endif
@@ -418,7 +418,7 @@ xmlGetThreadId(void)
 #ifdef HAVE_PTHREAD_H
     return((int) pthread_self());
 #elif defined HAVE_WIN32_THREADS
-	return GetCurrentThreadId ();
+    return GetCurrentThreadId();
 #else
     return((int) 0);
 #endif
@@ -437,7 +437,10 @@ xmlIsMainThread(void)
 #ifdef HAVE_PTHREAD_H
     pthread_once(&once_control, xmlOnceInit);
 #elif defined HAVE_WIN32_THREADS
-	if (run_once_init) { run_once_init = 0; xmlOnceInit (); }
+    if (run_once_init) { 
+	run_once_init = 0; 
+	xmlOnceInit (); 
+    }
 #endif
         
 #ifdef DEBUG_THREADS
@@ -446,7 +449,7 @@ xmlIsMainThread(void)
 #ifdef HAVE_PTHREAD_H
     return(mainthread == pthread_self());
 #elif defined HAVE_WIN32_THREADS
-	return (mainthread == GetCurrentThreadId ());
+    return(mainthread == GetCurrentThreadId ());
 #else
     return(1);
 #endif
@@ -522,12 +525,14 @@ xmlCleanupThreads(void)
 static void
 xmlOnceInit(void) {
 #ifdef HAVE_PTHREAD_H
-   (void) pthread_key_create(&globalkey, xmlFreeGlobalState);
+    (void) pthread_key_create(&globalkey, xmlFreeGlobalState);
     mainthread = pthread_self();
-#elif defined HAVE_WIN32_THREADS
-#if !defined(_MSC_VER) && !defined(__BORLANDC__)
-	globalkey = TlsAlloc ();
-#endif /* _MSC_VER */
-	mainthread = GetCurrentThreadId ();
+#endif
+
+#if defined(HAVE_WIN32_THREADS)
+#if !defined(HAVE_COMPILER_TLS)
+    globalkey = TlsAlloc();
+#endif
+    mainthread = GetCurrentThreadId();
 #endif
 }

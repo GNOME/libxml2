@@ -156,6 +156,20 @@ typedef enum {
 #define XML_SKIP_IDS		8
 
 /**
+ * xmlParserMode:
+ *
+ * A parser can operate in various modes
+ */
+typedef enum {
+    XML_PARSE_UNKNOWN = 0,
+    XML_PARSE_DOM = 1,
+    XML_PARSE_SAX = 2,
+    XML_PARSE_PUSH_DOM = 3,
+    XML_PARSE_PUSH_SAX = 4,
+    XML_PARSE_READER = 5
+} xmlParserMode;
+
+/**
  * xmlParserCtxt:
  *
  * The parser context.
@@ -240,7 +254,7 @@ struct _xmlParserCtxt {
 
     int                loadsubset;    /* should the external subset be loaded */
     int                linenumbers;   /* set line number in element content */
-    void              *catalogs;       /* document's own catalog */
+    void              *catalogs;      /* document's own catalog */
     int                recovery;      /* run in recovery mode */
     int                progressive;   /* is this a progressive parsing */
     xmlDictPtr         dict;          /* dictionnary for the parser */
@@ -282,6 +296,7 @@ struct _xmlParserCtxt {
      * the complete error informations for the last error.
      */
     xmlError          lastError;
+    xmlParserMode     parseMode;    /* the parser mode */
 };
 
 /**

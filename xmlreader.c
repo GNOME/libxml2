@@ -1224,6 +1224,7 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    reader->state = XML_TEXTREADER_ELEMENT;
 	}
 	reader->depth = 0;
+	reader->ctxt->parseMode = XML_PARSE_READER;
 	goto node_found;
     }
     oldstate = reader->state;
@@ -1920,6 +1921,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
 	ret->base = 0;
 	ret->cur = 0;
     }
+    
     if (ret->ctxt == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewTextReader : malloc failed\n");
@@ -1927,6 +1929,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
 	xmlFree(ret);
 	return(NULL);
     }
+    ret->ctxt->parseMode = XML_PARSE_READER;
     ret->ctxt->_private = ret;
     ret->ctxt->linenumbers = 1;
     ret->ctxt->dictNames = 1;
@@ -4231,6 +4234,7 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
      * use the parser dictionnary to allocate all elements and attributes names
      */
     reader->ctxt->docdict = 1;
+    reader->ctxt->parseMode = XML_PARSE_READER;
 
 #ifdef LIBXML_XINCLUDE_ENABLED
     if (reader->xincctxt != NULL) {

@@ -642,6 +642,22 @@ Readertests : xmllint$(EXEEXT)
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
+	@echo "## Reader entities substitution regression tests"
+	-@(for i in $(srcdir)/test/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/$$name.rde ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --noent --nonet --debug --stream $$i > $(srcdir)/result/$$name.rde 2>/dev/null ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	  else \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --noent --nonet --debug --stream $$i > result.$$name 2>/dev/null ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/$$name.rde result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
+
 SAXtests : testSAX$(EXEEXT)
 	@(echo > .memdump)
 	@echo "## SAX callbacks regression tests"

@@ -5514,8 +5514,9 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 				 * Prune it directly in the generated document
 				 * except for single text nodes.
 				 */
-				if ((list->type == XML_TEXT_NODE) &&
-				    (list->next == NULL)) {
+				if (((list->type == XML_TEXT_NODE) &&
+				     (list->next == NULL)) ||
+				    (ctxt->parseMode == XML_PARSE_READER)) {
 				    list->parent = (xmlNodePtr) ent;
 				    list = NULL;
 				    ent->owner = 1;
@@ -5568,10 +5569,21 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    /*
 		     * Seems we are generating the DOM content, do
 		     * a simple tree copy for all references except the first
-		     * In the first occurrence list contains the replacement
+		     * In the first occurrence list contains the replacement.
+		     * progressive == 2 means we are operating on the Reader
+		     * and since nodes are discarded we must copy all the time.
 		     */
-		    if ((list == NULL) && (ent->owner == 0)) {
+		    if (((list == NULL) && (ent->owner == 0)) ||
+		        (ctxt->parseMode == XML_PARSE_READER)) {
 			xmlNodePtr nw = NULL, cur, firstChild = NULL;
+
+			/*
+			 * when operating on a reader, the entities definitions
+			 * are always owning the entities subtree.
+			if (ctxt->parseMode == XML_PARSE_READER)
+			    ent->owner = 1;
+			 */
+
 			cur = ent->children;
 			while (cur != NULL) {
 			    nw = xmlCopyNode(cur, 1);
@@ -5580,10 +5592,20 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 				if (firstChild == NULL){
 				    firstChild = nw;
 				}
-				xmlAddChild(ctxt->node, nw);
+				nw = xmlAddChild(ctxt->node, nw);
 			    }
-			    if (cur == ent->last)
+			    if (cur == ent->last) {
+			        /*
+				 * needed to detect some strange empty
+				 * node cases in the reader tests
+				 */
+			        if ((ctxt->parseMode == XML_PARSE_READER) &&
+				    (nw->type == XML_ELEMENT_NODE) &&
+				    (nw->children == NULL))
+				    nw->extra = 1;
+
 				break;
+			    }
 			    cur = cur->next;
 			}
 #ifdef LIBXML_LEGACY_ENABLED
@@ -8790,7 +8812,7 @@ xmlParseGetLasts(xmlParserCtxtPtr ctxt, const xmlChar **lastlt,
 		    "Internal error: xmlParseGetLasts\n");
 	return;
     }
-    if ((ctxt->progressive == 1) && (ctxt->inputNr == 1)) {
+    if ((ctxt->progressive != 0) && (ctxt->inputNr == 1)) {
         tmp = ctxt->input->end;
 	tmp--;
 	while ((tmp >= ctxt->input->base) && (*tmp != '<') &&
@@ -9437,7 +9459,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    goto done;
 		} else {
 		    ctxt->instate = XML_PARSER_START_TAG;
-		    ctxt->progressive = 1;
+		    if (ctxt->progressive == 0)
+			ctxt->progressive = 1;
 		    xmlParseGetLasts(ctxt, &lastlt, &lastgt);
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,

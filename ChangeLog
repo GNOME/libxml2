@@ -1,3 +1,11 @@
+Tue Jun  8 14:01:14 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c xmlreader.c include/libxml/parser.h: fixed a serious
+	  problem when substituing entities using the Reader, the entities
+	  content might be freed and if rereferenced would crash
+	* Makefile.am test/* result/*: added a new test case and a new
+	  test operation for the reader with substitution of entities.
+
 Tue Jun  8 12:14:16 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c xmlIO.c include/libxml/globals.h include/libxml/xmlIO.h:

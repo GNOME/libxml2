@@ -1,3 +1,12 @@
+Tue Jun 11 12:07:04 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: applied a couple of patches from Peter Jacobi to start
+	  to get rid of ctxt->token, with a possible significant speed
+	  improvement to be gained once done. Better compliance with PE
+	  references constructs in DTDs too.
+	* test/valid/t[0-9]* result/valid/t[0-9]*: added a set of tests
+	  from Peter too
+
 Tue Jun 11 09:25:12 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: Babak Vahedipour-Kunze reported that openTag in 

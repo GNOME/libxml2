@@ -665,6 +665,58 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 }
 
 /**
+ * xmlNewBlanksWrapperInputStream:
+ * @ctxt:  an XML parser context
+ * @entity:  an Entity pointer
+ *
+ * Create a new input stream for wrapping
+ * blanks around a PEReference
+ *
+ * Returns the new input stream or NULL
+ */
+ 
+static void deallocblankswrapper (xmlChar *str) {xmlFree(str);}
+ 
+xmlParserInputPtr
+xmlNewBlanksWrapperInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
+    xmlParserInputPtr input;
+    xmlChar *buffer;
+    size_t length;
+    if (entity == NULL) {
+        ctxt->errNo = XML_ERR_INTERNAL_ERROR;
+        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	      "internal: xmlNewBlanksWrapperInputStream entity = NULL\n");
+	ctxt->errNo = XML_ERR_INTERNAL_ERROR;
+	return(NULL);
+    }
+    if (xmlParserDebugEntities)
+	xmlGenericError(xmlGenericErrorContext,
+		"new blanks wrapper for entity: %s\n", entity->name);
+    input = xmlNewInputStream(ctxt);
+    if (input == NULL) {
+	return(NULL);
+    }
+    length = xmlStrlen(entity->name) + 5;
+    buffer = xmlMalloc(length);
+    if (buffer == NULL) {
+    	return(NULL);
+    }
+    buffer [0] = ' ';
+    buffer [1] = '%';
+    buffer [length-3] = ';';
+    buffer [length-2] = ' ';
+    buffer [length-1] = 0;
+    memcpy(buffer + 2, entity->name, length - 5);
+    input->free = deallocblankswrapper;
+    input->base = buffer;
+    input->cur = buffer;
+    input->length = length;
+    input->end = &buffer[length];
+    return(input);
+}
+
+/**
  * xmlParserHandlePEReference:
  * @ctxt:  the parser context
  * 
@@ -765,6 +817,8 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 	     */
 	    if ((ctxt->external == 0) && (ctxt->inputNr == 1))
 		return;
+	    if (IS_BLANK(NXT(1)) || NXT(1) == 0)
+		return;
             break;
         case XML_PARSER_IGNORE:
             return;
@@ -822,6 +876,9 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 			 "PEReference: %%%s; not found\n", name);
 		    ctxt->valid = 0;
 		}
+	    } else if (ctxt->input->free != deallocblankswrapper) {
+		    input = xmlNewBlanksWrapperInputStream(ctxt, entity);
+		    xmlPushInput(ctxt, input);
 	    } else {
 	        if ((entity->etype == XML_INTERNAL_PARAMETER_ENTITY) ||
 		    (entity->etype == XML_EXTERNAL_PARAMETER_ENTITY)) {
@@ -857,8 +914,6 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 			(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
 			xmlParseTextDecl(ctxt);
 		    }
-		    if (ctxt->token == 0)
-			ctxt->token = ' ';
 		} else {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			ctxt->sax->error(ctxt->userData,
@@ -3421,6 +3476,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
     xmlChar *ndata = NULL;
     int isParameter = 0;
     xmlChar *orig = NULL;
+    int skipped;
     
     GROW;
     if ((RAW == '<') && (NXT(1) == '!') &&
@@ -3428,10 +3484,10 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
         (NXT(4) == 'T') && (NXT(5) == 'I') &&
         (NXT(6) == 'T') && (NXT(7) == 'Y')) {
 	xmlParserInputPtr input = ctxt->input;
-	ctxt->instate = XML_PARSER_ENTITY_DECL;
 	SHRINK;
 	SKIP(8);
-	if (!IS_BLANK(CUR)) {
+	skipped = SKIP_BLANKS;
+	if (skipped == 0) {
 	    ctxt->errNo = XML_ERR_SPACE_REQUIRED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
@@ -3439,11 +3495,11 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->wellFormed = 0;
 	    ctxt->disableSAX = 1;
 	}
-	SKIP_BLANKS;
 
 	if (RAW == '%') {
 	    NEXT;
-	    if (!IS_BLANK(CUR)) {
+	    skipped = SKIP_BLANKS;
+	    if (skipped == 0) {
 		ctxt->errNo = XML_ERR_SPACE_REQUIRED;
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
@@ -3451,7 +3507,6 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
 	    }
-	    SKIP_BLANKS;
 	    isParameter = 1;
 	}
 
@@ -3464,7 +3519,8 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->disableSAX = 1;
             return;
 	}
-	if (!IS_BLANK(CUR)) {
+        skipped = SKIP_BLANKS;
+	if (skipped == 0) {
 	    ctxt->errNo = XML_ERR_SPACE_REQUIRED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
@@ -3472,8 +3528,8 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->wellFormed = 0;
 	    ctxt->disableSAX = 1;
 	}
-        SKIP_BLANKS;
 
+	ctxt->instate = XML_PARSER_ENTITY_DECL;
 	/*
 	 * handle the various case of definitions...
 	 */
@@ -6037,6 +6093,9 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 			if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 			    ctxt->sax->warning(ctxt->userData,
 			 "Internal: %%%s; is not a parameter entity\n", name);
+	        } else if (ctxt->input->free != deallocblankswrapper) {
+		    input = xmlNewBlanksWrapperInputStream(ctxt, entity);
+		    xmlPushInput(ctxt, input);
 		    } else {
 			/*
 			 * TODO !!!
@@ -6060,8 +6119,6 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 				return;
 			    }
 			}
-			if (ctxt->token == 0)
-			    ctxt->token = ' ';
 		    }
 		}
 		ctxt->hasPErefs = 1;

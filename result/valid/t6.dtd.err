@@ -1,0 +1,6 @@
+./test/valid/t6.dtd:1: error: xmlParseStartTag: invalid element name
+<!ENTITY % xdef "def">
+^
+./test/valid/t6.dtd:1: error: Extra content at the end of the document
+<!ENTITY % xdef "def">
+^

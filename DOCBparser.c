@@ -503,6 +503,7 @@ docbookElementTable[] = {
 { "date",      0,      0,      0,      4,      0, "" }, /* docinfo */
 { "dedication",        0,      0,      0,      9,      0, "" }, /* sect.title.content */
 { "destructorsynopsis",0,0,    0,      9,      0, "" }, /* modifier */
+{ "docinfo",   0,      0,      0,      9,      0, "" },
 { "edition",   0,      0,      0,      4,      0, "" }, /* docinfo */
 { "editor",    0,      0,      0,      9,      0, "" }, /* person.ident.mix */
 { "email",     0,      0,      0,      4,      0, "" }, /* docinfo */
@@ -539,8 +540,8 @@ docbookElementTable[] = {
 { "glossdiv",  0,      0,      0,      9,      0, "" }, /* sect.title.content */
 { "glossentry",        0,      0,      0,      9,      0, "" }, /* glossterm */
 { "glosslist", 0,      0,      0,      9,      0, "" }, /* glossentry */
-{ "glossseealso",0,    0,      0,      2,      0, "" }, /* para */
-{ "glosssee",  0,      0,      0,      2,      0, "" }, /* para */
+{ "glossseealso",0,    0,      1,      2,      0, "" }, /* para */
+{ "glosssee",  0,      0,      1,      2,      0, "" }, /* para */
 { "glossterm", 0,      0,      0,      2,      0, "" }, /* para */
 { "graphic",   0,      0,      0,      9,      0, "" },
 { "graphicco", 0,      0,      0,      9,      0, "" }, /* areaspec */
@@ -650,7 +651,7 @@ docbookElementTable[] = {
 { "prefaceinfo",0,     0,      0,      9,      0, "" }, /* graphic */
 { "preface",   0,      0,      0,      9,      0, "" }, /* prefaceinfo */
 { "primaryie", 0,      0,      0,      4,      0, "" }, /* ndxterm */
-{ "primary  ", 0,      0,      0,      4,      0, "" }, /* ndxterm */
+{ "primary", 0,      0,      0,      9,      0, "" }, /* ndxterm */
 { "printhistory",0,    0,      0,      9,      0, "" }, /* para.class */
 { "procedure", 0,      0,      0,      9,      0, "" }, /* formalobject.title.content */
 { "productname",0,     0,      0,      2,      0, "" }, /* para */
@@ -2767,7 +2768,7 @@ docbParseSGMLAttribute(docbParserCtxtPtr ctxt, const xmlChar stop) {
                    *out++  = ((c >> bits) & 0x3F) | 0x80;
                }
            } else {
-               ent = docbParseEntityRef(ctxt, &name);
+               xent = docbParseEntityRef(ctxt, &name);
                if (name == NULL) {
                    *out++ = '&';
                    if (out - buffer > buffer_size - 100) {
@@ -2776,44 +2777,48 @@ docbParseSGMLAttribute(docbParserCtxtPtr ctxt, const xmlChar stop) {
                        growBuffer(buffer);
                        out = &buffer[indx];
                    }
-               } else if (ent == NULL) {
                    *out++ = '&';
-                   cur = name;
-                   while (*cur != 0) {
-                       if (out - buffer > buffer_size - 100) {
-                           int indx = out - buffer;
-
-                           growBuffer(buffer);
-                           out = &buffer[indx];
-                       }
-                       *out++ = *cur++;
-                   }
-                   xmlFree(name);
                } else {
-                   unsigned int c;
-                   int bits;
+		   ent = docbEntityLookup(name);
+		   if (ent == NULL) {
+		       *out++ = '&';
+		       cur = name;
+		       while (*cur != 0) {
+			   if (out - buffer > buffer_size - 100) {
+			       int indx = out - buffer;
 
-                   if (out - buffer > buffer_size - 100) {
-                       int indx = out - buffer;
+			       growBuffer(buffer);
+			       out = &buffer[indx];
+			   }
+			   *out++ = *cur++;
+		       }
+		       xmlFree(name);
+		   } else {
+		       unsigned int c;
+		       int bits;
 
-                       growBuffer(buffer);
-                       out = &buffer[indx];
-                   }
-                   c = (xmlChar)ent->value;
-                   if      (c <    0x80)
-                       { *out++  = c;                bits= -6; }
-                   else if (c <   0x800)
-                       { *out++  =((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
-                   else if (c < 0x10000)
-                       { *out++  =((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
-                   else                 
-                       { *out++  =((c >> 18) & 0x07) | 0xF0;  bits= 12; }
-            
-                   for ( ; bits >= 0; bits-= 6) {
-                       *out++  = ((c >> bits) & 0x3F) | 0x80;
-                   }
-                   xmlFree(name);
-               }
+		       if (out - buffer > buffer_size - 100) {
+			   int indx = out - buffer;
+
+			   growBuffer(buffer);
+			   out = &buffer[indx];
+		       }
+		       c = (xmlChar)ent->value;
+		       if      (c <    0x80)
+			   { *out++  = c;                bits= -6; }
+		       else if (c <   0x800)
+			   { *out++  =((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
+		       else if (c < 0x10000)
+			   { *out++  =((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
+		       else                 
+			   { *out++  =((c >> 18) & 0x07) | 0xF0;  bits= 12; }
+		
+		       for ( ; bits >= 0; bits-= 6) {
+			   *out++  = ((c >> bits) & 0x3F) | 0x80;
+		       }
+		       xmlFree(name);
+		   }
+	       }
            }
        } else {
            unsigned int c;

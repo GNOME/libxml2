@@ -1,3 +1,8 @@
+Wed May  2 14:39:57 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* DOCBparser.c: patche from  László Kovács, fixed entities refs
+	  in attributes handling
+
 Wed May  2 12:56:04 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlIO.c: Bjorn Reese provided a fix for a problem on buffer

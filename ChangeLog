@@ -1,3 +1,8 @@
+Tue Nov 12 22:06:45 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: strengthen the guard in the Pop macros,
+	  like in the XML parser, closes bug #97315
+
 Tue Nov 12 21:56:39 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/parser.h: fixed bug #98338 , fatalError SAX

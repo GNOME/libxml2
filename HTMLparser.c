@@ -84,7 +84,7 @@ scope int html##name##Push(htmlParserCtxtPtr ctxt, type value) {	\
 }									\
 scope type html##name##Pop(htmlParserCtxtPtr ctxt) {			\
     type ret;								\
-    if (ctxt->name##Nr < 0) return(0);					\
+    if (ctxt->name##Nr <= 0) return(0);					\
     ctxt->name##Nr--;							\
     if (ctxt->name##Nr < 0) return(0);					\
     if (ctxt->name##Nr > 0)						\

@@ -1,3 +1,8 @@
+Sat Feb  1 19:44:58 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: a bit of work done in the train back.
+	* test/relaxng/*: added one of the include tests
+
 Thu Jan 30 14:06:55 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng: more work done in the train

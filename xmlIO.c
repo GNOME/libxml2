@@ -673,9 +673,10 @@ xmlFileWrite (void * context, const char * buffer, int len) {
     int items;
 
     items = fwrite(&buffer[0], len, 1, (FILE *) context);
-    if ((items == 0) && (ferror((FILE *) context)))
+    if ((items == 0) && (ferror((FILE *) context))) {
         xmlIOErr(0, "fwrite()");
-
+	return(-1);
+    }
     return(items * len);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
@@ -2471,6 +2472,7 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
     int nbchars = 0;
 
     if (len < 0) return(0);
+    if ((in == NULL) || (in->error)) return(-1);
     if (in->encoder != NULL) {
         /*
 	 * Store the data in the incoming raw buffer
@@ -2486,6 +2488,7 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
 	if (nbchars < 0) {
 	    xmlIOErr(XML_IO_ENCODER, NULL);
+	    in->error = XML_IO_ENCODER;
 	    return(-1);
 	}
     } else {
@@ -2536,12 +2539,14 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     int buffree;
     unsigned int needSize;
 
+    if ((in == NULL) || (in->error)) return(-1);
     if ((len <= MINLEN) && (len != 4))
         len = MINLEN;
 
     buffree = in->buffer->size - in->buffer->use;
     if (buffree <= 0) {
 	xmlIOErr(XML_IO_BUFFER_FULL, NULL);
+	in->error = XML_IO_BUFFER_FULL;
 	return(0);
     }
 
@@ -2549,6 +2554,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     if (needSize > in->buffer->size){
         if (!xmlBufferResize(in->buffer, needSize)){
 	    xmlIOErrMemory("growing input buffer");
+	    in->error = XML_ERR_NO_MEMORY;
             return(0);
         }
     }
@@ -2563,6 +2569,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	    in->readcallback = endOfInput;
     } else {
 	xmlIOErr(XML_IO_NO_INPUT, NULL);
+	in->error = XML_IO_NO_INPUT;
 	return(-1);
     }
     if (res < 0) {
@@ -2584,6 +2591,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
 	if (nbchars < 0) {
 	    xmlIOErr(XML_IO_ENCODER, NULL);
+	    in->error = XML_IO_ENCODER;
 	    return(-1);
 	}
     } else {
@@ -2613,7 +2621,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
  */
 int
 xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
-    /* xmlBufferEmpty(in->buffer); */
+    if ((in == NULL) || (in->error)) return(-1);
     if (in->readcallback != NULL)
 	return(xmlParserInputBufferGrow(in, len));
     else if ((in->buffer != NULL) &&
@@ -2645,7 +2653,9 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
     int written = 0; /* number of char written to I/O so far */
     int chunk;       /* number of byte curreent processed from buf */
 
+    if ((out == NULL) || (out->error)) return(-1);
     if (len < 0) return(0);
+    if (out->error) return(-1);
 
     do {
 	chunk = len;
@@ -2673,6 +2683,7 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
 	    ret = xmlCharEncOutFunc(out->encoder, out->conv, out->buffer);
 	    if ((ret < 0) && (ret != -3)) {
 		xmlIOErr(XML_IO_ENCODER, NULL);
+		out->error = XML_IO_ENCODER;
 		return(-1);
 	    }
 	    nbchars = out->conv->use;
@@ -2703,6 +2714,7 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
 	    }
 	    if (ret < 0) {
 		xmlIOErr(XML_IO_WRITE, NULL);
+		out->error = XML_IO_WRITE;
 		return(ret);
 	    }
 	    out->written += ret;
@@ -2735,6 +2747,7 @@ int
 xmlOutputBufferWriteString(xmlOutputBufferPtr out, const char *str) {
     int len;
     
+    if ((out == NULL) || (out->error)) return(-1);
     if (str == NULL)
         return(-1);
     len = strlen(str);
@@ -2756,6 +2769,7 @@ int
 xmlOutputBufferFlush(xmlOutputBufferPtr out) {
     int nbchars = 0, ret = 0;
 
+    if ((out == NULL) || (out->error)) return(-1);
     /*
      * first handle encoding stuff.
      */
@@ -2766,6 +2780,7 @@ xmlOutputBufferFlush(xmlOutputBufferPtr out) {
 	nbchars = xmlCharEncOutFunc(out->encoder, out->conv, out->buffer);
 	if (nbchars < 0) {
 	    xmlIOErr(XML_IO_ENCODER, NULL);
+	    out->error = XML_IO_ENCODER;
 	    return(-1);
 	}
     }
@@ -2787,6 +2802,7 @@ xmlOutputBufferFlush(xmlOutputBufferPtr out) {
     }
     if (ret < 0) {
 	xmlIOErr(XML_IO_FLUSH, NULL);
+	out->error = XML_IO_FLUSH;
 	return(ret);
     }
     out->written += ret;

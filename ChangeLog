@@ -1,3 +1,7 @@
+Wed Oct  8 20:57:27 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: better handling of error cases
+
 Wed Oct  8 13:51:14 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c xmllint.c include/libxml/xmlerror.h: first pass at

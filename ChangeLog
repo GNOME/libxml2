@@ -1,3 +1,9 @@
+Tue Dec 23 15:14:37 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* valid.c: fixed bug concerning validation using external
+	  dtd of element with mutiple namespace declarations
+	  (Bug 129821)
+
 Tue Dec 23 11:41:42 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* tree.c: inhibited production of "(null):" in xmlGetNodePath

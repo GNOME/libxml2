@@ -1,3 +1,10 @@
+Fri Sep 20 15:40:14 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/configure.js: applied the patch from Mark Vakoc for 
+	  regexp support
+	* win32/libxml2.def.src: applied the patch from Mark Vakoc
+	  for regexp support
+	
 Fri Sep 20 15:35:33 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: as pointed by Igor Float and Double

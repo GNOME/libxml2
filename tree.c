@@ -5441,7 +5441,7 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
  * This does the entity substitution.
  * This function looks in DTD attribute declaration for #FIXED or
  * default declaration values unless DTD use has been turned off.
- * NOTE: this function acts independantly of namespaces associated
+ * NOTE: this function acts independently of namespaces associated
  *       to the attribute. Use xmlGetNsProp() or xmlGetNoNsProp()
  *       for namespace aware processing.
  *

@@ -125,7 +125,7 @@ the html (and would be too slow), so lynx-emacs is used by default.")
   "Look up xml-symbol." (interactive)
   ;; setting case-fold-search is now done in libxmldoc-string-match-cs
 
-  ;; Build up a symbol list if neccesary
+  ;; Build up a symbol list if necessary
   (if (null libxmldoc-symbols)
       (setq libxmldoc-symbols (libxmldoc-get-list-of-symbols)))
     

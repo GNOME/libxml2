@@ -1,3 +1,8 @@
+Sun Feb 16 16:48:38 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* ChangeLog tree.c doc/libxml-doc.el doc/libxml2-api.xml: applied
+	  a patch from Kjartan Maraas to fix some typos
+
 Sun Feb 16 16:40:52 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: more bug-hunting
@@ -1051,14 +1056,14 @@ Sun Nov 17 10:25:43 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 Sat Nov 16 16:30:25 CET 2002 Daniel Veillard <daniel@veillard.com>
 
-	* parser.c xpath.c: fixing #96925 wich was also dependant on the
+	* parser.c xpath.c: fixing #96925 wich was also dependent on the
 	  processing of parsed entities, and XPath computation on sustitued
 	  entities.
 	* testXPath.c: make sure entities are substitued.
 
 Fri Nov 15 16:22:54 CET 2002 Daniel Veillard <daniel@veillard.com>
 
-	* parser.c: fixed #96594, which was totally dependant on the 
+	* parser.c: fixed #96594, which was totally dependent on the 
 	  processing of internal parsed entities, which had to be changed.
 
 Fri Nov 15 12:16:07 CET 2002 Daniel Veillard <daniel@veillard.com>
@@ -2924,8 +2929,8 @@ Sun Feb 10 12:02:59 CET 2002 Daniel Veillard <daniel@veillard.com>
 Sat Feb  9 23:15:04 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am: seems some version of automake didn't
-	  generate the dependancies right as Jacob found out. Add
-	  an extra dependancy rule.
+	  generate the dependencies right as Jacob found out. Add
+	  an extra dependency rule.
 
 Sat Feb  9 18:59:23 CET 2002 Daniel Veillard <daniel@veillard.com>
 
@@ -3691,7 +3696,7 @@ Wed Oct 31 18:50:08 CET 2001 Daniel Veillard <daniel@veillard.com>
 	* xmlIO.c include/libxml/xmlIO.h: added xmlNoNetExternalEntityLoader()
 	  from xsltproc
 	* include/libxml/tree.h include/libxml/parser.h: trying to break a
-	  dependancy loop.
+	  dependency loop.
 
 Tue Oct 30 18:38:53 CET 2001 Daniel Veillard <daniel@veillard.com>
 
@@ -4454,7 +4459,7 @@ Tue Jul 24 15:39:11 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 Tue Jul 24 15:06:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: get rid of the readline and libhistory
-	  dependancies by default, release 2.4.1 with IA64 fix
+	  dependencies by default, release 2.4.1 with IA64 fix
 	* nanohttp.c tree.c xmlIO.c include/libxml/nanohttp.h
 	  include/libxml/tree.h include/libxml/xmlIO.h: incorporated
 	  John Kroll fixes to allow saving to HTTP via PUT (or
@@ -6596,7 +6601,7 @@ Wed Oct 11 02:53:10 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 Mon Oct  9 14:28:56 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* moved xml-error.h to xmlerror.h: seems this allowed to bypass
-	  the automake bug where wrong dependancies were generated.
+	  the automake bug where wrong dependencies were generated.
 	* xpath.[ch]: worked on XPointer
 
 Fri Oct  6 12:58:04 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
@@ -7007,7 +7012,7 @@ Fri Jul 14 16:12:20 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 Mon Jul 10 16:17:18 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.c: fixed the way the control connection is handled
-	* libxml.spec.in: fixed the dependancies and cleanup
+	* libxml.spec.in: fixed the dependencies and cleanup
 
 Mon Jul  3 14:37:07 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
@@ -7016,7 +7021,7 @@ Mon Jul  3 14:37:07 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 Sun Jul  2 20:51:43 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
-	* libxml.spec.in: fixed bug #7419, dependancies fouled for libxml-devel
+	* libxml.spec.in: fixed bug #7419, dependencies fouled for libxml-devel
 
 Sun Jul  2 09:52:45 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
@@ -8797,14 +8802,14 @@ Sun Nov 17 10:25:43 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 Sat Nov 16 16:30:25 CET 2002 Daniel Veillard <daniel@veillard.com>
 
-	* parser.c xpath.c: fixing #96925 wich was also dependant on the
+	* parser.c xpath.c: fixing #96925 wich was also dependent on the
 	  processing of parsed entities, and XPath computation on sustitued
 	  entities.
 	* testXPath.c: make sure entities are substitued.
 
 Fri Nov 15 16:22:54 CET 2002 Daniel Veillard <daniel@veillard.com>
 
-	* parser.c: fixed #96594, which was totally dependant on the 
+	* parser.c: fixed #96594, which was totally dependent on the 
 	  processing of internal parsed entities, which had to be changed.
 
 Fri Nov 15 12:16:07 CET 2002 Daniel Veillard <daniel@veillard.com>
@@ -10670,8 +10675,8 @@ Sun Feb 10 12:02:59 CET 2002 Daniel Veillard <daniel@veillard.com>
 Sat Feb  9 23:15:04 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am: seems some version of automake didn't
-	  generate the dependancies right as Jacob found out. Add
-	  an extra dependancy rule.
+	  generate the dependencies right as Jacob found out. Add
+	  an extra dependency rule.
 
 Sat Feb  9 18:59:23 CET 2002 Daniel Veillard <daniel@veillard.com>
 
@@ -11437,7 +11442,7 @@ Wed Oct 31 18:50:08 CET 2001 Daniel Veillard <daniel@veillard.com>
 	* xmlIO.c include/libxml/xmlIO.h: added xmlNoNetExternalEntityLoader()
 	  from xsltproc
 	* include/libxml/tree.h include/libxml/parser.h: trying to break a
-	  dependancy loop.
+	  dependency loop.
 
 Tue Oct 30 18:38:53 CET 2001 Daniel Veillard <daniel@veillard.com>
 
@@ -12200,7 +12205,7 @@ Tue Jul 24 15:39:11 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 Tue Jul 24 15:06:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: get rid of the readline and libhistory
-	  dependancies by default, release 2.4.1 with IA64 fix
+	  dependencies by default, release 2.4.1 with IA64 fix
 	* nanohttp.c tree.c xmlIO.c include/libxml/nanohttp.h
 	  include/libxml/tree.h include/libxml/xmlIO.h: incorporated
 	  John Kroll fixes to allow saving to HTTP via PUT (or
@@ -14342,7 +14347,7 @@ Wed Oct 11 02:53:10 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 Mon Oct  9 14:28:56 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* moved xml-error.h to xmlerror.h: seems this allowed to bypass
-	  the automake bug where wrong dependancies were generated.
+	  the automake bug where wrong dependencies were generated.
 	* xpath.[ch]: worked on XPointer
 
 Fri Oct  6 12:58:04 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
@@ -14753,7 +14758,7 @@ Fri Jul 14 16:12:20 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 Mon Jul 10 16:17:18 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.c: fixed the way the control connection is handled
-	* libxml.spec.in: fixed the dependancies and cleanup
+	* libxml.spec.in: fixed the dependencies and cleanup
 
 Mon Jul  3 14:37:07 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
@@ -14762,7 +14767,7 @@ Mon Jul  3 14:37:07 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 Sun Jul  2 20:51:43 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
-	* libxml.spec.in: fixed bug #7419, dependancies fouled for libxml-devel
+	* libxml.spec.in: fixed bug #7419, dependencies fouled for libxml-devel
 
 Sun Jul  2 09:52:45 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 

@@ -215,15 +215,14 @@
 
     <para>
       <programlisting>
-	<co id="getchildnode" /> cur = cur->xmlChildrenNode;
-	<co id="huntstoryinfo" /> while (cur != NULL) {
+	<co id="getchildnode" />cur = cur->xmlChildrenNode;
+	<co id="huntstoryinfo" />while (cur != NULL) {
 		if ((!xmlStrcmp(cur->name, (const xmlChar *)"storyinfo"))){
 			parseStory (doc, cur);
 		}
 		 
 	cur = cur->next;
 	}
-
       </programlisting>
 
       <calloutlist>
@@ -249,11 +248,14 @@
 void
 parseStory (xmlDocPtr doc, xmlNodePtr cur) {
 
+	xmlChar *key;
 	<co id="anothergetchild" /> cur = cur->xmlChildrenNode;
 	<co id="findkeyword" /> while (cur != NULL) {
 	    if ((!xmlStrcmp(cur->name, (const xmlChar *)"keyword"))) {
-	<co id="foundkeyword" />	    printf("keyword: %s\n", xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-	    }
+	<co id="foundkeyword" />	    key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+		    printf("keyword: %s\n", key);
+		    xmlFree(key);
+ 	    }
 	cur = cur->next;
 	}
     return;
@@ -275,6 +277,11 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur) {
 	    turn to <varname>cur-&gt;xmlChildrenNode</varname>. To retrieve it, we
 	    use the function <function><ulink
 					      url="http://xmlsoft.org/html/libxml-tree.html#XMLNODELISTGETSTRING">xmlNodeListGetString</ulink></function>, which also takes the <varname>doc</varname> pointer as an argument. In this case, we just print it out.</para>
+	  <note>
+	    <para>Because <function>xmlNodeListGetString</function> allocates
+	      memory for the string it returns, you must use
+	      <function>xmlFree</function> to free it.</para>
+	  </note>
 	</callout>
       </calloutlist>
     </para>

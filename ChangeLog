@@ -1,3 +1,8 @@
+Fri Aug 27 18:32:24 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlstring.c: fixed a problem with xmlCheckUTF8 reported on the
+	  mailing list by Julius Mittenzwei
+
 Fri Aug 27 00:13:39 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in: added BuildRequires:  zlib-devel, fixes

@@ -764,13 +764,36 @@ xmlCheckUTF8(const unsigned char *utf)
     int ix;
     unsigned char c;
 
-    for (ix = 0; (c = utf[ix]);) {
-        if (c & 0x80) {
-            if ((c & 0xc0) != 0x80 || (utf[ix + 1] & 0xc0) != 0x80)
+    /*
+     * utf is a string of 1, 2, 3 or 4 bytes.  The valid strings
+     * are as follows (in "bit format"):
+     *    0xxxxxxx                                      valid 1-byte
+     *    110xxxxx 10xxxxxx                             valid 2-byte
+     *    1110xxxx 10xxxxxx 10xxxxxx                    valid 3-byte
+     *    11110xxx 10xxxxxx 10xxxxxx 10xxxxxx           valid 4-byte
+     */
+    for (ix = 0; (c = utf[ix]);) {      /* string is 0-terminated */
+        if (c & 0x80) {                 /* if it is not a single byte */
+            /*
+             * We know the first byte starts with '1', so check
+             * the following bits and bytes.
+             *
+             * if the first byte does *not* start with 1 1, or the
+             * second byte does *not* start with 1 0 it's an error
+             */
+            if (((c & 0xc0) != 0xc0) || ((utf[ix + 1] & 0xc0) != 0x80))
                 return(0);
+            /*
+             * if the first three bits are set then the 3rd byte *must* start
+             * with 1 0
+             */
             if ((c & 0xe0) == 0xe0) {
                 if ((utf[ix + 2] & 0xc0) != 0x80)
                     return(0);
+                /*
+                 * if the first four bits are set then the fifth bit
+                 * must not be set, and the 4th byte *must* start with 1 0
+                 */
                 if ((c & 0xf0) == 0xf0) {
                     if ((c & 0xf8) != 0xf0 || (utf[ix + 3] & 0xc0) != 0x80)
                         return(0);

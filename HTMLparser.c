@@ -109,13 +109,15 @@ htmlParseErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
     if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
         (ctxt->instate == XML_PARSER_EOF))
 	return;
-    ctxt->errNo = error;
+    if (ctxt != NULL)
+	ctxt->errNo = error;
     __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_HTML, error,
                     XML_ERR_ERROR, NULL, 0,
 		    (const char *) str1, (const char *) str2,
 		    NULL, 0, 0,
 		    msg, str1, str2);
-    ctxt->wellFormed = 0;
+    if (ctxt != NULL)
+	ctxt->wellFormed = 0;
 }
 
 /**
@@ -134,11 +136,13 @@ htmlParseErrInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
     if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
         (ctxt->instate == XML_PARSER_EOF))
 	return;
-    ctxt->errNo = error;
+    if (ctxt != NULL)
+	ctxt->errNo = error;
     __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_HTML, error,
                     XML_ERR_ERROR, NULL, 0, NULL, NULL,
 		    NULL, val, 0, msg, val);
-    ctxt->wellFormed = 0;
+    if (ctxt != NULL)
+	ctxt->wellFormed = 0;
 }
 
 /************************************************************************
@@ -394,13 +398,15 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
-    htmlParseErr(ctxt, XML_ERR_INVALID_ENCODING,
-		 "Input is not proper UTF-8, indicate encoding !\n",
-		 NULL, NULL);
-    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
-	ctxt->sax->error(ctxt->userData, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+    {
+        char buffer[150];
+
+	snprintf(buffer, 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
+	htmlParseErr(ctxt, XML_ERR_INVALID_ENCODING,
+		     "Input is not proper UTF-8, indicate encoding !\n",
+		     BAD_CAST buffer, NULL);
     }
 
     ctxt->charset = XML_CHAR_ENCODING_8859_1; 
@@ -3018,6 +3024,12 @@ int
 htmlParseCharRef(htmlParserCtxtPtr ctxt) {
     int val = 0;
 
+    if ((ctxt == NULL) || (ctxt->input == NULL)) {
+	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
+		     "htmlParseCharRef: context error\n",
+		     NULL, NULL);
+        return(0);
+    }
     if ((CUR == '&') && (NXT(1) == '#') &&
         ((NXT(2) == 'x') || NXT(2) == 'X')) {
 	SKIP(3);
@@ -3341,6 +3353,11 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     int meta = 0;
     int i;
 
+    if ((ctxt == NULL) || (ctxt->input == NULL)) {
+	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
+		     "htmlParseStartTag: context error\n", NULL, NULL);
+	return;
+    }
     if (CUR != '<') return;
     NEXT;
 
@@ -3822,9 +3839,15 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     const htmlElemDesc * info;
     htmlParserNodeInfo node_info;
     const xmlChar *oldname;
-    int depth = ctxt->nameNr;
+    int depth;
     const xmlChar *oldptr;
 
+    if ((ctxt == NULL) || (ctxt->input == NULL)) {
+	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
+		     "htmlParseStartTag: context error\n", NULL, NULL);
+	return;
+    }
+    depth = ctxt->nameNr;
     /* Capture start position */
     if (ctxt->record_info) {
         node_info.begin_pos = ctxt->input->consumed +
@@ -3947,8 +3970,13 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     xmlInitParser();
 
     htmlDefaultSAXHandlerInit();
-    ctxt->html = 1;
 
+    if ((ctxt == NULL) || (ctxt->input == NULL)) {
+	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
+		     "htmlParseDocument: context error\n", NULL, NULL);
+	return(XML_ERR_INTERNAL_ERROR);
+    }
+    ctxt->html = 1;
     GROW;
     /*
      * SAX: beginning of the document processing.
@@ -5132,6 +5160,11 @@ done:
 int
 htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
+    if ((ctxt == NULL) || (ctxt->input == NULL)) {
+	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
+		     "htmlParseChunk: context error\n", NULL, NULL);
+	return(XML_ERR_INTERNAL_ERROR);
+    }
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
 	int base = ctxt->input->base - ctxt->input->buf->buffer->content;
@@ -5360,6 +5393,9 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     char *canonicFilename;
     /* htmlCharEncoding enc; */
     xmlChar *content, *content_line = (xmlChar *) "charset=";
+
+    if (filename == NULL)
+        return(NULL);
 
     ctxt = htmlNewParserCtxt();
     if (ctxt == NULL) {
@@ -5616,7 +5652,12 @@ void
 htmlCtxtReset(htmlParserCtxtPtr ctxt)
 {
     xmlParserInputPtr input;
-    xmlDictPtr dict = ctxt->dict;
+    xmlDictPtr dict;
+    
+    if (ctxt == NULL)
+        return;
+
+    dict = ctxt->dict;
 
     while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
         xmlFreeInputStream(input);
@@ -5696,6 +5737,9 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
 int
 htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
 {
+    if (ctxt == NULL)
+        return(-1);
+
     if (options & HTML_PARSE_NOWARNING) {
         ctxt->sax->warning = NULL;
         ctxt->vctxt.warning = NULL;

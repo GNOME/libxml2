@@ -26,6 +26,8 @@ int main(void) {
     int ret;
     int blocks, mem;
 
+    xmlInitParser();
+
     LIBXML_TEST_VERSION
 
     xmlSetStructuredErrorFunc(NULL, structured_errors);
@@ -304,8 +306,45 @@ static int
 test_htmlAutoCloseTag(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    int ret_val;
+    htmlDocPtr doc; /* the HTML document */
+    int n_doc;
+    const xmlChar * name; /* The tag name */
+    int n_name;
+    htmlNodePtr elem; /* the HTML element */
+    int n_elem;
 
-    /* missing type support */
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc);
+        name = gen_const_xmlChar_ptr(n_name);
+        elem = gen_xmlNodePtr(n_elem);
+
+        ret_val = htmlAutoCloseTag(doc, name, elem);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc);
+        des_const_xmlChar_ptr(n_name, name);
+        des_xmlNodePtr(n_elem, elem);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlAutoCloseTag",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_name);
+            printf(" %d", n_elem);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -334,18 +373,59 @@ static int
 test_htmlCtxtReadDoc(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    htmlDocPtr ret_val;
+    htmlParserCtxtPtr ctxt; /* an HTML parser context */
+    int n_ctxt;
+    const xmlChar * cur; /* a pointer to a zero terminated string */
+    int n_cur;
+    const char * URL; /* the base URL to use for the document */
+    int n_URL;
+    const char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of htmlParserOption(s) */
+    int n_options;
 
-    /* missing type support */
-    return(ret);
-}
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+    for (n_cur = 0;n_cur < gen_nb_const_xmlChar_ptr;n_cur++) {
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt);
+        cur = gen_const_xmlChar_ptr(n_cur);
+        URL = gen_filepath(n_URL);
+        encoding = gen_const_char_ptr(n_encoding);
+        options = gen_int(n_options);
 
+        ret_val = htmlCtxtReadDoc(ctxt, cur, URL, encoding, options);
+        desret_xmlDocPtr(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt);
+        des_const_xmlChar_ptr(n_cur, cur);
+        des_filepath(n_URL, URL);
+        des_const_char_ptr(n_encoding, encoding);
+        des_int(n_options, options);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlCtxtReadDoc",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_cur);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+#endif
 
-static int
-test_htmlCtxtReadFd(void) {
-    int ret = 0;
-
-
-    /* missing type support */
     return(ret);
 }
 
@@ -354,8 +434,52 @@ static int
 test_htmlCtxtReadFile(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    htmlDocPtr ret_val;
+    htmlParserCtxtPtr ctxt; /* an HTML parser context */
+    int n_ctxt;
+    const char * filename; /* a file or URL */
+    int n_filename;
+    const char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of htmlParserOption(s) */
+    int n_options;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+    for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt);
+        filename = gen_filepath(n_filename);
+        encoding = gen_const_char_ptr(n_encoding);
+        options = gen_int(n_options);
+
+        ret_val = htmlCtxtReadFile(ctxt, filename, encoding, options);
+        desret_xmlDocPtr(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt);
+        des_filepath(n_filename, filename);
+        des_const_char_ptr(n_encoding, encoding);
+        des_int(n_options, options);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlCtxtReadFile",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_filename);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -374,8 +498,66 @@ static int
 test_htmlCtxtReadMemory(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    htmlDocPtr ret_val;
+    htmlParserCtxtPtr ctxt; /* an HTML parser context */
+    int n_ctxt;
+    const char * buffer; /* a pointer to a char array */
+    int n_buffer;
+    int size; /* the size of the array */
+    int n_size;
+    const char * URL; /* the base URL to use for the document */
+    int n_URL;
+    const char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of htmlParserOption(s) */
+    int n_options;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+    for (n_buffer = 0;n_buffer < gen_nb_const_char_ptr;n_buffer++) {
+    for (n_size = 0;n_size < gen_nb_int;n_size++) {
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt);
+        buffer = gen_const_char_ptr(n_buffer);
+        size = gen_int(n_size);
+        URL = gen_filepath(n_URL);
+        encoding = gen_const_char_ptr(n_encoding);
+        options = gen_int(n_options);
+
+        ret_val = htmlCtxtReadMemory(ctxt, buffer, size, URL, encoding, options);
+        desret_xmlDocPtr(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt);
+        des_const_char_ptr(n_buffer, buffer);
+        des_int(n_size, size);
+        des_filepath(n_URL, URL);
+        des_const_char_ptr(n_encoding, encoding);
+        des_int(n_options, options);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlCtxtReadMemory",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_buffer);
+            printf(" %d", n_size);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -384,8 +566,29 @@ static int
 test_htmlCtxtReset(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    htmlParserCtxtPtr ctxt; /* an HTML parser context */
+    int n_ctxt;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt);
+
+        htmlCtxtReset(ctxt);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlCtxtReset",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -394,8 +597,38 @@ static int
 test_htmlCtxtUseOptions(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    int ret_val;
+    htmlParserCtxtPtr ctxt; /* an HTML parser context */
+    int n_ctxt;
+    int options; /* a combination of htmlParserOption(s) */
+    int n_options;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt);
+        options = gen_int(n_options);
+
+        ret_val = htmlCtxtUseOptions(ctxt, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt);
+        des_int(n_options, options);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlCtxtUseOptions",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -470,9 +703,11 @@ test_htmlHandleOmittedElem(void) {
         des_int(n_val, val);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in htmlHandleOmittedElem\n",
+            printf("Leak of %d blocks found in htmlHandleOmittedElem",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_val);
+            printf("\n");
         }
     }
 #endif
@@ -485,8 +720,38 @@ static int
 test_htmlIsAutoClosed(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    int ret_val;
+    htmlDocPtr doc; /* the HTML document */
+    int n_doc;
+    htmlNodePtr elem; /* the HTML element */
+    int n_elem;
 
-    /* missing type support */
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc);
+        elem = gen_xmlNodePtr(n_elem);
+
+        ret_val = htmlIsAutoClosed(doc, elem);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc);
+        des_xmlNodePtr(n_elem, elem);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlIsAutoClosed",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_elem);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -511,9 +776,11 @@ test_htmlIsScriptAttribute(void) {
         des_const_xmlChar_ptr(n_name, name);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in htmlIsScriptAttribute\n",
+            printf("Leak of %d blocks found in htmlIsScriptAttribute",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_name);
+            printf("\n");
         }
     }
 #endif
@@ -536,8 +803,31 @@ static int
 test_htmlParseCharRef(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    int ret_val;
+    htmlParserCtxtPtr ctxt; /* an HTML parser context */
+    int n_ctxt;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt);
+
+        ret_val = htmlParseCharRef(ctxt);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlParseCharRef",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -546,8 +836,54 @@ static int
 test_htmlParseChunk(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+#ifdef LIBXML_PUSH_ENABLED
+    int mem_base;
+    int ret_val;
+    htmlParserCtxtPtr ctxt; /* an HTML parser context */
+    int n_ctxt;
+    const char * chunk; /* an char array */
+    int n_chunk;
+    int size; /* the size in byte of the chunk */
+    int n_size;
+    int terminate; /* last chunk indicator */
+    int n_terminate;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+    for (n_chunk = 0;n_chunk < gen_nb_const_char_ptr;n_chunk++) {
+    for (n_size = 0;n_size < gen_nb_int;n_size++) {
+    for (n_terminate = 0;n_terminate < gen_nb_int;n_terminate++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt);
+        chunk = gen_const_char_ptr(n_chunk);
+        size = gen_int(n_size);
+        terminate = gen_int(n_terminate);
+
+        ret_val = htmlParseChunk(ctxt, chunk, size, terminate);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt);
+        des_const_char_ptr(n_chunk, chunk);
+        des_int(n_size, size);
+        des_int(n_terminate, terminate);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlParseChunk",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_chunk);
+            printf(" %d", n_size);
+            printf(" %d", n_terminate);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+#endif
+
     return(ret);
 }
 
@@ -566,8 +902,31 @@ static int
 test_htmlParseDocument(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    int ret_val;
+    htmlParserCtxtPtr ctxt; /* an HTML parser context */
+    int n_ctxt;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt);
+
+        ret_val = htmlParseDocument(ctxt);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlParseDocument",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -576,8 +935,29 @@ static int
 test_htmlParseElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    htmlParserCtxtPtr ctxt; /* an HTML parser context */
+    int n_ctxt;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt);
+
+        htmlParseElement(ctxt);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlParseElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -596,8 +976,28 @@ static int
 test_htmlParseFile(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    htmlDocPtr ret_val;
+    const char * filename; /* the filename */
+    int n_filename;
+    const char * encoding; /* a free form C string describing the HTML document encoding, or NULL */
+    int n_encoding;
 
-    /* missing type support */
+    for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+        filename = gen_filepath(n_filename);
+        encoding = gen_const_char_ptr(n_encoding);
+
+        ret_val = htmlParseFile(filename, encoding);
+        desret_xmlDocPtr(ret_val);
+        call_tests++;
+        des_filepath(n_filename, filename);
+        des_const_char_ptr(n_encoding, encoding);
+        xmlResetLastError();
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -606,18 +1006,52 @@ static int
 test_htmlReadDoc(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    htmlDocPtr ret_val;
+    const xmlChar * cur; /* a pointer to a zero terminated string */
+    int n_cur;
+    const char * URL; /* the base URL to use for the document */
+    int n_URL;
+    const char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of htmlParserOption(s) */
+    int n_options;
 
-    /* missing type support */
-    return(ret);
-}
+    for (n_cur = 0;n_cur < gen_nb_const_xmlChar_ptr;n_cur++) {
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        cur = gen_const_xmlChar_ptr(n_cur);
+        URL = gen_filepath(n_URL);
+        encoding = gen_const_char_ptr(n_encoding);
+        options = gen_int(n_options);
 
+        ret_val = htmlReadDoc(cur, URL, encoding, options);
+        desret_xmlDocPtr(ret_val);
+        call_tests++;
+        des_const_xmlChar_ptr(n_cur, cur);
+        des_filepath(n_URL, URL);
+        des_const_char_ptr(n_encoding, encoding);
+        des_int(n_options, options);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlReadDoc",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
 
-static int
-test_htmlReadFd(void) {
-    int ret = 0;
-
-
-    /* missing type support */
     return(ret);
 }
 
@@ -626,8 +1060,45 @@ static int
 test_htmlReadFile(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    htmlDocPtr ret_val;
+    const char * filename; /* a file or URL */
+    int n_filename;
+    const char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of htmlParserOption(s) */
+    int n_options;
 
-    /* missing type support */
+    for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        filename = gen_filepath(n_filename);
+        encoding = gen_const_char_ptr(n_encoding);
+        options = gen_int(n_options);
+
+        ret_val = htmlReadFile(filename, encoding, options);
+        desret_xmlDocPtr(ret_val);
+        call_tests++;
+        des_filepath(n_filename, filename);
+        des_const_char_ptr(n_encoding, encoding);
+        des_int(n_options, options);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlReadFile",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_filename);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -646,8 +1117,59 @@ static int
 test_htmlReadMemory(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    htmlDocPtr ret_val;
+    const char * buffer; /* a pointer to a char array */
+    int n_buffer;
+    int size; /* the size of the array */
+    int n_size;
+    const char * URL; /* the base URL to use for the document */
+    int n_URL;
+    const char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of htmlParserOption(s) */
+    int n_options;
 
-    /* missing type support */
+    for (n_buffer = 0;n_buffer < gen_nb_const_char_ptr;n_buffer++) {
+    for (n_size = 0;n_size < gen_nb_int;n_size++) {
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        buffer = gen_const_char_ptr(n_buffer);
+        size = gen_int(n_size);
+        URL = gen_filepath(n_URL);
+        encoding = gen_const_char_ptr(n_encoding);
+        options = gen_int(n_options);
+
+        ret_val = htmlReadMemory(buffer, size, URL, encoding, options);
+        desret_xmlDocPtr(ret_val);
+        call_tests++;
+        des_const_char_ptr(n_buffer, buffer);
+        des_int(n_size, size);
+        des_filepath(n_URL, URL);
+        des_const_char_ptr(n_encoding, encoding);
+        des_int(n_options, options);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlReadMemory",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_buffer);
+            printf(" %d", n_size);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -692,7 +1214,6 @@ test_HTMLparser(void) {
     ret += test_htmlCreateMemoryParserCtxt();
     ret += test_htmlCreatePushParserCtxt();
     ret += test_htmlCtxtReadDoc();
-    ret += test_htmlCtxtReadFd();
     ret += test_htmlCtxtReadFile();
     ret += test_htmlCtxtReadIO();
     ret += test_htmlCtxtReadMemory();
@@ -715,7 +1236,6 @@ test_HTMLparser(void) {
     ret += test_htmlParseEntityRef();
     ret += test_htmlParseFile();
     ret += test_htmlReadDoc();
-    ret += test_htmlReadFd();
     ret += test_htmlReadFile();
     ret += test_htmlReadIO();
     ret += test_htmlReadMemory();
@@ -798,9 +1318,11 @@ test_htmlIsBooleanAttr(void) {
         des_const_xmlChar_ptr(n_name, name);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in htmlIsBooleanAttr\n",
+            printf("Leak of %d blocks found in htmlIsBooleanAttr",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_name);
+            printf("\n");
         }
     }
 #endif
@@ -813,8 +1335,38 @@ static int
 test_htmlNewDoc(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    htmlDocPtr ret_val;
+    const xmlChar * URI; /* URI for the dtd, or NULL */
+    int n_URI;
+    const xmlChar * ExternalID; /* the external ID of the DTD, or NULL */
+    int n_ExternalID;
 
-    /* missing type support */
+    for (n_URI = 0;n_URI < gen_nb_const_xmlChar_ptr;n_URI++) {
+    for (n_ExternalID = 0;n_ExternalID < gen_nb_const_xmlChar_ptr;n_ExternalID++) {
+        mem_base = xmlMemBlocks();
+        URI = gen_const_xmlChar_ptr(n_URI);
+        ExternalID = gen_const_xmlChar_ptr(n_ExternalID);
+
+        ret_val = htmlNewDoc(URI, ExternalID);
+        desret_xmlDocPtr(ret_val);
+        call_tests++;
+        des_const_xmlChar_ptr(n_URI, URI);
+        des_const_xmlChar_ptr(n_ExternalID, ExternalID);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlNewDoc",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_URI);
+            printf(" %d", n_ExternalID);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -823,8 +1375,38 @@ static int
 test_htmlNewDocNoDtD(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    htmlDocPtr ret_val;
+    const xmlChar * URI; /* URI for the dtd, or NULL */
+    int n_URI;
+    const xmlChar * ExternalID; /* the external ID of the DTD, or NULL */
+    int n_ExternalID;
 
-    /* missing type support */
+    for (n_URI = 0;n_URI < gen_nb_const_xmlChar_ptr;n_URI++) {
+    for (n_ExternalID = 0;n_ExternalID < gen_nb_const_xmlChar_ptr;n_ExternalID++) {
+        mem_base = xmlMemBlocks();
+        URI = gen_const_xmlChar_ptr(n_URI);
+        ExternalID = gen_const_xmlChar_ptr(n_ExternalID);
+
+        ret_val = htmlNewDocNoDtD(URI, ExternalID);
+        desret_xmlDocPtr(ret_val);
+        call_tests++;
+        des_const_xmlChar_ptr(n_URI, URI);
+        des_const_xmlChar_ptr(n_ExternalID, ExternalID);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlNewDocNoDtD",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_URI);
+            printf(" %d", n_ExternalID);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -905,9 +1487,12 @@ test_htmlSaveFile(void) {
         des_xmlDocPtr(n_cur, cur);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in htmlSaveFile\n",
+            printf("Leak of %d blocks found in htmlSaveFile",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf(" %d", n_cur);
+            printf("\n");
         }
     }
     }
@@ -949,9 +1534,13 @@ test_htmlSaveFileEnc(void) {
         des_const_char_ptr(n_encoding, encoding);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in htmlSaveFileEnc\n",
+            printf("Leak of %d blocks found in htmlSaveFileEnc",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf(" %d", n_cur);
+            printf(" %d", n_encoding);
+            printf("\n");
         }
     }
     }
@@ -999,9 +1588,14 @@ test_htmlSaveFileFormat(void) {
         des_int(n_format, format);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in htmlSaveFileFormat\n",
+            printf("Leak of %d blocks found in htmlSaveFileFormat",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf(" %d", n_cur);
+            printf(" %d", n_encoding);
+            printf(" %d", n_format);
+            printf("\n");
         }
     }
     }
@@ -1018,8 +1612,38 @@ static int
 test_htmlSetMetaEncoding(void) {
     int ret = 0;
 
+#ifdef LIBXML_HTML_ENABLED
+    int mem_base;
+    int ret_val;
+    htmlDocPtr doc; /* the document */
+    int n_doc;
+    const xmlChar * encoding; /* the encoding string */
+    int n_encoding;
 
-    /* missing type support */
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_xmlChar_ptr;n_encoding++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc);
+        encoding = gen_const_xmlChar_ptr(n_encoding);
+
+        ret_val = htmlSetMetaEncoding(doc, encoding);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc);
+        des_const_xmlChar_ptr(n_encoding, encoding);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in htmlSetMetaEncoding",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_encoding);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -1205,9 +1829,13 @@ test_xmlCatalogAdd(void) {
         des_const_xmlChar_ptr(n_replace, replace);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCatalogAdd\n",
+            printf("Leak of %d blocks found in xmlCatalogAdd",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_type);
+            printf(" %d", n_orig);
+            printf(" %d", n_replace);
+            printf("\n");
         }
     }
     }
@@ -1233,18 +1861,11 @@ test_xmlCatalogCleanup(void) {
     int ret = 0;
 
 #ifdef LIBXML_CATALOG_ENABLED
-    int mem_base;
 
-        mem_base = xmlMemBlocks();
 
         xmlCatalogCleanup();
         call_tests++;
         xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCatalogCleanup\n",
-	           xmlMemBlocks() - mem_base);
-	    ret++;
-        }
 #endif
 
     return(ret);
@@ -1423,9 +2044,11 @@ test_xmlCatalogSetDebug(void) {
         des_int(n_level, level);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCatalogSetDebug\n",
+            printf("Leak of %d blocks found in xmlCatalogSetDebug",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_level);
+            printf("\n");
         }
     }
 #endif
@@ -1477,9 +2100,10 @@ test_xmlInitializeCatalog(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlInitializeCatalog\n",
+            printf("Leak of %d blocks found in xmlInitializeCatalog",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 
@@ -1583,9 +2207,11 @@ test_xmlParseCatalogFile(void) {
         des_filepath(n_filename, filename);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlParseCatalogFile\n",
+            printf("Leak of %d blocks found in xmlParseCatalogFile",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf("\n");
         }
     }
 #endif
@@ -1948,9 +2574,10 @@ test_xmlCleanupEncodingAliases(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCleanupEncodingAliases\n",
+            printf("Leak of %d blocks found in xmlCleanupEncodingAliases",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 
     return(ret);
@@ -1976,9 +2603,11 @@ test_xmlDelEncodingAlias(void) {
         des_const_char_ptr(n_alias, alias);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlDelEncodingAlias\n",
+            printf("Leak of %d blocks found in xmlDelEncodingAlias",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_alias);
+            printf("\n");
         }
     }
 
@@ -2045,9 +2674,11 @@ test_xmlGetEncodingAlias(void) {
         des_const_char_ptr(n_alias, alias);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlGetEncodingAlias\n",
+            printf("Leak of %d blocks found in xmlGetEncodingAlias",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_alias);
+            printf("\n");
         }
     }
 
@@ -2160,9 +2791,10 @@ test_xmlCleanupPredefinedEntities(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCleanupPredefinedEntities\n",
+            printf("Leak of %d blocks found in xmlCleanupPredefinedEntities",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 
     return(ret);
@@ -2291,9 +2923,10 @@ test_xmlInitializePredefinedEntities(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlInitializePredefinedEntities\n",
+            printf("Leak of %d blocks found in xmlInitializePredefinedEntities",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 
     return(ret);
@@ -2896,9 +3529,10 @@ test_xmlNanoFTPCleanup(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNanoFTPCleanup\n",
+            printf("Leak of %d blocks found in xmlNanoFTPCleanup",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 
@@ -3019,9 +3653,10 @@ test_xmlNanoFTPInit(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNanoFTPInit\n",
+            printf("Leak of %d blocks found in xmlNanoFTPInit",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 
@@ -3211,9 +3846,10 @@ test_xmlNanoHTTPCleanup(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNanoHTTPCleanup\n",
+            printf("Leak of %d blocks found in xmlNanoHTTPCleanup",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 
@@ -3274,9 +3910,10 @@ test_xmlNanoHTTPInit(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNanoHTTPInit\n",
+            printf("Leak of %d blocks found in xmlNanoHTTPInit",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 
@@ -3460,9 +4097,11 @@ test_xmlClearParserCtxt(void) {
         des_xmlParserCtxtPtr(n_ctxt, ctxt);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlClearParserCtxt\n",
+            printf("Leak of %d blocks found in xmlClearParserCtxt",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
         }
     }
 
@@ -3539,9 +4178,15 @@ test_xmlCtxtReadDoc(void) {
         des_int(n_options, options);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCtxtReadDoc\n",
+            printf("Leak of %d blocks found in xmlCtxtReadDoc",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_cur);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
         }
     }
     }
@@ -3587,9 +4232,14 @@ test_xmlCtxtReadFile(void) {
         des_int(n_options, options);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCtxtReadFile\n",
+            printf("Leak of %d blocks found in xmlCtxtReadFile",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_filename);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
         }
     }
     }
@@ -3654,9 +4304,16 @@ test_xmlCtxtReadMemory(void) {
         des_int(n_options, options);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCtxtReadMemory\n",
+            printf("Leak of %d blocks found in xmlCtxtReadMemory",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_buffer);
+            printf(" %d", n_size);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
         }
     }
     }
@@ -3686,9 +4343,11 @@ test_xmlCtxtReset(void) {
         des_xmlParserCtxtPtr(n_ctxt, ctxt);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCtxtReset\n",
+            printf("Leak of %d blocks found in xmlCtxtReset",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
         }
     }
 
@@ -3735,9 +4394,15 @@ test_xmlCtxtResetPush(void) {
         des_const_char_ptr(n_encoding, encoding);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCtxtResetPush\n",
+            printf("Leak of %d blocks found in xmlCtxtResetPush",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_chunk);
+            printf(" %d", n_size);
+            printf(" %d", n_filename);
+            printf(" %d", n_encoding);
+            printf("\n");
         }
     }
     }
@@ -3773,9 +4438,12 @@ test_xmlCtxtUseOptions(void) {
         des_int(n_options, options);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCtxtUseOptions\n",
+            printf("Leak of %d blocks found in xmlCtxtUseOptions",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_options);
+            printf("\n");
         }
     }
     }
@@ -3846,9 +4514,10 @@ test_xmlInitParser(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlInitParser\n",
+            printf("Leak of %d blocks found in xmlInitParser",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 
     return(ret);
@@ -3874,9 +4543,11 @@ test_xmlInitParserCtxt(void) {
         des_xmlParserCtxtPtr(n_ctxt, ctxt);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlInitParserCtxt\n",
+            printf("Leak of %d blocks found in xmlInitParserCtxt",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
         }
     }
 
@@ -3903,9 +4574,11 @@ test_xmlKeepBlanksDefault(void) {
         des_int(n_val, val);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlKeepBlanksDefault\n",
+            printf("Leak of %d blocks found in xmlKeepBlanksDefault",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_val);
+            printf("\n");
         }
     }
 
@@ -3932,9 +4605,11 @@ test_xmlLineNumbersDefault(void) {
         des_int(n_val, val);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlLineNumbersDefault\n",
+            printf("Leak of %d blocks found in xmlLineNumbersDefault",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_val);
+            printf("\n");
         }
     }
 
@@ -4027,9 +4702,14 @@ test_xmlParseChunk(void) {
         des_int(n_terminate, terminate);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlParseChunk\n",
+            printf("Leak of %d blocks found in xmlParseChunk",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_chunk);
+            printf(" %d", n_size);
+            printf(" %d", n_terminate);
+            printf("\n");
         }
     }
     }
@@ -4090,9 +4770,11 @@ test_xmlParseDocument(void) {
         des_xmlParserCtxtPtr(n_ctxt, ctxt);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlParseDocument\n",
+            printf("Leak of %d blocks found in xmlParseDocument",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
         }
     }
 
@@ -4119,9 +4801,11 @@ test_xmlParseEntity(void) {
         des_filepath(n_filename, filename);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlParseEntity\n",
+            printf("Leak of %d blocks found in xmlParseEntity",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf("\n");
         }
     }
 
@@ -4148,9 +4832,11 @@ test_xmlParseExtParsedEnt(void) {
         des_xmlParserCtxtPtr(n_ctxt, ctxt);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlParseExtParsedEnt\n",
+            printf("Leak of %d blocks found in xmlParseExtParsedEnt",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
         }
     }
 
@@ -4187,9 +4873,11 @@ test_xmlParseFile(void) {
         des_filepath(n_filename, filename);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlParseFile\n",
+            printf("Leak of %d blocks found in xmlParseFile",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf("\n");
         }
     }
 
@@ -4231,9 +4919,12 @@ test_xmlParseMemory(void) {
         des_int(n_size, size);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlParseMemory\n",
+            printf("Leak of %d blocks found in xmlParseMemory",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_buffer);
+            printf(" %d", n_size);
+            printf("\n");
         }
     }
     }
@@ -4311,9 +5002,11 @@ test_xmlPedanticParserDefault(void) {
         des_int(n_val, val);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlPedanticParserDefault\n",
+            printf("Leak of %d blocks found in xmlPedanticParserDefault",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_val);
+            printf("\n");
         }
     }
 
@@ -4355,9 +5048,14 @@ test_xmlReadDoc(void) {
         des_int(n_options, options);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlReadDoc\n",
+            printf("Leak of %d blocks found in xmlReadDoc",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
         }
     }
     }
@@ -4397,9 +5095,13 @@ test_xmlReadFile(void) {
         des_int(n_options, options);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlReadFile\n",
+            printf("Leak of %d blocks found in xmlReadFile",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
         }
     }
     }
@@ -4458,9 +5160,15 @@ test_xmlReadMemory(void) {
         des_int(n_options, options);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlReadMemory\n",
+            printf("Leak of %d blocks found in xmlReadMemory",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_buffer);
+            printf(" %d", n_size);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
         }
     }
     }
@@ -4501,9 +5209,11 @@ test_xmlRecoverFile(void) {
         des_filepath(n_filename, filename);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlRecoverFile\n",
+            printf("Leak of %d blocks found in xmlRecoverFile",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf("\n");
         }
     }
 
@@ -4535,9 +5245,12 @@ test_xmlRecoverMemory(void) {
         des_int(n_size, size);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlRecoverMemory\n",
+            printf("Leak of %d blocks found in xmlRecoverMemory",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_buffer);
+            printf(" %d", n_size);
+            printf("\n");
         }
     }
     }
@@ -4683,9 +5396,13 @@ test_xmlSetupParserForBuffer(void) {
         des_filepath(n_filename, filename);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSetupParserForBuffer\n",
+            printf("Leak of %d blocks found in xmlSetupParserForBuffer",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_buffer);
+            printf(" %d", n_filename);
+            printf("\n");
         }
     }
     }
@@ -4712,9 +5429,11 @@ test_xmlStopParser(void) {
         des_xmlParserCtxtPtr(n_ctxt, ctxt);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlStopParser\n",
+            printf("Leak of %d blocks found in xmlStopParser",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
         }
     }
 
@@ -4741,9 +5460,11 @@ test_xmlSubstituteEntitiesDefault(void) {
         des_int(n_val, val);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSubstituteEntitiesDefault\n",
+            printf("Leak of %d blocks found in xmlSubstituteEntitiesDefault",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_val);
+            printf("\n");
         }
     }
 
@@ -4871,9 +5592,10 @@ test_xmlRelaxNGCleanupTypes(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlRelaxNGCleanupTypes\n",
+            printf("Leak of %d blocks found in xmlRelaxNGCleanupTypes",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 
@@ -5100,22 +5822,26 @@ test_xmlAddChild(void) {
     xmlNodePtr cur; /* the child node */
     int n_cur;
 
-    for (n_parent = 0;n_parent < gen_nb_xmlNodePtr_in;n_parent++) {
+    for (n_parent = 0;n_parent < gen_nb_xmlNodePtr;n_parent++) {
     for (n_cur = 0;n_cur < gen_nb_xmlNodePtr_in;n_cur++) {
         mem_base = xmlMemBlocks();
-        parent = gen_xmlNodePtr_in(n_parent);
+        parent = gen_xmlNodePtr(n_parent);
         cur = gen_xmlNodePtr_in(n_cur);
 
         ret_val = xmlAddChild(parent, cur);
         desret_xmlNodePtr(ret_val);
         call_tests++;
-        des_xmlNodePtr_in(n_parent, parent);
+        if (ret_val == NULL) { xmlFreeNode(cur) ; cur = NULL ; }
+        des_xmlNodePtr(n_parent, parent);
         des_xmlNodePtr_in(n_cur, cur);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlAddChild\n",
+            printf("Leak of %d blocks found in xmlAddChild",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_parent);
+            printf(" %d", n_cur);
+            printf("\n");
         }
     }
     }
@@ -5135,22 +5861,26 @@ test_xmlAddChildList(void) {
     xmlNodePtr cur; /* the first node in the list */
     int n_cur;
 
-    for (n_parent = 0;n_parent < gen_nb_xmlNodePtr_in;n_parent++) {
+    for (n_parent = 0;n_parent < gen_nb_xmlNodePtr;n_parent++) {
     for (n_cur = 0;n_cur < gen_nb_xmlNodePtr_in;n_cur++) {
         mem_base = xmlMemBlocks();
-        parent = gen_xmlNodePtr_in(n_parent);
+        parent = gen_xmlNodePtr(n_parent);
         cur = gen_xmlNodePtr_in(n_cur);
 
         ret_val = xmlAddChildList(parent, cur);
         desret_xmlNodePtr(ret_val);
         call_tests++;
-        des_xmlNodePtr_in(n_parent, parent);
+        if (ret_val == NULL) { xmlFreeNodeList(cur) ; cur = NULL ; }
+        des_xmlNodePtr(n_parent, parent);
         des_xmlNodePtr_in(n_cur, cur);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlAddChildList\n",
+            printf("Leak of %d blocks found in xmlAddChildList",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_parent);
+            printf(" %d", n_cur);
+            printf("\n");
         }
     }
     }
@@ -5171,21 +5901,25 @@ test_xmlAddNextSibling(void) {
     int n_elem;
 
     for (n_cur = 0;n_cur < gen_nb_xmlNodePtr;n_cur++) {
-    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr_in;n_elem++) {
         mem_base = xmlMemBlocks();
         cur = gen_xmlNodePtr(n_cur);
-        elem = gen_xmlNodePtr(n_elem);
+        elem = gen_xmlNodePtr_in(n_elem);
 
         ret_val = xmlAddNextSibling(cur, elem);
         desret_xmlNodePtr(ret_val);
         call_tests++;
+        if (ret_val == NULL) { xmlFreeNode(elem) ; elem = NULL ; }
         des_xmlNodePtr(n_cur, cur);
-        des_xmlNodePtr(n_elem, elem);
+        des_xmlNodePtr_in(n_elem, elem);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlAddNextSibling\n",
+            printf("Leak of %d blocks found in xmlAddNextSibling",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_elem);
+            printf("\n");
         }
     }
     }
@@ -5207,21 +5941,25 @@ test_xmlAddPrevSibling(void) {
     int n_elem;
 
     for (n_cur = 0;n_cur < gen_nb_xmlNodePtr;n_cur++) {
-    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr_in;n_elem++) {
         mem_base = xmlMemBlocks();
         cur = gen_xmlNodePtr(n_cur);
-        elem = gen_xmlNodePtr(n_elem);
+        elem = gen_xmlNodePtr_in(n_elem);
 
         ret_val = xmlAddPrevSibling(cur, elem);
         desret_xmlNodePtr(ret_val);
         call_tests++;
+        if (ret_val == NULL) { xmlFreeNode(elem) ; elem = NULL ; }
         des_xmlNodePtr(n_cur, cur);
-        des_xmlNodePtr(n_elem, elem);
+        des_xmlNodePtr_in(n_elem, elem);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlAddPrevSibling\n",
+            printf("Leak of %d blocks found in xmlAddPrevSibling",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_elem);
+            printf("\n");
         }
     }
     }
@@ -5243,21 +5981,25 @@ test_xmlAddSibling(void) {
     int n_elem;
 
     for (n_cur = 0;n_cur < gen_nb_xmlNodePtr;n_cur++) {
-    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr_in;n_elem++) {
         mem_base = xmlMemBlocks();
         cur = gen_xmlNodePtr(n_cur);
-        elem = gen_xmlNodePtr(n_elem);
+        elem = gen_xmlNodePtr_in(n_elem);
 
         ret_val = xmlAddSibling(cur, elem);
         desret_xmlNodePtr(ret_val);
         call_tests++;
+        if (ret_val == NULL) { xmlFreeNode(elem) ; elem = NULL ; }
         des_xmlNodePtr(n_cur, cur);
-        des_xmlNodePtr(n_elem, elem);
+        des_xmlNodePtr_in(n_elem, elem);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlAddSibling\n",
+            printf("Leak of %d blocks found in xmlAddSibling",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_elem);
+            printf("\n");
         }
     }
     }
@@ -5491,9 +6233,12 @@ test_xmlCopyDoc(void) {
         des_int(n_recursive, recursive);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCopyDoc\n",
+            printf("Leak of %d blocks found in xmlCopyDoc",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_recursive);
+            printf("\n");
         }
     }
     }
@@ -5682,9 +6427,11 @@ test_xmlDocGetRootElement(void) {
         des_xmlDocPtr(n_doc, doc);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlDocGetRootElement\n",
+            printf("Leak of %d blocks found in xmlDocGetRootElement",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf("\n");
         }
     }
 
@@ -5705,21 +6452,25 @@ test_xmlDocSetRootElement(void) {
     int n_root;
 
     for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
-    for (n_root = 0;n_root < gen_nb_xmlNodePtr;n_root++) {
+    for (n_root = 0;n_root < gen_nb_xmlNodePtr_in;n_root++) {
         mem_base = xmlMemBlocks();
         doc = gen_xmlDocPtr(n_doc);
-        root = gen_xmlNodePtr(n_root);
+        root = gen_xmlNodePtr_in(n_root);
 
         ret_val = xmlDocSetRootElement(doc, root);
         desret_xmlNodePtr(ret_val);
         call_tests++;
+        if (doc == NULL) { xmlFreeNode(root) ; root = NULL ; }
         des_xmlDocPtr(n_doc, doc);
-        des_xmlNodePtr(n_root, root);
+        des_xmlNodePtr_in(n_root, root);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlDocSetRootElement\n",
+            printf("Leak of %d blocks found in xmlDocSetRootElement",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_root);
+            printf("\n");
         }
     }
     }
@@ -5763,9 +6514,10 @@ test_xmlGetCompressMode(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlGetCompressMode\n",
+            printf("Leak of %d blocks found in xmlGetCompressMode",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 
     return(ret);
@@ -5791,9 +6543,11 @@ test_xmlGetDocCompressMode(void) {
         des_xmlDocPtr(n_doc, doc);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlGetDocCompressMode\n",
+            printf("Leak of %d blocks found in xmlGetDocCompressMode",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf("\n");
         }
     }
 
@@ -5830,9 +6584,11 @@ test_xmlGetLastChild(void) {
         des_xmlNodePtr(n_parent, parent);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlGetLastChild\n",
+            printf("Leak of %d blocks found in xmlGetLastChild",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_parent);
+            printf("\n");
         }
     }
 
@@ -5939,9 +6695,11 @@ test_xmlIsBlankNode(void) {
         des_xmlNodePtr(n_node, node);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlIsBlankNode\n",
+            printf("Leak of %d blocks found in xmlIsBlankNode",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_node);
+            printf("\n");
         }
     }
 
@@ -5973,9 +6731,12 @@ test_xmlIsXHTML(void) {
         des_const_xmlChar_ptr(n_publicID, publicID);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlIsXHTML\n",
+            printf("Leak of %d blocks found in xmlIsXHTML",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_systemID);
+            printf(" %d", n_publicID);
+            printf("\n");
         }
     }
     }
@@ -6013,9 +6774,13 @@ test_xmlNewCDataBlock(void) {
         des_int(n_len, len);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewCDataBlock\n",
+            printf("Leak of %d blocks found in xmlNewCDataBlock",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_content);
+            printf(" %d", n_len);
+            printf("\n");
         }
     }
     }
@@ -6049,9 +6814,12 @@ test_xmlNewCharRef(void) {
         des_const_xmlChar_ptr(n_name, name);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewCharRef\n",
+            printf("Leak of %d blocks found in xmlNewCharRef",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_name);
+            printf("\n");
         }
     }
     }
@@ -6089,9 +6857,11 @@ test_xmlNewComment(void) {
         des_const_xmlChar_ptr(n_content, content);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewComment\n",
+            printf("Leak of %d blocks found in xmlNewComment",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_content);
+            printf("\n");
         }
     }
 
@@ -6118,9 +6888,11 @@ test_xmlNewDoc(void) {
         des_const_xmlChar_ptr(n_version, version);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewDoc\n",
+            printf("Leak of %d blocks found in xmlNewDoc",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_version);
+            printf("\n");
         }
     }
 
@@ -6152,9 +6924,12 @@ test_xmlNewDocComment(void) {
         des_const_xmlChar_ptr(n_content, content);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewDocComment\n",
+            printf("Leak of %d blocks found in xmlNewDocComment",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_content);
+            printf("\n");
         }
     }
     }
@@ -6183,9 +6958,11 @@ test_xmlNewDocFragment(void) {
         des_xmlDocPtr(n_doc, doc);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewDocFragment\n",
+            printf("Leak of %d blocks found in xmlNewDocFragment",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf("\n");
         }
     }
 #endif
@@ -6243,9 +7020,13 @@ test_xmlNewDocPI(void) {
         des_const_xmlChar_ptr(n_content, content);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewDocPI\n",
+            printf("Leak of %d blocks found in xmlNewDocPI",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
         }
     }
     }
@@ -6299,9 +7080,12 @@ test_xmlNewDocText(void) {
         des_const_xmlChar_ptr(n_content, content);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewDocText\n",
+            printf("Leak of %d blocks found in xmlNewDocText",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_content);
+            printf("\n");
         }
     }
     }
@@ -6339,9 +7123,13 @@ test_xmlNewDocTextLen(void) {
         des_int(n_len, len);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewDocTextLen\n",
+            printf("Leak of %d blocks found in xmlNewDocTextLen",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_content);
+            printf(" %d", n_len);
+            printf("\n");
         }
     }
     }
@@ -6445,9 +7233,12 @@ test_xmlNewPI(void) {
         des_const_xmlChar_ptr(n_content, content);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewPI\n",
+            printf("Leak of %d blocks found in xmlNewPI",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
         }
     }
     }
@@ -6490,9 +7281,12 @@ test_xmlNewReference(void) {
         des_const_xmlChar_ptr(n_name, name);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewReference\n",
+            printf("Leak of %d blocks found in xmlNewReference",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_name);
+            printf("\n");
         }
     }
     }
@@ -6520,9 +7314,11 @@ test_xmlNewText(void) {
         des_const_xmlChar_ptr(n_content, content);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewText\n",
+            printf("Leak of %d blocks found in xmlNewText",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_content);
+            printf("\n");
         }
     }
 
@@ -6564,9 +7360,12 @@ test_xmlNewTextLen(void) {
         des_int(n_len, len);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNewTextLen\n",
+            printf("Leak of %d blocks found in xmlNewTextLen",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_content);
+            printf(" %d", n_len);
+            printf("\n");
         }
     }
     }
@@ -6597,9 +7396,12 @@ test_xmlNodeAddContent(void) {
         des_const_xmlChar_ptr(n_content, content);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNodeAddContent\n",
+            printf("Leak of %d blocks found in xmlNodeAddContent",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_content);
+            printf("\n");
         }
     }
     }
@@ -6635,9 +7437,13 @@ test_xmlNodeAddContentLen(void) {
         des_int(n_len, len);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNodeAddContentLen\n",
+            printf("Leak of %d blocks found in xmlNodeAddContentLen",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_content);
+            printf(" %d", n_len);
+            printf("\n");
         }
     }
     }
@@ -6726,9 +7532,11 @@ test_xmlNodeGetSpacePreserve(void) {
         des_xmlNodePtr(n_cur, cur);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNodeGetSpacePreserve\n",
+            printf("Leak of %d blocks found in xmlNodeGetSpacePreserve",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf("\n");
         }
     }
 
@@ -6755,9 +7563,11 @@ test_xmlNodeIsText(void) {
         des_xmlNodePtr(n_node, node);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNodeIsText\n",
+            printf("Leak of %d blocks found in xmlNodeIsText",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_node);
+            printf("\n");
         }
     }
 
@@ -6808,9 +7618,12 @@ test_xmlNodeSetBase(void) {
         des_const_xmlChar_ptr(n_uri, uri);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNodeSetBase\n",
+            printf("Leak of %d blocks found in xmlNodeSetBase",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_uri);
+            printf("\n");
         }
     }
     }
@@ -6842,9 +7655,12 @@ test_xmlNodeSetContent(void) {
         des_const_xmlChar_ptr(n_content, content);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNodeSetContent\n",
+            printf("Leak of %d blocks found in xmlNodeSetContent",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_content);
+            printf("\n");
         }
     }
     }
@@ -6881,9 +7697,13 @@ test_xmlNodeSetContentLen(void) {
         des_int(n_len, len);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNodeSetContentLen\n",
+            printf("Leak of %d blocks found in xmlNodeSetContentLen",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_content);
+            printf(" %d", n_len);
+            printf("\n");
         }
     }
     }
@@ -6917,9 +7737,12 @@ test_xmlNodeSetLang(void) {
         des_const_xmlChar_ptr(n_lang, lang);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNodeSetLang\n",
+            printf("Leak of %d blocks found in xmlNodeSetLang",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_lang);
+            printf("\n");
         }
     }
     }
@@ -6952,9 +7775,12 @@ test_xmlNodeSetName(void) {
         des_const_xmlChar_ptr(n_name, name);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNodeSetName\n",
+            printf("Leak of %d blocks found in xmlNodeSetName",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_name);
+            printf("\n");
         }
     }
     }
@@ -6987,9 +7813,12 @@ test_xmlNodeSetSpacePreserve(void) {
         des_int(n_val, val);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlNodeSetSpacePreserve\n",
+            printf("Leak of %d blocks found in xmlNodeSetSpacePreserve",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf(" %d", n_val);
+            printf("\n");
         }
     }
     }
@@ -7023,9 +7852,12 @@ test_xmlReconciliateNs(void) {
         des_xmlNodePtr(n_tree, tree);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlReconciliateNs\n",
+            printf("Leak of %d blocks found in xmlReconciliateNs",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_tree);
+            printf("\n");
         }
     }
     }
@@ -7057,21 +7889,26 @@ test_xmlReplaceNode(void) {
     int n_cur;
 
     for (n_old = 0;n_old < gen_nb_xmlNodePtr;n_old++) {
-    for (n_cur = 0;n_cur < gen_nb_xmlNodePtr;n_cur++) {
+    for (n_cur = 0;n_cur < gen_nb_xmlNodePtr_in;n_cur++) {
         mem_base = xmlMemBlocks();
         old = gen_xmlNodePtr(n_old);
-        cur = gen_xmlNodePtr(n_cur);
+        cur = gen_xmlNodePtr_in(n_cur);
 
         ret_val = xmlReplaceNode(old, cur);
         desret_xmlNodePtr(ret_val);
         call_tests++;
+        if ((old == NULL) || (old->parent == NULL)) {
+              xmlFreeNode(cur) ; cur = NULL ; }
         des_xmlNodePtr(n_old, old);
-        des_xmlNodePtr(n_cur, cur);
+        des_xmlNodePtr_in(n_cur, cur);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlReplaceNode\n",
+            printf("Leak of %d blocks found in xmlReplaceNode",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_old);
+            printf(" %d", n_cur);
+            printf("\n");
         }
     }
     }
@@ -7106,9 +7943,12 @@ test_xmlSaveFile(void) {
         des_xmlDocPtr(n_cur, cur);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSaveFile\n",
+            printf("Leak of %d blocks found in xmlSaveFile",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf(" %d", n_cur);
+            printf("\n");
         }
     }
     }
@@ -7148,9 +7988,13 @@ test_xmlSaveFileEnc(void) {
         des_const_char_ptr(n_encoding, encoding);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSaveFileEnc\n",
+            printf("Leak of %d blocks found in xmlSaveFileEnc",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf(" %d", n_cur);
+            printf(" %d", n_encoding);
+            printf("\n");
         }
     }
     }
@@ -7201,9 +8045,13 @@ test_xmlSaveFormatFile(void) {
         des_int(n_format, format);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSaveFormatFile\n",
+            printf("Leak of %d blocks found in xmlSaveFormatFile",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf(" %d", n_cur);
+            printf(" %d", n_format);
+            printf("\n");
         }
     }
     }
@@ -7249,9 +8097,14 @@ test_xmlSaveFormatFileEnc(void) {
         des_int(n_format, format);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSaveFormatFileEnc\n",
+            printf("Leak of %d blocks found in xmlSaveFormatFileEnc",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf(" %d", n_cur);
+            printf(" %d", n_encoding);
+            printf(" %d", n_format);
+            printf("\n");
         }
     }
     }
@@ -7320,9 +8173,11 @@ test_xmlSetCompressMode(void) {
         des_int(n_mode, mode);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSetCompressMode\n",
+            printf("Leak of %d blocks found in xmlSetCompressMode",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_mode);
+            printf("\n");
         }
     }
 
@@ -7352,9 +8207,12 @@ test_xmlSetDocCompressMode(void) {
         des_int(n_mode, mode);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSetDocCompressMode\n",
+            printf("Leak of %d blocks found in xmlSetDocCompressMode",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_mode);
+            printf("\n");
         }
     }
     }
@@ -7385,9 +8243,12 @@ test_xmlSetListDoc(void) {
         des_xmlDocPtr(n_doc, doc);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSetListDoc\n",
+            printf("Leak of %d blocks found in xmlSetListDoc",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_list);
+            printf(" %d", n_doc);
+            printf("\n");
         }
     }
     }
@@ -7448,9 +8309,12 @@ test_xmlSetTreeDoc(void) {
         des_xmlDocPtr(n_doc, doc);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSetTreeDoc\n",
+            printf("Leak of %d blocks found in xmlSetTreeDoc",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_tree);
+            printf(" %d", n_doc);
+            printf("\n");
         }
     }
     }
@@ -7503,9 +8367,12 @@ test_xmlStringGetNodeList(void) {
         des_const_xmlChar_ptr(n_value, value);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlStringGetNodeList\n",
+            printf("Leak of %d blocks found in xmlStringGetNodeList",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_value);
+            printf("\n");
         }
     }
     }
@@ -7543,9 +8410,13 @@ test_xmlStringLenGetNodeList(void) {
         des_int(n_len, len);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlStringLenGetNodeList\n",
+            printf("Leak of %d blocks found in xmlStringLenGetNodeList",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_value);
+            printf(" %d", n_len);
+            printf("\n");
         }
     }
     }
@@ -7584,9 +8455,13 @@ test_xmlTextConcat(void) {
         des_int(n_len, len);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlTextConcat\n",
+            printf("Leak of %d blocks found in xmlTextConcat",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_node);
+            printf(" %d", n_content);
+            printf(" %d", n_len);
+            printf("\n");
         }
     }
     }
@@ -7607,22 +8482,27 @@ test_xmlTextMerge(void) {
     xmlNodePtr second; /* the second text node being merged */
     int n_second;
 
-    for (n_first = 0;n_first < gen_nb_xmlNodePtr;n_first++) {
-    for (n_second = 0;n_second < gen_nb_xmlNodePtr;n_second++) {
+    for (n_first = 0;n_first < gen_nb_xmlNodePtr_in;n_first++) {
+    for (n_second = 0;n_second < gen_nb_xmlNodePtr_in;n_second++) {
         mem_base = xmlMemBlocks();
-        first = gen_xmlNodePtr(n_first);
-        second = gen_xmlNodePtr(n_second);
+        first = gen_xmlNodePtr_in(n_first);
+        second = gen_xmlNodePtr_in(n_second);
 
         ret_val = xmlTextMerge(first, second);
         desret_xmlNodePtr(ret_val);
         call_tests++;
-        des_xmlNodePtr(n_first, first);
-        des_xmlNodePtr(n_second, second);
+        if ((first != NULL) && (first->type != XML_TEXT_NODE)) {
+              xmlFreeNode(second) ; second = NULL ; }
+        des_xmlNodePtr_in(n_first, first);
+        des_xmlNodePtr_in(n_second, second);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlTextMerge\n",
+            printf("Leak of %d blocks found in xmlTextMerge",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_first);
+            printf(" %d", n_second);
+            printf("\n");
         }
     }
     }
@@ -7648,9 +8528,11 @@ test_xmlUnlinkNode(void) {
         des_xmlNodePtr(n_cur, cur);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlUnlinkNode\n",
+            printf("Leak of %d blocks found in xmlUnlinkNode",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_cur);
+            printf("\n");
         }
     }
 
@@ -7693,9 +8575,12 @@ test_xmlUnsetProp(void) {
         des_const_xmlChar_ptr(n_name, name);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlUnsetProp\n",
+            printf("Leak of %d blocks found in xmlUnsetProp",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_node);
+            printf(" %d", n_name);
+            printf("\n");
         }
     }
     }
@@ -7729,9 +8614,12 @@ test_xmlValidateNCName(void) {
         des_int(n_space, space);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlValidateNCName\n",
+            printf("Leak of %d blocks found in xmlValidateNCName",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_value);
+            printf(" %d", n_space);
+            printf("\n");
         }
     }
     }
@@ -7764,9 +8652,12 @@ test_xmlValidateNMToken(void) {
         des_int(n_space, space);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlValidateNMToken\n",
+            printf("Leak of %d blocks found in xmlValidateNMToken",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_value);
+            printf(" %d", n_space);
+            printf("\n");
         }
     }
     }
@@ -7799,9 +8690,12 @@ test_xmlValidateName(void) {
         des_int(n_space, space);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlValidateName\n",
+            printf("Leak of %d blocks found in xmlValidateName",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_value);
+            printf(" %d", n_space);
+            printf("\n");
         }
     }
     }
@@ -7834,9 +8728,12 @@ test_xmlValidateQName(void) {
         des_int(n_space, space);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlValidateQName\n",
+            printf("Leak of %d blocks found in xmlValidateQName",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_value);
+            printf(" %d", n_space);
+            printf("\n");
         }
     }
     }
@@ -8408,9 +9305,12 @@ test_xmlIsMixedElement(void) {
         des_const_xmlChar_ptr(n_name, name);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlIsMixedElement\n",
+            printf("Leak of %d blocks found in xmlIsMixedElement",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_name);
+            printf("\n");
         }
     }
     }
@@ -8639,9 +9539,11 @@ test_xmlValidateNameValue(void) {
         des_const_xmlChar_ptr(n_value, value);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlValidateNameValue\n",
+            printf("Leak of %d blocks found in xmlValidateNameValue",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_value);
+            printf("\n");
         }
     }
 #endif
@@ -8670,9 +9572,11 @@ test_xmlValidateNamesValue(void) {
         des_const_xmlChar_ptr(n_value, value);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlValidateNamesValue\n",
+            printf("Leak of %d blocks found in xmlValidateNamesValue",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_value);
+            printf("\n");
         }
     }
 #endif
@@ -8701,9 +9605,11 @@ test_xmlValidateNmtokenValue(void) {
         des_const_xmlChar_ptr(n_value, value);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlValidateNmtokenValue\n",
+            printf("Leak of %d blocks found in xmlValidateNmtokenValue",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_value);
+            printf("\n");
         }
     }
 #endif
@@ -8732,9 +9638,11 @@ test_xmlValidateNmtokensValue(void) {
         des_const_xmlChar_ptr(n_value, value);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlValidateNmtokensValue\n",
+            printf("Leak of %d blocks found in xmlValidateNmtokensValue",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_value);
+            printf("\n");
         }
     }
 #endif
@@ -8932,9 +9840,11 @@ test_xmlXIncludeProcess(void) {
         des_xmlDocPtr(n_doc, doc);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXIncludeProcess\n",
+            printf("Leak of %d blocks found in xmlXIncludeProcess",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf("\n");
         }
     }
 #endif
@@ -8968,9 +9878,12 @@ test_xmlXIncludeProcessFlags(void) {
         des_int(n_flags, flags);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXIncludeProcessFlags\n",
+            printf("Leak of %d blocks found in xmlXIncludeProcessFlags",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_flags);
+            printf("\n");
         }
     }
     }
@@ -9010,9 +9923,11 @@ test_xmlXIncludeProcessTree(void) {
         des_xmlNodePtr(n_tree, tree);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXIncludeProcessTree\n",
+            printf("Leak of %d blocks found in xmlXIncludeProcessTree",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_tree);
+            printf("\n");
         }
     }
 #endif
@@ -9046,9 +9961,12 @@ test_xmlXIncludeProcessTreeFlags(void) {
         des_int(n_flags, flags);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXIncludeProcessTreeFlags\n",
+            printf("Leak of %d blocks found in xmlXIncludeProcessTreeFlags",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_tree);
+            printf(" %d", n_flags);
+            printf("\n");
         }
     }
     }
@@ -9124,9 +10042,11 @@ test_xmlCheckFilename(void) {
         des_const_char_ptr(n_path, path);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCheckFilename\n",
+            printf("Leak of %d blocks found in xmlCheckFilename",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_path);
+            printf("\n");
         }
     }
 
@@ -9156,9 +10076,10 @@ test_xmlCleanupInputCallbacks(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCleanupInputCallbacks\n",
+            printf("Leak of %d blocks found in xmlCleanupInputCallbacks",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 
     return(ret);
@@ -9178,9 +10099,10 @@ test_xmlCleanupOutputCallbacks(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCleanupOutputCallbacks\n",
+            printf("Leak of %d blocks found in xmlCleanupOutputCallbacks",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 
@@ -9217,9 +10139,11 @@ test_xmlFileMatch(void) {
         des_filepath(n_filename, filename);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlFileMatch\n",
+            printf("Leak of %d blocks found in xmlFileMatch",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf("\n");
         }
     }
 
@@ -9277,9 +10201,11 @@ test_xmlIOFTPMatch(void) {
         des_filepath(n_filename, filename);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlIOFTPMatch\n",
+            printf("Leak of %d blocks found in xmlIOFTPMatch",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf("\n");
         }
     }
 #endif
@@ -9338,9 +10264,11 @@ test_xmlIOHTTPMatch(void) {
         des_filepath(n_filename, filename);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlIOHTTPMatch\n",
+            printf("Leak of %d blocks found in xmlIOHTTPMatch",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_filename);
+            printf("\n");
         }
     }
 #endif
@@ -9603,9 +10531,10 @@ test_xmlPopInputCallbacks(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlPopInputCallbacks\n",
+            printf("Leak of %d blocks found in xmlPopInputCallbacks",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 
     return(ret);
@@ -9624,9 +10553,10 @@ test_xmlRegisterDefaultInputCallbacks(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlRegisterDefaultInputCallbacks\n",
+            printf("Leak of %d blocks found in xmlRegisterDefaultInputCallbacks",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 
     return(ret);
@@ -9646,9 +10576,10 @@ test_xmlRegisterDefaultOutputCallbacks(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlRegisterDefaultOutputCallbacks\n",
+            printf("Leak of %d blocks found in xmlRegisterDefaultOutputCallbacks",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 
@@ -9669,9 +10600,10 @@ test_xmlRegisterHTTPPostCallbacks(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlRegisterHTTPPostCallbacks\n",
+            printf("Leak of %d blocks found in xmlRegisterHTTPPostCallbacks",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 
@@ -11392,9 +12324,10 @@ test_xmlSchemaCleanupTypes(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSchemaCleanupTypes\n",
+            printf("Leak of %d blocks found in xmlSchemaCleanupTypes",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 
@@ -11649,9 +12582,12 @@ test_xmlStrEqual(void) {
         des_const_xmlChar_ptr(n_str2, str2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlStrEqual\n",
+            printf("Leak of %d blocks found in xmlStrEqual",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_str1);
+            printf(" %d", n_str2);
+            printf("\n");
         }
     }
     }
@@ -11699,9 +12635,13 @@ test_xmlStrQEqual(void) {
         des_const_xmlChar_ptr(n_str, str);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlStrQEqual\n",
+            printf("Leak of %d blocks found in xmlStrQEqual",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_pref);
+            printf(" %d", n_name);
+            printf(" %d", n_str);
+            printf("\n");
         }
     }
     }
@@ -11745,9 +12685,12 @@ test_xmlStrcasecmp(void) {
         des_const_xmlChar_ptr(n_str2, str2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlStrcasecmp\n",
+            printf("Leak of %d blocks found in xmlStrcasecmp",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_str1);
+            printf(" %d", n_str2);
+            printf("\n");
         }
     }
     }
@@ -11810,9 +12753,12 @@ test_xmlStrcmp(void) {
         des_const_xmlChar_ptr(n_str2, str2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlStrcmp\n",
+            printf("Leak of %d blocks found in xmlStrcmp",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_str1);
+            printf(" %d", n_str2);
+            printf("\n");
         }
     }
     }
@@ -11850,9 +12796,11 @@ test_xmlStrlen(void) {
         des_const_xmlChar_ptr(n_str, str);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlStrlen\n",
+            printf("Leak of %d blocks found in xmlStrlen",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_str);
+            printf("\n");
         }
     }
 
@@ -11889,9 +12837,13 @@ test_xmlStrncasecmp(void) {
         des_int(n_len, len);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlStrncasecmp\n",
+            printf("Leak of %d blocks found in xmlStrncasecmp",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_str1);
+            printf(" %d", n_str2);
+            printf(" %d", n_len);
+            printf("\n");
         }
     }
     }
@@ -11950,9 +12902,13 @@ test_xmlStrncmp(void) {
         des_int(n_len, len);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlStrncmp\n",
+            printf("Leak of %d blocks found in xmlStrncmp",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_str1);
+            printf(" %d", n_str2);
+            printf(" %d", n_len);
+            printf("\n");
         }
     }
     }
@@ -12016,9 +12972,12 @@ test_xmlUTF8Charcmp(void) {
         des_const_xmlChar_ptr(n_utf2, utf2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlUTF8Charcmp\n",
+            printf("Leak of %d blocks found in xmlUTF8Charcmp",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_utf1);
+            printf(" %d", n_utf2);
+            printf("\n");
         }
     }
     }
@@ -12046,9 +13005,11 @@ test_xmlUTF8Size(void) {
         des_const_xmlChar_ptr(n_utf, utf);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlUTF8Size\n",
+            printf("Leak of %d blocks found in xmlUTF8Size",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_utf);
+            printf("\n");
         }
     }
 
@@ -12075,9 +13036,11 @@ test_xmlUTF8Strlen(void) {
         des_const_xmlChar_ptr(n_utf, utf);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlUTF8Strlen\n",
+            printf("Leak of %d blocks found in xmlUTF8Strlen",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_utf);
+            printf("\n");
         }
     }
 
@@ -12109,9 +13072,12 @@ test_xmlUTF8Strloc(void) {
         des_const_xmlChar_ptr(n_utfchar, utfchar);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlUTF8Strloc\n",
+            printf("Leak of %d blocks found in xmlUTF8Strloc",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_utf);
+            printf(" %d", n_utfchar);
+            printf("\n");
         }
     }
     }
@@ -12164,9 +13130,12 @@ test_xmlUTF8Strsize(void) {
         des_int(n_len, len);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlUTF8Strsize\n",
+            printf("Leak of %d blocks found in xmlUTF8Strsize",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_utf);
+            printf(" %d", n_len);
+            printf("\n");
         }
     }
     }
@@ -13203,9 +14172,11 @@ test_xmlXPathCastStringToBoolean(void) {
         des_const_xmlChar_ptr(n_val, val);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXPathCastStringToBoolean\n",
+            printf("Leak of %d blocks found in xmlXPathCastStringToBoolean",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_val);
+            printf("\n");
         }
     }
 #endif
@@ -13279,9 +14250,12 @@ test_xmlXPathCmpNodes(void) {
         des_xmlNodePtr(n_node2, node2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXPathCmpNodes\n",
+            printf("Leak of %d blocks found in xmlXPathCmpNodes",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf(" %d", n_node1);
+            printf(" %d", n_node2);
+            printf("\n");
         }
     }
     }
@@ -13394,9 +14368,10 @@ test_xmlXPathInit(void) {
         call_tests++;
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlXPathInit\n",
+            printf("Leak of %d blocks found in xmlXPathInit",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
+            printf("\n");
         }
 #endif
 

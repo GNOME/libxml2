@@ -21,6 +21,7 @@ skipped_modules = [ "SAX", "SAX2", "xlink", "threads", "globals",
 # Some function really need to be skipped for the tests.
 #
 skipped_functions = [ "xmlFdRead", "xmlReadFd", "xmlCtxtReadFd",
+                      "htmlFdRead", "htmlReadFd", "htmlCtxtReadFd",
                       "xmlCleanupParser" ]
 
 #
@@ -31,7 +32,33 @@ skipped_memcheck = [ "xmlLoadCatalog", "xmlAddEncodingAlias",
    "xmlSchemaInitTypes", "xmlNanoFTPProxy", "xmlNanoFTPScanProxy",
    "xmlNanoHTTPScanProxy", "xmlResetLastError", "xmlCatalogConvert",
    "xmlCatalogRemove", "xmlLoadCatalogs", "xmlCleanupCharEncodingHandlers",
-   "xmlInitCharEncodingHandlers" ]
+   "xmlInitCharEncodingHandlers", "xmlCatalogCleanup",
+   "htmlParseFile" # loads the catalogs
+]
+
+#
+# Extra code needed for some test cases
+#
+extra_post_call = {
+   "xmlAddChild": 
+       "if (ret_val == NULL) { xmlFreeNode(cur) ; cur = NULL ; }",
+   "xmlAddChildList": 
+       "if (ret_val == NULL) { xmlFreeNodeList(cur) ; cur = NULL ; }",
+   "xmlAddSibling":
+       "if (ret_val == NULL) { xmlFreeNode(elem) ; elem = NULL ; }",
+   "xmlAddNextSibling":
+       "if (ret_val == NULL) { xmlFreeNode(elem) ; elem = NULL ; }",
+   "xmlAddPrevSibling": 
+       "if (ret_val == NULL) { xmlFreeNode(elem) ; elem = NULL ; }",
+   "xmlDocSetRootElement": 
+       "if (doc == NULL) { xmlFreeNode(root) ; root = NULL ; }",
+   "xmlReplaceNode": 
+       """if ((old == NULL) || (old->parent == NULL)) {
+              xmlFreeNode(cur) ; cur = NULL ; }""",
+   "xmlTextMerge": 
+       """if ((first != NULL) && (first->type != XML_TEXT_NODE)) {
+              xmlFreeNode(second) ; second = NULL ; }""",
+}
 
 modules = []
 
@@ -106,6 +133,8 @@ int main(void) {
     int ret;
     int blocks, mem;
 
+    xmlInitParser();
+
     LIBXML_TEST_VERSION
 
     xmlSetStructuredErrorFunc(NULL, structured_errors);
@@ -161,9 +190,12 @@ for module in modules:
 # Provide the type generators and destructors for the parameters
 #
 
-def type_convert(str, name, info, module, function):
+def type_convert(str, name, info, module, function, pos):
     res = string.replace(str, " *", "_ptr")
     res = string.replace(res, " ", "_")
+    res = string.replace(res, "htmlNode", "xmlNode")
+    res = string.replace(res, "htmlDoc", "xmlDoc")
+    res = string.replace(res, "htmlParser", "xmlParser")
     if res == 'const_char_ptr':
         if string.find(name, "file") != -1 or \
            string.find(name, "uri") != -1 or \
@@ -179,11 +211,22 @@ def type_convert(str, name, info, module, function):
 	    return('xmlNanoFTPCtxtPtr')
         if module == 'nanohttp' and name == 'ctx':
 	    return('xmlNanoHTTPCtxtPtr')
+    if res == 'xmlNodePtr' and pos != 0:
+        if (function == 'xmlAddChild' and pos == 2) or \
+	   (function == 'xmlAddChildList' and pos == 2) or \
+           (function == 'xmlAddNextSibling' and pos == 2) or \
+           (function == 'xmlAddSibling' and pos == 2) or \
+           (function == 'xmlDocSetRootElement' and pos == 2) or \
+           (function == 'xmlReplaceNode' and pos == 2) or \
+           (function == 'xmlTextMerge') or \
+	   (function == 'xmlAddPrevSibling' and pos == 2):
+	    return('xmlNodePtr_in');
         
     return res
 
 known_param_types = [ "int", "const_char_ptr", "const_xmlChar_ptr",
-   "xmlParserCtxtPtr", "xmlDocPtr", "filepath", "fileoutput" ];
+   "xmlParserCtxtPtr", "xmlDocPtr", "filepath", "fileoutput" ,
+   "xmlNodePtr", "xmlNodePtr_in" ];
 
 def is_known_param_type(name):
     for type in known_param_types:
@@ -265,14 +308,36 @@ static void des_xmlParserCtxtPtr(int no ATTRIBUTE_UNUSED, xmlParserCtxtPtr val) 
         xmlFreeParserCtxt(val);
 }
 
-#define gen_nb_xmlDocPtr 2
+#define gen_nb_xmlDocPtr 3
 static xmlDocPtr gen_xmlDocPtr(int no) {
     if (no == 0) return(xmlNewDoc(BAD_CAST "1.0"));
+    if (no == 1) return(xmlReadMemory("<foo/>", 6, "test", NULL, 0));
     return(NULL);
 }
 static void des_xmlDocPtr(int no ATTRIBUTE_UNUSED, xmlDocPtr val) {
     if (val != NULL)
         xmlFreeDoc(val);
+}
+
+#define gen_nb_xmlNodePtr 2
+static xmlNodePtr gen_xmlNodePtr(int no) {
+    if (no == 0) return(xmlNewPI(BAD_CAST "test", NULL));
+    return(NULL);
+}
+static void des_xmlNodePtr(int no ATTRIBUTE_UNUSED, xmlNodePtr val) {
+    if (val != NULL) {
+        xmlUnlinkNode(val);
+        xmlFreeNode(val);
+    }
+}
+
+#define gen_nb_xmlNodePtr_in 3
+static xmlNodePtr gen_xmlNodePtr_in(int no) {
+    if (no == 0) return(xmlNewPI(BAD_CAST "test", NULL));
+    if (no == 0) return(xmlNewText(BAD_CAST "text"));
+    return(NULL);
+}
+static void des_xmlNodePtr_in(int no ATTRIBUTE_UNUSED, xmlNodePtr val ATTRIBUTE_UNUSED) {
 }
 
 """);
@@ -364,13 +429,15 @@ test_%s(void) {
     except:
         args = []
     t_args = []
+    n = 0
     for arg in args:
+        n = n + 1
         rtype = arg.xpathEval("string(@type)")
 	if rtype == 'void':
 	    break;
 	info = arg.xpathEval("string(@info)")
 	nam = arg.xpathEval("string(@name)")
-        type = type_convert(rtype, nam, info, module, name)
+        type = type_convert(rtype, nam, info, module, name, n)
 	if is_known_param_type(type) == 0:
 	    add_missing_type(type, name);
 	    no_gen = 1
@@ -384,7 +451,7 @@ test_%s(void) {
     for ret in rets:
         rtype = ret.xpathEval("string(@type)")
 	info = ret.xpathEval("string(@info)")
-        type = type_convert(rtype, 'return', info, module, name)
+        type = type_convert(rtype, 'return', info, module, name, 0)
 	if rtype == 'void':
 	    break
 	if is_known_return_type(type) == 0:
@@ -469,6 +536,9 @@ test_%s(void) {
 	test.write(");\n")
     test.write("        call_tests++;\n");
 
+    if extra_post_call.has_key(name):
+        test.write("        %s\n"% (extra_post_call[name]))
+
     # Free the arguments
     for arg in t_args:
         (nam, type, rtype, info) = arg;
@@ -479,11 +549,15 @@ test_%s(void) {
     # Check the memory usage
     if no_mem == 0:
 	test.write("""        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %%d blocks found in %s\\n",
+            printf("Leak of %%d blocks found in %s",
 	           xmlMemBlocks() - mem_base);
 	    ret++;
-        }
 """ % (name));
+	for arg in t_args:
+	    (nam, type, rtype, info) = arg;
+	    test.write("""            printf(" %%d", n_%s);\n""" % (nam))
+	test.write("""            printf("\\n");\n""")
+	test.write("        }\n")
 
     for arg in t_args:
 	test.write("    }\n")

@@ -217,6 +217,8 @@
     <reference name='XML_CHECK_X' href='html/libxml-xmlerror.html#XML_CHECK_X'/>
     <reference name='XML_COMMENT_NODE' href='html/libxml-tree.html#XML_COMMENT_NODE'/>
     <reference name='XML_COMPLETE_ATTRS' href='html/libxml-parser.html#XML_COMPLETE_ATTRS'/>
+    <reference name='XML_CTXT_FINISH_DTD_0' href='html/libxml-valid.html#XML_CTXT_FINISH_DTD_0'/>
+    <reference name='XML_CTXT_FINISH_DTD_1' href='html/libxml-valid.html#XML_CTXT_FINISH_DTD_1'/>
     <reference name='XML_DEFAULT_VERSION' href='html/libxml-parser.html#XML_DEFAULT_VERSION'/>
     <reference name='XML_DETECT_IDS' href='html/libxml-parser.html#XML_DETECT_IDS'/>
     <reference name='XML_DOCB_DOCUMENT_NODE' href='html/libxml-tree.html#XML_DOCB_DOCUMENT_NODE'/>
@@ -2016,6 +2018,7 @@
     <reference name='xmlMallocAtomicLoc' href='html/libxml-xmlmemory.html#xmlMallocAtomicLoc'/>
     <reference name='xmlMallocFunc' href='html/libxml-xmlmemory.html#xmlMallocFunc'/>
     <reference name='xmlMallocLoc' href='html/libxml-xmlmemory.html#xmlMallocLoc'/>
+    <reference name='xmlMemBlocks' href='html/libxml-xmlmemory.html#xmlMemBlocks'/>
     <reference name='xmlMemDisplay' href='html/libxml-xmlmemory.html#xmlMemDisplay'/>
     <reference name='xmlMemFree' href='html/libxml-xmlmemory.html#xmlMemFree'/>
     <reference name='xmlMemGet' href='html/libxml-xmlmemory.html#xmlMemGet'/>
@@ -3467,6 +3470,8 @@
       <ref name='XML_CHECK_X'/>
       <ref name='XML_COMMENT_NODE'/>
       <ref name='XML_COMPLETE_ATTRS'/>
+      <ref name='XML_CTXT_FINISH_DTD_0'/>
+      <ref name='XML_CTXT_FINISH_DTD_1'/>
       <ref name='XML_DEFAULT_VERSION'/>
       <ref name='XML_DETECT_IDS'/>
       <ref name='XML_DOCB_DOCUMENT_NODE'/>
@@ -5302,6 +5307,7 @@
       <ref name='xmlMallocAtomicLoc'/>
       <ref name='xmlMallocFunc'/>
       <ref name='xmlMallocLoc'/>
+      <ref name='xmlMemBlocks'/>
       <ref name='xmlMemDisplay'/>
       <ref name='xmlMemFree'/>
       <ref name='xmlMemGet'/>
@@ -11185,6 +11191,8 @@
       <ref name='xmlURIUnescapeString'/>
     </file>
     <file name='valid'>
+      <ref name='XML_CTXT_FINISH_DTD_0'/>
+      <ref name='XML_CTXT_FINISH_DTD_1'/>
       <ref name='_xmlValidCtxt'/>
       <ref name='xmlAddAttributeDecl'/>
       <ref name='xmlAddElementDecl'/>
@@ -12173,6 +12181,7 @@
       <ref name='xmlMallocAtomicLoc'/>
       <ref name='xmlMallocFunc'/>
       <ref name='xmlMallocLoc'/>
+      <ref name='xmlMemBlocks'/>
       <ref name='xmlMemDisplay'/>
       <ref name='xmlMemFree'/>
       <ref name='xmlMemGet'/>
@@ -15725,6 +15734,7 @@
           <ref name='getPublicId'/>
           <ref name='getSystemId'/>
           <ref name='xmlGcMemGet'/>
+          <ref name='xmlMemBlocks'/>
           <ref name='xmlMemGet'/>
           <ref name='xmlMemUsed'/>
           <ref name='xmlNanoHTTPContentLength'/>
@@ -16396,6 +16406,8 @@
           <ref name='xmlParseStartTag'/>
         </word>
         <word name='Special'>
+          <ref name='XML_CTXT_FINISH_DTD_0'/>
+          <ref name='XML_CTXT_FINISH_DTD_1'/>
           <ref name='XML_SAX2_MAGIC'/>
         </word>
         <word name='Specials'>
@@ -17772,6 +17784,7 @@
         <word name='areas'>
           <ref name='xmlGcMemGet'/>
           <ref name='xmlGcMemSetup'/>
+          <ref name='xmlMemBlocks'/>
           <ref name='xmlMemShow'/>
         </word>
         <word name='args'>
@@ -18066,6 +18079,7 @@
           <ref name='initdocbDefaultSAXHandler'/>
           <ref name='inithtmlDefaultSAXHandler'/>
           <ref name='initxmlDefaultSAXHandler'/>
+          <ref name='xmlMemBlocks'/>
           <ref name='xmlMemDisplay'/>
           <ref name='xmlMemoryDump'/>
         </word>
@@ -19310,6 +19324,7 @@
         <word name='currently'>
           <ref name='XML_SCHEMAS_INCLUDING_CONVERT_NS'/>
           <ref name='xmlGcMemGet'/>
+          <ref name='xmlMemBlocks'/>
           <ref name='xmlMemGet'/>
           <ref name='xmlMemUsed'/>
           <ref name='xmlOutputBufferCreateFilename'/>
@@ -20172,6 +20187,10 @@
           <ref name='xmlCharEncodingInputFunc'/>
           <ref name='xmlCharEncodingOutputFunc'/>
         </word>
+        <word name='embedded'>
+          <ref name='XML_CTXT_FINISH_DTD_0'/>
+          <ref name='XML_CTXT_FINISH_DTD_1'/>
+        </word>
         <word name='emitted'>
           <ref name='xmlSetGenericErrorFunc'/>
         </word>
@@ -20769,6 +20788,8 @@
         </word>
         <word name='field'>
           <ref name='XML_COMPLETE_ATTRS'/>
+          <ref name='XML_CTXT_FINISH_DTD_0'/>
+          <ref name='XML_CTXT_FINISH_DTD_1'/>
           <ref name='XML_DETECT_IDS'/>
           <ref name='XML_SKIP_IDS'/>
           <ref name='xmlParseMisc'/>
@@ -20832,6 +20853,10 @@
         <word name='finds'>
           <ref name='xmlSearchNs'/>
           <ref name='xmlSearchNsByHref'/>
+        </word>
+        <word name='finishDtd'>
+          <ref name='XML_CTXT_FINISH_DTD_0'/>
+          <ref name='XML_CTXT_FINISH_DTD_1'/>
         </word>
         <word name='finished'>
           <ref name='_xmlValidCtxt'/>
@@ -22094,29 +22119,6 @@
         </word>
         <word name='insufficient'>
           <ref name='xmlCanonicPath'/>
-        </word>
-        <word name='int'>
-          <ref name='_xmlParserCtxt'/>
-          <ref name='c'/>
-          <ref name='getColumnNumber'/>
-          <ref name='getLineNumber'/>
-          <ref name='htmlHandleOmittedElem'/>
-          <ref name='htmlParseCharRef'/>
-          <ref name='xmlIsLetter'/>
-          <ref name='xmlKeepBlanksDefault'/>
-          <ref name='xmlLineNumbersDefault'/>
-          <ref name='xmlMallocAtomicLoc'/>
-          <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemUsed'/>
-          <ref name='xmlParseCharData'/>
-          <ref name='xmlParseCharRef'/>
-          <ref name='xmlPedanticParserDefault'/>
-          <ref name='xmlReallocLoc'/>
-          <ref name='xmlSAX2GetColumnNumber'/>
-          <ref name='xmlSAX2GetLineNumber'/>
-          <ref name='xmlShellCmd'/>
-          <ref name='xmlSplitQName3'/>
-          <ref name='xmlSubstituteEntitiesDefault'/>
         </word>
         <word name='integer'>
           <ref name='xmlStrcasecmp'/>
@@ -25242,6 +25244,7 @@
           <ref name='_htmlElemDesc'/>
         </word>
         <word name='representing'>
+          <ref name='xmlMemBlocks'/>
           <ref name='xmlMemUsed'/>
         </word>
         <word name='request'>
@@ -28379,6 +28382,10 @@
         </word>
         <word name='xmlParseURI'>
           <ref name='xmlURIEscape'/>
+        </word>
+        <word name='xmlParserCtxt'>
+          <ref name='XML_CTXT_FINISH_DTD_0'/>
+          <ref name='XML_CTXT_FINISH_DTD_1'/>
         </word>
         <word name='xmlParserCtxtPtr'>
           <ref name='xmlNewParserCtxt'/>

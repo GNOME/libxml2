@@ -2154,6 +2154,7 @@ xmlNewDocPI(xmlDocPtr doc, const xmlChar *name, const xmlChar *content) {
     if (content != NULL) {
 	cur->content = xmlStrdup(content);
     }
+    cur->doc = doc;
 
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
@@ -3525,10 +3526,10 @@ xmlUnlinkNode(xmlNodePtr cur) {
  */
 xmlNodePtr
 xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
-    if (old == NULL) {
+    if ((old == NULL) || (old->parent == NULL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlReplaceNode : old == NULL\n");
+		"xmlReplaceNode : old == NULL or without parent\n");
 #endif
 	return(NULL);
     }

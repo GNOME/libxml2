@@ -1557,6 +1557,8 @@
      <summary>The DTD validation</summary>
      <description>API for the DTD handling and the validity checking </description>
      <author>Daniel Veillard </author>
+     <exports symbol='XML_CTXT_FINISH_DTD_0' type='macro'/>
+     <exports symbol='XML_CTXT_FINISH_DTD_1' type='macro'/>
      <exports symbol='xmlElementTable' type='typedef'/>
      <exports symbol='xmlValidStatePtr' type='typedef'/>
      <exports symbol='xmlIDTablePtr' type='typedef'/>
@@ -2578,6 +2580,7 @@
      <exports symbol='xmlReallocFunc' type='function'/>
      <exports symbol='xmlMallocFunc' type='function'/>
      <exports symbol='xmlMemDisplay' type='function'/>
+     <exports symbol='xmlMemBlocks' type='function'/>
      <exports symbol='xmlGcMemSetup' type='function'/>
      <exports symbol='xmlMemShow' type='function'/>
      <exports symbol='xmlMemoryStrdup' type='function'/>
@@ -3750,6 +3753,12 @@
     </macro>
     <macro name='XML_COMPLETE_ATTRS' file='parser'>
       <info>Bit in the loadsubset context field to tell to do complete the elements attributes lists with the ones defaulted from the DTDs. Use it to initialize xmlLoadExtDtdDefaultValue.</info>
+    </macro>
+    <macro name='XML_CTXT_FINISH_DTD_0' file='valid'>
+      <info>Special value for finishDtd field when embedded in an xmlParserCtxt</info>
+    </macro>
+    <macro name='XML_CTXT_FINISH_DTD_1' file='valid'>
+      <info>Special value for finishDtd field when embedded in an xmlParserCtxt</info>
     </macro>
     <macro name='XML_DEFAULT_VERSION' file='parser'>
       <info>The default version of XML used: 1.0</info>
@@ -6125,7 +6134,7 @@ actually an xmlCharEncoding'/>
       <field name='nodeNr' type='int' info=' Depth of the parsing stack'/>
       <field name='nodeMax' type='int' info=' Max depth of the parsing stack'/>
       <field name='nodeTab' type='xmlNodePtr *' info=' array of nodes'/>
-      <field name='finishDtd' type='int' info=' finished validating the Dtd ?'/>
+      <field name='finishDtd' type='unsigned int' info=' finished validating the Dtd ?'/>
       <field name='doc' type='xmlDocPtr' info=' the document'/>
       <field name='valid' type='int' info=' temporary validity check result state state used for non-determinist content validation'/>
       <field name='vstate' type='xmlValidState *' info=' current state'/>
@@ -9913,6 +9922,10 @@ actually an xmlCharEncoding'/>
       <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
       <arg name='file' type='const char *' info='the file name or NULL'/>
       <arg name='line' type='int' info='the line number'/>
+    </function>
+    <function name='xmlMemBlocks' file='xmlmemory'>
+      <info>Provides the number of memory areas currently allocated</info>
+      <return type='int' info='an int representing the number of blocks'/>
     </function>
     <function name='xmlMemDisplay' file='xmlmemory'>
       <info>show in-extenso the memory blocks allocated</info>

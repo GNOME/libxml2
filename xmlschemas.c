@@ -5360,6 +5360,16 @@ xmlSchemaBuildAttributeUsesOwned(xmlSchemaParserCtxtPtr ctxt,
     return (0);
 }
 
+/**
+ * xmlSchemaCloneWildcardNsConstraints:
+ * @ctxt:  the schema parser context
+ * @dest:  the destination wildcard
+ * @source: the source wildcard
+ *
+ * Clones the namespace constraints of source
+ * and assignes them to dest.
+ * Returns -1 on internal error, 0 otherwise.
+ */
 static int
 xmlSchemaCloneWildcardNsConstraints(xmlSchemaParserCtxtPtr ctxt,
 				    xmlSchemaWildcardPtr *dest,
@@ -5396,6 +5406,17 @@ xmlSchemaCloneWildcardNsConstraints(xmlSchemaParserCtxtPtr ctxt,
     return(0);
 }
 
+/**
+ * xmlSchemaUnionWildcards:
+ * @ctxt:  the schema parser context
+ * @completeWild:  the first wildcard
+ * @curWild: the second wildcard 
+ *
+ * Unions the namespace constraints of the given wildcards.
+ * @completeWild will hold the resulting union.
+ * Returns a positive error code on failure, -1 in case of an
+ * internal error, 0 otherwise.
+ */
 static int
 xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt, 			    
 			    xmlSchemaWildcardPtr completeWild,
@@ -5444,7 +5465,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
     /*
     * 2 If either O1 or O2 is any, then any must be the value
     */
-    if ((completeWild->any != curWild->any) && (completeWild->any)) {	
+    if (completeWild->any != curWild->any) {	
 	if (completeWild->any == 0) {
 	    completeWild->any = 1;
 	    if (completeWild->nsSet != NULL) {
@@ -5456,6 +5477,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 		completeWild->negNsSet = NULL;
 	    }
 	}
+	return (0);
     }
     /*
     * 3 If both O1 and O2 are sets of (namespace names or ·absent·), 
@@ -5498,6 +5520,8 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 	(curWild->negNsSet != NULL) &&
 	(completeWild->negNsSet->value != curWild->negNsSet->value)) {
 	completeWild->negNsSet->value = NULL;
+
+	return(0);
     }
     /* 
      * 5.
@@ -5568,7 +5592,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 		XML_SCHEMAP_UNION_NOT_EXPRESSIBLE,
 		"The union of the wilcard is not expressible\n",
 		NULL, NULL);	
-	return(0);
+	    return(XML_SCHEMAP_UNION_NOT_EXPRESSIBLE);
 	} else if ((!nsFound) && (!absentFound)) {
 	    /* 
 	    * 5.4 If the set S does not include either the negated namespace 
@@ -5642,6 +5666,17 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 
 }
 
+/**
+ * xmlSchemaIntersectWildcards:
+ * @ctxt:  the schema parser context
+ * @completeWild:  the first wildcard
+ * @curWild: the second wildcard 
+ *
+ * Intersects the namespace constraints of the given wildcards.
+ * @completeWild will hold the resulting intersection.
+ * Returns a positive error code on failure, -1 in case of an
+ * internal error, 0 otherwise.
+ */
 static int
 xmlSchemaIntersectWildcards(xmlSchemaParserCtxtPtr ctxt, 			    
 			    xmlSchemaWildcardPtr completeWild,
@@ -5794,7 +5829,7 @@ xmlSchemaIntersectWildcards(xmlSchemaParserCtxtPtr ctxt,
 	xmlSchemaPErr(ctxt, completeWild->node, XML_SCHEMAP_INTERSECTION_NOT_EXPRESSIBLE,
 	    "The intersection of the wilcard is not expressible\n",
 	    NULL, NULL);	
-	return(0);
+	return(XML_SCHEMAP_INTERSECTION_NOT_EXPRESSIBLE);
     }		    
     /* 
     * 6 If the one is a negation of a namespace name and the other 
@@ -5809,11 +5844,96 @@ xmlSchemaIntersectWildcards(xmlSchemaParserCtxtPtr ctxt,
     return(0);
 }
 
+/**
+ * xmlSchemaIsWildcardNsConstraintSubset:
+ * @ctxt:  the schema parser context
+ * @wildA:  the first wildcard
+ * @wildB: the second wildcard 
+ *
+ * Returns 1 if the namespace constraint of @wildA is an intensional 
+ * subset of @wildB, 0 otherwise.
+ */
+static int
+xmlSchemaIsWildcardNsConstraintSubset(
+                            xmlSchemaParserCtxtPtr ctxt ATTRIBUTE_UNUSED, 
+			    xmlSchemaWildcardPtr wildA,
+			    xmlSchemaWildcardPtr wildB)
+{    
 
-static xmlSchemaWildcardPtr
-xmlSchemaBuildCompleteAttributeWildcard(xmlSchemaParserCtxtPtr ctxt, 				   
-				   xmlSchemaAttributePtr attrs,				   
-				   xmlSchemaWildcardPtr completeWild)					
+    /*
+    * Schema Component Constraint: Wildcard Subset 
+    */
+    /*
+    * 1 super must be any. 
+    */
+    if (wildB->any)
+	return (1);
+    /*
+    * 2.1 sub must be a pair of not and a namespace name or ·absent·.
+    * 2.2 super must be a pair of not and the same value.
+    */
+    if ((wildA->negNsSet != NULL) &&
+	(wildB->negNsSet != NULL) &&
+	(wildA->negNsSet->value == wildA->negNsSet->value))
+	return (1);    
+    /* 
+    * 3.1 sub must be a set whose members are either namespace names or ·absent·. 
+    */
+    if (wildA->nsSet != NULL) {
+	/*
+	* 3.2.1 super must be the same set or a superset thereof. 
+	*/
+	if (wildB->nsSet != NULL) {
+	    xmlSchemaWildcardNsPtr cur, curB;
+	    int found = 0;
+	    
+	    cur = wildA->nsSet;
+	    while (cur != NULL) {
+		found = 0;
+		curB = wildB->nsSet;
+		while (curB != NULL) {
+		    if (cur->value == curB->value) {
+			found = 1;
+			break;
+		    }
+		    curB = curB->next;
+		}
+		if (!found)
+		    return (0);
+		cur = cur->next;
+	    }
+	    if (found)
+		return (1); 
+	} else if (wildB->negNsSet != NULL) {
+	    xmlSchemaWildcardNsPtr cur;
+	    /*
+	    * 3.2.2 super must be a pair of not and a namespace name or 
+	    * ·absent· and that value must not be in sub's set. 
+	    */
+	    cur = wildA->nsSet;
+	    while (cur != NULL) {		
+		if (cur->value == wildB->negNsSet->value)
+		    return (0);
+		cur = cur->next;
+	    }  
+	    return (1);
+	}
+    }
+    return (0);
+}
+
+/**
+ * xmlSchemaBuildCompleteAttributeWildcard:
+ * @ctxt:  the schema parser context
+ * @attrs: the attribute list 
+ * @completeWild: the resulting complete wildcard
+ *
+ * Returns -1 in case of an internal error, 0 otherwise.
+ */
+static int
+xmlSchemaBuildCompleteAttributeWildcard(xmlSchemaParserCtxtPtr ctxt, 				    
+				   xmlSchemaAttributePtr attrs,
+				   xmlSchemaWildcardPtr *completeWild)				
 {        
     while (attrs != NULL) {
 	if (attrs->type == XML_SCHEMA_TYPE_ATTRIBUTEGROUP) {
@@ -5822,44 +5942,39 @@ xmlSchemaBuildCompleteAttributeWildcard(xmlSchemaParserCtxtPtr ctxt,
 	    group = (xmlSchemaAttributeGroupPtr) attrs;	  
 	    if ((group->flags & XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED) == 0) {
 		if (group->attributes != NULL) {
-		    if (group->attributeWildcard != NULL)			
-			xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
-			    group->attributes, group->attributeWildcard);
-		    else
-			group->attributeWildcard = 
-			    xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
-				group->attributes, group->attributeWildcard);
+		    if (xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
+			group->attributes, &group->attributeWildcard) == -1)
+			return (-1);
 		}
 		group->flags |= XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED;
 	    }		
 	    if (group->attributeWildcard != NULL) {		
-		if (completeWild == NULL) {
+		if (*completeWild == NULL) {
 		    /*
 		    * Copy the first encountered wildcard as context, except for the annotation.
 		    */
-		    completeWild = xmlSchemaAddWildcard(ctxt);
-		    completeWild->type = XML_SCHEMA_TYPE_ANY_ATTRIBUTE;	   
-		    if (!xmlSchemaCloneWildcardNsConstraints(ctxt, 
-			&completeWild, group->attributeWildcard))
-			return(NULL);
-		    completeWild->processContents = group->attributeWildcard->processContents;
+		    *completeWild = xmlSchemaAddWildcard(ctxt);
+		    (*completeWild)->type = XML_SCHEMA_TYPE_ANY_ATTRIBUTE;	   
+		    if (xmlSchemaCloneWildcardNsConstraints(ctxt, 
+			completeWild, group->attributeWildcard) == -1)
+			return (-1);
+		    (*completeWild)->processContents = group->attributeWildcard->processContents;
 		    /*
 		    * Although the complete wildcard might not correspond to any
 		    * node in the schema, we will save this context node.
 		    */
-		    completeWild->node = group->attributeWildcard->node;  
-		    return(completeWild);
-		} 				
-		if (xmlSchemaIntersectWildcards(ctxt, completeWild, group->attributeWildcard) == -1) {
-		    xmlSchemaFreeWildcard(completeWild);
-		    return(NULL);
+		    (*completeWild)->node = group->attributeWildcard->node;  
+		    
+		} else if (xmlSchemaIntersectWildcards(ctxt, *completeWild, group->attributeWildcard) == -1) {
+		    xmlSchemaFreeWildcard(*completeWild);
+		    return (-1);
 		}		
 	    }
 	}
 	attrs = attrs->next;
     }
    		                 
-    return (completeWild);   
+    return (0);   
 }
 
 /**
@@ -5911,7 +6026,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
     xmlSchemaAttributeLinkPtr cur, base, tmp, id = NULL, prev = NULL, uses = NULL, 
 	lastUse = NULL, lastBaseUse = NULL;
     xmlSchemaAttributePtr attrs;
-    int baseIsAnyType = 0;    
+    int baseIsAnyType = 0;
 
     /* 
      * Complex Type Definition with complex content Schema Component.
@@ -5927,6 +6042,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
     }
     if ((type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION) || 
 	(type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION)) {	
+	
 	/*
 	 * Inherit the attribute uses of the base type.
 	 */
@@ -5966,11 +6082,16 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 	attrs = type->subtypes->subtypes->attributes;	
 	/*
 	* Handle attribute wildcards.
-	*/
-	type->attributeWildcard = 
-	    xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
-		attrs, 
-		type->subtypes->subtypes->attributeWildcard);
+	*/	
+	type->attributeWildcard = type->subtypes->subtypes->attributeWildcard;
+
+	if (xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
+	    attrs, &type->attributeWildcard) == -1) {
+	    if ((type->attributeWildcard != NULL) &&
+		(type->attributeWildcard != type->subtypes->subtypes->attributeWildcard))
+		type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
+	    return (-1);
+	}
 	if ((type->attributeWildcard != NULL) &&
 	    (type->attributeWildcard != type->subtypes->subtypes->attributeWildcard))
 	    type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
@@ -5992,6 +6113,65 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 		type->attributeWildcard = baseType->attributeWildcard;
 	    }
 	}
+	if (!baseIsAnyType) {
+	    if (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION) {
+		if (type->attributeWildcard != NULL) {
+		    /* 
+		    * Derivation Valid (Restriction, Complex) 	    
+		    * 4.1 The {base type definition} must also have one. 
+		    */
+		    if (baseType->attributeWildcard == NULL) {	    
+			xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_1,
+			    "The derived type \"%s\" has an attribute wildcard, "
+			    "but the base type \"%s\" does not have one.\n",
+			    type->name, baseType->name);
+			return (1);
+		    } else if (xmlSchemaIsWildcardNsConstraintSubset(ctxt, 
+			type->attributeWildcard, baseType->attributeWildcard) == 0) {
+			/* 4.2 */
+			xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_2,
+			    "The wildcard in the derived type \"%s\" is not a valid " 
+			    "subset of the one in the base type \"%s\".\n",
+			    type->name, baseType->name);	    
+			return (1);
+		    }
+		    /* 4.3 Unless the {base type definition} is the ·ur-type 
+		    * definition·, the complex type definition's {attribute 
+		    * wildcard}'s {process contents} must be identical to or 
+		    * stronger than the {base type definition}'s {attribute 
+		    * wildcard}'s {process contents}, where strict is stronger 
+		    * than lax is stronger than skip.
+		    */
+		    if (type->attributeWildcard->processContents < 
+			baseType->attributeWildcard->processContents) {
+			xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_3,
+			    "The process contents of the wildcard in the "
+			    "derived type \"%s\" is weaker than " 
+			    "that in the base type \"%s\".\n",
+			    type->name, baseType->name);
+			return (1);
+		    }
+		}
+	    } else if (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION) {
+		/*
+		* Derivation Valid (Extension)
+		* At this point the type and the base have both, either
+		* no wildcard or a wildcard.
+		*/
+		if ((baseType->attributeWildcard != NULL) &&
+		    (baseType->attributeWildcard != type->attributeWildcard)) {
+		    /* 1.3 */
+		    if (xmlSchemaIsWildcardNsConstraintSubset(ctxt, 
+			baseType->attributeWildcard, type->attributeWildcard) == 0) {
+			xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_COS_CT_EXTENDS_1_3,
+			    "The wildcard in the derived type \"%s\" is not a valid " 
+			    "superset of the one in the base type \"%s\".\n",
+			    type->name, baseType->name);
+			return (1);		
+		    }
+		}		
+	    }
+	}
     } else {
 	/*
 	 * Although the complexType is implicitely derived by "restriction"
@@ -5999,9 +6179,18 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 	 */
 	baseType = NULL;
 	attrs = type->attributes;
-	if (attrs != NULL)
-	    type->attributeWildcard =
-		xmlSchemaBuildCompleteAttributeWildcard(ctxt, attrs, type->attributeWildcard);
+	if (attrs != NULL) {
+	    if (xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
+		attrs, &type->attributeWildcard) == -1) {
+		if ((type->attributeWildcard != NULL) &&
+		    (type->attributeWildcard != type->subtypes->subtypes->attributeWildcard))
+		    type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
+		return (-1);	    
+	    }
+	    if ((type->attributeWildcard != NULL) &&
+		((type->flags & XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD) == 0))
+		type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
+	}
     }
     /*
      * Gather attribute uses defined by this type.
@@ -6089,6 +6278,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 			}
 			/*
 			* TODO: derivation-ok-restriction  2.1.2 ({type definition} must be validly derived)
+			* TODO: derivation-ok-restriction  2.1.3 
 			*/
 			break;
 		    }				
@@ -6152,13 +6342,13 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 		type->attributeUses = uses;
 	    } else 
 		lastBaseUse->next = uses;
-    }
+	}
     } else {
 	/* 
-	 * Derive implicitely from the ur-type.
-	 */
+	* Derive implicitely from the ur-type.
+	*/
 	type->attributeUses = uses;
-}
+    }
     /*
      * 3.4.6 -> Complex Type Definition Properties Correct
      */
@@ -6169,10 +6359,10 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 	    /*
 	    * 4. Two distinct attribute declarations in the {attribute uses} must 
 	    * not have identical {name}s and {target namespace}s.
- *
+	    *
 	    * Note that this was already done for "restriction" and types derived from
 	    * the ur-type.
- */
+	    */
 	    if (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION) {
 		tmp = cur->next;
 		while (tmp != NULL) {	    
@@ -6184,11 +6374,11 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 			xmlSchemaPErr(ctxt, cur->attr->node, XML_SCHEMAP_CT_PROPS_CORRECT_4,
 			    "ct-props-correct.4: Duplicate attribute use with the name \"%s\" specified\n",
 			    xmlSchemaGetOnymousAttrName(cur->attr),  NULL);
-            break;
-        }
+			break;
+		    }
 		    tmp = tmp->next;
-            }
-        }
+		}
+	    }
 	    /*
 	    * 5. Two distinct attribute declarations in the {attribute uses} must 
 	    * not have {type definition}s which are or are derived from ID.
@@ -6205,7 +6395,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 			"\"%s\" and \"%s\" have types which derived from ID\n",
 			xmlSchemaGetOnymousAttrName(id->attr), 
 			xmlSchemaGetOnymousAttrName(cur->attr));
-        } 
+		} 
 		id = cur;
 	    }
 	    /*
@@ -6220,7 +6410,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 		else
 		    prev->next = cur->next;
 		cur = cur->next;
-        xmlFree(tmp);
+		xmlFree(tmp);
 	    } else {
 		prev = cur;
 		cur = cur->next;
@@ -8431,7 +8621,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 	    printf("found\n");
 #endif
             found = 1;
-	    ctxt->cur = (xmlNodePtr) attr;
+            ctxt->cur = (xmlNodePtr) attr;
 
             if (attrDecl->subtypes == NULL) {
 		curState->state = XML_SCHEMAS_ATTR_TYPE_NOT_RESOLVED;

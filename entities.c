@@ -250,8 +250,10 @@ xmlEntityPtr xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
 
 /*
  * xmlEncodeEntities : do a global encoding of a string, replacing the
- *                     basic content with their entities form.
- * TODO !!!! rewite !!!
+ *                     predefined entities and non ASCII values with their
+ *                     entities and CharRef counterparts.
+ * TODO !!!! Once moved to UTF-8 internal encoding, the encoding of non-ascii
+ *           get erroneous.
  */
 CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
     const CHAR *cur = input;
@@ -276,8 +278,6 @@ CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
 
 	/*
 	 * By default one have to encode at least '<', '>', '"' and '&' !
-	 * One could try a better encoding using the entities defined and
-	 * used as a compression code !!!.
 	 */
 	if (*cur == '<') {
 	    *out++ = '&';
@@ -309,6 +309,13 @@ CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
 	    *out++ = 'o';
 	    *out++ = 's';
 	    *out++ = ';';
+#ifndef USE_UTF_8
+	} else if ((sizeof(CHAR) == 1) && (*cur >= 0x80)) {
+	    char buf[10], *ptr;
+	    snprintf(buf, 9, "&#%d;", *cur);
+            ptr = buf;
+	    while (*ptr != 0) *out++ = *ptr++;
+#endif
 	} else {
 	    /*
 	     * default case, just copy !

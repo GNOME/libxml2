@@ -23,6 +23,17 @@
 
 #include "encoding.h"
 
+/*
+ * From rfc2044: encoding of the Unicode values on UTF-8:
+ *
+ * UCS-4 range (hex.)           UTF-8 octet sequence (binary)
+ * 0000 0000-0000 007F   0xxxxxxx
+ * 0000 0080-0000 07FF   110xxxxx 10xxxxxx
+ * 0000 0800-0000 FFFF   1110xxxx 10xxxxxx 10xxxxxx 
+ *
+ * I hope we won't use values > 0xFFFF anytime soon !
+ */
+
 /**
  * isolat1ToUTF8:
  * @out:  a pointer ot an array of bytes to store the result

@@ -68,27 +68,49 @@ type name##Pop(xmlParserCtxtPtr ctxt) {					\
 PUSH_AND_POP(xmlParserInputPtr, input)
 PUSH_AND_POP(xmlNodePtr, node)
 
-/*************
-#define CUR (*(ctxt->input->cur) ? *(ctxt->input->cur) : xmlPopInput(ctxt))
-#define NEXT (((*(ctxt->input->cur) == '\n') ?				\
-		(ctxt->input->line++, ctxt->input->col = 1) :		\
-		(ctxt->input->col++)), ctxt->input->cur++)
- *************/
+/*
+ * Macros for accessing the content. Those should be used only by the parser,
+ * and not exported.
+ *
+ * Dirty macros, i.e. one need to make assumption on the context to use them
+ *
+ *   CUR_PTR return the current pointer to the CHAR to be parsed.
+ *   CUR     returns the current CHAR value, i.e. a 8 bit value if compiled
+ *           in ISO-Latin or UTF-8, and the current 16 bit value if compiled
+ *           in UNICODE mode. This should be used internally by the parser
+ *           only to compare to ASCII values otherwise it would break when
+ *           running with UTF-8 encoding.
+ *   NXT(n)  returns the n'th next CHAR. Same as CUR is should be used only
+ *           to compare on ASCII based substring.
+ *   SKIP(n) Skip n CHAR, and must also be used only to skip ASCII defined
+ *           strings within the parser.
+ *
+ * Clean macros, not dependent of an ASCII context.
+ *
+ *   CURRENT Returns the current char value, with the full decoding of
+ *           UTF-8 if we are using this mode. It returns an int.
+ *   NEXT    Skip to the next character, this does the proper decoding
+ *           in UTF-8 mode. It also pop-up unfinished entities on the fly.
+ *           It returns the pointer to the current CHAR.
+ */
 
 #define CUR (*ctxt->input->cur)
+#define SKIP(val) ctxt->input->cur += (val)
+#define NXT(val) ctxt->input->cur[(val)]
+#define CUR_PTR ctxt->input->cur
+
+#define SKIP_BLANKS 							\
+    while (IS_BLANK(*(ctxt->input->cur))) NEXT
+
+#ifndef USE_UTF_8
+#define CURRENT (*ctxt->input->cur)
 #define NEXT ((*ctxt->input->cur) ?					\
                 (((*(ctxt->input->cur) == '\n') ?			\
 		    (ctxt->input->line++, ctxt->input->col = 1) :	\
 		    (ctxt->input->col++)), ctxt->input->cur++) :	\
 		(xmlPopInput(ctxt), ctxt->input->cur))
-
-#define CUR_PTR ctxt->input->cur
-
-#define NXT(val) ctxt->input->cur[(val)]
-
-#define SKIP(val) ctxt->input->cur += (val)
-#define SKIP_BLANKS 							\
-    while (IS_BLANK(*(ctxt->input->cur))) NEXT
+#else
+#endif
 
 
 /**
@@ -101,7 +123,8 @@ PUSH_AND_POP(xmlNodePtr, node)
  * TODO A deallocation of the popped Input structure is needed
  * return values: the current CHAR in the parser context
  */
-CHAR xmlPopInput(xmlParserCtxtPtr ctxt) {
+CHAR
+xmlPopInput(xmlParserCtxtPtr ctxt) {
     if (ctxt->inputNr == 1) return(0); /* End of main Input */
     inputPop(ctxt);
     return(CUR);
@@ -115,7 +138,8 @@ CHAR xmlPopInput(xmlParserCtxtPtr ctxt) {
  * xmlPushInput: switch to a new input stream which is stacked on top
  *               of the previous one(s).
  */
-void xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
+void
+xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
     if (input == NULL) return;
     inputPush(ctxt, input);
 }
@@ -540,9 +564,10 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 #define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))
 
 #else
+#ifndef USE_UTF_8
 /************************************************************************
  *									*
- * 8bits / ASCII version of the macros.					*
+ * 8bits / ISO-Latin version of the macros.				*
  *									*
  ************************************************************************/
 /*
@@ -589,6 +614,15 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
  */
 #define IS_EXTENDER(c) ((c) == 0xb7)
 
+#else /* USE_UTF_8 */
+/************************************************************************
+ *									*
+ * 8bits / UTF-8 version of the macros.					*
+ *									*
+ ************************************************************************/
+
+TODO !!!
+#endif /* USE_UTF_8 */
 #endif /* !UNICODE */
 
 /*
@@ -638,7 +672,8 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
  * return values: a new CHAR * or NULL
  */
 
-CHAR *xmlStrndup(const CHAR *cur, int len) {
+CHAR *
+xmlStrndup(const CHAR *cur, int len) {
     CHAR *ret = malloc((len + 1) * sizeof(CHAR));
 
     if (ret == NULL) {
@@ -659,7 +694,8 @@ CHAR *xmlStrndup(const CHAR *cur, int len) {
  * return values: a new CHAR * or NULL
  */
 
-CHAR *xmlStrdup(const CHAR *cur) {
+CHAR *
+xmlStrdup(const CHAR *cur) {
     const CHAR *p = cur;
 
     while (IS_CHAR(*p)) p++;
@@ -675,7 +711,8 @@ CHAR *xmlStrdup(const CHAR *cur) {
  * return values: a new CHAR * or NULL
  */
 
-CHAR *xmlCharStrndup(const char *cur, int len) {
+CHAR *
+xmlCharStrndup(const char *cur, int len) {
     int i;
     CHAR *ret = malloc((len + 1) * sizeof(CHAR));
 
@@ -699,7 +736,8 @@ CHAR *xmlCharStrndup(const char *cur, int len) {
  * return values: a new CHAR * or NULL
  */
 
-CHAR *xmlCharStrdup(const char *cur) {
+CHAR *
+xmlCharStrdup(const char *cur) {
     const char *p = cur;
 
     while (*p != '\0') p++;
@@ -715,7 +753,8 @@ CHAR *xmlCharStrdup(const char *cur) {
  * return values: the integer result of the comparison
  */
 
-int xmlStrcmp(const CHAR *str1, const CHAR *str2) {
+int
+xmlStrcmp(const CHAR *str1, const CHAR *str2) {
     register int tmp;
 
     do {
@@ -735,7 +774,8 @@ int xmlStrcmp(const CHAR *str1, const CHAR *str2) {
  * return values: the integer result of the comparison
  */
 
-int xmlStrncmp(const CHAR *str1, const CHAR *str2, int len) {
+int
+xmlStrncmp(const CHAR *str1, const CHAR *str2, int len) {
     register int tmp;
 
     if (len <= 0) return(0);
@@ -757,7 +797,8 @@ int xmlStrncmp(const CHAR *str1, const CHAR *str2, int len) {
  * return values: the CHAR * for the first occurence or NULL.
  */
 
-CHAR *xmlStrchr(const CHAR *str, CHAR val) {
+CHAR *
+xmlStrchr(const CHAR *str, CHAR val) {
     while (*str != 0) {
         if (*str == val) return((CHAR *) str);
 	str++;
@@ -773,7 +814,8 @@ CHAR *xmlStrchr(const CHAR *str, CHAR val) {
  * return values: the number of CHAR contained in the ARRAY.
  */
 
-int xmlStrlen(const CHAR *str) {
+int
+xmlStrlen(const CHAR *str) {
     int len = 0;
 
     if (str == NULL) return(0);
@@ -794,7 +836,8 @@ int xmlStrlen(const CHAR *str) {
  * return values: a new CHAR * containing the concatenated string.
  */
 
-CHAR *xmlStrncat(CHAR *cur, const CHAR *add, int len) {
+CHAR *
+xmlStrncat(CHAR *cur, const CHAR *add, int len) {
     int size;
     CHAR *ret;
 
@@ -824,7 +867,8 @@ CHAR *xmlStrncat(CHAR *cur, const CHAR *add, int len) {
  * return values: a new CHAR * containing the concatenated string.
  */
 
-CHAR *xmlStrcat(CHAR *cur, const CHAR *add) {
+CHAR *
+xmlStrcat(CHAR *cur, const CHAR *add) {
     const CHAR *p = add;
 
     if (add == NULL) return(cur);
@@ -879,7 +923,8 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const CHAR *str, int len) {
  * TODO: we should call the SAX handler here and have it resolve the issue
  */
 
-void xmlHandleEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
+void
+xmlHandleEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     int len;
     xmlParserInputPtr input;
 
@@ -934,7 +979,8 @@ CHAR *xmlParseReference(xmlParserCtxtPtr ctxt);
  * return values: the namespace name or NULL
  */
 
-CHAR *xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt) {
     const CHAR *q;
     CHAR *ret = NULL;
 
@@ -969,7 +1015,8 @@ CHAR *xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt) {
  *   to get the Prefix if any.
  */
 
-CHAR *xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, CHAR **prefix) {
+CHAR *
+xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, CHAR **prefix) {
     CHAR *ret = NULL;
 
     *prefix = NULL;
@@ -995,7 +1042,8 @@ CHAR *xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, CHAR **prefix) {
  * return values: the namespace name
  */
 
-CHAR *xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt) {
     CHAR *name = NULL;
 
     if ((CUR == 'x') && (NXT(1) == 'm') &&
@@ -1017,7 +1065,8 @@ CHAR *xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt) {
  * [OLD] Parse and return a string between quotes or doublequotes
  * return values: the string parser or NULL.
  */
-CHAR *xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
     CHAR *ret = NULL;
     const CHAR *q;
 
@@ -1056,7 +1105,8 @@ CHAR *xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
  * if ot was declared on the root of the Tree:-(
  */
 
-void xmlParseNamespace(xmlParserCtxtPtr ctxt) {
+void
+xmlParseNamespace(xmlParserCtxtPtr ctxt) {
     CHAR *href = NULL;
     CHAR *prefix = NULL;
     int garbage = 0;
@@ -1166,7 +1216,8 @@ void xmlParseNamespace(xmlParserCtxtPtr ctxt) {
  * return values: the Name parsed or NULL
  */
 
-CHAR *xmlParseName(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseName(xmlParserCtxtPtr ctxt) {
     const CHAR *q;
     CHAR *ret = NULL;
 
@@ -1198,7 +1249,8 @@ CHAR *xmlParseName(xmlParserCtxtPtr ctxt) {
  * return values: the Nmtoken parsed or NULL
  */
 
-CHAR *xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
     const CHAR *q;
     CHAR *ret = NULL;
 
@@ -1227,7 +1279,8 @@ CHAR *xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
  * return values: the EntityValue parsed or NULL
  */
 
-CHAR *xmlParseEntityValue(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseEntityValue(xmlParserCtxtPtr ctxt) {
     CHAR *ret = NULL, *cur;
     const CHAR *q;
 
@@ -1314,7 +1367,8 @@ CHAR *xmlParseEntityValue(xmlParserCtxtPtr ctxt) {
  * return values: the AttValue parsed or NULL.
  */
 
-CHAR *xmlParseAttValue(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseAttValue(xmlParserCtxtPtr ctxt) {
     CHAR *ret = NULL, *cur;
     const CHAR *q;
 
@@ -1414,7 +1468,8 @@ CHAR *xmlParseAttValue(xmlParserCtxtPtr ctxt) {
  * return values: the SystemLiteral parsed or NULL
  */
 
-CHAR *xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
     const CHAR *q;
     CHAR *ret = NULL;
 
@@ -1455,7 +1510,8 @@ CHAR *xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
  * return values: the PubidLiteral parsed or NULL.
  */
 
-CHAR *xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     const CHAR *q;
     CHAR *ret = NULL;
     /*
@@ -1501,7 +1557,8 @@ CHAR *xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
  * return values: 
  */
 
-void xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
+void
+xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
     const CHAR *q;
 
     q = CUR_PTR;
@@ -1537,7 +1594,8 @@ void xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
  *                case publicID receives PubidLiteral
  */
 
-CHAR *xmlParseExternalID(xmlParserCtxtPtr ctxt, CHAR **publicID) {
+CHAR *
+xmlParseExternalID(xmlParserCtxtPtr ctxt, CHAR **publicID) {
     CHAR *URI = NULL;
 
     if ((CUR == 'S') && (NXT(1) == 'Y') &&
@@ -1630,7 +1688,8 @@ xmlNodePtr xmlParseComment(xmlParserCtxtPtr ctxt, int create) {
  * return values: the PITarget name or NULL
  */
 
-CHAR *xmlParsePITarget(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParsePITarget(xmlParserCtxtPtr ctxt) {
     CHAR *name;
 
     name = xmlParseName(ctxt);
@@ -1654,7 +1713,8 @@ CHAR *xmlParsePITarget(xmlParserCtxtPtr ctxt) {
  * return values: the PI name or NULL
  */
 
-void xmlParsePI(xmlParserCtxtPtr ctxt) {
+void
+xmlParsePI(xmlParserCtxtPtr ctxt) {
     CHAR *target;
 
     if ((CUR == '<') && (NXT(1) == '?')) {
@@ -1756,7 +1816,8 @@ void xmlParsePI(xmlParserCtxtPtr ctxt) {
  * TODO: no handling of the values parsed !
  */
 
-void xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
+void
+xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
     CHAR *name;
     
     if ((CUR == '<') && (NXT(1) == '!') &&
@@ -1803,7 +1864,8 @@ void xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
  * [76] NDataDecl ::= S 'NDATA' S Name
  */
 
-void xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
+void
+xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
     CHAR *name = NULL;
     CHAR *value = NULL;
     CHAR *URI = NULL, *literal = NULL;
@@ -1906,7 +1968,8 @@ void xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
  * TODO: not implemented !!!
  */
 
-void xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, CHAR *name) {
+void
+xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, CHAR *name) {
     /*
      * TODO !!!
      */
@@ -1930,7 +1993,8 @@ void xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, CHAR *name) {
  *
  * TODO: not implemented !!!
  */
-void xmlParseAttributeType(xmlParserCtxtPtr ctxt, CHAR *name) {
+void
+xmlParseAttributeType(xmlParserCtxtPtr ctxt, CHAR *name) {
     /* TODO !!! */
     if ((CUR == 'C') && (NXT(1) == 'D') &&
         (NXT(2) == 'A') && (NXT(3) == 'T') &&
@@ -1981,7 +2045,8 @@ void xmlParseAttributeType(xmlParserCtxtPtr ctxt, CHAR *name) {
  *
  * TODO: not implemented !!!
  */
-void xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
+void
+xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
     CHAR *name;
 
     /* TODO !!! */
@@ -2041,7 +2106,8 @@ void xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
  * TODO: not implemented !!!
  */
 
-void xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, CHAR *name) {
+void
+xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, CHAR *name) {
     /*
      * TODO This has to be parsed correctly, currently we just skip until
      *      we reach the first '>'.
@@ -2063,7 +2129,8 @@ void xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, CHAR *name) {
  *
  * TODO There is a check [ VC: Unique Element Type Declaration ]
  */
-void xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
+void
+xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
     CHAR *name;
 
     if ((CUR == '<') && (NXT(1) == '!') &&
@@ -2115,7 +2182,8 @@ void xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
  *
  * TODO There is a check [ VC: Proper Declaration/PE Nesting ]
  */
-void xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
+void
+xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
     xmlParseElementDecl(ctxt);
     xmlParseAttributeListDecl(ctxt);
     xmlParseEntityDecl(ctxt);
@@ -2134,7 +2202,8 @@ void xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
  *                  '&#x' [0-9a-fA-F]+ ';'
  * return values: the value parsed
  */
-CHAR *xmlParseCharRef(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseCharRef(xmlParserCtxtPtr ctxt) {
     int val = 0;
     CHAR buf[2];
 
@@ -2155,13 +2224,13 @@ CHAR *xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	    }
 	    NEXT;
 	}
-	if (CUR != ';')
+	if (CUR == ';')
 	    NEXT;
     } else if  ((CUR == '&') && (NXT(1) == '#')) {
 	SKIP(2);
 	while (CUR != ';') {
 	    if ((CUR >= '0') && (CUR <= '9')) 
-	        val = val * 16 + (CUR - '0');
+	        val = val * 10 + (CUR - '0');
 	    else {
 	        xmlParserError(ctxt, "xmlParseCharRef: invalid value\n");
 		val = 0;
@@ -2169,7 +2238,7 @@ CHAR *xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	    }
 	    NEXT;
 	}
-	if (CUR != ';')
+	if (CUR == ';')
 	    NEXT;
     } else {
 	xmlParserError(ctxt, "xmlParseCharRef: invalid value\n");
@@ -2196,7 +2265,8 @@ CHAR *xmlParseCharRef(xmlParserCtxtPtr ctxt) {
  * [68] EntityRef ::= '&' Name ';'
  * return values: the entity ref string or NULL if directly as input stream.
  */
-CHAR *xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
     CHAR *ret = NULL;
     const CHAR *q;
     CHAR *name;
@@ -2247,7 +2317,8 @@ CHAR *xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
  * return values: the entity string or NULL if handled directly by pushing
  *      the entity value as the input.
  */
-CHAR *xmlParseReference(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseReference(xmlParserCtxtPtr ctxt) {
     if ((CUR == '&') && (NXT(1) == '#')) {
         return(xmlParseCharRef(ctxt));
     } else if (CUR == '&') {
@@ -2265,7 +2336,8 @@ CHAR *xmlParseReference(xmlParserCtxtPtr ctxt) {
  * [69] PEReference ::= '%' Name ';'
  * return values: the entity content or NULL if handled directly.
  */
-CHAR *xmlParsePEReference(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParsePEReference(xmlParserCtxtPtr ctxt) {
     CHAR *ret = NULL;
     CHAR *name;
     xmlEntityPtr entity;
@@ -2310,7 +2382,8 @@ CHAR *xmlParsePEReference(xmlParserCtxtPtr ctxt) {
  *                      ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
  */
 
-void xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
+void
+xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
     xmlDtdPtr dtd;
     CHAR *name;
     CHAR *ExternalID = NULL;
@@ -2583,7 +2656,8 @@ xmlNodePtr xmlParseStartTag(xmlParserCtxtPtr ctxt) {
  * return values: tagPtr receive the tag name just read
  */
 
-void xmlParseEndTag(xmlParserCtxtPtr ctxt, xmlNsPtr *nsPtr, CHAR **tagPtr) {
+void
+xmlParseEndTag(xmlParserCtxtPtr ctxt, xmlNsPtr *nsPtr, CHAR **tagPtr) {
     CHAR *namespace, *name;
     xmlNsPtr ns = NULL;
 
@@ -2634,7 +2708,8 @@ void xmlParseEndTag(xmlParserCtxtPtr ctxt, xmlNsPtr *nsPtr, CHAR **tagPtr) {
  *
  * [21] CDEnd ::= ']]>'
  */
-void xmlParseCDSect(xmlParserCtxtPtr ctxt) {
+void
+xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     const CHAR *r, *s, *base;
 
     if ((CUR == '<') && (NXT(1) == '!') &&
@@ -2685,7 +2760,8 @@ void xmlParseCDSect(xmlParserCtxtPtr ctxt) {
  * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
  */
 
-void xmlParseContent(xmlParserCtxtPtr ctxt) {
+void
+xmlParseContent(xmlParserCtxtPtr ctxt) {
     xmlNodePtr ret = NULL;
 
     while ((CUR != '<') || (NXT(1) != '/')) {
@@ -2889,7 +2965,8 @@ xmlNodePtr xmlParseElement(xmlParserCtxtPtr ctxt) {
  * [26] VersionNum ::= ([a-zA-Z0-9_.:] | '-')+
  * return values: the string giving the XML version number, or NULL
  */
-CHAR *xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
     const CHAR *q = CUR_PTR;
     CHAR *ret;
 
@@ -2916,7 +2993,8 @@ CHAR *xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
  * return values: the version string, e.g. "1.0"
  */
 
-CHAR *xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
     CHAR *version = NULL;
     const CHAR *q;
 
@@ -2965,7 +3043,8 @@ CHAR *xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
  *
  * return values: the encoding name value or NULL
  */
-CHAR *xmlParseEncName(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseEncName(xmlParserCtxtPtr ctxt) {
     const CHAR *q = CUR_PTR;
     CHAR *ret = NULL;
 
@@ -2997,7 +3076,8 @@ CHAR *xmlParseEncName(xmlParserCtxtPtr ctxt) {
  * return values: the encoding value or NULL
  */
 
-CHAR *xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
+CHAR *
+xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
     CHAR *encoding = NULL;
     const CHAR *q;
 
@@ -3048,7 +3128,8 @@ CHAR *xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
  * return values: 1 if standalone, 0 otherwise
  */
 
-int xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
+int
+xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
     int standalone = -1;
 
     SKIP_BLANKS;
@@ -3112,7 +3193,8 @@ int xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
  * [23] XMLDecl ::= '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>'
  */
 
-void xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
+void
+xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
     CHAR *version;
 
     /*
@@ -3164,7 +3246,8 @@ void xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
  * [27] Misc ::= Comment | PI |  S
  */
 
-void xmlParseMisc(xmlParserCtxtPtr ctxt) {
+void
+xmlParseMisc(xmlParserCtxtPtr ctxt) {
     while (((CUR == '<') && (NXT(1) == '?')) ||
            ((CUR == '<') && (NXT(1) == '!') &&
 	    (NXT(2) == '-') && (NXT(3) == '-')) ||
@@ -3193,7 +3276,8 @@ void xmlParseMisc(xmlParserCtxtPtr ctxt) {
  *                as a result of the parsing.
  */
 
-int xmlParseDocument(xmlParserCtxtPtr ctxt) {
+int
+xmlParseDocument(xmlParserCtxtPtr ctxt) {
     xmlDefaultSAXHandlerInit();
 
     /*
@@ -3518,7 +3602,8 @@ xmlDocPtr xmlParseMemory(char *buffer, int size) {
  * Initialize a parser context
  */
 
-void xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
+void
+xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 {
   /* Allocate the Input stack */
   ctxt->inputTab = (xmlParserInputPtr *) malloc(5 * sizeof(xmlParserInputPtr));
@@ -3545,7 +3630,8 @@ void xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
  * Clear (release owned resources) and reinitialize a parser context
  */
 
-void xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
+void
+xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
 {
   xmlClearNodeInfoSeq(&ctxt->node_seq);
   xmlInitParserCtxt(ctxt);
@@ -3563,7 +3649,8 @@ void xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
  * NULL, but the filename parameter can be
  */
 
-void xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const CHAR* buffer,
+void
+xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const CHAR* buffer,
                              const char* filename)
 {
   xmlParserInputPtr input;
@@ -3618,7 +3705,8 @@ const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxt* ctx,
  *
  * -- Initialize (set to initial state) node info sequence
  */
-void xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
+void
+xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
 {
   seq->length = 0;
   seq->maximum = 0;
@@ -3632,7 +3720,8 @@ void xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
  * -- Clear (release memory and reinitialize) node
  *   info sequence
  */
-void xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
+void
+xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
 {
   if ( seq->buffer != NULL )
     free(seq->buffer);
@@ -3685,7 +3774,8 @@ unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeq* seq,
  *
  * Insert node info record into the sorted sequence
  */
-void xmlParserAddNodeInfo(xmlParserCtxtPtr ctx, 
+void
+xmlParserAddNodeInfo(xmlParserCtxtPtr ctx, 
                           const xmlParserNodeInfo* info)
 {
   unsigned long pos;

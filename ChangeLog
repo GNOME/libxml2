@@ -1,3 +1,9 @@
+Sun Nov  1 14:31:06 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* entities.c, parser.c: debug and cleanup of CharRef handling/saving.
+	  added ent5 test for this purpose.
+	* parser.c, parser.h: formatting, comments and UTF-8 planning.
+
 Fri Oct 30 01:36:52 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: fixed? a strange error due to compression on a GWP

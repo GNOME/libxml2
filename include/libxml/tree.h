@@ -37,9 +37,13 @@ typedef enum {
 } xmlElementType;
 
 /*
- * Currently we use only 8bit chars internal representation, but
- * the parser is not tied to that, just define UNICODE to switch to
- * a 16 bits representation.
+ * Size of an internal character representation.
+ *
+ * Currently we use 8bit chars internal representation for memory efficiency,
+ * but the parser is not tied to that, just define UNICODE to switch to
+ * a 16 bits internal representation. Note that with 8 bits wide
+ * CHARs one can still use UTF-8 to handle correctly non ISO-Latin
+ * input.
  */
 #ifdef UNICODE
 typedef unsigned short CHAR;

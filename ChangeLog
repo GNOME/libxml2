@@ -1,3 +1,7 @@
+Fri Mar 26 11:47:29 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: apply fix for #136693
+
 Thu Mar 25 20:21:01 MST 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/examples/io2.c

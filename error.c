@@ -9,6 +9,7 @@
 #define IN_LIBXML
 #include "libxml.h"
 
+#include <string.h>
 #include <stdarg.h>
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
@@ -26,8 +27,7 @@ void xmlGenericErrorDefaultFunc	(void *ctx ATTRIBUTE_UNUSED,
     va_list   ap;						\
 								\
     str = (char *) xmlMalloc(150);				\
-    if (str == NULL) 						\
-	return;							\
+    if (str != NULL) {						\
 								\
     size = 150;							\
 								\
@@ -42,11 +42,10 @@ void xmlGenericErrorDefaultFunc	(void *ctx ATTRIBUTE_UNUSED,
 	else							\
 	    size += 100;					\
 	if ((larger = (char *) xmlRealloc(str, size)) == NULL) {\
-	    xmlFree(str);					\
-	    return;						\
+	    break;						\
 	}							\
 	str = larger;						\
-    }								\
+    }}								\
 }
 
 /************************************************************************
@@ -146,8 +145,9 @@ xmlParserPrintFileInfo(xmlParserInputPtr input) {
  * Displays current context within the input content for error tracking
  */
 
-void
-xmlParserPrintFileContext(xmlParserInputPtr input) {
+static void
+xmlParserPrintFileContextInternal(xmlParserInputPtr input , 
+		xmlGenericErrorFunc channel, void *data ) {
     const xmlChar *cur, *base;
     unsigned int n, col;	/* GCC warns if signed, because compared with sizeof() */
     xmlChar  content[81]; /* space for 80 chars + line terminator */
@@ -179,7 +179,7 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
     }
     *ctnt = 0;
     /* print out the selected text */
-    xmlGenericError(xmlGenericErrorContext,"%s\n", content);
+    channel(data ,"%s\n", content);
     /* create blank line with problem pointer */
     n = 0;
     ctnt = content;
@@ -191,57 +191,267 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
     }
     *ctnt++ = '^';
     *ctnt = 0;
-    xmlGenericError(xmlGenericErrorContext,"%s\n", content);
+    channel(data ,"%s\n", content);
 }
 
-#if 0
 /**
- * xmlGetVarStr:
- * @msg:  the message format
- * @args:  a va_list argument list
- *
- * SGS contribution
- * Get an arbitrary-sized string for an error argument
- * The caller must free() the returned string
+ * xmlParserPrintFileContext:
+ * @input:  an xmlParserInputPtr input
+ * 
+ * Displays current context within the input content for error tracking
  */
-static char *
-xmlGetVarStr(const char * msg, va_list args) {
-    int       size;
-    int       length;
-    int       chars, left;
-    char      *str, *larger;
-    va_list   ap;
-
-    str = (char *) xmlMalloc(150);
-    if (str == NULL)
-      return(NULL);
-
-    size = 150;
-    length = 0;
-
-    while (1) {
-	left = size - length;
-		    /* Try to print in the allocated space. */
-	va_start(msg, ap);
-  	chars = vsnprintf(str + length, left, msg, ap);
-	va_end(ap);
-			  /* If that worked, we're done. */
-	if ((chars > -1) && (chars < left ))
-	    break;
-			  /* Else try again with more space. */
-	if (chars > -1)         /* glibc 2.1 */
-	    size += chars + 1;  /* precisely what is needed */
-	else                    /* glibc 2.0 */
-	    size += 100;
-	if ((larger = (char *) xmlRealloc(str, size)) == NULL) {
-	    xmlFree(str);
-	    return(NULL);
-	}
-	str = larger;
-    }
-    return(str);
+void
+xmlParserPrintFileContext(xmlParserInputPtr input) {
+   xmlParserPrintFileContextInternal(input, xmlGenericError,
+                                     xmlGenericErrorContext);
 }
-#endif
+
+/**
+ * xmlReportError:
+ * @ctx: the parser context or NULL
+ * @str: the formatted error message
+ *
+ * Report an erro with its context, replace the 4 old error/warning
+ * routines.
+ */
+static void
+xmlReportError(xmlParserCtxtPtr ctxt, const char *str) {
+    char *file = NULL;
+    int line = 0;
+    int code = -1;
+    int domain;
+    xmlErrorLevel level;
+    xmlGenericErrorFunc channel;
+    xmlParserInputPtr input = NULL;
+    xmlParserInputPtr cur = NULL;
+    void *data;
+
+    if (ctxt == NULL) return;
+
+    channel = xmlGenericError;
+    data = xmlGenericErrorContext;
+    file = ctxt->lastError.file;
+    line = ctxt->lastError.line;
+    code = ctxt->lastError.code;
+    domain = ctxt->lastError.domain;
+    level = ctxt->lastError.level;
+    
+    if (code == XML_ERR_OK)
+        return;
+
+    /*
+     * Maintain the compatibility with the legacy error handling
+     */
+    input = ctxt->input;
+    if ((input != NULL) && (input->filename == NULL) &&
+	(ctxt->inputNr > 1)) {
+	cur = input;
+	input = ctxt->inputTab[ctxt->inputNr - 2];
+    }
+    if (input != NULL) {
+	if (input->filename)
+	    channel(data, "%s:%d: ", input->filename, input->line);
+	else
+	    channel(data, "Entity: line %d: ", input->line);
+    }
+    if (code == XML_ERR_OK)
+        return;
+    switch (domain) {
+        case XML_FROM_PARSER:
+            channel(data, "parser ");
+            break;
+        case XML_FROM_NAMESPACE:
+            channel(data, "namespace ");
+            break;
+        case XML_FROM_DTD:
+            channel(data, "validity ");
+            break;
+        case XML_FROM_HTML:
+            channel(data, "HTML parser ");
+            break;
+        case XML_FROM_MEMORY:
+            channel(data, "memory ");
+            break;
+        case XML_FROM_OUTPUT:
+            channel(data, "output ");
+            break;
+        case XML_FROM_IO:
+            channel(data, "I/O ");
+            break;
+        case XML_FROM_XINCLUDE:
+            channel(data, "XInclude ");
+            break;
+        case XML_FROM_XPATH:
+            channel(data, "XPath ");
+            break;
+        case XML_FROM_XPOINTER:
+            channel(data, "parser ");
+            break;
+        case XML_FROM_REGEXP:
+            channel(data, "regexp ");
+            break;
+        case XML_FROM_SCHEMAS:
+            channel(data, "Schemas ");
+            break;
+        case XML_FROM_RELAXNG:
+            channel(data, "Relax-NG ");
+            break;
+        case XML_FROM_CATALOG:
+            channel(data, "Catalog ");
+            break;
+        case XML_FROM_C14N:
+            channel(data, "C14N ");
+            break;
+        case XML_FROM_XSLT:
+            channel(data, "XSLT ");
+            break;
+        default:
+            break;
+    }
+    if (code == XML_ERR_OK)
+        return;
+    switch (level) {
+        case XML_ERR_NONE:
+            channel(data, ": ");
+	    break;
+        case XML_ERR_WARNING:
+            channel(data, "warning : ");
+	    break;
+        case XML_ERR_ERROR:
+            channel(data, "error : ");
+	    break;
+        case XML_ERR_FATAL:
+            channel(data, "error : ");
+	    break;
+    }
+    if (code == XML_ERR_OK)
+        return;
+    if (str != NULL) {
+        channel(data, "%s", str);
+    } else {
+        channel(data, "%s", "out of memory error");
+    }
+    if (code == XML_ERR_OK)
+        return;
+
+    if (ctxt != NULL) {
+        xmlParserPrintFileContextInternal(input, channel, data);
+        if (cur != NULL) {
+            if (cur->filename)
+                channel(data, "%s:%d: \n", cur->filename, cur->line);
+            else
+                channel(data, "Entity: line %d: \n", cur->line);
+            xmlParserPrintFileContextInternal(cur, channel, data);
+        }
+    }
+}
+
+/**
+ * xmlRaiseError:
+ * @ctx: the parser context or NULL
+ * @domain: the domain for the error
+ * @code: the code for the error
+ * @level: the xmlErrorLevel for the error
+ * @file: the file source of the error (or NULL)
+ * @line: the line of the error or 0 if N/A
+ * @str1: extra string info
+ * @str2: extra string info
+ * @str3: extra string info
+ * @int1: extra int info
+ * @int2: extra int info
+ * @msg:  the message to display/transmit
+ * @...:  extra parameters for the message display
+ *
+ * Update teh appropriate global or contextual error structure,
+ * then forward the error message down the parser or generic
+ * error callback handler
+ */
+void
+xmlRaiseError(void *ctx, int domain, int code, xmlErrorLevel level,
+              const char *file, int line, const char *str1,
+              const char *str2, const char *str3, int int1, int int2,
+	      const char *msg, ...)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    char *str = NULL;
+    xmlParserInputPtr input = NULL;
+    xmlErrorPtr to = &xmlLastError;
+    xmlGenericErrorFunc channel;
+    void *data;
+
+    if (code == XML_ERR_OK)
+        return;
+    /*
+     * Formatting the message
+     */
+    if (msg == NULL) {
+        str = (char *) xmlStrdup(BAD_CAST "No error message provided");
+    } else {
+        XML_GET_VAR_STR(msg, str);
+    }
+
+    /*
+     * specific processing if a parser context is provided
+     */
+    if (ctxt != NULL) {
+        if (file == NULL) {
+            input = ctxt->input;
+            if ((input != NULL) && (input->filename == NULL) &&
+                (ctxt->inputNr > 1)) {
+                input = ctxt->inputTab[ctxt->inputNr - 2];
+            }
+            if (input != NULL) {
+                file = input->filename;
+                line = input->line;
+            }
+        }
+        to = &ctxt->lastError;
+    }
+
+    /*
+     * Save the informations about the error
+     */
+    xmlResetError(to);
+    to->domain = domain;
+    to->code = code;
+    to->message = str;
+    to->level = level;
+    if (file != NULL)
+        to->file = (char *) xmlStrdup((const xmlChar *) file);
+    to->line = line;
+    if (str1 != NULL)
+        to->str1 = (char *) xmlStrdup((const xmlChar *) str1);
+    if (str2 != NULL)
+        to->str2 = (char *) xmlStrdup((const xmlChar *) str2);
+    if (str3 != NULL)
+        to->str3 = (char *) xmlStrdup((const xmlChar *) str3);
+    to->int1 = int1;
+    to->int2 = int2;
+
+    /*
+     * Find the callback channel.
+     */
+    if (ctxt != NULL) {
+        if (level == XML_ERR_WARNING)
+	    channel = ctxt->sax->warning;
+        else
+	    channel = ctxt->sax->error;
+	data = ctxt;
+    } else {
+	channel = xmlGenericError;
+	data = xmlGenericErrorContext;
+    }
+    if (channel == NULL)
+        return;
+
+    if ((channel == xmlParserError) ||
+        (channel == xmlParserWarning) ||
+	(channel == xmlParserValidityError) ||
+	(channel == xmlParserValidityWarning))
+	xmlReportError(ctxt, str);
+    else
+	channel(data, "%s", str);
+}
 
 /**
  * xmlParserError:
@@ -415,4 +625,158 @@ xmlParserValidityWarning(void *ctx, const char *msg, ...)
     }
 }
 
+
+/************************************************************************
+ *									*
+ *			Extended Error Handling				*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlGetLastError:
+ *
+ * Get the last global error registered. This is per thread if compiled
+ * with thread support.
+ *
+ * Returns NULL if no error occured or a pointer to the error
+ */
+xmlErrorPtr
+xmlGetLastError(void)
+{
+    if (xmlLastError.code == XML_ERR_OK)
+        return (NULL);
+    return (&xmlLastError);
+}
+
+/**
+ * xmlResetError:
+ * @err: pointer to the error.
+ *
+ * Cleanup the error.
+ */
+void
+xmlResetError(xmlErrorPtr err)
+{
+    if (err == NULL)
+        return;
+    if (err->code == XML_ERR_OK)
+        return;
+    if (err->message != NULL)
+        xmlFree(err->message);
+    if (err->file != NULL)
+        xmlFree(err->file);
+    if (err->str1 != NULL)
+        xmlFree(err->str1);
+    if (err->str2 != NULL)
+        xmlFree(err->str2);
+    if (err->str3 != NULL)
+        xmlFree(err->str3);
+    memset(err, 0, sizeof(xmlError));
+    err->code = XML_ERR_OK;
+}
+
+/**
+ * xmlResetLastError:
+ *
+ * Cleanup the last global error registered. For parsing error
+ * this does not change the well-formedness result.
+ */
+void
+xmlResetLastError(void)
+{
+    if (xmlLastError.code == XML_ERR_OK)
+        return;
+    xmlResetError(&xmlLastError);
+}
+
+/**
+ * xmlCtxtGetLastError:
+ * @ctx:  an XML parser context
+ *
+ * Get the last parsing error registered.
+ *
+ * Returns NULL if no error occured or a pointer to the error
+ */
+xmlErrorPtr
+xmlCtxtGetLastError(void *ctx)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+
+    if (ctxt == NULL)
+        return (NULL);
+    if (ctxt->lastError.code == XML_ERR_OK)
+        return (NULL);
+    return (&ctxt->lastError);
+}
+
+/**
+ * xmlCtxtResetLastError:
+ * @ctx:  an XML parser context
+ *
+ * Cleanup the last global error registered. For parsing error
+ * this does not change the well-formedness result.
+ */
+void
+xmlCtxtResetLastError(void *ctx)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+
+    if (ctxt == NULL)
+        return;
+    if (ctxt->lastError.code == XML_ERR_OK)
+        return;
+    xmlResetError(&ctxt->lastError);
+}
+
+/**
+ * xmlCopyError:
+ * @from:  a source error
+ * @to:  a target error
+ *
+ * Save the original error to the new place.
+ *
+ * Returns 0 in case of success and -1 in case of error.
+ */
+int
+xmlCopyError(xmlErrorPtr from, xmlErrorPtr to) {
+    if ((from == NULL) || (to == NULL))
+        return(-1);
+    if (to->message != NULL)
+        xmlFree(to->message);
+    if (to->file != NULL)
+        xmlFree(to->file);
+    if (to->str1 != NULL)
+        xmlFree(to->str1);
+    if (to->str2 != NULL)
+        xmlFree(to->str2);
+    if (to->str3 != NULL)
+        xmlFree(to->str3);
+    to->domain = from->domain;
+    to->code = from->code;
+    to->level = from->level;
+    to->line = from->line;
+    to->int1 = from->int1;
+    to->int2 = from->int2;
+    if (from->message != NULL)
+        to->message = (char *) xmlStrdup((xmlChar *) from->message);
+    else
+        to->message = NULL;
+    if (from->file != NULL)
+        to->file = (char *) xmlStrdup((xmlChar *) from->file);
+    else
+        to->file = NULL;
+    if (from->str1 != NULL)
+        to->str1 = (char *) xmlStrdup((xmlChar *) from->str1);
+    else
+        to->str1 = NULL;
+    if (from->str2 != NULL)
+        to->str2 = (char *) xmlStrdup((xmlChar *) from->str2);
+    else
+        to->str2 = NULL;
+    if (from->str3 != NULL)
+        to->str3 = (char *) xmlStrdup((xmlChar *) from->str3);
+    else
+        to->str3 = NULL;
+    return(0);
+}
 

@@ -1,3 +1,21 @@
+Fri Oct  3 00:19:02 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: changed 'make tests' to use a concise output,
+	  scrolling to see where thing broke wasn't pleasant
+	* configure.in: some beta4 preparation, but not ready yet
+	* error.c globals.c include/libxml/globals.h include/libxml/xmlerror.h:
+	  new error handling code, last error informations are stored
+	  in the parsing context or a global variable, new APIs to
+	  handle the xmlErrorPtr type.
+	* parser.c parserInternals.c valid.c : started migrating to the
+	  new error handling code, it's a royal pain.
+	* include/libxml/parser.h include/libxml/parserInternals.h:
+	  moved the definition of xmlNewParserCtxt()
+	* parser.c: small potential buffer access problem in push code
+	  provided by Justin Fletcher
+	* result/*.sax result/VC/PENesting* result/namespaces/*
+	  result/valid/*.err: some error messages were sligthly changed.
+
 Thu Oct  2 13:01:13 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/libxml/parser.h parser.c: introduced xmlStrPrintf

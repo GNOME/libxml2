@@ -15,6 +15,7 @@
 #include <libxml/hash.h>
 #include <libxml/valid.h>
 #include <libxml/entities.h>
+#include <libxml/xmlerror.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -272,6 +273,11 @@ struct _xmlParserCtxt {
     xmlNodePtr        freeElems;    /* List of freed element nodes */
     int               freeAttrsNr;  /* number of freed attributes nodes */
     xmlAttrPtr        freeAttrs;    /* List of freed attributes nodes */
+
+    /*
+     * the complete error informations for the last error.
+     */
+    xmlError          lastError;
 };
 
 /**
@@ -977,6 +983,8 @@ XMLPUBFUN int XMLCALL
 /*
  * Parser contexts handling.
  */
+XMLPUBFUN xmlParserCtxtPtr XMLCALL	
+		xmlNewParserCtxt	(void);
 XMLPUBFUN int XMLCALL		
 		xmlInitParserCtxt	(xmlParserCtxtPtr ctxt);
 XMLPUBFUN void XMLCALL		

@@ -121,7 +121,7 @@ xmlReallocFunc xmlRealloc = (xmlReallocFunc) realloc;
  * Returns the copy of the string or NULL in case of error
  */
 xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
-#endif
+#endif /* DEBUG_MEMORY_LOCATION || DEBUG_MEMORY */
 
 #include <libxml/threads.h>
 #include <libxml/globals.h>
@@ -150,6 +150,7 @@ xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 #undef	xmlSubstituteEntitiesDefaultValue
 #undef	xmlRegisterNodeDefaultValue
 #undef	xmlDeregisterNodeDefaultValue
+#undef	xmlLastError
 
 #undef	xmlFree
 #undef	xmlMalloc
@@ -293,6 +294,7 @@ static xmlGenericErrorFunc xmlGenericErrorThrDef = xmlGenericErrorDefaultFunc;
  */
 void *xmlGenericErrorContext = NULL;
 static void *xmlGenericErrorContextThrDef = NULL;
+xmlError xmlLastError;
 
 /*
  * output defaults
@@ -524,6 +526,7 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     gs->xmlGenericErrorContext = xmlGenericErrorContextThrDef;
     gs->xmlRegisterNodeDefaultValue = xmlRegisterNodeDefaultValueThrDef;
     gs->xmlDeregisterNodeDefaultValue = xmlDeregisterNodeDefaultValueThrDef;
+    memset(&gs->xmlLastError, 0, sizeof(xmlError));
 
     xmlMutexUnlock(xmlThrDefMutex);
 }
@@ -627,6 +630,15 @@ __htmlDefaultSAXHandler(void) {
 	return (&xmlGetGlobalState()->htmlDefaultSAXHandler);
 }
 #endif
+
+#undef xmlLastError
+xmlError *
+__xmlLastError(void) {
+    if (IS_MAIN_THREAD)
+	return (&xmlLastError);
+    else
+	return (&xmlGetGlobalState()->xmlLastError);
+}
 
 /*
  * Everything starting from the line below is

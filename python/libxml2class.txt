@@ -208,6 +208,9 @@ registerDefaultInputCallbacks()
 registerDefaultOutputCallbacks()
 registerHTTPPostCallbacks()
 
+# functions from module xmlerror
+resetLastError()
+
 # functions from module xmlreader
 newTextReaderFilename()
 

@@ -212,8 +212,6 @@ XMLPUBFUN xmlParserCtxtPtr XMLCALL
 			xmlCreateMemoryParserCtxt(const char *buffer,
 						 int size);
 XMLPUBFUN xmlParserCtxtPtr XMLCALL	
-			xmlNewParserCtxt	(void);
-XMLPUBFUN xmlParserCtxtPtr XMLCALL	
 			xmlCreateEntityParserCtxt(const xmlChar *URL,
 						 const xmlChar *ID,
 						 const xmlChar *base);

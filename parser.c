@@ -143,22 +143,14 @@ xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra)
         ctxt->instate = XML_PARSER_EOF;
         ctxt->disableSAX = 1;
     }
-    if ((ctxt != NULL) && (ctxt->sax != NULL)
-        && (ctxt->sax->error != NULL)) {
-        if (extra)
-            ctxt->sax->error(ctxt->userData,
-                             "Memory allocation failed : %s\n", extra);
-        else
-            ctxt->sax->error(ctxt->userData,
-                             "Memory allocation failed !\n");
-    } else {
-        if (extra)
-            xmlGenericError(xmlGenericErrorContext,
-                            "Memory allocation failed : %s\n", extra);
-        else
-            xmlGenericError(xmlGenericErrorContext,
-                            "Memory allocation failed !\n");
-    }
+    if (extra)
+        xmlRaiseError(ctxt, XML_FROM_PARSER, XML_ERR_NO_MEMORY,
+                      XML_ERR_FATAL, NULL, 0, extra, NULL, NULL, 0, 0,
+                      "Memory allocation failed : %s\n", extra);
+    else
+        xmlRaiseError(ctxt, XML_FROM_PARSER, XML_ERR_NO_MEMORY,
+                      XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0,
+                      "Memory allocation failed\n");
 }
 
 /**
@@ -174,15 +166,15 @@ xmlErrAttributeDup(xmlParserCtxtPtr ctxt, const xmlChar * prefix,
                    const xmlChar * localname)
 {
     ctxt->errNo = XML_ERR_ATTRIBUTE_REDEFINED;
-    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
-        if (prefix == NULL)
-            ctxt->sax->error(ctxt->userData,
-                             "Attribute %s redefined\n", localname);
-        else
-            ctxt->sax->error(ctxt->userData,
-                             "Attribute %s:%s redefined\n", prefix,
-                             localname);
-    }
+    if (prefix == NULL)
+        xmlRaiseError(ctxt, XML_FROM_PARSER, ctxt->errNo, XML_ERR_FATAL,
+                      NULL, 0, (const char *) localname, NULL, NULL, 0, 0,
+                      "Attribute %s redefined\n", localname);
+    else
+        xmlRaiseError(ctxt, XML_FROM_PARSER, ctxt->errNo, XML_ERR_FATAL,
+                      NULL, 0, (const char *) prefix,
+                      (const char *) localname, NULL, 0, 0,
+                      "Attribute %s:%s redefined\n", prefix, localname);
     ctxt->wellFormed = 0;
     if (ctxt->recovery == 0)
         ctxt->disableSAX = 1;
@@ -201,13 +193,6 @@ xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char * info)
 {
     const char *errmsg;
 
-    if (ctxt == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-			"xmlFatalErr: no context !\n");
-	return;
-    }
-    if ((ctxt->sax == NULL) || (ctxt->sax->error == NULL))
-        return;
     switch (error) {
         case XML_ERR_INVALID_HEX_CHARREF:
 	    errmsg = "CharRef: invalid hexadecimal value\n";
@@ -386,11 +371,8 @@ xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char * info)
 	    errmsg = "Unregistered error message\n";
     }
     ctxt->errNo = error;
-    if (info == NULL) {
-        ctxt->sax->error(ctxt->userData, errmsg);
-    } else {
-        ctxt->sax->error(ctxt->userData, "%s: %s", errmsg, info);
-    }
+    xmlRaiseError(ctxt, XML_FROM_PARSER, error, XML_ERR_FATAL, 
+		  NULL, 0, info, NULL, NULL, 0, 0, errmsg, info);
     ctxt->wellFormed = 0;
     if (ctxt->recovery == 0)
         ctxt->disableSAX = 1;
@@ -407,15 +389,9 @@ xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char * info)
 static void
 xmlFatalErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char *msg)
 {
-    if (ctxt == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-			"xmlFatalErr: no context !\n");
-	return;
-    }
     ctxt->errNo = error;
-    if ((ctxt->sax == NULL) || (ctxt->sax->error == NULL))
-        return;
-    ctxt->sax->error(ctxt->userData, msg);
+    xmlRaiseError(ctxt, XML_FROM_PARSER, error, XML_ERR_FATAL, 
+                  NULL, 0, NULL, NULL, NULL, 0, 0, msg);
     ctxt->wellFormed = 0;
     if (ctxt->recovery == 0)
         ctxt->disableSAX = 1;
@@ -434,15 +410,9 @@ static void
 xmlFatalErrMsgInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 		  const char *msg, int val)
 {
-    if (ctxt == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-			"xmlFatalErr: no context !\n");
-	return;
-    }
     ctxt->errNo = error;
-    if ((ctxt->sax == NULL) || (ctxt->sax->error == NULL))
-        return;
-    ctxt->sax->error(ctxt->userData, msg, val);
+    xmlRaiseError(ctxt, XML_FROM_PARSER, error, XML_ERR_FATAL, 
+                  NULL, 0, NULL, NULL, NULL, val, 0, msg, val);
     ctxt->wellFormed = 0;
     if (ctxt->recovery == 0)
         ctxt->disableSAX = 1;
@@ -461,15 +431,9 @@ static void
 xmlFatalErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 		  const char *msg, const xmlChar *val)
 {
-    if (ctxt == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-			"xmlFatalErr: no context !\n");
-	return;
-    }
     ctxt->errNo = error;
-    if ((ctxt->sax == NULL) || (ctxt->sax->error == NULL))
-        return;
-    ctxt->sax->error(ctxt->userData, msg, val);
+    xmlRaiseError(ctxt, XML_FROM_PARSER, error, XML_ERR_FATAL, 
+                  NULL, 0, (const char *) val, NULL, NULL, 0, 0, msg, val);
     ctxt->wellFormed = 0;
     if (ctxt->recovery == 0)
         ctxt->disableSAX = 1;
@@ -490,21 +454,11 @@ xmlNsErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
          const char *msg,
 	 const xmlChar *info1, const xmlChar *info2, const xmlChar *info3)
 {
-    if (ctxt == NULL)
-	return;
-    if ((ctxt->sax == NULL) || (ctxt->sax->error == NULL))
-        return;
-
     ctxt->errNo = error;
-    if (info1 == NULL) {
-        ctxt->sax->error(ctxt->userData, msg);
-    } else if (info2 == NULL) {
-        ctxt->sax->error(ctxt->userData, msg, info1);
-    } else if (info3 == NULL) {
-        ctxt->sax->error(ctxt->userData, msg, info1, info2);
-    } else {
-        ctxt->sax->error(ctxt->userData, msg, info1, info2, info3);
-    }
+    xmlRaiseError(ctxt, XML_FROM_NAMESPACE, error, XML_ERR_ERROR, 
+                  NULL, 0, (const char *) info1, (const char *) info2,
+		  (const char *) info3, 0, 0,
+		  msg, info1, info2, info3);
     ctxt->nsWellFormed = 0;
 }
 
@@ -9411,6 +9365,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    break;
 		}
 
+		if (avail < 2)
+		    goto done;
 		cur = ctxt->input->cur[0];
 		next = ctxt->input->cur[1];
 		if (cur == 0) {
@@ -12087,6 +12043,7 @@ xmlCleanupParser(void) {
 #endif
     xmlCleanupThreads();
     xmlCleanupGlobals();
+    xmlResetLastError();
     xmlParserInitialized = 0;
 }
 

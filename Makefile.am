@@ -132,9 +132,7 @@ valgrind:
 
 HTMLtests : testHTML$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## HTML regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/HTML/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -142,20 +140,18 @@ HTMLtests : testHTML$(EXEEXT)
 	      echo New test file $$name ; \
 	      $(CHECKER) $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testHTML $$i > result.$$name 2> error.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testHTML $$i > result.$$name 2> error.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/HTML/$$name result.$$name ; \
 	      diff -b $(srcdir)/result/HTML/$$name.err error.$$name ; \
 	      $(CHECKER) $(top_builddir)/testHTML result.$$name > result2.$$name 2>error.$$name ; \
-	      diff result.$$name result2.$$name ; \
+	      diff result.$$name result2.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name result2.$$name error.$$name ; \
 	  fi ; fi ; done)
 
 HTMLPushtests : testHTML$(EXEEXT)
-	@echo "##"
 	@echo "## Push HTML regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/HTML/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -163,20 +159,18 @@ HTMLPushtests : testHTML$(EXEEXT)
 	      echo New test file $$name ; \
 	      $(CHECKER) $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testHTML --push $$i > result.$$name 2> error.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testHTML --push $$i > result.$$name 2> error.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/HTML/$$name result.$$name ; \
 	      cut -b 1-15 $(srcdir)/result/HTML/$$name.err > errorcut.$$name; \
 	      cut -b 1-15 error.$$name > errorcut2.$$name; \
 	      diff -b errorcut.$$name errorcut2.$$name ; \
 	      $(CHECKER) $(top_builddir)/testHTML --push result.$$name > result2.$$name 2>error.$$name ; \
-	      diff result.$$name result2.$$name ; \
+	      diff result.$$name result2.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name result2.$$name error.$$name errorcut.$$name errorcut2.$$name ; \
 	  fi ; fi ; done)
-	@echo "##"
 	@echo "## HTML SAX regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/HTML/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -184,10 +178,10 @@ HTMLPushtests : testHTML$(EXEEXT)
 	      echo New test file $$name ; \
 	      $(CHECKER) $(top_builddir)/testHTML --sax $$i > $(srcdir)/result/HTML/$$name.sax ; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testHTML --sax $$i > result.$$name.sax ; \
+	      log=`$(CHECKER) $(top_builddir)/testHTML --sax $$i > result.$$name.sax ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/HTML/$$name.sax result.$$name.sax ; \
+	      diff $(srcdir)/result/HTML/$$name.sax result.$$name.sax` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name.sax ; \
 	  fi ; fi ; done)
 	@echo "##"
@@ -200,21 +194,16 @@ HTMLPushtests : testHTML$(EXEEXT)
 	      echo New test file $$name ; \
 	      $(CHECKER) $(top_builddir)/testHTML --sax $$i > $(srcdir)/result/HTML/$$name.sax ; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testHTML --push --sax $$i > result.$$name.sax ; \
+	      log=`$(CHECKER) $(top_builddir)/testHTML --push --sax $$i 2>&1 > result.$$name.sax ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/HTML/$$name.sax result.$$name.sax ; \
+	      diff $(srcdir)/result/HTML/$$name.sax result.$$name.sax` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name.sax ; \
 	  fi ; fi ; done)
 
-
 XMLtests : xmllint$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## XML regression tests"
-	@echo "##"
-	@echo "## You should see one warning on entity 'title.xml' for ent2"
-	@echo "##"
 	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -223,20 +212,16 @@ XMLtests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint $$i > $(srcdir)/result/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	      diff $(srcdir)/result/$$name result.$$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint result.$$name > result2.$$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint result.$$name 2>&1 > result2.$$name | grep -v 'failed to load external entity' ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	      diff result.$$name result2.$$name ; \
+	      diff result.$$name result2.$$name` ;\
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
-	@echo "##"
 	@echo "## XML regression tests on memory"
-	@echo "##"
-	@echo "## You should see two warnings on entity 'title.xml' for ent2"
-	@echo "##"
 	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -245,23 +230,19 @@ XMLtests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --memory $$i > $(srcdir)/result/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --memory $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --memory $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/$$name result.$$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --memory result.$$name > result2.$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	      $(CHECKER) $(top_builddir)/xmllint --memory result.$$name 2>&1 > result2.$$name | grep -v 'failed to load external entity' ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"`; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
 XMLPushtests: xmllint$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## XML push regression tests"
-	@echo "##"
-	@echo "## You should see one warning on entity 'title.xml' for ent2"
-	@echo "##"
 	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -270,21 +251,19 @@ XMLPushtests: xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --push $$i > $(srcdir)/result/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --push $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --push $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	      diff $(srcdir)/result/$$name result.$$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --push result.$$name > result2.$$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --push result.$$name 2>&1 > result2.$$name | grep -v 'failed to load external entity' ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	      diff result.$$name result2.$$name ; \
+	      diff result.$$name result2.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
 NStests : xmllint$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## XML Namespaces regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/namespaces/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -295,39 +274,19 @@ NStests : xmllint$(EXEEXT)
 		 > $(srcdir)/result/namespaces/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint $$i 2> error.$$name > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint $$i 2> error.$$name > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	      diff $(srcdir)/result/namespaces/$$name result.$$name ; \
-	      diff $(srcdir)/result/namespaces/$$name.err error.$$name ; \
+	      diff $(srcdir)/result/namespaces/$$name.err error.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)
 
 Docbtests : xmllint$(EXEEXT)
-	@(echo > .memdump)
-	@echo "##"
-	@echo "## SGML DocBook regression tests"
-	@echo "##"
-	-@(for i in $(srcdir)/test/DocBook/*.sgm ; do \
-	  name=`basename $$i .sgm`; \
-	  if [ ! -d $$i ] ; then \
-	  if [ ! -f $(srcdir)/result/DocBook/$$name.xml ] ; then \
-	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --sgml $$i > $(srcdir)/result/DocBook/$$name.xml ; \
-	      $(CHECKER) $(top_builddir)/xmllint --valid --noout $(srcdir)/result/DocBook/$$name.xml ; \
-	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --sgml $$i > result.$$name ; \
-	      diff $(srcdir)/result/DocBook/$$name.xml result.$$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --valid --noout result.$$name ; \
-	      rm result.$$name ; \
-	  fi ; fi ; done)
 
 XMLenttests : xmllint$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## XML entity subst regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -336,21 +295,19 @@ XMLenttests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --noent $$i > $(srcdir)/result/noent/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --noent $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --noent $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	      diff $(srcdir)/result/noent/$$name result.$$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --noent result.$$name > result2.$$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --noent result.$$name 2>&1 > result2.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	      diff result.$$name result2.$$name ; \
+	      diff result.$$name result2.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
 URItests : testURI$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## URI module regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/URI/*.data ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -359,10 +316,10 @@ URItests : testURI$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/testURI -base 'http://foo.com/path/to/index.html?orig#help' < $$i > $(srcdir)/result/URI/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testURI -base 'http://foo.com/path/to/index.html?orig#help' < $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testURI -base 'http://foo.com/path/to/index.html?orig#help' < $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/URI/$$name result.$$name ; \
+	      diff $(srcdir)/result/URI/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 	-@(for i in $(srcdir)/test/URI/*.uri ; do \
@@ -373,18 +330,16 @@ URItests : testURI$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/testURI < $$i > $(srcdir)/result/URI/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testURI < $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testURI < $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/URI/$$name result.$$name ; \
+	      diff $(srcdir)/result/URI/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
 XPathtests : testXPath$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## XPath regression tests"
-	@echo "##"
 	-@(if [ "`$(top_builddir)/testXPath | grep 'support not compiled in'`" != "" ] ; \
 	  then echo Skipping debug not compiled in ; exit 0 ; fi ; \
 	  for i in $(srcdir)/test/XPath/expr/* ; do \
@@ -395,10 +350,10 @@ XPathtests : testXPath$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/testXPath -f --expr $$i > $(srcdir)/result/XPath/expr/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testXPath -f --expr $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testXPath -f --expr $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/XPath/expr/$$name result.$$name ; \
+	      diff $(srcdir)/result/XPath/expr/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done ; \
 	  for i in $(srcdir)/test/XPath/docs/* ; do \
@@ -413,18 +368,16 @@ XPathtests : testXPath$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/testXPath -f -i $$i $$j > $(srcdir)/result/XPath/tests/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testXPath -f -i $$i $$j > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testXPath -f -i $$i $$j 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/XPath/tests/$$name result.$$name ; \
+	      diff $(srcdir)/result/XPath/tests/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)
 
 XPtrtests : testXPath$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## XPointer regression tests"
-	@echo "##"
 	-@(if [ "`$(top_builddir)/testXPath | grep 'support not compiled in'`" != "" ] ; \
 	  then echo Skipping debug not compiled in ; exit 0 ; fi ; \
 	  for i in $(srcdir)/test/XPath/docs/* ; do \
@@ -439,20 +392,17 @@ XPtrtests : testXPath$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/testXPath -xptr -f -i $$i $$j > $(srcdir)/result/XPath/xptr/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testXPath -xptr -f -i $$i $$j > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testXPath -xptr -f -i $$i $$j 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/XPath/xptr/$$name result.$$name ; \
+	      diff $(srcdir)/result/XPath/xptr/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)
 
 XIncludetests : xmllint$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## XInclude regression tests"
-	@echo "##"
 	@echo "## the warning reported on fallback.xml test is expected"
-	@echo "##"
 	-@(for i in $(srcdir)/test/XInclude/docs/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -461,19 +411,17 @@ XIncludetests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i > $(srcdir)/result/XInclude/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i 2>&1 > result.$$name | grep -v 'failed to load external entity' ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/XInclude/$$name result.$$name ; \
+	      diff $(srcdir)/result/XInclude/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
 Scripttests : xmllint$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## Scripts regression tests"
 	@echo "## Some of the base computations may be different if srcdir != ."
-	@echo "##"
 	-@(for i in $(srcdir)/test/scripts/*.script ; do \
 	  name=`basename $$i .script`; \
 	  xml=$(srcdir)/test/scripts/`basename $$i .script`.xml; \
@@ -483,18 +431,16 @@ Scripttests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --shell $$xml < $$i > $(srcdir)/result/scripts/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --shell $$xml < $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --shell $$xml < $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/scripts/$$name result.$$name ; \
+	      diff $(srcdir)/result/scripts/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
 Catatests : xmlcatalog$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## Catalog regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/catalogs/*.script ; do \
 	  name=`basename $$i .script`; \
 	  xml=$(srcdir)/test/catalogs/`basename $$i .script`.xml; \
@@ -504,10 +450,10 @@ Catatests : xmlcatalog$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmlcatalog --shell $$xml < $$i > $(srcdir)/result/catalogs/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmlcatalog --shell $$xml < $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmlcatalog --shell $$xml < $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/catalogs/$$name result.$$name ; \
+	      diff $(srcdir)/result/catalogs/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 	-@(for i in $(srcdir)/test/catalogs/*.script ; do \
@@ -519,13 +465,13 @@ Catatests : xmlcatalog$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmlcatalog --shell $$sgml < $$i > $(srcdir)/result/catalogs/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmlcatalog --shell $$sgml < $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmlcatalog --shell $$sgml < $$i > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/catalogs/$$name result.$$name ; \
+	      diff $(srcdir)/result/catalogs/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
-	@echo "Add and del operations on XML Catalogs"
+	@echo "## Add and del operations on XML Catalogs"
 	-@($(CHECKER) $(top_builddir)/xmlcatalog --create --noout $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	$(CHECKER) $(top_builddir)/xmlcatalog --noout --add public Pubid sysid $(srcdir)/result/catalogs/mycatalog; \
@@ -547,9 +493,7 @@ Catatests : xmlcatalog$(EXEEXT)
 	rm -f $(srcdir)/result/catalogs/mycatalog)
 
 SVGtests : xmllint$(EXEEXT)
-	@echo "##"
 	@echo "## SVG parsing regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/SVG/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -569,17 +513,13 @@ SVGtests : xmllint$(EXEEXT)
 	  fi ; fi ; done)
 
 Threadtests : testThreads$(EXEEXT)
-	@echo "##"
 	@echo "## Threaded regression tests"
-	@echo "##"
 	-($(CHECKER) $(top_builddir)/testThreads ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";)
 
 Readertests : xmllint$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## Reader regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -588,15 +528,13 @@ Readertests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --nonet --debug --stream $$i > $(srcdir)/result/$$name.rdr 2>/dev/null ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --nonet --debug --stream $$i > result.$$name 2>/dev/null ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --nonet --debug --stream $$i > result.$$name 2>/dev/null ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/$$name.rdr result.$$name ; \
+	      diff $(srcdir)/result/$$name.rdr result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
-	@echo "##"
 	@echo "## Reader on memory regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -605,19 +543,16 @@ Readertests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --memory --nonet --debug --stream $$i > $(srcdir)/result/$$name.rdr 2>/dev/null ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --memory --nonet --debug --stream $$i > result.$$name 2>/dev/null ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --memory --nonet --debug --stream $$i > result.$$name 2>/dev/null ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/$$name.rdr result.$$name ; \
+	      diff $(srcdir)/result/$$name.rdr result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
-
 SAXtests : testSAX$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## SAX callbacks regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -626,29 +561,24 @@ SAXtests : testSAX$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/testSAX $$i > $(srcdir)/result/$$name.sax ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testSAX $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testSAX $$i > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/$$name.sax result.$$name ; \
+	      diff $(srcdir)/result/$$name.sax result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
-
 Validtests : xmllint$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## Valid documents regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/VCM/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --valid --noout --nowarning $$i ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      log=`$(CHECKER) $(top_builddir)/xmllint --valid --noout --nowarning $$i ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"`;\
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	  fi ; done ; exit 0)
-	@echo "##"
 	@echo "## Validity checking regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/VC/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -657,15 +587,13 @@ Validtests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --noout --valid $$i 2> $(srcdir)/result/VC/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --noout --valid $$i 2> result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --noout --valid $$i 2> result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/VC/$$name result.$$name ; \
+	      diff $(srcdir)/result/VC/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
-	@echo "##"
 	@echo "## General documents valid regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/valid/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -674,19 +602,17 @@ Validtests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --valid $$i > $(srcdir)/result/valid/$$name 2>$(srcdir)/result/valid/$$name.err ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --valid $$i > result.$$name 2>error.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --valid $$i > result.$$name 2>error.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/valid/$$name result.$$name ; \
-	      diff $(srcdir)/result/valid/$$name.err error.$$name ; \
+	      diff $(srcdir)/result/valid/$$name.err error.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)
 
 Regexptests: testRegexp$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## Regexp regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/regexp/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -695,18 +621,16 @@ Regexptests: testRegexp$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/testRegexp -i $$i > $(srcdir)/result/regexp/$$name; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testRegexp -i $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testRegexp -i $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/regexp/$$name result.$$name ; \
+	      diff $(srcdir)/result/regexp/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
 Automatatests: testAutomata$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## Automata regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/automata/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -715,10 +639,10 @@ Automatatests: testAutomata$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/testAutomata $$i > $(srcdir)/result/automata/$$name; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testAutomata $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testAutomata $$i 2>&1 > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/automata/$$name result.$$name ; \
+	      diff $(srcdir)/result/automata/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
@@ -727,14 +651,12 @@ $(srcdir)/dba100000.xml: dbgenattr.pl
 	@(dbgenattr.pl 100000 > $(srcdir)/dba100000.xml)
 
 Timingtests: xmllint$(EXEEXT) $(srcdir)/dba100000.xml
-	@echo "##"
 	@echo "## Timing tests to try to detect performance"
 	@echo "## as well a memory usage breakage when streaming"
 	@echo "## 1/ using the file interface"
 	@echo "## 2/ using the memory interface"
 	@echo "## 3/ repeated DOM parsing"
 	@echo "## 4/ repeated DOM validation"
-	@echo "##"
 	-@(xmllint --stream --timing $(srcdir)/dba100000.xml; \
 	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
 	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
@@ -759,14 +681,11 @@ VTimingtests: xmllint$(EXEEXT)
 	   exit 0)
 
 C14Ntests : testC14N$(EXEEXT)
-	@echo "##"
 	@echo "## C14N and XPath regression tests"
-	@echo "##"
 	-@(for m in with-comments without-comments exc-without-comments ; do \
 	    for i in $(srcdir)/test/c14n/$$m/*.xml ; do  \
 		if [ ! -d $$i ] ; then \
 		    name=`basename $$i .xml`; \
-		    echo Testing $$m/$$name; \
 		    cmdline="$(CHECKER) $(top_builddir)/testC14N --$$m $$i"; \
 		    if [ -f $(srcdir)/test/c14n/$$m/$$name.xpath ] ; then \
 			cmdline="$$cmdline $(srcdir)/test/c14n/$$m/$$name.xpath"; \
@@ -778,7 +697,7 @@ C14Ntests : testC14N$(EXEEXT)
 		    if [ $$? -eq 0 ]; then \
 			diff  $(srcdir)/result/c14n/$$m/$$name $(srcdir)/test/c14n/test.tmp; \
 			if [ $$? -ne 0 ]; then \
-			    echo "Test failed"; \
+			    echo "Test $$m/$$name failed"; \
 			    cat $(srcdir)/test/c14n/test.tmp; \
 			fi; \
 		    else \
@@ -792,9 +711,7 @@ C14Ntests : testC14N$(EXEEXT)
 
 Schemastests: testSchemas$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## Schemas regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/schemas/*_*.xsd ; do \
 	  name=`basename $$i | sed 's+_.*++'`; \
 	  sno=`basename $$i | sed 's+.*_\(.*\).xsd+\1+'`; \
@@ -809,24 +726,22 @@ Schemastests: testSchemas$(EXEEXT)
 		    2> $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno".err; \
 	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      else \
-		  echo Testing "$$name"_"$$sno"_"$$xno" ; \
-	          $(CHECKER) $(top_builddir)/testSchemas $$i $$j \
+	          log=`$(CHECKER) $(top_builddir)/testSchemas $$i $$j \
 		    > res.$$name 2> err.$$name;\
 	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	          diff $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno" \
 		       res.$$name;\
 	          diff $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno".err \
 		       err.$$name;\
-		  grep Unimplemented err.$$name; \
+		  grep Unimplemented err.$$name`; \
+	          if [ -n "$$log" ] ; then echo "$$name"_"$$sno"_"$$xno" result ; echo $$log ; fi ; \
 	          rm res.$$name err.$$name ; \
 	       fi ; fi ;\
 	  done; done)
 
 Relaxtests: xmllint$(EXEEXT)
 	@(echo > .memdump)
-	@echo "##"
 	@echo "## Relax-NG regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/relaxng/*.rng ; do \
 	  name=`basename $$i | sed 's+\.rng++'`; \
 	  if [ ! -f $(srcdir)/result/relaxng/"$$name"_valid ] ; then \
@@ -836,15 +751,15 @@ Relaxtests: xmllint$(EXEEXT)
 		      2> $(srcdir)/result/relaxng/"$$name"_err; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      echo Checking schemas $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --relaxng $(srcdir)/test/relaxng/tutorA.rng $$i \
+	      log=`$(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --relaxng $(srcdir)/test/relaxng/tutorA.rng $$i \
 	      > res.$$name 2> err.$$name;\
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/relaxng/"$$name"_valid \
 		   res.$$name;\
 	      diff $(srcdir)/result/relaxng/"$$name"_err \
 		   err.$$name | grep -v "error detected at";\
-	      grep Unimplemented err.$$name; \
+	      grep Unimplemented err.$$name`; \
+	      if [ -n "$$log" ] ; then echo schemas $$name result ; echo $$log ; fi ; \
 	      rm res.$$name err.$$name ; \
 	  fi; \
 	  for j in $(srcdir)/test/relaxng/"$$name"_*.xml ; do \
@@ -858,24 +773,21 @@ Relaxtests: xmllint$(EXEEXT)
 		    2> $(srcdir)/result/relaxng/"$$name"_"$$xno".err; \
 	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      else \
-		  echo Testing "$$name"_"$$xno" ; \
-	          $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --relaxng $$i $$j \
+	          log=`$(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --relaxng $$i $$j \
 		    > res.$$name 2> err.$$name;\
 	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	          diff $(srcdir)/result/relaxng/"$$name"_"$$xno" \
 		       res.$$name;\
 	          diff $(srcdir)/result/relaxng/"$$name"_"$$xno".err \
 		       err.$$name | grep -v "error detected at";\
-		  grep Unimplemented err.$$name; \
+		  grep Unimplemented err.$$name`; \
+		  if [ -n "$$log" ] ; then echo "$$name"_"$$xno" result ; echo $$log ; fi ; \
 	          rm res.$$name err.$$name ; \
 	       fi ; fi ; \
 	  done; done)
-	@echo "##"
 	@echo "## Relax-NG streaming regression tests"
-	@echo "##"
 	@echo "## Some error messages are different than non-streaming"
 	@echo "## and generate small diffs"
-	@echo "##"
 	-@(for i in $(srcdir)/test/relaxng/*.rng ; do \
 	  name=`basename $$i | sed 's+\.rng++'`; \
 	  for j in $(srcdir)/test/relaxng/"$$name"_*.xml ; do \
@@ -889,15 +801,15 @@ Relaxtests: xmllint$(EXEEXT)
 		    2> $(srcdir)/result/relaxng/"$$name"_"$$xno".err; \
 	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      else \
-		  echo Testing "$$name"_"$$xno" ; \
-	          $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --stream --relaxng $$i $$j \
+	          log=`$(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --stream --relaxng $$i $$j \
 		    > res.$$name 2> err.$$name;\
 	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	          diff $(srcdir)/result/relaxng/"$$name"_"$$xno" \
 		       res.$$name;\
 	          diff $(srcdir)/result/relaxng/"$$name"_"$$xno".err \
 		       err.$$name | grep -v "error detected at";\
-		  grep Unimplemented err.$$name; \
+		  grep Unimplemented err.$$name`; \
+	          if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	          rm res.$$name err.$$name ; \
 	       fi ; fi ; \
 	  done; done)

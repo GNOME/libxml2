@@ -58,8 +58,9 @@ XMLPUBFUN void XMLCALL xmlCleanupGlobals(void);
 #undef	xmlRealloc
 #undef	xmlSaveNoEmptyTags
 #undef	xmlSubstituteEntitiesDefaultValue
-#undef xmlRegisterNodeDefaultValue
-#undef xmlDeregisterNodeDefaultValue
+#undef  xmlRegisterNodeDefaultValue
+#undef  xmlDeregisterNodeDefaultValue
+#undef  xmlLastError
 
 typedef void (*xmlRegisterNodeFunc) (xmlNodePtr node);
 typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
@@ -105,6 +106,7 @@ struct _xmlGlobalState
   	xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue;
 
 	xmlMallocFunc xmlMallocAtomic;
+	xmlError xmlLastError;
 };
 
 #ifdef __cplusplus
@@ -203,6 +205,13 @@ XMLPUBVAR xmlSAXHandlerV1 htmlDefaultSAXHandler;
 #endif
 #endif
 
+XMLPUBFUN xmlError * XMLCALL __xmlLastError(void);
+#ifdef LIBXML_THREAD_ENABLED
+#define xmlLastError \
+(*(__xmlLastError()))
+#else
+XMLPUBVAR xmlError xmlLastError;
+#endif
 
 /*
  * Everything starting from the line below is

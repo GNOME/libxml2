@@ -37,11 +37,59 @@ static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
 
+/************************************************************************
+ *									*
+ *			Error handling routines				*
+ *									*
+ ************************************************************************/
+
 #define VERROR							\
    if ((ctxt != NULL) && (ctxt->error != NULL)) ctxt->error
 
 #define VWARNING						\
    if ((ctxt != NULL) && (ctxt->warning != NULL)) ctxt->warning
+
+/**
+ * xmlErrMemory:
+ * @ctxt:  an XML validation parser context
+ * @extra:  extra informations
+ *
+ * Handle an out of memory error
+ */
+static void
+xmlErrMemory(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, const char *extra)
+{
+    if (extra)
+        xmlRaiseError(NULL, XML_FROM_DTD, XML_ERR_NO_MEMORY,
+                      XML_ERR_FATAL, NULL, 0, extra, NULL, NULL, 0, 0,
+                      "Memory allocation failed : %s\n", extra);
+    else
+        xmlRaiseError(NULL, XML_FROM_DTD, XML_ERR_NO_MEMORY,
+                      XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0,
+                      "Memory allocation failed\n");
+}
+
+/**
+ * xmlErrValid:
+ * @ctxt:  an XML validation parser context
+ * @
+ * @extra:  extra informations
+ *
+ * Handle a validation error
+ */
+static void
+xmlErrValid(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlParserErrors error,
+             const char *msg, const char *extra)
+{
+    if (extra)
+        xmlRaiseError(NULL, XML_FROM_DTD, error,
+                      XML_ERR_FATAL, NULL, 0, extra, NULL, NULL, 0, 0,
+                      msg, extra);
+    else
+        xmlRaiseError(NULL, XML_FROM_DTD, error,
+                      XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0,
+                      msg);
+}
 
 
 #ifdef LIBXML_REGEXP_ENABLED
@@ -68,7 +116,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementPtr elemDecl, xmlNodePtr node) {
 	ctxt->vstateTab = (xmlValidState *) xmlMalloc(ctxt->vstateMax *
 		              sizeof(ctxt->vstateTab[0]));
         if (ctxt->vstateTab == NULL) {
-	    VERROR(ctxt->userData, "malloc failed !n");
+	    xmlErrMemory(ctxt, "malloc failed");
 	    return(-1);
 	}
     }
@@ -79,7 +127,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementPtr elemDecl, xmlNodePtr node) {
 	tmp = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
 	             2 * ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
         if (tmp == NULL) {
-	    VERROR(ctxt->userData, "realloc failed !n");
+	    xmlErrMemory(ctxt, "realloc failed");
 	    return(-1);
 	}
 	ctxt->vstateMax *= 2;
@@ -173,8 +221,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
 	ctxt->vstateTab = (xmlValidState *) xmlMalloc(
 		     ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
 	if (ctxt->vstateTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "malloc failed !n");
+	    xmlErrMemory(ctxt, "malloc failed");
 	    return(-1);
 	}
     }
@@ -184,8 +231,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
         tmp = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
 	             2 * ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
         if (tmp == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "realloc failed !n");
+	    xmlErrMemory(ctxt, "malloc failed");
 	    return(-1);
 	}
 	ctxt->vstateMax *= 2;
@@ -233,7 +279,7 @@ nodeVPush(xmlValidCtxtPtr ctxt, xmlNodePtr value)
             (xmlNodePtr *) xmlMalloc(ctxt->nodeMax *
                                      sizeof(ctxt->nodeTab[0]));
         if (ctxt->nodeTab == NULL) {
-            xmlGenericError(xmlGenericErrorContext, "malloc failed !\n");
+	    xmlErrMemory(ctxt, "malloc failed");
             ctxt->nodeMax = 0;
             return (0);
         }
@@ -243,7 +289,7 @@ nodeVPush(xmlValidCtxtPtr ctxt, xmlNodePtr value)
         tmp = (xmlNodePtr *) xmlRealloc(ctxt->nodeTab,
 			      ctxt->nodeMax * 2 * sizeof(ctxt->nodeTab[0]));
         if (tmp == NULL) {
-            xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
+	    xmlErrMemory(ctxt, "realloc failed");
             return (0);
         }
         ctxt->nodeMax *= 2;
@@ -688,12 +734,13 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
  *
  * Returns NULL if not, otherwise the new validation context structure
  */
-xmlValidCtxtPtr
-xmlNewValidCtxt(void) {
+xmlValidCtxtPtr xmlNewValidCtxt(void) {
     xmlValidCtxtPtr ret;
 
-    if ((ret = xmlMalloc(sizeof (xmlValidCtxt))) == NULL)
+    if ((ret = xmlMalloc(sizeof (xmlValidCtxt))) == NULL) {
+	xmlErrMemory(NULL, "malloc failed");
 	return (NULL);
+    }
 
     (void) memset(ret, 0, sizeof (xmlValidCtxt));
 
@@ -729,27 +776,29 @@ xmlNewElementContent(const xmlChar *name, xmlElementContentType type) {
     switch(type) {
 	case XML_ELEMENT_CONTENT_ELEMENT:
 	    if (name == NULL) {
-	        xmlGenericError(xmlGenericErrorContext,
-			"xmlNewElementContent : name == NULL !\n");
+	        xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
+			"xmlNewElementContent : name == NULL !\n",
+			NULL);
 	    }
 	    break;
         case XML_ELEMENT_CONTENT_PCDATA:
 	case XML_ELEMENT_CONTENT_SEQ:
 	case XML_ELEMENT_CONTENT_OR:
 	    if (name != NULL) {
-	        xmlGenericError(xmlGenericErrorContext,
-			"xmlNewElementContent : name != NULL !\n");
+	        xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
+			"xmlNewElementContent : name != NULL !\n",
+			NULL);
 	    }
 	    break;
 	default:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlNewElementContent: unknown type %d\n", type);
+	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR, 
+		    "Internal: ELEMENT content corrupted invalid type\n",
+		    NULL);
 	    return(NULL);
     }
     ret = (xmlElementContentPtr) xmlMalloc(sizeof(xmlElementContent));
     if (ret == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlNewElementContent : out of memory!\n");
+	xmlErrMemory(NULL, "malloc failed");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlElementContent));
@@ -784,8 +833,7 @@ xmlCopyElementContent(xmlElementContentPtr cur) {
     if (cur == NULL) return(NULL);
     ret = xmlNewElementContent((xmlChar *) cur->name, cur->type);
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlCopyElementContent : out of memory\n");
+	xmlErrMemory(NULL, "malloc failed");
 	return(NULL);
     }
     if (cur->prefix != NULL)
@@ -816,8 +864,9 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
 	case XML_ELEMENT_CONTENT_OR:
 	    break;
 	default:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlFreeElementContent : type %d\n", cur->type);
+	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR, 
+		    "Internal: ELEMENT content corrupted invalid type\n",
+		    NULL);
 	    return;
     }
     if (cur->c1 != NULL) xmlFreeElementContent(cur->c1);
@@ -877,9 +926,9 @@ xmlDumpElementContent(xmlBufferPtr buf, xmlElementContentPtr content, int glob) 
 		xmlDumpElementContent(buf, content->c2, 0);
 	    break;
 	default:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlDumpElementContent: unknown type %d\n",
-	            content->type);
+	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR, 
+		    "Internal: ELEMENT content corrupted invalid type\n",
+		    NULL);
     }
     if (glob)
         xmlBufferWriteChar(buf, ")");
@@ -1077,47 +1126,48 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
     xmlChar *ns, *uqname;
 
     if (dtd == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddElementDecl: dtd == NULL\n");
 	return(NULL);
     }
     if (name == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddElementDecl: name == NULL\n");
 	return(NULL);
     }
     switch (type) {
         case XML_ELEMENT_TYPE_EMPTY:
 	    if (content != NULL) {
-	        xmlGenericError(xmlGenericErrorContext,
-		        "xmlAddElementDecl: content != NULL for EMPTY\n");
+		xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR, 
+		        "xmlAddElementDecl: content != NULL for EMPTY\n",
+			NULL);
 		return(NULL);
 	    }
 	    break;
 	case XML_ELEMENT_TYPE_ANY:
 	    if (content != NULL) {
-	        xmlGenericError(xmlGenericErrorContext,
-		        "xmlAddElementDecl: content != NULL for ANY\n");
+		xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR, 
+		        "xmlAddElementDecl: content != NULL for ANY\n",
+			NULL);
 		return(NULL);
 	    }
 	    break;
 	case XML_ELEMENT_TYPE_MIXED:
 	    if (content == NULL) {
-	        xmlGenericError(xmlGenericErrorContext,
-		        "xmlAddElementDecl: content == NULL for MIXED\n");
+		xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR, 
+		        "xmlAddElementDecl: content == NULL for MIXED\n",
+			NULL);
 		return(NULL);
 	    }
 	    break;
 	case XML_ELEMENT_TYPE_ELEMENT:
 	    if (content == NULL) {
-	        xmlGenericError(xmlGenericErrorContext,
-		        "xmlAddElementDecl: content == NULL for ELEMENT\n");
+		xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR, 
+		        "xmlAddElementDecl: content == NULL for ELEMENT\n",
+			NULL);
 		return(NULL);
 	    }
 	    break;
 	default:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlAddElementDecl: unknown type %d\n", type);
+	    xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR, 
+		    "Internal: ELEMENT decl corrupted invalid type\n",
+		    NULL);
 	    return(NULL);
     }
 
@@ -1137,8 +1187,8 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	dtd->elements = (void *) table;
     }
     if (table == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlAddElementDecl: Table creation failed!\n");
+	xmlErrMemory(ctxt,
+            "xmlAddElementDecl: Table creation failed!\n");
 	if (uqname != NULL)
 	    xmlFree(uqname);
 	if (ns != NULL)
@@ -1182,8 +1232,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
     } else {
 	ret = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
 	if (ret == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlAddElementDecl: out of memory\n");
+	    xmlErrMemory(ctxt, "malloc failed");
 	    if (uqname != NULL)
 		xmlFree(uqname);
             if (ns != NULL)
@@ -1198,8 +1247,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	 */
 	ret->name = xmlStrdup(name);
 	if (ret->name == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlAddElementDecl: out of memory\n");
+	    xmlErrMemory(ctxt, "malloc failed");
 	    if (uqname != NULL)
 		xmlFree(uqname);
             if (ns != NULL)
@@ -1281,8 +1329,7 @@ xmlCopyElement(xmlElementPtr elem) {
 
     cur = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
     if (cur == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlCopyElement: out of memory !\n");
+	xmlErrMemory(NULL, "malloc failed");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlElement));
@@ -1370,9 +1417,9 @@ xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
 	    xmlBufferWriteChar(buf, ">\n");
 	    break;
 	default:
-	    xmlGenericError(xmlGenericErrorContext,
-		"xmlDumpElementDecl: internal: unknown type %d\n",
-		    elem->etype);
+	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR, 
+		    "Internal: ELEMENT struct corrupted invalid type\n",
+		    NULL);
     }
 }
 
@@ -1404,9 +1451,7 @@ xmlCreateEnumeration(const xmlChar *name) {
 
     ret = (xmlEnumerationPtr) xmlMalloc(sizeof(xmlEnumeration));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlCreateEnumeration : xmlMalloc(%ld) failed\n",
-	        (long)sizeof(xmlEnumeration));
+	xmlErrMemory(NULL, "malloc failed");
         return(NULL);
     }
     memset(ret, 0, sizeof(xmlEnumeration));
@@ -1524,13 +1569,9 @@ xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
     xmlAttributeTablePtr table;
 
     if (dtd == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlScanAttributeDecl: dtd == NULL\n");
 	return(NULL);
     }
     if (elem == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlScanAttributeDecl: elem == NULL\n");
 	return(NULL);
     }
     table = (xmlAttributeTablePtr) dtd->attributes;
@@ -1626,20 +1667,14 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
     xmlElementPtr elemDef;
 
     if (dtd == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddAttributeDecl: dtd == NULL\n");
 	xmlFreeEnumeration(tree);
 	return(NULL);
     }
     if (name == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddAttributeDecl: name == NULL\n");
 	xmlFreeEnumeration(tree);
 	return(NULL);
     }
     if (elem == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddAttributeDecl: elem == NULL\n");
 	xmlFreeEnumeration(tree);
 	return(NULL);
     }
@@ -1670,8 +1705,9 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
         case XML_ATTRIBUTE_NOTATION:
 	    break;
 	default:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlAddAttributeDecl: unknown type %d\n", type);
+	    xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR, 
+		    "Internal: ATTRIBUTE struct corrupted invalid type\n",
+		    NULL);
 	    xmlFreeEnumeration(tree);
 	    return(NULL);
     }
@@ -1705,16 +1741,15 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	dtd->attributes = (void *) table;
     }
     if (table == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlAddAttributeDecl: Table creation failed!\n");
+	xmlErrMemory(ctxt,
+            "xmlAddAttributeDecl: Table creation failed!\n");
         return(NULL);
     }
 
 
     ret = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
     if (ret == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlAddAttributeDecl: out of memory\n");
+	xmlErrMemory(ctxt, "malloc failed");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlAttribute));
@@ -1837,8 +1872,7 @@ xmlCopyAttribute(xmlAttributePtr attr) {
 
     cur = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
     if (cur == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlCopyAttribute: out of memory !\n");
+	xmlErrMemory(NULL, "malloc failed");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttribute));
@@ -1925,9 +1959,9 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
 	    xmlDumpEnumeration(buf, attr->tree);
 	    break;
 	default:
-	    xmlGenericError(xmlGenericErrorContext,
-		"xmlDumpAttributeDecl: internal: unknown type %d\n",
-		    attr->atype);
+	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR, 
+		    "Internal: ATTRIBUTE struct corrupted invalid type\n",
+		    NULL);
     }
     switch (attr->def) {
 	case XML_ATTRIBUTE_NONE:
@@ -1942,9 +1976,9 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
 	    xmlBufferWriteChar(buf, " #FIXED");
 	    break;
 	default:
-	    xmlGenericError(xmlGenericErrorContext,
-		"xmlDumpAttributeDecl: internal: unknown default %d\n",
-		    attr->def);
+	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR, 
+		    "Internal: ATTRIBUTE struct corrupted invalid def\n",
+		    NULL);
     }
     if (attr->defaultValue != NULL) {
 	xmlBufferWriteChar(buf, " ");
@@ -2023,18 +2057,12 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDtdPtr dtd,
     xmlNotationTablePtr table;
 
     if (dtd == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddNotationDecl: dtd == NULL\n");
 	return(NULL);
     }
     if (name == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddNotationDecl: name == NULL\n");
 	return(NULL);
     }
     if ((PublicID == NULL) && (SystemID == NULL)) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddNotationDecl: no PUBLIC ID nor SYSTEM ID\n");
 	return(NULL);
     }
 
@@ -2045,15 +2073,14 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDtdPtr dtd,
     if (table == NULL) 
         dtd->notations = table = xmlCreateNotationTable();
     if (table == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
+	xmlErrMemory(ctxt,
 		"xmlAddNotationDecl: Table creation failed!\n");
         return(NULL);
     }
 
     ret = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
     if (ret == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlAddNotationDecl: out of memory\n");
+	xmlErrMemory(ctxt, "malloc failed");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlNotation));
@@ -2073,8 +2100,9 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDtdPtr dtd,
      */
     if (xmlHashAddEntry(table, name, ret)) {
 #ifdef LIBXML_VALID_ENABLED
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlAddNotationDecl: %s already defined\n", name);
+	xmlErrValid(NULL, XML_DTD_NOTATION_REDEFINED, 
+		    "xmlAddNotationDecl: %s already defined\n",
+		    (const char *) name);
 #endif /* LIBXML_VALID_ENABLED */
 	xmlFreeNotation(ret);
 	return(NULL);
@@ -2108,8 +2136,7 @@ xmlCopyNotation(xmlNotationPtr nota) {
 
     cur = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
     if (cur == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlCopyNotation: out of memory !\n");
+	xmlErrMemory(NULL, "malloc failed");
 	return(NULL);
     }
     if (nota->name != NULL)
@@ -2233,18 +2260,12 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     xmlIDTablePtr table;
 
     if (doc == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddID: doc == NULL\n");
 	return(NULL);
     }
     if (value == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddID: value == NULL\n");
 	return(NULL);
     }
     if (attr == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlAddID: attr == NULL\n");
 	return(NULL);
     }
 
@@ -2255,15 +2276,14 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     if (table == NULL) 
         doc->ids = table = xmlCreateIDTable();
     if (table == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
+	xmlErrMemory(ctxt,
 		"xmlAddID: Table creation failed!\n");
         return(NULL);
     }
 
     ret = (xmlIDPtr) xmlMalloc(sizeof(xmlID));
     if (ret == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlAddID: out of memory\n");
+	xmlErrMemory(ctxt, "malloc failed");
 	return(NULL);
     }
 
@@ -2419,12 +2439,10 @@ xmlGetID(xmlDocPtr doc, const xmlChar *ID) {
     xmlIDPtr id;
 
     if (doc == NULL) {
-        xmlGenericError(xmlGenericErrorContext, "xmlGetID: doc == NULL\n");
 	return(NULL);
     }
 
     if (ID == NULL) {
-        xmlGenericError(xmlGenericErrorContext, "xmlGetID: ID == NULL\n");
 	return(NULL);
     }
 
@@ -2548,18 +2566,12 @@ xmlAddRef(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDocPtr doc, const xmlChar *v
     xmlListPtr ref_list;
 
     if (doc == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-            "xmlAddRef: doc == NULL\n");
         return(NULL);
     }
     if (value == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-            "xmlAddRef: value == NULL\n");
         return(NULL);
     }
     if (attr == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-            "xmlAddRef: attr == NULL\n");
         return(NULL);
     }
 
@@ -2570,15 +2582,14 @@ xmlAddRef(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDocPtr doc, const xmlChar *v
     if (table == NULL) 
         doc->refs = table = xmlCreateRefTable();
     if (table == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
+	xmlErrMemory(ctxt,
             "xmlAddRef: Table creation failed!\n");
         return(NULL);
     }
 
     ret = (xmlRefPtr) xmlMalloc(sizeof(xmlRef));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-            "xmlAddRef: out of memory\n");
+	xmlErrMemory(ctxt, "malloc failed");
         return(NULL);
     }
 
@@ -2607,14 +2618,16 @@ xmlAddRef(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDocPtr doc, const xmlChar *v
 
     if (NULL == (ref_list = xmlHashLookup(table, value))) {
         if (NULL == (ref_list = xmlListCreate(xmlFreeRef, NULL))) {
-            xmlGenericError(xmlGenericErrorContext,
-                "xmlAddRef: Reference list creation failed!\n");
+	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
+		    "xmlAddRef: Reference list creation failed!\n",
+		    NULL);
             return(NULL);
         }
         if (xmlHashAddEntry(table, value, ref_list) < 0) {
             xmlListDelete(ref_list);
-            xmlGenericError(xmlGenericErrorContext,
-                "xmlAddRef: Reference list insertion failed!\n");
+	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
+		    "xmlAddRef: Reference list insertion failed!\n",
+		    NULL);
             return(NULL);
         }
     }
@@ -2739,12 +2752,10 @@ xmlGetRefs(xmlDocPtr doc, const xmlChar *ID) {
     xmlRefTablePtr table;
 
     if (doc == NULL) {
-        xmlGenericError(xmlGenericErrorContext, "xmlGetRefs: doc == NULL\n");
         return(NULL);
     }
 
     if (ID == NULL) {
-        xmlGenericError(xmlGenericErrorContext, "xmlGetRefs: ID == NULL\n");
         return(NULL);
     }
 
@@ -2820,8 +2831,7 @@ xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
 	    dtd->elements = (void *) table;
 	}
 	if (table == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlGetDtdElementDesc2: Table creation failed!\n");
+	    xmlErrMemory(NULL, "element table allocation failed");
 	    return(NULL);
 	}
     }
@@ -2834,8 +2844,7 @@ xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
     if ((cur == NULL) && (create)) {
 	cur = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
 	if (cur == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlGetDtdElementDesc2: out of memory\n");
+	    xmlErrMemory(NULL, "malloc failed");
 	    return(NULL);
 	}
 	memset(cur, 0, sizeof(xmlElement));
@@ -4842,8 +4851,7 @@ fail:
     ctxt->vstateTab = (xmlValidState *) xmlMalloc(
 		 ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
     if (ctxt->vstateTab == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"malloc failed !n");
+	xmlErrMemory(ctxt, "malloc failed");
 	return(-1);
     }
     /*
@@ -4898,8 +4906,7 @@ fail:
 		     */
 		    tmp = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
 		    if (tmp == NULL) {
-			xmlGenericError(xmlGenericErrorContext,
-				"xmlValidateElementContent : malloc failed\n");
+			xmlErrMemory(ctxt, "malloc failed");
 			xmlFreeNodeList(repl);
 			ret = -1;
 			goto done;
@@ -5117,9 +5124,9 @@ xmlValidateCheckMixed(xmlValidCtxtPtr ctxt  ATTRIBUTE_UNUSED,
 	    } else if ((cont->type != XML_ELEMENT_CONTENT_OR) ||
 		(cont->c1 == NULL) ||
 		(cont->c1->type != XML_ELEMENT_CONTENT_PCDATA)){
-		/* Internal error !!! */
-		xmlGenericError(xmlGenericErrorContext,
-			"Internal: MIXED struct bad\n");
+		xmlErrValid(NULL, XML_DTD_MIXED_CORRUPT, 
+			"Internal: MIXED struct corrupted\n",
+			NULL);
 		break;
 	    }
 	    cont = cont->c2;
@@ -5141,9 +5148,9 @@ xmlValidateCheckMixed(xmlValidCtxtPtr ctxt  ATTRIBUTE_UNUSED,
 	    } else if ((cont->type != XML_ELEMENT_CONTENT_OR) ||
 		(cont->c1 == NULL) ||
 		(cont->c1->type != XML_ELEMENT_CONTENT_PCDATA)){
-		/* Internal error !!! */
-		xmlGenericError(xmlGenericErrorContext,
-			"Internal: MIXED struct bad\n");
+		xmlErrValid(ctxt, XML_DTD_MIXED_CORRUPT, 
+			"Internal: MIXED struct corrupted\n",
+			NULL);
 		break;
 	    }
 	    cont = cont->c2;
@@ -5605,9 +5612,9 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 			    } else if ((cont->type != XML_ELEMENT_CONTENT_OR) ||
 				(cont->c1 == NULL) ||
 				(cont->c1->type != XML_ELEMENT_CONTENT_PCDATA)){
-				/* Internal error !!! */
-				xmlGenericError(xmlGenericErrorContext,
-					"Internal: MIXED struct bad\n");
+				xmlErrValid(NULL, XML_DTD_MIXED_CORRUPT, 
+					"Internal: MIXED struct corrupted\n",
+					NULL);
 				break;
 			    }
 			    cont = cont->c2;
@@ -5628,9 +5635,9 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 			} else if ((cont->type != XML_ELEMENT_CONTENT_OR) ||
 			    (cont->c1 == NULL) ||
 			    (cont->c1->type != XML_ELEMENT_CONTENT_PCDATA)) {
-			    /* Internal error !!! */
-			    xmlGenericError(xmlGenericErrorContext,
-				    "Internal: MIXED struct bad\n");
+			    xmlErrValid(ctxt, XML_DTD_MIXED_CORRUPT, 
+				    "Internal: MIXED struct corrupted\n",
+				    NULL);
 			    break;
 			}
 			cont = cont->c2;
@@ -6081,8 +6088,8 @@ xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     xmlRefTablePtr table;
 
     if (doc == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlValidateDocumentFinal: doc == NULL\n");
+        xmlErrValid(ctxt, XML_DTD_NO_DOC, 
+		"xmlValidateDocumentFinal: doc == NULL\n", NULL);
 	return(0);
     }
 

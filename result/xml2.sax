@@ -1,3 +1,4 @@
+xmlSAXUserParseFile returned error 27
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(test, , )

@@ -2123,6 +2123,19 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
 	    cur = next;
 	}
     }
+    /*
+     * cleanup the error strings
+     */
+    if (ctxt->lastError.message != NULL)
+        xmlFree(ctxt->lastError.message);
+    if (ctxt->lastError.file != NULL)
+        xmlFree(ctxt->lastError.file);
+    if (ctxt->lastError.str1 != NULL)
+        xmlFree(ctxt->lastError.str1);
+    if (ctxt->lastError.str2 != NULL)
+        xmlFree(ctxt->lastError.str2);
+    if (ctxt->lastError.str3 != NULL)
+        xmlFree(ctxt->lastError.str3);
 
 #ifdef LIBXML_CATALOG_ENABLED
     if (ctxt->catalogs != NULL)

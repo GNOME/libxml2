@@ -1452,13 +1452,15 @@ SAX.endElement(img)
 SAX.characters(
 , 1)
 SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.endElement(td)
 SAX.characters(
   , 3)
-SAX.error: Opening and ending tag mismatch: tr and font
+SAX.endElement(tr)
 SAX.characters(
 
 , 2)
-SAX.error: Opening and ending tag mismatch: table and font
+SAX.endElement(table)
 SAX.characters(
 
 , 2)
@@ -1626,9 +1628,13 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(  , 2)
 SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.endElement(td)
 SAX.characters(
         , 9)
-SAX.error: Opening and ending tag mismatch: tr and font
+SAX.endElement(tr)
 SAX.characters(
 , 1)
 SAX.comment( Commentary Frag End )
@@ -1884,7 +1890,9 @@ SAX.startElement(a, href='http://r.wired.com/r/wn_exec_r_vign/http://www.vignett
 SAX.startElement(font, color='#000000')
 SAX.characters(Vignette, 8)
 SAX.error: Opening and ending tag mismatch: a and font
-SAX.error: Opening and ending tag mismatch: i and font
+SAX.endElement(font)
+SAX.endElement(a)
+SAX.endElement(i)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -1947,10 +1955,12 @@ wired.com&amp;BANNER=Sprint', style='text-decoration:none')
 SAX.startElement(font, color='#000000')
 SAX.characters(Sprint, 6)
 SAX.error: Opening and ending tag mismatch: a and font
-SAX.error: Opening and ending tag mismatch: i and font
+SAX.endElement(font)
+SAX.endElement(a)
+SAX.endElement(i)
 SAX.error: End tag : expected '>'
 SAX.endElement(font)
-SAX.error: Opening and ending tag mismatch: font and a
+SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -1996,9 +2006,25 @@ SAX.characters(
 
 , 2)
 SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(font)
+SAX.endElement(td)
 SAX.characters(
 , 1)
-SAX.error: Opening and ending tag mismatch: tr and font
+SAX.endElement(tr)
 SAX.characters(
 , 1)
 SAX.comment( start of Gen News )
@@ -2084,7 +2110,7 @@ SAX.characters(
 SAX.comment( end of Gen News )
 SAX.characters(
 , 1)
-SAX.error: Opening and ending tag mismatch: table and font
+SAX.endElement(table)
 SAX.characters(
 
 
@@ -2631,10 +2657,10 @@ SAX.comment( - - - - - - - - - - - - )
 SAX.characters(
  
    , 6)
-SAX.error: Opening and ending tag mismatch: td and font
+SAX.endElement(td)
 SAX.characters(
   , 3)
-SAX.error: Opening and ending tag mismatch: tr and font
+SAX.endElement(tr)
 SAX.characters(
 
   , 4)
@@ -2801,7 +2827,7 @@ SAX.characters(
 SAX.endElement(tr)
 SAX.characters(
 , 1)
-SAX.error: Opening and ending tag mismatch: table and font
+SAX.endElement(table)
 SAX.characters(
 
 
@@ -2810,42 +2836,13 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(
 , 1)
-SAX.error: Opening and ending tag mismatch: body and font
+SAX.error: Opening and ending tag mismatch: body and td
 SAX.characters(
 , 1)
-SAX.error: Opening and ending tag mismatch: html and font
+SAX.error: Opening and ending tag mismatch: html and td
 SAX.ignorableWhitespace(
 
 , 2)
-SAX.endElement(font)
-SAX.endElement(a)
-SAX.endElement(i)
-SAX.endElement(font)
-SAX.endElement(font)
-SAX.endElement(a)
-SAX.endElement(i)
-SAX.endElement(font)
-SAX.endElement(font)
-SAX.endElement(font)
-SAX.endElement(font)
-SAX.endElement(font)
-SAX.endElement(font)
-SAX.endElement(font)
-SAX.endElement(font)
-SAX.endElement(td)
-SAX.endElement(tr)
-SAX.endElement(font)
-SAX.endElement(font)
-SAX.endElement(td)
-SAX.endElement(tr)
-SAX.endElement(table)
-SAX.endElement(td)
-SAX.endElement(tr)
-SAX.endElement(table)
-SAX.endElement(font)
-SAX.endElement(td)
-SAX.endElement(tr)
-SAX.endElement(table)
 SAX.endElement(td)
 SAX.endElement(tr)
 SAX.endElement(table)

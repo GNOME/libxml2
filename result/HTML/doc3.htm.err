@@ -43,18 +43,6 @@ om/ad_static.asp?pid=2097&sid=1881&asid=7708"></a></IFRAME></CENTER></LI></FONT
 ./test/HTML/doc3.htm:767: error: Opening and ending tag mismatch: center and font
             archive</A></FONT> </FORM></CENTER></TD></TR></TBODY></TABLE><!--		
                                                ^
-./test/HTML/doc3.htm:767: error: Opening and ending tag mismatch: td and font
-            archive</A></FONT> </FORM></CENTER></TD></TR></TBODY></TABLE><!--		
-                                                    ^
-./test/HTML/doc3.htm:767: error: Opening and ending tag mismatch: tr and font
-            archive</A></FONT> </FORM></CENTER></TD></TR></TBODY></TABLE><!--		
-                                                         ^
-./test/HTML/doc3.htm:767: error: Opening and ending tag mismatch: tbody and font
-            archive</A></FONT> </FORM></CENTER></TD></TR></TBODY></TABLE><!--		
-                                                                 ^
-./test/HTML/doc3.htm:767: error: Opening and ending tag mismatch: table and font
-            archive</A></FONT> </FORM></CENTER></TD></TR></TBODY></TABLE><!--		
-                                                                         ^
 ./test/HTML/doc3.htm:790: error: Unexpected end tag : iframe
 							document.write("42DF8478957377></IFRAME>");
                                                ^
@@ -82,48 +70,30 @@ om/ad_static.asp?pid=2097&sid=1881&asid=7708"></a></IFRAME></CENTER></LI></FONT
 ./test/HTML/doc3.htm:828: error: Unexpected end tag : p
             Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></
                                                   ^
-./test/HTML/doc3.htm:828: error: Opening and ending tag mismatch: td and form
+./test/HTML/doc3.htm:828: error: Opening and ending tag mismatch: center and td
             Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></
-                                                                ^
-./test/HTML/doc3.htm:828: error: Opening and ending tag mismatch: tr and form
-            Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></
-                                                                     ^
-./test/HTML/doc3.htm:828: error: Opening and ending tag mismatch: tbody and form
-            Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></
-                                                                             ^
-./test/HTML/doc3.htm:828: error: Opening and ending tag mismatch: table and form
-        Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></TABL
-                                                                              ^
+                                                           ^
 ./test/HTML/doc3.htm:834: error: Unexpected end tag : p
 width="100%">&nbsp;</TD></TR></TBODY></TABLE></P></CENTER></TR></TBODY></TABLE>
                                                  ^
-./test/HTML/doc3.htm:834: error: Opening and ending tag mismatch: center and form
-width="100%">&nbsp;</TD></TR></TBODY></TABLE></P></CENTER></TR></TBODY></TABLE>
-                                                          ^
-./test/HTML/doc3.htm:834: error: Opening and ending tag mismatch: tr and form
+./test/HTML/doc3.htm:834: error: Opening and ending tag mismatch: tr and td
 width="100%">&nbsp;</TD></TR></TBODY></TABLE></P></CENTER></TR></TBODY></TABLE>
                                                                ^
-./test/HTML/doc3.htm:834: error: Opening and ending tag mismatch: tbody and form
+./test/HTML/doc3.htm:834: error: Opening and ending tag mismatch: tbody and td
 width="100%">&nbsp;</TD></TR></TBODY></TABLE></P></CENTER></TR></TBODY></TABLE>
                                                                        ^
-./test/HTML/doc3.htm:834: error: Opening and ending tag mismatch: table and form
+./test/HTML/doc3.htm:834: error: Opening and ending tag mismatch: table and td
 width="100%">&nbsp;</TD></TR></TBODY></TABLE></P></CENTER></TR></TBODY></TABLE>
                                                                               ^
-./test/HTML/doc3.htm:835: error: Opening and ending tag mismatch: td and form
-<CENTER></CENTER></TD></TR><TR><TD COLSPAN="3" VALIGN="TOP" 
-                      ^
-./test/HTML/doc3.htm:835: error: Opening and ending tag mismatch: tr and form
-<CENTER></CENTER></TD></TR><TR><TD COLSPAN="3" VALIGN="TOP" 
-                           ^
-./test/HTML/doc3.htm:836: error: Opening and ending tag mismatch: table and form
+./test/HTML/doc3.htm:836: error: Opening and ending tag mismatch: table and tbody
 HEIGHT="70">&nbsp;</TD> </TR></TABLE>
                                     ^
-./test/HTML/doc3.htm:844: error: Opening and ending tag mismatch: div and form
+./test/HTML/doc3.htm:844: error: Opening and ending tag mismatch: div and tbody
 ,arial">Site design by Tim Brinkley</FONT>		</TD>	</TR> --></TBODY></TABLE></DI
                                                                               ^
-./test/HTML/doc3.htm:846: error: Opening and ending tag mismatch: body and form
+./test/HTML/doc3.htm:846: error: Opening and ending tag mismatch: body and tbody
 </BODY></HTML>
        ^
-./test/HTML/doc3.htm:846: error: Opening and ending tag mismatch: html and form
+./test/HTML/doc3.htm:846: error: Opening and ending tag mismatch: html and tbody
 </BODY></HTML>
              ^

@@ -7,6 +7,6 @@
 ./test/HTML/test3.html:27: error: Opening and ending tag mismatch: h4 and b
 <h4><b>Links</h4></b>
                  ^
-./test/HTML/test3.html:34: error: Opening and ending tag mismatch: html and h4
-</html>
-      ^
+./test/HTML/test3.html:27: error: Unexpected end tag : b
+<h4><b>Links</h4></b>
+                    ^

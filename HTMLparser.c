@@ -346,6 +346,7 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
  *  Start Tag: 1 means the start tag can be ommited
  *  End Tag:   1 means the end tag can be ommited
  *             2 means it's forbidden (empty elements)
+ *             3 means the tag is stylistic and should be closed easilly
  *  Depr:      this element is deprecated
  *  DTD:       1 means that this element is valid only in the Loose DTD
  *             2 means that this element is valid only in the Frameset DTD
@@ -359,17 +360,17 @@ htmlElemDesc  html40ElementTable[] = {
 { "address",	0,	0,	0,	0,	0,	0, "information on author " },
 { "applet",	0,	0,	0,	0,	1,	1, "java applet " },
 { "area",	0,	2,	2,	1,	0,	0, "client-side image map area " },
-{ "b",		0,	0,	0,	0,	0,	0, "bold text style" },
+{ "b",		0,	3,	0,	0,	0,	0, "bold text style" },
 { "base",	0,	2,	2,	1,	0,	0, "document base uri " },
 { "basefont",	0,	2,	2,	1,	1,	1, "base font size " },
 { "bdo",	0,	0,	0,	0,	0,	0, "i18n bidi over-ride " },
-{ "big",	0,	0,	0,	0,	0,	0, "large text style" },
+{ "big",	0,	3,	0,	0,	0,	0, "large text style" },
 { "blockquote",	0,	0,	0,	0,	0,	0, "long quotation " },
 { "body",	1,	1,	0,	0,	0,	0, "document body " },
 { "br",		0,	2,	2,	1,	0,	0, "forced line break " },
 { "button",	0,	0,	0,	0,	0,	0, "push button " },
 { "caption",	0,	0,	0,	0,	0,	0, "table caption " },
-{ "center",	0,	0,	0,	0,	1,	1, "shorthand for div align=center " },
+{ "center",	0,	3,	0,	0,	1,	1, "shorthand for div align=center " },
 { "cite",	0,	0,	0,	0,	0,	0, "citation" },
 { "code",	0,	0,	0,	0,	0,	0, "computer code fragment" },
 { "col",	0,	2,	2,	1,	0,	0, "table column " },
@@ -381,9 +382,9 @@ htmlElemDesc  html40ElementTable[] = {
 { "div",	0,	0,	0,	0,	0,	0, "generic language/style container"},
 { "dl",		0,	0,	0,	0,	0,	0, "definition list " },
 { "dt",		0,	1,	0,	0,	0,	0, "definition term " },
-{ "em",		0,	0,	0,	0,	0,	0, "emphasis" },
+{ "em",		0,	3,	0,	0,	0,	0, "emphasis" },
 { "fieldset",	0,	0,	0,	0,	0,	0, "form control group " },
-{ "font",	0,	0,	0,	0,	1,	1, "local change to font " },
+{ "font",	0,	3,	0,	0,	1,	1, "local change to font " },
 { "form",	0,	0,	0,	0,	0,	0, "interactive form " },
 { "frame",	0,	2,	2,	1,	0,	2, "subwindow " },
 { "frameset",	0,	0,	0,	0,	0,	2, "window subdivision" },
@@ -396,7 +397,7 @@ htmlElemDesc  html40ElementTable[] = {
 { "head",	1,	1,	0,	0,	0,	0, "document head " },
 { "hr",		0,	2,	2,	1,	0,	0, "horizontal rule " },
 { "html",	1,	1,	0,	0,	0,	0, "document root element " },
-{ "i",		0,	0,	0,	0,	0,	0, "italic text style" },
+{ "i",		0,	3,	0,	0,	0,	0, "italic text style" },
 { "iframe",	0,	0,	0,	0,	0,	1, "inline subwindow " },
 { "img",	0,	2,	2,	1,	0,	0, "embedded image " },
 { "input",	0,	2,	2,	1,	0,	0, "form control " },
@@ -420,17 +421,17 @@ htmlElemDesc  html40ElementTable[] = {
 { "param",	0,	2,	2,	1,	0,	0, "named property value " },
 { "pre",	0,	0,	0,	0,	0,	0, "preformatted text " },
 { "q",		0,	0,	0,	0,	0,	0, "short inline quotation " },
-{ "s",		0,	0,	0,	0,	1,	1, "strike-through text style" },
+{ "s",		0,	3,	0,	0,	1,	1, "strike-through text style" },
 { "samp",	0,	0,	0,	0,	0,	0, "sample program output, scripts, etc." },
 { "script",	0,	0,	0,	0,	0,	0, "script statements " },
 { "select",	0,	0,	0,	0,	0,	0, "option selector " },
-{ "small",	0,	0,	0,	0,	0,	0, "small text style" },
+{ "small",	0,	3,	0,	0,	0,	0, "small text style" },
 { "span",	0,	0,	0,	0,	0,	0, "generic language/style container " },
-{ "strike",	0,	0,	0,	0,	1,	1, "strike-through text" },
-{ "strong",	0,	0,	0,	0,	0,	0, "strong emphasis" },
+{ "strike",	0,	3,	0,	0,	1,	1, "strike-through text" },
+{ "strong",	0,	3,	0,	0,	0,	0, "strong emphasis" },
 { "style",	0,	0,	0,	0,	0,	0, "style info " },
-{ "sub",	0,	0,	0,	0,	0,	0, "subscript" },
-{ "sup",	0,	0,	0,	0,	0,	0, "superscript " },
+{ "sub",	0,	3,	0,	0,	0,	0, "subscript" },
+{ "sup",	0,	3,	0,	0,	0,	0, "superscript " },
 { "table",	0,	0,	0,	0,	0,	0, "&#160;" },
 { "tbody",	1,	0,	0,	0,	0,	0, "table body " },
 { "td",		0,	0,	0,	0,	0,	0, "table data cell" },
@@ -440,8 +441,8 @@ htmlElemDesc  html40ElementTable[] = {
 { "thead",	0,	1,	0,	0,	0,	0, "table header " },
 { "title",	0,	0,	0,	0,	0,	0, "document title " },
 { "tr",		0,	0,	0,	0,	0,	0, "table row " },
-{ "tt",		0,	0,	0,	0,	0,	0, "teletype or monospaced text style" },
-{ "u",		0,	0,	0,	0,	1,	1, "underlined text style" },
+{ "tt",		0,	3,	0,	0,	0,	0, "teletype or monospaced text style" },
+{ "u",		0,	3,	0,	0,	1,	1, "underlined text style" },
 { "ul",		0,	0,	0,	0,	0,	0, "unordered list " },
 { "var",	0,	0,	0,	0,	0,	0, "instance of a variable or program argument" },
 };
@@ -682,7 +683,16 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 #ifdef DEBUG
 	    xmlGenericError(xmlGenericErrorContext,"htmlAutoCloseOnClose: %s closes %s\n", newtag, ctxt->name);
 #endif
-        } else {
+        } else if (info->endTag == 3) {
+#ifdef DEBUG
+	    xmlGenericError(xmlGenericErrorContext,"End of tag %s: expecting %s\n", name, ctxt->name);
+#endif
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData,
+		 "Opening and ending tag mismatch: %s and %s\n",
+				 newtag, ctxt->name);
+	    ctxt->wellFormed = 0;
+	} else {
 	    return;
 	}
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))

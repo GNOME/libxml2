@@ -1,3 +1,10 @@
+Tue Apr 24 14:41:25 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c : HTML parsing still sucks ... trying to deal
+	  with madness
+	* result/HTML/ : this modified the result of the regression tests
+	  a lot.
+
 Tue Apr 24 14:10:38 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* entities.c: xmlEncodeEntitiesReentrant fixed a few accesses

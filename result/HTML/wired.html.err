@@ -205,26 +205,17 @@ MG SRC="http://barnesandnoble.bfast.com/booklink/serve?sourceid=383471&is_searc
 ./test/HTML/wired.html:346: error: Opening and ending tag mismatch: td and font
 </td>
     ^
-./test/HTML/wired.html:347: error: Opening and ending tag mismatch: tr and font
-  </tr>
-      ^
-./test/HTML/wired.html:349: error: Opening and ending tag mismatch: table and font
-</table>
-       ^
 ./test/HTML/wired.html:374: error: htmlParseEntityRef: no name
 a, sans-serif"><b><a href="/news/commentarySection/0,1292,31926,00.html">Rants 
                                                                               ^
 ./test/HTML/wired.html:374: error: Opening and ending tag mismatch: td and font
 Readers on Apple's G4 ... AOL's passwords ... MS vs. Linux.</font><br><br>  </t
                                                                               ^
-./test/HTML/wired.html:375: error: Opening and ending tag mismatch: tr and font
-        </tr>
-            ^
+./test/HTML/wired.html:374: error: Opening and ending tag mismatch: td and font
+Readers on Apple's G4 ... AOL's passwords ... MS vs. Linux.</font><br><br>  </t
+                                                                              ^
 ./test/HTML/wired.html:402: error: Opening and ending tag mismatch: a and font
 w.vignette.com/" style="text-decoration:none"><font color="#000000">Vignette</a
-                                                                              ^
-./test/HTML/wired.html:402: error: Opening and ending tag mismatch: i and font
-gnette.com/" style="text-decoration:none"><font color="#000000">Vignette</a></i
                                                                               ^
 ./test/HTML/wired.html:406: error: htmlParseEntityRef: expecting ';'
 ervlet/appservlet?from=/wired/sprint/&template=/security/security.html&SITE=
@@ -238,39 +229,39 @@ wired.com&BANNER=Sprint" style="text-decoration:none"><font color="#000000">Spr
 ./test/HTML/wired.html:406: error: Opening and ending tag mismatch: a and font
 com&BANNER=Sprint" style="text-decoration:none"><font color="#000000">Sprint</a
                                                                               ^
-./test/HTML/wired.html:406: error: Opening and ending tag mismatch: i and font
-BANNER=Sprint" style="text-decoration:none"><font color="#000000">Sprint</a></i
-                                                                              ^
 ./test/HTML/wired.html:406: error: End tag : expected '>'
 =Sprint" style="text-decoration:none"><font color="#000000">Sprint</a></i></fon
-                                                                              ^
-./test/HTML/wired.html:406: error: Opening and ending tag mismatch: font and a
-" style="text-decoration:none"><font color="#000000">Sprint</a></i></font</font
                                                                               ^
 ./test/HTML/wired.html:412: error: Opening and ending tag mismatch: td and font
 </td>
     ^
-./test/HTML/wired.html:413: error: Opening and ending tag mismatch: tr and font
-</tr>
+./test/HTML/wired.html:412: error: Opening and ending tag mismatch: td and font
+</td>
+    ^
+./test/HTML/wired.html:412: error: Opening and ending tag mismatch: td and font
+</td>
+    ^
+./test/HTML/wired.html:412: error: Opening and ending tag mismatch: td and font
+</td>
+    ^
+./test/HTML/wired.html:412: error: Opening and ending tag mismatch: td and font
+</td>
+    ^
+./test/HTML/wired.html:412: error: Opening and ending tag mismatch: td and font
+</td>
+    ^
+./test/HTML/wired.html:412: error: Opening and ending tag mismatch: td and font
+</td>
+    ^
+./test/HTML/wired.html:412: error: Opening and ending tag mismatch: td and font
+</td>
     ^
 ./test/HTML/wired.html:430: error: htmlParseEntityRef: expecting ';'
 href="http://www.lycos.com/news/flash/hitlerbunker.html?v=wn1015&lpv=1">Lycos</
                                                                     ^
-./test/HTML/wired.html:434: error: Opening and ending tag mismatch: table and font
-</table>
-       ^
-./test/HTML/wired.html:461: error: Opening and ending tag mismatch: td and font
-   </TD>
-       ^
-./test/HTML/wired.html:462: error: Opening and ending tag mismatch: tr and font
-  </TR>
-      ^
-./test/HTML/wired.html:508: error: Opening and ending tag mismatch: table and font
-</TABLE>
-       ^
-./test/HTML/wired.html:512: error: Opening and ending tag mismatch: body and font
+./test/HTML/wired.html:512: error: Opening and ending tag mismatch: body and td
 </body>
       ^
-./test/HTML/wired.html:513: error: Opening and ending tag mismatch: html and font
+./test/HTML/wired.html:513: error: Opening and ending tag mismatch: html and td
 </html>
       ^

@@ -1,3 +1,15 @@
+Thu Aug 28 08:59:51 MDT 2003 John Fleck <jfleck@inkstain.net>
+
+	add:
+	* doc/tutorial/api.html
+	* doc/tutorial/ar01s09.html
+	* doc/tutorial/includexpath.c
+	updated
+	* doc/tutorial/*.html
+	fix my bad - forgot to check in new files when I last
+	updated
+
+
 Thu Aug 28 14:31:13 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/Makefile.bcb: new file, support for Borland C++

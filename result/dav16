@@ -1,0 +1,10 @@
+
+
+------- test/dav16 -----------
+<?xml version="1.0"?>
+<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="D"?>
+<D:propfind>
+  <D:prop>
+    <lockdiscovery/>
+  </D:prop>
+</D:propfind>

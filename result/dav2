@@ -1,0 +1,29 @@
+
+
+------- test/dav2 -----------
+<?xml version="1.0"?>
+<?xml:namespace ns="http://www.foo.bar/boxschema/" prefix="R"?>
+<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="S"?>
+<S:multistatus>
+  <S:response>
+    <S:href>http://www.foo.bar/container/</S:href>
+    <S:prop>
+      <R:bigbox>
+        <R:BoxType>Box type A</R:BoxType>
+      </R:bigbox>
+      <R:author>
+        <R:Name>Hadrian</R:Name>
+      </R:author>
+    </S:prop>
+    <S:status>HTTP 1.1 200 OK</S:status>
+  </S:response>
+  <S:response>
+    <S:href>http://www.foo.bar/container/index.html</S:href>
+    <S:prop>
+      <R:bigbox>
+        <R:BoxType>Box type B</R:BoxType>
+      </R:bigbox>
+    </S:prop>
+    <S:status>HTTP 1.1 200 OK</S:status>
+  </S:response>
+</S:multistatus>

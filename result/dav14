@@ -1,0 +1,17 @@
+
+
+------- test/dav14 -----------
+<?xml version="1.0"?>
+<?xml:namespace ns="http://www.ietf.org/standards/dav/patch/" prefix="D"?>
+<D:resourceupdate>
+  <D:replace XML-SPACE="PRESERVE">
+    <D:octet-range>14</D:octet-range>
+003CTITLE003ENew
+   Title003C/TITLE003E  </D:replace>
+  <D:delete>
+    <D:octet-range>38-50</D:octet-range>
+  </D:delete>
+  <D:insert XML-SPACE="PRESERVE">
+    <D:octet-range>86</D:octet-range>
+003CP003ENew paragraph003C/P003E  </D:insert>
+</D:resourceupdate>

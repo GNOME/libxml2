@@ -1,0 +1,22 @@
+
+
+------- test/dav19 -----------
+<?xml version="1.0"?>
+<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="D"?>
+<D:multistatus>
+  <D:response>
+    <D:prop>
+      <D:supportedlock>
+        <D:LockEntry>
+          <D:locktype>Write</D:locktype>
+          <D:lockscope>Exclusive</D:lockscope>
+        </D:LockEntry>
+        <D:LockEntry>
+          <D:locktype>Write</D:locktype>
+          <D:lockscope>Shared</D:lockscope>
+        </D:LockEntry>
+      </D:supportedlock>
+    </D:prop>
+    <D:status>HTTP/1.1 200 OK</D:status>
+  </D:response>
+</D:multistatus>

@@ -1,0 +1,26 @@
+
+
+------- test/p3p -----------
+<?xml version="1.0"?>
+<?xml:namespace ns="http://www.w3.org/TR/WD-rdf-syntax#" prefix="RDF"?>
+<RDF:RDF>
+  <PROP assurance="http://www.TrustUs.org" agreeID="94df1293a3e519bb" entity="CoolCatalog" realm="http://www.CoolCatalog.com/catalogue/">
+    <USES>
+      <STATEMENT consq="a site with clothes you&apos;d appreciate." id="0" recpnt="0" purp="2,3">
+        <WITH>
+          <PREFIX name="User.">
+            <REF name="Name.First"/>
+            <REF optional="1" name="Bdate.Year"/>
+            <REF name="Gender"/>
+          </PREFIX>
+        </WITH>
+      </STATEMENT>
+    </USES>
+    <USES>
+      <STATEMENT id="1" recpnt="0" purp="0" action="read&amp;write">
+        <REF name="User.Shipping."/>
+      </STATEMENT>
+    </USES>
+    <DISCLOSURE other="0,1" access="3" discURI="http://www.CoolCatalog.com/PrivacyPractice.html"/>
+  </PROP>
+</RDF:RDF>

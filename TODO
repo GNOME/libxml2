@@ -1,0 +1,30 @@
+
+           TODO for the XML parser:
+
+- Support for UTF-8 encoding
+- progressive parsing. Currently the parser uses a single
+  string containing the full document. The good point is
+  that there is no context associated with the parser, the
+  full state is in the stack. The bad point is that such a
+  recursive design is hard to make progressive ...
+- Better error handling, use a dedicated, overridable error
+  handling function.
+- Keep track of line numbers for better error reporting.
+- DOM support, instead of using a proprietary in memory
+  format for the document representation, the parser should
+  call a DOM API to actually build the resulting document.
+  Then the parser becomes independent of the in-memory
+  representation of the document. Even better using RPC's
+  the parser can actually build the document in another
+  program.
+- finish the support for Entities.
+- Support for Comments (bad, should be in ASAP, they are parsed
+  but not stored).
+- Support for PI.
+- Support for CDATA.
+
+Done:
+- C++ support : John Ehresman <jehresma@dsg.harvard.edu>
+- Updated code to follow more recent specs, added compatibility flag
+
+$Id$

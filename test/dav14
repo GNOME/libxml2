@@ -1,0 +1,10 @@
+   <?XML version="1.0">
+   <?namespace href = "http://www.ietf.org/standards/dav/patch/" AS =
+   "D"?>
+   <D:resourceupdate>
+     <D:replace XML-SPACE = "PRESERVE">
+          <D:octet-range>14</D:octet-range>&003CTITLE&003ENew
+   Title&003C/TITLE&003E</D:replace>
+     <D:delete><D:octet-range>38-50</D:octet-range></D:delete>
+     <D:insert XML-SPACE = "PRESERVE"><D:octet-range>86</D:octet-range>&003CP&003ENew paragraph&003C/P&003E</D:insert>
+   </D:resourceupdate>

@@ -1,0 +1,25 @@
+
+
+------- test/dav15 -----------
+<?xml version="1.0"?>
+<?xml:namespace ns="http://www.foocorp.com/Project/" prefix="F"?>
+<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="D"?>
+<D:prop>
+  <D:Source>
+    <D:link>
+      <F:projfiles>Source</F:projfiles>
+      <D:src>http://foo.bar/program</D:src>
+      <D:dst>http://foo.bar/src/main.c</D:dst>
+    </D:link>
+    <D:link>
+      <F:projfiles>Library</F:projfiles>
+      <D:src>http://foo.bar/program</D:src>
+      <D:dst>http://foo.bar/src/main.lib</D:dst>
+    </D:link>
+    <D:link>
+      <F:projfiles>Makefile</F:projfiles>
+      <D:src>http://foo.bar/program</D:src>
+      <D:dst>http://foo.bar/src/makefile</D:dst>
+    </D:link>
+  </D:Source>
+</D:prop>

@@ -1,0 +1,24 @@
+   <?XML version="1.0">
+   <?namespace href ="http://www.ietf.org/standards/dav/" AS = "D"?>
+   <?namespace href = "http://www.foo.bar/boxschema" AS = "R"?>
+   <D:multistatus>
+     <D:response>
+          <D:prop>
+               <R:bigbox>
+                    <R:BoxType>Box type A</R:BoxType>
+               </R:bigbox>
+               <R:author>
+                    <R:Name>J.J. Dingleheimerschmidt</R:Name>
+               </R:author>
+          </D:prop>
+          <D:status>HTTP/1.1 200 OK</D:status>
+     </D:response>
+     <D:response>
+          <D:prop><R:DingALing/><R:Random/></D:prop>
+          <D:status>HTTP/1.1 403 Forbidden</D:status>
+          <D:responsedescription> The user does not have access to the DingALing property.
+          </D:responsedescription>
+     </D:response>
+     <D:responsedescription> There has been an access violation error.
+     </D:responsedescription>
+   </D:multistatus>

@@ -1,0 +1,22 @@
+
+
+------- test/dav5 -----------
+<?xml version="1.0"?>
+<?xml:namespace ns="http://www.w3.com/standards/z39.50/" prefix="Z"?>
+<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="D"?>
+<D:multistatus>
+  <D:response>
+    <D:prop>
+      <Z:Authors/>
+    </D:prop>
+    <D:status>HTTP/1.1 420 Method Failure</D:status>
+  </D:response>
+  <D:response>
+    <D:prop>
+      <Z:Copyright-Owner/>
+    </D:prop>
+    <D:status>HTTP/1.1 409 Conflict</D:status>
+  </D:response>
+  <D:responsedescription> Copyright Owner can not be deleted or
+   altered.</D:responsedescription>
+</D:multistatus>

@@ -1,0 +1,21 @@
+
+
+------- test/dav4 -----------
+<?xml version="1.0"?>
+<?xml:namespace ns="http://www.w3.com/standards/z39.50/" prefix="Z"?>
+<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="D"?>
+<D:propertyupdate>
+  <D:set>
+    <D:prop>
+      <Z:authors>
+        <Z:Author>Jim Whitehead</Z:Author>
+        <Z:Author>Roy Fielding</Z:Author>
+      </Z:authors>
+    </D:prop>
+  </D:set>
+  <D:remove>
+    <D:prop>
+      <Z:Copyright-Owner/>
+    </D:prop>
+  </D:remove>
+</D:propertyupdate>

@@ -1,3 +1,7 @@
+Wed Oct 25 12:11:03 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.c: closing bug #29260
+
 Tue Oct 24 18:49:34 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* hash.[ch] debugXML.c: expanded/enhanced the API, added

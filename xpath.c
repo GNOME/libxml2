@@ -1216,11 +1216,11 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
         fprintf(xmlXPathDebug, "%s:%d Internal error: no context\n",	\
 	        __FILE__, __LINE__);					\
     }									\
-    if (ctxt->doc == NULL) { 						\
+    else if (ctxt->doc == NULL) { 					\
         fprintf(xmlXPathDebug, "%s:%d Internal error: no document\n",	\
 	        __FILE__, __LINE__);					\
     }									\
-    if (ctxt->doc->children == NULL) { 					\
+    else if (ctxt->doc->children == NULL) { 				\
         fprintf(xmlXPathDebug,						\
 	        "%s:%d Internal error: document without root\n",	\
 	        __FILE__, __LINE__);					\
@@ -5143,10 +5143,11 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 
     xmlXPathInit();
 
-    CHECK_CONTEXT(ctx)
-
     if (xmlXPathDebug == NULL)
         xmlXPathDebug = stderr;
+
+    CHECK_CONTEXT(ctx)
+
     ctxt = xmlXPathNewParserContext(str, ctx);
     if (ctx->node != NULL) {
 	init = xmlXPathNewNodeSet(ctx->node);

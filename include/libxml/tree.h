@@ -390,6 +390,7 @@ struct _xmlID {
     xmlAttrPtr        attr;	/* The attribute holding it */
     const xmlChar    *name;	/* The attribute if attr is not available */
     int               lineno;	/* The line number if attr is not available */
+    struct _xmlDoc   *doc;	/* The document holding the ID */
 };
 
 /**

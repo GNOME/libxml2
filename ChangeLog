@@ -1,7 +1,15 @@
+Sat Nov 15 19:20:32 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Copyright: fixed some wording
+	* libxml.spec.in: make sure doc/examples is packaged
+	* include/libxml/tree.h valid.c xmlreader.c: fixed the really
+	  annoying problem about xmlRemoveID and xmlReader streaming.
+	  Thing looks fixed now, add to add a doc reference to the
+	  xmlID structure though...
+
 Sat Nov 15 09:53:36 MST 2003 John Fleck <jfleck@inkstain.net>
 
-	* doc/docdescr.doc
-	  added description of man page building
+	* doc/docdescr.doc: added description of man page building
 
 Sat Nov 15 19:08:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
 

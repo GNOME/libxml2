@@ -96,6 +96,7 @@ rm -fr %{buildroot}
 %doc AUTHORS ChangeLog NEWS README Copyright TODO
 %doc doc/*.html doc/html doc/*.gif doc/*.png
 %doc doc/tutorial doc/libxml2-api.xml
+%doc doc/examples
 
 %{_libdir}/lib*.so
 %{_libdir}/*a

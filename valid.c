@@ -2359,6 +2359,18 @@ xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
  *									*
  ************************************************************************/
 /**
+ * DICT_FREE:
+ * @str:  a string
+ *
+ * Free a string if it is not owned by the "dict" dictionnary in the
+ * current scope
+ */
+#define DICT_FREE(str)						\
+	if ((str) && ((!dict) || 				\
+	    (xmlDictOwns(dict, (const xmlChar *)(str)) == 0)))	\
+	    xmlFree((char *)(str));
+
+/**
  * xmlCreateIDTable:
  *
  * create and initialize an empty id hash table.
@@ -2379,13 +2391,20 @@ xmlCreateIDTable(void) {
  */
 static void
 xmlFreeID(xmlIDPtr id) {
+    xmlDictPtr dict = NULL;
+
     if (id == NULL) return;
+
+    if (id->doc != NULL)
+        dict = id->doc->dict;
+
     if (id->value != NULL)
-	xmlFree((xmlChar *) id->value);
+	DICT_FREE(id->value)
     if (id->name != NULL)
-	xmlFree((xmlChar *) id->name);
+	DICT_FREE(id->name)
     xmlFree(id);
 }
+
 
 /**
  * xmlAddID:
@@ -2436,11 +2455,15 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
      * fill the structure.
      */
     ret->value = xmlStrdup(value);
+    ret->doc = doc;
     if ((ctxt != NULL) && (ctxt->vstateNr != 0)) {
 	/*
 	 * Operating in streaming mode, attr is gonna disapear
 	 */
-	ret->name = xmlStrdup(attr->name);
+	if (doc->dict != NULL)
+	    ret->name = xmlDictLookup(doc->dict, attr->name, -1);
+	else
+	    ret->name = xmlStrdup(attr->name);
 	ret->attr = NULL;
     } else {
 	ret->attr = attr;
@@ -2546,8 +2569,8 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
  */
 int
 xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
-    xmlAttrPtr cur;
     xmlIDTablePtr table;
+    xmlIDPtr id;
     xmlChar *ID;
 
     if (doc == NULL) return(-1);
@@ -2561,8 +2584,8 @@ xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
     ID = xmlNodeListGetString(doc, attr->children, 1);
     if (ID == NULL)
 	return(-1);
-    cur = xmlHashLookup(table, ID);
-    if (cur != attr) {
+    id = xmlHashLookup(table, ID);
+    if (id == NULL || id->attr != attr) {
 	xmlFree(ID);
 	return(-1);
     }

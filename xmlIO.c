@@ -136,7 +136,7 @@ xmlCleanupInputCallbacks(void)
     if (!xmlInputCallbackInitialized)
         return;
 
-    for (i = xmlInputCallbackNr - 1; i <= 0; i--) {
+    for (i = xmlInputCallbackNr - 1; i >= 0; i--) {
         xmlInputCallbackTable[i].matchcallback = NULL;
         xmlInputCallbackTable[i].opencallback = NULL;
         xmlInputCallbackTable[i].readcallback = NULL;
@@ -161,7 +161,7 @@ xmlCleanupOutputCallbacks(void)
     if (!xmlOutputCallbackInitialized)
         return;
 
-    for (i = xmlOutputCallbackNr - 1; i <= 0; i--) {
+    for (i = xmlOutputCallbackNr - 1; i >= 0; i--) {
         xmlOutputCallbackTable[i].matchcallback = NULL;
         xmlOutputCallbackTable[i].opencallback = NULL;
         xmlOutputCallbackTable[i].writecallback = NULL;

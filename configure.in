@@ -622,6 +622,23 @@ fi
 AC_SUBST(WITH_READER)
 AC_SUBST(READER_TEST)
 
+AC_ARG_WITH(pattern,
+[  --with-pattern           add the xmlPattern selection interface (on)])
+if test "$with_minimum" = "yes" -a "$with_pattern" = ""
+then
+    with_pattern=no
+fi
+if test "$with_pattern" = "no" ; then
+    echo Disabling the xmlPattern parsing interface
+    WITH_PATTERN=0
+    PATTERN_TEST=
+else    
+    WITH_PATTERN=1
+    PATTERN_TEST=Patterntests
+fi
+AC_SUBST(WITH_PATTERN)
+AC_SUBST(PATTERN_TEST)
+
 AC_ARG_WITH(writer,
 [  --with-writer           add the xmlWriter saving interface (on)])
 if test "$with_minimum" = "yes" -a "$with_writer" = ""

@@ -89,6 +89,9 @@
 #include <libxml/relaxng.h>
 #include <libxml/xmlschemas.h>
 #endif
+#ifdef LIBXML_PATTERN_ENABLED
+#include <libxml/pattern.h>
+#endif
 
 #ifndef XML_XML_DEFAULT_CATALOG
 #define XML_XML_DEFAULT_CATALOG "file:///etc/xml/catalog"
@@ -160,6 +163,10 @@ static int chkregister = 0;
 #ifdef LIBXML_SAX1_ENABLED
 static int sax1 = 0;
 #endif /* LIBXML_SAX1_ENABLED */
+#ifdef LIBXML_PATTERN_ENABLED
+static const char *pattern = NULL;
+static xmlPatternPtr patternc = NULL;
+#endif
 static int options = 0;
 
 /*
@@ -620,6 +627,13 @@ static void processNode(xmlTextReaderPtr reader) {
     else {
 	printf(" %s\n", value);
     }
+#ifdef LIBXML_PATTERN_ENABLED
+    if (patternc) {
+        if (xmlPatternMatch(patternc, xmlTextReaderCurrentNode(reader)) == 1) {
+	    printf("Node matches pattern %s\n", pattern);
+	}
+    }
+#endif
 }
 
 static void streamFile(char *filename) {
@@ -680,7 +694,11 @@ static void streamFile(char *filename) {
 	}
 	ret = xmlTextReaderRead(reader);
 	while (ret == 1) {
-	    if (debug)
+	    if ((debug)
+#ifdef LIBXML_PATTERN_ENABLED
+	        || (patternc)
+#endif
+	       )
 		processNode(reader);
 	    ret = xmlTextReaderRead(reader);
 	}
@@ -748,7 +766,11 @@ static void walkDoc(xmlDocPtr doc) {
 	}
 	ret = xmlTextReaderRead(reader);
 	while (ret == 1) {
-	    if (debug)
+	    if ((debug)
+#ifdef LIBXML_PATTERN_ENABLED
+	        || (patternc)
+#endif
+	       )
 		processNode(reader);
 	    ret = xmlTextReaderRead(reader);
 	}
@@ -1451,7 +1473,7 @@ static void usage(const char *name) {
 #ifdef LIBXML_CATALOG_ENABLED
     printf("\t--catalogs : use SGML catalogs from $SGML_CATALOG_FILES\n");
     printf("\t             otherwise XML Catalogs starting from \n");
-    printf("\t         " XML_XML_DEFAULT_CATALOG " are activated by default\n");
+    printf("\t         %s are activated by default\n", XML_XML_DEFAULT_CATALOG);
     printf("\t--nocatalogs: deactivate all catalogs\n");
 #endif
     printf("\t--auto : generate a small doc on the fly\n");
@@ -1464,6 +1486,9 @@ static void usage(const char *name) {
     printf("\t--stream : use the streaming interface to process very large files\n");
     printf("\t--walker : create a reader and walk though the resulting doc\n");
 #endif /* LIBXML_READER_ENABLED */
+#ifdef LIBXML_PATTERN_ENABLED
+    printf("\t--pattern pattern_value : test the pattern support\n");
+#endif
     printf("\t--chkregister : verify the node registration code\n");
 #ifdef LIBXML_SCHEMAS_ENABLED
     printf("\t--relaxng schema : do RelaxNG validation against the schema\n");
@@ -1732,6 +1757,12 @@ main(int argc, char **argv) {
         } else if ((!strcmp(argv[i], "-nonet")) ||
                    (!strcmp(argv[i], "--nonet"))) {
 	    options |= XML_PARSE_NONET;
+#ifdef LIBXML_PATTERN_ENABLED
+        } else if ((!strcmp(argv[i], "-pattern")) ||
+                   (!strcmp(argv[i], "--pattern"))) {
+	    i++;
+	    pattern = argv[i];
+#endif
 	} else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);
 	    usage(argv[0]);
@@ -1847,7 +1878,18 @@ main(int argc, char **argv) {
 	    endTimer("Compiling the schemas");
 	}
     }
-#endif
+#endif /* LIBXML_SCHEMAS_ENABLED */
+#ifdef LIBXML_PATTERN_ENABLED
+    if (pattern != NULL) {
+        patternc = xmlPatterncompile((const xmlChar *) pattern, NULL, 0);
+	if (patternc == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Pattern %s failed to compile\n", pattern);
+            progresult = 7;
+	    pattern = NULL;
+	}
+    }
+#endif /* LIBXML_PATTERN_ENABLED */
     for (i = 1; i < argc ; i++) {
 	if ((!strcmp(argv[i], "-encode")) ||
 	         (!strcmp(argv[i], "--encode"))) {
@@ -1881,6 +1923,13 @@ main(int argc, char **argv) {
 	    i++;
 	    continue;
         }
+#ifdef LIBXML_PATTERN_ENABLED
+        if ((!strcmp(argv[i], "-pattern")) ||
+	    (!strcmp(argv[i], "--pattern"))) {
+	    i++;
+	    continue;
+	}
+#endif
 	if ((timing) && (repeat))
 	    startTimer();
 	/* Remember file names.  "-" means stdin.  <sven@zen.org> */
@@ -1931,6 +1980,10 @@ main(int argc, char **argv) {
     if (wxschemas != NULL)
 	xmlSchemaFree(wxschemas);
     xmlRelaxNGCleanupTypes();
+#endif
+#ifdef LIBXML_PATTERN_ENABLED
+    if (patternc != NULL)
+        xmlFreePattern(patternc);
 #endif
     xmlCleanupParser();
     xmlMemoryDump();

@@ -1,3 +1,11 @@
+Tue Dec  2 23:29:56 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* pattern.c include/libxml/pattern.h: adding the pattern node
+	  selection code. Inheried in part from libxslt but smaller.
+	* Makefile.am configure.in include/libxml/xmlversion.h.in:
+	  integrated the pattern module, made it a configure time option
+	* xmllint.c: added --pattern to test when doing --stream
+
 Tue Dec  2 11:25:25 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fixed a problem in xmlreader validation when

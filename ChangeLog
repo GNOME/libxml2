@@ -1,3 +1,7 @@
+Sun Mar 23 21:30:50 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c: avoid escaping ',' in URIs
+
 Sun Mar 23 12:57:00 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixing bug #108976 get the ID/REFs to reference 

@@ -1,3 +1,8 @@
+Tue Nov  9 10:21:37 GMT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: fixed problem concerning XPath context corruption
+	  during function argument evaluation (bug 157652)
+	  
 Mon Nov  8 18:54:52 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* testapi.c: more types.

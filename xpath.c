@@ -10437,10 +10437,14 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
         case XPATH_OP_ARG:
 	    bakd = ctxt->context->doc;
 	    bak = ctxt->context->node;
+	    pp = ctxt->context->proximityPosition;
+	    cs = ctxt->context->contextSize;
             if (op->ch1 != -1)
                 total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
-	    ctxt->context->doc = bakd;
+	    ctxt->context->contextSize = cs;
+	    ctxt->context->proximityPosition = pp;
 	    ctxt->context->node = bak;
+	    ctxt->context->doc = bakd;
 	    CHECK_ERROR0;
             if (op->ch2 != -1) {
                 total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);

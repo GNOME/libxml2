@@ -1,3 +1,9 @@
+Wed Sep 29 11:03:10 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/drv_libxml2.py: another patch from Malcolm Tredinnick
+	  adding option not to load dtd from the drv_libxml2.py module
+	  #134633
+
 Tue Sep 28 14:30:22 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* acconfig.h config.h.in configure.in xmlIO.c xmlregexp.c xmlschemas.c

@@ -38,7 +38,6 @@ __author__  = u"Stéphane Bidoul <sbi@skynet.be>"
 __version__ = "0.3"
 
 import codecs
-import sys
 from types import StringType, UnicodeType
 StringTypes = (StringType,UnicodeType)
 
@@ -100,6 +99,7 @@ class LibXml2Reader(xmlreader.XMLReader):
         self.__ns = 0
         self.__nspfx = 0
         self.__validate = 0
+        self.__extparams = 1
         # parsing flag
         self.__parsing = 0
         # additional handlers
@@ -142,10 +142,13 @@ class LibXml2Reader(xmlreader.XMLReader):
                 reader = input.newTextReader(source.getSystemId())
             reader.SetErrorHandler(self._errorHandler,None)
             # configure reader
-            reader.SetParserProp(libxml2.PARSER_LOADDTD,1)
-            reader.SetParserProp(libxml2.PARSER_DEFAULTATTRS,1)
-            reader.SetParserProp(libxml2.PARSER_SUBST_ENTITIES,1)
-            reader.SetParserProp(libxml2.PARSER_VALIDATE,self.__validate)
+            if self.__extparams:
+                reader.SetParserProp(libxml2.PARSER_LOADDTD,1)
+                reader.SetParserProp(libxml2.PARSER_DEFAULTATTRS,1)
+                reader.SetParserProp(libxml2.PARSER_SUBST_ENTITIES,1)
+                reader.SetParserProp(libxml2.PARSER_VALIDATE,self.__validate)
+            else:
+                reader.SetParserProp(libxml2.PARSER_LOADDTD, 0)
             # we reuse attribute maps (for a slight performance gain)
             if self.__ns:
                 attributesNSImpl = xmlreader.AttributesNSImpl({},{})
@@ -316,7 +319,7 @@ class LibXml2Reader(xmlreader.XMLReader):
         elif name == feature_external_ges:
             return 1 # TODO (does that relate to PARSER_LOADDTD)?
         elif name == feature_external_pes:
-            return 1 # TODO (does that relate to PARSER_LOADDTD)?
+            return self.__extparams
         else:
             raise SAXNotRecognizedException("Feature '%s' not recognized" % \
                                             name)
@@ -337,10 +340,7 @@ class LibXml2Reader(xmlreader.XMLReader):
                 raise SAXNotSupportedException("Feature '%s' not supported" % \
                                                name)
         elif name == feature_external_pes:
-            if state == 0:
-                # TODO (does that relate to PARSER_LOADDTD)?
-                raise SAXNotSupportedException("Feature '%s' not supported" % \
-                                               name)
+            self.__extparams = state
         else:
             raise SAXNotRecognizedException("Feature '%s' not recognized" % \
                                             name)

@@ -1,3 +1,9 @@
+Thu Mar 10 16:02:17 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xml.html doc/encoding.html: Enriched encoding.html with more
+	  link and foreword warning to avoid problem with ignorant
+	  programmers, c.f #169721
+
 Thu Mar 10 15:01:34 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* python/tests/Makefile.am python/tests/readernext.py: added

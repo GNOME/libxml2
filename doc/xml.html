@@ -3099,6 +3099,17 @@ of a number of things:</p>
 
 <h2><a name="Encodings">Encodings support</a></h2>
 
+<p>If you are not really familiar with Internationalization (usual shortcut
+is I18N) , Unicode, characters and glyphs, I suggest you read a <a
+href="http://www.tbray.org/ongoing/When/200x/2003/04/06/Unicode">presentation</a>
+by Tim Bray on Unicode and why you should care about it.</p>
+<p>If you don't understand why <b>it does not make sense to have a string
+without knowing what encoding it uses</b>, then as Joel Spolsky said
+<a href="http://www.joelonsoftware.com/articles/Unicode.html">please do
+not write another line of code until you finish reading that article.</a>.
+It is a prerequisite to understand this page, and avoid a lot of problems
+with libxml2, XML or text processing in general.</p>
+
 <p>Table of Content:</p>
 <ol>
   <li><a href="encoding.html#What">What does internationalization support
@@ -3112,11 +3123,6 @@ of a number of things:</p>
 </ol>
 
 <h3><a name="What">What does internationalization support mean ?</a></h3>
-
-<p>If you are not really familiar with Internationalization (usual shortcut
-is I18N) , Unicode, characters and glyphs, I suggest you read a <a
-href="http://www.tbray.org/ongoing/When/200x/2003/04/06/Unicode">presentation</a>
-by Tim Bray on Unicode and why you should care about it.</p>
 
 <p>XML was designed from the start to allow the support of any character set
 by using Unicode. Any conformant XML parser has to support the UTF-8 and

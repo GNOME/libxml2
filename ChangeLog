@@ -1,3 +1,7 @@
+Sat Jun 12 09:03:57 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* configure.in: apparently wasn't updated last time
+
 Thu Jun 10 20:57:48 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* configure.in, xmlmemory.c, globals.c: fixed problem when

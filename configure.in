@@ -498,7 +498,7 @@ if test "$with_minimum" = "yes" -a "$with_thread_alloc" = ""
 then
     with_thread_alloc=no
 fi
-if test "$with_threads_alloc" = "yes" -a "$WITH_THREADS" = "1" ; then
+if test "$with_thread_alloc" = "yes" -a "$WITH_THREADS" = "1" ; then
     THREAD_CFLAGS="$THREAD_CFLAGS -DLIBXML_THREAD_ALLOC_ENABLED"
 fi
 
@@ -1007,8 +1007,13 @@ then
     with_mem_debug=no
 fi
 if test "$with_mem_debug" = "yes" ; then
-    echo Enabling memory debug support
-    WITH_MEM_DEBUG=1
+    if test "$with_thread_alloc" = "yes" ; then
+        echo Disabling memory debug - cannot use mem-debug with thread-alloc!
+	WITH_MEM_DEBUG=0
+    else
+        echo Enabling memory debug support
+        WITH_MEM_DEBUG=1
+    fi
 else    
     WITH_MEM_DEBUG=0
 fi

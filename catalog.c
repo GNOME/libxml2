@@ -64,6 +64,12 @@ struct _xmlCatalogEntry {
 
 static xmlHashTablePtr xmlDefaultCatalog;
 
+/* Catalog stack */
+const char * catalTab[10];  /* stack of catals */
+const char * catal;         /* Current catal stream */
+int          catalNr = 0;   /* Number of current catal streams */
+int          catalMax = 10; /* Max number of catal streams */
+
 /************************************************************************
  *									*
  *			alloc or dealloc				*
@@ -81,8 +87,8 @@ xmlNewCatalogEntry(int type, xmlChar *name, xmlChar *value) {
 	return(NULL);
     }
     ret->type = type;
-    ret->name = name;
-    ret->value = value;
+    ret->name = xmlStrdup(name);
+    ret->value = xmlStrdup(value);
     return(ret);
 }
 
@@ -193,7 +199,7 @@ xmlParseCatalogComment(const xmlChar *cur) {
     if (cur[0] == 0) {
 	return(NULL);
     }
-    return(cur);
+    return(cur + 2);
 }
 
 static const xmlChar *
@@ -289,6 +295,7 @@ static int
 xmlParseCatalog(const xmlChar *value, const char *file) {
     const xmlChar *cur = value;
     xmlChar *base = NULL;
+    int res;
 
     if ((cur == NULL) || (file == NULL))
         return(-1);
@@ -348,9 +355,11 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
 		    /* error */
 		    break;
 		}
+		xmlFree(name);
 		continue;
 	    }
 	    xmlFree(name);
+	    name = NULL;
 
 	    switch(type) {
 		case XML_CATA_ENTITY:
@@ -417,28 +426,39 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
 	    } else if (type == XML_CATA_BASE) {
 		if (base != NULL)
 		    xmlFree(base);
-		base = sysid;
+		base = xmlStrdup(sysid);
 	    } else if ((type == XML_CATA_PUBLIC) ||
 		       (type == XML_CATA_SYSTEM)) {
 		xmlChar *filename;
 
 		filename = xmlBuildURI(sysid, base);
 		if (filename != NULL) {
+		    xmlCatalogEntryPtr entry;
 
-		    xmlHashAddEntry(xmlDefaultCatalog, name,
-		            xmlNewCatalogEntry(type, name, filename));
+		    entry = xmlNewCatalogEntry(type, name, filename);
+		    res = xmlHashAddEntry(xmlDefaultCatalog, name, entry);
+		    if (res < 0) {
+			xmlFreeCatalogEntry(entry);
+		    }
+		    xmlFree(filename);
 		}
-		if (sysid != NULL)
-		    xmlFree(sysid);
-	    } else {
-		/*
-		 * drop anything else we won't handle it
-		 */
-		if (name != NULL)
-		    xmlFree(name);
-		if (sysid != NULL)
-		    xmlFree(sysid);
+
+	    } else if (type == XML_CATA_CATALOG) {
+		xmlChar *filename;
+
+		filename = xmlBuildURI(sysid, base);
+		if (filename != NULL) {
+		    xmlLoadCatalog((const char *)filename);
+		    xmlFree(filename);
+		}
 	    }
+	    /*
+	     * drop anything else we won't handle it
+	     */
+	    if (name != NULL)
+		xmlFree(name);
+	    if (sysid != NULL)
+		xmlFree(sysid);
 	}
     }
     if (base != NULL)
@@ -460,17 +480,20 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
  *
  * Load the catalog and makes its definition effective for the default
  * external entity loader.
+ * TODO: this function is not thread safe, catalog initialization should
+ *       be done once at startup
  *
  * Returns 0 in case of success -1 in case of error
  */
 int
 xmlLoadCatalog(const char *filename) {
-    int fd, len, ret;
+    int fd, len, ret, i;
     struct stat info;
     xmlChar *content;
 
     if (filename == NULL)
 	return(-1);
+
     if (xmlDefaultCatalog == NULL)
 	xmlDefaultCatalog = xmlHashCreate(20);
     if (xmlDefaultCatalog == NULL)
@@ -479,17 +502,41 @@ xmlLoadCatalog(const char *filename) {
     if (stat(filename, &info) < 0) 
 	return(-1);
 
-    if ((fd = open(filename, O_RDONLY)) < 0)
+    /*
+     * Prevent loops
+     */
+    for (i = 0;i < catalNr;i++) {
+	if (xmlStrEqual(catalTab[i], filename)) {
+	    xmlGenericError(xmlGenericErrorContext,
+		"xmlLoadCatalog: %s seems to induce a loop\n",
+		            filename);
+	    return(-1);
+	}
+    }
+    if (catalNr >= catalMax) {
+	xmlGenericError(xmlGenericErrorContext,
+	    "xmlLoadCatalog: %s catalog list too deep\n",
+			filename);
+	    return(-1);
+    }
+    catalTab[catalNr++] = filename;
+
+    if ((fd = open(filename, O_RDONLY)) < 0) {
+	catalNr--;
 	return(-1);
+    }
 
     content = xmlMalloc(info.st_size + 10);
     if (content == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"realloc of %d byte failed\n", info.st_size + 10);
+	catalNr--;
+	return(-1);
     }
     len = read(fd, content, info.st_size);
     if (len < 0) {
 	xmlFree(content);
+	catalNr--;
 	return(-1);
     }
     content[len] = 0;
@@ -497,6 +544,7 @@ xmlLoadCatalog(const char *filename) {
 
     ret = xmlParseCatalog(content, filename);
     xmlFree(content);
+    catalNr--;
     return(ret);
 }
 

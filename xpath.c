@@ -7348,8 +7348,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 		        case XML_ELEMENT_NODE:
 			    if (xmlStrEqual(name, cur->name)) {
 				if (prefix == NULL) {
-				    if ((cur->ns == NULL) ||
-					(cur->ns->prefix == NULL)) {
+				    if (cur->ns == NULL) {
 #ifdef DEBUG_STEP
 					n++;
 #endif

@@ -1,3 +1,9 @@
+Sun Aug 31 21:52:12 PDT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* doc/README.docs, doc/Makefile.am: new file added,
+	  giving some description of the documentation generation process
+	* doc/search.php: fixed problem with upper case on filenames
+
 Fri Aug 29 12:25:01 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/Makefile.bcb: updates by Eric Zurcher

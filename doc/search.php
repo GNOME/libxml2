@@ -258,8 +258,9 @@ A:link, A:visited, A:active { text-decoration: underline }
 							$t,$m,$d,$w,$u);
 			    } else {
 				$id = strtoupper($name);
-				$m = strtolower($module);
-				$url = "html/libxml-$m.html#$id";
+//				$m = strtolower($module);
+//				$url = "html/libxml-$m.html#$id";
+				$url = "html/libxml-$module.html#$id";
 				$results[$name] = array($relevance,$type,
 						$module, $desc, $name, $url);
 			    }

@@ -25,6 +25,20 @@
 extern "C" {
 #endif
 
+/*
+ * Some of the basic types pointer to structures:
+ */
+/* xmlIO.h */
+typedef struct _xmlParserInputBuffer xmlParserInputBuffer;
+typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
+
+/* parser.h */
+typedef struct _xmlParserInput xmlParserInput;
+typedef xmlParserInput *xmlParserInputPtr;
+
+typedef struct _xmlParserCtxt xmlParserCtxt;
+typedef xmlParserCtxt *xmlParserCtxtPtr;
+
 #define BASE_BUFFER_SIZE 4000
 
 /**

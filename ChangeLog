@@ -1,3 +1,12 @@
+Wed Oct 31 18:50:08 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: cleanup
+	* threads.c: cleanup too
+	* xmlIO.c include/libxml/xmlIO.h: added xmlNoNetExternalEntityLoader()
+	  from xsltproc
+	* include/libxml/tree.h include/libxml/parser.h: trying to break a
+	  dependancy loop.
+
 Tue Oct 30 18:38:53 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: Justin Fletcher pointed out that xmlParseXMLCatalog

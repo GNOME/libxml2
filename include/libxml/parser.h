@@ -11,8 +11,9 @@
 
 #include <libxml/tree.h>
 #include <libxml/valid.h>
-#include <libxml/xmlIO.h>
 #include <libxml/entities.h>
+#include <libxml/encoding.h>
+#include <libxml/xmlIO.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,8 +39,6 @@ extern "C" {
 
 typedef void (* xmlParserInputDeallocate)(xmlChar *);
 
-typedef struct _xmlParserInput xmlParserInput;
-typedef xmlParserInput *xmlParserInputPtr;
 struct _xmlParserInput {
     /* Input buffer */
     xmlParserInputBufferPtr buf;      /* UTF-8 encoded buffer */
@@ -141,8 +140,6 @@ typedef enum {
  *      takes as the only argument the parser context pointer, so migrating
  *      to a state based parser for progressive parsing shouldn't be too hard.
  */
-typedef struct _xmlParserCtxt xmlParserCtxt;
-typedef xmlParserCtxt *xmlParserCtxtPtr;
 struct _xmlParserCtxt {
     struct _xmlSAXHandler *sax;       /* The SAX handler */
     void            *userData;        /* For SAX interface only, used by DOM build */

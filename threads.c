@@ -248,6 +248,7 @@ xmlRMutexUnlock(xmlRMutexPtr tok)
  *									*
  ************************************************************************/
 
+#ifdef LIBXML_THREAD_ENABLED
 /**
  * xmlFreeGlobalState:
  * @state:  a thread global state
@@ -283,6 +284,7 @@ xmlNewGlobalState(void)
     xmlInitializeGlobalState(gs);
     return (gs);
 }
+#endif /* LIBXML_THREAD_ENABLED */
 
 
 /**

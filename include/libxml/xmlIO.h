@@ -35,8 +35,6 @@ typedef void * (*xmlInputOpenCallback) (char const *filename);
 typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
 typedef int (*xmlInputCloseCallback) (void * context);
 
-typedef struct _xmlParserInputBuffer xmlParserInputBuffer;
-typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
 struct _xmlParserInputBuffer {
     void*                  context;
     xmlInputReadCallback   readcallback;
@@ -189,6 +187,13 @@ void		xmlNodeDumpOutput	(xmlOutputBufferPtr buf,
 void		htmlDocContentDumpOutput(xmlOutputBufferPtr buf,
 					 xmlDocPtr cur,
 					 const char *encoding);
+/*
+ * A predefined entity loader disabling network accesses
+ */
+xmlParserInputPtr xmlNoNetExternalEntityLoader(const char *URL,
+					 const char *ID,
+					 xmlParserCtxtPtr ctxt);
+
 #ifdef __cplusplus
 }
 #endif

@@ -443,7 +443,7 @@ Threadtests : testThreads
 	@echo "##"
 	@echo "## Threaded regression tests"
 	@echo "##"
-	testThreads
+	$(top_builddir)/testThreads
 
 SAXtests : testSAX
 	@(echo > .memdump)

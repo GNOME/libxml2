@@ -67,8 +67,13 @@
 
 #ifdef STANDALONE
 #define DEBUG_HTTP
+#ifdef WIN32
+#define xmlStrncasecmp(a, b, n) strnicmp((char *)a, (char *)b, n)
+#define xmlStrcasecmp(a, b) stricmp((char *)a, (char *)b)
+#else
 #define xmlStrncasecmp(a, b, n) strncasecmp((char *)a, (char *)b, n)
-#define xmlStrcasecmpi(a, b) strcasecmp((char *)a, (char *)b)
+#define xmlStrcasecmp(a, b) strcasecmp((char *)a, (char *)b)
+#endif
 #endif
 
 #define XML_NANO_HTTP_MAX_REDIR	10

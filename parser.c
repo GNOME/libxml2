@@ -786,13 +786,68 @@ xmlStrncmp(const CHAR *str1, const CHAR *str2, int len) {
  * Returns the CHAR * for the first occurence or NULL.
  */
 
-CHAR *
+const CHAR *
 xmlStrchr(const CHAR *str, CHAR val) {
     while (*str != 0) {
         if (*str == val) return((CHAR *) str);
 	str++;
     }
     return(NULL);
+}
+
+/**
+ * xmlStrstr:
+ * @str:  the CHAR * array (haystack)
+ * @val:  the CHAR to search (needle)
+ *
+ * a strstr for CHAR's
+ *
+ * Returns the CHAR * for the first occurence or NULL.
+ */
+
+const CHAR *
+xmlStrstr(const CHAR *str, CHAR *val) {
+    int n;
+    
+    if (str == NULL) return(NULL);
+    if (val == NULL) return(NULL);
+    n = xmlStrlen(val);
+
+    if (n == 0) return(str);
+    while (*str != 0) {
+        if (*str == *val) {
+	    if (!xmlStrncmp(str, val, n)) return((const CHAR *) str);
+	}
+	str++;
+    }
+    return(NULL);
+}
+
+/**
+ * xmlStrsub:
+ * @str:  the CHAR * array (haystack)
+ * @start:  the index of the first char (zero based)
+ * @len:  the length of the substring
+ *
+ * Extract a substring of a given string
+ *
+ * Returns the CHAR * for the first occurence or NULL.
+ */
+
+CHAR *
+xmlStrsub(const CHAR *str, int start, int len) {
+    int i;
+    
+    if (str == NULL) return(NULL);
+    if (start < 0) return(NULL);
+    if (len < 0) return(NULL);
+
+    for (i = 0;i < start;i++) {
+        if (*str == 0) return(NULL);
+	str++;
+    }
+    if (*str == 0) return(NULL);
+    return(xmlStrndup(str, len));
 }
 
 /**

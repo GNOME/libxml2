@@ -37,8 +37,10 @@ htmlDtdDump(xmlBufferPtr buf, xmlDocPtr doc) {
     if (cur->ExternalID != NULL) {
 	xmlBufferWriteChar(buf, " PUBLIC ");
 	xmlBufferWriteQuotedString(buf, cur->ExternalID);
-	xmlBufferWriteChar(buf, " ");
-	xmlBufferWriteQuotedString(buf, cur->SystemID);
+	if (cur->SystemID != NULL) {
+	    xmlBufferWriteChar(buf, " ");
+	    xmlBufferWriteQuotedString(buf, cur->SystemID);
+	} 
     }  else if (cur->SystemID != NULL) {
 	xmlBufferWriteChar(buf, " SYSTEM ");
 	xmlBufferWriteQuotedString(buf, cur->SystemID);
@@ -127,7 +129,6 @@ htmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
  */
 static void
 htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
-    int i;
     htmlElemDescPtr info;
 
     if (cur == NULL) {

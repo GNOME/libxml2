@@ -1,0 +1,7 @@
+/child::head
+/child::*
+/child::head/child::title
+/child::head/child::title/child::text()
+/child::head/node()
+/descendant::title
+/descendant::p/ancestor::chapter

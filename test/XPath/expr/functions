@@ -1,0 +1,5 @@
+true()
+false()
+number("1.5")
+concat("titi",'toto')
+concat("titi",'toto',"tata","last")

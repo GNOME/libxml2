@@ -113,7 +113,7 @@ void xmlDebugDumpAttrList(FILE *output, xmlAttrPtr attr, int depth) {
     }
 }
 
-void xmlDebugDumpNode(FILE *output, xmlNodePtr node, int depth) {
+void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
     int i;
     char shift[100];
 
@@ -187,6 +187,10 @@ void xmlDebugDumpNode(FILE *output, xmlNodePtr node, int depth) {
 	if (ent != NULL)
 	    xmlDebugDumpEntity(output, ent, depth + 1);
     }
+}
+
+void xmlDebugDumpNode(FILE *output, xmlNodePtr node, int depth) {
+    xmlDebugDumpOneNode(output, node, depth);
     if (node->childs != NULL)
 	xmlDebugDumpNodeList(output, node->childs, depth + 1);
 }

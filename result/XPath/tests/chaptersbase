@@ -1,0 +1,36 @@
+Object is a Node Set :
+Set contains 1 nodes:
+1    ELEMENT head
+Object is a Node Set :
+Set contains 6 nodes:
+1    ELEMENT head
+2    ELEMENT chapter
+3    ELEMENT chapter
+4    ELEMENT chapter
+5    ELEMENT chapter
+6    ELEMENT chapter
+Object is a Node Set :
+Set contains 1 nodes:
+1    ELEMENT title
+Object is a Node Set :
+Set contains 1 nodes:
+1    TEXT
+    content=Welcome to Gnome
+Object is a Node Set :
+Set contains 1 nodes:
+1    ELEMENT title
+Object is a Node Set :
+Set contains 6 nodes:
+1    ELEMENT title
+2    ELEMENT title
+3    ELEMENT title
+4    ELEMENT title
+5    ELEMENT title
+6    ELEMENT title
+Object is a Node Set :
+Set contains 5 nodes:
+1    ELEMENT chapter
+2    ELEMENT chapter
+3    ELEMENT chapter
+4    ELEMENT chapter
+5    ELEMENT chapter

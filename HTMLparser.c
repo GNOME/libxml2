@@ -456,6 +456,7 @@ htmlEntityDesc  html40EntitiesTable[] = {
  */
 { 34,	"quot",	"quotation mark = APL quote, U+0022 ISOnum" },
 { 38,	"amp",	"ampersand, U+0026 ISOnum" },
+{ 39,	"apos",	"single quote" },
 { 60,	"lt",	"less-than sign, U+003C ISOnum" },
 { 62,	"gt",	"greater-than sign, U+003E ISOnum" },
 

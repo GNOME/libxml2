@@ -37,7 +37,6 @@ static int noent = 0;
 
 /*
  * Note: there is a couple of errors introduced on purpose.
- */
 static CHAR buffer[] = 
 "<?xml version=\"1.0\"?>\n\
 <?xml:namespace ns = \"http://www.ietf.org/standards/dav/\" prefix = \"D\"?>\n\
@@ -57,6 +56,7 @@ static CHAR buffer[] =
 </D:propertyupdate>\n\
 \n\
 ";
+ */
 
 /************************************************************************
  *									*

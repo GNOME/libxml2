@@ -12,6 +12,7 @@
 extern void xmlDebugDumpString(FILE *output, const CHAR *str);
 extern void xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth);
 extern void xmlDebugDumpAttrList(FILE *output, xmlAttrPtr attr, int depth);
+extern void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth);
 extern void xmlDebugDumpNode(FILE *output, xmlNodePtr node, int depth);
 extern void xmlDebugDumpNodeList(FILE *output, xmlNodePtr node, int depth);
 extern void xmlDebugDumpDocument(FILE *output, xmlDocPtr doc);

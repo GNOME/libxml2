@@ -190,7 +190,9 @@ extern xmlSAXHandler htmlDefaultSAXHandler;
  */
 CHAR *xmlStrdup(const CHAR *cur);
 CHAR *xmlStrndup(const CHAR *cur, int len);
-CHAR *xmlStrchr(const CHAR *str, CHAR val);
+CHAR *xmlStrsub(const CHAR *str, int start, int len);
+const CHAR *xmlStrchr(const CHAR *str, CHAR val);
+const CHAR *xmlStrstr(const CHAR *str, CHAR *val);
 int xmlStrcmp(const CHAR *str1, const CHAR *str2);
 int xmlStrncmp(const CHAR *str1, const CHAR *str2, int len);
 int xmlStrlen(const CHAR *str);

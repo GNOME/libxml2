@@ -1,3 +1,16 @@
+Thu Jul 15 16:17:16 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in: upgraded to version 1.4.0
+	* xpath.c, xpath.h, testXPath.c, makefile.am: added code for the XPath
+	  draft from W3C. Will be used by XPointer, Xlink, XSL, and possibly
+	  XML query language, see http://www.w3.org/TR/xpath for more details.
+	* parser.c, parser.h: added CHAR* related string functions for XPath
+	* HTMLparser.[ch], HTMLtree.c: a bit of cleanup on entities.
+	* doc/gnome-xml.sgml, doc/html/* : added XPath and HTML documentation,
+	  rebuild the docs.
+	* Makefile.am, test/XPath/*, result/XPath/*: added an XPathtests target
+	  and regression testing capabilities for XPath.
+
 Mon Jul 12 12:36:39 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c, HTMLparser.c: applied patch from John Ellson <ellson@lucent.com>

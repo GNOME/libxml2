@@ -1,0 +1,6 @@
+/chapter[1]
+//p
+//chapter/image
+//p/text()
+//p/text()[position()=1]
+//p/text()[position()=last()]

@@ -2879,7 +2879,7 @@ xmlBase64Decode(const unsigned char *in, unsigned long *inlen,
     unsigned long inmax;		/* size of in[] */
     unsigned long outmax;		/* size of out[] */
     unsigned char cur;			/* the current value read from in[] */
-    unsigned char intmp[3], outtmp[4];	/* temporary buffers for the convert */
+    unsigned char intmp[4], outtmp[4];	/* temporary buffers for the convert */
     int nbintmp;			/* number of byte in intmp[] */
     int is_ignore;			/* cur should be ignored */
     int is_end = 0;			/* the end of the base64 was found */

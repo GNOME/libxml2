@@ -1,3 +1,8 @@
+1999-08-02  Robert Brady <rwb197@ecs.soton.ac.uk>
+
+	* encoding.c, Makefile.am: use libunicode to convert between latin1
+	  and utf-8.
+
 Tue Jul 27 21:43:00 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
         * xpath.[ch] : improvements and debug of the XPath implementation

@@ -2,11 +2,11 @@
 
 SUBDIRS = doc
 
-INCLUDES = -I@srcdir@ @CORBA_CFLAGS@ $(VERSION_FLAGS)
+INCLUDES = -I@srcdir@ @CORBA_CFLAGS@ $(VERSION_FLAGS)  `unicode-config --cflags`
 
 VERSION_FLAGS = -DLIBXML_VERSION=\"@LIBXML_VERSION@\"
 
-noinst_PROGRAMS=tester testSAX testHTML testXPath
+noinst_PROGRAMS=tester testSAX testHTML testXPath mytest
 
 bin_SCRIPTS=xml-config
 
@@ -44,12 +44,17 @@ xmlinc_HEADERS = \
 		valid.h
 
 DEPS = $(top_builddir)/libxml.la
-LDADDS = $(top_builddir)/libxml.la @Z_LIBS@
+LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ `unicode-config --libs`
 
 tester_SOURCES=tester.c
 tester_LDFLAGS = 
 tester_DEPENDENCIES = $(DEPS)
 tester_LDADD= $(LDADDS)
+
+mytest_SOURCES=mytest.c
+mytest_LDFLAGS = 
+mytest_DEPENDENCIES = $(DEPS)
+mytest_LDADD= $(LDADDS)
 
 testSAX_SOURCES=testSAX.c
 testSAX_LDFLAGS = 

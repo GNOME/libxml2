@@ -22,7 +22,11 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
+
+#include <unicode.h>
+
 #include "encoding.h"
+
 
 /*
  * From rfc2044: encoding of the Unicode values on UTF-8:
@@ -49,25 +53,20 @@
 int
 isolat1ToUTF8(unsigned char* out, int outlen, unsigned char* in, int inlen)
 {
-    unsigned char* outstart= out;
-    unsigned char* outend= out+outlen;
-    unsigned char* inend= in+inlen;
-    unsigned char c;
+  iconv_t u;
+  size_t i;
+  
+  unsigned char *o = out;
 
-    while (in < inend) {
-        c= *in++;
-        if (c < 0x80) {
-            if (out >= outend)  return -1;
-            *out++ = c;
-        }
-        else {
-            if (out >= outend)  return -1;
-            *out++ = 0xC0 | (c >> 6);
-            if (out >= outend)  return -1;
-            *out++ = 0x80 | (0x3F & c);
-        }
-    }
-    return out-outstart;
+  u = unicode_iconv_open("UTF-8", "ISO-8859-1");
+  i = unicode_iconv(u, &in, &inlen, &out, &outlen);
+
+  unicode_iconv_close(u);
+
+  if (i==-1)
+    return i;
+  else
+    return out - o;
 }
 
 /**
@@ -86,24 +85,20 @@ isolat1ToUTF8(unsigned char* out, int outlen, unsigned char* in, int inlen)
 int
 UTF8Toisolat1(unsigned char* out, int outlen, unsigned char* in, int inlen)
 {
-    unsigned char* outstart= out;
-    unsigned char* outend= out+outlen;
-    unsigned char* inend= in+inlen;
-    unsigned char c;
+  iconv_t u;
+  size_t i;
+  
+  unsigned char *o = out;
 
-    while (in < inend) {
-        c= *in++;
-        if (c < 0x80) {
-            if (out >= outend)  return -1;
-            *out++= c;
-        }
-        else if (((c & 0xFE) == 0xC2) && in<inend) {
-            if (out >= outend)  return -1;
-            *out++= ((c & 0x03) << 6) | (*in++ & 0x3F);
-        }
-        else  return -2;
-    }
-    return out-outstart;
+  u = unicode_iconv_open("ISO-8859-1", "UTF-8");
+  i = unicode_iconv(u, &in, &inlen, &out, &outlen);
+
+  unicode_iconv_close(u);
+
+  if (i==-1)
+    return i;
+  else
+    return out - o;
 }
 
 /**
@@ -120,38 +115,20 @@ UTF8Toisolat1(unsigned char* out, int outlen, unsigned char* in, int inlen)
 int
 UTF16ToUTF8(unsigned char* out, int outlen, unsigned short* in, int inlen)
 {
-    unsigned char* outstart= out;
-    unsigned char* outend= out+outlen;
-    unsigned short* inend= in+inlen;
-    unsigned int c, d;
-    int bits;
+  iconv_t u;
+  size_t i;
+  
+  unsigned char *o = out;
 
-    while (in < inend) {
-        c= *in++;
-        if ((c & 0xFC00) == 0xD800) {    /* surrogates */
-            if ((in<inend) && (((d=*in++) & 0xFC00) == 0xDC00)) {
-                c &= 0x03FF;
-                c <<= 10;
-                c |= d & 0x03FF;
-                c += 0x10000;
-            }
-            else  return -1;
-        }
+  u = unicode_iconv_open("UTF-8", "UTF-16");
+  i = unicode_iconv(u, &in, &inlen, &out, &outlen);
 
-      /* assertion: c is a single UTF-4 value */
+  unicode_iconv_close(u);
 
-        if (out >= outend)  return -1;
-        if      (c <    0x80) {  *out++=  c;                bits= -6; }
-        else if (c <   0x800) {  *out++= (c >>  6) | 0xC0;  bits=  0; }
-        else if (c < 0x10000) {  *out++= (c >> 12) | 0xE0;  bits=  6; }
-        else                  {  *out++= (c >> 18) | 0xF0;  bits= 12; }
- 
-        for ( ; bits < 0; bits-= 6) {
-            if (out >= outend)  return -1;
-            *out++= (c >> bits) & 0x3F;
-        }
-    }
-    return out-outstart;
+  if (i==-1)
+    return i;
+  else
+    return out - o;
 }
 
 /**
@@ -170,40 +147,20 @@ UTF16ToUTF8(unsigned char* out, int outlen, unsigned short* in, int inlen)
 int
 UTF8ToUTF16(unsigned short* out, int outlen, unsigned char* in, int inlen)
 {
-    unsigned short* outstart= out;
-    unsigned short* outend= out+outlen;
-    unsigned char* inend= in+inlen;
-    unsigned int c, d, trailing;
+  iconv_t u;
+  size_t i;
+  
+  unsigned short *o = out;
 
-    while (in < inend) {
-      d= *in++;
-      if      (d < 0x80)  { c= d; trailing= 0; }
-      else if (d < 0xC0)  return -2;    /* trailing byte in leading position */
-      else if (d < 0xE0)  { c= d & 0x1F; trailing= 1; }
-      else if (d < 0xF0)  { c= d & 0x0F; trailing= 2; }
-      else if (d < 0xF8)  { c= d & 0x07; trailing= 3; }
-      else return -2;    /* no chance for this in UTF-16 */
+  u = unicode_iconv_open("UTF-16", "UTF-8");
+  i = unicode_iconv(u, &in, &inlen, &out, &outlen);
 
-      for ( ; trailing; trailing--) {
-          if ((in >= inend) || (((d= *in++) & 0xC0) != 0x80))  return -1;
-          c <<= 6;
-          c |= d & 0x3F;
-      }
+  unicode_iconv_close(u);
 
-      /* assertion: c is a single UTF-4 value */
-        if (c < 0x10000) {
-            if (out >= outend)  return -1;
-            *out++ = c;
-        }
-        else if (c < 0x110000) {
-            if (out+1 >= outend)  return -1;
-            c -= 0x10000;
-            *out++ = 0xD800 | (c >> 10);
-            *out++ = 0xDC00 | (c & 0x03FF);
-        }
-        else  return -1;
-    }
-    return out-outstart;
+  if (i==-1)
+    return i;
+  else
+    return out - o;
 }
 
 
@@ -247,7 +204,7 @@ xmlDetectCharEncoding(const unsigned char* in)
 
 /**
  * xmlParseCharEncoding:
- * @name:  the encoding name as parsed, in UTF-8 format (ASCCI actually)
+ * @name:  the encoding name as parsed, in UTF-8 format (ASCII actually)
  *
  * Conpare the string to the known encoding schemes already known. Note
  * that the comparison is case insensitive accordingly to the section

@@ -4605,6 +4605,17 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			"HPP: entering CONTENT\n");
 #endif
 		break;
+	    case XML_PARSER_PUBLIC_LITERAL:
+		xmlGenericError(xmlGenericErrorContext,
+			"HPP: internal error, state == XML_PARSER_LITERAL\n");
+		ctxt->instate = XML_PARSER_CONTENT;
+		ctxt->checkIndex = 0;
+#ifdef DEBUG_PUSH
+		xmlGenericError(xmlGenericErrorContext,
+			"HPP: entering CONTENT\n");
+#endif
+		break;
+
 	}
     }
 done:    

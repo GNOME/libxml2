@@ -5,7 +5,8 @@ SUBDIRS = include . doc example python
 
 INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 
-noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook testThreads
+noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook testThreads \
+                testC14N
 
 bin_PROGRAMS = xmllint xmlcatalog
 
@@ -21,14 +22,14 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c globals.c threads.c triostr.c trio.c
+		catalog.c globals.c threads.c c14n.c triostr.c trio.c
 
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c globals.c threads.c
+		catalog.c globals.c threads.c c14n.c
 
 endif
 
@@ -69,6 +70,11 @@ testXPath_SOURCES=testXPath.c
 testXPath_LDFLAGS = 
 testXPath_DEPENDENCIES = $(DEPS)
 testXPath_LDADD= $(LDADDS)
+
+testC14N_SOURCES=testC14N.c
+testC14N_LDFLAGS = 
+testC14N_DEPENDENCIES = $(DEPS)
+testC14N_LDADD= $(LDADDS)
 
 testThreads_SOURCES=testThreads.c
 testThreads_LDFLAGS = 

@@ -1387,6 +1387,67 @@ xmlXPathNodeSetSort(xmlNodeSetPtr set) {
 
 #define XML_NODESET_DEFAULT	10
 /**
+ * xmlXPathNodeSetDupNs:
+ * @node:  the parent node of the namespace XPath node
+ * @ns:  the libxml namespace declaration node.
+ *
+ * Namespace node in libxml don't match the XPath semantic. In a node set
+ * the namespace nodes are duplicated and the next pointer is set to the
+ * parent node in the XPath semantic.
+ *
+ * Returns the newly created object.
+ */
+static xmlNodePtr
+xmlXPathNodeSetDupNs(xmlNodePtr node, xmlNsPtr ns) {
+    xmlNsPtr cur;
+
+    if ((ns == NULL) || (ns->type != XML_NAMESPACE_DECL))
+	return(NULL);
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL))
+	return((xmlNodePtr) ns);
+
+    /*
+     * Allocate a new Namespace and fill the fields.
+     */
+    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+    if (cur == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathNodeSetDupNs : malloc failed\n");
+	return(NULL);
+    }
+    memset(cur, 0, sizeof(xmlNs));
+    cur->type = XML_NAMESPACE_DECL;
+    if (ns->href != NULL)
+	cur->href = xmlStrdup(ns->href); 
+    if (ns->prefix != NULL)
+	cur->prefix = xmlStrdup(ns->prefix); 
+    cur->next = (xmlNsPtr) node;
+    return((xmlNodePtr) cur);
+}
+
+/**
+ * xmlXPathNodeSetFreeNs:
+ * @ns:  the XPath namespace node found in a nodeset.
+ *
+ * Namespace node in libxml don't match the XPath semantic. In a node set
+ * the namespace nodes are duplicated and the next pointer is set to the
+ * parent node in the XPath semantic. Check if such a node need to be freed
+ */
+static void
+xmlXPathNodeSetFreeNs(xmlNsPtr ns) {
+    if ((ns == NULL) || (ns->type != XML_NAMESPACE_DECL))
+	return;
+
+    if ((ns->next != NULL) && (ns->next->type != XML_NAMESPACE_DECL)) {
+	if (ns->href != NULL)
+	    xmlFree((xmlChar *)ns->href);
+	if (ns->prefix != NULL)
+	    xmlFree((xmlChar *)ns->prefix);
+	xmlFree(ns);
+    }
+}
+
+/**
  * xmlXPathNodeSetCreate:
  * @val:  an initial xmlNodePtr, or NULL
  *
@@ -1416,7 +1477,13 @@ xmlXPathNodeSetCreate(xmlNodePtr val) {
 	memset(ret->nodeTab, 0 ,
 	       XML_NODESET_DEFAULT * (size_t) sizeof(xmlNodePtr));
         ret->nodeMax = XML_NODESET_DEFAULT;
-	ret->nodeTab[ret->nodeNr++] = val;
+	if (val->type == XML_NAMESPACE_DECL) {
+	    xmlNsPtr ns = (xmlNsPtr) val;
+
+	    ret->nodeTab[ret->nodeNr++] =
+		xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
+	} else
+	    ret->nodeTab[ret->nodeNr++] = val;
     }
     return(ret);
 }
@@ -1434,11 +1501,85 @@ int
 xmlXPathNodeSetContains (xmlNodeSetPtr cur, xmlNodePtr val) {
     int i;
 
-    for (i = 0; i < cur->nodeNr; i++) {
-        if (cur->nodeTab[i] == val)
-	    return(1);
+    if (val->type == XML_NAMESPACE_DECL) {
+	for (i = 0; i < cur->nodeNr; i++) {
+	    if (cur->nodeTab[i]->type == XML_NAMESPACE_DECL) {
+		xmlNsPtr ns1, ns2;
+
+		ns1 = (xmlNsPtr) val;
+		ns2 = (xmlNsPtr) cur->nodeTab[i];
+		if (ns1 == ns2)
+		    return(1);
+		if ((ns1->next != NULL) && (ns2->next == ns1->next) &&
+	            (xmlStrEqual(ns1->prefix, ns2->prefix)))
+		    return(1);
+	    }
+	}
+    } else {
+	for (i = 0; i < cur->nodeNr; i++) {
+	    if (cur->nodeTab[i] == val)
+		return(1);
+	}
     }
     return(0);
+}
+
+/**
+ * xmlXPathNodeSetAddNs:
+ * @cur:  the initial node set
+ * @node:  the hosting node
+ * @ns:  a the namespace node
+ *
+ * add a new namespace node to an existing NodeSet
+ */
+static void
+xmlXPathNodeSetAddNs(xmlNodeSetPtr cur, xmlNodePtr node, xmlNsPtr ns) {
+    int i;
+
+    if ((ns == NULL) || (node == NULL) || (ns->type != XML_NAMESPACE_DECL) ||
+	(node->type != XML_ELEMENT_NODE))
+	return;
+
+    /* @@ with_ns to check wether namespace nodes should be looked at @@ */
+    /*
+     * check against doublons
+     */
+    for (i = 0;i < cur->nodeNr;i++) {
+        if ((cur->nodeTab[i] != NULL) &&
+	    (cur->nodeTab[i]->type == XML_NAMESPACE_DECL) &&
+	    (cur->nodeTab[i]->next == node) &&
+	    (xmlStrEqual(ns->prefix, ((xmlNsPtr)cur->nodeTab[i])->prefix)))
+	    return;
+    }
+
+    /*
+     * grow the nodeTab if needed
+     */
+    if (cur->nodeMax == 0) {
+        cur->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
+					     sizeof(xmlNodePtr));
+	if (cur->nodeTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPathNodeSetAdd: out of memory\n");
+	    return;
+	}
+	memset(cur->nodeTab, 0 ,
+	       XML_NODESET_DEFAULT * (size_t) sizeof(xmlNodePtr));
+        cur->nodeMax = XML_NODESET_DEFAULT;
+    } else if (cur->nodeNr == cur->nodeMax) {
+        xmlNodePtr *temp;
+
+        cur->nodeMax *= 2;
+	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax *
+				      sizeof(xmlNodePtr));
+	if (temp == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPathNodeSetAdd: out of memory\n");
+	    return;
+	}
+	cur->nodeTab = temp;
+    }
+    cur->nodeTab[cur->nodeNr++] = xmlXPathNodeSetDupNs(node, ns);
 }
 
 /**
@@ -1454,6 +1595,7 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
 
     if (val == NULL) return;
 
+    /* @@ with_ns to check wether namespace nodes should be looked at @@ */
     /*
      * check against doublons
      */
@@ -1487,7 +1629,13 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
 	}
 	cur->nodeTab = temp;
     }
-    cur->nodeTab[cur->nodeNr++] = val;
+    if (val->type == XML_NAMESPACE_DECL) {
+	xmlNsPtr ns = (xmlNsPtr) val;
+
+	cur->nodeTab[cur->nodeNr++] = 
+	    xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
+    } else
+	cur->nodeTab[cur->nodeNr++] = val;
 }
 
 /**
@@ -1502,6 +1650,7 @@ void
 xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
     if (val == NULL) return;
 
+    /* @@ with_ns to check wether namespace nodes should be looked at @@ */
     /*
      * grow the nodeTab if needed
      */
@@ -1529,7 +1678,13 @@ xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
 	}
 	cur->nodeTab = temp;
     }
-    cur->nodeTab[cur->nodeNr++] = val;
+    if (val->type == XML_NAMESPACE_DECL) {
+	xmlNsPtr ns = (xmlNsPtr) val;
+
+	cur->nodeTab[cur->nodeNr++] = 
+	    xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
+    } else
+	cur->nodeTab[cur->nodeNr++] = val;
 }
 
 /**
@@ -1551,6 +1706,7 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	val1 = xmlXPathNodeSetCreate(NULL);
     }
 
+    /* @@ with_ns to check wether namespace nodes should be looked at @@ */
     initNr = val1->nodeNr;
 
     for (i = 0;i < val2->nodeNr;i++) {
@@ -1562,6 +1718,16 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	    if (val1->nodeTab[j] == val2->nodeTab[i]) {
 		skip = 1;
 		break;
+	    } else if ((val1->nodeTab[j]->type == XML_NAMESPACE_DECL) &&
+		       (val2->nodeTab[i]->type == XML_NAMESPACE_DECL)) {
+		xmlNsPtr ns1, ns2;
+		ns1 = (xmlNsPtr) val1->nodeTab[j];
+		ns2 = (xmlNsPtr) val2->nodeTab[i];
+		if ((ns1->next == ns2->next) &&
+		    (xmlStrEqual(ns1->prefix, ns2->prefix))) {
+		    skip = 1;
+		    break;
+		}
 	    }
 	}
 	if (skip)
@@ -1594,7 +1760,13 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	    }
 	    val1->nodeTab = temp;
 	}
-	val1->nodeTab[val1->nodeNr++] = val2->nodeTab[i];
+	if (val2->nodeTab[i]->type == XML_NAMESPACE_DECL) {
+	    xmlNsPtr ns = (xmlNsPtr) val2->nodeTab[i];
+
+	    val1->nodeTab[val1->nodeNr++] =
+		xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
+	} else
+	    val1->nodeTab[val1->nodeNr++] = val2->nodeTab[i];
     }
 
     return(val1);
@@ -1628,6 +1800,9 @@ xmlXPathNodeSetDel(xmlNodeSetPtr cur, xmlNodePtr val) {
 #endif
         return;
     }
+    if ((cur->nodeTab[i] != NULL) &&
+	(cur->nodeTab[i]->type == XML_NAMESPACE_DECL))
+	xmlXPathNodeSetFreeNs((xmlNsPtr) cur->nodeTab[i]);
     cur->nodeNr--;
     for (;i < cur->nodeNr;i++)
         cur->nodeTab[i] = cur->nodeTab[i + 1];
@@ -1645,6 +1820,9 @@ void
 xmlXPathNodeSetRemove(xmlNodeSetPtr cur, int val) {
     if (cur == NULL) return;
     if (val >= cur->nodeNr) return;
+    if ((cur->nodeTab[val] != NULL) &&
+	(cur->nodeTab[val]->type == XML_NAMESPACE_DECL))
+	xmlXPathNodeSetFreeNs((xmlNsPtr) cur->nodeTab[val]);
     cur->nodeNr--;
     for (;val < cur->nodeNr;val++)
         cur->nodeTab[val] = cur->nodeTab[val + 1];
@@ -1661,6 +1839,13 @@ void
 xmlXPathFreeNodeSet(xmlNodeSetPtr obj) {
     if (obj == NULL) return;
     if (obj->nodeTab != NULL) {
+	int i;
+
+	/* @@ with_ns to check wether namespace nodes should be looked at @@ */
+	for (i = 0;i < obj->nodeNr;i++)
+	    if ((obj->nodeTab[i] != NULL) &&
+		(obj->nodeTab[i]->type == XML_NAMESPACE_DECL))
+		xmlXPathNodeSetFreeNs((xmlNsPtr) obj->nodeTab[i]);
 	xmlFree(obj->nodeTab);
     }
     xmlFree(obj);
@@ -1678,11 +1863,17 @@ xmlXPathFreeValueTree(xmlNodeSetPtr obj) {
     int i;
 
     if (obj == NULL) return;
-    for (i = 0;i < obj->nodeNr;i++)
-	if (obj->nodeTab[i] != NULL)
-	    xmlFreeNodeList(obj->nodeTab[i]);
 
     if (obj->nodeTab != NULL) {
+	for (i = 0;i < obj->nodeNr;i++) {
+	    if (obj->nodeTab[i] != NULL) {
+		if (obj->nodeTab[i]->type == XML_NAMESPACE_DECL) {
+		    xmlXPathNodeSetFreeNs((xmlNsPtr) obj->nodeTab[i]);
+		} else {
+		    xmlFreeNodeList(obj->nodeTab[i]);
+		}
+	    }
+	}
 	xmlFree(obj->nodeTab);
     }
     xmlFree(obj);
@@ -1752,6 +1943,7 @@ xmlXPathNewNodeSet(xmlNodePtr val) {
     ret->type = XPATH_NODESET;
     ret->boolval = 0;
     ret->nodesetval = xmlXPathNodeSetCreate(val);
+    /* @@ with_ns to check wether namespace nodes should be looked at @@ */
     return(ret);
 }
 
@@ -1792,22 +1984,22 @@ xmlXPathNewValueTree(xmlNodePtr val) {
  * Returns the newly created object.
  */
 xmlXPathObjectPtr
-xmlXPathNewNodeSetList(xmlNodeSetPtr val) {
+xmlXPathNewNodeSetList(xmlNodeSetPtr val)
+{
     xmlXPathObjectPtr ret;
     int i;
 
     if (val == NULL)
-    	ret = NULL;
+        ret = NULL;
     else if (val->nodeTab == NULL)
-	    ret = xmlXPathNewNodeSet(NULL);
-    else
-    	{
-	    ret = xmlXPathNewNodeSet(val->nodeTab[0]);
-	    for (i = 1; i < val->nodeNr; ++i)
-	    	xmlXPathNodeSetAddUnique(ret->nodesetval, val->nodeTab[i]);
-	    }
+        ret = xmlXPathNewNodeSet(NULL);
+    else {
+        ret = xmlXPathNewNodeSet(val->nodeTab[0]);
+        for (i = 1; i < val->nodeNr; ++i)
+            xmlXPathNodeSetAddUnique(ret->nodesetval, val->nodeTab[i]);
+    }
 
-    return(ret);
+    return (ret);
 }
 
 /**
@@ -4668,13 +4860,14 @@ xmlXPathNextParent(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    case XML_DOCB_DOCUMENT_NODE:
 #endif
                 return(NULL);
-	    case XML_NAMESPACE_DECL:
-		/*
-		 * TODO !!! may require extending struct _xmlNs with
-		 * parent field
-		 * C.f. Infoset case...
-		 */
+	    case XML_NAMESPACE_DECL: {
+		xmlNsPtr ns = (xmlNsPtr) ctxt->context->node;
+		
+		if ((ns->next != NULL) &&
+		    (ns->next->type != XML_NAMESPACE_DECL))
+		    return((xmlNodePtr) ns->next);
                 return(NULL);
+	    }
 	}
     }
     return(NULL);
@@ -4734,13 +4927,15 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    case XML_DOCB_DOCUMENT_NODE:
 #endif
                 return(NULL);
-	    case XML_NAMESPACE_DECL:
-		/*
-		 * TODO !!! may require extending struct _xmlNs with
-		 * parent field
-		 * C.f. Infoset case...
-		 */
+	    case XML_NAMESPACE_DECL: {
+		xmlNsPtr ns = (xmlNsPtr) ctxt->context->node;
+		
+		if ((ns->next != NULL) &&
+		    (ns->next->type != XML_NAMESPACE_DECL))
+		    return((xmlNodePtr) ns->next);
+		/* Bad, how did that namespace ended-up there ? */
                 return(NULL);
+	    }
 	}
 	return(NULL);
     }
@@ -4779,9 +4974,8 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    return(NULL);
 	case XML_NAMESPACE_DECL:
 	    /*
-	     * TODO !!! may require extending struct _xmlNs with
-	     * parent field
-	     * C.f. Infoset case...
+	     * this should not hapen a namespace can't be
+	     * the ancestor of another node
 	     */
 	    return(NULL);
     }
@@ -8260,7 +8454,8 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 #ifdef DEBUG_STEP
                             n++;
 #endif
-                            addNode(list, cur);
+                            xmlXPathNodeSetAddNs(list, ctxt->context->node, 
+				                 (xmlNsPtr) cur);
                         }
                     } else {
                         if (cur->type == XML_ELEMENT_NODE) {
@@ -8343,7 +8538,8 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 #ifdef DEBUG_STEP
                                     n++;
 #endif
-                                    addNode(list, cur);
+				    xmlXPathNodeSetAddNs(list,
+					ctxt->context->node, (xmlNsPtr) cur);
                                 }
                             }
                             break;
@@ -8674,7 +8870,8 @@ xmlXPathNodeCollectAndTestNth(xmlXPathParserContextPtr ctxt,
                         if (cur->type == XML_NAMESPACE_DECL) {
                             n++;
                             if (n == indx)
-                                addNode(list, cur);
+				xmlXPathNodeSetAddNs(list, ctxt->context->node, 
+						     (xmlNsPtr) cur);
                         }
                     } else {
                         if (cur->type == XML_ELEMENT_NODE) {
@@ -8748,7 +8945,8 @@ xmlXPathNodeCollectAndTestNth(xmlXPathParserContextPtr ctxt,
                                     && (xmlStrEqual(ns->prefix, name))) {
                                     n++;
                                     if (n == indx)
-                                        addNode(list, cur);
+					xmlXPathNodeSetAddNs(list,
+					   ctxt->context->node, (xmlNsPtr) cur);
                                 }
                             }
                             break;

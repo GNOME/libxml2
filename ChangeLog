@@ -1,3 +1,18 @@
+Mon Mar  4 17:59:29 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixing #61290 "namespace nodes have no parent"
+	  long standing divergence from the XPath REC. NodeSets
+	  simply hold a copy of namespace nodes and those node ->next
+	  points to the parent (which may not be the node carrying the
+	  definition).
+	* include/libxml/xpath.h: flagged but didn't added a possible
+	  speedup
+	* DOCBparser.c HTMLparser.c: removed some warnings from push
+	  parser due to new state being added.
+	* tree.c: new fix from Boris Erdmann
+	* configure.in c14n.c include/libxml/c14n.h testC14N.c: added
+	  the XML Canonalization support from Aleksey Sanin
+
 Sun Mar  3 15:12:42 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: patch from Boris Erdmann fixing some namespace odities

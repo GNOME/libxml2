@@ -2859,7 +2859,7 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
          * we cant be sure, that the namespce we found is identified
          * by the prefix
          */
-        if (xmlStrEqual(ns->href, ret->ns->href)) {
+        if (xmlStrEqual(ns->href, cur->ns->href)) {
           /* this is the nice case */
           ret->ns = ns;
         } else {
@@ -6907,8 +6907,9 @@ xmlSetDocCompressMode (xmlDocPtr doc, int mode) {
  * Returns 0 (uncompressed) to 9 (max compression)
  */
 int
- xmlGetCompressMode(void) {
-    return(xmlCompressMode);
+xmlGetCompressMode(void)
+{
+    return (xmlCompressMode);
 }
 
 /**

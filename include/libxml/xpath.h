@@ -62,6 +62,7 @@ struct _xmlNodeSet {
     int nodeNr;			/* number of nodes in the set */
     int nodeMax;		/* size of the array as allocated */
     xmlNodePtr *nodeTab;	/* array of nodes in no particular order */
+    /* @@ with_ns to check wether namespace nodes should be looked at @@ */
 };
 
 /*

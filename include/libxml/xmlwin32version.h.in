@@ -140,6 +140,15 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_C14N_ENABLED:
+ *
+ * Whether the Canonicalization support is configured in
+ */
+#if 0
+#define LIBXML_C14N_ENABLED
+#endif
+
+/**
  * LIBXML_XINCLUDE_ENABLED:
  *
  * Whether XInclude is configured in

@@ -103,6 +103,8 @@ struct _xmlTextReader {
     xmlParserInputBufferPtr	input;	/* the input */
     startElementSAXFunc		startElement;/* initial SAX callbacks */
     endElementSAXFunc		endElement;  /* idem */
+    startElementNsSAX2Func	startElementNs;/* idem */
+    endElementNsSAX2Func		endElementNs;  /* idem */
     charactersSAXFunc		characters;
     cdataBlockSAXFunc		cdataBlock;
     unsigned int 		base;	/* base of the segment in the input */
@@ -270,6 +272,78 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
 	reader->endElement(ctx, fullname);
     }
 }
+
+/**
+ * xmlTextReaderStartElementNs:
+ * @ctx: the user data (XML parser context)
+ * @localname:  the local name of the element
+ * @prefix:  the element namespace prefix if available
+ * @URI:  the element namespace name if available
+ * @nb_namespaces:  number of namespace definitions on that node
+ * @namespaces:  pointer to the array of prefix/URI pairs namespace definitions
+ * @nb_attributes:  the number of attributes on that node
+ * nb_defaulted:  the number of defaulted attributes.
+ * @attributes:  pointer to the array of (localname/prefix/URI/value/end)
+ *               attribute values.
+ *
+ * called when an opening tag has been processed.
+ */
+static void
+xmlTextReaderStartElementNs(void *ctx,
+                      const xmlChar *localname,
+		      const xmlChar *prefix,
+		      const xmlChar *URI,
+		      int nb_namespaces,
+		      const xmlChar **namespaces,
+		      int nb_attributes,
+		      int nb_defaulted,
+		      const xmlChar **attributes)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlTextReaderPtr reader = ctxt->_private;
+
+#ifdef DEBUG_CALLBACKS
+    printf("xmlTextReaderStartElementNs(%s)\n", fullname);
+#endif
+    if ((reader != NULL) && (reader->startElementNs != NULL)) {
+	reader->startElementNs(ctx, localname, prefix, URI, nb_namespaces,
+	                       namespaces, nb_attributes, nb_defaulted,
+			       attributes);
+	if ((ctxt->node != NULL) && (ctxt->input != NULL) &&
+	    (ctxt->input->cur != NULL) && (ctxt->input->cur[0] == '/') &&
+	    (ctxt->input->cur[1] == '>'))
+	    ctxt->node->_private = (void *) xmlTextReaderIsEmpty;
+    }
+    if (reader != NULL)
+	reader->state = XML_TEXTREADER_ELEMENT;
+}
+
+/**
+ * xmlTextReaderEndElementNs:
+ * @ctx: the user data (XML parser context)
+ * @localname:  the local name of the element
+ * @prefix:  the element namespace prefix if available
+ * @URI:  the element namespace name if available
+ *
+ * called when an ending tag has been processed.
+ */
+static void
+xmlTextReaderEndElementNs(void *ctx,
+                          const xmlChar * localname,
+                          const xmlChar * prefix,
+		          const xmlChar * URI)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlTextReaderPtr reader = ctxt->_private;
+
+#ifdef DEBUG_CALLBACKS
+    printf("xmlTextReaderEndElementNs(%s)\n", fullname);
+#endif
+    if ((reader != NULL) && (reader->endElementNs != NULL)) {
+	reader->endElementNs(ctx, localname, prefix, URI);
+    }
+}
+
 
 /**
  * xmlTextReaderCharacters:
@@ -1123,6 +1197,15 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->sax->startElement = xmlTextReaderStartElement;
     ret->endElement = ret->sax->endElement;
     ret->sax->endElement = xmlTextReaderEndElement;
+    if (ret->sax->initialized == XML_SAX2_MAGIC) {
+	ret->startElementNs = ret->sax->startElementNs;
+	ret->sax->startElementNs = xmlTextReaderStartElementNs;
+	ret->endElementNs = ret->sax->endElementNs;
+	ret->sax->endElementNs = xmlTextReaderEndElementNs;
+    } else {
+	ret->startElementNs = NULL;
+	ret->endElementNs = NULL;
+    }
     ret->characters = ret->sax->characters;
     ret->sax->characters = xmlTextReaderCharacters;
     ret->sax->ignorableWhitespace = xmlTextReaderCharacters;

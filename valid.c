@@ -3808,8 +3808,8 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
 int
 xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
-                        xmlNodePtr elem, xmlAttrPtr attr, const xmlChar *value) {
-    /* xmlElementPtr elemDecl; */
+                        xmlNodePtr elem, xmlAttrPtr attr, const xmlChar *value) 
+{
     xmlAttributePtr attrDecl =  NULL;
     int val;
     int ret = 1;

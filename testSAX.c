@@ -81,8 +81,7 @@ xmlSAXHandler emptySAXHandlerStruct = {
     1,
     NULL,
     NULL, /* startElementNs */
-    NULL, /* endElementNs */
-    NULL  /* attributeNs */
+    NULL /* endElementNs */
 };
 
 xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
@@ -306,19 +305,20 @@ entityDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name, int type,
  * An attribute definition has been parsed
  */
 static void
-attributeDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *elem, const xmlChar *name,
-              int type, int def, const xmlChar *defaultValue,
-	      xmlEnumerationPtr tree ATTRIBUTE_UNUSED)
+attributeDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar * elem,
+                   const xmlChar * name, int type, int def,
+                   const xmlChar * defaultValue, xmlEnumerationPtr tree)
 {
     callbacks++;
     if (quiet)
-	return;
+        return;
     if (defaultValue == NULL)
-	fprintf(stdout, "SAX.attributeDecl(%s, %s, %d, %d, NULL, ...)\n",
-            elem, name, type, def);
+        fprintf(stdout, "SAX.attributeDecl(%s, %s, %d, %d, NULL, ...)\n",
+                elem, name, type, def);
     else
-	fprintf(stdout, "SAX.attributeDecl(%s, %s, %d, %d, %s, ...)\n",
-            elem, name, type, def, defaultValue);
+        fprintf(stdout, "SAX.attributeDecl(%s, %s, %d, %d, %s, ...)\n",
+                elem, name, type, def, defaultValue);
+    xmlFreeEnumeration(tree);
 }
 
 /**
@@ -693,7 +693,6 @@ xmlSAXHandler debugSAXHandlerStruct = {
     1,
     NULL,
     NULL,
-    NULL,
     NULL
 };
 
@@ -703,7 +702,7 @@ xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;
  * SAX2 specific callbacks
  */
 /**
- * startElementDebug:
+ * startElementNsDebug:
  * @ctxt:  An XML parser context
  * @name:  The element name
  *
@@ -716,7 +715,9 @@ startElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
                     const xmlChar *URI,
 		    int nb_namespaces,
 		    const xmlChar **namespaces,
-		    int nb_attributes)
+		    int nb_attributes,
+		    int nb_defaulted,
+		    const xmlChar **attributes)
 {
     int i;
 
@@ -743,7 +744,18 @@ startElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
 	    fprintf(stdout, "='%s'", namespaces[i]);
 	}
     }
-    fprintf(stdout, ", %d)\n", nb_attributes);
+    fprintf(stdout, ", %d, %d", nb_attributes, nb_defaulted);
+    if (attributes != NULL) {
+        for (i = 0;i < nb_attributes;i += 5) {
+	    if (attributes[i + 1] != NULL)
+		fprintf(stdout, ", %s:%s='", attributes[i + 1], attributes[i]);
+	    else
+		fprintf(stdout, ", %s='", attributes[i]);
+	    fprintf(stdout, "%.4s...', %d", attributes[i + 3],
+		    attributes[i + 4] - attributes[i + 3]);
+	}
+    }
+    fprintf(stdout, ")\n");
 }
 
 /**
@@ -771,39 +783,6 @@ endElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
 	fprintf(stdout, ", NULL)\n");
     else
 	fprintf(stdout, ", '%s')\n", (char *) URI);
-}
-
-/**
- * attributeNsDebug:
- * @ctxt:  An XML parser context
- * @name:  The element name
- *
- * called when the end of an element has been detected.
- */
-static void
-attributeNsDebug(void *ctx ATTRIBUTE_UNUSED,
-                 const xmlChar *localname,
-                 const xmlChar *prefix,
-                 const xmlChar *URI,
-		 const xmlChar *value,
-		 int valuelen)
-{
-    callbacks++;
-    if (quiet)
-	return;
-    fprintf(stdout, "SAX.attributeNs(%s", (char *) localname);
-    if (prefix == NULL)
-	fprintf(stdout, ", NULL");
-    else
-	fprintf(stdout, ", %s", (char *) prefix);
-    if (URI == NULL)
-	fprintf(stdout, ", NULL");
-    else
-	fprintf(stdout, ", '%s'", (char *) URI);
-    if (valuelen > 13) 
-        fprintf(stdout, ", %10s..., %d)\n", value, valuelen);
-    else
-        fprintf(stdout, ", %s, %d)\n", value, valuelen);
 }
 
 xmlSAXHandler debugSAX2HandlerStruct = {
@@ -834,11 +813,10 @@ xmlSAXHandler debugSAX2HandlerStruct = {
     getParameterEntityDebug,
     cdataBlockDebug,
     externalSubsetDebug,
-    1,
+    XML_SAX2_MAGIC,
     NULL,
     startElementNsDebug,
-    endElementNsDebug,
-    attributeNsDebug
+    endElementNsDebug
 };
 
 xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;

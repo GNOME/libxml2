@@ -394,14 +394,24 @@ XMLPUBFUN void XMLCALL
  */
 #define XML_SUBSTITUTE_BOTH 	3
 
-XMLPUBFUN xmlChar * XMLCALL		xmlDecodeEntities	(xmlParserCtxtPtr ctxt,
+XMLPUBFUN xmlChar * XMLCALL
+		xmlDecodeEntities		(xmlParserCtxtPtr ctxt,
 						 int len,
 						 int what,
 						 xmlChar end,
 						 xmlChar  end2,
 						 xmlChar end3);
-XMLPUBFUN xmlChar * XMLCALL		xmlStringDecodeEntities	(xmlParserCtxtPtr ctxt,
+XMLPUBFUN xmlChar * XMLCALL
+		xmlStringDecodeEntities		(xmlParserCtxtPtr ctxt,
 						 const xmlChar *str,
+						 int what,
+						 xmlChar end,
+						 xmlChar  end2,
+						 xmlChar end3);
+XMLPUBFUN xmlChar * XMLCALL
+		xmlStringLenDecodeEntities	(xmlParserCtxtPtr ctxt,
+						 const xmlChar *str,
+						 int len,
 						 int what,
 						 xmlChar end,
 						 xmlChar  end2,

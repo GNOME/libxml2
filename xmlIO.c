@@ -1753,7 +1753,7 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 	if (xmlInputCallbackTable[i].opencallback == xmlGzfileOpen) {
 	    if (((z_stream *)context)->avail_in > 4) {
 	        char *cptr, buff4[4];
-		cptr = ((z_stream *)context)->next_in;
+		cptr = (char *) ((z_stream *)context)->next_in;
 		if (gzread(context, buff4, 4) == 4) {
 		    if (strncmp(buff4, cptr, 4) == 0)
 		        ret->compressed = 0;

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<RDF:RDF xmlns:p3p="http//www.w3.org/TR/1998/WD-P3P10-syntax#proposal.DTD" xmlns:RDF="http://www.w3.org/TR/WD-rdf-syntax#">
+<RDF:RDF xmlns:p3p="http://www.w3.org/TR/1998/WD-P3P10-syntax#proposal.DTD" xmlns:RDF="http://www.w3.org/TR/WD-rdf-syntax#">
 <PROP realm="http://www.CoolCatalog.com/catalogue/" entity="CoolCatalog" agreeID="94df1293a3e519bb" assurance="http://www.TrustUs.org">
   <USES>
   <STATEMENT purp="2,3" recpnt="0" id="0" consq="a site with clothes you'd appreciate.">

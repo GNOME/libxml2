@@ -150,6 +150,24 @@ XMLPUBFUN void * XMLCALL
 					 const xmlChar *name,
 					 const xmlChar *name2,
 					 const xmlChar *name3);
+XMLPUBFUN void * XMLCALL			
+			xmlHashQLookup	(xmlHashTablePtr table,
+					 const xmlChar *name,
+					 const xmlChar *prefix);
+XMLPUBFUN void * XMLCALL			
+			xmlHashQLookup2	(xmlHashTablePtr table,
+					 const xmlChar *name,
+					 const xmlChar *prefix,
+					 const xmlChar *name2,
+					 const xmlChar *prefix2);
+XMLPUBFUN void * XMLCALL			
+			xmlHashQLookup3	(xmlHashTablePtr table,
+					 const xmlChar *name,
+					 const xmlChar *prefix,
+					 const xmlChar *name2,
+					 const xmlChar *prefix2,
+					 const xmlChar *name3,
+					 const xmlChar *prefix3);
 
 /*
  * Helpers.

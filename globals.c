@@ -361,7 +361,6 @@ xmlSAXHandler xmlDefaultSAXHandler = {
     0,
     NULL,
     NULL,
-    NULL,
     NULL
 };
 
@@ -415,7 +414,6 @@ xmlSAXHandler htmlDefaultSAXHandler = {
     0,
     NULL,
     NULL,
-    NULL,
     NULL
 };
 #endif /* LIBXML_HTML_ENABLED */
@@ -457,7 +455,6 @@ xmlSAXHandler docbDefaultSAXHandler = {
     0,
     NULL,
     NULL,
-    NULL,
     NULL
 };
 #endif /* LIBXML_DOCB_ENABLED */
@@ -486,16 +483,16 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     xmlMutexLock(xmlThrDefMutex);
 
 #ifdef LIBXML_DOCB_ENABLED
-    initdocbDefaultSAXHandler(&gs->docbDefaultSAXHandler);
+    xmlSAX2InitDocbDefaultSAXHandler(&gs->docbDefaultSAXHandler);
 #endif
 #ifdef LIBXML_HTML_ENABLED
-    inithtmlDefaultSAXHandler(&gs->htmlDefaultSAXHandler);
+    xmlSAX2InitHtmlDefaultSAXHandler(&gs->htmlDefaultSAXHandler);
 #endif
 
     gs->oldXMLWDcompatibility = 0;
     gs->xmlBufferAllocScheme = xmlBufferAllocSchemeThrDef;
     gs->xmlDefaultBufferSize = xmlDefaultBufferSizeThrDef;
-    initxmlDefaultSAXHandler(&gs->xmlDefaultSAXHandler, 1);
+    xmlSAX2InitDefaultSAXHandler(&gs->xmlDefaultSAXHandler, 1);
     gs->xmlDefaultSAXLocator.getPublicId = getPublicId;
     gs->xmlDefaultSAXLocator.getSystemId = getSystemId;
     gs->xmlDefaultSAXLocator.getLineNumber = getLineNumber;

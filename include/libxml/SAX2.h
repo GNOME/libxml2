@@ -103,6 +103,21 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN void XMLCALL		
 		xmlSAX2EndElement		(void *ctx,
 						 const xmlChar *name);
+XMLPUBFUN void XMLCALL
+		xmlSAX2StartElementNs		(void *ctx,
+						 const xmlChar *localname,
+						 const xmlChar *prefix,
+						 const xmlChar *URI,
+						 int nb_namespaces,
+						 const xmlChar **namespaces,
+						 int nb_attributes,
+						 int nb_defaulted,
+						 const xmlChar **attributes);
+XMLPUBFUN void XMLCALL
+		xmlSAX2EndElementNs		(void *ctx,
+						 const xmlChar *localname,
+						 const xmlChar *prefix,
+						 const xmlChar *URI);
 XMLPUBFUN void XMLCALL		
 		xmlSAX2Reference		(void *ctx,
 						 const xmlChar *name);
@@ -142,6 +157,12 @@ XMLPUBFUN void XMLCALL
 						 const xmlChar *value,
 						 int len);
 
+XMLPUBFUN int XMLCALL
+		xmlSAXDefaultVersion		(int version);
+
+XMLPUBFUN int XMLCALL
+		xmlSAXVersion			(xmlSAXHandler *hdlr,
+						 int version);
 XMLPUBFUN void XMLCALL		
 		xmlSAX2InitDefaultSAXHandler    (xmlSAXHandler *hdlr,
 						 int warning);

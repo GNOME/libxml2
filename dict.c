@@ -274,8 +274,6 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
 
     if (len < 0)
         len = xmlStrlen(name);
-    if (len <= 0)
-	return(NULL);
 
     /*
      * Check for duplicate and insertion location.

@@ -12,6 +12,7 @@
 #include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 #include <libxml/dict.h>
+#include <libxml/hash.h>
 #include <libxml/valid.h>
 #include <libxml/entities.h>
 
@@ -246,14 +247,19 @@ struct _xmlParserCtxt {
      */
     const xmlChar *str_xml;
     const xmlChar *str_xmlns;
+    const xmlChar *str_xml_ns;
 
     /*
-     * Everything below is related to the new SAX mode
+     * Everything below is used only by the new SAX mode
      */
     int                sax2;          /* operating in the new SAX mode */
     int                nsNr;          /* the number of inherited namespaces */
     int                nsMax;         /* the size of the arrays */
     const xmlChar *   *nsTab;         /* the array of prefix/namespace name */
+    int               *attallocs;     /* which attribute were allocated */
+    void *            *pushTab;       /* array of data for push */
+    xmlHashTablePtr    attsDefault;   /* defaulted attributes if any */
+    xmlHashTablePtr    attsSpecial;   /* non-CDATA attributes if any */
 };
 
 /**
@@ -622,12 +628,14 @@ typedef int (*hasExternalSubsetSAXFunc) (void *ctx);
  * @nb_namespaces:  number of namespace definitions on that node
  * @namespaces:  pointer to the array of prefix/URI pairs namespace definitions
  * @nb_attributes:  the number of attributes on that node
+ * @nb_defaulted:  the number of defaulted attributes. The defaulted
+ *                  ones are at the end of the array
+ * @attributes:  pointer to the array of (localname/prefix/URI/value/end)
+ *               attribute values.
  *
  * SAX2 callback when an element start has been detected by the parser.
  * It provides the namespace informations for the element, as well as
  * the new namespace declarations on the element.
- * The number of attributes is given in this callback but the attributes
- * themselves will be provided as separate callbacks.
  */
 
 typedef void (*startElementNsSAX2Func) (void *ctx,
@@ -636,7 +644,9 @@ typedef void (*startElementNsSAX2Func) (void *ctx,
 					const xmlChar *URI,
 					int nb_namespaces,
 					const xmlChar **namespaces,
-					int nb_attributes);
+					int nb_attributes,
+					int nb_defaulted,
+					const xmlChar **attributes);
  
 /**
  * endElementNsSAX2Func:
@@ -654,26 +664,6 @@ typedef void (*endElementNsSAX2Func)   (void *ctx,
 					const xmlChar *prefix,
 					const xmlChar *URI);
 
-/**
- * attributeNsSAX2Func:
- * @ctx:  the user data (XML parser context)
- * @localname:  the local name of the attribute
- * @prefix:  the attribute namespace prefix if available
- * @URI:  the attribute namespace name if available
- * @value:  pointer to the attribute value string
- * @valuelen:  lenght of the attribute value string in bytes
- *
- * SAX2 callback when an attribute has been detected by the parser.
- * It provides the namespace informations for the attribute, as well as
- * the value of the attribute (note that @value may not be zero terminated
- * and use of the @valuelen is needed to find the value end).
- */
-typedef void (*attributeNsSAX2Func)    (void *ctx,
-					const xmlChar *localname,
-					const xmlChar *prefix,
-					const xmlChar *URI,
-					const xmlChar *value,
-					int valuelen);
 
 struct _xmlSAXHandler {
     internalSubsetSAXFunc internalSubset;
@@ -703,12 +693,11 @@ struct _xmlSAXHandler {
     getParameterEntitySAXFunc getParameterEntity;
     cdataBlockSAXFunc cdataBlock;
     externalSubsetSAXFunc externalSubset;
-    int initialized;
+    unsigned int initialized;
     /* The following fields are extensions available only on version 2 */
     void *_private;
     startElementNsSAX2Func startElementNs;
     endElementNsSAX2Func endElementNs;
-    attributeNsSAX2Func attributeNs;
 };
 
 /**
@@ -823,6 +812,10 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL		
 		xmlStrEqual		(const xmlChar *str1,
 					 const xmlChar *str2);
+XMLPUBFUN int XMLCALL
+		xmlStrQEqual		(const xmlChar *pref,
+					 const xmlChar *name,
+					 const xmlChar *str);
 XMLPUBFUN int XMLCALL		
 		xmlStrlen		(const xmlChar *str);
 XMLPUBFUN xmlChar * XMLCALL	

@@ -15,16 +15,21 @@ to test those   - More testing on RelaxNG
   Schemas
 
 
+2.5.11: Sep 9 2003:
+A bugfix only release:   - risk of crash in Relax-NG
+   - risk of crash when using multithreaded programs
+
+
 2.5.10: Aug 15 2003:
 A bugfixes only release   - Windows Makefiles (William Brack)
    - UTF-16 support fixes (Mark Itzcovitz)
    - Makefile and portability (William Brack) automake, Linux alpha, Mingw
-    on Windows (Mikhail Grushinskiy) 
+    on Windows (Mikhail Grushinskiy)
    - HTML parser (Oliver Stoeneberg)
    - XInclude performance problem reported by Kevin Ruscoe
    - XML parser performance problem reported by Grant Goodale
    - xmlSAXParseDTD() bug fix from Malcolm Tredinnick
-   - and a couple other cleanup 
+   - and a couple other cleanup
 
 
 2.5.9: Aug 9 2003:

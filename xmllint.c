@@ -13,7 +13,7 @@
 #include <assert.h>
 
 #if defined (_WIN32) && !defined(__CYGWIN__)
-#ifdef _MSC_VER
+#if defined (_MSC_VER) || defined(__BORLANDC__)
 #include <winsock2.h>
 #pragma comment(lib, "ws2_32.lib")
 #define gettimeofday(p1,p2)
@@ -148,6 +148,7 @@ static int nocatalogs = 0;
 #endif
 static int stream = 0;
 static int chkregister = 0;
+static int sax1 = 0;
 static const char *output = NULL;
 
 /*
@@ -1550,6 +1551,10 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--stream"))) {
 	     stream++;
 	}
+	else if ((!strcmp(argv[i], "-sax1")) ||
+	         (!strcmp(argv[i], "--sax1"))) {
+	     sax1++;
+	}
 	else if ((!strcmp(argv[i], "-chkregister")) ||
 	         (!strcmp(argv[i], "--chkregister"))) {
 	     chkregister++;
@@ -1589,6 +1594,11 @@ main(int argc, char **argv) {
 	}
     }
 #endif
+
+    if (sax1)
+        xmlSAXDefaultVersion(1);
+    else
+        xmlSAXDefaultVersion(2);
 
     if (chkregister) {
 	xmlRegisterNodeDefault(registerNode);

@@ -1,3 +1,10 @@
+Sat Dec 20 18:17:28 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* include/libxml/xpathInternals.h: undid last change (my
+	  bad).  Put necessary fix in libxslt/libexslt instead.
+	* include/libxml/DOCBparser.h: put test for __GCC__ on
+	  warning directive (Bug 129105)
+
 Sat Dec 20 10:48:37 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* include/libxml/xpathInternals.h: fixed xmlXPathReturnString

@@ -3382,9 +3382,6 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if ((elem == NULL) || (elem->name == NULL)) return(0);
     if ((attr == NULL) || (attr->name == NULL)) return(0);
 
-    if (xmlStrEqual(attr->name, "lang")) {
-	printf("hello\n");
-    }
     if ((elem->ns != NULL) && (elem->ns->prefix != NULL)) {
 	xmlChar qname[500];
 	snprintf((char *) qname, sizeof(qname), "%s:%s",

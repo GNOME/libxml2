@@ -3365,7 +3365,7 @@ Ravi Sethi, and Jeffrey D. Ullman.
 <emph>Compilers:  Principles, Techniques, and Tools</emph>.
 Reading:  Addison-Wesley, 1986, rpt. corr. 1988.</bibl>
 
-<bibl xml-link="simple" id="Berners-Lee" key="Berners-Lee et al.">
+<bibl id="Berners-Lee" xml-link="simple" key="Berners-Lee et al.">
 Berners-Lee, T., R. Fielding, and L. Masinter.
 <emph>Uniform Resource Identifiers (URI):  Generic Syntax and
 Semantics</emph>.
@@ -3391,21 +3391,21 @@ Bericht 38, Oktober 1991.
 Comparison of SGML and XML. See
 <loc href="http://www.w3.org/TR/NOTE-sgml-xml-971215">http://www.w3.org/TR/NOTE-sgml-xml-971215</loc>.
 </bibl>
-<bibl xml-link="simple" id="RFC1738" key="IETF RFC1738">
+<bibl id="RFC1738" xml-link="simple" key="IETF RFC1738">
 IETF (Internet Engineering Task Force).
 <emph>RFC 1738:  Uniform Resource Locators (URL)</emph>, 
 ed. T. Berners-Lee, L. Masinter, M. McCahill.
 1994.
 </bibl>
 
-<bibl xml-link="simple" id="RFC1808" key="IETF RFC1808">
+<bibl id="RFC1808" xml-link="simple" key="IETF RFC1808">
 IETF (Internet Engineering Task Force).
 <emph>RFC 1808:  Relative Uniform Resource Locators</emph>, 
 ed. R. Fielding.
 1995.
 </bibl>
 
-<bibl xml-link="simple" id="RFC2141" key="IETF RFC2141">
+<bibl id="RFC2141" xml-link="simple" key="IETF RFC2141">
 IETF (Internet Engineering Task Force).
 <emph>RFC 2141:  URN Syntax</emph>, 
 ed. R. Moats.

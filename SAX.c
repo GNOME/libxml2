@@ -1303,7 +1303,8 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	    }
 	} else {
 	    while ((att != NULL) && (value != NULL)) {
-		if ((att[0] != 'x') || (att[1] != 'm') || (att[2] != 'l'))
+		if ((att[0] != 'x') || (att[1] != 'm') || (att[2] != 'l') ||
+		    (att[3] != 'n') || (att[4] != 's'))
 		    attribute(ctxt, att, value);
 
 		/*

@@ -1,3 +1,10 @@
+Mon Mar 25 13:08:21 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c SAX.c: Never commit without running "make tests" :-(
+	  fix a couple of stupidities in the previous commit
+	* result/*: a few changes in some attribute order result of previous
+	  commit.
+
 Mon Mar 25 11:46:05 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c SAX.c: fixed bug #76168, attribute redeclared in

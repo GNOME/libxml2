@@ -1703,12 +1703,15 @@ static const htmlEntityDesc  html40EntitiesTable[] = {
  * Macro used to grow the current buffer.
  */
 #define growBuffer(buffer) {						\
+    xmlChar *tmp;							\
     buffer##_size *= 2;							\
-    buffer = (xmlChar *) xmlRealloc(buffer, buffer##_size * sizeof(xmlChar)); \
-    if (buffer == NULL) {						\
+    tmp = (xmlChar *) xmlRealloc(buffer, buffer##_size * sizeof(xmlChar)); \
+    if (tmp == NULL) {						\
 	htmlErrMemory(ctxt, "growing buffer\n");			\
+	xmlFree(buffer);						\
 	return(NULL);							\
     }									\
+    buffer = tmp;							\
 }
 
 /**
@@ -2849,13 +2852,17 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
            ((cur != '>') ||
 	    (r != '-') || (q != '-'))) {
 	if (len + 5 >= size) {
+	    xmlChar *tmp;
+
 	    size *= 2;
-	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-	    if (buf == NULL) {
+	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    if (tmp == NULL) {
+	        xmlFree(buf);
 	        htmlErrMemory(ctxt, "growing buffer failed\n");
 		ctxt->instate = state;
 		return;
 	    }
+	    buf = tmp;
 	}
 	COPY_BUF(ql,buf,len,q);
 	q = r;

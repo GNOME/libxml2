@@ -3964,14 +3964,17 @@ xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
                     return (NULL);
                 }
             } else if (max <= len) {
+	        xmlRelaxNGDefinePtr *temp;
+
                 max *= 2;
-                ret =
-                    xmlRealloc(ret,
+                temp = xmlRealloc(ret,
                                (max + 1) * sizeof(xmlRelaxNGDefinePtr));
-                if (ret == NULL) {
+                if (temp == NULL) {
                     xmlRngPErrMemory(ctxt, "getting element list\n");
+		    xmlFree(ret);
                     return (NULL);
                 }
+		ret = temp;
             }
             ret[len++] = cur;
             ret[len] = NULL;

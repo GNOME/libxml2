@@ -645,8 +645,8 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
     }
 
     /*
-     * plit the element name into prefix:localname , the string found
-     * are within the DTD and hen not associated to namespace names.
+     * split the element name into prefix:localname , the string found
+     * are within the DTD and then not associated to namespace names.
      */
     name = xmlSplitQName3(fullname, &len);
     if (name == NULL) {
@@ -663,17 +663,20 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
     defaults = xmlHashLookup2(ctxt->attsDefault, name, prefix);
     if (defaults == NULL) {
         defaults = (xmlDefAttrsPtr) xmlMalloc(sizeof(xmlDefAttrs) +
-	                               12 * sizeof(const xmlChar *));
+	                   (4 * 4) * sizeof(const xmlChar *));
 	if (defaults == NULL)
 	    goto mem_error;
-	defaults->maxAttrs = 4;
 	defaults->nbAttrs = 0;
+	defaults->maxAttrs = 4;
 	xmlHashUpdateEntry2(ctxt->attsDefault, name, prefix, defaults, NULL);
     } else if (defaults->nbAttrs >= defaults->maxAttrs) {
-        defaults = (xmlDefAttrsPtr) xmlRealloc(defaults, sizeof(xmlDefAttrs) +
+        xmlDefAttrsPtr temp;
+
+        temp = (xmlDefAttrsPtr) xmlRealloc(defaults, sizeof(xmlDefAttrs) +
 		       (2 * defaults->maxAttrs * 4) * sizeof(const xmlChar *));
-	if (defaults == NULL)
+	if (temp == NULL)
 	    goto mem_error;
+	defaults = temp;
 	defaults->maxAttrs *= 2;
 	xmlHashUpdateEntry2(ctxt->attsDefault, name, prefix, defaults, NULL);
     }

@@ -13103,6 +13103,7 @@ xmlSchemaRegisterAttributes(xmlSchemaValidCtxtPtr ctxt, xmlAttrPtr attrs)
 	    xmlSchemaVErrMemory(ctxt, "registering attributes", NULL);
 	    return (-1);
 	}
+	memset(tmp, 0, sizeof(xmlSchemaAttrState));
 	tmp->attr = attrs;
 	tmp->state = XML_SCHEMAS_ATTR_UNKNOWN;
 	tmp->next = NULL;

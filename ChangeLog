@@ -1,3 +1,7 @@
+Sun Sep 14 21:53:39 PDT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* HTMLtree.c: Fixed bug 121394 - missing ns on attributes
+
 Sun Sep 14 21:43:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/xmlerror.h: factoring of more 

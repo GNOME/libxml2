@@ -670,8 +670,7 @@ xmlXPtrLocationSetDel(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
     if (i >= cur->locNr) {
 #ifdef DEBUG
         xmlGenericError(xmlGenericErrorContext, 
-	        "xmlXPtrLocationSetDel: Range %s wasn't found in RangeList\n",
-		val->stringval);
+	        "xmlXPtrLocationSetDel: Range wasn't found in RangeList\n");
 #endif
         return;
     }

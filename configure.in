@@ -581,9 +581,9 @@ AC_SUBST(WITH_ICONV)
 
 AC_ARG_WITH(schemas, [  --with-schemas              Add experimental Schemas support (off)])
 if test "$with_schemas" = "yes" ; then
-    echo Enabling Schemas support
+    echo "Enabling Schemas/Relax-NG support"
     WITH_SCHEMAS=1
-    TEST_SCHEMAS="Schemastests"
+    TEST_SCHEMAS="Schemastests Relaxtests"
     with_regexps=yes
 else    
     WITH_SCHEMAS=0

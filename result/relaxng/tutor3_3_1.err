@@ -1,0 +1,9 @@
+xmlRelaxNGValidateAttribute(email): 0
+xmlRelaxNGValidateAttribute(name): 0
+xmlRelaxNGValidateAttribute(note): -1
+xmlRelaxNGValidateDefinition(): validated card : 0
+xmlRelaxNGValidateAttribute(email): 0
+xmlRelaxNGValidateAttribute(name): 0
+xmlRelaxNGValidateAttribute(note): 0
+xmlRelaxNGValidateDefinition(): validated card : 0
+xmlRelaxNGValidateDefinition(): validated addressBook : 0

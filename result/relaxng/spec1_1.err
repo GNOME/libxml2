@@ -1,0 +1,5 @@
+xmlRelaxNGValidateDefinition(): validated empty
+xmlRelaxNGValidateDefinition(): validated bar1 : 0
+xmlRelaxNGValidateDefinition(): validated empty
+xmlRelaxNGValidateDefinition(): validated bar2 : 0
+xmlRelaxNGValidateDefinition(): validated foo : 0

@@ -1,3 +1,11 @@
+Thu Jan 23 19:26:20 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am configure.in relaxng.c include/libxml/relaxng.h:
+	  First commit of the new Relax-NG validation code, not generally
+	  useful yet.
+	* test/relaxng/* result/relaxng/*: current state of the regression
+	  tests
+
 Thu Jan 23 19:22:54 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: minimized the memory allocated for GetContent

@@ -1,3 +1,7 @@
+Thu Dec 12 13:34:59 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/libxml2.def.src: exported htmlNodeDumpOutput
+
 Thu Dec 12 10:59:11 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing release of 2.4.30

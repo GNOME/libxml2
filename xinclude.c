@@ -844,6 +844,80 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
  ************************************************************************/
 
 /**
+ * xmlXIncludeMergeOneEntity:
+ * @ent: the entity
+ * @doc:  the including doc
+ * @nr: the entity name
+ *
+ * Inplements the merge of one entity
+ */
+static void
+xmlXIncludeMergeEntity(xmlEntityPtr ent, xmlDocPtr doc,
+	               xmlChar *name ATTRIBUTE_UNUSED) {
+    xmlEntityPtr ret;
+
+    if ((ent == NULL) || (doc == NULL))
+	return;
+    ret = xmlAddDocEntity(doc, ent->name, ent->etype, ent->ExternalID,
+			  ent->SystemID, ent->content);
+    if (ret != NULL) {
+	if (ent->URI != NULL)
+	    ret->URI = xmlStrdup(ent->URI);
+    }
+}
+
+/**
+ * xmlXIncludeMergeEntities:
+ * @ctxt: an XInclude context
+ * @doc:  the including doc
+ * @from:  the included doc
+ *
+ * Inplements the entity merge
+ *
+ * Returns 0 if merge succeeded, -1 if some processing failed
+ */
+static int
+xmlXIncludeMergeEntities(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
+	                 xmlDocPtr from) {
+    xmlNodePtr cur;
+    xmlDtdPtr target, source;
+
+    if (ctxt == NULL)
+	return(-1);
+
+    if ((from == NULL) || (from->intSubset == NULL))
+	return(0);
+
+    target = doc->intSubset;
+    if (target == NULL) {
+	cur = xmlDocGetRootElement(doc);
+	if (cur == NULL)
+	    return(-1);
+        target = xmlCreateIntSubset(doc, cur->name, NULL, NULL);
+	if (target == NULL)
+	    return(-1);
+    }
+
+    source = from->intSubset;
+    if ((source != NULL) && (source->entities != NULL)) {
+	xmlHashScan((xmlHashTablePtr) source->entities,
+		    (xmlHashScanner) xmlXIncludeMergeEntity, doc);
+    }
+    source = from->extSubset;
+    if ((source != NULL) && (source->entities != NULL)) {
+	/*
+	 * don't duplicate existing stuff when external subsets are the same
+	 */
+	if ((!xmlStrEqual(target->ExternalID, source->ExternalID)) &&
+	    (!xmlStrEqual(target->SystemID, source->SystemID))) {
+	    xmlHashScan((xmlHashTablePtr) source->entities,
+			(xmlHashScanner) xmlXIncludeMergeEntity, doc);
+	}
+    }
+    return(0);
+}
+
+/**
  * xmlXIncludeLoadDoc:
  * @ctxt:  the XInclude context
  * @url:  the associated URL
@@ -926,8 +1000,9 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     ctxt->incTab[nr]->doc = doc;
 
     /*
-     * TODO: Make sure we have all entities fixed up
+     * Make sure we have all entities fixed up
      */
+    xmlXIncludeMergeEntities(ctxt, ctxt->doc, doc);
 
     /*
      * We don't need the DTD anymore, free up space

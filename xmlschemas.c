@@ -2385,36 +2385,28 @@ xmlSchemaFree(xmlSchemaPtr schema)
 static void
 xmlSchemaElementDump(xmlSchemaElementPtr elem, FILE * output,
                      const xmlChar * name ATTRIBUTE_UNUSED,
-                     const xmlChar * context ATTRIBUTE_UNUSED,
-                     const xmlChar * namespace ATTRIBUTE_UNUSED)
+		     const xmlChar * namespace ATTRIBUTE_UNUSED,
+                     const xmlChar * context ATTRIBUTE_UNUSED)
 {
     if (elem == NULL)
         return;
 
-    fprintf(output, "Element ");
-    if (elem->flags & XML_SCHEMAS_ELEM_GLOBAL)
-        fprintf(output, "global ");
-    fprintf(output, ": %s ", elem->name);
-    if (namespace != NULL)
-        fprintf(output, "namespace '%s' ", namespace);
-
-    if (elem->flags & XML_SCHEMAS_ELEM_NILLABLE)
-        fprintf(output, "nillable ");
-    if (elem->flags & XML_SCHEMAS_ELEM_DEFAULT)
-        fprintf(output, "default ");
-    if (elem->flags & XML_SCHEMAS_ELEM_FIXED)
-        fprintf(output, "fixed ");
-    if (elem->flags & XML_SCHEMAS_ELEM_ABSTRACT)
-        fprintf(output, "abstract ");
-    if (elem->flags & XML_SCHEMAS_ELEM_REF)
-        fprintf(output, "ref '%s' ", elem->ref);
-    if (elem->id != NULL)
-        fprintf(output, "id '%s' ", elem->id);
+    if (elem->flags & XML_SCHEMAS_ELEM_REF) {
+	fprintf(output, "Particle: %s", name);
+	fprintf(output, ", term element: %s", elem->ref);
+	if (elem->refNs != NULL)
+	    fprintf(output, " ns %s", elem->refNs);
+    } else { 
+	fprintf(output, "Element");
+	if (elem->flags & XML_SCHEMAS_ELEM_GLOBAL)
+	    fprintf(output, " (global)");
+	fprintf(output, ": %s ", elem->name);
+	if (namespace != NULL)
+	    fprintf(output, "ns %s", namespace);
+    }
     fprintf(output, "\n");
     if ((elem->minOccurs != 1) || (elem->maxOccurs != 1)) {
-        fprintf(output, "  ");
-        if (elem->minOccurs != 1)
-            fprintf(output, "min: %d ", elem->minOccurs);
+	fprintf(output, "  min %d ", elem->minOccurs);
         if (elem->maxOccurs >= UNBOUNDED)
             fprintf(output, "max: unbounded\n");
         else if (elem->maxOccurs != 1)
@@ -2422,22 +2414,52 @@ xmlSchemaElementDump(xmlSchemaElementPtr elem, FILE * output,
         else
             fprintf(output, "\n");
     }
-    if (elem->namedType != NULL) {
-        fprintf(output, "  type: %s", elem->namedType);
-        if (elem->namedTypeNs != NULL)
-            fprintf(output, " ns %s\n", elem->namedTypeNs);
-        else
-            fprintf(output, "\n");
+    /*
+    * Misc other properties.
+    */
+    if ((elem->flags & XML_SCHEMAS_ELEM_NILLABLE) ||
+	(elem->flags & XML_SCHEMAS_ELEM_ABSTRACT) ||
+	(elem->flags & XML_SCHEMAS_ELEM_FIXED) ||
+	(elem->flags & XML_SCHEMAS_ELEM_DEFAULT) ||
+	(elem->id != NULL)) {
+	fprintf(output, "  props: ");
+	if (elem->flags & XML_SCHEMAS_ELEM_FIXED)
+	    fprintf(output, "[fixed] ");
+	if (elem->flags & XML_SCHEMAS_ELEM_DEFAULT)
+	    fprintf(output, "[default] ");
+	if (elem->flags & XML_SCHEMAS_ELEM_ABSTRACT)
+	    fprintf(output, "[abstract] ");
+	if (elem->flags & XML_SCHEMAS_ELEM_NILLABLE)
+	    fprintf(output, "[nillable] ");
+	if (elem->id != NULL)
+	    fprintf(output, "[id: '%s'] ", elem->id);
+	fprintf(output, "\n");
     }
-    if (elem->substGroup != NULL) {
-        fprintf(output, "  substitutionGroup: %s", elem->substGroup);
-        if (elem->substGroupNs != NULL)
-            fprintf(output, " ns %s\n", elem->substGroupNs);
-        else
-            fprintf(output, "\n");
-    }
+    /*
+    * Default/fixed value.
+    */
     if (elem->value != NULL)
-        fprintf(output, "  default: %s", elem->value);
+	fprintf(output, "  value: '%s'\n", elem->value);
+    /*
+    * Type.
+    */
+    if (elem->namedType != NULL) {
+	fprintf(output, "  type: %s ", elem->namedType);
+	if (elem->namedTypeNs != NULL)
+	    fprintf(output, "ns %s\n", elem->namedTypeNs);
+	else
+	    fprintf(output, "\n");
+    }
+    /*
+    * Substitution group.
+    */
+    if (elem->substGroup != NULL) {
+	fprintf(output, "  substitutionGroup: %s ", elem->substGroup);
+	if (elem->substGroupNs != NULL)
+	    fprintf(output, "ns %s\n", elem->substGroupNs);
+	else
+	    fprintf(output, "\n");
+    }
 }
 
 /**
@@ -2479,81 +2501,86 @@ xmlSchemaTypeDump(xmlSchemaTypePtr type, FILE * output)
     }
     fprintf(output, "Type: ");
     if (type->name != NULL)
-        fprintf(output, "%s, ", type->name);
+        fprintf(output, "%s ", type->name);
     else
-        fprintf(output, "no name");
+        fprintf(output, "no name ");
+    if (type->targetNamespace != NULL)
+	fprintf(output, "ns %s ", type->targetNamespace);
     switch (type->type) {
         case XML_SCHEMA_TYPE_BASIC:
-            fprintf(output, "basic ");
+            fprintf(output, "[basic] ");
             break;
         case XML_SCHEMA_TYPE_SIMPLE:
-            fprintf(output, "simple ");
+            fprintf(output, "[simple] ");
             break;
         case XML_SCHEMA_TYPE_COMPLEX:
-            fprintf(output, "complex ");
+            fprintf(output, "[complex] ");
             break;
         case XML_SCHEMA_TYPE_SEQUENCE:
-            fprintf(output, "sequence ");
+            fprintf(output, "[sequence] ");
             break;
         case XML_SCHEMA_TYPE_CHOICE:
-            fprintf(output, "choice ");
+            fprintf(output, "[choice] ");
             break;
         case XML_SCHEMA_TYPE_ALL:
-            fprintf(output, "all ");
+            fprintf(output, "[all] ");
             break;
         case XML_SCHEMA_TYPE_UR:
-            fprintf(output, "ur ");
+            fprintf(output, "[ur] ");
             break;
         case XML_SCHEMA_TYPE_RESTRICTION:
-            fprintf(output, "restriction ");
+            fprintf(output, "[restriction] ");
             break;
         case XML_SCHEMA_TYPE_EXTENSION:
-            fprintf(output, "extension ");
+            fprintf(output, "[extension] ");
             break;
         default:
-            fprintf(output, "unknowntype%d ", type->type);
+            fprintf(output, "[unknown type %d] ", type->type);
             break;
-    }
-    if (type->base != NULL) {
-        fprintf(output, "base %s, ", type->base);
-    }
+    }    
+    fprintf(output, "content: ");
     switch (type->contentType) {
         case XML_SCHEMA_CONTENT_UNKNOWN:
-            fprintf(output, "unknown ");
+            fprintf(output, "[unknown] ");
             break;
         case XML_SCHEMA_CONTENT_EMPTY:
-            fprintf(output, "empty ");
+            fprintf(output, "[empty] ");
             break;
         case XML_SCHEMA_CONTENT_ELEMENTS:
-            fprintf(output, "element ");
+            fprintf(output, "[element] ");
             break;
         case XML_SCHEMA_CONTENT_MIXED:
-            fprintf(output, "mixed ");
+            fprintf(output, "[mixed] ");
             break;
         case XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS:
 	/* not used. */
             break;
         case XML_SCHEMA_CONTENT_BASIC:
-            fprintf(output, "basic ");
+            fprintf(output, "[basic] ");
             break;
         case XML_SCHEMA_CONTENT_SIMPLE:
-            fprintf(output, "simple ");
+            fprintf(output, "[simple] ");
             break;
         case XML_SCHEMA_CONTENT_ANY:
-            fprintf(output, "any ");
+            fprintf(output, "[any] ");
             break;
     }
     fprintf(output, "\n");
     if ((type->minOccurs != 1) || (type->maxOccurs != 1)) {
-        fprintf(output, "  ");
-        if (type->minOccurs != 1)
-            fprintf(output, "min: %d ", type->minOccurs);
+        fprintf(output, "  min: %d ", type->minOccurs);
         if (type->maxOccurs >= UNBOUNDED)
             fprintf(output, "max: unbounded\n");
         else if (type->maxOccurs != 1)
             fprintf(output, "max: %d\n", type->maxOccurs);
         else
             fprintf(output, "\n");
+    }
+    if (type->base != NULL) {
+        fprintf(output, "  base type: %s", type->base);
+	if (type->baseNs != NULL)
+	    fprintf(output, " ns %s\n", type->baseNs);
+	else
+	    fprintf(output, "\n");
     }
     if (type->annot != NULL)
         xmlSchemaAnnotDump(output, type->annot);

@@ -7529,24 +7529,6 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	        /*
 		 * Very first chars read from the document flow.
 		 */
-		cur = ctxt->input->cur[0];
-		if (IS_BLANK(cur)) {
-		    if ((ctxt->sax) && (ctxt->sax->setDocumentLocator))
-			ctxt->sax->setDocumentLocator(ctxt->userData,
-						      &xmlDefaultSAXLocator);
-		    ctxt->errNo = XML_ERR_DOCUMENT_START;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
-	    "Extra spaces at the beginning of the document are not allowed\n");
-		    ctxt->wellFormed = 0;
-		    ctxt->disableSAX = 1;
-		    SKIP_BLANKS;
-		    ret++;
-		    if (ctxt->input->buf == NULL)
-			avail = ctxt->input->length - (ctxt->input->cur - ctxt->input->base);
-		    else
-			avail = ctxt->input->buf->buffer->use - (ctxt->input->cur - ctxt->input->base);
-		}
 		if (avail < 2)
 		    goto done;
 

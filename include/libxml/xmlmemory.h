@@ -92,7 +92,6 @@ int	xmlMemUsed	(void);
 void	xmlMemDisplay	(FILE *fp);
 void	xmlMemShow	(FILE *fp, int nr);
 void	xmlMemoryDump	(void);
-int	xmlInitMemory	(void);
 
 #ifdef DEBUG_MEMORY_LOCATION
 /**

@@ -1,3 +1,8 @@
+Mon Dec 10 22:06:16 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlmemory.h: Hietaniemi Jarkko pointed out that
+	  xmlInitMemory() was declared twice
+
 Sun Dec  9 14:59:23 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c: do not reference strdup() !

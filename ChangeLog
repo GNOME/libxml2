@@ -1,3 +1,9 @@
+Sun Jan  5 23:35:47 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c : applied patch from Lukas Schroeder for register callbacks
+	* valid.c: modified patch from Lukas Schroeder to test
+	  register callbacks with --chkregister
+
 Sun Jan  5 02:23:20 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: seriously changed the way data are pushed to

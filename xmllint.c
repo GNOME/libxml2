@@ -11,6 +11,8 @@
 #include <string.h>
 #include <stdarg.h>
 
+#include <assert.h>
+
 #if defined (_WIN32) && !defined(__CYGWIN__)
 #ifdef _MSC_VER
 #include <winsock2.h>
@@ -126,6 +128,7 @@ static int catalogs = 0;
 static int nocatalogs = 0;
 #endif
 static int stream = 0;
+static int chkregister = 0;
 static const char *output = NULL;
 
 
@@ -908,7 +911,7 @@ static void parseAndPrintFile(char *filename) {
 		    printf("%d element types can be inserted under root:\n",
 		           nb);
 		    for (i = 0;i < nb;i++) {
-			 printf("%s\n", list[i]);
+			 printf("%s\n", (char *) list[i]);
 		    }
 		}
 	    }
@@ -1175,9 +1178,24 @@ static void usage(const char *name) {
     printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
     printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
     printf("\t--stream : use the streaming interface to process very large files\n");
+    printf("\t--chkregister : verify the node registration code\n");
     printf("\nLibxml project home page: http://xmlsoft.org/\n");
     printf("To report bugs or get some help check: http://xmlsoft.org/bugs.html\n");
 }
+
+static void registerNode(xmlNodePtr node)
+{
+    node->_private = malloc(sizeof(long));
+    *(long*)node->_private = (long) 0x81726354;
+}
+
+static void deregisterNode(xmlNodePtr node)
+{
+    assert(node->_private != NULL);
+    assert(*(long*)node->_private == (long) 0x81726354);
+    free(node->_private);
+}
+
 int
 main(int argc, char **argv) {
     int i, acount;
@@ -1350,6 +1368,10 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-stream")) ||
 	         (!strcmp(argv[i], "--stream"))) {
 	     stream++;
+	}
+	else if ((!strcmp(argv[i], "-chkregister")) ||
+	         (!strcmp(argv[i], "--chkregister"))) {
+	     chkregister++;
 	} else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);
 	    usage(argv[0]);
@@ -1371,6 +1393,12 @@ main(int argc, char **argv) {
 	}
     }
 #endif
+
+    if (chkregister) {
+	xmlRegisterNodeDefault(registerNode);
+	xmlDeregisterNodeDefault(deregisterNode);
+    }
+
     xmlLineNumbersDefault(1);
     if (loaddtd != 0)
 	xmlLoadExtDtdDefaultValue |= XML_DETECT_IDS;

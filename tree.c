@@ -447,6 +447,9 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
 	    }
 	}
     }
+
+    if (xmlRegisterNodeDefaultValue)
+	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
 
@@ -1300,6 +1303,9 @@ xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
 	    cur->prev = prev;
 	}
     }
+
+    if (xmlRegisterNodeDefaultValue)
+	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
 
@@ -1579,6 +1585,9 @@ xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
     
     cur->name = name;
     cur->ns = ns;
+
+    if (xmlRegisterNodeDefaultValue)
+	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
 
@@ -3202,13 +3211,22 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
     if (parent != NULL) {
 	xmlNodePtr tmp;
 
+	/*
+	 * this is a tricky part for the node register thing:
+	 * in case ret does get coalesced in xmlAddChild
+	 * the deregister-node callback is called; so we register ret now already
+	 */
+	if (xmlRegisterNodeDefaultValue)
+	    xmlRegisterNodeDefaultValue((xmlNodePtr)ret);
+
         tmp = xmlAddChild(parent, ret);
 	/* node could have coalesced */
 	if (tmp != ret)
 	    return(tmp);
     }
     
-    if (!recursive) return(ret);
+    if (!recursive)
+	goto out;
     if (node->nsDef != NULL)
         ret->nsDef = xmlCopyNamespaceList(node->nsDef);
 
@@ -3255,6 +3273,11 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
         ret->children = xmlStaticCopyNodeList(node->children, doc, ret);
 	UPDATE_LAST_CHILD_AND_PARENT(ret)
     }
+
+out:
+    /* if parent != NULL we already registered the node above */
+    if (parent == NULL && xmlRegisterNodeDefaultValue)
+	xmlRegisterNodeDefaultValue((xmlNodePtr)ret);
     return(ret);
 }
 

@@ -1,3 +1,9 @@
+Sun Jan 13 17:14:06 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: trying to avoid troubles when a subtree is copied
+	  and coalesced in part with the target tree. Should fix 
+	  bug #67407
+
 Sun Jan 13 16:37:15 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fixed validation of attributes content of type

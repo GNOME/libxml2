@@ -2794,8 +2794,14 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
       if (node->type == XML_ELEMENT_NODE)
         ret->content = (void*)(long) node->content;
     }
-    if (parent != NULL)
-        xmlAddChild(parent, ret);
+    if (parent != NULL) {
+	xmlNodePtr tmp;
+
+        tmp = xmlAddChild(parent, ret);
+	/* node could have coalesced */
+	if (tmp != ret)
+	    return(tmp);
+    }
     
     if (!recursive) return(ret);
     if (node->nsDef != NULL)
@@ -2871,7 +2877,8 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
 	if (ret == NULL) {
 	    q->prev = NULL;
 	    ret = p = q;
-	} else {
+	} else if (p != q) {
+	/* the test is required if xmlStaticCopyNode coalesced 2 text nodes */
 	    p->next = q;
 	    q->prev = p;
 	    p = q;
@@ -3856,12 +3863,14 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE: {
-	    xmlNodePtr last, newNode;
+	    xmlNodePtr last, newNode, tmp;
 
 	    last = cur->last;
 	    newNode = xmlNewTextLen(content, len);
 	    if (newNode != NULL) {
-		xmlAddChild(cur, newNode);
+		tmp = xmlAddChild(cur, newNode);
+		if (tmp != newNode)
+		    return;
 	        if ((last != NULL) && (last->next == newNode)) {
 		    xmlTextMerge(last, newNode);
 		}

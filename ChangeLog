@@ -1,3 +1,9 @@
+Sun Mar  9 18:02:31 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmllint.1
+	regenerating man page from xmllint.xml to pick up Aleksey's
+	change
+
 Sun Mar  9 13:53:16 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* xmllint.c doc/xmllint.xml: use $XMLLINT_INDENT environment

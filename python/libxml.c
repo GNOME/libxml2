@@ -47,6 +47,7 @@ libxml_charPtrWrap(const char *str) {
     }
     /* TODO: look at deallocation */
     ret = PyString_FromString(str);
+    xmlFree(str);
     return(ret);
 }
 

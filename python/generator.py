@@ -6,6 +6,7 @@
 functions = {}
 
 import os
+import string
 import xmllib
 try:
     import sgmlop
@@ -157,6 +158,7 @@ def function(name, desc, ret, args, file):
     global functions
 
     functions[name] = (desc, ret, args, file)
+
 
 skipped_modules = {
     'xmlmemory': None,
@@ -358,10 +360,12 @@ for function in functions.keys():
     ret = print_function_wrapper(function, wrapper, export, include)
     if ret < 0:
         failed = failed + 1
-    if ret == 1:
-        nb_wrap = nb_wrap + 1
+	del functions[function]
     if ret == 0:
         skipped = skipped + 1
+	del functions[function]
+    if ret == 1:
+        nb_wrap = nb_wrap + 1
 include.close()
 export.close()
 wrapper.close()
@@ -369,3 +373,240 @@ wrapper.close()
 print "Generated %d wrapper functions, %d failed, %d skipped\n" % (nb_wrap,
 							  failed, skipped);
 print "Missing type converters: %s" % (unknown_types.keys())
+
+function_classes = {}
+for name in functions.keys():
+    (desc, ret, args, file) = functions[name]
+    if name[0:3] == "xml" and len(args) >= 1 and args[0][1] == "xmlNodePtr":
+        if name[0:11] == "xmlNodeList":
+	    func = name[11:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (0, func, name, ret, args, file)
+	    if function_classes.has_key('xmlNode'):
+		function_classes['xmlNode'].append(info)
+	    else:
+		function_classes['xmlNode'] = [info]
+	elif name[0:7] == "xmlNode":
+	    func = name[7:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (0, func, name, ret, args, file)
+	    if function_classes.has_key('xmlNode'):
+		function_classes['xmlNode'].append(info)
+	    else:
+		function_classes['xmlNode'] = [info]
+	elif name[0:6] == "xmlGet":
+	    func = name[6:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (0, func, name, ret, args, file)
+	    if function_classes.has_key('xmlNode'):
+		function_classes['xmlNode'].append(info)
+	    else:
+		function_classes['xmlNode'] = [info]
+	else:
+	    func = name[3:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (0, func, name, ret, args, file)
+	    if function_classes.has_key('xmlNode'):
+		function_classes['xmlNode'].append(info)
+	    else:
+		function_classes['xmlNode'] = [info]
+    elif name[0:3] == "xml" and len(args) >= 2 and args[1][1] == "xmlNodePtr":
+        if name[0:11] == "xmlNodeList":
+	    func = name[11:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (1, func, name, ret, args, file)
+	    if function_classes.has_key('xmlNode'):
+		function_classes['xmlNode'].append(info)
+	    else:
+		function_classes['xmlNode'] = [info]
+	elif name[0:7] == "xmlNode":
+	    func = name[7:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (1, func, name, ret, args, file)
+	    if function_classes.has_key('xmlNode'):
+		function_classes['xmlNode'].append(info)
+	    else:
+		function_classes['xmlNode'] = [info]
+	elif name[0:6] == "xmlGet":
+	    func = name[6:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (1, func, name, ret, args, file)
+	    if function_classes.has_key('xmlNode'):
+		function_classes['xmlNode'].append(info)
+	    else:
+		function_classes['xmlNode'] = [info]
+	else:
+	    func = name[3:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (1, func, name, ret, args, file)
+	    if function_classes.has_key('xmlNode'):
+		function_classes['xmlNode'].append(info)
+	    else:
+		function_classes['xmlNode'] = [info]
+    elif name[0:3] == "xml" and len(args) >= 1 and args[0][1] == "xmlDocPtr":
+	if name[0:6] == "xmlDoc":
+	    func = name[6:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (0, func, name, ret, args, file)
+	    if function_classes.has_key('xmlDoc'):
+		function_classes['xmlDoc'].append(info)
+	    else:
+		function_classes['xmlDoc'] = [info]
+	elif name[0:6] == "xmlGet":
+	    func = name[6:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (0, func, name, ret, args, file)
+	    if function_classes.has_key('xmlDoc'):
+		function_classes['xmlDoc'].append(info)
+	    else:
+		function_classes['xmlDoc'] = [info]
+	else:
+	    func = name[3:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (0, func, name, ret, args, file)
+	    if function_classes.has_key('xmlDoc'):
+		function_classes['xmlDoc'].append(info)
+	    else:
+		function_classes['xmlDoc'] = [info]
+    elif name[0:3] == "xml" and len(args) >= 2 and args[1][1] == "xmlDocPtr":
+	if name[0:6] == "xmlDoc":
+	    func = name[6:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (1, func, name, ret, args, file)
+	    if function_classes.has_key('xmlDoc'):
+		function_classes['xmlDoc'].append(info)
+	    else:
+		function_classes['xmlDoc'] = [info]
+	elif name[0:6] == "xmlGet":
+	    func = name[6:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (1, func, name, ret, args, file)
+	    if function_classes.has_key('xmlDoc'):
+		function_classes['xmlDoc'].append(info)
+	    else:
+		function_classes['xmlDoc'] = [info]
+	else:
+	    func = name[3:]
+	    func = string.lower(func[0:1]) + func[1:]
+	    info = (1, func, name, ret, args, file)
+	    if function_classes.has_key('xmlDoc'):
+		function_classes['xmlDoc'].append(info)
+	    else:
+		function_classes['xmlDoc'] = [info]
+    elif ret[0] == "xmlDocPtr" or ret[0] == "xmlDtdPtr":
+	func = name[3:]
+	func = string.lower(func[0:1]) + func[1:]
+	info = (0, func, name, ret, args, file)
+	if function_classes.has_key('None'):
+	    function_classes['None'].append(info)
+	else:
+	    function_classes['None'] = [info]
+    else:
+        print "unable to guess class for %s:%s" % (file,name)
+
+classes_type = {
+    "xmlNodePtr": ("._o", "xmlNode(_obj=%s)"),
+    "xmlNode *": ("._o", "xmlNode(_obj=%s)"),
+    "xmlDocPtr": ("._o", "xmlDoc(_obj=%s)"),
+    "xmlDocPtr *": ("._o", "xmlDoc(_obj=%s)"),
+    "xmlAttrPtr": ("._o", "xmlNode(_obj=%s)"),
+    "xmlAttr *": ("._o", "xmlNode(_obj=%s)"),
+    "xmlNsPtr": ("._o", "xmlNode(_obj=%s)"),
+    "xmlNs *": ("._o", "xmlNode(_obj=%s)"),
+    "xmlDtdPtr": ("._o", "xmlNode(_obj=%s)"),
+    "xmlDtd *": ("._o", "xmlNode(_obj=%s)"),
+    "xmlEntityPtr": ("._o", "xmlNode(_obj=%s)"),
+    "xmlEntity *": ("._o", "xmlNode(_obj=%s)"),
+}
+
+classes = open("libxml2class.py", "w")
+
+if function_classes.has_key("None"):
+    for info in function_classes["None"]:
+	(index, func, name, ret, args, file) = info
+	classes.write("def %s(" % func)
+	n = 0
+	for arg in args:
+	    if n != 0:
+	        classes.write(", ")
+	    classes.write("%s" % arg[0])
+	    n = n + 1
+	classes.write("):\n")
+	if ret[0] != "void":
+	    classes.write("    ret = ");
+	else:
+	    classes.write("    ");
+	classes.write("_libxml.%s(" % name)
+	n = 0
+	for arg in args:
+	    if n != 0:
+		classes.write(", ");
+	    classes.write("%s" % arg[0])
+	    if classes_type.has_key(arg[1]):
+		classes.write(classes_type[arg[1]][0])
+	    n = n + 1
+	classes.write(")\n");
+	if ret[0] != "void":
+	    if classes_type.has_key(ret[0]):
+		classes.write("    if ret == None: return None\n");
+		classes.write("    return ");
+		classes.write(classes_type[ret[0]][1] % ("ret"));
+		classes.write("\n");
+	    else:
+		classes.write("    return ret\n");
+	classes.write("\n");
+
+for classname in function_classes.keys():
+    if classname == "None":
+        pass
+    else:
+	classes.write("class %s(xmlCore):\n" % classname);
+        if classname == "xmlNode":
+	    classes.write("    def __init__(self, _obj=None):\n")
+	    classes.write("        self._o = None\n")
+	    classes.write("        xmlCore.__init__(self, _obj=_obj)\n\n")
+        elif classname == "xmlDoc":
+	    classes.write("    def __init__(self, _obj=None):\n")
+	    classes.write("        self._o = None\n")
+	    classes.write("        xmlCore.__init__(self, _obj=_obj)\n\n")
+	else:
+	    classes.write("    def __init__(self, _obj=None):\n")
+	    classes.write("        if _obj != None:self._o = _obj;return\n")
+	    classes.write("        self._o = None\n\n");
+	for info in function_classes[classname]:
+	    (index, func, name, ret, args, file) = info
+	    classes.write("    def %s(self" % func)
+	    n = 0
+	    for arg in args:
+	        if n != index:
+		    classes.write(", %s" % arg[0])
+		n = n + 1
+	    classes.write("):\n")
+	    if ret[0] != "void":
+	        classes.write("        ret = ");
+	    else:
+	        classes.write("        ");
+	    classes.write("_libxml.%s(" % name)
+	    n = 0
+	    for arg in args:
+	        if n != 0:
+		    classes.write(", ");
+	        if n != index:
+		    classes.write("%s" % arg[0])
+		else:
+		    classes.write("self");
+		if classes_type.has_key(arg[1]):
+		    classes.write(classes_type[arg[1]][0])
+		n = n + 1
+	    classes.write(")\n");
+	    if ret[0] != "void":
+	        if classes_type.has_key(ret[0]):
+		    classes.write("        if ret == None: return None\n");
+		    classes.write("        return ");
+		    classes.write(classes_type[ret[0]][1] % ("ret"));
+		    classes.write("\n");
+		else:
+		    classes.write("        return ret\n");
+	    classes.write("\n");
+
+classes.close()

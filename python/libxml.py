@@ -1,26 +1,12 @@
 import _libxml
 
-class xmlNode:
+class xmlCore:
     def __init__(self, _obj=None):
         if _obj != None: 
 	    self._o = _obj;
 	    return
 	self._o = None
 
-#    def __getattr__(self, attr):
-#	attrs = {
-#	'lower': _gtk.gtk_adjustment_get_lower,
-#	'upper': _gtk.gtk_adjustment_get_upper,
-#	'value': _gtk.gtk_adjustment_get_value,
-#	'step_increment': _gtk.gtk_adjustment_get_step_increment,
-#	'page_increment': _gtk.gtk_adjustment_get_page_increment,
-#	'page_size': _gtk.gtk_adjustment_get_page_size
-#	}
-#	if attrs.has_key(attr):
-#	    ret = attrs[attr](self._o)
-#	    if ret == None:
-#	        return None
-#	    return attrs[attr](self._o)
     def __getattr__(self, attr):
         if attr == "parent":
 	    ret = _libxml.parent(self._o)
@@ -107,9 +93,6 @@ class xmlNode:
     def free(self):
         _libxml.freeDoc(self._o)
 	    
-
-class xmlDoc(xmlNode):
-    def __init__(self, file = None, _doc=None):
-	if _doc == None and file != None:
-	    _doc = _libxml.parseFile(file)
-	xmlNode.__init__(self, _obj=_doc)
+#
+# Everything below this point is automatically generated
+#

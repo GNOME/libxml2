@@ -1,3 +1,8 @@
+Thu Jan 31 00:48:06 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c python/libxml.py:
+	  more work on the python bindings generator.
+
 Wed Jan 30 21:51:26 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/libxml_wrap.h:

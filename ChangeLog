@@ -1,3 +1,7 @@
+Tue Mar 25 12:07:03 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/setup.py.in : was missing "drv_libxml2.py"
+
 Mon Mar 24 19:38:05 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c xpath.c: some changes related to the new way of 

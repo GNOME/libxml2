@@ -87,7 +87,7 @@ os.path.join(ROOT,'lib'),
 
 xml_files = ["libxml2-api.xml", "libxml2-python-api.xml",
              "libxml.c", "libxml.py", "libxml_wrap.h", "types.c",
-	     "xmlgenerator.py", "README", "TODO"]
+	     "xmlgenerator.py", "README", "TODO", "drv_libxml2.py"]
 
 xslt_files = ["libxslt-api.xml", "libxslt-python-api.xml",
              "libxslt.c", "libxsl.py", "libxslt_wrap.h",

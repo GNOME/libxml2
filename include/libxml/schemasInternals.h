@@ -1,10 +1,11 @@
 /*
- * schemasInternals.h : internal interfaces for the XML Schemas handling
- *                      and schema validity checking
+ * Summary: internal interfaces for XML Schemas
+ * Description: internal interfaces for the XML Schemas handling
+ *              and schema validity checking
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * Author: Daniel Veillard
  */
 
 

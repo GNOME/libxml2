@@ -1,10 +1,11 @@
 /*
- * schemastypes.c : interface of the XML Schema Datatypes
- *             definition and validity checking
+ * Summary: implementation of XML Schema Datatypes
+ * Description: module providing the XML Schema Datatypes implementation
+ *              both definition and validity checking
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * Daniel Veillard <veillard@redhat.com>
+ * Author: Daniel Veillard
  */
 
 

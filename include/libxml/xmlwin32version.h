@@ -1,10 +1,11 @@
 /*
- * xmlwin32version.h : compile-time version informations for the XML parser
- *                     when compiled on the Windows platform
+ * Summary: compile-time version informations on Windows
+ * Description: compile-time version informations for the XML library
+ *              when compiled on the Windows platform
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_VERSION_H__

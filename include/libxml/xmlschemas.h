@@ -1,10 +1,11 @@
 /*
- * schemas.h : interface to the XML Schemas handling and schema validity
- *             checking
+ * Summary: incomplete XML Schemas structure implementation
+ * Description: interface to the XML Schemas handling and schema validity
+ *              checking, it is incomplete right now.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * Author: Daniel Veillard
  */
 
 

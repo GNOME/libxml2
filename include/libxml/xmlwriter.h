@@ -1,13 +1,10 @@
-
 /*
- * xmlwriter.h : Interfaces,
-					 constants and types of the
- * text writing API.for XML
+ * Summary: text writing API for XML
+ * Description: text writing API for XML
  *
- * For license and disclaimer see the license and disclaimer of
- * libxml2.
+ * Copy: See Copyright for the status of this software.
  *
- * alfred@mickautsch.de
+ * Author: Alfred Mickautsch <alfred@mickautsch.de>
  */
 
 #ifndef __XML_XMLWRITER_H__

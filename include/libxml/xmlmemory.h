@@ -1,7 +1,11 @@
 /*
- * xmlmemory.h: interface for the memory allocation debug.
+ * Summary: interface for the memory allocator
+ * Description: provides interfaces for the memory allocator,
+ *              including debugging capabilities.
  *
- * daniel@veillard.com
+ * Copy: See Copyright for the status of this software.
+ *
+ * Author: Daniel Veillard
  */
 
 

@@ -1,15 +1,17 @@
 /**
- * catalog.h: interfaces of the Catalog handling system
+ * Summary: interfaces to the Catalog handling system
+ * Description: the catalog module implements the support for
+ * XML Catalogs and SGML catalogs
  *
- * Reference:  SGML Open Technical Resolution TR9401:1997.
- *             http://www.jclark.com/sp/catalog.htm
+ * SGML Open Technical Resolution TR9401:1997.
+ * http://www.jclark.com/sp/catalog.htm
  *
- *             XML Catalogs Working Draft 12 Jun 2001
- *             http://www.oasis-open.org/committees/entity/spec-2001-06-12.html
+ * XML Catalogs Working Draft 06 August 2001
+ * http://www.oasis-open.org/committees/entity/spec-2001-08-06.html
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_CATALOG_H__

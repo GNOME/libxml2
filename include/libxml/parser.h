@@ -1,9 +1,10 @@
 /*
- * parser.h : Interfaces, constants and types related to the XML parser.
+ * Summary: the core parser module
+ * Description: Interfaces, constants and types related to the XML parser
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_PARSER_H__

@@ -1,9 +1,10 @@
 /*
- * xmlexports.h : macros for marking symbols as exportable/importable.
+ * Summary: macros for marking symbols as exportable/importable.
+ * Description: macros for marking symbols as exportable/importable.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * igor@zlatkovic.com
+ * Author: Igor Zlatovic <igor@zlatkovic.com>
  */
 
 #ifndef __XML_EXPORTS_H__

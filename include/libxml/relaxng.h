@@ -1,9 +1,10 @@
 /*
- * relaxng.h: header for the implementation of the Relax-NG validation
+ * Summary: implementation of the Relax-NG validation
+ * Description: implementation of the Relax-NG validation
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_RELAX_NG__

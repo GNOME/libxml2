@@ -1,9 +1,11 @@
 /*
- * SAX.h : Old SAX vewrsion1 handler interfaces.
+ * Summary: Old SAX version 1 handler, deprecated
+ * Description: DEPRECATED set of SAX version 1 interfaces used to
+ *              build the DOM tree.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * Daniel Veillard <daniel@veillard.com>
+ * Author: Daniel Veillard
  */
 
 

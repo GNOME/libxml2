@@ -1,11 +1,11 @@
 /**
- * uri.c: library of generic URI related routines 
+ * Summary: library of generic URI related routines
+ * Description: library of generic URI related routines
+ *              Implements RFC 2396
  *
- * Reference: RFC 2396
+ * Copy: See Copyright for the status of this software.
  *
- * See Copyright for the status of this software.
- *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_URI_H__

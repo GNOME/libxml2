@@ -1,10 +1,11 @@
 /*
- * HTMLtree.h : describes the structures found in an tree resulting
- *              from an XML parsing.
+ * Summary: specific APIs to process HTML tree, especially serialization
+ * Description: this module implements a few function needed to process
+ *              tree in an HTML specific way.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __HTML_TREE_H__

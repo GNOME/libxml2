@@ -1,9 +1,11 @@
 /*
- * nanohttp.c: minimalist FTP implementation to fetch external subsets.
+ * Summary: minimal FTP implementation
+ * Description: minimal FTP implementation allowing to fetch resources
+ *              like external subset.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
  
 #ifndef __NANO_FTP_H__

@@ -1,8 +1,9 @@
 /*
- * encoding.h : interface for the encoding conversion functions needed for
- *              XML
+ * Summary: interface for the encoding conversion functions
+ * Description: interface for the encoding conversion functions needed for
+ *              XML basic encoding and iconv() support.
  *
- * Related specs: 
+ * Related specs are
  * rfc2044        (UTF-8 and UTF-16) F. Yergeau Alis Technologies
  * [ISO-10646]    UTF-8 and UTF-16 in Annexes
  * [ISO-8859-1]   ISO Latin-1 characters codes.
@@ -13,9 +14,9 @@
  * [US-ASCII]     Coded Character Set--7-bit American Standard Code for
  *                Information Interchange, ANSI X3.4-1986.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_CHAR_ENCODING_H__

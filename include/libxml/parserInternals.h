@@ -1,10 +1,12 @@
 /*
- * parserInternals.h : internals routines exported by the parser.
+ * Summary: internals routines exported by the parser.
+ * Description: this module exports a number of internal parsing routines
+ *              they are not really all intended for applications but
+ *              can prove useful doing low level processing.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
- *
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_PARSER_INTERNALS_H__

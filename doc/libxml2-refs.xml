@@ -6037,9 +6037,9 @@
     </type>
     <type name='xmlEnumerationPtr'>
       <ref name='xmlCreateEnumeration'/>
+      <ref name='xmlParseNotationType'/>
       <ref name='xmlCopyEnumeration'/>
       <ref name='xmlParseEnumerationType'/>
-      <ref name='xmlParseNotationType'/>
     </type>
     <type name='xmlErrorPtr'>
       <ref name='xmlCtxtGetLastError'/>

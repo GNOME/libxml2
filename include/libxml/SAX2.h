@@ -1,9 +1,11 @@
 /*
- * SAX.h : Default SAX2 handler interfaces to build a tree.
+ * Summary: SAX2 parser interface used to build the DOM tree
+ * Description: those are the default SAX2 interfaces used by
+ *              the library when building DOM tree.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * Daniel Veillard <daniel@veillard.com>
+ * Author: Daniel Veillard
  */
 
 

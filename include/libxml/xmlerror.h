@@ -1,3 +1,12 @@
+/*
+ * Summary: error handling
+ * Description: the API used to report errors
+ *
+ * Copy: See Copyright for the status of this software.
+ *
+ * Author: Daniel Veillard
+ */
+
 #include <libxml/parser.h>
 
 #ifndef __XML_ERROR_H__

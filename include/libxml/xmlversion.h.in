@@ -1,9 +1,10 @@
 /*
- * xmlversion.h : compile-time version informations for the XML parser.
+ * Summary: compile-time version informations
+ * Description: compile-time version informations for the XML library
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_VERSION_H__

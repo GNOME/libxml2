@@ -1,9 +1,10 @@
 /*
- * valid.h : interface to the DTD handling and the validity checking
+ * Summary: The DTD validation
+ * Description: API for the DTD handling and the validity checking
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 

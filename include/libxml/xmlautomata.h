@@ -1,9 +1,10 @@
 /*
- * automata.h : description of the API to build regexp automats
+ * Summary: API to build regexp automata
+ * Description: the API to build regexp automata
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * Daniel Veillard <veillard@redhat.com>
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_AUTOMATA_H__

@@ -1,9 +1,11 @@
 /*
- * regexp.h : describes the basic API for libxml regular expressions handling
+ * Summary: regular expressions handling
+ * Description: basic API for libxml regular expressions handling used
+ *              for XML Schemas and validation.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * Daniel Veillard <veillard@redhat.com>
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_REGEXP_H__

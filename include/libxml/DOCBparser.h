@@ -1,9 +1,11 @@
 /*
- * DOCBparser.h : interface for a DocBook SGML non-verifying parser
+ * Summary: old DocBook SGML parser
+ * Description: interface for a DocBook SGML non-verifying parser
+ * This code is DEPRECATED, and should not be used anymore.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __DOCB_PARSER_H__

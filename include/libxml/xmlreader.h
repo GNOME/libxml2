@@ -1,9 +1,10 @@
 /*
- * xmlreader.h : Interfaces, constants and types of the XML streaming API.
+ * Summary: the XMLReader implementation
+ * Description: API of the XML streaming API based on C# interfaces.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_XMLREADER_H__

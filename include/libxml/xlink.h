@@ -1,13 +1,10 @@
 /*
- * xlink.h : interfaces to the hyperlinks detection module
+ * Summary: unfinished XLink detection module
+ * Description: unfinished XLink detection module
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * Related specification: http://www.w3.org/TR/xlink
- *                        http://www.w3.org/HTML/
- *     and XBase 
- *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_XLINK_H__

@@ -1,8 +1,11 @@
 /*
- * debugXML.h : Interfaces to a set of routines used for debugging the tree
+ * Summary: Tree debugging APIs
+ * Description: Interfaces to a set of routines used for debugging the tree
  *              produced by the XML parser.
  *
- * Daniel Veillard <daniel@veillard.com>
+ * Copy: See Copyright for the status of this software.
+ *
+ * Author: Daniel Veillard
  */
 
 #ifndef __DEBUG_XML__

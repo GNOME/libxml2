@@ -1,9 +1,11 @@
 /**
- * threads.c: set of generic threading related routines 
+ * Summary: interfaces for thread handling
+ * Description: set of generic threading related routines
+ *              should work with pthreads, Windows native or TLS threads
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_THREADS_H__

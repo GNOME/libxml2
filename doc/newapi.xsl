@@ -43,7 +43,7 @@
       <li><a style="font-weight:bold" 
              href="{$href_base}examples/index.html">Code Examples</a></li>
       <li><a style="font-weight:bold"
-             href="{$href_base}index.html">API Menu</a></li>
+             href="index.html">API Menu</a></li>
       <li><a href="libxml-parser.html">Parser API</a></li>
       <li><a href="libxml-tree.html">Tree API</a></li>
       <li><a href="libxml-xmlreader.html">Reader API</a></li>
@@ -103,6 +103,7 @@
 
   <xsl:template name="docstyle">
     <style type="text/css">
+      div.deprecated pre.programlisting {border-style: double;border-color:red}
       pre.programlisting {border-style: double}
     </style>
   </xsl:template>
@@ -244,7 +245,7 @@
 	<xsl:if test="@info != ''">
 	  <xsl:text>&#9;: </xsl:text>
 	  <xsl:call-template name="dumptext">
-	    <xsl:with-param name="text" select="substring(@info, 1, 50)"/>
+	    <xsl:with-param name="text" select="substring(@info, 1, 40)"/>
 	  </xsl:call-template>
 	</xsl:if>
 	<xsl:text>
@@ -425,6 +426,15 @@
     <xsl:apply-templates select="key('symbols', string(@symbol))[1]"/>
   </xsl:template>
 
+  <xsl:template name="description">
+    <xsl:if test="deprecated">
+      <h2 style="font-weight:bold;color:red;text-align:center">This module is deprecated</h2>
+    </xsl:if>
+    <xsl:if test="description">
+      <p><xsl:value-of select="description"/></p>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template match="file">
     <xsl:variable name="name" select="@name"/>
     <xsl:variable name="title">Module <xsl:value-of select="$name"/> from <xsl:value-of select="/api/@name"/></xsl:variable>
@@ -460,13 +470,28 @@
 				    <tr>
 				      <td bgcolor="#fffacd">
 	    <xsl:call-template name="navbar"/>
-	    <h2>Table of Contents</h2>
-	    <xsl:apply-templates select="exports" mode="toc"/>
-	    <h2>Description</h2>
-	    <xsl:text>
+	    <xsl:call-template name="description"/>
+	    <xsl:choose>
+	      <xsl:when test="deprecated">
+	        <div class="deprecated">
+		  <h2>Table of Contents</h2>
+		  <xsl:apply-templates select="exports" mode="toc"/>
+		  <h2>Description</h2>
+		  <xsl:text>
 </xsl:text>
-	    <xsl:apply-templates select="exports"/>
-					<p><a href="bugs.html">Daniel Veillard</a></p>
+		  <xsl:apply-templates select="exports"/>
+		</div>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<h2>Table of Contents</h2>
+		<xsl:apply-templates select="exports" mode="toc"/>
+		<h2>Description</h2>
+		<xsl:text>
+</xsl:text>
+		<xsl:apply-templates select="exports"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+					<p><a href="{$href_base}bugs.html">Daniel Veillard</a></p>
 				      </td>
 				    </tr>
 				  </table>
@@ -489,12 +514,17 @@
 
   <xsl:template match="file" mode="toc">
     <xsl:variable name="name" select="@name"/>
-    <li> <a href="libxml-{$name}.html"><xsl:value-of select="$name"/></a></li>
+    <li>
+      <a href="libxml-{$name}.html"><xsl:value-of select="$name"/></a>
+      <xsl:text>: </xsl:text>
+      <xsl:value-of select="summary"/>
+    </li>
   </xsl:template>
 
-  <xsl:template match="/">
+  <xsl:template name="mainpage">
+    <xsl:param name="file" select="concat($htmldir, '/index.html')"/>
     <xsl:variable name="title">Reference Manual for <xsl:value-of select="/api/@name"/></xsl:variable>
-    <xsl:document href="{$htmldir}/index.html" method="xml" encoding="ISO-8859-1"
+    <xsl:document href="{$file}" method="xml" encoding="ISO-8859-1"
       doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
       doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 	<html>
@@ -529,7 +559,7 @@
 	    <ul>
 	    <xsl:apply-templates select="/api/files/file" mode="toc"/>
 	    </ul>
-					<p><a href="bugs.html">Daniel Veillard</a></p>
+					<p><a href="{$href_base}bugs.html">Daniel Veillard</a></p>
 				      </td>
 				    </tr>
 				  </table>
@@ -548,6 +578,17 @@
 	  </body>
 	</html>
     </xsl:document>
+  </xsl:template>
+
+  <xsl:template match="/">
+    <!-- Save the main index.html as well as a couple of copies -->
+    <xsl:call-template name="mainpage"/>
+    <xsl:call-template name="mainpage">
+      <xsl:with-param name="file" select="concat($htmldir, '/book1.html')"/>
+    </xsl:call-template>
+    <xsl:call-template name="mainpage">
+      <xsl:with-param name="file" select="concat($htmldir, '/libxml-lib.html')"/>
+    </xsl:call-template>
     <!-- now build the file for each of the modules -->
     <xsl:apply-templates select="/api/files/file"/>
   </xsl:template>

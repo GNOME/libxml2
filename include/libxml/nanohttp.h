@@ -1,9 +1,11 @@
 /*
- * nanohttp.c: minimalist HTTP implementation to fetch external subsets.
+ * Summary: minimal HTTP implementation
+ * Description: minimal HTTP implementation allowing to fetch resources
+ *              like external subset.
  *
- * See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
  
 #ifndef __NANO_HTTP_H__

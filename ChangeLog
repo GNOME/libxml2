@@ -1,3 +1,10 @@
+Thu Sep  5 12:49:35 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: reimplemented a large part of the XInclude
+	  processor, trying to minimize resources used, James Henstridge
+	  provided a huge test case which was exhibiting severe memory
+	  consumption problems.
+
 Thu Sep  5 10:07:13 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am: applied patch from Christophe Merlet to

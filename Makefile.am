@@ -262,7 +262,7 @@ EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     libxml.pc.in
 
-pkgconfigdir = $(libexecdir)/pkgconfig
+pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml.pc
 
 xmlConf.sh: xmlConf.sh.in Makefile

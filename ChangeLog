@@ -1,3 +1,8 @@
+Tue Jan 11 14:41:47 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fixed bug #163641 when the value passed for
+	  an atomic list type is NULL.
+
 Tue Jan 11 10:14:33 HKT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* Makefile.am configure.in: fixed dependency on python 2.3,

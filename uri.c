@@ -1966,4 +1966,58 @@ done:
     return(val);
 }
 
+/**
+ * xmlCanonicPath:
+ * @path:  the resource locator in a filesystem notation
+ *
+ * Constructs a canonic path from the specified path. 
+ *
+ * Returns a new canonic path, or a duplicate of the path parameter if the 
+ * construction fails. The caller is responsible for freeing the memory occupied
+ * by the returned string. If there is insufficient memory available, or the 
+ * argument is NULL, the function returns NULL.
+ */
+#define IS_WINDOWS_PATH(p) 					\
+	((p != NULL) &&						\
+	 (((p[0] >= 'a') && (p[0] <= 'z')) ||			\
+	  ((p[0] >= 'A') && (p[0] <= 'Z'))) &&			\
+	 (p[1] == ':') && ((p[2] == '/') || (p[2] == '\\')))
+xmlChar*
+xmlCanonicPath(const xmlChar *path)
+{
+    int len, i = 0;
+    xmlChar *ret;
+    xmlURIPtr uri;
+
+    if (path == NULL)
+	return(NULL);
+    if ((uri = xmlParseURI(path)) != NULL) {
+	xmlFreeURI(uri);
+	return xmlStrdup(path);
+    }
+
+    uri = xmlCreateURI();
+
+#if defined(_WIN32) && !defined(__CYGWIN__)
+    len = xmlStrlen(path);
+    if ((len > 2) && IS_WINDOWS_PATH(path)) {
+	uri->scheme = xmlStrdup(BAD_CAST "file");
+	uri->path = xmlMalloc(len + 1);
+	uri->path[0] = '/';
+	while (i < len) {
+	    if (path[i] == '\\')
+		uri->path[i+1] = '/';
+	    else
+		uri->path[i+1] = path[i];
+	    i++;
+	}
+	uri->path[len] = '\0';
+    } else
+#endif
+	uri->path = xmlStrdup(path);
+    
+    ret = xmlSaveUri(uri);
+    xmlFreeURI(uri);
+    return(ret);
+}
 

@@ -107,15 +107,15 @@ Tue Aug 29 20:22:53 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 Tue Aug 29 11:24:48 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c testHTML.c: applied two new patches from
-	  Wayne Davison <wayned@blorf.net>
+	  Wayne Davison <wayned@users.sourceforge.net>
 	* result/HTML/*.sax: regenerated HTML SAX output
 	* parser.c: more cleanup.
 
 Mon Aug 28 11:58:12 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.[ch] testHTML.c: applied the second set of
-	  patches from Wayne Davison <wayned@blorf.net>, adding 
-	  htmlEncodeEntities()
+	  patches from Wayne Davison <wayned@users.sourceforge.net>,
+	  adding htmlEncodeEntities()
 	* HTMLparser.c: fixed an ignorable white space detection bug
 	  occuring when parsing with SAX only
 	* result/HTML/*.sax: updated since the output is now HTML
@@ -123,8 +123,8 @@ Mon Aug 28 11:58:12 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 Mon Aug 28 00:38:31 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
-	* HTMLparser.[ch]: applied some of Wayne Davison <wayned@blorf.net>
-	  patches
+	* HTMLparser.[ch]: applied some of Wayne Davison
+	  <wayned@users.sourceforge.net> patches
 
 Sun Aug 27 22:14:01 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 

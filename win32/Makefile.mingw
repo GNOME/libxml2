@@ -138,7 +138,8 @@ XML_OBJS = $(XML_INTDIR)/c14n.o\
 	$(XML_INTDIR)/xmlunicode.o\
 	$(XML_INTDIR)/xmlwriter.o\
 	$(XML_INTDIR)/xpath.o\
-	$(XML_INTDIR)/xpointer.o
+	$(XML_INTDIR)/xpointer.o\
+	$(XML_INTDIR)/xmlstring.o
 
 XML_SRCS = $(subst .o,.c,$(subst $(XML_INTDIR)/,$(XML_SRCDIR)/,$(XML_OBJS)))
 
@@ -181,7 +182,8 @@ XML_OBJS_A = $(XML_INTDIR_A)/c14n.o\
 	$(XML_INTDIR_A)/xmlunicode.o\
 	$(XML_INTDIR_A)/xmlwriter.o\
 	$(XML_INTDIR_A)/xpath.o\
-	$(XML_INTDIR_A)/xpointer.o
+	$(XML_INTDIR_A)/xpointer.o\
+	$(XML_INTDIR_A)/xmlstring.o
 
 XML_SRCS_A = $(subst .o,.c,$(subst $(XML_INTDIR_A)/,$(XML_SRCDIR)/,$(XML_OBJS_A)))
 

@@ -127,7 +127,8 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\xmlunicode.obj\
 	$(XML_INTDIR)\xmlwriter.obj\
 	$(XML_INTDIR)\xpath.obj\
-	$(XML_INTDIR)\xpointer.obj
+	$(XML_INTDIR)\xpointer.obj\
+	$(XML_INTDIR)\xmlstring.obj
 
 # Static libxml object files.
 XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
@@ -168,7 +169,8 @@ XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
 	$(XML_INTDIR_A)\xmlunicode.obj\
 	$(XML_INTDIR_A)\xmlwriter.obj\
 	$(XML_INTDIR_A)\xpath.obj\
-	$(XML_INTDIR_A)\xpointer.obj
+	$(XML_INTDIR_A)\xpointer.obj\
+	$(XML_INTDIR_A)\xmlstring.obj
 
 # Xmllint and friends executables.
 UTILS = $(BINDIR)\xmllint.exe\

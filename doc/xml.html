@@ -2773,13 +2773,13 @@ by using Unicode. Any conformant XML parser has to support the UTF-8 and
 UTF-16 default encodings which can both express the full unicode ranges. UTF8
 is a variable length encoding whose greatest points are to reuse the same
 encoding for ASCII and to save space for Western encodings, but it is a bit
-more complex to handle in practice. UTF-16 use 2 bytes per characters (and
+more complex to handle in practice. UTF-16 use 2 bytes per character (and
 sometimes combines two pairs), it makes implementation easier, but looks a
 bit overkill for Western languages encoding. Moreover the XML specification
-allows document to be encoded in other encodings at the condition that they
+allows the document to be encoded in other encodings at the condition that they
 are clearly labeled as such. For example the following is a wellformed XML
-document encoded in ISO-8859 1 and using accentuated letter that we French
-likes for both markup and content:</p>
+document encoded in ISO-8859-1 and using accentuated letters that we French
+like for both markup and content:</p>
 <pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
 &lt;très&gt;là&lt;/très&gt;</pre>
 
@@ -2813,9 +2813,9 @@ an internationalized fashion by libxml2 too:</p>
 
 <h3><a name="internal">The internal encoding, how and why</a></h3>
 
-<p>One of the core decision was to force all documents to be converted to a
+<p>One of the core decisions was to force all documents to be converted to a
 default internal encoding, and that encoding to be UTF-8, here are the
-rationale for those choices:</p>
+rationales for those choices:</p>
 <ul>
   <li>keeping the native encoding in the internal form would force the libxml
     users (or the code associated) to be fully aware of the encoding of the
@@ -2847,7 +2847,7 @@ rationale for those choices:</p>
         for using UTF-16 or UCS-4.</li>
       <li>UTF-8 is being used as the de-facto internal encoding standard for
         related code like the <a href="http://www.pango.org/">pango</a>
-        upcoming Gnome text widget, and a lot of Unix code (yep another place
+        upcoming Gnome text widget, and a lot of Unix code (yet another place
         where Unix programmer base takes a different approach from Microsoft
         - they are using UTF-16)</li>
     </ul>
@@ -2871,8 +2871,8 @@ when reading a document or saving one. Let's look first at the reading
 sequence:</p>
 <ol>
   <li>when a document is processed, we usually don't know the encoding, a
-    simple heuristic allows to detect UTF-16 and UCS-4 from whose where the
-    ASCII range (0-0x7F) maps with ASCII</li>
+    simple heuristic allows to detect UTF-16 and UCS-4 from encodings
+    where the ASCII range (0-0x7F) maps with ASCII</li>
   <li>the xml declaration if available is parsed, including the encoding
     declaration. At that point, if the autodetected encoding is different
     from the one declared a call to xmlSwitchEncoding() is issued.</li>
@@ -2900,7 +2900,7 @@ err2.xml:1: error: Unsupported encoding UnsupportedEnc
   </li>
   <li>From that point the encoder processes progressively the input (it is
     plugged as a front-end to the I/O module) for that entity. It captures
-    and convert on-the-fly the document to be parsed to UTF-8. The parser
+    and converts on-the-fly the document to be parsed to UTF-8. The parser
     itself just does UTF-8 checking of this input and process it
     transparently. The only difference is that the encoding information has
     been added to the parsing context (more precisely to the input
@@ -2937,12 +2937,12 @@ encoding:</p>
     resume the conversion. This guarantees that any document will be saved
     without losses (except for markup names where this is not legal, this is
     a problem in the current version, in practice avoid using non-ascii
-    characters for tags or attributes names  @@). A special "ascii" encoding
+    characters for tag or attribute names). A special "ascii" encoding
     name is used to save documents to a pure ascii form can be used when
     portability is really crucial</li>
 </ol>
 
-<p>Here is a few examples based on the same test document:</p>
+<p>Here are a few examples based on the same test document:</p>
 <pre>~/XML -&gt; ./xmllint isolat1 
 &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
 &lt;très&gt;là&lt;/très&gt;
@@ -2996,7 +2996,7 @@ aliases when handling a document:</p>
 <h3><a name="extend">How to extend the existing support</a></h3>
 
 <p>Well adding support for new encoding, or overriding one of the encoders
-(assuming it is buggy) should not be hard, just write an input and output
+(assuming it is buggy) should not be hard, just write input and output
 conversion routines to/from UTF-8, and register them using
 xmlNewCharEncodingHandler(name, xxxToUTF8, UTF8Toxxx),  and they will be
 called automatically if the parser(s) encounter such an encoding name
@@ -3563,7 +3563,7 @@ literature to point at:</p>
     Resolution</a> who maintains XML Catalog, you will find pointers to the
     specification update, some background and pointers to others tools
     providing XML Catalog support</li>
-  <li>Here is a <a href="buildDocBookCatalog">shell script</a> to generate
+  <li>There is a <a href="buildDocBookCatalog">shell script</a> to generate
     XML Catalogs for DocBook 4.1.2 . If it can write to the /etc/xml/
     directory, it will set-up /etc/xml/catalog and /etc/xml/docbook based on
     the resources found on the system. Otherwise it will just create

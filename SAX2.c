@@ -857,6 +857,7 @@ xmlSAX2EndDocument(void *ctx)
     }
 }
 
+#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED)
 /**
  * xmlSAX2AttributeInternal:
  * @ctx: the user data (XML parser context)
@@ -1588,8 +1589,8 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
 #endif
     nodePop(ctxt);
 }
+#endif /* LIBXML_SAX1_ENABLED || LIBXML_HTML_ENABLE */
 
-int nb_interned = 0;
 /*
  * xmlSAX2TextNode:
  * @ctxt:  the parser context
@@ -2429,6 +2430,7 @@ xmlSAX2CDataBlock(void *ctx, const xmlChar *value, int len)
 
 static int xmlSAX2DefaultVersionValue = 2;
 
+#ifdef LIBXML_SAX1_ENABLED
 /**
  * xmlSAXDefaultVersion:
  * @version:  the version, 1 or 2
@@ -2450,6 +2452,7 @@ xmlSAXDefaultVersion(int version)
     xmlSAX2DefaultVersionValue = version;
     return(ret);
 }
+#endif /* LIBXML_SAX1_ENABLED */
 
 /**
  * xmlSAXVersion:
@@ -2464,16 +2467,18 @@ int
 xmlSAXVersion(xmlSAXHandler *hdlr, int version)
 {
     if (hdlr == NULL) return(-1);
-    if (version == 1) {
-	hdlr->startElement = xmlSAX2StartElement;
-	hdlr->endElement = xmlSAX2EndElement;
-	hdlr->initialized = 1;
-    } else if (version == 2) {
+    if (version == 2) {
 	hdlr->startElement = NULL;
 	hdlr->endElement = NULL;
 	hdlr->startElementNs = xmlSAX2StartElementNs;
 	hdlr->endElementNs = xmlSAX2EndElementNs;
 	hdlr->initialized = XML_SAX2_MAGIC;
+#ifdef LIBXML_SAX1_ENABLED
+    } else if (version == 1) {
+	hdlr->startElement = xmlSAX2StartElement;
+	hdlr->endElement = xmlSAX2EndElement;
+	hdlr->initialized = 1;
+#endif /* LIBXML_SAX1_ENABLED */
     } else
         return(-1);
     hdlr->internalSubset = xmlSAX2InternalSubset;
@@ -2533,7 +2538,9 @@ xmlSAX2InitDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
 void
 xmlDefaultSAXHandlerInit(void)
 {
+#ifdef LIBXML_SAX1_ENABLED
     xmlSAXVersion((xmlSAXHandlerPtr) &xmlDefaultSAXHandler, 1);
+#endif /* LIBXML_SAX1_ENABLED */
 }
 
 #ifdef LIBXML_HTML_ENABLED

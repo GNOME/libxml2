@@ -8,6 +8,7 @@
 
 #include "libxml.h"
 
+#ifdef LIBXML_READER_ENABLED
 #include <string.h>
 #include <stdarg.h>
 
@@ -130,3 +131,9 @@ int main(int argc, char **argv) {
 
     return(0);
 }
+#else
+int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
+    printf("%s : xmlReader parser support not compiled in\n", argv[0]);
+    return(0);
+}
+#endif /* LIBXML_READER_ENABLED */

@@ -102,6 +102,24 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_READER_ENABLED:
+ *
+ * Whether the xmlReader parsing interface is configured in
+ */
+#if @WITH_READER@
+#define LIBXML_READER_ENABLED
+#endif
+
+/**
+ * LIBXML_SAX1_ENABLED:
+ *
+ * Whether the older SAX1 interface is configured in
+ */
+#if @WITH_SAX1@
+#define LIBXML_SAX1_ENABLED
+#endif
+
+/**
  * LIBXML_FTP_ENABLED:
  *
  * Whether the FTP support is configured in

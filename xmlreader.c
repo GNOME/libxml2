@@ -21,6 +21,7 @@
 #define IN_LIBXML
 #include "libxml.h"
 
+#ifdef LIBXML_READER_ENABLED
 #include <string.h> /* for memset() only ! */
 #include <stdarg.h>
 
@@ -1501,20 +1502,24 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
 		"xmlNewTextReader : malloc failed\n");
 	return(NULL);
     }
-    memcpy(ret->sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
+    xmlSAXVersion(ret->sax, 2);
     ret->startElement = ret->sax->startElement;
     ret->sax->startElement = xmlTextReaderStartElement;
     ret->endElement = ret->sax->endElement;
     ret->sax->endElement = xmlTextReaderEndElement;
+#ifdef LIBXML_SAX1_ENABLED
     if (ret->sax->initialized == XML_SAX2_MAGIC) {
+#endif /* LIBXML_SAX1_ENABLED */
 	ret->startElementNs = ret->sax->startElementNs;
 	ret->sax->startElementNs = xmlTextReaderStartElementNs;
 	ret->endElementNs = ret->sax->endElementNs;
 	ret->sax->endElementNs = xmlTextReaderEndElementNs;
+#ifdef LIBXML_SAX1_ENABLED
     } else {
 	ret->startElementNs = NULL;
 	ret->endElementNs = NULL;
     }
+#endif /* LIBXML_SAX1_ENABLED */
     ret->characters = ret->sax->characters;
     ret->sax->characters = xmlTextReaderCharacters;
     ret->sax->ignorableWhitespace = xmlTextReaderCharacters;
@@ -3698,3 +3703,4 @@ int main(int argc, char **argv) {
 }
 #endif
 #endif /* NOT_USED_YET */
+#endif /* LIBXML_READER_ENABLED */

@@ -2781,9 +2781,12 @@ xmlLoadExternalEntity(const char *URL, const char *ID,
 
 	canonicFilename = (char *) xmlCanonicPath((const xmlChar *) URL);
 	if (canonicFilename == NULL) {
-	    if (xmlDefaultSAXHandler.error != NULL) {
-		xmlDefaultSAXHandler.error(NULL, "out of memory\n");
-	    }
+#if 0
+	    xmlErrMemory(NULL, "failed to load entity");
+#else
+            xmlGenericError(xmlGenericErrorContext,
+		    "Memory allocation failed ! : failed to load entity\n");
+#endif
 	    return(NULL);
 	}
 

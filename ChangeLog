@@ -1,3 +1,11 @@
+Tue Sep 30 02:38:16 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am SAX.c SAX2.c configure.in globals.c parser.c
+	  parserInternals.c testReader.c testSAX.c xmlIO.c xmllint.c
+	  xmlreader.c example/gjobread.c include/libxml/xmlversion.h.in:
+	  added 2 new configure option: --with-reader --with-sax1
+	  to allow removing the reader or non-xmlReadxxx() interfaces.
+
 Mon Sep 29 19:58:26 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in entities.c tree.c valid.c xmllint.c

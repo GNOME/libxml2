@@ -623,6 +623,37 @@ else
 fi
 AC_SUBST(WITH_LEGACY)
 
+AC_ARG_WITH(reader,
+[  --with-reader           add the xmlReader parsing interface (on)])
+if test "$with_minimum" = "yes" -a "$with_reader" = ""
+then
+    with_reader=no
+fi
+if test "$with_reader" = "no" ; then
+    echo Disabling the xmlReader parsing interface
+    WITH_READER=0
+else    
+    WITH_READER=1
+fi
+AC_SUBST(WITH_READER)
+
+AC_ARG_WITH(sax1,
+[  --with-sax1             add the older SAX1 interface (on)])
+if test "$with_minimum" = "yes" -a "$with_sax1" = ""
+then
+    with_sax1=no
+fi
+if test "$with_sax1" = "no" ; then
+    echo Disabling the older SAX1 interface
+    WITH_SAX1=0
+    TEST_SAX=
+else    
+    WITH_SAX1=1
+    TEST_SAX=SAXtests
+fi
+AC_SUBST(WITH_SAX1)
+AC_SUBST(TEST_SAX)
+
 AC_ARG_WITH(valid,
 [  --with-valid            add the DTD validation support (on)])
 if test "$with_minimum" = "yes" -a "$with_valid" = ""

@@ -149,9 +149,13 @@ static int dropdtd = 0;
 static int catalogs = 0;
 static int nocatalogs = 0;
 #endif
+#ifdef LIBXML_READER_ENABLED
 static int stream = 0;
+#endif /* LIBXML_READER_ENABLED */
 static int chkregister = 0;
+#ifdef LIBXML_SAX1_ENABLED
 static int sax1 = 0;
+#endif /* LIBXML_SAX1_ENABLED */
 static int options = 0;
 
 /*
@@ -586,6 +590,7 @@ static void myClose(FILE *f) {
   }
 }
 
+#ifdef LIBXML_READER_ENABLED
 /************************************************************************
  * 									*
  * 			Stream Test processing				*
@@ -728,6 +733,7 @@ static void streamFile(char *filename) {
     }
 #endif
 }
+#endif /* LIBXML_READER_ENABLED */
 
 /************************************************************************
  * 									*
@@ -1302,7 +1308,9 @@ static void usage(const char *name) {
     printf("\t--shell : run a navigating shell\n");
     printf("\t--debugent : debug the entities defined in the document\n");
 #else
+#ifdef LIBXML_READER_ENABLED
     printf("\t--debug : dump the nodes content when using --stream\n");
+#endif /* LIBXML_READER_ENABLED */
 #endif
 #ifdef LIBXML_TREE_ENABLED
     printf("\t--copy : used to test the internal copy implementation\n");
@@ -1357,7 +1365,9 @@ static void usage(const char *name) {
 #endif
     printf("\t--loaddtd : fetch external DTD\n");
     printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
+#ifdef LIBXML_READER_ENABLED
     printf("\t--stream : use the streaming interface to process very large files\n");
+#endif /* LIBXML_READER_ENABLED */
     printf("\t--chkregister : verify the node registration code\n");
 #ifdef LIBXML_SCHEMAS_ENABLED
     printf("\t--relaxng schema : do RelaxNG validation against the schema\n");
@@ -1583,14 +1593,18 @@ main(int argc, char **argv) {
 #endif /* LIBXML_OUTPUT_ENABLED */
 	     xmlKeepBlanksDefault(0);
 	}
+#ifdef LIBXML_READER_ENABLED
 	else if ((!strcmp(argv[i], "-stream")) ||
 	         (!strcmp(argv[i], "--stream"))) {
 	     stream++;
 	}
+#endif /* LIBXML_READER_ENABLED */
+#ifdef LIBXML_SAX1_ENABLED
 	else if ((!strcmp(argv[i], "-sax1")) ||
 	         (!strcmp(argv[i], "--sax1"))) {
 	     sax1++;
 	}
+#endif /* LIBXML_SAX1_ENABLED */
 	else if ((!strcmp(argv[i], "-chkregister")) ||
 	         (!strcmp(argv[i], "--chkregister"))) {
 	     chkregister++;
@@ -1632,10 +1646,12 @@ main(int argc, char **argv) {
     }
 #endif
 
+#ifdef LIBXML_SAX1_ENABLED
     if (sax1)
         xmlSAXDefaultVersion(1);
     else
         xmlSAXDefaultVersion(2);
+#endif /* LIBXML_SAX1_ENABLED */
 
     if (chkregister) {
 	xmlRegisterNodeDefault(registerNode);
@@ -1671,7 +1687,11 @@ main(int argc, char **argv) {
     }
 
 #ifdef LIBXML_SCHEMAS_ENABLED
-    if ((relaxng != NULL) && (stream == 0)) {
+    if ((relaxng != NULL)
+#ifdef LIBXML_READER_ENABLED
+        && (stream == 0)
+#endif /* LIBXML_READER_ENABLED */
+	) {
 	xmlRelaxNGParserCtxtPtr ctxt;
 
         /* forces loading the DTDs */
@@ -1759,20 +1779,26 @@ main(int argc, char **argv) {
 		xmlParserCtxtPtr ctxt = NULL;
 
 		for (acount = 0;acount < repeat;acount++) {
+#ifdef LIBXML_READER_ENABLED
 		    if (stream != 0)
 			streamFile(argv[i]);
 		    else {
+#endif /* LIBXML_READER_ENABLED */
 		        if (ctxt == NULL)
 			    ctxt = xmlNewParserCtxt();
 			parseAndPrintFile(argv[i], ctxt);
+#ifdef LIBXML_READER_ENABLED
 		    }
+#endif /* LIBXML_READER_ENABLED */
 		}
 		if (ctxt != NULL)
 		    xmlFreeParserCtxt(ctxt);
 	    } else {
+#ifdef LIBXML_READER_ENABLED
 		if (stream != 0)
 		    streamFile(argv[i]);
 		else
+#endif /* LIBXML_READER_ENABLED */
 		    parseAndPrintFile(argv[i], NULL);
 	    }
 	    files ++;

@@ -325,6 +325,7 @@ static const char *xmlTreeIndentStringThrDef = "  ";
 int xmlSaveNoEmptyTags = 0;
 int xmlSaveNoEmptyTagsThrDef = 0;
 
+#ifdef LIBXML_SAX1_ENABLED
 /**
  * xmlDefaultSAXHandler:
  *
@@ -360,6 +361,7 @@ xmlSAXHandlerV1 xmlDefaultSAXHandler = {
     xmlSAX2ExternalSubset,
     0,
 };
+#endif /* LIBXML_SAX1_ENABLED */
 
 /**
  * xmlDefaultSAXLocator:
@@ -483,7 +485,9 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     gs->oldXMLWDcompatibility = 0;
     gs->xmlBufferAllocScheme = xmlBufferAllocSchemeThrDef;
     gs->xmlDefaultBufferSize = xmlDefaultBufferSizeThrDef;
+#ifdef LIBXML_SAX1_ENABLED
     initxmlDefaultSAXHandler(&gs->xmlDefaultSAXHandler, 1);
+#endif /* LIBXML_SAX1_ENABLED */
     gs->xmlDefaultSAXLocator.getPublicId = xmlSAX2GetPublicId;
     gs->xmlDefaultSAXLocator.getSystemId = xmlSAX2GetSystemId;
     gs->xmlDefaultSAXLocator.getLineNumber = xmlSAX2GetLineNumber;
@@ -674,6 +678,7 @@ int xmlThrDefDefaultBufferSize(int v) {
     return ret;
 }
 
+#ifdef LIBXML_SAX1_ENABLED
 #undef	xmlDefaultSAXHandler
 xmlSAXHandlerV1 *
 __xmlDefaultSAXHandler(void) {
@@ -682,6 +687,7 @@ __xmlDefaultSAXHandler(void) {
     else
 	return (&xmlGetGlobalState()->xmlDefaultSAXHandler);
 }
+#endif /* LIBXML_SAX1_ENABLED */
 
 #undef	xmlDefaultSAXLocator
 xmlSAXLocator *

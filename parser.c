@@ -111,9 +111,11 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 		      void *user_data, int depth, const xmlChar *URL,
 		      const xmlChar *ID, xmlNodePtr *list);
 
+#ifdef LIBXML_LEGACY_ENABLED
 static void
 xmlAddEntityReference(xmlEntityPtr ent, xmlNodePtr firstNode,
                       xmlNodePtr lastNode);
+#endif /* LIBXML_LEGACY_ENABLED */
 
 static xmlParserErrors
 xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
@@ -520,16 +522,19 @@ xmlNsErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 static void
 xmlDetectSAX2(xmlParserCtxtPtr ctxt) {
     if (ctxt == NULL) return;
+#ifdef LIBXML_SAX1_ENABLED
     if ((ctxt->sax) &&  (ctxt->sax->initialized == XML_SAX2_MAGIC) &&
         ((ctxt->sax->startElementNs != NULL) ||
          (ctxt->sax->endElementNs != NULL))) ctxt->sax2 = 1;
+#else
+    ctxt->sax2 = 1;
+#endif /* LIBXML_SAX1_ENABLED */
 
     ctxt->str_xml = xmlDictLookup(ctxt->dict, BAD_CAST "xml", 3);
     ctxt->str_xmlns = xmlDictLookup(ctxt->dict, BAD_CAST "xmlns", 5);
     ctxt->str_xml_ns = xmlDictLookup(ctxt->dict, XML_XML_NAMESPACE, 36);
 }
 
-#ifdef SAX2
 typedef struct _xmlDefAttrs xmlDefAttrs;
 typedef xmlDefAttrs *xmlDefAttrsPtr;
 struct _xmlDefAttrs {
@@ -537,7 +542,6 @@ struct _xmlDefAttrs {
     int maxAttrs;       /* the size of the array */
     const xmlChar *values[4]; /* array of localname/prefix/values */
 };
-#endif
 
 /**
  * xmlAddDefAttrs:
@@ -5884,8 +5888,10 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 					list = list->next;
 			 	    }
 				    list = ent->children;
+#ifdef LIBXML_LEGACY_ENABLED
 				    if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)
 				      xmlAddEntityReference(ent, list, NULL);
+#endif /* LIBXML_LEGACY_ENABLED */
 				}
 			    } else {
 				ent->owner = 1;
@@ -5939,8 +5945,10 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 				break;
 			    cur = cur->next;
 			}
+#ifdef LIBXML_LEGACY_ENABLED
 			if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)			      
 			  xmlAddEntityReference(ent, firstChild, nw);
+#endif /* LIBXML_LEGACY_ENABLED */
 		    } else if (list == NULL) {
 			xmlNodePtr nw = NULL, cur, next, last,
 			           firstChild = NULL;
@@ -5972,8 +5980,10 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			    cur = next;
 			}
 			ent->owner = 1;
+#ifdef LIBXML_LEGACY_ENABLED
 			if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)			      
 			  xmlAddEntityReference(ent, firstChild, nw);
+#endif /* LIBXML_LEGACY_ENABLED */
 		    } else {
 			/*
 			 * the name change is to avoid coalescing of the
@@ -6738,6 +6748,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
     NEXT;
 }
 
+#ifdef LIBXML_SAX1_ENABLED
 /**
  * xmlParseAttribute:
  * @ctxt:  an XML parser context
@@ -7079,6 +7090,7 @@ void
 xmlParseEndTag(xmlParserCtxtPtr ctxt) {
     xmlParseEndTag1(ctxt, 0);
 }
+#endif /* LIBXML_SAX1_ENABLED */
 
 /************************************************************************
  *									*
@@ -8246,10 +8258,14 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	spacePush(ctxt, *ctxt->space);
 
     line = ctxt->input->line;
+#ifdef LIBXML_SAX1_ENABLED
     if (ctxt->sax2)
+#endif /* LIBXML_SAX1_ENABLED */
         name = xmlParseStartTag2(ctxt, &prefix, &URI);
+#ifdef LIBXML_SAX1_ENABLED
     else
 	name = xmlParseStartTag(ctxt);
+#endif /* LIBXML_SAX1_ENABLED */
     if (name == NULL) {
 	spacePop(ctxt);
         return;
@@ -8277,10 +8293,12 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->endElementNs != NULL) &&
 		(!ctxt->disableSAX))
 		ctxt->sax->endElementNs(ctxt->userData, name, prefix, URI);
+#ifdef LIBXML_SAX1_ENABLED
 	} else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL) &&
 		(!ctxt->disableSAX))
 		ctxt->sax->endElement(ctxt->userData, name);
+#endif /* LIBXML_SAX1_ENABLED */
 	}
 	namePop(ctxt);
 	spacePop(ctxt);
@@ -8357,8 +8375,11 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     if (ctxt->sax2) {
 	xmlParseEndTag2(ctxt, prefix, URI, line, ctxt->nsNr - nsNr);
 	namePop(ctxt);
-    } else
+    }
+#ifdef LIBXML_SAX1_ENABLED
+      else
 	xmlParseEndTag1(ctxt, line);
+#endif /* LIBXML_SAX1_ENABLED */
 
     /*
      * Capture end position and add node
@@ -9469,10 +9490,14 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    spacePush(ctxt, -1);
 		else
 		    spacePush(ctxt, *ctxt->space);
+#ifdef LIBXML_SAX1_ENABLED
 		if (ctxt->sax2)
+#endif /* LIBXML_SAX1_ENABLED */
 		    name = xmlParseStartTag2(ctxt, &prefix, &URI);
+#ifdef LIBXML_SAX1_ENABLED
 		else
 		    name = xmlParseStartTag(ctxt);
+#endif /* LIBXML_SAX1_ENABLED */
 		if (name == NULL) {
 		    spacePop(ctxt);
 		    ctxt->instate = XML_PARSER_EOF;
@@ -9503,11 +9528,13 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    (!ctxt->disableSAX))
 			    ctxt->sax->endElementNs(ctxt->userData, name,
 			                            prefix, URI);
+#ifdef LIBXML_SAX1_ENABLED
 		    } else {
 			if ((ctxt->sax != NULL) &&
 			    (ctxt->sax->endElement != NULL) &&
 			    (!ctxt->disableSAX))
 			    ctxt->sax->endElement(ctxt->userData, name);
+#endif /* LIBXML_SAX1_ENABLED */
 		    }
 		    spacePop(ctxt);
 		    if (ctxt->nameNr == 0) {
@@ -9528,8 +9555,10 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		}
 		if (ctxt->sax2)
 		    nameNsPush(ctxt, name, prefix, URI, ctxt->nsNr - nsNr);
+#ifdef LIBXML_SAX1_ENABLED
 		else
 		    namePush(ctxt, name);
+#endif /* LIBXML_SAX1_ENABLED */
 
 		ctxt->instate = XML_PARSER_CONTENT;
                 break;
@@ -9641,8 +9670,11 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		           (void *) ctxt->pushTab[ctxt->nameNr * 3 - 2], 0,
 		       (int) (long) ctxt->pushTab[ctxt->nameNr * 3 - 1]);
 		    nameNsPop(ctxt);
-		} else
+		}
+#ifdef LIBXML_SAX1_ENABLED
+		  else
 		    xmlParseEndTag1(ctxt, 0);
+#endif /* LIBXML_SAX1_ENABLED */
 		if (ctxt->nameNr == 0) {
 		    ctxt->instate = XML_PARSER_EPILOG;
 		} else {
@@ -10179,7 +10211,9 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
     }
     if (sax != NULL) {
+#ifdef LIBXML_SAX1_ENABLED
 	if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
+#endif /* LIBXML_SAX1_ENABLED */
 	    xmlFree(ctxt->sax);
 	ctxt->sax = (xmlSAXHandlerPtr) xmlMalloc(sizeof(xmlSAXHandler));
 	if (ctxt->sax == NULL) {
@@ -10272,7 +10306,9 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
     }
     if (sax != NULL) {
+#ifdef LIBXML_SAX1_ENABLED
 	if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
+#endif /* LIBXML_SAX1_ENABLED */
 	    xmlFree(ctxt->sax);
 	ctxt->sax = (xmlSAXHandlerPtr) xmlMalloc(sizeof(xmlSAXHandler));
 	if (ctxt->sax == NULL) {
@@ -10887,6 +10923,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     return(ret);
 }
 
+#ifdef LIBXML_SAX1_ENABLED
 /**
  * xmlParseExternalEntity:
  * @doc:  the document the chunk pertains to
@@ -10940,6 +10977,7 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     return xmlParseBalancedChunkMemoryRecover( doc, sax, user_data,
                                                 depth, string, lst, 0 );
 }
+#endif /* LIBXML_SAX1_ENABLED */
 
 /**
  * xmlParseBalancedChunkMemoryInternal:
@@ -11090,6 +11128,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     return(ret);
 }
 
+#ifdef LIBXML_SAX1_ENABLED
 /**
  * xmlParseBalancedChunkMemoryRecover:
  * @doc:  the document the chunk pertains to
@@ -11300,6 +11339,7 @@ xmlDocPtr
 xmlParseEntity(const char *filename) {
     return(xmlSAXParseEntity(NULL, filename));
 }
+#endif /* LIBXML_SAX1_ENABLED */
 
 /**
  * xmlCreateEntityParserCtxt:
@@ -11385,9 +11425,7 @@ xmlCreateFileParserCtxt(const char *filename)
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
-	if (xmlDefaultSAXHandler.error != NULL) {
-	    xmlDefaultSAXHandler.error(NULL, "out of memory\n");
-	}
+	xmlErrMemory(NULL, "cannot allocate parser context");
 	return(NULL);
     }
 
@@ -11407,6 +11445,7 @@ xmlCreateFileParserCtxt(const char *filename)
     return(ctxt);
 }
 
+#ifdef LIBXML_SAX1_ENABLED
 /**
  * xmlSAXParseFileWithData:
  * @sax:  the SAX handler block
@@ -11598,7 +11637,9 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
     
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) return -1;
+#ifdef LIBXML_SAX1_ENABLED
     if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
+#endif /* LIBXML_SAX1_ENABLED */
 	xmlFree(ctxt->sax);
     ctxt->sax = sax;
     xmlDetectSAX2(ctxt);
@@ -11622,6 +11663,7 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
     
     return ret;
 }
+#endif /* LIBXML_SAX1_ENABLED */
 
 /************************************************************************
  *									*
@@ -11677,6 +11719,7 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
     return(ctxt);
 }
 
+#ifdef LIBXML_SAX1_ENABLED
 /**
  * xmlSAXParseMemoryWithData:
  * @sax:  the SAX handler block
@@ -11822,6 +11865,7 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
     
     return ret;
 }
+#endif /* LIBXML_SAX1_ENABLED */
 
 /**
  * xmlCreateDocParserCtxt:
@@ -11841,6 +11885,7 @@ xmlCreateDocParserCtxt(const xmlChar *cur) {
     return(xmlCreateMemoryParserCtxt((const char *)cur, len));
 }
 
+#ifdef LIBXML_SAX1_ENABLED
 /**
  * xmlSAXParseDoc:
  * @sax:  the SAX handler block
@@ -11898,7 +11943,9 @@ xmlDocPtr
 xmlParseDoc(xmlChar *cur) {
     return(xmlSAXParseDoc(NULL, cur, 0));
 }
+#endif /* LIBXML_SAX1_ENABLED */
 
+#ifdef LIBXML_LEGACY_ENABLED
 /************************************************************************
  *									*
  * 	Specific function to keep track of entities references		*
@@ -11937,6 +11984,7 @@ xmlSetEntityReferenceFunc(xmlEntityReferenceFunc func)
 {
     xmlEntityRefFunc = func;
 }
+#endif /* LIBXML_LEGACY_ENABLED */
 
 /************************************************************************
  *									*
@@ -12175,6 +12223,7 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
         options -= XML_PARSE_DTDVALID;
     } else
         ctxt->validate = 0;
+#ifdef LIBXML_SAX1_ENABLED
     if (options & XML_PARSE_SAX1) {
         ctxt->sax->startElement = xmlSAX2StartElement;
         ctxt->sax->endElement = xmlSAX2EndElement;
@@ -12183,6 +12232,7 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
         ctxt->sax->initialized = 1;
         options -= XML_PARSE_SAX1;
     }
+#endif /* LIBXML_SAX1_ENABLED */
     if (options & XML_PARSE_NODICT) {
         ctxt->dictNames = 0;
         options -= XML_PARSE_NODICT;

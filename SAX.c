@@ -28,6 +28,7 @@
 #include <libxml/globals.h>
 #include <libxml/SAX2.h>
 
+#ifdef LIBXML_SAX1_ENABLED
 /**
  * initxmlDefaultSAXHandler:
  * @hdlr:  the SAX handler
@@ -75,6 +76,7 @@ initxmlDefaultSAXHandler(xmlSAXHandlerV1 *hdlr, int warning)
 
     hdlr->initialized = 1;
 }
+#endif /* LIBXML_SAX1_ENABLED */
 
 #ifdef LIBXML_HTML_ENABLED
 

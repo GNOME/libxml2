@@ -1,3 +1,8 @@
+Thu Dec 12 10:59:11 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/apibuild.py doc/libxml2-api.xml: fixups to the api builder,
+	  gives enum values, fix functype return type
+
 Thu Dec 12 01:09:34 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c include/libxml/HTMLtree.h: patch from Mark Vadok

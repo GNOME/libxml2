@@ -745,6 +745,7 @@ class CParser:
 		 name = token[1]
 		 signature = self.signature
 		 if signature != None:
+		     type = string.split(type, '(')[0]
 		     d = self.mergeFunctionComment(name,
 			     ((type, None), signature), 1)
 		     self.index.add(name, self.filename, not self.is_header,
@@ -853,7 +854,7 @@ class CParser:
 	 name = None
 	 self.comment = None
 	 comment = ""
-	 value = ""
+	 value = "0"
          while token != None:
 	     if token[0] == "sep" and token[1] == "{":
 	         token = self.token()
@@ -874,9 +875,9 @@ class CParser:
 			 self.enums.append((name, value, comment))
 		     name = token[1]
 		     comment = ""
-		     value = ""
 		     token = self.token()
 		     if token[0] == "op" and token[1][0] == "=":
+		         value = ""
 		         if len(token[1]) > 1:
 			     value = token[1][1:]
 		         token = self.token()
@@ -884,6 +885,12 @@ class CParser:
 			       token[1] != '}'):
 			     value = value + token[1]
 			     token = self.token()
+		     else:
+		         try:
+			     value = "%d" % (int(value) + 1)
+			 except:
+			     print "Failed to compute value of enum %s" % (name)
+			     value=""
 		     if token[0] == "sep" and token[1] == ",":
 			 token = self.token()
 	     else:

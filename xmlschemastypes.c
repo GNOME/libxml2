@@ -708,6 +708,29 @@ xmlSchemaNewStringValue(xmlSchemaValType type,
     return(val);
 }
 
+/**
+ * xmlSchemaNewNOTATIONValue:
+ * @type:  the value type
+ *
+ * Allocate a new NOTATION value.
+ *
+ * Returns a pointer to the new value or NULL in case of error
+ */
+xmlSchemaValPtr
+xmlSchemaNewNOTATIONValue(const xmlChar *name,
+			  const xmlChar *ns)
+{
+    xmlSchemaValPtr val;
+
+    val = xmlSchemaNewValue(XML_SCHEMAS_NOTATION);
+    if (val == NULL)
+	return (NULL);
+
+    val->value.qname.name = name;
+    if (ns != NULL)
+	val->value.qname.uri = ns;
+    return(val);
+}
 
 /**
  * xmlSchemaFreeValue:
@@ -732,12 +755,12 @@ xmlSchemaFreeValue(xmlSchemaValPtr value) {
         case XML_SCHEMAS_IDREF:
         case XML_SCHEMAS_IDREFS:
         case XML_SCHEMAS_ENTITY:
-        case XML_SCHEMAS_ENTITIES:
-        case XML_SCHEMAS_NOTATION:
+        case XML_SCHEMAS_ENTITIES:        
         case XML_SCHEMAS_ANYURI:
 	    if (value->value.str != NULL)
 		xmlFree(value->value.str);
 	    break;
+	case XML_SCHEMAS_NOTATION:
         case XML_SCHEMAS_QNAME:
 	    if (value->value.qname.uri != NULL)
 		xmlFree(value->value.qname.uri);

@@ -100,6 +100,10 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN xmlSchemaValPtr XMLCALL
 		xmlSchemaNewStringValue		(xmlSchemaValType type,
 						 const xmlChar *value);
+XMLPUBFUN xmlSchemaValPtr XMLCALL
+		xmlSchemaNewNOTATIONValue	(const xmlChar *name,
+						 const xmlChar *ns);
+
 XMLPUBFUN int XMLCALL
 		xmlSchemaCompareValuesWhtsp	(xmlSchemaValPtr x,
 						 xmlSchemaWhitespaceValueType xws,

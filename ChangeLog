@@ -1,3 +1,17 @@
+Thu Feb 17 19:57:35 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Added validation for the attribute "id" in the
+	  schemata; doing this needed error report fixes for notations,
+	  facets and group. Changed NOTATION validation to work with the
+	  declared NOTATIONs in the schema; this does have no impact on
+	  the validation via the relaxng module.
+	* xmlschemastypes.c include/libxml/xmlschemastypes.h:
+	  Added xmlSchemaNewNOTATIONValue to the API to be able to do
+	  the NOTATION validation described above.
+	* test/schemas/element-err_0.xsd test/schemas/annot-err_0.xsd:
+	  Fixed the values of the "id" attributes, which were not validated
+	  previously.  
+
 Thu Feb 17 12:03:46 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed comparison for default/fixed attribute

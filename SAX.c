@@ -661,18 +661,6 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
 	    "SAX.unparsedEntityDecl(%s, %s, %s, %s)\n",
             name, publicId, systemId, notationName);
 #endif
-#if 0
-    Done in xmlValidateDtdFinal now.
-    if (ctxt->validate && ctxt->wellFormed && ctxt->myDoc) {
-	int ret;
-	ret = xmlValidateNotationUse(&ctxt->vctxt, ctxt->myDoc,
-	                                      notationName);
-	if (ret == 0) {
-	    ctxt->wellFormed = 0;
-	    ctxt->valid = 0;
-	}
-    }
-#endif
     if (ctxt->inSubset == 1) {
 	ent = xmlAddDocEntity(ctxt->myDoc, name,
 			XML_EXTERNAL_GENERAL_UNPARSED_ENTITY,

@@ -2977,7 +2977,7 @@ xmlValidateNotationUse(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if ((notaDecl == NULL) && (doc->extSubset != NULL))
 	notaDecl = xmlGetDtdNotationDesc(doc->extSubset, notationName);
 
-    if (notaDecl == NULL) {
+    if ((notaDecl == NULL) && (ctxt != NULL)) {
 	VERROR(ctxt->userData, "NOTATION %s is not declared\n",
 	       notationName);
 	return(0);

@@ -445,7 +445,10 @@ typedef void (*xmlRelaxNGTypeFree) (void *data, void *result);
  */
 typedef int (*xmlRelaxNGTypeCompare) (void *data, const xmlChar *type,
 	                              const xmlChar *value1,
-				      const xmlChar *value2);
+				      xmlNodePtr ctxt1,
+				      void *comp1,
+				      const xmlChar *value2,
+				      xmlNodePtr ctxt2);
 typedef struct _xmlRelaxNGTypeLibrary xmlRelaxNGTypeLibrary;
 typedef xmlRelaxNGTypeLibrary *xmlRelaxNGTypeLibraryPtr;
 struct _xmlRelaxNGTypeLibrary {
@@ -779,6 +782,14 @@ xmlRelaxNGFreeDefine(xmlRelaxNGDefinePtr define)
     if (define == NULL)
         return;
 
+    if ((define->type == XML_RELAXNG_VALUE) &&
+	(define->attrs != NULL)) {
+	xmlRelaxNGTypeLibraryPtr lib;
+
+	lib = (xmlRelaxNGTypeLibraryPtr) define->data;
+	if ((lib != NULL) && (lib->freef != NULL))
+	    lib->freef(lib->data, (void *) define->attrs);
+    }
     if ((define->data != NULL) &&
 	(define->type == XML_RELAXNG_INTERLEAVE))
 	xmlRelaxNGFreePartition((xmlRelaxNGPartitionPtr) define->data);
@@ -2336,9 +2347,12 @@ xmlRelaxNGSchemaFreeValue (void *data ATTRIBUTE_UNUSED, void *value) {
  */
 static int
 xmlRelaxNGSchemaTypeCompare(void *data ATTRIBUTE_UNUSED,
-	                    const xmlChar *type ATTRIBUTE_UNUSED,
-	                    const xmlChar *value1 ATTRIBUTE_UNUSED,
-			    const xmlChar *value2 ATTRIBUTE_UNUSED) {
+	                    const xmlChar *type,
+	                    const xmlChar *value1,
+			    xmlNodePtr ctxt1,
+			    void *comp1,
+			    const xmlChar *value2,
+			    xmlNodePtr ctxt2) {
     int ret;
     xmlSchemaTypePtr typ;
     xmlSchemaValPtr res1 = NULL, res2 = NULL;
@@ -2349,12 +2363,16 @@ xmlRelaxNGSchemaTypeCompare(void *data ATTRIBUTE_UNUSED,
 	       BAD_CAST "http://www.w3.org/2001/XMLSchema");
     if (typ == NULL)
 	return(-1);
-    ret = xmlSchemaValPredefTypeNode(typ, value1, &res1, NULL);
-    if (ret != 0)
-	return(-1);
-    if (res1 == NULL)
-	return(-1);
-    ret = xmlSchemaValPredefTypeNode(typ, value2, &res2, NULL);
+    if (comp1 == NULL) {
+	ret = xmlSchemaValPredefTypeNode(typ, value1, &res1, ctxt1);
+	if (ret != 0)
+	    return(-1);
+	if (res1 == NULL)
+	    return(-1);
+    } else {
+	res1 = (xmlSchemaValPtr) comp1;
+    }
+    ret = xmlSchemaValPredefTypeNode(typ, value2, &res2, ctxt2);
     if (ret != 0) {
 	xmlSchemaFreeValue(res1);
 	return(-1);
@@ -2364,7 +2382,8 @@ xmlRelaxNGSchemaTypeCompare(void *data ATTRIBUTE_UNUSED,
 	return(-1);
     }
     ret = xmlSchemaCompareValues(res1, res2);
-    xmlSchemaFreeValue(res1);
+    if (res1 != (xmlSchemaValPtr) comp1)
+	xmlSchemaFreeValue(res1);
     xmlSchemaFreeValue(res2);
     if (ret == -2)
 	return(-1);
@@ -2437,9 +2456,12 @@ xmlRelaxNGDefaultTypeCheck(void *data ATTRIBUTE_UNUSED,
  */
 static int
 xmlRelaxNGDefaultTypeCompare(void *data ATTRIBUTE_UNUSED,
-	                     const xmlChar *type ATTRIBUTE_UNUSED,
-	                     const xmlChar *value1 ATTRIBUTE_UNUSED,
-			     const xmlChar *value2 ATTRIBUTE_UNUSED) {
+	                     const xmlChar *type,
+	                     const xmlChar *value1,
+			     xmlNodePtr ctxt1 ATTRIBUTE_UNUSED,
+			     void *comp1 ATTRIBUTE_UNUSED,
+			     const xmlChar *value2,
+			     xmlNodePtr ctxt2 ATTRIBUTE_UNUSED) {
     int ret = -1;
 
     if (xmlStrEqual(type, BAD_CAST "string")) {
@@ -2850,7 +2872,7 @@ xmlRelaxNGParseValue(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     xmlRelaxNGTypeLibraryPtr lib;
     xmlChar *type;
     xmlChar *library;
-    int tmp;
+    int success = 0;
 
     def = xmlRelaxNGNewDefine(ctxt, node);
     if (def == NULL)
@@ -2892,8 +2914,8 @@ xmlRelaxNGParseValue(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 			    library);
 		ctxt->nbErrors++;
 	    } else {
-		tmp = lib->have(lib->data, def->name);
-		if (tmp != 1) {
+		success = lib->have(lib->data, def->name);
+		if (success != 1) {
 		    if (ctxt->error != NULL)
 			ctxt->error(ctxt->userData,
 		    "Error type '%s' is not exported by type library '%s'\n",
@@ -2912,13 +2934,27 @@ xmlRelaxNGParseValue(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	    ctxt->error(ctxt->userData,
 		"Expecting a single text value for <value>content\n");
 	ctxt->nbErrors++;
-    } else {
+    } else if (def != NULL) {
 	def->value = xmlNodeGetContent(node);
 	if (def->value == NULL) {
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData,
 			    "Element <value> has no content\n");
 	    ctxt->nbErrors++;
+	} else if ((lib != NULL) && (lib->check != NULL) && (success == 1)) {
+	    void *val = NULL;
+
+	    success = lib->check(lib->data, def->name, def->value, &val, node);
+	    if (success != 1) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+			"Value '%s' is not acceptable for type '%s'\n",
+			        def->value, def->name);
+		ctxt->nbErrors++;
+	    } else {
+		if (val != NULL)
+		    def->attrs = val;
+	    }
 	}
     }
     /* TODO check ahead of time that the value is okay per the type */
@@ -5355,7 +5391,7 @@ xmlRelaxNGSimplify(xmlRelaxNGParserCtxtPtr ctxt,
 	    cur->parent = parent;
 	    if (cur->content != NULL)
 		xmlRelaxNGSimplify(ctxt, cur->content, cur);
-	    if (cur->attrs != NULL)
+	    if ((cur->type != XML_RELAXNG_VALUE) && (cur->attrs != NULL))
 		xmlRelaxNGSimplify(ctxt, cur->attrs, cur);
 	    if (cur->nameClass != NULL)
 		xmlRelaxNGSimplify(ctxt, cur->nameClass, cur);
@@ -7232,10 +7268,12 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 		    xmlRelaxNGTypeLibraryPtr lib;
 		    
 		    lib = (xmlRelaxNGTypeLibraryPtr) define->data;
-		    if ((lib != NULL) && (lib->comp != NULL))
-			ret = lib->comp(lib->data, define->name, value,
-				        define->value);
-		    else
+		    if ((lib != NULL) && (lib->comp != NULL)) {
+			ret = lib->comp(lib->data, define->name,
+				        define->value, define->node,
+					(void *) define->attrs,
+					value, ctxt->state->node);
+		    } else
 			ret = -1;
 		    if (ret < 0) {
 			VALID_ERR2(XML_RELAXNG_ERR_TYPECMP, define->name);

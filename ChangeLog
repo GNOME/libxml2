@@ -1,3 +1,15 @@
+Sun Mar 30 23:04:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c xmlschemastypes.c: more work on XML Schemas datatypes
+	  and facets support. Currently only schemas with binHex or
+	  base64 don't compile. A few error left in the test suite:
+	  found 1035 test instances: 919 success 23 failures
+	  most are gdate or gdateyear failing check, and a few cases where
+	  James clark tests results are strange.
+	* valid.c: allow to reuse the Notation checking routine without
+	  having a validation context.
+	* SAX.c: removed a #if 0
+
 Sat Mar 29 17:35:05 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: forgot to apply one check from #106931 patch

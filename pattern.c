@@ -19,8 +19,6 @@
  *   currently push(NULL, NULL) means a reset of the streaming context
  *   and indicating we are on / (the document node), probably need
  *   something similar for .
- * - handling of disjunction "pattern1 | pattern2" mean needed to build
- *   and check a list internally
  * - get rid of the "compile" starting with lowercase
  * - get rid of the Strdup/Strndup in case of dictionary
  */
@@ -1303,10 +1301,14 @@ xmlNewStreamCtxt(xmlStreamCompPtr stream) {
  */
 void
 xmlFreeStreamCtxt(xmlStreamCtxtPtr stream) {
-    if (stream != NULL) {
+    xmlStreamCtxtPtr next;
+
+    while (stream != NULL) {
+        next = stream->next;
         if (stream->states != NULL)
 	    xmlFree(stream->states);
         xmlFree(stream);
+	stream = next;
     }
 }
 
@@ -1367,6 +1369,9 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
               const xmlChar *name, const xmlChar *ns) {
     int ret = 0, err = 0, tmp, i, m, match, step, desc, final;
     xmlStreamCompPtr comp;
+#ifdef DEBUG_STREAMING
+    xmlStreamCtxtPtr orig = stream;
+#endif
 
     if ((stream == NULL) || (stream->nbState < 0))
         return(-1);
@@ -1382,8 +1387,10 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
 		    err++;
 		if (comp->steps[tmp].flags & XML_STREAM_STEP_FINAL)
 		    ret = 1;
+		stream = stream->next;
 		continue; /* while */
 	    }
+	    stream = stream->next;
 	    continue; /* while */
 	}
 	/*
@@ -1486,11 +1493,11 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
         stream = stream->next;
     } /* while stream != NULL */
     
-#ifdef DEBUG_STREAMING
-    xmlDebugStreamCtxt(stream, ret);
-#endif
     if (err > 0)
         ret = -1;
+#ifdef DEBUG_STREAMING
+    xmlDebugStreamCtxt(orig, ret);
+#endif
     return(ret);
 }
 
@@ -1560,8 +1567,8 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
         return(NULL);
 
     start = pattern;
+    or = start;
     while (*or != 0) {
-	or = start;
 	tmp = NULL;
 	while ((*or != 0) && (*or != '|')) or++;
         if (*or == 0)
@@ -1591,11 +1598,11 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
 	xmlStreamCompile(cur);
 	if (xmlReversePattern(cur) < 0)
 	    goto error;
-	start = or;
 	if (tmp != NULL) {
 	    xmlFree(tmp);
 	    tmp = NULL;
 	}
+	start = or;
     }
     return(ret);
 error:

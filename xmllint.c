@@ -1062,6 +1062,17 @@ static void walkDoc(xmlDocPtr doc) {
 	    pattern = NULL;
 	}
     }
+    if (patternc != NULL) {
+        patstream = xmlPatternGetStreamCtxt(patternc);
+	if (patstream != NULL) {
+	    ret = xmlStreamPush(patstream, NULL, NULL);
+	    if (ret < 0) {
+		fprintf(stderr, "xmlStreamPush() failure\n");
+		xmlFreeStreamCtxt(patstream);
+		patstream = NULL;
+            }
+	}
+    }
 #endif /* LIBXML_PATTERN_ENABLED */
     reader = xmlReaderWalker(doc);
     if (reader != NULL) {
@@ -1090,6 +1101,12 @@ static void walkDoc(xmlDocPtr doc) {
 	fprintf(stderr, "Failed to crate a reader from the document\n");
 	progresult = XMLLINT_ERR_UNCLASS;
     }
+#ifdef LIBXML_PATTERN_ENABLED
+    if (patstream != NULL) {
+	xmlFreeStreamCtxt(patstream);
+	patstream = NULL;
+    }
+#endif
 }
 #endif /* LIBXML_READER_ENABLED */
 

@@ -30,6 +30,7 @@ libxml_la_SOURCES = \
 		xmlmemory.c \
 		nanohttp.c \
 		nanoftp.c \
+		uri.c \
 		valid.c \
 		xlink.c
 
@@ -50,6 +51,7 @@ xmlinc_HEADERS = \
 		xmlmemory.h \
 		nanohttp.h \
 		nanoftp.h \
+		uri.h \
 		valid.h \
 		xlink.h
 

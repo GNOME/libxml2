@@ -24,26 +24,27 @@ TODO:
   once stable.
   http://xmlsoft.org/conf/result.html
 
-- Optimization of tag strings allocation.
+- Optimization of tag strings allocation ?
 
 - maintain coherency of namespace when doing cut'n paste operations
   => the functions are coded, but need testing
 
-- function to rebuild the ID table ?
+- function to rebuild the ID table
+- functions to rebuild the DTD hash tables (after DTD changes).
 
-- Parsing of a well balanced chunk
 
-- dynamically adapt the alloc entry point to use g_alloc()/g_free()
-  if the programmer wants it
-
-- Validity checking problems for ENTITY ENTITIES attributes
-
-- Validity checking problems for NOTATIONS attributes
    
-- Check attribute normalization especially xmlGetProp()
 
 EXTENSIONS:
 ===========
+
+- Check attribute normalization especially xmlGetProp()
+- Validity checking problems for NOTATIONS attributes
+- Validity checking problems for ENTITY ENTITIES attributes
+- dynamically adapt the alloc entry point to use g_alloc()/g_free()
+  if the programmer wants it: 
+    - use xmlMemSetup() to reset the routines used.
+- Parsing of a well balanced chunk
 - URI module: validation, base, etc ...
 - Tools to produce man pages from the SGML docs.
 - Finish XPath

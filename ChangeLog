@@ -1,3 +1,16 @@
+Mon Mar 20 12:33:51 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* test/valid/dtds/xhtml*: removed RCS infos (pain with CVS)
+	* TODO: updated
+	* xmlmemory.[ch] : added xmlMemSetup() and xmlMemGet() to override
+	  libxml defaul allocation function with another set (like gmalloc/
+	  gfree).
+	* Makefile.am, uri.c, uri.h: added a set of functions to do
+	  exact (litteraly copied from the RFC 2396 productions) parsing
+	  and handling of URI. Will be needed for XLink, one XML WFC, 
+	  XML Base and reused in the nano[ftp/http] modules. Still work
+	  to be done.
+
 Tue Mar 14 20:52:35 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in, libxml.spec.in : libxml2

@@ -111,6 +111,8 @@
 #define FTP_GET_PASSWD		331
 #define FTP_BUF_SIZE		512
 
+#define XML_NANO_MAX_URLBUF	4096
+
 typedef struct xmlNanoFTPCtxt {
     char *protocol;	/* the protocol name */
     char *hostname;	/* the host name */
@@ -287,7 +289,7 @@ static void
 xmlNanoFTPScanURL(void *ctx, const char *URL) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     const char *cur = URL;
-    char buf[4096];
+    char buf[XML_NANO_MAX_URLBUF];
     int indx = 0;
     int port = 0;
 
@@ -305,7 +307,7 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
     }
     if (URL == NULL) return;
     buf[indx] = 0;
-    while (*cur != 0) {
+    while ((*cur != 0) && (indx < XML_NANO_MAX_URLBUF - 1)) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
 	    buf[indx] = 0;
 	    ctxt->protocol = xmlMemStrdup(buf);
@@ -322,7 +324,7 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
     {
 	const char *p = strchr(cur, '@');
 	if(p) {
-	    while(1) {
+	    while(indx < XML_NANO_MAX_URLBUF-1) {
 		if(cur[0] == ':' || cur[0] == '@') break;
 		buf[indx++] = *cur++;
 	    }
@@ -331,7 +333,7 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
 	    indx = 0;
 	    if(cur[0] == ':') {
 		cur++;
-		while(1) {
+		while(indx < XML_NANO_MAX_URLBUF-1) {
 		    if(cur[0] == '@') break;
 		    buf[indx++] = *cur++;
 		}
@@ -343,7 +345,7 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
 	}
     }
 
-    while (1) {
+    while (indx < XML_NANO_MAX_URLBUF - 1) {
 	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
 		(!strchr (cur, '[') && strchr (cur, ']'))) {
 	    xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPScanURL: %s",
@@ -410,7 +412,7 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
     else {
         indx = 0;
         buf[indx] = 0;
-	while (*cur != 0)
+	while ((*cur != 0) && (indx < XML_NANO_MAX_URLBUF-1))
 	    buf[indx++] = *cur++;
 	buf[indx] = 0;
 	ctxt->path = xmlMemStrdup(buf);
@@ -435,7 +437,7 @@ int
 xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     const char *cur = URL;
-    char buf[4096];
+    char buf[XML_NANO_MAX_URLBUF];
     int indx = 0;
     int port = 0;
 
@@ -448,7 +450,7 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
     if (ctxt->hostname == NULL)
 	return(-1);
     buf[indx] = 0;
-    while (*cur != 0) {
+    while ((*cur != 0) && (indx < XML_NANO_MAX_URLBUF-1)) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
 	    buf[indx] = 0;
 	    if (strcmp(ctxt->protocol, buf))
@@ -463,7 +465,7 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
 	return(-1);
 
     buf[indx] = 0;
-    while (1) {
+    while (indx < XML_NANO_MAX_URLBUF-1) {
 	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
 		(!strchr (cur, '[') && strchr (cur, ']'))) {
 	    xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPUpdateURL: %s",
@@ -473,7 +475,7 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
 
 	if (cur[0] == '[') {
 	    cur++;
-	    while (cur[0] != ']')
+	    while ((cur[0] != ']') && (indx < XML_NANO_MAX_URLBUF-1))
 		buf[indx++] = *cur++;
 
 	    if (!strchr (buf, ':')) {
@@ -540,7 +542,7 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
     else {
         indx = 0;
         buf[indx] = 0;
-	while (*cur != 0)
+	while ((*cur != 0) && (indx < XML_NANO_MAX_URLBUF-1))
 	    buf[indx++] = *cur++;
 	buf[indx] = 0;
 	ctxt->path = xmlMemStrdup(buf);
@@ -561,7 +563,7 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
 void
 xmlNanoFTPScanProxy(const char *URL) {
     const char *cur = URL;
-    char buf[4096];
+    char buf[XML_NANO_MAX_URLBUF];
     int indx = 0;
     int port = 0;
 
@@ -580,7 +582,7 @@ xmlNanoFTPScanProxy(const char *URL) {
 #endif
     if (URL == NULL) return;
     buf[indx] = 0;
-    while (*cur != 0) {
+    while ((*cur != 0) && (indx < XML_NANO_MAX_URLBUF-1)) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
 	    buf[indx] = 0;
 	    indx = 0;
@@ -592,7 +594,7 @@ xmlNanoFTPScanProxy(const char *URL) {
     if (*cur == 0) return;
 
     buf[indx] = 0;
-    while (1) {
+    while (indx < XML_NANO_MAX_URLBUF-1) {
 	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
 		(!strchr (cur, '[') && strchr (cur, ']'))) {
 	    xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPScanProxy: %s",

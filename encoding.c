@@ -580,7 +580,6 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
     *inlen = processed - instart;
     return(0);
 }
-#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * UTF8ToUTF16:
@@ -620,6 +619,7 @@ UTF8ToUTF16(unsigned char* outb, int *outlen,
     }
     return (UTF8ToUTF16LE(outb, outlen, in, inlen));
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * UTF16BEToUTF8:

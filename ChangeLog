@@ -1,3 +1,11 @@
+Tue Feb 10 19:24:38 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* encoding.c: applied patch supplied by Christophe Dubach
+	  to fix problem with --with-minimum configuration
+	  (bug 133773)
+	* nanoftp.c: fixed potential buffer overflow problem,
+	  similar to fix just applied to nanohttp.c.
+	  
 Mon Feb  9 18:40:21 CET 2004 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* nanohttp.c: fixed the fix for the buffer overflow, thanx

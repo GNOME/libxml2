@@ -1,3 +1,7 @@
+Wed Jan 31 21:45:37 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: fixed mod operator
+
 Wed Jan 31 16:50:42 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixed xmlStrcat doc

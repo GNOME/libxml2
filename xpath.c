@@ -2321,7 +2321,7 @@ xmlXPathMultValues(xmlXPathParserContextPtr ctxt) {
  * xmlXPathDivValues:
  * @ctxt:  the XPath Parser context
  *
- * Implement the div operation on XPath objects:
+ * Implement the div operation on XPath objects @arg1 / @arg2:
  * The numeric operators convert their operands to numbers as if
  * by calling the number function.
  */
@@ -2343,21 +2343,22 @@ xmlXPathDivValues(xmlXPathParserContextPtr ctxt) {
  * xmlXPathModValues:
  * @ctxt:  the XPath Parser context
  *
- * Implement the div operation on XPath objects: @arg1 / @arg2
+ * Implement the mod operation on XPath objects: @arg1 / @arg2
  * The numeric operators convert their operands to numbers as if
  * by calling the number function.
  */
 void
 xmlXPathModValues(xmlXPathParserContextPtr ctxt) {
     xmlXPathObjectPtr arg;
-    double val;
+    int arg1, arg2;
 
     POP_FLOAT
-    val = arg->floatval;
+    arg2 = (int) arg->floatval;
     xmlXPathFreeObject(arg);
 
     POP_FLOAT
-    arg->floatval /= val;
+    arg1 = (int) arg->floatval;
+    arg->floatval = arg1 % arg2;
     valuePush(ctxt, arg);
 }
 

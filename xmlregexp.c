@@ -141,7 +141,7 @@ typedef struct _xmlRegRange xmlRegRange;
 typedef xmlRegRange *xmlRegRangePtr;
 
 struct _xmlRegRange {
-    int neg;
+    int neg;		/* 0 normal, 1 not, 2 exclude */
     xmlRegAtomType type;
     int start;
     int end;
@@ -1995,14 +1995,20 @@ xmlRegCheckCharacter(xmlRegAtomPtr atom, int codepoint) {
 
 	    for (i = 0;i < atom->nbRanges;i++) {
 		range = atom->ranges[i];
-		if (range->neg) {
+		if (range->neg == 2) {
 		    ret = xmlRegCheckCharacterRange(range->type, codepoint,
 						0, range->start, range->end,
 						range->blockName);
 		    if (ret != 0)
 			return(0); /* excluded char */
-		    else
+		} else if (range->neg) {
+		    ret = xmlRegCheckCharacterRange(range->type, codepoint,
+						0, range->start, range->end,
+						range->blockName);
+		    if (ret == 0)
 		        accept = 1;
+		    else
+		        return(0);
 		} else {
 		    ret = xmlRegCheckCharacterRange(range->type, codepoint,
 						0, range->start, range->end,
@@ -3634,8 +3640,9 @@ xmlFAParseCharGroup(xmlRegParserCtxtPtr ctxt) {
 	    xmlFAParsePosCharGroup(ctxt);
 	    ctxt->neg = neg;
 	} else if (CUR == '-') {
+	    int neg = ctxt->neg;
 	    NEXT;
-	    ctxt->neg = !ctxt->neg;
+	    ctxt->neg = 2;
 	    if (CUR != '[') {
 		ERROR("charClassExpr: '[' expected");
 		break;
@@ -3648,6 +3655,7 @@ xmlFAParseCharGroup(xmlRegParserCtxtPtr ctxt) {
 		ERROR("charClassExpr: ']' expected");
 		break;
 	    }
+	    ctxt->neg = neg;
 	    break;
 	} else if (CUR != ']') {
 	    xmlFAParsePosCharGroup(ctxt);

@@ -1,3 +1,8 @@
+Mon Nov 24 15:26:21 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: fixing some Negative Character Group and
+	  Character Class Subtraction handling.
+
 Mon Nov 24 14:01:57 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c xmlschemas.c: more XML Schemas fixes based

@@ -592,18 +592,26 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
  */
 void
 xmlXPathNodeSetSort(xmlNodeSetPtr set) {
-    int i, j;
+    int i, j, incr, len, rc;
     xmlNodePtr tmp;
 
     if (set == NULL)
 	return;
 
-    for (i = 0;i < set->nodeNr -1;i++) {
-	for (j = i + 1; j < set->nodeNr; j++) {
-	    if (xmlXPathCmpNodes(set->nodeTab[i], set->nodeTab[j]) == -1) {
-		tmp = set->nodeTab[i];
-		set->nodeTab[i] = set->nodeTab[j];
-		set->nodeTab[j] = tmp;
+    /* Use Shell's sort to sort the node-set */
+    len = set->nodeNr;
+    for (incr = len / 2; incr > 0; incr /= 2) {
+	for (i = incr; i < len; i++) {
+	    j = i - incr;
+	    while (j >= 0) {
+		rc = xmlXPathCmpNodes(set->nodeTab[j], set->nodeTab[j + incr]);
+		if (rc != 1 && rc != -2) {
+		    tmp = set->nodeTab[j];
+		    set->nodeTab[j] = set->nodeTab[j + incr];
+		    set->nodeTab[j + incr] = tmp;
+		    j -= incr;
+		} else
+		    break;
 	    }
 	}
     }
@@ -4733,7 +4741,7 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
     int ok = 0;
     int isneg = 0;
 
-    while (*cur == ' ') cur++;
+    while (IS_BLANK(*cur)) cur++;
     if ((*cur != '.') && ((*cur < '0') || (*cur > '9')) && (*cur != '-')) {
         return(xmlXPathNAN);
     }
@@ -4757,7 +4765,7 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 	    cur++;
 	}
     }
-    while (*cur == ' ') cur++;
+    while (IS_BLANK(*cur)) cur++;
     if (*cur != 0) return(xmlXPathNAN);
     if (isneg) ret = -ret;
     return(ret);

@@ -392,7 +392,7 @@ static void
 xmlXPathCompSwap(xmlXPathStepOpPtr op) {
     int tmp;
 
-#ifdef LIBXML_THREAD_ENABLED
+#ifndef LIBXML_THREAD_ENABLED
     /*
      * Since this manipulates possibly shared variables, this is
      * disable if one detects that the library is used in a multithreaded

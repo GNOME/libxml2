@@ -1262,6 +1262,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 	xmlFreeEnumeration(tree);
 	return(NULL);
     }
+
     /*
      * Check the type and possibly the default value.
      */
@@ -1298,6 +1299,18 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 	       elem, name, defaultValue);
 	defaultValue = NULL;
 	ctxt->valid = 0;
+    }
+
+    /*
+     * Check first that an attribute defined in the external subset wasn't
+     * already defined in the internal subset
+     */
+    if ((dtd->doc != NULL) && (dtd->doc->extSubset == dtd) &&
+	(dtd->doc->intSubset != NULL) &&
+	(dtd->doc->intSubset->attributes != NULL)) {
+        ret = xmlHashLookup3(dtd->doc->intSubset->attributes, name, ns, elem);
+	if (ret != NULL)
+	    return(NULL);
     }
 
     /*
@@ -3369,6 +3382,9 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if ((elem == NULL) || (elem->name == NULL)) return(0);
     if ((attr == NULL) || (attr->name == NULL)) return(0);
 
+    if (xmlStrEqual(attr->name, "lang")) {
+	printf("hello\n");
+    }
     if ((elem->ns != NULL) && (elem->ns->prefix != NULL)) {
 	xmlChar qname[500];
 	snprintf((char *) qname, sizeof(qname), "%s:%s",

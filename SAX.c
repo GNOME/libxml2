@@ -520,8 +520,8 @@ attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
     }
     if (ctxt->vctxt.valid == 0)
 	ctxt->valid = 0;
-    if (ctxt->validate && ctxt->wellFormed &&
-        ctxt->myDoc && ctxt->myDoc->intSubset)
+    if ((attr != NULL) && (ctxt->validate) && (ctxt->wellFormed) &&
+        (ctxt->myDoc != NULL) && (ctxt->myDoc->intSubset != NULL))
 	ctxt->valid &= xmlValidateAttributeDecl(&ctxt->vctxt, ctxt->myDoc,
 	                                        attr);
     if (prefix != NULL)
@@ -1248,7 +1248,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     }
 
     /*
-     * process all the attributes whose name start with "xml"
+     * process all the attributes whose name start with "xmlns"
      */
     if (atts != NULL) {
         i = 0;
@@ -1256,7 +1256,8 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	value = atts[i++];
 	if (!ctxt->html) {
 	    while ((att != NULL) && (value != NULL)) {
-		if ((att[0] == 'x') && (att[1] == 'm') && (att[2] == 'l'))
+		if ((att[0] == 'x') && (att[1] == 'm') && (att[2] == 'l') &&
+		    (att[3] == 'n') && (att[4] == 's'))
 		    attribute(ctxt, att, value);
 
 		att = atts[i++];

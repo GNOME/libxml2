@@ -1,3 +1,10 @@
+Mon Mar 25 11:46:05 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c SAX.c: fixed bug #76168, attribute redeclared in
+	  the internal subset should not raise duplicate ID errors,
+	  also there was a small bug in conjunction to namespace
+	  declarations defaulted and xml:xxx attributes DTD definitions.
+	  
 Fri Mar 22 15:13:49 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: Richard Jinks also raised some rounding problems

@@ -39,6 +39,9 @@
 #ifdef HAVE_NETDB_H
 #include <netdb.h>
 #endif
+#ifdef HAVE_RESOLV_H
+#include <resolv.h>
+#endif
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h> 
 #endif

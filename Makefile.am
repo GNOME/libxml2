@@ -238,6 +238,16 @@ dist-hook:
 ## the value NONE in configure if the user doesn't specify them (this
 ## is an autoconf feature, not a bug).
 
+confexecdir=$(libdir)
+confexec_DATA = xmlConf.sh
+
+EXTRA_DIST = xmlConf.sh.in
+
+confexecdir=$(libdir)
+confexec_DATA = xmlConf.sh
+EXTRA_DIST = xmlConf.sh.in libxml.spec.in test result SAXresult \
+             example/Makefile.am example/gjobread.c example/gjobs.xml
+
 xmlConf.sh: xmlConf.sh.in Makefile
 ## Use sed and then mv to avoid problems if the user interrupts.
 	sed -e 's?\@XML_LIBDIR\@?$(XML_LIBDIR)?g' \

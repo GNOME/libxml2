@@ -1,3 +1,8 @@
+Sun Aug 15 21:15:17 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Makefile.am libxml.spec.in: corrected missing xmlConf.sh in
+	  the distribution due to a cut'n paste error at last commit
+
 Tue Aug 10 20:28:09 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: upgraded to version 1.4.0

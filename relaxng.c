@@ -1991,7 +1991,7 @@ xmlRelaxNGGetErrorString(xmlRelaxNGValidErr err, const xmlChar *arg1,
     if (msg[0] == 0) {
 	snprintf(msg, 1000, "Unknown error code %d", err);
     }
-    msg[1000] = 0;
+    msg[1000 - 1] = 0;
     return(xmlStrdup((xmlChar *) msg));
 }
 

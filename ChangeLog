@@ -1,3 +1,8 @@
+Sat May 10 16:01:21 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: Stéphane Bidoul found an off by one addressing
+	  error on the error handling.
+
 Fri May  9 19:08:20 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: trying to fix #112673

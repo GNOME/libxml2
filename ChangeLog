@@ -1,3 +1,7 @@
+Sun Jan 23 01:00:09 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: small optimization back.
+
 Sat Jan 22 00:40:31 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c parser.c include/libxml/dict.h: a single lock version

@@ -3189,6 +3189,7 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
     int nbchar = 0;
     int line = ctxt->input->line;
     int col = ctxt->input->col;
+    int ccol;
 
     SHRINK;
     GROW;
@@ -3233,15 +3234,18 @@ get_more_space:
 		}
 		return;
 	    }
+
 get_more:
+            ccol = ctxt->input->col;
 	    while (((*in > ']') && (*in <= 0x7F)) ||
 	           ((*in > '&') && (*in < '<')) ||
 	           ((*in > '<') && (*in < ']')) ||
 		   ((*in >= 0x20) && (*in < '&')) ||
 		   (*in == 0x09)) {
 			in++;
-			ctxt->input->col++;
+			ccol++;
 		}
+	    ctxt->input->col = ccol;
 	    if (*in == 0xA) {
 		ctxt->input->line++; ctxt->input->col = 1;
 		in++;

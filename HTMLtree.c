@@ -152,7 +152,12 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
             xmlChar *buffer;
 
 	    /* uses the HTML encoding routine !!!!!!!!!! */
+#ifndef XML_USE_BUFFER_CONTENT
             buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+#else
+            buffer = xmlEncodeEntitiesReentrant(doc, 
+                                                xmlBufferContent(cur->content));
+#endif 
 	    if (buffer != NULL) {
 		xmlBufferWriteCHAR(buf, buffer);
 		xmlFree(buffer);
@@ -163,7 +168,11 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     if (cur->type == HTML_COMMENT_NODE) {
 	if (cur->content != NULL) {
 	    xmlBufferWriteChar(buf, "<!--");
+#ifndef XML_USE_BUFFER_CONTENT
 	    xmlBufferWriteCHAR(buf, cur->content);
+#else
+	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
+#endif
 	    xmlBufferWriteChar(buf, "-->");
 	}
 	return;
@@ -213,7 +222,12 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     if (cur->content != NULL) {
 	xmlChar *buffer;
 
-	buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+#ifndef XML_USE_BUFFER_CONTENT
+    buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+#else
+    buffer = xmlEncodeEntitiesReentrant(doc, 
+                                        xmlBufferContent(cur->content));
+#endif
 	if (buffer != NULL) {
 	    xmlBufferWriteCHAR(buf, buffer);
 	    xmlFree(buffer);

@@ -12,11 +12,11 @@ REL="UP"
 TITLE="Gnome XML Library"
 HREF="libxml.html"><LINK
 REL="PREVIOUS"
-TITLE="xml-error"
-HREF="gnome-xml-xml-error.html"><LINK
+TITLE="xpath"
+HREF="gnome-xml-xpath.html"><LINK
 REL="NEXT"
-TITLE="HTMLparser"
-HREF="gnome-xml-htmlparser.html"></HEAD
+TITLE="xmlmemory"
+HREF="gnome-xml-xmlmemory.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -44,7 +44,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-xml-error.html"
+HREF="gnome-xml-xpath.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -98,7 +98,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-htmlparser.html"
+HREF="gnome-xml-xmlmemory.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN5241"
+NAME="AEN6603"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN5241"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN5244"
+NAME="AEN6606"
 ></A
 ><H2
 >Synopsis</H2
@@ -138,6 +138,10 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+#define     <A
+HREF="gnome-xml-parserinternals.html#XML-MAX-NAMELEN"
+>XML_MAX_NAMELEN</A
+>
 typedef     <A
 HREF="gnome-xml-parserinternals.html#CHARVAL"
 >CHARVAL</A
@@ -882,7 +886,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN5454"
+NAME="AEN6817"
 ></A
 ><H2
 >Description</H2
@@ -892,14 +896,40 @@ NAME="AEN5454"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN5457"
+NAME="AEN6820"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5459"
+NAME="AEN6822"
+></A
+><H3
+><A
+NAME="XML-MAX-NAMELEN"
+></A
+>XML_MAX_NAMELEN</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_MAX_NAMELEN 1000</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6827"
 ></A
 ><H3
 ><A
@@ -912,7 +942,7 @@ NAME="CHARVAL"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5463"
+NAME="AEN6831"
 ></A
 ><H3
 ><A
@@ -970,7 +1000,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5477"
+NAME="AEN6845"
 ></A
 ><H3
 ><A
@@ -986,7 +1016,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     SKIPCHARVAL(p)</PRE
+>#define SKIPCHARVAL(p) (p)++;</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1028,7 +1058,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5491"
+NAME="AEN6859"
 ></A
 ><H3
 ><A
@@ -1086,7 +1116,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5505"
+NAME="AEN6873"
 ></A
 ><H3
 ><A
@@ -1144,7 +1174,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5519"
+NAME="AEN6887"
 ></A
 ><H3
 ><A
@@ -1202,7 +1232,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5533"
+NAME="AEN6901"
 ></A
 ><H3
 ><A
@@ -1260,7 +1290,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5547"
+NAME="AEN6915"
 ></A
 ><H3
 ><A
@@ -1318,7 +1348,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5561"
+NAME="AEN6929"
 ></A
 ><H3
 ><A
@@ -1376,7 +1406,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5575"
+NAME="AEN6943"
 ></A
 ><H3
 ><A
@@ -1434,7 +1464,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5589"
+NAME="AEN6957"
 ></A
 ><H3
 ><A
@@ -1492,7 +1522,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5603"
+NAME="AEN6971"
 ></A
 ><H3
 ><A
@@ -1550,7 +1580,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5617"
+NAME="AEN6985"
 ></A
 ><H3
 ><A
@@ -1608,7 +1638,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5631"
+NAME="AEN6999"
 ></A
 ><H3
 ><A
@@ -1666,7 +1696,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5645"
+NAME="AEN7013"
 ></A
 ><H3
 ><A
@@ -1724,7 +1754,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5659"
+NAME="AEN7027"
 ></A
 ><H3
 ><A
@@ -1780,7 +1810,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a pointer to an array of CHAR</TD
 ></TR
 ><TR
 ><TD
@@ -1795,7 +1825,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new parser context or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -1805,7 +1835,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5680"
+NAME="AEN7048"
 ></A
 ><H3
 ><A
@@ -1860,7 +1890,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the filename</TD
 ></TR
 ><TR
 ><TD
@@ -1875,7 +1905,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new parser context or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -1885,7 +1915,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5700"
+NAME="AEN7068"
 ></A
 ><H3
 ><A
@@ -1939,7 +1969,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an pointer to a char array</TD
 ></TR
 ><TR
 ><TD
@@ -1956,7 +1986,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the siwe of the array</TD
 ></TR
 ><TR
 ><TD
@@ -1971,7 +2001,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new parser context or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -1981,7 +2011,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5724"
+NAME="AEN7092"
 ></A
 ><H3
 ><A
@@ -2035,7 +2065,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -2045,7 +2075,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5740"
+NAME="AEN7108"
 ></A
 ><H3
 ><A
@@ -2096,7 +2126,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlParserCtxtPtr or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -2106,7 +2136,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5756"
+NAME="AEN7124"
 ></A
 ><H3
 ><A
@@ -2164,7 +2194,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the parser context</TD
 ></TR
 ><TR
 ><TD
@@ -2191,7 +2221,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5777"
+NAME="AEN7145"
 ></A
 ><H3
 ><A
@@ -2251,7 +2281,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -2268,7 +2298,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML entity pointer.</TD
 ></TR
 ></TABLE
 ><P
@@ -2278,7 +2308,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5799"
+NAME="AEN7167"
 ></A
 ><H3
 ><A
@@ -2338,7 +2368,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -2355,7 +2385,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an Entity pointer</TD
 ></TR
 ><TR
 ><TD
@@ -2370,7 +2400,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new input stream or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -2380,7 +2410,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5825"
+NAME="AEN7193"
 ></A
 ><H3
 ><A
@@ -2438,7 +2468,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -2455,7 +2485,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser input fragment (entity, XML fragment ...).</TD
 ></TR
 ></TABLE
 ><P
@@ -2465,7 +2495,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5846"
+NAME="AEN7214"
 ></A
 ><H3
 ><A
@@ -2522,7 +2552,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -2537,7 +2567,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the current CHAR in the parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -2547,7 +2577,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5867"
+NAME="AEN7235"
 ></A
 ><H3
 ><A
@@ -2600,7 +2630,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an xmlP arserInputPtr</TD
 ></TR
 ></TABLE
 ><P
@@ -2610,7 +2640,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5883"
+NAME="AEN7251"
 ></A
 ><H3
 ><A
@@ -2667,7 +2697,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -2684,7 +2714,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the filename to use as entity</TD
 ></TR
 ><TR
 ><TD
@@ -2699,7 +2729,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new input stream or NULL in case of error</TD
 ></TR
 ></TABLE
 ><P
@@ -2709,7 +2739,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5908"
+NAME="AEN7276"
 ></A
 ><H3
 ><A
@@ -2775,7 +2805,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -2792,7 +2822,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a CHAR ** </TD
 ></TR
 ><TR
 ><TD
@@ -2807,7 +2837,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the function returns the local part, and prefix is updated
+to get the Prefix if any.</TD
 ></TR
 ></TABLE
 ><P
@@ -2817,7 +2848,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5937"
+NAME="AEN7305"
 ></A
 ><H3
 ><A
@@ -2878,7 +2909,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -2893,7 +2924,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the namespace name or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -2903,7 +2934,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5960"
+NAME="AEN7328"
 ></A
 ><H3
 ><A
@@ -2969,7 +3000,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -2986,7 +3017,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a CHAR ** </TD
 ></TR
 ><TR
 ><TD
@@ -3001,7 +3032,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the function returns the local part, and prefix is updated
+to get the Prefix if any.</TD
 ></TR
 ></TABLE
 ><P
@@ -3011,7 +3043,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5989"
+NAME="AEN7357"
 ></A
 ><H3
 ><A
@@ -3071,7 +3103,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -3086,7 +3118,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the namespace name</TD
 ></TR
 ></TABLE
 ><P
@@ -3096,7 +3128,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6012"
+NAME="AEN7380"
 ></A
 ><H3
 ><A
@@ -3153,7 +3185,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -3168,7 +3200,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the string parser or NULL.</TD
 ></TR
 ></TABLE
 ><P
@@ -3178,7 +3210,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6033"
+NAME="AEN7401"
 ></A
 ><H3
 ><A
@@ -3237,7 +3269,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -3247,7 +3279,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6051"
+NAME="AEN7419"
 ></A
 ><H3
 ><A
@@ -3311,7 +3343,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -3326,7 +3358,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the Name parsed or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -3336,7 +3368,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6075"
+NAME="AEN7443"
 ></A
 ><H3
 ><A
@@ -3399,7 +3431,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -3414,7 +3446,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the Name parsed or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -3424,7 +3456,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6099"
+NAME="AEN7467"
 ></A
 ><H3
 ><A
@@ -3484,7 +3516,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -3499,7 +3531,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the Nmtoken parsed or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -3509,7 +3541,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6122"
+NAME="AEN7490"
 ></A
 ><H3
 ><A
@@ -3572,7 +3604,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -3589,7 +3621,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  if non-NULL store a copy of the original entity value</TD
 ></TR
 ><TR
 ><TD
@@ -3604,7 +3636,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the EntityValue parsed with reference substitued or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -3614,7 +3646,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6149"
+NAME="AEN7517"
 ></A
 ><H3
 ><A
@@ -3643,8 +3675,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse a value for an attribute
 Note: the parser won't do substitution of entities here, this
-will be handled later in xmlStringGetNodeList, unless it was
-asked for ctxt-&gt;replaceEntities != 0 </P
+will be handled later in xmlStringGetNodeList</P
 ><P
 >[10] AttValue ::= '"' ([^&lt;&amp;"] | Reference)* '"' |
 "'" ([^&lt;&amp;'] | Reference)* "'"</P
@@ -3676,7 +3707,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -3691,7 +3722,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the AttValue parsed or NULL.</TD
 ></TR
 ></TABLE
 ><P
@@ -3701,7 +3732,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6171"
+NAME="AEN7539"
 ></A
 ><H3
 ><A
@@ -3759,7 +3790,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -3774,7 +3805,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the SystemLiteral parsed or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -3784,7 +3815,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6193"
+NAME="AEN7561"
 ></A
 ><H3
 ><A
@@ -3842,7 +3873,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -3857,7 +3888,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the PubidLiteral parsed or NULL.</TD
 ></TR
 ></TABLE
 ><P
@@ -3867,7 +3898,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6215"
+NAME="AEN7583"
 ></A
 ><H3
 ><A
@@ -3924,7 +3955,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -3941,7 +3972,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  int indicating whether we are within a CDATA section</TD
 ></TR
 ></TABLE
 ><P
@@ -3951,7 +3982,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6236"
+NAME="AEN7604"
 ></A
 ><H3
 ><A
@@ -4020,7 +4051,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4037,7 +4068,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a CHAR** receiving PubidLiteral</TD
 ></TR
 ><TR
 ><TD
@@ -4054,7 +4085,8 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> indicate whether we should restrict parsing to only
+production [75], see NOTE below</TD
 ></TR
 ><TR
 ><TD
@@ -4069,7 +4101,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the function returns SystemLiteral and in the second
+case publicID receives PubidLiteral, is strict is off
+it is possible to return NULL and have publicID set.</TD
 ></TR
 ></TABLE
 ><P
@@ -4079,7 +4113,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6269"
+NAME="AEN7637"
 ></A
 ><H3
 ><A
@@ -4104,7 +4138,6 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ></TABLE
 ><P
 >Skip an XML (SGML) comment &lt;!-- .... --&gt;
-This may or may not create a node (depending on the context)
 The spec says that "For compatibility, the string "--" (double-hyphen)
 must not occur within comments. "</P
 ><P
@@ -4137,7 +4170,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -4147,7 +4180,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6286"
+NAME="AEN7654"
 ></A
 ><H3
 ><A
@@ -4205,7 +4238,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4220,7 +4253,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the PITarget name or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -4230,7 +4263,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6308"
+NAME="AEN7676"
 ></A
 ><H3
 ><A
@@ -4287,7 +4320,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -4297,7 +4330,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6326"
+NAME="AEN7694"
 ></A
 ><H3
 ><A
@@ -4362,7 +4395,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -4372,7 +4405,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6346"
+NAME="AEN7714"
 ></A
 ><H3
 ><A
@@ -4411,7 +4444,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >[76] NDataDecl ::= S 'NDATA' S Name</P
 ><P
 >[ VC: Notation Declared ]
-TODO The Name must match the declared name of a notation.</P
+The Name must match the declared name of a notation.</P
 ><P
 ></P
 ><DIV
@@ -4440,7 +4473,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -4450,7 +4483,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6369"
+NAME="AEN7737"
 ></A
 ><H3
 ><A
@@ -4492,7 +4525,7 @@ HREF="FIXED"
 >' S)? AttValue)</P
 ><P
 >[ VC: Required Attribute ]
-TODO if the default declaration is the keyword <GTKDOCLINK
+if the default declaration is the keyword <GTKDOCLINK
 HREF="REQUIRED"
 >REQUIRED</GTKDOCLINK
 >, then the
@@ -4507,7 +4540,7 @@ HREF="gnome-xml-valid.html#XMLVALIDATEATTRIBUTEDECL"
 >()</P
 ><P
 >[ VC: Fixed Attribute Default ]
-TODO if an attribute has a default value declared with the <GTKDOCLINK
+if an attribute has a default value declared with the <GTKDOCLINK
 HREF="FIXED"
 >FIXED</GTKDOCLINK
 >
@@ -4546,7 +4579,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4563,7 +4596,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  Receive a possible fixed default value for the attribute</TD
 ></TR
 ><TR
 ><TD
@@ -4578,7 +4611,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> XML_ATTRIBUTE_NONE, XML_ATTRIBUTE_REQUIRED, XML_ATTRIBUTE_IMPLIED
+or XML_ATTRIBUTE_FIXED. </TD
 ></TR
 ></TABLE
 ><P
@@ -4588,7 +4622,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6406"
+NAME="AEN7774"
 ></A
 ><H3
 ><A
@@ -4622,7 +4656,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >[58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'</P
 ><P
 >[ VC: Notation Attributes ]
-TODO Values of this type must match one of the notation names included
+Values of this type must match one of the notation names included
 in the declaration; all notation names in the declaration must be declared.</P
 ><P
 ></P
@@ -4652,7 +4686,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4667,7 +4701,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the notation attribute tree built while parsing</TD
 ></TR
 ></TABLE
 ><P
@@ -4677,7 +4711,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6430"
+NAME="AEN7798"
 ></A
 ><H3
 ><A
@@ -4709,7 +4743,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >[59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'</P
 ><P
 >[ VC: Enumeration ]
-TODO Values of this type must match one of the Nmtoken tokens in
+Values of this type must match one of the Nmtoken tokens in
 the declaration</P
 ><P
 ></P
@@ -4739,7 +4773,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4754,7 +4788,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the enumeration attribute tree built while parsing</TD
 ></TR
 ></TABLE
 ><P
@@ -4764,7 +4798,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6453"
+NAME="AEN7821"
 ></A
 ><H3
 ><A
@@ -4825,7 +4859,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4842,7 +4876,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the enumeration tree built while parsing</TD
 ></TR
 ><TR
 ><TD
@@ -4857,7 +4891,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> XML_ATTRIBUTE_ENUMERATION or XML_ATTRIBUTE_NOTATION</TD
 ></TR
 ></TABLE
 ><P
@@ -4867,7 +4901,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6480"
+NAME="AEN7848"
 ></A
 ><H3
 ><A
@@ -4905,21 +4939,21 @@ HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
 'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'</P
 ><P
 >Validity constraints for attribute values syntax are checked in
-<GTKDOCLINK
-HREF="XMLVALIDATEATTRIBUTEVALUE"
->xmlValidateAttributeValue</GTKDOCLINK
+<A
+HREF="gnome-xml-valid.html#XMLVALIDATEATTRIBUTEVALUE"
+>xmlValidateAttributeValue</A
 >()</P
 ><P
 >[ VC: ID ]
-Values of type ID must match the Name production. TODO A name must not
+Values of type ID must match the Name production. A name must not
 appear more than once in an XML document as a value of this type;
 i.e., ID values must uniquely identify the elements which bear them.</P
 ><P
 >[ VC: One ID per Element Type ]
-TODO No element type may have more than one ID attribute specified.</P
+No element type may have more than one ID attribute specified.</P
 ><P
 >[ VC: ID Attribute Default ]
-TODO An ID attribute must have a declared default of <GTKDOCLINK
+An ID attribute must have a declared default of <GTKDOCLINK
 HREF="IMPLIED"
 >IMPLIED</GTKDOCLINK
 > or <GTKDOCLINK
@@ -4929,14 +4963,14 @@ HREF="REQUIRED"
 ><P
 >[ VC: IDREF ]
 Values of type IDREF must match the Name production, and values
-of type IDREFS must match Names; TODO each Name must match the value of
-an ID attribute on some element in the XML document; i.e. IDREF
+of type IDREFS must match Names; TODO each IDREF Name must match the value
+of an ID attribute on some element in the XML document; i.e. IDREF
 values must match the value of some ID attribute.</P
 ><P
 >[ VC: Entity Name ]
 Values of type ENTITY must match the Name production, values
-of type ENTITIES must match Names; TODO each Name must match the name of
-an unparsed entity declared in the DTD.  </P
+of type ENTITIES must match Names; TODO each Entity Name must match the
+name of an unparsed entity declared in the DTD.  </P
 ><P
 >[ VC: Name Token ]
 Values of type NMTOKEN must match the Nmtoken production; values
@@ -4969,7 +5003,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4986,7 +5020,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the enumeration tree built while parsing</TD
 ></TR
 ><TR
 ><TD
@@ -5001,7 +5035,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the attribute type</TD
 ></TR
 ></TABLE
 ><P
@@ -5011,7 +5045,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6518"
+NAME="AEN7886"
 ></A
 ><H3
 ><A
@@ -5068,7 +5102,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -5078,7 +5112,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6536"
+NAME="AEN7904"
 ></A
 ><H3
 ><A
@@ -5121,7 +5155,7 @@ HREF="PCDATA"
 >[ VC: Proper Group/PE Nesting ] applies to [51] too (see [49])</P
 ><P
 >[ VC: No Duplicate Types ]
-TODO The same name must not appear more than once in a single
+The same name must not appear more than once in a single
 mixed-content declaration.</P
 ><P
 ></P
@@ -5151,7 +5185,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -5166,7 +5200,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the list of the xmlElementContentPtr describing the element choices</TD
 ></TR
 ></TABLE
 ><P
@@ -5176,7 +5210,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6562"
+NAME="AEN7930"
 ></A
 ><H3
 ><A
@@ -5253,7 +5287,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -5268,7 +5302,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the tree of xmlElementContentPtr describing the element 
+hierarchy.</TD
 ></TR
 ></TABLE
 ><P
@@ -5278,7 +5313,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6588"
+NAME="AEN7956"
 ></A
 ><H3
 ><A
@@ -5342,7 +5377,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -5359,7 +5394,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the name of the element being defined.</TD
 ></TR
 ><TR
 ><TD
@@ -5376,7 +5411,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the Element Content pointer will be stored here if any</TD
 ></TR
 ><TR
 ><TD
@@ -5391,7 +5426,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the type of element content XML_ELEMENT_TYPE_xxx</TD
 ></TR
 ></TABLE
 ><P
@@ -5401,7 +5436,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6619"
+NAME="AEN7987"
 ></A
 ><H3
 ><A
@@ -5430,7 +5465,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >[45] elementdecl ::= '&lt;!ELEMENT' S Name S contentspec S? '&gt;'</P
 ><P
 >[ VC: Unique Element Type Declaration ]
-TODO No element type may be declared more than once</P
+No element type may be declared more than once</P
 ><P
 ></P
 ><DIV
@@ -5459,7 +5494,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -5474,7 +5509,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the type of the element, or -1 in case of error</TD
 ></TR
 ></TABLE
 ><P
@@ -5484,7 +5519,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6641"
+NAME="AEN8009"
 ></A
 ><H3
 ><A
@@ -5553,7 +5588,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -5563,7 +5598,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6660"
+NAME="AEN8028"
 ></A
 ><H3
 ><A
@@ -5626,7 +5661,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -5641,7 +5676,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the value parsed (as an int)</TD
 ></TR
 ></TABLE
 ><P
@@ -5651,7 +5686,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6683"
+NAME="AEN8051"
 ></A
 ><H3
 ><A
@@ -5727,7 +5762,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -5742,7 +5777,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlEntityPtr if found, or NULL otherwise.</TD
 ></TR
 ></TABLE
 ><P
@@ -5752,7 +5787,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6707"
+NAME="AEN8075"
 ></A
 ><H3
 ><A
@@ -5816,7 +5851,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -5826,7 +5861,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6726"
+NAME="AEN8094"
 ></A
 ><H3
 ><A
@@ -5902,7 +5937,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -5912,7 +5947,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6747"
+NAME="AEN8115"
 ></A
 ><H3
 ><A
@@ -5972,7 +6007,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -5982,7 +6017,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6765"
+NAME="AEN8133"
 ></A
 ><H3
 ><A
@@ -6026,7 +6061,7 @@ The replacement text of any entity referred to directly or indirectly in
 an attribute value (other than "&amp;lt;") must not contain a &lt;. </P
 ><P
 >[ VC: Attribute Value Type ]
-TODO The attribute must have been declared; the value must be of the type
+The attribute must have been declared; the value must be of the type
 declared for it.</P
 ><P
 >[25] Eq ::= S? '=' S?</P
@@ -6065,7 +6100,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -6082,7 +6117,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a CHAR ** used to store the value of the attribute</TD
 ></TR
 ><TR
 ><TD
@@ -6097,7 +6132,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the attribute name, and the value in *value.</TD
 ></TR
 ></TABLE
 ><P
@@ -6107,7 +6142,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6799"
+NAME="AEN8167"
 ></A
 ><H3
 ><A
@@ -6182,7 +6217,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -6197,7 +6232,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the element name parsed</TD
 ></TR
 ></TABLE
 ><P
@@ -6207,7 +6242,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6827"
+NAME="AEN8195"
 ></A
 ><H3
 ><A
@@ -6270,7 +6305,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -6287,7 +6322,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the tag name as parsed in the opening tag.</TD
 ></TR
 ></TABLE
 ><P
@@ -6297,7 +6332,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6851"
+NAME="AEN8219"
 ></A
 ><H3
 ><A
@@ -6358,7 +6393,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -6368,7 +6403,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6871"
+NAME="AEN8239"
 ></A
 ><H3
 ><A
@@ -6423,7 +6458,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -6433,7 +6468,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6888"
+NAME="AEN8256"
 ></A
 ><H3
 ><A
@@ -6466,7 +6501,7 @@ The Name in an element's end-tag must match the element type in the
 start-tag. </P
 ><P
 >[ VC: Element Valid ]
-TODO An element is valid if there is a declaration matching elementdecl
+An element is valid if there is a declaration matching elementdecl
 where the Name matches the element type and one of the following holds:
 - The declaration matches EMPTY and the element has no content.
 - The declaration matches children and the sequence of child elements
@@ -6505,7 +6540,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -6515,7 +6550,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6907"
+NAME="AEN8275"
 ></A
 ><H3
 ><A
@@ -6573,7 +6608,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -6588,7 +6623,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the string giving the XML version number, or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -6598,7 +6633,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6929"
+NAME="AEN8297"
 ></A
 ><H3
 ><A
@@ -6658,7 +6693,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -6673,7 +6708,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the version string, e.g. "1.0"</TD
 ></TR
 ></TABLE
 ><P
@@ -6683,7 +6718,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6952"
+NAME="AEN8320"
 ></A
 ><H3
 ><A
@@ -6741,7 +6776,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -6756,7 +6791,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the encoding name value or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -6766,7 +6801,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6974"
+NAME="AEN8342"
 ></A
 ><H3
 ><A
@@ -6826,7 +6861,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -6841,7 +6876,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the encoding value or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -6851,7 +6886,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6997"
+NAME="AEN8365"
 ></A
 ><H3
 ><A
@@ -6921,7 +6956,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -6936,7 +6971,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if standalone, 0 otherwise</TD
 ></TR
 ></TABLE
 ><P
@@ -6946,7 +6981,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7019"
+NAME="AEN8387"
 ></A
 ><H3
 ><A
@@ -7001,7 +7036,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -7011,7 +7046,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7036"
+NAME="AEN8404"
 ></A
 ><H3
 ><A
@@ -7066,7 +7101,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ></TABLE
 ><P
@@ -7076,7 +7111,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7053"
+NAME="AEN8421"
 ></A
 ><H3
 ><A
@@ -7114,8 +7149,6 @@ HREF="gnome-xml-tree.html#CHAR"
 ><P
 >[31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S) *</P
 ><P
->TODO There is a check [ VC: Proper Declaration/PE Nesting ]</P
-><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
@@ -7143,7 +7176,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -7187,7 +7220,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7082"
+NAME="AEN8449"
 ></A
 ><H3
 ><A
@@ -7203,7 +7236,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_SUBSTITUTE_NONE</PRE
+>#define XML_SUBSTITUTE_NONE	0</PRE
 ></TD
 ></TR
 ></TABLE
@@ -7213,7 +7246,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7087"
+NAME="AEN8454"
 ></A
 ><H3
 ><A
@@ -7229,7 +7262,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_SUBSTITUTE_REF</PRE
+>#define XML_SUBSTITUTE_REF	1</PRE
 ></TD
 ></TR
 ></TABLE
@@ -7239,7 +7272,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7092"
+NAME="AEN8459"
 ></A
 ><H3
 ><A
@@ -7255,7 +7288,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_SUBSTITUTE_PEREF</PRE
+>#define XML_SUBSTITUTE_PEREF	2</PRE
 ></TD
 ></TR
 ></TABLE
@@ -7265,7 +7298,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7097"
+NAME="AEN8464"
 ></A
 ><H3
 ><A
@@ -7281,7 +7314,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_SUBSTITUTE_BOTH</PRE
+>#define XML_SUBSTITUTE_BOTH 	3</PRE
 ></TD
 ></TR
 ></TABLE
@@ -7291,7 +7324,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7102"
+NAME="AEN8469"
 ></A
 ><H3
 ><A
@@ -7363,7 +7396,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the parser context</TD
 ></TR
 ><TR
 ><TD
@@ -7380,7 +7413,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the len to decode (in bytes !), -1 for no size limit</TD
 ></TR
 ><TR
 ><TD
@@ -7397,7 +7430,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF</TD
 ></TR
 ><TR
 ><TD
@@ -7414,7 +7447,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an end marker CHAR, 0 if none</TD
 ></TR
 ><TR
 ><TD
@@ -7431,7 +7464,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an end marker CHAR, 0 if none</TD
 ></TR
 ><TR
 ><TD
@@ -7448,7 +7481,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an end marker CHAR, 0 if none</TD
 ></TR
 ><TR
 ><TD
@@ -7463,7 +7496,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>A newly allocated string with the substitution done. The caller
+must deallocate it !</TD
 ></TR
 ></TABLE
 ><P
@@ -7473,7 +7507,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7147"
+NAME="AEN8514"
 ></A
 ><H3
 ><A
@@ -7570,7 +7604,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7171"
+NAME="AEN8538"
 ></A
 ><H3
 ><A
@@ -7649,7 +7683,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7191"
+NAME="AEN8558"
 ></A
 ><H3
 ><A
@@ -7746,7 +7780,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7215"
+NAME="AEN8582"
 ></A
 ><H3
 ><A
@@ -7837,7 +7871,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-xml-error.html"
+HREF="gnome-xml-xpath.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -7891,7 +7925,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-htmlparser.html"
+HREF="gnome-xml-xmlmemory.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -7909,7 +7943,7 @@ ALIGN="left"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->xml-error</B
+>xpath</B
 ></FONT
 ></TD
 ><TD
@@ -7919,7 +7953,7 @@ ALIGN="right"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->HTMLparser</B
+>xmlmemory</B
 ></FONT
 ></TD
 ></TR

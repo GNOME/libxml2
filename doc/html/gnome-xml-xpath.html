@@ -13,7 +13,10 @@ TITLE="Gnome XML Library"
 HREF="libxml.html"><LINK
 REL="PREVIOUS"
 TITLE="HTMLtree"
-HREF="gnome-xml-htmltree.html"></HEAD
+HREF="gnome-xml-htmltree.html"><LINK
+REL="NEXT"
+TITLE="parserInternals"
+HREF="gnome-xml-parserinternals.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -94,7 +97,16 @@ SIZE="3"
 WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
->&nbsp;</TD
+><A
+HREF="gnome-xml-parserinternals.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
 ></TR
 ></TABLE
 ></DIV
@@ -103,7 +115,7 @@ ALIGN="right"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN7665"
+NAME="AEN6408"
 ></A
 ><H2
 >Name</H2
@@ -111,7 +123,7 @@ NAME="AEN7665"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN7668"
+NAME="AEN6411"
 ></A
 ><H2
 >Synopsis</H2
@@ -215,7 +227,7 @@ HREF="XMLXPATHCONTEXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7693"
+NAME="AEN6436"
 ></A
 ><H2
 >Description</H2
@@ -225,14 +237,14 @@ NAME="AEN7693"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7696"
+NAME="AEN6439"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7698"
+NAME="AEN6441"
 ></A
 ><H3
 ><A
@@ -248,7 +260,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_UNDEFINED</PRE
+>#define XPATH_UNDEFINED	0</PRE
 ></TD
 ></TR
 ></TABLE
@@ -258,7 +270,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7703"
+NAME="AEN6446"
 ></A
 ><H3
 ><A
@@ -274,7 +286,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_NODESET</PRE
+>#define XPATH_NODESET	1</PRE
 ></TD
 ></TR
 ></TABLE
@@ -284,7 +296,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7708"
+NAME="AEN6451"
 ></A
 ><H3
 ><A
@@ -300,7 +312,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_BOOLEAN</PRE
+>#define XPATH_BOOLEAN	2</PRE
 ></TD
 ></TR
 ></TABLE
@@ -310,7 +322,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7713"
+NAME="AEN6456"
 ></A
 ><H3
 ><A
@@ -326,7 +338,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_NUMBER</PRE
+>#define XPATH_NUMBER	3</PRE
 ></TD
 ></TR
 ></TABLE
@@ -336,7 +348,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7718"
+NAME="AEN6461"
 ></A
 ><H3
 ><A
@@ -352,7 +364,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_STRING</PRE
+>#define XPATH_STRING	4</PRE
 ></TD
 ></TR
 ></TABLE
@@ -362,7 +374,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7723"
+NAME="AEN6466"
 ></A
 ><H3
 ><A
@@ -441,7 +453,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7742"
+NAME="AEN6485"
 ></A
 ><H3
 ><A
@@ -499,7 +511,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XML document</TD
 ></TR
 ><TR
 ><TD
@@ -516,7 +528,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the variable list</TD
 ></TR
 ><TR
 ><TD
@@ -533,7 +545,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the function list</TD
 ></TR
 ><TR
 ><TD
@@ -548,7 +560,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlXPathContext just allocated.</TD
 ></TR
 ></TABLE
 ><P
@@ -558,7 +570,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7771"
+NAME="AEN6514"
 ></A
 ><H3
 ><A
@@ -611,7 +623,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the context to free</TD
 ></TR
 ></TABLE
 ><P
@@ -621,7 +633,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7787"
+NAME="AEN6530"
 ></A
 ><H3
 ><A
@@ -681,7 +693,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XPath expression</TD
 ></TR
 ><TR
 ><TD
@@ -698,7 +710,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XPath context</TD
 ></TR
 ><TR
 ><TD
@@ -713,7 +725,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlXPathObjectPtr resulting from the eveluation or NULL.
+the caller has to free the object.</TD
 ></TR
 ></TABLE
 ><P
@@ -723,7 +736,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7813"
+NAME="AEN6556"
 ></A
 ><H3
 ><A
@@ -776,7 +789,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the object to free</TD
 ></TR
 ></TABLE
 ><P
@@ -786,7 +799,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7829"
+NAME="AEN6572"
 ></A
 ><H3
 ><A
@@ -846,7 +859,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XPath expression</TD
 ></TR
 ><TR
 ><TD
@@ -863,7 +876,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XPath context</TD
 ></TR
 ><TR
 ><TD
@@ -878,7 +891,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlXPathObjectPtr resulting from the evaluation or NULL.
+the caller has to free the object.</TD
 ></TR
 ></TABLE
 ><P
@@ -953,7 +967,16 @@ SIZE="3"
 WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
->&nbsp;</TD
+><A
+HREF="gnome-xml-parserinternals.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
 ></TR
 ><TR
 ><TD
@@ -969,7 +992,13 @@ SIZE="3"
 ><TD
 COLSPAN="2"
 ALIGN="right"
->&nbsp;</TD
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>parserInternals</B
+></FONT
+></TD
 ></TR
 ></TABLE
 ></DIV

@@ -5432,26 +5432,39 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     }
     if (cur->type == XML_TEXT_NODE) {
 	if (cur->content != NULL) {
-            xmlChar *buffer;
+	    if ((cur->name == xmlStringText) ||
+		(cur->name != xmlStringTextNoenc)) {
+		xmlChar *buffer;
 
 #ifndef XML_USE_BUFFER_CONTENT
-	    if (encoding == NULL)
-		buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
-	    else
-		buffer = xmlEncodeSpecialChars(doc, cur->content);
+		if (encoding == NULL)
+		    buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+		else
+		    buffer = xmlEncodeSpecialChars(doc, cur->content);
 #else
-	    if (encoding == NULL)
-		buffer = xmlEncodeEntitiesReentrant(doc, 
-				    xmlBufferContent(cur->content));
-	    else
-		buffer = xmlEncodeSpecialChars(doc, 
-				    xmlBufferContent(cur->content));
+		if (encoding == NULL)
+		    buffer = xmlEncodeEntitiesReentrant(doc, 
+					xmlBufferContent(cur->content));
+		else
+		    buffer = xmlEncodeSpecialChars(doc, 
+					xmlBufferContent(cur->content));
 #endif
-	    if (buffer != NULL) {
-		xmlOutputBufferWriteString(buf, (const char *)buffer);
-		xmlFree(buffer);
+		if (buffer != NULL) {
+		    xmlOutputBufferWriteString(buf, (const char *)buffer);
+		    xmlFree(buffer);
+		}
+	    } else {
+		/*
+		 * Disable escaping, needed for XSLT
+		 */
+#ifndef XML_USE_BUFFER_CONTENT
+		xmlOutputBufferWriteString(buf, cur->content);
+#else
+		xmlOutputBufferWriteString(buf, xmlBufferContent(cur->content));
+#endif
 	    }
 	}
+
 	return;
     }
     if (cur->type == XML_PI_NODE) {

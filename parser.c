@@ -10342,6 +10342,7 @@ xmlCreateFileParserCtxt(const char *filename)
 {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr inputStream;
+    char *canonicFilename;
     char *directory = NULL;
 
     ctxt = xmlNewParserCtxt();
@@ -10352,7 +10353,16 @@ xmlCreateFileParserCtxt(const char *filename)
 	return(NULL);
     }
 
-    inputStream = xmlLoadExternalEntity(filename, NULL, ctxt);
+    canonicFilename = xmlCanonicPath(filename);
+    if (canonicFilename == NULL) {
+	if (xmlDefaultSAXHandler.error != NULL) {
+	    xmlDefaultSAXHandler.error(NULL, "out of memory\n");
+	}
+	return(NULL);
+    }
+    
+    inputStream = xmlLoadExternalEntity(canonicFilename, NULL, ctxt);
+    xmlFree(canonicFilename);
     if (inputStream == NULL) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);

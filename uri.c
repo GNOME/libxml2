@@ -1985,8 +1985,10 @@ done:
 xmlChar*
 xmlCanonicPath(const xmlChar *path)
 {
-    int len, i = 0;
+    int len = 0;
+    int i = 0;
     xmlChar *ret;
+    xmlChar *p = NULL;
     xmlURIPtr uri;
 
     if (path == NULL)
@@ -1998,23 +2000,26 @@ xmlCanonicPath(const xmlChar *path)
 
     uri = xmlCreateURI();
 
-#if defined(_WIN32) && !defined(__CYGWIN__)
+#if defined(_WIN32) && !defined(__CYGWIN__)    
     len = xmlStrlen(path);
     if ((len > 2) && IS_WINDOWS_PATH(path)) {
 	uri->scheme = xmlStrdup(BAD_CAST "file");
-	uri->path = xmlMalloc(len + 1);
+	uri->path = xmlMalloc(len + 2);
 	uri->path[0] = '/';
-	while (i < len) {
-	    if (path[i] == '\\')
-		uri->path[i+1] = '/';
-	    else
-		uri->path[i+1] = path[i];
-	    i++;
-	}
-	uri->path[len] = '\0';
-    } else
-#endif
+	p = uri->path + 1;
+	strncpy(p, path, len + 1);
+    } else {
 	uri->path = xmlStrdup(path);
+	p = uri->path;
+    }
+    while (*p != '\0') {
+	if (*p == '\\')
+	    *p = '/';
+	p++;
+    }
+#else
+    uri->path = xmlStrdup(path);
+#endif
     
     ret = xmlSaveUri(uri);
     xmlFreeURI(uri);

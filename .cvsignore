@@ -11,6 +11,7 @@ config.guess
 config.status
 config.sub
 stamp-h
+stamp-h1
 libtool
 ltconfig
 ltmain.sh
@@ -29,6 +30,7 @@ testSAX
 testXPath
 libxml-2.0.pc
 libxml-2.0-uninstalled.pc
+libxml2.spec
 xmlversion.h
 xmllint
 testURI
@@ -38,6 +40,7 @@ xmlcatalog
 testAutomata
 testC14N
 testRegexp
+testRelax
 testSchemas
 testThreads
 testReader

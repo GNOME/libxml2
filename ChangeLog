@@ -1,3 +1,7 @@
+Mon Mar  8 11:12:23 CET 2004 Hagen Moebius <hagen.moebius@starschiffchen.de>
+
+	* .cvsignore and python/.cvsignore patched
+
 Mon Mar  8 22:33:14 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: enhanced to assure that if xpointer is called

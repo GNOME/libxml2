@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = doc example
+SUBDIRS = doc
 
 INCLUDES = -I@srcdir@ @CORBA_CFLAGS@ $(VERSION_FLAGS)
 

@@ -45,7 +45,13 @@ libtoolize --copy --force
 aclocal                                                                       
 automake --add-missing
 autoconf
-./configure "$@"
+if [ -z "$OBJ_DIR" ]; then
+	./configure "$@"
+else
+	mkdir -p "$OBJ_DIR"
+	cd "$OBJ_DIR"
+	../configure "$@"
+fi
 
 echo 
 echo "Now type 'make' to compile gnome-xml."

@@ -277,7 +277,10 @@ xmlDocPtr xmlNewDoc(const CHAR *version) {
     cur->entities = NULL;
     cur->standalone = -1;
     cur->compression = xmlCompressMode;
-    cur->servant = NULL;
+#ifndef WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif
     return(cur);
 }
 
@@ -326,6 +329,10 @@ xmlAttrPtr xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
 	cur->value = xmlStrdup(value);
     else 
 	cur->value = NULL;
+#ifndef WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif
 
     /*
      * Add it at the end to preserve parsing order ...
@@ -407,7 +414,10 @@ xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name, CHAR *content) {
     cur->name = xmlStrdup(name);
     cur->ns = ns;
     cur->nsDef = NULL;
-    cur->servant = NULL;
+#ifndef WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif
     if (content != NULL)
 	cur->content = xmlStrdup(content);
     else 

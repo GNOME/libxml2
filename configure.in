@@ -36,6 +36,16 @@ AC_SUBST(XML_LIBDIR)
 AC_SUBST(XML_LIBS)
 AC_SUBST(XML_INCLUDEDIR)
 
+AC_ARG_ENABLE(corba,    [  --enable-corba           Add Corba support (default)])
+
+dnl
+dnl Corba is enabled by default
+dnl
+if test "$enable_java" = "no" ; then
+   CORBA_CFLAGS="-DWITHOUT_CORBA"
+fi
+AC_SUBST(CORBA_CFLAGS)
+
 dnl Checks for library functions.
 AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(strdup strndup strerror snprintf )

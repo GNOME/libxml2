@@ -80,6 +80,11 @@ typedef struct xmlDtd {
  * A attribute of an XML node.
  */
 typedef struct xmlAttr {
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	/* for Corba, must be first ! */
+    void           *vepv;	/* for Corba, must be next ! */
+#endif
+    int             type;       /* XML_ATTRIBUTE_NODE, must be third ! */
     struct xmlNode *node;	/* attr->node link */
     struct xmlAttr *next;	/* parent->childs link */
     const CHAR     *name;       /* the name of the property */
@@ -105,7 +110,11 @@ typedef struct xmlAttr {
 #define XML_NOTATION_NODE	12
 
 typedef struct xmlNode {
-    int             type;	/* type number in the DTD */
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	/* for Corba, must be first ! */
+    void           *vepv;	/* for Corba, must be next ! */
+#endif
+    int             type;	/* type number in the DTD, must be third ! */
     struct xmlDoc  *doc;	/* the containing document */
     struct xmlNode *parent;	/* child->parent link */
     struct xmlNode *next;	/* next sibling link  */
@@ -116,13 +125,17 @@ typedef struct xmlNode {
     xmlNs          *ns;         /* pointer to the associated namespace */
     xmlNs          *nsDef;      /* namespace definitions on this node */
     CHAR           *content;    /* the content */
-    void           *servant;	/* for Corba ! */
 } xmlNode, *xmlNodePtr;
 
 /*
  * An XML document.
  */
 typedef struct xmlDoc {
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	/* for Corba, must be first ! */
+    void           *vepv;	/* for Corba, must be next ! */
+#endif
+    int             type;       /* XML_DOCUMENT_NODE, must be second ! */
     char           *name;	/* name/filename/URI of the document */
     const CHAR     *version;	/* the XML version string */
     const CHAR     *encoding;   /* encoding, if any */
@@ -132,7 +145,6 @@ typedef struct xmlDoc {
     struct xmlNs   *oldNs;	/* Global namespace, the old way */
     void          *entities;    /* Hash table for general entities if any */
     struct xmlNode *root;	/* the document tree */
-    void           *servant;	/* for Corba ! */
 } xmlDoc, *xmlDocPtr;
 
 /*

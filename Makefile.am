@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+INCLUDES = -I@srcdir@ @CORBA_CFLAGS@
+
 noinst_PROGRAMS=tester
 
 bin_SCRIPTS=xml-config
@@ -14,7 +16,6 @@ libxml_la_SOURCES = \
 		parser.c \
 		tester.c \
 		tree.c
-
 
 xmlincdir = $(includedir)/gnome-xml
 xmlinc_HEADERS = \

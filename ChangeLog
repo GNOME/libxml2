@@ -1,3 +1,10 @@
+Sat Oct 17 02:43:21 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.h, tree.c: Ok, the main objects in the tree will be native
+	  corba objects, it costs 8 bytes per Node, Attribute and Document
+	  but it simplifies the Corba integration a lot (no extra interface
+	  objects to allocate/free).
+
 Tue Oct 13 21:46:57 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.h, tree.c, parser.c: added prev and doc pointers to Node,

@@ -10382,6 +10382,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     ctxt->dictNames = ctx->dictNames;
     ctxt->attsDefault = ctx->attsDefault;
     ctxt->attsSpecial = ctx->attsSpecial;
+    ctxt->linenumbers = ctx->linenumbers;
 
     xmlParseContent(ctxt);
    

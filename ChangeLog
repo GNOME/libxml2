@@ -1,3 +1,8 @@
+Thu Feb  8 11:28:58 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* README: a bit of cleanup
+	* configure.in: preparing for 2.3.0 release
+
 Thu Feb  8 10:37:00 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* hash.[ch]: added a first version of xmlHashSize()

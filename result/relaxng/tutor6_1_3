@@ -1,2 +1,2 @@
-Extra attribute preferredFormat for element card
+Invalid attribute preferredFormat for element card
 ./test/relaxng/tutor6_1_3.xml validation generated an internal error

@@ -653,6 +653,8 @@ xmlRelaxNGErrorContext(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGPtr schema,
  * 			Type library hooks				*
  * 									*
  ************************************************************************/
+static xmlChar *xmlRelaxNGNormalize(xmlRelaxNGValidCtxtPtr ctxt,
+	                            const xmlChar *str);
 
 /**
  * xmlRelaxNGSchemaTypeHave:
@@ -767,8 +769,31 @@ xmlRelaxNGDefaultTypeCompare(void *data ATTRIBUTE_UNUSED,
 	                     const xmlChar *type ATTRIBUTE_UNUSED,
 	                     const xmlChar *value1 ATTRIBUTE_UNUSED,
 			     const xmlChar *value2 ATTRIBUTE_UNUSED) {
-    TODO
-    return(1);
+    int ret = -1;
+
+    if (xmlStrEqual(type, BAD_CAST "string")) {
+	ret = xmlStrEqual(value1, value2);
+    } else if (xmlStrEqual(type, BAD_CAST "token")) {
+	if (!xmlStrEqual(value1, value2)) {
+	    xmlChar *nval, *nvalue;
+
+	    /*
+	     * TODO: trivial optimizations are possible by
+	     * computing at compile-time
+	     */
+	    nval = xmlRelaxNGNormalize(NULL, value1);
+	    nvalue = xmlRelaxNGNormalize(NULL, value2);
+
+	    if ((nval == NULL) || (nvalue == NULL) ||
+		(!xmlStrEqual(nval, nvalue)))
+		ret = -1;
+	    if (nval != NULL)
+		xmlFree(nval);
+	    if (nvalue != NULL)
+		xmlFree(nvalue);
+	}
+    }
+    return(ret);
 }
  
 static int xmlRelaxNGTypeInitialized = 0;
@@ -2656,8 +2681,13 @@ xmlRelaxNGNormalize(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *str) {
 
     ret = (xmlChar *) xmlMalloc((len + 1) * sizeof(xmlChar));
     if (ret == NULL) {
-	VALID_CTXT();
-	VALID_ERROR("xmlRelaxNGNormalize: out of memory\n");
+	if (ctxt != NULL) {
+	    VALID_CTXT();
+	    VALID_ERROR("xmlRelaxNGNormalize: out of memory\n");
+	} else {
+	    xmlGenericError(xmlGenericErrorContext,
+		"xmlRelaxNGNormalize: out of memory\n");
+	}
         return(NULL);
     }
     p = ret;
@@ -2756,7 +2786,24 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 	case XML_RELAXNG_VALUE: {
 	    if (!xmlStrEqual(value, define->value)) {
 		if (define->name != NULL) {
-		    TODO /* value validation w.r.t. the type */
+		    xmlRelaxNGTypeLibraryPtr lib;
+		    
+		    lib = (xmlRelaxNGTypeLibraryPtr) define->data;
+		    if ((lib != NULL) && (lib->comp != NULL))
+			ret = lib->comp(lib->data, define->name, value,
+				        define->value);
+		    else
+			ret = -1;
+		    if (ret < 0) {
+			VALID_CTXT();
+			VALID_ERROR("Internal: failed to compare type %s\n",
+				    define->name);
+			return(-1);
+		    } else if (ret == 1) {
+			ret = 0;
+		    } else {
+			ret = -1;
+		    }
 		} else {
 		    xmlChar *nval, *nvalue;
 
@@ -2767,7 +2814,8 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 		    nval = xmlRelaxNGNormalize(ctxt, define->value);
 		    nvalue = xmlRelaxNGNormalize(ctxt, value);
 
-		    if (!xmlStrEqual(nval, nvalue))
+		    if ((nval == NULL) || (nvalue == NULL) ||
+			(!xmlStrEqual(nval, nvalue)))
 			ret = -1;
 		    if (nval != NULL)
 			xmlFree(nval);
@@ -3036,7 +3084,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    for (i = 0;i < state->nbAttrs;i++) {
 		if (state->attrs[i] != NULL) {
 		    VALID_CTXT();
-		    VALID_ERROR("Extra attribute %s for element %s\n",
+		    VALID_ERROR("Invalid attribute %s for element %s\n",
 				state->attrs[i]->name, node->name);
 		    ret = -1;
 		}
@@ -3169,7 +3217,37 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 		xmlFree(content);
 	    break;
 	}
-        case XML_RELAXNG_VALUE:
+        case XML_RELAXNG_VALUE: {
+	    xmlChar *content;
+	    xmlChar *oldvalue;
+
+	    content = xmlNodeGetContent(node);
+	    oldvalue = ctxt->state->value;
+	    ctxt->state->value = content;
+	    ret = xmlRelaxNGValidateValue(ctxt, define);
+	    ctxt->state->value = oldvalue;
+	    if (ret == -1) {
+		VALID_CTXT();
+		VALID_ERROR("internal error validating %s\n", define->name);
+	    } else if (ret == 0) {
+		ctxt->state->seq = node->next;
+	    }
+	    /*
+	     * TODO cover the problems with
+	     * <p>12<!-- comment -->34</p>
+	     * TODO detect full element coverage at compilation time.
+	     */
+	    if ((node != NULL) && (node->next != NULL)) {
+		VALID_CTXT();
+		VALID_ERROR("The data does not cover the full element %s\n",
+			    node->parent->name);
+		ret = -1;
+	    }
+	    if (content != NULL)
+		xmlFree(content);
+	    break;
+	}
+
 	    TODO
 	    break;
     }

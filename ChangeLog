@@ -1,3 +1,8 @@
+Sun Nov  4 13:11:41 MST 2001 John Fleck <jfleck@inkstain.net
+
+	* doc/xmllint.xml, xmllint.1 - updating xmllint man page to
+	document --sgml option, fixing gnome bugzilla #63382
+
 Sun Nov  4 20:56:53 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/catalog.h catalog.c: Fixed SGML catalogs

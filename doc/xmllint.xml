@@ -67,6 +67,7 @@
 	<arg>--repeat</arg>
 	<arg>--insert</arg>
 	<arg>--compress</arg>
+	<arg>--sgml</arg>
 	<arg>--html</arg>
 	<arg>--push</arg>
 	<arg>--memory</arg>
@@ -274,6 +275,16 @@
 	</listitem>
       </varlistentry>
    
+      <varlistentry>
+	<term><option>--sgml</option></term>
+	<listitem>
+	  <simpara>Use the DocBook <acronym>SGML</acronym> parser. This allows
+	    documents written in <acronym>SGML</acronym> DocBook to be converted
+	    into an in-memory tree and treated as if they were written in
+	    <acronym>XML</acronym>.</simpara>
+	</listitem>
+      </varlistentry>
+
     <varlistentry>
 	<term><option>--html</option></term>
 	<listitem>

@@ -3084,7 +3084,7 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 	    }
 	    ret = escaping(out->buffer->content + out->buffer->use ,
 	                   &chunk, str, &cons);
-	    if (ret < 0)
+	    if ((ret < 0) || (chunk == 0)) /* chunk==0 => nothing done */
 	        return(-1);
 	    out->buffer->use += chunk;
 	    out->buffer->content[out->buffer->use] = 0;
@@ -3105,7 +3105,7 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 	} else {
 	    ret = escaping(out->buffer->content + out->buffer->use ,
 	                   &chunk, str, &cons);
-	    if (ret < 0)
+	    if ((ret < 0) || (chunk == 0)) /* chunk==0 => nothing done */
 	        return(-1);
 	    out->buffer->use += chunk;
 	    out->buffer->content[out->buffer->use] = 0;

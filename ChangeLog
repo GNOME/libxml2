@@ -1,3 +1,8 @@
+Fri Nov 26 23:20:48 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlIO.c: added a check within xmlOutputBufferWriteEscape to prevent
+	  a dead loop on bad data (bug 159550)
+
 Fri Nov 26 13:09:04 CET 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed strict/lax element wildcards: the children

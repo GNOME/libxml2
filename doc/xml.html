@@ -554,8 +554,25 @@ for a really accurate description</h3>
 <p>Items floating around but not actively worked on, get in touch with me if
 you want to test those</p>
 <ul>
-  <li>Finishing up <a href="http://www.w3.org/TR/xptr">XPointer</a> and <a
-    href="http://www.w3.org/TR/xinclude">XInclude</a></li>
+  <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
+    Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a></li>
+</ul>
+
+<h3>2.4.21: Apr 29 2002</h3>
+
+<p>This release is both a bug fix release and also contains the early XML
+Schemas <a href="http://www.w3.org/TR/xmlschema-1/">structures</a> and <a
+href="http://www.w3.org/TR/xmlschema-2/">datatypes</a> code, beware, all
+interfaces are likely to change, there is huge holes, it is clearly a work in
+progress and don't even think of putting this code in a production system,
+it's actually not compiled in by default. The real fixes are: </p>
+<ul>
+  <li>a couple of bugs or limitations introduced in 2.4.20</li>
+  <li>patches for Borland C++ and MSC by Igor</li>
+  <li>some fixes on XPath strings and conformance patches by Richard
+  Jinks</li>
+  <li>patch from Aleksey for the ExcC14N specification</li>
+  <li>OSF/1 bug fix by Bjorn</li>
 </ul>
 
 <h3>2.4.20: Apr 15 2002</h3>
@@ -2567,6 +2584,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

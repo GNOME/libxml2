@@ -1232,6 +1232,50 @@ xmlNanoFTPCwd(void *ctx, char *directory) {
 }
 
 /**
+ * xmlNanoFTPDele:
+ * @ctx:  an FTP context
+ * @file:  a file or directory on the server
+ *
+ * Tries to delete an item (file or directory) from server
+ *
+ * Returns -1 incase of error, 1 if DELE worked, 0 if it failed
+ */
+
+int
+xmlNanoFTPDele(void *ctx, char *file) {
+    xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
+    char buf[400];
+    int len;
+    int res;
+
+    /*
+     * Expected response code for DELE:
+     *
+     * DELE
+     *       250
+     *       450, 550
+     *       500, 501, 502, 421, 530
+     */
+	 
+    snprintf(buf, sizeof(buf), "DELE %s\r\n", file);
+    buf[sizeof(buf) - 1] = 0;
+    len = strlen(buf);
+#ifdef DEBUG_FTP
+    xmlGenericError(xmlGenericErrorContext, "%s", buf);
+#endif
+    res = send(ctxt->controlFd, buf, len, 0);
+    if (res < 0) return(res);
+    res = xmlNanoFTPGetResponse(ctxt);
+    if (res == 4) {
+	return(-1);
+    }
+    if (res == 2) return(1);
+    if (res == 5) {
+	return(0);
+    }
+    return(0);
+}
+/**
  * xmlNanoFTPGetConnection:
  * @ctx:  an FTP context
  *

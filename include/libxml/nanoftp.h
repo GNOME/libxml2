@@ -93,6 +93,8 @@ int	xmlNanoFTPCheckResponse	(void *ctx);
  */
 int	xmlNanoFTPCwd		(void *ctx,
 				 char *directory);
+int	xmlNanoFTPDele		(void *ctx,
+				 char *file);
 
 int	xmlNanoFTPGetConnection	(void *ctx);
 int	xmlNanoFTPCloseConnection(void *ctx);

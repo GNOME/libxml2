@@ -1,3 +1,8 @@
+Wed Mar  5 17:41:37 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c include/libxml/nanoftp.h: adding xmlNanoFTPDele()
+	  from Philipp Dunkel
+
 Wed Mar  5 10:57:09 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastype.c: made powten array static it should not be exported

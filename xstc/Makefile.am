@@ -41,13 +41,13 @@ $(TESTDIRS):
 pytests: $(PYSCRIPTS) $(TESTDIRS)
 	-@(if [ -x nist-test.py -a -d nisttest ] ; then 		\
 	   echo "# Running NIST Schemas tests";				\
-	   ./nist-test.py -s ; fi)
+	   ./nist-test.py -s -b $(srcdir) ; fi)
 	-@(if [ -x sun-test.py -a -d suntest ] ; then 			\
 	   echo "# Running Sun Schemas tests";				\
-	   ./sun-test.py -s ; fi)
+	   ./sun-test.py -s -b $(srcdir) ; fi)
 	-@(if [ -x ms-test.py -a -d msxsdtest ] ; then 			\
 	   echo "# Running Microsoft Schemas tests";			\
-	   ./ms-test.py -s ; fi)
+	   ./ms-test.py -s -b $(srcdir) ; fi)
 
 tests:
 	-@(if [ -x $(PYTHON) ] ; then 					\

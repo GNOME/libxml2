@@ -20,6 +20,7 @@
 #include "libxml2-py.h"
 
 /* #define DEBUG */
+/* #define DEBUG_SAX */
 /* #define DEBUG_XPATH */
 /* #define DEBUG_ERROR */
 /* #define DEBUG_MEMORY */
@@ -127,6 +128,9 @@ pythonStartElement(void *user_data, const xmlChar * name,
     PyObject *result;
     int type = 0;
 
+#ifdef DEBUG_SAX
+    printf("pythonStartElement(%s) called\n", name);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "startElement"))
         type = 1;
@@ -140,6 +144,8 @@ pythonStartElement(void *user_data, const xmlChar * name,
         if ((attrs == NULL) && (type == 1)) {
             Py_XINCREF(Py_None);
             dict = Py_None;
+	} else if (attrs == NULL) {
+	    dict = PyDict_New();
         } else {
             dict = PyDict_New();
             for (i = 0; attrs[i] != NULL; i++) {
@@ -174,6 +180,9 @@ pythonStartDocument(void *user_data)
     PyObject *handler;
     PyObject *result;
 
+#ifdef DEBUG_SAX
+    printf("pythonStartDocument() called\n");
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "startDocument")) {
         result = PyObject_CallMethod(handler, "startDocument", NULL);
@@ -189,6 +198,9 @@ pythonEndDocument(void *user_data)
     PyObject *handler;
     PyObject *result;
 
+#ifdef DEBUG_SAX
+    printf("pythonEndDocument() called\n");
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "endDocument")) {
         result = PyObject_CallMethod(handler, "endDocument", NULL);
@@ -208,9 +220,17 @@ pythonEndElement(void *user_data, const xmlChar * name)
     PyObject *handler;
     PyObject *result;
 
+#ifdef DEBUG_SAX
+    printf("pythonEndElement(%s) called\n", name);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "endElement")) {
         result = PyObject_CallMethod(handler, "endElement", "s", name);
+	if (PyErr_Occurred())
+	    PyErr_Print();
+        Py_XDECREF(result);
+    } else if (PyObject_HasAttrString(handler, "end")) {
+        result = PyObject_CallMethod(handler, "end", "s", name);
 	if (PyErr_Occurred())
 	    PyErr_Print();
         Py_XDECREF(result);
@@ -223,6 +243,9 @@ pythonReference(void *user_data, const xmlChar * name)
     PyObject *handler;
     PyObject *result;
 
+#ifdef DEBUG_SAX
+    printf("pythonReference(%s) called\n", name);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "reference")) {
         result = PyObject_CallMethod(handler, "reference", "s", name);
@@ -239,6 +262,9 @@ pythonCharacters(void *user_data, const xmlChar * ch, int len)
     PyObject *result;
     int type = 0;
 
+#ifdef DEBUG_SAX
+    printf("pythonCharacters(%s, %d) called\n", ch, len);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "characters"))
 	type = 1;
@@ -262,6 +288,9 @@ pythonIgnorableWhitespace(void *user_data, const xmlChar * ch, int len)
     PyObject *result;
     int type = 0;
 
+#ifdef DEBUG_SAX
+    printf("pythonIgnorableWhitespace(%s, %d) called\n", ch, len);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "ignorableWhitespace"))
         type = 1;
@@ -285,6 +314,9 @@ pythonProcessingInstruction(void *user_data,
     PyObject *handler;
     PyObject *result;
 
+#ifdef DEBUG_SAX
+    printf("pythonProcessingInstruction(%s, %s) called\n", target, data);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "processingInstruction")) {
         result =
@@ -300,6 +332,9 @@ pythonComment(void *user_data, const xmlChar * value)
     PyObject *handler;
     PyObject *result;
 
+#ifdef DEBUG_SAX
+    printf("pythonComment(%s) called\n", value);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "comment")) {
         result = PyObject_CallMethod(handler, "comment", "s", value);
@@ -317,6 +352,9 @@ pythonWarning(void *user_data, const char *msg, ...)
     va_list args;
     char buf[1024];
 
+#ifdef DEBUG_SAX
+    printf("pythonWarning(%s) called\n", msg);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "warning")) {
         va_start(args, msg);
@@ -338,6 +376,9 @@ pythonError(void *user_data, const char *msg, ...)
     va_list args;
     char buf[1024];
 
+#ifdef DEBUG_SAX
+    printf("pythonError(%s) called\n", msg);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "error")) {
         va_start(args, msg);
@@ -359,6 +400,9 @@ pythonFatalError(void *user_data, const char *msg, ...)
     va_list args;
     char buf[1024];
 
+#ifdef DEBUG_SAX
+    printf("pythonFatalError(%s) called\n", msg);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "fatalError")) {
         va_start(args, msg);
@@ -379,6 +423,9 @@ pythonCdataBlock(void *user_data, const xmlChar * ch, int len)
     PyObject *result;
     int type = 0;
 
+#ifdef DEBUG_SAX
+    printf("pythonCdataBlock(%s, %d) called\n", ch, len);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "cdataBlock"))
 	type = 1;
@@ -403,6 +450,10 @@ pythonExternalSubset(void *user_data,
     PyObject *handler;
     PyObject *result;
 
+#ifdef DEBUG_SAX
+    printf("pythonExternalSubset(%s, %s, %s) called\n",
+	    name, externalID, systemID);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "externalSubset")) {
         result =
@@ -544,6 +595,10 @@ pythonInternalSubset(void *user_data, const xmlChar * name,
     PyObject *handler;
     PyObject *result;
 
+#ifdef DEBUG_SAX
+    printf("pythonInternalSubset(%s, %s, %s) called\n",
+	    name, ExternalID, SystemID);
+#endif
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "internalSubset")) {
         result = PyObject_CallMethod(handler, "internalSubset",

@@ -147,6 +147,7 @@ def xpathObjectRet(o):
 def registerXPathFunction(ctxt, name, ns_uri, f):
     ret = libxml2mod.xmlRegisterXPathFunction(ctxt, name, ns_uri, f)
 
+    
 #
 # Everything below this point is automatically generated
 #

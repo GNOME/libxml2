@@ -1,3 +1,7 @@
+Tue Feb 12 14:45:32 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: couple of bug fixes
+
 Mon Feb 11 19:41:29 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/*.py: removed tabs and used spaces.

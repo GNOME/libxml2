@@ -754,6 +754,7 @@ xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
     return(xmlHashCopy(table, (xmlHashCopier) xmlCopyEntity));
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlDumpEntityDecl:
  * @buf:  An XML buffer.
@@ -851,3 +852,4 @@ void
 xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table) {
     xmlHashScan(table, (xmlHashScanner)xmlDumpEntityDecl, buf);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */

@@ -512,6 +512,7 @@ asciiToUTF8(unsigned char* out, int *outlen,
     return(0);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * UTF8Toascii:
  * @out:  a pointer to an array of bytes to store the result
@@ -594,6 +595,7 @@ UTF8Toascii(unsigned char* out, int *outlen,
     *inlen = processed - instart;
     return(0);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * isolat1ToUTF8:
@@ -683,6 +685,7 @@ UTF8ToUTF8(unsigned char* out, int *outlen,
 }
 
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * UTF8Toisolat1:
  * @out:  a pointer to an array of bytes to store the result
@@ -770,6 +773,7 @@ UTF8Toisolat1(unsigned char* out, int *outlen,
     *inlen = processed - instart;
     return(0);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * UTF16LEToUTF8:
@@ -859,6 +863,7 @@ UTF16LEToUTF8(unsigned char* out, int *outlen,
     return(0);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * UTF8ToUTF16LE:
  * @outb:  a pointer to an array of bytes to store the result
@@ -978,6 +983,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
     *inlen = processed - instart;
     return(0);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * UTF16BEToUTF8:
@@ -1071,6 +1077,7 @@ UTF16BEToUTF8(unsigned char* out, int *outlen,
     return(0);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * UTF8ToUTF16BE:
  * @outb:  a pointer to an array of bytes to store the result
@@ -1187,6 +1194,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
     *inlen = processed - instart;
     return(0);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************
  *									*
@@ -1673,6 +1681,7 @@ xmlInitCharEncodingHandlers(void) {
 	return;
     }
     xmlNewCharEncodingHandler("UTF-8", UTF8ToUTF8, UTF8ToUTF8);
+#ifdef LIBXML_OUTPUT_ENABLED
     xmlUTF16LEHandler = 
           xmlNewCharEncodingHandler("UTF-16LE", UTF16LEToUTF8, UTF8ToUTF16LE);
     xmlUTF16BEHandler = 
@@ -1683,6 +1692,15 @@ xmlInitCharEncodingHandlers(void) {
 #ifdef LIBXML_HTML_ENABLED
     xmlNewCharEncodingHandler("HTML", NULL, UTF8ToHtml);
 #endif
+#else
+    xmlUTF16LEHandler = 
+          xmlNewCharEncodingHandler("UTF-16LE", UTF16LEToUTF8, NULL);
+    xmlUTF16BEHandler = 
+          xmlNewCharEncodingHandler("UTF-16BE", UTF16BEToUTF8, NULL);
+    xmlNewCharEncodingHandler("ISO-8859-1", isolat1ToUTF8, NULL);
+    xmlNewCharEncodingHandler("ASCII", asciiToUTF8, NULL);
+    xmlNewCharEncodingHandler("US-ASCII", asciiToUTF8, NULL);
+#endif /* LIBXML_OUTPUT_ENABLED */
 #ifndef LIBXML_ICONV_ENABLED
 #ifdef LIBXML_ISO8859X_ENABLED
     xmlRegisterCharEncodingHandlersISO8859x ();

@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
 
 #else
 #include <stdio.h>
-int main(int argc, char **argv) {
+int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     printf("%s : Regexp support not compiled in\n", argv[0]);
     return(0);
 }

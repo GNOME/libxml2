@@ -1,3 +1,20 @@
+Mon Sep 29 15:15:08 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c SAX2.c c14n.c catalog.c configure.in debugXML.c
+	  encoding.c entities.c nanoftp.c nanohttp.c parser.c relaxng.c
+          testAutomata.c testC14N.c testHTML.c testRegexp.c testRelax.c
+          testSchemas.c testXPath.c threads.c tree.c valid.c xmlIO.c
+	  xmlcatalog.c xmllint.c xmlmemory.c xmlreader.c xmlschemas.c
+	  example/gjobread.c include/libxml/HTMLtree.h include/libxml/c14n.h
+	  include/libxml/catalog.h include/libxml/debugXML.h
+	  include/libxml/entities.h include/libxml/nanohttp.h
+	  include/libxml/relaxng.h include/libxml/tree.h
+	  include/libxml/valid.h include/libxml/xmlIO.h
+	  include/libxml/xmlschemas.h include/libxml/xmlversion.h.in
+	  include/libxml/xpathInternals.h python/libxml.c:
+	  Okay this is scary but it is just adding a configure option
+	  to disable output, this touches most of the files.
+
 Mon Sep 29 12:53:56 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlmemory.c: better fix, avoids breaking the python bindings

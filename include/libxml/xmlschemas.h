@@ -88,9 +88,11 @@ XMLPUBFUN xmlSchemaPtr XMLCALL
 	    xmlSchemaParse		(xmlSchemaParserCtxtPtr ctxt);
 XMLPUBFUN void XMLCALL		
 	    xmlSchemaFree		(xmlSchemaPtr schema);
+#ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN void XMLCALL		
 	    xmlSchemaDump		(FILE *output,
 					 xmlSchemaPtr schema);
+#endif /* LIBXML_OUTPUT_ENABLED */
 /*
  * Interfaces for validating
  */

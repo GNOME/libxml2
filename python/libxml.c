@@ -319,6 +319,7 @@ xmlPythonFileClose (void * context) {
     return(0);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlOutputBufferCreatePythonFile:
  * @file:  a PyFile_Type
@@ -368,6 +369,7 @@ libxml_xmlCreateOutputBuffer(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
     py_retval = libxml_xmlOutputBufferPtrWrap(buffer);
     return(py_retval);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 
 /**
@@ -1056,7 +1058,10 @@ static xmlSAXHandler pythonSaxHandler = {
     NULL,                       /* TODO pythonGetParameterEntity, */
     pythonCdataBlock,
     pythonExternalSubset,
-    1
+    1,
+    NULL,			/* TODO mograte to SAX2 */
+    NULL,
+    NULL
 };
 
 /************************************************************************
@@ -2299,6 +2304,7 @@ libxml_xmlNodeGetNs(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     return (py_retval);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /************************************************************************
  *									*
  *			Serialization front-end				*
@@ -2524,6 +2530,7 @@ libxml_saveNodeTo(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     }
     return (PyInt_FromLong((long) len));
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************
  *									*
@@ -2773,9 +2780,11 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "type", libxml_type, METH_VARARGS, NULL},
     {(char *) "doc", libxml_doc, METH_VARARGS, NULL},
     {(char *) "xmlNewNode", libxml_xmlNewNode, METH_VARARGS, NULL},
+#ifdef LIBXML_OUTPUT_ENABLED
     {(char *) "serializeNode", libxml_serializeNode, METH_VARARGS, NULL},
     {(char *) "saveNodeTo", libxml_saveNodeTo, METH_VARARGS, NULL},
     {(char *) "outputBufferCreate", libxml_xmlCreateOutputBuffer, METH_VARARGS, NULL},
+#endif /* LIBXML_OUTPUT_ENABLED */
     {(char *) "inputBufferCreate", libxml_xmlCreateInputBuffer, METH_VARARGS, NULL},
     {(char *) "setEntityLoader", libxml_xmlSetEntityLoader, METH_VARARGS, NULL},
     {(char *)"xmlRegisterErrorHandler", libxml_xmlRegisterErrorHandler, METH_VARARGS, NULL },
@@ -2807,7 +2816,9 @@ initlibxml2mod(void)
         return;
     /* XXX xmlInitParser does much more than this */
     xmlInitGlobals();
+#ifdef LIBXML_OUTPUT_ENABLED
     xmlRegisterDefaultOutputCallbacks();
+#endif /* LIBXML_OUTPUT_ENABLED */
     xmlRegisterDefaultInputCallbacks();
     m = Py_InitModule((char *) "libxml2mod", libxmlMethods);
     initialized = 1;

@@ -1346,6 +1346,7 @@ xmlShellPrintXPathError(int errorType, const char *arg)
 }
 
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlShellPrintNodeCtxt:
  * @ctxt : a non-null shell context
@@ -1386,6 +1387,7 @@ xmlShellPrintNode(xmlNodePtr node)
 {
     xmlShellPrintNodeCtxt(NULL, node);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlShellPrintXPathResultCtxt:
@@ -1397,20 +1399,18 @@ xmlShellPrintNode(xmlNodePtr node)
 static void
 xmlShellPrintXPathResultCtxt(xmlShellCtxtPtr ctxt,xmlXPathObjectPtr list)
 {
-    int i = 0;
     if (!ctxt)
        return;
 
     if (list != NULL) {
         switch (list->type) {
             case XPATH_NODESET:{
+#ifdef LIBXML_OUTPUT_ENABLED
                     int indx;
 
                     if (list->nodesetval) {
                         for (indx = 0; indx < list->nodesetval->nodeNr;
                              indx++) {
-                            if (i > 0)
-                                fprintf(stderr, " -------\n");
                             xmlShellPrintNodeCtxt(ctxt,
 				    list->nodesetval->nodeTab[indx]);
                         }
@@ -1419,6 +1419,10 @@ xmlShellPrintXPathResultCtxt(xmlShellCtxtPtr ctxt,xmlXPathObjectPtr list)
                                         "Empty node set\n");
                     }
                     break;
+#else
+		    xmlGenericError(xmlGenericErrorContext,
+				    "Node set\n");
+#endif /* LIBXML_OUTPUT_ENABLED */
                 }
             case XPATH_BOOLEAN:
                 xmlGenericError(xmlGenericErrorContext,
@@ -1664,6 +1668,7 @@ xmlShellDir(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
     return (0);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlShellCat:
  * @ctxt:  the shell context
@@ -1707,6 +1712,7 @@ xmlShellCat(xmlShellCtxtPtr ctxt, char *arg ATTRIBUTE_UNUSED,
     fprintf(ctxt->output, "\n");
     return (0);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlShellLoad:
@@ -1761,6 +1767,7 @@ xmlShellLoad(xmlShellCtxtPtr ctxt, char *filename,
     return (0);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlShellWrite:
  * @ctxt:  the shell context
@@ -1887,6 +1894,7 @@ xmlShellSave(xmlShellCtxtPtr ctxt, char *filename,
     }
     return (0);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlShellValidate:
@@ -2178,18 +2186,22 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 #endif /* LIBXML_XPATH_ENABLED */
 		  fprintf(ctxt->output, "\tpwd          display current working directory\n");
 		  fprintf(ctxt->output, "\tquit         leave shell\n");
+#ifdef LIBXML_OUTPUT_ENABLED
 		  fprintf(ctxt->output, "\tsave [name]  save this document to name or the original name\n");
-		  fprintf(ctxt->output, "\tvalidate     check the document for errors\n");
 		  fprintf(ctxt->output, "\twrite [name] write the current node to the filename\n");
+#endif /* LIBXML_OUTPUT_ENABLED */
+		  fprintf(ctxt->output, "\tvalidate     check the document for errors\n");
 		  fprintf(ctxt->output, "\tgrep string  search for a string in the subtree\n");
         } else if (!strcmp(command, "validate")) {
             xmlShellValidate(ctxt, arg, NULL, NULL);
         } else if (!strcmp(command, "load")) {
             xmlShellLoad(ctxt, arg, NULL, NULL);
+#ifdef LIBXML_OUTPUT_ENABLED
         } else if (!strcmp(command, "save")) {
             xmlShellSave(ctxt, arg, NULL, NULL);
         } else if (!strcmp(command, "write")) {
             xmlShellWrite(ctxt, arg, NULL, NULL);
+#endif /* LIBXML_OUTPUT_ENABLED */
         } else if (!strcmp(command, "grep")) {
             xmlShellGrep(ctxt, arg, ctxt->node, NULL);
         } else if (!strcmp(command, "free")) {
@@ -2389,6 +2401,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
                 }
                 ctxt->pctxt->node = NULL;
             }
+#ifdef LIBXML_OUTPUT_ENABLED
         } else if (!strcmp(command, "cat")) {
             if (arg[0] == 0) {
                 xmlShellCat(ctxt, NULL, ctxt->node, NULL);
@@ -2466,6 +2479,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
                 }
                 ctxt->pctxt->node = NULL;
             }
+#endif /* LIBXML_OUTPUT_ENABLED */
         } else {
             xmlGenericError(xmlGenericErrorContext,
                             "Unknown command %s\n", command);

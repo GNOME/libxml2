@@ -99,7 +99,9 @@ static int run_once_init = 1;
 #endif /* HAVE_WIN32_THREADS */
 
 static xmlRMutexPtr	xmlLibraryLock = NULL;
+#ifdef LIBXML_THREAD_ENABLED
 static void xmlOnceInit(void);
+#endif
 
 /**
  * xmlNewMutex:
@@ -527,6 +529,7 @@ xmlCleanupThreads(void)
 #endif
 }
 
+#ifdef LIBXML_THREAD_ENABLED
 /**
  * xmlOnceInit
  *
@@ -550,6 +553,7 @@ xmlOnceInit(void) {
     mainthread = GetCurrentThreadId();
 #endif
 }
+#endif
 
 /**
  * DllMain:

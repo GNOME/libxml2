@@ -103,12 +103,14 @@ XMLPUBFUN xmlRelaxNGPtr XMLCALL
 		    xmlRelaxNGParse		(xmlRelaxNGParserCtxtPtr ctxt);
 XMLPUBFUN void XMLCALL		
 		    xmlRelaxNGFree		(xmlRelaxNGPtr schema);
+#ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN void XMLCALL		
 		    xmlRelaxNGDump		(FILE *output,
 					 xmlRelaxNGPtr schema);
 XMLPUBFUN void XMLCALL
 		    xmlRelaxNGDumpTree	(FILE * output,
 					 xmlRelaxNGPtr schema);
+#endif /* LIBXML_OUTPUT_ENABLED */
 /*
  * Interfaces for validating
  */

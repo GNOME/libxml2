@@ -110,12 +110,14 @@ XMLPUBFUN xmlEntitiesTablePtr XMLCALL
 			xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);
 XMLPUBFUN void XMLCALL			
 			xmlFreeEntitiesTable	(xmlEntitiesTablePtr table);
+#ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN void XMLCALL			
 			xmlDumpEntitiesTable	(xmlBufferPtr buf,
 						 xmlEntitiesTablePtr table);
 XMLPUBFUN void XMLCALL			
 			xmlDumpEntityDecl	(xmlBufferPtr buf,
 						 xmlEntityPtr ent);
+#endif /* LIBXML_OUTPUT_ENABLED */
 XMLPUBFUN void XMLCALL			
 			xmlCleanupPredefinedEntities(void);
 

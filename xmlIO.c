@@ -105,6 +105,7 @@ static xmlInputCallback xmlInputCallbackTable[MAX_INPUT_CALLBACK];
 static int xmlInputCallbackNr = 0;
 static int xmlInputCallbackInitialized = 0;
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /*
  * Output I/O callback sets
  */
@@ -120,6 +121,7 @@ typedef struct _xmlOutputCallback {
 static xmlOutputCallback xmlOutputCallbackTable[MAX_OUTPUT_CALLBACK];
 static int xmlOutputCallbackNr = 0;
 static int xmlOutputCallbackInitialized = 0;
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 
 /**
@@ -162,6 +164,7 @@ xmlCleanupInputCallbacks(void)
     xmlInputCallbackInitialized = 0;
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlCleanupOutputCallbacks:
  *
@@ -186,6 +189,7 @@ xmlCleanupOutputCallbacks(void)
     xmlOutputCallbackNr = 0;
     xmlOutputCallbackInitialized = 0;
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************
  *									*
@@ -245,6 +249,7 @@ xmlFdRead (void * context, char * buffer, int len) {
     return(read((int) (long) context, &buffer[0], len));
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlFdWrite:
  * @context:  the I/O context
@@ -259,6 +264,7 @@ static int
 xmlFdWrite (void * context, const char * buffer, int len) {
     return(write((int) (long) context, &buffer[0], len));
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlFdClose:
@@ -356,6 +362,7 @@ xmlFileOpen (const char *filename) {
     return retval;
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlFileOpenW:
  * @filename:  the URI for matching
@@ -396,6 +403,7 @@ xmlFileOpenW (const char *filename) {
     fd = fopen(path, "wb");
     return((void *) fd);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlFileRead:
@@ -412,6 +420,7 @@ xmlFileRead (void * context, char * buffer, int len) {
     return(fread(&buffer[0], 1,  len, (FILE *) context));
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlFileWrite:
  * @context:  the I/O context
@@ -430,6 +439,7 @@ xmlFileWrite (void * context, const char * buffer, int len) {
 
     return(items * len);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlFileClose:
@@ -549,6 +559,7 @@ xmlGzfileOpen (const char *filename) {
     return retval;
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlGzfileOpenW:
  * @filename:  the URI for matching
@@ -592,6 +603,7 @@ xmlGzfileOpenW (const char *filename, int compression) {
     fd = gzopen(path, mode);
     return((void *) fd);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlGzfileRead:
@@ -608,6 +620,7 @@ xmlGzfileRead (void * context, char * buffer, int len) {
     return(gzread((gzFile) context, &buffer[0], len));
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlGzfileWrite:
  * @context:  the I/O context
@@ -622,6 +635,7 @@ static int
 xmlGzfileWrite (void * context, const char * buffer, int len) {
     return(gzwrite((gzFile) context, (char *) &buffer[0], len));
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlGzfileClose:
@@ -642,6 +656,7 @@ xmlGzfileClose (void * context) {
  *									*
  ************************************************************************/
 
+#ifdef LIBXML_OUTPUT_ENABLED
 typedef struct xmlIOHTTPWriteCtxt_
 {
     int			compression;
@@ -974,8 +989,10 @@ xmlZMemBuffGetContent( xmlZMemBuffPtr buff, char ** data_ref ) {
     
     return ( zlgth );
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 #endif  /*  HAVE_ZLIB_H  */
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlFreeHTTPWriteCtxt
  * @ctxt:  Context to cleanup
@@ -1006,6 +1023,7 @@ xmlFreeHTTPWriteCtxt( xmlIOHTTPWriteCtxtPtr ctxt )
     xmlFree( ctxt );
     return;
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 
 /**
@@ -1036,6 +1054,7 @@ xmlIOHTTPOpen (const char *filename) {
     return(xmlNanoHTTPOpen(filename, NULL));
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlIOHTTPOpenW:
  * @post_uri:  The destination URI for the document
@@ -1099,7 +1118,9 @@ xmlIOHTTPOpenW(const char *post_uri, int compression)
 
     return (ctxt);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 				
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlIOHTTPDfltOpenW
  * @post_uri:  The destination URI for this document.
@@ -1114,6 +1135,7 @@ static void *
 xmlIOHTTPDfltOpenW( const char * post_uri ) {
     return ( xmlIOHTTPOpenW( post_uri, 0 ) );
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlIOHTTPRead:
@@ -1130,6 +1152,7 @@ xmlIOHTTPRead(void * context, char * buffer, int len) {
     return(xmlNanoHTTPRead(context, &buffer[0], len));
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlIOHTTPWrite
  * @context:  previously opened writing context
@@ -1173,6 +1196,7 @@ xmlIOHTTPWrite( void * context, const char * buffer, int len ) {
 
     return ( len );
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 
 /**
@@ -1189,6 +1213,7 @@ xmlIOHTTPClose (void * context) {
     return 0;
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlIOHTTCloseWrite
  * @context:  The I/O context
@@ -1345,6 +1370,7 @@ static int
 xmlIOHTTPClosePost( void * ctxt ) {
     return ( xmlIOHTTPCloseWrite( ctxt, "POST" ) );
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 #endif /* LIBXML_HTTP_ENABLED */
 
@@ -1438,6 +1464,7 @@ xmlRegisterInputCallbacks(xmlInputMatchCallback matchFunc,
     return(xmlInputCallbackNr++);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlRegisterOutputCallbacks:
  * @matchFunc:  the xmlOutputMatchCallback
@@ -1463,6 +1490,7 @@ xmlRegisterOutputCallbacks(xmlOutputMatchCallback matchFunc,
     xmlOutputCallbackInitialized = 1;
     return(xmlOutputCallbackNr++);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlRegisterDefaultInputCallbacks:
@@ -1494,6 +1522,7 @@ xmlRegisterDefaultInputCallbacks
     xmlInputCallbackInitialized = 1;
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlRegisterDefaultOutputCallbacks:
  *
@@ -1554,6 +1583,7 @@ xmlRegisterHTTPPostCallbacks( void ) {
     return;
 }
 #endif
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlAllocParserInputBuffer:
@@ -1593,6 +1623,7 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     return(ret);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlAllocOutputBuffer:
  * @encoder:  the encoding converter or NULL
@@ -1634,6 +1665,7 @@ xmlAllocOutputBuffer(xmlCharEncodingHandlerPtr encoder) {
 
     return(ret);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlFreeParserInputBuffer:
@@ -1663,6 +1695,7 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
     xmlFree(in);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlOutputBufferClose:
  * @out:  a buffered output
@@ -1700,6 +1733,7 @@ xmlOutputBufferClose(xmlOutputBufferPtr out) {
     xmlFree(out);
     return( ( err_rc == 0 ) ? written : err_rc );
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlParserInputBufferCreateFilename:
@@ -1770,6 +1804,7 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     return(ret);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlOutputBufferCreateFilename:
  * @URI:  a C string containing the URI or filename
@@ -1788,7 +1823,7 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 xmlOutputBufferPtr
 xmlOutputBufferCreateFilename(const char *URI,
                               xmlCharEncodingHandlerPtr encoder,
-			      int compression) {
+			      int compression ATTRIBUTE_UNUSED) {
     xmlOutputBufferPtr ret;
     int i = 0;
     void *context = NULL;
@@ -1899,6 +1934,7 @@ xmlOutputBufferCreateFilename(const char *URI,
     }
     return(ret);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlParserInputBufferCreateFile:
@@ -1929,6 +1965,7 @@ xmlParserInputBufferCreateFile(FILE *file, xmlCharEncoding enc) {
     return(ret);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlOutputBufferCreateFile:
  * @file:  a FILE* 
@@ -1957,6 +1994,7 @@ xmlOutputBufferCreateFile(FILE *file, xmlCharEncodingHandlerPtr encoder) {
 
     return(ret);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlParserInputBufferCreateFd:
@@ -2059,6 +2097,7 @@ xmlParserInputBufferCreateStatic(const char *mem, int size,
     return(ret);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlOutputBufferCreateFd:
  * @fd:  a file descriptor number
@@ -2084,6 +2123,7 @@ xmlOutputBufferCreateFd(int fd, xmlCharEncodingHandlerPtr encoder) {
 
     return(ret);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlParserInputBufferCreateIO:
@@ -2114,6 +2154,7 @@ xmlParserInputBufferCreateIO(xmlInputReadCallback   ioread,
     return(ret);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlOutputBufferCreateIO:
  * @iowrite:  an I/O write function
@@ -2143,6 +2184,7 @@ xmlOutputBufferCreateIO(xmlOutputWriteCallback   iowrite,
 
     return(ret);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlParserInputBufferPush:
@@ -2320,6 +2362,7 @@ xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
         return(-1);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlOutputBufferWrite:
  * @out:  a buffered parser output
@@ -2497,6 +2540,7 @@ xmlOutputBufferFlush(xmlOutputBufferPtr out) {
 #endif
     return(ret);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlParserGetDirectory:

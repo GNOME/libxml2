@@ -68,6 +68,7 @@ XMLPUBFUN const xmlChar * XMLCALL
 XMLPUBFUN int XMLCALL		
 		htmlSetMetaEncoding	(htmlDocPtr doc,
 					 const xmlChar *encoding);
+#ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN void XMLCALL	    
 		htmlDocDumpMemory	(xmlDocPtr cur,
 					 xmlChar **mem,
@@ -117,16 +118,16 @@ XMLPUBFUN void XMLCALL
 					 xmlDocPtr cur,
 					 const char *encoding,
 					 int format);
-
-XMLPUBFUN int XMLCALL		
-		htmlIsBooleanAttr	(const xmlChar *name);
 XMLPUBFUN void XMLCALL 
 		htmlNodeDumpOutput	(xmlOutputBufferPtr buf, 
 					 xmlDocPtr doc,
 					 xmlNodePtr cur, 
 					 const char *encoding);
 
+#endif /* LIBXML_OUTPUT_ENABLED */
 
+XMLPUBFUN int XMLCALL		
+		htmlIsBooleanAttr	(const xmlChar *name);
 
 
 #ifdef __cplusplus

@@ -114,10 +114,12 @@ int main(int argc, char **argv) {
 		    schema = xmlSchemaParse(ctxt);
 		    xmlSchemaFreeParserCtxt(ctxt);
 		}
+#ifdef LIBXML_OUTPUT_ENABLED
 #ifdef LIBXML_DEBUG_ENABLED
 		if (debug)
 		    xmlSchemaDump(stdout, schema);
 #endif
+#endif /* LIBXML_OUTPUT_ENABLED */
 	    } else {
 		xmlDocPtr doc;
 
@@ -173,7 +175,7 @@ int main(int argc, char **argv) {
 
 #else
 #include <stdio.h>
-int main(int argc, char **argv) {
+int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     printf("%s : Schemas support not compiled in\n", argv[0]);
     return(0);
 }

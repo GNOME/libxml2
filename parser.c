@@ -11974,7 +11974,9 @@ xmlInitParser(void) {
     xmlInitializePredefinedEntities();
     xmlDefaultSAXHandlerInit();
     xmlRegisterDefaultInputCallbacks();
+#ifdef LIBXML_OUTPUT_ENABLED
     xmlRegisterDefaultOutputCallbacks();
+#endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_HTML_ENABLED
     htmlInitAutoClose();
     htmlDefaultSAXHandlerInit();

@@ -827,6 +827,7 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
     xmlFree(cur);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlDumpElementContent:
  * @buf:  An XML buffer
@@ -910,6 +911,7 @@ xmlSprintfElementContent(char *buf ATTRIBUTE_UNUSED,
 	                 xmlElementContentPtr content ATTRIBUTE_UNUSED,
 			 int glob ATTRIBUTE_UNUSED) {
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlSnprintfElementContent:
@@ -1065,7 +1067,8 @@ xmlFreeElement(xmlElementPtr elem) {
  * Returns NULL if not, otherwise the entity
  */
 xmlElementPtr
-xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
+xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                  xmlDtdPtr dtd, const xmlChar *name,
                   xmlElementTypeVal type,
 		  xmlElementContentPtr content) {
     xmlElementPtr ret;
@@ -1312,6 +1315,7 @@ xmlCopyElementTable(xmlElementTablePtr table) {
 		                            (xmlHashCopier) xmlCopyElement));
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlDumpElementDecl:
  * @buf:  the XML buffer output
@@ -1381,6 +1385,7 @@ void
 xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table) {
     xmlHashScan(table, (xmlHashScanner) xmlDumpElementDecl, buf);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlCreateEnumeration:
@@ -1447,6 +1452,7 @@ xmlCopyEnumeration(xmlEnumerationPtr cur) {
     return(ret);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlDumpEnumeration:
  * @buf:  the XML buffer output
@@ -1466,6 +1472,7 @@ xmlDumpEnumeration(xmlBufferPtr buf, xmlEnumerationPtr cur) {
 	xmlDumpEnumeration(buf, cur->next);
     }
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlCreateAttributeTable:
@@ -1605,7 +1612,8 @@ xmlFreeAttribute(xmlAttributePtr attr) {
  * Returns NULL if not new, otherwise the attribute decl
  */
 xmlAttributePtr
-xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
+xmlAddAttributeDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                    xmlDtdPtr dtd, const xmlChar *elem,
                     const xmlChar *name, const xmlChar *ns,
 		    xmlAttributeType type, xmlAttributeDefault def,
 		    const xmlChar *defaultValue, xmlEnumerationPtr tree) {
@@ -1858,6 +1866,7 @@ xmlCopyAttributeTable(xmlAttributeTablePtr table) {
 				    (xmlHashCopier) xmlCopyAttribute));
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlDumpAttributeDecl:
  * @buf:  the XML buffer output
@@ -1949,6 +1958,7 @@ void
 xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
     xmlHashScan(table, (xmlHashScanner) xmlDumpAttributeDecl, buf);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************
  *									*
@@ -2124,6 +2134,7 @@ xmlCopyNotationTable(xmlNotationTablePtr table) {
 				    (xmlHashCopier) xmlCopyNotation));
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlDumpNotationDecl:
  * @buf:  the XML buffer output
@@ -2160,6 +2171,7 @@ void
 xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
     xmlHashScan(table, (xmlHashScanner) xmlDumpNotationDecl, buf);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************
  *									*

@@ -377,6 +377,7 @@ XMLPUBFUN void XMLCALL
 				 int line,
 				 int no);
 
+#ifdef LIBXML_DEBUG_ENABLED
 XMLPUBFUN void XMLCALL		
 		xmlXPathDebugDumpObject	(FILE *output,
 					 xmlXPathObjectPtr cur,
@@ -385,7 +386,7 @@ XMLPUBFUN void XMLCALL
 	    xmlXPathDebugDumpCompExpr(FILE *output,
 					 xmlXPathCompExprPtr comp,
 					 int depth);
-
+#endif
 /**
  * NodeSet handling.
  */

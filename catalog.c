@@ -374,6 +374,7 @@ xmlFreeCatalog(xmlCatalogPtr catal) {
  *									*
  ************************************************************************/
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlCatalogDumpEntry:
  * @entry:  the 
@@ -587,6 +588,7 @@ BAD_CAST "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd");
 
     return(ret);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************
  *									*
@@ -2682,6 +2684,7 @@ xmlACatalogResolveURI(xmlCatalogPtr catal, const xmlChar *URI) {
     return(ret);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlACatalogDump:
  * @catal:  a Catalog
@@ -2701,6 +2704,7 @@ xmlACatalogDump(xmlCatalogPtr catal, FILE *out) {
 		    (xmlHashScanner) xmlCatalogDumpEntry, out);
     } 
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlACatalogAdd:
@@ -3097,6 +3101,7 @@ xmlCatalogResolveURI(const xmlChar *URI) {
     return(ret);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlCatalogDump:
  * @out:  the file.
@@ -3113,6 +3118,7 @@ xmlCatalogDump(FILE *out) {
 
     xmlACatalogDump(xmlDefaultCatalog, out);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlCatalogAdd:

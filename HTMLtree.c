@@ -315,6 +315,7 @@ htmlIsBooleanAttr(const xmlChar *name)
     return 0;
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /************************************************************************
  *									*
  *   		Dumping HTML tree content to a simple buffer		*
@@ -1135,6 +1136,6 @@ htmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
     return(htmlSaveFileFormat(filename, cur, encoding, 1));
 }
 
-
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 #endif /* LIBXML_HTML_ENABLED */

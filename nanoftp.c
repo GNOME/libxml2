@@ -90,12 +90,15 @@
  * A couple portability macros
  */
 #ifndef _WINSOCKAPI_
+#ifndef __BEOS__
 #define closesocket(s) close(s)
+#endif
 #define SOCKET int
 #endif
 #if defined(VMS) || defined(__VMS)
 #define SOCKLEN_T unsigned int
 #endif
+
 
 #define FTP_COMMAND_OK		200
 #define FTP_SYNTAX_ERROR	500

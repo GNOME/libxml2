@@ -7,7 +7,7 @@
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "libxml.h"
-#if defined(LIBXML_C14N_ENABLED)
+#if defined(LIBXML_C14N_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
 
 #include <stdio.h>
 #include <string.h>
@@ -348,8 +348,8 @@ print_xpath_nodes(xmlNodeSetPtr nodes) {
 
 #else
 #include <stdio.h>
-int main(int argc, char **argv) {
-    printf("%s : XPath/Canonicalization support not compiled in\n", argv[0]);
+int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
+    printf("%s : XPath/Canonicalization and output support not compiled in\n", argv[0]);
     return(0);
 }
 #endif /* LIBXML_C14N_ENABLED */

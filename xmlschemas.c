@@ -512,6 +512,7 @@ xmlSchemaErrorContext(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * 									*
  ************************************************************************/
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlSchemaElementDump:
  * @elem:  an element
@@ -741,6 +742,7 @@ xmlSchemaDump(FILE * output, xmlSchemaPtr schema)
     xmlHashScanFull(schema->elemDecl,
 	            (xmlHashScannerFull) xmlSchemaElementDump, output);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************
  * 									*

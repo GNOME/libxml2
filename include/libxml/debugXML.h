@@ -148,6 +148,7 @@ XMLPUBFUN int XMLCALL
 				 char *filename,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
+#ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN int XMLCALL	
 	xmlShellWrite		(xmlShellCtxtPtr ctxt,
 				 char *filename,
@@ -158,6 +159,7 @@ XMLPUBFUN int XMLCALL
 				 char *filename,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
+#endif /* LIBXML_OUTPUT_ENABLED */
 XMLPUBFUN int XMLCALL	
 	xmlShellValidate	(xmlShellCtxtPtr ctxt,
 				 char *dtd,

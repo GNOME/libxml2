@@ -240,8 +240,10 @@ parseGjobFile(char *filename) {
         fprintf(stderr,"document of the wrong type, was '%s', Jobs expected",
 		cur->name);
 	fprintf(stderr,"xmlDocDump follows\n");
+#ifdef LIBXML_OUTPUT_ENABLED
 	xmlDocDump ( stderr, doc );
 	fprintf(stderr,"xmlDocDump finished\n");
+#endif /* LIBXML_OUTPUT_ENABLED */
 	xmlFreeDoc(doc);
 	free(ret);
 	return(NULL);

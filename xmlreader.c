@@ -764,6 +764,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
     return(0);
 }
 
+#ifdef LIBXML_REGEXP_ENABLED
 /**
  * xmlTextReaderValidatePush:
  * @reader:  the xmlTextReaderPtr used
@@ -771,8 +772,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
  * Push the current node for validation
  */
 static void
-xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
-#ifdef LIBXML_REGEXP_ENABLED
+xmlTextReaderValidatePush(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
     xmlNodePtr node = reader->node;
 
     if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
@@ -820,7 +820,6 @@ printf("Expand failed !\n");
 	    reader->rngValidErrors++;
 #endif
     }
-#endif /* LIBXML_REGEXP_ENABLED */
 }
 
 /**
@@ -834,7 +833,6 @@ printf("Expand failed !\n");
 static void
 xmlTextReaderValidateCData(xmlTextReaderPtr reader,
                            const xmlChar *data, int len) {
-#ifdef LIBXML_REGEXP_ENABLED
     if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
         (reader->ctxt != NULL) && (reader->ctxt->validate == 1)) {
 	reader->ctxt->valid &= xmlValidatePushCData(&reader->ctxt->vctxt,
@@ -850,7 +848,6 @@ xmlTextReaderValidateCData(xmlTextReaderPtr reader,
 	    reader->rngValidErrors++;
 #endif
     }
-#endif /* LIBXML_REGEXP_ENABLED */
 }
 
 /**
@@ -861,7 +858,6 @@ xmlTextReaderValidateCData(xmlTextReaderPtr reader,
  */
 static void
 xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
-#ifdef LIBXML_REGEXP_ENABLED
     xmlNodePtr node = reader->node;
 
     if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
@@ -898,8 +894,8 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 	    reader->rngValidErrors++;
 #endif
     }
-#endif /* LIBXML_REGEXP_ENABLED */
 }
+
 /**
  * xmlTextReaderValidateEntity:
  * @reader:  the xmlTextReaderPtr used
@@ -910,7 +906,6 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
  */
 static void
 xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
-#ifdef LIBXML_REGEXP_ENABLED
     xmlNodePtr oldnode = reader->node;
     xmlNodePtr node = reader->node;
     xmlParserCtxtPtr ctxt = reader->ctxt;
@@ -941,6 +936,7 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 		    break;
 		node = node->next;
 	    }
+#ifdef LIBXML_REGEXP_ENABLED
 	} else if (node->type == XML_ELEMENT_NODE) {
 	    reader->node = node;
 	    xmlTextReaderValidatePush(reader);
@@ -948,6 +944,7 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 		   (node->type == XML_CDATA_SECTION_NODE)) {
             xmlTextReaderValidateCData(reader, node->content,
 	                               xmlStrlen(node->content));
+#endif
 	}
 
 	/*
@@ -991,8 +988,8 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 	} while ((node != NULL) && (node != oldnode));
     } while ((node != NULL) && (node != oldnode));
     reader->node = oldnode;
-#endif /* LIBXML_REGEXP_ENABLED */
 }
+#endif /* LIBXML_REGEXP_ENABLED */
 
 
 /**
@@ -1155,9 +1152,11 @@ get_next_node:
 	    reader->state = XML_TEXTREADER_END;
 	    goto node_found;
 	}
+#ifdef LIBXML_REGEXP_ENABLED
 	if ((reader->validate) &&
 	    (reader->node->type == XML_ELEMENT_NODE))
 	    xmlTextReaderValidatePop(reader);
+#endif /* LIBXML_REGEXP_ENABLED */
 	reader->node = reader->node->next;
 	reader->state = XML_TEXTREADER_ELEMENT;
 
@@ -1183,8 +1182,10 @@ get_next_node:
 	reader->state = XML_TEXTREADER_END;
 	goto node_found;
     }
+#ifdef LIBXML_REGEXP_ENABLED
     if ((reader->validate) && (reader->node->type == XML_ELEMENT_NODE))
 	xmlTextReaderValidatePop(reader);
+#endif /* LIBXML_REGEXP_ENABLED */
     reader->node = reader->node->parent;
     if ((reader->node == NULL) ||
 	(reader->node->type == XML_DOCUMENT_NODE) ||
@@ -1249,10 +1250,12 @@ node_found:
 	    xmlTextReaderEntPush(reader, reader->node);
 	    reader->node = reader->node->children->children;
 	}
+#ifdef LIBXML_REGEXP_ENABLED
     } else if ((reader->node != NULL) &&
 	       (reader->node->type == XML_ENTITY_REF_NODE) &&
 	       (reader->ctxt != NULL) && (reader->validate)) {
 	xmlTextReaderValidateEntity(reader);
+#endif /* LIBXML_REGEXP_ENABLED */
     }
     if ((reader->node != NULL) &&
 	(reader->node->type == XML_ENTITY_DECL) &&

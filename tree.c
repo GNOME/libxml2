@@ -6789,6 +6789,7 @@ xmlBufferWriteQuotedString(xmlBufferPtr buf, const xmlChar *string) {
 }
 
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /************************************************************************
  *									*
  *   		Dumping XML tree content to a simple buffer		*
@@ -7567,6 +7568,7 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 	}
     }
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 #ifdef LIBXML_HTML_ENABLED
 /************************************************************************
@@ -7615,6 +7617,7 @@ xmlIsXHTML(const xmlChar *systemID, const xmlChar *publicID) {
     return(0);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xhtmlIsEmpty:
  * @node:  the node
@@ -8059,8 +8062,10 @@ xhtmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     xmlOutputBufferWriteString(buf, ">");
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 #endif
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /************************************************************************
  *									*
  *		Saving functions front-ends				*
@@ -8208,61 +8213,6 @@ xmlDocDumpMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 	            int * doc_txt_len, const char * txt_encoding) {
     xmlDocDumpFormatMemoryEnc(out_doc, doc_txt_ptr, doc_txt_len,
 	                      txt_encoding, 0);
-}
-
-/**
- * xmlGetDocCompressMode:
- * @doc:  the document
- *
- * get the compression ratio for a document, ZLIB based
- * Returns 0 (uncompressed) to 9 (max compression)
- */
-int
-xmlGetDocCompressMode (xmlDocPtr doc) {
-    if (doc == NULL) return(-1);
-    return(doc->compression);
-}
-
-/**
- * xmlSetDocCompressMode:
- * @doc:  the document
- * @mode:  the compression ratio
- *
- * set the compression ratio for a document, ZLIB based
- * Correct values: 0 (uncompressed) to 9 (max compression)
- */
-void
-xmlSetDocCompressMode (xmlDocPtr doc, int mode) {
-    if (doc == NULL) return;
-    if (mode < 0) doc->compression = 0;
-    else if (mode > 9) doc->compression = 9;
-    else doc->compression = mode;
-}
-
-/**
- * xmlGetCompressMode:
- *
- * get the default compression mode used, ZLIB based.
- * Returns 0 (uncompressed) to 9 (max compression)
- */
-int
-xmlGetCompressMode(void)
-{
-    return (xmlCompressMode);
-}
-
-/**
- * xmlSetCompressMode:
- * @mode:  the compression ratio
- *
- * set the default compression mode used, ZLIB based
- * Correct values: 0 (uncompressed) to 9 (max compression)
- */
-void
-xmlSetCompressMode(int mode) {
-    if (mode < 0) xmlCompressMode = 0;
-    else if (mode > 9) xmlCompressMode = 9;
-    else xmlCompressMode = mode;
 }
 
 /**
@@ -8461,5 +8411,62 @@ xmlSaveFormatFile(const char *filename, xmlDocPtr cur, int format) {
 int
 xmlSaveFile(const char *filename, xmlDocPtr cur) {
     return(xmlSaveFormatFileEnc(filename, cur, NULL, 0));
+}
+
+#endif /* LIBXML_OUTPUT_ENABLED */
+
+/**
+ * xmlGetDocCompressMode:
+ * @doc:  the document
+ *
+ * get the compression ratio for a document, ZLIB based
+ * Returns 0 (uncompressed) to 9 (max compression)
+ */
+int
+xmlGetDocCompressMode (xmlDocPtr doc) {
+    if (doc == NULL) return(-1);
+    return(doc->compression);
+}
+
+/**
+ * xmlSetDocCompressMode:
+ * @doc:  the document
+ * @mode:  the compression ratio
+ *
+ * set the compression ratio for a document, ZLIB based
+ * Correct values: 0 (uncompressed) to 9 (max compression)
+ */
+void
+xmlSetDocCompressMode (xmlDocPtr doc, int mode) {
+    if (doc == NULL) return;
+    if (mode < 0) doc->compression = 0;
+    else if (mode > 9) doc->compression = 9;
+    else doc->compression = mode;
+}
+
+/**
+ * xmlGetCompressMode:
+ *
+ * get the default compression mode used, ZLIB based.
+ * Returns 0 (uncompressed) to 9 (max compression)
+ */
+int
+xmlGetCompressMode(void)
+{
+    return (xmlCompressMode);
+}
+
+/**
+ * xmlSetCompressMode:
+ * @mode:  the compression ratio
+ *
+ * set the default compression mode used, ZLIB based
+ * Correct values: 0 (uncompressed) to 9 (max compression)
+ */
+void
+xmlSetCompressMode(int mode) {
+    if (mode < 0) xmlCompressMode = 0;
+    else if (mode > 9) xmlCompressMode = 9;
+    else xmlCompressMode = mode;
 }
 

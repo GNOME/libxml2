@@ -742,6 +742,7 @@ parseAndPrintFile(char *filename) {
 	xmlFreeDoc(tmp);
     }
 
+#ifdef LIBXML_OUTPUT_ENABLED
     /*
      * print it.
      */
@@ -761,6 +762,7 @@ parseAndPrintFile(char *filename) {
 	    htmlDocDump(stdout, doc);
 #endif
     }	
+#endif /* LIBXML_OUTPUT_ENABLED */
 
     /*
      * free it.
@@ -839,7 +841,7 @@ int main(int argc, char **argv) {
 }
 #else /* !LIBXML_HTML_ENABLED */
 #include <stdio.h>
-int main(int argc, char **argv) {
+int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     printf("%s : HTML support not compiled in\n", argv[0]);
     return(0);
 }

@@ -62,6 +62,7 @@ typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
  */
 typedef int (*xmlInputCloseCallback) (void * context);
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /*
  * Those are the functions and datatypes for the library output
  * I/O structures.
@@ -107,6 +108,7 @@ typedef int (*xmlOutputWriteCallback) (void * context, const char * buffer,
  * Returns 0 or -1 in case of error
  */
 typedef int (*xmlOutputCloseCallback) (void * context);
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 #ifdef __cplusplus
 }
@@ -133,6 +135,7 @@ struct _xmlParserInputBuffer {
 };
 
 
+#ifdef LIBXML_OUTPUT_ENABLED
 struct _xmlOutputBuffer {
     void*                   context;
     xmlOutputWriteCallback  writecallback;
@@ -144,14 +147,13 @@ struct _xmlOutputBuffer {
     xmlBufferPtr conv;      /* if encoder != NULL buffer for output */
     int written;            /* total number of byte written */
 };
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /*
  * Interfaces for input
  */
 XMLPUBFUN void XMLCALL	
 	xmlCleanupInputCallbacks		(void);
-XMLPUBFUN void XMLCALL	
-	xmlCleanupOutputCallbacks		(void);
 
 XMLPUBFUN void XMLCALL	
 	xmlRegisterDefaultInputCallbacks	(void);
@@ -198,9 +200,12 @@ XMLPUBFUN int XMLCALL
 						 xmlInputOpenCallback openFunc,
 						 xmlInputReadCallback readFunc,
 						 xmlInputCloseCallback closeFunc);
+#ifdef LIBXML_OUTPUT_ENABLED
 /*
  * Interfaces for output
  */
+XMLPUBFUN void XMLCALL	
+	xmlCleanupOutputCallbacks		(void);
 XMLPUBFUN void XMLCALL	
 	xmlRegisterDefaultOutputCallbacks(void);
 XMLPUBFUN xmlOutputBufferPtr XMLCALL
@@ -243,6 +248,7 @@ XMLPUBFUN int XMLCALL
 					 xmlOutputOpenCallback openFunc,
 					 xmlOutputWriteCallback writeFunc,
 					 xmlOutputCloseCallback closeFunc);
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /*  This function only exists if HTTP support built into the library  */
 #ifdef LIBXML_HTTP_ENABLED

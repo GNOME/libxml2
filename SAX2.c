@@ -871,7 +871,7 @@ xmlSAX2EndDocument(void *ctx)
  */
 static void
 xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
-             const xmlChar *value, const xmlChar *prefix)
+             const xmlChar *value, const xmlChar *prefix ATTRIBUTE_UNUSED)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlAttrPtr ret;

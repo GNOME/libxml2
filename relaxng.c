@@ -7405,6 +7405,7 @@ xmlRelaxNGGetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
     return(0);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /************************************************************************
  * 									*
  * 			Dump back a compiled form			*
@@ -7635,6 +7636,7 @@ xmlRelaxNGDumpTree(FILE * output, xmlRelaxNGPtr schema)
 	xmlDocDump(output, schema->doc); 
     }
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************
  * 									*

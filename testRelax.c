@@ -123,12 +123,14 @@ int main(int argc, char **argv) {
 		    files = -1;
 		    break;
 		}
+#ifdef LIBXML_OUTPUT_ENABLED
 #ifdef LIBXML_DEBUG_ENABLED
 		if (debug)
 		    xmlRelaxNGDump(stdout, schema);
 #endif
 		if (tree)
 		    xmlRelaxNGDumpTree(stdout, schema);
+#endif /* LIBXML_OUTPUT_ENABLED */
 	    } else {
 		xmlDocPtr doc;
 
@@ -185,7 +187,7 @@ int main(int argc, char **argv) {
 
 #else
 #include <stdio.h>
-int main(int argc, char **argv) {
+int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     printf("%s : RelaxNG support not compiled in\n", argv[0]);
     return(0);
 }

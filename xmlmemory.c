@@ -668,7 +668,9 @@ static void debugmem_tag_error(void *p)
 #endif
 }
 
+#ifdef MEM_LIST
 static FILE *xmlMemoryDumpFile = NULL;
+#endif
 
 /**
  * xmlMemShow:

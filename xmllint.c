@@ -102,8 +102,14 @@ static int debug = 0;
 static int copy = 0;
 static int recovery = 0;
 static int noent = 0;
+static int noblanks = 0;
 static int noout = 0;
 static int nowrap = 0;
+#ifdef LIBXML_OUTPUT_ENABLED
+static int format = 0;
+static const char *output = NULL;
+static int compress = 0;
+#endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_VALID_ENABLED
 static int valid = 0;
 static int postvalid = 0;
@@ -118,7 +124,6 @@ static xmlSchemaPtr wxschemas = NULL;
 #endif
 static int repeat = 0;
 static int insert = 0;
-static int compress = 0;
 #ifdef  LIBXML_HTML_ENABLED
 static int html = 0;
 #endif
@@ -127,8 +132,6 @@ static int push = 0;
 #ifdef HAVE_SYS_MMAN_H
 static int memory = 0;
 #endif
-static int noblanks = 0;
-static int format = 0;
 static int testIO = 0;
 static char *encoding = NULL;
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -147,7 +150,6 @@ static int nocatalogs = 0;
 static int stream = 0;
 static int chkregister = 0;
 static int sax1 = 0;
-static const char *output = NULL;
 static int options = 0;
 
 /*
@@ -983,6 +985,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	}    
     }else
 #endif /* LIBXML_VALID_ENABLED */
+#ifdef LIBXML_OUTPUT_ENABLED
     if (noout == 0) {
 	/*
 	 * print it.
@@ -1062,6 +1065,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	}
 #endif
     }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 #ifdef LIBXML_VALID_ENABLED
     /*
@@ -1278,7 +1282,11 @@ static void showVersion(const char *name) {
 
 static void usage(const char *name) {
     printf("Usage : %s [options] XMLfiles ...\n", name);
+#ifdef LIBXML_OUTPUT_ENABLED
     printf("\tParse the XML files and output the result of the parsing\n");
+#else
+    printf("\tParse the XML files\n");
+#endif /* LIBXML_OUTPUT_ENABLED */
     printf("\t--version : display the version of the XML library used\n");
 #ifdef LIBXML_DEBUG_ENABLED
     printf("\t--debug : dump a debug tree of the in-memory document\n");
@@ -1304,9 +1312,11 @@ static void usage(const char *name) {
     printf("\t--output file or -o file: save to a given file\n");
     printf("\t--repeat : repeat 100 times, for timing or profiling\n");
     printf("\t--insert : ad-hoc test for valid insertions\n");
+#ifdef LIBXML_OUTPUT_ENABLED
 #ifdef HAVE_ZLIB_H
     printf("\t--compress : turn on gzip compression of output\n");
 #endif
+#endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_HTML_ENABLED
     printf("\t--html : use the HTML parser\n");
 #endif
@@ -1317,10 +1327,13 @@ static void usage(const char *name) {
     printf("\t--nowarning : do not emit warnings from parser/validator\n");
     printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
     printf("\t--nocdata : replace cdata section with text nodes\n");
-    printf("\t--nsclean : remove redundant namespace declarations\n");
+#ifdef LIBXML_OUTPUT_ENABLED
     printf("\t--format : reformat/reindent the input\n");
-    printf("\t--testIO : test user I/O support\n");
     printf("\t--encode encoding : output in the given encoding\n");
+    printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
+#endif /* LIBXML_OUTPUT_ENABLED */
+    printf("\t--nsclean : remove redundant namespace declarations\n");
+    printf("\t--testIO : test user I/O support\n");
 #ifdef LIBXML_CATALOG_ENABLED
     printf("\t--catalogs : use SGML catalogs from $SGML_CATALOG_FILES\n");
     printf("\t             otherwise XML Catalogs starting from \n");
@@ -1333,7 +1346,6 @@ static void usage(const char *name) {
 #endif
     printf("\t--loaddtd : fetch external DTD\n");
     printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
-    printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
     printf("\t--stream : use the streaming interface to process very large files\n");
     printf("\t--chkregister : verify the node registration code\n");
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1411,24 +1423,26 @@ main(int argc, char **argv) {
 	} else if ((!strcmp(argv[i], "-noout")) ||
 	         (!strcmp(argv[i], "--noout")))
 	    noout++;
+#ifdef LIBXML_OUTPUT_ENABLED
 	else if ((!strcmp(argv[i], "-o")) ||
 	         (!strcmp(argv[i], "-output")) ||
 	         (!strcmp(argv[i], "--output"))) {
 	    i++;
 	    output = argv[i];
 	}
+#endif /* LIBXML_OUTPUT_ENABLED */
 	else if ((!strcmp(argv[i], "-htmlout")) ||
 	         (!strcmp(argv[i], "--htmlout")))
 	    htmlout++;
+	else if ((!strcmp(argv[i], "-nowrap")) ||
+	         (!strcmp(argv[i], "--nowrap")))
+	    nowrap++;
 #ifdef LIBXML_HTML_ENABLED
 	else if ((!strcmp(argv[i], "-html")) ||
 	         (!strcmp(argv[i], "--html"))) {
 	    html++;
         }
 #endif /* LIBXML_HTML_ENABLED */
-	else if ((!strcmp(argv[i], "-nowrap")) ||
-	         (!strcmp(argv[i], "--nowrap")))
-	    nowrap++;
 	else if ((!strcmp(argv[i], "-loaddtd")) ||
 	         (!strcmp(argv[i], "--loaddtd"))) {
 	    loaddtd++;
@@ -1496,6 +1510,7 @@ main(int argc, char **argv) {
 	    /* options |= XML_PARSE_XINCLUDE; */
 	}
 #endif
+#ifdef LIBXML_OUTPUT_ENABLED
 #ifdef HAVE_ZLIB_H
 	else if ((!strcmp(argv[i], "-compress")) ||
 	         (!strcmp(argv[i], "--compress"))) {
@@ -1503,6 +1518,7 @@ main(int argc, char **argv) {
 	    xmlSetCompressMode(9);
         }
 #endif
+#endif /* LIBXML_OUTPUT_ENABLED */
 	else if ((!strcmp(argv[i], "-nowarning")) ||
 	         (!strcmp(argv[i], "--nowarning"))) {
 	    xmlGetWarningsDefaultValue = 0;
@@ -1548,7 +1564,9 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-format")) ||
 	         (!strcmp(argv[i], "--format"))) {
 	     noblanks++;
+#ifdef LIBXML_OUTPUT_ENABLED
 	     format++;
+#endif /* LIBXML_OUTPUT_ENABLED */
 	     xmlKeepBlanksDefault(0);
 	}
 	else if ((!strcmp(argv[i], "-stream")) ||

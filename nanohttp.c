@@ -95,7 +95,9 @@
  * A couple portability macros
  */
 #ifndef _WINSOCKAPI_
+#ifndef __BEOS__
 #define closesocket(s) close(s)
+#endif
 #define SOCKET int
 #endif
 
@@ -922,6 +924,7 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
     if ( FD_ISSET(s, &wfd) ) {
 	SOCKLEN_T len;
 	len = sizeof(status);
+#ifdef SO_ERROR
 	if (getsockopt(s, SOL_SOCKET, SO_ERROR, (char*)&status, &len) < 0 ) {
 	    /* Solaris error code */
 	    xmlGenericError( xmlGenericErrorContext,
@@ -930,6 +933,7 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 				strerror( socket_errno( ) ) );
 	    return (-1);
 	}
+#endif
 	if ( status ) {
 	    closesocket(s);
 	    errno = status;
@@ -1510,6 +1514,7 @@ xmlNanoHTTPFetch(const char *URL, const char *filename, char **contentType) {
     return(0);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlNanoHTTPSave:
  * @ctxt:  the HTTP context
@@ -1546,6 +1551,7 @@ xmlNanoHTTPSave(void *ctxt, const char *filename) {
     xmlNanoHTTPClose(ctxt);
     return(0);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlNanoHTTPReturnCode:

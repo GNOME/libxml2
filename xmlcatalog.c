@@ -29,7 +29,7 @@
 #include <libxml/parser.h>
 #include <libxml/globals.h>
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
 static int shell = 0;
 static int sgml = 0;
 static int noout = 0;
@@ -580,8 +580,8 @@ int main(int argc, char **argv) {
     return(exit_value);
 }
 #else
-int main(int argc, char **argv) {
-    fprintf(stderr, "libxml was not compiled with catalog support\n");
+int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
+    fprintf(stderr, "libxml was not compiled with catalog and output support\n");
     return(1);
 }
 #endif

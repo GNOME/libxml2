@@ -527,8 +527,20 @@ if test "$with_history" = "yes" ; then
     LDFLAGS=${_ldflags}
 fi
 
-AC_SUBST(WITH_FTP)
-AC_SUBST(FTP_OBJ)
+AC_ARG_WITH(output,
+[  --with-output              add the serialization support (on)])
+if test "$with_minimum" = "yes" -a "$with_output" = ""
+then
+    with_output=no
+fi
+if test "$with_output" = "no" ; then
+    echo Disabling serialization/saving support
+    WITH_OUTPUT=0
+else    
+    WITH_OUTPUT=1
+fi
+AC_SUBST(WITH_OUTPUT)
+
 AC_ARG_WITH(ftp,
 [  --with-ftp              add the FTP support (on)])
 if test "$with_minimum" = "yes" -a "$with_ftp" = ""

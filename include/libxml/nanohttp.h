@@ -56,9 +56,11 @@ XMLPUBFUN int XMLCALL
 	xmlNanoHTTPRead		(void *ctx,
 				 void *dest,
 				 int len);
+#ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN int XMLCALL	
 	xmlNanoHTTPSave		(void *ctxt,
 				 const char *filename);
+#endif /* LIBXML_OUTPUT_ENABLED */
 XMLPUBFUN void XMLCALL	
 	xmlNanoHTTPClose	(void *ctx);
 #ifdef __cplusplus

@@ -63,7 +63,7 @@ main(int argc, char **argv) {
  *
  * Prints usage information.
  */
-void 
+static void 
 usage(const char *name) {
     assert(name);
     

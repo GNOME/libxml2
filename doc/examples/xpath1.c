@@ -21,7 +21,7 @@
 #if defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_SAX1_ENABLED)
 
 
-void usage(const char *name);
+static void usage(const char *name);
 int  execute_xpath_expression(const char* filename, const xmlChar* xpathExpr, const xmlChar* nsList);
 int  register_namespaces(xmlXPathContextPtr xpathCtx, const xmlChar* nsList);
 void print_xpath_nodes(xmlNodeSetPtr nodes, FILE* output);
@@ -61,7 +61,7 @@ main(int argc, char **argv) {
  *
  * Prints usage information.
  */
-void 
+static void 
 usage(const char *name) {
     assert(name);
     

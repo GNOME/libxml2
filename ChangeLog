@@ -1,3 +1,10 @@
+Thu Mar 10 11:35:57 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmodule.c: second patch from Rick Jones, portability fix for
+	  HP-UX
+	* doc/examples/xpath1.c doc/examples/xpath2.c: first fix from Rick Jones
+	  to avoid warnings.
+
 Thu Mar 10 10:20:23 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/hash.h libxml.h libxml.spec.in: some gcc4 portability

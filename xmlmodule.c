@@ -237,7 +237,7 @@ xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
     return 0;
 }
 
-#endif /* HAVE_DLOPEN */
+#else /* ! HAVE_DLOPEN */
 
 #ifdef HAVE_SHLLOAD             /* HAVE_SHLLOAD */
 #ifdef HAVE_DL_H
@@ -285,6 +285,7 @@ xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
 }
 
 #endif /* HAVE_SHLLOAD */
+#endif /* ! HAVE_DLOPEN */
 
 #ifdef _WIN32
 

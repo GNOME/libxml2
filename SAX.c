@@ -24,6 +24,7 @@
 #include <libxml/debugXML.h>
 #include <libxml/xmlIO.h>
 #include <libxml/SAX.h>
+#include <libxml/uri.h>
 
 /* #define DEBUG_SAX */
 /* #define DEBUG_SAX_TREE */
@@ -193,6 +194,7 @@ externalSubset(void *ctx, const xmlChar *name,
 	int oldwellFormed;
 	xmlParserInputPtr input = NULL;
 	xmlCharEncoding enc;
+	xmlCharEncoding oldcharset;
 
 	/*
 	 * Ask the Entity resolver to load the damn thing
@@ -214,6 +216,7 @@ externalSubset(void *ctx, const xmlChar *name,
 	oldinputMax = ctxt->inputMax;
 	oldinputTab = ctxt->inputTab;
 	oldwellFormed = ctxt->wellFormed;
+	oldcharset = ctxt->charset;
 
 	ctxt->inputTab = (xmlParserInputPtr *)
 	                 xmlMalloc(5 * sizeof(xmlParserInputPtr));
@@ -227,6 +230,7 @@ externalSubset(void *ctx, const xmlChar *name,
 	    ctxt->inputNr = oldinputNr;
 	    ctxt->inputMax = oldinputMax;
 	    ctxt->inputTab = oldinputTab;
+	    ctxt->charset = oldcharset;
 	    return;
 	}
 	ctxt->inputNr = 0;
@@ -269,6 +273,7 @@ externalSubset(void *ctx, const xmlChar *name,
 	ctxt->inputNr = oldinputNr;
 	ctxt->inputMax = oldinputMax;
 	ctxt->inputTab = oldinputTab;
+	ctxt->charset = oldcharset;
 	/* ctxt->wellFormed = oldwellFormed; */
     }
 }
@@ -604,6 +609,14 @@ endDocument(void *ctx)
 	ctxt->myDoc->encoding = ctxt->encoding;
 	ctxt->encoding = NULL;
     }
+    if ((ctxt->inputTab[0]->encoding != NULL) && (ctxt->myDoc != NULL) &&
+	(ctxt->myDoc->encoding == NULL)) {
+	ctxt->myDoc->encoding = xmlStrdup(ctxt->inputTab[0]->encoding);
+    }
+    if ((ctxt->charset != XML_CHAR_ENCODING_NONE) && (ctxt->myDoc != NULL) &&
+	(ctxt->myDoc->charset == XML_CHAR_ENCODING_NONE)) {
+	ctxt->myDoc->charset = ctxt->charset;
+    }
 }
 
 /**
@@ -640,7 +653,10 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
     /*
      * Do the last stave of the attribute normalization
      */
-    nval = xmlValidNormalizeAttributeValue(ctxt->myDoc,
+    if (ctxt->html)
+	nval = NULL;
+    else
+	nval = xmlValidNormalizeAttributeValue(ctxt->myDoc,
 			       ctxt->node, fullname, value);
     if (nval != NULL)
 	value = nval;
@@ -648,9 +664,25 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
     /*
      * Check whether it's a namespace definition
      */
-    if ((ns == NULL) &&
+    if ((!ctxt->html) && (ns == NULL) &&
         (name[0] == 'x') && (name[1] == 'm') && (name[2] == 'l') &&
         (name[3] == 'n') && (name[4] == 's') && (name[5] == 0)) {
+	xmlURIPtr uri;
+
+	uri = xmlParseURI((const char *)value);
+	if (uri == NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		ctxt->sax->warning(ctxt->userData, 
+		     "nmlns: %s not a valid URI\n", value);
+	} else {
+	    if (uri->scheme == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		    ctxt->sax->warning(ctxt->userData, 
+			 "nmlns: URI %s is not absolute\n", value);
+	    }
+	    xmlFreeURI(uri);
+	}
+
 	/* a default namespace definition */
 	xmlNewNs(ctxt->node, value, NULL);
 	if (name != NULL) 
@@ -659,7 +691,8 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 	    xmlFree(nval);
 	return;
     }
-    if ((ns != NULL) && (ns[0] == 'x') && (ns[1] == 'm') && (ns[2] == 'l') &&
+    if ((!ctxt->html) &&
+	(ns != NULL) && (ns[0] == 'x') && (ns[1] == 'm') && (ns[2] == 'l') &&
         (ns[3] == 'n') && (ns[4] == 's') && (ns[5] == 0)) {
 	/*
 	 * Validate also for namespace decls, they are attributes from
@@ -701,7 +734,7 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 		    ret->last = tmp;
 		tmp = tmp->next;
 	    }
-	} else {
+	} else if (value != NULL) {
 	    ret->children = xmlNewDocText(ctxt->myDoc, value);
 	    ret->last = ret->children;
 	    if (ret->children != NULL)
@@ -709,7 +742,7 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 	}
     }
 
-    if (ctxt->validate && ctxt->wellFormed &&
+    if ((!ctxt->html) && ctxt->validate && ctxt->wellFormed &&
         ctxt->myDoc && ctxt->myDoc->intSubset) {
 	
 	/*
@@ -817,6 +850,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     } else if (parent == NULL) {
         parent = ctxt->myDoc->children;
     }
+    ctxt->nodemem = -1;
 
     /*
      * We are parsing a new node.
@@ -845,46 +879,20 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     }
 
     /*
-     * If it's the Document root, finish the Dtd validation and
-     * check the document root element for validity
-     */
-    if ((ctxt->validate) && (ctxt->vctxt.finishDtd == 0)) {
-	ctxt->valid &= xmlValidateDtdFinal(&ctxt->vctxt, ctxt->myDoc);
-	ctxt->valid &= xmlValidateRoot(&ctxt->vctxt, ctxt->myDoc);
-	ctxt->vctxt.finishDtd = 1;
-    }
-    /*
      * process all the attributes whose name start with "xml"
      */
     if (atts != NULL) {
         i = 0;
 	att = atts[i++];
 	value = atts[i++];
-        while ((att != NULL) && (value != NULL)) {
-	    if ((att[0] == 'x') && (att[1] == 'm') && (att[2] == 'l'))
-		attribute(ctxt, att, value);
+	if (!ctxt->html) {
+	    while ((att != NULL) && (value != NULL)) {
+		if ((att[0] == 'x') && (att[1] == 'm') && (att[2] == 'l'))
+		    attribute(ctxt, att, value);
 
-	    att = atts[i++];
-	    value = atts[i++];
-	}
-    }
-
-    /*
-     * process all the other attributes
-     */
-    if (atts != NULL) {
-        i = 0;
-	att = atts[i++];
-	value = atts[i++];
-        while ((att != NULL) && (value != NULL)) {
-	    if ((att[0] != 'x') || (att[1] != 'm') || (att[2] != 'l'))
-		attribute(ctxt, att, value);
-
-	    /*
-	     * Next ones
-	     */
-	    att = atts[i++];
-	    value = atts[i++];
+		att = atts[i++];
+		value = atts[i++];
+	    }
 	}
     }
 
@@ -896,6 +904,43 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     if ((ns == NULL) && (parent != NULL))
 	ns = xmlSearchNs(ctxt->myDoc, parent, prefix);
     xmlSetNs(ret, ns);
+
+    /*
+     * process all the other attributes
+     */
+    if (atts != NULL) {
+        i = 0;
+	att = atts[i++];
+	value = atts[i++];
+	if (ctxt->html) {
+	    while (att != NULL) {
+		attribute(ctxt, att, value);
+		att = atts[i++];
+		value = atts[i++];
+	    }
+	} else {
+	    while ((att != NULL) && (value != NULL)) {
+		if ((att[0] != 'x') || (att[1] != 'm') || (att[2] != 'l'))
+		    attribute(ctxt, att, value);
+
+		/*
+		 * Next ones
+		 */
+		att = atts[i++];
+		value = atts[i++];
+	    }
+	}
+    }
+
+    /*
+     * If it's the Document root, finish the Dtd validation and
+     * check the document root element for validity
+     */
+    if ((ctxt->validate) && (ctxt->vctxt.finishDtd == 0)) {
+	ctxt->valid &= xmlValidateDtdFinal(&ctxt->vctxt, ctxt->myDoc);
+	ctxt->valid &= xmlValidateRoot(&ctxt->vctxt, ctxt->myDoc);
+	ctxt->vctxt.finishDtd = 1;
+    }
 
     if (prefix != NULL)
 	xmlFree(prefix);
@@ -932,6 +977,7 @@ endElement(void *ctx, const xmlChar *name)
       node_info.node = cur;
       xmlParserAddNodeInfo(ctxt, &node_info);
     }
+    ctxt->nodemem = -1;
 
     if (ctxt->validate && ctxt->wellFormed &&
         ctxt->myDoc && ctxt->myDoc->intSubset)
@@ -1008,14 +1054,62 @@ characters(void *ctx, const xmlChar *ch, int len)
 #ifdef DEBUG_SAX_TREE
     fprintf(stderr, "add chars to %s \n", ctxt->node->name);
 #endif
-    if (lastChild == NULL)
+
+    /*
+     * Here we needed an accelerator mechanism in case of very large
+     * elements. Use an attribute in the structure !!!
+     */
+    if (lastChild == NULL) {
+	/* first node, first time */
 	xmlNodeAddContentLen(ctxt->node, ch, len);
-    else {
-	if (xmlNodeIsText(lastChild))
+#ifndef XML_USE_BUFFER_CONTENT
+	if (ctxt->node->children != NULL) {
+	    ctxt->nodelen = len;
+	    ctxt->nodemem = len + 1;
+	}
+#endif
+    } else {
+	if (xmlNodeIsText(lastChild)) {
+#ifndef XML_USE_BUFFER_CONTENT
+	    /*
+	     * The whole point of maintaining nodelen and nodemem,
+	     * xmlTextConcat is too costly, i.e. compute lenght,
+	     * reallocate a new buffer, move data, append ch. Here
+	     * We try to minimaze realloc() uses and avoid copying
+	     * and recomputing lenght over and over.
+	     */
+	    if (ctxt->nodelen + len >= ctxt->nodemem) {
+		xmlChar *newbuf;
+		int size;
+
+		size = ctxt->nodemem + len;
+		size *= 2;
+                newbuf = (xmlChar *) xmlRealloc(lastChild->content,size);
+		if (newbuf == NULL) {
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData, 
+			     "SAX.characters(): out of memory\n");
+		    return;
+		}
+		ctxt->nodemem = size;
+		lastChild->content = newbuf;
+	    }
+	    memcpy(&lastChild->content[ctxt->nodelen], ch, len);
+	    ctxt->nodelen += len;
+	    lastChild->content[ctxt->nodelen] = 0;
+#else
 	    xmlTextConcat(lastChild, ch, len);
-	else {
+#endif
+	} else {
+	    /* Mixed content, first time */
 	    lastChild = xmlNewTextLen(ch, len);
 	    xmlAddChild(ctxt->node, lastChild);
+#ifndef XML_USE_BUFFER_CONTENT
+	    if (ctxt->node->children != NULL) {
+		ctxt->nodelen = len;
+		ctxt->nodemem = len + 1;
+	    }
+#endif
 	}
     }
 }

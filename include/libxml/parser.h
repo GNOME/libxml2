@@ -120,8 +120,8 @@ struct _xmlParserCtxt {
     xmlDocPtr           myDoc;        /* the document being built */
     int            wellFormed;        /* is the document well formed */
     int       replaceEntities;        /* shall we replace entities ? */
-    const xmlChar       *version;        /* the XML version string */
-    const xmlChar      *encoding;        /* encoding, if any */
+    const xmlChar    *version;        /* the XML version string */
+    const xmlChar   *encoding;        /* the declared encoding, if any */
     int            standalone;        /* standalone document */
     int                  html;        /* are we parsing an HTML document */
 
@@ -177,7 +177,11 @@ struct _xmlParserCtxt {
     int *              spaceTab;      /* array of space infos */
 
     int                depth;         /* to prevent entity substitution loops */
-    xmlParserInputPtr  entity;      /* used to check entities boundaries */
+    xmlParserInputPtr  entity;        /* used to check entities boundaries */
+    int                charset;       /* encoding of the in-memory content
+				         actually an xmlCharEncoding */
+    int                nodelen;       /* Those two fields are there to */
+    int                nodemem;       /* Speed up large node parsing */
 };
 
 /**

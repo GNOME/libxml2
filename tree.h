@@ -181,6 +181,7 @@ struct _xmlElement {
     xmlElementTypeVal      etype;	/* The type */
     xmlElementContentPtr content;	/* the allowed element content */
     xmlAttributePtr   attributes;	/* List of the declared attributes */
+    const xmlChar        *prefix;	/* the namespace prefix if any */
 };
 
 /*
@@ -347,11 +348,21 @@ struct _xmlDoc {
     struct _xmlDtd  *extSubset;	/* the document external subset */
     struct _xmlNs   *oldNs;	/* Global namespace, the old way */
     const xmlChar  *version;	/* the XML version string */
-    const xmlChar  *encoding;   /* encoding, if any */
+    const xmlChar  *encoding;   /* external initial encoding, if any */
     void           *ids;        /* Hash table for ID attributes if any */
     void           *refs;       /* Hash table for IDREFs attributes if any */
     const xmlChar  *URL;	/* The URI for that document */
+    int             charset;    /* encoding of the in-memory content
+				   actually an xmlCharEncoding */
 };
+
+/*
+ * Compatibility naming layer with libxml1
+ */
+#ifndef xmlChildrenNode
+#define xmlChildrenNode children
+#define xmlRootNode children
+#endif
 
 /*
  * Variables.
@@ -372,6 +383,9 @@ void		xmlBufferFree		(xmlBufferPtr buf);
 int		xmlBufferDump		(FILE *file,
 					 xmlBufferPtr buf);
 void		xmlBufferAdd		(xmlBufferPtr buf,
+					 const xmlChar *str,
+					 int len);
+void		xmlBufferAddHead	(xmlBufferPtr buf,
 					 const xmlChar *str,
 					 int len);
 void		xmlBufferCat		(xmlBufferPtr buf,
@@ -545,6 +559,9 @@ xmlNodePtr	xmlStringLenGetNodeList	(xmlDocPtr doc,
 xmlChar *	xmlNodeListGetString	(xmlDocPtr doc,
 					 xmlNodePtr list,
 					 int inLine);
+xmlChar *	xmlNodeListGetRawString	(xmlDocPtr doc,
+					 xmlNodePtr list,
+					 int inLine);
 void		xmlNodeSetContent	(xmlNodePtr cur,
 					 const xmlChar *content);
 void		xmlNodeSetContentLen	(xmlNodePtr cur,
@@ -591,13 +608,24 @@ int		xmlReconciliateNs	(xmlDocPtr doc,
 void		xmlDocDumpMemory	(xmlDocPtr cur,
 					 xmlChar**mem,
 					 int *size);
-void		xmlDocDump		(FILE *f,
+int		xmlDocDump		(FILE *f,
 					 xmlDocPtr cur);
 void		xmlElemDump		(FILE *f,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur);
 int		xmlSaveFile		(const char *filename,
 					 xmlDocPtr cur);
+
+/* This one is exported from xmlIO.h
+ 
+int		xmlSaveFileTo		(xmlOutputBuffer *buf,
+					 xmlDocPtr cur,
+					 const char *encoding);
+ */ 					 
+
+int		xmlSaveFileEnc		(const char *filename,
+					 xmlDocPtr cur,
+					 const char *encoding);
 
 /*
  * Compression

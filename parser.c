@@ -47,7 +47,6 @@
 #define XML_PARSER_BIG_BUFFER_SIZE 1000
 #define XML_PARSER_BUFFER_SIZE 100
 
-const char *xmlParserVersion = LIBXML_VERSION_STRING;
 int xmlGetWarningsDefaultValue = 1;
 
 /*
@@ -63,6 +62,37 @@ void xmlParserHandleReference(xmlParserCtxtPtr ctxt);
 void xmlParserHandlePEReference(xmlParserCtxtPtr ctxt);
 xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
                                        const xmlChar **str);
+
+/*
+ * Version handling
+ */
+const char *xmlParserVersion = LIBXML_VERSION_STRING;
+
+/*
+ * xmlCheckVersion:
+ * @version: the include version number
+ *
+ * check the compiled lib version against the include one.
+ * This can warn or immediately kill the application
+ */
+void
+xmlCheckVersion(int version) {
+    int myversion = LIBXML_VERSION;
+
+    if ((myversion / 10000) != (version / 10000)) {
+	fprintf(stderr, 
+		"Fatal: program compiled against libxml %d using libxml %d\n",
+		(version / 10000), (myversion / 10000));
+	exit(1);
+    }
+    if ((myversion / 100) < (version / 100)) {
+	fprintf(stderr, 
+		"Warning: program compiled against libxml %d using older %d\n",
+		(version / 100), (myversion / 100));
+    }
+}
+
+
 /************************************************************************
  *									*
  * 		Input handling functions for progressive parsing	*
@@ -431,7 +461,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt) {
 	    if (*(ctxt->input->cur) == '\n') {
 		ctxt->input->line++; ctxt->input->col = 1;
 	    } else ctxt->input->col++;
-	    if (ctxt->encoding == NULL) {
+	    if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
 		/*
 		 * We are supposed to handle UTF8, check it's valid
 		 * From rfc2044: encoding of the Unicode values on UTF-8:
@@ -522,12 +552,16 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
-    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
 	ctxt->sax->error(ctxt->userData, 
 			 "Input is not proper UTF-8, indicate encoding !\n");
+	ctxt->sax->error(ctxt->userData, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+			ctxt->input->cur[0], ctxt->input->cur[1],
+			ctxt->input->cur[2], ctxt->input->cur[3]);
+    }
     ctxt->errNo = XML_ERR_INVALID_ENCODING;
 
-    ctxt->encoding = xmlStrdup(BAD_CAST "ISO-8859-1"); 
+    ctxt->charset = XML_CHAR_ENCODING_8859_1; 
     ctxt->input->cur++;
     return;
 }
@@ -556,7 +590,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	*len = 0;
 	return(ctxt->token);
     }	
-    if (ctxt->encoding == NULL) {
+    if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
 	/*
 	 * We are supposed to handle UTF8, check it's valid
 	 * From rfc2044: encoding of the Unicode values on UTF-8:
@@ -654,12 +688,16 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
-    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
 	ctxt->sax->error(ctxt->userData, 
 			 "Input is not proper UTF-8, indicate encoding !\n");
+	ctxt->sax->error(ctxt->userData, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+			ctxt->input->cur[0], ctxt->input->cur[1],
+			ctxt->input->cur[2], ctxt->input->cur[3]);
+    }
     ctxt->errNo = XML_ERR_INVALID_ENCODING;
 
-    ctxt->encoding = xmlStrdup(BAD_CAST "ISO-8859-1"); 
+    ctxt->charset = XML_CHAR_ENCODING_8859_1; 
     *len = 1;
     return((int) *ctxt->input->cur);
 }
@@ -678,7 +716,7 @@ encoding_error:
 
 int
 xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar *cur, int *len) {
-    if (ctxt->encoding == NULL) {
+    if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
 	/*
 	 * We are supposed to handle UTF8, check it's valid
 	 * From rfc2044: encoding of the Unicode values on UTF-8:
@@ -755,9 +793,13 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
-    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
 	ctxt->sax->error(ctxt->userData, 
 			 "Input is not proper UTF-8, indicate encoding !\n");
+	ctxt->sax->error(ctxt->userData, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+			ctxt->input->cur[0], ctxt->input->cur[1],
+			ctxt->input->cur[2], ctxt->input->cur[3]);
+    }
     ctxt->errNo = XML_ERR_INVALID_ENCODING;
 
     *len = 1;
@@ -1224,6 +1266,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->inSubset = 0;
     ctxt->errNo = XML_ERR_OK;
     ctxt->depth = 0;
+    ctxt->charset = XML_CHAR_ENCODING_UTF8;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
 }
 
@@ -1463,7 +1506,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 		ctxt->errNo = XML_ERR_INVALID_HEX_CHARREF;
 	        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
-		         "xmlParseCharRef: invalid hexadecimal value\n");
+		         "xmlParseStringCharRef: invalid hexadecimal value\n");
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
 		val = 0;
@@ -1484,7 +1527,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 		ctxt->errNo = XML_ERR_INVALID_DEC_CHARREF;
 	        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
-		         "xmlParseCharRef: invalid decimal value\n");
+		         "xmlParseStringCharRef: invalid decimal value\n");
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
 		val = 0;
@@ -2297,9 +2340,11 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	    break;
 	case XML_CHAR_ENCODING_NONE:
 	    /* let's assume it's UTF-8 without the XML decl */
+	    ctxt->charset = XML_CHAR_ENCODING_UTF8;
 	    return(0);
 	case XML_CHAR_ENCODING_UTF8:
 	    /* default encoding, no conversion should be needed */
+	    ctxt->charset = XML_CHAR_ENCODING_UTF8;
 	    return(0);
 	default:
 	    break;
@@ -2316,12 +2361,15 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		    ctxt->sax->error(ctxt->userData, "encoding unknown\n");
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
+		ctxt->charset = XML_CHAR_ENCODING_UTF8;
 		break;
 	    case XML_CHAR_ENCODING_NONE:
 		/* let's assume it's UTF-8 without the XML decl */
+		ctxt->charset = XML_CHAR_ENCODING_UTF8;
 		return(0);
 	    case XML_CHAR_ENCODING_UTF8:
 		/* default encoding, no conversion should be needed */
+		ctxt->charset = XML_CHAR_ENCODING_UTF8;
 		return(0);
 	    case XML_CHAR_ENCODING_UTF16LE:
 		break;
@@ -2380,6 +2428,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		    (ctxt->input->encoding != NULL)) {
 		    ctxt->encoding = xmlStrdup(ctxt->input->encoding);
 		}
+		ctxt->charset = enc;
 		return(0);
 	    case XML_CHAR_ENCODING_2022_JP:
 		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
@@ -2403,6 +2452,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
     }
     if (handler == NULL)
 	return(-1);
+    ctxt->charset = XML_CHAR_ENCODING_UTF8;
     return(xmlSwitchToEncoding(ctxt, handler));
 }
 
@@ -2427,10 +2477,14 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 	        if (ctxt->input->buf->encoder != NULL) {
 		    if (ctxt->input->buf->encoder == handler)
 			return(0);
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
-			     "xmlSwitchEncoding : encoder already regitered\n");
-		    return(-1);
+		    /*
+		     * Note: this is a bit dangerous, but that's what it
+		     * takes to use nearly compatible signature for different
+		     * encodings.
+		     */
+		    xmlCharEncCloseFunc(ctxt->input->buf->encoder);
+		    ctxt->input->buf->encoder = handler;
+		    return(0);
 		}
 		ctxt->input->buf->encoder = handler;
 
@@ -2468,12 +2522,14 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		    ctxt->input->buf->buffer = xmlBufferCreate();
 
 		    /*
-		     * convert as much as possible of the raw input
-		     * to the parser reading buffer.
+		     * convert just enough to get
+		     * '<?xml version="1.0" encoding="xxx"?>'
+		     * parsed with the autodetected encoding
+		     * into the parser reading buffer.
 		     */
-		    nbchars = xmlCharEncInFunc(ctxt->input->buf->encoder,
-		                               ctxt->input->buf->buffer,
-					       ctxt->input->buf->raw);
+		    nbchars = xmlCharEncFirstLine(ctxt->input->buf->encoder,
+		                                  ctxt->input->buf->buffer,
+					          ctxt->input->buf->raw);
 		    if (nbchars < 0) {
 			fprintf(stderr, "xmlSwitchToEncoding: encoder error\n");
 			return(-1);
@@ -2536,10 +2592,7 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 	/*
 	 * The parsing is now done in UTF8 natively
 	 */
-	if (ctxt->encoding != NULL) {
-	    xmlFree((xmlChar *) ctxt->encoding);
-	    ctxt->encoding = NULL;
-	}
+	ctxt->charset = XML_CHAR_ENCODING_UTF8;
     } else 
 	return(-1);
     return(0);
@@ -3740,13 +3793,12 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 xmlChar *
 xmlParseAttValue(xmlParserCtxtPtr ctxt) {
     xmlChar limit = 0;
-    xmlChar *buffer = NULL;
-    int buffer_size = 0;
-    xmlChar *out = NULL;
-
+    xmlChar *buf = NULL;
+    int len = 0;
+    int buf_size = 0;
+    int c, l;
     xmlChar *current = NULL;
     xmlEntityPtr ent;
-    xmlChar cur;
 
 
     SHRINK;
@@ -3770,24 +3822,24 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
     /*
      * allocate a translation buffer.
      */
-    buffer_size = XML_PARSER_BUFFER_SIZE;
-    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
-    if (buffer == NULL) {
+    buf_size = XML_PARSER_BUFFER_SIZE;
+    buf = (xmlChar *) xmlMalloc(buf_size * sizeof(xmlChar));
+    if (buf == NULL) {
 	perror("xmlParseAttValue: malloc failed");
 	return(NULL);
     }
-    out = buffer;
 
     /*
      * Ok loop until we reach one of the ending char or a size limit.
      */
-    cur = CUR;
-    while (((NXT(0) != limit) && (cur != '<')) || (ctxt->token != 0)) {
-	if (cur == 0) break;
-        if ((cur == '&') && (NXT(1) == '#')) {
+    c = CUR_CHAR(l);
+    while (((NXT(0) != limit) && (c != '<')) || (ctxt->token != 0)) {
+	if (c == 0) break;
+        if ((c == '&') && (NXT(1) == '#')) {
 	    int val = xmlParseCharRef(ctxt);
-	    *out++ = val;
-	} else if (cur == '&') {
+	    COPY_BUF(l,buf,len,val);
+	    NEXTL(l);
+	} else if (c == '&') {
 	    ent = xmlParseEntityRef(ctxt);
 	    if ((ent != NULL) && 
 		(ctxt->replaceEntities != 0)) {
@@ -3799,19 +3851,16 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 		    if (rep != NULL) {
 			current = rep;
 			while (*current != 0) {
-			    *out++ = *current++;
-			    if (out - buffer > buffer_size - 10) {
-				int index = out - buffer;
-
-				growBuffer(buffer);
-				out = &buffer[index];
+			    buf[len++] = *current++;
+			    if (len > buf_size - 10) {
+				growBuffer(buf);
 			    }
 			}
 			xmlFree(rep);
 		    }
 		} else {
 		    if (ent->content != NULL)
-			*out++ = ent->content[0];
+			buf[len++] = ent->content[0];
 		}
 	    } else if (ent != NULL) {
 		int i = xmlStrlen(ent->name);
@@ -3832,41 +3881,32 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 		/*
 		 * Just output the reference
 		 */
-		*out++ = '&';
-		if (out - buffer > buffer_size - i - 10) {
-		    int index = out - buffer;
-
-		    growBuffer(buffer);
-		    out = &buffer[index];
+		buf[len++] = '&';
+		if (len > buf_size - i - 10) {
+		    growBuffer(buf);
 		}
 		for (;i > 0;i--)
-		    *out++ = *cur++;
-		*out++ = ';';
+		    buf[len++] = *cur++;
+		buf[len++] = ';';
 	    }
 	} else {
-	    /*  invalid for UTF-8 , use COPY(out); !!! */
-	    if ((cur == 0x20) || (cur == 0xD) || (cur == 0xA) || (cur == 0x9)) {
-		*out++ = 0x20;
-		if (out - buffer > buffer_size - 10) {
-		  int index = out - buffer;
-		  
-		  growBuffer(buffer);
-		  out = &buffer[index];
+	    if ((c == 0x20) || (c == 0xD) || (c == 0xA) || (c == 0x9)) {
+		COPY_BUF(l,buf,len,0x20);
+		if (len > buf_size - 10) {
+		    growBuffer(buf);
 		}
 	    } else {
-		*out++ = cur;
-		if (out - buffer > buffer_size - 10) {
-		  int index = out - buffer;
-		  
-		  growBuffer(buffer);
-		  out = &buffer[index];
+		COPY_BUF(l,buf,len,c);
+		if (len > buf_size - 10) {
+		    growBuffer(buf);
 		}
 	    }
-	    NEXT;
+	    NEXTL(l);
 	}
-	cur = CUR;
+	GROW;
+	c = CUR_CHAR(l);
     }
-    *out++ = 0;
+    buf[len++] = 0;
     if (RAW == '<') {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
@@ -3882,7 +3922,7 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 	ctxt->disableSAX = 1;
     } else
 	NEXT;
-    return(buffer);
+    return(buf);
 }
 
 /**
@@ -6341,7 +6381,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	int hex = NXT(2);
 	int val = xmlParseCharRef(ctxt);
 	
-	if (ctxt->encoding != NULL) {
+	if (ctxt->charset != XML_CHAR_ENCODING_UTF8) {
 	    /*
 	     * So we are using non-UTF-8 buffers
 	     * Check that the char fit on 8bits, if not
@@ -6507,7 +6547,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			ctxt->instate = XML_PARSER_EOF;
 			return;
 		    }
-		    if (input->standalone) {
+		    if (input->standalone == 1) {
 			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData,
 			    "external parsed entities cannot be standalone\n");
@@ -9557,15 +9597,6 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
     } else if (ctxt->instate != XML_PARSER_EOF)
         xmlParseTryOrFinish(ctxt, terminate);
     if (terminate) {
-	/*
-	 * Grab the encoding if it was added on-the-fly
-	 */
-	if ((ctxt->encoding != NULL) && (ctxt->myDoc != NULL) &&
-	    (ctxt->myDoc->encoding == NULL)) {
-	    ctxt->myDoc->encoding = ctxt->encoding;
-	    ctxt->encoding = NULL;
-	}
-
 	/*
 	 * Check for termination
 	 */

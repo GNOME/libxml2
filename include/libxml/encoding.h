@@ -102,6 +102,8 @@ typedef int (* xmlCharEncodingInputFunc)(unsigned char* out, int *outlen,
  *
  * Take a block of UTF-8 chars in and try to convert it to an other
  * encoding.
+ * Note: a first call designed to produce heading info is called with
+ * in = NULL. If stateful this should also initialize the encoder state
  *
  * Returns the number of byte written, or -1 by lack of space, or -2
  *     if the transcoding failed.
@@ -136,6 +138,7 @@ void	xmlRegisterCharEncodingHandler	(xmlCharEncodingHandlerPtr handler);
 xmlCharEncoding xmlDetectCharEncoding	(const unsigned char* in,
 					 int len);
 xmlCharEncoding xmlParseCharEncoding	(const char* name);
+const char*	xmlGetCharEncodingName	(xmlCharEncoding enc);
 xmlCharEncodingHandlerPtr xmlGetCharEncodingHandler(xmlCharEncoding enc);
 xmlCharEncodingHandlerPtr xmlFindCharEncodingHandler(const char *name);
 int	xmlCheckUTF8			(const unsigned char *utf);
@@ -145,6 +148,9 @@ int	xmlCharEncOutFunc		(xmlCharEncodingHandler *handler,
 					 xmlBufferPtr in);
 
 int	xmlCharEncInFunc		(xmlCharEncodingHandler *handler,
+					 xmlBufferPtr out,
+					 xmlBufferPtr in);
+int	xmlCharEncFirstLine		(xmlCharEncodingHandler *handler,
 					 xmlBufferPtr out,
 					 xmlBufferPtr in);
 int	xmlCharEncCloseFunc		(xmlCharEncodingHandler *handler);

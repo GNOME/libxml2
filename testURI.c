@@ -17,6 +17,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#include <libxml/xmlversion.h>
+#include <libxml/xmlmemory.h>
 #include <libxml/uri.h>
 
 int main(int argc, char **argv) {

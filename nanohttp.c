@@ -654,6 +654,23 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
 	    close(s);
 	    return(-1);
     }
+
+    if ( FD_ISSET(s, &wfd) ) {
+	socklen_t len;
+	len = sizeof(status);
+	if (getsockopt(s, SOL_SOCKET, SO_ERROR, &status, &len) < 0 ) {
+	    /* Solaris error code */
+	    return (-1);
+	}
+	if ( status ) {
+	    close (s);
+	    errno = status;
+	    return (-1);
+	}
+    } else {
+	/* pbm */
+	return (-1);
+    }
     
     return(s);
 }

@@ -3,6 +3,7 @@
  *
  * Related specs: 
  * rfc2044        (UTF-8 and UTF-16) F. Yergeau Alis Technologies
+ * rfc2781        UTF-16, an encoding of ISO 10646, P. Hoffman, F. Yergeau
  * [ISO-10646]    UTF-8 and UTF-16 in Annexes
  * [ISO-8859-1]   ISO Latin-1 characters codes.
  * [UNICODE]      The Unicode Consortium, "The Unicode Standard --
@@ -64,6 +65,73 @@ static int xmlLittleEndian = 1;
  *
  * I hope we won't use values > 0xFFFF anytime soon !
  */
+
+/**
+ * xmlGetUTF8Char:
+ * @utf:  a sequence of UTF-8 encoded bytes
+ * @len:  a pointer to @bytes len
+ *
+ * Read one UTF8 Char from @utf
+ *
+ * Returns the char value or -1 in case of error and update @len with the
+ *        number of bytes used
+ */
+int
+xmlGetUTF8Char(const unsigned char *utf, int *len) {
+    unsigned int c;
+
+    if (utf == NULL)
+	goto error;
+    if (len == NULL)
+	goto error;
+    if (*len < 1)
+	goto error;
+
+    c = utf[0];
+    if (c & 0x80) {
+	if (*len < 2)
+	    goto error;
+	if ((utf[1] & 0xc0) != 0x80)
+	    goto error;
+	if ((c & 0xe0) == 0xe0) {
+	    if (*len < 3)
+		goto error;
+	    if ((utf[2] & 0xc0) != 0x80)
+		goto error;
+	    if ((c & 0xf0) == 0xf0) {
+		if (*len < 4)
+		    goto error;
+		if ((c & 0xf8) != 0xf0 || (utf[3] & 0xc0) != 0x80)
+		    goto error;
+		*len = 4;
+		/* 4-byte code */
+		c = (utf[0] & 0x7) << 18;
+		c |= (utf[1] & 0x3f) << 12;
+		c |= (utf[2] & 0x3f) << 6;
+		c |= utf[3] & 0x3f;
+	    } else {
+	      /* 3-byte code */
+		*len = 3;
+		c = (utf[0] & 0xf) << 12;
+		c |= (utf[1] & 0x3f) << 6;
+		c |= utf[2] & 0x3f;
+	    }
+	} else {
+	  /* 2-byte code */
+	    *len = 2;
+	    c = (utf[0] & 0x1f) << 6;
+	    c |= utf[1] & 0x3f;
+	}
+    } else {
+	/* 1-byte code */
+	*len = 1;
+    }
+    return(c);
+
+error:
+    *len = 0;
+    return(-1);
+}
 
 /**
  * xmlCheckUTF8: Check utf-8 string for legality.
@@ -236,7 +304,7 @@ UTF16LEToUTF8(unsigned char* out, int *outlen,
         (*inlenb)--;
     inlen = *inlenb / 2;
     inend = in + inlen;
-    while (in < inend) {
+    while ((in < inend) && (out - outstart + 5 < *outlen)) {
         if (xmlLittleEndian) {
 	    c= *in++;
 	} else {
@@ -246,9 +314,9 @@ UTF16LEToUTF8(unsigned char* out, int *outlen,
 	    in++;
 	}
         if ((c & 0xFC00) == 0xD800) {    /* surrogates */
-            if (in >= inend) {           /* (in > inend) shouldn't happens */
-                break;
-            }
+	    if (in >= inend) {           /* (in > inend) shouldn't happens */
+		break;
+	    }
 	    if (xmlLittleEndian) {
 		d = *in++;
 	    } else {
@@ -317,6 +385,24 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
     unsigned char *tmp;
     unsigned short tmp1, tmp2;
 
+    if (in == NULL) {
+        /*
+	 * initialization, add the Byte Order Mark
+	 */
+        if (*outlen >= 2) {
+	    outb[0] = 0xFF;
+	    outb[1] = 0xFE;
+	    *outlen = 2;
+	    *inlen = 0;
+#ifdef DEBUG_ENCODING
+            fprintf(stderr, "Added FFFE Byte Order Mark\n");
+#endif
+	    return(2);
+	}
+	*outlen = 0;
+	*inlen = 0;
+	return(0);
+    }
     outend = out + (*outlen / 2);
     while (in < inend) {
       d= *in++;
@@ -385,7 +471,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
 	    break;
 	processed = in;
     }
-    *outlen = out - outstart;
+    *outlen = (out - outstart) * 2;
     *inlen = processed - in;
     return(0);
 }
@@ -509,6 +595,24 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
     unsigned char *tmp;
     unsigned short tmp1, tmp2;
 
+    if (in == NULL) {
+        /*
+	 * initialization, add the Byte Order Mark
+	 */
+        if (*outlen >= 2) {
+	    outb[0] = 0xFE;
+	    outb[1] = 0xFF;
+	    *outlen = 2;
+	    *inlen = 0;
+#ifdef DEBUG_ENCODING
+            fprintf(stderr, "Added FEFF Byte Order Mark\n");
+#endif
+	    return(2);
+	}
+	*outlen = 0;
+	*inlen = 0;
+	return(0);
+    }
     outend = out + (*outlen / 2);
     while (in < inend) {
       d= *in++;
@@ -574,7 +678,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 	    break;
 	processed = in;
     }
-    *outlen = out - outstart;
+    *outlen = (out - outstart) * 2;
     *inlen = processed - in;
     return(0);
 }
@@ -693,6 +797,70 @@ xmlParseCharEncoding(const char* name)
     fprintf(stderr, "Unknown encoding %s\n", name);
 #endif
     return(XML_CHAR_ENCODING_ERROR);
+}
+
+/**
+ * xmlGetCharEncodingName:
+ * @enc:  the encoding
+ *
+ * The "canonical" name for XML encoding.
+ * C.f. http://www.w3.org/TR/REC-xml#charencoding
+ * Section 4.3.3  Character Encoding in Entities
+ *
+ * Returns the canonical name for the given encoding
+ */
+
+const char*
+xmlGetCharEncodingName(xmlCharEncoding enc) {
+    switch (enc) {
+        case XML_CHAR_ENCODING_ERROR:
+	    return(NULL);
+        case XML_CHAR_ENCODING_NONE:
+	    return(NULL);
+        case XML_CHAR_ENCODING_UTF8:
+	    return("UTF-8");
+        case XML_CHAR_ENCODING_UTF16LE:
+	    return("UTF-16");
+        case XML_CHAR_ENCODING_UTF16BE:
+	    return("UTF-16");
+        case XML_CHAR_ENCODING_EBCDIC:
+            return("EBCDIC");
+        case XML_CHAR_ENCODING_UCS4LE:
+            return("ISO-10646-UCS-4");
+        case XML_CHAR_ENCODING_UCS4BE:
+            return("ISO-10646-UCS-4");
+        case XML_CHAR_ENCODING_UCS4_2143:
+            return("ISO-10646-UCS-4");
+        case XML_CHAR_ENCODING_UCS4_3412:
+            return("ISO-10646-UCS-4");
+        case XML_CHAR_ENCODING_UCS2:
+            return("ISO-10646-UCS-2");
+        case XML_CHAR_ENCODING_8859_1:
+	    return("ISO-8859-1");
+        case XML_CHAR_ENCODING_8859_2:
+	    return("ISO-8859-2");
+        case XML_CHAR_ENCODING_8859_3:
+	    return("ISO-8859-3");
+        case XML_CHAR_ENCODING_8859_4:
+	    return("ISO-8859-4");
+        case XML_CHAR_ENCODING_8859_5:
+	    return("ISO-8859-5");
+        case XML_CHAR_ENCODING_8859_6:
+	    return("ISO-8859-6");
+        case XML_CHAR_ENCODING_8859_7:
+	    return("ISO-8859-7");
+        case XML_CHAR_ENCODING_8859_8:
+	    return("ISO-8859-8");
+        case XML_CHAR_ENCODING_8859_9:
+	    return("ISO-8859-9");
+        case XML_CHAR_ENCODING_2022_JP:
+            return("ISO-2022-JP");
+        case XML_CHAR_ENCODING_SHIFT_JIS:
+            return("Shift-JIS");
+        case XML_CHAR_ENCODING_EUC_JP:
+            return("EUC-JP");
+    }
+    return(NULL);
 }
 
 /****************************************************************
@@ -883,7 +1051,7 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
             handler = xmlFindCharEncodingHandler("ebcdic");
             if (handler != NULL) return(handler);
 	    break;
-        case XML_CHAR_ENCODING_UCS4LE:
+        case XML_CHAR_ENCODING_UCS4BE:
             handler = xmlFindCharEncodingHandler("ISO-10646-UCS-4");
             if (handler != NULL) return(handler);
             handler = xmlFindCharEncodingHandler("UCS-4");
@@ -891,8 +1059,12 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
             handler = xmlFindCharEncodingHandler("UCS4");
             if (handler != NULL) return(handler);
 	    break;
-        case XML_CHAR_ENCODING_UCS4BE:
-            handler = xmlFindCharEncodingHandler("UCS4BE");
+        case XML_CHAR_ENCODING_UCS4LE:
+            handler = xmlFindCharEncodingHandler("ISO-10646-UCS-4");
+            if (handler != NULL) return(handler);
+            handler = xmlFindCharEncodingHandler("UCS-4");
+            if (handler != NULL) return(handler);
+            handler = xmlFindCharEncodingHandler("UCS4");
             if (handler != NULL) return(handler);
 	    break;
         case XML_CHAR_ENCODING_UCS4_2143:
@@ -953,9 +1125,10 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
  */
 xmlCharEncodingHandlerPtr
 xmlFindCharEncodingHandler(const char *name) {
+    xmlCharEncodingHandlerPtr enc;
+    xmlCharEncoding alias;
 #ifdef LIBXML_ICONV_ENABLED
     iconv_t icv_in, icv_out;
-    xmlCharEncodingHandlerPtr enc;
 #endif /* LIBXML_ICONV_ENABLED */
     char upper[100];
     int i;
@@ -964,6 +1137,9 @@ xmlFindCharEncodingHandler(const char *name) {
     if (name == NULL) return(xmlDefaultCharEncodingHandler);
     if (name[0] == 0) return(xmlDefaultCharEncodingHandler);
 
+    /*
+     * Check first for directly registered encoding names
+     */
     for (i = 0;i < 99;i++) {
         upper[i] = toupper(name[i]);
 	if (upper[i] == 0) break;
@@ -1002,9 +1178,23 @@ xmlFindCharEncodingHandler(const char *name) {
 	    fprintf(stderr, "iconv : problems with filters for '%s'\n", name);
     }
 #endif /* LIBXML_ICONV_ENABLED */
+
 #ifdef DEBUG_ENCODING
     fprintf(stderr, "No handler found for encoding %s\n", name);
 #endif
+
+    /*
+     * Fallback using the canonical names
+     */
+    alias = xmlParseCharEncoding(name);
+    if (alias != XML_CHAR_ENCODING_ERROR) {
+        const char* canon;
+        canon = xmlGetCharEncodingName(alias);
+        if ((canon != NULL) && (strcmp(name, canon))) {
+	    return(xmlFindCharEncodingHandler(canon));
+        }
+    }
+
     return(NULL);
 }
 
@@ -1040,8 +1230,13 @@ xmlIconvWrapper(iconv_t cd,
 	ret = iconv(cd,
 		&icv_in, &icv_inlen,
 		&icv_out, &icv_outlen);
-	*inlen -= icv_inlen;
-	*outlen -= icv_outlen;
+	if (in != NULL) {
+	    *inlen -= icv_inlen;
+	    *outlen -= icv_outlen;
+	} else {
+	    *inlen = 0;
+	    *outlen = 0;
+	}
 	if (icv_inlen != 0 || ret == (size_t) -1) {
 #ifdef EILSEQ
 		if (errno == EILSEQ) {
@@ -1065,6 +1260,91 @@ xmlIconvWrapper(iconv_t cd,
 	return 0;
 }
 #endif /* LIBXML_ICONV_ENABLED */
+
+/**
+ * xmlCharEncFirstLine:
+ * @handler:	char enconding transformation data structure
+ * @out:  an xmlBuffer for the output.
+ * @in:  an xmlBuffer for the input
+ *     
+ * Front-end for the encoding handler input function, but handle only
+ * the very first line, i.e. limit itself to 45 chars.
+ *     
+ * Returns the number of byte written if success, or 
+ *     -1 general error
+ *     -2 if the transcoding fails (for *in is not valid utf8 string or
+ *        the result of transformation can't fit into the encoding we want), or
+ */
+int
+xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
+                 xmlBufferPtr in) {
+    int ret = -2;
+    int written;
+    int toconv;
+
+    if (handler == NULL) return(-1);
+    if (out == NULL) return(-1);
+    if (in == NULL) return(-1);
+
+    written = out->size - out->use;
+    toconv = in->use;
+    if (toconv * 2 >= written) {
+        xmlBufferGrow(out, toconv);
+	written = out->size - out->use - 1;
+    }
+
+    /*
+     * echo '<?xml version="1.0" encoding="UCS4"?>' | wc -c => 38
+     * 45 chars should be sufficient to reach the end of the encoding
+     * decalration without going too far inside the document content.
+     */
+    written = 45;
+
+    if (handler->input != NULL) {
+	ret = handler->input(&out->content[out->use], &written,
+	                     in->content, &toconv);
+	xmlBufferShrink(in, toconv);
+	out->use += written;
+	out->content[out->use] = 0;
+    }
+#ifdef LIBXML_ICONV_ENABLED
+    else if (handler->iconv_in != NULL) {
+	ret = xmlIconvWrapper(handler->iconv_in, &out->content[out->use],
+	                      &written, in->content, &toconv);
+	xmlBufferShrink(in, toconv);
+	out->use += written;
+	out->content[out->use] = 0;
+	if (ret == -1) ret = -3;
+    }
+#endif /* LIBXML_ICONV_ENABLED */
+#ifdef DEBUG_ENCODING
+    switch (ret) {
+        case 0:
+	    fprintf(stderr, "converted %d bytes to %d bytes of input\n",
+	            toconv, written);
+	    break;
+        case -1:
+	    fprintf(stderr,"converted %d bytes to %d bytes of input, %d left\n",
+	            toconv, written, in->use);
+	    break;
+        case -2:
+	    fprintf(stderr, "input conversion failed due to input error\n");
+	    break;
+        case -3:
+	    fprintf(stderr,"converted %d bytes to %d bytes of input, %d left\n",
+	            toconv, written, in->use);
+	    break;
+	default:
+	    fprintf(stderr,"Unknown input conversion failed %d\n", ret);
+    }
+#endif
+    /*
+     * Ignore when input buffer is not on a boundary
+     */
+    if (ret == -3) ret = 0;
+    if (ret == -1) ret = 0;
+    return(ret);
+}
 
 /**
  * xmlCharEncInFunc:
@@ -1113,8 +1393,8 @@ xmlCharEncInFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 	if (ret == -1) ret = -3;
     }
 #endif /* LIBXML_ICONV_ENABLED */
-#ifdef DEBUG_ENCODING
     switch (ret) {
+#ifdef DEBUG_ENCODING
         case 0:
 	    fprintf(stderr, "converted %d bytes to %d bytes of input\n",
 	            toconv, written);
@@ -1123,17 +1403,17 @@ xmlCharEncInFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 	    fprintf(stderr,"converted %d bytes to %d bytes of input, %d left\n",
 	            toconv, written, in->use);
 	    break;
-        case -2:
-	    fprintf(stderr, "input conversion failed due to input error\n");
-	    break;
         case -3:
 	    fprintf(stderr,"converted %d bytes to %d bytes of input, %d left\n",
 	            toconv, written, in->use);
 	    break;
-	default:
-	    fprintf(stderr,"Unknown input conversion failed %d\n", ret);
-    }
 #endif
+        case -2:
+	    fprintf(stderr, "input conversion failed due to input error\n");
+	    fprintf(stderr, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+		    in->content[0], in->content[1],
+		    in->content[2], in->content[3]);
+    }
     /*
      * Ignore when input buffer is not on a boundary
      */
@@ -1148,6 +1428,11 @@ xmlCharEncInFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
  * @in:  an xmlBuffer for the input
  *     
  * Generic front-end for the encoding handler output function
+ * a first call with @in == NULL has to be made firs to initiate the 
+ * output in case of non-stateless encoding needing to initiate their
+ * state or the output (like the BOM in UTF16).
+ * In case of UTF8 sequence conversion errors for the given encoder,
+ * the content will be automatically remapped to a CharRef sequence.
  *     
  * Returns the number of byte written if success, or 
  *     -1 general error
@@ -1160,12 +1445,43 @@ xmlCharEncOutFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
     int ret = -2;
     int written;
     int toconv;
+    int output = 0;
 
     if (handler == NULL) return(-1);
     if (out == NULL) return(-1);
-    if (in == NULL) return(-1);
 
+retry:
+    
     written = out->size - out->use;
+
+    /*
+     * First specific handling of in = NULL, i.e. the initialization call
+     */
+    if (in == NULL) {
+        toconv = 0;
+	if (handler->output != NULL) {
+	    ret = handler->output(&out->content[out->use], &written,
+				  NULL, &toconv);
+	    out->use += written;
+	    out->content[out->use] = 0;
+	}
+#ifdef LIBXML_ICONV_ENABLED
+	else if (handler->iconv_out != NULL) {
+	    ret = xmlIconvWrapper(handler->iconv_out, &out->content[out->use],
+				  &written, NULL, &toconv);
+	    out->use += written;
+	    out->content[out->use] = 0;
+	}
+#endif /* LIBXML_ICONV_ENABLED */
+#ifdef DEBUG_ENCODING
+	fprintf(stderr, "initialized encoder\n");
+#endif
+        return(0);
+    }
+
+    /*
+     * Convertion itself.
+     */
     toconv = in->use;
     if (toconv * 2 >= written) {
         xmlBufferGrow(out, toconv * 2);
@@ -1173,7 +1489,7 @@ xmlCharEncOutFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
     }
     if (handler->output != NULL) {
 	ret = handler->output(&out->content[out->use], &written,
-	                     in->content, &toconv);
+	                      in->content, &toconv);
 	xmlBufferShrink(in, toconv);
 	out->use += written;
 	out->content[out->use] = 0;
@@ -1188,8 +1504,14 @@ xmlCharEncOutFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 	if (ret == -1) ret = -3;
     }
 #endif /* LIBXML_ICONV_ENABLED */
-#ifdef DEBUG_ENCODING
+
+    if (ret >= 0) output += ret;
+
+    /*
+     * Attempt to handle error cases
+     */
     switch (ret) {
+#ifdef DEBUG_ENCODING
         case 0:
 	    fprintf(stderr, "converted %d bytes to %d bytes of output\n",
 	            toconv, written);
@@ -1197,17 +1519,45 @@ xmlCharEncOutFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
         case -1:
 	    fprintf(stderr, "output conversion failed by lack of space\n");
 	    break;
-        case -2:
-	    fprintf(stderr, "output conversion failed due to output error\n");
-	    break;
         case -3:
 	    fprintf(stderr,"converted %d bytes to %d bytes of output %d left\n",
 	            toconv, written, in->use);
 	    break;
-	default:
-	    fprintf(stderr,"Unknown output conversion failed %d\n", ret);
-    }
 #endif
+        case -2: {
+	    int len = in->use;
+	    const char *utf = (const char *) in->content;
+	    int cur;
+
+	    cur = xmlGetUTF8Char(utf, &len);
+	    if (cur > 0) {
+		xmlChar charref[20];
+
+#ifdef DEBUG_ENCODING
+		fprintf(stderr, "handling output conversion error\n");
+		fprintf(stderr, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+			in->content[0], in->content[1],
+			in->content[2], in->content[3]);
+#endif
+		/*
+		 * Removes the UTF8 sequence, and replace it by a charref
+		 * and continue the transcoding phase, hoping the error
+		 * did not mangle the encoder state.
+		 */
+		sprintf(charref, "&#x%X;", cur);
+		xmlBufferShrink(in, len);
+		xmlBufferAddHead(in, charref, -1);
+
+		goto retry;
+	    } else {
+		fprintf(stderr, "output conversion failed due to conv error\n");
+		fprintf(stderr, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+			in->content[0], in->content[1],
+			in->content[2], in->content[3]);
+	    }
+	    break;
+	}
+    }
     return(ret);
 }
 

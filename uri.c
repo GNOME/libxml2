@@ -1513,7 +1513,10 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
 	val = xmlSaveUri(ref);
 	goto done;
     }
-    res->scheme = xmlMemStrdup(bas->scheme);
+    if (bas->scheme != NULL)
+	res->scheme = xmlMemStrdup(bas->scheme);
+    else
+	res->scheme = NULL;
 
     /*
      * 4) If the authority component is defined, then the reference is a

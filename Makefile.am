@@ -86,11 +86,13 @@ testURI_LDADD= $(LDADDS)
 
 check-local: tests
 
-install-data: $(srcdir)/libxml
-
 $(srcdir)/libxml:
 	-$(RM) $(srcdir)/libxml
 	ln -s $(srcdir)/. $(srcdir)/libxml
+
+install-data: $(srcdir)/libxml
+
+$(libxml_la_SOURCES): $(srcdir)/libxml
 
 testall : tests SVGtests SAXtests XPathtests XMLenttests
 

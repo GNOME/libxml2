@@ -10,12 +10,18 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <xmlmemory.h>
-#if defined(LIBXML_VERSION) && LIBXML_VERSION >= 20000
+/*
+ * This example should compile and run indifferently with libxml-1.8.8 +
+ * and libxml2-2.1.0 +
+ * Check the COMPAT comments below
+ */
+
+/*
+ * COMPAT using xml-config --cflags to get the include path this will
+ * work with both 
+ */
+#include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
-#else 
-#include <gnome-xml/parser.h>
-#endif
 
 #define DEBUG(x) printf(x)
 
@@ -50,12 +56,13 @@ DEBUG("parsePerson\n");
     memset(ret, 0, sizeof(person));
 
     /* We don't care what the top level element name is */
-    cur = cur->children;
+    /* COMPAT xmlChildrenNode is a macro unifying libxml1 and libxml2 names */
+    cur = cur->xmlChildrenNode;
     while (cur != NULL) {
         if ((!strcmp(cur->name, "Person")) && (cur->ns == ns))
-	    ret->name = xmlNodeListGetString(doc, cur->children, 1);
+	    ret->name = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
         if ((!strcmp(cur->name, "Email")) && (cur->ns == ns))
-	    ret->email = xmlNodeListGetString(doc, cur->children, 1);
+	    ret->email = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
 	cur = cur->next;
     }
 
@@ -108,7 +115,7 @@ DEBUG("parseJob\n");
     memset(ret, 0, sizeof(job));
 
     /* We don't care what the top level element name is */
-    cur = cur->children;
+    cur = cur->xmlChildrenNode;
     while (cur != NULL) {
         
         if ((!strcmp(cur->name, "Project")) && (cur->ns == ns)) {
@@ -118,9 +125,9 @@ DEBUG("parseJob\n");
 	    }
 	}
         if ((!strcmp(cur->name, "Application")) && (cur->ns == ns))
-	    ret->application = xmlNodeListGetString(doc, cur->children, 1);
+	    ret->application = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
         if ((!strcmp(cur->name, "Category")) && (cur->ns == ns))
-	    ret->category = xmlNodeListGetString(doc, cur->children, 1);
+	    ret->category = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
         if ((!strcmp(cur->name, "Contact")) && (cur->ns == ns))
 	    ret->contact = parsePerson(doc, ns, cur);
 	cur = cur->next;
@@ -173,8 +180,6 @@ gJobPtr parseGjobFile(char *filename) {
      * Check the document is of the right kind
      */
     
-    //    cur = doc->root;
-    //    cur = doc->children;
     cur = xmlDocGetRootElement(doc);
     if (cur == NULL) {
         fprintf(stderr,"empty document\n");
@@ -209,8 +214,7 @@ gJobPtr parseGjobFile(char *filename) {
      * Now, walk the tree.
      */
     /* First level we expect just Jobs */
-    //    cur = cur->children;
-    cur = cur -> children;
+    cur = cur->xmlChildrenNode;
     while ( cur && xmlIsBlankNode ( cur ) )
       {
 	cur = cur -> next;
@@ -229,7 +233,7 @@ gJobPtr parseGjobFile(char *filename) {
     }
 
     /* Second level is a list of Job, but be laxist */
-    cur = cur->children;
+    cur = cur->xmlChildrenNode;
     while (cur != NULL) {
         if ((!strcmp(cur->name, "Job")) && (cur->ns == ns)) {
 	    job = parseJob(doc, ns, cur);
@@ -256,6 +260,9 @@ void handleGjob(gJobPtr cur) {
 int main(int argc, char **argv) {
     int i;
     gJobPtr cur;
+
+    /* COMPAT: Do not genrate nodes for formatting spaces */
+    xmlKeepBlanksDefault(0);
 
     for (i = 1; i < argc ; i++) {
 	cur = parseGjobFile(argv[i]);

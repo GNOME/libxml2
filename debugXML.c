@@ -1326,7 +1326,7 @@ xmlShellDu(xmlShellCtxtPtr ctxt, char *arg, xmlNodePtr tree,
         if ((node->type == XML_DOCUMENT_NODE) ||
             (node->type == XML_HTML_DOCUMENT_NODE)) {
 	    node = ((xmlDocPtr) node)->children;
-        } else if (node->children != NULL) {
+        } else if ((node->children != NULL) && (node->type != XML_ENTITY_REF_NODE)) {
 	    /* deep first */
 	    node = node->children;
 	    indent++;

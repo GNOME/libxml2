@@ -68,6 +68,7 @@ static int htmlout = 0;
 static int push = 0;
 static int noblanks = 0;
 static int testIO = 0;
+static char *encoding = NULL;
 
 extern int xmlDoValidityCheckingDefaultValue;
 extern int xmlGetWarningsDefaultValue;
@@ -499,6 +500,8 @@ void parseAndPrintFile(char *filename) {
 #endif
 	    if (compress)
 		xmlSaveFile("-", doc);
+	    else if (encoding != NULL)
+	        xmlSaveFileEnc("-", doc, encoding);
 	    else
 		xmlDocDump(stdout, doc);
 #ifdef LIBXML_DEBUG_ENABLED
@@ -531,6 +534,7 @@ int main(int argc, char **argv) {
     int i, count;
     int files = 0;
 
+    LIBXML_TEST_VERSION
     for (i = 1; i < argc ; i++) {
 #ifdef LIBXML_DEBUG_ENABLED
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
@@ -593,6 +597,11 @@ int main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--nowarning"))) {
 	    xmlGetWarningsDefaultValue = 0;
         }
+	else if ((!strcmp(argv[i], "-encode")) ||
+	         (!strcmp(argv[i], "--encode"))) {
+	    i++;
+	    encoding = argv[i];
+        }
 	else if ((!strcmp(argv[i], "-noblanks")) ||
 	         (!strcmp(argv[i], "--noblanks"))) {
 	     noblanks++;
@@ -613,6 +622,11 @@ int main(int argc, char **argv) {
 		argv[0]);
     }
     for (i = 1; i < argc ; i++) {
+	if ((!strcmp(argv[i], "-encode")) ||
+	         (!strcmp(argv[i], "--encode"))) {
+	    i++;
+	    continue;
+        }
 	if (argv[i][0] != '-') {
 	    if (repeat) {
 		for (count = 0;count < 100 * repeat;count++)

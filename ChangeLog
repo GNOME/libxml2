@@ -1,3 +1,22 @@
+Wed Jun 28 23:10:26 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in: 2.1.0 prerelease
+	* Large resync between W3C and Gnome tree
+	* nanoftp, nanohttp.c: fixed stalled connections probs
+	* HTMLtree.c SAX.c : support for attribute without values in
+	  HTML for andersca
+	* valid.c: Fixed most validation + namespace problems
+	* HTMLparser.c: start document callback for andersca
+	* debugXML.c xpath.c: lots of XPath fixups from Picdar Technology
+	* parser.h, SAX.c: serious speed improvement for large
+	  CDATA blocks
+	* encoding.[ch] xmlIO.[ch]: Improved seriously saving to
+	  different encoding
+	* example/Makefile.am example/gjobread.c tree.h: work on 
+	  libxml1 libxml2 convergence.
+	* config.h.in parser.c xmllint.c: added xmlCheckVersion()
+	  and the LIBXML_TEST_VERSION macro
+
 Fri Jun 23 22:26:07 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xml.html: various patches and improvements typo fixed by

@@ -43,6 +43,8 @@ xmlURIPtr	xmlCreateURI		(void);
 xmlChar *	xmlBuildURI		(const xmlChar *URI,
 	                        	 const xmlChar *base);
 xmlURIPtr	xmlParseURI		(const char *URI);
+int		xmlParseURIReference	(xmlURIPtr uri,
+					 const char *str);
 xmlChar *	xmlSaveUri		(xmlURIPtr uri);
 void		xmlPrintURI		(FILE *stream,
 					 xmlURIPtr uri);

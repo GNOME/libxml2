@@ -84,13 +84,15 @@ htmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     }
     xmlBufferWriteChar(buf, " ");
     xmlBufferWriteCHAR(buf, cur->name);
-    value = xmlNodeListGetString(doc, cur->children, 0);
-    if (value) {
-	xmlBufferWriteChar(buf, "=");
-	xmlBufferWriteQuotedString(buf, value);
-	xmlFree(value);
-    } else  {
-	xmlBufferWriteChar(buf, "=\"\"");
+    if (cur->children != NULL) {
+	value = xmlNodeListGetString(doc, cur->children, 0);
+	if (value) {
+	    xmlBufferWriteChar(buf, "=");
+	    xmlBufferWriteQuotedString(buf, value);
+	    xmlFree(value);
+	} else  {
+	    xmlBufferWriteChar(buf, "=\"\"");
+	}
     }
 }
 

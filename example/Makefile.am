@@ -6,5 +6,9 @@ INCLUDES =					\
 
 LDADD = $(top_builddir)/libxml.la @Z_LIBS@
 
-$(top_builddir)/libxml.la:
+$(srcdir)/libxml:
+	-$(RM) $(srcdir)/libxml
+	ln -s $(srcdir)/. $(srcdir)/libxml
+
+$(top_builddir)/libxml.la: $(srcdir)/libxml
 	(cd .. ; $(MAKE))

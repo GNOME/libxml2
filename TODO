@@ -6,14 +6,17 @@
 TODO:
 =====
 
-- xmlSwitchToEncoding() need a rewrite for correct handling of conversion
-  error code conditions.
+- If the internal encoding is not UTF8 saving to a given encoding doesn't
+  work
+- problem when parsing hrefs with & with the HTML parser (IRC ac)
 - DOM needs
   xmlAttrPtr xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value)
   int xmlPruneProp(xmlNodePtr node, xmlAtttrPtr attr);
+- General checking of DTD validation in presence of namespaces ... hairy
+  mostly done
 - Fix DTD + namespace validity problem
   "Not valid: root and DtD name do not match 'ROOT' and 'prefix:ROOT'"
-- add support for the trick from Henry conf/sun/valid/empty.xml
+  mostly done
 - Correct standalone checking/emitting (hard)
   2.9 Standalone Document Declaration
 - Better checking of external parsed entities TAG 1234
@@ -24,9 +27,10 @@ TODO:
 - Handle undefined namespaces in entity contents better ... at least
   issue a warning
 - Issue warning when using non-absolute namespaces URI.
-- General checking of DTD validation in presence of namespaces ... hairy
 - fix --disable-corba configure switch handling, and use XML_WITHOUT_CORBA
   not WITHOUT_CORBA flag
+- the html parser should add <head> and <body> if they don't exist
+- Command to force the parser to stop parsing and ignore the rest of the file.
 
 TODO:
 =====
@@ -92,6 +96,9 @@ EXTENSIONS:
 Done:
 =====
 
+- support for HTML empty attributes like <hr noshade>
+- plugged iconv() in for support of a large set of encodings.
+- xmlSwitchToEncoding() rewrite done
 - URI checkings (no fragments) rfc2396.txt
 - Added a clean mechanism for overload or added input methods:
   xmlRegisterInputCallbacks()

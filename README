@@ -4,6 +4,8 @@
 Full documentation is available on-line at
     http://xmlsoft.org/
 
+This code is released under the LGPL and the W3C IPR
+
 A mailing-list is available, to subscribe:
     echo "subscribe xml" | mail majordomo@rufus.w3.org
 

@@ -388,6 +388,7 @@ char *htmlStartClose[] = {
 NULL
 };
 
+
 static char** htmlStartCloseIndex[100];
 static int htmlStartCloseIndexinitialized = 0;
 
@@ -601,6 +602,54 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *new) {
 #endif
 	    xmlFree(oldname);
 	}	
+    }
+}
+
+/**
+ * htmlCheckImplied:
+ * @ctxt:  an HTML parser context
+ * @new:  The new tag name
+ *
+ * The HTmL DtD allows a tag to exists only implicitely
+ * called when a new tag has been detected and generates the
+ * appropriates implicit tags if missing
+ */
+void
+htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *new) {
+    if (!strcmp(new, "html"))
+	return;
+    if (ctxt->nameNr <= 0) {
+#ifdef DEBUG
+	fprintf(stderr,"Implied element html: pushed html\n");
+#endif    
+	htmlnamePush(ctxt, xmlStrdup(BAD_CAST"html"));
+	if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
+	    ctxt->sax->startElement(ctxt->userData, BAD_CAST"html", NULL);
+    }
+    if ((!strcmp(new, "body")) || (!strcmp(new, "head")))
+        return;
+    if (ctxt->nameNr <= 1) {
+	if ((!strcmp(new, "script")) || (!strcmp(new, "style")) ||
+	    (!strcmp(new, "meta")) || (!strcmp(new, "link")) ||
+	    (!strcmp(new, "title")) || (!strcmp(new, "base"))) {
+	    /* 
+	     * dropped OBJECT ... i you put it first BODY will be
+	     * assumed !
+	     */
+#ifdef DEBUG
+	    fprintf(stderr,"Implied element head: pushed head\n");
+#endif    
+	    htmlnamePush(ctxt, xmlStrdup(BAD_CAST"head"));
+	    if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
+		ctxt->sax->startElement(ctxt->userData, BAD_CAST"head", NULL);
+	} else {
+#ifdef DEBUG
+	    fprintf(stderr,"Implied element body: pushed body\n");
+#endif    
+	    htmlnamePush(ctxt, xmlStrdup(BAD_CAST"body"));
+	    if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
+		ctxt->sax->startElement(ctxt->userData, BAD_CAST"body", NULL);
+	}
     }
 }
 
@@ -1322,6 +1371,7 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
 		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
     else
 	xmlCreateIntSubset(cur, BAD_CAST "HTML", ExternalID, URI);
+    cur->doc = cur;
     cur->name = NULL;
     cur->children = NULL; 
     cur->extSubset = NULL;
@@ -2161,11 +2211,12 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
         NEXT;
 	SKIP_BLANKS;
 	val = htmlParseAttValue(ctxt);
+	/******
     } else {
-        /* TODO : some attribute must have values, some may not */
+        * TODO : some attribute must have values, some may not
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->warning(ctxt->userData,
-	       "No value for attribute %s\n", name);
+	       "No value for attribute %s\n", name); */
     }
 
     *value = val;
@@ -2218,6 +2269,11 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
      * Check for auto-closure of HTML elements.
      */
     htmlAutoClose(ctxt, name);
+
+    /*
+     * Check for implied HTML elements.
+     */
+    htmlCheckImplied(ctxt, name);
 
     /*
      * Now parse the attributes, it ends up with the ending
@@ -2758,6 +2814,10 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
 	    ctxt->sax->error(ctxt->userData, "Document is empty\n");
 	ctxt->wellFormed = 0;
     }
+
+    if ((ctxt->sax) && (ctxt->sax->startDocument) && (!ctxt->disableSAX))
+	ctxt->sax->startDocument(ctxt->userData);
+
 
     /*
      * Parse possible comments before any content

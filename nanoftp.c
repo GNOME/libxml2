@@ -1193,7 +1193,9 @@ xmlNanoFTPGetConnection(void *ctx) {
 	if (sscanf(cur, "%d,%d,%d,%d,%d,%d", &temp[0], &temp[1], &temp[2],
 	            &temp[3], &temp[4], &temp[5]) != 6) {
 	    fprintf(stderr, "Invalid answer to PASV\n");
-	    close(ctxt->dataFd); ctxt->dataFd = -1;
+	    if (ctxt->dataFd != -1) {
+		close(ctxt->dataFd); ctxt->dataFd = -1;
+	    }
 	    return(-1);
 	}
 	for (i=0; i<6; i++) ad[i] = (unsigned char) (temp[i] & 0xff);
@@ -1448,6 +1450,8 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
         if (xmlNanoFTPCwd(ctxt, ctxt->path) < 1)
 	    return(-1);
 	ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
+	if (ctxt->dataFd == -1)
+	    return(-1);
 #ifndef HAVE_SNPRINTF
 	len = sprintf(buf, "LIST -L\r\n");
 #else /* HAVE_SNPRINTF */
@@ -1459,6 +1463,8 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
 		return(-1);
 	}
 	ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
+	if (ctxt->dataFd == -1)
+	    return(-1);
 #ifndef HAVE_SNPRINTF
 	len = sprintf(buf, "LIST -L %s\r\n", filename);
 #else /* HAVE_SNPRINTF */
@@ -1554,6 +1560,8 @@ xmlNanoFTPGetSocket(void *ctx, const char *filename) {
     if ((filename == NULL) && (ctxt->path == NULL))
 	return(-1);
     ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
+    if (ctxt->dataFd == -1)
+	return(-1);
 
 #ifndef HAVE_SNPRINTF
     len = sprintf(buf, "TYPE I\r\n");

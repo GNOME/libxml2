@@ -106,6 +106,8 @@ const xmlChar *		xmlEncodeEntities	(xmlDocPtr doc,
 						 const xmlChar *input);
 xmlChar *		xmlEncodeEntitiesReentrant(xmlDocPtr doc,
 						 const xmlChar *input);
+xmlChar *		xmlEncodeSpecialChars	(xmlDocPtr doc,
+						 const xmlChar *input);
 xmlEntitiesTablePtr	xmlCreateEntitiesTable	(void);
 xmlEntitiesTablePtr	xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);
 void			xmlFreeEntitiesTable	(xmlEntitiesTablePtr table);

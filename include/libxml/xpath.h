@@ -29,8 +29,8 @@ typedef xmlXPathParserContext *xmlXPathParserContextPtr;
 typedef struct _xmlNodeSet xmlNodeSet;
 typedef xmlNodeSet *xmlNodeSetPtr;
 struct _xmlNodeSet {
-    int nodeNr;			/* # of node in the set */
-    int nodeMax;		/* allocated space */
+    int nodeNr;			/* number of nodes in the set */
+    int nodeMax;		/* size of the array as allocated */
     xmlNodePtr *nodeTab;	/* array of nodes in no particular order */
 };
 
@@ -41,6 +41,8 @@ struct _xmlNodeSet {
  *   - boolean
  *   - number
  *   - string
+ *
+ * @@ XPointer will add more types !
  */
 
 #define XPATH_UNDEFINED	0

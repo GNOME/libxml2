@@ -18,6 +18,11 @@
 extern "C" {
 #endif
 
+/*
+ * Those are the functions and datatypes for the parser input
+ * I/O structures.
+ */
+
 typedef int (*xmlInputMatchCallback) (char const *filename);
 typedef void * (*xmlInputOpenCallback) (char const *filename);
 typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
@@ -32,13 +37,38 @@ struct _xmlParserInputBuffer {
     
     xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
     
-    xmlBufferPtr buffer;    /* Local buffer encoded in  UTF-8 */
+    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 or ISOLatin */
     xmlBufferPtr raw;       /* if encoder != NULL buffer for raw input */
 };
 
 
 /*
- * Interfaces
+ * Those are the functions and datatypes for the library output
+ * I/O structures.
+ */
+
+typedef int (*xmlOutputMatchCallback) (char const *filename);
+typedef void * (*xmlOutputOpenCallback) (char const *filename);
+typedef int (*xmlOutputWriteCallback) (void * context, const char * buffer,
+                                       int len);
+typedef void (*xmlOutputCloseCallback) (void * context);
+
+typedef struct _xmlOutputBuffer xmlOutputBuffer;
+typedef xmlOutputBuffer *xmlOutputBufferPtr;
+struct _xmlOutputBuffer {
+    void*                   context;
+    xmlOutputWriteCallback  writecallback;
+    xmlOutputCloseCallback  closecallback;
+    
+    xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
+    
+    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 or ISOLatin */
+    xmlBufferPtr conv;      /* if encoder != NULL buffer for output */
+    int written;            /* total number of byte written */
+};
+
+/*
+ * Interfaces for input
  */
 
 xmlParserInputBufferPtr
@@ -72,6 +102,51 @@ int     xmlRegisterInputCallbacks		(xmlInputMatchCallback match,
 						 xmlInputOpenCallback open,
 						 xmlInputReadCallback read,
 						 xmlInputCloseCallback close);
+/*
+ * Interfaces for output
+ */
+xmlOutputBufferPtr
+	xmlAllocOutputBuffer		(xmlCharEncodingHandlerPtr encoder);
+
+xmlOutputBufferPtr
+	xmlOutputBufferCreateFilename	(const char *URI,
+					 xmlCharEncodingHandlerPtr encoder,
+					 int compression);
+
+xmlOutputBufferPtr
+	xmlOutputBufferCreateFile	(FILE *file,
+					 xmlCharEncodingHandlerPtr encoder);
+
+xmlOutputBufferPtr
+	xmlOutputBufferCreateFd		(int fd,
+					 xmlCharEncodingHandlerPtr encoder);
+
+xmlOutputBufferPtr
+	xmlOutputBufferCreateIO		(xmlOutputWriteCallback   iowrite,
+					 xmlOutputCloseCallback  ioclose,
+					 void *ioctx,
+					 xmlCharEncodingHandlerPtr encoder);
+
+int	xmlOutputBufferWrite		(xmlOutputBufferPtr out,
+					 int len,
+					 const char *buf);
+int	xmlOutputBufferWriteString	(xmlOutputBufferPtr out,
+					 const char *str);
+
+int	xmlOutputBufferFlush		(xmlOutputBufferPtr out);
+int	xmlOutputBufferClose		(xmlOutputBufferPtr out);
+
+int     xmlRegisterOutputCallbacks	(xmlOutputMatchCallback match,
+					 xmlOutputOpenCallback open,
+					 xmlOutputWriteCallback write,
+					 xmlOutputCloseCallback close);
+
+/*
+ * This save function is part of tree.h actually
+ */
+int		xmlSaveFileTo		(xmlOutputBuffer *buf,
+					 xmlDocPtr cur,
+					 const char *encoding);
 #ifdef __cplusplus
 }
 #endif

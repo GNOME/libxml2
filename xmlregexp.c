@@ -247,6 +247,7 @@ struct _xmlRegexp {
      */
     int nbstates;
     int *compact;
+    void **transdata;
     int nbstrings;
     xmlChar **stringMap;
 };
@@ -352,12 +353,14 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 
     if ((ret->determinist != 0) &&
 	(ret->nbCounters == 0) &&
+	(ret->atoms != NULL) &&
 	(ret->atoms[0] != NULL) &&
 	(ret->atoms[0]->type == XML_REGEXP_STRING)) {
 	int i, j, nbstates = 0, nbatoms = 0;
 	int *stateRemap;
 	int *stringRemap;
 	int *transitions;
+	void **transdata;
 	xmlChar **stringMap;
         xmlChar *value;
 
@@ -416,6 +419,7 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 	 * state correspond to the state type.
 	 */
 	transitions = (int *) xmlMalloc(nbstates * (nbatoms + 1) * sizeof(int));
+	transdata = NULL;
 	memset(transitions, 0, nbstates * (nbatoms + 1) * sizeof(int));
 
 	for (i = 0;i < ret->nbStates;i++) {
@@ -435,6 +439,13 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 		if ((trans->to == -1) || (trans->atom == NULL))
 		    continue;
                 atomno = stringRemap[trans->atom->no];
+		if ((trans->atom->data != NULL) && (transdata == NULL)) {
+		    transdata = (void **) xmlMalloc(nbstates * nbatoms *
+			                            sizeof(void *));
+		    if (transdata != NULL)
+			memset(transdata, 0,
+			       nbstates * nbatoms * sizeof(void *));
+		}
 		targetno = stateRemap[trans->to];
 		/*
 		 * if the same atome can generate transition to 2 different
@@ -452,6 +463,8 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 			printf("       previous to is %d\n", prev);
 #endif
 			ret->determinist = 0;
+			if (transdata != NULL)
+			    xmlFree(transdata);
 			xmlFree(transitions);
 			xmlFree(stateRemap);
 			xmlFree(stringRemap);
@@ -466,7 +479,10 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 			   i, j, trans->atom->no, trans->to, atomno, targetno);
 #endif
 		    transitions[stateno * (nbatoms + 1) + atomno + 1] =
-			targetno + 1;; /* to avoid 0 */
+			targetno + 1; /* to avoid 0 */
+		    if (transdata != NULL)
+			transdata[stateno * nbatoms + atomno] =
+			    trans->atom->data;
 		}
 	    }
 	}
@@ -502,6 +518,7 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 	ret->nbAtoms = 0;
 
 	ret->compact = transitions;
+	ret->transdata = transdata;
 	ret->stringMap = stringMap;
 	ret->nbstrings = nbatoms;
 	ret->nbstates = nbstates;
@@ -2407,6 +2424,10 @@ xmlRegCompactPushString(xmlRegExecCtxtPtr exec,
 	    target--; /* to avoid 0 */
 	    if (xmlStrEqual(comp->stringMap[i], value)) {
 		exec->index = target;
+		if ((exec->callback != NULL) && (comp->transdata != NULL)) {
+		    exec->callback(exec->data, value,
+			  comp->transdata[state * comp->nbstrings + i], data);
+		}
 #ifdef DEBUG_PUSH
 		printf("entering state %d\n", target);
 #endif
@@ -3871,6 +3892,8 @@ xmlRegFreeRegexp(xmlRegexpPtr regexp) {
 	xmlFree(regexp->counters);
     if (regexp->compact != NULL)
 	xmlFree(regexp->compact);
+    if (regexp->transdata != NULL)
+	xmlFree(regexp->transdata);
     if (regexp->stringMap != NULL) {
 	for (i = 0; i < regexp->nbstrings;i++)
 	    xmlFree(regexp->stringMap[i]);

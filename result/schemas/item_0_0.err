@@ -8,30 +8,6 @@ Type of simpletype7 : ./test/schemas/item_0.xsd:29 :simple
 Type of restriction 1 : ./test/schemas/item_0.xsd:6 :empty
 Type of SKU : ./test/schemas/item_0.xsd:5 :simple
 Building content model for Item
-Content model of Item:
- regexp: '(null)' 
-5 atoms:
- 00  atom: string once 'productName' 
- 01  atom: string once 'quantity' 
- 02  atom: string once 'USPrice' 
- 03  atom: string once 'comment' 
- 04  atom: string once 'shipDate' 
-6 states:
- state: 0, 1 transitions:
-  trans: atom 0, to 1
- state: 1, 1 transitions:
-  trans: atom 1, to 2
- state: 2, 1 transitions:
-  trans: atom 2, to 3
- state: FINAL 3, 3 transitions:
-  trans: atom 3, to 4
-  trans: removed
-  trans: atom 4, to 5
- state: FINAL 4, 2 transitions:
-  trans: atom 4, to 5
-  trans: removed
- state: FINAL 5, 0 transitions:
-0 counters:
 xmlSchemaValidateCallback: productName, productName, productName
 xmlSchemaValidateCallback: quantity, quantity, quantity
 xmlSchemaValidateCallback: USPrice, USPrice, USPrice

@@ -36,7 +36,7 @@ testRegexpFile(const char *filename) {
     xmlAutomataPtr am;
     xmlAutomataStatePtr states[1000];
     xmlRegexpPtr regexp = NULL;
-    xmlRegExecCtxtPtr exec;
+    xmlRegExecCtxtPtr exec = NULL;
 
     for (i = 0;i<1000;i++)
 	states[i] = NULL;

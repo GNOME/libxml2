@@ -668,8 +668,8 @@ _xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
  *         and -1 in case of internal or API error.
  */
 static int
-xmlSchemaValidateDates (xmlSchemaTypePtr type, const xmlChar *dateTime,
-                        xmlSchemaValPtr *val) {
+xmlSchemaValidateDates (ATTRIBUTE_UNUSED xmlSchemaTypePtr type,
+	                const xmlChar *dateTime, xmlSchemaValPtr *val) {
     xmlSchemaValPtr dt;
     int ret;
     const xmlChar *cur = dateTime;
@@ -827,8 +827,8 @@ error:
  *         and -1 in case of internal or API error.
  */
 static int
-xmlSchemaValidateDuration (xmlSchemaTypePtr type, const xmlChar *duration,
-                        xmlSchemaValPtr *val) {
+xmlSchemaValidateDuration (ATTRIBUTE_UNUSED xmlSchemaTypePtr type,
+	                   const xmlChar *duration, xmlSchemaValPtr *val) {
     const xmlChar  *cur = duration;
     xmlSchemaValPtr dur;
     int isneg = 0;
@@ -1792,7 +1792,8 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
  *     number otherwise and -1 in case of internal or API error.
  */
 int
-xmlSchemaValidateFacet(xmlSchemaTypePtr base, xmlSchemaFacetPtr facet,
+xmlSchemaValidateFacet(ATTRIBUTE_UNUSED xmlSchemaTypePtr base,
+	               xmlSchemaFacetPtr facet,
 	               const xmlChar *value, xmlSchemaValPtr val)
 {
     int ret;
@@ -1854,7 +1855,7 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base, xmlSchemaFacetPtr facet,
 	    if ((facet->val != NULL) &&
 		(facet->val->type == XML_SCHEMAS_DECIMAL) &&
 		(facet->val->value.decimal.frac == 0)) {
-		int len;
+		unsigned int len;
 
 		if (facet->val->value.decimal.sign == 1)
 		    return(1);

@@ -36,6 +36,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/debugXML.h>
 #include <libxml/xmlschemas.h>
+#include <libxml/xmlschemastypes.h>
 
 #ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;

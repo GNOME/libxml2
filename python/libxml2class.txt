@@ -351,38 +351,38 @@ Class xmlDoc(xmlNode)
 
     # functions from module xpath
     xpathNewContext()
+Class xpathContext()
+    # accessors
+    contextDoc()
+    contextNode()
+    contextPosition()
+    contextSize()
+    function()
+    functionURI()
+    setContextDoc()
+    setContextNode()
+
+    # functions from module python
+    registerXPathFunction()
+
+    # functions from module xpath
+    xpathEval()
+    xpathEvalExpression()
+    xpathFreeContext()
+
+    # functions from module xpathInternals
+    xpathNewParserContext()
+    xpathNsLookup()
+    xpathRegisterAllFunctions()
+    xpathRegisterNs()
+    xpathRegisteredFuncsCleanup()
+    xpathRegisteredNsCleanup()
+    xpathRegisteredVariablesCleanup()
+    xpathVariableLookup()
+    xpathVariableLookupNS()
 
 
 Class xmlAttribute(xmlNode)
-
-
-Class xmlNs(xmlNode)
-
-    # functions from module tree
-    copyNamespace()
-    copyNamespaceList()
-    freeNs()
-    freeNsList()
-    newNodeEatName()
-
-    # functions from module xpathInternals
-    xpathNodeSetFreeNs()
-
-
-Class xmlDtd(xmlNode)
-
-    # functions from module debugXML
-    debugDumpDTD()
-
-    # functions from module tree
-    copyDtd()
-    freeDtd()
-
-    # functions from module valid
-    dtdAttrDesc()
-    dtdElementDesc()
-    dtdQAttrDesc()
-    dtdQElementDesc()
 Class catalog()
 
     # functions from module catalog
@@ -396,6 +396,27 @@ Class catalog()
     resolvePublic()
     resolveSystem()
     resolveURI()
+
+
+Class xmlElement(xmlNode)
+
+
+Class xmlAttr(xmlNode)
+
+    # functions from module debugXML
+    debugDumpAttr()
+    debugDumpAttrList()
+
+    # functions from module tree
+    freeProp()
+    freePropList()
+    removeProp()
+
+
+Class xmlEntity(xmlNode)
+
+    # functions from module parserInternals
+    handleEntity()
 Class xpathParserContext()
     # accessors
     context()
@@ -519,6 +540,44 @@ Class parserCtxt()
     stringDecodeEntities()
 
 
+Class xmlDtd(xmlNode)
+
+    # functions from module debugXML
+    debugDumpDTD()
+
+    # functions from module tree
+    copyDtd()
+    freeDtd()
+
+    # functions from module valid
+    dtdAttrDesc()
+    dtdElementDesc()
+    dtdQAttrDesc()
+    dtdQElementDesc()
+
+
+Class xmlNs(xmlNode)
+
+    # functions from module tree
+    copyNamespace()
+    copyNamespaceList()
+    freeNs()
+    freeNsList()
+    newNodeEatName()
+
+    # functions from module xpathInternals
+    xpathNodeSetFreeNs()
+
+
+Class inputBuffer(ioReadWrapper)
+
+    # functions from module xmlIO
+    freeParserInputBuffer()
+    grow()
+    push()
+    read()
+
+
 Class outputBuffer(ioWriteWrapper)
 
     # functions from module xmlIO
@@ -526,27 +585,6 @@ Class outputBuffer(ioWriteWrapper)
     flush()
     write()
     writeString()
-
-
-Class xmlElement(xmlNode)
-
-
-Class xmlEntity(xmlNode)
-
-    # functions from module parserInternals
-    handleEntity()
-
-
-Class xmlAttr(xmlNode)
-
-    # functions from module debugXML
-    debugDumpAttr()
-    debugDumpAttrList()
-
-    # functions from module tree
-    freeProp()
-    freePropList()
-    removeProp()
 Class URI()
     # accessors
     authority()
@@ -573,41 +611,3 @@ Class URI()
     parseURIReference()
     printURI()
     saveUri()
-Class xpathContext()
-    # accessors
-    contextDoc()
-    contextNode()
-    contextPosition()
-    contextSize()
-    function()
-    functionURI()
-    setContextDoc()
-    setContextNode()
-
-    # functions from module python
-    registerXPathFunction()
-
-    # functions from module xpath
-    xpathEval()
-    xpathEvalExpression()
-    xpathFreeContext()
-
-    # functions from module xpathInternals
-    xpathNewParserContext()
-    xpathNsLookup()
-    xpathRegisterAllFunctions()
-    xpathRegisterNs()
-    xpathRegisteredFuncsCleanup()
-    xpathRegisteredNsCleanup()
-    xpathRegisteredVariablesCleanup()
-    xpathVariableLookup()
-    xpathVariableLookupNS()
-
-
-Class inputBuffer(ioReadWrapper)
-
-    # functions from module xmlIO
-    freeParserInputBuffer()
-    grow()
-    push()
-    read()

@@ -28,6 +28,7 @@
 #define DEBUG 1                 /* very verbose output */
 #define DEBUG_CONTENT 1
 #define DEBUG_TYPE 1
+/* #define DEBUG_CONTENT_REGEXP 1 */
 /* #define DEBUG_AUTOMATA 1 */
 
 #define UNBOUNDED (1 << 30)
@@ -3269,7 +3270,7 @@ xmlSchemaBuildContentModel(xmlSchemaElementPtr elem,
 	ctxt->err = XML_SCHEMAS_ERR_NOTDETERMINIST;
 	ctxt->state = NULL;
     } else {
-#ifdef DEBUG_CONTENT
+#ifdef DEBUG_CONTENT_REGEXP
 	xmlGenericError(xmlGenericErrorContext,
 			"Content model of %s:\n", name);
 	xmlRegexpPrint(stderr, elem->contModel);
@@ -3495,6 +3496,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 	    case XML_SCHEMA_TYPE_UR:
 	    case XML_SCHEMA_TYPE_ELEMENT:
 	    case XML_SCHEMA_TYPE_ATTRIBUTE:
+	    case XML_SCHEMA_TYPE_ATTRIBUTEGROUP:
 	    case XML_SCHEMA_TYPE_NOTATION:
 	    case XML_SCHEMA_TYPE_LIST:
 	    case XML_SCHEMA_TYPE_UNION:
@@ -4864,6 +4866,9 @@ xmlSchemaValidateContent(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 	    TODO
 	    break;
 	case XML_SCHEMA_FACET_MINLENGTH:
+	    TODO
+	    break;
+	case XML_SCHEMA_TYPE_ATTRIBUTEGROUP:
 	    TODO
 	    break;
     }

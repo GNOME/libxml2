@@ -10,33 +10,6 @@ Type of extension 3 : ./test/schemas/extension0_0.xsd:12 :elements
 Type of sequence 4 : ./test/schemas/extension0_0.xsd:13 :elements
 Type of sequence 1 : ./test/schemas/extension0_0.xsd:4 :elements
 Building content model for addressee
-Content model of addressee:
- regexp: '(null)' 
-4 atoms:
- 00  atom: string once 'title' 
- 01  atom: string once 'forename' 
- 02  atom: string once 'surname' 
- 03  atom: string once 'generation' 
-5 states:
- state: 0, 4 transitions:
-  trans: atom 0, to 1
-  trans: removed
-  trans: atom 1, to 2
-  trans: atom 2, to 3
- state: 1, 3 transitions:
-  trans: atom 1, to 2
-  trans: removed
-  trans: atom 2, to 3
- state: 2, 4 transitions:
-  trans: removed
-  trans: atom 2, to 3
-  trans: atom 1, to 2
-  trans: atom 2, to 3
- state: FINAL 3, 2 transitions:
-  trans: atom 3, to 4
-  trans: removed
- state: FINAL 4, 0 transitions:
-0 counters:
 xmlSchemaValidateCallback: forename, forename, forename
 xmlSchemaValidateCallback: forename, forename, forename
 xmlSchemaValidateCallback: surname, surname, surname

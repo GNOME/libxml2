@@ -126,7 +126,7 @@ main()
 
 #else /* !LIBXML_THREADS_ENABLED */
 int
-main()
+main(void)
 {
     fprintf(stderr, "libxml was not compiled with thread or catalog support\n");
     return (0);

@@ -1,3 +1,15 @@
+Tue Sep 24 16:08:17 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: fixed the data callback on transition functionality
+	  which was broken when using the compact form
+	* result/schemas/*: updated the results, less verbose, all tests
+	  pass like before
+	* DOCBparser.c testAutomata.c testC14N.c testSchemas.c testThreads.c
+	  testXPath.c valid.c xinclude.c xmllint.c xmlregexp.c xmlschemas.c
+	  xmlschemastypes.c xpath.c python/libxml.c: removed a bunch of
+	  annoying warnings
+	* xpath.c: try to provide better error report when possible
+
 Sat Sep 21 14:56:37 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: fixed a breakage raised by Jacob

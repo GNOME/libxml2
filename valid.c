@@ -110,6 +110,7 @@ typedef struct _xmlValidState {
 #define SET_OCCURRENCE ctxt->vstate->occurs |= (1 << DEPTH)
 #define RESET_OCCURRENCE ctxt->vstate->occurs &= ((1 << DEPTH) - 1)
 
+#ifndef LIBXML_REGEXP_ENABLED
 static int
 vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
 	    xmlNodePtr node, unsigned char depth, long occurs,
@@ -159,6 +160,8 @@ vstateVPop(xmlValidCtxtPtr ctxt) {
     ctxt->vstate->state = ctxt->vstateTab[ctxt->vstateNr].state;
     return(ctxt->vstateNr);
 }
+
+#endif /* LIBXML_REGEXP_ENABLED */
 
 PUSH_AND_POP(static, xmlNodePtr, node)
 
@@ -3814,6 +3817,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     return(ret);
 }
 
+#ifndef  LIBXML_REGEXP_ENABLED
 /**
  * xmlValidateSkipIgnorable:
  * @ctxt:  the validation context
@@ -3849,7 +3853,6 @@ xmlValidateSkipIgnorable(xmlNodePtr child) {
     return(child);
 }
 
-#ifndef  LIBXML_REGEXP_ENABLED
 /**
  * xmlValidateElementType:
  * @ctxt:  the validation context

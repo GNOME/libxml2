@@ -71,14 +71,6 @@ static xmlChar buffer[] =
    <title>Chapter 3</title>\n\
    <p>this is chapter 3 ...</p>\n\
   </chapter>\n\
-  <chapter>\n\
-   <title>Chapter 4</title>\n\
-   <p>this is chapter 4 ...</p>\n\
-  </chapter>\n\
-  <chapter>\n\
-   <title>Chapter 5</title>\n\
-   <p>this is chapter 5 ...</p>\n\
-  </chapter>\n\
 </EXAMPLE>\n\
 ";
 

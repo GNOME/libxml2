@@ -369,7 +369,8 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
  * The XInclude recursive nature is handled at this point.
  */
 static void
-xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, const xmlURL url) {
+xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
+	              ATTRIBUTE_UNUSED const xmlURL url) {
     xmlXIncludeCtxtPtr newctxt;
     int i;
 
@@ -1236,6 +1237,7 @@ xmlXIncludePreProcessNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
     return(0);
 }
 
+#if 0
 /**
  * xmlXIncludePreloadNode:
  * @ctxt: an XInclude context
@@ -1373,6 +1375,7 @@ xmlXIncludePreloadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     xmlFree(URL);
     return(0);
 }
+#endif
 
 /**
  * xmlXIncludeLoadNode:

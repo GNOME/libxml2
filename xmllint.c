@@ -175,7 +175,7 @@ startTimer(void)
  *           type argument
  */
 static void
-endTimer(const char *format, ...)
+endTimer(const char *fmt, ...)
 {
     long msec;
     va_list ap;
@@ -188,8 +188,8 @@ endTimer(const char *format, ...)
 #ifndef HAVE_STDARG_H
 #error "endTimer required stdarg functions"
 #endif
-    va_start(ap, format);
-    vfprintf(stderr, format, ap);
+    va_start(ap, fmt);
+    vfprintf(stderr, fmt, ap);
     va_end(ap);
 
     fprintf(stderr, " took %ld ms\n", msec);

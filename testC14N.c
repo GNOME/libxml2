@@ -189,7 +189,7 @@ xmlChar **parse_list(xmlChar *str) {
 	return(NULL);
     }
 
-    len = strlen(str);
+    len = xmlStrlen(str);
     if((str[0] == '\'') && (str[len - 1] == '\'')) {
 	str[len - 1] = '\0';
 	str++;

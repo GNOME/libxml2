@@ -67,7 +67,8 @@ static xmlNs xmlXPathXMLNamespaceStruct = {
     NULL,
     XML_NAMESPACE_DECL,
     XML_XML_NAMESPACE,
-    BAD_CAST "xml"
+    BAD_CAST "xml",
+    NULL
 };
 static xmlNsPtr xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
 #ifndef LIBXML_THREAD_ENABLED
@@ -249,6 +250,7 @@ struct _xmlXPathCompExpr {
     int maxStep;
     xmlXPathStepOp *steps;        /* ops for computation */
     int last;
+    xmlChar *expr;
 #ifdef DEBUG_EVAL_COUNTS
     int nb;
     xmlChar *string;
@@ -330,6 +332,9 @@ xmlXPathFreeCompExpr(xmlXPathCompExprPtr comp)
         xmlFree(comp->string);
     }
 #endif
+    if (comp->expr != NULL) {
+        xmlFree(comp->expr);
+    }
 
     xmlFree(comp);
 }
@@ -1285,17 +1290,22 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, ATTRIBUTE_UNUSED const char *file,
     const xmlChar *cur;
     const xmlChar *base;
 
-/*    xmlGenericError(xmlGenericErrorContext,
-	    "Error %s:%d: %s\n", file, line,
-            xmlXPathErrorMessages[no]);
-*/
-    xmlGenericError(xmlGenericErrorContext,
-	    "Error %s\n", xmlXPathErrorMessages[no]);
-
     cur = ctxt->cur;
     base = ctxt->base;
-    if ((cur == NULL) || (base == NULL))
+    if ((cur == NULL) || (base == NULL)) {
+	if ((ctxt->comp != NULL) && (ctxt->comp->expr != NULL)) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "XPath error %s in %s\n", xmlXPathErrorMessages[no],
+			    ctxt->comp->expr);
+	} else {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "XPath error %s\n", xmlXPathErrorMessages[no]);
+	}
+
 	return;
+    }
+    xmlGenericError(xmlGenericErrorContext,
+	    "XPath error %s\n", xmlXPathErrorMessages[no]);
 
     while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
 	cur--;
@@ -10572,6 +10582,7 @@ xmlXPathCompile(const xmlChar *str) {
 	ctxt->comp = NULL;
     }
     xmlXPathFreeParserContext(ctxt);
+    comp->expr = xmlStrdup(str);
 #ifdef DEBUG_EVAL_COUNTS
     if (comp != NULL) {
 	comp->string = xmlStrdup(str);
@@ -10826,7 +10837,7 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
  *  returns "gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles%23ocean"
  *
  */
-void
+static void
 xmlXPathEscapeUriFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr str;
     int escape_reserved;

@@ -4,10 +4,4 @@ Type of anontype1 : ./test/schemas/empty_0.xsd:4 :empty
 Type of complexContent 2 : ./test/schemas/empty_0.xsd:5 :empty
 Type of restriction 3 : ./test/schemas/empty_0.xsd:6 :empty
 Building content model for internationalPrice
-Content model of internationalPrice:
- regexp: '(null)' 
-0 atoms:
-1 states:
- state: FINAL 0, 0 transitions:
-0 counters:
 Element internationalPrice content check succeeded

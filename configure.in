@@ -23,7 +23,8 @@ VERSION=${LIBXML_VERSION}
 
 AM_INIT_AUTOMAKE(libxml2, $VERSION)
 
-AC_ARG_WITH(html-dir, [  --with-html-dir=PATH path to installed docs ])
+AC_ARG_WITH(html-dir,
+[  --with-html-dir=PATH    path to installed docs ])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -47,7 +48,7 @@ _ldflags="${LDFLAGS}"
 
 
 AC_ARG_WITH(zlib,
-[  --with-zlib[=DIR]       use libz in DIR],[
+[  --with-zlib[[=DIR]]       use libz in DIR],[
   if test "$withval" != "no" -a "$withval" != "yes"; then
     Z_DIR=$withval
     CPPFLAGS="${CPPFLAGS} -I$withval/include"
@@ -250,7 +251,8 @@ PYTHON=
 PYTHON_VERSION=
 PYTHON_INCLUDES=
 PYTHON_SITE_PACKAGES=
-AC_ARG_WITH(python, [  --with-python[=DIR]    Build Python bindings if found])
+AC_ARG_WITH(python,
+[  --with-python[[=DIR]]     build Python bindings if found])
 if test "$with_python" != "no" ; then
     if test -x "$with_python/bin/python"
     then
@@ -355,7 +357,7 @@ AM_CONDITIONAL(WITH_TRIO_SOURCES, test "${NEED_TRIO}" = "1")
 AC_SUBST(WITH_TRIO)
 
 dnl
-dnl Aloow to enable/disable various pieces
+dnl Allow to enable/disable various pieces
 dnl
 
 THREAD_LIBS=""
@@ -363,7 +365,8 @@ WITH_THREADS=0
 THREAD_CFLAGS=""
 TEST_THREADS=""
 
-AC_ARG_WITH(threads, [  --with-threads          Add multithread support(on)])
+AC_ARG_WITH(threads,
+[  --with-threads          add multithread support(on)])
 if test "$with_threads" = "no" ; then
     echo Disabling multithreaded support
 else
@@ -381,7 +384,8 @@ else
 	TEST_THREADS="Threadtests"
     fi
 fi
-AC_ARG_WITH(thread-alloc, [  --with-thread-alloc     Add per-thread memory(off)])
+AC_ARG_WITH(thread-alloc,
+[  --with-thread-alloc     add per-thread memory(off)])
 if test "$with_threads_alloc" = "yes" -a "$WITH_THREADS" = "1" ; then
     THREAD_CFLAGS="$THREAD_CFLAGS -DLIBXML_THREAD_ALLOC_ENABLED"
 fi
@@ -391,7 +395,8 @@ AC_SUBST(WITH_THREADS)
 AC_SUBST(THREAD_CFLAGS)
 AC_SUBST(TEST_THREADS)
 
-AC_ARG_WITH(history, [  --with-history          Add history support to xmllint shell(off)])
+AC_ARG_WITH(history,
+[  --with-history          add history support to xmllint shell(off)])
 if test "$with_history" = "yes" ; then
     echo Enabling xmllint shell history
     dnl check for terminal library. this is a very cool solution
@@ -421,7 +426,8 @@ fi
 
 AC_SUBST(WITH_FTP)
 AC_SUBST(FTP_OBJ)
-AC_ARG_WITH(ftp, [  --with-ftp              Add the FTP support (on)])
+AC_ARG_WITH(ftp,
+[  --with-ftp              add the FTP support (on)])
 if test "$with_ftp" = "no" ; then
     echo Disabling FTP support
     WITH_FTP=0
@@ -433,7 +439,8 @@ fi
 AC_SUBST(WITH_FTP)
 AC_SUBST(FTP_OBJ)
 
-AC_ARG_WITH(http, [  --with-http             Add the HTTP support (on)])
+AC_ARG_WITH(http,
+[  --with-http             add the HTTP support (on)])
 if test "$with_http" = "no" ; then
     echo Disabling HTTP support
     WITH_HTTP=0
@@ -445,7 +452,8 @@ fi
 AC_SUBST(WITH_HTTP)
 AC_SUBST(HTTP_OBJ)
 
-AC_ARG_WITH(html, [  --with-html             Add the HTML support (on)])
+AC_ARG_WITH(html,
+[  --with-html             add the HTML support (on)])
 if test "$with_html" = "no" ; then
     echo Disabling HTML support
     WITH_HTML=0
@@ -457,7 +465,8 @@ fi
 AC_SUBST(WITH_HTML)
 AC_SUBST(HTML_OBJ)
 
-AC_ARG_WITH(catalog, [  --with-catalog          Add the Catalog support (on)])
+AC_ARG_WITH(catalog,
+[  --with-catalog          add the Catalog support (on)])
 if test "$with_catalog" = "no" ; then
     echo Disabling Catalog support
     WITH_CATALOG=0
@@ -469,7 +478,8 @@ fi
 AC_SUBST(WITH_CATALOG)
 AC_SUBST(CATALOG_OBJ)
 
-AC_ARG_WITH(docbook, [  --with-docbook          Add Docbook SGML support (on)])
+AC_ARG_WITH(docbook,
+[  --with-docbook          add Docbook SGML support (on)])
 if test "$with_docbook" = "no" ; then
     echo Disabling Docbook support
     WITH_DOCB=0
@@ -482,7 +492,8 @@ AC_SUBST(WITH_DOCB)
 AC_SUBST(DOCB_OBJ)
 
 
-AC_ARG_WITH(xpath, [  --with-xpath            Add the XPATH support (on)])
+AC_ARG_WITH(xpath,
+[  --with-xpath            add the XPATH support (on)])
 if test "$with_xpath" = "no" ; then
     echo Disabling XPATH support
     with_xptr="no"
@@ -497,7 +508,8 @@ fi
 AC_SUBST(WITH_XPATH)
 AC_SUBST(XPATH_OBJ)
 
-AC_ARG_WITH(xptr, [  --with-xptr             Add the XPointer support (on)])
+AC_ARG_WITH(xptr,
+[  --with-xptr             add the XPointer support (on)])
 if test "$with_xptr" = "no" ; then
     echo Disabling XPointer support
     WITH_XPTR=0
@@ -509,7 +521,8 @@ fi
 AC_SUBST(WITH_XPTR)
 AC_SUBST(XPTR_OBJ)
 
-AC_ARG_WITH(c14n, [  --with-c14n             Add the Canonicalization support (on)])
+AC_ARG_WITH(c14n,
+[  --with-c14n             add the Canonicalization support (on)])
 if test "$with_c14n" = "no" ; then
     echo Disabling C14N support
     WITH_C14N=0
@@ -521,7 +534,8 @@ fi
 AC_SUBST(WITH_C14N)
 AC_SUBST(C14N_OBJ)
 
-AC_ARG_WITH(xinclude, [  --with-xinclude         Add the XInclude support (on)])
+AC_ARG_WITH(xinclude,
+[  --with-xinclude         add the XInclude support (on)])
 if test "$with_xinclude" = "no" ; then
     echo Disabling XInclude support
     WITH_XINCLUDE=0
@@ -535,7 +549,8 @@ AC_SUBST(WITH_XINCLUDE)
 AC_SUBST(XINCLUDE_OBJ)
 
 WITH_ICONV=0
-AC_ARG_WITH(iconv, [  --with-iconv[=DIR]      Add ICONV support (on)])
+AC_ARG_WITH(iconv,
+[  --with-iconv[[=DIR]]      add ICONV support (on)])
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support
 else
@@ -579,7 +594,8 @@ M_LIBS="-lm"
 XML_LIBS="-lxml2 $Z_LIBS $THREAD_LIBS $ICONV_LIBS $M_LIBS $LIBS"
 AC_SUBST(WITH_ICONV)
 
-AC_ARG_WITH(schemas, [  --with-schemas              Add experimental Schemas/RelaxNG support (on)])
+AC_ARG_WITH(schemas,
+[  --with-schemas          add experimental Schemas/RelaxNG support (on)])
 if test "$with_schemas" = "no" ; then
     echo "Disabled Schemas/Relax-NG support"
     WITH_SCHEMAS=0
@@ -593,7 +609,8 @@ fi
 AC_SUBST(WITH_SCHEMAS)
 AC_SUBST(TEST_SCHEMAS)
 
-AC_ARG_WITH(regexps, [  --with-regexps              Add Regular Expressions support (on)])
+AC_ARG_WITH(regexps,
+[  --with-regexps          add Regular Expressions support (on)])
 if test "$with_regexps" = "no" ; then
     echo Disabling Regexps support
     WITH_REGEXPS=0
@@ -605,7 +622,8 @@ fi
 AC_SUBST(WITH_REGEXPS)
 AC_SUBST(TEST_REGEXPS)
 
-AC_ARG_WITH(debug, [  --with-debug            Add the debugging module (on)])
+AC_ARG_WITH(debug,
+[  --with-debug            add the debugging module (on)])
 if test "$with_debug" = "no" ; then
     echo Disabling DEBUG support
     WITH_DEBUG=0
@@ -617,7 +635,8 @@ fi
 AC_SUBST(WITH_DEBUG)
 AC_SUBST(DEBUG_OBJ)
 
-AC_ARG_WITH(mem_debug, [  --with-mem-debug        Add the memory debugging module (off)])
+AC_ARG_WITH(mem_debug,
+[  --with-mem-debug        add the memory debugging module (off)])
 if test "$with_mem_debug" = "yes" ; then
     echo Enabling memory debug support
     WITH_MEM_DEBUG=1

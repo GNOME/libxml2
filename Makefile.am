@@ -15,7 +15,6 @@ libxml_la_SOURCES = \
 		entities.c \
 		encoding.c \
 		error.c \
-		error.h \
 		parser.c \
 		debugXML.c \
 		tree.c \
@@ -28,6 +27,7 @@ xmlinc_HEADERS = \
 		parser.h \
 		parserInternals.h \
 		debugXML.h \
+		xml-error.h \
 		tree.h \
 		valid.h
 

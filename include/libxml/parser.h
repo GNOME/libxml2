@@ -141,7 +141,7 @@ extern xmlSAXLocator xmlDefaultSAXLocator;
 extern xmlSAXHandler xmlDefaultSAXHandler;
 
 #include "entities.h"
-#include "error.h"
+#include "xml-error.h"
 
 /*
  * CHAR handling

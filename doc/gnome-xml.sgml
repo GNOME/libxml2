@@ -2,7 +2,7 @@
 <!entity parser SYSTEM "sgml/parser.sgml">
 <!entity tree SYSTEM "sgml/tree.sgml">
 <!entity entities SYSTEM "sgml/entities.sgml">
-<!entity error SYSTEM "sgml/error.sgml">
+<!entity error SYSTEM "sgml/xml-error.sgml">
 <!entity valid SYSTEM "sgml/valid.sgml">
 <!entity parserInternals SYSTEM "sgml/parserInternals.sgml">
 ]>

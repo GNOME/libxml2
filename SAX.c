@@ -11,7 +11,7 @@
 #include "tree.h"
 #include "parser.h"
 #include "entities.h"
-#include "error.h"
+#include "xml-error.h"
 
 /* #define DEBUG_SAX */
 

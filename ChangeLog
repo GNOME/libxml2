@@ -1,3 +1,10 @@
+Fri Mar  5 07:23:53 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Renamed error.h to xml-error.h, corrected Makefile.am to list
+	  it in the header and not the sources, updated the doc.
+	  Thanks to Tim Mooney <mooney@dogbert.cc.ndsu.nodak.edu> for
+	  pointing this out.
+
 Mon Mar  1 13:27:17 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c, parser.h, parserInternals.h: memory leak hunting,

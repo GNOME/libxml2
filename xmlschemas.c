@@ -3350,9 +3350,14 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 		elem = (xmlSchemaElementPtr) subtypes;
 
 		/* TODO : handle the namespace too */
-		xmlAutomataNewOnceTrans(ctxt->am, ctxt->state, ctxt->state,
-			        elem->name, elem->minOccurs, elem->maxOccurs,
-				subtypes);
+		if ((elem->minOccurs == 1) && (elem->maxOccurs == 1)) {
+		    xmlAutomataNewOnceTrans(ctxt->am, ctxt->state, ctxt->state,
+				    elem->name, 1, 1, subtypes);
+		} else {
+		    xmlAutomataNewCountTrans(ctxt->am, ctxt->state, ctxt->state,
+				    elem->name, elem->minOccurs,
+				    elem->maxOccurs, subtypes);
+		}
 		subtypes = subtypes->next;
 	    }
 	    lax = type->minOccurs == 0;

@@ -1,3 +1,12 @@
+Fri May  9 15:34:32 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fixing bug #104081 with xs:all with an element
+	  holding minOccurs="0"
+	* test/schemas/all_* result/schemas/all_*: added some regression
+	  tests for that bug
+	* xmllint.c xmlreader.c: patches from Joerg Schmitz-Linneweber and
+	  Garry Pennington to compile without schemas support.
+
 Thu May  1 10:02:35 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed a problem with xmlUnlinkNode() for DTDs.

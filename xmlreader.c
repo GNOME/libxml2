@@ -1208,6 +1208,7 @@ void
 xmlFreeTextReader(xmlTextReaderPtr reader) {
     if (reader == NULL)
 	return;
+#ifdef LIBXML_SCHEMAS_ENABLED
     if (reader->rngSchemas != NULL) {
 	xmlRelaxNGFree(reader->rngSchemas);
 	reader->rngSchemas = NULL;
@@ -1216,6 +1217,7 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
 	xmlRelaxNGFreeValidCtxt(reader->rngValidCtxt);
 	reader->rngValidCtxt = NULL;
     }
+#endif
     if (reader->ctxt != NULL) {
 	if (reader->ctxt->myDoc != NULL) {
 	    xmlFreeDoc(reader->ctxt->myDoc);
@@ -2473,6 +2475,7 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
     return(reader->ctxt->myDoc);
 }
 
+#ifdef LIBXML_SCHEMAS_ENABLED
 /**
  * xmlTextReaderRelaxNGSetSchema:
  * @reader:  the xmlTextReaderPtr used
@@ -2590,6 +2593,7 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
     reader->validate = XML_TEXTREADER_VALIDATE_RNG;
     return(0);
 }
+#endif
 
 /************************************************************************
  *									*

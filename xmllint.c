@@ -626,6 +626,7 @@ static void streamFile(char *filename) {
 	    xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1);
 	else
 	    xmlTextReaderSetParserProp(reader, XML_PARSER_LOADDTD, 1);
+#ifdef LIBXML_SCHEMAS_ENABLED
 	if (relaxng != NULL) {
 	    if (timing) {
 		startTimer();
@@ -640,6 +641,7 @@ static void streamFile(char *filename) {
 		endTimer("Compiling the schemas");
 	    }
 	}
+#endif
 
 	/*
 	 * Process all nodes in sequence
@@ -654,7 +656,11 @@ static void streamFile(char *filename) {
 	    ret = xmlTextReaderRead(reader);
 	}
 	if (timing) {
+#ifdef LIBXML_SCHEMAS_ENABLED
 	    if ((valid) || (relaxng != NULL))
+#else
+	    if (valid)
+#endif
 		endTimer("Parsing and validating");
 	    else
 		endTimer("Parsing");
@@ -667,6 +673,7 @@ static void streamFile(char *filename) {
 		progresult = 3;
 	    }
 	}
+#ifdef LIBXML_SCHEMAS_ENABLED
 	if (relaxng != NULL) {
 	    if (xmlTextReaderIsValid(reader) != 1) {
 		printf("%s fails to validate\n", filename);
@@ -675,6 +682,7 @@ static void streamFile(char *filename) {
 		printf("%s validates\n", filename);
 	    }
 	}
+#endif
 	/*
 	 * Done, cleanup and status
 	 */

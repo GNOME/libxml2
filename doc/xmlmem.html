@@ -214,9 +214,14 @@ of a number of things:</p>
     memory when parsed). Validation will add a amount of memory required for
     maintaining the external Dtd state which should be linear with the
     complexity of the content model defined by the Dtd</li>
+  <li>If you need to work with fixed memory requirements or don't need the
+    full DOM tree then using the <a href="xmlreader.html">xmlReader
+    interface</a> is probably the best way to proceed, it still allows to
+    validate or operate on subset of the tree if needed.</li>
   <li>If you don't care about the advanced features of libxml like
-    validation, DOM, XPath or XPointer, but really need to work fixed memory
-    requirements, then the SAX interface should be used.</li>
+    validation, DOM, XPath or XPointer, don't use entities, need to work with
+    fixed memory requirements, and try to get the fastest parsing possible
+    then the SAX interface should be used, but it has known restrictions.</li>
 </ul>
 <p></p>
 <p><a href="bugs.html">Daniel Veillard</a></p>

@@ -624,17 +624,40 @@ static void streamFile(char *filename) {
     if (reader != NULL) {
 	if (valid)
 	    xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1);
-	if (relaxng != NULL)
-	    xmlTextReaderRelaxNGValidate(reader, relaxng);
+	else
+	    xmlTextReaderSetParserProp(reader, XML_PARSER_LOADDTD, 1);
+	if (relaxng != NULL) {
+	    if (timing) {
+		startTimer();
+	    }
+	    ret = xmlTextReaderRelaxNGValidate(reader, relaxng);
+	    if (ret < 0) {
+		xmlGenericError(xmlGenericErrorContext,
+			"Relax-NG schema %s failed to compile\n", relaxng);
+		relaxng = NULL;
+	    }
+	    if (timing) {
+		endTimer("Compiling the schemas");
+	    }
+	}
 
 	/*
 	 * Process all nodes in sequence
 	 */
+	if (timing) {
+	    startTimer();
+	}
 	ret = xmlTextReaderRead(reader);
 	while (ret == 1) {
 	    if (debug)
 		processNode(reader);
 	    ret = xmlTextReaderRead(reader);
+	}
+	if (timing) {
+	    if ((valid) || (relaxng != NULL))
+		endTimer("Parsing and validating");
+	    else
+		endTimer("Parsing");
 	}
 
 	if (valid) {
@@ -1502,9 +1525,11 @@ main(int argc, char **argv) {
     }
 
 #ifdef LIBXML_SCHEMAS_ENABLED
-    if (relaxng != NULL) {
+    if ((relaxng != NULL) && (stream == 0)) {
 	xmlRelaxNGParserCtxtPtr ctxt;
 
+        /* forces loading the DTDs */
+        xmlLoadExtDtdDefaultValue |= 1; 
 	if (timing) {
 	    startTimer();
 	}
@@ -1514,6 +1539,11 @@ main(int argc, char **argv) {
 		(xmlRelaxNGValidityWarningFunc) fprintf,
 		stderr);
 	relaxngschemas = xmlRelaxNGParse(ctxt);
+	if (relaxngschemas == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Relax-NG schema %s failed to compile\n", relaxng);
+	    relaxng = NULL;
+	}
 	xmlRelaxNGFreeParserCtxt(ctxt);
 	if (timing) {
 	    endTimer("Compiling the schemas");

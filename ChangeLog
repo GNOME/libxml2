@@ -1,3 +1,12 @@
+Wed Apr 16 17:46:50 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c xmllint.c: more work on RelaxNG streaming validation
+	  trying to improve the subset compiled, and more testing.
+	* doc/downloads.html doc/xml.html doc/xmlmem.html: some updates on the
+	  documentation
+	* test/relaxng/tutor11_1_3.xml: fixes the DTD path
+	* result/relaxng/*.err: fix some of the outputs
+
 Wed Apr 16 01:28:15 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c xmlreader.c xmllint.c include/libxml/relaxng.h

@@ -1,3 +1,8 @@
+Tue Jul 17 17:36:46 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmlmemory.c include/libxml/xmlmemory.h: debugging on IA64,
+	  fixed serious troubles due to size_t vs. int mismatch
+
 Tue Jul 17 16:04:36 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* SAX.c xmlIO.c: cleaned up some warning on the Alpha

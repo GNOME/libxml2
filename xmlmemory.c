@@ -29,9 +29,9 @@
 #include <libxml/xmlerror.h>
 
 void xmlMallocBreakpoint(void);
-void * xmlMemMalloc(int size);
-void * xmlMallocLoc(int size, const char * file, int line);
-void * xmlMemRealloc(void *ptr,int size);
+void * xmlMemMalloc(size_t size);
+void * xmlMallocLoc(size_t size, const char * file, int line);
+void * xmlMemRealloc(void *ptr,size_t size);
 void xmlMemFree(void *ptr);
 char * xmlMemoryStrdup(const char *str);
 
@@ -137,7 +137,7 @@ xmlMallocBreakpoint(void) {
  */
 
 void *
-xmlMallocLoc(int size, const char * file, int line)
+xmlMallocLoc(size_t size, const char * file, int line)
 {
     MEMHDR *p;
     
@@ -191,7 +191,7 @@ xmlMallocLoc(int size, const char * file, int line)
  */
 
 void *
-xmlMemMalloc(int size)
+xmlMemMalloc(size_t size)
 {
     return(xmlMallocLoc(size, "none", 0));
 }
@@ -209,7 +209,7 @@ xmlMemMalloc(int size)
  */
 
 void *
-xmlReallocLoc(void *ptr,int size, const char * file, int line)
+xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
 {
     MEMHDR *p;
     unsigned long number;
@@ -264,7 +264,7 @@ error:
  */
 
 void *
-xmlMemRealloc(void *ptr,int size) {
+xmlMemRealloc(void *ptr,size_t size) {
     return(xmlReallocLoc(ptr, size, "none", 0));
 }
 
@@ -304,7 +304,7 @@ xmlMemFree(void *ptr)
     
 error:    
     xmlGenericError(xmlGenericErrorContext,
-	    "xmlFree(%X) error\n", (unsigned int) ptr);
+	    "xmlFree(%lX) error\n", (unsigned long) ptr);
     return;
 }
 

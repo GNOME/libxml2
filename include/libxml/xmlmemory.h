@@ -51,8 +51,8 @@ extern "C" {
  * The XML memory wrapper support 4 basic overloadable functions
  */
 typedef void (*xmlFreeFunc)(void *);
-typedef void *(*xmlMallocFunc)(int);
-typedef void *(*xmlReallocFunc)(void *, int);
+typedef void *(*xmlMallocFunc)(size_t);
+typedef void *(*xmlReallocFunc)(void *, size_t);
 typedef char *(*xmlStrdupFunc)(const char *);
 
 /*
@@ -94,8 +94,8 @@ int	xmlInitMemory	(void);
 #define xmlRealloc(p, x) xmlReallocLoc((p), (x), __FILE__, __LINE__)
 #define xmlMemStrdup(x) xmlMemStrdupLoc((x), __FILE__, __LINE__)
 
-void *	xmlMallocLoc(int size, const char *file, int line);
-void *	xmlReallocLoc(void *ptr,int size, const char *file, int line);
+void *	xmlMallocLoc(size_t size, const char *file, int line);
+void *	xmlReallocLoc(void *ptr,size_t size, const char *file, int line);
 char *	xmlMemStrdupLoc(const char *str, const char *file, int line);
 #endif /* DEBUG_MEMORY_LOCATION */
 

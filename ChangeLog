@@ -1,3 +1,8 @@
+Fri Feb  6 19:07:04 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: changed coding to output good XIncludes when
+	  one or more bad ones are present (bug 132588)
+
 Fri Feb  6 17:34:21 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: corrected handling of empty fallback condition

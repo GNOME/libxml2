@@ -2193,11 +2193,18 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
 
     /*
      * Third phase: extend the original document infoset.
+     *
+     * Originally we bypassed the inclusion if there were any errors
+     * encountered on any of the XIncludes.  A bug was raised (bug
+     * 132588) requesting that we output the XIncludes without error,
+     * so the check for inc!=NULL || xptr!=NULL was put in.  This may
+     * give some other problems in the future, but for now it seems to
+     * work ok.
+     *
      */
-    if (ctxt->nbErrors == 0) {
-	for (i = ctxt->incBase;i < ctxt->incNr; i++) {
+    for (i = ctxt->incBase;i < ctxt->incNr; i++) {
+	if ((ctxt->incTab[i]->inc != NULL) || (ctxt->incTab[i]->xptr != NULL))
 	    xmlXIncludeIncludeNode(ctxt, i);
-	}
     }
 
     if (doc->URL != NULL)

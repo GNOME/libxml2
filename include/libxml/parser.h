@@ -734,6 +734,11 @@ xmlDocPtr	xmlSAXParseMemory	(xmlSAXHandlerPtr sax,
 					 const char *buffer,
                                    	 int size,
 					 int recovery);
+xmlDocPtr	xmlSAXParseMemoryWithData (xmlSAXHandlerPtr sax,
+					 const char *buffer,
+                                   	 int size,
+					 int recovery,
+					 void *data);
 xmlDocPtr	xmlSAXParseFile		(xmlSAXHandlerPtr sax,
 					 const char *filename,
 					 int recovery);

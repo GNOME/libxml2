@@ -1,3 +1,13 @@
+Tue Nov 12 13:32:50 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: fixed the initialization of the SAX structure
+	  which was breaking xsltproc
+	* xpath.c: patch from Petr Pajas for CDATA nodes
+	* tree.c: patch from Petr Pajas improving xmlGetNodePath()
+	* parser.c include/libxml/parser.h: patch from Peter Jones
+	  removing a leak in xmlSAXParseMemory() and adding the
+	  function xmlSAXParseMemoryWithData()
+
 Mon Nov 11 20:47:03 MST 2002 John Fleck <jfleck@inkstain.net>
 
 	adding pdf of tutorial, changing web page to link to it

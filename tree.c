@@ -3493,8 +3493,9 @@ xmlGetNodePath(xmlNodePtr node)
             }
             if (occur == 0) {
                 tmp = cur->next;
-                while (tmp != NULL) {
-                    if (xmlStrEqual(cur->name, tmp->name))
+                while (tmp != NULL && occur == 0) {
+                    if ((tmp->type == XML_ELEMENT_NODE) &&
+			(xmlStrEqual(cur->name, tmp->name)))
                         occur++;
                     tmp = tmp->next;
                 }
@@ -3502,6 +3503,91 @@ xmlGetNodePath(xmlNodePtr node)
                     occur = 1;
             } else
                 occur++;
+        } else if (cur->type == XML_COMMENT_NODE) {
+            sep = "/";
+	    name = "comment()";
+            next = cur->parent;
+
+            /*
+             * Thumbler index computation
+             */
+            tmp = cur->prev;
+            while (tmp != NULL) {
+                if (tmp->type == XML_COMMENT_NODE)
+		    occur++;
+                tmp = tmp->prev;
+            }
+            if (occur == 0) {
+                tmp = cur->next;
+                while (tmp != NULL && occur == 0) {
+		  if (tmp->type == XML_COMMENT_NODE)
+		    occur++;
+                    tmp = tmp->next;
+                }
+                if (occur != 0)
+                    occur = 1;
+            } else
+                occur++;
+        } else if ((cur->type == XML_TEXT_NODE) ||
+                   (cur->type == XML_CDATA_SECTION_NODE)) {
+            sep = "/";
+	    name = "text()";
+            next = cur->parent;
+
+            /*
+             * Thumbler index computation
+             */
+            tmp = cur->prev;
+            while (tmp != NULL) {
+                if ((cur->type == XML_TEXT_NODE) ||
+		    (cur->type == XML_CDATA_SECTION_NODE))
+		    occur++;
+                tmp = tmp->prev;
+            }
+            if (occur == 0) {
+                tmp = cur->next;
+                while (tmp != NULL && occur == 0) {
+		  if ((cur->type == XML_TEXT_NODE) ||
+		      (cur->type == XML_CDATA_SECTION_NODE))
+		    occur++;
+                    tmp = tmp->next;
+                }
+                if (occur != 0)
+                    occur = 1;
+            } else
+                occur++;
+        } else if (cur->type == XML_PI_NODE) {
+            sep = "/";
+	    snprintf(nametemp, sizeof(nametemp) - 1,
+		     "processing-instruction('%s')", cur->name);
+            nametemp[sizeof(nametemp) - 1] = 0;
+            name = nametemp;
+
+	    next = cur->parent;
+
+            /*
+             * Thumbler index computation
+             */
+            tmp = cur->prev;
+            while (tmp != NULL) {
+                if ((tmp->type == XML_PI_NODE) &&
+		    (xmlStrEqual(cur->name, tmp->name)))
+                    occur++;
+                tmp = tmp->prev;
+            }
+            if (occur == 0) {
+                tmp = cur->next;
+                while (tmp != NULL && occur == 0) {
+                    if ((tmp->type == XML_PI_NODE) &&
+			(xmlStrEqual(cur->name, tmp->name)))
+                        occur++;
+                    tmp = tmp->next;
+                }
+                if (occur != 0)
+                    occur = 1;
+            } else
+                occur++;
+
         } else if (cur->type == XML_ATTRIBUTE_NODE) {
             sep = "/@";
             name = (const char *) (((xmlAttrPtr) cur)->name);

@@ -10339,6 +10339,57 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
 }
 
 /**
+ * xmlSAXParseMemoryWithData:
+ * @sax:  the SAX handler block
+ * @buffer:  an pointer to a char array
+ * @size:  the size of the array
+ * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+ *             documents
+ * @data:  the userdata
+ *
+ * parse an XML in-memory block and use the given SAX function block
+ * to handle the parsing callback. If sax is NULL, fallback to the default
+ * DOM tree building routines.
+ *
+ * User data (void *) is stored within the parser context in the
+ * context's _private member, so it is available nearly everywhere in libxml
+ *
+ * Returns the resulting document tree
+ */
+
+xmlDocPtr
+xmlSAXParseMemoryWithData(xmlSAXHandlerPtr sax, const char *buffer,
+	          int size, int recovery, void *data) {
+    xmlDocPtr ret;
+    xmlParserCtxtPtr ctxt;
+
+    ctxt = xmlCreateMemoryParserCtxt(buffer, size);
+    if (ctxt == NULL) return(NULL);
+    if (sax != NULL) {
+	if (ctxt->sax != NULL)
+	    xmlFree(ctxt->sax);
+        ctxt->sax = sax;
+    }
+    if (data!=NULL) {
+	ctxt->_private=data;
+    }
+
+    xmlParseDocument(ctxt);
+
+    if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
+    else {
+       ret = NULL;
+       xmlFreeDoc(ctxt->myDoc);
+       ctxt->myDoc = NULL;
+    }
+    if (sax != NULL) 
+	ctxt->sax = NULL;
+    xmlFreeParserCtxt(ctxt);
+    
+    return(ret);
+}
+
+/**
  * xmlSAXParseMemory:
  * @sax:  the SAX handler block
  * @buffer:  an pointer to a char array
@@ -10355,28 +10406,7 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
 xmlDocPtr
 xmlSAXParseMemory(xmlSAXHandlerPtr sax, const char *buffer,
 	          int size, int recovery) {
-    xmlDocPtr ret;
-    xmlParserCtxtPtr ctxt;
-
-    ctxt = xmlCreateMemoryParserCtxt(buffer, size);
-    if (ctxt == NULL) return(NULL);
-    if (sax != NULL) {
-        ctxt->sax = sax;
-    }
-
-    xmlParseDocument(ctxt);
-
-    if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
-    else {
-       ret = NULL;
-       xmlFreeDoc(ctxt->myDoc);
-       ctxt->myDoc = NULL;
-    }
-    if (sax != NULL) 
-	ctxt->sax = NULL;
-    xmlFreeParserCtxt(ctxt);
-    
-    return(ret);
+    return xmlSAXParseMemoryWithData(sax, buffer, size, recovery, NULL);
 }
 
 /**

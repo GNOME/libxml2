@@ -9336,7 +9336,9 @@ xmlXPathNodeCollectAndTestNth(xmlXPathParserContextPtr ctxt,
                           (cur->type == XML_PI_NODE) ||
                           (cur->type == XML_COMMENT_NODE) ||
                           (cur->type == XML_CDATA_SECTION_NODE) ||
-                          (cur->type == XML_TEXT_NODE)))) {
+                          (cur->type == XML_TEXT_NODE))) ||
+			((type == NODE_TYPE_TEXT) &&
+			 (cur->type == XML_CDATA_SECTION_NODE))) {
                         n++;
                         if (n == indx)
                             addNode(list, cur);

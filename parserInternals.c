@@ -2250,7 +2250,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->space = &ctxt->spaceTab[0];
 
     ctxt->sax = sax;
-    initxmlDefaultSAXHandler(sax, xmlGetWarningsDefaultValue);
+    memcpy(sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
 
     ctxt->userData = ctxt;
     ctxt->myDoc = NULL;

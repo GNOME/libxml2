@@ -8,19 +8,31 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.7</version>
-    <last-release> Feb 23 2004</last-release>
+    <version>2.6.8</version>
+    <last-release> Mar 23 2004</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - documentation: tutorial updates (John Fleck), benchmark results
-   - xmlWriter: updates and fixes (Alfred Mickautsch, Lucas Brasilino)
-   - XPath optimization (Petr Pajas)
-   - DTD ID handling optimization
-   - bugfixes: xpath number with  &gt; 19 fractional (William Brack), push
-    mode with unescaped '&gt;' characters, fix xmllint --stream --timing, fix
-    xmllint --memory --stream memory usage, xmlAttrSerializeTxtContent
-    handling NULL, trying to fix Relax-NG/Perl interface.
-   - python: 2.3 compatibility, whitespace fixes (Malcolm Tredinnick)
-   - Added relaxng option to xmllint --shell
+    <changes>   - First step of the cleanup of the serialization code and APIs
+   - XML Schemas: mixed content (Adam Dickmeiss), QName handling fixes (Adam
+    Dickmeiss), anyURI for "" (John Belmonte)
+   - Python: Canonicalization C14N support added (Anthony Carrico)
+   - xmlDocCopyNode() extension (William)
+   - Relax-NG: fix when processing XInclude results (William), external
+    reference in interleave (William), missing error on &lt;choice&gt;
+    failure (William), memory leak in schemas datatype facets.
+   - xmlWriter: patch for better DTD support (Alfred Mickautsch)
+   - bug fixes: xmlXPathLangFunction memory leak (Mike Hommey and William
+    Brack), no ID errors if using HTML_PARSE_NOERROR, xmlcatalog fallbacks to
+    URI on SYSTEM lookup failure, XInclude parse flags inheritance (William),
+    XInclude and XPointer fixes for entities (William), XML parser bug
+    reported by Holger Rauch, nanohttp fd leak (William),  regexps char
+    groups '-' handling (William), dictionnary reference counting problems,
+    do not close stderr.
+   - performance patches from Petr Pajas
+   - Documentation fixes: XML_CATALOG_FILES in man pages (Mike Hommey)
+   - compilation and portability fixes: --without-valid, catalog cleanups
+    (Peter Breitenlohner), MingW patch (Roland Schwingel), cross-compilation
+    to Windows (Christophe de Vienne),  --with-html-dir fixup (Julio Merino
+    Vidal), Windows build (Eric Zurcher)
 
 </changes>
   </product>

@@ -11,7 +11,24 @@ A:link, A:visited, A:active { text-decoration: underline }
 to help those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
-</ul><p>There is the list of public releases:</p><h3>2.6.8: Mar 23 2004</h3><ul><li>First step of the cleanup of the serialization code and APIs</li>
+</ul><p>There is the list of public releases:</p><h3>2.6.9: Apr 18 2004</h3><ul><li>implement xml:id Working Draft, relaxed XPath id() checking</li>
+  <li>bugfixes: xmlCtxtReset (Brent Hendricks), line number and CDATA (Dave
+    Beckett), Relax-NG compilation (William Brack), Regexp patches (with
+    William), xmlUriEscape (Mark Vakoc), a Relax-NG notAllowed problem (with
+    William), Relax-NG name classes compares (William), XInclude duplicate
+    fallback (William), external DTD encoding detection (William), a DTD
+    validation bug (William), xmlReader Close() fix, recusive extention
+    schemas</li>
+  <li>improvements: use xmlRead* APIs in test tools (Mark Vakoc), indenting
+    save optimization, better handle IIS broken HTTP redirect  behaviour (Ian
+    Hummel), HTML parser frameset (James Bursa), libxml2-python RPM
+    dependancy, XML Schemas union support (Kasimier Buchcik), warning removal
+    clanup (William), keep ChangeLog compressed when installing from RPMs</li>
+  <li>documentation: examples and xmlDocDumpMemory docs (John Fleck), new
+    example (load, xpath, modify, save), xmlCatalogDump() comments, </li>
+  <li>Windows: Borland C++ builder (Eric Zurcher), work around Microsoft
+    compiler NaN handling bug (Mark Vakoc)</li>
+</ul><h3>2.6.8: Mar 23 2004</h3><ul><li>First step of the cleanup of the serialization code and APIs</li>
   <li>XML Schemas: mixed content (Adam Dickmeiss), QName handling fixes (Adam
     Dickmeiss), anyURI for "" (John Belmonte)</li>
   <li>Python: Canonicalization C14N support added (Anthony Carrico)</li>

@@ -219,6 +219,8 @@
     <reference name='XML_DTD_UNKNOWN_ENTITY' href='html/libxml-xmlerror.html#XML_DTD_UNKNOWN_ENTITY'/>
     <reference name='XML_DTD_UNKNOWN_ID' href='html/libxml-xmlerror.html#XML_DTD_UNKNOWN_ID'/>
     <reference name='XML_DTD_UNKNOWN_NOTATION' href='html/libxml-xmlerror.html#XML_DTD_UNKNOWN_NOTATION'/>
+    <reference name='XML_DTD_XMLID_TYPE' href='html/libxml-xmlerror.html#XML_DTD_XMLID_TYPE'/>
+    <reference name='XML_DTD_XMLID_VALUE' href='html/libxml-xmlerror.html#XML_DTD_XMLID_VALUE'/>
     <reference name='XML_ELEMENT_CONTENT_ELEMENT' href='html/libxml-tree.html#XML_ELEMENT_CONTENT_ELEMENT'/>
     <reference name='XML_ELEMENT_CONTENT_MULT' href='html/libxml-tree.html#XML_ELEMENT_CONTENT_MULT'/>
     <reference name='XML_ELEMENT_CONTENT_ONCE' href='html/libxml-tree.html#XML_ELEMENT_CONTENT_ONCE'/>
@@ -710,6 +712,7 @@
     <reference name='XML_SCHEMAP_NOTYPE_NOREF' href='html/libxml-xmlerror.html#XML_SCHEMAP_NOTYPE_NOREF'/>
     <reference name='XML_SCHEMAP_NOT_SCHEMA' href='html/libxml-xmlerror.html#XML_SCHEMAP_NOT_SCHEMA'/>
     <reference name='XML_SCHEMAP_PREFIX_UNDEFINED' href='html/libxml-xmlerror.html#XML_SCHEMAP_PREFIX_UNDEFINED'/>
+    <reference name='XML_SCHEMAP_RECURSIVE' href='html/libxml-xmlerror.html#XML_SCHEMAP_RECURSIVE'/>
     <reference name='XML_SCHEMAP_REDEFINED_ATTR' href='html/libxml-xmlerror.html#XML_SCHEMAP_REDEFINED_ATTR'/>
     <reference name='XML_SCHEMAP_REDEFINED_ATTRGROUP' href='html/libxml-xmlerror.html#XML_SCHEMAP_REDEFINED_ATTRGROUP'/>
     <reference name='XML_SCHEMAP_REDEFINED_ELEMENT' href='html/libxml-xmlerror.html#XML_SCHEMAP_REDEFINED_ELEMENT'/>
@@ -3104,6 +3107,8 @@
       <ref name='XML_DTD_UNKNOWN_ENTITY'/>
       <ref name='XML_DTD_UNKNOWN_ID'/>
       <ref name='XML_DTD_UNKNOWN_NOTATION'/>
+      <ref name='XML_DTD_XMLID_TYPE'/>
+      <ref name='XML_DTD_XMLID_VALUE'/>
       <ref name='XML_ELEMENT_CONTENT_ELEMENT'/>
       <ref name='XML_ELEMENT_CONTENT_MULT'/>
       <ref name='XML_ELEMENT_CONTENT_ONCE'/>
@@ -3595,6 +3600,7 @@
       <ref name='XML_SCHEMAP_NOTYPE_NOREF'/>
       <ref name='XML_SCHEMAP_NOT_SCHEMA'/>
       <ref name='XML_SCHEMAP_PREFIX_UNDEFINED'/>
+      <ref name='XML_SCHEMAP_RECURSIVE'/>
       <ref name='XML_SCHEMAP_REDEFINED_ATTR'/>
       <ref name='XML_SCHEMAP_REDEFINED_ATTRGROUP'/>
       <ref name='XML_SCHEMAP_REDEFINED_ELEMENT'/>
@@ -10499,6 +10505,8 @@
       <ref name='XML_DTD_UNKNOWN_ENTITY'/>
       <ref name='XML_DTD_UNKNOWN_ID'/>
       <ref name='XML_DTD_UNKNOWN_NOTATION'/>
+      <ref name='XML_DTD_XMLID_TYPE'/>
+      <ref name='XML_DTD_XMLID_VALUE'/>
       <ref name='XML_ERR_ATTLIST_NOT_FINISHED'/>
       <ref name='XML_ERR_ATTLIST_NOT_STARTED'/>
       <ref name='XML_ERR_ATTRIBUTE_NOT_FINISHED'/>
@@ -10855,6 +10863,7 @@
       <ref name='XML_SCHEMAP_NOTYPE_NOREF'/>
       <ref name='XML_SCHEMAP_NOT_SCHEMA'/>
       <ref name='XML_SCHEMAP_PREFIX_UNDEFINED'/>
+      <ref name='XML_SCHEMAP_RECURSIVE'/>
       <ref name='XML_SCHEMAP_REDEFINED_ATTR'/>
       <ref name='XML_SCHEMAP_REDEFINED_ATTRGROUP'/>
       <ref name='XML_SCHEMAP_REDEFINED_ELEMENT'/>
@@ -12141,6 +12150,9 @@
         </word>
         <word name='Bengali'>
           <ref name='xmlUCSIsBengali'/>
+        </word>
+        <word name='Best'>
+          <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='BinHex'>
           <ref name='xmlTextWriterWriteBinHex'/>
@@ -16168,6 +16180,7 @@
           <ref name='xmlNormalizeURIPath'/>
           <ref name='xmlReallocLoc'/>
           <ref name='xmlSetBufferAllocationScheme'/>
+          <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='allocations'>
           <ref name='xmlGcMemGet'/>
@@ -17049,6 +17062,9 @@
         </word>
         <word name='ceiling'>
           <ref name='xmlXPathCeilingFunction'/>
+        </word>
+        <word name='certainly'>
+          <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='chained'>
           <ref name='xmlFreeNsList'/>
@@ -18398,6 +18414,9 @@
         </word>
         <word name='differentiate'>
           <ref name='xmlXPathOrderDocElems'/>
+        </word>
+        <word name='differently'>
+          <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='digit'>
           <ref name='xmlXPathStringFunction'/>
@@ -19797,6 +19816,7 @@
         </word>
         <word name='good'>
           <ref name='xmlSAXDefaultVersion'/>
+          <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='grafted'>
           <ref name='xmlCopyProp'/>
@@ -20158,6 +20178,7 @@
           <ref name='xmlMallocFunc'/>
           <ref name='xmlReallocFunc'/>
           <ref name='xmlStrdupFunc'/>
+          <ref name='xmlTextReaderGetRemainder'/>
           <ref name='xmlXPathRegisterFunc'/>
           <ref name='xmlXPathRegisterFuncNS'/>
         </word>
@@ -22477,6 +22498,7 @@
         <word name='past'>
           <ref name='attribute'/>
           <ref name='attributeSAXFunc'/>
+          <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='paste'>
           <ref name='xmlReconciliateNs'/>
@@ -22841,6 +22863,7 @@
           <ref name='xmlRelaxNGValidatePopElement'/>
           <ref name='xmlRelaxNGValidatePushCData'/>
           <ref name='xmlRelaxNGValidatePushElement'/>
+          <ref name='xmlTextReaderGetRemainder'/>
           <ref name='xmlUTF8Strsub'/>
           <ref name='xmlValidatePopElement'/>
           <ref name='xmlValidatePushCData'/>
@@ -22890,6 +22913,9 @@
           <ref name='xmlParseEntityRef'/>
           <ref name='xmlValidCtxtNormalizeAttributeValue'/>
           <ref name='xmlValidNormalizeAttributeValue'/>
+        </word>
+        <word name='procgressed'>
+          <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='produce'>
           <ref name='xmlCharEncodingOutputFunc'/>
@@ -23220,6 +23246,9 @@
           <ref name='xmlTextReaderReadState'/>
           <ref name='xmlTextReaderReadString'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
+        </word>
+        <word name='reader-'>
+          <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='reading'>
           <ref name='xmlSchemaValidateStream'/>
@@ -23817,6 +23846,9 @@
           <ref name='xmlXPathNextAncestorOrSelf'/>
           <ref name='xmlXPathNextPreceding'/>
           <ref name='xmlXPathNextPrecedingSibling'/>
+        </word>
+        <word name='rewrite'>
+          <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='right'>
           <ref name='xmlAutomataNewCounterTrans'/>
@@ -25185,6 +25217,7 @@
           <ref name='xmlParseNotationDecl'/>
           <ref name='xmlParseReference'/>
           <ref name='xmlStructuredErrorFunc'/>
+          <ref name='xmlTextReaderGetRemainder'/>
           <ref name='xmlTextReaderNext'/>
           <ref name='xmlTextReaderNextSibling'/>
           <ref name='xmlTextReaderRead'/>
@@ -26109,6 +26142,7 @@
         </word>
         <word name='would'>
           <ref name='htmlAutoCloseTag'/>
+          <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='write'>
           <ref name='xmlFileRead'/>

@@ -1784,7 +1784,7 @@
      <exports symbol='XML_DTD_EMPTY_NOTATION' type='enum'/>
      <exports symbol='XML_RNGP_ELEMENT_EMPTY' type='enum'/>
      <exports symbol='XML_RNGP_PAT_LIST_TEXT' type='enum'/>
-     <exports symbol='XML_XPATH_START_LITERAL_ERROR' type='enum'/>
+     <exports symbol='XML_SCHEMAP_UNKNOWN_ALL_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI' type='enum'/>
      <exports symbol='XML_ERR_ELEMCONTENT_NOT_STARTED' type='enum'/>
      <exports symbol='XML_RNGP_INCLUDE_FAILURE' type='enum'/>
@@ -1796,7 +1796,7 @@
      <exports symbol='XML_FROM_CATALOG' type='enum'/>
      <exports symbol='XML_SCHEMAV_ATTRINVALID' type='enum'/>
      <exports symbol='XML_SCHEMAV_VALUE' type='enum'/>
-     <exports symbol='XML_IO_LOAD_ERROR' type='enum'/>
+     <exports symbol='XML_DTD_NOT_EMPTY' type='enum'/>
      <exports symbol='XML_FROM_HTML' type='enum'/>
      <exports symbol='XML_RNGP_PAT_START_LIST' type='enum'/>
      <exports symbol='XML_ERR_LT_REQUIRED' type='enum'/>
@@ -1922,6 +1922,7 @@
      <exports symbol='XML_XINCLUDE_FALLBACK_NOT_IN_INCLUDE' type='enum'/>
      <exports symbol='XML_RNGP_ATTRIBUTE_CONTENT' type='enum'/>
      <exports symbol='XML_RNGP_REF_NOT_EMPTY' type='enum'/>
+     <exports symbol='XML_DTD_XMLID_TYPE' type='enum'/>
      <exports symbol='XML_XPATH_VARIABLE_REF_ERROR' type='enum'/>
      <exports symbol='XML_RNGP_INTERLEAVE_ADD' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_CHOICE_CHILD' type='enum'/>
@@ -1948,6 +1949,7 @@
      <exports symbol='XML_FROM_XSLT' type='enum'/>
      <exports symbol='XML_RNGP_PAT_LIST_ATTR' type='enum'/>
      <exports symbol='XML_IO_EIO' type='enum'/>
+     <exports symbol='XML_XPATH_START_LITERAL_ERROR' type='enum'/>
      <exports symbol='XML_IO_EACCES' type='enum'/>
      <exports symbol='XML_DTD_NOT_PCDATA' type='enum'/>
      <exports symbol='XML_SCHEMAP_PREFIX_UNDEFINED' type='enum'/>
@@ -1955,7 +1957,7 @@
      <exports symbol='XML_RNGP_PARAM_FORBIDDEN' type='enum'/>
      <exports symbol='XML_ERR_OK' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOTHING_TO_PARSE' type='enum'/>
-     <exports symbol='XML_SCHEMAP_UNKNOWN_PROCESSCONTENT_CHILD' type='enum'/>
+     <exports symbol='XML_SCHEMAP_RECURSIVE' type='enum'/>
      <exports symbol='XML_ERR_UNSUPPORTED_ENCODING' type='enum'/>
      <exports symbol='XML_SCHEMAP_GROUP_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_RNGP_PAT_NSNAME_EXCEPT_ANYNAME' type='enum'/>
@@ -2003,7 +2005,7 @@
      <exports symbol='XML_RNGP_ATTRIBUTE_EMPTY' type='enum'/>
      <exports symbol='XML_SCHEMAV_ISABSTRACT' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ATTRIBUTE_GROUP' type='enum'/>
-     <exports symbol='XML_DTD_NOT_EMPTY' type='enum'/>
+     <exports symbol='XML_IO_LOAD_ERROR' type='enum'/>
      <exports symbol='XML_RNGP_PAT_LIST_ELEM' type='enum'/>
      <exports symbol='XML_SCHEMAV_UNDECLAREDELEM' type='enum'/>
      <exports symbol='XML_RNGP_CREATE_FAILURE' type='enum'/>
@@ -2117,7 +2119,7 @@
      <exports symbol='XML_ERR_TAG_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_RNGP_XMLNS_NAME' type='enum'/>
      <exports symbol='XML_ERR_LTSLASH_REQUIRED' type='enum'/>
-     <exports symbol='XML_SCHEMAP_UNKNOWN_ALL_CHILD' type='enum'/>
+     <exports symbol='XML_DTD_XMLID_VALUE' type='enum'/>
      <exports symbol='XML_DTD_MIXED_CORRUPT' type='enum'/>
      <exports symbol='XML_RNGP_DEFINE_CREATE_FAILED' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_BOUNDARY' type='enum'/>
@@ -2150,6 +2152,7 @@
      <exports symbol='XML_RNGP_PARENTREF_NOT_EMPTY' type='enum'/>
      <exports symbol='XML_ERR_PEREF_NO_NAME' type='enum'/>
      <exports symbol='XML_ERR_ENTITYREF_AT_EOF' type='enum'/>
+     <exports symbol='XML_SCHEMAP_UNKNOWN_PROCESSCONTENT_CHILD' type='enum'/>
      <exports symbol='XML_NS_ERR_ATTRIBUTE_REDEFINED' type='enum'/>
      <exports symbol='XML_ERR_NAME_REQUIRED' type='enum'/>
      <exports symbol='XML_IO_ETIMEDOUT' type='enum'/>
@@ -3796,6 +3799,8 @@
     <enum name='XML_DTD_UNKNOWN_ENTITY' file='xmlerror' value='535' type='xmlParserErrors' info='535'/>
     <enum name='XML_DTD_UNKNOWN_ID' file='xmlerror' value='536' type='xmlParserErrors' info='536'/>
     <enum name='XML_DTD_UNKNOWN_NOTATION' file='xmlerror' value='537' type='xmlParserErrors' info='537'/>
+    <enum name='XML_DTD_XMLID_TYPE' file='xmlerror' value='540' type='xmlParserErrors' info='540'/>
+    <enum name='XML_DTD_XMLID_VALUE' file='xmlerror' value='539' type='xmlParserErrors' info='539'/>
     <enum name='XML_ELEMENT_CONTENT_ELEMENT' file='tree' value='2' type='xmlElementContentType'/>
     <enum name='XML_ELEMENT_CONTENT_MULT' file='tree' value='3' type='xmlElementContentOccur'/>
     <enum name='XML_ELEMENT_CONTENT_ONCE' file='tree' value='1' type='xmlElementContentOccur'/>
@@ -4282,6 +4287,7 @@
     <enum name='XML_SCHEMAP_NOTYPE_NOREF' file='xmlerror' value='1724' type='xmlParserErrors' info='1724'/>
     <enum name='XML_SCHEMAP_NOT_SCHEMA' file='xmlerror' value='1772' type='xmlParserErrors' info='1771'/>
     <enum name='XML_SCHEMAP_PREFIX_UNDEFINED' file='xmlerror' value='1700' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAP_RECURSIVE' file='xmlerror' value='1775' type='xmlParserErrors' info='1724'/>
     <enum name='XML_SCHEMAP_REDEFINED_ATTR' file='xmlerror' value='1764' type='xmlParserErrors' info='1763'/>
     <enum name='XML_SCHEMAP_REDEFINED_ATTRGROUP' file='xmlerror' value='1763' type='xmlParserErrors' info='1762'/>
     <enum name='XML_SCHEMAP_REDEFINED_ELEMENT' file='xmlerror' value='1762' type='xmlParserErrors' info='1761'/>
@@ -5251,6 +5257,7 @@ actually an xmlCharEncoding'/>
       <field name='baseType' type='xmlSchemaTypePtr' info=''/>
       <field name='facets' type='xmlSchemaFacetPtr' info=''/>
       <field name='redef' type='struct _xmlSchemaType *' info=' possible redefinitions for the type'/>
+      <field name='recurse' type='int' info=''/>
     </struct>
     <typedef name='xmlSchemaTypePtr' file='schemasInternals' type='xmlSchemaType *'/>
     <typedef name='xmlSchemaTypeType' file='schemasInternals' type='enum'/>
@@ -11798,7 +11805,7 @@ actually an xmlCharEncoding'/>
       <arg name='prop' type='int' info='the xmlParserProperties to get'/>
     </function>
     <function name='xmlTextReaderGetRemainder' file='xmlreader'>
-      <info>Method to get the remainder of the buffered XML. this method stops the parser, set its state to End Of File and return the input stream with what is left that the parser did not use.</info>
+      <info>Method to get the remainder of the buffered XML. this method stops the parser, set its state to End Of File and return the input stream with what is left that the parser did not use.  The implementation is not good, the parser certainly procgressed past what&apos;s left in reader-&gt;input, and there is an allocation problem. Best would be to rewrite it differently.</info>
       <return type='xmlParserInputBufferPtr' info='the xmlParserInputBufferPtr attached to the XML or NULL in case of error.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>

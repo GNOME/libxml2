@@ -309,9 +309,9 @@
       <include>&lt;libxml/parser.h&gt;</include>
     </includes>
     <uses>
-      <function line='94' file='parser' name='xmlFreeParserCtxt'/>
-      <function line='86' file='parser' name='xmlParseChunk'/>
-      <function line='67' file='parser' name='xmlCreatePushParserCtxt'/>
+      <function line='93' file='parser' name='xmlFreeParserCtxt'/>
+      <function line='85' file='parser' name='xmlParseChunk'/>
+      <function line='66' file='parser' name='xmlCreatePushParserCtxt'/>
       <typedef line='44' file='tree' name='xmlParserCtxtPtr'/>
     </uses>
   </example>

@@ -10,6 +10,26 @@ to help those   - More testing on RelaxNG
   Schemas
 
 There is the list of public releases:
+2.6.9: Apr 18 2004:
+   - implement xml:id Working Draft, relaxed XPath id() checking
+   - bugfixes: xmlCtxtReset (Brent Hendricks), line number and CDATA (Dave
+    Beckett), Relax-NG compilation (William Brack), Regexp patches (with
+    William), xmlUriEscape (Mark Vakoc), a Relax-NG notAllowed problem (with
+    William), Relax-NG name classes compares (William), XInclude duplicate
+    fallback (William), external DTD encoding detection (William), a DTD
+    validation bug (William), xmlReader Close() fix, recusive extention
+    schemas
+   - improvements: use xmlRead* APIs in test tools (Mark Vakoc), indenting
+    save optimization, better handle IIS broken HTTP redirect  behaviour (Ian
+    Hummel), HTML parser frameset (James Bursa), libxml2-python RPM
+    dependancy, XML Schemas union support (Kasimier Buchcik), warning removal
+    clanup (William), keep ChangeLog compressed when installing from RPMs
+   - documentation: examples and xmlDocDumpMemory docs (John Fleck), new
+    example (load, xpath, modify, save), xmlCatalogDump() comments, 
+   - Windows: Borland C++ builder (Eric Zurcher), work around Microsoft
+    compiler NaN handling bug (Mark Vakoc)
+
+
 2.6.8: Mar 23 2004:
    - First step of the cleanup of the serialization code and APIs
    - XML Schemas: mixed content (Adam Dickmeiss), QName handling fixes (Adam

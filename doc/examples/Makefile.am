@@ -15,7 +15,7 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(HTML_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(srcdir)/*.xml $(srcdir)/*.xsl $(srcdir)/*.res $(DESTDIR)$(HTML_DIR)
 
-EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml reader1.res reader3.res tree1.res tree2.res io1.res io2.res xpath1.res xpath2.res 
+EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml tst.xml reader1.res reader3.res tree1.res tree2.res io1.res io2.res xpath1.res xpath2.res 
 
 noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 io1 parse3 parse4 io2 xpath2 
 

@@ -1,3 +1,8 @@
+Sun Apr 18 23:45:46 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: preparing 2.6.9 release
+	* doc/* News: updated and rebuilt the docs
+
 Sun Apr 18 22:51:43 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: relaxed id() to not check taht the name(s) passed
@@ -13,7 +18,7 @@ Sun Apr 18 21:46:17 CEST 2004 Daniel Veillard <daniel@veillard.com>
 	* xpath.c: work around Microsoft compiler NaN bug raise reported
 	  by Mark Vakoc
 	* xmlschemas.c include/libxml/schemasInternals.h 
-	  include/libxml/xmlerror.h: fixed a recusive expection schemas
+	  include/libxml/xmlerror.h: fixed a recusive extention schemas
 	  compilation error raised by taihei goi
 
 Sun Apr 18 16:57:02 CEST 2004 Daniel Veillard <daniel@veillard.com>
@@ -95,7 +100,7 @@ Fri Apr  2 17:03:48 HKT 2004 William Brack <wbrack@mmm.com.hk>
 Thu Apr  1 22:07:52 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: fix for xmlUriEscape on "http://user@somewhere.com"
-	  from Mark Vadok.
+	  from Mark Vakoc.
 
 2004-04-01  Johan Dahlin  <johan@gnome.org>
 
@@ -170,7 +175,7 @@ Thu Mar 25 20:21:01 MST 2004 John Fleck <jfleck@inkstain.net>
 Thu Mar 25 10:33:05 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c testXPath.c xmllint.c xmlschemastypes.c: applied
-	  patch from Mark Vadoc avoiding using xmlParse* option and use
+	  patch from Mark Vakoc avoiding using xmlParse* option and use
 	  xmlRead* instead
 	* win32/Makefile.bcb: patch to Borland C++ builder from Eric Zurcher
 	  to avoid problems with some pathnames.

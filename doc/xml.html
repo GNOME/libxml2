@@ -73,6 +73,8 @@ languages:</p>
   <li>W3C XML Schemas Part 2: Datatypes <a
     href="http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/">REC 02 May
     2001</a></li>
+  <li>W3C <a href="http://www.w3.org/TR/xml-id/">xml:id</a> Working Draft 7
+    April 2004</li>
 </ul>
 
 <p>In most cases libxml2 tries to implement the specifications in a
@@ -600,11 +602,10 @@ database</a>:</p>
 <h2><a name="Downloads">Downloads</a></h2>
 
 <p>The latest versions of libxml2 can be found on the <a
-href="ftp://xmlsoft.org/">xmlsoft.org</a> server (
-<a href="http://xmlsoft.org/sources/">HTTP</a>,
-<a href="ftp://xmlsoft.org/">FTP</a> and rsync are
-available), there is also mirrors (<a
-href="ftp://speakeasy.rpmfind.net/pub/libxml/">Seattle</a>, <a
+href="ftp://xmlsoft.org/">xmlsoft.org</a> server ( <a
+href="http://xmlsoft.org/sources/">HTTP</a>, <a
+href="ftp://xmlsoft.org/">FTP</a> and rsync are available), there is also
+mirrors (<a href="ftp://speakeasy.rpmfind.net/pub/libxml/">Seattle</a>, <a
 href="ftp://fr.rpmfind.net/pub/libxml/">France</a>) or on the <a
 href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> as <a
 href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/">source archive</a>
@@ -613,8 +614,9 @@ mirror in Austria</a>. (NOTE that you need both the <a
 href="http://rpmfind.net/linux/RPM/libxml2.html">libxml(2)</a> and <a
 href="http://rpmfind.net/linux/RPM/libxml2-devel.html">libxml(2)-devel</a>
 packages installed to compile applications using libxml.)</p>
-<p> You can find all the history of libxml(2) and libxslt releases
-in the <a href="http://xmlsoft.org/sources/old/">old</a> directory.</p>
+
+<p>You can find all the history of libxml(2) and libxslt releases in the <a
+href="http://xmlsoft.org/sources/old/">old</a> directory.</p>
 
 <p>Binary ports:</p>
 <ul>
@@ -674,6 +676,27 @@ to help those</p>
 </ul>
 
 <p>There is the list of public releases:</p>
+
+<h3>2.6.9: Apr 18 2004</h3>
+<ul>
+  <li>implement xml:id Working Draft, relaxed XPath id() checking</li>
+  <li>bugfixes: xmlCtxtReset (Brent Hendricks), line number and CDATA (Dave
+    Beckett), Relax-NG compilation (William Brack), Regexp patches (with
+    William), xmlUriEscape (Mark Vakoc), a Relax-NG notAllowed problem (with
+    William), Relax-NG name classes compares (William), XInclude duplicate
+    fallback (William), external DTD encoding detection (William), a DTD
+    validation bug (William), xmlReader Close() fix, recusive extention
+    schemas</li>
+  <li>improvements: use xmlRead* APIs in test tools (Mark Vakoc), indenting
+    save optimization, better handle IIS broken HTTP redirect  behaviour (Ian
+    Hummel), HTML parser frameset (James Bursa), libxml2-python RPM
+    dependancy, XML Schemas union support (Kasimier Buchcik), warning removal
+    clanup (William), keep ChangeLog compressed when installing from RPMs</li>
+  <li>documentation: examples and xmlDocDumpMemory docs (John Fleck), new
+    example (load, xpath, modify, save), xmlCatalogDump() comments, </li>
+  <li>Windows: Borland C++ builder (Eric Zurcher), work around Microsoft
+    compiler NaN handling bug (Mark Vakoc)</li>
+</ul>
 
 <h3>2.6.8: Mar 23 2004</h3>
 <ul>

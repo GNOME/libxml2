@@ -270,6 +270,7 @@ py_types = {
     'xmlParserCtxt *': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
     'htmlParserCtxtPtr': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
     'htmlParserCtxt *': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
+    'xmlValidCtxtPtr': ('O', "ValidCtxt", "xmlValidCtxtPtr", "xmlValidCtxtPtr"),
     'xmlCatalogPtr': ('O', "catalog", "xmlCatalogPtr", "xmlCatalogPtr"),
     'FILE *': ('O', "File", "FILEPtr", "FILE *"),
     'xmlURIPtr': ('O', "URI", "xmlURIPtr", "xmlURIPtr"),
@@ -345,6 +346,14 @@ def skip_function(name):
         return 1
     if name == "xmlErrMemory":
         return 1
+
+    if name == "xmlValidBuildContentModel":
+        return 1
+    if name == "xmlValidateElementDecl":
+        return 1
+    if name == "xmlValidateAttributeDecl":
+        return 1
+
     return 0
 
 def print_function_wrapper(name, output, export, include):
@@ -668,6 +677,7 @@ classes_type = {
     "xmlParserCtxt *": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
     "htmlParserCtxtPtr": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
     "htmlParserCtxt *": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
+    "xmlValidCtxtPtr": ("._o", "ValidCtxt(_obj=%s)", "ValidCtxt"),
     "xmlCatalogPtr": ("._o", "catalog(_obj=%s)", "catalog"),
     "xmlURIPtr": ("._o", "URI(_obj=%s)", "URI"),
     "xmlErrorPtr": ("._o", "Error(_obj=%s)", "Error"),
@@ -718,6 +728,7 @@ classes_destructors = {
 	"Schema": "xmlSchemaFree",
 	"SchemaParserCtxt": "xmlSchemaFreeParserCtxt",
 	"SchemaValidCtxt": "xmlSchemaFreeValidCtxt",
+        "ValidCtxt": "xmlFreeValidCtxt",
 }
 
 functions_noexcept = {

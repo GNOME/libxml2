@@ -1,8 +1,16 @@
+Wed Nov 10 12:55:18 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c python/libxml2class.txt
+	  python/libxml_wrap.h python/types.c: Applied patch from Brent
+	  Hendricks adding support for late DTD validation.
+	* python/tests/Makefile.am python/tests/dtdvalid.py
+	  python/tests/test.dtd: integrated the provided regression test
+
 Tue nov  9 19:24:31 CET 2004 Dodji Seketeli <dodji@seketeli.org>
 
 	* configure.in: detect when struct sockaddr_storage
-	has the __ss_family member instead of ss_family and
-	behave accordingly. We know can use ipv6 on aix.
+	  has the __ss_family member instead of ss_family and
+	  behave accordingly. We now can use ipv6 on aix.
 
 Tue Nov  9 17:15:46 CET 2004 Daniel Veillard <daniel@veillard.com>
 

@@ -1554,7 +1554,7 @@ libxml_xmlParserCtxtGenericErrorFuncHandler(void *ctx, int severity, char *str)
     xmlParserCtxtPyCtxtPtr pyCtxt;
     
 #ifdef DEBUG_ERROR
-    printf("libxml_xmlParserCtxtGenericErrorFuncHandler(%p, %s, ...) called\n", ctx, msg);
+    printf("libxml_xmlParserCtxtGenericErrorFuncHandler(%p, %s, ...) called\n", ctx, str);
 #endif
 
     ctxt = (xmlParserCtxtPtr)ctx;
@@ -1721,6 +1721,141 @@ libxml_xmlFreeParserCtxt(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
 
     Py_INCREF(Py_None);
     return(Py_None);
+}
+
+/***
+ * xmlValidCtxt stuff
+ */
+
+typedef struct 
+{
+    PyObject *warn;
+    PyObject *error;
+    PyObject *arg;
+} xmlValidCtxtPyCtxt;
+typedef xmlValidCtxtPyCtxt *xmlValidCtxtPyCtxtPtr;
+
+static void
+libxml_xmlValidCtxtGenericErrorFuncHandler(void *ctx, int severity, char *str) 
+{
+    PyObject *list;
+    PyObject *result;
+    xmlValidCtxtPyCtxtPtr pyCtxt;
+    
+#ifdef DEBUG_ERROR
+    printf("libxml_xmlValidCtxtGenericErrorFuncHandler(%p, %d, %s, ...) called\n", ctx, severity, str);
+#endif
+
+    pyCtxt = (xmlValidCtxtPyCtxtPtr)ctx;
+    
+    list = PyTuple_New(2);
+    PyTuple_SetItem(list, 0, libxml_charPtrWrap(str));
+    PyTuple_SetItem(list, 1, pyCtxt->arg);
+    Py_XINCREF(pyCtxt->arg);
+    result = PyEval_CallObject(pyCtxt->error, list);
+    if (result == NULL) 
+    {
+	/* TODO: manage for the exception to be propagated... */
+	PyErr_Print();
+    }
+    Py_XDECREF(list);
+    Py_XDECREF(result);
+}
+
+static void
+libxml_xmlValidCtxtGenericWarningFuncHandler(void *ctx, int severity, char *str) 
+{
+    PyObject *list;
+    PyObject *result;
+    xmlValidCtxtPyCtxtPtr pyCtxt;
+    
+#ifdef DEBUG_ERROR
+    printf("libxml_xmlValidCtxtGenericWarningFuncHandler(%p, %d, %s, ...) called\n", ctx, severity, str);
+#endif
+
+    pyCtxt = (xmlValidCtxtPyCtxtPtr)ctx;
+
+    list = PyTuple_New(2);
+    PyTuple_SetItem(list, 0, libxml_charPtrWrap(str));
+    PyTuple_SetItem(list, 1, pyCtxt->arg);
+    Py_XINCREF(pyCtxt->arg);
+    result = PyEval_CallObject(pyCtxt->warn, list);
+    if (result == NULL) 
+    {
+	/* TODO: manage for the exception to be propagated... */
+	PyErr_Print();
+    }
+    Py_XDECREF(list);
+    Py_XDECREF(result);
+}
+
+static void 
+libxml_xmlValidCtxtErrorFuncHandler(void *ctx, const char *msg, ...) 
+{
+    va_list ap;
+
+    va_start(ap, msg);
+    libxml_xmlValidCtxtGenericErrorFuncHandler(ctx,XML_PARSER_SEVERITY_VALIDITY_ERROR,libxml_buildMessage(msg,ap));
+    va_end(ap);
+}
+
+static void 
+libxml_xmlValidCtxtWarningFuncHandler(void *ctx, const char *msg, ...) 
+{
+    va_list ap;
+
+    va_start(ap, msg);
+    libxml_xmlValidCtxtGenericWarningFuncHandler(ctx,XML_PARSER_SEVERITY_VALIDITY_WARNING,libxml_buildMessage(msg,ap));
+    va_end(ap);
+}
+
+static PyObject *
+libxml_xmlSetValidErrors(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
+{
+    PyObject *py_retval;
+    PyObject *pyobj_error;
+    PyObject *pyobj_warn;
+    PyObject *pyobj_ctx;
+    PyObject *pyobj_arg = Py_None;
+    xmlValidCtxtPtr ctxt;
+    xmlValidCtxtPyCtxtPtr pyCtxt;
+
+    if (!PyArg_ParseTuple
+        (args, (char *) "OOO|O:xmlSetValidErrors", &pyobj_ctx, &pyobj_error, &pyobj_warn, &pyobj_arg))
+        return (NULL);
+
+#ifdef DEBUG_ERROR
+    printf("libxml_xmlSetValidErrors(%p, %p, %p) called\n", pyobj_ctx, pyobj_error, pyobj_warn);
+#endif
+
+    ctxt = PyValidCtxt_Get(pyobj_ctx);
+    pyCtxt = xmlMalloc(sizeof(xmlValidCtxtPyCtxt));
+    if (pyCtxt == NULL) {
+            py_retval = libxml_intWrap(-1);
+            return(py_retval);
+    }
+    memset(pyCtxt, 0, sizeof(xmlValidCtxtPyCtxt));
+
+    
+    /* TODO: check warn and error is a function ! */
+    Py_XDECREF(pyCtxt->error);
+    Py_XINCREF(pyobj_error);
+    pyCtxt->error = pyobj_error;
+    
+    Py_XDECREF(pyCtxt->warn);
+    Py_XINCREF(pyobj_warn);
+    pyCtxt->warn = pyobj_warn;
+    
+    Py_XDECREF(pyCtxt->arg);
+    Py_XINCREF(pyobj_arg);
+    pyCtxt->arg = pyobj_arg;
+
+    ctxt->error = libxml_xmlValidCtxtErrorFuncHandler;
+    ctxt->warning = libxml_xmlValidCtxtWarningFuncHandler;
+    ctxt->userData = pyCtxt;
+
+    py_retval = libxml_intWrap(1);
+    return (py_retval);
 }
 
 /************************************************************************
@@ -3482,6 +3617,7 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "type", libxml_type, METH_VARARGS, NULL},
     {(char *) "doc", libxml_doc, METH_VARARGS, NULL},
     {(char *) "xmlNewNode", libxml_xmlNewNode, METH_VARARGS, NULL},
+    {(char *)"xmlSetValidErrors", libxml_xmlSetValidErrors, METH_VARARGS, NULL},
 #ifdef LIBXML_OUTPUT_ENABLED
     {(char *) "serializeNode", libxml_serializeNode, METH_VARARGS, NULL},
     {(char *) "saveNodeTo", libxml_saveNodeTo, METH_VARARGS, NULL},

@@ -36,12 +36,14 @@ PYTESTS=	\
     thread2.py \
     sync.py \
     tstLastError.py \
-    indexes.py
+    indexes.py \
+    dtdvalid.py
 
 XMLS=		\
     tst.xml	\
     valid.xml	\
-    invalid.xml
+    invalid.xml	\
+    test.dtd
 
 EXTRA_DIST = $(PYTESTS) $(XMLS)
 

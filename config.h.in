@@ -25,6 +25,9 @@
 /* Define to 1 if you have the <arpa/nameser.h> header file. */
 #undef HAVE_ARPA_NAMESER_H
 
+/* Whether struct sockaddr::__ss_family exists */
+#undef HAVE_BROKEN_SS_FAMILY
+
 /* Define to 1 if you have the `class' function. */
 #undef HAVE_CLASS
 
@@ -278,6 +281,9 @@
 
 /* Win32 Std C name mangling work-around */
 #undef snprintf
+
+/* ss_family is not defined here, use __ss_family instead */
+#undef ss_family
 
 /* Win32 Std C name mangling work-around */
 #undef vsnprintf

@@ -478,6 +478,26 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj)
 }
 
 PyObject *
+libxml_xmlValidCtxtPtrWrap(xmlValidCtxtPtr valid)
+{
+	PyObject *ret;
+	
+#ifdef DEBUG
+	printf("libxml_xmlValidCtxtPtrWrap: valid = %p\n", valid);
+#endif
+	if (valid == NULL) {
+		Py_INCREF(Py_None);
+		return (Py_None);
+	}
+
+	ret = 
+		PyCObject_FromVoidPtrAndDesc((void *) valid,
+									 (char *) "xmlValidCtxtPtr", NULL);
+
+	return (ret);
+}
+
+PyObject *
 libxml_xmlCatalogPtrWrap(xmlCatalogPtr catal)
 {
     PyObject *ret;

@@ -561,6 +561,11 @@ WScript.Echo("Created Makefile.");
 // Create the config.h.
 var confighsrc = "..\\include\\win32config.h";
 var configh = "..\\config.h";
+var f = fso.FileExists(configh);
+if (f) {
+	var t = fso.GetFile(configh);
+	t.Attributes =0;
+}
 fso.CopyFile(confighsrc, configh, true);
 WScript.Echo("Created config.h.");
 

@@ -1,7 +1,11 @@
+Wed Nov  5 10:49:20 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* win32/configure.js: applied patch from Mark Vakoc to simplify
+	  his work from CVS checkouts.
+
 Tue Nov  4 21:16:47 MST 2003 John Fleck <jfleck@inkstain.net>
 
-	* doc/xmlreader.html
-	minor cleanups
+	* doc/xmlreader.html: minor cleanups
 
 Tue Nov  4 15:52:28 PST 2003 William Brack <wbrack@mmm.com.hk>
 

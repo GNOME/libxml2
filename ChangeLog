@@ -1,3 +1,8 @@
+Thu Aug 17 15:50:00 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* testSAX.c testHTML.c result/HTML/: cleanup of the output
+	  of SAX tests
+
 Mon Aug 14 13:56:33 EDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Patch from Albert Chin-A-Young <china@thewrittenword.com>:

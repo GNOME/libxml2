@@ -1,6 +1,6 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.internalSubset(HTML, -//W3C//DTD HTML 4.0 Transitional//EN, (null))
+SAX.internalSubset(HTML, -//W3C//DTD HTML 4.0 Transitional//EN, )
 SAX.comment( saved from url=(0025)http://bp6.gamesquad.net/ )
 SAX.comment( BEGIN Naviscope Javascript )
 SAX.startElement(html)
@@ -344,7 +344,7 @@ SAX.startElement(p, align='center')
 SAX.startElement(a, href='http://www.gentus.com/')
 SAX.error: error parsing attribute name
 SAX.error: htmlParseStartTag: problem parsing attributes
-SAX.startElement(img, align='bottom', alt='Taking a first look at the Abit Linux release called ', border='0', height='45', src='doc3_files/gentusbox.gif', width='70', Gentus='(null)')
+SAX.startElement(img, align='bottom', alt='Taking a first look at the Abit Linux release called ', border='0', height='45', src='doc3_files/gentusbox.gif', width='70', Gentus)
 SAX.error: Couldn't find end of Start Tag img
 SAX.characters(?.?>, 4)
 SAX.endElement(a)
@@ -2591,7 +2591,7 @@ SAX.characters(
             , 14)
 SAX.endElement(font)
 SAX.startElement(center)
-SAX.startElement(iframe, frameBorder='0', height='60', marginHeight='0', marginWidth='0', noResize='(null)', scrolling='no', src='doc3_files/ad_iframe.htm', width='468')
+SAX.startElement(iframe, frameBorder='0', height='60', marginHeight='0', marginWidth='0', noResize, scrolling='no', src='doc3_files/ad_iframe.htm', width='468')
 SAX.startElement(a, href='http://ads.adflight.com/go_static.asp?asid=7708', target='_top')
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
@@ -2758,7 +2758,7 @@ SAX.error: Opening and ending tag mismatch: b and noscript
 SAX.endElement(noscript)
 SAX.endElement(b)
 SAX.startElement(a, href='http://www.goto.com/d/search/ssn/?fromGIF=true', target='_blank')
-SAX.startElement(img, align='bottom', border='0', height='90', isMap='(null)', src='doc3_files/100x90.gif', width='100')
+SAX.startElement(img, align='bottom', border='0', height='90', isMap, src='doc3_files/100x90.gif', width='100')
 SAX.endElement(img)
 SAX.endElement(a)
 SAX.startElement(b)

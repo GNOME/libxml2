@@ -1,6 +1,6 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.internalSubset(html, -//IETF//DTD HTML//EN, (null))
+SAX.internalSubset(html, -//IETF//DTD HTML//EN, )
 SAX.startElement(html)
 SAX.characters(
 

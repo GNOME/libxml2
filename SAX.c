@@ -344,7 +344,30 @@ getEntity(void *ctx, const xmlChar *name)
 	    "SAX.getEntity(%s)\n", name);
 #endif
 
-    ret = xmlGetDocEntity(ctxt->myDoc, name);
+    if ((ctxt->myDoc != NULL) && (ctxt->myDoc->standalone == 1)) {
+	if (ctxt->inSubset == 2) {
+	    ctxt->myDoc->standalone = 0;
+	    ret = xmlGetDocEntity(ctxt->myDoc, name);
+	    ctxt->myDoc->standalone = 1;
+	} else {
+	    ret = xmlGetDocEntity(ctxt->myDoc, name);
+	    if (ret == NULL) {
+		ctxt->myDoc->standalone = 0;
+		ret = xmlGetDocEntity(ctxt->myDoc, name);
+		if (ret != NULL) {
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt, 
+		 "Entity(%s) document marked standalone but require external subset\n",
+					 name);
+		    ctxt->valid = 0;
+		    ctxt->wellFormed = 0;
+		}
+		ctxt->myDoc->standalone = 1;
+	    }
+	}
+    } else {
+	ret = xmlGetDocEntity(ctxt->myDoc, name);
+    }
     if ((ret != NULL) && (ctxt->validate) && (ret->children == NULL) &&
 	(ret->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)) {
 	/*
@@ -617,10 +640,15 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
 	    "SAX.unparsedEntityDecl(%s, %s, %s, %s)\n",
             name, publicId, systemId, notationName);
 #endif
-    if (ctxt->validate && ctxt->wellFormed &&
-        ctxt->myDoc && ctxt->myDoc->extSubset)
-	ctxt->valid &= xmlValidateNotationUse(&ctxt->vctxt, ctxt->myDoc,
+    if (ctxt->validate && ctxt->wellFormed && ctxt->myDoc) {
+	int ret;
+	ret = xmlValidateNotationUse(&ctxt->vctxt, ctxt->myDoc,
 	                                      notationName);
+	if (ret == 0) {
+	    ctxt->wellFormed = 0;
+	    ctxt->valid = 0;
+	}
+    }
     if (ctxt->inSubset == 1) {
 	ent = xmlAddDocEntity(ctxt->myDoc, name,
 			XML_EXTERNAL_GENERAL_UNPARSED_ENTITY,

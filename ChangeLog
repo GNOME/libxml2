@@ -1,3 +1,8 @@
+Mon Feb 18 12:17:41 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c entities.c: fixed a couple of conformances issues deep
+	  into the validation code (standalone and undeclared Notations)
+
 Mon Feb 18 00:17:24 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed #71741 supid typo an a bug about encoding parsing

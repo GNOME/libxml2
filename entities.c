@@ -385,11 +385,14 @@ xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
 	    if (cur != NULL)
 		return(cur);
 	}
-	if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
-	    table = (xmlEntitiesTablePtr) doc->extSubset->entities;
-	    cur = xmlGetEntityFromTable(table, name);
-	    if (cur != NULL)
-		return(cur);
+	if (doc->standalone != 1) {
+	    if ((doc->extSubset != NULL) &&
+		(doc->extSubset->entities != NULL)) {
+		table = (xmlEntitiesTablePtr) doc->extSubset->entities;
+		cur = xmlGetEntityFromTable(table, name);
+		if (cur != NULL)
+		    return(cur);
+	    }
 	}
     }
     if (xmlPredefinedEntities == NULL)

@@ -1,3 +1,8 @@
+Thu Feb 25 11:52:24 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in, Makefile.am, doc/makefile.am : General changes for
+	  1.0.0 release and including the generated HTML documentation.
+
 Thu Feb 25 09:44:52 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* makefile.am : added parserInternals.h, oops.

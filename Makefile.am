@@ -58,8 +58,7 @@ tests : tester
 confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
 
-EXTRA_DIST = xmlConf.sh.in libxml.spec.in doc/xml.html doc/structure.gif \
-             doc/DOM.gif
+EXTRA_DIST = xmlConf.sh.in libxml.spec.in
 
 dist-hook:
 	cp libxml.spec $(distdir)

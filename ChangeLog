@@ -1,3 +1,11 @@
+Thu Jun 24 10:17:31 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* valid.c: implemented bugfix from Massimo Morara for DTD
+	  dumping problem.
+	* test/valid/t10.xml, result/valid/t10.*: added regression
+	  for above
+	* configure.in: small change for my profile settings
+
 Wed Jun 23 20:18:19 MDT 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/xmlcatalog_man.xml, xmlcatalog.1

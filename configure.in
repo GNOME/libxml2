@@ -422,7 +422,7 @@ dnl (-Wunreachable-code)
 dnl
 if [[ "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ]] || \
    [[ "${LOGNAME}" = "bill" -a "`pwd`" = "/home/bill/gnomecvs/xmltest" ]] || \
-   [[ "${LOGNAME}" = "bill" -a "`pwd`" = "/home/bill/gnomecvs/xmlnew" ]]
+   [[ "${LOGNAME}" = "wbrack" -a "`pwd`" = "/Users/wbrack/gnomecvs/xmltest" ]]
    then
     if test "$with_minimum" != "yes"
     then

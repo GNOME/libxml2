@@ -444,6 +444,10 @@ then
 	exit 1
     fi
 fi
+if test -e $srcdir/xmlversion.h
+then
+    rm -f $srcdir/xmlversion.h
+fi
 if test ! -r libxml
 then
     rm -rf libxml

@@ -1,3 +1,10 @@
+Sat Jun 23 20:50:53 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: should finish the migration of exported includes
+	  into a real include/libxml in CVS, at least for CVS users.
+	* removed the exported headers, added in include/libxml (as well
+	  as xmlversion.h.in).
+
 Sat Jun 23 20:37:19 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: fixed the way to detect symlink

@@ -27,6 +27,11 @@
 #include <libxml/hash.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+#include <libxml/xmlerror.h>
+
+#define MAX_HASH_LEN 8
+
+/* #define DEBUG_GROW */
 
 /*
  * A single entry in the hash table
@@ -55,13 +60,29 @@ struct _xmlHashTable {
  * Calculate the hash key
  */
 static unsigned long
-xmlHashComputeKey(xmlHashTablePtr table, const xmlChar *string) {
+xmlHashComputeKey(xmlHashTablePtr table, const xmlChar *name,
+	          const xmlChar *name2, const xmlChar *name3) {
     unsigned long value = 0L;
     char ch;
     
-    while ((ch = *string++) != 0) {
-        /* value *= 31; */
-        value += (unsigned long)ch;
+    if (name != NULL) {
+	value += 30 * (*name);
+	while ((ch = *name++) != 0) {
+	    /* value *= 31; */
+	    value += (unsigned long)ch;
+	}
+    }
+    if (name2 != NULL) {
+	while ((ch = *name2++) != 0) {
+	    /* value *= 31; */
+	    value += (unsigned long)ch;
+	}
+    }
+    if (name3 != NULL) {
+	while ((ch = *name3++) != 0) {
+	    /* value *= 31; */
+	    value += (unsigned long)ch;
+	}
     }
     return (value % table->size);
 }
@@ -96,6 +117,77 @@ xmlHashCreate(int size) {
 }
 
 /**
+ * xmlHashGrow:
+ * @table: the hash table
+ * @size: the new size of the hash table
+ *
+ * resize the hash table
+ *
+ * Returns 0 in case of success, -1 in case of failure
+ */
+int
+xmlHashGrow(xmlHashTablePtr table, int size) {
+    unsigned long key;
+    int oldsize, i;
+    xmlHashEntryPtr iter, next;
+    struct _xmlHashEntry **oldtable;
+#ifdef DEBUG_GROW
+    unsigned long nbElem = 0;
+#endif
+  
+    if (table == NULL)
+	return(-1);
+    if (size < 8)
+        return(-1);
+    if (size > 8 * 2048)
+	return(-1);
+
+    oldsize = table->size;
+    oldtable = table->table;
+    if (oldtable == NULL)
+        return(-1);
+  
+    table->table = xmlMalloc(size * sizeof(xmlHashEntry));
+    if (table->table == NULL) {
+	table->table = oldtable;
+	return(-1);
+    }
+    memset(table->table, 0, size * sizeof(xmlHashEntry));
+    table->size = size;
+
+    for (i = 0; i < oldsize; i++) {
+	iter = oldtable[i];
+	while (iter) {
+	    next = iter->next;
+
+	    /*
+	     * put back the entry in the new table
+	     */
+
+	    key = xmlHashComputeKey(table, iter->name, iter->name2,
+		                    iter->name3);
+	    iter->next = table->table[key];
+	    table->table[key] = iter;
+
+#ifdef DEBUG_GROW
+	    nbElem++;
+#endif
+
+	    iter = next;
+	}
+    }
+
+    xmlFree(oldtable);
+
+#ifdef DEBUG_GROW
+    xmlGenericError(xmlGenericErrorContext,
+	    "xmlHashGrow : from %d to %d, %d elems\n", oldsize, size, nbElem);
+#endif
+
+    return(0);
+}
+
+/**
  * xmlHashFree:
  * @table: the hash table
  * @f:  the deallocator function for items in the hash
@@ -116,14 +208,14 @@ xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
 	    iter = table->table[i];
 	    while (iter) {
 		next = iter->next;
+		if (f)
+		    f(iter->payload, iter->name);
 		if (iter->name)
 		    xmlFree(iter->name);
 		if (iter->name2)
 		    xmlFree(iter->name2);
 		if (iter->name3)
 		    xmlFree(iter->name3);
-		if (f)
-		    f(iter->payload, iter->name);
 		iter->payload = NULL;
 		xmlFree(iter);
 		iter = next;
@@ -257,7 +349,7 @@ int
 xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
 	         const xmlChar *name2, const xmlChar *name3,
 		 void *userdata) {
-    unsigned long key;
+    unsigned long key, len = 0;
     xmlHashEntryPtr entry;
     xmlHashEntryPtr insert;
 
@@ -267,7 +359,7 @@ xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
     /*
      * Check for duplicate and insertion location.
      */
-    key = xmlHashComputeKey(table, name);
+    key = xmlHashComputeKey(table, name, name2, name3);
     if (table->table[key] == NULL) {
 	insert = NULL;
     } else {
@@ -277,6 +369,7 @@ xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
 		(xmlStrEqual(insert->name2, name2)) &&
 		(xmlStrEqual(insert->name3, name3)))
 		return(-1);
+	    len++;
 	}
 	if ((xmlStrEqual(insert->name, name)) &&
 	    (xmlStrEqual(insert->name2, name2)) &&
@@ -300,6 +393,10 @@ xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
 	insert->next = entry;
     }
     table->nbElems++;
+
+    if (len > MAX_HASH_LEN)
+	xmlHashGrow(table, MAX_HASH_LEN * table->size);
+
     return(0);
 }
 
@@ -332,7 +429,7 @@ xmlHashUpdateEntry3(xmlHashTablePtr table, const xmlChar *name,
     /*
      * Check for duplicate and insertion location.
      */
-    key = xmlHashComputeKey(table, name);
+    key = xmlHashComputeKey(table, name, name2, name3);
     if (table->table[key] == NULL) {
 	insert = NULL;
     } else {
@@ -397,7 +494,7 @@ xmlHashLookup3(xmlHashTablePtr table, const xmlChar *name,
 	return(NULL);
     if (name == NULL)
 	return(NULL);
-    key = xmlHashComputeKey(table, name);
+    key = xmlHashComputeKey(table, name, name2, name3);
     for (entry = table->table[key]; entry != NULL; entry = entry->next) {
 	if ((xmlStrEqual(entry->name, name)) &&
 	    (xmlStrEqual(entry->name2, name2)) &&
@@ -544,8 +641,8 @@ xmlHashSize(xmlHashTablePtr table) {
  * Returns 0 if the removal succeeded and -1 in case of error or not found.
  */
 int xmlHashRemoveEntry(xmlHashTablePtr table, const xmlChar *name,
-											 xmlHashDeallocator f) {
-	return(xmlHashRemoveEntry3(table, name, NULL, NULL, f));
+		       xmlHashDeallocator f) {
+    return(xmlHashRemoveEntry3(table, name, NULL, NULL, f));
 }
 
 /**
@@ -561,8 +658,8 @@ int xmlHashRemoveEntry(xmlHashTablePtr table, const xmlChar *name,
  * Returns 0 if the removal succeeded and -1 in case of error or not found.
  */
 int xmlHashRemoveEntry2(xmlHashTablePtr table, const xmlChar *name,
-												const xmlChar *name2, xmlHashDeallocator f) {
-	return(xmlHashRemoveEntry3(table, name, name2, NULL, f));
+			const xmlChar *name2, xmlHashDeallocator f) {
+    return(xmlHashRemoveEntry3(table, name, name2, NULL, f));
 }
 
 /**
@@ -579,43 +676,42 @@ int xmlHashRemoveEntry2(xmlHashTablePtr table, const xmlChar *name,
  * Returns 0 if the removal succeeded and -1 in case of error or not found.
  */
 int xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
-												const xmlChar *name2, const xmlChar *name3,
-												xmlHashDeallocator f) {
-	unsigned long key;
-	xmlHashEntryPtr entry;
-	xmlHashEntryPtr prev = NULL;
+    const xmlChar *name2, const xmlChar *name3, xmlHashDeallocator f) {
+    unsigned long key;
+    xmlHashEntryPtr entry;
+    xmlHashEntryPtr prev = NULL;
 
-	if (table == NULL || name == NULL)
-		return(-1);
+    if (table == NULL || name == NULL)
+        return(-1);
 
-	key = xmlHashComputeKey(table, name);
-	if (table->table[key] == NULL) {
-		return(-1);
-	} else {
-		for (entry = table->table[key]; entry != NULL; entry = entry->next) {
-			if (xmlStrEqual(entry->name, name) &&
-					xmlStrEqual(entry->name2, name2) &&
-					xmlStrEqual(entry->name3, name3)) {
-				if(f)
-					f(entry->payload, entry->name);
-				entry->payload = NULL;
-				if(entry->name)
-					xmlFree(entry->name);
-				if(entry->name2)
-					xmlFree(entry->name2);
-				if(entry->name3)
-					xmlFree(entry->name3);
-				if(prev)
-					prev->next = entry->next;
-				else
-					table->table[key] = entry->next;
-				xmlFree(entry);
-				table->nbElems--;
-				return(0);
-			}
-			prev = entry;
-		}
-		return(-1);
-	}
+    key = xmlHashComputeKey(table, name, name2, name3);
+    if (table->table[key] == NULL) {
+        return(-1);
+    } else {
+        for (entry = table->table[key]; entry != NULL; entry = entry->next) {
+            if (xmlStrEqual(entry->name, name) &&
+                    xmlStrEqual(entry->name2, name2) &&
+                    xmlStrEqual(entry->name3, name3)) {
+                if(f)
+                    f(entry->payload, entry->name);
+                entry->payload = NULL;
+                if(entry->name)
+                    xmlFree(entry->name);
+                if(entry->name2)
+                    xmlFree(entry->name2);
+                if(entry->name3)
+                    xmlFree(entry->name3);
+                if(prev)
+                    prev->next = entry->next;
+                else
+                    table->table[key] = entry->next;
+                xmlFree(entry);
+                table->nbElems--;
+                return(0);
+            }
+            prev = entry;
+        }
+        return(-1);
+    }
 }
 

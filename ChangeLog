@@ -1,3 +1,10 @@
+Wed Apr 18 15:06:30 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* debugXML.c hash.c tree.h valid.c : some changes related to
+	  the validation suport to improve speed with DocBook
+	* result/VC/OneID2 result/VC/OneID3 : this slightly changes
+	  the way validation errors get reported
+
 Wed Apr 18 11:42:47 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c HTMLtree.c: applied part of the patches provided

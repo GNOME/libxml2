@@ -172,6 +172,7 @@ struct _xmlElementContent {
 };
 
 typedef enum {
+    XML_ELEMENT_TYPE_UNDEFINED = 0,
     XML_ELEMENT_TYPE_EMPTY = 1,
     XML_ELEMENT_TYPE_ANY,
     XML_ELEMENT_TYPE_MIXED,

@@ -161,6 +161,8 @@ void xmlValidDebug(xmlNodePtr cur, xmlElementContentPtr cont) {
 	    (doc->extSubset == NULL)) return(0)
 
 xmlElementPtr xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name);
+static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
+	                           int create);
 xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem);
 
 /************************************************************************
@@ -507,6 +509,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
 		  xmlElementContentPtr content) {
     xmlElementPtr ret;
     xmlElementTablePtr table;
+    xmlAttributePtr oldAttributes = NULL;
     xmlChar *ns, *uqname;
 
     if (dtd == NULL) {
@@ -575,38 +578,73 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
         return(NULL);
     }
 
-    ret = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
-    if (ret == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlAddElementDecl: out of memory\n");
-	return(NULL);
+    /*
+     * lookup old attributes inserted on an undefined element in the
+     * internal subset.
+     */
+    if ((dtd->doc != NULL) && (dtd->doc->intSubset != NULL)) {
+	ret = xmlHashLookup2(dtd->doc->intSubset->elements, name, ns);
+	if ((ret != NULL) && (ret->etype == XML_ELEMENT_TYPE_UNDEFINED)) {
+	    oldAttributes = ret->attributes;
+	    ret->attributes = NULL;
+	    xmlHashRemoveEntry2(dtd->doc->intSubset->elements, name, ns, NULL);
+	    xmlFreeElement(ret);
+	}
     }
-    memset(ret, 0, sizeof(xmlElement));
-    ret->type = XML_ELEMENT_DECL;
 
     /*
-     * fill the structure.
+     * The element may already be present if one of its attribute
+     * was registered first
+     */
+    ret = xmlHashLookup2(table, name, ns);
+    if (ret != NULL) {
+	if (ret->etype != XML_ELEMENT_TYPE_UNDEFINED) {
+	    /*
+	     * The element is already defined in this Dtd.
+	     */
+	    VERROR(ctxt->userData, "Redefinition of element %s\n", name);
+	    if (uqname != NULL)
+		xmlFree(uqname);
+	    return(NULL);
+	}
+    } else {
+	ret = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
+	if (ret == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlAddElementDecl: out of memory\n");
+	    return(NULL);
+	}
+	memset(ret, 0, sizeof(xmlElement));
+	ret->type = XML_ELEMENT_DECL;
+
+	/*
+	 * fill the structure.
+	 */
+	ret->name = xmlStrdup(name);
+	ret->prefix = ns;
+
+	/*
+	 * Validity Check:
+	 * Insertion must not fail
+	 */
+	if (xmlHashAddEntry2(table, name, ns, ret)) {
+	    /*
+	     * The element is already defined in this Dtd.
+	     */
+	    VERROR(ctxt->userData, "Redefinition of element %s\n", name);
+	    xmlFreeElement(ret);
+	    if (uqname != NULL)
+		xmlFree(uqname);
+	    return(NULL);
+	}
+    }
+
+    /*
+     * Finish to fill the structure.
      */
     ret->etype = type;
-    ret->name = xmlStrdup(name);
-    ret->prefix = ns;
     ret->content = xmlCopyElementContent(content);
-    ret->attributes = xmlScanAttributeDecl(dtd, name);
-
-    /*
-     * Validity Check:
-     * Insertion must not fail
-     */
-    if (xmlHashAddEntry2(table, name, ns, ret)) {
-	/*
-	 * The element is already defined in this Dtd.
-	 */
-	VERROR(ctxt->userData, "Redefinition of element %s\n", name);
-	xmlFreeElement(ret);
-	if (uqname != NULL)
-	    xmlFree(uqname);
-	return(NULL);
-    }
+    ret->attributes = oldAttributes;
 
     /*
      * Link it to the Dtd
@@ -910,7 +948,7 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
 	    ret ++;
 	    if (ret > 1)
 		VERROR(ctxt->userData, 
-	       "Element %s has too may ID attributes defined : %s\n",
+	       "Element %s has too many ID attributes defined : %s\n",
 		       elem->name, cur->name);
 	}
 	cur = cur->nexth;
@@ -1078,7 +1116,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
      * Validity Check:
      * Multiple ID per element
      */
-    elemDef = xmlGetDtdElementDesc(dtd, elem);
+    elemDef = xmlGetDtdElementDesc2(dtd, elem, 1);
     if (elemDef != NULL) {
         if ((type == XML_ATTRIBUTE_ID) &&
 	    (xmlScanIDAttributeDecl(NULL, elemDef) != 0))
@@ -1999,16 +2037,80 @@ xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
     xmlChar *uqname = NULL, *prefix = NULL;
 
     if (dtd == NULL) return(NULL);
-    if (dtd->elements == NULL) return(NULL);
+    if (dtd->elements == NULL)
+	return(NULL);
     table = (xmlElementTablePtr) dtd->elements;
 
     uqname = xmlSplitQName2(name, &prefix);
-    if (uqname != NULL) {
-	cur = xmlHashLookup2(table, uqname, prefix);
-	if (prefix != NULL) xmlFree(prefix);
-	if (uqname != NULL) xmlFree(uqname);
-    } else
-	cur = xmlHashLookup2(table, name, NULL);
+    if (uqname != NULL)
+        name = uqname;
+    cur = xmlHashLookup2(table, name, prefix);
+    if (prefix != NULL) xmlFree(prefix);
+    if (uqname != NULL) xmlFree(uqname);
+    return(cur);
+}
+/**
+ * xmlGetDtdElementDesc2:
+ * @dtd:  a pointer to the DtD to search
+ * @name:  the element name
+ * @create:  create an empty description if not found
+ *
+ * Search the Dtd for the description of this element
+ *
+ * returns the xmlElementPtr if found or NULL
+ */
+
+xmlElementPtr
+xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
+    xmlElementTablePtr table;
+    xmlElementPtr cur;
+    xmlChar *uqname = NULL, *prefix = NULL;
+
+    if (dtd == NULL) return(NULL);
+    if (dtd->elements == NULL) {
+	if (!create) 
+	    return(NULL);
+	/*
+	 * Create the Element table if needed.
+	 */
+	table = (xmlElementTablePtr) dtd->elements;
+	if (table == NULL) {
+	    table = xmlCreateElementTable();
+	    dtd->elements = (void *) table;
+	}
+	if (table == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlGetDtdElementDesc: Table creation failed!\n");
+	    return(NULL);
+	}
+    }
+    table = (xmlElementTablePtr) dtd->elements;
+
+    uqname = xmlSplitQName2(name, &prefix);
+    if (uqname != NULL)
+        name = uqname;
+    cur = xmlHashLookup2(table, name, prefix);
+    if ((cur == NULL) && (create)) {
+	cur = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
+	if (cur == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlGetDtdElementDesc: out of memory\n");
+	    return(NULL);
+	}
+	memset(cur, 0, sizeof(xmlElement));
+	cur->type = XML_ELEMENT_DECL;
+
+	/*
+	 * fill the structure.
+	 */
+	cur->name = xmlStrdup(name);
+	cur->prefix = xmlStrdup(prefix);
+	cur->etype = XML_ELEMENT_TYPE_UNDEFINED;
+
+	xmlHashAddEntry2(table, name, prefix, cur);
+    }
+    if (prefix != NULL) xmlFree(prefix);
+    if (uqname != NULL) xmlFree(uqname);
     return(cur);
 }
 
@@ -2169,6 +2271,8 @@ xmlIsMixedElement(xmlDocPtr doc, const xmlChar *name) {
 	elemDecl = xmlGetDtdElementDesc(doc->extSubset, name);
     if (elemDecl == NULL) return(-1);
     switch (elemDecl->etype) {
+	case XML_ELEMENT_TYPE_UNDEFINED:
+	    return(-1);
 	case XML_ELEMENT_TYPE_ELEMENT:
 	    return(0);
         case XML_ELEMENT_TYPE_EMPTY:
@@ -2788,22 +2892,25 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     /* VC: Unique Element Type Declaration */
     tst = xmlGetDtdElementDesc(doc->intSubset, elem->name);
-    if ((tst != NULL ) && (tst != elem)) {
+    if ((tst != NULL ) && (tst != elem) &&
+	(tst->etype != XML_ELEMENT_TYPE_UNDEFINED)) {
 	VERROR(ctxt->userData, "Redefinition of element %s\n",
 	       elem->name);
 	ret = 0;
     }
     tst = xmlGetDtdElementDesc(doc->extSubset, elem->name);
-    if ((tst != NULL ) && (tst != elem)) {
+    if ((tst != NULL ) && (tst != elem) &&
+	(tst->etype != XML_ELEMENT_TYPE_UNDEFINED)) {
 	VERROR(ctxt->userData, "Redefinition of element %s\n",
 	       elem->name);
 	ret = 0;
     }
 
-    /* One ID per Element Type */
+    /* One ID per Element Type
+     * already done when registering the attribute
     if (xmlScanIDAttributeDecl(ctxt, elem) > 1) {
 	ret = 0;
-    }
+    } */
     return(ret);
 }
 
@@ -3426,6 +3533,10 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     /* Check taht the element content matches the definition */
     switch (elemDecl->etype) {
+        case XML_ELEMENT_TYPE_UNDEFINED:
+	    VERROR(ctxt->userData, "No declaration for element %s\n",
+		   elem->name);
+	    return(0);
         case XML_ELEMENT_TYPE_EMPTY:
 	    if (elem->children != NULL) {
 		VERROR(ctxt->userData,

@@ -239,6 +239,9 @@ xmlDebugDumpElemDecl(FILE *output, xmlElementPtr elem, int depth) {
     } else
 	fprintf(output, "PBM ELEMDECL noname!!!");
     switch (elem->etype) {
+	case XML_ELEMENT_TYPE_UNDEFINED: 
+	    fprintf(output, ", UNDEFINED");
+	    break;
 	case XML_ELEMENT_TYPE_EMPTY: 
 	    fprintf(output, ", EMPTY");
 	    break;

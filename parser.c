@@ -9613,6 +9613,16 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
 	if (ctxt->wellFormed) {
 	    ret = ctxt->myDoc->extSubset;
 	    ctxt->myDoc->extSubset = NULL;
+	    if (ret != NULL) {
+		xmlNodePtr tmp;
+
+		ret->doc = NULL;
+		tmp = ret->children;
+		while (tmp != NULL) {
+		    tmp->doc = NULL;
+		    tmp = tmp->next;
+		}
+	    }
 	} else {
 	    ret = NULL;
 	}

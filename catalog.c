@@ -2917,7 +2917,7 @@ xmlLoadCatalog(const char *filename)
 
 /**
  * xmlLoadCatalogs:
- * @paths:  a space-separated list of catalog files.
+ * @paths:  a list of directories separated by a colon or a space.
  *
  * Load the catalogs and makes their definitions effective for the default
  * external entity loader.
@@ -2938,7 +2938,7 @@ xmlLoadCatalogs(const char *pathss) {
 	while (IS_BLANK(*cur)) cur++;
 	if (*cur != 0) {
 	    paths = cur;
-	    while ((*cur != 0) && (!IS_BLANK(*cur)))
+	    while ((*cur != 0) && (*cur != ':') && (!IS_BLANK(*cur)))
 		cur++;
 	    path = xmlStrndup((const xmlChar *)paths, cur - paths);
 	    if (path != NULL) {

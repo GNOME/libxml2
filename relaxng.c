@@ -710,6 +710,47 @@ xmlRelaxNGCopyValidState(xmlRelaxNGValidCtxtPtr ctxt,
 }
 
 /**
+ * xmlRelaxNGEqualValidState:
+ * @ctxt:  a Relax-NG validation context
+ * @state1:  a validation state
+ * @state2:  a validation state
+ *
+ * Compare the validation states for equality
+ *
+ * Returns 1 if equald, 0 otherwise
+ */
+static int
+xmlRelaxNGEqualValidState(xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+	                 xmlRelaxNGValidStatePtr state1,
+			 xmlRelaxNGValidStatePtr state2)
+{
+    int i;
+
+    if ((state1 == NULL) || (state2 == NULL))
+	return(0);
+    if (state1 == state2)
+	return(1);
+    if (state1->node != state2->node)
+	return(0);
+    if (state1->seq != state2->seq)
+	return(0);
+    if (state1->nbAttrLeft != state2->nbAttrLeft)
+	return(0);
+    if (state1->nbAttrs != state2->nbAttrs)
+	return(0);
+    if (state1->endvalue != state2->endvalue)
+	return(0);
+    if ((state1->value != state2->value) &&
+	(!xmlStrEqual(state1->value, state2->value)))
+	return(0);
+    for (i = 0;i < state1->nbAttrs;i++) {
+	if (state1->attrs[i] != state2->attrs[i])
+	    return(0);
+    }
+    return(1);
+}
+
+/**
  * xmlRelaxNGFreeValidState:
  * @state:  a validation state structure
  *
@@ -5965,21 +6006,25 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    ret = -1;
 	    break;
         case XML_RELAXNG_TEXT:
+#if 0
 	    if (node == NULL) {
 		ret = 0;
 		break;
 	    }
+#endif
 	    while ((node != NULL) &&
 		   ((node->type == XML_TEXT_NODE) ||
 		    (node->type == XML_COMMENT_NODE) ||
 		    (node->type == XML_PI_NODE) ||
 		    (node->type == XML_CDATA_SECTION_NODE)))
 		node = node->next;
+#if 0
 	    if (node == ctxt->state->seq) {
 		VALID_CTXT();
 		VALID_ERROR("Expecting text content\n");
 		ret = -1;
 	    }
+#endif
 	    ctxt->state->seq = node;
 	    break;
         case XML_RELAXNG_ELEMENT:
@@ -6149,6 +6194,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	}
         case XML_RELAXNG_CHOICE: {
 	    xmlRelaxNGDefinePtr list = define->content;
+	    int success = 0;
 
 	    oldflags = ctxt->flags;
 	    ctxt->flags |= FLAGS_IGNORABLE;
@@ -6157,14 +6203,24 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 		oldstate = xmlRelaxNGCopyValidState(ctxt, ctxt->state);
 		ret = xmlRelaxNGValidateDefinition(ctxt, list);
 		if (ret == 0) {
-		    xmlRelaxNGFreeValidState(oldstate);
-		    break;
+		    if (xmlRelaxNGEqualValidState(ctxt, ctxt->state, oldstate)){
+			/*
+			 * if that pattern was nullable flag it but try 
+			 * to make more progresses
+			 */
+			success = 1;
+		    } else {
+			xmlRelaxNGFreeValidState(oldstate);
+			break;
+		    }
 		}
 		xmlRelaxNGFreeValidState(ctxt->state);
 		ctxt->state = oldstate;
 		list = list->next;
 	    }
 	    ctxt->flags = oldflags;
+	    if (success == 1)
+		ret = 0;
 	    break;
 	}
         case XML_RELAXNG_DEF:

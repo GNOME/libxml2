@@ -373,6 +373,17 @@ xmlSaveUri(xmlURIPtr uri) {
 		    ret[len++] = lo + (lo > 9? 'A'-10 : '0');
 		}
 	    }
+	} else if (uri->scheme != NULL) {
+	    if (len + 3 >= max) {
+		max *= 2;
+		ret = (xmlChar *) xmlRealloc(ret, (max + 1) * sizeof(xmlChar));
+		if (ret == NULL) {
+		    fprintf(stderr, "xmlSaveUri: out of memory\n");
+		    return(NULL);
+		}
+	    }
+	    ret[len++] = '/';
+	    ret[len++] = '/';
 	}
 	if (uri->path != NULL) {
 	    p = uri->path;
@@ -767,11 +778,24 @@ xmlParseURIServer(xmlURIPtr uri, const char **str) {
         cur = *str;
     }
     /*
+     * This can be empty in the case where there is no server
+     */
+    host = cur;
+    if (*cur == '/') {
+	if (uri != NULL) {
+	    if (uri->authority != NULL) xmlFree(uri->authority);
+	    uri->authority = NULL;
+	    if (uri->server != NULL) xmlFree(uri->server);
+	    uri->server = NULL;
+	    uri->port = 0;
+	}
+	return(0);
+    }
+    /*
      * host part of hostport can derive either an IPV4 address
      * or an unresolved name. Check the IP first, it easier to detect
      * errors if wrong one
      */
-    host = cur;
     if (IS_DIGIT(*cur)) {
         while(IS_DIGIT(*cur)) cur++;
 	if (*cur != '.')

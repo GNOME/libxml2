@@ -143,7 +143,6 @@ struct _xmlXPathAxis {
 struct _xmlXPathContext {
     xmlDocPtr doc;			/* The current document */
     xmlNodePtr node;			/* The current node */
-    xmlNodeSetPtr nodelist;		/* The current node list */
 
     int nb_variables;			/* number of defined variables */
     int max_variables;			/* max number of variables */

@@ -1,3 +1,11 @@
+Mon Oct  2 23:47:32 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.[ch] debugXML.c testXPath.c: fixed the XPath evaluation
+	  engine, should be far more stable, incorporated a new version of
+	  preceding/following axis, need testing
+        * uri.c: fixed file:///c:/a/b/c problem
+	* test/XPath/tests/idsimple: augmented the XPath tests
+
 Sun Oct  1 22:33:00 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/* rebuilding docs for 2.2.4 release

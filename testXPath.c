@@ -40,8 +40,10 @@
 #include <libxml/parser.h>
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
+#include <libxml/parserInternals.h>
 
 static int debug = 0;
+static int valid = 0;
 static int expr = 0;
 static xmlDocPtr document = NULL;
 
@@ -171,6 +173,8 @@ int main(int argc, char **argv) {
     for (i = 1; i < argc ; i++) {
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
+	if ((!strcmp(argv[i], "-valid")) || (!strcmp(argv[i], "--valid")))
+	    valid++;
 	if ((!strcmp(argv[i], "-expr")) || (!strcmp(argv[i], "--expr")))
 	    expr++;
 	if ((!strcmp(argv[i], "-i")) || (!strcmp(argv[i], "--input")))
@@ -178,6 +182,7 @@ int main(int argc, char **argv) {
 	if ((!strcmp(argv[i], "-f")) || (!strcmp(argv[i], "--file")))
 	    usefile++;
     }
+    if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
     if (document == NULL) {
         if (filename == NULL)
 	    document = xmlParseDoc(buffer);
@@ -201,6 +206,7 @@ int main(int argc, char **argv) {
 	       argv[0]);
 	printf("\tParse the XPath strings and output the result of the parsing\n");
 	printf("\t--debug : dump a debug version of the result\n");
+	printf("\t--valid : switch on DTD support in the parser\n");
 	printf("\t--expr : debug XPath expressions only\n");
 	printf("\t--input filename : or\n");
 	printf("\t-i filename      : read the document from filename\n");

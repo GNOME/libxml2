@@ -1649,9 +1649,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 	    } else {
 	        ctxt->pctxt->node = ctxt->node;
 #ifdef LIBXML_XPATH_ENABLED
-		if (ctxt->pctxt->nodelist != NULL)
-		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
-	        ctxt->pctxt->nodelist = xmlXPathNodeSetCreate(ctxt->node);
+	        ctxt->pctxt->node = ctxt->node;
 		list = xmlXPathEval((xmlChar *) arg, ctxt->pctxt);
 #else
 		list = NULL;
@@ -1688,21 +1686,14 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		} else {
 		    fprintf(stderr, "%s: no such node\n", arg);
 		}
-#ifdef LIBXML_XPATH_ENABLED
-		if (ctxt->pctxt->nodelist != NULL)
-		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
-#endif /* LIBXML_XPATH_ENABLED */
-		ctxt->pctxt->nodelist = NULL;
+		ctxt->pctxt->node = NULL;
 	    }
 	} else if (!strcmp(command, "cd")) {
 	    if (arg[0] == 0) {
 		ctxt->node = (xmlNodePtr) ctxt->doc;
 	    } else {
-	        ctxt->pctxt->node = ctxt->node;
 #ifdef LIBXML_XPATH_ENABLED
-		if (ctxt->pctxt->nodelist != NULL)
-		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
-	        ctxt->pctxt->nodelist = xmlXPathNodeSetCreate(ctxt->node);
+	        ctxt->pctxt->node = ctxt->node;
 		list = xmlXPathEval((xmlChar *) arg, ctxt->pctxt);
 #else
 		list = NULL;
@@ -1733,11 +1724,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		} else {
 		    fprintf(stderr, "%s: no such node\n", arg);
 		}
-#ifdef LIBXML_XPATH_ENABLED
-		if (ctxt->pctxt->nodelist != NULL)
-		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
-#endif /* LIBXML_XPATH_ENABLED */
-		ctxt->pctxt->nodelist = NULL;
+		ctxt->pctxt->node = NULL;
 	    }
 	} else if (!strcmp(command, "cat")) {
 	    if (arg[0] == 0) {
@@ -1745,9 +1732,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 	    } else {
 	        ctxt->pctxt->node = ctxt->node;
 #ifdef LIBXML_XPATH_ENABLED
-		if (ctxt->pctxt->nodelist != NULL)
-		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
-	        ctxt->pctxt->nodelist = xmlXPathNodeSetCreate(ctxt->node);
+	        ctxt->pctxt->node = ctxt->node;
 		list = xmlXPathEval((xmlChar *) arg, ctxt->pctxt);
 #else
 		list = NULL;
@@ -1781,11 +1766,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		} else {
 		    fprintf(stderr, "%s: no such node\n", arg);
 		}
-#ifdef LIBXML_XPATH_ENABLED
-		if (ctxt->pctxt->nodelist != NULL)
-		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
-#endif /* LIBXML_XPATH_ENABLED */
-		ctxt->pctxt->nodelist = NULL;
+		ctxt->pctxt->node = NULL;
 	    }
 	} else {
 	    fprintf(stderr, "Unknown command %s\n", command);

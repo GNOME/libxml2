@@ -429,7 +429,7 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
  * @str2: extra string info
  * @str3: extra string info
  * @int1: extra int info
- * @int2: extra int info
+ * @col: column number of the error or 0 if N/A 
  * @msg:  the message to display/transmit
  * @...:  extra parameters for the message display
  *
@@ -442,7 +442,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
               xmlGenericErrorFunc channel, void *data, void *ctx,
               void *nod, int domain, int code, xmlErrorLevel level,
               const char *file, int line, const char *str1,
-              const char *str2, const char *str3, int int1, int int2,
+              const char *str2, const char *str3, int int1, int col,
 	      const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = NULL;
@@ -505,6 +505,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
             if (input != NULL) {
                 file = input->filename;
                 line = input->line;
+                col = input->col;
             }
         }
         to = &ctxt->lastError;
@@ -571,7 +572,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     if (str3 != NULL)
         to->str3 = (char *) xmlStrdup((const xmlChar *) str3);
     to->int1 = int1;
-    to->int2 = int2;
+    to->int2 = col;
     to->node = node;
     to->ctxt = ctx;
 

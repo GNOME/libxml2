@@ -473,8 +473,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
              *   the single character #xA.
              */
             if (*(ctxt->input->cur) == '\n') {
-                ctxt->input->line++;
-                ctxt->input->col = 1;
+                ctxt->input->line++; ctxt->input->col = 1;
             } else
                 ctxt->input->col++;
 
@@ -551,8 +550,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
          */
 
         if (*(ctxt->input->cur) == '\n') {
-            ctxt->input->line++;
-            ctxt->input->col = 1;
+            ctxt->input->line++; ctxt->input->col = 1;
         } else
             ctxt->input->col++;
         ctxt->input->cur++;

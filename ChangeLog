@@ -1,3 +1,10 @@
+Tue Jan  4 17:08:45 PST 2005 Aleksey Sanin <aleksey@aleksey.com>
+
+	* parser.c, parserInternal.c: fixed "col" calculation for 
+          struct _xmlParserInput (based on patch from Rob Richards) 
+	* include/libxml/xmlerror.h, error.c: propagated error column
+          number in the xmlError structure
+
 Tue Jan  4 22:47:22 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed namespace bug in push mode reported by 
@@ -40,7 +47,7 @@ Tue Jan  4 15:30:15 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 Mon Jan  3 13:57:21 PST 2005 Aleksey Sanin <aleksey@aleksey.com>
 
-	* Added GetLineNumber and GetColumnNumber functions for xmlReader
+	* parser.c: added GetLineNumber and GetColumnNumber functions for xmlReader
 
 Sun Jan  2 17:51:18 HKT 2005 William Brack <wbrack@mmm.com.hk>
 

@@ -82,7 +82,7 @@ struct _xmlError {
     char       *str2;	/* extra string information */
     char       *str3;	/* extra string information */
     int		int1;	/* extra number information */
-    int		int2;	/* extra number information */
+    int		int2;	/* column number of the error or 0 if N/A (todo: rename this field when we would break ABI) */
     void       *ctxt;   /* the parser context if available */
     void       *node;   /* the node in the tree */
 };
@@ -889,7 +889,7 @@ XMLPUBFUN void XMLCALL
 				 const char *str2,
 				 const char *str3,
 				 int int1,
-				 int int2,
+				 int col,
 				 const char *msg,
 				 ...);
 XMLPUBFUN void XMLCALL 

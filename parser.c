@@ -2421,6 +2421,7 @@ xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
     while (*in != 0 && *in == *cmp) {
     	++in;
 	++cmp;
+	ctxt->input->col++;
     }
     if (*cmp == 0 && (*in == '>' || IS_BLANK_CH (*in))) {
     	/* success */
@@ -3201,10 +3202,10 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
 get_more_space:
 	    while (*in == 0x20) in++;
 	    if (*in == 0xA) {
-		ctxt->input->line++;
+		ctxt->input->line++; ctxt->input->col = 1;
 		in++;
 		while (*in == 0xA) {
-		    ctxt->input->line++;
+		    ctxt->input->line++; ctxt->input->col = 1;
 		    in++;
 		}
 		goto get_more_space;
@@ -3237,13 +3238,15 @@ get_more:
 	           ((*in > '&') && (*in < '<')) ||
 	           ((*in > '<') && (*in < ']')) ||
 		   ((*in >= 0x20) && (*in < '&')) ||
-		   (*in == 0x09))
-		in++;
+		   (*in == 0x09)) {
+			in++;
+			ctxt->input->col++;
+		}
 	    if (*in == 0xA) {
-		ctxt->input->line++;
+		ctxt->input->line++; ctxt->input->col = 1;
 		in++;
 		while (*in == 0xA) {
-		    ctxt->input->line++;
+		    ctxt->input->line++; ctxt->input->col = 1;
 		    in++;
 		}
 		goto get_more;
@@ -3255,6 +3258,7 @@ get_more:
 		    return;
 		}
 		in++;
+		ctxt->input->col++;
 		goto get_more;
 	    }
 	    nbchar = in - ctxt->input->cur;
@@ -3288,7 +3292,7 @@ get_more:
 		if (*in == 0xA) {
 		    ctxt->input->cur = in;
 		    in++;
-		    ctxt->input->line++;
+		    ctxt->input->line++; ctxt->input->col = 1;
 		    continue; /* while */
 		}
 		in--;

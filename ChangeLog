@@ -1,3 +1,8 @@
+Sun Jul 29 07:18:53 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: don't override existing encoding specified before
+	  starting xmlParseDocument()
+
 Sat Jul 28 13:33:10 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* include/libxml/xmlwin32version.h: reinserted, needed for

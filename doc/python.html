@@ -121,7 +121,21 @@ or libxslt wrappers or bindings:</p>
 </ul>
 <p>The distribution includes a set of Python bindings, which are garanteed to
 be maintained as part of the library in the future, though the Python
-interface have not yet reached the maturity of the C API. The distribution
+interface have not yet reached the maturity of the C API.</p>
+<p>To install the Python bindings there are 2 options:
+</p>
+<ul>
+<li> If you use an RPM based distribution, simply install the
+<a href="http://rpmfind.net/linux/rpm2html/search.php?query=libxml2-python">libxml2-python RPM</a> (and if needed the
+<a href="http://rpmfind.net/linux/rpm2html/search.php?query=libxslt-python">libxslt-python RPM</a>).
+</li>
+<li> Otherwise use the <a href="ftp://xmlsoft.org/python/">libxml2-python
+module distribution</a> corresponding to your installed version of libxml2
+and libxslt. Note that to install it you will need both libxml2 and libxslt
+installed and run &quot;python setup.py build install&quot; in the module tree.
+</li>
+</ul>
+<p>The distribution
 includes a set of examples and regression tests for the python bindings in
 the <code>python/tests</code> directory. Here are some excepts from those
 tests:</p>

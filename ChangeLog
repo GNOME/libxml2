@@ -1,3 +1,9 @@
+Fri Dec 20 11:27:49 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/libxml2-api.xml python/tests/reader.py: one really need
+	  to provide the base URI information when creating a reader parser
+	  from an input stream. Updated the API and the example using it.
+
 Fri Dec 20 01:11:30 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* testReader.c xmlreader.c valid.c include/libxml/tree.h

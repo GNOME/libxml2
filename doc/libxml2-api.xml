@@ -909,6 +909,9 @@
      <exports symbol='xmlValidateOneAttribute'/>
      <exports symbol='xmlValidateOneElement'/>
      <exports symbol='xmlValidateOneNamespace'/>
+     <exports symbol='xmlValidatePopElement'/>
+     <exports symbol='xmlValidatePushCData'/>
+     <exports symbol='xmlValidatePushElement'/>
      <exports symbol='xmlValidateRoot'/>
      <exports symbol='xmlValidityErrorFunc'/>
      <exports symbol='xmlValidityWarningFunc'/>
@@ -2669,6 +2672,8 @@ actually an xmlCharEncoding'/>
       <field name='next' type='struct _xmlID *' info=' next ID'/>
       <field name='value' type='const xmlChar *' info=' The ID name'/>
       <field name='attr' type='xmlAttrPtr' info=' The attribute holding it'/>
+      <field name='name' type='const xmlChar *' info=' The attribute if attr is not available'/>
+      <field name='lineno' type='int' info=' The line number if attr is not available'/>
     </struct>
     <typedef name='xmlIDPtr' file='tree' type='xmlID *'/>
     <struct name='xmlIDTable' file='valid' type='struct _xmlHashTable'/>
@@ -2843,6 +2848,8 @@ actually an xmlCharEncoding'/>
       <field name='next' type='struct _xmlRef *' info=' next Ref'/>
       <field name='value' type='const xmlChar *' info=' The Ref name'/>
       <field name='attr' type='xmlAttrPtr' info=' The attribute holding it'/>
+      <field name='name' type='const xmlChar *' info=' The attribute if attr is not available'/>
+      <field name='lineno' type='int' info=' The line number if attr is not available'/>
     </struct>
     <typedef name='xmlRefPtr' file='tree' type='xmlRef *'/>
     <struct name='xmlRefTable' file='valid' type='struct _xmlHashTable'/>
@@ -6493,6 +6500,7 @@ actually an xmlCharEncoding'/>
       <info>Create an xmlTextReader structure fed with @input</info>
       <return type='xmlTextReaderPtr' info='the new xmlTextReaderPtr or NULL in case of error'/>
       <arg name='input' type='xmlParserInputBufferPtr' info='the xmlParserInputBufferPtr used to read data'/>
+      <arg name='URI' type='const char *' info='the URI information for the source if available'/>
     </function>
     <function name='xmlNewTextReaderFilename' file='xmlreader'>
       <info>Create an xmlTextReader structure fed with the resource at @URI</info>
@@ -7276,7 +7284,7 @@ actually an xmlCharEncoding'/>
     <function name='xmlRegExecPushString' file='xmlregexp'>
       <info>Push one input token in the execution context</info>
       <return type='int' info='1 if the regexp reached a final state, 0 if non-final, and a negative value in case of error.'/>
-      <arg name='exec' type='xmlRegExecCtxtPtr' info='a regexp execution context'/>
+      <arg name='exec' type='xmlRegExecCtxtPtr' info='a regexp execution context or NULL to indicate the end'/>
       <arg name='value' type='const xmlChar *' info='a string token input'/>
       <arg name='data' type='void *' info='data associated to the token to reuse in callbacks'/>
     </function>
@@ -8984,6 +8992,29 @@ actually an xmlCharEncoding'/>
       <arg name='prefix' type='const xmlChar *' info='the namespace prefix'/>
       <arg name='ns' type='xmlNsPtr' info='an namespace declaration instance'/>
       <arg name='value' type='const xmlChar *' info='the attribute value (without entities processing)'/>
+    </function>
+    <function name='xmlValidatePopElement' file='valid'>
+      <info>Pop the element end from the validation stack.</info>
+      <return type='int' info='1 if no validation problem was found or 0 otherwise'/>
+      <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>
+      <arg name='doc' type='xmlDocPtr' info='a document instance'/>
+      <arg name='elem' type='xmlNodePtr' info='an element instance'/>
+      <arg name='qname' type='const xmlChar *' info='the qualified name as appearing in the serialization'/>
+    </function>
+    <function name='xmlValidatePushCData' file='valid'>
+      <info>check the CData parsed for validation in the current stack</info>
+      <return type='int' info='1 if no validation problem was found or 0 otherwise'/>
+      <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>
+      <arg name='data' type='const xmlChar *' info='some character data read'/>
+      <arg name='len' type='int' info='the lenght of the data'/>
+    </function>
+    <function name='xmlValidatePushElement' file='valid'>
+      <info>Push a new element start on the validation stack.</info>
+      <return type='int' info='1 if no validation problem was found or 0 otherwise'/>
+      <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>
+      <arg name='doc' type='xmlDocPtr' info='a document instance'/>
+      <arg name='elem' type='xmlNodePtr' info='an element instance'/>
+      <arg name='qname' type='const xmlChar *' info='the qualified name as appearing in the serialization'/>
     </function>
     <function name='xmlValidateRoot' file='valid'>
       <info>Try to validate a the root element basically it does the following check as described by the XML-1.0 recommendation: - [ VC: Root Element Type ] it doesn&apos;t try to recurse or apply other check to the element</info>

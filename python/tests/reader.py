@@ -8,7 +8,7 @@ libxml2.debugMemory(1)
 
 f = StringIO.StringIO("""<a><b b1="b1"/><c>content of c</c></a>""")
 input = libxml2.inputBuffer(f)
-reader = input.newTextReader()
+reader = input.newTextReader("test1")
 ret = reader.read()
 if ret != 1:
     print "Error reading to first element"
@@ -68,7 +68,7 @@ if ret != 0:
 #
 f = StringIO.StringIO("""<test xmlns:dt="urn:datatypes" dt:type="int"/>""")
 input = libxml2.inputBuffer(f)
-reader = input.newTextReader()
+reader = input.newTextReader("test2")
 
 ret = reader.read()
 if ret != 1:
@@ -90,7 +90,7 @@ f = StringIO.StringIO("""<root xmlns:a="urn:456">
 </item>
 </root>""")
 input = libxml2.inputBuffer(f)
-reader = input.newTextReader()
+reader = input.newTextReader("test3")
 
 ret = reader.read()
 while ret == 1:
@@ -109,7 +109,7 @@ if ret != 1:
 #
 f = StringIO.StringIO("""<testattr xmlns="urn:1" xmlns:a="urn:2" b="b" a:b="a:b"/>""")
 input = libxml2.inputBuffer(f)
-reader = input.newTextReader()
+reader = input.newTextReader("test4")
 ret = reader.read()
 if ret != 1:
     print "Error reading the testattr element"

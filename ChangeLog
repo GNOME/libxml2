@@ -1,3 +1,8 @@
+Thu Jan 17 09:44:44 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixed the funxtion to set the xml: attributes
+	* debugXML.c: added "setbase" to test it.
+
 Wed Jan 16 16:36:08 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: update xmlNodeSetContent() and xmlNodeSetContentLen()

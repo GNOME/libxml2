@@ -3249,6 +3249,8 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
  */
 void
 xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
+    xmlNsPtr ns;
+
     if (cur == NULL) return;
     switch(cur->type) {
         case XML_TEXT_NODE:
@@ -3277,7 +3279,10 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
         case XML_ATTRIBUTE_NODE:
 	    break;
     }
-    xmlSetProp(cur, BAD_CAST "xml:lang", lang);
+    ns = xmlSearchNsByHref(cur->doc, cur, XML_XML_NAMESPACE);
+    if (ns == NULL)
+	return;
+    xmlSetNsProp(cur, ns, BAD_CAST "lang", lang);
 }
  
 /**
@@ -3314,6 +3319,8 @@ xmlNodeGetLang(xmlNodePtr cur) {
  */
 void
 xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
+    xmlNsPtr ns;
+
     if (cur == NULL) return;
     switch(cur->type) {
         case XML_TEXT_NODE:
@@ -3342,13 +3349,15 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
         case XML_ATTRIBUTE_NODE:
 	    break;
     }
+    ns = xmlSearchNsByHref(cur->doc, cur, XML_XML_NAMESPACE);
+    if (ns == NULL)
+	return;
     switch (val) {
     case 0:
-	xmlSetProp(cur, BAD_CAST "xml:space", BAD_CAST "default");
+	xmlSetNsProp(cur, ns, BAD_CAST "space", BAD_CAST "default");
 	break;
     case 1:
-	xmlSetProp(cur, BAD_CAST "xml:space", 
-		       BAD_CAST "preserve");
+	xmlSetNsProp(cur, ns, BAD_CAST "space", BAD_CAST "preserve");
 	break;
     }
 }
@@ -3368,7 +3377,7 @@ xmlNodeGetSpacePreserve(xmlNodePtr cur) {
     xmlChar *space;
 
     while (cur != NULL) {
-        space = xmlGetProp(cur, BAD_CAST "xml:space");
+	space = xmlGetNsProp(cur, BAD_CAST "space", XML_XML_NAMESPACE);
 	if (space != NULL) {
 	    if (xmlStrEqual(space, BAD_CAST "preserve")) {
 		xmlFree(space);
@@ -3437,6 +3446,8 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
  */
 void
 xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
+    xmlNsPtr ns;
+
     if (cur == NULL) return;
     switch(cur->type) {
         case XML_TEXT_NODE:
@@ -3465,7 +3476,11 @@ xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
         case XML_ATTRIBUTE_NODE:
 	    break;
     }
-    xmlSetProp(cur, BAD_CAST "xml:base", uri);
+    
+    ns = xmlSearchNsByHref(cur->doc, cur, XML_XML_NAMESPACE);
+    if (ns == NULL)
+	return;
+    xmlSetNsProp(cur, ns, BAD_CAST "base", uri);
 }
 
 /**
@@ -4113,6 +4128,11 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
 
     if ((node == NULL) || (href == NULL)) return(NULL);
     if (xmlStrEqual(href, XML_XML_NAMESPACE)) {
+	/*
+	 * Only the document can hold the XML spec namespace.
+	 */
+	if (doc == NULL)
+	    return(NULL);
 	if (doc->oldNs == NULL) {
 	    /*
 	     * Allocate a new Namespace and fill the fields.

@@ -1424,6 +1424,27 @@ xmlShellBase(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
 }
 
 /**
+ * xmlShellSetBase:
+ * @ctxt:  the shell context
+ * @arg:  the new base
+ * @node:  a node
+ * @node2:  unused
+ *
+ * Implements the XML shell function "setbase"
+ * change the current XML base of the node
+ *
+ * Returns 0
+ */
+static int
+xmlShellSetBase(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
+             char *arg ATTRIBUTE_UNUSED, xmlNodePtr node,
+             xmlNodePtr node2 ATTRIBUTE_UNUSED)
+{
+    xmlNodeSetBase(node, (xmlChar*) arg);
+    return (0);
+}
+
+/**
  * xmlShellDir:
  * @ctxt:  the shell context
  * @arg:  unused
@@ -1940,6 +1961,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
             break;
 		if (!strcmp(command, "help")) {
 		  fprintf(stdout, "\tbase         display XML base of the node\n");
+		  fprintf(stdout, "\tsetbase URI  change the XML base of the node\n");
 		  fprintf(stdout, "\tbye          leave shell\n");
 		  fprintf(stdout, "\tcat [node]   display node or current node\n");
 		  fprintf(stdout, "\tcd [path]    change directory to path or to root\n");
@@ -1981,6 +2003,8 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
             xmlShellDu(ctxt, NULL, ctxt->node, NULL);
         } else if (!strcmp(command, "base")) {
             xmlShellBase(ctxt, NULL, ctxt->node, NULL);
+        } else if (!strcmp(command, "setbase")) {
+            xmlShellSetBase(ctxt, arg, ctxt->node, NULL);
         } else if ((!strcmp(command, "ls")) || (!strcmp(command, "dir"))) {
             int dir = (!strcmp(command, "dir"));
 

@@ -1,3 +1,9 @@
+Mon Nov 18 00:11:24 CET 2002 ERDI Gergo <cactus@cactus.rulez.org>
+
+	* configure.in (PYTHON_SITE_PACKAGES): If --with-python is
+	  specified, look for the Python interpreter not just in the
+	  specified root but also in the specified location. Fixes #98825
+
 Sun Nov 17 23:36:06 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: fixing bug #98792 , node may have no doc

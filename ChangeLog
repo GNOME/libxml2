@@ -1,3 +1,8 @@
+Thu Nov 22 13:58:14 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/tree.h: Fixed a couple of macro errors pointed out
+	  by Denis Beurive, closes #65111
+
 Tue Nov 20 10:34:01 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: in case of content model validity error, don't

@@ -441,15 +441,17 @@ struct _xmlNode {
  * macro to extract the content pointer of a node
  */
 #define XML_GET_CONTENT(n)					\
-    ((n)->type == XML_ELEMENT_PTR ? NULL : (n)->content)
+    ((n)->type == XML_ELEMENT_NODE ? NULL : (n)->content)
 
 /**
  * XML_GET_LINE:
  *
- * macro to extract the line number of an element node
+ * macro to extract the line number of an element node. 
+ * This will work only if line numbering is activated by
+ * calling xmlLineNumbersDefault(1) before parsing
  */
 #define XML_GET_LINE(n)						\
-    ((n)->type == XML_ELEMENT_PTR ? (int) (n)->content : 0)
+    ((n)->type == XML_ELEMENT_NODE ? (int) (n)->content : 0)
 
 /**
  * xmlDoc:

@@ -1456,6 +1456,7 @@ int
 xmlParseCharRef(xmlParserCtxtPtr ctxt) {
     unsigned int val = 0;
     int count = 0;
+    unsigned int outofrange = 0;
 
     /*
      * Using RAW/CUR/NEXT is okay since we are working on ASCII range here
@@ -1480,6 +1481,9 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 		val = 0;
 		break;
 	    }
+	    if (val > 0x10FFFF)
+	        outofrange = val;
+
 	    NEXT;
 	    count++;
 	}
@@ -1504,6 +1508,9 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 		val = 0;
 		break;
 	    }
+	    if (val > 0x10FFFF)
+	        outofrange = val;
+
 	    NEXT;
 	    count++;
 	}
@@ -1522,7 +1529,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
      * Characters referred to using character references must match the
      * production for Char. 
      */
-    if (IS_CHAR(val)) {
+    if ((IS_CHAR(val) && (outofrange == 0))) {
         return(val);
     } else {
         xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
@@ -1554,7 +1561,8 @@ static int
 xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
     const xmlChar *ptr;
     xmlChar cur;
-    int val = 0;
+    unsigned int val = 0;
+    unsigned int outofrange = 0;
 
     if ((str == NULL) || (*str == NULL)) return(0);
     ptr = *str;
@@ -1574,6 +1582,9 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 		val = 0;
 		break;
 	    }
+	    if (val > 0x10FFFF)
+	        outofrange = val;
+
 	    ptr++;
 	    cur = *ptr;
 	}
@@ -1590,6 +1601,9 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 		val = 0;
 		break;
 	    }
+	    if (val > 0x10FFFF)
+	        outofrange = val;
+
 	    ptr++;
 	    cur = *ptr;
 	}
@@ -1606,7 +1620,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
      * Characters referred to using character references must match the
      * production for Char. 
      */
-    if (IS_CHAR(val)) {
+    if ((IS_CHAR(val) && (outofrange == 0))) {
         return(val);
     } else {
         xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,

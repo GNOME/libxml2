@@ -1,3 +1,10 @@
+Thu Jun  3 13:20:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed a bug where invalid charrefs may not be detected
+	  sometimes as pointed by Morus Walter.
+	* test/errors/charref1.xm result/errors/charref1.xml*: added the
+	  test in the regression suite.
+
 Thu Jun  3 18:38:27 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemas.c: small change to xmlSchemaValidateAttributes,

@@ -1,3 +1,9 @@
+Fri Nov 28 21:39:49 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/xml.html
+	* doc/python.html
+	fix tst.py text, which didn't import sys
+
 Fri Nov 28 17:28:47 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* encoding.c, include/libxml/encoding.h: Enhanced the handling of UTF-16,

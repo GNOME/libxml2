@@ -62,7 +62,7 @@ build the bindings is python/generator.py in the source distribution.</p><p>To i
     module tree.</li>
 </ul><p>The distribution includes a set of examples and regression tests for the
 python bindings in the <code>python/tests</code> directory. Here are some
-excerpts from those tests:</p><h3>tst.py:</h3><p>This is a basic test of the file interface and DOM navigation:</p><pre>import libxml2
+excerpts from those tests:</p><h3>tst.py:</h3><p>This is a basic test of the file interface and DOM navigation:</p><pre>import libxml2, sys
 
 doc = libxml2.parseFile(&quot;tst.xml&quot;)
 if doc.name != &quot;tst.xml&quot;:

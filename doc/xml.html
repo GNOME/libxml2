@@ -1967,7 +1967,7 @@ excerpts from those tests:</p>
 <h3>tst.py:</h3>
 
 <p>This is a basic test of the file interface and DOM navigation:</p>
-<pre>import libxml2
+<pre>import libxml2, sys
 
 doc = libxml2.parseFile("tst.xml")
 if doc.name != "tst.xml":

@@ -1,5 +1,3 @@
-xmlSAXHandler,docbDefaultSAXHandler
-xmlSAXHandler,htmlDefaultSAXHandler
 int,oldXMLWDcompatibility
 xmlBufferAllocationScheme,xmlBufferAllocScheme
 int,xmlDefaultBufferSize

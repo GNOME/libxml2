@@ -1,3 +1,8 @@
+Sun Nov  4 21:17:24 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c global.data globals.c testThreads.c: fix bug #63752
+	  of compiling libxml with a non standard set of options
+
 Sun Nov  4 13:11:41 MST 2001 John Fleck <jfleck@inkstain.net
 
 	* doc/xmllint.xml, xmllint.1 - updating xmllint man page to

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <libxml/xmlversion.h>
 
-#ifdef LIBXML_THREAD_ENABLED
+#if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED)
 #include <libxml/globals.h>
 #include <libxml/threads.h>
 #include <libxml/parser.h>
@@ -128,7 +128,7 @@ main()
 int
 main()
 {
-    fprintf(stderr, "libxml was not compiled with thread support\n");
+    fprintf(stderr, "libxml was not compiled with thread or catalog support\n");
     return (0);
 }
 #endif

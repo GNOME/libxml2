@@ -43,8 +43,8 @@
 #ifdef LIBXML_HTML_ENABLED
 #include <libxml/HTMLparser.h>
 #endif
-#include <libxml/xmlerror.h>
 #include <libxml/globals.h>
+#include <libxml/xmlerror.h>
 
 static xmlCharEncodingHandlerPtr xmlUTF16LEHandler = NULL;
 static xmlCharEncodingHandlerPtr xmlUTF16BEHandler = NULL;

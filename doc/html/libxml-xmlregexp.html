@@ -1,152 +1,56 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlregexp</title><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="generator" content="GTK-Doc V1.1 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-encoding.html" title="encoding"><link rel="next" href="libxml-xmlmemory.html" title="xmlmemory"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-encoding.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xmlmemory.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-xmlregexp"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlregexp</h2><p>xmlregexp &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2622339"></a>Synopsis</h1></h2><pre class="synopsis">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><link rel="SHORTCUT ICON" href="/favicon.ico" /><style type="text/css">
+TD {font-family: Verdana,Arial,Helvetica}
+BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
+H1 {font-family: Verdana,Arial,Helvetica}
+H2 {font-family: Verdana,Arial,Helvetica}
+H3 {font-family: Verdana,Arial,Helvetica}
+A:link, A:visited, A:active { text-decoration: underline }
+</style><title>Module xmlregexp from libxml2</title></head><body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000"><table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr><td width="120"><a href="http://swpat.ffii.org/"><img src="../epatents.png" alt="Action against software patents" /></a></td><td width="180"><a href="http://www.gnome.org/"><img src="../gnome2.png" alt="Gnome2 Logo" /></a><a href="http://www.w3.org/Status"><img src="../w3c.png" alt="W3C Logo" /></a><a href="http://www.redhat.com/"><img src="../redhat.gif" alt="Red Hat Logo" /></a><div align="left"><a href="http://xmlsoft.org/"><img src="../Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo" /></a></div></td><td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center"><h1></h1><h2>Module xmlregexp from libxml2</h2></td></tr></table></td></tr></table></td></tr></table><table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr><td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr><tr><td bgcolor="#fffacd"><form action="search.php" enctype="application/x-www-form-urlencoded" method="get"><input name="query" type="text" size="20" value="" /><input name="submit" type="submit" value="Search ..." /></form><ul><li><a href="index.html">Home</a></li><li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li><li><a href="guidelines.html">XML Guidelines</a></li></ul></td></tr></table><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Related links</b></center></td></tr><tr><td bgcolor="#fffacd"><ul><li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li><li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li><li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li><li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li><li><a href="ftp://xmlsoft.org/">FTP</a></li><li><a href="http://www.zlatkovic.com/projects/libxml/">Windows binaries</a></li><li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li><li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li><li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li><li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml2">Bug Tracker</a></li></ul></td></tr></table></td></tr></table></td><td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd"><h2>Table of Contents</h2><pre class="programlisting">void	<a href="#xmlRegFreeExecCtxt">xmlRegFreeExecCtxt</a>	(<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec)<br />
+</pre><pre class="programlisting">int	<a href="#xmlRegexpExec">xmlRegexpExec</a>	(<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * content)<br />
+</pre><pre class="programlisting"><a name="xmlRegExecCallbacks" id="xmlRegExecCallbacks"></a>Function type: xmlRegExecCallbacks
+void	xmlRegExecCallbacks	(<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * token, <br />				 void * transdata, <br />				 void * inputdata)
+</pre><p></p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>exec</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>token</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>transdata</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>inputdata</tt></i>:</span></td><td></td></tr></tbody></table></div><br />
+<pre class="programlisting">Typedef <a href="libxml-xmlregexp.html#xmlRegExecCtxt">xmlRegExecCtxt</a> * <a name="xmlRegExecCtxtPtr" id="xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a>
 
+</pre><pre class="programlisting">int	<a href="#xmlRegExecPushString2">xmlRegExecPushString2</a>	(<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value2, <br />				 void * data)<br />
+</pre><pre class="programlisting">void	<a href="#xmlRegFreeRegexp">xmlRegFreeRegexp</a>	(<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> regexp)<br />
+</pre><pre class="programlisting">Structure <a name="xmlRegExecCtxt" id="xmlRegExecCtxt">xmlRegExecCtxt</a><br />struct _xmlRegExecCtxt {
+The content of this structure is not made public by the API.
+}</pre><br /><pre class="programlisting">Structure <a name="xmlRegexp" id="xmlRegexp">xmlRegexp</a><br />struct _xmlRegexp {
+The content of this structure is not made public by the API.
+}</pre><br /><pre class="programlisting">Typedef <a href="libxml-xmlregexp.html#xmlRegexp">xmlRegexp</a> * <a name="xmlRegexpPtr" id="xmlRegexpPtr">xmlRegexpPtr</a>
 
-
-struct      <a href="libxml-xmlregexp.html#xmlRegexp">xmlRegexp</a>;
-typedef     <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>;
-struct      <a href="libxml-xmlregexp.html#xmlRegExecCtxt">xmlRegExecCtxt</a>;
-typedef     <a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a>;
-<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> <a href="libxml-xmlregexp.html#xmlRegexpCompile">xmlRegexpCompile</a>               (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *regexp);
-void        <a href="libxml-xmlregexp.html#xmlRegFreeRegexp">xmlRegFreeRegexp</a>                (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> regexp);
-int         <a href="libxml-xmlregexp.html#xmlRegexpExec">xmlRegexpExec</a>                   (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);
-void        <a href="libxml-xmlregexp.html#xmlRegexpPrint">xmlRegexpPrint</a>                  (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> regexp);
-int         <a href="libxml-xmlregexp.html#xmlRegexpIsDeterminist">xmlRegexpIsDeterminist</a>          (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp);
-void        (<a href="libxml-xmlregexp.html#xmlRegExecCallbacks">*xmlRegExecCallbacks</a>)          (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *token,
-                                             void *transdata,
-                                             void *inputdata);
-<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> <a href="libxml-xmlregexp.html#xmlRegNewExecCtxt">xmlRegNewExecCtxt</a>         (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp,
-                                             <a href="libxml-xmlregexp.html#xmlRegExecCallbacks">xmlRegExecCallbacks</a> callback,
-                                             void *data);
-void        <a href="libxml-xmlregexp.html#xmlRegFreeExecCtxt">xmlRegFreeExecCtxt</a>              (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec);
-int         <a href="libxml-xmlregexp.html#xmlRegExecPushString">xmlRegExecPushString</a>            (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
-                                             void *data);
-int         <a href="libxml-xmlregexp.html#xmlRegExecPushString2">xmlRegExecPushString2</a>           (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value2,
-                                             void *data);
-</pre></div><div class="refsect1"><h2>Description</h2><p>
-
-</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlRegexp"></a>struct xmlRegexp</h3><pre class="programlisting">struct xmlRegexp;</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlRegexpPtr"></a>xmlRegexpPtr</h3><pre class="programlisting">typedef xmlRegexp *xmlRegexpPtr;
-</pre><p>
-A libxml regular expression, they can actually be far more complex
-thank the POSIX regex expressions.</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlRegExecCtxt"></a>struct xmlRegExecCtxt</h3><pre class="programlisting">struct xmlRegExecCtxt;</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlRegExecCtxtPtr"></a>xmlRegExecCtxtPtr</h3><pre class="programlisting">typedef xmlRegExecCtxt *xmlRegExecCtxtPtr;
-</pre><p>
-A libxml progressive regular expression evaluation context</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlRegexpCompile"></a>xmlRegexpCompile ()</h3><pre class="programlisting"><a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> xmlRegexpCompile               (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *regexp);</pre><p>
-Parses a regular expression conforming to XML Schemas Part 2 Datatype
-Appendix F and build an automata suitable for testing strings against
-that regular expression</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>regexp</tt></i>:</span></td><td>  a regular expression string
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the compiled expression or NULL in case of error
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegFreeRegexp"></a>xmlRegFreeRegexp ()</h3><pre class="programlisting">void        xmlRegFreeRegexp                (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> regexp);</pre><p>
-Free a regexp</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>regexp</tt></i>:</span></td><td>  the regexp
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegexpExec"></a>xmlRegexpExec ()</h3><pre class="programlisting">int         xmlRegexpExec                   (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
-Check if the regular expression generate the value</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>comp</tt></i>:</span></td><td>  the compiled regular expression
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if it matches, 0 if not and a negativa value in case of error
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegexpPrint"></a>xmlRegexpPrint ()</h3><pre class="programlisting">void        xmlRegexpPrint                  (<GTKDOCLINK HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
-                                             <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> regexp);</pre><p>
-Print the content of the compiled regular expression</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>output</tt></i>:</span></td><td> the file for the output debug
-</td></tr><tr><td><span class="term"><i><tt>regexp</tt></i>:</span></td><td> the compiled regexp
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegexpIsDeterminist"></a>xmlRegexpIsDeterminist ()</h3><pre class="programlisting">int         xmlRegexpIsDeterminist          (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp);</pre><p>
-Check if the regular expression is determinist</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>comp</tt></i>:</span></td><td>  the compiled regular expression
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>1 if it yes, 0 if not and a negativa value in case of error
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegExecCallbacks"></a>xmlRegExecCallbacks ()</h3><pre class="programlisting">void        (*xmlRegExecCallbacks)          (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *token,
-                                             void *transdata,
-                                             void *inputdata);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>exec</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>token</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>transdata</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>inputdata</tt></i>:</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegNewExecCtxt"></a>xmlRegNewExecCtxt ()</h3><pre class="programlisting"><a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> xmlRegNewExecCtxt         (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp,
-                                             <a href="libxml-xmlregexp.html#xmlRegExecCallbacks">xmlRegExecCallbacks</a> callback,
-                                             void *data);</pre><p>
-Build a context used for progressive evaluation of a regexp.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>comp</tt></i>:</span></td><td> a precompiled regular expression
-</td></tr><tr><td><span class="term"><i><tt>callback</tt></i>:</span></td><td> a callback function used for handling progresses in the
-           automata matching phase
-</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td> the context data associated to the callback in this context
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the new context
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegFreeExecCtxt"></a>xmlRegFreeExecCtxt ()</h3><pre class="programlisting">void        xmlRegFreeExecCtxt              (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec);</pre><p>
-Free the structures associated to a regular expression evaulation context.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>exec</tt></i>:</span></td><td> a regular expression evaulation context
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegExecPushString"></a>xmlRegExecPushString ()</h3><pre class="programlisting">int         xmlRegExecPushString            (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
-                                             void *data);</pre><p>
-Push one input token in the execution context</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>exec</tt></i>:</span></td><td> a regexp execution context or NULL to indicate the end
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td> a string token input
-</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td> data associated to the token to reuse in callbacks
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td> 1 if the regexp reached a final state, 0 if non-final, and
-    a negative value in case of error.
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegExecPushString2"></a>xmlRegExecPushString2 ()</h3><pre class="programlisting">int         xmlRegExecPushString2           (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value2,
-                                             void *data);</pre><p>
-Push one input token in the execution context</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>exec</tt></i>:</span></td><td> a regexp execution context or NULL to indicate the end
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td> the first string token input
-</td></tr><tr><td><span class="term"><i><tt>value2</tt></i>:</span></td><td> the second string token input
-</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td> data associated to the token to reuse in callbacks
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td> 1 if the regexp reached a final state, 0 if non-final, and
-    a negative value in case of error.
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-encoding.html"><b>&lt;&lt; encoding</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlmemory.html"><b>xmlmemory &gt;&gt;</b></a></td></tr></table></body></html>
+</pre><pre class="programlisting">int	<a href="#xmlRegExecPushString">xmlRegExecPushString</a>	(<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value, <br />				 void * data)<br />
+</pre><pre class="programlisting">int	<a href="#xmlRegexpIsDeterminist">xmlRegexpIsDeterminist</a>	(<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp)<br />
+</pre><pre class="programlisting"><a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a>	<a href="#xmlRegNewExecCtxt">xmlRegNewExecCtxt</a>	(<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp, <br />				 <a href="libxml-xmlregexp.html#xmlRegExecCallbacks">xmlRegExecCallbacks</a> callback, <br />				 void * data)<br />
+</pre><pre class="programlisting"><a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>	<a href="#xmlRegexpCompile">xmlRegexpCompile</a>	(const <a href="libxml-tree.html#xmlChar">xmlChar</a> * regexp)<br />
+</pre><pre class="programlisting">void	<a href="#xmlRegexpPrint">xmlRegexpPrint</a>	(FILE * output, <br />				 <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> regexp)<br />
+</pre><h2>Description</h2>
+<h3><a name="xmlRegFreeExecCtxt" id="xmlRegFreeExecCtxt"></a>Function: xmlRegFreeExecCtxt</h3><pre class="programlisting">void	xmlRegFreeExecCtxt	(<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec)<br />
+</pre><p>Free the structures associated to a regular expression evaulation context.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>exec</tt></i>:</span></td><td>a regular expression evaulation context</td></tr></tbody></table></div><h3><a name="xmlRegexpExec" id="xmlRegexpExec"></a>Function: xmlRegexpExec</h3><pre class="programlisting">int	xmlRegexpExec	(<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * content)<br />
+</pre><p>Check if the regular expression generate the value</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>comp</tt></i>:</span></td><td>the compiled regular expression</td></tr><tr><td><span class="term"><i><tt>content</tt></i>:</span></td><td>the value to check against the regular expression</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>1 if it matches, 0 if not and a negativa value in case of error</td></tr></tbody></table></div>
+      
+      
+      
+      
+      
+      
+    <h3><a name="xmlRegExecPushString2" id="xmlRegExecPushString2"></a>Function: xmlRegExecPushString2</h3><pre class="programlisting">int	xmlRegExecPushString2	(<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value2, <br />				 void * data)<br />
+</pre><p>Push one input token in the execution context</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>exec</tt></i>:</span></td><td>a regexp execution context or NULL to indicate the end</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>the first string token input</td></tr><tr><td><span class="term"><i><tt>value2</tt></i>:</span></td><td>the second string token input</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>data associated to the token to reuse in callbacks</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>1 if the regexp reached a final state, 0 if non-final, and a negative value in case of error.</td></tr></tbody></table></div><h3><a name="xmlRegFreeRegexp" id="xmlRegFreeRegexp"></a>Function: xmlRegFreeRegexp</h3><pre class="programlisting">void	xmlRegFreeRegexp	(<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> regexp)<br />
+</pre><p>Free a regexp</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>regexp</tt></i>:</span></td><td>the regexp</td></tr></tbody></table></div><h3><a name="xmlRegExecPushString" id="xmlRegExecPushString"></a>Function: xmlRegExecPushString</h3><pre class="programlisting">int	xmlRegExecPushString	(<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value, <br />				 void * data)<br />
+</pre><p>Push one input token in the execution context</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>exec</tt></i>:</span></td><td>a regexp execution context or NULL to indicate the end</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>a string token input</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>data associated to the token to reuse in callbacks</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>1 if the regexp reached a final state, 0 if non-final, and a negative value in case of error.</td></tr></tbody></table></div><h3><a name="xmlRegexpIsDeterminist" id="xmlRegexpIsDeterminist"></a>Function: xmlRegexpIsDeterminist</h3><pre class="programlisting">int	xmlRegexpIsDeterminist	(<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp)<br />
+</pre><p>Check if the regular expression is determinist</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>comp</tt></i>:</span></td><td>the compiled regular expression</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>1 if it yes, 0 if not and a negativa value in case of error</td></tr></tbody></table></div><h3><a name="xmlRegNewExecCtxt" id="xmlRegNewExecCtxt"></a>Function: xmlRegNewExecCtxt</h3><pre class="programlisting"><a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a>	xmlRegNewExecCtxt	(<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp, <br />				 <a href="libxml-xmlregexp.html#xmlRegExecCallbacks">xmlRegExecCallbacks</a> callback, <br />				 void * data)<br />
+</pre><p>Build a context used for progressive evaluation of a regexp.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>comp</tt></i>:</span></td><td>a precompiled regular expression</td></tr><tr><td><span class="term"><i><tt>callback</tt></i>:</span></td><td>a callback function used for handling progresses in the automata matching phase</td></tr><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td>the context data associated to the callback in this context</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the new context</td></tr></tbody></table></div><h3><a name="xmlRegexpCompile" id="xmlRegexpCompile"></a>Function: xmlRegexpCompile</h3><pre class="programlisting"><a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>	xmlRegexpCompile	(const <a href="libxml-tree.html#xmlChar">xmlChar</a> * regexp)<br />
+</pre><p>Parses a regular expression conforming to XML Schemas Part 2 Datatype Appendix F and build an automata suitable for testing strings against that regular expression</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>regexp</tt></i>:</span></td><td>a regular expression string</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the compiled expression or NULL in case of error</td></tr></tbody></table></div><h3><a name="xmlRegexpPrint" id="xmlRegexpPrint"></a>Function: xmlRegexpPrint</h3><pre class="programlisting">void	xmlRegexpPrint	(FILE * output, <br />				 <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> regexp)<br />
+</pre><p>Print the content of the compiled regular expression</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>output</tt></i>:</span></td><td>the file for the output debug</td></tr><tr><td><span class="term"><i><tt>regexp</tt></i>:</span></td><td>the compiled regexp</td></tr></tbody></table></div><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

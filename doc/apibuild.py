@@ -49,6 +49,12 @@ def escape(raw):
     raw = string.replace(raw, '"', '&quot;')
     return raw
 
+def uniq(items):
+    d = {}
+    for item in items:
+        d[item]=1
+    return d.keys()
+
 class identifier:
      def __init__(self, name, module=None, type=None, lineno = 0,
                   info=None, extra=None):
@@ -1497,7 +1503,7 @@ class docBuilder:
 	       dict.macros.keys() + dict.typedefs.keys() + \
 	       dict.structs.keys() + dict.enums.keys()
 	 ids.sort()
-	 for id in ids:
+	 for id in uniq(ids):
 	     output.write("     <exports symbol='%s'/>\n" % (id))
 	 output.write("    </file>\n")
 

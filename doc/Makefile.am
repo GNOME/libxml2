@@ -59,16 +59,14 @@ xmllint.1: xmllint.xml
 xmlcatalog.1: xmlcatalog_man.xml
 	-@(xsltproc --nonet xmlcatalog_man.xml)
 
-scan:
-	-gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h win32config.h trio.h triostr.h triop.h config-mac.h XMLTestPrefix2.h  XMLTestPrefix.h triodef.h trionan.h xlink.h libxml.h libxml2-py.h libxml_wrap.h"
-
-templates: scan
-	-gtkdoc-mktmpl --module=libxml
-
-xml: templates
-	if test -d xml ; then rm -f xml/* ; else mkdir xml ; fi
-	-gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --main-sgml-file=$(DOC_MAIN_XML_FILE)
-
+html: libxml2-api.xml $(srcdir)/newapi.xsl
+	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	  echo "Rebuilding the HTML pages from the XML API" ; \
+	  $(bindir)/xsltproc \
+	  --nonet $(srcdir)/newapi.xsl libxml2-api.xml ; fi )
+	-@(if [ -x $(bindir)/xmllint ] ; then \
+	  echo "Validating the resulting XHTML pages" ; \
+	  $(bindir)/xmllint --nonet --valid --noout html/*.html ; fi );
 
 libxml2-api.xml: apibuild.py ../include/libxml/*.h ../*.c
 	-(./apibuild.py)
@@ -80,22 +78,13 @@ $(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
 
 api: libxml2-api.xml libxml2-refs.xml $(WIN32_DIR)/libxml2.def.src
 
-html:
-	if test ! -d html ; then mkdir html ; fi
-	-cd html && gtkdoc-mkhtml libxml ../$(DOC_MAIN_XML_FILE)
-
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
 
 maintainer-clean-local: clean
 	rm -rf libxml-decl-list.txt libxml-decl.txt 
 
-libxml-decl-list.txt libxml-decl.txt : templates
-
-libxml-sections.txt : scan
-	cp libxml-decl-list.txt libxml-sections.txt
-
-rebuild: libxml-sections.txt templates xml html api
+rebuild: api html
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)

@@ -1,142 +1,44 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlschemastypes</title><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="generator" content="GTK-Doc V1.1 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xmlautomata.html" title="xmlautomata"><link rel="next" href="libxml-xpointer.html" title="xpointer"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlautomata.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xpointer.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-xmlschemastypes"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlschemastypes</h2><p>xmlschemastypes &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2740571"></a>Synopsis</h1></h2><pre class="synopsis">
-
-
-
-void        <a href="libxml-xmlschemastypes.html#xmlSchemaInitTypes">xmlSchemaInitTypes</a>              (void);
-void        <a href="libxml-xmlschemastypes.html#xmlSchemaCleanupTypes">xmlSchemaCleanupTypes</a>           (void);
-<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> <a href="libxml-xmlschemastypes.html#xmlSchemaGetPredefinedType">xmlSchemaGetPredefinedType</a> (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ns);
-int         <a href="libxml-xmlschemastypes.html#xmlSchemaValidatePredefinedType">xmlSchemaValidatePredefinedType</a> (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> *val);
-int         <a href="libxml-xmlschemastypes.html#xmlSchemaValPredefTypeNode">xmlSchemaValPredefTypeNode</a>      (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> *val,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);
-int         <a href="libxml-xmlschemastypes.html#xmlSchemaValidateFacet">xmlSchemaValidateFacet</a>          (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> base,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> val);
-void        <a href="libxml-xmlschemastypes.html#xmlSchemaFreeValue">xmlSchemaFreeValue</a>              (<a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> val);
-<a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> <a href="libxml-xmlschemastypes.html#xmlSchemaNewFacet">xmlSchemaNewFacet</a>         (void);
-int         <a href="libxml-xmlschemastypes.html#xmlSchemaCheckFacet">xmlSchemaCheckFacet</a>             (<a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> typeDecl,
-                                             <a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);
-void        <a href="libxml-xmlschemastypes.html#xmlSchemaFreeFacet">xmlSchemaFreeFacet</a>              (<a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet);
-int         <a href="libxml-xmlschemastypes.html#xmlSchemaCompareValues">xmlSchemaCompareValues</a>          (<a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> x,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> y);
-</pre></div><div class="refsect1"><h2>Description</h2><p>
-
-</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlSchemaInitTypes"></a>xmlSchemaInitTypes ()</h3><pre class="programlisting">void        xmlSchemaInitTypes              (void);</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaCleanupTypes"></a>xmlSchemaCleanupTypes ()</h3><pre class="programlisting">void        xmlSchemaCleanupTypes           (void);</pre><p>
-Cleanup the default XML Schemas type library</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaGetPredefinedType"></a>xmlSchemaGetPredefinedType ()</h3><pre class="programlisting"><a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> xmlSchemaGetPredefinedType (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ns);</pre><p>
-Lookup a type in the default XML Schemas type library</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td> the type name
-</td></tr><tr><td><span class="term"><i><tt>ns</tt></i>:</span></td><td>  the URI of the namespace usually "http://www.w3.org/2001/XMLSchema"
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the type if found, NULL otherwise
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaValidatePredefinedType"></a>xmlSchemaValidatePredefinedType ()</h3><pre class="programlisting">int         xmlSchemaValidatePredefinedType (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> *val);</pre><p>
-Check that a value conforms to the lexical space of the predefined type.
-if true a value is computed and returned in <i><tt>val</tt></i>.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>type</tt></i>:</span></td><td> the predefined type
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td> the value to check
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>  the return computed value
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 if this validates, a positive error code number otherwise
-        and -1 in case of internal or API error.
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaValPredefTypeNode"></a>xmlSchemaValPredefTypeNode ()</h3><pre class="programlisting">int         xmlSchemaValPredefTypeNode      (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> *val,
-                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
-Check that a value conforms to the lexical space of the predefined type.
-if true a value is computed and returned in <i><tt>val</tt></i>.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>type</tt></i>:</span></td><td> the predefined type
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td> the value to check
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>  the return computed value
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i>:</span></td><td>  the node containing the value
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 if this validates, a positive error code number otherwise
-        and -1 in case of internal or API error.
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaValidateFacet"></a>xmlSchemaValidateFacet ()</h3><pre class="programlisting">int         xmlSchemaValidateFacet          (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> base,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> val);</pre><p>
-Check a value against a facet condition</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>base</tt></i>:</span></td><td>  the base type
-</td></tr><tr><td><span class="term"><i><tt>facet</tt></i>:</span></td><td>  the facet to check
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>  the lexical repr of the value to validate
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>  the precomputed value
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 if the element is schemas valid, a positive error code
-    number otherwise and -1 in case of internal or API error.
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaFreeValue"></a>xmlSchemaFreeValue ()</h3><pre class="programlisting">void        xmlSchemaFreeValue              (<a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> val);</pre><p>
-Cleanup the default XML Schemas type library</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaNewFacet"></a>xmlSchemaNewFacet ()</h3><pre class="programlisting"><a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> xmlSchemaNewFacet         (void);</pre><p>
-Allocate a new Facet structure.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the newly allocated structure or NULL in case or error
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaCheckFacet"></a>xmlSchemaCheckFacet ()</h3><pre class="programlisting">int         xmlSchemaCheckFacet             (<a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> typeDecl,
-                                             <a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt,
-                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
-Checks the default values types, especially for facets</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>facet</tt></i>:</span></td><td>  the facet
-</td></tr><tr><td><span class="term"><i><tt>typeDecl</tt></i>:</span></td><td>  the schema type definition
-</td></tr><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>  the schema parser context or NULL
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td> name of the type
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 if okay or -1 in cae of error
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaFreeFacet"></a>xmlSchemaFreeFacet ()</h3><pre class="programlisting">void        xmlSchemaFreeFacet              (<a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet);</pre><p>
-Deallocate a Schema Facet structure.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>facet</tt></i>:</span></td><td>  a schema facet structure
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSchemaCompareValues"></a>xmlSchemaCompareValues ()</h3><pre class="programlisting">int         xmlSchemaCompareValues          (<a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> x,
-                                             <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> y);</pre><p>
-Compare 2 values</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>x</tt></i>:</span></td><td>  a first value
-</td></tr><tr><td><span class="term"><i><tt>y</tt></i>:</span></td><td>  a second value
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>-1 if x &lt; y, 0 if x == y, 1 if x &gt; y, 2 if x &lt;&gt; y, and -2 in
-case of error
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlautomata.html"><b>&lt;&lt; xmlautomata</b></a></td><td align="right"><a accesskey="n" href="libxml-xpointer.html"><b>xpointer &gt;&gt;</b></a></td></tr></table></body></html>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><link rel="SHORTCUT ICON" href="/favicon.ico" /><style type="text/css">
+TD {font-family: Verdana,Arial,Helvetica}
+BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
+H1 {font-family: Verdana,Arial,Helvetica}
+H2 {font-family: Verdana,Arial,Helvetica}
+H3 {font-family: Verdana,Arial,Helvetica}
+A:link, A:visited, A:active { text-decoration: underline }
+</style><title>Module xmlschemastypes from libxml2</title></head><body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000"><table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr><td width="120"><a href="http://swpat.ffii.org/"><img src="../epatents.png" alt="Action against software patents" /></a></td><td width="180"><a href="http://www.gnome.org/"><img src="../gnome2.png" alt="Gnome2 Logo" /></a><a href="http://www.w3.org/Status"><img src="../w3c.png" alt="W3C Logo" /></a><a href="http://www.redhat.com/"><img src="../redhat.gif" alt="Red Hat Logo" /></a><div align="left"><a href="http://xmlsoft.org/"><img src="../Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo" /></a></div></td><td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center"><h1></h1><h2>Module xmlschemastypes from libxml2</h2></td></tr></table></td></tr></table></td></tr></table><table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr><td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr><tr><td bgcolor="#fffacd"><form action="search.php" enctype="application/x-www-form-urlencoded" method="get"><input name="query" type="text" size="20" value="" /><input name="submit" type="submit" value="Search ..." /></form><ul><li><a href="index.html">Home</a></li><li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li><li><a href="guidelines.html">XML Guidelines</a></li></ul></td></tr></table><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Related links</b></center></td></tr><tr><td bgcolor="#fffacd"><ul><li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li><li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li><li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li><li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li><li><a href="ftp://xmlsoft.org/">FTP</a></li><li><a href="http://www.zlatkovic.com/projects/libxml/">Windows binaries</a></li><li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li><li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li><li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li><li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml2">Bug Tracker</a></li></ul></td></tr></table></td></tr></table></td><td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd"><h2>Table of Contents</h2><pre class="programlisting"><a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a>	<a href="#xmlSchemaNewFacet">xmlSchemaNewFacet</a>	(void)<br />
+</pre><pre class="programlisting">int	<a href="#xmlSchemaValPredefTypeNode">xmlSchemaValPredefTypeNode</a>	(<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> * val, <br />				 <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br />
+</pre><pre class="programlisting">void	<a href="#xmlSchemaFreeFacet">xmlSchemaFreeFacet</a>	(<a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet)<br />
+</pre><pre class="programlisting">int	<a href="#xmlSchemaValidatePredefinedType">xmlSchemaValidatePredefinedType</a>	(<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> * val)<br />
+</pre><pre class="programlisting">int	<a href="#xmlSchemaCompareValues">xmlSchemaCompareValues</a>	(<a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> x, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> y)<br />
+</pre><pre class="programlisting">int	<a href="#xmlSchemaValidateFacet">xmlSchemaValidateFacet</a>	(<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> base, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> val)<br />
+</pre><pre class="programlisting">void	<a href="#xmlSchemaCleanupTypes">xmlSchemaCleanupTypes</a>	(void)<br />
+</pre><pre class="programlisting">void	<a href="#xmlSchemaInitTypes">xmlSchemaInitTypes</a>	(void)<br />
+</pre><pre class="programlisting">void	<a href="#xmlSchemaFreeValue">xmlSchemaFreeValue</a>	(<a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> value)<br />
+</pre><pre class="programlisting"><a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	<a href="#xmlSchemaGetPredefinedType">xmlSchemaGetPredefinedType</a>	(const <a href="libxml-tree.html#xmlChar">xmlChar</a> * name, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * ns)<br />
+</pre><pre class="programlisting">int	<a href="#xmlSchemaCheckFacet">xmlSchemaCheckFacet</a>	(<a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> typeDecl, <br />				 <a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * name)<br />
+</pre><h2>Description</h2>
+<h3><a name="xmlSchemaNewFacet" id="xmlSchemaNewFacet"></a>Function: xmlSchemaNewFacet</h3><pre class="programlisting"><a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a>	xmlSchemaNewFacet	(void)<br />
+</pre><p>Allocate a new Facet structure.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the newly allocated structure or NULL in case or error</td></tr></tbody></table></div><h3><a name="xmlSchemaValPredefTypeNode" id="xmlSchemaValPredefTypeNode"></a>Function: xmlSchemaValPredefTypeNode</h3><pre class="programlisting">int	xmlSchemaValPredefTypeNode	(<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> * val, <br />				 <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br />
+</pre><p>Check that a value conforms to the lexical space of the predefined type. if true a value is computed and returned in @val.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>type</tt></i>:</span></td><td>the predefined type</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>the value to check</td></tr><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>the return computed value</td></tr><tr><td><span class="term"><i><tt>node</tt></i>:</span></td><td>the node containing the value</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.</td></tr></tbody></table></div><h3><a name="xmlSchemaFreeFacet" id="xmlSchemaFreeFacet"></a>Function: xmlSchemaFreeFacet</h3><pre class="programlisting">void	xmlSchemaFreeFacet	(<a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet)<br />
+</pre><p>Deallocate a Schema Facet structure.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>facet</tt></i>:</span></td><td>a schema facet structure</td></tr></tbody></table></div><h3><a name="xmlSchemaValidatePredefinedType" id="xmlSchemaValidatePredefinedType"></a>Function: xmlSchemaValidatePredefinedType</h3><pre class="programlisting">int	xmlSchemaValidatePredefinedType	(<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> * val)<br />
+</pre><p>Check that a value conforms to the lexical space of the predefined type. if true a value is computed and returned in @val.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>type</tt></i>:</span></td><td>the predefined type</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>the value to check</td></tr><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>the return computed value</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.</td></tr></tbody></table></div><h3><a name="xmlSchemaCompareValues" id="xmlSchemaCompareValues"></a>Function: xmlSchemaCompareValues</h3><pre class="programlisting">int	xmlSchemaCompareValues	(<a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> x, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> y)<br />
+</pre><p>Compare 2 values</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>x</tt></i>:</span></td><td>a first value</td></tr><tr><td><span class="term"><i><tt>y</tt></i>:</span></td><td>a second value</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>-1 if x &lt; y, 0 if x == y, 1 if x &gt; y, 2 if x &lt;&gt; y, and -2 in case of error</td></tr></tbody></table></div><h3><a name="xmlSchemaValidateFacet" id="xmlSchemaValidateFacet"></a>Function: xmlSchemaValidateFacet</h3><pre class="programlisting">int	xmlSchemaValidateFacet	(<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> base, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * value, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> val)<br />
+</pre><p>Check a value against a facet condition</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>base</tt></i>:</span></td><td>the base type</td></tr><tr><td><span class="term"><i><tt>facet</tt></i>:</span></td><td>the facet to check</td></tr><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>the lexical repr of the value to validate</td></tr><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>the precomputed value</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if the element is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.</td></tr></tbody></table></div><h3><a name="xmlSchemaCleanupTypes" id="xmlSchemaCleanupTypes"></a>Function: xmlSchemaCleanupTypes</h3><pre class="programlisting">void	xmlSchemaCleanupTypes	(void)<br />
+</pre><p>Cleanup the default XML Schemas type library</p>
+<h3><a name="xmlSchemaInitTypes" id="xmlSchemaInitTypes"></a>Function: xmlSchemaInitTypes</h3><pre class="programlisting">void	xmlSchemaInitTypes	(void)<br />
+</pre><p>Initialize the default XML Schemas type library</p>
+<h3><a name="xmlSchemaFreeValue" id="xmlSchemaFreeValue"></a>Function: xmlSchemaFreeValue</h3><pre class="programlisting">void	xmlSchemaFreeValue	(<a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> value)<br />
+</pre><p>Cleanup the default XML Schemas type library</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>value</tt></i>:</span></td><td>the value to free</td></tr></tbody></table></div><h3><a name="xmlSchemaGetPredefinedType" id="xmlSchemaGetPredefinedType"></a>Function: xmlSchemaGetPredefinedType</h3><pre class="programlisting"><a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	xmlSchemaGetPredefinedType	(const <a href="libxml-tree.html#xmlChar">xmlChar</a> * name, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * ns)<br />
+</pre><p>Lookup a type in the default XML Schemas type library</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>the type name</td></tr><tr><td><span class="term"><i><tt>ns</tt></i>:</span></td><td>the URI of the namespace usually &quot;http://www.w3.org/2001/XMLSchema&quot;</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the type if found, NULL otherwise</td></tr></tbody></table></div><h3><a name="xmlSchemaCheckFacet" id="xmlSchemaCheckFacet"></a>Function: xmlSchemaCheckFacet</h3><pre class="programlisting">int	xmlSchemaCheckFacet	(<a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet, <br />				 <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> typeDecl, <br />				 <a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt, <br />				 const <a href="libxml-tree.html#xmlChar">xmlChar</a> * name)<br />
+</pre><p>Checks the default values types, especially for facets</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>facet</tt></i>:</span></td><td>the facet</td></tr><tr><td><span class="term"><i><tt>typeDecl</tt></i>:</span></td><td>the schema type definition</td></tr><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the schema parser context or NULL</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>name of the type</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>0 if okay or -1 in cae of error</td></tr></tbody></table></div><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

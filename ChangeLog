@@ -1,3 +1,11 @@
+Mon Nov 17 14:54:38 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/Makefile.am doc/apibuild.py doc/libxml2-api.xml doc/newapi.xsl:
+	  improvement of the stylesheets, fixed a API generation problem,
+	  switched the stylesheet and Makefile to build the HTML output.
+	* doc/html/*.html: complete update, ditched some old files, might
+	  introduce some breakage...
+
 Mon Nov 17 12:50:28 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/newapi.xsl: lot of improvements, this starts looking good

@@ -23,8 +23,8 @@
   <!-- Build keys for all symbols -->
   <xsl:key name="symbols" match="/api/symbols/*" use="@name"/>
 
-  <!-- the target directory -->
-  <xsl:variable name="htmldir">newhtml</xsl:variable>
+  <!-- the target directory for the HTML output -->
+  <xsl:variable name="htmldir">html</xsl:variable>
 
   <!-- This is convoluted but needed to force the current document to
        be the API one and not the result tree from the tokenize() result,
@@ -60,6 +60,21 @@
   <xsl:template match="macro" mode="toc">
     <pre class="programlisting">
     <xsl:text>#define </xsl:text><a href="#{@name}"><xsl:value-of select="@name"/></a><xsl:text>
+
+</xsl:text>
+    </pre>
+  </xsl:template>
+
+  <xsl:template match="variable" mode="toc">
+    <pre class="programlisting">
+    <xsl:text>Variable </xsl:text>
+    <xsl:call-template name="dumptext">
+      <xsl:with-param name="text" select="string(@type)"/>
+    </xsl:call-template>
+    <xsl:text> </xsl:text>
+    <a name="{@name}"></a>
+    <xsl:value-of select="@name"/>
+    <xsl:text>
 
 </xsl:text>
     </pre>
@@ -113,23 +128,29 @@
     <xsl:text>Structure </xsl:text><a name="{@name}"><xsl:value-of select="@name"/></a><br/>
     <xsl:value-of select="@type"/><xsl:text> {
 </xsl:text>
+    <xsl:if test="not(field)">
+      <xsl:text>The content of this structure is not made public by the API.
+</xsl:text>
+    </xsl:if>
     <xsl:for-each select="field">
         <xsl:text>    </xsl:text>
 	<xsl:call-template name="dumptext">
 	  <xsl:with-param name="text" select="@type"/>
 	</xsl:call-template>
 	<xsl:text>&#9;</xsl:text>
-	<xsl:value-of select="@name"/><xsl:text>&#9;: </xsl:text>
-	<xsl:call-template name="dumptext">
-	  <xsl:with-param name="text" select="substring(@info, 1, 50)"/>
-	</xsl:call-template>
+	<xsl:value-of select="@name"/>
+	<xsl:if test="@info != ''">
+	  <xsl:text>&#9;: </xsl:text>
+	  <xsl:call-template name="dumptext">
+	    <xsl:with-param name="text" select="substring(@info, 1, 50)"/>
+	  </xsl:call-template>
+	</xsl:if>
 	<xsl:text>
 </xsl:text>
     </xsl:for-each>
+    <xsl:text>}</xsl:text>
     </pre>
-    <xsl:text>}
-
-</xsl:text>
+    <br/>
   </xsl:template>
 
   <xsl:template match="macro">
@@ -205,24 +226,34 @@
     <xsl:call-template name="dumptext">
       <xsl:with-param name="text" select="info"/>
     </xsl:call-template>
-    </p><xsl:text>
-</xsl:text>
+    </p>
     <xsl:if test="arg | return">
       <div class="variablelist"><table border="0"><col align="left"/><tbody>
       <xsl:for-each select="arg">
         <tr>
           <td><span class="term"><i><tt><xsl:value-of select="@name"/></tt></i>:</span></td>
-	  <td><xsl:value-of select="@info"/></td>
+	  <td>
+	    <xsl:call-template name="dumptext">
+	      <xsl:with-param name="text" select="@info"/>
+	    </xsl:call-template>
+	  </td>
         </tr>
       </xsl:for-each>
       <xsl:if test="return/@info">
         <tr>
           <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-	  <td><xsl:value-of select="return/@info"/></td>
+	  <td>
+	    <xsl:call-template name="dumptext">
+	      <xsl:with-param name="text" select="return/@info"/>
+	    </xsl:call-template>
+	  </td>
         </tr>
       </xsl:if>
       </tbody></table></div>
     </xsl:if>
+    <br/>
+    <xsl:text>
+</xsl:text>
   </xsl:template>
 
   <xsl:template match="function">
@@ -263,13 +294,21 @@
       <xsl:for-each select="arg">
         <tr>
           <td><span class="term"><i><tt><xsl:value-of select="@name"/></tt></i>:</span></td>
-	  <td><xsl:value-of select="@info"/></td>
+	  <td>
+	    <xsl:call-template name="dumptext">
+	      <xsl:with-param name="text" select="@info"/>
+	    </xsl:call-template>
+	  </td>
         </tr>
       </xsl:for-each>
       <xsl:if test="return/@info">
         <tr>
           <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-	  <td><xsl:value-of select="return/@info"/></td>
+	  <td>
+	    <xsl:call-template name="dumptext">
+	      <xsl:with-param name="text" select="return/@info"/>
+	    </xsl:call-template>
+	  </td>
         </tr>
       </xsl:if>
       </tbody></table></div>
@@ -277,11 +316,11 @@
   </xsl:template>
 
   <xsl:template match="exports" mode="toc">
-    <xsl:apply-templates select="key('symbols', string(@symbol))" mode="toc"/>
+    <xsl:apply-templates select="key('symbols', string(@symbol))[1]" mode="toc"/>
   </xsl:template>
 
   <xsl:template match="exports">
-    <xsl:apply-templates select="key('symbols', string(@symbol))"/>
+    <xsl:apply-templates select="key('symbols', string(@symbol))[1]"/>
   </xsl:template>
 
   <xsl:template match="file">

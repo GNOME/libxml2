@@ -1,418 +1,215 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>globals</title><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="generator" content="GTK-Doc V1.1 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-tree.html" title="tree"><link rel="next" href="libxml-xmlunicode.html" title="xmlunicode"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-tree.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xmlunicode.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-globals"></a><div class="titlepage"></div><div class="refnamediv"><h2>globals</h2><p>globals &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2839615"></a>Synopsis</h1></h2><pre class="synopsis">
-
-
-
-void        <a href="libxml-globals.html#xmlInitGlobals">xmlInitGlobals</a>                  (void);
-void        <a href="libxml-globals.html#xmlCleanupGlobals">xmlCleanupGlobals</a>               (void);
-void        (<a href="libxml-globals.html#xmlRegisterNodeFunc">*xmlRegisterNodeFunc</a>)          (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);
-void        (<a href="libxml-globals.html#xmlDeregisterNodeFunc">*xmlDeregisterNodeFunc</a>)        (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);
-struct      <a href="libxml-globals.html#xmlGlobalState">xmlGlobalState</a>;
-typedef     <a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a>;
-void        <a href="libxml-globals.html#xmlInitializeGlobalState">xmlInitializeGlobalState</a>        (<a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> gs);
-void        <a href="libxml-globals.html#xmlThrDefSetGenericErrorFunc">xmlThrDefSetGenericErrorFunc</a>    (void *ctx,
-                                             <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);
-void        <a href="libxml-globals.html#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc</a> (void *ctx,
-                                             <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler);
-<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> <a href="libxml-globals.html#xmlRegisterNodeDefault">xmlRegisterNodeDefault</a>  (<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);
-<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> <a href="libxml-globals.html#xmlThrDefRegisterNodeDefault">xmlThrDefRegisterNodeDefault</a>
-                                            (<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);
-<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> <a href="libxml-globals.html#xmlDeregisterNodeDefault">xmlDeregisterNodeDefault</a>
-                                            (<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);
-<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> <a href="libxml-globals.html#xmlThrDefDeregisterNodeDefault">xmlThrDefDeregisterNodeDefault</a>
-                                            (<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);
-#define     <a href="libxml-xmlmemory.html#xmlMalloc">xmlMalloc</a>                       (size)
-#define     <a href="libxml-xmlmemory.html#xmlMallocAtomic">xmlMallocAtomic</a>                 (size)
-#define     <a href="libxml-xmlmemory.html#xmlRealloc">xmlRealloc</a>                      (ptr, size)
-#define     <a href="libxml-globals.html#xmlFree">xmlFree</a>
-#define     <a href="libxml-xmlmemory.html#xmlMemStrdup">xmlMemStrdup</a>                    (str)
-#define     <a href="libxml-globals.html#docbDefaultSAXHandler">docbDefaultSAXHandler</a>
-#define     <a href="libxml-globals.html#htmlDefaultSAXHandler">htmlDefaultSAXHandler</a>
-#define     <a href="libxml-globals.html#xmlLastError">xmlLastError</a>
-#define     <a href="libxml-globals.html#oldXMLWDcompatibility">oldXMLWDcompatibility</a>
-#define     <a href="libxml-globals.html#xmlBufferAllocScheme">xmlBufferAllocScheme</a>
-<a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> <a href="libxml-globals.html#xmlThrDefBufferAllocScheme">xmlThrDefBufferAllocScheme</a>
-                                            (<a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> v);
-#define     <a href="libxml-globals.html#xmlDefaultBufferSize">xmlDefaultBufferSize</a>
-int         <a href="libxml-globals.html#xmlThrDefDefaultBufferSize">xmlThrDefDefaultBufferSize</a>      (int v);
-#define     <a href="libxml-globals.html#xmlDefaultSAXHandler">xmlDefaultSAXHandler</a>
-#define     <a href="libxml-globals.html#xmlDefaultSAXLocator">xmlDefaultSAXLocator</a>
-#define     <a href="libxml-globals.html#xmlDoValidityCheckingDefaultValue">xmlDoValidityCheckingDefaultValue</a>
-int         <a href="libxml-globals.html#xmlThrDefDoValidityCheckingDefaultValue">xmlThrDefDoValidityCheckingDefaultValue</a>
-                                            (int v);
-#define     <a href="libxml-globals.html#xmlGenericError">xmlGenericError</a>
-#define     <a href="libxml-globals.html#xmlStructuredError">xmlStructuredError</a>
-#define     <a href="libxml-globals.html#xmlGenericErrorContext">xmlGenericErrorContext</a>
-#define     <a href="libxml-globals.html#xmlGetWarningsDefaultValue">xmlGetWarningsDefaultValue</a>
-int         <a href="libxml-globals.html#xmlThrDefGetWarningsDefaultValue">xmlThrDefGetWarningsDefaultValue</a>
-                                            (int v);
-#define     <a href="libxml-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a>
-int         <a href="libxml-globals.html#xmlThrDefIndentTreeOutput">xmlThrDefIndentTreeOutput</a>       (int v);
-#define     <a href="libxml-globals.html#xmlTreeIndentString">xmlTreeIndentString</a>
-const char* <a href="libxml-globals.html#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>       (const char *v);
-#define     <a href="libxml-globals.html#xmlKeepBlanksDefaultValue">xmlKeepBlanksDefaultValue</a>
-int         <a href="libxml-globals.html#xmlThrDefKeepBlanksDefaultValue">xmlThrDefKeepBlanksDefaultValue</a> (int v);
-#define     <a href="libxml-globals.html#xmlLineNumbersDefaultValue">xmlLineNumbersDefaultValue</a>
-int         <a href="libxml-globals.html#xmlThrDefLineNumbersDefaultValue">xmlThrDefLineNumbersDefaultValue</a>
-                                            (int v);
-#define     <a href="libxml-globals.html#xmlLoadExtDtdDefaultValue">xmlLoadExtDtdDefaultValue</a>
-int         <a href="libxml-globals.html#xmlThrDefLoadExtDtdDefaultValue">xmlThrDefLoadExtDtdDefaultValue</a> (int v);
-#define     <a href="libxml-globals.html#xmlParserDebugEntities">xmlParserDebugEntities</a>
-int         <a href="libxml-globals.html#xmlThrDefParserDebugEntities">xmlThrDefParserDebugEntities</a>    (int v);
-#define     <a href="libxml-globals.html#xmlParserVersion">xmlParserVersion</a>
-#define     <a href="libxml-globals.html#xmlPedanticParserDefaultValue">xmlPedanticParserDefaultValue</a>
-int         <a href="libxml-globals.html#xmlThrDefPedanticParserDefaultValue">xmlThrDefPedanticParserDefaultValue</a>
-                                            (int v);
-#define     <a href="libxml-globals.html#xmlSaveNoEmptyTags">xmlSaveNoEmptyTags</a>
-int         <a href="libxml-globals.html#xmlThrDefSaveNoEmptyTags">xmlThrDefSaveNoEmptyTags</a>        (int v);
-#define     <a href="libxml-globals.html#xmlSubstituteEntitiesDefaultValue">xmlSubstituteEntitiesDefaultValue</a>
-int         <a href="libxml-globals.html#xmlThrDefSubstituteEntitiesDefaultValue">xmlThrDefSubstituteEntitiesDefaultValue</a>
-                                            (int v);
-#define     <a href="libxml-globals.html#xmlRegisterNodeDefaultValue">xmlRegisterNodeDefaultValue</a>
-#define     <a href="libxml-globals.html#xmlDeregisterNodeDefaultValue">xmlDeregisterNodeDefaultValue</a>
-</pre></div><div class="refsect1"><h2>Description</h2><p>
-
-</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlInitGlobals"></a>xmlInitGlobals ()</h3><pre class="programlisting">void        xmlInitGlobals                  (void);</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlCleanupGlobals"></a>xmlCleanupGlobals ()</h3><pre class="programlisting">void        xmlCleanupGlobals               (void);</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlRegisterNodeFunc"></a>xmlRegisterNodeFunc ()</h3><pre class="programlisting">void        (*xmlRegisterNodeFunc)          (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>node</tt></i>:</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlDeregisterNodeFunc"></a>xmlDeregisterNodeFunc ()</h3><pre class="programlisting">void        (*xmlDeregisterNodeFunc)        (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>node</tt></i>:</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlGlobalState"></a>struct xmlGlobalState</h3><pre class="programlisting">struct xmlGlobalState {
-
-	const char *xmlParserVersion;
-
-	xmlSAXLocator xmlDefaultSAXLocator;
-	xmlSAXHandlerV1 xmlDefaultSAXHandler;
-	xmlSAXHandlerV1 docbDefaultSAXHandler;
-	xmlSAXHandlerV1 htmlDefaultSAXHandler;
-
-	xmlFreeFunc xmlFree;
-	xmlMallocFunc xmlMalloc;
-	xmlStrdupFunc xmlMemStrdup;
-	xmlReallocFunc xmlRealloc;
-
-	xmlGenericErrorFunc xmlGenericError;
-	xmlStructuredErrorFunc xmlStructuredError;
-	void *xmlGenericErrorContext;
-
-	int oldXMLWDcompatibility;
-
-	xmlBufferAllocationScheme xmlBufferAllocScheme;
-	int xmlDefaultBufferSize;
-
-	int xmlSubstituteEntitiesDefaultValue;
-	int xmlDoValidityCheckingDefaultValue;
-	int xmlGetWarningsDefaultValue;
-	int xmlKeepBlanksDefaultValue;
-	int xmlLineNumbersDefaultValue;
-	int xmlLoadExtDtdDefaultValue;
-	int xmlParserDebugEntities;
-	int xmlPedanticParserDefaultValue;
-
-	int xmlSaveNoEmptyTags;
-	int xmlIndentTreeOutput;
-	const char *xmlTreeIndentString;
-
-  	xmlRegisterNodeFunc xmlRegisterNodeDefaultValue;
-  	xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue;
-
-	xmlMallocFunc xmlMallocAtomic;
-	xmlError xmlLastError;
-};
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlGlobalStatePtr"></a>xmlGlobalStatePtr</h3><pre class="programlisting">typedef xmlGlobalState *xmlGlobalStatePtr;
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlInitializeGlobalState"></a>xmlInitializeGlobalState ()</h3><pre class="programlisting">void        xmlInitializeGlobalState        (<a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> gs);</pre><p>
-<a href="libxml-globals.html#xmlInitializeGlobalState">xmlInitializeGlobalState</a>() initialize a global state with all the
-default values of the library.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>gs</tt></i>:</span></td><td> a pointer to a newly allocated global state
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlThrDefSetGenericErrorFunc"></a>xmlThrDefSetGenericErrorFunc ()</h3><pre class="programlisting">void        xmlThrDefSetGenericErrorFunc    (void *ctx,
-                                             <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlThrDefSetStructuredErrorFunc"></a>xmlThrDefSetStructuredErrorFunc ()</h3><pre class="programlisting">void        xmlThrDefSetStructuredErrorFunc (void *ctx,
-                                             <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegisterNodeDefault"></a>xmlRegisterNodeDefault ()</h3><pre class="programlisting"><a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> xmlRegisterNodeDefault  (<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);</pre><p>
-Registers a callback for node creation</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>func</tt></i>:</span></td><td> function pointer to the new RegisterNodeFunc
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the old value of the registration function
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlThrDefRegisterNodeDefault"></a>xmlThrDefRegisterNodeDefault ()</h3><pre class="programlisting"><a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> xmlThrDefRegisterNodeDefault
-                                            (<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>func</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlDeregisterNodeDefault"></a>xmlDeregisterNodeDefault ()</h3><pre class="programlisting"><a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> xmlDeregisterNodeDefault
-                                            (<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);</pre><p>
-Registers a callback for node destruction</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>func</tt></i>:</span></td><td> function pointer to the new DeregisterNodeFunc
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>the previous value of the deregistration function
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlThrDefDeregisterNodeDefault"></a>xmlThrDefDeregisterNodeDefault ()</h3><pre class="programlisting"><a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> xmlThrDefDeregisterNodeDefault
-                                            (<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>func</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMalloc"></a>xmlMalloc()</h3><pre class="programlisting">#define     xmlMalloc(size)</pre><p>
-Wrapper for the <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() function used in the XML library.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlMallocAtomic"></a>xmlMallocAtomic()</h3><pre class="programlisting">#define     xmlMallocAtomic(size)</pre><p>
-Wrapper for the <GTKDOCLINK HREF="malloc">malloc</GTKDOCLINK>() function used in the XML library for allocation
-of block not containing pointers to other areas.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRealloc"></a>xmlRealloc()</h3><pre class="programlisting">#define     xmlRealloc(ptr, size)</pre><p>
-Wrapper for the <GTKDOCLINK HREF="realloc">realloc</GTKDOCLINK>() function used in the XML library.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i>:</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlFree"></a>xmlFree</h3><pre class="programlisting">#define     xmlFree</pre><p>
-The variable holding the libxml <GTKDOCLINK HREF="free">free</GTKDOCLINK>() implementation</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlMemStrdup"></a>xmlMemStrdup()</h3><pre class="programlisting">#define     xmlMemStrdup(str)</pre><p>
-Wrapper for the <GTKDOCLINK HREF="strdup">strdup</GTKDOCLINK>() function, <a href="libxml-parser.html#xmlStrdup">xmlStrdup</a>() is usually preferred.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>str</tt></i>:</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="docbDefaultSAXHandler"></a>docbDefaultSAXHandler</h3><pre class="programlisting">#define     docbDefaultSAXHandler</pre><p>
-Default old SAX v1 handler for SGML DocBook, builds the DOM tree</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="htmlDefaultSAXHandler"></a>htmlDefaultSAXHandler</h3><pre class="programlisting">#define     htmlDefaultSAXHandler</pre><p>
-Default old SAX v1 handler for HTML, builds the DOM tree</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlLastError"></a>xmlLastError</h3><pre class="programlisting">#define     xmlLastError</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="oldXMLWDcompatibility"></a>oldXMLWDcompatibility</h3><pre class="programlisting">#define     oldXMLWDcompatibility</pre><p>
-Global setting, DEPRECATED.</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlBufferAllocScheme"></a>xmlBufferAllocScheme</h3><pre class="programlisting">#define     xmlBufferAllocScheme</pre><p>
-Global setting, default allocation policy for buffers, default is
-XML_BUFFER_ALLOC_EXACT</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefBufferAllocScheme"></a>xmlThrDefBufferAllocScheme ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> xmlThrDefBufferAllocScheme
-                                            (<a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlDefaultBufferSize"></a>xmlDefaultBufferSize</h3><pre class="programlisting">#define     xmlDefaultBufferSize</pre><p>
-Global setting, default buffer size. Default value is BASE_BUFFER_SIZE</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefDefaultBufferSize"></a>xmlThrDefDefaultBufferSize ()</h3><pre class="programlisting">int         xmlThrDefDefaultBufferSize      (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlDefaultSAXHandler"></a>xmlDefaultSAXHandler</h3><pre class="programlisting">#define     xmlDefaultSAXHandler</pre><p>
-Default SAX version1 handler for XML, builds the DOM tree</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlDefaultSAXLocator"></a>xmlDefaultSAXLocator</h3><pre class="programlisting">#define     xmlDefaultSAXLocator</pre><p>
-The default SAX Locator
-{ getPublicId, getSystemId, getLineNumber, getColumnNumber}</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlDoValidityCheckingDefaultValue"></a>xmlDoValidityCheckingDefaultValue</h3><pre class="programlisting">#define     xmlDoValidityCheckingDefaultValue</pre><p>
-Global setting, indicate that the parser should work in validating mode.
-Disabled by default.</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefDoValidityCheckingDefaultValue"></a>xmlThrDefDoValidityCheckingDefaultValue ()</h3><pre class="programlisting">int         xmlThrDefDoValidityCheckingDefaultValue
-                                            (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlGenericError"></a>xmlGenericError</h3><pre class="programlisting">#define     xmlGenericError</pre><p>
-Global setting: function used for generic error callbacks</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlStructuredError"></a>xmlStructuredError</h3><pre class="programlisting">#define     xmlStructuredError</pre><p>
-Global setting: function used for structured error callbacks</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlGenericErrorContext"></a>xmlGenericErrorContext</h3><pre class="programlisting">#define     xmlGenericErrorContext</pre><p>
-Global setting passed to generic error callbacks</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlGetWarningsDefaultValue"></a>xmlGetWarningsDefaultValue</h3><pre class="programlisting">#define     xmlGetWarningsDefaultValue</pre><p>
-Global setting, indicate that the parser should provide warnings.
-Activated by default.</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefGetWarningsDefaultValue"></a>xmlThrDefGetWarningsDefaultValue ()</h3><pre class="programlisting">int         xmlThrDefGetWarningsDefaultValue
-                                            (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIndentTreeOutput"></a>xmlIndentTreeOutput</h3><pre class="programlisting">#define     xmlIndentTreeOutput</pre><p>
-Global setting, asking the serializer to indent the output tree by default
-Enabled by default</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefIndentTreeOutput"></a>xmlThrDefIndentTreeOutput ()</h3><pre class="programlisting">int         xmlThrDefIndentTreeOutput       (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlTreeIndentString"></a>xmlTreeIndentString</h3><pre class="programlisting">#define     xmlTreeIndentString</pre><p>
-The string used to do one-level indent. By default is equal to "  " (two spaces)</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefTreeIndentString"></a>xmlThrDefTreeIndentString ()</h3><pre class="programlisting">const char* xmlThrDefTreeIndentString       (const char *v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlKeepBlanksDefaultValue"></a>xmlKeepBlanksDefaultValue</h3><pre class="programlisting">#define     xmlKeepBlanksDefaultValue</pre><p>
-Global setting, indicate that the parser should keep all blanks
-nodes found in the content
-Activated by default, this is actually needed to have the parser
-conformant to the XML Recommendation, however the option is kept
-for some applications since this was libxml1 default behaviour.</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefKeepBlanksDefaultValue"></a>xmlThrDefKeepBlanksDefaultValue ()</h3><pre class="programlisting">int         xmlThrDefKeepBlanksDefaultValue (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlLineNumbersDefaultValue"></a>xmlLineNumbersDefaultValue</h3><pre class="programlisting">#define     xmlLineNumbersDefaultValue</pre><p>
-Global setting, indicate that the parser should store the line number
-in the content field of elements in the DOM tree. 
-Disabled by default since this may not be safe for old classes of
-applicaton.</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefLineNumbersDefaultValue"></a>xmlThrDefLineNumbersDefaultValue ()</h3><pre class="programlisting">int         xmlThrDefLineNumbersDefaultValue
-                                            (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlLoadExtDtdDefaultValue"></a>xmlLoadExtDtdDefaultValue</h3><pre class="programlisting">#define     xmlLoadExtDtdDefaultValue</pre><p>
-Global setting, indicate that the parser should load DTD while not
-validating.
-Disabled by default.</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefLoadExtDtdDefaultValue"></a>xmlThrDefLoadExtDtdDefaultValue ()</h3><pre class="programlisting">int         xmlThrDefLoadExtDtdDefaultValue (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlParserDebugEntities"></a>xmlParserDebugEntities</h3><pre class="programlisting">#define     xmlParserDebugEntities</pre><p>
-Global setting, asking the parser to print out debugging informations.
-while handling entities.
-Disabled by default</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefParserDebugEntities"></a>xmlThrDefParserDebugEntities ()</h3><pre class="programlisting">int         xmlThrDefParserDebugEntities    (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlParserVersion"></a>xmlParserVersion</h3><pre class="programlisting">#define     xmlParserVersion</pre><p>
-Constant string describing the internal version of the library</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlPedanticParserDefaultValue"></a>xmlPedanticParserDefaultValue</h3><pre class="programlisting">#define     xmlPedanticParserDefaultValue</pre><p>
-Global setting, indicate that the parser be pedantic
-Disabled by default.</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefPedanticParserDefaultValue"></a>xmlThrDefPedanticParserDefaultValue ()</h3><pre class="programlisting">int         xmlThrDefPedanticParserDefaultValue
-                                            (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSaveNoEmptyTags"></a>xmlSaveNoEmptyTags</h3><pre class="programlisting">#define     xmlSaveNoEmptyTags</pre><p>
-Global setting, asking the serializer to not output empty tags
-as &lt;empty/&gt; but &lt;empty&gt;&lt;/empty&gt;. those two forms are undistinguishable
-once parsed.
-Disabled by default</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefSaveNoEmptyTags"></a>xmlThrDefSaveNoEmptyTags ()</h3><pre class="programlisting">int         xmlThrDefSaveNoEmptyTags        (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlSubstituteEntitiesDefaultValue"></a>xmlSubstituteEntitiesDefaultValue</h3><pre class="programlisting">#define     xmlSubstituteEntitiesDefaultValue</pre><p>
-Global setting, indicate that the parser should not generate entity
-references but replace them with the actual content of the entity
-Disabled by default, this should be activated when using XPath since
-the XPath data model requires entities replacement and the XPath
-engine does not handle entities references transparently.</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlThrDefSubstituteEntitiesDefaultValue"></a>xmlThrDefSubstituteEntitiesDefaultValue ()</h3><pre class="programlisting">int         xmlThrDefSubstituteEntitiesDefaultValue
-                                            (int v);</pre><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td>
-</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
-
-
-</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlRegisterNodeDefaultValue"></a>xmlRegisterNodeDefaultValue</h3><pre class="programlisting">#define     xmlRegisterNodeDefaultValue</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlDeregisterNodeDefaultValue"></a>xmlDeregisterNodeDefaultValue</h3><pre class="programlisting">#define     xmlDeregisterNodeDefaultValue</pre><p>
-
-</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-tree.html"><b>&lt;&lt; tree</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlunicode.html"><b>xmlunicode &gt;&gt;</b></a></td></tr></table></body></html>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><link rel="SHORTCUT ICON" href="/favicon.ico" /><style type="text/css">
+TD {font-family: Verdana,Arial,Helvetica}
+BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
+H1 {font-family: Verdana,Arial,Helvetica}
+H2 {font-family: Verdana,Arial,Helvetica}
+H3 {font-family: Verdana,Arial,Helvetica}
+A:link, A:visited, A:active { text-decoration: underline }
+</style><title>Module globals from libxml2</title></head><body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000"><table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr><td width="120"><a href="http://swpat.ffii.org/"><img src="../epatents.png" alt="Action against software patents" /></a></td><td width="180"><a href="http://www.gnome.org/"><img src="../gnome2.png" alt="Gnome2 Logo" /></a><a href="http://www.w3.org/Status"><img src="../w3c.png" alt="W3C Logo" /></a><a href="http://www.redhat.com/"><img src="../redhat.gif" alt="Red Hat Logo" /></a><div align="left"><a href="http://xmlsoft.org/"><img src="../Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo" /></a></div></td><td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center"><h1></h1><h2>Module globals from libxml2</h2></td></tr></table></td></tr></table></td></tr></table><table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr><td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr><tr><td bgcolor="#fffacd"><form action="search.php" enctype="application/x-www-form-urlencoded" method="get"><input name="query" type="text" size="20" value="" /><input name="submit" type="submit" value="Search ..." /></form><ul><li><a href="index.html">Home</a></li><li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li><li><a href="guidelines.html">XML Guidelines</a></li></ul></td></tr></table><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Related links</b></center></td></tr><tr><td bgcolor="#fffacd"><ul><li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li><li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li><li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li><li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li><li><a href="ftp://xmlsoft.org/">FTP</a></li><li><a href="http://www.zlatkovic.com/projects/libxml/">Windows binaries</a></li><li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li><li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li><li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li><li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml2">Bug Tracker</a></li></ul></td></tr></table></td></tr></table></td><td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd"><h2>Table of Contents</h2><pre class="programlisting">void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc</a>	(void * ctx, <br />				 <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler)<br />
+</pre><pre class="programlisting">void	<a href="#xmlInitializeGlobalState">xmlInitializeGlobalState</a>	(<a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> gs)<br />
+</pre><pre class="programlisting">Variable const char * <a name="xmlTreeIndentString" id="xmlTreeIndentString"></a>xmlTreeIndentString
+
+</pre><pre class="programlisting"><a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a>	<a href="#xmlThrDefBufferAllocScheme">xmlThrDefBufferAllocScheme</a>	(<a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> v)<br />
+</pre><pre class="programlisting">Variable int <a name="xmlIndentTreeOutput" id="xmlIndentTreeOutput"></a>xmlIndentTreeOutput
+
+</pre><pre class="programlisting">int	<a href="#xmlThrDefPedanticParserDefaultValue">xmlThrDefPedanticParserDefaultValue</a>	(int v)<br />
+</pre><pre class="programlisting">Variable <a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> <a name="xmlBufferAllocScheme" id="xmlBufferAllocScheme"></a>xmlBufferAllocScheme
+
+</pre><pre class="programlisting"><a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	<a href="#xmlRegisterNodeDefault">xmlRegisterNodeDefault</a>	(<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func)<br />
+</pre><pre class="programlisting">Variable int <a name="xmlDefaultBufferSize" id="xmlDefaultBufferSize"></a>xmlDefaultBufferSize
+
+</pre><pre class="programlisting">Variable <a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> <a name="xmlRegisterNodeDefaultValue" id="xmlRegisterNodeDefaultValue"></a>xmlRegisterNodeDefaultValue
+
+</pre><pre class="programlisting">Variable int <a name="xmlGetWarningsDefaultValue" id="xmlGetWarningsDefaultValue"></a>xmlGetWarningsDefaultValue
+
+</pre><pre class="programlisting">const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	(const char * v)<br />
+</pre><pre class="programlisting">Variable <a href="libxml-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> <a name="docbDefaultSAXHandler" id="docbDefaultSAXHandler"></a>docbDefaultSAXHandler
+
+</pre><pre class="programlisting">Variable void * <a name="xmlGenericErrorContext" id="xmlGenericErrorContext"></a>xmlGenericErrorContext
+
+</pre><pre class="programlisting">int	<a href="#xmlThrDefDefaultBufferSize">xmlThrDefDefaultBufferSize</a>	(int v)<br />
+</pre><pre class="programlisting">int	<a href="#xmlThrDefLoadExtDtdDefaultValue">xmlThrDefLoadExtDtdDefaultValue</a>	(int v)<br />
+</pre><pre class="programlisting">Variable <a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> <a name="xmlDeregisterNodeDefaultValue" id="xmlDeregisterNodeDefaultValue"></a>xmlDeregisterNodeDefaultValue
+
+</pre><pre class="programlisting">Variable <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> <a name="xmlGenericError" id="xmlGenericError"></a>xmlGenericError
+
+</pre><pre class="programlisting"><a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	<a href="#xmlDeregisterNodeDefault">xmlDeregisterNodeDefault</a>	(<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func)<br />
+</pre><pre class="programlisting">Variable <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> <a name="xmlMalloc" id="xmlMalloc"></a>xmlMalloc
+
+</pre><pre class="programlisting">Variable const char * <a name="xmlParserVersion" id="xmlParserVersion"></a>xmlParserVersion
+
+</pre><pre class="programlisting">Variable <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> <a name="xmlStructuredError" id="xmlStructuredError"></a>xmlStructuredError
+
+</pre><pre class="programlisting">int	<a href="#xmlThrDefKeepBlanksDefaultValue">xmlThrDefKeepBlanksDefaultValue</a>	(int v)<br />
+</pre><pre class="programlisting">Variable int <a name="xmlSaveNoEmptyTags" id="xmlSaveNoEmptyTags"></a>xmlSaveNoEmptyTags
+
+</pre><pre class="programlisting"><a name="xmlDeregisterNodeFunc" id="xmlDeregisterNodeFunc"></a>Function type: xmlDeregisterNodeFunc
+void	xmlDeregisterNodeFunc	(<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node)
+</pre><p></p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>node</tt></i>:</span></td><td></td></tr></tbody></table></div><br />
+<pre class="programlisting">Variable int <a name="xmlPedanticParserDefaultValue" id="xmlPedanticParserDefaultValue"></a>xmlPedanticParserDefaultValue
+
+</pre><pre class="programlisting">Variable int <a name="xmlParserDebugEntities" id="xmlParserDebugEntities"></a>xmlParserDebugEntities
+
+</pre><pre class="programlisting">Typedef <a href="libxml-globals.html#xmlGlobalState">xmlGlobalState</a> * <a name="xmlGlobalStatePtr" id="xmlGlobalStatePtr">xmlGlobalStatePtr</a>
+
+</pre><pre class="programlisting">Variable <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> <a name="xmlRealloc" id="xmlRealloc"></a>xmlRealloc
+
+</pre><pre class="programlisting"><a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	<a href="#xmlThrDefRegisterNodeDefault">xmlThrDefRegisterNodeDefault</a>	(<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func)<br />
+</pre><pre class="programlisting">int	<a href="#xmlThrDefParserDebugEntities">xmlThrDefParserDebugEntities</a>	(int v)<br />
+</pre><pre class="programlisting">Variable <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> <a name="xmlMemStrdup" id="xmlMemStrdup"></a>xmlMemStrdup
+
+</pre><pre class="programlisting">Variable <a href="libxml-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> <a name="htmlDefaultSAXHandler" id="htmlDefaultSAXHandler"></a>htmlDefaultSAXHandler
+
+</pre><pre class="programlisting">void	<a href="#xmlThrDefSetGenericErrorFunc">xmlThrDefSetGenericErrorFunc</a>	(void * ctx, <br />				 <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler)<br />
+</pre><pre class="programlisting">Structure <a name="xmlGlobalState" id="xmlGlobalState">xmlGlobalState</a><br />struct _xmlGlobalState {
+    const char *	xmlParserVersion
+    <a href="libxml-tree.html#xmlSAXLocator">xmlSAXLocator</a>	xmlDefaultSAXLocator
+    <a href="libxml-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a>	xmlDefaultSAXHandler
+    <a href="libxml-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a>	docbDefaultSAXHandler
+    <a href="libxml-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a>	htmlDefaultSAXHandler
+    <a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a>	xmlFree
+    <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a>	xmlMalloc
+    <a href="libxml-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a>	xmlMemStrdup
+    <a href="libxml-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a>	xmlRealloc
+    <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a>	xmlGenericError
+    <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>	xmlStructuredError
+    void *	xmlGenericErrorContext
+    int	oldXMLWDcompatibility
+    <a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a>	xmlBufferAllocScheme
+    int	xmlDefaultBufferSize
+    int	xmlSubstituteEntitiesDefaultValue
+    int	xmlDoValidityCheckingDefaultValue
+    int	xmlGetWarningsDefaultValue
+    int	xmlKeepBlanksDefaultValue
+    int	xmlLineNumbersDefaultValue
+    int	xmlLoadExtDtdDefaultValue
+    int	xmlParserDebugEntities
+    int	xmlPedanticParserDefaultValue
+    int	xmlSaveNoEmptyTags
+    int	xmlIndentTreeOutput
+    const char *	xmlTreeIndentString
+    <a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	xmlRegisterNodeDefaultValue
+    <a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	xmlDeregisterNodeDefaultValue
+    <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a>	xmlMallocAtomic
+    <a href="libxml-xmlerror.html#xmlError">xmlError</a>	xmlLastError
+}</pre><br /><pre class="programlisting">int	<a href="#xmlThrDefDoValidityCheckingDefaultValue">xmlThrDefDoValidityCheckingDefaultValue</a>	(int v)<br />
+</pre><pre class="programlisting">void	<a href="#xmlCleanupGlobals">xmlCleanupGlobals</a>	(void)<br />
+</pre><pre class="programlisting">Variable int <a name="xmlDoValidityCheckingDefaultValue" id="xmlDoValidityCheckingDefaultValue"></a>xmlDoValidityCheckingDefaultValue
+
+</pre><pre class="programlisting">int	<a href="#xmlThrDefGetWarningsDefaultValue">xmlThrDefGetWarningsDefaultValue</a>	(int v)<br />
+</pre><pre class="programlisting">Variable int <a name="xmlKeepBlanksDefaultValue" id="xmlKeepBlanksDefaultValue"></a>xmlKeepBlanksDefaultValue
+
+</pre><pre class="programlisting"><a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	<a href="#xmlThrDefDeregisterNodeDefault">xmlThrDefDeregisterNodeDefault</a>	(<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func)<br />
+</pre><pre class="programlisting">int	<a href="#xmlThrDefSubstituteEntitiesDefaultValue">xmlThrDefSubstituteEntitiesDefaultValue</a>	(int v)<br />
+</pre><pre class="programlisting"><a name="xmlRegisterNodeFunc" id="xmlRegisterNodeFunc"></a>Function type: xmlRegisterNodeFunc
+void	xmlRegisterNodeFunc	(<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node)
+</pre><p></p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>node</tt></i>:</span></td><td></td></tr></tbody></table></div><br />
+<pre class="programlisting">int	<a href="#xmlThrDefSaveNoEmptyTags">xmlThrDefSaveNoEmptyTags</a>	(int v)<br />
+</pre><pre class="programlisting">Variable <a href="libxml-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> <a name="xmlMallocAtomic" id="xmlMallocAtomic"></a>xmlMallocAtomic
+
+</pre><pre class="programlisting">int	<a href="#xmlThrDefIndentTreeOutput">xmlThrDefIndentTreeOutput</a>	(int v)<br />
+</pre><pre class="programlisting">Variable int <a name="xmlSubstituteEntitiesDefaultValue" id="xmlSubstituteEntitiesDefaultValue"></a>xmlSubstituteEntitiesDefaultValue
+
+</pre><pre class="programlisting">Variable int <a name="oldXMLWDcompatibility" id="oldXMLWDcompatibility"></a>oldXMLWDcompatibility
+
+</pre><pre class="programlisting">Variable <a href="libxml-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> <a name="xmlFree" id="xmlFree"></a>xmlFree
+
+</pre><pre class="programlisting">Variable int <a name="xmlLoadExtDtdDefaultValue" id="xmlLoadExtDtdDefaultValue"></a>xmlLoadExtDtdDefaultValue
+
+</pre><pre class="programlisting">Variable <a href="libxml-xmlerror.html#xmlError">xmlError</a> <a name="xmlLastError" id="xmlLastError"></a>xmlLastError
+
+</pre><pre class="programlisting">void	<a href="#xmlInitGlobals">xmlInitGlobals</a>	(void)<br />
+</pre><pre class="programlisting">Variable int <a name="xmlLineNumbersDefaultValue" id="xmlLineNumbersDefaultValue"></a>xmlLineNumbersDefaultValue
+
+</pre><pre class="programlisting">int	<a href="#xmlThrDefLineNumbersDefaultValue">xmlThrDefLineNumbersDefaultValue</a>	(int v)<br />
+</pre><pre class="programlisting">Variable <a href="libxml-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> <a name="xmlDefaultSAXHandler" id="xmlDefaultSAXHandler"></a>xmlDefaultSAXHandler
+
+</pre><pre class="programlisting">Variable <a href="libxml-tree.html#xmlSAXLocator">xmlSAXLocator</a> <a name="xmlDefaultSAXLocator" id="xmlDefaultSAXLocator"></a>xmlDefaultSAXLocator
+
+</pre><h2>Description</h2>
+<h3><a name="xmlThrDefSetStructuredErrorFunc" id="xmlThrDefSetStructuredErrorFunc"></a>Function: xmlThrDefSetStructuredErrorFunc</h3><pre class="programlisting">void	xmlThrDefSetStructuredErrorFunc	(void * ctx, <br />				 <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlInitializeGlobalState" id="xmlInitializeGlobalState"></a>Function: xmlInitializeGlobalState</h3><pre class="programlisting">void	xmlInitializeGlobalState	(<a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> gs)<br />
+</pre><p>xmlInitializeGlobalState() initialize a global state with all the default values of the library.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>gs</tt></i>:</span></td><td>a pointer to a newly allocated global state</td></tr></tbody></table></div><h3><a name="xmlThrDefBufferAllocScheme" id="xmlThrDefBufferAllocScheme"></a>Function: xmlThrDefBufferAllocScheme</h3><pre class="programlisting"><a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a>	xmlThrDefBufferAllocScheme	(<a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlThrDefPedanticParserDefaultValue" id="xmlThrDefPedanticParserDefaultValue"></a>Function: xmlThrDefPedanticParserDefaultValue</h3><pre class="programlisting">int	xmlThrDefPedanticParserDefaultValue	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlRegisterNodeDefault" id="xmlRegisterNodeDefault"></a>Function: xmlRegisterNodeDefault</h3><pre class="programlisting"><a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	xmlRegisterNodeDefault	(<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func)<br />
+</pre><p>Registers a callback for node creation</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>func</tt></i>:</span></td><td>function pointer to the new RegisterNodeFunc</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the old value of the registration function</td></tr></tbody></table></div><h3><a name="xmlThrDefTreeIndentString" id="xmlThrDefTreeIndentString"></a>Function: xmlThrDefTreeIndentString</h3><pre class="programlisting">const char *	xmlThrDefTreeIndentString	(const char * v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlThrDefDefaultBufferSize" id="xmlThrDefDefaultBufferSize"></a>Function: xmlThrDefDefaultBufferSize</h3><pre class="programlisting">int	xmlThrDefDefaultBufferSize	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlThrDefLoadExtDtdDefaultValue" id="xmlThrDefLoadExtDtdDefaultValue"></a>Function: xmlThrDefLoadExtDtdDefaultValue</h3><pre class="programlisting">int	xmlThrDefLoadExtDtdDefaultValue	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlDeregisterNodeDefault" id="xmlDeregisterNodeDefault"></a>Function: xmlDeregisterNodeDefault</h3><pre class="programlisting"><a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	xmlDeregisterNodeDefault	(<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func)<br />
+</pre><p>Registers a callback for node destruction</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>func</tt></i>:</span></td><td>function pointer to the new DeregisterNodeFunc</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the previous value of the deregistration function</td></tr></tbody></table></div><h3><a name="xmlThrDefKeepBlanksDefaultValue" id="xmlThrDefKeepBlanksDefaultValue"></a>Function: xmlThrDefKeepBlanksDefaultValue</h3><pre class="programlisting">int	xmlThrDefKeepBlanksDefaultValue	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div>
+      
+      
+      
+    <h3><a name="xmlThrDefRegisterNodeDefault" id="xmlThrDefRegisterNodeDefault"></a>Function: xmlThrDefRegisterNodeDefault</h3><pre class="programlisting"><a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	xmlThrDefRegisterNodeDefault	(<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>func</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlThrDefParserDebugEntities" id="xmlThrDefParserDebugEntities"></a>Function: xmlThrDefParserDebugEntities</h3><pre class="programlisting">int	xmlThrDefParserDebugEntities	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlThrDefSetGenericErrorFunc" id="xmlThrDefSetGenericErrorFunc"></a>Function: xmlThrDefSetGenericErrorFunc</h3><pre class="programlisting">void	xmlThrDefSetGenericErrorFunc	(void * ctx, <br />				 <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td></td></tr></tbody></table></div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    <h3><a name="xmlThrDefDoValidityCheckingDefaultValue" id="xmlThrDefDoValidityCheckingDefaultValue"></a>Function: xmlThrDefDoValidityCheckingDefaultValue</h3><pre class="programlisting">int	xmlThrDefDoValidityCheckingDefaultValue	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlCleanupGlobals" id="xmlCleanupGlobals"></a>Function: xmlCleanupGlobals</h3><pre class="programlisting">void	xmlCleanupGlobals	(void)<br />
+</pre><p></p>
+<h3><a name="xmlThrDefGetWarningsDefaultValue" id="xmlThrDefGetWarningsDefaultValue"></a>Function: xmlThrDefGetWarningsDefaultValue</h3><pre class="programlisting">int	xmlThrDefGetWarningsDefaultValue	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlThrDefDeregisterNodeDefault" id="xmlThrDefDeregisterNodeDefault"></a>Function: xmlThrDefDeregisterNodeDefault</h3><pre class="programlisting"><a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	xmlThrDefDeregisterNodeDefault	(<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>func</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlThrDefSubstituteEntitiesDefaultValue" id="xmlThrDefSubstituteEntitiesDefaultValue"></a>Function: xmlThrDefSubstituteEntitiesDefaultValue</h3><pre class="programlisting">int	xmlThrDefSubstituteEntitiesDefaultValue	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div>
+      
+      
+      
+    <h3><a name="xmlThrDefSaveNoEmptyTags" id="xmlThrDefSaveNoEmptyTags"></a>Function: xmlThrDefSaveNoEmptyTags</h3><pre class="programlisting">int	xmlThrDefSaveNoEmptyTags	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlThrDefIndentTreeOutput" id="xmlThrDefIndentTreeOutput"></a>Function: xmlThrDefIndentTreeOutput</h3><pre class="programlisting">int	xmlThrDefIndentTreeOutput	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><h3><a name="xmlInitGlobals" id="xmlInitGlobals"></a>Function: xmlInitGlobals</h3><pre class="programlisting">void	xmlInitGlobals	(void)<br />
+</pre><p></p>
+<h3><a name="xmlThrDefLineNumbersDefaultValue" id="xmlThrDefLineNumbersDefaultValue"></a>Function: xmlThrDefLineNumbersDefaultValue</h3><pre class="programlisting">int	xmlThrDefLineNumbersDefaultValue	(int v)<br />
+</pre><p></p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>v</tt></i>:</span></td><td></td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td></td></tr></tbody></table></div><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

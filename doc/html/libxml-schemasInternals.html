@@ -1,355 +1,303 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>schemasInternals</title><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="generator" content="GTK-Doc V1.1 (XML mode)"><style type="text/css">
-        .synopsis, .classsynopsis {
-            background: #eeeeee;
-            border: solid 1px #aaaaaa;
-            padding: 0.5em;
-        }
-        .programlisting {
-            background: #eeeeff;
-            border: solid 1px #aaaaff;
-            padding: 0.5em;
-        }
-        .variablelist {
-            padding: 4px;
-            margin-left: 3em;
-        }
-        .navigation {
-            background: #ffeeee;
-            border: solid 1px #ffaaaa;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .navigation a {
-            color: #770000;
-        }
-        .navigation a:visited {
-            color: #550000;
-        }
-        .navigation .title {
-            font-size: 200%;
-        }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-nanoftp.html" title="nanoftp"><link rel="next" href="libxml-threads.html" title="threads"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-nanoftp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-threads.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-schemasInternals"></a><div class="titlepage"></div><div class="refnamediv"><h2>schemasInternals</h2><p>schemasInternals &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2624369"></a>Synopsis</h1></h2><pre class="synopsis">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /><link rel="SHORTCUT ICON" href="/favicon.ico" /><style type="text/css">
+TD {font-family: Verdana,Arial,Helvetica}
+BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
+H1 {font-family: Verdana,Arial,Helvetica}
+H2 {font-family: Verdana,Arial,Helvetica}
+H3 {font-family: Verdana,Arial,Helvetica}
+A:link, A:visited, A:active { text-decoration: underline }
+</style><title>Module schemasInternals from libxml2</title></head><body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000"><table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr><td width="120"><a href="http://swpat.ffii.org/"><img src="../epatents.png" alt="Action against software patents" /></a></td><td width="180"><a href="http://www.gnome.org/"><img src="../gnome2.png" alt="Gnome2 Logo" /></a><a href="http://www.w3.org/Status"><img src="../w3c.png" alt="W3C Logo" /></a><a href="http://www.redhat.com/"><img src="../redhat.gif" alt="Red Hat Logo" /></a><div align="left"><a href="http://xmlsoft.org/"><img src="../Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo" /></a></div></td><td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center"><h1></h1><h2>Module schemasInternals from libxml2</h2></td></tr></table></td></tr></table></td></tr></table><table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr><td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr><tr><td bgcolor="#fffacd"><form action="search.php" enctype="application/x-www-form-urlencoded" method="get"><input name="query" type="text" size="20" value="" /><input name="submit" type="submit" value="Search ..." /></form><ul><li><a href="index.html">Home</a></li><li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li><li><a href="guidelines.html">XML Guidelines</a></li></ul></td></tr></table><table width="100%" border="0" cellspacing="1" cellpadding="3"><tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Related links</b></center></td></tr><tr><td bgcolor="#fffacd"><ul><li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li><li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li><li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li><li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li><li><a href="ftp://xmlsoft.org/">FTP</a></li><li><a href="http://www.zlatkovic.com/projects/libxml/">Windows binaries</a></li><li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li><li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li><li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li><li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml2">Bug Tracker</a></li></ul></td></tr></table></td></tr></table></td><td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd"><h2>Table of Contents</h2><pre class="programlisting">Typedef <a href="libxml-schemasInternals.html#xmlSchemaNotation">xmlSchemaNotation</a> * <a name="xmlSchemaNotationPtr" id="xmlSchemaNotationPtr">xmlSchemaNotationPtr</a>
 
+</pre><pre class="programlisting">Typedef <a href="libxml-schemasInternals.html#xmlSchemaAttributeGroup">xmlSchemaAttributeGroup</a> * <a name="xmlSchemaAttributeGroupPtr" id="xmlSchemaAttributeGroupPtr">xmlSchemaAttributeGroupPtr</a>
 
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_QUALIF_ATTR">XML_SCHEMAS_QUALIF_ATTR</a>
 
-enum        <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>;
-enum        <a href="libxml-schemasInternals.html#xmlSchemaContentType">xmlSchemaContentType</a>;
-struct      <a href="libxml-schemasInternals.html#xmlSchemaVal">xmlSchemaVal</a>;
-typedef     <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a>;
-struct      <a href="libxml-schemasInternals.html#xmlSchemaType">xmlSchemaType</a>;
-typedef     <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>;
-struct      <a href="libxml-schemasInternals.html#xmlSchemaFacet">xmlSchemaFacet</a>;
-typedef     <a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a>;
-struct      <a href="libxml-schemasInternals.html#xmlSchemaAnnot">xmlSchemaAnnot</a>;
-typedef     <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>;
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-ANYATTR-SKIP-CAPS">XML_SCHEMAS_ANYATTR_SKIP</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-ANYATTR-LAX-CAPS">XML_SCHEMAS_ANYATTR_LAX</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-ANYATTR-STRICT-CAPS">XML_SCHEMAS_ANYATTR_STRICT</a>
-struct      <a href="libxml-schemasInternals.html#xmlSchemaAttribute">xmlSchemaAttribute</a>;
-typedef     <a href="libxml-schemasInternals.html#xmlSchemaAttributePtr">xmlSchemaAttributePtr</a>;
-struct      <a href="libxml-schemasInternals.html#xmlSchemaAttributeGroup">xmlSchemaAttributeGroup</a>;
-typedef     <a href="libxml-schemasInternals.html#xmlSchemaAttributeGroupPtr">xmlSchemaAttributeGroupPtr</a>;
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-TYPE-MIXED-CAPS">XML_SCHEMAS_TYPE_MIXED</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-ELEM-NILLABLE-CAPS">XML_SCHEMAS_ELEM_NILLABLE</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-ELEM-GLOBAL-CAPS">XML_SCHEMAS_ELEM_GLOBAL</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-ELEM-DEFAULT-CAPS">XML_SCHEMAS_ELEM_DEFAULT</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-ELEM-FIXED-CAPS">XML_SCHEMAS_ELEM_FIXED</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-ELEM-ABSTRACT-CAPS">XML_SCHEMAS_ELEM_ABSTRACT</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-ELEM-TOPLEVEL-CAPS">XML_SCHEMAS_ELEM_TOPLEVEL</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-ELEM-REF-CAPS">XML_SCHEMAS_ELEM_REF</a>
-struct      <a href="libxml-schemasInternals.html#xmlSchemaElement">xmlSchemaElement</a>;
-typedef     <a href="libxml-schemasInternals.html#xmlSchemaElementPtr">xmlSchemaElementPtr</a>;
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-FACET-UNKNOWN-CAPS">XML_SCHEMAS_FACET_UNKNOWN</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-FACET-PRESERVE-CAPS">XML_SCHEMAS_FACET_PRESERVE</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-FACET-REPLACE-CAPS">XML_SCHEMAS_FACET_REPLACE</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-FACET-COLLAPSE-CAPS">XML_SCHEMAS_FACET_COLLAPSE</a>
-struct      <a href="libxml-schemasInternals.html#xmlSchemaNotation">xmlSchemaNotation</a>;
-typedef     <a href="libxml-schemasInternals.html#xmlSchemaNotationPtr">xmlSchemaNotationPtr</a>;
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-QUALIF-ELEM-CAPS">XML_SCHEMAS_QUALIF_ELEM</a>
-#define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-QUALIF-ATTR-CAPS">XML_SCHEMAS_QUALIF_ATTR</a>
-struct      <a href="libxml-schemasInternals.html#xmlSchema">xmlSchema</a>;
-void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFreeType</a>               (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type);
-</pre></div><div class="refsect1"><h2>Description</h2><p>
+</pre><pre class="programlisting">Typedef <a href="libxml-schemasInternals.html#xmlSchemaElement">xmlSchemaElement</a> * <a name="xmlSchemaElementPtr" id="xmlSchemaElementPtr">xmlSchemaElementPtr</a>
 
-</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlSchemaTypeType"></a>enum xmlSchemaTypeType</h3><pre class="programlisting">typedef enum {
-    XML_SCHEMA_TYPE_BASIC = 1,
-    XML_SCHEMA_TYPE_ANY,
-    XML_SCHEMA_TYPE_FACET,
-    XML_SCHEMA_TYPE_SIMPLE,
-    XML_SCHEMA_TYPE_COMPLEX,
-    XML_SCHEMA_TYPE_SEQUENCE,
-    XML_SCHEMA_TYPE_CHOICE,
-    XML_SCHEMA_TYPE_ALL,
-    XML_SCHEMA_TYPE_SIMPLE_CONTENT,
-    XML_SCHEMA_TYPE_COMPLEX_CONTENT,
-    XML_SCHEMA_TYPE_UR,
-    XML_SCHEMA_TYPE_RESTRICTION,
-    XML_SCHEMA_TYPE_EXTENSION,
-    XML_SCHEMA_TYPE_ELEMENT,
-    XML_SCHEMA_TYPE_ATTRIBUTE,
-    XML_SCHEMA_TYPE_ATTRIBUTEGROUP,
-    XML_SCHEMA_TYPE_GROUP,
-    XML_SCHEMA_TYPE_NOTATION,
-    XML_SCHEMA_TYPE_LIST,
-    XML_SCHEMA_TYPE_UNION,
-    XML_SCHEMA_FACET_MININCLUSIVE = 1000,
-    XML_SCHEMA_FACET_MINEXCLUSIVE,
-    XML_SCHEMA_FACET_MAXINCLUSIVE,
-    XML_SCHEMA_FACET_MAXEXCLUSIVE,
-    XML_SCHEMA_FACET_TOTALDIGITS,
-    XML_SCHEMA_FACET_FRACTIONDIGITS,
-    XML_SCHEMA_FACET_PATTERN,
-    XML_SCHEMA_FACET_ENUMERATION,
-    XML_SCHEMA_FACET_WHITESPACE,
-    XML_SCHEMA_FACET_LENGTH,
-    XML_SCHEMA_FACET_MAXLENGTH,
-    XML_SCHEMA_FACET_MINLENGTH
-} xmlSchemaTypeType;
-</pre><p>
+</pre><pre class="programlisting">void	<a href="#xmlSchemaFreeType">xmlSchemaFreeType</a>	(<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type)<br />
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_FACET_COLLAPSE">XML_SCHEMAS_FACET_COLLAPSE</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaContentType"></a>enum xmlSchemaContentType</h3><pre class="programlisting">typedef enum {
-    XML_SCHEMA_CONTENT_UNKNOWN = 0,
-    XML_SCHEMA_CONTENT_EMPTY = 1,
-    XML_SCHEMA_CONTENT_ELEMENTS,
-    XML_SCHEMA_CONTENT_MIXED,
-    XML_SCHEMA_CONTENT_SIMPLE,
-    XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS,
-    XML_SCHEMA_CONTENT_BASIC,
-    XML_SCHEMA_CONTENT_ANY
-} xmlSchemaContentType;
-</pre><p>
+</pre><pre class="programlisting">Enum <a name="xmlSchemaContentType" id="xmlSchemaContentType">xmlSchemaContentType</a> {
+    <a name="XML_SCHEMA_CONTENT_UNKNOWN" id="XML_SCHEMA_CONTENT_UNKNOWN">XML_SCHEMA_CONTENT_UNKNOWN</a> = 0
+    <a name="XML_SCHEMA_CONTENT_EMPTY" id="XML_SCHEMA_CONTENT_EMPTY">XML_SCHEMA_CONTENT_EMPTY</a> = 1
+    <a name="XML_SCHEMA_CONTENT_ELEMENTS" id="XML_SCHEMA_CONTENT_ELEMENTS">XML_SCHEMA_CONTENT_ELEMENTS</a> = 2
+    <a name="XML_SCHEMA_CONTENT_MIXED" id="XML_SCHEMA_CONTENT_MIXED">XML_SCHEMA_CONTENT_MIXED</a> = 3
+    <a name="XML_SCHEMA_CONTENT_SIMPLE" id="XML_SCHEMA_CONTENT_SIMPLE">XML_SCHEMA_CONTENT_SIMPLE</a> = 4
+    <a name="XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS" id="XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS">XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS</a> = 5
+    <a name="XML_SCHEMA_CONTENT_BASIC" id="XML_SCHEMA_CONTENT_BASIC">XML_SCHEMA_CONTENT_BASIC</a> = 6
+    <a name="XML_SCHEMA_CONTENT_ANY" id="XML_SCHEMA_CONTENT_ANY">XML_SCHEMA_CONTENT_ANY</a> = 7
+}
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaVal"></a>struct xmlSchemaVal</h3><pre class="programlisting">struct xmlSchemaVal;</pre><p>
+</pre><pre class="programlisting">Enum <a name="xmlSchemaTypeType" id="xmlSchemaTypeType">xmlSchemaTypeType</a> {
+    <a name="XML_SCHEMA_TYPE_BASIC" id="XML_SCHEMA_TYPE_BASIC">XML_SCHEMA_TYPE_BASIC</a> = 1
+    <a name="XML_SCHEMA_TYPE_ANY" id="XML_SCHEMA_TYPE_ANY">XML_SCHEMA_TYPE_ANY</a> = 2
+    <a name="XML_SCHEMA_TYPE_FACET" id="XML_SCHEMA_TYPE_FACET">XML_SCHEMA_TYPE_FACET</a> = 3
+    <a name="XML_SCHEMA_TYPE_SIMPLE" id="XML_SCHEMA_TYPE_SIMPLE">XML_SCHEMA_TYPE_SIMPLE</a> = 4
+    <a name="XML_SCHEMA_TYPE_COMPLEX" id="XML_SCHEMA_TYPE_COMPLEX">XML_SCHEMA_TYPE_COMPLEX</a> = 5
+    <a name="XML_SCHEMA_TYPE_SEQUENCE" id="XML_SCHEMA_TYPE_SEQUENCE">XML_SCHEMA_TYPE_SEQUENCE</a> = 6
+    <a name="XML_SCHEMA_TYPE_CHOICE" id="XML_SCHEMA_TYPE_CHOICE">XML_SCHEMA_TYPE_CHOICE</a> = 7
+    <a name="XML_SCHEMA_TYPE_ALL" id="XML_SCHEMA_TYPE_ALL">XML_SCHEMA_TYPE_ALL</a> = 8
+    <a name="XML_SCHEMA_TYPE_SIMPLE_CONTENT" id="XML_SCHEMA_TYPE_SIMPLE_CONTENT">XML_SCHEMA_TYPE_SIMPLE_CONTENT</a> = 9
+    <a name="XML_SCHEMA_TYPE_COMPLEX_CONTENT" id="XML_SCHEMA_TYPE_COMPLEX_CONTENT">XML_SCHEMA_TYPE_COMPLEX_CONTENT</a> = 10
+    <a name="XML_SCHEMA_TYPE_UR" id="XML_SCHEMA_TYPE_UR">XML_SCHEMA_TYPE_UR</a> = 11
+    <a name="XML_SCHEMA_TYPE_RESTRICTION" id="XML_SCHEMA_TYPE_RESTRICTION">XML_SCHEMA_TYPE_RESTRICTION</a> = 12
+    <a name="XML_SCHEMA_TYPE_EXTENSION" id="XML_SCHEMA_TYPE_EXTENSION">XML_SCHEMA_TYPE_EXTENSION</a> = 13
+    <a name="XML_SCHEMA_TYPE_ELEMENT" id="XML_SCHEMA_TYPE_ELEMENT">XML_SCHEMA_TYPE_ELEMENT</a> = 14
+    <a name="XML_SCHEMA_TYPE_ATTRIBUTE" id="XML_SCHEMA_TYPE_ATTRIBUTE">XML_SCHEMA_TYPE_ATTRIBUTE</a> = 15
+    <a name="XML_SCHEMA_TYPE_ATTRIBUTEGROUP" id="XML_SCHEMA_TYPE_ATTRIBUTEGROUP">XML_SCHEMA_TYPE_ATTRIBUTEGROUP</a> = 16
+    <a name="XML_SCHEMA_TYPE_GROUP" id="XML_SCHEMA_TYPE_GROUP">XML_SCHEMA_TYPE_GROUP</a> = 17
+    <a name="XML_SCHEMA_TYPE_NOTATION" id="XML_SCHEMA_TYPE_NOTATION">XML_SCHEMA_TYPE_NOTATION</a> = 18
+    <a name="XML_SCHEMA_TYPE_LIST" id="XML_SCHEMA_TYPE_LIST">XML_SCHEMA_TYPE_LIST</a> = 19
+    <a name="XML_SCHEMA_TYPE_UNION" id="XML_SCHEMA_TYPE_UNION">XML_SCHEMA_TYPE_UNION</a> = 20
+    <a name="XML_SCHEMA_FACET_MININCLUSIVE" id="XML_SCHEMA_FACET_MININCLUSIVE">XML_SCHEMA_FACET_MININCLUSIVE</a> = 1000
+    <a name="XML_SCHEMA_FACET_MINEXCLUSIVE" id="XML_SCHEMA_FACET_MINEXCLUSIVE">XML_SCHEMA_FACET_MINEXCLUSIVE</a> = 1001
+    <a name="XML_SCHEMA_FACET_MAXINCLUSIVE" id="XML_SCHEMA_FACET_MAXINCLUSIVE">XML_SCHEMA_FACET_MAXINCLUSIVE</a> = 1002
+    <a name="XML_SCHEMA_FACET_MAXEXCLUSIVE" id="XML_SCHEMA_FACET_MAXEXCLUSIVE">XML_SCHEMA_FACET_MAXEXCLUSIVE</a> = 1003
+    <a name="XML_SCHEMA_FACET_TOTALDIGITS" id="XML_SCHEMA_FACET_TOTALDIGITS">XML_SCHEMA_FACET_TOTALDIGITS</a> = 1004
+    <a name="XML_SCHEMA_FACET_FRACTIONDIGITS" id="XML_SCHEMA_FACET_FRACTIONDIGITS">XML_SCHEMA_FACET_FRACTIONDIGITS</a> = 1005
+    <a name="XML_SCHEMA_FACET_PATTERN" id="XML_SCHEMA_FACET_PATTERN">XML_SCHEMA_FACET_PATTERN</a> = 1006
+    <a name="XML_SCHEMA_FACET_ENUMERATION" id="XML_SCHEMA_FACET_ENUMERATION">XML_SCHEMA_FACET_ENUMERATION</a> = 1007
+    <a name="XML_SCHEMA_FACET_WHITESPACE" id="XML_SCHEMA_FACET_WHITESPACE">XML_SCHEMA_FACET_WHITESPACE</a> = 1008
+    <a name="XML_SCHEMA_FACET_LENGTH" id="XML_SCHEMA_FACET_LENGTH">XML_SCHEMA_FACET_LENGTH</a> = 1009
+    <a name="XML_SCHEMA_FACET_MAXLENGTH" id="XML_SCHEMA_FACET_MAXLENGTH">XML_SCHEMA_FACET_MAXLENGTH</a> = 1010
+    <a name="XML_SCHEMA_FACET_MINLENGTH" id="XML_SCHEMA_FACET_MINLENGTH">XML_SCHEMA_FACET_MINLENGTH</a> = 1011
+}
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaValPtr"></a>xmlSchemaValPtr</h3><pre class="programlisting">typedef xmlSchemaVal *xmlSchemaValPtr;
-</pre><p>
+</pre><pre class="programlisting">Structure <a name="xmlSchemaAnnot" id="xmlSchemaAnnot">xmlSchemaAnnot</a><br />struct _xmlSchemaAnnot {
+    struct _xmlSchemaAnnot *	next
+    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	content	: the annotation
+}</pre><br /><pre class="programlisting">#define <a href="#XML_SCHEMAS_FACET_UNKNOWN">XML_SCHEMAS_FACET_UNKNOWN</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaType"></a>struct xmlSchemaType</h3><pre class="programlisting">struct xmlSchemaType {
+</pre><pre class="programlisting">Structure <a name="xmlSchemaAttribute" id="xmlSchemaAttribute">xmlSchemaAttribute</a><br />struct _xmlSchemaAttribute {
+    <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
+    struct _xmlSchemaAttribute *	next	: the next <a href="libxml-SAX.html#attribute">attribute</a> if in a group ...
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	ref
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	refNs
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	typeName
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	typeNs
+    <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
+    <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	base
+    int	occurs
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	defValue
+    <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	subtypes
+    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
+}</pre><br /><pre class="programlisting">Structure <a name="xmlSchemaElement" id="xmlSchemaElement">xmlSchemaElement</a><br />struct _xmlSchemaElement {
+    <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
+    struct _xmlSchemaType *	next	: the next type if in a sequence ...
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	ref
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	refNs
+    <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
+    <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	subtypes
+    <a href="libxml-schemasInternals.html#xmlSchemaAttributePtr">xmlSchemaAttributePtr</a>	attributes
+    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
+    int	minOccurs
+    int	maxOccurs
+    int	flags
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	targetNamespace
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	namedType
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	namedTypeNs
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	substGroup
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	substGroupNs
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	scope
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	value
+    struct _xmlSchemaElement *	refDecl
+    <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>	contModel
+    <a href="libxml-schemasInternals.html#xmlSchemaContentType">xmlSchemaContentType</a>	contentType
+}</pre><br /><pre class="programlisting">#define <a href="#XML_SCHEMAS_ELEM_FIXED">XML_SCHEMAS_ELEM_FIXED</a>
 
-    xmlSchemaTypeType type;	/* The kind of type */
-    struct _xmlSchemaType *next;/* the next type if in a sequence ... */
-    xmlChar *name;
-    xmlChar *id;
-    xmlChar *ref;
-    xmlChar *refNs;
-    xmlSchemaAnnotPtr annot;
-    xmlSchemaTypePtr subtypes;
-    xmlSchemaAttributePtr attributes;
-    xmlNodePtr node;
-    int minOccurs;
-    int maxOccurs;
+</pre><pre class="programlisting">Structure <a name="xmlSchemaNotation" id="xmlSchemaNotation">xmlSchemaNotation</a><br />struct _xmlSchemaNotation {
+    <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	identifier
+}</pre><br /><pre class="programlisting">Typedef <a href="libxml-schemasInternals.html#xmlSchemaFacet">xmlSchemaFacet</a> * <a name="xmlSchemaFacetPtr" id="xmlSchemaFacetPtr">xmlSchemaFacetPtr</a>
 
-    int flags;
-    xmlSchemaContentType contentType;
-    xmlChar *base;
-    xmlChar *baseNs;
-    xmlSchemaTypePtr baseType;
-    xmlSchemaFacetPtr facets;
-};
-</pre><p>
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_ANYATTR_STRICT">XML_SCHEMAS_ANYATTR_STRICT</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaTypePtr"></a>xmlSchemaTypePtr</h3><pre class="programlisting">typedef xmlSchemaType *xmlSchemaTypePtr;
-</pre><p>
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_FACET_PRESERVE">XML_SCHEMAS_FACET_PRESERVE</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaFacet"></a>struct xmlSchemaFacet</h3><pre class="programlisting">struct xmlSchemaFacet {
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_ANYATTR_SKIP">XML_SCHEMAS_ANYATTR_SKIP</a>
 
-    xmlSchemaTypeType type;	/* The kind of type */
-    struct _xmlSchemaFacet *next;/* the next type if in a sequence ... */
-    xmlChar *value;
-    xmlChar *id;
-    xmlSchemaAnnotPtr annot;
-    xmlNodePtr node;
-    int fixed;
-    int whitespace;
-    xmlSchemaValPtr val;
-    xmlRegexpPtr    regexp;
-};
-</pre><p>
+</pre><pre class="programlisting">Typedef <a href="libxml-schemasInternals.html#xmlSchemaVal">xmlSchemaVal</a> * <a name="xmlSchemaValPtr" id="xmlSchemaValPtr">xmlSchemaValPtr</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaFacetPtr"></a>xmlSchemaFacetPtr</h3><pre class="programlisting">typedef xmlSchemaFacet *xmlSchemaFacetPtr;
-</pre><p>
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_ANYATTR_LAX">XML_SCHEMAS_ANYATTR_LAX</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaAnnot"></a>struct xmlSchemaAnnot</h3><pre class="programlisting">struct xmlSchemaAnnot {
+</pre><pre class="programlisting">Structure <a name="xmlSchemaAttributeGroup" id="xmlSchemaAttributeGroup">xmlSchemaAttributeGroup</a><br />struct _xmlSchemaAttributeGroup {
+    <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
+    struct _xmlSchemaAttribute *	next	: the next <a href="libxml-SAX.html#attribute">attribute</a> if in a group ...
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	ref
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	refNs
+    <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
+    <a href="libxml-schemasInternals.html#xmlSchemaAttributePtr">xmlSchemaAttributePtr</a>	attributes
+    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
+}</pre><br /><pre class="programlisting">#define <a href="#XML_SCHEMAS_ELEM_NILLABLE">XML_SCHEMAS_ELEM_NILLABLE</a>
 
-    struct _xmlSchemaAnnot *next;
-    xmlNodePtr content;         /* the annotation */
-};
-</pre><p>
+</pre><pre class="programlisting">Typedef <a href="libxml-schemasInternals.html#xmlSchemaType">xmlSchemaType</a> * <a name="xmlSchemaTypePtr" id="xmlSchemaTypePtr">xmlSchemaTypePtr</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaAnnotPtr"></a>xmlSchemaAnnotPtr</h3><pre class="programlisting">typedef xmlSchemaAnnot *xmlSchemaAnnotPtr;
-</pre><p>
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_ELEM_GLOBAL">XML_SCHEMAS_ELEM_GLOBAL</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-ANYATTR-SKIP-CAPS"></a>XML_SCHEMAS_ANYATTR_SKIP</h3><pre class="programlisting">#define XML_SCHEMAS_ANYATTR_SKIP	1
-</pre><p>
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_ELEM_TOPLEVEL">XML_SCHEMAS_ELEM_TOPLEVEL</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-ANYATTR-LAX-CAPS"></a>XML_SCHEMAS_ANYATTR_LAX</h3><pre class="programlisting">#define XML_SCHEMAS_ANYATTR_LAX		2
-</pre><p>
+</pre><pre class="programlisting">Typedef <a href="libxml-schemasInternals.html#xmlSchemaAttribute">xmlSchemaAttribute</a> * <a name="xmlSchemaAttributePtr" id="xmlSchemaAttributePtr">xmlSchemaAttributePtr</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-ANYATTR-STRICT-CAPS"></a>XML_SCHEMAS_ANYATTR_STRICT</h3><pre class="programlisting">#define XML_SCHEMAS_ANYATTR_STRICT	3
-</pre><p>
+</pre><pre class="programlisting">Typedef <a href="libxml-schemasInternals.html#xmlSchemaAnnot">xmlSchemaAnnot</a> * <a name="xmlSchemaAnnotPtr" id="xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaAttribute"></a>struct xmlSchemaAttribute</h3><pre class="programlisting">struct xmlSchemaAttribute {
+</pre><pre class="programlisting">Structure <a name="xmlSchemaVal" id="xmlSchemaVal">xmlSchemaVal</a><br />struct _xmlSchemaVal {
+The content of this structure is not made public by the API.
+}</pre><br /><pre class="programlisting">#define <a href="#XML_SCHEMAS_TYPE_MIXED">XML_SCHEMAS_TYPE_MIXED</a>
 
-    xmlSchemaTypeType type;	/* The kind of type */
-    struct _xmlSchemaAttribute *next;/* the next attribute if in a group ... */
-    xmlChar *name;
-    xmlChar *id;
-    xmlChar *ref;
-    xmlChar *refNs;
-    xmlChar *typeName;
-    xmlChar *typeNs;
-    xmlSchemaAnnotPtr annot;
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_ELEM_ABSTRACT">XML_SCHEMAS_ELEM_ABSTRACT</a>
 
-    xmlSchemaTypePtr base;
-    int occurs;
-    xmlChar *defValue;
-    xmlSchemaTypePtr subtypes;
-    xmlNodePtr node;
-};
-</pre><p>
+</pre><pre class="programlisting">Structure <a name="xmlSchemaFacet" id="xmlSchemaFacet">xmlSchemaFacet</a><br />struct _xmlSchemaFacet {
+    <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
+    struct _xmlSchemaFacet *	next	: the next type if in a sequence ...
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	value
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
+    <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
+    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
+    int	fixed
+    int	whitespace
+    <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a>	val
+    <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>	regexp
+}</pre><br /><pre class="programlisting">#define <a href="#XML_SCHEMAS_QUALIF_ELEM">XML_SCHEMAS_QUALIF_ELEM</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaAttributePtr"></a>xmlSchemaAttributePtr</h3><pre class="programlisting">typedef xmlSchemaAttribute *xmlSchemaAttributePtr;
-</pre><p>
+</pre><pre class="programlisting">Structure <a name="xmlSchemaType" id="xmlSchemaType">xmlSchemaType</a><br />struct _xmlSchemaType {
+    <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
+    struct _xmlSchemaType *	next	: the next type if in a sequence ...
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	ref
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	refNs
+    <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
+    <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	subtypes
+    <a href="libxml-schemasInternals.html#xmlSchemaAttributePtr">xmlSchemaAttributePtr</a>	attributes
+    <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
+    int	minOccurs
+    int	maxOccurs
+    int	flags
+    <a href="libxml-schemasInternals.html#xmlSchemaContentType">xmlSchemaContentType</a>	contentType
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	base
+    <a href="libxml-tree.html#xmlChar">xmlChar</a> *	baseNs
+    <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	baseType
+    <a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a>	facets
+}</pre><br /><pre class="programlisting">#define <a href="#XML_SCHEMAS_ELEM_REF">XML_SCHEMAS_ELEM_REF</a>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaAttributeGroup"></a>struct xmlSchemaAttributeGroup</h3><pre class="programlisting">struct xmlSchemaAttributeGroup {
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_ELEM_DEFAULT">XML_SCHEMAS_ELEM_DEFAULT</a>
 
-    xmlSchemaTypeType type;	/* The kind of type */
-    struct _xmlSchemaAttribute *next;/* the next attribute if in a group ... */
-    xmlChar *name;
-    xmlChar *id;
-    xmlChar *ref;
-    xmlChar *refNs;
-    xmlSchemaAnnotPtr annot;
+</pre><pre class="programlisting">#define <a href="#XML_SCHEMAS_FACET_REPLACE">XML_SCHEMAS_FACET_REPLACE</a>
 
-    xmlSchemaAttributePtr attributes;
-    xmlNodePtr node;
-};
-</pre><p>
+</pre><h2>Description</h2>
+<h3><a name="XML_SCHEMAS_QUALIF_ATTR" id="XML_SCHEMAS_QUALIF_ATTR"></a>Macro: XML_SCHEMAS_QUALIF_ATTR</h3><pre>#define XML_SCHEMAS_QUALIF_ATTR</pre><p>the shemas requires qualified attributes</p>
+<h3><a name="xmlSchemaFreeType" id="xmlSchemaFreeType"></a>Function: xmlSchemaFreeType</h3><pre class="programlisting">void	xmlSchemaFreeType	(<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type)<br />
+</pre><p>Deallocate a Schema Type structure.</p>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>type</tt></i>:</span></td><td>a schema type structure</td></tr></tbody></table></div><h3><a name="XML_SCHEMAS_FACET_COLLAPSE" id="XML_SCHEMAS_FACET_COLLAPSE"></a>Macro: XML_SCHEMAS_FACET_COLLAPSE</h3><pre>#define XML_SCHEMAS_FACET_COLLAPSE</pre><p>collapse the types of the facet</p>
 
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaAttributeGroupPtr"></a>xmlSchemaAttributeGroupPtr</h3><pre class="programlisting">typedef xmlSchemaAttributeGroup *xmlSchemaAttributeGroupPtr;
-</pre><p>
+      
+      
+    <h3><a name="XML_SCHEMAS_FACET_UNKNOWN" id="XML_SCHEMAS_FACET_UNKNOWN"></a>Macro: XML_SCHEMAS_FACET_UNKNOWN</h3><pre>#define XML_SCHEMAS_FACET_UNKNOWN</pre><p>unknown facet handling</p>
 
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-TYPE-MIXED-CAPS"></a>XML_SCHEMAS_TYPE_MIXED</h3><pre class="programlisting">#define XML_SCHEMAS_TYPE_MIXED		1 &lt;&lt; 0
-</pre><p>
-the element content type is mixed</p><p>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    <h3><a name="XML_SCHEMAS_ELEM_FIXED" id="XML_SCHEMAS_ELEM_FIXED"></a>Macro: XML_SCHEMAS_ELEM_FIXED</h3><pre>#define XML_SCHEMAS_ELEM_FIXED</pre><p>the element has a fixed value</p>
 
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-ELEM-NILLABLE-CAPS"></a>XML_SCHEMAS_ELEM_NILLABLE</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_NILLABLE	1 &lt;&lt; 0
-</pre><p>
-the element is nillable</p><p>
+      
+      
+      
+      
+    <h3><a name="XML_SCHEMAS_ANYATTR_STRICT" id="XML_SCHEMAS_ANYATTR_STRICT"></a>Macro: XML_SCHEMAS_ANYATTR_STRICT</h3><pre>#define XML_SCHEMAS_ANYATTR_STRICT</pre><p></p>
+<h3><a name="XML_SCHEMAS_FACET_PRESERVE" id="XML_SCHEMAS_FACET_PRESERVE"></a>Macro: XML_SCHEMAS_FACET_PRESERVE</h3><pre>#define XML_SCHEMAS_FACET_PRESERVE</pre><p>preserve the type of the facet</p>
+<h3><a name="XML_SCHEMAS_ANYATTR_SKIP" id="XML_SCHEMAS_ANYATTR_SKIP"></a>Macro: XML_SCHEMAS_ANYATTR_SKIP</h3><pre>#define XML_SCHEMAS_ANYATTR_SKIP</pre><p></p>
+<h3><a name="XML_SCHEMAS_ANYATTR_LAX" id="XML_SCHEMAS_ANYATTR_LAX"></a>Macro: XML_SCHEMAS_ANYATTR_LAX</h3><pre>#define XML_SCHEMAS_ANYATTR_LAX</pre><p></p>
 
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-ELEM-GLOBAL-CAPS"></a>XML_SCHEMAS_ELEM_GLOBAL</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_GLOBAL		1 &lt;&lt; 1
-</pre><p>
-the element is global</p><p>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    <h3><a name="XML_SCHEMAS_ELEM_NILLABLE" id="XML_SCHEMAS_ELEM_NILLABLE"></a>Macro: XML_SCHEMAS_ELEM_NILLABLE</h3><pre>#define XML_SCHEMAS_ELEM_NILLABLE</pre><p>the element is nillable</p>
+<h3><a name="XML_SCHEMAS_ELEM_GLOBAL" id="XML_SCHEMAS_ELEM_GLOBAL"></a>Macro: XML_SCHEMAS_ELEM_GLOBAL</h3><pre>#define XML_SCHEMAS_ELEM_GLOBAL</pre><p>the element is global</p>
+<h3><a name="XML_SCHEMAS_ELEM_TOPLEVEL" id="XML_SCHEMAS_ELEM_TOPLEVEL"></a>Macro: XML_SCHEMAS_ELEM_TOPLEVEL</h3><pre>#define XML_SCHEMAS_ELEM_TOPLEVEL</pre><p>the element is top level</p>
+<h3><a name="XML_SCHEMAS_TYPE_MIXED" id="XML_SCHEMAS_TYPE_MIXED"></a>Macro: XML_SCHEMAS_TYPE_MIXED</h3><pre>#define XML_SCHEMAS_TYPE_MIXED</pre><p>the element content type is mixed</p>
+<h3><a name="XML_SCHEMAS_ELEM_ABSTRACT" id="XML_SCHEMAS_ELEM_ABSTRACT"></a>Macro: XML_SCHEMAS_ELEM_ABSTRACT</h3><pre>#define XML_SCHEMAS_ELEM_ABSTRACT</pre><p>the element is abstract</p>
 
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-ELEM-DEFAULT-CAPS"></a>XML_SCHEMAS_ELEM_DEFAULT</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_DEFAULT	1 &lt;&lt; 2
-</pre><p>
-the element has a default value</p><p>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    <h3><a name="XML_SCHEMAS_QUALIF_ELEM" id="XML_SCHEMAS_QUALIF_ELEM"></a>Macro: XML_SCHEMAS_QUALIF_ELEM</h3><pre>#define XML_SCHEMAS_QUALIF_ELEM</pre><p>the shemas requires qualified elements</p>
 
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-ELEM-FIXED-CAPS"></a>XML_SCHEMAS_ELEM_FIXED</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_FIXED		1 &lt;&lt; 3
-</pre><p>
-the element has a fixed value</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-ELEM-ABSTRACT-CAPS"></a>XML_SCHEMAS_ELEM_ABSTRACT</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_ABSTRACT	1 &lt;&lt; 4
-</pre><p>
-the element is abstract</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-ELEM-TOPLEVEL-CAPS"></a>XML_SCHEMAS_ELEM_TOPLEVEL</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_TOPLEVEL	1 &lt;&lt; 5
-</pre><p>
-the element is top level</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-ELEM-REF-CAPS"></a>XML_SCHEMAS_ELEM_REF</h3><pre class="programlisting">#define XML_SCHEMAS_ELEM_REF		1 &lt;&lt; 6
-</pre><p>
-the element is a reference to a type</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaElement"></a>struct xmlSchemaElement</h3><pre class="programlisting">struct xmlSchemaElement {
-
-    xmlSchemaTypeType type;	/* The kind of type */
-    struct _xmlSchemaType *next;/* the next type if in a sequence ... */
-    xmlChar *name;
-    xmlChar *id;
-    xmlChar *ref;
-    xmlChar *refNs;
-    xmlSchemaAnnotPtr annot;
-    xmlSchemaTypePtr subtypes;
-    xmlSchemaAttributePtr attributes;
-    xmlNodePtr node;
-    int minOccurs;
-    int maxOccurs;
-
-    int flags;
-    xmlChar *targetNamespace;
-    xmlChar *namedType;
-    xmlChar *namedTypeNs;
-    xmlChar *substGroup;
-    xmlChar *substGroupNs;
-    xmlChar *scope;
-    xmlChar *value;
-    struct _xmlSchemaElement *refDecl;
-    xmlRegexpPtr contModel;
-    xmlSchemaContentType contentType;
-};
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaElementPtr"></a>xmlSchemaElementPtr</h3><pre class="programlisting">typedef xmlSchemaElement *xmlSchemaElementPtr;
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-FACET-UNKNOWN-CAPS"></a>XML_SCHEMAS_FACET_UNKNOWN</h3><pre class="programlisting">#define XML_SCHEMAS_FACET_UNKNOWN	0
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-FACET-PRESERVE-CAPS"></a>XML_SCHEMAS_FACET_PRESERVE</h3><pre class="programlisting">#define XML_SCHEMAS_FACET_PRESERVE	1
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-FACET-REPLACE-CAPS"></a>XML_SCHEMAS_FACET_REPLACE</h3><pre class="programlisting">#define XML_SCHEMAS_FACET_REPLACE	2
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-FACET-COLLAPSE-CAPS"></a>XML_SCHEMAS_FACET_COLLAPSE</h3><pre class="programlisting">#define XML_SCHEMAS_FACET_COLLAPSE	3
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaNotation"></a>struct xmlSchemaNotation</h3><pre class="programlisting">struct xmlSchemaNotation {
-
-    xmlSchemaTypeType type;	/* The kind of type */
-    xmlChar *name;
-    xmlSchemaAnnotPtr annot;
-    xmlChar *identifier;
-};
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaNotationPtr"></a>xmlSchemaNotationPtr</h3><pre class="programlisting">typedef xmlSchemaNotation *xmlSchemaNotationPtr;
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-QUALIF-ELEM-CAPS"></a>XML_SCHEMAS_QUALIF_ELEM</h3><pre class="programlisting">#define XML_SCHEMAS_QUALIF_ELEM		1 &lt;&lt; 0
-</pre><p>
-the shemas requires qualified elements</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="XML-SCHEMAS-QUALIF-ATTR-CAPS"></a>XML_SCHEMAS_QUALIF_ATTR</h3><pre class="programlisting">#define XML_SCHEMAS_QUALIF_ATTR		1 &lt;&lt; 1
-</pre><p>
-the shemas requires qualified attributes</p><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchema"></a>struct xmlSchema</h3><pre class="programlisting">struct xmlSchema {
-
-    xmlChar *name;        /* schema name */
-    xmlChar *targetNamespace;     /* the target namespace */
-    xmlChar *version;
-    xmlChar *id;
-    xmlDocPtr doc;
-    xmlSchemaAnnotPtr annot;
-    int flags;
-
-    xmlHashTablePtr typeDecl;
-    xmlHashTablePtr attrDecl;
-    xmlHashTablePtr attrgrpDecl;
-    xmlHashTablePtr elemDecl;
-    xmlHashTablePtr notaDecl;
-
-    xmlHashTablePtr schemasImports;
-
-    void *_private;	/* unused by the library for users or bindings */
-    xmlHashTablePtr groupDecl;
-};
-</pre><p>
-
-</p></div><hr><div class="refsect2"><h3><a name="xmlSchemaFreeType"></a>xmlSchemaFreeType ()</h3><pre class="programlisting">void        xmlSchemaFreeType               (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type);</pre><p>
-Deallocate a Schema Type structure.</p><p>
-
-</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>type</tt></i>:</span></td><td>  a schema type structure
-</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-nanoftp.html"><b>&lt;&lt; nanoftp</b></a></td><td align="right"><a accesskey="n" href="libxml-threads.html"><b>threads &gt;&gt;</b></a></td></tr></table></body></html>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    <h3><a name="XML_SCHEMAS_ELEM_REF" id="XML_SCHEMAS_ELEM_REF"></a>Macro: XML_SCHEMAS_ELEM_REF</h3><pre>#define XML_SCHEMAS_ELEM_REF</pre><p>the element is a <a href="libxml-SAX.html#reference">reference</a> to a type</p>
+<h3><a name="XML_SCHEMAS_ELEM_DEFAULT" id="XML_SCHEMAS_ELEM_DEFAULT"></a>Macro: XML_SCHEMAS_ELEM_DEFAULT</h3><pre>#define XML_SCHEMAS_ELEM_DEFAULT</pre><p>the element has a default value</p>
+<h3><a name="XML_SCHEMAS_FACET_REPLACE" id="XML_SCHEMAS_FACET_REPLACE"></a>Macro: XML_SCHEMAS_FACET_REPLACE</h3><pre>#define XML_SCHEMAS_FACET_REPLACE</pre><p>replace the type of the facet</p>
+<p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

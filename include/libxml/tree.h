@@ -544,372 +544,512 @@ LIBXML_DLL_IMPORT extern int xmlDefaultBufferSize; /* default buffer size */
 XMLPUBFUN int XMLCALL
 		xmlValidateNCName	(const xmlChar *value,
 					 int space);
-XMLPUBFUN int XMLCALL		xmlValidateQName	(const xmlChar *value,
+XMLPUBFUN int XMLCALL		
+		xmlValidateQName	(const xmlChar *value,
 					 int space);
-XMLPUBFUN int XMLCALL		xmlValidateName		(const xmlChar *value,
+XMLPUBFUN int XMLCALL		
+		xmlValidateName		(const xmlChar *value,
 					 int space);
-XMLPUBFUN int XMLCALL		xmlValidateNMToken	(const xmlChar *value,
+XMLPUBFUN int XMLCALL		
+		xmlValidateNMToken	(const xmlChar *value,
 					 int space);
 
-XMLPUBFUN xmlChar * XMLCALL	xmlBuildQName		(const xmlChar *ncname,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlBuildQName		(const xmlChar *ncname,
 					 const xmlChar *prefix,
 					 xmlChar *memory,
 					 int len);
-XMLPUBFUN xmlChar * XMLCALL	xmlSplitQName2		(const xmlChar *name,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlSplitQName2		(const xmlChar *name,
 					 xmlChar **prefix);
-XMLPUBFUN const xmlChar * XMLCALL	xmlSplitQName3		(const xmlChar *name,
+XMLPUBFUN const xmlChar * XMLCALL	
+		xmlSplitQName3		(const xmlChar *name,
 					 int *len);
 
 /*
  * Handling Buffers.
  */
 
-XMLPUBFUN void XMLCALL		xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme);
-XMLPUBFUN xmlBufferAllocationScheme XMLCALL	 xmlGetBufferAllocationScheme(void);
+XMLPUBFUN void XMLCALL		
+		xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme);
+XMLPUBFUN xmlBufferAllocationScheme XMLCALL	 
+		xmlGetBufferAllocationScheme(void);
 
-XMLPUBFUN xmlBufferPtr XMLCALL	xmlBufferCreate		(void);
-XMLPUBFUN xmlBufferPtr XMLCALL	xmlBufferCreateSize	(size_t size);
-XMLPUBFUN int XMLCALL		xmlBufferResize		(xmlBufferPtr buf,
+XMLPUBFUN xmlBufferPtr XMLCALL	
+		xmlBufferCreate		(void);
+XMLPUBFUN xmlBufferPtr XMLCALL	
+		xmlBufferCreateSize	(size_t size);
+XMLPUBFUN int XMLCALL		
+		xmlBufferResize		(xmlBufferPtr buf,
 					 unsigned int size);
-XMLPUBFUN void XMLCALL		xmlBufferFree		(xmlBufferPtr buf);
-XMLPUBFUN int XMLCALL		xmlBufferDump		(FILE *file,
+XMLPUBFUN void XMLCALL		
+		xmlBufferFree		(xmlBufferPtr buf);
+XMLPUBFUN int XMLCALL		
+		xmlBufferDump		(FILE *file,
 					 xmlBufferPtr buf);
-XMLPUBFUN void XMLCALL		xmlBufferAdd		(xmlBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		xmlBufferAdd		(xmlBufferPtr buf,
 					 const xmlChar *str,
 					 int len);
-XMLPUBFUN void XMLCALL		xmlBufferAddHead	(xmlBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		xmlBufferAddHead	(xmlBufferPtr buf,
 					 const xmlChar *str,
 					 int len);
-XMLPUBFUN void XMLCALL		xmlBufferCat		(xmlBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		xmlBufferCat		(xmlBufferPtr buf,
 					 const xmlChar *str);
-XMLPUBFUN void XMLCALL	xmlBufferCCat		(xmlBufferPtr buf,
+XMLPUBFUN void XMLCALL	
+		xmlBufferCCat		(xmlBufferPtr buf,
 					 const char *str);
-XMLPUBFUN int XMLCALL		xmlBufferShrink		(xmlBufferPtr buf,
+XMLPUBFUN int XMLCALL		
+		xmlBufferShrink		(xmlBufferPtr buf,
 					 unsigned int len);
-XMLPUBFUN int XMLCALL		xmlBufferGrow		(xmlBufferPtr buf,
+XMLPUBFUN int XMLCALL		
+		xmlBufferGrow		(xmlBufferPtr buf,
 					 unsigned int len);
-XMLPUBFUN void XMLCALL		xmlBufferEmpty		(xmlBufferPtr buf);
-XMLPUBFUN const xmlChar* XMLCALL	xmlBufferContent	(const xmlBufferPtr buf);
-XMLPUBFUN void XMLCALL		xmlBufferSetAllocationScheme(xmlBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		xmlBufferEmpty		(xmlBufferPtr buf);
+XMLPUBFUN const xmlChar* XMLCALL	
+		xmlBufferContent	(const xmlBufferPtr buf);
+XMLPUBFUN void XMLCALL		
+		xmlBufferSetAllocationScheme(xmlBufferPtr buf,
 					 xmlBufferAllocationScheme scheme);
-XMLPUBFUN int XMLCALL		xmlBufferLength		(const xmlBufferPtr buf);
+XMLPUBFUN int XMLCALL		
+		xmlBufferLength		(const xmlBufferPtr buf);
 
 /*
  * Creating/freeing new structures.
  */
-XMLPUBFUN xmlDtdPtr XMLCALL	xmlCreateIntSubset	(xmlDocPtr doc,
+XMLPUBFUN xmlDtdPtr XMLCALL	
+		xmlCreateIntSubset	(xmlDocPtr doc,
 					 const xmlChar *name,
 					 const xmlChar *ExternalID,
 					 const xmlChar *SystemID);
-XMLPUBFUN xmlDtdPtr XMLCALL	xmlNewDtd		(xmlDocPtr doc,
+XMLPUBFUN xmlDtdPtr XMLCALL	
+		xmlNewDtd		(xmlDocPtr doc,
 					 const xmlChar *name,
 					 const xmlChar *ExternalID,
 					 const xmlChar *SystemID);
-XMLPUBFUN xmlDtdPtr XMLCALL	xmlGetIntSubset		(xmlDocPtr doc);
-XMLPUBFUN void XMLCALL		xmlFreeDtd		(xmlDtdPtr cur);
-XMLPUBFUN xmlNsPtr XMLCALL	xmlNewGlobalNs		(xmlDocPtr doc,
+XMLPUBFUN xmlDtdPtr XMLCALL	
+		xmlGetIntSubset		(xmlDocPtr doc);
+XMLPUBFUN void XMLCALL		
+		xmlFreeDtd		(xmlDtdPtr cur);
+XMLPUBFUN xmlNsPtr XMLCALL	
+		xmlNewGlobalNs		(xmlDocPtr doc,
 					 const xmlChar *href,
 					 const xmlChar *prefix);
-XMLPUBFUN xmlNsPtr XMLCALL	xmlNewNs		(xmlNodePtr node,
+XMLPUBFUN xmlNsPtr XMLCALL	
+		xmlNewNs		(xmlNodePtr node,
 					 const xmlChar *href,
 					 const xmlChar *prefix);
-XMLPUBFUN void XMLCALL		xmlFreeNs		(xmlNsPtr cur);
-XMLPUBFUN void XMLCALL		xmlFreeNsList		(xmlNsPtr cur);
-XMLPUBFUN xmlDocPtr XMLCALL 	xmlNewDoc		(const xmlChar *version);
-XMLPUBFUN void XMLCALL		xmlFreeDoc		(xmlDocPtr cur);
-XMLPUBFUN xmlAttrPtr XMLCALL	xmlNewDocProp		(xmlDocPtr doc,
+XMLPUBFUN void XMLCALL		
+		xmlFreeNs		(xmlNsPtr cur);
+XMLPUBFUN void XMLCALL		
+		xmlFreeNsList		(xmlNsPtr cur);
+XMLPUBFUN xmlDocPtr XMLCALL 	
+		xmlNewDoc		(const xmlChar *version);
+XMLPUBFUN void XMLCALL		
+		xmlFreeDoc		(xmlDocPtr cur);
+XMLPUBFUN xmlAttrPtr XMLCALL	
+		xmlNewDocProp		(xmlDocPtr doc,
 					 const xmlChar *name,
 					 const xmlChar *value);
-XMLPUBFUN xmlAttrPtr XMLCALL	xmlNewProp		(xmlNodePtr node,
+XMLPUBFUN xmlAttrPtr XMLCALL	
+		xmlNewProp		(xmlNodePtr node,
 					 const xmlChar *name,
 					 const xmlChar *value);
-XMLPUBFUN xmlAttrPtr XMLCALL	xmlNewNsProp		(xmlNodePtr node,
+XMLPUBFUN xmlAttrPtr XMLCALL	
+		xmlNewNsProp		(xmlNodePtr node,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *value);
-XMLPUBFUN xmlAttrPtr XMLCALL	xmlNewNsPropEatName	(xmlNodePtr node,
+XMLPUBFUN xmlAttrPtr XMLCALL	
+		xmlNewNsPropEatName	(xmlNodePtr node,
 					 xmlNsPtr ns,
 					 xmlChar *name,
 					 const xmlChar *value);
-XMLPUBFUN void XMLCALL		xmlFreePropList		(xmlAttrPtr cur);
-XMLPUBFUN void XMLCALL		xmlFreeProp		(xmlAttrPtr cur);
-XMLPUBFUN xmlAttrPtr XMLCALL	xmlCopyProp		(xmlNodePtr target,
+XMLPUBFUN void XMLCALL		
+		xmlFreePropList		(xmlAttrPtr cur);
+XMLPUBFUN void XMLCALL		
+		xmlFreeProp		(xmlAttrPtr cur);
+XMLPUBFUN xmlAttrPtr XMLCALL	
+		xmlCopyProp		(xmlNodePtr target,
 					 xmlAttrPtr cur);
-XMLPUBFUN xmlAttrPtr XMLCALL	xmlCopyPropList		(xmlNodePtr target,
+XMLPUBFUN xmlAttrPtr XMLCALL	
+		xmlCopyPropList		(xmlNodePtr target,
 					 xmlAttrPtr cur);
-XMLPUBFUN xmlDtdPtr XMLCALL	xmlCopyDtd		(xmlDtdPtr dtd);
-XMLPUBFUN xmlDocPtr XMLCALL	xmlCopyDoc		(xmlDocPtr doc,
+XMLPUBFUN xmlDtdPtr XMLCALL	
+		xmlCopyDtd		(xmlDtdPtr dtd);
+XMLPUBFUN xmlDocPtr XMLCALL	
+		xmlCopyDoc		(xmlDocPtr doc,
 					 int recursive);
 
 /*
  * Creating new nodes.
  */
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewDocNode		(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewDocNode		(xmlDocPtr doc,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewDocNodeEatName	(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewDocNodeEatName	(xmlDocPtr doc,
 					 xmlNsPtr ns,
 					 xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewDocRawNode	(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewDocRawNode	(xmlDocPtr doc,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewNode		(xmlNsPtr ns,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewNode		(xmlNsPtr ns,
 					 const xmlChar *name);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewNodeEatName	(xmlNsPtr ns,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewNodeEatName	(xmlNsPtr ns,
 					 xmlChar *name);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewChild		(xmlNodePtr parent,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewChild		(xmlNodePtr parent,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewTextChild		(xmlNodePtr parent,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewTextChild		(xmlNodePtr parent,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewDocText		(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewDocText		(xmlDocPtr doc,
 					 const xmlChar *content);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewText		(const xmlChar *content);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewPI		(const xmlChar *name,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewText		(const xmlChar *content);
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewPI		(const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewDocTextLen	(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewDocTextLen	(xmlDocPtr doc,
 					 const xmlChar *content,
 					 int len);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewTextLen		(const xmlChar *content,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewTextLen		(const xmlChar *content,
 					 int len);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewDocComment	(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewDocComment	(xmlDocPtr doc,
 					 const xmlChar *content);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewComment		(const xmlChar *content);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewCDataBlock	(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewComment		(const xmlChar *content);
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewCDataBlock	(xmlDocPtr doc,
 					 const xmlChar *content,
 					 int len);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewCharRef		(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewCharRef		(xmlDocPtr doc,
 					 const xmlChar *name);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewReference		(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewReference		(xmlDocPtr doc,
 					 const xmlChar *name);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlCopyNode		(const xmlNodePtr node,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlCopyNode		(const xmlNodePtr node,
 					 int recursive);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlDocCopyNode		(const xmlNodePtr node,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlDocCopyNode		(const xmlNodePtr node,
 					 xmlDocPtr doc,
 					 int recursive);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlCopyNodeList		(const xmlNodePtr node);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlNewDocFragment	(xmlDocPtr doc);
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlCopyNodeList		(const xmlNodePtr node);
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlNewDocFragment	(xmlDocPtr doc);
 
 /*
  * Navigating.
  */
-XMLPUBFUN long XMLCALL		xmlGetLineNo		(xmlNodePtr node);
-XMLPUBFUN xmlChar * XMLCALL	xmlGetNodePath		(xmlNodePtr node);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlDocGetRootElement	(xmlDocPtr doc);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlGetLastChild		(xmlNodePtr parent);
-XMLPUBFUN int XMLCALL		xmlNodeIsText		(xmlNodePtr node);
-XMLPUBFUN int XMLCALL		xmlIsBlankNode		(xmlNodePtr node);
+XMLPUBFUN long XMLCALL		
+		xmlGetLineNo		(xmlNodePtr node);
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlGetNodePath		(xmlNodePtr node);
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlDocGetRootElement	(xmlDocPtr doc);
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlGetLastChild		(xmlNodePtr parent);
+XMLPUBFUN int XMLCALL		
+		xmlNodeIsText		(xmlNodePtr node);
+XMLPUBFUN int XMLCALL		
+		xmlIsBlankNode		(xmlNodePtr node);
 
 /*
  * Changing the structure.
  */
-XMLPUBFUN xmlNodePtr XMLCALL	xmlDocSetRootElement	(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlDocSetRootElement	(xmlDocPtr doc,
 					 xmlNodePtr root);
-XMLPUBFUN void XMLCALL		xmlNodeSetName		(xmlNodePtr cur,
+XMLPUBFUN void XMLCALL		
+		xmlNodeSetName		(xmlNodePtr cur,
 					 const xmlChar *name);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlAddChild		(xmlNodePtr parent,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlAddChild		(xmlNodePtr parent,
 					 xmlNodePtr cur);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlAddChildList		(xmlNodePtr parent,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlAddChildList		(xmlNodePtr parent,
 					 xmlNodePtr cur);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlReplaceNode		(xmlNodePtr old,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlReplaceNode		(xmlNodePtr old,
 					 xmlNodePtr cur);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlAddSibling		(xmlNodePtr cur,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlAddSibling		(xmlNodePtr cur,
 					 xmlNodePtr elem);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlAddPrevSibling	(xmlNodePtr cur,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlAddPrevSibling	(xmlNodePtr cur,
 					 xmlNodePtr elem);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlAddNextSibling	(xmlNodePtr cur,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlAddNextSibling	(xmlNodePtr cur,
 					 xmlNodePtr elem);
-XMLPUBFUN void XMLCALL		xmlUnlinkNode		(xmlNodePtr cur);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlTextMerge		(xmlNodePtr first,
+XMLPUBFUN void XMLCALL		
+		xmlUnlinkNode		(xmlNodePtr cur);
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlTextMerge		(xmlNodePtr first,
 					 xmlNodePtr second);
-XMLPUBFUN int XMLCALL		xmlTextConcat		(xmlNodePtr node,
+XMLPUBFUN int XMLCALL		
+		xmlTextConcat		(xmlNodePtr node,
 					 const xmlChar *content,
 					 int len);
-XMLPUBFUN void XMLCALL		xmlFreeNodeList		(xmlNodePtr cur);
-XMLPUBFUN void XMLCALL		xmlFreeNode		(xmlNodePtr cur);
-XMLPUBFUN void XMLCALL		xmlSetTreeDoc		(xmlNodePtr tree,
+XMLPUBFUN void XMLCALL		
+		xmlFreeNodeList		(xmlNodePtr cur);
+XMLPUBFUN void XMLCALL		
+		xmlFreeNode		(xmlNodePtr cur);
+XMLPUBFUN void XMLCALL		
+		xmlSetTreeDoc		(xmlNodePtr tree,
 					 xmlDocPtr doc);
-XMLPUBFUN void XMLCALL		xmlSetListDoc		(xmlNodePtr list,
+XMLPUBFUN void XMLCALL		
+		xmlSetListDoc		(xmlNodePtr list,
 					 xmlDocPtr doc);
 
 /*
  * Namespaces.
  */
-XMLPUBFUN xmlNsPtr XMLCALL	xmlSearchNs		(xmlDocPtr doc,
+XMLPUBFUN xmlNsPtr XMLCALL	
+		xmlSearchNs		(xmlDocPtr doc,
 					 xmlNodePtr node,
 					 const xmlChar *nameSpace);
-XMLPUBFUN xmlNsPtr XMLCALL	xmlSearchNsByHref	(xmlDocPtr doc,
+XMLPUBFUN xmlNsPtr XMLCALL	
+		xmlSearchNsByHref	(xmlDocPtr doc,
 					 xmlNodePtr node,
 					 const xmlChar *href);
-XMLPUBFUN xmlNsPtr * XMLCALL	xmlGetNsList		(xmlDocPtr doc,
+XMLPUBFUN xmlNsPtr * XMLCALL	
+		xmlGetNsList		(xmlDocPtr doc,
 					 xmlNodePtr node);
-XMLPUBFUN void XMLCALL		xmlSetNs		(xmlNodePtr node,
+XMLPUBFUN void XMLCALL		
+		xmlSetNs		(xmlNodePtr node,
 					 xmlNsPtr ns);
-XMLPUBFUN xmlNsPtr XMLCALL	xmlCopyNamespace	(xmlNsPtr cur);
-XMLPUBFUN xmlNsPtr XMLCALL	xmlCopyNamespaceList	(xmlNsPtr cur);
+XMLPUBFUN xmlNsPtr XMLCALL	
+		xmlCopyNamespace	(xmlNsPtr cur);
+XMLPUBFUN xmlNsPtr XMLCALL	
+		xmlCopyNamespaceList	(xmlNsPtr cur);
 
 /*
  * Changing the content.
  */
-XMLPUBFUN xmlAttrPtr XMLCALL	xmlSetProp		(xmlNodePtr node,
+XMLPUBFUN xmlAttrPtr XMLCALL	
+		xmlSetProp		(xmlNodePtr node,
 					 const xmlChar *name,
 					 const xmlChar *value);
-XMLPUBFUN xmlChar * XMLCALL	xmlGetProp		(xmlNodePtr node,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlGetProp		(xmlNodePtr node,
 					 const xmlChar *name);
-XMLPUBFUN xmlChar * XMLCALL	xmlGetNoNsProp		(xmlNodePtr node,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlGetNoNsProp		(xmlNodePtr node,
 					 const xmlChar *name);
-XMLPUBFUN xmlAttrPtr XMLCALL	xmlHasProp		(xmlNodePtr node,
+XMLPUBFUN xmlAttrPtr XMLCALL	
+		xmlHasProp		(xmlNodePtr node,
 					 const xmlChar *name);
-XMLPUBFUN xmlAttrPtr XMLCALL	xmlHasNsProp		(xmlNodePtr node,
+XMLPUBFUN xmlAttrPtr XMLCALL	
+		xmlHasNsProp		(xmlNodePtr node,
 					 const xmlChar *name,
 					 const xmlChar *nameSpace);
-XMLPUBFUN xmlAttrPtr XMLCALL	xmlSetNsProp		(xmlNodePtr node,
+XMLPUBFUN xmlAttrPtr XMLCALL	
+		xmlSetNsProp		(xmlNodePtr node,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *value);
-XMLPUBFUN xmlChar * XMLCALL	xmlGetNsProp		(xmlNodePtr node,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlGetNsProp		(xmlNodePtr node,
 					 const xmlChar *name,
 					 const xmlChar *nameSpace);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlStringGetNodeList	(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlStringGetNodeList	(xmlDocPtr doc,
 					 const xmlChar *value);
-XMLPUBFUN xmlNodePtr XMLCALL	xmlStringLenGetNodeList	(xmlDocPtr doc,
+XMLPUBFUN xmlNodePtr XMLCALL	
+		xmlStringLenGetNodeList	(xmlDocPtr doc,
 					 const xmlChar *value,
 					 int len);
-XMLPUBFUN xmlChar * XMLCALL	xmlNodeListGetString	(xmlDocPtr doc,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlNodeListGetString	(xmlDocPtr doc,
 					 xmlNodePtr list,
 					 int inLine);
-XMLPUBFUN xmlChar * XMLCALL	xmlNodeListGetRawString	(xmlDocPtr doc,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlNodeListGetRawString	(xmlDocPtr doc,
 					 xmlNodePtr list,
 					 int inLine);
-XMLPUBFUN void XMLCALL		xmlNodeSetContent	(xmlNodePtr cur,
+XMLPUBFUN void XMLCALL		
+		xmlNodeSetContent	(xmlNodePtr cur,
 					 const xmlChar *content);
-XMLPUBFUN void XMLCALL		xmlNodeSetContentLen	(xmlNodePtr cur,
+XMLPUBFUN void XMLCALL		
+		xmlNodeSetContentLen	(xmlNodePtr cur,
 					 const xmlChar *content,
 					 int len);
-XMLPUBFUN void XMLCALL		xmlNodeAddContent	(xmlNodePtr cur,
+XMLPUBFUN void XMLCALL		
+		xmlNodeAddContent	(xmlNodePtr cur,
 					 const xmlChar *content);
-XMLPUBFUN void XMLCALL		xmlNodeAddContentLen	(xmlNodePtr cur,
+XMLPUBFUN void XMLCALL		
+		xmlNodeAddContentLen	(xmlNodePtr cur,
 					 const xmlChar *content,
 					 int len);
-XMLPUBFUN xmlChar * XMLCALL	xmlNodeGetContent	(xmlNodePtr cur);
-XMLPUBFUN xmlChar * XMLCALL	xmlNodeGetLang		(xmlNodePtr cur);
-XMLPUBFUN void XMLCALL		xmlNodeSetLang		(xmlNodePtr cur,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlNodeGetContent	(xmlNodePtr cur);
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlNodeGetLang		(xmlNodePtr cur);
+XMLPUBFUN void XMLCALL		
+		xmlNodeSetLang		(xmlNodePtr cur,
 					 const xmlChar *lang);
-XMLPUBFUN int XMLCALL		xmlNodeGetSpacePreserve	(xmlNodePtr cur);
-XMLPUBFUN void XMLCALL		xmlNodeSetSpacePreserve (xmlNodePtr cur,
+XMLPUBFUN int XMLCALL		
+		xmlNodeGetSpacePreserve	(xmlNodePtr cur);
+XMLPUBFUN void XMLCALL		
+		xmlNodeSetSpacePreserve (xmlNodePtr cur,
 					 int val);
-XMLPUBFUN xmlChar * XMLCALL	xmlNodeGetBase		(xmlDocPtr doc,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlNodeGetBase		(xmlDocPtr doc,
 					 xmlNodePtr cur);
-XMLPUBFUN void XMLCALL		xmlNodeSetBase		(xmlNodePtr cur,
+XMLPUBFUN void XMLCALL		
+		xmlNodeSetBase		(xmlNodePtr cur,
 					 xmlChar *uri);
 
 /*
  * Removing content.
  */
-XMLPUBFUN int XMLCALL		xmlRemoveProp		(xmlAttrPtr cur);
-XMLPUBFUN int XMLCALL		xmlUnsetProp		(xmlNodePtr node,
+XMLPUBFUN int XMLCALL		
+		xmlRemoveProp		(xmlAttrPtr cur);
+XMLPUBFUN int XMLCALL		
+		xmlUnsetProp		(xmlNodePtr node,
 					 const xmlChar *name);
-XMLPUBFUN int XMLCALL		xmlUnsetNsProp		(xmlNodePtr node,
+XMLPUBFUN int XMLCALL		
+		xmlUnsetNsProp		(xmlNodePtr node,
 					 xmlNsPtr ns,
 					 const xmlChar *name);
 
 /*
  * Internal, don't use.
  */
-XMLPUBFUN void XMLCALL		xmlBufferWriteCHAR	(xmlBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		xmlBufferWriteCHAR	(xmlBufferPtr buf,
 					 const xmlChar *string);
-XMLPUBFUN void XMLCALL		xmlBufferWriteChar	(xmlBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		xmlBufferWriteChar	(xmlBufferPtr buf,
 					 const char *string);
-XMLPUBFUN void XMLCALL		xmlBufferWriteQuotedString(xmlBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		xmlBufferWriteQuotedString(xmlBufferPtr buf,
 					 const xmlChar *string);
 
 /*
  * Namespace handling.
  */
-XMLPUBFUN int XMLCALL		xmlReconciliateNs	(xmlDocPtr doc,
+XMLPUBFUN int XMLCALL		
+		xmlReconciliateNs	(xmlDocPtr doc,
 					 xmlNodePtr tree);
 
 /*
  * Saving.
  */
-XMLPUBFUN void XMLCALL		xmlDocDumpFormatMemory	(xmlDocPtr cur,
+XMLPUBFUN void XMLCALL		
+		xmlDocDumpFormatMemory	(xmlDocPtr cur,
 					 xmlChar **mem,
 					 int *size,
 					 int format);
-XMLPUBFUN void XMLCALL		xmlDocDumpMemory	(xmlDocPtr cur,
+XMLPUBFUN void XMLCALL		
+		xmlDocDumpMemory	(xmlDocPtr cur,
 					 xmlChar **mem,
 					 int *size);
-XMLPUBFUN void XMLCALL		xmlDocDumpMemoryEnc	(xmlDocPtr out_doc,
+XMLPUBFUN void XMLCALL		
+		xmlDocDumpMemoryEnc	(xmlDocPtr out_doc,
 					 xmlChar **doc_txt_ptr,
 					 int * doc_txt_len,
 					 const char *txt_encoding);
-XMLPUBFUN void XMLCALL		xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc,
+XMLPUBFUN void XMLCALL		
+		xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc,
 					 xmlChar **doc_txt_ptr,
 					 int * doc_txt_len,
 					 const char *txt_encoding,
 					 int format);
-XMLPUBFUN int XMLCALL		xmlDocFormatDump(FILE *f,
+XMLPUBFUN int XMLCALL		
+		xmlDocFormatDump	(FILE *f,
 					 xmlDocPtr cur,
 					 int format);
-XMLPUBFUN int XMLCALL	xmlDocDump		(FILE *f,
+XMLPUBFUN int XMLCALL	
+		xmlDocDump		(FILE *f,
 					 xmlDocPtr cur);
-XMLPUBFUN void XMLCALL		xmlElemDump		(FILE *f,
+XMLPUBFUN void XMLCALL		
+		xmlElemDump		(FILE *f,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur);
-XMLPUBFUN int XMLCALL		xmlSaveFile		(const char *filename,
+XMLPUBFUN int XMLCALL		
+		xmlSaveFile		(const char *filename,
 					 xmlDocPtr cur);
-XMLPUBFUN int XMLCALL		xmlSaveFormatFile	(const char *filename,
+XMLPUBFUN int XMLCALL		
+		xmlSaveFormatFile	(const char *filename,
 					 xmlDocPtr cur,
 					 int format);
-XMLPUBFUN int XMLCALL		xmlNodeDump		(xmlBufferPtr buf,
+XMLPUBFUN int XMLCALL		
+		xmlNodeDump		(xmlBufferPtr buf,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur,
 					 int level,
 					 int format);
 
-XMLPUBFUN int XMLCALL		xmlSaveFileTo		(xmlOutputBufferPtr buf,
+XMLPUBFUN int XMLCALL		
+		xmlSaveFileTo		(xmlOutputBufferPtr buf,
 					 xmlDocPtr cur,
 					 const char *encoding);
-XMLPUBFUN int XMLCALL             xmlSaveFormatFileTo     (xmlOutputBufferPtr buf,
+XMLPUBFUN int XMLCALL             
+		xmlSaveFormatFileTo     (xmlOutputBufferPtr buf,
 					 xmlDocPtr cur,
 				         const char *encoding,
 				         int format);
-XMLPUBFUN void XMLCALL		xmlNodeDumpOutput	(xmlOutputBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		xmlNodeDumpOutput	(xmlOutputBufferPtr buf,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur,
 					 int level,
 					 int format,
 					 const char *encoding);
 
-XMLPUBFUN int XMLCALL		xmlSaveFormatFileEnc    (const char *filename,
+XMLPUBFUN int XMLCALL		
+		xmlSaveFormatFileEnc    (const char *filename,
 					 xmlDocPtr cur,
 					 const char *encoding,
 					 int format);
 
-XMLPUBFUN int XMLCALL		xmlSaveFileEnc		(const char *filename,
+XMLPUBFUN int XMLCALL		
+		xmlSaveFileEnc		(const char *filename,
 					 xmlDocPtr cur,
 					 const char *encoding);
 
 /*
  * XHTML
  */
-XMLPUBFUN int XMLCALL		xmlIsXHTML		(const xmlChar *systemID,
+XMLPUBFUN int XMLCALL		
+		xmlIsXHTML		(const xmlChar *systemID,
 					 const xmlChar *publicID);
 
 /*
  * Compression.
  */
-XMLPUBFUN int XMLCALL		xmlGetDocCompressMode	(xmlDocPtr doc);
-XMLPUBFUN void XMLCALL		xmlSetDocCompressMode	(xmlDocPtr doc,
+XMLPUBFUN int XMLCALL		
+		xmlGetDocCompressMode	(xmlDocPtr doc);
+XMLPUBFUN void XMLCALL		
+		xmlSetDocCompressMode	(xmlDocPtr doc,
 					 int mode);
-XMLPUBFUN int XMLCALL		xmlGetCompressMode	(void);
-XMLPUBFUN void XMLCALL		xmlSetCompressMode	(int mode);
+XMLPUBFUN int XMLCALL		
+		xmlGetCompressMode	(void);
+XMLPUBFUN void XMLCALL		
+		xmlSetCompressMode	(int mode);
 
 #ifdef __cplusplus
 }

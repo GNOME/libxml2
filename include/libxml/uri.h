@@ -49,21 +49,31 @@ XMLPUBFUN xmlURIPtr XMLCALL
 XMLPUBFUN xmlChar * XMLCALL	
 		xmlBuildURI		(const xmlChar *URI,
 	                        	 const xmlChar *base);
-XMLPUBFUN xmlURIPtr XMLCALL	xmlParseURI		(const char *str);
-XMLPUBFUN int XMLCALL		xmlParseURIReference	(xmlURIPtr uri,
+XMLPUBFUN xmlURIPtr XMLCALL	
+		xmlParseURI		(const char *str);
+XMLPUBFUN int XMLCALL		
+		xmlParseURIReference	(xmlURIPtr uri,
 					 const char *str);
-XMLPUBFUN xmlChar * XMLCALL	xmlSaveUri		(xmlURIPtr uri);
-XMLPUBFUN void XMLCALL		xmlPrintURI		(FILE *stream,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlSaveUri		(xmlURIPtr uri);
+XMLPUBFUN void XMLCALL		
+		xmlPrintURI		(FILE *stream,
 					 xmlURIPtr uri);
-XMLPUBFUN xmlChar * XMLCALL       xmlURIEscapeStr         (const xmlChar *str,
+XMLPUBFUN xmlChar * XMLCALL       
+		xmlURIEscapeStr         (const xmlChar *str,
  					 const xmlChar *list);
-XMLPUBFUN char * XMLCALL		xmlURIUnescapeString	(const char *str,
+XMLPUBFUN char * XMLCALL		
+		xmlURIUnescapeString	(const char *str,
 					 int len,
 					 char *target);
-XMLPUBFUN int XMLCALL		xmlNormalizeURIPath	(char *path);
-XMLPUBFUN xmlChar * XMLCALL	xmlURIEscape		(const xmlChar *str);
-XMLPUBFUN void XMLCALL		xmlFreeURI		(xmlURIPtr uri);
-XMLPUBFUN xmlChar* XMLCALL	xmlCanonicPath		(const xmlChar *path);
+XMLPUBFUN int XMLCALL		
+		xmlNormalizeURIPath	(char *path);
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlURIEscape		(const xmlChar *str);
+XMLPUBFUN void XMLCALL		
+		xmlFreeURI		(xmlURIPtr uri);
+XMLPUBFUN xmlChar* XMLCALL	
+		xmlCanonicPath		(const xmlChar *path);
 
 #ifdef __cplusplus
 }

@@ -22,29 +22,40 @@
 extern "C" {
 #endif
 
-XMLPUBFUN void XMLCALL		xmlSchemaInitTypes		(void);
-XMLPUBFUN void XMLCALL		xmlSchemaCleanupTypes		(void);
-XMLPUBFUN xmlSchemaTypePtr XMLCALL xmlSchemaGetPredefinedType	(const xmlChar *name,
+XMLPUBFUN void XMLCALL		
+    		xmlSchemaInitTypes		(void);
+XMLPUBFUN void XMLCALL		
+		xmlSchemaCleanupTypes		(void);
+XMLPUBFUN xmlSchemaTypePtr XMLCALL 
+		xmlSchemaGetPredefinedType	(const xmlChar *name,
 						 const xmlChar *ns);
-XMLPUBFUN int XMLCALL		xmlSchemaValidatePredefinedType	(xmlSchemaTypePtr type,
+XMLPUBFUN int XMLCALL		
+		xmlSchemaValidatePredefinedType	(xmlSchemaTypePtr type,
 						 const xmlChar *value,
 						 xmlSchemaValPtr *val);
-XMLPUBFUN int XMLCALL		xmlSchemaValPredefTypeNode	(xmlSchemaTypePtr type,
+XMLPUBFUN int XMLCALL		
+		xmlSchemaValPredefTypeNode	(xmlSchemaTypePtr type,
 						 const xmlChar *value,
 						 xmlSchemaValPtr *val,
 						 xmlNodePtr node);
-XMLPUBFUN int XMLCALL		xmlSchemaValidateFacet		(xmlSchemaTypePtr base,
+XMLPUBFUN int XMLCALL		
+		xmlSchemaValidateFacet		(xmlSchemaTypePtr base,
 						 xmlSchemaFacetPtr facet,
 						 const xmlChar *value,
 						 xmlSchemaValPtr val);
-XMLPUBFUN void XMLCALL		xmlSchemaFreeValue		(xmlSchemaValPtr val);
-XMLPUBFUN xmlSchemaFacetPtr XMLCALL xmlSchemaNewFacet		(void);
-XMLPUBFUN int XMLCALL		xmlSchemaCheckFacet		(xmlSchemaFacetPtr facet,
+XMLPUBFUN void XMLCALL		
+		xmlSchemaFreeValue		(xmlSchemaValPtr val);
+XMLPUBFUN xmlSchemaFacetPtr XMLCALL 
+		xmlSchemaNewFacet		(void);
+XMLPUBFUN int XMLCALL		
+		xmlSchemaCheckFacet		(xmlSchemaFacetPtr facet,
 						 xmlSchemaTypePtr typeDecl,
 						 xmlSchemaParserCtxtPtr ctxt,
 						 const xmlChar *name);
-XMLPUBFUN void XMLCALL		xmlSchemaFreeFacet		(xmlSchemaFacetPtr facet);
-XMLPUBFUN int XMLCALL		xmlSchemaCompareValues		(xmlSchemaValPtr x,
+XMLPUBFUN void XMLCALL		
+		xmlSchemaFreeFacet		(xmlSchemaFacetPtr facet);
+XMLPUBFUN int XMLCALL		
+		xmlSchemaCompareValues		(xmlSchemaValPtr x,
 						 xmlSchemaValPtr y);
 
 #ifdef __cplusplus

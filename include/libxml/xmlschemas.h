@@ -72,34 +72,46 @@ typedef xmlSchemaValidCtxt *xmlSchemaValidCtxtPtr;
 /*
  * Interfaces for parsing.
  */
-XMLPUBFUN xmlSchemaParserCtxtPtr XMLCALL xmlSchemaNewParserCtxt	(const char *URL);
-XMLPUBFUN xmlSchemaParserCtxtPtr XMLCALL xmlSchemaNewMemParserCtxt(const char *buffer,
-						 int size);
-XMLPUBFUN void XMLCALL		xmlSchemaFreeParserCtxt	(xmlSchemaParserCtxtPtr ctxt);
-XMLPUBFUN void XMLCALL		xmlSchemaSetParserErrors(xmlSchemaParserCtxtPtr ctxt,
+XMLPUBFUN xmlSchemaParserCtxtPtr XMLCALL 
+	    xmlSchemaNewParserCtxt	(const char *URL);
+XMLPUBFUN xmlSchemaParserCtxtPtr XMLCALL 
+	    xmlSchemaNewMemParserCtxt	(const char *buffer,
+					 int size);
+XMLPUBFUN void XMLCALL		
+	    xmlSchemaFreeParserCtxt	(xmlSchemaParserCtxtPtr ctxt);
+XMLPUBFUN void XMLCALL		
+	    xmlSchemaSetParserErrors	(xmlSchemaParserCtxtPtr ctxt,
 					 xmlSchemaValidityErrorFunc err,
 					 xmlSchemaValidityWarningFunc warn,
 					 void *ctx);
-XMLPUBFUN xmlSchemaPtr XMLCALL	xmlSchemaParse		(xmlSchemaParserCtxtPtr ctxt);
-XMLPUBFUN void XMLCALL		xmlSchemaFree		(xmlSchemaPtr schema);
-XMLPUBFUN void XMLCALL		xmlSchemaDump		(FILE *output,
+XMLPUBFUN xmlSchemaPtr XMLCALL	
+	    xmlSchemaParse		(xmlSchemaParserCtxtPtr ctxt);
+XMLPUBFUN void XMLCALL		
+	    xmlSchemaFree		(xmlSchemaPtr schema);
+XMLPUBFUN void XMLCALL		
+	    xmlSchemaDump		(FILE *output,
 					 xmlSchemaPtr schema);
 /*
  * Interfaces for validating
  */
-XMLPUBFUN void XMLCALL		xmlSchemaSetValidErrors	(xmlSchemaValidCtxtPtr ctxt,
+XMLPUBFUN void XMLCALL		
+	    xmlSchemaSetValidErrors	(xmlSchemaValidCtxtPtr ctxt,
 					 xmlSchemaValidityErrorFunc err,
 					 xmlSchemaValidityWarningFunc warn,
 					 void *ctx);
-XMLPUBFUN xmlSchemaValidCtxtPtr XMLCALL	xmlSchemaNewValidCtxt	(xmlSchemaPtr schema);
-XMLPUBFUN void XMLCALL			xmlSchemaFreeValidCtxt	(xmlSchemaValidCtxtPtr ctxt);
-XMLPUBFUN int XMLCALL			xmlSchemaValidateDoc	(xmlSchemaValidCtxtPtr ctxt,
-					 	 xmlDocPtr instance);
-XMLPUBFUN int XMLCALL			xmlSchemaValidateStream	(xmlSchemaValidCtxtPtr ctxt,
-						 xmlParserInputBufferPtr input,
-						 xmlCharEncoding enc,
-					 	 xmlSAXHandlerPtr sax,
-						 void *user_data);
+XMLPUBFUN xmlSchemaValidCtxtPtr XMLCALL	
+	    xmlSchemaNewValidCtxt	(xmlSchemaPtr schema);
+XMLPUBFUN void XMLCALL			
+	    xmlSchemaFreeValidCtxt	(xmlSchemaValidCtxtPtr ctxt);
+XMLPUBFUN int XMLCALL			
+	    xmlSchemaValidateDoc	(xmlSchemaValidCtxtPtr ctxt,
+					 xmlDocPtr instance);
+XMLPUBFUN int XMLCALL			
+	    xmlSchemaValidateStream	(xmlSchemaValidCtxtPtr ctxt,
+					 xmlParserInputBufferPtr input,
+					 xmlCharEncoding enc,
+					 xmlSAXHandlerPtr sax,
+					 void *user_data);
 #ifdef __cplusplus
 }
 #endif

@@ -19,8 +19,10 @@
 extern "C" {
 #endif
 
-XMLPUBFUN int XMLCALL	xmlXIncludeProcess	(xmlDocPtr doc);
-XMLPUBFUN int XMLCALL	xmlXIncludeProcessTree	(xmlNodePtr tree);
+XMLPUBFUN int XMLCALL	
+		xmlXIncludeProcess	    (xmlDocPtr doc);
+XMLPUBFUN int XMLCALL	
+		xmlXIncludeProcessTree	    (xmlNodePtr tree);
 
 #ifdef __cplusplus
 }

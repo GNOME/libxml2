@@ -1286,9 +1286,7 @@ main(int argc, char **argv) {
 	usage(argv[0]);
     }
     xmlCleanupParser();
-#ifdef WITH_MEM_DEBUG
     xmlMemoryDump();
-#endif
 
     return(progresult);
 }

@@ -31,6 +31,14 @@ typedef struct {
     xmlXPathContextPtr obj;
 } PyxmlXPathContext_Object;
 
+#define PyxmlXPathParserContext_Get(v) (((v) == Py_None) ? NULL : \
+	(((PyxmlXPathParserContext_Object *)(v))->obj))
+
+typedef struct {
+    PyObject_HEAD
+    xmlXPathParserContextPtr obj;
+} PyxmlXPathParserContext_Object;
+
 #define PyparserCtxt_Get(v) (((v) == Py_None) ? NULL : \
         (((PyparserCtxt_Object *)(v))->obj))
 
@@ -38,6 +46,17 @@ typedef struct {
     PyObject_HEAD
     xmlParserCtxtPtr obj;
 } PyparserCtxt_Object;
+
+#define Pycatalog_Get(v) (((v) == Py_None) ? NULL : \
+        (((Pycatalog_Object *)(v))->obj))
+
+typedef struct {
+    PyObject_HEAD
+    xmlCatalogPtr obj;
+} Pycatalog_Object;
+
+#define PyFile_Get(v) (((v) == Py_None) ? NULL : \
+	(PyFile_Check(v) ? NULL : (PyFile_AsFile(v))))
 
 PyObject * libxml_intWrap(int val);
 PyObject * libxml_longWrap(long val);
@@ -54,6 +73,8 @@ PyObject * libxml_xmlElementPtrWrap(xmlElementPtr ns);
 PyObject * libxml_doubleWrap(double val);
 PyObject * libxml_xmlXPathContextPtrWrap(xmlXPathContextPtr ctxt);
 PyObject * libxml_xmlParserCtxtPtrWrap(xmlParserCtxtPtr ctxt);
+PyObject * libxml_xmlXPathParserContextPtrWrap(xmlXPathParserContextPtr ctxt);
 PyObject * libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj);
+PyObject * libxml_xmlCatalogPtrWrap(xmlCatalogPtr obj);
 
 xmlXPathObjectPtr libxml_xmlXPathObjectPtrConvert(PyObject * obj);

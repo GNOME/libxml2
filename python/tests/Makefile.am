@@ -1,6 +1,6 @@
 EXAMPLE_DIR = $(prefix)/share/doc/libxml2-python-$(LIBXML_VERSION)/examples
 
-TESTS=		\
+PYTESTS=	\
     build.py	\
     tst.py	\
     tstxpath.py	\
@@ -16,12 +16,12 @@ XMLS=		\
     valid.xml	\
     invalid.xml
 
-EXTRA_DIST = $(TESTS) $(XMLS)
+EXTRA_DIST = $(TESTSPY) $(XMLS)
 
 if WITH_PYTHON
-tests: $(TESTS)
+tests: $(TESTSPY)
 	-@(PYTHONPATH=".." ; export PYTHONPATH; \
-	   for test in $(TESTS) ; do echo "-- $$test" ; $(PYTHON) $$test ; done)
+	   for test in $(TESTSPY) ; do echo "-- $$test" ; $(PYTHON) $$test ; done)
 else
 tests:
 endif
@@ -31,6 +31,6 @@ clean:
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(EXAMPLE_DIR)
-	-(for test in $(TESTS) $(XMLS); \
+	-(for test in $(TESTSPY) $(XMLS); \
 	  do @INSTALL@ -m 0644 $$test $(DESTDIR)$(EXAMPLE_DIR) ; done)
 

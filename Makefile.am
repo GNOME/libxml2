@@ -552,8 +552,8 @@ dist-hook: libxml.spec
 cleantar:
 	@(rm -f libxslt*.tar.gz)
 
-rpm: cleantar dist
-	rpm -ta $(distdir).tar.gz
+rpm: cleantar
+	@(unset CDPATH ; $(MAKE) dist && rpm -ta $(distdir).tar.gz)
 
 ## We create xml2Conf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given

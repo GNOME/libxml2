@@ -215,6 +215,23 @@ libxml_xmlXPathContextPtrWrap(xmlXPathContextPtr ctxt) {
 }
 
 PyObject *
+libxml_xmlXPathParserContextPtrWrap(xmlXPathParserContextPtr ctxt)
+{
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlXPathParserContextPtrWrap: ctxt = %p\n", ctxt);
+#endif
+    if (ctxt == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+    ret = PyCObject_FromVoidPtrAndDesc((void *) ctxt,
+                                       "xmlXPathParserContextPtr", NULL);
+    return (ret);
+}
+
+PyObject *
 libxml_xmlParserCtxtPtrWrap(xmlParserCtxtPtr ctxt) {
     PyObject *ret;
 
@@ -302,6 +319,21 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj) {
 	printf("Unable to convert Python Object to XPath");
     }
     Py_DECREF(obj);
+    return(ret);
+}
+
+PyObject *
+libxml_xmlCatalogPtrWrap(xmlCatalogPtr catal) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlNodePtrWrap: catal = %p\n", catal);
+#endif
+    if (catal == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    ret = PyCObject_FromVoidPtrAndDesc((void *) catal, "xmlCatalogPtr", NULL);
     return(ret);
 }
 

@@ -40,6 +40,8 @@ xmlDebugDumpString(FILE * output, const xmlChar * str)
 {
     int i;
 
+    if (output == NULL)
+	output = stdout;
     if (str == NULL) {
         fprintf(output, "(NULL)");
         return;
@@ -558,6 +560,8 @@ xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
 void
 xmlDebugDumpAttrList(FILE * output, xmlAttrPtr attr, int depth)
 {
+    if (output == NULL)
+	output = stdout;
     while (attr != NULL) {
         xmlDebugDumpAttr(output, attr, depth);
         attr = attr->next;
@@ -578,6 +582,8 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
     int i;
     char shift[100];
 
+    if (output == NULL)
+	output = stdout;
     for (i = 0; ((i < depth) && (i < 25)); i++)
         shift[2 * i] = shift[2 * i + 1] = ' ';
     shift[2 * i] = shift[2 * i + 1] = 0;
@@ -740,6 +746,8 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
 void
 xmlDebugDumpNode(FILE * output, xmlNodePtr node, int depth)
 {
+    if (output == NULL)
+	output = stdout;
     if (node == NULL) {
 	int i;
 	char shift[100];
@@ -768,6 +776,8 @@ xmlDebugDumpNode(FILE * output, xmlNodePtr node, int depth)
 void
 xmlDebugDumpNodeList(FILE * output, xmlNodePtr node, int depth)
 {
+    if (output == NULL)
+	output = stdout;
     while (node != NULL) {
         xmlDebugDumpNode(output, node, depth);
         node = node->next;
@@ -893,6 +903,8 @@ xmlDebugDumpDocument(FILE * output, xmlDocPtr doc)
 void
 xmlDebugDumpDTD(FILE * output, xmlDtdPtr dtd)
 {
+    if (output == NULL)
+	output = stdout;
     if (dtd == NULL) {
 	fprintf(output, "DTD is NULL\n");
         return;

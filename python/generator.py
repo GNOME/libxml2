@@ -259,10 +259,13 @@ py_types = {
     'const htmlNode *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
     'xmlXPathContextPtr':  ('O', "xmlXPathContext", "xmlXPathContextPtr", "xmlXPathContextPtr"),
     'xmlXPathContext *':  ('O', "xpathContext", "xmlXPathContextPtr", "xmlXPathContextPtr"),
+    'xmlXPathParserContextPtr':  ('O', "xmlXPathParserContext", "xmlXPathParserContextPtr", "xmlXPathParserContextPtr"),
     'xmlParserCtxtPtr': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
     'xmlParserCtxt *': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
     'htmlParserCtxtPtr': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
     'htmlParserCtxt *': ('O', "parserCtxt", "xmlParserCtxtPtr", "xmlParserCtxtPtr"),
+    'xmlCatalogPtr': ('O', "catalog", "xmlCatalogPtr", "xmlCatalogPtr"),
+    'FILE *': ('O', "File", "FILEPtr", "FILE *"),
 }
 
 py_return_types = {
@@ -459,7 +462,10 @@ wrapper.close()
 
 print "Generated %d wrapper functions, %d failed, %d skipped\n" % (nb_wrap,
 							  failed, skipped);
-print "Missing type converters: %s" % (unknown_types.keys())
+print "Missing type converters: "
+for type in unknown_types.keys():
+    print "%s:%d " % (type, len(unknown_types[type])),
+print
 
 #######################################################################
 #
@@ -492,8 +498,12 @@ classes_type = {
     "xmlAttributePtr": ("._o", "xmlAttribute(_obj=%s)", "xmlAttribute"),
     "xmlAttribute *": ("._o", "xmlAttribute(_obj=%s)", "xmlAttribute"),
     "xmlXPathContextPtr": ("._o", "xpathContext(_obj=%s)", "xpathContext"),
+    "xmlXPathContext *": ("._o", "xpathContext(_obj=%s)", "xpathContext"),
+    "xmlXPathParserContext *": ("._o", "xpathParserContext(_obj=%s)", "xpathParserContext"),
+    "xmlXPathParserContextPtr": ("._o", "xpathParserContext(_obj=%s)", "xpathParserContext"),
     "xmlParserCtxtPtr": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
     "xmlParserCtxt *": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
+    "xmlCatalogPtr": ("._o", "catalog(_obj=%s)", "catalog"),
 }
 
 converter_type = {
@@ -515,6 +525,7 @@ classes_ancestor = {
 classes_destructors = {
     "xpathContext": "xmlXPathFreeContext",
     "parserCtxt": "xmlFreeParserCtxt",
+    "catalog": "xmlFreeCatalog",
 }
 
 function_classes = {}
@@ -564,6 +575,9 @@ def nameFixup(function, classe, type, file):
         func = string.lower(func[0:1]) + func[1:]
     elif name[0:10] == "xmlNodeGet" and file == "python_accessor":
         func = name[10:]
+        func = string.lower(func[0:1]) + func[1:]
+    elif name[0:11] == "xmlACatalog":
+        func = name[11:]
         func = string.lower(func[0:1]) + func[1:]
     elif name[0:l] == classe:
 	func = name[l:]

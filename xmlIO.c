@@ -1966,7 +1966,7 @@ xmlOutputBufferCreateFd(int fd, xmlCharEncodingHandlerPtr encoder) {
     if (ret != NULL) {
         ret->context = (void *) (long) fd;
 	ret->writecallback = xmlFdWrite;
-	ret->closecallback = xmlFdClose;
+	ret->closecallback = NULL;
     }
 
     return(ret);

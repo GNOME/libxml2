@@ -33,9 +33,6 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(DOCS_DIR)
 	-@(for doc in $(DOCS) ; \
 	   do @INSTALL@ -m 0644 $$doc $(DESTDIR)$(DOCS_DIR) ; done)
-else
-all: 
-endif
 
 libxml.o: libxml.c libxml2-export.c libxml_wrap.h
 	$(CC) $(SHCFLAGS) -c -o libxml.o $(srcdir)/libxml.c
@@ -55,6 +52,9 @@ GENERATED= $(srcdir)/libxml2class.py \
 
 $(GENERATED): $(srcdir)/$(GENERATE) $(API_DESC)
 	cd $(srcdir) && $(PYTHON) $(GENERATE)
+else
+all: 
+endif
 
 tests: all
 	cd tests && $(MAKE) tests

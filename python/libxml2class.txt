@@ -23,6 +23,7 @@ htmlNewDocNoDtD()
 catalogAdd()
 catalogCleanup()
 catalogConvert()
+catalogDump()
 catalogGetPublic()
 catalogGetSystem()
 catalogRemove()
@@ -32,11 +33,15 @@ catalogResolveSystem()
 catalogResolveURI()
 catalogSetDebug()
 initializeCatalog()
+loadACatalog()
 loadCatalog()
 loadCatalogs()
+loadSGMLSuperCatalog()
+newCatalog()
 parseCatalogFile()
 
 # functions from module debugXML
+debugDumpString()
 shellPrintXPathError()
 
 # functions from module encoding
@@ -147,6 +152,9 @@ registerHTTPPostCallbacks()
 # functions from module xmlversion
 checkVersion()
 
+# functions from module xpathInternals
+valuePop()
+
 
 #
 # Set of classes of the module
@@ -160,7 +168,11 @@ Class xmlNode(xmlCore)
     nsDefs()
 
     # functions from module debugXML
+    debugDumpNode()
+    debugDumpNodeList()
+    debugDumpOneNode()
     lsCountNode()
+    lsOneNode()
     shellPrintNode()
 
     # functions from module tree
@@ -233,6 +245,19 @@ Class xmlNode(xmlCore)
     # functions from module xpathInternals
     xpathNewNodeSet()
     xpathNewValueTree()
+    xpathNextAncestor()
+    xpathNextAncestorOrSelf()
+    xpathNextAttribute()
+    xpathNextChild()
+    xpathNextDescendant()
+    xpathNextDescendantOrSelf()
+    xpathNextFollowing()
+    xpathNextFollowingSibling()
+    xpathNextNamespace()
+    xpathNextParent()
+    xpathNextPreceding()
+    xpathNextPrecedingSibling()
+    xpathNextSelf()
 
 
 Class xmlDoc(xmlNode)
@@ -242,11 +267,19 @@ Class xmlDoc(xmlNode)
     htmlIsAutoClosed()
 
     # functions from module HTMLtree
+    htmlDocDump()
     htmlGetMetaEncoding()
+    htmlNodeDumpFile()
+    htmlNodeDumpFileFormat()
     htmlSaveFile()
     htmlSaveFileEnc()
     htmlSaveFileFormat()
     htmlSetMetaEncoding()
+
+    # functions from module debugXML
+    debugDumpDocument()
+    debugDumpDocumentHead()
+    debugDumpEntities()
 
     # functions from module entities
     addDocEntity()
@@ -262,6 +295,8 @@ Class xmlDoc(xmlNode)
     copyDoc()
     createIntSubset()
     docCompressMode()
+    dump()
+    elemDump()
     freeDoc()
     getRootElement()
     intSubset()
@@ -298,7 +333,7 @@ Class xmlDoc(xmlNode)
     xpathNewContext()
 
 
-Class xmlEntity(xmlNode)
+Class xmlAttribute(xmlNode)
 
 
 Class xmlNs(xmlNode)
@@ -311,18 +346,10 @@ Class xmlNs(xmlNode)
     newNode()
 
 
-Class xmlAttr(xmlNode)
-
-    # functions from module tree
-    freeProp()
-    freePropList()
-    removeProp()
-
-
-Class xmlAttribute(xmlNode)
-
-
 Class xmlDtd(xmlNode)
+
+    # functions from module debugXML
+    debugDumpDTD()
 
     # functions from module tree
     copyDtd()
@@ -333,9 +360,65 @@ Class xmlDtd(xmlNode)
     dtdElementDesc()
     dtdQAttrDesc()
     dtdQElementDesc()
+Class catalog()
 
+    # functions from module catalog
+    add()
+    catalogIsEmpty()
+    convertSGMLCatalog()
+    dump()
+    freeCatalog()
+    remove()
+    resolve()
+    resolvePublic()
+    resolveSystem()
+    resolveURI()
+Class xpathParserContext()
 
-Class xmlElement(xmlNode)
+    # functions from module xpathInternals
+    xpathAddValues()
+    xpathBooleanFunction()
+    xpathCeilingFunction()
+    xpathCompareValues()
+    xpathConcatFunction()
+    xpathContainsFunction()
+    xpathCountFunction()
+    xpathDivValues()
+    xpathEqualValues()
+    xpathEvalExpr()
+    xpathFalseFunction()
+    xpathFloorFunction()
+    xpathFreeParserContext()
+    xpathIdFunction()
+    xpathLangFunction()
+    xpathLastFunction()
+    xpathLocalNameFunction()
+    xpathModValues()
+    xpathMultValues()
+    xpathNamespaceURIFunction()
+    xpathNormalizeFunction()
+    xpathNotFunction()
+    xpathNumberFunction()
+    xpathParseNCName()
+    xpathParseName()
+    xpathPopBoolean()
+    xpathPopNumber()
+    xpathPopString()
+    xpathPositionFunction()
+    xpathRoot()
+    xpathRoundFunction()
+    xpathStartsWithFunction()
+    xpathStringFunction()
+    xpathStringLengthFunction()
+    xpathSubValues()
+    xpathSubstringAfterFunction()
+    xpathSubstringBeforeFunction()
+    xpathSubstringFunction()
+    xpathSumFunction()
+    xpathTranslateFunction()
+    xpathTrueFunction()
+    xpathValueFlipSign()
+    xpatherror()
 Class parserCtxt()
     # accessors
     doc()
@@ -358,7 +441,6 @@ Class parserCtxt()
     # functions from module parserInternals
     decodeEntities()
     freeParserCtxt()
-    handleEntity()
     namespaceParseNCName()
     namespaceParseNSDef()
     nextChar()
@@ -403,6 +485,27 @@ Class parserCtxt()
     scanName()
     skipBlankChars()
     stringDecodeEntities()
+
+
+Class xmlElement(xmlNode)
+
+
+Class xmlEntity(xmlNode)
+
+    # functions from module parserInternals
+    handleEntity()
+
+
+Class xmlAttr(xmlNode)
+
+    # functions from module debugXML
+    debugDumpAttr()
+    debugDumpAttrList()
+
+    # functions from module tree
+    freeProp()
+    freePropList()
+    removeProp()
 Class xpathContext()
 
     # functions from module python
@@ -414,6 +517,7 @@ Class xpathContext()
 
     # functions from module xpathInternals
     xpathFreeContext()
+    xpathNewParserContext()
     xpathNsLookup()
     xpathRegisterAllFunctions()
     xpathRegisterNs()

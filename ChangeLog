@@ -1,3 +1,9 @@
+Thu Feb 27 21:09:32 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* check-xsddata-test-suite.py test/xsdtest/xsdtest.xml
+	  test/xsdtest/xsdtest.xsl: import of the XSD Datatype
+	  regression tests from James Clark.
+
 Thu Feb 27 18:40:04 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c xmlschemas.c xmlschemastypes.c

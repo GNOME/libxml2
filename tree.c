@@ -6217,7 +6217,7 @@ xmlAttrSerializeContent(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr attr)
  * @format: is formatting allowed
  *
  * Dump an XML node, recursive behaviour,children are printed too.
- * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  *
  * Returns the number of bytes written to the buffer or -1 in case of error
@@ -6478,7 +6478,7 @@ xmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @encoding:  an optional encoding string
  *
  * Dump an XML node list, recursive behaviour, children are printed too.
- * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
 static void
@@ -6516,7 +6516,7 @@ xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @encoding:  an optional encoding string
  *
  * Dump an XML node, recursive behaviour, children are printed too.
- * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
 static void
@@ -6683,7 +6683,7 @@ xmlNodeDumpOutputInternal(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @encoding:  an optional encoding string
  *
  * Dump an XML node, recursive behaviour, children are printed too.
- * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
 void
@@ -6725,7 +6725,7 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
  * @format:  should formatting spaces been added
  *
  * Dump an XML document.
- * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
 static void
@@ -6988,7 +6988,7 @@ xhtmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @encoding:  an optional encoding string
  *
  * Dump an XML node list, recursive behaviour, children are printed too.
- * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
 static void
@@ -7026,7 +7026,7 @@ xhtmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @encoding:  an optional encoding string
  *
  * Dump an XHTML node, recursive behaviour, children are printed too.
- * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
 static void
@@ -7260,7 +7260,7 @@ xhtmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
  * Dump the current DOM tree into memory using the character encoding specified
  * by the caller.  Note it is up to the caller of this function to free the
  * allocated memory with xmlFree().
- * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
 
@@ -7375,7 +7375,7 @@ xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  *
  * Dump an XML document in memory and return the #xmlChar * and it's size.
  * It's up to the caller to free the memory with xmlFree().
- * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
 void
@@ -7466,6 +7466,8 @@ xmlSetCompressMode(int mode) {
  * Dump an XML document to an open FILE.
  *
  * returns: the number of bytes written or -1 in case of failure.
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * or xmlKeepBlanksDefault(0) was called
  */
 int
 xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
@@ -7553,6 +7555,8 @@ xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
  * Dump an XML document to an I/O buffer.
  *
  * returns: the number of bytes written or -1 in case of failure.
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * or xmlKeepBlanksDefault(0) was called
  */
 int
 xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding, int format) {
@@ -7574,6 +7578,8 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding,
  * Dump an XML document to a file or an URL.
  *
  * Returns the number of bytes written or -1 in case of error.
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * or xmlKeepBlanksDefault(0) was called
  */
 int
 xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
@@ -7644,6 +7650,8 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
  * Dump an XML document to a file. Will use compression if
  * compiled in and enabled. If @filename is "-" the stdout file is
  * used. If @format is set then the document will be indented on output.
+ * Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+ * or xmlKeepBlanksDefault(0) was called
  *
  * returns: the number of bytes written or -1 in case of failure.
  */

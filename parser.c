@@ -10910,6 +10910,8 @@ xmlInitParser(void) {
  * parsing related global memory allocated for the parser processing.
  * It doesn't deallocate any document related memory. Calling this
  * function should not prevent reusing the parser.
+ * One should call xmlCleanupParser() only when the process has
+ * finished using the library or XML document built with it.
  */
 
 void

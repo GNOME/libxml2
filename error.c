@@ -80,6 +80,7 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
  * @handler:  the handler
  * 
  * Set or reset (if NULL) the default handler for generic errors
+ * to the builtin error function.
  */
 void
 initGenericErrorDefaultFunc(xmlGenericErrorFunc * handler)

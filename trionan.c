@@ -798,7 +798,7 @@ TRIO_ARGS2((prefix, number),
   printf("%-6s: %s %-15s %g\n",
 	 prefix,
 	 trio_signbit(number) ? "-" : "+",
-	 getClassification(trio_fpclassify(number)),
+	 getClassification(TRIO_FPCLASSIFY(number)),
 	 number);
 }
 

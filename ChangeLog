@@ -1,3 +1,7 @@
+Wed Oct 15 10:16:47 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* vms/build_libxml.com trionan.c: VMS patch from Craig A. Berry
+
 Mon Oct 13 21:46:25 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: small fix from Bjorn Reese

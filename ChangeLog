@@ -1,3 +1,9 @@
+Tue Jul 22 19:42:15 MDT 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmllint.html
+	include html version of the xmllint man page, so an
+	up-to-date version is visible on the Web
+
 Mon Jul 21 21:53:43 IST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c include/libxml/xinclude.h: added a new API

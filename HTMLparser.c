@@ -2630,11 +2630,11 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
 	res = stat(filename, &buf);
 	if (res < 0)
 		return(NULL);
-	len = buf.st_size + 1;
+	len = buf.st_size;
 	if (len < MINLEN)
 		len = MINLEN;
     }
-    buffer = (char *)malloc(len*sizeof(char));
+    buffer = (char *)malloc((len+1)*sizeof(char));
     if (buffer == NULL) {
 	    fprintf (stderr, "Cannot malloc\n");
 	    perror ("malloc failed");
@@ -2649,7 +2649,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
 #endif
 	if (cnt == len) {
 	    len *= 2;
-	    nbuf =  (char *)realloc(buffer,len*sizeof(char));
+	    nbuf =  (char *)realloc(buffer,(len+1)*sizeof(char));
 	    if (nbuf == NULL) {
 		fprintf(stderr,"Cannot realloc\n");
 		free(buffer);

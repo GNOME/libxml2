@@ -1,3 +1,8 @@
+Fri Jul  9 12:10:24 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c parser.c: applied patch from John Ellson <ellson@lucent.com>
+	  which fixed a problem on the file reading-code.
+
 Wed Jul  7 09:28:43 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.[ch], HTMLtree.[ch]: more work for HTML parsing and

@@ -262,6 +262,7 @@ int main(int argc, char **argv) {
     gJobPtr cur;
 
     /* COMPAT: Do not genrate nodes for formatting spaces */
+    LIBXML_TEST_VERSION
     xmlKeepBlanksDefault(0);
 
     for (i = 1; i < argc ; i++) {

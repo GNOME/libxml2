@@ -1,3 +1,12 @@
+Sun Jan 13 14:23:21 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c: applied Serguei Narojnyi's patch to add native
+	  thread support on the Win32 platform
+	* testThreadsWin32.c Makefile.am: added the test program also
+	  from Serguei, Win32 specific
+	* include/win32config.h include/libxml/xmlwin32version.h.in:
+	  added patch from Igor for the Windows thread specific defines.
+
 Wed Jan  9 12:50:39 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* entities.c: Anthony Jones pointed a bug in xmlCopyEntity()

@@ -144,5 +144,12 @@ static int isnan (double d) {
 #define ATTRIBUTE_UNUSED
 #endif
 
+/* Define this if you want to use Windows native thread implementation.
+   Undefine it if you wish to use another, pthreads for example. Note
+   that this alone does not enable threads, just specifies the
+   threading model. Threading support is activated in xmlversion.h by
+   defining LIBXML_THREAD_ENABLE. */
+#define HAVE_WIN32_THREADS
+
 #endif /* __LIBXML_WIN32_CONFIG__ */
 

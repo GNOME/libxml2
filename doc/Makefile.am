@@ -35,7 +35,7 @@ sgml:
 	gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR)
 
 html:
-	if ! test -d html ; then mkdir html ; fi
+	if test -n -d html ; then mkdir html ; fi
 	-cd html && gtkdoc-mkhtml libxml ../$(DOC_MAIN_SGML_FILE)
 
 clean-local:

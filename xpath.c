@@ -10592,6 +10592,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 if ((oldset == NULL) || (oldset->nodeNr == 0)) {
                     ctxt->context->contextSize = 0;
                     ctxt->context->proximityPosition = 0;
+/*
                     if (op->ch2 != -1)
                         total +=
                             xmlXPathCompOpEval(ctxt,
@@ -10600,6 +10601,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                     res = valuePop(ctxt);
                     if (res != NULL)
                         xmlXPathFreeObject(res);
+*/
                     valuePush(ctxt, obj);
                     ctxt->context->node = oldnode;
                     CHECK_ERROR0;

@@ -1,3 +1,8 @@
+Wed Jun 02 16:25:32 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: fixed problem with predicate evaluation on an
+	  empty nodeset (bug 143409)
+
 Wed Jun 02 11:26:41 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* testSAX.c: fixed problem with attribute listing (bug 142674)

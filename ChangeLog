@@ -1,3 +1,8 @@
+Tue Jan 13 21:39:58 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c relaxng.c testRelax.c testSchemas.c: applied
+	  patch from Mark Vadoc to not use SAX1 unless necessary.
+
 Mon Jan 12 17:22:57 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c parser.c xmlstring.c: some parser optimizations,

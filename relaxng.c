@@ -1569,7 +1569,7 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar * URL,
     /*
      * load the document
      */
-    doc = xmlParseFile((const char *) URL);
+    doc = xmlReadFile((const char *) URL,NULL,0);
     if (doc == NULL) {
         xmlRngPErr(ctxt, node, XML_RNGP_PARSE_ERROR,
                    "xmlRelaxNG: could not load %s\n", URL, NULL);
@@ -1901,7 +1901,7 @@ xmlRelaxNGLoadExternalRef(xmlRelaxNGParserCtxtPtr ctxt,
     /*
      * load the document
      */
-    doc = xmlParseFile((const char *) URL);
+    doc = xmlReadFile((const char *) URL,NULL,0);
     if (doc == NULL) {
         xmlRngPErr(ctxt, NULL, XML_RNGP_PARSE_ERROR,
                    "xmlRelaxNG: could not load %s\n", URL, NULL);
@@ -7240,7 +7240,7 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
      * First step is to parse the input document into an DOM/Infoset
      */
     if (ctxt->URL != NULL) {
-        doc = xmlParseFile((const char *) ctxt->URL);
+        doc = xmlReadFile((const char *) ctxt->URL,NULL,0);
         if (doc == NULL) {
             xmlRngPErr(ctxt, NULL, XML_RNGP_PARSE_ERROR,
                        "xmlRelaxNGParse: could not load %s\n", ctxt->URL,
@@ -7248,7 +7248,7 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
             return (NULL);
         }
     } else if (ctxt->buffer != NULL) {
-        doc = xmlParseMemory(ctxt->buffer, ctxt->size);
+        doc = xmlReadMemory(ctxt->buffer, ctxt->size,NULL,NULL,0);
         if (doc == NULL) {
             xmlRngPErr(ctxt, NULL, XML_RNGP_PARSE_ERROR,
                        "xmlRelaxNGParse: could not parse schemas\n", NULL,

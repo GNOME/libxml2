@@ -134,7 +134,7 @@ int main(int argc, char **argv) {
 	    } else {
 		xmlDocPtr doc;
 
-		doc = xmlParseFile(argv[i]);
+		doc = xmlReadFile(argv[i],NULL,0);
 
 		if (doc == NULL) {
 		    fprintf(stderr, "Could not parse %s\n", argv[i]);

@@ -5173,9 +5173,11 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     }
     canonicFilename = (char *) xmlCanonicPath((const xmlChar *) filename);
     if (canonicFilename == NULL) {
+#ifdef LIBXML_SAX1_ENABLED
 	if (xmlDefaultSAXHandler.error != NULL) {
 	    xmlDefaultSAXHandler.error(NULL, "out of memory\n");
 	}
+#endif
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }

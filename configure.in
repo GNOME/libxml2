@@ -411,7 +411,7 @@ AC_ARG_WITH(iconv, [  --with-iconv[=DIR]      Add ICONV support (on)])
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support
 else
-    if test "$with_iconv" != "yes" ; then
+    if test "$with_iconv" != "yes" -a "$with_iconv" != "" ; then
 	CPPFLAGS="${CPPFLAGS} -I$with_iconv/include"
 	# Export this since our headers include iconv.h
 	XML_INCLUDEDIR="${XML_INCLUDEDIR} -I$with_iconv/include"

@@ -16,20 +16,62 @@
 #include <libxml/uri.h>
 #include <libxml/globals.h>
 
-int main(int argc, char **argv) {
-    int i, ret, arg = 1;
-    xmlURIPtr uri;
-    const char *base = NULL;
-    xmlChar *composite;
+static const char *base = NULL;
+static int escape = 0;
 
-    if ((argc > 1) && (argv[arg] != NULL) &&
+static void handleURI(const char *str) {
+    int ret;
+    xmlURIPtr uri;
+    xmlChar *res = NULL, *parsed = NULL;
+
+    uri = xmlCreateURI();
+
+    if (base == NULL) {
+	ret = xmlParseURIReference(uri, str);
+	if (ret != 0)
+	    printf("%s : error %d\n", str, ret);
+	else {
+	    xmlNormalizeURIPath(uri->path);
+	    if (escape != 0) {
+		parsed = xmlSaveUri(uri);
+		res = xmlURIEscape(parsed);
+		printf("%s\n", res);
+
+	    } else {
+		xmlPrintURI(stdout, uri);
+		printf("\n");
+	    }
+	}
+    } else {
+	res = xmlBuildURI((xmlChar *)str, (xmlChar *) base);
+	if (res != NULL) {
+	    printf("%s\n", res);
+	}
+	else
+	    printf("::ERROR::\n");
+    }
+    if (res != NULL)
+	xmlFree(res);
+    if (parsed != NULL)
+	xmlFree(parsed);
+    xmlFreeURI(uri);
+}
+
+int main(int argc, char **argv) {
+    int i, arg = 1;
+
+    if ((argc > arg) && (argv[arg] != NULL) &&
 	((!strcmp(argv[arg], "-base")) || (!strcmp(argv[arg], "--base")))) {
 	arg++;
 	base = argv[arg];
 	if (base != NULL)
 	    arg++;
     }
-    uri = xmlCreateURI();
+    if ((argc > arg) && (argv[arg] != NULL) &&
+	((!strcmp(argv[arg], "-escape")) || (!strcmp(argv[arg], "--escape")))) {
+	arg++;
+	escape++;
+    }
     if (argv[arg] == NULL) {
 	char str[1024];
 
@@ -50,47 +92,14 @@ int main(int argc, char **argv) {
 		i--;
 		str[i] = 0;
 	    }
-
-	    if (base == NULL) {
-		ret = xmlParseURIReference(uri, str);
-		if (ret != 0)
-		    printf("%s : error %d\n", str, ret);
-		else {
-		    xmlNormalizeURIPath(uri->path);
-		    xmlPrintURI(stdout, uri);
-		    printf("\n");
-		}
-	    } else {
-		composite = xmlBuildURI((xmlChar *)str, (xmlChar *) base);
-		if (composite != NULL) {
-		    printf("%s\n", composite);
-		    xmlFree(composite);
-		}
-		else
-		    printf("::ERROR::\n");
-	    }
+	    handleURI(str);
         }
     } else {
 	while (argv[arg] != NULL) {
-	    if (base == NULL) {
-		ret = xmlParseURIReference(uri, argv[arg]);
-		if (ret != 0)
-		    printf("%s : error %d\n", argv[arg], ret);
-		else {
-		    xmlPrintURI(stdout, uri);
-		    printf("\n");
-		}
-	    } else {
-		composite = xmlBuildURI((xmlChar *)argv[arg], (xmlChar *) base);
-		if (composite != NULL) {
-		    printf("%s\n", composite);
-		    xmlFree(composite);
-		}
-	    }
+	    handleURI(argv[arg]);
 	    arg++;
 	}
     }
-    xmlFreeURI(uri);
     xmlMemoryDump();
     return(0);
 }

@@ -1030,7 +1030,6 @@ xmlURIEscape(const xmlChar * str)
         segment = xmlURIEscapeStr(BAD_CAST uri->opaque, BAD_CAST "");
         NULLCHK(segment)
         ret = xmlStrcat(ret, segment);
-        ret = xmlStrcat(ret, BAD_CAST ":");
         xmlFree(segment);
     }
 

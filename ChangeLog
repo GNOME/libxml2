@@ -1,3 +1,9 @@
+Fri Dec  7 12:32:00 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: closed bug #66159
+	* testURI.c: added --escape option
+	* configure.in: some cleanup for xml2-config --cflags
+
 Thu Dec  6 15:31:30 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c testThreads.c: removed some misplaced includes

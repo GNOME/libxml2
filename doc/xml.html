@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V3.2">
+  <meta name="GENERATOR" content="amaya V3.2.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -190,6 +190,20 @@ for really accurate description</h3>
 <ul>
   <li>working on HTML and XML links recognition layers, get in touch with me
     if you want to test those.</li>
+</ul>
+
+<h2>2.2.0: July 14 2000</h2>
+<ul>
+  <li>applied a lot of portability fixes</li>
+  <li>better encoding support/cleanup and saving (content is now always
+    encoded in UTF-8)</li>
+  <li>the HTML parser now correctly handles encodings</li>
+  <li>added xmlHasProp()</li>
+  <li>fixed a serious problem with &amp;#38;</li>
+  <li>propagated the fix to FTP client</li>
+  <li>cleanup, bugfixes, etc ...</li>
+  <li>Added a page about <a href="encoding.html">libxml Internationalization
+    support</a></li>
 </ul>
 
 <h3>1.8.9:  July 9 2000</h3>
@@ -1199,6 +1213,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.41 2000/07/10 12:17:33 veillard Exp $</p>
+<p>$Id: xml.html,v 1.42 2000/07/14 12:12:59 veillard Exp $</p>
 </body>
 </html>

@@ -8795,7 +8795,9 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 	    xmlGenericErrorContextNodeSet(stdout, ctxt->value->nodesetval);
 #endif
 
+#ifdef LIBXML_XPTR_ENABLED
 eval_predicates:
+#endif
 	op1 = ctxt->comp->last;
 	ctxt->comp->last = -1;
 

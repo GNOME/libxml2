@@ -872,6 +872,9 @@ static int
 xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 {
     fd_set wfd;
+#ifdef _WINSOCKAPI_
+    fd_set xfd;
+#endif
     struct timeval tv;
     int status;
     int addrlen;
@@ -954,8 +957,15 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
     
     FD_ZERO(&wfd);
     FD_SET(s, &wfd);
+
+#ifdef _WINSOCKAPI_    
+    FD_ZERO(&xfd);
+    FD_SET(s, &xfd);
     
+    switch(select(s+1, NULL, &wfd, &xfd, &tv))
+#else
     switch(select(s+1, NULL, &wfd, NULL, &tv))
+#endif
     {
 	case 0:
 	    /* Time out */
@@ -969,7 +979,11 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 	    return(-1);
     }
 
-    if ( FD_ISSET(s, &wfd) ) {
+    if ( FD_ISSET(s, &wfd)
+#ifdef _WINSOCKAPI_
+                           || FD_ISSET(s, &xfd)
+#endif
+                                                ) {
 	SOCKLEN_T len;
 	len = sizeof(status);
 #ifdef SO_ERROR

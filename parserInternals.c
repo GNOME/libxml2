@@ -1686,7 +1686,7 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
     if (ctxt->vctxt.nodeTab != NULL) xmlFree(ctxt->vctxt.nodeTab);
     if (ctxt->atts != NULL) xmlFree((xmlChar * *)ctxt->atts);
     if (ctxt->dict != NULL) xmlDictFree(ctxt->dict);
-    if (ctxt->nsTab != NULL) xmlFree(ctxt->nsTab);
+    if (ctxt->nsTab != NULL) xmlFree((char *) ctxt->nsTab);
     if (ctxt->pushTab != NULL) xmlFree(ctxt->pushTab);
     if (ctxt->attallocs != NULL) xmlFree(ctxt->attallocs);
     if (ctxt->attsDefault != NULL) 

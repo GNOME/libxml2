@@ -854,7 +854,7 @@ nsPush(xmlParserCtxtPtr ctxt, const xmlChar *prefix, const xmlChar *URL)
     } else if (ctxt->nsNr >= ctxt->nsMax) {
         ctxt->nsMax *= 2;
         ctxt->nsTab = (const xmlChar **)
-	              xmlRealloc(ctxt->nsTab,
+	              xmlRealloc((char *) ctxt->nsTab,
 				 ctxt->nsMax * sizeof(ctxt->nsTab[0]));
         if (ctxt->nsTab == NULL) {
             xmlErrMemory(ctxt, NULL);

@@ -1,3 +1,10 @@
+Mon Feb  9 13:35:50 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: remove the warning on the 2001 namespace
+	* parser.c parserInternals.c xpath.c: remove some warnings
+	  when compiling with MSVC6
+	* nanohttp.c: applied a patch when using _WINSOCKAPI_
+
 Sun Feb  8 12:09:55 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: added a small hack to fix interference between

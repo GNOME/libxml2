@@ -1,3 +1,8 @@
+Thu Aug 22 09:15:00 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* win32/win32/Makefile.mingw: updated with version from 
+	  Elizabeth Barham at http://soggytrousers.net/repository/
+
 Tue Aug 20 16:40:48 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/Makefile.msvc: added the prefix location to the include

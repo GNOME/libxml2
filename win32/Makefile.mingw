@@ -3,16 +3,19 @@
 # compiler environment.  This Makefile is based on Alfred Reibenschuh's
 # version for 2.1.1, and was modified by Wayne Davison.
 # Modified 2001/10/10 Tobias Peters for libxml2-2.4.5
+# Modified 2002/07/12 Elizabeth Barham for libxml2.4.23
 
 # Set "PREFIX" to the root of the mingw installed files.
 
-PREFIX = /mingw
+# PREFIX = /mingw
+PREFIX = F:\WIN98\PROGR~-I\DEV-C~QN
 
 CC       = gcc
 CFLAGS   = -Iinclude -fnative-struct -D_WINSOCKAPI_ \
-           -Dsnprintf=_snprintf -Dvsnprintf=_vsnprintf
-LDFLAGS  = -L. -L$(PREFIX)/lib
-LIBS     = -lwsock32 -lz
+           -Dsnprintf=_snprintf -Dvsnprintf=_vsnprintf \
+           -DLIBXML_THREAD_ENABLED
+LDFLAGS  = -L. -L$(PREFIX)\lib
+LIBS     = -lwsock32 -lz -liconv_dll
 
 AR=ar rc
 DLLTOOL=dlltool
@@ -23,7 +26,10 @@ LIBSRCS=SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c strio.c
+                catalog.c c14n.c threads.c xmlschemastypes.c xmlschemas.c \
+                xmlregexp.c xmlunicode.c globals.c
+
+#                strio.c
 
 LIBOBJS=$(LIBSRCS:.c=.o)
 
@@ -36,9 +42,25 @@ DLL=$(LIB:.a=.dll)
 OBJ1=testHTML.o
 OBJ2=testSAX.o
 OBJ3=testURI.o
+OBJ4=testSchemas.o
+OBJ5=testAutomata.o
+OBJ6=testC14N.o
+OBJ7=testDocbook.o
+OBJ8=testRegexp.o
+OBJ9=testThreadsWin32.o
+OBJ10=testXPath.o
+OBJ11=xmllint.o
 EXE1=$(OBJ1:.o=.exe)
 EXE2=$(OBJ2:.o=.exe)
 EXE3=$(OBJ3:.o=.exe)
+EXE4=$(OBJ4:.o=.exe)
+EXE5=$(OBJ5:.o=.exe)
+EXE6=$(OBJ6:.o=.exe)
+EXE7=$(OBJ7:.o=.exe)
+EXE8=$(OBJ8:.o=.exe)
+EXE9=$(OBJ9:.o=.exe)
+EXE10=$(OBJ10:.o=.exe)
+EXE11=$(OBJ11:.o=.exe)
 
 IMPBASE=$(LIBBASE)_dll
 IMP=lib$(IMPBASE).a
@@ -47,7 +69,8 @@ DLLFLAGS = --shared -o $(DLL) -Wl,--out-implib,$(IMP)
 
 DEF=$(DLL:.dll=.def)
 
-all: $(LIB) $(DLL) $(DEF) $(IMP) $(EXE1) $(EXE2) $(EXE3)
+all: $(LIB) $(DLL) $(DEF) $(IMP) $(EXE1) $(EXE2) $(EXE3) $(EXE4) $(EXE5) \
+        $(EXE6) $(EXE7) $(EXE8) $(EXE9) $(EXE10) $(EXE11)
 
 dll: $(DLL)
 
@@ -75,6 +98,38 @@ $(EXE3): $(OBJ3) $(LIB)
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(LIBBASE) $(LIBS)
 	strip $@
 
+$(EXE4): $(OBJ4) $(DLL)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
+	strip $@
+
+$(EXE5): $(OBJ5) $(DLL)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
+	strip $@
+
+$(EXE6): $(OBJ6) $(DLL)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
+	strip $@
+
+$(EXE7): $(OBJ7) $(DLL)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
+	strip $@
+
+$(EXE8): $(OBJ8) $(DLL)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
+	strip $@
+
+$(EXE9): $(OBJ9) $(DLL)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
+	strip $@
+
+$(EXE10): $(OBJ10) $(DLL)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
+	strip $@
+
+$(EXE11): $(OBJ11) $(DLL)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
+	strip $@
+
 $(OBJ1): $(OBJ1:.o=.c)
 	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
 
@@ -83,6 +138,32 @@ $(OBJ2): $(OBJ2:.o=.c)
 
 $(OBJ3): $(OBJ3:.o=.c)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ4): $(OBJ4:.o=.c)
+	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
+
+$(OBJ5): $(OBJ5:.o=.c)
+	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
+
+$(OBJ6): $(OBJ6:.o=.c)
+	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
+
+$(OBJ7): $(OBJ7:.o=.c)
+	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
+
+$(OBJ8): $(OBJ8:.o=.c)
+	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
+
+$(OBJ9): $(OBJ9:.o=.c)
+	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
+
+$(OBJ10): $(OBJ10:.o=.c)
+	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
+
+$(OBJ11): $(OBJ11:.o=.c)
+	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
+
+
 
 .c.o:
 	$(CC) $(CFLAGS) -DIN_LIBXML -c $< -o $@	

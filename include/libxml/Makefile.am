@@ -32,6 +32,6 @@ xmlinc_HEADERS = \
 		catalog.h
 
 install-exec-hook:
-	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)/libxml2 $(DESTDIR)$(xmlincdir)/libxml2/libxml
+	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)
 
 EXTRA_DIST = xmlversion.h.in xmlwin32version.h.in

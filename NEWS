@@ -12,9 +12,27 @@ http://cvs.gnome.org/lxr/source/gnome-xml/ChangeLog
 for a really accurate description:
 Items not finished and worked on, get in touch with the list if you want
 to test those
+   - More testing on RelaxNG
    - Finishing up XML
-    Schemas and XInclude
+  Schemas
 
+
+
+2.5.2: Feb 5 2003:
+   - First implementation of RelaxNG, added --relaxng flag to xmllint
+   - Schemas support now compiled in by default.
+   - Bug fixes: DTD validation, namespace checking, XInclude and entities,
+    delegateURI in XML Catalogs, HTML parser, XML reader (Stéphane Bidoul),
+    XPath parser and evaluation,  UTF8ToUTF8 serialization, XML reader memory
+    consumption, HTML parser, HTML serialization in the presence of
+  namespaces
+   - added an HTML API to check elements and attributes.
+   - Documentation improvement, PDF for the tutorial (John Fleck), doc
+    patches (Stefan Kost)
+   - Portability fixes: NetBSD (Julio Merino), Windows (Igor Zlatkovic)
+   - Added python bindings for XPointer, contextual error reporting
+    (Stéphane Bidoul)
+   - URI/file escaping problems (Stefano Zacchiroli)
 
 
 2.5.1: Jan 8 2003:

@@ -1,3 +1,7 @@
+Wed Feb  5 15:28:04 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS doc/*: updated the docs, ready for 2.5.2 release
+
 Wed Feb  5 14:15:59 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c tree.c xmlIO.c: comments cleanups

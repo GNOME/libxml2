@@ -80,8 +80,11 @@ specifications but doesn't claim to implement them completely:</p>
   XML</li>
 </ul>
 
-<p>XML Schemas is being worked on but it would be far too early to make any
-conformance statement about it at the moment.</p>
+<p>A first implementation of RelaxNG is available as of libxml2-2.5.2, it
+should cover most of the specification, feedback welcome.</p>
+
+<p>A partial implementation of XML Schemas is being worked on but it would be
+far too early to make any conformance statement about it at the moment.</p>
 
 <p>Libxml2 is known to be very portable, the library should build and work
 without serious troubles on a variety of systems (Linux, Unix, Windows,
@@ -603,8 +606,27 @@ for a really accurate description</h3>
 <p>Items not finished and worked on, get in touch with the list if you want
 to test those</p>
 <ul>
+  <li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
-    Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a></li>
+  Schemas</a></li>
+</ul>
+
+<h3>2.5.2: Feb 5 2003</h3>
+<ul>
+  <li>First implementation of RelaxNG, added --relaxng flag to xmllint</li>
+  <li>Schemas support now compiled in by default.</li>
+  <li>Bug fixes: DTD validation, namespace checking, XInclude and entities,
+    delegateURI in XML Catalogs, HTML parser, XML reader (Stéphane Bidoul),
+    XPath parser and evaluation,  UTF8ToUTF8 serialization, XML reader memory
+    consumption, HTML parser, HTML serialization in the presence of
+  namespaces</li>
+  <li>added an HTML API to check elements and attributes.</li>
+  <li>Documentation improvement, PDF for the tutorial (John Fleck), doc
+    patches (Stefan Kost)</li>
+  <li>Portability fixes: NetBSD (Julio Merino), Windows (Igor Zlatkovic)</li>
+  <li>Added python bindings for XPointer, contextual error reporting
+    (Stéphane Bidoul)</li>
+  <li>URI/file escaping problems (Stefano Zacchiroli)</li>
 </ul>
 
 <h3>2.5.1: Jan 8 2003</h3>
@@ -2791,6 +2813,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

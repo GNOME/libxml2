@@ -88,15 +88,28 @@ typedef struct xmlAttr {
 
 /*
  * A node in an XML tree.
+ * NOTE: This is synchronized with DOM Level1 values
+ *       See http://www.w3.org/TR/REC-DOM-Level-1/
  */
-#define XML_TYPE_TEXT		1
-#define XML_TYPE_COMMENT	2
-#define XML_TYPE_ENTITY		3
+#define XML_ELEMENT_NODE	1
+#define XML_ATTRIBUTE_NODE	2
+#define XML_TEXT_NODE		3
+#define XML_CDATA_SECTION_NODE	4
+#define XML_ENTITY_REF_NODE	5
+#define XML_ENTITY_NODE		6
+#define XML_PI_NODE		7
+#define XML_COMMENT_NODE	8
+#define XML_DOCUMENT_NODE	9
+#define XML_DOCUMENT_TYPE_NODE	10
+#define XML_DOCUMENT_FRAG_NODE	11
+#define XML_NOTATION_NODE	12
 
 typedef struct xmlNode {
     int             type;	/* type number in the DTD */
+    struct xmlDoc  *doc;	/* the containing document */
     struct xmlNode *parent;	/* child->parent link */
     struct xmlNode *next;	/* next sibling link  */
+    struct xmlNode *prev;	/* previous sibling link  */
     struct xmlNode *childs;	/* parent->childs link */
     struct xmlAttr *properties;	/* properties list */
     const CHAR     *name;       /* the name of the node, or the entity */
@@ -147,9 +160,14 @@ extern xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name,
 extern const CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name);
 extern void xmlFreePropList(xmlAttrPtr cur);
 extern void xmlFreeProp(xmlAttrPtr cur);
+extern xmlNodePtr xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
+                             const CHAR *name, CHAR *content);
 extern xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name, CHAR *content);
+extern xmlNodePtr xmlNewDocText(xmlDocPtr doc, const CHAR *content);
 extern xmlNodePtr xmlNewText(const CHAR *content);
+extern xmlNodePtr xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len);
 extern xmlNodePtr xmlNewTextLen(const CHAR *content, int len);
+extern xmlNodePtr xmlNewDocComment(xmlDocPtr doc, CHAR *content);
 extern xmlNodePtr xmlNewComment(CHAR *content);
 extern xmlNodePtr xmlAddChild(xmlNodePtr parent, xmlNodePtr cur);
 extern xmlNodePtr xmlGetLastChild(xmlNodePtr node);
@@ -166,6 +184,8 @@ extern xmlNsPtr xmlSearchNs(xmlDocPtr doc, xmlNodePtr node,
 extern xmlNsPtr xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node,
                                   const CHAR *href);
 extern void xmlSetNs(xmlNodePtr node, xmlNsPtr ns);
+extern xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
+                              const CHAR *name, CHAR *content);
 extern xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
                               const CHAR *name, CHAR *content);
 

@@ -397,10 +397,12 @@ xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name, CHAR *content) {
 	return(NULL);
     }
 
+    cur->doc = NULL;
     cur->parent = NULL; 
-    cur->next = NULL; 
-    cur->childs = NULL; 
-    cur->properties = NULL; 
+    cur->next = NULL;
+    cur->prev = NULL;
+    cur->childs = NULL;
+    cur->properties = NULL;
     cur->type = 0;
     cur->name = xmlStrdup(name);
     cur->ns = ns;
@@ -412,6 +414,16 @@ xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name, CHAR *content) {
 	cur->content = NULL;
     return(cur);
 }
+
+xmlNodePtr xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
+                         const CHAR *name, CHAR *content) {
+    xmlNodePtr cur;
+
+    cur = xmlNewNode(ns, name, content);
+    if (cur != NULL) cur->doc = doc;
+    return(cur);
+}
+
 
 /*
  * Creation of a new node contening text.
@@ -428,11 +440,13 @@ xmlNodePtr xmlNewText(const CHAR *content) {
 	return(NULL);
     }
 
+    cur->doc = NULL;
     cur->parent = NULL; 
     cur->next = NULL; 
+    cur->prev = NULL; 
     cur->childs = NULL; 
     cur->properties = NULL; 
-    cur->type = XML_TYPE_TEXT;
+    cur->type = XML_TEXT_NODE;
     cur->name = xmlStrdup(xmlStringText);
     cur->ns = NULL;
     cur->nsDef = NULL;
@@ -440,6 +454,14 @@ xmlNodePtr xmlNewText(const CHAR *content) {
 	cur->content = xmlStrdup(content);
     else 
 	cur->content = NULL;
+    return(cur);
+}
+
+xmlNodePtr xmlNewDocText(xmlDocPtr doc, const CHAR *content) {
+    xmlNodePtr cur;
+
+    cur = xmlNewText(content);
+    if (cur != NULL) cur->doc = doc;
     return(cur);
 }
 
@@ -458,11 +480,13 @@ xmlNodePtr xmlNewTextLen(const CHAR *content, int len) {
 	return(NULL);
     }
 
+    cur->doc = NULL; 
     cur->parent = NULL; 
+    cur->prev = NULL; 
     cur->next = NULL; 
     cur->childs = NULL; 
     cur->properties = NULL; 
-    cur->type = XML_TYPE_TEXT;
+    cur->type = XML_TEXT_NODE;
     cur->name = xmlStrdup(xmlStringText);
     cur->ns = NULL;
     cur->nsDef = NULL;
@@ -470,6 +494,14 @@ xmlNodePtr xmlNewTextLen(const CHAR *content, int len) {
 	cur->content = xmlStrndup(content, len);
     else 
 	cur->content = NULL;
+    return(cur);
+}
+
+xmlNodePtr xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len) {
+    xmlNodePtr cur;
+
+    cur = xmlNewTextLen(content, len);
+    if (cur != NULL) cur->doc = doc;
     return(cur);
 }
 
@@ -488,11 +520,13 @@ xmlNodePtr xmlNewComment(CHAR *content) {
 	return(NULL);
     }
 
+    cur->doc = NULL; 
     cur->parent = NULL; 
+    cur->prev = NULL; 
     cur->next = NULL; 
     cur->childs = NULL; 
     cur->properties = NULL; 
-    cur->type = XML_TYPE_COMMENT;
+    cur->type = XML_COMMENT_NODE;
     cur->name = xmlStrdup(xmlStringText);
     cur->ns = NULL;
     cur->nsDef = NULL;
@@ -500,6 +534,14 @@ xmlNodePtr xmlNewComment(CHAR *content) {
 	cur->content = xmlStrdup(content);
     else 
 	cur->content = NULL;
+    return(cur);
+}
+
+xmlNodePtr xmlNewDocComment(xmlDocPtr doc, CHAR *content) {
+    xmlNodePtr cur;
+
+    cur = xmlNewComment(content);
+    if (cur != NULL) cur->doc = doc;
     return(cur);
 }
 
@@ -533,12 +575,14 @@ xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
      * add the new element at the end of the childs list.
      */
     cur->parent = parent;
+    cur->doc = parent->doc;
     if (parent->childs == NULL) {
         parent->childs = cur;
     } else {
         prev = parent->childs;
 	while (prev->next != NULL) prev = prev->next;
 	prev->next = cur;
+	cur->prev = prev;
     }
 
     return(cur);
@@ -560,16 +604,23 @@ xmlNodePtr xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	return(NULL);
     }
 
+    if ((cur->doc != NULL) && (parent->doc != NULL) &&
+        (cur->doc != parent->doc)) {
+	fprintf(stderr, "Elements moved to a different document\n");
+    }
+
     /*
      * add the new element at the end of the childs list.
      */
     cur->parent = parent;
+    cur->doc = parent->doc; /* the parent may not be linked to a doc ! */
     if (parent->childs == NULL) {
         parent->childs = cur;
     } else {
         prev = parent->childs;
 	while (prev->next != NULL) prev = prev->next;
 	prev->next = cur;
+	cur->prev = prev;
     }
 
     return(cur);
@@ -797,7 +848,7 @@ xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
 int xmlNodeIsText(xmlNodePtr node) {
     if (node == NULL) return(0);
 
-    if (node->type == XML_TYPE_TEXT) return(1);
+    if (node->type == XML_TEXT_NODE) return(1);
     return(0);
 }
 
@@ -809,7 +860,7 @@ int xmlNodeIsText(xmlNodePtr node) {
 void xmlTextConcat(xmlNodePtr node, const CHAR *content, int len) {
     if (node == NULL) return;
 
-    if (node->type != XML_TYPE_TEXT) {
+    if (node->type != XML_TEXT_NODE) {
 	fprintf(stderr, "xmlTextConcat: node is not text\n");
         return;
     }
@@ -1052,12 +1103,12 @@ static void xmlNodeDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
         fprintf(stderr, "xmlNodeDump : node == NULL\n");
 	return;
     }
-    if (cur->type == XML_TYPE_TEXT) {
+    if (cur->type == XML_TEXT_NODE) {
 	if (cur->content != NULL)
 	    xmlBufferWriteCHAR(xmlEncodeEntities(doc, cur->content));
 	return;
     }
-    if (cur->type == XML_TYPE_COMMENT) {
+    if (cur->type == XML_COMMENT_NODE) {
 	if (cur->content != NULL) {
 	    xmlBufferWriteChar("<!--");
 	    xmlBufferWriteCHAR(cur->content);

@@ -1,3 +1,8 @@
+Tue Oct 13 21:46:57 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.h, tree.c, parser.c: added prev and doc pointers to Node,
+	  and changed NODEs contants for conformity with DOM Level 1
+
 Wed Oct  7 23:42:46 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* added hooks to keep track of servants when creating objects

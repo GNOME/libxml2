@@ -1410,7 +1410,7 @@ xmlNodePtr xmlParseComment(xmlParserCtxtPtr ctxt, int create) {
         NEXT;
 	if (create) {
 	    val = xmlStrndup(start, q - start);
-	    ret = xmlNewComment(val);
+	    ret = xmlNewDocComment(ctxt->doc, val);
 	    free(val);
 	}
     }
@@ -2268,7 +2268,7 @@ xmlNodePtr xmlParseStartTag(xmlParserCtxtPtr ctxt) {
      *        attributes parsing, since local namespace can be defined as
      *        an attribute at this level.
      */
-    ret = xmlNewNode(ns, name, NULL);
+    ret = xmlNewDocNode(ctxt->doc, ns, name, NULL);
 
     /*
      * Now parse the attributes, it ends up with the ending

@@ -1394,6 +1394,13 @@ loaded:
 		xmlFree(fragment);
 		return(-1);
 	    case XPATH_NODESET:
+	        if ((xptr->nodesetval == NULL) ||
+		    (xptr->nodesetval->nodeNr <= 0)) {
+		    xmlXPathFreeContext(xptrctxt);
+		    xmlFree(URL);
+		    xmlFree(fragment);
+		    return(-1);
+		}
 	    case XPATH_RANGE:
 	    case XPATH_LOCATIONSET:
 		break;

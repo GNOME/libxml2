@@ -1,3 +1,8 @@
+Mon Nov  3 17:51:28 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: fixed bug #125812, about XPointer in XInclude 
+	  failing but not returning an error.
+
 Mon Nov  3 17:18:22 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fixed bug #125811 related to DTD post validation

@@ -89,13 +89,14 @@ else
     %configure
     make
 fi
-(cd doc/examples ; make clean)
 gzip -9 ChangeLog
 
 %install
 rm -fr %{buildroot}
 
 %makeinstall
+(cd doc/examples ; make clean ; rm -rf .deps)
+gzip -9 doc/libxml2-api.xml
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %clean
@@ -125,7 +126,7 @@ rm -fr %{buildroot}
 %doc %{_mandir}/man1/xml2-config.1*
 %doc AUTHORS ChangeLog.gz NEWS README Copyright TODO
 %doc doc/*.html doc/html doc/*.gif doc/*.png
-%doc doc/tutorial doc/libxml2-api.xml
+%doc doc/tutorial doc/libxml2-api.xml.gz
 %doc doc/examples
 
 %{_libdir}/lib*.so

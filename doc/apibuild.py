@@ -160,9 +160,6 @@ class identifier:
 	    self.set_extra(extra)
         if conditionals != None:
 	    self.set_conditionals(conditionals)
-	if self.name == 'xmlCleanupPredefinedEntities':
-	    print "updating xmlCleanupPredefinedEntities : header %s module %s info %s" % (self.header, self.module, self.info)
-
 
 class index:
     def __init__(self, name = "noname"):
@@ -181,8 +178,6 @@ class index:
     def add_ref(self, name, header, module, static, type, lineno, info=None, extra=None, conditionals = None):
         if name[0:2] == '__':
 	    return None
-	if name == 'xmlCleanupPredefinedEntities':
-	    print "adding ref xmlCleanupPredefinedEntities : header %s module %s info %s" % (header, module, info)
         d = None
         try:
 	   d = self.identifiers[name]
@@ -205,8 +200,6 @@ class index:
     def add(self, name, header, module, static, type, lineno, info=None, extra=None, conditionals = None):
         if name[0:2] == '__':
 	    return None
-	if name == 'xmlCleanupPredefinedEntities':
-	    print "adding xmlCleanupPredefinedEntities : header %s module %s info %s" % (header, module, info)
         d = None
         try:
 	   d = self.identifiers[name]

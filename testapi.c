@@ -33067,7 +33067,7 @@ test_xmlSchemaGetValType(void) {
 #if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlSchemaValType ret_val;
-    xmlSchemaValPtr val; /*  */
+    xmlSchemaValPtr val; /* a schemas value */
     int n_val;
 
     for (n_val = 0;n_val < gen_nb_xmlSchemaValPtr;n_val++) {

@@ -1,3 +1,8 @@
+Sat Apr  2 12:48:41 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* doc/* configure.in NEWS: preparing release 2.6.19, updated docs and
+	  rebuilding.
+
 Sat Apr  2 13:27:32 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xstc/Makefile.am: integrated fixup-tests.py

@@ -715,6 +715,27 @@ to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p>
 
 <p>There is the list of public releases:</p>
 
+<h3>2.6.19: Apr 02 2005</h3>
+<ul>
+  <li> build fixes: drop .la from RPMs, --with-minimum build fix (William
+       Brack), use XML_SOCKLEN_T instead of SOCKLEN_T because it breaks with
+       AIX 5.3 compiler, fixed elfgcchack.h generation and PLT reduction
+       code on Linux/ELF/gcc4</li>
+  <li> bug fixes: schemas type decimal fixups (William Brack), xmmlint return
+       code (Gerry Murphy), small schemas fixes (Matthew Burgess and
+       GUY Fabrice), workaround "DAV:" namespace brokeness in c14n (Aleksey
+       Sanin), segfault in Schemas (Kasimier Buchcik), Schemas attribute
+       validation (Kasimier), Prop related functions and xmlNewNodeEatName
+       (Rob Richards), HTML serialization of name attribute on a elements,
+       Python error handlers leaks and improvement (Brent Hendricks), 
+       uninitialized variable in encoding code, Relax-NG validation bug,
+       potential crash if gnorableWhitespace is NULL, xmlSAXParseDoc and
+       xmlParseDoc signatures, switched back to assuming UTF-8 in case 
+       no encoding is given at serialization time</li>
+  <li> improvements: lot of work on Schemas by Kasimier Buchcikii on facets
+       checking and also mixed handling.</li>
+  <li></li>
+</ul>
 <h3>2.6.18: Mar 13 2005</h3>
 <ul>
   <li> build fixes: warnings (Peter Breitenlohner), testapi.c generation, 

@@ -12787,9 +12787,9 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaGetValType' file='xmlschemastypes' module='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
-      <info></info>
-      <return type='xmlSchemaValType' info=''/>
-      <arg name='val' type='xmlSchemaValPtr' info=''/>
+      <info>Accessor for the type of a value</info>
+      <return type='xmlSchemaValType' info='the xmlSchemaValType of the value'/>
+      <arg name='val' type='xmlSchemaValPtr' info='a schemas value'/>
     </function>
     <function name='xmlSchemaGetValidErrors' file='xmlschemas' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>

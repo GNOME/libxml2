@@ -13382,6 +13382,9 @@
         <word name='Absolute'>
           <ref name='xmlBuildURI'/>
         </word>
+        <word name='Accessor'>
+          <ref name='xmlSchemaGetValType'/>
+        </word>
         <word name='Activation'>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
@@ -26127,6 +26130,7 @@
           <ref name='xmlRelaxNGNewDocParserCtxt'/>
           <ref name='xmlRelaxNGNewMemParserCtxt'/>
           <ref name='xmlSchemaGetFacetValueAsULong'/>
+          <ref name='xmlSchemaGetValType'/>
           <ref name='xmlSchemaNewMemParserCtxt'/>
           <ref name='xmlSchemaValidateDoc'/>
           <ref name='xmlSchemaValidateFacet'/>
@@ -29171,6 +29175,9 @@
           <ref name='xmlSaveToFd'/>
           <ref name='xmlSaveToFilename'/>
           <ref name='xmlSaveToIO'/>
+        </word>
+        <word name='xmlSchemaValType'>
+          <ref name='xmlSchemaGetValType'/>
         </word>
         <word name='xmlSchemaValidOption'>
           <ref name='xmlSchemaSetValidOptions'/>

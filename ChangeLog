@@ -1,3 +1,7 @@
+Thu Jan 22 14:17:05 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* xmlmemory.c: make xmlReallocLoc() accept NULL pointer
+
 Thu Jan 22 08:26:20 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: applied patch from John Belmonte for

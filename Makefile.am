@@ -757,7 +757,7 @@ Automatatests: testAutomata$(EXEEXT)
 
 $(srcdir)/dba100000.xml: dbgenattr.pl
 	@echo "## generating dba100000.xml"
-	@($(top_srcdir)/dbgenattr.pl 100000 > $(srcdir)/dba100000.xml)
+	@($(PERL) $(top_srcdir)/dbgenattr.pl 100000 > $(srcdir)/dba100000.xml)
 
 Timingtests: xmllint$(EXEEXT) $(srcdir)/dba100000.xml
 	@echo "## Timing tests to try to detect performance"

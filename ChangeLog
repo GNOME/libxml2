@@ -1,3 +1,10 @@
+Wed Jul 21 17:04:27 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* configure.in, Makefile.am: put in an auto* check for the
+	  path to perl (if it exists), and modified make Timingtests
+	  to use that path instead of just executing the dbgenattr.pl
+	  script (bug 148056)
+
 Fri Jul 16 18:36:33 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* python/generator.py: added a check on the argument for some

@@ -4837,7 +4837,7 @@ xmlValidateOneCdataElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     int ret = 1;
     xmlNodePtr cur, child;
 
-    if ((ctxt == NULL) || (doc == NULL) | (elem == NULL))
+    if ((ctxt == NULL) || (doc == NULL) || (elem == NULL))
 	return(0);
 
     child = elem->children;

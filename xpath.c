@@ -10582,13 +10582,13 @@ xmlXPathCompile(const xmlChar *str) {
 	ctxt->comp = NULL;
     }
     xmlXPathFreeParserContext(ctxt);
-    comp->expr = xmlStrdup(str);
-#ifdef DEBUG_EVAL_COUNTS
     if (comp != NULL) {
+	comp->expr = xmlStrdup(str);
+#ifdef DEBUG_EVAL_COUNTS
 	comp->string = xmlStrdup(str);
 	comp->nb = 0;
-    }
 #endif
+    }
     return(comp);
 }
 

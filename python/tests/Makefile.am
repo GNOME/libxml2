@@ -11,6 +11,7 @@ PYTESTS=	\
     serialize.py\
     validate.py	\
     tstURI.py	\
+    cutnpaste.py\
     xpathret.py	\
     xpath.py
 

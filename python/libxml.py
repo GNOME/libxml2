@@ -181,8 +181,11 @@ class xmlCore:
         elif attr == "doc":
             ret = libxml2mod.doc(self._o)
             if ret == None:
-                return None
-            return xmlDoc(_doc=ret)
+		if self.type == "document_xml" or self.type == "document_html":
+		    return xmlDoc(_obj=self._o)
+		else:
+		    return None
+            return xmlDoc(_obj=ret)
         raise AttributeError,attr
 
         #
@@ -235,7 +238,7 @@ class xmlCore:
         ret = libxml2mod.doc(self._o)
         if ret == None:
             return None
-        return xmlDoc(_doc=ret)
+        return xmlDoc(_obj=ret)
     def free(self):
         libxml2mod.freeDoc(self._o)
 
@@ -250,6 +253,20 @@ class xmlCore:
     def saveTo(self, file, encoding = None, format = 0):
         return libxml2mod.saveNodeTo(self._o, file, encoding, format)
             
+    #
+    # Selecting nodes using XPath, a bit slow because the context
+    # is allocated/freed every time but convenient.
+    #
+    def xpathEval(self, expr):
+	doc = self.doc
+	if doc == None:
+	    return None
+	ctxt = doc.xpathNewContext()
+	ctxt.setContextNode(self)
+	res = ctxt.xpathEval(expr)
+	ctxt.xpathFreeContext()
+	return res
+	
 #
 # converters to present a nicer view of the XPath returns
 #

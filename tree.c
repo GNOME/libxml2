@@ -4515,11 +4515,18 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
      * Find a close prefix which is not already in use.
      * Let's strip namespace prefixes longer than 20 chars !
      */
-    sprintf((char *) prefix, "%.20s", ns->prefix);
+    if (ns->prefix == NULL)
+	sprintf((char *) prefix, "default");
+    else
+	sprintf((char *) prefix, "%.20s", ns->prefix);
+
     def = xmlSearchNs(doc, tree, prefix);
     while (def != NULL) {
         if (counter > 1000) return(NULL);
-        sprintf((char *) prefix, "%.20s%d", ns->prefix, counter++);
+	if (ns->prefix == NULL)
+	    sprintf((char *) prefix, "default%d", counter++);
+	else
+	    sprintf((char *) prefix, "%.20s%d", ns->prefix, counter++);
 	def = xmlSearchNs(doc, tree, prefix);
     }
 
@@ -4721,6 +4728,10 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 	} else
 	    break;
     }
+    if (oldNs != NULL)
+	xmlFree(oldNs);
+    if (newNs != NULL)
+	xmlFree(newNs);
     return(ret);
 }
 

@@ -1,3 +1,11 @@
+Thu Mar  7 01:02:37 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c python/tests/Makefile.am python/tests/cutnpaste.py:
+	  fixed xmlReconciliateNs(), added a Python test/example for
+	  inter-document cut'n paste
+	* python/libxml.py: fixed node.doc on document nodes and added
+	  xpathEval() onto node objects
+
 Wed Mar  6 22:38:03 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c: fixed some htmlSetMetaEncoding() problems

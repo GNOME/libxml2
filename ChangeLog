@@ -1,3 +1,8 @@
+Tue Aug  3 09:42:31 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* tree.c: fixed problem with memory leak on text nodes in DTD
+	  (bug 148965) with patch provided by Darrell Kindred
+
 Tue Aug  3 08:14:44 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* HTMLparser.c: fixed initialisation problem for htmlReadMemory

@@ -1020,12 +1020,15 @@ xmlFreeDtd(xmlDtdPtr cur) {
 	xmlNodePtr next, c = cur->children;
 
 	/*
-	 * Cleanup all the DTD comments they are not in the DTD
-	 * indexes.
+	 * Cleanup all nodes which are not part of the specific lists
+	 * of notations, elements, attributes and entities.
 	 */
         while (c != NULL) {
 	    next = c->next;
-	    if ((c->type == XML_COMMENT_NODE) || (c->type == XML_PI_NODE)) {
+	    if ((c->type != XML_NOTATION_NODE) &&
+	        (c->type != XML_ELEMENT_DECL) &&
+		(c->type != XML_ATTRIBUTE_DECL) &&
+		(c->type != XML_ENTITY_DECL)) {
 		xmlUnlinkNode(c);
 		xmlFreeNode(c);
 	    }

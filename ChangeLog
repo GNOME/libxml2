@@ -1,3 +1,8 @@
+Fri Sep 20 18:40:50 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/Makefile.msvc: applied zlib patch from Daniel Gehriger
+	* win32/configure.js: applied zlib patch from Daniel Gehriger
+
 Fri Sep 20 15:40:14 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/configure.js: applied the patch from Mark Vakoc for 

@@ -67,6 +67,11 @@ xmlDebugDumpDtdNode(FILE *output, xmlDtdPtr dtd, int depth) {
 
     fprintf(output, shift);
 
+    if (dtd == NULL) {
+	fprintf(output, "DTD node is NULL\n");
+	return;
+    }
+
     if (dtd->type != XML_DTD_NODE) {
 	fprintf(output, "PBM: not a DTD\n");
 	return;
@@ -116,6 +121,10 @@ xmlDebugDumpAttrDecl(FILE *output, xmlAttributePtr attr, int depth) {
 
     fprintf(output, shift);
 
+    if (attr == NULL) {
+	fprintf(output, "Attribute declaration is NULL\n");
+	return;
+    }
     if (attr->type != XML_ATTRIBUTE_DECL) {
 	fprintf(output, "PBM: not a Attr\n");
 	return;
@@ -233,6 +242,10 @@ xmlDebugDumpElemDecl(FILE *output, xmlElementPtr elem, int depth) {
 
     fprintf(output, shift);
 
+    if (elem == NULL) {
+	fprintf(output, "Element declaration is NULL\n");
+	return;
+    }
     if (elem->type != XML_ELEMENT_DECL) {
 	fprintf(output, "PBM: not a Elem\n");
 	return;
@@ -307,6 +320,10 @@ xmlDebugDumpEntityDecl(FILE *output, xmlEntityPtr ent, int depth) {
 
     fprintf(output, shift);
 
+    if (ent == NULL) {
+	fprintf(output, "Entity declaration is NULL\n");
+	return;
+    }
     if (ent->type != XML_ENTITY_DECL) {
 	fprintf(output, "PBM: not a Entity decl\n");
 	return;
@@ -391,6 +408,11 @@ xmlDebugDumpNamespace(FILE *output, xmlNsPtr ns, int depth) {
     shift[2 * i] = shift[2 * i + 1] = 0;
 
     fprintf(output, shift);
+
+    if (ns == NULL) {
+	fprintf(output, "namespace node is NULL\n");
+	return;
+    }
     if (ns->type != XML_NAMESPACE_DECL) {
         fprintf(output, "invalid namespace node %d\n", ns->type);
 	return;
@@ -429,6 +451,11 @@ xmlDebugDumpEntity(FILE *output, xmlEntityPtr ent, int depth) {
     shift[2 * i] = shift[2 * i + 1] = 0;
 
     fprintf(output, shift);
+    
+    if (ent == NULL) {
+	fprintf(output, "Entity is NULL\n");
+	return;
+    }
     switch (ent->etype) {
         case XML_INTERNAL_GENERAL_ENTITY:
 	    fprintf(output, "INTERNAL_GENERAL_ENTITY ");
@@ -487,7 +514,11 @@ xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
     shift[2 * i] = shift[2 * i + 1] = 0;
 
     fprintf(output, shift);
-
+    
+    if (attr == NULL) {
+	fprintf(output, "Attr is NULL");
+	return;
+    }
     fprintf(output, "ATTRIBUTE ");
     xmlDebugDumpString(output, attr->name);
     fprintf(output, "\n");
@@ -551,6 +582,11 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
         shift[2 * i] = shift[2 * i + 1] = ' ';
     shift[2 * i] = shift[2 * i + 1] = 0;
 
+    if (node == NULL) {
+	fprintf(output, shift);
+	fprintf(output, "node is NULL\n");
+	return;
+    }
     switch (node->type) {
         case XML_ELEMENT_NODE:
             fprintf(output, shift);
@@ -704,6 +740,18 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
 void
 xmlDebugDumpNode(FILE * output, xmlNodePtr node, int depth)
 {
+    if (node == NULL) {
+	int i;
+	char shift[100];
+    	
+	for (i = 0; ((i < depth) && (i < 25)); i++)
+	    shift[2 * i] = shift[2 * i + 1] = ' ';
+	shift[2 * i] = shift[2 * i + 1] = 0;
+	
+	fprintf(output, shift);
+	fprintf(output, "node is NULL\n");
+	return;
+    }	
     xmlDebugDumpOneNode(output, node, depth);
     if ((node->children != NULL) && (node->type != XML_ENTITY_REF_NODE))
         xmlDebugDumpNodeList(output, node->children, depth + 1);
@@ -845,8 +893,10 @@ xmlDebugDumpDocument(FILE * output, xmlDocPtr doc)
 void
 xmlDebugDumpDTD(FILE * output, xmlDtdPtr dtd)
 {
-    if (dtd == NULL)
+    if (dtd == NULL) {
+	fprintf(output, "DTD is NULL\n");
         return;
+    }
     if (dtd->type != XML_DTD_NODE) {
         fprintf(output, "PBM: not a DTD\n");
         return;
@@ -890,6 +940,10 @@ xmlDebugDumpDTD(FILE * output, xmlDtdPtr dtd)
 
 static void
 xmlDebugDumpEntityCallback(xmlEntityPtr cur, FILE *output) {
+    if (cur == NULL) {
+	fprintf(output, "Entity is NULL");
+	return;
+    }
     fprintf(output, "%s : ", cur->name);
     switch (cur->etype) {
 	case XML_INTERNAL_GENERAL_ENTITY:
@@ -1015,6 +1069,9 @@ int
 xmlLsCountNode(xmlNodePtr node) {
     int ret = 0;
     xmlNodePtr list = NULL;
+    
+    if (node == NULL)
+	return(0);
 
     switch (node->type) {
 	case XML_ELEMENT_NODE:
@@ -1071,6 +1128,10 @@ xmlLsCountNode(xmlNodePtr node) {
  */
 void
 xmlLsOneNode(FILE *output, xmlNodePtr node) {
+    if (node == NULL) {
+	fprintf(output, "NULL\n");
+	return;
+    }
     switch (node->type) {
 	case XML_ELEMENT_NODE:
 	    fprintf(output, "-");
@@ -1373,7 +1434,10 @@ xmlShellList(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
              xmlNodePtr node2 ATTRIBUTE_UNUSED)
 {
     xmlNodePtr cur;
-
+    if (node == NULL) {
+	fprintf(stdout, "NULL\n");
+	return (0);
+    }
     if ((node->type == XML_DOCUMENT_NODE) ||
         (node->type == XML_HTML_DOCUMENT_NODE)) {
         cur = ((xmlDocPtr) node)->children;
@@ -1411,6 +1475,10 @@ xmlShellBase(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
              xmlNodePtr node2 ATTRIBUTE_UNUSED)
 {
     xmlChar *base;
+    if (node == NULL) {
+	fprintf(stdout, "NULL\n");
+	return (0);
+    }    
 
     base = xmlNodeGetBase(node->doc, node);
 
@@ -1461,6 +1529,10 @@ xmlShellDir(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
             char *arg ATTRIBUTE_UNUSED, xmlNodePtr node,
             xmlNodePtr node2 ATTRIBUTE_UNUSED)
 {
+    if (node == NULL) {
+	fprintf(stdout, "NULL\n");
+	return (0);
+    }    
     if ((node->type == XML_DOCUMENT_NODE) ||
         (node->type == XML_HTML_DOCUMENT_NODE)) {
         xmlDebugDumpDocumentHead(stdout, (xmlDocPtr) node);
@@ -1488,6 +1560,10 @@ int
 xmlShellCat(xmlShellCtxtPtr ctxt, char *arg ATTRIBUTE_UNUSED,
             xmlNodePtr node, xmlNodePtr node2 ATTRIBUTE_UNUSED)
 {
+    if (node == NULL) {
+	fprintf(stdout, "NULL\n");
+	return (0);
+    }    
     if (ctxt->doc->type == XML_HTML_DOCUMENT_NODE) {
 #ifdef LIBXML_HTML_ENABLED
         if (node->type == XML_HTML_DOCUMENT_NODE)

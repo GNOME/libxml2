@@ -1,3 +1,8 @@
+Tue Jan 22 22:42:23 CET 2002  Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: patch from Anthony Jones to catch NULL nodes in
+	  debug routines.
+
 Tue Jan 22 22:38:42 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: apply an patch from Petr Kozelka for unlink and replace 

@@ -1,3 +1,8 @@
+Mon Jun 14 00:17:50 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* added example directory
+	* added example/gjobs.xml gjobread.c, still need a Makefile.in
+
 Wed Jun  2 19:40:58 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Release of libxml-1.1, nearly everything has been touched for

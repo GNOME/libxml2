@@ -148,6 +148,7 @@ XML_OBJS = $(XML_INTDIR)/c14n.o\
 	$(XML_INTDIR)/hash.o\
 	$(XML_INTDIR)/HTMLparser.o\
 	$(XML_INTDIR)/HTMLtree.o\
+	$(XML_INTDIR)/legacy.o\
 	$(XML_INTDIR)/list.o\
 	$(XML_INTDIR)/nanoftp.o\
 	$(XML_INTDIR)/nanohttp.o\
@@ -187,6 +188,7 @@ XML_OBJS_A = $(XML_INTDIR_A)/c14n.o\
 	$(XML_INTDIR_A)/hash.o\
 	$(XML_INTDIR_A)/HTMLparser.o\
 	$(XML_INTDIR_A)/HTMLtree.o\
+	$(XML_INTDIR_A)/legacy.o\
 	$(XML_INTDIR_A)/list.o\
 	$(XML_INTDIR_A)/nanoftp.o\
 	$(XML_INTDIR_A)/nanohttp.o\

@@ -45,6 +45,14 @@ var withDebug = true;
 var withMemDebug = false;
 var withSchemas = true;
 var withRegExps = true;
+var withTree = true;
+var withReader = true;
+var withWalker = true;
+var withPush = true;
+var withValid = true;
+var withSax1 = true;
+var withLegacy = true;
+var withOutput = true;
 var withPython = false;
 /* Win32 build options. */
 var dirSep = "\\";
@@ -112,6 +120,14 @@ function usage()
 	txt += "  xml_debug:  Enable XML debbugging module (" + (withDebug? "yes" : "no")  + ")\n";
 	txt += "  mem_debug:  Enable memory debugger (" + (withMemDebug? "yes" : "no")  + ")\n";
 	txt += "  regexps:    Enable regular expressions (" + (withRegExps? "yes" : "no") + ")\n";
+	txt += "  tree:       Enable tree api (" + (withTree? "yes" : "no") + ")\n";
+	txt += "  reader:     Enable xmlReader api (" + (withReader? "yes" : "no") + ")\n";
+	txt += "  walker:     Enable xmlDocWalker api (" + (withWalker? "yes" : "no") + ")\n";
+	txt += "  push:       Enable push api (" + (withPush? "yes" : "no") + ")\n";
+	txt += "  valid:      Enable DTD validation support (" + (withValid? "yes" : "no") + ")\n";
+	txt += "  sax1:       Enable SAX1 api (" + (withSax1? "yes" : "no") + ")\n";
+	txt += "  legacy:     Enable Deprecated api's (" + (withLegacy? "yes" : "no") + ")\n";
+	txt += "  output:     Enable serialization support (" + (withOutput? "yes" : "no") + ")\n";
 	txt += "  schemas:    Enable XML Schema support (" + (withSchemas? "yes" : "no")  + ")\n";
 	txt += "  python:     Build Python bindings (" + (withPython? "yes" : "no")  + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
@@ -191,6 +207,14 @@ function discoverVersion()
 	vf.WriteLine("WITH_MEM_DEBUG=" + (withMemDebug? "1" : "0"));
 	vf.WriteLine("WITH_SCHEMAS=" + (withSchemas? "1" : "0"));
 	vf.WriteLine("WITH_REGEXPS=" + (withRegExps? "1" : "0"));
+	vf.WriteLine("WITH_TREE=" + (withTree? "1" : "0"));
+	vf.WriteLine("WITH_READER=" + (withReader? "1" : "0"));
+	vf.WriteLine("WITH_WALKER=" + (withWalker? "1" : "0"));
+	vf.WriteLine("WITH_PUSH=" + (withPush? "1" : "0"));
+	vf.WriteLine("WITH_VALID=" + (withValid? "1" : "0"));
+	vf.WriteLine("WITH_SAX1=" + (withSax1? "1" : "0"));
+	vf.WriteLine("WITH_LEGACY=" + (withLegacy? "1" : "0"));
+	vf.WriteLine("WITH_OUTPUT=" + (withOutput? "1" : "0"));
 	vf.WriteLine("WITH_PYTHON=" + (withPython? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
 	vf.WriteLine("STATIC=" + (buildStatic? "1" : "0"));
@@ -265,6 +289,22 @@ function configureLibxml()
 			of.WriteLine(s.replace(/\@WITH_SCHEMAS\@/, withSchemas? "1" : "0"));
 		} else if (s.search(/\@WITH_REGEXPS\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_REGEXPS\@/, withRegExps? "1" : "0"));
+		} else if (s.search(/\@WITH_TREE\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_TREE\@/, withTree? "1" : "0"));
+		} else if (s.search(/\@WITH_READER\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_READER\@/, withReader? "1" : "0"));
+		} else if (s.search(/\@WITH_WALKER\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_WALKER\@/, withWalker? "1" : "0"));
+		} else if (s.search(/\@WITH_PUSH\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_PUSH\@/, withPush? "1" : "0"));
+		} else if (s.search(/\@WITH_VALID\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_VALID\@/, withValid? "1" : "0"));
+		} else if (s.search(/\@WITH_SAX1\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_SAX1\@/, withSax1? "1" : "0"));
+		} else if (s.search(/\@WITH_LEGACY\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_LEGACY\@/, withLegacy? "1" : "0"));
+		} else if (s.search(/\@WITH_OUTPUT\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_OUTPUT\@/, withOutput? "1" : "0"));
 		} else
 			of.WriteLine(ln);
 	}
@@ -400,6 +440,22 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withSchemas = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "regexps")
 			withRegExps = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "tree")
+			withTree = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "reader")
+			withReader = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "walker")
+			withWalker = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "push")
+			withPush = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "valid")
+			withValid = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "sax1")
+			withSax1 = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "legacy")
+			withLegacy = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "output")
+			withOutput = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "python")
 			withPython = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "compiler")
@@ -521,6 +577,14 @@ txtOut += "      zlib support: " + boolToStr(withZlib) + "\n";
 txtOut += "  Debugging module: " + boolToStr(withDebug) + "\n";
 txtOut += "  Memory debugging: " + boolToStr(withMemDebug) + "\n";
 txtOut += "    Regexp support: " + boolToStr(withRegExps) + "\n";
+txtOut += "      Tree support: " + boolToStr(withTree) + "\n";
+txtOut += "    Reader support: " + boolToStr(withReader) + "\n";
+txtOut += "    Walker support: " + boolToStr(withWalker) + "\n";
+txtOut += "      Push support: " + boolToStr(withPush) + "\n";
+txtOut += "Validation support: " + boolToStr(withValid) + "\n";
+txtOut += "      SAX1 support: " + boolToStr(withSax1) + "\n";
+txtOut += "    Legacy support: " + boolToStr(withLegacy) + "\n";
+txtOut += "    Output support: " + boolToStr(withOutput) + "\n";
 txtOut += "XML Schema support: " + boolToStr(withSchemas) + "\n";
 txtOut += "   Python bindings: " + boolToStr(withPython) + "\n";
 txtOut += "\n";

@@ -1,3 +1,9 @@
+Mon Oct  6 10:46:35 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* win32/Makefile.bcb win32/Makefile.mingw win32/Makefile.msvc
+	  win32/configure.js: applied patch from Stéphane Bidoul to
+	  fix the compilation of 2.6.0 code on Win32
+
 Mon Oct  6 10:16:30 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* check-xml-test-suite.py: fixing the script

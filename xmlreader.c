@@ -1825,7 +1825,7 @@ xmlTextReaderNextSibling(xmlTextReaderPtr reader) {
     if (reader == NULL)
         return(-1);
     if (reader->doc == NULL) {
-        TODO
+        /* TODO */
 	return(-1);
     }
 
@@ -4629,6 +4629,9 @@ xmlReaderNewWalker(xmlTextReaderPtr reader, xmlDocPtr doc)
     if (reader == NULL)
         return (-1);
 
+    if (reader->input != NULL) {
+        xmlFreeParserInputBuffer(reader->input);
+    }
     if (reader->ctxt != NULL) {
 	xmlCtxtReset(reader->ctxt);
     }

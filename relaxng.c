@@ -2781,7 +2781,7 @@ xmlRelaxNGRegisterTypeLibrary(const xmlChar * namespace, void *data,
  *
  * Returns 0 in case of success and -1 in case of error.
  */
-static int
+int
 xmlRelaxNGInitTypes(void)
 {
     if (xmlRelaxNGTypeInitialized != 0)

@@ -58,7 +58,8 @@ typedef enum {
     XML_FROM_C14N,	/* The Canonicalization module */
     XML_FROM_XSLT,	/* The XSLT engine from libxslt */
     XML_FROM_VALID,	/* The XML DTD validation with valid context */
-    XML_FROM_CHECK	/* The error checking module */
+    XML_FROM_CHECK,	/* The error checking module */
+    XML_FROM_WRITER	/* The xmlwriter module */
 } xmlErrorDomain;
 
 /**

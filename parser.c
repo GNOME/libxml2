@@ -12117,6 +12117,7 @@ xmlCleanupParser(void) {
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
     xmlSchemaCleanupTypes();
+    xmlRelaxNGCleanupTypes();
 #endif
     xmlCleanupGlobals();
     xmlResetLastError();

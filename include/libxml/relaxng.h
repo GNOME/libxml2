@@ -94,6 +94,12 @@ typedef enum {
     XML_RELAXNGP_FREE_DOC = 1,
     XML_RELAXNGP_CRNG = 2
 } xmlRelaxNGParserFlag;
+
+XMLPUBFUN int XMLCALL
+		    xmlRelaxNGInitTypes		(void);
+XMLPUBFUN void XMLCALL			
+		    xmlRelaxNGCleanupTypes	(void);
+
 /*
  * Interfaces for parsing.
  */
@@ -153,8 +159,6 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN int XMLCALL			
 		    xmlRelaxNGValidateDoc	(xmlRelaxNGValidCtxtPtr ctxt,
 					 	 xmlDocPtr doc);
-XMLPUBFUN void XMLCALL			
-		    xmlRelaxNGCleanupTypes	(void);
 /*
  * Interfaces for progressive validation when possible
  */

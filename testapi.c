@@ -29,6 +29,7 @@ int main(void) {
     int blocks, mem;
 
     xmlInitParser();
+    xmlRelaxNGInitTypes();
 
     LIBXML_TEST_VERSION
 
@@ -70,7 +71,6 @@ int main(void) {
 #include <libxml/xmlIO.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlerror.h>
-#include <libxml/xmlexports.h>
 #include <libxml/xmlreader.h>
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlsave.h>
@@ -103,7 +103,6 @@ static int test_xinclude(void);
 static int test_xmlIO(void);
 static int test_xmlautomata(void);
 static int test_xmlerror(void);
-static int test_xmlexports(void);
 static int test_xmlreader(void);
 static int test_xmlregexp(void);
 static int test_xmlsave(void);
@@ -248,6 +247,17 @@ static void des_xmlTextWriterPtr(int no ATTRIBUTE_UNUSED, xmlTextWriterPtr val) 
     if (val != NULL) xmlFreeTextWriter(val);
 }
 
+#define gen_nb_xmlTextReaderPtr 4
+static xmlTextReaderPtr gen_xmlTextReaderPtr(int no) {
+    if (no == 0) return(xmlNewTextReaderFilename("test/ent2"));
+    if (no == 1) return(xmlNewTextReaderFilename("test/valid/REC-xml-19980210.xml"));
+    if (no == 2) return(xmlNewTextReaderFilename("test/valid/dtds/xhtml1-strict.dtd"));
+    return(NULL);
+}
+static void des_xmlTextReaderPtr(int no ATTRIBUTE_UNUSED, xmlTextReaderPtr val) {
+    if (val != NULL) xmlFreeTextReader(val);
+}
+
 
 static void desret_int(int val ATTRIBUTE_UNUSED) {
 }
@@ -301,7 +311,6 @@ testlibxml2(void)
     ret += test_xmlIO();
     ret += test_xmlautomata();
     ret += test_xmlerror();
-    ret += test_xmlexports();
     ret += test_xmlreader();
     ret += test_xmlregexp();
     ret += test_xmlsave();
@@ -5842,30 +5851,6 @@ test_pattern(void) {
 }
 
 static int
-test_xmlRelaxNGCleanupTypes(void) {
-    int ret = 0;
-
-#ifdef LIBXML_SCHEMAS_ENABLED
-    int mem_base;
-
-        mem_base = xmlMemBlocks();
-
-        xmlRelaxNGCleanupTypes();
-        call_tests++;
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlRelaxNGCleanupTypes",
-	           xmlMemBlocks() - mem_base);
-	    ret++;
-            printf("\n");
-        }
-#endif
-
-    return(ret);
-}
-
-
-static int
 test_xmlRelaxNGDump(void) {
     int ret = 0;
 
@@ -6039,7 +6024,6 @@ test_relaxng(void) {
     int ret = 0;
 
     printf("Testing relaxng ...\n");
-    ret += test_xmlRelaxNGCleanupTypes();
     ret += test_xmlRelaxNGDump();
     ret += test_xmlRelaxNGDumpTree();
     ret += test_xmlRelaxNGGetParserErrors();
@@ -11817,16 +11801,6 @@ test_xmlerror(void) {
 	printf("Module xmlerror: %d errors\n", ret);
     return(ret);
 }
-static int
-test_xmlexports(void) {
-    int ret = 0;
-
-    printf("Testing xmlexports ...\n");
-
-    if (ret != 0)
-	printf("Module xmlexports: %d errors\n", ret);
-    return(ret);
-}
 
 static int
 test_xmlNewTextReader(void) {
@@ -11902,18 +11876,59 @@ static int
 test_xmlReaderNewDoc(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* an XML reader */
+    int n_reader;
+    const xmlChar * cur; /* a pointer to a zero terminated string */
+    int n_cur;
+    const char * URL; /* the base URL to use for the document */
+    int n_URL;
+    const char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of xmlParserOption */
+    int n_options;
 
-    /* missing type support */
-    return(ret);
-}
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_cur = 0;n_cur < gen_nb_const_xmlChar_ptr;n_cur++) {
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        cur = gen_const_xmlChar_ptr(n_cur);
+        URL = gen_filepath(n_URL);
+        encoding = gen_const_char_ptr(n_encoding);
+        options = gen_int(n_options);
 
+        ret_val = xmlReaderNewDoc(reader, cur, URL, encoding, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_const_xmlChar_ptr(n_cur, cur);
+        des_filepath(n_URL, URL);
+        des_const_char_ptr(n_encoding, encoding);
+        des_int(n_options, options);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlReaderNewDoc",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_cur);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+#endif
 
-static int
-test_xmlReaderNewFd(void) {
-    int ret = 0;
-
-
-    /* missing type support */
     return(ret);
 }
 
@@ -11922,8 +11937,52 @@ static int
 test_xmlReaderNewFile(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* an XML reader */
+    int n_reader;
+    const char * filename; /* a file or URL */
+    int n_filename;
+    const char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of xmlParserOption */
+    int n_options;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        filename = gen_filepath(n_filename);
+        encoding = gen_const_char_ptr(n_encoding);
+        options = gen_int(n_options);
+
+        ret_val = xmlReaderNewFile(reader, filename, encoding, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_filepath(n_filename, filename);
+        des_const_char_ptr(n_encoding, encoding);
+        des_int(n_options, options);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlReaderNewFile",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_filename);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11942,8 +12001,66 @@ static int
 test_xmlReaderNewMemory(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* an XML reader */
+    int n_reader;
+    const char * buffer; /* a pointer to a char array */
+    int n_buffer;
+    int size; /* the size of the array */
+    int n_size;
+    const char * URL; /* the base URL to use for the document */
+    int n_URL;
+    const char * encoding; /* the document encoding, or NULL */
+    int n_encoding;
+    int options; /* a combination of xmlParserOption */
+    int n_options;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_buffer = 0;n_buffer < gen_nb_const_char_ptr;n_buffer++) {
+    for (n_size = 0;n_size < gen_nb_int;n_size++) {
+    for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        buffer = gen_const_char_ptr(n_buffer);
+        size = gen_int(n_size);
+        URL = gen_filepath(n_URL);
+        encoding = gen_const_char_ptr(n_encoding);
+        options = gen_int(n_options);
+
+        ret_val = xmlReaderNewMemory(reader, buffer, size, URL, encoding, options);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_const_char_ptr(n_buffer, buffer);
+        des_int(n_size, size);
+        des_filepath(n_URL, URL);
+        des_const_char_ptr(n_encoding, encoding);
+        des_int(n_options, options);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlReaderNewMemory",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_buffer);
+            printf(" %d", n_size);
+            printf(" %d", n_URL);
+            printf(" %d", n_encoding);
+            printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11952,8 +12069,38 @@ static int
 test_xmlReaderNewWalker(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* an XML reader */
+    int n_reader;
+    xmlDocPtr doc; /* a preparsed document */
+    int n_doc;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        doc = gen_xmlDocPtr(n_doc);
+
+        ret_val = xmlReaderNewWalker(reader, doc);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_xmlDocPtr(n_doc, doc);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlReaderNewWalker",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_doc);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11972,8 +12119,31 @@ static int
 test_xmlTextReaderAttributeCount(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderAttributeCount(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderAttributeCount",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11982,8 +12152,31 @@ static int
 test_xmlTextReaderBaseUri(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderBaseUri(reader);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderBaseUri",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11992,8 +12185,31 @@ static int
 test_xmlTextReaderClose(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderClose(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderClose",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12102,8 +12318,31 @@ static int
 test_xmlTextReaderCurrentDoc(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlDocPtr ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderCurrentDoc(reader);
+        desret_xmlDocPtr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderCurrentDoc",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12112,8 +12351,31 @@ static int
 test_xmlTextReaderCurrentNode(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderCurrentNode(reader);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderCurrentNode",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12122,8 +12384,31 @@ static int
 test_xmlTextReaderDepth(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderDepth(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderDepth",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12132,8 +12417,31 @@ static int
 test_xmlTextReaderExpand(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderExpand(reader);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderExpand",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12142,8 +12450,38 @@ static int
 test_xmlTextReaderGetAttribute(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    const xmlChar * name; /* the qualified name of the attribute. */
+    int n_name;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        name = gen_const_xmlChar_ptr(n_name);
+
+        ret_val = xmlTextReaderGetAttribute(reader, name);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_const_xmlChar_ptr(n_name, name);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderGetAttribute",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12152,8 +12490,38 @@ static int
 test_xmlTextReaderGetAttributeNo(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    int no; /* the zero-based index of the attribute relative to the containing element */
+    int n_no;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_no = 0;n_no < gen_nb_int;n_no++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        no = gen_int(n_no);
+
+        ret_val = xmlTextReaderGetAttributeNo(reader, no);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_int(n_no, no);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderGetAttributeNo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_no);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12162,8 +12530,45 @@ static int
 test_xmlTextReaderGetAttributeNs(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    const xmlChar * localName; /* the local name of the attribute. */
+    int n_localName;
+    const xmlChar * namespaceURI; /* the namespace URI of the attribute. */
+    int n_namespaceURI;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_localName = 0;n_localName < gen_nb_const_xmlChar_ptr;n_localName++) {
+    for (n_namespaceURI = 0;n_namespaceURI < gen_nb_const_xmlChar_ptr;n_namespaceURI++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        localName = gen_const_xmlChar_ptr(n_localName);
+        namespaceURI = gen_const_xmlChar_ptr(n_namespaceURI);
+
+        ret_val = xmlTextReaderGetAttributeNs(reader, localName, namespaceURI);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_const_xmlChar_ptr(n_localName, localName);
+        des_const_xmlChar_ptr(n_namespaceURI, namespaceURI);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderGetAttributeNs",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_localName);
+            printf(" %d", n_namespaceURI);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12182,8 +12587,38 @@ static int
 test_xmlTextReaderGetParserProp(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    int prop; /* the xmlParserProperties to get */
+    int n_prop;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_prop = 0;n_prop < gen_nb_int;n_prop++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        prop = gen_int(n_prop);
+
+        ret_val = xmlTextReaderGetParserProp(reader, prop);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_int(n_prop, prop);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderGetParserProp",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_prop);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12202,8 +12637,31 @@ static int
 test_xmlTextReaderHasAttributes(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderHasAttributes(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderHasAttributes",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12212,8 +12670,31 @@ static int
 test_xmlTextReaderHasValue(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderHasValue(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderHasValue",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12222,8 +12703,31 @@ static int
 test_xmlTextReaderIsDefault(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderIsDefault(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderIsDefault",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12232,8 +12736,31 @@ static int
 test_xmlTextReaderIsEmptyElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderIsEmptyElement(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderIsEmptyElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12242,8 +12769,31 @@ static int
 test_xmlTextReaderIsNamespaceDecl(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderIsNamespaceDecl(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderIsNamespaceDecl",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12252,8 +12802,31 @@ static int
 test_xmlTextReaderIsValid(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderIsValid(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderIsValid",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12262,8 +12835,31 @@ static int
 test_xmlTextReaderLocalName(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderLocalName(reader);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderLocalName",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12292,8 +12888,38 @@ static int
 test_xmlTextReaderLookupNamespace(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    const xmlChar * prefix; /* the prefix whose namespace URI is to be resolved. To return the default namespace, specify NULL */
+    int n_prefix;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_prefix = 0;n_prefix < gen_nb_const_xmlChar_ptr;n_prefix++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        prefix = gen_const_xmlChar_ptr(n_prefix);
+
+        ret_val = xmlTextReaderLookupNamespace(reader, prefix);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_const_xmlChar_ptr(n_prefix, prefix);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderLookupNamespace",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_prefix);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12302,8 +12928,38 @@ static int
 test_xmlTextReaderMoveToAttribute(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    const xmlChar * name; /* the qualified name of the attribute. */
+    int n_name;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        name = gen_const_xmlChar_ptr(n_name);
+
+        ret_val = xmlTextReaderMoveToAttribute(reader, name);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_const_xmlChar_ptr(n_name, name);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderMoveToAttribute",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12312,8 +12968,38 @@ static int
 test_xmlTextReaderMoveToAttributeNo(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    int no; /* the zero-based index of the attribute relative to the containing element. */
+    int n_no;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_no = 0;n_no < gen_nb_int;n_no++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        no = gen_int(n_no);
+
+        ret_val = xmlTextReaderMoveToAttributeNo(reader, no);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_int(n_no, no);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderMoveToAttributeNo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_no);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12322,8 +13008,45 @@ static int
 test_xmlTextReaderMoveToAttributeNs(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    const xmlChar * localName; /* the local name of the attribute. */
+    int n_localName;
+    const xmlChar * namespaceURI; /* the namespace URI of the attribute. */
+    int n_namespaceURI;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_localName = 0;n_localName < gen_nb_const_xmlChar_ptr;n_localName++) {
+    for (n_namespaceURI = 0;n_namespaceURI < gen_nb_const_xmlChar_ptr;n_namespaceURI++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        localName = gen_const_xmlChar_ptr(n_localName);
+        namespaceURI = gen_const_xmlChar_ptr(n_namespaceURI);
+
+        ret_val = xmlTextReaderMoveToAttributeNs(reader, localName, namespaceURI);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_const_xmlChar_ptr(n_localName, localName);
+        des_const_xmlChar_ptr(n_namespaceURI, namespaceURI);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderMoveToAttributeNs",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_localName);
+            printf(" %d", n_namespaceURI);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12332,8 +13055,31 @@ static int
 test_xmlTextReaderMoveToElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderMoveToElement(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderMoveToElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12342,8 +13088,31 @@ static int
 test_xmlTextReaderMoveToFirstAttribute(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderMoveToFirstAttribute(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderMoveToFirstAttribute",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12352,8 +13121,31 @@ static int
 test_xmlTextReaderMoveToNextAttribute(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderMoveToNextAttribute(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderMoveToNextAttribute",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12362,8 +13154,31 @@ static int
 test_xmlTextReaderName(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderName(reader);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderName",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12372,8 +13187,31 @@ static int
 test_xmlTextReaderNamespaceUri(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderNamespaceUri(reader);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderNamespaceUri",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12382,8 +13220,31 @@ static int
 test_xmlTextReaderNext(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderNext(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderNext",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12392,8 +13253,31 @@ static int
 test_xmlTextReaderNextSibling(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderNextSibling(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderNextSibling",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12402,8 +13286,31 @@ static int
 test_xmlTextReaderNodeType(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderNodeType(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderNodeType",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12412,8 +13319,31 @@ static int
 test_xmlTextReaderNormalization(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderNormalization(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderNormalization",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12422,8 +13352,31 @@ static int
 test_xmlTextReaderPrefix(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderPrefix(reader);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderPrefix",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12432,8 +13385,31 @@ static int
 test_xmlTextReaderPreserve(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderPreserve(reader);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderPreserve",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12452,8 +13428,31 @@ static int
 test_xmlTextReaderQuoteChar(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderQuoteChar(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderQuoteChar",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12462,8 +13461,31 @@ static int
 test_xmlTextReaderRead(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderRead(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderRead",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12472,28 +13494,31 @@ static int
 test_xmlTextReaderReadAttributeValue(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
-    return(ret);
-}
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
 
+        ret_val = xmlTextReaderReadAttributeValue(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderReadAttributeValue",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
 
-static int
-test_xmlTextReaderReadInnerXml(void) {
-    int ret = 0;
-
-
-    /* missing type support */
-    return(ret);
-}
-
-
-static int
-test_xmlTextReaderReadOuterXml(void) {
-    int ret = 0;
-
-
-    /* missing type support */
     return(ret);
 }
 
@@ -12502,18 +13527,31 @@ static int
 test_xmlTextReaderReadState(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
-    return(ret);
-}
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
 
+        ret_val = xmlTextReaderReadState(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderReadState",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
 
-static int
-test_xmlTextReaderReadString(void) {
-    int ret = 0;
-
-
-    /* missing type support */
     return(ret);
 }
 
@@ -12532,8 +13570,40 @@ static int
 test_xmlTextReaderRelaxNGValidate(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+#ifdef LIBXML_SCHEMAS_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    const char * rng; /* the path to a RelaxNG schema or NULL */
+    int n_rng;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_rng = 0;n_rng < gen_nb_const_char_ptr;n_rng++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        rng = gen_const_char_ptr(n_rng);
+
+        ret_val = xmlTextReaderRelaxNGValidate(reader, rng);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_const_char_ptr(n_rng, rng);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderRelaxNGValidate",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_rng);
+            printf("\n");
+        }
+    }
+    }
+#endif
+#endif
+
     return(ret);
 }
 
@@ -12552,8 +13622,45 @@ static int
 test_xmlTextReaderSetParserProp(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
+    int prop; /* the xmlParserProperties to set */
+    int n_prop;
+    int value; /* usually 0 or 1 to (de)activate it */
+    int n_value;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+    for (n_prop = 0;n_prop < gen_nb_int;n_prop++) {
+    for (n_value = 0;n_value < gen_nb_int;n_value++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+        prop = gen_int(n_prop);
+        value = gen_int(n_value);
+
+        ret_val = xmlTextReaderSetParserProp(reader, prop, value);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        des_int(n_prop, prop);
+        des_int(n_value, value);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderSetParserProp",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf(" %d", n_prop);
+            printf(" %d", n_value);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12572,8 +13679,31 @@ static int
 test_xmlTextReaderStandalone(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderStandalone(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderStandalone",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12582,8 +13712,31 @@ static int
 test_xmlTextReaderValue(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderValue(reader);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderValue",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12592,8 +13745,31 @@ static int
 test_xmlTextReaderXmlLang(void) {
     int ret = 0;
 
+#ifdef LIBXML_READER_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
+    int n_reader;
 
-    /* missing type support */
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader);
+
+        ret_val = xmlTextReaderXmlLang(reader);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderXmlLang",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -12610,7 +13786,6 @@ test_xmlreader(void) {
     ret += test_xmlReaderForIO();
     ret += test_xmlReaderForMemory();
     ret += test_xmlReaderNewDoc();
-    ret += test_xmlReaderNewFd();
     ret += test_xmlReaderNewFile();
     ret += test_xmlReaderNewIO();
     ret += test_xmlReaderNewMemory();
@@ -12667,10 +13842,7 @@ test_xmlreader(void) {
     ret += test_xmlTextReaderQuoteChar();
     ret += test_xmlTextReaderRead();
     ret += test_xmlTextReaderReadAttributeValue();
-    ret += test_xmlTextReaderReadInnerXml();
-    ret += test_xmlTextReaderReadOuterXml();
     ret += test_xmlTextReaderReadState();
-    ret += test_xmlTextReaderReadString();
     ret += test_xmlTextReaderRelaxNGSetSchema();
     ret += test_xmlTextReaderRelaxNGValidate();
     ret += test_xmlTextReaderSetErrorHandler();

@@ -15,14 +15,25 @@ except:
 #
 skipped_modules = [ "SAX", "SAX2", "xlink", "threads", "globals",
   "xpathInternals", "xmlunicode", "parserInternals", "xmlmemory",
-  "xmlversion", "debugXML" ]
+  "xmlversion", "debugXML", "xmlexports" ]
 
 #
 # Some function really need to be skipped for the tests.
 #
-skipped_functions = [ "xmlFdRead", "xmlReadFd", "xmlCtxtReadFd",
-                      "htmlFdRead", "htmlReadFd", "htmlCtxtReadFd",
-                      "xmlCleanupParser", "xmlStrcat", "xmlStrncat" ]
+skipped_functions = [
+# block on I/O
+"xmlFdRead", "xmlReadFd", "xmlCtxtReadFd",
+"htmlFdRead", "htmlReadFd", "htmlCtxtReadFd",
+"xmlReaderNewFd", 
+# library state cleanup, generate false leak informations and other
+# troubles, heavillyb tested otherwise.
+"xmlCleanupParser", "xmlRelaxNGCleanupTypes",
+# hard to avoid leaks in the tests
+"xmlStrcat", "xmlStrncat",
+# unimplemented
+"xmlTextReaderReadInnerXml", "xmlTextReaderReadOuterXml",
+"xmlTextReaderReadString"
+]
 
 #
 # Those functions have side effect on the global state
@@ -141,6 +152,7 @@ int main(void) {
     int blocks, mem;
 
     xmlInitParser();
+    xmlRelaxNGInitTypes();
 
     LIBXML_TEST_VERSION
 
@@ -236,7 +248,7 @@ def type_convert(str, name, info, module, function, pos):
 known_param_types = [ "int", "const_char_ptr", "const_xmlChar_ptr",
    "xmlParserCtxtPtr", "xmlDocPtr", "filepath", "fileoutput",
    "xmlNodePtr", "xmlNodePtr_in", "userdata", "xmlChar_ptr",
-   "xmlTextWriterPtr" ];
+   "xmlTextWriterPtr", "xmlTextReaderPtr" ];
 
 def is_known_param_type(name):
     for type in known_param_types:
@@ -377,6 +389,17 @@ static xmlTextWriterPtr gen_xmlTextWriterPtr(int no) {
 }
 static void des_xmlTextWriterPtr(int no ATTRIBUTE_UNUSED, xmlTextWriterPtr val) {
     if (val != NULL) xmlFreeTextWriter(val);
+}
+
+#define gen_nb_xmlTextReaderPtr 4
+static xmlTextReaderPtr gen_xmlTextReaderPtr(int no) {
+    if (no == 0) return(xmlNewTextReaderFilename("test/ent2"));
+    if (no == 1) return(xmlNewTextReaderFilename("test/valid/REC-xml-19980210.xml"));
+    if (no == 2) return(xmlNewTextReaderFilename("test/valid/dtds/xhtml1-strict.dtd"));
+    return(NULL);
+}
+static void des_xmlTextReaderPtr(int no ATTRIBUTE_UNUSED, xmlTextReaderPtr val) {
+    if (val != NULL) xmlFreeTextReader(val);
 }
 
 """);

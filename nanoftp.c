@@ -1220,6 +1220,7 @@ xmlNanoFTPGetConnection(void *ctx) {
     struct sockaddr_in dataAddr;
     SOCKLEN_T dataAddrLen;
 
+retry:
     ctxt->dataFd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (ctxt->dataFd < 0) {
         xmlGenericError(xmlGenericErrorContext,

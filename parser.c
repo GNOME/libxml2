@@ -28,9 +28,6 @@
  * See Copyright for the status of this software.
  *
  * daniel@veillard.com
- *
- * 14 Nov 2000 ht - truncated definitions of xmlSubstituteEntitiesDefaultValue
- * and xmlDoValidityCheckingDefaultValue for VMS
  */
 
 #include "libxml.h"
@@ -5470,7 +5467,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 	    ctxt->errNo = XML_ERR_NAME_REQUIRED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData,
-		                 "xmlParseEntityRef: no name\n");
+		                 "xmlParseStringEntityRef: no name\n");
 	    ctxt->wellFormed = 0;
 	    ctxt->disableSAX = 1;
 	} else {
@@ -5602,7 +5599,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 		ctxt->errNo = XML_ERR_ENTITYREF_SEMICOL_MISSING;
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
-		                     "xmlParseEntityRef: expecting ';'\n");
+				 "xmlParseStringEntityRef: expecting ';'\n");
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
 	    }

@@ -1,3 +1,8 @@
+Thu Jul  5 22:01:31 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: a bug reported by Stephan Kulow empty nodesets
+	  were not equal to empty strings
+
 Thu Jul  5 00:52:25 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* SAX.c: fixed a URI-Reference computation problem when validating

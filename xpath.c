@@ -1904,7 +1904,7 @@ xmlXPathRegisterVariableLookup(xmlXPathContextPtr ctxt,
  * Search in the Variable array of the context for the given
  * variable value.
  *
- * Returns the value or NULL if not found
+ * Returns a copy of the value or NULL if not found
  */
 xmlXPathObjectPtr
 xmlXPathVariableLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
@@ -1928,9 +1928,9 @@ xmlXPathVariableLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
  * @ns_uri:  the variable namespace URI
  *
  * Search in the Variable array of the context for the given
- * variable value.
+ * variable value. 
  *
- * Returns the value or NULL if not found
+ * Returns the a copy of the value or NULL if not found
  */
 xmlXPathObjectPtr
 xmlXPathVariableLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
@@ -3327,8 +3327,11 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar * str)
     hash = xmlXPathStringHash(str);
     if (ns == NULL)
         return (0);
-    if (ns->nodeNr <= 0)
-        return (0);
+    if (ns->nodeNr <= 0) {
+	if (hash == 0)
+	    return(1);
+        return(0);
+    }
     for (i = 0; i < ns->nodeNr; i++) {
         if (xmlXPathNodeValHash(ns->nodeTab[i]) == hash) {
             str2 = xmlNodeGetContent(ns->nodeTab[i]);

@@ -11742,40 +11742,11 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 xmlParserCtxtPtr
 xmlCreateDocParserCtxt(xmlChar *cur) {
     int len;
-    xmlParserCtxtPtr ctxt;
-    xmlParserInputPtr input;
-    xmlParserInputBufferPtr buf;
 
     if (cur == NULL)
 	return(NULL);
     len = xmlStrlen(cur);
-
-    ctxt = xmlNewParserCtxt();
-    if (ctxt == NULL)
-       return(NULL);
-
-    buf = xmlParserInputBufferCreateStatic((char *)cur, len,
-                                           XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) {
-       xmlFreeParserCtxt(ctxt);
-       return(NULL);
-    }
-
-    input = xmlNewInputStream(ctxt);
-    if (input == NULL) {
-       xmlFreeParserInputBuffer(buf);
-       xmlFreeParserCtxt(ctxt);
-       return(NULL);
-    }
-
-    input->filename = NULL;
-    input->buf = buf;
-    input->base = input->buf->buffer->content;
-    input->cur = input->buf->buffer->content;
-    input->end = &input->buf->buffer->content[input->buf->buffer->use];
-
-    inputPush(ctxt, input);
-    return(ctxt);
+    return(xmlCreateMemoryParserCtxt((char *)cur, len));
 }
 
 /**

@@ -1,3 +1,8 @@
+Tue Sep 23 11:15:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: revert xmlCreateDocParserCtxt() since this break
+	  the parseDoc() python bindings
+
 Tue Sep 23 11:00:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: make sure xmlDetectSAX2() is called only at 

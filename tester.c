@@ -45,6 +45,7 @@ static int noout = 0;
 static int valid = 0;
 static int repeat = 0;
 static int insert = 0;
+static int compress = 0;
 
 extern int xmlDoValidityCheckingDefaultValue;
 
@@ -168,9 +169,12 @@ void parseAndPrintFile(char *filename) {
 	/*
 	 * print it.
 	 */
-	if (!debug)
-	    xmlDocDump(stdout, doc);
-	else
+	if (!debug) {
+	    if (compress)
+		xmlSaveFile("-", doc);
+	    else
+		xmlDocDump(stdout, doc);
+	} else
 	    xmlDebugDumpDocument(stdout, doc);
     }
 
@@ -203,9 +207,12 @@ void parseAndPrintBuffer(xmlChar *buf) {
     /*
      * print it.
      */
-    if (!debug)
-	xmlDocDump(stdout, doc);
-    else
+    if (!debug) {
+        if (compress)
+	    xmlSaveFile("-", doc);
+	else
+	    xmlDocDump(stdout, doc);
+    } else
         xmlDebugDumpDocument(stdout, doc);
 
     /*
@@ -241,6 +248,11 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-repeat")) ||
 	         (!strcmp(argv[i], "--repeat")))
 	    repeat++;
+	else if ((!strcmp(argv[i], "-compress")) ||
+	         (!strcmp(argv[i], "--compress"))) {
+	    compress++;
+	    xmlSetCompressMode(9);
+        }
     }
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
     if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
@@ -266,6 +278,7 @@ int main(int argc, char **argv) {
 	printf("\t--valid : validate the document in addition to std well-formed check\n");
 	printf("\t--repeat : parse the file 100 times, for timing or profiling\n");
 	printf("\t--insert : test for valid insertions\n");
+	printf("\t--compress : turn on gzip compression of output\n");
     }
     xmlMemoryDump();
 

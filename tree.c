@@ -403,7 +403,7 @@ xmlNewDoc(const xmlChar *version) {
     cur->oldNs = NULL;
     cur->encoding = NULL;
     cur->standalone = -1;
-    cur->compression = xmlCompressMode;
+    cur->compression = -1; /* not initialized */
     cur->ids = NULL;
     cur->refs = NULL;
 #ifndef XML_WITHOUT_CORBA
@@ -1027,15 +1027,20 @@ xmlNewNode(xmlNsPtr ns, const xmlChar *name) {
  * @doc:  the document
  * @ns:  namespace if any
  * @name:  the node name
- * @content:  the text content if any
+ * @content:  the XML text content if any
  *
  * Creation of a new node element within a document. @ns and @content
  * are optionnal (NULL).
+ * NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities
+ *       references, but XML special chars need to be escaped first by using
+ *       xmlEncodeEntitiesReentrant(). Use xmlNewDocRawNode() if you don't
+ *       need entities support.
+ *
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
-                         const xmlChar *name, const xmlChar *content) {
+              const xmlChar *name, const xmlChar *content) {
     xmlNodePtr cur;
 
     cur = xmlNewNode(ns, name);
@@ -1043,6 +1048,35 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
         cur->doc = doc;
 	if (content != NULL) {
 	    cur->childs = xmlStringGetNodeList(doc, content);
+	    UPDATE_LAST_CHILD(cur)
+	}
+    }
+    return(cur);
+}
+
+
+/**
+ * xmlNewDocRawNode:
+ * @doc:  the document
+ * @ns:  namespace if any
+ * @name:  the node name
+ * @content:  the text content if any
+ *
+ * Creation of a new node element within a document. @ns and @content
+ * are optionnal (NULL).
+ *
+ * Returns a pointer to the new node object.
+ */
+xmlNodePtr
+xmlNewDocRawNode(xmlDocPtr doc, xmlNsPtr ns,
+                 const xmlChar *name, const xmlChar *content) {
+    xmlNodePtr cur;
+
+    cur = xmlNewNode(ns, name);
+    if (cur != NULL) {
+        cur->doc = doc;
+	if (content != NULL) {
+	    cur->childs = xmlNewDocText(doc, content);
 	    UPDATE_LAST_CHILD(cur)
 	}
     }
@@ -1090,6 +1124,62 @@ xmlNewText(const xmlChar *content) {
     cur->_private = NULL;
     cur->vepv = NULL;
 #endif    
+    return(cur);
+}
+
+/**
+ * xmlNewTextChild:
+ * @parent:  the parent node
+ * @ns:  a namespace if any
+ * @name:  the name of the child
+ * @content:  the text content of the child if any.
+ *
+ * Creation of a new child element, added at the end of @parent childs list.
+ * @ns and @content parameters are optionnal (NULL). If content is non NULL,
+ * a child TEXT node will be created containing the string content.
+ *
+ * Returns a pointer to the new node object.
+ */
+xmlNodePtr
+xmlNewTextChild(xmlNodePtr parent, xmlNsPtr ns,
+            const xmlChar *name, const xmlChar *content) {
+    xmlNodePtr cur, prev;
+
+    if (parent == NULL) {
+        fprintf(stderr, "xmlNewTextChild : parent == NULL\n");
+	return(NULL);
+    }
+
+    if (name == NULL) {
+        fprintf(stderr, "xmlNewTextChild : name == NULL\n");
+	return(NULL);
+    }
+
+    /*
+     * Allocate a new node
+     */
+    if (ns == NULL)
+	cur = xmlNewDocRawNode(parent->doc, parent->ns, name, content);
+    else
+	cur = xmlNewDocRawNode(parent->doc, ns, name, content);
+    if (cur == NULL) return(NULL);
+
+    /*
+     * add the new element at the end of the childs list.
+     */
+    cur->type = XML_ELEMENT_NODE;
+    cur->parent = parent;
+    cur->doc = parent->doc;
+    if (parent->childs == NULL) {
+        parent->childs = cur;
+	parent->last = cur;
+    } else {
+        prev = parent->last;
+	prev->next = cur;
+	cur->prev = prev;
+	parent->last = cur;
+    }
+
     return(cur);
 }
 
@@ -1332,22 +1422,27 @@ xmlNewDocComment(xmlDocPtr doc, const xmlChar *content) {
     return(cur);
 }
 
+
 /**
  * xmlNewChild:
  * @parent:  the parent node
  * @ns:  a namespace if any
  * @name:  the name of the child
- * @content:  the content of the child if any.
+ * @content:  the XML content of the child if any.
  *
- * 
  * Creation of a new child element, added at the end of @parent childs list.
  * @ns and @content parameters are optionnal (NULL). If content is non NULL,
  * a child list containing the TEXTs and ENTITY_REFs node will be created.
+ * NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities
+ *       references, but XML special chars need to be escaped first by using
+ *       xmlEncodeEntitiesReentrant(). Use xmlNewTextChild() if entities
+ *       support is not needed.
+ *
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
-                       const xmlChar *name, const xmlChar *content) {
+            const xmlChar *name, const xmlChar *content) {
     xmlNodePtr cur, prev;
 
     if (parent == NULL) {
@@ -1703,7 +1798,7 @@ xmlCopyPropList(xmlNodePtr target, xmlAttrPtr cur) {
 }
 
 /*
- * NOTE about the CopyNode operations !
+ * NOTE abeut the CopyNode operations !
  *
  * They are splitted into external and internal parts for one
  * tricky reason: namespaces. Doing a direct copy of a node
@@ -3242,7 +3337,8 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
  * @cur:  the document
  *
  * Dump an XML document to a file. Will use compression if
- * compiled in and enabled.
+ * compiled in and enabled. If @filename is "-" the stdout file is
+ * used.
  * returns: the number of file written or -1 in case of failure.
  */
 int
@@ -3263,9 +3359,13 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     xmlDocContentDump(buf, cur);
 
 #ifdef HAVE_ZLIB_H
+    if (cur->compression < 0) cur->compression = xmlCompressMode;
     if ((cur->compression > 0) && (cur->compression <= 9)) {
         sprintf(mode, "w%d", cur->compression);
-	zoutput = gzopen(filename, mode);
+	if (!strcmp(filename, "-")) 
+	    zoutput = gzdopen(1, mode);
+	else
+	    zoutput = gzopen(filename, mode);
     }
     if (zoutput == NULL) {
 #endif

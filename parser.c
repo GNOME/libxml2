@@ -6651,8 +6651,9 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
  * 
  * Returns 0 in case of success or a error number otherwise
  */
-int xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
-			      const char *filename) {
+int
+xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
+                    const char *filename) {
     int ret = 0;
     xmlParserCtxtPtr ctxt;
     

@@ -363,9 +363,17 @@ xmlNodePtr	xmlNewDocNode		(xmlDocPtr doc,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
+xmlNodePtr	xmlNewDocRawNode	(xmlDocPtr doc,
+					 xmlNsPtr ns,
+					 const xmlChar *name,
+					 const xmlChar *content);
 xmlNodePtr	xmlNewNode		(xmlNsPtr ns,
 					 const xmlChar *name);
 xmlNodePtr	xmlNewChild		(xmlNodePtr parent,
+					 xmlNsPtr ns,
+					 const xmlChar *name,
+					 const xmlChar *content);
+xmlNodePtr	xmlNewTextChild		(xmlNodePtr parent,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);

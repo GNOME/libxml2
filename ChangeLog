@@ -1,3 +1,10 @@
+Tue Nov 23 11:23:55 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.[ch]: closing bug 3748, added xmlNewDocRawNode(), 
+	             xmlNewTextChild() and xmlSetCompressMode() behaviour.
+	* tester.c: added --compress option
+	* doc/*: rebuilt the documentation
+
 Fri Nov 19 18:41:28 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c: bugfixing, the damn thing MUST not crash even

@@ -3322,8 +3322,8 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	    return;
 	}
 
-	if ((xmlStrEqual(currentNode, BAD_CAST"script")) ||
-	    (xmlStrEqual(currentNode, BAD_CAST"style"))) {
+	if ((CUR != 0) && ((xmlStrEqual(currentNode, BAD_CAST"script")) ||
+	    (xmlStrEqual(currentNode, BAD_CAST"style")))) {
 	    /*
 	     * Handle SCRIPT/STYLE separately
 	     */
@@ -3371,7 +3371,10 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	     * Fourth : end of the resource
 	     */
 	    else if (CUR == 0) {
+		int level = ctxt->nodeNr;
 		htmlAutoClose(ctxt, NULL);
+		if (level == ctxt->nodeNr)
+		    break;
 	    }
 
 	    /*

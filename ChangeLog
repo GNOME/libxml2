@@ -1,3 +1,9 @@
+Wed Feb 20 15:36:03 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xml.html doc/python.html doc/*: added a Python and binding
+	  page describing the current state of the Python bindings and 
+	  giving pointers to the other languages wrappers.
+
 Wed Feb 20 11:16:15 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in include/libxml/xmlwin32version.h: preparing 2.4.16

@@ -92,6 +92,9 @@
       <xsl:when test="$name = '#FAQ'">
         <xsl:text>FAQ.html</xsl:text>
       </xsl:when>
+      <xsl:when test="$name = '#Python'">
+        <xsl:text>python.html</xsl:text>
+      </xsl:when>
       <xsl:when test="$name = ''">
         <xsl:text>unknown.html</xsl:text>
       </xsl:when>

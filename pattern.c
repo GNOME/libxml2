@@ -66,6 +66,7 @@ struct _xmlStreamComp {
 };
 
 struct _xmlStreamCtxt {
+    struct _xmlStreamCtxt *next;/* link to next sub pattern if | */
     xmlStreamCompPtr comp;	/* the compiled stream */
     int nbState;		/* number of state in the automata */
     int maxState;		/* allocated number of state */
@@ -118,7 +119,7 @@ struct _xmlStepOp {
 struct _xmlPattern {
     void *data;    		/* the associated template */
     xmlDictPtr dict;		/* the optional dictionnary */
-    struct _xmlPattern *next;	/* siblings */
+    struct _xmlPattern *next;	/* next pattern if | is used */
     const xmlChar *pattern;	/* the pattern */
 
     int nbStep;
@@ -188,6 +189,8 @@ xmlFreePattern(xmlPatternPtr comp) {
 
     if (comp == NULL)
 	return;
+    if (comp->next != NULL)
+        xmlFreePattern(comp->next);
     if (comp->stream != NULL)
         xmlFreeStreamComp(comp->stream);
     if (comp->pattern != NULL)
@@ -1362,132 +1365,132 @@ xmlStreamCtxtAddState(xmlStreamCtxtPtr comp, int idx, int level) {
 int
 xmlStreamPush(xmlStreamCtxtPtr stream,
               const xmlChar *name, const xmlChar *ns) {
-    int ret = 0, tmp, i, m, match, step, desc, final;
+    int ret = 0, err = 0, tmp, i, m, match, step, desc, final;
     xmlStreamCompPtr comp;
 
     if ((stream == NULL) || (stream->nbState < 0))
         return(-1);
-    comp = stream->comp;
-    if ((name == NULL) && (ns == NULL)) {
-        stream->nbState = 0;
-	stream->level = 0;
-	if (comp->steps[0].flags & XML_STREAM_STEP_ROOT) {
-	    tmp = xmlStreamCtxtAddState(stream, 0, 0);
-	    if (tmp < 0)
-	        return(-1);
-	    if (comp->steps[tmp].flags & XML_STREAM_STEP_FINAL)
-		return(1);
-	}
-	return(0);
-    }
-    /*
-     * Check evolution of existing states
-     */
-    m = stream->nbState;
-    for (i = 0;i < m;i++) {
-        match = 0;
-	step = stream->states[2 * i];
-	/* dead states */
-	if (step < 0) continue;
-	/* skip new states just added */
-	if (stream->states[(2 * i) + 1] > stream->level) continue;
-	/* skip continuations */
-	desc = comp->steps[step].flags & XML_STREAM_STEP_DESC;
-	if ((stream->states[(2 * i) + 1] < stream->level) && (!desc))continue;
 
-	/* discard old states */
-	/* something needed about old level discarded */
-
-        if (comp->dict) {
-	    if (comp->steps[step].name == NULL) {
-	        if (comp->steps[step].ns == NULL)
-		    match = 1;
-		else
-		    match = (comp->steps[step].ns == ns);
-	    } else {
-		match = ((comp->steps[step].name == name) &&
-			 (comp->steps[step].ns == ns));
-	    }
-	} else {
-	    if (comp->steps[step].name == NULL) {
-	        if (comp->steps[step].ns == NULL)
-		    match = 1;
-		else
-		    match = xmlStrEqual(comp->steps[step].ns, ns);
-	    } else {
-		match = ((xmlStrEqual(comp->steps[step].name, name)) &&
-			 (xmlStrEqual(comp->steps[step].ns, ns)));
-	    }
-	}
-	if (match) {
-	    final = comp->steps[step].flags & XML_STREAM_STEP_FINAL;
-	    if (desc) {
-		if (final) {
+    while (stream != NULL) {
+	comp = stream->comp;
+	if ((name == NULL) && (ns == NULL)) {
+	    stream->nbState = 0;
+	    stream->level = 0;
+	    if (comp->steps[0].flags & XML_STREAM_STEP_ROOT) {
+		tmp = xmlStreamCtxtAddState(stream, 0, 0);
+		if (tmp < 0)
+		    err++;
+		if (comp->steps[tmp].flags & XML_STREAM_STEP_FINAL)
 		    ret = 1;
+		continue; /* while */
+	    }
+	    continue; /* while */
+	}
+	/*
+	 * Check evolution of existing states
+	 */
+	m = stream->nbState;
+	for (i = 0;i < m;i++) {
+	    match = 0;
+	    step = stream->states[2 * i];
+	    /* dead states */
+	    if (step < 0) continue;
+	    /* skip new states just added */
+	    if (stream->states[(2 * i) + 1] > stream->level)
+	        continue;
+	    /* skip continuations */
+	    desc = comp->steps[step].flags & XML_STREAM_STEP_DESC;
+	    if ((stream->states[(2 * i) + 1] < stream->level) && (!desc))
+	        continue;
+
+	    /* discard old states */
+	    /* something needed about old level discarded */
+
+	    if (comp->dict) {
+		if (comp->steps[step].name == NULL) {
+		    if (comp->steps[step].ns == NULL)
+			match = 1;
+		    else
+			match = (comp->steps[step].ns == ns);
 		} else {
-		    /* descending match create a new state */
-		    xmlStreamCtxtAddState(stream, step + 1, stream->level + 1);
+		    match = ((comp->steps[step].name == name) &&
+			     (comp->steps[step].ns == ns));
 		}
 	    } else {
-		if (final) {
-		    ret = 1;
-#if 0
-		    stream->states[2 * i] = -1;
-#endif
+		if (comp->steps[step].name == NULL) {
+		    if (comp->steps[step].ns == NULL)
+			match = 1;
+		    else
+			match = xmlStrEqual(comp->steps[step].ns, ns);
 		} else {
-#if 0
-		    stream->states[2 * i] = step + 1;
-		    stream->states[2 * i + 1] = stream->level + 1;
-#endif
-		    xmlStreamCtxtAddState(stream, step + 1, stream->level + 1);
+		    match = ((xmlStrEqual(comp->steps[step].name, name)) &&
+			     (xmlStrEqual(comp->steps[step].ns, ns)));
 		}
 	    }
-#if 0
-	} else if (!desc) {
-	    /* didn't match, discard */
-	    stream->states[2 * i] = -1;
-#endif
+	    if (match) {
+		final = comp->steps[step].flags & XML_STREAM_STEP_FINAL;
+		if (desc) {
+		    if (final) {
+			ret = 1;
+		    } else {
+			/* descending match create a new state */
+			xmlStreamCtxtAddState(stream, step + 1,
+			                      stream->level + 1);
+		    }
+		} else {
+		    if (final) {
+			ret = 1;
+		    } else {
+			xmlStreamCtxtAddState(stream, step + 1,
+			                      stream->level + 1);
+		    }
+		}
+	    }
 	}
-    }
 
-    /*
-     * Check creating a new state.
-     */
-    stream->level++;
-    if (!(comp->steps[0].flags & XML_STREAM_STEP_ROOT)) {
-        match = 0;
-        if (comp->dict) {
-	    if (comp->steps[0].name == NULL) {
-	        if (comp->steps[0].ns == NULL)
-		    match = 1;
-		else
-		    match = (comp->steps[0].ns == ns);
+	/*
+	 * Check creating a new state.
+	 */
+	stream->level++;
+	if (!(comp->steps[0].flags & XML_STREAM_STEP_ROOT)) {
+	    match = 0;
+	    if (comp->dict) {
+		if (comp->steps[0].name == NULL) {
+		    if (comp->steps[0].ns == NULL)
+			match = 1;
+		    else
+			match = (comp->steps[0].ns == ns);
+		} else {
+		    match = ((comp->steps[0].name == name) &&
+			     (comp->steps[0].ns == ns));
+		}
 	    } else {
-		match = ((comp->steps[0].name == name) &&
-			 (comp->steps[0].ns == ns));
+		if (comp->steps[0].name == NULL) {
+		    if (comp->steps[0].ns == NULL)
+			match = 1;
+		    else
+			match = xmlStrEqual(comp->steps[0].ns, ns);
+		} else {
+		    match = ((xmlStrEqual(comp->steps[0].name, name)) &&
+			     (xmlStrEqual(comp->steps[0].ns, ns)));
+		}
 	    }
-	} else {
-	    if (comp->steps[0].name == NULL) {
-	        if (comp->steps[0].ns == NULL)
-		    match = 1;
+	    if (match) {
+		if (comp->steps[0].flags & XML_STREAM_STEP_FINAL)
+		    ret = 1;
 		else
-		    match = xmlStrEqual(comp->steps[0].ns, ns);
-	    } else {
-		match = ((xmlStrEqual(comp->steps[0].name, name)) &&
-			 (xmlStrEqual(comp->steps[0].ns, ns)));
+		    xmlStreamCtxtAddState(stream, 1, stream->level);
 	    }
 	}
-	if (match) {
-	    if (comp->steps[0].flags & XML_STREAM_STEP_FINAL)
-	        ret = 1;
-            else
-	        xmlStreamCtxtAddState(stream, 1, stream->level);
-	}
-    }
+
+        stream = stream->next;
+    } /* while stream != NULL */
     
 #ifdef DEBUG_STREAMING
     xmlDebugStreamCtxt(stream, ret);
 #endif
+    if (err > 0)
+        ret = -1;
     return(ret);
 }
 
@@ -1502,22 +1505,27 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
 int
 xmlStreamPop(xmlStreamCtxtPtr stream) {
     int i, m;
+    int ret;
 
     if (stream == NULL)
         return(-1);
-    stream->level--;
-    if (stream->level < 0)
-        return(-1);
-    
-    /*
-     * Check evolution of existing states
-     */
-    m = stream->nbState;
-    for (i = 0;i < m;i++) {
-	if (stream->states[(2 * i)] < 0) break;
-	/* discard obsoleted states */
-	if (stream->states[(2 * i) + 1] > stream->level)
-	    stream->states[(2 * i)] = -1;
+    ret = 0;
+    while (stream != NULL) {
+	stream->level--;
+	if (stream->level < 0)
+	    ret = -1;
+	
+	/*
+	 * Check evolution of existing states
+	 */
+	m = stream->nbState;
+	for (i = 0;i < m;i++) {
+	    if (stream->states[(2 * i)] < 0) break;
+	    /* discard obsoleted states */
+	    if (stream->states[(2 * i) + 1] > stream->level)
+		stream->states[(2 * i)] = -1;
+	}
+	stream = stream->next;
     }
     return(0);
 }
@@ -1543,25 +1551,57 @@ xmlPatternPtr
 xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
                   int flags ATTRIBUTE_UNUSED,
                   const xmlChar **namespaces) {
-    xmlPatternPtr ret = NULL;
+    xmlPatternPtr ret = NULL, cur;
     xmlPatParserContextPtr ctxt = NULL;
+    const xmlChar *or, *start;
+    xmlChar *tmp = NULL;
 
-    ctxt = xmlNewPatParserContext(pattern, dict, namespaces);
-    if (ctxt == NULL) goto error;
-    ret = xmlNewPattern();
-    if (ret == NULL) goto error;
-    ctxt->comp = ret;
+    if (pattern == NULL)
+        return(NULL);
 
-    xmlCompilePathPattern(ctxt);
-    xmlFreePatParserContext(ctxt);
+    start = pattern;
+    while (*or != 0) {
+	or = start;
+	tmp = NULL;
+	while ((*or != 0) && (*or != '|')) or++;
+        if (*or == 0)
+	    ctxt = xmlNewPatParserContext(start, dict, namespaces);
+	else {
+	    tmp = xmlStrndup(start, or - start);
+	    if (tmp != NULL) {
+		ctxt = xmlNewPatParserContext(tmp, dict, namespaces);
+	    }
+	    or++;
+	}
+	if (ctxt == NULL) goto error;
+	cur = xmlNewPattern();
+	if (cur == NULL) goto error;
+	if (ret == NULL)
+	    ret = cur;
+	else {
+	    cur->next = ret->next;
+	    ret->next = cur;
+	}
+	ctxt->comp = cur;
 
-    xmlStreamCompile(ret);
-    if (xmlReversePattern(ret) < 0)
-        goto error;
+	xmlCompilePathPattern(ctxt);
+	xmlFreePatParserContext(ctxt);
+
+
+	xmlStreamCompile(cur);
+	if (xmlReversePattern(cur) < 0)
+	    goto error;
+	start = or;
+	if (tmp != NULL) {
+	    xmlFree(tmp);
+	    tmp = NULL;
+	}
+    }
     return(ret);
 error:
     if (ctxt != NULL) xmlFreePatParserContext(ctxt);
     if (ret != NULL) xmlFreePattern(ret);
+    if (tmp != NULL) xmlFree(tmp);
     return(NULL);
 }
 
@@ -1577,9 +1617,18 @@ error:
 int
 xmlPatternMatch(xmlPatternPtr comp, xmlNodePtr node)
 {
+    int ret = 0;
+
     if ((comp == NULL) || (node == NULL))
         return(-1);
-    return(xmlPatMatch(comp, node));
+
+    while (comp != NULL) {
+        ret = xmlPatMatch(comp, node);
+	if (ret != 0)
+	    return(ret);
+	comp = comp->next;
+    }
+    return(ret);
 }
 
 /**
@@ -1594,9 +1643,29 @@ xmlPatternMatch(xmlPatternPtr comp, xmlNodePtr node)
 xmlStreamCtxtPtr
 xmlPatternGetStreamCtxt(xmlPatternPtr comp)
 {
+    xmlStreamCtxtPtr ret = NULL, cur;
+
     if ((comp == NULL) || (comp->stream == NULL))
         return(NULL);
-    return(xmlNewStreamCtxt(comp->stream));
+
+    while (comp != NULL) {
+        if (comp->stream == NULL)
+	    goto failed;
+	cur = xmlNewStreamCtxt(comp->stream);
+	if (cur == NULL)
+	    goto failed;
+	if (ret == NULL)
+	    ret = cur;
+	else {
+	    cur->next = ret->next;
+	    ret->next = cur;
+	}
+	comp = comp->next;
+    }
+    return(ret);
+failed:
+    xmlFreeStreamCtxt(ret);
+    return(NULL);
 }
 
 #endif /* LIBXML_PATTERN_ENABLED */

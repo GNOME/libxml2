@@ -1,3 +1,7 @@
+Sat Feb  5 18:36:56 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* pattern.c: first implementation for | support
+
 Sat Feb  5 14:58:46 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* pattern.c: fixed the namespaces support

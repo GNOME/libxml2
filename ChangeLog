@@ -1,3 +1,7 @@
+Wed Jun 27 23:47:29 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am: patch from brad@openbsd.org to handle DESTDIR
+
 2001-06-21  Zbigniew Chyla  <cyba@gnome.pl>
 
 	Made xmlParseChunk behaving the same way as xmlParseFile

@@ -1,3 +1,8 @@
+Sat Oct  6 15:07:14 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixing #61673 part I, do not loose doc information
+	  when copying result value trees.
+
 Sat Oct  6 11:58:58 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: trying to harden the XPath interpreter

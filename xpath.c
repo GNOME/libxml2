@@ -2755,7 +2755,8 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 	    if ((val->nodesetval != NULL) &&
 		(val->nodesetval->nodeTab != NULL)) {
 		ret->boolval = 1;
-		ret->user = xmlCopyNode(val->nodesetval->nodeTab[0], 1);
+		ret->user = xmlDocCopyNode(val->nodesetval->nodeTab[0],
+				       val->nodesetval->nodeTab[0]->doc, 1);
 		ret->nodesetval = xmlXPathNodeSetCreate(
 					  (xmlNodePtr) ret->user);
 	    } else

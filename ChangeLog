@@ -1,3 +1,11 @@
+Tue Feb  3 09:21:09 CET 2004 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* include/libxml/xmlreader.h include/libxml/xmlmemory.h: added
+	  calling convention to the public function prototypes (rep by
+	  Cameron Johnson)
+	* include/libxml/xmlexports.h: fixed mingw+msys compilation
+	  (rep by Mikhail Grushinskiy)
+	
 Mon Feb  2 20:22:18 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlwriter.c: enhanced output indenting (bug 133264)

@@ -1,3 +1,8 @@
+Wed Jun 27 18:33:13 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am: added --push regression tests
+	* parserInternals.c: the XML parser segfaulted in --push mode
+
 Wed Jun 27 13:09:51 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: moved the symlinks detection within a CVS

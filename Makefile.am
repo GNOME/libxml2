@@ -185,6 +185,26 @@ XMLtests : xmllint
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
+	@(echo > .memdump)
+	@echo "##"
+	@echo "## XML push regression tests"
+	@echo "##"
+	@echo "## You should see one warning on entity 'title.xml' for ent2"
+	@echo "##"
+	@(for i in $(srcdir)/test/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(top_builddir)/xmllint --push $$i > $(srcdir)/result/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      $(top_builddir)/xmllint --push $$i > result.$$name ; \
+	      diff $(srcdir)/result/$$name result.$$name ; \
+	      $(top_builddir)/xmllint --push result.$$name > result2.$$name ; \
+	      diff result.$$name result2.$$name ; \
+	      rm result.$$name result2.$$name ; \
+	  fi ; fi ; done)
 	@echo "##"
 	@echo "## XML regression tests on memory"
 	@echo "##"

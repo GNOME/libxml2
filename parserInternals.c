@@ -1575,7 +1575,8 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	     * Specific handling of the Byte Order Mark for
 	     * UTF-8
 	     */
-	    if ((ctxt->input->cur[0] == 0xEF) &&
+	    if ((ctxt->input != NULL) &&
+		(ctxt->input->cur[0] == 0xEF) &&
 		(ctxt->input->cur[1] == 0xBB) &&
 		(ctxt->input->cur[2] == 0xBF)) {
 		ctxt->input->cur += 3;

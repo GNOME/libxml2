@@ -597,7 +597,20 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 	    else fprintf(output, "false\n");
 	    break;
         case XPATH_NUMBER:
-	    fprintf(output, "Object is a number : %0g\n", cur->floatval);
+	    switch (isinf(cur->floatval)) {
+	    case 1:
+		fprintf(output, "Object is a number : +Infinity\n");
+		break;
+	    case -1:
+		fprintf(output, "Object is a number : -Infinity\n");
+		break;
+	    default:
+		if (isnan(cur->floatval)) {
+		    fprintf(output, "Object is a number : NaN\n");
+		} else {
+		    fprintf(output, "Object is a number : %0g\n", cur->floatval);
+		}
+	    }
 	    break;
         case XPATH_STRING:
 	    fprintf(output, "Object is a string : ");

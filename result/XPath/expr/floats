@@ -25,15 +25,15 @@ Object is a number : 0.00123
 
 ========================
 Expression: 1 div 0
-Object is a number : inf
+Object is a number : +Infinity
 
 ========================
 Expression: -1 div 0
-Object is a number : -inf
+Object is a number : -Infinity
 
 ========================
 Expression: 0 div 0
-Object is a number : nan
+Object is a number : NaN
 
 ========================
 Expression: (1 div 0) > 0

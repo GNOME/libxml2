@@ -83,7 +83,7 @@ testall : tests SVGtests SAXtests
 tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests
 
 HTMLtests : testHTML
-	@(rm -f .memdump ; touch .memdump)
+	@(echo > .memdump)
 	@echo "##"
 	@echo "## HTML regression tests"
 	@echo "##"
@@ -159,7 +159,7 @@ HTMLtests : testHTML
 
 
 XMLtests : xmllint
-	@(rm -f .memdump ; touch .memdump)
+	@(echo > .memdump)
 	@echo "##"
 	@echo "## XML regression tests"
 	@echo "##"
@@ -201,7 +201,7 @@ XMLtests : xmllint
 	  fi ; fi ; done)
 
 XMLenttests : xmllint
-	@(rm -f .memdump ; touch .memdump)
+	@(echo > .memdump)
 	@echo "##"
 	@echo "## XML entity subst regression tests"
 	@echo "##"
@@ -221,7 +221,7 @@ XMLenttests : xmllint
 	  fi ; fi ; done)
 
 URItests : testURI
-	@(rm -f .memdump ; touch .memdump)
+	@(echo > .memdump)
 	@echo "##"
 	@echo "## URI module regression tests"
 	@echo "##"
@@ -253,7 +253,7 @@ URItests : testURI
 	  fi ; fi ; done)
 
 XPathtests : testXPath
-	@(rm -f .memdump ; touch .memdump)
+	@(echo > .memdump)
 	@echo "##"
 	@echo "## XPath regression tests"
 	@echo "##"
@@ -291,7 +291,7 @@ XPathtests : testXPath
 	  fi ; fi ; done ; fi ; done)
 
 XPtrtests : testXPath
-	@(rm -f .memdump ; touch .memdump)
+	@(echo > .memdump)
 	@echo "##"
 	@echo "## XPointer regression tests"
 	@echo "##"
@@ -314,7 +314,7 @@ XPtrtests : testXPath
 	  fi ; fi ; done ; fi ; done)
 
 XIncludetests : xmllint
-	@(rm -f .memdump ; touch .memdump)
+	@(echo > .memdump)
 	@echo "##"
 	@echo "## XInclude regression tests"
 	@echo "##"
@@ -352,6 +352,7 @@ SVGtests : xmllint
 	  fi ; fi ; done)
 
 SAXtests : testSAX
+	@(echo > .memdump)
 	@echo "##"
 	@echo "## SAX callbacks regression tests"
 	@echo "##"
@@ -370,7 +371,7 @@ SAXtests : testSAX
 
 
 Validtests : xmllint
-	@(rm -f .memdump ; touch .memdump)
+	@(echo > .memdump)
 	@echo "##"
 	@echo "## Valid documents regression tests"
 	@echo "##"

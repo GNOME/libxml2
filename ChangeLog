@@ -1,3 +1,8 @@
+Thu May  3 12:47:46 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c result/XPath/expr/floats : clarified and cleanup
+	  printing of abnormal floats in tests.
+
 Thu May  3 10:25:19 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c: trying to fix the problem reported by Jonas Borgström

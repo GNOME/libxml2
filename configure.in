@@ -155,6 +155,7 @@ dnl
 dnl Extra flags
 dnl
 XML_CFLAGS=""
+RDL_LIBS=""
 
 dnl
 dnl Workaround for native compilers
@@ -229,8 +230,6 @@ else
     CPPFLAGS=${_cppflags}
 fi
 LDFLAGS=${_ldflags}
-
-AC_SUBST(RDL_LIBS)
 
 dnl
 dnl specific tests to setup DV's devel environment with debug etc ...

@@ -310,8 +310,9 @@ extern int xmlGetWarningsDefaultValue;
 
 
 /**
- * Cleanup
+ * Init/Cleanup
  */
+void		xmlInitParser		(void);
 void		xmlCleanupParser	(void);
 
 /**

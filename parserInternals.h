@@ -287,6 +287,13 @@ int			xmlCopyChar		(int len,
 						 int val);
 void			xmlNextChar		(xmlParserCtxtPtr ctxt);
 void			xmlParserInputShrink	(xmlParserInputPtr in);
+
+#ifdef LIBXML_HTML_ENABLED
+/*
+ * Actually comes from the HTML parser but launched from the init stuff
+ */
+void			htmlInitAutoClose	(void);
+#endif
 #ifdef __cplusplus
 }
 #endif

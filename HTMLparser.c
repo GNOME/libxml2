@@ -579,7 +579,8 @@ static int htmlStartCloseIndexinitialized = 0;
  * htmlInitAutoClose:
  *
  * Initialize the htmlStartCloseIndex for fast lookup of closing tags names.
- *
+ * This is not reentrant. Call xmlInitParser() once before processing in
+ * case of use in multithreaded programs.
  */
 void
 htmlInitAutoClose(void) {
@@ -594,6 +595,7 @@ htmlInitAutoClose(void) {
 	while (htmlStartClose[i] != NULL) i++;
 	i++;
     }
+    htmlStartCloseIndexinitialized = 1;
 }
 
 /**

@@ -86,6 +86,7 @@ struct _xmlEntitiesTable {
  * External functions :
  */
 
+void		xmlInitializePredefinedEntities	(void);
 xmlEntityPtr		xmlAddDocEntity		(xmlDocPtr doc,
 						 const xmlChar *name,
 						 int type,

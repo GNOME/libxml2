@@ -1,3 +1,10 @@
+Sun Oct  1 20:19:39 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c: fixed htmlStartCloseIndexinitialized init
+	* entities.h: exported xmlInitializePredefinedEntities
+	* parser.[ch] : added xmlInitParser()
+	* parserInternals.h : had to export htmlInitAutoClose()
+
 Sun Oct  1 16:28:22 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.[ch] : fixed some serious XPath Predicate evaluation

@@ -6909,7 +6909,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     xmlChar start[4];
     xmlCharEncoding enc;
 
-    xmlDefaultSAXHandlerInit();
+    xmlInitParser();
 
     GROW;
 
@@ -9477,6 +9477,30 @@ xmlParseDoc(xmlChar *cur) {
  *									*
  ************************************************************************/
 
+static int xmlParserInitialized = 0;
+
+/**
+ * xmlInitParser:
+ *
+ * Initialization function for the XML parser.
+ * This is not reentrant. Call once before processing in case of
+ * use in multithreaded programs.
+ */
+
+void
+xmlInitParser(void) {
+    if (xmlParserInitialized) return;
+
+    xmlInitCharEncodingHandlers();
+    xmlInitializePredefinedEntities();
+    xmlDefaultSAXHandlerInit();
+#ifdef LIBXML_HTML_ENABLED
+    htmlInitAutoClose();
+    htmlDefaultSAXHandlerInit();
+#endif
+    xmlParserInitialized = 1;
+}
+
 /**
  * xmlCleanupParser:
  *
@@ -9488,6 +9512,7 @@ xmlParseDoc(xmlChar *cur) {
 
 void
 xmlCleanupParser(void) {
+    xmlParserInitialized = 0;
     xmlCleanupCharEncodingHandlers();
     xmlCleanupPredefinedEntities();
 }

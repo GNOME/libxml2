@@ -32,6 +32,8 @@ extern "C" {
 #endif
 
 /**
+ * xmlCharEncoding:
+ *
  * Predefined values for some standard encodings
  * Libxml don't do beforehand translation on UTF8, ISOLatinX
  * It also support UTF16 (LE and BE) by default.

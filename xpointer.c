@@ -11,7 +11,7 @@
 
 #include "libxml.h"
 
-/**
+/*
  * TODO: better handling of error cases, the full expression should
  *       be parsed beforehand instead of a progressive evaluation
  * TODO: Access into entities references are not supported now ...

@@ -313,7 +313,9 @@ struct _xmlBuffer {
     xmlBufferAllocationScheme alloc; /* The realloc method */
 };
 
-/*
+/**
+ * xmlNode:
+ *
  * A node in an XML tree.
  */
 typedef struct _xmlNode xmlNode;

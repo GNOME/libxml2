@@ -42,6 +42,10 @@ typedef void (*ftpListCallback) (void *userData,
 				 int minute);
 /**
  * ftpDataCallback: 
+ * @userData: the user provided context
+ * @data: the data received
+ * @len: its size in bytes
+ *
  * A callback for the xmlNanoFTPGet command
  */
 typedef void (*ftpDataCallback) (void *userData, const char *data, int len);

@@ -25,6 +25,8 @@ extern "C" {
 #define XML_DEFAULT_VERSION	"1.0"
 
 /**
+ * xmlParserInput:
+ *
  * an xmlParserInput is an input flow for the XML processor.
  * Each entity parsed is associated an xmlParserInput (except the
  * few predefined ones). This is the case both for internal entities
@@ -56,6 +58,8 @@ struct _xmlParserInput {
 };
 
 /**
+ * xmlParserNodeInfo:
+ *
  * the parser can be asked to collect Node informations, i.e. at what
  * place in the file they were detected. 
  * NOTE: This is off by default and not very well tested.
@@ -81,6 +85,8 @@ struct _xmlParserNodeInfoSeq {
 };
 
 /**
+ * xmlParserInputState:
+ *
  * The parser is now working also as a state based parser
  * The recursive one use the stagte info for entities processing
  */
@@ -105,6 +111,8 @@ typedef enum {
 } xmlParserInputState;
 
 /**
+ * xmlParserCtxt:
+ *
  * The parser context.
  * NOTE This doesn't completely defines the parser state, the (current ?)
  *      design of the parser uses recursive function calls since this allow
@@ -191,6 +199,8 @@ struct _xmlParserCtxt {
 };
 
 /**
+ * xmlSAXLocator:
+ *
  * a SAX Locator.
  */
 typedef struct _xmlSAXLocator xmlSAXLocator;
@@ -203,6 +213,8 @@ struct _xmlSAXLocator {
 };
 
 /**
+ * xmlSAXHandler:
+ *
  * a SAX handler is bunch of callbacks called by the parser when processing
  * of the input generate data or structure informations.
  */
@@ -288,13 +300,18 @@ struct _xmlSAXHandler {
 };
 
 /**
+ * xmlExternalEntityLoader:
+ * @URL: The System ID of the resource requested
+ * @ID: The Public ID of the resource requested
+ * @xmlParserCtxtPtr: the XML parser context 
+ *
  * External entity loaders types
  */
 typedef xmlParserInputPtr (*xmlExternalEntityLoader)(const char *URL,
 						     const char *ID,
 						     xmlParserCtxtPtr context);
 
-/**
+/*
  * Global variables: just the default SAX interface tables and XML
  * version infos.
  */
@@ -305,7 +322,7 @@ LIBXML_DLL_IMPORT extern xmlSAXHandler xmlDefaultSAXHandler;
 LIBXML_DLL_IMPORT extern xmlSAXHandler htmlDefaultSAXHandler;
 LIBXML_DLL_IMPORT extern xmlSAXHandler docbDefaultSAXHandler;
 
-/**
+/*
  * entity substitution default behaviour.
  */
 
@@ -318,13 +335,13 @@ LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;
 
 
-/**
+/*
  * Init/Cleanup
  */
 void		xmlInitParser		(void);
 void		xmlCleanupParser	(void);
 
-/**
+/*
  * Input functions
  */
 int		xmlParserInputRead	(xmlParserInputPtr in,
@@ -332,7 +349,7 @@ int		xmlParserInputRead	(xmlParserInputPtr in,
 int		xmlParserInputGrow	(xmlParserInputPtr in,
 					 int len);
 
-/**
+/*
  * xmlChar handling
  */
 xmlChar *	xmlStrdup		(const xmlChar *cur);
@@ -369,7 +386,7 @@ xmlChar *	xmlStrncat		(xmlChar *cur,
 					 const xmlChar *add,
 					 int len);
 
-/**
+/*
  * Basic parsing Interfaces
  */
 xmlDocPtr	xmlParseDoc		(xmlChar *cur);
@@ -381,7 +398,7 @@ int		xmlKeepBlanksDefault	(int val);
 void		xmlStopParser		(xmlParserCtxtPtr ctxt);
 int		xmlPedanticParserDefault(int val);
 
-/**
+/*
  * Recovery mode 
  */
 xmlDocPtr	xmlRecoverDoc		(xmlChar *cur);
@@ -389,7 +406,7 @@ xmlDocPtr	xmlRecoverMemory	(char *buffer,
 					 int size);
 xmlDocPtr	xmlRecoverFile		(const char *filename);
 
-/**
+/*
  * Less common routines and SAX interfaces
  */
 int		xmlParseDocument	(xmlParserCtxtPtr ctxt);
@@ -440,13 +457,13 @@ int		xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx,
 					 const xmlChar *ID,
 					 xmlNodePtr *list);
 
-/**
+/*
  * SAX initialization routines
  */
 void		xmlDefaultSAXHandlerInit(void);
 void		htmlDefaultSAXHandlerInit(void);
 
-/**
+/*
  * Parser contexts handling.
  */
 void		xmlInitParserCtxt	(xmlParserCtxtPtr ctxt);
@@ -457,7 +474,7 @@ void		xmlSetupParserForBuffer	(xmlParserCtxtPtr ctxt,
 					 const char* filename);
 xmlParserCtxtPtr xmlCreateDocParserCtxt	(xmlChar *cur);
 
-/**
+/*
  * Reading/setting optional parsing features.
  */
 
@@ -470,7 +487,7 @@ int		xmlSetFeature		(xmlParserCtxtPtr ctxt,
 					 const char *name,
 					 void *value);
 
-/**
+/*
  * Interfaces for the Push mode
  */
 xmlParserCtxtPtr xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax,
@@ -483,7 +500,7 @@ int		 xmlParseChunk		(xmlParserCtxtPtr ctxt,
 					 int size,
 					 int terminate);
 
-/**
+/*
  * Special I/O mode
  */
 
@@ -498,7 +515,7 @@ xmlParserInputPtr xmlNewIOInputStream	(xmlParserCtxtPtr ctxt,
 					 xmlParserInputBufferPtr input,
 					 xmlCharEncoding enc);
 
-/**
+/*
  * Node infos
  */
 const xmlParserNodeInfo*

@@ -1,3 +1,15 @@
+Sat May 19 15:20:03 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c: Closed bug #54891
+	* result/HTML/cf_128.html* test/HTML/cf_128.html: added the test
+	  to the suite
+
+Thu May 17 14:15:07 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* encoding.h hash.c nanoftp.h parser.h tree.h uri.h xlink.h xpointer.c:
+	  applied a documentation patch from LotR and filled in a few missing
+	  descriptions
+
 Wed May 16 23:02:41 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c tree.c parser.c: speed optimizations at the parser level

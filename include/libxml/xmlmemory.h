@@ -11,9 +11,13 @@
 #include <stdio.h>
 #include <libxml/xmlversion.h>
 
-/*
- * DEBUG_MEMORY_LOCATION should be activated only done when debugging 
- * libxml.
+/**
+ * DEBUG_MEMORY:
+ *
+ * should be activated only done when debugging libxml. It replaces the
+ * allocator with a collect and debug shell to the libc allocator.
+ * DEBUG_MEMORY should be activated only when debugging 
+ * libxml i.e. if libxml has been configured with --with-debug-mem too
  */
 /* #define DEBUG_MEMORY_FREED */
 /* #define DEBUG_MEMORY_LOCATION */
@@ -24,15 +28,15 @@
 #endif
 #endif
 
+/**
+ * DEBUG_MEMORY_LOCATION:
+ *
+ * should be activated 
+ * DEBUG_MEMORY_LOCATION should be activated only when debugging 
+ * libxml i.e. if libxml has been configured with --with-debug-mem too
+ */
 #ifdef DEBUG_MEMORY_LOCATION
 #define MEM_LIST /* keep a list of all the allocated memory blocks */
-#define DEBUG_MEMORY_FREED
-#endif
-
-#ifdef DEBUG_MEMORY_FREED
-#define MEM_CLEANUP(p,l) memset((p), -1, (l));
-#else
-#define MEM_CLEANUP(p,l)
 #endif
 
 #ifdef __cplusplus

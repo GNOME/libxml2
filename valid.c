@@ -4577,6 +4577,7 @@ xmlValidGetPotentialChildren(xmlElementContent *ctree, const xmlChar **list,
 int
 xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
                          int max) {
+    xmlValidCtxt vctxt;
     int nb_valid_elements = 0;
     const xmlChar *elements[256];
     int nb_elements = 0, i;
@@ -4591,6 +4592,10 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
     xmlNode *parent_last;
     
     xmlElement *element_desc;
+
+    vctxt.userData = NULL;
+    vctxt.error = NULL;
+    vctxt.warning = NULL;
 
     if (prev == NULL && next == NULL)
         return(-1);
@@ -4644,7 +4649,7 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
     
     for (i = 0;i < nb_elements;i++) {
 	test_node->name = elements[i];
-	if (xmlValidateOneElement(NULL, parent->doc, parent)) {
+	if (xmlValidateOneElement(&vctxt, parent->doc, parent)) {
 	    int j;
 
 	    for (j = 0; j < nb_valid_elements;j++)

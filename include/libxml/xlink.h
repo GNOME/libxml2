@@ -156,7 +156,7 @@ struct _xlinkHandler {
     xlinkExtendedLinkSetFunk set;
 };
 
-/**
+/*
  * the default detection routine, can be overriden, they call the default
  * detection callbacks. 
  */
@@ -164,7 +164,7 @@ struct _xlinkHandler {
 xlinkNodeDetectFunc	xlinkGetDefaultDetect	(void);
 void			xlinkSetDefaultDetect	(xlinkNodeDetectFunc func);
 
-/**
+/*
  * Routines to set/get the default handlers.
  */
 xlinkHandlerPtr	xlinkGetDefaultHandler	(void);

@@ -739,7 +739,7 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 #endif
         } else if (info->endTag == 3) {
 #ifdef DEBUG
-	    xmlGenericError(xmlGenericErrorContext,"End of tag %s: expecting %s\n", name, ctxt->name);
+	    xmlGenericError(xmlGenericErrorContext,"End of tag %s: expecting %s\n", newtag, ctxt->name);
 #endif
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
@@ -1383,7 +1383,7 @@ htmlEntityDescPtr
 htmlEntityValueLookup(unsigned int value) {
     unsigned int i;
 #ifdef DEBUG
-    int lv = 0;
+    unsigned int lv = 0;
 #endif
 
     for (i = 0;i < (sizeof(html40EntitiesTable)/
@@ -4165,6 +4165,15 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
 			    "HPP: entering CONTENT\n");
+#endif
+		    break;
+		}
+		if (in->cur[1] == '/') {
+		    ctxt->instate = XML_PARSER_END_TAG;
+		    ctxt->checkIndex = 0;
+#ifdef DEBUG_PUSH
+		    xmlGenericError(xmlGenericErrorContext,
+			    "HPP: entering END_TAG\n");
 #endif
 		    break;
 		}

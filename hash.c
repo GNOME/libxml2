@@ -626,6 +626,7 @@ xmlHashSize(xmlHashTablePtr table) {
 }
 
 /**
+ * xmlHashRemoveEntry:
  * @table: the hash table
  * @name: the name of the userdata
  * @f: the deallocator function for removed item (if any)
@@ -642,6 +643,7 @@ int xmlHashRemoveEntry(xmlHashTablePtr table, const xmlChar *name,
 }
 
 /**
+ * xmlHashRemoveEntry2:
  * @table: the hash table
  * @name: the name of the userdata
  * @name2: a second name of the userdata
@@ -659,6 +661,7 @@ int xmlHashRemoveEntry2(xmlHashTablePtr table, const xmlChar *name,
 }
 
 /**
+ * xmlHashRemoveEntry3
  * @table: the hash table
  * @name: the name of the userdata
  * @name2: a second name of the userdata

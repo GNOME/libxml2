@@ -230,8 +230,6 @@ typedef struct xmlDoc {
     char           *name;	/* name/filename/URI of the document */
     const CHAR     *version;	/* the XML version string */
     const CHAR     *encoding;   /* encoding, if any */
-    const CHAR     *ID;		/* the HTML version */
-    const CHAR     *DTD;   	/* the HTML dtd URI */
     int             compression;/* level of zlib compression */
     int             standalone; /* standalone document (no external refs) */
     struct xmlDtd  *intSubset;	/* the document internal subset */

@@ -23,6 +23,7 @@ libxml_la_SOURCES = \
 		HTMLparser.c \
 		debugXML.c \
 		tree.c \
+		HTMLtree.c \
 		valid.c
 
 xmlincdir = $(includedir)/gnome-xml
@@ -30,6 +31,7 @@ xmlinc_HEADERS = \
 		entities.h \
 		encoding.h \
 		parser.h \
+		HTMLparser.h \
 		parserInternals.h \
 		debugXML.h \
 		xml-error.h \

@@ -180,7 +180,13 @@ resolveEntity(void *ctx, const CHAR *publicId, const CHAR *systemId)
      * TODO : not 100% sure that the appropriate handling in that case.
      */
     if (systemId != NULL) {
-        return(xmlNewInputFromFile(ctxt, systemId));
+        if (!xmlStrncmp(systemId, "http://", 7)) {
+	    /* !!!!!!!!! TODO */
+	} else if (!xmlStrncmp(systemId, "ftp://", 6)) {
+	    /* !!!!!!!!! TODO */
+	} else {
+	    return(xmlNewInputFromFile(ctxt, systemId));
+	}
     }
     return(NULL);
 }

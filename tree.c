@@ -387,8 +387,6 @@ xmlNewDoc(const CHAR *version) {
 
     cur->type = XML_DOCUMENT_NODE;
     cur->version = xmlStrdup(version); 
-    cur->ID = NULL;
-    cur->DTD = NULL;
     cur->name = NULL;
     cur->root = NULL; 
     cur->intSubset = NULL;

@@ -1,3 +1,9 @@
+Wed Jul  7 00:25:42 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.h : Oops removed the binary compatibility problem
+	* HTMLparser.[ch], HTMLtree.h : More work on the HTML parse/dump
+	* parser.c, HTMLparser.c: applied patches for reading from stdin
+
 Mon Jul  5 18:45:31 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c, entities.c, valid.c: cleanup bug #1591

@@ -264,74 +264,111 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
 #endif
     int res;
     int len;
+    int cnt;
     struct stat buf;
-    char *buffer;
+    char *buffer, *nbuf;
     xmlParserInputPtr inputStream;
     /* xmlCharEncoding enc; */
 
-    res = stat(filename, &buf);
-    if (res < 0) return(NULL);
+#define MINLEN 40000
 
+    if (strcmp(filename,"-") == 0) {
 #ifdef HAVE_ZLIB_H
-    len = (buf.st_size * 8) + 1000;
-retry_bigger:
-    buffer = malloc(len);
-#else
-    len = buf.st_size + 100;
-    buffer = malloc(len);
-#endif
-    if (buffer == NULL) {
-	perror("malloc");
-        return(NULL);
-    }
-
-    memset(buffer, 0, len);
-#ifdef HAVE_ZLIB_H
-    input = gzopen (filename, "r");
-    if (input == NULL) {
-        fprintf (stderr, "Cannot read file %s :\n", filename);
-	perror ("gzopen failed");
-	return(NULL);
-    }
+        input = gzdopen (fileno(stdin), "r");
+        if (input == NULL) {
+            fprintf (stderr, "Cannot read from stdin\n");
+            perror ("gzdopen failed");
+            return(NULL);
+	}
 #else
 #ifdef WIN32
-    input = _open (filename, O_RDONLY | _O_BINARY);
+        input = -1;
 #else
-    input = open (filename, O_RDONLY);
+        input = fileno(stdin);
 #endif
-    if (input < 0) {
-        fprintf (stderr, "Cannot read file %s :\n", filename);
-	perror ("open failed");
-	return(NULL);
+        if (input < 0) {
+            fprintf (stderr, "Cannot read from stdin\n");
+            perror ("open failed");
+        return(NULL);
     }
 #endif
+		len = MINLEN;
+    } else {
 #ifdef HAVE_ZLIB_H
-    res = gzread(input, buffer, len);
+	input = gzopen (filename, "r");
+	if (input == NULL) {
+	    fprintf (stderr, "Cannot read file %s :\n", filename);
+	    perror ("gzopen failed");
+	    return(NULL);
+	}
 #else
-    res = read(input, buffer, buf.st_size);
+#ifdef WIN32
+	input = _open (filename, O_RDONLY | _O_BINARY);
+#else
+	input = open (filename, O_RDONLY);
 #endif
-    if (res < 0) {
-        fprintf (stderr, "Cannot read file %s :\n", filename);
+	if (input < 0) {
+	    fprintf (stderr, "Cannot read file %s :\n", filename);
+	    perror ("open failed");
+	    return(NULL);
+	}
+#endif
+	res = stat(filename, &buf);
+	if (res < 0) 
+		return(NULL);
+	len = buf.st_size+1;
+	if (len < MINLEN)
+		len = MINLEN;
+    }
+    buffer = (char *)malloc(len*sizeof(char));
+    if (buffer == NULL) {
+		fprintf (stderr, "Cannot malloc\n");
+		perror ("malloc failed");
+		return(NULL);
+    }
+
+    cnt = 0;
 #ifdef HAVE_ZLIB_H
-	perror ("gzread failed");
+    while(!gzeof(input)) {
 #else
-	perror ("read failed");
+    while(1) {
 #endif
-	return(NULL);
+	if (cnt >= len) {
+	    len *= 2;
+	    nbuf =  (char *)realloc(buffer,len*sizeof(char));
+	    if (nbuf == NULL) {
+		    fprintf(stderr,"Cannot realloc\n");
+		    free(buffer);
+		    perror ("realloc failed");
+		    return(NULL);
+	    }
+	    buffer = nbuf;
+	}
+#ifdef HAVE_ZLIB_H
+    	res = gzread(input, &buffer[cnt], len-cnt);
+#else
+	res = read(input, &buffer[cnt], len-cnt);
+#endif
+	if (res < 0) {
+	    fprintf (stderr, "Cannot read file %s :\n", filename);
+#ifdef HAVE_ZLIB_H
+	    perror ("gzread failed");
+#else
+	    perror ("read failed");
+#endif
+	    return(NULL);
+	}
+	if (res == 0) 
+	    break;
+	cnt += res;
     }
 #ifdef HAVE_ZLIB_H
     gzclose(input);
-    if (res >= len) {
-        free(buffer);
-	len *= 2;
-	goto retry_bigger;
-    }
-    buf.st_size = res;
 #else
     close(input);
 #endif
 
-    buffer[buf.st_size] = '\0';
+    buffer[cnt] = '\0';
 
     inputStream = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (inputStream == NULL) {
@@ -4594,28 +4631,36 @@ xmlCreateFileParserCtxt(const char *filename)
 #endif
     int res;
     int len;
+	int cnt;
     struct stat buf;
-    char *buffer;
+    char *buffer, *nbuf;
     xmlParserInputPtr inputStream;
     xmlCharEncoding enc;
 
-    res = stat(filename, &buf);
-    if (res < 0) return(NULL);
+#define MINLEN 40000
 
+	if (strcmp(filename,"-") == 0) {
 #ifdef HAVE_ZLIB_H
-    len = (buf.st_size * 8) + 1000;
-retry_bigger:
-    buffer = malloc(len);
+        input = gzdopen (fileno(stdin), "r");
+        if (input == NULL) {
+            fprintf (stderr, "Cannot read from stdin\n");
+            perror ("gzdopen failed");
+            return(NULL);
+	    }
 #else
-    len = buf.st_size + 100;
-    buffer = malloc(len);
+#ifdef WIN32
+        input = -1;
+#else
+        input = fileno(stdin);
 #endif
-    if (buffer == NULL) {
-	perror("malloc");
+        if (input < 0) {
+            fprintf (stderr, "Cannot read from stdin\n");
+            perror ("open failed");
         return(NULL);
     }
-
-    memset(buffer, 0, len);
+#endif
+		len = MINLEN;
+    } else {
 #ifdef HAVE_ZLIB_H
     input = gzopen (filename, "r");
     if (input == NULL) {
@@ -4635,10 +4680,41 @@ retry_bigger:
 	return(NULL);
     }
 #endif
+		res = stat(filename, &buf);
+		if (res < 0) 
+			return(NULL);
+		len = buf.st_size+1;
+		if (len < MINLEN)
+			len = MINLEN;
+    }
+	buffer = (char *)malloc(len*sizeof(char));
+    if (buffer == NULL) {
+		fprintf (stderr, "Cannot malloc\n");
+		perror ("malloc failed");
+		return(NULL);
+	}
+
+	cnt = 0;
 #ifdef HAVE_ZLIB_H
-    res = gzread(input, buffer, len);
+	while(!gzeof(input)) {
 #else
-    res = read(input, buffer, buf.st_size);
+	while(1) {
+#endif
+		if (cnt == len) {
+			len *= 2;
+			nbuf =  (char *)realloc(buffer,len*sizeof(char));
+			if (nbuf == NULL) {
+				fprintf(stderr,"Cannot realloc\n");
+				free(buffer);
+				perror ("realloc failed");
+				return(NULL);
+			}
+			buffer = nbuf;
+		}
+#ifdef HAVE_ZLIB_H
+    	res = gzread(input, &buffer[cnt], len-cnt);
+#else
+   		res = read(input, &buffer[cnt], len-cnt);
 #endif
     if (res < 0) {
         fprintf (stderr, "Cannot read file %s :\n", filename);
@@ -4649,19 +4725,17 @@ retry_bigger:
 #endif
 	return(NULL);
     }
+   		if (res == 0) 
+			break;
+		cnt += res;
+	}
 #ifdef HAVE_ZLIB_H
     gzclose(input);
-    if (res >= len) {
-        free(buffer);
-	len *= 2;
-	goto retry_bigger;
-    }
-    buf.st_size = res;
 #else
     close(input);
 #endif
 
-    buffer[res] = '\0';
+    buffer[cnt] = '\0';
 
     ctxt = (xmlParserCtxtPtr) malloc(sizeof(xmlParserCtxt));
     if (ctxt == NULL) {

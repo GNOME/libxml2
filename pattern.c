@@ -11,6 +11,20 @@
  * daniel@veillard.com
  */
 
+/*
+ * TODO:
+ * - compilation flags to check for specific syntaxes
+ *   using flags of xmlPatterncompile()
+ * - making clear how pattern starting with / or . need to be handled,
+ *   currently push(NULL, NULL) means a reset of the streaming context
+ *   and indicating we are on / (the document node), probably need
+ *   something similar for .
+ * - xmlPatterncompile support of namespaces arguments, I'm not sure
+ *   it's implemented and definitely not tested
+ * - handling of disjunction "pattern1 | pattern2" mean needed to build
+ *   and check a list internally
+ */
+
 #define IN_LIBXML
 #include "libxml.h"
 
@@ -1348,7 +1362,6 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
 	    }
 	} else if (!(comp->steps[step].flags & XML_STREAM_STEP_DESC)) {
 	    /* didn't match, discard */
-	    printf("discard %d\n", i); 
 	    stream->states[2 * i] = -1;
 	}
     }

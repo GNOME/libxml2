@@ -148,7 +148,7 @@ check-local: all tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests NStests IDtests Errtests APItests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@ @PYTHON_TESTS@ @TEST_MODULES@
+tests: XMLtests XMLenttests NStests IDtests Errtests APItests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_PATTERN@ @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@ @PYTHON_TESTS@ @TEST_MODULES@
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; \
 	    $(MAKE) MAKEFLAGS+=--silent tests ; fi)
 	@(cd doc/examples ; $(MAKE) MAKEFLAGS+=--silent tests)
@@ -1000,6 +1000,30 @@ SchemasPythonTests:
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
 	  fi)
 	@(if [ -x $(PYTHON) -a -d xstc ] ; then cd xstc ; $(MAKE) CHECKER="$(CHECKER)" MAKEFLAGS+=--silent pytests ; fi)
+
+Patterntests: xmllint$(EXEEXT)
+	@(echo > .memdump)
+	@echo "## Pattern regression tests"
+	-@(for i in $(srcdir)/test/pattern/*.pat ; do \
+	  name=`basename $$i .pat`; \
+	  if [ -f $(srcdir)/test/pattern/$$name.xml ] ; then \
+	  if [ ! -f $(srcdir)/result/pattern/$$name ] ; then \
+	      rm -f result.$$name ; \
+	      echo New test file $$name ; \
+	      for pat in `cat $$i` ; do \
+	      $(CHECKER) $(top_builddir)/xmllint --stream --pattern $$pat $(srcdir)/test/pattern/$$name.xml >> $(srcdir)/result/pattern/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      done ;\
+	  else \
+	      rm -f result.$$name ; \
+	      lst=`cat $$i` ; \
+	      log=`for pat in $$lst ; do $(CHECKER) $(top_builddir)/xmllint --stream --pattern $$pat $(srcdir)/test/pattern/$$name.xml 2>&1 >> result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      done ;\
+	      diff $(srcdir)/result/pattern/$$name result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done ;)
 
 ModuleTests: testModule$(EXEEXT) testdso.la
 	@echo "## Module tests"

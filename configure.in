@@ -866,13 +866,13 @@ AC_SUBST(WITH_WRITER)
 if test "$with_pattern" = "no" ; then
     echo Disabling the xmlPattern parsing interface
     WITH_PATTERN=0
-    PATTERN_TEST=
+    TEST_PATTERN=
 else    
     WITH_PATTERN=1
-    PATTERN_TEST=Patterntests
+    TEST_PATTERN=Patterntests
 fi
 AC_SUBST(WITH_PATTERN)
-AC_SUBST(PATTERN_TEST)
+AC_SUBST(TEST_PATTERN)
 
 if test "$with_sax1" = "no" ; then
     echo Disabling the older SAX1 interface

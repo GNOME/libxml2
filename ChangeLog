@@ -1,3 +1,9 @@
+Sun Jan 30 23:35:19 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am configure.in result/pattern/simple 
+	  test/pattern/simple.*: added first test for the patterns
+	* pattern.c xmllint.c: a few fixes
+
 Sun Jan 30 19:27:23 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* pattern.c include/libxml/pattern.h xmllint.c: added a 

@@ -865,8 +865,6 @@ static void processNode(xmlTextReaderPtr reader) {
 		    fprintf(stderr,
 		            "  pattern %s node %s\n",
 			    pattern, path);
-		    if (path != NULL)
-		        xmlFree(path);
 		}
 		
 
@@ -879,6 +877,8 @@ static void processNode(xmlTextReaderPtr reader) {
 		}
 	    }
 	}
+	if (path != NULL)
+	    xmlFree(path);
     }
 #endif
 }

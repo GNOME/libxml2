@@ -1,3 +1,7 @@
+Tue Apr  5 23:48:35 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c: applied fix from Rob Richards to compile on Windows.
+
 Tue Apr  5 17:02:58 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Added "Type Derivation OK (Complex)" constraints

@@ -94,9 +94,6 @@
 #endif
 #define SOCKET int
 #endif
-#if defined(VMS) || defined(__VMS)
-#define XML_SOCKLEN_T unsigned int
-#endif
 
 #ifdef __BEOS__
 #ifndef PF_INET
@@ -106,6 +103,10 @@
 
 #ifdef _AIX
 #define ss_family __ss_family
+#endif
+
+#ifndef XML_SOCKLEN_T
+#define XML_SOCKLEN_T unsigned int
 #endif
 
 #define FTP_COMMAND_OK		200

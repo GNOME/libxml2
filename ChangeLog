@@ -1,3 +1,8 @@
+Tue Dec  4 14:13:44 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: applied Geert Kloosterman's patch to fix
+	  --repeat --timing output
+
 Thu Nov 29 17:10:22 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: Robin Berjon <robin@knowscape.com> found a case

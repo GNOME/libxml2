@@ -1082,14 +1082,14 @@ main(int argc, char **argv) {
 	    } else
 		parseAndPrintFile(argv[i]);
 	    files ++;
-	}
-	if ((timing) && (repeat)) {
-	    long msec;
-	    gettimeofday(&end, NULL);
-	    msec = end.tv_sec - begin.tv_sec;
-	    msec *= 1000;
-	    msec += (end.tv_usec - begin.tv_usec) / 1000;
-	    fprintf(stderr, "100 iteration took %ld ms\n", msec);
+	    if ((timing) && (repeat)) {
+		long msec;
+		gettimeofday(&end, NULL);
+		msec = end.tv_sec - begin.tv_sec;
+		msec *= 1000;
+		msec += (end.tv_usec - begin.tv_usec) / 1000;
+		fprintf(stderr, "100 iterations took %ld ms\n", msec);
+	    }
 	}
     }
     if (generate) 

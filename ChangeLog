@@ -1,3 +1,7 @@
+Mon Mar  6 09:34:52 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/xml.html, doc/update.html: updated docs, 1.8.7
+
 Sat Mar  4 16:14:42 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/* : rebuilt the docs

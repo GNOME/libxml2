@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V2.4">
+  <meta name="GENERATOR" content="amaya V2.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -42,9 +42,10 @@
 
 <h2><a name="Introducti">Introduction</a></h2>
 
-<p>This document describes libxml, the <a href="http://www.w3.org/XML/">XML</a>
-library provided in the <a href="http://www.gnome.org/">Gnome</a> framework.
-XML is a standard for building tag-based structured documents/data.</p>
+<p>This document describes libxml, the <a
+href="http://www.w3.org/XML/">XML</a> library provided in the <a
+href="http://www.gnome.org/">Gnome</a> framework. XML is a standard for
+building tag-based structured documents/data.</p>
 
 <p>Here are some key points about libxml:</p>
 <ul>
@@ -56,9 +57,11 @@ XML is a standard for building tag-based structured documents/data.</p>
   <li>Libxml now includes a nearly complete <a
     href="http://www.w3.org/TR/xpath">XPath</a> implementation.</li>
   <li>Libxml exports Push and Pull type parser interfaces for both XML and
-  HTML.</li>
+    HTML.</li>
   <li>This library is released both under the W3C Copyright and the GNU LGPL.
     Basically, everybody should be happy; if not, drop me a mail.</li>
+  <li>There is <a href="upgrade.html">a  first set of instruction</a>
+    concerning upgrade from libxml-1.x to libxml-2.x </li>
 </ul>
 
 <h2><a name="Documentat">Documentation</a></h2>
@@ -138,11 +141,11 @@ platform, get in touch with me to upload the package. I will keep them in the
 <ul>
   <li><p>The <a href="http://dev.w3.org/cvsweb/XML/">W3C CVS base</a>,
     available read-only using the CVS pserver authentification (I tend to use
-    this base for my own development, so it's updated more regularly, but
-    the content may not be as stable):</p>
+    this base for my own development, so it's updated more regularly, but the
+    content may not be as stable):</p>
     <pre>CVSROOT=:pserver:anonymous@dev.w3.org:/sources/public
-password: anonymous
-module: XML</pre>
+    password: anonymous
+    module: XML</pre>
   </li>
   <li><p>The <a
     href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Gnome
@@ -163,12 +166,14 @@ for really accurate description</h3>
   <li>huge work toward libxml-2.0: This work is available only in W3C CVs base
     for the moment. You get the <a
     href="ftp://rpmfind.net/pub/libxml/cvs-snapshot.tar.gz">snapshot</a> for
-    the updated version: 
+    the updated version:
     <ul>
       <li>fix I18N support. ISO-Latin-x/UTF-8/UTF-16 seems correctly handled
         now</li>
-      <li>Better handling of entities</li>
+      <li>Better handling of entities, especially well formedness checking and
+        proper PEref extensions in external subsets</li>
       <li>DTD conditional sections</li>
+      <li>Validation now correcly handle entities content</li>
       <li><a href="http://rpmfind.net/tools/gdome/messages/0039.html">change
         structures to accomodate DOM</a></li>
       <li>Lot of work toward a better compliance. I'm now running and
@@ -177,6 +182,22 @@ for really accurate description</h3>
         testsuite</a></li>
     </ul>
   </li>
+</ul>
+
+<h3>1.8.7: Mar 6 2000</h3>
+<ul>
+  <li>This is a bug fix release:</li>
+  <li>It is possible to disable the ignorable blanks heuristic used by
+    libxml-1.x, a new function  xmlKeepBlanksDefault(0) will allow this. Note
+    that for adherence to XML spec, this behaviour will be disabled by default
+    in 2.x . The same function will allow to keep compatibility for old
+  code.</li>
+  <li>Blanks in &lt;a>  &lt;/a> constructs are not ignored anymore, avoiding
+    heuristic is really the Right Way :-\</li>
+  <li>The unchecked use of snprintf which was breaking libxml-1.8.6
+    compilation on some platforms has been fixed</li>
+  <li>nanoftp.c nanohttp.c: Fixed '#' and '?' stripping when processing
+  URIs</li>
 </ul>
 
 <h3>1.8.6: Jan 31 2000</h3>
@@ -209,8 +230,7 @@ for really accurate description</h3>
 <h3>1.8.3: Jan 5 2000</h3>
 <ul>
   <li>a Push interface for the XML and HTML parsers</li>
-  <li>a shell-like interface to the document tree (try tester --shell
-  :-)</li>
+  <li>a shell-like interface to the document tree (try tester --shell :-)</li>
   <li>lots of bug fixes and improvement added over XMas hollidays</li>
   <li>fixed the DTD parsing code to work with the xhtml DTD</li>
   <li>added xmlRemoveProp(), xmlRemoveID() and xmlRemoveRef()</li>
@@ -299,8 +319,8 @@ for really accurate description</h3>
 <h2><a name="XML">XML</a></h2>
 
 <p><a href="http://www.w3.org/TR/REC-xml">XML is a standard</a> for
-markup-based structured documents. Here is <a name="example">an example
-XML document</a>:</p>
+markup-based structured documents. Here is <a name="example">an example XML
+document</a>:</p>
 <pre>&lt;?xml version="1.0"?>
 &lt;EXAMPLE prop1="gnome is great" prop2="&amp;amp; linux too">
   &lt;head>
@@ -317,25 +337,24 @@ XML document</a>:</p>
 <p>The first line specifies that it's an XML document and gives useful
 information about its encoding. Then the document is a text format whose
 structure is specified by tags between brackets. <strong>Each tag opened has
-to be closed</strong>. XML is pedantic about this. However, if a tag is
-empty (no content), a single tag can serve as both the opening and closing
-tag if it ends with <code>/></code> rather than with <code>></code>.
-Note that, for example, the
-image tag has no content (just an attribute) and is closed by ending the
-tag with <code>/></code>.</p>
+to be closed</strong>. XML is pedantic about this. However, if a tag is empty
+(no content), a single tag can serve as both the opening and closing tag if it
+ends with <code>/></code> rather than with <code>></code>. Note that, for
+example, the image tag has no content (just an attribute) and is closed by
+ending the tag with <code>/></code>.</p>
 
 <p>XML can be applied sucessfully to a wide range of uses, from long term
 structured document maintenance (where it follows the steps of SGML) to simple
-data encoding mechanisms like configuration file formatting (glade), spreadsheets
-(gnumeric), or even shorter lived documents such as WebDAV where it is used to
-encode remote calls between a client and a server.</p>
+data encoding mechanisms like configuration file formatting (glade),
+spreadsheets (gnumeric), or even shorter lived documents such as WebDAV where
+it is used to encode remote calls between a client and a server.</p>
 
 <h2><a name="tree">The tree output</a></h2>
 
 <p>The parser returns a tree built during the document analysis. The value
 returned is an <strong>xmlDocPtr</strong> (i.e., a pointer to an
-<strong>xmlDoc</strong> structure). This structure contains information such as
-the file name, the document type, and a <strong>root</strong> pointer which
+<strong>xmlDoc</strong> structure). This structure contains information such
+as the file name, the document type, and a <strong>root</strong> pointer which
 is the root of the document (or more exactly the first child under the root
 which is the document). The tree is made of <strong>xmlNode</strong>s, chained
 in double-linked lists of siblings and with childs&lt;->parent relationship.
@@ -349,10 +368,10 @@ should be only one ELEMENT under the root):</p>
 
 <p>In the source package there is a small program (not installed by default)
 called <strong>tester</strong> which parses XML files given as argument and
-prints them back as parsed. This is useful for detecting errors both in XML code
-and in the XML parser itself. It has an option <strong>--debug</strong> which
-prints the actual in-memory structure of the document, here is the result with
-the <a href="#example">example</a> given before:</p>
+prints them back as parsed. This is useful for detecting errors both in XML
+code and in the XML parser itself. It has an option <strong>--debug</strong>
+which prints the actual in-memory structure of the document, here is the
+result with the <a href="#example">example</a> given before:</p>
 <pre>DOCUMENT
 version=1.0
 standalone=true
@@ -391,13 +410,13 @@ standalone=true
 memory. In that case (and if you don't expect to save back the XML document
 loaded using libxml), it's better to use the SAX interface of libxml. SAX is a
 <strong>callback-based interface</strong> to the parser. Before parsing, the
-application layer registers a customized set of callbacks which are called
-by the library as it progresses through the XML input.</p>
+application layer registers a customized set of callbacks which are called by
+the library as it progresses through the XML input.</p>
 
 <p>To get more detailed step-by-step guidance on using the SAX interface of
 libxml, see the
 href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">nice
-documentation.</a> written by <a href="mailto:james@daa.com.au">James
+documentation.written by <a href="mailto:james@daa.com.au">James
 Henstridge</a>.</p>
 
 <p>You can debug the SAX behaviour by using the <strong>testSAX</strong>
@@ -471,7 +490,8 @@ defined in "parser.h":</p>
 </dl>
 <dl>
   <dt><code>xmlDocPtr xmlParseFile(const char *filename);</code></dt>
-    <dd><p>Parse an XML document contained in a (possibly compressed) file.</p>
+    <dd><p>Parse an XML document contained in a (possibly compressed)
+      file.</p>
     </dd>
 </dl>
 
@@ -532,9 +552,9 @@ limited to SAX. Just use the two first arguments of
 <h3><a name="Building">Building a tree from scratch</a></h3>
 
 <p>The other way to get an XML tree in memory is by building it. Basically
-there is a set of functions dedicated to building new elements. (These are also
-described in "tree.h".) For example, here is a piece of code that produces the
-XML document used in the previous examples:</p>
+there is a set of functions dedicated to building new elements. (These are
+also described in "tree.h".) For example, here is a piece of code that
+produces the XML document used in the previous examples:</p>
 <pre>    xmlDocPtr doc;
     xmlNodePtr tree, subtree;
 
@@ -555,8 +575,8 @@ XML document used in the previous examples:</p>
 <h3><a name="Traversing">Traversing the tree</a></h3>
 
 <p>Basically by <a href="gnome-xml-tree.html">including "tree.h"</a> your code
-has access to the internal structure of all the elements of the tree. The names
-should be somewhat simple like <strong>parent</strong>,
+has access to the internal structure of all the elements of the tree. The
+names should be somewhat simple like <strong>parent</strong>,
 <strong>childs</strong>, <strong>next</strong>, <strong>prev</strong>,
 <strong>properties</strong>, etc... For example, still with the previous
 example:</p>
@@ -565,8 +585,8 @@ example:</p>
 <p>points to the title element,</p>
 <pre>doc->root->childs->next->child->child</pre>
 
-<p>points to the text node containing the chapter title "The Linux adventure".
-</p>
+<p>points to the text node containing the chapter title "The Linux
+adventure".</p>
 
 <p><strong>NOTE</strong>: XML allows <em>PI</em>s and <em>comments</em> to be
 present before the document root, so <code>doc->root</code> may point to an
@@ -599,20 +619,19 @@ elements:</p>
   *value);</code></dt>
     <dd><p>This function takes an "external" string and convert it to one text
       node or possibly to a list of entity and text nodes. All non-predefined
-      entity references like &amp;Gnome; will be stored internally as
-      entity nodes, hence the result of the function may not be a single
-      node.</p>
+      entity references like &amp;Gnome; will be stored internally as entity
+      nodes, hence the result of the function may not be a single node.</p>
     </dd>
 </dl>
 <dl>
   <dt><code>xmlChar *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int
   inLine);</code></dt>
-    <dd><p>This function is the inverse of <code>xmlStringGetNodeList()</code>.
-      It generates a new string containing
-      the content of the text and entity nodes. Note the extra argument
-      inLine. If this argument is set to 1, the function will expand entity
-      references.  For example, instead of returning the &amp;Gnome; XML
-      encoding in the string, it will substitute it with its value (say,
+    <dd><p>This function is the inverse of
+      <code>xmlStringGetNodeList()</code>. It generates a new string
+      containing the content of the text and entity nodes. Note the extra
+      argument inLine. If this argument is set to 1, the function will expand
+      entity references.  For example, instead of returning the &amp;Gnome;
+      XML encoding in the string, it will substitute it with its value (say,
       "GNU Network Object Model Environment"). Set this argument if you want
       to use the string for non-XML usage like User Interface.</p>
     </dd>
@@ -634,16 +653,16 @@ elements:</p>
 </dl>
 <dl>
   <dt><code>int xmlSaveFile(const char *filename, xmlDocPtr cur);</code></dt>
-    <dd><p>Saves the document to a file. In this case, the compression interface
-      is triggered if it has been turned on.</p>
+    <dd><p>Saves the document to a file. In this case, the compression
+      interface is triggered if it has been turned on.</p>
     </dd>
 </dl>
 
 <h3><a name="Compressio">Compression</a></h3>
 
 <p>The library transparently handles compression when doing file-based
-accesses. The level of compression on saves can be turned on either globally or
-individually for one file:</p>
+accesses. The level of compression on saves can be turned on either globally
+or individually for one file:</p>
 <dl>
   <dt><code>int  xmlGetDocCompressMode (xmlDocPtr doc);</code></dt>
     <dd><p>Gets the document compression ratio (0-9).</p>
@@ -670,9 +689,9 @@ individually for one file:</p>
 <p>Entities in principle are similar to simple C macros. An entity defines an
 abbreviation for a given string that you can reuse many times throughout the
 content of your document. Entities are especially useful when a given string
-may occur frequently within a document, or to confine the change needed
-to a document to a restricted area in the internal subset of the document (at
-the beginning). Example:</p>
+may occur frequently within a document, or to confine the change needed to a
+document to a restricted area in the internal subset of the document (at the
+beginning). Example:</p>
 <pre>1 &lt;?xml version="1.0"?>
 2 &lt;!DOCTYPE EXAMPLE SYSTEM "example.dtd" [
 3 &lt;!ENTITY xml "Extensible Markup Language">
@@ -691,11 +710,10 @@ for the character '>',  <strong>&amp;apos;</strong> for the character ''',
 <strong>&amp;amp;</strong> for the character '&amp;'.</p>
 
 <p>One of the problems related to entities is that you may want the parser to
-substitute an entity's content so that you can see the replacement text in your
-application.
-Or you may prefer to keep entity references as such in the content to be
-able to save the document back without losing this usually precious
-information (if the user went through the pain of explicitly defining
+substitute an entity's content so that you can see the replacement text in
+your application. Or you may prefer to keep entity references as such in the
+content to be able to save the document back without losing this usually
+precious information (if the user went through the pain of explicitly defining
 entities, he may have a a rather negative attitude if you blindly susbtitute
 them as saving time). The <a
 href="gnome-xml-parser.html#XMLSUBSTITUTEENTITIESDEFAULT">xmlSubstituteEntitiesDefault()</a>
@@ -744,26 +762,26 @@ structure and all elements or attributes within that namespace point to it.
 Hence testing the namespace is a simple and fast equality operation at the
 user level.</p>
 
-<p>I suggest that people using libxml use a namespace, and declare it in
-the root element of their document as the default namespace. Then they don't
-need to use the prefix in the content but we will have a basis for future
-semantic refinement and  merging of data from different sources. This doesn't
-augment significantly the size of the XML output, but significantly increase
-its value in the long-term.</p>
+<p>I suggest that people using libxml use a namespace, and declare it in the
+root element of their document as the default namespace. Then they don't need
+to use the prefix in the content but we will have a basis for future semantic
+refinement and  merging of data from different sources. This doesn't augment
+significantly the size of the XML output, but significantly increase its value
+in the long-term.</p>
 
 <p>Concerning the namespace value, this has to be an URL, but the URL doesn't
 have to point to any existing resource on the Web. I suggest that it makes
-sense to use an URL within a domain you control, and that the URL
-should contain some kind of version information if possible. For example,
+sense to use an URL within a domain you control, and that the URL should
+contain some kind of version information if possible. For example,
 <code>"http://www.gnome.org/gnumeric/1.0"</code> is a good namespace scheme.
 Then when you load a file, make sure that a namespace carrying the
 version-independent prefix is installed on the root element of your document,
 and if the version information don't match something you know, warn the user
 and be liberal in what you accept as the input. Also do *not* try to base
 namespace checking on the prefix value. &lt;foo:text> may be exactly the same
-as &lt;bar:text> in another document. What really matter is the URI
-associated with the element or the attribute, not the prefix string (which is
-just a shortcut for the full URI).</p>
+as &lt;bar:text> in another document. What really matter is the URI associated
+with the element or the attribute, not the prefix string (which is just a
+shortcut for the full URI).</p>
 
 <p>@@Interfaces@@</p>
 
@@ -771,8 +789,8 @@ just a shortcut for the full URI).</p>
 
 <p>Usually people object using namespace in the case of validation, I object
 this and will make sure that using namespaces won't break validity checking,
-so even is you plan to use or currently are using validation I strongly suggest
-adding namespaces to your document. A default namespace scheme
+so even is you plan to use or currently are using validation I strongly
+suggest adding namespaces to your document. A default namespace scheme
 <code>xmlns="http://...."</code> should not break validity even on less
 flexible parsers. Now using namespace to mix and differentiate content coming
 from multiple DTDs will certainly break current validation schemes. I will try
@@ -915,10 +933,11 @@ only a couple of functions, browsing the tree to gather the informations and
 generate the internals structures is harder, and more error prone.</p>
 
 <p>The suggested principle is to be tolerant with respect to the input
-structure. For example, the ordering of the attributes is not significant, Cthe
-XML specification is clear about it. It's also usually a good idea to not be
-dependent of the orders of the childs of a given node, unless it really makes
-things harder. Here is some code to parse the informations for a person:</p>
+structure. For example, the ordering of the attributes is not significant,
+Cthe XML specification is clear about it. It's also usually a good idea to not
+be dependent of the orders of the childs of a given node, unless it really
+makes things harder. Here is some code to parse the informations for a
+person:</p>
 <pre>/*
  * A person record
  */
@@ -1047,6 +1066,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.26 2000/03/01 00:40:41 veillard Exp $</p>
+<p>$Id: xml.html,v 1.27 2000/03/02 00:15:55 veillard Exp $</p>
 </body>
 </html>

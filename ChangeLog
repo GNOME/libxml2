@@ -1,3 +1,8 @@
+Thu Jan 24 17:04:04 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: more fixes from Petr Kozelka for attribute handling
+	  in the tree API to align the semantic with DOM.
+
 Thu Jan 24 16:00:53 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c tree.c entities.c: another set of patches from

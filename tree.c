@@ -1931,12 +1931,14 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
  * @cur:  the child node
  * @elem:  the new node
  *
- * Add a new element @elem as the next siblings of @cur
- * If the new element was already inserted in a document it is
+ * Add a new node @elem as the next sibling of @cur
+ * If the new node was already inserted in a document it is
  * first unlinked from its existing context.
  * As a result of text merging @elem may be freed.
+ * If the new node is ATTRIBUTE, it is added into properties instead of children.
+ * If there is an attribute with equal name, it is first destroyed. 
  *
- * Returns the new element or NULL in case of error.
+ * Returns the new node or NULL in case of error.
  */
 xmlNodePtr
 xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
@@ -1984,6 +1986,18 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	    xmlFreeNode(elem);
 	    return(cur->next);
 	}
+    } else if (elem->type == XML_ATTRIBUTE_NODE) {
+        /* check if an attribute with the same name exists */
+	xmlAttrPtr attr;
+
+	if (elem->ns == NULL)
+	    attr = xmlHasProp(cur->parent, elem->name);
+	else
+	    attr = xmlHasNsProp(cur->parent, elem->name, elem->ns->href);
+	if ((attr != NULL) && (attr != (xmlAttrPtr) elem)) {
+	    /* different instance, destroy it (attributes must be unique) */
+	    xmlFreeProp(attr);
+	}
     }
 
     if (elem->doc != cur->doc) {
@@ -1995,7 +2009,7 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
     cur->next = elem;
     if (elem->next != NULL)
 	elem->next->prev = elem;
-    if ((elem->parent != NULL) && (elem->parent->last == cur))
+    if ((elem->parent != NULL) && (elem->parent->last == cur) && (elem->type != XML_ATTRIBUTE_NODE))
 	elem->parent->last = elem;
     return(elem);
 }
@@ -2005,12 +2019,14 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
  * @cur:  the child node
  * @elem:  the new node
  *
- * Add a new element @elem as the previous siblings of @cur
+ * Add a new node @elem as the previous sibling of @cur
  * merging adjacent TEXT nodes (@elem may be freed)
- * If the new element was already inserted in a document it is
+ * If the new node was already inserted in a document it is
  * first unlinked from its existing context.
+ * If the new node is ATTRIBUTE, it is added into properties instead of children.
+ * If there is an attribute with equal name, it is first destroyed. 
  *
- * Returns the new element or NULL in case of error.
+ * Returns the new node or NULL in case of error.
  */
 xmlNodePtr
 xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
@@ -2057,6 +2073,18 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	    xmlFreeNode(elem);
 	    return(cur->prev);
 	}
+    } else if (elem->type == XML_ATTRIBUTE_NODE) {
+        /* check if an attribute with the same name exists */
+	xmlAttrPtr attr;
+
+	if (elem->ns == NULL)
+	    attr = xmlHasProp(cur->parent, elem->name);
+	else
+	    attr = xmlHasNsProp(cur->parent, elem->name, elem->ns->href);
+	if ((attr != NULL) && (attr != (xmlAttrPtr) elem)) {
+	    /* different instance, destroy it (attributes must be unique) */
+	    xmlFreeProp(attr);
+	}
     }
 
     if (elem->doc != cur->doc) {
@@ -2068,8 +2096,17 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
     cur->prev = elem;
     if (elem->prev != NULL)
 	elem->prev->next = elem;
-    if ((elem->parent != NULL) && (elem->parent->children == cur))
-	elem->parent->children = elem;
+    if (elem->parent != NULL) {
+	if (elem->type == XML_ATTRIBUTE_NODE) {
+	    if (elem->parent->properties == (xmlAttrPtr) cur) {
+		elem->parent->properties = (xmlAttrPtr) elem;
+	    }
+	} else {
+	    if (elem->parent->children == cur) {
+		elem->parent->children = elem;
+	    }
+	}
+    }
     return(elem);
 }
 
@@ -2233,8 +2270,13 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
  * @parent:  the parent node
  * @cur:  the child node
  *
- * Add a new child element, to @parent, at the end of the child list
+ * Add a new node to @parent, at the end of the child (or property) list
  * merging adjacent TEXT nodes (in which case @cur is freed)
+ * If the new node was already inserted in a document it is
+ * first unlinked from its existing context.
+ * If the new node is ATTRIBUTE, it is added into properties instead of children.
+ * If there is an attribute with equal name, it is first destroyed. 
+ *
  * Returns the child or NULL in case of error.
  */
 xmlNodePtr
@@ -2305,16 +2347,40 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	xmlFreeNode(cur);
 	return(parent);
     }
-    if (parent->children == NULL) {
-        parent->children = cur;
-	parent->last = cur;
-    } else {
-        prev = parent->last;
-	prev->next = cur;
-	cur->prev = prev;
-	parent->last = cur;
-    }
+    if (cur->type == XML_ATTRIBUTE_NODE) {
+	if (parent->properties == NULL) {
+	    parent->properties = (xmlAttrPtr) cur;
+	} else {
+	    /* check if an attribute with the same name exists */
+	    xmlAttrPtr lastattr;
 
+	    if (cur->ns == NULL)
+		lastattr = xmlHasProp(parent, cur->name);
+	    else
+		lastattr = xmlHasNsProp(parent, cur->name, cur->ns->href);
+	    if ((lastattr != NULL) && (lastattr != (xmlAttrPtr) cur)) {
+		/* different instance, destroy it (attributes must be unique) */
+		xmlFreeProp(lastattr);
+	    }
+	    /* find the end */
+	    lastattr = parent->properties;
+	    while (lastattr->next != NULL) {
+		lastattr = lastattr->next;
+	    }
+	    lastattr->next = (xmlAttrPtr) cur;
+	    ((xmlAttrPtr) cur)->prev = lastattr;
+	}
+    } else {
+	if (parent->children == NULL) {
+	    parent->children = cur;
+	    parent->last = cur;
+	} else {
+	    prev = parent->last;
+	    prev->next = cur;
+	    cur->prev = prev;
+	    parent->last = cur;
+	}
+    }
     return(cur);
 }
 
@@ -2554,6 +2620,20 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
 	return(old);
     }
     if (cur == old) {
+	return(old);
+    }
+    if ((old->type==XML_ATTRIBUTE_NODE) && (cur->type!=XML_ATTRIBUTE_NODE)) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlReplaceNode : Trying to replace attribute node with other node type\n");
+#endif
+	return(old);
+    }
+    if ((cur->type==XML_ATTRIBUTE_NODE) && (old->type!=XML_ATTRIBUTE_NODE)) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlReplaceNode : Trying to replace a non-attribute node with attribute node\n");
+#endif
 	return(old);
     }
     if ((old->type==XML_ATTRIBUTE_NODE) && (cur->type!=XML_ATTRIBUTE_NODE)) {

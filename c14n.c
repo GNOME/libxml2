@@ -437,20 +437,15 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
     attr = cur->properties;
     while (attr != NULL) {
         /* 
-         * todo: do we need to check that attribute is visible and has non
-         * default namespace
+         * we need to check that attribute is visible and has non
+         * default namespace (XML Namespaces: "default namespaces 
+	   * do not apply directly to attributes")	 
          */
-        if (xmlC14NIsVisible(ctx, attr)) {
-            ns = (attr->ns != NULL) ? attr->ns : xmlSearchNs(ctx->doc, cur,
-                                                             NULL);
-            if ((ns != NULL) && (xmlC14NIsVisible(ctx, attr)) &&
-                (!xmlC14NIsXmlNs(ns))) {
-                if ((xmlListSearch(list, ns) == NULL)
-                    && (!xmlExcC14NIsRendered(ctx, ns))) {
-                    xmlListInsert(list, ns);
-                    xmlXPathNodeSetAdd(ctx->ns_rendered, (xmlNodePtr) ns);
-                }
-            }
+        if ((attr->ns != NULL) && xmlC14NIsVisible(ctx, attr) && 
+        			 (xmlListSearch(list, attr->ns) == NULL) && 
+				 (!xmlExcC14NIsRendered(ctx, attr->ns))) {
+            xmlListInsert(list, attr->ns);
+            xmlXPathNodeSetAdd(ctx->ns_rendered, (xmlNodePtr) attr->ns);
         }
         attr = attr->next;
     }

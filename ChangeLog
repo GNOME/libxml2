@@ -1,3 +1,9 @@
+Sun Mar 17 11:31:55 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* c14n.c: applied a new patch from Aleksey Sanin
+	* doc/site.xsl doc/xml.html doc/*.html: updated the documentation
+	  to reference Aleksey implementation of XML digital Signatures
+
 Sat Mar 16 23:01:42 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: small fix to avoid potential problem due to

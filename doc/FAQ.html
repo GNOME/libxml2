@@ -75,10 +75,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
 <li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
 <li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li>
+<li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li>
 <li><a href="ftp://xmlsoft.org/">FTP</a></li>
 <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
 <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
-<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml">Bug Tracker</a></li>
+<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
 </ul></td></tr>
 </table>
 </td></tr></table></td>
@@ -278,8 +279,7 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
 <li>
 <em>XPath implementation looks seriously broken</em>
     <p>XPath implementation prior to 2.3.0 was really incomplete, upgrade to
-    a recent version, the implementation and debug of libxslt generated fixes
-    for most obvious problems.</p>
+    a recent version, there is no known bug in the current version.</p>
 </li>
 <li>
 <em>The example provided in the web page does not compile</em>
@@ -307,7 +307,9 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
 <li>
 <a href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Browse
         the libxml source</a> , I try to write code as clean and documented
-        as possible, so looking at it may be helpful</li>
+        as possible, so looking at it may be helpful. Especially the code of
+        xmllint.c and of the various testXXX.c tests programs should provide
+        good example on how to do things with the library.</li>
 </ul>
 </li>
 <li>What about C++ ?

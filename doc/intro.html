@@ -75,10 +75,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
 <li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
 <li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li>
+<li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li>
 <li><a href="ftp://xmlsoft.org/">FTP</a></li>
 <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
 <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
-<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml">Bug Tracker</a></li>
+<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
 </ul></td></tr>
 </table>
 </td></tr></table></td>
@@ -87,11 +88,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 structured documents/data.</p>
 <p>Here are some key points about libxml:</p>
 <ul>
-<li>Libxml exports Push and Pull type parser interfaces for both XML and
-    HTML.</li>
+<li>Libxml exports Push (progressive) and Pull (blocking) type parser
+    interfaces for both XML and HTML.</li>
 <li>Libxml can do DTD validation at parse time, using a parsed document
     instance, or with an arbitrary DTD.</li>
-<li>Libxml now includes nearly complete <a href="http://www.w3.org/TR/xpath">XPath</a>, <a href="http://www.w3.org/TR/xptr">XPointer</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a> implementations.</li>
+<li>Libxml includes complete <a href="http://www.w3.org/TR/xpath">XPath</a>, <a href="http://www.w3.org/TR/xptr">XPointer</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a> implementations.</li>
 <li>It is written in plain C, making as few assumptions as possible, and
     sticking closely to ANSI C/POSIX for easy embedding. Works on
     Linux/Unix/Windows, ported to a number of other platforms.</li>
@@ -106,7 +107,7 @@ structured documents/data.</p>
     wording.</li>
 </ul>
 <p>Warning: unless you are forced to because your application links with a
-Gnome library requiring it,  <strong><span style="background-color: #FF0000">Do Not Use libxml1</span></strong>, use
+Gnome-1.X library requiring it,  <strong><span style="background-color: #FF0000">Do Not Use libxml1</span></strong>, use
 libxml2</p>
 <p><a href="bugs.html">Daniel Veillard</a></p>
 </td></tr></table></td></tr></table></td></tr></table></td>

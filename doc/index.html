@@ -75,10 +75,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
 <li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
 <li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li>
+<li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li>
 <li><a href="ftp://xmlsoft.org/">FTP</a></li>
 <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
 <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
-<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml">Bug Tracker</a></li>
+<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
 </ul></td></tr>
 </table>
 </td></tr></table></td>
@@ -117,9 +118,7 @@ languages:</p>
 <li>XML Catalogs Working Draft 06 August 2001: <a href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">http://www.oasis-open.org/committees/entity/spec-2001-08-06.html</a>
 </li>
 <li>Canonical XML Version 1.0: <a href="http://www.w3.org/TR/xml-c14n">http://www.w3.org/TR/xml-c14n</a>
-    and the 
-    <p>Exclusive XML Canonicalization CR draft <a href="http://www.w3.org/TR/xml-exc-c14n">http://www.w3.org/TR/xml-exc-c14n</a>
-</p>
+    and the Exclusive XML Canonicalization CR draft <a href="http://www.w3.org/TR/xml-exc-c14n">http://www.w3.org/TR/xml-exc-c14n</a>
 </li>
 </ul>
 <p>In most cases libxml tries to implement the specifications in a relatively
@@ -142,17 +141,22 @@ specification but don't claim to implement them:</p>
 <li>DocBook SGML v4: libxml2 includes a hackish parser to transition to
   XML</li>
 </ul>
-<p>Libxml2 is known to be very portable, should build and work without
-serious troubles on a variety of systems (Linux, Unix, Windows, CygWin,
-MacOs, MacOsX, RISC Os, OS/2, VMS, QNX, MVS, ...)</p>
+<p>Libxml2 is known to be very portable, the library should build and work
+without serious troubles on a variety of systems (Linux, Unix, Windows,
+CygWin, MacOs, MacOsX, RISC Os, OS/2, VMS, QNX, MVS, ...)</p>
 <p>Separate documents:</p>
 <ul>
 <li>
 <a href="http://xmlsoft.org/XSLT/">the libxslt page</a> providing an
-    implementation of XSLT 1.0 and extensions on top of libxml2</li>
+    implementation of XSLT 1.0 and common extensions like EXSLT for
+  libxml2</li>
 <li>
 <a href="http://www.cs.unibo.it/~casarini/gdome2/">the gdome2 page</a>
-    : a standard DOM2 implementation based on libxml2</li>
+    : a standard DOM2 implementation for libxml2</li>
+<li>
+<a href="http://www.aleksey.com/xmlsec/">the XMLSec page</a>: an
+    implementation of <a href="http://www.w3.org/TR/xmldsig-core/">W3C XML
+    Digital Signature</a> for libxml2</li>
 </ul>
 <p><a href="bugs.html">Daniel Veillard</a></p>
 </td></tr></table></td></tr></table></td></tr></table></td>

@@ -656,13 +656,13 @@ xmlInitMemory(void)
 int
 xmlMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
             xmlReallocFunc reallocFunc, xmlStrdupFunc strdupFunc) {
-    if (freeFunc != NULL)
+    if (freeFunc == NULL)
 	return(-1);
-    if (mallocFunc != NULL)
+    if (mallocFunc == NULL)
 	return(-1);
-    if (reallocFunc != NULL)
+    if (reallocFunc == NULL)
 	return(-1);
-    if (strdupFunc != NULL)
+    if (strdupFunc == NULL)
 	return(-1);
     xmlFree = freeFunc;
     xmlMalloc = mallocFunc;

@@ -6,6 +6,8 @@
 TODO:
 =====
 
+- If the internal encoding is not UTF8 saving to a given encoding doesn't
+  work => fix to force UTF8 encoding ...
 - problem when parsing hrefs with & with the HTML parser (IRC ac)
 - DOM needs
   xmlAttrPtr xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value)
@@ -91,9 +93,6 @@ EXTENSIONS:
 Done:
 =====
 
-- If the internal encoding is not UTF8 saving to a given encoding doesn't
-  work => fix to force UTF8 encoding ...
-  done, added documentation too
 - Add an ASCII I/O encoder (asciiToUTF8 and UTF8Toascii)
 - Issue warning when using non-absolute namespaces URI.
 - the html parser should add <head> and <body> if they don't exist

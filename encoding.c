@@ -1033,8 +1033,6 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
             return("Shift-JIS");
         case XML_CHAR_ENCODING_EUC_JP:
             return("EUC-JP");
-        case XML_CHAR_ENCODING_ASCII:
-            return("ASCII");
     }
     return(NULL);
 }

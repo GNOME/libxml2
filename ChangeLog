@@ -1,3 +1,12 @@
+Fri Jul 21 17:09:57 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanohttp.c: fixed socklen_t replacement to unsigned int
+	* parser.c: fixed a space handdling missing at the end of
+	  production 28 DOCTYPE.
+	* xmlmemory.c: fixed a stupid bug on the routine to override
+	  allocation functions
+	* TODO: updated
+
 Fri Jul 14 17:01:14 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/ regenerated the docs

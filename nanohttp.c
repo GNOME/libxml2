@@ -656,7 +656,7 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
     }
 
     if ( FD_ISSET(s, &wfd) ) {
-	unsigned int len; /* was socklen_t barfed on some systems :-( */
+	int len; /* was socklen_t barfed on some systems :-( */
 	len = sizeof(status);
 	if (getsockopt(s, SOL_SOCKET, SO_ERROR, &status, &len) < 0 ) {
 	    /* Solaris error code */

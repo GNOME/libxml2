@@ -2380,10 +2380,6 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		/* let's assume it's UTF-8 without the XML decl */
 		ctxt->charset = XML_CHAR_ENCODING_UTF8;
 		return(0);
-	    case XML_CHAR_ENCODING_ASCII:
-		/* default encoding, no conversion should be needed */
-		ctxt->charset = XML_CHAR_ENCODING_UTF8;
-		return(0);
 	    case XML_CHAR_ENCODING_UTF8:
 		/* default encoding, no conversion should be needed */
 		ctxt->charset = XML_CHAR_ENCODING_UTF8;
@@ -7348,7 +7344,10 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 		break;
 	    }
 	}
-	if (RAW == ']') NEXT;
+	if (RAW == ']') { 
+	    NEXT;
+	    SKIP_BLANKS;
+	}
     }
 
     /*

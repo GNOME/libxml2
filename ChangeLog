@@ -1,3 +1,8 @@
+Sun Sep 10 15:14:43 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c parserInternals.h: demacroified most of the IS_XXX
+	  the gain in size is significant so ...
+
 Fri Sep  8 20:48:29 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* entities.c: cases where looking up entities with doc==NULL

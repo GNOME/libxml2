@@ -46,6 +46,7 @@
 #include <libxml/valid.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
+#include <libxml/SAX.h>
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
 #endif
@@ -2259,6 +2260,9 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->pedantic = xmlPedanticParserDefaultValue;
     ctxt->linenumbers = xmlLineNumbersDefaultValue;
     ctxt->keepBlanks = xmlKeepBlanksDefaultValue;
+    if (ctxt->keepBlanks == 0)
+	sax->ignorableWhitespace = ignorableWhitespace;
+
     ctxt->vctxt.userData = ctxt;
     if (ctxt->validate) {
 	ctxt->vctxt.error = xmlParserValidityError;

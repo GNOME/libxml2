@@ -1,3 +1,11 @@
+Fri Sep 14 12:26:58 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c entities.c: do not output hexadecimal charrefs
+	  when serializing HTML since some version of Netscape can't
+	  grok it, generate decimal ones.
+	* result/HTML/doc3.htm: output changed due to previous test
+	* parserInternals.c: repair xmlKeepBlanksDefault() broken in 2.4.4
+
 Thu Sep 13 13:34:27 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* libxml-2.0.pc.in: dohh generated the wrong include path :-(

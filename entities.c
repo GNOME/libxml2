@@ -708,7 +708,10 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		/*
 		 * We could do multiple things here. Just save as a char ref
 		 */
-		snprintf(buf, sizeof(buf), "&#x%X;", val);
+		if (html)
+		    snprintf(buf, sizeof(buf), "&#%d;", val);
+		else
+		    snprintf(buf, sizeof(buf), "&#x%X;", val);
 		buf[sizeof(buf) - 1] = 0;
 		ptr = buf;
 		while (*ptr != 0) *out++ = *ptr++;

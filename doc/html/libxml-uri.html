@@ -13,8 +13,8 @@ REL="UP"
 TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
-TITLE="valid"
-HREF="libxml-valid.html"><LINK
+TITLE="relaxng"
+HREF="libxml-relaxng.html"><LINK
 REL="NEXT"
 TITLE="xmlerror"
 HREF="libxml-xmlerror.html"></HEAD
@@ -49,7 +49,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="libxml-valid.html"
+HREF="libxml-relaxng.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -117,11 +117,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="LIBXML-URI">uri</H1
+NAME="LIBXML-URI"
+></A
+>uri</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN10662"
+NAME="AEN12609"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +131,9 @@ NAME="AEN10662"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN10665"><H2
+NAME="AEN12612"
+></A
+><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -247,7 +251,17 @@ HREF="libxml-uri.html#XMLFREEURI"
 >                      (<A
 HREF="libxml-uri.html#XMLURIPTR"
 >xmlURIPtr</A
-> uri);</PRE
+> uri);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-uri.html#XMLCANONICPATH"
+>xmlCanonicPath</A
+>                  (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *path);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -255,7 +269,7 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10697"
+NAME="AEN12647"
 ></A
 ><H2
 >Description</H2
@@ -265,14 +279,14 @@ NAME="AEN10697"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10700"
+NAME="AEN12650"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10702"
+NAME="AEN12652"
 ></A
 ><H3
 ><A
@@ -312,7 +326,7 @@ as described in RFC 2396 but separated for further processing.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10708"
+NAME="AEN12658"
 ></A
 ><H3
 ><A
@@ -338,7 +352,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10713"
+NAME="AEN12663"
 ></A
 ><H3
 ><A
@@ -368,7 +382,9 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10720"><P
+NAME="AEN12670"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -405,7 +421,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10729"
+NAME="AEN12679"
 ></A
 ><H3
 ><A
@@ -447,7 +463,9 @@ RFC 2396</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10739"><P
+NAME="AEN12689"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -508,7 +526,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >a new URI string (to be freed by the caller) or NULL in case
-of error.</TD
+        of error.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -519,7 +537,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10756"
+NAME="AEN12706"
 ></A
 ><H3
 ><A
@@ -551,7 +569,9 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10764"><P
+NAME="AEN12714"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -605,7 +625,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10777"
+NAME="AEN12727"
 ></A
 ><H3
 ><A
@@ -644,7 +664,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10786"><P
+NAME="AEN12736"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -715,7 +737,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10803"
+NAME="AEN12753"
 ></A
 ><H3
 ><A
@@ -748,7 +770,9 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10811"><P
+NAME="AEN12761"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -802,7 +826,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10824"
+NAME="AEN12774"
 ></A
 ><H3
 ><A
@@ -841,7 +865,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10833"><P
+NAME="AEN12783"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -894,7 +920,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10846"
+NAME="AEN12796"
 ></A
 ><H3
 ><A
@@ -932,7 +958,9 @@ and the characters in the exception list.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10855"><P
+NAME="AEN12805"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1003,7 +1031,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10872"
+NAME="AEN12822"
 ></A
 ><H3
 ><A
@@ -1036,7 +1064,9 @@ CLASS="LITERAL"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10879"><P
+NAME="AEN12829"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1124,7 +1154,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10900"
+NAME="AEN12850"
 ></A
 ><H3
 ><A
@@ -1154,7 +1184,9 @@ Section 5.2, steps 6.c through 6.g.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10907"><P
+NAME="AEN12857"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1208,7 +1240,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10920"
+NAME="AEN12870"
 ></A
 ><H3
 ><A
@@ -1243,7 +1275,9 @@ based it's impossible to be sure.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10928"><P
+NAME="AEN12878"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1291,7 +1325,7 @@ VALIGN="TOP"
 25 May 2001
 Uses xmlParseURI and xmlURIEscapeStr to try to escape correctly
 according to RFC2396.
-- Carl Douglas</TD
+  - Carl Douglas</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1302,7 +1336,7 @@ according to RFC2396.
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10941"
+NAME="AEN12891"
 ></A
 ><H3
 ><A
@@ -1332,7 +1366,9 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10948"><P
+NAME="AEN12898"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1365,6 +1401,98 @@ VALIGN="TOP"
 ></P
 ></DIV
 ></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12907"
+></A
+><H3
+><A
+NAME="XMLCANONICPATH"
+></A
+>xmlCanonicPath ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlCanonicPath                  (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *path);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Constructs a canonic path from the specified path.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN12915"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>path</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the resource locator in a filesystem notation</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new canonic path, or a duplicate of the path parameter if the 
+construction fails. The caller is responsible for freeing the memory occupied
+by the returned string. If there is insufficient memory available, or the 
+argument is NULL, the function returns NULL.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -1381,7 +1509,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="libxml-valid.html"
+HREF="libxml-relaxng.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -1453,7 +1581,7 @@ ALIGN="left"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->valid</B
+>relaxng</B
 ></FONT
 ></TD
 ><TD

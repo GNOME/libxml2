@@ -1,0 +1,5264 @@
+<HTML
+><HEAD
+><TITLE
+>xmlreader</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Libxml Library Reference"
+HREF="libxml-lib.html"><LINK
+REL="PREVIOUS"
+TITLE="parser"
+HREF="libxml-parser.html"><LINK
+REL="NEXT"
+TITLE="SAX"
+HREF="libxml-sax.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>Gnome XML Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="libxml-parser.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="libxml-sax.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="LIBXML-XMLREADER"
+></A
+>xmlreader</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN2927"
+></A
+><H2
+>Name</H2
+>xmlreader&nbsp;--&nbsp;</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN2930"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+enum        <A
+HREF="libxml-xmlreader.html#XMLPARSERPROPERTIES"
+>xmlParserProperties</A
+>;
+enum        <A
+HREF="libxml-xmlreader.html#XMLPARSERSEVERITIES"
+>xmlParserSeverities</A
+>;
+struct      <A
+HREF="libxml-xmlreader.html#XMLTEXTREADER"
+>xmlTextReader</A
+>;
+typedef     <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+>;
+<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> <A
+HREF="libxml-xmlreader.html#XMLNEWTEXTREADER"
+>xmlNewTextReader</A
+>           (<A
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> input,
+                                             const char *URI);
+<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> <A
+HREF="libxml-xmlreader.html#XMLNEWTEXTREADERFILENAME"
+>xmlNewTextReaderFilename</A
+>   (const char *URI);
+void        <A
+HREF="libxml-xmlreader.html#XMLFREETEXTREADER"
+>xmlFreeTextReader</A
+>               (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERREAD"
+>xmlTextReaderRead</A
+>               (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERREADINNERXML"
+>xmlTextReaderReadInnerXml</A
+>       (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERREADOUTERXML"
+>xmlTextReaderReadOuterXml</A
+>       (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERREADSTRING"
+>xmlTextReaderReadString</A
+>         (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERREADATTRIBUTEVALUE"
+>xmlTextReaderReadAttributeValue</A
+> (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERATTRIBUTECOUNT"
+>xmlTextReaderAttributeCount</A
+>     (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERBASEURI"
+>xmlTextReaderBaseUri</A
+>            (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERDEPTH"
+>xmlTextReaderDepth</A
+>              (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERHASATTRIBUTES"
+>xmlTextReaderHasAttributes</A
+>      (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERHASVALUE"
+>xmlTextReaderHasValue</A
+>           (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERISDEFAULT"
+>xmlTextReaderIsDefault</A
+>          (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERISEMPTYELEMENT"
+>xmlTextReaderIsEmptyElement</A
+>     (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOCALNAME"
+>xmlTextReaderLocalName</A
+>          (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERNAME"
+>xmlTextReaderName</A
+>               (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERNAMESPACEURI"
+>xmlTextReaderNamespaceUri</A
+>       (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERNODETYPE"
+>xmlTextReaderNodeType</A
+>           (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPREFIX"
+>xmlTextReaderPrefix</A
+>             (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERQUOTECHAR"
+>xmlTextReaderQuoteChar</A
+>          (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERVALUE"
+>xmlTextReaderValue</A
+>              (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERXMLLANG"
+>xmlTextReaderXmlLang</A
+>            (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERREADSTATE"
+>xmlTextReaderReadState</A
+>          (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERCLOSE"
+>xmlTextReaderClose</A
+>              (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERGETATTRIBUTENO"
+>xmlTextReaderGetAttributeNo</A
+>     (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             int no);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERGETATTRIBUTE"
+>xmlTextReaderGetAttribute</A
+>       (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERGETATTRIBUTENS"
+>xmlTextReaderGetAttributeNs</A
+>     (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *localName,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *namespaceURI);
+<A
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERGETREMAINDER"
+>xmlTextReaderGetRemainder</A
+>
+                                            (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOOKUPNAMESPACE"
+>xmlTextReaderLookupNamespace</A
+>    (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERMOVETOATTRIBUTENO"
+>xmlTextReaderMoveToAttributeNo</A
+>  (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             int no);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERMOVETOATTRIBUTE"
+>xmlTextReaderMoveToAttribute</A
+>    (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERMOVETOATTRIBUTENS"
+>xmlTextReaderMoveToAttributeNs</A
+>  (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *localName,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *namespaceURI);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERMOVETOFIRSTATTRIBUTE"
+>xmlTextReaderMoveToFirstAttribute</A
+>
+                                            (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERMOVETONEXTATTRIBUTE"
+>xmlTextReaderMoveToNextAttribute</A
+>
+                                            (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERMOVETOELEMENT"
+>xmlTextReaderMoveToElement</A
+>      (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERNORMALIZATION"
+>xmlTextReaderNormalization</A
+>      (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERSETPARSERPROP"
+>xmlTextReaderSetParserProp</A
+>      (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             int prop,
+                                             int value);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERGETPARSERPROP"
+>xmlTextReaderGetParserProp</A
+>      (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             int prop);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERCURRENTNODE"
+>xmlTextReaderCurrentNode</A
+>        (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERCURRENTDOC"
+>xmlTextReaderCurrentDoc</A
+>         (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);
+typedef     <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOCATORPTR"
+>xmlTextReaderLocatorPtr</A
+>;
+void        (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERERRORFUNC"
+>*xmlTextReaderErrorFunc</A
+>)       (void *arg,
+                                             const char *msg,
+                                             <A
+HREF="libxml-xmlreader.html#XMLPARSERSEVERITIES"
+>xmlParserSeverities</A
+> severity,
+                                             <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOCATORPTR"
+>xmlTextReaderLocatorPtr</A
+> locator);
+int         <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOCATORLINENUMBER"
+>xmlTextReaderLocatorLineNumber</A
+>  (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOCATORPTR"
+>xmlTextReaderLocatorPtr</A
+> locator);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOCATORBASEURI"
+>xmlTextReaderLocatorBaseURI</A
+>     (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOCATORPTR"
+>xmlTextReaderLocatorPtr</A
+> locator);
+void        <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERSETERRORHANDLER"
+>xmlTextReaderSetErrorHandler</A
+>    (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERERRORFUNC"
+>xmlTextReaderErrorFunc</A
+> f,
+                                             void *arg);
+void        <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERGETERRORHANDLER"
+>xmlTextReaderGetErrorHandler</A
+>    (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERERRORFUNC"
+>xmlTextReaderErrorFunc</A
+> *f,
+                                             void **arg);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3059"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3062"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3064"
+></A
+><H3
+><A
+NAME="XMLPARSERPROPERTIES"
+></A
+>enum xmlParserProperties</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    XML_PARSER_LOADDTD = 1,
+    XML_PARSER_DEFAULTATTRS = 2,
+    XML_PARSER_VALIDATE = 3,
+    XML_PARSER_SUBST_ENTITIES = 4
+} xmlParserProperties;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3069"
+></A
+><H3
+><A
+NAME="XMLPARSERSEVERITIES"
+></A
+>enum xmlParserSeverities</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    XML_PARSER_SEVERITY_VALIDITY_WARNING = 1,
+    XML_PARSER_SEVERITY_VALIDITY_ERROR = 2,
+    XML_PARSER_SEVERITY_WARNING = 3,
+    XML_PARSER_SEVERITY_ERROR = 4
+} xmlParserSeverities;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3074"
+></A
+><H3
+><A
+NAME="XMLTEXTREADER"
+></A
+>struct xmlTextReader</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlTextReader;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3079"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERPTR"
+></A
+>xmlTextReaderPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlTextReader *xmlTextReaderPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3084"
+></A
+><H3
+><A
+NAME="XMLNEWTEXTREADER"
+></A
+>xmlNewTextReader ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> xmlNewTextReader           (<A
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> input,
+                                             const char *URI);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create an xmlTextReader structure fed with <TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3093"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the xmlParserInputBufferPtr used to read data</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URI</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the URI information for the source if available</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new xmlTextReaderPtr or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3110"
+></A
+><H3
+><A
+NAME="XMLNEWTEXTREADERFILENAME"
+></A
+>xmlNewTextReaderFilename ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> xmlNewTextReaderFilename   (const char *URI);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create an xmlTextReader structure fed with the resource at <TT
+CLASS="PARAMETER"
+><I
+>URI</I
+></TT
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3118"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URI</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the URI of the resource to process</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new xmlTextReaderPtr or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3131"
+></A
+><H3
+><A
+NAME="XMLFREETEXTREADER"
+></A
+>xmlFreeTextReader ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeTextReader               (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Deallocate all the resources associated to the reader</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3138"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3147"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERREAD"
+></A
+>xmlTextReaderRead ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderRead               (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Moves the position of the current instance to the next node in
+ the stream, exposing its properties.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3154"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if the node was read successfully, 0 if there is no more
+         nodes to read, or -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3167"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERREADINNERXML"
+></A
+>xmlTextReaderReadInnerXml ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderReadInnerXml       (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Reads the contents of the current node, including child nodes and markup.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3175"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a string containing the XML content, or NULL if the current node
+        is neither an element nor attribute, or has no child nodes. The 
+        string must be deallocated by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3188"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERREADOUTERXML"
+></A
+>xmlTextReaderReadOuterXml ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderReadOuterXml       (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Reads the contents of the current node, including child nodes and markup.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3196"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a string containing the XML content, or NULL if the current node
+        is neither an element nor attribute, or has no child nodes. The 
+        string must be deallocated by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3209"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERREADSTRING"
+></A
+>xmlTextReaderReadString ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderReadString         (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Reads the contents of an element or a text node as a string.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3217"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a string containing the contents of the Element or Text node,
+        or NULL if the reader is positioned on any other type of node.
+        The string must be deallocated by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3230"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERREADATTRIBUTEVALUE"
+></A
+>xmlTextReaderReadAttributeValue ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderReadAttributeValue (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Parses an attribute value into one or more Text and EntityReference nodes.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3237"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 in case of success, 0 if the reader was not positionned on an
+        ttribute node or all the attribute values have been read, or -1
+        in case of error.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3250"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERATTRIBUTECOUNT"
+></A
+>xmlTextReaderAttributeCount ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderAttributeCount     (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Provides the number of attributes of the current node</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3257"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 i no attributes, -1 in case of error or the attribute count</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3270"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERBASEURI"
+></A
+>xmlTextReaderBaseUri ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderBaseUri            (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The base URI of the node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3278"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the base URI or NULL if not available</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3291"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERDEPTH"
+></A
+>xmlTextReaderDepth ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderDepth              (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The depth of the node in the tree.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3298"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the depth or -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3311"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERHASATTRIBUTES"
+></A
+>xmlTextReaderHasAttributes ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderHasAttributes      (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Whether the node has attributes.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3318"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if true, 0 if false, and -1 in case or error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3331"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERHASVALUE"
+></A
+>xmlTextReaderHasValue ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderHasValue           (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Whether the node can have a text value.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3338"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if true, 0 if false, and -1 in case or error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3351"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERISDEFAULT"
+></A
+>xmlTextReaderIsDefault ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderIsDefault          (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Whether an Attribute  node was generated from the default value
+defined in the DTD or schema.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3358"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if not defaulted, 1 if defaulted, and -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3371"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERISEMPTYELEMENT"
+></A
+>xmlTextReaderIsEmptyElement ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderIsEmptyElement     (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check if the current node is empty</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3378"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if empty, 0 if not and -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3391"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERLOCALNAME"
+></A
+>xmlTextReaderLocalName ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderLocalName          (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The local name of the node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3399"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the local name or NULL if not available</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3412"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERNAME"
+></A
+>xmlTextReaderName ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderName               (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The qualified name of the node, equal to Prefix :LocalName.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3420"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the local name or NULL if not available</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3433"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERNAMESPACEURI"
+></A
+>xmlTextReaderNamespaceUri ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderNamespaceUri       (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The URI defining the namespace associated with the node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3441"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the namespace URI or NULL if not available</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3454"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERNODETYPE"
+></A
+>xmlTextReaderNodeType ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderNodeType           (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Get the node type of the current node
+Reference:
+http://dotgnu.org/pnetlib-doc/System/Xml/XmlNodeType.html</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3461"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlNodeType of the current node or -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3474"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERPREFIX"
+></A
+>xmlTextReaderPrefix ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderPrefix             (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>A shorthand reference to the namespace associated with the node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3482"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the prefix or NULL if not available</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3495"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERQUOTECHAR"
+></A
+>xmlTextReaderQuoteChar ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderQuoteChar          (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The quotation mark character used to enclose the value of an attribute.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3502"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>" or ' and -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3515"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERVALUE"
+></A
+>xmlTextReaderValue ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderValue              (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Provides the text value of the node if present</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3523"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the string or NULL if not available. The retsult must be deallocated
+    with <A
+HREF="libxml-globals.html#XMLFREE"
+>xmlFree</A
+>()</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3537"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERXMLLANG"
+></A
+>xmlTextReaderXmlLang ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderXmlLang            (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The xml:lang scope within which the node resides.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3545"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xml:lang value or NULL if none exists.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3558"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERREADSTATE"
+></A
+>xmlTextReaderReadState ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderReadState          (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Gets the read state of the reader.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3565"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the state value, or -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3578"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERCLOSE"
+></A
+>xmlTextReaderClose ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderClose              (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This method releases any resources allocated by the current instance
+changes the state to Closed and close any underlying input.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3585"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 or -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3598"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERGETATTRIBUTENO"
+></A
+>xmlTextReaderGetAttributeNo ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderGetAttributeNo     (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             int no);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Provides the value of the attribute with the specified index relative
+to the containing element.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3606"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>no</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the zero-based index of the attribute relative to the containing element</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a string containing the value of the specified attribute, or NULL
+   in case of error. The string must be deallocated by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3623"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERGETATTRIBUTE"
+></A
+>xmlTextReaderGetAttribute ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderGetAttribute       (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Provides the value of the attribute with the specified qualified name.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3632"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the qualified name of the attribute.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a string containing the value of the specified attribute, or NULL
+   in case of error. The string must be deallocated by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3649"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERGETATTRIBUTENS"
+></A
+>xmlTextReaderGetAttributeNs ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderGetAttributeNs     (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *localName,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *namespaceURI);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Provides the value of the specified attribute</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3659"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>localName</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the local name of the attribute.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>namespaceURI</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the namespace URI of the attribute.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a string containing the value of the specified attribute, or NULL
+   in case of error. The string must be deallocated by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3680"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERGETREMAINDER"
+></A
+>xmlTextReaderGetRemainder ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> xmlTextReaderGetRemainder
+                                            (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Method to get the remainder of the buffered XML. this method stops the
+parser, set its state to End Of File and return the input stream with
+what is left that the parser did not use.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3688"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlParserInputBufferPtr attached to the XML or NULL
+   in case of error.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3701"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERLOOKUPNAMESPACE"
+></A
+>xmlTextReaderLookupNamespace ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderLookupNamespace    (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Resolves a namespace prefix in the scope of the current element.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3710"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prefix</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the prefix whose namespace URI is to be resolved. To return
+         the default namespace, specify NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a string containing the namespace URI to which the prefix maps
+   or NULL in case of error. The string must be deallocated by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3727"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERMOVETOATTRIBUTENO"
+></A
+>xmlTextReaderMoveToAttributeNo ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderMoveToAttributeNo  (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             int no);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Moves the position of the current instance to the attribute with
+the specified index relative to the containing element.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3734"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>no</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the zero-based index of the attribute relative to the containing
+     element.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 in case of success, -1 in case of error, 0 if not found</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3751"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERMOVETOATTRIBUTE"
+></A
+>xmlTextReaderMoveToAttribute ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderMoveToAttribute    (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Moves the position of the current instance to the attribute with
+the specified qualified name.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3759"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the qualified name of the attribute.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 in case of success, -1 in case of error, 0 if not found</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3776"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERMOVETOATTRIBUTENS"
+></A
+>xmlTextReaderMoveToAttributeNs ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderMoveToAttributeNs  (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *localName,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *namespaceURI);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Moves the position of the current instance to the attribute with the
+specified local name and namespace URI.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3785"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>localName</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the local name of the attribute.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>namespaceURI</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the namespace URI of the attribute.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 in case of success, -1 in case of error, 0 if not found</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3806"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERMOVETOFIRSTATTRIBUTE"
+></A
+>xmlTextReaderMoveToFirstAttribute ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderMoveToFirstAttribute
+                                            (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Moves the position of the current instance to the first attribute
+associated with the current node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3813"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 in case of success, -1 in case of error, 0 if not found</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3826"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERMOVETONEXTATTRIBUTE"
+></A
+>xmlTextReaderMoveToNextAttribute ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderMoveToNextAttribute
+                                            (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Moves the position of the current instance to the next attribute
+associated with the current node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3833"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 in case of success, -1 in case of error, 0 if not found</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3846"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERMOVETOELEMENT"
+></A
+>xmlTextReaderMoveToElement ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderMoveToElement      (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Moves the position of the current instance to the node that
+contains the current Attribute  node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3853"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 in case of success, -1 in case of error, 0 if not moved</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3866"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERNORMALIZATION"
+></A
+>xmlTextReaderNormalization ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderNormalization      (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The value indicating whether to normalize white space and attribute values.
+Since attribute value and end of line normalizations are a MUST in the XML
+specification only the value true is accepted. The broken bahaviour of
+accepting out of range character entities like &amp;<GTKDOCLINK
+HREF="0-CAPS"
+>0</GTKDOCLINK
+>; is of course not
+supported either.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3874"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 or -1 in case of error.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3887"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERSETPARSERPROP"
+></A
+>xmlTextReaderSetParserProp ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderSetParserProp      (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             int prop,
+                                             int value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Change the parser processing behaviour by changing some of its internal
+properties. Note that some properties can only be changed before any
+read has been done.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3894"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prop</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlParserProperties to set</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  usually 0 or 1 to (de)activate it</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if the call was successful, or -1 in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3915"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERGETPARSERPROP"
+></A
+>xmlTextReaderGetParserProp ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderGetParserProp      (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             int prop);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Read the parser internal property.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3922"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prop</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlParserProperties to get</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the value, usually 0 or 1, or -1 in case of error.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3939"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERCURRENTNODE"
+></A
+>xmlTextReaderCurrentNode ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlTextReaderCurrentNode        (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Hacking interface allowing to get the xmlNodePtr correponding to the
+current node being accessed by the xmlTextReader. This is dangerous
+because the underlying node may be destroyed on the next Reads.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3947"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlNodePtr or NULL in case of error.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3960"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERCURRENTDOC"
+></A
+>xmlTextReaderCurrentDoc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlTextReaderCurrentDoc         (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Hacking interface allowing to get the xmlDocPtr correponding to the
+current document being accessed by the xmlTextReader. This is dangerous
+because the associated node may be destroyed on the next Reads.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3968"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlDocPtr or NULL in case of error.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3981"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERLOCATORPTR"
+></A
+>xmlTextReaderLocatorPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef void *  xmlTextReaderLocatorPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3986"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERERRORFUNC"
+></A
+>xmlTextReaderErrorFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlTextReaderErrorFunc)       (void *arg,
+                                             const char *msg,
+                                             <A
+HREF="libxml-xmlreader.html#XMLPARSERSEVERITIES"
+>xmlParserSeverities</A
+> severity,
+                                             <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOCATORPTR"
+>xmlTextReaderLocatorPtr</A
+> locator);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3993"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>arg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>severity</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>locator</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4014"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERLOCATORLINENUMBER"
+></A
+>xmlTextReaderLocatorLineNumber ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlTextReaderLocatorLineNumber  (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOCATORPTR"
+>xmlTextReaderLocatorPtr</A
+> locator);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Obtain the line number for the given locator.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4021"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>locator</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the xmlTextReaderLocatorPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the line number or -1 in case of error.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4034"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERLOCATORBASEURI"
+></A
+>xmlTextReaderLocatorBaseURI ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlTextReaderLocatorBaseURI     (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERLOCATORPTR"
+>xmlTextReaderLocatorPtr</A
+> locator);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Obtain the base URI for the given locator.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4042"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>locator</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the xmlTextReaderLocatorPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the base URI or NULL in case of error.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4055"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERSETERRORHANDLER"
+></A
+>xmlTextReaderSetErrorHandler ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlTextReaderSetErrorHandler    (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERERRORFUNC"
+>xmlTextReaderErrorFunc</A
+> f,
+                                             void *arg);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a callback function that will be called on error and warnings.</P
+><P
+>If <TT
+CLASS="PARAMETER"
+><I
+>f</I
+></TT
+> is NULL, the default error and warning handlers are restored.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4065"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>f</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>	the callback function to call on error and warnings</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>arg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>    a user argument to pass to the callback function</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4082"
+></A
+><H3
+><A
+NAME="XMLTEXTREADERGETERRORHANDLER"
+></A
+>xmlTextReaderGetErrorHandler ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlTextReaderGetErrorHandler    (<A
+HREF="libxml-xmlreader.html#XMLTEXTREADERPTR"
+>xmlTextReaderPtr</A
+> reader,
+                                             <A
+HREF="libxml-xmlreader.html#XMLTEXTREADERERRORFUNC"
+>xmlTextReaderErrorFunc</A
+> *f,
+                                             void **arg);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Retrieve the error callback function and user argument.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4090"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reader</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlTextReaderPtr used</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>f</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>	the callback function or NULL is no callback has been registered</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>arg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>    a user argument</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="libxml-parser.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="libxml-sax.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>parser</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>SAX</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -117,11 +117,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="LIBXML-XMLMEMORY">xmlmemory</H1
+NAME="LIBXML-XMLMEMORY"
+></A
+>xmlmemory</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN27280"
+NAME="AEN29382"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +131,9 @@ NAME="AEN27280"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN27283"><H2
+NAME="AEN29385"
+></A
+><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -234,6 +238,29 @@ void        <A
 HREF="libxml-xmlmemory.html#XMLMEMORYDUMP"
 >xmlMemoryDump</A
 >                   (void);
+void*       <A
+HREF="libxml-xmlmemory.html#XMLMEMMALLOC"
+>xmlMemMalloc</A
+>                    (<GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+void*       <A
+HREF="libxml-xmlmemory.html#XMLMEMREALLOC"
+>xmlMemRealloc</A
+>                   (void *ptr,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+void        <A
+HREF="libxml-xmlmemory.html#XMLMEMFREE"
+>xmlMemFree</A
+>                      (void *ptr);
+char*       <A
+HREF="libxml-xmlmemory.html#XMLMEMORYSTRDUP"
+>xmlMemoryStrdup</A
+>                 (const char *str);
 #define     <A
 HREF="libxml-globals.html#XMLMALLOC"
 >xmlMalloc</A
@@ -278,7 +305,7 @@ HREF="libxml-xmlmemory.html#XMLMEMSTRDUPLOC"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN27318"
+NAME="AEN29426"
 ></A
 ><H2
 >Description</H2
@@ -288,14 +315,14 @@ NAME="AEN27318"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN27321"
+NAME="AEN29429"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27323"
+NAME="AEN29431"
 ></A
 ><H3
 ><A
@@ -326,7 +353,7 @@ libxml i.e. if libxml has been configured with --with-debug-mem too.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27329"
+NAME="AEN29437"
 ></A
 ><H3
 ><A
@@ -356,7 +383,9 @@ HREF="FREE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27336"><P
+NAME="AEN29444"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -392,7 +421,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27345"
+NAME="AEN29453"
 ></A
 ><H3
 ><A
@@ -425,7 +454,9 @@ HREF="MALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27353"><P
+NAME="AEN29461"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -461,7 +492,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27362"
+NAME="AEN29470"
 ></A
 ><H3
 ><A
@@ -495,7 +526,9 @@ HREF="REALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27370"><P
+NAME="AEN29478"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -548,7 +581,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27383"
+NAME="AEN29491"
 ></A
 ><H3
 ><A
@@ -578,7 +611,9 @@ HREF="STRDUP"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27390"><P
+NAME="AEN29498"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -632,7 +667,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27403"
+NAME="AEN29511"
 ></A
 ><H3
 ><A
@@ -678,7 +713,9 @@ done ?</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27414"><P
+NAME="AEN29522"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -795,7 +832,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27443"
+NAME="AEN29551"
 ></A
 ><H3
 ><A
@@ -831,13 +868,15 @@ HREF="libxml-xmlmemory.html#XMLSTRDUPFUNC"
 ></TR
 ></TABLE
 ><P
->Return the memory access functions set currently in use</P
+>Provides the memory access functions set currently in use</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27453"><P
+NAME="AEN29561"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -862,7 +901,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the <GTKDOCLINK
+> place to save the <GTKDOCLINK
 HREF="FREE"
 >free</GTKDOCLINK
 >() function in use</TD
@@ -882,7 +921,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the <GTKDOCLINK
+> place to save the <GTKDOCLINK
 HREF="MALLOC"
 >malloc</GTKDOCLINK
 >() function in use</TD
@@ -902,7 +941,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the <GTKDOCLINK
+> place to save the <GTKDOCLINK
 HREF="REALLOC"
 >realloc</GTKDOCLINK
 >() function in use</TD
@@ -922,7 +961,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the <GTKDOCLINK
+> place to save the <GTKDOCLINK
 HREF="STRDUP"
 >strdup</GTKDOCLINK
 >() function in use</TD
@@ -954,7 +993,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27482"
+NAME="AEN29590"
 ></A
 ><H3
 ><A
@@ -981,7 +1020,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27488"><P
+NAME="AEN29596"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1018,7 +1059,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27497"
+NAME="AEN29605"
 ></A
 ><H3
 ><A
@@ -1039,13 +1080,15 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->returns the amount of memory currently allocated</P
+>Provides the amount of memory currently allocated</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27503"><P
+NAME="AEN29611"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1082,7 +1125,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27512"
+NAME="AEN29620"
 ></A
 ><H3
 ><A
@@ -1112,7 +1155,9 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27519"><P
+NAME="AEN29627"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1138,7 +1183,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >  a FILE descriptor used as the output file, if NULL, the result is
-written to the file .memorylist</TD
+      written to the file .memorylist</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1149,7 +1194,7 @@ written to the file .memorylist</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27528"
+NAME="AEN29636"
 ></A
 ><H3
 ><A
@@ -1186,7 +1231,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27536"><P
+NAME="AEN29644"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1239,7 +1286,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27549"
+NAME="AEN29657"
 ></A
 ><H3
 ><A
@@ -1267,7 +1314,321 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27555"
+NAME="AEN29663"
+></A
+><H3
+><A
+NAME="XMLMEMMALLOC"
+></A
+>xmlMemMalloc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void*       xmlMemMalloc                    (<GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a <GTKDOCLINK
+HREF="MALLOC"
+>malloc</GTKDOCLINK
+>() equivalent, with logging of the allocation info.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN29671"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an int specifying the size in byte to allocate.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN29680"
+></A
+><H3
+><A
+NAME="XMLMEMREALLOC"
+></A
+>xmlMemRealloc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void*       xmlMemRealloc                   (void *ptr,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a <GTKDOCLINK
+HREF="REALLOC"
+>realloc</GTKDOCLINK
+>() equivalent, with logging of the allocation info.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN29688"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ptr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the initial memory block pointer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an int specifying the size in byte to allocate.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN29701"
+></A
+><H3
+><A
+NAME="XMLMEMFREE"
+></A
+>xmlMemFree ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlMemFree                      (void *ptr);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a <GTKDOCLINK
+HREF="FREE"
+>free</GTKDOCLINK
+>() equivalent, with error checking.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN29708"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ptr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the memory block pointer</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN29717"
+></A
+><H3
+><A
+NAME="XMLMEMORYSTRDUP"
+></A
+>xmlMemoryStrdup ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>char*       xmlMemoryStrdup                 (const char *str);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a <GTKDOCLINK
+HREF="STRDUP"
+>strdup</GTKDOCLINK
+>() equivalent, with logging of the allocation info.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN29724"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the initial string pointer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new string or NULL if allocation error occurred.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN29737"
 ></A
 ><H3
 ><A
@@ -1297,7 +1658,9 @@ HREF="MALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27562"><P
+NAME="AEN29744"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1333,7 +1696,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27571"
+NAME="AEN29753"
 ></A
 ><H3
 ><A
@@ -1363,7 +1726,9 @@ HREF="REALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27578"><P
+NAME="AEN29760"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1416,7 +1781,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27591"
+NAME="AEN29773"
 ></A
 ><H3
 ><A
@@ -1449,7 +1814,9 @@ HREF="libxml-parser.html#XMLSTRDUP"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27599"><P
+NAME="AEN29781"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1485,7 +1852,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27608"
+NAME="AEN29790"
 ></A
 ><H3
 ><A
@@ -1520,7 +1887,9 @@ HREF="MALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27616"><P
+NAME="AEN29798"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1590,7 +1959,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27633"
+NAME="AEN29815"
 ></A
 ><H3
 ><A
@@ -1626,7 +1995,9 @@ HREF="REALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27641"><P
+NAME="AEN29823"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1713,7 +2084,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN27662"
+NAME="AEN29844"
 ></A
 ><H3
 ><A
@@ -1745,7 +2116,9 @@ HREF="STRDUP"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN27669"><P
+NAME="AEN29851"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"

@@ -117,11 +117,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="LIBXML-THREADS">threads</H1
+NAME="LIBXML-THREADS"
+></A
+>threads</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN20981"
+NAME="AEN22983"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +131,9 @@ NAME="AEN20981"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN20984"><H2
+NAME="AEN22986"
+></A
+><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -252,7 +256,7 @@ HREF="libxml-threads.html#XMLGETGLOBALSTATE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN21015"
+NAME="AEN23017"
 ></A
 ><H2
 >Description</H2
@@ -262,14 +266,14 @@ NAME="AEN21015"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN21018"
+NAME="AEN23020"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21020"
+NAME="AEN23022"
 ></A
 ><H3
 ><A
@@ -295,7 +299,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21025"
+NAME="AEN23027"
 ></A
 ><H3
 ><A
@@ -316,18 +320,12 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
-><A
-HREF="libxml-threads.html#XMLNEWMUTEX"
->xmlNewMutex</A
->() is used to allocate a libxml2 token struct for use in
-synchronizing access to data.</P
-><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21032"
+NAME="AEN23032"
 ></A
 ><H3
 ><A
@@ -353,7 +351,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21037"
+NAME="AEN23037"
 ></A
 ><H3
 ><A
@@ -379,7 +377,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21042"
+NAME="AEN23042"
 ></A
 ><H3
 ><A
@@ -403,11 +401,19 @@ HREF="libxml-threads.html#XMLMUTEXPTR"
 ></TR
 ></TABLE
 ><P
+><A
+HREF="libxml-threads.html#XMLNEWMUTEX"
+>xmlNewMutex</A
+>() is used to allocate a libxml2 token struct for use in
+synchronizing access to data.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21048"><P
+NAME="AEN23050"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -433,7 +439,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a new simple mutex pointer or NULL in case of error</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -444,7 +450,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21057"
+NAME="AEN23059"
 ></A
 ><H3
 ><A
@@ -477,7 +483,9 @@ HREF="libxml-threads.html#XMLMUTEXLOCK"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21065"><P
+NAME="AEN23067"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -513,7 +521,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21074"
+NAME="AEN23076"
 ></A
 ><H3
 ><A
@@ -546,7 +554,9 @@ HREF="libxml-threads.html#XMLMUTEXUNLOCK"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21082"><P
+NAME="AEN23084"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -582,7 +592,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21091"
+NAME="AEN23093"
 ></A
 ><H3
 ><A
@@ -616,7 +626,9 @@ struct.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21099"><P
+NAME="AEN23101"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -652,7 +664,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21108"
+NAME="AEN23110"
 ></A
 ><H3
 ><A
@@ -676,11 +688,21 @@ HREF="libxml-threads.html#XMLRMUTEXPTR"
 ></TR
 ></TABLE
 ><P
+><GTKDOCLINK
+HREF="XMLRNEWMUTEX"
+>xmlRNewMutex</GTKDOCLINK
+>() is used to allocate a reentrant mutex for use in
+synchronizing access to data. token_r is a re-entrant lock and thus useful
+for synchronizing access to data structures that may be manipulated in a
+recursive fashion.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21114"><P
+NAME="AEN23118"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -706,7 +728,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new reentrant mutex pointer or NULL in case of error</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -717,7 +739,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21123"
+NAME="AEN23127"
 ></A
 ><H3
 ><A
@@ -750,7 +772,9 @@ HREF="libxml-threads.html#XMLRMUTEXLOCK"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21131"><P
+NAME="AEN23135"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -786,7 +810,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21140"
+NAME="AEN23144"
 ></A
 ><H3
 ><A
@@ -819,7 +843,9 @@ HREF="libxml-threads.html#XMLRMUTEXUNLOCK"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21148"><P
+NAME="AEN23152"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -855,7 +881,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21157"
+NAME="AEN23161"
 ></A
 ><H3
 ><A
@@ -879,11 +905,19 @@ HREF="libxml-threads.html#XMLRMUTEXPTR"
 ></TR
 ></TABLE
 ><P
+><GTKDOCLINK
+HREF="XMLRFREEMUTEX"
+>xmlRFreeMutex</GTKDOCLINK
+>() is used to reclaim resources associated with a
+reentrant mutex.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21163"><P
+NAME="AEN23169"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -908,7 +942,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the reentrant mutex</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -919,7 +953,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21172"
+NAME="AEN23178"
 ></A
 ><H3
 ><A
@@ -951,7 +985,7 @@ data of the libxml2 library.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21179"
+NAME="AEN23185"
 ></A
 ><H3
 ><A
@@ -983,7 +1017,7 @@ library.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21186"
+NAME="AEN23192"
 ></A
 ><H3
 ><A
@@ -1015,7 +1049,7 @@ library.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21193"
+NAME="AEN23199"
 ></A
 ><H3
 ><A
@@ -1045,7 +1079,9 @@ HREF="libxml-threads.html#XMLGETTHREADID"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21200"><P
+NAME="AEN23206"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1082,7 +1118,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21209"
+NAME="AEN23215"
 ></A
 ><H3
 ><A
@@ -1112,7 +1148,9 @@ HREF="libxml-threads.html#XMLISMAINTHREAD"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21216"><P
+NAME="AEN23222"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1149,7 +1187,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21225"
+NAME="AEN23231"
 ></A
 ><H3
 ><A
@@ -1181,7 +1219,7 @@ data of the libxml2 library once processing has ended.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21232"
+NAME="AEN23238"
 ></A
 ><H3
 ><A
@@ -1214,7 +1252,9 @@ HREF="libxml-threads.html#XMLGETGLOBALSTATE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21240"><P
+NAME="AEN23246"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"

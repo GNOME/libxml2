@@ -989,6 +989,7 @@
      <exports symbol='XML_PARSER_START'/>
      <exports symbol='XML_PARSER_START_TAG'/>
      <exports symbol='XML_PARSER_SYSTEM_LITERAL'/>
+     <exports symbol='XML_SKIP_IDS'/>
      <exports symbol='_xmlParserCtxt'/>
      <exports symbol='_xmlParserInput'/>
      <exports symbol='_xmlParserNodeInfo'/>
@@ -2154,6 +2155,9 @@
     </macro>
     <macro name='XML_MAX_NAMELEN' file='parserInternals'>
       <info>Identifiers can be longer, but this will be more costly at runtime.</info>
+    </macro>
+    <macro name='XML_SKIP_IDS' file='parser'>
+      <info>Bit in the loadsubset context field to tell to not do ID/REFs registration. Used to initialize xmlLoadExtDtdDefaultValue in some special cases.</info>
     </macro>
     <macro name='XML_SUBSTITUTE_BOTH' file='parserInternals'>
       <info>Both general and parameter entities need to be substituted.</info>

@@ -31,6 +31,8 @@
 <!entity xmlschemas SYSTEM "sgml/xmlschemas.sgml">
 <!entity xmlschemastypes SYSTEM "sgml/xmlschemastypes.sgml">
 <!entity schemasInternals SYSTEM "sgml/schemasInternals.sgml">
+<!entity relaxng SYSTEM "sgml/relaxng.sgml">
+<!entity xmlreader SYSTEM "sgml/xmlreader.sgml">
 ]>
 
 <book>
@@ -90,10 +92,12 @@
     build by extracting comments from the code sources. </para>
 
     &parser;
+    &xmlreader;
     &SAX;
     &tree;
     &entities;
     &valid;
+    &relaxng;
     &uri;
     &error;
     &HTMLparser;

@@ -117,11 +117,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="LIBXML-GLOBALS">globals</H1
+NAME="LIBXML-GLOBALS"
+></A
+>globals</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN21254"
+NAME="AEN23260"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +131,9 @@ NAME="AEN21254"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN21257"><H2
+NAME="AEN23263"
+></A
+><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -142,6 +146,20 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+void        (<A
+HREF="libxml-globals.html#XMLREGISTERNODEFUNC"
+>*xmlRegisterNodeFunc</A
+>)          (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);
+void        (<A
+HREF="libxml-globals.html#XMLDEREGISTERNODEFUNC"
+>*xmlDeregisterNodeFunc</A
+>)        (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);
 struct      <A
 HREF="libxml-globals.html#XMLGLOBALSTATE"
 >xmlGlobalState</A
@@ -157,6 +175,27 @@ HREF="libxml-globals.html#XMLINITIALIZEGLOBALSTATE"
 HREF="libxml-globals.html#XMLGLOBALSTATEPTR"
 >xmlGlobalStatePtr</A
 > gs);
+<A
+HREF="libxml-globals.html#XMLREGISTERNODEFUNC"
+>xmlRegisterNodeFunc</A
+> <A
+HREF="libxml-globals.html#XMLREGISTERNODEDEFAULT"
+>xmlRegisterNodeDefault</A
+>  (<A
+HREF="libxml-globals.html#XMLREGISTERNODEFUNC"
+>xmlRegisterNodeFunc</A
+> func);
+<A
+HREF="libxml-globals.html#XMLDEREGISTERNODEFUNC"
+>xmlDeregisterNodeFunc</A
+> <A
+HREF="libxml-globals.html#XMLDEREGISTERNODEDEFAULT"
+>xmlDeregisterNodeDefault</A
+>
+                                            (<A
+HREF="libxml-globals.html#XMLDEREGISTERNODEFUNC"
+>xmlDeregisterNodeFunc</A
+> func);
 #define     <A
 HREF="libxml-globals.html#XMLMALLOC"
 >xmlMalloc</A
@@ -254,8 +293,16 @@ HREF="libxml-globals.html#XMLSAVENOEMPTYTAGS"
 >xmlSaveNoEmptyTags</A
 >
 #define     <A
-HREF="libxml-parser.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE"
+HREF="libxml-globals.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE"
 >xmlSubstituteEntitiesDefaultValue</A
+>
+#define     <A
+HREF="libxml-globals.html#XMLREGISTERNODEDEFAULTVALUE"
+>xmlRegisterNodeDefaultValue</A
+>
+#define     <A
+HREF="libxml-globals.html#XMLDEREGISTERNODEDEFAULTVALUE"
+>xmlDeregisterNodeDefaultValue</A
 ></PRE
 ></TD
 ></TR
@@ -264,7 +311,7 @@ HREF="libxml-parser.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN21289"
+NAME="AEN23307"
 ></A
 ><H2
 >Description</H2
@@ -274,14 +321,146 @@ NAME="AEN21289"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN21292"
+NAME="AEN23310"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21294"
+NAME="AEN23312"
+></A
+><H3
+><A
+NAME="XMLREGISTERNODEFUNC"
+></A
+>xmlRegisterNodeFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlRegisterNodeFunc)          (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN23318"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN23327"
+></A
+><H3
+><A
+NAME="XMLDEREGISTERNODEFUNC"
+></A
+>xmlDeregisterNodeFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlDeregisterNodeFunc)        (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN23333"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN23342"
 ></A
 ><H3
 ><A
@@ -331,6 +510,9 @@ CLASS="PROGRAMLISTING"
 	int xmlSaveNoEmptyTags;
 	int xmlIndentTreeOutput;
 	const char *xmlTreeIndentString;
+
+  	xmlRegisterNodeFunc xmlRegisterNodeDefaultValue;
+  	xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue;
 };</PRE
 ></TD
 ></TR
@@ -341,7 +523,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21299"
+NAME="AEN23347"
 ></A
 ><H3
 ><A
@@ -367,7 +549,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21304"
+NAME="AEN23352"
 ></A
 ><H3
 ><A
@@ -401,7 +583,9 @@ default values of the library.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21312"><P
+NAME="AEN23360"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -437,7 +621,186 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21321"
+NAME="AEN23369"
+></A
+><H3
+><A
+NAME="XMLREGISTERNODEDEFAULT"
+></A
+>xmlRegisterNodeDefault ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-globals.html#XMLREGISTERNODEFUNC"
+>xmlRegisterNodeFunc</A
+> xmlRegisterNodeDefault  (<A
+HREF="libxml-globals.html#XMLREGISTERNODEFUNC"
+>xmlRegisterNodeFunc</A
+> func);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Registers a callback for node creation</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN23377"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>func</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> function pointer to the new RegisterNodeFunc</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the old value of the registration function</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN23390"
+></A
+><H3
+><A
+NAME="XMLDEREGISTERNODEDEFAULT"
+></A
+>xmlDeregisterNodeDefault ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-globals.html#XMLDEREGISTERNODEFUNC"
+>xmlDeregisterNodeFunc</A
+> xmlDeregisterNodeDefault
+                                            (<A
+HREF="libxml-globals.html#XMLDEREGISTERNODEFUNC"
+>xmlDeregisterNodeFunc</A
+> func);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Registers a callback for node destruction</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN23398"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>func</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> function pointer to the new DeregisterNodeFunc</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the previous value of the deregistration function</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN23411"
 ></A
 ><H3
 ><A
@@ -467,7 +830,9 @@ HREF="MALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21328"><P
+NAME="AEN23418"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -503,7 +868,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21337"
+NAME="AEN23427"
 ></A
 ><H3
 ><A
@@ -533,7 +898,9 @@ HREF="REALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21344"><P
+NAME="AEN23434"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -586,7 +953,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21357"
+NAME="AEN23447"
 ></A
 ><H3
 ><A
@@ -617,7 +984,7 @@ HREF="FREE"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21364"
+NAME="AEN23454"
 ></A
 ><H3
 ><A
@@ -650,7 +1017,9 @@ HREF="libxml-parser.html#XMLSTRDUP"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21372"><P
+NAME="AEN23462"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -686,7 +1055,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21381"
+NAME="AEN23471"
 ></A
 ><H3
 ><A
@@ -714,7 +1083,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21387"
+NAME="AEN23477"
 ></A
 ><H3
 ><A
@@ -742,7 +1111,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21393"
+NAME="AEN23483"
 ></A
 ><H3
 ><A
@@ -770,7 +1139,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21399"
+NAME="AEN23489"
 ></A
 ><H3
 ><A
@@ -799,7 +1168,7 @@ XML_BUFFER_ALLOC_EXACT</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21405"
+NAME="AEN23495"
 ></A
 ><H3
 ><A
@@ -827,7 +1196,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21411"
+NAME="AEN23501"
 ></A
 ><H3
 ><A
@@ -855,7 +1224,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21417"
+NAME="AEN23507"
 ></A
 ><H3
 ><A
@@ -884,7 +1253,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21423"
+NAME="AEN23513"
 ></A
 ><H3
 ><A
@@ -913,7 +1282,7 @@ Disabled by default.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21429"
+NAME="AEN23519"
 ></A
 ><H3
 ><A
@@ -941,7 +1310,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21435"
+NAME="AEN23525"
 ></A
 ><H3
 ><A
@@ -969,7 +1338,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21441"
+NAME="AEN23531"
 ></A
 ><H3
 ><A
@@ -998,7 +1367,7 @@ Activated by default.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21447"
+NAME="AEN23537"
 ></A
 ><H3
 ><A
@@ -1027,7 +1396,7 @@ Enabled by default</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21453"
+NAME="AEN23543"
 ></A
 ><H3
 ><A
@@ -1055,7 +1424,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21459"
+NAME="AEN23549"
 ></A
 ><H3
 ><A
@@ -1087,7 +1456,7 @@ for some applications since this was libxml1 default behaviour.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21465"
+NAME="AEN23555"
 ></A
 ><H3
 ><A
@@ -1118,7 +1487,7 @@ applicaton.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21471"
+NAME="AEN23561"
 ></A
 ><H3
 ><A
@@ -1148,7 +1517,7 @@ Disabled by default.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21477"
+NAME="AEN23567"
 ></A
 ><H3
 ><A
@@ -1178,7 +1547,7 @@ Disabled by default</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21483"
+NAME="AEN23573"
 ></A
 ><H3
 ><A
@@ -1206,7 +1575,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21489"
+NAME="AEN23579"
 ></A
 ><H3
 ><A
@@ -1235,7 +1604,7 @@ Disabled by default.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21495"
+NAME="AEN23585"
 ></A
 ><H3
 ><A
@@ -1266,7 +1635,7 @@ Disabled by default</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21501"
+NAME="AEN23591"
 ></A
 ><H3
 ><A
@@ -1287,7 +1656,63 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Global variable controlling the entity substitution default behavior.</P
+>Global setting, indicate that the parser should not generate entity
+references but replace them with the actual content of the entity
+Disabled by default, this should be activated when using XPath since
+the XPath data model requires entities replacement and the XPath
+engine does not handle entities references transparently.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN23597"
+></A
+><H3
+><A
+NAME="XMLREGISTERNODEDEFAULTVALUE"
+></A
+>xmlRegisterNodeDefaultValue</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlRegisterNodeDefaultValue</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN23602"
+></A
+><H3
+><A
+NAME="XMLDEREGISTERNODEDEFAULTVALUE"
+></A
+>xmlDeregisterNodeDefaultValue</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlDeregisterNodeDefaultValue</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ></DIV

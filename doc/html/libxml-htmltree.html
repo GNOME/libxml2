@@ -117,11 +117,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="LIBXML-HTMLTREE">HTMLtree</H1
+NAME="LIBXML-HTMLTREE"
+></A
+>HTMLtree</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN11856"
+NAME="AEN13826"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +131,9 @@ NAME="AEN11856"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN11859"><H2
+NAME="AEN13829"
+></A
+><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -242,7 +246,7 @@ HREF="libxml-htmltree.html#HTMLSAVEFILE"
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur);
-void        <A
+int         <A
 HREF="libxml-htmltree.html#HTMLNODEDUMP"
 >htmlNodeDump</A
 >                    (<A
@@ -356,7 +360,23 @@ HREF="libxml-htmltree.html#HTMLISBOOLEANATTR"
 >               (const <A
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
-> *name);</PRE
+> *name);
+void        <A
+HREF="libxml-htmltree.html#HTMLNODEDUMPOUTPUT"
+>htmlNodeDumpOutput</A
+>              (<A
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> buf,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const char *encoding);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -364,7 +384,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11917"
+NAME="AEN13891"
 ></A
 ><H2
 >Description</H2
@@ -374,14 +394,14 @@ NAME="AEN11917"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11920"
+NAME="AEN13894"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11922"
+NAME="AEN13896"
 ></A
 ><H3
 ><A
@@ -410,7 +430,7 @@ the same way as a text node in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11928"
+NAME="AEN13902"
 ></A
 ><H3
 ><A
@@ -439,7 +459,7 @@ the same way as an entity reference in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11934"
+NAME="AEN13908"
 ></A
 ><H3
 ><A
@@ -468,7 +488,7 @@ the same way as a comment in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11940"
+NAME="AEN13914"
 ></A
 ><H3
 ><A
@@ -497,7 +517,7 @@ the same way as a CDATA section in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11946"
+NAME="AEN13920"
 ></A
 ><H3
 ><A
@@ -526,7 +546,7 @@ the same way as a processing instruction in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11952"
+NAME="AEN13926"
 ></A
 ><H3
 ><A
@@ -563,7 +583,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11961"><P
+NAME="AEN13935"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -634,7 +656,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11978"
+NAME="AEN13952"
 ></A
 ><H3
 ><A
@@ -682,7 +704,9 @@ are NULL</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11989"><P
+NAME="AEN13963"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -753,7 +777,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12006"
+NAME="AEN13980"
 ></A
 ><H3
 ><A
@@ -786,7 +810,9 @@ HREF="libxml-htmlparser.html#HTMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12014"><P
+NAME="AEN13988"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -840,7 +866,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12027"
+NAME="AEN14001"
 ></A
 ><H3
 ><A
@@ -876,7 +902,9 @@ the META flag associated.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12035"><P
+NAME="AEN14009"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -947,7 +975,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12052"
+NAME="AEN14026"
 ></A
 ><H3
 ><A
@@ -983,7 +1011,9 @@ It's up to the caller to free the memory.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12060"><P
+NAME="AEN14034"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1053,7 +1083,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12077"
+NAME="AEN14051"
 ></A
 ><H3
 ><A
@@ -1087,7 +1117,9 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12085"><P
+NAME="AEN14059"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1158,7 +1190,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12102"
+NAME="AEN14076"
 ></A
 ><H3
 ><A
@@ -1195,7 +1227,9 @@ used.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12110"><P
+NAME="AEN14084"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1266,7 +1300,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12127"
+NAME="AEN14101"
 ></A
 ><H3
 ><A
@@ -1282,7 +1316,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        htmlNodeDump                    (<A
+>int         htmlNodeDump                    (<A
 HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
@@ -1305,7 +1339,9 @@ and formatting returns are added.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12136"><P
+NAME="AEN14110"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1366,6 +1402,24 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the current node</TD
 ></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of byte written or -1 in case of error</TD
+></TR
 ></TBODY
 ></TABLE
 ><P
@@ -1375,7 +1429,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12153"
+NAME="AEN14131"
 ></A
 ><H3
 ><A
@@ -1414,7 +1468,9 @@ and formatting returns are added.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12162"><P
+NAME="AEN14140"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1484,7 +1540,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12179"
+NAME="AEN14157"
 ></A
 ><H3
 ><A
@@ -1526,7 +1582,9 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12189"><P
+NAME="AEN14167"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1648,7 +1706,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12218"
+NAME="AEN14196"
 ></A
 ><H3
 ><A
@@ -1681,7 +1739,9 @@ and formatting returns/spaces are added.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12225"><P
+NAME="AEN14203"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1769,7 +1829,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12246"
+NAME="AEN14224"
 ></A
 ><H3
 ><A
@@ -1802,7 +1862,9 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12253"><P
+NAME="AEN14231"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1907,7 +1969,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12278"
+NAME="AEN14256"
 ></A
 ><H3
 ><A
@@ -1947,7 +2009,9 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12287"><P
+NAME="AEN14265"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2051,7 +2115,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12312"
+NAME="AEN14290"
 ></A
 ><H3
 ><A
@@ -2086,7 +2150,9 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12320"><P
+NAME="AEN14298"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2156,7 +2222,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12337"
+NAME="AEN14315"
 ></A
 ><H3
 ><A
@@ -2192,7 +2258,9 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12345"><P
+NAME="AEN14323"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2279,7 +2347,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12366"
+NAME="AEN14344"
 ></A
 ><H3
 ><A
@@ -2309,7 +2377,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12373"><P
+NAME="AEN14351"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2353,6 +2423,135 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 > false if the attribute is not boolean, true otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14364"
+></A
+><H3
+><A
+NAME="HTMLNODEDUMPOUTPUT"
+></A
+>htmlNodeDumpOutput ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        htmlNodeDumpOutput              (<A
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> buf,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const char *encoding);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump an HTML node, recursive behaviour,children are printed too,
+and formatting returns/spaces are added.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN14373"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the HTML buffer output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoding</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding string</TD
 ></TR
 ></TBODY
 ></TABLE

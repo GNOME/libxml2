@@ -117,11 +117,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="LIBXML-NANOFTP">nanoftp</H1
+NAME="LIBXML-NANOFTP"
+></A
+>nanoftp</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN18041"
+NAME="AEN20047"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +131,9 @@ NAME="AEN18041"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN18044"><H2
+NAME="AEN20050"
+></A
+><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -151,9 +155,9 @@ HREF="libxml-nanoftp.html#FTPLISTCALLBACK"
                                              const char *owner,
                                              const char *group,
                                              unsigned <GTKDOCLINK
-HREF="LONG"
->long</GTKDOCLINK
-> size,
+HREF="LONG-SIZE"
+>long size</GTKDOCLINK
+>,
                                              int links,
                                              int year,
                                              const char *month,
@@ -234,6 +238,11 @@ HREF="libxml-nanoftp.html#XMLNANOFTPCWD"
 >                   (void *ctx,
                                              char *directory);
 int         <A
+HREF="libxml-nanoftp.html#XMLNANOFTPDELE"
+>xmlNanoFTPDele</A
+>                  (void *ctx,
+                                             char *file);
+int         <A
 HREF="libxml-nanoftp.html#XMLNANOFTPGETCONNECTION"
 >xmlNanoFTPGetConnection</A
 >         (void *ctx);
@@ -279,7 +288,7 @@ HREF="libxml-nanoftp.html#XMLNANOFTPREAD"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN18073"
+NAME="AEN20080"
 ></A
 ><H2
 >Description</H2
@@ -289,14 +298,14 @@ NAME="AEN18073"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN18076"
+NAME="AEN20083"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18078"
+NAME="AEN20085"
 ></A
 ><H3
 ><A
@@ -318,9 +327,9 @@ CLASS="PROGRAMLISTING"
                                              const char *owner,
                                              const char *group,
                                              unsigned <GTKDOCLINK
-HREF="LONG"
->long</GTKDOCLINK
-> size,
+HREF="LONG-SIZE"
+>long size</GTKDOCLINK
+>,
                                              int links,
                                              int year,
                                              const char *month,
@@ -338,7 +347,9 @@ Note that only one of year and day:minute are specified.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18085"><P
+NAME="AEN20092"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -441,14 +452,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->size</I
+>Param6</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the file size</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -561,7 +572,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18138"
+NAME="AEN20145"
 ></A
 ><H3
 ><A
@@ -590,7 +601,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18144"><P
+NAME="AEN20151"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -660,7 +673,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18161"
+NAME="AEN20168"
 ></A
 ><H3
 ><A
@@ -690,7 +703,7 @@ and get the hostname</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18167"
+NAME="AEN20174"
 ></A
 ><H3
 ><A
@@ -718,7 +731,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18173"
+NAME="AEN20180"
 ></A
 ><H3
 ><A
@@ -745,7 +758,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18179"><P
+NAME="AEN20186"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -781,7 +796,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18188"
+NAME="AEN20195"
 ></A
 ><H3
 ><A
@@ -808,7 +823,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18194"><P
+NAME="AEN20201"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -844,7 +861,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18203"
+NAME="AEN20210"
 ></A
 ><H3
 ><A
@@ -872,7 +889,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18209"><P
+NAME="AEN20216"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -925,7 +944,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18222"
+NAME="AEN20229"
 ></A
 ><H3
 ><A
@@ -952,7 +971,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18228"><P
+NAME="AEN20235"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -988,7 +1009,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18237"
+NAME="AEN20244"
 ></A
 ><H3
 ><A
@@ -1015,7 +1036,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18243"><P
+NAME="AEN20250"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1069,7 +1092,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18256"
+NAME="AEN20263"
 ></A
 ><H3
 ><A
@@ -1096,7 +1119,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18262"><P
+NAME="AEN20269"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1150,7 +1175,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18275"
+NAME="AEN20282"
 ></A
 ><H3
 ><A
@@ -1177,7 +1202,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18281"><P
+NAME="AEN20288"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1231,7 +1258,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18294"
+NAME="AEN20301"
 ></A
 ><H3
 ><A
@@ -1261,7 +1288,9 @@ A NULL URL cleans up proxy informations.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18300"><P
+NAME="AEN20307"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1297,7 +1326,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18309"
+NAME="AEN20316"
 ></A
 ><H3
 ><A
@@ -1330,7 +1359,9 @@ ftp_proxy_password environment variables.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18315"><P
+NAME="AEN20322"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1439,7 +1470,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18341"
+NAME="AEN20348"
 ></A
 ><H3
 ><A
@@ -1471,7 +1502,9 @@ be established.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18347"><P
+NAME="AEN20354"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1542,7 +1575,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18364"
+NAME="AEN20371"
 ></A
 ><H3
 ><A
@@ -1569,7 +1602,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18370"><P
+NAME="AEN20377"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1623,7 +1658,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18383"
+NAME="AEN20390"
 ></A
 ><H3
 ><A
@@ -1650,7 +1685,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18389"><P
+NAME="AEN20396"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1704,7 +1741,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18402"
+NAME="AEN20409"
 ></A
 ><H3
 ><A
@@ -1732,7 +1769,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18408"><P
+NAME="AEN20415"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1803,7 +1842,108 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18425"
+NAME="AEN20432"
+></A
+><H3
+><A
+NAME="XMLNANOFTPDELE"
+></A
+>xmlNanoFTPDele ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlNanoFTPDele                  (void *ctx,
+                                             char *file);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Tries to delete an item (file or directory) from server</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN20438"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an FTP context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>file</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a file or directory on the server</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>-1 incase of error, 1 if DELE worked, 0 if it failed</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN20455"
 ></A
 ><H3
 ><A
@@ -1831,7 +1971,9 @@ passive mode is supported.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18431"><P
+NAME="AEN20461"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1885,7 +2027,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18444"
+NAME="AEN20474"
 ></A
 ><H3
 ><A
@@ -1912,7 +2054,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18450"><P
+NAME="AEN20480"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1966,7 +2110,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18463"
+NAME="AEN20493"
 ></A
 ><H3
 ><A
@@ -2000,7 +2144,9 @@ in the callbacks.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18470"><P
+NAME="AEN20500"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2105,7 +2251,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18495"
+NAME="AEN20525"
 ></A
 ><H3
 ><A
@@ -2133,7 +2279,9 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18501"><P
+NAME="AEN20531"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2204,7 +2352,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18518"
+NAME="AEN20548"
 ></A
 ><H3
 ><A
@@ -2238,7 +2386,9 @@ in the callbacks. The last callback has a size of 0 block.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18525"><P
+NAME="AEN20555"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2343,7 +2493,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18550"
+NAME="AEN20580"
 ></A
 ><H3
 ><A
@@ -2383,7 +2533,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18558"><P
+NAME="AEN20588"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2461,7 +2613,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the number of byte read. 0 is an indication of an end of connection.
--1 indicates a parameter error.</TD
+        -1 indicates a parameter error.</TD
 ></TR
 ></TBODY
 ></TABLE

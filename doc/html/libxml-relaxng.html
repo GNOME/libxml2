@@ -1,7 +1,7 @@
 <HTML
 ><HEAD
 ><TITLE
->xmlschemas</TITLE
+>relaxng</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
@@ -13,11 +13,11 @@ REL="UP"
 TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
-TITLE="xmlunicode"
-HREF="libxml-xmlunicode.html"><LINK
+TITLE="valid"
+HREF="libxml-valid.html"><LINK
 REL="NEXT"
-TITLE="xmlschemastypes"
-HREF="libxml-xmlschemastypes.html"></HEAD
+TITLE="uri"
+HREF="libxml-uri.html"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -49,7 +49,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="libxml-xmlunicode.html"
+HREF="libxml-valid.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -103,7 +103,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="libxml-xmlschemastypes.html"
+HREF="libxml-uri.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -117,21 +117,21 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="LIBXML-XMLSCHEMAS"
+NAME="LIBXML-RELAXNG"
 ></A
->xmlschemas</H1
+>relaxng</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN33416"
+NAME="AEN12160"
 ></A
 ><H2
 >Name</H2
->xmlschemas&nbsp;--&nbsp;</DIV
+>relaxng&nbsp;--&nbsp;</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN33419"
+NAME="AEN12163"
 ></A
 ><H2
 >Synopsis</H2
@@ -146,164 +146,177 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+struct      <A
+HREF="libxml-relaxng.html#XMLRELAXNG"
+>xmlRelaxNG</A
+>;
+typedef     <A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
+>;
+void        (<A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYERRORFUNC"
+>*xmlRelaxNGValidityErrorFunc</A
+>)  (void *ctx,
+                                             const char *msg,
+                                             ...);
+void        (<A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
+>*xmlRelaxNGValidityWarningFunc</A
+>)
+                                            (void *ctx,
+                                             const char *msg,
+                                             ...);
+struct      <A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXT"
+>xmlRelaxNGParserCtxt</A
+>;
+typedef     <A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
+>;
+struct      <A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXT"
+>xmlRelaxNGValidCtxt</A
+>;
+typedef     <A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
+>;
 enum        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDERROR"
->xmlSchemaValidError</A
->;
-struct      <A
-HREF="libxml-xmlschemas.html#XMLSCHEMA"
->xmlSchema</A
->;
-typedef     <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
->;
-void        (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYERRORFUNC"
->*xmlSchemaValidityErrorFunc</A
->)   (void *ctx,
-                                             const char *msg,
-                                             ...);
-void        (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
->*xmlSchemaValidityWarningFunc</A
->) (void *ctx,
-                                             const char *msg,
-                                             ...);
-struct      <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXT"
->xmlSchemaParserCtxt</A
->;
-typedef     <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
->;
-struct      <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXT"
->xmlSchemaValidCtxt</A
->;
-typedef     <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDERR"
+>xmlRelaxNGValidErr</A
 >;
 <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
 > <A
-HREF="libxml-xmlschemas.html#XMLSCHEMANEWPARSERCTXT"
->xmlSchemaNewParserCtxt</A
+HREF="libxml-relaxng.html#XMLRELAXNGNEWPARSERCTXT"
+>xmlRelaxNGNewParserCtxt</A
 >
                                             (const char *URL);
 <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
 > <A
-HREF="libxml-xmlschemas.html#XMLSCHEMANEWMEMPARSERCTXT"
->xmlSchemaNewMemParserCtxt</A
+HREF="libxml-relaxng.html#XMLRELAXNGNEWMEMPARSERCTXT"
+>xmlRelaxNGNewMemParserCtxt</A
 >
                                             (const char *buffer,
                                              int size);
 void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAFREEPARSERCTXT"
->xmlSchemaFreeParserCtxt</A
->         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGFREEPARSERCTXT"
+>xmlRelaxNGFreeParserCtxt</A
+>        (<A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
 > ctxt);
 void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMASETPARSERERRORS"
->xmlSchemaSetParserErrors</A
->        (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGSETPARSERERRORS"
+>xmlRelaxNGSetParserErrors</A
+>       (<A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYERRORFUNC"
->xmlSchemaValidityErrorFunc</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYERRORFUNC"
+>xmlRelaxNGValidityErrorFunc</A
 > err,
                                              <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
->xmlSchemaValidityWarningFunc</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
+>xmlRelaxNGValidityWarningFunc</A
 > warn,
                                              void *ctx);
 <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
 > <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSE"
->xmlSchemaParse</A
->                 (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSE"
+>xmlRelaxNGParse</A
+>               (<A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
 > ctxt);
 void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAFREE"
->xmlSchemaFree</A
->                   (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGFREE"
+>xmlRelaxNGFree</A
+>                  (<A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
 > schema);
 void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMADUMP"
->xmlSchemaDump</A
->                   (<GTKDOCLINK
+HREF="libxml-relaxng.html#XMLRELAXNGDUMP"
+>xmlRelaxNGDump</A
+>                  (<GTKDOCLINK
 HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *output,
                                              <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
 > schema);
 void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMASETVALIDERRORS"
->xmlSchemaSetValidErrors</A
->         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGDUMPTREE"
+>xmlRelaxNGDumpTree</A
+>              (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
+> schema);
+void        <A
+HREF="libxml-relaxng.html#XMLRELAXNGSETVALIDERRORS"
+>xmlRelaxNGSetValidErrors</A
+>        (<A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
 > ctxt,
                                              <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYERRORFUNC"
->xmlSchemaValidityErrorFunc</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYERRORFUNC"
+>xmlRelaxNGValidityErrorFunc</A
 > err,
                                              <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
->xmlSchemaValidityWarningFunc</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
+>xmlRelaxNGValidityWarningFunc</A
 > warn,
                                              void *ctx);
 <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
 > <A
-HREF="libxml-xmlschemas.html#XMLSCHEMANEWVALIDCTXT"
->xmlSchemaNewValidCtxt</A
-> (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGNEWVALIDCTXT"
+>xmlRelaxNGNewValidCtxt</A
+>
+                                            (<A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
 > schema);
 void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAFREEVALIDCTXT"
->xmlSchemaFreeValidCtxt</A
->          (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGFREEVALIDCTXT"
+>xmlRelaxNGFreeValidCtxt</A
+>         (<A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
 > ctxt);
 int         <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDATEDOC"
->xmlSchemaValidateDoc</A
->            (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDATEDOC"
+>xmlRelaxNGValidateDoc</A
+>           (<A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
 > ctxt,
                                              <A
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > instance);
 int         <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDATESTREAM"
->xmlSchemaValidateStream</A
->         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDATESTREAM"
+>xmlRelaxNGValidateStream</A
+>        (<A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
 > ctxt,
                                              <A
 HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
@@ -317,7 +330,11 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
-                                             void *user_data);</PRE
+                                             void *user_data);
+void        <A
+HREF="libxml-relaxng.html#XMLRELAXNGCLEANUPTYPES"
+>xmlRelaxNGCleanupTypes</A
+>          (void);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -325,7 +342,7 @@ HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN33466"
+NAME="AEN12214"
 ></A
 ><H2
 >Description</H2
@@ -335,20 +352,377 @@ NAME="AEN33466"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN33469"
+NAME="AEN12217"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33471"
+NAME="AEN12219"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMAVALIDERROR"
+NAME="XMLRELAXNG"
 ></A
->enum xmlSchemaValidError</H3
+>struct xmlRelaxNG</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlRelaxNG;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12224"
+></A
+><H3
+><A
+NAME="XMLRELAXNGPTR"
+></A
+>xmlRelaxNGPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlRelaxNG *xmlRelaxNGPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12229"
+></A
+><H3
+><A
+NAME="XMLRELAXNGVALIDITYERRORFUNC"
+></A
+>xmlRelaxNGValidityErrorFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlRelaxNGValidityErrorFunc)  (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN12234"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12251"
+></A
+><H3
+><A
+NAME="XMLRELAXNGVALIDITYWARNINGFUNC"
+></A
+>xmlRelaxNGValidityWarningFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlRelaxNGValidityWarningFunc)
+                                            (void *ctx,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN12256"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12273"
+></A
+><H3
+><A
+NAME="XMLRELAXNGPARSERCTXT"
+></A
+>struct xmlRelaxNGParserCtxt</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlRelaxNGParserCtxt;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12278"
+></A
+><H3
+><A
+NAME="XMLRELAXNGPARSERCTXTPTR"
+></A
+>xmlRelaxNGParserCtxtPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlRelaxNGParserCtxt *xmlRelaxNGParserCtxtPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12283"
+></A
+><H3
+><A
+NAME="XMLRELAXNGVALIDCTXT"
+></A
+>struct xmlRelaxNGValidCtxt</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlRelaxNGValidCtxt;</PRE
+></TD
+></TR
+></TABLE
+><P
+>A RelaxNGs validation context</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12289"
+></A
+><H3
+><A
+NAME="XMLRELAXNGVALIDCTXTPTR"
+></A
+>xmlRelaxNGValidCtxtPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlRelaxNGValidCtxt *xmlRelaxNGValidCtxtPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12294"
+></A
+><H3
+><A
+NAME="XMLRELAXNGVALIDERR"
+></A
+>enum xmlRelaxNGValidErr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -359,31 +733,45 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum {
-    XML_SCHEMAS_ERR_OK		= 0,
-    XML_SCHEMAS_ERR_NOROOT	= 1,
-    XML_SCHEMAS_ERR_UNDECLAREDELEM,
-    XML_SCHEMAS_ERR_NOTTOPLEVEL,
-    XML_SCHEMAS_ERR_MISSING,
-    XML_SCHEMAS_ERR_WRONGELEM,
-    XML_SCHEMAS_ERR_NOTYPE,
-    XML_SCHEMAS_ERR_NOROLLBACK,
-    XML_SCHEMAS_ERR_ISABSTRACT,
-    XML_SCHEMAS_ERR_NOTEMPTY,
-    XML_SCHEMAS_ERR_ELEMCONT,
-    XML_SCHEMAS_ERR_HAVEDEFAULT,
-    XML_SCHEMAS_ERR_NOTNILLABLE,
-    XML_SCHEMAS_ERR_EXTRACONTENT,
-    XML_SCHEMAS_ERR_INVALIDATTR,
-    XML_SCHEMAS_ERR_INVALIDELEM,
-    XML_SCHEMAS_ERR_NOTDETERMINIST,
-    XML_SCHEMAS_ERR_CONSTRUCT,
-    XML_SCHEMAS_ERR_INTERNAL,
-    XML_SCHEMAS_ERR_NOTSIMPLE,
-    XML_SCHEMAS_ERR_ATTRUNKNOWN,
-    XML_SCHEMAS_ERR_ATTRINVALID,
-    XML_SCHEMAS_ERR_,
-    XML_SCHEMAS_ERR_XXX
-} xmlSchemaValidError;</PRE
+    XML_RELAXNG_OK = 0,
+    XML_RELAXNG_ERR_MEMORY,
+    XML_RELAXNG_ERR_TYPE,
+    XML_RELAXNG_ERR_TYPEVAL,
+    XML_RELAXNG_ERR_DUPID,
+    XML_RELAXNG_ERR_TYPECMP,
+    XML_RELAXNG_ERR_NOSTATE,
+    XML_RELAXNG_ERR_NODEFINE,
+    XML_RELAXNG_ERR_LISTEXTRA,
+    XML_RELAXNG_ERR_LISTEMPTY,
+    XML_RELAXNG_ERR_INTERNODATA,
+    XML_RELAXNG_ERR_INTERSEQ,
+    XML_RELAXNG_ERR_INTEREXTRA,
+    XML_RELAXNG_ERR_ELEMNAME,
+    XML_RELAXNG_ERR_ATTRNAME,
+    XML_RELAXNG_ERR_ELEMNONS,
+    XML_RELAXNG_ERR_ATTRNONS,
+    XML_RELAXNG_ERR_ELEMWRONGNS,
+    XML_RELAXNG_ERR_ATTRWRONGNS,
+    XML_RELAXNG_ERR_ELEMEXTRANS,
+    XML_RELAXNG_ERR_ATTREXTRANS,
+    XML_RELAXNG_ERR_ELEMNOTEMPTY,
+    XML_RELAXNG_ERR_NOELEM,
+    XML_RELAXNG_ERR_NOTELEM,
+    XML_RELAXNG_ERR_ATTRVALID,
+    XML_RELAXNG_ERR_CONTENTVALID,
+    XML_RELAXNG_ERR_EXTRACONTENT,
+    XML_RELAXNG_ERR_INVALIDATTR,
+    XML_RELAXNG_ERR_DATAELEM,
+    XML_RELAXNG_ERR_VALELEM,
+    XML_RELAXNG_ERR_LISTELEM,
+    XML_RELAXNG_ERR_DATATYPE,
+    XML_RELAXNG_ERR_VALUE,
+    XML_RELAXNG_ERR_LIST,
+    XML_RELAXNG_ERR_NOGRAMMAR,
+    XML_RELAXNG_ERR_EXTRADATA,
+    XML_RELAXNG_ERR_LACKDATA,
+    XML_RELAXNG_ERR_INTERNAL
+} xmlRelaxNGValidErr;</PRE
 ></TD
 ></TR
 ></TABLE
@@ -393,387 +781,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33476"
+NAME="AEN12299"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMA"
+NAME="XMLRELAXNGNEWPARSERCTXT"
 ></A
->struct xmlSchema</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSchema {
-    xmlChar *name;        /* schema name */
-    xmlChar *targetNamespace;     /* the target namespace */
-    xmlChar *version;
-    xmlChar *id;
-    xmlDocPtr doc;
-    xmlSchemaAnnotPtr annot;
-    int flags;
-
-    xmlHashTablePtr typeDecl;
-    xmlHashTablePtr attrDecl;
-    xmlHashTablePtr attrgrpDecl;
-    xmlHashTablePtr elemDecl;
-    xmlHashTablePtr notaDecl;
-
-    xmlHashTablePtr schemasImports;
-
-    void *_private;	/* unused by the library for users or bindings */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33481"
-></A
-><H3
-><A
-NAME="XMLSCHEMAPTR"
-></A
->xmlSchemaPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlSchema *xmlSchemaPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33486"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDITYERRORFUNC"
-></A
->xmlSchemaValidityErrorFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlSchemaValidityErrorFunc)   (void *ctx,
-                                             const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33491"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33508"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDITYWARNINGFUNC"
-></A
->xmlSchemaValidityWarningFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlSchemaValidityWarningFunc) (void *ctx,
-                                             const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33513"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33530"
-></A
-><H3
-><A
-NAME="XMLSCHEMAPARSERCTXT"
-></A
->struct xmlSchemaParserCtxt</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSchemaParserCtxt;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33535"
-></A
-><H3
-><A
-NAME="XMLSCHEMAPARSERCTXTPTR"
-></A
->xmlSchemaParserCtxtPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlSchemaParserCtxt *xmlSchemaParserCtxtPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33540"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDCTXT"
-></A
->struct xmlSchemaValidCtxt</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSchemaValidCtxt;</PRE
-></TD
-></TR
-></TABLE
-><P
->A Schemas validation context</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33546"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDCTXTPTR"
-></A
->xmlSchemaValidCtxtPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlSchemaValidCtxt *xmlSchemaValidCtxtPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33551"
-></A
-><H3
-><A
-NAME="XMLSCHEMANEWPARSERCTXT"
-></A
->xmlSchemaNewParserCtxt ()</H3
+>xmlRelaxNGNewParserCtxt ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -784,22 +798,22 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> xmlSchemaNewParserCtxt
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
+> xmlRelaxNGNewParserCtxt
                                             (const char *URL);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Create an XML Schemas parse context for that file/resource expected
-to contain an XML Schemas file.</P
+>Create an XML RelaxNGs parse context for that file/resource expected
+to contain an XML RelaxNGs file.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33558"
+NAME="AEN12306"
 ></A
 ><P
 ></P
@@ -855,13 +869,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33571"
+NAME="AEN12319"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMANEWMEMPARSERCTXT"
+NAME="XMLRELAXNGNEWMEMPARSERCTXT"
 ></A
->xmlSchemaNewMemParserCtxt ()</H3
+>xmlRelaxNGNewMemParserCtxt ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -872,23 +886,23 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> xmlSchemaNewMemParserCtxt
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
+> xmlRelaxNGNewMemParserCtxt
                                             (const char *buffer,
                                              int size);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Create an XML Schemas parse context for that memory buffer expected
-to contain an XML Schemas file.</P
+>Create an XML RelaxNGs parse context for that memory buffer expected
+to contain an XML RelaxNGs file.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33578"
+NAME="AEN12326"
 ></A
 ><P
 ></P
@@ -961,13 +975,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33595"
+NAME="AEN12343"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMAFREEPARSERCTXT"
+NAME="XMLRELAXNGFREEPARSERCTXT"
 ></A
->xmlSchemaFreeParserCtxt ()</H3
+>xmlRelaxNGFreeParserCtxt ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -977,9 +991,9 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlSchemaFreeParserCtxt         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
+>void        xmlRelaxNGFreeParserCtxt        (<A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
 ></TR
@@ -991,7 +1005,7 @@ HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33602"
+NAME="AEN12350"
 ></A
 ><P
 ></P
@@ -1029,13 +1043,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33611"
+NAME="AEN12359"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMASETPARSERERRORS"
+NAME="XMLRELAXNGSETPARSERERRORS"
 ></A
->xmlSchemaSetParserErrors ()</H3
+>xmlRelaxNGSetParserErrors ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1045,17 +1059,17 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlSchemaSetParserErrors        (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
+>void        xmlRelaxNGSetParserErrors       (<A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYERRORFUNC"
->xmlSchemaValidityErrorFunc</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYERRORFUNC"
+>xmlRelaxNGValidityErrorFunc</A
 > err,
                                              <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
->xmlSchemaValidityWarningFunc</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
+>xmlRelaxNGValidityWarningFunc</A
 > warn,
                                              void *ctx);</PRE
 ></TD
@@ -1068,7 +1082,7 @@ HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33620"
+NAME="AEN12368"
 ></A
 ><P
 ></P
@@ -1095,7 +1109,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a schema validation context</TD
+>  a Relax-NG validation context</TD
 ></TR
 ><TR
 ><TD
@@ -1157,13 +1171,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33641"
+NAME="AEN12389"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMAPARSE"
+NAME="XMLRELAXNGPARSE"
 ></A
->xmlSchemaParse ()</H3
+>xmlRelaxNGParse ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1174,11 +1188,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
-> xmlSchemaParse                 (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
+> xmlRelaxNGParse               (<A
+HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
+>xmlRelaxNGParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
 ></TR
@@ -1192,7 +1206,7 @@ XML Shema struture which can be used to validate instances.
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33649"
+NAME="AEN12397"
 ></A
 ><P
 ></P
@@ -1219,7 +1233,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a schema validation context</TD
+>  a Relax-NG parser context</TD
 ></TR
 ><TR
 ><TD
@@ -1237,7 +1251,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the internal XML Schema structure built from the resource or
+>the internal XML RelaxNG structure built from the resource or
         NULL in case of error</TD
 ></TR
 ></TBODY
@@ -1249,13 +1263,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33662"
+NAME="AEN12410"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMAFREE"
+NAME="XMLRELAXNGFREE"
 ></A
->xmlSchemaFree ()</H3
+>xmlRelaxNGFree ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1265,21 +1279,21 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlSchemaFree                   (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
+>void        xmlRelaxNGFree                  (<A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
 > schema);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Deallocate a Schema structure.</P
+>Deallocate a RelaxNG structure.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33669"
+NAME="AEN12417"
 ></A
 ><P
 ></P
@@ -1317,13 +1331,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33678"
+NAME="AEN12426"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMADUMP"
+NAME="XMLRELAXNGDUMP"
 ></A
->xmlSchemaDump ()</H3
+>xmlRelaxNGDump ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1333,25 +1347,25 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlSchemaDump                   (<GTKDOCLINK
+>void        xmlRelaxNGDump                  (<GTKDOCLINK
 HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *output,
                                              <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
 > schema);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Dump a Schema structure.</P
+>Dump a RelaxNG structure back</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33686"
+NAME="AEN12434"
 ></A
 ><P
 ></P
@@ -1406,13 +1420,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33699"
+NAME="AEN12447"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMASETVALIDERRORS"
+NAME="XMLRELAXNGDUMPTREE"
 ></A
->xmlSchemaSetValidErrors ()</H3
+>xmlRelaxNGDumpTree ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1422,17 +1436,106 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlSchemaSetValidErrors         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
+>void        xmlRelaxNGDumpTree              (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
+> schema);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump the transformed RelaxNG tree.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN12455"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the file output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>schema</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a schema structure</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12468"
+></A
+><H3
+><A
+NAME="XMLRELAXNGSETVALIDERRORS"
+></A
+>xmlRelaxNGSetValidErrors ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlRelaxNGSetValidErrors        (<A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
 > ctxt,
                                              <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYERRORFUNC"
->xmlSchemaValidityErrorFunc</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYERRORFUNC"
+>xmlRelaxNGValidityErrorFunc</A
 > err,
                                              <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
->xmlSchemaValidityWarningFunc</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
+>xmlRelaxNGValidityWarningFunc</A
 > warn,
                                              void *ctx);</PRE
 ></TD
@@ -1445,7 +1548,7 @@ HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33708"
+NAME="AEN12477"
 ></A
 ><P
 ></P
@@ -1472,7 +1575,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a schema validation context</TD
+>  a Relax-NG validation context</TD
 ></TR
 ><TR
 ><TD
@@ -1534,13 +1637,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33729"
+NAME="AEN12498"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMANEWVALIDCTXT"
+NAME="XMLRELAXNGNEWVALIDCTXT"
 ></A
->xmlSchemaNewValidCtxt ()</H3
+>xmlRelaxNGNewValidCtxt ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1551,23 +1654,24 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> xmlSchemaNewValidCtxt (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
+> xmlRelaxNGNewValidCtxt
+                                            (<A
+HREF="libxml-relaxng.html#XMLRELAXNGPTR"
+>xmlRelaxNGPtr</A
 > schema);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Create an XML Schemas validation context based on the given schema</P
+>Create an XML RelaxNGs validation context based on the given schema</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33737"
+NAME="AEN12506"
 ></A
 ><P
 ></P
@@ -1594,7 +1698,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a precompiled XML Schemas</TD
+>  a precompiled XML RelaxNGs</TD
 ></TR
 ><TR
 ><TD
@@ -1623,13 +1727,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33750"
+NAME="AEN12519"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMAFREEVALIDCTXT"
+NAME="XMLRELAXNGFREEVALIDCTXT"
 ></A
->xmlSchemaFreeValidCtxt ()</H3
+>xmlRelaxNGFreeValidCtxt ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1639,9 +1743,9 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlSchemaFreeValidCtxt          (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
+>void        xmlRelaxNGFreeValidCtxt         (<A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
 > ctxt);</PRE
 ></TD
 ></TR
@@ -1653,7 +1757,7 @@ HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33757"
+NAME="AEN12526"
 ></A
 ><P
 ></P
@@ -1691,13 +1795,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33766"
+NAME="AEN12535"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMAVALIDATEDOC"
+NAME="XMLRELAXNGVALIDATEDOC"
 ></A
->xmlSchemaValidateDoc ()</H3
+>xmlRelaxNGValidateDoc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1707,9 +1811,9 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSchemaValidateDoc            (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
+>int         xmlRelaxNGValidateDoc           (<A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
 > ctxt,
                                              <A
 HREF="libxml-tree.html#XMLDOCPTR"
@@ -1725,7 +1829,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33774"
+NAME="AEN12543"
 ></A
 ><P
 ></P
@@ -1752,7 +1856,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a schema validation context</TD
+>  a Relax-NG validation context</TD
 ></TR
 ><TR
 ><TD
@@ -1787,7 +1891,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 if the document is schemas valid, a positive error code
+>0 if the document is valid, a positive error code
     number otherwise and -1 in case of internal or API error.</TD
 ></TR
 ></TBODY
@@ -1799,13 +1903,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN33791"
+NAME="AEN12560"
 ></A
 ><H3
 ><A
-NAME="XMLSCHEMAVALIDATESTREAM"
+NAME="XMLRELAXNGVALIDATESTREAM"
 ></A
->xmlSchemaValidateStream ()</H3
+>xmlRelaxNGValidateStream ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1815,9 +1919,9 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSchemaValidateStream         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
+>int         xmlRelaxNGValidateStream        (<A
+HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
+>xmlRelaxNGValidCtxtPtr</A
 > ctxt,
                                              <A
 HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
@@ -1836,13 +1940,11 @@ HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 ></TR
 ></TABLE
 ><P
->Validate a document tree in memory.</P
-><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN33801"
+NAME="AEN12569"
 ></A
 ><P
 ></P
@@ -1869,7 +1971,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a schema validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1886,7 +1988,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the input to use for reading the data</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1903,7 +2005,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an optional encoding information</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1920,7 +2022,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a SAX handler for the resulting events</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1937,7 +2039,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the context to provide to the SAX handler.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1955,14 +2057,41 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 if the document is schemas valid, a positive error code
-    number otherwise and -1 in case of internal or API error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
 ><P
 ></P
 ></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12598"
+></A
+><H3
+><A
+NAME="XMLRELAXNGCLEANUPTYPES"
+></A
+>xmlRelaxNGCleanupTypes ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlRelaxNGCleanupTypes          (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Cleanup the default Schemas type library associated to RelaxNG</P
+><P
+></P
 ></DIV
 ></DIV
 ><DIV
@@ -1980,7 +2109,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="libxml-xmlunicode.html"
+HREF="libxml-valid.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -2034,7 +2163,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="libxml-xmlschemastypes.html"
+HREF="libxml-uri.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -2052,7 +2181,7 @@ ALIGN="left"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->xmlunicode</B
+>valid</B
 ></FONT
 ></TD
 ><TD
@@ -2062,7 +2191,7 @@ ALIGN="right"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->xmlschemastypes</B
+>uri</B
 ></FONT
 ></TD
 ></TR

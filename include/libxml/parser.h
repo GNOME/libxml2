@@ -240,6 +240,20 @@ struct _xmlParserCtxt {
     const xmlChar *   *atts;          /* array for the attributes callbacks */
     int                maxatts;       /* the size of the array */
     int                docdict;       /* use strings from dict to build tree */
+
+    /*
+     * pre-interned strings
+     */
+    const xmlChar *str_xml;
+    const xmlChar *str_xmlns;
+
+    /*
+     * Everything below is related to the new SAX mode
+     */
+    int                sax2;          /* operating in the new SAX mode */
+    int                nsNr;          /* the number of inherited namespaces */
+    int                nsMax;         /* the size of the arrays */
+    const xmlChar *   *nsTab;         /* the array of prefix/namespace name */
 };
 
 /**

@@ -85,6 +85,8 @@
  */
 #define MAX_DEPTH 1024
 
+#define SAX2 1
+
 #define XML_PARSER_BIG_BUFFER_SIZE 300
 #define XML_PARSER_BUFFER_SIZE 100
 
@@ -124,6 +126,114 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 
 xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
                                      const xmlChar ** str);
+
+#ifdef SAX2
+/**
+ * nsPush:
+ * @ctxt:  an XML parser context
+ * @prefix:  the namespace prefix or NULL
+ * @URL:  the namespace name
+ *
+ * Pushes a new parser namespace on top of the ns stack
+ *
+ * Returns -1 in case of error, the index in the stack otherwise
+ */
+static int
+nsPush(xmlParserCtxtPtr ctxt, const xmlChar *prefix, const xmlChar *URL)
+{
+    if ((ctxt->nsMax == 0) || (ctxt->nsTab == NULL)) {
+	ctxt->nsMax = 10;
+	ctxt->nsNr = 0;
+	ctxt->nsTab = (const xmlChar **)
+	              xmlMalloc(ctxt->nsMax * sizeof(xmlChar *));
+	if (ctxt->nsTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "malloc failed !\n");
+	    ctxt->nsMax = 0;
+            return (-1);
+	}
+    } else if (ctxt->nsNr >= ctxt->nsMax) {
+        ctxt->nsMax *= 2;
+        ctxt->nsTab = (const xmlChar **)
+	              xmlRealloc(ctxt->nsTab,
+				 ctxt->nsMax * sizeof(ctxt->nsTab[0]));
+        if (ctxt->nsTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
+	    ctxt->nsMax /= 2;
+            return (-1);
+        }
+    }
+    ctxt->nsTab[ctxt->nsNr++] = prefix;
+    ctxt->nsTab[ctxt->nsNr++] = URL;
+    return (ctxt->nsNr);
+}
+/**
+ * nsPop:
+ * @ctxt: an XML parser context
+ * @nr:  the number to pop
+ *
+ * Pops the top @nr parser prefix/namespace from the ns stack
+ *
+ * Returns the number of namespaces removed
+ */
+static int
+nsPop(xmlParserCtxtPtr ctxt, int nr)
+{
+    int i;
+
+    if (ctxt->nsTab == NULL) return(0);
+    if (ctxt->nsNr < nr) {
+        xmlGenericError(xmlGenericErrorContext, "Pbm popping %d NS\n", nr);
+        nr = ctxt->nsNr;
+    }
+    if (ctxt->nsNr <= 0)
+        return (0);
+    
+    for (i = 0;i < nr;i++) {
+         ctxt->nsNr--;
+	 ctxt->nsTab[ctxt->nsNr] = NULL;
+    }
+    return(nr);
+}
+#endif
+
+static int
+xmlCtxtGrowAttrs(xmlParserCtxtPtr ctxt, int nr) {
+    const xmlChar **atts;
+    int maxatts;
+
+    if (ctxt->atts == NULL) {
+	maxatts = 44; /* allow for 10 attrs by default */
+	atts = (const xmlChar **)
+	       xmlMalloc(maxatts * sizeof(xmlChar *));
+	if (atts == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc of %ld byte failed\n",
+		    maxatts * (long)sizeof(xmlChar *));
+	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    ctxt->instate = XML_PARSER_EOF;
+	    ctxt->disableSAX = 1;
+	    return(-1);
+	}
+	ctxt->atts = atts;
+	ctxt->maxatts = maxatts;
+    } else if (nr + 4 > ctxt->maxatts) {
+	maxatts = (nr + 4) * 2;
+	atts = (const xmlChar **) xmlRealloc((void *) ctxt->atts,
+				     maxatts * sizeof(const xmlChar *));
+	if (atts == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "realloc of %ld byte failed\n",
+		    maxatts * (long)sizeof(xmlChar *));
+	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    ctxt->instate = XML_PARSER_EOF;
+	    ctxt->disableSAX = 1;
+	    return(-1);
+	}
+	ctxt->atts = atts;
+	ctxt->maxatts = maxatts;
+    }
+    return(ctxt->maxatts);
+}
 
 /**
  * inputPush:
@@ -1870,6 +1980,8 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
  ************************************************************************/
 
 static const xmlChar * xmlParseNameComplex(xmlParserCtxtPtr ctxt);
+static xmlChar * xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len);
+
 /**
  * xmlParseName:
  * @ctxt:  an XML parser context
@@ -1935,7 +2047,6 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
  * parse an XML name and compares for match
  * (specialized for endtag parsing)
  *
- *
  * Returns NULL for an illegal name, (xmlChar*) 1 for success
  * and the name for mismatch
  */
@@ -1960,7 +2071,8 @@ xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
     }
     /* failure (or end of input buffer), check with full function */
     ret = xmlParseName (ctxt);
-    if ((ret != NULL) && (xmlStrEqual (ret, other))) {
+    /* strings coming from the dictionnary direct compare possible */
+    if (ret == other) {
 	return (const xmlChar*) 1;
     }
     return ret;
@@ -2323,79 +2435,9 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 }
 
 /**
- * xmlParseAttValue:
- * @ctxt:  an XML parser context
- *
- * parse a value for an attribute
- * Note: the parser won't do substitution of entities here, this
- * will be handled later in xmlStringGetNodeList
- *
- * [10] AttValue ::= '"' ([^<&"] | Reference)* '"' |
- *                   "'" ([^<&'] | Reference)* "'"
- *
- * 3.3.3 Attribute-Value Normalization:
- * Before the value of an attribute is passed to the application or
- * checked for validity, the XML processor must normalize it as follows: 
- * - a character reference is processed by appending the referenced
- *   character to the attribute value
- * - an entity reference is processed by recursively processing the
- *   replacement text of the entity 
- * - a whitespace character (#x20, #xD, #xA, #x9) is processed by
- *   appending #x20 to the normalized value, except that only a single
- *   #x20 is appended for a "#xD#xA" sequence that is part of an external
- *   parsed entity or the literal entity value of an internal parsed entity 
- * - other characters are processed by appending them to the normalized value 
- * If the declared value is not CDATA, then the XML processor must further
- * process the normalized attribute value by discarding any leading and
- * trailing space (#x20) characters, and by replacing sequences of space
- * (#x20) characters by a single space (#x20) character.  
- * All attributes for which no declaration has been read should be treated
- * by a non-validating parser as if declared CDATA.
- *
- * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
- */
-
-xmlChar *
-xmlParseAttValueComplex(xmlParserCtxtPtr ctxt);
-
-xmlChar *
-xmlParseAttValue(xmlParserCtxtPtr ctxt) {
-    xmlChar limit = 0;
-    const xmlChar *in = NULL;
-    xmlChar *ret = NULL;
-
-    SHRINK;
-    GROW;
-    in = (xmlChar *) CUR_PTR;
-    if (*in != '"' && *in != '\'') {
-      ctxt->errNo = XML_ERR_ATTRIBUTE_NOT_STARTED;
-      if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-          ctxt->sax->error(ctxt->userData, "AttValue: \" or ' expected\n");
-      ctxt->wellFormed = 0;
-      if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-      return(NULL);
-    } 
-    ctxt->instate = XML_PARSER_ATTRIBUTE_VALUE;
-    limit = *in;
-    ++in;
-    
-    while (*in != limit && *in >= 0x20 && *in <= 0x7f && 
-      *in != '&' && *in != '<'
-    ) {
-      ++in;
-    }
-    if (*in != limit) {
-      return xmlParseAttValueComplex(ctxt);
-    }
-    ++in;
-    ret = xmlStrndup (CUR_PTR + 1, in - CUR_PTR - 2);
-    CUR_PTR = in;
-    return ret;
-}
-
-/**
  * xmlParseAttValueComplex:
  * @ctxt:  an XML parser context
+ * @len:   the resulting attribute len
  *
  * parse a value for an attribute, this is the fallback function
  * of xmlParseAttValue() when the attribute parsing requires handling
@@ -2403,8 +2445,8 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
  *
  * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
  */
-xmlChar *
-xmlParseAttValueComplex(xmlParserCtxtPtr ctxt) {
+static xmlChar *
+xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen) {
     xmlChar limit = 0;
     xmlChar *buf = NULL;
     int len = 0;
@@ -2566,7 +2608,47 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt) {
 	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
     } else
 	NEXT;
+    if (attlen != NULL) *attlen = len;
     return(buf);
+}
+
+/**
+ * xmlParseAttValue:
+ * @ctxt:  an XML parser context
+ *
+ * parse a value for an attribute
+ * Note: the parser won't do substitution of entities here, this
+ * will be handled later in xmlStringGetNodeList
+ *
+ * [10] AttValue ::= '"' ([^<&"] | Reference)* '"' |
+ *                   "'" ([^<&'] | Reference)* "'"
+ *
+ * 3.3.3 Attribute-Value Normalization:
+ * Before the value of an attribute is passed to the application or
+ * checked for validity, the XML processor must normalize it as follows: 
+ * - a character reference is processed by appending the referenced
+ *   character to the attribute value
+ * - an entity reference is processed by recursively processing the
+ *   replacement text of the entity 
+ * - a whitespace character (#x20, #xD, #xA, #x9) is processed by
+ *   appending #x20 to the normalized value, except that only a single
+ *   #x20 is appended for a "#xD#xA" sequence that is part of an external
+ *   parsed entity or the literal entity value of an internal parsed entity 
+ * - other characters are processed by appending them to the normalized value 
+ * If the declared value is not CDATA, then the XML processor must further
+ * process the normalized attribute value by discarding any leading and
+ * trailing space (#x20) characters, and by replacing sequences of space
+ * (#x20) characters by a single space (#x20) character.  
+ * All attributes for which no declaration has been read should be treated
+ * by a non-validating parser as if declared CDATA.
+ *
+ * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
+ */
+
+
+xmlChar *
+xmlParseAttValue(xmlParserCtxtPtr ctxt) {
+    return(xmlParseAttValueInternal(ctxt, NULL));
 }
 
 /**
@@ -2841,7 +2923,7 @@ get_more:
 	    SHRINK;
 	    GROW;
 	    in = ctxt->input->cur;
-	} while ((*in >= 0x20) && (*in <= 0x7F));
+	} while ((*in >= 0x20) && (*in <= 0x7F) || (*in == 0x09));
 	nbchar = 0;
     }
     ctxt->input->line = line;
@@ -6664,7 +6746,6 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 		    goto failed;
 		}
 	    }
-
 	    /*
 	     * Add the pair to atts
 	     */
@@ -6764,8 +6845,10 @@ failed:
 }
 
 /**
- * xmlParseEndTagInternal:
+ * xmlParseEndTag1:
  * @ctxt:  an XML parser context
+ * @line:  line of the start tag
+ * @nsNr:  number of namespaces on the start tag
  *
  * parse an end of tag
  *
@@ -6777,7 +6860,7 @@ failed:
  */
 
 static void
-xmlParseEndTagInternal(xmlParserCtxtPtr ctxt, int line) {
+xmlParseEndTag1(xmlParserCtxtPtr ctxt, int line) {
     const xmlChar *name;
     const xmlChar *oldname;
 
@@ -6863,7 +6946,696 @@ xmlParseEndTagInternal(xmlParserCtxtPtr ctxt, int line) {
 
 void
 xmlParseEndTag(xmlParserCtxtPtr ctxt) {
-    xmlParseEndTagInternal(ctxt, 0);
+    xmlParseEndTag1(ctxt, 0);
+}
+
+/************************************************************************
+ *									*
+ *		      SAX 2 specific operations				*
+ *									*
+ ************************************************************************/
+
+static const xmlChar *
+xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
+    int len = 0, l;
+    int c;
+    int count = 0;
+
+    /*
+     * Handler for more complex cases
+     */
+    GROW;
+    c = CUR_CHAR(l);
+    if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
+	(!IS_LETTER(c) && (c != '_') &&
+         (c != ':'))) {
+	return(NULL);
+    }
+
+    while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
+	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+            (c == '.') || (c == '-') ||
+	    (c == '_') || (c == ':') || 
+	    (IS_COMBINING(c)) ||
+	    (IS_EXTENDER(c)))) {
+	if (count++ > 100) {
+	    count = 0;
+	    GROW;
+	}
+	len += l;
+	NEXTL(l);
+	c = CUR_CHAR(l);
+    }
+    return(xmlDictLookup(ctxt->dict, ctxt->input->cur - len, len));
+}
+
+/*
+ * xmlGetNamespace:
+ * @ctxt:  an XML parser context
+ * @prefix:  the prefix to lookup
+ *
+ * Lookup the namespace name for the @prefix (which ca be NULL)
+ * The prefix must come from the @ctxt->dict dictionnary
+ *
+ * Returns the namespace name or NULL if not bound
+ */
+static const xmlChar *
+xmlGetNamespace(xmlParserCtxtPtr ctxt, const xmlChar *prefix) {
+    int i;
+
+    for (i = ctxt->nsNr - 2;i >= 0;i-=2)
+        if (ctxt->nsTab[i] == prefix)
+	    return(ctxt->nsTab[i + 1]);
+    return(NULL);
+}
+
+/**
+ * xmlParseNCName:
+ * @ctxt:  an XML parser context
+ *
+ * parse an XML name.
+ *
+ * [4NS] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
+ *                      CombiningChar | Extender
+ *
+ * [5NS] NCName ::= (Letter | '_') (NCNameChar)*
+ *
+ * Returns the Name parsed or NULL
+ */
+
+static const xmlChar *
+xmlParseNCName(xmlParserCtxtPtr ctxt) {
+    const xmlChar *in;
+    const xmlChar *ret;
+    int count = 0;
+
+    /*
+     * Accelerator for simple ASCII names
+     */
+    in = ctxt->input->cur;
+    if (((*in >= 0x61) && (*in <= 0x7A)) ||
+	((*in >= 0x41) && (*in <= 0x5A)) ||
+	(*in == '_')) {
+	in++;
+	while (((*in >= 0x61) && (*in <= 0x7A)) ||
+	       ((*in >= 0x41) && (*in <= 0x5A)) ||
+	       ((*in >= 0x30) && (*in <= 0x39)) ||
+	       (*in == '_') || (*in == '-') ||
+	       (*in == '.'))
+	    in++;
+	if ((*in > 0) && (*in < 0x80)) {
+	    count = in - ctxt->input->cur;
+	    ret = xmlDictLookup(ctxt->dict, ctxt->input->cur, count);
+	    ctxt->input->cur = in;
+	    ctxt->nbChars += count;
+	    ctxt->input->col += count;
+	    if (ret == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData, 
+			 "XML parser: out of memory\n");
+		ctxt->errNo = XML_ERR_NO_MEMORY;
+		ctxt->instate = XML_PARSER_EOF;
+		ctxt->disableSAX = 1;
+	    }
+	    return(ret);
+	}
+    }
+    return(xmlParseNCNameComplex(ctxt));
+}
+
+/**
+ * xmlParseQName:
+ * @ctxt:  an XML parser context
+ * @prefix:  pointer to store the prefix part
+ *
+ * parse an XML Namespace QName
+ *
+ * [6]  QName  ::= (Prefix ':')? LocalPart
+ * [7]  Prefix  ::= NCName
+ * [8]  LocalPart  ::= NCName
+ *
+ * Returns the Name parsed or NULL
+ */
+
+static const xmlChar *
+xmlParseQName(xmlParserCtxtPtr ctxt, const xmlChar **prefix) {
+    const xmlChar *l, *p;
+
+    GROW;
+
+    l = xmlParseNCName(ctxt);
+    if (l == NULL) return(NULL);
+    if (CUR == ':') {
+        NEXT;
+	p = l;
+	l = xmlParseNCName(ctxt);
+	if (l == NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+		ctxt->sax->error(ctxt->userData, 
+		     "Failed to parse QName '%s:'\n", p);
+	    }
+	    return(NULL);
+	}
+	if (CUR == ':') {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+		ctxt->sax->error(ctxt->userData, 
+		     "Failed to parse QName '%s:%s:'\n", p, l);
+	    }
+	    return(NULL);
+	}
+	*prefix = p;
+    } else
+        *prefix = NULL;
+    return(l);
+}
+
+/**
+ * xmlParseQNameAndCompare:
+ * @ctxt:  an XML parser context
+ * @name:  the localname
+ * @prefix:  the prefix, if any.
+ *
+ * parse an XML name and compares for match
+ * (specialized for endtag parsing)
+ *
+ * Returns NULL for an illegal name, (xmlChar*) 1 for success
+ * and the name for mismatch
+ */
+
+static const xmlChar *
+xmlParseQNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *name,
+                        xmlChar const *prefix) {
+    const xmlChar *cmp = name;
+    const xmlChar *in;
+    const xmlChar *ret;
+    const xmlChar *prefix2;
+
+    if (prefix == NULL) return(xmlParseNameAndCompare(ctxt, name));
+
+    GROW;
+    in = ctxt->input->cur;
+    
+    cmp = prefix;
+    while (*in != 0 && *in == *cmp) {
+    	++in;
+	++cmp;
+    }
+    if ((*cmp == 0) && (*in == ':')) {
+        in++;
+	cmp = name;
+	while (*in != 0 && *in == *cmp) {
+	    ++in;
+	    ++cmp;
+	}
+	if (*cmp == 0 && (*in == '>' || IS_BLANK (*in))) {
+	    /* success */
+	    ctxt->input->cur = in;
+	    return((const xmlChar*) 1);
+	}
+    }
+    /*
+     * all strings coms from the dictionary, equality can be done directly
+     */
+    ret = xmlParseQName (ctxt, &prefix2);
+    if ((ret == name) && (prefix == prefix2))
+	return((const xmlChar*) 1);
+    return ret;
+}
+
+/**
+ * xmlParseAttValueInternal:
+ * @ctxt:  an XML parser context
+ * @len:  attribute len result
+ *
+ * parse a value for an attribute.
+ * NOTE: if no normalization is needed, the routine will return pointers
+ *       directly from the data buffer.
+ *
+ * 3.3.3 Attribute-Value Normalization:
+ * Before the value of an attribute is passed to the application or
+ * checked for validity, the XML processor must normalize it as follows: 
+ * - a character reference is processed by appending the referenced
+ *   character to the attribute value
+ * - an entity reference is processed by recursively processing the
+ *   replacement text of the entity 
+ * - a whitespace character (#x20, #xD, #xA, #x9) is processed by
+ *   appending #x20 to the normalized value, except that only a single
+ *   #x20 is appended for a "#xD#xA" sequence that is part of an external
+ *   parsed entity or the literal entity value of an internal parsed entity 
+ * - other characters are processed by appending them to the normalized value 
+ * If the declared value is not CDATA, then the XML processor must further
+ * process the normalized attribute value by discarding any leading and
+ * trailing space (#x20) characters, and by replacing sequences of space
+ * (#x20) characters by a single space (#x20) character.  
+ * All attributes for which no declaration has been read should be treated
+ * by a non-validating parser as if declared CDATA.
+ *
+ * Returns the AttValue parsed or NULL. The value has to be freed by the
+ *     caller if it was copied, this can be detected by val[*len] == 0.
+ */
+
+static xmlChar *
+xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len) {
+    xmlChar limit = 0;
+    const xmlChar *in = NULL;
+    xmlChar *ret = NULL;
+
+    GROW;
+    in = (xmlChar *) CUR_PTR;
+    if (*in != '"' && *in != '\'') {
+      ctxt->errNo = XML_ERR_ATTRIBUTE_NOT_STARTED;
+      if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+          ctxt->sax->error(ctxt->userData, "AttValue: \" or ' expected\n");
+      ctxt->wellFormed = 0;
+      if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+      return(NULL);
+    } 
+    ctxt->instate = XML_PARSER_ATTRIBUTE_VALUE;
+    limit = *in;
+    ++in;
+    
+    while (*in != limit && *in >= 0x20 && *in <= 0x7f && 
+      *in != '&' && *in != '<'
+    ) {
+      ++in;
+    }
+    if (*in != limit) {
+      return xmlParseAttValueComplex(ctxt, len);
+    }
+    ++in;
+    if (len != NULL) {
+        *len = in - CUR_PTR - 2;
+	ret = (xmlChar *) CUR_PTR + 1;
+    } else {
+	ret = xmlStrndup (CUR_PTR + 1, in - CUR_PTR - 2);
+    }
+    CUR_PTR = in;
+    return ret;
+}
+
+/**
+ * xmlParseAttribute2:
+ * @ctxt:  an XML parser context
+ * @value:  a xmlChar ** used to store the value of the attribute
+ *
+ * parse an attribute in the new SAX2 framework.
+ *
+ * Returns the attribute name, and the value in *value, .
+ */
+
+static const xmlChar *
+xmlParseAttribute2(xmlParserCtxtPtr ctxt, const xmlChar **prefix, 
+                   xmlChar **value, int *len) {
+    const xmlChar *name;
+    xmlChar *val;
+
+    *value = NULL;
+    GROW;
+    name = xmlParseQName(ctxt, prefix);
+    if (name == NULL) {
+	ctxt->errNo = XML_ERR_NAME_REQUIRED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, "error parsing attribute name\n");
+	ctxt->wellFormed = 0;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+        return(NULL);
+    }
+
+    /*
+     * read the value
+     */
+    SKIP_BLANKS;
+    if (RAW == '=') {
+        NEXT;
+	SKIP_BLANKS;
+	val = xmlParseAttValueInternal(ctxt, len);
+	ctxt->instate = XML_PARSER_CONTENT;
+    } else {
+	ctxt->errNo = XML_ERR_ATTRIBUTE_WITHOUT_VALUE;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	       "Specification mandate value for attribute %s\n", name);
+	ctxt->wellFormed = 0;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+	return(NULL);
+    }
+
+    /*
+     * Check that xml:lang conforms to the specification
+     * No more registered as an error, just generate a warning now
+     * since this was deprecated in XML second edition
+     */
+    if ((ctxt->pedantic) && (xmlStrEqual(name, BAD_CAST "xml:lang"))) {
+	if (!xmlCheckLanguageID(val)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		ctxt->sax->warning(ctxt->userData,
+		   "Malformed value for xml:lang : %s\n", val);
+	}
+    }
+
+    /*
+     * Check that xml:space conforms to the specification
+     */
+    if (xmlStrEqual(name, BAD_CAST "xml:space")) {
+	if (xmlStrEqual(val, BAD_CAST "default"))
+	    *(ctxt->space) = 0;
+	else if (xmlStrEqual(val, BAD_CAST "preserve"))
+	    *(ctxt->space) = 1;
+	else {
+	    ctxt->errNo = XML_ERR_ATTRIBUTE_WITHOUT_VALUE;
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData,
+"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n",
+                                 val);
+	    ctxt->wellFormed = 0;
+	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+	}
+    }
+
+    *value = val;
+    return(name);
+}
+
+/**
+ * xmlParseStartTag2:
+ * @ctxt:  an XML parser context
+ * 
+ * parse a start of tag either for rule element or
+ * EmptyElement. In both case we don't parse the tag closing chars.
+ * This routine is called when running SAX2 parsing
+ *
+ * [40] STag ::= '<' Name (S Attribute)* S? '>'
+ *
+ * [ WFC: Unique Att Spec ]
+ * No attribute name may appear more than once in the same start-tag or
+ * empty-element tag. 
+ *
+ * [44] EmptyElemTag ::= '<' Name (S Attribute)* S? '/>'
+ *
+ * [ WFC: Unique Att Spec ]
+ * No attribute name may appear more than once in the same start-tag or
+ * empty-element tag. 
+ *
+ * With namespace:
+ *
+ * [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
+ *
+ * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
+ *
+ * Returns the element name parsed
+ */
+
+static const xmlChar *
+xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
+                  const xmlChar **URI) {
+    const xmlChar *localname;
+    const xmlChar *prefix;
+    const xmlChar *attname;
+    const xmlChar *nsname;
+    xmlChar *attvalue;
+    const xmlChar **atts = ctxt->atts;
+    int nbatts = 0;
+    int maxatts = ctxt->maxatts;
+    int i, j, nbNs = 0, attval = 0;
+
+    if (RAW != '<') return(NULL);
+    NEXT1;
+
+    /*
+     * NOTE: it is crucial with the SAX2 API to never call SHRINK beyond that
+     *       point since the attribute values may be stored as pointers to
+     *       the buffer and calling SHRINK would destroy them !
+     *       The Shrinking is only possible once the full set of attribute
+     *       callbacks have been done.
+     */
+    SHRINK;
+
+    localname = xmlParseQName(ctxt, &prefix);
+    if (localname == NULL) {
+	ctxt->errNo = XML_ERR_NAME_REQUIRED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, 
+	     "xmlParseStartTag: invalid element name\n");
+	ctxt->wellFormed = 0;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+        return(NULL);
+    }
+
+    /*
+     * Now parse the attributes, it ends up with the ending
+     *
+     * (S Attribute)* S?
+     */
+    SKIP_BLANKS;
+    GROW;
+
+    while ((RAW != '>') && 
+	   ((RAW != '/') || (NXT(1) != '>')) &&
+	   (IS_CHAR((unsigned int) RAW))) {
+	const xmlChar *q = CUR_PTR;
+	unsigned int cons = ctxt->input->consumed;
+	const xmlChar *aprefix;
+	int len = -1;
+
+	attname = xmlParseAttribute2(ctxt, &aprefix, &attvalue, &len);
+        if ((attname != NULL) && (attvalue != NULL)) {
+	    if (len < 0) len = xmlStrlen(attvalue);
+            if ((attname == ctxt->str_xmlns) && (aprefix == NULL)) {
+		/*
+		 * TODO: [ WFC: Unique Att Spec ]
+		 */
+		if (nsPush(ctxt, NULL,
+		           xmlDictLookup(ctxt->dict, attvalue, len)) > 0)
+		    nbNs++;
+		if (attvalue[len] == 0)
+		    xmlFree(attvalue);
+		continue;
+	    }
+            if (aprefix == ctxt->str_xmlns) {
+		/*
+		 * TODO: [ WFC: Unique Att Spec ]
+		 */
+		if (nsPush(ctxt, attname,
+			   xmlDictLookup(ctxt->dict, attvalue, len)) > 0)
+		    nbNs++;
+		if (attvalue[len] == 0)
+		    xmlFree(attvalue);
+		continue;
+	    }
+
+	    /*
+	     * Add the pair to atts
+	     */
+	    if ((atts == NULL) || (nbatts + 4 > maxatts)) {
+	        if (xmlCtxtGrowAttrs(ctxt, nbatts + 4) < 0) {
+		    if (attvalue[len] == 0)
+			xmlFree(attvalue);
+		    goto failed;
+		}
+	        maxatts = ctxt->maxatts;
+		atts = ctxt->atts;
+	    }
+	    atts[nbatts++] = attname;
+	    atts[nbatts++] = aprefix;
+	    atts[nbatts++] = attvalue;
+	    attvalue += len;
+	    atts[nbatts++] = attvalue;
+	    /*
+	     * tag if some deallocation is needed
+	     */
+	    if (*attvalue != 0) attval = 1;
+	} else {
+	    if ((attvalue != NULL) && (attvalue[len] == 0))
+		xmlFree(attvalue);
+	}
+
+failed:     
+
+	GROW
+	if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
+	    break;
+	if (!IS_BLANK(RAW)) {
+	    ctxt->errNo = XML_ERR_SPACE_REQUIRED;
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData,
+		    "attributes construct error\n");
+	    ctxt->wellFormed = 0;
+	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+	}
+	SKIP_BLANKS;
+        if ((cons == ctxt->input->consumed) && (q == CUR_PTR) &&
+            (attname == NULL) && (attvalue == NULL)) {
+	    ctxt->errNo = XML_ERR_INTERNAL_ERROR;
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	        ctxt->sax->error(ctxt->userData, 
+	         "xmlParseStartTag: problem parsing attributes\n");
+	    ctxt->wellFormed = 0;
+	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+	    break;
+	}
+	SHRINK;
+        GROW;
+    }
+
+    nsname = xmlGetNamespace(ctxt, prefix);
+    if ((prefix != NULL) && (nsname == NULL)) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, 
+	     "Namespace prefix %s on %d is not defined\n", prefix, localname);
+    }
+    *pref = prefix;
+    *URI = nsname;
+    /*
+     * SAX: Start of Element !
+     */
+    if ((ctxt->sax != NULL) && (ctxt->sax->startElementNs != NULL) &&
+	(!ctxt->disableSAX)) {
+	if (nbNs > 0)
+	    ctxt->sax->startElementNs(ctxt->userData, localname, prefix,
+			  nsname, nbNs, &ctxt->nsTab[ctxt->nsNr - 2 * nbNs],
+			  nbatts / 4);
+	else
+	    ctxt->sax->startElementNs(ctxt->userData, localname, prefix,
+	                  nsname, 0, NULL, nbatts / 4);
+    }
+    /*
+     * The attributes callbacks
+     */
+    for (i = 0; i < nbatts;i += 4) {
+        nsname = xmlGetNamespace(ctxt, atts[i + 1]);
+	if ((atts[i + 1] != NULL) && (nsname == NULL)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData, 
+		 "Namespace prefix %s for %s on %d is not defined\n",
+		                 atts[i + 1], atts[i], localname);
+	}
+	/*
+	 * [ WFC: Unique Att Spec ]
+	 * No attribute name may appear more than once in the same
+	 * start-tag or empty-element tag. 
+	 * As extended by the Namespace in XML REC.
+	 */
+        for (j = 0; j < i;j += 4) {
+	    if (atts[i] == atts[j]) {
+	        if (atts[i+1] == atts[j+1]) {
+		    ctxt->errNo = XML_ERR_ATTRIBUTE_REDEFINED;
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+		        if (atts[i+1] == NULL)
+			    ctxt->sax->error(ctxt->userData,
+					     "Attribute %s redefined\n",
+					     atts[i]);
+			else
+			    ctxt->sax->error(ctxt->userData,
+					     "Attribute %s:%s redefined\n",
+					     atts[i+1], atts[i]);
+		    }
+		    ctxt->wellFormed = 0;
+		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		    goto skip_attribute;
+		}
+		if ((nsname != NULL) &&
+		    (xmlGetNamespace(ctxt, atts[j + 1]) == nsname)) {
+		    ctxt->sax->error(ctxt->userData,
+				     "Attribute %s in %s redefined\n",
+				     atts[i], nsname);
+		    goto skip_attribute;
+		}
+	    }
+	}
+	if ((ctxt->sax != NULL) && (ctxt->sax->attributeNs != NULL))
+	    ctxt->sax->attributeNs(ctxt->userData,
+	                           atts[i], atts[i + 1], nsname,
+				   atts[i + 2], atts[i + 3] - atts[i + 2]);
+skip_attribute:
+	if ((attval != 0) && (*atts[i+3] == 0))
+	    xmlFree((xmlChar *) atts[i+3]);
+    }
+
+    return(localname);
+}
+
+/**
+ * xmlParseEndTag2:
+ * @ctxt:  an XML parser context
+ * @line:  line of the start tag
+ * @nsNr:  number of namespaces on the start tag
+ *
+ * parse an end of tag
+ *
+ * [42] ETag ::= '</' Name S? '>'
+ *
+ * With namespace
+ *
+ * [NS 9] ETag ::= '</' QName S? '>'
+ */
+
+static void
+xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlChar *prefix,
+                const xmlChar *URI, int line, int nsNr) {
+    const xmlChar *name;
+
+    GROW;
+    if ((RAW != '<') || (NXT(1) != '/')) {
+	ctxt->errNo = XML_ERR_LTSLASH_REQUIRED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, "xmlParseEndTag: '</' not found\n");
+	ctxt->wellFormed = 0;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+	return;
+    }
+    SKIP(2);
+
+    name = xmlParseQNameAndCompare(ctxt, ctxt->name, prefix);
+
+    /*
+     * We should definitely be at the ending "S? '>'" part
+     */
+    GROW;
+    SKIP_BLANKS;
+    if ((!IS_CHAR((unsigned int) RAW)) || (RAW != '>')) {
+	ctxt->errNo = XML_ERR_GT_REQUIRED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, "End tag : expected '>'\n");
+	ctxt->wellFormed = 0;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+    } else
+	NEXT1;
+
+    /*
+     * [ WFC: Element Type Match ]
+     * The Name in an element's end-tag must match the element type in the
+     * start-tag. 
+     *
+     */
+    if (name != (xmlChar*)1) {
+	ctxt->errNo = XML_ERR_TAG_NAME_MISMATCH;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+	    if (name != NULL) {
+		ctxt->sax->error(ctxt->userData,
+		     "Opening and ending tag mismatch: %s line %d and %s\n",
+		                 ctxt->name, line, name);
+            } else {
+		ctxt->sax->error(ctxt->userData,
+		     "Ending tag error for: %s line %d\n", ctxt->name, line);
+	    }
+
+	}     
+	ctxt->wellFormed = 0;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+    }
+
+    /*
+     * SAX: End of Tag
+     */
+    if ((ctxt->sax != NULL) && (ctxt->sax->endElementNs != NULL) &&
+	(!ctxt->disableSAX))
+	ctxt->sax->endElementNs(ctxt->userData, ctxt->name, prefix, URI);
+
+    namePop(ctxt);
+    spacePop(ctxt);
+    if (nsNr != 0)
+	nsPop(ctxt, nsNr);
+    return;
 }
 
 /**
@@ -7082,27 +7854,17 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
  * The Name in an element's end-tag must match the element type in the
  * start-tag. 
  *
- * [ VC: Element Valid ]
- * An element is valid if there is a declaration matching elementdecl
- * where the Name matches the element type and one of the following holds:
- *  - The declaration matches EMPTY and the element has no content.
- *  - The declaration matches children and the sequence of child elements
- *    belongs to the language generated by the regular expression in the
- *    content model, with optional white space (characters matching the
- *    nonterminal S) between each pair of child elements. 
- *  - The declaration matches Mixed and the content consists of character
- *    data and child elements whose types match names in the content model. 
- *  - The declaration matches ANY, and the types of any child elements have
- *    been declared.
  */
 
 void
 xmlParseElement(xmlParserCtxtPtr ctxt) {
     const xmlChar *name;
-    const xmlChar *oldname;
+    const xmlChar *prefix;
+    const xmlChar *URI;
     xmlParserNodeInfo node_info;
     int line;
     xmlNodePtr ret;
+    int nsNr = ctxt->nsNr;
 
     /* Capture start position */
     if (ctxt->record_info) {
@@ -7117,7 +7879,10 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	spacePush(ctxt, *ctxt->space);
 
     line = ctxt->input->line;
-    name = xmlParseStartTag(ctxt);
+    if (ctxt->sax2)
+        name = xmlParseStartTag2(ctxt, &prefix, &URI);
+    else
+	name = xmlParseStartTag(ctxt);
     if (name == NULL) {
 	spacePop(ctxt);
         return;
@@ -7139,16 +7904,19 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
      */
     if ((RAW == '/') && (NXT(1) == '>')) {
         SKIP(2);
-	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL) &&
-	    (!ctxt->disableSAX))
-	    ctxt->sax->endElement(ctxt->userData, name);
-	oldname = namePop(ctxt);
-	spacePop(ctxt);
-#ifdef DEBUG_STACK
-	if (oldname != NULL) {
-	    xmlGenericError(xmlGenericErrorContext,"Close: popped %s\n", oldname);
+	if (ctxt->sax2) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->endElementNs != NULL) &&
+		(!ctxt->disableSAX))
+		ctxt->sax->endElementNs(ctxt->userData, name, prefix, URI);
+	} else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL) &&
+		(!ctxt->disableSAX))
+		ctxt->sax->endElement(ctxt->userData, name);
 	}
-#endif
+	namePop(ctxt);
+	spacePop(ctxt);
+	if (nsNr != ctxt->nsNr)
+	    nsPop(ctxt, ctxt->nsNr - nsNr);
 	if ( ret != NULL && ctxt->record_info ) {
 	   node_info.end_pos = ctxt->input->consumed +
 			      (CUR_PTR - ctxt->input->base);
@@ -7173,13 +7941,10 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	 * end of parsing of this node.
 	 */
 	nodePop(ctxt);
-	oldname = namePop(ctxt);
+	namePop(ctxt);
 	spacePop(ctxt);
-#ifdef DEBUG_STACK
-	if (oldname != NULL) {
-	    xmlGenericError(xmlGenericErrorContext,"Close: popped %s\n", oldname);
-	}
-#endif
+	if (nsNr != ctxt->nsNr)
+	    nsPop(ctxt, ctxt->nsNr - nsNr);
 
 	/*
 	 * Capture end position and add node
@@ -7210,20 +7975,20 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	 * end of parsing of this node.
 	 */
 	nodePop(ctxt);
-	oldname = namePop(ctxt);
+	namePop(ctxt);
 	spacePop(ctxt);
-#ifdef DEBUG_STACK
-	if (oldname != NULL) {
-	    xmlGenericError(xmlGenericErrorContext,"Close: popped %s\n", oldname);
-	}
-#endif
+	if (nsNr != ctxt->nsNr)
+	    nsPop(ctxt, ctxt->nsNr - nsNr);
 	return;
     }
 
     /*
      * parse the end of tag: '</' should be here.
      */
-    xmlParseEndTagInternal(ctxt, line);
+    if (ctxt->sax2)
+	xmlParseEndTag2(ctxt, prefix, URI, line, ctxt->nsNr - nsNr);
+    else
+	xmlParseEndTag1(ctxt, line);
 
     /*
      * Capture end position and add node
@@ -7805,6 +8570,17 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     xmlInitParser();
 
     GROW;
+
+    /*
+     * SAX: detecting the level.
+     */
+    if ((ctxt->sax) &&
+        ((ctxt->sax->startElementNs != NULL) ||
+         (ctxt->sax->endElementNs != NULL) ||
+         (ctxt->sax->attributeNs != NULL))) ctxt->sax2 = 1;
+
+    ctxt->str_xml = xmlDictLookup(ctxt->dict, BAD_CAST "xml", 3);
+    ctxt->str_xmlns = xmlDictLookup(ctxt->dict, BAD_CAST "xmlns", 5);
 
     /*
      * SAX: beginning of the document processing.

@@ -46,6 +46,8 @@ static int push = 0;
 static int speed = 0;
 static int noent = 0;
 static int quiet = 0;
+static int nonull = 0;
+static int sax2 = 0;
 static int callbacks = 0;
 
 xmlSAXHandler emptySAXHandlerStruct = {
@@ -75,8 +77,12 @@ xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* xmlParserError */
     NULL, /* getParameterEntity */
     NULL, /* cdataBlock; */
-    NULL,  /* externalSubset; */
-    1
+    NULL, /* externalSubset; */
+    1,
+    NULL,
+    NULL, /* startElementNs */
+    NULL, /* endElementNs */
+    NULL  /* attributeNs */
 };
 
 xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
@@ -684,10 +690,158 @@ xmlSAXHandler debugSAXHandlerStruct = {
     getParameterEntityDebug,
     cdataBlockDebug,
     externalSubsetDebug,
-    1
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL
 };
 
 xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;
+
+/*
+ * SAX2 specific callbacks
+ */
+/**
+ * startElementDebug:
+ * @ctxt:  An XML parser context
+ * @name:  The element name
+ *
+ * called when an opening tag has been processed.
+ */
+static void
+startElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
+                    const xmlChar *localname,
+                    const xmlChar *prefix,
+                    const xmlChar *URI,
+		    int nb_namespaces,
+		    const xmlChar **namespaces,
+		    int nb_attributes)
+{
+    int i;
+
+    callbacks++;
+    if (quiet)
+	return;
+    fprintf(stdout, "SAX.startElementNs(%s", (char *) localname);
+    if (prefix == NULL)
+	fprintf(stdout, ", NULL");
+    else
+	fprintf(stdout, ", %s", (char *) prefix);
+    if (URI == NULL)
+	fprintf(stdout, ", NULL");
+    else
+	fprintf(stdout, ", '%s'", (char *) URI);
+    fprintf(stdout, ", %d", nb_namespaces);
+    
+    if (namespaces != NULL) {
+        for (i = 0;i < nb_namespaces * 2;i++) {
+	    fprintf(stdout, ", xmlns");
+	    if (namespaces[i] != NULL)
+	        fprintf(stdout, ":%s", namespaces[i]);
+	    i++;
+	    fprintf(stdout, "='%s'", namespaces[i]);
+	}
+    }
+    fprintf(stdout, ", %d)\n", nb_attributes);
+}
+
+/**
+ * endElementDebug:
+ * @ctxt:  An XML parser context
+ * @name:  The element name
+ *
+ * called when the end of an element has been detected.
+ */
+static void
+endElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
+                  const xmlChar *localname,
+                  const xmlChar *prefix,
+                  const xmlChar *URI)
+{
+    callbacks++;
+    if (quiet)
+	return;
+    fprintf(stdout, "SAX.endElementNs(%s", (char *) localname);
+    if (prefix == NULL)
+	fprintf(stdout, ", NULL");
+    else
+	fprintf(stdout, ", %s", (char *) prefix);
+    if (URI == NULL)
+	fprintf(stdout, ", NULL)\n");
+    else
+	fprintf(stdout, ", '%s')\n", (char *) URI);
+}
+
+/**
+ * attributeNsDebug:
+ * @ctxt:  An XML parser context
+ * @name:  The element name
+ *
+ * called when the end of an element has been detected.
+ */
+static void
+attributeNsDebug(void *ctx ATTRIBUTE_UNUSED,
+                 const xmlChar *localname,
+                 const xmlChar *prefix,
+                 const xmlChar *URI,
+		 const xmlChar *value,
+		 int valuelen)
+{
+    callbacks++;
+    if (quiet)
+	return;
+    fprintf(stdout, "SAX.attributeNs(%s", (char *) localname);
+    if (prefix == NULL)
+	fprintf(stdout, ", NULL");
+    else
+	fprintf(stdout, ", %s", (char *) prefix);
+    if (URI == NULL)
+	fprintf(stdout, ", NULL");
+    else
+	fprintf(stdout, ", '%s'", (char *) URI);
+    if (valuelen > 13) 
+        fprintf(stdout, ", %10s..., %d)\n", value, valuelen);
+    else
+        fprintf(stdout, ", %s, %d)\n", value, valuelen);
+}
+
+xmlSAXHandler debugSAX2HandlerStruct = {
+    internalSubsetDebug,
+    isStandaloneDebug,
+    hasInternalSubsetDebug,
+    hasExternalSubsetDebug,
+    resolveEntityDebug,
+    getEntityDebug,
+    entityDeclDebug,
+    notationDeclDebug,
+    attributeDeclDebug,
+    elementDeclDebug,
+    unparsedEntityDeclDebug,
+    setDocumentLocatorDebug,
+    startDocumentDebug,
+    endDocumentDebug,
+    NULL,
+    NULL,
+    referenceDebug,
+    charactersDebug,
+    ignorableWhitespaceDebug,
+    processingInstructionDebug,
+    commentDebug,
+    warningDebug,
+    errorDebug,
+    fatalErrorDebug,
+    getParameterEntityDebug,
+    cdataBlockDebug,
+    externalSubsetDebug,
+    1,
+    NULL,
+    startElementNsDebug,
+    endElementNsDebug,
+    attributeNsDebug
+};
+
+xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
 
 /************************************************************************
  *									*
@@ -702,29 +856,31 @@ parseAndPrintFile(char *filename) {
     if (push) {
 	FILE *f;
 
-	/*
-	 * Empty callbacks for checking
-	 */
-	f = fopen(filename, "r");
-	if (f != NULL) {
-	    int ret;
-	    char chars[10];
-	    xmlParserCtxtPtr ctxt;
+        if ((!quiet) && (!nonull)) {
+	    /*
+	     * Empty callbacks for checking
+	     */
+	    f = fopen(filename, "r");
+	    if (f != NULL) {
+		int ret;
+		char chars[10];
+		xmlParserCtxtPtr ctxt;
 
-	    ret = fread(chars, 1, 4, f);
-	    if (ret > 0) {
-		ctxt = xmlCreatePushParserCtxt(emptySAXHandler, NULL,
-			    chars, ret, filename);
-		while ((ret = fread(chars, 1, 3, f)) > 0) {
-		    xmlParseChunk(ctxt, chars, ret, 0);
+		ret = fread(chars, 1, 4, f);
+		if (ret > 0) {
+		    ctxt = xmlCreatePushParserCtxt(emptySAXHandler, NULL,
+				chars, ret, filename);
+		    while ((ret = fread(chars, 1, 3, f)) > 0) {
+			xmlParseChunk(ctxt, chars, ret, 0);
+		    }
+		    xmlParseChunk(ctxt, chars, 0, 1);
+		    xmlFreeParserCtxt(ctxt);
 		}
-		xmlParseChunk(ctxt, chars, 0, 1);
-		xmlFreeParserCtxt(ctxt);
+		fclose(f);
+	    } else {
+		xmlGenericError(xmlGenericErrorContext,
+			"Cannot read file %s\n", filename);
 	    }
-	    fclose(f);
-	} else {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "Cannot read file %s\n", filename);
 	}
 	/*
 	 * Debug callback
@@ -737,8 +893,12 @@ parseAndPrintFile(char *filename) {
 
 	    ret = fread(chars, 1, 4, f);
 	    if (ret > 0) {
-		ctxt = xmlCreatePushParserCtxt(debugSAXHandler, NULL,
-			    chars, ret, filename);
+	        if (sax2)
+		    ctxt = xmlCreatePushParserCtxt(debugSAX2Handler, NULL,
+				chars, ret, filename);
+		else
+		    ctxt = xmlCreatePushParserCtxt(debugSAXHandler, NULL,
+				chars, ret, filename);
 		while ((ret = fread(chars, 1, 3, f)) > 0) {
 		    xmlParseChunk(ctxt, chars, ret, 0);
 		}
@@ -756,7 +916,7 @@ parseAndPrintFile(char *filename) {
 	    /*
 	     * Empty callbacks for checking
 	     */
-	    if (!quiet) {
+	    if ((!quiet) && (!nonull)) {
 		res = xmlSAXUserParseFile(emptySAXHandler, NULL, filename);
 		if (res != 0) {
 		    fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
@@ -767,7 +927,10 @@ parseAndPrintFile(char *filename) {
 	     * Debug callback
 	     */
 	    callbacks = 0;
-	    res = xmlSAXUserParseFile(debugSAXHandler, NULL, filename);
+	    if (sax2)
+	        res = xmlSAXUserParseFile(debugSAX2Handler, NULL, filename);
+	    else
+		res = xmlSAXUserParseFile(debugSAXHandler, NULL, filename);
 	    if (res != 0) {
 		fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
 	    }
@@ -813,6 +976,12 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-quiet")) ||
 	         (!strcmp(argv[i], "--quiet")))
 	    quiet++;
+	else if ((!strcmp(argv[i], "-sax2")) ||
+	         (!strcmp(argv[i], "--sax2")))
+	    sax2++;
+	else if ((!strcmp(argv[i], "-nonull")) ||
+	         (!strcmp(argv[i], "--nonull")))
+	    nonull++;
     }
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
     for (i = 1; i < argc ; i++) {

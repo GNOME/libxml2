@@ -256,7 +256,7 @@ xmlDictFree(xmlDictPtr dict) {
  * xmlDictLookup:
  * @dict: the dictionnary
  * @name: the name of the userdata
- * @len: the length of the name
+ * @len: the length of the name, if -1 it is recomputed
  *
  * Add the @name to the hash @dict if not present.
  *
@@ -269,7 +269,12 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
     xmlDictEntryPtr insert;
     const xmlChar *ret;
 
-    if ((dict == NULL) || (name == NULL) || (len <= 0))
+    if ((dict == NULL) || (name == NULL))
+	return(NULL);
+
+    if (len < 0)
+        len = xmlStrlen(name);
+    if (len <= 0)
 	return(NULL);
 
     /*

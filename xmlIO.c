@@ -151,35 +151,44 @@ static int xmlOutputCallbackInitialized = 0;
 xmlChar *
 xmlNormalizeWindowsPath(const xmlChar *path)
 {
-    int len, i, j;
+    int len, i = 0, j;
     xmlChar *ret;
 
     if (path == NULL)
 	return(NULL);
-    if (!IS_WINDOWS_PATH(path))
-	return(xmlStrdup(path));
 
     len = xmlStrlen(path);
-    ret = xmlMalloc(len + 10);
-    if (ret == NULL)
-	return(NULL);
+    if (!IS_WINDOWS_PATH(path)) {
+	ret = xmlStrdup(path);
+	if (ret == NULL)
+	    return(NULL);
+	j = 0;
+    } else {
+	ret = xmlMalloc(len + 10);
+	if (ret == NULL)
+	    return(NULL);
+	ret[0] = 'f';
+	ret[1] = 'i';
+	ret[2] = 'l';
+	ret[3] = 'e';
+	ret[4] = ':';
+	ret[5] = '/';
+	ret[6] = '/';
+	ret[7] = '/';
+	j = 8;
+    }
 
-    ret[0] = 'f';
-    ret[1] = 'i';
-    ret[2] = 'l';
-    ret[3] = 'e';
-    ret[4] = ':';
-    ret[5] = '/';
-    ret[6] = '/';
-    ret[7] = '/';
-    for (i = 0,j = 8;i < len;i++,j++) {
+    while (i < len) {
 	/* TODO: UTF8 conversion + URI escaping ??? */
 	if (path[i] == '\\')
 	    ret[j] = '/';
 	else
 	    ret[j] = path[i];
+	i++;
+	j++;
     }
     ret[j] = 0;
+
     return(ret);
 }
 

@@ -4815,47 +4815,52 @@ xmlXPathNamespaceURIFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * returned.
  */
 static void
-xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
+xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs)
+{
     xmlXPathObjectPtr cur;
 
     if (nargs == 0) {
-	valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->node));
-	nargs = 1;
+        valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->node));
+        nargs = 1;
     }
 
     CHECK_ARITY(1);
-    if ((ctxt->value == NULL) || 
-	((ctxt->value->type != XPATH_NODESET) &&
-	 (ctxt->value->type != XPATH_XSLT_TREE)))
-	XP_ERROR(XPATH_INVALID_TYPE);
+    if ((ctxt->value == NULL) ||
+        ((ctxt->value->type != XPATH_NODESET) &&
+         (ctxt->value->type != XPATH_XSLT_TREE)))
+        XP_ERROR(XPATH_INVALID_TYPE);
     cur = valuePop(ctxt);
 
     if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr == 0)) {
-	valuePush(ctxt, xmlXPathNewCString(""));
+        valuePush(ctxt, xmlXPathNewCString(""));
     } else {
-	int i = 0; /* Should be first in document order !!!!! */
+        int i = 0;              /* Should be first in document order !!!!! */
 
-	switch (cur->nodesetval->nodeTab[i]->type) {
-	case XML_ELEMENT_NODE:
-	case XML_ATTRIBUTE_NODE:
-	    if (cur->nodesetval->nodeTab[i]->ns == NULL)
-		valuePush(ctxt, xmlXPathNewString(
-			    cur->nodesetval->nodeTab[i]->name));
-	    
-	    else {
-		char name[2000];
-		snprintf(name, sizeof(name), "%s:%s", 
-			 (char *) cur->nodesetval->nodeTab[i]->ns->prefix,
-			 (char *) cur->nodesetval->nodeTab[i]->name);
-		name[sizeof(name) - 1] = 0;
-		valuePush(ctxt, xmlXPathNewCString(name));
-	    }
-	    break;
-	default:
-	    valuePush(ctxt,
-		      xmlXPathNewNodeSet(cur->nodesetval->nodeTab[i]));
-	    xmlXPathLocalNameFunction(ctxt, 1);
-	}
+        switch (cur->nodesetval->nodeTab[i]->type) {
+            case XML_ELEMENT_NODE:
+            case XML_ATTRIBUTE_NODE:
+                if ((cur->nodesetval->nodeTab[i]->ns == NULL) ||
+                    (cur->nodesetval->nodeTab[i]->ns->prefix == NULL))
+                    valuePush(ctxt,
+                              xmlXPathNewString(cur->nodesetval->
+                                                nodeTab[i]->name));
+
+                else {
+                    char name[2000];
+
+                    snprintf(name, sizeof(name), "%s:%s",
+                             (char *) cur->nodesetval->nodeTab[i]->ns->
+                             prefix,
+                             (char *) cur->nodesetval->nodeTab[i]->name);
+                    name[sizeof(name) - 1] = 0;
+                    valuePush(ctxt, xmlXPathNewCString(name));
+                }
+                break;
+            default:
+                valuePush(ctxt,
+                          xmlXPathNewNodeSet(cur->nodesetval->nodeTab[i]));
+                xmlXPathLocalNameFunction(ctxt, 1);
+        }
     }
     xmlXPathFreeObject(cur);
 }

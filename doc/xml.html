@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V2.1">
+  <meta name="GENERATOR" content="amaya V3.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -141,8 +141,9 @@ about Docbook), but it's a good starting point.</p>
 href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> or on the <a
 href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> either
 as a <a href="ftp://ftp.gnome.org/pub/GNOME/stable/sources/libxml/">source
-archive</a> or <a href="ftp://ftp.gnome.org/pub/GNOME/contrib/redhat/SRPMS/">RPM
-packages</a>. (NOTE that you need both the <a
+archive</a> or <a
+href="ftp://ftp.gnome.org/pub/GNOME/contrib/redhat/SRPMS/">RPM packages</a>.
+(NOTE that you need both the <a
 href="http://rpmfind.net/linux/RPM/libxml2.html">libxml(2)</a> and <a
 href="http://rpmfind.net/linux/RPM/libxml2-devel.html">libxml(2)-devel</a>
 packages installed to compile applications using libxml.)</p>
@@ -437,12 +438,13 @@ it is used to encode remote calls between a client and a server.</p>
 <p>The parser returns a tree built during the document analysis. The value
 returned is an <strong>xmlDocPtr</strong> (i.e., a pointer to an
 <strong>xmlDoc</strong> structure). This structure contains information such
-as the file name, the document type, and a <strong>root</strong> pointer which
-is the root of the document (or more exactly the first child under the root
-which is the document). The tree is made of <strong>xmlNode</strong>s, chained
-in double-linked lists of siblings and with childs&lt;->parent relationship.
-An xmlNode can also carry properties (a chain of xmlAttr structures). An
-attribute may have a value which is a list of TEXT or ENTITY_REF nodes.</p>
+as the file name, the document type, and a <strong>children</strong> pointer
+which is the root of the document (or more exactly the first child under the
+root which is the document). The tree is made of <strong>xmlNode</strong>s,
+chained in double-linked lists of siblings and with children&lt;->parent
+relationship. An xmlNode can also carry properties (a chain of xmlAttr
+structures). An attribute may have a value which is a list of TEXT or
+ENTITY_REF nodes.</p>
 
 <p>Here is an example (erroneous with respect to the XML spec since there
 should be only one ELEMENT under the root):</p>
@@ -643,12 +645,12 @@ that produces the XML document used in the previous examples:</p>
     xmlNodePtr tree, subtree;
 
     doc = xmlNewDoc("1.0");
-    doc->root = xmlNewDocNode(doc, NULL, "EXAMPLE", NULL);
-    xmlSetProp(doc->root, "prop1", "gnome is great");
-    xmlSetProp(doc->root, "prop2", "&amp; linux too");
-    tree = xmlNewChild(doc->root, NULL, "head", NULL);
+    doc->children = xmlNewDocNode(doc, NULL, "EXAMPLE", NULL);
+    xmlSetProp(doc->children, "prop1", "gnome is great");
+    xmlSetProp(doc->children, "prop2", "&amp; linux too");
+    tree = xmlNewChild(doc->children, NULL, "head", NULL);
     subtree = xmlNewChild(tree, NULL, "title", "Welcome to Gnome");
-    tree = xmlNewChild(doc->root, NULL, "chapter", NULL);
+    tree = xmlNewChild(doc->children, NULL, "chapter", NULL);
     subtree = xmlNewChild(tree, NULL, "title", "The Linux adventure");
     subtree = xmlNewChild(tree, NULL, "p", "bla bla bla ...");
     subtree = xmlNewChild(tree, NULL, "image", NULL);
@@ -658,23 +660,23 @@ that produces the XML document used in the previous examples:</p>
 
 <h3><a name="Traversing">Traversing the tree</a></h3>
 
-<p>Basically by <a href="html/gnome-xml-tree.html">including "tree.h"</a> your code
-has access to the internal structure of all the elements of the tree. The
+<p>Basically by <a href="html/gnome-xml-tree.html">including "tree.h"</a> your
+code has access to the internal structure of all the elements of the tree. The
 names should be somewhat simple like <strong>parent</strong>,
-<strong>childs</strong>, <strong>next</strong>, <strong>prev</strong>,
+<strong>children</strong>, <strong>next</strong>, <strong>prev</strong>,
 <strong>properties</strong>, etc... For example, still with the previous
 example:</p>
-<pre><code>doc->root->childs->childs</code></pre>
+<pre><code>doc->children->children->children</code></pre>
 
 <p>points to the title element,</p>
-<pre>doc->root->childs->next->child->child</pre>
+<pre>doc->children->children->next->child->child</pre>
 
 <p>points to the text node containing the chapter title "The Linux
 adventure".</p>
 
 <p><strong>NOTE</strong>: XML allows <em>PI</em>s and <em>comments</em> to be
-present before the document root, so <code>doc->root</code> may point to an
-element which is not the document Root Element, a function
+present before the document root, so <code>doc->children</code> may point to
+an element which is not the document Root Element, a function
 <code>xmlDocGetRootElement()</code> was added for this purpose.</p>
 
 <h3><a name="Modifying">Modifying the tree</a></h3>
@@ -901,10 +903,10 @@ a set of rules.</p>
 of  XML life cycle. Briefly a DTD defines all the possibles element to be
 found within your document, what is the formal shape of your document tree (by
 defining the allowed content of an element, either text, a regular expression
-for the allowed list of children, or mixed content i.e. both text and childs).
-The DTD also defines the allowed attributes for all elements and the types of
-the attributes. For more detailed informations, I suggest to read the related
-parts of the XML specification, the examples found under
+for the allowed list of children, or mixed content i.e. both text and
+children). The DTD also defines the allowed attributes for all elements and
+the types of the attributes. For more detailed informations, I suggest to read
+the related parts of the XML specification, the examples found under
 gnome-xml/test/valid/dtd and the large amount of books available on XML. The
 dia example in gnome-xml/test/valid should be both simple and complete enough
 to allow you to build your own.</p>
@@ -1028,7 +1030,7 @@ generate the internals structures is harder, and more error prone.</p>
 <p>The suggested principle is to be tolerant with respect to the input
 structure. For example, the ordering of the attributes is not significant,
 Cthe XML specification is clear about it. It's also usually a good idea to not
-be dependent of the orders of the childs of a given node, unless it really
+be dependent of the orders of the children of a given node, unless it really
 makes things harder. Here is some code to parse the informations for a
 person:</p>
 <pre>/*
@@ -1062,12 +1064,12 @@ DEBUG("parsePerson\n");
     memset(ret, 0, sizeof(person));
 
     /* We don't care what the top level element name is */
-    cur = cur->childs;
+    cur = cur->xmlChildrenNode;
     while (cur != NULL) {
         if ((!strcmp(cur->name, "Person")) &amp;&amp; (cur->ns == ns))
-            ret->name = xmlNodeListGetString(doc, cur->childs, 1);
+            ret->name = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
         if ((!strcmp(cur->name, "Email")) &amp;&amp; (cur->ns == ns))
-            ret->email = xmlNodeListGetString(doc, cur->childs, 1);
+            ret->email = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
         cur = cur->next;
     }
 
@@ -1125,7 +1127,7 @@ DEBUG("parseJob\n");
     memset(ret, 0, sizeof(job));
 
     /* We don't care what the top level element name is */
-    cur = cur->childs;
+    cur = cur->xmlChildrenNode;
     while (cur != NULL) {
         
         if ((!strcmp(cur->name, "Project")) &amp;&amp; (cur->ns == ns)) {
@@ -1135,9 +1137,9 @@ DEBUG("parseJob\n");
             }
         }
         if ((!strcmp(cur->name, "Application")) &amp;&amp; (cur->ns == ns))
-            ret->application = xmlNodeListGetString(doc, cur->childs, 1);
+            ret->application = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
         if ((!strcmp(cur->name, "Category")) &amp;&amp; (cur->ns == ns))
-            ret->category = xmlNodeListGetString(doc, cur->childs, 1);
+            ret->category = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
         if ((!strcmp(cur->name, "Contact")) &amp;&amp; (cur->ns == ns))
             ret->contact = parsePerson(doc, ns, cur);
         cur = cur->next;
@@ -1182,6 +1184,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.37 2000/07/03 11:41:26 veillard Exp $</p>
+<p>$Id: xml.html,v 1.38 2000/07/03 11:52:01 veillard Exp $</p>
 </body>
 </html>

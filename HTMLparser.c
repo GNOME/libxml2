@@ -6038,7 +6038,7 @@ htmlCtxtReadFile(htmlParserCtxtPtr ctxt, const char *filename,
 
     htmlCtxtReset(ctxt);
 
-    stream = xmlNewInputFromFile(ctxt, filename);
+    stream = xmlLoadExternalEntity(filename, NULL, ctxt);
     if (stream == NULL) {
         return (NULL);
     }

@@ -1,3 +1,9 @@
+Fri Nov 26 11:44:36 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c parser.c: make sure xmlCtxtReadFile and htmlCtxtReadFile
+	  go through the catalog resolution.
+	* gentest.py testapi.c: fix a side effect wrning of the change
+
 Wed Nov 24 13:41:52 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c include/libxml/dict.h: added xmlDictExists() to the 

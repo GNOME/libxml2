@@ -12732,7 +12732,7 @@ xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
 
     xmlCtxtReset(ctxt);
 
-    stream = xmlNewInputFromFile(ctxt, filename);
+    stream = xmlLoadExternalEntity(filename, NULL, ctxt);
     if (stream == NULL) {
         return (NULL);
     }

@@ -1537,7 +1537,6 @@ test_htmlCtxtReadFile(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_HTML_ENABLED
-    int mem_base;
     htmlDocPtr ret_val;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
     int n_ctxt;
@@ -1552,7 +1551,6 @@ test_htmlCtxtReadFile(void) {
     for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
     for (n_options = 0;n_options < gen_nb_int;n_options++) {
-        mem_base = xmlMemBlocks();
         ctxt = gen_htmlParserCtxtPtr(n_ctxt, 0);
         filename = gen_filepath(n_filename, 1);
         encoding = gen_const_char_ptr(n_encoding, 2);
@@ -1566,16 +1564,6 @@ test_htmlCtxtReadFile(void) {
         des_const_char_ptr(n_encoding, (const char *)encoding, 2);
         des_int(n_options, options, 3);
         xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in htmlCtxtReadFile",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_ctxt);
-            printf(" %d", n_filename);
-            printf(" %d", n_encoding);
-            printf(" %d", n_options);
-            printf("\n");
-        }
     }
     }
     }

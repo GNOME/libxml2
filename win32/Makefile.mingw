@@ -2,40 +2,28 @@
 # DLL-import library, and the test executables using the "mingw" gcc
 # compiler environment.  This Makefile is based on Alfred Reibenschuh's
 # version for 2.1.1, and was modified by Wayne Davison.
+# Modified 2001/10/10 Tobias Peters for libxml2-2.4.5
 
 # Set "PREFIX" to the root of the mingw installed files.
 
 PREFIX = /mingw
 
-CC=gcc
-CFLAGS=-O -Iinclude -I$(PREFIX)/include -D_WINSOCKAPI_ -fnative-struct
-LDFLAGS=-L. -L$(PREFIX)/lib
-LIBS=-lwsock32 -lz
+CC       = gcc
+CFLAGS   = -Iinclude -fnative-struct -D_WINSOCKAPI_ \
+           -Dsnprintf=_snprintf -Dvsnprintf=_vsnprintf
+LDFLAGS  = -L. -L$(PREFIX)/lib
+LIBS     = -lwsock32 -lz
 
 AR=ar rc
 DLLTOOL=dlltool
 DLLWRAP=dllwrap
 
-LIBSRCS=HTMLparser.c	\
-	HTMLtree.c	\
-	SAX.c		\
-	debugXML.c	\
-	encoding.c	\
-	entities.c	\
-	error.c		\
-	nanoftp.c	\
-	nanohttp.c	\
-	parser.c	\
-	parserInternals.c	\
-	tree.c		\
-	valid.c		\
-	xlink.c		\
-	xmlIO.c		\
-	xmlmemory.c	\
-	xpath.c		\
-	xpointer.c	\
-	hash.c		\
-	uri.c
+
+LIBSRCS=SAX.c entities.c encoding.c error.c parserInternals.c  \
+		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
+		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
+		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
+		catalog.c strio.c
 
 LIBOBJS=$(LIBSRCS:.c=.o)
 
@@ -55,6 +43,8 @@ EXE3=$(OBJ3:.o=.exe)
 IMPBASE=$(LIBBASE)_dll
 IMP=lib$(IMPBASE).a
 
+DLLFLAGS = --shared -o $(DLL) -Wl,--out-implib,$(IMP)
+
 DEF=$(DLL:.dll=.def)
 
 all: $(LIB) $(DLL) $(DEF) $(IMP) $(EXE1) $(EXE2) $(EXE3)
@@ -63,8 +53,9 @@ dll: $(DLL)
 
 lib: $(LIB)
 
-$(DLL): $(LIB) $(DEF) $(IMP)
-	$(DLLWRAP) --def $(DEF) --dllname $@ --output-lib $@ $(LIB) $(LDFLAGS) $(LIBS) -mwindows
+$(DLL) $(IMP): $(LIBOBJS)
+	$(CC) $(DLLFLAGS) $(LIBOBJS) $(LDFLAGS) $(LIBS)
+# -mwindows
 
 $(LIB): $(LIBOBJS)
 	$(AR) $@ $^
@@ -72,23 +63,29 @@ $(LIB): $(LIBOBJS)
 $(DEF): $(LIBOBJS)
 	$(DLLTOOL) --kill-at --export-all -D $(DLL) --output-def $@ $^
 
-$(IMP): $(DEF)
-	$(DLLTOOL) -d $< -l $@ -D $(DLL)
-
-$(EXE1): $(OBJ1) $(LIBOBJS) $(DLL)
+$(EXE1): $(OBJ1) $(DLL)
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
 	strip $@
 
-$(EXE2): $(OBJ2) $(LIBOBJS) $(DLL)
+$(EXE2): $(OBJ2) $(DLL)
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(IMPBASE) $(LIBS)
 	strip $@
 
-$(EXE3): $(OBJ3) $(LIBOBJS) $(LIB)
+$(EXE3): $(OBJ3) $(LIB)
 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS) -l$(LIBBASE) $(LIBS)
 	strip $@
 
+$(OBJ1): $(OBJ1:.o=.c)
+	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
+
+$(OBJ2): $(OBJ2:.o=.c)
+	$(CC) $(CFLAGS) -DLIBXML_DLL_IMPORT=__declspec'(dllimport)' -c $< -o $@
+
+$(OBJ3): $(OBJ3:.o=.c)
+	$(CC) $(CFLAGS) -c $< -o $@
+
 .c.o:
-	$(CC) $(CFLAGS) -c $< -o $@	
+	$(CC) $(CFLAGS) -DIN_LIBXML -c $< -o $@	
 
 clean:
 	rm *.o *.a *.dll *.def

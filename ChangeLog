@@ -1,3 +1,8 @@
+Thu Oct 11 08:44:01 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* win32/Makefile.mingw: update from Tobias Peters for 2.4.5
+	* DOCBparser.c: generate line nubers in elements
+
 Wed Oct 10 11:35:45 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing 2.4.6 release

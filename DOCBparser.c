@@ -5029,6 +5029,7 @@ docbInitParserCtxt(docbParserCtxtPtr ctxt)
     ctxt->userData = ctxt;
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
+    ctxt->linenumbers = 1;
     ctxt->replaceEntities = xmlSubstituteEntitiesDefaultValue;
     ctxt->html = 2;
     ctxt->record_info = 0;

@@ -33,7 +33,7 @@ languages:</p>
   <li>XML Base: <a
     href="http://www.w3.org/TR/xmlbase/">http://www.w3.org/TR/xmlbase/</a></li>
   <li><a href="http://www.cis.ohio-state.edu/rfc/rfc2396.txt">RFC 2396</a>
-    : Uniform Resource Identifiers <a
+     : Uniform Resource Identifiers <a
     href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a></li>
   <li>XML Path Language (XPath) 1.0: <a
     href="http://www.w3.org/TR/xpath">http://www.w3.org/TR/xpath</a></li>
@@ -61,9 +61,9 @@ other specification but don't claim to implement them:</p>
     it doesn't implement the API itself, gdome2 does this in top of
   libxml2</li>
   <li><a href="http://www.cis.ohio-state.edu/rfc/rfc959.txt">RFC 959</a>
-    : libxml implements a basic FTP client code</li>
+     : libxml implements a basic FTP client code</li>
   <li><a href="http://www.cis.ohio-state.edu/rfc/rfc1945.txt">RFC 1945</a>
-    : HTTP/1.0, again a basic HTTP client code</li>
+     : HTTP/1.0, again a basic HTTP client code</li>
   <li>SAX: a minimal SAX implementation compatible with early expat
   versions</li>
   <li>DocBook SGML v4: libxml2 includes a hackish parser to transition to
@@ -74,10 +74,11 @@ other specification but don't claim to implement them:</p>
 
 <p>Separate documents:</p>
 <ul>
-  <li><a href="http://xmlsoft.org/XSLT/">the libxslt page</a> providing an
-    implementation of XSLT 1.0 and extensions on top of libxml2</li>
-  <li><a href="http://www.cs.unibo.it/~casarini/gdome2/">the gdome2 page</a>:
-    a standard DOM2 implementation based on libxml2</li>
+  <li><a href="http://xmlsoft.org/XSLT/">the libxslt page</a>
+     providing an implementation of XSLT 1.0 and extensions on top of
+  libxml2</li>
+  <li><a href="http://www.cs.unibo.it/~casarini/gdome2/">the gdome2 page</a>
+    : a standard DOM2 implementation based on libxml2</li>
 </ul>
 
 <h2><a name="Introducti">Introduction</a></h2>
@@ -514,7 +515,9 @@ packages installed to compile applications using libxml.) <a
 href="mailto:izlatkovic@daenet.de">Igor  Zlatkovic</a> is now the maintainer
 of the Windows port, <a
 href="http://www.fh-frankfurt.de/~igor/projects/libxml/index.html">he
-provides binaries</a></p>
+provides binaries</a>. <a href="mailto:Gary.Pennington@sun.com">Gary
+Pennington</a> provides <a
+href="http://pages.eidosnet.co.uk/~garypen/libxml/">Solaris binaries</a>.</p>
 
 <p><a name="Snapshot">Snapshot:</a></p>
 <ul>
@@ -524,11 +527,12 @@ provides binaries</a></p>
     href="ftp://xmlsoft.org/libxml-docs.tar.gz">libxml-docs.tar.gz</a></li>
 </ul>
 
-<p><a name="Contribs">Contribs:</a></p>
+<p><a name="Contribs">Contributions:</a></p>
 
 <p>I do accept external contributions, especially if compiling on another
-platform, get in touch with me to upload the package. I will keep them in the
-<a href="ftp://xmlsoft.org/contribs/">contrib directory</a></p>
+platform,  get in touch with me to upload the package, wrappers for various
+languages have been provided, and can be found in the 
+<a href="contribs.html">contrib section</a></p>
 
 <p>Libxml is also available from CVS:</p>
 <ul>
@@ -2121,6 +2125,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
 
 
 
+
 } </pre>
   </li>
   <li>And then use it to save the document:
@@ -3209,12 +3214,12 @@ Gnome CVS base under gnome-xml/example</p>
     patches, Gary Pennington worked on the validation API, threading support
     and Solaris port.</li>
   <li>John Fleck helps maintaining the documentation and man pages.</li>
-  <li><p><a href="mailto:ari@lusis.org">Ari Johnson</a></p>
-    provides a  C++ wrapper for libxml:
-    <p>Website: <a
-    href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a></p>
-    <p>Download: <a
-    href="http://lusis.org/~ari/xml++/libxml++.tar.gz">http://lusis.org/~ari/xml++/libxml++.tar.gz</a></p>
+  <li><a href="mailto:ari@lusis.org">Ari Johnson</a>
+    provides a  C++ wrapper for libxml:<br>
+    Website: <a
+    href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a><br>
+    Download: <a
+    href="http://lusis.org/~ari/xml++/libxml++.tar.gz">http://lusis.org/~ari/xml++/libxml++.tar.gz</a>
   </li>
   <li><a href="mailto:izlatkovic@daenet.de">Igor  Zlatkovic</a>
      is now the maintainer of the Windows port, <a
@@ -3246,8 +3251,5 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p></p>
 
-<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
-
-<p>$Id: xml.html,v 1.114 2001/10/24 12:35:52 veillard Exp $</p>
 </body>
 </html>

@@ -118,7 +118,7 @@ docbnamePush(docbParserCtxtPtr ctxt, const xmlChar * value)
     if (ctxt->nameNr >= ctxt->nameMax) {
         ctxt->nameMax *= 2;
         ctxt->nameTab = (const xmlChar * *)
-                         xmlRealloc(ctxt->nameTab,
+                         xmlRealloc((xmlChar * *)ctxt->nameTab,
                                     ctxt->nameMax *
                                     sizeof(ctxt->nameTab[0]));
         if (ctxt->nameTab == NULL) {

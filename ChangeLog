@@ -1,3 +1,8 @@
+Thu Aug 28 12:32:59 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* parser.c parserInternals.c DOCBparser.c HTMLparser.c: added
+	  few casts to shut the compiler warnings
+
 Thu Aug 28 12:23:51 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/Makefile.* win32/configure.js: fixed for mingw

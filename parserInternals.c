@@ -2360,7 +2360,7 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
         xmlFreeInputStream(input);
     }
     if (ctxt->spaceTab != NULL) xmlFree(ctxt->spaceTab);
-    if (ctxt->nameTab != NULL) xmlFree(ctxt->nameTab);
+    if (ctxt->nameTab != NULL) xmlFree((xmlChar * *)ctxt->nameTab);
     if (ctxt->nodeTab != NULL) xmlFree(ctxt->nodeTab);
     if (ctxt->inputTab != NULL) xmlFree(ctxt->inputTab);
     if (ctxt->version != NULL) xmlFree((char *) ctxt->version);
@@ -2371,7 +2371,7 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
         xmlFree(ctxt->sax);
     if (ctxt->directory != NULL) xmlFree((char *) ctxt->directory);
     if (ctxt->vctxt.nodeTab != NULL) xmlFree(ctxt->vctxt.nodeTab);
-    if (ctxt->atts != NULL) xmlFree(ctxt->atts);
+    if (ctxt->atts != NULL) xmlFree((xmlChar * *)ctxt->atts);
     if (ctxt->dict != NULL) xmlDictFree(ctxt->dict);
 #ifdef LIBXML_CATALOG_ENABLED
     if (ctxt->catalogs != NULL)

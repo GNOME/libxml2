@@ -1,3 +1,8 @@
+Sat Dec 27 12:32:58 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemas.c: added tests for xs:all to assure minOccurs
+	  and maxOccurs <= 1 (Bug 130020)
+
 Sat Dec 27 09:53:06 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xmlregexp.c: fixed xmlFAParseCharRange for Unicode ranges

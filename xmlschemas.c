@@ -2563,7 +2563,13 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     type->type = XML_SCHEMA_TYPE_ALL;
     type->id = xmlSchemaGetProp(ctxt, node, "id");
     type->minOccurs = xmlGetMinOccurs(ctxt, node);
+    if (type->minOccurs > 1)
+        xmlSchemaPErr(ctxt, node, XML_SCHEMAP_INVALID_MINOCCURS,
+	    "invalid value for minOccurs (must be 0 or 1)\n", NULL, NULL);
     type->maxOccurs = xmlGetMaxOccurs(ctxt, node);
+    if (type->maxOccurs > 1)
+        xmlSchemaPErr(ctxt, node, XML_SCHEMAP_INVALID_MAXOCCURS,
+	    "invalid value for maxOccurs (must be 0 or 1)\n", NULL, NULL);
 
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
@@ -2574,6 +2580,14 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         subtype = (xmlSchemaTypePtr)
             xmlSchemaParseElement(ctxt, schema, child, 0);
         if (subtype != NULL) {
+	    if (subtype->minOccurs > 1)
+                xmlSchemaPErr(ctxt, child, XML_SCHEMAP_INVALID_MINOCCURS,
+	             "invalid value for minOccurs (must be 0 or 1)\n",
+		     NULL, NULL);
+	    if (subtype->maxOccurs > 1)
+	        xmlSchemaPErr(ctxt, child, XML_SCHEMAP_INVALID_MAXOCCURS,
+	             "invalid value for maxOccurs (must be 0 or 1)\n",
+		     NULL, NULL);
             if (last == NULL) {
                 type->subtypes = subtype;
                 last = subtype;

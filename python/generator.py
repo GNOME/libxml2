@@ -383,7 +383,7 @@ def print_function_wrapper(name, output, export, include):
     return 1
 
 try:
-    f = open("libxml2-api.xml")
+    f = open("../doc/libxml2-api.xml")
     data = f.read()
     (parser, target)  = getparser()
     parser.feed(data)

@@ -1,3 +1,8 @@
+Sun Jan 13 21:30:54 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixed xmlSaveFormatFileEnc() when encoding == NULL
+	  Fixes bug #67229
+
 Sun Jan 13 17:14:06 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: trying to avoid troubles when a subtree is copied

@@ -6603,6 +6603,9 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
     xmlCharEncoding enc;
     int ret;
 
+    if (encoding == NULL)
+	encoding = (const char *) cur->encoding;
+
     if (encoding != NULL) {
 
 	enc = xmlParseCharEncoding(encoding);

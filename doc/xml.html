@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML C library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V3.2.1">
+  <meta name="GENERATOR" content="amaya V3.2">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -75,7 +75,7 @@ structured documents/data.</p>
     href="http://www.w3.org/TR/xptr/">XPointer</a> implementations.</li>
   <li>It is written in plain C, making as few assumptions as possible, and
     sticking closely to ANSI C/POSIX for easy embedding. Works on
-    Linux/Unix/Windows, ported to a number of other platforms. </li>
+    Linux/Unix/Windows, ported to a number of other platforms.</li>
   <li>Basic support for HTTP and FTP client allowing to fetch remote
   resources</li>
   <li>The design of modular, most of the extensions can be compiled out.</li>
@@ -169,8 +169,8 @@ database:</a>:</p>
 <ol>
   <li>provide patches when you find problems</li>
   <li>provide the diffs when you port libxml to a new platform. They may not
-    be integrated in all cases but help pinpointing portability problems and
-  </li>
+    be integrated in all cases but help pinpointing portability problems
+  and</li>
   <li>provice documentation fixes (either as patches to the code comments or
     as HTML diffs).</li>
   <li>provide new documentations pieces (translations, examples, etc ...)</li>
@@ -231,6 +231,15 @@ platform, get in touch with me to upload the package. I will keep them in the
 <h3>CVS only : check the <a
 href="http://cvs.gnome.org/lxr/source/gnome-xml/ChangeLog">Changelog</a> file
 for a really accurate description</h3>
+
+<p>Item floating around but not actively worked on, get in touch with me if
+you want to test those</p>
+<ul>
+  <li>working on HTML and XML links recognition layers</li>
+  <li>parsing/import of Docbook SGML docs</li>
+</ul>
+
+<h3>2.2.5: Oct 15 2000:</h3>
 <ul>
   <li>XPointer implementation and testsuite</li>
   <li>Lot of XPath fixes, added variable and functions registration, more
@@ -240,13 +249,7 @@ for a really accurate description</h3>
   <li>Late validation fixes</li>
   <li>Integrated a lot of contributed patches</li>
   <li>added memory management docs</li>
-</ul>
-
-<p>Item floating around but not actively worked on, get in touch with me if
-you want to test those</p>
-<ul>
-  <li>working on HTML and XML links recognition layers</li>
-  <li>parsing/import of Docbook SGML docs</li>
+  <li>a performance problem when using large buffer seems fixed</li>
 </ul>
 
 <h3>2.2.4: Oct 1 2000:</h3>
@@ -1339,6 +1342,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.53 2000/09/29 02:42:04 veillard Exp $</p>
+<p>$Id: xml.html,v 1.54 2000/10/13 10:23:06 veillard Exp $</p>
 </body>
 </html>

@@ -1,3 +1,9 @@
+Sun Mar 20 11:13:02 PST 2005 Aleksey Sanin <aleksey@aleksey.com>
+	
+	* c14n.c include/libxml/xmlerror.h: special case "DAV:" namespace
+	in c14n relative namespaces check and add structured error messages
+	to c14n code
+
 Thu Mar 17 12:55:23 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Removed inheritance of "mixed" content type for

@@ -403,8 +403,17 @@ xmlNanoHTTPFreeCtxt(xmlNanoHTTPCtxtPtr ctxt) {
 
 static void
 xmlNanoHTTPSend(xmlNanoHTTPCtxtPtr ctxt) {
-    if (ctxt->state & XML_NANO_HTTP_WRITE)
-	ctxt->last = send(ctxt->fd, ctxt->outptr, strlen(ctxt->outptr), 0);
+    if (ctxt->state & XML_NANO_HTTP_WRITE) {
+        int total_sent = 0;
+        while (total_sent <strlen(ctxt->outptr)) {
+            int nsent = send(ctxt->fd, ctxt->outptr+total_sent,
+                             strlen(ctxt->outptr)-total_sent, 0);
+            if (nsent>0)
+                total_sent += nsent;
+}
+
+        ctxt->last = total_sent;
+    }
 }
 
 /**

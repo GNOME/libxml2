@@ -3505,9 +3505,19 @@ xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 		*child = cur;
 	        return(0);
 	    }
+	    if (ret == -1) return(-1);
+	    cur = *child;
 	    do {
-		cur = *child;
+		if (*child == NULL)
+		    break; /* while */
+		if (((*child)->type == XML_TEXT_NODE) &&
+		    (xmlIsBlankNode(*child))) {
+		    *child = (*child)->next;
+		    continue;
+		}
 		ret = xmlValidateElementTypeExpr(ctxt, child, cont);
+		if (ret == 1)
+		    cur = *child;
 	    } while (ret == 1);
 	    if (ret == -1) return(-1);
 	    *child = cur;
@@ -3812,6 +3822,11 @@ child_ok:
 	    child = elem->children;
 	    cont = elemDecl->content;
 	    ret = xmlValidateElementTypeElement(ctxt, &child, cont);
+	    while ((child != NULL) && (child->type == XML_TEXT_NODE) &&
+		(xmlIsBlankNode(child))) {
+		child = child->next;
+		continue;
+	    }
 	    if ((ret == 0) || (child != NULL)) {
 	        char expr[1000];
 	        char list[2000];

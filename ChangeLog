@@ -1,3 +1,12 @@
+Sun Oct 22 13:59:50 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c: coalesce adjacent text nodes
+	* valid.c: handling of blank nodes in DTd validation (raised
+	  by problems with a posteriori validation).
+	* nanohttp.c: changing behaviour on HTTP write stuff.
+	* HTMLtree.c: forced body and html to be explicitely closed.
+	* xpath.h: exported more XPath functions.
+
 Sun Oct 15 22:28:32 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
         * Release of 2.2.5

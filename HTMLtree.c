@@ -849,9 +849,10 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
 	return;
     }
     if ((cur->content == NULL) && (cur->children == NULL)) {
-        if ((info != NULL) && (info->endTag != 0))
+        if ((info != NULL) && (info->endTag != 0) &&
+	    (strcmp(info->name, "html")) && (strcmp(info->name, "body"))) {
 	    xmlOutputBufferWriteString(buf, ">");
-	else {
+	} else {
 	    xmlOutputBufferWriteString(buf, "></");
 	    xmlOutputBufferWriteString(buf, (const char *)cur->name);
 	    xmlOutputBufferWriteString(buf, ">");

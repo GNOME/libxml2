@@ -1,3 +1,8 @@
+Sun Jan 25 20:59:20 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: applied patch from Frederic Peters
+	  fixing the wrong arg order in xpath callback in bug #130980
+
 Sun Jan 25 20:52:09 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: fixing #130453 XInclude element with no href attribute

@@ -1,3 +1,8 @@
+Mon Mar 26 23:20:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c parserold.c: Sullivan and Darin found a parser bug,
+	  applied the patch.
+
 Mon Mar 26 09:51:40 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parserold.c : reapplied bug 52299 fix

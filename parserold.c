@@ -5484,7 +5484,7 @@ xmlOldParseContent(xmlParserCtxtPtr ctxt) {
     while ((CUR != '<') || (NXT(1) != '/')) {
 	const xmlChar *test = CUR_PTR;
 	int cons = ctxt->input->consumed;
-	xmlChar tok = ctxt->token;
+	int tok = ctxt->token;
 
 	/*
 	 * Handle  possible processed charrefs.

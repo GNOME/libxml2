@@ -1,3 +1,8 @@
+Fri Oct 22 16:36:50 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: added support for HTML PIs #156087
+	* test/HTML/python.html result/HTML/python.html*: added specific tests
+
 Fri Oct 22 15:20:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: fixed nasty bug #156087

@@ -2635,7 +2635,7 @@ xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
     hdlr->characters = xmlSAX2Characters;
     hdlr->cdataBlock = xmlSAX2CDataBlock;
     hdlr->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
-    hdlr->processingInstruction = NULL;
+    hdlr->processingInstruction = xmlSAX2ProcessingInstruction;
     hdlr->comment = xmlSAX2Comment;
     hdlr->warning = xmlParserWarning;
     hdlr->error = xmlParserError;

@@ -430,7 +430,7 @@ xmlSAXHandlerV1 htmlDefaultSAXHandler = {
     NULL,
     xmlSAX2Characters,
     xmlSAX2IgnorableWhitespace,
-    NULL,
+    xmlSAX2ProcessingInstruction,
     xmlSAX2Comment,
     xmlParserWarning,
     xmlParserError,

@@ -1,205 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Libxml Input/Output handling</title>
-  <meta name="GENERATOR" content="amaya V4.1">
-  <meta http-equiv="Content-Type" content="text/html">
+<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<style type="text/css"><!--
+TD {font-size: 10pt; font-family: Verdana,Arial,Helvetica}
+BODY {font-size: 10pt; font-family: Verdana,Arial,Helvetica; margin-top: 5pt; margin-left: 0pt; margin-right: 0pt}
+H1 {font-size: 16pt; font-family: Verdana,Arial,Helvetica}
+H2 {font-size: 14pt; font-family: Verdana,Arial,Helvetica}
+H3 {font-size: 12pt; font-family: Verdana,Arial,Helvetica}
+A:link, A:visited, A:active { text-decoration: underline }
+--></style>
+<title>Validation &amp; DTDs</title>
 </head>
-
-<body bgcolor="#ffffff">
-<h1 align="center">Libxml DTD support</h1>
-
-<p>Location: <a
-href="http://xmlsoft.org/xmlio.html">http://xmlsoft.org/xmldtd.html</a></p>
-
-<p>Libxml home page: <a href="http://xmlsoft.org/">http://xmlsoft.org/</a></p>
-
-<p>Mailing-list archive:  <a
-href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
-
-<p>Version: $Revision$</p>
-
+<body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
+<table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr>
+<td width="180">
+<a href="http://www.gnome.org/"><img src="smallfootonly.gif" alt="Gnome Logo"></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"></a>
+</td>
+<td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center">
+<h1>The XML C library for Gnome</h1>
+<h2>Validation &amp; DTDs</h2>
+</td></tr></table></td></tr></table></td>
+</tr></table>
+<table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr>
+<td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td>
+<table width="100%" border="0" cellspacing="1" cellpadding="3">
+<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr>
+<tr><td bgcolor="#fffacd"><ul style="margin-left: -2pt">
+<li><a href="index.html">Home</a></li>
+<li><a href="intro.html">Introduction</a></li>
+<li><a href="FAQ.html">FAQ</a></li>
+<li><a href="docs.html">Documentation</a></li>
+<li><a href="bugs.html">Reporting bugs and getting help</a></li>
+<li><a href="help.html">How to help</a></li>
+<li><a href="downloads.html">Downloads</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="XML.html">XML</a></li>
+<li><a href="XSLT.html">XSLT</a></li>
+<li><a href="architecture.html">libxml architecture</a></li>
+<li><a href="tree.html">The tree output</a></li>
+<li><a href="interface.html">The SAX interface</a></li>
+<li><a href="xmldtd.html">Validation &amp; DTDs</a></li>
+<li><a href="xmlmem.html">Memory Management</a></li>
+<li><a href="encoding.html">Encodings support</a></li>
+<li><a href="xmlio.html">I/O Interfaces</a></li>
+<li><a href="catalog.html">Catalog support</a></li>
+<li><a href="library.html">The parser interfaces</a></li>
+<li><a href="entities.html">Entities or no entities</a></li>
+<li><a href="namespaces.html">Namespaces</a></li>
+<li><a href="upgrade.html">Upgrading 1.x code</a></li>
+<li><a href="DOM.html">DOM Principles</a></li>
+<li><a href="example.html">A real example</a></li>
+<li><a href="contribs.html">Contributions</a></li>
+<li>
+<a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a>
+</li>
+</ul></td></tr>
+</table>
+<table width="100%" border="0" cellspacing="1" cellpadding="3">
+<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Related links</b></center></td></tr>
+<tr><td bgcolor="#fffacd"><ul style="margin-left: -2pt">
+<li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
+<li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
+<li><a href="http://www.cs.unibo.it/~casarini/gdome2/">DOM gdome2</a></li>
+<li><a href="ftp://xmlsoft.org/">FTP</a></li>
+<li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
+<li><a href="http://pages.eidosnet.co.uk/~garypen/libxml/">Solaris binaries</a></li>
+</ul></td></tr>
+</table>
+</td></tr></table></td>
+<td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd">
 <p>Table of Content:</p>
 <ol>
-  <li><a href="#General">General overview</a></li>
-  <li><a href="#definition">The definition</a></li>
-  <li><a href="#Simple">Simple rules</a>
-    <ol>
-      <li><a href="#reference">How to reference a DTD from a document</a></li>
-      <li><a href="#Declaring">Declaring elements</a></li>
-      <li><a href="#Declaring1">Declaring attributes</a></li>
-    </ol>
-  </li>
-  <li><a href="#Some">Some examples</a></li>
-  <li><a href="#validate">How to validate</a></li>
-  <li><a href="#Other">Other resources</a></li>
+<li><a href="#General5">General overview</a></li>
+<li><a href="#definition">The definition</a></li>
+<li>
+<a href="#Simple">Simple rules</a><ol>
+<li><a href="#reference">How to reference a DTD from a
+        document</a></li>
+<li><a href="#Declaring">Declaring elements</a></li>
+<li><a href="#Declaring1">Declaring attributes</a></li>
 </ol>
-
-<h2><a name="General">General overview</a></h2>
-
+</li>
+<li><a href="#Some">Some examples</a></li>
+<li><a href="#validate">How to validate</a></li>
+<li><a href="#Other">Other resources</a></li>
+</ol>
+<h3><a name="General5">General overview</a></h3>
+<p>Well what is validation and what is a DTD ?</p>
 <p>DTD is the acronym for Document Type Definition. This is a description of
 the content for a familly of XML files. This is part of the XML 1.0
 specification, and alows to describe and check that a given document instance
 conforms to a set of rules detailing its structure and content.</p>
-
-<h2><a name="definition">The definition</a></h2>
-
-<p>The <a href="http://www.w3.org/TR/REC-xml">W3C XML Recommendation</a> (<a
-href="http://www.xml.com/axml/axml.html">Tim Bray's annotated version of
+<p>Validation is the process of checking a document against a DTD (more
+generally against a set of construction rules).</p>
+<p>The validation process and building DTDs are the two most difficult parts
+of the XML life cycle. Briefly a DTD defines all the possibles element to be
+found within your document, what is the formal shape of your document tree
+(by defining the allowed content of an element, either text, a regular
+expression for the allowed list of children, or mixed content i.e. both text
+and children). The DTD also defines the allowed attributes for all elements
+and the types of the attributes.</p>
+<h3><a name="definition1">The definition</a></h3>
+<p>The <a href="http://www.w3.org/TR/REC-xml">W3C XML Recommendation</a> (<a href="http://www.xml.com/axml/axml.html">Tim Bray's annotated version of
 Rev1</a>):</p>
 <ul>
-  <li><a href="http://www.w3.org/TR/REC-xml#elemdecls">Declaring
+<li><a href="http://www.w3.org/TR/REC-xml#elemdecls">Declaring
   elements</a></li>
-  <li><a href="http://www.w3.org/TR/REC-xml#attdecls">Declaring
+<li><a href="http://www.w3.org/TR/REC-xml#attdecls">Declaring
   attributes</a></li>
 </ul>
-
 <p>(unfortunately) all this is inherited from the SGML world, the syntax is
 ancient...</p>
-
-<h2><a name="Simple">Simple rules</a></h2>
-
+<h3><a name="Simple1">Simple rules</a></h3>
 <p>Writing DTD can be done in multiple ways, the rules to build them if you
 need something fixed or something which can evolve over time can be radically
 different. Really complex DTD like Docbook ones are flexible but quite harder
 to design. I will just focuse on DTDs for a formats with a fixed simple
 structure. It is just a set of basic rules, and definitely not exhaustive nor
 useable for complex DTD design.</p>
-
-<h3><a name="reference">How to reference a DTD from a document</a>:</h3>
-
+<h4>
+<a name="reference1">How to reference a DTD from a document</a>:</h4>
 <p>Assuming the top element of the document is <code>spec</code> and the dtd
-is placed in the file <code>mydtd</code> in the subdirectory <code>dtds</code>
-of the directory from where the document were loaded:</p>
-
-<p><code>&lt;!DOCTYPE spec SYSTEM "dtds/mydtd"&gt;</code></p>
-
+is placed in the file <code>mydtd</code> in the subdirectory
+<code>dtds</code> of the directory from where the document were loaded:</p>
+<p><code>&lt;!DOCTYPE spec SYSTEM &quot;dtds/mydtd&quot;&gt;</code></p>
 <p>Notes:</p>
 <ul>
-  <li>the system string is actually an URI-Reference (as defined in <a
-    href="http://www.ietf.org/rfc/rfc2396.txt">RFC 2396</a>) so you can use a
+<li>the system string is actually an URI-Reference (as defined in <a href="http://www.ietf.org/rfc/rfc2396.txt">RFC 2396</a>) so you can use a
     full URL string indicating the location of your DTD on the Web, this is a
     really good thing to do if you want others to validate your document</li>
-  <li>it is also possible to associate a <code>PUBLIC</code> identifier (a
+<li>it is also possible to associate a <code>PUBLIC</code> identifier (a
     magic string) so that the DTd is looked up in catalogs on the client side
     without having to locate it on the web</li>
-  <li>a dtd contains a set of elements and attributes declarations, but they
+<li>a dtd contains a set of elements and attributes declarations, but they
     don't define what the root of the document should be. This is explicitely
     told to the parser/validator as the first element of the
     <code>DOCTYPE</code> declaration.</li>
 </ul>
-
-<h3><a name="Declaring">Declaring elements</a>:</h3>
-
+<h4>
+<a name="Declaring2">Declaring elements</a>:</h4>
 <p>The following declares an element <code>spec</code>:</p>
-
 <p><code>&lt;!ELEMENT spec (front, body, back?)&gt;</code></p>
-
 <p>it also expresses that the spec element contains one <code>front</code>,
-one <code>body</code> and one optionnal <code>back</code> children elements in
-this order. The declaration of one element of the structure and its content
-are done in a single declaration. Similary the following declares
+one <code>body</code> and one optionnal <code>back</code> children elements
+in this order. The declaration of one element of the structure and its
+content are done in a single declaration. Similary the following declares
 <code>div1</code> elements:</p>
-
 <p><code>&lt;!ELEMENT div1 (head, (p | list | note)*, div2*)&gt;</code></p>
-
 <p>means div1 contains one <code>head</code> then a series of optional
-<code>p</code>, <code>list</code>s and <code>note</code>s and then an optional
-<code>div2</code>. And last but not least an element can contain text:</p>
-
+<code>p</code>, <code>list</code>s and <code>note</code>s and then an
+optional <code>div2</code>. And last but not least an element can contain
+text:</p>
 <p><code>&lt;!ELEMENT b (#PCDATA)&gt;</code></p>
-
-<p><code>b</code> contains text or being of mixed content (text and elements
+<p>
+<code>b</code> contains text or being of mixed content (text and elements
 in no particular order):</p>
-
 <p><code>&lt;!ELEMENT p (#PCDATA|a|ul|b|i|em)*&gt;</code></p>
-
-<p><code>p </code>can contain text or <code>a</code>, <code>ul</code>,
+<p>
+<code>p </code>can contain text or <code>a</code>, <code>ul</code>,
 <code>b</code>, <code>i </code>or <code>em</code> elements in no particular
 order.</p>
-
-<h3><a name="Declaring1">Declaring attributes</a>:</h3>
-
+<h4>
+<a name="Declaring1">Declaring attributes</a>:</h4>
 <p>again the attributes declaration includes their content definition:</p>
-
 <p><code>&lt;!ATTLIST termdef name CDATA #IMPLIED&gt;</code></p>
-
 <p>means that the element <code>termdef</code> can have a <code>name</code>
 attribute containing text (<code>CDATA</code>) and which is optionnal
 (<code>#IMPLIED</code>). The attribute value can also be defined within a
 set:</p>
-
 <p><code>&lt;!ATTLIST list type (bullets|ordered|glossary)
-"ordered"&gt;</code></p>
-
+&quot;ordered&quot;&gt;</code></p>
 <p>means <code>list</code> element have a <code>type</code> attribute with 3
-allowed values "bullets", "ordered" or "glossary" and which default to
-"ordered" if the attribute is not explicitely specified.</p>
-
+allowed values &quot;bullets&quot;, &quot;ordered&quot; or &quot;glossary&quot; and which default to
+&quot;ordered&quot; if the attribute is not explicitely specified.</p>
 <p>The content type of an attribute can be text (<code>CDATA</code>),
 anchor/reference/references
 (<code>ID</code>/<code>IDREF</code>/<code>IDREFS</code>), entity(ies)
 (<code>ENTITY</code>/<code>ENTITIES</code>) or name(s)
 (<code>NMTOKEN</code>/<code>NMTOKENS</code>). The following defines that a
-<code>chapter</code> element can have an optional <code>id</code> attribute of
-type <code>ID</code>, usable for reference from attribute of type IDREF:</p>
-
+<code>chapter</code> element can have an optional <code>id</code> attribute
+of type <code>ID</code>, usable for reference from attribute of type
+IDREF:</p>
 <p><code>&lt;!ATTLIST chapter id ID #IMPLIED&gt;</code></p>
-
 <p>The last value of an attribute definition can be <code>#REQUIRED
 </code>meaning that the attribute has to be given, <code>#IMPLIED</code>
 meaning that it is optional, or the default value (possibly prefixed by
 <code>#FIXED</code> if it is the only allowed).</p>
-
 <p>Notes:</p>
-<ul>
-  <li>usually the attributes pertaining to a given element are declared in a
+<ul><li>usually the attributes pertaining to a given element are declared in a
     single expression, but it is just a convention adopted by a lot of DTD
     writers:
     <pre>&lt;!ATTLIST termdef
           id      ID      #REQUIRED
           name    CDATA   #IMPLIED&gt;</pre>
-    <p>The previous construct defines both <code>id</code> and
-    <code>name</code> attributes for the element <code>termdef</code></p>
-  </li>
-</ul>
-
-<h2><a name="Some">Some examples</a></h2>
-
+<p>The previous construct defines both <code>id</code> and
+    <code>name</code> attributes for the element <code>termdef</code>
+</p>
+</li></ul>
+<h3><a name="Some1">Some examples</a></h3>
 <p>The directory <code>test/valid/dtds/</code> in the libxml distribution
 contains some complex DTD examples. The  <code>test/valid/dia.xml</code>
-example shows an XML file where the simple DTD is directly included within the
-document.</p>
-
-<h2><a name="validate">How to validate</a></h2>
-
+example shows an XML file where the simple DTD is directly included within
+the document.</p>
+<h3><a name="validate1">How to validate</a></h3>
 <p>The simplest is to use the xmllint program comming with libxml. The
 <code>--valid</code> option turn on validation of the files given as input,
 for example the following validates a copy of the first revision of the XML
 1.0 specification:</p>
-
 <p><code>xmllint --valid --noout test/valid/REC-xml-19980210.xml</code></p>
-
 <p>the -- noout is used to not output the resulting tree.</p>
-
 <p>The <code>--dtdvalid dtd</code> allows to validate the document(s) against
 a given DTD.</p>
-
-<p>Libxml exports an API to handle DTDs and validation, check the <a
-href="http://xmlsoft.org/html/libxml-valid.html">associated
+<p>Libxml exports an API to handle DTDs and validation, check the <a href="http://xmlsoft.org/html/libxml-valid.html">associated
 description</a>.</p>
-
-<h2><a name="Other">Other resources</a></h2>
-
+<h3><a name="Other1">Other resources</a></h3>
 <p>DTDs are as old as SGML. So there may be a number of examples on-line, I
 will just list one for now, others pointers welcome:</p>
-<ul>
-  <li><a href="http://www.xml101.com:8081/dtd/">XML-101 DTD</a></li>
-</ul>
-
-<p></p>
-
+<ul><li><a href="http://www.xml101.com:8081/dtd/">XML-101 DTD</a></li></ul>
+<p>I suggest looking at the examples found under test/valid/dtd and any of
+the large number of books available on XML. The dia example in test/valid
+should be both simple and complete enough to allow you to build your own.</p>
+<p>
 <p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
-
-<p>$Id$</p>
+</td></tr></table></td></tr></table></td></tr></table></td>
+</tr></table></td></tr></table>
 </body>
 </html>

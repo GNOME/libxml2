@@ -1,124 +1,157 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Libxml Input/Output handling</title>
-  <meta name="GENERATOR" content="amaya V3.2.1">
-  <meta http-equiv="Content-Type" content="text/html">
+<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<style type="text/css"><!--
+TD {font-size: 10pt; font-family: Verdana,Arial,Helvetica}
+BODY {font-size: 10pt; font-family: Verdana,Arial,Helvetica; margin-top: 5pt; margin-left: 0pt; margin-right: 0pt}
+H1 {font-size: 16pt; font-family: Verdana,Arial,Helvetica}
+H2 {font-size: 14pt; font-family: Verdana,Arial,Helvetica}
+H3 {font-size: 12pt; font-family: Verdana,Arial,Helvetica}
+A:link, A:visited, A:active { text-decoration: underline }
+--></style>
+<title>I/O Interfaces</title>
 </head>
-
-<body bgcolor="#ffffff">
-<h1 align="center">Libxml Input/Output handling</h1>
-
-<p>Location: <a
-href="http://xmlsoft.org/xmlio.html">http://xmlsoft.org/xmlio.html</a></p>
-
-<p>Libxml home page: <a href="http://xmlsoft.org/">http://xmlsoft.org/</a></p>
-
-<p>Mailing-list archive:  <a
-href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
-
-<p>Version: $Revision: 1.4 $</p>
-
+<body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
+<table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr>
+<td width="180">
+<a href="http://www.gnome.org/"><img src="smallfootonly.gif" alt="Gnome Logo"></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"></a>
+</td>
+<td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center">
+<h1>The XML C library for Gnome</h1>
+<h2>I/O Interfaces</h2>
+</td></tr></table></td></tr></table></td>
+</tr></table>
+<table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr>
+<td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td>
+<table width="100%" border="0" cellspacing="1" cellpadding="3">
+<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr>
+<tr><td bgcolor="#fffacd"><ul style="margin-left: -2pt">
+<li><a href="index.html">Home</a></li>
+<li><a href="intro.html">Introduction</a></li>
+<li><a href="FAQ.html">FAQ</a></li>
+<li><a href="docs.html">Documentation</a></li>
+<li><a href="bugs.html">Reporting bugs and getting help</a></li>
+<li><a href="help.html">How to help</a></li>
+<li><a href="downloads.html">Downloads</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="XML.html">XML</a></li>
+<li><a href="XSLT.html">XSLT</a></li>
+<li><a href="architecture.html">libxml architecture</a></li>
+<li><a href="tree.html">The tree output</a></li>
+<li><a href="interface.html">The SAX interface</a></li>
+<li><a href="xmldtd.html">Validation &amp; DTDs</a></li>
+<li><a href="xmlmem.html">Memory Management</a></li>
+<li><a href="encoding.html">Encodings support</a></li>
+<li><a href="xmlio.html">I/O Interfaces</a></li>
+<li><a href="catalog.html">Catalog support</a></li>
+<li><a href="library.html">The parser interfaces</a></li>
+<li><a href="entities.html">Entities or no entities</a></li>
+<li><a href="namespaces.html">Namespaces</a></li>
+<li><a href="upgrade.html">Upgrading 1.x code</a></li>
+<li><a href="DOM.html">DOM Principles</a></li>
+<li><a href="example.html">A real example</a></li>
+<li><a href="contribs.html">Contributions</a></li>
+<li>
+<a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a>
+</li>
+</ul></td></tr>
+</table>
+<table width="100%" border="0" cellspacing="1" cellpadding="3">
+<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Related links</b></center></td></tr>
+<tr><td bgcolor="#fffacd"><ul style="margin-left: -2pt">
+<li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
+<li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
+<li><a href="http://www.cs.unibo.it/~casarini/gdome2/">DOM gdome2</a></li>
+<li><a href="ftp://xmlsoft.org/">FTP</a></li>
+<li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
+<li><a href="http://pages.eidosnet.co.uk/~garypen/libxml/">Solaris binaries</a></li>
+</ul></td></tr>
+</table>
+</td></tr></table></td>
+<td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd">
 <p>Table of Content:</p>
 <ol>
-  <li><a href="#General">General overview</a></li>
-  <li><a href="#basic">The basic buffer type</a></li>
-  <li><a href="#Input">Input I/O handlers</a></li>
-  <li><a href="#Output">Output I/O handlers</a></li>
-  <li><a href="#entities">The entities loader</a></li>
-  <li><a href="#Example">Example of customized I/O</a></li>
+<li><a href="#General1">General overview</a></li>
+<li><a href="#basic">The basic buffer type</a></li>
+<li><a href="#Input">Input I/O handlers</a></li>
+<li><a href="#Output">Output I/O handlers</a></li>
+<li><a href="#entities">The entities loader</a></li>
+<li><a href="#Example2">Example of customized I/O</a></li>
 </ol>
-
-<h2><a name="General">General overview</a></h2>
-
-<p>The module <code><a
-href="http://xmlsoft.org/html/libxml-xmlio.html">xmlIO.h</a></code>
-provides the interfaces to the libxml I/O system. This consists of 4 main
-parts:</p>
+<h3><a name="General1">General overview</a></h3>
+<p>The module <code><a href="http://xmlsoft.org/html/libxml-xmlio.html">xmlIO.h</a></code> provides
+the interfaces to the libxml I/O system. This consists of 4 main parts:</p>
 <ul>
-  <li>Entities loader, this is a routine which tries to fetch the entities
+<li>Entities loader, this is a routine which tries to fetch the entities
     (files) based on their PUBLIC and SYSTEM identifiers. The default loader
     don't look at the public identifier since libxml do not maintain a
     catalog. You can redefine you own entity loader by using
     <code>xmlGetExternalEntityLoader()</code> and
-    <code>xmlSetExternalEntityLoader()</code>. <a href="#entities">Check the
-    example</a>.</li>
-  <li>Input I/O buffers which are a commodity structure used by the parser(s)
+    <code>xmlSetExternalEntityLoader()</code>. <a href="#entities">Check the example</a>.</li>
+<li>Input I/O buffers which are a commodity structure used by the parser(s)
     input layer to handle fetching the informations to feed the parser. This
-    provides buffering and is also a placeholder where the encoding convertors
-    to UTF8 are piggy-backed.</li>
-  <li>Output I/O buffers are similar to the Input ones and fulfill similar
+    provides buffering and is also a placeholder where the encoding
+    convertors to UTF8 are piggy-backed.</li>
+<li>Output I/O buffers are similar to the Input ones and fulfill similar
     task but when generating a serialization from a tree.</li>
-  <li>A mechanism to register sets of I/O callbacks and associate them with
+<li>A mechanism to register sets of I/O callbacks and associate them with
     specific naming schemes like the protocol part of the URIs.
     <p>This affect the default I/O operations and allows to use specific I/O
     handlers for certain names.</p>
-  </li>
+</li>
 </ul>
-
 <p>The general mechanism used when loading http://rpmfind.net/xml.html for
 example in the HTML parser is the following:</p>
 <ol>
-  <li>The default entity loader calls <code>xmlNewInputFromFile()</code> with
+<li>The default entity loader calls <code>xmlNewInputFromFile()</code> with
     the parsing context and the URI string.</li>
-  <li>the URI string is checked against the existing registered handlers using
-    their match() callback function, if the HTTP module was compiled in, it is
-    registered and its match() function will succeeds</li>
-  <li>the open() function of the handler is called and if successful will
+<li>the URI string is checked against the existing registered handlers
+    using their match() callback function, if the HTTP module was compiled
+    in, it is registered and its match() function will succeeds</li>
+<li>the open() function of the handler is called and if successful will
     return an I/O Input buffer</li>
-  <li>the parser will the start reading from this buffer and progressively
+<li>the parser will the start reading from this buffer and progressively
     fetch information from the resource, calling the read() function of the
     handler until the resource is exhausted</li>
-  <li>if an encoding change is detected it will be installed on the input
+<li>if an encoding change is detected it will be installed on the input
     buffer, providing buffering and efficient use of the conversion
   routines</li>
-  <li>once the parser has finished, the close() function of the handler is
+<li>once the parser has finished, the close() function of the handler is
     called once and the Input buffer and associed resources are
   deallocated.</li>
 </ol>
-
 <p>The user defined callbacks are checked first to allow overriding of the
 default libxml I/O routines.</p>
-
-<h2><a name="basic">The basic buffer type</a></h2>
-
+<h3><a name="basic">The basic buffer type</a></h3>
 <p>All the buffer manipulation handling is done using the
-<code>xmlBuffer</code> type define in <code><a
-href="http://xmlsoft.org/html/libxml-tree.html">tree.h</a> </code>which is
-a resizable memory buffer. The buffer allocation strategy can be selected to
-be either best-fit or use an exponential doubling one (CPU vs. memory use
+<code>xmlBuffer</code> type define in <code><a href="http://xmlsoft.org/html/libxml-tree.html">tree.h</a></code>which is a
+resizable memory buffer. The buffer allocation strategy can be selected to be
+either best-fit or use an exponential doubling one (CPU vs. memory use
 tradeoff). The values are <code>XML_BUFFER_ALLOC_EXACT</code> and
 <code>XML_BUFFER_ALLOC_DOUBLEIT</code>, and can be set individually or on a
 system wide basis using <code>xmlBufferSetAllocationScheme()</code>. A number
 of functions allows to manipulate buffers with names starting with the
 <code>xmlBuffer...</code> prefix.</p>
-
-<h2><a name="Input">Input I/O handlers</a></h2>
-
+<h3><a name="Input">Input I/O handlers</a></h3>
 <p>An Input I/O handler is a simple structure
 <code>xmlParserInputBuffer</code> containing a context associated to the
 resource (file descriptor, or pointer to a protocol handler), the read() and
 close() callbacks to use and an xmlBuffer. And extra xmlBuffer and a charset
 encoding handler are also present to support charset conversion when
 needed.</p>
-
-<h2><a name="Output">Output I/O handlers</a></h2>
-
+<h3><a name="Output">Output I/O handlers</a></h3>
 <p>An Output handler <code>xmlOutputBuffer</code> is completely similar to an
 Input one except the callbacks are write() and close().</p>
-
-<h2><a name="entities">The entities loader</a></h2>
-
+<h3><a name="entities">The entities loader</a></h3>
 <p>The entity loader resolves requests for new entities and create inputs for
-the parser. Creating an input from a filename or an URI string is done through
-the xmlNewInputFromFile() routine.  The default entity loader do not handle
-the PUBLIC identifier associated with an entity (if any). So it just calls
-xmlNewInputFromFile() with the SYSTEM identifier (which is mandatory in
+the parser. Creating an input from a filename or an URI string is done
+through the xmlNewInputFromFile() routine.  The default entity loader do not
+handle the PUBLIC identifier associated with an entity (if any). So it just
+calls xmlNewInputFromFile() with the SYSTEM identifier (which is mandatory in
 XML).</p>
-
-<p>If you want to hook up a catalog mechanism then you simply need to override
-the default entity loader, here is an example:</p>
+<p>If you want to hook up a catalog mechanism then you simply need to
+override the default entity loader, here is an example:</p>
 <pre>#include &lt;libxml/xmlIO.h&gt;
 
 xmlExternalEntityLoader defaultLoader = NULL;
@@ -149,16 +182,13 @@ int main(..) {
 
     ...
 }</pre>
-
-<h2><a name="Example">Example of customized I/O</a></h2>
-
+<h3><a name="Example2">Example of customized I/O</a></h3>
 <p>This example come from <a href="http://xmlsoft.org/messages/0708.html">a
 real use case</a>,  xmlDocDump() closes the FILE * passed by the application
-and this was a problem. The <a
-href="http://xmlsoft.org/messages/0711.html">solution</a> was to redefine a
+and this was a problem. The <a href="http://xmlsoft.org/messages/0711.html">solution</a> was to redefine a
 new output handler with the closing call deactivated:</p>
 <ol>
-  <li>First define a new I/O ouput allocator where the output don't close the
+<li>First define a new I/O ouput allocator where the output don't close the
     file:
     <pre>xmlOutputBufferPtr
 xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
@@ -177,9 +207,10 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
     return(ret); <br>
 
 
+
 } </pre>
-  </li>
-  <li>And then use it to save the document:
+</li>
+<li>And then use it to save the document:
     <pre>FILE *f;
 xmlOutputBufferPtr output;
 xmlDocPtr doc;
@@ -191,11 +222,10 @@ doc = ....
 output = xmlOutputBufferCreateOwn(f, NULL);
 res = xmlSaveFileTo(output, doc, NULL);
     </pre>
-  </li>
+</li>
 </ol>
-
 <p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
-
-<p>$Id: xmlio.html,v 1.4 2001/01/29 08:22:12 veillard Exp $</p>
+</td></tr></table></td></tr></table></td></tr></table></td>
+</tr></table></td></tr></table>
 </body>
 </html>

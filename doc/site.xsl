@@ -1,9 +1,104 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:output method="html" version="4.01" encoding="ISO-8859-1"/>
+<!--
+ - returns the filename associated to an ID in the original file
+ -->
+  <xsl:template name="filename">
+    <xsl:param name="name" select="string(@href)"/>
+    <xsl:choose>
+      <xsl:when test="$name = '#Introducti'">
+        <xsl:text>intro.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Documentat'">
+        <xsl:text>docs.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Reporting'">
+        <xsl:text>bugs.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#help'">
+        <xsl:text>help.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Help'">
+        <xsl:text>help.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Downloads'">
+        <xsl:text>downloads.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#News'">
+        <xsl:text>news.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Contributi'">
+        <xsl:text>contribs.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#xsltproc'">
+        <xsl:text>xsltproc2.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#API'">
+        <xsl:text>API.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#XSLT'">
+        <xsl:text>XSLT.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#XML'">
+        <xsl:text>XML.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Validation'">
+        <xsl:text>xmldtd.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#tree'">
+        <xsl:text>tree.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#library'">
+        <xsl:text>library.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#interface'">
+        <xsl:text>interface.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Example'">
+        <xsl:text>example.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Entities'">
+        <xsl:text>entities.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#architecture'">
+        <xsl:text>architecture.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Namespaces'">
+        <xsl:text>namespaces.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#DOM'">
+        <xsl:text>DOM.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Catalog'">
+        <xsl:text>catalog.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Upgrading'">
+        <xsl:text>upgrade.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Encodings'">
+        <xsl:text>encoding.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#IO'">
+        <xsl:text>xmlio.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#Memory'">
+        <xsl:text>xmlmem.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = '#FAQ'">
+        <xsl:text>FAQ.html</xsl:text>
+      </xsl:when>
+      <xsl:when test="$name = ''">
+        <xsl:text>unknown.html</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$name"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 <!--
  - The global title
  -->
-  <xsl:output method="html" version="4.01" encoding="ISO-8859-1"/>
   <xsl:variable name="globaltitle" select="string(/html/body/h1[1])"/>
 <!--
  - The table of content
@@ -11,7 +106,6 @@
   <xsl:variable name="toc">
     <ul style="margin-left: -2pt">
       <li><a href="index.html">Home</a></li>
-      <li><a href="FAQ.html">FAQ</a></li>
       <xsl:for-each select="/html/body/h2">
         <xsl:variable name="filename">
           <xsl:call-template name="filename">
@@ -27,11 +121,6 @@
           </xsl:element>
         </li>
       </xsl:for-each>
-      <li><a href="encoding.html">Encodings support</a></li>
-      <li><a href="catalog.html">Catalogs support</a></li>
-      <li><a href="xmlio.html">I/O interfaces</a></li>
-      <li><a href="xmlmem.html">Memory interfaces</a></li>
-      <li><a href="xmldtd.html">DTD support</a></li>
       <li><a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a></li>
     </ul>
   </xsl:variable>
@@ -98,6 +187,7 @@ BODY {font-size: 10pt; font-family: Verdana,Arial,Helvetica; margin-top: 5pt; ma
 H1 {font-size: 16pt; font-family: Verdana,Arial,Helvetica}
 H2 {font-size: 14pt; font-family: Verdana,Arial,Helvetica}
 H3 {font-size: 12pt; font-family: Verdana,Arial,Helvetica}
+A:link, A:visited, A:active { text-decoration: underline }
 <xsl:text disable-output-escaping="yes">--&gt;</xsl:text></style>
   </xsl:template>
 <!--
@@ -134,83 +224,6 @@ H3 {font-size: 12pt; font-family: Verdana,Arial,Helvetica}
     </td>
     </tr>
     </table>
-  </xsl:template>
-<!--
- - returns the filename associated to an ID in the original file
- -->
-  <xsl:template name="filename">
-    <xsl:param name="name" select="string(@href)"/>
-    <xsl:choose>
-      <xsl:when test="$name = '#Introducti'">
-        <xsl:text>intro.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#Documentat'">
-        <xsl:text>docs.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#Reporting'">
-        <xsl:text>bugs.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#help'">
-        <xsl:text>help.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#Help'">
-        <xsl:text>help.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#Downloads'">
-        <xsl:text>downloads.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#News'">
-        <xsl:text>news.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#Contributi'">
-        <xsl:text>contribs.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#xsltproc'">
-        <xsl:text>xsltproc2.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#API'">
-        <xsl:text>API.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#XSLT'">
-        <xsl:text>XSLT.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#XML'">
-        <xsl:text>XML.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#Validation'">
-        <xsl:text>valid.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#tree'">
-        <xsl:text>tree.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#library'">
-        <xsl:text>library.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#interface'">
-        <xsl:text>interface.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#Example'">
-        <xsl:text>example.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#Entities'">
-        <xsl:text>entities.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#architecture'">
-        <xsl:text>architecture.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#Namespaces'">
-        <xsl:text>namespaces.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = '#DOM'">
-        <xsl:text>DOM.html</xsl:text>
-      </xsl:when>
-      <xsl:when test="$name = ''">
-        <xsl:text>unknown.html</xsl:text>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$name"/>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 <!--
  - Handling of nodes in the body before the first H2, table of content

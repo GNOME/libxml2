@@ -1,3 +1,9 @@
+Sun Nov 30 21:06:29 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/docdescr.doc
+	Updating William's explanation of how to build docs, 
+	reflecting Daniel's new docs build system
+
 Sat Nov 29 18:38:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xmlmemory.c: enhanced by adding mutex to protect global

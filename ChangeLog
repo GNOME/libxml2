@@ -1,3 +1,8 @@
+Fri Sep 26 21:09:34 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: other patches from William Brack to avoid
+	  compilation warnings on AIX.
+
 Fri Sep 26 11:03:08 PDT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* HTMLparser.c, entities.c, xmlreader.c: minor change to

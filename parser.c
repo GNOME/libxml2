@@ -105,7 +105,7 @@ static const char *xmlW3CPIs[] = {
 xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
                                        const xmlChar **str);
 
-static int
+static xmlParserErrors
 xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 	              xmlSAXHandlerPtr sax,
 		      void *user_data, int depth, const xmlChar *URL,
@@ -115,7 +115,7 @@ static void
 xmlAddEntityReference(xmlEntityPtr ent, xmlNodePtr firstNode,
                       xmlNodePtr lastNode);
 
-static int
+static xmlParserErrors
 xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 		      const xmlChar *string, void *user_data, xmlNodePtr *lst);
 
@@ -5694,7 +5694,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	if ((ent->name != NULL) && 
 	    (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY)) {
 	    xmlNodePtr list = NULL;
-	    int ret;
+	    xmlParserErrors ret = XML_ERR_OK;
 
 
 	    /*
@@ -5779,7 +5779,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 				   ent->URI, ent->ExternalID, &list);
 			ctxt->depth--;
 		    } else {
-			ret = -1;
+			ret = XML_ERR_ENTITY_PE_INTERNAL;
 			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData,
 				"Internal: invalid entity type\n");
@@ -5787,7 +5787,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    if (ret == XML_ERR_ENTITY_LOOP) {
 			xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
 			return;
-		    } else if ((ret == 0) && (list != NULL)) {
+		    } else if ((ret == XML_ERR_OK) && (list != NULL)) {
 			if (((ent->etype == XML_INTERNAL_GENERAL_ENTITY) ||
 			 (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY))&&
 			    (ent->children == NULL)) {
@@ -8357,7 +8357,6 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
 xmlChar *
 xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
     xmlChar *version = NULL;
-    const xmlChar *q;
 
     if ((RAW == 'v') && (NXT(1) == 'e') &&
         (NXT(2) == 'r') && (NXT(3) == 's') &&
@@ -8373,7 +8372,6 @@ xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
 	SKIP_BLANKS;
 	if (RAW == '"') {
 	    NEXT;
-	    q = CUR_PTR;
 	    version = xmlParseVersionNum(ctxt);
 	    if (RAW != '"') {
 		xmlFatalErr(ctxt, XML_ERR_STRING_NOT_CLOSED, NULL);
@@ -8381,7 +8379,6 @@ xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
 	        NEXT;
 	} else if (RAW == '\''){
 	    NEXT;
-	    q = CUR_PTR;
 	    version = xmlParseVersionNum(ctxt);
 	    if (RAW != '\'') {
 		xmlFatalErr(ctxt, XML_ERR_STRING_NOT_CLOSED, NULL);
@@ -8468,7 +8465,6 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
 const xmlChar *
 xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
     xmlChar *encoding = NULL;
-    const xmlChar *q;
 
     SKIP_BLANKS;
     if ((RAW == 'e') && (NXT(1) == 'n') &&
@@ -8485,7 +8481,6 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	SKIP_BLANKS;
 	if (RAW == '"') {
 	    NEXT;
-	    q = CUR_PTR;
 	    encoding = xmlParseEncName(ctxt);
 	    if (RAW != '"') {
 		xmlFatalErr(ctxt, XML_ERR_STRING_NOT_CLOSED, NULL);
@@ -8493,7 +8488,6 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	        NEXT;
 	} else if (RAW == '\''){
 	    NEXT;
-	    q = CUR_PTR;
 	    encoding = xmlParseEncName(ctxt);
 	    if (RAW != '\'') {
 		xmlFatalErr(ctxt, XML_ERR_STRING_NOT_CLOSED, NULL);
@@ -10645,7 +10639,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
  *    the parser error code otherwise
  */
 
-static int
+static xmlParserErrors
 xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 	              xmlSAXHandlerPtr sax,
 		      void *user_data, int depth, const xmlChar *URL,
@@ -10653,7 +10647,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
-    int ret = 0;
+    xmlParserErrors ret = XML_ERR_OK;
     xmlChar start[4];
     xmlCharEncoding enc;
 
@@ -10666,9 +10660,9 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     if (list != NULL)
         *list = NULL;
     if ((URL == NULL) && (ID == NULL))
-	return(-1);
+	return(XML_ERR_INTERNAL_ERROR);
     if (doc == NULL) /* @@ relax but check for dereferences */
-	return(-1);
+	return(XML_ERR_INTERNAL_ERROR);
 
 
     ctxt = xmlCreateEntityParserCtxt(URL, ID, NULL);
@@ -10706,7 +10700,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 	ctxt->node_seq.length = 0;
 	ctxt->node_seq.buffer = NULL;
 	xmlFreeParserCtxt(ctxt);
-	return(-1);
+	return(XML_ERR_INTERNAL_ERROR);
     }
     if (doc != NULL) {
 	newDoc->intSubset = doc->intSubset;
@@ -10726,7 +10720,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 	newDoc->intSubset = NULL;
 	newDoc->extSubset = NULL;
         xmlFreeDoc(newDoc);
-	return(-1);
+	return(XML_ERR_INTERNAL_ERROR);
     }
     nodePush(ctxt, newDoc->children);
     if (doc == NULL) {
@@ -10776,7 +10770,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 
     if (!ctxt->wellFormed) {
         if (ctxt->errNo == 0)
-	    ret = 1;
+	    ret = XML_ERR_INTERNAL_ERROR;
 	else
 	    ret = ctxt->errNo;
     } else {
@@ -10795,7 +10789,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 	    }
             newDoc->children->children = NULL;
 	}
-	ret = 0;
+	ret = XML_ERR_OK;
     }
     if (sax != NULL) 
 	ctxt->sax = oldsax;
@@ -10882,13 +10876,13 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
  *
  * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
  *
- * Returns 0 if the chunk is well balanced, -1 in case of args problem and
- *    the parser error code otherwise
+ * Returns XML_ERR_OK if the chunk is well balanced, and the parser
+ * error code otherwise
  *    
  * In case recover is set to 1, the nodelist will not be empty even if
  * the parsed chunk is not well balanced. 
  */
-static int
+static xmlParserErrors
 xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	const xmlChar *string, void *user_data, xmlNodePtr *lst) {
     xmlParserCtxtPtr ctxt;
@@ -10896,7 +10890,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     xmlSAXHandlerPtr oldsax = NULL;
     xmlNodePtr content = NULL;
     int size;
-    int ret = 0;
+    xmlParserErrors ret = XML_ERR_OK;
 
     if (oldctxt->depth > 40) {
 	return(XML_ERR_ENTITY_LOOP);
@@ -10973,7 +10967,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 
     if (!ctxt->wellFormed) {
         if (ctxt->errNo == 0)
-	    ret = 1;
+	    ret = XML_ERR_INTERNAL_ERROR;
 	else
 	    ret = ctxt->errNo;
     } else {

@@ -110,7 +110,7 @@ NAME="LIBXML-XMLMEMORY"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN22715"
+NAME="AEN23508"
 ></A
 ><H2
 >Name</H2
@@ -118,7 +118,7 @@ NAME="AEN22715"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN22718"
+NAME="AEN23511"
 ></A
 ><H2
 >Synopsis</H2
@@ -273,7 +273,7 @@ HREF="libxml-xmlmemory.html#XMLMEMSTRDUPLOC"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN22754"
+NAME="AEN23547"
 ></A
 ><H2
 >Description</H2
@@ -283,14 +283,14 @@ NAME="AEN22754"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN22757"
+NAME="AEN23550"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22759"
+NAME="AEN23552"
 ></A
 ><H3
 ><A
@@ -311,12 +311,17 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>should be activated only done when debugging libxml. It replaces the
+allocator with a collect and debug shell to the libc allocator.
+DEBUG_MEMORY should be activated only when debugging 
+libxml i.e. if libxml has been configured with --with-debug-mem too</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22764"
+NAME="AEN23558"
 ></A
 ><H3
 ><A
@@ -337,12 +342,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>keep track of all allocated blocks for error reporting</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22769"
+NAME="AEN23564"
 ></A
 ><H3
 ><A
@@ -367,7 +374,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22774"
+NAME="AEN23569"
 ></A
 ><P
 ></P
@@ -405,7 +412,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22783"
+NAME="AEN23578"
 ></A
 ><H3
 ><A
@@ -433,7 +440,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22789"
+NAME="AEN23584"
 ></A
 ><P
 ></P
@@ -471,7 +478,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22798"
+NAME="AEN23593"
 ></A
 ><H3
 ><A
@@ -500,7 +507,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22804"
+NAME="AEN23599"
 ></A
 ><P
 ></P
@@ -555,7 +562,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22817"
+NAME="AEN23612"
 ></A
 ><H3
 ><A
@@ -580,7 +587,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22822"
+NAME="AEN23617"
 ></A
 ><P
 ></P
@@ -633,7 +640,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22835"
+NAME="AEN23630"
 ></A
 ><H3
 ><A
@@ -679,7 +686,7 @@ done ?</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22846"
+NAME="AEN23641"
 ></A
 ><P
 ></P
@@ -795,7 +802,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22875"
+NAME="AEN23670"
 ></A
 ><H3
 ><A
@@ -837,7 +844,7 @@ HREF="libxml-xmlmemory.html#XMLSTRDUPFUNC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22885"
+NAME="AEN23680"
 ></A
 ><P
 ></P
@@ -953,7 +960,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22914"
+NAME="AEN23709"
 ></A
 ><H3
 ><A
@@ -980,7 +987,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22920"
+NAME="AEN23715"
 ></A
 ><P
 ></P
@@ -1016,7 +1023,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22929"
+NAME="AEN23724"
 ></A
 ><H3
 ><A
@@ -1043,7 +1050,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22935"
+NAME="AEN23730"
 ></A
 ><P
 ></P
@@ -1079,7 +1086,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22944"
+NAME="AEN23739"
 ></A
 ><H3
 ><A
@@ -1109,7 +1116,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22951"
+NAME="AEN23746"
 ></A
 ><P
 ></P
@@ -1148,7 +1155,7 @@ written to the file .memorylist</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22960"
+NAME="AEN23755"
 ></A
 ><H3
 ><A
@@ -1185,7 +1192,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22968"
+NAME="AEN23763"
 ></A
 ><P
 ></P
@@ -1240,7 +1247,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22981"
+NAME="AEN23776"
 ></A
 ><H3
 ><A
@@ -1268,7 +1275,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22987"
+NAME="AEN23782"
 ></A
 ><H3
 ><A
@@ -1289,11 +1296,16 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Wrapper for the <GTKDOCLINK
+HREF="MALLOC"
+>malloc</GTKDOCLINK
+>() function used in the XML library</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22992"
+NAME="AEN23789"
 ></A
 ><P
 ></P
@@ -1320,7 +1332,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  number of bytes to allocate</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1331,7 +1343,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23001"
+NAME="AEN23798"
 ></A
 ><H3
 ><A
@@ -1352,11 +1364,16 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Wrapper for the <GTKDOCLINK
+HREF="REALLOC"
+>realloc</GTKDOCLINK
+>() function used in the XML library</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23006"
+NAME="AEN23805"
 ></A
 ><P
 ></P
@@ -1383,7 +1400,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  pointer to the existing allocated area</TD
 ></TR
 ><TR
 ><TD
@@ -1400,7 +1417,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  number of bytes to allocate</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1411,7 +1428,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23019"
+NAME="AEN23818"
 ></A
 ><H3
 ><A
@@ -1432,11 +1449,19 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Wrapper for the <GTKDOCLINK
+HREF="STRDUP"
+>strdup</GTKDOCLINK
+>() function, <A
+HREF="libxml-parser.html#XMLSTRDUP"
+>xmlStrdup</A
+>() is usually preferred</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23024"
+NAME="AEN23826"
 ></A
 ><P
 ></P
@@ -1463,7 +1488,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  pointer to the existing string</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1474,7 +1499,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23033"
+NAME="AEN23835"
 ></A
 ><H3
 ><A
@@ -1509,7 +1534,7 @@ HREF="MALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23041"
+NAME="AEN23843"
 ></A
 ><P
 ></P
@@ -1581,7 +1606,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23058"
+NAME="AEN23860"
 ></A
 ><H3
 ><A
@@ -1617,7 +1642,7 @@ HREF="REALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23066"
+NAME="AEN23868"
 ></A
 ><P
 ></P
@@ -1706,7 +1731,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23087"
+NAME="AEN23889"
 ></A
 ><H3
 ><A
@@ -1738,7 +1763,7 @@ HREF="STRDUP"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23094"
+NAME="AEN23896"
 ></A
 ><P
 ></P

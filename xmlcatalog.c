@@ -26,6 +26,7 @@
 
 static int shell = 0;
 static int noout = 0;
+static int create = 0;
 static int add = 0;
 static int del = 0;
 static int verbose = 0;
@@ -275,6 +276,7 @@ static void usage(const char *name) {
     printf("Usage : %s [options] catalogfile entities...\n", name);
     printf("\tParse the catalog file and query it for the entities\n");
     printf("\t--shell : run a shell allowing interactive queries\n");
+    printf("\t--create : create a new catalog\n");
     printf("\t--add 'type' 'orig' 'replace' : add an entry\n");
     printf("\t--del 'values' : remove values\n");
     printf("\t--noout: avoid dumping the result on stdout\n");
@@ -308,6 +310,9 @@ int main(int argc, char **argv) {
 	    (!strcmp(argv[i], "--shell"))) {
 	    shell++;
             noout = 1;
+	} else if ((!strcmp(argv[i], "-create")) ||
+	    (!strcmp(argv[i], "--create"))) {
+	    create++;
 	} else if ((!strcmp(argv[i], "-add")) ||
 	    (!strcmp(argv[i], "--add"))) {
 	    i += 3;
@@ -335,7 +340,11 @@ int main(int argc, char **argv) {
 	} else if (argv[i][0] == '-')
 	    continue;
 	filename = argv[i];
-	xmlLoadCatalog(argv[i]);
+	if (!create) {
+	    xmlLoadCatalog(argv[i]);
+	} else {
+	    xmlCatalogAdd(BAD_CAST "catalog", BAD_CAST argv[i], NULL);
+	}
 	break;
     }
 
@@ -367,17 +376,6 @@ int main(int argc, char **argv) {
 	    }
 	}
 	
-	if (noout) {
-	    FILE *out;
-
-	    out = fopen(filename, "w");
-	    if (out == NULL) {
-		fprintf(stderr, "could not open %s for saving\n", filename);
-		noout = 0;
-	    } else {
-		xmlCatalogDump(out);
-	    }
-	}
     } else if (shell) {
 	usershell();
     } else {
@@ -404,6 +402,21 @@ int main(int argc, char **argv) {
 		    xmlFree(ans);
 		}
 	    }
+	}
+    }
+    if ((add) || (del) || (create)) {
+	if (noout) {
+	    FILE *out;
+
+	    out = fopen(filename, "w");
+	    if (out == NULL) {
+		fprintf(stderr, "could not open %s for saving\n", filename);
+		noout = 0;
+	    } else {
+		xmlCatalogDump(out);
+	    }
+	} else {
+	    xmlCatalogDump(stdout);
 	}
     }
 

@@ -2182,6 +2182,13 @@ int
 xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) {
     int res = -1;
 
+    if ((xmlDefaultXMLCatalogList == NULL) &&
+	(xmlStrEqual(type, BAD_CAST "catalog"))) {
+	xmlDefaultXMLCatalogList = xmlNewCatalogEntry(XML_CATA_CATALOG, NULL,
+		orig, xmlCatalogDefaultPrefer);
+	return(0);
+    } 
+
     if (!xmlCatalogInitialized)
 	xmlInitializeCatalog();
 

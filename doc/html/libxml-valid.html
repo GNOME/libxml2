@@ -122,7 +122,7 @@ NAME="LIBXML-VALID"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN7947"
+NAME="AEN8012"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN7947"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN7950"
+NAME="AEN8015"
 ></A
 ><H2
 >Synopsis</H2
@@ -303,6 +303,16 @@ HREF="libxml-valid.html#XMLFREEELEMENTCONTENT"
 HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 >xmlElementContentPtr</A
 > cur);
+void        <A
+HREF="libxml-valid.html#XMLSNPRINTFELEMENTCONTENT"
+>xmlSnprintfElementContent</A
+>       (char *buf,
+                                             int size,
+                                             <A
+HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> content,
+                                             int glob);
 void        <A
 HREF="libxml-valid.html#XMLSPRINTFELEMENTCONTENT"
 >xmlSprintfElementContent</A
@@ -858,6 +868,28 @@ HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
+HREF="libxml-tree.html#XMLATTRIBUTEPTR"
+>xmlAttributePtr</A
+> <A
+HREF="libxml-valid.html#XMLGETDTDQATTRDESC"
+>xmlGetDtdQAttrDesc</A
+>          (<A
+HREF="libxml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *elem,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix);
+<A
 HREF="libxml-tree.html#XMLNOTATIONPTR"
 >xmlNotationPtr</A
 > <A
@@ -871,6 +903,24 @@ HREF="libxml-tree.html#XMLDTDPTR"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
+<A
+HREF="libxml-tree.html#XMLELEMENTPTR"
+>xmlElementPtr</A
+> <A
+HREF="libxml-valid.html#XMLGETDTDQELEMENTDESC"
+>xmlGetDtdQElementDesc</A
+>         (<A
+HREF="libxml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix);
 <A
 HREF="libxml-tree.html#XMLELEMENTPTR"
 >xmlElementPtr</A
@@ -921,7 +971,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN8161"
+NAME="AEN8239"
 ></A
 ><H2
 >Description</H2
@@ -931,14 +981,14 @@ NAME="AEN8161"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN8164"
+NAME="AEN8242"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8166"
+NAME="AEN8244"
 ></A
 ><H3
 ><A
@@ -964,7 +1014,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8171"
+NAME="AEN8249"
 ></A
 ><H3
 ><A
@@ -990,7 +1040,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8176"
+NAME="AEN8254"
 ></A
 ><H3
 ><A
@@ -1017,7 +1067,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8181"
+NAME="AEN8259"
 ></A
 ><P
 ></P
@@ -1089,7 +1139,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8198"
+NAME="AEN8276"
 ></A
 ><H3
 ><A
@@ -1116,7 +1166,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8203"
+NAME="AEN8281"
 ></A
 ><P
 ></P
@@ -1188,7 +1238,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8220"
+NAME="AEN8298"
 ></A
 ><H3
 ><A
@@ -1234,7 +1284,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8225"
+NAME="AEN8303"
 ></A
 ><H3
 ><A
@@ -1260,7 +1310,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8230"
+NAME="AEN8308"
 ></A
 ><H3
 ><A
@@ -1286,7 +1336,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8235"
+NAME="AEN8313"
 ></A
 ><H3
 ><A
@@ -1312,7 +1362,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8240"
+NAME="AEN8318"
 ></A
 ><H3
 ><A
@@ -1338,7 +1388,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8245"
+NAME="AEN8323"
 ></A
 ><H3
 ><A
@@ -1364,7 +1414,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8250"
+NAME="AEN8328"
 ></A
 ><H3
 ><A
@@ -1390,7 +1440,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8255"
+NAME="AEN8333"
 ></A
 ><H3
 ><A
@@ -1433,7 +1483,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8267"
+NAME="AEN8345"
 ></A
 ><P
 ></P
@@ -1504,7 +1554,7 @@ is updated to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8284"
+NAME="AEN8362"
 ></A
 ><H3
 ><A
@@ -1553,7 +1603,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8296"
+NAME="AEN8374"
 ></A
 ><P
 ></P
@@ -1674,7 +1724,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8325"
+NAME="AEN8403"
 ></A
 ><H3
 ><A
@@ -1707,7 +1757,7 @@ HREF="libxml-valid.html#XMLNOTATIONTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8333"
+NAME="AEN8411"
 ></A
 ><P
 ></P
@@ -1760,7 +1810,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8346"
+NAME="AEN8424"
 ></A
 ><H3
 ><A
@@ -1790,7 +1840,7 @@ HREF="libxml-valid.html#XMLNOTATIONTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8353"
+NAME="AEN8431"
 ></A
 ><P
 ></P
@@ -1828,7 +1878,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8362"
+NAME="AEN8440"
 ></A
 ><H3
 ><A
@@ -1862,7 +1912,7 @@ HREF="libxml-tree.html#XMLNOTATIONPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8370"
+NAME="AEN8448"
 ></A
 ><P
 ></P
@@ -1917,7 +1967,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8383"
+NAME="AEN8461"
 ></A
 ><H3
 ><A
@@ -1951,7 +2001,7 @@ HREF="libxml-valid.html#XMLNOTATIONTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8391"
+NAME="AEN8469"
 ></A
 ><P
 ></P
@@ -2006,7 +2056,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8404"
+NAME="AEN8482"
 ></A
 ><H3
 ><A
@@ -2043,7 +2093,7 @@ HREF="libxml-tree.html#XMLELEMENTCONTENTTYPE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8413"
+NAME="AEN8491"
 ></A
 ><P
 ></P
@@ -2113,7 +2163,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8430"
+NAME="AEN8508"
 ></A
 ><H3
 ><A
@@ -2146,7 +2196,7 @@ HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8438"
+NAME="AEN8516"
 ></A
 ><P
 ></P
@@ -2199,7 +2249,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8451"
+NAME="AEN8529"
 ></A
 ><H3
 ><A
@@ -2229,7 +2279,7 @@ HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8458"
+NAME="AEN8536"
 ></A
 ><P
 ></P
@@ -2267,7 +2317,130 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8467"
+NAME="AEN8545"
+></A
+><H3
+><A
+NAME="XMLSNPRINTFELEMENTCONTENT"
+></A
+>xmlSnprintfElementContent ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSnprintfElementContent       (char *buf,
+                                             int size,
+                                             <A
+HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> content,
+                                             int glob);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This will dump the content of the element content definition
+Intended just for the debug routine</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8552"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an output buffer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the buffer size</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An element table</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>glob</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 1 if one must print the englobing parenthesis, 0 otherwise</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8573"
 ></A
 ><H3
 ><A
@@ -2293,14 +2466,13 @@ HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 ></TR
 ></TABLE
 ><P
->This will dump the content of the element content definition
-Intended just for the debug routine</P
+>Deprecated, unsafe, use xmlSnprintfElementContent</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8474"
+NAME="AEN8580"
 ></A
 ><P
 ></P
@@ -2372,7 +2544,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8491"
+NAME="AEN8597"
 ></A
 ><H3
 ><A
@@ -2421,7 +2593,7 @@ HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8503"
+NAME="AEN8609"
 ></A
 ><P
 ></P
@@ -2542,7 +2714,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8532"
+NAME="AEN8638"
 ></A
 ><H3
 ><A
@@ -2575,7 +2747,7 @@ HREF="libxml-valid.html#XMLELEMENTTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8540"
+NAME="AEN8646"
 ></A
 ><P
 ></P
@@ -2628,7 +2800,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8553"
+NAME="AEN8659"
 ></A
 ><H3
 ><A
@@ -2658,7 +2830,7 @@ HREF="libxml-valid.html#XMLELEMENTTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8560"
+NAME="AEN8666"
 ></A
 ><P
 ></P
@@ -2696,7 +2868,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8569"
+NAME="AEN8675"
 ></A
 ><H3
 ><A
@@ -2730,7 +2902,7 @@ HREF="libxml-valid.html#XMLELEMENTTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8577"
+NAME="AEN8683"
 ></A
 ><P
 ></P
@@ -2785,7 +2957,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8590"
+NAME="AEN8696"
 ></A
 ><H3
 ><A
@@ -2820,7 +2992,7 @@ DTD definition</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8598"
+NAME="AEN8704"
 ></A
 ><P
 ></P
@@ -2875,7 +3047,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8611"
+NAME="AEN8717"
 ></A
 ><H3
 ><A
@@ -2908,7 +3080,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8619"
+NAME="AEN8725"
 ></A
 ><P
 ></P
@@ -2962,7 +3134,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8632"
+NAME="AEN8738"
 ></A
 ><H3
 ><A
@@ -2992,7 +3164,7 @@ HREF="libxml-tree.html#XMLENUMERATIONPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8639"
+NAME="AEN8745"
 ></A
 ><P
 ></P
@@ -3030,7 +3202,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8648"
+NAME="AEN8754"
 ></A
 ><H3
 ><A
@@ -3063,7 +3235,7 @@ HREF="libxml-tree.html#XMLENUMERATIONPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8656"
+NAME="AEN8762"
 ></A
 ><P
 ></P
@@ -3117,7 +3289,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8669"
+NAME="AEN8775"
 ></A
 ><H3
 ><A
@@ -3188,7 +3360,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8686"
+NAME="AEN8792"
 ></A
 ><P
 ></P
@@ -3377,7 +3549,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8731"
+NAME="AEN8837"
 ></A
 ><H3
 ><A
@@ -3410,7 +3582,7 @@ HREF="libxml-valid.html#XMLATTRIBUTETABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8739"
+NAME="AEN8845"
 ></A
 ><P
 ></P
@@ -3463,7 +3635,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8752"
+NAME="AEN8858"
 ></A
 ><H3
 ><A
@@ -3493,7 +3665,7 @@ HREF="libxml-valid.html#XMLATTRIBUTETABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8759"
+NAME="AEN8865"
 ></A
 ><P
 ></P
@@ -3531,7 +3703,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8768"
+NAME="AEN8874"
 ></A
 ><H3
 ><A
@@ -3565,7 +3737,7 @@ HREF="libxml-valid.html#XMLATTRIBUTETABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8776"
+NAME="AEN8882"
 ></A
 ><P
 ></P
@@ -3620,7 +3792,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8789"
+NAME="AEN8895"
 ></A
 ><H3
 ><A
@@ -3655,7 +3827,7 @@ DTD definition</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8797"
+NAME="AEN8903"
 ></A
 ><P
 ></P
@@ -3710,7 +3882,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8810"
+NAME="AEN8916"
 ></A
 ><H3
 ><A
@@ -3755,7 +3927,7 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8821"
+NAME="AEN8927"
 ></A
 ><P
 ></P
@@ -3859,7 +4031,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8846"
+NAME="AEN8952"
 ></A
 ><H3
 ><A
@@ -3889,7 +4061,7 @@ HREF="libxml-valid.html#XMLIDTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8853"
+NAME="AEN8959"
 ></A
 ><P
 ></P
@@ -3927,7 +4099,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8862"
+NAME="AEN8968"
 ></A
 ><H3
 ><A
@@ -3964,7 +4136,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8871"
+NAME="AEN8977"
 ></A
 ><P
 ></P
@@ -4034,7 +4206,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8888"
+NAME="AEN8994"
 ></A
 ><H3
 ><A
@@ -4074,7 +4246,7 @@ or lowercase).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8897"
+NAME="AEN9003"
 ></A
 ><P
 ></P
@@ -4161,7 +4333,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8918"
+NAME="AEN9024"
 ></A
 ><H3
 ><A
@@ -4195,7 +4367,7 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8926"
+NAME="AEN9032"
 ></A
 ><P
 ></P
@@ -4265,7 +4437,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8943"
+NAME="AEN9049"
 ></A
 ><H3
 ><A
@@ -4310,7 +4482,7 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8954"
+NAME="AEN9060"
 ></A
 ><P
 ></P
@@ -4414,7 +4586,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8979"
+NAME="AEN9085"
 ></A
 ><H3
 ><A
@@ -4444,7 +4616,7 @@ HREF="libxml-valid.html#XMLREFTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8986"
+NAME="AEN9092"
 ></A
 ><P
 ></P
@@ -4482,7 +4654,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8995"
+NAME="AEN9101"
 ></A
 ><H3
 ><A
@@ -4522,7 +4694,7 @@ or lowercase).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9004"
+NAME="AEN9110"
 ></A
 ><P
 ></P
@@ -4609,7 +4781,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9025"
+NAME="AEN9131"
 ></A
 ><H3
 ><A
@@ -4643,7 +4815,7 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9033"
+NAME="AEN9139"
 ></A
 ><P
 ></P
@@ -4713,7 +4885,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9050"
+NAME="AEN9156"
 ></A
 ><H3
 ><A
@@ -4750,7 +4922,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9059"
+NAME="AEN9165"
 ></A
 ><P
 ></P
@@ -4820,7 +4992,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9076"
+NAME="AEN9182"
 ></A
 ><H3
 ><A
@@ -4858,7 +5030,7 @@ it doesn't try to recurse or apply other check to the element</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9084"
+NAME="AEN9190"
 ></A
 ><P
 ></P
@@ -4928,7 +5100,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9101"
+NAME="AEN9207"
 ></A
 ><H3
 ><A
@@ -4971,7 +5143,7 @@ XML-1.0 recommendation:
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9110"
+NAME="AEN9216"
 ></A
 ><P
 ></P
@@ -5058,7 +5230,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9131"
+NAME="AEN9237"
 ></A
 ><H3
 ><A
@@ -5118,7 +5290,7 @@ HREF="X20"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9146"
+NAME="AEN9252"
 ></A
 ><P
 ></P
@@ -5223,7 +5395,7 @@ the caller must free the returned value.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9171"
+NAME="AEN9277"
 ></A
 ><H3
 ><A
@@ -5268,7 +5440,7 @@ XML-1.0 recommendation:
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9181"
+NAME="AEN9287"
 ></A
 ><P
 ></P
@@ -5355,7 +5527,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9202"
+NAME="AEN9308"
 ></A
 ><H3
 ><A
@@ -5404,7 +5576,7 @@ of type NMTOKENS must match Nmtokens.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9214"
+NAME="AEN9320"
 ></A
 ><P
 ></P
@@ -5474,7 +5646,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9231"
+NAME="AEN9337"
 ></A
 ><H3
 ><A
@@ -5516,7 +5688,7 @@ But this function get called anyway ...</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9240"
+NAME="AEN9346"
 ></A
 ><P
 ></P
@@ -5603,7 +5775,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9261"
+NAME="AEN9367"
 ></A
 ><H3
 ><A
@@ -5643,7 +5815,7 @@ HREF="libxml-tree.html#XMLDTDPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9271"
+NAME="AEN9377"
 ></A
 ><P
 ></P
@@ -5730,7 +5902,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9292"
+NAME="AEN9398"
 ></A
 ><H3
 ><A
@@ -5771,7 +5943,7 @@ possible values matches one of the defined notations.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9301"
+NAME="AEN9407"
 ></A
 ><P
 ></P
@@ -5841,7 +6013,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9318"
+NAME="AEN9424"
 ></A
 ><H3
 ><A
@@ -5879,7 +6051,7 @@ and validate the document tree.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9327"
+NAME="AEN9433"
 ></A
 ><P
 ></P
@@ -5949,7 +6121,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9344"
+NAME="AEN9450"
 ></A
 ><H3
 ><A
@@ -5987,7 +6159,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9353"
+NAME="AEN9459"
 ></A
 ><P
 ></P
@@ -6074,7 +6246,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9374"
+NAME="AEN9480"
 ></A
 ><H3
 ><A
@@ -6122,7 +6294,7 @@ HREF="libxml-valid.html#XMLVALIDATEONEATTRIBUTE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9385"
+NAME="AEN9491"
 ></A
 ><P
 ></P
@@ -6209,7 +6381,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9406"
+NAME="AEN9512"
 ></A
 ><H3
 ><A
@@ -6267,7 +6439,7 @@ XML-1.0 recommendation:
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9418"
+NAME="AEN9524"
 ></A
 ><P
 ></P
@@ -6388,7 +6560,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9447"
+NAME="AEN9553"
 ></A
 ><H3
 ><A
@@ -6425,7 +6597,7 @@ incremental validation steps have been completed</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9456"
+NAME="AEN9562"
 ></A
 ><P
 ></P
@@ -6495,7 +6667,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9473"
+NAME="AEN9579"
 ></A
 ><H3
 ><A
@@ -6534,7 +6706,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9482"
+NAME="AEN9588"
 ></A
 ><P
 ></P
@@ -6621,7 +6793,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9503"
+NAME="AEN9609"
 ></A
 ><H3
 ><A
@@ -6656,7 +6828,7 @@ basically if it is supposed to accept text childs</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9511"
+NAME="AEN9617"
 ></A
 ><P
 ></P
@@ -6726,7 +6898,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9528"
+NAME="AEN9634"
 ></A
 ><H3
 ><A
@@ -6768,7 +6940,7 @@ this element.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9538"
+NAME="AEN9644"
 ></A
 ><P
 ></P
@@ -6855,7 +7027,157 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9559"
+NAME="AEN9665"
+></A
+><H3
+><A
+NAME="XMLGETDTDQATTRDESC"
+></A
+>xmlGetDtdQAttrDesc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLATTRIBUTEPTR"
+>xmlAttributePtr</A
+> xmlGetDtdQAttrDesc          (<A
+HREF="libxml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *elem,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Search the Dtd for the description of this qualified attribute on
+this element.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9676"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>dtd</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a pointer to the DtD to search</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>elem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prefix</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute namespace prefix</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlAttributePtr if found or NULL</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9701"
 ></A
 ><H3
 ><A
@@ -6892,7 +7214,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9568"
+NAME="AEN9710"
 ></A
 ><P
 ></P
@@ -6962,7 +7284,135 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9585"
+NAME="AEN9727"
+></A
+><H3
+><A
+NAME="XMLGETDTDQELEMENTDESC"
+></A
+>xmlGetDtdQElementDesc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLELEMENTPTR"
+>xmlElementPtr</A
+> xmlGetDtdQElementDesc         (<A
+HREF="libxml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Search the Dtd for the description of this element</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9737"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>dtd</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a pointer to the DtD to search</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prefix</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element namespace prefix</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlElementPtr if found or NULL</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9758"
 ></A
 ><H3
 ><A
@@ -6999,7 +7449,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9594"
+NAME="AEN9767"
 ></A
 ><P
 ></P
@@ -7069,7 +7519,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9611"
+NAME="AEN9784"
 ></A
 ><H3
 ><A
@@ -7129,7 +7579,7 @@ and do not need to be freed.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9623"
+NAME="AEN9796"
 ></A
 ><P
 ></P
@@ -7240,7 +7690,7 @@ receiving array and retry.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9649"
+NAME="AEN9822"
 ></A
 ><H3
 ><A
@@ -7276,7 +7726,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9657"
+NAME="AEN9830"
 ></A
 ><P
 ></P

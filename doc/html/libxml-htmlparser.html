@@ -122,7 +122,7 @@ NAME="LIBXML-HTMLPARSER"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN10190"
+NAME="AEN10363"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN10190"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN10193"
+NAME="AEN10366"
 ></A
 ><H2
 >Synopsis</H2
@@ -198,33 +198,32 @@ HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 >htmlEntityDescPtr</A
 >;
 const <A
-HREF="libxml-htmlparser.html#HTMLELEMDESCPTR"
->htmlElemDescPtr</A
-> <A
+HREF="libxml-htmlparser.html#HTMLELEMDESC"
+>htmlElemDesc</A
+>* <A
 HREF="libxml-htmlparser.html#HTMLTAGLOOKUP"
 >htmlTagLookup</A
->         (const <A
+>           (const <A
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *tag);
 const <A
-HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
-> <A
+HREF="libxml-htmlparser.html#HTMLENTITYDESC"
+>htmlEntityDesc</A
+>* <A
 HREF="libxml-htmlparser.html#HTMLENTITYLOOKUP"
 >htmlEntityLookup</A
->    (const <A
+>      (const <A
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 const <A
-HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
-> <A
+HREF="libxml-htmlparser.html#HTMLENTITYDESC"
+>htmlEntityDesc</A
+>* <A
 HREF="libxml-htmlparser.html#HTMLENTITYVALUELOOKUP"
 >htmlEntityValueLookup</A
->
-                                            (unsigned int value);
+> (unsigned int value);
 int         <A
 HREF="libxml-htmlparser.html#HTMLISAUTOCLOSED"
 >htmlIsAutoClosed</A
@@ -251,13 +250,13 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-htmlparser.html#HTMLNODEPTR"
 >htmlNodePtr</A
 > elem);
-<A
-HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
-> <A
+const <A
+HREF="libxml-htmlparser.html#HTMLENTITYDESC"
+>htmlEntityDesc</A
+>* <A
 HREF="libxml-htmlparser.html#HTMLPARSEENTITYREF"
 >htmlParseEntityRef</A
->        (<A
+>    (<A
 HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt,
@@ -395,7 +394,7 @@ HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10257"
+NAME="AEN10430"
 ></A
 ><H2
 >Description</H2
@@ -405,14 +404,14 @@ NAME="AEN10257"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10260"
+NAME="AEN10433"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10262"
+NAME="AEN10435"
 ></A
 ><H3
 ><A
@@ -438,7 +437,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10267"
+NAME="AEN10440"
 ></A
 ><H3
 ><A
@@ -464,7 +463,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10272"
+NAME="AEN10445"
 ></A
 ><H3
 ><A
@@ -490,7 +489,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10277"
+NAME="AEN10450"
 ></A
 ><H3
 ><A
@@ -516,7 +515,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10282"
+NAME="AEN10455"
 ></A
 ><H3
 ><A
@@ -542,7 +541,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10287"
+NAME="AEN10460"
 ></A
 ><H3
 ><A
@@ -568,7 +567,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10292"
+NAME="AEN10465"
 ></A
 ><H3
 ><A
@@ -594,7 +593,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10297"
+NAME="AEN10470"
 ></A
 ><H3
 ><A
@@ -620,7 +619,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10302"
+NAME="AEN10475"
 ></A
 ><H3
 ><A
@@ -646,7 +645,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10307"
+NAME="AEN10480"
 ></A
 ><H3
 ><A
@@ -682,7 +681,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10312"
+NAME="AEN10485"
 ></A
 ><H3
 ><A
@@ -708,7 +707,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10317"
+NAME="AEN10490"
 ></A
 ><H3
 ><A
@@ -738,7 +737,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10322"
+NAME="AEN10495"
 ></A
 ><H3
 ><A
@@ -764,7 +763,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10327"
+NAME="AEN10500"
 ></A
 ><H3
 ><A
@@ -781,9 +780,9 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="libxml-htmlparser.html#HTMLELEMDESCPTR"
->htmlElemDescPtr</A
-> htmlTagLookup         (const <A
+HREF="libxml-htmlparser.html#HTMLELEMDESC"
+>htmlElemDesc</A
+>* htmlTagLookup           (const <A
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *tag);</PRE
@@ -797,7 +796,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10335"
+NAME="AEN10508"
 ></A
 ><P
 ></P
@@ -850,7 +849,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10348"
+NAME="AEN10521"
 ></A
 ><H3
 ><A
@@ -867,9 +866,9 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
-> htmlEntityLookup    (const <A
+HREF="libxml-htmlparser.html#HTMLENTITYDESC"
+>htmlEntityDesc</A
+>* htmlEntityLookup      (const <A
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
@@ -885,7 +884,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10357"
+NAME="AEN10530"
 ></A
 ><P
 ></P
@@ -938,7 +937,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10370"
+NAME="AEN10543"
 ></A
 ><H3
 ><A
@@ -955,10 +954,9 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
-> htmlEntityValueLookup
-                                            (unsigned int value);</PRE
+HREF="libxml-htmlparser.html#HTMLENTITYDESC"
+>htmlEntityDesc</A
+>* htmlEntityValueLookup (unsigned int value);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -971,7 +969,7 @@ HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10378"
+NAME="AEN10551"
 ></A
 ><P
 ></P
@@ -1024,7 +1022,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10391"
+NAME="AEN10564"
 ></A
 ><H3
 ><A
@@ -1060,7 +1058,7 @@ if a tag is autoclosed by one of it's child</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10399"
+NAME="AEN10572"
 ></A
 ><P
 ></P
@@ -1130,7 +1128,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10416"
+NAME="AEN10589"
 ></A
 ><H3
 ><A
@@ -1171,7 +1169,7 @@ given tag.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10425"
+NAME="AEN10598"
 ></A
 ><P
 ></P
@@ -1258,7 +1256,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10446"
+NAME="AEN10619"
 ></A
 ><H3
 ><A
@@ -1274,10 +1272,10 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
-> htmlParseEntityRef        (<A
+>const <A
+HREF="libxml-htmlparser.html#HTMLENTITYDESC"
+>htmlEntityDesc</A
+>* htmlParseEntityRef    (<A
 HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt,
@@ -1297,7 +1295,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10456"
+NAME="AEN10629"
 ></A
 ><P
 ></P
@@ -1368,7 +1366,7 @@ if non-NULL *str will have to be freed by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10473"
+NAME="AEN10646"
 ></A
 ><H3
 ><A
@@ -1404,7 +1402,7 @@ HREF="X"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10482"
+NAME="AEN10655"
 ></A
 ><P
 ></P
@@ -1457,7 +1455,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10495"
+NAME="AEN10668"
 ></A
 ><H3
 ><A
@@ -1491,7 +1489,7 @@ HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10504"
+NAME="AEN10677"
 ></A
 ><P
 ></P
@@ -1529,7 +1527,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10513"
+NAME="AEN10686"
 ></A
 ><H3
 ><A
@@ -1570,7 +1568,7 @@ behavior and return a tree.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10522"
+NAME="AEN10695"
 ></A
 ><P
 ></P
@@ -1675,7 +1673,7 @@ not well formed.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10547"
+NAME="AEN10720"
 ></A
 ><H3
 ><A
@@ -1709,7 +1707,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10555"
+NAME="AEN10728"
 ></A
 ><P
 ></P
@@ -1779,7 +1777,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10572"
+NAME="AEN10745"
 ></A
 ><H3
 ><A
@@ -1818,7 +1816,7 @@ If sax is NULL, fallback to the default DOM tree building routines.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10580"
+NAME="AEN10753"
 ></A
 ><P
 ></P
@@ -1923,7 +1921,7 @@ not well formed.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10605"
+NAME="AEN10778"
 ></A
 ><H3
 ><A
@@ -1955,7 +1953,7 @@ compressed document is provided by default if found at compile-time.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10612"
+NAME="AEN10785"
 ></A
 ><P
 ></P
@@ -2025,7 +2023,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10629"
+NAME="AEN10802"
 ></A
 ><H3
 ><A
@@ -2056,7 +2054,7 @@ plus HTML entities block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10635"
+NAME="AEN10808"
 ></A
 ><P
 ></P
@@ -2183,7 +2181,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10664"
+NAME="AEN10837"
 ></A
 ><H3
 ><A
@@ -2215,7 +2213,7 @@ plus HTML entities block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10670"
+NAME="AEN10843"
 ></A
 ><P
 ></P
@@ -2359,7 +2357,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10703"
+NAME="AEN10876"
 ></A
 ><H3
 ><A
@@ -2389,7 +2387,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10710"
+NAME="AEN10883"
 ></A
 ><P
 ></P
@@ -2442,7 +2440,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10723"
+NAME="AEN10896"
 ></A
 ><H3
 ><A
@@ -2469,7 +2467,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10729"
+NAME="AEN10902"
 ></A
 ><P
 ></P
@@ -2522,7 +2520,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10742"
+NAME="AEN10915"
 ></A
 ><H3
 ><A
@@ -2553,7 +2551,7 @@ document in ctxt-&gt;myDoc is not freed.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10749"
+NAME="AEN10922"
 ></A
 ><P
 ></P
@@ -2591,7 +2589,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10758"
+NAME="AEN10931"
 ></A
 ><H3
 ><A
@@ -2645,7 +2643,7 @@ and error/warning reports.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10769"
+NAME="AEN10942"
 ></A
 ><P
 ></P
@@ -2783,7 +2781,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10802"
+NAME="AEN10975"
 ></A
 ><H3
 ><A
@@ -2816,7 +2814,7 @@ HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10809"
+NAME="AEN10982"
 ></A
 ><P
 ></P

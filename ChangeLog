@@ -1,3 +1,9 @@
+Thu Aug 23 01:38:42 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* doc/catalog.html doc/xml.html: added documentation about
+	  Catalog support, misses an API description 
+	* doc/html/*: reextracted the API pages
+
 Wed Aug 22 18:27:47 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/catalog.h catalog.c xmlIO.c HTMLparser.c:

@@ -122,7 +122,7 @@ NAME="LIBXML-URI"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN9687"
+NAME="AEN9860"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN9687"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN9690"
+NAME="AEN9863"
 ></A
 ><H2
 >Synopsis</H2
@@ -180,7 +180,7 @@ HREF="libxml-uri.html#XMLURIPTR"
 >   <A
 HREF="libxml-uri.html#XMLPARSEURI"
 >xmlParseURI</A
->                     (const char *str);
+>                     (const char *URI);
 int         <A
 HREF="libxml-uri.html#XMLPARSEURIREFERENCE"
 >xmlParseURIReference</A
@@ -258,7 +258,7 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9722"
+NAME="AEN9895"
 ></A
 ><H2
 >Description</H2
@@ -268,14 +268,14 @@ NAME="AEN9722"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9725"
+NAME="AEN9898"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9727"
+NAME="AEN9900"
 ></A
 ><H3
 ><A
@@ -292,52 +292,52 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlURI {
-    char *scheme;	/* the URI scheme */
-    char *opaque;	/* opaque part */
-    char *authority;	/* the authority part */
-    char *server;	/* the server part */
-    char *user;		/* the user part */
-    int port;		/* the port number */
-    char *path;		/* the path string */
-    char *query;	/* the query string */
-    char *fragment;	/* the fragment identifier */
-};</PRE
+
+    char *scheme;
+
+    char *opaque;
+
+    char *authority;
+
+    char *server;
+
+    char *user;
+
+    int port;
+
+    char *path;
+
+    char *query;
+
+    char *fragment;
+
+};&#13;</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>A parsed URI reference. This is a struct containing the various fields
+as described in RFC 2396 but separated for further processing</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9732"
+NAME="AEN9906"
 ></A
 ><H3
 ><A
 NAME="XMLURIPTR"
 ></A
 >xmlURIPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlURI *xmlURIPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9737"
+NAME="AEN9910"
 ></A
 ><H3
 ><A
@@ -367,7 +367,7 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9744"
+NAME="AEN9917"
 ></A
 ><P
 ></P
@@ -392,7 +392,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new structure or NULL in case of error</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -403,7 +403,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9753"
+NAME="AEN9926"
 ></A
 ><H3
 ><A
@@ -445,7 +445,7 @@ RFC 2396</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9763"
+NAME="AEN9936"
 ></A
 ><P
 ></P
@@ -472,7 +472,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the URI instance found in the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -489,7 +489,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the base value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -504,8 +504,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new URI string (to be freed by the caller) or NULL in case
-of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -516,7 +515,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9780"
+NAME="AEN9953"
 ></A
 ><H3
 ><A
@@ -535,7 +534,7 @@ CLASS="PROGRAMLISTING"
 ><A
 HREF="libxml-uri.html#XMLURIPTR"
 >xmlURIPtr</A
->   xmlParseURI                     (const char *str);</PRE
+>   xmlParseURI                     (const char *URI);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -548,7 +547,7 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9788"
+NAME="AEN9961"
 ></A
 ><P
 ></P
@@ -568,14 +567,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->str</I
+>URI</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the URI string to analyze</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -590,7 +589,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a newly build xmlURIPtr or NULL in case of error</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -601,7 +600,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9801"
+NAME="AEN9974"
 ></A
 ><H3
 ><A
@@ -640,7 +639,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9810"
+NAME="AEN9983"
 ></A
 ><P
 ></P
@@ -667,7 +666,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to an URI structure</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -684,7 +683,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the string to analyze</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -699,7 +698,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 or the error code</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -710,7 +709,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9827"
+NAME="AEN10000"
 ></A
 ><H3
 ><A
@@ -743,7 +742,7 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9835"
+NAME="AEN10008"
 ></A
 ><P
 ></P
@@ -770,7 +769,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to an xmlURI</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -785,7 +784,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new string (to be deallocated by caller)</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -796,7 +795,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9848"
+NAME="AEN10021"
 ></A
 ><H3
 ><A
@@ -835,7 +834,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9857"
+NAME="AEN10030"
 ></A
 ><P
 ></P
@@ -862,7 +861,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a FILE* for the output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -879,7 +878,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to an xmlURI</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -890,7 +889,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9870"
+NAME="AEN10043"
 ></A
 ><H3
 ><A
@@ -928,7 +927,7 @@ and the characters in the exception list.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9879"
+NAME="AEN10052"
 ></A
 ><P
 ></P
@@ -955,7 +954,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  string to escape</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -972,7 +971,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> exception list string of chars not to escape</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -987,7 +986,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new escaped string or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -998,7 +997,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9896"
+NAME="AEN10069"
 ></A
 ><H3
 ><A
@@ -1031,7 +1030,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9903"
+NAME="AEN10076"
 ></A
 ><P
 ></P
@@ -1058,7 +1057,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the string to unescape</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1075,7 +1074,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->   the lenght in bytes to unescape (or &lt;= 0 to indicate full string)</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1092,7 +1091,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  optionnal destination buffer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1107,7 +1106,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->an copy of the string, but unescaped</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1118,7 +1117,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9924"
+NAME="AEN10097"
 ></A
 ><H3
 ><A
@@ -1148,7 +1147,7 @@ Section 5.2, steps 6.c through 6.g.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9931"
+NAME="AEN10104"
 ></A
 ><P
 ></P
@@ -1175,7 +1174,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the path string</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1190,7 +1189,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 or an error code</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1201,7 +1200,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9944"
+NAME="AEN10117"
 ></A
 ><H3
 ><A
@@ -1236,7 +1235,7 @@ based it's impossible to be sure.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9952"
+NAME="AEN10125"
 ></A
 ><P
 ></P
@@ -1263,7 +1262,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the string of the URI to escape</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1278,12 +1277,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->an copy of the string, but escaped
-
-25 May 2001
-Uses xmlParseURI and xmlURIEscapeStr to try to escape correctly
-according to RFC2396.
-- Carl Douglas</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1294,7 +1288,7 @@ according to RFC2396.
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9965"
+NAME="AEN10138"
 ></A
 ><H3
 ><A
@@ -1324,7 +1318,7 @@ HREF="libxml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN9972"
+NAME="AEN10145"
 ></A
 ><P
 ></P
@@ -1351,7 +1345,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to an xmlURI</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE

@@ -874,6 +874,7 @@ xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
 xmlAttrPtr
 xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     xmlAttrPtr cur;
+    xmlDocPtr doc = NULL;
 
     if (name == NULL) {
 #ifdef DEBUG_TREE
@@ -896,17 +897,22 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     cur->type = XML_ATTRIBUTE_NODE;
 
     cur->parent = node; 
+    if (node != NULL) {
+	doc = node->doc;
+	cur->doc = doc;
+    }
     cur->name = xmlStrdup(name);
     if (value != NULL) {
 	xmlChar *buffer;
 	xmlNodePtr tmp;
 
-	buffer = xmlEncodeEntitiesReentrant(node->doc, value);
-	cur->children = xmlStringGetNodeList(node->doc, buffer);
+	buffer = xmlEncodeEntitiesReentrant(doc, value);
+	cur->children = xmlStringGetNodeList(doc, buffer);
 	cur->last = NULL;
 	tmp = cur->children;
 	while (tmp != NULL) {
 	    tmp->parent = (xmlNodePtr) cur;
+	    tmp->doc = doc;
 	    if (tmp->next == NULL)
 		cur->last = tmp;
 	    tmp = tmp->next;
@@ -4101,7 +4107,11 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 xmlAttrPtr
 xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     xmlAttrPtr prop = node->properties;
+    xmlDocPtr doc = NULL;
 
+    if ((node == NULL) || (name == NULL))
+	return(NULL);
+    doc = node->doc;
     while (prop != NULL) {
         if (xmlStrEqual(prop->name, name)) {
 	    if (prop->children != NULL) 
@@ -4115,9 +4125,11 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 		buffer = xmlEncodeEntitiesReentrant(node->doc, value);
 		prop->children = xmlStringGetNodeList(node->doc, buffer);
 		prop->last = NULL;
+		prop->doc = doc;
 		tmp = prop->children;
 		while (tmp != NULL) {
 		    tmp->parent = (xmlNodePtr) prop;
+		    tmp->doc = doc;
 		    if (tmp->next == NULL)
 			prop->last = tmp;
 		    tmp = tmp->next;
@@ -5458,7 +5470,7 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 		 * Disable escaping, needed for XSLT
 		 */
 #ifndef XML_USE_BUFFER_CONTENT
-		xmlOutputBufferWriteString(buf, cur->content);
+		xmlOutputBufferWriteString(buf, (const char *) cur->content);
 #else
 		xmlOutputBufferWriteString(buf, xmlBufferContent(cur->content));
 #endif

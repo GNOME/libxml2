@@ -82,7 +82,8 @@ typedef enum {
     XPATH_POINT = 5,
     XPATH_RANGE = 6,
     XPATH_LOCATIONSET = 7,
-    XPATH_USERS = 8
+    XPATH_USERS = 8,
+    XPATH_XSLT_TREE = 9  /* An XSLT value tree, non modifiable */
 } xmlXPathObjectType;
 
 typedef struct _xmlXPathObject xmlXPathObject;

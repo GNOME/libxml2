@@ -1725,6 +1725,10 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			    xmlGenericError(xmlGenericErrorContext,
 				    "%s is user-defined\n", arg);
 			    break;
+			case XPATH_XSLT_TREE:
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is an XSLT value tree\n", arg);
+			    break;
 		    }
 		    xmlXPathFreeNodeSetList(list);
 		} else {
@@ -1784,6 +1788,10 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			case XPATH_USERS:
 			    xmlGenericError(xmlGenericErrorContext,
 				    "%s is user-defined\n", arg);
+			    break;
+			case XPATH_XSLT_TREE:
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is an XSLT value tree\n", arg);
 			    break;
 		    }
 		    xmlXPathFreeNodeSetList(list);
@@ -1847,6 +1855,10 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			case XPATH_USERS:
 			    xmlGenericError(xmlGenericErrorContext,
 				    "%s is user-defined\n", arg);
+			    break;
+			case XPATH_XSLT_TREE:
+			    xmlGenericError(xmlGenericErrorContext,
+				    "%s is an XSLT value tree\n", arg);
 			    break;
 		    }
 		    xmlXPathFreeNodeSetList(list);

@@ -136,6 +136,7 @@ xmlXPathObjectPtr xmlXPathNewCString		(const char *val);
 xmlXPathObjectPtr xmlXPathNewFloat		(double val);
 xmlXPathObjectPtr xmlXPathNewBoolean		(int val);
 xmlXPathObjectPtr xmlXPathNewNodeSet		(xmlNodePtr val);
+xmlXPathObjectPtr xmlXPathNewValueTree		(xmlNodePtr val);
 void		  xmlXPathNodeSetAdd		(xmlNodeSetPtr cur,
 						 xmlNodePtr val);
 

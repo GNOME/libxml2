@@ -282,6 +282,10 @@ void xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 	    fprintf(output, "Object is a Node Set :\n");
 	    xmlXPathDebugDumpNodeSet(output, cur->nodesetval, depth);
 	    break;
+	case XPATH_XSLT_TREE:
+	    fprintf(output, "Object is an XSLT value tree :\n");
+	    xmlXPathDebugDumpNode(output, cur->user, depth);
+	    break;
         case XPATH_BOOLEAN:
 	    fprintf(output, "Object is a Boolean : ");
 	    if (cur->boolval) fprintf(output, "true\n");
@@ -784,6 +788,31 @@ xmlXPathNewNodeSet(xmlNodePtr val) {
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
     ret->type = XPATH_NODESET;
+    ret->nodesetval = xmlXPathNodeSetCreate(val);
+    return(ret);
+}
+
+/**
+ * xmlXPathNewValueTree:
+ * @val:  the NodePtr value
+ *
+ * Create a new xmlXPathObjectPtr of type Value Tree (XSLT) and initialize
+ * it with the tree root @val
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathNewValueTree(xmlNodePtr val) {
+    xmlXPathObjectPtr ret;
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlXPathNewNodeSet: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_XSLT_TREE;
     ret->nodesetval = xmlXPathNodeSetCreate(val);
     return(ret);
 }
@@ -1297,10 +1326,12 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
     switch (val->type) {
 	case XPATH_BOOLEAN:
 	case XPATH_NUMBER:
-	case XPATH_STRING:
 	case XPATH_POINT:
 	case XPATH_RANGE:
 	    break;
+	case XPATH_STRING:
+	    ret->stringval = xmlStrdup(val->stringval);
+	case XPATH_XSLT_TREE:
 	case XPATH_NODESET:
 	    ret->nodesetval = xmlXPathNodeSetMerge(NULL, val->nodesetval);
 	    break;
@@ -1317,6 +1348,7 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "xmlXPathObjectCopy: unsupported type %d\n",
 		    val->type);
+	    break;
     }
     return(ret);
 }
@@ -1341,6 +1373,9 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
     } else if (obj->type == XPATH_STRING) {
 	if (obj->stringval != NULL)
 	    xmlFree(obj->stringval);
+    } else if (obj->type == XPATH_XSLT_TREE) {
+	if (obj->nodesetval != NULL)
+	    xmlXPathFreeNodeSet(obj->nodesetval);
     }
 
 #ifdef DEBUG
@@ -1839,6 +1874,7 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    "Equal: undefined\n");
 #endif
 	    break;
+        case XPATH_XSLT_TREE:
         case XPATH_NODESET:
 	    switch (arg2->type) {
 	        case XPATH_UNDEFINED:
@@ -1847,6 +1883,7 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 			    "Equal: undefined\n");
 #endif
 		    break;
+		case XPATH_XSLT_TREE:
 		case XPATH_NODESET:
 		    ret = xmlXPathEqualNodeSets(arg1, arg2);
 		    break;
@@ -1880,6 +1917,7 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 #endif
 		    break;
 		case XPATH_NODESET:
+		case XPATH_XSLT_TREE:
 		    if ((arg2->nodesetval == NULL) ||
 			(arg2->nodesetval->nodeNr == 0)) ret = 0;
 		    else 
@@ -1922,6 +1960,7 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 #endif
 		    break;
 		case XPATH_NODESET:
+		case XPATH_XSLT_TREE:
 		    ret = xmlXPathEqualNodeSetFloat(arg2, arg1->floatval);
 		    break;
 		case XPATH_BOOLEAN:
@@ -1954,6 +1993,7 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 #endif
 		    break;
 		case XPATH_NODESET:
+		case XPATH_XSLT_TREE:
 		    ret = xmlXPathEqualNodeSetString(arg2, arg1->stringval);
 		    break;
 		case XPATH_BOOLEAN:
@@ -3476,6 +3516,7 @@ xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 #endif
 	    valuePush(ctxt, xmlXPathNewCString(""));
 	    break;
+        case XPATH_XSLT_TREE:
         case XPATH_NODESET:
 	    if (cur->nodesetval->nodeNr == 0) {
 		valuePush(ctxt, xmlXPathNewCString(""));
@@ -4135,6 +4176,7 @@ xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 #endif
 	    valuePush(ctxt, xmlXPathNewFloat(0.0));
 	    break;
+        case XPATH_XSLT_TREE:
         case XPATH_NODESET:
 	    valuePush(ctxt, cur);
 	    xmlXPathStringFunction(ctxt, 1);

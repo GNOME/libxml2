@@ -25,7 +25,7 @@ There is the list of public releases:
     dependancy, XML Schemas union support (Kasimier Buchcik), warning removal
     clanup (William), keep ChangeLog compressed when installing from RPMs
    - documentation: examples and xmlDocDumpMemory docs (John Fleck), new
-    example (load, xpath, modify, save), xmlCatalogDump() comments, 
+    example (load, xpath, modify, save), xmlCatalogDump() comments,
    - Windows: Borland C++ builder (Eric Zurcher), work around Microsoft
     compiler NaN handling bug (Mark Vakoc)
 

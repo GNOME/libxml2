@@ -475,6 +475,32 @@ xmlCleanupInputCallbacks(void)
     xmlInputCallbackInitialized = 0;
 }
 
+/**
+ * xmlPopInputCallback:
+ *
+ * Clear the top input callback from the input stack. this includes the
+ * compiled-in I/O. 
+ *
+ * Returns the number of input callback registered or -1 in case of error.
+ */
+int
+xmlPopInputCallbacks(void)
+{
+    if (!xmlInputCallbackInitialized)
+        return(-1);
+
+    if (xmlInputCallbackNr <= 0)
+        return(-1);
+        
+    xmlInputCallbackNr--;
+    xmlInputCallbackTable[xmlInputCallbackNr].matchcallback = NULL;
+    xmlInputCallbackTable[xmlInputCallbackNr].opencallback = NULL;
+    xmlInputCallbackTable[xmlInputCallbackNr].readcallback = NULL;
+    xmlInputCallbackTable[xmlInputCallbackNr].closecallback = NULL;
+
+    return(xmlInputCallbackNr);
+}
+
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlCleanupOutputCallbacks:

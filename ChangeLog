@@ -1,3 +1,9 @@
+Fri May  7 22:31:54 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c include/libxml/valid.h: fixes the use of 'list' as a parameter
+	* xmlIO.c include/libxml/xmlIO.h: added xmlPopInputCallback for
+	  Matt Sergeant
+
 Thu May  6 21:14:38 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlregexp.c: enhanced the handling of subexpression ranges

@@ -158,6 +158,9 @@ struct _xmlOutputBuffer {
 XMLPUBFUN void XMLCALL	
 	xmlCleanupInputCallbacks		(void);
 
+XMLPUBFUN int XMLCALL
+	xmlPopInputCallbacks			(void);
+
 XMLPUBFUN void XMLCALL	
 	xmlRegisterDefaultInputCallbacks	(void);
 XMLPUBFUN xmlParserInputBufferPtr XMLCALL

@@ -6586,7 +6586,7 @@ xmlValidGetPotentialChildren(xmlElementContent *ctree, const xmlChar **list,
  * xmlValidGetValidElements:
  * @prev:  an element to insert after
  * @next:  an element to insert next
- * @list:  an array to store the list of child names
+ * @names:  an array to store the list of child names
  * @max:  the size of the array
  *
  * This function returns the list of authorized children to insert
@@ -6608,7 +6608,7 @@ xmlValidGetPotentialChildren(xmlElementContent *ctree, const xmlChar **list,
  */
 
 int
-xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
+xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **names,
                          int max) {
     xmlValidCtxt vctxt;
     int nb_valid_elements = 0;
@@ -6632,7 +6632,7 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
     if (prev == NULL && next == NULL)
         return(-1);
 
-    if (list == NULL) return(-1);
+    if (names == NULL) return(-1);
     if (max <= 0) return(-1);
 
     nb_valid_elements = 0;
@@ -6686,8 +6686,8 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
 	    int j;
 
 	    for (j = 0; j < nb_valid_elements;j++)
-		if (xmlStrEqual(elements[i], list[j])) break;
-	    list[nb_valid_elements++] = elements[i];
+		if (xmlStrEqual(elements[i], names[j])) break;
+	    names[nb_valid_elements++] = elements[i];
 	    if (nb_valid_elements >= max) break;
 	}
     }

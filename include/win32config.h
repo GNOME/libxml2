@@ -106,5 +106,10 @@ static int isnan (double d) {
 #endif /* WITH_TRIO */
 #endif /* _MSC_VER */
 
+
+#ifndef ATTRIBUTE_UNUSED
+#define ATTRIBUTE_UNUSED
+#endif
+
 #endif /* __LIBXML_WIN32_CONFIG__ */
 

@@ -1,3 +1,7 @@
+Sun Aug 25 16:38:05 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: handle Windows sepecific file://localhost/ semantic ...
+
 Thu Aug 22 22:03:19 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: possible mem leak patch from Jason Adams

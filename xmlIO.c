@@ -297,7 +297,11 @@ xmlFileOpen (const char *filename) {
     }
 
     if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost", 16))
+#if defined (_WIN32) && !defined(__CYGWIN__)
+	path = &filename[17];
+#else
 	path = &filename[16];
+#endif
     else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
 #if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &filename[8];

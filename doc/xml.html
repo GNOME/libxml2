@@ -1500,8 +1500,8 @@ ctxt.parseChunk(chunk, len(chunk), 0)
 chunk = "ar&lt;/foo&gt;"
 ctxt.parseChunk(chunk, len(chunk), 1)
 
-reference = "startDocument:startElement foo {'url': 'tst'}:
-characters: bar:endElement foo:endDocument:"
+reference = "startDocument:startElement foo {'url': 'tst'}:" + \ 
+            "characters: bar:endElement foo:endDocument:"
 if log != reference:
     print "Error got: %s" % log
     print "Exprected: %s" % reference</pre>

@@ -42,6 +42,13 @@ import string
 import os
 
 #
+# We are not interested in parsing errors here
+#
+def callback(ctx, str):
+    return
+libxml2.registerErrorHandler(callback, None)
+
+#
 # The dictionnary of tables required and the SQL command needed
 # to create them
 #
@@ -60,6 +67,19 @@ TABLES={
 	   KEY name (name),
 	   KEY symbol (symbol),
 	   UNIQUE KEY ID (name, symbol))""",
+  "wordsHTML" : """CREATE TABLE wordsHTML (
+           name varchar(50) NOT NULL,
+	   resource varchar(255) NOT NULL,
+	   section varchar(255),
+	   id varchar(50),
+           relevance int,
+	   KEY name (name),
+	   KEY resource (resource),
+	   UNIQUE KEY ref (name, resource))""",
+  "pages" : """CREATE TABLE pages (
+           resource varchar(255) NOT NULL,
+	   title varchar(255) NOT NULL,
+	   UNIQUE KEY name (resource))""",
   "Queries" : """CREATE TABLE Queries (
            ID int(11) NOT NULL auto_increment,
 	   Value varchar(50) NOT NULL,
@@ -237,6 +257,74 @@ def addType(name, module, desc = ""):
 def addFunctype(name, module, desc = ""):
     return updateSymbol(name, module, 'functype', desc)
 
+def addPage(resource, title):
+    global DB
+
+    if DB == None:
+        openMySQL()
+    if DB == None:
+        return -1
+    if resource == None:
+        return -1
+
+    c = DB.cursor()
+    try:
+	ret = c.execute(
+	    """INSERT INTO pages (resource, title) VALUES ('%s','%s')""" %
+                    (resource, title))
+    except:
+        try:
+	    ret = c.execute(
+		"""UPDATE pages SET title='%s' WHERE resource='%s'""" %
+                    (title, resource))
+        except:
+	    print "Update symbol (%s, %s, %s) failed command" % (name, module, type)
+	    print """UPDATE pages SET title='%s' WHERE resource='%s'""" % (title, resource)
+	    print sys.exc_type, sys.exc_value
+	    return -1
+	     
+    return ret
+
+def updateWordHTML(name, resource, desc, id, relevance):
+    global DB
+
+    if DB == None:
+        openMySQL()
+    if DB == None:
+        return -1
+    if name == None:
+        return -1
+    if resource == None:
+        return -1
+    if id == None:
+        id = ""
+    if desc == None:
+        desc = ""
+    else:
+	try:
+	    desc = string.replace(desc, "'", " ")
+	    desc = desc[0:99]
+	except:
+	    desc = ""
+
+    c = DB.cursor()
+    try:
+	ret = c.execute(
+"""INSERT INTO wordsHTML (name, resource, section, id, relevance) VALUES ('%s','%s', '%s', '%s', '%d')""" %
+                    (name, resource, desc, id, relevance))
+    except:
+        try:
+	    ret = c.execute(
+"""UPDATE wordsHTML SET section='%s', id='%s', relevance='%d' where name='%s' and resource='%s'""" %
+                    (desc, id, relevance, name, resource))
+        except:
+	    print "Update symbol (%s, %s, %d) failed command" % (name, resource, relevance)
+	    print """UPDATE wordsHTML SET section='%s', id='%s', relevance='%d' where name='%s' and resource='%s'""" % (desc, id, relevance, name, resource)
+	    print sys.exc_type, sys.exc_value
+	    return -1
+	     
+    return ret
+        
 #########################################################################
 #									#
 #                  Word dictionnary and analysis routines		#
@@ -244,6 +332,7 @@ def addFunctype(name, module, desc = ""):
 #########################################################################
 
 wordsDict = {}
+wordsDictHTML = {}
 
 def splitIdentifier(str):
     ret = []
@@ -300,6 +389,65 @@ def addString(str, module, symbol, relevance):
     for word in l:
 	if len(word) > 2:
 	    ret = ret + addWord(word, module, symbol, 5)
+
+    return ret
+
+def addWordHTML(word, resource, id, section, relevance):
+    global wordsDictHTML
+
+    if word == None or len(word) < 3:
+        return -1
+    if resource == None or section == None:
+        return -1
+
+    if wordsDictHTML.has_key(word):
+        d = wordsDictHTML[word]
+	if d == None:
+	    return 0
+	if len(d) > 15:
+	    wordsDictHTML[word] = None
+	    return 0
+	try:
+	    (r,i,s) = d[resource]
+	    if i != None:
+	        id = i
+	    if s != None:
+	        section = s
+	    relevance = relevance + r
+	except:
+	    pass
+    else:
+        wordsDictHTML[word] = {}
+    wordsDictHTML[word][resource] = (relevance, id, section)
+    return relevance
+    
+def addStringHTML(str, resource, id, section, relevance):
+    if str == None or len(str) < 3:
+        return -1
+    ret = 0
+    str = string.replace(str, ".", " ")
+    str = string.replace(str, ",", " ")
+    str = string.replace(str, "'", " ")
+    str = string.replace(str, '"', " ")
+    str = string.replace(str, ";", " ")
+    str = string.replace(str, "-", " ")
+    str = string.replace(str, "(", " ")
+    str = string.replace(str, ")", " ")
+    str = string.replace(str, "{", " ")
+    str = string.replace(str, "}", " ")
+    str = string.replace(str, "<", " ")
+    str = string.replace(str, ">", " ")
+    str = string.replace(str, "/", " ")
+    str = string.replace(str, "*", " ")
+    str = string.replace(str, ":", " ")
+    str = string.replace(str, "\n", " ")
+    str = string.replace(str, "\r", " ")
+    str = string.replace(str, "\xc2", " ")
+    str = string.replace(str, "\xa0", " ")
+    l = string.split(str)
+    for word in l:
+	if len(word) > 2:
+	    ret = ret + addWordHTML(word, resource, id, section, relevance)
 
     return ret
 
@@ -563,6 +711,83 @@ def analyzeAPI(doc):
 
 #########################################################################
 #									#
+#                  Web pages parsing and analysis			#
+#									#
+#########################################################################
+
+import glob
+
+def analyzeHTMLPara(doc, resource, p, section, id):
+    words = 0
+    try:
+	content = p.content
+	words = words + addStringHTML(content, resource, id, section, 5)
+    except:
+        return -1
+    return words
+
+def analyzeHTMLPre(doc, resource, p, section, id):
+    words = 0
+    try:
+	content = p.content
+	words = words + addStringHTML(content, resource, id, section, 5)
+    except:
+        return -1
+    return words
+
+def analyzeHTML(doc, resource):
+    para = 0;
+    ctxt = doc.xpathNewContext()
+    try:
+	res = ctxt.xpathEval("//head/title")
+	title = res[0].content
+    except:
+        title = "Page %s" % (resource)
+    addPage(resource, title)
+    try:
+	items = ctxt.xpathEval("//h1 | //h2 | //h3 | //p | //pre")
+	section = title
+	id = ""
+	for item in items:
+	    if item.name == 'h1' or item.name == 'h2' or item.name == 'h3':
+	        section = item.content
+		if item.prop("id"):
+		    id = item.prop("id")
+		elif item.prop("name"):
+		    id = item.prop("name")
+	    elif item.name == 'p':
+	        analyzeHTMLPara(doc, resource, item, section, id)
+		para = para + 1
+	    elif item.name == 'pre':
+	        analyzeHTMLPre(doc, resource, item, section, id)
+		para = para + 1
+	    else:
+	        print "Page %s, unexpected %s element" % (resource, item.name)
+    except:
+        print "Page %s: problem analyzing" % (resource)
+	print sys.exc_type, sys.exc_value
+
+    return para
+
+def analyzeHTMLPages():
+    ret = 0
+    HTMLfiles = glob.glob("*.html") + glob.glob("tutorial/*.html")
+    for html in HTMLfiles:
+	if html[0:3] == "API":
+	    continue
+	if html == "xml.html":
+	    continue
+	try:
+	    doc = libxml2.htmlParseFile(html, None)
+	    res = analyzeHTML(doc, html)
+	    print "Parsed %s : %d paragraphs" % (html, res)
+	    ret = ret + 1
+	except:
+	    print "could not parse %s" % (html)
+    return ret
+
+#########################################################################
+#									#
 #          Main code: open the DB, the API XML and analyze it		#
 #									#
 #########################################################################
@@ -572,6 +797,23 @@ except:
     print "Failed to open the database"
     print sys.exc_type, sys.exc_value
     sys.exit(1)
+
+ret = analyzeHTMLPages()
+print "Indexed %d words in %d HTML pages" % (len(wordsDictHTML), ret)
+
+i = 0
+skipped = 0
+for word in wordsDictHTML.keys():
+    refs = wordsDictHTML[word]
+    if refs  == None:
+        skipped = skipped + 1
+        continue;
+    for resource in refs.keys():
+        (relevance, id, section) = refs[resource]
+        updateWordHTML(word, resource, section, id, relevance)
+	i = i + 1
+
+print "Found %d associations in HTML pages" % (i)
 
 try:
     doc = loadAPI(API)

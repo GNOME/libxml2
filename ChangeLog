@@ -1,3 +1,7 @@
+Sun Oct  6 23:50:29 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/index.py: added HTML page indexing 
+
 Fri Oct  4 15:33:55 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* xmlIO.c: extended Windows path normalisation to fix the base

@@ -1,3 +1,9 @@
+Thu May  6 21:14:38 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlregexp.c: enhanced the handling of subexpression ranges
+	  which have a minOccurs of 0 (bug 140478 again); cleaned up
+	  comments throughout the module.
+
 Tue May  4 00:52:16 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: adding a --maxmem option to check memory used.

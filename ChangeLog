@@ -1,3 +1,13 @@
+Mon Oct 21 09:57:10 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: tried to fix bug #91500 where doc->children may
+	  be overriden by a call to xmlParseBalancedChunkMemory()
+
+Mon Oct 21 09:04:32 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: tried to fix bug #90945 w.r.t. parsing of system
+	  identifiers in SGML catalogs containing '&'
+
 Sun Oct 20 23:31:47 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/types.c: fixed bugs when passing result value tree

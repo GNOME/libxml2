@@ -1954,7 +1954,7 @@ xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
 		"malloc of %d byte failed\n", size);
 	return(NULL);
     }
-    while (xmlIsPubidChar(*cur)) {
+    while (xmlIsPubidChar(*cur) || (*cur == '?')) {
 	if ((*cur == stop) && (stop != ' '))
 	    break;
 	if ((stop == ' ') && (IS_BLANK(*cur)))

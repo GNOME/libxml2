@@ -9784,6 +9784,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
+    xmlNodePtr content;
     int size;
     int ret = 0;
 
@@ -9843,7 +9844,10 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     ctxt->validate = 0;
     ctxt->loadsubset = 0;
 
+    content = doc->children;
+    doc->children = NULL;
     xmlParseContent(ctxt);
+    doc->children = content;
    
     if ((RAW == '<') && (NXT(1) == '/')) {
 	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;

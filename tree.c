@@ -3959,6 +3959,7 @@ xmlBufferFree(xmlBufferPtr buf) {
  */
 void
 xmlBufferEmpty(xmlBufferPtr buf) {
+    if (buf->content == NULL) return;
     buf->use = 0;
     memset(buf->content, -1, buf->size);/* just for debug */
 }

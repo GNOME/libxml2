@@ -1970,7 +1970,7 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
 	    }
 	} else {
 	    unsigned int c;
-	    int bits;
+	    int bits, l;
 
 	    if (out - buffer > buffer_size - 100) {
 		int index = out - buffer;
@@ -1978,7 +1978,7 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
 		growBuffer(buffer);
 		out = &buffer[index];
 	    }
-	    c = CUR;
+	    c = CUR_CHAR(l);
 	    if      (c <    0x80)
 		    { *out++  = c;                bits= -6; }
 	    else if (c <   0x800)
@@ -3526,7 +3526,8 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     if (sax == NULL) {
         fprintf(stderr, "htmlInitParserCtxt: out of memory\n");
     }
-    memset(sax, 0, sizeof(htmlSAXHandler));
+    else
+        memset(sax, 0, sizeof(htmlSAXHandler));
 
     /* Allocate the Input stack */
     ctxt->inputTab = (htmlParserInputPtr *) 

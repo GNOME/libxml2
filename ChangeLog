@@ -1,3 +1,12 @@
+Tue Sep 19 14:20:10 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* uri.c: applied patch for URI escaping from Wayne Davison
+	  <wayned@blorf.net>
+	* tree.c parserInternals.c HTMLparser.c: memset checks patches
+	  from Denis Barbier <barbier@imacs.polytechnique.fr>
+	* HTMLparser.c: UTF8 characters in HTML tag-attribute values
+	  patch from Wayne Davison
+
 Sun Sep 17 18:37:03 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xml.html : updated with new releases, adding "how to help"

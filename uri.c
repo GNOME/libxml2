@@ -254,26 +254,11 @@ xmlSaveUri(xmlURIPtr uri) {
 	        ((*(p) == '+')) || ((*(p) == '$')) || ((*(p) == ',')))
 		ret[len++] = *p++;
 	    else {
-		int val = *p++;
+		int val = *(unsigned char *)p++;
+		int hi = val / 0x10, lo = val % 0x10;
 		ret[len++] = '%';
-		switch (val / 0x10) {
-		    case 0xF: ret[len++] = 'F'; break;
-		    case 0xE: ret[len++] = 'E'; break;
-		    case 0xD: ret[len++] = 'D'; break;
-		    case 0xC: ret[len++] = 'C'; break;
-		    case 0xB: ret[len++] = 'B'; break;
-		    case 0xA: ret[len++] = 'A'; break;
-		    default: ret[len++] = '0' + (val / 0x10);
-		}
-		switch (val % 0x10) {
-		    case 0xF: ret[len++] = 'F'; break;
-		    case 0xE: ret[len++] = 'E'; break;
-		    case 0xD: ret[len++] = 'D'; break;
-		    case 0xC: ret[len++] = 'C'; break;
-		    case 0xB: ret[len++] = 'B'; break;
-		    case 0xA: ret[len++] = 'A'; break;
-		    default: ret[len++] = '0' + (val % 0x10);
-		}
+		ret[len++] = hi + (hi > 9? 'A'-10 : '0');
+		ret[len++] = lo + (lo > 9? 'A'-10 : '0');
 	    }
 	}
 	if (len >= max) {
@@ -314,26 +299,11 @@ xmlSaveUri(xmlURIPtr uri) {
 			((*(p) == ',')))
 			ret[len++] = *p++;
 		    else {
-			int val = *p++;
+			int val = *(unsigned char *)p++;
+			int hi = val / 0x10, lo = val % 0x10;
 			ret[len++] = '%';
-			switch (val / 0x10) {
-			    case 0xF: ret[len++] = 'F'; break;
-			    case 0xE: ret[len++] = 'E'; break;
-			    case 0xD: ret[len++] = 'D'; break;
-			    case 0xC: ret[len++] = 'C'; break;
-			    case 0xB: ret[len++] = 'B'; break;
-			    case 0xA: ret[len++] = 'A'; break;
-			    default: ret[len++] = '0' + (val / 0x10);
-			}
-			switch (val % 0x10) {
-			    case 0xF: ret[len++] = 'F'; break;
-			    case 0xE: ret[len++] = 'E'; break;
-			    case 0xD: ret[len++] = 'D'; break;
-			    case 0xC: ret[len++] = 'C'; break;
-			    case 0xB: ret[len++] = 'B'; break;
-			    case 0xA: ret[len++] = 'A'; break;
-			    default: ret[len++] = '0' + (val % 0x10);
-			}
+			ret[len++] = hi + (hi > 9? 'A'-10 : '0');
+			ret[len++] = lo + (lo > 9? 'A'-10 : '0');
 		    }
 		}
 		if (len + 3 >= max) {
@@ -396,26 +366,11 @@ xmlSaveUri(xmlURIPtr uri) {
                     ((*(p) == '=')) || ((*(p) == '+')))
 		    ret[len++] = *p++;
 		else {
-		    int val = *p++;
+		    int val = *(unsigned char *)p++;
+		    int hi = val / 0x10, lo = val % 0x10;
 		    ret[len++] = '%';
-		    switch (val / 0x10) {
-			case 0xF: ret[len++] = 'F'; break;
-			case 0xE: ret[len++] = 'E'; break;
-			case 0xD: ret[len++] = 'D'; break;
-			case 0xC: ret[len++] = 'C'; break;
-			case 0xB: ret[len++] = 'B'; break;
-			case 0xA: ret[len++] = 'A'; break;
-			default: ret[len++] = '0' + (val / 0x10);
-		    }
-		    switch (val % 0x10) {
-			case 0xF: ret[len++] = 'F'; break;
-			case 0xE: ret[len++] = 'E'; break;
-			case 0xD: ret[len++] = 'D'; break;
-			case 0xC: ret[len++] = 'C'; break;
-			case 0xB: ret[len++] = 'B'; break;
-			case 0xA: ret[len++] = 'A'; break;
-			default: ret[len++] = '0' + (val % 0x10);
-		    }
+		    ret[len++] = hi + (hi > 9? 'A'-10 : '0');
+		    ret[len++] = lo + (lo > 9? 'A'-10 : '0');
 		}
 	    }
 	}
@@ -436,26 +391,11 @@ xmlSaveUri(xmlURIPtr uri) {
 	            ((*(p) == ',')))
 		    ret[len++] = *p++;
 		else {
-		    int val = *p++;
+		    int val = *(unsigned char *)p++;
+		    int hi = val / 0x10, lo = val % 0x10;
 		    ret[len++] = '%';
-		    switch (val / 0x10) {
-			case 0xF: ret[len++] = 'F'; break;
-			case 0xE: ret[len++] = 'E'; break;
-			case 0xD: ret[len++] = 'D'; break;
-			case 0xC: ret[len++] = 'C'; break;
-			case 0xB: ret[len++] = 'B'; break;
-			case 0xA: ret[len++] = 'A'; break;
-			default: ret[len++] = '0' + (val / 0x10);
-		    }
-		    switch (val % 0x10) {
-			case 0xF: ret[len++] = 'F'; break;
-			case 0xE: ret[len++] = 'E'; break;
-			case 0xD: ret[len++] = 'D'; break;
-			case 0xC: ret[len++] = 'C'; break;
-			case 0xB: ret[len++] = 'B'; break;
-			case 0xA: ret[len++] = 'A'; break;
-			default: ret[len++] = '0' + (val % 0x10);
-		    }
+		    ret[len++] = hi + (hi > 9? 'A'-10 : '0');
+		    ret[len++] = lo + (lo > 9? 'A'-10 : '0');
 		}
 	    }
 	}
@@ -482,26 +422,11 @@ xmlSaveUri(xmlURIPtr uri) {
 		if ((IS_UNRESERVED(*(p))) || (IS_RESERVED(*(p)))) 
 		    ret[len++] = *p++;
 		else {
-		    int val = *p++;
+		    int val = *(unsigned char *)p++;
+		    int hi = val / 0x10, lo = val % 0x10;
 		    ret[len++] = '%';
-		    switch (val / 0x10) {
-			case 0xF: ret[len++] = 'F'; break;
-			case 0xE: ret[len++] = 'E'; break;
-			case 0xD: ret[len++] = 'D'; break;
-			case 0xC: ret[len++] = 'C'; break;
-			case 0xB: ret[len++] = 'B'; break;
-			case 0xA: ret[len++] = 'A'; break;
-			default: ret[len++] = '0' + (val / 0x10);
-		    }
-		    switch (val % 0x10) {
-			case 0xF: ret[len++] = 'F'; break;
-			case 0xE: ret[len++] = 'E'; break;
-			case 0xD: ret[len++] = 'D'; break;
-			case 0xC: ret[len++] = 'C'; break;
-			case 0xB: ret[len++] = 'B'; break;
-			case 0xA: ret[len++] = 'A'; break;
-			default: ret[len++] = '0' + (val % 0x10);
-		    }
+		    ret[len++] = hi + (hi > 9? 'A'-10 : '0');
+		    ret[len++] = lo + (lo > 9? 'A'-10 : '0');
 		}
 	    }
 	}
@@ -528,26 +453,11 @@ xmlSaveUri(xmlURIPtr uri) {
 		if ((IS_UNRESERVED(*(p))) || (IS_RESERVED(*(p)))) 
 		    ret[len++] = *p++;
 		else {
-		    int val = *p++;
+		    int val = *(unsigned char *)p++;
+		    int hi = val / 0x10, lo = val % 0x10;
 		    ret[len++] = '%';
-		    switch (val / 0x10) {
-			case 0xF: ret[len++] = 'F'; break;
-			case 0xE: ret[len++] = 'E'; break;
-			case 0xD: ret[len++] = 'D'; break;
-			case 0xC: ret[len++] = 'C'; break;
-			case 0xB: ret[len++] = 'B'; break;
-			case 0xA: ret[len++] = 'A'; break;
-			default: ret[len++] = '0' + (val / 0x10);
-		    }
-		    switch (val % 0x10) {
-			case 0xF: ret[len++] = 'F'; break;
-			case 0xE: ret[len++] = 'E'; break;
-			case 0xD: ret[len++] = 'D'; break;
-			case 0xC: ret[len++] = 'C'; break;
-			case 0xB: ret[len++] = 'B'; break;
-			case 0xA: ret[len++] = 'A'; break;
-			default: ret[len++] = '0' + (val % 0x10);
-		    }
+		    ret[len++] = hi + (hi > 9? 'A'-10 : '0');
+		    ret[len++] = lo + (lo > 9? 'A'-10 : '0');
 		}
 	    }
 	}

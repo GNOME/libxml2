@@ -2054,7 +2054,8 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     if (sax == NULL) {
         fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
     }
-    memset(sax, 0, sizeof(xmlSAXHandler));
+    else
+        memset(sax, 0, sizeof(xmlSAXHandler));
 
     /* Allocate the Input stack */
     ctxt->inputTab = (xmlParserInputPtr *) xmlMalloc(5 * sizeof(xmlParserInputPtr));

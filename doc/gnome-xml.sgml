@@ -25,7 +25,6 @@
 <!entity hash SYSTEM "sgml/hash.sgml">
 <!entity threads SYSTEM "sgml/threads.sgml">
 <!entity globals SYSTEM "sgml/globals.sgml">
-<!entity global_functions SYSTEM "sgml/global_functions.sgml">
 ]>
 
 <book>

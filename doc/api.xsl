@@ -39,7 +39,7 @@
     </p>
   </xsl:template>
   <xsl:template match="file" mode="reflist">
-    <h2>Module <xsl:value-of select="@name"/>:</h2>
+    <h2><a name="{@name}">Module <xsl:value-of select="@name"/></a>:</h2>
     <p>
       <xsl:for-each select="ref">
         <xsl:apply-templates mode="anchor" select="."/>

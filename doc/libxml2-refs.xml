@@ -11167,6 +11167,9 @@
         <word name='flag'>
           <ref name='htmlSetMetaEncoding'/>
           <ref name='initxmlDefaultSAXHandler'/>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
         </word>
         <word name='flagged'>
           <ref name='htmlGetMetaEncoding'/>
@@ -11337,6 +11340,8 @@
           <ref name='xmlURI'/>
         </word>
       </letter>
+    </chunk>
+    <chunk name='chunk12'>
       <letter name='g'>
         <word name='general'>
           <ref name='XML_SUBSTITUTE_BOTH'/>
@@ -11447,8 +11452,6 @@
           <ref name='xmlBufferWriteXmlCHAR'/>
         </word>
       </letter>
-    </chunk>
-    <chunk name='chunk12'>
       <letter name='h'>
         <word name='had'>
           <ref name='xmlNewGlobalNs'/>
@@ -11764,11 +11767,6 @@
           <ref name='xmlXPathStringFunction'/>
         </word>
         <word name='inclusive'>
-          <ref name='xmlC14NDocDumpMemory'/>
-          <ref name='xmlC14NDocSave'/>
-          <ref name='xmlC14NDocSaveTo'/>
-        </word>
-        <word name='inclusive_ns_prefixe'>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
@@ -12994,6 +12992,11 @@
         </word>
         <word name='non-empty'>
           <ref name='xmlXPathBooleanFunction'/>
+        </word>
+        <word name='non-exclusive'>
+          <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlC14NDocSave'/>
+          <ref name='xmlC14NDocSaveTo'/>
         </word>
         <word name='non-negative'>
           <ref name='xmlC14NDocSaveTo'/>
@@ -17314,8 +17317,8 @@
       <chunk name='chunk8' start='c' end='c'/>
       <chunk name='chunk9' start='d' end='d'/>
       <chunk name='chunk10' start='e' end='e'/>
-      <chunk name='chunk11' start='f' end='g'/>
-      <chunk name='chunk12' start='h' end='i'/>
+      <chunk name='chunk11' start='f' end='f'/>
+      <chunk name='chunk12' start='g' end='i'/>
       <chunk name='chunk13' start='j' end='l'/>
       <chunk name='chunk14' start='m' end='n'/>
       <chunk name='chunk15' start='o' end='o'/>

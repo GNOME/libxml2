@@ -1,0 +1,929 @@
+<HTML
+><HEAD
+><TITLE
+>c14n</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.64
+"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Libxml Library Reference"
+HREF="libxml-lib.html"><LINK
+REL="PREVIOUS"
+TITLE="catalog"
+HREF="libxml-catalog.html"><LINK
+REL="NEXT"
+TITLE="threads"
+HREF="libxml-threads.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>Gnome XML Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="libxml-catalog.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="libxml-threads.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="LIBXML-C14N"
+>c14n</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN19926"
+></A
+><H2
+>Name</H2
+>c14n&nbsp;--&nbsp;</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN19929"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+int         <A
+HREF="libxml-c14n.html#XMLC14NDOCSAVETO"
+>xmlC14NDocSaveTo</A
+>                (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-xpath.html#XMLNODESETPTR"
+>xmlNodeSetPtr</A
+> nodes,
+                                             int exclusive,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **inclusive_ns_prefixes,
+                                             int with_comments,
+                                             <A
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> buf);
+int         <A
+HREF="libxml-c14n.html#XMLC14NDOCDUMPMEMORY"
+>xmlC14NDocDumpMemory</A
+>            (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-xpath.html#XMLNODESETPTR"
+>xmlNodeSetPtr</A
+> nodes,
+                                             int exclusive,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **inclusive_ns_prefixes,
+                                             int with_comments,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **doc_txt_ptr);
+int         <A
+HREF="libxml-c14n.html#XMLC14NDOCSAVE"
+>xmlC14NDocSave</A
+>                  (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-xpath.html#XMLNODESETPTR"
+>xmlNodeSetPtr</A
+> nodes,
+                                             int exclusive,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **inclusive_ns_prefixes,
+                                             int with_comments,
+                                             const char *filename,
+                                             int compression);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN19946"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN19949"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19951"
+></A
+><H3
+><A
+NAME="XMLC14NDOCSAVETO"
+></A
+>xmlC14NDocSaveTo ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlC14NDocSaveTo                (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-xpath.html#XMLNODESETPTR"
+>xmlNodeSetPtr</A
+> nodes,
+                                             int exclusive,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **inclusive_ns_prefixes,
+                                             int with_comments,
+                                             <A
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> buf);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dumps the canonized image of given XML document into the provided buffer.
+For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
+"Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19961"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the XML document for canonization</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nodes</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the nodes set to be included in the canonized image
+or NULL if all document nodes should be included</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>exclusive</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>		the exclusive flag (0 - non-exclusive canonicalization;
+otherwise - exclusive canonicalization)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>inclusive_ns_prefixes</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the list of inclusive namespace prefixes 
+ended with a NULL or NULL if there is no
+inclusive namespaces (only for exclusive 
+canonicalization, ignored otherwise)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>with_comments</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	include comments in the result (!=0) or not (==0)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the output buffer to store canonical XML; this 
+buffer MUST have encoder==NULL because C14N requires
+UTF-8 output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>non-negative value on success or a negative value on fail  </TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19994"
+></A
+><H3
+><A
+NAME="XMLC14NDOCDUMPMEMORY"
+></A
+>xmlC14NDocDumpMemory ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlC14NDocDumpMemory            (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-xpath.html#XMLNODESETPTR"
+>xmlNodeSetPtr</A
+> nodes,
+                                             int exclusive,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **inclusive_ns_prefixes,
+                                             int with_comments,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **doc_txt_ptr);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dumps the canonized image of given XML document into memory.
+For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
+"Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN20004"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the XML document for canonization</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nodes</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the nodes set to be included in the canonized image
+or NULL if all document nodes should be included</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>exclusive</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>		the exclusive flag (0 - non-exclusive canonicalization;
+otherwise - exclusive canonicalization)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>inclusive_ns_prefixes</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the list of inclusive namespace prefixes 
+ended with a NULL or NULL if there is no
+inclusive namespaces (only for exclusive 
+canonicalization, ignored otherwise)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>with_comments</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	include comments in the result (!=0) or not (==0)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc_txt_ptr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	the memory pointer for allocated canonical XML text;
+the caller of this functions is responsible for calling
+<A
+HREF="libxml-globals.html#XMLFREE"
+>xmlFree</A
+>() to free allocated memory </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of bytes written on success or a negative value on fail  </TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN20038"
+></A
+><H3
+><A
+NAME="XMLC14NDOCSAVE"
+></A
+>xmlC14NDocSave ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlC14NDocSave                  (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-xpath.html#XMLNODESETPTR"
+>xmlNodeSetPtr</A
+> nodes,
+                                             int exclusive,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **inclusive_ns_prefixes,
+                                             int with_comments,
+                                             const char *filename,
+                                             int compression);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dumps the canonized image of given XML document into the file.
+For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
+"Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN20047"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the XML document for canonization</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nodes</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the nodes set to be included in the canonized image
+or NULL if all document nodes should be included</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>exclusive</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>		the exclusive flag (0 - non-exclusive canonicalization;
+otherwise - exclusive canonicalization)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>inclusive_ns_prefixes</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the list of inclusive namespace prefixes 
+ended with a NULL or NULL if there is no
+inclusive namespaces (only for exclusive 
+canonicalization, ignored otherwise)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>with_comments</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	include comments in the result (!=0) or not (==0)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the filename to store canonical XML image</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>compression</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>	the compression level (zlib requred): 
+-1 - libxml default,
+0 - uncompressed, 
+&gt;0 - compression level</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of bytes written success or a negative value on fail  </TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="libxml-catalog.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="libxml-threads.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>catalog</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>threads</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

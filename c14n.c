@@ -1190,7 +1190,7 @@ xmlC14NNewCtx(xmlDocPtr doc, xmlNodeSetPtr nodes,
  *      		or NULL if all document nodes should be included
  * @exclusive:		the exclusive flag (0 - non-exclusive canonicalization;
  *			otherwise - exclusive canonicalization)
- * @inclusive_ns_prefixe the list of inclusive namespace prefixes 
+ * @inclusive_ns_prefixes: the list of inclusive namespace prefixes 
  *			ended with a NULL or NULL if there is no
  *			inclusive namespaces (only for exclusive 
  *			canonicalization, ignored otherwise)
@@ -1287,7 +1287,7 @@ xmlC14NDocSaveTo(xmlDocPtr doc, xmlNodeSetPtr nodes,
  *      		or NULL if all document nodes should be included
  * @exclusive:		the exclusive flag (0 - non-exclusive canonicalization;
  *			otherwise - exclusive canonicalization)
- * @inclusive_ns_prefixe the list of inclusive namespace prefixes 
+ * @inclusive_ns_prefixes: the list of inclusive namespace prefixes 
  *			ended with a NULL or NULL if there is no
  *			inclusive namespaces (only for exclusive 
  *			canonicalization, ignored otherwise)
@@ -1369,7 +1369,7 @@ xmlC14NDocDumpMemory(xmlDocPtr doc, xmlNodeSetPtr nodes,
  *      		or NULL if all document nodes should be included
  * @exclusive:		the exclusive flag (0 - non-exclusive canonicalization;
  *			otherwise - exclusive canonicalization)
- * @inclusive_ns_prefixe the list of inclusive namespace prefixes 
+ * @inclusive_ns_prefixes: the list of inclusive namespace prefixes 
  *			ended with a NULL or NULL if there is no
  *			inclusive namespaces (only for exclusive 
  *			canonicalization, ignored otherwise)

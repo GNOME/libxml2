@@ -1,3 +1,10 @@
+Sat Mar  9 15:10:49 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* c14n.c: fixed a few comments
+	* doc/*.html doc/*/*.html: regenerated the docs and added
+	  the C14N API
+	* doc/api.xsl doc/gnome-xml.sgml: fixups and added IDs
+
 Sat Mar  9 11:16:11 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* check-xml-test-suite.py: fix to adapt varaiations in the

@@ -2850,8 +2850,8 @@
       <return type='int' info='the number of bytes written on success or a negative value on fail '/>
       <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
       <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image or NULL if all document nodes should be included '/>
-      <arg name='exclusive' type='int' info='inclusive_ns_prefixe the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
-      <arg name='inclusive_ns_prefixes' type='xmlChar **'/>
+      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
       <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
       <arg name='doc_txt_ptr' type='xmlChar **' info='	the memory pointer for allocated canonical XML text; the caller of this functions is responsible for calling xmlFree() to free allocated memory '/>
     </function>
@@ -2860,8 +2860,8 @@
       <return type='int' info='the number of bytes written success or a negative value on fail '/>
       <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
       <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image or NULL if all document nodes should be included '/>
-      <arg name='exclusive' type='int' info='inclusive_ns_prefixe the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
-      <arg name='inclusive_ns_prefixes' type='xmlChar **'/>
+      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
       <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
       <arg name='filename' type='const char*' info='		the filename to store canonical XML image '/>
       <arg name='compression' type='int' info='	the compression level (zlib requred): -1 - libxml default, 0 - uncompressed, &gt;0 - compression level '/>
@@ -2871,8 +2871,8 @@
       <return type='int' info='non-negative value on success or a negative value on fail '/>
       <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
       <arg name='nodes' type='xmlNodeSetPtr' info='		the nodes set to be included in the canonized image or NULL if all document nodes should be included '/>
-      <arg name='exclusive' type='int' info='inclusive_ns_prefixe the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
-      <arg name='inclusive_ns_prefixes' type='xmlChar **'/>
+      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
       <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
       <arg name='buf' type='xmlOutputBufferPtr' info='		the output buffer to store canonical XML; this buffer MUST have encoder==NULL because C14N requires UTF-8 output '/>
     </function>

@@ -1,3 +1,8 @@
+Mon May 12 21:58:00 EDT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* minor cleanup of configure '--help' display
+	* error.c: enhanced xmlParserPrintFileContext to fix bug #109942
+
 Mon May 12 17:53:30 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: PI nodes in external subset were not freed :-\

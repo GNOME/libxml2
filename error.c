@@ -149,8 +149,8 @@ xmlParserPrintFileInfo(xmlParserInputPtr input) {
 void
 xmlParserPrintFileContext(xmlParserInputPtr input) {
     const xmlChar *cur, *base;
-    int n;
-    xmlChar  content[81];
+    int n, col;
+    xmlChar  content[81]; /* space for 80 chars + line terminator */
     xmlChar *ctnt;
 
     if (input == NULL) return;
@@ -161,37 +161,34 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
 	cur--;
     }
     n = 0;
-    /* search backwards for beginning-of-line maximum 80 characters */
-    while ((n++ < 80) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
+    /* search backwards for beginning-of-line (to max buff size) */
+    while ((n++ < sizeof(content)-1) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
         cur--;
     if ((*cur == '\n') || (*cur == '\r')) cur++;
-	/* search forward for end-of-line maximum 80 characters */
+    /* calculate the error position in terms of the current position */
+    col = input->cur - cur;
+    /* search forward for end-of-line (to max buff size) */
     n = 0;
     ctnt = content;
-    while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < 79)) {
+    /* copy selected text to our buffer */
+    while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < sizeof(content)-1)) {
 		*ctnt++ = *cur++;
 	n++;
     }
     *ctnt = 0;
+    /* print out the selected text */
     xmlGenericError(xmlGenericErrorContext,"%s\n", content);
     /* create blank line with problem pointer */
-    cur = input->cur;
-    while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
-		cur--;
-	}
     n = 0;
     ctnt = content;
-    while ((n++ < 79) && (cur > base) && (*cur != '\n') && (*cur != '\r')) {
-	*ctnt++ = ' ';
-	cur--;
+    /* (leave buffer space for pointer + line terminator) */
+    while ((n<col) && (n++ < sizeof(content)-2) && (*ctnt != 0)) {
+	if (*ctnt!='\t')
+	    *ctnt = ' ';
+	*ctnt++;
     }
-    if (ctnt > content) {
-	*(--ctnt) = '^';
-	*(++ctnt) = 0;
-    } else {
-	*ctnt = '^';
-	*(++ctnt) = 0;
-    }
+    *ctnt++ = '^';
+    *ctnt = 0;
     xmlGenericError(xmlGenericErrorContext,"%s\n", content);
 }
 

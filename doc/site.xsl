@@ -85,6 +85,9 @@
       <xsl:when test="$name = '#Memory'">
         <xsl:text>xmlmem.html</xsl:text>
       </xsl:when>
+      <xsl:when test="$name = '#Thread'">
+        <xsl:text>threads.html</xsl:text>
+      </xsl:when>
       <xsl:when test="$name = '#FAQ'">
         <xsl:text>FAQ.html</xsl:text>
       </xsl:when>

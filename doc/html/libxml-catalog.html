@@ -16,8 +16,8 @@ REL="PREVIOUS"
 TITLE="xmlIO"
 HREF="libxml-xmlio.html"><LINK
 REL="NEXT"
-TITLE="DOCBparser"
-HREF="libxml-docbparser.html"></HEAD
+TITLE="threads"
+HREF="libxml-threads.html"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -103,7 +103,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="libxml-docbparser.html"
+HREF="libxml-threads.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -123,7 +123,7 @@ NAME="LIBXML-CATALOG"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN18741"
+NAME="AEN18833"
 ></A
 ><H2
 >Name</H2
@@ -131,7 +131,7 @@ NAME="AEN18741"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN18744"
+NAME="AEN18836"
 ></A
 ><H2
 >Synopsis</H2
@@ -162,6 +162,143 @@ enum        <A
 HREF="libxml-catalog.html#XMLCATALOGALLOW"
 >xmlCatalogAllow</A
 >;
+struct      <A
+HREF="libxml-catalog.html#XMLCATALOG"
+>xmlCatalog</A
+>;
+typedef     <A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+>;
+<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> <A
+HREF="libxml-catalog.html#XMLLOADACATALOG"
+>xmlLoadACatalog</A
+>               (const char *filename);
+<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> <A
+HREF="libxml-catalog.html#XMLLOADSGMLSUPERCATALOG"
+>xmlLoadSGMLSuperCatalog</A
+>       (const char *filename);
+int         <A
+HREF="libxml-catalog.html#XMLCONVERTSGMLCATALOG"
+>xmlConvertSGMLCatalog</A
+>           (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal);
+int         <A
+HREF="libxml-catalog.html#XMLACATALOGADD"
+>xmlACatalogAdd</A
+>                  (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *type,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *orig,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *replace);
+int         <A
+HREF="libxml-catalog.html#XMLACATALOGREMOVE"
+>xmlACatalogRemove</A
+>               (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-catalog.html#XMLACATALOGRESOLVE"
+>xmlACatalogResolve</A
+>              (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *pubID,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *sysID);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-catalog.html#XMLACATALOGRESOLVESYSTEM"
+>xmlACatalogResolveSystem</A
+>        (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *sysID);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-catalog.html#XMLACATALOGRESOLVEPUBLIC"
+>xmlACatalogResolvePublic</A
+>        (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *pubID);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-catalog.html#XMLACATALOGRESOLVEURI"
+>xmlACatalogResolveURI</A
+>           (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *URI);
+void        <A
+HREF="libxml-catalog.html#XMLACATALOGDUMP"
+>xmlACatalogDump</A
+>                 (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             <GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *out);
+void        <A
+HREF="libxml-catalog.html#XMLFREECATALOG"
+>xmlFreeCatalog</A
+>                  (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal);
 void        <A
 HREF="libxml-catalog.html#XMLINITIALIZECATALOG"
 >xmlInitializeCatalog</A
@@ -170,10 +307,6 @@ int         <A
 HREF="libxml-catalog.html#XMLLOADCATALOG"
 >xmlLoadCatalog</A
 >                  (const char *filename);
-int         <A
-HREF="libxml-catalog.html#XMLLOADSGMLSUPERCATALOG"
->xmlLoadSGMLSuperCatalog</A
->         (const char *filename);
 void        <A
 HREF="libxml-catalog.html#XMLLOADCATALOGS"
 >xmlLoadCatalogs</A
@@ -359,7 +492,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN18804"
+NAME="AEN18933"
 ></A
 ><H2
 >Description</H2
@@ -369,14 +502,14 @@ NAME="AEN18804"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN18807"
+NAME="AEN18936"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18809"
+NAME="AEN18938"
 ></A
 ><H3
 ><A
@@ -404,7 +537,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18815"
+NAME="AEN18944"
 ></A
 ><H3
 ><A
@@ -430,7 +563,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18820"
+NAME="AEN18949"
 ></A
 ><H3
 ><A
@@ -460,7 +593,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18825"
+NAME="AEN18954"
 ></A
 ><H3
 ><A
@@ -491,7 +624,1174 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18830"
+NAME="AEN18959"
+></A
+><H3
+><A
+NAME="XMLCATALOG"
+></A
+>struct xmlCatalog</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlCatalog;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18964"
+></A
+><H3
+><A
+NAME="XMLCATALOGPTR"
+></A
+>xmlCatalogPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlCatalog *xmlCatalogPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18969"
+></A
+><H3
+><A
+NAME="XMLLOADACATALOG"
+></A
+>xmlLoadACatalog ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> xmlLoadACatalog               (const char *filename);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Load the catalog and build the associated data structures.
+This can be either an XML Catalog or an SGML Catalog
+It will recurse in SGML CATALOG entries. On the other hand XML
+Catalogs are not handled recursively.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN18976"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a file path</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the catalog parsed or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18989"
+></A
+><H3
+><A
+NAME="XMLLOADSGMLSUPERCATALOG"
+></A
+>xmlLoadSGMLSuperCatalog ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> xmlLoadSGMLSuperCatalog       (const char *filename);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Load an SGML super catalog. It won't expand CATALOG or DELEGATE
+references. This is only needed for manipulating SGML Super Catalogs
+like adding and removing CATALOG or DELEGATE entries.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN18996"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a file path</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the catalog parsed or NULL in case of error</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19009"
+></A
+><H3
+><A
+NAME="XMLCONVERTSGMLCATALOG"
+></A
+>xmlConvertSGMLCatalog ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlConvertSGMLCatalog           (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Convert all the SGML catalog entries as XML ones</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19016"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>catal</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the catalog</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of entries converted if successful, -1 otherwise</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19029"
+></A
+><H3
+><A
+NAME="XMLACATALOGADD"
+></A
+>xmlACatalogAdd ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlACatalogAdd                  (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *type,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *orig,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *replace);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Add an entry in the catalog, it may overwrite existing but
+different entries.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19039"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>catal</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a Catalog</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the type of record to add to the catalog</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>orig</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the system, public or prefix to match </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>replace</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the replacement value for the match</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if successful, -1 otherwise</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19064"
+></A
+><H3
+><A
+NAME="XMLACATALOGREMOVE"
+></A
+>xmlACatalogRemove ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlACatalogRemove               (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Remove an entry from the catalog</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19072"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>catal</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a Catalog</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the value to remove</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of entries removed if successful, -1 otherwise</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19089"
+></A
+><H3
+><A
+NAME="XMLACATALOGRESOLVE"
+></A
+>xmlACatalogResolve ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlACatalogResolve              (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *pubID,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *sysID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a complete resolution lookup of an External Identifier</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19099"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>catal</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a Catalog</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>pubID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the public ID string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>sysID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the system ID string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the URI of the resource or NULL if not found, it must be freed
+by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19120"
+></A
+><H3
+><A
+NAME="XMLACATALOGRESOLVESYSTEM"
+></A
+>xmlACatalogResolveSystem ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlACatalogResolveSystem        (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *sysID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to lookup the catalog resource for a system ID</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19129"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>catal</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a Catalog</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>sysID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the public ID string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the system ID if found or NULL otherwise, the value returned
+must be freed by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19146"
+></A
+><H3
+><A
+NAME="XMLACATALOGRESOLVEPUBLIC"
+></A
+>xmlACatalogResolvePublic ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlACatalogResolvePublic        (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *pubID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Try to lookup the system ID associated to a public ID in that catalog</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19155"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>catal</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a Catalog</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>pubID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the public ID string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the system ID if found or NULL otherwise, the value returned
+must be freed by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19172"
+></A
+><H3
+><A
+NAME="XMLACATALOGRESOLVEURI"
+></A
+>xmlACatalogResolveURI ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlACatalogResolveURI           (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *URI);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a complete resolution lookup of an URI</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19181"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>catal</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a Catalog</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URI</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the URI of the resource or NULL if not found, it must be freed
+by the caller.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19198"
+></A
+><H3
+><A
+NAME="XMLACATALOGDUMP"
+></A
+>xmlACatalogDump ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlACatalogDump                 (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal,
+                                             <GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *out);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free up all the memory associated with catalogs</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19206"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>catal</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a Catalog</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the file.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19219"
+></A
+><H3
+><A
+NAME="XMLFREECATALOG"
+></A
+>xmlFreeCatalog ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeCatalog                  (<A
+HREF="libxml-catalog.html#XMLCATALOGPTR"
+>xmlCatalogPtr</A
+> catal);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free the memory allocated to a Catalog</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19226"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>catal</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a Catalog entry</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19235"
 ></A
 ><H3
 ><A
@@ -513,7 +1813,7 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 >Do the catalog initialization.
-TODO: this function is not thread safe, catalog initialization should
+this function is not thread safe, catalog initialization should
 preferably be done once at startup</P
 ><P
 ></P
@@ -521,7 +1821,7 @@ preferably be done once at startup</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18836"
+NAME="AEN19241"
 ></A
 ><H3
 ><A
@@ -544,14 +1844,14 @@ CLASS="PROGRAMLISTING"
 ><P
 >Load the catalog and makes its definitions effective for the default
 external entity loader. It will recurse in SGML CATALOG entries.
-TODO: this function is not thread safe, catalog initialization should
+this function is not thread safe, catalog initialization should
 preferably be done once at startup</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18842"
+NAME="AEN19247"
 ></A
 ><P
 ></P
@@ -604,89 +1904,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18855"
-></A
-><H3
-><A
-NAME="XMLLOADSGMLSUPERCATALOG"
-></A
->xmlLoadSGMLSuperCatalog ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlLoadSGMLSuperCatalog         (const char *filename);</PRE
-></TD
-></TR
-></TABLE
-><P
->Load an SGML super catalog. It won't expand CATALOG or DELEGATE
-references. This is only needed for manipulating SGML Super Catalogs
-like adding and removing CATALOG or DELEGATE entries.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN18861"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a file path</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 in case of success -1 in case of error</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18874"
+NAME="AEN19260"
 ></A
 ><H3
 ><A
@@ -709,14 +1927,14 @@ CLASS="PROGRAMLISTING"
 ><P
 >Load the catalogs and makes their definitions effective for the default
 external entity loader.
-TODO: this function is not thread safe, catalog initialization should
+this function is not thread safe, catalog initialization should
 preferably be done once at startup</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18880"
+NAME="AEN19266"
 ></A
 ><P
 ></P
@@ -754,7 +1972,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18889"
+NAME="AEN19275"
 ></A
 ><H3
 ><A
@@ -782,7 +2000,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18895"
+NAME="AEN19281"
 ></A
 ><H3
 ><A
@@ -812,7 +2030,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18902"
+NAME="AEN19288"
 ></A
 ><P
 ></P
@@ -850,7 +2068,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18911"
+NAME="AEN19297"
 ></A
 ><H3
 ><A
@@ -887,7 +2105,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18920"
+NAME="AEN19306"
 ></A
 ><P
 ></P
@@ -958,7 +2176,7 @@ by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18937"
+NAME="AEN19323"
 ></A
 ><H3
 ><A
@@ -991,7 +2209,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18945"
+NAME="AEN19331"
 ></A
 ><P
 ></P
@@ -1045,7 +2263,7 @@ must be freed by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18958"
+NAME="AEN19344"
 ></A
 ><H3
 ><A
@@ -1078,7 +2296,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18966"
+NAME="AEN19352"
 ></A
 ><P
 ></P
@@ -1132,7 +2350,7 @@ must be freed by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18979"
+NAME="AEN19365"
 ></A
 ><H3
 ><A
@@ -1165,7 +2383,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18987"
+NAME="AEN19373"
 ></A
 ><P
 ></P
@@ -1219,7 +2437,7 @@ by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19000"
+NAME="AEN19386"
 ></A
 ><H3
 ><A
@@ -1252,13 +2470,18 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TABLE
 ><P
 >Add an entry in the catalog, it may overwrite existing but
-different entries.</P
+different entries.
+If called before any other catalo routine, allows to override the
+default shared catalog put in place by <A
+HREF="libxml-catalog.html#XMLINITIALIZECATALOG"
+>xmlInitializeCatalog</A
+>();</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19009"
+NAME="AEN19396"
 ></A
 ><P
 ></P
@@ -1345,7 +2568,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19030"
+NAME="AEN19417"
 ></A
 ><H3
 ><A
@@ -1375,7 +2598,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19037"
+NAME="AEN19424"
 ></A
 ><P
 ></P
@@ -1428,7 +2651,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19050"
+NAME="AEN19437"
 ></A
 ><H3
 ><A
@@ -1462,7 +2685,7 @@ except it bypass all catalog lookups.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19058"
+NAME="AEN19445"
 ></A
 ><P
 ></P
@@ -1515,7 +2738,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19071"
+NAME="AEN19458"
 ></A
 ><H3
 ><A
@@ -1542,7 +2765,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19077"
+NAME="AEN19464"
 ></A
 ><P
 ></P
@@ -1578,7 +2801,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19086"
+NAME="AEN19473"
 ></A
 ><H3
 ><A
@@ -1605,7 +2828,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19092"
+NAME="AEN19479"
 ></A
 ><P
 ></P
@@ -1643,7 +2866,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19101"
+NAME="AEN19488"
 ></A
 ><H3
 ><A
@@ -1674,7 +2897,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19108"
+NAME="AEN19495"
 ></A
 ><P
 ></P
@@ -1729,7 +2952,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19121"
+NAME="AEN19508"
 ></A
 ><H3
 ><A
@@ -1768,7 +2991,7 @@ document's private catalog list</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19130"
+NAME="AEN19517"
 ></A
 ><P
 ></P
@@ -1856,7 +3079,7 @@ by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19151"
+NAME="AEN19538"
 ></A
 ><H3
 ><A
@@ -1891,7 +3114,7 @@ document's private catalog list</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19159"
+NAME="AEN19546"
 ></A
 ><P
 ></P
@@ -1962,7 +3185,7 @@ by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19176"
+NAME="AEN19563"
 ></A
 ><H3
 ><A
@@ -1990,7 +3213,7 @@ debugging, 1 enable it</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19182"
+NAME="AEN19569"
 ></A
 ><P
 ></P
@@ -2043,7 +3266,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19195"
+NAME="AEN19582"
 ></A
 ><H3
 ><A
@@ -2078,7 +3301,7 @@ Values accepted are XML_CATA_PREFER_PUBLIC or XML_CATA_PREFER_SYSTEM</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19203"
+NAME="AEN19590"
 ></A
 ><P
 ></P
@@ -2131,7 +3354,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19216"
+NAME="AEN19603"
 ></A
 ><H3
 ><A
@@ -2162,7 +3385,7 @@ be accepted</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19223"
+NAME="AEN19610"
 ></A
 ><P
 ></P
@@ -2200,7 +3423,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19232"
+NAME="AEN19619"
 ></A
 ><H3
 ><A
@@ -2231,7 +3454,7 @@ be accepted</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19239"
+NAME="AEN19626"
 ></A
 ><P
 ></P
@@ -2267,7 +3490,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19248"
+NAME="AEN19635"
 ></A
 ><H3
 ><A
@@ -2304,7 +3527,7 @@ HREF="libxml-catalog.html#XMLCATALOGRESOLVESYSTEM"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19257"
+NAME="AEN19644"
 ></A
 ><P
 ></P
@@ -2357,7 +3580,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19270"
+NAME="AEN19657"
 ></A
 ><H3
 ><A
@@ -2394,7 +3617,7 @@ HREF="libxml-catalog.html#XMLCATALOGRESOLVEPUBLIC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19279"
+NAME="AEN19666"
 ></A
 ><P
 ></P
@@ -2514,7 +3737,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="libxml-docbparser.html"
+HREF="libxml-threads.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -2542,7 +3765,7 @@ ALIGN="right"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->DOCBparser</B
+>threads</B
 ></FONT
 ></TD
 ></TR

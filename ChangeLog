@@ -1,3 +1,10 @@
+Tue Oct 30 13:33:13 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: preparing 2.4.7
+	* Makefile.am doc/Makefile.am: switched to the latest xmllint
+	  manual page from John
+	* doc/*: updated the doc and rebuilt the generated pages
+
 Tue Oct 30 11:31:19 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: closing bug #62711, the library should never

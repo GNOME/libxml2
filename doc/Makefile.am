@@ -17,7 +17,7 @@ PAGES= architecture.html bugs.html contribs.html docs.html DOM.html \
     interface.html intro.html library.html namespaces.html news.html \
     tree.html xmldtd.html XML.html XSLT.html
 
-man_MANS = xmlcatalog.1
+man_MANS = xmllint.1 xmlcatalog.1
 
 all: $(PAGES)
 

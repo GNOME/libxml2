@@ -34,7 +34,7 @@ endif
 DEPS = $(top_builddir)/libxml2.la
 LDADDS = $(top_builddir)/libxml2.la @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) -lm
 
-man_MANS = xmllint.1 xml2-config.1 libxml.4
+man_MANS = xml2-config.1 libxml.4
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = libxml.m4

@@ -21,6 +21,10 @@
 <!entity nanohttp SYSTEM "sgml/nanohttp.sgml">
 <!entity nanoftp SYSTEM "sgml/nanoftp.sgml">
 <!entity valid SYSTEM "sgml/valid.sgml">
+<!entity hash SYSTEM "sgml/hash.sgml">
+<!entity threads SYSTEM "sgml/threads.sgml">
+<!entity globals SYSTEM "sgml/globals.sgml">
+<!entity global_functions SYSTEM "sgml/global_functions.sgml">
 ]>
 
 <book>
@@ -96,9 +100,13 @@
     &nanoftp;
     &xmlIO;
     &catalog;
+    &threads;
+    &globals;
+    &global_functions;
     &DOCBparser;
     &parserInternals;
     &encoding;
+    &hash;
     &debugXML;
     &xmlmemory;
   </chapter>

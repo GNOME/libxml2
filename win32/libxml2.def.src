@@ -702,6 +702,30 @@ xmlCleanupPredefinedEntities
 	/* Specific function to keep track of entities references and used by the XSLT debugger. */
 	xmlSetEntityReferenceFunc
 
+
+/* relaxng.h
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_SCHEMAS_ENABLED
+	/* Interfaces for parsing. */
+	xmlRelaxNGNewParserCtxt
+	xmlRelaxNGNewMemParserCtxt
+	xmlRelaxNGFreeParserCtxt
+	xmlRelaxNGSetParserErrors
+	xmlRelaxNGParse
+	xmlRelaxNGFree
+	xmlRelaxNGDump
+	
+	/* Interfaces for validating */
+	xmlRelaxNGSetValidErrors
+	xmlRelaxNGNewValidCtxt
+	xmlRelaxNGFreeValidCtxt
+	xmlRelaxNGValidateDoc
+	/* not existent in the source */
+	/*xmlRelaxNGValidateStream*/
+	xmlRelaxNGCleanupTypes
+#endif /* LIBXML_SCHEMAS_ENABLED */
+
+
 /* SAX.h
    --------------------------------------------------------------------- */
 	getPublicId

@@ -1344,6 +1344,12 @@ xmlXPathNsLookup(xmlXPathContextPtr ctxt, const xmlChar *prefix) {
 	return(NULL);
     if (prefix == NULL)
 	return(NULL);
+
+#ifdef XML_XML_NAMESPACE
+    if (xmlStrEqual(prefix, (const xmlChar *) "xml"))
+	return(XML_XML_NAMESPACE);
+#endif
+
     if (ctxt->nsHash == NULL)
 	return(NULL);
 
@@ -3289,10 +3295,24 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 		        case XML_ATTRIBUTE_NODE: {
 			    xmlAttrPtr attr = (xmlAttrPtr) cur;
 			    if (xmlStrEqual(name, attr->name)) {
+				if (prefix == NULL) {
+				    if ((attr->ns == NULL) ||
+					(attr->ns->prefix == NULL)) {
 #ifdef DEBUG_STEP
-				n++;
+					n++;
 #endif
-				addNode(ret, cur);
+					addNode(ret, attr);
+				    }
+				} else {
+				    if ((attr->ns != NULL) && 
+				        (xmlStrEqual(prefix,
+						     attr->ns->href))) {
+#ifdef DEBUG_STEP
+					n++;
+#endif
+					addNode(ret, attr);
+				    }
+				}
 			    }
 			    break;
 			}

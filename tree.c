@@ -3615,6 +3615,26 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
     xmlNsPtr cur;
 
     if (node == NULL) return(NULL);
+    if ((nameSpace != NULL) &&
+	(xmlStrEqual(nameSpace, (const xmlChar *)"xml"))) {
+	if (doc->oldNs == NULL) {
+	    /*
+	     * Allocate a new Namespace and fill the fields.
+	     */
+	    doc->oldNs = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+	    if (doc->oldNs == NULL) {
+		xmlGenericError(xmlGenericErrorContext,
+			"xmlSearchNsByHref : malloc failed\n");
+		return(NULL);
+	    }
+	    memset(doc->oldNs, 0, sizeof(xmlNs));
+	    doc->oldNs->type = XML_LOCAL_NAMESPACE;
+
+	    doc->oldNs->href = xmlStrdup(XML_XML_NAMESPACE); 
+	    doc->oldNs->prefix = xmlStrdup((const xmlChar *)"xml"); 
+	}
+	return(doc->oldNs);
+    }
     while (node != NULL) {
 	if ((node->type == XML_ENTITY_REF_NODE) ||
 	    (node->type == XML_ENTITY_NODE) ||
@@ -3654,6 +3674,25 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
     xmlNodePtr orig = node;
 
     if ((node == NULL) || (href == NULL)) return(NULL);
+    if (xmlStrEqual(href, XML_XML_NAMESPACE)) {
+	if (doc->oldNs == NULL) {
+	    /*
+	     * Allocate a new Namespace and fill the fields.
+	     */
+	    doc->oldNs = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+	    if (doc->oldNs == NULL) {
+		xmlGenericError(xmlGenericErrorContext,
+			"xmlSearchNsByHref : malloc failed\n");
+		return(NULL);
+	    }
+	    memset(doc->oldNs, 0, sizeof(xmlNs));
+	    doc->oldNs->type = XML_LOCAL_NAMESPACE;
+
+	    doc->oldNs->href = xmlStrdup(XML_XML_NAMESPACE); 
+	    doc->oldNs->prefix = xmlStrdup((const xmlChar *)"xml"); 
+	}
+	return(doc->oldNs);
+    }
     while (node != NULL) {
 	cur = node->nsDef;
 	while (cur != NULL) {

@@ -1,3 +1,8 @@
+Fri Feb 16 01:10:06 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.[ch] parser.c xpath.c: fixed the problem of addressing
+	  attributes within the XML-1.0 namespace
+
 Thu Feb 15 16:53:20 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpathInternals.h: exported a few axis functions

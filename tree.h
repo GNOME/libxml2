@@ -20,6 +20,9 @@
 extern "C" {
 #endif
 
+#define XML_XML_NAMESPACE \
+    (const xmlChar *) "http://www.w3.org/XML/1998/namespace"
+
 /*
  * The different element types carried by an XML tree
  *

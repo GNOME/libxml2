@@ -240,7 +240,8 @@ Validtests : tester
 	  fi ; fi ; done)
 
 dist-hook: libxml.spec
-	cp libxml.spec $(distdir)
+	-cp libxml.spec $(distdir)
+	(cd $(srcdir) ; tar -cf - --exclude CVS test result SAXresult ) | (cd $(distdir); tar xf -)
 
 ## We create xmlConf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given
@@ -258,9 +259,6 @@ confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
 EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec \
              example/Makefile.am example/gjobread.c example/gjobs.xml
-
-dist-hook:
-	(cd $(srcdir) ; tar -cf - --exclude CVS test result SAXresult ) | (cd $(distdir); tar xf -)
 
 xmlConf.sh: xmlConf.sh.in Makefile
 ## Use sed and then mv to avoid problems if the user interrupts.

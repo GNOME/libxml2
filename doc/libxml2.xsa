@@ -8,31 +8,26 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.8</version>
-    <last-release> Mar 23 2004</last-release>
+    <version>2.6.9</version>
+    <last-release> Apr 18 2004</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - First step of the cleanup of the serialization code and APIs
-   - XML Schemas: mixed content (Adam Dickmeiss), QName handling fixes (Adam
-    Dickmeiss), anyURI for "" (John Belmonte)
-   - Python: Canonicalization C14N support added (Anthony Carrico)
-   - xmlDocCopyNode() extension (William)
-   - Relax-NG: fix when processing XInclude results (William), external
-    reference in interleave (William), missing error on &lt;choice&gt;
-    failure (William), memory leak in schemas datatype facets.
-   - xmlWriter: patch for better DTD support (Alfred Mickautsch)
-   - bug fixes: xmlXPathLangFunction memory leak (Mike Hommey and William
-    Brack), no ID errors if using HTML_PARSE_NOERROR, xmlcatalog fallbacks to
-    URI on SYSTEM lookup failure, XInclude parse flags inheritance (William),
-    XInclude and XPointer fixes for entities (William), XML parser bug
-    reported by Holger Rauch, nanohttp fd leak (William),  regexps char
-    groups '-' handling (William), dictionnary reference counting problems,
-    do not close stderr.
-   - performance patches from Petr Pajas
-   - Documentation fixes: XML_CATALOG_FILES in man pages (Mike Hommey)
-   - compilation and portability fixes: --without-valid, catalog cleanups
-    (Peter Breitenlohner), MingW patch (Roland Schwingel), cross-compilation
-    to Windows (Christophe de Vienne),  --with-html-dir fixup (Julio Merino
-    Vidal), Windows build (Eric Zurcher)
+    <changes>   - implement xml:id Working Draft, relaxed XPath id() checking
+   - bugfixes: xmlCtxtReset (Brent Hendricks), line number and CDATA (Dave
+    Beckett), Relax-NG compilation (William Brack), Regexp patches (with
+    William), xmlUriEscape (Mark Vakoc), a Relax-NG notAllowed problem (with
+    William), Relax-NG name classes compares (William), XInclude duplicate
+    fallback (William), external DTD encoding detection (William), a DTD
+    validation bug (William), xmlReader Close() fix, recusive extention
+    schemas
+   - improvements: use xmlRead* APIs in test tools (Mark Vakoc), indenting
+    save optimization, better handle IIS broken HTTP redirect  behaviour (Ian
+    Hummel), HTML parser frameset (James Bursa), libxml2-python RPM
+    dependancy, XML Schemas union support (Kasimier Buchcik), warning removal
+    clanup (William), keep ChangeLog compressed when installing from RPMs
+   - documentation: examples and xmlDocDumpMemory docs (John Fleck), new
+    example (load, xpath, modify, save), xmlCatalogDump() comments,
+   - Windows: Borland C++ builder (Eric Zurcher), work around Microsoft
+    compiler NaN handling bug (Mark Vakoc)
 
 </changes>
   </product>

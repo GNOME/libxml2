@@ -1,3 +1,7 @@
+Mon May 17 23:07:15 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS doc/*: updated the docs for 2.6.10
+
 Mon May 17 05:52:03 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in : releasing 2.6.10

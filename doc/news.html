@@ -11,7 +11,24 @@ A:link, A:visited, A:active { text-decoration: underline }
 to help those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
-</ul><p>There is the list of public releases:</p><h3>2.6.9: Apr 18 2004</h3><ul><li>implement xml:id Working Draft, relaxed XPath id() checking</li>
+</ul><p>There is the list of public releases:</p><h3>2.6.10: May 17 2004</h3><ul><li>Web page generated for ChangeLog</li>
+  <li>build fixes: --without-html problems, make check without make all</li>
+  <li>portability: problem with xpath.c on Windows (MSC and Borland), memcmp
+    vs. strncmp on Solaris, XPath tests on Windows (Mark Vakoc), C++ do not
+    use "list" as parameter name, make tests work with Python 1.5 (Ed
+  Davis),</li>
+  <li>improvements: made xmlTextReaderMode public, small buffers resizing
+    (Morten Welinder), add --maxmem option to xmllint, add
+    xmlPopInputCallback() for Matt Sergeant, refactoring of serialization
+    escaping, added escaping customization  </li>
+  <li>bugfixes: xsd:extension (Taihei Goi), assorted regexp bugs (William
+    Brack), xmlReader end of stream problem, node deregistration with reader,
+    URI escaping and filemanes,  XHTML1 formatting (Nick Wellnhofer), regexp
+    transition reduction (William), various XSD Schemas fixes (Kasimier
+    Buchcik), XInclude fallback problem (William), weird problems with DTD
+    (William), structured error handler callback context (William), reverse
+    xmlEncodeSpecialChars() behaviour back to escaping '"'</li>
+</ul><h3>2.6.9: Apr 18 2004</h3><ul><li>implement xml:id Working Draft, relaxed XPath id() checking</li>
   <li>bugfixes: xmlCtxtReset (Brent Hendricks), line number and CDATA (Dave
     Beckett), Relax-NG compilation (William Brack), Regexp patches (with
     William), xmlUriEscape (Mark Vakoc), a Relax-NG notAllowed problem (with

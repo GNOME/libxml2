@@ -1,3 +1,9 @@
+Sun Oct 29 19:03:11 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.c xpathInternals.h: applied a large cleaning patch
+	  from TOM <ptittom@free.fr>, it also add namespace support
+	  for function and variables registration.
+
 Sun Oct 29 18:51:46 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* uri.c: Wayne Davison's patch fixing xmlBuildURI()

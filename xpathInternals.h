@@ -38,12 +38,23 @@ extern "C" {
 
 #define CHECK_TYPE(typeval)						\
     if ((ctxt->value == NULL) || (ctxt->value->type != typeval))	\
-        XP_ERROR(XPATH_INVALID_TYPE)					\
+        XP_ERROR(XPATH_INVALID_TYPE)
 
 #define CHECK_ARITY(x)							\
-    if (nargs != (x)) {							\
-        XP_ERROR(XPATH_INVALID_ARITY);					\
-    }									\
+    if (nargs != (x))							\
+        XP_ERROR(XPATH_INVALID_ARITY);
+
+#define CAST_TO_STRING							\
+    if ((ctxt->value != NULL) && (ctxt->value->type != XPATH_STRING))	\
+        xmlXPathStringFunction(ctxt, 1);
+
+#define CAST_TO_NUMBER							\
+    if ((ctxt->value != NULL) && (ctxt->value->type != XPATH_NUMBER))	\
+        xmlXPathNumberFunction(ctxt, 1);
+
+#define CAST_TO_BOOLEAN							\
+    if ((ctxt->value != NULL) && (ctxt->value->type != XPATH_BOOLEAN))	\
+        xmlXPathBooleanFunction(ctxt, 1);
 
 void		xmlXPatherror	(xmlXPathParserContextPtr ctxt,
 				 const char *file,
@@ -60,14 +71,28 @@ void		xmlXPathDebugDumpObject	(FILE *output,
 int		   xmlXPathRegisterFunc		(xmlXPathContextPtr ctxt,
 						 const xmlChar *name,
 						 xmlXPathFunction f);
+int		   xmlXPathRegisterFuncNS	(xmlXPathContextPtr ctxt,
+						 const xmlChar *name,
+						 const xmlChar *ns_uri,
+						 xmlXPathFunction f);
 int		   xmlXPathRegisterVariable	(xmlXPathContextPtr ctxt,
 						 const xmlChar *name,
 						 xmlXPathObjectPtr value);
+int		   xmlXPathRegisterVariableNS	(xmlXPathContextPtr ctxt,
+						 const xmlChar *name,
+						 const xmlChar *ns_uri,
+						 xmlXPathObjectPtr value);
 xmlXPathFunction   xmlXPathFunctionLookup	(xmlXPathContextPtr ctxt,
 						 const xmlChar *name);
+xmlXPathFunction   xmlXPathFunctionLookupNS	(xmlXPathContextPtr ctxt,
+						 const xmlChar *name,
+						 const xmlChar *ns_uri);
 void		   xmlXPathRegisteredFuncsCleanup(xmlXPathContextPtr ctxt);
 xmlXPathObjectPtr  xmlXPathVariableLookup	(xmlXPathContextPtr ctxt,
 						 const xmlChar *name);
+xmlXPathObjectPtr  xmlXPathVariableLookupNS	(xmlXPathContextPtr ctxt,
+						 const xmlChar *name,
+						 const xmlChar *ns_uri);
 void		   xmlXPathRegisteredVariablesCleanup(xmlXPathContextPtr ctxt);
 
 /**

@@ -372,12 +372,19 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     <p>libxml is written in pure C in order to allow easy reuse on a number
     of platforms, including embedded systems. I don't intend to convert to
     C++.</p>
-    <p>There is however a C++ wrapper provided by Ari Johnson
-    &lt;ari@btigate.com&gt; which may fullfill your needs:</p>
-    <p>Website: <a
-    href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a></p>
-    <p>Download: <a
-    href="http://lusis.org/~ari/xml++/libxml++.tar.gz">http://lusis.org/~ari/xml++/libxml++.tar.gz</a></p>
+    <p>There is however a few C++ wrappers which may fullfill your needs:</p>
+    <ul>
+      <li>by Ari Johnson &lt;ari@btigate.com&gt;:
+        <p>Website: <a
+        href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a></p>
+        <p>Download: <a
+        href="http://lusis.org/~ari/xml++/libxml++.tar.gz">http://lusis.org/~ari/xml++/libxml++.tar.gz</a></p>
+      </li>
+      <li>by Peter Jones &lt;pjones@pmade.org&gt;
+        <p>Website: <a
+        href="http://pmade.org/pjones/software/xmlwrapp/">http://pmade.org/pjones/software/xmlwrapp/</a></p>
+      </li>
+    </ul>
   </li>
   <li>How to validate a document a posteriori ?
     <p>It is possible to validate documents which had not been validated at
@@ -1384,6 +1391,10 @@ or libxslt wrappers or bindings:</p>
     href="http://lusis.org/~ari/xml++/libxml++.tar.gz">http://lusis.org/~ari/xml++/libxml++.tar.gz</a></li>
   <li>There is another <a href="http://libgdome-cpp.berlios.de/">C++ wrapper
     based on the gdome2 </a>bindings maintained by Tobias Peters.</li>
+  <li>and a third C++ wrapper by Peter Jones &lt;pjones@pmade.org&gt;
+    <p>Website: <a
+    href="http://pmade.org/pjones/software/xmlwrapp/">http://pmade.org/pjones/software/xmlwrapp/</a></p>
+  </li>
   <li><a
     href="http://mail.gnome.org/archives/xml/2001-March/msg00014.html">Matt
     Sergeant</a> developped <a
@@ -2600,6 +2611,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
 
 
 
+
 } </pre>
   </li>
   <li>And then use it to save the document:
@@ -3728,12 +3740,6 @@ Gnome CVS base under gnome-xml/example</p>
     patches, Gary Pennington worked on the validation API, threading support
     and Solaris port.</li>
   <li>John Fleck helps maintaining the documentation and man pages.</li>
-  <li><a href="mailto:ari@lusis.org">Ari Johnson</a> provides a  C++ wrapper
-    for libxml:<br>
-    Website: <a
-    href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a><br>
-    Download: <a
-    href="http://lusis.org/~ari/xml++/libxml++.tar.gz">http://lusis.org/~ari/xml++/libxml++.tar.gz</a></li>
   <li><a href="mailto:igor@stud.fh-frankfurt.de">Igor  Zlatkovic</a> is now
     the maintainer of the Windows port, <a
     href="http://www.fh-frankfurt.de/~igor/projects/libxml/index.html">he

@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.2)
 AC_INIT(entities.h)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(libxml, 0.99.3)
+AM_INIT_AUTOMAKE(libxml, 0.99.5)
 
 dnl Checks for programs.
 AC_PROG_CC

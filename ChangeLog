@@ -1,3 +1,7 @@
+Fri Dec 27 12:57:22 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml_wrap.h: trying to fix #102037
+
 Fri Dec 27 12:18:14 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: fixing bug #95296, when the predefined entities

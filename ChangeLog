@@ -1,3 +1,9 @@
+Tue Mar 23 12:35:08 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/* News: preparing 2.6.8 release, updated and rebuilt
+	  the docs.
+	* Makefile.am: use valgring fro the new Python based regression tests
+
 Mon Mar 22 20:07:27 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: remove a memory leak on schemas type facets.

@@ -116,15 +116,14 @@ conformance statement about it at the moment.</p>
   <li>also check the related links section below for more related and active
     projects.</li>
 </ul>
-
-<!----------------
-<p>Results of the <a
+<!----------------<p>Results of the <a
 href="http://xmlbench.sourceforge.net/results/benchmark/index.html">xmlbench
 benchmark</a> on sourceforge February 2004 (smaller is better):</p>
 
 <p align="center"><img src="benchmark.png"
 alt="benchmark results for Expat Xerces libxml2 Oracle and Sun toolkits"></p>
 -------------->
+
 
 <p>Logo designed by <a href="mailto:liyanage@access.ch">Marc Liyanage</a>.</p>
 
@@ -668,6 +667,32 @@ to test those</p>
   <li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
+</ul>
+
+<h3>2.6.8: Mar 23 2004</h3>
+<ul>
+  <li>First step of the cleanup of the serialization code and APIs</li>
+  <li>XML Schemas: mixed content (Adam Dickmeiss), QName handling fixes (Adam
+    Dickmeiss), anyURI for "" (John Belmonte)</li>
+  <li>Python: Canonicalization C14N support added (Anthony Carrico)</li>
+  <li>xmlDocCopyNode() extension (William)</li>
+  <li>Relax-NG: fix when processing XInclude results (William), external
+    reference in interleave (William), missing error on &lt;choice&gt;
+    failure (William), memory leak in schemas datatype facets.</li>
+  <li>xmlWriter: patch for better DTD support (Alfred Mickautsch)</li>
+  <li>bug fixes: xmlXPathLangFunction memory leak (Mike Hommey and William
+    Brack), no ID errors if using HTML_PARSE_NOERROR, xmlcatalog fallbacks to
+    URI on SYSTEM lookup failure, XInclude parse flags inheritance (William),
+    XInclude and XPointer fixes for entities (William), XML parser bug
+    reported by Holger Rauch, nanohttp fd leak (William),  regexps char
+    groups '-' handling (William), dictionnary reference counting problems,
+    do not close stderr. </li>
+  <li>performance patches from Petr Pajas</li>
+  <li>Documentation fixes: XML_CATALOG_FILES in man pages (Mike Hommey)</li>
+  <li>compilation and portability fixes: --without-valid, catalog cleanups
+    (Peter Breitenlohner), MingW patch (Roland Schwingel), cross-compilation
+    to Windows (Christophe de Vienne),  --with-html-dir fixup (Julio Merino
+    Vidal), Windows build (Eric Zurcher)</li>
 </ul>
 
 <h3>2.6.7: Feb 23 2004</h3>

@@ -886,15 +886,15 @@ Relaxtests: xmllint$(EXEEXT)
 RelaxNGPythonTests:
 	@(if [ -x $(PYTHON) ] ; then \
 	    echo "## Relax-NG Python based test suite 1" ; \
-	    $(PYTHON) $(srcdir)/check-relaxng-test-suite.py ; \
+	    $(CHECKER) $(PYTHON) $(srcdir)/check-relaxng-test-suite.py ; \
 	    echo "## Relax-NG Python based test suite 2" ; \
-	    $(PYTHON) $(srcdir)/check-relaxng-test-suite2.py ; \
+	    $(CHECKER) $(PYTHON) $(srcdir)/check-relaxng-test-suite2.py ; \
 	  fi)
 
 SchemasPythonTests:
 	@(if [ -x $(PYTHON) ] ; then \
 	    echo "## XML Schemas datatypes Python based test suite" ; \
-	    $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
+	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
 	  fi)
 
 cleanup:
@@ -930,7 +930,8 @@ confexecdir=$(libdir)
 confexec_DATA = xml2Conf.sh
 EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
              libxml.m4 Copyright check-xml-test-suite.py \
-	     check-relaxng-test-suite.py check-xinclude-test-suite.py \
+	     check-relaxng-test-suite.py check-relaxng-test-suite2.py \
+	     check-xsddata-test-suite.py check-xinclude-test-suite.py \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     $(man_MANS) libxml-2.0.pc.in libxml-2.0-uninstalled.pc.in \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \

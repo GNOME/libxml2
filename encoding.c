@@ -2194,6 +2194,9 @@ retry:
     
     written = out->size - out->use;
 
+    if (written > 0)
+	written--; /* Gennady: count '/0' */
+
     /*
      * First specific handling of in = NULL, i.e. the initialization call
      */
@@ -2202,8 +2205,10 @@ retry:
 	if (handler->output != NULL) {
 	    ret = handler->output(&out->content[out->use], &written,
 				  NULL, &toconv);
-	    out->use += written;
-	    out->content[out->use] = 0;
+	    if (ret == 0) { /* Gennady: check return value */
+		out->use += written;
+		out->content[out->use] = 0;
+	    }
 	}
 #ifdef LIBXML_ICONV_ENABLED
 	else if (handler->iconv_out != NULL) {

@@ -457,12 +457,13 @@ if (withPython == true) {
 	}
 }
 
-
 // Create the makefile.
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 var makefile = ".\\Makefile.msvc";
 if (compiler == "mingw")
 	makefile = ".\\Makefile.mingw";
+else if (compiler == "bcb")
+	makefile = ".\\Makefile.bcb";
 fso.CopyFile(makefile, ".\\Makefile", true);
 WScript.Echo("Created Makefile.");
 

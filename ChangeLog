@@ -1,3 +1,8 @@
+Sat Jul 28 13:33:10 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* include/libxml/xmlwin32version.h: reinserted, needed for
+	  Windows users of CVS
+
 2001-07-27  Darin Adler  <darin@bentspoon.com>
 
 	* encoding.c: (xmlIconvWrapper): Add cast to fix warning.

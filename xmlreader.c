@@ -1030,11 +1030,12 @@ xmlTextReaderDoExpand(xmlTextReaderPtr reader) {
 
     if ((reader == NULL) || (reader->node == NULL) || (reader->ctxt == NULL))
         return(-1);
-
     do {
+	if (reader->ctxt->instate == XML_PARSER_EOF) return(1);
+
         if (xmlTextReaderGetSuccessor(reader->node) != NULL)
 	    return(1);
-	if (reader->ctxt->nodeNr <= reader->depth)
+	if (reader->ctxt->nodeNr < reader->depth)
 	    return(1);
 	if (reader->mode == XML_TEXTREADER_MODE_EOF)
 	    return(1);

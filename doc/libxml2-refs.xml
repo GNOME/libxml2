@@ -89,10 +89,12 @@
     <reference name='XINCLUDE_HREF' href='html/libxml-xinclude.html#XINCLUDE_HREF'/>
     <reference name='XINCLUDE_NODE' href='html/libxml-xinclude.html#XINCLUDE_NODE'/>
     <reference name='XINCLUDE_NS' href='html/libxml-xinclude.html#XINCLUDE_NS'/>
+    <reference name='XINCLUDE_OLD_NS' href='html/libxml-xinclude.html#XINCLUDE_OLD_NS'/>
     <reference name='XINCLUDE_PARSE' href='html/libxml-xinclude.html#XINCLUDE_PARSE'/>
     <reference name='XINCLUDE_PARSE_ENCODING' href='html/libxml-xinclude.html#XINCLUDE_PARSE_ENCODING'/>
     <reference name='XINCLUDE_PARSE_TEXT' href='html/libxml-xinclude.html#XINCLUDE_PARSE_TEXT'/>
     <reference name='XINCLUDE_PARSE_XML' href='html/libxml-xinclude.html#XINCLUDE_PARSE_XML'/>
+    <reference name='XINCLUDE_PARSE_XPOINTER' href='html/libxml-xinclude.html#XINCLUDE_PARSE_XPOINTER'/>
     <reference name='XLINK_ACTUATE_AUTO' href='html/libxml-xlink.html#XLINK_ACTUATE_AUTO'/>
     <reference name='XLINK_ACTUATE_NONE' href='html/libxml-xlink.html#XLINK_ACTUATE_NONE'/>
     <reference name='XLINK_ACTUATE_ONREQUEST' href='html/libxml-xlink.html#XLINK_ACTUATE_ONREQUEST'/>
@@ -210,6 +212,7 @@
     <reference name='XML_DTD_NO_PREFIX' href='html/libxml-xmlerror.html#XML_DTD_NO_PREFIX'/>
     <reference name='XML_DTD_NO_ROOT' href='html/libxml-xmlerror.html#XML_DTD_NO_ROOT'/>
     <reference name='XML_DTD_ROOT_NAME' href='html/libxml-xmlerror.html#XML_DTD_ROOT_NAME'/>
+    <reference name='XML_DTD_STANDALONE_DEFAULTED' href='html/libxml-xmlerror.html#XML_DTD_STANDALONE_DEFAULTED'/>
     <reference name='XML_DTD_STANDALONE_WHITE_SPACE' href='html/libxml-xmlerror.html#XML_DTD_STANDALONE_WHITE_SPACE'/>
     <reference name='XML_DTD_UNKNOWN_ATTRIBUTE' href='html/libxml-xmlerror.html#XML_DTD_UNKNOWN_ATTRIBUTE'/>
     <reference name='XML_DTD_UNKNOWN_ELEM' href='html/libxml-xmlerror.html#XML_DTD_UNKNOWN_ELEM'/>
@@ -866,10 +869,12 @@
     <reference name='XML_WAR_UNDECLARED_ENTITY' href='html/libxml-xmlerror.html#XML_WAR_UNDECLARED_ENTITY'/>
     <reference name='XML_WAR_UNKNOWN_VERSION' href='html/libxml-xmlerror.html#XML_WAR_UNKNOWN_VERSION'/>
     <reference name='XML_XINCLUDE_BUILD_FAILED' href='html/libxml-xmlerror.html#XML_XINCLUDE_BUILD_FAILED'/>
+    <reference name='XML_XINCLUDE_DEPRECATED_NS' href='html/libxml-xmlerror.html#XML_XINCLUDE_DEPRECATED_NS'/>
     <reference name='XML_XINCLUDE_END' href='html/libxml-tree.html#XML_XINCLUDE_END'/>
     <reference name='XML_XINCLUDE_ENTITY_DEF_MISMATCH' href='html/libxml-xmlerror.html#XML_XINCLUDE_ENTITY_DEF_MISMATCH'/>
     <reference name='XML_XINCLUDE_FALLBACKS_IN_INCLUDE' href='html/libxml-xmlerror.html#XML_XINCLUDE_FALLBACKS_IN_INCLUDE'/>
     <reference name='XML_XINCLUDE_FALLBACK_NOT_IN_INCLUDE' href='html/libxml-xmlerror.html#XML_XINCLUDE_FALLBACK_NOT_IN_INCLUDE'/>
+    <reference name='XML_XINCLUDE_FRAGMENT_ID' href='html/libxml-xmlerror.html#XML_XINCLUDE_FRAGMENT_ID'/>
     <reference name='XML_XINCLUDE_HREF_URI' href='html/libxml-xmlerror.html#XML_XINCLUDE_HREF_URI'/>
     <reference name='XML_XINCLUDE_INCLUDE_IN_INCLUDE' href='html/libxml-xmlerror.html#XML_XINCLUDE_INCLUDE_IN_INCLUDE'/>
     <reference name='XML_XINCLUDE_INVALID_CHAR' href='html/libxml-xmlerror.html#XML_XINCLUDE_INVALID_CHAR'/>
@@ -2598,8 +2603,11 @@
     <reference name='xmlXIncludeFreeContext' href='html/libxml-xinclude.html#xmlXIncludeFreeContext'/>
     <reference name='xmlXIncludeNewContext' href='html/libxml-xinclude.html#xmlXIncludeNewContext'/>
     <reference name='xmlXIncludeProcess' href='html/libxml-xinclude.html#xmlXIncludeProcess'/>
+    <reference name='xmlXIncludeProcessFlags' href='html/libxml-xinclude.html#xmlXIncludeProcessFlags'/>
     <reference name='xmlXIncludeProcessNode' href='html/libxml-xinclude.html#xmlXIncludeProcessNode'/>
     <reference name='xmlXIncludeProcessTree' href='html/libxml-xinclude.html#xmlXIncludeProcessTree'/>
+    <reference name='xmlXIncludeProcessTreeFlags' href='html/libxml-xinclude.html#xmlXIncludeProcessTreeFlags'/>
+    <reference name='xmlXIncludeSetFlags' href='html/libxml-xinclude.html#xmlXIncludeSetFlags'/>
     <reference name='xmlXPathAddValues' href='html/libxml-xpathInternals.html#xmlXPathAddValues'/>
     <reference name='xmlXPathAxis' href='html/libxml-xpath.html#xmlXPathAxis'/>
     <reference name='xmlXPathAxisFunc' href='html/libxml-xpath.html#xmlXPathAxisFunc'/>
@@ -2933,10 +2941,12 @@
       <ref name='XINCLUDE_HREF'/>
       <ref name='XINCLUDE_NODE'/>
       <ref name='XINCLUDE_NS'/>
+      <ref name='XINCLUDE_OLD_NS'/>
       <ref name='XINCLUDE_PARSE'/>
       <ref name='XINCLUDE_PARSE_ENCODING'/>
       <ref name='XINCLUDE_PARSE_TEXT'/>
       <ref name='XINCLUDE_PARSE_XML'/>
+      <ref name='XINCLUDE_PARSE_XPOINTER'/>
       <ref name='XLINK_ACTUATE_AUTO'/>
       <ref name='XLINK_ACTUATE_NONE'/>
       <ref name='XLINK_ACTUATE_ONREQUEST'/>
@@ -3054,6 +3064,7 @@
       <ref name='XML_DTD_NO_PREFIX'/>
       <ref name='XML_DTD_NO_ROOT'/>
       <ref name='XML_DTD_ROOT_NAME'/>
+      <ref name='XML_DTD_STANDALONE_DEFAULTED'/>
       <ref name='XML_DTD_STANDALONE_WHITE_SPACE'/>
       <ref name='XML_DTD_UNKNOWN_ATTRIBUTE'/>
       <ref name='XML_DTD_UNKNOWN_ELEM'/>
@@ -3710,10 +3721,12 @@
       <ref name='XML_WAR_UNDECLARED_ENTITY'/>
       <ref name='XML_WAR_UNKNOWN_VERSION'/>
       <ref name='XML_XINCLUDE_BUILD_FAILED'/>
+      <ref name='XML_XINCLUDE_DEPRECATED_NS'/>
       <ref name='XML_XINCLUDE_END'/>
       <ref name='XML_XINCLUDE_ENTITY_DEF_MISMATCH'/>
       <ref name='XML_XINCLUDE_FALLBACKS_IN_INCLUDE'/>
       <ref name='XML_XINCLUDE_FALLBACK_NOT_IN_INCLUDE'/>
+      <ref name='XML_XINCLUDE_FRAGMENT_ID'/>
       <ref name='XML_XINCLUDE_HREF_URI'/>
       <ref name='XML_XINCLUDE_INCLUDE_IN_INCLUDE'/>
       <ref name='XML_XINCLUDE_INVALID_CHAR'/>
@@ -5478,8 +5491,11 @@
       <ref name='xmlXIncludeFreeContext'/>
       <ref name='xmlXIncludeNewContext'/>
       <ref name='xmlXIncludeProcess'/>
+      <ref name='xmlXIncludeProcessFlags'/>
       <ref name='xmlXIncludeProcessNode'/>
       <ref name='xmlXIncludeProcessTree'/>
+      <ref name='xmlXIncludeProcessTreeFlags'/>
+      <ref name='xmlXIncludeSetFlags'/>
       <ref name='xmlXPathAddValues'/>
       <ref name='xmlXPathAxis'/>
       <ref name='xmlXPathAxisFunc'/>
@@ -5929,6 +5945,7 @@
       <ref name='xmlStringDecodeEntities'/>
       <ref name='xmlParseEncName'/>
       <ref name='xmlTextReaderPrefix'/>
+      <ref name='xmlDecodeEntities'/>
       <ref name='xmlXPathCastNumberToString'/>
       <ref name='xmlParseNmtoken'/>
       <ref name='xmlTextReaderLocatorBaseURI'/>
@@ -5940,7 +5957,6 @@
       <ref name='xmlEncodeSpecialChars'/>
       <ref name='xmlURIEscapeStr'/>
       <ref name='xmlGetNsProp'/>
-      <ref name='xmlDecodeEntities'/>
       <ref name='xmlXPathCastNodeToString'/>
       <ref name='xmlNamespaceParseNCName'/>
       <ref name='xmlCatalogResolveURI'/>
@@ -6008,8 +6024,8 @@
       <ref name='xmlSAXParseMemoryWithData'/>
       <ref name='xmlSAXParseEntity'/>
       <ref name='xmlParseEntity'/>
-      <ref name='xmlRecoverDoc'/>
       <ref name='xmlSAXParseFileWithData'/>
+      <ref name='xmlRecoverDoc'/>
       <ref name='xmlReadDoc'/>
       <ref name='xmlReadMemory'/>
       <ref name='xmlCtxtReadIO'/>
@@ -6017,13 +6033,13 @@
       <ref name='xmlReadFile'/>
       <ref name='xmlRecoverFile'/>
       <ref name='xmlSAXParseDoc'/>
-      <ref name='xmlParseCatalogFile'/>
       <ref name='xmlCtxtReadFile'/>
       <ref name='xmlCtxtReadFd'/>
       <ref name='xmlReadIO'/>
       <ref name='xmlCopyDoc'/>
       <ref name='xmlCtxtReadMemory'/>
       <ref name='xmlReadFd'/>
+      <ref name='xmlParseCatalogFile'/>
       <ref name='xmlCtxtReadDoc'/>
       <ref name='xmlParseMemory'/>
       <ref name='xmlSAXParseFile'/>
@@ -7873,6 +7889,7 @@
       <ref name='xmlValidateRoot'/>
       <ref name='xmlXIncludeNewContext'/>
       <ref name='xmlXIncludeProcess'/>
+      <ref name='xmlXIncludeProcessFlags'/>
       <ref name='xmlXPathNewContext'/>
       <ref name='xmlXPathOrderDocElems'/>
       <ref name='xmlXPtrNewContext'/>
@@ -8252,6 +8269,7 @@
       <ref name='xmlValidatePushElement'/>
       <ref name='xmlXIncludeProcessNode'/>
       <ref name='xmlXIncludeProcessTree'/>
+      <ref name='xmlXIncludeProcessTreeFlags'/>
       <ref name='xmlXPathCastNodeToNumber'/>
       <ref name='xmlXPathCastNodeToString'/>
       <ref name='xmlXPathCmpNodes'/>
@@ -8902,6 +8920,7 @@
     <type name='xmlXIncludeCtxtPtr'>
       <ref name='xmlXIncludeFreeContext'/>
       <ref name='xmlXIncludeProcessNode'/>
+      <ref name='xmlXIncludeSetFlags'/>
     </type>
     <type name='xmlXPathCompExprPtr'>
       <ref name='xmlXPathCompiledEval'/>
@@ -10497,19 +10516,24 @@
     </file>
     <file name='xinclude'>
       <ref name='XINCLUDE_PARSE_TEXT'/>
+      <ref name='XINCLUDE_PARSE_XPOINTER'/>
+      <ref name='xmlXIncludeProcessFlags'/>
       <ref name='xmlXIncludeCtxt'/>
       <ref name='XINCLUDE_HREF'/>
       <ref name='xmlXIncludeProcessNode'/>
       <ref name='XINCLUDE_FALLBACK'/>
       <ref name='XINCLUDE_NS'/>
-      <ref name='xmlXIncludeCtxtPtr'/>
+      <ref name='XINCLUDE_PARSE'/>
       <ref name='xmlXIncludeProcessTree'/>
       <ref name='xmlXIncludeProcess'/>
       <ref name='xmlXIncludeFreeContext'/>
-      <ref name='XINCLUDE_PARSE'/>
+      <ref name='xmlXIncludeCtxtPtr'/>
       <ref name='XINCLUDE_NODE'/>
+      <ref name='xmlXIncludeSetFlags'/>
       <ref name='XINCLUDE_PARSE_XML'/>
       <ref name='xmlXIncludeNewContext'/>
+      <ref name='XINCLUDE_OLD_NS'/>
+      <ref name='xmlXIncludeProcessTreeFlags'/>
       <ref name='XINCLUDE_PARSE_ENCODING'/>
     </file>
     <file name='xlink'>
@@ -10743,7 +10767,7 @@
       <ref name='XML_XPATH_INVALID_CTXT_POSITION'/>
       <ref name='XML_ERR_NOTATION_NOT_FINISHED'/>
       <ref name='xmlError'/>
-      <ref name='XML_HTML_STRUCURE_ERROR'/>
+      <ref name='XML_DTD_STANDALONE_DEFAULTED'/>
       <ref name='XML_DTD_INVALID_DEFAULT'/>
       <ref name='XML_DTD_UNKNOWN_ELEM'/>
       <ref name='XML_SCHEMAP_REDEFINED_TYPE'/>
@@ -10824,11 +10848,11 @@
       <ref name='XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF'/>
       <ref name='XML_SCHEMAP_UNKNOWN_EXTENSION_CHILD'/>
       <ref name='XML_RNGP_PAT_START_INTERLEAVE'/>
-      <ref name='XML_IO_ENFILE'/>
+      <ref name='XML_HTML_STRUCURE_ERROR'/>
       <ref name='XML_SCHEMAV_MISSING'/>
       <ref name='XML_RNGP_GRAMMAR_CONTENT'/>
       <ref name='XML_XINCLUDE_XPTR_FAILED'/>
-      <ref name='XML_DTD_ELEM_REDEFINED'/>
+      <ref name='XML_IO_ENFILE'/>
       <ref name='XML_RNGP_PARENTREF_CREATE_FAILED'/>
       <ref name='XML_ERR_ENTITY_IS_PARAMETER'/>
       <ref name='XML_ERR_RESERVED_XML_NAME'/>
@@ -10916,7 +10940,7 @@
       <ref name='XML_RNGP_PAT_DATA_EXCEPT_ATTR'/>
       <ref name='XML_FTP_ACCNT'/>
       <ref name='XML_FROM_RELAXNGV'/>
-      <ref name='XML_RNGP_PAT_START_DATA'/>
+      <ref name='XML_RNGP_REF_NAME_INVALID'/>
       <ref name='XML_SCHEMAV_NOTTOPLEVEL'/>
       <ref name='XML_IO_ENOENT'/>
       <ref name='XML_ERR_NO_DTD'/>
@@ -10966,6 +10990,7 @@
       <ref name='XML_WAR_CATALOG_PI'/>
       <ref name='XML_SCHEMAP_INVALID_MINOCCURS'/>
       <ref name='XML_IO_ENOLCK'/>
+      <ref name='XML_XINCLUDE_DEPRECATED_NS'/>
       <ref name='XML_RNGP_CHOICE_EMPTY'/>
       <ref name='XML_ERR_LITERAL_NOT_FINISHED'/>
       <ref name='xmlSetStructuredErrorFunc'/>
@@ -11038,13 +11063,14 @@
       <ref name='xmlCtxtResetLastError'/>
       <ref name='XML_IO_EFBIG'/>
       <ref name='XML_ERR_NS_DECL_ERROR'/>
-      <ref name='XML_RNGP_REF_NAME_INVALID'/>
+      <ref name='XML_RNGP_PAT_START_DATA'/>
       <ref name='XML_ERR_ERROR'/>
       <ref name='XML_DTD_MISSING_ATTRIBUTE'/>
       <ref name='XML_IO_EMFILE'/>
       <ref name='XML_RNGP_EMPTY_NOT_EMPTY'/>
       <ref name='XML_DTD_ELEM_NAMESPACE'/>
       <ref name='XML_RNGP_PAT_ATTR_ELEM'/>
+      <ref name='XML_XINCLUDE_FRAGMENT_ID'/>
       <ref name='XML_IO_NO_INPUT'/>
       <ref name='XML_NS_ERR_UNDEFINED_NAMESPACE'/>
       <ref name='XML_XPATH_INVALID_ARITY'/>
@@ -11074,6 +11100,7 @@
       <ref name='XML_FROM_XPOINTER'/>
       <ref name='XML_ERR_ATTRIBUTE_WITHOUT_VALUE'/>
       <ref name='XML_RNGP_TEXT_HAS_CHILD'/>
+      <ref name='XML_DTD_ELEM_REDEFINED'/>
       <ref name='XML_SCHEMAV_NOTNILLABLE'/>
       <ref name='XML_SCHEMAP_ELEM_DEFAULT_FIXED'/>
       <ref name='XML_SCHEMAP_UNKNOWN_TYPE'/>
@@ -15100,6 +15127,7 @@
           <ref name='xmlSetNsProp'/>
           <ref name='xmlSetProp'/>
           <ref name='xmlSubstituteEntitiesDefault'/>
+          <ref name='xmlXIncludeSetFlags'/>
           <ref name='xmlXPtrEvalRangePredicate'/>
         </word>
         <word name='Sets'>
@@ -15774,11 +15802,15 @@
         <word name='XInclude'>
           <ref name='LIBXML_XINCLUDE_ENABLED'/>
           <ref name='XINCLUDE_NS'/>
+          <ref name='XINCLUDE_OLD_NS'/>
           <ref name='xmlXIncludeFreeContext'/>
           <ref name='xmlXIncludeNewContext'/>
           <ref name='xmlXIncludeProcess'/>
+          <ref name='xmlXIncludeProcessFlags'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
+          <ref name='xmlXIncludeProcessTreeFlags'/>
+          <ref name='xmlXIncludeSetFlags'/>
         </word>
         <word name='XLINK_TYPE_NONE'>
           <ref name='xlinkIsLink'/>
@@ -15906,6 +15938,7 @@
         </word>
         <word name='Xinclude'>
           <ref name='XINCLUDE_NS'/>
+          <ref name='XINCLUDE_OLD_NS'/>
         </word>
         <word name='Xml'>
           <ref name='xmlTextReaderNodeType'/>
@@ -18229,10 +18262,12 @@
           <ref name='XINCLUDE_HREF'/>
           <ref name='XINCLUDE_NODE'/>
           <ref name='XINCLUDE_NS'/>
+          <ref name='XINCLUDE_OLD_NS'/>
           <ref name='XINCLUDE_PARSE'/>
           <ref name='XINCLUDE_PARSE_ENCODING'/>
           <ref name='XINCLUDE_PARSE_TEXT'/>
           <ref name='XINCLUDE_PARSE_XML'/>
+          <ref name='XINCLUDE_PARSE_XPOINTER'/>
           <ref name='xmlGetID'/>
           <ref name='xmlReconciliateNs'/>
           <ref name='xmlShellDu'/>
@@ -18704,6 +18739,9 @@
         <word name='down'>
           <ref name='xmlGetBufferAllocationScheme'/>
           <ref name='xmlSetBufferAllocationScheme'/>
+        </word>
+        <word name='draft'>
+          <ref name='XINCLUDE_OLD_NS'/>
         </word>
         <word name='drop'>
           <ref name='xmlFileRead'/>
@@ -19320,8 +19358,10 @@
           <ref name='xmlRemoveRef'/>
           <ref name='xmlShellLoad'/>
           <ref name='xmlXIncludeProcess'/>
+          <ref name='xmlXIncludeProcessFlags'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
+          <ref name='xmlXIncludeProcessTreeFlags'/>
           <ref name='xmlXPathCompareValues'/>
         </word>
         <word name='fails'>
@@ -19527,6 +19567,7 @@
           <ref name='xmlReaderNewFile'/>
           <ref name='xmlReaderNewIO'/>
           <ref name='xmlReaderNewMemory'/>
+          <ref name='xmlXIncludeSetFlags'/>
         </word>
         <word name='flat'>
           <ref name='xmlStringGetNodeList'/>
@@ -19750,6 +19791,7 @@
           <ref name='xmlStopParser'/>
           <ref name='xmlValidCtxtNormalizeAttributeValue'/>
           <ref name='xmlValidNormalizeAttributeValue'/>
+          <ref name='xmlXIncludeSetFlags'/>
         </word>
       </letter>
     </chunk>
@@ -20161,6 +20203,7 @@
         </word>
         <word name='http:'>
           <ref name='XINCLUDE_NS'/>
+          <ref name='XINCLUDE_OLD_NS'/>
           <ref name='getSystemId'/>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
@@ -20331,6 +20374,9 @@
           <ref name='_xmlSchema'/>
           <ref name='xmlCleanupInputCallbacks'/>
           <ref name='xmlCleanupOutputCallbacks'/>
+          <ref name='xmlXIncludeProcessFlags'/>
+          <ref name='xmlXIncludeProcessTreeFlags'/>
+          <ref name='xmlXIncludeSetFlags'/>
         </word>
         <word name='including'>
           <ref name='attribute'/>
@@ -21711,6 +21757,7 @@
         </word>
         <word name='namespace:'>
           <ref name='XINCLUDE_NS'/>
+          <ref name='XINCLUDE_OLD_NS'/>
           <ref name='xmlParseAttribute'/>
           <ref name='xmlParseStartTag'/>
         </word>
@@ -22316,6 +22363,7 @@
         </word>
         <word name='org'>
           <ref name='XINCLUDE_NS'/>
+          <ref name='XINCLUDE_OLD_NS'/>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
@@ -22931,33 +22979,6 @@
           <ref name='xmlSAX2StartElement'/>
           <ref name='xmlTextReaderRelaxNGSetSchema'/>
           <ref name='xmlTextReaderRelaxNGValidate'/>
-        </word>
-        <word name='processing'>
-          <ref name='HTML_PI_NODE'/>
-          <ref name='entityDecl'/>
-          <ref name='entityDeclSAXFunc'/>
-          <ref name='htmlInitAutoClose'/>
-          <ref name='processingInstruction'/>
-          <ref name='processingInstructionSAXFunc'/>
-          <ref name='xmlCleanupParser'/>
-          <ref name='xmlCleanupThreads'/>
-          <ref name='xmlGetProp'/>
-          <ref name='xmlInitCharEncodingHandlers'/>
-          <ref name='xmlInitParser'/>
-          <ref name='xmlListReverseWalk'/>
-          <ref name='xmlListWalk'/>
-          <ref name='xmlNewPI'/>
-          <ref name='xmlParseAttValue'/>
-          <ref name='xmlParsePI'/>
-          <ref name='xmlSAX2EntityDecl'/>
-          <ref name='xmlSAX2ProcessingInstruction'/>
-          <ref name='xmlStopParser'/>
-          <ref name='xmlTextReaderSetParserProp'/>
-          <ref name='xmlValidateOneAttribute'/>
-          <ref name='xmlValidateOneNamespace'/>
-          <ref name='xmlXIncludeProcess'/>
-          <ref name='xmlXIncludeProcessNode'/>
-          <ref name='xmlXIncludeProcessTree'/>
         </word>
         <word name='processing-instruction'>
           <ref name='xmlXPathIsNodeType'/>
@@ -23790,6 +23811,7 @@
           <ref name='xmlSchemaFreeParserCtxt'/>
           <ref name='xmlSchemaFreeValidCtxt'/>
           <ref name='xmlTextReaderClose'/>
+          <ref name='xmlXIncludeSetFlags'/>
         </word>
         <word name='respecting'>
           <ref name='xmlValidGetValidElements'/>
@@ -24382,8 +24404,10 @@
           <ref name='xmlTextReaderSetParserProp'/>
           <ref name='xmlValidatePushCData'/>
           <ref name='xmlXIncludeProcess'/>
+          <ref name='xmlXIncludeProcessFlags'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
+          <ref name='xmlXIncludeProcessTreeFlags'/>
         </word>
         <word name='somewhat'>
           <ref name='xmlCheckLanguageID'/>
@@ -24890,15 +24914,19 @@
           <ref name='xmlStringLenDecodeEntities'/>
           <ref name='xmlSubstituteEntitiesDefault'/>
           <ref name='xmlXIncludeProcess'/>
+          <ref name='xmlXIncludeProcessFlags'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
+          <ref name='xmlXIncludeProcessTreeFlags'/>
         </word>
         <word name='substitutions'>
           <ref name='xmlStringDecodeEntities'/>
           <ref name='xmlStringLenDecodeEntities'/>
           <ref name='xmlXIncludeProcess'/>
+          <ref name='xmlXIncludeProcessFlags'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
+          <ref name='xmlXIncludeProcessTreeFlags'/>
         </word>
         <word name='substring'>
           <ref name='xmlNodeAddContent'/>
@@ -24931,6 +24959,7 @@
           <ref name='xmlValidateElement'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
+          <ref name='xmlXIncludeProcessTreeFlags'/>
         </word>
         <word name='succeeded'>
           <ref name='xmlHashAddEntry'/>
@@ -25963,8 +25992,10 @@
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlMemShow'/>
           <ref name='xmlXIncludeProcess'/>
+          <ref name='xmlXIncludeProcessFlags'/>
           <ref name='xmlXIncludeProcessNode'/>
           <ref name='xmlXIncludeProcessTree'/>
+          <ref name='xmlXIncludeProcessTreeFlags'/>
         </word>
         <word name='wether'>
           <ref name='_xmlNodeSet'/>
@@ -26129,6 +26160,7 @@
         </word>
         <word name='www'>
           <ref name='XINCLUDE_NS'/>
+          <ref name='XINCLUDE_OLD_NS'/>
           <ref name='getSystemId'/>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
@@ -27030,6 +27062,9 @@
         <word name='xpath'>
           <ref name='xmlShellPrintXPathError'/>
           <ref name='xmlShellPrintXPathResult'/>
+        </word>
+        <word name='xpointer'>
+          <ref name='XINCLUDE_PARSE_XPOINTER'/>
         </word>
       </letter>
     </chunk>

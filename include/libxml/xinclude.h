@@ -2,8 +2,8 @@
  * Summary: implementation of XInclude
  * Description: API to handle XInclude processing,
  * implements the
- * World Wide Web Consortium Working Draft 26 October 2000
- * http://www.w3.org/TR/2000/WD-xinclude-20001026
+ * World Wide Web Consortium Last Call Working Draft 10 November 2003
+ * http://www.w3.org/TR/2003/WD-xinclude-20031110
  *
  * Copy: See Copyright for the status of this software.
  *
@@ -90,12 +90,21 @@ typedef xmlXIncludeCtxt *xmlXIncludeCtxtPtr;
 XMLPUBFUN int XMLCALL	
 		xmlXIncludeProcess	(xmlDocPtr doc);
 XMLPUBFUN int XMLCALL	
+		xmlXIncludeProcessFlags	(xmlDocPtr doc,
+					 int flags);
+XMLPUBFUN int XMLCALL	
 		xmlXIncludeProcessTree	(xmlNodePtr tree);
+XMLPUBFUN int XMLCALL	
+		xmlXIncludeProcessTreeFlags(xmlNodePtr tree,
+					 int flags);
 /*
  * contextual processing
  */
 XMLPUBFUN xmlXIncludeCtxtPtr XMLCALL
 		xmlXIncludeNewContext	(xmlDocPtr doc);
+XMLPUBFUN int XMLCALL
+		xmlXIncludeSetFlags	(xmlXIncludeCtxtPtr ctxt,
+					 int flags);
 XMLPUBFUN void XMLCALL
 		xmlXIncludeFreeContext	(xmlXIncludeCtxtPtr ctxt);
 XMLPUBFUN int XMLCALL

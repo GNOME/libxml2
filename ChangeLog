@@ -1,3 +1,16 @@
+Tue Dec  9 12:29:26 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c xmllint.c xmlreader.c include/libxml/xinclude.h
+	  include/libxml/xmlerror.h: augmented the XInclude API
+	  to be able to pass XML parser flags down to the Inclusion
+	  process. Also resynchronized with the Last Call W3C Working
+	  Draft 10 November 2003 for the xpointer attribute.
+	* Makefile.am test/XInclude/docs/nodes[23].xml 
+	  result/XInclude/*: augmented the tests for the new namespace and
+	  testing the xpointer attribute, changed the way error messages
+	  are tested
+	* doc/*: regenerated the documentation
+
 Mon Dec  8 18:38:26 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* error.c: filter warning messages if the global setting blocks them

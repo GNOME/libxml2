@@ -405,14 +405,15 @@ XIncludetests : xmllint$(EXEEXT)
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/XInclude/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i > $(srcdir)/result/XInclude/$$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i > $(srcdir)/result/XInclude/$$name 2> $(srcdir)/result/XInclude/$$name.err ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i 2>&1 > result.$$name | grep -v 'failed to load external entity' ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i > result.$$name 2>error.$$name | grep -v 'failed to load external entity' ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/XInclude/$$name result.$$name` ; \
+	      diff $(srcdir)/result/XInclude/$$name result.$$name ; \
+	      diff $(srcdir)/result/XInclude/$$name.err error.$$name` ; \
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
-	      rm result.$$name ; \
+	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)
 	@(echo > .memdump)
 	@echo "## XInclude xmlReader regression tests"
@@ -424,11 +425,12 @@ XIncludetests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --walker --debug $$i > $(srcdir)/result/XInclude/$$name.rdr ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i 2>&1 > result.$$name | grep -v 'failed to load external entity' ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i > result.$$name 2>error.$$name | grep -v 'failed to load external entity' ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/XInclude/$$name.err error.$$name ; \
 	      diff $(srcdir)/result/XInclude/$$name.rdr result.$$name` ; \
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
-	      rm result.$$name ; \
+	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)
 
 Scripttests : xmllint$(EXEEXT)

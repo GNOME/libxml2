@@ -2315,10 +2315,19 @@ xmlXIncludeNewContext
 xmlXIncludeProcess
 #endif
 #ifdef LIBXML_XINCLUDE_ENABLED
+xmlXIncludeProcessFlags
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
 xmlXIncludeProcessNode
 #endif
 #ifdef LIBXML_XINCLUDE_ENABLED
 xmlXIncludeProcessTree
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
+xmlXIncludeProcessTreeFlags
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
+xmlXIncludeSetFlags
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 xmlXPathAddValues

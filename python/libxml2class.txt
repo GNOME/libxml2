@@ -488,6 +488,7 @@ Class xmlNode(xmlCore)
 
     # functions from module xinclude
     xincludeProcessTree()
+    xincludeProcessTreeFlags()
 
     # functions from module xpath
     xpathCastNodeToNumber()
@@ -616,6 +617,7 @@ Class xmlDoc(xmlNode)
 
     # functions from module xinclude
     xincludeProcess()
+    xincludeProcessFlags()
 
     # functions from module xmlreader
     NewWalker()

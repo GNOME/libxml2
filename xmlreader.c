@@ -156,6 +156,7 @@ struct _xmlTextReader {
     xmlPatternPtr     *patternTab;      /* array of preserve patterns */
 #endif
     int                preserves;	/* level of preserves */
+    int                parserFlags;	/* the set of options set */
 };
 
 #define NODE_IS_EMPTY		0x1
@@ -1368,6 +1369,7 @@ node_found:
 	 (xmlStrEqual(reader->node->ns->href, XINCLUDE_OLD_NS)))) {
 	if (reader->xincctxt == NULL) {
 	    reader->xincctxt = xmlXIncludeNewContext(reader->ctxt->myDoc);
+	    xmlXIncludeSetFlags(reader->xincctxt, reader->parserFlags);
 	}
 	/*
 	 * expand that node and process it
@@ -4032,6 +4034,7 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 
     reader->doc = NULL;
     reader->entNr = 0;
+    reader->parserFlags = options;
     reader->validate = XML_TEXTREADER_NOT_VALIDATE;
     if ((input != NULL) && (reader->input != NULL) &&
         (reader->allocs & XML_TEXTREADER_INPUT)) {

@@ -1,3 +1,8 @@
+Mon Dec 10 21:39:55 MST 2001 John Fleck <jfleck@inkstain.net>
+
+	* docs/xmllint.1, xmllint.xml, xmlcatalog.1, xmlcatalog_man.html,
+	xmlcatalog_man.xml
+
 Mon Dec 10 22:06:16 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlmemory.h: Hietaniemi Jarkko pointed out that

@@ -102,6 +102,7 @@ typedef enum {
     XML_SCHEMA_TYPE_IDC_UNIQUE,
     XML_SCHEMA_TYPE_IDC_KEY,
     XML_SCHEMA_TYPE_IDC_KEYREF,
+    XML_SCHEMA_TYPE_PARTICLE,
     XML_SCHEMA_FACET_MININCLUSIVE = 1000,
     XML_SCHEMA_FACET_MINEXCLUSIVE,
     XML_SCHEMA_FACET_MAXINCLUSIVE,
@@ -113,7 +114,8 @@ typedef enum {
     XML_SCHEMA_FACET_WHITESPACE,
     XML_SCHEMA_FACET_LENGTH,
     XML_SCHEMA_FACET_MAXLENGTH,
-    XML_SCHEMA_FACET_MINLENGTH
+    XML_SCHEMA_FACET_MINLENGTH,
+    XML_SCHEMA_EXTRA_QNAMEREF = 2000
 } xmlSchemaTypeType;
 
 typedef enum {
@@ -409,7 +411,7 @@ struct _xmlSchemaFacetLink {
  * the complexType owns an attribute wildcard, i.e.
  * it can be freed by the complexType
  */
-#define XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD    1 << 4
+#define XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD    1 << 4 /* Obsolete. */
 /**
  * XML_SCHEMAS_TYPE_VARIETY_ABSENT:
  *
@@ -507,6 +509,19 @@ struct _xmlSchemaFacetLink {
  * indicates if the facets need a computed value
  */
 #define XML_SCHEMAS_TYPE_FACETSNEEDVALUE    1 << 21
+/**
+ * XML_SCHEMAS_TYPE_INTERNAL_RESOLVED:
+ *
+ * indicates that the type was typefixed
+ */
+#define XML_SCHEMAS_TYPE_INTERNAL_RESOLVED    1 << 22
+/**
+ * XML_SCHEMAS_TYPE_INTERNAL_INVALID:
+ *
+ * indicates that the type is invalid
+ */
+#define XML_SCHEMAS_TYPE_INTERNAL_INVALID    1 << 23
+
 
 /**
  * _xmlSchemaType:
@@ -835,6 +850,7 @@ struct _xmlSchema {
     int preserve;        /* whether to free the document */
     int counter; /* used to give ononymous components unique names */
     xmlHashTablePtr idcDef;
+    void *volatiles; /* Misc. helper items (e.g. reference items) */
 };
 
 XMLPUBFUN void XMLCALL         xmlSchemaFreeType        (xmlSchemaTypePtr type);

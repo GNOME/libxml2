@@ -1,1 +1,1 @@
-./test/schemas/src-element2-1_0.xsd:12: element element: Schemas parser error : Element ref. 'foo:bar': The attributes 'ref' and 'name' are mutually exclusive.
+./test/schemas/src-element2-1_0.xsd:12: element element: Schemas parser error : Element 'element': The attributes 'ref' and 'name' are mutually exclusive.

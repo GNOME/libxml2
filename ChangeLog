@@ -1,3 +1,9 @@
+Fri Apr  1 17:33:50 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c include/libxml/schemasInternals.h
+	  result/schemas/src-element2-*.err result/schemas/element-*.err:
+	  Committing again, since the CVS server aborted.
+
 Fri Apr  1 15:29:27 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemastypes.c: Corrected 'length' facet validation for

@@ -231,6 +231,7 @@ xmlFreePatternList(xmlPatternPtr comp) {
     while (comp != NULL) {
 	cur = comp;
 	comp = comp->next;
+	cur->next = NULL;
 	xmlFreePattern(cur);
     }
 }
@@ -1081,6 +1082,10 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 	    xmlFree(name);
 	}
     } else if (CUR == '*') {
+        if (name != NULL) {
+	    ctxt->error = 1;
+	    goto error;
+	}
 	NEXT;
 	PUSH(XML_OP_ALL, token, NULL);
     } else {
@@ -1350,7 +1355,19 @@ xmlStreamCompile(xmlPatternPtr comp) {
         stream->dict = comp->dict;
 	xmlDictReference(stream->dict);
     }
-    for (i = 0;i < comp->nbStep;i++) {
+
+    /*
+     * Skip leading ./ on relative paths
+     */
+    i = 0;
+    while ((comp->flags & PAT_FROM_CUR) && (comp->nbStep > i + 2) &&
+        (comp->steps[i].op == XML_OP_ELEM) &&
+	(comp->steps[i].value == NULL) &&
+	(comp->steps[i].value2 == NULL) &&
+	(comp->steps[i + 1].op == XML_OP_PARENT)) {
+	i += 2;
+    }
+    for (;i < comp->nbStep;i++) {
         switch (comp->steps[i].op) {
 	    case XML_OP_END:
 	        break;
@@ -1374,8 +1391,15 @@ xmlStreamCompile(xmlPatternPtr comp) {
 		if (s < 0)
 		    goto error;
 		break;
-	    case XML_OP_CHILD:
 	    case XML_OP_ELEM:
+	        if ((comp->steps[i].value == NULL) &&
+		    (comp->steps[i].value2 == NULL) &&
+		    (comp->nbStep > i + 2) &&
+		    (comp->steps[i + 1].op == XML_OP_PARENT)) {
+		    i++;
+		    continue;
+		 }
+	    case XML_OP_CHILD:
 	        s = xmlStreamCompAddStep(stream, comp->steps[i].value,
 		                         comp->steps[i].value2, flags);
 		flags = 0;
@@ -1389,6 +1413,13 @@ xmlStreamCompile(xmlPatternPtr comp) {
 		    goto error;
 		break;
 	    case XML_OP_PARENT:
+	        if ((comp->nbStep > i + 1) &&
+		    (comp->steps[i + 1].op == XML_OP_ELEM) &&
+		    (comp->steps[i + 1].value == NULL) &&
+		    (comp->steps[i + 1].value2 == NULL)) {
+		    i++;
+		    continue;
+		 }
 	        break;
 	    case XML_OP_ANCESTOR:
 	        flags |= XML_STREAM_STEP_DESC;
@@ -1816,6 +1847,8 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
     xmlPatParserContextPtr ctxt = NULL;
     const xmlChar *or, *start;
     xmlChar *tmp = NULL;
+    int type = 0;
+    int streamable = 1;
 
     if (pattern == NULL)
         return(NULL);
@@ -1851,7 +1884,19 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
 	xmlFreePatParserContext(ctxt);
 
 
-	xmlStreamCompile(cur);
+        if (streamable) {
+	    if (type == 0) {
+	        type = cur->flags & (PAT_FROM_ROOT | PAT_FROM_CUR);
+	    } else if (type == PAT_FROM_ROOT) {
+	        if (cur->flags & PAT_FROM_CUR)
+		    streamable = 0;
+	    } else if (type == PAT_FROM_CUR) {
+	        if (cur->flags & PAT_FROM_ROOT)
+		    streamable = 0;
+	    }
+	}
+	if (streamable)
+	    xmlStreamCompile(cur);
 	if (xmlReversePattern(cur) < 0)
 	    goto error;
 	if (tmp != NULL) {
@@ -1859,6 +1904,16 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
 	    tmp = NULL;
 	}
 	start = or;
+    }
+    if (streamable == 0) {
+        cur = ret;
+	while (cur != NULL) {
+	    if (cur->stream != NULL) {
+		xmlFreeStreamComp(cur->stream);
+		cur->stream = NULL;
+	    }
+	    cur = cur->next;
+	}
     }
     return(ret);
 error:

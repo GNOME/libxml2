@@ -56,16 +56,7 @@
 #endif
 
 #ifdef LIBXML_PATTERN_ENABLED
-/* currently only in testing for DV as it's not yet solid enough for XSLT */
-/*
- * TODO:
- *  - fix the | where there is both relative and absolute expressions
- *    probably need new pattens APIs to separate both e.g "//b | a "
- *  - fix also the 0 depth trick used for "/" and "." when or'ed
- *  - double check /. is a noop
- *  - libxslt tests show a mem leak of a few bytes
- */
-/* #define XPATH_STREAMING */
+#define XPATH_STREAMING
 #endif
 
 #define TODO 								\
@@ -10963,13 +10954,14 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
     from_root = xmlPatternFromRoot(comp);
     if (from_root < 0)
         return(NULL);
-/*    printf("stream eval: depth %d from root %d\n", max_depth, from_root); */
+#if 0
+    printf("stream eval: depth %d from root %d\n", max_depth, from_root);
+#endif
 
     retval = xmlXPathNewNodeSet(NULL);
     if (retval == NULL)
         return(NULL);
     
-    /* FIXME '. | /' */
     if ((from_root) && (max_depth == 0)) {
 	xmlXPathNodeSetAddUnique(retval->nodesetval, (xmlNodePtr) ctxt->doc);
 	return(retval);
@@ -11085,8 +11077,10 @@ scan_children:
 
     } while ((cur != NULL) && (depth >= 0));
 done:
-/*    printf("stream eval: checked %d nodes selected %d\n",
-           nb_nodes, retval->nodesetval->nodeNr); */
+#if 0
+    printf("stream eval: checked %d nodes selected %d\n",
+           nb_nodes, retval->nodesetval->nodeNr);
+#endif
     xmlFreeStreamCtxt(patstream);
     return(retval);
 }

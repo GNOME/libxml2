@@ -4976,7 +4976,7 @@ fail:
     if ((ret == -3) && (warn)) {
 	xmlErrValidWarning(ctxt, child, XML_DTD_CONTENT_NOT_DETERMINIST,
 	       "Content model for Element %s is ambiguous\n",
-	                   name);
+	                   name, NULL, NULL);
     } else if (ret == -2) {
 	/*
 	 * An entities reference appeared at this level.

@@ -1,3 +1,7 @@
+Mon Oct 13 15:59:25 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fix a call missing arguments
+
 Sun Oct 12 18:42:18 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* genChRanges.py, chvalid.c, include/libxml/chvalid.h: fixed

@@ -245,6 +245,18 @@ fi
 AC_SUBST(WITH_XPATH)
 AC_SUBST(XPATH_OBJ)
 
+AC_ARG_WITH(xptr, [  --with-xptr             Add the XPointer support (on)])
+if test "$with_xptr" = "no" ; then
+    echo Disabling XPointer support
+    WITH_XPTR=0
+    XPTR_OBJ=
+else    
+    WITH_XPTR=1
+    XPTR_OBJ=xpointer.o
+fi
+AC_SUBST(WITH_XPTR)
+AC_SUBST(XPTR_OBJ)
+
 AC_ARG_WITH(iconv, [  --with-iconv            Add the ICONV support (on)])
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support

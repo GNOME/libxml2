@@ -784,7 +784,7 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
 #ifdef LIBXML_XPTR_ENABLED
     } else if (obj->type == XPATH_LOCATIONSET) {
 	if (obj->user != NULL)
-	    xmlXPathFreeLocationSet(obj->user);
+	    xmlXPtrFreeLocationSet(obj->user);
 #endif
     } else if (obj->type == XPATH_STRING) {
 	if (obj->stringval != NULL)
@@ -2118,6 +2118,16 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
     }
     fprintf(xmlXPathDebug, "Testing : ");
 #endif
+    /*
+     * 2.3 Node Tests
+     *  - For the attribute axis, the principal node type is attribute. 
+     *  - For the namespace axis, the principal node type is namespace. 
+     *  - For other axes, the principal node type is element. 
+     *
+     * A node test * is true for any node of the
+     * principal node type. For example, child::* willi
+     * select all element children of the context node
+     */
     for (i = 0;i < nodelist->nodeNr; i++) {
         ctxt->context->node = nodelist->nodeTab[i];
 
@@ -2157,8 +2167,8 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 		    break;
                 case NODE_TEST_ALL:
 		    if ((cur->type == XML_ELEMENT_NODE) ||
-		        (cur->type == XML_ATTRIBUTE_NODE)) {
-			/* !!! || (cur->type == XML_TEXT_NODE)) { */
+			(cur->type == XML_DOCUMENT_NODE) ||
+			(cur->type == XML_HTML_DOCUMENT_NODE)) {
 #ifdef DEBUG_STEP
                         n++;
 #endif
@@ -4756,6 +4766,15 @@ eval_predicates:
 void
 xmlXPathEvalRelativeLocationPath(xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
+    if ((CUR == '/') && (NXT(1) == '/')) {
+	SKIP(2);
+	SKIP_BLANKS;
+	xmlXPathNodeCollectAndTest(ctxt, AXIS_DESCENDANT_OR_SELF,
+			 NODE_TEST_TYPE, XML_ELEMENT_NODE, NULL, NULL);
+    } else if (CUR == '/') {
+	    NEXT;
+	SKIP_BLANKS;
+    }
     xmlXPathEvalStep(ctxt);
     SKIP_BLANKS;
     while (CUR == '/') {

@@ -32,6 +32,7 @@ libxml_la_SOURCES = \
 		HTMLtree.c \
 		debugXML.c \
 		xpath.c \
+		xpointer.c \
 		nanohttp.c \
 		nanoftp.c
 
@@ -79,7 +80,7 @@ $(libxml_la_SOURCES): $(srcdir)/libxml
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests
+tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests
 
 HTMLtests : testHTML
 	@(rm -f .memdump ; touch .memdump)
@@ -234,6 +235,7 @@ XPathtests : testXPath
 	  if [ ! -d $$i ] ; then \
 	  doc=`basename $$i`; \
 	  for j in $(srcdir)/test/XPath/tests/$$doc* ; do \
+	  if [ ! -f $$j ] ; then continue ; fi ; \
 	  name=`basename $$j`; \
 	  if [ ! -d $$j ] ; then \
 	  if [ ! -f $(srcdir)/result/XPath/tests/$$name ] ; then \
@@ -243,6 +245,29 @@ XPathtests : testXPath
 	      echo Testing $$name ; \
 	      $(top_builddir)/testXPath -f -i $$i $$j > result.$$name ; \
 	      diff $(srcdir)/result/XPath/tests/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done ; fi ; done)
+
+XPtrtests : testXPath
+	@(rm -f .memdump ; touch .memdump)
+	@echo "##"
+	@echo "## XPointer regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/XPath/docs/* ; do \
+	  if [ ! -d $$i ] ; then \
+	  doc=`basename $$i`; \
+	  for j in $(srcdir)/test/XPath/xptr/$$doc* ; do \
+	  if [ ! -f $$j ] ; then continue ; fi ; \
+	  name=`basename $$j`; \
+	  if [ ! -d $$j ] ; then \
+	  if [ ! -f $(srcdir)/result/XPath/xptr/$$name ] ; then \
+	      echo New test file $$name ; \
+	      ./testXPath -xptr -f -i $$i $$j > $(srcdir)/result/XPath/xptr/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      ./testXPath -xptr -f -i $$i $$j > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/XPath/xptr/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)
 

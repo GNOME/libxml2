@@ -1,0 +1,3 @@
+xpointer(//chapter[position() = 2]/range-to(following::chapter[1]))
+xpointer(//chapter[position() <= 2]/range-to(following::chapter[1]))
+xpointer(//chapter[position() = last()]/range-to(following::chapter[1]))

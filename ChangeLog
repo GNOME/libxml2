@@ -1,3 +1,11 @@
+Wed Oct 11 01:46:44 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in Makefile.am include/makefile.am: adding XPointer
+	  and XPtrtests target
+	* xpointer.[ch] : new files for XPointer support
+	* test/XPath/xptr result/XPath/xptr: added XPointer testsuite and
+	  more XPath tests
+
 Wed Oct 11 01:23:25 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: fixed, very broken, make distcheck works again

@@ -26,6 +26,9 @@ Set contains 10 nodes:
 1  ELEMENT p
 2  ELEMENT title
 3  ELEMENT chapter
+    ATTRIBUTE id
+      TEXT
+        content=chapter2
 4  ELEMENT p
 5  ELEMENT image
     ATTRIBUTE href
@@ -34,6 +37,9 @@ Set contains 10 nodes:
 6  ELEMENT p
 7  ELEMENT title
 8  ELEMENT chapter
+    ATTRIBUTE id
+      TEXT
+        content=chapter1
 9  ELEMENT title
 10  ELEMENT head
 
@@ -42,9 +48,15 @@ Expression: /child::EXAMPLE/child::chapter[3]/following::*
 Object is a Node Set :
 Set contains 6 nodes:
 1  ELEMENT chapter
+    ATTRIBUTE id
+      TEXT
+        content=chapter4
 2  ELEMENT title
 3  ELEMENT p
 4  ELEMENT chapter
+    ATTRIBUTE id
+      TEXT
+        content=chapter5
 5  ELEMENT title
 6  ELEMENT p
 
@@ -63,14 +75,26 @@ Object is a Node Set :
 Set contains 13 nodes:
 1  ELEMENT p
 2  ELEMENT chapter
+    ATTRIBUTE id
+      TEXT
+        content=chapter2
 3  ELEMENT title
 4  ELEMENT p
 5  ELEMENT chapter
+    ATTRIBUTE id
+      TEXT
+        content=chapter3
 6  ELEMENT title
 7  ELEMENT p
 8  ELEMENT chapter
+    ATTRIBUTE id
+      TEXT
+        content=chapter4
 9  ELEMENT title
 10  ELEMENT p
 11  ELEMENT chapter
+    ATTRIBUTE id
+      TEXT
+        content=chapter5
 12  ELEMENT title
 13  ELEMENT p

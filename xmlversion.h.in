@@ -78,6 +78,15 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /*
+ * Whether XPointer is configured in
+ */
+#if @WITH_XPTR@
+#define LIBXML_XPTR_ENABLED
+#else
+#define LIBXML_XPTR_DISABLED
+#endif
+
+/*
  * Whether iconv support is available
  */
 #if @WITH_ICONV@

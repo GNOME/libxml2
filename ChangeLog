@@ -1,3 +1,8 @@
+Fri Mar  7 15:18:32 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fix bug #107804, the algorithm used for document order
+	  computation was failing on attributes.
+
 Thu Mar  6 22:35:50 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fix bug #107764 , possibility of buffer overflow

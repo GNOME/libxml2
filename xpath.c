@@ -1352,6 +1352,7 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file ATTRIBUTE_UNUSED,
 int
 xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
     int depth1, depth2;
+    int attr1 = 0, attr2 = 0;
     xmlNodePtr cur, root;
 
     if ((node1 == NULL) || (node2 == NULL))
@@ -1359,8 +1360,21 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
     /*
      * a couple of optimizations which will avoid computations in most cases
      */
-    if (node1 == node2)
-	return(0);
+    if (node1->type == XML_ATTRIBUTE_NODE) {
+	attr1 = 1;
+	node1 = node1->parent;
+    }
+    if (node2->type == XML_ATTRIBUTE_NODE) {
+	attr2 = 1;
+	node2 = node2->parent;
+    }
+    if (node1 == node2) {
+	if (attr1 == attr2)
+	    return(0);
+	if (attr2 == 1)
+	    return(1);
+	return(-1);
+    }
     if ((node1->type == XML_NAMESPACE_DECL) ||
         (node2->type == XML_NAMESPACE_DECL))
 	return(1);

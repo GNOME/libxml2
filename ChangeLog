@@ -1,3 +1,12 @@
+Sat Oct  2 15:03:14 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* include/libxml/parserInternals.h: added two new macros
+	  IS_ASCII_LETTER and IS_ASCII_DIGIT used with (html)
+	  parsing and xpath for testing data not necessarily
+	  unicode.
+	* HTMLparser.c, xpath.c: changed use of IS_LETTER_CH and
+	  IS_DIGIT_CH macros to ascii versions (bug 153936).
+	  
 Fri Oct  1 20:37:25 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* error.c: added some coding to attempt to display which file

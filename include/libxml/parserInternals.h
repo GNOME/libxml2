@@ -197,6 +197,26 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  *
  */
 #define IS_LETTER_CH(c) xmlIsBaseChar_ch(c)
+
+/**
+ * IS_ASCII_LETTER(c)
+ * @c: an xmlChar value
+ *
+ * Macro to check [a-zA-Z]
+ *
+ */
+#define IS_ASCII_LETTER(c)	(((0x41 <= (c)) && ((c) <= 0x5a)) || \
+				 ((0x61 <= (c)) && ((c) <= 0x7a)))
+
+/**
+ * IS_ASCII_DIGIT(c)
+ * @c: an xmlChar value
+ *
+ * Macro to check [0-9]
+ *
+ */
+#define IS_ASCII_DIGIT(c)	((0x30 <= (c)) && ((c) <= 0x39))
+
 /**
  * IS_PUBIDCHAR:
  * @c:  an UNICODE value (int)

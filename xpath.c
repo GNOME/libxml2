@@ -57,6 +57,13 @@
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
 
+/*
+ * TODO:
+ * There are a few spots where some tests are done which depend upon ascii
+ * data.  These should be enhanced for full UTF8 support (see particularly
+ * any use of the macros IS_ASCII_CHARACTER and IS_ASCII_DIGIT)
+ */
+ 
 #if defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XPATH_ENABLED)
 /************************************************************************
  * 									*
@@ -7947,7 +7954,7 @@ xmlXPathCompPrimaryExpr(xmlXPathParserContextPtr ctxt) {
 	}
 	NEXT;
 	SKIP_BLANKS;
-    } else if (IS_DIGIT_CH(CUR) || (CUR == '.' && IS_DIGIT_CH(NXT(1)))) {
+    } else if (IS_ASCII_DIGIT(CUR) || (CUR == '.' && IS_ASCII_DIGIT(NXT(1)))) {
 	xmlXPathCompNumber(ctxt);
     } else if ((CUR == '\'') || (CUR == '"')) {
 	xmlXPathCompLiteral(ctxt);
@@ -8009,12 +8016,12 @@ xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
     int len = 0;
 
     SKIP_BLANKS;
-    if (!IS_LETTER_CH(CUR) && (CUR != '_') &&
+    if (!IS_ASCII_LETTER(CUR) && (CUR != '_') &&
         (CUR != ':')) {
 	return(NULL);
     }
 
-    while ((IS_LETTER_CH(NXT(len))) || (IS_DIGIT_CH(NXT(len))) ||
+    while ((IS_ASCII_LETTER(NXT(len))) || (IS_ASCII_DIGIT(NXT(len))) ||
            (NXT(len) == '.') || (NXT(len) == '-') ||
 	   (NXT(len) == '_') || (NXT(len) == ':') || 
 	   (IS_COMBINING_CH(NXT(len))) ||
@@ -8024,7 +8031,7 @@ xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
 	if (len >= XML_MAX_NAMELEN) {
 	    xmlGenericError(xmlGenericErrorContext, 
 	       "xmlScanName: reached XML_MAX_NAMELEN limit\n");
-	    while ((IS_LETTER_CH(NXT(len))) || (IS_DIGIT_CH(NXT(len))) ||
+	    while ((IS_ASCII_LETTER(NXT(len))) || (IS_ASCII_DIGIT(NXT(len))) ||
 		   (NXT(len) == '.') || (NXT(len) == '-') ||
 		   (NXT(len) == '_') || (NXT(len) == ':') || 
 		   (IS_COMBINING_CH(NXT(len))) ||
@@ -8060,8 +8067,10 @@ xmlXPathCompPathExpr(xmlXPathParserContextPtr ctxt) {
     xmlChar *name = NULL; /* we may have to preparse a name to find out */
 
     SKIP_BLANKS;
-    if ((CUR == '$') || (CUR == '(') || (IS_DIGIT_CH(CUR)) ||
-        (CUR == '\'') || (CUR == '"') || (CUR == '.' && IS_DIGIT_CH(NXT(1)))) {
+    if ((CUR == '$') || (CUR == '(') || 
+    	(IS_ASCII_DIGIT(CUR)) ||
+        (CUR == '\'') || (CUR == '"') ||
+	(CUR == '.' && IS_ASCII_DIGIT(NXT(1)))) {
 	lc = 0;
     } else if (CUR == '*') {
 	/* relative or absolute location path */
@@ -8957,7 +8966,7 @@ xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt) {
 		NEXT;
 		SKIP_BLANKS;
 		if ((CUR != 0 ) &&
-		    ((IS_LETTER_CH(CUR)) || (CUR == '_') || (CUR == '.') ||
+		    ((IS_ASCII_LETTER(CUR)) || (CUR == '_') || (CUR == '.') ||
 		     (CUR == '@') || (CUR == '*')))
 		    xmlXPathCompRelativeLocationPath(ctxt);
 	    }

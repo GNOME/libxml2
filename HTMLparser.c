@@ -2168,11 +2168,11 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
     int i = 0;
     xmlChar loc[HTML_PARSER_BUFFER_SIZE];
 
-    if (!IS_LETTER_CH(CUR) && (CUR != '_') &&
+    if (!IS_ASCII_LETTER(CUR) && (CUR != '_') &&
         (CUR != ':')) return(NULL);
 
     while ((i < HTML_PARSER_BUFFER_SIZE) &&
-           ((IS_LETTER_CH(CUR)) || (IS_DIGIT_CH(CUR)) ||
+           ((IS_ASCII_LETTER(CUR)) || (IS_ASCII_DIGIT(CUR)) ||
 	   (CUR == ':') || (CUR == '-') || (CUR == '_'))) {
 	if ((CUR >= 'A') && (CUR <= 'Z')) loc[i] = CUR + 0x20;
         else loc[i] = CUR;

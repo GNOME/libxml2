@@ -265,6 +265,8 @@ xmlNodeSetPtr	   xmlXPathNodeSetCreate	(xmlNodePtr val);
 void		   xmlXPathFreeNodeSetList	(xmlXPathObjectPtr obj);
 void		   xmlXPathFreeNodeSet		(xmlNodeSetPtr obj);
 xmlXPathObjectPtr  xmlXPathObjectCopy		(xmlXPathObjectPtr val);
+int		   xmlXPathCmpNodes		(xmlNodePtr node1,
+						 xmlNodePtr node2);
 
 
 #ifdef __cplusplus

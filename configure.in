@@ -103,6 +103,7 @@ AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(strdup strndup strerror snprintf)
 AC_CHECK_FUNCS(finite isnand fp_class class fpclass)
 AC_CHECK_FUNCS(strftime localtime)
+AC_CHECK_FUNCS(stat _stat)
 
 dnl Checks for inet libraries:
 AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))

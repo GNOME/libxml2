@@ -151,9 +151,6 @@ xmlXPtrGetNthChild(xmlNodePtr cur, int no) {
  */
 int
 xmlXPtrCmpPoints(xmlNodePtr node1, int index1, xmlNodePtr node2, int index2) {
-    int depth1, depth2;
-    xmlNodePtr cur, root;
-
     if ((node1 == NULL) || (node2 == NULL))
 	return(-2);
     /*
@@ -166,58 +163,7 @@ xmlXPtrCmpPoints(xmlNodePtr node1, int index1, xmlNodePtr node2, int index2) {
 	    return(-1);
 	return(0);
     }
-    if (node1 == node2->prev)
-	    return(1);
-    if (node1 == node2->next)
-	    return(-1);
-
-    /*
-     * compute depth to root
-     */
-    for (depth2 = 0, cur = node2;cur->parent != NULL;cur = cur->parent) {
-	if (cur == node1)
-	    return(1);
-	depth2++;
-    }
-    root = cur;
-    for (depth1 = 0, cur = node1;cur->parent != NULL;cur = cur->parent) {
-	if (cur == node2)
-	    return(-1);
-	depth1++;
-    }
-    /*
-     * Distinct document (or distinct entities :-( ) case.
-     */
-    if (root != cur) {
-	return(-2);
-    }
-    /*
-     * get the nearest common ancestor.
-     */
-    while (depth1 > depth2) {
-	depth1--;
-	node1 = node1->parent;
-    }
-    while (depth2 > depth1) {
-	depth2--;
-	node2 = node2->parent;
-    }
-    while (node1->parent != node2->parent) {
-	node1 = node1->parent;
-	node2 = node2->parent;
-	/* should not happen but just in case ... */
-	if ((node1 == NULL) || (node2 == NULL))
-	    return(-2);
-    }
-    /*
-     * Find who's first.
-     */
-    if (node1 == node2->next)
-	return(-1);
-    for (cur = node1->next;cur != NULL;cur = cur->next)
-	if (cur == node2)
-	    return(1);
-    return(-1); /* assume there is no sibling list corruption */
+    return(xmlXPathCmpNodes(node1, node2));
 }
 
 /**

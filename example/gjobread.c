@@ -27,15 +27,16 @@
 
 /*
  * A person record
+ * an xmlChar * is really an UTF8 encoded char string (0 terminated)
  */
 typedef struct person {
-    char *name;
-    char *email;
-    char *company;
-    char *organisation;
-    char *smail;
-    char *webPage;
-    char *phone;
+    xmlChar *name;
+    xmlChar *email;
+    xmlChar *company;
+    xmlChar *organisation;
+    xmlChar *smail;
+    xmlChar *webPage;
+    xmlChar *phone;
 } person, *personPtr;
 
 /*
@@ -59,9 +60,11 @@ DEBUG("parsePerson\n");
     /* COMPAT xmlChildrenNode is a macro unifying libxml1 and libxml2 names */
     cur = cur->xmlChildrenNode;
     while (cur != NULL) {
-        if ((!strcmp(cur->name, "Person")) && (cur->ns == ns))
+        if ((!xmlStrcmp(cur->name, (const xmlChar *)"Person")) &&
+	    (cur->ns == ns))
 	    ret->name = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-        if ((!strcmp(cur->name, "Email")) && (cur->ns == ns))
+        if ((!xmlStrcmp(cur->name, (const xmlChar *)"Email")) &&
+	    (cur->ns == ns))
 	    ret->email = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
 	cur = cur->next;
     }
@@ -89,9 +92,9 @@ void printPerson(personPtr cur) {
  * a Description for a Job
  */
 typedef struct job {
-    char *projectID;
-    char *application;
-    char *category;
+    xmlChar *projectID;
+    xmlChar *application;
+    xmlChar *category;
     personPtr contact;
     int nbDevelopers;
     personPtr developers[100]; /* using dynamic alloc is left as an exercise */
@@ -118,17 +121,23 @@ DEBUG("parseJob\n");
     cur = cur->xmlChildrenNode;
     while (cur != NULL) {
         
-        if ((!strcmp(cur->name, "Project")) && (cur->ns == ns)) {
-	    ret->projectID = xmlGetProp(cur, "ID");
+        if ((!xmlStrcmp(cur->name, (const xmlChar *) "Project")) &&
+	    (cur->ns == ns)) {
+	    ret->projectID = xmlGetProp(cur, (const xmlChar *) "ID");
 	    if (ret->projectID == NULL) {
 		fprintf(stderr, "Project has no ID\n");
 	    }
 	}
-        if ((!strcmp(cur->name, "Application")) && (cur->ns == ns))
-	    ret->application = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-        if ((!strcmp(cur->name, "Category")) && (cur->ns == ns))
-	    ret->category = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-        if ((!strcmp(cur->name, "Contact")) && (cur->ns == ns))
+        if ((!xmlStrcmp(cur->name, (const xmlChar *) "Application")) &&
+            (cur->ns == ns))
+	    ret->application = 
+		xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+        if ((!xmlStrcmp(cur->name, (const xmlChar *) "Category")) &&
+	    (cur->ns == ns))
+	    ret->category =
+		xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+        if ((!xmlStrcmp(cur->name, (const xmlChar *) "Contact")) &&
+	    (cur->ns == ns))
 	    ret->contact = parsePerson(doc, ns, cur);
 	cur = cur->next;
     }
@@ -186,14 +195,15 @@ gJobPtr parseGjobFile(char *filename) {
 	xmlFreeDoc(doc);
 	return(NULL);
     }
-    ns = xmlSearchNsByHref(doc, cur, "http://www.gnome.org/some-location");
+    ns = xmlSearchNsByHref(doc, cur,
+	    (const xmlChar *) "http://www.gnome.org/some-location");
     if (ns == NULL) {
         fprintf(stderr,
 	        "document of the wrong type, GJob Namespace not found\n");
 	xmlFreeDoc(doc);
 	return(NULL);
     }
-    if (strcmp(cur->name, "Helping")) {
+    if (xmlStrcmp(cur->name, (const xmlChar *) "Helping")) {
         fprintf(stderr,"document of the wrong type, root node != Helping");
 	xmlFreeDoc(doc);
 	return(NULL);
@@ -221,7 +231,7 @@ gJobPtr parseGjobFile(char *filename) {
       }
     if ( cur == 0 )
       return ( NULL );
-    if ((strcmp(cur->name, "Jobs")) || (cur->ns != ns)) {
+    if ((xmlStrcmp(cur->name, (const xmlChar *) "Jobs")) || (cur->ns != ns)) {
         fprintf(stderr,"document of the wrong type, was '%s', Jobs expected",
 		cur->name);
 	fprintf(stderr,"xmlDocDump follows\n");
@@ -235,7 +245,8 @@ gJobPtr parseGjobFile(char *filename) {
     /* Second level is a list of Job, but be laxist */
     cur = cur->xmlChildrenNode;
     while (cur != NULL) {
-        if ((!strcmp(cur->name, "Job")) && (cur->ns == ns)) {
+        if ((!xmlStrcmp(cur->name, (const xmlChar *) "Job")) &&
+	    (cur->ns == ns)) {
 	    job = parseJob(doc, ns, cur);
 	    if (job != NULL)
 	        ret->jobs[ret->nbJobs++] = job;

@@ -87,3 +87,6 @@ static int isnan (double d) {
 }
 
 #include <direct.h>
+
+#define HAVE_SYS_STAT_H                                                         #define HAVE__STAT
+

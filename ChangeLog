@@ -1,3 +1,24 @@
+Thu Jan 25 13:34:11 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.[ch] xpointer.c: added xmlXPathCmpNodes, changed
+	  xmlXPtrCmpPoints to use it.
+	* propagated the following patch from Alejandro Forero
+	* include/win32config.h xmlIO.c: applied further suggestions
+	  from Igor Zlatkovic <igorz@dialup.nacamar.de> and cleanup
+	* example/gjobread.c: fixed warnings, now that it builds
+
+Wed Jan 24 20:27:28 COT 2001 Alejandro Forero <bachue@bachue.com>
+
+        * xmlIO.c (xmlFileOpen, xmlFileOpenW): Removed unnecesary checks.
+
+        * xmlIO.c (xmlCheckFilename): Function added to know whether a given
+          filename points to a valid file (not a directory).
+        * xmlIO.c (xmlFileOpen, xmlFileOpenW, xmlGzfileOpen, xmlGzfileOpenW):
+          Added calls to xmlCheckFilenameDir.
+
+        * xmlIO.c (xmlGzfileOpen, xmlGzfileOpenW, xmlFdOpen, xmlFdOpenW): Pass
+          `path' (rather than `filename') as the parameter to gzopen and open.
+
 Tue Jan 23 16:26:30 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am: fixed a problem with EXTRA_DIST

@@ -34,7 +34,7 @@
 #ifdef HAVE_MATH_H
 #include <math.h>
 #endif
-#ifdef HAVE_MATH_H
+#ifdef HAVE_FLOAT_H
 #include <float.h>
 #endif
 #ifdef HAVE_IEEEFP_H
@@ -507,6 +507,82 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file,
  *			Routines to handle NodeSets			*
  *									*
  ************************************************************************/
+
+/**
+ * xmlXPathCmpNodes:
+ * @node1:  the first node
+ * @node2:  the second node
+ *
+ * Compare two nodes w.r.t document order
+ *
+ * Returns -2 in case of error 1 if first point < second point, 0 if
+ *         that's the same point, -1 otherwise
+ */
+int
+xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
+    int depth1, depth2;
+    xmlNodePtr cur, root;
+
+    if ((node1 == NULL) || (node2 == NULL))
+	return(-2);
+    /*
+     * a couple of optimizations which will avoid computations in most cases
+     */
+    if (node1 == node2)
+	return(0);
+    if (node1 == node2->prev)
+	return(1);
+    if (node1 == node2->next)
+	return(-1);
+
+    /*
+     * compute depth to root
+     */
+    for (depth2 = 0, cur = node2;cur->parent != NULL;cur = cur->parent) {
+	if (cur == node1)
+	    return(1);
+	depth2++;
+    }
+    root = cur;
+    for (depth1 = 0, cur = node1;cur->parent != NULL;cur = cur->parent) {
+	if (cur == node2)
+	    return(-1);
+	depth1++;
+    }
+    /*
+     * Distinct document (or distinct entities :-( ) case.
+     */
+    if (root != cur) {
+	return(-2);
+    }
+    /*
+     * get the nearest common ancestor.
+     */
+    while (depth1 > depth2) {
+	depth1--;
+	node1 = node1->parent;
+    }
+    while (depth2 > depth1) {
+	depth2--;
+	node2 = node2->parent;
+    }
+    while (node1->parent != node2->parent) {
+	node1 = node1->parent;
+	node2 = node2->parent;
+	/* should not happen but just in case ... */
+	if ((node1 == NULL) || (node2 == NULL))
+	    return(-2);
+    }
+    /*
+     * Find who's first.
+     */
+    if (node1 == node2->next)
+	return(-1);
+    for (cur = node1->next;cur != NULL;cur = cur->next)
+	if (cur == node2)
+	    return(1);
+    return(-1); /* assume there is no sibling list corruption */
+}
 
 #define XML_NODESET_DEFAULT	10
 /**
@@ -3175,6 +3251,7 @@ xmlXPathRoot(xmlXPathParserContextPtr ctxt) {
 /**
  * xmlXPathLastFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the last() XPath function
  *    number last()
@@ -3197,6 +3274,7 @@ xmlXPathLastFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathPositionFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the position() XPath function
  *    number position()
@@ -3222,6 +3300,7 @@ xmlXPathPositionFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathCountFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the count() XPath function
  *    number count(node-set)
@@ -3241,6 +3320,7 @@ xmlXPathCountFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathIdFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the id() XPath function
  *    node-set id(object)
@@ -3338,6 +3418,7 @@ xmlXPathIdFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathLocalNameFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the local-name() XPath function
  *    string local-name(node-set?)
@@ -3385,6 +3466,7 @@ xmlXPathLocalNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathNamespaceURIFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the namespace-uri() XPath function
  *    string namespace-uri(node-set?)
@@ -3430,6 +3512,7 @@ xmlXPathNamespaceURIFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathNameFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the name() XPath function
  *    string name(node-set?)
@@ -3500,6 +3583,7 @@ xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathStringFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the string() XPath function
  *    string string(object?)
@@ -3602,6 +3686,7 @@ xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathStringLengthFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the string-length() XPath function
  *    number string-length(string?)
@@ -3637,6 +3722,7 @@ xmlXPathStringLengthFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathConcatFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the concat() XPath function
  *    string concat(string, string, string*)
@@ -3680,6 +3766,7 @@ xmlXPathConcatFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathContainsFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the contains() XPath function
  *    boolean contains(string, string)
@@ -3712,6 +3799,7 @@ xmlXPathContainsFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathStartsWithFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the starts-with() XPath function
  *    boolean starts-with(string, string)
@@ -3746,6 +3834,7 @@ xmlXPathStartsWithFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathSubstringFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the substring() XPath function
  *    string substring(string, number, number?)
@@ -3841,6 +3930,7 @@ xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathSubstringBeforeFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the substring-before() XPath function
  *    string substring-before(string, string)
@@ -3882,6 +3972,7 @@ xmlXPathSubstringBeforeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathSubstringAfterFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the substring-after() XPath function
  *    string substring-after(string, string)
@@ -3925,6 +4016,7 @@ xmlXPathSubstringAfterFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathNormalizeFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the normalize-space() XPath function
  *    string normalize-space(string?)
@@ -3986,6 +4078,7 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathTranslateFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the translate() XPath function
  *    string translate(string, string, string)
@@ -4046,6 +4139,7 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathBooleanFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the boolean() XPath function
  *    boolean boolean(object)
@@ -4092,6 +4186,7 @@ xmlXPathBooleanFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathNotFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the not() XPath function
  *    boolean not(boolean)
@@ -4109,6 +4204,7 @@ xmlXPathNotFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathTrueFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the true() XPath function
  *    boolean true()
@@ -4122,6 +4218,7 @@ xmlXPathTrueFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathFalseFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the false() XPath function
  *    boolean false()
@@ -4135,6 +4232,7 @@ xmlXPathFalseFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathLangFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the lang() XPath function
  *    boolean lang(string)
@@ -4180,6 +4278,7 @@ not_equal:
 /**
  * xmlXPathNumberFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the number() XPath function
  *    number number(object?)
@@ -4243,6 +4342,7 @@ xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathSumFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the sum() XPath function
  *    number sum(node-set)
@@ -4276,6 +4376,7 @@ xmlXPathSumFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathFloorFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the floor() XPath function
  *    number floor(number)
@@ -4298,6 +4399,7 @@ xmlXPathFloorFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathCeilingFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the ceiling() XPath function
  *    number ceiling(number)
@@ -4324,6 +4426,7 @@ xmlXPathCeilingFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPathRoundFunction:
  * @ctxt:  the XPath Parser context
+ * @nargs:  the number of arguments
  *
  * Implement the round() XPath function
  *    number round(number)
@@ -6032,6 +6135,12 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     return(res);
 }
 
+/**
+ * xmlXPathRegisterAllFunctions:
+ * @ctxt:  the XPath context
+ *
+ * Registers all default XPath functions in this context
+ */
 void
 xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt)
 {

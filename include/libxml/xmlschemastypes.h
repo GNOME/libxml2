@@ -50,7 +50,16 @@ XMLPUBFUN int XMLCALL
 		xmlSchemaValidateFacet		(xmlSchemaTypePtr base,
 						 xmlSchemaFacetPtr facet,
 						 const xmlChar *value,
-						 xmlSchemaValPtr val);	
+						 xmlSchemaValPtr val);
+#if 0
+XMLPUBFUN int XMLCALL
+		xmlSchemaValidateFacetWhtsp	(xmlSchemaFacetPtr facet,
+						 xmlSchemaWhitespaceValueType fws,
+						 xmlSchemaValType valType,
+						 xmlSchemaValPtr val,
+						 const xmlChar *value,
+						 xmlSchemaWhitespaceValueType ws);
+#endif
 XMLPUBFUN void XMLCALL		
 		xmlSchemaFreeValue		(xmlSchemaValPtr val);
 XMLPUBFUN xmlSchemaFacetPtr XMLCALL 
@@ -110,7 +119,7 @@ XMLPUBFUN int XMLCALL
 						 xmlSchemaValPtr y,
 						 xmlSchemaWhitespaceValueType yws);
 XMLPUBFUN xmlSchemaValPtr XMLCALL
-		xmlSchemaCopyValue		(xmlSchemaValPtr val); 
+		xmlSchemaCopyValue		(xmlSchemaValPtr val);
 
 #ifdef __cplusplus
 }

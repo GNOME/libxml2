@@ -7,6 +7,11 @@
  */
 
 
+#ifdef WIN32
+#include "win32config.h"
+#else
+#include "config.h"
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include "xmlmemory.h"

@@ -19,7 +19,9 @@
  * Daniel.Veillard@w3.org
  */
 
-#ifndef WIN32
+#ifdef WIN32
+#include "win32config.h"
+#else
 #include "config.h"
 #endif
 

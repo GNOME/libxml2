@@ -7,8 +7,7 @@
  */
 
 #ifdef WIN32
-#define HAVE_FCNTL_H
-#include <io.h>
+#include "win32config.h"
 #else
 #include "config.h"
 #endif
@@ -3000,7 +2999,7 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
         if ((!xmlStrcmp(prop->name, name)) &&
 	    (((prop->ns == NULL) && (node->ns != NULL) &&
 	      (!xmlStrcmp(node->ns->href, namespace))) ||
-	     (prop->ns != NULL) && (!xmlStrcmp(prop->ns->href, namespace))))  {
+	     ((prop->ns != NULL) && (!xmlStrcmp(prop->ns->href, namespace))))) {
 	    xmlChar *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->val, 1);

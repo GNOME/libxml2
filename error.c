@@ -6,6 +6,12 @@
  * Daniel Veillard <Daniel.Veillard@w3.org>
  */
 
+#ifdef WIN32
+#include "win32config.h"
+#else
+#include "config.h"
+#endif
+
 #include <stdio.h>
 #include <stdarg.h>
 #include "parser.h"

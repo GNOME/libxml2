@@ -7,8 +7,7 @@
  */
 
 #ifdef WIN32
-#define HAVE_FCNTL_H
-#include <io.h>
+#include "win32config.h"
 #else
 #include "config.h"
 #endif
@@ -46,6 +45,14 @@
 
 const char *xmlParserVersion = LIBXML_VERSION;
 
+/*
+ * List of XML prefixed PI allowed by W3C specs
+ */
+
+const char *xmlW3CPIs[] = {
+    "xml-stylesheet",
+    NULL
+};
 
 /************************************************************************
  *									*
@@ -3321,17 +3328,21 @@ xmlParsePITarget(xmlParserCtxtPtr ctxt) {
     xmlChar *name;
 
     name = xmlParseName(ctxt);
-    if ((name != NULL) && (name[3] == 0) &&
+    if ((name != NULL) &&
         ((name[0] == 'x') || (name[0] == 'X')) &&
         ((name[1] == 'm') || (name[1] == 'M')) &&
         ((name[2] == 'l') || (name[2] == 'L'))) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
-	    ctxt->sax->error(ctxt->userData,
+	int i;
+	for (i = 0;;i++) {
+	    if (xmlW3CPIs[i] == NULL) break;
+	    if (!xmlStrcmp(name, (const xmlChar *)xmlW3CPIs[i]))
+	        return(name);
+	}
+	if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL)) {
+	    ctxt->sax->warning(ctxt->userData,
 	         "xmlParsePItarget: invalid name prefix 'xml'\n");
 	    ctxt->errNo = XML_ERR_RESERVED_XML_NAME;
-	    /* ctxt->wellFormed = 0; !!! ? */
 	}
-	return(NULL);
     }
     return(name);
 }

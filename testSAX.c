@@ -7,8 +7,7 @@
  */
 
 #ifdef WIN32
-#define HAVE_FCNTL_H
-#include <io.h>
+#include "win32config.h"
 #else
 #include "config.h"
 #endif

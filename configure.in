@@ -142,5 +142,5 @@ AC_SUBST(HAVE_ISINF)
 
 AC_SUBST(Z_LIBS)
 AC_SUBST(M_LIBS)
-AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile xml-config)
+AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile xml-config win32config.h)
 

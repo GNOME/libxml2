@@ -1,3 +1,8 @@
+Thu Oct 31 17:11:46 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* catalog.c: fixed bug #96963, reverted to the old behaviour of
+	  xmlLoadCatalogs that used to separate directories with a ':'.
+
 Thu Oct 31 16:55:21 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* threads.c: improvements to the Windows-side of thread handling

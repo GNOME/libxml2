@@ -1,3 +1,9 @@
+Mon Nov 12 23:43:22 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlerror.h: avoid an include problem if
+	  #include <libxml/xmlerror.h> happens first in code
+	  seems to be the case in KDE libs
+
 Mon Nov 12 22:32:41 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* win32/dsp/* include/libxml/xmlwin32version.h.in: update

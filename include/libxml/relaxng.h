@@ -14,6 +14,8 @@
 #include <libxml/hash.h>
 #include <libxml/xmlstring.h>
 
+#ifdef LIBXML_SCHEMAS_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -176,4 +178,7 @@ XMLPUBFUN int XMLCALL
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_SCHEMAS_ENABLED */
+
 #endif /* __XML_RELAX_NG__ */

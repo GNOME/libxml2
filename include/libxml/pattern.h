@@ -15,6 +15,8 @@
 #include <libxml/tree.h>
 #include <libxml/dict.h>
 
+#ifdef LIBXML_PATTERN_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -45,4 +47,7 @@ XMLPUBFUN int XMLCALL
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_PATTERN_ENABLED */
+
 #endif /* __XML_PATTERN_H__ */

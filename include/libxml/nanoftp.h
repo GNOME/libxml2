@@ -138,6 +138,6 @@ XMLPUBFUN int XMLCALL
 
 #ifdef __cplusplus
 }
-#endif /* LIBXML_FTP_ENABLED */
 #endif
+#endif /* LIBXML_FTP_ENABLED */
 #endif /* __NANO_FTP_H__ */

@@ -20,6 +20,9 @@
 #define __XML_XPATH_H__
 
 #include <libxml/xmlversion.h>
+
+#ifdef LIBXML_XPATH_ENABLED
+
 #include <libxml/xmlerror.h>
 #include <libxml/tree.h>
 #include <libxml/hash.h>
@@ -464,4 +467,6 @@ XMLPUBFUN void XMLCALL
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_XPATH_ENABLED */
 #endif /* ! __XML_XPATH_H__ */

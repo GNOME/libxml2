@@ -1039,6 +1039,8 @@ nodePop(xmlParserCtxtPtr ctxt)
     ctxt->nodeTab[ctxt->nodeNr] = 0;
     return (ret);
 }
+
+#ifdef LIBXML_PUSH_ENABLED
 /**
  * nameNsPush:
  * @ctxt:  an XML parser context
@@ -1109,6 +1111,7 @@ nameNsPop(xmlParserCtxtPtr ctxt)
     ctxt->nameTab[ctxt->nameNr] = NULL;
     return (ret);
 }
+#endif /* LIBXML_PUSH_ENABLED */
 
 /**
  * namePush:

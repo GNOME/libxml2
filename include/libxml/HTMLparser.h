@@ -15,6 +15,8 @@
 #include <libxml/xmlversion.h>
 #include <libxml/parser.h>
 
+#ifdef LIBXML_HTML_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -292,4 +294,5 @@ XMLPUBFUN htmlStatus XMLCALL htmlNodeStatus(const htmlNodePtr, int) ;
 }
 #endif
 
+#endif /* LIBXML_HTML_ENABLED */
 #endif /* __HTML_PARSER_H__ */

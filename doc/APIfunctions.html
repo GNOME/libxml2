@@ -187,6 +187,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#xmlBufferWriteCHAR">xmlBufferWriteCHAR</a><br />
 <a href="html/libxml-tree.html#xmlBufferWriteQuotedString">xmlBufferWriteQuotedString</a><br />
 <a href="html/libxml-tree.html#xmlBuildQName">xmlBuildQName</a><br />
+<a href="html/libxml-uri.html#xmlBuildRelativeURI">xmlBuildRelativeURI</a><br />
 <a href="html/libxml-uri.html#xmlBuildURI">xmlBuildURI</a><br />
 <a href="html/libxml-uri.html#xmlCanonicPath">xmlCanonicPath</a><br />
 <a href="html/libxml-catalog.html#xmlCatalogAdd">xmlCatalogAdd</a><br />
@@ -903,7 +904,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlwriter.html#xmlNewTextWriterMemory">xmlNewTextWriterMemory</a><br />
 <a href="html/libxml-tree.html#xmlNodeBufGetContent">xmlNodeBufGetContent</a><br />
 <a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
-<a href="html/libxml-xmlsave.html#xmlSaveToBuffer">xmlSaveToBuffer</a><br />
 </p><h2>Type xmlC14NIsVisibleCallback:</h2><p><a href="html/libxml-c14n.html#xmlC14NExecute">xmlC14NExecute</a><br />
 </p><h2>Type xmlCatalogAllow:</h2><p><a href="html/libxml-catalog.html#xmlCatalogSetDefaults">xmlCatalogSetDefaults</a><br />
 </p><h2>Type xmlCatalogPrefer:</h2><p><a href="html/libxml-catalog.html#xmlCatalogSetDefaultPrefer">xmlCatalogSetDefaultPrefer</a><br />
@@ -975,6 +975,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlIO.html#xmlParserInputBufferCreateFd">xmlParserInputBufferCreateFd</a><br />
 <a href="html/libxml-xmlIO.html#xmlParserInputBufferCreateFile">xmlParserInputBufferCreateFile</a><br />
 <a href="html/libxml-xmlIO.html#xmlParserInputBufferCreateFilename">xmlParserInputBufferCreateFilename</a><br />
+<a href="html/libxml-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a><br />
 <a href="html/libxml-xmlIO.html#xmlParserInputBufferCreateIO">xmlParserInputBufferCreateIO</a><br />
 <a href="html/libxml-xmlIO.html#xmlParserInputBufferCreateMem">xmlParserInputBufferCreateMem</a><br />
 <a href="html/libxml-xmlIO.html#xmlParserInputBufferCreateStatic">xmlParserInputBufferCreateStatic</a><br />
@@ -988,6 +989,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFd">xmlOutputBufferCreateFd</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFile">xmlOutputBufferCreateFile</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFilename">xmlOutputBufferCreateFilename</a><br />
+<a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferCreateIO">xmlOutputBufferCreateIO</a><br />
 <a href="html/libxml-encoding.html#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a><br />
 <a href="html/libxml-parserInternals.html#xmlSwitchInputEncoding">xmlSwitchInputEncoding</a><br />
@@ -1494,6 +1496,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-valid.html#xmlValidateOneNamespace">xmlValidateOneNamespace</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathNodeSetAddNs">xmlXPathNodeSetAddNs</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathNodeSetFreeNs">xmlXPathNodeSetFreeNs</a><br />
+</p><h2>Type xmlOutputBufferCreateFilenameFunc:</h2><p><a href="html/libxml-xmlIO.html#xmlOutputBufferCreateFilenameDefault">xmlOutputBufferCreateFilenameDefault</a><br />
+<a href="html/libxml-globals.html#xmlThrDefOutputBufferCreateFilenameDefault">xmlThrDefOutputBufferCreateFilenameDefault</a><br />
 </p><h2>Type xmlOutputBufferPtr:</h2><p><a href="html/libxml-HTMLtree.html#htmlDocContentDumpFormatOutput">htmlDocContentDumpFormatOutput</a><br />
 <a href="html/libxml-HTMLtree.html#htmlDocContentDumpOutput">htmlDocContentDumpOutput</a><br />
 <a href="html/libxml-HTMLtree.html#htmlNodeDumpFormatOutput">htmlNodeDumpFormatOutput</a><br />
@@ -1621,6 +1625,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a><br />
 <a href="html/libxml-parserInternals.html#xmlSwitchInputEncoding">xmlSwitchInputEncoding</a><br />
 <a href="html/libxml-parserInternals.html#xmlSwitchToEncoding">xmlSwitchToEncoding</a><br />
+</p><h2>Type xmlParserInputBufferCreateFilenameFunc:</h2><p><a href="html/libxml-xmlIO.html#xmlParserInputBufferCreateFilenameDefault">xmlParserInputBufferCreateFilenameDefault</a><br />
+<a href="html/libxml-globals.html#xmlThrDefParserInputBufferCreateFilenameDefault">xmlThrDefParserInputBufferCreateFilenameDefault</a><br />
 </p><h2>Type xmlParserInputBufferPtr:</h2><p><a href="html/libxml-xmlIO.html#xmlFreeParserInputBuffer">xmlFreeParserInputBuffer</a><br />
 <a href="html/libxml-parser.html#xmlIOParseDTD">xmlIOParseDTD</a><br />
 <a href="html/libxml-parser.html#xmlNewIOInputStream">xmlNewIOInputStream</a><br />

@@ -18,6 +18,9 @@
 #define __XML_XPTR_H__
 
 #include <libxml/xmlversion.h>
+
+#ifdef LIBXML_XPTR_ENABLED
+
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 
@@ -106,4 +109,6 @@ XMLPUBFUN void XMLCALL
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_XPTR_ENABLED */
 #endif /* __XML_XPTR_H__ */

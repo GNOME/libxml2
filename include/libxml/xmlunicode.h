@@ -17,6 +17,8 @@
 
 #include <libxml/xmlversion.h>
 
+#ifdef LIBXML_UNICODE_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -194,4 +196,7 @@ XMLPUBFUN int XMLCALL xmlUCSIsCat	(int code, const char *cat);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_UNICODE_ENABLED */
+
 #endif /* __XML_UNICODE_H__ */

@@ -1357,7 +1357,6 @@ xmlSaveToFilename(const char *filename, const char *encoding, int options)
     return(ret);
 }
 
-#if 0
 /**
  * xmlSaveToBuffer:
  * @buffer:  a buffer
@@ -1368,14 +1367,13 @@ xmlSaveToFilename(const char *filename, const char *encoding, int options)
  * with the encoding and the options given
  *
  * Returns a new serialization context or NULL in case of error.
- */
 xmlSaveCtxtPtr
 xmlSaveToBuffer(xmlBufferPtr buffer, const char *encoding, int options)
 {
     TODO
     return(NULL);
 }
-#endif
+ */
 
 /**
  * xmlSaveToIO:

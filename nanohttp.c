@@ -158,7 +158,7 @@ static char *proxy = NULL;	 /* the proxy name if any */
 static int proxyPort;	/* the proxy port if any */
 static unsigned int timeout = 60;/* the select() timeout in seconds */
 
-int xmlNanoHTTPFetchContent( void * ctx, char ** ptr, int * len );
+static int xmlNanoHTTPFetchContent( void * ctx, char ** ptr, int * len );
 int xmlNanoHTTPContentLength( void * ctx );
 
 /**
@@ -1710,7 +1710,7 @@ xmlNanoHTTPMimeType( void * ctx ) {
  * -1 if received content length was less than specified or an error 
  * occurred.
  */
-int
+static int
 xmlNanoHTTPFetchContent( void * ctx, char ** ptr, int * len ) {
     xmlNanoHTTPCtxtPtr	ctxt = (xmlNanoHTTPCtxtPtr)ctx;
 

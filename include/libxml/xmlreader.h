@@ -17,6 +17,8 @@
 #include <libxml/relaxng.h>
 #endif
 
+#ifdef LIBXML_READER_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -359,5 +361,8 @@ XMLPUBFUN void XMLCALL
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_READER_ENABLED */
+
 #endif /* __XML_XMLREADER_H__ */
 

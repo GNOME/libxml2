@@ -1,3 +1,16 @@
+Sun Jun 27 14:02:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* elfgcchack.h doc/elfgcchack.xsl libxml.h: hack based on Arjan van de
+	  Ven suggestion to reduce ELF footprint and generated code. Based on
+	  aliasing of libraries function to generate direct call instead of
+	  indirect ones
+	* doc/libxml2-api.xml doc/Makefile.am doc/apibuild.py: added automatic
+	  generation of elfgcchack.h based on the API description, extended
+	  the API description to show the conditionals configuration flags
+	  required for symbols.
+	* nanohttp.c parser.c xmlsave.c include/libxml/*.h: lot of cleanup
+	* doc/*: regenerated the docs.
+
 Sun Jun 27 10:02:28 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* regressions.py, regressions.xml: new files for running

@@ -49,4 +49,12 @@ extern int __xmlRegisterCallbacks;
  */
 void __xmlIOErr(int domain, int code, const char *extra);
 void __xmlLoaderErr(void *ctx, const char *msg, const char *filename);
+
+#ifdef IN_LIBXML
+#ifdef __GNUC__
+#ifdef linux
+#include "elfgcchack.h"
+#endif
+#endif
+#endif
 #endif /* ! __XML_LIBXML_H__ */

@@ -16,6 +16,8 @@
 #include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 
+#ifdef LIBXML_XINCLUDE_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -113,4 +115,7 @@ XMLPUBFUN int XMLCALL
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_XINCLUDE_ENABLED */
+
 #endif /* __XML_XINCLUDE_H__ */

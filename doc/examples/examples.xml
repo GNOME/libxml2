@@ -309,10 +309,10 @@
       <include>&lt;libxml/parser.h&gt;</include>
     </includes>
     <uses>
-      <function line='93' file='parser' name='xmlFreeParserCtxt'/>
-      <function line='85' file='parser' name='xmlParseChunk'/>
-      <function line='66' file='parser' name='xmlCreatePushParserCtxt'/>
-      <typedef line='44' file='tree' name='xmlParserCtxtPtr'/>
+      <function line='94' file='parser' name='xmlFreeParserCtxt'/>
+      <function line='86' file='parser' name='xmlParseChunk'/>
+      <function line='67' file='parser' name='xmlCreatePushParserCtxt'/>
+      <typedef line='45' file='tree' name='xmlParserCtxtPtr'/>
     </uses>
   </example>
   <example filename='io2.c'>
@@ -327,13 +327,13 @@
       <include>&lt;libxml/parser.h&gt;</include>
     </includes>
     <uses>
-      <function line='27' file='tree' name='xmlNodeSetContent'/>
-      <function line='34' file='tree' name='xmlDocDumpFormatMemory'/>
-      <variable line='40' file='globals' name='xmlFree'/>
-      <function line='28' file='tree' name='xmlDocSetRootElement'/>
-      <typedef line='17' file='tree' name='xmlNodePtr'/>
-      <function line='25' file='tree' name='xmlNewDoc'/>
-      <function line='26' file='tree' name='xmlNewNode'/>
+      <function line='29' file='tree' name='xmlNodeSetContent'/>
+      <function line='36' file='tree' name='xmlDocDumpFormatMemory'/>
+      <variable line='42' file='globals' name='xmlFree'/>
+      <function line='30' file='tree' name='xmlDocSetRootElement'/>
+      <typedef line='19' file='tree' name='xmlNodePtr'/>
+      <function line='27' file='tree' name='xmlNewDoc'/>
+      <function line='28' file='tree' name='xmlNewNode'/>
     </uses>
   </example>
   <example filename='xpath2.c'>

@@ -18,6 +18,8 @@
 #include <libxml/parser.h>
 #include <libxml/xlink.h>
 
+#ifdef LIBXML_SAX1_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -162,4 +164,7 @@ XMLPUBFUN void XMLCALL
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_SAX1_ENABLED */
+
 #endif /* __XML_SAX_H__ */

@@ -11,6 +11,9 @@
 #ifndef __DOCB_PARSER_H__
 #define __DOCB_PARSER_H__
 #include <libxml/xmlversion.h>
+
+#ifdef LIBXML_DOCB_ENABLED
+
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 
@@ -87,4 +90,7 @@ XMLPUBFUN int XMLCALL
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_DOCB_ENABLED */
+
 #endif /* __DOCB_PARSER_H__ */

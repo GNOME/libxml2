@@ -15,6 +15,8 @@
 #include <libxml/xmlversion.h>
 #include <libxml/xpath.h>
 
+#ifdef LIBXML_XPATH_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -650,4 +652,6 @@ XMLPUBFUN void XMLCALL xmlXPathNodeSetFreeNs(xmlNsPtr ns);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_XPATH_ENABLED */
 #endif /* ! __XML_XPATH_INTERNALS_H__ */

@@ -11,6 +11,10 @@
 #ifndef __XML_XMLWRITER_H__
 #define __XML_XMLWRITER_H__
 
+#include <libxml/xmlversion.h>
+
+#ifdef LIBXML_WRITER_ENABLED
+
 #include <stdarg.h>
 #include <libxml/xmlIO.h>
 #include <libxml/list.h>
@@ -449,4 +453,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_WRITER_ENABLED */
+
 #endif                          /* __XML_XMLWRITER_H__ */

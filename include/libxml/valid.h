@@ -269,7 +269,7 @@ XMLPUBFUN xmlListPtr XMLCALL
 /**
  * The public function calls related to validity checking.
  */
-
+#ifdef LIBXML_VALID_ENABLED
 XMLPUBFUN int XMLCALL		
 		xmlValidateRoot		(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc);
@@ -337,6 +337,8 @@ XMLPUBFUN int XMLCALL
 		xmlValidateNotationUse	(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 					 const xmlChar *notationName);
+#endif /* LIBXML_VALID_ENABLED */
+
 XMLPUBFUN int XMLCALL		
 		xmlIsMixedElement	(xmlDocPtr doc,
 					 const xmlChar *name);
@@ -370,6 +372,9 @@ XMLPUBFUN int XMLCALL
 					 const xmlChar **list,
 					 int *len,
 					 int max);
+
+#ifdef LIBXML_VALID_ENABLED
+
 XMLPUBFUN int XMLCALL		
 		xmlValidateNameValue	(const xmlChar *value);
 XMLPUBFUN int XMLCALL		
@@ -379,6 +384,7 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL		
 		xmlValidateNmtokensValue(const xmlChar *value);
 
+#endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_REGEXP_ENABLED
 /*
  * Validation based on the regexp support

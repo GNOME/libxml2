@@ -118,11 +118,13 @@ __xmlMemStrdup
 #else
 xmlMemStrdup DATA
 #endif
+xmlOutputBufferCreateFilenameValue DATA
 #ifdef LIBXML_THREAD_ENABLED
 __xmlParserDebugEntities
 #else
 xmlParserDebugEntities DATA
 #endif
+xmlParserInputBufferCreateFilenameValue DATA
 xmlParserMaxDepth DATA
 #ifdef LIBXML_THREAD_ENABLED
 __xmlParserVersion
@@ -549,6 +551,7 @@ xmlBufferWriteCHAR
 xmlBufferWriteChar
 xmlBufferWriteQuotedString
 xmlBuildQName
+xmlBuildRelativeURI
 xmlBuildURI
 xmlByteConsumed
 #ifdef LIBXML_C14N_ENABLED
@@ -1172,6 +1175,7 @@ xmlOutputBufferClose
 xmlOutputBufferCreateFd
 xmlOutputBufferCreateFile
 xmlOutputBufferCreateFilename
+xmlOutputBufferCreateFilenameDefault
 xmlOutputBufferCreateIO
 xmlOutputBufferFlush
 xmlOutputBufferWrite
@@ -1251,6 +1255,7 @@ xmlParserHandleReference
 xmlParserInputBufferCreateFd
 xmlParserInputBufferCreateFile
 xmlParserInputBufferCreateFilename
+xmlParserInputBufferCreateFilenameDefault
 xmlParserInputBufferCreateIO
 xmlParserInputBufferCreateMem
 xmlParserInputBufferCreateStatic
@@ -1458,7 +1463,6 @@ xmlSaveFormatFileEnc
 xmlSaveFormatFileTo
 xmlSaveSetAttrEscape
 xmlSaveSetEscape
-xmlSaveToBuffer
 xmlSaveToFd
 xmlSaveToFilename
 xmlSaveToIO
@@ -1776,7 +1780,9 @@ xmlThrDefIndentTreeOutput
 xmlThrDefKeepBlanksDefaultValue
 xmlThrDefLineNumbersDefaultValue
 xmlThrDefLoadExtDtdDefaultValue
+xmlThrDefOutputBufferCreateFilenameDefault
 xmlThrDefParserDebugEntities
+xmlThrDefParserInputBufferCreateFilenameDefault
 xmlThrDefPedanticParserDefaultValue
 xmlThrDefRegisterNodeDefault
 xmlThrDefSaveNoEmptyTags

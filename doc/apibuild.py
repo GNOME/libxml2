@@ -12,6 +12,8 @@ import string
 import glob
 
 debug=0
+#debugsym='ignorableWhitespaceSAXFunc'
+debugsym=None
 
 #
 # C parser analysis code
@@ -29,6 +31,7 @@ ignored_files = {
   "testOOMlib.c": "out of memory tester",
   "rngparser.c": "not yet integrated",
   "rngparser.h": "not yet integrated",
+  "elfgcchack.h": "not a normal header",
 }
 
 ignored_words = {
@@ -44,6 +47,7 @@ ignored_words = {
   "XSLTCALL": (0, "Special macro for win32 calls"),
   "EXSLTCALL": (0, "Special macro for win32 calls"),
   "__declspec": (3, "Windows keyword"),
+  "__stdcall": (0, "Windows keyword"),
   "ATTRIBUTE_UNUSED": (0, "macro keyword"),
   "LIBEXSLT_PUBLIC": (0, "macro keyword"),
   "X_IN_Y": (5, "macro function builder"),
@@ -65,7 +69,7 @@ def uniq(items):
 
 class identifier:
     def __init__(self, name, module=None, type=None, lineno = 0,
-                 info=None, extra=None):
+                 info=None, extra=None, conditionals = None):
         self.name = name
 	self.module = module
 	self.type = type
@@ -73,6 +77,13 @@ class identifier:
 	self.extra = extra
 	self.lineno = lineno
 	self.static = 0
+	if conditionals == None or len(conditionals) == 0:
+	    self.conditionals = None
+	else:
+	    self.conditionals = conditionals[:]
+	if self.name == debugsym:
+	    print "=> define %s : %s" % (debugsym, (module, type, info,
+	                                 extra, conditionals))
 
     def __repr__(self):
         r = "%s %s:" % (self.type, self.name)
@@ -84,6 +95,8 @@ class identifier:
 	    r = r + " " +  `self.info`
 	if self.extra != None:
 	    r = r + " " + `self.extra`
+	if self.conditionals != None:
+	    r = r + " " + `self.conditionals`
 	return r
 
 
@@ -99,6 +112,11 @@ class identifier:
         self.lineno = lineno
     def set_static(self, static):
         self.static = static
+    def set_conditionals(self, conditionals):
+	if conditionals == None or len(conditionals) == 0:
+	    self.conditionals = None
+	else:
+	    self.conditionals = conditionals[:]
 
     def get_name(self):
         return self.name
@@ -114,8 +132,14 @@ class identifier:
         return self.extra
     def get_static(self):
         return self.static
+    def get_conditionals(self):
+        return self.conditionals
 
-    def update(self, module, type = None, info = None, extra=None):
+    def update(self, module, type = None, info = None, extra=None,
+               conditionals=None):
+	if self.name == debugsym:
+	    print "=> update %s : %s" % (debugsym, (module, type, info,
+	                                 extra, conditionals))
         if module != None and self.module == None:
 	    self.set_module(module)
         if type != None and self.type == None:
@@ -124,6 +148,8 @@ class identifier:
 	    self.set_info(info)
         if extra != None:
 	    self.set_extra(extra)
+        if conditionals != None:
+	    self.set_conditionals(conditionals)
 
 
 class index:
@@ -140,15 +166,15 @@ class index:
 	self.references = {}
 	self.info = {}
 
-    def add_ref(self, name, module, static, type, lineno, info=None, extra=None):
+    def add_ref(self, name, module, static, type, lineno, info=None, extra=None, conditionals = None):
         if name[0:2] == '__':
 	    return None
         d = None
         try:
 	   d = self.identifiers[name]
-	   d.update(module, type, lineno, info, extra)
+	   d.update(module, type, lineno, info, extra, conditionals)
 	except:
-	   d = identifier(name, module, type, lineno, info, extra)
+	   d = identifier(name, module, type, lineno, info, extra, conditionals)
 	   self.identifiers[name] = d
 
 	if d != None and static == 1:
@@ -157,15 +183,20 @@ class index:
 	if d != None and name != None and type != None:
 	    self.references[name] = d
 
-    def add(self, name, module, static, type, lineno, info=None, extra=None):
+	if name == debugsym:
+	    print "New ref: %s" % (d)
+
+	return d
+
+    def add(self, name, module, static, type, lineno, info=None, extra=None, conditionals = None):
         if name[0:2] == '__':
 	    return None
         d = None
         try:
 	   d = self.identifiers[name]
-	   d.update(module, type, lineno, info, extra)
+	   d.update(module, type, lineno, info, extra, conditionals)
 	except:
-	   d = identifier(name, module, type, lineno, info, extra)
+	   d = identifier(name, module, type, lineno, info, extra, conditionals)
 	   self.identifiers[name] = d
 
 	if d != None and static == 1:
@@ -190,6 +221,10 @@ class index:
 	        self.macros[name] = d
 	    else:
 	        print "Unable to register type ", type
+
+	if name == debugsym:
+	    print "New symbol: %s" % (d)
+
 	return d
 
     def merge(self, idx):
@@ -514,6 +549,8 @@ class CParser:
 	self.comment = None
 	self.collect_ref = 0
 	self.no_error = 0
+	self.conditionals = []
+	self.defines = []
 
     def collect_references(self):
         self.collect_ref = 1
@@ -529,12 +566,12 @@ class CParser:
 
     def index_add(self, name, module, static, type, info=None, extra = None):
         self.index.add(name, module, static, type, self.lineno(),
-	               info, extra)
+	               info, extra, self.conditionals)
 
     def index_add_ref(self, name, module, static, type, info=None,
                       extra = None):
         self.index.add_ref(name, module, static, type, self.lineno(),
-	               info, extra)
+	               info, extra, self.conditionals)
 
     def warning(self, msg):
         if self.no_error:
@@ -787,6 +824,8 @@ class CParser:
 	return(((ret[0], retdesc), args, desc))
 
     def parsePreproc(self, token):
+	if debug:
+	    print "=> preproc ", token, self.lexer.tokens
         name = token[1]
 	if name == "#include":
 	    token = self.lexer.token()
@@ -818,6 +857,22 @@ class CParser:
 		self.index_add(name, self.filename, not self.is_header,
 		                "macro", info)
 		return token
+	if name == "#ifdef" and self.is_header:
+	    try:
+	        self.defines.append(self.lexer.tokens[0][1])
+	        if string.find(self.lexer.tokens[0][1], 'ENABLED') != -1:
+		    self.conditionals.append(self.lexer.tokens[0][1])
+#		print self.conditionals
+#		print self.defines
+	    except:
+	        pass
+	if name == "#endif" and self.is_header:
+	    if self.conditionals != [] and self.defines != [] and \
+	       self.defines[-1] == self.conditionals[-1]:
+	        self.conditionals = self.conditionals[:-1]
+	    self.defines = self.defines[:-1]
+#	    print self.defines
+#	    print self.conditionals
 	token = self.lexer.token()
 	while token != None and token[0] == 'preproc' and \
 	    token[1][0] != '#':
@@ -1581,8 +1636,14 @@ class docBuilder:
 	              
     def serialize_function(self, output, name):
         id = self.idx.functions[name]
+	if name == debugsym:
+	    print "=>", id
+
         output.write("    <%s name='%s' file='%s'>\n" % (id.type, name,
 	             self.modulename_file(id.module)))
+	if id.conditionals != None:
+	    for cond in id.conditionals:
+	        output.write("      <cond>%s</cond>\n"% (cond));
 	try:
 	    (ret, params, desc) = id.info
 	    output.write("      <info>%s</info>\n" % (escape(desc)))
@@ -1910,4 +1971,8 @@ def parse(filename):
     return idx
 
 if __name__ == "__main__":
-    rebuild()
+    if len(sys.argv) > 1:
+        debug = 1
+        parse(sys.argv[1])
+    else:
+	rebuild()

@@ -52,6 +52,7 @@ struct _xmlHashTable {
     struct _xmlHashEntry *table;
     int size;
     int nbElems;
+    xmlDictPtr dict;
 };
 
 /*
@@ -149,6 +150,7 @@ xmlHashCreate(int size) {
   
     table = xmlMalloc(sizeof(xmlHashTable));
     if (table) {
+        table->dict = NULL;
         table->size = size;
 	table->nbElems = 0;
         table->table = xmlMalloc(size * sizeof(xmlHashEntry));
@@ -159,6 +161,27 @@ xmlHashCreate(int size) {
         xmlFree(table);
     }
     return(NULL);
+}
+
+/**
+ * xmlHashCreateDict:
+ * @size: the size of the hash table
+ * @dict: a dictionary to use for the hash
+ *
+ * Create a new xmlHashTablePtr which will use @dict as the internal dictionary
+ *
+ * Returns the newly created object, or NULL if an error occured.
+ */
+xmlHashTablePtr
+xmlHashCreateDict(int size, xmlDictPtr dict) {
+    xmlHashTablePtr table;
+
+    table = xmlHashCreate(size);
+    if (table != NULL) {
+        table->dict = dict;
+	xmlDictReference(dict);
+    }
+    return(table);
 }
 
 /**
@@ -282,12 +305,14 @@ xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
 		next = iter->next;
 		if ((f != NULL) && (iter->payload != NULL))
 		    f(iter->payload, iter->name);
-		if (iter->name)
-		    xmlFree(iter->name);
-		if (iter->name2)
-		    xmlFree(iter->name2);
-		if (iter->name3)
-		    xmlFree(iter->name3);
+		if (table->dict == NULL) {
+		    if (iter->name)
+			xmlFree(iter->name);
+		    if (iter->name2)
+			xmlFree(iter->name2);
+		    if (iter->name3)
+			xmlFree(iter->name3);
+		}
 		iter->payload = NULL;
 		if (!inside_table)
 		    xmlFree(iter);
@@ -299,6 +324,8 @@ xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
 	}
 	xmlFree(table->table);
     }
+    if (table->dict)
+        xmlDictFree(table->dict);
     xmlFree(table);
 }
 
@@ -463,8 +490,29 @@ xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
     xmlHashEntryPtr entry;
     xmlHashEntryPtr insert;
 
-    if ((table == NULL) || name == NULL)
+    if ((table == NULL) || (name == NULL))
 	return(-1);
+
+    /*
+     * If using a dict internalize if needed
+     */
+    if (table->dict) {
+        if (!xmlDictOwns(table->dict, name)) {
+	    name = xmlDictLookup(table->dict, name, -1);
+	    if (name == NULL)
+	        return(-1);
+	}
+        if ((name2 != NULL) && (!xmlDictOwns(table->dict, name2))) {
+	    name2 = xmlDictLookup(table->dict, name2, -1);
+	    if (name2 == NULL)
+	        return(-1);
+	}
+        if ((name3 != NULL) && (!xmlDictOwns(table->dict, name3))) {
+	    name3 = xmlDictLookup(table->dict, name3, -1);
+	    if (name3 == NULL)
+	        return(-1);
+	}
+    }
 
     /*
      * Check for duplicate and insertion location.
@@ -473,18 +521,33 @@ xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
     if (table->table[key].valid == 0) {
 	insert = NULL;
     } else {
-	for (insert = &(table->table[key]); insert->next != NULL;
-	     insert = insert->next) {
+        if (table->dict) {
+	    for (insert = &(table->table[key]); insert->next != NULL;
+		 insert = insert->next) {
+		if ((insert->name == name) &&
+		    (insert->name2 == name2) &&
+		    (insert->name3 == name3))
+		    return(-1);
+		len++;
+	    }
+	    if ((insert->name == name) &&
+		(insert->name2 == name2) &&
+		(insert->name3 == name3))
+		return(-1);
+	} else {
+	    for (insert = &(table->table[key]); insert->next != NULL;
+		 insert = insert->next) {
+		if ((xmlStrEqual(insert->name, name)) &&
+		    (xmlStrEqual(insert->name2, name2)) &&
+		    (xmlStrEqual(insert->name3, name3)))
+		    return(-1);
+		len++;
+	    }
 	    if ((xmlStrEqual(insert->name, name)) &&
 		(xmlStrEqual(insert->name2, name2)) &&
 		(xmlStrEqual(insert->name3, name3)))
 		return(-1);
-	    len++;
 	}
-	if ((xmlStrEqual(insert->name, name)) &&
-	    (xmlStrEqual(insert->name2, name2)) &&
-	    (xmlStrEqual(insert->name3, name3)))
-	    return(-1);
     }
 
     if (insert == NULL) {
@@ -495,9 +558,15 @@ xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
 	     return(-1);
     }
 
-    entry->name = xmlStrdup(name);
-    entry->name2 = xmlStrdup(name2);
-    entry->name3 = xmlStrdup(name3);
+    if (table->dict != NULL) {
+        entry->name = (xmlChar *) name;
+        entry->name2 = (xmlChar *) name2;
+        entry->name3 = (xmlChar *) name3;
+    } else {
+	entry->name = xmlStrdup(name);
+	entry->name2 = xmlStrdup(name2);
+	entry->name3 = xmlStrdup(name3);
+    }
     entry->payload = userdata;
     entry->next = NULL;
     entry->valid = 1;
@@ -541,14 +610,65 @@ xmlHashUpdateEntry3(xmlHashTablePtr table, const xmlChar *name,
 	return(-1);
 
     /*
+     * If using a dict internalize if needed
+     */
+    if (table->dict) {
+        if (!xmlDictOwns(table->dict, name)) {
+	    name = xmlDictLookup(table->dict, name, -1);
+	    if (name == NULL)
+	        return(-1);
+	}
+        if ((name2 != NULL) && (!xmlDictOwns(table->dict, name2))) {
+	    name2 = xmlDictLookup(table->dict, name2, -1);
+	    if (name2 == NULL)
+	        return(-1);
+	}
+        if ((name3 != NULL) && (!xmlDictOwns(table->dict, name3))) {
+	    name3 = xmlDictLookup(table->dict, name3, -1);
+	    if (name3 == NULL)
+	        return(-1);
+	}
+    }
+
+    /*
      * Check for duplicate and insertion location.
      */
     key = xmlHashComputeKey(table, name, name2, name3);
     if (table->table[key].valid == 0) {
 	insert = NULL;
     } else {
-	for (insert = &(table->table[key]); insert->next != NULL;
-	     insert = insert->next) {
+        if (table ->dict) {
+	    for (insert = &(table->table[key]); insert->next != NULL;
+		 insert = insert->next) {
+		if ((insert->name == name) &&
+		    (insert->name2 == name2) &&
+		    (insert->name3 == name3)) {
+		    if (f)
+			f(insert->payload, insert->name);
+		    insert->payload = userdata;
+		    return(0);
+		}
+	    }
+	    if ((insert->name == name) &&
+		(insert->name2 == name2) &&
+		(insert->name3 == name3)) {
+		if (f)
+		    f(insert->payload, insert->name);
+		insert->payload = userdata;
+		return(0);
+	    }
+	} else {
+	    for (insert = &(table->table[key]); insert->next != NULL;
+		 insert = insert->next) {
+		if ((xmlStrEqual(insert->name, name)) &&
+		    (xmlStrEqual(insert->name2, name2)) &&
+		    (xmlStrEqual(insert->name3, name3))) {
+		    if (f)
+			f(insert->payload, insert->name);
+		    insert->payload = userdata;
+		    return(0);
+		}
+	    }
 	    if ((xmlStrEqual(insert->name, name)) &&
 		(xmlStrEqual(insert->name2, name2)) &&
 		(xmlStrEqual(insert->name3, name3))) {
@@ -557,14 +677,6 @@ xmlHashUpdateEntry3(xmlHashTablePtr table, const xmlChar *name,
 		insert->payload = userdata;
 		return(0);
 	    }
-	}
-	if ((xmlStrEqual(insert->name, name)) &&
-	    (xmlStrEqual(insert->name2, name2)) &&
-	    (xmlStrEqual(insert->name3, name3))) {
-	    if (f)
-		f(insert->payload, insert->name);
-	    insert->payload = userdata;
-	    return(0);
 	}
     }
 
@@ -576,9 +688,15 @@ xmlHashUpdateEntry3(xmlHashTablePtr table, const xmlChar *name,
 	     return(-1);
     }
 
-    entry->name = xmlStrdup(name);
-    entry->name2 = xmlStrdup(name2);
-    entry->name3 = xmlStrdup(name3);
+    if (table->dict != NULL) {
+        entry->name = (xmlChar *) name;
+        entry->name2 = (xmlChar *) name2;
+        entry->name3 = (xmlChar *) name3;
+    } else {
+	entry->name = xmlStrdup(name);
+	entry->name2 = xmlStrdup(name2);
+	entry->name3 = xmlStrdup(name3);
+    }
     entry->payload = userdata;
     entry->next = NULL;
     entry->valid = 1;
@@ -615,6 +733,14 @@ xmlHashLookup3(xmlHashTablePtr table, const xmlChar *name,
     key = xmlHashComputeKey(table, name, name2, name3);
     if (table->table[key].valid == 0)
 	return(NULL);
+    if (table->dict) {
+	for (entry = &(table->table[key]); entry != NULL; entry = entry->next) {
+	    if ((entry->name == name) &&
+		(entry->name2 == name2) &&
+		(entry->name3 == name3))
+		return(entry->payload);
+	}
+    }
     for (entry = &(table->table[key]); entry != NULL; entry = entry->next) {
 	if ((xmlStrEqual(entry->name, name)) &&
 	    (xmlStrEqual(entry->name2, name2)) &&
@@ -920,12 +1046,14 @@ xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
                 if ((f != NULL) && (entry->payload != NULL))
                     f(entry->payload, entry->name);
                 entry->payload = NULL;
-                if(entry->name)
-                    xmlFree(entry->name);
-                if(entry->name2)
-                    xmlFree(entry->name2);
-                if(entry->name3)
-                    xmlFree(entry->name3);
+		if (table->dict == NULL) {
+		    if(entry->name)
+			xmlFree(entry->name);
+		    if(entry->name2)
+			xmlFree(entry->name2);
+		    if(entry->name3)
+			xmlFree(entry->name3);
+		}
                 if(prev) {
                     prev->next = entry->next;
 		    xmlFree(entry);

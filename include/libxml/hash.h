@@ -27,6 +27,7 @@ typedef xmlHashTable *xmlHashTablePtr;
 
 #include <libxml/xmlversion.h>
 #include <libxml/parser.h>
+#include <libxml/dict.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -99,6 +100,9 @@ typedef void (*xmlHashScannerFull)(void *payload, void *data,
  */
 XMLPUBFUN xmlHashTablePtr XMLCALL
 			xmlHashCreate	(int size);
+XMLPUBFUN xmlHashTablePtr XMLCALL
+			xmlHashCreateDict(int size,
+					 xmlDictPtr dict);
 XMLPUBFUN void XMLCALL			
 			xmlHashFree	(xmlHashTablePtr table,
 					 xmlHashDeallocator f);

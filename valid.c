@@ -1207,18 +1207,6 @@ xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int
  ****************************************************************/
 
 /**
- * xmlCreateElementTable:
- *
- * create and initialize an empty element hash table.
- *
- * Returns the xmlElementTablePtr just created or NULL in case of error.
- */
-static xmlElementTablePtr
-xmlCreateElementTable(void) {
-    return(xmlHashCreate(0));
-}
-
-/**
  * xmlFreeElement:
  * @elem:  An element
  *
@@ -1269,6 +1257,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
     if (name == NULL) {
 	return(NULL);
     }
+
     switch (type) {
         case XML_ELEMENT_TYPE_EMPTY:
 	    if (content != NULL) {
@@ -1321,7 +1310,11 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
      */
     table = (xmlElementTablePtr) dtd->elements;
     if (table == NULL) {
-        table = xmlCreateElementTable();
+	xmlDictPtr dict = NULL;
+
+	if (dtd->doc != NULL)
+	    dict = dtd->doc->dict;
+        table = xmlHashCreateDict(0, dict);
 	dtd->elements = (void *) table;
     }
     if (table == NULL) {
@@ -1683,19 +1676,6 @@ xmlDumpEnumeration(xmlBufferPtr buf, xmlEnumerationPtr cur) {
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
-/**
- * xmlCreateAttributeTable:
- *
- * create and initialize an empty attribute hash table.
- *
- * Returns the xmlAttributeTablePtr just created or NULL in case
- *                of error.
- */
-static xmlAttributeTablePtr
-xmlCreateAttributeTable(void) {
-    return(xmlHashCreate(0));
-}
-
 #ifdef LIBXML_VALID_ENABLED
 /**
  * xmlScanAttributeDeclCallback:
@@ -1899,7 +1879,10 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
      */
     table = (xmlAttributeTablePtr) dtd->attributes;
     if (table == NULL) {
-        table = xmlCreateAttributeTable();
+	xmlDictPtr dict = NULL;
+	if (dtd->doc != NULL)
+	    dict = dtd->doc->dict;
+        table = xmlHashCreateDict(0, dict);
 	dtd->attributes = (void *) table;
     }
     if (table == NULL) {
@@ -2185,19 +2168,6 @@ xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
  *									*
  ************************************************************************/
 /**
- * xmlCreateNotationTable:
- *
- * create and initialize an empty notation hash table.
- *
- * Returns the xmlNotationTablePtr just created or NULL in case
- *                of error.
- */
-static xmlNotationTablePtr
-xmlCreateNotationTable(void) {
-    return(xmlHashCreate(0));
-}
-
-/**
  * xmlFreeNotation:
  * @not:  A notation
  *
@@ -2249,8 +2219,13 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd,
      * Create the Notation table if needed.
      */
     table = (xmlNotationTablePtr) dtd->notations;
-    if (table == NULL) 
-        dtd->notations = table = xmlCreateNotationTable();
+    if (table == NULL) {
+	xmlDictPtr dict = NULL;
+	if (dtd->doc != NULL)
+	    dict = dtd->doc->dict;
+
+        dtd->notations = table = xmlHashCreateDict(0, dict);
+    }
     if (table == NULL) {
 	xmlVErrMemory(ctxt,
 		"xmlAddNotationDecl: Table creation failed!\n");
@@ -2421,19 +2396,6 @@ xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
 	    xmlFree((char *)(str));
 
 /**
- * xmlCreateIDTable:
- *
- * create and initialize an empty id hash table.
- *
- * Returns the xmlIDTablePtr just created or NULL in case
- *                of error.
- */
-static xmlIDTablePtr
-xmlCreateIDTable(void) {
-    return(xmlHashCreate(0));
-}
-
-/**
  * xmlFreeID:
  * @not:  A id
  *
@@ -2487,8 +2449,9 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
      * Create the ID table if needed.
      */
     table = (xmlIDTablePtr) doc->ids;
-    if (table == NULL) 
-        doc->ids = table = xmlCreateIDTable();
+    if (table == NULL)  {
+        doc->ids = table = xmlHashCreateDict(0, doc->dict);
+    }
     if (table == NULL) {
 	xmlVErrMemory(ctxt,
 		"xmlAddID: Table creation failed!\n");
@@ -2705,19 +2668,6 @@ typedef struct xmlValidateMemo_t
 typedef xmlValidateMemo *xmlValidateMemoPtr;
 
 /**
- * xmlCreateRefTable:
- *
- * create and initialize an empty ref hash table.
- *
- * Returns the xmlRefTablePtr just created or NULL in case
- *                of error.
- */
-static xmlRefTablePtr
-xmlCreateRefTable(void) {
-    return(xmlHashCreate(0));
-}
-
-/**
  * xmlFreeRef:
  * @lk:  A list link
  *
@@ -2813,8 +2763,9 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
      * Create the Ref table if needed.
      */
     table = (xmlRefTablePtr) doc->refs;
-    if (table == NULL) 
-        doc->refs = table = xmlCreateRefTable();
+    if (table == NULL) {
+        doc->refs = table = xmlHashCreateDict(0, doc->dict);
+    }
     if (table == NULL) {
 	xmlVErrMemory(ctxt,
             "xmlAddRef: Table creation failed!\n");
@@ -3063,6 +3014,11 @@ xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
 
     if (dtd == NULL) return(NULL);
     if (dtd->elements == NULL) {
+	xmlDictPtr dict = NULL;
+
+	if (dtd->doc != NULL)
+	    dict = dtd->doc->dict;
+
 	if (!create) 
 	    return(NULL);
 	/*
@@ -3070,7 +3026,7 @@ xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
 	 */
 	table = (xmlElementTablePtr) dtd->elements;
 	if (table == NULL) {
-	    table = xmlCreateElementTable();
+	    table = xmlHashCreateDict(0, dict);
 	    dtd->elements = (void *) table;
 	}
 	if (table == NULL) {

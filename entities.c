@@ -161,13 +161,13 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
         case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
         case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
 	    if (dtd->entities == NULL)
-		dtd->entities = xmlHashCreate(0);
+		dtd->entities = xmlHashCreateDict(0, dict);
 	    table = dtd->entities;
 	    break;
         case XML_INTERNAL_PARAMETER_ENTITY:
         case XML_EXTERNAL_PARAMETER_ENTITY:
 	    if (dtd->pentities == NULL)
-		dtd->pentities = xmlHashCreate(0);
+		dtd->pentities = xmlHashCreateDict(0, dict);
 	    table = dtd->pentities;
 	    break;
         case XML_INTERNAL_PREDEFINED_ENTITY:
@@ -726,6 +726,7 @@ xmlEncodeSpecialChars(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *input) {
  * xmlCreateEntitiesTable:
  *
  * create and initialize an empty entities hash table.
+ * This really doesn't make sense and should be deprecated
  *
  * Returns the xmlEntitiesTablePtr just created or NULL in case of error.
  */

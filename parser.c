@@ -642,7 +642,7 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
     const xmlChar *prefix;
 
     if (ctxt->attsDefault == NULL) {
-        ctxt->attsDefault = xmlHashCreate(10);
+        ctxt->attsDefault = xmlHashCreateDict(10, ctxt->dict);
 	if (ctxt->attsDefault == NULL)
 	    goto mem_error;
     }
@@ -729,7 +729,7 @@ xmlAddSpecialAttr(xmlParserCtxtPtr ctxt,
 		  int type)
 {
     if (ctxt->attsSpecial == NULL) {
-        ctxt->attsSpecial = xmlHashCreate(10);
+        ctxt->attsSpecial = xmlHashCreateDict(10, ctxt->dict);
 	if (ctxt->attsSpecial == NULL)
 	    goto mem_error;
     }
@@ -3588,7 +3588,7 @@ void
 xmlParseComment(xmlParserCtxtPtr ctxt) {
     xmlChar *buf = NULL;
     int size = XML_PARSER_BUFFER_SIZE;
-    int len;
+    int len = 0;
     xmlParserInputState state;
     const xmlChar *in;
     int nbchar = 0, ccol;

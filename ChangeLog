@@ -1,3 +1,10 @@
+Sun Jan 23 23:54:39 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* hash.c include/libxml/hash.h: added xmlHashCreateDict where
+	  the hash reuses the dictionnary for internal strings
+	* entities.c valid.c parser.c: reuse that new API, leads to a decent
+	  speedup when parsing for example DocBook documents.
+
 Sun Jan 23 21:14:20 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: small speedup in skipping blanks characters

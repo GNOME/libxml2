@@ -217,7 +217,8 @@ xmlNewTextWriterMemory(xmlBufferPtr buf, int compression ATTRIBUTE_UNUSED)
  * Returns the new xmlTextWriterPtr or NULL in case of error
  */
 xmlTextWriterPtr
-xmlNewTextWriterPushParser(xmlParserCtxtPtr ctxt, int compression)
+xmlNewTextWriterPushParser(xmlParserCtxtPtr ctxt,
+                           int compression ATTRIBUTE_UNUSED)
 {
     xmlTextWriterPtr ret;
     xmlOutputBufferPtr out;
@@ -273,7 +274,7 @@ xmlNewTextWriterDoc(xmlDocPtr * doc, int compression)
         return NULL;
     }
 
-    ctxt->myDoc = xmlNewDoc(XML_DEFAULT_VERSION);
+    ctxt->myDoc = xmlNewDoc(BAD_CAST XML_DEFAULT_VERSION);
     if (ctxt->myDoc == NULL) {
         xmlFreeParserCtxt(ctxt);
         xmlGenericError(xmlGenericErrorContext,
@@ -552,6 +553,7 @@ xmlTextWriterEndDocument(xmlTextWriterPtr writer)
  * xmlTextWriterWriteFormatComment:
  * @writer:  the xmlTextWriterPtr
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write an xml comment.
  *
@@ -929,6 +931,7 @@ xmlTextWriterFullEndElement(xmlTextWriterPtr writer)
  * xmlTextWriterWriteFormatRaw:
  * @writer:  the xmlTextWriterPtr
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted raw xml text.
  *
@@ -1066,6 +1069,7 @@ xmlTextWriterWriteRaw(xmlTextWriterPtr writer, const xmlChar * content)
  * xmlTextWriterWriteFormatString:
  * @writer:  the xmlTextWriterPtr
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted xml text.
  *
@@ -1644,6 +1648,7 @@ xmlTextWriterEndAttribute(xmlTextWriterPtr writer)
  * @writer:  the xmlTextWriterPtr
  * @name:  attribute name
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted xml attribute.
  *
@@ -1738,6 +1743,7 @@ xmlTextWriterWriteAttribute(xmlTextWriterPtr writer, const xmlChar * name,
  * @name:  attribute local name
  * @namespaceURI:  namespace URI
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted xml attribute.with namespace support
  *
@@ -1859,6 +1865,7 @@ xmlTextWriterWriteAttributeNS(xmlTextWriterPtr writer,
  * @writer:  the xmlTextWriterPtr
  * @name:  element name
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted xml element.
  *
@@ -1953,6 +1960,7 @@ xmlTextWriterWriteElement(xmlTextWriterPtr writer, const xmlChar * name,
  * @name:  element local name
  * @namespaceURI:  namespace URI
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted xml element with namespace support.
  *
@@ -2193,6 +2201,7 @@ xmlTextWriterEndPI(xmlTextWriterPtr writer)
  * @writer:  the xmlTextWriterPtr
  * @target:  PI target
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted PI.
  *
@@ -2401,6 +2410,7 @@ xmlTextWriterEndCDATA(xmlTextWriterPtr writer)
  * xmlTextWriterWriteFormatCDATA:
  * @writer:  the xmlTextWriterPtr
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted xml CDATA.
  *
@@ -2655,6 +2665,7 @@ xmlTextWriterEndDTD(xmlTextWriterPtr writer)
  * @pubid:  the public identifier, which is an alternative to the system identifier
  * @sysid:  the system identifier, which is the URI of the DTD
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a DTD with a formatted markup declarations part.
  *
@@ -2840,6 +2851,7 @@ xmlTextWriterStartDTDElement(xmlTextWriterPtr writer, const xmlChar * name)
  * @writer:  the xmlTextWriterPtr
  * @name:  the name of the DTD element
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted DTD element.
  *
@@ -3024,6 +3036,7 @@ xmlTextWriterStartDTDAttlist(xmlTextWriterPtr writer, const xmlChar * name)
  * @writer:  the xmlTextWriterPtr
  * @name:  the name of the DTD ATTLIST
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted DTD ATTLIST.
  *
@@ -3219,6 +3232,7 @@ xmlTextWriterStartDTDEntity(xmlTextWriterPtr writer,
  * @pe:  TRUE if this is a parameter entity, FALSE if not
  * @name:  the name of the DTD entity
  * @format:  format string (see printf)
+ * @...:  extra parameters for the format
  *
  * Write a formatted DTD internal entity.
  *
@@ -3795,7 +3809,7 @@ xmlTextWriterWriteDocCallback(void *context, const xmlChar * str, int len)
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) context;
     int rc;
 
-    if ((rc = xmlParseChunk(ctxt, str, len, 0)) != 0) {
+    if ((rc = xmlParseChunk(ctxt, (const char *) str, len, 0)) != 0) {
         xmlGenericError(xmlGenericErrorContext,
                         "xmlTextWriterWriteDocCallback : XML error %d !\n",
                         rc);

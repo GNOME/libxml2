@@ -1,3 +1,10 @@
+Fri Nov 21 01:26:00 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: applied patch from Robert Stepanek to start 
+	  import os schemas support, cleaned up stuff and the patch.
+	* test/schemas/import0_0.* result/schemas/import0_0_0*: added test
+	  to regression, fixed a few regressions too.
+
 Thu Nov 20 22:58:00 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: applied two parsing fixes from James Bursa

@@ -133,6 +133,15 @@ struct _xmlSchemaValidCtxt {
     xmlSchemaAttrStatePtr attr;
 };
 
+/*
+ * These are the entries in the schemas importSchemas hash table
+ */
+typedef struct _xmlSchemaImport xmlSchemaImport;
+typedef xmlSchemaImport *xmlSchemaImportPtr;
+struct _xmlSchemaImport {
+    const xmlChar *schemaLocation;
+    xmlSchemaPtr schema;
+};
 
 /************************************************************************
  * 									*
@@ -398,6 +407,23 @@ xmlSchemaFreeAnnot(xmlSchemaAnnotPtr annot)
 }
 
 /**
+ * xmlSchemaFreeImport:
+ * @import:  a schema import structure
+ *
+ * Deallocate an import structure
+ */
+static void
+xmlSchemaFreeImport(xmlSchemaImportPtr import)
+{
+    if (import == NULL)
+        return;
+
+    xmlSchemaFree(import->schema);
+    xmlFree((xmlChar *) import->schemaLocation);
+    xmlFree(import);
+}
+
+/**
  * xmlSchemaFreeNotation:
  * @schema:  a schema notation structure
  *
@@ -522,6 +548,8 @@ xmlSchemaFreeType(xmlSchemaTypePtr type)
         return;
     if (type->name != NULL)
         xmlFree((xmlChar *) type->name);
+    if (type->ref != NULL)
+        xmlFree((xmlChar *) type->ref);
     if (type->base != NULL)
         xmlFree((xmlChar *) type->base);
     if (type->baseNs != NULL)
@@ -577,6 +605,9 @@ xmlSchemaFree(xmlSchemaPtr schema)
     if (schema->groupDecl != NULL)
         xmlHashFree(schema->groupDecl,
                     (xmlHashDeallocator) xmlSchemaFreeType);
+    if (schema->schemasImports != NULL)
+	xmlHashFree(schema->schemasImports,
+		    (xmlHashDeallocator) xmlSchemaFreeImport);
     if (schema->annot != NULL)
         xmlSchemaFreeAnnot(schema->annot);
     if (schema->doc != NULL)
@@ -845,6 +876,7 @@ xmlSchemaGetType(xmlSchemaPtr schema, const xmlChar * name,
                  const xmlChar * namespace)
 {
     xmlSchemaTypePtr ret;
+    xmlSchemaImportPtr import;
 
     if (name == NULL)
         return (NULL);
@@ -854,6 +886,11 @@ xmlSchemaGetType(xmlSchemaPtr schema, const xmlChar * name,
             return (ret);
     }
     ret = xmlSchemaGetPredefinedType(name, namespace);
+    if (ret != NULL)
+	return (ret);
+    import = xmlHashLookup(schema->schemasImports, namespace);
+    if (import != NULL)
+	ret = xmlSchemaGetType(import->schema, name, namespace);
 #ifdef DEBUG
     if (ret == NULL) {
         if (namespace == NULL)
@@ -2216,8 +2253,10 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         name = xmlStrdup((xmlChar *) buf);
     }
     type = xmlSchemaAddGroup(ctxt, schema, name);
+    xmlFree(name);
     if (type == NULL)
         return (NULL);
+
     type->node = node;
     type->type = XML_SCHEMA_TYPE_GROUP;
     type->id = xmlGetProp(node, BAD_CAST "id");
@@ -2319,6 +2358,63 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 }
 
 /**
+ * xmlSchemaImportSchema
+ * 
+ * @ctxt:  a schema validation context
+ * @schemaLocation:  an URI defining where to find the imported schema
+ *
+ * import a XML schema
+ * *WARNING* this interface is highly subject to change
+ *
+ * Returns -1 in case of error and 1 in case of success.
+ */
+static xmlSchemaImportPtr
+xmlSchemaImportSchema(xmlSchemaParserCtxtPtr ctxt,
+                      const xmlChar *schemaLocation)
+{
+    xmlSchemaImportPtr import;
+    xmlSchemaParserCtxtPtr newctxt;
+
+    newctxt = xmlSchemaNewParserCtxt((const char *) schemaLocation);
+    if (newctxt == NULL) {
+        xmlSchemaPErrMemory(NULL, "allocating parser context",
+                            NULL);
+        return (NULL);
+    }
+    xmlSchemaSetParserErrors(newctxt, ctxt->error, ctxt->warning,
+	                     ctxt->userData);
+
+    import = (xmlSchemaImport*) xmlMalloc(sizeof(xmlSchemaImport));
+    if (import == NULL) {
+        xmlSchemaPErrMemory(NULL, "allocating imported schema",
+                            NULL);
+	xmlSchemaFreeParserCtxt(newctxt);
+        return (NULL);
+    }
+
+    memset(import, 0, sizeof(xmlSchemaImport));
+    import->schemaLocation = xmlStrdup(schemaLocation);
+    import->schema = xmlSchemaParse(newctxt);
+
+    if (import->schema == NULL) {
+        /* FIXME use another error enum here ? */
+        xmlSchemaPErr(ctxt, NULL, XML_SCHEMAS_ERR_INTERNAL,
+	              "failed to import schema at location %s\n",
+		      schemaLocation, NULL);
+
+	xmlSchemaFreeParserCtxt(newctxt);
+	if (import->schemaLocation != NULL)
+	    xmlFree((xmlChar *)import->schemaLocation);
+	xmlFree(import);
+	return NULL;
+    }
+
+    xmlSchemaFreeParserCtxt(newctxt);
+    return import;
+}
+
+
+/**
  * xmlSchemaParseImport:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
@@ -2335,10 +2431,12 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                      xmlNodePtr node)
 {
     xmlNodePtr child = NULL;
+    xmlSchemaImportPtr import = NULL;
     xmlChar *namespace;
     xmlChar *schemaLocation;
-    xmlChar *previous;
+    const xmlChar *previous;
     xmlURIPtr check;
+
 
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (-1);
@@ -2359,6 +2457,8 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
     schemaLocation = xmlGetProp(node, BAD_CAST "schemaLocation");
     if (schemaLocation != NULL) {
+        xmlChar *base = NULL;
+        xmlChar *URI = NULL;
         check = xmlParseURI((const char *) schemaLocation);
         if (check == NULL) {
             xmlSchemaPErr2(ctxt, node, child,
@@ -2372,6 +2472,17 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         } else {
             xmlFreeURI(check);
         }
+	base = xmlNodeGetBase(node->doc, node);
+	if (base == NULL) {
+	    URI = xmlBuildURI(schemaLocation, node->doc->URL);
+	} else {
+	    URI = xmlBuildURI(schemaLocation, base);
+	}
+	if (base != NULL) xmlFree(base);
+	if (URI != NULL) {
+	    xmlFree(schemaLocation);
+	    schemaLocation = URI;
+	}
     }
     if (schema->schemasImports == NULL) {
         schema->schemasImports = xmlHashCreate(10);
@@ -2388,8 +2499,13 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         }
     }
     if (namespace == NULL) {
-        previous = xmlHashLookup(schema->schemasImports,
-                                 XML_SCHEMAS_DEFAULT_NAMESPACE);
+        import = xmlHashLookup(schema->schemasImports,
+	                               XML_SCHEMAS_DEFAULT_NAMESPACE);
+	if (import != NULL)
+            previous = import->schemaLocation;
+	else
+	    previous = NULL;
+
         if (schemaLocation != NULL) {
             if (previous != NULL) {
                 if (!xmlStrEqual(schemaLocation, previous)) {
@@ -2399,13 +2515,27 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                                    schemaLocation, NULL);
                 }
             } else {
+	        import = xmlSchemaImportSchema(ctxt, schemaLocation);
+		if (import == NULL) {
+		    if (schemaLocation != NULL)
+			xmlFree(schemaLocation);
+		    if (namespace != NULL)
+			xmlFree(namespace);
+		    return (-1);
+		}
                 xmlHashAddEntry(schema->schemasImports,
                                 XML_SCHEMAS_DEFAULT_NAMESPACE,
-                                schemaLocation);
+                                import);
             }
+	    xmlFree(schemaLocation);
         }
     } else {
-        previous = xmlHashLookup(schema->schemasImports, namespace);
+        import = xmlHashLookup(schema->schemasImports, namespace);
+	if (import != NULL)
+	    previous = import->schemaLocation;
+	else
+	    previous = NULL;
+
         if (schemaLocation != NULL) {
             if (previous != NULL) {
                 if (!xmlStrEqual(schemaLocation, previous)) {
@@ -2415,11 +2545,22 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                                    namespace, schemaLocation);
                 }
             } else {
+	        import = xmlSchemaImportSchema(ctxt, schemaLocation);
+		if (import == NULL) {
+		    if (schemaLocation != NULL)
+			xmlFree(schemaLocation);
+		    if (namespace != NULL)
+			xmlFree(namespace);
+		    return (-1);
+		}
                 xmlHashAddEntry(schema->schemasImports,
-                                namespace, schemaLocation);
+                                namespace, import);
             }
         }
+	xmlFree(namespace);
     }
+    if (schemaLocation != NULL)
+	xmlFree(schemaLocation);
 
     child = node->children;
     while (IS_SCHEMA(child, "annotation")) {
@@ -4271,6 +4412,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
 	xmlSchemaPErr(ctxt, (xmlNodePtr) doc,
 		      XML_SCHEMAP_NOROOT,
 		      "schemas has no root", NULL, NULL);
+	xmlFreeDoc(doc);
         return (NULL);
     }
 
@@ -4338,8 +4480,10 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
      * Then do the parsing for good
      */
     ret = xmlSchemaParseSchema(ctxt, root);
-    if (ret == NULL)
+    if (ret == NULL) {
+	xmlFreeDoc(doc);
         return (NULL);
+    }
     ret->doc = doc;
 
     /*

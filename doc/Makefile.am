@@ -31,9 +31,11 @@ EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
 
 man_MANS = xmllint.1 xmlcatalog.1
 
-all: api web $(top_srcdir)/NEWS libxml2.xsa $(man_MANS)
+all: web $(top_srcdir)/NEWS libxml2.xsa $(man_MANS)
 
-web: $(PAGES) $(APIPAGES) $(srcdir)/html/index.html
+api: libxml2-api.xml libxml2-refs.xml $(APIPAGES) $(srcdir)/html/index.html $(WIN32_DIR)/libxml2.def.src
+
+web: $(PAGES)
 
 $(PAGES): xml.html site.xsl
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
@@ -69,8 +71,6 @@ $(srcdir)/html/index.html: libxml2-api.xml $(srcdir)/newapi.xsl
 	  echo "Validating the resulting XHTML pages" ; \
 	  $(bindir)/xmllint --nonet --valid --noout html/*.html ; fi );
 
-api: libxml2-api.xml libxml2-refs.xml $(WIN32_DIR)/libxml2.def.src
-
 $(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
 	  $(bindir)/xsltproc -o $(WIN32_DIR)/libxml2.def.src \
@@ -91,7 +91,7 @@ clean-local:
 maintainer-clean-local: clean
 	rm -rf libxml-decl-list.txt libxml-decl.txt 
 
-rebuild: api web
+rebuild: api all
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)

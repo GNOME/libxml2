@@ -1,3 +1,12 @@
+Sun Sep 24 20:32:52 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.c: patch for normalize-string() substring-before(),
+	  substring-after() and translate() functions from Bjorn Reese
+	  <breese@mail1.stofanet.dk>
+	* libxml.m4 Makefile.am: added libxml.m4 from Debian ?
+	  Fredrik Hallenberg <hallon@lysator.liu.se>
+	* TODO: updated
+
 Sun Sep 24 10:00:49 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xmlversion.h.in nanoftp.c nanohttp.c: traying to work out the

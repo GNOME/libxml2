@@ -2760,8 +2760,29 @@ xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathSubstringBeforeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-    CHECK_ARITY(2);
-    TODO /* substring before */
+  xmlXPathObjectPtr str;
+  xmlXPathObjectPtr find;
+  xmlBufferPtr target;
+  const xmlChar *point;
+  int offset;
+  
+  CHECK_ARITY(2);
+  find = valuePop(ctxt);
+  str = valuePop(ctxt);
+  
+  target = xmlBufferCreate();
+  if (target) {
+    point = xmlStrstr(str->stringval, find->stringval);
+    if (point) {
+      offset = (int)(point - str->stringval);
+      xmlBufferAdd(target, str->stringval, offset);
+    }
+    valuePush(ctxt, xmlXPathNewString(xmlBufferContent(target)));
+    xmlBufferFree(target);
+  }
+  
+  xmlXPathFreeObject(str);
+  xmlXPathFreeObject(find);
 }
 
 /**
@@ -2778,8 +2799,30 @@ xmlXPathSubstringBeforeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathSubstringAfterFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-    CHECK_ARITY(2);
-    TODO /* substring after */
+  xmlXPathObjectPtr str;
+  xmlXPathObjectPtr find;
+  xmlBufferPtr target;
+  const xmlChar *point;
+  int offset;
+  
+  CHECK_ARITY(2);
+  find = valuePop(ctxt);
+  str = valuePop(ctxt);
+  
+  target = xmlBufferCreate();
+  if (target) {
+    point = xmlStrstr(str->stringval, find->stringval);
+    if (point) {
+      offset = (int)(point - str->stringval) + xmlStrlen(find->stringval);
+      xmlBufferAdd(target, &str->stringval[offset],
+		   xmlStrlen(str->stringval) - offset);
+    }
+    valuePush(ctxt, xmlXPathNewString(xmlBufferContent(target)));
+    xmlBufferFree(target);
+  }
+  
+  xmlXPathFreeObject(str);
+  xmlXPathFreeObject(find);
 }
 
 /**
@@ -2796,8 +2839,49 @@ xmlXPathSubstringAfterFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
+  xmlXPathObjectPtr obj = NULL;
+  xmlChar *source = NULL;
+  xmlBufferPtr target;
+  xmlChar blank;
+  
+  if (nargs < 1) {
+    /* Use current context node */
+    CHECK_ARITY(0);
+    TODO /* source = xmlNodeGetContent(ctxt->context->node); */
+  } else if (nargs >= 1) {
+    /* Use argument */
     CHECK_ARITY(1);
-    TODO /* normalize isn't as boring as translate, but pretty much */
+    obj = valuePop(ctxt);
+    if (obj == NULL) XP_ERROR(XPATH_INVALID_OPERAND);
+    source = obj->stringval;
+  }
+  target = xmlBufferCreate();
+  if (target && source) {
+    
+    /* Skip leading whitespaces */
+    while (IS_BLANK(*source))
+      source++;
+  
+    /* Collapse intermediate whitespaces, and skip trailing whitespaces */
+    blank = 0;
+    while (*source) {
+      if (IS_BLANK(*source)) {
+	blank = *source;
+      } else {
+	if (blank) {
+	  xmlBufferAdd(target, &blank, 1);
+	  blank = 0;
+	}
+	xmlBufferAdd(target, source, 1);
+      }
+      source++;
+    }
+  
+    valuePush(ctxt, xmlXPathNewString(xmlBufferContent(target)));
+    xmlBufferFree(target);
+  }
+  if (obj)
+    xmlXPathFreeObject(obj);
 }
 
 /**
@@ -2821,8 +2905,39 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-    CHECK_ARITY(3);
-    TODO /* translate is boring, waiting for UTF-8 representation too */
+  xmlXPathObjectPtr str;
+  xmlXPathObjectPtr from;
+  xmlXPathObjectPtr to;
+  xmlBufferPtr target;
+  int i, offset, max;
+  xmlChar ch;
+  const xmlChar *point;
+
+  CHECK_ARITY(3);
+
+  to = valuePop(ctxt);
+  from = valuePop(ctxt);
+  str = valuePop(ctxt);
+
+  target = xmlBufferCreate();
+  if (target) {
+    max = xmlStrlen(to->stringval);
+    for (i = 0; (ch = str->stringval[i]); i++) {
+      point = xmlStrchr(from->stringval, ch);
+      if (point) {
+	/* Warning: This may not work with UTF-8 */
+	offset = (int)(point - from->stringval);
+	if (offset < max)
+	  xmlBufferAdd(target, &to->stringval[offset], 1);
+      } else
+	xmlBufferAdd(target, &ch, 1);
+    }
+  }
+  valuePush(ctxt, xmlXPathNewString(xmlBufferContent(target)));
+  xmlBufferFree(target);
+  xmlXPathFreeObject(str);
+  xmlXPathFreeObject(from);
+  xmlXPathFreeObject(to);
 }
 
 /**

@@ -62,6 +62,8 @@ LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@
 
 man_MANS = xmllint.1 libxml.4
 
+m4datadir = $(datadir)/aclocal                                                  m4data_DATA = libxml.m4
+
 xmllint_SOURCES=xmllint.c
 xmllint_LDFLAGS = 
 xmllint_DEPENDENCIES = $(DEPS)
@@ -352,7 +354,7 @@ CLEANFILES=xmlConf.sh
 
 confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
-EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec \
+EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec libxml.m4 \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     $(man_MANS)
 

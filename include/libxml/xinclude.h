@@ -23,9 +23,15 @@ extern "C" {
 /**
  * XINCLUDE_NS:
  *
- * Macro defining the Xinclude namespace: http://www.w3.org/2001/XInclude
+ * Macro defining the Xinclude namespace: http://www.w3.org/2003/XInclude
  */
-#define XINCLUDE_NS (const xmlChar *) "http://www.w3.org/2001/XInclude"
+#define XINCLUDE_NS (const xmlChar *) "http://www.w3.org/2003/XInclude"
+/**
+ * XINCLUDE_OLD_NS:
+ *
+ * Macro defining the draft Xinclude namespace: http://www.w3.org/2001/XInclude
+ */
+#define XINCLUDE_OLD_NS (const xmlChar *) "http://www.w3.org/2001/XInclude"
 /**
  * XINCLUDE_NODE:
  *
@@ -68,6 +74,12 @@ extern "C" {
  * Macro defining "encoding"
  */
 #define XINCLUDE_PARSE_ENCODING (const xmlChar *) "encoding"
+/**
+ * XINCLUDE_PARSE_XPOINTER:
+ *
+ * Macro defining "xpointer"
+ */
+#define XINCLUDE_PARSE_XPOINTER (const xmlChar *) "xpointer"
 
 typedef struct _xmlXIncludeCtxt xmlXIncludeCtxt;
 typedef xmlXIncludeCtxt *xmlXIncludeCtxtPtr;

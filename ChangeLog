@@ -1,3 +1,11 @@
+Mon Dec  8 18:38:26 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* error.c: filter warning messages if the global setting blocks them
+	* xinclude.c xmlreader.c include/libxml/xinclude.h
+	  include/libxml/xmlerror.h: updated the change of namespace at
+	  the XInclude level, raise a warning if the old one is found,
+	  and some cleanup
+
 Mon Dec  8 13:09:39 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: tentative fix for #126117 character reference in

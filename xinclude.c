@@ -78,6 +78,7 @@ struct _xmlXIncludeCtxt {
     xmlChar *         *urlTab; /* url stack */
 
     int              nbErrors; /* the number of errors detected */
+    int                legacy; /* using XINCLUDE_OLD_NS */
 };
 
 static int
@@ -115,7 +116,7 @@ xmlXIncludeErrMemory(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node,
  * @msg:  the error message
  * @extra:  extra informations
  *
- * Handle a resource access error
+ * Handle an XInclude error
  */
 static void
 xmlXIncludeErr(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
@@ -129,6 +130,51 @@ xmlXIncludeErr(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
 		    msg, (const char *) extra);
 }
 
+/**
+ * xmlXIncludeWarn:
+ * @ctxt: the XInclude context
+ * @node: the context node
+ * @msg:  the error message
+ * @extra:  extra informations
+ *
+ * Emit an XInclude warning.
+ */
+static void
+xmlXIncludeWarn(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
+               const char *msg, const xmlChar *extra)
+{
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, node, XML_FROM_XINCLUDE,
+                    error, XML_ERR_WARNING, NULL, 0,
+		    (const char *) extra, NULL, NULL, 0, 0,
+		    msg, (const char *) extra);
+}
+
+/**
+ * xmlXIncludeGetProp:
+ * @ctxt:  the XInclude context
+ * @cur:  the node
+ * @name:  the attribute name
+ *
+ * Get an XInclude attribute
+ *
+ * Returns the value (to be freed) or NULL if not found
+ */
+static xmlChar *
+xmlXIncludeGetProp(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur,
+                   const xmlChar *name) {
+    xmlChar *ret;
+
+    ret = xmlGetNsProp(cur, XINCLUDE_NS, name);
+    if (ret != NULL)
+        return(ret);
+    if (ctxt->legacy != 0) {
+	ret = xmlGetNsProp(cur, XINCLUDE_OLD_NS, name);
+	if (ret != NULL)
+	    return(ret);
+    }
+    ret = xmlGetProp(cur, name);
+    return(ret);
+}
 /**
  * xmlXIncludeFreeRef:
  * @ref: the XInclude reference
@@ -423,21 +469,16 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
     /*
      * read the attributes
      */
-    href = xmlGetNsProp(cur, XINCLUDE_NS, XINCLUDE_HREF);
+    href = xmlXIncludeGetProp(ctxt, cur, XINCLUDE_HREF);
     if (href == NULL) {
-	href = xmlGetProp(cur, XINCLUDE_HREF);
-	if (href == NULL) {
-	    xmlXIncludeErr(ctxt, cur, XML_XINCLUDE_NO_HREF,
-	                   "no href\n", NULL);
+	href = xmlStrdup(BAD_CAST ""); /* @@@@ href is now optional */
+	if (href == NULL) 
 	    return(-1);
-	}
+	local = 1;
     }
     if (href[0] == '#')
 	local = 1;
-    parse = xmlGetNsProp(cur, XINCLUDE_NS, XINCLUDE_PARSE);
-    if (parse == NULL) {
-	parse = xmlGetProp(cur, XINCLUDE_PARSE);
-    }
+    parse = xmlXIncludeGetProp(ctxt, cur, XINCLUDE_PARSE);
     if (parse != NULL) {
 	if (xmlStrEqual(parse, XINCLUDE_PARSE_XML))
 	    xml = 1;
@@ -1704,19 +1745,14 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     /*
      * read the attributes
      */
-    href = xmlGetNsProp(cur, XINCLUDE_NS, XINCLUDE_HREF);
+    href = xmlXIncludeGetProp(ctxt, cur, XINCLUDE_HREF);
     if (href == NULL) {
-	href = xmlGetProp(cur, XINCLUDE_HREF);
-	if (href == NULL) {
-	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 
-	                   XML_XINCLUDE_NO_HREF, "no href\n", NULL);
-	    return(-1);
-	}
+        /* @@@@ */
+	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 
+		       XML_XINCLUDE_NO_HREF, "no href\n", NULL);
+	return(-1);
     }
-    parse = xmlGetNsProp(cur, XINCLUDE_NS, XINCLUDE_PARSE);
-    if (parse == NULL) {
-	parse = xmlGetProp(cur, XINCLUDE_PARSE);
-    }
+    parse = xmlXIncludeGetProp(ctxt, cur, XINCLUDE_PARSE);
     if (parse != NULL) {
 	if (xmlStrEqual(parse, XINCLUDE_PARSE_XML))
 	    xml = 1;
@@ -1797,7 +1833,8 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	    if ((children->type == XML_ELEMENT_NODE) &&
 		(children->ns != NULL) &&
 		(xmlStrEqual(children->name, XINCLUDE_FALLBACK)) &&
-		(xmlStrEqual(children->ns->href, XINCLUDE_NS))) {
+		((xmlStrEqual(children->ns->href, XINCLUDE_NS)) ||
+		 (xmlStrEqual(children->ns->href, XINCLUDE_OLD_NS)))) {
 		ret = xmlXIncludeLoadFallback(ctxt, children, nr);
 		if (ret == 0)
 		    break;
@@ -1928,7 +1965,15 @@ xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
 	return(0);
     if (node->ns == NULL)
 	return(0);
-    if (xmlStrEqual(node->ns->href, XINCLUDE_NS)) {
+    if ((xmlStrEqual(node->ns->href, XINCLUDE_NS)) ||
+        (xmlStrEqual(node->ns->href, XINCLUDE_OLD_NS))) {
+	if (xmlStrEqual(node->ns->href, XINCLUDE_OLD_NS)) {
+	    if (ctxt->legacy == 0) {
+		xmlXIncludeWarn(ctxt, node, XML_XINCLUDE_DEPRECATED_NS,
+	               "Deprecated XInclude namespace found, use %s",
+		                XINCLUDE_NS);
+	    }
+	}
 	if (xmlStrEqual(node->name, XINCLUDE_NODE)) {
 	    xmlNodePtr child = node->children;
 	    int nb_fallback = 0;
@@ -1936,7 +1981,8 @@ xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
 	    while (child != NULL) {
 		if ((child->type == XML_ELEMENT_NODE) &&
 		    (child->ns != NULL) &&
-		    (xmlStrEqual(child->ns->href, XINCLUDE_NS))) {
+		    ((xmlStrEqual(child->ns->href, XINCLUDE_NS)) ||
+		     (xmlStrEqual(child->ns->href, XINCLUDE_OLD_NS)))) {
 		    if (xmlStrEqual(child->name, XINCLUDE_NODE)) {
 			xmlXIncludeErr(ctxt, node,
 			               XML_XINCLUDE_INCLUDE_IN_INCLUDE,
@@ -1962,7 +2008,8 @@ xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
 	    if ((node->parent == NULL) ||
 		(node->parent->type != XML_ELEMENT_NODE) ||
 		(node->parent->ns == NULL) ||
-		(!xmlStrEqual(node->parent->ns->href, XINCLUDE_NS)) ||
+		((!xmlStrEqual(node->parent->ns->href, XINCLUDE_NS)) &&
+		 (!xmlStrEqual(node->parent->ns->href, XINCLUDE_OLD_NS))) ||
 		(!xmlStrEqual(node->parent->name, XINCLUDE_NODE))) {
 		xmlXIncludeErr(ctxt, node,
 		               XML_XINCLUDE_FALLBACK_NOT_IN_INCLUDE,

@@ -447,6 +447,8 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     xmlErrorPtr to = &xmlLastError;
     xmlChar *base = NULL;
 
+    if ((xmlGetWarningsDefaultValue == 0) && (level == XML_ERR_WARNING))
+        return;
     if ((domain == XML_FROM_PARSER) || (domain == XML_FROM_HTML) ||
         (domain == XML_FROM_DTD) || (domain == XML_FROM_NAMESPACE) ||
 	(domain == XML_FROM_IO)) {

@@ -1364,7 +1364,8 @@ node_found:
     if ((reader->xinclude) && (reader->node != NULL) &&
 	(reader->node->type == XML_ELEMENT_NODE) &&
 	(reader->node->ns != NULL) &&
-	(xmlStrEqual(reader->node->ns->href, XINCLUDE_NS))) {
+	((xmlStrEqual(reader->node->ns->href, XINCLUDE_NS)) ||
+	 (xmlStrEqual(reader->node->ns->href, XINCLUDE_OLD_NS)))) {
 	if (reader->xincctxt == NULL) {
 	    reader->xincctxt = xmlXIncludeNewContext(reader->ctxt->myDoc);
 	}

@@ -1,3 +1,22 @@
+Wed Dec 27 12:35:49 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.[ch]: added a way to avoid adding automatically
+	  omitted tags. htmlHandleOmittedElem() allows to change the
+	  default handling.
+	* tree.[ch] xmllint.c: added xmlDocDumpFormatMemory() and 
+	  xmlDocDumpFormatMemoryEnc(), uses memory functions for output
+	  of xmllint too when using --memory flag, added a memory test
+	  suite at the Makefile level.
+	* xpathInternals.h xpath.[ch] xpointer.c: fixed problems
+	  with namespace use when encountering QNames in XPath evalation,
+	  added xmlns() scheme in XPointer.
+	* nanoftp.c : incorporated a fix
+	* parser.c xmlIO.c: fixed problems raised with encoding when using
+	  the memory I/O
+	* parserInternals.c: closed bug 25934 reported by 
+	  torsten.landschoff@innominate.de
+	* TODO: updated
+
 Sat Nov 25 11:46:27 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in doc/html/* doc/xml.html: made a 2.2.9 release

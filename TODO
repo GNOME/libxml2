@@ -32,6 +32,9 @@ TODO:
 - jamesh suggestion: SAX like functions to save a document ie. call a
   function to open a new element with given attributes, write character
   data, close last element, etc
+- htmlParseDoc has parameter encoding which is not used.
+  Function htmlCreateDocParserCtxt ignore it.
+
 
 TODO:
 =====

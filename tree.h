@@ -634,6 +634,10 @@ int		xmlReconciliateNs	(xmlDocPtr doc,
 /*
  * Saving
  */
+void		xmlDocDumpFormatMemory	(xmlDocPtr cur,
+					 xmlChar**mem,
+					 int *size,
+					 int format);
 void		xmlDocDumpMemory	(xmlDocPtr cur,
 					 xmlChar**mem,
 					 int *size);
@@ -641,6 +645,11 @@ void		xmlDocDumpMemoryEnc	(xmlDocPtr out_doc,
 					 xmlChar **doc_txt_ptr,
 					 int * doc_txt_len,
 					 const char *txt_encoding);
+void		xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc,
+					 xmlChar **doc_txt_ptr,
+					 int * doc_txt_len,
+					 const char *txt_encoding,
+					 int format);
 int		xmlDocDump		(FILE *f,
 					 xmlDocPtr cur);
 void		xmlElemDump		(FILE *f,

@@ -1413,6 +1413,9 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
     if (nbchars < MINLEN)
 	return(0);
 
+    if (!out->writecallback)
+	return(nbchars);
+
     /*
      * second write the stuff to the I/O channel
      */
@@ -1477,7 +1480,7 @@ xmlOutputBufferWriteString(xmlOutputBufferPtr out, const char *str) {
  */
 int
 xmlOutputBufferFlush(xmlOutputBufferPtr out) {
-    int nbchars = 0, ret;
+    int nbchars = 0, ret = 0;
 
     /*
      * first handle encoding stuff.
@@ -1497,12 +1500,13 @@ xmlOutputBufferFlush(xmlOutputBufferPtr out) {
     /*
      * second flush the stuff to the I/O channel
      */
-    if ((out->conv != NULL) && (out->encoder != NULL)) {
+    if ((out->conv != NULL) && (out->encoder != NULL) &&
+	(out->writecallback != NULL)) {
 	ret = out->writecallback(out->context,
 	           (const char *)out->conv->content, out->conv->use);
 	if (ret >= 0)
 	    xmlBufferShrink(out->conv, ret);
-    } else {
+    } else if (out->writecallback != NULL) {
 	ret = out->writecallback(out->context,
 	           (const char *)out->buffer->content, out->buffer->use);
 	if (ret >= 0)

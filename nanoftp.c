@@ -650,6 +650,9 @@ get_more:
      * and analyzed.
      */
     len = xmlNanoFTPGetMore(ctx);
+    if (len < 0) {
+        return(-1);
+    }
     if ((ctxt->controlBufUsed == 0) && (len == 0)) {
         return(-1);
     }

@@ -28,6 +28,7 @@
 #include <libxml/xpointer.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parserInternals.h>
+#include <libxml/uri.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 #ifdef LIBXML_DEBUG_ENABLED
@@ -36,6 +37,9 @@
 #include <libxml/xmlerror.h>
 
 #ifdef LIBXML_XPTR_ENABLED
+
+/* Add support of the xmlns() xpointer scheme to initialize the namespaces */
+#define XPTR_XMLNS_SCHEME
 
 /* #define DEBUG_RANGES */
 
@@ -1038,6 +1042,50 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	xmlXPathRoot(ctxt);
 	xmlXPathEvalExpr(ctxt);
 	CUR_PTR=left;
+#ifdef XPTR_XMLNS_SCHEME
+    } else if (xmlStrEqual(name, (xmlChar *) "xmlns")) {
+	const xmlChar *left = CUR_PTR;
+	xmlChar *prefix;
+	xmlChar *URI;
+	xmlURIPtr value;
+
+	CUR_PTR = buffer;
+        prefix = xmlXPathParseNCName(ctxt);
+	if (prefix == NULL) {
+	    xmlFree(buffer);
+	    xmlFree(name);
+	    XP_ERROR(XPTR_SYNTAX_ERROR);
+	}
+	SKIP_BLANKS;
+	if (CUR != '=') {
+	    xmlFree(prefix);
+	    xmlFree(buffer);
+	    xmlFree(name);
+	    XP_ERROR(XPTR_SYNTAX_ERROR);
+	}
+	NEXT;
+	SKIP_BLANKS;
+	/* @@ check escaping in the XPointer WD */
+
+	value = xmlParseURI((const char *)ctxt->cur);
+	if (value == NULL) {
+	    xmlFree(prefix);
+	    xmlFree(buffer);
+	    xmlFree(name);
+	    XP_ERROR(XPTR_SYNTAX_ERROR);
+	}
+	URI = xmlSaveUri(value);
+	xmlFreeURI(value);
+	if (URI == NULL) {
+	    xmlFree(prefix);
+	    xmlFree(buffer);
+	    xmlFree(name);
+	    XP_ERROR(XPATH_MEMORY_ERROR);
+	}
+	
+	xmlXPathRegisterNs(ctxt->context, prefix, URI);
+	CUR_PTR = left;
+#endif /* XPTR_XMLNS_SCHEME */
     } else {
         xmlGenericError(xmlGenericErrorContext,
 		"unsupported scheme '%s'\n", name);

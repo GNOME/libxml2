@@ -179,6 +179,24 @@ XMLtests : xmllint
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
+	@echo "##"
+	@echo "## XML regression tests on memory"
+	@echo "##"
+	@(for i in $(srcdir)/test/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(top_builddir)/xmllint --memory $$i > $(srcdir)/result/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      $(top_builddir)/xmllint --memory $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/$$name result.$$name ; \
+	      $(top_builddir)/xmllint --memory result.$$name > result2.$$name ; \
+	      diff result.$$name result2.$$name ; \
+	      rm result.$$name result2.$$name ; \
+	  fi ; fi ; done)
 
 XMLenttests : xmllint
 	@echo "##"

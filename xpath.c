@@ -444,7 +444,8 @@ const char *xmlXPathErrorMessages[] = {
     "Memory allocation error",
     "Syntax error",
     "Resource error",
-    "Sub resource error"
+    "Sub resource error",
+    "Undefined namespace prefix"
 };
 
 /**
@@ -1064,6 +1065,70 @@ xmlXPathRegisteredVariablesCleanup(xmlXPathContextPtr ctxt) {
     ctxt->varHash = NULL;
 }
 
+/**
+ * xmlXPathRegisterNs:
+ * @ctxt:  the XPath context
+ * @prefix:  the namespace prefix
+ * @ns_uri:  the namespace name
+ *
+ * Register a new namespace. If @ns_uri is NULL it unregisters
+ * the namespace
+ *
+ * Returns 0 in case of success, -1 in case of error
+ */
+int
+xmlXPathRegisterNs(xmlXPathContextPtr ctxt, const xmlChar *prefix,
+			   const xmlChar *ns_uri) {
+    if (ctxt == NULL)
+	return(-1);
+    if (prefix == NULL)
+	return(-1);
+
+    if (ctxt->nsHash == NULL)
+	ctxt->nsHash = xmlHashCreate(10);
+    if (ctxt->nsHash == NULL)
+	return(-1);
+    return(xmlHashUpdateEntry(ctxt->nsHash, prefix, (void *) ns_uri,
+			      (xmlHashDeallocator)xmlFree));
+}
+
+/**
+ * xmlXPathNsLookup:
+ * @ctxt:  the XPath context
+ * @prefix:  the namespace prefix value
+ *
+ * Search in the namespace declaration array of the context for the given
+ * namespace name associated to the given prefix
+ *
+ * Returns the value or NULL if not found
+ */
+const xmlChar *
+xmlXPathNsLookup(xmlXPathContextPtr ctxt, const xmlChar *prefix) {
+    if (ctxt == NULL)
+	return(NULL);
+    if (prefix == NULL)
+	return(NULL);
+    if (ctxt->nsHash == NULL)
+	return(NULL);
+
+    return((const xmlChar *) xmlHashLookup(ctxt->nsHash, prefix));
+}
+
+/**
+ * xmlXPathRegisteredVariablesCleanup:
+ * @ctxt:  the XPath context
+ *
+ * Cleanup the XPath context data associated to registered variables
+ */
+void
+xmlXPathRegisteredNsCleanup(xmlXPathContextPtr ctxt) {
+    if (ctxt == NULL)
+	return;
+
+    xmlHashFree(ctxt->nsHash, NULL);
+    ctxt->nsHash = NULL;
+}
+
 /************************************************************************
  *									*
  *			Routines to handle Values			*
@@ -1285,9 +1350,8 @@ xmlXPathNewContext(xmlDocPtr doc) {
     ret->max_axis = 0;
     ret->axis = NULL;
 
-    ret->namespaces = NULL;
+    ret->nsHash = NULL;
     ret->user = NULL;
-    ret->nsNr = 0;
 
     ret->contextSize = -1;
     ret->proximityPosition = -1;
@@ -1305,9 +1369,7 @@ xmlXPathNewContext(xmlDocPtr doc) {
  */
 void
 xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
-    if (ctxt->namespaces != NULL)
-        xmlFree(ctxt->namespaces);
-
+    xmlXPathRegisteredNsCleanup(ctxt);
     xmlXPathRegisteredFuncsCleanup(ctxt);
     xmlXPathRegisteredVariablesCleanup(ctxt);
 #ifdef DEBUG
@@ -2712,10 +2774,19 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 			if ((cur->type == XML_ELEMENT_NODE) ||
 			    (cur->type == XML_DOCUMENT_NODE) ||
 			    (cur->type == XML_HTML_DOCUMENT_NODE)) {
+			    if (prefix == NULL) {
 #ifdef DEBUG_STEP
-			    n++;
+				n++;
 #endif
-			    xmlXPathNodeSetAdd(ret, cur);
+				xmlXPathNodeSetAdd(ret, cur);
+			    } else if ((cur->ns != NULL) && 
+				(xmlStrEqual(prefix,
+					     cur->ns->href))) {
+#ifdef DEBUG_STEP
+				n++;
+#endif
+				xmlXPathNodeSetAdd(ret, cur);
+			    }
 			}
 		    }
 		    break;
@@ -2726,14 +2797,25 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
                 case NODE_TEST_NAME:
 		    switch (cur->type) {
 		        case XML_ELEMENT_NODE:
-			    if (xmlStrEqual(name, cur->name) && 
-				(((prefix == NULL) ||
-				  ((cur->ns != NULL) && 
-				   (xmlStrEqual(prefix, cur->ns->href)))))) {
+			    if (xmlStrEqual(name, cur->name)) {
+				if (prefix == NULL) {
+				    if ((cur->ns == NULL) ||
+					(cur->ns->prefix == NULL)) {
 #ifdef DEBUG_STEP
-				n++;
+					n++;
 #endif
-				xmlXPathNodeSetAdd(ret, cur);
+					xmlXPathNodeSetAdd(ret, cur);
+				    }
+				} else {
+				    if ((cur->ns != NULL) && 
+				        (xmlStrEqual(prefix,
+						     cur->ns->href))) {
+#ifdef DEBUG_STEP
+					n++;
+#endif
+					xmlXPathNodeSetAdd(ret, cur);
+				    }
+				}
 			    }
 			    break;
 		        case XML_ATTRIBUTE_NODE: {
@@ -5106,7 +5188,7 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
  */
 xmlChar *
 xmlXPathEvalNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
-	             xmlXPathTypeVal *type, xmlChar **prefix, xmlChar *name) {
+	             xmlXPathTypeVal *type, const xmlChar **prefix, xmlChar *name) {
     int blanks;
 
     if ((test == NULL) || (type == NULL) || (prefix == NULL)) {
@@ -5148,8 +5230,11 @@ xmlXPathEvalNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	    *type = NODE_TYPE_PI;
 	else if (xmlStrEqual(name, BAD_CAST "text"))
 	    *type = NODE_TYPE_TEXT;
-	else
+	else {
+	    if (name != NULL)
+		xmlFree(name);
 	    XP_ERROR0(XPATH_EXPR_ERROR);
+	}
 
 	*test = NODE_TEST_TYPE;
 	
@@ -5172,8 +5257,11 @@ xmlXPathEvalNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	    xmlXPathFreeObject(cur);
 	    SKIP_BLANKS;
 	}
-	if (CUR != ')')
+	if (CUR != ')') {
+	    if (name != NULL)
+		xmlFree(name);
 	    XP_ERROR0(XPATH_UNCLOSED_ERROR);
+	}
 	NEXT;
 	return(name);
     }
@@ -5181,7 +5269,15 @@ xmlXPathEvalNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
     if ((!blanks) && (CUR == ':')) {
 	NEXT;
 
-	*prefix = name;
+	/*
+	 * get the namespace name for this prefix
+	 */
+	*prefix = xmlXPathNsLookup(ctxt->context, name);
+	if (name != NULL)
+	    xmlFree(name);
+	if (*prefix == NULL) {
+	    XP_ERROR0(XPATH_UNDEF_PREFIX_ERROR);
+	}
 
 	if (CUR == '*') {
 	    /*
@@ -5347,7 +5443,7 @@ xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
 	SKIP_BLANKS;
     } else {
 	xmlChar *name = NULL;
-	xmlChar *prefix = NULL;
+	const xmlChar *prefix = NULL;
 	xmlXPathTestVal test;
 	xmlXPathAxisVal axis;
 	xmlXPathTypeVal type;
@@ -5420,8 +5516,6 @@ xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
 #endif
 	if (name != NULL)
 	    xmlFree(name);
-	if (prefix != NULL)
-	    xmlFree(prefix);
 
 eval_predicates:
 	SKIP_BLANKS;

@@ -8189,17 +8189,23 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 
 	if ((terminate) || (ctxt->input->buf->buffer->use > 80))
 	    xmlParseTryOrFinish(ctxt, terminate);
-    } else if (ctxt->instate != XML_PARSER_EOF)
-      if ((ctxt->input != NULL) && ctxt->input->buf != NULL) {
-      xmlParserInputBufferPtr in = ctxt->input->buf;
-      int nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
-      if (nbchars < 0) {
-          xmlGenericError(xmlGenericErrorContext,
-                  "xmlParseChunk: encoder error\n");
-          return(XML_ERR_INVALID_ENCODING);
-      }
-      }
-        xmlParseTryOrFinish(ctxt, terminate);
+    } else if (ctxt->instate != XML_PARSER_EOF) {
+	if ((ctxt->input != NULL) && ctxt->input->buf != NULL) {
+	    xmlParserInputBufferPtr in = ctxt->input->buf;
+	    if ((in->encoder != NULL) && (in->buffer != NULL) &&
+		    (in->raw != NULL)) {
+		int nbchars;
+		    
+		nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
+		if (nbchars < 0) {
+		    xmlGenericError(xmlGenericErrorContext,
+				    "xmlParseChunk: encoder error\n");
+		    return(XML_ERR_INVALID_ENCODING);
+		}
+	    }
+	}
+    }
+    xmlParseTryOrFinish(ctxt, terminate);
     if (terminate) {
 	/*
 	 * Check for termination
@@ -9234,6 +9240,7 @@ xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
     } else {
 	inputStream = xmlLoadExternalEntity((char *)uri, (char *)ID, ctxt);
 	if (inputStream == NULL) {
+	    xmlFree(uri);
 	    xmlFreeParserCtxt(ctxt);
 	    return(NULL);
 	}

@@ -53,6 +53,8 @@
 /* #define DEBUG */
 /* #define DEBUG_PUSH */
 
+int htmlOmittedDefaultValue = 1;
+
 /************************************************************************
  *									*
  * 		Parser stacks related functions and macros		*
@@ -837,12 +839,14 @@ htmlIsAutoClosed(htmlDocPtr doc, htmlNodePtr elem) {
  * @ctxt:  an HTML parser context
  * @newtag:  The new tag name
  *
- * The HTmL DtD allows a tag to exists only implicitely
+ * The HTML DtD allows a tag to exists only implicitely
  * called when a new tag has been detected and generates the
  * appropriates implicit tags if missing
  */
 void
 htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
+    if (!htmlOmittedDefaultValue)
+	return;
     if (xmlStrEqual(newtag, BAD_CAST"html"))
 	return;
     if (ctxt->nameNr <= 0) {
@@ -2786,6 +2790,10 @@ htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
 
     if ((ctxt == NULL) || (attvalue == NULL))
 	return;
+
+    /* do not change encoding */	
+    if (ctxt->input->encoding != NULL)
+        return;
 
     encoding = xmlStrcasestr(attvalue, BAD_CAST"charset=");
     if (encoding != NULL) {
@@ -4822,6 +4830,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     htmlParserInputPtr inputStream;
     xmlParserInputBufferPtr buf;
     /* htmlCharEncoding enc; */
+    xmlChar *content, *content_line = (xmlChar *) "charset=";
 
     buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
     if (buf == NULL) return(NULL);
@@ -4852,6 +4861,18 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     inputStream->free = NULL;
 
     inputPush(ctxt, inputStream);
+    
+    /* set encoding */
+    if (encoding) {
+        content = xmlMalloc (xmlStrlen(content_line) + strlen(encoding) + 1);
+	if (content) {  
+	    strcpy ((char *)content, (char *)content_line);
+            strcat ((char *)content, (char *)encoding);
+            htmlCheckEncoding (ctxt, content);
+	    xmlFree (content);
+	}
+    }
+    
     return(ctxt);
 }
 
@@ -4911,6 +4932,23 @@ htmlSAXParseFile(const char *filename, const char *encoding, htmlSAXHandlerPtr s
 htmlDocPtr
 htmlParseFile(const char *filename, const char *encoding) {
     return(htmlSAXParseFile(filename, encoding, NULL, NULL));
+}
+
+/**
+ * htmlHandleOmittedElem:
+ * @val:  int 0 or 1 
+ *
+ * Set and return the previous value for handling HTML omitted tags.
+ *
+ * Returns the last value for 0 for no handling, 1 for auto insertion.
+ */
+
+int
+htmlHandleOmittedElem(int val) {
+    int old = htmlOmittedDefaultValue;
+
+    htmlOmittedDefaultValue = val;
+    return(old);
 }
 
 #endif /* LIBXML_HTML_ENABLED */

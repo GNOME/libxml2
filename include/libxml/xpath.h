@@ -47,7 +47,8 @@ typedef enum {
     XPATH_MEMORY_ERROR,
     XPTR_SYNTAX_ERROR,
     XPTR_RESOURCE_ERROR,
-    XPTR_SUB_RESOURCE_ERROR
+    XPTR_SUB_RESOURCE_ERROR,
+    XPATH_UNDEF_PREFIX_ERROR
 } xmlXPathError;
 
 /*
@@ -171,6 +172,8 @@ struct _xmlXPathAxis {
  *    - a set of variable bindings 
  *    - a function library 
  *    - the set of namespace declarations in scope for the expression 
+ * Following the switch to hash tables, this need to be trimmed up at
+ * the next binary incompatible release.
  */
 
 struct _xmlXPathContext {
@@ -193,10 +196,10 @@ struct _xmlXPathContext {
     int max_axis;			/* max number of axis */
     xmlXPathAxisPtr axis;		/* Array of defined axis */
 
-    /* Namespace traversal should be implemented with user */
-    xmlNsPtr *namespaces;		/* The namespaces lookup */
-    int nsNr;				/* the current Namespace index */
-    void *user;				/* user defined extra info */
+    /* the namespace nodes of the context node */
+    xmlNsPtr *namespaces;		/* Array of namespaces */
+    int nsNr;				/* number of namespace in scope */
+    void *user;				/* function to free */
 
     /* extra variables */
     int contextSize;			/* the context size */
@@ -206,6 +209,9 @@ struct _xmlXPathContext {
     int xptr;				/* it this an XPointer context */
     xmlNodePtr here;			/* for here() */
     xmlNodePtr origin;			/* for origin() */
+
+    /* the set of namespace declarations in scope for the expression */
+    xmlHashTablePtr nsHash;		/* The namespaces hash table */
 };
 
 /*

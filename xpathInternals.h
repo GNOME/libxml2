@@ -68,6 +68,13 @@ void		xmlXPathDebugDumpObject	(FILE *output,
 /**
  * Extending a context
  */
+int		   xmlXPathRegisterNs		(xmlXPathContextPtr ctxt,
+						 const xmlChar *prefix,
+						 const xmlChar *ns_uri);
+const xmlChar *	   xmlXPathNsLookup		(xmlXPathContextPtr ctxt,
+						 const xmlChar *ns_uri);
+void		   xmlXPathRegisteredNsCleanup	(xmlXPathContextPtr ctxt);
+
 int		   xmlXPathRegisterFunc		(xmlXPathContextPtr ctxt,
 						 const xmlChar *name,
 						 xmlXPathFunction f);
@@ -121,6 +128,7 @@ void		  xmlXPathIdFunction		(xmlXPathParserContextPtr ctxt,
 void		  xmlXPathRoot			(xmlXPathParserContextPtr ctxt);
 void		  xmlXPathEvalExpr		(xmlXPathParserContextPtr ctxt);
 xmlChar *	  xmlXPathParseName		(xmlXPathParserContextPtr ctxt);
+xmlChar *	  xmlXPathParseNCName		(xmlXPathParserContextPtr ctxt);
 
 /*
  * Debug

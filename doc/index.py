@@ -1048,6 +1048,10 @@ def scanXMLMsgArchive(url, title, force = 0):
     return 1
 
 def scanXMLDateArchive(t = None, force = 0):
+    global wordsDictArchive
+
+    wordsDictArchive = {}
+
     url = getXMLDateArchive(t)
     print "loading %s" % (url)
     try:

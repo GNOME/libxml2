@@ -1,3 +1,9 @@
+Wed Sep 17 21:33:57 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: small fix from Rob Richards for input filename
+	* xmllint.c: fixes for --repeat and --memory/--stream for speed tests
+	* xmlIO: adding a guard in one function
+
 Wed Sep 17 15:57:44 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c xmlreader.c include/libxml/parser.h: more performance hunting

@@ -609,8 +609,28 @@ static void processNode(xmlTextReaderPtr reader) {
 static void streamFile(char *filename) {
     xmlTextReaderPtr reader;
     int ret;
+#ifdef HAVE_SYS_MMAN_H
+    int fd = -1;
+    struct stat info;
+    const char *base = NULL;
+    xmlParserInputBufferPtr input = NULL;
 
-    reader = xmlNewTextReaderFilename(filename);
+    if (memory) {
+	if (stat(filename, &info) < 0) 
+	    return;
+	if ((fd = open(filename, O_RDONLY)) < 0)
+	    return;
+	base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
+	if (base == (void *) MAP_FAILED)
+	    return;
+
+	input = xmlParserInputBufferCreateMem((char *) base, info.st_size,
+	                                      XML_CHAR_ENCODING_NONE);
+	reader = xmlNewTextReader(input, filename);
+    } else
+#endif
+	reader = xmlNewTextReaderFilename(filename);
+
     if (reader != NULL) {
 	if (valid)
 	    xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1);
@@ -685,6 +705,13 @@ static void streamFile(char *filename) {
 	fprintf(stderr, "Unable to open %s\n", filename);
 	progresult = 1;
     }
+#ifdef HAVE_SYS_MMAN_H
+    if (memory) {
+        xmlFreeParserInputBuffer(input);
+	munmap((char *) base, info.st_size);
+	close(fd);
+    }
+#endif
 }
 
 /************************************************************************
@@ -1426,9 +1453,12 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--auto")))
 	    generate++;
 	else if ((!strcmp(argv[i], "-repeat")) ||
-	         (!strcmp(argv[i], "--repeat")))
-	    repeat++;
-	else if ((!strcmp(argv[i], "-push")) ||
+	         (!strcmp(argv[i], "--repeat"))) {
+	    if (repeat)
+	        repeat *= 10;
+	    else
+	        repeat = 100;
+	} else if ((!strcmp(argv[i], "-push")) ||
 	         (!strcmp(argv[i], "--push")))
 	    push++;
 #ifdef HAVE_SYS_MMAN_H
@@ -1664,7 +1694,7 @@ main(int argc, char **argv) {
 	/* Remember file names.  "-" means stdin.  <sven@zen.org> */
 	if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
 	    if (repeat) {
-		for (acount = 0;acount < 100 * repeat;acount++)
+		for (acount = 0;acount < repeat;acount++)
 		    if (stream != 0)
 			streamFile(argv[i]);
 		    else
@@ -1677,7 +1707,7 @@ main(int argc, char **argv) {
 	    }
 	    files ++;
 	    if ((timing) && (repeat)) {
-		endTimer("100 iterations");
+		endTimer("%d iterations", repeat);
 	    }
 	}
     }

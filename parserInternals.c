@@ -2167,7 +2167,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
 	return(NULL);
     }
 
-    inputStream->filename = (const char *) URI;
+    inputStream->filename = (char *) xmlCanonicPath((const xmlChar *) URI);
     inputStream->directory = directory;
     inputStream->buf = buf;
 

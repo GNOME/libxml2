@@ -1643,6 +1643,8 @@ xmlAllocOutputBuffer(xmlCharEncodingHandlerPtr encoder) {
  */
 void
 xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
+    if (in == NULL) return;
+
     if (in->raw) {
         xmlBufferFree(in->raw);
 	in->raw = NULL;

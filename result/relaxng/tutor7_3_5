@@ -1,0 +1,4 @@
+Internal: failed to validate type double
+internal error validating list
+Extra content for element path
+./test/relaxng/tutor7_3_5.xml validation generated an internal error

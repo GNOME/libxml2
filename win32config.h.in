@@ -7,6 +7,8 @@
 #define LIBXML_VERSION "@LIBXML_VERSION@"
 
 #include <io.h>
+
+#ifdef INCLUDE_WINSOCK
 #include <winsock2.h>
 
 #define EWOULDBLOCK             WSAEWOULDBLOCK
@@ -46,6 +48,7 @@
 #define EDQUOT                  WSAEDQUOT
 #define ESTALE                  WSAESTALE
 #define EREMOTE                 WSAEREMOTE
+#endif /* INCLUDE_WINSOCK */
 
 #include <math.h>
 static int isinf (double d) {

@@ -22,6 +22,7 @@
 #include "entities.h"
 #include "xml-error.h"
 #include "debugXML.h"
+#include "xmlIO.h"
 #include "SAX.h"
 
 /* #define DEBUG_SAX */
@@ -145,7 +146,7 @@ hasExternalSubset(void *ctx)
  * internalSubset:
  * @ctx: the user data (XML parser context)
  *
- * Does this document has an internal subset
+ * Callback on internal subset declaration.
  */
 void
 internalSubset(void *ctx, const xmlChar *name,
@@ -226,11 +227,11 @@ internalSubset(void *ctx, const xmlChar *name,
  * @publicId: The public ID of the entity
  * @systemId: The system ID of the entity
  *
- * Special entity resolver, better left to the parser, it has
- * more context than the application layer.
- * The default behaviour is to NOT resolve the entities, in that case
- * the ENTITY_REF nodes are built in the structure (and the parameter
- * values).
+ * The entity loader, to control the loading of external entities,
+ * the application can either:
+ *    - override this resolveEntity() callback in the SAX block
+ *    - or better use the xmlSetExternalEntityLoader() function to
+ *      set up it's own entity resolution routine
  *
  * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
@@ -243,10 +244,8 @@ resolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
     fprintf(stderr, "SAX.resolveEntity(%s, %s)\n", publicId, systemId);
 #endif
 
-    if (systemId != NULL) {
-	return(xmlNewInputFromFile(ctxt, (char *) systemId));
-    }
-    return(NULL);
+    return(xmlLoadExternalEntity((const char *) systemId,
+				 (const char *) publicId, ctxt));
 }
 
 /**

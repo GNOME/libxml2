@@ -1,5 +1,60 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.startElement(diagram, testattr='test', xml:lang='en', xml:link='simple', xml:space='preserve')
-SAX.endElement(diagram)
+SAX.processingInstruction(xml-stylesheet, type="text/xml"
+href="#style1")
+SAX.internalSubset(doc, (null), doc.dtd)
+SAX.startElement(doc)
+SAX.characters(
+, 1)
+SAX.startElement(head)
+SAX.characters(
+, 1)
+SAX.startElement(xsl:stylesheet, id='style1', version='1.0', xmlns:xsl='http://www.w3.org/1999/XSL/Transform', xmlns:fo='http://www.w3.org/1999/XSL/Format')
+SAX.characters(
+, 1)
+SAX.startElement(xsl:import, href='doc.xsl')
+SAX.endElement(xsl:import)
+SAX.characters(
+, 1)
+SAX.startElement(xsl:template, match='id('foo')')
+SAX.characters(
+, 1)
+SAX.startElement(fo:block, font-weight='bold')
+SAX.startElement(xsl:apply-templates)
+SAX.endElement(xsl:apply-templates)
+SAX.endElement(fo:block)
+SAX.characters(
+, 1)
+SAX.endElement(xsl:template)
+SAX.characters(
+, 1)
+SAX.startElement(xsl:template, match='xsl:stylesheet')
+SAX.characters(
+, 1)
+SAX.comment( ignore )
+SAX.characters(
+, 1)
+SAX.endElement(xsl:template)
+SAX.characters(
+, 1)
+SAX.endElement(xsl:stylesheet)
+SAX.characters(
+, 1)
+SAX.endElement(head)
+SAX.characters(
+, 1)
+SAX.startElement(body)
+SAX.characters(
+, 1)
+SAX.startElement(para, id='foo')
+SAX.characters(
+...
+, 5)
+SAX.endElement(para)
+SAX.characters(
+, 1)
+SAX.endElement(body)
+SAX.characters(
+, 1)
+SAX.endElement(doc)
 SAX.endDocument()

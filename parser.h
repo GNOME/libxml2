@@ -50,10 +50,6 @@ typedef struct xmlParserInput {
 } xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
 
-typedef xmlParserInputPtr (*xmlExternalEntityLoader)(const char *URL,
-						     const char *ID,
-						     xmlParserInputPtr context);
-
 /**
  * the parser can be asked to collect Node informations, i.e. at what
  * place in the file they were detected. 
@@ -256,6 +252,13 @@ typedef struct xmlSAXHandler {
 typedef xmlSAXHandler *xmlSAXHandlerPtr;
 
 /**
+ * External entity loaders types
+ */
+typedef xmlParserInputPtr (*xmlExternalEntityLoader)(const char *URL,
+						     const char *ID,
+						     xmlParserCtxtPtr context);
+
+/**
  * Global variables: just the default SAX interface tables and XML
  * version infos.
  */
@@ -407,7 +410,7 @@ xmlExternalEntityLoader
 xmlParserInputPtr
 		xmlLoadExternalEntity	(const char *URL,
 					 const char *ID,
-					 xmlParserInputPtr context);
+					 xmlParserCtxtPtr context);
 
 #ifdef __cplusplus
 }

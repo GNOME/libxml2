@@ -46,6 +46,7 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
     const xmlChar *cur, *base;
     int n;
 
+    if (input == NULL) return;
     cur = input->cur;
     base = input->base;
     while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
@@ -91,7 +92,7 @@ xmlParserError(void *ctx, const char *msg, ...)
     va_list args;
 
     input = ctxt->input;
-    if ((input->filename == NULL) && (ctxt->inputNr > 1)) {
+    if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
 	cur = input;
         input = ctxt->inputTab[ctxt->inputNr - 2];
     }
@@ -129,7 +130,7 @@ xmlParserWarning(void *ctx, const char *msg, ...)
     va_list args;
 
     input = ctxt->input;
-    if ((input->filename == NULL) && (ctxt->inputNr > 1)) {
+    if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
 	cur = input;
         input = ctxt->inputTab[ctxt->inputNr - 2];
     }

@@ -1,3 +1,22 @@
+Mon Jan  3 11:58:05 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.[ch]: added xmlRemoveProp
+	* win32config.h.in nanohttp.c: avoid including the Windows
+	    socket stuff in every C files
+	* parser.c: removed an indetermination xmLDecl/PI(xml...) in
+	    the XmL parser(s)
+	* test/ns4 result/ns4 etc...: added test case for previous prob    
+	* tree.c: xmlNewNs wasn't checking for double definition
+	* Makefile.in: fixed a problem with dist-hook duplicates
+	* parser.[hc], xmlIO.c: fixed the loading of external entities
+	    APIs, now xmlLoadExternalEntity() is used everywhere and
+	    setting up an app specific front-end using the 
+	* SAX.c parser.c: some fixes, now the xhtml spec validates
+	    with the xhtml DTD.
+	* error.c: fixed crashes in case of no input stream    
+	* test/valid/[dtds/]/xhtml* : added the xhtml spec and dtds
+	    to the validation tests and results
+
 Wed Dec 29 15:29:52 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.[ch] testHTML.c: added push mode for the HTML parser

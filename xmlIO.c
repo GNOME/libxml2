@@ -36,6 +36,7 @@
 
 #include "xmlmemory.h"
 #include "parser.h"
+#include "parserInternals.h"
 #include "xmlIO.h"
 #include "nanohttp.h"
 
@@ -464,22 +465,33 @@ xmlParserGetDirectory(const char *filename) {
  * xmlDefaultExternalEntityLoader:
  * @URL:  the URL for the entity to load
  * @ID:  the System ID for the entity to load
- * @context:  the context in which the entity is called or NULL
+ * @ctxt:  the context in which the entity is called or NULL
  *
  * By default we don't load external entitites, yet.
- * TODO: get a sample http implementation and scan for existing one
- *       at compile time.
  *
  * Returns a new allocated xmlParserInputPtr, or NULL.
  */
 static
 xmlParserInputPtr
 xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
-                               xmlParserInputPtr context) {
+                               xmlParserCtxtPtr ctxt) {
+    xmlParserInputPtr ret = NULL;
 #ifdef DEBUG_EXTERNAL_ENTITIES
     fprintf(stderr, "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
 #endif
-    return(NULL);
+    if (URL == NULL) {
+        if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	    ctxt->sax->warning(ctxt, "failed to load external entity \"%s\"\n",
+	                       ID);
+        return(NULL);
+    }
+    ret = xmlNewInputFromFile(ctxt, URL);
+    if (ret == NULL) {
+        if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	    ctxt->sax->warning(ctxt, "failed to load external entity \"%s\"\n",
+	                       URL);
+    }
+    return(ret);
 }
 
 static xmlExternalEntityLoader xmlCurrentExternalEntityLoader =
@@ -512,7 +524,7 @@ xmlGetExternalEntityLoader(void) {
  * xmlLoadExternalEntity:
  * @URL:  the URL for the entity to load
  * @ID:  the System ID for the entity to load
- * @context:  the context in which the entity is called or NULL
+ * @ctxt:  the context in which the entity is called or NULL
  *
  * Load an external entity, note that the use of this function for
  * unparsed entities may generate problems
@@ -522,7 +534,7 @@ xmlGetExternalEntityLoader(void) {
  */
 xmlParserInputPtr
 xmlLoadExternalEntity(const char *URL, const char *ID,
-                      xmlParserInputPtr context) {
-    return(xmlCurrentExternalEntityLoader(URL, ID, context));
+                      xmlParserCtxtPtr ctxt) {
+    return(xmlCurrentExternalEntityLoader(URL, ID, ctxt));
 }
 

@@ -116,8 +116,10 @@ xmlUpgradeOldNs(xmlDocPtr doc) {
  * @href:  the URI associated
  * @prefix:  the prefix for the namespace
  *
- * Creation of a new Namespace.
- * Returns returns a new namespace pointer
+ * Creation of a new Namespace. This function will refuse to create
+ * a namespace with a similar prefix than an existing one present on this
+ * node.
+ * Returns returns a new namespace pointer or NULL
  */
 xmlNsPtr
 xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
@@ -149,6 +151,7 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
 
     /*
      * Add it at the end to preserve parsing order ...
+     * and checks for existing use of the prefix
      */
     cur->next = NULL;
     if (node != NULL) {
@@ -157,11 +160,17 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
 	} else {
 	    xmlNsPtr prev = node->nsDef;
 
-	    while (prev->next != NULL) prev = prev->next;
+	    while (prev->next != NULL) {
+		if (((prev->prefix == NULL) && (cur->prefix == NULL)) ||
+		    (!xmlStrcmp(prev->prefix, cur->prefix))) {
+		    xmlFreeNs(cur);
+		    return(NULL);
+		}    
+	        prev = prev->next;
+	    }
 	    prev->next = cur;
 	}
     }
-
     return(cur);
 }
 
@@ -171,48 +180,14 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
  * @href:  the URI associated
  * @prefix:  the prefix for the namespace
  *
- * Creation of a Namespace, the old way using PI and without scoping, to AVOID.
- * Returns returns a new namespace pointer
+ * Creation of a Namespace, the old way using PI and without scoping
+ *   DEPRECATED !!!
+ * Will be removed at next major release !
+ * Returns NULL this functionnality had been removed
  */
 xmlNsPtr
 xmlNewGlobalNs(xmlDocPtr doc, const xmlChar *href, const xmlChar *prefix) {
-    xmlNsPtr cur;
-
-    /*
-     * Allocate a new DTD and fill the fields.
-     */
-    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
-    if (cur == NULL) {
-        fprintf(stderr, "xmlNewGlobalNs : malloc failed\n");
-	return(NULL);
-    }
-
-    cur->type = XML_GLOBAL_NAMESPACE;
-    if (href != NULL)
-	cur->href = xmlStrdup(href); 
-    else
-        cur->href = NULL;
-    if (prefix != NULL)
-	cur->prefix = xmlStrdup(prefix); 
-    else
-        cur->prefix = NULL;
-
-    /*
-     * Add it at the end to preserve parsing order ...
-     */
-    cur->next = NULL;
-    if (doc != NULL) {
-	if (doc->oldNs == NULL) {
-	    doc->oldNs = cur;
-	} else {
-	    xmlNsPtr prev = doc->oldNs;
-
-	    while (prev->next != NULL) prev = prev->next;
-	    prev->next = cur;
-	}
-    }
-
-    return(cur);
+    return(NULL);
 }
 
 /**
@@ -956,9 +931,9 @@ xmlFreePropList(xmlAttrPtr cur) {
 
 /**
  * xmlFreeProp:
- * @cur:  the first property in the list
+ * @cur:  an attribute
  *
- * Free one property, all the childs are freed too.
+ * Free one attribute, all the content is freed too
  */
 void
 xmlFreeProp(xmlAttrPtr cur) {
@@ -970,6 +945,44 @@ xmlFreeProp(xmlAttrPtr cur) {
     if (cur->val != NULL) xmlFreeNodeList(cur->val);
     memset(cur, -1, sizeof(xmlAttr));
     xmlFree(cur);
+}
+
+/**
+ * xmlRemoveProp:
+ * @cur:  an attribute
+ *
+ * Unlink and free one attribute, all the content is freed too
+ * Note this doesn't work for namespace definition attributes
+ *
+ * Returns 0 if success and -1 in case of error.
+ */
+int
+xmlRemoveProp(xmlAttrPtr cur) {
+    xmlAttrPtr tmp;
+    if (cur == NULL) {
+        fprintf(stderr, "xmlRemoveProp : cur == NULL\n");
+	return(-1);
+    }
+    if (cur->node == NULL) {
+        fprintf(stderr, "xmlRemoveProp : cur->node == NULL\n");
+	return(-1);
+    }
+    tmp = cur->node->properties;
+    if (tmp == cur) {
+        cur->node->properties = cur->next;
+	xmlFreeProp(cur);
+	return(0);
+    }
+    while (tmp != NULL) {
+	if (tmp->next == cur) {
+	    tmp->next = cur->next;
+	    xmlFreeProp(cur);
+	    return(0);
+	}
+        tmp = tmp->next;
+    }
+    fprintf(stderr, "xmlRemoveProp : attribute not owned by its node\n");
+    return(-1);
 }
 
 /**

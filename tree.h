@@ -449,6 +449,7 @@ void		xmlTextConcat		(xmlNodePtr node,
 					 int len);
 void		xmlFreeNodeList		(xmlNodePtr cur);
 void		xmlFreeNode		(xmlNodePtr cur);
+int		xmlRemoveProp		(xmlAttrPtr cur);
 
 /*
  * Namespaces

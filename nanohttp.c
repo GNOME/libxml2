@@ -15,6 +15,7 @@
         fly with ZLIB if found at compile-time */
 
 #ifdef WIN32
+#define INCLUDE_WINSOCKS
 #include "win32config.h"
 #else
 #include "config.h"

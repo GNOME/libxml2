@@ -344,6 +344,8 @@ PUSH_AND_POP(extern, xmlChar*, name)
 #define SKIP_BLANKS 							\
     do { 								\
 	while (IS_BLANK(CUR)) NEXT;					\
+	while ((CUR == 0) && (ctxt->inputNr > 1))			\
+	    xmlPopInput(ctxt);						\
 	if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
 	if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt);	\
     } while (IS_BLANK(CUR));
@@ -494,7 +496,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
             case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
             case XML_EXTERNAL_PARAMETER_ENTITY:
 		return(xmlLoadExternalEntity((char *) entity->SystemID,
-		       (char *) entity->ExternalID, ctxt->input));
+		       (char *) entity->ExternalID, ctxt));
             case XML_INTERNAL_GENERAL_ENTITY:
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
@@ -584,7 +586,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
             buf = xmlParserInputBufferCreateFilename(name,
 	                                             XML_CHAR_ENCODING_NONE);
 	    if (buf != NULL)
-		directory = xmlMemStrdup(ctxt->input->directory);
+		directory = xmlParserGetDirectory(name);
 	}
 	if ((buf == NULL) && (ctxt->directory != NULL)) {
 #ifdef WIN32
@@ -595,7 +597,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
             buf = xmlParserInputBufferCreateFilename(name,
 	                                             XML_CHAR_ENCODING_NONE);
 	    if (buf != NULL)
-		directory = xmlMemStrdup(ctxt->directory);
+		directory = xmlParserGetDirectory(name);
 	}
 	if (buf == NULL)
 	    return(NULL);
@@ -4665,7 +4667,15 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 	    if (name != NULL) xmlFree(name);
 	    return(-1);
 	}
+
 	SKIP_BLANKS;
+	/*
+	 * Pop-up of finished entities.
+	 */
+	while ((CUR == 0) && (ctxt->inputNr > 1))
+	    xmlPopInput(ctxt);
+	SKIP_BLANKS;
+
 	if (CUR != '>') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData, 
@@ -6838,19 +6848,17 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     GROW;
     if ((CUR == '<') && (NXT(1) == '?') &&
         (NXT(2) == 'x') && (NXT(3) == 'm') &&
-	(NXT(4) == 'l')) {
+	(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
 	xmlParseXMLDecl(ctxt);
-	/* SKIP_EOL(cur); */
 	SKIP_BLANKS;
     } else if ((CUR == '<') && (NXT(1) == '?') &&
         (NXT(2) == 'X') && (NXT(3) == 'M') &&
-	(NXT(4) == 'L')) {
+	(NXT(4) == 'L') && (IS_BLANK(NXT(5)))) {
 	/*
 	 * The first drafts were using <?XML and the final W3C REC
 	 * now use <?xml ...
 	 */
 	xmlParseXMLDecl(ctxt);
-	/* SKIP_EOL(cur); */
 	SKIP_BLANKS;
     } else {
 	ctxt->version = xmlCharStrdup(XML_DEFAULT_VERSION);
@@ -7127,7 +7135,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 						      &xmlDefaultSAXLocator);
 		    if ((in->cur[2] == 'x') &&
 			(in->cur[3] == 'm') &&
-			(in->cur[4] == 'l')) {
+			(in->cur[4] == 'l') &&
+			(IS_BLANK(in->cur[5]))) {
 			ret += 5;
 #ifdef DEBUG_PUSH
 			fprintf(stderr, "PP: Parsing XML Decl\n");

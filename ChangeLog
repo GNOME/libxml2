@@ -1,3 +1,8 @@
+Thu Feb 12 16:28:12 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS configure.in: preparing release of 2.6.6
+	* doc/*: updated the docs and rebuilt them
+
 Thu Feb 12 13:41:16 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: fixing bug #132930 with the provided patch, a bit

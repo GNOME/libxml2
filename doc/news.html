@@ -12,6 +12,28 @@ for a really accurate description</h3><p>Items not finished and worked on, get i
 to test those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
+</ul><h3>2.6.6: Feb 12 2004</h3><ul><li>nanohttp and nanoftp: buffer overflow error on URI parsing (Igor and
+    William) reported by Yuuichi Teranishi</li>
+  <li>bugfixes: make test and path issues, xmlWriter attribute serialization
+    (William Brack), xmlWriter indentation (William), schemas validation
+    (Eric Haszlakiewicz), XInclude dictionnaries issues (William and Oleg
+    Paraschenko), XInclude empty fallback (William), HTML warnings (William),
+    XPointer in XInclude (William), Python namespace serialization,
+    isolat1ToUTF8 bound error (Alfred Mickautsch), output of parameter
+    entities in internal subset (William), internal subset bug in push mode,
+    &lt;xs:all&gt; fix (Alexey Sarytchev)</li>
+  <li>Build: fix for automake-1.8 (Alexander Winston), warnings removal
+    (Philip Ludlam), SOCKLEN_T detection fixes (Daniel Richard), fix
+    --with-minimum configuration.</li>
+  <li>XInclude: allow the 2001 namespace without warning.</li>
+  <li>Documentation: missing example/index.html (John Fleck), version
+    dependancies (John Fleck)</li>
+  <li>reader API: structured error reporting (Steve Ball)</li>
+  <li>Windows compilation: mingw, msys (Mikhail Grushinskiy), function
+    prototype (Cameron Johnson), MSVC6 compiler warnings, _WINSOCKAPI_
+  patch</li>
+  <li>Parsers: added xmlByteConsumed(ctxt) API to get the byte offest in
+    input.</li>
 </ul><h3>2.6.5: Jan 25 2004</h3><ul><li>Bugfixes: dictionnaries for schemas (William Brack), regexp segfault
     (William), xs:all problem (William), a number of XPointer bugfixes
     (William), xmllint error go to stderr, DTD validation problem with
@@ -27,7 +49,7 @@ to test those</p><ul><li>More testing on RelaxNG</li>
   <li>XInclude: various fixes for conformance, problem related to dictionnary
     references (William &amp; me), recursion (William)</li>
   <li>xmlWriter: indentation (Lucas Brasilino), memory leaks (Alfred
-    Mickautsch), </li>
+    Mickautsch),</li>
   <li>xmlSchemas: normalizedString datatype (John Belmonte)</li>
   <li>code cleanup for strings functions (William)</li>
   <li>Windows: compiler patches (Mark Vakoc)</li>

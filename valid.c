@@ -3534,7 +3534,8 @@ cont:
 			return(-2);
 		} while ((NODE != NULL) &&
 			 ((NODE->type != XML_ELEMENT_NODE) &&
-			  (NODE->type != XML_TEXT_NODE)));
+			  (NODE->type != XML_TEXT_NODE) &&
+			  (NODE->type != XML_CDATA_SECTION_NODE)));
                 ret = 1;
 		break;
 	    } else {
@@ -3574,7 +3575,8 @@ cont:
 			return(-2);
 		} while ((NODE != NULL) &&
 			 ((NODE->type != XML_ELEMENT_NODE) &&
-			  (NODE->type != XML_TEXT_NODE)));
+			  (NODE->type != XML_TEXT_NODE) &&
+			  (NODE->type != XML_CDATA_SECTION_NODE)));
 	    } else {
 		DEBUG_VALID_MSG("element failed");
 		ret = 0;
@@ -3976,9 +3978,10 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 		    }
 		    break;
 		case XML_TEXT_NODE:
-		case XML_CDATA_SECTION_NODE:
 		    if (xmlIsBlankNode(cur))
 			break;
+		    /* no break on purpose */
+		case XML_CDATA_SECTION_NODE:
 		    /* no break on purpose */
 		case XML_ELEMENT_NODE:
 		    /*
@@ -4003,6 +4006,13 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 		    else {
 			last->next = tmp;
 			last = tmp;
+		    }
+		    if (cur->type == XML_CDATA_SECTION_NODE) {
+			/* 
+			 * E59 spaces in CDATA does not match the
+			 * nonterminal S
+			 */
+			tmp->content = xmlStrdup(BAD_CAST "CDATA");
 		    }
 		    break;
 		default:

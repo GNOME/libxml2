@@ -263,7 +263,7 @@ xmlSchemaVErr3(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node, int error,
     }
     /* reajust to global error numbers */
     error += XML_SCHEMAV_NOROOT - XML_SCHEMAS_ERR_NOROOT;
-    __xmlRaiseError(channel, data, ctxt, node, XML_FROM_SCHEMASP,
+    __xmlRaiseError(channel, data, ctxt, node, XML_FROM_SCHEMASV,
                     error, XML_ERR_ERROR, NULL, 0,
                     (const char *) str1, (const char *) str2,
 		    (const char *) str3, 0, 0,
@@ -295,7 +295,7 @@ xmlSchemaVErr(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node, int error,
     }
     /* reajust to global error numbers */
     error += XML_SCHEMAV_NOROOT - XML_SCHEMAS_ERR_NOROOT;
-    __xmlRaiseError(channel, data, ctxt, node, XML_FROM_SCHEMASP,
+    __xmlRaiseError(channel, data, ctxt, node, XML_FROM_SCHEMASV,
                     error, XML_ERR_ERROR, NULL, 0,
                     (const char *) str1, (const char *) str2, NULL, 0, 0,
                     msg, str1, str2);

@@ -311,10 +311,10 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
             channel(data, "regexp ");
             break;
         case XML_FROM_SCHEMASV:
-            channel(data, "Schemas validity");
+            channel(data, "Schemas validity ");
             break;
         case XML_FROM_SCHEMASP:
-            channel(data, "Schemas parser");
+            channel(data, "Schemas parser ");
             break;
         case XML_FROM_RELAXNGP:
             channel(data, "Relax-NG parser ");

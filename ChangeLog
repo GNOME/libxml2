@@ -1,3 +1,12 @@
+Fri Oct 10 12:49:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* error.c xmlschemas.c: a bit of cleanup
+	* result/schemas/*.err: updated with the new result strings
+
+Fri Oct 10 03:58:39 PDT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: fixed bug 124061
+
 Fri Oct 10 02:47:22 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: cleanup

@@ -2156,6 +2156,29 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
  ************************************************************************/
  
 /**
+ * xmlDocGetRootElement:
+ * @doc:  the document
+ *
+ * Get the root element of the document (doc->root is a list
+ * containing possibly comments, PIs, etc ...).
+ *
+ * Returns the xmlNodePtr for the root or NULL
+ */
+xmlNodePtr
+xmlDocGetRootElement(xmlDocPtr doc) {
+    xmlNodePtr ret;
+
+    if (doc == NULL) return(NULL);
+    ret = doc->root;
+    while (ret != NULL) {
+	if (ret->type == XML_ELEMENT_NODE)
+	    return(ret);
+        ret = ret->next;
+    }
+    return(ret);
+}
+ 
+/**
  * xmlNodeSetLang:
  * @cur:  the node being changed
  * @lang:  the langage description

@@ -44,84 +44,13 @@ static int recovery = 0;
 static int noent = 0;
 static int noout = 0;
 static int valid = 0;
+static int postvalid = 0;
 static int repeat = 0;
 static int insert = 0;
 static int compress = 0;
 
 extern int xmlDoValidityCheckingDefaultValue;
 
-/*
- * Note: there is a couple of errors introduced on purpose.
-static xmlChar buffer[] = 
-"<?xml version=\"1.0\"?>\n\
-<?xml:namespace ns = \"http://www.ietf.org/standards/dav/\" prefix = \"D\"?>\n\
-<?xml:namespace ns = \"http://www.w3.com/standards/z39.50/\" prefix = \"Z\"?>\n\
-<D:propertyupdate>\n\
-<D:set a=\"'toto'\" b>\n\
-       <D:prop>\n\
-            <Z:authors>\n\
-                 <Z:Author>Jim Whitehead</Z:Author>\n\
-                 <Z:Author>Roy Fielding</Z:Author>\n\
-            </Z:authors>\n\
-       </D:prop>\n\
-  </D:set>\n\
-  <D:remove>\n\
-       <D:prop><Z:Copyright-Owner/></D:prop>\n\
-  </D:remove>\n\
-</D:propertyupdate>\n\
-\n\
-";
- */
-
-/************************************************************************
- *									*
- *				Debug					*
- *									*
- ************************************************************************/
-
-int treeTest(void) {
-    xmlDocPtr doc, tmp;
-    xmlNodePtr tree, subtree;
-
-    /*
-     * build a fake XML document
-     */
-    doc = xmlNewDoc(BAD_CAST "1.0");
-    doc->root = xmlNewDocNode(doc, NULL, BAD_CAST "EXAMPLE", NULL);
-    xmlSetProp(doc->root, BAD_CAST "prop1", BAD_CAST "gnome is great");
-    xmlSetProp(doc->root, BAD_CAST "prop2", BAD_CAST "&linux; too");
-    xmlSetProp(doc->root, BAD_CAST "emptyprop", BAD_CAST "");
-    tree = xmlNewChild(doc->root, NULL, BAD_CAST "head", NULL);
-    subtree = xmlNewChild(tree, NULL, BAD_CAST "title",
-                          BAD_CAST "Welcome to Gnome");
-    tree = xmlNewChild(doc->root, NULL, BAD_CAST "chapter", NULL);
-    subtree = xmlNewChild(tree, NULL, BAD_CAST "title",
-                          BAD_CAST "The Linux adventure");
-    subtree = xmlNewChild(tree, NULL, BAD_CAST "p", BAD_CAST "bla bla bla ...");
-    subtree = xmlNewChild(tree, NULL, BAD_CAST "image", NULL);
-    xmlSetProp(subtree, BAD_CAST "href", BAD_CAST "linus.gif");
-
-    /*
-     * test intermediate copy if needed.
-     */
-    if (copy) {
-        tmp = doc;
-	doc = xmlCopyDoc(doc, 1);
-	xmlFreeDoc(tmp);
-    }
-
-    /*
-     * print it.
-     */
-    if (noout == 0)
-	xmlDocDump(stdout, doc);
-
-    /*
-     * free it.
-     */
-    xmlFreeDoc(doc);
-    return(0);
-}
 
 void parseAndPrintFile(char *filename) {
     xmlDocPtr doc, tmp;
@@ -178,47 +107,18 @@ void parseAndPrintFile(char *filename) {
 	} else
 	    xmlDebugDumpDocument(stdout, doc);
     }
-    if (debugent)	
-	xmlDebugDumpEntities(stdout, doc);
 
     /*
-     * free it.
+     * A posteriori validation test
      */
-    xmlFreeDoc(doc);
-}
-
-void parseAndPrintBuffer(xmlChar *buf) {
-    xmlDocPtr doc, tmp;
-
-    /*
-     * build an XML tree from a string;
-     */
-    if (recovery)
-	doc = xmlRecoverDoc(buf);
-    else
-	doc = xmlParseDoc(buf);
-
-    /*
-     * test intermediate copy if needed.
-     */
-    if (copy) {
-        tmp = doc;
-	doc = xmlCopyDoc(doc, 1);
-	xmlFreeDoc(tmp);
+    if (postvalid) {
+	xmlValidCtxt cvp;
+	cvp.userData = (void *) stderr;                                                 cvp.error    = (xmlValidityErrorFunc) fprintf;                                  cvp.warning  = (xmlValidityWarningFunc) fprintf;
+	xmlValidateDocument(&cvp, doc);
     }
 
-    /*
-     * print it.
-     */
-    if (!debug) {
-        if (compress)
-	    xmlSaveFile("-", doc);
-	else
-	    xmlDocDump(stdout, doc);
-    } else
-        xmlDebugDumpDocument(stdout, doc);
     if (debugent)	
-        xmlDebugDumpEntities(stdout, doc);
+	xmlDebugDumpEntities(stdout, doc);
 
     /*
      * free it.
@@ -249,6 +149,9 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-valid")) ||
 	         (!strcmp(argv[i], "--valid")))
 	    valid++;
+	else if ((!strcmp(argv[i], "-postvalid")) ||
+	         (!strcmp(argv[i], "--postvalid")))
+	    postvalid++;
 	else if ((!strcmp(argv[i], "-insert")) ||
 	         (!strcmp(argv[i], "--insert")))
 	    insert++;
@@ -280,12 +183,13 @@ int main(int argc, char **argv) {
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
 	printf("\t--debugent : debug the entities defined in the document\n");
 	printf("\t--copy : used to test the internal copy implementation\n");
-	printf("\t--recover : output what is parsable on broken XmL documents\n");
+	printf("\t--recover : output what was parsable on broken XML documents\n");
 	printf("\t--noent : substitute entity references by their value\n");
-	printf("\t--noout : don't output the result\n");
+	printf("\t--noout : don't output the result tree\n");
 	printf("\t--valid : validate the document in addition to std well-formed check\n");
-	printf("\t--repeat : parse the file 100 times, for timing or profiling\n");
-	printf("\t--insert : test for valid insertions\n");
+	printf("\t--postvalid : do a posteriori validation, i.e after parsing\n");
+	printf("\t--repeat : repeat 100 times, for timing or profiling\n");
+	printf("\t--insert : ad-hoc test for valid insertions\n");
 	printf("\t--compress : turn on gzip compression of output\n");
     }
     xmlCleanupParser();

@@ -443,13 +443,11 @@ typedef unsigned char CHARVAL;
  * [85] BaseChar ::= ... long list see REC ...
  */
 #define IS_BASECHAR(c)							\
-    ((((c) >= 0x41) && ((c) <= 0x5a)) ||				\
-     (((c) >= 0x61) && ((c) <= 0x7a)) ||				\
-     (((c) >= 0xaa) && ((c) <= 0x5b)) ||				\
-     (((c) >= 0xc0) && ((c) <= 0xd6)) ||				\
-     (((c) >= 0xd8) && ((c) <= 0xf6)) ||				\
-     (((c) >= 0xf8) && ((c) <= 0xff)) ||				\
-      ((c) == 0xba))
+     ((((c) >= 0x0041) && ((c) <= 0x005A)) ||				\
+      (((c) >= 0x0061) && ((c) <= 0x007A)) ||				\
+      (((c) >= 0x00C0) && ((c) <= 0x00D6)) ||				\
+      (((c) >= 0x00D8) && ((c) <= 0x00F6)) ||				\
+      (((c) >= 0x00F8) && ((c) <= 0x00FF)))
 
 /*
  * [88] Digit ::= ... long list see REC ...

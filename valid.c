@@ -2730,7 +2730,69 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     CHECK_DTD;
 
-    if ((elem == NULL) || (elem->name == NULL)) return(0);
+    if (elem == NULL) return(0);
+    if (elem->type == XML_TEXT_NODE) {
+    }
+    switch (elem->type) {
+        case XML_ATTRIBUTE_NODE:
+	    VERROR(ctxt->userData, 
+		   "Attribute element not expected here\n");
+	    return(0);
+        case XML_TEXT_NODE:
+	    if (elem->childs != NULL) {
+		VERROR(ctxt->userData, "Text element has childs !\n");
+		return(0);
+	    }
+	    if (elem->properties != NULL) {
+		VERROR(ctxt->userData, "Text element has attributes !\n");
+		return(0);
+	    }
+	    if (elem->ns != NULL) {
+		VERROR(ctxt->userData, "Text element has namespace !\n");
+		return(0);
+	    }
+	    if (elem->ns != NULL) {
+		VERROR(ctxt->userData, 
+		       "Text element carries namespace definitions !\n");
+		return(0);
+	    }
+	    if (elem->content == NULL) {
+		VERROR(ctxt->userData, 
+		       "Text element has no content !\n");
+		return(0);
+	    }
+	    return(1);
+        case XML_CDATA_SECTION_NODE:
+        case XML_ENTITY_REF_NODE:
+        case XML_PI_NODE:
+        case XML_COMMENT_NODE:
+	    return(1);
+        case XML_ENTITY_NODE:
+	    VERROR(ctxt->userData, 
+		   "Entity element not expected here\n");
+	    return(0);
+        case XML_NOTATION_NODE:
+	    VERROR(ctxt->userData, 
+		   "Notation element not expected here\n");
+	    return(0);
+        case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+        case XML_DOCUMENT_FRAG_NODE:
+	    VERROR(ctxt->userData, 
+		   "Document element not expected here\n");
+	    return(0);
+        case XML_HTML_DOCUMENT_NODE:
+	    VERROR(ctxt->userData, 
+		   "\n");
+	    return(0);
+        case XML_ELEMENT_NODE:
+	    break;
+	default:
+	    VERROR(ctxt->userData, 
+		   "unknown element type %d\n", elem->type);
+	    return(0);
+    }
+    if (elem->name == NULL) return(0);
 
     elemDecl = xmlGetDtdElementDesc(doc->intSubset, elem->name);
     if ((elemDecl == NULL) && (doc->extSubset != NULL))
@@ -2828,6 +2890,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
 int
 xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
+    xmlNodePtr root;
     if (doc == NULL) return(0);
 
     if ((doc->intSubset == NULL) ||
@@ -2835,14 +2898,15 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 	VERROR(ctxt->userData, "Not valid: no DtD found\n");
         return(0);
     }
-    if ((doc->root == NULL) || (doc->root->name == NULL)) {
+    root = xmlDocGetRootElement(doc);
+    if ((root == NULL) || (root->name == NULL)) {
 	VERROR(ctxt->userData, "Not valid: no root element\n");
         return(0);
     }
-    if (xmlStrcmp(doc->intSubset->name, doc->root->name)) {
+    if (xmlStrcmp(doc->intSubset->name, root->name)) {
 	VERROR(ctxt->userData,
-	       "Not valid: root and DtD name do not match %s and %s\n",
-	       doc->root->name, doc->intSubset->name);
+	       "Not valid: root and DtD name do not match '%s' and '%s'\n",
+	       root->name, doc->intSubset->name);
 	return(0);
     }
     return(1);
@@ -2876,7 +2940,7 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
         value = xmlNodeListGetString(doc, attr->val, 0);
 	ret &= xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
 	if (value != NULL)
-	    free(value);
+	    xmlFree(value);
 	attr= attr->next;
     }
     child = elem->childs;
@@ -2937,7 +3001,7 @@ xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
  * @doc:  a document instance
  * @dtd:  a dtd instance
  *
- * Try to validate the dtd instance
+ * Try to validate the document against the dtd instance
  *
  * basically it does check all the definitions in the DtD.
  *
@@ -2946,8 +3010,24 @@ xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 
 int
 xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
-    /* TODO xmlValidateDtd */
-    return(1);
+    int ret;
+    xmlDtdPtr oldExt;
+    xmlNodePtr root;
+
+    if (dtd == NULL) return(0);
+    if (doc == NULL) return(0);
+    oldExt = doc->extSubset;
+    doc->extSubset = dtd;
+    ret = xmlValidateRoot(ctxt, doc);
+    if (ret == 0) {
+	doc->extSubset = oldExt;
+	return(ret);
+    }
+    root = xmlDocGetRootElement(doc);
+    ret = xmlValidateElement(ctxt, doc, root);
+    ret &= xmlValidateDocumentFinal(ctxt, doc);
+    doc->extSubset = oldExt;
+    return(ret);
 }
 
 /**
@@ -2967,10 +3047,32 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
 int
 xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     int ret;
+    xmlNodePtr root;
+
+    if ((doc->intSubset == NULL) && (doc->extSubset == NULL))
+	return(0);
+    if ((doc->intSubset != NULL) && ((doc->intSubset->SystemID != NULL) ||
+	(doc->intSubset->ExternalID != NULL)) && (doc->extSubset == NULL)) {
+        doc->extSubset = xmlParseDTD(doc->intSubset->ExternalID,
+		                     doc->intSubset->SystemID);
+        if (doc->extSubset == NULL) {
+	    if (doc->intSubset->SystemID != NULL) {
+		VERROR(ctxt->userData, 
+		       "Could not load the external subset '%s'\n",
+		       doc->intSubset->SystemID);
+	    } else {
+		VERROR(ctxt->userData, 
+		       "Could not load the external subset '%s'\n",
+		       doc->intSubset->ExternalID);
+	    }
+	    return(0);
+	}
+    }
 
     if (!xmlValidateRoot(ctxt, doc)) return(0);
 
-    ret = xmlValidateElement(ctxt, doc, doc->root);
+    root = xmlDocGetRootElement(doc);
+    ret = xmlValidateElement(ctxt, doc, root);
     ret &= xmlValidateDocumentFinal(ctxt, doc);
     return(ret);
 }

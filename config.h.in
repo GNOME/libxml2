@@ -40,6 +40,9 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
+/* Have dlopen based dso */
+#undef HAVE_DLOPEN
+
 /* Define to 1 if you have the <errno.h> header file. */
 #undef HAVE_ERRNO_H
 
@@ -94,6 +97,9 @@
 /* Define to 1 if you have the `inet' library (-linet). */
 #undef HAVE_LIBINET
 
+/* Define to 1 if you have the `net' library (-lnet). */
+#undef HAVE_LIBNET
+
 /* Define to 1 if you have the `nsl' library (-lnsl). */
 #undef HAVE_LIBNSL
 
@@ -144,6 +150,9 @@
 
 /* Define to 1 if you have the <resolv.h> header file. */
 #undef HAVE_RESOLV_H
+
+/* Have shl_load based dso */
+#undef HAVE_SHLLOAD
 
 /* Define to 1 if you have the `signal' function. */
 #undef HAVE_SIGNAL
@@ -258,7 +267,7 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Define if compiler has function prototypes */
+/* Define to 1 if the C compiler supports function prototypes. */
 #undef PROTOTYPES
 
 /* Determine what socket length (socklen_t) data type is */
@@ -275,6 +284,9 @@
 
 /* Using the Win32 Socket implementation */
 #undef _WINSOCKAPI_
+
+/* Define like PROTOTYPES; this can be used by system headers. */
+#undef __PROTOTYPES
 
 /* Win32 Std C name mangling work-around */
 #undef snprintf

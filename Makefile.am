@@ -8,7 +8,7 @@ INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAG
 
 noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
                 testThreads testC14N testAutomata testRegexp \
-		testReader testapi
+                testReader testapi testModule
 
 bin_PROGRAMS = xmllint xmlcatalog
 
@@ -17,7 +17,7 @@ bin_SCRIPTS=xml2-config
 lib_LTLIBRARIES = libxml2.la
 libxml2_la_LIBADD = @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) @M_LIBS@ @WIN32_EXTRA_LIBADD@
 
-libxml2_la_LDFLAGS = @CYGWIN_EXTRA_LDFLAGS@ @WIN32_EXTRA_LDFLAGS@ -version-info @LIBXML_VERSION_INFO@
+libxml2_la_LDFLAGS = @CYGWIN_EXTRA_LDFLAGS@ @WIN32_EXTRA_LDFLAGS@ -version-info @LIBXML_VERSION_INFO@ @MODULE_PLATFORM_LIBS@
 
 if WITH_TRIO_SOURCES
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
@@ -27,7 +27,7 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		catalog.c globals.c threads.c c14n.c xmlstring.c \
 		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
 		triostr.c trio.c xmlreader.c relaxng.c dict.c SAX2.c \
-		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c
+		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c xmlmodule.c
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
@@ -36,7 +36,8 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		catalog.c globals.c threads.c c14n.c xmlstring.c \
 		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
 		xmlreader.c relaxng.c dict.c SAX2.c \
-		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c
+		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c \
+		xmlmodule.c
 endif
 
 DEPS = $(top_builddir)/libxml2.la
@@ -113,6 +114,15 @@ testReader_LDFLAGS =
 testReader_DEPENDENCIES = $(DEPS)
 testReader_LDADD= $(LDADDS)
 
+testModule_SOURCES=testModule.c
+testModule_LDFLAGS = 
+testModule_DEPENDENCIES = $(DEPS)
+testModule_LDADD= $(LDADDS)
+
+noinst_LTLIBRARIES = testdso.la
+testdso_la_SOURCES = testdso.c
+testdso_la_LDFLAGS = -module -rpath $(libdir)
+
 testapi.c: gentest.py doc/libxml2-api.xml
 	-@(if [ "$(PYTHON)" != "" ] ; then \
 	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
@@ -131,7 +141,7 @@ check-local: all tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests NStests IDtests Errtests APItests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@ @PYTHON_TESTS@
+tests: XMLtests XMLenttests NStests IDtests Errtests APItests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@ @PYTHON_TESTS@ @TEST_MODULES@
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; \
 	    $(MAKE) MAKEFLAGS+=--silent tests ; fi)
 	@(cd doc/examples ; $(MAKE) MAKEFLAGS+=--silent tests)
@@ -984,6 +994,10 @@ SchemasPythonTests:
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
 	  fi)
 	@(if [ -x $(PYTHON) -a -d xstc ] ; then cd xstc ; $(MAKE) CHECKER="$(CHECKER)" MAKEFLAGS+=--silent pytests ; fi)
+
+ModuleTests: testModule$(EXEEXT) testdso.la
+	@echo "## Module tests"
+	@(./testModule$(EXEEXT))
 
 cleanup:
 	-@(find . -name .\#\* -exec rm {} \;)

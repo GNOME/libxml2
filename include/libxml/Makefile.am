@@ -34,6 +34,7 @@ xmlinc_HEADERS = \
 		c14n.h \
 		xmlautomata.h \
 		xmlregexp.h \
+		xmlmodule.h \
 		xmlschemas.h \
 		schemasInternals.h \
 		xmlschemastypes.h \

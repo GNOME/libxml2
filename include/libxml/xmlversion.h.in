@@ -340,6 +340,16 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_MODULES_ENABLED:
+ *
+ * Whether the module interfaces are compiled in
+ */
+#if @WITH_MODULES@
+#define LIBXML_MODULES_ENABLED
+#define LIBXML_MODULE_EXTENSION "@MODULE_EXTENSION@" 
+#endif
+
+/**
  * ATTRIBUTE_UNUSED:
  *
  * Macro used to signal to GCC unused function parameters

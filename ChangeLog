@@ -1,3 +1,12 @@
+Tue Jan  4 16:07:52 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am config.h.in configure.in error.c libxml-2.0.pc.in
+	  testModule.c testdso.c xml2-config.in xmllint.c xmlmodule.c
+	  include/libxml/Makefile.am include/libxml/xmlerror.h
+	  include/libxml/xmlmodule.h include/libxml/xmlversion.h.in 
+	  include/libxml/xmlwin32version.h.in: applied DSO support
+	  patch 2 from Joel Reed
+
 Tue Jan  4 15:30:15 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: applied patch from Marcin Konicki for BeOS

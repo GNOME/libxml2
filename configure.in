@@ -628,6 +628,32 @@ fi
 AC_SUBST(pythondir)
 AC_SUBST(PYTHON_SUBDIR)
 
+dnl check for dso support
+WITH_MODULES=0
+MODULE_EXTENSION=".so"
+TEST_MODULES=
+
+AC_CHECK_LIB(dld, shl_load, [
+  WITH_MODULES=1
+  MODULE_PLATFORM_LIBS="-ldld"
+  AC_DEFINE([HAVE_SHLLOAD], [], [Have shl_load based dso])
+])
+
+AC_CHECK_LIB(dl, dlopen, [
+  WITH_MODULES=1
+  MODULE_PLATFORM_LIBS="-ldl"
+  AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])
+])
+
+if test "${WITH_MODULES}" = "1"; then
+  TEST_MODULES="ModuleTests"
+fi  
+
+AC_SUBST(WITH_MODULES)
+AC_SUBST(MODULE_PLATFORM_LIBS)
+AC_SUBST(MODULE_EXTENSION)
+AC_SUBST(TEST_MODULES)
+
 dnl
 dnl Tester makes use of readline if present
 dnl

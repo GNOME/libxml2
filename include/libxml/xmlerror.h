@@ -59,7 +59,8 @@ typedef enum {
     XML_FROM_XSLT,	/* The XSLT engine from libxslt */
     XML_FROM_VALID,	/* The XML DTD validation with valid context */
     XML_FROM_CHECK,	/* The error checking module */
-    XML_FROM_WRITER	/* The xmlwriter module */
+    XML_FROM_WRITER,	/* The xmlwriter module */
+    XML_FROM_MODULE	/* The dynamically loaded module module*/
 } xmlErrorDomain;
 
 /**
@@ -746,6 +747,8 @@ typedef enum {
     XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_3, /* 3077 */
     XML_SCHEMAP_AU_PROPS_CORRECT_2, /* 3078 */
     XML_SCHEMAP_A_PROPS_CORRECT_2, /* 3079 */
+    XML_MODULE_OPEN = 4900, /* 4900 */
+    XML_MODULE_CLOSE, /* 4901 */
     XML_CHECK_FOUND_ELEMENT = 5000,
     XML_CHECK_FOUND_ATTRIBUTE, /* 5001 */
     XML_CHECK_FOUND_TEXT, /* 5002 */

@@ -95,6 +95,9 @@ LIBS = $(LIBS) zlibomf.lib
 !if "$(WITH_THREADS)" == "posix"
 LIBS = $(LIBS) pthreadVC.lib
 !endif
+!if "$(WITH_MODULES)" == "1"
+LIBS = $(LIBS) kernel32.lib
+!endif
 
 # The archiver and its options.
 AR = tlib.exe
@@ -143,6 +146,7 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\xmlmemory.obj\
 	$(XML_INTDIR)\xmlreader.obj\
 	$(XML_INTDIR)\xmlregexp.obj\
+	$(XML_INTDIR)\xmlmodule.obj\
 	$(XML_INTDIR)\xmlsave.obj\
 	$(XML_INTDIR)\xmlschemas.obj\
 	$(XML_INTDIR)\xmlschemastypes.obj\
@@ -186,6 +190,7 @@ XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
 	$(XML_INTDIR_A)\xmlmemory.obj\
 	$(XML_INTDIR_A)\xmlreader.obj\
 	$(XML_INTDIR_A)\xmlregexp.obj\
+	$(XML_INTDIR_A)\xmlmodule.obj\
 	$(XML_INTDIR_A)\xmlsave.obj\
 	$(XML_INTDIR_A)\xmlschemas.obj\
 	$(XML_INTDIR_A)\xmlschemastypes.obj\
@@ -205,6 +210,7 @@ UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\testReader.exe\
 	$(BINDIR)\testRelax.exe\
 	$(BINDIR)\testRegexp.exe\
+	$(BINDIR)\testModule.exe\
 	$(BINDIR)\testSAX.exe\
 	$(BINDIR)\testSchemas.exe\
 	$(BINDIR)\testURI.exe\

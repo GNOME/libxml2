@@ -1663,6 +1663,9 @@ static void showVersion(const char *name) {
 #ifdef LIBXML_SCHEMAS_ENABLED
     fprintf(stderr, "Schemas ");
 #endif
+#ifdef LIBXML_MODULES_ENABLED
+    fprintf(stderr, "Modules ");
+#endif
     fprintf(stderr, "\n");
 }
 

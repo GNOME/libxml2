@@ -330,6 +330,9 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
         case XML_FROM_REGEXP:
             channel(data, "regexp ");
             break;
+        case XML_FROM_MODULE:
+            channel(data, "module ");
+            break;
         case XML_FROM_SCHEMASV:
             channel(data, "Schemas validity ");
             break;

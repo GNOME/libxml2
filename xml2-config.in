@@ -17,6 +17,7 @@ Known values for OPTION are:
   --libs		print library linking information
   --libtool-libs        print linking information for use with libtool
   --cflags		print pre-processor and compiler flags
+  --modules		module support enabled
   --help		display this help and exit
   --version		output version information
 EOF
@@ -73,6 +74,10 @@ while test $# -gt 0; do
     --libtool-libs)
 	echo ${libdir}/@XML_LIBTOOLLIBS@
         ;;
+
+    --modules)
+       	echo @WITH_MODULES@
+       	;;
 
     --libs)
         if [ "`uname`" = "Linux" ]

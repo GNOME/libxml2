@@ -261,6 +261,18 @@ extern void xmlCheckVersion(int version);
 #endif
 #endif
 
+/*
+ * #pragma comment(lib, "kernel32.lib")
+ *
+ * pragma understood my MS compiler which enables a conditional link with
+ * kernel32.
+ */
+#ifdef _MSC_VER
+#if defined LIBXML_MODULES_ENABLED
+#pragma comment(lib, "kernel32.lib")
+#endif
+#endif
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

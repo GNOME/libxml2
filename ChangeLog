@@ -1,3 +1,9 @@
+Fri Sep 14 16:00:18 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: fixing #60387 with the provided patch from
+	  Heiko W.Rupp
+	* configure.in: preparing 1.8.16 release
+
 Mon Sep 10 23:24:04 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: tried to fix #60295 by backporting the detection

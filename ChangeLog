@@ -1,3 +1,9 @@
+Sun Apr 20 10:36:05 MDT 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmllint.xml
+	* doc/xmllint.1
+	update man page to explain use of --stream
+
 Sat Apr 19 02:03:24 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* DOCBparser.c HTMLparser.c c14n.c catalog.c encoding.c globals.c

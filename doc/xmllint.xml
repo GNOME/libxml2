@@ -420,8 +420,9 @@
       <varlistentry>
 	<term><option>--stream</option></term>
 	<listitem>
-	  <simpara>Use streaming API - useful for validation of files that are
-	  too large to be held in memory.</simpara> 
+	  <simpara>Use streaming API - useful when  used  in combination with
+              --relaxng or --valid options for validation of files that are
+	    too large to be held in memory.</simpara> 
 	</listitem>
       </varlistentry>
       <varlistentry>

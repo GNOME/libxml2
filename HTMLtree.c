@@ -888,20 +888,6 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
     }
     xmlOutputBufferWriteString(buf, ">");
     if (cur->content != NULL) {
-#if 0
-	xmlChar *buffer;
-
-#ifndef XML_USE_BUFFER_CONTENT
-    buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
-#else
-    buffer = xmlEncodeEntitiesReentrant(doc, 
-                                        xmlBufferContent(cur->content));
-#endif
-	if (buffer != NULL) {
-	    xmlOutputBufferWriteString(buf, buffer);
-	    xmlFree(buffer);
-	}
-#else
 	    /*
 	     * Uses the OutputBuffer property to automatically convert
 	     * invalids to charrefs
@@ -912,7 +898,6 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
 #else
             xmlOutputBufferWriteString(buf, 
 		           (const char *) xmlBufferContent(cur->content));
-#endif 
 #endif 
     }
     if (cur->children != NULL) {

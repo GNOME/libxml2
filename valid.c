@@ -2831,12 +2831,14 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     /* Validity Constraint: ID uniqueness */
     if (attrDecl->atype == XML_ATTRIBUTE_ID) {
-        xmlAddID(ctxt, doc, value, attr);
+        if (xmlAddID(ctxt, doc, value, attr) == NULL)
+	    ret = 0;
     }
 
     if ((attrDecl->atype == XML_ATTRIBUTE_IDREF) ||
 	(attrDecl->atype == XML_ATTRIBUTE_IDREFS)) {
-        xmlAddRef(ctxt, doc, value, attr);
+        if (xmlAddRef(ctxt, doc, value, attr) == NULL)
+	    ret = 0;
     }
 
     /* Validity Constraint: Notation Attributes */
@@ -3706,6 +3708,14 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
 	doc->extSubset = oldExt;
 	return(ret);
     }
+    if (doc->ids != NULL) {
+          xmlFreeIDTable(doc->ids);
+          doc->ids = NULL;
+    }
+    if (doc->refs != NULL) {
+          xmlFreeRefTable(doc->refs);
+          doc->refs = NULL;
+    }
     root = xmlDocGetRootElement(doc);
     ret = xmlValidateElement(ctxt, doc, root);
     ret &= xmlValidateDocumentFinal(ctxt, doc);
@@ -3825,6 +3835,14 @@ xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 	}
     }
 
+    if (doc->ids != NULL) {
+          xmlFreeIDTable(doc->ids);
+          doc->ids = NULL;
+    }
+    if (doc->refs != NULL) {
+          xmlFreeRefTable(doc->refs);
+          doc->refs = NULL;
+    }
     ret = xmlValidateDtdFinal(ctxt, doc);
     if (!xmlValidateRoot(ctxt, doc)) return(0);
 

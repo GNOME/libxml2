@@ -1,3 +1,8 @@
+Wed Feb  7 19:22:37 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c: couple of bug fixes pointed by Gary Pennington
+	* HTMLtree.c: #if 0 cleanup
+
 Tue Feb  6 14:02:56 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: started profiling XSLT, added xmlXPathNodeSetAddUnique()

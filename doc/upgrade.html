@@ -1,7 +1,9 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <title>Upgrading libxml client code from 1.x to 2.x</title>
-  <meta name="GENERATOR" content="amaya V4.1">
+  <meta name="GENERATOR" content="amaya V5.0">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -14,8 +16,8 @@
 incompatible changes. The main goals were:</p>
 <ul>
   <li>a general cleanup. A number of mistakes inherited from the very early
-    versions couldn't be changed due to compatibility constraints. Example the
-    "childs" element in the nodes.</li>
+    versions couldn't be changed due to compatibility constraints. Example
+    the "childs" element in the nodes.</li>
   <li>Uniformization of the various nodes, at least for their header and link
     parts (doc, parent, children, prev, next), the goal is a simpler
     programming model and simplifying the task of the DOM implementors.</li>
@@ -42,9 +44,9 @@ mail</a>:</p>
     <strong>children</strong> so s/childs/children/g should be  applied
     (probablility of having "childs" anywere else is close to 0+</li>
   <li>The document don't have anymore a <strong>root</strong> element it has
-    been replaced by <strong>children</strong> and usually you will get a list
-    of element here. For example a Dtd element for the internal subset and
-    it's declaration may be found in that list, as well as processing
+    been replaced by <strong>children</strong> and usually you will get a
+    list of element here. For example a Dtd element for the internal subset
+    and it's declaration may be found in that list, as well as processing
     instructions or comments found before or after the document root element.
     Use <strong>xmlDocGetRootElement(doc)</strong> to get the root element of
     a document. Alternatively if you are sure to not reference Dtds nor have
@@ -58,9 +60,9 @@ mail</a>:</p>
     <ol>
       <li>lazy one, use the compatibility call
         <strong>xmlKeepBlanksDefault(0)</strong> but be aware that you are
-        relying on a special (and possibly broken) set of heuristics of libxml
-        to detect ignorable blanks. Don't complain if it breaks or make your
-        application not 100% clean w.r.t. to it's input.</li>
+        relying on a special (and possibly broken) set of heuristics of
+        libxml to detect ignorable blanks. Don't complain if it breaks or
+        make your application not 100% clean w.r.t. to it's input.</li>
       <li>the Right Way: change you code to accept possibly unsignificant
         blanks characters, or have your tree populated with weird blank text
         nodes. You can spot them using the comodity function
@@ -79,6 +81,8 @@ mail</a>:</p>
     <p>output to generate you compile commands this will probably work out of
     the box</p>
   </li>
+  <li>xmlDetectCharEncoding takes an extra argument indicating the lenght in
+    byte of the head of the document available for character detection.</li>
 </ol>
 
 <h2>Ensuring both libxml-1.x and libxml-2.x compatibility</h2>
@@ -100,8 +104,8 @@ compatibility. They offers the following:</p>
 following:</p>
 <ol>
   <li>install the  libxml-1.8.8 (and libxml-devel-1.8.8) packages</li>
-  <li>find all occurences where the xmlDoc <strong>root</strong> field is used
-    and change it to <strong>xmlRootNode</strong></li>
+  <li>find all occurences where the xmlDoc <strong>root</strong> field is
+    used and change it to <strong>xmlRootNode</strong></li>
   <li>similary find all occurences where the xmlNode <strong>childs</strong>
     field is used and change it to <strong>xmlChildrenNode</strong></li>
   <li>add a <strong>LIBXML_TEST_VERSION</strong> macro somewhere in your
@@ -131,6 +135,6 @@ upgrade, it may cost a lot on the long term ...</p>
 
 <p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
 
-<p>$Id: upgrade.html,v 1.8 2001/03/16 22:04:15 veillard Exp $</p>
+<p>$Id: upgrade.html,v 1.9 2001/06/24 12:13:21 veillard Exp $</p>
 </body>
 </html>

@@ -1773,20 +1773,24 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
     
     if ((fallback == NULL) || (ctxt == NULL))
 	return(-1);
-    /*
-     * It's possible that the fallback also has 'includes'
-     * (Bug 129969), so we re-process the fallback just in case
-     */
-    newctxt = xmlXIncludeNewContext(ctxt->doc);
-    if (newctxt == NULL)
-        return (-1);
-    xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
-    ret = xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback->children);
-    if ((ret >=0) && (ctxt->nbErrors > 0))
-        ret = -1;
-    xmlXIncludeFreeContext(newctxt);
+    if (fallback->children != NULL) {
+	/*
+	 * It's possible that the fallback also has 'includes'
+	 * (Bug 129969), so we re-process the fallback just in case
+	 */
+	newctxt = xmlXIncludeNewContext(ctxt->doc);
+	if (newctxt == NULL)
+	    return (-1);
+	xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
+	ret = xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback->children);
+	if ((ret >=0) && (ctxt->nbErrors > 0))
+	    ret = -1;
+	xmlXIncludeFreeContext(newctxt);
 
-    ctxt->incTab[nr]->inc = xmlCopyNodeList(fallback->children);
+	ctxt->incTab[nr]->inc = xmlCopyNodeList(fallback->children);
+    } else {
+        ctxt->incTab[nr]->inc = NULL;
+    }
     return(ret);
 }
 

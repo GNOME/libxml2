@@ -1,3 +1,8 @@
+Fri Feb  6 17:34:21 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: corrected handling of empty fallback condition
+	  (bug 132585)
+
 Fri Feb  6 15:28:36 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* HTMLparser.c: added initialisation for ctxt->vctxt

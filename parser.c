@@ -2588,6 +2588,8 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
     xmlChar *URI = NULL;
 
     SHRINK;
+
+    *publicID = NULL;
     if ((RAW == 'S') && (NXT(1) == 'Y') &&
          (NXT(2) == 'S') && (NXT(3) == 'T') &&
 	 (NXT(4) == 'E') && (NXT(5) == 'M')) {

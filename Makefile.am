@@ -75,7 +75,7 @@ testURI_LDADD= $(LDADDS)
 check-local: tests
 
 $(srcdir)/libxml:
-	-$(RM) $(srcdir)/libxml
+	-$(RM) -f $(srcdir)/libxml
 	ln -s $(srcdir)/. $(srcdir)/libxml
 
 install-data: $(srcdir)/libxml

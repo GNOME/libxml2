@@ -987,6 +987,10 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
  * It will try to escape the chars needing this, but this is heuristic
  * based it's impossible to be sure.
  *
+ * TODO: make the proper implementation of this function by calling
+ *       xmlParseURIReference() and escaping each section accordingly
+ *       to the rules (c.f. bug 51876)
+ *
  * Returns an copy of the string, but escaped
  */
 xmlChar *

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE xsa PUBLIC "-//LM Garshol//DTD XML Software Autoupdate 1.0//EN//XML" "http://www.garshol.priv.no/download/xsa/xsa.dtd">
+<xsa>
+  <vendor>
+    <name>Daniel Veillard</name>
+    <email>daniel@veillard.com</email>
+    <url>http://veillard.com/</url>
+  </vendor>
+  <product id="libxml2">
+    <name>libxml2</name>
+    <version>2.5.4</version>
+    <last-release> Feb 20 2003</last-release>
+    <info-url>http://xmlsoft.org/</info-url>
+    <changes>   - Conformance testing and lot of fixes on Relax NG and XInclude
+    implementation
+   - Implementation of XPointer element() scheme
+   - Bug fixes: XML parser, XInclude entities merge, validity checking on
+    namespaces,
+    2 serialization bugs, node info generation problems, a DTD regexp
+    generation problem.
+  
+   - Portability: windows updates and path canonicalization (Igor)
+   - A few typo fixes (Kjartan Maraas)
+   - Python bindings generator fixes (Stephane Bidoul)
+
+</changes>
+  </product>
+</xsa>

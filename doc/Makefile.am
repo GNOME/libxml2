@@ -22,12 +22,12 @@ EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
            tutorial/images/*.png tutorial/images/callouts/*.png \
 	   API*.html *.1 *.xsl *.html *.gif w3c.png html/*.html \
 	   html/*.sgml libxml2-api.xml parsedecl.py index.py search.php \
-	   apibuild.py
+	   apibuild.py libxml2.xsa
 
 
 man_MANS = xmllint.1 xmlcatalog.1
 
-all: $(PAGES) $(top_srcdir)/NEWS
+all: $(PAGES) $(top_srcdir)/NEWS libxml2.xsa
 
 web: $(PAGES) $(APIPAGES)
 
@@ -38,6 +38,10 @@ $(PAGES): xml.html site.xsl
 $(top_srcdir)/NEWS: $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
 	  $(bindir)/xsltproc --html $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html > $(top_srcdir)/NEWS ; fi );
+
+libxml2.xsa: $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html
+	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	  $(bindir)/xsltproc --html $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html > libxml2.xsa ; fi );
 
 $(APIPAGES): libxml2-refs.xml site.xsl api.xsl
 	-@(if [ -x $(bindir)/xsltproc ] ; then \

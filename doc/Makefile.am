@@ -20,37 +20,37 @@ scan:
 	@(if [ -L $(DOC_SOURCE_DIR)/libxml ] ; then rm -f $(DOC_SOURCE_DIR)/libxml ; fi)
 	@(if [ -L $(DOC_SOURCE_DIR)/include ] ; then rm -f $(DOC_SOURCE_DIR)/include ; fi)
 	@(if [ -L $(DOC_SOURCE_DIR)/include/libxml ] ; then rm -f $(DOC_SOURCE_DIR)/include/libxml ; fi)
-	gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h"
+	gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h"
 
 templates: scan
-	gtkdoc-mktmpl --module=$(DOC_MODULE)
+	gtkdoc-mktmpl --module=libxml
 
 sgml:
-	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR)
+	gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR)
 
 html:
 	if ! test -d html ; then mkdir html ; fi
-	-cd html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
+	-cd html && gtkdoc-mkhtml libxml ../$(DOC_MAIN_SGML_FILE)
 
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
 
 maintainer-clean-local: clean
-	rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt 
+	rm -rf sgml html libxml-decl-list.txt libxml-decl.txt 
 
-gnome-xml-decl-list.txt : templates
+libxml-decl-list.txt : templates
 
-gnome-xml-sections.txt : scan
-	cp gnome-xml-decl-list.txt gnome-xml-sections.txt
+libxml-sections.txt : scan
+	cp libxml-decl-list.txt libxml-sections.txt
 
-rebuild: gnome-xml-sections.txt templates sgml html
+rebuild: libxml-sections.txt templates sgml html
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/xml.html $(srcdir)/encoding.html $(srcdir)/FAQ.html $(srcdir)/structure.gif $(srcdir)/DOM.gif $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/html/*.html $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR)
-	-(cd $(DESTDIR); gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR))
+	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
 
 dist-hook:
 	(cd $(srcdir) ; tar cvf - *.html *.gif html/*.html html/*.sgml) | (cd $(distdir); tar xf -)

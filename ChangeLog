@@ -1,3 +1,8 @@
+Sat Jan 27 18:49:02 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/Makefile.am: fixed make rebuild in doc
+	* doc/html/*.html: rebuilt the docs
+
 Fri Jan 26 10:30:58 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: patch from Bjorn Reese on xmlBufferCCat

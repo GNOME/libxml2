@@ -1,3 +1,8 @@
+Tue Apr 22 13:58:43 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/libxml2.def.src: added more exports from the relaxng and
+	  xmlreader clan
+
 Tue Apr 22 10:35:13 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c test/valid/ns* test/result/ns*: applied the patch

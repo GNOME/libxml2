@@ -2,7 +2,7 @@
  * debugXML.h : Interfaces to a set of routines used for debugging the tree
  *              produced by the XML parser.
  *
- * Daniel Veillard <Daniel.Veillard@w3.org>
+ * Daniel Veillard <daniel@veillard.com>
  */
 
 #ifndef __DEBUG_XML__

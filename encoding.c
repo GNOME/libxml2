@@ -15,7 +15,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  *
  * UTF8 string routines from:
  * "William M. Brack" <wbrack@mmm.com.hk>

@@ -1,5 +1,6 @@
 /*
- * xmlversion.h : compile-time version informations for the XML parser.
+ * xmlwin32version.h : compile-time version informations for the XML parser
+ *                     when compiled on the Windows platform
  *
  * See Copyright for the status of this software.
  *
@@ -17,20 +18,17 @@ extern "C" {
  * use those to be sure nothing nasty will happen if
  * your library and includes mismatch
  */
-#ifndef LIBXML2_COMPILING_MSCCDEF
-extern void xmlCheckVersion(int version);
-#endif /* LIBXML2_COMPILING_MSCCDEF */
-#define LIBXML_DOTTED_VERSION "@VERSION@"
-#define LIBXML_VERSION @LIBXML_VERSION_NUMBER@
-#define LIBXML_VERSION_STRING "@LIBXML_VERSION_NUMBER@"
-#define LIBXML_TEST_VERSION xmlCheckVersion(@LIBXML_VERSION_NUMBER@);
+#define LIBXML_DOTTED_VERSION "2.3.11"
+#define LIBXML_VERSION 20311
+#define LIBXML_VERSION_STRING "20311"
+#define LIBXML_TEST_VERSION xmlCheckVersion(20311);
 
 /**
  * WITH_TRIO:
  *
  * Whether the trio support need to be configured in
  */
-#if @WITH_TRIO@
+#if 0
 #define WITH_TRIO
 #else
 #define WITHOUT_TRIO
@@ -41,7 +39,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the FTP support is configured in
  */
-#if @WITH_FTP@
+#if 1
 #define LIBXML_FTP_ENABLED
 #else
 #define LIBXML_FTP_DISABLED
@@ -52,7 +50,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the HTTP support is configured in
  */
-#if @WITH_HTTP@
+#if 1
 #define LIBXML_HTTP_ENABLED
 #else
 #define LIBXML_HTTP_DISABLED
@@ -63,7 +61,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the HTML support is configured in
  */
-#if @WITH_HTML@
+#if 1
 #define LIBXML_HTML_ENABLED
 #else
 #define LIBXML_HTML_DISABLED
@@ -74,7 +72,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the Catalog support is configured in
  */
-#if @WITH_CATALOG@
+#if 1
 #define LIBXML_CATALOG_ENABLED
 #else
 #define LIBXML_CATALOG_DISABLED
@@ -85,7 +83,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the SGML Docbook support is configured in
  */
-#if @WITH_DOCB@
+#if 0
 #define LIBXML_DOCB_ENABLED
 #else
 #define LIBXML_DOCB_DISABLED
@@ -96,7 +94,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether XPath is configured in
  */
-#if @WITH_XPATH@
+#if 1
 #define LIBXML_XPATH_ENABLED
 #else
 #define LIBXML_XPATH_DISABLED
@@ -107,7 +105,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether XPointer is configured in
  */
-#if @WITH_XPTR@
+#if 1
 #define LIBXML_XPTR_ENABLED
 #else
 #define LIBXML_XPTR_DISABLED
@@ -118,7 +116,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether XInclude is configured in
  */
-#if @WITH_XINCLUDE@
+#if 1
 #define LIBXML_XINCLUDE_ENABLED
 #else
 #define LIBXML_XINCLUDE_DISABLED
@@ -129,8 +127,8 @@ extern void xmlCheckVersion(int version);
  *
  * Whether iconv support is available
  */
-#if !defined(WIN32) || defined(__CYGWIN__)
-#if @WITH_ICONV@
+#if defined(__CYGWIN__)
+#if 1
 #define LIBXML_ICONV_ENABLED
 #else
 #define LIBXML_ICONV_DISABLED
@@ -142,7 +140,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether Debugging module is configured in
  */
-#if @WITH_DEBUG@
+#if 1
 #define LIBXML_DEBUG_ENABLED
 #else
 #define LIBXML_DEBUG_DISABLED
@@ -153,12 +151,12 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the memory debugging is configured in
  */
-#if @WITH_MEM_DEBUG@
+#if 0
 #define DEBUG_MEMORY_LOCATION
 #endif
 
 #ifndef LIBXML_DLL_IMPORT
-#if defined(WIN32) && !defined(STATIC)
+#if !defined(STATIC)
 #define LIBXML_DLL_IMPORT __declspec(dllimport)
 #else
 #define LIBXML_DLL_IMPORT
@@ -169,17 +167,9 @@ extern void xmlCheckVersion(int version);
  * ATTRIBUTE_UNUSED:
  *
  * Macro used to signal to GCC unused function parameters
+ * Disabled on Windows, this is checked on Linux.
  */
-#ifdef __GNUC__
-#ifdef HAVE_ANSIDECL_H
-#include <ansidecl.h>
-#endif
-#ifndef ATTRIBUTE_UNUSED
 #define ATTRIBUTE_UNUSED
-#endif
-#else
-#define ATTRIBUTE_UNUSED
-#endif
 
 #ifdef __cplusplus
 }

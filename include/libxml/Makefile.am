@@ -27,10 +27,11 @@ xmlinc_HEADERS = \
 		valid.h \
 		xlink.h \
 		xmlversion.h \
+		xmlwin32version.h \
 		DOCBparser.h \
 		catalog.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir) $(DESTDIR)$(xmlincdir)/libxml
 
-EXTRA_DIST = xmlversion.h.in
+EXTRA_DIST = xmlversion.h.in xmlwin32version.h.in

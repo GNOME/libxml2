@@ -4,7 +4,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  *
  * 14 Nov 2000 ht - added redefinition of xmlBufferWriteChar for VMS
  *
@@ -14,7 +14,11 @@
 #define __XML_TREE_H__
 
 #include <stdio.h>
+#if defined(WIN32) && defined(_MSC_VER)
+#include <libxml/xmlwin32version.h>
+#else
 #include <libxml/xmlversion.h>
+#endif
 #include <libxml/xmlmemory.h>
 
 #ifdef __cplusplus

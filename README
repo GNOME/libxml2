@@ -7,10 +7,10 @@ Full documentation is available on-line at
 This code is released under the LGPL or the W3C IPR, pick the one
 you prefer.
 
-A mailing-list is available, to subscribe:
-    echo "subscribe xml" | mail majordomo@rpmfind.net
+A mailing-list xml@gnome.org is available, to subscribe:
+    http://mail.gnome.org/mailman/listinfo/xml
 
 The list archive is at:
-    http://xmlsoft.org/messages/
+    http://mail.gnome.org/archives/xml/
 
-Daniel.Veillard@w3.org
+daniel@veillard.com

@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  *
  * 14 Nov 2000 ht - Changed the name of function xmlBufferWriteChar under VMS
  * as it was similar to xmlBufferWriteCHAR when compiling without case

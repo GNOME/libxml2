@@ -5,7 +5,7 @@ NOTE:
     http://xmlsoft.org/upgrade.html
   - in the meantime the old 1.x code has been tagged with LIB_XML_1_BRANCH
     extract this version and drop me a mail if you want me to take care of
-    the update of your module to libxml-2 <veillard@w3.org>
+    the update of your module to libxml-2 <daniel@veillard.com>
   - the 1.x branch has a separate commit policy, please check the HACKING
     file for this branch
 

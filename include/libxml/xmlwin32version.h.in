@@ -1,9 +1,10 @@
 /*
- * xmlversion.h : compile-time version informations for the XML parser.
+ * xmlwin32version.h : compile-time version informations for the XML parser
+ *                     when compiled on the Windows platform
  *
  * See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  */
 
 #ifndef __XML_VERSION_H__
@@ -17,13 +18,10 @@ extern "C" {
  * use those to be sure nothing nasty will happen if
  * your library and includes mismatch
  */
-#ifndef LIBXML2_COMPILING_MSCCDEF
-extern void xmlCheckVersion(int version);
-#endif /* LIBXML2_COMPILING_MSCCDEF */
-#define LIBXML_DOTTED_VERSION "2.3.11"
-#define LIBXML_VERSION 20311
-#define LIBXML_VERSION_STRING "20311"
-#define LIBXML_TEST_VERSION xmlCheckVersion(20311);
+#define LIBXML_DOTTED_VERSION "@VERSION@"
+#define LIBXML_VERSION @LIBXML_VERSION_NUMBER@
+#define LIBXML_VERSION_STRING "@LIBXML_VERSION_NUMBER@"
+#define LIBXML_TEST_VERSION xmlCheckVersion(@LIBXML_VERSION_NUMBER@);
 
 /**
  * WITH_TRIO:
@@ -85,7 +83,7 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the SGML Docbook support is configured in
  */
-#if 1
+#if 0
 #define LIBXML_DOCB_ENABLED
 #else
 #define LIBXML_DOCB_DISABLED
@@ -129,8 +127,8 @@ extern void xmlCheckVersion(int version);
  *
  * Whether iconv support is available
  */
-#if !defined(WIN32) || defined(__CYGWIN__)
-#if 1
+#if defined(__CYGWIN__)
+#if @WITH_ICONV@
 #define LIBXML_ICONV_ENABLED
 #else
 #define LIBXML_ICONV_DISABLED
@@ -158,7 +156,7 @@ extern void xmlCheckVersion(int version);
 #endif
 
 #ifndef LIBXML_DLL_IMPORT
-#if defined(WIN32) && !defined(STATIC)
+#if !defined(STATIC)
 #define LIBXML_DLL_IMPORT __declspec(dllimport)
 #else
 #define LIBXML_DLL_IMPORT
@@ -169,17 +167,9 @@ extern void xmlCheckVersion(int version);
  * ATTRIBUTE_UNUSED:
  *
  * Macro used to signal to GCC unused function parameters
+ * Disabled on Windows, this is checked on Linux.
  */
-#ifdef __GNUC__
-#ifdef HAVE_ANSIDECL_H
-#include <ansidecl.h>
-#endif
-#ifndef ATTRIBUTE_UNUSED
 #define ATTRIBUTE_UNUSED
-#endif
-#else
-#define ATTRIBUTE_UNUSED
-#endif
 
 #ifdef __cplusplus
 }

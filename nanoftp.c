@@ -12,7 +12,7 @@
 #define HAVE_NETINET_IN_H
 #define HAVE_NETDB_H
 #define HAVE_SYS_TIME_H
-#include <libxml/xmlversion.h>
+#include "libxml.h"
 #ifdef WITHOUT_TRIO
 #include <stdio.h>
 #else

@@ -1,7 +1,7 @@
 /*
  * xmlmemory.h: interface for the memory allocation debug.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  */
 
 
@@ -9,7 +9,11 @@
 #define _DEBUG_MEMORY_ALLOC_
 
 #include <stdio.h>
+#if defined(WIN32) && defined(_MSC_VER)
+#include <libxml/xmlwin32version.h>
+#else
 #include <libxml/xmlversion.h>
+#endif
 
 /**
  * DEBUG_MEMORY:

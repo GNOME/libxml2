@@ -1,7 +1,7 @@
 /*
  * memory.c:  libxml memory allocator wrapper.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  */
 
 #include "libxml.h"

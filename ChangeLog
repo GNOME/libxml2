@@ -1,3 +1,18 @@
+Sun Jun 24 14:05:54 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* AUTHORS: added William and Bjorn
+	* include/libxml/*.h *.c README doc/*.html etc.: changed old email to
+	  daniel@veillard.com hopefully I won't have to do this again
+	* doc/Makefile.am doc/html/*.html: cleanup makefile, checked that
+	  docs can be rebuilt cleanly now
+	* include/libxml/xml*version.h*: removed include/libxml/xmlversion.h
+	  from CVs it's generated, added include/libxml/xmlwin32version.h
+	  also generated but which should change far less frequently.
+	* catalog.c nanoftp.c: made sure to include libxml.h not
+	  libxml/xmlversion.h directly
+	* include/libxml/*.h: include xmlwin32version.h instead of xmlversion.h
+	  when compiling on WIN32 and MSC
+
 Sat Jun 23 23:54:12 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* include/Makefile.am include/libxml/Makefile.am configure.in:

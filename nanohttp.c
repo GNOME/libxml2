@@ -8,7 +8,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  */
  
 /* TODO add compression support, Send the Accept- , and decompress on the

@@ -6,7 +6,7 @@
  *
  * See COPYRIGHT for the status of this software
  *
- * Author: Daniel.Veillard@w3.org
+ * Author: daniel@veillard.com
  */
 
 #ifndef __XML_XPATH_H__

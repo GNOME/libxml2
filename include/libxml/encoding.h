@@ -15,13 +15,17 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  */
 
 #ifndef __XML_CHAR_ENCODING_H__
 #define __XML_CHAR_ENCODING_H__
 
+#if defined(WIN32) && defined(_MSC_VER)
+#include <libxml/xmlwin32version.h>
+#else
 #include <libxml/xmlversion.h>
+#endif
 #ifdef LIBXML_ICONV_ENABLED
 #include <iconv.h>
 #endif

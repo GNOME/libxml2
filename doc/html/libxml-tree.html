@@ -122,7 +122,7 @@ NAME="LIBXML-TREE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN3714"
+NAME="AEN3703"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN3714"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN3717"
+NAME="AEN3706"
 ></A
 ><H2
 >Synopsis</H2
@@ -1811,7 +1811,7 @@ HREF="libxml-tree.html#XMLSETCOMPRESSMODE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4172"
+NAME="AEN4161"
 ></A
 ><H2
 >Description</H2
@@ -1821,14 +1821,14 @@ NAME="AEN4172"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4175"
+NAME="AEN4164"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4177"
+NAME="AEN4166"
 ></A
 ><H3
 ><A
@@ -1854,7 +1854,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4182"
+NAME="AEN4171"
 ></A
 ><H3
 ><A
@@ -1904,26 +1904,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4187"
+NAME="AEN4176"
 ></A
 ><H3
 ><A
 NAME="XMLCHAR"
 ></A
 >xmlChar</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef unsigned char xmlChar;</PRE
-></TD
-></TR
-></TABLE
 ><P
 >This is a basic byte in an UTF-8 encoded string.
 It's unsigned allowing to pinpoint case where char * are assigned
@@ -1934,7 +1921,7 @@ to xmlChar * (possibly making serialization back impossible).</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4193"
+NAME="AEN4181"
 ></A
 ><H3
 ><A
@@ -1950,7 +1937,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define BAD_CAST (xmlChar *)</PRE
+>#define     BAD_CAST</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1962,7 +1949,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4199"
+NAME="AEN4187"
 ></A
 ><H3
 ><A
@@ -1994,33 +1981,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4205"
+NAME="AEN4193"
 ></A
 ><H3
 ><A
 NAME="XMLNOTATIONPTR"
 ></A
 >xmlNotationPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlNotation *xmlNotationPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4210"
+NAME="AEN4197"
 ></A
 ><H3
 ><A
@@ -2059,7 +2033,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4216"
+NAME="AEN4203"
 ></A
 ><H3
 ><A
@@ -2092,7 +2066,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4222"
+NAME="AEN4209"
 ></A
 ><H3
 ><A
@@ -2123,33 +2097,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4228"
+NAME="AEN4215"
 ></A
 ><H3
 ><A
 NAME="XMLENUMERATIONPTR"
 ></A
 >xmlEnumerationPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlEnumeration *xmlEnumerationPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4233"
+NAME="AEN4219"
 ></A
 ><H3
 ><A
@@ -2166,9 +2127,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlAttribute {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	        /* for Corba, must be first ! */
-#endif
     xmlElementType          type;       /* XML_ATTRIBUTE_DECL, must be second ! */
     const xmlChar          *name;	/* Attribute name */
     struct _xmlNode    *children;	/* NULL */
@@ -2197,33 +2156,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4239"
+NAME="AEN4225"
 ></A
 ><H3
 ><A
 NAME="XMLATTRIBUTEPTR"
 ></A
 >xmlAttributePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlAttribute *xmlAttributePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4244"
+NAME="AEN4229"
 ></A
 ><H3
 ><A
@@ -2256,7 +2202,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4250"
+NAME="AEN4235"
 ></A
 ><H3
 ><A
@@ -2289,7 +2235,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4256"
+NAME="AEN4241"
 ></A
 ><H3
 ><A
@@ -2325,33 +2271,20 @@ in a DTD.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4262"
+NAME="AEN4247"
 ></A
 ><H3
 ><A
 NAME="XMLELEMENTCONTENTPTR"
 ></A
 >xmlElementContentPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlElementContent *xmlElementContentPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4267"
+NAME="AEN4251"
 ></A
 ><H3
 ><A
@@ -2385,7 +2318,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4273"
+NAME="AEN4257"
 ></A
 ><H3
 ><A
@@ -2402,9 +2335,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlElement {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	        /* for Corba, must be first ! */
-#endif
     xmlElementType          type;       /* XML_ELEMENT_DECL, must be second ! */
     const xmlChar          *name;	/* Element name */
     struct _xmlNode    *children;	/* NULL */
@@ -2430,33 +2361,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4279"
+NAME="AEN4263"
 ></A
 ><H3
 ><A
 NAME="XMLELEMENTPTR"
 ></A
 >xmlElementPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlElement *xmlElementPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4284"
+NAME="AEN4267"
 ></A
 ><H3
 ><A
@@ -2472,7 +2390,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XML_LOCAL_NAMESPACE XML_NAMESPACE_DECL</PRE
+>#define     XML_LOCAL_NAMESPACE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -2482,33 +2400,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4289"
+NAME="AEN4272"
 ></A
 ><H3
 ><A
 NAME="XMLNSTYPE"
 ></A
 >xmlNsType</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlElementType xmlNsType;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4294"
+NAME="AEN4276"
 ></A
 ><H3
 ><A
@@ -2546,33 +2451,20 @@ xmlNsType is unified with xmlElementType</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4301"
+NAME="AEN4283"
 ></A
 ><H3
 ><A
 NAME="XMLNSPTR"
 ></A
 >xmlNsPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlNs *xmlNsPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4306"
+NAME="AEN4287"
 ></A
 ><H3
 ><A
@@ -2589,9 +2481,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlDtd {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-#endif
     xmlElementType  type;       /* XML_DTD_NODE, must be second ! */
     const xmlChar *name;	/* Name of the DTD */
     struct _xmlNode *children;	/* the value of the property link */
@@ -2622,33 +2512,20 @@ the internal subset and for the external subset</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4312"
+NAME="AEN4293"
 ></A
 ><H3
 ><A
 NAME="XMLDTDPTR"
 ></A
 >xmlDtdPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlDtd *xmlDtdPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4317"
+NAME="AEN4297"
 ></A
 ><H3
 ><A
@@ -2665,9 +2542,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlAttr {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-#endif
     xmlElementType   type;      /* XML_ATTRIBUTE_NODE, must be second ! */
     const xmlChar   *name;      /* the name of the property */
     struct _xmlNode *children;	/* the value of the property */
@@ -2690,33 +2565,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4323"
+NAME="AEN4303"
 ></A
 ><H3
 ><A
 NAME="XMLATTRPTR"
 ></A
 >xmlAttrPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlAttr *xmlAttrPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4328"
+NAME="AEN4307"
 ></A
 ><H3
 ><A
@@ -2748,33 +2610,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4334"
+NAME="AEN4313"
 ></A
 ><H3
 ><A
 NAME="XMLIDPTR"
 ></A
 >xmlIDPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlID *xmlIDPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4339"
+NAME="AEN4317"
 ></A
 ><H3
 ><A
@@ -2806,33 +2655,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4345"
+NAME="AEN4323"
 ></A
 ><H3
 ><A
 NAME="XMLREFPTR"
 ></A
 >xmlRefPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlRef *xmlRefPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4350"
+NAME="AEN4327"
 ></A
 ><H3
 ><A
@@ -2864,7 +2700,7 @@ need or double it's allocated size each time it is found too small</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4356"
+NAME="AEN4333"
 ></A
 ><H3
 ><A
@@ -2897,33 +2733,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4362"
+NAME="AEN4339"
 ></A
 ><H3
 ><A
 NAME="XMLBUFFERPTR"
 ></A
 >xmlBufferPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlBuffer *xmlBufferPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4367"
+NAME="AEN4343"
 ></A
 ><H3
 ><A
@@ -2940,9 +2763,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlNode {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-#endif
     xmlElementType   type;	/* type number, must be second ! */
     const xmlChar   *name;      /* the name of the node, or the entity */
     struct _xmlNode *children;	/* parent-&gt;childs link */
@@ -2973,33 +2794,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4373"
+NAME="AEN4349"
 ></A
 ><H3
 ><A
 NAME="XMLNODEPTR"
 ></A
 >xmlNodePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlNode *xmlNodePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4378"
+NAME="AEN4353"
 ></A
 ><H3
 ><A
@@ -3016,9 +2824,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlDoc {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-#endif
     xmlElementType  type;       /* XML_DOCUMENT_NODE, must be second ! */
     char           *name;	/* name/filename/URI of the document */
     struct _xmlNode *children;	/* the document tree */
@@ -3053,33 +2859,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4384"
+NAME="AEN4359"
 ></A
 ><H3
 ><A
 NAME="XMLDOCPTR"
 ></A
 >xmlDocPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlDoc *xmlDocPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4389"
+NAME="AEN4363"
 ></A
 ><H3
 ><A
@@ -3095,7 +2888,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define xmlChildrenNode children</PRE
+>#define     xmlChildrenNode</PRE
 ></TD
 ></TR
 ></TABLE
@@ -3107,7 +2900,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4395"
+NAME="AEN4369"
 ></A
 ><H3
 ><A
@@ -3123,7 +2916,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define xmlRootNode children</PRE
+>#define     xmlRootNode</PRE
 ></TD
 ></TR
 ></TABLE
@@ -3135,7 +2928,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4401"
+NAME="AEN4375"
 ></A
 ><H3
 ><A
@@ -3168,7 +2961,7 @@ improves performance</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4408"
+NAME="AEN4382"
 ></A
 ><P
 ></P
@@ -3195,7 +2988,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  allocation method to use</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3206,7 +2999,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4417"
+NAME="AEN4391"
 ></A
 ><H3
 ><A
@@ -3240,7 +3033,7 @@ improves performance</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4424"
+NAME="AEN4398"
 ></A
 ><P
 ></P
@@ -3265,7 +3058,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the current allocation scheme</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3276,7 +3069,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4433"
+NAME="AEN4407"
 ></A
 ><H3
 ><A
@@ -3306,7 +3099,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4440"
+NAME="AEN4414"
 ></A
 ><P
 ></P
@@ -3331,7 +3124,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new structure.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3342,7 +3135,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4449"
+NAME="AEN4423"
 ></A
 ><H3
 ><A
@@ -3375,7 +3168,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4457"
+NAME="AEN4431"
 ></A
 ><P
 ></P
@@ -3402,7 +3195,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> initial size of buffer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3417,7 +3210,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new structure.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3428,7 +3221,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4470"
+NAME="AEN4444"
 ></A
 ><H3
 ><A
@@ -3464,7 +3257,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4478"
+NAME="AEN4452"
 ></A
 ><P
 ></P
@@ -3491,7 +3284,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to resize</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3508,7 +3301,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the desired size</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3523,7 +3316,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 in case of problems, 1 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3534,7 +3327,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4495"
+NAME="AEN4469"
 ></A
 ><H3
 ><A
@@ -3564,7 +3357,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4502"
+NAME="AEN4476"
 ></A
 ><P
 ></P
@@ -3591,7 +3384,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to free</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3602,7 +3395,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4511"
+NAME="AEN4485"
 ></A
 ><H3
 ><A
@@ -3636,7 +3429,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4519"
+NAME="AEN4493"
 ></A
 ><P
 ></P
@@ -3663,7 +3456,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the file output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3680,7 +3473,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to dump</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3695,7 +3488,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of xmlChar written</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3706,7 +3499,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4536"
+NAME="AEN4510"
 ></A
 ><H3
 ><A
@@ -3742,7 +3535,7 @@ str is recomputed.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4544"
+NAME="AEN4518"
 ></A
 ><P
 ></P
@@ -3769,7 +3562,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to dump</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3786,7 +3579,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar string</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3803,7 +3596,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the number of xmlChar to add</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3814,7 +3607,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4561"
+NAME="AEN4535"
 ></A
 ><H3
 ><A
@@ -3855,7 +3648,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4570"
+NAME="AEN4544"
 ></A
 ><P
 ></P
@@ -3882,7 +3675,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3899,7 +3692,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar string</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3916,7 +3709,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the number of xmlChar to add</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3927,7 +3720,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4587"
+NAME="AEN4561"
 ></A
 ><H3
 ><A
@@ -3961,7 +3754,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4595"
+NAME="AEN4569"
 ></A
 ><P
 ></P
@@ -3988,7 +3781,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to dump</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4005,7 +3798,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar string</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4016,7 +3809,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4608"
+NAME="AEN4582"
 ></A
 ><H3
 ><A
@@ -4047,7 +3840,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4615"
+NAME="AEN4589"
 ></A
 ><P
 ></P
@@ -4074,7 +3867,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to dump</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4091,7 +3884,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the C char string</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4102,7 +3895,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4628"
+NAME="AEN4602"
 ></A
 ><H3
 ><A
@@ -4133,7 +3926,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4635"
+NAME="AEN4609"
 ></A
 ><P
 ></P
@@ -4160,7 +3953,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to dump</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4177,7 +3970,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the number of xmlChar to remove</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4192,7 +3985,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of xmlChar removed, or -1 in case of failure.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4203,7 +3996,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4652"
+NAME="AEN4626"
 ></A
 ><H3
 ><A
@@ -4234,7 +4027,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4659"
+NAME="AEN4633"
 ></A
 ><P
 ></P
@@ -4261,7 +4054,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4278,7 +4071,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the minimum free size to allocate</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4293,7 +4086,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new available space or -1 in case of error</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4304,7 +4097,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4676"
+NAME="AEN4650"
 ></A
 ><H3
 ><A
@@ -4334,7 +4127,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4683"
+NAME="AEN4657"
 ></A
 ><P
 ></P
@@ -4361,7 +4154,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4372,7 +4165,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4692"
+NAME="AEN4666"
 ></A
 ><H3
 ><A
@@ -4405,7 +4198,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4700"
+NAME="AEN4674"
 ></A
 ><P
 ></P
@@ -4432,7 +4225,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4447,7 +4240,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the internal content</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4458,7 +4251,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4713"
+NAME="AEN4687"
 ></A
 ><H3
 ><A
@@ -4486,7 +4279,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4719"
+NAME="AEN4693"
 ></A
 ><P
 ></P
@@ -4539,7 +4332,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4732"
+NAME="AEN4706"
 ></A
 ><H3
 ><A
@@ -4573,7 +4366,7 @@ HREF="libxml-tree.html#XMLBUFFERALLOCATIONSCHEME"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4740"
+NAME="AEN4714"
 ></A
 ><P
 ></P
@@ -4600,7 +4393,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to free</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4617,7 +4410,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  allocation scheme to use</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4628,7 +4421,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4753"
+NAME="AEN4727"
 ></A
 ><H3
 ><A
@@ -4658,7 +4451,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4760"
+NAME="AEN4734"
 ></A
 ><P
 ></P
@@ -4685,7 +4478,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer </TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4700,7 +4493,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the length of data in the internal content</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4711,7 +4504,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4773"
+NAME="AEN4747"
 ></A
 ><H3
 ><A
@@ -4756,7 +4549,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4784"
+NAME="AEN4758"
 ></A
 ><P
 ></P
@@ -4783,7 +4576,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document pointer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4800,7 +4593,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the DTD name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4817,7 +4610,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the external (PUBLIC) ID</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4834,7 +4627,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the system ID</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4849,7 +4642,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new DTD structure</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4860,7 +4653,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4809"
+NAME="AEN4783"
 ></A
 ><H3
 ><A
@@ -4909,7 +4702,7 @@ HREF="libxml-tree.html#XMLCREATEINTSUBSET"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4821"
+NAME="AEN4795"
 ></A
 ><P
 ></P
@@ -4936,7 +4729,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document pointer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4953,7 +4746,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the DTD name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4970,7 +4763,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the external ID</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4987,7 +4780,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the system ID</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5002,7 +4795,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new DTD structure</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5013,7 +4806,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4846"
+NAME="AEN4820"
 ></A
 ><H3
 ><A
@@ -5046,7 +4839,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4854"
+NAME="AEN4828"
 ></A
 ><P
 ></P
@@ -5073,7 +4866,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document pointer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5088,7 +4881,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the DTD structure or NULL if not found</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5099,7 +4892,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4867"
+NAME="AEN4841"
 ></A
 ><H3
 ><A
@@ -5129,7 +4922,7 @@ HREF="libxml-tree.html#XMLDTDPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4874"
+NAME="AEN4848"
 ></A
 ><P
 ></P
@@ -5156,7 +4949,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the DTD structure to free up</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5167,7 +4960,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4883"
+NAME="AEN4857"
 ></A
 ><H3
 ><A
@@ -5210,7 +5003,7 @@ It now create a namespace on the root element of the document if found.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4893"
+NAME="AEN4867"
 ></A
 ><P
 ></P
@@ -5237,7 +5030,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document carrying the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5254,7 +5047,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the URI associated</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5271,7 +5064,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the prefix for the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5286,7 +5079,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL this functionnality had been removed</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5297,7 +5090,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4914"
+NAME="AEN4888"
 ></A
 ><H3
 ><A
@@ -5342,7 +5135,7 @@ was not defined.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4924"
+NAME="AEN4898"
 ></A
 ><P
 ></P
@@ -5369,7 +5162,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element carrying the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5386,7 +5179,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the URI associated</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5403,7 +5196,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the prefix for the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5418,7 +5211,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->returns a new namespace pointer or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5429,7 +5222,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4945"
+NAME="AEN4919"
 ></A
 ><H3
 ><A
@@ -5459,7 +5252,7 @@ HREF="libxml-tree.html#XMLNSPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4952"
+NAME="AEN4926"
 ></A
 ><P
 ></P
@@ -5486,7 +5279,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace pointer</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5497,7 +5290,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4961"
+NAME="AEN4935"
 ></A
 ><H3
 ><A
@@ -5527,7 +5320,7 @@ HREF="libxml-tree.html#XMLNSPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4968"
+NAME="AEN4942"
 ></A
 ><P
 ></P
@@ -5554,7 +5347,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first namespace pointer</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5565,7 +5358,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4977"
+NAME="AEN4951"
 ></A
 ><H3
 ><A
@@ -5598,7 +5391,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4985"
+NAME="AEN4959"
 ></A
 ><P
 ></P
@@ -5625,7 +5418,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  xmlChar string giving the version of XML "1.0"</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5640,7 +5433,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new document</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5651,7 +5444,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4998"
+NAME="AEN4972"
 ></A
 ><H3
 ><A
@@ -5681,7 +5474,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5005"
+NAME="AEN4979"
 ></A
 ><P
 ></P
@@ -5708,8 +5501,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the document
-@:  </TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5720,7 +5512,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5014"
+NAME="AEN4988"
 ></A
 ><H3
 ><A
@@ -5761,7 +5553,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5024"
+NAME="AEN4998"
 ></A
 ><P
 ></P
@@ -5788,7 +5580,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5805,7 +5597,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the name of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5822,7 +5614,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5837,7 +5629,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the attribute</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5848,7 +5640,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5045"
+NAME="AEN5019"
 ></A
 ><H3
 ><A
@@ -5889,7 +5681,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5055"
+NAME="AEN5029"
 ></A
 ><P
 ></P
@@ -5916,7 +5708,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the holding node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5933,7 +5725,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the name of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5950,7 +5742,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5965,7 +5757,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the attribute</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -5976,7 +5768,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5076"
+NAME="AEN5050"
 ></A
 ><H3
 ><A
@@ -6021,7 +5813,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5087"
+NAME="AEN5061"
 ></A
 ><P
 ></P
@@ -6048,7 +5840,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the holding node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6065,7 +5857,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6082,7 +5874,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the name of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6099,7 +5891,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6114,7 +5906,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the attribute</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -6125,7 +5917,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5112"
+NAME="AEN5086"
 ></A
 ><H3
 ><A
@@ -6155,7 +5947,7 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5119"
+NAME="AEN5093"
 ></A
 ><P
 ></P
@@ -6182,7 +5974,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first property in the list</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -6193,7 +5985,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5128"
+NAME="AEN5102"
 ></A
 ><H3
 ><A
@@ -6223,7 +6015,7 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5135"
+NAME="AEN5109"
 ></A
 ><P
 ></P
@@ -6250,7 +6042,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an attribute</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -6261,7 +6053,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5144"
+NAME="AEN5118"
 ></A
 ><H3
 ><A
@@ -6298,7 +6090,7 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5153"
+NAME="AEN5127"
 ></A
 ><P
 ></P
@@ -6325,7 +6117,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element where the attribute will be grafted</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6342,7 +6134,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6357,7 +6149,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlAttrPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -6368,7 +6160,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5170"
+NAME="AEN5144"
 ></A
 ><H3
 ><A
@@ -6405,7 +6197,7 @@ HREF="libxml-tree.html#XMLATTRPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5179"
+NAME="AEN5153"
 ></A
 ><P
 ></P
@@ -6432,7 +6224,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element where the attributes will be grafted</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6449,7 +6241,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6464,7 +6256,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlAttrPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -6475,7 +6267,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5196"
+NAME="AEN5170"
 ></A
 ><H3
 ><A
@@ -6508,7 +6300,7 @@ HREF="libxml-tree.html#XMLDTDPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5204"
+NAME="AEN5178"
 ></A
 ><P
 ></P
@@ -6535,7 +6327,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the dtd</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6550,7 +6342,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlDtdPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -6561,7 +6353,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5217"
+NAME="AEN5191"
 ></A
 ><H3
 ><A
@@ -6596,7 +6388,7 @@ be copied too as well as Dtd, namespaces and entities.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5225"
+NAME="AEN5199"
 ></A
 ><P
 ></P
@@ -6623,7 +6415,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6640,7 +6432,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  if 1 do a recursive copy.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6655,7 +6447,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlDocPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -6666,7 +6458,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5242"
+NAME="AEN5216"
 ></A
 ><H3
 ><A
@@ -6737,7 +6529,7 @@ need entities support.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5258"
+NAME="AEN5232"
 ></A
 ><P
 ></P
@@ -6764,7 +6556,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6781,7 +6573,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  namespace if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6798,7 +6590,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6815,7 +6607,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML text content if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6830,7 +6622,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -6841,7 +6633,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5283"
+NAME="AEN5257"
 ></A
 ><H3
 ><A
@@ -6897,7 +6689,7 @@ are optionnal (NULL).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5296"
+NAME="AEN5270"
 ></A
 ><P
 ></P
@@ -6924,7 +6716,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6941,7 +6733,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  namespace if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6958,7 +6750,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6975,7 +6767,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6990,7 +6782,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -7001,7 +6793,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5321"
+NAME="AEN5295"
 ></A
 ><H3
 ><A
@@ -7043,7 +6835,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5331"
+NAME="AEN5305"
 ></A
 ><P
 ></P
@@ -7070,7 +6862,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  namespace if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7087,7 +6879,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7102,7 +6894,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -7113,7 +6905,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5348"
+NAME="AEN5322"
 ></A
 ><H3
 ><A
@@ -7190,7 +6982,7 @@ support is not needed.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5365"
+NAME="AEN5339"
 ></A
 ><P
 ></P
@@ -7217,7 +7009,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the parent node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7234,7 +7026,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a namespace if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7251,7 +7043,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the name of the child</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7268,7 +7060,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML content of the child if any.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7283,7 +7075,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -7294,7 +7086,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5390"
+NAME="AEN5364"
 ></A
 ><H3
 ><A
@@ -7356,7 +7148,7 @@ a child TEXT node will be created containing the string content.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5404"
+NAME="AEN5378"
 ></A
 ><P
 ></P
@@ -7383,7 +7175,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the parent node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7400,7 +7192,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a namespace if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7417,7 +7209,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the name of the child</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7434,7 +7226,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content of the child if any.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7449,7 +7241,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -7460,7 +7252,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5429"
+NAME="AEN5403"
 ></A
 ><H3
 ><A
@@ -7497,7 +7289,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5438"
+NAME="AEN5412"
 ></A
 ><P
 ></P
@@ -7524,7 +7316,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7541,7 +7333,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7556,7 +7348,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -7567,7 +7359,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5455"
+NAME="AEN5429"
 ></A
 ><H3
 ><A
@@ -7600,7 +7392,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5463"
+NAME="AEN5437"
 ></A
 ><P
 ></P
@@ -7627,7 +7419,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7642,7 +7434,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -7653,7 +7445,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5476"
+NAME="AEN5450"
 ></A
 ><H3
 ><A
@@ -7690,7 +7482,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5485"
+NAME="AEN5459"
 ></A
 ><P
 ></P
@@ -7717,7 +7509,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the processing instruction name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7734,7 +7526,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the PI content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7749,7 +7541,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -7760,7 +7552,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5502"
+NAME="AEN5476"
 ></A
 ><H3
 ><A
@@ -7799,7 +7591,7 @@ text node pertain to a given document.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5511"
+NAME="AEN5485"
 ></A
 ><P
 ></P
@@ -7826,7 +7618,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7843,7 +7635,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7860,7 +7652,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text len.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7875,7 +7667,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -7886,7 +7678,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5532"
+NAME="AEN5506"
 ></A
 ><H3
 ><A
@@ -7920,7 +7712,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5540"
+NAME="AEN5514"
 ></A
 ><P
 ></P
@@ -7947,7 +7739,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7964,7 +7756,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text len.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7979,7 +7771,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -7990,7 +7782,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5557"
+NAME="AEN5531"
 ></A
 ><H3
 ><A
@@ -8027,7 +7819,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5566"
+NAME="AEN5540"
 ></A
 ><P
 ></P
@@ -8054,7 +7846,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8071,7 +7863,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the comment content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8086,7 +7878,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -8097,7 +7889,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5583"
+NAME="AEN5557"
 ></A
 ><H3
 ><A
@@ -8130,7 +7922,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5591"
+NAME="AEN5565"
 ></A
 ><P
 ></P
@@ -8157,7 +7949,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the comment content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8172,7 +7964,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -8183,7 +7975,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5604"
+NAME="AEN5578"
 ></A
 ><H3
 ><A
@@ -8221,7 +8013,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5613"
+NAME="AEN5587"
 ></A
 ><P
 ></P
@@ -8248,7 +8040,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8265,7 +8057,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the CData block content content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8282,7 +8074,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the length of the block</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8297,7 +8089,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -8308,7 +8100,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5634"
+NAME="AEN5608"
 ></A
 ><H3
 ><A
@@ -8345,7 +8137,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5643"
+NAME="AEN5617"
 ></A
 ><P
 ></P
@@ -8372,7 +8164,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8389,7 +8181,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the char ref string, starting with # or "&amp;# ... ;"</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8404,7 +8196,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -8415,7 +8207,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5660"
+NAME="AEN5634"
 ></A
 ><H3
 ><A
@@ -8452,7 +8244,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5669"
+NAME="AEN5643"
 ></A
 ><P
 ></P
@@ -8479,7 +8271,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8496,7 +8288,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the reference name, or the reference string with &amp; and ;</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8511,7 +8303,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -8522,7 +8314,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5686"
+NAME="AEN5660"
 ></A
 ><H3
 ><A
@@ -8556,7 +8348,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5694"
+NAME="AEN5668"
 ></A
 ><P
 ></P
@@ -8583,7 +8375,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8600,7 +8392,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  if 1 do a recursive copy.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8615,7 +8407,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlNodePtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -8626,7 +8418,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5711"
+NAME="AEN5685"
 ></A
 ><H3
 ><A
@@ -8664,7 +8456,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5720"
+NAME="AEN5694"
 ></A
 ><P
 ></P
@@ -8691,7 +8483,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8725,7 +8517,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  if 1 do a recursive copy.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8740,7 +8532,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlNodePtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -8751,7 +8543,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5741"
+NAME="AEN5715"
 ></A
 ><H3
 ><A
@@ -8784,7 +8576,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5749"
+NAME="AEN5723"
 ></A
 ><P
 ></P
@@ -8811,7 +8603,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first node in the list.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8826,7 +8618,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlNodePtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -8837,7 +8629,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5762"
+NAME="AEN5736"
 ></A
 ><H3
 ><A
@@ -8870,7 +8662,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5770"
+NAME="AEN5744"
 ></A
 ><P
 ></P
@@ -8897,7 +8689,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document owning the fragment</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8912,7 +8704,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -8923,7 +8715,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5783"
+NAME="AEN5757"
 ></A
 ><H3
 ><A
@@ -8957,7 +8749,7 @@ containing possibly comments, PIs, etc ...).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5791"
+NAME="AEN5765"
 ></A
 ><P
 ></P
@@ -8984,7 +8776,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8999,7 +8791,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlNodePtr for the root or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -9010,7 +8802,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5804"
+NAME="AEN5778"
 ></A
 ><H3
 ><A
@@ -9043,7 +8835,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5812"
+NAME="AEN5786"
 ></A
 ><P
 ></P
@@ -9070,7 +8862,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the parent node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9085,7 +8877,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the last child or NULL if none.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -9096,7 +8888,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5825"
+NAME="AEN5799"
 ></A
 ><H3
 ><A
@@ -9126,7 +8918,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5832"
+NAME="AEN5806"
 ></A
 ><P
 ></P
@@ -9153,7 +8945,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9168,7 +8960,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 yes, 0 no</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -9179,7 +8971,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5845"
+NAME="AEN5819"
 ></A
 ><H3
 ><A
@@ -9210,7 +9002,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5852"
+NAME="AEN5826"
 ></A
 ><P
 ></P
@@ -9237,7 +9029,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9252,7 +9044,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 yes, 0 no</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -9263,7 +9055,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5865"
+NAME="AEN5839"
 ></A
 ><H3
 ><A
@@ -9301,7 +9093,7 @@ containing possibly comments, PIs, etc ...).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5874"
+NAME="AEN5848"
 ></A
 ><P
 ></P
@@ -9328,7 +9120,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9345,7 +9137,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new document root element</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9360,7 +9152,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the old root element if any was found</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -9371,7 +9163,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5891"
+NAME="AEN5865"
 ></A
 ><H3
 ><A
@@ -9405,7 +9197,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5899"
+NAME="AEN5873"
 ></A
 ><P
 ></P
@@ -9432,7 +9224,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being changed</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9449,7 +9241,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new tag name</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -9460,7 +9252,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5912"
+NAME="AEN5886"
 ></A
 ><H3
 ><A
@@ -9508,7 +9300,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5923"
+NAME="AEN5897"
 ></A
 ><P
 ></P
@@ -9535,7 +9327,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the parent node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9552,7 +9344,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the child node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9567,7 +9359,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the child or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -9578,7 +9370,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5940"
+NAME="AEN5914"
 ></A
 ><H3
 ><A
@@ -9621,7 +9413,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5950"
+NAME="AEN5924"
 ></A
 ><P
 ></P
@@ -9648,7 +9440,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the parent node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9665,7 +9457,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first node in the list</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9680,7 +9472,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the last child or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -9691,7 +9483,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5967"
+NAME="AEN5941"
 ></A
 ><H3
 ><A
@@ -9730,7 +9522,7 @@ first unlinked from its existing context.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5976"
+NAME="AEN5950"
 ></A
 ><P
 ></P
@@ -9757,7 +9549,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the old node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9774,7 +9566,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9789,7 +9581,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the old node</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -9800,7 +9592,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5993"
+NAME="AEN5967"
 ></A
 ><H3
 ><A
@@ -9855,7 +9647,7 @@ first unlinked from its existing context.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6005"
+NAME="AEN5979"
 ></A
 ><P
 ></P
@@ -9882,7 +9674,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the child node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9899,7 +9691,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9914,7 +9706,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new element or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -9925,7 +9717,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6022"
+NAME="AEN5996"
 ></A
 ><H3
 ><A
@@ -9980,7 +9772,7 @@ first unlinked from its existing context.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6034"
+NAME="AEN6008"
 ></A
 ><P
 ></P
@@ -10007,7 +9799,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the child node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10024,7 +9816,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10039,7 +9831,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new element or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -10050,7 +9842,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6051"
+NAME="AEN6025"
 ></A
 ><H3
 ><A
@@ -10105,7 +9897,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6063"
+NAME="AEN6037"
 ></A
 ><P
 ></P
@@ -10132,7 +9924,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the child node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10149,7 +9941,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10164,7 +9956,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new element or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -10175,7 +9967,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6080"
+NAME="AEN6054"
 ></A
 ><H3
 ><A
@@ -10205,7 +9997,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6087"
+NAME="AEN6061"
 ></A
 ><P
 ></P
@@ -10232,7 +10024,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -10243,7 +10035,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6096"
+NAME="AEN6070"
 ></A
 ><H3
 ><A
@@ -10280,7 +10072,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6105"
+NAME="AEN6079"
 ></A
 ><P
 ></P
@@ -10307,7 +10099,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first text node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10324,7 +10116,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the second text node being merged</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10339,7 +10131,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the first text node augmented</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -10350,7 +10142,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6122"
+NAME="AEN6096"
 ></A
 ><H3
 ><A
@@ -10385,7 +10177,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6130"
+NAME="AEN6104"
 ></A
 ><P
 ></P
@@ -10412,7 +10204,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10429,7 +10221,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10446,12 +10238,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  <TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
-> lenght</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -10462,7 +10249,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6148"
+NAME="AEN6121"
 ></A
 ><H3
 ><A
@@ -10493,7 +10280,7 @@ the children are freed too.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6155"
+NAME="AEN6128"
 ></A
 ><P
 ></P
@@ -10520,7 +10307,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first node in the list</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -10531,7 +10318,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6164"
+NAME="AEN6137"
 ></A
 ><H3
 ><A
@@ -10565,7 +10352,7 @@ HREF="libxml-tree.html#XMLUNLINKNODE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6172"
+NAME="AEN6145"
 ></A
 ><P
 ></P
@@ -10592,7 +10379,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -10603,7 +10390,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6181"
+NAME="AEN6154"
 ></A
 ><H3
 ><A
@@ -10637,7 +10424,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6189"
+NAME="AEN6162"
 ></A
 ><P
 ></P
@@ -10664,7 +10451,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the top element</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10681,7 +10468,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -10692,7 +10479,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6202"
+NAME="AEN6175"
 ></A
 ><H3
 ><A
@@ -10726,7 +10513,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6210"
+NAME="AEN6183"
 ></A
 ><P
 ></P
@@ -10770,7 +10557,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -10781,7 +10568,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6223"
+NAME="AEN6196"
 ></A
 ><H3
 ><A
@@ -10833,7 +10620,7 @@ is generated to cover this case.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6234"
+NAME="AEN6207"
 ></A
 ><P
 ></P
@@ -10860,7 +10647,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10877,7 +10664,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the current node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10894,7 +10681,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace prefix</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10909,7 +10696,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the namespace pointer or NULL.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -10920,7 +10707,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6255"
+NAME="AEN6228"
 ></A
 ><H3
 ><A
@@ -10962,7 +10749,7 @@ the defined namespace or return NULL otherwise.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6265"
+NAME="AEN6238"
 ></A
 ><P
 ></P
@@ -10989,7 +10776,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11006,7 +10793,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the current node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11023,7 +10810,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11038,7 +10825,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the namespace pointer or NULL.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -11049,7 +10836,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6286"
+NAME="AEN6259"
 ></A
 ><H3
 ><A
@@ -11086,7 +10873,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6295"
+NAME="AEN6268"
 ></A
 ><P
 ></P
@@ -11113,7 +10900,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11130,7 +10917,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the current node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11145,9 +10932,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->an NULL terminated array of all the xmlNsPtr found
-that need to be freed by the caller or NULL if no
-namespace if defined</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -11158,7 +10943,7 @@ namespace if defined</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6312"
+NAME="AEN6285"
 ></A
 ><H3
 ><A
@@ -11192,7 +10977,7 @@ HREF="libxml-tree.html#XMLNSPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6320"
+NAME="AEN6293"
 ></A
 ><P
 ></P
@@ -11219,7 +11004,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a node in the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11236,7 +11021,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a namespace pointer</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -11247,7 +11032,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6333"
+NAME="AEN6306"
 ></A
 ><H3
 ><A
@@ -11280,7 +11065,7 @@ HREF="libxml-tree.html#XMLNSPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6341"
+NAME="AEN6314"
 ></A
 ><P
 ></P
@@ -11307,7 +11092,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11322,7 +11107,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlNsPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -11333,7 +11118,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6354"
+NAME="AEN6327"
 ></A
 ><H3
 ><A
@@ -11366,7 +11151,7 @@ HREF="libxml-tree.html#XMLNSPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6362"
+NAME="AEN6335"
 ></A
 ><P
 ></P
@@ -11393,7 +11178,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11408,7 +11193,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlNsPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -11419,7 +11204,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6375"
+NAME="AEN6348"
 ></A
 ><H3
 ><A
@@ -11460,7 +11245,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6385"
+NAME="AEN6358"
 ></A
 ><P
 ></P
@@ -11487,7 +11272,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11504,7 +11289,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11521,7 +11306,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11536,7 +11321,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the attribute pointer.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -11547,7 +11332,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6406"
+NAME="AEN6379"
 ></A
 ><H3
 ><A
@@ -11590,7 +11375,7 @@ default declaration values unless DTD use has been turned off.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6416"
+NAME="AEN6389"
 ></A
 ><P
 ></P
@@ -11617,7 +11402,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11634,7 +11419,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11649,8 +11434,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the attribute value or NULL if not found.
-It's up to the caller to free the memory.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -11661,7 +11445,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6433"
+NAME="AEN6406"
 ></A
 ><H3
 ><A
@@ -11703,7 +11487,7 @@ default declaration values unless DTD use has been turned off.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6443"
+NAME="AEN6416"
 ></A
 ><P
 ></P
@@ -11730,7 +11514,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11747,7 +11531,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11762,8 +11546,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the attribute or the attribute declaration or NULL if 
-neither was found.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -11774,7 +11557,7 @@ neither was found.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6460"
+NAME="AEN6433"
 ></A
 ><H3
 ><A
@@ -11822,7 +11605,7 @@ default declaration values unless DTD use has been turned off.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6471"
+NAME="AEN6444"
 ></A
 ><P
 ></P
@@ -11849,7 +11632,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11866,7 +11649,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11883,7 +11666,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the URI of the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11898,8 +11681,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the attribute or the attribute declaration or NULL
-if neither was found.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -11910,7 +11692,7 @@ if neither was found.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6492"
+NAME="AEN6465"
 ></A
 ><H3
 ><A
@@ -11956,7 +11738,7 @@ The ns structure must be in scope, this is not checked.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6503"
+NAME="AEN6476"
 ></A
 ><P
 ></P
@@ -11983,7 +11765,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12000,7 +11782,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace definition</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12017,7 +11799,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12034,7 +11816,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12049,7 +11831,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the attribute pointer.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -12060,7 +11842,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6528"
+NAME="AEN6501"
 ></A
 ><H3
 ><A
@@ -12108,7 +11890,7 @@ default declaration values unless DTD use has been turned off.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6539"
+NAME="AEN6512"
 ></A
 ><P
 ></P
@@ -12135,7 +11917,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12152,7 +11934,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12169,7 +11951,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the URI of the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12184,8 +11966,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the attribute value or NULL if not found.
-It's up to the caller to free the memory.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -12196,7 +11977,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6560"
+NAME="AEN6533"
 ></A
 ><H3
 ><A
@@ -12234,7 +12015,7 @@ produce a flat tree with only TEXTs and ENTITY_REFs.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6569"
+NAME="AEN6542"
 ></A
 ><P
 ></P
@@ -12261,7 +12042,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12278,7 +12059,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12293,7 +12074,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the first child</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -12304,7 +12085,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6586"
+NAME="AEN6559"
 ></A
 ><H3
 ><A
@@ -12343,7 +12124,7 @@ produce a flat tree with only TEXTs and ENTITY_REFs.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6595"
+NAME="AEN6568"
 ></A
 ><P
 ></P
@@ -12370,7 +12151,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12387,7 +12168,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value of the text</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12404,7 +12185,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the length of the string value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12419,7 +12200,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the first child</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -12430,7 +12211,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6616"
+NAME="AEN6589"
 ></A
 ><H3
 ><A
@@ -12469,7 +12250,7 @@ made of TEXTs and ENTITY_REFs</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6625"
+NAME="AEN6598"
 ></A
 ><P
 ></P
@@ -12496,7 +12277,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12513,7 +12294,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a Node list</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12530,7 +12311,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  should we replace entity contents or show their external form</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12545,7 +12326,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the string copy, the calller must free it.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -12556,7 +12337,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6646"
+NAME="AEN6619"
 ></A
 ><H3
 ><A
@@ -12599,7 +12380,7 @@ this function doesn't do any character encoding handling.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6656"
+NAME="AEN6629"
 ></A
 ><P
 ></P
@@ -12626,7 +12407,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12643,7 +12424,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a Node list</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12660,7 +12441,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  should we replace entity contents or show their external form</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12675,7 +12456,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the string copy, the calller must free it.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -12686,7 +12467,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6677"
+NAME="AEN6650"
 ></A
 ><H3
 ><A
@@ -12720,7 +12501,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6685"
+NAME="AEN6658"
 ></A
 ><P
 ></P
@@ -12747,7 +12528,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being modified</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12764,7 +12545,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new value of the content</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -12775,7 +12556,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6698"
+NAME="AEN6671"
 ></A
 ><H3
 ><A
@@ -12810,7 +12591,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6706"
+NAME="AEN6679"
 ></A
 ><P
 ></P
@@ -12837,7 +12618,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being modified</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12854,7 +12635,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new value of the content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12871,12 +12652,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size of <TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
-></TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -12887,7 +12663,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6724"
+NAME="AEN6696"
 ></A
 ><H3
 ><A
@@ -12921,7 +12697,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6732"
+NAME="AEN6704"
 ></A
 ><P
 ></P
@@ -12948,7 +12724,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being modified</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -12965,7 +12741,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  extra content</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -12976,7 +12752,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6745"
+NAME="AEN6717"
 ></A
 ><H3
 ><A
@@ -13011,7 +12787,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6753"
+NAME="AEN6725"
 ></A
 ><P
 ></P
@@ -13038,7 +12814,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being modified</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13055,7 +12831,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  extra content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13072,12 +12848,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size of <TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
-></TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -13088,7 +12859,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6771"
+NAME="AEN6742"
 ></A
 ><H3
 ><A
@@ -13124,7 +12895,7 @@ Entity references are substitued.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6779"
+NAME="AEN6750"
 ></A
 ><P
 ></P
@@ -13151,7 +12922,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being read</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13166,8 +12937,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new xmlChar * or NULL if no content is available.
-It's up to the caller to free the memory.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -13178,7 +12948,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6792"
+NAME="AEN6763"
 ></A
 ><H3
 ><A
@@ -13212,7 +12982,7 @@ attribute or the one carried by the nearest ancestor.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6800"
+NAME="AEN6771"
 ></A
 ><P
 ></P
@@ -13239,7 +13009,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being checked</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13254,8 +13024,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the lang value, or NULL if not found
-It's up to the caller to free the memory.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -13266,7 +13035,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6813"
+NAME="AEN6784"
 ></A
 ><H3
 ><A
@@ -13301,7 +13070,7 @@ attribute.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6821"
+NAME="AEN6792"
 ></A
 ><P
 ></P
@@ -13328,7 +13097,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being changed</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13345,7 +13114,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the langage description</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -13356,7 +13125,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6834"
+NAME="AEN6805"
 ></A
 ><H3
 ><A
@@ -13388,7 +13157,7 @@ ancestor.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6841"
+NAME="AEN6812"
 ></A
 ><P
 ></P
@@ -13415,7 +13184,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being checked</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13430,7 +13199,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->-1 if xml:space is not inheried, 0 if "default", 1 if "preserve"</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -13441,7 +13210,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6854"
+NAME="AEN6825"
 ></A
 ><H3
 ><A
@@ -13476,7 +13245,7 @@ value of the xml:space attribute.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6862"
+NAME="AEN6833"
 ></A
 ><P
 ></P
@@ -13503,7 +13272,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being changed</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13531,7 +13300,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6875"
+NAME="AEN6846"
 ></A
 ><H3
 ><A
@@ -13578,7 +13347,7 @@ HREF="XMLDOCUMENTGETBASE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6885"
+NAME="AEN6856"
 ></A
 ><P
 ></P
@@ -13605,7 +13374,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document the node pertains to</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13622,7 +13391,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being checked</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13637,8 +13406,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the base URL, or NULL if not found
-It's up to the caller to free the memory.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -13649,7 +13417,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6902"
+NAME="AEN6873"
 ></A
 ><H3
 ><A
@@ -13684,7 +13452,7 @@ xml:base attribute.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6910"
+NAME="AEN6881"
 ></A
 ><P
 ></P
@@ -13711,7 +13479,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being changed</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13728,7 +13496,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new base URI</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -13739,7 +13507,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6923"
+NAME="AEN6894"
 ></A
 ><H3
 ><A
@@ -13770,7 +13538,7 @@ Note this doesn't work for namespace definition attributes</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6930"
+NAME="AEN6901"
 ></A
 ><P
 ></P
@@ -13812,7 +13580,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 if success and -1 in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -13823,7 +13591,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6943"
+NAME="AEN6914"
 ></A
 ><H3
 ><A
@@ -13851,7 +13619,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6949"
+NAME="AEN6920"
 ></A
 ><P
 ></P
@@ -13904,7 +13672,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6962"
+NAME="AEN6933"
 ></A
 ><H3
 ><A
@@ -13938,7 +13706,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6970"
+NAME="AEN6941"
 ></A
 ><P
 ></P
@@ -13965,7 +13733,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13982,7 +13750,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -13997,7 +13765,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 if successful, -1 if not found</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -14008,7 +13776,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6987"
+NAME="AEN6958"
 ></A
 ><H3
 ><A
@@ -14046,7 +13814,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6996"
+NAME="AEN6967"
 ></A
 ><P
 ></P
@@ -14073,7 +13841,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14090,7 +13858,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace definition</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14107,7 +13875,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14122,7 +13890,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 if successful, -1 if not found</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -14133,7 +13901,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7017"
+NAME="AEN6988"
 ></A
 ><H3
 ><A
@@ -14165,7 +13933,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7024"
+NAME="AEN6995"
 ></A
 ><P
 ></P
@@ -14220,7 +13988,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7037"
+NAME="AEN7008"
 ></A
 ><H3
 ><A
@@ -14255,7 +14023,7 @@ xmlChars at the end of the buffer.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7045"
+NAME="AEN7016"
 ></A
 ><P
 ></P
@@ -14282,7 +14050,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14299,7 +14067,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the string to add</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -14310,7 +14078,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7058"
+NAME="AEN7029"
 ></A
 ><H3
 ><A
@@ -14342,7 +14110,7 @@ C chars at the end of the array.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7065"
+NAME="AEN7036"
 ></A
 ><P
 ></P
@@ -14369,7 +14137,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14386,7 +14154,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the string to add</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -14397,7 +14165,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7078"
+NAME="AEN7049"
 ></A
 ><H3
 ><A
@@ -14433,7 +14201,7 @@ quote or double-quotes internally</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7086"
+NAME="AEN7057"
 ></A
 ><P
 ></P
@@ -14460,7 +14228,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14477,7 +14245,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the string to add</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -14488,7 +14256,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7099"
+NAME="AEN7070"
 ></A
 ><H3
 ><A
@@ -14533,7 +14301,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7108"
+NAME="AEN7079"
 ></A
 ><P
 ></P
@@ -14560,7 +14328,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14577,7 +14345,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a node defining the subtree to reconciliate</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14592,7 +14360,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of namespace declarations created or -1 in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -14603,7 +14371,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7125"
+NAME="AEN7096"
 ></A
 ><H3
 ><A
@@ -14629,6 +14397,131 @@ HREF="libxml-tree.html#XMLCHAR"
 > **mem,
                                              int *size,
                                              int format);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump an XML document in memory and return the xmlChar * and it's size.
+It's up to the caller to free the memory.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7104"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>format</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7125"
+></A
+><H3
+><A
+NAME="XMLDOCDUMPMEMORY"
+></A
+>xmlDocDumpMemory ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDocDumpMemory                (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **mem,
+                                             int *size);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -14667,7 +14560,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14684,7 +14577,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  OUT: the memory pointer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14701,24 +14594,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  OUT: the memory lenght</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->format</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  should formatting spaces been added</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -14729,115 +14605,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7154"
-></A
-><H3
-><A
-NAME="XMLDOCDUMPMEMORY"
-></A
->xmlDocDumpMemory ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlDocDumpMemory                (<A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> cur,
-                                             <A
-HREF="libxml-tree.html#XMLCHAR"
->xmlChar</A
-> **mem,
-                                             int *size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Dump an XML document in memory and return the xmlChar * and it's size.
-It's up to the caller to free the memory.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7162"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mem</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  OUT: the memory pointer</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  OUT: the memory lenght</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7179"
+NAME="AEN7150"
 ></A
 ><H3
 ><A
@@ -14875,7 +14643,7 @@ allocated memory.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7187"
+NAME="AEN7158"
 ></A
 ><P
 ></P
@@ -14902,7 +14670,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  Document to generate XML text from</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14919,7 +14687,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  Memory pointer for allocated XML text</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14936,7 +14704,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  Length of the generated XML text</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -14953,7 +14721,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  Character encoding to use when generating XML text</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -14964,7 +14732,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7208"
+NAME="AEN7179"
 ></A
 ><H3
 ><A
@@ -14999,7 +14767,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7215"
+NAME="AEN7186"
 ></A
 ><P
 ></P
@@ -15105,7 +14873,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7240"
+NAME="AEN7211"
 ></A
 ><H3
 ><A
@@ -15139,7 +14907,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7248"
+NAME="AEN7219"
 ></A
 ><P
 ></P
@@ -15166,7 +14934,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the FILE*</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15183,7 +14951,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15198,7 +14966,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the number of byte written or -1 in case of failure.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -15209,7 +14977,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7265"
+NAME="AEN7236"
 ></A
 ><H3
 ><A
@@ -15247,7 +15015,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7274"
+NAME="AEN7245"
 ></A
 ><P
 ></P
@@ -15274,7 +15042,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the FILE * for the output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15291,7 +15059,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15308,7 +15076,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the current node</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -15319,7 +15087,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7291"
+NAME="AEN7262"
 ></A
 ><H3
 ><A
@@ -15357,7 +15125,7 @@ used.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7299"
+NAME="AEN7270"
 ></A
 ><P
 ></P
@@ -15384,7 +15152,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename (or URL)</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15401,7 +15169,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15416,7 +15184,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the number of byte written or -1 in case of failure.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -15427,7 +15195,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7316"
+NAME="AEN7287"
 ></A
 ><H3
 ><A
@@ -15466,7 +15234,7 @@ used. If format is set then the document will be indented on output.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7324"
+NAME="AEN7295"
 ></A
 ><P
 ></P
@@ -15493,7 +15261,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename (or URL)</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15510,7 +15278,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15527,7 +15295,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  should formatting spaces been added</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15542,7 +15310,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the number of byte written or -1 in case of failure.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -15553,7 +15321,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7345"
+NAME="AEN7316"
 ></A
 ><H3
 ><A
@@ -15593,7 +15361,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7354"
+NAME="AEN7325"
 ></A
 ><P
 ></P
@@ -15620,7 +15388,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15637,7 +15405,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15654,7 +15422,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the current node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15671,7 +15439,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the imbrication level for indenting</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15688,7 +15456,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> is formatting allowed</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -15699,7 +15467,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7379"
+NAME="AEN7350"
 ></A
 ><H3
 ><A
@@ -15731,7 +15499,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7386"
+NAME="AEN7357"
 ></A
 ><P
 ></P
@@ -15758,7 +15526,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename (or URL)</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15775,7 +15543,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15792,7 +15560,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the name of an encoding (or NULL)</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15807,7 +15575,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the number of byte written or -1 in case of failure.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -15818,7 +15586,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7407"
+NAME="AEN7378"
 ></A
 ><H3
 ><A
@@ -15848,7 +15616,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7414"
+NAME="AEN7385"
 ></A
 ><P
 ></P
@@ -15875,7 +15643,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15890,7 +15658,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 (uncompressed) to 9 (max compression)</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -15901,7 +15669,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7427"
+NAME="AEN7398"
 ></A
 ><H3
 ><A
@@ -15933,7 +15701,7 @@ Correct values: 0 (uncompressed) to 9 (max compression)</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7434"
+NAME="AEN7405"
 ></A
 ><P
 ></P
@@ -15960,7 +15728,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -15977,7 +15745,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the compression ratio</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -15988,7 +15756,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7447"
+NAME="AEN7418"
 ></A
 ><H3
 ><A
@@ -16015,7 +15783,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7453"
+NAME="AEN7424"
 ></A
 ><P
 ></P
@@ -16040,7 +15808,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 (uncompressed) to 9 (max compression)</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -16051,7 +15819,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7462"
+NAME="AEN7433"
 ></A
 ><H3
 ><A
@@ -16079,7 +15847,7 @@ Correct values: 0 (uncompressed) to 9 (max compression)</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7468"
+NAME="AEN7439"
 ></A
 ><P
 ></P
@@ -16106,7 +15874,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the compression ratio</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE

@@ -7,7 +7,7 @@
  *                        http://www.w3.org/HTML/
  *     and XBase 
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  */
 
 #ifndef __XML_XLINK_H__

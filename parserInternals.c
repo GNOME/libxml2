@@ -4,7 +4,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  */
 
 #include "libxml.h"
@@ -3321,7 +3321,7 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
 xmlGenericError(xmlGenericErrorContext,
 	"Reached deprecated section in xmlParserHandleReference()\n");
 xmlGenericError(xmlGenericErrorContext,
-	"Please forward the document to Daniel.Veillard@w3.org\n");
+	"Please forward the document to daniel@veillard.com\n");
 xmlGenericError(xmlGenericErrorContext,
 	"indicating the version: %s, thanks !\n", xmlParserVersion);
     NEXT;

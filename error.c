@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel Veillard <Daniel.Veillard@w3.org>
+ * Daniel Veillard <daniel@veillard.com>
  */
 
 #include "libxml.h"

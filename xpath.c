@@ -10,7 +10,7 @@
  *
  * See COPYRIGHT for the status of this software
  *
- * Author: Daniel.Veillard@w3.org
+ * Author: daniel@veillard.com
  *
  * 14 Nov 2000 ht - truncated declaration of xmlXPathEvalRelativeLocationPath
  * for VMS

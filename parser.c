@@ -27,7 +27,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  *
  * 14 Nov 2000 ht - truncated definitions of xmlSubstituteEntitiesDefaultValue
  * and xmlDoValidityCheckingDefaultValue for VMS

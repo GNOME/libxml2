@@ -9,7 +9,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel.Veillard@w3.org
+ * daniel@veillard.com
  */
 
 #ifndef __XML_CATALOG_H__
@@ -17,7 +17,11 @@
 
 #include <stdio.h>
 
+#if defined(WIN32) && defined(_MSC_VER)
+#include <libxml/xmlwin32version.h>
+#else
 #include <libxml/xmlversion.h>
+#endif
 #ifdef LIBXML_CATALOG_ENABLED
 
 #ifdef __cplusplus

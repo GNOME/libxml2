@@ -42,25 +42,30 @@ dnl
       AC_TRY_RUN([
 #include <stdlib.h>
 #include <stdio.h>
-#include <glib.h>
+#include <xmlversion.h>
 #include <parser.h>
 
 int
 main()
 {
+  int xml_major_version, xml_minor_version, xml_micro_version;
   int major, minor, micro;
   char *tmp_version;
 
   system("touch conf.xmltest");
 
-  tmp_version = g_strdup("$min_xml_version");
+  tmp_version = xmlStrdup("$min_xml_version");
   if(sscanf(tmp_version, "%d.%d.%d", &major, &minor, &micro) != 3) {
     printf("%s, bad version string\n", "$min_xml_version");
     exit(1);
   }
 
-  return 0; /* FIXME */
-#if 0 /* FIXME */
+  tmp_version = xmlStrdup(LIBXML_DOTTED_VERSION);
+  if(sscanf(tmp_version, "%d.%d.%d", &xml_major_version, &xml_minor_version, &xml_micro_version) != 3) {
+    printf("%s, bad version string\n", "$min_xml_version");
+    exit(1);
+  }
+
   if((xml_major_version != $xml_config_major_version) ||
      (xml_minor_version != $xml_config_minor_version) ||
      (xml_micro_version != $xml_config_micro_version))
@@ -103,7 +108,6 @@ main()
           printf("*** so that the correct libraries are found at run-time))\n");
         }
     }
-#endif
   return 1;
 }
 ],, no_xml=yes,[echo $ac_n "cross compiling; assumed OK... $ac_c"])

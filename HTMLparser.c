@@ -2329,6 +2329,14 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	NEXT;
 	cur = CUR;
     }
+    if (!(IS_CHAR(cur))) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+		"Invalid char in CDATA 0x%X\n", cur);
+	ctxt->wellFormed = 0;
+	NEXT;
+    }
+
     if ((nbchar != 0) && (ctxt->sax != NULL) && (!ctxt->disableSAX)) {
 	if (ctxt->sax->cdataBlock!= NULL) {
 	    /*

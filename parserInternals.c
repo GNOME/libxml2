@@ -3403,3 +3403,107 @@ handle_as_char:
 #endif
 }
 
+/**
+ * xmlNewGlobalNs:
+ * @doc:  the document carrying the namespace
+ * @href:  the URI associated
+ * @prefix:  the prefix for the namespace
+ *
+ * Creation of a Namespace, the old way using PI and without scoping
+ *   DEPRECATED !!!
+ * It now create a namespace on the root element of the document if found.
+ * Returns NULL this functionnality had been removed
+ */
+xmlNsPtr
+xmlNewGlobalNs(xmlDocPtr doc, const xmlChar *href, const xmlChar *prefix) {
+    static int deprecated = 0;
+    if (!deprecated) {
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlNewGlobalNs() deprecated function reached\n");
+	deprecated = 1;
+    }
+    return(NULL);
+#if 0
+    xmlNodePtr root;
+
+    xmlNsPtr cur;
+ 
+    root = xmlDocGetRootElement(doc);
+    if (root != NULL)
+	return(xmlNewNs(root, href, prefix));
+	
+    /*
+     * if there is no root element yet, create an old Namespace type
+     * and it will be moved to the root at save time.
+     */
+    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+    if (cur == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewGlobalNs : malloc failed\n");
+	return(NULL);
+    }
+    memset(cur, 0, sizeof(xmlNs));
+    cur->type = XML_GLOBAL_NAMESPACE;
+
+    if (href != NULL)
+	cur->href = xmlStrdup(href); 
+    if (prefix != NULL)
+	cur->prefix = xmlStrdup(prefix); 
+
+    /*
+     * Add it at the end to preserve parsing order ...
+     */
+    if (doc != NULL) {
+	if (doc->oldNs == NULL) {
+	    doc->oldNs = cur;
+	} else {
+	    xmlNsPtr prev = doc->oldNs;
+
+	    while (prev->next != NULL) prev = prev->next;
+	    prev->next = cur;
+	}
+    }
+
+  return(NULL);
+#endif
+}
+
+/**
+ * xmlUpgradeOldNs:
+ * @doc:  a document pointer
+ * 
+ * Upgrade old style Namespaces (PI) and move them to the root of the document.
+ * DEPRECATED
+ */
+void
+xmlUpgradeOldNs(xmlDocPtr doc) {
+    static int deprecated = 0;
+    if (!deprecated) {
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlNewGlobalNs() deprecated function reached\n");
+	deprecated = 1;
+    }
+#if 0
+    xmlNsPtr cur;
+
+    if ((doc == NULL) || (doc->oldNs == NULL)) return;
+    if (doc->children == NULL) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlUpgradeOldNs: failed no root !\n");
+#endif
+	return;
+    }
+
+    cur = doc->oldNs;
+    while (cur->next != NULL) {
+	cur->type = XML_LOCAL_NAMESPACE;
+        cur = cur->next;
+    }
+    cur->type = XML_LOCAL_NAMESPACE;
+    cur->next = doc->children->nsDef;
+    doc->children->nsDef = doc->oldNs;
+    doc->oldNs = NULL;
+#endif
+}
+

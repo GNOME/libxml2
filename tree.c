@@ -93,36 +93,6 @@ xmlGetBufferAllocationScheme() {
 }
 
 /**
- * xmlUpgradeOldNs:
- * @doc:  a document pointer
- * 
- * Upgrade old style Namespaces (PI) and move them to the root of the document.
- */
-void
-xmlUpgradeOldNs(xmlDocPtr doc) {
-    xmlNsPtr cur;
-
-    if ((doc == NULL) || (doc->oldNs == NULL)) return;
-    if (doc->children == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlUpgradeOldNs: failed no root !\n");
-#endif
-	return;
-    }
-
-    cur = doc->oldNs;
-    while (cur->next != NULL) {
-	cur->type = XML_LOCAL_NAMESPACE;
-        cur = cur->next;
-    }
-    cur->type = XML_LOCAL_NAMESPACE;
-    cur->next = doc->children->nsDef;
-    doc->children->nsDef = doc->oldNs;
-    doc->oldNs = NULL;
-}
-
-/**
  * xmlNewNs:
  * @node:  the element carrying the namespace
  * @href:  the URI associated
@@ -183,62 +153,6 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
 	}
     }
     return(cur);
-}
-
-/**
- * xmlNewGlobalNs:
- * @doc:  the document carrying the namespace
- * @href:  the URI associated
- * @prefix:  the prefix for the namespace
- *
- * Creation of a Namespace, the old way using PI and without scoping
- *   DEPRECATED !!!
- * It now create a namespace on the root element of the document if found.
- * Returns NULL this functionnality had been removed
- */
-xmlNsPtr
-xmlNewGlobalNs(xmlDocPtr doc, const xmlChar *href, const xmlChar *prefix) {
-    xmlNodePtr root;
-
-    xmlNsPtr cur;
- 
-    root = xmlDocGetRootElement(doc);
-    if (root != NULL)
-	return(xmlNewNs(root, href, prefix));
-	
-    /*
-     * if there is no root element yet, create an old Namespace type
-     * and it will be moved to the root at save time.
-     */
-    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
-    if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewGlobalNs : malloc failed\n");
-	return(NULL);
-    }
-    memset(cur, 0, sizeof(xmlNs));
-    cur->type = XML_GLOBAL_NAMESPACE;
-
-    if (href != NULL)
-	cur->href = xmlStrdup(href); 
-    if (prefix != NULL)
-	cur->prefix = xmlStrdup(prefix); 
-
-    /*
-     * Add it at the end to preserve parsing order ...
-     */
-    if (doc != NULL) {
-	if (doc->oldNs == NULL) {
-	    doc->oldNs = cur;
-	} else {
-	    xmlNsPtr prev = doc->oldNs;
-
-	    while (prev->next != NULL) prev = prev->next;
-	    prev->next = cur;
-	}
-    }
-
-  return(NULL);
 }
 
 /**
@@ -2390,16 +2304,13 @@ xmlCopyNamespace(xmlNsPtr cur) {
 
     if (cur == NULL) return(NULL);
     switch (cur->type) {
-        case XML_GLOBAL_NAMESPACE:
-	    ret = xmlNewGlobalNs(NULL, cur->href, cur->prefix);
-	    break;
 	case XML_LOCAL_NAMESPACE:
 	    ret = xmlNewNs(NULL, cur->href, cur->prefix);
 	    break;
 	default:
 #ifdef DEBUG_TREE
 	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlCopyNamespace: unknown type %d\n", cur->type);
+		    "xmlCopyNamespace: invalid type %d\n", cur->type);
 #endif
 	    return(NULL);
     }
@@ -2817,6 +2728,7 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
         case XML_PI_NODE:
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
+	case XML_NAMESPACE_DECL:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -2879,6 +2791,7 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
         case XML_PI_NODE:
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
+	case XML_NAMESPACE_DECL:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -2949,6 +2862,7 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_NOTATION_NODE:
         case XML_HTML_DOCUMENT_NODE:
+	case XML_NAMESPACE_DECL:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -2996,6 +2910,7 @@ xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
         case XML_PI_NODE:
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
+	case XML_NAMESPACE_DECL:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -3115,6 +3030,9 @@ xmlNodeGetContent(xmlNodePtr cur) {
 	case XML_SGML_DOCUMENT_NODE:
 #endif
 	    return(NULL);
+	case XML_NAMESPACE_DECL:
+	    /* TODO !!! */
+	    return(NULL);
         case XML_ELEMENT_DECL:
 	    /* TODO !!! */
 	    return(NULL);
@@ -3208,6 +3126,8 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
 	    break;
         case XML_DTD_NODE:
 	    break;
+	case XML_NAMESPACE_DECL:
+	    break;
         case XML_ELEMENT_DECL:
 	    /* TODO !!! */
 	    break;
@@ -3286,6 +3206,7 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_DTD_NODE:
         case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
+	case XML_NAMESPACE_DECL:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -3374,6 +3295,7 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_DTD_NODE:
         case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
+	case XML_NAMESPACE_DECL:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -4618,51 +4540,6 @@ void
 htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur);
 
 /**
- * xmlGlobalNsDump:
- * @buf:  the XML buffer output
- * @cur:  a namespace
- *
- * Dump a global Namespace, this is the old version based on PIs.
- */
-static void
-xmlGlobalNsDump(xmlBufferPtr buf, xmlNsPtr cur) {
-    if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlGlobalNsDump : Ns == NULL\n");
-#endif
-	return;
-    }
-    if (cur->type == XML_GLOBAL_NAMESPACE) {
-	xmlBufferWriteChar(buf, "<?namespace");
-	if (cur->href != NULL) {
-	    xmlBufferWriteChar(buf, " href=");
-	    xmlBufferWriteQuotedString(buf, cur->href);
-	}
-	if (cur->prefix != NULL) {
-	    xmlBufferWriteChar(buf, " AS=");
-	    xmlBufferWriteQuotedString(buf, cur->prefix);
-	}
-	xmlBufferWriteChar(buf, "?>\n");
-    }
-}
-
-/**
- * xmlGlobalNsListDump:
- * @buf:  the XML buffer output
- * @cur:  the first namespace
- *
- * Dump a list of global Namespace, this is the old version based on PIs.
- */
-static void
-xmlGlobalNsListDump(xmlBufferPtr buf, xmlNsPtr cur) {
-    while (cur != NULL) {
-        xmlGlobalNsDump(buf, cur);
-	cur = cur->next;
-    }
-}
-
-/**
  * xmlNsDump:
  * @buf:  the XML buffer output
  * @cur:  a namespace
@@ -5087,12 +4964,6 @@ xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
     if (cur->children != NULL) {
         xmlNodePtr child = cur->children;
 
-	/* global namespace definitions, the old way */
-	if (oldXMLWDcompatibility)
-	    xmlGlobalNsListDump(buf, cur->oldNs);
-	else 
-	    xmlUpgradeOldNs(cur);
-	
 	while (child != NULL) {
 	    xmlNodeDump(buf, cur, child, 0, 1);
 	    xmlBufferWriteChar(buf, "\n");
@@ -5113,51 +4984,6 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 static void
 xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
                   int level, int format, const char *encoding);
-/**
- * xmlGlobalNsDumpOutput:
- * @buf:  the XML buffer output
- * @cur:  a namespace
- *
- * Dump a global Namespace, this is the old version based on PIs.
- */
-static void
-xmlGlobalNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
-    if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlGlobalNsDump : Ns == NULL\n");
-#endif
-	return;
-    }
-    if (cur->type == XML_GLOBAL_NAMESPACE) {
-	xmlOutputBufferWriteString(buf, "<?namespace");
-	if (cur->href != NULL) {
-	    xmlOutputBufferWriteString(buf, " href=");
-	    xmlBufferWriteQuotedString(buf->buffer, cur->href);
-	}
-	if (cur->prefix != NULL) {
-	    xmlOutputBufferWriteString(buf, " AS=");
-	    xmlBufferWriteQuotedString(buf->buffer, cur->prefix);
-	}
-	xmlOutputBufferWriteString(buf, "?>\n");
-    }
-}
-
-/**
- * xmlGlobalNsListDumpOutput:
- * @buf:  the XML buffer output
- * @cur:  the first namespace
- *
- * Dump a list of global Namespace, this is the old version based on PIs.
- */
-static void
-xmlGlobalNsListDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
-    while (cur != NULL) {
-        xmlGlobalNsDumpOutput(buf, cur);
-	cur = cur->next;
-    }
-}
-
 /**
  * xmlNsDumpOutput:
  * @buf:  the XML buffer output
@@ -5571,12 +5397,6 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
     if (cur->children != NULL) {
         xmlNodePtr child = cur->children;
 
-	/* global namespace definitions, the old way */
-	if (oldXMLWDcompatibility)
-	    xmlGlobalNsListDumpOutput(buf, cur->oldNs);
-	else 
-	    xmlUpgradeOldNs(cur);
-	
 	while (child != NULL) {
 	    xmlNodeDumpOutput(buf, cur, child, 0, 1, encoding);
 	    xmlOutputBufferWriteString(buf, "\n");

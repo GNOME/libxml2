@@ -1975,6 +1975,7 @@ xmlXPathNextChild(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    case XML_ATTRIBUTE_DECL:
 	    case XML_ENTITY_DECL:
             case XML_ATTRIBUTE_NODE:
+	    case XML_NAMESPACE_DECL:
 		return(NULL);
 	}
 	return(NULL);
@@ -2102,6 +2103,13 @@ xmlXPathNextParent(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    case XML_SGML_DOCUMENT_NODE:
 #endif
                 return(NULL);
+	    case XML_NAMESPACE_DECL:
+		/*
+		 * TODO !!! may require extending struct _xmlNs with
+		 * parent field
+		 * C.f. Infoset case...
+		 */
+                return(NULL);
 	}
     }
     return(NULL);
@@ -2159,6 +2167,13 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    case XML_SGML_DOCUMENT_NODE:
 #endif
                 return(NULL);
+	    case XML_NAMESPACE_DECL:
+		/*
+		 * TODO !!! may require extending struct _xmlNs with
+		 * parent field
+		 * C.f. Infoset case...
+		 */
+                return(NULL);
 	}
 	return(NULL);
     }
@@ -2192,6 +2207,13 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
+	    return(NULL);
+	case XML_NAMESPACE_DECL:
+	    /*
+	     * TODO !!! may require extending struct _xmlNs with
+	     * parent field
+	     * C.f. Infoset case...
+	     */
 	    return(NULL);
     }
     return(NULL);

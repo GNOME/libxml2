@@ -377,8 +377,10 @@ void xmlDebugDumpNamespace(FILE *output, xmlNsPtr ns, int depth) {
     shift[2 * i] = shift[2 * i + 1] = 0;
 
     fprintf(output, shift);
-    if (ns->type == XML_GLOBAL_NAMESPACE)
-        fprintf(output, "old ");
+    if (ns->type != XML_NAMESPACE_DECL) {
+        fprintf(output, "invalid namespace node %d\n", ns->type);
+	return;
+    }
     if (ns->href == NULL) {
 	if (ns->prefix != NULL)
 	    fprintf(output, "incomplete namespace %s href=NULL\n", ns->prefix);
@@ -570,6 +572,9 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	    return;
         case XML_ENTITY_DECL:
 	    xmlDebugDumpEntityDecl(output, (xmlEntityPtr) node, depth);
+	    return;
+        case XML_NAMESPACE_DECL:
+	    xmlDebugDumpNamespace(output, (xmlNsPtr) node, depth);
 	    return;
 	default:
 	    fprintf(output, shift);
@@ -911,6 +916,7 @@ static int xmlLsCountNode(xmlNodePtr node) {
         case XML_ELEMENT_DECL:
         case XML_ATTRIBUTE_DECL:
         case XML_ENTITY_DECL:
+	case XML_NAMESPACE_DECL:
 	    ret = 1;
 	    break;
     }

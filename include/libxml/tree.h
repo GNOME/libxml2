@@ -40,11 +40,10 @@ typedef enum {
     XML_DTD_NODE=		14,
     XML_ELEMENT_DECL=		15,
     XML_ATTRIBUTE_DECL=		16,
-#ifdef LIBXML_SGML_ENABLED
     XML_ENTITY_DECL=		17,
-    XML_SGML_DOCUMENT_NODE=	18
-#else
-    XML_ENTITY_DECL=		17
+    XML_NAMESPACE_DECL=		18
+#ifdef LIBXML_SGML_ENABLED
+   ,XML_SGML_DOCUMENT_NODE=	19
 #endif
 } xmlElementType;
 
@@ -192,12 +191,13 @@ struct _xmlElement {
  * An XML namespace.
  * Note that prefix == NULL is valid, it defines the default namespace
  * within the subtree (until overriden).
+ *
+ * XML_GLOBAL_NAMESPACE is now deprecated for good
+ * xmlNsType is unified with xmlElementType
  */
 
-typedef enum {
-    XML_GLOBAL_NAMESPACE = 1,	/* old style global namespace */
-    XML_LOCAL_NAMESPACE		/* new style local scoping */
-} xmlNsType;
+#define XML_LOCAL_NAMESPACE XML_NAMESPACE_DECL
+typedef xmlElementType xmlNsType;
 
 typedef struct _xmlNs xmlNs;
 typedef xmlNs *xmlNsPtr;

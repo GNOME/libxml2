@@ -1,3 +1,19 @@
+Tue Oct 31 14:14:13 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c: fixed loop on invalid char in scripts
+	* parser.c: update to description of xmlIOParseDTD()
+	* libxml.m4 xmlversion.h.in: changes contributed by
+	  Michael Schmeing <m.schmeing@internet-factory.de>
+	* configure.in: preparing for 2.2.7
+	* Makefile.am: trying to avoid  config.h and acconfig.h
+	  being included in the distrib
+	* configure.in: released 2.2.7
+
+Mon Oct 30 17:08:10 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.[ch] debugXML.c parserInternals.c xpath.c: Deprecated Pi's
+	  like namespaces for good. Unified xmlNs and xmlNode somewhat.
+
 Mon Oct 30 16:26:49 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.[ch]: added xmlIOParseDTD()

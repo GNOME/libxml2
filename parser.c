@@ -8369,6 +8369,7 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
  * Load and parse a DTD
  * 
  * Returns the resulting xmlDtdPtr or NULL in case of error.
+ * @input will be freed at parsing end.
  */
 
 xmlDtdPtr

@@ -145,6 +145,7 @@ xmlCleanupInputCallbacks(void)
     }
 
     xmlInputCallbackNr = 0;
+    xmlInputCallbackInitialized = 0;
 }
 
 /**
@@ -169,6 +170,7 @@ xmlCleanupOutputCallbacks(void)
     }
 
     xmlOutputCallbackNr = 0;
+    xmlOutputCallbackInitialized = 0;
 }
 
 /************************************************************************

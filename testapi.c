@@ -1071,6 +1071,7 @@ static void des_xmlSchemaValType(int no ATTRIBUTE_UNUSED, xmlSchemaValType val A
 #include <libxml/xmlIO.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlerror.h>
+#include <libxml/xmlmodule.h>
 #include <libxml/xmlreader.h>
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlsave.h>
@@ -1108,6 +1109,7 @@ static int test_xinclude(void);
 static int test_xmlIO(void);
 static int test_xmlautomata(void);
 static int test_xmlerror(void);
+static int test_xmlmodule(void);
 static int test_xmlreader(void);
 static int test_xmlregexp(void);
 static int test_xmlsave(void);
@@ -1159,6 +1161,7 @@ testlibxml2(void)
     test_ret += test_xmlIO();
     test_ret += test_xmlautomata();
     test_ret += test_xmlerror();
+    test_ret += test_xmlmodule();
     test_ret += test_xmlreader();
     test_ret += test_xmlregexp();
     test_ret += test_xmlsave();
@@ -28215,6 +28218,111 @@ test_xmlerror(void) {
     return(test_ret);
 }
 
+#define gen_nb_xmlModulePtr 1
+static xmlModulePtr gen_xmlModulePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_xmlModulePtr(int no ATTRIBUTE_UNUSED, xmlModulePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+static int
+test_xmlModuleClose(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_MODULES_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlModulePtr module; /* the module handle */
+    int n_module;
+
+    for (n_module = 0;n_module < gen_nb_xmlModulePtr;n_module++) {
+        mem_base = xmlMemBlocks();
+        module = gen_xmlModulePtr(n_module, 0);
+
+        ret_val = xmlModuleClose(module);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlModulePtr(n_module, module, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlModuleClose",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_module);
+            printf("\n");
+        }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlModuleOpen(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
+test_xmlModuleSymbol(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_MODULES_ENABLED)
+    int mem_base;
+    void * ret_val;
+    xmlModulePtr module; /* the module */
+    int n_module;
+    char * name; /* the name of the symbol */
+    int n_name;
+
+    for (n_module = 0;n_module < gen_nb_xmlModulePtr;n_module++) {
+    for (n_name = 0;n_name < gen_nb_const_char_ptr;n_name++) {
+        mem_base = xmlMemBlocks();
+        module = gen_xmlModulePtr(n_module, 0);
+        name = gen_const_char_ptr(n_name, 1);
+
+        ret_val = xmlModuleSymbol(module, (const char *)name);
+        desret_void_ptr(ret_val);
+        call_tests++;
+        des_xmlModulePtr(n_module, module, 0);
+        des_const_char_ptr(n_name, (const char *)name, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlModuleSymbol",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_module);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+static int
+test_xmlmodule(void) {
+    int test_ret = 0;
+
+    if (quiet == 0) printf("Testing xmlmodule : 2 of 4 functions ...\n");
+    test_ret += test_xmlModuleClose();
+    test_ret += test_xmlModuleOpen();
+    test_ret += test_xmlModuleSymbol();
+
+    if (test_ret != 0)
+	printf("Module xmlmodule: %d errors\n", test_ret);
+    return(test_ret);
+}
+
 static int
 test_xmlNewTextReader(void) {
     int test_ret = 0;
@@ -29479,6 +29587,74 @@ test_xmlTextReaderGetErrorHandler(void) {
         }
     }
     }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlTextReaderGetParserColumnNumber(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_READER_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the user data (XML reader context) */
+    int n_reader;
+
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader, 0);
+
+        ret_val = xmlTextReaderGetParserColumnNumber(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderGetParserColumnNumber",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlTextReaderGetParserLineNumber(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_READER_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlTextReaderPtr reader; /* the user data (XML reader context) */
+    int n_reader;
+
+    for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
+        mem_base = xmlMemBlocks();
+        reader = gen_xmlTextReaderPtr(n_reader, 0);
+
+        ret_val = xmlTextReaderGetParserLineNumber(reader);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextReaderPtr(n_reader, reader, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextReaderGetParserLineNumber",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_reader);
+            printf("\n");
+        }
     }
     function_tests++;
 #endif
@@ -30864,7 +31040,7 @@ static int
 test_xmlreader(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlreader : 68 of 78 functions ...\n");
+    if (quiet == 0) printf("Testing xmlreader : 70 of 80 functions ...\n");
     test_ret += test_xmlNewTextReader();
     test_ret += test_xmlNewTextReaderFilename();
     test_ret += test_xmlReaderForDoc();
@@ -30896,6 +31072,8 @@ test_xmlreader(void) {
     test_ret += test_xmlTextReaderGetAttributeNo();
     test_ret += test_xmlTextReaderGetAttributeNs();
     test_ret += test_xmlTextReaderGetErrorHandler();
+    test_ret += test_xmlTextReaderGetParserColumnNumber();
+    test_ret += test_xmlTextReaderGetParserLineNumber();
     test_ret += test_xmlTextReaderGetParserProp();
     test_ret += test_xmlTextReaderGetRemainder();
     test_ret += test_xmlTextReaderHasAttributes();
@@ -48476,6 +48654,7 @@ test_module(const char *module) {
     if (!strcmp(module, "xmlIO")) return(test_xmlIO());
     if (!strcmp(module, "xmlautomata")) return(test_xmlautomata());
     if (!strcmp(module, "xmlerror")) return(test_xmlerror());
+    if (!strcmp(module, "xmlmodule")) return(test_xmlmodule());
     if (!strcmp(module, "xmlreader")) return(test_xmlreader());
     if (!strcmp(module, "xmlregexp")) return(test_xmlregexp());
     if (!strcmp(module, "xmlsave")) return(test_xmlsave());

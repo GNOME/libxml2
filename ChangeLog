@@ -1,3 +1,13 @@
+Tue Jan  4 18:47:19 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: making DSO support an option
+	* xmlmodule.c xmlreader.c include/libxml/xmlmodule.h: code
+	  and documentation cleanups
+	* elfgcchack.h testapi.c doc/*: regenerated the docs and
+	  checks for new module
+	* test/valid/REC-xml-19980210.xml: fix a small change introduced
+	  previously
+
 Tue Jan  4 16:07:52 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am config.h.in configure.in error.c libxml-2.0.pc.in

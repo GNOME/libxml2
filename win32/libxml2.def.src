@@ -991,6 +991,10 @@ xmlMemStrdupLoc
 xmlMemUsed
 xmlMemoryDump
 xmlMemoryStrdup
+xmlModuleClose
+xmlModuleFree
+xmlModuleOpen
+xmlModuleSymbol
 xmlMutexLock
 xmlMutexUnlock
 xmlNamespaceParseNCName
@@ -1720,6 +1724,8 @@ xmlTextReaderGetAttribute
 xmlTextReaderGetAttributeNo
 xmlTextReaderGetAttributeNs
 xmlTextReaderGetErrorHandler
+xmlTextReaderGetParserColumnNumber
+xmlTextReaderGetParserLineNumber
 xmlTextReaderGetParserProp
 xmlTextReaderGetRemainder
 xmlTextReaderHasAttributes

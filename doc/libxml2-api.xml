@@ -1801,7 +1801,7 @@
      <description>the API used to report errors </description>
      <author>Daniel Veillard </author>
      <exports symbol='XML_DTD_ATTRIBUTE_VALUE' type='enum'/>
-     <exports symbol='XML_RNGP_DEFINE_CREATE_FAILED' type='enum'/>
+     <exports symbol='XML_RNGP_PARAM_NAME_MISSING' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_NO_PARENT' type='enum'/>
      <exports symbol='XML_IO_EISCONN' type='enum'/>
      <exports symbol='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI' type='enum'/>
@@ -1815,7 +1815,7 @@
      <exports symbol='XML_SCHEMAP_SRC_IMPORT_2_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_IMPORT_2_1' type='enum'/>
      <exports symbol='XML_DTD_NOT_STANDALONE' type='enum'/>
-     <exports symbol='XML_RNGP_NEED_COMBINE' type='enum'/>
+     <exports symbol='XML_HTTP_USE_IP' type='enum'/>
      <exports symbol='XML_ERR_XMLDECL_NOT_STARTED' type='enum'/>
      <exports symbol='XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING' type='enum'/>
      <exports symbol='XML_SCHEMAV_ELEMENT_CONTENT' type='enum'/>
@@ -1843,6 +1843,7 @@
      <exports symbol='XML_SCHEMAP_REDEFINED_GROUP' type='enum'/>
      <exports symbol='XML_SCHEMAP_IMPORT_NAMESPACE_NOT_URI' type='enum'/>
      <exports symbol='XML_ERR_CHARREF_IN_EPILOG' type='enum'/>
+     <exports symbol='XML_DTD_ID_SUBSET' type='enum'/>
      <exports symbol='XML_SCHEMAP_FAILED_BUILD_IMPORT' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ATTRGRP_CHILD' type='enum'/>
      <exports symbol='XML_XPTR_CHILDSEQ_START' type='enum'/>
@@ -1850,6 +1851,7 @@
      <exports symbol='XML_FROM_DTD' type='enum'/>
      <exports symbol='XML_CHECK_NOT_ATTR' type='enum'/>
      <exports symbol='XML_DTD_ATTRIBUTE_DEFAULT' type='enum'/>
+     <exports symbol='XML_FROM_MODULE' type='enum'/>
      <exports symbol='XML_SCHEMAV_EXTRACONTENT' type='enum'/>
      <exports symbol='XML_RNGP_ELEM_CONTENT_EMPTY' type='enum'/>
      <exports symbol='XML_IO_EMLINK' type='enum'/>
@@ -1910,7 +1912,7 @@
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_1' type='enum'/>
      <exports symbol='XML_IO_EDOM' type='enum'/>
      <exports symbol='XML_CHECK_NOT_ELEM_DECL' type='enum'/>
-     <exports symbol='XML_HTTP_USE_IP' type='enum'/>
+     <exports symbol='XML_RNGP_DEFINE_CREATE_FAILED' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_ELEMENT_2_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_ELEMENT_2_1' type='enum'/>
      <exports symbol='XML_RNGP_INVALID_URI' type='enum'/>
@@ -2074,12 +2076,13 @@
      <exports symbol='XML_SCHEMAV_CVC_MINLENGTH_VALID' type='enum'/>
      <exports symbol='XML_IO_WRITE' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_PE_INTERNAL' type='enum'/>
-     <exports symbol='XML_DTD_ID_SUBSET' type='enum'/>
+     <exports symbol='XML_DTD_XMLID_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_DERIVED_OK_2_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_DERIVED_OK_2_1' type='enum'/>
      <exports symbol='XML_CHECK_NOT_NS_DECL' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_ELEM' type='enum'/>
      <exports symbol='XML_IO_NETWORK_ATTEMPT' type='enum'/>
+     <exports symbol='XML_MODULE_CLOSE' type='enum'/>
      <exports symbol='XML_RNGP_PAT_START_EMPTY' type='enum'/>
      <exports symbol='XML_ERR_ATTLIST_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_XINCLUDE_TEXT_FRAGMENT' type='enum'/>
@@ -2175,7 +2178,6 @@
      <exports symbol='XML_SCHEMAV_CVC_ENUMERATION_VALID' type='enum'/>
      <exports symbol='XML_ERR_CHARREF_IN_PROLOG' type='enum'/>
      <exports symbol='XML_RNGP_INVALID_DEFINE_NAME' type='enum'/>
-     <exports symbol='XML_RNGP_PARAM_NAME_MISSING' type='enum'/>
      <exports symbol='XML_SAVE_UNKNOWN_ENCODING' type='enum'/>
      <exports symbol='XML_ERR_CONDSEC_INVALID_KEYWORD' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_ELT_7' type='enum'/>
@@ -2281,6 +2283,7 @@
      <exports symbol='XML_SCHEMAV_NOROLLBACK' type='enum'/>
      <exports symbol='XML_SCHEMAV_FACET' type='enum'/>
      <exports symbol='XML_ERR_INVALID_DEC_CHARREF' type='enum'/>
+     <exports symbol='XML_RNGP_NEED_COMBINE' type='enum'/>
      <exports symbol='XML_SCHEMAV_NOTTOPLEVEL' type='enum'/>
      <exports symbol='XML_CATALOG_MISSING_ATTR' type='enum'/>
      <exports symbol='XML_RNGP_PAT_LIST_LIST' type='enum'/>
@@ -2326,7 +2329,7 @@
      <exports symbol='XML_SCHEMAP_ATTR_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_ELEMENT_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_INTERSECTION_NOT_EXPRESSIBLE' type='enum'/>
-     <exports symbol='XML_DTD_XMLID_VALUE' type='enum'/>
+     <exports symbol='XML_MODULE_OPEN' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_CHAR_ERROR' type='enum'/>
      <exports symbol='XML_DTD_UNKNOWN_ENTITY' type='enum'/>
      <exports symbol='XML_RNGP_PARSE_ERROR' type='enum'/>
@@ -2591,6 +2594,17 @@
      <exports symbol='xmlMemoryStrdup' type='function'/>
      <exports symbol='xmlMemStrdupLoc' type='function'/>
     </file>
+    <file name='xmlmodule'>
+     <summary>dynamic module loading</summary>
+     <description>basic API for dynamic module loading, used by libexslt added in 2.6.17 </description>
+     <author>Joel W. Reed </author>
+     <exports symbol='xmlModule' type='typedef'/>
+     <exports symbol='xmlModulePtr' type='typedef'/>
+     <exports symbol='xmlModuleFree' type='function'/>
+     <exports symbol='xmlModuleSymbol' type='function'/>
+     <exports symbol='xmlModuleOpen' type='function'/>
+     <exports symbol='xmlModuleClose' type='function'/>
+    </file>
     <file name='xmlreader'>
      <summary>the XMLReader implementation</summary>
      <description>API of the XML streaming API based on C# interfaces. </description>
@@ -2657,6 +2671,7 @@
      <exports symbol='xmlTextReaderMoveToNextAttribute' type='function'/>
      <exports symbol='xmlTextReaderQuoteChar' type='function'/>
      <exports symbol='xmlTextReaderReadOuterXml' type='function'/>
+     <exports symbol='xmlTextReaderGetParserLineNumber' type='function'/>
      <exports symbol='xmlTextReaderGetAttributeNs' type='function'/>
      <exports symbol='xmlReaderNewWalker' type='function'/>
      <exports symbol='xmlReaderNewDoc' type='function'/>
@@ -2680,6 +2695,7 @@
      <exports symbol='xmlTextReaderGetErrorHandler' type='function'/>
      <exports symbol='xmlTextReaderConstPrefix' type='function'/>
      <exports symbol='xmlTextReaderGetParserProp' type='function'/>
+     <exports symbol='xmlTextReaderGetParserColumnNumber' type='function'/>
      <exports symbol='xmlTextReaderGetRemainder' type='function'/>
      <exports symbol='xmlReaderNewFile' type='function'/>
      <exports symbol='xmlFreeTextReader' type='function'/>
@@ -3047,7 +3063,7 @@
      <description>compile-time version informations for the XML library </description>
      <author>Daniel Veillard </author>
      <exports symbol='LIBXML_VERSION_EXTRA' type='macro'/>
-     <exports symbol='LIBXML_DOCB_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_MODULES_ENABLED' type='macro'/>
      <exports symbol='LIBXML_LEGACY_ENABLED' type='macro'/>
      <exports symbol='LIBXML_READER_ENABLED' type='macro'/>
      <exports symbol='LIBXML_THREAD_ENABLED' type='macro'/>
@@ -3056,6 +3072,7 @@
      <exports symbol='LIBXML_DEBUG_ENABLED' type='macro'/>
      <exports symbol='LIBXML_XINCLUDE_ENABLED' type='macro'/>
      <exports symbol='ATTRIBUTE_UNUSED' type='macro'/>
+     <exports symbol='LIBXML_DOCB_ENABLED' type='macro'/>
      <exports symbol='LIBXML_PUSH_ENABLED' type='macro'/>
      <exports symbol='LIBXML_SAX1_ENABLED' type='macro'/>
      <exports symbol='WITHOUT_TRIO' type='macro'/>
@@ -3068,6 +3085,7 @@
      <exports symbol='LIBXML_VERSION_STRING' type='macro'/>
      <exports symbol='LIBXML_CATALOG_ENABLED' type='macro'/>
      <exports symbol='LIBXML_REGEXP_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_MODULE_EXTENSION' type='macro'/>
      <exports symbol='LIBXML_ICONV_ENABLED' type='macro'/>
      <exports symbol='LIBXML_HTML_ENABLED' type='macro'/>
      <exports symbol='LIBXML_UNICODE_ENABLED' type='macro'/>
@@ -3644,6 +3662,11 @@
     </macro>
     <macro name='LIBXML_LEGACY_ENABLED' file='xmlversion'>
       <info>Whether the deprecated APIs are compiled in for compatibility</info>
+    </macro>
+    <macro name='LIBXML_MODULES_ENABLED' file='xmlversion'>
+      <info>Whether the module interfaces are compiled in</info>
+    </macro>
+    <macro name='LIBXML_MODULE_EXTENSION' file='xmlversion'>
     </macro>
     <macro name='LIBXML_OUTPUT_ENABLED' file='xmlversion'>
       <info>Whether the serialization/saving support is configured in</info>
@@ -4506,6 +4529,7 @@
     <enum name='XML_FROM_HTTP' file='xmlerror' value='10' type='xmlErrorDomain' info='The FTP module'/>
     <enum name='XML_FROM_IO' file='xmlerror' value='8' type='xmlErrorDomain' info='The Input/Output stack'/>
     <enum name='XML_FROM_MEMORY' file='xmlerror' value='6' type='xmlErrorDomain' info='The memory allocator'/>
+    <enum name='XML_FROM_MODULE' file='xmlerror' value='26' type='xmlErrorDomain' info=' The dynamically loaded module modul'/>
     <enum name='XML_FROM_NAMESPACE' file='xmlerror' value='3' type='xmlErrorDomain' info='The XML Namespace module'/>
     <enum name='XML_FROM_NONE' file='xmlerror' value='0' type='xmlErrorDomain'/>
     <enum name='XML_FROM_OUTPUT' file='xmlerror' value='7' type='xmlErrorDomain' info='The serialization code'/>
@@ -4517,7 +4541,7 @@
     <enum name='XML_FROM_SCHEMASV' file='xmlerror' value='17' type='xmlErrorDomain' info='The W3C XML Schemas validation module'/>
     <enum name='XML_FROM_TREE' file='xmlerror' value='2' type='xmlErrorDomain' info='The tree module'/>
     <enum name='XML_FROM_VALID' file='xmlerror' value='23' type='xmlErrorDomain' info='The XML DTD validation with valid context'/>
-    <enum name='XML_FROM_WRITER' file='xmlerror' value='25' type='xmlErrorDomain' info=' The xmlwriter module'/>
+    <enum name='XML_FROM_WRITER' file='xmlerror' value='25' type='xmlErrorDomain' info='The xmlwriter module'/>
     <enum name='XML_FROM_XINCLUDE' file='xmlerror' value='11' type='xmlErrorDomain' info='The XInclude processing'/>
     <enum name='XML_FROM_XPATH' file='xmlerror' value='12' type='xmlErrorDomain' info='The XPath module'/>
     <enum name='XML_FROM_XPOINTER' file='xmlerror' value='13' type='xmlErrorDomain' info='The XPointer module'/>
@@ -4591,6 +4615,8 @@
     <enum name='XML_IO_NO_INPUT' file='xmlerror' value='1547' type='xmlParserErrors' info='1547'/>
     <enum name='XML_IO_UNKNOWN' file='xmlerror' value='1500' type='xmlParserErrors'/>
     <enum name='XML_IO_WRITE' file='xmlerror' value='1546' type='xmlParserErrors' info='1546'/>
+    <enum name='XML_MODULE_CLOSE' file='xmlerror' value='4901' type='xmlParserErrors' info='4901'/>
+    <enum name='XML_MODULE_OPEN' file='xmlerror' value='4900' type='xmlParserErrors' info='4900'/>
     <enum name='XML_NAMESPACE_DECL' file='tree' value='18' type='xmlElementType'/>
     <enum name='XML_NOTATION_NODE' file='tree' value='12' type='xmlElementType'/>
     <enum name='XML_NS_ERR_ATTRIBUTE_REDEFINED' file='xmlerror' value='203' type='xmlParserErrors' info='203'/>
@@ -5635,6 +5661,8 @@ actually an xmlCharEncoding'/>
       <field name='locTab' type='xmlXPathObjectPtr *' info=' array of locations'/>
     </struct>
     <typedef name='xmlLocationSetPtr' file='xpointer' type='xmlLocationSet *'/>
+    <struct name='xmlModule' file='xmlmodule' type='struct _xmlModule'/>
+    <typedef name='xmlModulePtr' file='xmlmodule' type='xmlModule *'/>
     <struct name='xmlMutex' file='threads' type='struct _xmlMutex'/>
     <typedef name='xmlMutexPtr' file='threads' type='xmlMutex *'/>
     <struct name='xmlNode' file='tree' type='struct _xmlNode'>
@@ -9971,9 +9999,9 @@ actually an xmlCharEncoding'/>
       <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist'/>
     </function>
     <function name='xmlMemFree' file='xmlmemory'>
-      <info></info>
+      <info>a free() equivalent, with error checking.</info>
       <return type='void'/>
-      <arg name='ptr' type='void *' info=''/>
+      <arg name='ptr' type='void *' info='the memory block pointer'/>
     </function>
     <function name='xmlMemGet' file='xmlmemory'>
       <info>Provides the memory access functions set currently in use</info>
@@ -9984,15 +10012,15 @@ actually an xmlCharEncoding'/>
       <arg name='strdupFunc' type='xmlStrdupFunc *' info='place to save the strdup() function in use'/>
     </function>
     <function name='xmlMemMalloc' file='xmlmemory'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='size' type='size_t' info=''/>
+      <info>a malloc() equivalent, with logging of the allocation info.</info>
+      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
+      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
     </function>
     <function name='xmlMemRealloc' file='xmlmemory'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='ptr' type='void *' info=''/>
-      <arg name='size' type='size_t' info=''/>
+      <info>a realloc() equivalent, with logging of the allocation info.</info>
+      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
+      <arg name='ptr' type='void *' info='the initial memory block pointer'/>
+      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
     </function>
     <function name='xmlMemSetup' file='xmlmemory'>
       <info>Override the default memory access functions with a new set This has to be called before any other libxml routines !  Should this be blocked if there was already some allocations done ?</info>
@@ -10024,9 +10052,34 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='xmlMemoryStrdup' file='xmlmemory'>
-      <info></info>
-      <return type='char *' info=''/>
-      <arg name='str' type='const char *' info=''/>
+      <info>a strdup() equivalent, with logging of the allocation info.</info>
+      <return type='char *' info='a pointer to the new string or NULL if allocation error occurred.'/>
+      <arg name='str' type='const char *' info='the initial string pointer'/>
+    </function>
+    <function name='xmlModuleClose' file='xmlmodule'>
+      <cond>defined(LIBXML_MODULES_ENABLED)</cond>
+      <info>The close operations unload the associated module and free the data associated to the module.</info>
+      <return type='int' info='0 in case of success, -1 in case of argument error and -2 if the module could not be closed/unloaded.'/>
+      <arg name='module' type='xmlModulePtr' info='the module handle'/>
+    </function>
+    <function name='xmlModuleFree' file='xmlmodule'>
+      <cond>defined(LIBXML_MODULES_ENABLED)</cond>
+      <info>The free operations free the data associated to the module but does not unload the associated shared library which may still be in use.</info>
+      <return type='int' info='0 in case of success, -1 in case of argument error'/>
+      <arg name='module' type='xmlModulePtr' info='the module handle'/>
+    </function>
+    <function name='xmlModuleOpen' file='xmlmodule'>
+      <cond>defined(LIBXML_MODULES_ENABLED)</cond>
+      <info>Opens a module/shared library given its name or path</info>
+      <return type='xmlModulePtr' info='a handle for the module or NULL in case of error'/>
+      <arg name='name' type='const char *' info='the module name'/>
+    </function>
+    <function name='xmlModuleSymbol' file='xmlmodule'>
+      <cond>defined(LIBXML_MODULES_ENABLED)</cond>
+      <info>Lookup for a symbol address in the given module</info>
+      <return type='void *' info='the pointer to the symbol object or NULL in case of error'/>
+      <arg name='module' type='xmlModulePtr' info='the module'/>
+      <arg name='name' type='const char *' info='the name of the symbol'/>
     </function>
     <function name='xmlMutexLock' file='threads'>
       <info>xmlMutexLock() is used to lock a libxml2 token.</info>
@@ -13359,6 +13412,18 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='f' type='xmlTextReaderErrorFunc *' info='the callback function or NULL is no callback has been registered'/>
       <arg name='arg' type='void **' info='a user argument'/>
+    </function>
+    <function name='xmlTextReaderGetParserColumnNumber' file='xmlreader'>
+      <cond>defined(LIBXML_READER_ENABLED)</cond>
+      <info>Provide the column number of the current parsing point.</info>
+      <return type='int' info='an int or 0 if not available'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the user data (XML reader context)'/>
+    </function>
+    <function name='xmlTextReaderGetParserLineNumber' file='xmlreader'>
+      <cond>defined(LIBXML_READER_ENABLED)</cond>
+      <info>Provide the line number of the current parsing point.</info>
+      <return type='int' info='an int or 0 if not available'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the user data (XML reader context)'/>
     </function>
     <function name='xmlTextReaderGetParserProp' file='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>

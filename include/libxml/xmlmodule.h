@@ -1,7 +1,7 @@
 /*
  * Summary: dynamic module loading
  * Description: basic API for dynamic module loading, used by
- *              libexslt
+ *              libexslt added in 2.6.17
  *
  * Copy: See Copyright for the status of this software.
  *

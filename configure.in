@@ -144,6 +144,8 @@ AC_ARG_WITH(xpath,
 [  --with-xpath            add the XPATH support (on)])
 AC_ARG_WITH(xptr,
 [  --with-xptr             add the XPointer support (on)])
+AC_ARG_WITH(modules,
+[  --with-modules          add the dynamic modules support (on)])
 AC_ARG_WITH(zlib,
 [  --with-zlib[[=DIR]]       use libz in DIR],[
   if test "$withval" != "no" -a "$withval" != "yes"; then
@@ -287,6 +289,10 @@ then
     if test "$with_zlib" = ""
     then
       with_zlib=no
+    fi
+    if test "$with_modules" = ""
+    then
+      with_modules=no
     fi
 fi
 
@@ -633,6 +639,7 @@ WITH_MODULES=0
 MODULE_EXTENSION=".so"
 TEST_MODULES=
 
+if test "$with_modules" != "no" ; then
 AC_CHECK_LIB(dld, shl_load, [
   WITH_MODULES=1
   MODULE_PLATFORM_LIBS="-ldld"
@@ -644,6 +651,7 @@ AC_CHECK_LIB(dl, dlopen, [
   MODULE_PLATFORM_LIBS="-ldl"
   AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])
 ])
+fi
 
 if test "${WITH_MODULES}" = "1"; then
   TEST_MODULES="ModuleTests"

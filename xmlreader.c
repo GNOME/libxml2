@@ -3569,38 +3569,41 @@ xmlTextReaderGetParserProp(xmlTextReaderPtr reader, int prop) {
     return(-1);
 }
 
+
 /**
  * xmlTextReaderGetParserLineNumber:
- * @ctx: the user data (XML reader context)
+ * @reader: the user data (XML reader context)
  *
  * Provide the line number of the current parsing point.
  *
- * Returns an int
+ * Returns an int or 0 if not available
  */
 int
 xmlTextReaderGetParserLineNumber(xmlTextReaderPtr reader)
 {
-    if ((reader == NULL) || (reader->ctxt == NULL) || (reader->ctxt->input == NULL)) {
-        return(0);
+    if ((reader == NULL) || (reader->ctxt == NULL) ||
+        (reader->ctxt->input == NULL)) {
+        return (0);
     }
-    return(reader->ctxt->input->line);
+    return (reader->ctxt->input->line);
 }
 
 /**
  * xmlTextReaderGetParserColumnNumber:
- * @ctx: the user data (XML reader context)
+ * @reader: the user data (XML reader context)
  *
  * Provide the column number of the current parsing point.
  *
- * Returns an int
+ * Returns an int or 0 if not available
  */
 int
 xmlTextReaderGetParserColumnNumber(xmlTextReaderPtr reader)
 {
-    if ((reader == NULL) || (reader->ctxt == NULL) || (reader->ctxt->input == NULL)) {
-        return(0);
+    if ((reader == NULL) || (reader->ctxt == NULL) ||
+        (reader->ctxt->input == NULL)) {
+        return (0);
     }
-    return(reader->ctxt->input->col);
+    return (reader->ctxt->input->col);
 }
 
 /**

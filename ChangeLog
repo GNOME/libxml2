@@ -1,3 +1,8 @@
+Thu Jun 13 17:30:25 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: removed an uninitialized data error popped by valgrind
+	  on PE references
+
 Wed Jun 12 21:38:46 MDT 2002 John Fleck <jfleck@inkstain.net>
 
 	* doc/xml.html

@@ -899,13 +899,15 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		     * plug some encoding conversion routines.
 		     */
 		    GROW
-		    start[0] = RAW;
-		    start[1] = NXT(1);
-		    start[2] = NXT(2);
-		    start[3] = NXT(3);
-		    enc = xmlDetectCharEncoding(start, 4);
-		    if (enc != XML_CHAR_ENCODING_NONE) {
-			xmlSwitchEncoding(ctxt, enc);
+	            if (entity->length >= 4) {
+			start[0] = RAW;
+			start[1] = NXT(1);
+			start[2] = NXT(2);
+			start[3] = NXT(3);
+			enc = xmlDetectCharEncoding(start, 4);
+			if (enc != XML_CHAR_ENCODING_NONE) {
+			    xmlSwitchEncoding(ctxt, enc);
+			}
 		    }
 
 		    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&

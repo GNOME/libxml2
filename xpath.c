@@ -9590,6 +9590,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
     xmlXPathObjectPtr arg1, arg2;
     xmlNodePtr bak;
     xmlDocPtr bakd;
+    int pp;
 
     CHECK_ERROR0;
     comp = ctxt->comp;
@@ -9599,6 +9600,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
         case XPATH_OP_AND:
 	    bakd = ctxt->context->doc;
 	    bak = ctxt->context->node;
+	    pp = ctxt->context->proximityPosition;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
             xmlXPathBooleanFunction(ctxt, 1);
@@ -9607,6 +9609,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
             arg2 = valuePop(ctxt);
 	    ctxt->context->doc = bakd;
 	    ctxt->context->node = bak;
+	    ctxt->context->proximityPosition = pp;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    if (ctxt->error) {
 		xmlXPathFreeObject(arg2);
@@ -9621,6 +9624,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
         case XPATH_OP_OR:
 	    bakd = ctxt->context->doc;
 	    bak = ctxt->context->node;
+	    pp = ctxt->context->proximityPosition;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
             xmlXPathBooleanFunction(ctxt, 1);
@@ -9629,6 +9633,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
             arg2 = valuePop(ctxt);
 	    ctxt->context->doc = bakd;
 	    ctxt->context->node = bak;
+	    ctxt->context->proximityPosition = pp;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    if (ctxt->error) {
 		xmlXPathFreeObject(arg2);
@@ -9643,10 +9648,12 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
         case XPATH_OP_EQUAL:
 	    bakd = ctxt->context->doc;
 	    bak = ctxt->context->node;
+	    pp = ctxt->context->proximityPosition;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
 	    ctxt->context->doc = bakd;
 	    ctxt->context->node = bak;
+	    ctxt->context->proximityPosition = pp;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    CHECK_ERROR0;
             equal = xmlXPathEqualValues(ctxt);
@@ -9658,10 +9665,12 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
         case XPATH_OP_CMP:
 	    bakd = ctxt->context->doc;
 	    bak = ctxt->context->node;
+	    pp = ctxt->context->proximityPosition;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
 	    ctxt->context->doc = bakd;
 	    ctxt->context->node = bak;
+	    ctxt->context->proximityPosition = pp;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    CHECK_ERROR0;
             ret = xmlXPathCompareValues(ctxt, op->value, op->value2);
@@ -9670,11 +9679,13 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
         case XPATH_OP_PLUS:
 	    bakd = ctxt->context->doc;
 	    bak = ctxt->context->node;
+	    pp = ctxt->context->proximityPosition;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
             if (op->ch2 != -1) {
 		ctxt->context->doc = bakd;
 		ctxt->context->node = bak;
+		ctxt->context->proximityPosition = pp;
                 total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    }
 	    CHECK_ERROR0;
@@ -9692,10 +9703,12 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
         case XPATH_OP_MULT:
 	    bakd = ctxt->context->doc;
 	    bak = ctxt->context->node;
+	    pp = ctxt->context->proximityPosition;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
 	    ctxt->context->doc = bakd;
 	    ctxt->context->node = bak;
+	    ctxt->context->proximityPosition = pp;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    CHECK_ERROR0;
             if (op->value == 0)
@@ -9708,10 +9721,12 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
         case XPATH_OP_UNION:
 	    bakd = ctxt->context->doc;
 	    bak = ctxt->context->node;
+	    pp = ctxt->context->proximityPosition;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
 	    ctxt->context->doc = bakd;
 	    ctxt->context->node = bak;
+	    ctxt->context->proximityPosition = pp;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    CHECK_ERROR0;
             CHECK_TYPE0(XPATH_NODESET);

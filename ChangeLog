@@ -1,3 +1,8 @@
+Fri Jun 28 19:38:00 HKT 2002 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c enhanced behaviour of position() after usage of
+	  expressions involving preceding-sibling (et al).
+
 Tue Jun 18 09:58:48 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* hash.c: applied a patch from Peter Jacobi to solve a problem

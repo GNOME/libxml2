@@ -1,3 +1,9 @@
+Sun Oct 20 22:37:03 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* entities.c, valid.c: fixed problem reported on the mailing
+	  list by Melvyn Sopacua - wrong argument order on functions
+	  called through xmlHashScan.
+
 Sun Oct 19 23:57:45 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c xmlIO.c: fixes for compiling using --with-minimum

@@ -1531,6 +1531,19 @@ xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
 }
 
 /**
+ * xmlDumpElementDeclScan:
+ * @elem:  An element table
+ * @buf:  the XML buffer output
+ *
+ * This routine is used by the hash scan function.  It just reverses
+ * the arguments.
+ */
+static void
+xmlDumpElementDeclScan(xmlElementPtr elem, xmlBufferPtr buf) {
+    xmlDumpElementDecl(buf, elem);
+}
+
+/**
  * xmlDumpElementTable:
  * @buf:  the XML buffer output
  * @table:  An element table
@@ -1539,7 +1552,7 @@ xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
  */
 void
 xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table) {
-    xmlHashScan(table, (xmlHashScanner) xmlDumpElementDecl, buf);
+    xmlHashScan(table, (xmlHashScanner) xmlDumpElementDeclScan, buf);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -2096,6 +2109,18 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
 }
 
 /**
+ * xmlDumpAttributeDeclScan:
+ * @attr:  An attribute declaration
+ * @buf:  the XML buffer output
+ *
+ * This is used with the hash scan function - just reverses arguments
+ */
+static void
+xmlDumpAttributeDeclScan(xmlAttributePtr attr, xmlBufferPtr buf) {
+    xmlDumpAttributeDecl(buf, attr);
+}
+
+/**
  * xmlDumpAttributeTable:
  * @buf:  the XML buffer output
  * @table:  An attribute table
@@ -2104,7 +2129,7 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
  */
 void
 xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
-    xmlHashScan(table, (xmlHashScanner) xmlDumpAttributeDecl, buf);
+    xmlHashScan(table, (xmlHashScanner) xmlDumpAttributeDeclScan, buf);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -2304,6 +2329,18 @@ xmlDumpNotationDecl(xmlBufferPtr buf, xmlNotationPtr nota) {
 }
 
 /**
+ * xmlDumpNotationDeclScan:
+ * @nota:  A notation declaration
+ * @buf:  the XML buffer output
+ *
+ * This is called with the hash scan function, and just reverses args
+ */
+static void
+xmlDumpNotationDeclScan(xmlNotationPtr nota, xmlBufferPtr buf) {
+    xmlDumpNotationDecl(buf, nota);
+}
+
+/**
  * xmlDumpNotationTable:
  * @buf:  the XML buffer output
  * @table:  A notation table
@@ -2312,7 +2349,7 @@ xmlDumpNotationDecl(xmlBufferPtr buf, xmlNotationPtr nota) {
  */
 void
 xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
-    xmlHashScan(table, (xmlHashScanner) xmlDumpNotationDecl, buf);
+    xmlHashScan(table, (xmlHashScanner) xmlDumpNotationDeclScan, buf);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

@@ -828,6 +828,18 @@ xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
 }
 
 /**
+ * xmlDumpEntityDeclScan:
+ * @ent:  An entity table
+ * @buf:  An XML buffer.
+ *
+ * When using the hash table scan function, arguments need to be reversed
+ */
+static void
+xmlDumpEntityDeclScan(xmlEntityPtr ent, xmlBufferPtr buf) {
+    xmlDumpEntityDecl(buf, ent);
+}
+      
+/**
  * xmlDumpEntitiesTable:
  * @buf:  An XML buffer.
  * @table:  An entity table
@@ -836,6 +848,6 @@ xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
  */
 void
 xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table) {
-    xmlHashScan(table, (xmlHashScanner)xmlDumpEntityDecl, buf);
+    xmlHashScan(table, (xmlHashScanner)xmlDumpEntityDeclScan, buf);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */

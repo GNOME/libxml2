@@ -1,3 +1,7 @@
+Tue Aug 20 14:02:00 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixing bug #87900 
+
 May 24 13:10:22 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
  	* libxml.spec.in: fixing bug #81112

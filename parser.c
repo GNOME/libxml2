@@ -10985,10 +10985,14 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 			  char *buffer, int size) {
     int ret = 0;
     xmlParserCtxtPtr ctxt;
+    xmlSAXHandlerPtr oldsax;
     
     ctxt = xmlCreateMemoryParserCtxt(buffer, size);
     if (ctxt == NULL) return -1;
-    ctxt->sax = sax;
+    if (sax != NULL) {
+	oldsax = ctxt->sax;
+	ctxt->sax = sax;
+    }
     ctxt->userData = user_data;
     
     xmlParseDocument(ctxt);
@@ -11002,7 +11006,7 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 	    ret = -1;
     }
     if (sax != NULL)
-	ctxt->sax = NULL;
+	ctxt->sax = oldsax;
     xmlFreeParserCtxt(ctxt);
     
     return ret;

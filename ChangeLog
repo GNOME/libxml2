@@ -1,3 +1,8 @@
+Mon Oct 28 14:01:29 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied patch from Brian Stafford to fix a bug
+	  in xmlReconciliateNs()
+
 Mon Oct 28 13:51:55 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied patch from Christian Glahn to allow

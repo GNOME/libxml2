@@ -4780,7 +4780,7 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 		}
 		for (i = 0;i < nbCache;i++) {
 		    if (oldNs[i] == attr->ns) {
-			node->ns = newNs[i];
+			attr->ns = newNs[i];
 			break;
 		    }
 		}

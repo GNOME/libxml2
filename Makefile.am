@@ -435,21 +435,21 @@ Catatests : xmlcatalog
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 	@echo "Add and del operations on XML Catalogs"
-	@(xmlcatalog --create --noout result/catalogs/mycatalog; \
+	@($(top_builddir)/xmlcatalog --create --noout result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	xmlcatalog --noout --add public Pubid sysid result/catalogs/mycatalog; \
+	$(top_builddir)/xmlcatalog --noout --add public Pubid sysid result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	xmlcatalog --noout --add public Pubid2 sysid2 result/catalogs/mycatalog; \
+	$(top_builddir)/xmlcatalog --noout --add public Pubid2 sysid2 result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	xmlcatalog --noout --add public Pubid3 sysid3 result/catalogs/mycatalog; \
+	$(top_builddir)/xmlcatalog --noout --add public Pubid3 sysid3 result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	diff result/catalogs/mycatalog.full result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	xmlcatalog --noout --del sysid result/catalogs/mycatalog; \
+	$(top_builddir)/xmlcatalog --noout --del sysid result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	xmlcatalog --noout --del sysid3 result/catalogs/mycatalog; \
+	$(top_builddir)/xmlcatalog --noout --del sysid3 result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	xmlcatalog --noout --del sysid2 result/catalogs/mycatalog; \
+	$(top_builddir)/xmlcatalog --noout --del sysid2 result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	diff result/catalogs/mycatalog.empty result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \

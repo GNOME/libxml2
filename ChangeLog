@@ -1,3 +1,12 @@
+Mon Nov 12 22:32:41 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* win32/dsp/* include/libxml/xmlwin32version.h.in: update
+	  from Igor for Windows
+
+Mon Nov 12 10:19:41 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: Gary Pennington pointed out a missing prefix
+
 Sat Nov 10 12:55:42 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in include/libxml/xmlwin32version.h: preparing 2.4.10

@@ -169,8 +169,12 @@ EXPORTS
 	htmlSaveFile
 	htmlNodeDump
 	htmlNodeDumpFile
+	htmlNodeDumpFileFormat
 	htmlSaveFileEnc
 	htmlSaveFileFormat
+	htmlNodeDumpFormatOutput
+	htmlDocContentDumpOutput
+	htmlDocContentDumpFormatOutput
 #endif /* LIBXML_HTML_ENABLED */
 
 /* 
@@ -646,6 +650,7 @@ EXPORTS
 //	xmlStringText
 //	xmlStringTextNoenc
 //	xmlStringComment
+	xmlSaveFormatFileEnc
 	xmlSaveFormatFile
 	xmlUnsetProp
 //	baseDTD DATA
@@ -762,6 +767,8 @@ EXPORTS
 /* 
  * xmlIO.h 
  */
+	xmlCleanupInputCallbacks
+	xmlCleanupOutputCallbacks
 	xmlRegisterDefaultInputCallbacks
 	xmlAllocParserInputBuffer
 	xmlParserInputBufferCreateFilename
@@ -790,7 +797,10 @@ EXPORTS
 	xmlNodeDumpOutput
 #ifdef LIBXML_HTML_ENABLED
 	htmlDocContentDumpOutput
+	xmlIOHTTPOpenW
+	xmlRegisterHTTPPostCallbacks
 #endif /* LIBXML_HTML_ENABLED */
+	xmlNoNetExternalEntityLoader
 
 /* 
  * xmlmemory.h 
@@ -944,6 +954,7 @@ EXPORTS
 	xmlXPathNewNodeSet
 	xmlXPathNewNodeSetList
 	xmlXPathWrapNodeSet
+	xmlXPathWrapExternal
 	xmlXPathFreeNodeSetList
 	xmlXPathNewFloat
 	xmlXPathNewBoolean

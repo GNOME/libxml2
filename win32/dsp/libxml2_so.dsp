@@ -118,6 +118,10 @@ SOURCE=..\..\error.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\globals.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\hash.c
 # End Source File
 # Begin Source File
@@ -188,6 +192,10 @@ SOURCE=..\..\SAX.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\threads.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\tree.c
 # End Source File
 # Begin Source File
@@ -205,6 +213,10 @@ SOURCE=..\..\xinclude.c
 # Begin Source File
 
 SOURCE=..\..\xlink.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\xmlcatalog.c
 # End Source File
 # Begin Source File
 

@@ -3,7 +3,7 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "libxml2_a"=.\libxml2_a.dsp - Package Owner=<4>
+Project: "libxml2_a"=".\libxml2_a.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -15,7 +15,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "libxml2_so"=.\libxml2_so.dsp - Package Owner=<4>
+Project: "libxml2_so"=".\libxml2_so.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -27,7 +27,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "testCatalog"=.\testCatalog.dsp - Package Owner=<4>
+Project: "testDocbook"=".\testDocbook.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -39,7 +39,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "testDocbook"=.\testDocbook.dsp - Package Owner=<4>
+Project: "testHTML"=".\testHTML.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -51,7 +51,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "testHTML"=.\testHTML.dsp - Package Owner=<4>
+Project: "testSAX"=".\testSAX.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -63,7 +63,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "testSAX"=.\testSAX.dsp - Package Owner=<4>
+Project: "testURI"=".\testURI.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -75,7 +75,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "testURI"=.\testURI.dsp - Package Owner=<4>
+Project: "testXPath"=".\testXPath.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -87,19 +87,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "testXPath"=.\testXPath.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "xmllint"=.\xmllint.dsp - Package Owner=<4>
+Project: "xmllint"=".\xmllint.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

@@ -42,6 +42,13 @@ void		xmlCatalogCleanup	(void);
 void		xmlCatalogDump		(FILE *out);
 const xmlChar *	xmlCatalogGetSystem	(const xmlChar *sysID);
 const xmlChar *	xmlCatalogGetPublic	(const xmlChar *pubID);
+const xmlChar *	xmlCatalogResolve	(const xmlChar *pubID,
+	                                 const xmlChar *sysID);
+int		xmlCatalogAdd		(const xmlChar *type,
+					 const xmlChar *orig,
+					 const xmlChar *replace);
+int		xmlCatalogRemove	(const xmlChar *value);
+int		xmlCatalogSetDebug	(int level);
 
 #ifdef __cplusplus
 }

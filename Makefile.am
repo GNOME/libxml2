@@ -7,9 +7,9 @@ SUBDIRS = include . doc example
 
 INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @Z_CFLAGS@ 
 
-noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook testCatalog
+noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook
 
-bin_PROGRAMS = xmllint
+bin_PROGRAMS = xmllint xmlcatalog
 
 bin_SCRIPTS=xml2-config
 
@@ -62,10 +62,10 @@ testDocbook_LDFLAGS =
 testDocbook_DEPENDENCIES = $(DEPS)
 testDocbook_LDADD= $(LDADDS)
 
-testCatalog_SOURCES=testCatalog.c
-testCatalog_LDFLAGS = 
-testCatalog_DEPENDENCIES = $(DEPS)
-testCatalog_LDADD= $(LDADDS)
+xmlcatalog_SOURCES=xmlcatalog.c
+xmlcatalog_LDFLAGS = 
+xmlcatalog_DEPENDENCIES = $(DEPS)
+xmlcatalog_LDADD= $(LDADDS)
 
 testXPath_SOURCES=testXPath.c
 testXPath_LDFLAGS = 

@@ -122,6 +122,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/xmllint
+%{prefix}/bin/xmlcatalog
 
 %files devel
 %defattr(-, root, root)

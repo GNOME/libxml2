@@ -1,3 +1,14 @@
+Mon Aug 20 02:04:13 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am xmlcatalog.c libxml.spec.in: renaming 
+	  testCatalog as xmlcatalog, making it an installed app
+	  adding a shell, and preparing it to be a /etc/xml/catalog
+	  management tool, though not ready yet
+	* catalog.c include/libxml/catalog.h: adding support for
+	  XML Catalogs http://www.oasis-open.org/committees/entity/
+	  not finished, there is some interesting tradeoffs and a
+	  few open questions left.
+
 Sun Aug 19 14:59:56 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: fixed a line formatting problem

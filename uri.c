@@ -156,6 +156,15 @@
 	            (IS_RESERVED(*(p))))
 
 /*
+ * unwise = "{" | "}" | "|" | "\" | "^" | "[" | "]" | "`"
+ */
+
+#define IS_UNWISE(p) 							\
+      (((*(p) == '{')) || ((*(p) == '}')) || ((*(p) == '|')) ||		\
+       ((*(p) == '\\')) || ((*(p) == '^')) || ((*(p) == '[')) ||	\
+       ((*(p) == ']')) || ((*(p) == '`')))
+
+/*
  * Skip to next pointer char, handle escaped sequences
  */
 
@@ -600,141 +609,6 @@ xmlFreeURI(xmlURIPtr uri) {
  *									*
  ************************************************************************/
 
-#if 0
-/**
- * xmlNormalizeURIPath:
- * @path:  pointer to the path string
- *
- * applies the 5 normalization steps to a path string
- * Normalization occurs directly on the string, no new allocation is done
- *
- * Returns 0 or an error code
- */
-int
-xmlNormalizeURIPath(char *path) {
-    int cur, out;
-
-    if (path == NULL)
-	return(-1);
-    cur = 0;
-    out = 0;
-    while ((path[cur] != 0) && (path[cur] != '/')) cur++;
-    if (path[cur] == 0)
-	return(0);
-
-    /* we are positionned at the beginning of the first segment */
-    cur++;
-    out = cur;
-
-    /*
-     * Analyze each segment in sequence.
-     */
-    while (path[cur] != 0) {
-	/*
-	 * c) All occurrences of "./", where "." is a complete path segment,
-	 *    are removed from the buffer string.
-	 */
-	if ((path[cur] == '.') && (path[cur + 1] == '/')) {
-	    cur += 2;
-	    if (path[cur] == 0) {
-		path[out++] = 0;
-	    }
-	    continue;
-	}
-
-	/*
-	 * d) If the buffer string ends with "." as a complete path segment,
-	 *    that "." is removed.
-	 */
-	if ((path[cur] == '.') && (path[cur + 1] == 0)) {
-	    path[out] = 0;
-	    break;
-	}
-
-	/* read the segment */
-	while ((path[cur] != 0) && (path[cur] != '/')) {
-	    path[out++] = path[cur++];
-	}
-	path[out++] = path[cur];
-	if (path[cur] != 0) {
-	    cur++;
-	}
-    }
-
-    cur = 0;
-    out = 0;
-    while ((path[cur] != 0) && (path[cur] != '/')) cur++;
-    if (path[cur] == 0)
-	return(0);
-    /* we are positionned at the beginning of the first segment */
-    cur++;
-    out = cur;
-    /*
-     * Analyze each segment in sequence.
-     */
-    while (path[cur] != 0) {
-	/*
-	 * e) All occurrences of "<segment>/../", where <segment> is a
-	 *    complete path segment not equal to "..", are removed from the
-	 *    buffer string.  Removal of these path segments is performed
-	 *    iteratively, removing the leftmost matching pattern on each
-	 *    iteration, until no matching pattern remains.
-	 */
-	if ((cur > 1) && (out > 1) &&
-	    (path[cur] == '/') && (path[cur + 1] == '.') &&
-	    (path[cur + 2] == '.') && (path[cur + 3] == '/') &&
-	    ((path[out] != '.') || (path[out - 1] != '.') ||
-	     (path[out - 2] != '/'))) {
-	    cur += 3;
-	    out --;
-	    while ((out > 0) && (path[out] != '/')) { out --; }
-	    path[out] = 0;
-            continue;
-	}
-
-	/*
-	 * f) If the buffer string ends with "<segment>/..", where <segment>
-	 *    is a complete path segment not equal to "..", that
-	 *    "<segment>/.." is removed.
-	 */
-	if ((path[cur] == '/') && (path[cur + 1] == '.') &&
-	    (path[cur + 2] == '.') && (path[cur + 3] == 0) &&
-	    ((path[out] != '.') || (path[out - 1] != '.') ||
-	     (path[out - 2] != '/'))) {
-	    cur += 4;
-	    out --;
-	    while ((out > 0) && (path[out - 1] != '/')) { out --; }
-	    path[out] = 0;
-            continue;
-	}
-        
-	path[out++] = path[cur++]; /* / or 0 */
-    }
-    path[out] = 0;
-
-    /*
-     * g) If the resulting buffer string still begins with one or more
-     *    complete path segments of "..", then the reference is 
-     *    considered to be in error. Implementations may handle this
-     *    error by retaining these components in the resolved path (i.e.,
-     *    treating them as part of the final URI), by removing them from
-     *    the resolved path (i.e., discarding relative levels above the
-     *    root), or by avoiding traversal of the reference.
-     *
-     * We discard them from the final path.
-     */
-    cur = 0;
-    while ((path[cur] == '/') && (path[cur + 1] == '.') &&
-	   (path[cur + 2] == '.'))
-	cur += 3;
-    if (cur != 0) {
-	out = 0;
-	while (path[cur] != 0) path[out++] = path[cur++];
-	path[out] = 0;
-    }
-    return(0);
-}
-#else
 /**
  * xmlNormalizeURIPath:
  * @path:  pointer to the path string
@@ -918,7 +792,6 @@ xmlNormalizeURIPath(char *path) {
 
     return(0);
 }
-#endif
 
 /**
  * xmlURIUnescapeString:
@@ -1066,13 +939,25 @@ xmlChar *
 xmlURIEscape(const xmlChar *str) {
     xmlChar *ret, *segment = NULL;
     xmlURIPtr uri;
+    int ret2;
 
 #define NULLCHK(p) if(!p) { \
                    xmlGenericError(xmlGenericErrorContext, \
                         "xmlURIEscape: out of memory\n"); \
                    return NULL; }
 
-    uri = xmlParseURI( (const char *) str);
+    if (str == NULL)
+	return(NULL);
+
+    uri = xmlCreateURI();
+    if (uri != NULL) {
+	uri->cleanup = 1;
+	ret2 = xmlParseURIReference(uri, str);
+        if (ret2) {
+	    xmlFreeURI(uri);
+	    return(NULL);
+	}
+    }
 
     if(!uri)
 	return NULL;
@@ -1179,7 +1064,7 @@ xmlParseURIFragment(xmlURIPtr uri, const char **str) {
 
     if (str == NULL) return(-1);
 
-    while (IS_URIC(cur)) NEXT(cur);
+    while (IS_URIC(cur) || ((uri->cleanup) && (IS_UNWISE(cur)))) NEXT(cur);
     if (uri != NULL) {
 	if (uri->fragment != NULL) xmlFree(uri->fragment);
 	uri->fragment = xmlURIUnescapeString(*str, cur - *str, NULL);
@@ -1265,11 +1150,11 @@ xmlParseURIOpaquePart(xmlURIPtr uri, const char **str) {
 	return(-1);
     
     cur = *str;
-    if (!IS_URIC_NO_SLASH(cur)) {
+    if (!(IS_URIC_NO_SLASH(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))) {
 	return(3);
     }
     NEXT(cur);
-    while (IS_URIC(cur)) NEXT(cur);
+    while (IS_URIC(cur) || ((uri->cleanup) && (IS_UNWISE(cur)))) NEXT(cur);
     if (uri != NULL) {
 	if (uri->opaque != NULL) xmlFree(uri->opaque);
 	uri->opaque = xmlURIUnescapeString(*str, cur - *str, NULL);
@@ -1441,11 +1326,11 @@ xmlParseURIRelSegment(xmlURIPtr uri, const char **str) {
 	return(-1);
     
     cur = *str;
-    if (!IS_SEGMENT(cur)) {
+    if (!IS_SEGMENT(cur) || ((uri->cleanup) && (IS_UNWISE(cur)))) {
 	return(3);
     }
     NEXT(cur);
-    while (IS_SEGMENT(cur)) NEXT(cur);
+    while (IS_SEGMENT(cur) || ((uri->cleanup) && (IS_UNWISE(cur)))) NEXT(cur);
     if (uri != NULL) {
 	if (uri->path != NULL) xmlFree(uri->path);
 	uri->path = xmlURIUnescapeString(*str, cur - *str, NULL);
@@ -1478,10 +1363,12 @@ xmlParseURIPathSegments(xmlURIPtr uri, const char **str, int slash) {
     cur = *str;
 
     do {
-	while (IS_PCHAR(cur)) NEXT(cur);
+	while (IS_PCHAR(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
+	    NEXT(cur);
 	if (*cur == ';') {
 	    cur++;
-	    while (IS_PCHAR(cur)) NEXT(cur);
+	    while (IS_PCHAR(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
+		NEXT(cur);
 	}
 	if (*cur != '/') break;
 	cur++;

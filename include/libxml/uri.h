@@ -35,6 +35,7 @@ struct _xmlURI {
     char *path;		/* the path string */
     char *query;	/* the query string */
     char *fragment;	/* the fragment identifier */
+    int  cleanup;	/* parsing potentially unclean URI */
 };
 
 /*

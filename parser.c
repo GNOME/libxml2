@@ -5560,6 +5560,7 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
 void
 xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
                        const xmlChar *SystemID) {
+    xmlDetectSAX2(ctxt);
     GROW;
     if ((RAW == '<') && (NXT(1) == '?') &&
         (NXT(2) == 'x') && (NXT(3) == 'm') &&
@@ -8912,6 +8913,8 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
 
     xmlDefaultSAXHandlerInit();
 
+    xmlDetectSAX2(ctxt);
+
     GROW;
 
     /*
@@ -9956,6 +9959,8 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
     if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);
+    if (ctxt->instate == XML_PARSER_START)
+        xmlDetectSAX2(ctxt);
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
 	int base = ctxt->input->base - ctxt->input->buf->buffer->content;
@@ -9970,10 +9975,6 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif
 
-#if 0
-	if ((terminate) || (ctxt->input->buf->buffer->use > 80))
-	    xmlParseTryOrFinish(ctxt, terminate);
-#endif
     } else if (ctxt->instate != XML_PARSER_EOF) {
 	if ((ctxt->input != NULL) && ctxt->input->buf != NULL) {
 	    xmlParserInputBufferPtr in = ctxt->input->buf;
@@ -10104,7 +10105,6 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	if (user_data != NULL)
 	    ctxt->userData = user_data;
     }	
-    xmlDetectSAX2(ctxt);
     if (filename == NULL) {
 	ctxt->directory = NULL;
     } else {
@@ -10150,7 +10150,6 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     if (enc != XML_CHAR_ENCODING_NONE) {
         xmlSwitchEncoding(ctxt, enc);
     }
-    xmlDetectSAX2(ctxt);
 
     return(ctxt);
 }
@@ -10198,7 +10197,6 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	if (user_data != NULL)
 	    ctxt->userData = user_data;
     }	
-    xmlDetectSAX2(ctxt);
 
     inputStream = xmlNewIOInputStream(ctxt, buf, enc);
     if (inputStream == NULL) {
@@ -10365,7 +10363,6 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
         ctxt->sax = sax;
         ctxt->userData = ctxt;
     }
-    xmlDetectSAX2(ctxt);
 
     /*
      * Ask the Entity resolver to load the damn thing
@@ -11057,7 +11054,6 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	if (user_data != NULL)
 	    ctxt->userData = user_data;
     }
-    xmlDetectSAX2(ctxt);
     newDoc = xmlNewDoc(BAD_CAST "1.0");
     if (newDoc == NULL) {
 	xmlFreeParserCtxt(ctxt);
@@ -11178,7 +11174,6 @@ xmlSAXParseEntity(xmlSAXHandlerPtr sax, const char *filename) {
         ctxt->sax = sax;
         ctxt->userData = NULL;
     }
-    xmlDetectSAX2(ctxt);
 
     xmlParseExtParsedEnt(ctxt);
 
@@ -11270,8 +11265,6 @@ xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
 	    ctxt->directory = directory;
 	xmlFree(uri);
     }
-    xmlDetectSAX2(ctxt);
-
     return(ctxt);
 }
 
@@ -11749,11 +11742,40 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 xmlParserCtxtPtr
 xmlCreateDocParserCtxt(xmlChar *cur) {
     int len;
+    xmlParserCtxtPtr ctxt;
+    xmlParserInputPtr input;
+    xmlParserInputBufferPtr buf;
 
     if (cur == NULL)
 	return(NULL);
     len = xmlStrlen(cur);
-    return(xmlCreateMemoryParserCtxt((char *)cur, len));
+
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL)
+       return(NULL);
+
+    buf = xmlParserInputBufferCreateStatic((char *)cur, len,
+                                           XML_CHAR_ENCODING_NONE);
+    if (buf == NULL) {
+       xmlFreeParserCtxt(ctxt);
+       return(NULL);
+    }
+
+    input = xmlNewInputStream(ctxt);
+    if (input == NULL) {
+       xmlFreeParserInputBuffer(buf);
+       xmlFreeParserCtxt(ctxt);
+       return(NULL);
+    }
+
+    input->filename = NULL;
+    input->buf = buf;
+    input->base = input->buf->buffer->content;
+    input->cur = input->buf->buffer->content;
+    input->end = &input->buf->buffer->content[input->buf->buffer->use];
+
+    inputPush(ctxt, input);
+    return(ctxt);
 }
 
 /**

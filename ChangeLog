@@ -1,3 +1,10 @@
+Tue Sep 23 11:00:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: make sure xmlDetectSAX2() is called only at 
+	  parsing time to avoid breaking apps changing the SAX
+	  callbacks after context allocation, change xmlCreateDocParserCtxt()
+	  to use an immutable buffer instead of a copy
+
 Tue Sep 23 09:40:33 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: applied patch from Markus Keim fixing a problem

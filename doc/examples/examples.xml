@@ -99,12 +99,40 @@
       <function line='72' file='tree' name='xmlDocGetRootElement'/>
     </uses>
   </example>
+  <example filename='tree2.c'>
+    <synopsis>Creates a tree</synopsis>
+    <purpose>Shows how to create document, nodes and dump it to stdout or file.</purpose>
+    <usage>tree2 &lt;filename&gt;  -Default output: stdout</usage>
+    <test>tree2 &gt; tree2.tmp ; diff tree2.tmp tree2.out ; rm tree2.tmp</test>
+    <author>Lucas Brasilino &lt;brasilino@recife.pe.gov.br&gt;</author>
+    <copy>see Copyright for the status of this software </copy>
+    <section>Tree</section>
+    <includes>
+      <include>&lt;libxml/tree.h&gt;</include>
+      <include>&lt;libxml/parser.h&gt;</include>
+    </includes>
+    <uses>
+      <function line='73' file='tree' name='xmlNewText'/>
+      <function line='94' file='tree' name='xmlSaveFormatFileEnc'/>
+      <function line='76' file='tree' name='xmlAddChild'/>
+      <function line='39' file='tree' name='xmlDocSetRootElement'/>
+      <function line='103' file='parser' name='xmlCleanupParser'/>
+      <macro line='32' file='xmlversion' name='LIBXML_TEST_VERSION'/>
+      <function line='87' file='tree' name='xmlNewProp'/>
+      <function line='86' file='tree' name='xmlNewChild'/>
+      <function line='72' file='tree' name='xmlNewNode'/>
+      <function line='44' file='tree' name='xmlCreateIntSubset'/>
+      <function line='97' file='tree' name='xmlFreeDoc'/>
+      <function line='37' file='tree' name='xmlNewDoc'/>
+    </uses>
+  </example>
   <symbols>
     <symbol name='LIBXML_TEST_VERSION'>
       <ref filename='xpath1.c'/>
       <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
       <ref filename='tree1.c'/>
+      <ref filename='tree2.c'/>
     </symbol>
     <symbol name='XML_ELEMENT_NODE'>
       <ref filename='xpath1.c'/>
@@ -116,11 +144,18 @@
     <symbol name='XML_PARSE_DTDVALID'>
       <ref filename='parse2.c'/>
     </symbol>
+    <symbol name='xmlAddChild'>
+      <ref filename='tree2.c'/>
+    </symbol>
     <symbol name='xmlCleanupParser'>
       <ref filename='xpath1.c'/>
       <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
       <ref filename='tree1.c'/>
+      <ref filename='tree2.c'/>
+    </symbol>
+    <symbol name='xmlCreateIntSubset'>
+      <ref filename='tree2.c'/>
     </symbol>
     <symbol name='xmlCtxtReadFile'>
       <ref filename='parse2.c'/>
@@ -133,11 +168,15 @@
       <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
     </symbol>
+    <symbol name='xmlDocSetRootElement'>
+      <ref filename='tree2.c'/>
+    </symbol>
     <symbol name='xmlFreeDoc'>
       <ref filename='xpath1.c'/>
       <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
       <ref filename='tree1.c'/>
+      <ref filename='tree2.c'/>
     </symbol>
     <symbol name='xmlFreeParserCtxt'>
       <ref filename='parse2.c'/>
@@ -145,8 +184,23 @@
     <symbol name='xmlInitParser'>
       <ref filename='xpath1.c'/>
     </symbol>
+    <symbol name='xmlNewChild'>
+      <ref filename='tree2.c'/>
+    </symbol>
+    <symbol name='xmlNewDoc'>
+      <ref filename='tree2.c'/>
+    </symbol>
+    <symbol name='xmlNewNode'>
+      <ref filename='tree2.c'/>
+    </symbol>
     <symbol name='xmlNewParserCtxt'>
       <ref filename='parse2.c'/>
+    </symbol>
+    <symbol name='xmlNewProp'>
+      <ref filename='tree2.c'/>
+    </symbol>
+    <symbol name='xmlNewText'>
+      <ref filename='tree2.c'/>
     </symbol>
     <symbol name='xmlNodePtr'>
       <ref filename='xpath1.c'/>
@@ -163,6 +217,9 @@
     </symbol>
     <symbol name='xmlReadFile'>
       <ref filename='parse1.c'/>
+    </symbol>
+    <symbol name='xmlSaveFormatFileEnc'>
+      <ref filename='tree2.c'/>
     </symbol>
     <symbol name='xmlStrchr'>
       <ref filename='xpath1.c'/>
@@ -199,6 +256,7 @@
     </section>
     <section name='Tree'>
       <example filename='tree1.c'/>
+      <example filename='tree2.c'/>
     </section>
     <section name='XPath'>
       <example filename='xpath1.c'/>

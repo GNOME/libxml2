@@ -1,3 +1,8 @@
+Wed Nov 19 17:19:35 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: fix an error message
+	* doc/examples/*: added tree2 example from Lucas Brasilino
+
 Wed Nov 19 17:50:47 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* doc/newapi.xsl: improve the sort sequence for page content

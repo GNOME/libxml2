@@ -1361,7 +1361,7 @@ loaded:
 	if (xptrctxt == NULL) {
 	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 
 	                   XML_XINCLUDE_XPTR_FAILED,
-			   "could create XPointer context\n", NULL);
+			   "could not create XPointer context\n", NULL);
 	    xmlFree(URL);
 	    xmlFree(fragment);
 	    return(-1);

@@ -28,6 +28,7 @@ PYTESTS=	\
     reader6.py	\
     reader7.py	\
     reader8.py	\
+    readernext.py	\
     walker.py	\
     ctxterror.py\
     readererr.py\

@@ -671,7 +671,7 @@ xmlXPtrLocationSetDel(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
 #ifdef DEBUG
         xmlGenericError(xmlGenericErrorContext, 
 	        "xmlXPtrLocationSetDel: Range %s wasn't found in RangeList\n",
-		val->name);
+		val->stringval);
 #endif
         return;
     }

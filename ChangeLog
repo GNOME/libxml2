@@ -1,3 +1,7 @@
+Wed Nov 28 15:41:40 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xpointer.c: fixed a compilation bug pointed by Danny Jamshy
+
 Wed Nov 28 10:09:51 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: as robert pointed again, xmlInputCallbackInitialized

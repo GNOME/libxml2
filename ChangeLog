@@ -1,6 +1,11 @@
+Fri Aug 20 18:51:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am configure.in: a bit of cleanup and a extra variable for
+	  CVS dist
+
 Thu Aug 19 07:44:07 MDT 2004 John Fleck <jfleck@inkstain.net>
 
-	* doc/xmllint.xml, xmllint.1, xmllint.html
+	* doc/xmllint.xml, xmllint.1, xmllint.html:
 	Edit and rebuild the man pages with Daniel's C14 update
 
 Wed Aug 18 19:15:27 PDT 2004 William Brack <wbrack@mmm.com.hk>

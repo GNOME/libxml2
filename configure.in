@@ -13,7 +13,12 @@ LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML
 LIBXML_VERSION_NUMBER=`expr $LIBXML_MAJOR_VERSION \* 10000 + $LIBXML_MINOR_VERSION \* 100 + $LIBXML_MICRO_VERSION`
 
 if test -f CVS/Entries; then
-  LIBXML_VERSION_EXTRA=-CVS`grep ChangeLog CVS/Entries | sed -e s\%/ChangeLog/1\.%% -e s\%/.*$%%`
+  extra=`grep ChangeLog CVS/Entries | grep -v LIBXML | sed -e s\%/ChangeLog/1\.%% -e s\%/.*$%%`
+  echo extra=$extra
+  if test "$extra" != ""
+  then
+      LIBXML_VERSION_EXTRA="-CVS$extra"
+  fi
 fi
 AC_SUBST(LIBXML_MAJOR_VERSION)
 AC_SUBST(LIBXML_MINOR_VERSION)

@@ -43,7 +43,7 @@
 	  <xsl:value-of select="$title"/>
 	</xsl:element>
         </head>
-        <body bgcolor="#8b7765" text="#000000" link="#a06060" vlink="#a06060">
+        <body bgcolor="#8b7765" text="#000000" link="#a06060" vlink="#000000">
           <xsl:call-template name="titlebox">
 	    <xsl:with-param name="title" select="$title"/>
 	  </xsl:call-template>

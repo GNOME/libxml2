@@ -1670,8 +1670,10 @@ xmlIconvWrapper(iconv_t cd, unsigned char *out, int *outlen,
     char *icv_out = (char *) out;
     int ret;
 
-    if ((out == NULL) || (outlen == NULL) || (inlen == NULL) || (in == NULL))
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL) || (in == NULL)) {
+        if (outlen != NULL) *outlen = 0;
         return(-1);
+    }
     icv_inlen = *inlen;
     icv_outlen = *outlen;
     ret = iconv(cd, (char **) &icv_in, &icv_inlen, &icv_out, &icv_outlen);
@@ -2166,7 +2168,7 @@ xmlByteConsumed(xmlParserCtxtPtr ctxt) {
 		    written = 32000;
 		    ret = xmlIconvWrapper(handler->iconv_out, &convbuf[0],
 	                      &written, cur, &toconv);
-		    if (ret == -1) {
+		    if (ret < 0) {
 		        if (written > 0)
 			    ret = -2;
 			else

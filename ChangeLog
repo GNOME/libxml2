@@ -1,3 +1,7 @@
+Sat Nov  6 14:27:18 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: fixed a regression in iconv support.
+
 Fri Nov  5 18:19:23 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: autogenerate a minimal NULL value sequence

@@ -10702,10 +10702,12 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     ctxt->vctxt.node = NULL;
     if (ctxt->dict != NULL) xmlDictFree(ctxt->dict);
     ctxt->dict = ctx->dict;
+    ctxt->str_xml = xmlDictLookup(ctxt->dict, BAD_CAST "xml", 3);
+    ctxt->str_xmlns = xmlDictLookup(ctxt->dict, BAD_CAST "xmlns", 5);
+    ctxt->str_xml_ns = xmlDictLookup(ctxt->dict, XML_XML_NAMESPACE, 36);
     ctxt->dictNames = ctx->dictNames;
     ctxt->attsDefault = ctx->attsDefault;
     ctxt->attsSpecial = ctx->attsSpecial;
-    xmlDetectSAX2(ctxt); /* update the ctxt->str_* */
 
     xmlParseContent(ctxt);
    
@@ -11047,7 +11049,9 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	ctxt->userData = ctxt;
     if (ctxt->dict != NULL) xmlDictFree(ctxt->dict);
     ctxt->dict = oldctxt->dict;
-    xmlDetectSAX2(ctxt); /* update the ctxt->str_* */
+    ctxt->str_xml = xmlDictLookup(ctxt->dict, BAD_CAST "xml", 3);
+    ctxt->str_xmlns = xmlDictLookup(ctxt->dict, BAD_CAST "xmlns", 5);
+    ctxt->str_xml_ns = xmlDictLookup(ctxt->dict, XML_XML_NAMESPACE, 36);
 
     oldsax = ctxt->sax;
     ctxt->sax = oldctxt->sax;

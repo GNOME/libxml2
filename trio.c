@@ -789,6 +789,12 @@ TrioIsQualifier(const char ch)
  * generate a NaN.
  */
 static double
+TrioDivide(double dividend, double divisor)
+{
+  return dividend / divisor;
+}
+
+static double
 TrioGenerateNaN(void)
 {
 #if defined(TRIO_COMPILER_SUPPORTS_C99)
@@ -800,11 +806,11 @@ TrioGenerateNaN(void)
   void (*signal_handler)(int);
   
   signal_handler = signal(SIGFPE, SIG_IGN);
-  value = 0.0 / 0.0;
+  value = TrioDivide(0.0, 0.0);
   signal(SIGFPE, signal_handler);
   return value;
 #else
-  return 0.0 / 0.0;
+  return TrioDivide(0.0, 0.0);
 #endif
 }
 

@@ -1,3 +1,7 @@
+Fri Jun 22 16:39:36 CEST 2001 Bjorn Reese <breese@users.sourceforge.net>
+
+	* trio.c: MSVC fix (provided by Igor Zlatkovic)
+	
 Fri Jun 22 12:42:16 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* include/win32config.h: another small fix for ATTRIBUTE_UNUSED

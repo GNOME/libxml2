@@ -1254,6 +1254,7 @@
     <reference name='xmlValidateNotationUse' href='html/libxml-valid.html#XMLVALIDATENOTATIONUSE'/>
     <reference name='xmlValidateOneAttribute' href='html/libxml-valid.html#XMLVALIDATEONEATTRIBUTE'/>
     <reference name='xmlValidateOneElement' href='html/libxml-valid.html#XMLVALIDATEONEELEMENT'/>
+    <reference name='xmlValidateOneNamespace' href='html/libxml-valid.html#XMLVALIDATEONENAMESPACE'/>
     <reference name='xmlValidateRoot' href='html/libxml-valid.html#XMLVALIDATEROOT'/>
     <reference name='xmlValidityErrorFunc' href='html/libxml-valid.html#XMLVALIDITYERRORFUNC'/>
     <reference name='xmlValidityWarningFunc' href='html/libxml-valid.html#XMLVALIDITYWARNINGFUNC'/>
@@ -2789,6 +2790,7 @@
     <ref name='xmlValidateNotationUse'/>
     <ref name='xmlValidateOneAttribute'/>
     <ref name='xmlValidateOneElement'/>
+    <ref name='xmlValidateOneNamespace'/>
     <ref name='xmlValidateRoot'/>
     <ref name='xmlValidityErrorFunc'/>
     <ref name='xmlValidityWarningFunc'/>
@@ -7051,9 +7053,11 @@
           <ref name='xmlValidateAttributeDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
         </word>
         <word name='Attributes'>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlXPtrBuildNodeList'/>
         </word>
         <word name='Automatic'>
@@ -7577,6 +7581,7 @@
           <ref name='xmlHandleEntity'/>
           <ref name='xmlValidateAttributeDecl'/>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
         </word>
         <word name='Deletes'>
           <ref name='xmlListDelete'/>
@@ -7813,6 +7818,7 @@
           <ref name='xmlNodeGetBase'/>
           <ref name='xmlNodeGetContent'/>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
         </word>
         <word name='EntityValue'>
           <ref name='xmlParseEntityValue'/>
@@ -7948,6 +7954,7 @@
         </word>
         <word name='Fixed'>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
         </word>
         <word name='Float'>
           <ref name='xmlXPathStringEvalNumber'/>
@@ -8157,6 +8164,7 @@
         <word name='IDREF'>
           <ref name='xmlRef'/>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
         </word>
         <word name='IDs'>
           <ref name='xmlXPathIdFunction'/>
@@ -8502,6 +8510,7 @@
           <ref name='xmlScanName'/>
           <ref name='xmlValidateNameValue'/>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
         </word>
         <word name='Names'>
           <ref name='xmlValidateNamesValue'/>
@@ -8574,6 +8583,7 @@
           <ref name='xmlParseNotationType'/>
           <ref name='xmlValidateNotationUse'/>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
         </word>
         <word name='Note'>
           <ref name='ftpListCallback'/>
@@ -9265,6 +9275,7 @@
         </word>
         <word name='Token'>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
         </word>
         <word name='Traversal'>
           <ref name='xmlXPathNextAncestor'/>
@@ -9308,12 +9319,14 @@
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlValidateRoot'/>
         </word>
         <word name='Type'>
           <ref name='xmlSchemaFreeType'/>
           <ref name='xmlValidateElementDecl'/>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlValidateRoot'/>
         </word>
         <word name='Types'>
@@ -9424,6 +9437,7 @@
           <ref name='xmlValidateNotationUse'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlValidateRoot'/>
         </word>
         <word name='VMS'>
@@ -9447,6 +9461,7 @@
         </word>
         <word name='Value'>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlXPathNewValueTree'/>
         </word>
         <word name='Values'>
@@ -9559,6 +9574,7 @@
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlValidateRoot'/>
         </word>
         <word name='XMLSchema'>
@@ -10235,6 +10251,7 @@
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlValidateRoot'/>
         </word>
         <word name='basis'>
@@ -10835,6 +10852,7 @@
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlXPathNodeSetContains'/>
         </word>
         <word name='children'>
@@ -11701,6 +11719,7 @@
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlValidateRoot'/>
         </word>
         <word name='describing'>
@@ -11920,6 +11939,7 @@
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlValidateRoot'/>
           <ref name='xmlXPathSubstringAfterFunction'/>
           <ref name='xmlXPathSubstringBeforeFunction'/>
@@ -13498,6 +13518,7 @@
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlValidateRoot'/>
         </word>
         <word name='instances'>
@@ -15457,6 +15478,7 @@
           <ref name='xmlStopParser'/>
           <ref name='xmlURI'/>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlXIncludeProcess'/>
         </word>
         <word name='processor'>
@@ -15795,6 +15817,7 @@
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlValidateRoot'/>
         </word>
         <word name='recomputed'>
@@ -16710,6 +16733,7 @@
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlXPathNewNodeSet'/>
           <ref name='xmlXPathNormalizeFunction'/>
           <ref name='xmlXPtrNewCollapsedRange'/>
@@ -17986,6 +18010,7 @@
           <ref name='xmlValidateNotationDecl'/>
           <ref name='xmlValidateOneAttribute'/>
           <ref name='xmlValidateOneElement'/>
+          <ref name='xmlValidateOneNamespace'/>
           <ref name='xmlValidateRoot'/>
         </word>
         <word name='validates'>
@@ -18291,6 +18316,7 @@
           <ref name='xmlNewGlobalNs'/>
           <ref name='xmlScanName'/>
           <ref name='xmlValidateOneAttribute'/>
+          <ref name='xmlValidateOneNamespace'/>
         </word>
         <word name='won'>
           <ref name='xmlLoadSGMLSuperCatalog'/>

@@ -133,6 +133,11 @@
     </ul>
   </xsl:variable>
   <xsl:variable name="api">
+    <form action="http://xmlsoft.org/search.php"
+          enctype="application/x-www-form-urlencoded" method="GET">
+      <input name="query" type="TEXT" size="20" value=""/>
+      <input name="submit" type="submit" value="Search ..."/>
+    </form>
     <ul><!-- style="margin-left: -1em" -->
       <li><a href="APIchunk0.html">Alphabetic</a></li>
       <li><a href="APIconstructors.html">Constructors</a></li>

@@ -7855,13 +7855,14 @@
       <arg name='elem' type='xmlNodePtr' info='an element instance '/>
     </function>
     <function name='xmlValidateOneNamespace' file='valid'>
-      <return type='int'/>
-      <arg name='ctxt' type='xmlValidCtxtPtr'/>
-      <arg name='doc' type='xmlDocPtr'/>
-      <arg name='elem' type='xmlNodePtr'/>
+      <info>Try to validate a single namespace declaration for an element basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: Attribute Value Type ] - [ VC: Fixed Attribute Default ] - [ VC: Entity Name ] - [ VC: Name Token ] - [ VC: ID ] - [ VC: IDREF ] - [ VC: Entity Name ] - [ VC: Notation Attributes ] </info>
+      <return type='int' info='1 if valid or 0 otherwise '/>
+      <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context '/>
+      <arg name='doc' type='xmlDocPtr' info='a document instance '/>
+      <arg name='elem' type='xmlNodePtr' info='an element instance '/>
       <arg name='prefix' type='const xmlChar *'/>
-      <arg name='ns' type='xmlNsPtr'/>
-      <arg name='value' type='const xmlChar *'/>
+      <arg name='ns' type='xmlNsPtr' info='an namespace declaration instance '/>
+      <arg name='value' type='const xmlChar *' info='the attribute value (without entities processing) '/>
     </function>
     <function name='xmlValidateRoot' file='valid'>
       <info>Try to validate a the root element basically it does the following check as described by the XML-1.0 recommendation: - [ VC: Root Element Type ] it doesn&apos;t try to recurse or apply other check to the element</info>

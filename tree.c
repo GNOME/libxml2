@@ -6670,7 +6670,7 @@ xmlNodeDumpOutputInternal(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	return;
     }
     if (cur->type == XML_NAMESPACE_DECL) {
-	xmlNsDumpOutput(buf, cur);
+	xmlNsDumpOutput(buf, (xmlNsPtr) cur);
 	return;
     }
 
@@ -6980,6 +6980,7 @@ xhtmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     xmlAttrPtr lang = NULL;
     xmlAttrPtr name = NULL;
     xmlAttrPtr id = NULL;
+    xmlNodePtr parent;
 
     if (cur == NULL) {
 #ifdef DEBUG_TREE
@@ -6988,6 +6989,7 @@ xhtmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 #endif
 	return;
     }
+    parent = cur->parent;
     while (cur != NULL) {
 	if ((cur->ns == NULL) && (xmlStrEqual(cur->name, BAD_CAST "id")))
 	    id = cur;
@@ -7019,9 +7021,20 @@ xhtmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
      * C.8
      */
     if ((name != NULL) && (id == NULL)) {
-	xmlOutputBufferWriteString(buf, " id=\"");
-	xmlAttrSerializeContent(buf->buffer, doc, name);
-	xmlOutputBufferWriteString(buf, "\"");
+	if ((parent != NULL) && (parent->name != NULL) &&
+	    ((xmlStrEqual(parent->name, BAD_CAST "a")) ||
+	     (xmlStrEqual(parent->name, BAD_CAST "p")) ||
+	     (xmlStrEqual(parent->name, BAD_CAST "div")) ||
+	     (xmlStrEqual(parent->name, BAD_CAST "img")) ||
+	     (xmlStrEqual(parent->name, BAD_CAST "map")) ||
+	     (xmlStrEqual(parent->name, BAD_CAST "applet")) ||
+	     (xmlStrEqual(parent->name, BAD_CAST "form")) ||
+	     (xmlStrEqual(parent->name, BAD_CAST "frame")) ||
+	     (xmlStrEqual(parent->name, BAD_CAST "iframe")))) {
+	    xmlOutputBufferWriteString(buf, " id=\"");
+	    xmlAttrSerializeContent(buf->buffer, doc, name);
+	    xmlOutputBufferWriteString(buf, "\"");
+	}
     }
     /*
      * C.7.

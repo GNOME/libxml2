@@ -1,3 +1,8 @@
+Mon Feb 10 17:11:22 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: trying to fix #104934 about some XHTML1 serialization
+	  issues.
+
 Mon Feb 10 16:41:13 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c xmlIO.c: fixing bug #104646 about iconv based

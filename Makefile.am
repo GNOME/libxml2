@@ -106,7 +106,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests Scripttests Catatests @TEST_SCHEMAS@ @TEST_THREADS@
+tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_SCHEMAS@ @TEST_THREADS@
 	@(cd python ; $(MAKE) tests)
 
 valgrind:
@@ -611,6 +611,38 @@ Automatatests: testAutomata$(EXEEXT)
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
+C14Ntests : testC14N$(EXEEXT)
+	-@(for m in with-comments without-comments exc-without-comments ; do \
+	    echo "##"; \
+	    echo "## C14N tests: $$m"; \
+	    echo "##"; \
+	    for i in $(srcdir)/test/c14n/$$m/*.xml ; do  \
+		if [ ! -d $$i ] ; then \
+		    name=`basename $$i .xml`; \
+		    echo $$name; \
+		    if [ -e $(srcdir)/test/c14n/$$m/$$name.xpath ] ; then \
+			xpathFile=$(srcdir)/test/c14n/$$m/$$name.xpath; \
+		    else \
+			xpathFile=""; \
+		    fi; \
+		    if [ -e $(srcdir)/test/c14n/$$m/$$name.ns ] ; then \
+			nsList=`cat $(srcdir)/test/c14n/$$m/$$name.ns`; \
+		    else \
+			nsList=""; \
+		    fi; \
+		    $(CHECKER) $(top_builddir)/testC14N --$$m $$i $$xpathFile $$nsList > $(srcdir)/test/c14n/test.tmp; \
+		    if [ $$? -eq 0 ]; then \
+			diff $(srcdir)/result/c14n/$$m/$$name $(srcdir)/test/c14n/test.tmp ; \
+			if [ $$? -ne 0 ]; then \
+			    echo "Test failed"; \
+			fi; \
+		    else \
+			echo "C14N failed"; \
+		    fi; \
+		fi; \
+		rm -f $(srcdir)/test/c14n/test.tmp; \
+	    done; \
+	done)
 
 Schemastests: testSchemas$(EXEEXT)
 	@(echo > .memdump)

@@ -1,3 +1,8 @@
+Thu May 30 23:34:27 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* Makefile.am result/c14n/* test/c14n/*: C14N tests integrated
+	into LibXML2 test suite
+
 Thu May 30 21:23:06 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* c14n.c: propagating xpath ancesstors node fix to c14n

@@ -1,3 +1,11 @@
+Tue Mar 19 12:15:20 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: pretty insane thing, the xmlXPathFormatNumber()
+	  was not serializing 1 as "1" if LC_ALL=sv_SE :-( and in the
+	  context of ScrollKeeper, made sure that if the number is
+	  an integer, the serialization follows the description at
+	  http://www.w3.org/TR/xpath#section-String-Functions
+
 Mon Mar 18 19:18:13 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing 2.4.18

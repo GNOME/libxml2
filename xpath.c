@@ -1125,6 +1125,36 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 	if (xmlXPathIsNaN(number)) {
 	    if (buffersize > (int)sizeof("NaN"))
 		sprintf(buffer, "NaN");
+	} else if (number == ((int) number)) {
+	    char work[30];
+	    char *ptr, *cur;
+	    int res, value = (int) number;
+
+            ptr = &buffer[0];
+	    if (value < 0) {
+		*ptr++ = '-';
+		value = -value;
+	    }
+	    if (value == 0) {
+		*ptr++ = '0';
+	    } else {
+		cur = &work[0];
+		while (value != 0) {
+		    res = value % 10;
+		    value = value / 10;
+		    *cur++ = '0' + res;
+		}
+		cur--;
+		while ((cur >= &work[0]) && (ptr - buffer < buffersize)) {
+		    *ptr++ = *cur--;
+		}
+	    }
+	    if (ptr - buffer < buffersize) {
+		*ptr = 0;
+	    } else if (buffersize > 0) {
+		ptr--;
+		*ptr = 0;
+	    }
 	} else {
 	    /* 3 is sign, decimal point, and terminating zero */
 	    char work[DBL_DIG + EXPONENT_DIGITS + 3];

@@ -1,3 +1,8 @@
+Fri Mar 26 18:28:32 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: applied patch from Dave Beckett to correct line number
+	  errors when using push with CDATA
+
 Fri Mar 26 14:53:58 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/xpath1.c: added a test template

@@ -1260,6 +1260,21 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 	    xmlPopInput(ctxt);						\
   } while (0)
 
+#define SKIPL(val) do {							\
+    int skipl;								\
+    for(skipl=0; skipl<val; skipl++) {					\
+    	if (*(ctxt->input->cur) == '\n') {				\
+	ctxt->input->line++; ctxt->input->col = 1;			\
+    	} else ctxt->input->col++;					\
+    	ctxt->nbChars++;						\
+	ctxt->input->cur++;						\
+    }									\
+    if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
+    if ((*ctxt->input->cur == 0) &&					\
+        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
+	    xmlPopInput(ctxt);						\
+  } while (0)
+
 #define SHRINK if ((ctxt->progressive == 0) &&				\
 		   (ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
 		   (ctxt->input->end - ctxt->input->cur < 2 * INPUT_CHUNK)) \
@@ -9250,7 +9265,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 				                      ctxt->input->cur,
 					  XML_PARSER_BIG_BUFFER_SIZE);
 			}
-			SKIP(XML_PARSER_BIG_BUFFER_SIZE);
+			SKIPL(XML_PARSER_BIG_BUFFER_SIZE);
 			ctxt->checkIndex = 0;
 		    }
 		    goto done;
@@ -9264,7 +9279,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    ctxt->sax->characters(ctxt->userData,
 						  ctxt->input->cur, base);
 		    }
-		    SKIP(base + 3);
+		    SKIPL(base + 3);
 		    ctxt->checkIndex = 0;
 		    ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH

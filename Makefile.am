@@ -623,9 +623,9 @@ C14Ntests : testC14N$(EXEEXT)
 		    name=`basename $$i .xml`; \
 		    echo Testing $$m/$$name; \
 		    cmdline="$(CHECKER) $(top_builddir)/testC14N --$$m $$i"; \
-		    if [ -e $(srcdir)/test/c14n/$$m/$$name.xpath ] ; then \
+		    if [ -f $(srcdir)/test/c14n/$$m/$$name.xpath ] ; then \
 			cmdline="$$cmdline $(srcdir)/test/c14n/$$m/$$name.xpath"; \
-			if [ -e $(srcdir)/test/c14n/$$m/$$name.ns ] ; then \
+			if [ -f $(srcdir)/test/c14n/$$m/$$name.ns ] ; then \
 			    cmdline="$$cmdline '`cat $(srcdir)/test/c14n/$$m/$$name.ns`'"; \
 			fi; \
 		    fi; \
@@ -682,7 +682,7 @@ cleantar:
 	@(rm -f libxml*.tar.gz COPYING.LIB)
 
 rpm: cleantar
-	@(unset CDPATH ; $(MAKE) dist && rpm -ta $(distdir).tar.gz)
+	@(unset CDPATH ; $(MAKE) dist && rpmbuild -ta $(distdir).tar.gz)
 
 ## We create xml2Conf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given

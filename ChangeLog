@@ -1,3 +1,8 @@
+Tue Oct 15 10:35:57 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: use test -f instead of test -e since Solaris /bin/sh
+	  misses it, reported by Peter Bray.
+
 Mon Oct 14 17:37:32 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: investigating xmlNodeGetContent() on namespace nodes

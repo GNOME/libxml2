@@ -1,3 +1,8 @@
+Sat Feb 22 18:28:16 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* parser.c uri.c: fixed the bug I introduced in the path
+	  handling, reported by Sebastian Bergmann
+
 Sat Feb 22 00:19:48 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixing some nodeinfo in entities problem raised

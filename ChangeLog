@@ -1,3 +1,11 @@
+Mon Jan 24 14:31:09 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xml-config.in: xml-config --version to just return the
+	  version number
+	* xpath.c: some cleanup w.r.t. axis when the current node is
+	  an attribute.
+	* TODO: updated
+
 Tue Jan 18 18:46:06 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: prepared for libxml-1.8.5

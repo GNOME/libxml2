@@ -44,7 +44,7 @@ while test $# -gt 0; do
 	;;
 
     --version)
-	echo @PACKAGE@ @VERSION@
+	echo @VERSION@
 	exit 0
 	;;
 

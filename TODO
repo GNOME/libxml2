@@ -86,6 +86,10 @@ TODO:
 - dynamically adapt the alloc entry point to use g_alloc()/g_free()
   if the programmer wants it
 
+- I18N: http://wap.trondheim.com/vaer/index.phtml is not XML and accepted
+  by the XML parser, UTF-8 should be checked when there is no "encoding"
+  declared !
+
 Done:
 =====
 

@@ -1488,10 +1488,26 @@ xmlXPathNextSelf(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 xmlNodePtr
 xmlXPathNextChild(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     if (cur == NULL) {
-	if ((ctxt->context->node->type == XML_DOCUMENT_NODE) ||
-	    (ctxt->context->node->type == XML_HTML_DOCUMENT_NODE))
-	    return(((xmlDocPtr) ctxt->context->node)->root);
-        return(ctxt->context->node->childs);
+	if (ctxt->context->node == NULL) return(NULL);
+	switch (ctxt->context->node->type) {
+            case XML_ELEMENT_NODE:
+            case XML_TEXT_NODE:
+            case XML_CDATA_SECTION_NODE:
+            case XML_ENTITY_REF_NODE:
+            case XML_ENTITY_NODE:
+            case XML_PI_NODE:
+            case XML_COMMENT_NODE:
+            case XML_NOTATION_NODE:
+		return(ctxt->context->node->childs);
+            case XML_ATTRIBUTE_NODE:
+		return(NULL);
+            case XML_DOCUMENT_NODE:
+            case XML_DOCUMENT_TYPE_NODE:
+            case XML_DOCUMENT_FRAG_NODE:
+            case XML_HTML_DOCUMENT_NODE:
+		return(((xmlDocPtr) ctxt->context->node)->root);
+	}
+	return(NULL);
     }
     if ((cur->type == XML_DOCUMENT_NODE) ||
         (cur->type == XML_HTML_DOCUMENT_NODE))
@@ -1513,6 +1529,11 @@ xmlXPathNextChild(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 xmlNodePtr
 xmlXPathNextDescendant(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     if (cur == NULL) {
+	if (ctxt->context->node == NULL)
+	    return(NULL);
+	if (ctxt->context->node->type == XML_ATTRIBUTE_NODE)
+	    return(NULL);
+
         if (ctxt->context->node == (xmlNodePtr) ctxt->context->doc)
 	    return(ctxt->context->doc->root);
         return(ctxt->context->node->childs);
@@ -1548,24 +1569,15 @@ xmlXPathNextDescendant(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
  */
 xmlNodePtr
 xmlXPathNextDescendantOrSelf(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
-    if (cur == NULL)
+    if (cur == NULL) {
+	if (ctxt->context->node == NULL)
+	    return(NULL);
+	if (ctxt->context->node->type == XML_ATTRIBUTE_NODE)
+	    return(NULL);
         return(ctxt->context->node);
+    }
 
-    if (cur == (xmlNodePtr) ctxt->context->doc)
-        return(ctxt->context->doc->root);
-    if (cur->childs != NULL) return(cur->childs);
-    if (cur->next != NULL) return(cur->next);
-    
-    do {
-        cur = cur->parent;
-	if (cur == NULL) return(NULL);
-	if (cur == ctxt->context->node) return(NULL);
-	if (cur->next != NULL) {
-	    cur = cur->next;
-	    return(cur);
-	}
-    } while (cur != NULL);
-    return(cur);
+    return(xmlXPathNextDescendant(ctxt, cur));
 }
 
 /**
@@ -1581,14 +1593,35 @@ xmlXPathNextDescendantOrSelf(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 xmlNodePtr
 xmlXPathNextParent(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     /*
-     * !!!!!!!!!!!!!
      * the parent of an attribute or namespace node is the element
      * to which the attribute or namespace node is attached
+     * Namespace handling !!!
      */
     if (cur == NULL) {
-        if (ctxt->context->node->parent == NULL)
-	    return((xmlNodePtr) ctxt->context->doc);
-        return(ctxt->context->node->parent);
+	if (ctxt->context->node == NULL) return(NULL);
+	switch (ctxt->context->node->type) {
+            case XML_ELEMENT_NODE:
+            case XML_TEXT_NODE:
+            case XML_CDATA_SECTION_NODE:
+            case XML_ENTITY_REF_NODE:
+            case XML_ENTITY_NODE:
+            case XML_PI_NODE:
+            case XML_COMMENT_NODE:
+            case XML_NOTATION_NODE:
+		if (ctxt->context->node->parent == NULL)
+		    return((xmlNodePtr) ctxt->context->doc);
+		return(ctxt->context->node->parent);
+            case XML_ATTRIBUTE_NODE: {
+		xmlAttrPtr att = (xmlAttrPtr) ctxt->context->node;
+
+		return(att->node);
+	    }
+            case XML_DOCUMENT_NODE:
+            case XML_DOCUMENT_TYPE_NODE:
+            case XML_DOCUMENT_FRAG_NODE:
+            case XML_HTML_DOCUMENT_NODE:
+                return(NULL);
+	}
     }
     return(NULL);
 }
@@ -1610,20 +1643,63 @@ xmlXPathNextParent(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 xmlNodePtr
 xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     /*
-     * !!!!!!!!!!!!!
      * the parent of an attribute or namespace node is the element
      * to which the attribute or namespace node is attached
+     * !!!!!!!!!!!!!
      */
     if (cur == NULL) {
-        if (ctxt->context->node->parent == NULL)
-	    return((xmlNodePtr) ctxt->context->doc);
-        return(ctxt->context->node->parent);
+	if (ctxt->context->node == NULL) return(NULL);
+	switch (ctxt->context->node->type) {
+            case XML_ELEMENT_NODE:
+            case XML_TEXT_NODE:
+            case XML_CDATA_SECTION_NODE:
+            case XML_ENTITY_REF_NODE:
+            case XML_ENTITY_NODE:
+            case XML_PI_NODE:
+            case XML_COMMENT_NODE:
+            case XML_NOTATION_NODE:
+		if (ctxt->context->node->parent == NULL)
+		    return((xmlNodePtr) ctxt->context->doc);
+		return(ctxt->context->node->parent);
+            case XML_ATTRIBUTE_NODE: {
+		xmlAttrPtr cur = (xmlAttrPtr) ctxt->context->node;
+
+		return(cur->node);
+	    }
+            case XML_DOCUMENT_NODE:
+            case XML_DOCUMENT_TYPE_NODE:
+            case XML_DOCUMENT_FRAG_NODE:
+            case XML_HTML_DOCUMENT_NODE:
+                return(NULL);
+	}
+	return(NULL);
     }
     if (cur == ctxt->context->doc->root)
 	return((xmlNodePtr) ctxt->context->doc);
     if (cur == (xmlNodePtr) ctxt->context->doc)
 	return(NULL);
-    return(cur->parent);
+    switch (cur->type) {
+	case XML_ELEMENT_NODE:
+	case XML_TEXT_NODE:
+	case XML_CDATA_SECTION_NODE:
+	case XML_ENTITY_REF_NODE:
+	case XML_ENTITY_NODE:
+	case XML_PI_NODE:
+	case XML_COMMENT_NODE:
+	case XML_NOTATION_NODE:
+	    return(cur->parent);
+	case XML_ATTRIBUTE_NODE: {
+	    xmlAttrPtr att = (xmlAttrPtr) ctxt->context->node;
+
+	    return(att->node);
+	}
+	case XML_DOCUMENT_NODE:
+	case XML_DOCUMENT_TYPE_NODE:
+	case XML_DOCUMENT_FRAG_NODE:
+	case XML_HTML_DOCUMENT_NODE:
+	    return(NULL);
+    }
+    return(NULL);
 }
 
 /**
@@ -1641,18 +1717,9 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
  */
 xmlNodePtr
 xmlXPathNextAncestorOrSelf(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
-    /*
-     * !!!!!!!!!!!!!
-     * the parent of an attribute or namespace node is the element
-     * to which the attribute or namespace node is attached
-     */
     if (cur == NULL)
         return(ctxt->context->node);
-    if (cur == ctxt->context->doc->root)
-	return((xmlNodePtr) ctxt->context->doc);
-    if (cur == (xmlNodePtr) ctxt->context->doc)
-	return(NULL);
-    return(cur->parent);
+    return(xmlXPathNextAncestor(ctxt, cur));
 }
 
 /**

@@ -1,3 +1,8 @@
+Wed Oct 22 10:43:21 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* chvalid.c genChRanges.py: Stephane Bidoul pointed out that
+	  it doesn't define IN_LIBXML
+
 Tue Oct 21 21:14:55 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* win32/Makefile.mingw: typo pointed out by Stephane Bidoul

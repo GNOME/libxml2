@@ -274,6 +274,8 @@ output.write(
  * William Brack <wbrack@mmm.com.hk>
  */
 
+#define IN_LIBXML
+#include "libxml.h"
 #include <libxml/chvalid.h>
 
 /*

@@ -1,4 +1,4 @@
 Makefile
-configure.txt
+config.*
 *.int
 binaries

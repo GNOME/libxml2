@@ -1,3 +1,8 @@
+Sun Jan 16 19:58:36 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: better fix for #151694 not killing c14n regression tests
+	* xmlschemastypes.c: fixing bug #157653
+
 Sun Jan 16 19:01:06 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixing bug #151694, line should always be set in the

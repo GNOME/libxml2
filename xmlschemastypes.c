@@ -2101,8 +2101,18 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
             goto done;
         case XML_SCHEMAS_NAME:
             ret = xmlValidateName(value, 1);
-            if ((ret == 0) && (val != NULL)) {
-                TODO;
+            if ((ret == 0) && (val != NULL) && (value != NULL)) {
+		v = xmlSchemaNewValue(XML_SCHEMAS_NAME);
+		if (v != NULL) {
+		     const xmlChar *start = value, *end;
+		     while (IS_BLANK_CH(*start)) start++;
+		     end = start;
+		     while ((*end != 0) && (!IS_BLANK_CH(*end))) end++;
+		     v->value.str = xmlStrndup(start, end - start);
+		    *val = v;
+		} else {
+		    goto error;
+		}
             }
             goto done;
         case XML_SCHEMAS_QNAME:{

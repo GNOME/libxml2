@@ -1,3 +1,8 @@
+Thu Feb 13 12:00:30 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: added TODO for the DTD compatibility spec
+	* xinclude.c: more bug fixes driven by the testsuite 
+
 Tue Feb 11 19:01:02 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* check-xinclude-test-suite.py xinclude.c: Work on the W3C/NIST

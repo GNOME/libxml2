@@ -13,6 +13,8 @@
  *    - NOT_ALLOWED
  *    - EMPTY
  * - handle namespace declarations as attributes.
+ * - add support for DTD compatibility spec
+ *   http://www.oasis-open.org/committees/relax-ng/compatibility-20011203.html
  */
 
 #define IN_LIBXML

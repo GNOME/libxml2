@@ -239,6 +239,15 @@ static xmlNodePtr gen_xmlNodePtr_in(int no) {
 static void des_xmlNodePtr_in(int no ATTRIBUTE_UNUSED, xmlNodePtr val ATTRIBUTE_UNUSED) {
 }
 
+#define gen_nb_xmlTextWriterPtr 2
+static xmlTextWriterPtr gen_xmlTextWriterPtr(int no) {
+    if (no == 0) return(xmlNewTextWriterFilename("test.out", 0));
+    return(NULL);
+}
+static void des_xmlTextWriterPtr(int no ATTRIBUTE_UNUSED, xmlTextWriterPtr val) {
+    if (val != NULL) xmlFreeTextWriter(val);
+}
+
 
 static void desret_int(int val ATTRIBUTE_UNUSED) {
 }
@@ -14236,8 +14245,31 @@ static int
 test_xmlTextWriterEndAttribute(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterEndAttribute(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterEndAttribute",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14246,8 +14278,31 @@ static int
 test_xmlTextWriterEndCDATA(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterEndCDATA(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterEndCDATA",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14256,8 +14311,31 @@ static int
 test_xmlTextWriterEndComment(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterEndComment(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterEndComment",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14266,8 +14344,31 @@ static int
 test_xmlTextWriterEndDTD(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterEndDTD(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterEndDTD",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14276,8 +14377,31 @@ static int
 test_xmlTextWriterEndDTDAttlist(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterEndDTDAttlist(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterEndDTDAttlist",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14286,8 +14410,31 @@ static int
 test_xmlTextWriterEndDTDElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterEndDTDElement(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterEndDTDElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14296,8 +14443,31 @@ static int
 test_xmlTextWriterEndDTDEntity(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterEndDTDEntity(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterEndDTDEntity",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14306,8 +14476,31 @@ static int
 test_xmlTextWriterEndDocument(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterEndDocument(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterEndDocument",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14316,8 +14509,31 @@ static int
 test_xmlTextWriterEndElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterEndElement(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterEndElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14326,8 +14542,31 @@ static int
 test_xmlTextWriterEndPI(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterEndPI(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterEndPI",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14336,8 +14575,31 @@ static int
 test_xmlTextWriterFlush(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterFlush(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterFlush",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14346,8 +14608,31 @@ static int
 test_xmlTextWriterFullEndElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterFullEndElement(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterFullEndElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14356,8 +14641,38 @@ static int
 test_xmlTextWriterSetIndent(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    int indent; /* do indentation? */
+    int n_indent;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_indent = 0;n_indent < gen_nb_int;n_indent++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        indent = gen_int(n_indent);
+
+        ret_val = xmlTextWriterSetIndent(writer, indent);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_int(n_indent, indent);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterSetIndent",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_indent);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14366,8 +14681,38 @@ static int
 test_xmlTextWriterSetIndentString(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * str; /* the xmlChar string */
+    int n_str;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_str = 0;n_str < gen_nb_const_xmlChar_ptr;n_str++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        str = gen_const_xmlChar_ptr(n_str);
+
+        ret_val = xmlTextWriterSetIndentString(writer, str);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_str, str);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterSetIndentString",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_str);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14376,8 +14721,38 @@ static int
 test_xmlTextWriterStartAttribute(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* element name */
+    int n_name;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+
+        ret_val = xmlTextWriterStartAttribute(writer, name);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartAttribute",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14386,8 +14761,52 @@ static int
 test_xmlTextWriterStartAttributeNS(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * prefix; /* namespace prefix or NULL */
+    int n_prefix;
+    const xmlChar * name; /* element local name */
+    int n_name;
+    const xmlChar * namespaceURI; /* namespace URI or NULL */
+    int n_namespaceURI;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_prefix = 0;n_prefix < gen_nb_const_xmlChar_ptr;n_prefix++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_namespaceURI = 0;n_namespaceURI < gen_nb_const_xmlChar_ptr;n_namespaceURI++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        prefix = gen_const_xmlChar_ptr(n_prefix);
+        name = gen_const_xmlChar_ptr(n_name);
+        namespaceURI = gen_const_xmlChar_ptr(n_namespaceURI);
+
+        ret_val = xmlTextWriterStartAttributeNS(writer, prefix, name, namespaceURI);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_prefix, prefix);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_namespaceURI, namespaceURI);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartAttributeNS",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_prefix);
+            printf(" %d", n_name);
+            printf(" %d", n_namespaceURI);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14396,8 +14815,31 @@ static int
 test_xmlTextWriterStartCDATA(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterStartCDATA(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartCDATA",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14406,8 +14848,31 @@ static int
 test_xmlTextWriterStartComment(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+
+        ret_val = xmlTextWriterStartComment(writer);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartComment",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf("\n");
+        }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14416,8 +14881,52 @@ static int
 test_xmlTextWriterStartDTD(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* the name of the DTD */
+    int n_name;
+    const xmlChar * pubid; /* the public identifier, which is an alternative to the system identifier */
+    int n_pubid;
+    const xmlChar * sysid; /* the system identifier, which is the URI of the DTD */
+    int n_sysid;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_pubid = 0;n_pubid < gen_nb_const_xmlChar_ptr;n_pubid++) {
+    for (n_sysid = 0;n_sysid < gen_nb_const_xmlChar_ptr;n_sysid++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+        pubid = gen_const_xmlChar_ptr(n_pubid);
+        sysid = gen_const_xmlChar_ptr(n_sysid);
+
+        ret_val = xmlTextWriterStartDTD(writer, name, pubid, sysid);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_pubid, pubid);
+        des_const_xmlChar_ptr(n_sysid, sysid);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartDTD",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf(" %d", n_pubid);
+            printf(" %d", n_sysid);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14426,8 +14935,38 @@ static int
 test_xmlTextWriterStartDTDAttlist(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* the name of the DTD ATTLIST */
+    int n_name;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+
+        ret_val = xmlTextWriterStartDTDAttlist(writer, name);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartDTDAttlist",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14436,8 +14975,38 @@ static int
 test_xmlTextWriterStartDTDElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* the name of the DTD element */
+    int n_name;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+
+        ret_val = xmlTextWriterStartDTDElement(writer, name);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartDTDElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14446,8 +15015,45 @@ static int
 test_xmlTextWriterStartDTDEntity(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    int pe; /* TRUE if this is a parameter entity, FALSE if not */
+    int n_pe;
+    const xmlChar * name; /* the name of the DTD ATTLIST */
+    int n_name;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_pe = 0;n_pe < gen_nb_int;n_pe++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        pe = gen_int(n_pe);
+        name = gen_const_xmlChar_ptr(n_name);
+
+        ret_val = xmlTextWriterStartDTDEntity(writer, pe, name);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_int(n_pe, pe);
+        des_const_xmlChar_ptr(n_name, name);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartDTDEntity",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_pe);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14456,8 +15062,52 @@ static int
 test_xmlTextWriterStartDocument(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const char * version; /* the xml version ("1.0") or NULL for default ("1.0") */
+    int n_version;
+    const char * encoding; /* the encoding or NULL for default */
+    int n_encoding;
+    const char * standalone; /* "yes" or "no" or NULL for default */
+    int n_standalone;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_version = 0;n_version < gen_nb_const_char_ptr;n_version++) {
+    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
+    for (n_standalone = 0;n_standalone < gen_nb_const_char_ptr;n_standalone++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        version = gen_const_char_ptr(n_version);
+        encoding = gen_const_char_ptr(n_encoding);
+        standalone = gen_const_char_ptr(n_standalone);
+
+        ret_val = xmlTextWriterStartDocument(writer, version, encoding, standalone);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_char_ptr(n_version, version);
+        des_const_char_ptr(n_encoding, encoding);
+        des_const_char_ptr(n_standalone, standalone);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartDocument",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_version);
+            printf(" %d", n_encoding);
+            printf(" %d", n_standalone);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14466,8 +15116,38 @@ static int
 test_xmlTextWriterStartElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* element name */
+    int n_name;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+
+        ret_val = xmlTextWriterStartElement(writer, name);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14476,8 +15156,52 @@ static int
 test_xmlTextWriterStartElementNS(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * prefix; /* namespace prefix or NULL */
+    int n_prefix;
+    const xmlChar * name; /* element local name */
+    int n_name;
+    const xmlChar * namespaceURI; /* namespace URI or NULL */
+    int n_namespaceURI;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_prefix = 0;n_prefix < gen_nb_const_xmlChar_ptr;n_prefix++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_namespaceURI = 0;n_namespaceURI < gen_nb_const_xmlChar_ptr;n_namespaceURI++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        prefix = gen_const_xmlChar_ptr(n_prefix);
+        name = gen_const_xmlChar_ptr(n_name);
+        namespaceURI = gen_const_xmlChar_ptr(n_namespaceURI);
+
+        ret_val = xmlTextWriterStartElementNS(writer, prefix, name, namespaceURI);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_prefix, prefix);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_namespaceURI, namespaceURI);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartElementNS",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_prefix);
+            printf(" %d", n_name);
+            printf(" %d", n_namespaceURI);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14486,8 +15210,38 @@ static int
 test_xmlTextWriterStartPI(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * target; /* PI target */
+    int n_target;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_target = 0;n_target < gen_nb_const_xmlChar_ptr;n_target++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        target = gen_const_xmlChar_ptr(n_target);
+
+        ret_val = xmlTextWriterStartPI(writer, target);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_target, target);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterStartPI",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_target);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14496,8 +15250,45 @@ static int
 test_xmlTextWriterWriteAttribute(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* attribute name */
+    int n_name;
+    const xmlChar * content; /* attribute content */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteAttribute(writer, name, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteAttribute",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14506,8 +15297,59 @@ static int
 test_xmlTextWriterWriteAttributeNS(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * prefix; /* namespace prefix */
+    int n_prefix;
+    const xmlChar * name; /* attribute local name */
+    int n_name;
+    const xmlChar * namespaceURI; /* namespace URI */
+    int n_namespaceURI;
+    const xmlChar * content; /* attribute content */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_prefix = 0;n_prefix < gen_nb_const_xmlChar_ptr;n_prefix++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_namespaceURI = 0;n_namespaceURI < gen_nb_const_xmlChar_ptr;n_namespaceURI++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        prefix = gen_const_xmlChar_ptr(n_prefix);
+        name = gen_const_xmlChar_ptr(n_name);
+        namespaceURI = gen_const_xmlChar_ptr(n_namespaceURI);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteAttributeNS(writer, prefix, name, namespaceURI, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_prefix, prefix);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_namespaceURI, namespaceURI);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteAttributeNS",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_prefix);
+            printf(" %d", n_name);
+            printf(" %d", n_namespaceURI);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14516,8 +15358,52 @@ static int
 test_xmlTextWriterWriteBase64(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const char * data; /* binary data */
+    int n_data;
+    int start; /* the position within the data of the first byte to encode */
+    int n_start;
+    int len; /* the number of bytes to encode */
+    int n_len;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_data = 0;n_data < gen_nb_const_char_ptr;n_data++) {
+    for (n_start = 0;n_start < gen_nb_int;n_start++) {
+    for (n_len = 0;n_len < gen_nb_int;n_len++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        data = gen_const_char_ptr(n_data);
+        start = gen_int(n_start);
+        len = gen_int(n_len);
+
+        ret_val = xmlTextWriterWriteBase64(writer, data, start, len);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_char_ptr(n_data, data);
+        des_int(n_start, start);
+        des_int(n_len, len);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteBase64",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_data);
+            printf(" %d", n_start);
+            printf(" %d", n_len);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14526,8 +15412,52 @@ static int
 test_xmlTextWriterWriteBinHex(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const char * data; /* binary data */
+    int n_data;
+    int start; /* the position within the data of the first byte to encode */
+    int n_start;
+    int len; /* the number of bytes to encode */
+    int n_len;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_data = 0;n_data < gen_nb_const_char_ptr;n_data++) {
+    for (n_start = 0;n_start < gen_nb_int;n_start++) {
+    for (n_len = 0;n_len < gen_nb_int;n_len++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        data = gen_const_char_ptr(n_data);
+        start = gen_int(n_start);
+        len = gen_int(n_len);
+
+        ret_val = xmlTextWriterWriteBinHex(writer, data, start, len);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_char_ptr(n_data, data);
+        des_int(n_start, start);
+        des_int(n_len, len);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteBinHex",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_data);
+            printf(" %d", n_start);
+            printf(" %d", n_len);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14536,8 +15466,38 @@ static int
 test_xmlTextWriterWriteCDATA(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * content; /* CDATA content */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteCDATA(writer, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteCDATA",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14546,8 +15506,38 @@ static int
 test_xmlTextWriterWriteComment(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * content; /* comment string */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteComment(writer, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteComment",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14556,8 +15546,59 @@ static int
 test_xmlTextWriterWriteDTD(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* the name of the DTD */
+    int n_name;
+    const xmlChar * pubid; /* the public identifier, which is an alternative to the system identifier */
+    int n_pubid;
+    const xmlChar * sysid; /* the system identifier, which is the URI of the DTD */
+    int n_sysid;
+    const xmlChar * subset; /* string content of the DTD */
+    int n_subset;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_pubid = 0;n_pubid < gen_nb_const_xmlChar_ptr;n_pubid++) {
+    for (n_sysid = 0;n_sysid < gen_nb_const_xmlChar_ptr;n_sysid++) {
+    for (n_subset = 0;n_subset < gen_nb_const_xmlChar_ptr;n_subset++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+        pubid = gen_const_xmlChar_ptr(n_pubid);
+        sysid = gen_const_xmlChar_ptr(n_sysid);
+        subset = gen_const_xmlChar_ptr(n_subset);
+
+        ret_val = xmlTextWriterWriteDTD(writer, name, pubid, sysid, subset);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_pubid, pubid);
+        des_const_xmlChar_ptr(n_sysid, sysid);
+        des_const_xmlChar_ptr(n_subset, subset);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteDTD",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf(" %d", n_pubid);
+            printf(" %d", n_sysid);
+            printf(" %d", n_subset);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14566,8 +15607,45 @@ static int
 test_xmlTextWriterWriteDTDAttlist(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* the name of the DTD ATTLIST */
+    int n_name;
+    const xmlChar * content; /* content of the ATTLIST */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteDTDAttlist(writer, name, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteDTDAttlist",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14576,8 +15654,45 @@ static int
 test_xmlTextWriterWriteDTDElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* the name of the DTD element */
+    int n_name;
+    const xmlChar * content; /* content of the element */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteDTDElement(writer, name, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteDTDElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14586,8 +15701,73 @@ static int
 test_xmlTextWriterWriteDTDEntity(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    int pe; /* TRUE if this is a parameter entity, FALSE if not */
+    int n_pe;
+    const xmlChar * name; /* the name of the DTD entity */
+    int n_name;
+    const xmlChar * pubid; /* the public identifier, which is an alternative to the system identifier */
+    int n_pubid;
+    const xmlChar * sysid; /* the system identifier, which is the URI of the DTD */
+    int n_sysid;
+    const xmlChar * ndataid; /* the xml notation name. */
+    int n_ndataid;
+    const xmlChar * content; /* content of the entity */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_pe = 0;n_pe < gen_nb_int;n_pe++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_pubid = 0;n_pubid < gen_nb_const_xmlChar_ptr;n_pubid++) {
+    for (n_sysid = 0;n_sysid < gen_nb_const_xmlChar_ptr;n_sysid++) {
+    for (n_ndataid = 0;n_ndataid < gen_nb_const_xmlChar_ptr;n_ndataid++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        pe = gen_int(n_pe);
+        name = gen_const_xmlChar_ptr(n_name);
+        pubid = gen_const_xmlChar_ptr(n_pubid);
+        sysid = gen_const_xmlChar_ptr(n_sysid);
+        ndataid = gen_const_xmlChar_ptr(n_ndataid);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteDTDEntity(writer, pe, name, pubid, sysid, ndataid, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_int(n_pe, pe);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_pubid, pubid);
+        des_const_xmlChar_ptr(n_sysid, sysid);
+        des_const_xmlChar_ptr(n_ndataid, ndataid);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteDTDEntity",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_pe);
+            printf(" %d", n_name);
+            printf(" %d", n_pubid);
+            printf(" %d", n_sysid);
+            printf(" %d", n_ndataid);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14596,8 +15776,66 @@ static int
 test_xmlTextWriterWriteDTDExternalEntity(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    int pe; /* TRUE if this is a parameter entity, FALSE if not */
+    int n_pe;
+    const xmlChar * name; /* the name of the DTD entity */
+    int n_name;
+    const xmlChar * pubid; /* the public identifier, which is an alternative to the system identifier */
+    int n_pubid;
+    const xmlChar * sysid; /* the system identifier, which is the URI of the DTD */
+    int n_sysid;
+    const xmlChar * ndataid; /* the xml notation name. */
+    int n_ndataid;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_pe = 0;n_pe < gen_nb_int;n_pe++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_pubid = 0;n_pubid < gen_nb_const_xmlChar_ptr;n_pubid++) {
+    for (n_sysid = 0;n_sysid < gen_nb_const_xmlChar_ptr;n_sysid++) {
+    for (n_ndataid = 0;n_ndataid < gen_nb_const_xmlChar_ptr;n_ndataid++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        pe = gen_int(n_pe);
+        name = gen_const_xmlChar_ptr(n_name);
+        pubid = gen_const_xmlChar_ptr(n_pubid);
+        sysid = gen_const_xmlChar_ptr(n_sysid);
+        ndataid = gen_const_xmlChar_ptr(n_ndataid);
+
+        ret_val = xmlTextWriterWriteDTDExternalEntity(writer, pe, name, pubid, sysid, ndataid);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_int(n_pe, pe);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_pubid, pubid);
+        des_const_xmlChar_ptr(n_sysid, sysid);
+        des_const_xmlChar_ptr(n_ndataid, ndataid);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteDTDExternalEntity",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_pe);
+            printf(" %d", n_name);
+            printf(" %d", n_pubid);
+            printf(" %d", n_sysid);
+            printf(" %d", n_ndataid);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14606,8 +15844,52 @@ static int
 test_xmlTextWriterWriteDTDExternalEntityContents(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * pubid; /* the public identifier, which is an alternative to the system identifier */
+    int n_pubid;
+    const xmlChar * sysid; /* the system identifier, which is the URI of the DTD */
+    int n_sysid;
+    const xmlChar * ndataid; /* the xml notation name. */
+    int n_ndataid;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_pubid = 0;n_pubid < gen_nb_const_xmlChar_ptr;n_pubid++) {
+    for (n_sysid = 0;n_sysid < gen_nb_const_xmlChar_ptr;n_sysid++) {
+    for (n_ndataid = 0;n_ndataid < gen_nb_const_xmlChar_ptr;n_ndataid++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        pubid = gen_const_xmlChar_ptr(n_pubid);
+        sysid = gen_const_xmlChar_ptr(n_sysid);
+        ndataid = gen_const_xmlChar_ptr(n_ndataid);
+
+        ret_val = xmlTextWriterWriteDTDExternalEntityContents(writer, pubid, sysid, ndataid);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_pubid, pubid);
+        des_const_xmlChar_ptr(n_sysid, sysid);
+        des_const_xmlChar_ptr(n_ndataid, ndataid);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteDTDExternalEntityContents",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_pubid);
+            printf(" %d", n_sysid);
+            printf(" %d", n_ndataid);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14616,8 +15898,52 @@ static int
 test_xmlTextWriterWriteDTDInternalEntity(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    int pe; /* TRUE if this is a parameter entity, FALSE if not */
+    int n_pe;
+    const xmlChar * name; /* the name of the DTD entity */
+    int n_name;
+    const xmlChar * content; /* content of the entity */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_pe = 0;n_pe < gen_nb_int;n_pe++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        pe = gen_int(n_pe);
+        name = gen_const_xmlChar_ptr(n_name);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteDTDInternalEntity(writer, pe, name, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_int(n_pe, pe);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteDTDInternalEntity",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_pe);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14626,8 +15952,52 @@ static int
 test_xmlTextWriterWriteDTDNotation(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* the name of the xml notation */
+    int n_name;
+    const xmlChar * pubid; /* the public identifier, which is an alternative to the system identifier */
+    int n_pubid;
+    const xmlChar * sysid; /* the system identifier, which is the URI of the DTD */
+    int n_sysid;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_pubid = 0;n_pubid < gen_nb_const_xmlChar_ptr;n_pubid++) {
+    for (n_sysid = 0;n_sysid < gen_nb_const_xmlChar_ptr;n_sysid++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+        pubid = gen_const_xmlChar_ptr(n_pubid);
+        sysid = gen_const_xmlChar_ptr(n_sysid);
+
+        ret_val = xmlTextWriterWriteDTDNotation(writer, name, pubid, sysid);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_pubid, pubid);
+        des_const_xmlChar_ptr(n_sysid, sysid);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteDTDNotation",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf(" %d", n_pubid);
+            printf(" %d", n_sysid);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14636,8 +16006,45 @@ static int
 test_xmlTextWriterWriteElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * name; /* element name */
+    int n_name;
+    const xmlChar * content; /* element content */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        name = gen_const_xmlChar_ptr(n_name);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteElement(writer, name, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_name);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14646,8 +16053,59 @@ static int
 test_xmlTextWriterWriteElementNS(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * prefix; /* namespace prefix */
+    int n_prefix;
+    const xmlChar * name; /* element local name */
+    int n_name;
+    const xmlChar * namespaceURI; /* namespace URI */
+    int n_namespaceURI;
+    const xmlChar * content; /* element content */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_prefix = 0;n_prefix < gen_nb_const_xmlChar_ptr;n_prefix++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_namespaceURI = 0;n_namespaceURI < gen_nb_const_xmlChar_ptr;n_namespaceURI++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        prefix = gen_const_xmlChar_ptr(n_prefix);
+        name = gen_const_xmlChar_ptr(n_name);
+        namespaceURI = gen_const_xmlChar_ptr(n_namespaceURI);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteElementNS(writer, prefix, name, namespaceURI, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_prefix, prefix);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_namespaceURI, namespaceURI);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteElementNS",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_prefix);
+            printf(" %d", n_name);
+            printf(" %d", n_namespaceURI);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14786,8 +16244,45 @@ static int
 test_xmlTextWriterWritePI(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * target; /* PI target */
+    int n_target;
+    const xmlChar * content; /* PI content */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_target = 0;n_target < gen_nb_const_xmlChar_ptr;n_target++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        target = gen_const_xmlChar_ptr(n_target);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWritePI(writer, target, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_target, target);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWritePI",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_target);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14796,8 +16291,38 @@ static int
 test_xmlTextWriterWriteRaw(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * content; /* text string */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteRaw(writer, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteRaw",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14806,8 +16331,45 @@ static int
 test_xmlTextWriterWriteRawLen(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * content; /* text string */
+    int n_content;
+    int len; /* length of the text string */
+    int n_len;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+    for (n_len = 0;n_len < gen_nb_int;n_len++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        content = gen_const_xmlChar_ptr(n_content);
+        len = gen_int(n_len);
+
+        ret_val = xmlTextWriterWriteRawLen(writer, content, len);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_content, content);
+        des_int(n_len, len);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteRawLen",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_content);
+            printf(" %d", n_len);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -14816,8 +16378,38 @@ static int
 test_xmlTextWriterWriteString(void) {
     int ret = 0;
 
+#ifdef LIBXML_WRITER_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
+    int n_writer;
+    const xmlChar * content; /* text string */
+    int n_content;
 
-    /* missing type support */
+    for (n_writer = 0;n_writer < gen_nb_xmlTextWriterPtr;n_writer++) {
+    for (n_content = 0;n_content < gen_nb_const_xmlChar_ptr;n_content++) {
+        mem_base = xmlMemBlocks();
+        writer = gen_xmlTextWriterPtr(n_writer);
+        content = gen_const_xmlChar_ptr(n_content);
+
+        ret_val = xmlTextWriterWriteString(writer, content);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlTextWriterPtr(n_writer, writer);
+        des_const_xmlChar_ptr(n_content, content);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlTextWriterWriteString",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_writer);
+            printf(" %d", n_content);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 

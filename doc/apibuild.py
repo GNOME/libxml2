@@ -32,6 +32,7 @@ ignored_files = {
   "rngparser.c": "not yet integrated",
   "rngparser.h": "not yet integrated",
   "elfgcchack.h": "not a normal header",
+  "testapi.c": "generated regression tests",
 }
 
 ignored_words = {

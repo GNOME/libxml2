@@ -234,8 +234,9 @@ def type_convert(str, name, info, module, function, pos):
     return res
 
 known_param_types = [ "int", "const_char_ptr", "const_xmlChar_ptr",
-   "xmlParserCtxtPtr", "xmlDocPtr", "filepath", "fileoutput" ,
-   "xmlNodePtr", "xmlNodePtr_in", "userdata", "xmlChar_ptr" ];
+   "xmlParserCtxtPtr", "xmlDocPtr", "filepath", "fileoutput",
+   "xmlNodePtr", "xmlNodePtr_in", "userdata", "xmlChar_ptr",
+   "xmlTextWriterPtr" ];
 
 def is_known_param_type(name):
     for type in known_param_types:
@@ -367,6 +368,15 @@ static xmlNodePtr gen_xmlNodePtr_in(int no) {
     return(NULL);
 }
 static void des_xmlNodePtr_in(int no ATTRIBUTE_UNUSED, xmlNodePtr val ATTRIBUTE_UNUSED) {
+}
+
+#define gen_nb_xmlTextWriterPtr 2
+static xmlTextWriterPtr gen_xmlTextWriterPtr(int no) {
+    if (no == 0) return(xmlNewTextWriterFilename("test.out", 0));
+    return(NULL);
+}
+static void des_xmlTextWriterPtr(int no ATTRIBUTE_UNUSED, xmlTextWriterPtr val) {
+    if (val != NULL) xmlFreeTextWriter(val);
 }
 
 """);

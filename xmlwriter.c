@@ -1206,7 +1206,7 @@ xmlTextWriterWriteRawLen(xmlTextWriterPtr writer, const xmlChar * content,
         return -1;
     }
 
-    if ((content == NULL) && (len > 0)) {
+    if ((content == NULL) || (len < 0)) {
         xmlGenericError(xmlGenericErrorContext,
                         "xmlTextWriterWriteRawLen : invalid content!\n");
         return -1;
@@ -1268,6 +1268,9 @@ xmlTextWriterWriteFormatString(xmlTextWriterPtr writer, const char *format,
     int rc;
     va_list ap;
 
+    if ((writer == NULL) || (format == NULL))
+        return -1;
+
     va_start(ap, format);
 
     rc = xmlTextWriterWriteVFormatString(writer, format, ap);
@@ -1293,7 +1296,7 @@ xmlTextWriterWriteVFormatString(xmlTextWriterPtr writer,
     int rc;
     xmlChar *buf;
 
-    if (writer == NULL)
+    if ((writer == NULL) || (format == NULL))
         return -1;
 
     buf = xmlTextWriterVSprintf(format, argptr);
@@ -1324,7 +1327,7 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
     xmlTextWriterStackEntry *p;
     xmlChar *buf;
 
-    if (writer == NULL)
+    if ((writer == NULL) || (content == NULL))
         return -1;
 
     sum = 0;
@@ -1392,6 +1395,9 @@ xmlOutputBufferWriteBase64(xmlOutputBufferPtr out, int len,
     int linelen;
     int count;
     int sum;
+
+    if ((out == NULL) || (len < 0) || (data == NULL))
+        return(-1);
 
     linelen = 0;
     sum = 0;
@@ -1465,7 +1471,7 @@ xmlTextWriterWriteBase64(xmlTextWriterPtr writer, const char *data,
     xmlLinkPtr lk;
     xmlTextWriterStackEntry *p;
 
-    if (writer == NULL)
+    if ((writer == NULL) || (data == NULL) || (start < 0) || (len < 0))
         return -1;
 
     sum = 0;
@@ -1515,7 +1521,7 @@ xmlOutputBufferWriteBinHex(xmlOutputBufferPtr out,
     	{'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
     int i;
 
-    if ((out == NULL) || ((data == 0) && (len != 0))) {
+    if ((out == NULL) || (data == NULL) || (len < 0)) {
         return -1;
     }
 
@@ -1558,7 +1564,7 @@ xmlTextWriterWriteBinHex(xmlTextWriterPtr writer, const char *data,
     xmlLinkPtr lk;
     xmlTextWriterStackEntry *p;
 
-    if (writer == NULL)
+    if ((writer == NULL) || (data == NULL) || (start < 0) || (len < 0))
         return -1;
 
     sum = 0;
@@ -1742,12 +1748,14 @@ xmlTextWriterEndAttribute(xmlTextWriterPtr writer)
     lk = xmlListFront(writer->nodes);
     if (lk == 0) {
         xmlListDelete(writer->nsstack);
+	writer->nsstack = NULL;
         return -1;
     }
 
     p = (xmlTextWriterStackEntry *) xmlLinkGetData(lk);
     if (p == 0) {
         xmlListDelete(writer->nsstack);
+	writer->nsstack = NULL;
         return -1;
     }
 
@@ -1759,6 +1767,7 @@ xmlTextWriterEndAttribute(xmlTextWriterPtr writer)
             count = xmlOutputBufferWrite(writer->out, 1, &writer->qchar);
             if (count < 0) {
                 xmlListDelete(writer->nsstack);
+		writer->nsstack = NULL;
                 return -1;
             }
             sum += count;
@@ -1772,6 +1781,7 @@ xmlTextWriterEndAttribute(xmlTextWriterPtr writer)
                                                     np->uri);
                     if (count < 0) {
                         xmlListDelete(writer->nsstack);
+			writer->nsstack = NULL;
                         return -1;
                     }
                     sum += count;
@@ -4390,7 +4400,7 @@ xmlTextWriterStartDocumentCallback(void *ctx)
 int
 xmlTextWriterSetIndent(xmlTextWriterPtr writer, int indent)
 {
-    if (indent < 0)
+    if ((writer == NULL) || (indent < 0))
         return -1;
 
     writer->indent = indent;
@@ -4411,7 +4421,7 @@ xmlTextWriterSetIndent(xmlTextWriterPtr writer, int indent)
 int
 xmlTextWriterSetIndentString(xmlTextWriterPtr writer, const xmlChar * str)
 {
-    if (!str)
+    if ((writer == NULL) || (!str))
         return -1;
 
     if (writer->ichar != NULL)

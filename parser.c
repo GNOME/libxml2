@@ -855,7 +855,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
     if ((str == NULL) || (*str == NULL)) return(0);
     ptr = *str;
     cur = *ptr;
-    if ((cur = '&') && (ptr[1] == '#') && (ptr[2] == 'x')) {
+    if ((cur == '&') && (ptr[1] == '#') && (ptr[2] == 'x')) {
 	ptr += 3;
 	cur = *ptr;
 	while (cur != ';') {

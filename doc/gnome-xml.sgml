@@ -52,7 +52,7 @@
     </legalnotice>
 
     <abstract>
-      <para>This manual documents the interfaces of the libglade
+      <para>This manual documents the interfaces of the libxml
       library and has some short notes to help get you up to speed
       with using the library.</para>
     </abstract>

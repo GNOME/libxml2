@@ -1,3 +1,8 @@
+Tue Dec 21 17:22:17 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c: fixed a stupid = vs. == bug :-(
+	* doc/gnome-xml.sgml: s/glade/xml/
+
 Tue Dec 21 14:29:34 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in, doc/xml.html : bug fix release 1.8.2

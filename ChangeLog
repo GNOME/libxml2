@@ -1,3 +1,7 @@
+Sat May 15 12:38:17 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c: more xmlSave cleanup, optimization and refactoring
+
 Fri May 14 17:51:48 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c xmlsave.c: third pass at the escaping refactoring.

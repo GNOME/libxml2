@@ -10047,8 +10047,13 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                 node = xmlRelaxNGSkipIgnored(ctxt, node);
 
                 errNr = ctxt->errNr;
-                if ((define->dflags & IS_TRIABLE)
-                    && (define->data != NULL)) {
+                if ((define->dflags & IS_TRIABLE) && (define->data != NULL) &&
+		    (node != NULL)) {
+		    /*
+		     * node == NULL can't be optimized since IS_TRIABLE
+		     * doesn't account for choice which may lead to
+		     * only attributes.
+		     */
                     xmlHashTablePtr triage =
                         (xmlHashTablePtr) define->data;
 
@@ -10056,10 +10061,6 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                      * Something we can optimize cleanly there is only one
                      * possble branch out !
                      */
-                    if (node == NULL) {
-                        ret = -1;
-                        break;
-                    }
                     if ((node->type == XML_TEXT_NODE) ||
                         (node->type == XML_CDATA_SECTION_NODE)) {
                         list =

@@ -17,7 +17,7 @@ install-data-local:
 
 EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml tst.xml reader1.res reader3.res tree1.res tree2.res io1.res io2.res xpath1.res xpath2.res reader4.res 
 
-noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 io1 parse3 parse4 io2 xpath2 reader4 
+noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 io1 parse3 parse4 io2 xpath2 reader4 reader3 
 
 xpath1_SOURCES=xpath1.c
 xpath1_LDFLAGS=
@@ -59,11 +59,6 @@ reader2_LDFLAGS=
 reader2_DEPENDENCIES= $(DEPS)
 reader2_LDADD= @RDL_LIBS@ $(LDADDS)
 
-reader3_SOURCES=reader3.c
-reader3_LDFLAGS=
-reader3_DEPENDENCIES= $(DEPS)
-reader3_LDADD= @RDL_LIBS@ $(LDADDS)
-
 io1_SOURCES=io1.c
 io1_LDFLAGS=
 io1_DEPENDENCIES= $(DEPS)
@@ -94,6 +89,11 @@ reader4_LDFLAGS=
 reader4_DEPENDENCIES= $(DEPS)
 reader4_LDADD= @RDL_LIBS@ $(LDADDS)
 
+reader3_SOURCES=reader3.c
+reader3_LDFLAGS=
+reader3_DEPENDENCIES= $(DEPS)
+reader3_LDADD= @RDL_LIBS@ $(LDADDS)
+
 valgrind: 
 	$(MAKE) CHECKER='valgrind -q' tests
 
@@ -116,8 +116,6 @@ tests: $(noinst_PROGRAMS)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@($(CHECKER) ./reader2 test2.xml > reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@($(CHECKER) ./reader3 > reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp)
-	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@($(CHECKER) ./io1 > io1.tmp ; diff io1.tmp io1.res ; rm -f io1.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@($(CHECKER) ./parse3)
@@ -129,6 +127,8 @@ tests: $(noinst_PROGRAMS)
 	@($(CHECKER) ./xpath2 test3.xml '//discarded' discarded > xpath2.tmp ; diff xpath2.tmp xpath2.res ; rm xpath2.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@($(CHECKER) ./reader4 test1.xml test2.xml test3.xml > reader4.tmp ; diff reader4.tmp reader4.res ; rm reader4.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
+	@($(CHECKER) ./reader3 > reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 
 

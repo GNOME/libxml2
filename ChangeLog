@@ -1,3 +1,11 @@
+Sat Jan 15 13:35:19 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed bug #157633 in relaxng choice optimization
+	* result/relaxng/choice0* test/relaxng/choice0*: added regression
+	  tests about it.
+	* doc/*: rebuilt
+	* testdso.c: removed a warning due to a missing void in signature.
+
 Thu Jan 13 17:42:55 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* include/libxml/schemasInternals.h xmlschemas.c: 

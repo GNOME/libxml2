@@ -895,17 +895,23 @@ xmlFreeValidCtxt(xmlValidCtxtPtr cur) {
 #endif /* LIBXML_VALID_ENABLED */
 
 /**
- * xmlNewElementContent:
+ * xmlNewDocElementContent:
+ * @doc:  the document
  * @name:  the subelement name or NULL
  * @type:  the type of element content decl
  *
- * Allocate an element content structure.
+ * Allocate an element content structure for the document.
  *
  * Returns NULL if not, otherwise the new element content structure
  */
 xmlElementContentPtr
-xmlNewElementContent(const xmlChar *name, xmlElementContentType type) {
+xmlNewDocElementContent(xmlDocPtr doc, const xmlChar *name,
+                        xmlElementContentType type) {
     xmlElementContentPtr ret;
+    xmlDictPtr dict = NULL;
+
+    if (doc != NULL)
+        dict = doc->dict;
 
     switch(type) {
 	case XML_ELEMENT_CONTENT_ELEMENT:
@@ -939,16 +945,121 @@ xmlNewElementContent(const xmlChar *name, xmlElementContentType type) {
     ret->type = type;
     ret->ocur = XML_ELEMENT_CONTENT_ONCE;
     if (name != NULL) {
-	xmlChar *prefix = NULL;
-	ret->name = xmlSplitQName2(name, &prefix);
-	if (ret->name == NULL)
-	    ret->name = xmlStrdup(name);
-	ret->prefix = prefix;
-    } else {
-        ret->name = NULL;
-	ret->prefix = NULL;
+        int l;
+	const xmlChar *tmp;
+
+	tmp = xmlSplitQName3(name, &l);
+	if (tmp == NULL) {
+	    if (dict == NULL)
+		ret->name = xmlStrdup(name);
+	    else
+	        ret->name = xmlDictLookup(dict, name, -1);
+	} else {
+	    if (dict == NULL) {
+		ret->prefix = xmlStrndup(name, l);
+		ret->name = xmlStrdup(tmp);
+	    } else {
+	        ret->prefix = xmlDictLookup(dict, name, l);
+		ret->name = xmlDictLookup(dict, tmp, -1);
+	    }
+	}
     }
-    ret->c1 = ret->c2 = ret->parent = NULL;
+    return(ret);
+}
+
+/**
+ * xmlNewElementContent:
+ * @name:  the subelement name or NULL
+ * @type:  the type of element content decl
+ *
+ * Allocate an element content structure.
+ * Deprecated in favor of xmlNewDocElementContent
+ *
+ * Returns NULL if not, otherwise the new element content structure
+ */
+xmlElementContentPtr
+xmlNewElementContent(const xmlChar *name, xmlElementContentType type) {
+    return(xmlNewDocElementContent(NULL, name, type));
+}
+
+/**
+ * xmlCopyDocElementContent:
+ * @doc:  the document owning the element declaration
+ * @cur:  An element content pointer.
+ *
+ * Build a copy of an element content description.
+ * 
+ * Returns the new xmlElementContentPtr or NULL in case of error.
+ */
+xmlElementContentPtr
+xmlCopyDocElementContent(xmlDocPtr doc, xmlElementContentPtr cur) {
+    xmlElementContentPtr ret = NULL, prev = NULL, tmp;
+    xmlDictPtr dict = NULL;
+
+    if (cur == NULL) return(NULL);
+
+    if (doc != NULL)
+        dict = doc->dict;
+
+    ret = (xmlElementContentPtr) xmlMalloc(sizeof(xmlElementContent));
+    if (ret == NULL) {
+	xmlVErrMemory(NULL, "malloc failed");
+	return(NULL);
+    }
+    memset(ret, 0, sizeof(xmlElementContent));
+    ret->type = cur->type;
+    ret->ocur = cur->ocur;
+    if (cur->name != NULL) {
+	if (dict)
+	    ret->name = xmlDictLookup(dict, cur->name, -1);
+	else
+	    ret->name = xmlStrdup(cur->name);
+    }
+    
+    if (cur->prefix != NULL) {
+	if (dict)
+	    ret->prefix = xmlDictLookup(dict, cur->prefix, -1);
+	else
+	    ret->prefix = xmlStrdup(cur->prefix);
+    }
+    if (cur->c1 != NULL)
+        ret->c1 = xmlCopyDocElementContent(doc, cur->c1);
+    if (ret->c1 != NULL)
+	ret->c1->parent = ret;
+    if (cur->c2 != NULL) {
+        prev = ret;
+	cur = cur->c2;
+	while (cur != NULL) {
+	    tmp = (xmlElementContentPtr) xmlMalloc(sizeof(xmlElementContent));
+	    if (tmp == NULL) {
+		xmlVErrMemory(NULL, "malloc failed");
+		return(ret);
+	    }
+	    memset(tmp, 0, sizeof(xmlElementContent));
+	    tmp->type = cur->type;
+	    tmp->ocur = cur->ocur;
+	    prev->c2 = tmp;
+	    if (cur->name != NULL) {
+		if (dict)
+		    tmp->name = xmlDictLookup(dict, cur->name, -1);
+		else
+		    tmp->name = xmlStrdup(cur->name);
+	    }
+	    
+	    if (cur->prefix != NULL) {
+		if (dict)
+		    tmp->prefix = xmlDictLookup(dict, cur->prefix, -1);
+		else
+		    tmp->prefix = xmlStrdup(cur->prefix);
+	    }
+	    if (cur->c1 != NULL)
+	        tmp->c1 = xmlCopyDocElementContent(doc,cur->c1);
+	    if (tmp->c1 != NULL)
+		tmp->c1->parent = ret;
+	    prev = tmp;
+	    cur = cur->c2;
+	}
+    }
     return(ret);
 }
 
@@ -957,57 +1068,69 @@ xmlNewElementContent(const xmlChar *name, xmlElementContentType type) {
  * @cur:  An element content pointer.
  *
  * Build a copy of an element content description.
+ * Deprecated, use xmlCopyDocElementContent instead
  * 
  * Returns the new xmlElementContentPtr or NULL in case of error.
  */
 xmlElementContentPtr
 xmlCopyElementContent(xmlElementContentPtr cur) {
-    xmlElementContentPtr ret;
+    return(xmlCopyDocElementContent(NULL, cur));
+}
 
-    if (cur == NULL) return(NULL);
-    ret = xmlNewElementContent((xmlChar *) cur->name, cur->type);
-    if (ret == NULL) {
-	xmlVErrMemory(NULL, "malloc failed");
-	return(NULL);
+/**
+ * xmlFreeDocElementContent:
+ * @doc: the document owning the element declaration
+ * @cur:  the element content tree to free
+ *
+ * Free an element content structure. The whole subtree is removed.
+ */
+void
+xmlFreeDocElementContent(xmlDocPtr doc, xmlElementContentPtr cur) {
+    xmlElementContentPtr next;
+    xmlDictPtr dict = NULL;
+
+    if (doc != NULL)
+        dict = doc->dict;
+
+    while (cur != NULL) {
+        next = cur->c2;
+	switch (cur->type) {
+	    case XML_ELEMENT_CONTENT_PCDATA:
+	    case XML_ELEMENT_CONTENT_ELEMENT:
+	    case XML_ELEMENT_CONTENT_SEQ:
+	    case XML_ELEMENT_CONTENT_OR:
+		break;
+	    default:
+		xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR, 
+			"Internal: ELEMENT content corrupted invalid type\n",
+			NULL);
+		return;
+	}
+	if (cur->c1 != NULL) xmlFreeDocElementContent(doc, cur->c1);
+	if (dict) {
+	    if ((cur->name != NULL) && (!xmlDictOwns(dict, cur->name)))
+	        xmlFree((xmlChar *) cur->name);
+	    if ((cur->prefix != NULL) && (!xmlDictOwns(dict, cur->prefix)))
+	        xmlFree((xmlChar *) cur->prefix);
+	} else {
+	    if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
+	    if (cur->prefix != NULL) xmlFree((xmlChar *) cur->prefix);
+	}
+	xmlFree(cur);
+	cur = next;
     }
-    if (cur->prefix != NULL)
-	ret->prefix = xmlStrdup(cur->prefix);
-    ret->ocur = cur->ocur;
-    if (cur->c1 != NULL) ret->c1 = xmlCopyElementContent(cur->c1);
-    if (ret->c1 != NULL)
-	ret->c1->parent = ret;
-    if (cur->c2 != NULL) ret->c2 = xmlCopyElementContent(cur->c2);
-    if (ret->c2 != NULL)
-	ret->c2->parent = ret;
-    return(ret);
 }
 
 /**
  * xmlFreeElementContent:
  * @cur:  the element content tree to free
  *
- * Free an element content structure. This is a recursive call !
+ * Free an element content structure. The whole subtree is removed.
+ * Deprecated, use xmlFreeDocElementContent instead
  */
 void
 xmlFreeElementContent(xmlElementContentPtr cur) {
-    if (cur == NULL) return;
-    switch (cur->type) {
-	case XML_ELEMENT_CONTENT_PCDATA:
-	case XML_ELEMENT_CONTENT_ELEMENT:
-	case XML_ELEMENT_CONTENT_SEQ:
-	case XML_ELEMENT_CONTENT_OR:
-	    break;
-	default:
-	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR, 
-		    "Internal: ELEMENT content corrupted invalid type\n",
-		    NULL);
-	    return;
-    }
-    if (cur->c1 != NULL) xmlFreeElementContent(cur->c1);
-    if (cur->c2 != NULL) xmlFreeElementContent(cur->c2);
-    if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
-    if (cur->prefix != NULL) xmlFree((xmlChar *) cur->prefix);
-    xmlFree(cur);
+    xmlFreeDocElementContent(NULL, cur);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -1216,7 +1339,7 @@ static void
 xmlFreeElement(xmlElementPtr elem) {
     if (elem == NULL) return;
     xmlUnlinkNode((xmlNodePtr) elem);
-    xmlFreeElementContent(elem->content);
+    xmlFreeDocElementContent(elem->doc, elem->content);
     if (elem->name != NULL)
 	xmlFree((xmlChar *) elem->name);
     if (elem->prefix != NULL)
@@ -1419,7 +1542,19 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
      * Finish to fill the structure.
      */
     ret->etype = type;
-    ret->content = xmlCopyElementContent(content);
+    /*
+     * Avoid a stupid copy when called by the parser
+     * and flag it by setting a special parent value
+     * so the parser doesn't unallocate it.
+     */
+    if ((ctxt->finishDtd == XML_CTXT_FINISH_DTD_0) ||
+        (ctxt->finishDtd == XML_CTXT_FINISH_DTD_1)) {
+	ret->content = content;
+	if (content != NULL)
+	    content->parent = (xmlElementContentPtr) 1;
+    } else {
+	ret->content = xmlCopyDocElementContent(dtd->doc, content);
+    }
 
     /*
      * Link it to the DTD
@@ -1763,18 +1898,36 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
  */
 static void
 xmlFreeAttribute(xmlAttributePtr attr) {
+    xmlDictPtr dict;
+
     if (attr == NULL) return;
+    if (attr->doc != NULL)
+	dict = attr->doc->dict;
+    else
+	dict = NULL;
     xmlUnlinkNode((xmlNodePtr) attr);
     if (attr->tree != NULL)
         xmlFreeEnumeration(attr->tree);
-    if (attr->elem != NULL)
-	xmlFree((xmlChar *) attr->elem);
-    if (attr->name != NULL)
-	xmlFree((xmlChar *) attr->name);
-    if (attr->defaultValue != NULL)
-	xmlFree((xmlChar *) attr->defaultValue);
-    if (attr->prefix != NULL)
-	xmlFree((xmlChar *) attr->prefix);
+    if (dict) {
+        if ((attr->elem != NULL) && (!xmlDictOwns(dict, attr->elem)))
+	    xmlFree((xmlChar *) attr->elem);
+        if ((attr->name != NULL) && (!xmlDictOwns(dict, attr->name)))
+	    xmlFree((xmlChar *) attr->name);
+        if ((attr->prefix != NULL) && (!xmlDictOwns(dict, attr->prefix)))
+	    xmlFree((xmlChar *) attr->prefix);
+        if ((attr->defaultValue != NULL) &&
+	    (!xmlDictOwns(dict, attr->defaultValue)))
+	    xmlFree((xmlChar *) attr->defaultValue);
+    } else {
+	if (attr->elem != NULL)
+	    xmlFree((xmlChar *) attr->elem);
+	if (attr->name != NULL)
+	    xmlFree((xmlChar *) attr->name);
+	if (attr->defaultValue != NULL)
+	    xmlFree((xmlChar *) attr->defaultValue);
+	if (attr->prefix != NULL)
+	    xmlFree((xmlChar *) attr->prefix);
+    }
     xmlFree(attr);
 }
 
@@ -1805,6 +1958,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
     xmlAttributePtr ret;
     xmlAttributeTablePtr table;
     xmlElementPtr elemDef;
+    xmlDictPtr dict = NULL;
 
     if (dtd == NULL) {
 	xmlFreeEnumeration(tree);
@@ -1818,6 +1972,8 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
 	xmlFreeEnumeration(tree);
 	return(NULL);
     }
+    if (dtd->doc != NULL)
+	dict = dtd->doc->dict;
 
 #ifdef LIBXML_VALID_ENABLED
     /*
@@ -1879,9 +2035,6 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
      */
     table = (xmlAttributeTablePtr) dtd->attributes;
     if (table == NULL) {
-	xmlDictPtr dict = NULL;
-	if (dtd->doc != NULL)
-	    dict = dtd->doc->dict;
         table = xmlHashCreateDict(0, dict);
 	dtd->attributes = (void *) table;
     }
@@ -1904,19 +2057,29 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
      * fill the structure.
      */
     ret->atype = type;
-    ret->name = xmlStrdup(name);
-    ret->prefix = xmlStrdup(ns);
-    ret->elem = xmlStrdup(elem);
+    if (dict) {
+	ret->name = xmlDictLookup(dict, name, -1);
+	ret->prefix = xmlDictLookup(dict, ns, -1);
+	ret->elem = xmlDictLookup(dict, elem, -1);
+    } else {
+	ret->name = xmlStrdup(name);
+	ret->prefix = xmlStrdup(ns);
+	ret->elem = xmlStrdup(elem);
+    }
     ret->def = def;
     ret->tree = tree;
-    if (defaultValue != NULL)
-	ret->defaultValue = xmlStrdup(defaultValue);
+    if (defaultValue != NULL) {
+        if (dict)
+	    ret->defaultValue = xmlDictLookup(dict, defaultValue, -1);
+	else
+	    ret->defaultValue = xmlStrdup(defaultValue);
+    }
 
     /*
      * Validity Check:
      * Search the DTD for previous declarations of the ATTLIST
      */
-    if (xmlHashAddEntry3(table, name, ns, elem, ret) < 0) {
+    if (xmlHashAddEntry3(table, ret->name, ret->prefix, ret->elem, ret) < 0) {
 #ifdef LIBXML_VALID_ENABLED
 	/*
 	 * The attribute is already defined in this DTD.

@@ -4739,7 +4739,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
                                  NULL);
 	    }
 	    NEXT;
-	    ret = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_PCDATA);
+	    ret = xmlNewDocElementContent(ctxt->myDoc, NULL, XML_ELEMENT_CONTENT_PCDATA);
 	    if (RAW == '*') {
 		ret->ocur = XML_ELEMENT_CONTENT_MULT;
 		NEXT;
@@ -4747,22 +4747,22 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
 	    return(ret);
 	}
 	if ((RAW == '(') || (RAW == '|')) {
-	    ret = cur = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_PCDATA);
+	    ret = cur = xmlNewDocElementContent(ctxt->myDoc, NULL, XML_ELEMENT_CONTENT_PCDATA);
 	    if (ret == NULL) return(NULL);
 	}
 	while (RAW == '|') {
 	    NEXT;
 	    if (elem == NULL) {
-	        ret = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
+	        ret = xmlNewDocElementContent(ctxt->myDoc, NULL, XML_ELEMENT_CONTENT_OR);
 		if (ret == NULL) return(NULL);
 		ret->c1 = cur;
 		if (cur != NULL)
 		    cur->parent = ret;
 		cur = ret;
 	    } else {
-	        n = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
+	        n = xmlNewDocElementContent(ctxt->myDoc, NULL, XML_ELEMENT_CONTENT_OR);
 		if (n == NULL) return(NULL);
-		n->c1 = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
+		n->c1 = xmlNewDocElementContent(ctxt->myDoc, elem, XML_ELEMENT_CONTENT_ELEMENT);
 		if (n->c1 != NULL)
 		    n->c1->parent = n;
 	        cur->c2 = n;
@@ -4775,7 +4775,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
 	    if (elem == NULL) {
 		xmlFatalErrMsg(ctxt, XML_ERR_NAME_REQUIRED,
 			"xmlParseElementMixedContentDecl : Name expected\n");
-		xmlFreeElementContent(cur);
+		xmlFreeDocElementContent(ctxt->myDoc, cur);
 		return(NULL);
 	    }
 	    SKIP_BLANKS;
@@ -4783,7 +4783,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
 	}
 	if ((RAW == ')') && (NXT(1) == '*')) {
 	    if (elem != NULL) {
-		cur->c2 = xmlNewElementContent(elem,
+		cur->c2 = xmlNewDocElementContent(ctxt->myDoc, elem,
 		                               XML_ELEMENT_CONTENT_ELEMENT);
 		if (cur->c2 != NULL)
 		    cur->c2->parent = cur;
@@ -4796,7 +4796,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
 	    }
 	    SKIP(2);
 	} else {
-	    xmlFreeElementContent(ret);
+	    xmlFreeDocElementContent(ctxt->myDoc, ret);
 	    xmlFatalErr(ctxt, XML_ERR_MIXED_NOT_STARTED, NULL);
 	    return(NULL);
 	}
@@ -4861,7 +4861,7 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
 	    xmlFatalErr(ctxt, XML_ERR_ELEMCONTENT_NOT_STARTED, NULL);
 	    return(NULL);
 	}
-        cur = ret = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
+        cur = ret = xmlNewDocElementContent(ctxt->myDoc, elem, XML_ELEMENT_CONTENT_ELEMENT);
 	if (cur == NULL) {
 	    xmlErrMemory(ctxt, NULL);
 	    return(NULL);
@@ -4898,18 +4898,18 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
 		    "xmlParseElementChildrenContentDecl : '%c' expected\n",
 		                  type);
 		if ((last != NULL) && (last != ret))
-		    xmlFreeElementContent(last);
+		    xmlFreeDocElementContent(ctxt->myDoc, last);
 		if (ret != NULL)
-		    xmlFreeElementContent(ret);
+		    xmlFreeDocElementContent(ctxt->myDoc, ret);
 		return(NULL);
 	    }
 	    NEXT;
 
-	    op = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_SEQ);
+	    op = xmlNewDocElementContent(ctxt->myDoc, NULL, XML_ELEMENT_CONTENT_SEQ);
 	    if (op == NULL) {
 		if ((last != NULL) && (last != ret))
-		    xmlFreeElementContent(last);
-	        xmlFreeElementContent(ret);
+		    xmlFreeDocElementContent(ctxt->myDoc, last);
+	        xmlFreeDocElementContent(ctxt->myDoc, ret);
 		return(NULL);
 	    }
 	    if (last == NULL) {
@@ -4938,19 +4938,19 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
 		    "xmlParseElementChildrenContentDecl : '%c' expected\n",
 				  type);
 		if ((last != NULL) && (last != ret))
-		    xmlFreeElementContent(last);
+		    xmlFreeDocElementContent(ctxt->myDoc, last);
 		if (ret != NULL)
-		    xmlFreeElementContent(ret);
+		    xmlFreeDocElementContent(ctxt->myDoc, ret);
 		return(NULL);
 	    }
 	    NEXT;
 
-	    op = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
+	    op = xmlNewDocElementContent(ctxt->myDoc, NULL, XML_ELEMENT_CONTENT_OR);
 	    if (op == NULL) {
 		if ((last != NULL) && (last != ret))
-		    xmlFreeElementContent(last);
+		    xmlFreeDocElementContent(ctxt->myDoc, last);
 		if (ret != NULL)
-		    xmlFreeElementContent(ret);
+		    xmlFreeDocElementContent(ctxt->myDoc, ret);
 		return(NULL);
 	    }
 	    if (last == NULL) {
@@ -4971,7 +4971,7 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
 	} else {
 	    xmlFatalErr(ctxt, XML_ERR_ELEMCONTENT_NOT_FINISHED, NULL);
 	    if (ret != NULL)
-		xmlFreeElementContent(ret);
+		xmlFreeDocElementContent(ctxt->myDoc, ret);
 	    return(NULL);
 	}
 	GROW;
@@ -4989,10 +4989,10 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
 	    if (elem == NULL) {
 		xmlFatalErr(ctxt, XML_ERR_ELEMCONTENT_NOT_STARTED, NULL);
 		if (ret != NULL)
-		    xmlFreeElementContent(ret);
+		    xmlFreeDocElementContent(ctxt->myDoc, ret);
 		return(NULL);
 	    }
-	    last = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
+	    last = xmlNewDocElementContent(ctxt->myDoc, elem, XML_ELEMENT_CONTENT_ELEMENT);
 	    if (RAW == '?') {
 		last->ocur = XML_ELEMENT_CONTENT_OPT;
 		NEXT;
@@ -5213,6 +5213,9 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 
 	if (RAW != '>') {
 	    xmlFatalErr(ctxt, XML_ERR_GT_REQUIRED, NULL);
+	    if (content != NULL) {
+		xmlFreeDocElementContent(ctxt->myDoc, content);
+	    }
 	} else {
 	    if (input != ctxt->input) {
 		xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
@@ -5221,12 +5224,23 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 		
 	    NEXT;
 	    if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
-		(ctxt->sax->elementDecl != NULL))
+		(ctxt->sax->elementDecl != NULL)) {
+		if (content != NULL)
+		    content->parent = NULL;
 	        ctxt->sax->elementDecl(ctxt->userData, name, ret,
 		                       content);
-	}
-	if (content != NULL) {
-	    xmlFreeElementContent(content);
+		if ((content != NULL) && (content->parent == NULL)) {
+		    /*
+		     * this is a trick: if xmlAddElementDecl is called,
+		     * instead of copying the full tree it is plugged directly
+		     * if called from the parser. Avoid duplicating the 
+		     * interfaces or change the API/ABI
+		     */
+		    xmlFreeDocElementContent(ctxt->myDoc, content);
+		}
+	    } else if (content != NULL) {
+		xmlFreeDocElementContent(ctxt->myDoc, content);
+	    }
 	}
     }
     return(ret);

@@ -19,7 +19,7 @@
 
 #ifdef LIBXML_REGEXP_ENABLED
 
-#define DEBUG_ERR
+/* #define DEBUG_ERR */
 
 #include <stdio.h>
 #include <string.h>
@@ -3343,7 +3343,7 @@ xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
 #ifdef DEBUG_ERR
 static void testerr(xmlRegExecCtxtPtr exec) {
     const xmlChar *string;
-    const xmlChar *values[5];
+    xmlChar *values[5];
     int nb = 5;
     int nbneg;
     int terminal;

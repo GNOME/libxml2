@@ -172,6 +172,7 @@ XMLPUBFUN void XMLCALL
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /* Element Content */
+/* the non Doc version are being deprecated */
 XMLPUBFUN xmlElementContentPtr XMLCALL 
 		xmlNewElementContent	(const xmlChar *name,
 					 xmlElementContentType type);
@@ -179,6 +180,17 @@ XMLPUBFUN xmlElementContentPtr XMLCALL
 		xmlCopyElementContent	(xmlElementContentPtr content);
 XMLPUBFUN void XMLCALL		     
 		xmlFreeElementContent	(xmlElementContentPtr cur);
+/* the new versions with doc argument */
+XMLPUBFUN xmlElementContentPtr XMLCALL 
+		xmlNewDocElementContent	(xmlDocPtr doc,
+					 const xmlChar *name,
+					 xmlElementContentType type);
+XMLPUBFUN xmlElementContentPtr XMLCALL 
+		xmlCopyDocElementContent(xmlDocPtr doc,
+					 xmlElementContentPtr content);
+XMLPUBFUN void XMLCALL		     
+		xmlFreeDocElementContent(xmlDocPtr doc,
+					 xmlElementContentPtr cur);
 XMLPUBFUN void XMLCALL		     
 		xmlSnprintfElementContent(char *buf,
 					 int size,

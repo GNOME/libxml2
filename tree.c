@@ -3795,7 +3795,7 @@ xmlIsBlankNode(xmlNodePtr node) {
     if (node == NULL) return(0);
 
     if (node->type != XML_TEXT_NODE) return(0);
-    if (node->content == NULL) return(0);
+    if (node->content == NULL) return(1);
     cur = node->content;
     while (*cur != 0) {
 	if (!IS_BLANK(*cur)) return(0);

@@ -1,3 +1,8 @@
+Wed Oct 11 17:53:57 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c valid.c xmllint.c: Fixed a few postvalidation bugs
+	  and added a --dtdvalid option to xmllint used to test it
+
 Wed Oct 11 15:01:29 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xml-config.1 Makefile.am libxml.spec.in: adding a man page for

@@ -149,7 +149,8 @@ void xmlValidDebug(xmlNodePtr cur, xmlElementContentPtr cont) {
 
 #define CHECK_DTD						\
    if (doc == NULL) return(0);					\
-   else if (doc->intSubset == NULL) return(0)
+   else if ((doc->intSubset == NULL) &&				\
+	    (doc->extSubset == NULL)) return(0)
 
 xmlElementPtr xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name);
 xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem);
@@ -3329,6 +3330,14 @@ xmlValidateElementTypeExpr(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 		*child = (*child)->next;
 	    continue;
 	}
+        if (((*child)->type == XML_TEXT_NODE) &&
+	    (xmlIsBlankNode(*child)) &&
+	    ((cont->type == XML_ELEMENT_CONTENT_ELEMENT) ||
+	     (cont->type == XML_ELEMENT_CONTENT_SEQ) ||
+	     (cont->type == XML_ELEMENT_CONTENT_OR))) {
+	    *child = (*child)->next;
+	    continue;
+	}
         if ((*child)->type == XML_PI_NODE) {
 	    *child = (*child)->next;
 	    continue;
@@ -3434,6 +3443,14 @@ xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 		*child = (*child)->next;
 	    continue;
 	}
+        if (((*child)->type == XML_TEXT_NODE) &&
+	    (xmlIsBlankNode(*child)) &&
+	    ((cont->type == XML_ELEMENT_CONTENT_ELEMENT) ||
+	     (cont->type == XML_ELEMENT_CONTENT_SEQ) ||
+	     (cont->type == XML_ELEMENT_CONTENT_OR))) {
+	    *child = (*child)->next;
+	    continue;
+	}
         if ((*child)->type == XML_PI_NODE) {
 	    *child = (*child)->next;
 	    continue;
@@ -3511,6 +3528,14 @@ xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 		*child = (*child)->next;
 	    continue;
 	}
+        if (((*child)->type == XML_TEXT_NODE) &&
+	    (xmlIsBlankNode(*child)) &&
+	    ((cont->type == XML_ELEMENT_CONTENT_ELEMENT) ||
+	     (cont->type == XML_ELEMENT_CONTENT_SEQ) ||
+	     (cont->type == XML_ELEMENT_CONTENT_OR))) {
+	    *child = (*child)->next;
+	    continue;
+	}
         if ((*child)->type == XML_PI_NODE) {
 	    *child = (*child)->next;
 	    continue;
@@ -3551,6 +3576,8 @@ xmlSprintfElementChilds(char *buf, xmlNodePtr node, int glob) {
 		     strcat(buf, " ");
 		 break;
             case XML_TEXT_NODE:
+		 if (xmlIsBlankNode(cur))
+		     break;
             case XML_CDATA_SECTION_NODE:
             case XML_ENTITY_REF_NODE:
 	         strcat(buf, "CDATA");
@@ -3887,11 +3914,6 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     xmlNodePtr root;
     if (doc == NULL) return(0);
 
-    if ((doc->intSubset == NULL) ||
-	(doc->intSubset->name == NULL)) {
-	VERROR(ctxt->userData, "Not valid: no DtD found\n");
-        return(0);
-    }
     root = xmlDocGetRootElement(doc);
     if ((root == NULL) || (root->name == NULL)) {
 	VERROR(ctxt->userData, "Not valid: no root element\n");
@@ -3899,29 +3921,36 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     }
 
     /*
-     * Check first the document root against the NQName
+     * When doing post validation against a separate DTD, those may
+     * no internal subset has been generated
      */
-    if (!xmlStrEqual(doc->intSubset->name, root->name)) {
-	if ((root->ns != NULL) && (root->ns->prefix != NULL)) {
-	    xmlChar qname[500];
+    if ((doc->intSubset != NULL) &&
+	(doc->intSubset->name != NULL)) {
+	/*
+	 * Check first the document root against the NQName
+	 */
+	if (!xmlStrEqual(doc->intSubset->name, root->name)) {
+	    if ((root->ns != NULL) && (root->ns->prefix != NULL)) {
+		xmlChar qname[500];
 #ifdef HAVE_SNPRINTF
-	    snprintf((char *) qname, sizeof(qname), "%s:%s",
-		     root->ns->prefix, root->name);
+		snprintf((char *) qname, sizeof(qname), "%s:%s",
+			 root->ns->prefix, root->name);
 #else
-	    sprintf((char *) qname, "%s:%s", root->ns->prefix, root->name);
+		sprintf((char *) qname, "%s:%s", root->ns->prefix, root->name);
 #endif
-            qname[sizeof(qname) - 1] = 0;
-	    if (xmlStrEqual(doc->intSubset->name, qname))
+		qname[sizeof(qname) - 1] = 0;
+		if (xmlStrEqual(doc->intSubset->name, qname))
+		    goto name_ok;
+	    } 
+	    if ((xmlStrEqual(doc->intSubset->name, BAD_CAST "HTML")) &&
+		(xmlStrEqual(root->name, BAD_CAST "html")))
 		goto name_ok;
-	} 
-	if ((xmlStrEqual(doc->intSubset->name, BAD_CAST "HTML")) &&
-	    (xmlStrEqual(root->name, BAD_CAST "html")))
-	    goto name_ok;
-	VERROR(ctxt->userData,
-	       "Not valid: root and DtD name do not match '%s' and '%s'\n",
-	       root->name, doc->intSubset->name);
-	return(0);
-	
+	    VERROR(ctxt->userData,
+		   "Not valid: root and DtD name do not match '%s' and '%s'\n",
+		   root->name, doc->intSubset->name);
+	    return(0);
+	    
+	}
     }
 name_ok:
     return(1);

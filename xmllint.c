@@ -67,6 +67,7 @@ static int noout = 0;
 static int nowrap = 0;
 static int valid = 0;
 static int postvalid = 0;
+static char * dtdvalid = NULL;
 static int repeat = 0;
 static int insert = 0;
 static int compress = 0;
@@ -562,10 +563,27 @@ void parseAndPrintFile(char *filename) {
     /*
      * A posteriori validation test
      */
-    if (postvalid) {
+    if (dtdvalid != NULL) {
+	xmlDtdPtr dtd;
+
+	dtd = xmlParseDTD(NULL, (const xmlChar *)dtdvalid); 
+	if (dtd == NULL) {
+	    fprintf(stderr, "Could not parse DTD %s\n", dtdvalid);
+	} else {
+	    xmlValidCtxt cvp;
+	    cvp.userData = (void *) stderr;                                                 cvp.error    = (xmlValidityErrorFunc) fprintf;                                  cvp.warning  = (xmlValidityWarningFunc) fprintf;
+	    if (!xmlValidateDtd(&cvp, doc, dtd)) {
+		fprintf(stderr, "Document %s does not validate against %s\n",
+			filename, dtdvalid);
+	    }
+	    xmlFreeDtd(dtd);
+	}
+    } else if (postvalid) {
 	xmlValidCtxt cvp;
 	cvp.userData = (void *) stderr;                                                 cvp.error    = (xmlValidityErrorFunc) fprintf;                                  cvp.warning  = (xmlValidityWarningFunc) fprintf;
-	xmlValidateDocument(&cvp, doc);
+	if (!xmlValidateDocument(&cvp, doc)) {
+	    fprintf(stderr, "Document %s does not validate\n", filename);
+	}
     }
 
 #ifdef LIBXML_DEBUG_ENABLED
@@ -623,6 +641,11 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-postvalid")) ||
 	         (!strcmp(argv[i], "--postvalid")))
 	    postvalid++;
+	else if ((!strcmp(argv[i], "-dtdvalid")) ||
+	         (!strcmp(argv[i], "--dtdvalid"))) {
+	    i++;
+	    dtdvalid = argv[i];
+        }
 	else if ((!strcmp(argv[i], "-insert")) ||
 	         (!strcmp(argv[i], "--insert")))
 	    insert++;
@@ -696,6 +719,11 @@ int main(int argc, char **argv) {
 	    i++;
 	    continue;
         }
+	if ((!strcmp(argv[i], "-dtdvalid")) ||
+	         (!strcmp(argv[i], "--dtdvalid"))) {
+	    i++;
+	    continue;
+        }
 	if (argv[i][0] != '-') {
 	    if (repeat) {
 		for (count = 0;count < 100 * repeat;count++)
@@ -725,6 +753,7 @@ int main(int argc, char **argv) {
 	printf("\t--nowarp : do not put HTML doc wrapper\n");
 	printf("\t--valid : validate the document in addition to std well-formed check\n");
 	printf("\t--postvalid : do a posteriori validation, i.e after parsing\n");
+	printf("\t--dtdvalid URL : do a posteriori validation against a given DTD\n");
 	printf("\t--repeat : repeat 100 times, for timing or profiling\n");
 	printf("\t--insert : ad-hoc test for valid insertions\n");
 	printf("\t--compress : turn on gzip compression of output\n");

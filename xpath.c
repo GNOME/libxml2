@@ -10447,10 +10447,10 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                          * single item in the nodelocset.
                          */
                         ctxt->context->node = oldlocset->locTab[i]->user;
-                        tmp = xmlXPathNewNodeSet(ctxt->context->node);
-                        valuePush(ctxt, tmp);
                         ctxt->context->contextSize = oldlocset->locNr;
                         ctxt->context->proximityPosition = i + 1;
+                        tmp = xmlXPathNewNodeSet(ctxt->context->node);
+                        valuePush(ctxt, tmp);
 
                         if (op->ch2 != -1)
                             total +=
@@ -10632,9 +10632,9 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                          * Run the evaluation with a node list made of a
                          * single item in the nodelocset.
                          */
-                        ctxt->context->node = (xmlNodePtr)ctxt->context->doc;
-                        ctxt->context->contextSize = 1;
-                        ctxt->context->proximityPosition = 1;
+                        ctxt->context->node = oldlocset->locTab[i]->user;
+                        ctxt->context->contextSize = oldlocset->locNr;
+                        ctxt->context->proximityPosition = i + 1;
                         tmp = xmlXPathNewNodeSet(ctxt->context->node);
                         valuePush(ctxt, tmp);
 
@@ -10644,10 +10644,6 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                                                    &comp->steps[op->ch2]);
                         CHECK_ERROR0;
 
-                        /*
-                         * The result of the evaluation needs to be tested to
-                         * decide whether the filter succeeded or not
-                         */
                         res = valuePop(ctxt);
 			if (res->type == XPATH_LOCATIONSET) {
 			    xmlLocationSetPtr rloc = 
@@ -10706,10 +10702,6 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                                                    &comp->steps[op->ch2]);
                             CHECK_ERROR0;
 
-                            /*
-                             * The result of the evaluation need to be tested to
-                             * decided whether the filter succeeded or not
-                             */
                             res = valuePop(ctxt);
                             range =
                                 xmlXPtrNewRangeNodeObject(oldset->nodeTab[i],

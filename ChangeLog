@@ -1,3 +1,11 @@
+Wed Dec 31 15:55:55 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* python/generator.py, python/libxml2class.txt: fixed problem
+	  pointed out by Stéphane Bidoul on the list.
+	* xinclude.c, xpointer.c, xpath.c, include/libxml/xpointer.h:
+	  completed modifications required to fix Bug 129967 (at last!).
+	  Now wait to see how long before further trouble...
+
 Tue Dec 30 16:26:13 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* parser.c, xmlmemory.c, include/libxml/xmlmemory.h: Fixed

@@ -103,8 +103,6 @@ XMLPUBFUN xmlNodePtr XMLCALL
 		    xmlXPtrBuildNodeList	(xmlXPathObjectPtr obj);
 XMLPUBFUN void XMLCALL		
 		    xmlXPtrEvalRangePredicate	(xmlXPathParserContextPtr ctxt);
-XMLPUBFUN xmlNodePtr XMLCALL
-		    xmlXPtrAdvanceNode		(xmlNodePtr cur);
 #ifdef __cplusplus
 }
 #endif

@@ -123,7 +123,8 @@ xmlXPtrErr(xmlXPathParserContextPtr ctxt, int error,
  *		A few helper functions for child sequences		*
  *									*
  ************************************************************************/
-
+/* xmlXPtrAdvanceNode is a private function, but used by xinclude.c */
+xmlNodePtr xmlXPtrAdvanceNode(xmlNodePtr cur, int *level);
 /**
  * xmlXPtrGetArity:
  * @cur:  the node
@@ -1582,7 +1583,7 @@ xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
 	    STRANGE
 	    return(NULL);
 	}
-	cur = xmlXPtrAdvanceNode(cur);
+	cur = xmlXPtrAdvanceNode(cur, NULL);
     }
     return(list);
 }
@@ -2296,12 +2297,14 @@ xmlXPtrRangeToFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * Returns -1 in case of failure, 0 otherwise
  */
 xmlNodePtr
-xmlXPtrAdvanceNode(xmlNodePtr cur) {
+xmlXPtrAdvanceNode(xmlNodePtr cur, int *level) {
 next:
     if (cur == NULL)
 	return(NULL);
     if (cur->children != NULL) {
         cur = cur->children ;
+	if (level != NULL)
+	    (*level)++;
 	goto found;
     }
     if (cur->next != NULL) {
@@ -2310,6 +2313,8 @@ next:
     }
     do {
         cur = cur->parent;
+	if (level != NULL)
+	    (*level)--;
         if (cur == NULL) return(NULL);
         if (cur->next != NULL) {
 	    cur = cur->next;
@@ -2366,7 +2371,7 @@ xmlXPtrAdvanceChar(xmlNodePtr *node, int *indx, int bytes) {
 		cur = xmlXPtrGetNthChild(cur, pos);
 		pos = 0;
 	    } else {
-		cur = xmlXPtrAdvanceNode(cur);
+		cur = xmlXPtrAdvanceNode(cur, NULL);
 		pos = 0;
 	    }
 	}
@@ -2401,7 +2406,7 @@ xmlXPtrAdvanceChar(xmlNodePtr *node, int *indx, int bytes) {
 	}
 	if (pos + bytes >= len) {
 	    bytes -= (len - pos);
-	    cur = xmlXPtrAdvanceNode(cur);
+	    cur = xmlXPtrAdvanceNode(cur, NULL);
 	    cur = 0;
 	} else if (pos + bytes < len) {
 	    pos += bytes;
@@ -2490,7 +2495,7 @@ xmlXPtrMatchString(const xmlChar *string, xmlNodePtr start, int startindex,
 		}
 	    }
 	}
-	cur = xmlXPtrAdvanceNode(cur);
+	cur = xmlXPtrAdvanceNode(cur, NULL);
 	if (cur == NULL)
 	    return(0);
 	pos = 0;
@@ -2583,7 +2588,7 @@ xmlXPtrSearchString(const xmlChar *string, xmlNodePtr *start, int *startindex,
 	}
 	if ((cur == *end) && (pos >= *endindex))
 	    return(0);
-	cur = xmlXPtrAdvanceNode(cur);
+	cur = xmlXPtrAdvanceNode(cur, NULL);
 	if (cur == NULL)
 	    return(0);
 	pos = 1;

@@ -896,7 +896,6 @@ Class parserCtxt(parserCtxtCore)
 
     # functions from module parserInternals
     decodeEntities()
-    errMemory()
     handleEntity()
     namespaceParseNCName()
     namespaceParseNSDef()

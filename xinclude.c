@@ -844,6 +844,7 @@ xmlXIncludeGetNthChild(xmlNodePtr cur, int no) {
     return(cur);
 }
 
+xmlNodePtr xmlXPtrAdvanceNode(xmlNodePtr cur, int *level); /* in xpointer.c */
 /**
  * xmlXIncludeCopyRange:
  * @ctxt:  the XInclude context
@@ -860,10 +861,12 @@ static xmlNodePtr
 xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	                xmlDocPtr source, xmlXPathObjectPtr range) {
     /* pointers to generated nodes */
-    xmlNodePtr list = NULL, last = NULL, parent = NULL, tmp;
+    xmlNodePtr list = NULL, last = NULL, listParent = NULL;
+    xmlNodePtr tmp, tmp2;
     /* pointers to traversal nodes */
     xmlNodePtr start, cur, end;
     int index1, index2;
+    int level = 0, lastLevel = 0;
 
     if ((ctxt == NULL) || (target == NULL) || (source == NULL) ||
 	(range == NULL))
@@ -881,7 +884,36 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
     cur = start;
     index1 = range->index;
     index2 = range->index2;
+    /*
+     * level is depth of the current node under consideration
+     * list is the pointer to the root of the output tree
+     * listParent is a pointer to the parent of output tree (within
+       the included file) in case we need to add another level
+     * last is a pointer to the last node added to the output tree
+     * lastLevel is the depth of last (relative to the root)
+     */
     while (cur != NULL) {
+	/*
+	 * Check if our output tree needs a parent
+	 */
+	if (level < 0) {
+	    while (level < 0) {
+	        tmp2 = xmlDocCopyNode(listParent, target, 0);
+	        xmlAddChild(tmp2, list);
+	        list = tmp2;
+	        listParent = listParent->parent;
+	        level++;
+	    }
+	    last = list;
+	    lastLevel = 0;
+	}
+	/*
+	 * Check whether we need to change our insertion point
+	 */
+	while (level < lastLevel) {
+	    last = last->parent;
+	    lastLevel --;
+	}
 	if (cur == end) {	/* Are we at the end of the range? */
 	    if (cur->type == XML_TEXT_NODE) {
 		const xmlChar *content = cur->content;
@@ -904,23 +936,25 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		if (list == NULL)
 		    return(tmp);
 		/* prune and return full set */
-		if (last != NULL)
+		if (level == lastLevel)
 		    xmlAddNextSibling(last, tmp);
 		else 
-		    xmlAddChild(parent, tmp);
+		    xmlAddChild(last, tmp);
 		return(list);
 	    } else {	/* ending node not a text node */
 		tmp = xmlDocCopyNode(cur, target, 0);
-		if (list == NULL)
+		if (list == NULL) {
 		    list = tmp;
-		else {
-		    if (last != NULL)
+		    listParent = cur->parent;
+		} else {
+		    if (level == lastLevel)
 			xmlAddNextSibling(last, tmp);
-		    else
-			xmlAddChild(parent, tmp);
+		    else {
+			xmlAddChild(last, tmp);
+			lastLevel = level;
+		    }
 		}
-		last = NULL;
-		parent = tmp;
+		last = tmp;
 
 		if (index2 > 1) {
 		    end = xmlXIncludeGetNthChild(cur, index2 - 1);
@@ -937,8 +971,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		 */
 		continue; /* while */
 	    }
-	} else if ((cur == start) &&	/* Not at the end, are we at start? */
-		   (list == NULL) /* looks superfluous but ... */ ) {
+	} else if (cur == start) {	/* Not at the end, are we at start? */
 	    if ((cur->type == XML_TEXT_NODE) ||
 		(cur->type == XML_CDATA_SECTION_NODE)) {
 		const xmlChar *content = cur->content;
@@ -953,23 +986,20 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		    tmp = xmlNewText(content);
 		}
 		last = list = tmp;
+		listParent = cur->parent;
 	    } else {		/* Not text node */
+		tmp = xmlDocCopyNode(cur, target, 0);
+		list = last = tmp;
+		listParent = cur->parent;
 		if (index1 > 1) {	/* Do we need to position? */
-		    tmp = xmlDocCopyNode(cur, target, 0);
-		    list = tmp;
-		    parent = tmp;
-		    last = NULL;
 		    cur = xmlXIncludeGetNthChild(cur, index1 - 1);
+		    level = lastLevel = 1;
 		    index1 = 0;
 		    /*
 		     * Now gather the remaining nodes from cur to end
 		     */
 		    continue; /* while */
 		}
-		tmp = xmlDocCopyNode(cur, target, 0);
-		list = tmp;
-		parent = NULL;
-		last = tmp;
 	    }
 	} else {
 	    tmp = NULL;
@@ -995,24 +1025,19 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		    break;
 	    }
 	    if (tmp != NULL) {
-		if ((list == NULL) || ((last == NULL) && (parent == NULL)))  {
-		    return(NULL);
-		}
-		if (last != NULL)
+		if (level == lastLevel)
 		    xmlAddNextSibling(last, tmp);
 		else {
-		    xmlAddChild(parent, tmp);
-		    last = tmp;
+		    xmlAddChild(last, tmp);
+		    lastLevel = level;
 		}
+		last = tmp;
 	    }
 	}
 	/*
 	 * Skip to next node in document order
 	 */
-	if ((list == NULL) || ((last == NULL) && (parent == NULL)))  {
-	    return(NULL);
-	}
-	cur = xmlXPtrAdvanceNode(cur);
+	cur = xmlXPtrAdvanceNode(cur, &level);
     }
     return(list);
 }

@@ -325,6 +325,8 @@ def skip_function(name):
         return 1
     if name == "xmlOutputBufferFlush": # handled by by the superclass
         return 1
+    if name == "xmlErrMemory":
+        return 1
     return 0
 
 def print_function_wrapper(name, output, export, include):
@@ -573,8 +575,6 @@ def buildStubs():
     wrapper = open("libxml2-py.c", "w")
     wrapper.write("/* Generated */\n\n")
     wrapper.write("#include <Python.h>\n")
-#    wrapper.write("#include \"config.h\"\n")
-    wrapper.write("#define IN_LIBXML\n")
     wrapper.write("#include <libxml/xmlversion.h>\n")
     wrapper.write("#include <libxml/tree.h>\n")
     wrapper.write("#include <libxml/xmlschemastypes.h>\n")

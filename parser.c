@@ -6938,7 +6938,6 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 
 void
 xmlParseElement(xmlParserCtxtPtr ctxt) {
-    const xmlChar *openTag = CUR_PTR;
     xmlChar *name;
     xmlChar *oldname;
     xmlParserNodeInfo node_info;
@@ -7004,8 +7003,8 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	ctxt->errNo = XML_ERR_GT_REQUIRED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
-	                     "Couldn't find end of Start Tag\n%.30s\n",
-	                     openTag);
+	                     "Couldn't find end of Start Tag %s\n",
+	                     name);
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
 
@@ -7043,7 +7042,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	ctxt->errNo = XML_ERR_TAG_NOT_FINISHED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
-	         "Premature end of data in tag %.30s\n", openTag);
+	         "Premature end of data in tag %s\n", name);
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
 

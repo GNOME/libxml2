@@ -1,3 +1,10 @@
+Tue Jun 11 09:25:12 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: Babak Vahedipour-Kunze reported that openTag in 
+	  xmlParseElement was likely to have been deallocated at the
+	  time of the report, possibly leading to segfault. Just report
+	  the tag name now.
+
 Mon Jun 10 18:00:02 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: patch from Richard Jinks for XPath substring() function

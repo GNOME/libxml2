@@ -2268,10 +2268,12 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    }
 	}
     }
-    TODO
 
     child = node->children;
     while (IS_SCHEMA(child, "annotation")) {
+	/*
+	 * the annotations here are simply discarded ...
+	 */
 	child = child->next;
     }
     if (child != NULL) {

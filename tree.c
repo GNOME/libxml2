@@ -7481,7 +7481,8 @@ xmlNodeDumpOutputInternal(xmlOutputBufferPtr buf, xmlDocPtr doc,
     if (format == 1) {
 	tmp = cur->children;
 	while (tmp != NULL) {
-	    if ((tmp->type == XML_TEXT_NODE) || 
+	    if ((tmp->type == XML_TEXT_NODE) ||
+		(tmp->type == XML_CDATA_SECTION_NODE) ||
 		(tmp->type == XML_ENTITY_REF_NODE)) {
 		format = 0;
 		break;

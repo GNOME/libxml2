@@ -3083,6 +3083,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
     if (ret == NULL) {
 	xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n",
 	             (const char *) resource);
+	return(NULL);
     }
     if ((ret->buf != NULL) && (ret->buf->readcallback == xmlIOHTTPRead)) {
         const char *encoding;

@@ -9,7 +9,7 @@
 #define LIBXML_DLL_IMPORT
 #define SOCKLEN_T int
 
-#ifdef INCLUDE_WINSOCK
+#ifdef NEED_SOCKETS
 #include <winsock2.h>
 
 #define EWOULDBLOCK             WSAEWOULDBLOCK
@@ -94,7 +94,10 @@ static int isnan (double d) {
 /* Microsoft's C runtime names all non-ANSI functions with a leading
    underscore. Since functionality is still the same, they can be used. */
 #ifdef _MSC_VER
+#include <libxml/xmlversion.h>
+#ifndef WITH_TRIO
 #define snprintf _snprintf
 #define vsnprintf _vsnprintf
+#endif /* WITH_TRIO */
 #endif /* _MSC_VER */
 

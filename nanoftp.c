@@ -20,6 +20,7 @@
 #include "trio.h"
 #endif
 #else /* STANDALONE */
+#define NEED_SOCKETS
 #include "libxml.h"
 #endif /* STANDALONE */
 

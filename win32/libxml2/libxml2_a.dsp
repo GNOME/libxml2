@@ -89,7 +89,15 @@ LIB32=link.exe -lib
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=..\..\catalog.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\debugXML.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\DOCBparser.c
 # End Source File
 # Begin Source File
 
@@ -185,7 +193,15 @@ SOURCE=..\..\xpointer.c
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
+SOURCE=..\..\include\libxml\catalog.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\libxml\debugXML.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\DOCBparser.h
 # End Source File
 # Begin Source File
 
@@ -206,6 +222,10 @@ SOURCE=..\..\include\libxml\HTMLparser.h
 # Begin Source File
 
 SOURCE=..\..\include\libxml\HTMLtree.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\libxml.h
 # End Source File
 # Begin Source File
 

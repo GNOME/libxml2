@@ -434,7 +434,6 @@ EXPORTS
 	cdataBlock
 	xmlDefaultSAXHandlerInit
 	htmlDefaultSAXHandlerInit
-	sgmlDefaultSAXHandlerInit
 
 /* 
  * strio.h 
@@ -910,4 +909,20 @@ EXPORTS
 	xmlXPtrBuildNodeList
 	xmlXPtrEvalRangePredicate
 #endif /* LIBXML_XPTR_ENABLED */
+
+/*
+ * DOCBParser.h
+ */
+#ifdef LIBXML_DOCB_ENABLED
+	docbEncodeEntities
+	docbSAXParseDoc
+	docbParseDoc
+	docbSAXParseFile
+	docbParseFile
+	docbFreeParserCtxt
+	docbCreatePushParserCtxt
+	docbParseChunk
+	docbCreateFileParserCtxt
+	docbParseDocument
+#endif /* LIBXML_DOCB_ENABLED */
 

@@ -1,3 +1,10 @@
+Sat Jun  9 15:50:11 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* nanoftp.c nanohttp.c uri.c include/win32config.h: Igor  Zlatkovic
+	  provided fixes to compile on MSCC again
+	* win32/libxml2/libxml2.def.src win32/libxml2/libxml2*.dsp: he
+	  also provided an update for the project files.
+
 Thu Jun  7 21:52:10 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: applied Steve Tinney patch to xmlNewNsProp to fix

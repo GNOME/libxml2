@@ -10,10 +10,6 @@
 
 #include "libxml.h"
 
-#ifdef WIN32
-#define INCLUDE_WINSOCK
-#endif
-
 #include <string.h>
 
 #include <libxml/xmlmemory.h>

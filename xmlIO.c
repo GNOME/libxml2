@@ -130,7 +130,7 @@ static int xmlOutputCallbackInitialized = 0;
  ************************************************************************/
 
 static const char *IOerr[] = {
-    "Unknown IO error errno",   /* UNKNOWN */
+    "Unknown IO error",         /* UNKNOWN */
     "Permission denied",	/* EACCES */
     "Resource temporarily unavailable",/* EAGAIN */
     "Bad file descriptor",	/* EBADF */

@@ -353,9 +353,9 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
         int len;
 	len = xmlStrlen((const xmlChar *)str);
 	if ((len > 0) && (str[len - 1] != '\n'))
-	    channel(data, "%s", str);
-	else
 	    channel(data, "%s\n", str);
+	else
+	    channel(data, "%s", str);
     } else {
         channel(data, "%s\n", "out of memory error");
     }

@@ -1010,7 +1010,7 @@ cleanup:
 
 dist-hook: cleanup libxml2.spec
 	-cp libxml2.spec $(distdir)
-	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms test result SAXresult ) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms bakefile test result SAXresult ) | (cd $(distdir); tar xf -)
 
 dist-source: distdir
 	$(AMTAR) -chof - --exclude test --exclude result $(distdir) | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-sources+"`.tar.gz

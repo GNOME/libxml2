@@ -1,3 +1,8 @@
+Tue Jun  5 14:46:10 CEST 2001 Bjorn Reese <breese@users.sourceforge.net>
+
+	* error.c: Workaround for non-preserving variadic list.
+	* trio.c trio.h triop.h strio.c strio.h: Upgraded to trio baseline 1.4
+	
 Sat Jun  2 06:12:33 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/xml.html: added 2.3.10 release

@@ -12,7 +12,7 @@ except:
     sys.exit(0)
 
 #
-# Modules we don't want skip in API test
+# Modules we want to skip in API test
 #
 skipped_modules = [ "SAX", "xlink", "threads", "globals",
   "xmlmemory", "xmlversion", "xmlexports",
@@ -96,7 +96,7 @@ function_defines = {
 }
 
 #
-# Some function really need to be skipped for the tests.
+# Some functions really need to be skipped for the tests.
 #
 skipped_functions = [
 # block on I/O
@@ -156,7 +156,7 @@ skipped_functions = [
 ]
 
 #
-# Those functions have side effect on the global state
+# These functions have side effects on the global state
 # and hence generate errors on memory allocation tests
 #
 skipped_memcheck = [ "xmlLoadCatalog", "xmlAddEncodingAlias",
@@ -331,15 +331,15 @@ def type_convert(str, name, info, module, function, pos):
         if function == 'xmlIOHTTPOpenW':
 	    return('xmlNanoHTTPCtxtPtr')
 	if string.find(name, "data") != -1:
-	    return('userdata');
+	    return('userdata')
 	if string.find(name, "user") != -1:
-	    return('userdata');
+	    return('userdata')
     if res == 'xmlDoc_ptr':
-        res = 'xmlDocPtr';
+        res = 'xmlDocPtr'
     if res == 'xmlNode_ptr':
-        res = 'xmlNodePtr';
+        res = 'xmlNodePtr'
     if res == 'xmlDict_ptr':
-        res = 'xmlDictPtr';
+        res = 'xmlDictPtr'
     if res == 'xmlNodePtr' and pos != 0:
         if (function == 'xmlAddChild' and pos == 2) or \
 	   (function == 'xmlAddChildList' and pos == 2) or \
@@ -351,7 +351,7 @@ def type_convert(str, name, info, module, function, pos):
 	   (function == 'xmlAddPrevSibling' and pos == 2):
 	    return('xmlNodePtr_in');
     if res == 'const xmlBufferPtr':
-        res = 'xmlBufferPtr';
+        res = 'xmlBufferPtr'
     if res == 'xmlChar_ptr' and name == 'name' and \
        string.find(function, "EatName") != -1:
         return('eaten_name')
@@ -370,7 +370,7 @@ def type_convert(str, name, info, module, function, pos):
     if res == 'int' and name == 'options':
         if module == 'parser' or module == 'xmlreader':
 	    res = 'parseroptions'
-        
+
     return res
 
 known_param_types = []
@@ -474,17 +474,46 @@ if doc == None:
 ctxt = doc.xpathNewContext()
 
 #
+# Generate a list of all function parameters and select only
+# those used in the api tests
+#
+argtypes = {}
+args = ctxt.xpathEval("/api/symbols/function/arg")
+for arg in args:
+    mod = arg.xpathEval('string(../@file)')
+    func = arg.xpathEval('string(../@name)')
+    if (mod not in skipped_modules) and (func not in skipped_functions):
+	type = arg.xpathEval('string(@type)')
+	if not argtypes.has_key(type):
+	    argtypes[type] = func
+
+# similarly for return types
+rettypes = {}
+rets = ctxt.xpathEval("/api/symbols/function/return")
+for ret in rets:
+    mod = ret.xpathEval('string(../@file)')
+    func = ret.xpathEval('string(../@name)')
+    if (mod not in skipped_modules) and (func not in skipped_functions):
+        type = ret.xpathEval('string(@type)')
+	if not rettypes.has_key(type):
+	    rettypes[type] = func
+
+#
 # Generate constructors and return type handling for all enums
+# which are used as function parameters
 #
 enums = ctxt.xpathEval("/api/symbols/typedef[@type='enum']")
 for enum in enums:
-    name = enum.xpathEval('string(@name)')
-    if name == None:
-        continue;
     module = enum.xpathEval('string(@file)')
+    name = enum.xpathEval('string(@name)')
+    #
+    # Skip any enums which are not in our filtered lists
+    #
+    if (name == None) or ((name not in argtypes) and (name not in rettypes)):
+        continue;
     define = 0
 
-    if is_known_param_type(name, name) == 0:
+    if argtypes.has_key(name) and is_known_param_type(name, name) == 0:
 	values = ctxt.xpathEval("/api/symbols/enum[@type='%s']" % name)
 	i = 0
 	vals = []
@@ -497,7 +526,7 @@ for enum in enums:
 		break;
 	    vals.append(vname)
 	if vals == []:
-	    print "Didn't found any value for enum %s" % (name)
+	    print "Didn't find any value for enum %s" % (name)
 	    continue
 	if modules_defines.has_key(module):
 	    test.write("#ifdef %s\n" % (modules_defines[module]))
@@ -511,19 +540,21 @@ for enum in enums:
 	    i = i + 1
 	test.write("""    return(0);
 }
-""");
+
+static void des_%s(int no ATTRIBUTE_UNUSED, %s val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+""" % (name, name));
 	known_param_types.append(name)
 
-    if is_known_return_type(name) == 0:
+    if (is_known_return_type(name) == 0) and (name in rettypes):
 	if define == 0 and modules_defines.has_key(module):
 	    test.write("#ifdef %s\n" % (modules_defines[module]))
 	    define = 1
-        test.write("""static void des_%s(int no ATTRIBUTE_UNUSED, %s val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_%s(%s val ATTRIBUTE_UNUSED) {
+        test.write("""static void desret_%s(%s val ATTRIBUTE_UNUSED) {
 }
 
-""" % (name, name, name, name))
+""" % (name, name))
 	known_return_types.append(name)
     if define == 1:
         test.write("#endif\n\n")

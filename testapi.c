@@ -692,6 +692,8 @@ static void desret_xmlChar(xmlChar val ATTRIBUTE_UNUSED) {
 }
 static void desret_long(long val ATTRIBUTE_UNUSED) {
 }
+static void desret_unsigned_long(unsigned long val ATTRIBUTE_UNUSED) {
+}
 static void desret_double(double val ATTRIBUTE_UNUSED) {
 }
 static void desret_xmlCharEncoding(xmlCharEncoding val ATTRIBUTE_UNUSED) {
@@ -771,7 +773,6 @@ static void desret_xmlNodeSetPtr(xmlNodeSetPtr val) {
 static void desret_xmlParserCtxtPtr(xmlParserCtxtPtr val) {
     xmlFreeParserCtxt(val);
 }
-
 static void desret_xmlParserInputBufferPtr(xmlParserInputBufferPtr val) {
     xmlFreeParserInputBuffer(val);
 }
@@ -892,6 +893,29 @@ static void des_xmlPatternPtr(int no ATTRIBUTE_UNUSED, xmlPatternPtr val ATTRIBU
 }
 #endif
 
+#define gen_nb_xmlElementContentPtr 1
+static xmlElementContentPtr gen_xmlElementContentPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_xmlElementContentPtr(int no ATTRIBUTE_UNUSED, xmlElementContentPtr val, int nr ATTRIBUTE_UNUSED) {
+    if (val != NULL)
+        xmlFreeElementContent(val);
+}
+static void desret_xmlElementContentPtr(xmlElementContentPtr val) {
+    if (val != NULL)
+        xmlFreeElementContent(val);
+}
+
+#define gen_nb_xmlParserNodeInfoSeqPtr 1
+static xmlParserNodeInfoSeqPtr gen_xmlParserNodeInfoSeqPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_xmlParserNodeInfoSeqPtr(int no ATTRIBUTE_UNUSED, xmlParserNodeInfoSeqPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+static void desret_const_xmlParserNodeInfo_ptr(const xmlParserNodeInfo *val ATTRIBUTE_UNUSED) {
+}
+
 /************************************************************************
  *									*
  *   WARNING: end of the manually maintained part of the test code	*
@@ -901,74 +925,10 @@ static void des_xmlPatternPtr(int no ATTRIBUTE_UNUSED, xmlPatternPtr val ATTRIBU
 
 /* CUT HERE: everything below that line is generated */
 #ifdef LIBXML_HTML_ENABLED
-#define gen_nb_htmlParserOption 4
-static htmlParserOption gen_htmlParserOption(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(HTML_PARSE_NOBLANKS);
-    if (no == 2) return(HTML_PARSE_NOERROR);
-    if (no == 3) return(HTML_PARSE_NONET);
-    if (no == 4) return(HTML_PARSE_NOWARNING);
-    return(0);
-}
-static void des_htmlParserOption(int no ATTRIBUTE_UNUSED, htmlParserOption val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_htmlParserOption(htmlParserOption val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_HTML_ENABLED
-#define gen_nb_htmlStatus 4
-static htmlStatus gen_htmlStatus(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(HTML_DEPRECATED);
-    if (no == 2) return(HTML_INVALID);
-    if (no == 3) return(HTML_NA);
-    if (no == 4) return(HTML_REQUIRED);
-    return(0);
-}
-static void des_htmlStatus(int no ATTRIBUTE_UNUSED, htmlStatus val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
 static void desret_htmlStatus(htmlStatus val ATTRIBUTE_UNUSED) {
 }
 
 #endif
-
-#define gen_nb_xlinkActuate 3
-static xlinkActuate gen_xlinkActuate(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XLINK_ACTUATE_AUTO);
-    if (no == 2) return(XLINK_ACTUATE_NONE);
-    if (no == 3) return(XLINK_ACTUATE_ONREQUEST);
-    return(0);
-}
-static void des_xlinkActuate(int no ATTRIBUTE_UNUSED, xlinkActuate val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xlinkActuate(xlinkActuate val ATTRIBUTE_UNUSED) {
-}
-
-#define gen_nb_xlinkShow 4
-static xlinkShow gen_xlinkShow(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XLINK_SHOW_EMBED);
-    if (no == 2) return(XLINK_SHOW_NEW);
-    if (no == 3) return(XLINK_SHOW_NONE);
-    if (no == 4) return(XLINK_SHOW_REPLACE);
-    return(0);
-}
-static void des_xlinkShow(int no ATTRIBUTE_UNUSED, xlinkShow val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xlinkShow(xlinkShow val ATTRIBUTE_UNUSED) {
-}
-
-#define gen_nb_xlinkType 4
-static xlinkType gen_xlinkType(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XLINK_TYPE_EXTENDED);
-    if (no == 2) return(XLINK_TYPE_EXTENDED_SET);
-    if (no == 3) return(XLINK_TYPE_NONE);
-    if (no == 4) return(XLINK_TYPE_SIMPLE);
-    return(0);
-}
-static void des_xlinkType(int no ATTRIBUTE_UNUSED, xlinkType val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xlinkType(xlinkType val ATTRIBUTE_UNUSED) {
-}
 
 #define gen_nb_xmlAttributeDefault 4
 static xmlAttributeDefault gen_xmlAttributeDefault(int no, int nr ATTRIBUTE_UNUSED) {
@@ -978,9 +938,8 @@ static xmlAttributeDefault gen_xmlAttributeDefault(int no, int nr ATTRIBUTE_UNUS
     if (no == 4) return(XML_ATTRIBUTE_REQUIRED);
     return(0);
 }
+
 static void des_xmlAttributeDefault(int no ATTRIBUTE_UNUSED, xmlAttributeDefault val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlAttributeDefault(xmlAttributeDefault val ATTRIBUTE_UNUSED) {
 }
 
 #define gen_nb_xmlAttributeType 4
@@ -991,9 +950,8 @@ static xmlAttributeType gen_xmlAttributeType(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 4) return(XML_ATTRIBUTE_ENUMERATION);
     return(0);
 }
+
 static void des_xmlAttributeType(int no ATTRIBUTE_UNUSED, xmlAttributeType val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlAttributeType(xmlAttributeType val ATTRIBUTE_UNUSED) {
 }
 
 #define gen_nb_xmlBufferAllocationScheme 3
@@ -1003,8 +961,10 @@ static xmlBufferAllocationScheme gen_xmlBufferAllocationScheme(int no, int nr AT
     if (no == 3) return(XML_BUFFER_ALLOC_IMMUTABLE);
     return(0);
 }
+
 static void des_xmlBufferAllocationScheme(int no ATTRIBUTE_UNUSED, xmlBufferAllocationScheme val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+
 static void desret_xmlBufferAllocationScheme(xmlBufferAllocationScheme val ATTRIBUTE_UNUSED) {
 }
 
@@ -1017,8 +977,10 @@ static xmlCatalogAllow gen_xmlCatalogAllow(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 4) return(XML_CATA_ALLOW_NONE);
     return(0);
 }
+
 static void des_xmlCatalogAllow(int no ATTRIBUTE_UNUSED, xmlCatalogAllow val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+
 static void desret_xmlCatalogAllow(xmlCatalogAllow val ATTRIBUTE_UNUSED) {
 }
 
@@ -1032,25 +994,14 @@ static xmlCatalogPrefer gen_xmlCatalogPrefer(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 3) return(XML_CATA_PREFER_SYSTEM);
     return(0);
 }
+
 static void des_xmlCatalogPrefer(int no ATTRIBUTE_UNUSED, xmlCatalogPrefer val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+
 static void desret_xmlCatalogPrefer(xmlCatalogPrefer val ATTRIBUTE_UNUSED) {
 }
 
 #endif
-
-#define gen_nb_xmlElementContentOccur 4
-static xmlElementContentOccur gen_xmlElementContentOccur(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_ELEMENT_CONTENT_MULT);
-    if (no == 2) return(XML_ELEMENT_CONTENT_ONCE);
-    if (no == 3) return(XML_ELEMENT_CONTENT_OPT);
-    if (no == 4) return(XML_ELEMENT_CONTENT_PLUS);
-    return(0);
-}
-static void des_xmlElementContentOccur(int no ATTRIBUTE_UNUSED, xmlElementContentOccur val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlElementContentOccur(xmlElementContentOccur val ATTRIBUTE_UNUSED) {
-}
 
 #define gen_nb_xmlElementContentType 4
 static xmlElementContentType gen_xmlElementContentType(int no, int nr ATTRIBUTE_UNUSED) {
@@ -1060,22 +1011,8 @@ static xmlElementContentType gen_xmlElementContentType(int no, int nr ATTRIBUTE_
     if (no == 4) return(XML_ELEMENT_CONTENT_SEQ);
     return(0);
 }
-static void des_xmlElementContentType(int no ATTRIBUTE_UNUSED, xmlElementContentType val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlElementContentType(xmlElementContentType val ATTRIBUTE_UNUSED) {
-}
 
-#define gen_nb_xmlElementType 4
-static xmlElementType gen_xmlElementType(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_ATTRIBUTE_DECL);
-    if (no == 2) return(XML_ATTRIBUTE_NODE);
-    if (no == 3) return(XML_CDATA_SECTION_NODE);
-    if (no == 4) return(XML_COMMENT_NODE);
-    return(0);
-}
-static void des_xmlElementType(int no ATTRIBUTE_UNUSED, xmlElementType val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlElementType(xmlElementType val ATTRIBUTE_UNUSED) {
+static void des_xmlElementContentType(int no ATTRIBUTE_UNUSED, xmlElementContentType val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
 #define gen_nb_xmlElementTypeVal 4
@@ -1086,212 +1023,12 @@ static xmlElementTypeVal gen_xmlElementTypeVal(int no, int nr ATTRIBUTE_UNUSED) 
     if (no == 4) return(XML_ELEMENT_TYPE_MIXED);
     return(0);
 }
+
 static void des_xmlElementTypeVal(int no ATTRIBUTE_UNUSED, xmlElementTypeVal val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
-static void desret_xmlElementTypeVal(xmlElementTypeVal val ATTRIBUTE_UNUSED) {
-}
 
-#define gen_nb_xmlEntityType 4
-static xmlEntityType gen_xmlEntityType(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_EXTERNAL_GENERAL_PARSED_ENTITY);
-    if (no == 2) return(XML_EXTERNAL_GENERAL_UNPARSED_ENTITY);
-    if (no == 3) return(XML_EXTERNAL_PARAMETER_ENTITY);
-    if (no == 4) return(XML_INTERNAL_GENERAL_ENTITY);
-    return(0);
-}
-static void des_xmlEntityType(int no ATTRIBUTE_UNUSED, xmlEntityType val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlEntityType(xmlEntityType val ATTRIBUTE_UNUSED) {
-}
-
-#define gen_nb_xmlErrorDomain 4
-static xmlErrorDomain gen_xmlErrorDomain(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_FROM_C14N);
-    if (no == 2) return(XML_FROM_CATALOG);
-    if (no == 3) return(XML_FROM_CHECK);
-    if (no == 4) return(XML_FROM_DATATYPE);
-    return(0);
-}
-static void des_xmlErrorDomain(int no ATTRIBUTE_UNUSED, xmlErrorDomain val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlErrorDomain(xmlErrorDomain val ATTRIBUTE_UNUSED) {
-}
-
-#define gen_nb_xmlErrorLevel 4
-static xmlErrorLevel gen_xmlErrorLevel(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_ERR_ERROR);
-    if (no == 2) return(XML_ERR_FATAL);
-    if (no == 3) return(XML_ERR_NONE);
-    if (no == 4) return(XML_ERR_WARNING);
-    return(0);
-}
-static void des_xmlErrorLevel(int no ATTRIBUTE_UNUSED, xmlErrorLevel val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlErrorLevel(xmlErrorLevel val ATTRIBUTE_UNUSED) {
-}
-
-#define gen_nb_xmlParserErrors 4
-static xmlParserErrors gen_xmlParserErrors(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_C14N_CREATE_CTXT);
-    if (no == 2) return(XML_C14N_CREATE_STACK);
-    if (no == 3) return(XML_C14N_INVALID_NODE);
-    if (no == 4) return(XML_C14N_REQUIRES_UTF8);
-    return(0);
-}
-static void des_xmlParserErrors(int no ATTRIBUTE_UNUSED, xmlParserErrors val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
 static void desret_xmlParserErrors(xmlParserErrors val ATTRIBUTE_UNUSED) {
 }
-
-#define gen_nb_xmlParserInputState 4
-static xmlParserInputState gen_xmlParserInputState(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_PARSER_ATTRIBUTE_VALUE);
-    if (no == 2) return(XML_PARSER_CDATA_SECTION);
-    if (no == 3) return(XML_PARSER_COMMENT);
-    if (no == 4) return(XML_PARSER_CONTENT);
-    return(0);
-}
-static void des_xmlParserInputState(int no ATTRIBUTE_UNUSED, xmlParserInputState val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlParserInputState(xmlParserInputState val ATTRIBUTE_UNUSED) {
-}
-
-#define gen_nb_xmlParserMode 4
-static xmlParserMode gen_xmlParserMode(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_PARSE_DOM);
-    if (no == 2) return(XML_PARSE_PUSH_DOM);
-    if (no == 3) return(XML_PARSE_PUSH_SAX);
-    if (no == 4) return(XML_PARSE_READER);
-    return(0);
-}
-static void des_xmlParserMode(int no ATTRIBUTE_UNUSED, xmlParserMode val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlParserMode(xmlParserMode val ATTRIBUTE_UNUSED) {
-}
-
-#define gen_nb_xmlParserOption 4
-static xmlParserOption gen_xmlParserOption(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_PARSE_DTDATTR);
-    if (no == 2) return(XML_PARSE_DTDLOAD);
-    if (no == 3) return(XML_PARSE_DTDVALID);
-    if (no == 4) return(XML_PARSE_NOBLANKS);
-    return(0);
-}
-static void des_xmlParserOption(int no ATTRIBUTE_UNUSED, xmlParserOption val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlParserOption(xmlParserOption val ATTRIBUTE_UNUSED) {
-}
-
-#ifdef LIBXML_READER_ENABLED
-#define gen_nb_xmlParserProperties 4
-static xmlParserProperties gen_xmlParserProperties(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_PARSER_DEFAULTATTRS);
-    if (no == 2) return(XML_PARSER_LOADDTD);
-    if (no == 3) return(XML_PARSER_SUBST_ENTITIES);
-    if (no == 4) return(XML_PARSER_VALIDATE);
-    return(0);
-}
-static void des_xmlParserProperties(int no ATTRIBUTE_UNUSED, xmlParserProperties val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlParserProperties(xmlParserProperties val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_READER_ENABLED
-#define gen_nb_xmlParserSeverities 4
-static xmlParserSeverities gen_xmlParserSeverities(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_PARSER_SEVERITY_ERROR);
-    if (no == 2) return(XML_PARSER_SEVERITY_VALIDITY_ERROR);
-    if (no == 3) return(XML_PARSER_SEVERITY_VALIDITY_WARNING);
-    if (no == 4) return(XML_PARSER_SEVERITY_WARNING);
-    return(0);
-}
-static void des_xmlParserSeverities(int no ATTRIBUTE_UNUSED, xmlParserSeverities val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlParserSeverities(xmlParserSeverities val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_READER_ENABLED
-#define gen_nb_xmlReaderTypes 4
-static xmlReaderTypes gen_xmlReaderTypes(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_READER_TYPE_ATTRIBUTE);
-    if (no == 2) return(XML_READER_TYPE_CDATA);
-    if (no == 3) return(XML_READER_TYPE_COMMENT);
-    if (no == 4) return(XML_READER_TYPE_DOCUMENT);
-    return(0);
-}
-static void des_xmlReaderTypes(int no ATTRIBUTE_UNUSED, xmlReaderTypes val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlReaderTypes(xmlReaderTypes val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_SCHEMAS_ENABLED
-#define gen_nb_xmlRelaxNGParserFlag 3
-static xmlRelaxNGParserFlag gen_xmlRelaxNGParserFlag(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_RELAXNGP_CRNG);
-    if (no == 2) return(XML_RELAXNGP_FREE_DOC);
-    if (no == 3) return(XML_RELAXNGP_NONE);
-    return(0);
-}
-static void des_xmlRelaxNGParserFlag(int no ATTRIBUTE_UNUSED, xmlRelaxNGParserFlag val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlRelaxNGParserFlag(xmlRelaxNGParserFlag val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_SCHEMAS_ENABLED
-#define gen_nb_xmlRelaxNGValidErr 4
-static xmlRelaxNGValidErr gen_xmlRelaxNGValidErr(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_RELAXNG_ERR_ATTREXTRANS);
-    if (no == 2) return(XML_RELAXNG_ERR_ATTRNAME);
-    if (no == 3) return(XML_RELAXNG_ERR_ATTRNONS);
-    if (no == 4) return(XML_RELAXNG_ERR_ATTRVALID);
-    return(0);
-}
-static void des_xmlRelaxNGValidErr(int no ATTRIBUTE_UNUSED, xmlRelaxNGValidErr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlRelaxNGValidErr(xmlRelaxNGValidErr val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_SCHEMAS_ENABLED
-#define gen_nb_xmlSchemaContentType 4
-static xmlSchemaContentType gen_xmlSchemaContentType(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_SCHEMA_CONTENT_ANY);
-    if (no == 2) return(XML_SCHEMA_CONTENT_BASIC);
-    if (no == 3) return(XML_SCHEMA_CONTENT_ELEMENTS);
-    if (no == 4) return(XML_SCHEMA_CONTENT_EMPTY);
-    return(0);
-}
-static void des_xmlSchemaContentType(int no ATTRIBUTE_UNUSED, xmlSchemaContentType val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlSchemaContentType(xmlSchemaContentType val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_SCHEMAS_ENABLED
-#define gen_nb_xmlSchemaTypeType 4
-static xmlSchemaTypeType gen_xmlSchemaTypeType(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_SCHEMA_FACET_ENUMERATION);
-    if (no == 2) return(XML_SCHEMA_FACET_FRACTIONDIGITS);
-    if (no == 3) return(XML_SCHEMA_FACET_LENGTH);
-    if (no == 4) return(XML_SCHEMA_FACET_MAXEXCLUSIVE);
-    return(0);
-}
-static void des_xmlSchemaTypeType(int no ATTRIBUTE_UNUSED, xmlSchemaTypeType val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlSchemaTypeType(xmlSchemaTypeType val ATTRIBUTE_UNUSED) {
-}
-
-#endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 #define gen_nb_xmlSchemaValType 4
@@ -1302,86 +1039,8 @@ static xmlSchemaValType gen_xmlSchemaValType(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 4) return(XML_SCHEMAS_BASE64BINARY);
     return(0);
 }
+
 static void des_xmlSchemaValType(int no ATTRIBUTE_UNUSED, xmlSchemaValType val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlSchemaValType(xmlSchemaValType val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_SCHEMAS_ENABLED
-#define gen_nb_xmlSchemaValidError 4
-static xmlSchemaValidError gen_xmlSchemaValidError(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_SCHEMAS_ERR_);
-    if (no == 2) return(XML_SCHEMAS_ERR_ATTRINVALID);
-    if (no == 3) return(XML_SCHEMAS_ERR_ATTRUNKNOWN);
-    if (no == 4) return(XML_SCHEMAS_ERR_CONSTRUCT);
-    return(0);
-}
-static void des_xmlSchemaValidError(int no ATTRIBUTE_UNUSED, xmlSchemaValidError val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlSchemaValidError(xmlSchemaValidError val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_SCHEMAS_ENABLED
-#define gen_nb_xmlSchemaValidOption 1
-static xmlSchemaValidOption gen_xmlSchemaValidOption(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_SCHEMA_VAL_VC_I_CREATE);
-    return(0);
-}
-static void des_xmlSchemaValidOption(int no ATTRIBUTE_UNUSED, xmlSchemaValidOption val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlSchemaValidOption(xmlSchemaValidOption val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_READER_ENABLED
-#define gen_nb_xmlTextReaderMode 4
-static xmlTextReaderMode gen_xmlTextReaderMode(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XML_TEXTREADER_MODE_CLOSED);
-    if (no == 2) return(XML_TEXTREADER_MODE_EOF);
-    if (no == 3) return(XML_TEXTREADER_MODE_ERROR);
-    if (no == 4) return(XML_TEXTREADER_MODE_INITIAL);
-    return(0);
-}
-static void des_xmlTextReaderMode(int no ATTRIBUTE_UNUSED, xmlTextReaderMode val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlTextReaderMode(xmlTextReaderMode val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_XPATH_ENABLED
-#define gen_nb_xmlXPathError 4
-static xmlXPathError gen_xmlXPathError(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XPATH_ENCODING_ERROR);
-    if (no == 2) return(XPATH_EXPRESSION_OK);
-    if (no == 3) return(XPATH_EXPR_ERROR);
-    if (no == 4) return(XPATH_INVALID_ARITY);
-    return(0);
-}
-static void des_xmlXPathError(int no ATTRIBUTE_UNUSED, xmlXPathError val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlXPathError(xmlXPathError val ATTRIBUTE_UNUSED) {
-}
-
-#endif
-
-#ifdef LIBXML_XPATH_ENABLED
-#define gen_nb_xmlXPathObjectType 4
-static xmlXPathObjectType gen_xmlXPathObjectType(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 1) return(XPATH_BOOLEAN);
-    if (no == 2) return(XPATH_LOCATIONSET);
-    if (no == 3) return(XPATH_NODESET);
-    if (no == 4) return(XPATH_NUMBER);
-    return(0);
-}
-static void des_xmlXPathObjectType(int no ATTRIBUTE_UNUSED, xmlXPathObjectType val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-static void desret_xmlXPathObjectType(xmlXPathObjectType val ATTRIBUTE_UNUSED) {
 }
 
 #endif
@@ -4155,13 +3814,6 @@ test_xmlSAX2Comment(void) {
     return(test_ret);
 }
 
-
-#define gen_nb_xmlElementContentPtr 1
-static xmlElementContentPtr gen_xmlElementContentPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlElementContentPtr(int no ATTRIBUTE_UNUSED, xmlElementContentPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
 
 static int
 test_xmlSAX2ElementDecl(void) {
@@ -12835,13 +12487,6 @@ test_xmlByteConsumed(void) {
 }
 
 
-#define gen_nb_xmlParserNodeInfoSeqPtr 1
-static xmlParserNodeInfoSeqPtr gen_xmlParserNodeInfoSeqPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-static void des_xmlParserNodeInfoSeqPtr(int no ATTRIBUTE_UNUSED, xmlParserNodeInfoSeqPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
-}
-
 static int
 test_xmlClearNodeInfoSeq(void) {
     int test_ret = 0;
@@ -14446,8 +14091,37 @@ static int
 test_xmlParserFindNodeInfo(void) {
     int test_ret = 0;
 
+    int mem_base;
+    const xmlParserNodeInfo * ret_val;
+    xmlParserCtxtPtr ctx; /* an XML parser context */
+    int n_ctx;
+    xmlNodePtr node; /* an XML node within the tree */
+    int n_node;
 
-    /* missing type support */
+    for (n_ctx = 0;n_ctx < gen_nb_const_xmlParserCtxtPtr;n_ctx++) {
+    for (n_node = 0;n_node < gen_nb_const_xmlNodePtr;n_node++) {
+        mem_base = xmlMemBlocks();
+        ctx = gen_const_xmlParserCtxtPtr(n_ctx, 0);
+        node = gen_const_xmlNodePtr(n_node, 1);
+
+        ret_val = xmlParserFindNodeInfo((const xmlParserCtxtPtr)ctx, (const xmlNodePtr)node);
+        desret_const_xmlParserNodeInfo_ptr(ret_val);
+        call_tests++;
+        des_const_xmlParserCtxtPtr(n_ctx, (const xmlParserCtxtPtr)ctx, 0);
+        des_const_xmlNodePtr(n_node, (const xmlNodePtr)node, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlParserFindNodeInfo",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctx);
+            printf(" %d", n_node);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+
     return(test_ret);
 }
 
@@ -14463,8 +14137,37 @@ static int
 test_xmlParserFindNodeInfoIndex(void) {
     int test_ret = 0;
 
+    int mem_base;
+    unsigned long ret_val;
+    xmlParserNodeInfoSeqPtr seq; /* a node info sequence pointer */
+    int n_seq;
+    xmlNodePtr node; /* an XML node pointer */
+    int n_node;
 
-    /* missing type support */
+    for (n_seq = 0;n_seq < gen_nb_const_xmlParserNodeInfoSeqPtr;n_seq++) {
+    for (n_node = 0;n_node < gen_nb_const_xmlNodePtr;n_node++) {
+        mem_base = xmlMemBlocks();
+        seq = gen_const_xmlParserNodeInfoSeqPtr(n_seq, 0);
+        node = gen_const_xmlNodePtr(n_node, 1);
+
+        ret_val = xmlParserFindNodeInfoIndex((const xmlParserNodeInfoSeqPtr)seq, (const xmlNodePtr)node);
+        desret_unsigned_long(ret_val);
+        call_tests++;
+        des_const_xmlParserNodeInfoSeqPtr(n_seq, (const xmlParserNodeInfoSeqPtr)seq, 0);
+        des_const_xmlNodePtr(n_node, (const xmlNodePtr)node, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlParserFindNodeInfoIndex",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_seq);
+            printf(" %d", n_node);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+
     return(test_ret);
 }
 
@@ -15495,7 +15198,7 @@ static int
 test_parser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parser : 58 of 69 functions ...\n");
+    if (quiet == 0) printf("Testing parser : 60 of 69 functions ...\n");
     test_ret += test_xmlByteConsumed();
     test_ret += test_xmlClearNodeInfoSeq();
     test_ret += test_xmlClearParserCtxt();
@@ -23835,8 +23538,30 @@ static int
 test_xmlCopyElementContent(void) {
     int test_ret = 0;
 
+    int mem_base;
+    xmlElementContentPtr ret_val;
+    xmlElementContentPtr cur; /* An element content pointer. */
+    int n_cur;
 
-    /* missing type support */
+    for (n_cur = 0;n_cur < gen_nb_xmlElementContentPtr;n_cur++) {
+        mem_base = xmlMemBlocks();
+        cur = gen_xmlElementContentPtr(n_cur, 0);
+
+        ret_val = xmlCopyElementContent(cur);
+        desret_xmlElementContentPtr(ret_val);
+        call_tests++;
+        des_xmlElementContentPtr(n_cur, cur, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCopyElementContent",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_cur);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
     return(test_ret);
 }
 
@@ -24528,8 +24253,37 @@ static int
 test_xmlNewElementContent(void) {
     int test_ret = 0;
 
+    int mem_base;
+    xmlElementContentPtr ret_val;
+    xmlChar * name; /* the subelement name or NULL */
+    int n_name;
+    xmlElementContentType type; /* the type of element content decl */
+    int n_type;
 
-    /* missing type support */
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_type = 0;n_type < gen_nb_xmlElementContentType;n_type++) {
+        mem_base = xmlMemBlocks();
+        name = gen_const_xmlChar_ptr(n_name, 0);
+        type = gen_xmlElementContentType(n_type, 1);
+
+        ret_val = xmlNewElementContent((const xmlChar *)name, type);
+        desret_xmlElementContentPtr(ret_val);
+        call_tests++;
+        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 0);
+        des_xmlElementContentType(n_type, type, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewElementContent",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_name);
+            printf(" %d", n_type);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+
     return(test_ret);
 }
 
@@ -25963,7 +25717,7 @@ static int
 test_valid(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing valid : 46 of 67 functions ...\n");
+    if (quiet == 0) printf("Testing valid : 48 of 67 functions ...\n");
     test_ret += test_xmlAddAttributeDecl();
     test_ret += test_xmlAddElementDecl();
     test_ret += test_xmlAddID();
@@ -32466,8 +32220,32 @@ static int
 test_xmlSchemaGetFacetValueAsULong(void) {
     int test_ret = 0;
 
+#ifdef LIBXML_SCHEMAS_ENABLED
+    int mem_base;
+    unsigned long ret_val;
+    xmlSchemaFacetPtr facet; /* an schemas type facet */
+    int n_facet;
 
-    /* missing type support */
+    for (n_facet = 0;n_facet < gen_nb_xmlSchemaFacetPtr;n_facet++) {
+        mem_base = xmlMemBlocks();
+        facet = gen_xmlSchemaFacetPtr(n_facet, 0);
+
+        ret_val = xmlSchemaGetFacetValueAsULong(facet);
+        desret_unsigned_long(ret_val);
+        call_tests++;
+        des_xmlSchemaFacetPtr(n_facet, facet, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlSchemaGetFacetValueAsULong",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_facet);
+            printf("\n");
+        }
+    }
+    function_tests++;
+#endif
+
     return(test_ret);
 }
 
@@ -32924,7 +32702,7 @@ static int
 test_xmlschemastypes(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlschemastypes : 15 of 19 functions ...\n");
+    if (quiet == 0) printf("Testing xmlschemastypes : 16 of 19 functions ...\n");
     test_ret += test_xmlSchemaCheckFacet();
     test_ret += test_xmlSchemaCleanupTypes();
     test_ret += test_xmlSchemaCollapseString();

@@ -1,3 +1,9 @@
+Sun Nov 14 22:23:18 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* gentest.py, testapi.c: further enhancement, now all
+	  compilation warnings have been fixed.
+	* xmlschemastypes.c: added NULL check for one function
+
 Fri Nov 12 23:58:14 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: trivial change (changed CHECK_CONTEXT to CHECK_CTXT

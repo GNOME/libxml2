@@ -3814,6 +3814,8 @@ xmlSchemaGetFacetValueAsULong(xmlSchemaFacetPtr facet)
     /*
     * TODO: Check if this is a decimal.
     */
+    if (facet == NULL)
+        return 0;
     return ((unsigned long) facet->val->value.decimal.lo);
 }
 

@@ -28,6 +28,9 @@
 
 #include "parser.h"
 #include "tree.h"
+#include "debugXML.h"
+
+static int debug = 0;
 
 /*
  * Note: there is a couple of errors introduced on purpose.
@@ -65,7 +68,10 @@ void parseAndPrintFile(char *filename) {
     /*
      * print it.
      */
-    xmlDocDump(stdout, doc);
+    if (!debug)
+	xmlDocDump(stdout, doc);
+    else
+        xmlDebugDumpDocument(stdout, doc);
 
     /*
      * free it.
@@ -84,7 +90,10 @@ void parseAndPrintBuffer(CHAR *buf) {
     /*
      * print it.
      */
-    xmlDocDump(stdout, doc);
+    if (!debug)
+	xmlDocDump(stdout, doc);
+    else
+        xmlDebugDumpDocument(stdout, doc);
 
     /*
      * free it.
@@ -97,7 +106,10 @@ int main(int argc, char **argv) {
 
     if (argc > 1) {
         for (i = 1; i < argc ; i++) {
-	    parseAndPrintFile(argv[i]);
+	    if ((strcmp(argv[i], "-debug")) && (strcmp(argv[i], "--debug")))
+		parseAndPrintFile(argv[i]);
+	    else
+	        debug++;
 	}
     } else
         parseAndPrintBuffer(buffer);

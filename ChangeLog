@@ -1,3 +1,10 @@
+Tue Oct 27 17:54:00 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* debugXML.h debugXML.c: added debugging utilities.
+	* tester.c: added --debug switch.
+	* tree.c: patched an incorrect node->type assignment.
+	* parser.c: formatting, ensure that node->doc != NULL in attributes
+
 Tue Oct 27 01:15:39 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
         * parser.[ch] SAX.c tree.[ch]: large amount of changes to improve

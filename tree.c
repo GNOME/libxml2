@@ -372,22 +372,34 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
     CHAR *val;
     const CHAR *cur = value;
     const CHAR *q;
+    xmlEntityPtr ent;
 
     if (value == NULL) return(NULL);
 
     q = cur;
     while ((*cur != 0) && (cur - value < len)) {
 	if (*cur == '&') {
+	    /*
+	     * Save the current text.
+	     */
             if (cur != q) {
-	        node = xmlNewDocTextLen(doc, q, cur - q);
-		if (node == NULL) return(ret);
-		if (last == NULL)
-		    last = ret = node;
-		else {
-		    last->next = node;
-		    last = node;
+		if ((last != NULL) && (last->type == XML_TEXT_NODE)) {
+		    xmlNodeAddContentLen(last, q, cur - q);
+		} else {
+		    node = xmlNewDocTextLen(doc, q, cur - q);
+		    if (node == NULL) return(ret);
+		    if (last == NULL)
+			last = ret = node;
+		    else {
+			last->next = node;
+			node->prev = last;
+			last = node;
+		    }
 		}
 	    }
+	    /*
+	     * Read the entity string
+	     */
 	    cur++;
 	    q = cur;
 	    while ((*cur != 0) && (cur - value < len) && (*cur != ';')) cur++;
@@ -397,14 +409,32 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
 	        return(ret);
 	    }
             if (cur != q) {
+		/*
+		 * Predefined entities don't generate nodes
+		 */
 		val = xmlStrndup(q, cur - q);
-		node = xmlNewReference(doc, val);
-		if (node == NULL) return(ret);
-		if (last == NULL)
-		    last = ret = node;
-		else {
-		    last->next = node;
-		    last = node;
+		ent = xmlGetDocEntity(doc, val);
+		if ((ent != NULL) &&
+		    (ent->type == XML_INTERNAL_PREDEFINED_ENTITY)) {
+		    if (last == NULL) {
+		        node = xmlNewDocText(doc, ent->content);
+			last = ret = node;
+		    } else
+		        xmlNodeAddContent(last, ent->content);
+		        
+		} else {
+		    /*
+		     * Create a new REFERENCE_REF node
+		     */
+		    node = xmlNewReference(doc, val);
+		    if (node == NULL) return(ret);
+		    if (last == NULL)
+			last = ret = node;
+		    else {
+			last->next = node;
+			node->prev = last;
+			last = node;
+		    }
 		}
 		free(val);
 	    }
@@ -414,13 +444,21 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
 	    cur++;
     }
     if (cur != q) {
-	node = xmlNewDocTextLen(doc, q, cur - q);
-	if (node == NULL) return(ret);
-	if (last == NULL)
-	    last = ret = node;
-	else {
-	    last->next = node;
-	    last = node;
+        /*
+	 * Handle the last piece of text.
+	 */
+	if ((last != NULL) && (last->type == XML_TEXT_NODE)) {
+	    xmlNodeAddContentLen(last, q, cur - q);
+	} else {
+	    node = xmlNewDocTextLen(doc, q, cur - q);
+	    if (node == NULL) return(ret);
+	    if (last == NULL)
+		last = ret = node;
+	    else {
+		last->next = node;
+		node->prev = last;
+		last = node;
+	    }
 	}
     }
     return(ret);
@@ -442,22 +480,34 @@ xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value) {
     CHAR *val;
     const CHAR *cur = value;
     const CHAR *q;
+    xmlEntityPtr ent;
 
     if (value == NULL) return(NULL);
 
     q = cur;
     while (*cur != 0) {
 	if (*cur == '&') {
+	    /*
+	     * Save the current text.
+	     */
             if (cur != q) {
-	        node = xmlNewDocTextLen(doc, q, cur - q);
-		if (node == NULL) return(ret);
-		if (last == NULL)
-		    last = ret = node;
-		else {
-		    last->next = node;
-		    last = node;
+		if ((last != NULL) && (last->type == XML_TEXT_NODE)) {
+		    xmlNodeAddContentLen(last, q, cur - q);
+		} else {
+		    node = xmlNewDocTextLen(doc, q, cur - q);
+		    if (node == NULL) return(ret);
+		    if (last == NULL)
+			last = ret = node;
+		    else {
+			last->next = node;
+			node->prev = last;
+			last = node;
+		    }
 		}
 	    }
+	    /*
+	     * Read the entity string
+	     */
 	    cur++;
 	    q = cur;
 	    while ((*cur != 0) && (*cur != ';')) cur++;
@@ -467,14 +517,33 @@ xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value) {
 	        return(ret);
 	    }
             if (cur != q) {
+		/*
+		 * Predefined entities don't generate nodes
+		 */
 		val = xmlStrndup(q, cur - q);
-		node = xmlNewReference(doc, val);
-		if (node == NULL) return(ret);
-		if (last == NULL)
-		    last = ret = node;
-		else {
-		    last->next = node;
-		    last = node;
+		ent = xmlGetDocEntity(doc, val);
+		if ((ent != NULL) &&
+		    (ent->type == XML_INTERNAL_PREDEFINED_ENTITY)) {
+		    if (last == NULL) {
+		        node = xmlNewDocText(doc, ent->content);
+			last = ret = node;
+		    } else
+		        xmlNodeAddContent(last, ent->content);
+		        
+		} else {
+		    /*
+		     * Create a new REFERENCE_REF node
+		     */
+		    val = xmlStrndup(q, cur - q);
+		    node = xmlNewReference(doc, val);
+		    if (node == NULL) return(ret);
+		    if (last == NULL)
+			last = ret = node;
+		    else {
+			last->next = node;
+			node->prev = last;
+			last = node;
+		    }
 		}
 		free(val);
 	    }
@@ -484,13 +553,21 @@ xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value) {
 	    cur++;
     }
     if (cur != q) {
-	node = xmlNewDocTextLen(doc, q, cur - q);
-	if (node == NULL) return(ret);
-	if (last == NULL)
-	    last = ret = node;
-	else {
-	    last->next = node;
-	    last = node;
+        /*
+	 * Handle the last piece of text.
+	 */
+	if ((last != NULL) && (last->type == XML_TEXT_NODE)) {
+	    xmlNodeAddContentLen(last, q, cur - q);
+	} else {
+	    node = xmlNewDocTextLen(doc, q, cur - q);
+	    if (node == NULL) return(ret);
+	    if (last == NULL)
+		last = ret = node;
+	    else {
+		last->next = node;
+		node->prev = last;
+		last = node;
+	    }
 	}
     }
     return(ret);
@@ -2129,46 +2206,3 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     return(ret * sizeof(CHAR));
 }
 
-/************************************************************************
- *									*
- *				Debug					*
- *									*
- ************************************************************************/
-
-#ifdef STANDALONE
-int main(void) {
-    xmlDocPtr doc;
-    xmlNodePtr tree, subtree;
-    xmlNsPtr ns1;
-    xmlNsPtr ns2;
-
-    /*
-     * build a fake XML document
-     */
-    doc = xmlNewDoc("1.0");
-    ns1 = xmlNewNs(doc, "http://www.ietf.org/standards/dav/", "D");
-    ns2 = xmlNewNs(doc, "http://www.w3.com/standards/z39.50/", "Z");
-    doc->root = xmlNewDocNode(doc, ns1, "multistatus", NULL);
-    tree = xmlNewChild(doc->root, NULL, "response", NULL);
-    subtree = xmlNewChild(tree, NULL, "prop", NULL);
-    xmlNewChild(subtree, ns2, "Authors", NULL);
-    subtree = xmlNewChild(tree, NULL, "status", "HTTP/1.1 420 Method Failure");
-    tree = xmlNewChild(doc->root, NULL, "response", NULL);
-    subtree = xmlNewChild(tree, NULL, "prop", NULL);
-    xmlNewChild(subtree, ns2, "Copyright-Owner", NULL);
-    subtree = xmlNewChild(tree, NULL, "status", "HTTP/1.1 409 Conflict");
-    tree = xmlNewChild(doc->root, NULL, "responsedescription",
-                       "Copyright Owner can not be deleted or altered");
-
-    /*
-     * print it.
-     */
-    xmlDocDump(stdout, doc);
-
-    /*
-     * free it.
-     */
-    xmlFreeDoc(doc);
-    return(0);
-}
-#endif

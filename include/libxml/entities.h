@@ -20,6 +20,7 @@ extern "C" {
 #define XML_EXTERNAL_GENERAL_UNPARSED_ENTITY	3
 #define XML_INTERNAL_PARAMETER_ENTITY		4
 #define XML_EXTERNAL_PARAMETER_ENTITY		5
+#define XML_INTERNAL_PREDEFINED_ENTITY		6
 
 /*
  * An unit of storage for an entity, contains the string, the value

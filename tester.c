@@ -56,6 +56,42 @@ static CHAR buffer[] =
 \n\
 ";
 
+/************************************************************************
+ *									*
+ *				Debug					*
+ *									*
+ ************************************************************************/
+
+int treeTest(void) {
+    /*
+     * build a fake XML document
+     */
+    xmlDocPtr doc;
+    xmlNodePtr tree, subtree;
+
+    doc = xmlNewDoc("1.0");
+    doc->root = xmlNewDocNode(doc, NULL, "EXAMPLE", NULL);
+    xmlSetProp(doc->root, "prop1", "gnome is great");
+    xmlSetProp(doc->root, "prop2", "&linux; too");
+    tree = xmlNewChild(doc->root, NULL, "head", NULL);
+    subtree = xmlNewChild(tree, NULL, "title", "Welcome to Gnome");
+    tree = xmlNewChild(doc->root, NULL, "chapter", NULL);
+    subtree = xmlNewChild(tree, NULL, "title", "The Linux adventure");
+    subtree = xmlNewChild(tree, NULL, "p", "bla bla bla ...");
+    subtree = xmlNewChild(tree, NULL, "image", NULL);
+    xmlSetProp(subtree, "href", "linus.gif");
+
+    /*
+     * print it.
+     */
+    xmlDocDump(stdout, doc);
+
+    /*
+     * free it.
+     */
+    xmlFreeDoc(doc);
+    return(0);
+}
 
 void parseAndPrintFile(char *filename) {
     xmlDocPtr doc;
@@ -111,8 +147,12 @@ int main(int argc, char **argv) {
 	    else
 	        debug++;
 	}
-    } else
+    } else {
+	printf("\nFirst test for the parser, with errors\n");
         parseAndPrintBuffer(buffer);
+	printf("\nBuilding a tree from scratch and printing it\n");
+	treeTest();
+    }
 
     return(0);
 }

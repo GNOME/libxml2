@@ -138,7 +138,7 @@ void xmlInitializePredefinedEntities(void) {
 	out = &value[0];
 	for (;(*out++ = (CHAR) *in);)in++;
         xmlAddEntity(xmlPredefinedEntities, (const CHAR *) &name[0],
-	             XML_INTERNAL_GENERAL_ENTITY, NULL, NULL,
+	             XML_INTERNAL_PREDEFINED_ENTITY, NULL, NULL,
 		     &value[0]);
     }
 }

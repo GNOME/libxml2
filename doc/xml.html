@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-<title>No title</title>
+<title>The XML library for Gnome</title>
 <meta name="GENERATOR" content="amaya V1.3b">
 </head>
 <body bgcolor="#ffffff">
@@ -75,18 +75,22 @@ standalone=true
       content= too
     ELEMENT head
       ELEMENT title
-      content=Welcome to Gnome
+        TEXT
+        content=Welcome to Gnome
     ELEMENT chapter
       ELEMENT title
-      content=The Linux adventure
+        TEXT
+        content=The Linux adventure
       ELEMENT p
-      content=bla bla bla ...
+        TEXT
+        content=bla bla bla ...
       ELEMENT image
         ATTRIBUTE href
           TEXT
           content=linus.gif
       ELEMENT p
-      content=...</pre>
+        TEXT
+        content=...</pre>
 <p>
 This should be useful to learn the internal representation model.</p>
 
@@ -106,19 +110,19 @@ Usually, the first thing to do is to read an XML input, the parser accepts to
 parse both memory mapped documents or direct files. The functions are defined
 in "parser.h":</p>
 <dl>
-<dt>xmlDocPtr xmlParseMemory(char *buffer, int size);</dt>
+<dt><code>xmlDocPtr xmlParseMemory(char *buffer, int size);</code></dt>
 <dd><p>
 parse a zero terminated string containing the document</p>
 </dd>
 </dl>
 <dl>
-<dt>xmlDocPtr xmlParseFile(const char *filename);</dt>
+<dt><code>xmlDocPtr xmlParseFile(const char *filename);</code></dt>
 <dd><p>
 parse an XML document contained in a file (possibly compressed)</p>
 </dd>
 </dl>
 <p>
- This returns a pointer to the document structure (or NULL in case of
+This returns a pointer to the document structure (or NULL in case of
 failure).</p>
 <p>
 A couple of comments can be made, first this mean that the parser is
@@ -126,25 +130,156 @@ memory-hungry, first to load the document in memory, second to build the tree.
 Reading a document without building the tree will be possible in the future by
 pluggin the code to the SAX interface (see SAX.c).</p>
 
+<h3>Building a tree from scratch</h3>
+<p>
+The other way to get an XML tree in memory is by building it. Basically there
+is a set of functions dedicated to building new elements, those are also
+described in "tree.h", here is for example the piece of code producing the
+example used before:</p>
+<pre>    xmlDocPtr doc;
+    xmlNodePtr tree, subtree;
+
+    doc = xmlNewDoc("1.0");
+    doc->root = xmlNewDocNode(doc, NULL, "EXAMPLE", NULL);
+    xmlSetProp(doc->root, "prop1", "gnome is great");
+    xmlSetProp(doc->root, "prop2", "&amp;linux; too");
+    tree = xmlNewChild(doc->root, NULL, "head", NULL);
+    subtree = xmlNewChild(tree, NULL, "title", "Welcome to Gnome");
+    tree = xmlNewChild(doc->root, NULL, "chapter", NULL);
+    subtree = xmlNewChild(tree, NULL, "title", "The Linux adventure");
+    subtree = xmlNewChild(tree, NULL, "p", "bla bla bla ...");
+    subtree = xmlNewChild(tree, NULL, "image", NULL);
+    xmlSetProp(subtree, "href", "linus.gif");</pre>
+<p>
+Not really rocket science ...</p>
+
 <h3>Traversing the tree</h3>
 <p>
 Basically by including "tree.h" your code has access to the internal structure
 of all the element of the tree. The names should be somewhat simple like
 <strong>parent</strong>, <strong>childs</strong>, <strong>next</strong>,
-<strong>prev</strong>, <strong>properties</strong>, etc... </p>
+<strong>prev</strong>, <strong>properties</strong>, etc... For example still
+with the previous example:</p>
+<pre><code>doc->root->childs->childs</code></pre>
+<p>
+points to the title element,</p>
+<pre>doc->root->childs->next->child->child</pre>
+<p>
+points to the text node containing the chapter titlle "The Linux adventure"
+and</p>
+<pre>doc->root->properties->next->val</pre>
+<p>
+points to the entity reference containing the value of "&amp;linux" at the
+beginning of the second attribute of the root element "EXAMPLE".</p>
 
 <h3>Modifying the tree</h3>
+<p>
+functions are provided to read and write the document content:</p>
+<dl>
+<dt><code>xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name, const CHAR
+*value);</code></dt>
+<dd><p>
+This set (or change) an attribute carried by an ELEMENT node the value can be
+NULL</p>
+</dd>
+</dl>
+<dl>
+<dt><code>const CHAR *xmlGetProp(xmlNodePtr node, const CHAR
+*name);</code></dt>
+<dd><p>
+This function returns a pointer to the property content, note that no extra
+copy is made</p>
+</dd>
+</dl>
+<p>
+Two functions must be used to read an write the text associated to
+elements:</p>
+<dl>
+<dt><code>xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const CHAR
+*value);</code></dt>
+<dd><p>
+This function takes an "external" string and convert it to one text node or
+possibly to a list of entity and text nodes. All non-predefined entity
+references like &amp;Gnome; will be stored internally as an entity node, hence
+the result of the function may not be a single node.</p>
+</dd>
+</dl>
+<dl>
+<dt><code>CHAR *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int
+inLine);</code></dt>
+<dd><p>
+this is the dual function, which generate a new string containing the content
+of the text and entity nodes. Note the extra argument inLine, if set to 1
+instead of returning the &amp;Gnome; XML encoding in the string it will
+substitute it with it's value say "GNU Network Object Model Environment". Set
+it if you want to use the string for non XML usage like User Interface.</p>
+</dd>
+</dl>
 
 <h3>Saving a tree</h3>
+<p>
+Basically 3 options are possible:</p>
+<dl>
+<dt><code>void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int
+*size);</code></dt>
+<dd><p>
+returns a buffer where the document has been saved</p>
+</dd>
+</dl>
+<dl>
+<dt><code>extern void xmlDocDump(FILE *f, xmlDocPtr doc);</code></dt>
+<dd><p>
+dumps a buffer to an open file descriptor</p>
+</dd>
+</dl>
+<dl>
+<dt><code>int xmlSaveFile(const char *filename, xmlDocPtr cur);</code></dt>
+<dd><p>
+save the document ot a file. In that case the compression interface is
+triggered if turned on</p>
+</dd>
+</dl>
 
-<h2><a name="DOM">DOM interfaces</a></h2>
+<h3>Compression</h3>
+<p>
+The library handle transparently compression when doing file based accesses,
+the level of compression on saves can be tuned either globally or individually
+for one file:</p>
+<dl>
+<dt><code>int  xmlGetDocCompressMode (xmlDocPtr doc);</code></dt>
+<dd><p>
+Get the document compression ratio (0-9)</p>
+</dd>
+</dl>
+<dl>
+<dt><code>void xmlSetDocCompressMode (xmlDocPtr doc, int mode);</code></dt>
+<dd><p>
+Set the document compression ratio</p>
+</dd>
+</dl>
+<dl>
+<dt><code>int  xmlGetCompressMode(void);</code></dt>
+<dd><p>
+Get the default compression ratio</p>
+</dd>
+</dl>
+<dl>
+<dt><code>void xmlSetCompressMode(int mode);</code></dt>
+<dd><p>
+set the default compression ratio</p>
+</dd>
+</dl>
+
+<h2><a name="DOM">DOM Principles</a></h2>
 <p>
 <a href="http://www.w3.org/DOM/">DOM</a> stands for the <em>Document Object
 Model</em> this is an API for accessing XML or HTML structured documents.
 Native support for DOM in Gnome is on the way (module gnome-dom), and it will
-be based on gnome-xml. DOM defiles a set of IDL (or Java) interfaces allowing
-to traverse and manipulate a document. The DOM library will allow accessing
-and modifying "live" documents presents on other programs like this:</p>
+be based on gnome-xml. This will be a far cleaner interface to manipulate XML
+files within Gnome since it won't expose the internal structure. DOM defiles a
+set of IDL (or Java) interfaces allowing to traverse and manipulate a
+document. The DOM library will allow accessing and modifying "live" documents
+presents on other programs like this:</p>
 <p>
 <img src="DOM.gif" alt=" DOM.gif "></p>
 <p>

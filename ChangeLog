@@ -1,3 +1,10 @@
+Thu Oct 29 00:48:45 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.[ch]: bug fixing
+	* entities.[ch]: defined a specific type for predefined entities
+	* doc/xml.html: more documentation on the library, how to use it,
+	  overview of the interfaces.
+
 Wed Oct 28 17:56:35 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.[ch]: more cleanup on the API, made the tree mor conformant.

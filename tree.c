@@ -20,6 +20,7 @@
 
 #include "tree.h"
 #include "entities.h"
+#include "valid.h"
 
 static CHAR xmlStringText[] = { 't', 'e', 'x', 't', 0 };
 int oldXMLWDcompatibility = 0;
@@ -345,7 +346,7 @@ xmlFreeDtd(xmlDtdPtr cur) {
     if (cur->SystemID != NULL) free((char *) cur->SystemID);
     if (cur->ExternalID != NULL) free((char *) cur->ExternalID);
     if (cur->elements != NULL)
-        fprintf(stderr, "xmlFreeDtd: cur->elements != NULL !!! \n");
+        xmlFreeElementTable((xmlElementTablePtr) cur->elements);
     if (cur->entities != NULL)
         xmlFreeEntitiesTable((xmlEntitiesTablePtr) cur->entities);
     memset(cur, -1, sizeof(xmlDtd));
@@ -2268,13 +2269,15 @@ xmlDtdDump(xmlDocPtr doc) {
 	xmlBufferWriteCHAR(cur->SystemID);
 	xmlBufferWriteChar("\"");
     }
-    if (cur->entities == NULL) {
+    if ((cur->entities == NULL) && (cur->elements == NULL)) {
 	xmlBufferWriteChar(">\n");
 	return;
     }
     xmlBufferWriteChar(" [\n");
     if (cur->entities != NULL)
 	xmlDumpEntitiesTable((xmlEntitiesTablePtr) cur->entities);
+    if (cur->elements != NULL)
+	xmlDumpElementTable((xmlElementTablePtr) cur->elements);
     xmlBufferWriteChar("]");
 
     /* TODO !!! a lot more things to dump ... */

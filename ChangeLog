@@ -1,3 +1,10 @@
+Sun Jan 31 22:06:48 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* valid.[ch], tree.c, parser.c : more work toward full parsing
+	  of XML DTDs.
+	* README: added informations about mailing-list and on-line
+	  documentation
+
 1999-01-27  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.in (XML_INCLUDEDIR): Use -I not -L for includes.

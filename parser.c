@@ -2388,16 +2388,21 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
         (NXT(6) == 'A')) {
 	SKIP(7);
 	SKIP_BLANKS;
+	if (CUR == ')') {
+	    NEXT;
+	    ret = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_PCDATA);
+	    return(ret);
+	}
 	if ((CUR == '(') || (CUR == '|')) {
 	    ret = cur = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_PCDATA);
 	    if (ret == NULL) return(NULL);
-	} else {
+	} /********** else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt, 
 		    "xmlParseElementMixedContentDecl : '|' or ')' expected\n");
 	    ctxt->wellFormed = 0;
 	    return(NULL);
-	}
+	} **********/
 	while (CUR == '|') {
 	    if (elem == NULL) {
 	        ret = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
@@ -2422,7 +2427,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 	    }
 	    SKIP_BLANKS;
 	}
-	if (CUR == ')') {
+	if ((CUR == ')') && (NXT(1) == '*')) {
 	    if (elem != NULL)
 		cur->c2 = xmlNewElementContent(elem,
 		                               XML_ELEMENT_CONTENT_ELEMENT);
@@ -2430,7 +2435,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 	} else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt, 
-		    "xmlParseElementMixedContentDecl : '|' or ')' expected\n");
+		    "xmlParseElementMixedContentDecl : '|' or ')*' expected\n");
 	    ctxt->wellFormed = 0;
 	    xmlFreeElementContent(ret);
 	    return(NULL);
@@ -2671,6 +2676,7 @@ xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, CHAR *name,
 	return(-1);
     }
      ****************************/
+    *result = tree;
     return(res);
 }
 

@@ -240,6 +240,7 @@ EXPORTS
 	__xmlGenericErrorContext
 	__xmlGetWarningsDefaultValue
 	__xmlIndentTreeOutput
+	__xmlTreeIndentString
 	__xmlKeepBlanksDefaultValue
 	__xmlLineNumbersDefaultValue
 	__xmlLoadExtDtdDefaultValue
@@ -265,6 +266,7 @@ EXPORTS
 	xmlGenericErrorContext DATA
 	xmlGetWarningsDefaultValue DATA
 	xmlIndentTreeOutput DATA
+	xmlTreeIndentString DATA
 	xmlKeepBlanksDefaultValue DATA
 	xmlLineNumbersDefaultValue DATA
 	xmlLoadExtDtdDefaultValue DATA

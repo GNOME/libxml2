@@ -6012,7 +6012,7 @@ xmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
 	if ((format) && (xmlIndentTreeOutput) &&
 	    (cur->type == XML_ELEMENT_NODE))
 	    for (i = 0;i < level;i++)
-		xmlBufferWriteChar(buf, "  ");
+		xmlBufferWriteChar(buf, xmlTreeIndentString);
         xmlNodeDump(buf, doc, cur, level, format);
 	if (format) {
 	    xmlBufferWriteChar(buf, "\n");
@@ -6167,7 +6167,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
 		        (level >= 0?level+1:-1), format);
 	if ((xmlIndentTreeOutput) && (format))
 	    for (i = 0;i < level;i++)
-		xmlBufferWriteChar(buf, "  ");
+		xmlBufferWriteChar(buf, xmlTreeIndentString);
     }
     xmlBufferWriteChar(buf, "</");
     if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
@@ -6399,7 +6399,7 @@ xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	if ((format) && (xmlIndentTreeOutput) &&
 	    (cur->type == XML_ELEMENT_NODE))
 	    for (i = 0;i < level;i++)
-		xmlOutputBufferWriteString(buf, "  ");
+		xmlOutputBufferWriteString(buf, xmlTreeIndentString);
         xmlNodeDumpOutput(buf, doc, cur, level, format, encoding);
 	if (format) {
 	    xmlOutputBufferWriteString(buf, "\n");
@@ -6563,7 +6563,7 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 		        (level >= 0?level+1:-1), format, encoding);
 	if ((xmlIndentTreeOutput) && (format))
 	    for (i = 0;i < level;i++)
-		xmlOutputBufferWriteString(buf, "  ");
+		xmlOutputBufferWriteString(buf, xmlTreeIndentString);
     }
     xmlOutputBufferWriteString(buf, "</");
     if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {

@@ -40,6 +40,7 @@ extern "C" {
 #undef	xmlGenericErrorContext
 #undef	xmlGetWarningsDefaultValue
 #undef	xmlIndentTreeOutput
+#undef  xmlTreeIndentString
 #undef	xmlKeepBlanksDefaultValue
 #undef	xmlLineNumbersDefaultValue
 #undef	xmlLoadExtDtdDefaultValue
@@ -87,6 +88,7 @@ struct _xmlGlobalState
 
 	int xmlSaveNoEmptyTags;
 	int xmlIndentTreeOutput;
+	const char *xmlTreeIndentString;
 };
 
 #ifdef __cplusplus
@@ -253,6 +255,14 @@ extern int *__xmlIndentTreeOutput(void);
 (*(__xmlIndentTreeOutput()))
 #else
 LIBXML_DLL_IMPORT extern int xmlIndentTreeOutput;
+#endif
+
+extern const char * *__xmlTreeIndentString(void);
+#ifdef LIBXML_THREAD_ENABLED
+#define xmlTreeIndentString \
+(*(__xmlTreeIndentString()))
+#else
+LIBXML_DLL_IMPORT extern const char * xmlTreeIndentString;
 #endif
 
 extern int *__xmlKeepBlanksDefaultValue(void);

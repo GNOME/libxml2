@@ -106,6 +106,7 @@ xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 #undef	xmlGenericErrorContext
 #undef	xmlGetWarningsDefaultValue
 #undef	xmlIndentTreeOutput
+#undef  xmlTreeIndentString
 #undef	xmlKeepBlanksDefaultValue
 #undef	xmlLineNumbersDefaultValue
 #undef	xmlLoadExtDtdDefaultValue
@@ -247,9 +248,17 @@ void *xmlGenericErrorContext = NULL;
  * xmlIndentTreeOutput:
  *
  * Global setting, asking the serializer to indent the output tree by default
- * Disabled by default
+ * Enabled by default
  */
-int xmlIndentTreeOutput = 0;
+int xmlIndentTreeOutput = 1;
+
+/**
+ * xmlTreeIndentString:
+ *
+ * The string used to do one-level indent. By default is equal to "  " (two spaces)
+ */
+const char *xmlTreeIndentString = "  ";
+
 /**
  * xmlSaveNoEmptyTags:
  *
@@ -431,7 +440,8 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 #endif
     gs->xmlGenericErrorContext = NULL;
     gs->xmlGetWarningsDefaultValue = 1;
-    gs->xmlIndentTreeOutput = 0;
+    gs->xmlIndentTreeOutput = 1;
+    gs->xmlTreeIndentString = "  ";
     gs->xmlKeepBlanksDefaultValue = 1;
     gs->xmlLineNumbersDefaultValue = 0;
     gs->xmlLoadExtDtdDefaultValue = 0;
@@ -559,6 +569,15 @@ __xmlIndentTreeOutput(void) {
 	return (&xmlIndentTreeOutput);
     else
 	return (&xmlGetGlobalState()->xmlIndentTreeOutput);
+}
+
+#undef xmlTreeIndentString
+const char * *
+__xmlTreeIndentString(void) {
+    if (IS_MAIN_THREAD)
+	return (&xmlTreeIndentString);
+    else
+	return (&xmlGetGlobalState()->xmlTreeIndentString);
 }
 
 #undef	xmlKeepBlanksDefaultValue

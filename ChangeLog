@@ -1,3 +1,9 @@
+Wed May 23 13:59:19 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xinclude.[ch]: Updated the namespace for the Last Call version
+	* result/XInclude/include test/XInclude/include: updated the
+	  testsuite accordingly
+
 Wed May 23 12:27:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* uri.[ch]: applied a patch from Carl Douglas for URI escaping,

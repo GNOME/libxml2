@@ -1,8 +1,8 @@
 /*
  * xinclude.c : Code to implement XInclude processing
  *
- * World Wide Web Consortium Working Draft 26 October 2000
- * http://www.w3.org/TR/2000/WD-xinclude-20001026
+ * World Wide Web Consortium W3C Last Call Working Draft 16 May 2001
+ * http://www.w3.org/TR/2001/WD-xinclude-20010516/
  *
  * See Copyright for the status of this software.
  *
@@ -30,7 +30,7 @@
 #ifdef LIBXML_XINCLUDE_ENABLED
 #include <libxml/xinclude.h>
 
-#define XINCLUDE_NS (const xmlChar *) "http://www.w3.org/1999/XML/xinclude"
+#define XINCLUDE_NS (const xmlChar *) "http://www.w3.org/2001/XInclude"
 #define XINCLUDE_NODE (const xmlChar *) "include"
 #define XINCLUDE_HREF (const xmlChar *) "href"
 #define XINCLUDE_PARSE (const xmlChar *) "parse"

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<x xmlns:xinclude="http://www.w3.org/1999/XML/xinclude">
+<x xmlns:xinclude="http://www.w3.org/2001/XInclude">
    <!-- Simple test of including another XML document -->
    <doc>
 <p>something</p>

@@ -1,3 +1,7 @@
+Mon Mar  1 15:22:06 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* testSAX.c: fix a compilation problem about a missing timb include
+
 Sat Feb 28 22:35:32 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* testSAX.c: small enhancement to prevent trying to print

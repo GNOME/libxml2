@@ -2952,8 +2952,8 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
 	case XML_NAMESPACE_DECL:
-#ifdef LIBXML_SGML_ENABLED
-	case XML_SGML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+	case XML_DOCB_DOCUMENT_NODE:
 #endif
 	case XML_XINCLUDE_START:
 	case XML_XINCLUDE_END:
@@ -3019,8 +3019,8 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
 	case XML_NAMESPACE_DECL:
 	case XML_XINCLUDE_START:
 	case XML_XINCLUDE_END:
-#ifdef LIBXML_SGML_ENABLED
-	case XML_SGML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+	case XML_DOCB_DOCUMENT_NODE:
 #endif
 	    return;
         case XML_ELEMENT_NODE:
@@ -3092,8 +3092,8 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
 	case XML_NAMESPACE_DECL:
 	case XML_XINCLUDE_START:
 	case XML_XINCLUDE_END:
-#ifdef LIBXML_SGML_ENABLED
-	case XML_SGML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+	case XML_DOCB_DOCUMENT_NODE:
 #endif
 	    return;
         case XML_ELEMENT_NODE:
@@ -3142,8 +3142,8 @@ xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
 	case XML_NAMESPACE_DECL:
 	case XML_XINCLUDE_START:
 	case XML_XINCLUDE_END:
-#ifdef LIBXML_SGML_ENABLED
-	case XML_SGML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+	case XML_DOCB_DOCUMENT_NODE:
 #endif
 	    return;
         case XML_ELEMENT_NODE:
@@ -3327,8 +3327,8 @@ xmlNodeGetContent(xmlNodePtr cur) {
         case XML_DTD_NODE:
 	case XML_XINCLUDE_START:
 	case XML_XINCLUDE_END:
-#ifdef LIBXML_SGML_ENABLED
-	case XML_SGML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+	case XML_DOCB_DOCUMENT_NODE:
 #endif
 	    return(NULL);
 	case XML_NAMESPACE_DECL:
@@ -3420,8 +3420,8 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
         case XML_DOCUMENT_TYPE_NODE:
 	case XML_XINCLUDE_START:
 	case XML_XINCLUDE_END:
-#ifdef LIBXML_SGML_ENABLED
-	case XML_SGML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+	case XML_DOCB_DOCUMENT_NODE:
 #endif
 	    break;
         case XML_NOTATION_NODE:
@@ -3511,8 +3511,8 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	case XML_NAMESPACE_DECL:
 	case XML_XINCLUDE_START:
 	case XML_XINCLUDE_END:
-#ifdef LIBXML_SGML_ENABLED
-	case XML_SGML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+	case XML_DOCB_DOCUMENT_NODE:
 #endif
 	    break;
         case XML_ELEMENT_DECL:
@@ -3602,8 +3602,8 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	case XML_NAMESPACE_DECL:
 	case XML_XINCLUDE_START:
 	case XML_XINCLUDE_END:
-#ifdef LIBXML_SGML_ENABLED
-	case XML_SGML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+	case XML_DOCB_DOCUMENT_NODE:
 #endif
 	    break;
         case XML_ELEMENT_DECL:

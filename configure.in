@@ -235,9 +235,9 @@ if test "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ; then
     if test "${with_mem_debug}" = "" ; then
         with_mem_debug="yes"
     fi
-dnl    if test "${with_docbook}" = "" ; then
-dnl        with_docbook="yes"
-dnl    fi
+    if test "${with_docbook}" = "" ; then
+        with_docbook="yes"
+    fi
     if test "${with_xptr}" = "" ; then
         with_xptr="yes"
     fi
@@ -296,6 +296,19 @@ else
 fi
 AC_SUBST(WITH_HTML)
 AC_SUBST(HTML_OBJ)
+
+AC_ARG_WITH(docbook, [  --with-docbook         Add Docbook SGML support (off)])
+if test "$with_docbook" = "yes" ; then
+    echo Enabling Docbook support
+    WITH_DOCB=1
+    DOCB_OBJ="DOCBparser.o"
+else    
+    WITH_DOCB=0
+    DOCB_OBJ=
+fi
+AC_SUBST(WITH_DOCB)
+AC_SUBST(DOCB_OBJ)
+
 
 AC_ARG_WITH(xpath, [  --with-xpath            Add the XPATH support (on)])
 if test "$with_xpath" = "no" ; then

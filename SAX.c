@@ -1628,6 +1628,7 @@ xmlDefaultSAXHandlerInit(void)
     xmlDefaultSAXHandler.fatalError = xmlParserError;
 }
 
+#ifdef LIBXML_HTML_ENABLED
 /*
  * Default handler for HTML, builds the DOM tree
  */
@@ -1697,11 +1698,13 @@ htmlDefaultSAXHandlerInit(void)
     htmlDefaultSAXHandler.error = xmlParserError;
     htmlDefaultSAXHandler.fatalError = xmlParserError;
 }
+#endif /* LIBXML_HTML_ENABLED */
 
+#ifdef LIBXML_DOCB_ENABLED
 /*
- * Default handler for HTML, builds the DOM tree
+ * Default handler for SGML DocBook, builds the DOM tree
  */
-xmlSAXHandler sgmlDefaultSAXHandler = {
+xmlSAXHandler docbDefaultSAXHandler = {
     internalSubset,
     NULL,
     NULL,
@@ -1732,38 +1735,40 @@ xmlSAXHandler sgmlDefaultSAXHandler = {
 };
 
 /**
- * sgmlDefaultSAXHandlerInit:
+ * docbDefaultSAXHandlerInit:
  *
  * Initialize the default SAX handler
  */
 void
-sgmlDefaultSAXHandlerInit(void)
+docbDefaultSAXHandlerInit(void)
 {
-    sgmlDefaultSAXHandler.internalSubset = internalSubset;
-    sgmlDefaultSAXHandler.externalSubset = NULL;
-    sgmlDefaultSAXHandler.isStandalone = NULL;
-    sgmlDefaultSAXHandler.hasInternalSubset = NULL;
-    sgmlDefaultSAXHandler.hasExternalSubset = NULL;
-    sgmlDefaultSAXHandler.resolveEntity = NULL;
-    sgmlDefaultSAXHandler.getEntity = getEntity;
-    sgmlDefaultSAXHandler.getParameterEntity = NULL;
-    sgmlDefaultSAXHandler.entityDecl = NULL;
-    sgmlDefaultSAXHandler.attributeDecl = NULL;
-    sgmlDefaultSAXHandler.elementDecl = NULL;
-    sgmlDefaultSAXHandler.notationDecl = NULL;
-    sgmlDefaultSAXHandler.unparsedEntityDecl = NULL;
-    sgmlDefaultSAXHandler.setDocumentLocator = setDocumentLocator;
-    sgmlDefaultSAXHandler.startDocument = startDocument;
-    sgmlDefaultSAXHandler.endDocument = endDocument;
-    sgmlDefaultSAXHandler.startElement = startElement;
-    sgmlDefaultSAXHandler.endElement = endElement;
-    sgmlDefaultSAXHandler.reference = NULL;
-    sgmlDefaultSAXHandler.characters = characters;
-    sgmlDefaultSAXHandler.cdataBlock = NULL;
-    sgmlDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
-    sgmlDefaultSAXHandler.processingInstruction = NULL;
-    sgmlDefaultSAXHandler.comment = comment;
-    sgmlDefaultSAXHandler.warning = xmlParserWarning;
-    sgmlDefaultSAXHandler.error = xmlParserError;
-    sgmlDefaultSAXHandler.fatalError = xmlParserError;
+    docbDefaultSAXHandler.internalSubset = internalSubset;
+    docbDefaultSAXHandler.externalSubset = NULL;
+    docbDefaultSAXHandler.isStandalone = NULL;
+    docbDefaultSAXHandler.hasInternalSubset = NULL;
+    docbDefaultSAXHandler.hasExternalSubset = NULL;
+    docbDefaultSAXHandler.resolveEntity = NULL;
+    docbDefaultSAXHandler.getEntity = getEntity;
+    docbDefaultSAXHandler.getParameterEntity = NULL;
+    docbDefaultSAXHandler.entityDecl = NULL;
+    docbDefaultSAXHandler.attributeDecl = NULL;
+    docbDefaultSAXHandler.elementDecl = NULL;
+    docbDefaultSAXHandler.notationDecl = NULL;
+    docbDefaultSAXHandler.unparsedEntityDecl = NULL;
+    docbDefaultSAXHandler.setDocumentLocator = setDocumentLocator;
+    docbDefaultSAXHandler.startDocument = startDocument;
+    docbDefaultSAXHandler.endDocument = endDocument;
+    docbDefaultSAXHandler.startElement = startElement;
+    docbDefaultSAXHandler.endElement = endElement;
+    docbDefaultSAXHandler.reference = NULL;
+    docbDefaultSAXHandler.characters = characters;
+    docbDefaultSAXHandler.cdataBlock = NULL;
+    docbDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
+    docbDefaultSAXHandler.processingInstruction = NULL;
+    docbDefaultSAXHandler.comment = comment;
+    docbDefaultSAXHandler.warning = xmlParserWarning;
+    docbDefaultSAXHandler.error = xmlParserError;
+    docbDefaultSAXHandler.fatalError = xmlParserError;
 }
+
+#endif /* LIBXML_DOCB_ENABLED */

@@ -303,7 +303,7 @@ LIBXML_DLL_IMPORT extern const char *xmlParserVersion;
 LIBXML_DLL_IMPORT extern xmlSAXLocator xmlDefaultSAXLocator;
 LIBXML_DLL_IMPORT extern xmlSAXHandler xmlDefaultSAXHandler;
 LIBXML_DLL_IMPORT extern xmlSAXHandler htmlDefaultSAXHandler;
-LIBXML_DLL_IMPORT extern xmlSAXHandler sgmlDefaultSAXHandler;
+LIBXML_DLL_IMPORT extern xmlSAXHandler docbDefaultSAXHandler;
 
 /**
  * entity substitution default behaviour.

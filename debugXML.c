@@ -899,8 +899,8 @@ static int xmlLsCountNode(xmlNodePtr node) {
 	    break;
 	case XML_DOCUMENT_NODE:
 	case XML_HTML_DOCUMENT_NODE:
-#ifdef LIBXML_SGML_ENABLED
-	case XML_SGML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+	case XML_DOCB_DOCUMENT_NODE:
 #endif
 	    list = ((xmlDocPtr) node)->children;
 	    break;

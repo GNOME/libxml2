@@ -62,13 +62,13 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /*
- * Whether the Docbook support is configured in
-#if @WITH_SGML@
-#define LIBXML_SGML_ENABLED
-#else
-#define LIBXML_SGML_DISABLED
-#endif
+ * Whether the SGML Docbook support is configured in
  */
+#if @WITH_DOCB@
+#define LIBXML_DOCB_ENABLED
+#else
+#define LIBXML_DOCB_DISABLED
+#endif
 
 /*
  * Whether XPath is configured in

@@ -22,7 +22,8 @@ def errorHandler(ctx, str):
     global error_nr
     global error_msg
 
-    error_nr = error_nr + 1
+    if string.find(str, "error:") >= 0:
+	error_nr = error_nr + 1
     if len(error_msg) < 300:
         if len(error_msg) == 0 or error_msg[-1] == '\n':
 	    error_msg = error_msg + "   >>" + str
@@ -155,6 +156,34 @@ def testWfEntDtd(filename, id):
     doc.freeDoc()
     return 1
 
+def testError(filename, id):
+    global error_nr
+    global error_msg
+    global log
+
+    error_nr = 0
+    error_msg = ''
+
+    ctxt = libxml2.createFileParserCtxt(filename)
+    if ctxt == None:
+        return -1
+    ctxt.replaceEntities(1)
+    ctxt.loadSubset(1)
+    ctxt.parseDocument()
+
+    doc = ctxt.doc()
+    if ctxt.wellFormed() == 0:
+        print "%s: warning: failed to parse the document but accepted" % (id)
+	log.write("%s: warning: failed to parse the document but accepte\n" % (id))
+	return 2
+    if error_nr != 0:
+        print "%s: warning: WF document generated an error msg" % (id)
+	log.write("%s: error: WF document generated an error msg\n" % (id))
+	doc.freeDoc()
+	return 2
+    doc.freeDoc()
+    return 1
+
 def testInvalid(filename, id):
     global error_nr
     global error_msg
@@ -271,7 +300,7 @@ def runTest(test):
 	#    print "Unknow value %s for an ENTITIES test value" % (extra)
 	#    return -1
     elif type == "error":
-	res = testWfEntDtd(URI, id)
+	res = testError(URI, id)
     else:
         # TODO skipped for now
 	return -1

@@ -1,3 +1,9 @@
+Mon Feb 18 15:30:14 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* check-xml-test-suite.py: fixed the test script after some discussion
+	  on the semantic of TYPE="error"
+	* Makefile.am: added the script to the distrib
+
 Mon Feb 18 12:17:41 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c entities.c: fixed a couple of conformances issues deep

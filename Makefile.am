@@ -551,7 +551,7 @@ dist-hook: libxml.spec
 	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms test result SAXresult ) | (cd $(distdir); tar xf -)
 
 cleantar:
-	@(rm -f libxslt*.tar.gz COPYING.LIB)
+	@(rm -f libxml*.tar.gz COPYING.LIB)
 
 rpm: cleantar
 	@(unset CDPATH ; $(MAKE) dist && rpm -ta $(distdir).tar.gz)
@@ -566,7 +566,7 @@ CLEANFILES=xml2Conf.sh
 confexecdir=$(libdir)
 confexec_DATA = xml2Conf.sh
 EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml.spec \
-             libxml.m4 Copyright \
+             libxml.m4 Copyright check-xml-test-suite.py \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     $(man_MANS) libxml-2.0.pc.in \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \

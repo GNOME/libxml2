@@ -1,3 +1,8 @@
+Thu Jan 29 23:51:48 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: added (void *) type override to prevent
+	  warning on Solaris (Bug 132671)
+
 Wed Jan 28 07:20:37 MST 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/examples/Makefile.am

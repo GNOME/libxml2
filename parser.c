@@ -7169,7 +7169,7 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 		ctxt->disableSAX = 1;
 	    } else
 	        NEXT;
-	} else if (RAW == '"'){
+	} else {
 	    ctxt->errNo = XML_ERR_STRING_NOT_STARTED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData,

@@ -141,23 +141,21 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
 <h2><a name="Developper">Developper</a> corner</h2>
 <ol>
   <li>Extra nodes in the document:
-    <p><em>For a XML file as below:</em><br>
-    </p>
-    <p><code><em>&lt;?xml version="1.0"?&gt;</em></code></p>
-    <p><code><em>&lt;PLAN
-    xmlns="http://www.argus.ca/autotest/1.0/"&gt;</em></code></p>
-    <p><code><em>&lt;NODE CommFlag="0"/&gt;</em></code></p>
-    <p><code><em>&lt;NODE CommFlag="1"/&gt;</em></code></p>
-    <p><code><em>&lt;/PLAN&gt; </em></code></p>
-    <p><em>after parsing it with the function
-    pxmlDoc=xmlParseFile(...);</em></p>
+    <p><em>For a XML file as below:</em></p>
+    <pre>&lt;?xml version="1.0"?&gt;
+&lt;PLAN
+xmlns="http://www.argus.ca/autotest/1.0/"&gt;
+&lt;NODE CommFlag="0"/&gt;
+&lt;NODE CommFlag="1"/&gt;
+&lt;/PLAN&gt;</pre>
+    <p><em>after parsing it with the function pxmlDoc=xmlParseFile(...);</em></p>
     <p><em>I want to the get the content of the first node (node with the
     CommFlag="0")</em></p>
     <p><em>so I did it as following;</em></p>
-    <p><code><em>xmlNodePtr pode;</em></code></p>
-    <p><code><em>pnode=pxmlDoc-&gt;children-&gt;children;</em></code></p>
+    <pre>xmlNodePtr pode;
+pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     <p><em>but it does not work. If I change it to</em></p>
-    <p><code><em>pnode=pxmlDoc-&gt;children-&gt;children-&gt;next;</em></code></p>
+    <pre>pnode=pxmlDoc-&gt;children-&gt;children-&gt;next;</pre>
     <p><em>then it works.  Can someone explain it to me.</em></p>
     <p></p>
     <p>In XML all characters in the content of the document are signifficant

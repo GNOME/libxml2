@@ -3182,6 +3182,7 @@
      <exports symbol='XPATH_RANGE' type='enum'/>
      <exports symbol='XPTR_SYNTAX_ERROR' type='enum'/>
      <exports symbol='XPATH_LOCATIONSET' type='enum'/>
+     <exports symbol='XPATH_INVALID_CTXT' type='enum'/>
      <exports symbol='XPATH_INVALID_CHAR_ERROR' type='enum'/>
      <exports symbol='XPATH_UNDEF_VARIABLE_ERROR' type='enum'/>
      <exports symbol='XPATH_UNCLOSED_ERROR' type='enum'/>
@@ -3196,9 +3197,9 @@
      <exports symbol='XPATH_EXPR_ERROR' type='enum'/>
      <exports symbol='XPATH_VARIABLE_REF_ERROR' type='enum'/>
      <exports symbol='XPATH_INVALID_TYPE' type='enum'/>
-     <exports symbol='XPATH_INVALID_CTXT_SIZE' type='enum'/>
-     <exports symbol='XPATH_INVALID_CTXT_POSITION' type='enum'/>
      <exports symbol='XPATH_UNDEFINED' type='enum'/>
+     <exports symbol='XPATH_INVALID_CTXT_POSITION' type='enum'/>
+     <exports symbol='XPATH_INVALID_CTXT_SIZE' type='enum'/>
      <exports symbol='XPATH_MEMORY_ERROR' type='enum'/>
      <exports symbol='XPATH_UNFINISHED_LITERAL_ERROR' type='enum'/>
      <exports symbol='XPATH_NUMBER' type='enum'/>
@@ -5256,6 +5257,7 @@
     <enum name='XPATH_EXPR_ERROR' file='xpath' value='7' type='xmlXPathError'/>
     <enum name='XPATH_INVALID_ARITY' file='xpath' value='12' type='xmlXPathError'/>
     <enum name='XPATH_INVALID_CHAR_ERROR' file='xpath' value='21' type='xmlXPathError'/>
+    <enum name='XPATH_INVALID_CTXT' file='xpath' value='22' type='xmlXPathError'/>
     <enum name='XPATH_INVALID_CTXT_POSITION' file='xpath' value='14' type='xmlXPathError'/>
     <enum name='XPATH_INVALID_CTXT_SIZE' file='xpath' value='13' type='xmlXPathError'/>
     <enum name='XPATH_INVALID_OPERAND' file='xpath' value='10' type='xmlXPathError'/>
@@ -8878,7 +8880,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlFileRead' file='xmlIO'>
       <info>Read @len bytes to @buffer from the I/O channel.</info>
-      <return type='int' info='the number of bytes written'/>
+      <return type='int' info='the number of bytes written or &lt; 0 in case of failure'/>
       <arg name='context' type='void *' info='the I/O context'/>
       <arg name='buffer' type='char *' info='where to drop data'/>
       <arg name='len' type='int' info='number of bytes to write'/>
@@ -10549,7 +10551,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlNewTextWriter' file='xmlwriter'>
       <cond>LIBXML_WRITER_ENABLED</cond>
-      <info>Create a new xmlNewTextWriter structure using an xmlOutputBufferPtr</info>
+      <info>Create a new xmlNewTextWriter structure using an xmlOutputBufferPtr NOTE: the @out parameter will be deallocated when the writer is closed (if the call succeed.)</info>
       <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
       <arg name='out' type='xmlOutputBufferPtr' info='an xmlOutputBufferPtr'/>
     </function>
@@ -10576,7 +10578,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlNewTextWriterPushParser' file='xmlwriter'>
       <cond>LIBXML_WRITER_ENABLED</cond>
-      <info>Create a new xmlNewTextWriter structure with @ctxt as output TODO: handle compression</info>
+      <info>Create a new xmlNewTextWriter structure with @ctxt as output NOTE: the @ctxt context will be freed with the resulting writer (if the call succeeds). TODO: handle compression</info>
       <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='xmlParserCtxtPtr to hold the new XML document tree'/>
       <arg name='compression' type='int' info='compress the output?'/>
@@ -12756,6 +12758,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlShell' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Implements the XML shell This allow to load, validate, view, modify and save a document using a environment similar to a UNIX commandline.</info>
       <return type='void'/>
       <arg name='doc' type='xmlDocPtr' info='the initial document'/>
@@ -12765,6 +12768,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlShellBase' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Implements the XML shell function &quot;base&quot; dumps the current XML base of the node</info>
       <return type='int' info='0'/>
       <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
@@ -12774,6 +12778,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlShellCat' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Implements the XML shell function &quot;cat&quot; dumps the serialization node content (XML or HTML).</info>
       <return type='int' info='0'/>
       <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
@@ -12783,6 +12788,7 @@ actually an xmlCharEncoding'/>
     </function>
     <functype name='xmlShellCmd' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>This is a generic signature for the XML shell functions.</info>
       <return type='int' info='an int, negative returns indicating errors.'/>
       <arg name='ctxt' type='xmlShellCtxtPtr' info='a shell context'/>
@@ -12792,6 +12798,7 @@ actually an xmlCharEncoding'/>
     </functype>
     <function name='xmlShellDir' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Implements the XML shell function &quot;dir&quot; dumps informations about the node (namespace, attributes, content).</info>
       <return type='int' info='0'/>
       <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
@@ -12801,6 +12808,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlShellDu' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Implements the XML shell function &quot;du&quot; show the structure of the subtree under node @tree If @tree is null, the command works on the current node.</info>
       <return type='int' info='0 or -1 in case of error'/>
       <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
@@ -12810,6 +12818,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlShellList' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Implements the XML shell function &quot;ls&quot; Does an Unix like listing of the given node (like a directory)</info>
       <return type='int' info='0'/>
       <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
@@ -12819,6 +12828,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlShellLoad' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Implements the XML shell function &quot;load&quot; loads a new document specified by the filename</info>
       <return type='int' info='0 or -1 if loading failed'/>
       <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
@@ -12828,12 +12838,14 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlShellPrintNode' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Print node to the output FILE</info>
       <return type='void'/>
       <arg name='node' type='xmlNodePtr' info='a non-null node to print to the output FILE'/>
     </function>
     <function name='xmlShellPrintXPathError' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Print the xpath error to libxml default error channel</info>
       <return type='void'/>
       <arg name='errorType' type='int' info='valid xpath error id'/>
@@ -12841,12 +12853,14 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlShellPrintXPathResult' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Prints result to the output FILE</info>
       <return type='void'/>
       <arg name='list' type='xmlXPathObjectPtr' info='a valid result generated by an xpath evaluation'/>
     </function>
     <function name='xmlShellPwd' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Implements the XML shell function &quot;pwd&quot; Show the full path from the root to the node, if needed building thumblers when similar elements exists at a given ancestor level. The output is compatible with XPath commands.</info>
       <return type='int' info='0 or -1 in case of error'/>
       <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
@@ -12856,12 +12870,14 @@ actually an xmlCharEncoding'/>
     </function>
     <functype name='xmlShellReadlineFunc' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>This is a generic signature for the XML shell input function.</info>
       <return type='char *' info='a string which will be freed by the Shell.'/>
       <arg name='prompt' type='char *' info='a string prompt'/>
     </functype>
     <function name='xmlShellSave' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <cond>LIBXML_OUTPUT_ENABLED</cond>
       <info>Implements the XML shell function &quot;save&quot; Write the current document to the filename, or it&apos;s original name</info>
       <return type='int' info='0 or -1 in case of error'/>
@@ -12872,6 +12888,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlShellValidate' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Implements the XML shell function &quot;validate&quot; Validate the document, if a DTD path is provided, then the validation is done against the given DTD.</info>
       <return type='int' info='0 or -1 in case of error'/>
       <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
@@ -12881,6 +12898,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlShellWrite' file='debugXML'>
       <cond>LIBXML_DEBUG_ENABLED</cond>
+      <cond>LIBXML_XPATH_ENABLED</cond>
       <cond>LIBXML_OUTPUT_ENABLED</cond>
       <info>Implements the XML shell function &quot;write&quot; Write the current node to the filename, it saves the serialization of the subtree under the @node specified</info>
       <return type='int' info='0 or -1 in case of error'/>
@@ -15289,7 +15307,7 @@ actually an xmlCharEncoding'/>
       <arg name='pos' type='int' info='the position of the desired UTF8 char (in chars)'/>
     </function>
     <function name='xmlUTF8Strsize' file='xmlstring'>
-      <info>storage size of an UTF8 string</info>
+      <info>storage size of an UTF8 string the behaviour is not garanteed if the input string is not UTF-8</info>
       <return type='int' info='the storage size of the first &apos;len&apos; characters of ARRAY'/>
       <arg name='utf' type='const xmlChar *' info='a sequence of UTF-8 encoded bytes'/>
       <arg name='len' type='int' info='the number of characters in the array'/>

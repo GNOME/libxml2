@@ -4405,7 +4405,7 @@ xmlTextWriterStartDocumentCallback(void *ctx)
             return;
         }
 #else
-        xmlWriterErrMsg(writer, XML_ERR_INTERNAL_ERROR,
+        xmlWriterErrMsg(NULL, XML_ERR_INTERNAL_ERROR,
                         "libxml2 built without HTML support\n");
         ctxt->errNo = XML_ERR_INTERNAL_ERROR;
         ctxt->instate = XML_PARSER_EOF;

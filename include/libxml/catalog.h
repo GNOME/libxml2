@@ -21,6 +21,7 @@
 
 #include <libxml/xmlversion.h>
 #include <libxml/xmlstring.h>
+#include <libxml/tree.h>
 
 #ifdef LIBXML_CATALOG_ENABLED
 

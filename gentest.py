@@ -92,6 +92,7 @@ function_defines = {
     "xmlValidGetPotentialChildren" : "LIBXML_VALID_ENABLED",
     "xmlValidGetValidElements" : "LIBXML_VALID_ENABLED",
     "docbDefaultSAXHandlerInit" : "LIBXML_DOCB_ENABLED",
+    "xmlTextReaderPreservePattern" : "LIBXML_PATTERN_ENABLED",
 }
 
 #
@@ -775,6 +776,7 @@ test_%s(void) {
     for arg in t_args:
 	test.write("    }\n")
 
+    test.write("    function_tests++;\n")
     #
     # end of conditional
     #
@@ -787,7 +789,6 @@ test_%s(void) {
     nb_tests = nb_tests + 1;
 
     test.write("""
-    function_tests++;
     return(test_ret);
 }
 
@@ -816,7 +817,7 @@ for module in modules:
 test_%s(void) {
     int test_ret = 0;
 
-    printf("Testing %s : %d of %d functions ...\\n");
+    if (quiet == 0) printf("Testing %s : %d of %d functions ...\\n");
 """ % (module, module, nb_tests - nb_tests_old, i))
 
     # iterate over all functions in the module generating the call

@@ -738,6 +738,7 @@ xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
  * 									*
  ************************************************************************/
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
 /**
  * xmlShellReadline:
  * @prompt:  the prompt value
@@ -778,6 +779,7 @@ xmlShellReadline(char *prompt) {
     return(ret);
 #endif
 }
+#endif /* LIBXML_XPATH_ENABLED */
 #endif /* LIBXML_DEBUG_ENABLED */
 
 /************************************************************************
@@ -1223,11 +1225,13 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 #endif
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
     /*
      * shell interaction
      */
     if (shell)  
         xmlShell(doc, filename, xmlShellReadline, stdout);
+#endif
 #endif
 
 #ifdef LIBXML_TREE_ENABLED

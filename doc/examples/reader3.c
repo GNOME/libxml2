@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <libxml/xmlreader.h>
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_PATTERN_ENABLED)
 
 /**
  * streamFile:
@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
 
 #else
 int main(void) {
-    fprintf(stderr, "XInclude support not compiled in\n");
+    fprintf(stderr, "Reader or Pattern support not compiled in\n");
     exit(1);
 }
 #endif

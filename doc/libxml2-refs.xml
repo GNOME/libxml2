@@ -1248,6 +1248,7 @@
     <reference name='XPATH_EXPR_ERROR' href='html/libxml-xpath.html#XPATH_EXPR_ERROR'/>
     <reference name='XPATH_INVALID_ARITY' href='html/libxml-xpath.html#XPATH_INVALID_ARITY'/>
     <reference name='XPATH_INVALID_CHAR_ERROR' href='html/libxml-xpath.html#XPATH_INVALID_CHAR_ERROR'/>
+    <reference name='XPATH_INVALID_CTXT' href='html/libxml-xpath.html#XPATH_INVALID_CTXT'/>
     <reference name='XPATH_INVALID_CTXT_POSITION' href='html/libxml-xpath.html#XPATH_INVALID_CTXT_POSITION'/>
     <reference name='XPATH_INVALID_CTXT_SIZE' href='html/libxml-xpath.html#XPATH_INVALID_CTXT_SIZE'/>
     <reference name='XPATH_INVALID_OPERAND' href='html/libxml-xpath.html#XPATH_INVALID_OPERAND'/>
@@ -4503,6 +4504,7 @@
       <ref name='XPATH_EXPR_ERROR'/>
       <ref name='XPATH_INVALID_ARITY'/>
       <ref name='XPATH_INVALID_CHAR_ERROR'/>
+      <ref name='XPATH_INVALID_CTXT'/>
       <ref name='XPATH_INVALID_CTXT_POSITION'/>
       <ref name='XPATH_INVALID_CTXT_SIZE'/>
       <ref name='XPATH_INVALID_OPERAND'/>
@@ -12765,6 +12767,7 @@
       <ref name='XPATH_EXPR_ERROR'/>
       <ref name='XPATH_INVALID_ARITY'/>
       <ref name='XPATH_INVALID_CHAR_ERROR'/>
+      <ref name='XPATH_INVALID_CTXT'/>
       <ref name='XPATH_INVALID_CTXT_POSITION'/>
       <ref name='XPATH_INVALID_CTXT_SIZE'/>
       <ref name='XPATH_INVALID_OPERAND'/>
@@ -15284,6 +15287,8 @@
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>
           <ref name='xmlNewTextChild'/>
+          <ref name='xmlNewTextWriter'/>
+          <ref name='xmlNewTextWriterPushParser'/>
           <ref name='xmlParseExternalID'/>
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
@@ -18026,6 +18031,7 @@
           <ref name='xmlNodeSetSpacePreserve'/>
           <ref name='xmlSAX2ResolveEntity'/>
           <ref name='xmlTextReaderSetParserProp'/>
+          <ref name='xmlUTF8Strsize'/>
         </word>
         <word name='below'>
           <ref name='_xmlParserCtxt'/>
@@ -18242,6 +18248,8 @@
           <ref name='xmlInitializePredefinedEntities'/>
           <ref name='xmlNanoFTPRead'/>
           <ref name='xmlNanoHTTPRead'/>
+          <ref name='xmlNewTextWriter'/>
+          <ref name='xmlNewTextWriterPushParser'/>
           <ref name='xmlParseReference'/>
           <ref name='xmlSAXUserParseFile'/>
           <ref name='xmlSAXUserParseMemory'/>
@@ -18596,6 +18604,7 @@
         </word>
         <word name='closed'>
           <ref name='xmlCtxtReadFd'/>
+          <ref name='xmlNewTextWriter'/>
           <ref name='xmlReadFd'/>
           <ref name='xmlReaderForFd'/>
           <ref name='xmlReaderNewFd'/>
@@ -19389,6 +19398,7 @@
           <ref name='xmlEncodeSpecialChars'/>
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlHashFree'/>
+          <ref name='xmlNewTextWriter'/>
           <ref name='xmlSaveUri'/>
           <ref name='xmlTextReaderConstBaseUri'/>
           <ref name='xmlTextReaderConstEncoding'/>
@@ -20728,6 +20738,7 @@
           <ref name='xmlDocDump'/>
           <ref name='xmlDocFormatDump'/>
           <ref name='xmlFileOpen'/>
+          <ref name='xmlFileRead'/>
           <ref name='xmlListAppend'/>
           <ref name='xmlListInsert'/>
           <ref name='xmlNanoHTTPFetch'/>
@@ -21164,6 +21175,9 @@
     </chunk>
     <chunk name='chunk14'>
       <letter name='g'>
+        <word name='garanteed'>
+          <ref name='xmlUTF8Strsize'/>
+        </word>
         <word name='garbage'>
           <ref name='xmlGcMemGet'/>
           <ref name='xmlGcMemSetup'/>
@@ -26560,6 +26574,9 @@
           <ref name='xmlXIncludeProcessTree'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
         </word>
+        <word name='succeed'>
+          <ref name='xmlNewTextWriter'/>
+        </word>
         <word name='succeeded'>
           <ref name='xmlHashAddEntry'/>
           <ref name='xmlHashAddEntry2'/>
@@ -26574,6 +26591,7 @@
         </word>
         <word name='succeeds'>
           <ref name='xmlCheckFilename'/>
+          <ref name='xmlNewTextWriterPushParser'/>
         </word>
         <word name='successful'>
           <ref name='xmlACatalogAdd'/>
@@ -27831,6 +27849,8 @@
         </word>
         <word name='writer'>
           <ref name='xmlFreeTextWriter'/>
+          <ref name='xmlNewTextWriter'/>
+          <ref name='xmlNewTextWriterPushParser'/>
         </word>
         <word name='writes'>
           <ref name='xmlBufferWriteQuotedString'/>

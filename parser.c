@@ -1006,15 +1006,17 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
 {
     if (ctxt == NULL) return(0);
     if (ctxt->nodeNr >= ctxt->nodeMax) {
-        ctxt->nodeMax *= 2;
-        ctxt->nodeTab =
-            (xmlNodePtr *) xmlRealloc(ctxt->nodeTab,
-                                      ctxt->nodeMax *
+        xmlNodePtr *tmp;
+
+	tmp = (xmlNodePtr *) xmlRealloc(ctxt->nodeTab,
+                                      ctxt->nodeMax * 2 *
                                       sizeof(ctxt->nodeTab[0]));
-        if (ctxt->nodeTab == NULL) {
+        if (tmp == NULL) {
             xmlErrMemory(ctxt, NULL);
             return (0);
         }
+        ctxt->nodeTab = tmp;
+	ctxt->nodeMax *= 2;
     }
     if (((unsigned int) ctxt->nodeNr) > xmlParserMaxDepth) {
 	xmlFatalErrMsgInt(ctxt, XML_ERR_INTERNAL_ERROR,

@@ -1,3 +1,13 @@
+Tue Nov  9 17:15:46 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am gentest.py testapi.c: integrated in "make tests"
+	  added -q option, and more conditional features fixes
+	* catalog.c debugXML.c parser.c testThreads.c xmllint.c
+	  xmlschemastypes.c xmlwriter.cinclude/libxml/catalog.h
+	  include/libxml/debugXML.h: various compilation and conditional
+	  cleanups.
+	* doc/*: regenerated
+
 Tue Nov  9 15:59:50 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: better handling of conditional features

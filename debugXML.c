@@ -1772,6 +1772,7 @@ xmlBoolToText(int boolval)
         return("False");
 }
 
+#ifdef LIBXML_XPATH_ENABLED
 /****************************************************************
  *								*
  *	 	The XML shell related functions			*
@@ -3198,4 +3199,5 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
         free(cmdline);          /* not xmlFree here ! */
 }
 
+#endif /* LIBXML_XPATH_ENABLED */
 #endif /* LIBXML_DEBUG_ENABLED */

@@ -111,6 +111,8 @@ get_api_attr(void) {
     return(api_attr);
 }
 
+static int quiet = 0;
+
 int main(int argc, char **argv) {
     int ret;
     int blocks, mem;
@@ -129,9 +131,17 @@ int main(int argc, char **argv) {
 
     xmlSetStructuredErrorFunc(NULL, structured_errors);
 
-    if (argc == 2)
-        ret = test_module(argv[1]);
-    else
+    if (argc >= 2) {
+        if (!strcmp(argv[1], "-q")) {
+	    quiet = 1;
+	    if (argc >= 3)
+	        ret = test_module(argv[2]);
+	    else
+		ret = testlibxml2();
+        } else {
+	   ret = test_module(argv[1]);
+	}
+    } else
 	ret = testlibxml2();
 
     xmlCleanupParser();
@@ -289,7 +299,7 @@ static void des_unsigned_long(int no ATTRIBUTE_UNUSED, unsigned long val ATTRIBU
 static double gen_double(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(0);
     if (no == 1) return(-1.1);
-#if defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XPATH_ENABLED)
+#if defined(LIBXML_XPATH_ENABLED)
     if (no == 2) return(xmlXPathNAN);
 #endif
     return(-1);
@@ -857,12 +867,14 @@ static void des_xmlNodeSetPtr(int no ATTRIBUTE_UNUSED, xmlNodeSetPtr val ATTRIBU
 #endif
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
 #define gen_nb_xmlShellCtxtPtr 1
 static xmlShellCtxtPtr gen_xmlShellCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 static void des_xmlShellCtxtPtr(int no ATTRIBUTE_UNUSED, xmlShellCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
 #endif
 
 #ifdef LIBXML_PATTERN_ENABLED
@@ -1548,9 +1560,9 @@ test_UTF8ToHtml(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -1606,9 +1618,9 @@ test_htmlAttrAllowed(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -1664,9 +1676,9 @@ test_htmlAutoCloseTag(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -1705,9 +1717,9 @@ test_htmlCreateMemoryParserCtxt(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -1785,10 +1797,10 @@ test_htmlCreatePushParserCtxt(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -1848,9 +1860,9 @@ test_htmlCtxtReadDoc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -1903,9 +1915,9 @@ test_htmlCtxtReadFile(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -1972,9 +1984,9 @@ test_htmlCtxtReadMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2004,9 +2016,9 @@ test_htmlCtxtReset(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2045,9 +2057,9 @@ test_htmlCtxtUseOptions(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2086,9 +2098,9 @@ test_htmlElementAllowedHere(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2127,9 +2139,9 @@ test_htmlElementStatusHere(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2189,9 +2201,9 @@ test_htmlEncodeEntities(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2223,9 +2235,9 @@ test_htmlEntityLookup(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2257,9 +2269,9 @@ test_htmlEntityValueLookup(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2291,9 +2303,9 @@ test_htmlHandleOmittedElem(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2332,9 +2344,9 @@ test_htmlIsAutoClosed(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2366,9 +2378,9 @@ test_htmlIsScriptAttribute(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2407,9 +2419,9 @@ test_htmlNodeStatus(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2441,9 +2453,9 @@ test_htmlParseCharRef(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2498,10 +2510,10 @@ test_htmlParseChunk(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2540,9 +2552,9 @@ test_htmlParseDoc(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2575,9 +2587,9 @@ test_htmlParseDocument(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2607,9 +2619,9 @@ test_htmlParseElement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2648,9 +2660,9 @@ test_htmlParseEntityRef(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2679,9 +2691,9 @@ test_htmlParseFile(void) {
         xmlResetLastError();
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2734,9 +2746,9 @@ test_htmlReadDoc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2782,9 +2794,9 @@ test_htmlReadFile(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2844,9 +2856,9 @@ test_htmlReadMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2899,9 +2911,9 @@ test_htmlSAXParseDoc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2954,9 +2966,9 @@ test_htmlSAXParseFile(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -2974,7 +2986,7 @@ static int
 test_HTMLparser(void) {
     int test_ret = 0;
 
-    printf("Testing HTMLparser : 31 of 37 functions ...\n");
+    if (quiet == 0) printf("Testing HTMLparser : 31 of 37 functions ...\n");
     test_ret += test_UTF8ToHtml();
     test_ret += test_htmlAttrAllowed();
     test_ret += test_htmlAutoCloseTag();
@@ -3060,10 +3072,10 @@ test_htmlDocContentDumpFormatOutput(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3108,10 +3120,10 @@ test_htmlDocContentDumpOutput(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3151,10 +3163,10 @@ test_htmlDocDump(void) {
         }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3206,10 +3218,10 @@ test_htmlDocDumpMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3241,9 +3253,9 @@ test_htmlGetMetaEncoding(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3275,9 +3287,9 @@ test_htmlIsBooleanAttr(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3316,9 +3328,9 @@ test_htmlNewDoc(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3357,9 +3369,9 @@ test_htmlNewDocNoDtD(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3406,10 +3418,10 @@ test_htmlNodeDump(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3454,10 +3466,10 @@ test_htmlNodeDumpFile(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3518,10 +3530,10 @@ test_htmlNodeDumpFileFormat(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3580,10 +3592,10 @@ test_htmlNodeDumpFormatOutput(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3635,10 +3647,10 @@ test_htmlNodeDumpOutput(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3678,10 +3690,10 @@ test_htmlSaveFile(void) {
         }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3728,10 +3740,10 @@ test_htmlSaveFileEnc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3785,10 +3797,10 @@ test_htmlSaveFileFormat(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3827,9 +3839,9 @@ test_htmlSetMetaEncoding(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3837,7 +3849,7 @@ static int
 test_HTMLtree(void) {
     int test_ret = 0;
 
-    printf("Testing HTMLtree : 17 of 17 functions ...\n");
+    if (quiet == 0) printf("Testing HTMLtree : 17 of 17 functions ...\n");
     test_ret += test_htmlDocContentDumpFormatOutput();
     test_ret += test_htmlDocContentDumpOutput();
     test_ret += test_htmlDocDump();
@@ -3879,9 +3891,9 @@ test_docbDefaultSAXHandlerInit(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3904,9 +3916,9 @@ test_htmlDefaultSAXHandlerInit(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -3928,8 +3940,8 @@ test_xmlDefaultSAXHandlerInit(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4007,8 +4019,8 @@ test_xmlSAX2AttributeDecl(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4051,8 +4063,8 @@ test_xmlSAX2CDataBlock(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4095,8 +4107,8 @@ test_xmlSAX2Characters(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4132,8 +4144,8 @@ test_xmlSAX2Comment(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4190,8 +4202,8 @@ test_xmlSAX2ElementDecl(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4220,8 +4232,8 @@ test_xmlSAX2EndDocument(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4258,9 +4270,9 @@ test_xmlSAX2EndElement(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -4310,8 +4322,8 @@ test_xmlSAX2EndElementNs(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4375,8 +4387,8 @@ test_xmlSAX2EntityDecl(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4426,8 +4438,8 @@ test_xmlSAX2ExternalSubset(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4458,8 +4470,8 @@ test_xmlSAX2GetColumnNumber(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4497,8 +4509,8 @@ test_xmlSAX2GetEntity(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4529,8 +4541,8 @@ test_xmlSAX2GetLineNumber(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4568,8 +4580,8 @@ test_xmlSAX2GetParameterEntity(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4600,8 +4612,8 @@ test_xmlSAX2GetPublicId(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4632,8 +4644,8 @@ test_xmlSAX2GetSystemId(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4664,8 +4676,8 @@ test_xmlSAX2HasExternalSubset(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4696,8 +4708,8 @@ test_xmlSAX2HasInternalSubset(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4740,8 +4752,8 @@ test_xmlSAX2IgnorableWhitespace(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4784,8 +4796,8 @@ test_xmlSAX2InitDefaultSAXHandler(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4815,9 +4827,9 @@ test_xmlSAX2InitDocbDefaultSAXHandler(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -4847,9 +4859,9 @@ test_xmlSAX2InitHtmlDefaultSAXHandler(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -4899,8 +4911,8 @@ test_xmlSAX2InternalSubset(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4931,8 +4943,8 @@ test_xmlSAX2IsStandalone(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -4982,8 +4994,8 @@ test_xmlSAX2NotationDecl(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -5026,8 +5038,8 @@ test_xmlSAX2ProcessingInstruction(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -5063,8 +5075,8 @@ test_xmlSAX2Reference(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -5109,8 +5121,8 @@ test_xmlSAX2ResolveEntity(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -5153,8 +5165,8 @@ test_xmlSAX2SetDocumentLocator(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -5183,8 +5195,8 @@ test_xmlSAX2StartDocument(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -5228,9 +5240,9 @@ test_xmlSAX2StartElement(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -5315,8 +5327,8 @@ test_xmlSAX2StartElementNs(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -5373,8 +5385,8 @@ test_xmlSAX2UnparsedEntityDecl(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -5406,9 +5418,9 @@ test_xmlSAXDefaultVersion(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -5446,8 +5458,8 @@ test_xmlSAXVersion(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -5455,7 +5467,7 @@ static int
 test_SAX2(void) {
     int test_ret = 0;
 
-    printf("Testing SAX2 : 38 of 38 functions ...\n");
+    if (quiet == 0) printf("Testing SAX2 : 38 of 38 functions ...\n");
     test_ret += test_docbDefaultSAXHandlerInit();
     test_ret += test_htmlDefaultSAXHandlerInit();
     test_ret += test_xmlDefaultSAXHandlerInit();
@@ -5563,10 +5575,10 @@ test_xmlC14NDocDumpMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -5641,10 +5653,10 @@ test_xmlC14NDocSave(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -5712,10 +5724,10 @@ test_xmlC14NDocSaveTo(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -5733,7 +5745,7 @@ static int
 test_c14n(void) {
     int test_ret = 0;
 
-    printf("Testing c14n : 3 of 4 functions ...\n");
+    if (quiet == 0) printf("Testing c14n : 3 of 4 functions ...\n");
     test_ret += test_xmlC14NDocDumpMemory();
     test_ret += test_xmlC14NDocSave();
     test_ret += test_xmlC14NDocSaveTo();
@@ -5802,9 +5814,9 @@ test_xmlACatalogAdd(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -5842,10 +5854,10 @@ test_xmlACatalogDump(void) {
         }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -5884,9 +5896,9 @@ test_xmlACatalogRemove(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -5932,9 +5944,9 @@ test_xmlACatalogResolve(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -5973,9 +5985,9 @@ test_xmlACatalogResolvePublic(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6014,9 +6026,9 @@ test_xmlACatalogResolveSystem(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6055,9 +6067,9 @@ test_xmlACatalogResolveURI(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6103,9 +6115,9 @@ test_xmlCatalogAdd(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6120,9 +6132,9 @@ test_xmlCatalogCleanup(void) {
         xmlCatalogCleanup();
         call_tests++;
         xmlResetLastError();
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6139,9 +6151,9 @@ test_xmlCatalogConvert(void) {
         desret_int(ret_val);
         call_tests++;
         xmlResetLastError();
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6172,10 +6184,10 @@ test_xmlCatalogDump(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6200,9 +6212,9 @@ test_xmlCatalogGetDefaults(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6234,9 +6246,9 @@ test_xmlCatalogIsEmpty(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6282,9 +6294,9 @@ test_xmlCatalogLocalResolve(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6323,9 +6335,9 @@ test_xmlCatalogLocalResolveURI(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6348,9 +6360,9 @@ test_xmlCatalogRemove(void) {
         des_const_xmlChar_ptr(n_value, value, 0);
         xmlResetLastError();
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6389,9 +6401,9 @@ test_xmlCatalogResolve(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6423,9 +6435,9 @@ test_xmlCatalogResolvePublic(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6457,9 +6469,9 @@ test_xmlCatalogResolveSystem(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6491,9 +6503,9 @@ test_xmlCatalogResolveURI(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6525,9 +6537,9 @@ test_xmlCatalogSetDefaultPrefer(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6557,9 +6569,9 @@ test_xmlCatalogSetDefaults(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6591,9 +6603,9 @@ test_xmlConvertSGMLCatalog(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6616,9 +6628,9 @@ test_xmlInitializeCatalog(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6651,9 +6663,9 @@ test_xmlLoadCatalog(void) {
         des_filepath(n_filename, filename, 0);
         xmlResetLastError();
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6674,9 +6686,9 @@ test_xmlLoadCatalogs(void) {
         des_const_char_ptr(n_pathss, pathss, 0);
         xmlResetLastError();
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6728,9 +6740,9 @@ test_xmlParseCatalogFile(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -6738,7 +6750,7 @@ static int
 test_catalog(void) {
     int test_ret = 0;
 
-    printf("Testing catalog : 27 of 36 functions ...\n");
+    if (quiet == 0) printf("Testing catalog : 27 of 36 functions ...\n");
     test_ret += test_xmlACatalogAdd();
     test_ret += test_xmlACatalogDump();
     test_ret += test_xmlACatalogRemove();
@@ -6815,8 +6827,8 @@ test_xmlCharInRange(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -6847,8 +6859,8 @@ test_xmlIsBaseChar(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -6879,8 +6891,8 @@ test_xmlIsBlank(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -6911,8 +6923,8 @@ test_xmlIsChar(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -6943,8 +6955,8 @@ test_xmlIsCombining(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -6975,8 +6987,8 @@ test_xmlIsDigit(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -7007,8 +7019,8 @@ test_xmlIsExtender(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -7039,8 +7051,8 @@ test_xmlIsIdeographic(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -7071,8 +7083,8 @@ test_xmlIsPubidChar(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -7080,7 +7092,7 @@ static int
 test_chvalid(void) {
     int test_ret = 0;
 
-    printf("Testing chvalid : 9 of 9 functions ...\n");
+    if (quiet == 0) printf("Testing chvalid : 9 of 9 functions ...\n");
     test_ret += test_xmlCharInRange();
     test_ret += test_xmlIsBaseChar();
     test_ret += test_xmlIsBlank();
@@ -7123,9 +7135,9 @@ test_xmlBoolToText(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7164,9 +7176,9 @@ test_xmlDebugCheckDocument(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7210,9 +7222,9 @@ test_xmlDebugDumpAttr(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7256,9 +7268,9 @@ test_xmlDebugDumpAttrList(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7295,9 +7307,9 @@ test_xmlDebugDumpDTD(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7334,9 +7346,9 @@ test_xmlDebugDumpDocument(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7373,9 +7385,9 @@ test_xmlDebugDumpDocumentHead(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7412,9 +7424,9 @@ test_xmlDebugDumpEntities(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7458,9 +7470,9 @@ test_xmlDebugDumpNode(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7504,9 +7516,9 @@ test_xmlDebugDumpNodeList(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7550,9 +7562,9 @@ test_xmlDebugDumpOneNode(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7589,9 +7601,9 @@ test_xmlDebugDumpString(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7623,9 +7635,9 @@ test_xmlLsCountNode(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7662,9 +7674,9 @@ test_xmlLsOneNode(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7691,6 +7703,7 @@ test_xmlShellBase(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7734,9 +7747,10 @@ test_xmlShellBase(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7746,6 +7760,7 @@ test_xmlShellCat(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7789,9 +7804,10 @@ test_xmlShellCat(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7801,6 +7817,7 @@ test_xmlShellDir(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7844,9 +7861,10 @@ test_xmlShellDir(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7856,6 +7874,7 @@ test_xmlShellDu(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7899,9 +7918,10 @@ test_xmlShellDu(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7911,6 +7931,7 @@ test_xmlShellList(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7954,9 +7975,10 @@ test_xmlShellList(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -7966,6 +7988,7 @@ test_xmlShellLoad(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -8009,9 +8032,10 @@ test_xmlShellLoad(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -8021,6 +8045,7 @@ test_xmlShellPrintXPathResult(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
     int mem_base;
     xmlXPathObjectPtr list; /* a valid result generated by an xpath evaluation */
     int n_list;
@@ -8041,9 +8066,10 @@ test_xmlShellPrintXPathResult(void) {
             printf("\n");
         }
     }
+    function_tests++;
+#endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -8053,6 +8079,7 @@ test_xmlShellPwd(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -8096,9 +8123,10 @@ test_xmlShellPwd(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -8108,6 +8136,7 @@ test_xmlShellSave(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
 #ifdef LIBXML_OUTPUT_ENABLED
     int mem_base;
     int ret_val;
@@ -8152,10 +8181,11 @@ test_xmlShellSave(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -8165,6 +8195,7 @@ test_xmlShellValidate(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -8208,9 +8239,10 @@ test_xmlShellValidate(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -8220,6 +8252,7 @@ test_xmlShellWrite(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_DEBUG_ENABLED
+#ifdef LIBXML_XPATH_ENABLED
 #ifdef LIBXML_OUTPUT_ENABLED
     int mem_base;
     int ret_val;
@@ -8264,10 +8297,11 @@ test_xmlShellWrite(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -8275,7 +8309,7 @@ static int
 test_debugXML(void) {
     int test_ret = 0;
 
-    printf("Testing debugXML : 25 of 28 functions ...\n");
+    if (quiet == 0) printf("Testing debugXML : 25 of 28 functions ...\n");
     test_ret += test_xmlBoolToText();
     test_ret += test_xmlDebugCheckDocument();
     test_ret += test_xmlDebugDumpAttr();
@@ -8327,8 +8361,8 @@ test_xmlDictCreate(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8359,8 +8393,8 @@ test_xmlDictCreateSub(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8405,8 +8439,8 @@ test_xmlDictLookup(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8444,8 +8478,8 @@ test_xmlDictOwns(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8490,8 +8524,8 @@ test_xmlDictQLookup(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8523,8 +8557,8 @@ test_xmlDictReference(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8555,8 +8589,8 @@ test_xmlDictSize(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8564,7 +8598,7 @@ static int
 test_dict(void) {
     int test_ret = 0;
 
-    printf("Testing dict : 7 of 8 functions ...\n");
+    if (quiet == 0) printf("Testing dict : 7 of 8 functions ...\n");
     test_ret += test_xmlDictCreate();
     test_ret += test_xmlDictCreateSub();
     test_ret += test_xmlDictLookup();
@@ -8626,9 +8660,9 @@ test_UTF8Toisolat1(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -8680,8 +8714,8 @@ test_isolat1ToUTF8(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8709,8 +8743,8 @@ test_xmlAddEncodingAlias(void) {
         xmlResetLastError();
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8748,8 +8782,8 @@ test_xmlCharEncCloseFunc(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8794,8 +8828,8 @@ test_xmlCharEncFirstLine(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8840,8 +8874,8 @@ test_xmlCharEncInFunc(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8886,8 +8920,8 @@ test_xmlCharEncOutFunc(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8901,8 +8935,8 @@ test_xmlCleanupCharEncodingHandlers(void) {
         xmlCleanupCharEncodingHandlers();
         call_tests++;
         xmlResetLastError();
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8924,8 +8958,8 @@ test_xmlCleanupEncodingAliases(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8956,8 +8990,8 @@ test_xmlDelEncodingAlias(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -8995,8 +9029,8 @@ test_xmlDetectCharEncoding(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9047,8 +9081,8 @@ test_xmlGetCharEncodingName(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9079,8 +9113,8 @@ test_xmlGetEncodingAlias(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9094,8 +9128,8 @@ test_xmlInitCharEncodingHandlers(void) {
         xmlInitCharEncodingHandlers();
         call_tests++;
         xmlResetLastError();
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9136,8 +9170,8 @@ test_xmlParseCharEncoding(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9173,8 +9207,8 @@ test_xmlRegisterCharEncodingHandler(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9182,7 +9216,7 @@ static int
 test_encoding(void) {
     int test_ret = 0;
 
-    printf("Testing encoding : 16 of 19 functions ...\n");
+    if (quiet == 0) printf("Testing encoding : 16 of 19 functions ...\n");
     test_ret += test_UTF8Toisolat1();
     test_ret += test_isolat1ToUTF8();
     test_ret += test_xmlAddEncodingAlias();
@@ -9269,8 +9303,8 @@ test_xmlAddDocEntity(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9336,8 +9370,8 @@ test_xmlAddDtdEntity(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9360,9 +9394,9 @@ test_xmlCleanupPredefinedEntities(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -9426,9 +9460,9 @@ test_xmlDumpEntitiesTable(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -9472,9 +9506,9 @@ test_xmlDumpEntityDecl(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -9512,8 +9546,8 @@ test_xmlEncodeEntitiesReentrant(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9551,8 +9585,8 @@ test_xmlEncodeSpecialChars(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9590,8 +9624,8 @@ test_xmlGetDocEntity(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9629,8 +9663,8 @@ test_xmlGetDtdEntity(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9668,8 +9702,8 @@ test_xmlGetParameterEntity(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9700,8 +9734,8 @@ test_xmlGetPredefinedEntity(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9724,9 +9758,9 @@ test_xmlInitializePredefinedEntities(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -9734,7 +9768,7 @@ static int
 test_entities(void) {
     int test_ret = 0;
 
-    printf("Testing entities : 12 of 16 functions ...\n");
+    if (quiet == 0) printf("Testing entities : 12 of 16 functions ...\n");
     test_ret += test_xmlAddDocEntity();
     test_ret += test_xmlAddDtdEntity();
     test_ret += test_xmlCleanupPredefinedEntities();
@@ -9795,8 +9829,8 @@ test_xmlHashAddEntry(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9848,8 +9882,8 @@ test_xmlHashAddEntry2(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9908,8 +9942,8 @@ test_xmlHashAddEntry3(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -9967,8 +10001,8 @@ test_xmlHashLookup(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10013,8 +10047,8 @@ test_xmlHashLookup2(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10066,8 +10100,8 @@ test_xmlHashLookup3(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10112,8 +10146,8 @@ test_xmlHashQLookup(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10172,8 +10206,8 @@ test_xmlHashQLookup2(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10246,8 +10280,8 @@ test_xmlHashQLookup3(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10292,8 +10326,8 @@ test_xmlHashRemoveEntry(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10345,8 +10379,8 @@ test_xmlHashRemoveEntry2(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10405,8 +10439,8 @@ test_xmlHashRemoveEntry3(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10477,8 +10511,8 @@ test_xmlHashSize(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10530,8 +10564,8 @@ test_xmlHashUpdateEntry(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10590,8 +10624,8 @@ test_xmlHashUpdateEntry2(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10657,8 +10691,8 @@ test_xmlHashUpdateEntry3(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10666,7 +10700,7 @@ static int
 test_hash(void) {
     int test_ret = 0;
 
-    printf("Testing hash : 16 of 23 functions ...\n");
+    if (quiet == 0) printf("Testing hash : 16 of 23 functions ...\n");
     test_ret += test_xmlHashAddEntry();
     test_ret += test_xmlHashAddEntry2();
     test_ret += test_xmlHashAddEntry3();
@@ -10728,8 +10762,8 @@ test_xmlLinkGetData(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10767,8 +10801,8 @@ test_xmlListAppend(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10797,8 +10831,8 @@ test_xmlListClear(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10843,8 +10877,8 @@ test_xmlListCopy(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10895,8 +10929,8 @@ test_xmlListEmpty(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10954,8 +10988,8 @@ test_xmlListInsert(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -10991,8 +11025,8 @@ test_xmlListMerge(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11021,8 +11055,8 @@ test_xmlListPopBack(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11051,8 +11085,8 @@ test_xmlListPopFront(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11090,8 +11124,8 @@ test_xmlListPushBack(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11129,8 +11163,8 @@ test_xmlListPushFront(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11168,8 +11202,8 @@ test_xmlListRemoveAll(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11207,8 +11241,8 @@ test_xmlListRemoveFirst(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11246,8 +11280,8 @@ test_xmlListRemoveLast(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11276,8 +11310,8 @@ test_xmlListReverse(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11315,8 +11349,8 @@ test_xmlListReverseSearch(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11364,8 +11398,8 @@ test_xmlListSearch(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11396,8 +11430,8 @@ test_xmlListSize(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11426,8 +11460,8 @@ test_xmlListSort(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -11445,7 +11479,7 @@ static int
 test_list(void) {
     int test_ret = 0;
 
-    printf("Testing list : 19 of 26 functions ...\n");
+    if (quiet == 0) printf("Testing list : 19 of 26 functions ...\n");
     test_ret += test_xmlLinkGetData();
     test_ret += test_xmlListAppend();
     test_ret += test_xmlListClear();
@@ -11504,9 +11538,9 @@ test_xmlNanoFTPCheckResponse(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11529,9 +11563,9 @@ test_xmlNanoFTPCleanup(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11563,9 +11597,9 @@ test_xmlNanoFTPCloseConnection(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11604,9 +11638,9 @@ test_xmlNanoFTPCwd(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11645,9 +11679,9 @@ test_xmlNanoFTPDele(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11689,9 +11723,9 @@ test_xmlNanoFTPGetConnection(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11723,9 +11757,9 @@ test_xmlNanoFTPGetResponse(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11764,9 +11798,9 @@ test_xmlNanoFTPGetSocket(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11789,9 +11823,9 @@ test_xmlNanoFTPInit(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11843,9 +11877,9 @@ test_xmlNanoFTPOpen(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11890,9 +11924,9 @@ test_xmlNanoFTPProxy(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11924,9 +11958,9 @@ test_xmlNanoFTPQuit(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11972,9 +12006,9 @@ test_xmlNanoFTPRead(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -11995,9 +12029,9 @@ test_xmlNanoFTPScanProxy(void) {
         des_filepath(n_URL, URL, 0);
         xmlResetLastError();
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12036,9 +12070,9 @@ test_xmlNanoFTPUpdateURL(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12046,7 +12080,7 @@ static int
 test_nanoftp(void) {
     int test_ret = 0;
 
-    printf("Testing nanoftp : 15 of 22 functions ...\n");
+    if (quiet == 0) printf("Testing nanoftp : 15 of 22 functions ...\n");
     test_ret += test_xmlNanoFTPCheckResponse();
     test_ret += test_xmlNanoFTPCleanup();
     test_ret += test_xmlNanoFTPCloseConnection();
@@ -12098,9 +12132,9 @@ test_xmlNanoHTTPAuthHeader(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12123,9 +12157,9 @@ test_xmlNanoHTTPCleanup(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12155,9 +12189,9 @@ test_xmlNanoHTTPClose(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12189,9 +12223,9 @@ test_xmlNanoHTTPContentLength(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12223,9 +12257,9 @@ test_xmlNanoHTTPEncoding(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12278,9 +12312,9 @@ test_xmlNanoHTTPFetch(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12303,9 +12337,9 @@ test_xmlNanoHTTPInit(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12372,9 +12406,9 @@ test_xmlNanoHTTPMethod(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12448,9 +12482,9 @@ test_xmlNanoHTTPMethodRedir(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12482,9 +12516,9 @@ test_xmlNanoHTTPMimeType(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12523,9 +12557,9 @@ test_xmlNanoHTTPOpen(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12571,9 +12605,9 @@ test_xmlNanoHTTPOpenRedir(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12619,9 +12653,9 @@ test_xmlNanoHTTPRead(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12663,9 +12697,9 @@ test_xmlNanoHTTPReturnCode(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12705,10 +12739,10 @@ test_xmlNanoHTTPSave(void) {
         }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12729,9 +12763,9 @@ test_xmlNanoHTTPScanProxy(void) {
         des_filepath(n_URL, URL, 0);
         xmlResetLastError();
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -12739,7 +12773,7 @@ static int
 test_nanohttp(void) {
     int test_ret = 0;
 
-    printf("Testing nanohttp : 16 of 17 functions ...\n");
+    if (quiet == 0) printf("Testing nanohttp : 16 of 17 functions ...\n");
     test_ret += test_xmlNanoHTTPAuthHeader();
     test_ret += test_xmlNanoHTTPCleanup();
     test_ret += test_xmlNanoHTTPClose();
@@ -12789,8 +12823,8 @@ test_xmlByteConsumed(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -12826,8 +12860,8 @@ test_xmlClearNodeInfoSeq(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -12856,8 +12890,8 @@ test_xmlClearParserCtxt(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -12888,8 +12922,8 @@ test_xmlCreateDocParserCtxt(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -12949,9 +12983,9 @@ test_xmlCreatePushParserCtxt(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -13010,8 +13044,8 @@ test_xmlCtxtReadDoc(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13063,8 +13097,8 @@ test_xmlCtxtReadFile(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13130,8 +13164,8 @@ test_xmlCtxtReadMemory(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13160,8 +13194,8 @@ test_xmlCtxtReset(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13220,8 +13254,8 @@ test_xmlCtxtResetPush(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13259,8 +13293,8 @@ test_xmlCtxtUseOptions(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13316,9 +13350,9 @@ test_xmlGetFeature(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -13364,9 +13398,9 @@ test_xmlGetFeaturesList(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -13413,9 +13447,9 @@ test_xmlIOParseDTD(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -13444,8 +13478,8 @@ test_xmlInitNodeInfoSeq(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13467,8 +13501,8 @@ test_xmlInitParser(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13499,8 +13533,8 @@ test_xmlInitParserCtxt(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13531,8 +13565,8 @@ test_xmlKeepBlanksDefault(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13563,8 +13597,8 @@ test_xmlLineNumbersDefault(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13609,8 +13643,8 @@ test_xmlLoadExternalEntity(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13656,8 +13690,8 @@ test_xmlNewIOInputStream(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13681,8 +13715,8 @@ test_xmlNewParserCtxt(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13761,9 +13795,9 @@ test_xmlParseBalancedChunkMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -13842,9 +13876,9 @@ test_xmlParseBalancedChunkMemoryRecover(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -13898,9 +13932,9 @@ test_xmlParseChunk(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -13952,8 +13986,8 @@ test_xmlParseCtxtExternalEntity(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -13992,9 +14026,9 @@ test_xmlParseDTD(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14026,9 +14060,9 @@ test_xmlParseDoc(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14060,8 +14094,8 @@ test_xmlParseDocument(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -14093,9 +14127,9 @@ test_xmlParseEntity(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14127,8 +14161,8 @@ test_xmlParseExtParsedEnt(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -14202,9 +14236,9 @@ test_xmlParseExternalEntity(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14236,9 +14270,9 @@ test_xmlParseFile(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14297,8 +14331,8 @@ test_xmlParseInNodeContext(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -14337,9 +14371,9 @@ test_xmlParseMemory(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14382,8 +14416,8 @@ test_xmlParserAddNodeInfo(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -14469,8 +14503,8 @@ test_xmlParserInputGrow(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -14508,8 +14542,8 @@ test_xmlParserInputRead(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -14540,8 +14574,8 @@ test_xmlPedanticParserDefault(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -14593,8 +14627,8 @@ test_xmlReadDoc(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -14639,8 +14673,8 @@ test_xmlReadFile(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -14699,8 +14733,8 @@ test_xmlReadMemory(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -14732,9 +14766,9 @@ test_xmlRecoverDoc(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14766,9 +14800,9 @@ test_xmlRecoverFile(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14807,9 +14841,9 @@ test_xmlRecoverMemory(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14855,9 +14889,9 @@ test_xmlSAXParseDTD(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14903,9 +14937,9 @@ test_xmlSAXParseDoc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14944,9 +14978,9 @@ test_xmlSAXParseEntity(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -14992,9 +15026,9 @@ test_xmlSAXParseFile(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15047,9 +15081,9 @@ test_xmlSAXParseFileWithData(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15102,9 +15136,9 @@ test_xmlSAXParseMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15164,9 +15198,9 @@ test_xmlSAXParseMemoryWithData(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15217,9 +15251,9 @@ test_xmlSAXUserParseFile(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15277,9 +15311,9 @@ test_xmlSAXUserParseMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15335,9 +15369,9 @@ test_xmlSetFeature(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15381,9 +15415,9 @@ test_xmlSetupParserForBuffer(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15413,9 +15447,9 @@ test_xmlStopParser(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15446,8 +15480,8 @@ test_xmlSubstituteEntitiesDefault(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15455,7 +15489,7 @@ static int
 test_parser(void) {
     int test_ret = 0;
 
-    printf("Testing parser : 58 of 69 functions ...\n");
+    if (quiet == 0) printf("Testing parser : 58 of 69 functions ...\n");
     test_ret += test_xmlByteConsumed();
     test_ret += test_xmlClearNodeInfoSeq();
     test_ret += test_xmlClearParserCtxt();
@@ -15558,9 +15592,9 @@ test_htmlCreateFileParserCtxt(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15583,9 +15617,9 @@ test_htmlInitAutoClose(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -15616,8 +15650,8 @@ test_inputPop(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15655,8 +15689,8 @@ test_inputPush(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15687,8 +15721,8 @@ test_namePop(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15726,8 +15760,8 @@ test_namePush(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15758,8 +15792,8 @@ test_nodePop(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15797,8 +15831,8 @@ test_nodePush(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15829,8 +15863,8 @@ test_xmlCheckLanguageID(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15875,8 +15909,8 @@ test_xmlCopyChar(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15914,8 +15948,8 @@ test_xmlCopyCharMultiByte(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15960,8 +15994,8 @@ test_xmlCreateEntityParserCtxt(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -15992,8 +16026,8 @@ test_xmlCreateFileParserCtxt(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16031,8 +16065,8 @@ test_xmlCreateMemoryParserCtxt(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16070,8 +16104,8 @@ test_xmlCreateURLParserCtxt(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16109,8 +16143,8 @@ test_xmlCurrentChar(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16146,8 +16180,8 @@ test_xmlErrMemory(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16178,8 +16212,8 @@ test_xmlIsLetter(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16217,8 +16251,8 @@ test_xmlNewEntityInputStream(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16256,8 +16290,8 @@ test_xmlNewInputFromFile(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16288,8 +16322,8 @@ test_xmlNewInputStream(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16327,8 +16361,8 @@ test_xmlNewStringInputStream(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16357,8 +16391,8 @@ test_xmlNextChar(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16387,8 +16421,8 @@ test_xmlParserInputShrink(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16419,8 +16453,8 @@ test_xmlPopInput(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16456,8 +16490,8 @@ test_xmlPushInput(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16512,8 +16546,8 @@ test_xmlSplitQName(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16558,8 +16592,8 @@ test_xmlStringCurrentChar(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16625,8 +16659,8 @@ test_xmlStringDecodeEntities(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16699,8 +16733,8 @@ test_xmlStringLenDecodeEntities(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16738,8 +16772,8 @@ test_xmlSwitchEncoding(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16784,8 +16818,8 @@ test_xmlSwitchInputEncoding(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16823,8 +16857,8 @@ test_xmlSwitchToEncoding(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -16832,7 +16866,7 @@ static int
 test_parserInternals(void) {
     int test_ret = 0;
 
-    printf("Testing parserInternals : 33 of 90 functions ...\n");
+    if (quiet == 0) printf("Testing parserInternals : 33 of 90 functions ...\n");
     test_ret += test_htmlCreateFileParserCtxt();
     test_ret += test_htmlInitAutoClose();
     test_ret += test_inputPop();
@@ -16907,9 +16941,9 @@ test_xmlPatternMatch(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -16927,7 +16961,7 @@ static int
 test_pattern(void) {
     int test_ret = 0;
 
-    printf("Testing pattern : 1 of 4 functions ...\n");
+    if (quiet == 0) printf("Testing pattern : 1 of 4 functions ...\n");
     test_ret += test_xmlPatternMatch();
     test_ret += test_xmlPatterncompile();
 
@@ -16979,10 +17013,10 @@ test_xmlRelaxNGDump(void) {
         }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17020,10 +17054,10 @@ test_xmlRelaxNGDumpTree(void) {
         }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17116,9 +17150,9 @@ test_xmlRelaxNGGetParserErrors(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17181,9 +17215,9 @@ test_xmlRelaxNGGetValidErrors(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17208,9 +17242,9 @@ test_xmlRelaxNGInitTypes(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17242,9 +17276,9 @@ test_xmlRelaxNGNewDocParserCtxt(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17283,9 +17317,9 @@ test_xmlRelaxNGNewMemParserCtxt(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17317,9 +17351,9 @@ test_xmlRelaxNGNewParserCtxt(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17398,9 +17432,9 @@ test_xmlRelaxNGValidateDoc(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17446,9 +17480,9 @@ test_xmlRelaxNGValidateFullElement(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17494,9 +17528,9 @@ test_xmlRelaxNGValidatePopElement(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17542,9 +17576,9 @@ test_xmlRelaxNGValidatePushCData(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17590,9 +17624,9 @@ test_xmlRelaxNGValidatePushElement(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17631,9 +17665,9 @@ test_xmlRelaxParserSetFlag(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17641,7 +17675,7 @@ static int
 test_relaxng(void) {
     int test_ret = 0;
 
-    printf("Testing relaxng : 14 of 22 functions ...\n");
+    if (quiet == 0) printf("Testing relaxng : 14 of 22 functions ...\n");
     test_ret += test_xmlRelaxNGDump();
     test_ret += test_xmlRelaxNGDumpTree();
     test_ret += test_xmlRelaxNGGetParserErrors();
@@ -17669,7 +17703,7 @@ static int
 test_schemasInternals(void) {
     int test_ret = 0;
 
-    printf("Testing schemasInternals : 0 of 2 functions ...\n");
+    if (quiet == 0) printf("Testing schemasInternals : 0 of 2 functions ...\n");
 
     if (test_ret != 0)
 	printf("Module schemasInternals: %d errors\n", test_ret);
@@ -17710,8 +17744,8 @@ test_xmlAddChild(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -17750,8 +17784,8 @@ test_xmlAddChildList(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -17790,8 +17824,8 @@ test_xmlAddNextSibling(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -17831,9 +17865,9 @@ test_xmlAddPrevSibling(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17872,8 +17906,8 @@ test_xmlAddSibling(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -17924,9 +17958,9 @@ test_xmlAttrSerializeTxtContent(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -17971,8 +18005,8 @@ test_xmlBufferAdd(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18017,8 +18051,8 @@ test_xmlBufferAddHead(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18056,8 +18090,8 @@ test_xmlBufferCCat(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18095,8 +18129,8 @@ test_xmlBufferCat(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18134,8 +18168,8 @@ test_xmlBufferContent(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18159,8 +18193,8 @@ test_xmlBufferCreate(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18209,8 +18243,8 @@ test_xmlBufferEmpty(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18248,8 +18282,8 @@ test_xmlBufferGrow(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18280,8 +18314,8 @@ test_xmlBufferLength(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18319,8 +18353,8 @@ test_xmlBufferResize(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18356,8 +18390,8 @@ test_xmlBufferSetAllocationScheme(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18395,8 +18429,8 @@ test_xmlBufferShrink(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18432,8 +18466,8 @@ test_xmlBufferWriteCHAR(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18469,8 +18503,8 @@ test_xmlBufferWriteChar(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18506,8 +18540,8 @@ test_xmlBufferWriteQuotedString(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18563,8 +18597,8 @@ test_xmlBuildQName(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18603,9 +18637,9 @@ test_xmlCopyDoc(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -18637,9 +18671,9 @@ test_xmlCopyDtd(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -18671,8 +18705,8 @@ test_xmlCopyNamespace(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18704,8 +18738,8 @@ test_xmlCopyNamespaceList(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18743,8 +18777,8 @@ test_xmlCopyNode(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18775,8 +18809,8 @@ test_xmlCopyNodeList(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18814,8 +18848,8 @@ test_xmlCopyProp(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18853,8 +18887,8 @@ test_xmlCopyPropList(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18906,8 +18940,8 @@ test_xmlCreateIntSubset(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18952,8 +18986,8 @@ test_xmlDocCopyNode(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -18991,8 +19025,8 @@ test_xmlDocCopyNodeList(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19031,9 +19065,9 @@ test_xmlDocDump(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -19084,9 +19118,9 @@ test_xmlDocDumpFormatMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -19144,9 +19178,9 @@ test_xmlDocDumpFormatMemoryEnc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -19190,9 +19224,9 @@ test_xmlDocDumpMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -19243,9 +19277,9 @@ test_xmlDocDumpMemoryEnc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -19291,9 +19325,9 @@ test_xmlDocFormatDump(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -19324,8 +19358,8 @@ test_xmlDocGetRootElement(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19365,9 +19399,9 @@ test_xmlDocSetRootElement(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -19411,9 +19445,9 @@ test_xmlElemDump(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -19437,8 +19471,8 @@ test_xmlGetBufferAllocationScheme(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19462,8 +19496,8 @@ test_xmlGetCompressMode(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19494,8 +19528,8 @@ test_xmlGetDocCompressMode(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19526,8 +19560,8 @@ test_xmlGetIntSubset(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19558,8 +19592,8 @@ test_xmlGetLastChild(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19590,8 +19624,8 @@ test_xmlGetLineNo(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19629,8 +19663,8 @@ test_xmlGetNoNsProp(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19662,9 +19696,9 @@ test_xmlGetNodePath(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -19719,8 +19753,8 @@ test_xmlGetNsProp(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19758,8 +19792,8 @@ test_xmlGetProp(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19804,8 +19838,8 @@ test_xmlHasNsProp(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19843,8 +19877,8 @@ test_xmlHasProp(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19875,8 +19909,8 @@ test_xmlIsBlankNode(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19914,8 +19948,8 @@ test_xmlIsXHTML(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19960,8 +19994,8 @@ test_xmlNewCDataBlock(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -19999,8 +20033,8 @@ test_xmlNewCharRef(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20053,9 +20087,9 @@ test_xmlNewChild(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -20086,8 +20120,8 @@ test_xmlNewComment(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20118,8 +20152,8 @@ test_xmlNewDoc(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20157,8 +20191,8 @@ test_xmlNewDocComment(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20190,9 +20224,9 @@ test_xmlNewDocFragment(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -20244,8 +20278,8 @@ test_xmlNewDocNode(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20297,8 +20331,8 @@ test_xmlNewDocNodeEatName(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20343,8 +20377,8 @@ test_xmlNewDocPI(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20389,8 +20423,8 @@ test_xmlNewDocProp(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20443,9 +20477,9 @@ test_xmlNewDocRawNode(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -20483,8 +20517,8 @@ test_xmlNewDocText(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20529,8 +20563,8 @@ test_xmlNewDocTextLen(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20582,8 +20616,8 @@ test_xmlNewDtd(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20621,8 +20655,8 @@ test_xmlNewNode(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20660,8 +20694,8 @@ test_xmlNewNodeEatName(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20707,8 +20741,8 @@ test_xmlNewNs(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20760,8 +20794,8 @@ test_xmlNewNsProp(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20813,8 +20847,8 @@ test_xmlNewNsPropEatName(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20852,8 +20886,8 @@ test_xmlNewPI(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20899,9 +20933,9 @@ test_xmlNewProp(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -20939,8 +20973,8 @@ test_xmlNewReference(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -20971,8 +21005,8 @@ test_xmlNewText(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21025,9 +21059,9 @@ test_xmlNewTextChild(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21065,8 +21099,8 @@ test_xmlNewTextLen(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21102,8 +21136,8 @@ test_xmlNodeAddContent(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21146,8 +21180,8 @@ test_xmlNodeAddContentLen(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21185,8 +21219,8 @@ test_xmlNodeBufGetContent(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21246,9 +21280,9 @@ test_xmlNodeDump(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21313,9 +21347,9 @@ test_xmlNodeDumpOutput(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21353,8 +21387,8 @@ test_xmlNodeGetBase(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21385,8 +21419,8 @@ test_xmlNodeGetContent(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21417,8 +21451,8 @@ test_xmlNodeGetLang(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21449,8 +21483,8 @@ test_xmlNodeGetSpacePreserve(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21481,8 +21515,8 @@ test_xmlNodeIsText(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21528,9 +21562,9 @@ test_xmlNodeListGetRawString(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21575,8 +21609,8 @@ test_xmlNodeListGetString(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21613,9 +21647,9 @@ test_xmlNodeSetBase(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21651,8 +21685,8 @@ test_xmlNodeSetContent(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -21696,9 +21730,9 @@ test_xmlNodeSetContentLen(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21735,9 +21769,9 @@ test_xmlNodeSetLang(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21774,9 +21808,9 @@ test_xmlNodeSetName(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21813,9 +21847,9 @@ test_xmlNodeSetSpacePreserve(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21854,9 +21888,9 @@ test_xmlReconciliateNs(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21889,9 +21923,9 @@ test_xmlRemoveProp(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21937,9 +21971,9 @@ test_xmlReplaceNode(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -21978,9 +22012,9 @@ test_xmlSaveFile(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22026,9 +22060,9 @@ test_xmlSaveFileEnc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22075,9 +22109,9 @@ test_xmlSaveFileTo(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22123,9 +22157,9 @@ test_xmlSaveFormatFile(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22178,9 +22212,9 @@ test_xmlSaveFormatFileEnc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22234,9 +22268,9 @@ test_xmlSaveFormatFileTo(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22281,8 +22315,8 @@ test_xmlSearchNs(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22327,8 +22361,8 @@ test_xmlSearchNsByHref(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22357,8 +22391,8 @@ test_xmlSetBufferAllocationScheme(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22387,8 +22421,8 @@ test_xmlSetCompressMode(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22424,8 +22458,8 @@ test_xmlSetDocCompressMode(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22461,8 +22495,8 @@ test_xmlSetNs(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22515,9 +22549,9 @@ test_xmlSetNsProp(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22563,9 +22597,9 @@ test_xmlSetProp(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22603,8 +22637,8 @@ test_xmlSplitQName2(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22642,8 +22676,8 @@ test_xmlSplitQName3(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22681,8 +22715,8 @@ test_xmlStringGetNodeList(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22727,8 +22761,8 @@ test_xmlStringLenGetNodeList(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22773,8 +22807,8 @@ test_xmlTextConcat(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22815,8 +22849,8 @@ test_xmlTextMerge(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -22862,9 +22896,9 @@ test_xmlUnsetNsProp(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22903,9 +22937,9 @@ test_xmlUnsetProp(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22944,9 +22978,9 @@ test_xmlValidateNCName(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -22985,9 +23019,9 @@ test_xmlValidateNMToken(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -23026,9 +23060,9 @@ test_xmlValidateName(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -23067,9 +23101,9 @@ test_xmlValidateQName(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -23077,7 +23111,7 @@ static int
 test_tree(void) {
     int test_ret = 0;
 
-    printf("Testing tree : 129 of 146 functions ...\n");
+    if (quiet == 0) printf("Testing tree : 129 of 146 functions ...\n");
     test_ret += test_xmlAddChild();
     test_ret += test_xmlAddChildList();
     test_ret += test_xmlAddNextSibling();
@@ -23249,8 +23283,8 @@ test_xmlBuildRelativeURI(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23288,8 +23322,8 @@ test_xmlBuildURI(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23320,8 +23354,8 @@ test_xmlCanonicPath(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23362,8 +23396,8 @@ test_xmlNormalizeURIPath(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23418,8 +23452,8 @@ test_xmlParseURIReference(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23455,8 +23489,8 @@ test_xmlPrintURI(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23487,8 +23521,8 @@ test_xmlSaveUri(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23519,8 +23553,8 @@ test_xmlURIEscape(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23558,8 +23592,8 @@ test_xmlURIEscapeStr(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23577,7 +23611,7 @@ static int
 test_uri(void) {
     int test_ret = 0;
 
-    printf("Testing uri : 9 of 13 functions ...\n");
+    if (quiet == 0) printf("Testing uri : 9 of 13 functions ...\n");
     test_ret += test_xmlBuildRelativeURI();
     test_ret += test_xmlBuildURI();
     test_ret += test_xmlCanonicPath();
@@ -23678,8 +23712,8 @@ test_xmlAddAttributeDecl(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23738,8 +23772,8 @@ test_xmlAddElementDecl(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -23894,9 +23928,9 @@ test_xmlDumpAttributeDecl(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -23933,9 +23967,9 @@ test_xmlDumpAttributeTable(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -23979,9 +24013,9 @@ test_xmlDumpElementDecl(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -24018,9 +24052,9 @@ test_xmlDumpElementTable(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -24064,9 +24098,9 @@ test_xmlDumpNotationDecl(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -24103,9 +24137,9 @@ test_xmlDumpNotationTable(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -24150,8 +24184,8 @@ test_xmlGetDtdAttrDesc(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24189,8 +24223,8 @@ test_xmlGetDtdElementDesc(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24252,8 +24286,8 @@ test_xmlGetDtdQAttrDesc(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24298,8 +24332,8 @@ test_xmlGetDtdQElementDesc(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24337,8 +24371,8 @@ test_xmlGetID(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24393,8 +24427,8 @@ test_xmlIsID(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24432,8 +24466,8 @@ test_xmlIsMixedElement(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24478,8 +24512,8 @@ test_xmlIsRef(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24537,8 +24571,8 @@ test_xmlRemoveID(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24576,8 +24610,8 @@ test_xmlRemoveRef(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24627,8 +24661,8 @@ test_xmlSnprintfElementContent(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -24672,9 +24706,9 @@ test_xmlSprintfElementContent(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -24713,9 +24747,9 @@ test_xmlValidBuildContentModel(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -24775,9 +24809,9 @@ test_xmlValidCtxtNormalizeAttributeValue(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -24837,9 +24871,9 @@ test_xmlValidGetPotentialChildren(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -24892,9 +24926,9 @@ test_xmlValidGetValidElements(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -24947,9 +24981,9 @@ test_xmlValidNormalizeAttributeValue(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -24995,9 +25029,9 @@ test_xmlValidateAttributeDecl(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25036,9 +25070,9 @@ test_xmlValidateAttributeValue(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25077,9 +25111,9 @@ test_xmlValidateDocument(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25118,9 +25152,9 @@ test_xmlValidateDocumentFinal(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25166,9 +25200,9 @@ test_xmlValidateDtd(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25207,9 +25241,9 @@ test_xmlValidateDtdFinal(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25255,9 +25289,9 @@ test_xmlValidateElement(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25303,9 +25337,9 @@ test_xmlValidateElementDecl(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25337,9 +25371,9 @@ test_xmlValidateNameValue(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25371,9 +25405,9 @@ test_xmlValidateNamesValue(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25405,9 +25439,9 @@ test_xmlValidateNmtokenValue(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25439,9 +25473,9 @@ test_xmlValidateNmtokensValue(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25487,9 +25521,9 @@ test_xmlValidateNotationDecl(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25535,9 +25569,9 @@ test_xmlValidateNotationUse(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25597,9 +25631,9 @@ test_xmlValidateOneAttribute(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25645,9 +25679,9 @@ test_xmlValidateOneElement(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25714,9 +25748,9 @@ test_xmlValidateOneNamespace(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25769,9 +25803,9 @@ test_xmlValidatePopElement(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25817,9 +25851,9 @@ test_xmlValidatePushCData(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25872,9 +25906,9 @@ test_xmlValidatePushElement(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25913,9 +25947,9 @@ test_xmlValidateRoot(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -25923,7 +25957,7 @@ static int
 test_valid(void) {
     int test_ret = 0;
 
-    printf("Testing valid : 46 of 67 functions ...\n");
+    if (quiet == 0) printf("Testing valid : 46 of 67 functions ...\n");
     test_ret += test_xmlAddAttributeDecl();
     test_ret += test_xmlAddElementDecl();
     test_ret += test_xmlAddID();
@@ -26026,9 +26060,9 @@ test_xmlXIncludeProcess(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26067,9 +26101,9 @@ test_xmlXIncludeProcessFlags(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26118,9 +26152,9 @@ test_xmlXIncludeProcessNode(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26152,9 +26186,9 @@ test_xmlXIncludeProcessTree(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26193,9 +26227,9 @@ test_xmlXIncludeProcessTreeFlags(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26234,9 +26268,9 @@ test_xmlXIncludeSetFlags(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26244,7 +26278,7 @@ static int
 test_xinclude(void) {
     int test_ret = 0;
 
-    printf("Testing xinclude : 6 of 8 functions ...\n");
+    if (quiet == 0) printf("Testing xinclude : 6 of 8 functions ...\n");
     test_ret += test_xmlXIncludeNewContext();
     test_ret += test_xmlXIncludeProcess();
     test_ret += test_xmlXIncludeProcessFlags();
@@ -26285,9 +26319,9 @@ test_xmlAllocOutputBuffer(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26318,8 +26352,8 @@ test_xmlAllocParserInputBuffer(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -26350,8 +26384,8 @@ test_xmlCheckFilename(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -26389,8 +26423,8 @@ test_xmlCheckHTTPInput(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -26412,8 +26446,8 @@ test_xmlCleanupInputCallbacks(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -26436,9 +26470,9 @@ test_xmlCleanupOutputCallbacks(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26469,8 +26503,8 @@ test_xmlFileClose(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -26501,8 +26535,8 @@ test_xmlFileMatch(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -26533,8 +26567,8 @@ test_xmlFileOpen(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -26579,8 +26613,8 @@ test_xmlFileRead(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -26612,9 +26646,9 @@ test_xmlIOFTPClose(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26646,9 +26680,9 @@ test_xmlIOFTPMatch(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26680,9 +26714,9 @@ test_xmlIOFTPOpen(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26728,9 +26762,9 @@ test_xmlIOFTPRead(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26762,9 +26796,9 @@ test_xmlIOHTTPClose(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26796,9 +26830,9 @@ test_xmlIOHTTPMatch(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26830,9 +26864,9 @@ test_xmlIOHTTPOpen(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26888,9 +26922,9 @@ test_xmlIOHTTPRead(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -26935,8 +26969,8 @@ test_xmlNoNetExternalEntityLoader(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -26967,8 +27001,8 @@ test_xmlNormalizeWindowsPath(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27007,9 +27041,9 @@ test_xmlOutputBufferCreateFd(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -27048,9 +27082,9 @@ test_xmlOutputBufferCreateFile(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -27096,9 +27130,9 @@ test_xmlOutputBufferCreateFilename(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -27130,9 +27164,9 @@ test_xmlOutputBufferFlush(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -27178,9 +27212,9 @@ test_xmlOutputBufferWrite(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -27229,9 +27263,9 @@ test_xmlOutputBufferWriteString(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -27280,8 +27314,8 @@ test_xmlParserInputBufferCreateFd(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27319,8 +27353,8 @@ test_xmlParserInputBufferCreateFile(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27358,8 +27392,8 @@ test_xmlParserInputBufferCreateFilename(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27404,8 +27438,8 @@ test_xmlParserInputBufferCreateMem(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27450,8 +27484,8 @@ test_xmlParserInputBufferCreateStatic(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27489,8 +27523,8 @@ test_xmlParserInputBufferGrow(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27535,8 +27569,8 @@ test_xmlParserInputBufferPush(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27574,8 +27608,8 @@ test_xmlParserInputBufferRead(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27599,8 +27633,8 @@ test_xmlPopInputCallbacks(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27622,8 +27656,8 @@ test_xmlRegisterDefaultInputCallbacks(void) {
 	    test_ret++;
             printf("\n");
         }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -27646,9 +27680,9 @@ test_xmlRegisterDefaultOutputCallbacks(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -27671,9 +27705,9 @@ test_xmlRegisterHTTPPostCallbacks(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -27681,7 +27715,7 @@ static int
 test_xmlIO(void) {
     int test_ret = 0;
 
-    printf("Testing xmlIO : 38 of 47 functions ...\n");
+    if (quiet == 0) printf("Testing xmlIO : 38 of 47 functions ...\n");
     test_ret += test_xmlAllocOutputBuffer();
     test_ret += test_xmlAllocParserInputBuffer();
     test_ret += test_xmlCheckFilename();
@@ -27786,9 +27820,9 @@ test_xmlAutomataIsDeterminist(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -27884,9 +27918,9 @@ test_xmlAutomataNewCounter(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -27995,9 +28029,9 @@ test_xmlAutomataSetFinalState(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28015,7 +28049,7 @@ static int
 test_xmlautomata(void) {
     int test_ret = 0;
 
-    printf("Testing xmlautomata : 3 of 18 functions ...\n");
+    if (quiet == 0) printf("Testing xmlautomata : 3 of 18 functions ...\n");
     test_ret += test_xmlAutomataCompile();
     test_ret += test_xmlAutomataGetInitState();
     test_ret += test_xmlAutomataIsDeterminist();
@@ -28070,8 +28104,8 @@ test_initGenericErrorDefaultFunc(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -28116,8 +28150,8 @@ test_xmlCopyError(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -28156,8 +28190,8 @@ test_xmlCtxtResetLastError(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -28206,8 +28240,8 @@ test_xmlParserPrintFileContext(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -28236,8 +28270,8 @@ test_xmlParserPrintFileInfo(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -28296,8 +28330,8 @@ test_xmlResetError(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -28311,8 +28345,8 @@ test_xmlResetLastError(void) {
         xmlResetLastError();
         call_tests++;
         xmlResetLastError();
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -28340,7 +28374,7 @@ static int
 test_xmlerror(void) {
     int test_ret = 0;
 
-    printf("Testing xmlerror : 7 of 15 functions ...\n");
+    if (quiet == 0) printf("Testing xmlerror : 7 of 15 functions ...\n");
     test_ret += test_initGenericErrorDefaultFunc();
     test_ret += test_xmlCopyError();
     test_ret += test_xmlCtxtGetLastError();
@@ -28396,9 +28430,9 @@ test_xmlNewTextReader(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28430,9 +28464,9 @@ test_xmlNewTextReaderFilename(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28485,9 +28519,9 @@ test_xmlReaderForDoc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28533,9 +28567,9 @@ test_xmlReaderForFile(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28595,9 +28629,9 @@ test_xmlReaderForMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28657,9 +28691,9 @@ test_xmlReaderNewDoc(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28712,9 +28746,9 @@ test_xmlReaderNewFile(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28781,9 +28815,9 @@ test_xmlReaderNewMemory(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28822,9 +28856,9 @@ test_xmlReaderNewWalker(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28856,9 +28890,9 @@ test_xmlReaderWalker(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28890,9 +28924,9 @@ test_xmlTextReaderAttributeCount(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28924,9 +28958,9 @@ test_xmlTextReaderBaseUri(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28958,9 +28992,9 @@ test_xmlTextReaderClose(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -28992,9 +29026,9 @@ test_xmlTextReaderConstBaseUri(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29026,9 +29060,9 @@ test_xmlTextReaderConstEncoding(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29060,9 +29094,9 @@ test_xmlTextReaderConstLocalName(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29094,9 +29128,9 @@ test_xmlTextReaderConstName(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29128,9 +29162,9 @@ test_xmlTextReaderConstNamespaceUri(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29162,9 +29196,9 @@ test_xmlTextReaderConstPrefix(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29203,9 +29237,9 @@ test_xmlTextReaderConstString(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29237,9 +29271,9 @@ test_xmlTextReaderConstValue(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29271,9 +29305,9 @@ test_xmlTextReaderConstXmlLang(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29305,9 +29339,9 @@ test_xmlTextReaderConstXmlVersion(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29339,9 +29373,9 @@ test_xmlTextReaderCurrentDoc(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29373,9 +29407,9 @@ test_xmlTextReaderCurrentNode(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29407,9 +29441,9 @@ test_xmlTextReaderDepth(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29441,9 +29475,9 @@ test_xmlTextReaderExpand(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29482,9 +29516,9 @@ test_xmlTextReaderGetAttribute(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29523,9 +29557,9 @@ test_xmlTextReaderGetAttributeNo(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29571,9 +29605,9 @@ test_xmlTextReaderGetAttributeNs(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29627,9 +29661,9 @@ test_xmlTextReaderGetErrorHandler(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29668,9 +29702,9 @@ test_xmlTextReaderGetParserProp(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29702,9 +29736,9 @@ test_xmlTextReaderGetRemainder(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29736,9 +29770,9 @@ test_xmlTextReaderHasAttributes(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29770,9 +29804,9 @@ test_xmlTextReaderHasValue(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29804,9 +29838,9 @@ test_xmlTextReaderIsDefault(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29838,9 +29872,9 @@ test_xmlTextReaderIsEmptyElement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29872,9 +29906,9 @@ test_xmlTextReaderIsNamespaceDecl(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29906,9 +29940,9 @@ test_xmlTextReaderIsValid(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29940,9 +29974,9 @@ test_xmlTextReaderLocalName(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -29984,9 +30018,9 @@ test_xmlTextReaderLocatorBaseURI(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30018,9 +30052,9 @@ test_xmlTextReaderLocatorLineNumber(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30059,9 +30093,9 @@ test_xmlTextReaderLookupNamespace(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30100,9 +30134,9 @@ test_xmlTextReaderMoveToAttribute(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30141,9 +30175,9 @@ test_xmlTextReaderMoveToAttributeNo(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30189,9 +30223,9 @@ test_xmlTextReaderMoveToAttributeNs(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30223,9 +30257,9 @@ test_xmlTextReaderMoveToElement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30257,9 +30291,9 @@ test_xmlTextReaderMoveToFirstAttribute(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30291,9 +30325,9 @@ test_xmlTextReaderMoveToNextAttribute(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30325,9 +30359,9 @@ test_xmlTextReaderName(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30359,9 +30393,9 @@ test_xmlTextReaderNamespaceUri(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30393,9 +30427,9 @@ test_xmlTextReaderNext(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30427,9 +30461,9 @@ test_xmlTextReaderNextSibling(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30461,9 +30495,9 @@ test_xmlTextReaderNodeType(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30495,9 +30529,9 @@ test_xmlTextReaderNormalization(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30529,9 +30563,9 @@ test_xmlTextReaderPrefix(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30563,9 +30597,9 @@ test_xmlTextReaderPreserve(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30575,6 +30609,7 @@ test_xmlTextReaderPreservePattern(void) {
     int test_ret = 0;
 
 #ifdef LIBXML_READER_ENABLED
+#ifdef LIBXML_PATTERN_ENABLED
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30611,9 +30646,10 @@ test_xmlTextReaderPreservePattern(void) {
     }
     }
     }
+    function_tests++;
+#endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30645,9 +30681,9 @@ test_xmlTextReaderQuoteChar(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30679,9 +30715,9 @@ test_xmlTextReaderRead(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30713,9 +30749,9 @@ test_xmlTextReaderReadAttributeValue(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30747,9 +30783,9 @@ test_xmlTextReaderReadState(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30789,10 +30825,10 @@ test_xmlTextReaderRelaxNGSetSchema(void) {
         }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30832,10 +30868,10 @@ test_xmlTextReaderRelaxNGValidate(void) {
         }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30891,9 +30927,9 @@ test_xmlTextReaderSetParserProp(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30935,9 +30971,9 @@ test_xmlTextReaderStandalone(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -30969,9 +31005,9 @@ test_xmlTextReaderValue(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31003,9 +31039,9 @@ test_xmlTextReaderXmlLang(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31013,7 +31049,7 @@ static int
 test_xmlreader(void) {
     int test_ret = 0;
 
-    printf("Testing xmlreader : 68 of 78 functions ...\n");
+    if (quiet == 0) printf("Testing xmlreader : 68 of 78 functions ...\n");
     test_ret += test_xmlNewTextReader();
     test_ret += test_xmlNewTextReaderFilename();
     test_ret += test_xmlReaderForDoc();
@@ -31141,9 +31177,9 @@ test_xmlRegExecPushString(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31196,9 +31232,9 @@ test_xmlRegExecPushString2(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31267,9 +31303,9 @@ test_xmlRegexpExec(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31301,9 +31337,9 @@ test_xmlRegexpIsDeterminist(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31340,9 +31376,9 @@ test_xmlRegexpPrint(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31350,7 +31386,7 @@ static int
 test_xmlregexp(void) {
     int test_ret = 0;
 
-    printf("Testing xmlregexp : 5 of 9 functions ...\n");
+    if (quiet == 0) printf("Testing xmlregexp : 5 of 9 functions ...\n");
     test_ret += test_xmlRegExecPushString();
     test_ret += test_xmlRegExecPushString2();
     test_ret += test_xmlRegNewExecCtxt();
@@ -31401,9 +31437,9 @@ test_xmlSaveClose(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31442,9 +31478,9 @@ test_xmlSaveDoc(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31476,9 +31512,9 @@ test_xmlSaveFlush(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31557,9 +31593,9 @@ test_xmlSaveTree(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31567,7 +31603,7 @@ static int
 test_xmlsave(void) {
     int test_ret = 0;
 
-    printf("Testing xmlsave : 4 of 9 functions ...\n");
+    if (quiet == 0) printf("Testing xmlsave : 4 of 9 functions ...\n");
     test_ret += test_xmlSaveClose();
     test_ret += test_xmlSaveDoc();
     test_ret += test_xmlSaveFlush();
@@ -31625,10 +31661,10 @@ test_xmlSchemaDump(void) {
         }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31711,9 +31747,9 @@ test_xmlSchemaGetParserErrors(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31776,9 +31812,9 @@ test_xmlSchemaGetValidErrors(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31810,9 +31846,9 @@ test_xmlSchemaNewDocParserCtxt(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31851,9 +31887,9 @@ test_xmlSchemaNewMemParserCtxt(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31885,9 +31921,9 @@ test_xmlSchemaNewParserCtxt(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -31966,9 +32002,9 @@ test_xmlSchemaSetValidOptions(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32000,9 +32036,9 @@ test_xmlSchemaValidCtxtGetOptions(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32041,9 +32077,9 @@ test_xmlSchemaValidateDoc(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32082,9 +32118,9 @@ test_xmlSchemaValidateOneElement(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32144,9 +32180,9 @@ test_xmlSchemaValidateStream(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32154,7 +32190,7 @@ static int
 test_xmlschemas(void) {
     int test_ret = 0;
 
-    printf("Testing xmlschemas : 11 of 18 functions ...\n");
+    if (quiet == 0) printf("Testing xmlschemas : 11 of 18 functions ...\n");
     test_ret += test_xmlSchemaDump();
     test_ret += test_xmlSchemaGetParserErrors();
     test_ret += test_xmlSchemaGetValidErrors();
@@ -32244,9 +32280,9 @@ test_xmlSchemaCheckFacet(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32269,9 +32305,9 @@ test_xmlSchemaCleanupTypes(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32303,9 +32339,9 @@ test_xmlSchemaCollapseString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32354,9 +32390,9 @@ test_xmlSchemaCompareValues(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32388,9 +32424,9 @@ test_xmlSchemaGetBuiltInListSimpleTypeItemType(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32413,9 +32449,9 @@ test_xmlSchemaGetBuiltInType(void) {
         des_xmlSchemaValType(n_type, type, 0);
         xmlResetLastError();
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32464,9 +32500,9 @@ test_xmlSchemaGetPredefinedType(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32481,9 +32517,9 @@ test_xmlSchemaInitTypes(void) {
         xmlSchemaInitTypes();
         call_tests++;
         xmlResetLastError();
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32522,9 +32558,9 @@ test_xmlSchemaIsBuiltInTypeFacet(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32597,9 +32633,9 @@ test_xmlSchemaValPredefTypeNode(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32652,9 +32688,9 @@ test_xmlSchemaValPredefTypeNodeNoNorm(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32707,9 +32743,9 @@ test_xmlSchemaValidateFacet(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32769,9 +32805,9 @@ test_xmlSchemaValidateLengthFacet(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32824,9 +32860,9 @@ test_xmlSchemaValidateListSimpleTypeFacet(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32872,9 +32908,9 @@ test_xmlSchemaValidatePredefinedType(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -32882,7 +32918,7 @@ static int
 test_xmlschemastypes(void) {
     int test_ret = 0;
 
-    printf("Testing xmlschemastypes : 15 of 19 functions ...\n");
+    if (quiet == 0) printf("Testing xmlschemastypes : 15 of 19 functions ...\n");
     test_ret += test_xmlSchemaCheckFacet();
     test_ret += test_xmlSchemaCleanupTypes();
     test_ret += test_xmlSchemaCollapseString();
@@ -32932,8 +32968,8 @@ test_xmlCharStrdup(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -32971,8 +33007,8 @@ test_xmlCharStrndup(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33003,8 +33039,8 @@ test_xmlCheckUTF8(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33042,8 +33078,8 @@ test_xmlGetUTF8Char(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33081,8 +33117,8 @@ test_xmlStrEqual(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33137,8 +33173,8 @@ test_xmlStrQEqual(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33186,8 +33222,8 @@ test_xmlStrcasecmp(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33225,8 +33261,8 @@ test_xmlStrcasestr(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33264,8 +33300,8 @@ test_xmlStrchr(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33303,8 +33339,8 @@ test_xmlStrcmp(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33335,8 +33371,8 @@ test_xmlStrdup(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33367,8 +33403,8 @@ test_xmlStrlen(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33413,8 +33449,8 @@ test_xmlStrncasecmp(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33459,8 +33495,8 @@ test_xmlStrncatNew(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33505,8 +33541,8 @@ test_xmlStrncmp(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33544,8 +33580,8 @@ test_xmlStrndup(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33583,8 +33619,8 @@ test_xmlStrstr(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33629,8 +33665,8 @@ test_xmlStrsub(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33668,8 +33704,8 @@ test_xmlUTF8Charcmp(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33700,8 +33736,8 @@ test_xmlUTF8Size(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33732,8 +33768,8 @@ test_xmlUTF8Strlen(void) {
             printf("\n");
         }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33771,8 +33807,8 @@ test_xmlUTF8Strloc(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33810,8 +33846,8 @@ test_xmlUTF8Strndup(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33849,8 +33885,8 @@ test_xmlUTF8Strpos(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33888,8 +33924,8 @@ test_xmlUTF8Strsize(void) {
         }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33934,8 +33970,8 @@ test_xmlUTF8Strsub(void) {
     }
     }
     }
-
     function_tests++;
+
     return(test_ret);
 }
 
@@ -33943,7 +33979,7 @@ static int
 test_xmlstring(void) {
     int test_ret = 0;
 
-    printf("Testing xmlstring : 26 of 30 functions ...\n");
+    if (quiet == 0) printf("Testing xmlstring : 26 of 30 functions ...\n");
     test_ret += test_xmlCharStrdup();
     test_ret += test_xmlCharStrndup();
     test_ret += test_xmlCheckUTF8();
@@ -34005,9 +34041,9 @@ test_xmlUCSIsAegeanNumbers(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34039,9 +34075,9 @@ test_xmlUCSIsAlphabeticPresentationForms(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34073,9 +34109,9 @@ test_xmlUCSIsArabic(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34107,9 +34143,9 @@ test_xmlUCSIsArabicPresentationFormsA(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34141,9 +34177,9 @@ test_xmlUCSIsArabicPresentationFormsB(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34175,9 +34211,9 @@ test_xmlUCSIsArmenian(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34209,9 +34245,9 @@ test_xmlUCSIsArrows(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34243,9 +34279,9 @@ test_xmlUCSIsBasicLatin(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34277,9 +34313,9 @@ test_xmlUCSIsBengali(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34318,9 +34354,9 @@ test_xmlUCSIsBlock(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34352,9 +34388,9 @@ test_xmlUCSIsBlockElements(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34386,9 +34422,9 @@ test_xmlUCSIsBopomofo(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34420,9 +34456,9 @@ test_xmlUCSIsBopomofoExtended(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34454,9 +34490,9 @@ test_xmlUCSIsBoxDrawing(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34488,9 +34524,9 @@ test_xmlUCSIsBraillePatterns(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34522,9 +34558,9 @@ test_xmlUCSIsBuhid(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34556,9 +34592,9 @@ test_xmlUCSIsByzantineMusicalSymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34590,9 +34626,9 @@ test_xmlUCSIsCJKCompatibility(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34624,9 +34660,9 @@ test_xmlUCSIsCJKCompatibilityForms(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34658,9 +34694,9 @@ test_xmlUCSIsCJKCompatibilityIdeographs(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34692,9 +34728,9 @@ test_xmlUCSIsCJKCompatibilityIdeographsSupplement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34726,9 +34762,9 @@ test_xmlUCSIsCJKRadicalsSupplement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34760,9 +34796,9 @@ test_xmlUCSIsCJKSymbolsandPunctuation(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34794,9 +34830,9 @@ test_xmlUCSIsCJKUnifiedIdeographs(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34828,9 +34864,9 @@ test_xmlUCSIsCJKUnifiedIdeographsExtensionA(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34862,9 +34898,9 @@ test_xmlUCSIsCJKUnifiedIdeographsExtensionB(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34903,9 +34939,9 @@ test_xmlUCSIsCat(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34937,9 +34973,9 @@ test_xmlUCSIsCatC(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -34971,9 +35007,9 @@ test_xmlUCSIsCatCc(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35005,9 +35041,9 @@ test_xmlUCSIsCatCf(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35039,9 +35075,9 @@ test_xmlUCSIsCatCo(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35073,9 +35109,9 @@ test_xmlUCSIsCatCs(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35107,9 +35143,9 @@ test_xmlUCSIsCatL(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35141,9 +35177,9 @@ test_xmlUCSIsCatLl(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35175,9 +35211,9 @@ test_xmlUCSIsCatLm(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35209,9 +35245,9 @@ test_xmlUCSIsCatLo(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35243,9 +35279,9 @@ test_xmlUCSIsCatLt(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35277,9 +35313,9 @@ test_xmlUCSIsCatLu(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35311,9 +35347,9 @@ test_xmlUCSIsCatM(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35345,9 +35381,9 @@ test_xmlUCSIsCatMc(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35379,9 +35415,9 @@ test_xmlUCSIsCatMe(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35413,9 +35449,9 @@ test_xmlUCSIsCatMn(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35447,9 +35483,9 @@ test_xmlUCSIsCatN(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35481,9 +35517,9 @@ test_xmlUCSIsCatNd(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35515,9 +35551,9 @@ test_xmlUCSIsCatNl(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35549,9 +35585,9 @@ test_xmlUCSIsCatNo(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35583,9 +35619,9 @@ test_xmlUCSIsCatP(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35617,9 +35653,9 @@ test_xmlUCSIsCatPc(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35651,9 +35687,9 @@ test_xmlUCSIsCatPd(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35685,9 +35721,9 @@ test_xmlUCSIsCatPe(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35719,9 +35755,9 @@ test_xmlUCSIsCatPf(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35753,9 +35789,9 @@ test_xmlUCSIsCatPi(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35787,9 +35823,9 @@ test_xmlUCSIsCatPo(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35821,9 +35857,9 @@ test_xmlUCSIsCatPs(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35855,9 +35891,9 @@ test_xmlUCSIsCatS(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35889,9 +35925,9 @@ test_xmlUCSIsCatSc(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35923,9 +35959,9 @@ test_xmlUCSIsCatSk(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35957,9 +35993,9 @@ test_xmlUCSIsCatSm(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -35991,9 +36027,9 @@ test_xmlUCSIsCatSo(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36025,9 +36061,9 @@ test_xmlUCSIsCatZ(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36059,9 +36095,9 @@ test_xmlUCSIsCatZl(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36093,9 +36129,9 @@ test_xmlUCSIsCatZp(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36127,9 +36163,9 @@ test_xmlUCSIsCatZs(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36161,9 +36197,9 @@ test_xmlUCSIsCherokee(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36195,9 +36231,9 @@ test_xmlUCSIsCombiningDiacriticalMarks(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36229,9 +36265,9 @@ test_xmlUCSIsCombiningDiacriticalMarksforSymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36263,9 +36299,9 @@ test_xmlUCSIsCombiningHalfMarks(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36297,9 +36333,9 @@ test_xmlUCSIsCombiningMarksforSymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36331,9 +36367,9 @@ test_xmlUCSIsControlPictures(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36365,9 +36401,9 @@ test_xmlUCSIsCurrencySymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36399,9 +36435,9 @@ test_xmlUCSIsCypriotSyllabary(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36433,9 +36469,9 @@ test_xmlUCSIsCyrillic(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36467,9 +36503,9 @@ test_xmlUCSIsCyrillicSupplement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36501,9 +36537,9 @@ test_xmlUCSIsDeseret(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36535,9 +36571,9 @@ test_xmlUCSIsDevanagari(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36569,9 +36605,9 @@ test_xmlUCSIsDingbats(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36603,9 +36639,9 @@ test_xmlUCSIsEnclosedAlphanumerics(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36637,9 +36673,9 @@ test_xmlUCSIsEnclosedCJKLettersandMonths(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36671,9 +36707,9 @@ test_xmlUCSIsEthiopic(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36705,9 +36741,9 @@ test_xmlUCSIsGeneralPunctuation(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36739,9 +36775,9 @@ test_xmlUCSIsGeometricShapes(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36773,9 +36809,9 @@ test_xmlUCSIsGeorgian(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36807,9 +36843,9 @@ test_xmlUCSIsGothic(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36841,9 +36877,9 @@ test_xmlUCSIsGreek(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36875,9 +36911,9 @@ test_xmlUCSIsGreekExtended(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36909,9 +36945,9 @@ test_xmlUCSIsGreekandCoptic(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36943,9 +36979,9 @@ test_xmlUCSIsGujarati(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -36977,9 +37013,9 @@ test_xmlUCSIsGurmukhi(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37011,9 +37047,9 @@ test_xmlUCSIsHalfwidthandFullwidthForms(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37045,9 +37081,9 @@ test_xmlUCSIsHangulCompatibilityJamo(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37079,9 +37115,9 @@ test_xmlUCSIsHangulJamo(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37113,9 +37149,9 @@ test_xmlUCSIsHangulSyllables(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37147,9 +37183,9 @@ test_xmlUCSIsHanunoo(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37181,9 +37217,9 @@ test_xmlUCSIsHebrew(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37215,9 +37251,9 @@ test_xmlUCSIsHighPrivateUseSurrogates(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37249,9 +37285,9 @@ test_xmlUCSIsHighSurrogates(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37283,9 +37319,9 @@ test_xmlUCSIsHiragana(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37317,9 +37353,9 @@ test_xmlUCSIsIPAExtensions(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37351,9 +37387,9 @@ test_xmlUCSIsIdeographicDescriptionCharacters(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37385,9 +37421,9 @@ test_xmlUCSIsKanbun(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37419,9 +37455,9 @@ test_xmlUCSIsKangxiRadicals(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37453,9 +37489,9 @@ test_xmlUCSIsKannada(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37487,9 +37523,9 @@ test_xmlUCSIsKatakana(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37521,9 +37557,9 @@ test_xmlUCSIsKatakanaPhoneticExtensions(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37555,9 +37591,9 @@ test_xmlUCSIsKhmer(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37589,9 +37625,9 @@ test_xmlUCSIsKhmerSymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37623,9 +37659,9 @@ test_xmlUCSIsLao(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37657,9 +37693,9 @@ test_xmlUCSIsLatin1Supplement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37691,9 +37727,9 @@ test_xmlUCSIsLatinExtendedA(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37725,9 +37761,9 @@ test_xmlUCSIsLatinExtendedAdditional(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37759,9 +37795,9 @@ test_xmlUCSIsLatinExtendedB(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37793,9 +37829,9 @@ test_xmlUCSIsLetterlikeSymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37827,9 +37863,9 @@ test_xmlUCSIsLimbu(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37861,9 +37897,9 @@ test_xmlUCSIsLinearBIdeograms(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37895,9 +37931,9 @@ test_xmlUCSIsLinearBSyllabary(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37929,9 +37965,9 @@ test_xmlUCSIsLowSurrogates(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37963,9 +37999,9 @@ test_xmlUCSIsMalayalam(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -37997,9 +38033,9 @@ test_xmlUCSIsMathematicalAlphanumericSymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38031,9 +38067,9 @@ test_xmlUCSIsMathematicalOperators(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38065,9 +38101,9 @@ test_xmlUCSIsMiscellaneousMathematicalSymbolsA(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38099,9 +38135,9 @@ test_xmlUCSIsMiscellaneousMathematicalSymbolsB(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38133,9 +38169,9 @@ test_xmlUCSIsMiscellaneousSymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38167,9 +38203,9 @@ test_xmlUCSIsMiscellaneousSymbolsandArrows(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38201,9 +38237,9 @@ test_xmlUCSIsMiscellaneousTechnical(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38235,9 +38271,9 @@ test_xmlUCSIsMongolian(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38269,9 +38305,9 @@ test_xmlUCSIsMusicalSymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38303,9 +38339,9 @@ test_xmlUCSIsMyanmar(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38337,9 +38373,9 @@ test_xmlUCSIsNumberForms(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38371,9 +38407,9 @@ test_xmlUCSIsOgham(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38405,9 +38441,9 @@ test_xmlUCSIsOldItalic(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38439,9 +38475,9 @@ test_xmlUCSIsOpticalCharacterRecognition(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38473,9 +38509,9 @@ test_xmlUCSIsOriya(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38507,9 +38543,9 @@ test_xmlUCSIsOsmanya(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38541,9 +38577,9 @@ test_xmlUCSIsPhoneticExtensions(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38575,9 +38611,9 @@ test_xmlUCSIsPrivateUse(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38609,9 +38645,9 @@ test_xmlUCSIsPrivateUseArea(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38643,9 +38679,9 @@ test_xmlUCSIsRunic(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38677,9 +38713,9 @@ test_xmlUCSIsShavian(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38711,9 +38747,9 @@ test_xmlUCSIsSinhala(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38745,9 +38781,9 @@ test_xmlUCSIsSmallFormVariants(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38779,9 +38815,9 @@ test_xmlUCSIsSpacingModifierLetters(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38813,9 +38849,9 @@ test_xmlUCSIsSpecials(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38847,9 +38883,9 @@ test_xmlUCSIsSuperscriptsandSubscripts(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38881,9 +38917,9 @@ test_xmlUCSIsSupplementalArrowsA(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38915,9 +38951,9 @@ test_xmlUCSIsSupplementalArrowsB(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38949,9 +38985,9 @@ test_xmlUCSIsSupplementalMathematicalOperators(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -38983,9 +39019,9 @@ test_xmlUCSIsSupplementaryPrivateUseAreaA(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39017,9 +39053,9 @@ test_xmlUCSIsSupplementaryPrivateUseAreaB(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39051,9 +39087,9 @@ test_xmlUCSIsSyriac(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39085,9 +39121,9 @@ test_xmlUCSIsTagalog(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39119,9 +39155,9 @@ test_xmlUCSIsTagbanwa(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39153,9 +39189,9 @@ test_xmlUCSIsTags(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39187,9 +39223,9 @@ test_xmlUCSIsTaiLe(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39221,9 +39257,9 @@ test_xmlUCSIsTaiXuanJingSymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39255,9 +39291,9 @@ test_xmlUCSIsTamil(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39289,9 +39325,9 @@ test_xmlUCSIsTelugu(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39323,9 +39359,9 @@ test_xmlUCSIsThaana(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39357,9 +39393,9 @@ test_xmlUCSIsThai(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39391,9 +39427,9 @@ test_xmlUCSIsTibetan(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39425,9 +39461,9 @@ test_xmlUCSIsUgaritic(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39459,9 +39495,9 @@ test_xmlUCSIsUnifiedCanadianAboriginalSyllabics(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39493,9 +39529,9 @@ test_xmlUCSIsVariationSelectors(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39527,9 +39563,9 @@ test_xmlUCSIsVariationSelectorsSupplement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39561,9 +39597,9 @@ test_xmlUCSIsYiRadicals(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39595,9 +39631,9 @@ test_xmlUCSIsYiSyllables(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39629,9 +39665,9 @@ test_xmlUCSIsYijingHexagramSymbols(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39639,7 +39675,7 @@ static int
 test_xmlunicode(void) {
     int test_ret = 0;
 
-    printf("Testing xmlunicode : 166 of 166 functions ...\n");
+    if (quiet == 0) printf("Testing xmlunicode : 166 of 166 functions ...\n");
     test_ret += test_xmlUCSIsAegeanNumbers();
     test_ret += test_xmlUCSIsAlphabeticPresentationForms();
     test_ret += test_xmlUCSIsArabic();
@@ -39840,9 +39876,9 @@ test_xmlNewTextWriter(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39881,9 +39917,9 @@ test_xmlNewTextWriterFilename(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39922,9 +39958,9 @@ test_xmlNewTextWriterMemory(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -39964,9 +40000,9 @@ test_xmlNewTextWriterPushParser(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40012,9 +40048,9 @@ test_xmlNewTextWriterTree(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40046,9 +40082,9 @@ test_xmlTextWriterEndAttribute(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40080,9 +40116,9 @@ test_xmlTextWriterEndCDATA(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40114,9 +40150,9 @@ test_xmlTextWriterEndComment(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40148,9 +40184,9 @@ test_xmlTextWriterEndDTD(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40182,9 +40218,9 @@ test_xmlTextWriterEndDTDAttlist(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40216,9 +40252,9 @@ test_xmlTextWriterEndDTDElement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40250,9 +40286,9 @@ test_xmlTextWriterEndDTDEntity(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40284,9 +40320,9 @@ test_xmlTextWriterEndDocument(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40318,9 +40354,9 @@ test_xmlTextWriterEndElement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40352,9 +40388,9 @@ test_xmlTextWriterEndPI(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40386,9 +40422,9 @@ test_xmlTextWriterFlush(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40420,9 +40456,9 @@ test_xmlTextWriterFullEndElement(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40461,9 +40497,9 @@ test_xmlTextWriterSetIndent(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40502,9 +40538,9 @@ test_xmlTextWriterSetIndentString(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40543,9 +40579,9 @@ test_xmlTextWriterStartAttribute(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40598,9 +40634,9 @@ test_xmlTextWriterStartAttributeNS(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40632,9 +40668,9 @@ test_xmlTextWriterStartCDATA(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40666,9 +40702,9 @@ test_xmlTextWriterStartComment(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40721,9 +40757,9 @@ test_xmlTextWriterStartDTD(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40762,9 +40798,9 @@ test_xmlTextWriterStartDTDAttlist(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40803,9 +40839,9 @@ test_xmlTextWriterStartDTDElement(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40851,9 +40887,9 @@ test_xmlTextWriterStartDTDEntity(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40906,9 +40942,9 @@ test_xmlTextWriterStartDocument(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -40947,9 +40983,9 @@ test_xmlTextWriterStartElement(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41002,9 +41038,9 @@ test_xmlTextWriterStartElementNS(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41043,9 +41079,9 @@ test_xmlTextWriterStartPI(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41091,9 +41127,9 @@ test_xmlTextWriterWriteAttribute(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41153,9 +41189,9 @@ test_xmlTextWriterWriteAttributeNS(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41208,9 +41244,9 @@ test_xmlTextWriterWriteBase64(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41263,9 +41299,9 @@ test_xmlTextWriterWriteBinHex(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41304,9 +41340,9 @@ test_xmlTextWriterWriteCDATA(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41345,9 +41381,9 @@ test_xmlTextWriterWriteComment(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41407,9 +41443,9 @@ test_xmlTextWriterWriteDTD(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41455,9 +41491,9 @@ test_xmlTextWriterWriteDTDAttlist(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41503,9 +41539,9 @@ test_xmlTextWriterWriteDTDElement(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41579,9 +41615,9 @@ test_xmlTextWriterWriteDTDEntity(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41648,9 +41684,9 @@ test_xmlTextWriterWriteDTDExternalEntity(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41703,9 +41739,9 @@ test_xmlTextWriterWriteDTDExternalEntityContents(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41758,9 +41794,9 @@ test_xmlTextWriterWriteDTDInternalEntity(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41813,9 +41849,9 @@ test_xmlTextWriterWriteDTDNotation(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41861,9 +41897,9 @@ test_xmlTextWriterWriteElement(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -41923,9 +41959,9 @@ test_xmlTextWriterWriteElementNS(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42101,9 +42137,9 @@ test_xmlTextWriterWritePI(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42142,9 +42178,9 @@ test_xmlTextWriterWriteRaw(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42190,9 +42226,9 @@ test_xmlTextWriterWriteRawLen(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42231,9 +42267,9 @@ test_xmlTextWriterWriteString(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42371,7 +42407,7 @@ static int
 test_xmlwriter(void) {
     int test_ret = 0;
 
-    printf("Testing xmlwriter : 51 of 79 functions ...\n");
+    if (quiet == 0) printf("Testing xmlwriter : 51 of 79 functions ...\n");
     test_ret += test_xmlNewTextWriter();
     test_ret += test_xmlNewTextWriterFilename();
     test_ret += test_xmlNewTextWriterMemory();
@@ -42482,9 +42518,9 @@ test_xmlXPathCastBooleanToNumber(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42516,9 +42552,9 @@ test_xmlXPathCastBooleanToString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42550,9 +42586,9 @@ test_xmlXPathCastNodeSetToBoolean(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42584,9 +42620,9 @@ test_xmlXPathCastNodeSetToNumber(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42618,9 +42654,9 @@ test_xmlXPathCastNodeSetToString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42652,9 +42688,9 @@ test_xmlXPathCastNodeToNumber(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42686,9 +42722,9 @@ test_xmlXPathCastNodeToString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42720,9 +42756,9 @@ test_xmlXPathCastNumberToBoolean(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42754,9 +42790,9 @@ test_xmlXPathCastNumberToString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42788,9 +42824,9 @@ test_xmlXPathCastStringToBoolean(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42822,9 +42858,9 @@ test_xmlXPathCastStringToNumber(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42856,9 +42892,9 @@ test_xmlXPathCastToBoolean(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42890,9 +42926,9 @@ test_xmlXPathCastToNumber(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42924,9 +42960,9 @@ test_xmlXPathCastToString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -42965,9 +43001,9 @@ test_xmlXPathCmpNodes(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43036,9 +43072,9 @@ test_xmlXPathCompiledEval(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43071,9 +43107,9 @@ test_xmlXPathConvertBoolean(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43106,9 +43142,9 @@ test_xmlXPathConvertNumber(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43141,9 +43177,9 @@ test_xmlXPathConvertString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43192,9 +43228,9 @@ test_xmlXPathEval(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43233,9 +43269,9 @@ test_xmlXPathEvalExpression(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43274,9 +43310,9 @@ test_xmlXPathEvalPredicate(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43299,9 +43335,9 @@ test_xmlXPathInit(void) {
 	    test_ret++;
             printf("\n");
         }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43333,9 +43369,9 @@ test_xmlXPathIsInf(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43367,9 +43403,9 @@ test_xmlXPathIsNaN(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43411,9 +43447,9 @@ test_xmlXPathNodeSetCreate(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43445,9 +43481,9 @@ test_xmlXPathObjectCopy(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43479,9 +43515,9 @@ test_xmlXPathOrderDocElems(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43489,7 +43525,7 @@ static int
 test_xpath(void) {
     int test_ret = 0;
 
-    printf("Testing xpath : 28 of 36 functions ...\n");
+    if (quiet == 0) printf("Testing xpath : 28 of 36 functions ...\n");
     test_ret += test_xmlXPathCastBooleanToNumber();
     test_ret += test_xmlXPathCastBooleanToString();
     test_ret += test_xmlXPathCastNodeSetToBoolean();
@@ -43564,9 +43600,9 @@ test_valuePop(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43605,9 +43641,9 @@ test_valuePush(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43637,9 +43673,9 @@ test_xmlXPathAddValues(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43676,9 +43712,9 @@ test_xmlXPathBooleanFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43715,9 +43751,9 @@ test_xmlXPathCeilingFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43763,9 +43799,9 @@ test_xmlXPathCompareValues(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43802,9 +43838,9 @@ test_xmlXPathConcatFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43841,9 +43877,9 @@ test_xmlXPathContainsFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43880,9 +43916,9 @@ test_xmlXPathCountFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43927,10 +43963,10 @@ test_xmlXPathDebugDumpCompExpr(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -43975,10 +44011,10 @@ test_xmlXPathDebugDumpObject(void) {
     }
     }
     }
+    function_tests++;
 #endif
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44017,9 +44053,9 @@ test_xmlXPathDifference(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44051,9 +44087,9 @@ test_xmlXPathDistinct(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44085,9 +44121,9 @@ test_xmlXPathDistinctSorted(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44117,9 +44153,9 @@ test_xmlXPathDivValues(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44151,9 +44187,9 @@ test_xmlXPathEqualValues(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44190,9 +44226,9 @@ test_xmlXPathErr(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44222,9 +44258,9 @@ test_xmlXPathEvalExpr(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44263,9 +44299,9 @@ test_xmlXPathEvaluatePredicateResult(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44302,9 +44338,9 @@ test_xmlXPathFalseFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44341,9 +44377,9 @@ test_xmlXPathFloorFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44402,9 +44438,9 @@ test_xmlXPathHasSameNodes(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44441,9 +44477,9 @@ test_xmlXPathIdFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44482,9 +44518,9 @@ test_xmlXPathIntersection(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44516,9 +44552,9 @@ test_xmlXPathIsNodeType(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44555,9 +44591,9 @@ test_xmlXPathLangFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44594,9 +44630,9 @@ test_xmlXPathLastFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44635,9 +44671,9 @@ test_xmlXPathLeading(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44676,9 +44712,9 @@ test_xmlXPathLeadingSorted(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44715,9 +44751,9 @@ test_xmlXPathLocalNameFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44747,9 +44783,9 @@ test_xmlXPathModValues(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44779,9 +44815,9 @@ test_xmlXPathMultValues(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44818,9 +44854,9 @@ test_xmlXPathNamespaceURIFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44852,9 +44888,9 @@ test_xmlXPathNewBoolean(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44886,9 +44922,9 @@ test_xmlXPathNewCString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44920,9 +44956,9 @@ test_xmlXPathNewFloat(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44954,9 +44990,9 @@ test_xmlXPathNewNodeSet(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -44988,9 +45024,9 @@ test_xmlXPathNewNodeSetList(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45032,9 +45068,9 @@ test_xmlXPathNewString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45073,9 +45109,9 @@ test_xmlXPathNextAncestor(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45114,9 +45150,9 @@ test_xmlXPathNextAncestorOrSelf(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45155,9 +45191,9 @@ test_xmlXPathNextAttribute(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45196,9 +45232,9 @@ test_xmlXPathNextChild(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45237,9 +45273,9 @@ test_xmlXPathNextDescendant(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45278,9 +45314,9 @@ test_xmlXPathNextDescendantOrSelf(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45319,9 +45355,9 @@ test_xmlXPathNextFollowing(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45360,9 +45396,9 @@ test_xmlXPathNextFollowingSibling(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45401,9 +45437,9 @@ test_xmlXPathNextNamespace(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45442,9 +45478,9 @@ test_xmlXPathNextParent(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45483,9 +45519,9 @@ test_xmlXPathNextPreceding(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45524,9 +45560,9 @@ test_xmlXPathNextPrecedingSibling(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45565,9 +45601,9 @@ test_xmlXPathNextSelf(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45606,9 +45642,9 @@ test_xmlXPathNodeLeading(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45647,9 +45683,9 @@ test_xmlXPathNodeLeadingSorted(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45686,9 +45722,9 @@ test_xmlXPathNodeSetAdd(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45732,9 +45768,9 @@ test_xmlXPathNodeSetAddNs(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45771,9 +45807,9 @@ test_xmlXPathNodeSetAddUnique(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45812,9 +45848,9 @@ test_xmlXPathNodeSetContains(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45851,9 +45887,9 @@ test_xmlXPathNodeSetDel(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45892,9 +45928,9 @@ test_xmlXPathNodeSetMerge(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45931,9 +45967,9 @@ test_xmlXPathNodeSetRemove(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -45963,9 +45999,9 @@ test_xmlXPathNodeSetSort(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46004,9 +46040,9 @@ test_xmlXPathNodeTrailing(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46045,9 +46081,9 @@ test_xmlXPathNodeTrailingSorted(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46084,9 +46120,9 @@ test_xmlXPathNormalizeFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46118,9 +46154,9 @@ test_xmlXPathNotEqualValues(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46157,9 +46193,9 @@ test_xmlXPathNotFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46198,9 +46234,9 @@ test_xmlXPathNsLookup(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46237,9 +46273,9 @@ test_xmlXPathNumberFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46271,9 +46307,9 @@ test_xmlXPathParseNCName(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46305,9 +46341,9 @@ test_xmlXPathParseName(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46339,9 +46375,9 @@ test_xmlXPathPopBoolean(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46373,9 +46409,9 @@ test_xmlXPathPopExternal(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46407,9 +46443,9 @@ test_xmlXPathPopNodeSet(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46441,9 +46477,9 @@ test_xmlXPathPopNumber(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46475,9 +46511,9 @@ test_xmlXPathPopString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46514,9 +46550,9 @@ test_xmlXPathPositionFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46546,9 +46582,9 @@ test_xmlXPathRegisterAllFunctions(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46624,9 +46660,9 @@ test_xmlXPathRegisterNs(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46672,9 +46708,9 @@ test_xmlXPathRegisterVariable(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46737,9 +46773,9 @@ test_xmlXPathRegisterVariableNS(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46769,9 +46805,9 @@ test_xmlXPathRegisteredFuncsCleanup(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46801,9 +46837,9 @@ test_xmlXPathRegisteredNsCleanup(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46833,9 +46869,9 @@ test_xmlXPathRegisteredVariablesCleanup(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46865,9 +46901,9 @@ test_xmlXPathRoot(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46904,9 +46940,9 @@ test_xmlXPathRoundFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46943,9 +46979,9 @@ test_xmlXPathStartsWithFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -46977,9 +47013,9 @@ test_xmlXPathStringEvalNumber(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47016,9 +47052,9 @@ test_xmlXPathStringFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47055,9 +47091,9 @@ test_xmlXPathStringLengthFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47087,9 +47123,9 @@ test_xmlXPathSubValues(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47126,9 +47162,9 @@ test_xmlXPathSubstringAfterFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47165,9 +47201,9 @@ test_xmlXPathSubstringBeforeFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47204,9 +47240,9 @@ test_xmlXPathSubstringFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47243,9 +47279,9 @@ test_xmlXPathSumFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47284,9 +47320,9 @@ test_xmlXPathTrailing(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47325,9 +47361,9 @@ test_xmlXPathTrailingSorted(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47364,9 +47400,9 @@ test_xmlXPathTranslateFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47403,9 +47439,9 @@ test_xmlXPathTrueFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47435,9 +47471,9 @@ test_xmlXPathValueFlipSign(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47476,9 +47512,9 @@ test_xmlXPathVariableLookup(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47524,9 +47560,9 @@ test_xmlXPathVariableLookupNS(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47558,9 +47594,9 @@ test_xmlXPathWrapCString(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47592,9 +47628,9 @@ test_xmlXPathWrapExternal(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47626,9 +47662,9 @@ test_xmlXPathWrapNodeSet(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47679,9 +47715,9 @@ test_xmlXPatherror(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47689,7 +47725,7 @@ static int
 test_xpathInternals(void) {
     int test_ret = 0;
 
-    printf("Testing xpathInternals : 106 of 117 functions ...\n");
+    if (quiet == 0) printf("Testing xpathInternals : 106 of 117 functions ...\n");
     test_ret += test_valuePop();
     test_ret += test_valuePush();
     test_ret += test_xmlXPathAddValues();
@@ -47836,9 +47872,9 @@ test_xmlXPtrBuildNodeList(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47877,9 +47913,9 @@ test_xmlXPtrEval(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47909,9 +47945,9 @@ test_xmlXPtrEvalRangePredicate(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -47958,9 +47994,9 @@ test_xmlXPtrLocationSetAdd(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48007,9 +48043,9 @@ test_xmlXPtrLocationSetDel(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48056,9 +48092,9 @@ test_xmlXPtrLocationSetRemove(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48090,9 +48126,9 @@ test_xmlXPtrNewCollapsedRange(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48134,9 +48170,9 @@ test_xmlXPtrNewLocationSetNodeSet(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48175,9 +48211,9 @@ test_xmlXPtrNewLocationSetNodes(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48230,9 +48266,9 @@ test_xmlXPtrNewRange(void) {
     }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48271,9 +48307,9 @@ test_xmlXPtrNewRangeNodeObject(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48312,9 +48348,9 @@ test_xmlXPtrNewRangeNodePoint(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48353,9 +48389,9 @@ test_xmlXPtrNewRangeNodes(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48394,9 +48430,9 @@ test_xmlXPtrNewRangePointNode(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48435,9 +48471,9 @@ test_xmlXPtrNewRangePoints(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48474,9 +48510,9 @@ test_xmlXPtrRangeToFunction(void) {
         }
     }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48508,9 +48544,9 @@ test_xmlXPtrWrapLocationSet(void) {
             printf("\n");
         }
     }
+    function_tests++;
 #endif
 
-    function_tests++;
     return(test_ret);
 }
 
@@ -48518,7 +48554,7 @@ static int
 test_xpointer(void) {
     int test_ret = 0;
 
-    printf("Testing xpointer : 17 of 21 functions ...\n");
+    if (quiet == 0) printf("Testing xpointer : 17 of 21 functions ...\n");
     test_ret += test_xmlXPtrBuildNodeList();
     test_ret += test_xmlXPtrEval();
     test_ret += test_xmlXPtrEvalRangePredicate();

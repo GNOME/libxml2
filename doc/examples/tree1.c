@@ -64,10 +64,10 @@ main(int argc, char **argv)
     LIBXML_TEST_VERSION
 
     /*parse the file and get the DOM */
-    doc = xmlParseFile(argv[1]);
+    doc = xmlReadFile(argv[1], NULL, 0);
 
     if (doc == NULL) {
-        printf("error: could not parse file file.xml\n");
+        printf("error: could not parse file %s\n", argv[1]);
     }
 
     /*Get the root element node */

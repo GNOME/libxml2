@@ -238,7 +238,7 @@ xmlFileOpen (const char *filename) {
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
     else if (!strncmp(filename, "file:///", 8))
-	path = &filename[8];
+	path = &filename[7];
     else 
 	path = filename;
 
@@ -277,7 +277,7 @@ xmlFileOpenW (const char *filename) {
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
     else if (!strncmp(filename, "file:///", 8))
-	path = &filename[8];
+	path = &filename[7];
     else 
 	path = filename;
 
@@ -419,7 +419,7 @@ xmlGzfileOpenW (const char *filename, int compression) {
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
     else if (!strncmp(filename, "file:///", 8))
-	path = &filename[8];
+	path = &filename[7];
     else 
 	path = filename;
 

@@ -1,3 +1,7 @@
+Thu May 31 20:42:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmlIO.c: Gary Pennington spotted a few troubles with file:///
+
 Thu May 31 20:18:59 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* encoding.c: Robert Collins provided a patch to add the

@@ -1,3 +1,10 @@
+Wed Feb 20 11:16:15 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in include/libxml/xmlwin32version.h: preparing 2.4.16
+	* doc/* python/libxml2class.txt: updated and rebuilt the docs,
+	  rebuilt the API and web site
+	* xpath.c: fixed #71978 portability bugs
+
 Tue Feb 19 22:49:36 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: oops broke automatic defaulting of namespaces attributes.

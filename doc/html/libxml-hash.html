@@ -123,7 +123,7 @@ NAME="LIBXML-HASH"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN24413"
+NAME="AEN24411"
 ></A
 ><H2
 >Name</H2
@@ -131,7 +131,7 @@ NAME="AEN24413"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN24416"
+NAME="AEN24414"
 ></A
 ><H2
 >Synopsis</H2
@@ -170,7 +170,7 @@ HREF="libxml-hash.html#XMLHASHCOPIER"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
-void*       (<A
+void        (<A
 HREF="libxml-hash.html#XMLHASHSCANNER"
 >*xmlHashScanner</A
 >)               (void *payload,
@@ -524,7 +524,7 @@ HREF="libxml-hash.html#XMLHASHSCANNERFULL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN24514"
+NAME="AEN24512"
 ></A
 ><H2
 >Description</H2
@@ -534,14 +534,14 @@ NAME="AEN24514"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN24517"
+NAME="AEN24515"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24519"
+NAME="AEN24517"
 ></A
 ><H3
 ><A
@@ -567,7 +567,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24524"
+NAME="AEN24522"
 ></A
 ><H3
 ><A
@@ -593,7 +593,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24529"
+NAME="AEN24527"
 ></A
 ><H3
 ><A
@@ -618,11 +618,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Callback to free data from a hash</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24535"
+NAME="AEN24534"
 ></A
 ><P
 ></P
@@ -649,7 +651,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the data in the hash</TD
 ></TR
 ><TR
 ><TD
@@ -666,7 +668,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the name associated</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -677,7 +679,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24548"
+NAME="AEN24547"
 ></A
 ><H3
 ><A
@@ -701,6 +703,8 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TD
 ></TR
 ></TABLE
+><P
+>Callback to copy data from a hash</P
 ><P
 ></P
 ><DIV
@@ -733,7 +737,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the data in the hash</TD
 ></TR
 ><TR
 ><TD
@@ -750,7 +754,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the name associated</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -777,7 +781,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void*       (*xmlHashScanner)               (void *payload,
+>void        (*xmlHashScanner)               (void *payload,
                                              void *data,
                                              <A
 HREF="libxml-tree.html#XMLCHAR"
@@ -787,11 +791,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Callback when scanning data in a hash with the simple scanner</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24573"
+NAME="AEN24574"
 ></A
 ><P
 ></P
@@ -818,7 +824,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the data in the hash</TD
 ></TR
 ><TR
 ><TD
@@ -835,7 +841,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  extra scannner data</TD
 ></TR
 ><TR
 ><TD
@@ -852,7 +858,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the name associated</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -863,7 +869,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24590"
+NAME="AEN24591"
 ></A
 ><H3
 ><A
@@ -897,11 +903,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Callback when scanning data in a hash with the full scanner</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24598"
+NAME="AEN24600"
 ></A
 ><P
 ></P
@@ -928,7 +936,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the data in the hash</TD
 ></TR
 ><TR
 ><TD
@@ -945,7 +953,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  extra scannner data</TD
 ></TR
 ><TR
 ><TD
@@ -962,7 +970,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the name associated</TD
 ></TR
 ><TR
 ><TD
@@ -979,7 +987,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the second name associated</TD
 ></TR
 ><TR
 ><TD
@@ -996,7 +1004,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the third name associated</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1007,7 +1015,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24623"
+NAME="AEN24625"
 ></A
 ><H3
 ><A
@@ -1037,7 +1045,7 @@ HREF="libxml-hash.html#XMLHASHTABLEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24630"
+NAME="AEN24632"
 ></A
 ><P
 ></P
@@ -1090,7 +1098,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24643"
+NAME="AEN24645"
 ></A
 ><H3
 ><A
@@ -1135,7 +1143,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24653"
+NAME="AEN24655"
 ></A
 ><P
 ></P
@@ -1190,7 +1198,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24666"
+NAME="AEN24668"
 ></A
 ><H3
 ><A
@@ -1241,7 +1249,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24677"
+NAME="AEN24679"
 ></A
 ><P
 ></P
@@ -1328,7 +1336,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24698"
+NAME="AEN24700"
 ></A
 ><H3
 ><A
@@ -1394,7 +1402,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24712"
+NAME="AEN24714"
 ></A
 ><P
 ></P
@@ -1498,7 +1506,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24737"
+NAME="AEN24739"
 ></A
 ><H3
 ><A
@@ -1558,7 +1566,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24750"
+NAME="AEN24752"
 ></A
 ><P
 ></P
@@ -1662,7 +1670,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24775"
+NAME="AEN24777"
 ></A
 ><H3
 ><A
@@ -1732,7 +1740,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24790"
+NAME="AEN24792"
 ></A
 ><P
 ></P
@@ -1853,7 +1861,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24819"
+NAME="AEN24821"
 ></A
 ><H3
 ><A
@@ -1923,7 +1931,7 @@ errors.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24834"
+NAME="AEN24836"
 ></A
 ><P
 ></P
@@ -2044,7 +2052,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24863"
+NAME="AEN24865"
 ></A
 ><H3
 ><A
@@ -2123,7 +2131,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24880"
+NAME="AEN24882"
 ></A
 ><P
 ></P
@@ -2261,7 +2269,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24913"
+NAME="AEN24915"
 ></A
 ><H3
 ><A
@@ -2316,7 +2324,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24925"
+NAME="AEN24927"
 ></A
 ><P
 ></P
@@ -2403,7 +2411,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24946"
+NAME="AEN24948"
 ></A
 ><H3
 ><A
@@ -2467,7 +2475,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24960"
+NAME="AEN24962"
 ></A
 ><P
 ></P
@@ -2571,7 +2579,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24985"
+NAME="AEN24987"
 ></A
 ><H3
 ><A
@@ -2644,7 +2652,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25001"
+NAME="AEN25003"
 ></A
 ><P
 ></P
@@ -2765,7 +2773,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25030"
+NAME="AEN25032"
 ></A
 ><H3
 ><A
@@ -2804,7 +2812,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25039"
+NAME="AEN25041"
 ></A
 ><P
 ></P
@@ -2859,7 +2867,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25052"
+NAME="AEN25054"
 ></A
 ><H3
 ><A
@@ -2907,7 +2915,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25063"
+NAME="AEN25065"
 ></A
 ><P
 ></P
@@ -2979,7 +2987,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25080"
+NAME="AEN25082"
 ></A
 ><H3
 ><A
@@ -3036,7 +3044,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25093"
+NAME="AEN25095"
 ></A
 ><P
 ></P
@@ -3125,7 +3133,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25114"
+NAME="AEN25116"
 ></A
 ><H3
 ><A
@@ -3172,7 +3180,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25125"
+NAME="AEN25127"
 ></A
 ><P
 ></P
@@ -3242,7 +3250,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25142"
+NAME="AEN25144"
 ></A
 ><H3
 ><A
@@ -3277,7 +3285,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25150"
+NAME="AEN25152"
 ></A
 ><P
 ></P
@@ -3331,7 +3339,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25163"
+NAME="AEN25165"
 ></A
 ><H3
 ><A
@@ -3376,7 +3384,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25173"
+NAME="AEN25175"
 ></A
 ><P
 ></P
@@ -3448,7 +3456,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25190"
+NAME="AEN25192"
 ></A
 ><H3
 ><A
@@ -3522,7 +3530,7 @@ the comparison is considered to match.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25206"
+NAME="AEN25208"
 ></A
 ><P
 ></P
@@ -3645,7 +3653,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25235"
+NAME="AEN25237"
 ></A
 ><H3
 ><A
@@ -3690,7 +3698,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25245"
+NAME="AEN25247"
 ></A
 ><P
 ></P
@@ -3762,7 +3770,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25262"
+NAME="AEN25264"
 ></A
 ><H3
 ><A
@@ -3836,7 +3844,7 @@ the comparison is considered to match.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25278"
+NAME="AEN25280"
 ></A
 ><P
 ></P

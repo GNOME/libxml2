@@ -111,7 +111,7 @@ NAME="LIBXML-XMLMEMORY"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN26182"
+NAME="AEN26184"
 ></A
 ><H2
 >Name</H2
@@ -119,7 +119,7 @@ NAME="AEN26182"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN26185"
+NAME="AEN26187"
 ></A
 ><H2
 >Synopsis</H2
@@ -138,33 +138,29 @@ CLASS="SYNOPSIS"
 HREF="libxml-xmlmemory.html#DEBUG-MEMORY-CAPS"
 >DEBUG_MEMORY</A
 >
-#define     <A
-HREF="libxml-xmlmemory.html#MEM-LIST-CAPS"
->MEM_LIST</A
->
 void        (<A
 HREF="libxml-xmlmemory.html#XMLFREEFUNC"
 >*xmlFreeFunc</A
->)                  (void*);
+>)                  (void *mem);
 void*       (<A
 HREF="libxml-xmlmemory.html#XMLMALLOCFUNC"
 >*xmlMallocFunc</A
 >)                (<GTKDOCLINK
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
->);
+> size);
 void*       (<A
 HREF="libxml-xmlmemory.html#XMLREALLOCFUNC"
 >*xmlReallocFunc</A
->)               (void*,
+>)               (void *mem,
                                              <GTKDOCLINK
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
->);
+> size);
 char*       (<A
 HREF="libxml-xmlmemory.html#XMLSTRDUPFUNC"
 >*xmlStrdupFunc</A
->)                (const char*);
+>)                (const char *str);
 int         <A
 HREF="libxml-xmlmemory.html#XMLMEMSETUP"
 >xmlMemSetup</A
@@ -274,7 +270,7 @@ HREF="libxml-xmlmemory.html#XMLMEMSTRDUPLOC"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN26221"
+NAME="AEN26222"
 ></A
 ><H2
 >Description</H2
@@ -284,14 +280,14 @@ NAME="AEN26221"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN26224"
+NAME="AEN26225"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26226"
+NAME="AEN26227"
 ></A
 ><H3
 ><A
@@ -322,35 +318,7 @@ libxml i.e. if libxml has been configured with --with-debug-mem too</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26232"
-></A
-><H3
-><A
-NAME="MEM-LIST-CAPS"
-></A
->&#62;MEM_LIST</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define MEM_LIST /* keep a list of all the allocated memory blocks */</PRE
-></TD
-></TR
-></TABLE
-><P
->keep track of all allocated blocks for error reporting</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN26238"
+NAME="AEN26233"
 ></A
 ><H3
 ><A
@@ -366,16 +334,21 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        (*xmlFreeFunc)                  (void*);</PRE
+>void        (*xmlFreeFunc)                  (void *mem);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Signature for a <GTKDOCLINK
+HREF="FREE"
+>free</GTKDOCLINK
+>() implementation</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26243"
+NAME="AEN26240"
 ></A
 ><P
 ></P
@@ -395,14 +368,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->Param1</I
+>mem</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> an already allocated block of memory</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -413,7 +386,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26252"
+NAME="AEN26249"
 ></A
 ><H3
 ><A
@@ -432,16 +405,21 @@ CLASS="PROGRAMLISTING"
 >void*       (*xmlMallocFunc)                (<GTKDOCLINK
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
->);</PRE
+> size);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Signature for a <GTKDOCLINK
+HREF="MALLOC"
+>malloc</GTKDOCLINK
+>() implementation</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26258"
+NAME="AEN26257"
 ></A
 ><P
 ></P
@@ -461,14 +439,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->Param1</I
+>size</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the size requested in bytes</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -479,7 +457,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26267"
+NAME="AEN26266"
 ></A
 ><H3
 ><A
@@ -495,20 +473,25 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void*       (*xmlReallocFunc)               (void*,
+>void*       (*xmlReallocFunc)               (void *mem,
                                              <GTKDOCLINK
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
->);</PRE
+> size);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Signature for a <GTKDOCLINK
+HREF="REALLOC"
+>realloc</GTKDOCLINK
+>() implementation</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26273"
+NAME="AEN26274"
 ></A
 ><P
 ></P
@@ -528,14 +511,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->Param1</I
+>mem</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> an already allocated block of memory</TD
 ></TR
 ><TR
 ><TD
@@ -545,14 +528,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->Param2</I
+>size</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the new size requested in bytes</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -563,7 +546,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26286"
+NAME="AEN26287"
 ></A
 ><H3
 ><A
@@ -579,16 +562,21 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->char*       (*xmlStrdupFunc)                (const char*);</PRE
+>char*       (*xmlStrdupFunc)                (const char *str);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Signature for an <GTKDOCLINK
+HREF="STRDUP"
+>strdup</GTKDOCLINK
+>() implementation</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26291"
+NAME="AEN26294"
 ></A
 ><P
 ></P
@@ -608,14 +596,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->Param1</I
+>str</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> a zero terminated string</TD
 ></TR
 ><TR
 ><TD
@@ -630,7 +618,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the copy of the string or NULL in case of error</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -641,7 +629,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26304"
+NAME="AEN26307"
 ></A
 ><H3
 ><A
@@ -687,7 +675,7 @@ done ?</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26315"
+NAME="AEN26318"
 ></A
 ><P
 ></P
@@ -803,7 +791,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26344"
+NAME="AEN26347"
 ></A
 ><H3
 ><A
@@ -845,7 +833,7 @@ HREF="libxml-xmlmemory.html#XMLSTRDUPFUNC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26354"
+NAME="AEN26357"
 ></A
 ><P
 ></P
@@ -961,7 +949,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26383"
+NAME="AEN26386"
 ></A
 ><H3
 ><A
@@ -988,7 +976,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26389"
+NAME="AEN26392"
 ></A
 ><P
 ></P
@@ -1024,7 +1012,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26398"
+NAME="AEN26401"
 ></A
 ><H3
 ><A
@@ -1051,7 +1039,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26404"
+NAME="AEN26407"
 ></A
 ><P
 ></P
@@ -1087,7 +1075,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26413"
+NAME="AEN26416"
 ></A
 ><H3
 ><A
@@ -1117,7 +1105,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26420"
+NAME="AEN26423"
 ></A
 ><P
 ></P
@@ -1156,7 +1144,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26429"
+NAME="AEN26432"
 ></A
 ><H3
 ><A
@@ -1193,7 +1181,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26437"
+NAME="AEN26440"
 ></A
 ><P
 ></P
@@ -1248,7 +1236,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26450"
+NAME="AEN26453"
 ></A
 ><H3
 ><A
@@ -1276,7 +1264,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26456"
+NAME="AEN26459"
 ></A
 ><H3
 ><A
@@ -1306,7 +1294,7 @@ HREF="MALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26463"
+NAME="AEN26466"
 ></A
 ><P
 ></P
@@ -1344,7 +1332,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26472"
+NAME="AEN26475"
 ></A
 ><H3
 ><A
@@ -1374,7 +1362,7 @@ HREF="REALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26479"
+NAME="AEN26482"
 ></A
 ><P
 ></P
@@ -1429,7 +1417,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26492"
+NAME="AEN26495"
 ></A
 ><H3
 ><A
@@ -1462,7 +1450,7 @@ HREF="libxml-parser.html#XMLSTRDUP"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26500"
+NAME="AEN26503"
 ></A
 ><P
 ></P
@@ -1500,7 +1488,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26509"
+NAME="AEN26512"
 ></A
 ><H3
 ><A
@@ -1535,7 +1523,7 @@ HREF="MALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26517"
+NAME="AEN26520"
 ></A
 ><P
 ></P
@@ -1607,7 +1595,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26534"
+NAME="AEN26537"
 ></A
 ><H3
 ><A
@@ -1643,7 +1631,7 @@ HREF="REALLOC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26542"
+NAME="AEN26545"
 ></A
 ><P
 ></P
@@ -1732,7 +1720,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN26563"
+NAME="AEN26566"
 ></A
 ><H3
 ><A
@@ -1764,7 +1752,7 @@ HREF="STRDUP"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN26570"
+NAME="AEN26573"
 ></A
 ><P
 ></P
@@ -1791,7 +1779,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the initial string pointer</TD
 ></TR
 ><TR
 ><TD

@@ -78,8 +78,6 @@ nanoHTTPScanProxy()
 # functions from module parser
 cleanupParser()
 createDocParserCtxt()
-defaultSAXHandlerInit()
-htmlDefaultSAXHandlerInit()
 initParser()
 keepBlanksDefault()
 lineNumbersDefault()
@@ -329,7 +327,7 @@ Class xmlDoc(xmlNode)
     # functions from module xinclude
     xincludeProcess()
 
-    # functions from module xpathInternals
+    # functions from module xpath
     xpathNewContext()
 
 
@@ -434,6 +432,7 @@ Class parserCtxt()
 
     # functions from module parser
     clearParserCtxt()
+    freeParserCtxt()
     initParserCtxt()
     parseChunk()
     parseDocument()
@@ -442,7 +441,6 @@ Class parserCtxt()
 
     # functions from module parserInternals
     decodeEntities()
-    freeParserCtxt()
     namespaceParseNCName()
     namespaceParseNSDef()
     nextChar()
@@ -523,9 +521,9 @@ Class xpathContext()
     # functions from module xpath
     xpathEval()
     xpathEvalExpression()
+    xpathFreeContext()
 
     # functions from module xpathInternals
-    xpathFreeContext()
     xpathNewParserContext()
     xpathNsLookup()
     xpathRegisterAllFunctions()

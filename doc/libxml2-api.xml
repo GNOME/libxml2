@@ -1,337 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <api name='libxml2'>
   <files>
-    <file name='debugXML'>
-     <exports symbol='xmlDebugDumpString'/>
-     <exports symbol='xmlDebugDumpAttr'/>
-     <exports symbol='xmlDebugDumpAttrList'/>
-     <exports symbol='xmlDebugDumpOneNode'/>
-     <exports symbol='xmlDebugDumpNode'/>
-     <exports symbol='xmlDebugDumpNodeList'/>
-     <exports symbol='xmlDebugDumpDocumentHead'/>
-     <exports symbol='xmlDebugDumpDocument'/>
-     <exports symbol='xmlDebugDumpDTD'/>
-     <exports symbol='xmlDebugDumpEntities'/>
-     <exports symbol='xmlLsOneNode'/>
-     <exports symbol='xmlLsCountNode'/>
-     <exports symbol='xmlShellReadlineFunc'/>
-     <exports symbol='xmlShellCtxt'/>
-     <exports symbol='xmlShellCtxtPtr'/>
-     <exports symbol='xmlShellCmd'/>
-     <exports symbol='xmlShellPrintXPathError'/>
-     <exports symbol='xmlShellPrintNode'/>
-     <exports symbol='xmlShellPrintXPathResult'/>
-     <exports symbol='xmlShellList'/>
-     <exports symbol='xmlShellBase'/>
-     <exports symbol='xmlShellDir'/>
-     <exports symbol='xmlShellCat'/>
-     <exports symbol='xmlShellLoad'/>
-     <exports symbol='xmlShellWrite'/>
-     <exports symbol='xmlShellSave'/>
-     <exports symbol='xmlShellValidate'/>
-     <exports symbol='xmlShellDu'/>
-     <exports symbol='xmlShellPwd'/>
-     <exports symbol='xmlShell'/>
-    </file>
-    <file name='DOCBparser'>
-     <exports symbol='docbParserCtxt'/>
-     <exports symbol='docbParserCtxtPtr'/>
-     <exports symbol='docbParserNodeInfo'/>
-     <exports symbol='docbSAXHandler'/>
-     <exports symbol='docbSAXHandlerPtr'/>
-     <exports symbol='docbParserInput'/>
-     <exports symbol='docbParserInputPtr'/>
-     <exports symbol='docbDocPtr'/>
-     <exports symbol='docbNodePtr'/>
-     <exports symbol='docbEncodeEntities'/>
-     <exports symbol='docbSAXParseDoc'/>
-     <exports symbol='docbParseDoc'/>
-     <exports symbol='docbSAXParseFile'/>
-     <exports symbol='docbParseFile'/>
-     <exports symbol='docbFreeParserCtxt'/>
-     <exports symbol='docbCreatePushParserCtxt'/>
-     <exports symbol='docbParseChunk'/>
-     <exports symbol='docbCreateFileParserCtxt'/>
-     <exports symbol='docbParseDocument'/>
-    </file>
-    <file name='HTMLparser'>
-     <exports symbol='htmlParserCtxt'/>
-     <exports symbol='htmlParserCtxtPtr'/>
-     <exports symbol='htmlParserNodeInfo'/>
-     <exports symbol='htmlSAXHandler'/>
-     <exports symbol='htmlSAXHandlerPtr'/>
-     <exports symbol='htmlParserInput'/>
-     <exports symbol='htmlParserInputPtr'/>
-     <exports symbol='htmlDocPtr'/>
-     <exports symbol='htmlNodePtr'/>
-     <exports symbol='htmlElemDesc'/>
-     <exports symbol='htmlElemDescPtr'/>
-     <exports symbol='htmlEntityDesc'/>
-     <exports symbol='htmlEntityDescPtr'/>
-     <exports symbol='htmlTagLookup'/>
-     <exports symbol='htmlEntityLookup'/>
-     <exports symbol='htmlEntityValueLookup'/>
-     <exports symbol='htmlIsAutoClosed'/>
-     <exports symbol='htmlAutoCloseTag'/>
-     <exports symbol='htmlParseEntityRef'/>
-     <exports symbol='htmlParseCharRef'/>
-     <exports symbol='htmlParseElement'/>
-     <exports symbol='htmlSAXParseDoc'/>
-     <exports symbol='htmlParseDoc'/>
-     <exports symbol='htmlSAXParseFile'/>
-     <exports symbol='htmlParseFile'/>
-     <exports symbol='UTF8ToHtml'/>
-     <exports symbol='htmlEncodeEntities'/>
-     <exports symbol='htmlIsScriptAttribute'/>
-     <exports symbol='htmlHandleOmittedElem'/>
-     <exports symbol='htmlFreeParserCtxt'/>
-     <exports symbol='htmlCreatePushParserCtxt'/>
-     <exports symbol='htmlParseChunk'/>
-    </file>
-    <file name='SAX'>
-     <exports symbol='getPublicId'/>
-     <exports symbol='getSystemId'/>
-     <exports symbol='setDocumentLocator'/>
-     <exports symbol='getLineNumber'/>
-     <exports symbol='getColumnNumber'/>
-     <exports symbol='isStandalone'/>
-     <exports symbol='hasInternalSubset'/>
-     <exports symbol='hasExternalSubset'/>
-     <exports symbol='internalSubset'/>
-     <exports symbol='externalSubset'/>
-     <exports symbol='getEntity'/>
-     <exports symbol='getParameterEntity'/>
-     <exports symbol='resolveEntity'/>
-     <exports symbol='entityDecl'/>
-     <exports symbol='attributeDecl'/>
-     <exports symbol='elementDecl'/>
-     <exports symbol='notationDecl'/>
-     <exports symbol='unparsedEntityDecl'/>
-     <exports symbol='startDocument'/>
-     <exports symbol='endDocument'/>
-     <exports symbol='attribute'/>
-     <exports symbol='startElement'/>
-     <exports symbol='endElement'/>
-     <exports symbol='reference'/>
-     <exports symbol='characters'/>
-     <exports symbol='ignorableWhitespace'/>
-     <exports symbol='processingInstruction'/>
-     <exports symbol='globalNamespace'/>
-     <exports symbol='setNamespace'/>
-     <exports symbol='getNamespace'/>
-     <exports symbol='checkNamespace'/>
-     <exports symbol='namespaceDecl'/>
-     <exports symbol='comment'/>
-     <exports symbol='cdataBlock'/>
-     <exports symbol='initxmlDefaultSAXHandler'/>
-     <exports symbol='inithtmlDefaultSAXHandler'/>
-     <exports symbol='initdocbDefaultSAXHandler'/>
-     <exports symbol='xmlDefaultSAXHandlerInit'/>
-     <exports symbol='htmlDefaultSAXHandlerInit'/>
-     <exports symbol='docbDefaultSAXHandlerInit'/>
-    </file>
-    <file name='nanohttp'>
-     <exports symbol='xmlNanoHTTPInit'/>
-     <exports symbol='xmlNanoHTTPCleanup'/>
-     <exports symbol='xmlNanoHTTPScanProxy'/>
-     <exports symbol='xmlNanoHTTPFetch'/>
-     <exports symbol='xmlNanoHTTPMethod'/>
-     <exports symbol='xmlNanoHTTPMethodRedir'/>
-     <exports symbol='xmlNanoHTTPOpen'/>
-     <exports symbol='xmlNanoHTTPOpenRedir'/>
-     <exports symbol='xmlNanoHTTPReturnCode'/>
-     <exports symbol='xmlNanoHTTPAuthHeader'/>
-     <exports symbol='xmlNanoHTTPRead'/>
-     <exports symbol='xmlNanoHTTPSave'/>
-     <exports symbol='xmlNanoHTTPClose'/>
-    </file>
-    <file name='entities'>
-     <exports symbol='xmlEntityType'/>
-     <exports symbol='xmlEntity'/>
-     <exports symbol='xmlEntityPtr'/>
-     <exports symbol='xmlEntitiesTablePtr'/>
-     <exports symbol='xmlInitializePredefinedEntities'/>
-     <exports symbol='xmlAddDocEntity'/>
-     <exports symbol='xmlAddDtdEntity'/>
-     <exports symbol='xmlGetPredefinedEntity'/>
-     <exports symbol='xmlGetDocEntity'/>
-     <exports symbol='xmlGetDtdEntity'/>
-     <exports symbol='xmlGetParameterEntity'/>
-     <exports symbol='xmlEncodeEntities'/>
-     <exports symbol='xmlEncodeEntitiesReentrant'/>
-     <exports symbol='xmlEncodeSpecialChars'/>
-     <exports symbol='xmlCreateEntitiesTable'/>
-     <exports symbol='xmlCopyEntitiesTable'/>
-     <exports symbol='xmlFreeEntitiesTable'/>
-     <exports symbol='xmlDumpEntitiesTable'/>
-     <exports symbol='xmlDumpEntityDecl'/>
-     <exports symbol='xmlCleanupPredefinedEntities'/>
-    </file>
-    <file name='xmlmemory'>
-     <exports symbol='DEBUG_MEMORY'/>
-     <exports symbol='MEM_LIST'/>
-     <exports symbol='xmlFreeFunc'/>
-     <exports symbol='xmlMallocFunc'/>
-     <exports symbol='xmlReallocFunc'/>
-     <exports symbol='xmlStrdupFunc'/>
-     <exports symbol='xmlMemSetup'/>
-     <exports symbol='xmlMemGet'/>
-     <exports symbol='xmlInitMemory'/>
-     <exports symbol='xmlMemUsed'/>
-     <exports symbol='xmlMemDisplay'/>
-     <exports symbol='xmlMemShow'/>
-     <exports symbol='xmlMemoryDump'/>
-     <exports symbol='xmlMalloc'/>
-     <exports symbol='xmlRealloc'/>
-     <exports symbol='xmlMemStrdup'/>
-     <exports symbol='xmlMallocLoc'/>
-     <exports symbol='xmlReallocLoc'/>
-     <exports symbol='xmlMemStrdupLoc'/>
-    </file>
-    <file name='valid'>
-     <exports symbol='xmlValidState'/>
-     <exports symbol='xmlValidStatePtr'/>
-     <exports symbol='xmlValidityErrorFunc'/>
-     <exports symbol='xmlValidityWarningFunc'/>
-     <exports symbol='xmlValidCtxt'/>
-     <exports symbol='xmlValidCtxtPtr'/>
-     <exports symbol='xmlNotationTablePtr'/>
-     <exports symbol='xmlElementTablePtr'/>
-     <exports symbol='xmlAttributeTablePtr'/>
-     <exports symbol='xmlIDTablePtr'/>
-     <exports symbol='xmlRefTablePtr'/>
-     <exports symbol='xmlSplitQName2'/>
-     <exports symbol='xmlAddNotationDecl'/>
-     <exports symbol='xmlCopyNotationTable'/>
-     <exports symbol='xmlFreeNotationTable'/>
-     <exports symbol='xmlDumpNotationDecl'/>
-     <exports symbol='xmlDumpNotationTable'/>
-     <exports symbol='xmlNewElementContent'/>
-     <exports symbol='xmlCopyElementContent'/>
-     <exports symbol='xmlFreeElementContent'/>
-     <exports symbol='xmlSnprintfElementContent'/>
-     <exports symbol='xmlSprintfElementContent'/>
-     <exports symbol='xmlAddElementDecl'/>
-     <exports symbol='xmlCopyElementTable'/>
-     <exports symbol='xmlFreeElementTable'/>
-     <exports symbol='xmlDumpElementTable'/>
-     <exports symbol='xmlDumpElementDecl'/>
-     <exports symbol='xmlCreateEnumeration'/>
-     <exports symbol='xmlFreeEnumeration'/>
-     <exports symbol='xmlCopyEnumeration'/>
-     <exports symbol='xmlAddAttributeDecl'/>
-     <exports symbol='xmlCopyAttributeTable'/>
-     <exports symbol='xmlFreeAttributeTable'/>
-     <exports symbol='xmlDumpAttributeTable'/>
-     <exports symbol='xmlDumpAttributeDecl'/>
-     <exports symbol='xmlAddID'/>
-     <exports symbol='xmlFreeIDTable'/>
-     <exports symbol='xmlGetID'/>
-     <exports symbol='xmlIsID'/>
-     <exports symbol='xmlRemoveID'/>
-     <exports symbol='xmlAddRef'/>
-     <exports symbol='xmlFreeRefTable'/>
-     <exports symbol='xmlIsRef'/>
-     <exports symbol='xmlRemoveRef'/>
-     <exports symbol='xmlGetRefs'/>
-     <exports symbol='xmlValidateRoot'/>
-     <exports symbol='xmlValidateElementDecl'/>
-     <exports symbol='xmlValidNormalizeAttributeValue'/>
-     <exports symbol='xmlValidateAttributeDecl'/>
-     <exports symbol='xmlValidateAttributeValue'/>
-     <exports symbol='xmlValidateNotationDecl'/>
-     <exports symbol='xmlValidateDtd'/>
-     <exports symbol='xmlValidateDtdFinal'/>
-     <exports symbol='xmlValidateDocument'/>
-     <exports symbol='xmlValidateElement'/>
-     <exports symbol='xmlValidateOneElement'/>
-     <exports symbol='xmlValidateOneAttribute'/>
-     <exports symbol='xmlValidateDocumentFinal'/>
-     <exports symbol='xmlValidateNotationUse'/>
-     <exports symbol='xmlIsMixedElement'/>
-     <exports symbol='xmlGetDtdAttrDesc'/>
-     <exports symbol='xmlGetDtdQAttrDesc'/>
-     <exports symbol='xmlGetDtdNotationDesc'/>
-     <exports symbol='xmlGetDtdQElementDesc'/>
-     <exports symbol='xmlGetDtdElementDesc'/>
-     <exports symbol='xmlValidGetValidElements'/>
-     <exports symbol='xmlValidGetPotentialChildren'/>
-    </file>
-    <file name='uri'>
-     <exports symbol='xmlURI'/>
-     <exports symbol='xmlURIPtr'/>
-     <exports symbol='xmlCreateURI'/>
-     <exports symbol='xmlBuildURI'/>
-     <exports symbol='xmlParseURI'/>
-     <exports symbol='xmlParseURIReference'/>
-     <exports symbol='xmlSaveUri'/>
-     <exports symbol='xmlPrintURI'/>
-     <exports symbol='xmlURIEscapeStr'/>
-     <exports symbol='xmlURIUnescapeString'/>
-     <exports symbol='xmlNormalizeURIPath'/>
-     <exports symbol='xmlURIEscape'/>
-     <exports symbol='xmlFreeURI'/>
-    </file>
-    <file name='list'>
-     <exports symbol='xmlLink'/>
-     <exports symbol='xmlLinkPtr'/>
-     <exports symbol='xmlList'/>
-     <exports symbol='xmlListPtr'/>
-     <exports symbol='xmlListDeallocator'/>
-     <exports symbol='xmlListDataCompare'/>
-     <exports symbol='xmlListWalker'/>
-     <exports symbol='xmlListCreate'/>
-     <exports symbol='xmlListDelete'/>
-     <exports symbol='xmlListSearch'/>
-     <exports symbol='xmlListReverseSearch'/>
-     <exports symbol='xmlListInsert'/>
-     <exports symbol='xmlListAppend'/>
-     <exports symbol='xmlListRemoveFirst'/>
-     <exports symbol='xmlListRemoveLast'/>
-     <exports symbol='xmlListRemoveAll'/>
-     <exports symbol='xmlListClear'/>
-     <exports symbol='xmlListEmpty'/>
-     <exports symbol='xmlListFront'/>
-     <exports symbol='xmlListEnd'/>
-     <exports symbol='xmlListSize'/>
-     <exports symbol='xmlListPopFront'/>
-     <exports symbol='xmlListPopBack'/>
-     <exports symbol='xmlListPushFront'/>
-     <exports symbol='xmlListPushBack'/>
-     <exports symbol='xmlListReverse'/>
-     <exports symbol='xmlListSort'/>
-     <exports symbol='xmlListWalk'/>
-     <exports symbol='xmlListReverseWalk'/>
-     <exports symbol='xmlListMerge'/>
-     <exports symbol='xmlListDup'/>
-     <exports symbol='xmlListCopy'/>
-     <exports symbol='xmlLinkGetData'/>
-    </file>
-    <file name='nanoftp'>
-     <exports symbol='ftpListCallback'/>
-     <exports symbol='ftpDataCallback'/>
-     <exports symbol='xmlNanoFTPInit'/>
-     <exports symbol='xmlNanoFTPCleanup'/>
-     <exports symbol='xmlNanoFTPNewCtxt'/>
-     <exports symbol='xmlNanoFTPFreeCtxt'/>
-     <exports symbol='xmlNanoFTPConnectTo'/>
-     <exports symbol='xmlNanoFTPOpen'/>
-     <exports symbol='xmlNanoFTPConnect'/>
-     <exports symbol='xmlNanoFTPClose'/>
-     <exports symbol='xmlNanoFTPQuit'/>
-     <exports symbol='xmlNanoFTPScanProxy'/>
-     <exports symbol='xmlNanoFTPProxy'/>
-     <exports symbol='xmlNanoFTPUpdateURL'/>
-     <exports symbol='xmlNanoFTPGetResponse'/>
-     <exports symbol='xmlNanoFTPCheckResponse'/>
-     <exports symbol='xmlNanoFTPCwd'/>
-     <exports symbol='xmlNanoFTPGetConnection'/>
-     <exports symbol='xmlNanoFTPCloseConnection'/>
-     <exports symbol='xmlNanoFTPList'/>
-     <exports symbol='xmlNanoFTPGetSocket'/>
-     <exports symbol='xmlNanoFTPGet'/>
-     <exports symbol='xmlNanoFTPRead'/>
-    </file>
     <file name='parserInternals'>
      <exports symbol='XML_MAX_NAMELEN'/>
      <exports symbol='INPUT_CHUNK'/>
@@ -353,8 +22,8 @@
      <exports symbol='xmlIsLetter'/>
      <exports symbol='xmlIsDigit'/>
      <exports symbol='xmlIsIdeographic'/>
-     <exports symbol='xmlIsCombining'/>
      <exports symbol='xmlIsExtender'/>
+     <exports symbol='xmlIsCombining'/>
      <exports symbol='xmlIsChar'/>
      <exports symbol='xmlCreateFileParserCtxt'/>
      <exports symbol='xmlCreateMemoryParserCtxt'/>
@@ -362,7 +31,6 @@
      <exports symbol='xmlCreateEntityParserCtxt'/>
      <exports symbol='xmlSwitchEncoding'/>
      <exports symbol='xmlSwitchToEncoding'/>
-     <exports symbol='xmlFreeParserCtxt'/>
      <exports symbol='xmlHandleEntity'/>
      <exports symbol='xmlNewStringInputStream'/>
      <exports symbol='xmlNewEntityInputStream'/>
@@ -450,6 +118,336 @@
      <exports symbol='xmlEntityReferenceFunc'/>
      <exports symbol='xmlSetEntityReferenceFunc'/>
     </file>
+    <file name='SAX'>
+     <exports symbol='getPublicId'/>
+     <exports symbol='getSystemId'/>
+     <exports symbol='setDocumentLocator'/>
+     <exports symbol='getLineNumber'/>
+     <exports symbol='getColumnNumber'/>
+     <exports symbol='isStandalone'/>
+     <exports symbol='hasInternalSubset'/>
+     <exports symbol='hasExternalSubset'/>
+     <exports symbol='internalSubset'/>
+     <exports symbol='externalSubset'/>
+     <exports symbol='getEntity'/>
+     <exports symbol='getParameterEntity'/>
+     <exports symbol='resolveEntity'/>
+     <exports symbol='entityDecl'/>
+     <exports symbol='attributeDecl'/>
+     <exports symbol='elementDecl'/>
+     <exports symbol='notationDecl'/>
+     <exports symbol='unparsedEntityDecl'/>
+     <exports symbol='startDocument'/>
+     <exports symbol='endDocument'/>
+     <exports symbol='attribute'/>
+     <exports symbol='startElement'/>
+     <exports symbol='endElement'/>
+     <exports symbol='reference'/>
+     <exports symbol='characters'/>
+     <exports symbol='ignorableWhitespace'/>
+     <exports symbol='processingInstruction'/>
+     <exports symbol='globalNamespace'/>
+     <exports symbol='setNamespace'/>
+     <exports symbol='getNamespace'/>
+     <exports symbol='checkNamespace'/>
+     <exports symbol='namespaceDecl'/>
+     <exports symbol='comment'/>
+     <exports symbol='cdataBlock'/>
+     <exports symbol='initxmlDefaultSAXHandler'/>
+     <exports symbol='inithtmlDefaultSAXHandler'/>
+     <exports symbol='initdocbDefaultSAXHandler'/>
+     <exports symbol='xmlDefaultSAXHandlerInit'/>
+     <exports symbol='htmlDefaultSAXHandlerInit'/>
+     <exports symbol='docbDefaultSAXHandlerInit'/>
+    </file>
+    <file name='debugXML'>
+     <exports symbol='xmlDebugDumpString'/>
+     <exports symbol='xmlDebugDumpAttr'/>
+     <exports symbol='xmlDebugDumpAttrList'/>
+     <exports symbol='xmlDebugDumpOneNode'/>
+     <exports symbol='xmlDebugDumpNode'/>
+     <exports symbol='xmlDebugDumpNodeList'/>
+     <exports symbol='xmlDebugDumpDocumentHead'/>
+     <exports symbol='xmlDebugDumpDocument'/>
+     <exports symbol='xmlDebugDumpDTD'/>
+     <exports symbol='xmlDebugDumpEntities'/>
+     <exports symbol='xmlLsOneNode'/>
+     <exports symbol='xmlLsCountNode'/>
+     <exports symbol='xmlShellReadlineFunc'/>
+     <exports symbol='xmlShellCtxt'/>
+     <exports symbol='xmlShellCtxtPtr'/>
+     <exports symbol='xmlShellCmd'/>
+     <exports symbol='xmlShellPrintXPathError'/>
+     <exports symbol='xmlShellPrintNode'/>
+     <exports symbol='xmlShellPrintXPathResult'/>
+     <exports symbol='xmlShellList'/>
+     <exports symbol='xmlShellBase'/>
+     <exports symbol='xmlShellDir'/>
+     <exports symbol='xmlShellCat'/>
+     <exports symbol='xmlShellLoad'/>
+     <exports symbol='xmlShellWrite'/>
+     <exports symbol='xmlShellSave'/>
+     <exports symbol='xmlShellValidate'/>
+     <exports symbol='xmlShellDu'/>
+     <exports symbol='xmlShellPwd'/>
+     <exports symbol='xmlShell'/>
+    </file>
+    <file name='DOCBparser'>
+     <exports symbol='docbParserCtxt'/>
+     <exports symbol='docbParserCtxtPtr'/>
+     <exports symbol='docbParserNodeInfo'/>
+     <exports symbol='docbSAXHandler'/>
+     <exports symbol='docbSAXHandlerPtr'/>
+     <exports symbol='docbParserInput'/>
+     <exports symbol='docbParserInputPtr'/>
+     <exports symbol='docbDocPtr'/>
+     <exports symbol='docbNodePtr'/>
+     <exports symbol='docbEncodeEntities'/>
+     <exports symbol='docbSAXParseDoc'/>
+     <exports symbol='docbParseDoc'/>
+     <exports symbol='docbSAXParseFile'/>
+     <exports symbol='docbParseFile'/>
+     <exports symbol='docbFreeParserCtxt'/>
+     <exports symbol='docbCreatePushParserCtxt'/>
+     <exports symbol='docbParseChunk'/>
+     <exports symbol='docbCreateFileParserCtxt'/>
+     <exports symbol='docbParseDocument'/>
+    </file>
+    <file name='HTMLparser'>
+     <exports symbol='htmlParserCtxt'/>
+     <exports symbol='htmlParserCtxtPtr'/>
+     <exports symbol='htmlParserNodeInfo'/>
+     <exports symbol='htmlSAXHandler'/>
+     <exports symbol='htmlSAXHandlerPtr'/>
+     <exports symbol='htmlParserInput'/>
+     <exports symbol='htmlParserInputPtr'/>
+     <exports symbol='htmlDocPtr'/>
+     <exports symbol='htmlNodePtr'/>
+     <exports symbol='htmlElemDesc'/>
+     <exports symbol='htmlElemDescPtr'/>
+     <exports symbol='htmlEntityDesc'/>
+     <exports symbol='htmlEntityDescPtr'/>
+     <exports symbol='htmlTagLookup'/>
+     <exports symbol='htmlEntityLookup'/>
+     <exports symbol='htmlEntityValueLookup'/>
+     <exports symbol='htmlIsAutoClosed'/>
+     <exports symbol='htmlAutoCloseTag'/>
+     <exports symbol='htmlParseEntityRef'/>
+     <exports symbol='htmlParseCharRef'/>
+     <exports symbol='htmlParseElement'/>
+     <exports symbol='htmlSAXParseDoc'/>
+     <exports symbol='htmlParseDoc'/>
+     <exports symbol='htmlSAXParseFile'/>
+     <exports symbol='htmlParseFile'/>
+     <exports symbol='UTF8ToHtml'/>
+     <exports symbol='htmlEncodeEntities'/>
+     <exports symbol='htmlIsScriptAttribute'/>
+     <exports symbol='htmlHandleOmittedElem'/>
+     <exports symbol='htmlFreeParserCtxt'/>
+     <exports symbol='htmlCreatePushParserCtxt'/>
+     <exports symbol='htmlParseChunk'/>
+    </file>
+    <file name='valid'>
+     <exports symbol='xmlValidState'/>
+     <exports symbol='xmlValidStatePtr'/>
+     <exports symbol='xmlValidityErrorFunc'/>
+     <exports symbol='xmlValidityWarningFunc'/>
+     <exports symbol='xmlValidCtxt'/>
+     <exports symbol='xmlValidCtxtPtr'/>
+     <exports symbol='xmlNotationTablePtr'/>
+     <exports symbol='xmlElementTablePtr'/>
+     <exports symbol='xmlAttributeTablePtr'/>
+     <exports symbol='xmlIDTablePtr'/>
+     <exports symbol='xmlRefTablePtr'/>
+     <exports symbol='xmlSplitQName2'/>
+     <exports symbol='xmlAddNotationDecl'/>
+     <exports symbol='xmlCopyNotationTable'/>
+     <exports symbol='xmlFreeNotationTable'/>
+     <exports symbol='xmlDumpNotationDecl'/>
+     <exports symbol='xmlDumpNotationTable'/>
+     <exports symbol='xmlNewElementContent'/>
+     <exports symbol='xmlCopyElementContent'/>
+     <exports symbol='xmlFreeElementContent'/>
+     <exports symbol='xmlSnprintfElementContent'/>
+     <exports symbol='xmlSprintfElementContent'/>
+     <exports symbol='xmlAddElementDecl'/>
+     <exports symbol='xmlCopyElementTable'/>
+     <exports symbol='xmlFreeElementTable'/>
+     <exports symbol='xmlDumpElementTable'/>
+     <exports symbol='xmlDumpElementDecl'/>
+     <exports symbol='xmlCreateEnumeration'/>
+     <exports symbol='xmlFreeEnumeration'/>
+     <exports symbol='xmlCopyEnumeration'/>
+     <exports symbol='xmlAddAttributeDecl'/>
+     <exports symbol='xmlCopyAttributeTable'/>
+     <exports symbol='xmlFreeAttributeTable'/>
+     <exports symbol='xmlDumpAttributeTable'/>
+     <exports symbol='xmlDumpAttributeDecl'/>
+     <exports symbol='xmlAddID'/>
+     <exports symbol='xmlFreeIDTable'/>
+     <exports symbol='xmlGetID'/>
+     <exports symbol='xmlIsID'/>
+     <exports symbol='xmlRemoveID'/>
+     <exports symbol='xmlAddRef'/>
+     <exports symbol='xmlFreeRefTable'/>
+     <exports symbol='xmlIsRef'/>
+     <exports symbol='xmlRemoveRef'/>
+     <exports symbol='xmlGetRefs'/>
+     <exports symbol='xmlValidateRoot'/>
+     <exports symbol='xmlValidateElementDecl'/>
+     <exports symbol='xmlValidNormalizeAttributeValue'/>
+     <exports symbol='xmlValidCtxtNormalizeAttributeValue'/>
+     <exports symbol='xmlValidateAttributeDecl'/>
+     <exports symbol='xmlValidateAttributeValue'/>
+     <exports symbol='xmlValidateNotationDecl'/>
+     <exports symbol='xmlValidateDtd'/>
+     <exports symbol='xmlValidateDtdFinal'/>
+     <exports symbol='xmlValidateDocument'/>
+     <exports symbol='xmlValidateElement'/>
+     <exports symbol='xmlValidateOneElement'/>
+     <exports symbol='xmlValidateOneAttribute'/>
+     <exports symbol='xmlValidateDocumentFinal'/>
+     <exports symbol='xmlValidateNotationUse'/>
+     <exports symbol='xmlIsMixedElement'/>
+     <exports symbol='xmlGetDtdAttrDesc'/>
+     <exports symbol='xmlGetDtdQAttrDesc'/>
+     <exports symbol='xmlGetDtdNotationDesc'/>
+     <exports symbol='xmlGetDtdQElementDesc'/>
+     <exports symbol='xmlGetDtdElementDesc'/>
+     <exports symbol='xmlValidGetValidElements'/>
+     <exports symbol='xmlValidGetPotentialChildren'/>
+    </file>
+    <file name='nanohttp'>
+     <exports symbol='xmlNanoHTTPInit'/>
+     <exports symbol='xmlNanoHTTPCleanup'/>
+     <exports symbol='xmlNanoHTTPScanProxy'/>
+     <exports symbol='xmlNanoHTTPFetch'/>
+     <exports symbol='xmlNanoHTTPMethod'/>
+     <exports symbol='xmlNanoHTTPMethodRedir'/>
+     <exports symbol='xmlNanoHTTPOpen'/>
+     <exports symbol='xmlNanoHTTPOpenRedir'/>
+     <exports symbol='xmlNanoHTTPReturnCode'/>
+     <exports symbol='xmlNanoHTTPAuthHeader'/>
+     <exports symbol='xmlNanoHTTPRead'/>
+     <exports symbol='xmlNanoHTTPSave'/>
+     <exports symbol='xmlNanoHTTPClose'/>
+    </file>
+    <file name='entities'>
+     <exports symbol='xmlEntityType'/>
+     <exports symbol='xmlEntity'/>
+     <exports symbol='xmlEntitiesTablePtr'/>
+     <exports symbol='xmlInitializePredefinedEntities'/>
+     <exports symbol='xmlAddDocEntity'/>
+     <exports symbol='xmlAddDtdEntity'/>
+     <exports symbol='xmlGetPredefinedEntity'/>
+     <exports symbol='xmlGetDocEntity'/>
+     <exports symbol='xmlGetDtdEntity'/>
+     <exports symbol='xmlGetParameterEntity'/>
+     <exports symbol='xmlEncodeEntities'/>
+     <exports symbol='xmlEncodeEntitiesReentrant'/>
+     <exports symbol='xmlEncodeSpecialChars'/>
+     <exports symbol='xmlCreateEntitiesTable'/>
+     <exports symbol='xmlCopyEntitiesTable'/>
+     <exports symbol='xmlFreeEntitiesTable'/>
+     <exports symbol='xmlDumpEntitiesTable'/>
+     <exports symbol='xmlDumpEntityDecl'/>
+     <exports symbol='xmlCleanupPredefinedEntities'/>
+    </file>
+    <file name='xmlmemory'>
+     <exports symbol='DEBUG_MEMORY'/>
+     <exports symbol='xmlFreeFunc'/>
+     <exports symbol='xmlMallocFunc'/>
+     <exports symbol='xmlReallocFunc'/>
+     <exports symbol='xmlStrdupFunc'/>
+     <exports symbol='xmlMemSetup'/>
+     <exports symbol='xmlMemGet'/>
+     <exports symbol='xmlInitMemory'/>
+     <exports symbol='xmlMemUsed'/>
+     <exports symbol='xmlMemDisplay'/>
+     <exports symbol='xmlMemShow'/>
+     <exports symbol='xmlMemoryDump'/>
+     <exports symbol='xmlMalloc'/>
+     <exports symbol='xmlRealloc'/>
+     <exports symbol='xmlMemStrdup'/>
+     <exports symbol='xmlMallocLoc'/>
+     <exports symbol='xmlReallocLoc'/>
+     <exports symbol='xmlMemStrdupLoc'/>
+    </file>
+    <file name='uri'>
+     <exports symbol='xmlURI'/>
+     <exports symbol='xmlURIPtr'/>
+     <exports symbol='xmlCreateURI'/>
+     <exports symbol='xmlBuildURI'/>
+     <exports symbol='xmlParseURI'/>
+     <exports symbol='xmlParseURIReference'/>
+     <exports symbol='xmlSaveUri'/>
+     <exports symbol='xmlPrintURI'/>
+     <exports symbol='xmlURIEscapeStr'/>
+     <exports symbol='xmlURIUnescapeString'/>
+     <exports symbol='xmlNormalizeURIPath'/>
+     <exports symbol='xmlURIEscape'/>
+     <exports symbol='xmlFreeURI'/>
+    </file>
+    <file name='list'>
+     <exports symbol='xmlLink'/>
+     <exports symbol='xmlLinkPtr'/>
+     <exports symbol='xmlList'/>
+     <exports symbol='xmlListPtr'/>
+     <exports symbol='xmlListDeallocator'/>
+     <exports symbol='xmlListDataCompare'/>
+     <exports symbol='xmlListWalker'/>
+     <exports symbol='xmlListCreate'/>
+     <exports symbol='xmlListDelete'/>
+     <exports symbol='xmlListSearch'/>
+     <exports symbol='xmlListReverseSearch'/>
+     <exports symbol='xmlListInsert'/>
+     <exports symbol='xmlListAppend'/>
+     <exports symbol='xmlListRemoveFirst'/>
+     <exports symbol='xmlListRemoveLast'/>
+     <exports symbol='xmlListRemoveAll'/>
+     <exports symbol='xmlListClear'/>
+     <exports symbol='xmlListEmpty'/>
+     <exports symbol='xmlListFront'/>
+     <exports symbol='xmlListEnd'/>
+     <exports symbol='xmlListSize'/>
+     <exports symbol='xmlListPopFront'/>
+     <exports symbol='xmlListPopBack'/>
+     <exports symbol='xmlListPushFront'/>
+     <exports symbol='xmlListPushBack'/>
+     <exports symbol='xmlListReverse'/>
+     <exports symbol='xmlListSort'/>
+     <exports symbol='xmlListWalk'/>
+     <exports symbol='xmlListReverseWalk'/>
+     <exports symbol='xmlListMerge'/>
+     <exports symbol='xmlListDup'/>
+     <exports symbol='xmlListCopy'/>
+     <exports symbol='xmlLinkGetData'/>
+    </file>
+    <file name='nanoftp'>
+     <exports symbol='ftpListCallback'/>
+     <exports symbol='ftpDataCallback'/>
+     <exports symbol='xmlNanoFTPInit'/>
+     <exports symbol='xmlNanoFTPCleanup'/>
+     <exports symbol='xmlNanoFTPNewCtxt'/>
+     <exports symbol='xmlNanoFTPFreeCtxt'/>
+     <exports symbol='xmlNanoFTPConnectTo'/>
+     <exports symbol='xmlNanoFTPOpen'/>
+     <exports symbol='xmlNanoFTPConnect'/>
+     <exports symbol='xmlNanoFTPClose'/>
+     <exports symbol='xmlNanoFTPQuit'/>
+     <exports symbol='xmlNanoFTPScanProxy'/>
+     <exports symbol='xmlNanoFTPProxy'/>
+     <exports symbol='xmlNanoFTPUpdateURL'/>
+     <exports symbol='xmlNanoFTPGetResponse'/>
+     <exports symbol='xmlNanoFTPCheckResponse'/>
+     <exports symbol='xmlNanoFTPCwd'/>
+     <exports symbol='xmlNanoFTPGetConnection'/>
+     <exports symbol='xmlNanoFTPCloseConnection'/>
+     <exports symbol='xmlNanoFTPList'/>
+     <exports symbol='xmlNanoFTPGetSocket'/>
+     <exports symbol='xmlNanoFTPGet'/>
+     <exports symbol='xmlNanoFTPRead'/>
+    </file>
     <file name='tree'>
      <exports symbol='xmlParserInputBuffer'/>
      <exports symbol='xmlParserInputBufferPtr'/>
@@ -459,6 +457,12 @@
      <exports symbol='xmlParserInputPtr'/>
      <exports symbol='xmlParserCtxt'/>
      <exports symbol='xmlParserCtxtPtr'/>
+     <exports symbol='xmlSAXLocator'/>
+     <exports symbol='xmlSAXLocatorPtr'/>
+     <exports symbol='xmlSAXHandler'/>
+     <exports symbol='xmlSAXHandlerPtr'/>
+     <exports symbol='xmlEntity'/>
+     <exports symbol='xmlEntityPtr'/>
      <exports symbol='BASE_BUFFER_SIZE'/>
      <exports symbol='XML_XML_NAMESPACE'/>
      <exports symbol='xmlElementType'/>
@@ -632,6 +636,38 @@
      <exports symbol='xmlGetCompressMode'/>
      <exports symbol='xmlSetCompressMode'/>
     </file>
+    <file name='encoding'>
+     <exports symbol='xmlCharEncoding'/>
+     <exports symbol='xmlCharEncodingInputFunc'/>
+     <exports symbol='xmlCharEncodingOutputFunc'/>
+     <exports symbol='xmlCharEncodingHandler'/>
+     <exports symbol='xmlCharEncodingHandlerPtr'/>
+     <exports symbol='xmlInitCharEncodingHandlers'/>
+     <exports symbol='xmlCleanupCharEncodingHandlers'/>
+     <exports symbol='xmlRegisterCharEncodingHandler'/>
+     <exports symbol='xmlGetCharEncodingHandler'/>
+     <exports symbol='xmlFindCharEncodingHandler'/>
+     <exports symbol='xmlAddEncodingAlias'/>
+     <exports symbol='xmlDelEncodingAlias'/>
+     <exports symbol='xmlGetEncodingAlias'/>
+     <exports symbol='xmlCleanupEncodingAliases'/>
+     <exports symbol='xmlParseCharEncoding'/>
+     <exports symbol='xmlGetCharEncodingName'/>
+     <exports symbol='xmlDetectCharEncoding'/>
+     <exports symbol='xmlCharEncOutFunc'/>
+     <exports symbol='xmlCharEncInFunc'/>
+     <exports symbol='xmlCharEncFirstLine'/>
+     <exports symbol='xmlCharEncCloseFunc'/>
+     <exports symbol='UTF8Toisolat1'/>
+     <exports symbol='isolat1ToUTF8'/>
+     <exports symbol='xmlCheckUTF8'/>
+     <exports symbol='xmlUTF8Strsize'/>
+     <exports symbol='xmlUTF8Strndup'/>
+     <exports symbol='xmlUTF8Strpos'/>
+     <exports symbol='xmlUTF8Strloc'/>
+     <exports symbol='xmlUTF8Strsub'/>
+     <exports symbol='xmlUTF8Strlen'/>
+    </file>
     <file name='HTMLtree'>
      <exports symbol='HTML_TEXT_NODE'/>
      <exports symbol='HTML_ENTITY_REF_NODE'/>
@@ -738,28 +774,19 @@
      <exports symbol='xmlXPathNodeSetAdd'/>
      <exports symbol='xmlXPathNodeSetAddUnique'/>
      <exports symbol='xmlXPathNodeSetSort'/>
-     <exports symbol='xmlXPathIdFunction'/>
      <exports symbol='xmlXPathRoot'/>
      <exports symbol='xmlXPathEvalExpr'/>
      <exports symbol='xmlXPathParseName'/>
      <exports symbol='xmlXPathParseNCName'/>
      <exports symbol='xmlXPathStringEvalNumber'/>
      <exports symbol='xmlXPathEvaluatePredicateResult'/>
-     <exports symbol='xmlXPathInit'/>
-     <exports symbol='xmlXPathStringFunction'/>
      <exports symbol='xmlXPathRegisterAllFunctions'/>
-     <exports symbol='xmlXPathNodeSetCreate'/>
      <exports symbol='xmlXPathNodeSetMerge'/>
      <exports symbol='xmlXPathNodeSetDel'/>
      <exports symbol='xmlXPathNodeSetRemove'/>
-     <exports symbol='xmlXPathFreeNodeSet'/>
      <exports symbol='xmlXPathNewNodeSetList'/>
      <exports symbol='xmlXPathWrapNodeSet'/>
      <exports symbol='xmlXPathWrapExternal'/>
-     <exports symbol='xmlXPathFreeNodeSetList'/>
-     <exports symbol='xmlXPathFreeObject'/>
-     <exports symbol='xmlXPathNewContext'/>
-     <exports symbol='xmlXPathFreeContext'/>
      <exports symbol='xmlXPathEqualValues'/>
      <exports symbol='xmlXPathCompareValues'/>
      <exports symbol='xmlXPathValueFlipSign'/>
@@ -785,8 +812,10 @@
      <exports symbol='xmlXPathLastFunction'/>
      <exports symbol='xmlXPathPositionFunction'/>
      <exports symbol='xmlXPathCountFunction'/>
+     <exports symbol='xmlXPathIdFunction'/>
      <exports symbol='xmlXPathLocalNameFunction'/>
      <exports symbol='xmlXPathNamespaceURIFunction'/>
+     <exports symbol='xmlXPathStringFunction'/>
      <exports symbol='xmlXPathStringLengthFunction'/>
      <exports symbol='xmlXPathConcatFunction'/>
      <exports symbol='xmlXPathContainsFunction'/>
@@ -838,12 +867,12 @@
     <file name='threads'>
      <exports symbol='xmlMutex'/>
      <exports symbol='xmlMutexPtr'/>
+     <exports symbol='xmlRMutex'/>
+     <exports symbol='xmlRMutexPtr'/>
      <exports symbol='xmlNewMutex'/>
      <exports symbol='xmlMutexLock'/>
      <exports symbol='xmlMutexUnlock'/>
      <exports symbol='xmlFreeMutex'/>
-     <exports symbol='xmlRMutex'/>
-     <exports symbol='xmlRMutexPtr'/>
      <exports symbol='xmlNewRMutex'/>
      <exports symbol='xmlRMutexLock'/>
      <exports symbol='xmlRMutexUnlock'/>
@@ -929,29 +958,6 @@
      <exports symbol='xmlCatalogGetSystem'/>
      <exports symbol='xmlCatalogGetPublic'/>
     </file>
-    <file name='xmlversion'>
-     <exports symbol='xmlCheckVersion'/>
-     <exports symbol='LIBXML_DOTTED_VERSION'/>
-     <exports symbol='LIBXML_VERSION'/>
-     <exports symbol='LIBXML_VERSION_STRING'/>
-     <exports symbol='LIBXML_TEST_VERSION'/>
-     <exports symbol='WITH_TRIO'/>
-     <exports symbol='WITHOUT_TRIO'/>
-     <exports symbol='LIBXML_THREAD_ENABLED'/>
-     <exports symbol='LIBXML_FTP_ENABLED'/>
-     <exports symbol='LIBXML_HTTP_ENABLED'/>
-     <exports symbol='LIBXML_HTML_ENABLED'/>
-     <exports symbol='LIBXML_CATALOG_ENABLED'/>
-     <exports symbol='LIBXML_DOCB_ENABLED'/>
-     <exports symbol='LIBXML_XPATH_ENABLED'/>
-     <exports symbol='LIBXML_XPTR_ENABLED'/>
-     <exports symbol='LIBXML_XINCLUDE_ENABLED'/>
-     <exports symbol='LIBXML_ICONV_ENABLED'/>
-     <exports symbol='LIBXML_DEBUG_ENABLED'/>
-     <exports symbol='DEBUG_MEMORY_LOCATION'/>
-     <exports symbol='LIBXML_DLL_IMPORT'/>
-     <exports symbol='ATTRIBUTE_UNUSED'/>
-    </file>
     <file name='parser'>
      <exports symbol='XML_DEFAULT_VERSION'/>
      <exports symbol='xmlParserInputDeallocate'/>
@@ -965,7 +971,6 @@
      <exports symbol='XML_COMPLETE_ATTRS'/>
      <exports symbol='xmlParserCtxt'/>
      <exports symbol='xmlSAXLocator'/>
-     <exports symbol='xmlSAXLocatorPtr'/>
      <exports symbol='resolveEntitySAXFunc'/>
      <exports symbol='internalSubsetSAXFunc'/>
      <exports symbol='externalSubsetSAXFunc'/>
@@ -995,7 +1000,6 @@
      <exports symbol='hasInternalSubsetSAXFunc'/>
      <exports symbol='hasExternalSubsetSAXFunc'/>
      <exports symbol='xmlSAXHandler'/>
-     <exports symbol='xmlSAXHandlerPtr'/>
      <exports symbol='xmlExternalEntityLoader'/>
      <exports symbol='xmlSubstituteEntitiesDefaultValue'/>
      <exports symbol='xmlInitParser'/>
@@ -1045,8 +1049,6 @@
      <exports symbol='xmlParseBalancedChunkMemory'/>
      <exports symbol='xmlParseExternalEntity'/>
      <exports symbol='xmlParseCtxtExternalEntity'/>
-     <exports symbol='xmlDefaultSAXHandlerInit'/>
-     <exports symbol='htmlDefaultSAXHandlerInit'/>
      <exports symbol='xmlInitParserCtxt'/>
      <exports symbol='xmlClearParserCtxt'/>
      <exports symbol='xmlFreeParserCtxt'/>
@@ -1080,37 +1082,28 @@
      <exports symbol='xmlParserPrintFileInfo'/>
      <exports symbol='xmlParserPrintFileContext'/>
     </file>
-    <file name='encoding'>
-     <exports symbol='xmlCharEncoding'/>
-     <exports symbol='xmlCharEncodingInputFunc'/>
-     <exports symbol='xmlCharEncodingOutputFunc'/>
-     <exports symbol='xmlCharEncodingHandler'/>
-     <exports symbol='xmlCharEncodingHandlerPtr'/>
-     <exports symbol='xmlInitCharEncodingHandlers'/>
-     <exports symbol='xmlCleanupCharEncodingHandlers'/>
-     <exports symbol='xmlRegisterCharEncodingHandler'/>
-     <exports symbol='xmlGetCharEncodingHandler'/>
-     <exports symbol='xmlFindCharEncodingHandler'/>
-     <exports symbol='xmlAddEncodingAlias'/>
-     <exports symbol='xmlDelEncodingAlias'/>
-     <exports symbol='xmlGetEncodingAlias'/>
-     <exports symbol='xmlCleanupEncodingAliases'/>
-     <exports symbol='xmlParseCharEncoding'/>
-     <exports symbol='xmlGetCharEncodingName'/>
-     <exports symbol='xmlDetectCharEncoding'/>
-     <exports symbol='xmlCharEncOutFunc'/>
-     <exports symbol='xmlCharEncInFunc'/>
-     <exports symbol='xmlCharEncFirstLine'/>
-     <exports symbol='xmlCharEncCloseFunc'/>
-     <exports symbol='UTF8Toisolat1'/>
-     <exports symbol='isolat1ToUTF8'/>
-     <exports symbol='xmlCheckUTF8'/>
-     <exports symbol='xmlUTF8Strsize'/>
-     <exports symbol='xmlUTF8Strndup'/>
-     <exports symbol='xmlUTF8Strpos'/>
-     <exports symbol='xmlUTF8Strloc'/>
-     <exports symbol='xmlUTF8Strsub'/>
-     <exports symbol='xmlUTF8Strlen'/>
+    <file name='xmlversion'>
+     <exports symbol='xmlCheckVersion'/>
+     <exports symbol='LIBXML_DOTTED_VERSION'/>
+     <exports symbol='LIBXML_VERSION'/>
+     <exports symbol='LIBXML_VERSION_STRING'/>
+     <exports symbol='LIBXML_TEST_VERSION'/>
+     <exports symbol='WITH_TRIO'/>
+     <exports symbol='WITHOUT_TRIO'/>
+     <exports symbol='LIBXML_THREAD_ENABLED'/>
+     <exports symbol='LIBXML_FTP_ENABLED'/>
+     <exports symbol='LIBXML_HTTP_ENABLED'/>
+     <exports symbol='LIBXML_HTML_ENABLED'/>
+     <exports symbol='LIBXML_CATALOG_ENABLED'/>
+     <exports symbol='LIBXML_DOCB_ENABLED'/>
+     <exports symbol='LIBXML_XPATH_ENABLED'/>
+     <exports symbol='LIBXML_XPTR_ENABLED'/>
+     <exports symbol='LIBXML_XINCLUDE_ENABLED'/>
+     <exports symbol='LIBXML_ICONV_ENABLED'/>
+     <exports symbol='LIBXML_DEBUG_ENABLED'/>
+     <exports symbol='DEBUG_MEMORY_LOCATION'/>
+     <exports symbol='LIBXML_DLL_IMPORT'/>
+     <exports symbol='ATTRIBUTE_UNUSED'/>
     </file>
     <file name='hash'>
      <exports symbol='xmlHashTable'/>
@@ -1391,9 +1384,6 @@
     <macro name='LIBXML_XPTR_ENABLED' file='xmlversion'>
       <info>Whether XPointer is configured in</info>
     </macro>
-    <macro name='MEM_LIST' file='xmlmemory'>
-      <info>keep track of all allocated blocks for error reporting</info>
-    </macro>
     <macro name='MOVETO_ENDTAG' file='parserInternals'>
       <info>Skips to the next &apos;&gt;&apos; char</info>
       <arg name='p' info='and UTF8 string pointer '/>
@@ -1645,6 +1635,7 @@
     <const name='XML_PARSER_MISC' file='parser'/>
     <const name='XML_PARSER_PI' file='parser'/>
     <const name='XML_PARSER_PROLOG' file='parser'/>
+    <const name='XML_PARSER_PUBLIC_LITERAL' file='parser'/>
     <const name='XML_PARSER_START' file='parser'/>
     <const name='XML_PARSER_START_TAG' file='parser'/>
     <const name='XML_PARSER_SYSTEM_LITERAL' file='parser'/>
@@ -2091,7 +2082,7 @@
     <macro name='htmlDefaultSAXHandler' file='globals'>
       <info>Default handler for HTML, builds the DOM tree</info>
     </macro>
-    <function name='htmlDefaultSAXHandlerInit' file='parser'>
+    <function name='htmlDefaultSAXHandlerInit' file='SAX'>
       <info>Initialize the default SAX handler</info>
       <return type='void'/>
     </function>
@@ -2618,7 +2609,7 @@
       <arg name='tree' type='xmlEnumerationPtr' info='if it&apos;s an enumeration, the associated list '/>
     </function>
     <function name='xmlAddChild' file='tree'>
-      <info>Add a new child element, to parent, at the end of the child list merging adjacent TEXT nodes (in which case cur is freed)</info>
+      <info>Add a new node to parent, at the end of the child (or property) list merging adjacent TEXT nodes (in which case cur is freed) If the new node was already inserted in a document it is first unlinked from its existing context. If the new node is ATTRIBUTE, it is added into properties instead of children. If there is an attribute with equal name, it is first destroyed.</info>
       <return type='xmlNodePtr' info='the child or NULL in case of error. '/>
       <arg name='parent' type='xmlNodePtr' info='the parent node '/>
       <arg name='cur' type='xmlNodePtr' info='the child node '/>
@@ -2673,8 +2664,8 @@
       <arg name='attr' type='xmlAttrPtr' info='the attribute holding the ID '/>
     </function>
     <function name='xmlAddNextSibling' file='tree'>
-      <info>Add a new element elem as the next siblings of cur If the new element was already inserted in a document it is first unlinked from its existing context. As a result of text merging elem may be freed.</info>
-      <return type='xmlNodePtr' info='the new element or NULL in case of error. '/>
+      <info>Add a new node elem as the next sibling of cur If the new node was already inserted in a document it is first unlinked from its existing context. As a result of text merging elem may be freed. If the new node is ATTRIBUTE, it is added into properties instead of children. If there is an attribute with equal name, it is first destroyed.</info>
+      <return type='xmlNodePtr' info='the new node or NULL in case of error. '/>
       <arg name='cur' type='xmlNodePtr' info='the child node '/>
       <arg name='elem' type='xmlNodePtr' info='the new node '/>
     </function>
@@ -2688,8 +2679,8 @@
       <arg name='SystemID' type='const xmlChar *' info='the system identifier or NULL '/>
     </function>
     <function name='xmlAddPrevSibling' file='tree'>
-      <info>Add a new element elem as the previous siblings of cur merging adjacent TEXT nodes (elem may be freed) If the new element was already inserted in a document it is first unlinked from its existing context.</info>
-      <return type='xmlNodePtr' info='the new element or NULL in case of error. '/>
+      <info>Add a new node elem as the previous sibling of cur merging adjacent TEXT nodes (elem may be freed) If the new node was already inserted in a document it is first unlinked from its existing context. If the new node is ATTRIBUTE, it is added into properties instead of children. If there is an attribute with equal name, it is first destroyed.</info>
+      <return type='xmlNodePtr' info='the new node or NULL in case of error. '/>
       <arg name='cur' type='xmlNodePtr' info='the child node '/>
       <arg name='elem' type='xmlNodePtr' info='the new node '/>
     </function>
@@ -3308,7 +3299,7 @@
     <macro name='xmlDefaultSAXHandler' file='globals'>
       <info>Default handler for XML, builds the DOM tree</info>
     </macro>
-    <function name='xmlDefaultSAXHandlerInit' file='parser'>
+    <function name='xmlDefaultSAXHandlerInit' file='SAX'>
       <info>Initialize the default SAX handler</info>
       <return type='void'/>
     </function>
@@ -3472,8 +3463,8 @@
       <arg name='input' type='const xmlChar *' info='A string to convert to XML. '/>
     </function>
     <typedef name='xmlEntitiesTablePtr' file='entities'/>
-    <struct name='xmlEntity' file='entities'/>
-    <typedef name='xmlEntityPtr' file='entities'/>
+    <struct name='xmlEntity' file='tree'/>
+    <typedef name='xmlEntityPtr' file='tree'/>
     <functype name='xmlEntityReferenceFunc' file='parserInternals'>
       <info>Callback function used when one need to be able to track back the provenance of a chunk of nodes inherited from an entity replacement</info>
       <return type='void'/>
@@ -3584,7 +3575,7 @@
       <return type='void'/>
       <arg name='cur' type='xmlNsPtr' info='the first namespace pointer '/>
     </function>
-    <function name='xmlFreeParserCtxt' file='parserInternals'>
+    <function name='xmlFreeParserCtxt' file='parser'>
       <info>Free all the memory used by a parser context. However the parsed document in ctxt-&gt;myDoc is not freed.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
@@ -3674,7 +3665,7 @@
       <arg name='name' type='const xmlChar *' info='the element name '/>
     </function>
     <function name='xmlGetDtdEntity' file='entities'>
-      <info>Do an entity lookup in the DTD entity hash table and returns the corresponding entity, if found.</info>
+      <info>Do an entity lookup in the DTD entity hash table and returns the corresponding entity, if found. Note: the first argument is the document node, not the DTD node.</info>
       <return type='xmlEntityPtr' info='A pointer to the entity structure or NULL if not found. '/>
       <arg name='doc' type='xmlDocPtr' info='the document referencing the entity '/>
       <arg name='name' type='const xmlChar *' info='the entity name '/>
@@ -5211,6 +5202,7 @@
       <info>parse the declaration for a Mixed Element content The leading &apos;(&apos; and spaces have been skipped in xmlParseElementContentDecl </info>
       <return type='xmlElementContentPtr' info='the tree of xmlElementContentPtr describing the element  hierarchy. '/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
+      <arg name='inputchk' type='xmlParserInputPtr'/>
     </function>
     <function name='xmlParseElementContentDecl' file='parserInternals'>
       <info>parse the declaration for an Element content either Mixed or Children, the cases EMPTY and ANY are handled directly in xmlParseElementDecl </info>
@@ -5228,6 +5220,7 @@
       <info>parse the declaration for a Mixed Element content The leading &apos;(&apos; and spaces have been skipped in xmlParseElementContentDecl </info>
       <return type='xmlElementContentPtr' info='the list of the xmlElementContentPtr describing the element choices '/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
+      <arg name='inputchk' type='xmlParserInputPtr'/>
     </function>
     <function name='xmlParseEncName' file='parserInternals'>
       <info>parse the XML encoding name </info>
@@ -5737,10 +5730,10 @@
     <macro name='xmlRootNode' file='tree'>
       <info>Macro for compatibility naming layer with libxml1</info>
     </macro>
-    <struct name='xmlSAXHandler' file='parser' info='a SAX handler is bunch of callbacks called by the parser when processing of the input generate data or structure informations.'/>
-    <typedef name='xmlSAXHandlerPtr' file='parser'/>
-    <struct name='xmlSAXLocator' file='parser' info='a SAX Locator.'/>
-    <typedef name='xmlSAXLocatorPtr' file='parser'/>
+    <struct name='xmlSAXHandler' file='tree' info='a SAX handler is bunch of callbacks called by the parser when processing of the input generate data or structure informations.'/>
+    <typedef name='xmlSAXHandlerPtr' file='tree'/>
+    <struct name='xmlSAXLocator' file='tree' info='a SAX Locator.'/>
+    <typedef name='xmlSAXLocatorPtr' file='tree'/>
     <function name='xmlSAXParseDTD' file='parser'>
       <info>Load and parse an external subset.</info>
       <return type='xmlDtdPtr' info='the resulting xmlDtdPtr or NULL in case of error. '/>
@@ -6337,6 +6330,15 @@
       <arg name='name' type='const xmlChar *' info='the attribute name '/>
     </function>
     <struct name='xmlValidCtxt' file='valid'/>
+    <function name='xmlValidCtxtNormalizeAttributeValue' file='valid'>
+      <info>Does the validation related extra step of the normalization of attribute values: </info>
+      <return type='xmlChar *' info='a new normalized string if normalization is needed, NULL otherwise the caller must free the returned value. '/>
+      <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context '/>
+      <arg name='doc' type='xmlDocPtr' info='the document '/>
+      <arg name='elem' type='xmlNodePtr' info='the parent '/>
+      <arg name='name' type='const xmlChar *' info='the attribute name '/>
+      <arg name='value' type='const xmlChar *' info='the attribute value '/>
+    </function>
     <typedef name='xmlValidCtxtPtr' file='valid'/>
     <function name='xmlValidGetPotentialChildren' file='valid'>
       <info>Build/extend a list of potential children allowed by the content tree</info>
@@ -6398,7 +6400,7 @@
     </function>
     <function name='xmlValidateDtdFinal' file='valid'>
       <info>Does the final step for the dtds validation once all the subsets have been parsed </info>
-      <return type='int' info='1 if valid or 0 otherwise '/>
+      <return type='int' info='1 if valid or 0 if invalid and -1 if not well-formed '/>
       <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context '/>
       <arg name='doc' type='xmlDocPtr' info='a document instance '/>
     </function>
@@ -6734,22 +6736,22 @@
       <return type='void'/>
       <arg name='comp' type='xmlXPathCompExprPtr' info='an XPATH comp '/>
     </function>
-    <function name='xmlXPathFreeContext' file='xpathInternals'>
+    <function name='xmlXPathFreeContext' file='xpath'>
       <info>Free up an xmlXPathContext</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the context to free '/>
     </function>
-    <function name='xmlXPathFreeNodeSet' file='xpathInternals'>
+    <function name='xmlXPathFreeNodeSet' file='xpath'>
       <info>Free the NodeSet compound (not the actual nodes !).</info>
       <return type='void'/>
       <arg name='obj' type='xmlNodeSetPtr' info='the xmlNodeSetPtr to free '/>
     </function>
-    <function name='xmlXPathFreeNodeSetList' file='xpathInternals'>
+    <function name='xmlXPathFreeNodeSetList' file='xpath'>
       <info>Free up the xmlXPathObjectPtr obj but don&apos;t deallocate the objects in the list contrary to xmlXPathFreeObject().</info>
       <return type='void'/>
       <arg name='obj' type='xmlXPathObjectPtr' info='an existing NodeSetList object '/>
     </function>
-    <function name='xmlXPathFreeObject' file='xpathInternals'>
+    <function name='xmlXPathFreeObject' file='xpath'>
       <info>Free up an xmlXPathObjectPtr object.</info>
       <return type='void'/>
       <arg name='obj' type='xmlXPathObjectPtr' info='the object to free '/>
@@ -6811,7 +6813,7 @@
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context '/>
       <arg name='nargs' type='int' info='the number of arguments '/>
     </function>
-    <function name='xmlXPathInit' file='xpathInternals'>
+    <function name='xmlXPathInit' file='xpath'>
       <info>Initialize the XPath environment</info>
       <return type='void'/>
     </function>
@@ -6892,7 +6894,7 @@
       <return type='xmlXPathObjectPtr' info='the newly created object. '/>
       <arg name='val' type='const char *' info='the char * value '/>
     </function>
-    <function name='xmlXPathNewContext' file='xpathInternals'>
+    <function name='xmlXPathNewContext' file='xpath'>
       <info>Create a new xmlXPathContext</info>
       <return type='xmlXPathContextPtr' info='the xmlXPathContext just allocated. '/>
       <arg name='doc' type='xmlDocPtr' info='the XML document '/>
@@ -7036,7 +7038,7 @@
       <arg name='cur' type='xmlNodeSetPtr' info='the node-set '/>
       <arg name='val' type='xmlNodePtr' info='the node '/>
     </function>
-    <function name='xmlXPathNodeSetCreate' file='xpathInternals'>
+    <function name='xmlXPathNodeSetCreate' file='xpath'>
       <info>Create a new xmlNodeSetPtr of type double and of value val</info>
       <return type='xmlNodeSetPtr' info='the newly created object. '/>
       <arg name='val' type='xmlNodePtr' info='an initial xmlNodePtr, or NULL '/>

@@ -32,6 +32,8 @@ index = {}
 
 
 def indexString(id, str):
+    if str == None:
+        return
     str = string.replace(str, "'", ' ')
     str = string.replace(str, '"', ' ')
     str = string.replace(str, "/", ' ')
@@ -798,7 +800,11 @@ def link(id):
         target = string.upper(ids[id])
     else:
 	target = string.upper(id)
-    file = 'html/libxml-' + string.lower(hash[id]) + '.html';
+    if hash.has_key(id):
+        module = string.lower(hash[id])
+    else:
+        module = 'index'
+    file = 'html/libxml-' + module + '.html';
     return file + '#' + target
     
 print "Saving XML crossreferences libxml2-refs.xml"

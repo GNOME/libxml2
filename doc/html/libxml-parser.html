@@ -156,7 +156,7 @@ HREF="libxml-parser.html#XMLPARSERINPUTDEALLOCATE"
 >)     (<A
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
->*);
+> *str);
 struct      <A
 HREF="libxml-parser.html#XMLPARSERINPUT"
 >xmlParserInput</A
@@ -196,10 +196,6 @@ HREF="libxml-parser.html#XMLPARSERCTXT"
 struct      <A
 HREF="libxml-parser.html#XMLSAXLOCATOR"
 >xmlSAXLocator</A
->;
-typedef     <A
-HREF="libxml-parser.html#XMLSAXLOCATORPTR"
->xmlSAXLocatorPtr</A
 >;
 <A
 HREF="libxml-tree.html#XMLPARSERINPUTPTR"
@@ -249,7 +245,7 @@ HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);
 <A
-HREF="libxml-entities.html#XMLENTITYPTR"
+HREF="libxml-tree.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > (<A
 HREF="libxml-parser.html#GETENTITYSAXFUNC"
@@ -260,7 +256,7 @@ HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="libxml-entities.html#XMLENTITYPTR"
+HREF="libxml-tree.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > (<A
 HREF="libxml-parser.html#GETPARAMETERENTITYSAXFUNC"
@@ -318,7 +314,7 @@ HREF="libxml-tree.html#XMLCHAR"
                                              const <A
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
-> *name,
+> *fullname,
                                              int type,
                                              int def,
                                              const <A
@@ -367,7 +363,7 @@ HREF="libxml-parser.html#SETDOCUMENTLOCATORSAXFUNC"
 >*setDocumentLocatorSAXFunc</A
 >)    (void *ctx,
                                              <A
-HREF="libxml-parser.html#XMLSAXLOCATORPTR"
+HREF="libxml-tree.html#XMLSAXLOCATORPTR"
 >xmlSAXLocatorPtr</A
 > loc);
 void        (<A
@@ -498,10 +494,6 @@ HREF="libxml-parser.html#HASEXTERNALSUBSETSAXFUNC"
 struct      <A
 HREF="libxml-parser.html#XMLSAXHANDLER"
 >xmlSAXHandler</A
->;
-typedef     <A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
->xmlSAXHandlerPtr</A
 >;
 <A
 HREF="libxml-tree.html#XMLPARSERINPUTPTR"
@@ -821,7 +813,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 HREF="libxml-parser.html#XMLSAXPARSEDOC"
 >xmlSAXParseDoc</A
 >                  (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              <A
@@ -833,7 +825,7 @@ int         <A
 HREF="libxml-parser.html#XMLSAXUSERPARSEFILE"
 >xmlSAXUserParseFile</A
 >             (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -842,7 +834,7 @@ int         <A
 HREF="libxml-parser.html#XMLSAXUSERPARSEMEMORY"
 >xmlSAXUserParseMemory</A
 >           (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -855,7 +847,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 HREF="libxml-parser.html#XMLSAXPARSEMEMORY"
 >xmlSAXParseMemory</A
 >               (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *buffer,
@@ -868,7 +860,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 HREF="libxml-parser.html#XMLSAXPARSEFILE"
 >xmlSAXParseFile</A
 >                 (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *filename,
@@ -880,7 +872,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 HREF="libxml-parser.html#XMLSAXPARSEFILEWITHDATA"
 >xmlSAXParseFileWithData</A
 >         (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *filename,
@@ -893,7 +885,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 HREF="libxml-parser.html#XMLSAXPARSEENTITY"
 >xmlSAXParseEntity</A
 >               (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *filename);
@@ -925,7 +917,7 @@ HREF="libxml-tree.html#XMLDTDPTR"
 HREF="libxml-parser.html#XMLSAXPARSEDTD"
 >xmlSAXParseDTD</A
 >                  (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const <A
@@ -943,7 +935,7 @@ HREF="libxml-tree.html#XMLDTDPTR"
 HREF="libxml-parser.html#XMLIOPARSEDTD"
 >xmlIOParseDTD</A
 >                   (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              <A
@@ -962,7 +954,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -983,7 +975,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -1019,14 +1011,6 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > *lst);
-void        <A
-HREF="libxml-parser.html#XMLDEFAULTSAXHANDLERINIT"
->xmlDefaultSAXHandlerInit</A
->        (void);
-void        <A
-HREF="libxml-parser.html#HTMLDEFAULTSAXHANDLERINIT"
->htmlDefaultSAXHandlerInit</A
->       (void);
 void        <A
 HREF="libxml-parser.html#XMLINITPARSERCTXT"
 >xmlInitParserCtxt</A
@@ -1100,7 +1084,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 HREF="libxml-parser.html#XMLCREATEPUSHPARSERCTXT"
 >xmlCreatePushParserCtxt</A
 >    (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -1124,7 +1108,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 HREF="libxml-parser.html#XMLCREATEIOPARSERCTXT"
 >xmlCreateIOParserCtxt</A
 >      (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -1239,7 +1223,7 @@ HREF="libxml-parser.html#XMLLOADEXTERNALENTITY"
                                              <A
 HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
-> context);</PRE
+> ctxt);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1247,7 +1231,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN317"
+NAME="AEN313"
 ></A
 ><H2
 >Description</H2
@@ -1257,14 +1241,14 @@ NAME="AEN317"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN320"
+NAME="AEN316"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN322"
+NAME="AEN318"
 ></A
 ><H3
 ><A
@@ -1292,7 +1276,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN328"
+NAME="AEN324"
 ></A
 ><H3
 ><A
@@ -1311,16 +1295,18 @@ CLASS="PROGRAMLISTING"
 >void        (*xmlParserInputDeallocate)     (<A
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
->*);</PRE
+> *str);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Callback for freeing some parser input allocations</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN334"
+NAME="AEN331"
 ></A
 ><P
 ></P
@@ -1340,14 +1326,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->Param1</I
+>str</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the string to deallocate</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1358,7 +1344,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN343"
+NAME="AEN340"
 ></A
 ><H3
 ><A
@@ -1408,7 +1394,7 @@ progressive reading and I18N conversions to the internal UTF-8 format.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN349"
+NAME="AEN346"
 ></A
 ><H3
 ><A
@@ -1445,7 +1431,7 @@ NOTE: This is off by default and not very well tested.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN355"
+NAME="AEN352"
 ></A
 ><H3
 ><A
@@ -1471,7 +1457,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN360"
+NAME="AEN357"
 ></A
 ><H3
 ><A
@@ -1501,7 +1487,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN365"
+NAME="AEN362"
 ></A
 ><H3
 ><A
@@ -1527,7 +1513,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN370"
+NAME="AEN367"
 ></A
 ><H3
 ><A
@@ -1560,7 +1546,8 @@ CLASS="PROGRAMLISTING"
     XML_PARSER_ATTRIBUTE_VALUE,	/* within an attribute value */
     XML_PARSER_SYSTEM_LITERAL,	/* within a SYSTEM value */
     XML_PARSER_EPILOG, 		/* the Misc* after the last end tag */
-    XML_PARSER_IGNORE		/* within an IGNORED section */
+    XML_PARSER_IGNORE,		/* within an IGNORED section */
+    XML_PARSER_PUBLIC_LITERAL 	/* within a PUBLIC value */
 } xmlParserInputState;</PRE
 ></TD
 ></TR
@@ -1574,7 +1561,7 @@ The recursive one use the state info for entities processing</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN376"
+NAME="AEN373"
 ></A
 ><H3
 ><A
@@ -1603,7 +1590,7 @@ Use it to initialize xmlLoadExtDtdDefaultValue</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN382"
+NAME="AEN379"
 ></A
 ><H3
 ><A
@@ -1633,7 +1620,7 @@ Use it to initialize xmlLoadExtDtdDefaultValue</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN388"
+NAME="AEN385"
 ></A
 ><H3
 ><A
@@ -1742,7 +1729,7 @@ NOTE This doesn't completely defines the parser state, the (current ?)
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN394"
+NAME="AEN391"
 ></A
 ><H3
 ><A
@@ -1775,33 +1762,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN400"
-></A
-><H3
-><A
-NAME="XMLSAXLOCATORPTR"
-></A
->&#62;xmlSAXLocatorPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlSAXLocator *xmlSAXLocatorPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN405"
+NAME="AEN397"
 ></A
 ><H3
 ><A
@@ -1833,11 +1794,24 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Callback:
+The entity loader, to control the loading of external entities,
+the application can either:
+   - override this <A
+HREF="libxml-sax.html#RESOLVEENTITY"
+>resolveEntity</A
+>() callback in the SAX block
+   - or better use the <A
+HREF="libxml-parser.html#XMLSETEXTERNALENTITYLOADER"
+>xmlSetExternalEntityLoader</A
+>() function to
+     set up it's own entity resolution routine</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN413"
+NAME="AEN408"
 ></A
 ><P
 ></P
@@ -1864,7 +1838,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -1881,7 +1855,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The public ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -1898,7 +1872,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The system ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -1913,7 +1887,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlParserInputPtr if inlined or NULL for DOM behaviour.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1924,7 +1898,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN434"
+NAME="AEN429"
 ></A
 ><H3
 ><A
@@ -1957,11 +1931,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Callback on internal subset declaration.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN442"
+NAME="AEN438"
 ></A
 ><P
 ></P
@@ -1988,7 +1964,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2005,7 +1981,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the root element name</TD
 ></TR
 ><TR
 ><TD
@@ -2022,7 +1998,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the external ID</TD
 ></TR
 ><TR
 ><TD
@@ -2039,7 +2015,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the SYSTEM ID (e.g. filename or URL)</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2050,7 +2026,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN463"
+NAME="AEN459"
 ></A
 ><H3
 ><A
@@ -2083,11 +2059,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Callback on external subset declaration.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN471"
+NAME="AEN468"
 ></A
 ><P
 ></P
@@ -2114,7 +2092,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2131,7 +2109,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the root element name</TD
 ></TR
 ><TR
 ><TD
@@ -2148,7 +2126,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the external ID</TD
 ></TR
 ><TR
 ><TD
@@ -2165,7 +2143,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the SYSTEM ID (e.g. filename or URL)</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2176,7 +2154,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN492"
+NAME="AEN489"
 ></A
 ><H3
 ><A
@@ -2193,7 +2171,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-entities.html#XMLENTITYPTR"
+HREF="libxml-tree.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > (*getEntitySAXFunc)            (void *ctx,
                                              const <A
@@ -2204,11 +2182,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Get an entity by name</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN499"
+NAME="AEN497"
 ></A
 ><P
 ></P
@@ -2235,7 +2215,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2252,7 +2232,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The entity name</TD
 ></TR
 ><TR
 ><TD
@@ -2267,7 +2247,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlEntityPtr if found.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2278,7 +2258,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN516"
+NAME="AEN514"
 ></A
 ><H3
 ><A
@@ -2295,7 +2275,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-entities.html#XMLENTITYPTR"
+HREF="libxml-tree.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > (*getParameterEntitySAXFunc)   (void *ctx,
                                              const <A
@@ -2306,11 +2286,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Get a parameter entity by name</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN523"
+NAME="AEN522"
 ></A
 ><P
 ></P
@@ -2337,7 +2319,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2354,7 +2336,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The entity name</TD
 ></TR
 ><TR
 ><TD
@@ -2369,7 +2351,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlEntityPtr if found.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2380,7 +2362,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN540"
+NAME="AEN539"
 ></A
 ><H3
 ><A
@@ -2418,6 +2400,8 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>An entity definition has been parsed</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
@@ -2449,7 +2433,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2466,7 +2450,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity name </TD
 ></TR
 ><TR
 ><TD
@@ -2483,7 +2467,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity type </TD
 ></TR
 ><TR
 ><TD
@@ -2500,7 +2484,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The public ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -2517,7 +2501,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The system ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -2534,7 +2518,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the entity value (without processing).</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2578,11 +2562,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>What to do when a notation declaration has been parsed.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN586"
+NAME="AEN587"
 ></A
 ><P
 ></P
@@ -2609,7 +2595,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2626,7 +2612,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The name of the notation</TD
 ></TR
 ><TR
 ><TD
@@ -2643,7 +2629,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The public ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -2660,7 +2646,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The system ID of the entity</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2671,7 +2657,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN607"
+NAME="AEN608"
 ></A
 ><H3
 ><A
@@ -2695,7 +2681,7 @@ HREF="libxml-tree.html#XMLCHAR"
                                              const <A
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
-> *name,
+> *fullname,
                                              int type,
                                              int def,
                                              const <A
@@ -2710,11 +2696,13 @@ HREF="libxml-tree.html#XMLENUMERATIONPTR"
 ></TR
 ></TABLE
 ><P
+>An attribute definition has been parsed</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN616"
+NAME="AEN618"
 ></A
 ><P
 ></P
@@ -2741,7 +2729,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2758,7 +2746,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the name of the element</TD
 ></TR
 ><TR
 ><TD
@@ -2768,14 +2756,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->name</I
+>fullname</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the attribute name </TD
 ></TR
 ><TR
 ><TD
@@ -2792,7 +2780,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the attribute type </TD
 ></TR
 ><TR
 ><TD
@@ -2809,7 +2797,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the type of default value</TD
 ></TR
 ><TR
 ><TD
@@ -2826,7 +2814,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the attribute default value</TD
 ></TR
 ><TR
 ><TD
@@ -2843,7 +2831,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the tree of enumerated value set</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2854,7 +2842,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN649"
+NAME="AEN651"
 ></A
 ><H3
 ><A
@@ -2884,11 +2872,13 @@ HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 ></TR
 ></TABLE
 ><P
+>An element definition has been parsed</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN656"
+NAME="AEN659"
 ></A
 ><P
 ></P
@@ -2915,7 +2905,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2932,7 +2922,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the element name </TD
 ></TR
 ><TR
 ><TD
@@ -2949,7 +2939,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the element type </TD
 ></TR
 ><TR
 ><TD
@@ -2966,7 +2956,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the element value tree</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2977,7 +2967,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN677"
+NAME="AEN680"
 ></A
 ><H3
 ><A
@@ -3014,11 +3004,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>What to do when an unparsed entity declaration is parsed</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN686"
+NAME="AEN690"
 ></A
 ><P
 ></P
@@ -3045,7 +3037,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3062,7 +3054,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The name of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -3079,7 +3071,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The public ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -3096,7 +3088,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The system ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -3113,7 +3105,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the name of the notation</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3124,7 +3116,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN711"
+NAME="AEN715"
 ></A
 ><H3
 ><A
@@ -3142,18 +3134,21 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*setDocumentLocatorSAXFunc)    (void *ctx,
                                              <A
-HREF="libxml-parser.html#XMLSAXLOCATORPTR"
+HREF="libxml-tree.html#XMLSAXLOCATORPTR"
 >xmlSAXLocatorPtr</A
 > loc);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>Receive the document locator at startup, actually xmlDefaultSAXLocator
+Everything is available on the context, so this is useless in our case.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN717"
+NAME="AEN722"
 ></A
 ><P
 ></P
@@ -3180,7 +3175,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3197,7 +3192,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> A SAX Locator</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3208,7 +3203,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN730"
+NAME="AEN735"
 ></A
 ><H3
 ><A
@@ -3229,11 +3224,13 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>called when the document start being processed.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN735"
+NAME="AEN741"
 ></A
 ><P
 ></P
@@ -3260,7 +3257,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3271,7 +3268,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN744"
+NAME="AEN750"
 ></A
 ><H3
 ><A
@@ -3292,11 +3289,13 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>called when the document end has been detected.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN749"
+NAME="AEN756"
 ></A
 ><P
 ></P
@@ -3323,7 +3322,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3334,7 +3333,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN758"
+NAME="AEN765"
 ></A
 ><H3
 ><A
@@ -3363,11 +3362,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>called when an opening tag has been processed.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN765"
+NAME="AEN773"
 ></A
 ><P
 ></P
@@ -3394,7 +3395,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3411,7 +3412,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The element name, including namespace prefix</TD
 ></TR
 ><TR
 ><TD
@@ -3428,7 +3429,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An array of name/value attributes pairs, NULL terminated</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3439,7 +3440,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN782"
+NAME="AEN790"
 ></A
 ><H3
 ><A
@@ -3464,11 +3465,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>called when the end of an element has been detected.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN788"
+NAME="AEN797"
 ></A
 ><P
 ></P
@@ -3495,7 +3498,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3512,7 +3515,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The element name</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3523,7 +3526,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN801"
+NAME="AEN810"
 ></A
 ><H3
 ><A
@@ -3552,11 +3555,16 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Handle an attribute that has been read by the parser.
+The default handling is to convert the attribute into an
+DOM subtree and past it in a new xmlAttr element added to
+the element.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN808"
+NAME="AEN818"
 ></A
 ><P
 ></P
@@ -3583,7 +3591,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3600,7 +3608,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The attribute name, including namespace prefix</TD
 ></TR
 ><TR
 ><TD
@@ -3617,7 +3625,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The attribute value</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3628,7 +3636,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN825"
+NAME="AEN835"
 ></A
 ><H3
 ><A
@@ -3653,11 +3661,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>called when an entity reference is detected.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN831"
+NAME="AEN842"
 ></A
 ><P
 ></P
@@ -3684,7 +3694,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3701,7 +3711,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The entity name</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3712,7 +3722,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN844"
+NAME="AEN855"
 ></A
 ><H3
 ><A
@@ -3738,11 +3748,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>receiving some chars from the parser.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN850"
+NAME="AEN862"
 ></A
 ><P
 ></P
@@ -3769,7 +3781,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3786,7 +3798,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a xmlChar string</TD
 ></TR
 ><TR
 ><TD
@@ -3803,7 +3815,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of xmlChar</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3814,7 +3826,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN867"
+NAME="AEN879"
 ></A
 ><H3
 ><A
@@ -3840,11 +3852,14 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>receiving some ignorable whitespaces from the parser.
+UNUSED: by default the DOM building will use characters</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN873"
+NAME="AEN886"
 ></A
 ><P
 ></P
@@ -3871,7 +3886,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3888,7 +3903,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a xmlChar string</TD
 ></TR
 ><TR
 ><TD
@@ -3905,7 +3920,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of xmlChar</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3916,7 +3931,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN890"
+NAME="AEN903"
 ></A
 ><H3
 ><A
@@ -3945,11 +3960,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>A processing instruction has been parsed.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN897"
+NAME="AEN911"
 ></A
 ><P
 ></P
@@ -3976,7 +3993,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3993,7 +4010,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the target name</TD
 ></TR
 ><TR
 ><TD
@@ -4010,7 +4027,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the PI data's</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4021,7 +4038,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN914"
+NAME="AEN928"
 ></A
 ><H3
 ><A
@@ -4046,11 +4063,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>A comment has been parsed.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN920"
+NAME="AEN935"
 ></A
 ><P
 ></P
@@ -4077,7 +4096,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -4094,7 +4113,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the comment content</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4105,7 +4124,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN933"
+NAME="AEN948"
 ></A
 ><H3
 ><A
@@ -4131,11 +4150,13 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>called when a pcdata block has been parsed</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN939"
+NAME="AEN955"
 ></A
 ><P
 ></P
@@ -4162,7 +4183,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -4179,7 +4200,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The pcdata content</TD
 ></TR
 ><TR
 ><TD
@@ -4196,7 +4217,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the block length</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4207,7 +4228,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN956"
+NAME="AEN972"
 ></A
 ><H3
 ><A
@@ -4230,11 +4251,13 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Display and format a warning messages, callback</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN961"
+NAME="AEN978"
 ></A
 ><P
 ></P
@@ -4261,7 +4284,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4278,7 +4301,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the message to display/transmit</TD
 ></TR
 ><TR
 ><TD
@@ -4295,7 +4318,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  extra parameters for the message display</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4306,7 +4329,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN978"
+NAME="AEN995"
 ></A
 ><H3
 ><A
@@ -4329,11 +4352,13 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Display and format an error messages, callback</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN983"
+NAME="AEN1001"
 ></A
 ><P
 ></P
@@ -4360,7 +4385,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4377,7 +4402,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the message to display/transmit</TD
 ></TR
 ><TR
 ><TD
@@ -4394,7 +4419,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  extra parameters for the message display</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4405,7 +4430,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1000"
+NAME="AEN1018"
 ></A
 ><H3
 ><A
@@ -4428,11 +4453,13 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Display and format fatal error messages, callback</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1005"
+NAME="AEN1024"
 ></A
 ><P
 ></P
@@ -4459,7 +4486,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4476,7 +4503,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the message to display/transmit</TD
 ></TR
 ><TR
 ><TD
@@ -4493,7 +4520,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  extra parameters for the message display</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4504,7 +4531,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1022"
+NAME="AEN1041"
 ></A
 ><H3
 ><A
@@ -4525,11 +4552,13 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Is this document tagged standalone ?</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1027"
+NAME="AEN1047"
 ></A
 ><P
 ></P
@@ -4556,7 +4585,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -4571,7 +4600,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if true</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4582,7 +4611,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1040"
+NAME="AEN1060"
 ></A
 ><H3
 ><A
@@ -4603,11 +4632,13 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Does this document has an internal subset</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1045"
+NAME="AEN1066"
 ></A
 ><P
 ></P
@@ -4634,7 +4665,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -4649,7 +4680,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if true</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4660,7 +4691,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1058"
+NAME="AEN1079"
 ></A
 ><H3
 ><A
@@ -4681,11 +4712,13 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Does this document has an external subset</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1063"
+NAME="AEN1085"
 ></A
 ><P
 ></P
@@ -4712,7 +4745,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -4727,7 +4760,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if true</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4738,7 +4771,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1076"
+NAME="AEN1098"
 ></A
 ><H3
 ><A
@@ -4796,33 +4829,7 @@ of the input generate data or structure informations.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1082"
-></A
-><H3
-><A
-NAME="XMLSAXHANDLERPTR"
-></A
->&#62;xmlSAXHandlerPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlSAXHandler *xmlSAXHandlerPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1087"
+NAME="AEN1104"
 ></A
 ><H3
 ><A
@@ -4858,7 +4865,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1095"
+NAME="AEN1112"
 ></A
 ><P
 ></P
@@ -4945,7 +4952,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1116"
+NAME="AEN1133"
 ></A
 ><H3
 ><A
@@ -4973,7 +4980,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1122"
+NAME="AEN1139"
 ></A
 ><H3
 ><A
@@ -5003,7 +5010,7 @@ use in multithreaded programs.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1128"
+NAME="AEN1145"
 ></A
 ><H3
 ><A
@@ -5034,7 +5041,7 @@ function should not prevent reusing the parser.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1134"
+NAME="AEN1151"
 ></A
 ><H3
 ><A
@@ -5066,7 +5073,7 @@ preserve pointers to the input buffer, and discard already read data</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1141"
+NAME="AEN1158"
 ></A
 ><P
 ></P
@@ -5137,7 +5144,7 @@ end of this entity</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1158"
+NAME="AEN1175"
 ></A
 ><H3
 ><A
@@ -5169,7 +5176,7 @@ preserve pointers to the input buffer, and keep already read data</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1165"
+NAME="AEN1182"
 ></A
 ><P
 ></P
@@ -5240,7 +5247,7 @@ end of this entity</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1182"
+NAME="AEN1199"
 ></A
 ><H3
 ><A
@@ -5275,7 +5282,7 @@ a termination mark of '0'.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1190"
+NAME="AEN1207"
 ></A
 ><P
 ></P
@@ -5328,7 +5335,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1203"
+NAME="AEN1220"
 ></A
 ><H3
 ><A
@@ -5362,7 +5369,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1211"
+NAME="AEN1228"
 ></A
 ><P
 ></P
@@ -5437,7 +5444,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1229"
+NAME="AEN1246"
 ></A
 ><H3
 ><A
@@ -5468,7 +5475,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1236"
+NAME="AEN1253"
 ></A
 ><P
 ></P
@@ -5543,7 +5550,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1254"
+NAME="AEN1271"
 ></A
 ><H3
 ><A
@@ -5573,7 +5580,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1261"
+NAME="AEN1278"
 ></A
 ><P
 ></P
@@ -5626,7 +5633,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1274"
+NAME="AEN1291"
 ></A
 ><H3
 ><A
@@ -5661,7 +5668,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1282"
+NAME="AEN1299"
 ></A
 ><P
 ></P
@@ -5748,7 +5755,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1303"
+NAME="AEN1320"
 ></A
 ><H3
 ><A
@@ -5785,7 +5792,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1312"
+NAME="AEN1329"
 ></A
 ><P
 ></P
@@ -5855,7 +5862,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1329"
+NAME="AEN1346"
 ></A
 ><H3
 ><A
@@ -5892,7 +5899,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1338"
+NAME="AEN1355"
 ></A
 ><P
 ></P
@@ -5962,7 +5969,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1355"
+NAME="AEN1372"
 ></A
 ><H3
 ><A
@@ -5999,7 +6006,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1364"
+NAME="AEN1381"
 ></A
 ><P
 ></P
@@ -6069,7 +6076,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1381"
+NAME="AEN1398"
 ></A
 ><H3
 ><A
@@ -6103,7 +6110,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1389"
+NAME="AEN1406"
 ></A
 ><P
 ></P
@@ -6173,7 +6180,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1406"
+NAME="AEN1423"
 ></A
 ><H3
 ><A
@@ -6208,7 +6215,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1414"
+NAME="AEN1431"
 ></A
 ><P
 ></P
@@ -6295,7 +6302,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1435"
+NAME="AEN1452"
 ></A
 ><H3
 ><A
@@ -6329,7 +6336,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1443"
+NAME="AEN1460"
 ></A
 ><P
 ></P
@@ -6399,7 +6406,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1460"
+NAME="AEN1477"
 ></A
 ><H3
 ><A
@@ -6434,7 +6441,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1468"
+NAME="AEN1485"
 ></A
 ><P
 ></P
@@ -6521,7 +6528,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1489"
+NAME="AEN1506"
 ></A
 ><H3
 ><A
@@ -6559,7 +6566,7 @@ HREF="libxml-parser.html#XMLSTREQUAL"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1498"
+NAME="AEN1515"
 ></A
 ><P
 ></P
@@ -6629,7 +6636,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1515"
+NAME="AEN1532"
 ></A
 ><H3
 ><A
@@ -6659,7 +6666,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1522"
+NAME="AEN1539"
 ></A
 ><P
 ></P
@@ -6712,7 +6719,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1535"
+NAME="AEN1552"
 ></A
 ><H3
 ><A
@@ -6751,7 +6758,7 @@ a termination mark of '0'.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1544"
+NAME="AEN1561"
 ></A
 ><P
 ></P
@@ -6821,7 +6828,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1561"
+NAME="AEN1578"
 ></A
 ><H3
 ><A
@@ -6870,7 +6877,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1572"
+NAME="AEN1589"
 ></A
 ><P
 ></P
@@ -6968,7 +6975,7 @@ and should not be freed</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1595"
+NAME="AEN1612"
 ></A
 ><H3
 ><A
@@ -7001,7 +7008,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1603"
+NAME="AEN1620"
 ></A
 ><P
 ></P
@@ -7054,7 +7061,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1616"
+NAME="AEN1633"
 ></A
 ><H3
 ><A
@@ -7085,7 +7092,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1623"
+NAME="AEN1640"
 ></A
 ><P
 ></P
@@ -7155,7 +7162,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1640"
+NAME="AEN1657"
 ></A
 ><H3
 ><A
@@ -7186,7 +7193,7 @@ compressed document is provided by default if found at compile-time.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1647"
+NAME="AEN1664"
 ></A
 ><P
 ></P
@@ -7240,7 +7247,7 @@ NULL otherwise.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1660"
+NAME="AEN1677"
 ></A
 ><H3
 ><A
@@ -7275,7 +7282,7 @@ file basis.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1667"
+NAME="AEN1684"
 ></A
 ><P
 ></P
@@ -7328,7 +7335,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1680"
+NAME="AEN1697"
 ></A
 ><H3
 ><A
@@ -7382,7 +7389,7 @@ if blanks sections are kept, indentation is not generated.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1690"
+NAME="AEN1707"
 ></A
 ><P
 ></P
@@ -7435,7 +7442,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1703"
+NAME="AEN1720"
 ></A
 ><H3
 ><A
@@ -7465,7 +7472,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1710"
+NAME="AEN1727"
 ></A
 ><P
 ></P
@@ -7503,7 +7510,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1719"
+NAME="AEN1736"
 ></A
 ><H3
 ><A
@@ -7530,7 +7537,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1725"
+NAME="AEN1742"
 ></A
 ><P
 ></P
@@ -7583,7 +7590,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1738"
+NAME="AEN1755"
 ></A
 ><H3
 ><A
@@ -7611,7 +7618,7 @@ contents. This may break on old application and is turned off by default.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1744"
+NAME="AEN1761"
 ></A
 ><P
 ></P
@@ -7664,7 +7671,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1757"
+NAME="AEN1774"
 ></A
 ><H3
 ><A
@@ -7698,7 +7705,7 @@ In the case the document is not Well Formed, a tree is built anyway</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1765"
+NAME="AEN1782"
 ></A
 ><P
 ></P
@@ -7751,7 +7758,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1778"
+NAME="AEN1795"
 ></A
 ><H3
 ><A
@@ -7783,7 +7790,7 @@ In the case the document is not Well Formed, a tree is built anyway</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1785"
+NAME="AEN1802"
 ></A
 ><P
 ></P
@@ -7853,7 +7860,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1802"
+NAME="AEN1819"
 ></A
 ><H3
 ><A
@@ -7885,7 +7892,7 @@ In the case the document is not Well Formed, a tree is built anyway</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1809"
+NAME="AEN1826"
 ></A
 ><P
 ></P
@@ -7938,7 +7945,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1822"
+NAME="AEN1839"
 ></A
 ><H3
 ><A
@@ -7973,7 +7980,7 @@ interface).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1831"
+NAME="AEN1848"
 ></A
 ><P
 ></P
@@ -8027,7 +8034,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1844"
+NAME="AEN1861"
 ></A
 ><H3
 ><A
@@ -8061,7 +8068,7 @@ production labeled extParsedEnt.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1852"
+NAME="AEN1869"
 ></A
 ><P
 ></P
@@ -8115,7 +8122,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1865"
+NAME="AEN1882"
 ></A
 ><H3
 ><A
@@ -8135,7 +8142,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlSAXParseDoc                  (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              <A
@@ -8155,7 +8162,7 @@ If sax is NULL, fallback to the default DOM tree building routines.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1874"
+NAME="AEN1891"
 ></A
 ><P
 ></P
@@ -8243,7 +8250,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1895"
+NAME="AEN1912"
 ></A
 ><H3
 ><A
@@ -8260,7 +8267,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlSAXUserParseFile             (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -8276,7 +8283,7 @@ Automatic support for ZLIB/Compress compressed document is provided</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1902"
+NAME="AEN1919"
 ></A
 ><P
 ></P
@@ -8363,7 +8370,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1923"
+NAME="AEN1940"
 ></A
 ><H3
 ><A
@@ -8380,7 +8387,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlSAXUserParseMemory           (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -8397,7 +8404,7 @@ parse an XML in-memory buffer and call the given SAX handler routines.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1930"
+NAME="AEN1947"
 ></A
 ><P
 ></P
@@ -8501,7 +8508,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1955"
+NAME="AEN1972"
 ></A
 ><H3
 ><A
@@ -8521,7 +8528,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlSAXParseMemory               (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *buffer,
@@ -8539,7 +8546,7 @@ DOM tree building routines.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1963"
+NAME="AEN1980"
 ></A
 ><P
 ></P
@@ -8644,7 +8651,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1988"
+NAME="AEN2005"
 ></A
 ><H3
 ><A
@@ -8664,7 +8671,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlSAXParseFile                 (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *filename,
@@ -8682,7 +8689,7 @@ If sax is NULL, fallback to the default DOM tree building routines.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1996"
+NAME="AEN2013"
 ></A
 ><P
 ></P
@@ -8770,7 +8777,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2017"
+NAME="AEN2034"
 ></A
 ><H3
 ><A
@@ -8790,7 +8797,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlSAXParseFileWithData         (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *filename,
@@ -8812,7 +8819,7 @@ available nearly everywhere in libxml.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2026"
+NAME="AEN2043"
 ></A
 ><P
 ></P
@@ -8917,7 +8924,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2051"
+NAME="AEN2068"
 ></A
 ><H3
 ><A
@@ -8937,7 +8944,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlSAXParseEntity               (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *filename);</PRE
@@ -8957,7 +8964,7 @@ If sax is NULL, fallback to the default DOM tree building routines.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2061"
+NAME="AEN2078"
 ></A
 ><P
 ></P
@@ -9027,7 +9034,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2078"
+NAME="AEN2095"
 ></A
 ><H3
 ><A
@@ -9061,7 +9068,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2087"
+NAME="AEN2104"
 ></A
 ><P
 ></P
@@ -9114,7 +9121,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2100"
+NAME="AEN2117"
 ></A
 ><H3
 ><A
@@ -9151,7 +9158,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2109"
+NAME="AEN2126"
 ></A
 ><P
 ></P
@@ -9221,7 +9228,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2126"
+NAME="AEN2143"
 ></A
 ><H3
 ><A
@@ -9241,7 +9248,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   xmlSAXParseDTD                  (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const <A
@@ -9262,7 +9269,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2136"
+NAME="AEN2153"
 ></A
 ><P
 ></P
@@ -9349,7 +9356,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2157"
+NAME="AEN2174"
 ></A
 ><H3
 ><A
@@ -9369,7 +9376,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   xmlIOParseDTD                   (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              <A
@@ -9390,7 +9397,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2167"
+NAME="AEN2184"
 ></A
 ><P
 ></P
@@ -9483,7 +9490,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2189"
+NAME="AEN2206"
 ></A
 ><H3
 ><A
@@ -9504,7 +9511,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -9532,7 +9539,7 @@ the content production in the XML grammar:</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2200"
+NAME="AEN2217"
 ></A
 ><P
 ></P
@@ -9671,7 +9678,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2233"
+NAME="AEN2250"
 ></A
 ><H3
 ><A
@@ -9692,7 +9699,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -9723,7 +9730,7 @@ production labeled extParsedEnt.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2245"
+NAME="AEN2262"
 ></A
 ><P
 ></P
@@ -9879,7 +9886,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2282"
+NAME="AEN2299"
 ></A
 ><H3
 ><A
@@ -9925,7 +9932,7 @@ production labeled extParsedEnt.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2293"
+NAME="AEN2310"
 ></A
 ><P
 ></P
@@ -10030,63 +10037,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2318"
-></A
-><H3
-><A
-NAME="XMLDEFAULTSAXHANDLERINIT"
-></A
->&#62;xmlDefaultSAXHandlerInit ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlDefaultSAXHandlerInit        (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Initialize the default SAX handler</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2324"
-></A
-><H3
-><A
-NAME="HTMLDEFAULTSAXHANDLERINIT"
-></A
->&#62;htmlDefaultSAXHandlerInit ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        htmlDefaultSAXHandlerInit       (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Initialize the default SAX handler</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2330"
+NAME="AEN2335"
 ></A
 ><H3
 ><A
@@ -10116,7 +10067,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2337"
+NAME="AEN2342"
 ></A
 ><P
 ></P
@@ -10154,7 +10105,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2346"
+NAME="AEN2351"
 ></A
 ><H3
 ><A
@@ -10184,7 +10135,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2353"
+NAME="AEN2358"
 ></A
 ><P
 ></P
@@ -10222,7 +10173,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2362"
+NAME="AEN2367"
 ></A
 ><H3
 ><A
@@ -10253,7 +10204,7 @@ document in ctxt-&gt;myDoc is not freed.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2369"
+NAME="AEN2374"
 ></A
 ><P
 ></P
@@ -10291,7 +10242,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2378"
+NAME="AEN2383"
 ></A
 ><H3
 ><A
@@ -10328,7 +10279,7 @@ NULL, but the filename parameter can be</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2386"
+NAME="AEN2391"
 ></A
 ><P
 ></P
@@ -10400,7 +10351,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2403"
+NAME="AEN2408"
 ></A
 ><H3
 ><A
@@ -10433,7 +10384,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2411"
+NAME="AEN2416"
 ></A
 ><P
 ></P
@@ -10486,7 +10437,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2424"
+NAME="AEN2429"
 ></A
 ><H3
 ><A
@@ -10524,7 +10475,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2432"
+NAME="AEN2437"
 ></A
 ><P
 ></P
@@ -10596,7 +10547,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2449"
+NAME="AEN2454"
 ></A
 ><H3
 ><A
@@ -10628,7 +10579,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2456"
+NAME="AEN2461"
 ></A
 ><P
 ></P
@@ -10715,7 +10666,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2477"
+NAME="AEN2482"
 ></A
 ><H3
 ><A
@@ -10747,7 +10698,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2484"
+NAME="AEN2489"
 ></A
 ><P
 ></P
@@ -10834,7 +10785,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2505"
+NAME="AEN2510"
 ></A
 ><H3
 ><A
@@ -10854,7 +10805,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > xmlCreatePushParserCtxt    (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -10884,7 +10835,7 @@ and error/warning reports.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2515"
+NAME="AEN2520"
 ></A
 ><P
 ></P
@@ -11005,7 +10956,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2544"
+NAME="AEN2549"
 ></A
 ><H3
 ><A
@@ -11038,7 +10989,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2551"
+NAME="AEN2556"
 ></A
 ><P
 ></P
@@ -11142,7 +11093,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2576"
+NAME="AEN2581"
 ></A
 ><H3
 ><A
@@ -11162,7 +11113,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > xmlCreateIOParserCtxt      (<A
-HREF="libxml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-tree.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -11190,7 +11141,7 @@ I/O stream</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2587"
+NAME="AEN2592"
 ></A
 ><P
 ></P
@@ -11328,7 +11279,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2620"
+NAME="AEN2625"
 ></A
 ><H3
 ><A
@@ -11375,7 +11326,7 @@ a stream suitable for the parser.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2631"
+NAME="AEN2636"
 ></A
 ><P
 ></P
@@ -11462,7 +11413,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2652"
+NAME="AEN2657"
 ></A
 ><H3
 ><A
@@ -11500,7 +11451,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2661"
+NAME="AEN2666"
 ></A
 ><P
 ></P
@@ -11570,7 +11521,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2678"
+NAME="AEN2683"
 ></A
 ><H3
 ><A
@@ -11600,7 +11551,7 @@ HREF="libxml-parser.html#XMLPARSERNODEINFOSEQPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2685"
+NAME="AEN2690"
 ></A
 ><P
 ></P
@@ -11638,7 +11589,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2694"
+NAME="AEN2699"
 ></A
 ><H3
 ><A
@@ -11669,7 +11620,7 @@ HREF="libxml-parser.html#XMLPARSERNODEINFOSEQPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2701"
+NAME="AEN2706"
 ></A
 ><P
 ></P
@@ -11707,7 +11658,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2710"
+NAME="AEN2715"
 ></A
 ><H3
 ><A
@@ -11745,7 +11696,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2719"
+NAME="AEN2724"
 ></A
 ><P
 ></P
@@ -11815,7 +11766,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2736"
+NAME="AEN2741"
 ></A
 ><H3
 ><A
@@ -11849,7 +11800,7 @@ HREF="libxml-parser.html#XMLPARSERNODEINFOPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2744"
+NAME="AEN2749"
 ></A
 ><P
 ></P
@@ -11904,7 +11855,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2757"
+NAME="AEN2762"
 ></A
 ><H3
 ><A
@@ -11934,7 +11885,7 @@ HREF="libxml-parser.html#XMLEXTERNALENTITYLOADER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2764"
+NAME="AEN2769"
 ></A
 ><P
 ></P
@@ -11972,7 +11923,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2773"
+NAME="AEN2778"
 ></A
 ><H3
 ><A
@@ -12003,7 +11954,7 @@ HREF="libxml-parser.html#XMLEXTERNALENTITYLOADER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2780"
+NAME="AEN2785"
 ></A
 ><P
 ></P
@@ -12039,7 +11990,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2789"
+NAME="AEN2794"
 ></A
 ><H3
 ><A
@@ -12063,7 +12014,7 @@ HREF="libxml-tree.html#XMLPARSERINPUTPTR"
                                              <A
 HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
-> context);</PRE
+> ctxt);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -12076,7 +12027,7 @@ TODO: a more generic External entity API must be designed</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2797"
+NAME="AEN2802"
 ></A
 ><P
 ></P
@@ -12130,14 +12081,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->context</I
+>ctxt</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the context in which the entity is called or NULL</TD
 ></TR
 ><TR
 ><TD

@@ -4425,7 +4425,15 @@ xmlXPathDivValues(xmlXPathParserContextPtr ctxt) {
 
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
-    ctxt->value->floatval /= val;
+    if (val == 0) {
+	if (ctxt->value->floatval == 0)
+	    ctxt->value->floatval = xmlXPathNAN;
+	else if (ctxt->value->floatval > 0)
+	    ctxt->value->floatval = xmlXPathPINF;
+	else if (ctxt->value->floatval < 0)
+	    ctxt->value->floatval = xmlXPathNINF;
+    } else 
+	ctxt->value->floatval /= val;
 }
 
 /**

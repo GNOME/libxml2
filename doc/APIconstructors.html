@@ -95,8 +95,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <h2>Type const xmlChar *:</h2>
 <p>
 <a href="html/libxml-htmltree.html#HTMLGETMETAENCODING">htmlGetMetaEncoding</a>
-<a href="html/libxml-sax.html#GETPUBLICID">getPublicId</a>
-<a href="html/libxml-sax.html#GETSYSTEMID">getSystemId</a>
 <a href="html/libxml-catalog.html#XMLCATALOGGETSYSTEM">xmlCatalogGetSystem</a>
 <a href="html/libxml-catalog.html#XMLCATALOGGETPUBLIC">xmlCatalogGetPublic</a>
 <a href="html/libxml-entities.html#XMLENCODEENTITIES">xmlEncodeEntities</a>
@@ -105,6 +103,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#XMLSTRCASESTR">xmlStrcasestr</a>
 <a href="html/libxml-tree.html#XMLBUFFERCONTENT">xmlBufferContent</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNSLOOKUP">xmlXPathNsLookup</a>
+<a href="html/libxml-sax.html#GETPUBLICID">getPublicId</a>
+<a href="html/libxml-sax.html#GETSYSTEMID">getSystemId</a>
 </p>
 <h2>Type const xmlParserNodeInfo *:</h2>
 <p>
@@ -291,6 +291,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-uri.html#XMLURIESCAPE">xmlURIEscape</a>
 <a href="html/libxml-valid.html#XMLSPLITQNAME2">xmlSplitQName2</a>
 <a href="html/libxml-valid.html#XMLVALIDNORMALIZEATTRIBUTEVALUE">xmlValidNormalizeAttributeValue</a>
+<a href="html/libxml-valid.html#XMLVALIDCTXTNORMALIZEATTRIBUTEVALUE">xmlValidCtxtNormalizeAttributeValue</a>
 <a href="html/libxml-xpath.html#XMLXPATHCASTBOOLEANTOSTRING">xmlXPathCastBooleanToString</a>
 <a href="html/libxml-xpath.html#XMLXPATHCASTNUMBERTOSTRING">xmlXPathCastNumberToString</a>
 <a href="html/libxml-xpath.html#XMLXPATHCASTNODETOSTRING">xmlXPathCastNodeToString</a>
@@ -363,8 +364,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 </p>
 <h2>Type xmlEntityPtr:</h2>
 <p>
-<a href="html/libxml-sax.html#GETENTITY">getEntity</a>
-<a href="html/libxml-sax.html#GETPARAMETERENTITY">getParameterEntity</a>
 <a href="html/libxml-entities.html#XMLADDDOCENTITY">xmlAddDocEntity</a>
 <a href="html/libxml-entities.html#XMLADDDTDENTITY">xmlAddDtdEntity</a>
 <a href="html/libxml-entities.html#XMLGETPREDEFINEDENTITY">xmlGetPredefinedEntity</a>
@@ -374,6 +373,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#GETENTITYSAXFUNC">getEntitySAXFunc</a>
 <a href="html/libxml-parser.html#GETPARAMETERENTITYSAXFUNC">getParameterEntitySAXFunc</a>
 <a href="html/libxml-parserinternals.html#XMLPARSEENTITYREF">xmlParseEntityRef</a>
+<a href="html/libxml-sax.html#GETENTITY">getEntity</a>
+<a href="html/libxml-sax.html#GETPARAMETERENTITY">getParameterEntity</a>
 </p>
 <h2>Type xmlEnumerationPtr:</h2>
 <p>
@@ -484,7 +485,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xpathinternals.html#XMLXPATHTRAILINGSORTED">xmlXPathTrailingSorted</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNODETRAILING">xmlXPathNodeTrailing</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHTRAILING">xmlXPathTrailing</a>
-<a href="html/libxml-xpath.html#XMLXPATHNODESETCREATE">xmlXPathNodeSetCreate</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNODESETMERGE">xmlXPathNodeSetMerge</a>
 </p>
 <h2>Type xmlNotationPtr:</h2>
@@ -498,13 +498,13 @@ A:link, A:visited, A:active { text-decoration: underline }
 </p>
 <h2>Type xmlNsPtr:</h2>
 <p>
-<a href="html/libxml-sax.html#GETNAMESPACE">getNamespace</a>
 <a href="html/libxml-tree.html#XMLNEWGLOBALNS">xmlNewGlobalNs</a>
 <a href="html/libxml-tree.html#XMLNEWNS">xmlNewNs</a>
 <a href="html/libxml-tree.html#XMLSEARCHNS">xmlSearchNs</a>
 <a href="html/libxml-tree.html#XMLSEARCHNSBYHREF">xmlSearchNsByHref</a>
 <a href="html/libxml-tree.html#XMLCOPYNAMESPACE">xmlCopyNamespace</a>
 <a href="html/libxml-tree.html#XMLCOPYNAMESPACELIST">xmlCopyNamespaceList</a>
+<a href="html/libxml-sax.html#GETNAMESPACE">getNamespace</a>
 </p>
 <h2>Type xmlNsPtr *:</h2>
 <p>
@@ -540,7 +540,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 </p>
 <h2>Type xmlParserInputPtr:</h2>
 <p>
-<a href="html/libxml-sax.html#RESOLVEENTITY">resolveEntity</a>
 <a href="html/libxml-parser.html#RESOLVEENTITYSAXFUNC">resolveEntitySAXFunc</a>
 <a href="html/libxml-parser.html#XMLEXTERNALENTITYLOADER">xmlExternalEntityLoader</a>
 <a href="html/libxml-parser.html#XMLNEWIOINPUTSTREAM">xmlNewIOInputStream</a>
@@ -551,6 +550,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parserinternals.html#XMLNEWINPUTSTREAM">xmlNewInputStream</a>
 <a href="html/libxml-parserinternals.html#INPUTPOP">inputPop</a>
 <a href="html/libxml-xmlio.html#XMLNONETEXTERNALENTITYLOADER">xmlNoNetExternalEntityLoader</a>
+<a href="html/libxml-sax.html#RESOLVEENTITY">resolveEntity</a>
 </p>
 <h2>Type xmlRMutexPtr:</h2>
 <p>
@@ -571,7 +571,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 </p>
 <h2>Type xmlXPathContextPtr:</h2>
 <p>
-<a href="html/libxml-xpath.html#XMLXPATHNEWCONTEXT">xmlXPathNewContext</a>
 <a href="html/libxml-xpath.html#XMLXPATHNEWCONTEXT">xmlXPathNewContext</a>
 <a href="html/libxml-xpointer.html#XMLXPTRNEWCONTEXT">xmlXPtrNewContext</a>
 </p>
@@ -603,14 +602,9 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xpathinternals.html#XMLXPATHNEWBOOLEAN">xmlXPathNewBoolean</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNEWNODESET">xmlXPathNewNodeSet</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNEWVALUETREE">xmlXPathNewValueTree</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHNEWNODESET">xmlXPathNewNodeSet</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNEWNODESETLIST">xmlXPathNewNodeSetList</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHWRAPNODESET">xmlXPathWrapNodeSet</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHWRAPEXTERNAL">xmlXPathWrapExternal</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHNEWFLOAT">xmlXPathNewFloat</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHNEWBOOLEAN">xmlXPathNewBoolean</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHNEWSTRING">xmlXPathNewString</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHNEWCSTRING">xmlXPathNewCString</a>
 <a href="html/libxml-xpointer.html#XMLXPTRNEWRANGE">xmlXPtrNewRange</a>
 <a href="html/libxml-xpointer.html#XMLXPTRNEWRANGEPOINTS">xmlXPtrNewRangePoints</a>
 <a href="html/libxml-xpointer.html#XMLXPTRNEWRANGENODEPOINT">xmlXPtrNewRangeNodePoint</a>

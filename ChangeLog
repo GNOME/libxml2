@@ -1,3 +1,10 @@
+Fri Dec 10 11:24:41 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixed ID deallocation problem based on patch from
+	  Steve Shepard fixes bug #160893
+	* xmlmemory.c: improving comment.
+	* testapi.c: new test for xmlDictExists() is generated.
+
 Wed Dec  1 22:35:37 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* dict.c, xpath.c, include/libxml/hash.h: fixed up some gcc warnings,

@@ -229,6 +229,7 @@ schemaNewParserCtxt()
 schemaCleanupTypes()
 schemaCollapseString()
 schemaInitTypes()
+schemaWhiteSpaceReplace()
 
 # functions from module xmlstring
 UTF8Charcmp()

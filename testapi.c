@@ -8046,6 +8046,52 @@ test_xmlDictCreateSub(void) {
 
 
 static int
+test_xmlDictExists(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    const xmlChar * ret_val;
+    xmlDictPtr dict; /* the dictionnary */
+    int n_dict;
+    xmlChar * name; /* the name of the userdata */
+    int n_name;
+    int len; /* the length of the name, if -1 it is recomputed */
+    int n_len;
+
+    for (n_dict = 0;n_dict < gen_nb_xmlDictPtr;n_dict++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_len = 0;n_len < gen_nb_int;n_len++) {
+        mem_base = xmlMemBlocks();
+        dict = gen_xmlDictPtr(n_dict, 0);
+        name = gen_const_xmlChar_ptr(n_name, 1);
+        len = gen_int(n_len, 2);
+
+        ret_val = xmlDictExists(dict, (const xmlChar *)name, len);
+        desret_const_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlDictPtr(n_dict, dict, 0);
+        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
+        des_int(n_len, len, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlDictExists",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_dict);
+            printf(" %d", n_name);
+            printf(" %d", n_len);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlDictLookup(void) {
     int test_ret = 0;
 
@@ -8244,9 +8290,10 @@ static int
 test_dict(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing dict : 7 of 8 functions ...\n");
+    if (quiet == 0) printf("Testing dict : 8 of 9 functions ...\n");
     test_ret += test_xmlDictCreate();
     test_ret += test_xmlDictCreateSub();
+    test_ret += test_xmlDictExists();
     test_ret += test_xmlDictLookup();
     test_ret += test_xmlDictOwns();
     test_ret += test_xmlDictQLookup();
@@ -32686,11 +32733,45 @@ test_xmlSchemaValidatePredefinedType(void) {
     return(test_ret);
 }
 
+
+static int
+test_xmlSchemaWhiteSpaceReplace(void) {
+    int test_ret = 0;
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlChar * value; /* a value */
+    int n_value;
+
+    for (n_value = 0;n_value < gen_nb_const_xmlChar_ptr;n_value++) {
+        mem_base = xmlMemBlocks();
+        value = gen_const_xmlChar_ptr(n_value, 0);
+
+        ret_val = xmlSchemaWhiteSpaceReplace((const xmlChar *)value);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_const_xmlChar_ptr(n_value, (const xmlChar *)value, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlSchemaWhiteSpaceReplace",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_value);
+            printf("\n");
+        }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
 static int
 test_xmlschemastypes(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlschemastypes : 16 of 19 functions ...\n");
+    if (quiet == 0) printf("Testing xmlschemastypes : 17 of 20 functions ...\n");
     test_ret += test_xmlSchemaCheckFacet();
     test_ret += test_xmlSchemaCleanupTypes();
     test_ret += test_xmlSchemaCollapseString();
@@ -32708,6 +32789,7 @@ test_xmlschemastypes(void) {
     test_ret += test_xmlSchemaValidateLengthFacet();
     test_ret += test_xmlSchemaValidateListSimpleTypeFacet();
     test_ret += test_xmlSchemaValidatePredefinedType();
+    test_ret += test_xmlSchemaWhiteSpaceReplace();
 
     if (test_ret != 0)
 	printf("Module xmlschemastypes: %d errors\n", test_ret);

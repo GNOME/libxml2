@@ -744,7 +744,7 @@ name characters.
 | <nt def='NT-CombiningChar'>CombiningChar</nt> 
 | <nt def='NT-Extender'>Extender</nt></rhs>
 </prod>
-<prod id='NT-Name'><lhs>Name</lhs>
+<prod id='NT-Name'><lhs>Name</lhs> 
 <rhs>(<nt def='NT-Letter'>Letter</nt> | '_' | ':')
 (<nt def='NT-NameChar'>NameChar</nt>)*</rhs></prod>
 <prod id='NT-Names'><lhs>Names</lhs>

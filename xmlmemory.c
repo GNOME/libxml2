@@ -863,7 +863,8 @@ xmlInitMemory(void)
 /**
  * xmlCleanupMemory:
  *
- * Free up all the memory associated with memorys
+ * Free up all the memory allocated by the library for its own
+ * use. This should not be called by user level code.
  */
 void
 xmlCleanupMemory(void) {

@@ -52,7 +52,7 @@ char *	<a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str)
 <h2>Description</h2>
 <h3><a name="DEBUG_MEMORY" id="DEBUG_MEMORY"></a>Macro: DEBUG_MEMORY</h3><pre>#define DEBUG_MEMORY</pre><p><a href="libxml-xmlmemory.html#DEBUG_MEMORY">DEBUG_MEMORY</a> replaces the allocator with a collect and debug shell to the libc allocator. <a href="libxml-xmlmemory.html#DEBUG_MEMORY">DEBUG_MEMORY</a> should only be activated when debugging libxml i.e. if libxml has been configured with --with-debug-mem too. #define DEBUG_MEMORY_FREED #define <a href="libxml-xmlversion.html#DEBUG_MEMORY_LOCATION">DEBUG_MEMORY_LOCATION</a></p>
 <h3><a name="xmlCleanupMemory" id="xmlCleanupMemory"></a>Function: xmlCleanupMemory</h3><pre class="programlisting">void	xmlCleanupMemory		(void)<br />
-</pre><p>Free up all the memory associated with memorys</p>
+</pre><p>Free up all the memory allocated by the library for its own use. This should not be called by user level code.</p>
 <h3><a name="xmlFreeFunc" id="xmlFreeFunc"></a>Function type: xmlFreeFunc</h3><pre class="programlisting">Function type: xmlFreeFunc
 void	xmlFreeFunc			(void * mem)
 </pre><p>Signature for a free() implementation.</p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>mem</tt></i>:</span></td><td>an already allocated block of memory</td></tr></tbody></table></div><br />

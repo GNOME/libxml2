@@ -136,6 +136,7 @@
     <reference name='XML_C14N_CREATE_STACK' href='html/libxml-xmlerror.html#XML_C14N_CREATE_STACK'/>
     <reference name='XML_C14N_INVALID_NODE' href='html/libxml-xmlerror.html#XML_C14N_INVALID_NODE'/>
     <reference name='XML_C14N_REQUIRES_UTF8' href='html/libxml-xmlerror.html#XML_C14N_REQUIRES_UTF8'/>
+    <reference name='XML_CAST_FPTR' href='html/libxml-hash.html#XML_CAST_FPTR'/>
     <reference name='XML_CATALOGS_NAMESPACE' href='html/libxml-catalog.html#XML_CATALOGS_NAMESPACE'/>
     <reference name='XML_CATALOG_ENTRY_BROKEN' href='html/libxml-xmlerror.html#XML_CATALOG_ENTRY_BROKEN'/>
     <reference name='XML_CATALOG_MISSING_ATTR' href='html/libxml-xmlerror.html#XML_CATALOG_MISSING_ATTR'/>
@@ -1735,6 +1736,7 @@
     <reference name='xmlDict' href='html/libxml-dict.html#xmlDict'/>
     <reference name='xmlDictCreate' href='html/libxml-dict.html#xmlDictCreate'/>
     <reference name='xmlDictCreateSub' href='html/libxml-dict.html#xmlDictCreateSub'/>
+    <reference name='xmlDictExists' href='html/libxml-dict.html#xmlDictExists'/>
     <reference name='xmlDictFree' href='html/libxml-dict.html#xmlDictFree'/>
     <reference name='xmlDictLookup' href='html/libxml-dict.html#xmlDictLookup'/>
     <reference name='xmlDictOwns' href='html/libxml-dict.html#xmlDictOwns'/>
@@ -2537,6 +2539,7 @@
     <reference name='xmlSchemaValidateStream' href='html/libxml-xmlschemas.html#xmlSchemaValidateStream'/>
     <reference name='xmlSchemaValidityErrorFunc' href='html/libxml-xmlschemas.html#xmlSchemaValidityErrorFunc'/>
     <reference name='xmlSchemaValidityWarningFunc' href='html/libxml-xmlschemas.html#xmlSchemaValidityWarningFunc'/>
+    <reference name='xmlSchemaWhiteSpaceReplace' href='html/libxml-xmlschemastypes.html#xmlSchemaWhiteSpaceReplace'/>
     <reference name='xmlSchemaWildcard' href='html/libxml-schemasInternals.html#xmlSchemaWildcard'/>
     <reference name='xmlSchemaWildcardNs' href='html/libxml-schemasInternals.html#xmlSchemaWildcardNs'/>
     <reference name='xmlSchemaWildcardNsPtr' href='html/libxml-schemasInternals.html#xmlSchemaWildcardNsPtr'/>
@@ -3392,6 +3395,7 @@
       <ref name='XML_C14N_CREATE_STACK'/>
       <ref name='XML_C14N_INVALID_NODE'/>
       <ref name='XML_C14N_REQUIRES_UTF8'/>
+      <ref name='XML_CAST_FPTR'/>
       <ref name='XML_CATALOGS_NAMESPACE'/>
       <ref name='XML_CATALOG_ENTRY_BROKEN'/>
       <ref name='XML_CATALOG_MISSING_ATTR'/>
@@ -5027,6 +5031,7 @@
       <ref name='xmlDict'/>
       <ref name='xmlDictCreate'/>
       <ref name='xmlDictCreateSub'/>
+      <ref name='xmlDictExists'/>
       <ref name='xmlDictFree'/>
       <ref name='xmlDictLookup'/>
       <ref name='xmlDictOwns'/>
@@ -5829,6 +5834,7 @@
       <ref name='xmlSchemaValidateStream'/>
       <ref name='xmlSchemaValidityErrorFunc'/>
       <ref name='xmlSchemaValidityWarningFunc'/>
+      <ref name='xmlSchemaWhiteSpaceReplace'/>
       <ref name='xmlSchemaWildcard'/>
       <ref name='xmlSchemaWildcardNs'/>
       <ref name='xmlSchemaWildcardNsPtr'/>
@@ -6543,6 +6549,7 @@
       <ref name='xmlBufferContent'/>
       <ref name='xmlCatalogGetPublic'/>
       <ref name='xmlCatalogGetSystem'/>
+      <ref name='xmlDictExists'/>
       <ref name='xmlDictLookup'/>
       <ref name='xmlDictQLookup'/>
       <ref name='xmlEncodeEntities'/>
@@ -6781,6 +6788,7 @@
       <ref name='xmlSaveUri'/>
       <ref name='xmlScanName'/>
       <ref name='xmlSchemaCollapseString'/>
+      <ref name='xmlSchemaWhiteSpaceReplace'/>
       <ref name='xmlSplitQName'/>
       <ref name='xmlSplitQName2'/>
       <ref name='xmlStrcat'/>
@@ -7470,6 +7478,7 @@
       <ref name='xmlCreateIntSubset'/>
       <ref name='xmlCtxtReadDoc'/>
       <ref name='xmlDebugDumpString'/>
+      <ref name='xmlDictExists'/>
       <ref name='xmlDictLookup'/>
       <ref name='xmlDictOwns'/>
       <ref name='xmlDictQLookup'/>
@@ -7595,6 +7604,7 @@
       <ref name='xmlSchemaValidateLengthFacet'/>
       <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
       <ref name='xmlSchemaValidatePredefinedType'/>
+      <ref name='xmlSchemaWhiteSpaceReplace'/>
       <ref name='xmlSearchNs'/>
       <ref name='xmlSearchNsByHref'/>
       <ref name='xmlSetNsProp'/>
@@ -8387,6 +8397,7 @@
     </type>
     <type name='xmlDictPtr'>
       <ref name='xmlDictCreateSub'/>
+      <ref name='xmlDictExists'/>
       <ref name='xmlDictFree'/>
       <ref name='xmlDictLookup'/>
       <ref name='xmlDictOwns'/>
@@ -10049,6 +10060,7 @@
       <ref name='xmlDict'/>
       <ref name='xmlDictCreate'/>
       <ref name='xmlDictCreateSub'/>
+      <ref name='xmlDictExists'/>
       <ref name='xmlDictFree'/>
       <ref name='xmlDictLookup'/>
       <ref name='xmlDictOwns'/>
@@ -10204,6 +10216,7 @@
       <ref name='xmlTreeIndentString'/>
     </file>
     <file name='hash'>
+      <ref name='XML_CAST_FPTR'/>
       <ref name='xmlHashAddEntry'/>
       <ref name='xmlHashAddEntry2'/>
       <ref name='xmlHashAddEntry3'/>
@@ -12433,6 +12446,7 @@
       <ref name='xmlSchemaValidateLengthFacet'/>
       <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
       <ref name='xmlSchemaValidatePredefinedType'/>
+      <ref name='xmlSchemaWhiteSpaceReplace'/>
     </file>
     <file name='xmlstring'>
       <ref name='BAD_CAST'/>
@@ -16058,6 +16072,9 @@
           <ref name='xmlNodeSetContent'/>
           <ref name='xmlNodeSetContentLen'/>
         </word>
+        <word name='Replaces'>
+          <ref name='xmlSchemaWhiteSpaceReplace'/>
+        </word>
         <word name='Required'>
           <ref name='_htmlElemDesc'/>
           <ref name='htmlAttrAllowed'/>
@@ -18369,6 +18386,9 @@
           <ref name='CAST_TO_STRING'/>
           <ref name='xmlXPathConvertFunc'/>
         </word>
+        <word name='casting'>
+          <ref name='XML_CAST_FPTR'/>
+        </word>
         <word name='cat'>
           <ref name='xmlShellCat'/>
         </word>
@@ -18407,6 +18427,7 @@
           <ref name='xmlResetLastError'/>
           <ref name='xmlSchemaCollapseString'/>
           <ref name='xmlSchemaParse'/>
+          <ref name='xmlSchemaWhiteSpaceReplace'/>
           <ref name='xmlSubstituteEntitiesDefault'/>
           <ref name='xmlSwitchEncoding'/>
           <ref name='xmlSwitchInputEncoding'/>
@@ -19805,6 +19826,7 @@
           <ref name='_xmlXPathContext'/>
           <ref name='xmlDictCreate'/>
           <ref name='xmlDictCreateSub'/>
+          <ref name='xmlDictExists'/>
           <ref name='xmlDictFree'/>
           <ref name='xmlDictLookup'/>
           <ref name='xmlDictOwns'/>
@@ -20286,6 +20308,9 @@
         <word name='encountered'>
           <ref name='xmlEncodeEntities'/>
         </word>
+        <word name='encountering'>
+          <ref name='XML_CAST_FPTR'/>
+        </word>
         <word name='end-tag'>
           <ref name='xmlParseElement'/>
         </word>
@@ -20583,6 +20608,7 @@
           <ref name='xmlXPtrLocationSetAdd'/>
         </word>
         <word name='exists'>
+          <ref name='xmlDictExists'/>
           <ref name='xmlShellPwd'/>
           <ref name='xmlTextReaderConstXmlLang'/>
           <ref name='xmlTextReaderXmlLang'/>
@@ -21181,6 +21207,9 @@
         <word name='garbage'>
           <ref name='xmlGcMemGet'/>
           <ref name='xmlGcMemSetup'/>
+        </word>
+        <word name='gcc'>
+          <ref name='XML_CAST_FPTR'/>
         </word>
         <word name='genChRanges'>
           <ref name='xmlIsBaseCharQ'/>
@@ -22501,6 +22530,7 @@
           <ref name='_xmlDoc'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlCatalogSetDebug'/>
+          <ref name='xmlCleanupMemory'/>
           <ref name='xmlDebugDumpAttr'/>
           <ref name='xmlDebugDumpAttrList'/>
           <ref name='xmlDebugDumpNode'/>
@@ -22537,6 +22567,7 @@
         <word name='library'>
           <ref name='_xmlError'/>
           <ref name='_xmlSchema'/>
+          <ref name='xmlCleanupMemory'/>
           <ref name='xmlCleanupParser'/>
           <ref name='xmlCleanupThreads'/>
           <ref name='xmlInitThreads'/>
@@ -22994,9 +23025,6 @@
         <word name='memorylist'>
           <ref name='xmlMemDisplay'/>
           <ref name='xmlMemoryDump'/>
-        </word>
-        <word name='memorys'>
-          <ref name='xmlCleanupMemory'/>
         </word>
         <word name='merged'>
           <ref name='xmlTextMerge'/>
@@ -23970,6 +23998,7 @@
           <ref name='_xmlParserCtxt'/>
           <ref name='resolveEntity'/>
           <ref name='resolveEntitySAXFunc'/>
+          <ref name='xmlCleanupMemory'/>
           <ref name='xmlSAX2ResolveEntity'/>
         </word>
         <word name='owned'>
@@ -24916,6 +24945,7 @@
         <word name='recomputed'>
           <ref name='xmlBufferAdd'/>
           <ref name='xmlBufferAddHead'/>
+          <ref name='xmlDictExists'/>
           <ref name='xmlDictLookup'/>
         </word>
         <word name='reconciliate'>
@@ -25304,6 +25334,7 @@
           <ref name='htmlRequiredAttrs'/>
           <ref name='xmlCatalogSetDebug'/>
           <ref name='xmlSchemaCollapseString'/>
+          <ref name='xmlSchemaWhiteSpaceReplace'/>
           <ref name='xmlXPathStringFunction'/>
         </word>
         <word name='requires'>
@@ -27581,6 +27612,7 @@
           <ref name='xmlCheckVersion'/>
         </word>
         <word name='warning'>
+          <ref name='XML_CAST_FPTR'/>
           <ref name='_xmlValidCtxt'/>
           <ref name='docbCreatePushParserCtxt'/>
           <ref name='htmlCreatePushParserCtxt'/>
@@ -27782,6 +27814,7 @@
           <ref name='xmlXPathIntersection'/>
         </word>
         <word name='without'>
+          <ref name='XML_CAST_FPTR'/>
           <ref name='_xmlEntity'/>
           <ref name='entityDecl'/>
           <ref name='entityDeclSAXFunc'/>

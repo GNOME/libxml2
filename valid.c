@@ -2639,7 +2639,7 @@ xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
 	xmlFree(ID);
 	return(-1);
     }
-    xmlHashUpdateEntry(table, ID, NULL, (xmlHashDeallocator) xmlFreeID);
+    xmlHashRemoveEntry(table, ID, (xmlHashDeallocator) xmlFreeID);
     xmlFree(ID);
     return(0);
 }

@@ -1,3 +1,8 @@
+Mon Jan 21 09:55:21 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c include/libxml/xpathInternals.h: the change made to
+	  xmlXPathFuncLookupFunc was incompatible roll it back
+
 Sun Jan 20 23:03:41 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: cleanup patch from Anthony Jones

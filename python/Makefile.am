@@ -31,7 +31,6 @@ mylibs = \
 
 all-local:	libxml2.py
 
-pythondir = $(libdir)/python${PYTHON_VERSION}/site-packages
 python_LTLIBRARIES = libxml2mod.la
 
 libxml2mod_la_SOURCES = libxml.c types.c libxml2-py.c
@@ -41,9 +40,9 @@ libxml2.py: $(srcdir)/libxml.py $(srcdir)/libxml2class.py
 	cat $(srcdir)/libxml.py $(srcdir)/libxml2class.py > libxml2.py
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(libdir)/python${PYTHON_VERSION}/site-packages
-	@INSTALL@ -m 0644 libxml2.py $(DESTDIR)$(libdir)/python${PYTHON_VERSION}/site-packages
-	@INSTALL@ -m 0644 drv_libxml2.py $(DESTDIR)$(libdir)/python${PYTHON_VERSION}/site-packages
+	$(mkinstalldirs) $(DESTDIR)$(pythondir)
+	@INSTALL@ -m 0644 libxml2.py $(DESTDIR)$(pythondir)
+	@INSTALL@ -m 0644 drv_libxml2.py $(DESTDIR)$(pythondir)
 	$(mkinstalldirs) $(DESTDIR)$(DOCS_DIR)
 	@(for doc in $(DOCS) ; \
 	   do @INSTALL@ -m 0644 $$doc $(DESTDIR)$(DOCS_DIR) ; done)

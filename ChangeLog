@@ -1,3 +1,9 @@
+Wed May 14 14:56:46 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in libxml.spec.in python/Makefile.am: trying
+	  to conciliate --with-python= requirements and RPM builds,
+	  a PITA really...
+
 Tue May 13 18:30:34 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: oops last commit introduced a memory leak.

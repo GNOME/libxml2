@@ -251,6 +251,7 @@ PYTHON=
 PYTHON_VERSION=
 PYTHON_INCLUDES=
 PYTHON_SITE_PACKAGES=
+pythondir=
 AC_ARG_WITH(python,
 [  --with-python[[=DIR]]     build Python bindings if found])
 if test "$with_python" != "no" ; then
@@ -299,6 +300,12 @@ if test "$with_python" != "no" ; then
 	    fi
 	fi
     fi
+    if test "$with_python" != ""
+    then
+        pythondir='$(PYTHON_SITE_PACKAGES)'
+    else
+        pythondir='$(libdir)/python${PYTHON_VERSION}/site-packages'
+    fi
 fi
 AM_CONDITIONAL(WITH_PYTHON, test "$PYTHON_INCLUDES" != "")
 if test "$PYTHON_INCLUDES" != ""
@@ -307,6 +314,7 @@ then
 else
     PYTHON_SUBDIR=
 fi
+AC_SUBST(pythondir)
 AC_SUBST(PYTHON_SUBDIR)
 
 dnl

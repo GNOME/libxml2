@@ -1,7 +1,7 @@
 <html>
 <head>
   <title>Libxml Input/Output handling</title>
-  <meta name="GENERATOR" content="amaya V4.0">
+  <meta name="GENERATOR" content="amaya V4.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -39,7 +39,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
 <p>DTD is the acronym for Document Type Definition. This is a description of
 the content for a familly of XML files. This is part of the XML 1.0
 specification, and alows to describe and check that a given document instance
-conforms to a set of rules detailing its structure and content.  </p>
+conforms to a set of rules detailing its structure and content.</p>
 
 <h2><a name="definition">The definition</a></h2>
 
@@ -73,15 +73,15 @@ of the directory from where the document were loaded:</p>
 
 <p><code>&lt;!DOCTYPE spec SYSTEM "dtds/mydtd"&gt;</code></p>
 
-<p>Notes: </p>
+<p>Notes:</p>
 <ul>
-  <li>the system string is actually an URI-Reference (as defined in RFC 2396)
-    so you can use a full URL string indicating the location of your DTD on
-    the Web, this is a really good thing to do if you want others to validate
-    your document</li>
+  <li>the system string is actually an URI-Reference (as defined in <a
+    href="http://www.ietf.org/rfc/rfc2396.txt">RFC 2396</a>) so you can use a
+    full URL string indicating the location of your DTD on the Web, this is a
+    really good thing to do if you want others to validate your document</li>
   <li>it is also possible to associate a <code>PUBLIC</code> identifier (a
     magic string) so that the DTd is looked up in catalogs on the client side
-    without having to locate it on the web </li>
+    without having to locate it on the web</li>
   <li>a dtd contains a set of elements and attributes declarations, but they
     don't define what the root of the document should be. This is explicitely
     told to the parser/validator as the first element of the
@@ -94,16 +94,17 @@ of the directory from where the document were loaded:</p>
 
 <p><code>&lt;!ELEMENT spec (front, body, back?)&gt;</code></p>
 
-<p>it also expresses that the spec element contains one front, one body and
-one optionnal back in this order. The declaration of one element of the
-structure and its content are done in a single declaration. Similary the
-following declares <code>div1</code> elements:</p>
+<p>it also expresses that the spec element contains one <code>front</code>,
+one <code>body</code> and one optionnal <code>back</code> children elements in
+this order. The declaration of one element of the structure and its content
+are done in a single declaration. Similary the following declares
+<code>div1</code> elements:</p>
 
 <p><code>&lt;!ELEMENT div1 (head, (p | list | note)*, div2*)&gt;</code></p>
 
-<p>means div1 contains one head then a series of optional p, lists and notes
-and then an optional div2. And last but not least an element can contain
-text:</p>
+<p>means div1 contains one <code>head</code> then a series of optional
+<code>p</code>, <code>list</code>s and <code>note</code>s and then an optional
+<code>div2</code>. And last but not least an element can contain text:</p>
 
 <p><code>&lt;!ELEMENT b (#PCDATA)&gt;</code></p>
 
@@ -112,7 +113,7 @@ in no particular order):</p>
 
 <p><code>&lt;!ELEMENT p (#PCDATA|a|ul|b|i|em)*&gt;</code></p>
 
-<p> <code>p </code>can contain text or <code>a</code>, <code>ul</code>,
+<p><code>p </code>can contain text or <code>a</code>, <code>ul</code>,
 <code>b</code>, <code>i </code>or <code>em</code> elements in no particular
 order.</p>
 
@@ -132,7 +133,7 @@ set:</p>
 
 <p>means <code>list</code> element have a <code>type</code> attribute with 3
 allowed values "bullets", "ordered" or "glossary" and which default to
-"ordered" if the attribute is not explicitely specified. </p>
+"ordered" if the attribute is not explicitely specified.</p>
 
 <p>The content type of an attribute can be text (<code>CDATA</code>),
 anchor/reference/references
@@ -148,6 +149,19 @@ type <code>ID</code>, usable for reference from attribute of type IDREF:</p>
 </code>meaning that the attribute has to be given, <code>#IMPLIED</code>
 meaning that it is optional, or the default value (possibly prefixed by
 <code>#FIXED</code> if it is the only allowed).</p>
+
+<p>Notes:</p>
+<ul>
+  <li>usually the attributes pertaining to a given element are declared in a
+    single expression, but it is just a convention adopted by a lot of DTD
+    writers:
+    <pre>&lt;!ATTLIST termdef
+          id      ID      #REQUIRED
+          name    CDATA   #IMPLIED&gt;</pre>
+    <p>The previous construct defines both <code>id</code> and
+    <code>name</code> attributes for the element <code>termdef</code></p>
+  </li>
+</ul>
 
 <h2><a name="Some">Some examples</a></h2>
 

@@ -1986,7 +1986,7 @@ xmlFindCharEncodingHandler(const char *name) {
     }
 
     /*
-     * If nothing was found and it is "UTF-16" then use the Little indian
+     * If nothing was found and it is "UTF-16" then use the Little endian
      * version.
      */
     if ((xmlStrEqual(BAD_CAST upper, BAD_CAST "UTF-16")) ||

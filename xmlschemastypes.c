@@ -222,6 +222,28 @@ static xmlSchemaTypePtr xmlSchemaTypeNotationDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNmtokenDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNmtokensDef = NULL;
 
+/************************************************************************
+ *									*
+ * 			Datatype error handlers				*
+ *									*
+ ************************************************************************/
+/**
+ * xmlSchemaTypeErrMemory:
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+static void
+xmlSchemaTypeErrMemory(xmlNodePtr node, const char *extra)
+{
+    __xmlSimpleError(XML_FROM_DATATYPE, XML_ERR_NO_MEMORY, node, NULL, extra);
+}
+
+/************************************************************************
+ *									*
+ * 			Base types support				*
+ *									*
+ ************************************************************************/
 /*
  * xmlSchemaInitBasicType:
  * @name:  the type name
@@ -235,8 +257,7 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type) {
 
     ret = (xmlSchemaTypePtr) xmlMalloc(sizeof(xmlSchemaType));
     if (ret == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"Could not initilize type %s: out of memory\n", name);
+        xmlSchemaTypeErrMemory(NULL, "could not initialize basic types");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlSchemaType));
@@ -1607,14 +1628,10 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                     if (type == xmlSchemaTypeFloatDef) {
                         v = xmlSchemaNewValue(XML_SCHEMAS_FLOAT);
                         if (v != NULL) {
-                            if (sscanf
-                                ((const char *) value, "%f",
+                            if (sscanf((const char *) value, "%f",
                                  &(v->value.f)) == 1) {
                                 *val = v;
                             } else {
-                                xmlGenericError(xmlGenericErrorContext,
-                                                "failed to scanf float %s\n",
-                                                value);
                                 xmlSchemaFreeValue(v);
                                 goto return1;
                             }
@@ -1624,14 +1641,10 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                     } else {
                         v = xmlSchemaNewValue(XML_SCHEMAS_DOUBLE);
                         if (v != NULL) {
-                            if (sscanf
-                                ((const char *) value, "%lf",
+                            if (sscanf((const char *) value, "%lf",
                                  &(v->value.d)) == 1) {
                                 *val = v;
                             } else {
-                                xmlGenericError(xmlGenericErrorContext,
-                                                "failed to scanf double %s\n",
-                                                value);
                                 xmlSchemaFreeValue(v);
                                 goto return1;
                             }
@@ -2008,6 +2021,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 
                     cur = xmlStrdup(value);
                     if (cur == NULL) {
+		        xmlSchemaTypeErrMemory(node, "allocating hexbin data");
                         xmlFree(v);
                         goto return1;
                     }
@@ -2135,10 +2149,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                         (xmlChar *) xmlMallocAtomic((i + pad + 1) *
                                                     sizeof(xmlChar));
                     if (base == NULL) {
-                        xmlGenericError(xmlGenericErrorContext,
-                                        "malloc of %ld byte failed\n",
-                                        (i + pad +
-                                         1) * (long) sizeof(xmlChar));
+		        xmlSchemaTypeErrMemory(node, "allocating base64 data");
                         xmlFree(v);
                         goto return1;
                     }

@@ -402,7 +402,6 @@ XPtrtests : testXPath$(EXEEXT)
 XIncludetests : xmllint$(EXEEXT)
 	@(echo > .memdump)
 	@echo "## XInclude regression tests"
-	@echo "## the warning reported on fallback.xml test is expected"
 	-@(for i in $(srcdir)/test/XInclude/docs/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \

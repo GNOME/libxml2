@@ -1,3 +1,11 @@
+Fri Oct 10 02:47:22 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: cleanup
+	* encoding.c: fix a funny typo
+	* error.c xmlschemas.c xmlschemastypes.c include/libxml/xmlerror.h:
+	  converted the Schemas code to the new error handling. PITA,
+	  still need to check output from regression tests.
+
 Thu Oct  9 15:13:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c include/libxml/xmlerror.h: converted too

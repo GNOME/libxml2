@@ -32,4 +32,5 @@ extern void xmlFreeElementContent(xmlElementContentPtr cur);
 
 extern xmlElementTablePtr xmlCopyElementTable(xmlElementTablePtr table);
 extern void xmlFreeElementTable(xmlElementTablePtr table);
+extern void xmlDumpElementTable(xmlElementTablePtr table);
 #endif /* __XML_VALID_H__ */

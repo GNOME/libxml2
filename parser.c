@@ -2379,7 +2379,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
  */
 xmlElementContentPtr
 xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
-    xmlElementContentPtr ret = NULL, cur = NULL;
+    xmlElementContentPtr ret = NULL, cur = NULL, n;
     CHAR *elem = NULL;
 
     if ((CUR == '#') && (NXT(1) == 'P') &&
@@ -2404,16 +2404,18 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 	    return(NULL);
 	} **********/
 	while (CUR == '|') {
+	    NEXT;
 	    if (elem == NULL) {
 	        ret = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
 		if (ret == NULL) return(NULL);
 		ret->c1 = cur;
+		cur = ret;
 	    } else {
-	        cur->c1 = xmlNewElementContent(elem,
-		                               XML_ELEMENT_CONTENT_ELEMENT);
-	        cur->c2 = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
-		cur = cur->c2;
-		if (cur == NULL) return(NULL);
+	        n = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
+		if (n == NULL) return(NULL);
+		n->c1 = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
+	        cur->c2 = n;
+		cur = n;
 	    }
 	    SKIP_BLANKS;
 	    elem = xmlParseName(ctxt);
@@ -2431,7 +2433,8 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 	    if (elem != NULL)
 		cur->c2 = xmlNewElementContent(elem,
 		                               XML_ELEMENT_CONTENT_ELEMENT);
-	    NEXT;
+	    ret->ocur = XML_ELEMENT_CONTENT_MULT;
+	    SKIP(2);
 	} else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt, 
@@ -2525,6 +2528,7 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 		xmlFreeElementContent(ret);
 		return(NULL);
 	    }
+	    NEXT;
 
 	    op = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_SEQ);
 	    if (op == NULL) {
@@ -2538,6 +2542,7 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 	        cur->c2 = op;
 		op->c1 = last;
 		cur =op;
+		last = NULL;
 	    }
 	} else if (CUR == '|') {
 	    if (type == 0) type = CUR;
@@ -2554,6 +2559,7 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 		xmlFreeElementContent(ret);
 		return(NULL);
 	    }
+	    NEXT;
 
 	    op = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
 	    if (op == NULL) {
@@ -2567,6 +2573,7 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 	        cur->c2 = op;
 		op->c1 = last;
 		cur =op;
+		last = NULL;
 	    }
 	} else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -2581,7 +2588,7 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 	    /* Recurse on second child */
 	    NEXT;
 	    SKIP_BLANKS;
-	    cur = xmlParseElementChildrenContentDecl(ctxt);
+	    last = xmlParseElementChildrenContentDecl(ctxt);
 	    SKIP_BLANKS;
 	} else {
 	    elem = xmlParseName(ctxt);
@@ -2592,7 +2599,7 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 		ctxt->wellFormed = 0;
 		return(NULL);
 	    }
-	    cur = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
+	    last = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
 	}
 	if (CUR == '?') {
 	    ret->ocur = XML_ELEMENT_CONTENT_OPT;
@@ -2607,6 +2614,9 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 	    ret->ocur = XML_ELEMENT_CONTENT_ONCE;
 	}
 	SKIP_BLANKS;
+    }
+    if ((cur != NULL) && (last != NULL)) {
+        cur->c2 = last;
     }
     NEXT;
     if (CUR == '?') {

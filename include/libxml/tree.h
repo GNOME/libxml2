@@ -81,32 +81,38 @@ typedef unsigned char CHAR;
 /*
  * a DTD Element definition.
  */
-#define XML_ELEMENT_CONTENT_PCDATA	1
-#define XML_ELEMENT_CONTENT_ELEMENT	2
-#define XML_ELEMENT_CONTENT_SEQ		3
-#define XML_ELEMENT_CONTENT_OR		4
+typedef enum {
+    XML_ELEMENT_CONTENT_PCDATA=1,
+    XML_ELEMENT_CONTENT_ELEMENT,
+    XML_ELEMENT_CONTENT_SEQ,
+    XML_ELEMENT_CONTENT_OR
+} xmlElementContentType;
 
-#define XML_ELEMENT_CONTENT_ONCE	1
-#define XML_ELEMENT_CONTENT_OPT		2
-#define XML_ELEMENT_CONTENT_MULT	3
-#define XML_ELEMENT_CONTENT_PLUS	4
+typedef enum {
+    XML_ELEMENT_CONTENT_ONCE=1,
+    XML_ELEMENT_CONTENT_OPT,
+    XML_ELEMENT_CONTENT_MULT,
+    XML_ELEMENT_CONTENT_PLUS
+} xmlElementContentOccur;
 
 typedef struct xmlElementContent {
-    int            type;		/* PCDATA, ELEMENT, SEQ or OR */
-    int            ocur;		/* ONCE, OPT, MULT or PLUS */
-    const CHAR    *name;		/* Element name */
+    xmlElementContentType     type;	/* PCDATA, ELEMENT, SEQ or OR */
+    xmlElementContentOccur    ocur;	/* ONCE, OPT, MULT or PLUS */
+    const CHAR               *name;	/* Element name */
     struct xmlElementContent *c1;	/* first child */
     struct xmlElementContent *c2;	/* second child */
 } xmlElementContent, *xmlElementContentPtr;
 
-#define XML_ELEMENT_TYPE_EMPTY		1
-#define XML_ELEMENT_TYPE_ANY		2
-#define XML_ELEMENT_TYPE_MIXED		3
-#define XML_ELEMENT_TYPE_ELEMENT	4
+typedef enum {
+    XML_ELEMENT_TYPE_EMPTY=1,
+    XML_ELEMENT_TYPE_ANY,
+    XML_ELEMENT_TYPE_MIXED,
+    XML_ELEMENT_TYPE_ELEMENT
+} xmlElementTypeVal;
 
 typedef struct xmlElement {
-    const CHAR    *name;		/* Element name */
-    int            type;		/* The type */
+    const CHAR          *name;		/* Element name */
+    xmlElementTypeVal    type;		/* The type */
     xmlElementContentPtr content;	/* the allowed element content */
 } xmlElement, *xmlElementPtr;
 
@@ -116,12 +122,14 @@ typedef struct xmlElement {
  * within the subtree (until overriden).
  */
 
-#define XML_GLOBAL_NAMESPACE		1 /* old style global namespace */
-#define XML_LOCAL_NAMESPACE		2 /* new style local scoping */
+typedef enum {
+    XML_GLOBAL_NAMESPACE=1,	/* old style global namespace */
+    XML_LOCAL_NAMESPACE		/* new style local scoping */
+} xmlNsType;
 
 typedef struct xmlNs {
     struct xmlNs  *next;	/* next Ns link for this node  */
-    int            type;	/* global or local */
+    xmlNsType      type;	/* global or local */
     const CHAR    *href;	/* URL for the namespace */
     const CHAR    *prefix;	/* prefix for the namespace */
 } xmlNs, *xmlNsPtr;

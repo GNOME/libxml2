@@ -78,15 +78,81 @@ xmlCopyElementContent(xmlElementContentPtr content) {
 }
 
 /**
- * xmlNewElementContent:
- * @name:  the subelement name or NULL
- * @type:  the type of element content decl
+ * xmlFreeElementContent:
+ * @cur:  the element content tree to free
  *
  * Free an element content structure. This is a recursive call !
  */
 void
 xmlFreeElementContent(xmlElementContentPtr cur) {
 /* TODO !!! */
+}
+
+/**
+ * xmlDumpElementContent:
+ * @content:  An element table
+ * @glob: 1 if one must print the englobing parenthesis, 0 otherwise
+ *
+ * This will dump the content of the element table as an XML DTD definition
+ *
+ * NOTE: TODO an extra parameter allowing a reentant implementation will
+ *       be added.
+ */
+void
+xmlDumpElementContent(xmlElementContentPtr content, int glob) {
+    if (content == NULL) return;
+
+    if (glob) xmlBufferWriteChar("(");
+    switch (content->type) {
+        case XML_ELEMENT_CONTENT_PCDATA:
+            xmlBufferWriteChar("#PCDATA");
+	    break;
+	case XML_ELEMENT_CONTENT_ELEMENT:
+	    xmlBufferWriteCHAR(content->name);
+	    break;
+	case XML_ELEMENT_CONTENT_SEQ:
+	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
+	        (content->c1->type == XML_ELEMENT_CONTENT_SEQ))
+		xmlDumpElementContent(content->c1, 1);
+	    else
+		xmlDumpElementContent(content->c1, 0);
+            xmlBufferWriteChar(" , ");
+	    if (content->c2->type == XML_ELEMENT_CONTENT_OR)
+		xmlDumpElementContent(content->c2, 1);
+	    else
+		xmlDumpElementContent(content->c2, 0);
+	    break;
+	case XML_ELEMENT_CONTENT_OR:
+	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
+	        (content->c1->type == XML_ELEMENT_CONTENT_SEQ))
+		xmlDumpElementContent(content->c1, 1);
+	    else
+		xmlDumpElementContent(content->c1, 0);
+            xmlBufferWriteChar(" | ");
+	    if (content->c2->type == XML_ELEMENT_CONTENT_SEQ)
+		xmlDumpElementContent(content->c2, 1);
+	    else
+		xmlDumpElementContent(content->c2, 0);
+	    break;
+	default:
+	    fprintf(stderr, "xmlDumpElementContent: unknown type %d\n",
+	            content->type);
+    }
+    if (glob)
+        xmlBufferWriteChar(")");
+    switch (content->ocur) {
+        case XML_ELEMENT_CONTENT_ONCE:
+	    break;
+        case XML_ELEMENT_CONTENT_OPT:
+	    xmlBufferWriteChar("?");
+	    break;
+        case XML_ELEMENT_CONTENT_MULT:
+	    xmlBufferWriteChar("*");
+	    break;
+        case XML_ELEMENT_CONTENT_PLUS:
+	    xmlBufferWriteChar("+");
+	    break;
+    }
 }
 
 /****************************************************************
@@ -337,18 +403,26 @@ xmlDumpElementTable(xmlElementTablePtr table) {
 	    case XML_ELEMENT_TYPE_EMPTY:
 	        xmlBufferWriteChar("<!ELEMENT ");
 		xmlBufferWriteCHAR(cur->name);
-		xmlBufferWriteChar(" EMPTY>");
+		xmlBufferWriteChar(" EMPTY>\n");
 	        break;
 	    case XML_ELEMENT_TYPE_ANY:
 	        xmlBufferWriteChar("<!ELEMENT ");
 		xmlBufferWriteCHAR(cur->name);
-		xmlBufferWriteChar(" ANY>");
+		xmlBufferWriteChar(" ANY>\n");
 	        break;
 	    case XML_ELEMENT_TYPE_MIXED:
-		/* TODO !!! */
+	        xmlBufferWriteChar("<!ELEMENT ");
+		xmlBufferWriteCHAR(cur->name);
+		xmlBufferWriteChar(" ");
+		xmlDumpElementContent(cur->content, 1);
+		xmlBufferWriteChar(">\n");
 	        break;
 	    case XML_ELEMENT_TYPE_ELEMENT:
-		/* TODO !!! */
+	        xmlBufferWriteChar("<!ELEMENT ");
+		xmlBufferWriteCHAR(cur->name);
+		xmlBufferWriteChar(" ");
+		xmlDumpElementContent(cur->content, 1);
+		xmlBufferWriteChar(">\n");
 	        break;
 	    default:
 	        fprintf(stderr,

@@ -1,3 +1,9 @@
+Mon Feb  1 12:10:13 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.h: cleaned up using enums instead of defines
+	* parser.c, valid.[ch]: more work on parsing/output of element
+	  declarations
+
 Sun Jan 31 22:06:48 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* valid.[ch], tree.c, parser.c : more work toward full parsing

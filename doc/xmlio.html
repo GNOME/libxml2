@@ -18,7 +18,7 @@ href="http://xmlsoft.org/xmlio.html">http://xmlsoft.org/xmlio.html</a></p>
 <p>Mailing-list archive:  <a
 href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
 
-<p>Version: $Revision:$</p>
+<p>Version: $Revision: 1.1 $</p>
 
 <p>Table of Content:</p>
 <ol>
@@ -108,43 +108,40 @@ new output handler with the closing call deactivated:</p>
 <ol>
   <li>First define a new I/O ouput allocator where the output don't close the
     file:
-    <pre>xmlOutputBufferPtr <br>
-xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) { <br>
-    xmlOutputBufferPtr ret; <br>
-     <br>
-    if (xmlOutputCallbackInitialized == 0) <br>
-        xmlRegisterDefaultOutputCallbacks(); <br>
-     <br>
-    if (file == NULL) return(NULL); <br>
-    </pre>
-    <pre>    ret = xmlAllocOutputBuffer(encoder); <br>
-    if (ret != NULL) { <br>
-        ret-&gt;context = file; <br>
-        ret-&gt;writecallback = xmlFileWrite; <br>
-        ret-&gt;closecallback = NULL;  /* No close callback */ <br>
-    } <br>
-    </pre>
-    <pre>    return(ret); <br>
+    <pre>xmlOutputBufferPtr
+xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
+    xmlOutputBufferPtr ret;
+    
+    if (xmlOutputCallbackInitialized == 0)
+        xmlRegisterDefaultOutputCallbacks();
+
+    if (file == NULL) return(NULL);
+    ret = xmlAllocOutputBuffer(encoder);
+    if (ret != NULL) {
+        ret-&gt;context = file;
+        ret-&gt;writecallback = xmlFileWrite;
+        ret-&gt;closecallback = NULL;  /* No close callback */
+    }
+    return(ret); <br>
 } </pre>
   </li>
   <li>And then use it to save the document:
     <pre>FILE *f;
-xmlOutputBufferPtr output;</pre>
-    <pre>xmlDocPtr doc;
+xmlOutputBufferPtr output;
+xmlDocPtr doc;
 int res;
-<br>
+
 f = ...
 doc = ....
-output = xmlOutputBufferCreateOwn(f, NULL);
-<br>
-res = xmlSaveFileTo(output, doc, NULL);
 
+output = xmlOutputBufferCreateOwn(f, NULL);
+res = xmlSaveFileTo(output, doc, NULL);
     </pre>
   </li>
 </ol>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id$</p>
+<p>$Id: xmlio.html,v 1.1 2000/08/31 13:50:12 veillard Exp $</p>
 </body>
 </html>

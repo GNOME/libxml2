@@ -894,7 +894,8 @@ xmlCtxtDumpOneNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
             if (!ctxt->check)
                 xmlCtxtDumpSpaces(ctxt);
             fprintf(ctxt->output, "Error, ATTRIBUTE found here\n");
-            break;
+            xmlCtxtGenericNodeCheck(ctxt, node);
+            return;
         case XML_TEXT_NODE:
             if (!ctxt->check) {
                 xmlCtxtDumpSpaces(ctxt);
@@ -940,8 +941,9 @@ xmlCtxtDumpOneNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
             if (!ctxt->check) {
                 xmlCtxtDumpSpaces(ctxt);
             }
-            fprintf(ctxt->output, "PBM: DOCUMENT found here\n");
-            break;
+            fprintf(ctxt->output, "Error, DOCUMENT found here\n");
+            xmlCtxtGenericNodeCheck(ctxt, node);
+            return;
         case XML_DOCUMENT_TYPE_NODE:
             if (!ctxt->check) {
                 xmlCtxtDumpSpaces(ctxt);

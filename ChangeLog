@@ -1,3 +1,10 @@
+Fri Dec 17 11:40:21 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* doc/Makefile.am: changed maintainer-clean dependency with
+	  suggestion from Crispin Flowerday (bug #157634)
+	* debugXML.c: fixed crash when ATTRIBUTE or DOCUMENT nodes
+	  were specified with debugDumpNode (bug #160621)
+
 Fri Dec 10 11:24:41 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fixed ID deallocation problem based on patch from

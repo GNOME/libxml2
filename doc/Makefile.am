@@ -92,7 +92,7 @@ xmlcatalog.1: xmlcatalog_man.xml
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
 
-maintainer-clean-local: clean
+maintainer-clean-local: clean-local
 	rm -rf libxml-decl-list.txt libxml-decl.txt 
 
 rebuild: api all

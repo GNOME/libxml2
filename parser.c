@@ -8271,8 +8271,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     xmlParseContent(ctxt);
     if (!IS_BYTE_CHAR(RAW)) {
         xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NOT_FINISHED,
-		     "Premature end of data in tag %s line %d\n"
-		     "Couldn't find end of Start Tag %s line %d\n",
+	 "Premature end of data in tag %s line %d\n",
 		                name, line, NULL);
 
 	/*

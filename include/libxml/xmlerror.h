@@ -34,6 +34,8 @@ typedef enum {
     XML_FROM_MEMORY,	/* The memory allocator */
     XML_FROM_OUTPUT,	/* The serialization code */
     XML_FROM_IO,	/* The Input/Output stack */
+    XML_FROM_FTP,	/* The FTP module */
+    XML_FROM_HTTP,	/* The FTP module */
     XML_FROM_XINCLUDE,	/* The XInclude processing */
     XML_FROM_XPATH,	/* The XPath module */
     XML_FROM_XPOINTER,	/* The XPointer module */
@@ -426,6 +428,13 @@ typedef enum {
     XML_IO_NO_INPUT, /* 1547 */
     XML_IO_BUFFER_FULL, /* 1548 */
     XML_IO_LOAD_ERROR, /* 1549 */
+    XML_IO_ENOTSOCK, /* 1550 */
+    XML_IO_EISCONN, /* 1551 */
+    XML_IO_ECONNREFUSED, /* 1552 */
+    XML_IO_ENETUNREACH, /* 1553 */
+    XML_IO_EADDRINUSE, /* 1554 */
+    XML_IO_EALREADY, /* 1555 */
+    XML_IO_EAFNOSUPPORT, /* 1556 */
     XML_XINCLUDE_RECURSION=1600,
     XML_XINCLUDE_PARSE_VALUE, /* 1601 */
     XML_XINCLUDE_ENTITY_DEF_MISMATCH, /* 1602 */
@@ -545,7 +554,13 @@ typedef enum {
     XML_C14N_CREATE_CTXT = 1950,
     XML_C14N_REQUIRES_UTF8, /* 1951 */
     XML_C14N_CREATE_STACK, /* 1952 */
-    XML_C14N_INVALID_NODE /* 1953 */
+    XML_C14N_INVALID_NODE, /* 1953 */
+    XML_FTP_PASV_ANSWER = 2000,
+    XML_FTP_EPSV_ANSWER, /* 2001 */
+    XML_FTP_ACCNT, /* 2002 */
+    XML_HTTP_URL_SYNTAX = 2020,
+    XML_HTTP_USE_IP, /* 2021 */
+    XML_HTTP_UNKNOWN_HOST /* 2022 */
 } xmlParserErrors;
 
 /**

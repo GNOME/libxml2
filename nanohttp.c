@@ -160,6 +160,18 @@ int xmlNanoHTTPFetchContent( void * ctx, char ** ptr, int * len );
 int xmlNanoHTTPContentLength( void * ctx );
 
 /**
+ * xmlHTTPErrMemory:
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+static void
+xmlHTTPErrMemory(const char *extra)
+{
+    __xmlSimpleError(XML_FROM_HTTP, XML_ERR_NO_MEMORY, NULL, NULL, extra);
+}
+
+/**
  * A portability function
  */
 static int socket_errno(void) {
@@ -290,8 +302,8 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
     while (1) {
 	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
 		(!strchr (cur, '[') && strchr (cur, ']'))) {
-	    xmlGenericError (xmlGenericErrorContext, "\nxmlNanoHTTPScanURL: %s",
-		    "Syntax Error\n");
+	    __xmlIOErr(XML_FROM_HTTP, XML_HTTP_URL_SYNTAX, 
+	               "Syntax Error\n");
 	    return;
 	}
 
@@ -301,7 +313,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
 		buf[indx++] = *cur++;
     
 	    if (!strchr (buf, ':')) {
-		xmlGenericError (xmlGenericErrorContext, "\nxmlNanoHTTPScanURL: %s",
+		__xmlIOErr(XML_FROM_HTTP, XML_HTTP_USE_IP,
 			"Use [IPv6]/IPv4 format\n");
 		return;
 	    }
@@ -410,8 +422,7 @@ xmlNanoHTTPScanProxy(const char *URL) {
     while (1) {
 	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
 		(!strchr (cur, '[') && strchr (cur, ']'))) {
-	    xmlGenericError (xmlGenericErrorContext, "\nxmlNanoHTTPScanProxy: %s",
-		    "Syntax error\n");
+	    __xmlIOErr(XML_FROM_HTTP, XML_HTTP_URL_SYNTAX, "Syntax Error\n");
 	    return;
 	}
 
@@ -421,7 +432,7 @@ xmlNanoHTTPScanProxy(const char *URL) {
 		buf[indx++] = *cur++;
 
 	    if (!strchr (buf, ':')) {
-		xmlGenericError (xmlGenericErrorContext, "\nxmlNanoHTTPScanProxy: %s",
+		__xmlIOErr(XML_FROM_HTTP, XML_HTTP_USE_IP,
 			"Use [IPv6]/IPv4 format\n");
 		return;
 	    }
@@ -485,7 +496,10 @@ xmlNanoHTTPNewCtxt(const char *URL) {
     xmlNanoHTTPCtxtPtr ret;
 
     ret = (xmlNanoHTTPCtxtPtr) xmlMalloc(sizeof(xmlNanoHTTPCtxt));
-    if (ret == NULL) return(NULL);
+    if (ret == NULL) {
+        xmlHTTPErrMemory("allocating context");
+        return(NULL);
+    }
 
     memset(ret, 0, sizeof(xmlNanoHTTPCtxt));
     ret->port = 80;
@@ -546,10 +560,7 @@ xmlNanoHTTPSend(xmlNanoHTTPCtxtPtr ctxt, const char * xmt_ptr, int outlen) {
 	    	      ( socket_errno( ) != EAGAIN ) &&
 #endif
 		        ( socket_errno( ) != EWOULDBLOCK ) ) {
-	        xmlGenericError( xmlGenericErrorContext,
-				"xmlNanoHTTPSend error:  %s",
-				strerror( socket_errno( ) ) );
-
+		__xmlIOErr(XML_FROM_HTTP, 0, "send failed\n");
 		if ( total_sent == 0 )
 		    total_sent = -1;
 		break;
@@ -597,9 +608,8 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt) {
 	if (ctxt->in == NULL) {
 	    ctxt->in = (char *) xmlMallocAtomic(65000 * sizeof(char));
 	    if (ctxt->in == NULL) {
+		xmlHTTPErrMemory("allocating input");
 	        ctxt->last = -1;
-		xmlGenericError( xmlGenericErrorContext, 
-			"xmlNanoHTTPRecv:  Error allocating input memory." );
 		return(-1);
 	    }
 	    ctxt->inlen = 65000;
@@ -623,10 +633,7 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt) {
 	    ctxt->inlen *= 2;
             ctxt->in = (char *) xmlRealloc(tmp_ptr, ctxt->inlen);
 	    if (ctxt->in == NULL) {
-	        xmlGenericError( xmlGenericErrorContext,
-				"xmlNanoHTTPRecv:  %s %d bytes.",
-				"Failed to realloc input buffer to",
-				ctxt->inlen );
+		xmlHTTPErrMemory("allocating input buffer");
 		xmlFree( tmp_ptr );
 	        ctxt->last = -1;
 		return(-1);
@@ -657,9 +664,7 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt) {
 		    return ( 0 );
 
 		default:
-		    xmlGenericError( xmlGenericErrorContext,
-		    		"xmlNanoHTTPRecv:  recv( ) failure - %s",
-				strerror( socket_errno( ) ) );
+		    __xmlIOErr(XML_FROM_HTTP, 0, "recv failed\n");
 		    return(-1);
 	    }
 	}
@@ -843,10 +848,7 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 #ifdef DEBUG_HTTP
 	perror("socket");
 #endif
-	xmlGenericError( xmlGenericErrorContext,
-			"xmlNanoHTTPConnectAttempt: %s - %s",
-			"socket creation failure",
-			strerror( socket_errno( ) ) );
+	__xmlIOErr(XML_FROM_HTTP, 0, "socket failed\n");
 	return(-1);
     }
     
@@ -877,10 +879,7 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 #ifdef DEBUG_HTTP
 	perror("nonblocking");
 #endif
-	xmlGenericError( xmlGenericErrorContext,
-			"xmlNanoHTTPConnectAttempt:  %s - %s",
-			"error setting non-blocking IO",
-			strerror( socket_errno( ) ) );
+	__xmlIOErr(XML_FROM_HTTP, 0, "error setting non-blocking IO\n");
 	closesocket(s);
 	return(-1);
     }
@@ -893,10 +892,7 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 	    case EWOULDBLOCK:
 		break;
 	    default:
-		xmlGenericError( xmlGenericErrorContext,
-				"xmlNanoHTTPConnectAttempt:  %s - %s",
-				"error connecting to HTTP server",
-				strerror( socket_errno( ) ) );
+		__xmlIOErr(XML_FROM_HTTP, 0, "error connecting to HTTP server");
 		closesocket(s);
 		return(-1);
 	}
@@ -912,17 +908,12 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
     {
 	case 0:
 	    /* Time out */
-	    xmlGenericError( xmlGenericErrorContext, 
-	    			"xmlNanoHTTPConnectAttempt: %s",
-				"Connect attempt timed out." );
+	    __xmlIOErr(XML_FROM_HTTP, 0, "Connect attempt timed out");
 	    closesocket(s);
 	    return(-1);
 	case -1:
 	    /* Ermm.. ?? */
-	    xmlGenericError( xmlGenericErrorContext,
-	    			"xmlNanoHTTPConnectAttempt: %s - %s",
-				"Error connecting to host",
-				strerror( socket_errno( ) ) );
+	    __xmlIOErr(XML_FROM_HTTP, 0, "Connect failed");
 	    closesocket(s);
 	    return(-1);
     }
@@ -933,27 +924,19 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 #ifdef SO_ERROR
 	if (getsockopt(s, SOL_SOCKET, SO_ERROR, (char*)&status, &len) < 0 ) {
 	    /* Solaris error code */
-	    xmlGenericError( xmlGenericErrorContext,
-	    			"xmlNanoHTTPConnectAttempt: %s - %s",
-				"Error retrieving pending socket errors",
-				strerror( socket_errno( ) ) );
+	    __xmlIOErr(XML_FROM_HTTP, 0, "getsockopt failed\n");
 	    return (-1);
 	}
 #endif
 	if ( status ) {
+	    __xmlIOErr(XML_FROM_HTTP, 0, "Error connecting to remote host");
 	    closesocket(s);
 	    errno = status;
-	    xmlGenericError( xmlGenericErrorContext,
-	    			"xmlNanoHTTPConnectAttempt: %s - %s",
-				"Error connecting to remote host",
-				strerror( status ) );
 	    return (-1);
 	}
     } else {
 	/* pbm */
-	xmlGenericError( xmlGenericErrorContext,
-		"xmlNanoHTTPConnectAttempt:  %s\n",
-		"Select returned, but descriptor not set for connection.\n" );
+	__xmlIOErr(XML_FROM_HTTP, 0, "select failed\n");
 	closesocket(s);
 	return (-1);
     }
@@ -1008,10 +991,7 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 
 	status = getaddrinfo (host, NULL, &hints, &result);
 	if (status) {
-	    xmlGenericError (xmlGenericErrorContext,
-		    "xmlNanoHTTPConnectHost:  %s '%s' - %s",
-		    "Failed to resolve host", host, gai_strerror (status));
-
+	    __xmlIOErr(XML_FROM_HTTP, 0, "getaddrinfo failed\n");
 	    return (-1);
 	}
 
@@ -1077,13 +1057,9 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 		    h_err_txt = "No error text defined.";
 		    break;
 	    }
-	    xmlGenericError (xmlGenericErrorContext,
-		"xmlNanoHTTPConnectHost:  %s '%s' - %s",
-		"Failed to resolve host", host, h_err_txt);
+	    __xmlIOErr(XML_FROM_HTTP, 0, h_err_txt);
 #else
-	    xmlGenericError (xmlGenericErrorContext,
-		"xmlNanoHTTPConnectHost:  %s '%s'",
-		"Failed to resolve host", host);
+	    __xmlIOErr(XML_FROM_HTTP, 0, "Failed to resolve host");
 #endif
 	    return (-1);
 	}
@@ -1252,27 +1228,18 @@ retry:
     }
 
     if ( ctxt == NULL ) {
-	xmlGenericError( xmlGenericErrorContext,
-			"xmlNanoHTTPMethodRedir:  %s %s.",
-			"Unable to allocate HTTP context to URI",
-			( ( redirURL == NULL ) ? URL : redirURL ) );
 	return ( NULL );
     }
 
     if ((ctxt->protocol == NULL) || (strcmp(ctxt->protocol, "http"))) {
-	xmlGenericError( xmlGenericErrorContext,
-			"xmlNanoHTTPMethodRedir:  %s - %s.",
-			"Not a valid HTTP URI",
-			( ( redirURL == NULL ) ? URL : redirURL ) );
+	__xmlIOErr(XML_FROM_HTTP, XML_HTTP_URL_SYNTAX, "Not a valid HTTP URI");
         xmlNanoHTTPFreeCtxt(ctxt);
 	if (redirURL != NULL) xmlFree(redirURL);
         return(NULL);
     }
     if (ctxt->hostname == NULL) {
-	xmlGenericError( xmlGenericErrorContext,
-			"xmlNanoHTTPMethodRedir:  %s - %s",
-			"Failed to identify host in URI",
-			( ( redirURL == NULL ) ? URL : redirURL ) );
+	__xmlIOErr(XML_FROM_HTTP, XML_HTTP_UNKNOWN_HOST,
+	           "Failed to identify host in URI");
         xmlNanoHTTPFreeCtxt(ctxt);
 	if (redirURL != NULL) xmlFree(redirURL);
         return(NULL);
@@ -1305,9 +1272,7 @@ retry:
     bp = xmlMallocAtomic(blen);
     if ( bp == NULL ) {
         xmlNanoHTTPFreeCtxt( ctxt );
-	xmlGenericError( xmlGenericErrorContext,
-			"xmlNanoHTTPMethodRedir:  %s",
-			"Error allocating HTTP header buffer." );
+	xmlHTTPErrMemory("allocating header buffer");
 	return ( NULL );
     }
 

@@ -1,3 +1,11 @@
+Fri Oct 10 21:34:01 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c: fixed a nasty bug with interning some text strings
+	* configure.in: prepare for beta5 of 2.6.0
+	* libxml.h nanoftp.c nanohttp.c xmlIO.c include/libxml/xmlerror.h:
+	  better error handling for I/O and converted FTP and HTTP
+	* parser.c: fixed another bug
+
 Fri Oct 10 16:45:20 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c: fixed uninitialized new field.

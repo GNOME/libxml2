@@ -2221,6 +2221,10 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 	     * We try to minimaze realloc() uses and avoid copying
 	     * and recomputing length over and over.
 	     */
+	    if ((ctxt->nodemem == ctxt->nodelen + 1) &&
+	        (xmlDictOwns(ctxt->dict, lastChild->content))) {
+		lastChild->content = xmlStrdup(lastChild->content);
+	    }
 	    if (ctxt->nodelen + len >= ctxt->nodemem) {
 		xmlChar *newbuf;
 		int size;

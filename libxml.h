@@ -44,4 +44,5 @@
  * function while checking if the callback exists.
  */
 extern int __xmlRegisterCallbacks;
+void __xmlIOErr(int domain, int code, const char *extra);
 #endif /* ! __XML_LIBXML_H__ */

@@ -173,8 +173,20 @@ static const char *IOerr[] = {
     "No such process",		/* ESRCH */
     "Operation timed out",	/* ETIMEDOUT */
     "Improper link",		/* EXDEV */
-    "Attempt to load network entity %s" /* XML_IO_NETWORK_ATTEMPT */
+    "Attempt to load network entity %s", /* XML_IO_NETWORK_ATTEMPT */
     "encoder error",		/* XML_IO_ENCODER */
+    "flush error",
+    "write error",
+    "no input",
+    "buffer full",
+    "loading error",
+    "not a socket",		/* ENOTSOCK */
+    "already connected",	/* EISCONN */
+    "connection refuxed",	/* ECONNREFUSED */
+    "unreachable network",	/* ENETUNREACH */
+    "adddress in use",		/* EADDRINUSE */
+    "already in use",		/* EALREADY */
+    "unknown address familly",	/* EAFNOSUPPORT */
 };
 
 /**
@@ -190,14 +202,15 @@ xmlIOErrMemory(const char *extra)
 }
 
 /**
- * xmlIOErr:
+ * __xmlIOErr:
  * @code:  the error number
+ * @
  * @extra:  extra informations
  *
  * Handle an I/O error
  */
-static void
-xmlIOErr(int code, const char *extra)
+void
+__xmlIOErr(int domain, int code, const char *extra)
 {
     unsigned int idx;
 
@@ -330,6 +343,33 @@ xmlIOErr(int code, const char *extra)
 #ifdef EXDEV
         else if (errno == EXDEV) code = XML_IO_EXDEV;
 #endif
+#ifdef ENOTSOCK
+        else if (errno == ENOTSOCK) code = XML_IO_ENOTSOCK;
+#endif
+#ifdef EISCONN
+        else if (errno == EISCONN) code = XML_IO_EISCONN;
+#endif
+#ifdef ECONNREFUSED
+        else if (errno == ECONNREFUSED) code = XML_IO_ECONNREFUSED;
+#endif
+#ifdef ETIMEDOUT
+        else if (errno == ETIMEDOUT) code = XML_IO_ETIMEDOUT;
+#endif
+#ifdef ENETUNREACH
+        else if (errno == ENETUNREACH) code = XML_IO_ENETUNREACH;
+#endif
+#ifdef EADDRINUSE
+        else if (errno == EADDRINUSE) code = XML_IO_EADDRINUSE;
+#endif
+#ifdef EINPROGRESS
+        else if (errno == EINPROGRESS) code = XML_IO_EINPROGRESS;
+#endif
+#ifdef EALREADY
+        else if (errno == EALREADY) code = XML_IO_EALREADY;
+#endif
+#ifdef EAFNOSUPPORT
+        else if (errno == EAFNOSUPPORT) code = XML_IO_EAFNOSUPPORT;
+#endif
         else code = XML_IO_UNKNOWN;
 #endif /* HAVE_ERRNO_H */
     }
@@ -337,7 +377,20 @@ xmlIOErr(int code, const char *extra)
     if (code >= XML_IO_UNKNOWN) idx = code - XML_IO_UNKNOWN;
     if (idx >= (sizeof(IOerr) / sizeof(IOerr[0]))) idx = 0;
     
-    __xmlSimpleError(XML_FROM_IO, code, NULL, IOerr[idx], extra);
+    __xmlSimpleError(domain, code, NULL, IOerr[idx], extra);
+}
+
+/**
+ * xmlIOErr:
+ * @code:  the error number
+ * @extra:  extra informations
+ *
+ * Handle an I/O error
+ */
+static void
+xmlIOErr(int code, const char *extra)
+{
+    __xmlIOErr(XML_FROM_IO, code, extra);
 }
 
 /**

@@ -1,3 +1,7 @@
+Tue Apr  1 21:57:26 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/libxml2.def.src: exported new functions
+
 Tue Apr  1 13:09:46 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in NEWS: preparing release 2.5.6

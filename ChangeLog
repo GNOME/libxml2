@@ -1,3 +1,9 @@
+Thu Mar 31 15:36:52 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed a problem in Relax-NG validation #159968
+	* test/relaxng/list.* result/relaxng/list_*: added the test
+	  to the regression suite
+
 Thu Mar 31 13:06:02 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: fixed bug #168504

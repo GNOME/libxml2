@@ -6129,11 +6129,18 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
         ret = XML_RELAXNG_CONTENT_EMPTY;
         if ((cur->type == XML_RELAXNG_REF) ||
             (cur->type == XML_RELAXNG_PARENTREF)) {
+           /*
+            * This should actually be caught by list//element(ref) at the
+            * element boundaries, c.f. Bug #159968 local refs are dropped
+            * in step 4.19.
+            */
+#if 0
             if (flags & XML_RELAXNG_IN_LIST) {
                 xmlRngPErr(ctxt, cur->node, XML_RNGP_PAT_LIST_REF,
                            "Found forbidden pattern list//ref\n", NULL,
                            NULL);
             }
+#endif
             if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
                 xmlRngPErr(ctxt, cur->node, XML_RNGP_PAT_DATA_EXCEPT_REF,
                            "Found forbidden pattern data/except//ref\n",

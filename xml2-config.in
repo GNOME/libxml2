@@ -13,6 +13,7 @@ Usage: xml2-config [OPTION]
 Known values for OPTION are:
 
   --prefix=DIR		change libxml prefix [default $prefix]
+  --exec-prefix=DIR	change libxml exec prefix [default $exec_prefix]
   --libs		print library linking information
   --libtool-libs        print linking information for use with libtool
   --cflags		print pre-processor and compiler flags
@@ -46,6 +47,15 @@ while test $# -gt 0; do
     --prefix)
 	echo $prefix
 	;;
+
+    --exec-prefix=*)
+      exec_prefix=$optarg
+      libdir=$exec_prefix/lib
+      ;;
+
+    --exec-prefix)
+      echo $exec_prefix
+      ;;
 
     --version)
 	echo @VERSION@

@@ -769,8 +769,6 @@ xmlMemoryDump(void)
  *								*
  ****************************************************************/
 
-static int xmlInitMemoryDone = 0;
-
 /**
  * xmlInitMemory:
  *
@@ -784,9 +782,12 @@ xmlInitMemory(void)
 #ifdef HAVE_STDLIB_H
      char *breakpoint;
 #endif     
-
+    /*
+     This is really not good code (see Bug 130419).  Suggestions for
+     improvement will be welcome!
+    */
+     if (xmlMemInitialized) return(-1);
      xmlMemInitialized = 1;
-     if (xmlInitMemoryDone) return(-1);
      xmlMemMutex = xmlNewMutex();
 
 #ifdef HAVE_STDLIB_H
@@ -806,7 +807,6 @@ xmlInitMemory(void)
      xmlGenericError(xmlGenericErrorContext,
 	     "xmlInitMemory() Ok\n");
 #endif     
-     xmlInitMemoryDone = 1;
 
      return(0);
 }

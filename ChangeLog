@@ -1,3 +1,13 @@
+Sun Jan  4 08:57:51 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlmemory.c: applied suggestion from Miloslav Trmac (see
+	  Bug 130419) and eliminated xmlInitMemoryDone.  More
+	  improvement needed.
+
+	* xml2-config.in: added an additional flag (--exec-prefix) to
+	  allow library directory to be different from include directory
+	  (Bug 129558).
+	  
 Fri Jan  2 21:22:18 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* error.c: applied patch from Stéphane Bidoul for structured error

@@ -21,6 +21,8 @@
  * platform might need different definitions.
  */
 
+/* Defaults. These will be used on platforms which 
+   do not appear below. */
 #define XMLPUBFUN
 #define XMLPUBVAR extern
 #define XMLCALL
@@ -51,13 +53,13 @@
   #undef XMLCALL
   #if defined(IN_LIBXML) && !defined(LIBXML_STATIC)
     #define XMLPUBFUN __declspec(dllexport)
-    #define XMLPUBVAR __declspec(dllexport)
+    #define XMLPUBVAR __declspec(dllexport) extern
   #else
     #define XMLPUBFUN
     #if !defined(LIBXML_STATIC)
       #define XMLPUBVAR __declspec(dllimport) extern
     #else
-      #define XMLPUBVAR
+      #define XMLPUBVAR extern
     #endif
   #endif
   #define XMLCALL __cdecl

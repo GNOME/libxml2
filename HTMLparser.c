@@ -5347,13 +5347,9 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
 {
     htmlParserCtxtPtr ctxt;
     htmlParserInputPtr inputStream;
-    xmlParserInputBufferPtr buf;
     char *canonicFilename;
     /* htmlCharEncoding enc; */
     xmlChar *content, *content_line = (xmlChar *) "charset=";
-
-    buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) return(NULL);
 
     ctxt = (htmlParserCtxtPtr) xmlMalloc(sizeof(htmlParserCtxt));
     if (ctxt == NULL) {
@@ -5367,6 +5363,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
 	if (xmlDefaultSAXHandler.error != NULL) {
 	    xmlDefaultSAXHandler.error(NULL, "out of memory\n");
 	}
+	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
     

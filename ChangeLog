@@ -1,3 +1,8 @@
+Wed Feb  5 11:43:58 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: added the redefinition of namespaced attribute
+	  check that was missing as Fabrice Desré pointed out.
+
 Wed Feb  5 11:09:29 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c include/libxml/HTMLparser.h: applied HTML

@@ -940,9 +940,29 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
 	return;
     }
 
-    if (ns != NULL)
+    if (ns != NULL) {
+	xmlAttrPtr prop;
 	namespace = xmlSearchNs(ctxt->myDoc, ctxt->node, ns);
-    else {
+
+	prop = ctxt->node->properties;
+	while (prop != NULL) {
+	    if (prop->ns != NULL) {
+		if ((xmlStrEqual(name, prop->name)) &&
+		    ((namespace == prop->ns) ||
+		     (xmlStrEqual(namespace->href, prop->ns->href)))) {
+		    ctxt->errNo = XML_ERR_ATTRIBUTE_REDEFINED;
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData,
+			        "Attribute %s in %s redefined\n",
+			                 name, namespace->href);
+		    ctxt->wellFormed = 0;
+		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		    goto error;
+		}
+	    }
+	    prop = prop->next;
+	}
+    } else {
 	namespace = NULL;
     }
 
@@ -1022,6 +1042,7 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
 	    xmlAddRef(&ctxt->vctxt, ctxt->myDoc, value, ret);
     }
 
+error:
     if (nval != NULL)
 	xmlFree(nval);
     if (ns != NULL) 

@@ -1409,8 +1409,8 @@ xmlParseURIPathSegments(xmlURIPtr uri, const char **str, int slash)
         }
         path = (char *) xmlMallocAtomic(len + 1);
         if (path == NULL) {
-            xmlGenericError(xmlGenericErrorContext,
-                            "xmlParseURIPathSegments: out of memory\n");
+	    xmlGenericError(xmlGenericErrorContext,
+	    		    "xmlParseURIPathSegments: out of memory\n");
             *str = cur;
             return (-1);
         }
@@ -2202,7 +2202,7 @@ xmlCanonicPath(const xmlChar *path)
 	p = uri->path + 1;
 	strncpy(p, path, len + 1);
     } else {
-	uri->path = xmlStrdup(path);
+	uri->path = xmlStrdup(path);		/* FIXME - check alloc! */
 	p = uri->path;
     }
     while (*p != '\0') {
@@ -2213,7 +2213,10 @@ xmlCanonicPath(const xmlChar *path)
 #else
     uri->path = (char *) xmlStrdup((const xmlChar *) path);
 #endif
-    
+    if (uri->path == NULL) {
+        xmlFreeURI(uri);
+        return(NULL);
+    }
     ret = xmlSaveUri(uri);
     xmlFreeURI(uri);
     return(ret);

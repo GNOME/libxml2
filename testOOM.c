@@ -37,6 +37,8 @@
 
 #define EXIT_OOM 2
 
+int error = FALSE;
+int errcount = 0;
 int noent = 0;
 int count = 0;
 int valid = 0;
@@ -129,7 +131,7 @@ static void buffer_add_char (struct buffer *b, char c)
 static void buffer_add_string (struct buffer *b, const char *s)
 {
     size_t size = strlen(s) + 1;
-    int ix;
+    unsigned int ix;
     for (ix=0; ix<size-1; ix++) {
         if (s[ix] < 0x20)
 	    printf ("binary data [0x%02x]?\n", (unsigned char)s[ix]);
@@ -193,22 +195,22 @@ static int processNode (xmlTextReaderPtr reader, void *data)
 	buffer_add_string (buff, elementNames[type]);
 
 	if (type == 1) {
-	    s = xmlTextReaderConstName (reader);
+	    s = (const char *)xmlTextReaderConstName (reader);
 	    if (s == NULL) return FALSE;
 	    buffer_add_string (buff, s);
 	    while ((ret = xmlTextReaderMoveToNextAttribute (reader)) == 1) {
-		s = xmlTextReaderConstName (reader);
+		s = (const char *)xmlTextReaderConstName (reader);
 		if (s == NULL) return FALSE;
 		buffer_add_string (buff, s);
 		buffer_add_char (buff, '=');
-		s = xmlTextReaderConstValue (reader);
+		s = (const char *)xmlTextReaderConstValue (reader);
 		if (s == NULL) return FALSE;
 		buffer_add_string (buff, s);		
 	    }
 	    if (ret == -1) return FALSE;
 	}
 	else if (type == 3) {
-	    s = xmlTextReaderConstValue (reader);
+	    s = (const char *)xmlTextReaderConstValue (reader);
 	    if (s == NULL) return FALSE;
 	    buffer_add_string (buff, s);
 	}
@@ -224,14 +226,15 @@ struct file_params {
 };
 
 static void
-error_func (void *data, xmlErrorPtr err)
+error_func (void *data ATTRIBUTE_UNUSED, xmlErrorPtr err)
 {
-    int *e = data;
+
+    errcount++;
     if (err->level == XML_ERR_ERROR ||
         err->level == XML_ERR_FATAL)
-        *e = TRUE;
+        error = TRUE;
     if (showErrs) {
-        printf("line %d: %s\n", err->line, err->message);
+        printf("%3d line %d: %s\n", error, err->line, err->message);
     }
 }
 
@@ -241,7 +244,7 @@ check_load_file_memory_func (void *data)
      struct file_params *p = data;
      struct buffer *b;
      xmlTextReaderPtr reader;
-     int ret, status, first_run, error;
+     int ret, status, first_run;
 
      if (count) {
          elem = 0;
@@ -261,7 +264,8 @@ check_load_file_memory_func (void *data)
      if (reader == NULL)
        goto out;
 
-     xmlTextReaderSetStructuredErrorHandler (reader, error_func, &error);
+     xmlTextReaderSetStructuredErrorHandler (reader, error_func, NULL);
+     xmlSetStructuredErrorFunc(NULL, error_func);
 
      if (valid) {
        if (xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1) == -1)
@@ -279,7 +283,7 @@ check_load_file_memory_func (void *data)
        goto out;
 
      if (error) {
-	 fprintf (stdout, "error handler was called but parse completed successfully\n");
+	 fprintf (stdout, "error handler was called but parse completed successfully (last error #%d)\n", errcount);
 	 return FALSE;
      }
 

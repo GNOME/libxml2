@@ -1878,6 +1878,12 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->entNr = 0;
     ret->input = input;
     ret->buffer = xmlBufferCreateSize(100);
+    if (ret->buffer == NULL) {
+        xmlFree(ret);
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewTextReader : malloc failed\n");
+	return(NULL);
+    }
     ret->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (ret->sax == NULL) {
 	xmlBufferFree(ret->buffer);
@@ -3908,7 +3914,8 @@ xmlTextReaderGenericError(void *ctxt, xmlParserSeverities severity, char *str) {
     xmlParserCtxtPtr ctx = (xmlParserCtxtPtr)ctxt;
     xmlTextReaderPtr reader = (xmlTextReaderPtr)ctx->_private;
 
-    if (str != NULL && reader->errorFunc) {
+    if (str != NULL) {
+      if (reader->errorFunc)
 	reader->errorFunc(reader->errorFuncArg,
 			  str,
 			  severity,

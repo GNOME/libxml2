@@ -1,3 +1,12 @@
+Sat Jul 31 09:12:44 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* SAX2.c, encoding.c, error.c, parser.c, tree.c, uri.c, xmlIO.c,
+	  xmlreader.c, include/libxml/tree.h: many further little changes
+	  for OOM problems.  Now seems to be getting closer to "ok".
+	* testOOM.c: added code to intercept more errors, found more
+	  problems with library. Changed method of flagging / counting
+	  errors intercepted.
+
 Fri Jul 30 13:57:55 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied a couple of patch one from Oliver Stoeneberg

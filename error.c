@@ -900,8 +900,17 @@ xmlCtxtResetLastError(void *ctx)
  */
 int
 xmlCopyError(xmlErrorPtr from, xmlErrorPtr to) {
+    char *message, *file, *str1, *str2, *str3;
+
     if ((from == NULL) || (to == NULL))
         return(-1);
+
+    message = (char *) xmlStrdup((xmlChar *) from->message);
+    file = (char *) xmlStrdup ((xmlChar *) from->file);
+    str1 = (char *) xmlStrdup ((xmlChar *) from->str1);
+    str2 = (char *) xmlStrdup ((xmlChar *) from->str2);
+    str3 = (char *) xmlStrdup ((xmlChar *) from->str3);
+
     if (to->message != NULL)
         xmlFree(to->message);
     if (to->file != NULL)
@@ -921,26 +930,12 @@ xmlCopyError(xmlErrorPtr from, xmlErrorPtr to) {
     to->int2 = from->int2;
     to->node = from->node;
     to->ctxt = from->ctxt;
-    if (from->message != NULL)
-        to->message = (char *) xmlStrdup((xmlChar *) from->message);
-    else
-        to->message = NULL;
-    if (from->file != NULL)
-        to->file = (char *) xmlStrdup((xmlChar *) from->file);
-    else
-        to->file = NULL;
-    if (from->str1 != NULL)
-        to->str1 = (char *) xmlStrdup((xmlChar *) from->str1);
-    else
-        to->str1 = NULL;
-    if (from->str2 != NULL)
-        to->str2 = (char *) xmlStrdup((xmlChar *) from->str2);
-    else
-        to->str2 = NULL;
-    if (from->str3 != NULL)
-        to->str3 = (char *) xmlStrdup((xmlChar *) from->str3);
-    else
-        to->str3 = NULL;
-    return(0);
+    to->message = message;
+    to->file = file;
+    to->str1 = str1;
+    to->str2 = str2;
+    to->str3 = str3;
+
+    return 0;
 }
 

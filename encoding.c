@@ -1263,6 +1263,7 @@ xmlNewCharEncodingHandler(const char *name,
     handler = (xmlCharEncodingHandlerPtr)
               xmlMalloc(sizeof(xmlCharEncodingHandler));
     if (handler == NULL) {
+        xmlFree(up);
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewCharEncodingHandler : out of memory !\n");
 	return(NULL);

@@ -2452,6 +2452,7 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
+    int errcode;
 
     if (size <= 0) return(NULL);
     if (mem == NULL) return(NULL);
@@ -2461,7 +2462,11 @@ xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
         ret->context = (void *) mem;
 	ret->readcallback = (xmlInputReadCallback) xmlNop;
 	ret->closecallback = NULL;
-	xmlBufferAdd(ret->buffer, (const xmlChar *) mem, size);
+	errcode = xmlBufferAdd(ret->buffer, (const xmlChar *) mem, size);
+	if (errcode != 0) {
+	    xmlFree(ret);
+	    return(NULL);
+	}
     }
 
     return(ret);
@@ -2659,6 +2664,7 @@ int
 xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	                 int len, const char *buf) {
     int nbchars = 0;
+    int ret;
 
     if (len < 0) return(0);
     if ((in == NULL) || (in->error)) return(-1);
@@ -2671,7 +2677,9 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
         if (in->raw == NULL) {
 	    in->raw = xmlBufferCreate();
 	}
-	xmlBufferAdd(in->raw, (const xmlChar *) buf, len);
+	ret = xmlBufferAdd(in->raw, (const xmlChar *) buf, len);
+	if (ret != 0)
+	    return(-1);
 
 	/*
 	 * convert as much as possible to the parser reading buffer.
@@ -2686,7 +2694,9 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	in->rawconsumed += (use - in->raw->use);
     } else {
 	nbchars = len;
-        xmlBufferAdd(in->buffer, (xmlChar *) buf, nbchars);
+        ret = xmlBufferAdd(in->buffer, (xmlChar *) buf, nbchars);
+	if (ret != 0)
+	    return(-1);
     }
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext,
@@ -2740,7 +2750,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     if (buffree <= 0) {
 	xmlIOErr(XML_IO_BUFFER_FULL, NULL);
 	in->error = XML_IO_BUFFER_FULL;
-	return(0);
+	return(-1);
     }
 
     needSize = in->buffer->use + len + 1;
@@ -2748,7 +2758,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
         if (!xmlBufferResize(in->buffer, needSize)){
 	    xmlIOErrMemory("growing input buffer");
 	    in->error = XML_ERR_NO_MEMORY;
-            return(0);
+            return(-1);
         }
     }
     buffer = (char *)&in->buffer->content[in->buffer->use];
@@ -2778,7 +2788,9 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
         if (in->raw == NULL) {
 	    in->raw = xmlBufferCreate();
 	}
-	xmlBufferAdd(in->raw, (const xmlChar *) buffer, len);
+	res = xmlBufferAdd(in->raw, (const xmlChar *) buffer, len);
+	if (res != 0)
+	    return(-1);
 
 	/*
 	 * convert as much as possible to the parser reading buffer.
@@ -2869,7 +2881,9 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
 	    if (out->conv == NULL) {
 		out->conv = xmlBufferCreate();
 	    }
-	    xmlBufferAdd(out->buffer, (const xmlChar *) buf, chunk);
+	    ret = xmlBufferAdd(out->buffer, (const xmlChar *) buf, chunk);
+	    if (ret != 0)
+	        return(-1);
 
 	    if ((out->buffer->use < MINLEN) && (chunk == len))
 		goto done;
@@ -2885,7 +2899,9 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
 	    }
 	    nbchars = out->conv->use;
 	} else {
-	    xmlBufferAdd(out->buffer, (const xmlChar *) buf, chunk);
+	    ret = xmlBufferAdd(out->buffer, (const xmlChar *) buf, chunk);
+	    if (ret != 0)
+	        return(-1);
 	    nbchars = out->buffer->use;
 	}
 	buf += chunk;

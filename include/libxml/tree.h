@@ -585,18 +585,18 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN int XMLCALL		
 		xmlBufferDump		(FILE *file,
 					 xmlBufferPtr buf);
-XMLPUBFUN void XMLCALL		
+XMLPUBFUN int XMLCALL		
 		xmlBufferAdd		(xmlBufferPtr buf,
 					 const xmlChar *str,
 					 int len);
-XMLPUBFUN void XMLCALL		
+XMLPUBFUN int XMLCALL		
 		xmlBufferAddHead	(xmlBufferPtr buf,
 					 const xmlChar *str,
 					 int len);
-XMLPUBFUN void XMLCALL		
+XMLPUBFUN int XMLCALL		
 		xmlBufferCat		(xmlBufferPtr buf,
 					 const xmlChar *str);
-XMLPUBFUN void XMLCALL	
+XMLPUBFUN int XMLCALL	
 		xmlBufferCCat		(xmlBufferPtr buf,
 					 const char *str);
 XMLPUBFUN int XMLCALL		

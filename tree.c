@@ -912,12 +912,36 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
     memset(cur, 0, sizeof(xmlDtd));
     cur->type = XML_DTD_NODE;
 
-    if (name != NULL)
-	cur->name = xmlStrdup(name); 
-    if (ExternalID != NULL)
+    if (name != NULL) {
+	cur->name = xmlStrdup(name);
+	if (cur->name == NULL) {
+	    xmlTreeErrMemory("building internal subset");
+	    xmlFree(cur);
+	    return(NULL);
+	}
+    }
+    if (ExternalID != NULL) {
 	cur->ExternalID = xmlStrdup(ExternalID); 
-    if (SystemID != NULL)
+	if (cur->ExternalID  == NULL) {
+	    xmlTreeErrMemory("building internal subset");
+	    if (cur->name != NULL)
+	        xmlFree((char *)cur->name);
+	    xmlFree(cur);
+	    return(NULL);
+	}
+    }
+    if (SystemID != NULL) {
 	cur->SystemID = xmlStrdup(SystemID); 
+	if (cur->SystemID == NULL) {
+	    xmlTreeErrMemory("building internal subset");
+	    if (cur->name != NULL)
+	        xmlFree((char *)cur->name);
+	    if (cur->ExternalID != NULL)
+	        xmlFree((char *)cur->ExternalID);
+	    xmlFree(cur);
+	    return(NULL);
+	}
+    }
     if (doc != NULL) {
 	doc->intSubset = cur;
 	cur->parent = doc;
@@ -1054,6 +1078,11 @@ xmlNewDoc(const xmlChar *version) {
     cur->type = XML_DOCUMENT_NODE;
 
     cur->version = xmlStrdup(version); 
+    if (cur->version == NULL) {
+	xmlTreeErrMemory("building doc");
+	xmlFree(cur);
+    	return(NULL);
+    }
     cur->standalone = -1;
     cur->compression = -1; /* not initialized */
     cur->doc = cur;
@@ -6769,8 +6798,11 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
  *
  * Add a string range to an XML buffer. if len == -1, the length of
  * str is recomputed.
+ *
+ * Returns 0 successful, a positive error code number otherwise
+ *         and -1 in case of internal or API error.
  */
-void
+int
 xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
     unsigned int needSize;
 
@@ -6779,34 +6811,35 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlBufferAdd: str == NULL\n");
 #endif
-	return;
+	return -1;
     }
-    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return;
+    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return -1;
     if (len < -1) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
 		"xmlBufferAdd: len < 0\n");
 #endif
-	return;
+	return -1;
     }
-    if (len == 0) return;
+    if (len == 0) return 0;
 
     if (len < 0)
         len = xmlStrlen(str);
 
-    if (len <= 0) return;
+    if (len <= 0) return -1;
 
     needSize = buf->use + len + 2;
     if (needSize > buf->size){
         if (!xmlBufferResize(buf, needSize)){
 	    xmlTreeErrMemory("growing buffer");
-            return;
+            return XML_ERR_NO_MEMORY;
         }
     }
 
     memmove(&buf->content[buf->use], str, len*sizeof(xmlChar));
     buf->use += len;
     buf->content[buf->use] = 0;
+    return 0;
 }
 
 /**
@@ -6817,38 +6850,41 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
  *
  * Add a string range to the beginning of an XML buffer.
  * if len == -1, the length of @str is recomputed.
+ *
+ * Returns 0 successful, a positive error code number otherwise
+ *         and -1 in case of internal or API error.
  */
-void
+int
 xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
     unsigned int needSize;
 
-    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return;
+    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return -1;
     if (str == NULL) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
 		"xmlBufferAddHead: str == NULL\n");
 #endif
-	return;
+	return -1;
     }
     if (len < -1) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
 		"xmlBufferAddHead: len < 0\n");
 #endif
-	return;
+	return -1;
     }
-    if (len == 0) return;
+    if (len == 0) return 0;
 
     if (len < 0)
         len = xmlStrlen(str);
 
-    if (len <= 0) return;
+    if (len <= 0) return -1;
 
     needSize = buf->use + len + 2;
     if (needSize > buf->size){
         if (!xmlBufferResize(buf, needSize)){
 	    xmlTreeErrMemory("growing buffer");
-            return;
+            return XML_ERR_NO_MEMORY;
         }
     }
 
@@ -6856,20 +6892,24 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
     memmove(&buf->content[0], str, len * sizeof(xmlChar));
     buf->use += len;
     buf->content[buf->use] = 0;
+    return 0;
 }
 
 /**
  * xmlBufferCat:
- * @buf:  the buffer to dump
+ * @buf:  the buffer to add to
  * @str:  the #xmlChar string
  *
  * Append a zero terminated string to an XML buffer.
+ *
+ * Returns 0 successful, a positive error code number otherwise
+ *         and -1 in case of internal or API error.
  */
-void
+int
 xmlBufferCat(xmlBufferPtr buf, const xmlChar *str) {
-    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return;
-    if (str != NULL)
-	xmlBufferAdd(buf, str, -1);
+    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return -1;
+    if (str == NULL) return -1;
+    return xmlBufferAdd(buf, str, -1);
 }
 
 /**
@@ -6878,29 +6918,33 @@ xmlBufferCat(xmlBufferPtr buf, const xmlChar *str) {
  * @str:  the C char string
  *
  * Append a zero terminated C string to an XML buffer.
+ *
+ * Returns 0 successful, a positive error code number otherwise
+ *         and -1 in case of internal or API error.
  */
-void
+int
 xmlBufferCCat(xmlBufferPtr buf, const char *str) {
     const char *cur;
 
-    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return;
+    if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return -1;
     if (str == NULL) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
 		"xmlBufferCCat: str == NULL\n");
 #endif
-	return;
+	return -1;
     }
     for (cur = str;*cur != 0;cur++) {
         if (buf->use  + 10 >= buf->size) {
             if (!xmlBufferResize(buf, buf->use+10)){
 		xmlTreeErrMemory("growing buffer");
-                return;
+                return XML_ERR_NO_MEMORY;
             }
         }
         buf->content[buf->use++] = *cur;
     }
     buf->content[buf->use] = 0;
+    return 0;
 }
 
 /**

@@ -50,7 +50,7 @@
  * @msg:   a string to accompany the error message
  */
 static void
-xmlSAX2ErrMemory(xmlParserCtxtPtr ctxt, char *msg) {
+xmlSAX2ErrMemory(xmlParserCtxtPtr ctxt, const char *msg) {
     if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
         ctxt->sax->error(ctxt->userData, "%s: out of memory\n", msg);
     ctxt->errNo = XML_ERR_NO_MEMORY;
@@ -858,7 +858,7 @@ xmlSAX2StartDocument(void *ctx)
 	(ctxt->input != NULL) && (ctxt->input->filename != NULL)) {
 	ctxt->myDoc->URL = xmlCanonicPath((const xmlChar *) ctxt->input->filename);
 	if (ctxt->myDoc->URL == NULL)
-	    ctxt->myDoc->URL = xmlStrdup((const xmlChar *) ctxt->input->filename);
+	    xmlSAX2ErrMemory(ctxt, "xmlSAX2StartDocument");
     }
 }
 
@@ -2268,6 +2268,9 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 	    lastChild->doc = ctxt->node->doc;
 	    ctxt->nodelen = len;
 	    ctxt->nodemem = len + 1;
+	} else {
+	    xmlSAX2ErrMemory(ctxt, "xmlSAX2Characters");
+	    return;
 	}
     } else {
 	int coalesceText = (lastChild != NULL) &&

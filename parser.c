@@ -3474,13 +3474,16 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
 	    xmlFatalErr(ctxt, XML_ERR_HYPHEN_IN_COMMENT, NULL);
 	}
 	if (len + 5 >= size) {
+	    xmlChar *new_buf;
 	    size *= 2;
-	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-	    if (buf == NULL) {
+	    new_buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    if (new_buf == NULL) {
+		xmlFree (buf);
 		xmlErrMemory(ctxt, NULL);
 		ctxt->instate = state;
 		return;
 	    }
+	    buf = new_buf;
 	}
 	COPY_BUF(ql,buf,len,q);
 	q = r;
@@ -9079,6 +9082,10 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			ctxt->sax->setDocumentLocator(ctxt->userData,
 						      &xmlDefaultSAXLocator);
 		    ctxt->version = xmlCharStrdup(XML_DEFAULT_VERSION);
+		    if (ctxt->version == NULL) {
+		        xmlErrMemory(ctxt, NULL);
+			break;
+		    }
 		    if ((ctxt->sax) && (ctxt->sax->startDocument) &&
 		        (!ctxt->disableSAX))
 			ctxt->sax->startDocument(ctxt->userData);
@@ -9737,8 +9744,14 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
 	int base = ctxt->input->base - ctxt->input->buf->buffer->content;
 	int cur = ctxt->input->cur - ctxt->input->base;
+	int res;
 	
-	xmlParserInputBufferPush(ctxt->input->buf, size, chunk);	      
+	res =xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
+	if (res < 0) {
+	    ctxt->errNo = XML_PARSER_EOF;
+	    ctxt->disableSAX = 1;
+	    return (XML_PARSER_EOF);
+	}
 	ctxt->input->base = ctxt->input->buf->buffer->content + base;
 	ctxt->input->cur = ctxt->input->base + cur;
 	ctxt->input->end =
@@ -9897,9 +9910,15 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 
     if (filename == NULL)
 	inputStream->filename = NULL;
-    else
+    else {
 	inputStream->filename = (char *)
 	    xmlCanonicPath((const xmlChar *) filename);
+	if (inputStream->filename == NULL) {
+	    xmlFreeParserCtxt(ctxt);
+	    xmlFreeParserInputBuffer(buf);
+	    return(NULL);
+	}
+    }
     inputStream->buf = buf;
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;

@@ -11,6 +11,9 @@ DOC_SOURCE_DIR=..
 
 HTML_DIR=$(datadir)/doc
 
+# A file in win32 depends upon one of the doc files
+WIN32_DIR=$(top_srcdir)/win32
+
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)/html
 PAGES= architecture.html bugs.html contribs.html docs.html DOM.html \
     downloads.html entities.html example.html help.html index.html \
@@ -69,7 +72,12 @@ xml: templates
 libxml2-api.xml: apibuild.py ../include/libxml/*.h
 	-(./apibuild.py)
 
-api: libxml2-api.xml libxml2-refs.xml
+$(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
+	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	  $(bindir)/xsltproc -o $(WIN32_DIR)/libxml2.def.src \
+	  --nonet $(WIN32_DIR)/defgen.xsl libxml2-api.xml ; fi )
+
+api: libxml2-api.xml libxml2-refs.xml $(WIN32_DIR)/libxml2.def.src
 
 html:
 	if test -n -d html ; then mkdir html ; fi

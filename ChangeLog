@@ -1,3 +1,15 @@
+Tue Aug 12 18:55:08 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* autogen.sh: took away the requirement for automake-1.4,
+	  changed the messages for getting auto* tools to current
+	  gnu pages.
+	* configure.in: added check for Linux Dec alpha requiring
+	  -ieee flag, fixed test for ipv6
+	* trionan.c: fixed problem for compiling on Linux Dec alpha
+	  using native compiler
+	* doc/Makefile.am: implemented regeneration of win32/libxml2.def.src
+	  whenever libxml2-api.xml is changed.
+	  
 Mon Aug 11 17:02:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: cleaning up a problem when parsing UTF-16 and libiconv

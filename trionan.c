@@ -51,7 +51,11 @@
 # include <signal.h>
 #endif
 #if defined(TRIO_COMPILER_DECC)
-# include <fp_class.h>
+#  if defined(__linux__)
+#   include <cpml.h>
+#  else
+#   include <fp_class.h>
+#  endif
 #endif
 #include <assert.h>
 
@@ -435,7 +439,7 @@ trio_isinf
 TRIO_ARGS1((number),
 	   double number)
 {
-#if defined(TRIO_COMPILER_DECC)
+#if defined(TRIO_COMPILER_DECC) && !defined(__linux__)
   /*
    * DECC has an isinf() macro, but it works differently than that
    * of C99, so we use the fp_class() function instead.

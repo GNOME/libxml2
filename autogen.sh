@@ -12,29 +12,24 @@ DIE=0
 	echo
 	echo "You must have autoconf installed to compile libxml."
 	echo "Download the appropriate package for your distribution,"
-	echo "or get the source tarball at ftp://ftp.gnu.org/pub/gnu/"
+	echo "or see http://www.gnu.org/software/autoconf"
 	DIE=1
 }
 
 (libtool --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "You must have libtool installed to compile libxml."
-	echo "Get ftp://alpha.gnu.org/gnu/libtool-1.0h.tar.gz"
-	echo "(or a newer version if it is available)"
+	echo "Download the appropriate package for your distribution,"
+	echo "or see http://www.gnu.org/software/libtool"
 	DIE=1
 }
 
-(automake-1.4 --version) < /dev/null > /dev/null 2>&1 || {
+(automake --version) < /dev/null > /dev/null 2>&1 || {
 	echo
-	echo "You must have latest automake 1.4 installed to compile libxml,"
-        echo "or alternatively create a symlink from automake-1.4 to "
-        echo "plain automake."
-        echo "Newer versions of automake 1.4 come with the symlink "
-        echo "pregenerated. This will allow you to compile libxml "
-        echo "while also installing newer automakes such as 1.6."
-	echo "Get ftp://sources.redhat.com/pub/automake/automake-1.4l.tar.gz"
-	echo "(or a newer version in the 1.4 series if it is available)."              
 	DIE=1
+	echo "You must have automake installed to compile libxml."
+	echo "Download the appropriate package for your distribution,"
+	echo "or see http://www.gnu.org/software/automake"
 }
 
 if test "$DIE" -eq 1; then
@@ -52,8 +47,8 @@ if test -z "$*"; then
 fi
 
 libtoolize --copy --force
-aclocal-1.4 $ACLOCAL_FLAGS
-automake-1.4 --add-missing
+aclocal $ACLOCAL_FLAGS
+automake --add-missing
 autoconf
 
 cd $THEDIR

@@ -209,7 +209,7 @@ if test $enable_ipv6 = yes; then
   )
   AC_MSG_RESULT($have_ipv6)
 
-  if test $have_ipv6=yes; then
+  if test $have_ipv6 = yes; then
     AC_DEFINE(SUPPORT_IP6)
 
     have_getaddrinfo=no
@@ -220,7 +220,7 @@ if test $enable_ipv6 = yes; then
       done
     fi
 
-    if test $have_getaddrinfo=yes; then
+    if test $have_getaddrinfo = yes; then
       AC_DEFINE(HAVE_GETADDRINFO)
     fi
   fi
@@ -259,6 +259,9 @@ if test "${GCC}" != "yes" ; then
           *-dec-osf* )
                CFLAGS="${CFLAGS} -ieee"
                ;;
+	  alpha*-*-linux* )
+	       CFLAGS="${CFLAGS} -ieee"
+	       ;;
     esac
 else
     if test "$with_fexceptions" = "yes"

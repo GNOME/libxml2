@@ -1,3 +1,8 @@
+Mon Oct 25 16:04:22 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* parser.c: modified the handling of _private for entity
+	  expansion (bug 155816)
+
 Mon Oct 25 17:11:37 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed the leak reported by Volker Roth on the list

@@ -5609,6 +5609,19 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		ctxt->sax->reference(ctxt->userData, ent->name);
 		return;
 	    } else if (ctxt->replaceEntities) {
+		/*
+		 * There is a problem on the handling of _private for entities
+		 * (bug 155816): Should we copy the content of the field from
+		 * the entity (possibly overwriting some value set by the user
+		 * when a copy is created), should we leave it alone, or should
+		 * we try to take care of different situations?  The problem
+		 * is exacerbated by the usage of this field by the xmlReader.
+		 * To fix this bug, we look at _private on the created node
+		 * and, if it's NULL, we copy in whatever was in the entity.
+		 * If it's not NULL we leave it alone.  This is somewhat of a
+		 * hack - maybe we should have further tests to determine
+		 * what to do.
+		 */
 		if ((ctxt->node != NULL) && (ent->children != NULL)) {
 		    /*
 		     * Seems we are generating the DOM content, do
@@ -5632,7 +5645,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			while (cur != NULL) {
 			    nw = xmlCopyNode(cur, 1);
 			    if (nw != NULL) {
-				nw->_private = cur->_private;
+				if (nw->_private == NULL)
+				    nw->_private = cur->_private;
 				if (firstChild == NULL){
 				    firstChild = nw;
 				}
@@ -5675,7 +5689,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			    cur->parent = NULL;
 			    nw = xmlCopyNode(cur, 1);
 			    if (nw != NULL) {
-				nw->_private = cur->_private;
+				if (nw->_private == NULL)
+				    nw->_private = cur->_private;
 				if (firstChild == NULL){
 				    firstChild = cur;
 				}

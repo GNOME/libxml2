@@ -632,6 +632,7 @@ classes_destructors = {
 functions_noexcept = {
     "xmlHasProp": 1,
     "xmlHasNsProp": 1,
+    "xmlDocSetRootElement": 1,
 }
 
 reference_keepers = {

@@ -1,3 +1,9 @@
+Fri Jan 10 16:20:34 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py: fixed a bug raised by Raymond Wiker, 
+	  docSetRootElement() should not raise an exception if the
+	  return is None
+
 Fri Jan 10 14:13:03 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.py python/libxml.c python/libxml2-python-api.xml:

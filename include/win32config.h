@@ -80,23 +80,11 @@ static int isnan (double d) {
 }
 #endif /* _MSC_VER */
 
-#ifdef _MSC_VER
-/* We don't use trio when compiling under MSVC. This is not because trio
-   is bad, but because MSVC has no easy way to conditionally include a .c
-   file in the project. In order to enable trio usage, we would have to compile
-   all trio functionality into the executable, even if we don't use it.
-   Since MS C-runtime has all required functions, trio is not necessary. */
-#ifdef WITH_TRIO
-#undef WITH_TRIO
-#endif /* WITH_TRIO */
-#ifndef WITHOUT_TRIO
-#define WITHOUT_TRIO
-#endif /* WITHOUT_TRIO */
-/* Microsoft's C runtime names all non-ANSI functions with a leading
-   underscore. Since functionality is still the same, they can be used. */
+#if defined(_MSC_VER) || defined(__MINGW32__)
+#define mkdir(p,m) _mkdir(p)
 #define snprintf _snprintf
-#define vsnprintf _vsnprintf
-#endif /* _MSC_VER */
+#define vsnprintf(b,c,f,a) _vsnprintf(b,c,f,a)
+#endif
 
 /* Threading API to use should be specified here for compatibility reasons.
    This is however best specified on the compiler's command-line. */

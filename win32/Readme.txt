@@ -95,11 +95,15 @@ configuration.
   -------------
 
 After the configuration stage has been completed, you want to build
-the software. To do that, type
+the software. You will have to use the make tool which comes with
+your compiler. If you, for example, configured the source to build
+with Microsoft's MSVC compiler, you would use the NMAKE utility. If
+ýou configured it to build with GNU C compiler, mingw edition, you
+would use the GNU make. Assuming you use MSVC, type
 
   nmake
 
-in the win32 subdirectory.When the building completes, you will find
+in the win32 subdirectory. When the building completes, you will find
 the executable files in win32\binaries directory.
  
 You can install the software into the directory you specified to the
@@ -125,5 +129,5 @@ possible, and there is also a chance that support exists for IDEs
 which I have never seen.
 
 
-March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+November 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 

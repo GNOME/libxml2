@@ -1256,8 +1256,11 @@ get_next_node:
 	if ((oldstate == XML_TEXTREADER_ELEMENT) &&
             (reader->node->type == XML_ELEMENT_NODE) &&
 	    (reader->node->children == NULL) &&
-	    ((reader->node->extra & NODE_IS_EMPTY) == 0) &&
-	    (reader->in_xinclude <= 0)) {
+	    ((reader->node->extra & NODE_IS_EMPTY) == 0)
+#ifdef LIBXML_XINCLUDE_ENABLED
+	    && (reader->in_xinclude <= 0)
+#endif
+	    ) {
 	    reader->state = XML_TEXTREADER_END;
 	    goto node_found;
 	}
@@ -1276,7 +1279,9 @@ get_next_node:
 	 * Cleanup of the old node
 	 */
 	if ((reader->preserves == 0) &&
+#ifdef LIBXML_XINCLUDE_ENABLED
 	    (reader->in_xinclude == 0) &&
+#endif
 	    (reader->entNr == 0) &&
 	    (reader->node->prev != NULL) &&
             (reader->node->prev->type != XML_DTD_NODE) &&
@@ -1322,7 +1327,9 @@ get_next_node:
 	 * Cleanup of the old node
 	 */
 	if ((reader->preserves == 0) &&
+#ifdef LIBXML_XINCLUDE_ENABLED
 	    (reader->in_xinclude == 0) &&
+#endif
 	    (reader->entNr == 0) &&
 	    (oldnode->type != XML_DTD_NODE) &&
 	    ((oldnode->extra & NODE_IS_PRESERVED) == 0) &&
@@ -1334,7 +1341,9 @@ get_next_node:
 	goto node_end;
     }
     if ((reader->preserves == 0) &&
+#ifdef LIBXML_XINCLUDE_ENABLED
         (reader->in_xinclude == 0) &&
+#endif
 	(reader->entNr == 0) &&
         (reader->node->last != NULL) &&
         ((reader->node->last->extra & NODE_IS_PRESERVED) == 0)) {
@@ -2737,8 +2746,10 @@ xmlTextReaderIsEmptyElement(xmlTextReaderPtr reader) {
 	return(0);
     if (reader->doc != NULL)
         return(1);
+#ifdef LIBXML_XINCLUDE_ENABLED
     if (reader->in_xinclude > 0)
         return(1);
+#endif
     return((reader->node->extra & NODE_IS_EMPTY) != 0);
 }
 

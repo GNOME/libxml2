@@ -1,3 +1,8 @@
+Thu Jan  8 17:48:46 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fixing some problem if configured --without-xinclude
+	  c.f. #130902
+
 Thu Jan  8 17:42:48 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: changed AC_OUTPUT() macro to avoid a cygwin problem

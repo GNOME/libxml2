@@ -157,12 +157,13 @@ dnl Workaround for HP native compiler
 dnl http://bugs.gnome.org/db/31/3163.html
 dnl
 if test "${GCC}" != "yes" ; then
-    CFLAGS="${CFLAGS} -Wall "
     case "${host}" in
           *-*-hpux* )
 	       CFLAGS="${CFLAGS} -Wp,-H30000"
 	       ;;
     esac
+else
+    CFLAGS="${CFLAGS} -Wall"
 fi
 case ${host} in
     *-*-solaris*)
@@ -320,8 +321,9 @@ AC_ARG_WITH(iconv, [  --with-iconv            Add the ICONV support (on)])
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support
     WITH_ICONV=0
-else    
-    AC_CHECK_FUNC(iconv, , AC_CHECK_LIB(iconv, iconv))
+else
+    AC_CHECK_HEADER(iconv.h, 
+	AC_CHECK_FUNC(iconv, , AC_CHECK_LIB(iconv, iconv)))
     if test "$have_iconv" != "" ; then
         echo Iconv support not found
         WITH_ICONV=0

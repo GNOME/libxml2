@@ -726,6 +726,34 @@ xmlXPathFreeNodeSet(xmlNodeSetPtr obj) {
     xmlFree(obj);
 }
 
+/**
+ * xmlXPathFreeValueTree:
+ * @obj:  the xmlNodeSetPtr to free
+ *
+ * Free the NodeSet compound and the actual tree, this is different
+ * from xmlXPathFreeNodeSet()
+ */
+void
+xmlXPathFreeValueTree(xmlNodeSetPtr obj) {
+    int i;
+
+    if (obj == NULL) return;
+    for (i = 0;i < obj->nodeNr;i++)
+        if (obj->nodeTab[i] != NULL)
+	    xmlFreeNode(obj->nodeTab[i]);
+
+    if (obj->nodeTab != NULL) {
+#ifdef DEBUG
+	memset(obj->nodeTab, 0xB , (size_t) sizeof(xmlNodePtr) * obj->nodeMax);
+#endif
+	xmlFree(obj->nodeTab);
+    }
+#ifdef DEBUG
+    memset(obj, 0xB , (size_t) sizeof(xmlNodeSet));
+#endif
+    xmlFree(obj);
+}
+
 #if defined(DEBUG) || defined(DEBUG_STEP)
 /**
  * xmlGenericErrorContextNodeSet:
@@ -1332,6 +1360,13 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 	case XPATH_STRING:
 	    ret->stringval = xmlStrdup(val->stringval);
 	case XPATH_XSLT_TREE:
+	    if ((val->nodesetval != NULL) &&
+		(val->nodesetval->nodeTab != NULL))
+		ret->nodesetval = xmlXPathNodeSetCreate(
+			xmlCopyNode(val->nodesetval->nodeTab[0], 1));
+	    else
+		ret->nodesetval = xmlXPathNodeSetCreate(NULL);
+	    break;
 	case XPATH_NODESET:
 	    ret->nodesetval = xmlXPathNodeSetMerge(NULL, val->nodesetval);
 	    break;
@@ -1375,7 +1410,7 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
 	    xmlFree(obj->stringval);
     } else if (obj->type == XPATH_XSLT_TREE) {
 	if (obj->nodesetval != NULL)
-	    xmlXPathFreeNodeSet(obj->nodesetval);
+	    xmlXPathFreeValueTree(obj->nodesetval);
     }
 
 #ifdef DEBUG

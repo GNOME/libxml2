@@ -1,3 +1,8 @@
+Mon Jan 22 11:43:21 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: when copying a XSLT tree object teh tree need to be copied
+	  too, and deallocation need to occur the same way.
+
 Mon Jan 22 10:35:40 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpathInternals.h xpath.[ch] debugXML.c: added the XPATH_XSLT_TREE

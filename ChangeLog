@@ -1,3 +1,7 @@
+Sat Jun 23 20:37:19 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: fixed the way to detect symlink
+
 Sat Jun 23 20:30:11 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: updated, include/libxml is now a real CVS dir

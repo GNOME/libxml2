@@ -43,6 +43,9 @@
 /* Define if you have the printf function.  */
 #undef HAVE_PRINTF
 
+/* Define if you have the signal function.  */
+#undef HAVE_SIGNAL
+
 /* Define if you have the snprintf function.  */
 #undef HAVE_SNPRINTF
 
@@ -120,6 +123,9 @@
 
 /* Define if you have the <netinet/in.h> header file.  */
 #undef HAVE_NETINET_IN_H
+
+/* Define if you have the <signal.h> header file.  */
+#undef HAVE_SIGNAL_H
 
 /* Define if you have the <stdarg.h> header file.  */
 #undef HAVE_STDARG_H

@@ -431,13 +431,16 @@ AC_SUBST(RDL_LIBS)
 dnl
 dnl cleanup any remaining symlinks if any for include/libxml
 dnl
-if test ! -d $srcdir/include/libxml
+if test -L $srcdir/include/libxml
 then
     if test -d $srcdir/include/CVS
     then
 	rm -rf $srcdir/include/libxml
 	echo The CVS repository changed a bit
 	echo 'please run "cvs update -d" and rerun the configuration script'
+	exit 1
+    else
+        echo  $srcdir/include/libxml should not be a symlink anymore
 	exit 1
     fi
 fi

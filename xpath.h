@@ -237,13 +237,14 @@ struct _xmlXPathParserContext {
 
     int error;				/* error code */
 
-    xmlXPathCompExprPtr comp;		/* the precompiled expression */
-
     xmlXPathContextPtr  context;	/* the evaluation context */
     xmlXPathObjectPtr     value;	/* the current value */
     int                 valueNr;	/* number of values stacked */
     int                valueMax;	/* max number of values stacked */
     xmlXPathObjectPtr *valueTab;	/* stack of values */
+
+    xmlXPathCompExprPtr comp;		/* the precompiled expression */
+
 };
 
 /*

@@ -11392,10 +11392,12 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
 
     if ((ctxt->wellFormed) || recovery) {
         ret = ctxt->myDoc;
-	if (ctxt->input->buf->compressed > 0)
-	    ret->compression = 9;
-	else
-	    ret->compression = ctxt->input->buf->compressed;
+	if (ret != NULL) {
+	    if (ctxt->input->buf->compressed > 0)
+		ret->compression = 9;
+	    else
+		ret->compression = ctxt->input->buf->compressed;
+	}
     }
     else {
        ret = NULL;

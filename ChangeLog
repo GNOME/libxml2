@@ -1,3 +1,8 @@
+Wed Oct  8 23:31:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: bug in compression saving was crashing galeon
+	  reported by teuf
+	  
 Wed Oct  8 21:18:12 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* error.c tree.c xmlIO.c xmllint.c: more cleanup through the

@@ -3,6 +3,7 @@ BEGIN         {
 		nb_entry = 0
                 in_entry = 0
                 in_item = 0
+		print "<?xml version='1.0' encoding='ISO-8859-1'?>"
 		print "<log>"
 	      }
 END           {

@@ -1071,3 +1071,4 @@ __xmlOutputBufferCreateFilenameValue(void) {
     else
 	return (&xmlGetGlobalState()->xmlOutputBufferCreateFilenameValue);
 }
+

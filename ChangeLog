@@ -1,3 +1,9 @@
+Thu Jun  3 10:12:38 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemas.c: minor cosmetic changes, no change to logic.
+	* result/schemas/attruse_0_[12].err: regenerated
+	* globals.c: added a newline at end to make gcc happy
+
 Wed Jun  2 21:16:26 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c include/libxml/schemasInternals.h 

@@ -274,6 +274,7 @@ xmlSchemaPErr2(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
         xmlSchemaPErr(ctxt, node, error, msg, str1, str2);
 }
 
+#if 0
 /**
  * xmlSchemaPErrExt:
  * @ctxt: the parsing context
@@ -312,8 +313,10 @@ xmlSchemaPErrExt(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int error,
     __xmlRaiseError(schannel, channel, data, ctxt, node, XML_FROM_SCHEMASP,
                     error, XML_ERR_ERROR, NULL, 0,
                     (const char *) strData1, (const char *) strData2, 
-		    (const char *) strData3, 0, 0, msg, str1, str2, str3, str4, str5);
+		    (const char *) strData3, 0, 0, msg, str1, str2, 
+		    str3, str4, str5);
 }
+#endif
 
 /**
  * xmlSchemaVTypeErrMemory:
@@ -2332,9 +2335,9 @@ xmlSchemaParseAnyAttribute(xmlSchemaParserCtxtPtr ctxt,
      * Build the namespace constraints.
      */
     nsConstraint = xmlSchemaGetProp(ctxt, node, "namespace");
-    if ((nsConstraint == NULL) || (xmlStrEqual(nsConstraint, "##any")))
+    if ((nsConstraint == NULL) || (xmlStrEqual(nsConstraint, BAD_CAST "##any")))
 	ret->any = 1;
-    else if (xmlStrEqual(nsConstraint, "##other")) {
+    else if (xmlStrEqual(nsConstraint, BAD_CAST "##other")) {
 	ret->negNsSet = xmlSchemaNewWildcardNsConstraint(ctxt);
 	if (ret->negNsSet == NULL) {	    
 	    xmlSchemaFreeWildcard(ret);
@@ -2352,7 +2355,8 @@ xmlSchemaParseAnyAttribute(xmlSchemaParserCtxtPtr ctxt,
 	    if (end == cur)
 		break;
 	    member = xmlStrndup(cur, end - cur);    	    
-	    if ((xmlStrEqual(member, "##other")) || (xmlStrEqual(member, "##any"))) {
+	    if ((xmlStrEqual(member, BAD_CAST "##other")) ||
+		    (xmlStrEqual(member, BAD_CAST "##any"))) {
 		xmlSchemaPErr(ctxt, ret->node, XML_SCHEMAP_WILDCARD_INVALID_NS_MEMBER,
 		    "The namespace constraint of an anyAttribute "
 		    "is a set and must not contain \"%s\"\n",
@@ -2361,9 +2365,9 @@ xmlSchemaParseAnyAttribute(xmlSchemaParserCtxtPtr ctxt,
 		/*
 		* TODO: Validate the value (anyURI).
 		*/		
-		if (xmlStrEqual(member, "##targetNamespace")) {
+		if (xmlStrEqual(member, BAD_CAST "##targetNamespace")) {
 		    dictMember = schema->targetNamespace;
-		} else if (xmlStrEqual(member, "##local")) {
+		} else if (xmlStrEqual(member, BAD_CAST "##local")) {
 		    dictMember = NULL;
 		} else
 		    dictMember = xmlDictLookup(ctxt->dict, member, -1);
@@ -2642,7 +2646,6 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt,
 {
     const xmlChar *name, *refNs = NULL, *ref = NULL;
     xmlSchemaAttributeGroupPtr ret;
-    xmlSchemaAttributePtr last = NULL;
     xmlNodePtr child = NULL;
     const xmlChar *oldcontainer;
     char buf[100];
@@ -5274,7 +5277,7 @@ xmlSchemaGetOnymousTargetNsURI(xmlSchemaTypePtr type)
  * Returns 1 if the type has the given value type, or
  * is derived from such a type.
  */
-int
+static int
 xmlSchemaIsDerivedFromBuiltInType(xmlSchemaParserCtxtPtr ctxt, 
 				  xmlSchemaTypePtr type, int valType)
 {
@@ -5412,7 +5415,7 @@ xmlSchemaUnionWildcards(xmlSchemaParserCtxtPtr ctxt,
 	    (completeWild->negNsSet->value == curWild->negNsSet->value)) {
 	    
 	    if (completeWild->nsSet != NULL) {
-		int found;
+		int found = 0;
 		
 		/* 
 		* Check equality of sets. 
@@ -5644,7 +5647,7 @@ xmlSchemaIntersectWildcards(xmlSchemaParserCtxtPtr ctxt,
 			    xmlSchemaWildcardPtr completeWild,
 			    xmlSchemaWildcardPtr curWild)
 {
-    xmlSchemaWildcardNsPtr cur, curB, prev, last = NULL, tmp;
+    xmlSchemaWildcardNsPtr cur, curB, prev,  tmp;
 
     /*
     * 1 If O1 and O2 are the same value, then that value must be the 
@@ -5658,7 +5661,7 @@ xmlSchemaIntersectWildcards(xmlSchemaParserCtxtPtr ctxt,
 	    (completeWild->negNsSet->value == curWild->negNsSet->value)) {
 	    
 	    if (completeWild->nsSet != NULL) {
-		int found;
+		int found = 0;
 		
 		/* 
 		* Check equality of sets. 
@@ -5906,7 +5909,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 {
     xmlSchemaTypePtr baseType = NULL;
     xmlSchemaAttributeLinkPtr cur, base, tmp, id = NULL, prev = NULL, uses = NULL, 
-	lastUse = NULL, lastBaseUse;
+	lastUse = NULL, lastBaseUse = NULL;
     xmlSchemaAttributePtr attrs;
     int baseIsAnyType = 0;    
 
@@ -5933,7 +5936,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 	 * xmlSchemaTypeAnyTypeDef is static in xmlschematypes.c.
 	 */
 	if ((baseType->type == XML_SCHEMA_TYPE_BASIC) &&
-	    xmlStrEqual(baseType->name, "anyType")) {	    
+	    xmlStrEqual(baseType->name, BAD_CAST "anyType")) {	    
 	    baseIsAnyType = 1;
 	}
 	/*
@@ -8344,7 +8347,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
     xmlSchemaAttributeLinkPtr attrUse;
     xmlSchemaAttributePtr attrDecl;
     int found;
-    xmlSchemaAttrStatePtr curState, reqAttrStates = NULL, reqAttrStatesTop;
+    xmlSchemaAttrStatePtr curState, reqAttrStates = NULL, reqAttrStatesTop = NULL;
 #ifdef DEBUG_ATTR_VALIDATION
     int redundant = 0;
 #endif
@@ -8753,7 +8756,7 @@ xmlSchemaNewValidCtxt(xmlSchemaPtr schema)
     ret->schema = schema;
     /* 
      * Removed due to changes of the attribute state list.
-    /*
+    */
     /* ret->attrNr = 0; */
     /* ret->attrMax = 10; */
     /* ret->attrBase = NULL; */
@@ -8761,7 +8764,7 @@ xmlSchemaNewValidCtxt(xmlSchemaPtr schema)
     ret->attr = NULL;
     /* 
      * Removed due to changes of the attribute state list.
-    /*
+     *
     ret->attr = (xmlSchemaAttrStatePtr) xmlMalloc(ret->attrMax *
                                                   sizeof
                                                   (xmlSchemaAttrState));

@@ -7,7 +7,7 @@ end xmlIsChar
 
 name xmlIsPubidChar
 ur 0x20 0x0d 0x0a 'a'..'z' 'A'..'Z' '0'..'9'
-ur '-' '\' '(' ')' '+' ',' '.' '/'
+ur '-' 0x27 '(' ')' '+' ',' '.' '/'
 ur ':' '=' '?' ';' '!' '*' '#' '@'
 ur '$' '_' '%'
 end

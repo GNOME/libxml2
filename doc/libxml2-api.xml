@@ -4796,7 +4796,6 @@ actually an xmlCharEncoding'/>
       <field name='state' type='xmlAutomataStatePtr' info=' used to build the automata'/>
       <field name='am' type='void *' info=''/>
       <field name='state' type='void *' info=''/>
-      <field name='serror' type='xmlStructuredErrorFunc' info=' structured error reporting capability'/>
     </struct>
     <typedef name='xmlValidCtxtPtr' file='valid' type='xmlValidCtxt *'/>
     <struct name='xmlValidState' file='valid' type='struct _xmlValidState'/>

@@ -1,3 +1,12 @@
+Sat Oct 11 22:54:13 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* check-xml-test-suite.py: removed some annoying warnings
+	* chvalid.def chvalid.c include/libxml/chvalid.h: fixed a bug
+	  in the PubidChars definition, regenerated, there is still
+	  a bug left somewhere
+	* genChRanges.py: save the header directly in include/libxml/
+	* configure.in: I generated a 2.6.0beta6 earlier today
+
 Sat Oct 11 23:32:47 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* fixed small error on previous commit (chvalid.h in

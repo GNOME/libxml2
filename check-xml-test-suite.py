@@ -6,6 +6,11 @@ import string
 sys.path.append("python")
 import libxml2
 
+test_nr = 0
+test_succeed = 0
+test_failed = 0
+test_error = 0
+
 #
 # the testsuite description
 #
@@ -279,15 +284,10 @@ def testValid(filename, id):
     doc.freeDoc()
     return 1
 
-test_nr = 0
-test_succeed = 0
-test_failed = 0
-test_error = 0
 def runTest(test):
     global test_nr
-    global test_failed
-    global test_error
     global test_succeed
+    global test_failed
     global error_msg
     global log
 
@@ -391,11 +391,6 @@ start = time.time()
 
 case = testsuite.children
 while case != None:
-    global test_nr
-    global test_succeed
-    global test_failed
-    global test_error
-
     if case.name == 'TESTCASES':
 	old_test_nr = test_nr
 	old_test_succeed = test_succeed

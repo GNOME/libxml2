@@ -201,9 +201,9 @@ for line in defines.readlines():
 # Generate the headings:
 #
 try:
-    header = open("chvalid.h", "w")
+    header = open("include/libxml/chvalid.h", "w")
 except:
-    print "Failed to open chvalid.h"
+    print "Failed to open include/libxml/chvalid.h"
     sys.exit(1)
 
 try:

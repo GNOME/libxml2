@@ -419,9 +419,10 @@ static xmlChar *static_buffer = NULL;
 
 static int growBuffer(void) {
     static_buffer_size *= 2;
-    static_buffer = (xmlChar *) xmlRealloc(static_buffer, static_buffer_size * sizeof(xmlChar));
+    static_buffer = (xmlChar *) xmlRealloc(static_buffer,
+	                                static_buffer_size * sizeof(xmlChar));
     if (static_buffer == NULL) {
-        perror("realloc failed");
+        xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
 	return(-1);
     }
     return(0);
@@ -466,9 +467,10 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
 
     if (static_buffer == NULL) {
         static_buffer_size = 1000;
-        static_buffer = (xmlChar *) xmlMalloc(static_buffer_size * sizeof(xmlChar));
+        static_buffer = (xmlChar *)
+	    xmlMalloc(static_buffer_size * sizeof(xmlChar));
 	if (static_buffer == NULL) {
-	    perror("malloc failed");
+	    xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
             return(NULL);
 	}
 	out = static_buffer;
@@ -561,7 +563,7 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
     buffer = (xmlChar *)						\
     		xmlRealloc(buffer, buffer_size * sizeof(xmlChar));	\
     if (buffer == NULL) {						\
-	perror("realloc failed");					\
+	xmlGenericError(xmlGenericErrorContext, "realloc failed\n");	\
 	return(NULL);							\
     }									\
 }
@@ -597,7 +599,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
     buffer_size = 1000;
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
-	perror("malloc failed");
+	xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
 	return(NULL);
     }
     out = buffer;
@@ -780,7 +782,7 @@ xmlEncodeSpecialChars(xmlDocPtr doc, const xmlChar *input) {
     buffer_size = 1000;
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
-	perror("malloc failed");
+	xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
 	return(NULL);
     }
     out = buffer;

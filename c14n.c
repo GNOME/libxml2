@@ -1821,7 +1821,7 @@ xmlC14NDocSave(xmlDocPtr doc, xmlNodeSetPtr nodes,
     buffer = (xmlChar *)						\
     		xmlRealloc(buffer, buffer_size * sizeof(xmlChar));	\
     if (buffer == NULL) {						\
-	perror("realloc failed");					\
+	xmlGenericError(xmlGenericErrorContext, "realloc failed");	\
 	return(NULL);							\
     }									\
 }
@@ -1856,7 +1856,7 @@ xmlC11NNormalizeString(const xmlChar * input,
     buffer_size = 1000;
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
-        perror("malloc failed");
+        xmlGenericError(xmlGenericErrorContext, "malloc failed");
         return (NULL);
     }
     out = buffer;

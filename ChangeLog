@@ -1,3 +1,10 @@
+Thu Sep  5 13:29:47 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* DOCBparser.c HTMLparser.c c14n.c entities.c list.c
+	  parser.c parserInternals.c xmlIO.c: get rid of all the 
+	  perror() calls made in the library execution paths. This
+	  should fix both #92059 and #92385
+
 Thu Sep  5 13:13:17 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: memory leak reporting was broken after a change

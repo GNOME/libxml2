@@ -119,19 +119,20 @@ struct _docbElemDesc {
  * Generic function for accessing stacks in the Parser Context
  */
 
-#define PUSH_AND_POP(scope, type, name)                                        \
+#define PUSH_AND_POP(scope, type, name)                                \
 scope int docb##name##Push(docbParserCtxtPtr ctxt, type value) {       \
     if (ctxt->name##Nr >= ctxt->name##Max) {                           \
        ctxt->name##Max *= 2;                                           \
         ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,         \
                     ctxt->name##Max * sizeof(ctxt->name##Tab[0]));     \
         if (ctxt->name##Tab == NULL) {                                 \
-           xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");                      \
+           xmlGenericError(xmlGenericErrorContext,                     \
+		           "realloc failed !\n");                      \
            return(0);                                                  \
        }                                                               \
     }                                                                  \
     ctxt->name##Tab[ctxt->name##Nr] = value;                           \
-    ctxt->name = value;                                                        \
+    ctxt->name = value;                                                \
     return(ctxt->name##Nr++);                                          \
 }                                                                      \
 scope type docb##name##Pop(docbParserCtxtPtr ctxt) {                   \
@@ -2049,10 +2050,10 @@ docbookEntitiesTable[] = {
  * Macro used to grow the current buffer.
  */
 #define growBuffer(buffer) {                                           \
-    buffer##_size *= 2;                                                        \
-    buffer = (xmlChar *) xmlRealloc(buffer, buffer##_size * sizeof(xmlChar));  \
+    buffer##_size *= 2;                                                \
+    buffer = (xmlChar *) xmlRealloc(buffer, buffer##_size * sizeof(xmlChar)); \
     if (buffer == NULL) {                                              \
-       perror("realloc failed");                                       \
+       xmlGenericError(xmlGenericErrorContext, "realloc failed");      \
        return(NULL);                                                   \
     }                                                                  \
 }
@@ -2678,7 +2679,8 @@ docbParseSGMLAttribute(docbParserCtxtPtr ctxt, const xmlChar stop) {
     buffer_size = DOCB_PARSER_BIG_BUFFER_SIZE;
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
-       perror("docbParseSGMLAttribute: malloc failed");
+       xmlGenericError(xmlGenericErrorContext,
+	               "docbParseSGMLAttribute: malloc failed");
        return(NULL);
     }
     out = buffer;
@@ -5001,15 +5003,15 @@ docbCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
 
     ctxt = (docbParserCtxtPtr) xmlMalloc(sizeof(docbParserCtxt));
     if (ctxt == NULL) {
-        perror("malloc");
-       return(NULL);
+        xmlGenericError(xmlGenericErrorContext, "malloc failed");
+        return(NULL);
     }
     docbInitParserCtxt(ctxt);
     input = (docbParserInputPtr) xmlMalloc(sizeof(docbParserInput));
     if (input == NULL) {
-        perror("malloc");
-       xmlFree(ctxt);
-       return(NULL);
+        xmlGenericError(xmlGenericErrorContext, "malloc failed");
+        xmlFree(ctxt);
+        return(NULL);
     }
     memset(input, 0, sizeof(docbParserInput));
 
@@ -6010,16 +6012,16 @@ docbCreateFileParserCtxt(const char *filename,
 
     ctxt = (docbParserCtxtPtr) xmlMalloc(sizeof(docbParserCtxt));
     if (ctxt == NULL) {
-        perror("malloc");
-       return(NULL);
+        xmlGenericError(xmlGenericErrorContext, "malloc failed");
+        return(NULL);
     }
     memset(ctxt, 0, sizeof(docbParserCtxt));
     docbInitParserCtxt(ctxt);
     inputStream = (docbParserInputPtr) xmlMalloc(sizeof(docbParserInput));
     if (inputStream == NULL) {
-        perror("malloc");
-       xmlFree(ctxt);
-       return(NULL);
+        xmlGenericError(xmlGenericErrorContext, "malloc failed");
+        xmlFree(ctxt);
+        return(NULL);
     }
     memset(inputStream, 0, sizeof(docbParserInput));
 

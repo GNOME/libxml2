@@ -931,7 +931,7 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
     buffer = (xmlChar *)						\
     		xmlRealloc(buffer, buffer##_size * sizeof(xmlChar));	\
     if (buffer == NULL) {						\
-	perror("realloc failed");					\
+	xmlGenericError(xmlGenericErrorContext,	"realloc failed");	\
 	return(NULL);							\
     }									\
 }
@@ -984,7 +984,8 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
     buffer_size = XML_PARSER_BIG_BUFFER_SIZE;
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
-	perror("xmlStringDecodeEntities: malloc failed");
+	xmlGenericError(xmlGenericErrorContext,
+		        "xmlStringDecodeEntities: malloc failed");
 	return(NULL);
     }
 
@@ -2341,7 +2342,8 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt) {
     buf_size = XML_PARSER_BUFFER_SIZE;
     buf = (xmlChar *) xmlMalloc(buf_size * sizeof(xmlChar));
     if (buf == NULL) {
-	perror("xmlParseAttValue: malloc failed");
+	xmlGenericError(xmlGenericErrorContext,
+		        "xmlParseAttValue: malloc failed");
 	return(NULL);
     }
 
@@ -10191,7 +10193,8 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
 
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
-        perror("malloc");
+        xmlGenericError(xmlGenericErrorContext,
+		        "malloc");
         xmlFree(ctxt);
         return;
     }

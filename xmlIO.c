@@ -2158,7 +2158,6 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	return(-1);
     }
     if (res < 0) {
-	perror ("read error");
 	return(-1);
     }
     len = res;

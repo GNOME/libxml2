@@ -1325,9 +1325,9 @@ static const htmlEntityDesc  html40EntitiesTable[] = {
  */
 #define growBuffer(buffer) {						\
     buffer##_size *= 2;							\
-    buffer = (xmlChar *) xmlRealloc(buffer, buffer##_size * sizeof(xmlChar));	\
+    buffer = (xmlChar *) xmlRealloc(buffer, buffer##_size * sizeof(xmlChar)); \
     if (buffer == NULL) {						\
-	perror("realloc failed");					\
+	xmlGenericError(xmlGenericErrorContext, "realloc failed\n");	\
 	return(NULL);							\
     }									\
 }
@@ -1617,79 +1617,6 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, int len ATTRIBUTE_UN
 	deprecated = 1;
     }
     return(NULL);
-#if 0
-    xmlChar *name = NULL;
-    xmlChar *buffer = NULL;
-    unsigned int buffer_size = 0;
-    unsigned int nbchars = 0;
-    htmlEntityDescPtr ent;
-    unsigned int max = (unsigned int) len;
-    int c,l;
-
-    if (ctxt->depth > 40) {
-	ctxt->errNo = XML_ERR_ENTITY_LOOP;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-		"Detected entity reference loop\n");
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-	return(NULL);
-    }
-
-    /*
-     * allocate a translation buffer.
-     */
-    buffer_size = HTML_PARSER_BIG_BUFFER_SIZE;
-    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
-    if (buffer == NULL) {
-	perror("xmlDecodeEntities: malloc failed");
-	return(NULL);
-    }
-
-    /*
-     * Ok loop until we reach one of the ending char or a size limit.
-     */
-    c = CUR_CHAR(l);
-    while ((nbchars < max) && (c != end) &&
-           (c != end2) && (c != end3)) {
-
-	if (c == 0) break;
-        if (((c == '&') && (ctxt->token != '&')) && (NXT(1) == '#')) {
-	    int val = htmlParseCharRef(ctxt);
-	    COPY_BUF(0,buffer,nbchars,val);
-	    NEXTL(l);
-	} else if ((c == '&') && (ctxt->token != '&')) {
-	    ent = htmlParseEntityRef(ctxt, &name);
-	    if (name != NULL) {
-		if (ent != NULL) {
-		    int val = ent->value;
-		    COPY_BUF(0,buffer,nbchars,val);
-		    NEXTL(l);
-		} else {
-		    const xmlChar *cur = name;
-
-		    buffer[nbchars++] = '&';
-		    if (nbchars > buffer_size - HTML_PARSER_BUFFER_SIZE) {
-			growBuffer(buffer);
-		    }
-		    while (*cur != 0) {
-			buffer[nbchars++] = *cur++;
-		    }
-		    buffer[nbchars++] = ';';
-		}
-	    }
-	} else {
-	    COPY_BUF(l,buffer,nbchars,c);
-	    NEXTL(l);
-	    if (nbchars > buffer_size - HTML_PARSER_BUFFER_SIZE) {
-	      growBuffer(buffer);
-	    }
-	}
-	c = CUR_CHAR(l);
-    }
-    buffer[nbchars++] = 0;
-    return(buffer);
-#endif
 }
 
 /************************************************************************
@@ -1989,7 +1916,8 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
     buffer_size = HTML_PARSER_BUFFER_SIZE;
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
-	perror("htmlParseHTMLAttribute: malloc failed");
+	xmlGenericError(xmlGenericErrorContext,
+		        "htmlParseHTMLAttribute: malloc failed\n");
 	return(NULL);
     }
     out = buffer;
@@ -3830,7 +3758,6 @@ htmlNewParserCtxt(void)
     if (ctxt == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewParserCtxt : cannot allocate context\n");
-        perror("malloc");
 	return(NULL);
     }
     memset(ctxt, 0, sizeof(xmlParserCtxt));
@@ -4941,14 +4868,14 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
 
     ctxt = (htmlParserCtxtPtr) xmlMalloc(sizeof(htmlParserCtxt));
     if (ctxt == NULL) {
-        perror("malloc");
+        xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
 	return(NULL);
     }
     memset(ctxt, 0, sizeof(htmlParserCtxt));
     htmlInitParserCtxt(ctxt);
     inputStream = (htmlParserInputPtr) xmlMalloc(sizeof(htmlParserInput));
     if (inputStream == NULL) {
-        perror("malloc");
+        xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
 	xmlFree(ctxt);
 	return(NULL);
     }

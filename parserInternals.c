@@ -2351,7 +2351,7 @@ xmlNewParserCtxt()
     if (ctxt == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewParserCtxt : cannot allocate context\n");
-        perror("malloc");
+        xmlGenericError(xmlGenericErrorContext, "malloc failed");
 	return(NULL);
     }
     memset(ctxt, 0, sizeof(xmlParserCtxt));
@@ -2767,7 +2767,8 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUS
     buffer_size = XML_PARSER_BIG_BUFFER_SIZE;
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
-	perror("xmlDecodeEntities: malloc failed");
+	xmlGenericError(xmlGenericErrorContext, 
+		        "xmlDecodeEntities: malloc failed");
 	return(NULL);
     }
 

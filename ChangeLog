@@ -1,3 +1,8 @@
+Sat Mar 22 23:38:08 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fixed #107043 removing 2 warnings with Sun One
+	  compiler.
+
 Sat Mar 22 18:50:45 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: valgrind'ed and cleaned up a couple of memory issues.

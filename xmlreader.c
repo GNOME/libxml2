@@ -2034,7 +2034,7 @@ xmlTextReaderHasValue(xmlTextReaderPtr reader) {
         case XML_COMMENT_NODE:
 	    return(1);
 	default:
-	    return(0);
+	    break;
     }
     return(0);
 }
@@ -2080,7 +2080,7 @@ xmlTextReaderValue(xmlTextReaderPtr reader) {
             if (node->content != NULL)
                 return (xmlStrdup(node->content));
 	default:
-	    return(NULL);
+	    break;
     }
     return(NULL);
 }

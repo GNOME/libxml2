@@ -1578,7 +1578,7 @@ xmlXPathNodeSetAddNs(xmlNodeSetPtr cur, xmlNodePtr node, xmlNsPtr ns) {
     for (i = 0;i < cur->nodeNr;i++) {
         if ((cur->nodeTab[i] != NULL) &&
 	    (cur->nodeTab[i]->type == XML_NAMESPACE_DECL) &&
-	    (cur->nodeTab[i]->next == node) &&
+	    (((xmlNsPtr)cur->nodeTab[i])->next == (xmlNsPtr) node) &&
 	    (xmlStrEqual(ns->prefix, ((xmlNsPtr)cur->nodeTab[i])->prefix)))
 	    return;
     }

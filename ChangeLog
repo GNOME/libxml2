@@ -1,3 +1,12 @@
+Tue Oct  7 13:30:39 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* error.c relaxng.c include/libxml/xmlerror.h: switched Relax-NG
+	  module to teh new error reporting. Better default report, adds
+	  the element associated if found, context and node are included
+	  in the xmlError
+	* python/tests/reader2.py: the error messages changed.
+	* result/relaxng/*: error message changed too.
+
 Mon Oct  6 10:46:35 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* win32/Makefile.bcb win32/Makefile.mingw win32/Makefile.msvc

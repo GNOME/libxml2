@@ -216,31 +216,38 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
  * routines.
  */
 static void
-xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str)
+xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
+               xmlGenericErrorFunc channel, void *data)
 {
     char *file = NULL;
     int line = 0;
     int code = -1;
     int domain;
+    const xmlChar *name = NULL;
+    xmlNodePtr node;
     xmlErrorLevel level;
-    xmlGenericErrorFunc channel;
     xmlParserInputPtr input = NULL;
     xmlParserInputPtr cur = NULL;
-    void *data;
 
     if (err == NULL)
         return;
 
-    channel = xmlGenericError;
-    data = xmlGenericErrorContext;
+    if (channel == NULL) {
+	channel = xmlGenericError;
+	data = xmlGenericErrorContext;
+    }
     file = err->file;
     line = err->line;
     code = err->code;
     domain = err->domain;
     level = err->level;
+    node = err->node;
 
     if (code == XML_ERR_OK)
         return;
+
+    if ((node != NULL) && (node->type == XML_ELEMENT_NODE))
+        name = node->name;
 
     /*
      * Maintain the compatibility with the legacy error handling
@@ -263,6 +270,9 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str)
             channel(data, "%s:%d: ", file, line);
         else
             channel(data, "Entity: line %d: ", line);
+    }
+    if (name != NULL) {
+        channel(data, "element %s: ", name);
     }
     if (code == XML_ERR_OK)
         return;
@@ -303,8 +313,11 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str)
         case XML_FROM_SCHEMAS:
             channel(data, "Schemas ");
             break;
-        case XML_FROM_RELAXNG:
-            channel(data, "Relax-NG ");
+        case XML_FROM_RELAXNGP:
+            channel(data, "Relax-NG parser ");
+            break;
+        case XML_FROM_RELAXNGV:
+            channel(data, "Relax-NG validaty ");
             break;
         case XML_FROM_CATALOG:
             channel(data, "Catalog ");
@@ -422,11 +435,17 @@ __xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
         to = &ctxt->lastError;
     } else if ((node != NULL) && (file == NULL)) {
 	int i;
-        base = xmlNodeGetBase(NULL, node);
+
+	if ((node->doc != NULL) && (node->doc->URL != NULL))
+	    base = xmlStrdup(node->doc->URL);
 	for (i = 0;
 	     ((i < 10) && (node != NULL) && (node->type != XML_ELEMENT_NODE));
 	     i++)
 	     node = node->parent;
+        if ((base == NULL) && (node != NULL) &&
+	    (node->doc != NULL) && (node->doc->URL != NULL))
+	    base = xmlStrdup(node->doc->URL);
+
 	if ((node != NULL) && (node->type == XML_ELEMENT_NODE))
 	    line = (int) node->content;
     }
@@ -454,6 +473,8 @@ __xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
         to->str3 = (char *) xmlStrdup((const xmlChar *) str3);
     to->int1 = int1;
     to->int2 = int2;
+    to->node = node;
+    to->ctxt = ctxt;
 
     /*
      * Find the callback channel.
@@ -463,7 +484,7 @@ __xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
 	    channel = ctxt->sax->warning;
         else
 	    channel = ctxt->sax->error;
-	data = ctxt;
+	data = ctxt->userData;
     } else if (channel == NULL) {
 	channel = xmlGenericError;
 	data = xmlGenericErrorContext;
@@ -475,7 +496,10 @@ __xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
         (channel == xmlParserWarning) ||
 	(channel == xmlParserValidityError) ||
 	(channel == xmlParserValidityWarning))
-	xmlReportError(to, ctxt, str);
+	xmlReportError(to, ctxt, str, NULL, NULL);
+    else if ((channel == (xmlGenericErrorFunc) fprintf) ||
+             (channel == xmlGenericErrorDefaultFunc))
+	xmlReportError(to, ctxt, str, channel, data);
     else
 	channel(data, "%s", str);
 }
@@ -782,8 +806,11 @@ xmlCopyError(xmlErrorPtr from, xmlErrorPtr to) {
     to->code = from->code;
     to->level = from->level;
     to->line = from->line;
+    to->node = from->node;
     to->int1 = from->int1;
     to->int2 = from->int2;
+    to->node = from->node;
+    to->ctxt = from->ctxt;
     if (from->message != NULL)
         to->message = (char *) xmlStrdup((xmlChar *) from->message);
     else

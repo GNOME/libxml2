@@ -1,2 +1,1 @@
-RNG validity error: file ./test/relaxng/tutor6_3_1.xml line 1 element card
-Element card failed to validate attributes
+./test/relaxng/tutor6_3_1.xml:1: element card: Relax-NG validaty error : Element card failed to validate attributes

@@ -1,6 +1,3 @@
-RNG validity error: file ./test/relaxng/tutor7_1_2.xml line 1 element text
-failed to validate type float
-RNG validity error: file ./test/relaxng/tutor7_1_2.xml line 1 element text
-Error validating list
-RNG validity error: file ./test/relaxng/tutor7_1_2.xml line 1 element text
-Element vector failed to validate content
+./test/relaxng/tutor7_1_2.xml:1: element vector: Relax-NG validaty error : failed to validate type float
+./test/relaxng/tutor7_1_2.xml:1: element vector: Relax-NG validaty error : Error validating list
+./test/relaxng/tutor7_1_2.xml:1: element vector: Relax-NG validaty error : Element vector failed to validate content

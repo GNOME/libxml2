@@ -1,2 +1,1 @@
-RNG validity error: file ./test/relaxng/tutor10_2_4.xml line 1 element foo
-Expecting no namespace for element foo
+./test/relaxng/tutor10_2_4.xml:1: element foo: Relax-NG validaty error : Expecting no namespace for element foo

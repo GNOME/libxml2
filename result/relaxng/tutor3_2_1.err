@@ -1,2 +1,1 @@
-RNG validity error: file ./test/relaxng/tutor3_2_1.xml line 1 element email
-Did not expect element email there
+./test/relaxng/tutor3_2_1.xml:1: element email: Relax-NG validaty error : Did not expect element email there

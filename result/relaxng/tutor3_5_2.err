@@ -1,4 +1,2 @@
-RNG validity error: file ./test/relaxng/tutor3_5_2.xml line 2 element email
-Expecting element name, got email
-RNG validity error: file ./test/relaxng/tutor3_5_2.xml line 2 element email
-Element card failed to validate content
+./test/relaxng/tutor3_5_2.xml:2: element email: Relax-NG validaty error : Expecting element name, got email
+./test/relaxng/tutor3_5_2.xml:2: element email: Relax-NG validaty error : Element card failed to validate content

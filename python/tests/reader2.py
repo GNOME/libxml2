@@ -12,10 +12,10 @@ import libxml2
 libxml2.debugMemory(1)
 
 err=""
-expect="""../../test/valid/rss.xml:177: validity error : Element rss does not carry attribute version
+expect="""../../test/valid/rss.xml:177: element rss: validity error : Element rss does not carry attribute version
 </rss>
       ^
-../../test/valid/xlink.xml:450: validity error : ID dt-arc already defined
+../../test/valid/xlink.xml:450: element termdef: validity error : ID dt-arc already defined
 	<p><termdef id="dt-arc" term="Arc">An <ter
 	                                  ^
 ../../test/valid/xlink.xml:530: validity error : attribute def line 199 references an unknown ID "dt-xlg"

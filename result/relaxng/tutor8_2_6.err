@@ -1,4 +1,2 @@
-RNG validity error
-Extra element base in interleave
-RNG validity error: file ./test/relaxng/tutor8_2_6.xml line 4 element base
-Element head failed to validate content
+Entity: line 0: Relax-NG validaty error : Extra element base in interleave
+./test/relaxng/tutor8_2_6.xml:4: element base: Relax-NG validaty error : Element head failed to validate content

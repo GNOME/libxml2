@@ -1,4 +1,2 @@
-RNG validity error: file ./test/relaxng/tutor9_5_2.xml line 2 element card
-Invalid sequence in interleave
-RNG validity error: file ./test/relaxng/tutor9_5_2.xml line 2 element card
-Element card failed to validate attributes
+./test/relaxng/tutor9_5_2.xml:2: element card: Relax-NG validaty error : Invalid sequence in interleave
+./test/relaxng/tutor9_5_2.xml:2: element card: Relax-NG validaty error : Element card failed to validate attributes

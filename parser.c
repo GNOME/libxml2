@@ -777,7 +777,7 @@ xmlNewBlanksWrapperInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 	return(NULL);
     }
     length = xmlStrlen(entity->name) + 5;
-    buffer = xmlMalloc(length);
+    buffer = xmlMallocAtomic(length);
     if (buffer == NULL) {
     	return(NULL);
     }
@@ -1072,7 +1072,7 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
      * allocate a translation buffer.
      */
     buffer_size = XML_PARSER_BIG_BUFFER_SIZE;
-    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
+    buffer = (xmlChar *) xmlMallocAtomic(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		        "xmlStringDecodeEntities: malloc failed");
@@ -1196,7 +1196,7 @@ xmlStrndup(const xmlChar *cur, int len) {
     xmlChar *ret;
     
     if ((cur == NULL) || (len < 0)) return(NULL);
-    ret = (xmlChar *) xmlMalloc((len + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlMallocAtomic((len + 1) * sizeof(xmlChar));
     if (ret == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"malloc of %ld byte failed\n",
@@ -1243,7 +1243,7 @@ xmlCharStrndup(const char *cur, int len) {
     xmlChar *ret;
     
     if ((cur == NULL) || (len < 0)) return(NULL);
-    ret = (xmlChar *) xmlMalloc((len + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlMallocAtomic((len + 1) * sizeof(xmlChar));
     if (ret == NULL) {
         xmlGenericError(xmlGenericErrorContext, "malloc of %ld byte failed\n",
 	        (len + 1) * (long)sizeof(xmlChar));
@@ -1741,7 +1741,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	 */
 	max = len * 2;
 	
-	buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	if (buffer == NULL) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
@@ -1813,7 +1813,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	     */
 	    max = len * 2;
 	    
-	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
 		if ((ctxt != NULL) && (ctxt->sax != NULL) &&
 	            (ctxt->sax->error != NULL))
@@ -1987,7 +1987,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	    xmlChar *buffer;
 	    int max = len * 2;
 	    
-	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
@@ -2073,7 +2073,7 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 	    xmlChar *buffer;
 	    int max = len * 2;
 	    
-	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
@@ -2153,7 +2153,7 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
 	    xmlChar *buffer;
 	    int max = len * 2;
 	    
-	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
@@ -2228,7 +2228,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	return(NULL);
     }
-    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
     if (buf == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"malloc of %d byte failed\n", size);
@@ -2461,7 +2461,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt) {
      * allocate a translation buffer.
      */
     buf_size = XML_PARSER_BUFFER_SIZE;
-    buf = (xmlChar *) xmlMalloc(buf_size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(buf_size * sizeof(xmlChar));
     if (buf == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		        "xmlParseAttValue: malloc failed");
@@ -2634,7 +2634,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
 	return(NULL);
     }
     
-    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
     if (buf == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"malloc of %d byte failed\n", size);
@@ -2718,7 +2718,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
 	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	return(NULL);
     }
-    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
     if (buf == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"malloc of %d byte failed\n", size);
@@ -3098,7 +3098,7 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     ctxt->instate = XML_PARSER_COMMENT;
     SHRINK;
     SKIP(4);
-    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
     if (buf == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"malloc of %d byte failed\n", size);
@@ -3352,7 +3352,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		xmlFree(target);
 		return;
 	    }
-	    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+	    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
 	    if (buf == NULL) {
 		xmlGenericError(xmlGenericErrorContext,
 			"malloc of %d byte failed\n", size);
@@ -6959,7 +6959,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     }
     NEXTL(sl);
     cur = CUR_CHAR(l);
-    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
     if (buf == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"malloc of %d byte failed\n", size);
@@ -7291,7 +7291,7 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
     int size = 10;
     xmlChar cur;
 
-    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
     if (buf == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"malloc of %d byte failed\n", size);
@@ -7413,7 +7413,7 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
     cur = CUR;
     if (((cur >= 'a') && (cur <= 'z')) ||
         ((cur >= 'A') && (cur <= 'Z'))) {
-	buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+	buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
 	if (buf == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "malloc of %d byte failed\n", size);

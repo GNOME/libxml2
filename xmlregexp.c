@@ -2792,7 +2792,7 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
     lenp = strlen((char *) value);
 
     if (150 < lenn + lenp + 2) {
-	str = (xmlChar *) xmlMalloc(lenn + lenp + 2);
+	str = (xmlChar *) xmlMallocAtomic(lenn + lenp + 2);
 	if (str == NULL) {
 	    exec->status = -1;
 	    return(-1);
@@ -4114,7 +4114,7 @@ xmlAutomataNewTransition2(xmlAutomataPtr am, xmlAutomataStatePtr from,
 	lenn = strlen((char *) token2);
 	lenp = strlen((char *) token);
 
-	str = (xmlChar *) xmlMalloc(lenn + lenp + 2);
+	str = (xmlChar *) xmlMallocAtomic(lenn + lenp + 2);
 	if (str == NULL) {
 	    xmlRegFreeAtom(atom);
 	    return(NULL);

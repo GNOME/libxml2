@@ -45,6 +45,7 @@ extern "C" {
 #undef	xmlLineNumbersDefaultValue
 #undef	xmlLoadExtDtdDefaultValue
 #undef	xmlMalloc
+#undef	xmlMallocAtomic
 #undef	xmlMemStrdup
 #undef	xmlParserDebugEntities
 #undef	xmlParserVersion
@@ -97,6 +98,8 @@ struct _xmlGlobalState
 
   	xmlRegisterNodeFunc xmlRegisterNodeDefaultValue;
   	xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue;
+
+	xmlMallocFunc xmlMallocAtomic;
 };
 
 #ifdef __cplusplus
@@ -116,6 +119,7 @@ xmlDeregisterNodeFunc xmlDeregisterNodeDefault(xmlDeregisterNodeFunc func);
  * In general the memory allocation entry points are not kept
  * thread specific but this can be overridden by LIBXML_THREAD_ALLOC_ENABLED
  *    - xmlMalloc
+ *    - xmlMallocAtomic
  *    - xmlRealloc
  *    - xmlMemStrdup
  *    - xmlFree
@@ -128,6 +132,14 @@ extern xmlMallocFunc *__xmlMalloc(void);
 (*(__xmlMalloc()))
 #else
 LIBXML_DLL_IMPORT extern xmlMallocFunc xmlMalloc;
+#endif
+
+#ifdef LIBXML_THREAD_ENABLED
+extern xmlMallocFunc *__xmlMallocAtomic(void);
+#define xmlMallocAtomic \
+(*(__xmlMallocAtomic()))
+#else
+LIBXML_DLL_IMPORT extern xmlMallocFunc xmlMallocAtomic;
 #endif
 
 #ifdef LIBXML_THREAD_ENABLED
@@ -153,8 +165,10 @@ extern xmlStrdupFunc *__xmlMemStrdup(void);
 #else
 LIBXML_DLL_IMPORT extern xmlStrdupFunc xmlMemStrdup;
 #endif
+
 #else /* !LIBXML_THREAD_ALLOC_ENABLED */
 LIBXML_DLL_IMPORT extern xmlMallocFunc xmlMalloc;
+LIBXML_DLL_IMPORT extern xmlMallocFunc xmlMallocAtomic;
 LIBXML_DLL_IMPORT extern xmlReallocFunc xmlRealloc;
 LIBXML_DLL_IMPORT extern xmlFreeFunc xmlFree;
 LIBXML_DLL_IMPORT extern xmlStrdupFunc xmlMemStrdup;

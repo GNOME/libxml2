@@ -156,7 +156,7 @@ xmlBuildQName(const xmlChar *ncname, const xmlChar *prefix,
     lenp = strlen((char *) prefix);
 
     if ((memory == NULL) || (len < lenn + lenp + 2)) {
-	ret = (xmlChar *) xmlMalloc(lenn + lenp + 2);
+	ret = (xmlChar *) xmlMallocAtomic(lenn + lenp + 2);
 	if (ret == NULL) return(NULL);
     } else {
 	ret = memory;
@@ -3977,10 +3977,10 @@ xmlGetNodePath(xmlNodePtr node)
         return (NULL);
 
     buf_len = 500;
-    buffer = (xmlChar *) xmlMalloc(buf_len * sizeof(xmlChar));
+    buffer = (xmlChar *) xmlMallocAtomic(buf_len * sizeof(xmlChar));
     if (buffer == NULL)
         return (NULL);
-    buf = (xmlChar *) xmlMalloc(buf_len * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(buf_len * sizeof(xmlChar));
     if (buf == NULL) {
         xmlFree(buffer);
         return (NULL);
@@ -6087,7 +6087,7 @@ xmlBufferCreate(void) {
     ret->use = 0;
     ret->size = xmlDefaultBufferSize;
     ret->alloc = xmlBufferAllocScheme;
-    ret->content = (xmlChar *) xmlMalloc(ret->size * sizeof(xmlChar));
+    ret->content = (xmlChar *) xmlMallocAtomic(ret->size * sizeof(xmlChar));
     if (ret->content == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlBufferCreate : out of memory!\n");
@@ -6119,7 +6119,7 @@ xmlBufferCreateSize(size_t size) {
     ret->alloc = xmlBufferAllocScheme;
     ret->size = (size ? size+2 : 0);         /* +1 for ending null */
     if (ret->size){
-        ret->content = (xmlChar *) xmlMalloc(ret->size * sizeof(xmlChar));
+        ret->content = (xmlChar *) xmlMallocAtomic(ret->size * sizeof(xmlChar));
         if (ret->content == NULL) {
             xmlGenericError(xmlGenericErrorContext,
 		    "xmlBufferCreate : out of memory!\n");
@@ -6338,7 +6338,7 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
     }
 
     if (buf->content == NULL)
-	rebuf = (xmlChar *) xmlMalloc(newSize * sizeof(xmlChar));
+	rebuf = (xmlChar *) xmlMallocAtomic(newSize * sizeof(xmlChar));
     else
 	rebuf = (xmlChar *) xmlRealloc(buf->content, 
 				       newSize * sizeof(xmlChar));

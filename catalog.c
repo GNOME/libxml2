@@ -867,7 +867,7 @@ xmlLoadFileContent(const char *filename)
         return (NULL);
     }
 #endif
-    content = xmlMalloc(size + 10);
+    content = xmlMallocAtomic(size + 10);
     if (content == NULL) {
         xmlGenericError(xmlGenericErrorContext,
                         "malloc of %d byte failed\n", size + 10);
@@ -1955,7 +1955,7 @@ xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
     } else {
 	stop = ' ';
     }
-    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
     if (buf == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"malloc of %d byte failed\n", size);

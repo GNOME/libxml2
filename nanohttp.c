@@ -484,7 +484,7 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt) {
 
     while (ctxt->state & XML_NANO_HTTP_READ) {
 	if (ctxt->in == NULL) {
-	    ctxt->in = (char *) xmlMalloc(65000 * sizeof(char));
+	    ctxt->in = (char *) xmlMallocAtomic(65000 * sizeof(char));
 	    if (ctxt->in == NULL) {
 	        ctxt->last = -1;
 		xmlGenericError( xmlGenericErrorContext, 
@@ -1125,7 +1125,7 @@ retry:
     if (contentType && *contentType)
 	blen += strlen(*contentType) + 16;
     blen += strlen(method) + strlen(ctxt->path) + 24;
-    bp = xmlMalloc(blen);
+    bp = xmlMallocAtomic(blen);
     if ( bp == NULL ) {
         xmlNanoHTTPFreeCtxt( ctxt );
 	xmlGenericError( xmlGenericErrorContext,

@@ -7319,7 +7319,7 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
 	    xmlChar *buffer;
 	    int max = len * 2;
 	    
-	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
 		XP_ERROR0(XPATH_MEMORY_ERROR);
 	    }

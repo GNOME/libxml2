@@ -227,7 +227,7 @@ xmlSaveUri(xmlURIPtr uri) {
 
 
     max = 80;
-    ret = (xmlChar *) xmlMalloc((max + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlMallocAtomic((max + 1) * sizeof(xmlChar));
     if (ret == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlSaveUri: out of memory\n");
@@ -803,7 +803,7 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
     if (len < 0) return(NULL);
 
     if (target == NULL) {
-	ret = (char *) xmlMalloc(len + 1);
+	ret = (char *) xmlMallocAtomic(len + 1);
 	if (ret == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "xmlURIUnescapeString: out of memory\n");
@@ -864,7 +864,7 @@ xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
     if (!(len > 0)) return(NULL);
 
     len += 20;
-    ret = (xmlChar *) xmlMalloc(len);
+    ret = (xmlChar *) xmlMallocAtomic(len);
     if (ret == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlURIEscapeStr: out of memory\n");
@@ -1391,7 +1391,7 @@ xmlParseURIPathSegments(xmlURIPtr uri, const char **str, int slash)
             len2 = strlen(uri->path);
             len += len2;
         }
-        path = (char *) xmlMalloc(len + 1);
+        path = (char *) xmlMallocAtomic(len + 1);
         if (path == NULL) {
             xmlGenericError(xmlGenericErrorContext,
                             "xmlParseURIPathSegments: out of memory\n");
@@ -1885,7 +1885,7 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
 	len += strlen(ref->path);
     if (bas->path != NULL)
 	len += strlen(bas->path);
-    res->path = (char *) xmlMalloc(len);
+    res->path = (char *) xmlMallocAtomic(len);
     if (res->path == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlBuildURI: out of memory\n");
@@ -1997,7 +1997,7 @@ xmlCanonicPath(const xmlChar *path)
     len = xmlStrlen(path);
     if ((len > 2) && IS_WINDOWS_PATH(path)) {
 	uri->scheme = xmlStrdup(BAD_CAST "file");
-	uri->path = xmlMalloc(len + 2);
+	uri->path = xmlMallocAtomic(len + 2);
 	uri->path[0] = '/';
 	p = uri->path + 1;
 	strncpy(p, path, len + 1);

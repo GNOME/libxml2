@@ -283,7 +283,7 @@ xmlUTF8Strndup(const xmlChar *utf, int len) {
     
     if ((utf == NULL) || (len < 0)) return(NULL);
     i = xmlUTF8Strsize(utf, len);
-    ret = (xmlChar *) xmlMalloc((i + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlMallocAtomic((i + 1) * sizeof(xmlChar));
     if (ret == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"malloc of %ld byte failed\n",

@@ -940,7 +940,7 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 
     len = xmlStrlen(ctxt->cur);
     len++;
-    buffer = (xmlChar *) xmlMalloc(len * sizeof (xmlChar));
+    buffer = (xmlChar *) xmlMallocAtomic(len * sizeof (xmlChar));
     if (buffer == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlXPtrEvalXPtrPart: out of memory\n");

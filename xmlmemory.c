@@ -76,6 +76,8 @@ char * xmlMemoryStrdup(const char *str);
 #define MALLOC_TYPE 1
 #define REALLOC_TYPE 2
 #define STRDUP_TYPE 3
+#define MALLOC_ATOMIC_TYPE 4
+#define REALLOC_ATOMIC_TYPE 5
 
 typedef struct memnod {
     unsigned int   mh_tag;
@@ -205,6 +207,70 @@ xmlMallocLoc(size_t size, const char * file, int line)
     return(ret);
 }
 
+/**
+ * xmlMallocAtomicLoc:
+ * @size:  an int specifying the size in byte to allocate.
+ * @file:  the file name or NULL
+ * @line:  the line number
+ *
+ * a malloc() equivalent, with logging of the allocation info.
+ *
+ * Returns a pointer to the allocated area or NULL in case of lack of memory.
+ */
+
+void *
+xmlMallocAtomicLoc(size_t size, const char * file, int line)
+{
+    MEMHDR *p;
+    void *ret;
+    
+    if (!xmlMemInitialized) xmlInitMemory();
+#ifdef DEBUG_MEMORY
+    xmlGenericError(xmlGenericErrorContext,
+	    "Malloc(%d)\n",size);
+#endif
+
+    TEST_POINT
+    
+    p = (MEMHDR *) malloc(RESERVE_SIZE+size);
+
+    if (!p) {
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlMallocLoc : Out of free space\n");
+	xmlMemoryDump();
+	return(NULL);
+    }   
+    p->mh_tag = MEMTAG;
+    p->mh_number = ++block;
+    p->mh_size = size;
+    p->mh_type = MALLOC_ATOMIC_TYPE;
+    p->mh_file = file;
+    p->mh_line = line;
+    debugMemSize += size;
+    if (debugMemSize > debugMaxMemSize) debugMaxMemSize = debugMemSize;
+#ifdef MEM_LIST
+    debugmem_list_add(p);
+#endif
+
+#ifdef DEBUG_MEMORY
+    xmlGenericError(xmlGenericErrorContext,
+	    "Malloc(%d) Ok\n",size);
+#endif
+    
+    if (xmlMemStopAtBlock == block) xmlMallocBreakpoint();
+
+    ret = HDR_2_CLIENT(p);
+
+    if (xmlMemTraceBlockAt == ret) {
+	xmlGenericError(xmlGenericErrorContext,
+			"%p : Malloc(%d) Ok\n", xmlMemTraceBlockAt, size);
+	xmlMallocBreakpoint();
+    }
+
+    TEST_POINT
+
+    return(ret);
+}
 /**
  * xmlMemMalloc:
  * @size:  an int specifying the size in byte to allocate.
@@ -523,8 +589,10 @@ xmlMemShow(FILE *fp, int nr)
 	    switch (p->mh_type) {
 	       case STRDUP_TYPE:fprintf(fp,"strdup()  in ");break;
 	       case MALLOC_TYPE:fprintf(fp,"malloc()  in ");break;
+	       case MALLOC_ATOMIC_TYPE:fprintf(fp,"atomicmalloc()  in ");break;
 	      case REALLOC_TYPE:fprintf(fp,"realloc() in ");break;
-			default:fprintf(fp,"   ???    in ");break;
+	      case REALLOC_ATOMIC_TYPE:fprintf(fp,"atomicrealloc() in ");break;
+		default:fprintf(fp,"   ???    in ");break;
 	    }
 	    if (p->mh_file != NULL)
 	        fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
@@ -578,6 +646,8 @@ xmlMemDisplay(FILE *fp)
            case STRDUP_TYPE:fprintf(fp,"strdup()  in ");break;
            case MALLOC_TYPE:fprintf(fp,"malloc()  in ");break;
           case REALLOC_TYPE:fprintf(fp,"realloc() in ");break;
+           case MALLOC_ATOMIC_TYPE:fprintf(fp,"atomicmalloc()  in ");break;
+          case REALLOC_ATOMIC_TYPE:fprintf(fp,"atomicrealloc() in ");break;
                     default:fprintf(fp,"   ???    in ");break;
         }
 	  if (p->mh_file != NULL) fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
@@ -747,6 +817,7 @@ xmlMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
 	return(-1);
     xmlFree = freeFunc;
     xmlMalloc = mallocFunc;
+    xmlMallocAtomic = mallocFunc;
     xmlRealloc = reallocFunc;
     xmlMemStrdup = strdupFunc;
     return(0);
@@ -768,6 +839,72 @@ xmlMemGet(xmlFreeFunc *freeFunc, xmlMallocFunc *mallocFunc,
 	  xmlReallocFunc *reallocFunc, xmlStrdupFunc *strdupFunc) {
     if (freeFunc != NULL) *freeFunc = xmlFree;
     if (mallocFunc != NULL) *mallocFunc = xmlMalloc;
+    if (reallocFunc != NULL) *reallocFunc = xmlRealloc;
+    if (strdupFunc != NULL) *strdupFunc = xmlMemStrdup;
+    return(0);
+}
+
+/**
+ * xmlGcMemSetup:
+ * @freeFunc: the free() function to use
+ * @mallocFunc: the malloc() function to use
+ * @mallocAtomicFunc: the malloc() function to use for atomic allocations
+ * @reallocFunc: the realloc() function to use
+ * @strdupFunc: the strdup() function to use
+ *
+ * Override the default memory access functions with a new set
+ * This has to be called before any other libxml routines !
+ * The mallocAtomicFunc is specialized for atomic block
+ * allocations (i.e. of areas  useful for garbage collected memory allocators
+ *
+ * Should this be blocked if there was already some allocations
+ * done ?
+ *
+ * Returns 0 on success
+ */
+int
+xmlGcMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
+              xmlMallocFunc mallocAtomicFunc, xmlReallocFunc reallocFunc,
+	      xmlStrdupFunc strdupFunc) {
+    if (freeFunc == NULL)
+	return(-1);
+    if (mallocFunc == NULL)
+	return(-1);
+    if (mallocAtomicFunc == NULL)
+	return(-1);
+    if (reallocFunc == NULL)
+	return(-1);
+    if (strdupFunc == NULL)
+	return(-1);
+    xmlFree = freeFunc;
+    xmlMalloc = mallocFunc;
+    xmlMallocAtomic = mallocAtomicFunc;
+    xmlRealloc = reallocFunc;
+    xmlMemStrdup = strdupFunc;
+    return(0);
+}
+
+/**
+ * xmlGcMemGet:
+ * @freeFunc: place to save the free() function in use
+ * @mallocFunc: place to save the malloc() function in use
+ * @mallocAtomicFunc: place to save the atomic malloc() function in use
+ * @reallocFunc: place to save the realloc() function in use
+ * @strdupFunc: place to save the strdup() function in use
+ *
+ * Provides the memory access functions set currently in use
+ * The mallocAtomicFunc is specialized for atomic block
+ * allocations (i.e. of areas  useful for garbage collected memory allocators
+ *
+ * Returns 0 on success
+ */
+int
+xmlGcMemGet(xmlFreeFunc *freeFunc, xmlMallocFunc *mallocFunc,
+            xmlMallocFunc *mallocAtomicFunc, xmlReallocFunc *reallocFunc,
+	    xmlStrdupFunc *strdupFunc) {
+    if (freeFunc != NULL) *freeFunc = xmlFree;
+    if (mallocFunc != NULL) *mallocFunc = xmlMalloc;
+    if (mallocAtomicFunc != NULL) *mallocAtomicFunc = xmlMallocAtomic;
     if (reallocFunc != NULL) *reallocFunc = xmlRealloc;
     if (strdupFunc != NULL) *strdupFunc = xmlMemStrdup;
     return(0);

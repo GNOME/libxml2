@@ -50,6 +50,7 @@ extern char * xmlMemoryStrdup(const char *str);
 
 xmlFreeFunc xmlFree = (xmlFreeFunc) xmlMemFree;
 xmlMallocFunc xmlMalloc = (xmlMallocFunc) xmlMemMalloc;
+xmlMallocFunc xmlMallocAtomic = (xmlMallocFunc) xmlMemMalloc;
 xmlReallocFunc xmlRealloc = (xmlReallocFunc) xmlMemRealloc;
 xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlMemoryStrdup;
 #else
@@ -69,6 +70,17 @@ xmlFreeFunc xmlFree = (xmlFreeFunc) free;
  * Returns a pointer to the newly allocated block or NULL in case of error
  */
 xmlMallocFunc xmlMalloc = (xmlMallocFunc) malloc;
+/**
+ * xmlMallocAtomic:
+ * @size:  the size requested in bytes
+ *
+ * The variable holding the libxml malloc() implementation for atomic
+ * data (i.e. blocks not containings pointers), useful when using a
+ * garbage collecting allocator.
+ *
+ * Returns a pointer to the newly allocated block or NULL in case of error
+ */
+xmlMallocFunc xmlMallocAtomic = (xmlMallocFunc) malloc;
 /**
  * xmlRealloc:
  * @mem: an already allocated block of memory
@@ -120,6 +132,7 @@ xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 
 #undef	xmlFree
 #undef	xmlMalloc
+#undef	xmlMallocAtomic
 #undef	xmlMemStrdup
 #undef	xmlRealloc
 
@@ -435,11 +448,13 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 #if defined(DEBUG_MEMORY_LOCATION) | defined(DEBUG_MEMORY)
     gs->xmlFree = (xmlFreeFunc) xmlMemFree;
     gs->xmlMalloc = (xmlMallocFunc) xmlMemMalloc;
+    gs->xmlMallocAtomic = (xmlMallocFunc) xmlMemMalloc;
     gs->xmlRealloc = (xmlReallocFunc) xmlMemRealloc;
     gs->xmlMemStrdup = (xmlStrdupFunc) xmlMemoryStrdup;
 #else
     gs->xmlFree = (xmlFreeFunc) free;
     gs->xmlMalloc = (xmlMallocFunc) malloc;
+    gs->xmlMallocAtomic = (xmlMallocFunc) malloc;
     gs->xmlRealloc = (xmlReallocFunc) realloc;
     gs->xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 #endif

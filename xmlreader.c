@@ -2633,7 +2633,7 @@ xmlTextReaderBuildMessage(const char *msg, va_list ap) {
     char *larger;
     char *str;
 
-    str = (char *) xmlMalloc(150);
+    str = (char *) xmlMallocAtomic(150);
     if (str == NULL) {
 	xmlGenericError(xmlGenericErrorContext, "xmlMalloc failed !\n");
         return NULL;

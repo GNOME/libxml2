@@ -1,3 +1,14 @@
+Sat Apr 19 02:03:24 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* DOCBparser.c HTMLparser.c c14n.c catalog.c encoding.c globals.c
+	  nanohttp.c parser.c parserInternals.c relaxng.c tree.c uri.c
+	  xmlmemory.c xmlreader.c xmlregexp.c xpath.c xpointer.c
+	  include/libxml/globals.h include/libxml/xmlmemory.h: added
+	  xmlMallocAtomic() to be used when allocating blocks which
+	  do not contains pointers, add xmlGcMemSetup() and xmlGcMemGet()
+	  to allow registering the full set of functions needed by
+	  a garbage collecting allocator like libgc, ref #109944
+
 Fri Apr 18 16:37:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: switched to have thread support enabled by default,

@@ -8134,7 +8134,7 @@ xmlRelaxNGNormalize(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *str) {
     while (*tmp != 0) tmp++;
     len = tmp - str;
 
-    ret = (xmlChar *) xmlMalloc((len + 1) * sizeof(xmlChar));
+    ret = (xmlChar *) xmlMallocAtomic((len + 1) * sizeof(xmlChar));
     if (ret == NULL) {
 	if (ctxt != NULL) {
 	    VALID_ERR(XML_RELAXNG_ERR_MEMORY);

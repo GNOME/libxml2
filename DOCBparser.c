@@ -2682,7 +2682,7 @@ docbParseSGMLAttribute(docbParserCtxtPtr ctxt, const xmlChar stop) {
      * allocate a translation buffer.
      */
     buffer_size = DOCB_PARSER_BIG_BUFFER_SIZE;
-    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
+    buffer = (xmlChar *) xmlMallocAtomic(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
        xmlGenericError(xmlGenericErrorContext,
 	               "docbParseSGMLAttribute: malloc failed");
@@ -3195,7 +3195,7 @@ docbParsePI(xmlParserCtxtPtr ctxt) {
 		}
 
 	    }
-	    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+	    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
 	    if (buf == NULL) {
 		xmlGenericError(xmlGenericErrorContext,
 			"malloc of %d byte failed\n", size);
@@ -3315,7 +3315,7 @@ docbParseComment(docbParserCtxtPtr ctxt) {
     ctxt->instate = XML_PARSER_COMMENT;
     SHRINK;
     SKIP(4);
-    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
     if (buf == NULL) {
        xmlGenericError(xmlGenericErrorContext,
                "malloc of %d byte failed\n", size);

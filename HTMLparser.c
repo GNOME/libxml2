@@ -2268,7 +2268,7 @@ htmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	    xmlChar *buffer;
 	    int max = len * 2;
 	    
-	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    buffer = (xmlChar *) xmlMallocAtomic(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
@@ -2333,7 +2333,7 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
      * allocate a translation buffer.
      */
     buffer_size = HTML_PARSER_BUFFER_SIZE;
-    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
+    buffer = (xmlChar *) xmlMallocAtomic(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		        "htmlParseHTMLAttribute: malloc failed\n");
@@ -2900,7 +2900,7 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
     ctxt->instate = XML_PARSER_COMMENT;
     SHRINK;
     SKIP(4);
-    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    buf = (xmlChar *) xmlMallocAtomic(size * sizeof(xmlChar));
     if (buf == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"malloc of %d byte failed\n", size);
@@ -5378,7 +5378,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     
     /* set encoding */
     if (encoding) {
-        content = xmlMalloc (xmlStrlen(content_line) + strlen(encoding) + 1);
+        content = xmlMallocAtomic (xmlStrlen(content_line) + strlen(encoding) + 1);
 	if (content) {  
 	    strcpy ((char *)content, (char *)content_line);
             strcat ((char *)content, (char *)encoding);

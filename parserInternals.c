@@ -2519,7 +2519,7 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
 			(2 * ctxt->node_seq.maximum));
 
             if (ctxt->node_seq.buffer == NULL)
-                tmp_buffer = (xmlParserNodeInfo *) xmlMalloc(byte_size);
+                tmp_buffer = (xmlParserNodeInfo *) xmlMallocAtomic(byte_size);
             else
                 tmp_buffer =
                     (xmlParserNodeInfo *) xmlRealloc(ctxt->node_seq.buffer,

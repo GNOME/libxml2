@@ -4485,17 +4485,18 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
  */
 xmlAttrPtr
 xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
-    xmlAttrPtr prop = node->properties;
-    xmlDocPtr doc = NULL;
+    xmlAttrPtr prop;
+    xmlDocPtr doc;
 
     if ((node == NULL) || (name == NULL))
 	return(NULL);
     doc = node->doc;
+    prop = node->properties;
     while (prop != NULL) {
         if ((xmlStrEqual(prop->name, name)) &&
 	    (prop->ns == NULL)){
-	    if (prop->children != NULL) 
-	        xmlFreeNodeList(prop->children);
+	    xmlNodePtr oldprop = prop->children;
+
 	    prop->children = NULL;
 	    prop->last = NULL;
 	    if (value != NULL) {
@@ -4516,6 +4517,8 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 		}
 		xmlFree(buffer);
 	    }
+	    if (oldprop != NULL) 
+	        xmlFreeNodeList(oldprop);
 	    return(prop);
 	}
 	prop = prop->next;

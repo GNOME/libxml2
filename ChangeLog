@@ -1,3 +1,13 @@
+Tue May 13 18:10:38 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c doc/xmllint.xml: added --nonet option
+	* doc/Makefile.am: fixing #112803 by adding --nonet when calling
+	  xsltproc or xmllint
+	* doc/xmllint.xml doc/xmllint.1: also added --schema doc and
+	  rebuilt
+	* HTMLparser.c: cleaned up the HTML parser context build when 
+	  using an URL
+
 Tue May 13 16:35:04 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in: added a comment about bug #112902 

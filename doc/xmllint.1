@@ -31,7 +31,8 @@ xmllint \- command line XML tool
         | \fB--noblanks\fR | \fB--format\fR | \fB--testIO\fR | \fB--encode \fIencoding\fR\fR
         | \fB--catalogs\fR | \fB--nocatalogs\fR | \fB--auto\fR | \fB--xinclude\fR
         | \fB--loaddtd\fR | \fB--dtdattr\fR | \fB--dropdtd\fR | \fB--stream\fR
-        | \fB--chkregister\fR | \fB--relaxng\fR] [\fBxmlfile\fR]
+        | \fB--chkregister\fR | \fB--relaxng\fR | \fB--schema\fR | \fB--nonet\fR]
+        [\fBxmlfile\fR]
 .fi
 
 .SH "INTRODUCTION"
@@ -187,6 +188,14 @@ Turn on node registration. Useful for developeres testing libxml2 node tracking 
 .TP
 \fB--relaxng\fR \fIschema\fR
 Use RelaxNG file named \fIschema\fR for validation.
+
+.TP
+\fB--schema\fR \fIschema\fR
+Use a W3C XML Schema file named \fIschema\fR for validation.
+
+.TP
+\fB--nonet\fR
+Do not use the Internet to fetch DTD's or entities.
 
 .SH "SHELL"
 

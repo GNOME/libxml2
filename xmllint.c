@@ -1260,6 +1260,7 @@ static void usage(const char *name) {
     printf("\t--recover : output what was parsable on broken XML documents\n");
     printf("\t--noent : substitute entity references by their value\n");
     printf("\t--noout : don't output the result tree\n");
+    printf("\t--nonet : refuse to fetch DTDs or entities over network\n");
     printf("\t--htmlout : output results as HTML\n");
     printf("\t--nowrap : do not put HTML doc wrapper\n");
     printf("\t--valid : validate the document in addition to std well-formed check\n");
@@ -1513,6 +1514,9 @@ main(int argc, char **argv) {
 	    schema = argv[i];
 	    noent++;
 #endif
+        } else if ((!strcmp(argv[i], "-nonet")) ||
+                   (!strcmp(argv[i], "--nonet"))) {
+	    xmlSetExternalEntityLoader(xmlNoNetExternalEntityLoader);
 	} else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);
 	    usage(argv[0]);

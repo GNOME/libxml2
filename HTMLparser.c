@@ -5348,6 +5348,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     htmlParserCtxtPtr ctxt;
     htmlParserInputPtr inputStream;
     xmlParserInputBufferPtr buf;
+    char *canonicFilename;
     /* htmlCharEncoding enc; */
     xmlChar *content, *content_line = (xmlChar *) "charset=";
 
@@ -5361,27 +5362,23 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     }
     memset(ctxt, 0, sizeof(htmlParserCtxt));
     htmlInitParserCtxt(ctxt);
-    inputStream = (htmlParserInputPtr) xmlMalloc(sizeof(htmlParserInput));
-    if (inputStream == NULL) {
-        xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
-	xmlFree(ctxt);
+    canonicFilename = (char *) xmlCanonicPath((const xmlChar *) filename);
+    if (canonicFilename == NULL) {
+	if (xmlDefaultSAXHandler.error != NULL) {
+	    xmlDefaultSAXHandler.error(NULL, "out of memory\n");
+	}
 	return(NULL);
     }
-    memset(inputStream, 0, sizeof(htmlParserInput));
-
-    inputStream->filename = (char *)
-	xmlCanonicPath((xmlChar *)filename);
-    inputStream->line = 1;
-    inputStream->col = 1;
-    inputStream->buf = buf;
-    inputStream->directory = NULL;
-
-    inputStream->base = inputStream->buf->buffer->content;
-    inputStream->cur = inputStream->buf->buffer->content;
-    inputStream->free = NULL;
+    
+    inputStream = xmlLoadExternalEntity(canonicFilename, NULL, ctxt);
+    xmlFree(canonicFilename);
+    if (inputStream == NULL) {
+	xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
 
     inputPush(ctxt, inputStream);
-    
+
     /* set encoding */
     if (encoding) {
         content = xmlMallocAtomic (xmlStrlen(content_line) + strlen(encoding) + 1);

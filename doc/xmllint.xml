@@ -79,6 +79,8 @@
 	<arg>--stream</arg>
 	<arg>--chkregister</arg>
 	<arg>--relaxng</arg>
+	<arg>--schema</arg>
+	<arg>--nonet</arg>
       </group>
       <arg><option><replaceable>xmlfile</replaceable></option></arg>
   </cmdsynopsis>
@@ -439,6 +441,19 @@
 	<listitem>
 	  <simpara>Use RelaxNG file named <replaceable>schema</replaceable> for
 	  validation.</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>--schema</option> <replaceable>schema</replaceable></term>
+	<listitem>
+	  <simpara>Use a W3C XML Schema file named <replaceable>schema</replaceable> for validation.</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+      <option>--nonet</option></term>
+	<listitem>
+	  <simpara>Do not use the Internet to fetch DTD's or entities.</simpara>
 	</listitem>
       </varlistentry>
     </variablelist>

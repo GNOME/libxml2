@@ -1,3 +1,9 @@
+Tue nov  9 19:24:31 CET 2004 Dodji Seketeli <dodji@seketeli.org>
+
+	* configure.in: detect when struct sockaddr_storage
+	has the __ss_family member instead of ss_family and
+	behave accordingly. We know can use ipv6 on aix.
+
 Tue Nov  9 17:15:46 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am gentest.py testapi.c: integrated in "make tests"

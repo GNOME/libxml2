@@ -243,6 +243,28 @@ if test $enable_ipv6 = yes; then
 
   if test $have_ipv6 = yes; then
     AC_DEFINE([SUPPORT_IP6], [], [Support for IPv6])
+    have_broken_ss_family=no
+
+    dnl *********************************************************************
+    dnl on some platforms (like AIX 5L), the structure sockaddr doesn't have
+    dnl a ss_family member, but rather __ss_family. Let's detect that
+    dnl and define the HAVE_BROKEN_SS_FAMILY when we are on one of these platforms.
+    dnl ********************************************************************
+    AC_MSG_CHECKING([broken struct sockaddr::ss_family])
+    AC_TRY_COMPILE([
+      #include <sys/socket.h>
+      #include <sys/types.h>], [
+      struct sockaddr_storage ss ;
+      ss.__ss_family = 0 ;
+      ],
+      have_broken_ss_family=yes,
+      have_broken_ss_family=no
+    )
+    AC_MSG_RESULT($have_broken_ss_family)
+    if test x$have_broken_ss_family = xyes ; then
+      AC_DEFINE(HAVE_BROKEN_SS_FAMILY, [], [Whether struct sockaddr::__ss_family exists]) 
+      AC_DEFINE(ss_family, __ss_family, [ss_family is not defined here, use __ss_family instead])
+    fi
 
     have_getaddrinfo=no
     AC_CHECK_FUNC(getaddrinfo, have_getaddrinfo=yes)

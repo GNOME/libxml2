@@ -840,7 +840,15 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
 	while ((*cur == ' ') || (*cur == '\t')) cur++;
 	if (ctxt->location != NULL)
 	    xmlFree(ctxt->location);
-	ctxt->location = xmlMemStrdup(cur);
+	if (*cur == '/') {
+	    xmlChar *tmp_http = xmlStrdup(BAD_CAST "http://");
+	    xmlChar *tmp_loc = 
+	        xmlStrcat(tmp_http, (const xmlChar *) ctxt->hostname);
+	    ctxt->location = 
+	        (char *) xmlStrcat (tmp_loc, (const xmlChar *) cur);
+	} else {
+	    ctxt->location = xmlMemStrdup(cur);
+	}
     } else if (!xmlStrncasecmp(BAD_CAST line, BAD_CAST"WWW-Authenticate:", 17)) {
         cur += 17;
 	while ((*cur == ' ') || (*cur == '\t')) cur++;

@@ -2959,10 +2959,8 @@ xmlRelaxNGIsCompileable(xmlRelaxNGDefinePtr def)
         case XML_RELAXNG_LIST:
         case XML_RELAXNG_PARAM:
         case XML_RELAXNG_VALUE:
-            ret = 0;
-            break;
         case XML_RELAXNG_NOT_ALLOWED:
-            ret = -1;
+            ret = 0;
             break;
     }
     if (ret == 0)

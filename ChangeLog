@@ -1,3 +1,10 @@
+Fri Apr  2 17:03:48 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* nanohttp.c: implemented fix for M$ IIS redirect provided
+	  by Ian Hummel
+	* relaxng.c: fixed problem with notAllowed compilation
+	  (bug 138793)
+
 Thu Apr  1 22:07:52 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: fix for xmlUriEscape on "http://user@somewhere.com"

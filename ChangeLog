@@ -1,3 +1,10 @@
+Tue Aug 26 15:54:04 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed bug #120386 again a problem introduced when
+	  trying to reuse automata for content validation. Fix a bug report
+          problem on zeroOrMore
+	* result/relaxng/tutor3_7_err: change slightly error reporting.
+
 Mon Aug 25 13:24:57 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/Makefile.am: make sure the new header will

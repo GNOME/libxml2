@@ -365,6 +365,8 @@ struct _xmlRelaxNGValidCtxt {
     int                     pstate;	/* progressive state */
     xmlNodePtr              pnode;	/* the current node */
     xmlRelaxNGDefinePtr     pdef;	/* the non-streamable definition */
+    int                     perr;	/* signal error in content model
+                                           outside the regexp */
 };
 
 /**
@@ -7690,6 +7692,8 @@ xmlRelaxNGValidateCompiledCallback(xmlRegExecCtxtPtr exec ATTRIBUTE_UNUSED,
 	return;
     }
     ret = xmlRelaxNGValidateDefinition(ctxt, define);
+    if (ret != 0)
+        ctxt->perr = ret;
 }
 
 /**
@@ -7708,11 +7712,13 @@ xmlRelaxNGValidateCompiledContent(xmlRelaxNGValidCtxtPtr ctxt,
     xmlRegExecCtxtPtr exec;
     xmlNodePtr cur;
     int ret = 0;
+    int oldperr = ctxt->perr;
 
     if ((ctxt == NULL) || (regexp == NULL))
         return(-1);
     exec = xmlRegNewExecCtxt(regexp, 
                              xmlRelaxNGValidateCompiledCallback, ctxt);
+    ctxt->perr = 0;
     cur = content;
     while (cur != NULL) {
         ctxt->state->seq = cur;
@@ -7762,6 +7768,14 @@ xmlRelaxNGValidateCompiledContent(xmlRelaxNGValidCtxtPtr ctxt,
         ret = -1;
     }
     xmlRegFreeExecCtxt(exec);
+    /*
+     * There might be content model errors outside of the pure
+     * regexp validation, e.g. for attribute values.
+     */
+    if ((ret == 0) && (ctxt->perr != 0)) {
+        ret = ctxt->perr;
+    }
+    ctxt->perr = oldperr;
     return(ret);
 }
 
@@ -9777,8 +9791,13 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                 }
                 ctxt->states = res;
                 ctxt->flags = oldflags;
+#if 0
+                /*
+		 * errors may have to be propagated back...
+		 */
                 if (ctxt->errNr > errNr)
                     xmlRelaxNGPopErrors(ctxt, errNr);
+#endif
                 ret = 0;
                 break;
             }

@@ -1,3 +1,8 @@
+Tue Jan 22 22:38:42 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: apply an patch from Petr Kozelka for unlink and replace 
+	  support of attribute nodes
+
 Tue Jan 22 19:12:06 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/libxml2-api.xml doc/parsedecl.py: Build a new version

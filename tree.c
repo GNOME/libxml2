@@ -2506,16 +2506,25 @@ xmlUnlinkNode(xmlNodePtr cur) {
 	if (doc->extSubset == (xmlDtdPtr) cur)
 	    doc->extSubset = NULL;
     }
-    if ((cur->parent != NULL) && (cur->parent->children == cur))
-        cur->parent->children = cur->next;
-    if ((cur->parent != NULL) && (cur->parent->last == cur))
-        cur->parent->last = cur->prev;
+    if (cur->parent != NULL) {
+	xmlNodePtr parent;
+	parent = cur->parent;
+	if (cur->type == XML_ATTRIBUTE_NODE) {
+	    if (parent->properties == (xmlAttrPtr) cur)
+		parent->properties = ((xmlAttrPtr) cur)->next;
+	} else {
+	    if (parent->children == cur)
+		parent->children = cur->next;
+	    if (parent->last == cur)
+		parent->last = cur->prev;
+	}
+	cur->parent = NULL;
+    }
     if (cur->next != NULL)
         cur->next->prev = cur->prev;
     if (cur->prev != NULL)
         cur->prev->next = cur->next;
     cur->next = cur->prev = NULL;
-    cur->parent = NULL;
 }
 
 /**
@@ -2545,6 +2554,20 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
     if (cur == old) {
 	return(old);
     }
+    if ((old->type==XML_ATTRIBUTE_NODE) && (cur->type!=XML_ATTRIBUTE_NODE)) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlReplaceNode : Trying to replace attribute node with other node type\n");
+#endif
+	return(old);
+    }
+    if ((cur->type==XML_ATTRIBUTE_NODE) && (old->type!=XML_ATTRIBUTE_NODE)) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlReplaceNode : Trying to replace a non-attribute node with attribute node\n");
+#endif
+	return(old);
+    }
     xmlUnlinkNode(cur);
     cur->doc = old->doc;
     cur->parent = old->parent;
@@ -2555,10 +2578,15 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
     if (cur->prev != NULL)
 	cur->prev->next = cur;
     if (cur->parent != NULL) {
-	if (cur->parent->children == old)
-	    cur->parent->children = cur;
-	if (cur->parent->last == old)
-	    cur->parent->last = cur;
+	if (cur->type == XML_ATTRIBUTE_NODE) {
+	    if (cur->parent->properties == (xmlAttrPtr)old)
+		cur->parent->properties = ((xmlAttrPtr) cur);
+	} else {
+	    if (cur->parent->children == old)
+		cur->parent->children = cur;
+	    if (cur->parent->last == old)
+		cur->parent->last = cur;
+	}
     }
     old->next = old->prev = NULL;
     old->parent = NULL;

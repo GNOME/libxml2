@@ -107,7 +107,7 @@
  - The table of content
  -->
   <xsl:variable name="toc">
-    <ul style="margin-left: -1em">
+    <ul><!-- style="margin-left: -1em" -->
       <li><a href="index.html">Home</a></li>
       <xsl:for-each select="/html/body/h2">
         <xsl:variable name="filename">
@@ -128,7 +128,7 @@
     </ul>
   </xsl:variable>
   <xsl:variable name="related">
-    <ul style="margin-left: -1em">
+    <ul><!-- style="margin-left: -1em" -->
       <li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
       <li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
       <li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li>

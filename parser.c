@@ -10150,6 +10150,7 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input = NULL;
     xmlCharEncoding enc;
+    xmlChar* systemIdCanonic;
 
     if ((ExternalID == NULL) && (SystemID == NULL)) return(NULL);
 
@@ -10167,16 +10168,26 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
         ctxt->sax = sax;
         ctxt->userData = ctxt;
     }
+    
+    /*
+     * Canonicalise the system ID
+     */
+    systemIdCanonic = xmlCanonicPath(SystemID);
+    if (systemIdCanonic == NULL) {
+	xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
 
     /*
      * Ask the Entity resolver to load the damn thing
      */
 
     if ((ctxt->sax != NULL) && (ctxt->sax->resolveEntity != NULL))
-	input = ctxt->sax->resolveEntity(ctxt, ExternalID, SystemID);
+	input = ctxt->sax->resolveEntity(ctxt, ExternalID, systemIdCanonic);
     if (input == NULL) {
         if (sax != NULL) ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);
+	xmlFree(systemIdCanonic);
 	return(NULL);
     }
 
@@ -10190,7 +10201,9 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     }
 
     if (input->filename == NULL)
-	input->filename = (char *) xmlCanonicPath(SystemID);
+	input->filename = (char *) systemIdCanonic;
+    else
+	xmlFree(systemIdCanonic);
     input->line = 1;
     input->col = 1;
     input->base = ctxt->input->cur;

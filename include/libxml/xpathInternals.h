@@ -571,6 +571,12 @@ void xmlXPathFloorFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathCeilingFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathBooleanFunction(xmlXPathParserContextPtr ctxt, int nargs);
+
+/**
+ * Really internal functions
+ */
+void xmlXPathNodeSetFreeNs(xmlNsPtr ns);
+ 
 #ifdef __cplusplus
 }
 #endif

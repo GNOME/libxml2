@@ -1,3 +1,19 @@
+Mon Jun  3 21:21:26 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* result/c14n/exc-without-comments/merlin-c14n-two-*
+	  result/c14n/without-comments/merlin-c14n-two-*
+	  test/c14n/exc-without-comments/merlin-c14n-two-*
+	  test/c14n/without-comments/merlin-c14n-two-*
+	  testC14N.c Makefile.am: added merlin-c14n-two.tar.gz tests for 
+	c14n/exc-c14n and slightly modified test script to handle
+	these test cases
+	* c14n.c: fixed bugs for complicated nodes set (namespace
+	without node and others from merlin-c14n-two.tar.gz)
+	* include/libxml/xpathInternals.h win32/dsp/libxml2.def.src
+	win32/libxml2.def.src: "opened" xmlXPathNodeSetFreeNs() function
+	for xmlsec performance patch
+	* xpath.c: fixed self::node() for namespaces and attributes
+
 Fri May 31 12:16:48 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* Makefile.am: updated c14n tests suite

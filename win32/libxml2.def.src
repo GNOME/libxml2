@@ -1541,6 +1541,9 @@ xmlCleanupPredefinedEntities
 	xmlXPathCeilingFunction
 	xmlXPathRoundFunction
 	xmlXPathBooleanFunction
+
+	/* really internal functions */
+	xmlXPathNodeSetFreeNs
 #endif /* LIBXML_XPATH_ENABLED */
 
 

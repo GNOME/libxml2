@@ -612,29 +612,27 @@ Automatatests: testAutomata$(EXEEXT)
 	  fi ; fi ; done)
 
 C14Ntests : testC14N$(EXEEXT)
+	@echo "##"
+	@echo "## C14N and XPath regression tests"
+	@echo "##"
 	-@(for m in with-comments without-comments exc-without-comments ; do \
-	    echo "##"; \
-	    echo "## C14N regression tests: $$m"; \
-	    echo "##"; \
 	    for i in $(srcdir)/test/c14n/$$m/*.xml ; do  \
 		if [ ! -d $$i ] ; then \
 		    name=`basename $$i .xml`; \
-		    echo Testing $$name; \
+		    echo Testing $$m/$$name; \
+		    cmdline="$(CHECKER) $(top_builddir)/testC14N --$$m $$i"; \
 		    if [ -e $(srcdir)/test/c14n/$$m/$$name.xpath ] ; then \
-			xpathFile=$(srcdir)/test/c14n/$$m/$$name.xpath; \
-		    else \
-			xpathFile=""; \
+			cmdline="$$cmdline $(srcdir)/test/c14n/$$m/$$name.xpath"; \
+			if [ -e $(srcdir)/test/c14n/$$m/$$name.ns ] ; then \
+			    cmdline="$$cmdline '`cat $(srcdir)/test/c14n/$$m/$$name.ns`'"; \
+			fi; \
 		    fi; \
-		    if [ -e $(srcdir)/test/c14n/$$m/$$name.ns ] ; then \
-			nsList=`cat $(srcdir)/test/c14n/$$m/$$name.ns`; \
-		    else \
-			nsList=""; \
-		    fi; \
-		    $(CHECKER) $(top_builddir)/testC14N --$$m $$i $$xpathFile $$nsList > $(srcdir)/test/c14n/test.tmp; \
+		    $$cmdline > $(srcdir)/test/c14n/test.tmp; \
 		    if [ $$? -eq 0 ]; then \
 			diff  $(srcdir)/result/c14n/$$m/$$name $(srcdir)/test/c14n/test.tmp; \
 			if [ $$? -ne 0 ]; then \
 			    echo "Test failed"; \
+			    cat $(srcdir)/test/c14n/test.tmp; \
 			fi; \
 		    else \
 			echo "C14N failed"; \

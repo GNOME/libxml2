@@ -1489,7 +1489,7 @@ xmlXPathNodeSetDupNs(xmlNodePtr node, xmlNsPtr ns) {
  * the namespace nodes are duplicated and the next pointer is set to the
  * parent node in the XPath semantic. Check if such a node need to be freed
  */
-static void
+void
 xmlXPathNodeSetFreeNs(xmlNsPtr ns) {
     if ((ns == NULL) || (ns->type != XML_NAMESPACE_DECL))
 	return;
@@ -8736,6 +8736,8 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
                          ((cur->type == XML_DOCUMENT_NODE) ||
                           (cur->type == XML_HTML_DOCUMENT_NODE) ||
                           (cur->type == XML_ELEMENT_NODE) ||
+                          (cur->type == XML_NAMESPACE_DECL) ||
+                          (cur->type == XML_ATTRIBUTE_NODE) ||
                           (cur->type == XML_PI_NODE) ||
                           (cur->type == XML_COMMENT_NODE) ||
                           (cur->type == XML_CDATA_SECTION_NODE) ||

@@ -46,8 +46,7 @@ load_xpath_expr (xmlDocPtr parent_doc, const char* filename);
 
 xmlChar **parse_list(xmlChar *str);
 
-void
-print_xpath_nodes(xmlXPathObjectPtr ptr);
+void print_xpath_nodes(xmlNodeSetPtr nodes);
 
 static int 
 test_c14n(const char* xml_filename, int with_comments, int exclusive,
@@ -184,11 +183,18 @@ xmlChar **parse_list(xmlChar *str) {
     xmlChar **buffer;
     xmlChar **out = NULL;
     int buffer_size = 0;
+    int len;
 
     if(str == NULL) {
 	return(NULL);
     }
 
+    len = strlen(str);
+    if((str[0] == '\'') && (str[len - 1] == '\'')) {
+	str[len - 1] = '\0';
+	str++;
+	len -= 2;
+    }
     /*
      * allocate an translation buffer.
      */
@@ -298,7 +304,7 @@ load_xpath_expr (xmlDocPtr parent_doc, const char* filename) {
         return(NULL);
     }
 
-    /* print_xpath_nodes(xpath); */
+    /* print_xpath_nodes(xpath->nodesetval); */
 
     xmlFree(expr); 
     xmlXPathFreeContext(ctx); 
@@ -307,20 +313,39 @@ load_xpath_expr (xmlDocPtr parent_doc, const char* filename) {
 }
 
 void
-print_xpath_nodes(xmlXPathObjectPtr ptr) {
+print_xpath_nodes(xmlNodeSetPtr nodes) {
     xmlNodePtr cur;
     int i;
     
-    if(ptr == NULL || ptr->nodesetval == NULL ){ 
+    if(nodes == NULL ){ 
 	fprintf(stderr, "Error: no nodes set defined\n");
 	return;
     }
     
-    for(i = 0; i < ptr->nodesetval->nodeNr; ++i) {
-	cur = ptr->nodesetval->nodeTab[i];    
-	fprintf(stderr, "node %s. type %d\n", cur->name, cur->type);
+    fprintf(stderr, "Nodes Set:\n-----\n");
+    for(i = 0; i < nodes->nodeNr; ++i) {
+	if(nodes->nodeTab[i]->type == XML_NAMESPACE_DECL) {
+	    xmlNsPtr ns;
+	    
+	    ns = (xmlNsPtr)nodes->nodeTab[i];
+	    cur = (xmlNodePtr)ns->next;
+	    fprintf(stderr, "namespace \"%s\"=\"%s\" for node %s:%s\n", 
+		    ns->prefix, ns->href,
+		    (cur->ns) ? cur->ns->prefix : BAD_CAST "", cur->name);
+	} else if(nodes->nodeTab[i]->type == XML_ELEMENT_NODE) {
+	    cur = nodes->nodeTab[i];    
+	    fprintf(stderr, "element node \"%s:%s\"\n", 
+		    (cur->ns) ? cur->ns->prefix : BAD_CAST "", cur->name);
+	} else {
+	    cur = nodes->nodeTab[i];    
+	    fprintf(stderr, "node \"%s\": type %d\n", cur->name, cur->type);
+	}
     }
 }
+
+
+
+
 
 #else
 #include <stdio.h>

@@ -512,7 +512,6 @@ struct _xmlDoc {
 /*
  * Variables.
  */
-LIBXML_DLL_IMPORT extern xmlNsPtr baseDTD;
 LIBXML_DLL_IMPORT extern int oldXMLWDcompatibility;/* maintain compatibility with old WD */
 LIBXML_DLL_IMPORT extern int xmlIndentTreeOutput;  /* try to indent the tree dumps */
 LIBXML_DLL_IMPORT extern xmlBufferAllocationScheme xmlBufferAllocScheme; /* alloc scheme to use */

@@ -3,8 +3,6 @@
 # tries to parse the output of gtk-doc declaration files and make
 # an XML reusable description from them
 #
-# TODO: try to extracts comments from the DocBook output of
-
 import sys
 import string
 

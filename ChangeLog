@@ -1,3 +1,9 @@
+Wed Jan 30 17:35:33 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c python/libxml.py
+	  python/libxml_wrap.h: commited early version of a python binding
+	  for private use only ATM
+
 Sat Jan 26 22:41:13 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* entities.c tree.c include/libxml/entities.h: applied patch

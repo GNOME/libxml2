@@ -2,9 +2,9 @@
 
 noinst_PROGRAMS=tester
 
-lib_LTLIBRARIES = libxml_0.10.la
+lib_LTLIBRARIES = libxml.la
 
-libxml_0_10_la_SOURCES = \
+libxml_la_SOURCES = \
 		xml_entities.c \
 		xml_parser.c \
 		xml_tree.c
@@ -14,8 +14,8 @@ include_HEADERS = \
 		xml_parser.h \
 		xml_tree.h
 
-DEPS = $(top_builddir)/libxml_0.10.la
-LDADDS = $(top_builddir)/libxml_0.10.la @Z_LIBS@
+DEPS = $(top_builddir)/libxml.la
+LDADDS = $(top_builddir)/libxml.la @Z_LIBS@
 
 tester_SOURCES=tester.c
 tester_LDFLAGS = 

@@ -59,6 +59,8 @@
 #define ENOTEMPTY               WSAENOTEMPTY
 */
 
+#else
+#define HAVE_ERRNO_H
 #endif /* NEED_SOCKETS */
 
 #define HAVE_ISINF

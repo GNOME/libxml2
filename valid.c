@@ -609,14 +609,14 @@ xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int
 	    break;
 	case XML_ELEMENT_CONTENT_ELEMENT:
 	    if (content->prefix != NULL) {
-		if (size - len < xmlStrlen(content->prefix + 10)) {
+		if (size - len < xmlStrlen(content->prefix) + 10) {
 		    strcat(buf, " ...");
 		    return;
 		}
 		strcat(buf, (char *) content->prefix);
 		strcat(buf, ":");
 	    }
-	    if (size - len < xmlStrlen(content->name + 10)) {
+	    if (size - len < xmlStrlen(content->name) + 10) {
 		strcat(buf, " ...");
 		return;
 	    }
@@ -3935,7 +3935,7 @@ xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
         switch (cur->type) {
             case XML_ELEMENT_NODE:
 		if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
-		    if (size - len < xmlStrlen(cur->ns->prefix + 10)) {
+		    if (size - len < xmlStrlen(cur->ns->prefix) + 10) {
 			if ((size - len > 4) && (buf[len - 1] != '.'))
 			    strcat(buf, " ...");
 			return;
@@ -3943,7 +3943,7 @@ xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
 		    strcat(buf, (char *) cur->ns->prefix);
 		    strcat(buf, ":");
 		}
-                if (size - len < xmlStrlen(cur->name + 10)) {
+                if (size - len < xmlStrlen(cur->name) + 10) {
 		    if ((size - len > 4) && (buf[len - 1] != '.'))
 			strcat(buf, " ...");
 		    return;

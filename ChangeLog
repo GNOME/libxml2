@@ -1,3 +1,13 @@
+Tue Mar 19 15:24:49 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: adding "make valgrind" running the full regression
+	  tests (except python ones) under Valgrind (using valgrind -q
+	  which was kindly added by the author).
+	* valid.c: stupid bug pinpointed by Valgrind, the regression tests
+	  passes cleanly now except an obcure floating point initialization
+	  raised in log10() in one XPath regression test ???
+	* tree.c: edited some comments to close #75244
+
 Tue Mar 19 12:15:20 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: pretty insane thing, the xmlXPathFormatNumber()

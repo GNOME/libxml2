@@ -94,6 +94,9 @@ CFLAGS = $(CFLAGS) -I$(XML_SRCDIR) -I$(XML_SRCDIR)\include -I$(INCPREFIX) -I$(IN
 !if "$(WITH_THREADS)" != "no"
 CFLAGS = $(CFLAGS) -D_REENTRANT -tWM
 !endif
+!if "$(STATIC_RTL)" != "1"
+CFLAGS = $(CFLAGS) -D_RTLDLL
+!endif
 !if "$(WITH_THREADS)" == "yes" || "$(WITH_THREADS)" == "ctls"
 CFLAGS = $(CFLAGS) -DHAVE_WIN32_THREADS -DHAVE_COMPILER_TLS
 !else if "$(WITH_THREADS)" == "native"
@@ -341,11 +344,11 @@ $(UTILS_INTDIR)\$(DUMMY) :
 # An implicit rule for xmllint and friends.
 !if "$(STATIC)" == "1"
 {$(UTILS_SRCDIR)}.c{$(BINDIR)}.exe:
-	$(CC) -DLIBXML_STATIC -w -D_RTLDLL -tWC $(CFLAGS) -o$(UTILS_INTDIR)\$&.obj -c $< 
+	$(CC) -DLIBXML_STATIC -w -tWC $(CFLAGS) -o$(UTILS_INTDIR)\$&.obj -c $< 
 	$(LD) $(LDFLAGS) c0x32.obj $(UTILS_INTDIR)\$&.obj,$@,,$(LIBS) $(XML_A)
 !else
 {$(UTILS_SRCDIR)}.c{$(BINDIR)}.exe:
-	$(CC) $(CFLAGS) -D_RTLDLL -tWC -o$(UTILS_INTDIR)\$&.obj -c $< 
+	$(CC) $(CFLAGS) -tWC -o$(UTILS_INTDIR)\$&.obj -c $< 
 	$(LD) $(LDFLAGS) c0x32.obj $(UTILS_INTDIR)\$&.obj $(XML_IMP),$@,,$(LIBS) 
 !endif
 

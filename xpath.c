@@ -1868,15 +1868,29 @@ xmlXPathCompareNodeSetString(xmlXPathParserContextPtr ctxt, int inf, int strict,
  *
  * Implement the compare operation on nodesets:
  *
- * If both objects to be compared are node-sets, then the comparison will be true if
- * and only if there is a node in the first node-set and a node in the second node-set
- * such that the result of performing the comparison on the string-values of the two
- * nodes is true. 
+ * If both objects to be compared are node-sets, then the comparison
+ * will be true if and only if there is a node in the first node-set
+ * and a node in the second node-set such that the result of performing
+ * the comparison on the string-values of the two nodes is true. 
+ * ....
+ * When neither object to be compared is a node-set and the operator
+ * is <=, <, >= or >, then the objects are compared by converting both
+ * objects to numbers and comparing the numbers according to IEEE 754.
+ * ....
+ * The number function converts its argument to a number as follows:
+ *  - a string that consists of optional whitespace followed by an
+ *    optional minus sign followed by a Number followed by whitespace
+ *    is converted to the IEEE 754 number that is nearest (according
+ *    to the IEEE 754 round-to-nearest rule) to the mathematical value
+ *    represented by the string; any other string is converted to NaN
+ *
+ * Conclusion all nodes need to be converted first to their string value
+ * and then the comparison must be done when possible 
  */
 int
 xmlXPathCompareNodeSets(xmlXPathParserContextPtr ctxt, int inf, int strict,
 	                xmlXPathObjectPtr ns1, xmlXPathObjectPtr ns2) {
-    TODO
+    TODO /* xmlXPathCompareNodeSets */
     return(0);
 }
 
@@ -1894,10 +1908,10 @@ xmlXPathCompareNodeSets(xmlXPathParserContextPtr ctxt, int inf, int strict,
  *     @ns > @val    (0, 1, ...
  *     @ns >= @val   (0, 0, ...
  *
- * If one object to be compared is a node-set and the other is a boolean, then the
- * comparison will be true if and only if the result of performing the comparison
- * on the boolean and on the result of converting the node-set to a boolean using
- * the boolean function is true.
+ * If one object to be compared is a node-set and the other is a boolean,
+ * then the comparison will be true if and only if the result of performing
+ * the comparison on the boolean and on the result of converting
+ * the node-set to a boolean using the boolean function is true.
  *
  * Returns 0 or 1 depending on the results of the test.
  */
@@ -1951,6 +1965,8 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar *str) {
 	((arg->type != XPATH_NODESET) && (arg->type != XPATH_XSLT_TREE)))
         return(0);
     ns = arg->nodesetval;
+    if (ns->nodeNr <= 0)
+	return(0);
     for (i = 0;i < ns->nodeNr;i++) {
          str2 = xmlNodeGetContent(ns->nodeTab[i]);
 	 if ((str2 != NULL) && (xmlStrEqual(str, str2))) {
@@ -2015,9 +2031,12 @@ xmlXPathEqualNodeSetFloat(xmlXPathObjectPtr arg, double f) {
  */
 int
 xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
-    int i;
-    xmlNodeSetPtr ns;
-    xmlChar *str;
+    int i, j;
+    xmlChar **values1;
+    xmlChar **values2;
+    int ret = 0;
+    xmlNodeSetPtr ns1;
+    xmlNodeSetPtr ns2;
 
     if ((arg1 == NULL) ||
 	((arg1->type != XPATH_NODESET) && (arg1->type != XPATH_XSLT_TREE)))
@@ -2026,16 +2045,53 @@ xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
 	((arg2->type != XPATH_NODESET) && (arg2->type != XPATH_XSLT_TREE)))
         return(0);
 
-    ns = arg1->nodesetval;
-    for (i = 0;i < ns->nodeNr;i++) {
-         str = xmlNodeGetContent(ns->nodeTab[i]);
-	 if ((str != NULL) && (xmlXPathEqualNodeSetString(arg2, str))) {
-	     xmlFree(str);
-	     return(1);
-	 }
-	 xmlFree(str);
+    ns1 = arg1->nodesetval;
+    ns2 = arg2->nodesetval;
+
+    if (ns1->nodeNr <= 0)
+	return(0);
+    if (ns2->nodeNr <= 0)
+	return(0);
+
+    /*
+     * check if there is a node pertaining to both sets
+     */
+    for (i = 0;i < ns1->nodeNr;i++)
+	for (j = 0;j < ns2->nodeNr;j++)
+	    if (ns1->nodeTab[i] == ns2->nodeTab[j])
+		return(1);
+
+    values1 = (xmlChar **) xmlMalloc(ns1->nodeNr * sizeof(xmlChar *));
+    if (values1 == NULL)
+	return(0);
+    memset(values1, 0, ns1->nodeNr * sizeof(xmlChar *));
+    values2 = (xmlChar **) xmlMalloc(ns2->nodeNr * sizeof(xmlChar *));
+    if (values2 == NULL) {
+	xmlFree(values1);
+	return(0);
     }
-    return(0);
+    memset(values2, 0, ns2->nodeNr * sizeof(xmlChar *));
+    for (i = 0;i < ns1->nodeNr;i++) {
+	values1[i] = xmlNodeGetContent(ns1->nodeTab[i]);
+	for (j = 0;j < ns2->nodeNr;j++) {
+	    if (i == 0)
+		values2[j] = xmlNodeGetContent(ns2->nodeTab[j]);
+	    ret = xmlStrEqual(values1[i], values2[j]);
+	    if (ret)
+		break;
+	}
+	if (ret)
+	    break;
+    }
+    for (i = 0;i < ns1->nodeNr;i++)
+	if (values1[i] != NULL)
+	    xmlFree(values1[i]);
+    for (j = 0;j < ns2->nodeNr;j++)
+	if (values2[j] != NULL)
+	    xmlFree(values2[j]);
+    xmlFree(values1);
+    xmlFree(values2);
+    return(ret);
 }
 
 /**

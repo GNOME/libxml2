@@ -3169,9 +3169,69 @@ xmlNodeGetContent(xmlNodePtr cur) {
     if (cur == NULL) return(NULL);
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
-        case XML_ELEMENT_NODE:
-            return(xmlNodeListGetString(cur->doc, cur->children, 1));
-	    break;
+        case XML_ELEMENT_NODE: {
+	    xmlNodePtr tmp = cur;
+	    xmlBufferPtr buffer;
+	    xmlChar *ret;
+
+            buffer = xmlBufferCreate();
+	    if (buffer == NULL)
+		return(NULL);
+	    while (tmp != NULL) {
+		switch (tmp->type) {
+		    case XML_ELEMENT_NODE: 
+		    case XML_TEXT_NODE:
+			if (tmp->content != NULL)
+#ifndef XML_USE_BUFFER_CONTENT
+			    xmlBufferCat(buffer, tmp->content);
+#else
+			    xmlBufferCat(buffer,
+				    xmlBufferContent(tmp->content));
+#endif
+			break;
+		    case XML_ENTITY_REF_NODE: {
+		        xmlEntityPtr ent;
+
+			ent = xmlGetDocEntity(cur->doc, tmp->name);
+			if (ent != NULL)
+			    xmlBufferCat(buffer, ent->content);
+		    }
+		    default:
+			break;
+		}
+		/*
+		 * Skip to next node
+		 */
+		if (tmp->children != NULL) {
+		    if (tmp->children->type != XML_ENTITY_DECL) {
+			tmp = tmp->children;
+			continue;
+		    }
+		}
+		if (tmp->next != NULL) {
+		    tmp = tmp->next;
+		    continue;
+		}
+		
+		do {
+		    tmp = tmp->parent;
+		    if (tmp == NULL)
+			break;
+		    if (tmp == (xmlNodePtr) cur) {
+			tmp = NULL;
+			break;
+		    }
+		    if (tmp->next != NULL) {
+			tmp = tmp->next;
+			break;
+		    }
+		} while (tmp != NULL);
+	    }
+	    ret = buffer->content;
+	    buffer->content = NULL;
+	    xmlBufferFree(buffer);
+	    return(ret);
+        }
         case XML_ATTRIBUTE_NODE: {
 	    xmlAttrPtr attr = (xmlAttrPtr) cur;
 	    if (attr->parent != NULL)
@@ -4553,7 +4613,7 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
 
 /**
  * xmlBufferContent:
- * @buf:  the buffer to resize
+ * @buf:  the buffer
  *
  * Returns the internal content
  */

@@ -1,3 +1,9 @@
+Tue Feb 20 18:57:54 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: fixed xmlNodeGetContent, it was not recursing on child
+	* parserInternals.[ch]: trying to speed up parsing
+	* xpath.c : speeded up node set equality op
+
 Mon Feb 19 19:01:57 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am valid.c list.[ch]: Gary Pennington provided a

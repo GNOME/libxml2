@@ -1256,6 +1256,10 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	*len = 0;
 	return(ctxt->token);
     }	
+    if ((*ctxt->input->cur >= 0x20) && (*ctxt->input->cur <= 0x7F)) {
+	    *len = 1;
+	    return((int) *ctxt->input->cur);
+    }
     if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
 	/*
 	 * We are supposed to handle UTF8, check it's valid

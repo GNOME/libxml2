@@ -1,3 +1,8 @@
+Sun Mar  7 19:03:48 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: modified to make sub-includes inherit the
+	  parse flags from the parent document (bug 132597)
+
 Fri Mar  5 01:13:22 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: QName handling fixes for the XML Schemas

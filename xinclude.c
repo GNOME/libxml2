@@ -694,6 +694,11 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	    newctxt->incTab[i]->count++; /* prevent the recursion from
 					    freeing it */
 	}
+	/*
+	 * The new context should also inherit the Parse Flags
+	 * (bug 132597)
+	 */
+	newctxt->parseFlags = ctxt->parseFlags;
 	xmlXIncludeDoProcess(newctxt, doc, xmlDocGetRootElement(doc));
 	for (i = 0;i < ctxt->incNr;i++) {
 	    newctxt->incTab[i]->count--;

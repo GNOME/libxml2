@@ -587,7 +587,7 @@
 	    <xsl:call-template name="docstyle"/>
 	    <title><xsl:value-of select="$title"/></title>
 	  </head>
-	  <body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
+	  <body bgcolor="#8b7765" text="#000000" link="#a06060" vlink="#a06060">
 	    <xsl:call-template name="titlebox">
 	      <xsl:with-param name="title" select="$title"/>
 	    </xsl:call-template>
@@ -701,7 +701,7 @@
 	    <xsl:call-template name="docstyle"/>
 	    <title><xsl:value-of select="$title"/></title>
 	  </head>
-	  <body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
+	  <body bgcolor="#8b7765" text="#000000" link="#a06060" vlink="#a06060">
 	    <xsl:call-template name="titlebox">
 	      <xsl:with-param name="title" select="$title"/>
 	    </xsl:call-template>

@@ -607,7 +607,7 @@ A:link, A:visited, A:active { text-decoration: underline }
             <xsl:value-of select="$title"/>
           </xsl:element>
         </head>
-        <body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
+        <body bgcolor="#8b7765" text="#000000" link="#a06060" vlink="#a06060">
           <xsl:call-template name="titlebox">
             <xsl:with-param name="title" select="$title"/>
           </xsl:call-template>
@@ -671,7 +671,7 @@ A:link, A:visited, A:active { text-decoration: underline }
   <xsl:template match="body">
     <xsl:variable name="firsth2" select="./h2[1]"/>
     <xsl:variable name="rest2" select="./h2[position()&gt;1]"/>
-    <body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
+    <body bgcolor="#8b7765" text="#000000" link="#a06060" vlink="#a06060">
       <xsl:call-template name="titlebox">
         <xsl:with-param name="title" select="'libxml'"/>
       </xsl:call-template>

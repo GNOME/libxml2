@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="libxml2_so" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="libxml2" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
-CFG=libxml2_so - Win32 Debug
+CFG=libxml2 - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "libxml2_so.mak".
+!MESSAGE NMAKE /f "libxml2.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "libxml2_so.mak" CFG="libxml2_so - Win32 Debug"
+!MESSAGE NMAKE /f "libxml2.mak" CFG="libxml2 - Win32 Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "libxml2_so - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "libxml2_so - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "libxml2 - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "libxml2 - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -29,20 +29,20 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "libxml2_so - Win32 Release"
+!IF  "$(CFG)" == "libxml2 - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
-# PROP BASE Output_Dir "libxml2_so___Win32_Release"
-# PROP BASE Intermediate_Dir "libxml2_so___Win32_Release"
+# PROP BASE Output_Dir "libxml2___Win32_Release"
+# PROP BASE Intermediate_Dir "libxml2___Win32_Release"
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "libxml2_so"
-# PROP Intermediate_Dir "libxml2_so"
+# PROP Output_Dir "libxml2"
+# PROP Intermediate_Dir "libxml2"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LIBXML2_SO_EXPORTS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "libxml2_EXPORTS" /YX /FD /c
 # ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "IN_LIBXML" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -54,22 +54,30 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 wsock32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"libxml2_so/libxml2.dll"
+# ADD LINK32 wsock32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
+# Begin Custom Build - Creating static library libxml2_a.lib...
+InputPath=.\libxml2\libxml2.dll
+SOURCE="$(InputPath)"
 
-!ELSEIF  "$(CFG)" == "libxml2_so - Win32 Debug"
+"libxml2\libxml2_a.lib" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	lib /nologo /out:libxml2\libxml2_a.lib libxml2\*.obj
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "libxml2 - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir "libxml2_so___Win32_Debug"
-# PROP BASE Intermediate_Dir "libxml2_so___Win32_Debug"
+# PROP BASE Output_Dir "libxml2___Win32_Debug"
+# PROP BASE Intermediate_Dir "libxml2___Win32_Debug"
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "libxml2_so"
-# PROP Intermediate_Dir "libxml2_so"
+# PROP Output_Dir "libxml2"
+# PROP Intermediate_Dir "libxml2"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LIBXML2_SO_EXPORTS" /YX /FD /GZ /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "libxml2_EXPORTS" /YX /FD /GZ /c
 # ADD CPP /nologo /MD /W3 /Gm /Zi /Od /I "..\..\include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "IN_LIBXML" /FR /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -81,14 +89,22 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 wsock32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /out:"libxml2_so/libxml2.dll" /pdbtype:sept
+# ADD LINK32 wsock32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# Begin Custom Build - Creating static library libxml2_a.lib...
+InputPath=.\libxml2\libxml2.dll
+SOURCE="$(InputPath)"
+
+"libxml2\libxml2_a.lib" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	lib /nologo /out:libxml2\libxml2_a.lib libxml2\*.obj
+
+# End Custom Build
 
 !ENDIF 
 
 # Begin Target
 
-# Name "libxml2_so - Win32 Release"
-# Name "libxml2_so - Win32 Debug"
+# Name "libxml2 - Win32 Release"
+# Name "libxml2 - Win32 Debug"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
@@ -140,7 +156,7 @@ SOURCE=.\libxml2.def
 
 SOURCE=.\libxml2.def.src
 
-!IF  "$(CFG)" == "libxml2_so - Win32 Release"
+!IF  "$(CFG)" == "libxml2 - Win32 Release"
 
 USERDEP__LIBXM="../../include/libxml/xmlversion.h"	
 # Begin Custom Build
@@ -151,7 +167,7 @@ InputPath=.\libxml2.def.src
 
 # End Custom Build
 
-!ELSEIF  "$(CFG)" == "libxml2_so - Win32 Debug"
+!ELSEIF  "$(CFG)" == "libxml2 - Win32 Debug"
 
 # PROP Ignore_Default_Tool 1
 USERDEP__LIBXM="../../include/libxml/xmlversion.h"	
@@ -216,10 +232,6 @@ SOURCE=..\..\xlink.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\xmlcatalog.c
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\xmlIO.c
 # End Source File
 # Begin Source File
@@ -257,6 +269,10 @@ SOURCE=..\..\include\libxml\encoding.h
 # Begin Source File
 
 SOURCE=..\..\include\libxml\entities.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\globals.h
 # End Source File
 # Begin Source File
 

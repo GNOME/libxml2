@@ -1,7 +1,4 @@
------------------------------------------------------------------------
-[24. July, 2001, igor@stud.fh-frankfurt.de] 
-
-And again there are new MSVC project files for libxml2.
+Hi there.
 
 You can find the project files for MSVC 6.0 and higher in win32/dsp/
 subdirectory of the source tree. You should load the file libxml2.dsw
@@ -12,107 +9,25 @@ Check the file xmlwin32version.h for optional features and enable or
 disable them, as it suits you. The defaults are apropriate for most 
 people, so there is usually no need to mess with this.
 
-If you receive few compiler warnings, ignore them. These are harmless
-and shall dissapear in the future.
+For libxml2, there is a single project file which builds both static 
+and shared library in a single run. When you build the project libxml2, 
+you will find the following files in your win32/dsp/libxml2 
+subdirectory:
 
-From now on, all object files produced by the compiler end up in the same
+  libxml2.dll     shared library
+  libxml2.lib     import library for dynamic link
+  libxml2_a.lib   static library
+
+Other project files produce a single executable in a subdirectory which
+shares the name with the project.
+
+All object files produced by the compiler end up in the same
 directory for each project, no matter if you compile with debugging
 turned on or not. This means that a release build shall overwite the 
 debug build and vice versa. This makes the dependency tracking easier,
 but there are people who don't like this for some reason.
 
-The new project files from win32/dsp/ make any other project files 
-obsolete. Previous project files shall remain in their usual location 
-for some time and end up removed if noone complains.
+If you receive few compiler warnings, ignore them. These are harmless
+and shall dissapear in the future.
 
------------------------------------------------------------------------
-[January the 16th, 2001, igor@stud.fh-frankfurt.de] 
-
-The following applies only if you use Microsoft Visual C/C++ compiler, 
-in combination with Visual C++ IDE. Risk a glance further below for
-information on using GNU C compilers, such as Mingw32.
-
-There are two new project files in win32/libxml2:
-
-libxml2_a.dsp:  Use this one to build an object archive, a thing known
-                as a static library in the wonderful world of Windows.
-
-libxml2_so.dsp: Use this one to build a shared object, or a DLL if you
-                prefer calling it using the dialect mentioned above.
-
-There are few things to note about these project files and their 
-differences to the originally supplied project file (libxml2.dsp):
-
-1. C-Runtime is not LIBC anymore. LIBC is fairly old and should be 
-considered obsolete today. Microsoft had considered it apropriate to
-produce a better C-Runtime library, and indeed, their new one is
-called MSVCRT. All decent Win32 systems have this newer library, save
-for the oldest incarnations of Win95, which can be ignored safely.
-Following that, I changed the dependencies and now both project files
-mentioned above use MSVCRT.
-
-2. Both project files cause the resulting binary to depend on a shared 
-version of MSVCRT. Yes, that is what I am saying, the C-Runtime is 
-linked dynamically, not statically. This enables the programmer to do 
-likewise with his libxml2-based software, an action I like to think 
-everyone would perform without hesitation.
-
-3. There was a small flaw in the previous project file. The source file
-xpointer.c was not included in the project file and that caused a
-linkage problem with libxml2-based program, but not with libxml2 
-itself, if XPointer feature was enabled. This is now fixed.
------------------------------------------------------------------------
-
-
-If you're creating libxml2 with the "mingw" compiler, just copy the
-Makefile.mingw to the root directory as "Makefile", edit the PREFIX
-value, and run "make".
-
-If you're using MSVC, here are some instructions for how you can
-proceed:
-
-The configuration stuff (i.e. what should be enabled/disabled) is in
-xmlversion.h I only tested it compiled fine with the current settings
-(that is nearly everything disabled, I didn't need many features)
-
-----------------------------
-
-How did I get everything in place so the MSDev project works from the
-original archive?
-
-from the cygwin prompt (http://sources.redhat.com/cygwin) :
-$ ./configure --disable-corba --without-ftp --without-http --without-html --wit
-hout-xpath --without-iconv --without-debug
-
-built the project file for the static library
-
-----------------------------
-
-diff after doing the changes and cleaning up the generated stuff:
-
-[Note: this is out of date]
-diff libxml2-2.2.4/xmlversion.h libxml2-2.2.4-reference/xmlversion.h
-38c38
-< #if 0
----
-> #if 1
-47c47
-< #if 0
----
-> #if 1
-56c56
-< #if 0
----
-> #if 1
-74c74
-< #if 0
----
-> #if 1
-83c83
-< #if 0
----
-> #if 1
-92c92
-< #if 0
----
-> #if 1
+5. January 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>

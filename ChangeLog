@@ -1,3 +1,9 @@
+Thu Apr 29 17:05:00 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* win32/Makefile.msvc: patch from Mark Vakoc for regression tests
+	  on Windows.
+	* xpath.c: the NaN problem also shows up on Borland
+
 Mon Apr 26 23:37:12 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlregexp.c: enhanced xmlFARegExec range evaluation for min

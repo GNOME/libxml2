@@ -200,8 +200,8 @@ static void des_userdata(int no ATTRIBUTE_UNUSED, void *val ATTRIBUTE_UNUSED, in
 static int gen_int(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(0);
     if (no == 1) return(1);
-    if (no == 1) return(-1);
-    if (no == 2) return(122);
+    if (no == 2) return(-1);
+    if (no == 3) return(122);
     return(-1);
 }
 
@@ -214,8 +214,8 @@ static void des_int(int no ATTRIBUTE_UNUSED, int val ATTRIBUTE_UNUSED, int nr AT
 static long gen_long(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(0);
     if (no == 1) return(1);
-    if (no == 1) return(-1);
-    if (no == 2) return(122);
+    if (no == 2) return(-1);
+    if (no == 3) return(122);
     return(-1);
 }
 
@@ -4265,40 +4265,6 @@ test_xmlCatalogResolveURI(void) {
 
 
 static int
-test_xmlCatalogSetDebug(void) {
-    int ret = 0;
-
-#ifdef LIBXML_CATALOG_ENABLED
-    int mem_base;
-    int ret_val;
-    int level; /* the debug level of catalogs required */
-    int n_level;
-
-    for (n_level = 0;n_level < gen_nb_int;n_level++) {
-        mem_base = xmlMemBlocks();
-        level = gen_int(n_level, 0);
-
-        ret_val = xmlCatalogSetDebug(level);
-        desret_int(ret_val);
-        call_tests++;
-        des_int(n_level, level, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlCatalogSetDebug",
-	           xmlMemBlocks() - mem_base);
-	    ret++;
-            printf(" %d", n_level);
-            printf("\n");
-        }
-    }
-#endif
-
-    function_tests++;
-    return(ret);
-}
-
-
-static int
 test_xmlCatalogSetDefaultPrefer(void) {
     int ret = 0;
 
@@ -4538,7 +4504,7 @@ static int
 test_catalog(void) {
     int ret = 0;
 
-    printf("Testing catalog : 28 of 36 functions ...\n");
+    printf("Testing catalog : 27 of 36 functions ...\n");
     ret += test_xmlACatalogAdd();
     ret += test_xmlACatalogDump();
     ret += test_xmlACatalogRemove();
@@ -4559,7 +4525,6 @@ test_catalog(void) {
     ret += test_xmlCatalogResolvePublic();
     ret += test_xmlCatalogResolveSystem();
     ret += test_xmlCatalogResolveURI();
-    ret += test_xmlCatalogSetDebug();
     ret += test_xmlCatalogSetDefaultPrefer();
     ret += test_xmlCatalogSetDefaults();
     ret += test_xmlConvertSGMLCatalog();

@@ -51,6 +51,8 @@ skipped_functions = [
 "xmlNewGlobalNs",
 # allocators
 "xmlMemFree",
+# verbosity
+"xmlCatalogSetDebug",
 ]
 
 #

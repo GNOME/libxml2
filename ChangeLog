@@ -1,10 +1,13 @@
+Sun Nov  7 13:18:05 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: fixed typos and avoid Catalogs verbosity
+
 Sat Nov  6 23:25:16 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* testapi.c: augmented the number of types
 
 Sat Nov  6 20:24:07 CET 2004 Daniel Veillard <daniel@veillard.com>
 
-	* gentest.py testapi.c: augmented types supported
 	* HTMLtree.c tree.c xmlreader.c xmlwriter.c: a number of new
 	  bug fixes and documentation updates.
 

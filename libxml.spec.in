@@ -44,9 +44,19 @@ Libraries, include files, etc you can use to develop libxml applications.
 %build
 # Needed for snapshot releases.
 if [ ! -f configure ]; then
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix 
+%ifarch alpha
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefi
+x --sysconfdir="/etc"
+%else
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc"
+%endif
 else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix 
+%ifarch alpha
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix
+ --sysconfdir="/etc"
+%else
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc"
+%endif
 fi
 
 if [ "$SMP" != "" ]; then

@@ -1164,6 +1164,44 @@ xmlTextReaderDoExpand(xmlTextReaderPtr reader) {
 }
 
 /**
+ * xmlTextReaderCollectSiblings:
+ * @node:    the first child
+ *
+ *  Traverse depth-first through all sibling nodes and their children
+ *  nodes and concatenate their content. This is an auxiliary function
+ *  to xmlTextReaderReadString.
+ *
+ *  Returns a string containing the content, or NULL in case of error.
+ */
+static xmlChar *
+xmlTextReaderCollectSiblings(xmlNodePtr node)
+{
+    xmlBufferPtr buffer;
+    xmlChar *ret;
+
+    buffer = xmlBufferCreate();
+    if (buffer == NULL)
+       return NULL;
+
+    for ( ; node != NULL; node = node->next) {
+       switch (node->type) {
+       case XML_TEXT_NODE:
+       case XML_CDATA_SECTION_NODE:
+           xmlBufferCat(buffer, node->content);
+           break;
+       case XML_ELEMENT_NODE:
+           xmlBufferCat(buffer, xmlTextReaderCollectSiblings(node->children));
+       default:
+           break;
+       }
+    }
+    ret = buffer->content;
+    buffer->content = NULL;
+    xmlBufferFree(buffer);
+    return(ret);
+}
+
+/**
  * xmlTextReaderRead:
  * @reader:  the xmlTextReaderPtr used
  *
@@ -1606,8 +1644,29 @@ xmlTextReaderReadOuterXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
  *         The string must be deallocated by the caller.
  */
 xmlChar *
-xmlTextReaderReadString(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
-    TODO
+xmlTextReaderReadString(xmlTextReaderPtr reader)
+{
+    xmlNodePtr node;
+
+    if ((reader == NULL) || (reader->node == NULL))
+       return(NULL);
+
+    node = (reader->curnode != NULL) ? reader->curnode : reader->node;
+    switch (node->type) {
+    case XML_TEXT_NODE:
+       if (node->content != NULL)
+           return(xmlStrdup(node->content));
+       break;
+    case XML_ELEMENT_NODE:
+	if (xmlTextReaderDoExpand(reader) != -1) {
+	    return xmlTextReaderCollectSiblings(node->children);
+	}
+    case XML_ATTRIBUTE_NODE:
+	TODO
+	break;
+    default:
+       break;
+    }
     return(NULL);
 }
 

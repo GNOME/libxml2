@@ -235,28 +235,23 @@ isolat1ToUTF8(unsigned char* out, int *outlen,
     unsigned char* outend = out + *outlen;
     const unsigned char* inend;
     const unsigned char* instop;
-    xmlChar c = *in;
 
     inend = in + (*inlen);
     instop = inend;
     
     while (in < inend && out < outend - 1) {
-    	if (c >= 0x80) {
-	    *out++= ((c >>  6) & 0x1F) | 0xC0;
-            *out++= (c & 0x3F) | 0x80;
+    	if (*in >= 0x80) {
+	    *out++ = (((*in) >>  6) & 0x1F) | 0xC0;
+        *out++ = ((*in) & 0x3F) | 0x80;
 	    ++in;
-	    c = *in;
 	}
 	if (instop - in > outend - out) instop = in + (outend - out); 
-	while (c < 0x80 && in < instop) {
-	    *out++ =  c;
-	    ++in;
-	    c = *in;
+	while (in < instop && *in < 0x80) {
+	    *out++ = *in++;
 	}
     }	
-    if (in < inend && out < outend && c < 0x80) {
-        *out++ =  c;
-	++in;
+    if (in < inend && out < outend && *in < 0x80) {
+        *out++ = *in++;
     }
     *outlen = out - outstart;
     *inlen = in - base;

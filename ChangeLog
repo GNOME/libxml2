@@ -1,3 +1,8 @@
+Mon Feb  9 13:41:47 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: applied a small patch from Alfred Mickautsch
+	  to avoid an out of bound error in isolat1ToUTF8()
+
 Mon Feb  9 13:35:50 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: remove the warning on the 2001 namespace

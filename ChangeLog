@@ -1,3 +1,9 @@
+Sat Feb  9 23:15:04 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am: seems some version of automake didn't
+	  generate the dependancies right as Jacob found out. Add
+	  an extra dependancy rule.
+
 Sat Feb  9 18:59:23 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c valid.c: Justin Fletcher found some parts

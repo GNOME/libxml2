@@ -439,6 +439,7 @@ pythonExternalEntityLoader(const char *URL, const char *ID,
 
 	ret = PyObject_CallFunction(pythonExternalEntityLoaderObjext,
 		      (char *) "(ssO)", URL, ID, ctxtobj);
+	Py_XDECREF(ctxtobj);
 #ifdef DEBUG_LOADER
 	printf("pythonExternalEntityLoader: result ");
 	PyObject_Print(ret, stdout, 0);
@@ -1372,6 +1373,7 @@ libxml_xmlSetParserCtxtErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *a
 {
     PyObject *py_retval;
     xmlParserCtxtPtr ctxt;
+    xmlParserCtxtPyCtxtPtr pyCtxt;
     PyObject *pyobj_ctxt;
     PyObject *pyobj_f;
     PyObject *pyobj_arg;
@@ -1381,8 +1383,6 @@ libxml_xmlSetParserCtxtErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *a
         return(NULL);
     ctxt = (xmlParserCtxtPtr) PyparserCtxt_Get(pyobj_ctxt);
     if (ctxt->_private == NULL) {
-	xmlParserCtxtPyCtxt *pyCtxt;
-
 	pyCtxt = xmlMalloc(sizeof(xmlParserCtxtPyCtxt));
 	if (pyCtxt == NULL) {
 	    py_retval = libxml_intWrap(-1);
@@ -1391,11 +1391,16 @@ libxml_xmlSetParserCtxtErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *a
 	memset(pyCtxt,0,sizeof(xmlParserCtxtPyCtxt));
 	ctxt->_private = pyCtxt;
     }
+    else {
+	pyCtxt = ctxt->_private;
+    }
     /* TODO: check f is a function ! */
+    Py_XDECREF(pyCtxt->errorFunc);
     Py_XINCREF(pyobj_f);
-    ((xmlParserCtxtPyCtxt *)ctxt->_private)->errorFunc = pyobj_f;
+    pyCtxt->errorFunc = pyobj_f;
+    Py_XDECREF(pyCtxt->errorFuncArg);
     Py_XINCREF(pyobj_arg);
-    ((xmlParserCtxtPyCtxt *)ctxt->_private)->errorFuncArg = pyobj_arg;
+    pyCtxt->errorFuncArg = pyobj_arg;
 
     ctxt->sax->error = libxml_xmlParserCtxtErrorFuncHandler;
     ctxt->vctxt.error = libxml_xmlParserCtxtErrorFuncHandler;
@@ -1445,6 +1450,7 @@ libxml_xmlSetParserCtxtWarningHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject 
 {
     PyObject *py_retval;
     xmlParserCtxtPtr ctxt;
+    xmlParserCtxtPyCtxtPtr pyCtxt;
     PyObject *pyobj_ctxt;
     PyObject *pyobj_f;
     PyObject *pyobj_arg;
@@ -1452,11 +1458,25 @@ libxml_xmlSetParserCtxtWarningHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject 
     if (!PyArg_ParseTuple(args, (char *)"OOO:xmlSetParserCtxtWarningHandler", &pyobj_ctxt, &pyobj_f, &pyobj_arg))
         return(NULL);
     ctxt = (xmlParserCtxtPtr) PyparserCtxt_Get(pyobj_ctxt);
+    if (ctxt->_private == NULL) {
+	pyCtxt = xmlMalloc(sizeof(xmlParserCtxtPyCtxt));
+	if (pyCtxt == NULL) {
+	    py_retval = libxml_intWrap(-1);
+	    return(py_retval);
+	}
+	memset(pyCtxt,0,sizeof(xmlParserCtxtPyCtxt));
+	ctxt->_private = pyCtxt;
+    }
+    else {
+	pyCtxt = ctxt->_private;
+    }
     /* TODO: check f is a function ! */
+    Py_XDECREF(pyCtxt->warningFunc);
     Py_XINCREF(pyobj_f);
-    ((xmlParserCtxtPyCtxt *)ctxt->_private)->warningFunc = pyobj_f;
+    pyCtxt->warningFunc = pyobj_f;
+    Py_XDECREF(pyCtxt->warningFuncArg);
     Py_XINCREF(pyobj_arg);
-    ((xmlParserCtxtPyCtxt *)ctxt->_private)->warningFuncArg = pyobj_arg;
+    pyCtxt->warningFuncArg = pyobj_arg;
 
     ctxt->sax->warning = libxml_xmlParserCtxtWarningFuncHandler;
     ctxt->vctxt.warning = libxml_xmlParserCtxtWarningFuncHandler;

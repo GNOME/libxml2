@@ -1,3 +1,7 @@
+Tue Jan 14 15:39:14 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: cleanup patch from Stéphane Bidoul
+
 Tue Jan 14 14:41:18 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: fixing bug #103100 with a dummy UTF8ToUTF8 copy
@@ -6,7 +10,7 @@ Tue Jan 14 12:40:29 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/libxml.py
 	  python/libxml_wrap.h python/types.c: applied and fixed a patch
-	  from Stephane Bibould to provide per parser error handlers at the
+	  from Stéphane Bidoul to provide per parser error handlers at the
 	  Python level.
 	* python/tests/Makefile.am python/tests/ctxterror.py: added a
 	  regression test for it.

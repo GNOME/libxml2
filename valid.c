@@ -2798,7 +2798,8 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
             return(NULL);
         }
     }
-    xmlListInsert(ref_list, ret);
+/*    xmlListInsert(ref_list, ret); */
+    xmlListAppend(ref_list, ret);
     return(ret);
 }
 

@@ -1,3 +1,5 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <title>The XML C library for Gnome</title>
@@ -1242,22 +1244,15 @@ core.</p>
 Model</em>; this is an API for accessing XML or HTML structured documents.
 Native support for DOM in Gnome is on the way (module gnome-dom), and will be
 based on gnome-xml. This will be a far cleaner interface to manipulate XML
-files within Gnome since it won't expose the internal structure. DOM defines a
-set of IDL (or Java) interfaces allowing you to traverse and manipulate a
-document. The DOM library will allow accessing and modifying "live" documents
-present in other programs like this:</p>
-
-<p><img src="DOM.gif" alt=" DOM.gif "></p>
-
-<p>This should help greatly doing things like modifying a gnumeric spreadsheet
-embedded in a GWP document for example.</p>
+files within Gnome since it won't expose the internal structure. </p>
 
 <p>The current DOM implementation on top of libxml is the <a
-href="http://cvs.gnome.org/lxr/source/gdome/">gdome Gnome module</a>, this is
-a full DOM interface, thanks to <a href="mailto:raph@levien.com">Raph
-Levien</a>.</p>
+href="http://cvs.gnome.org/lxr/source/gdome2/">gdome2 Gnome module</a>, this
+is a full DOM interface, thanks to Paolo Casarini, check the <a
+href="http://www.cs.unibo.it/~casarini/gdome2/">Gdome2 homepage</a> for more
+informations.</p>
 
-<p>The gnome-dom module in the Gnome CVS base is obsolete</p>
+<p>The gnome-dom and gdome modules in the Gnome CVS base are obsolete</p>
 
 <h2><a name="Example"></a><a name="real">A real example</a></h2>
 
@@ -1488,6 +1483,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@imag.fr">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.75 2001/03/21 10:28:36 veillard Exp $</p>
+<p>$Id: xml.html,v 1.76 2001/03/24 17:00:35 veillard Exp $</p>
 </body>
 </html>

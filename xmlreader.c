@@ -369,9 +369,9 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    if (reader->node == NULL)
 		return(-1);
 	} else {
-	    reader->node = reader->ctxt->node;
+	    reader->node = reader->ctxt->nodeTab[0];
 	}
-	reader->depth = 1;
+	reader->depth = 0;
 	return(1);
     }
     oldstate = reader->state;
@@ -449,7 +449,7 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    reader->mode = XML_TEXTREADER_DONE;
 	}
 	reader->node = NULL;
-	reader->depth = 0;
+	reader->depth = -1;
 
 	/*
 	 * Cleanup of the old node

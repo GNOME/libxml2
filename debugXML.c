@@ -1355,17 +1355,23 @@ xmlShellPrintXPathError(int errorType, const char *arg)
 static void
 xmlShellPrintNodeCtxt(xmlShellCtxtPtr ctxt,xmlNodePtr node)
 {
-    if (!ctxt || !node)
+    FILE *fp;
+
+    if (!node)
         return;
+    if (ctxt == NULL)
+	fp = stdout;
+    else
+	fp = ctxt->output;
 
     if (node->type == XML_DOCUMENT_NODE)
-        xmlDocDump(ctxt->output, (xmlDocPtr) node);
+        xmlDocDump(fp, (xmlDocPtr) node);
     else if (node->type == XML_ATTRIBUTE_NODE)
-        xmlDebugDumpAttrList(ctxt->output, (xmlAttrPtr) node, 0);
+        xmlDebugDumpAttrList(fp, (xmlAttrPtr) node, 0);
     else
-        xmlElemDump(ctxt->output, node->doc, node);
+        xmlElemDump(fp, node->doc, node);
 
-    fprintf(ctxt->output, "\n");
+    fprintf(fp, "\n");
 }
 
 /**

@@ -4552,9 +4552,9 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
        xmlElementPtr elemDecl, int warn, xmlNodePtr parent) {
     int ret = 1;
 #ifndef  LIBXML_REGEXP_ENABLED
-    xmlNodePtr last = NULL;
+    xmlNodePtr repl = NULL, last = NULL, tmp;
 #endif
-    xmlNodePtr repl = NULL, cur, tmp;
+    xmlNodePtr cur;
     xmlElementContentPtr cont;
     const xmlChar *name;
 
@@ -4572,6 +4572,9 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     } else {
 	xmlRegExecCtxtPtr exec;
 
+	ctxt->nodeMax = 0;
+	ctxt->nodeNr = 0;
+	ctxt->nodeTab = NULL;
 	exec = xmlRegNewExecCtxt(elemDecl->contModel, NULL, NULL);
 	if (exec != NULL) {
 	    cur = child;
@@ -4763,9 +4766,11 @@ fail:
 	    expr[0] = 0;
 	    xmlSnprintfElementContent(expr, 5000, cont, 1);
 	    list[0] = 0;
+#ifndef LIBXML_REGEXP_ENABLED
 	    if (repl != NULL)
 		xmlSnprintfElements(list, 5000, repl, 1);
 	    else
+#endif /* LIBXML_REGEXP_ENABLED */
 		xmlSnprintfElements(list, 5000, child, 1);
 
 	    if (name != NULL) {
@@ -4798,7 +4803,6 @@ fail:
 
 #ifndef  LIBXML_REGEXP_ENABLED
 done:
-#endif
     /*
      * Deallocate the copy if done, and free up the validation stack
      */
@@ -4812,6 +4816,7 @@ done:
 	xmlFree(ctxt->vstateTab);
 	ctxt->vstateTab = NULL;
     }
+#endif
     ctxt->nodeMax = 0;
     ctxt->nodeNr = 0;
     if (ctxt->nodeTab != NULL) {

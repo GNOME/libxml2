@@ -1,3 +1,8 @@
+Wed Oct  9 12:18:37 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: Joe Marcus Clarke reported a segfault on FBsd 
+	  this was due to uninitialized parts of the validation context
+
 Tue Oct  8 23:24:20 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: applied patch from Mark Vakoc except the API

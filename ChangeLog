@@ -1,3 +1,9 @@
+Fri Oct  4 15:33:55 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* xmlIO.c: extended Windows path noramlisation to fix the base
+	  problem in libxslt.
+	* catalog.c: fixed list handling in XML_CATALOG_FILES
+
 Fri Oct  4 13:43:02 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: typo/bug found by Christian Glahn

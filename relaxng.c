@@ -8317,7 +8317,14 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		tmp = xmlRelaxNGValidateDefinitionList(ctxt, define->content);
 		if (tmp != 0) {
 		    ret = -1;
-		    VALID_ERR2(XML_RELAXNG_ERR_CONTENTVALID, node->name);
+		    if (ctxt->state == NULL) {
+			ctxt->state = oldstate;
+			VALID_ERR2(XML_RELAXNG_ERR_CONTENTVALID, node->name);
+			ctxt->state = NULL;
+		    } else {
+			VALID_ERR2(XML_RELAXNG_ERR_CONTENTVALID, node->name);
+		    }
+
 		}
 	    }
 	    if (ctxt->states != NULL) {

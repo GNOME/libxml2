@@ -113,6 +113,27 @@ struct _xmlSchemaAnnot {
 #define XML_SCHEMAS_ANYATTR_STRICT	3
 
 /**
+ * XML_SCHEMAS_ATTR_USE_PROHIBITED:
+ *
+ * The attribute is prohibited.
+ */
+#define XML_SCHEMAS_ATTR_USE_PROHIBITED 0
+
+/**
+ * XML_SCHEMAS_ATTR_USE_REQUIRED:
+ *
+ * The attribute is required.
+ */
+#define XML_SCHEMAS_ATTR_USE_REQUIRED 1
+
+/**
+ * XML_SCHEMAS_ATTR_USE_OPTIONAL:
+ *
+ * The attribute is optional.
+ */
+#define XML_SCHEMAS_ATTR_USE_OPTIONAL 2
+
+/**
  * XML_SCHEMAS_ATTR_NSDEFAULT:
  *
  * allow elements in no namespace

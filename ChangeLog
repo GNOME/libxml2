@@ -1,3 +1,11 @@
+Fri Apr 16 18:44:47 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c include/libxml/schemasInternals.h
+	  include/libxml/xmlerror.h: applied patches from Kasimier Buchcik
+	  for the attribute use support
+	* test/schemas/attruse* result/schemas/attruse*: added the
+	  tests to the regression suite.
+
 Fri Apr 16 18:22:25 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: move the TODO as comments as the function while not

@@ -1996,7 +1996,7 @@ static xmlSchemaAttributePtr
 xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                         xmlNodePtr node)
 {
-    const xmlChar *name, *refNs = NULL, *ref = NULL;
+    const xmlChar *name, *refNs = NULL, *ref = NULL, *attrVal;
     xmlSchemaAttributePtr ret;
     xmlNodePtr child = NULL;
     char buf[100];
@@ -2025,6 +2025,23 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (ret == NULL) {
         return (NULL);
     }
+
+    /* Read the "use" attribute. */
+	attrVal = xmlSchemaGetProp(ctxt, node, "use");
+	if (attrVal != NULL) {
+		if (xmlStrEqual(attrVal, BAD_CAST "optional"))
+			ret->occurs = XML_SCHEMAS_ATTR_USE_OPTIONAL;
+		else if (xmlStrEqual(attrVal, BAD_CAST "prohibited"))
+			ret->occurs = XML_SCHEMAS_ATTR_USE_PROHIBITED;
+		else if (xmlStrEqual(attrVal, BAD_CAST "required"))
+			ret->occurs = XML_SCHEMAS_ATTR_USE_REQUIRED;
+    else
+		  xmlSchemaPErr(ctxt, node,
+                    XML_SCHEMAP_INVALID_ATTR_USE,
+                    "attribute %s has an invalid value for \"use\"\n", name, NULL);
+	} else
+		ret->occurs = XML_SCHEMAS_ATTR_USE_OPTIONAL;
+
     ret->ref = ref;
     ret->refNs = refNs;
     if ((ret->targetNamespace != NULL) &&
@@ -6210,14 +6227,16 @@ static int
 xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
                             xmlSchemaAttributePtr attributes)
 {
-    int i, ret;
+    int i, ret, count = 1;
     xmlAttrPtr attr;
     xmlChar *value;
     xmlSchemaAttributeGroupPtr group = NULL;
+    int found;
 
     if (attributes == NULL)
         return (0);
     while (attributes != NULL) {
+        found = 0;    
         /*
          * Handle attribute groups
          */
@@ -6263,11 +6282,22 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
 			continue;
 		}
             }
+            found = 1;
             ctxt->cur = (xmlNodePtr) attributes;
+
             if (attributes->subtypes == NULL) {
                 xmlSchemaVErr(ctxt, (xmlNodePtr) attr, XML_SCHEMAS_ERR_INTERNAL, "Internal error: attribute %s type not resolved\n", attr->name, NULL);
                 continue;
             }
+
+            if (attributes->occurs == XML_SCHEMAS_ATTR_USE_PROHIBITED) {
+                xmlSchemaVErr(ctxt, elem, XML_SCHEMAS_ERR_INVALIDATTR, "attribute %s on %s is prohibited\n", attributes->name, elem->name);
+                /* Setting the state to XML_SCHEMAS_ATTR_CHECKED seems not very logical but it
+                   surpresses the "attribute is unknown" error report. Please change this if you know better */
+                ctxt->attr[i].state = XML_SCHEMAS_ATTR_CHECKED;
+                break;
+            }            
+         
             value = xmlNodeListGetString(elem->doc, attr->children, 1);
             ret = xmlSchemaValidateSimpleValue(ctxt, attributes->subtypes,
                                                value);
@@ -6279,6 +6309,9 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
             if (value != NULL) {
                 xmlFree(value);
             }
+        }
+        if ((!found) && (attributes->occurs == XML_SCHEMAS_ATTR_USE_REQUIRED)) {
+        	xmlSchemaVErr(ctxt, elem, XML_SCHEMAS_ERR_MISSING, "required attribute %s on %s is missing\n", attributes->name, elem->name);            
         }
         attributes = attributes->next;
     }

@@ -1,3 +1,7 @@
+Wed May 15 00:25:34 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/libxml2.def.src: exported xmlXPathNodeSetAddNs()
+
 Tue May 14 13:00:48 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixing an XPath function evalutation bug pointed out

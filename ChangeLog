@@ -1,3 +1,23 @@
+Tue Jun  4 09:09:18 MDT 2002 John Fleck <jfleck@inkstain.net>
+
+	* added doc/tutorial, including:
+	apa.html
+	apb.html
+	apc.html
+	apd.html
+	ar01s02.html
+	ar01s03.html
+	ar01s04.html
+	ar01s05.html
+	ar01s06.html
+	includeaddattribute.c
+	includeaddkeyword.c
+	includekeyword.c
+	includestory.xml
+	index.html
+	xmltutorial.xml
+	libxml tutorial, including generated html
+
 Mon Jun  3 21:21:26 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* result/c14n/exc-without-comments/merlin-c14n-two-*

@@ -1,0 +1,372 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+    "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY KEYWORD SYSTEM "includekeyword.c">
+<!ENTITY STORY SYSTEM "includestory.xml">
+<!ENTITY ADDKEYWORD SYSTEM "includeaddkeyword.c">
+<!ENTITY ADDATTRIBUTE SYSTEM "includeaddattribute.c">
+]>
+<article>
+  <articleinfo>
+    <title>Libxml Tutorial</title>
+    <author>
+      <firstname>John</firstname>
+      <surname>Fleck</surname>
+    </author>
+    <copyright>
+      <year>2002</year>
+      <holder>John Fleck</holder>
+    </copyright>
+    <revhistory>
+      <revision>
+	<revnumber>1</revnumber>
+	<date>June 4,2002</date>
+      </revision>
+    </revhistory>
+  </articleinfo>
+  <abstract>
+    <para>Libxml is a freely licensed C language library for handling
+    <acronym>XML</acronym>, portable across a large number of platforms. This
+    tutorial provides examples of its basic functions.</para>
+  </abstract>
+  <sect1 id="introduction">
+    <title>Introduction</title>
+    <para>Libxml is a C language library implementing functions for reading,
+      creating and manipulating <acronym>XML</acronym> data. This tutorial
+    provides example code and explanations of its basic functionality.</para>
+    <para>Libxml and more details about its use are available on <ulink
+									url="http://www.xmlsoft.org/">the project home page</ulink>. Included there is complete <ulink url="http://xmlsoft.org/html/libxml-lib.html">
+	<acronym>API</acronym> documentation</ulink>. This tutorial is not meant
+    to substitute for that complete documentation, but to illustrate the
+    functions needed to use the library to perform basic operations.
+<!--
+ Links to
+      other resources can be found in <xref linkend="furtherresources" />.
+-->
+</para>
+    <para>The tutorial is based on a simple <acronym>XML</acronym> application I
+    use for articles I write. The format includes metadata and the body
+    of the article.</para>
+    <para>The example code in this tutorial demonstrates how to:
+      <itemizedlist>
+	<listitem>
+	  <para>Parse the document.</para>
+	</listitem>
+	<listitem>
+	  <para>Extract the text within a specified element.</para>
+	</listitem>
+	<listitem>
+	  <para>Add an element and its content.</para>
+	</listitem>
+	<listitem>
+	  <para>Extract the value of an attribute.</para>
+	</listitem>
+	<listitem>
+	  <para>Add an attribute.</para>
+	</listitem>
+      </itemizedlist>
+
+    </para>
+    <para>Full code for the examples is included in the appendices.</para>
+
+  </sect1>
+
+  <sect1 id="xmltutorialdatatypes">
+    <title>Data Types</title>
+    <para><application>Libxml</application> declares a number of datatypes we
+    will encounter repeatedly, hiding the messy stuff so you do not have to deal
+    with it unless you have some specific need.</para>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term><ulink
+	  url="http://xmlsoft.org/html/libxml-tree.html#XMLCHAR">xmlChar</ulink></term>
+	  <listitem>
+	    <para>A basic replacement for char, a byte in a UTF-8 encoded
+	    string.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <ulink url="http://xmlsoft.org/html/libxml-tree.html#XMLDOC">xmlDoc</ulink></term>
+	  <listitem>
+	    <para>A structure containing the tree created by a parsed doc. <ulink
+	  url="http://xmlsoft.org/html/libxml-tree.html#XMLDOCPTR">xmlDocPtr</ulink>
+	  is a pointer to the structure.</para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><ulink
+	  url="http://xmlsoft.org/html/libxml-tree.html#XMLNODEPTR">xmlNodePtr</ulink>
+	    and <ulink url="http://xmlsoft.org/html/libxml-tree.html#XMLNODE">xmlNode</ulink></term>
+	  <listitem>
+	    <para>A structure containing a single node. <ulink
+	  url="http://xmlsoft.org/html/libxml-tree.html#XMLNODEPTR">xmlNodePtr</ulink>
+	  is a pointer to the structure, and is used in traversing the document tree.</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+
+  </sect1>
+
+  <sect1 id="xmltutorialparsing">
+    <title>Parsing the file</title>
+    <para>Parsing the file requires only the name of the file and a single
+      function call, plus error checking. Full code: <xref
+    linkend="keywordappendix" /></para>
+    <para>
+    <programlisting>
+        <co id="declaredoc" /> xmlDocPtr doc;
+	<co id="declarenode" /> xmlNodePtr cur;
+
+	<co id="parsefile" /> doc = xmlParseFile(docname);
+	
+	<co id="checkparseerror" /> if (doc == NULL ) {
+		fprintf(stderr,"Document not parsed successfully. \n");
+		return;
+	}
+
+	<co id="getrootelement" /> cur = xmlDocGetRootElement(doc);
+	
+	<co id="checkemptyerror" /> if (cur == NULL) {
+		fprintf(stderr,"empty document\n");
+		xmlFreeDoc(doc);
+		return;
+	}
+	
+	<co id="checkroottype" /> if (xmlStrcmp(cur->name, (const xmlChar *) "story")) {
+		fprintf(stderr,"document of the wrong type, root node != story");
+		xmlFreeDoc(doc);
+		return;
+	}
+
+    </programlisting>
+      <calloutlist>
+	<callout arearefs="declaredoc">
+	  <para>Declare the pointer that will point to your parsed document.</para>
+	</callout>
+	<callout arearefs="declarenode">
+	  <para>Declare a node pointer (you'll need this in order to
+	  interact with individual nodes).</para>
+	</callout>
+	<callout arearefs="checkparseerror">
+	  <para>Check to see that the document was successfully parsed.</para>
+	</callout>
+	<callout arearefs="getrootelement">
+	  <para>Retrieve the document's root element.</para>
+	</callout>
+	<callout arearefs="checkemptyerror">
+	  <para>Check to make sure the document actually contains something.</para>
+	</callout>
+	<callout arearefs="checkroottype">
+	  <para>In our case, we need to make sure the document is the right
+	  type. &quot;story&quot; is the root type of my documents.</para>
+	</callout>
+      </calloutlist>
+    </para>
+  </sect1>
+
+  <sect1 id="xmltutorialgettext">
+    <title>Retrieving Element Content</title>
+    <para>Retrieving the content of an element involves traversing the document
+    tree until you find what you are looking for. In this case, we are looking
+    for an element called &quot;keyword&quot; contained within element called &quot;story&quot;. The
+    process to find the node we are interested in involves tediously walking the
+    tree. We assume you already have an xmlDocPtr called <varname>doc</varname>
+    and an xmlNodPtr called <varname>cur</varname>.</para>
+
+    <para>
+      <programlisting>
+	<co id="getchildnode" /> cur = cur->xmlChildrenNode;
+	<co id="huntstoryinfo" /> while (cur != NULL) {
+		if ((!xmlStrcmp(cur->name, (const xmlChar *)"storyinfo"))){
+			parseStory (doc, cur);
+		}
+		 
+	cur = cur->next;
+	}
+
+      </programlisting>
+
+      <calloutlist>
+	<callout arearefs="getchildnode">
+	  <para>Get the first child node of <varname>cur</varname>. At this
+	    point, <varname>cur</varname> points at the document root, which is
+	    the element &quot;story&quot;.</para>
+	</callout>
+	<callout arearefs="huntstoryinfo">
+	  <para>This loop iterates through the elements that are children of
+	  &quot;story&quot;, looking for one called &quot;storyinfo&quot;. That
+	  is the element that will contain the &quot;keywords&quot; we are
+	    looking for. It uses the <application>libxml</application> string
+	  comparison
+	    function, <function><ulink
+				       url="http://xmlsoft.org/html/libxml-parser.html#XMLSTRCMP">xmlStrcmp</ulink></function>. If there is a match, it calls the function <function>parseStory</function>.</para>
+	</callout>
+      </calloutlist>
+    </para>
+
+    <para>
+      <programlisting>
+void
+parseStory (xmlDocPtr doc, xmlNodePtr cur) {
+
+	<co id="anothergetchild" /> cur = cur->xmlChildrenNode;
+	<co id="findkeyword" /> while (cur != NULL) {
+	    if ((!xmlStrcmp(cur->name, (const xmlChar *)"keyword"))) {
+	<co id="foundkeyword" />	    printf("keyword: %s\n", xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+	    }
+	cur = cur->next;
+	}
+    return;
+}
+      </programlisting>
+      <calloutlist>
+	<callout arearefs="anothergetchild">
+	  <para>Again we get the first child node.</para>
+	</callout>
+	<callout arearefs="findkeyword">
+	  <para>Like the loop above, we then iterate through the nodes, looking
+	  for one that matches the element we're interested in, in this case
+	  &quot;keyword&quot;.</para>
+	</callout>
+	<callout arearefs="foundkeyword">
+	  <para>When we find the &quot;keyword&quot; element, we need to print
+	    its contents. Remember that in <acronym>XML</acronym>, the text
+	    contained within an element is a child node of that element, so we
+	    turn to <varname>cur-&gt;xmlChildrenNode</varname>. To retrieve it, we
+	    use the function <function><ulink
+					      url="http://xmlsoft.org/html/libxml-tree.html#XMLNODELISTGETSTRING">xmlNodeListGetString</ulink></function>, which also takes the <varname>doc</varname> pointer as an argument. In this case, we just print it out.</para>
+	</callout>
+      </calloutlist>
+    </para>
+
+  </sect1>
+
+<sect1 id="xmltutorialwritingcontent">
+    <title>Writing element content</title>
+    <para>Writing element content uses many of the same steps we used above
+    &mdash; parsing the document and walking the tree. We parse the document,
+    then traverse the tree to find the place we want to insert our element. For
+    this example, we want to again find the &quot;storyinfo&quot; element and
+      this time insert a keyword. Then we'll write the file to disk. Full code:
+    <xref linkend="addkeywordappendix" /></para>
+
+    <para>
+      The main difference in this example is in
+      <function>parseStory</function>:
+
+      <programlisting>
+void
+parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
+
+	<co id="addkeyword" /> xmlNewTextChild (cur, NULL, "keyword", keyword);
+    return;
+}
+      </programlisting>
+      <calloutlist>
+	<callout arearefs="addkeyword">
+	  <para>The <function><ulink
+				     url="http://xmlsoft.org/html/libxml-tree.html#XMLNEWTEXTCHILD">xmlNewTextChild</ulink></function>
+				     function adds a new child element at the
+				     current node pointer's location in the
+	    tree, specificied by <varname>cur</varname>.</para>
+	</callout>
+      </calloutlist>
+         </para>
+
+    <para>
+      Once the node has been added, we would like to write the document to
+      file. Is you want the element to have a namespace, you can add it here as
+      well. In our case, the namespace is NULL.
+      <programlisting>
+	xmlSaveFormatFile (docname, doc, 1);
+      </programlisting>
+      The first parameter is the name of the file to be written. You'll notice
+      it is the same as the file we just read. In this case, we just write over
+      the old file. The second parameter is a pointer to the xmlDoc
+      structure. Setting the third parameter equal to one ensures indenting on output.
+    </para>
+
+  </sect1>
+<!--
+  <sect1 id="xmltutorialattribute">
+    <title>Retrieving Attributes</title>
+    <para>Retrieving</para>
+  </sect1>
+-->
+ 
+
+  <sect1 id="xmltutorialwritingattribute">
+    <title>Writing Attribute</title>
+    <para>Writing an attribute is similar to writing text to a new element. In
+      this case, we'll add a reference <acronym>URI</acronym> to our
+      document. Full code:<xref linkend="addattributeappendix" />.</para>
+    <para>
+      A <sgmltag>reference</sgmltag> is a child of the <sgmltag>story</sgmltag>
+      element, so finding the place to put our new element and attribute is
+      simple. As soon as we do the error-checking test in our
+      <function>parseDoc</function>, we are in the right spot to add our
+      element. But before we do that, we need to make a declaration using a
+      datatype we have not seen yet:
+      <programlisting>
+	xmlAttrPtr newattr;
+      </programlisting>
+      We also need an extra xmlNodePtr:
+      <programlisting>
+	xmlNodePtr newnode;
+      </programlisting>
+    </para>
+    <para>
+      The rest of <function>parseDoc</function> is the same as before until we
+      check to see if our root element is <sgmltag>story</sgmltag>. If it is,
+      then we know we are at the right spot to add our element:
+
+      <programlisting>
+	<co id="addreferencenode" /> newnode = xmlNewTextChild (cur, NULL, "reference", NULL);
+	<co id="addattributenode" /> newattr = xmlNewProp (newnode, "uri", uri);	
+      </programlisting>
+      <calloutlist>
+	<callout arearefs="addreferencenode">
+	  <para>First we add a new node at the location of the current node
+	    pointer, <varname>cur.</varname> using the <ulink
+							      url="http://xmlsoft.org/html/libxml-tree.html#XMLNEWTEXTCHILD">xmlNewTextChild</ulink> function.</para>
+	</callout>
+      </calloutlist>
+   </para>
+
+    <para>Once the node is added, the file is written to disk just as in the
+    previous example in which we added an element with text content.</para>
+
+  </sect1>
+
+<!--
+  <appendix id="furtherresources">
+    <title>Further Resources</title>
+    <para></para>
+  </appendix>
+-->
+  <appendix id="sampledoc">
+    <title>Sample Document</title>
+    <programlisting>&STORY;</programlisting>
+  </appendix>
+  <appendix id="keywordappendix">
+    <title>Code for Keyword Example</title>
+    <para>
+      <programlisting>&KEYWORD;</programlisting>
+    </para>
+  </appendix>
+<appendix id="addkeywordappendix">
+    <title>Code for Add Keyword Example</title>
+    <para>
+      <programlisting>&ADDKEYWORD;</programlisting>
+    </para>
+  </appendix>
+<appendix id="addattributeappendix">
+    <title>Code for Add Attribute Example</title>
+    <para>
+      <programlisting>&ADDATTRIBUTE;</programlisting>
+    </para>
+  </appendix>
+</article>

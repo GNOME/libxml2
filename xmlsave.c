@@ -470,16 +470,18 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	if (cur->content != NULL) {
 	    if ((cur->name == xmlStringText) ||
 		(cur->name != xmlStringTextNoenc)) {
-		xmlChar *buffer;
 
-		if (ctxt->encoding == NULL)
+		if (ctxt->encoding == NULL) {
+		    xmlChar *buffer;
+
 		    buffer = xmlEncodeEntitiesReentrant(ctxt->doc,
 		                                        cur->content);
-		else
-		    buffer = xmlEncodeSpecialChars(ctxt->doc, cur->content);
-		if (buffer != NULL) {
-		    xmlOutputBufferWriteString(buf, (const char *)buffer);
-		    xmlFree(buffer);
+		    if (buffer != NULL) {
+			xmlOutputBufferWriteString(buf, (const char *)buffer);
+			xmlFree(buffer);
+		    }
+		} else {
+		    xmlOutputBufferWriteEscape(buf, cur->content);
 		}
 	    } else {
 		/*
@@ -582,15 +584,17 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     }
     xmlOutputBufferWriteString(buf, ">");
     if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
-	xmlChar *buffer;
+	if (ctxt->encoding == NULL) {
+	    xmlChar *buffer;
 
-	if (ctxt->encoding == NULL)
-	    buffer = xmlEncodeEntitiesReentrant(ctxt->doc, cur->content);
-	else
-	    buffer = xmlEncodeSpecialChars(ctxt->doc, cur->content);
-	if (buffer != NULL) {
-	    xmlOutputBufferWriteString(buf, (const char *)buffer);
-	    xmlFree(buffer);
+	    buffer = xmlEncodeEntitiesReentrant(ctxt->doc,
+						cur->content);
+	    if (buffer != NULL) {
+		xmlOutputBufferWriteString(buf, (const char *)buffer);
+		xmlFree(buffer);
+	    }
+	} else {
+	    xmlOutputBufferWriteEscape(buf, cur->content);
 	}
     }
     if (cur->children != NULL) {
@@ -926,16 +930,18 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	if (cur->content != NULL) {
 	    if ((cur->name == xmlStringText) ||
 		(cur->name != xmlStringTextNoenc)) {
-		xmlChar *buffer;
 
-		if (ctxt->encoding == NULL)
+		if (ctxt->encoding == NULL) {
+		    xmlChar *buffer;
+
 		    buffer = xmlEncodeEntitiesReentrant(ctxt->doc,
 		                                        cur->content);
-		else
-		    buffer = xmlEncodeSpecialChars(ctxt->doc, cur->content);
-		if (buffer != NULL) {
-		    xmlOutputBufferWriteString(buf, (const char *)buffer);
-		    xmlFree(buffer);
+		    if (buffer != NULL) {
+			xmlOutputBufferWriteString(buf, (const char *)buffer);
+			xmlFree(buffer);
+		    }
+		} else {
+		    xmlOutputBufferWriteEscape(buf, cur->content);
 		}
 	    } else {
 		/*
@@ -1052,15 +1058,17 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     }
     xmlOutputBufferWriteString(buf, ">");
     if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
-	xmlChar *buffer;
+	if (ctxt->encoding == NULL) {
+	    xmlChar *buffer;
 
-	if (ctxt->encoding == NULL)
-	    buffer = xmlEncodeEntitiesReentrant(ctxt->doc, cur->content);
-	else
-	    buffer = xmlEncodeSpecialChars(ctxt->doc, cur->content);
-	if (buffer != NULL) {
-	    xmlOutputBufferWriteString(buf, (const char *)buffer);
-	    xmlFree(buffer);
+	    buffer = xmlEncodeEntitiesReentrant(ctxt->doc,
+						cur->content);
+	    if (buffer != NULL) {
+		xmlOutputBufferWriteString(buf, (const char *)buffer);
+		xmlFree(buffer);
+	    }
+	} else {
+	    xmlOutputBufferWriteEscape(buf, cur->content);
 	}
     }
 

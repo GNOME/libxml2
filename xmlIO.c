@@ -2866,6 +2866,179 @@ done:
 }
 
 /**
+ * xmlEscapeContent:
+ * @out:  a pointer to an array of bytes to store the result
+ * @outlen:  the length of @out
+ * @in:  a pointer to an array of unescaped UTF-8 bytes
+ * @inlen:  the length of @in
+ *
+ * Take a block of UTF-8 chars in and escape them.
+ * Returns 0 if success, or -1 otherwise
+ * The value of @inlen after return is the number of octets consumed
+ *     if the return value is positive, else unpredictable.
+ * The value of @outlen after return is the number of octets consumed.
+ */
+static int
+xmlEscapeContent(unsigned char* out, int *outlen,
+                 const xmlChar* in, int *inlen) {
+    unsigned char* outstart = out;
+    const unsigned char* base = in;
+    unsigned char* outend = out + *outlen;
+    const unsigned char* inend;
+
+    inend = in + (*inlen);
+    
+    while ((in < inend) && (out < outend)) {
+    	if (*in == '<') {
+	    if (outend - out < 4) break;
+	    *out++ = '&';
+	    *out++ = 'l';
+	    *out++ = 't';
+	    *out++ = ';';
+	} else if (*in == '>') {
+	    if (outend - out < 4) break;
+	    *out++ = '&';
+	    *out++ = 'g';
+	    *out++ = 't';
+	    *out++ = ';';
+	} else if (*in == '&') {
+	    if (outend - out < 5) break;
+	    *out++ = '&';
+	    *out++ = 'a';
+	    *out++ = 'm';
+	    *out++ = 'p';
+	    *out++ = ';';
+	} else if (*in == '\r') {
+	    if (outend - out < 5) break;
+	    *out++ = '&';
+	    *out++ = '#';
+	    *out++ = '1';
+	    *out++ = '3';
+	    *out++ = ';';
+	} else {
+	    *out++ = (unsigned char) *in;
+	}
+	++in;
+    }	
+    *outlen = out - outstart;
+    *inlen = in - base;
+    return(0);
+}
+
+/**
+ * xmlOutputBufferWriteEscape:
+ * @out:  a buffered parser output
+ * @str:  a zero terminated UTF-8 string
+ *
+ * Write the content of the string in the output I/O buffer
+ * This routine escapes the caracters and then handle the I18N
+ * transcoding from internal UTF-8
+ * The buffer is lossless, i.e. will store in case of partial
+ * or delayed writes.
+ *
+ * Returns the number of chars immediately written, or -1
+ *         in case of error.
+ */
+int
+xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str) {
+    int nbchars = 0; /* number of chars to output to I/O */
+    int ret;         /* return from function call */
+    int written = 0; /* number of char written to I/O so far */
+    int chunk;       /* number of byte currently processed from str */
+    int len;         /* number of bytes in str */
+    int cons;        /* byte from str consumed */
+
+    if ((out == NULL) || (out->error) || (str == NULL)) return(-1);
+    len = strlen(str);
+    if (len < 0) return(0);
+    if (out->error) return(-1);
+
+    do {
+        /*
+	 * how many bytes to consume and how many bytes to store.
+	 */
+	cons = len;
+	chunk = (out->buffer->size - out->buffer->use) - 1;
+
+	/*
+	 * first handle encoding stuff.
+	 */
+	if (out->encoder != NULL) {
+	    /*
+	     * Store the data in the incoming raw buffer
+	     */
+	    if (out->conv == NULL) {
+		out->conv = xmlBufferCreate();
+	    }
+	    ret = xmlEscapeContent(out->buffer->content + out->buffer->use ,
+	                           &chunk, str, &cons);
+	    if (ret < 0)
+	        return(-1);
+	    out->buffer->use += chunk;
+	    out->buffer->content[out->buffer->use] = 0;
+
+	    if ((out->buffer->use < MINLEN) && (cons == len))
+		goto done;
+
+	    /*
+	     * convert as much as possible to the output buffer.
+	     */
+	    ret = xmlCharEncOutFunc(out->encoder, out->conv, out->buffer);
+	    if ((ret < 0) && (ret != -3)) {
+		xmlIOErr(XML_IO_ENCODER, NULL);
+		out->error = XML_IO_ENCODER;
+		return(-1);
+	    }
+	    nbchars = out->conv->use;
+	} else {
+	    ret = xmlEscapeContent(out->buffer->content + out->buffer->use ,
+	                           &chunk, str, &cons);
+	    if (ret < 0)
+	        return(-1);
+	    out->buffer->use += chunk;
+	    out->buffer->content[out->buffer->use] = 0;
+	    nbchars = out->buffer->use;
+	}
+	str += cons;
+	len -= cons;
+
+	if ((nbchars < MINLEN) && (len <= 0))
+	    goto done;
+
+	if (out->writecallback) {
+	    /*
+	     * second write the stuff to the I/O channel
+	     */
+	    if (out->encoder != NULL) {
+		ret = out->writecallback(out->context, 
+				 (const char *)out->conv->content, nbchars);
+		if (ret >= 0)
+		    xmlBufferShrink(out->conv, ret);
+	    } else {
+		ret = out->writecallback(out->context, 
+				 (const char *)out->buffer->content, nbchars);
+		if (ret >= 0)
+		    xmlBufferShrink(out->buffer, ret);
+	    }
+	    if (ret < 0) {
+		xmlIOErr(XML_IO_WRITE, NULL);
+		out->error = XML_IO_WRITE;
+		return(ret);
+	    }
+	    out->written += ret;
+	}
+	written += nbchars;
+    } while (len > 0);
+
+done:
+#ifdef DEBUG_INPUT
+    xmlGenericError(xmlGenericErrorContext,
+	    "I/O: wrote %d chars\n", written);
+#endif
+    return(written);
+}
+
+/**
  * xmlOutputBufferWriteString:
  * @out:  a buffered parser output
  * @str:  a zero terminated C string

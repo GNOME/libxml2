@@ -1,3 +1,10 @@
+Thu May 13 10:31:28 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c xmlsave.c include/libxml/xmlIO.h: first pass at refactoring
+	  the escape on save routines for better performances (less malloc)
+	  and more flexibility using the new saving context. Preliminary
+	  work, interface will change.
+
 Wed May 12 22:34:03 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemas.c: added code in xmlSchemaBuildAContentModel to handle

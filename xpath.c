@@ -4423,9 +4423,11 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		case XPATH_NODESET:
 		case XPATH_XSLT_TREE:
 		    if ((arg2->nodesetval == NULL) ||
-			(arg2->nodesetval->nodeNr == 0)) ret = 0;
+			(arg2->nodesetval->nodeNr == 0))
+			ret = 0;
 		    else 
 			ret = 1;
+		    ret = (ret == arg1->boolval);
 		    break;
 		case XPATH_BOOLEAN:
 #ifdef DEBUG_EXPR

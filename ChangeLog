@@ -1,3 +1,8 @@
+Mon Apr  1 10:02:57 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixed a bug in the nodeset to boolean comparison code
+	  pointed out by Melvyn Sopacua.
+
 Fri Mar 29 23:41:53 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.m4: Frédéric Crozat gave a patch related to the change

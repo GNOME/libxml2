@@ -1300,7 +1300,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->Callback for freeing some parser input allocations</P
+>Callback for freeing some parser input allocations.</P
 ><P
 ></P
 ><DIV
@@ -1382,7 +1382,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->an xmlParserInput is an input flow for the XML processor.
+>An xmlParserInput is an input flow for the XML processor.
 Each entity parsed is associated an xmlParserInput (except the
 few predefined ones). This is the case both for internal entities
 - in which case the flow is already completely in memory - or
@@ -1422,7 +1422,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->the parser can be asked to collect Node informations, i.e. at what
+>The parser can be asked to collect Node informations, i.e. at what
 place in the file they were detected. 
 NOTE: This is off by default and not very well tested.</P
 ><P
@@ -1553,8 +1553,8 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->The parser is now working also as a state based parser
-The recursive one use the state info for entities processing</P
+>The parser is now working also as a state based parser.
+The recursive one use the state info for entities processing.</P
 ><P
 ></P
 ></DIV
@@ -1582,8 +1582,8 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Bit in the loadsubset context field to tell to do ID/REFs lookups
-Use it to initialize xmlLoadExtDtdDefaultValue</P
+>Bit in the loadsubset context field to tell to do ID/REFs lookups.
+Use it to initialize xmlLoadExtDtdDefaultValue.</P
 ><P
 ></P
 ></DIV
@@ -1612,8 +1612,8 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 >Bit in the loadsubset context field to tell to do complete the
-elements attributes lists with the ones defaulted from the DTDs
-Use it to initialize xmlLoadExtDtdDefaultValue</P
+elements attributes lists with the ones defaulted from the DTDs.
+Use it to initialize xmlLoadExtDtdDefaultValue.</P
 ><P
 ></P
 ></DIV
@@ -1716,7 +1716,7 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 >The parser context.
-NOTE This doesn't completely defines the parser state, the (current ?)
+NOTE This doesn't completely define the parser state, the (current ?)
 design of the parser uses recursive function calls since this allow
 and easy mapping from the production rules of the specification
 to the actual code. The drawback is that the actual function call
@@ -1755,7 +1755,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->a SAX Locator.</P
+>A SAX Locator.</P
 ><P
 ></P
 ></DIV
@@ -2182,7 +2182,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->Get an entity by name</P
+>Get an entity by name.</P
 ><P
 ></P
 ><DIV
@@ -2286,7 +2286,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->Get a parameter entity by name</P
+>Get a parameter entity by name.</P
 ><P
 ></P
 ><DIV
@@ -2400,7 +2400,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->An entity definition has been parsed</P
+>An entity definition has been parsed.</P
 ><P
 ></P
 ><DIV
@@ -2696,7 +2696,7 @@ HREF="libxml-tree.html#XMLENUMERATIONPTR"
 ></TR
 ></TABLE
 ><P
->An attribute definition has been parsed</P
+>An attribute definition has been parsed.</P
 ><P
 ></P
 ><DIV
@@ -2872,7 +2872,7 @@ HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 ></TR
 ></TABLE
 ><P
->An element definition has been parsed</P
+>An element definition has been parsed.</P
 ><P
 ></P
 ><DIV
@@ -3004,7 +3004,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->What to do when an unparsed entity declaration is parsed</P
+>What to do when an unparsed entity declaration is parsed.</P
 ><P
 ></P
 ><DIV
@@ -3141,7 +3141,7 @@ HREF="libxml-tree.html#XMLSAXLOCATORPTR"
 ></TR
 ></TABLE
 ><P
->Receive the document locator at startup, actually xmlDefaultSAXLocator
+>Receive the document locator at startup, actually xmlDefaultSAXLocator.
 Everything is available on the context, so this is useless in our case.</P
 ><P
 ></P
@@ -3224,7 +3224,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->called when the document start being processed.</P
+>Called when the document start being processed.</P
 ><P
 ></P
 ><DIV
@@ -3289,7 +3289,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->called when the document end has been detected.</P
+>Called when the document end has been detected.</P
 ><P
 ></P
 ><DIV
@@ -3362,7 +3362,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->called when an opening tag has been processed.</P
+>Called when an opening tag has been processed.</P
 ><P
 ></P
 ><DIV
@@ -3465,7 +3465,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->called when the end of an element has been detected.</P
+>Called when the end of an element has been detected.</P
 ><P
 ></P
 ><DIV
@@ -3661,7 +3661,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->called when an entity reference is detected.</P
+>Called when an entity reference is detected.</P
 ><P
 ></P
 ><DIV
@@ -3748,7 +3748,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->receiving some chars from the parser.</P
+>Receiving some chars from the parser.</P
 ><P
 ></P
 ><DIV
@@ -3852,8 +3852,8 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->receiving some ignorable whitespaces from the parser.
-UNUSED: by default the DOM building will use characters</P
+>Receiving some ignorable whitespaces from the parser.
+UNUSED: by default the DOM building will use characters.</P
 ><P
 ></P
 ><DIV
@@ -4150,7 +4150,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->called when a pcdata block has been parsed</P
+>Called when a pcdata block has been parsed.</P
 ><P
 ></P
 ><DIV
@@ -4251,7 +4251,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Display and format a warning messages, callback</P
+>Display and format a warning messages, callback.</P
 ><P
 ></P
 ><DIV
@@ -4352,7 +4352,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Display and format an error messages, callback</P
+>Display and format an error messages, callback.</P
 ><P
 ></P
 ><DIV
@@ -4453,7 +4453,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Display and format fatal error messages, callback</P
+>Display and format fatal error messages, callback.</P
 ><P
 ></P
 ><DIV
@@ -4552,7 +4552,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Is this document tagged standalone ?</P
+>Is this document tagged standalone?</P
 ><P
 ></P
 ><DIV
@@ -4632,7 +4632,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Does this document has an internal subset</P
+>Does this document has an internal subset.</P
 ><P
 ></P
 ><DIV
@@ -4712,7 +4712,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Does this document has an external subset</P
+>Does this document has an external subset?</P
 ><P
 ></P
 ><DIV
@@ -4821,7 +4821,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->a SAX handler is bunch of callbacks called by the parser when processing
+>A SAX handler is bunch of callbacks called by the parser when processing
 of the input generate data or structure informations.</P
 ><P
 ></P
@@ -4859,7 +4859,7 @@ HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 ></TR
 ></TABLE
 ><P
->External entity loaders types</P
+>External entity loaders types.</P
 ><P
 ></P
 ><DIV
@@ -4941,7 +4941,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the entity input parser</TD
+>the entity input parser.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4973,7 +4973,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->global variable controlling the entity substitution default behavior</P
+>Global variable controlling the entity substitution default behavior.</P
 ><P
 ></P
 ></DIV

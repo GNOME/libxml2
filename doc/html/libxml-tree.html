@@ -2114,7 +2114,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->an xmlParserInput is an input flow for the XML processor.
+>An xmlParserInput is an input flow for the XML processor.
 Each entity parsed is associated an xmlParserInput (except the
 few predefined ones). This is the case both for internal entities
 - in which case the flow is already completely in memory - or
@@ -2248,7 +2248,7 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 >The parser context.
-NOTE This doesn't completely defines the parser state, the (current ?)
+NOTE This doesn't completely define the parser state, the (current ?)
 design of the parser uses recursive function calls since this allow
 and easy mapping from the production rules of the specification
 to the actual code. The drawback is that the actual function call
@@ -2313,7 +2313,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->a SAX Locator.</P
+>A SAX Locator.</P
 ><P
 ></P
 ></DIV
@@ -2396,7 +2396,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->a SAX handler is bunch of callbacks called by the parser when processing
+>A SAX handler is bunch of callbacks called by the parser when processing
 of the input generate data or structure informations.</P
 ><P
 ></P
@@ -2523,7 +2523,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->default buffer size 4000</P
+>default buffer size 4000.</P
 ><P
 ></P
 ></DIV
@@ -2552,7 +2552,7 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 >This is the namespace for the special xml: prefix predefined in the
-XML Namespace specification</P
+XML Namespace specification.</P
 ><P
 ></P
 ></DIV
@@ -2692,7 +2692,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->a DTD Notation definition</P
+>A DTD Notation definition.</P
 ><P
 ></P
 ></DIV
@@ -2757,7 +2757,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->a DTD Attribute type definition</P
+>A DTD Attribute type definition.</P
 ><P
 ></P
 ></DIV
@@ -2790,7 +2790,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->a DTD Attribute default definition</P
+>A DTD Attribute default definition.</P
 ><P
 ></P
 ></DIV
@@ -2821,7 +2821,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->list structure used when there is an enumeration in DTDs</P
+>List structure used when there is an enumeration in DTDs.</P
 ><P
 ></P
 ></DIV
@@ -2893,7 +2893,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->an Attribute declaration in a DTD</P
+>An Attribute declaration in a DTD.</P
 ><P
 ></P
 ></DIV
@@ -2952,7 +2952,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Possible definitions of element content types</P
+>Possible definitions of element content types.</P
 ><P
 ></P
 ></DIV
@@ -2985,7 +2985,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Possible definitions of element content occurrences</P
+>Possible definitions of element content occurrences.</P
 ><P
 ></P
 ></DIV
@@ -3021,7 +3021,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->an XML Element content as stored after parsing an element definition
+>An XML Element content as stored after parsing an element definition
 in a DTD.</P
 ><P
 ></P
@@ -3082,7 +3082,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->the different possibilities for an element content type</P
+>The different possibilities for an element content type.</P
 ><P
 ></P
 ></DIV
@@ -3125,7 +3125,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->an XML Element declaration from a DTD</P
+>An XML Element declaration from a DTD.</P
 ><P
 ></P
 ></DIV
@@ -3179,7 +3179,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->A namespace declaration node</P
+>A namespace declaration node.</P
 ><P
 ></P
 ></DIV
@@ -3242,7 +3242,7 @@ CLASS="PROGRAMLISTING"
 Note that prefix == NULL is valid, it defines the default namespace
 within the subtree (until overridden).</P
 ><P
->xmlNsType is unified with xmlElementType</P
+>xmlNsType is unified with xmlElementType.</P
 ><P
 ></P
 ></DIV
@@ -3316,7 +3316,7 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 >An XML DTD, as defined by &lt;!DOCTYPE ... There is actually one for
-the internal subset and for the external subset</P
+the internal subset and for the external subset.</P
 ><P
 ></P
 ></DIV
@@ -3382,7 +3382,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->A attribute on an XML node.</P
+>An attribute on an XML node.</P
 ><P
 ></P
 ></DIV
@@ -3556,7 +3556,7 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 >A buffer allocation scheme can be defined to either match exactly the
-need or double it's allocated size each time it is found too small</P
+need or double it's allocated size each time it is found too small.</P
 ><P
 ></P
 ></DIV
@@ -3589,7 +3589,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->A buffer structure</P
+>A buffer structure.</P
 ><P
 ></P
 ></DIV
@@ -3651,11 +3651,7 @@ CLASS="PROGRAMLISTING"
 
     /* End of common part */
     xmlNs           *ns;        /* pointer to the associated namespace */
-#ifndef XML_USE_BUFFER_CONTENT    
     xmlChar         *content;   /* the content */
-#else
-    xmlBufferPtr     content;   /* the content in a buffer */
-#endif
     struct _xmlAttr *properties;/* properties list */
     xmlNs           *nsDef;     /* namespace definitions on this node */
 };</PRE
@@ -3717,7 +3713,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->macro to extract the content pointer of a node</P
+>Macro to extract the content pointer of a node.</P
 ><P
 ></P
 ><DIV
@@ -3782,9 +3778,9 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->macro to extract the line number of an element node. 
+>Macro to extract the line number of an element node. 
 This will work only if line numbering is activated by
-calling xmlLineNumbersDefault(1) before parsing</P
+calling xmlLineNumbersDefault(1) before parsing.</P
 ><P
 ></P
 ><DIV
@@ -3927,7 +3923,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Macro for compatibility naming layer with libxml1</P
+>Macro for compatibility naming layer with libxml1.</P
 ><P
 ></P
 ></DIV
@@ -3955,7 +3951,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->Macro for compatibility naming layer with libxml1</P
+>Macro for compatibility naming layer with libxml1.</P
 ><P
 ></P
 ></DIV
@@ -15555,7 +15551,9 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > * and it's size.
-It's up to the caller to free the memory.</P
+It's up to the caller to free the memory.
+Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+or xmlKeepBlanksDefault(0) was called</P
 ><P
 ></P
 ><DIV
@@ -15921,7 +15919,9 @@ HREF="libxml-tree.html#XMLCHAR"
 ><P
 >Dump the current DOM tree into memory using the character encoding specified
 by the caller.  Note it is up to the caller of this function to free the
-allocated memory.</P
+allocated memory.
+Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+or xmlKeepBlanksDefault(0) was called</P
 ><P
 ></P
 ><DIV
@@ -16520,7 +16520,9 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
->Dump an XML node, recursive behaviour,children are printed too.</P
+>Dump an XML node, recursive behaviour,children are printed too.
+Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+or xmlKeepBlanksDefault(0) was called</P
 ><P
 ></P
 ><DIV
@@ -16929,7 +16931,9 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
->Dump an XML node, recursive behaviour, children are printed too.</P
+>Dump an XML node, recursive behaviour, children are printed too.
+Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
+or xmlKeepBlanksDefault(0) was called</P
 ><P
 ></P
 ><DIV

@@ -1253,93 +1253,93 @@
       <info>Macro to cast a string to an xmlChar * when one know its safe.</info>
     </macro>
     <macro name='BASE_BUFFER_SIZE' file='tree'>
-      <info>default buffer size 4000</info>
+      <info>default buffer size 4000.</info>
     </macro>
     <macro name='CAST_TO_BOOLEAN' file='xpathInternals'>
-      <info>Macro to try to cast the value on the top of the XPath stack to a boolean</info>
+      <info>Macro to try to cast the value on the top of the XPath stack to a boolean.</info>
     </macro>
     <macro name='CAST_TO_NUMBER' file='xpathInternals'>
-      <info>Macro to try to cast the value on the top of the XPath stack to a number</info>
+      <info>Macro to try to cast the value on the top of the XPath stack to a number.</info>
     </macro>
     <macro name='CAST_TO_STRING' file='xpathInternals'>
-      <info>Macro to try to cast the value on the top of the XPath stack to a string</info>
+      <info>Macro to try to cast the value on the top of the XPath stack to a string.</info>
     </macro>
     <macro name='CHECK_ARITY' file='xpathInternals'>
-      <info>Macro to check that the number of args passed to an XPath function matches</info>
+      <info>Macro to check that the number of args passed to an XPath function matches.</info>
       <arg name='x' info='the number of expected args '/>
     </macro>
     <macro name='CHECK_ERROR' file='xpathInternals'>
-      <info>macro to return from the function if an XPath error was detected</info>
+      <info>Macro to return from the function if an XPath error was detected.</info>
     </macro>
     <macro name='CHECK_ERROR0' file='xpathInternals'>
-      <info>macro to return 0 from the function if an XPath error was detected</info>
+      <info>Macro to return 0 from the function if an XPath error was detected.</info>
     </macro>
     <macro name='CHECK_TYPE' file='xpathInternals'>
       <info>Macro to check that the value on top of the XPath stack is of a given type.</info>
       <arg name='typeval' info='the XPath type '/>
     </macro>
     <macro name='CHECK_TYPE0' file='xpathInternals'>
-      <info>Macro to check that the value on top of the XPath stack is of a given type. return(0) in case of failure</info>
+      <info>Macro to check that the value on top of the XPath stack is of a given type. Return(0) in case of failure</info>
       <arg name='typeval' info='the XPath type '/>
     </macro>
     <macro name='DEBUG_MEMORY' file='xmlmemory'>
-      <info>should be activated only done when debugging libxml. It replaces the allocator with a collect and debug shell to the libc allocator. DEBUG_MEMORY should be activated only when debugging libxml i.e. if libxml has been configured with --with-debug-mem too</info>
+      <info>DEBUG_MEMORY replaces the allocator with a collect and debug shell to the libc allocator. DEBUG_MEMORY should only be activated when debugging libxml i.e. if libxml has been configured with --with-debug-mem too.</info>
     </macro>
     <macro name='DEBUG_MEMORY_LOCATION' file='xmlversion'>
       <info>Whether the memory debugging is configured in</info>
     </macro>
     <macro name='HTML_COMMENT_NODE' file='HTMLtree'>
-      <info>Macro, a comment in a HTML document is really implemented the same way as a comment in an XML document.</info>
+      <info>Macro. A comment in a HTML document is really implemented the same way as a comment in an XML document.</info>
     </macro>
     <macro name='HTML_ENTITY_REF_NODE' file='HTMLtree'>
-      <info>Macro, an entity reference in a HTML document is really implemented the same way as an entity reference in an XML document.</info>
+      <info>Macro. An entity reference in a HTML document is really implemented the same way as an entity reference in an XML document.</info>
     </macro>
     <macro name='HTML_PI_NODE' file='HTMLtree'>
-      <info>Macro, a processing instruction in a HTML document is really implemented the same way as a processing instruction in an XML document.</info>
+      <info>Macro. A processing instruction in a HTML document is really implemented the same way as a processing instruction in an XML document.</info>
     </macro>
     <macro name='HTML_PRESERVE_NODE' file='HTMLtree'>
-      <info>Macro, a preserved node in a HTML document is really implemented the same way as a CDATA section in an XML document.</info>
+      <info>Macro. A preserved node in a HTML document is really implemented the same way as a CDATA section in an XML document.</info>
     </macro>
     <macro name='HTML_TEXT_NODE' file='HTMLtree'>
-      <info>Macro, a text node in a HTML document is really implemented the same way as a text node in an XML document.</info>
+      <info>Macro. A text node in a HTML document is really implemented the same way as a text node in an XML document.</info>
     </macro>
     <macro name='INPUT_CHUNK' file='parserInternals'>
-      <info>The parser tries to always have that amount of input ready one of the point is providing context when reporting errors</info>
+      <info>The parser tries to always have that amount of input ready. One of the point is providing context when reporting errors.</info>
     </macro>
     <macro name='IS_BASECHAR' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec </info>
+      <info>Macro to check the following production in the XML spec: </info>
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='IS_BLANK' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec </info>
+      <info>Macro to check the following production in the XML spec: </info>
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='IS_CHAR' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec </info>
+      <info>Macro to check the following production in the XML spec: </info>
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='IS_COMBINING' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec </info>
+      <info>Macro to check the following production in the XML spec: </info>
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='IS_DIGIT' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec </info>
+      <info>Macro to check the following production in the XML spec: </info>
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='IS_EXTENDER' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec </info>
+      <info>Macro to check the following production in the XML spec: </info>
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='IS_IDEOGRAPHIC' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec </info>
+      <info>Macro to check the following production in the XML spec: </info>
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='IS_LETTER' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec </info>
+      <info>Macro to check the following production in the XML spec: </info>
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='IS_PUBIDCHAR' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec </info>
+      <info>Macro to check the following production in the XML spec: </info>
       <arg name='c' info='an UNICODE value (int) '/>
     </macro>
     <macro name='LIBXML_C14N_ENABLED' file='xmlversion'>
@@ -1394,15 +1394,15 @@
       <info>Whether XPointer is configured in</info>
     </macro>
     <macro name='MOVETO_ENDTAG' file='parserInternals'>
-      <info>Skips to the next &apos;&gt;&apos; char</info>
+      <info>Skips to the next &apos;&gt;&apos; char.</info>
       <arg name='p' info='and UTF8 string pointer '/>
     </macro>
     <macro name='MOVETO_STARTTAG' file='parserInternals'>
-      <info>Skips to the next &apos;&lt;&apos; char</info>
+      <info>Skips to the next &apos;&lt;&apos; char.</info>
       <arg name='p' info='and UTF8 string pointer '/>
     </macro>
     <macro name='SKIP_EOL' file='parserInternals'>
-      <info>Skips the end of line chars</info>
+      <info>Skips the end of line chars.</info>
       <arg name='p' info='and UTF8 string pointer '/>
     </macro>
     <function name='UTF8ToHtml' file='HTMLparser'>
@@ -1446,10 +1446,10 @@
     <const name='XML_BUFFER_ALLOC_DOUBLEIT' file='tree'/>
     <const name='XML_BUFFER_ALLOC_EXACT' file='tree'/>
     <macro name='XML_CATALOGS_NAMESPACE' file='catalog'>
-      <info>The namespace for the XML Catalogs elements</info>
+      <info>The namespace for the XML Catalogs elements.</info>
     </macro>
     <macro name='XML_CATALOG_PI' file='catalog'>
-      <info>the specific XML Catalog Processing Instuction name</info>
+      <info>The specific XML Catalog Processing Instuction name.</info>
     </macro>
     <const name='XML_CATA_ALLOW_ALL' file='catalog'/>
     <const name='XML_CATA_ALLOW_DOCUMENT' file='catalog'/>
@@ -1485,13 +1485,13 @@
     <const name='XML_CHAR_ENCODING_UTF8' file='encoding'/>
     <const name='XML_COMMENT_NODE' file='tree'/>
     <macro name='XML_COMPLETE_ATTRS' file='parser'>
-      <info>Bit in the loadsubset context field to tell to do complete the elements attributes lists with the ones defaulted from the DTDs Use it to initialize xmlLoadExtDtdDefaultValue</info>
+      <info>Bit in the loadsubset context field to tell to do complete the elements attributes lists with the ones defaulted from the DTDs. Use it to initialize xmlLoadExtDtdDefaultValue.</info>
     </macro>
     <macro name='XML_DEFAULT_VERSION' file='parser'>
       <info>The default version of XML used: 1.0</info>
     </macro>
     <macro name='XML_DETECT_IDS' file='parser'>
-      <info>Bit in the loadsubset context field to tell to do ID/REFs lookups Use it to initialize xmlLoadExtDtdDefaultValue</info>
+      <info>Bit in the loadsubset context field to tell to do ID/REFs lookups. Use it to initialize xmlLoadExtDtdDefaultValue.</info>
     </macro>
     <const name='XML_DOCB_DOCUMENT_NODE' file='tree'/>
     <const name='XML_DOCUMENT_FRAG_NODE' file='tree'/>
@@ -1613,17 +1613,17 @@
     <const name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY' file='entities'/>
     <const name='XML_EXTERNAL_PARAMETER_ENTITY' file='entities'/>
     <macro name='XML_GET_CONTENT' file='tree'>
-      <info>macro to extract the content pointer of a node</info>
+      <info>Macro to extract the content pointer of a node.</info>
     </macro>
     <macro name='XML_GET_LINE' file='tree'>
-      <info>macro to extract the line number of an element node. This will work only if line numbering is activated by calling xmlLineNumbersDefault(1) before parsing</info>
+      <info>Macro to extract the line number of an element node. This will work only if line numbering is activated by calling xmlLineNumbersDefault(1) before parsing.</info>
     </macro>
     <const name='XML_HTML_DOCUMENT_NODE' file='tree'/>
     <const name='XML_INTERNAL_GENERAL_ENTITY' file='entities'/>
     <const name='XML_INTERNAL_PARAMETER_ENTITY' file='entities'/>
     <const name='XML_INTERNAL_PREDEFINED_ENTITY' file='entities'/>
     <macro name='XML_LOCAL_NAMESPACE' file='tree'>
-      <info>A namespace declaration node</info>
+      <info>A namespace declaration node.</info>
     </macro>
     <macro name='XML_MAX_NAMELEN' file='parserInternals'>
       <info>Identifiers can be longer, but this will be more costly at runtime.</info>
@@ -1650,16 +1650,16 @@
     <const name='XML_PARSER_SYSTEM_LITERAL' file='parser'/>
     <const name='XML_PI_NODE' file='tree'/>
     <macro name='XML_SUBSTITUTE_BOTH' file='parserInternals'>
-      <info>Both general and parameter entities need to be substituted</info>
+      <info>Both general and parameter entities need to be substituted.</info>
     </macro>
     <macro name='XML_SUBSTITUTE_NONE' file='parserInternals'>
-      <info>If no entities need to be substituted</info>
+      <info>If no entities need to be substituted.</info>
     </macro>
     <macro name='XML_SUBSTITUTE_PEREF' file='parserInternals'>
-      <info>Whether parameter entities need to be substituted</info>
+      <info>Whether parameter entities need to be substituted.</info>
     </macro>
     <macro name='XML_SUBSTITUTE_REF' file='parserInternals'>
-      <info>Whether general entities need to be substituted</info>
+      <info>Whether general entities need to be substituted.</info>
     </macro>
     <const name='XML_TEXT_NODE' file='tree'/>
     <const name='XML_WAR_CATALOG_PI' file='xmlerror'/>
@@ -1667,7 +1667,7 @@
     <const name='XML_XINCLUDE_END' file='tree'/>
     <const name='XML_XINCLUDE_START' file='tree'/>
     <macro name='XML_XML_NAMESPACE' file='tree'>
-      <info>This is the namespace for the special xml: prefix predefined in the XML Namespace specification</info>
+      <info>This is the namespace for the special xml: prefix predefined in the XML Namespace specification.</info>
     </macro>
     <const name='XPATH_BOOLEAN' file='xpath'/>
     <const name='XPATH_ENCODING_ERROR' file='xpath'/>
@@ -1702,11 +1702,11 @@
     <const name='XPTR_SUB_RESOURCE_ERROR' file='xpath'/>
     <const name='XPTR_SYNTAX_ERROR' file='xpath'/>
     <macro name='XP_ERROR' file='xpathInternals'>
-      <info>Macro to raise an XPath error and return</info>
+      <info>Macro to raise an XPath error and return.</info>
       <arg name='X' info='the error code '/>
     </macro>
     <macro name='XP_ERROR0' file='xpathInternals'>
-      <info>Macro to raise an XPath error and return 0</info>
+      <info>Macro to raise an XPath error and return 0.</info>
       <arg name='X' info='the error code '/>
     </macro>
     <function name='attribute' file='SAX'>
@@ -1728,7 +1728,7 @@
       <arg name='tree' type='xmlEnumerationPtr' info='the tree of enumerated value set '/>
     </function>
     <functype name='attributeDeclSAXFunc' file='parser'>
-      <info>An attribute definition has been parsed</info>
+      <info>An attribute definition has been parsed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='elem' type='const xmlChar *' info='the name of the element '/>
@@ -1753,7 +1753,7 @@
       <arg name='len' type='int' info='the block length '/>
     </function>
     <functype name='cdataBlockSAXFunc' file='parser'>
-      <info>called when a pcdata block has been parsed</info>
+      <info>Called when a pcdata block has been parsed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='value' type='const xmlChar *' info='The pcdata content '/>
@@ -1767,7 +1767,7 @@
       <arg name='len' type='int' info='the number of xmlChar '/>
     </function>
     <functype name='charactersSAXFunc' file='parser'>
-      <info>receiving some chars from the parser.</info>
+      <info>Receiving some chars from the parser.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='ch' type='const xmlChar *' info='a xmlChar string '/>
@@ -1887,7 +1887,7 @@
       <arg name='content' type='xmlElementContentPtr' info='the element value tree '/>
     </function>
     <functype name='elementDeclSAXFunc' file='parser'>
-      <info>An element definition has been parsed</info>
+      <info>An element definition has been parsed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='name' type='const xmlChar *' info='the element name '/>
@@ -1900,7 +1900,7 @@
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
     </function>
     <functype name='endDocumentSAXFunc' file='parser'>
-      <info>called when the document end has been detected.</info>
+      <info>Called when the document end has been detected.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
     </functype>
@@ -1911,7 +1911,7 @@
       <arg name='name' type='const xmlChar *' info='The element name '/>
     </function>
     <functype name='endElementSAXFunc' file='parser'>
-      <info>called when the end of an element has been detected.</info>
+      <info>Called when the end of an element has been detected.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='name' type='const xmlChar *' info='The element name '/>
@@ -1927,7 +1927,7 @@
       <arg name='content' type='xmlChar *' info='the entity value (without processing). '/>
     </function>
     <functype name='entityDeclSAXFunc' file='parser'>
-      <info>An entity definition has been parsed</info>
+      <info>An entity definition has been parsed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='name' type='const xmlChar *' info='the entity name '/>
@@ -1937,7 +1937,7 @@
       <arg name='content' type='xmlChar *' info='the entity value (without processing). '/>
     </functype>
     <functype name='errorSAXFunc' file='parser'>
-      <info>Display and format an error messages, callback</info>
+      <info>Display and format an error messages, callback.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='an XML parser context '/>
       <arg name='msg' type='const char *' info='the message to display/transmit '/>
@@ -1960,21 +1960,21 @@
       <arg name='SystemID' type='const xmlChar *' info='the SYSTEM ID (e.g. filename or URL) '/>
     </functype>
     <functype name='fatalErrorSAXFunc' file='parser'>
-      <info>Display and format fatal error messages, callback</info>
+      <info>Display and format fatal error messages, callback.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='an XML parser context '/>
       <arg name='msg' type='const char *' info='the message to display/transmit '/>
       <arg name='' type='...'/>
     </functype>
     <functype name='ftpDataCallback' file='nanoftp'>
-      <info>A callback for the xmlNanoFTPGet command</info>
+      <info>A callback for the xmlNanoFTPGet command.</info>
       <return type='void'/>
       <arg name='userData' type='void *' info='the user provided context '/>
       <arg name='data' type='const char *' info='the data received '/>
       <arg name='len' type='int' info='its size in bytes '/>
     </functype>
     <functype name='ftpListCallback' file='nanoftp'>
-      <info>A callback for the xmlNanoFTPList command Note that only one of year and day:minute are specified</info>
+      <info>A callback for the xmlNanoFTPList command. Note that only one of year and day:minute are specified.</info>
       <return type='void'/>
       <arg name='userData' type='void *' info='user provided data for the callback '/>
       <arg name='filename' type='const char *' info='the file name (including &quot;-&gt;&quot; when links are shown) '/>
@@ -2001,7 +2001,7 @@
       <arg name='name' type='const xmlChar *' info='The entity name '/>
     </function>
     <functype name='getEntitySAXFunc' file='parser'>
-      <info>Get an entity by name</info>
+      <info>Get an entity by name.</info>
       <return type='xmlEntityPtr' info='the xmlEntityPtr if found. '/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='name' type='const xmlChar *' info='The entity name '/>
@@ -2023,7 +2023,7 @@
       <arg name='name' type='const xmlChar *' info='The entity name '/>
     </function>
     <functype name='getParameterEntitySAXFunc' file='parser'>
-      <info>Get a parameter entity by name</info>
+      <info>Get a parameter entity by name.</info>
       <return type='xmlEntityPtr' info='the xmlEntityPtr if found. '/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='name' type='const xmlChar *' info='The entity name '/>
@@ -2051,7 +2051,7 @@
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
     </function>
     <functype name='hasExternalSubsetSAXFunc' file='parser'>
-      <info>Does this document has an external subset</info>
+      <info>Does this document has an external subset?</info>
       <return type='int' info='1 if true '/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
     </functype>
@@ -2061,7 +2061,7 @@
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
     </function>
     <functype name='hasInternalSubsetSAXFunc' file='parser'>
-      <info>Does this document has an internal subset</info>
+      <info>Does this document has an internal subset.</info>
       <return type='int' info='1 if true '/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
     </functype>
@@ -2321,7 +2321,7 @@
       <arg name='len' type='int' info='the number of xmlChar '/>
     </function>
     <functype name='ignorableWhitespaceSAXFunc' file='parser'>
-      <info>receiving some ignorable whitespaces from the parser. UNUSED: by default the DOM building will use characters</info>
+      <info>Receiving some ignorable whitespaces from the parser. UNUSED: by default the DOM building will use characters.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='ch' type='const xmlChar *' info='a xmlChar string '/>
@@ -2381,7 +2381,7 @@
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
     </function>
     <functype name='isStandaloneSAXFunc' file='parser'>
-      <info>Is this document tagged standalone ?</info>
+      <info>Is this document tagged standalone?</info>
       <return type='int' info='1 if true '/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
     </functype>
@@ -2462,7 +2462,7 @@
       <arg name='name' type='const xmlChar *' info='The entity name '/>
     </function>
     <functype name='referenceSAXFunc' file='parser'>
-      <info>called when an entity reference is detected.</info>
+      <info>Called when an entity reference is detected.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='name' type='const xmlChar *' info='The entity name '/>
@@ -2488,7 +2488,7 @@
       <arg name='loc' type='xmlSAXLocatorPtr' info='A SAX Locator '/>
     </function>
     <functype name='setDocumentLocatorSAXFunc' file='parser'>
-      <info>Receive the document locator at startup, actually xmlDefaultSAXLocator Everything is available on the context, so this is useless in our case.</info>
+      <info>Receive the document locator at startup, actually xmlDefaultSAXLocator. Everything is available on the context, so this is useless in our case.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='loc' type='xmlSAXLocatorPtr' info='A SAX Locator '/>
@@ -2505,7 +2505,7 @@
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
     </function>
     <functype name='startDocumentSAXFunc' file='parser'>
-      <info>called when the document start being processed.</info>
+      <info>Called when the document start being processed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
     </functype>
@@ -2517,7 +2517,7 @@
       <arg name='atts' type='const xmlChar **' info='An array of name/value attributes pairs, NULL terminated '/>
     </function>
     <functype name='startElementSAXFunc' file='parser'>
-      <info>called when an opening tag has been processed.</info>
+      <info>Called when an opening tag has been processed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='name' type='const xmlChar *' info='The element name, including namespace prefix '/>
@@ -2533,7 +2533,7 @@
       <arg name='notationName' type='const xmlChar *' info='the name of the notation '/>
     </function>
     <functype name='unparsedEntityDeclSAXFunc' file='parser'>
-      <info>What to do when an unparsed entity declaration is parsed</info>
+      <info>What to do when an unparsed entity declaration is parsed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='name' type='const xmlChar *' info='The name of the entity '/>
@@ -2553,7 +2553,7 @@
       <arg name='value' type='xmlXPathObjectPtr' info='the XPath object '/>
     </function>
     <functype name='warningSAXFunc' file='parser'>
-      <info>Display and format a warning messages, callback</info>
+      <info>Display and format a warning messages, callback.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='an XML parser context '/>
       <arg name='msg' type='const char *' info='the message to display/transmit '/>
@@ -2717,14 +2717,14 @@
       <return type='xmlParserInputBufferPtr' info='the new parser input or NULL '/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known '/>
     </function>
-    <struct name='xmlAttr' file='tree' info='A attribute on an XML node.'/>
+    <struct name='xmlAttr' file='tree' info='An attribute on an XML node.'/>
     <typedef name='xmlAttrPtr' file='tree'/>
-    <struct name='xmlAttribute' file='tree' info='an Attribute declaration in a DTD'/>
+    <struct name='xmlAttribute' file='tree' info='An Attribute declaration in a DTD.'/>
     <enum name='xmlAttributeDefault' file='tree'/>
     <typedef name='xmlAttributePtr' file='tree'/>
     <typedef name='xmlAttributeTablePtr' file='valid'/>
     <enum name='xmlAttributeType' file='tree'/>
-    <struct name='xmlBuffer' file='tree' info='A buffer structure'/>
+    <struct name='xmlBuffer' file='tree' info='A buffer structure.'/>
     <function name='xmlBufferAdd' file='tree'>
       <info>Add a string range to an XML buffer. if len == -1, the length of str is recomputed.</info>
       <return type='void'/>
@@ -3023,7 +3023,7 @@
       <arg name='inlen' type='int *' info='in '/>
     </functype>
     <functype name='xmlCharEncodingOutputFunc' file='encoding'>
-      <info>Take a block of UTF-8 chars in and try to convert it to an other encoding. Note: a first call designed to produce heading info is called with in = NULL. If stateful this should also initialize the encoder state</info>
+      <info>Take a block of UTF-8 chars in and try to convert it to an other encoding. Note: a first call designed to produce heading info is called with in = NULL. If stateful this should also initialize the encoder state.</info>
       <return type='int' info='outlen after return is the number of ocetes consumed. '/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result '/>
       <arg name='outlen' type='int *' info='out '/>
@@ -3057,7 +3057,7 @@
       <arg name='version' type='int' info='the include version number '/>
     </function>
     <macro name='xmlChildrenNode' file='tree'>
-      <info>Macro for compatibility naming layer with libxml1</info>
+      <info>Macro for compatibility naming layer with libxml1.</info>
     </macro>
     <function name='xmlCleanupCharEncodingHandlers' file='encoding'>
       <info>Cleanup the memory allocated for the char encoding support, it unregisters all the encoding handlers and the aliases.</info>
@@ -3375,7 +3375,7 @@
       <arg name='cur' type='xmlDocPtr' info='the document '/>
     </function>
     <function name='xmlDocDumpFormatMemory' file='tree'>
-      <info>Dump an XML document in memory and return the xmlChar * and it&apos;s size. It&apos;s up to the caller to free the memory.</info>
+      <info>Dump an XML document in memory and return the xmlChar * and it&apos;s size. It&apos;s up to the caller to free the memory. Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='void'/>
       <arg name='cur' type='xmlDocPtr' info='the document '/>
       <arg name='mem' type='xmlChar **' info='OUT: the memory pointer '/>
@@ -3383,7 +3383,7 @@
       <arg name='format' type='int' info='should formatting spaces been added '/>
     </function>
     <function name='xmlDocDumpFormatMemoryEnc' file='tree'>
-      <info>Dump the current DOM tree into memory using the character encoding specified by the caller. Note it is up to the caller of this function to free the allocated memory.</info>
+      <info>Dump the current DOM tree into memory using the character encoding specified by the caller. Note it is up to the caller of this function to free the allocated memory. Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='void'/>
       <arg name='out_doc' type='xmlDocPtr' info='Document to generate XML text from '/>
       <arg name='doc_txt_ptr' type='xmlChar **' info='Memory pointer for allocated XML text '/>
@@ -3418,7 +3418,7 @@
       <arg name='doc' type='xmlDocPtr' info='the document '/>
       <arg name='root' type='xmlNodePtr' info='the new document root element '/>
     </function>
-    <struct name='xmlDtd' file='tree' info='An XML DTD, as defined by &lt;!DOCTYPE ... There is actually one for the internal subset and for the external subset'/>
+    <struct name='xmlDtd' file='tree' info='An XML DTD, as defined by &lt;!DOCTYPE ... There is actually one for the internal subset and for the external subset.'/>
     <typedef name='xmlDtdPtr' file='tree'/>
     <function name='xmlDumpAttributeDecl' file='valid'>
       <info>This will dump the content of the attribute declaration as an XML DTD definition</info>
@@ -3475,8 +3475,8 @@
       <arg name='doc' type='xmlDocPtr' info='the document '/>
       <arg name='cur' type='xmlNodePtr' info='the current node '/>
     </function>
-    <struct name='xmlElement' file='tree' info='an XML Element declaration from a DTD'/>
-    <struct name='xmlElementContent' file='tree' info='an XML Element content as stored after parsing an element definition in a DTD.'/>
+    <struct name='xmlElement' file='tree' info='An XML Element declaration from a DTD.'/>
+    <struct name='xmlElementContent' file='tree' info='An XML Element content as stored after parsing an element definition in a DTD.'/>
     <enum name='xmlElementContentOccur' file='tree'/>
     <typedef name='xmlElementContentPtr' file='tree'/>
     <enum name='xmlElementContentType' file='tree'/>
@@ -3506,18 +3506,18 @@
     <struct name='xmlEntity' file='tree'/>
     <typedef name='xmlEntityPtr' file='tree'/>
     <functype name='xmlEntityReferenceFunc' file='parserInternals'>
-      <info>Callback function used when one need to be able to track back the provenance of a chunk of nodes inherited from an entity replacement</info>
+      <info>Callback function used when one needs to be able to track back the provenance of a chunk of nodes inherited from an entity replacement.</info>
       <return type='void'/>
       <arg name='ent' type='xmlEntityPtr' info='the entity '/>
       <arg name='firstNode' type='xmlNodePtr' info='the fist node in the chunk '/>
       <arg name='lastNode' type='xmlNodePtr' info='the last nod in the chunk '/>
     </functype>
     <enum name='xmlEntityType' file='entities'/>
-    <struct name='xmlEnumeration' file='tree' info='list structure used when there is an enumeration in DTDs'/>
+    <struct name='xmlEnumeration' file='tree' info='List structure used when there is an enumeration in DTDs.'/>
     <typedef name='xmlEnumerationPtr' file='tree'/>
     <functype name='xmlExternalEntityLoader' file='parser'>
-      <info>External entity loaders types</info>
-      <return type='xmlParserInputPtr' info='the entity input parser '/>
+      <info>External entity loaders types.</info>
+      <return type='xmlParserInputPtr' info='the entity input parser. '/>
       <arg name='URL' type='const char *' info='The System ID of the resource requested '/>
       <arg name='ID' type='const char *' info='The Public ID of the resource requested '/>
       <arg name='context' type='xmlParserCtxtPtr' info='the XML parser context '/>
@@ -3571,7 +3571,7 @@
       <arg name='cur' type='xmlEnumerationPtr' info='the tree to free. '/>
     </function>
     <functype name='xmlFreeFunc' file='xmlmemory'>
-      <info>Signature for a free() implementation</info>
+      <info>Signature for a free() implementation.</info>
       <return type='void'/>
       <arg name='mem' type='void *' info='an already allocated block of memory '/>
     </functype>
@@ -3656,7 +3656,7 @@
       <info>Global setting passed to generic error callbacks</info>
     </macro>
     <functype name='xmlGenericErrorFunc' file='xmlerror'>
-      <info>Signature of the function to use when there is an error and no parsing or validity context available</info>
+      <info>Signature of the function to use when there is an error and no parsing or validity context available .</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='a parsing context '/>
       <arg name='msg' type='const char *' info='the message '/>
@@ -3872,7 +3872,7 @@
       <arg name='userdata' type='void *' info='a pointer to the userdata '/>
     </function>
     <functype name='xmlHashCopier' file='hash'>
-      <info>Callback to copy data from a hash</info>
+      <info>Callback to copy data from a hash.</info>
       <return type='void *'/>
       <arg name='payload' type='void *' info='the data in the hash '/>
       <arg name='name' type='xmlChar *' info='the name associated '/>
@@ -3889,7 +3889,7 @@
       <arg name='size' type='int' info='the size of the hash table '/>
     </function>
     <functype name='xmlHashDeallocator' file='hash'>
-      <info>Callback to free data from a hash</info>
+      <info>Callback to free data from a hash.</info>
       <return type='void'/>
       <arg name='payload' type='void *' info='the data in the hash '/>
       <arg name='name' type='xmlChar *' info='the name associated '/>
@@ -3980,14 +3980,14 @@
       <arg name='data' type='void *' info='extra data passed to f '/>
     </function>
     <functype name='xmlHashScanner' file='hash'>
-      <info>Callback when scanning data in a hash with the simple scanner</info>
+      <info>Callback when scanning data in a hash with the simple scanner.</info>
       <return type='void'/>
       <arg name='payload' type='void *' info='the data in the hash '/>
       <arg name='data' type='void *' info='extra scannner data '/>
       <arg name='name' type='xmlChar *' info='the name associated '/>
     </functype>
     <functype name='xmlHashScannerFull' file='hash'>
-      <info>Callback when scanning data in a hash with the full scanner</info>
+      <info>Callback when scanning data in a hash with the full scanner.</info>
       <return type='void'/>
       <arg name='payload' type='void *' info='the data in the hash '/>
       <arg name='data' type='void *' info='extra scannner data '/>
@@ -4231,13 +4231,13 @@
       <arg name='compare' type='xmlListDataCompare' info='an optional comparison function '/>
     </function>
     <functype name='xmlListDataCompare' file='list'>
-      <info>Callback function used to compare 2 data</info>
-      <return type='int' info='0 is equality, -1 or 1 otherwise depending on the ordering '/>
+      <info>Callback function used to compare 2 data.</info>
+      <return type='int' info='0 is equality, -1 or 1 otherwise depending on the ordering. '/>
       <arg name='data0' type='const void *' info='the first data '/>
       <arg name='data1' type='const void *' info='the second data '/>
     </functype>
     <functype name='xmlListDeallocator' file='list'>
-      <info>Callback function used to free data from a list</info>
+      <info>Callback function used to free data from a list.</info>
       <return type='void'/>
       <arg name='lk' type='xmlLinkPtr' info='the data to deallocate '/>
     </functype>
@@ -4361,8 +4361,8 @@
       <arg name='user' type='const void *' info='a user parameter passed to the walker function '/>
     </function>
     <functype name='xmlListWalker' file='list'>
-      <info>Callback function used when walking a list with xmlListWalk()</info>
-      <return type='int' info='0 to stop walking the list, 1 otherwise '/>
+      <info>Callback function used when walking a list with xmlListWalk().</info>
+      <return type='int' info='0 to stop walking the list, 1 otherwise. '/>
       <arg name='data' type='const void *' info='the data found in the list '/>
       <arg name='user' type='const void *' info='extra user provided data to the walker '/>
     </functype>
@@ -4414,11 +4414,11 @@
       <arg name='node' type='xmlNodePtr' info='the node to dump '/>
     </function>
     <macro name='xmlMalloc' file='globals'>
-      <info>Wrapper for the malloc() function used in the XML library</info>
+      <info>Wrapper for the malloc() function used in the XML library.</info>
       <arg name='size' info='number of bytes to allocate '/>
     </macro>
     <functype name='xmlMallocFunc' file='xmlmemory'>
-      <info>Signature for a malloc() implementation</info>
+      <info>Signature for a malloc() implementation.</info>
       <return type='void *'/>
       <arg name='size' type='size_t' info='the size requested in bytes '/>
     </functype>
@@ -4457,7 +4457,7 @@
       <arg name='nr' type='int' info='number of entries to dump '/>
     </function>
     <macro name='xmlMemStrdup' file='globals'>
-      <info>Wrapper for the strdup() function, xmlStrdup() is usually preferred</info>
+      <info>Wrapper for the strdup() function, xmlStrdup() is usually preferred.</info>
       <arg name='str' info='pointer to the existing string '/>
     </macro>
     <function name='xmlMemStrdupLoc' file='xmlmemory'>
@@ -4934,7 +4934,7 @@
       <arg name='len' type='int' info='content '/>
     </function>
     <function name='xmlNodeDump' file='tree'>
-      <info>Dump an XML node, recursive behaviour,children are printed too.</info>
+      <info>Dump an XML node, recursive behaviour,children are printed too. Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='void'/>
       <arg name='buf' type='xmlBufferPtr' info='the XML buffer output '/>
       <arg name='doc' type='xmlDocPtr' info='the document '/>
@@ -4943,7 +4943,7 @@
       <arg name='format' type='int' info='is formatting allowed '/>
     </function>
     <function name='xmlNodeDumpOutput' file='tree'>
-      <info>Dump an XML node, recursive behaviour, children are printed too.</info>
+      <info>Dump an XML node, recursive behaviour, children are printed too. Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='void'/>
       <arg name='buf' type='xmlOutputBufferPtr' info='the XML buffer output '/>
       <arg name='doc' type='xmlDocPtr' info='the document '/>
@@ -5037,7 +5037,7 @@
       <return type='int' info='0 or an error code '/>
       <arg name='path' type='char *' info='pointer to the path string '/>
     </function>
-    <struct name='xmlNotation' file='tree' info='a DTD Notation definition'/>
+    <struct name='xmlNotation' file='tree' info='A DTD Notation definition.'/>
     <typedef name='xmlNotationPtr' file='tree'/>
     <typedef name='xmlNotationTablePtr' file='valid'/>
     <struct name='xmlNs' file='tree' info='An XML namespace. Note that prefix == NULL is valid, it defines the default namespace within the subtree (until overridden). '/>
@@ -5467,7 +5467,7 @@
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context '/>
       <arg name='info' type='const xmlParserNodeInfoPtr' info='a node info sequence pointer '/>
     </function>
-    <struct name='xmlParserCtxt' file='tree' info='The parser context. NOTE This doesn&apos;t completely defines the parser state, the (current ?) design of the parser uses recursive function calls since this allow and easy mapping from the production rules of the specification to the actual code. The drawback is that the actual function call also reflect the parser state. However most of the parsing routines takes as the only argument the parser context pointer, so migrating to a state based parser for progressive parsing shouldn&apos;t be too hard.'/>
+    <struct name='xmlParserCtxt' file='tree' info='The parser context. NOTE This doesn&apos;t completely define the parser state, the (current ?) design of the parser uses recursive function calls since this allow and easy mapping from the production rules of the specification to the actual code. The drawback is that the actual function call also reflect the parser state. However most of the parsing routines takes as the only argument the parser context pointer, so migrating to a state based parser for progressive parsing shouldn&apos;t be too hard.'/>
     <typedef name='xmlParserCtxtPtr' file='tree'/>
     <macro name='xmlParserDebugEntities' file='globals'>
       <info>Global setting, asking the parser to print out debugging informations. while handling entities. Disabled by default</info>
@@ -5507,7 +5507,7 @@
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context '/>
     </function>
-    <struct name='xmlParserInput' file='tree' info='an xmlParserInput is an input flow for the XML processor. Each entity parsed is associated an xmlParserInput (except the few predefined ones). This is the case both for internal entities - in which case the flow is already completely in memory - or external entities - in which case we use the buf structure for progressive reading and I18N conversions to the internal UTF-8 format.'/>
+    <struct name='xmlParserInput' file='tree' info='An xmlParserInput is an input flow for the XML processor. Each entity parsed is associated an xmlParserInput (except the few predefined ones). This is the case both for internal entities - in which case the flow is already completely in memory - or external entities - in which case we use the buf structure for progressive reading and I18N conversions to the internal UTF-8 format.'/>
     <struct name='xmlParserInputBuffer' file='xmlIO'/>
     <function name='xmlParserInputBufferCreateFd' file='xmlIO'>
       <info>Create a buffered parser input for the progressive parsing for the input from a file descriptor</info>
@@ -5569,7 +5569,7 @@
       <arg name='len' type='int' info='indicative value of the amount of chars to read '/>
     </function>
     <functype name='xmlParserInputDeallocate' file='parser'>
-      <info>Callback for freeing some parser input allocations</info>
+      <info>Callback for freeing some parser input allocations.</info>
       <return type='void'/>
       <arg name='str' type='xmlChar *' info='the string to deallocate '/>
     </functype>
@@ -5592,7 +5592,7 @@
       <arg name='in' type='xmlParserInputPtr' info='an XML parser input '/>
     </function>
     <enum name='xmlParserInputState' file='parser'/>
-    <struct name='xmlParserNodeInfo' file='parser' info='the parser can be asked to collect Node informations, i.e. at what place in the file they were detected. NOTE: This is off by default and not very well tested.'/>
+    <struct name='xmlParserNodeInfo' file='parser' info='The parser can be asked to collect Node informations, i.e. at what place in the file they were detected. NOTE: This is off by default and not very well tested.'/>
     <typedef name='xmlParserNodeInfoPtr' file='parser'/>
     <struct name='xmlParserNodeInfoSeq' file='parser'/>
     <typedef name='xmlParserNodeInfoSeqPtr' file='parser'/>
@@ -5668,12 +5668,12 @@
       <arg name='tok' type='xmlRMutexPtr' info='the reentrant mutex '/>
     </function>
     <macro name='xmlRealloc' file='globals'>
-      <info>Wrapper for the realloc() function used in the XML library</info>
+      <info>Wrapper for the realloc() function used in the XML library.</info>
       <arg name='ptr' info='pointer to the existing allocated area '/>
       <arg name='size' info='number of bytes to allocate '/>
     </macro>
     <functype name='xmlReallocFunc' file='xmlmemory'>
-      <info>Signature for a realloc() implementation</info>
+      <info>Signature for a realloc() implementation.</info>
       <return type='void *'/>
       <arg name='mem' type='void *' info='an already allocated block of memory '/>
       <arg name='size' type='size_t' info='the new size requested in bytes '/>
@@ -5768,11 +5768,11 @@
       <arg name='cur' type='xmlNodePtr' info='the node '/>
     </function>
     <macro name='xmlRootNode' file='tree'>
-      <info>Macro for compatibility naming layer with libxml1</info>
+      <info>Macro for compatibility naming layer with libxml1.</info>
     </macro>
-    <struct name='xmlSAXHandler' file='tree' info='a SAX handler is bunch of callbacks called by the parser when processing of the input generate data or structure informations.'/>
+    <struct name='xmlSAXHandler' file='tree' info='A SAX handler is bunch of callbacks called by the parser when processing of the input generate data or structure informations.'/>
     <typedef name='xmlSAXHandlerPtr' file='tree'/>
-    <struct name='xmlSAXLocator' file='tree' info='a SAX Locator.'/>
+    <struct name='xmlSAXLocator' file='tree' info='A SAX Locator.'/>
     <typedef name='xmlSAXLocatorPtr' file='tree'/>
     <function name='xmlSAXParseDTD' file='parser'>
       <info>Load and parse an external subset.</info>
@@ -6005,14 +6005,14 @@
       <arg name='node2' type='xmlNodePtr' info='unused '/>
     </function>
     <functype name='xmlShellCmd' file='debugXML'>
-      <info>This is a generic signature for the XML shell functions</info>
-      <return type='int' info='an int, negative returns indicating errors '/>
+      <info>This is a generic signature for the XML shell functions.</info>
+      <return type='int' info='an int, negative returns indicating errors. '/>
       <arg name='ctxt' type='xmlShellCtxtPtr' info='a shell context '/>
       <arg name='arg' type='char *' info='a string argument '/>
       <arg name='node' type='xmlNodePtr' info='a first node '/>
       <arg name='node2' type='xmlNodePtr' info='a second node '/>
     </functype>
-    <struct name='xmlShellCtxt' file='debugXML' info='A debugging shell context TODO: add the defined function tables.'/>
+    <struct name='xmlShellCtxt' file='debugXML' info='A debugging shell context. TODO: add the defined function tables.'/>
     <typedef name='xmlShellCtxtPtr' file='debugXML'/>
     <function name='xmlShellDir' file='debugXML'>
       <info>Implements the XML shell function &quot;dir&quot; dumps informations about the node (namespace, attributes, content).</info>
@@ -6071,8 +6071,8 @@
       <arg name='node2' type='xmlNodePtr' info='unused '/>
     </function>
     <functype name='xmlShellReadlineFunc' file='debugXML'>
-      <info>This is a generic signature for the XML shell input function</info>
-      <return type='char *' info='a string which will be freed by the Shell '/>
+      <info>This is a generic signature for the XML shell input function.</info>
+      <return type='char *' info='a string which will be freed by the Shell. '/>
       <arg name='prompt' type='char *' info='a string prompt '/>
     </functype>
     <function name='xmlShellSave' file='debugXML'>
@@ -6179,8 +6179,8 @@
       <arg name='cur' type='const xmlChar *' info='the input xmlChar * '/>
     </function>
     <functype name='xmlStrdupFunc' file='xmlmemory'>
-      <info>Signature for an strdup() implementation</info>
-      <return type='char *' info='the copy of the string or NULL in case of error '/>
+      <info>Signature for an strdup() implementation.</info>
+      <return type='char *' info='the copy of the string or NULL in case of error. '/>
       <arg name='str' type='const char *' info='a zero terminated string '/>
     </functype>
     <function name='xmlStringCurrentChar' file='parserInternals'>
@@ -6264,7 +6264,7 @@
       <arg name='val' type='int' info='int 0 or 1 '/>
     </function>
     <macro name='xmlSubstituteEntitiesDefaultValue' file='globals'>
-      <info>global variable controlling the entity substitution default behavior</info>
+      <info>Global variable controlling the entity substitution default behavior.</info>
     </macro>
     <function name='xmlSwitchEncoding' file='parserInternals'>
       <info>change the input functions when discovering the character encoding of a given entity.</info>
@@ -6291,7 +6291,7 @@
       <arg name='first' type='xmlNodePtr' info='the first text node '/>
       <arg name='second' type='xmlNodePtr' info='the second text node being merged '/>
     </function>
-    <struct name='xmlURI' file='uri' info='A parsed URI reference. This is a struct containing the various fields as described in RFC 2396 but separated for further processing'/>
+    <struct name='xmlURI' file='uri' info='A parsed URI reference. This is a struct containing the various fields as described in RFC 2396 but separated for further processing.'/>
     <function name='xmlURIEscape' file='uri'>
       <info>Escaping routine, does not do validity checks ! It will try to escape the chars needing this, but this is heuristic based it&apos;s impossible to be sure.</info>
       <return type='xmlChar *' info='an copy of the string, but escaped 25 May 2001 Uses xmlParseURI and xmlURIEscapeStr to try to escape correctly according to RFC2396. - Carl Douglas '/>
@@ -6495,14 +6495,14 @@
       <arg name='doc' type='xmlDocPtr' info='a document instance '/>
     </function>
     <functype name='xmlValidityErrorFunc' file='valid'>
-      <info>Callback called when a validity error is found, this is a message oriented function similar to an *printf function.</info>
+      <info>Callback called when a validity error is found. This is a message oriented function similar to an *printf function.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='an xmlValidCtxtPtr validity error context '/>
       <arg name='msg' type='const char *' info='the string to format *printf like vararg '/>
       <arg name='' type='...'/>
     </functype>
     <functype name='xmlValidityWarningFunc' file='valid'>
-      <info>Callback called when a validity warning is found, this is a message oriented function similar to an *printf function.</info>
+      <info>Callback called when a validity warning is found. This is a message oriented function similar to an *printf function.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='an xmlValidCtxtPtr validity error context '/>
       <arg name='msg' type='const char *' info='the string to format *printf like vararg '/>
@@ -6521,7 +6521,7 @@
     <struct name='xmlXPathAxis' file='xpath'/>
     <functype name='xmlXPathAxisFunc' file='xpath'>
       <info>An axis traversal function. To traverse an axis, the engine calls the first time with cur == NULL and repeat until the function returns NULL indicating the end of the axis traversal.</info>
-      <return type='xmlXPathObjectPtr' info='the next node in that axis or NULL if at the end of the axis '/>
+      <return type='xmlXPathObjectPtr' info='the next node in that axis or NULL if at the end of the axis. '/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath interpreter context '/>
       <arg name='cur' type='xmlXPathObjectPtr' info='the previous node being explored on that axis '/>
     </functype>
@@ -6609,7 +6609,7 @@
       <arg name='nargs' type='int' info='the number of arguments '/>
     </function>
     <macro name='xmlXPathCheckError' file='xpathInternals'>
-      <info>Check if an XPath error was raised</info>
+      <info>Check if an XPath error was raised.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <function name='xmlXPathCmpNodes' file='xpath'>
@@ -6715,7 +6715,7 @@
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context '/>
     </function>
     <macro name='xmlXPathEmptyNodeSet' file='xpathInternals'>
-      <info>Empties a node-set</info>
+      <info>Empties a node-set.</info>
       <arg name='ns' info='a node-set '/>
     </macro>
     <function name='xmlXPathEqualValues' file='xpathInternals'>
@@ -6742,7 +6742,7 @@
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context '/>
     </function>
     <functype name='xmlXPathEvalFunc' file='xpath'>
-      <info>an XPath evaluation function, the parameters are on the XPath context stack</info>
+      <info>An XPath evaluation function, the parameters are on the XPath context stack.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='an XPath parser context '/>
       <arg name='nargs' type='int' info='the number of arguments passed to the function '/>
@@ -6802,8 +6802,8 @@
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the context to free '/>
     </function>
     <functype name='xmlXPathFuncLookupFunc' file='xpathInternals'>
-      <info>Prototype for callbacks used to plug function lookup in the XPath engine</info>
-      <return type='xmlXPathFunction' info='the XPath function or NULL if not found '/>
+      <info>Prototype for callbacks used to plug function lookup in the XPath engine.</info>
+      <return type='xmlXPathFunction' info='the XPath function or NULL if not found. '/>
       <arg name='ctxt' type='void *' info='an XPath context '/>
       <arg name='name' type='const xmlChar *' info='name of the function '/>
       <arg name='ns_uri' type='const xmlChar *' info='the namespace name hosting this function '/>
@@ -6811,7 +6811,7 @@
     <typedef name='xmlXPathFuncPtr' file='xpath'/>
     <struct name='xmlXPathFunct' file='xpath'/>
     <functype name='xmlXPathFunction' file='xpath'>
-      <info>An XPath function The arguments (if any) are popped out from the context stack and the result is pushed on the stack.</info>
+      <info>An XPath function. The arguments (if any) are popped out from the context stack and the result is pushed on the stack.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath interprestation context '/>
       <arg name='nargs' type='int' info='the number of arguments '/>
@@ -6830,15 +6830,15 @@
       <arg name='ns_uri' type='const xmlChar *' info='the function namespace URI '/>
     </function>
     <macro name='xmlXPathGetContextNode' file='xpathInternals'>
-      <info>Get the context node of an XPath context</info>
+      <info>Get the context node of an XPath context.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <macro name='xmlXPathGetDocument' file='xpathInternals'>
-      <info>Get the document of an XPath context</info>
+      <info>Get the document of an XPath context.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <macro name='xmlXPathGetError' file='xpathInternals'>
-      <info>Get the error code of an XPath context</info>
+      <info>Get the error code of an XPath context.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <function name='xmlXPathHasSameNodes' file='xpathInternals'>
@@ -7090,15 +7090,15 @@
       <arg name='val' type='xmlNodePtr' info='an xmlNodePtr '/>
     </function>
     <macro name='xmlXPathNodeSetGetLength' file='xpath'>
-      <info>Implement a functionality similar to the DOM NodeList.length</info>
+      <info>Implement a functionality similar to the DOM NodeList.length.</info>
       <arg name='ns' info='a node-set '/>
     </macro>
     <macro name='xmlXPathNodeSetIsEmpty' file='xpath'>
-      <info>Checks whether ns is empty or not</info>
+      <info>Checks whether ns is empty or not.</info>
       <arg name='ns' info='a node-set '/>
     </macro>
     <macro name='xmlXPathNodeSetItem' file='xpath'>
-      <info>Implements a functionality similar to the DOM NodeList.item()</info>
+      <info>Implements a functionality similar to the DOM NodeList.item().</info>
       <arg name='ns' info='a node-set '/>
       <arg name='index' info='index of a node in the set '/>
     </macro>
@@ -7173,7 +7173,7 @@
       <return type='xmlChar *' info='the namespace name or NULL '/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context '/>
     </function>
-    <struct name='xmlXPathParserContext' file='xpath' info='An XPath parser context, it contains pure parsing informations, an xmlXPathContext, and the stack of objects.'/>
+    <struct name='xmlXPathParserContext' file='xpath' info='An XPath parser context. It contains pure parsing informations, an xmlXPathContext, and the stack of objects.'/>
     <typedef name='xmlXPathParserContextPtr' file='xpath'/>
     <function name='xmlXPathPopBoolean' file='xpathInternals'>
       <info>Pops a boolean from the stack, handling conversion if needed. Check error with xmlXPathCheckError.</info>
@@ -7278,44 +7278,44 @@
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context '/>
     </function>
     <macro name='xmlXPathReturnBoolean' file='xpathInternals'>
-      <info>Pushes the boolean val on the context stack</info>
+      <info>Pushes the boolean val on the context stack.</info>
       <arg name='ctxt' info='an XPath parser context '/>
       <arg name='val' info='a boolean '/>
     </macro>
     <macro name='xmlXPathReturnEmptyNodeSet' file='xpathInternals'>
-      <info>Pushes an empty node-set on the context stack</info>
+      <info>Pushes an empty node-set on the context stack.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <macro name='xmlXPathReturnEmptyString' file='xpathInternals'>
-      <info>Pushes an empty string on the stack</info>
+      <info>Pushes an empty string on the stack.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <macro name='xmlXPathReturnExternal' file='xpathInternals'>
-      <info>Pushes user data on the context stack</info>
+      <info>Pushes user data on the context stack.</info>
       <arg name='ctxt' info='an XPath parser context '/>
       <arg name='val' info='user data '/>
     </macro>
     <macro name='xmlXPathReturnFalse' file='xpathInternals'>
-      <info>Pushes false on the context stack</info>
+      <info>Pushes false on the context stack.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <macro name='xmlXPathReturnNodeSet' file='xpathInternals'>
-      <info>Pushes the node-set ns on the context stack</info>
+      <info>Pushes the node-set ns on the context stack.</info>
       <arg name='ctxt' info='an XPath parser context '/>
       <arg name='ns' info='a node-set '/>
     </macro>
     <macro name='xmlXPathReturnNumber' file='xpathInternals'>
-      <info>Pushes the double val on the context stack</info>
+      <info>Pushes the double val on the context stack.</info>
       <arg name='ctxt' info='an XPath parser context '/>
       <arg name='val' info='a double '/>
     </macro>
     <macro name='xmlXPathReturnString' file='xpathInternals'>
-      <info>Pushes the string str on the context stack</info>
+      <info>Pushes the string str on the context stack.</info>
       <arg name='ctxt' info='an XPath parser context '/>
       <arg name='str' info='a string '/>
     </macro>
     <macro name='xmlXPathReturnTrue' file='xpathInternals'>
-      <info>Pushes true on the context stack</info>
+      <info>Pushes true on the context stack.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <function name='xmlXPathRoot' file='xpathInternals'>
@@ -7330,7 +7330,7 @@
       <arg name='nargs' type='int' info='the number of arguments '/>
     </function>
     <macro name='xmlXPathSetArityError' file='xpathInternals'>
-      <info>Raises an XPATH_INVALID_ARITY error</info>
+      <info>Raises an XPATH_INVALID_ARITY error.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <macro name='xmlXPathSetError' file='xpathInternals'>
@@ -7339,7 +7339,7 @@
       <arg name='err' info='an xmlXPathError code '/>
     </macro>
     <macro name='xmlXPathSetTypeError' file='xpathInternals'>
-      <info>Raises an XPATH_INVALID_TYPE error</info>
+      <info>Raises an XPATH_INVALID_TYPE error.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <macro name='xmlXPathStackIsExternal' file='xpathInternals'>
@@ -7347,7 +7347,7 @@
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <macro name='xmlXPathStackIsNodeSet' file='xpathInternals'>
-      <info>Check if the current value on the XPath stack is a node set or an XSLT value tree</info>
+      <info>Check if the current value on the XPath stack is a node set or an XSLT value tree.</info>
       <arg name='ctxt' info='an XPath parser context '/>
     </macro>
     <function name='xmlXPathStartsWithFunction' file='xpathInternals'>
@@ -7441,8 +7441,8 @@
       <arg name='name' type='const xmlChar *' info='the variable name '/>
     </function>
     <functype name='xmlXPathVariableLookupFunc' file='xpathInternals'>
-      <info>Prototype for callbacks used to plug variable lookup in the XPath engine</info>
-      <return type='xmlXPathObjectPtr' info='the XPath object value or NULL if not found '/>
+      <info>Prototype for callbacks used to plug variable lookup in the XPath engine.</info>
+      <return type='xmlXPathObjectPtr' info='the XPath object value or NULL if not found. '/>
       <arg name='ctxt' type='void *' info='an XPath context '/>
       <arg name='name' type='const xmlChar *' info='name of the variable '/>
       <arg name='ns_uri' type='const xmlChar *' info='the namespace name hosting this variable '/>

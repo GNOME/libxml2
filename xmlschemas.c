@@ -52,7 +52,7 @@
 
 /* #define DEBUG_UNION_VALIDATION 1 */
 
-#define ELEM_INFO_ENABLED 1
+ #define ELEM_INFO_ENABLED 1 
 
 /* #define IDC_ENABLED 1 */
 
@@ -218,6 +218,8 @@ struct _xmlSchemaParserCtxt {
 #define XML_SCHEMAS_ATTR_TYPE_NOT_RESOLVED 6
 #define XML_SCHEMAS_ATTR_INVALID_FIXED_VALUE 7
 #define XML_SCHEMAS_ATTR_DEFAULT 8
+#define XML_SCHEMAS_ATTR_VALIDATE_VALUE 9
+#define XML_SCHEMAS_ATTR_WILD_NO_DECL 10
 
 typedef struct _xmlSchemaAttrState xmlSchemaAttrState;
 typedef xmlSchemaAttrState *xmlSchemaAttrStatePtr;
@@ -1047,6 +1049,9 @@ xmlSchemaFormatItemForReport(xmlChar **buf,
 		*buf = xmlStrdup(BAD_CAST "keyRef '");
 	    *buf = xmlStrcat(*buf, ((xmlSchemaIDCPtr) item)->name);
 	    *buf = xmlStrcat(*buf, BAD_CAST "'");
+	    break;
+	case XML_SCHEMA_TYPE_ANY_ATTRIBUTE:
+	    TODO
 	    break;
 	default:
 	    named = 0;
@@ -2111,7 +2116,7 @@ xmlSchemaVWildcardErr(xmlSchemaValidCtxtPtr ctxt,
     xmlChar *des = NULL, *msg = NULL;
 
     xmlSchemaFormatItemForReport(&des, NULL, NULL, node, 0);
-    msg = xmlStrdup(BAD_CAST "%s, [");
+    msg = xmlStrdup(BAD_CAST "%s [");
     msg = xmlStrcat(msg, BAD_CAST xmlSchemaWildcardPCToString(wild->processContents));
     msg = xmlStrcat(msg, BAD_CAST " wildcard]: ");
     msg = xmlStrcat(msg, (const xmlChar *) message);
@@ -3565,7 +3570,7 @@ xmlSchemaAddAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    */	    
 	    snprintf(buf, 29, "#aCont%d", ctxt->counter++ + 1);
 	    val = xmlHashAddEntry3(schema->attrDecl, name,
-		namespace, BAD_CAST buf, ret);
+		namespace, xmlDictLookup(ctxt->dict, BAD_CAST buf, -1), ret);
 
 	    if (val != 0) {
 		xmlSchemaPCustomErr(ctxt,
@@ -4315,10 +4320,11 @@ xmlGetBooleanProp(xmlSchemaParserCtxtPtr ctxt,
 	def = 1;
     else if (xmlStrEqual(val, BAD_CAST "0"))
         def = 0;    
-    else {
+    else {    
         xmlSchemaPSimpleTypeErr(ctxt, 
 	    XML_SCHEMAP_INVALID_BOOLEAN,
-	    ownerDes, ownerItem, node, 
+	    ownerDes, ownerItem, 
+	    (xmlNodePtr) xmlSchemaGetPropNode(node, name),
 	    xmlSchemaGetBuiltInType(XML_SCHEMAS_BOOLEAN), 
 	    "(1 | 0 | true | false)", val, NULL, NULL, NULL);
     }
@@ -5844,7 +5850,7 @@ xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt,
 #ifdef IDC_XPATH_SUPPORT
 	if (selector->xpathComp == NULL) {
 	    xmlSchemaPCustomErr(ctxt,
-		* TODO: Adjust error code? *
+		/* TODO: Adjust error code? */
 		XML_SCHEMAP_S4S_ATTR_INVALID_VALUE, 
 		NULL, NULL, node, 
 		"The XPath expression '%s' could not be "
@@ -12463,6 +12469,7 @@ xmlSchemaCreateVCtxtOnPCtxt(xmlSchemaParserCtxtPtr ctxt)
  * @ctxt:  the schema parser context
  * @type:  the simple type definition
  * @value: the default value
+ * @val: the precomputed value to be returned
  * @node: an optional node (the holder of the value)
  *
  * Checks the "cos-valid-default" constraints.
@@ -14307,7 +14314,7 @@ xmlSchemaCheckElemValConstr(xmlSchemaElementPtr decl,
 	    * Consume the computed value.
 	    */
     	    decl->defVal = ctxt->vctxt->value;
-	    ctxt->vctxt->value = NULL;	
+  	    ctxt->vctxt->value = NULL;
 	} else if (ret < 0) {
 	    xmlSchemaPCustomErr(ctxt, XML_SCHEMAP_INTERNAL,
 		NULL, NULL, node,
@@ -14315,7 +14322,7 @@ xmlSchemaCheckElemValConstr(xmlSchemaElementPtr decl,
 		"failed to validate the value constraint of the "
 		"element declaration '%s'",
 		decl->name); 	    
-	}	   	
+	}
     }    
 }
 
@@ -14977,6 +14984,7 @@ static int xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt,
                                        xmlSchemaTypePtr type);
 static int xmlSchemaValidateElementByType(xmlSchemaValidCtxtPtr ctxt,                                
 					  xmlSchemaTypePtr type,
+					  int isNil,
 					  int valSimpleContent);
 
 static void xmlSchemaBeginElement(xmlSchemaValidCtxtPtr vctxt);
@@ -15580,12 +15588,6 @@ leave:
 
 #ifdef ELEM_INFO_ENABLED
     xmlSchemaEndElement(ctxt);
-    /*
-    xmlSchemaDebugDumpIDCTable(stdout,
-	    NULL,
-	    ctxt->node->name,
-	    ctxt->elemInfo->idcTable);
-    */
 #endif
     ctxt->type = oldtype;
     ctxt->node = oldnode;
@@ -15978,6 +15980,7 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 static int
 xmlSchemaValidateElementBySimpleType(xmlSchemaValidCtxtPtr ctxt, 
 				     xmlSchemaTypePtr type,
+				     int isNil,
 				     int valSimpleContent)
 {
     xmlSchemaTypePtr oldtype;
@@ -16046,7 +16049,8 @@ xmlSchemaValidateElementBySimpleType(xmlSchemaValidCtxtPtr ctxt,
     * This will skip validation if the type is 'anySimpleType' and
     * if the value was already validated (e.g. default values).
     */
-    if ((valSimpleContent == 1) &&
+    if ((! isNil) && 
+	(valSimpleContent == 1) &&
 	((type->type != XML_SCHEMA_TYPE_BASIC) ||
 	 (type->builtInType != XML_SCHEMAS_ANYSIMPLETYPE))) {
 	xmlChar *value;
@@ -16439,10 +16443,21 @@ xmlSchemaIDCFreeKey(xmlSchemaPSVIIDCKeyPtr key)
  * Frees an IDC binding. Note that the node table-items
  * are not freed.
  */
-static void 
 xmlSchemaIDCFreeBinding(xmlSchemaPSVIIDCBindingPtr bind)
 {
     if (bind->nodeTable != NULL) {
+	if (bind->definition->type == XML_SCHEMA_TYPE_IDC_KEYREF) {
+	    int i;
+	    /*
+	    * Node-table items for keyrefs are not stored globally
+	    * to the validation context, since they are not bubbled.
+	    * We need to free them here.
+	    */
+	    for (i = 0; i < bind->nbNodes; i++) {
+		xmlFree(bind->nodeTable[i]->keys);
+		xmlFree(bind->nodeTable[i]);
+	    }
+	}
 	xmlFree(bind->nodeTable);
     }
     xmlFree(bind);
@@ -16566,8 +16581,11 @@ compareValue:
     {	
 #ifdef IDC_VALUE_SUPPORT
 	int ret;
-	ret = xmlSchemaCompareValuesOpt(a, b,
-	    XML_SCHEMA_VALUECOMP_STRISNORM);
+	ret = xmlSchemaCompareValues(a, b);
+	/*
+	* ret = xmlSchemaCompareValuesOpt(a, b,
+	*    XML_SCHEMA_VALUECOMP_STRISNORM);
+	*/
 	if (ret == 0) 
 	    return(1);
 	else if (ret == -2)
@@ -16711,7 +16729,7 @@ xmlSchemaXPathEvaluate(xmlSchemaValidCtxtPtr vctxt,
 	    localName, namespaceName);	    
 #else
 	res = 0;
-#endif
+#endif	
 	if (res == -1) {
 	    xmlSchemaVErr(vctxt, vctxt->node,
 		XML_SCHEMAV_INTERNAL,
@@ -16804,9 +16822,10 @@ next_sto:
 }
 
 /**
- * xmlSchemaXPathProcessChanges:
+ * xmlSchemaXPathProcessHistory:
  * @vctxt: the WXS validation context
  * @type: the simple/complex type of the current node if any at all
+ * @compValue: the precompiled value
  *
  * Processes and pops the history items of the IDC state objects.
  * IDC key-sequences are validated/created on IDC bindings.
@@ -16814,8 +16833,9 @@ next_sto:
  * Returns 0 on success and -1 on internal errors.
  */
 static int
-xmlSchemaXPathProcessChanges(xmlSchemaValidCtxtPtr vctxt,
-			     xmlSchemaTypePtr type)
+xmlSchemaXPathProcessHistory(xmlSchemaValidCtxtPtr vctxt,
+			     xmlSchemaTypePtr type,
+			     xmlSchemaValPtr *compValue)
 {
     xmlSchemaIDCStateObjPtr sto, nextsto;
     int res, matchDepth;
@@ -16834,12 +16854,18 @@ xmlSchemaXPathProcessChanges(xmlSchemaValidCtxtPtr vctxt,
 		vctxt->elemInfo->localName), vctxt->depth);
 	FREE_AND_NULL(str)
     }
-#endif
-
+#endif    
     /*
     * Evaluate the state objects.
     */
     while (sto != NULL) {
+#ifdef IDC_XPATH_SUPPORT
+	xmlStreamPop((xmlStreamCtxtPtr) sto->xpathCtxt);
+	#if DEBUG_IDC
+	    xmlGenericError(xmlGenericErrorContext, "IDC:   stream pop '%s'\n",
+		sto->sel->xpath);
+	#endif
+#endif
 	if (sto->nbHistory == 0)
 	    goto deregister_check;
 
@@ -16869,15 +16895,15 @@ xmlSchemaXPathProcessChanges(xmlSchemaValidCtxtPtr vctxt,
 		sto->nbHistory--;
 		goto deregister_check;
 	    }
-	    if ((key == NULL) && (vctxt->value == NULL)) {
+	    if ((key == NULL) && (*compValue == NULL)) {
 		/*
 		* Failed to provide the normalized value; maby
 		* the value was invalid.
 		*/ 
 		xmlSchemaVErr(vctxt, NULL, 
 		    XML_SCHEMAV_INTERNAL,
-		    "Internal error: xmlSchemaIDCEvaluateMatches, "
-		    "normalized node value not available.\n", 
+		    "Internal error: xmlSchemaXPathProcessHistory, "
+		    "computed value not available.\n",
 		    NULL, NULL);
 		sto->nbHistory--;
 		goto deregister_check;
@@ -17000,8 +17026,8 @@ create_key:
 		    * Consume the compiled value.
 		    */
 		    key->type = type;
-		    key->compValue = vctxt->value;
-		    vctxt->value = NULL;
+		    key->compValue = *compValue;
+		    (*compValue) = NULL;
 		    /*
 		    * Store the key in a global list.
 		    */
@@ -17185,7 +17211,7 @@ selector_leave:
 	    /*
 	    * Free the key-sequence if not added to the IDC table.
 	    */
-	    if (*keySeq != NULL) {
+	    if ((keySeq != NULL) && (*keySeq != NULL)) {
 		xmlFree(*keySeq);
 		*keySeq = NULL;
 	    }
@@ -17205,7 +17231,7 @@ deregister_check:
 	    if (vctxt->xpathStates != sto) {
 		xmlSchemaVErr(vctxt, vctxt->node,
 		    XML_SCHEMAV_INTERNAL,
-		    "Internal error: xmlSchemaXPathProcessChanges, "
+		    "Internal error: xmlSchemaXPathProcessHistory, "
 		    "The state object to be removed is not the first "
 		    "in the list.\n",
 		    NULL, NULL);
@@ -17248,7 +17274,7 @@ xmlSchemaIDCRegisterMatchers(xmlSchemaValidCtxtPtr vctxt,
     idc = (xmlSchemaIDCPtr) elemDecl->idcs;
     if (idc == NULL)
 	return (0);
-
+    
 #if DEBUG_IDC
     {
 	xmlChar *str = NULL;
@@ -17393,7 +17419,7 @@ xmlSchemaBubbleIDCNodeTables(xmlSchemaValidCtxtPtr vctxt)
 	/* Fine, no table, no bubbles. */
 	return (0);
     }
-
+    
     parTable = &(vctxt->elemInfos[vctxt->depth -1]->idcTable);
     /*
     * Walk all bindings; create new or add to existing bindings.
@@ -17735,7 +17761,8 @@ xmlSchemaEndElement(xmlSchemaValidCtxtPtr vctxt)
     /*
     * Evaluate the history of changes of active state objects.
     */
-    xmlSchemaXPathProcessChanges(vctxt, vctxt->elemInfo->typeDef);
+    xmlSchemaXPathProcessHistory(vctxt, vctxt->elemInfo->typeDef,
+	&(vctxt->elemInfo->value));
 
     if (vctxt->elemInfo->value != NULL) {
 	xmlSchemaFreeValue(vctxt->elemInfo->value);
@@ -17816,6 +17843,13 @@ xmlSchemaEndElement(xmlSchemaValidCtxtPtr vctxt)
     }
 #endif
     vctxt->depth--;
+    /*
+    * Clear the current elemInfo.
+    */
+    if (vctxt->elemInfo->value != NULL) {
+	xmlSchemaFreeValue(vctxt->elemInfo->value);
+	vctxt->elemInfo->value = NULL;
+    }
     vctxt->elemInfo = vctxt->elemInfos[vctxt->depth];
     vctxt->node = vctxt->elemInfo->node;
 }
@@ -18059,6 +18093,13 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
     }
     
     /*
+    * Remember the actual-type definition.
+    */
+#ifdef ELEM_INFO_ENABLED
+    ctxt->elemInfo->typeDef = actualType;
+#endif
+    
+    /*
     * TODO: Since this should be already checked by the content model automaton,
     * and we want to get rid of the XML_SCHEMAS_ERR... types, the error code
     * has been changed to XML_SCHEMAV_INTERNAL.
@@ -18127,7 +18168,7 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 	if (actualType != elemDecl->subtypes) {
 	    xmlSchemaCreatePCtxtOnVCtxt(ctxt);
 	    ret = xmlSchemaCheckCOSValidDefault(ctxt->pctxt, ctxt, actualType, 
-		elemDecl->value, NULL);
+		elemDecl->value, NULL);	    
 	    if (ret < 0) {
 		xmlSchemaVCustomErr(ctxt, 
 		    XML_SCHEMAV_INTERNAL, 
@@ -18146,14 +18187,14 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 	* (§3.3.4).
 	*/
 	/*
-        * Disable validation of the simple content, since it was already
+        * Disable validation of the simple content, if it was already
 	* done above.
 	*/
 	if (ret == 0) {
 	    if (actualType != elemDecl->subtypes)
-		ret = xmlSchemaValidateElementByType(ctxt, actualType, 0);
+		ret = xmlSchemaValidateElementByType(ctxt, actualType, 0, 0);
 	    else
-		ret = xmlSchemaValidateElementByType(ctxt, actualType, 0);
+		ret = xmlSchemaValidateElementByType(ctxt, actualType, 0, 1);
 	    ctxt->node = elem;
 	    if (ret < 0) {
 		xmlSchemaVCustomErr(ctxt, 
@@ -18188,7 +18229,17 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 	* to the ·actual type definition· as defined by Element Locally 
 	* Valid (Type) (§3.3.4).
 	*/
-	ret = xmlSchemaValidateElementByType(ctxt, actualType, 1);
+	ret = xmlSchemaValidateElementByType(ctxt, actualType, nilled, 1);
+	/*
+	* Consume the computed value for IDCs, ect. Note that default
+	* values are not supported yet.
+	*/
+#ifdef ELEM_INFO_ENABLED
+	if (ctxt->value != NULL) {
+	    ctxt->elemInfo->value = ctxt->value;
+	    ctxt->value = NULL;
+	}
+#endif
 	ctxt->node = elem;
 	if (ret < 0) {
 	    xmlSchemaVCustomErr(ctxt, 
@@ -18202,7 +18253,6 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 	* 5.2.2 If there is a fixed {value constraint} and clause 3.2 has 
 	* not applied, all of the following must be true:
 	*/
-
 	if ((elemDecl->flags & XML_SCHEMAS_ELEM_FIXED) && (nilled == 0)) {
 	    /*
 	    * 5.2.2.1 The element information item must have no element 
@@ -18241,7 +18291,7 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 		    if (! xmlStrEqual(BAD_CAST value, elemDecl->value)) {
 			/* 
 			* TODO: Report invalid & expected values as well.
-			* TODO: Implement the cononical stuff.
+			* TODO: Implement the canonical stuff.
 			*/
 			xmlSchemaVCustomErr(ctxt, 
 			    XML_SCHEMAV_CVC_ELT_5_2_2_2_1, 
@@ -18266,7 +18316,7 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 		    /*
 		    * TODO: *actual value* is the normalized value, impl. this.
 		    * TODO: Report invalid & expected values as well.
-		    * TODO: Implement the cononical stuff.
+		    * TODO: Implement the canonical stuff.
 		    * 
 		    */
 		    value = xmlNodeListGetString(elem->doc, elem->children, 1);
@@ -18274,7 +18324,7 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 			xmlSchemaVCustomErr(ctxt, 
 			    XML_SCHEMAV_CVC_ELT_5_2_2_2_2, 
 			    elem, (xmlSchemaTypePtr) elemDecl,
-			    "The normalized value does not match the cononical "
+			    "The normalized value does not match the canonical "
 			    "lexical representation of the fixed constraint", 
 			    NULL);
 		    }
@@ -18909,6 +18959,7 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 static int
 xmlSchemaValidateElementByType(xmlSchemaValidCtxtPtr ctxt,
 			       xmlSchemaTypePtr type,
+			       int isNil,
 			       int valSimpleContent)
 {
     int ret;
@@ -18941,10 +18992,6 @@ xmlSchemaValidateElementByType(xmlSchemaValidCtxtPtr ctxt,
     	return (XML_SCHEMAV_CVC_TYPE_2);
     }
 
-#ifdef ELEM_INFO_ENABLED
-    ctxt->elemInfo->typeDef = type;
-#endif
-
     switch (type->type) {
 	case XML_SCHEMA_TYPE_COMPLEX:
             ret = xmlSchemaValidateElementByComplexType(ctxt, type,
@@ -18952,14 +18999,14 @@ xmlSchemaValidateElementByType(xmlSchemaValidCtxtPtr ctxt,
             break;
 	case XML_SCHEMA_TYPE_SIMPLE:
             ret = xmlSchemaValidateElementBySimpleType(ctxt, type,
-		valSimpleContent);
+		isNil, valSimpleContent);
             break;
 	case XML_SCHEMA_TYPE_BASIC:
 	    if (type->builtInType == XML_SCHEMAS_ANYTYPE)
 		ret = xmlSchemaValidateElementByAnyType(ctxt, type);
 	    else
 		ret = xmlSchemaValidateElementBySimpleType(ctxt, type,
-		    valSimpleContent);
+		    isNil, valSimpleContent);
 	    break;
 	default:
 	    ret = -1;
@@ -19099,7 +19146,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 	printf("attr use - name: %s\n", xmlSchemaGetAttrName(attrDecl));
 	printf("attr use - use: %d\n", attrDecl->occurs);
 #endif
-        for (curState = ctxt->attr; curState != NULL; curState = curState->next) {		    
+        for (curState = ctxt->attr; curState != NULL; curState = curState->next) {
 
 	    if (curState->decl == attrUse->attr) {
 #ifdef DEBUG_ATTR_VALIDATION
@@ -19159,7 +19206,10 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 #endif
             found = 1;	    
 	    curState->decl = attrDecl;
+	    curState->state = XML_SCHEMAS_ATTR_VALIDATE_VALUE;
+	    /*
 	    ret = xmlSchemaCheckAttrLocallyValid(ctxt, attrDecl, curState, attr);
+	    */
         }
         if (!found) {
 	    if (attrDecl->occurs == XML_SCHEMAS_ATTR_USE_REQUIRED) {
@@ -19294,25 +19344,81 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 			curState->decl = attrDecl;
 			if (attrDecl != NULL) {
 			    curState->decl = attrDecl;
-			    ret = xmlSchemaCheckAttrLocallyValid(ctxt, attrDecl, curState, attr);			    
+			    curState->state = XML_SCHEMAS_ATTR_VALIDATE_VALUE;
+			    /* TODO
+			    ret = xmlSchemaCheckAttrLocallyValid(ctxt, attrDecl, curState, attr);
+			    */
 			} else if (type->attributeWildcard->processContents == 
 			    XML_SCHEMAS_ANY_LAX) {
 			    curState->state = XML_SCHEMAS_ATTR_CHECKED;
-			}											
+			} else
+			    curState->state = XML_SCHEMAS_ATTR_WILD_NO_DECL;
 		    } else
 			curState->state = XML_SCHEMAS_ATTR_CHECKED;
-		}		
+		}
 	    }
 	    curState = curState->next;
         }
-    }
-
-    /*
-    * Report missing and illegal attributes.
-    */
+    }    
+    
     if (ctxt->attr != NULL) {
+
+	/*
+	* Validate the value of the attribute.
+	*/
+	if (ctxt->value != NULL) {
+	    xmlSchemaFreeValue(ctxt->value);
+	    ctxt->value = NULL;
+	}
 	curState = ctxt->attr;
-	while ((curState != NULL) && (curState != ctxt->attrTop->next)) {    
+	while ((curState != NULL) && (curState != ctxt->attrTop->next)) {
+#ifdef IDC_ENABLED
+	    xmlSchemaTypePtr attrType;
+#endif
+	    switch (curState->state) {
+		case XML_SCHEMAS_ATTR_VALIDATE_VALUE:
+		    ret = xmlSchemaCheckAttrLocallyValid(ctxt,
+			curState->decl, curState, curState->attr);
+		    if (ret == -1)
+			return (-1);
+		    if ((ret != 0) && (ctxt->value != NULL)) {
+			xmlSchemaFreeValue(ctxt->value);
+			ctxt->value = NULL;
+		    }
+		    /* No break on purpose. */
+		case XML_SCHEMAS_ATTR_CHECKED:
+#ifdef IDC_ENABLED
+		    if (ctxt->xpathStates != NULL) {
+			/*
+			* Evaluate IDCs.
+			*/
+			if (curState->attr->ns != NULL) 
+			    nsURI = curState->attr->ns->href;
+			else
+			    nsURI = NULL;
+			xmlSchemaXPathEvaluate(ctxt, nsURI, attr->name,
+			    XML_ATTRIBUTE_NODE);
+			if (curState->decl != NULL)
+			    attrType = curState->decl->subtypes;
+			else
+			    attrType = NULL;
+			xmlSchemaXPathProcessHistory(ctxt,
+			    curState->decl->subtypes,
+			    &(ctxt->value));
+		    }
+		    break;
+#endif
+		default:
+		    break;		
+	    }
+	    curState = curState->next;
+	}
+
+	/*
+	* Report missing and illegal attributes.
+	*/
+	curState = ctxt->attr;
+	while ((curState != NULL) && (curState != ctxt->attrTop->next)) {
 	    if (curState->state != XML_SCHEMAS_ATTR_CHECKED) {
 		attr = curState->attr;
 		if (curState->decl != NULL) {
@@ -19339,6 +19445,14 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 			    (xmlNodePtr) attr, (xmlSchemaTypePtr) attrDecl,
 			    "The value does not match the fixed value "
 			    "constraint", NULL);
+		} else if (curState->state == XML_SCHEMAS_ATTR_WILD_NO_DECL) {
+		    xmlSchemaVWildcardErr(ctxt, 
+			XML_SCHEMAV_CVC_WILDCARD,
+			(xmlNodePtr) attr,
+			type->attributeWildcard,
+			"No global attribute declaration found, but "
+			"stipulated by the strict processContents of "
+			"the wildcard");			
 		} else if (curState->state == XML_SCHEMAS_ATTR_UNKNOWN) {
 		    /* TODO: "prohibited" won't ever be touched here!. 
 		      (curState->state == XML_SCHEMAS_ATTR_PROHIBITED))

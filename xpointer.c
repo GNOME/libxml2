@@ -1021,6 +1021,8 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	
 	xmlXPathRegisterNs(ctxt->context, prefix, URI);
 	CUR_PTR = left;
+	xmlFree(URI);
+	xmlFree(prefix);
 #endif /* XPTR_XMLNS_SCHEME */
     } else {
         xmlGenericError(xmlGenericErrorContext,

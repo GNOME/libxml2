@@ -1,3 +1,7 @@
+Wed Nov  6 16:48:44 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpointer.c: tried to fix bug #97852 reported by Nicolas Noffke
+
 Sun Nov  3 10:43:44 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: switched the order of a couple of includes

@@ -231,9 +231,13 @@ htmlnamePop(htmlParserCtxtPtr ctxt)
 
 #define CUR_PTR ctxt->input->cur
 
-#define SHRINK  xmlParserInputShrink(ctxt->input)
+#define SHRINK if ((ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
+		   (ctxt->input->end - ctxt->input->cur < 2 * INPUT_CHUNK)) \
+	xmlParserInputShrink(ctxt->input)
 
-#define GROW  xmlParserInputGrow(ctxt->input, INPUT_CHUNK)
+#define GROW if ((ctxt->progressive == 0) &&				\
+		 (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK))	\
+	xmlParserInputGrow(ctxt->input, INPUT_CHUNK)
 
 #define CURRENT ((int) (*ctxt->input->cur))
 

@@ -1,3 +1,10 @@
+Tue Oct 28 23:02:29 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: Fix #124907 by simply backporting the same
+	  fix as for the XML parser
+	* result/HTML/doc3.htm.err: change to ID detecting modified one
+	  test result.
+
 Tue Oct 28 22:28:50 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/parser.h: included a new function

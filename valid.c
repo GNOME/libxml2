@@ -3737,8 +3737,10 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 		    }
 		    break;
 		case XML_TEXT_NODE:
+		case XML_CDATA_SECTION_NODE:
 		    if (xmlIsBlankNode(cur))
 			break;
+		    /* no break on purpose */
 		case XML_ELEMENT_NODE:
 		    /*
 		     * Allocate a new node and minimally fills in
@@ -3842,6 +3844,72 @@ done:
 }
 
 /**
+ * xmlValidateCdataElement:
+ * @ctxt:  the validation context
+ * @doc:  a document instance
+ * @elem:  an element instance
+ *
+ * Check that an element follows #CDATA
+ *
+ * returns 1 if valid or 0 otherwise
+ */
+static int
+xmlValidateOneCdataElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
+                           xmlNodePtr elem) {
+    int ret = 1;
+    xmlNodePtr cur, child;
+
+    if ((ctxt == NULL) || (doc == NULL) | (elem == NULL))
+	return(0);
+
+    child = elem->children;
+
+    cur = child;
+    while (cur != NULL) {
+	switch (cur->type) {
+	    case XML_ENTITY_REF_NODE:
+		/*
+		 * Push the current node to be able to roll back
+		 * and process within the entity
+		 */
+		if ((cur->children != NULL) &&
+		    (cur->children->children != NULL)) {
+		    nodeVPush(ctxt, cur);
+		    cur = cur->children->children;
+		    continue;
+		}
+		break;
+	    case XML_COMMENT_NODE:
+	    case XML_PI_NODE:
+	    case XML_TEXT_NODE:
+	    case XML_CDATA_SECTION_NODE:
+		break;
+	    default:
+		ret = 0;
+		goto done;
+	}
+	/*
+	 * Switch to next element
+	 */
+	cur = cur->next;
+	while (cur == NULL) {
+	    cur = nodeVPop(ctxt);
+	    if (cur == NULL)
+		break;
+	    cur = cur->next;
+	}
+    }
+done:
+    ctxt->nodeMax = 0;
+    ctxt->nodeNr = 0;
+    if (ctxt->nodeTab != NULL) {
+	xmlFree(ctxt->nodeTab);
+	ctxt->nodeTab = NULL;
+    }
+    return(ret);
+}
+
+/**
  * xmlValidateOneElement:
  * @ctxt:  the validation context
  * @doc:  a document instance
@@ -3872,8 +3940,6 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     CHECK_DTD;
 
     if (elem == NULL) return(0);
-    if (elem->type == XML_TEXT_NODE) {
-    }
     switch (elem->type) {
         case XML_ATTRIBUTE_NODE:
 	    VERROR(ctxt->userData, 
@@ -3981,8 +4047,19 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    /* I don't think anything is required then */
 	    break;
         case XML_ELEMENT_TYPE_MIXED:
-	    /* Hum, this start to get messy */
+	    /* simple case of declared as #PCDATA */
+	    if ((elemDecl->content != NULL) &&
+		(elemDecl->content->type == XML_ELEMENT_CONTENT_PCDATA)) {
+		ret = xmlValidateOneCdataElement(ctxt, doc, elem);
+		if (!ret) {
+		    VERROR(ctxt->userData,
+	       "Element %s was declared #PCDATA but contains non text nodes\n",
+			   elem->name);
+		}
+		break;
+	    }
 	    child = elem->children;
+	    /* Hum, this start to get messy */
 	    while (child != NULL) {
 	        if (child->type == XML_ELEMENT_NODE) {
 		    name = child->name;

@@ -1,3 +1,8 @@
+Mon Jul  9 22:06:53 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c: fixed "Internal: MIXED struct bad" when #CDATA elements
+	  validation occured on content with element child
+
 Mon Jul  9 17:59:08 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: fixed XML Base computation which was broken

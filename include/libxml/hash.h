@@ -48,8 +48,13 @@ extern "C" {
  * function pointer without encountering a warning from
  * gcc
  *
+ * #define XML_CAST_FPTR(fptr) (*(void **)(&fptr))
+ * This macro violated ISO C aliasing rules (gcc4 on s390 broke)
+ * so it is disabled now
  */
-#define XML_CAST_FPTR(fptr) (*(void **)(&fptr))
+
+#define XML_CAST_FPTR(fptr) fptr
+
 
 /*
  * function types:

@@ -1,3 +1,9 @@
+Thu Mar 10 10:20:23 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/hash.h libxml.h libxml.spec.in: some gcc4 portability
+	  patches, including a serious aliasing bug exposed in s390 
+	  when trying to convert data pointer to code pointer.
+
 Mon Mar  7 18:34:00 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Tiny restructuring of the validation start-up

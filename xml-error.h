@@ -1,10 +1,10 @@
 #ifndef __XML_ERROR_H__
 #define __XML_ERROR_H__
 
+#include "parser.h"
 #ifdef __cplusplus
 #define extern "C" {
 #endif
-#include "parser.h"
 
 typedef enum {
     XML_ERR_OK = 0,

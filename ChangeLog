@@ -1,9 +1,18 @@
+Mon Dec 20 16:20:55 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* result/HTML/*.htm[l] : updated the HTML regression tests according
+	  to the new output
+	* xpath.h xml-error.h valid.h tree.h parser.h entities.h SAX.h
+	  HTMLtree.h tree.c entities.c: headers tweakings to avoid a nasty
+	  problem due to intermix of extern "C" { ... } declarations for C++
+	  and recursive includes in the headers
+
 1999-12-20  Chris Lahey  <clahey@umich.edu>
 
 	* HTMLtree.c: Made it so that html nodes with a single child do
 	not insert a carriage return before or after the child node.
 
-Sat Dec 18 16:07:03 CET 1999
+Sat Dec 18 16:07:03 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in, doc/xml.html : bug fix release 1.8.1
 	* parser.c: fixed bug #4344

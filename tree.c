@@ -5081,7 +5081,7 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
         case XML_COMMENT_NODE:
 	    if (cur->content != NULL) {
 	        if (!((cur->doc != NULL) && (cur->doc->dict != NULL) &&
-			xmlDictOwns(cur->doc->dict, cur->content)))
+		    (!xmlDictOwns(cur->doc->dict, cur->content))))
 		    xmlFree(cur->content);
 	    }	
 	    if (cur->children != NULL) xmlFreeNodeList(cur->children);

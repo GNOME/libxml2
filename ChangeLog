@@ -1,3 +1,8 @@
+Mon Oct 25 17:11:37 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed the leak reported by Volker Roth on the list
+	* test/ent10 result//ent10*: added a specific test for the problem
+
 Sat Oct 23 11:07:41 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* valid.c: unlinked the internal subset within xmlValidateDtd

@@ -5692,16 +5692,20 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			  xmlAddEntityReference(ent, firstChild, nw);
 #endif /* LIBXML_LEGACY_ENABLED */
 		    } else {
+		        const xmlChar *nbktext;
+
 			/*
 			 * the name change is to avoid coalescing of the
 			 * node with a possible previous text one which
 			 * would make ent->children a dangling pointer
 			 */
+			nbktext = xmlDictLookup(ctxt->dict, BAD_CAST "nbktext",
+			                        -1);
 			if (ent->children->type == XML_TEXT_NODE)
-			    ent->children->name = xmlStrdup(BAD_CAST "nbktext");
+			    ent->children->name = nbktext;
 			if ((ent->last != ent->children) &&
 			    (ent->last->type == XML_TEXT_NODE))
-			    ent->last->name = xmlStrdup(BAD_CAST "nbktext");
+			    ent->last->name = nbktext;
 			xmlAddChildList(ctxt->node, ent->children);
 		    }
 

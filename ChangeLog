@@ -1,3 +1,7 @@
+Fri Sep 24 01:06:36 CEST 1999
+
+	* nanohttp.c: conditionned references to snprintf with HAVE_SNPRINTF
+
 Fri Sep 24 00:15:58 CEST 1999
 
 	* libxml.spec.in: fixed the alpha compile problem

@@ -619,8 +619,13 @@ retry:
         return(NULL);
     }
     ctxt->fd = ret;
+#ifdef HAVE_SNPRINTF
     snprintf(buf, sizeof(buf),"GET %s HTTP/1.0\r\nHost: %s\r\n\r\n",
 	     ctxt->path, ctxt->hostname);
+#else
+    sprintf(buf, "GET %s HTTP/1.0\r\nHost: %s\r\n\r\n",
+	     ctxt->path, ctxt->hostname);
+#endif
 #ifdef DEBUG_HTTP
     printf("-> GET %s HTTP/1.0\n-> Host: %s\n\n",
            ctxt->path, ctxt->hostname);
@@ -788,50 +793,102 @@ retry:
     if (input == NULL) {
         if (headers == NULL) {
 	    if ((contentType == NULL) || (*contentType == NULL)) {
+#ifdef HAVE_SNPRINTF
 		snprintf(buf, sizeof(buf),
 		         "%s %s HTTP/1.0\r\nHost: %s\r\n\r\n",
 			 method, ctxt->path, ctxt->hostname);
+#else
+		sprintf(buf,
+		         "%s %s HTTP/1.0\r\nHost: %s\r\n\r\n",
+			 method, ctxt->path, ctxt->hostname);
+#endif
 	    } else {
+#ifdef HAVE_SNPRINTF
 		snprintf(buf, sizeof(buf),
 		     "%s %s HTTP/1.0\r\nHost: %s\r\nContent-Type: %s\r\n\r\n",
 			 method, ctxt->path, ctxt->hostname, *contentType);
+#else
+		sprintf(buf,
+		     "%s %s HTTP/1.0\r\nHost: %s\r\nContent-Type: %s\r\n\r\n",
+			 method, ctxt->path, ctxt->hostname, *contentType);
+#endif
 	    }
 	} else {
 	    if ((contentType == NULL) || (*contentType == NULL)) {
+#ifdef HAVE_SNPRINTF
 		snprintf(buf, sizeof(buf),
 		         "%s %s HTTP/1.0\r\nHost: %s\r\n%s\r\n",
 			 method, ctxt->path, ctxt->hostname, headers);
+#else
+		sprintf(buf,
+		         "%s %s HTTP/1.0\r\nHost: %s\r\n%s\r\n",
+			 method, ctxt->path, ctxt->hostname, headers);
+#endif
 	    } else {
+#ifdef HAVE_SNPRINTF
 		snprintf(buf, sizeof(buf),
 		 "%s %s HTTP/1.0\r\nHost: %s\r\nContent-Type: %s\r\n%s\r\n",
 			 method, ctxt->path, ctxt->hostname, *contentType,
 			 headers);
+#else
+		sprintf(buf,
+		 "%s %s HTTP/1.0\r\nHost: %s\r\nContent-Type: %s\r\n%s\r\n",
+			 method, ctxt->path, ctxt->hostname, *contentType,
+			 headers);
+#endif
 	    }
 	}
     } else {
         int len = strlen(input);
         if (headers == NULL) {
 	    if ((contentType == NULL) || (*contentType == NULL)) {
+#ifdef HAVE_SNPRINTF
 		snprintf(buf, sizeof(buf),
 		 "%s %s HTTP/1.0\r\nHost: %s\r\nContent-Length: %d\r\n\r\n%s",
 			 method, ctxt->path, ctxt->hostname, len, input);
+#else
+		sprintf(buf,
+		 "%s %s HTTP/1.0\r\nHost: %s\r\nContent-Length: %d\r\n\r\n%s",
+			 method, ctxt->path, ctxt->hostname, len, input);
+#endif
 	    } else {
+#ifdef HAVE_SNPRINTF
 		snprintf(buf, sizeof(buf),
 "%s %s HTTP/1.0\r\nHost: %s\r\nContent-Type: %s\r\nContent-Length: %d\r\n\r\n%s",
 			 method, ctxt->path, ctxt->hostname, *contentType, len,
 			 input);
+#else
+		sprintf(buf,
+"%s %s HTTP/1.0\r\nHost: %s\r\nContent-Type: %s\r\nContent-Length: %d\r\n\r\n%s",
+			 method, ctxt->path, ctxt->hostname, *contentType, len,
+			 input);
+#endif
 	    }
 	} else {
 	    if ((contentType == NULL) || (*contentType == NULL)) {
+#ifdef HAVE_SNPRINTF
 		snprintf(buf, sizeof(buf),
 	     "%s %s HTTP/1.0\r\nHost: %s\r\nContent-Length: %d\r\n%s\r\n%s",
 			 method, ctxt->path, ctxt->hostname, len,
 			 headers, input);
+#else
+		sprintf(buf,
+	     "%s %s HTTP/1.0\r\nHost: %s\r\nContent-Length: %d\r\n%s\r\n%s",
+			 method, ctxt->path, ctxt->hostname, len,
+			 headers, input);
+#endif
 	    } else {
+#ifdef HAVE_SNPRINTF
 		snprintf(buf, sizeof(buf),
 "%s %s HTTP/1.0\r\nHost: %s\r\nContent-Type: %s\r\nContent-Length: %d\r\n%s\r\n%s",
 			 method, ctxt->path, ctxt->hostname, *contentType,
 			 len, headers, input);
+#else
+		sprintf(buf,
+"%s %s HTTP/1.0\r\nHost: %s\r\nContent-Type: %s\r\nContent-Length: %d\r\n%s\r\n%s",
+			 method, ctxt->path, ctxt->hostname, *contentType,
+			 len, headers, input);
+#endif
 	    }
 	}
     }

@@ -126,7 +126,12 @@ def openMySQL(db="xmlsoft", passwd=None):
     global DB
 
     if passwd == None:
-        passwd = "ducon"
+        try:
+	    passwd = os.environ["MySQL_PASS"]
+	except:
+	    print "No password available, set environment MySQL_PASS"
+	    sys.exit(1)
+
     DB = MySQLdb.connect(passwd=passwd, db=db)
     if DB == None:
         return -1

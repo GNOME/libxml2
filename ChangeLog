@@ -1,3 +1,11 @@
+Sun Jul  6 23:09:13 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/*: preparing release 1.5.8
+	* nanohttp.c: changed some preprocessor block
+	* xmlschemastypes.c: applied patch from Charles Bozeman adding
+	  hexBinary schema datatype and adding support for totalDigits and
+	  fractionDigits facets.
+
 Sun Jul  6 19:56:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c xpath.c: fixed 2 bugs pointed in #116448

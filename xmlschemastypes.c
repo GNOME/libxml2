@@ -82,7 +82,8 @@ typedef enum {
     XML_SCHEMAS_SHORT,
     XML_SCHEMAS_USHORT,
     XML_SCHEMAS_BYTE,
-    XML_SCHEMAS_UBYTE
+    XML_SCHEMAS_UBYTE,
+    XML_SCHEMAS_HEXBINARY
 } xmlSchemaValType;
 
 static unsigned long powten[10] = {
@@ -169,6 +170,7 @@ static xmlSchemaTypePtr xmlSchemaTypeDurationDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeFloatDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeBooleanDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeDoubleDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeHexBinaryDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeAnyURIDef = NULL;
 
 /*
@@ -278,6 +280,8 @@ xmlSchemaInitTypes(void)
                                                      XML_SCHEMAS_BOOLEAN);
     xmlSchemaTypeAnyURIDef = xmlSchemaInitBasicType("anyURI",
                                                     XML_SCHEMAS_ANYURI);
+    xmlSchemaTypeHexBinaryDef = xmlSchemaInitBasicType("hexBinary",
+                                                     XML_SCHEMAS_HEXBINARY);
 
     /*
      * derived datatypes
@@ -1914,6 +1918,67 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar *value,
 	    xmlFreeURI(uri);
 	    goto return0;
 	}
+        case XML_SCHEMAS_HEXBINARY: {
+	    const xmlChar *tmp, *cur = value;
+            int total, i = 0;
+            unsigned long lo = 0, mi = 0, hi = 0;
+	    unsigned long *base;
+
+            tmp = cur;
+            while (((*tmp >= '0') && (*tmp <= '9')) ||
+                   ((*tmp >= 'A') && (*tmp <= 'F')) ||
+                   ((*tmp >= 'a') && (*tmp <= 'f'))) {
+	        i++;tmp++;
+            }
+
+	    if (*tmp != 0)
+		goto return1;
+            if (i > 24)
+		goto return1;
+            if ((i % 2) != 0)
+		goto return1;
+
+            total = i / 2;		/* number of octets */
+
+	    if (i >= 16)
+	        base = &hi;
+	    else if (i >= 8)
+	        base = &mi;
+	    else
+	        base = &lo;
+
+            while (i > 0) {
+                if ((*cur >= '0') && (*cur <= '9')) {
+                    *base = *base * 16 + (*cur - '0');
+                } else if ((*cur >= 'A') && (*cur <= 'F')) {
+                    *base = *base * 16 + (*cur - 'A') + 10;
+                } else if ((*cur >= 'a') && (*cur <= 'f')) {
+                    *base = *base * 16 + (*cur - 'a') + 10;
+                } else
+            	    break;
+
+                cur++;
+                i--;
+		if (i == 16)
+		    base = &mi;
+		else if (i == 8)
+		    base = &lo;
+            }
+
+	    if (val != NULL) {
+		v = xmlSchemaNewValue(XML_SCHEMAS_HEXBINARY);
+		if (v != NULL) {
+		    v->value.decimal.lo = lo;
+		    v->value.decimal.mi = mi;
+		    v->value.decimal.hi = hi;
+		    v->value.decimal.total = total;
+		    *val = v;
+		} else {
+		    goto error;
+		}
+	    }
+	    goto return0;
+        }
         case XML_SCHEMAS_INTEGER:
         case XML_SCHEMAS_PINTEGER:
         case XML_SCHEMAS_NPINTEGER:
@@ -3061,6 +3126,10 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 		return(1);
 	    }
 	    return (-2);
+        case XML_SCHEMAS_HEXBINARY:
+            if (y->type == XML_SCHEMAS_HEXBINARY)
+                return (xmlSchemaCompareDecimals(x, y));
+            return (-2);
         case XML_SCHEMAS_STRING:
         case XML_SCHEMAS_IDREFS:
         case XML_SCHEMAS_ENTITIES:
@@ -3205,22 +3274,26 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
 		(facet->val->value.decimal.frac != 0)) {
 		return(-1);
 	    }
-	    switch (base->flags) {
-		case XML_SCHEMAS_IDREF:
-		case XML_SCHEMAS_NORMSTRING:
-		case XML_SCHEMAS_TOKEN:
-		case XML_SCHEMAS_LANGUAGE:
-		case XML_SCHEMAS_NMTOKEN:
-		case XML_SCHEMAS_NAME:
-		case XML_SCHEMAS_NCNAME:
-		case XML_SCHEMAS_ID:
-		    len = xmlSchemaNormLen(value);
-		    break;
-		case XML_SCHEMAS_STRING:
-		    len = xmlUTF8Strlen(value);
-		    break;
-		default:
-		    TODO
+	    if ((val != NULL) && (val->type == XML_SCHEMAS_HEXBINARY))
+	        len = val->value.decimal.total;
+	    else { 
+	        switch (base->flags) {
+	    	    case XML_SCHEMAS_IDREF:
+		    case XML_SCHEMAS_NORMSTRING:
+		    case XML_SCHEMAS_TOKEN:
+		    case XML_SCHEMAS_LANGUAGE:
+		    case XML_SCHEMAS_NMTOKEN:
+		    case XML_SCHEMAS_NAME:
+		    case XML_SCHEMAS_NCNAME:
+		    case XML_SCHEMAS_ID:
+		        len = xmlSchemaNormLen(value);
+		        break;
+		    case XML_SCHEMAS_STRING:
+		        len = xmlUTF8Strlen(value);
+		        break;
+		    default:
+		        TODO
+	        }
 	    }
 	    if (facet->type == XML_SCHEMA_FACET_LENGTH) {
 		if (len != facet->val->value.decimal.lo)
@@ -3234,6 +3307,41 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
 	    }
 	    break;
 	}
+	case XML_SCHEMA_FACET_TOTALDIGITS:
+	case XML_SCHEMA_FACET_FRACTIONDIGITS:
+
+	    if ((facet->val == NULL) ||
+		((facet->val->type != XML_SCHEMAS_DECIMAL) &&
+		 (facet->val->type != XML_SCHEMAS_NNINTEGER)) ||
+		(facet->val->value.decimal.frac != 0)) {
+		return(-1);
+	    }
+	    if ((val == NULL) ||
+		((val->type != XML_SCHEMAS_DECIMAL) &&
+		 (val->type != XML_SCHEMAS_INTEGER) &&
+		 (val->type != XML_SCHEMAS_NPINTEGER) &&
+		 (val->type != XML_SCHEMAS_NINTEGER) &&
+		 (val->type != XML_SCHEMAS_NNINTEGER) &&
+		 (val->type != XML_SCHEMAS_PINTEGER) &&
+		 (val->type != XML_SCHEMAS_INT) &&
+		 (val->type != XML_SCHEMAS_UINT) &&
+		 (val->type != XML_SCHEMAS_LONG) &&
+		 (val->type != XML_SCHEMAS_ULONG) &&
+		 (val->type != XML_SCHEMAS_SHORT) &&
+		 (val->type != XML_SCHEMAS_USHORT) &&
+		 (val->type != XML_SCHEMAS_BYTE) &&
+		 (val->type != XML_SCHEMAS_UBYTE))) {
+		return(-1);
+	    }
+	    if (facet->type == XML_SCHEMA_FACET_TOTALDIGITS) {
+	        if (val->value.decimal.total > facet->val->value.decimal.lo)
+	            return(1);
+
+	    } else if (facet->type == XML_SCHEMA_FACET_FRACTIONDIGITS) {
+	        if (val->value.decimal.frac > facet->val->value.decimal.lo)
+		    return(1);
+	    }
+	    break;
 	default:
 	    TODO
     }

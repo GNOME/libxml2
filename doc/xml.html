@@ -18,12 +18,12 @@ site</a></h1>
 <p></p>
 
 <p>Libxml2 is the XML C parser and toolkit developed for the Gnome project
-(but usable outside of the Gnome platform).
-XML itself is a metalanguage to design markup languages, i.e. text language
-where semantic and structure are added to the content using extra "markup"
-information enclosed between angle brackets. HTML is the most well-known
-markup language. Though the library is written in C <a href="python.html">a
-variety of language bindings</a> make it available in other environments.</p>
+(but usable outside of the Gnome platform). XML itself is a metalanguage to
+design markup languages, i.e. text language where semantic and structure are
+added to the content using extra "markup" information enclosed between angle
+brackets. HTML is the most well-known markup language. Though the library is
+written in C <a href="python.html">a variety of language bindings</a> make it
+available in other environments.</p>
 
 <p>Libxml2 is known to be very portable, the library should build and work
 without serious troubles on a variety of systems (Linux, Unix, Windows,
@@ -67,9 +67,9 @@ languages:</p>
     2001</a> except the base64Binary and hexBinary types</li>
 </ul>
 
-<p>In most cases libxml2 tries to implement the specifications in a relatively
-strictly compliant way. As of release 2.4.16, libxml2 passes all 1800+ tests
-from the <a
+<p>In most cases libxml2 tries to implement the specifications in a
+relatively strictly compliant way. As of release 2.4.16, libxml2 passes all
+1800+ tests from the <a
 href="http://www.oasis-open.org/committees/xml-conformance/">OASIS XML Tests
 Suite</a>.</p>
 
@@ -121,8 +121,8 @@ alt="benchmark results for Expat Xerces libxml2 Oracle and Sun toolkits"></p>
 <h2><a name="Introducti">Introduction</a></h2>
 
 <p>This document describes libxml, the <a
-href="http://www.w3.org/XML/">XML</a> C parser and toolkit developed for the <a
-href="http://www.gnome.org/">Gnome</a> project. <a
+href="http://www.w3.org/XML/">XML</a> C parser and toolkit developed for the
+<a href="http://www.gnome.org/">Gnome</a> project. <a
 href="http://www.w3.org/XML/">XML is a standard</a> for building tag-based
 structured documents/data.</p>
 
@@ -144,8 +144,9 @@ structured documents/data.</p>
   <li>The design is modular, most of the extensions can be compiled out.</li>
   <li>The internal document representation is as close as possible to the <a
     href="http://www.w3.org/DOM/">DOM</a> interfaces.</li>
-  <li>Libxml2 also has a <a href="http://www.megginson.com/SAX/index.html">SAX
-    like interface</a>; the interface is designed to be compatible with <a
+  <li>Libxml2 also has a <a
+    href="http://www.megginson.com/SAX/index.html">SAX like interface</a>;
+    the interface is designed to be compatible with <a
     href="http://www.jclark.com/xml/expat.html">Expat</a>.</li>
   <li>This library is released under the <a
     href="http://www.opensource.org/licenses/mit-license.html">MIT
@@ -186,8 +187,8 @@ libxml2</p>
 
 <h3><a name="Installati">Installation</a></h3>
 <ol>
-  <li><strong><span style="background-color: #FF0000">Do
-    Not Use libxml1</span></strong>, use libxml2</li>
+  <li><strong><span style="background-color: #FF0000">Do Not Use
+    libxml1</span></strong>, use libxml2</li>
   <li><em>Where can I get libxml</em> ?
     <p>The original distribution comes from <a
     href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> or <a
@@ -296,7 +297,7 @@ libxml2</p>
     <p>Usually the problem comes from the fact that the compiler doesn't get
     the right compilation or linking flags. There is a small shell script
     <code>xml2-config</code> which is installed as part of libxml2 usual
-    install process which provides those flags. Use </p>
+    install process which provides those flags. Use</p>
     <p><code>xml2-config --cflags</code></p>
     <p>to get the compilation flags and</p>
     <p><code>xml2-config --libs</code></p>
@@ -460,8 +461,8 @@ xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
     internationalization support</a>.</li>
   <li>This page provides a global overview and <a href="example.html">some
     examples</a> on how to use libxml.</li>
-  <li>John Fleck's libxml2 tutorial: <a href="tutorial/index.html">html</a> or
-    <a href="tutorial/xmltutorial.pdf">pdf</a>.</li>
+  <li>John Fleck's libxml2 tutorial: <a href="tutorial/index.html">html</a>
+    or <a href="tutorial/xmltutorial.pdf">pdf</a>.</li>
   <li>If you need to parse large files, check the <a
     href="xmlreader.html">xmlReader</a> API tutorial</li>
   <li><a href="mailto:james@daa.com.au">James Henstridge</a> wrote <a
@@ -530,9 +531,9 @@ answer a given question, ask on the list.</p>
     others" and is not welcome. I will automatically Carbon-Copy the
     xml@gnome.org mailing list for any technical reply made about libxml2 or
     libxslt.</li>
-  <li>There is <span style="color: #E50000">no garantee of support</span>,
-    if your question remains unanswered after a week, repost it, making sure
-    you gave all the detail needed and the information requested.</li>
+  <li>There is <span style="color: #E50000">no garantee of support</span>, if
+    your question remains unanswered after a week, repost it, making sure you
+    gave all the detail needed and the information requested.</li>
   <li>Failing to provide information as requested or double checking first
     for prior feedback also carries the implicit message "the time of the
     library maintainers is less valuable than my time" and might not be
@@ -544,10 +545,11 @@ probably be processed faster than those without.</p>
 
 <p>If you're looking for help, a quick look at <a
 href="http://mail.gnome.org/archives/xml/">the list archive</a> may actually
-provide the answer. I usually send source samples when answering libxml2 usage
-questions. The <a href="http://xmlsoft.org/html/book1.html">auto-generated
-documentation</a> is not as polished as I would like (i need to learn more
-about DocBook), but it's a good starting point.</p>
+provide the answer. I usually send source samples when answering libxml2
+usage questions. The <a
+href="http://xmlsoft.org/html/book1.html">auto-generated documentation</a> is
+not as polished as I would like (i need to learn more about DocBook), but
+it's a good starting point.</p>
 
 <h2><a name="help">How to help</a></h2>
 
@@ -648,6 +650,27 @@ to test those</p>
   <li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
+</ul>
+
+<h3>2.5.8: Jul 6 2003</h3>
+<ul>
+  <li>bugfixes: XPath, XInclude, file/URI mapping, UTF-16 save (Mark
+    Itzcovitz), UTF-8 checking, URI saving, error printing (William Brack),
+    PI related memleak, compilation without schemas or without xpath (Joerg
+    Schmitz-Linneweber/Garry Pennington), xmlUnlinkNode problem with DTDs,
+    rpm problem on , i86_64, removed a few compilation problems from 2.5.7,
+    xmlIOParseDTD, and xmlSAXParseDTD (Malcolm Tredinnick)</li>
+  <li>portability: DJGPP (MsDos) , OpenVMS (Craig A. Berry)</li>
+  <li>William Brack fixed multithreading lock problems</li>
+  <li>IPv6 patch for FTP and HTTP accesses (Archana Shah/Wipro)</li>
+  <li>Windows fixes (Igor Zlatkovic,  Eric Zurcher), threading (Stéphane
+    Bidoul)</li>
+  <li>A few W3C Schemas Structure improvements</li>
+  <li>W3C Schemas Datatype improvements (Charlie Bozeman)</li>
+  <li>Python bindings for thread globals (Stéphane Bidoul), and method/class
+    generator </li>
+  <li>added --nonet option to xmllint </li>
+  <li>documentation improvements (John Fleck)</li>
 </ul>
 
 <h3>2.5.7: Apr 25 2003</h3>
@@ -1677,8 +1700,8 @@ server.</p>
 language for transforming XML documents into other XML documents (or
 HTML/textual output).</p>
 
-<p>A separate library called libxslt is available implementing XSLT-1.0
-for libxml2. This module "libxslt" too can be found in the Gnome CVS base.</p>
+<p>A separate library called libxslt is available implementing XSLT-1.0 for
+libxml2. This module "libxslt" too can be found in the Gnome CVS base.</p>
 
 <p>You can check the <a
 href="http://cvs.gnome.org/lxr/source/libxslt/FEATURES">features</a>
@@ -2019,8 +2042,8 @@ calls dumpMemory() which saves that list in a <code>.memdump</code> file.</p>
 
 <h2><a name="architecture">libxml2 architecture</a></h2>
 
-<p>Libxml2 is made of multiple components; some of them are optional, and most
-of the block interfaces are public. The main components are:</p>
+<p>Libxml2 is made of multiple components; some of them are optional, and
+most of the block interfaces are public. The main components are:</p>
 <ul>
   <li>an Input/Output layer</li>
   <li>FTP and HTTP client layers (optional)</li>
@@ -3230,8 +3253,8 @@ catalog support</a>.</p>
 
 <p>The API is voluntarily kept very simple. First it is not obvious that
 applications really need access to it since it is the default behaviour of
-libxml2 (Note: it is possible to completely override libxml2 default catalog by
-using <a href="html/libxml-parser.html">xmlSetExternalEntityLoader</a> to
+libxml2 (Note: it is possible to completely override libxml2 default catalog
+by using <a href="html/libxml-parser.html">xmlSetExternalEntityLoader</a> to
 plug an application specific resolver).</p>
 
 <p>Basically libxml2 support 2 catalog lists:</p>
@@ -3349,9 +3372,8 @@ me:</p>
 using the XML tollkit from the C language. It is not intended to be
 extensive. I hope the automatically generated documents will provide the
 completeness required, but as a separate set of documents. The interfaces of
-the XML parser are by principle low level,
-Those interested in a higher level API should <a href="#DOM">look at
-DOM</a>.</p>
+the XML parser are by principle low level, Those interested in a higher level
+API should <a href="#DOM">look at DOM</a>.</p>
 
 <p>The <a href="html/libxml-parser.html">parser interfaces for XML</a> are
 separated from the <a href="html/libxml-htmlparser.html">HTML parser
@@ -3380,8 +3402,9 @@ failure).</p>
 <h3 id="Invoking1">Invoking the parser: the push method</h3>
 
 <p>In order for the application to keep the control when the document is
-being fetched (which is common for GUI based programs) libxml2 provides a push
-interface, too, as of version 1.8.3. Here are the interface functions:</p>
+being fetched (which is common for GUI based programs) libxml2 provides a
+push interface, too, as of version 1.8.3. Here are the interface
+functions:</p>
 <pre>xmlParserCtxtPtr xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax,
                                          void *user_data,
                                          const char *chunk,

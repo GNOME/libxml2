@@ -968,13 +968,14 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 #ifdef SUPPORT_IP6
     memset (&sockin6, 0, sizeof(sockin6));
     if (have_ipv6 ())
-    {
 #if !defined(HAVE_GETADDRINFO) && defined(RES_USE_INET6)
+    {
 	if (!(_res.options & RES_INIT))
 	    res_init();
 	_res.options |= RES_USE_INET6;
     }
 #elif defined(HAVE_GETADDRINFO)
+    {
 	int status;
 	struct addrinfo hints, *res, *result;
 

@@ -1596,9 +1596,9 @@ decode:
 /**
  * xmlSAX2AttributeNs:
  * @ctx: the user data (XML parser context)
- * @localname:  the local name of the element
- * @prefix:  the element namespace prefix if available
- * @URI:  the element namespace name if available
+ * @localname:  the local name of the attribute
+ * @prefix:  the attribute namespace prefix if available
+ * @URI:  the attribute namespace name if available
  * @value:  Start of the attribute value
  * @valueend: end of the attribute value
  *
@@ -1617,11 +1617,6 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
     xmlAttrPtr ret;
     xmlNsPtr namespace = NULL;
     xmlChar *dup = NULL;
-
-#if 0
-    TODO, check taht CDATA normalization is done at the
-    parser level !!!!!
-#endif
 
     /*
      * Note: if prefix == NULL, the attribute is not in the default namespace
@@ -1662,31 +1657,50 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
         if (!ctxt->replaceEntities) {
 	    dup = xmlSAX2DecodeAttrEntities(ctxt, value, valueend);
 	    if (dup == NULL) {
-	        /*
-		 * cheaper to finally allocate here than duplicate
-		 * entry points in the full validation code
-		 */
-	        dup = xmlStrndup(value, valueend - value);
+	        if (*valueend == 0) {
+		    ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt,
+				    ctxt->myDoc, ctxt->node, ret, value);
+		} else {
+		    /*
+		     * That should already be normalized.
+		     * cheaper to finally allocate here than duplicate
+		     * entry points in the full validation code
+		     */
+		    dup = xmlStrndup(value, valueend - value);
 
-		ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt,
-				ctxt->myDoc, ctxt->node, ret, dup);
+		    ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt,
+				    ctxt->myDoc, ctxt->node, ret, dup);
+		}
 	    } else {
-#if 0
-	        TODO
-		xmlChar *nvalnorm;
-
-		/*
-		 * Do the last stage of the attribute normalization
+	        /*
+		 * dup now contains a string of the flattened attribute
+		 * content with entities substitued. Check if we need to
+		 * apply an extra layer of normalization.
 		 * It need to be done twice ... it's an extra burden related
 		 * to the ability to keep references in attributes
 		 */
-		nvalnorm = xmlValidNormalizeAttributeValue(ctxt->myDoc,
-					    ctxt->node, fullname, dup);
-		if (nvalnorm != NULL) {
-		    xmlFree(dup);
-		    dup = nvalnorm;
+		if (ctxt->attsSpecial != NULL) {
+		    xmlChar *nvalnorm;
+		    xmlChar fn[50];
+		    xmlChar *fullname;
+		    
+		    fullname = xmlBuildQName(localname, prefix, fn, 50);
+		    if (fullname != NULL) {
+			ctxt->vctxt.valid = 1;
+		        nvalnorm = xmlValidCtxtNormalizeAttributeValue(
+			                 &ctxt->vctxt, ctxt->myDoc,
+					 ctxt->node, fullname, dup);
+			if (ctxt->vctxt.valid != 1)
+			    ctxt->valid = 0;
+
+			if ((fullname != fn) && (fullname != localname))
+			    xmlFree(fullname);
+			if (nvalnorm != NULL) {
+			    xmlFree(dup);
+			    dup = nvalnorm;
+			}
+		    }
 		}
-#endif
 
 		ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt,
 			        ctxt->myDoc, ctxt->node, ret, dup);
@@ -2221,7 +2235,7 @@ xmlSAX2CDataBlock(void *ctx, const xmlChar *value, int len)
     }
 }
 
-static xmlSAX2DefaultVersionValue = 2;
+static int xmlSAX2DefaultVersionValue = 2;
 
 /**
  * xmlSAXDefaultVersion:

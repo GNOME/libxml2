@@ -3319,17 +3319,10 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    xmlEntityPtr ent;
 
 	    ent = xmlGetDocEntity(doc, value);
+	    /* yeah it's a bit messy... */
 	    if ((ent == NULL) && (doc->standalone == 1)) {
 		doc->standalone = 0;
 		ent = xmlGetDocEntity(doc, value);
-		if (ent != NULL) {
-		    VERROR(ctxt->userData, 
-"standalone problem: attribute %s reference entity \"%s\" in external subset\n",
-			   name, value);
-		    /* WAIT to get answer from the Core WG on this 
-		    ret = 0;
-		     */
-		}
 	    } 
 	    if (ent == NULL) {
 		VERROR(ctxt->userData, 

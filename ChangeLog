@@ -1,3 +1,9 @@
+Mon Sep 15 14:54:42 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c parser.c valid.c: starting to cleanup some of the
+	  problems exposed by the W3C/NIST regression suite.
+	* result/ent7.sax result/xml2.sax: small fixes.
+
 Mon Sep 15 11:46:47 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: more parser error factoring

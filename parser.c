@@ -3024,10 +3024,10 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 	   (c != '<')) {
 	if (c == 0) break;
 	if (c == '&') {
+	    in_space = 0;
 	    if (NXT(1) == '#') {
 		int val = xmlParseCharRef(ctxt);
 
-		in_space = 0;
 		if (val == '&') {
 		    if (ctxt->replaceEntities) {
 			if (len > buf_size - 10) {
@@ -3071,7 +3071,6 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		    } else {
 			buf[len++] = ent->content[0];
 		    }
-		    in_space = 0;
 		} else if ((ent != NULL) && 
 		           (ctxt->replaceEntities != 0)) {
 		    xmlChar *rep;

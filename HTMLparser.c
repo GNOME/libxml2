@@ -4317,6 +4317,7 @@ htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
  * @first:  the first char to lookup
  * @next:  the next char to lookup or zero
  * @third:  the next char to lookup or zero
+ * @iscomment: flag to force checking inside comments
  *
  * Try to find if a sequence (first, next, third) or  just (first next) or
  * (first) is available in the input stream.
@@ -4330,7 +4331,7 @@ htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
  */
 static int
 htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
-                       xmlChar next, xmlChar third) {
+                       xmlChar next, xmlChar third, int iscomment) {
     int base, len;
     htmlParserInputPtr in;
     const xmlChar *buf;
@@ -4353,13 +4354,13 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
     if (third) len -= 2;
     else if (next) len --;
     for (;base < len;base++) {
-	if (!incomment && (base + 4 < len)) {
+	if (!incomment && (base + 4 < len) && !iscomment) {
 	    if ((buf[base] == '<') && (buf[base + 1] == '!') &&
 		(buf[base + 2] == '-') && (buf[base + 3] == '-')) {
 		incomment = 1;
+		/* do not increment past <! - some people use <!--> */
+		base += 2;
 	    }
-	    /* do not increment past <!, some people use <!--> */
-	    base += 2;
 	}
 	if (incomment) {
 	    if (base + 3 > len)
@@ -4540,7 +4541,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -4573,7 +4574,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	        if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
+		        (htmlParseLookupSequence(ctxt, '-', '-', '>', 1) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -4587,7 +4588,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -4623,7 +4624,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
+		        (htmlParseLookupSequence(ctxt, '-', '-', '>', 1) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -4660,7 +4661,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	        if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
+		        (htmlParseLookupSequence(ctxt, '-', '-', '>', 1) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    xmlGenericError(xmlGenericErrorContext,
@@ -4710,7 +4711,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    break;
 		}
 		if ((!terminate) &&
-		    (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 		    goto done;
 
 		oldname = xmlStrdup(ctxt->name);
@@ -4879,7 +4880,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		     * Handle SCRIPT/STYLE separately
 		     */
 		    if ((!terminate) &&
-		        (htmlParseLookupSequence(ctxt, '<', '/', 0) < 0))
+		        (htmlParseLookupSequence(ctxt, '<', '/', 0, 0) < 0))
 			goto done;
 		    htmlParseScript(ctxt);
 		    if ((cur == '<') && (next == '/')) {
@@ -4901,7 +4902,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			(UPP(6) == 'Y') && (UPP(7) == 'P') &&
 			(UPP(8) == 'E')) {
 			if ((!terminate) &&
-			    (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+			    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 			    goto done;
 			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData,
@@ -4911,7 +4912,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    } else if ((cur == '<') && (next == '!') &&
 			(in->cur[2] == '-') && (in->cur[3] == '-')) {
 			if ((!terminate) &&
-			    (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
+			    (htmlParseLookupSequence(
+			    		ctxt, '-', '-', '>', 1) < 0))
 			    goto done;
 #ifdef DEBUG_PUSH
 			xmlGenericError(xmlGenericErrorContext,
@@ -4939,7 +4941,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			break;
 		    } else if (cur == '&') {
 			if ((!terminate) &&
-			    (htmlParseLookupSequence(ctxt, ';', 0, 0) < 0))
+			    (htmlParseLookupSequence(ctxt, ';', 0, 0, 0) < 0))
 			    goto done;
 #ifdef DEBUG_PUSH
 			xmlGenericError(xmlGenericErrorContext,
@@ -4957,7 +4959,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			if ((ctxt->inputNr == 1) &&
 			    (avail < HTML_PARSER_BIG_BUFFER_SIZE)) {
 			    if ((!terminate) &&
-				(htmlParseLookupSequence(ctxt, '<', 0, 0) < 0))
+				(htmlParseLookupSequence(
+					ctxt, '<', 0, 0, 0) < 0))
 				goto done;
 			}
 			ctxt->checkIndex = 0;
@@ -4985,7 +4988,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if (avail < 2)
 		    goto done;
 		if ((!terminate) &&
-		    (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+		    (htmlParseLookupSequence(ctxt, '>', 0, 0, 0) < 0))
 		    goto done;
 		htmlParseEndTag(ctxt);
 		if (ctxt->nameNr == 0) {

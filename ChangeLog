@@ -1,3 +1,9 @@
+Wed Jul 30 14:57:55 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: applied a patch from William Brack about
+	  the problem of parsing very large HTML instance with comments
+	  as raised by Nick Kew
+
 Wed Jul 30 12:29:38 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c include/libxml/xmlreader.h: applying cleanup

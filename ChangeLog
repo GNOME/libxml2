@@ -1,3 +1,10 @@
+Fri Feb 20 09:56:47 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: xmlAttrSerializeTxtContent don't segfault if NULL
+	  is passed.
+	* test/att7 result//att7*: adding an old regression test
+	  laying around on my laptop
+
 Thu Feb 19 17:33:36 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fixed xmllint --memory --stream memory consumption

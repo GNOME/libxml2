@@ -7016,6 +7016,7 @@ xmlAttrSerializeTxtContent(xmlBufferPtr buf, xmlDocPtr doc,
         xmlAttrPtr attr, const xmlChar *string) {
     xmlChar *base, *cur;
 
+    if (string == NULL) return;
     base = cur = (xmlChar *)string;
     while (*cur != 0) {
         if (*cur == '\n') {

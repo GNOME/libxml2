@@ -2009,12 +2009,13 @@ CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
     xmlAttrPtr prop = node->properties;
 
     while (prop != NULL) {
-        if (!xmlStrcmp(prop->name, name)) 
+        if (!xmlStrcmp(prop->name, name))  {
 	    CHAR *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->val, 1);
 	    if (ret == NULL) return(xmlStrdup(""));
 	    return(ret);
+        }
 	prop = prop->next;
     }
     return(NULL);

@@ -1,3 +1,8 @@
+Fri Mar  1 17:14:42 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: Fixed #72346, about handling of xmlns:foo="", this could
+	  actually change in a future XML Namespace revision.
+
 Fri Mar  1 17:12:15 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/types.c python/tests/Makefile.am python/tests/xpathret.py:

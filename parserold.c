@@ -2229,6 +2229,7 @@ xmlOldParseAttValue(xmlParserCtxtPtr ctxt) {
     while ((ctxt->token != 0) ||
 	   ((cur != limit) && (cur != '<'))) {
 	if (cur == 0) break;
+	if (cur == '&') { GROW; }
 	if (ctxt->token == '&') {
 	    /*
 	     * The reparsing will be done in xmlStringGetNodeList()

@@ -1,3 +1,10 @@
+2002-01-23  Ettore Perazzoli  <ettore@ximian.com>
+
+	[Patch from Ian Goldberg <ian@cypherpunks.ca>.]
+
+	* parserold.c (xmlOldParseAttValue): Ensure you've got enough
+	characters in your readahead buffer before you check NXT(1).
+
 2001-09-07  Jody Goldberg <jgoldberg@home.com>
 
 	* tree.c (xmlStaticCopyNode) : back port a fix from xml2

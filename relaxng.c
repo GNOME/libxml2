@@ -2703,6 +2703,7 @@ static xmlRelaxNGPtr
 xmlRelaxNGParseDocument(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     xmlRelaxNGPtr schema = NULL;
     const xmlChar *olddefine;
+    xmlRelaxNGGrammarPtr old;
 
     if ((ctxt == NULL) || (node == NULL))
         return (NULL);
@@ -2721,8 +2722,11 @@ xmlRelaxNGParseDocument(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	    return(schema);
 	}
 	schema->topgrammar->parent = NULL;
+	old = ctxt->grammar;
 	ctxt->grammar = schema->topgrammar;
 	xmlRelaxNGParseStart(ctxt, node);
+	if (old != NULL)
+	    ctxt->grammar = old;
     }
     ctxt->define = olddefine;
 
@@ -3318,8 +3322,12 @@ xmlRelaxNGDumpDefine(FILE * output, xmlRelaxNGDefinePtr define) {
 	    xmlRelaxNGDumpDefines(output, define->content);
 	    fprintf(output, "</ref>\n");
 	    break;
-        case XML_RELAXNG_DATATYPE:
 	case XML_RELAXNG_EXTERNALREF:
+	    fprintf(output, "<externalRef");
+	    xmlRelaxNGDumpDefines(output, define->content);
+	    fprintf(output, "</externalRef>\n");
+	    break;
+        case XML_RELAXNG_DATATYPE:
         case XML_RELAXNG_VALUE:
 	    TODO
 	    break;

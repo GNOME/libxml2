@@ -1,7 +1,7 @@
 Unimplemented block at xmlschemastypes.c:1135
 Unimplemented block at xmlschemastypes.c:1135
 Unimplemented block at xmlschemastypes.c:1135
-error detected at relaxng.c:3698
-error detected at relaxng.c:4485
-error detected at relaxng.c:4300
+error detected at relaxng.c:3706
+error detected at relaxng.c:4493
+error detected at relaxng.c:4308
 xmlRelaxNGValidateDefinition(): validated path : -1

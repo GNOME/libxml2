@@ -1,3 +1,9 @@
+Wed Jan 29 23:44:58 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: debugging of externalRef
+	* test/relaxng/* result/relaxng/*: augmented/updated the
+	  regression tests
+
 Wed Jan 29 22:06:04 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: more work on Relax-NG, implementing externalRef

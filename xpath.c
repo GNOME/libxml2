@@ -1773,6 +1773,68 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 }
 
 /**
+ * xmlXPathNodeSetMergeUnique:
+ * @val1:  the first NodeSet or NULL
+ * @val2:  the second NodeSet
+ *
+ * Merges two nodesets, all nodes from @val2 are added to @val1
+ * if @val1 is NULL, a new set is created and copied from @val2
+ *
+ * Returns @val1 once extended or NULL in case of error.
+ */
+static xmlNodeSetPtr
+xmlXPathNodeSetMergeUnique(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
+    int i, initNr;
+
+    if (val2 == NULL) return(val1);
+    if (val1 == NULL) {
+	val1 = xmlXPathNodeSetCreate(NULL);
+    }
+
+    /* @@ with_ns to check wether namespace nodes should be looked at @@ */
+    initNr = val1->nodeNr;
+
+    for (i = 0;i < val2->nodeNr;i++) {
+	/*
+	 * grow the nodeTab if needed
+	 */
+	if (val1->nodeMax == 0) {
+	    val1->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
+						    sizeof(xmlNodePtr));
+	    if (val1->nodeTab == NULL) {
+		xmlGenericError(xmlGenericErrorContext,
+				"xmlXPathNodeSetMerge: out of memory\n");
+		return(NULL);
+	    }
+	    memset(val1->nodeTab, 0 ,
+		   XML_NODESET_DEFAULT * (size_t) sizeof(xmlNodePtr));
+	    val1->nodeMax = XML_NODESET_DEFAULT;
+	} else if (val1->nodeNr == val1->nodeMax) {
+	    xmlNodePtr *temp;
+
+	    val1->nodeMax *= 2;
+	    temp = (xmlNodePtr *) xmlRealloc(val1->nodeTab, val1->nodeMax *
+					     sizeof(xmlNodePtr));
+	    if (temp == NULL) {
+		xmlGenericError(xmlGenericErrorContext,
+				"xmlXPathNodeSetMerge: out of memory\n");
+		return(NULL);
+	    }
+	    val1->nodeTab = temp;
+	}
+	if (val2->nodeTab[i]->type == XML_NAMESPACE_DECL) {
+	    xmlNsPtr ns = (xmlNsPtr) val2->nodeTab[i];
+
+	    val1->nodeTab[val1->nodeNr++] =
+		xmlXPathNodeSetDupNs((xmlNodePtr) ns->next, ns);
+	} else
+	    val1->nodeTab[val1->nodeNr++] = val2->nodeTab[i];
+    }
+
+    return(val1);
+}
+
+/**
  * xmlXPathNodeSetDel:
  * @cur:  the initial node set
  * @val:  an xmlNodePtr
@@ -8233,6 +8295,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     xmlNodeSetPtr ret, list;
     xmlXPathTraversalFunction next = NULL;
     void (*addNode) (xmlNodeSetPtr, xmlNodePtr);
+    xmlNodeSetPtr (*mergeNodeSet) (xmlNodeSetPtr, xmlNodeSetPtr);
     xmlNodePtr cur = NULL;
     xmlXPathObjectPtr obj;
     xmlNodeSetPtr nodelist;
@@ -8241,6 +8304,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     CHECK_TYPE0(XPATH_NODESET);
     obj = valuePop(ctxt);
     addNode = xmlXPathNodeSetAdd;
+    mergeNodeSet = xmlXPathNodeSetMerge;
     if (prefix != NULL) {
         URI = xmlXPathNsLookup(ctxt->context, prefix);
         if (URI == NULL)
@@ -8272,6 +8336,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
             first = NULL;
 	    last = NULL;
             next = xmlXPathNextAttribute;
+	    mergeNodeSet = xmlXPathNodeSetMergeUnique;
             break;
         case AXIS_CHILD:
 #ifdef DEBUG_STEP
@@ -8279,6 +8344,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 #endif
 	    last = NULL;
             next = xmlXPathNextChild;
+	    mergeNodeSet = xmlXPathNodeSetMergeUnique;
             break;
         case AXIS_DESCENDANT:
 #ifdef DEBUG_STEP
@@ -8309,6 +8375,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 #endif
 	    last = NULL;
             next = xmlXPathNextFollowingSibling;
+	    mergeNodeSet = xmlXPathNodeSetMergeUnique;
             break;
         case AXIS_NAMESPACE:
 #ifdef DEBUG_STEP
@@ -8317,6 +8384,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
             first = NULL;
 	    last = NULL;
             next = (xmlXPathTraversalFunction) xmlXPathNextNamespace;
+	    mergeNodeSet = xmlXPathNodeSetMergeUnique;
             break;
         case AXIS_PARENT:
 #ifdef DEBUG_STEP
@@ -8339,6 +8407,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 #endif
             first = NULL;
             next = xmlXPathNextPrecedingSibling;
+	    mergeNodeSet = xmlXPathNodeSetMergeUnique;
             break;
         case AXIS_SELF:
 #ifdef DEBUG_STEP
@@ -8347,6 +8416,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
             first = NULL;
 	    last = NULL;
             next = xmlXPathNextSelf;
+	    mergeNodeSet = xmlXPathNodeSetMergeUnique;
             break;
     }
     if (next == NULL)
@@ -8591,7 +8661,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
         if (ret == NULL) {
             ret = list;
         } else {
-            ret = xmlXPathNodeSetMerge(ret, list);
+            ret = mergeNodeSet(ret, list);
             xmlXPathFreeNodeSet(list);
         }
     }

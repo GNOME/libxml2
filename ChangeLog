@@ -1,3 +1,11 @@
+Wed Mar 13 11:00:59 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: speedup some node selection operations, this can
+	  have a significant impact on DocBook Norm's stylesheets
+	* nanohttp.c: someone reported that SOCKLEN_T may not be defined
+	  make sure it's always the case
+	* debugXML.c: distinguish CDATA and comments in ls operations
+
 Tue Mar 12 19:45:24 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/*.h: Heiko W. Rupp fixed a lot of comments

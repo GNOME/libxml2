@@ -78,6 +78,12 @@
 #define SOCKET int
 #endif
 
+#ifndef SOCKLEN_T
+#define SOCKLEN_T unsigned int
+#endif
+#ifndef SOCKET
+#define SOCKET int
+#endif
 
 #ifdef STANDALONE
 #define DEBUG_HTTP

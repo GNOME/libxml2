@@ -1148,7 +1148,7 @@ xmlLsOneNode(FILE *output, xmlNodePtr node) {
 	    fprintf(output, "t");
 	    break;
 	case XML_CDATA_SECTION_NODE:
-	    fprintf(output, "c");
+	    fprintf(output, "C");
 	    break;
 	case XML_ENTITY_REF_NODE:
 	    fprintf(output, "e");

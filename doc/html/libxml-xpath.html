@@ -69,6 +69,9 @@ void	<a href="#xmlXPathEvalFunc">xmlXPathEvalFunc</a>		(<a href="libxml-xpath.ht
 <pre class="programlisting">void	<a href="#xmlXPathFreeNodeSet">xmlXPathFreeNodeSet</a>		(<a href="libxml-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> obj)</pre>
 <pre class="programlisting">void	<a href="#xmlXPathFreeNodeSetList">xmlXPathFreeNodeSetList</a>		(<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> obj)</pre>
 <pre class="programlisting">void	<a href="#xmlXPathFreeObject">xmlXPathFreeObject</a>		(<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> obj)</pre>
+<pre class="programlisting">Function type: <a href="#xmlXPathFuncLookupFunc">xmlXPathFuncLookupFunc</a>
+<a href="libxml-xpath.html#xmlXPathFunction">xmlXPathFunction</a>	<a href="#xmlXPathFuncLookupFunc">xmlXPathFuncLookupFunc</a>	(void * ctxt, <br />						 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * name, <br />						 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * ns_uri)
+</pre>
 <pre class="programlisting">Function type: <a href="#xmlXPathFunction">xmlXPathFunction</a>
 void	<a href="#xmlXPathFunction">xmlXPathFunction</a>		(<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br />					 int nargs)
 </pre>
@@ -79,6 +82,9 @@ void	<a href="#xmlXPathFunction">xmlXPathFunction</a>		(<a href="libxml-xpath.ht
 <pre class="programlisting"><a href="libxml-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a>	<a href="#xmlXPathNodeSetCreate">xmlXPathNodeSetCreate</a>	(<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> val)</pre>
 <pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	<a href="#xmlXPathObjectCopy">xmlXPathObjectCopy</a>	(<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val)</pre>
 <pre class="programlisting">long	<a href="#xmlXPathOrderDocElems">xmlXPathOrderDocElems</a>		(<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc)</pre>
+<pre class="programlisting">Function type: <a href="#xmlXPathVariableLookupFunc">xmlXPathVariableLookupFunc</a>
+<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	<a href="#xmlXPathVariableLookupFunc">xmlXPathVariableLookupFunc</a>	(void * ctxt, <br />							 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * name, <br />							 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * ns_uri)
+</pre>
 <h2>Description</h2>
 <h3><a name="xmlXPathNodeSetGetLength" id="xmlXPathNodeSetGetLength"></a>Macro: xmlXPathNodeSetGetLength</h3><pre>#define xmlXPathNodeSetGetLength</pre><p>Implement a functionality similar to the DOM NodeList.length. Returns the number of nodes in the node-set.</p>
 <h3><a name="xmlXPathNodeSetIsEmpty" id="xmlXPathNodeSetIsEmpty"></a>Macro: xmlXPathNodeSetIsEmpty</h3><pre>#define xmlXPathNodeSetIsEmpty</pre><p>Checks whether @ns is empty or not. Returns %TRUE if @ns is an empty node-set.</p>
@@ -116,12 +122,12 @@ The content of this structure is not made public by the API.
     <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	here	: for here()
     <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	origin	: for origin() the set of namespace decla
     <a href="libxml-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	nsHash	: The namespaces hash table
-    void *	varLookupFunc	: variable lookup func
+    <a href="libxml-xpath.html#xmlXPathVariableLookupFunc">xmlXPathVariableLookupFunc</a>	varLookupFunc	: variable lookup func
     void *	varLookupData	: variable lookup data Possibility to lin
     void *	extra	: needed for XSLT The function name and U
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	function
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	functionURI	: function lookup function and data
-    void *	funcLookupFunc	: function lookup func
+    <a href="libxml-xpath.html#xmlXPathFuncLookupFunc">xmlXPathFuncLookupFunc</a>	funcLookupFunc	: function lookup func
     void *	funcLookupData	: function lookup data temporary namespac
     <a href="libxml-tree.html#xmlNsPtr">xmlNsPtr</a> *	tmpNsList	: Array of namespaces
     int	tmpNsNr	: number of namespace in scope error repo
@@ -264,7 +270,10 @@ void	xmlXPathEvalFunc		(<a href="libxml-xpath.html#xmlXPathParserContextPtr">xml
 </pre><p>Free up the <a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> @obj but don't deallocate the objects in the list contrary to xmlXPathFreeObject().</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>obj</tt></i>:</span></td><td>an existing NodeSetList object</td></tr></tbody></table></div><h3><a name="xmlXPathFreeObject" id="xmlXPathFreeObject"></a>Function: xmlXPathFreeObject</h3><pre class="programlisting">void	xmlXPathFreeObject		(<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> obj)<br />
 </pre><p>Free up an <a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> object.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>obj</tt></i>:</span></td><td>the object to free</td></tr></tbody></table></div><h3><a name="xmlXPathFunction" id="xmlXPathFunction"></a>Function type: xmlXPathFunction</h3><pre class="programlisting">Function type: xmlXPathFunction
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>obj</tt></i>:</span></td><td>the object to free</td></tr></tbody></table></div><h3><a name="xmlXPathFuncLookupFunc" id="xmlXPathFuncLookupFunc"></a>Function type: xmlXPathFuncLookupFunc</h3><pre class="programlisting">Function type: xmlXPathFuncLookupFunc
+<a href="libxml-xpath.html#xmlXPathFunction">xmlXPathFunction</a>	xmlXPathFuncLookupFunc	(void * ctxt, <br />						 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * name, <br />						 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * ns_uri)
+</pre><p>Prototype for callbacks used to plug function lookup in the XPath engine.</p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XPath context</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>name of the function</td></tr><tr><td><span class="term"><i><tt>ns_uri</tt></i>:</span></td><td>the namespace name hosting this function</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the XPath function or NULL if not found.</td></tr></tbody></table></div><br />
+<h3><a name="xmlXPathFunction" id="xmlXPathFunction"></a>Function type: xmlXPathFunction</h3><pre class="programlisting">Function type: xmlXPathFunction
 void	xmlXPathFunction		(<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br />					 int nargs)
 </pre><p>An XPath function. The arguments (if any) are popped out from the context stack and the result is pushed on the stack.</p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>the XPath interprestation context</td></tr><tr><td><span class="term"><i><tt>nargs</tt></i>:</span></td><td>the number of arguments</td></tr></tbody></table></div><br />
 <h3><a name="xmlXPathInit" id="xmlXPathInit"></a>Function: xmlXPathInit</h3><pre class="programlisting">void	xmlXPathInit			(void)<br />
@@ -281,4 +290,7 @@ void	xmlXPathFunction		(<a href="libxml-xpath.html#xmlXPathParserContextPtr">xml
 </pre><p>allocate a new copy of a given object</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>val</tt></i>:</span></td><td>the original object</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the newly created object.</td></tr></tbody></table></div><h3><a name="xmlXPathOrderDocElems" id="xmlXPathOrderDocElems"></a>Function: xmlXPathOrderDocElems</h3><pre class="programlisting">long	xmlXPathOrderDocElems		(<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br />
 </pre><p>Call this routine to speed up XPath computation on static documents. This stamps all the element nodes with the document order Like for line information, the order is kept in the element-&gt;content field, the value stored is actually - the node number (starting at -1) to be able to differentiate from line numbers.</p>
-<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>an input document</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of elements found in the document or -1 in case of error.</td></tr></tbody></table></div><p><a href="../bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>
+<div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>doc</tt></i>:</span></td><td>an input document</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the number of elements found in the document or -1 in case of error.</td></tr></tbody></table></div><h3><a name="xmlXPathVariableLookupFunc" id="xmlXPathVariableLookupFunc"></a>Function type: xmlXPathVariableLookupFunc</h3><pre class="programlisting">Function type: xmlXPathVariableLookupFunc
+<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	xmlXPathVariableLookupFunc	(void * ctxt, <br />							 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * name, <br />							 const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> * ns_uri)
+</pre><p>Prototype for callbacks used to plug variable lookup in the XPath engine.</p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i>:</span></td><td>an XPath context</td></tr><tr><td><span class="term"><i><tt>name</tt></i>:</span></td><td>name of the variable</td></tr><tr><td><span class="term"><i><tt>ns_uri</tt></i>:</span></td><td>the namespace name hosting this variable</td></tr><tr><td><span class="term"><i><tt>Returns</tt></i>:</span></td><td>the XPath object value or NULL if not found.</td></tr></tbody></table></div><br />
+<p><a href="../bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

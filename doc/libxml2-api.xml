@@ -1788,7 +1788,7 @@
      <exports symbol='XML_ERR_INVALID_DEC_CHARREF' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_NO_PARENT' type='enum'/>
      <exports symbol='XML_ERR_CDATA_NOT_FINISHED' type='enum'/>
-     <exports symbol='XML_SCHEMAV_CVC_TYPE_3_1_2' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_1' type='enum'/>
      <exports symbol='XML_XINCLUDE_INCLUDE_IN_INCLUDE' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_TYPE_3_1_1' type='enum'/>
      <exports symbol='XML_XPATH_EXPRESSION_OK' type='enum'/>
@@ -1805,6 +1805,7 @@
      <exports symbol='XML_ERR_PEREF_SEMICOL_MISSING' type='enum'/>
      <exports symbol='XML_ERR_DOCUMENT_START' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_TEXT' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_IMPORT_2_2' type='enum'/>
      <exports symbol='XML_FROM_IO' type='enum'/>
      <exports symbol='XML_HTML_UNKNOWN_TAG' type='enum'/>
      <exports symbol='XML_DTD_NOT_STANDALONE' type='enum'/>
@@ -1821,6 +1822,7 @@
      <exports symbol='XML_RNGP_URI_FRAGMENT' type='enum'/>
      <exports symbol='XML_FROM_MEMORY' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_1_2' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_IMPORT_2' type='enum'/>
      <exports symbol='XML_XPATH_INVALID_CHAR_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_MAXOCCURS' type='enum'/>
      <exports symbol='XML_ERR_MISSING_ENCODING' type='enum'/>
@@ -1836,6 +1838,7 @@
      <exports symbol='XML_SCHEMAV_CVC_MAXEXCLUSIVE_VALID' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_ATTR_USE' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_TYPE_3_1_2' type='enum'/>
      <exports symbol='XML_IO_UNKNOWN' type='enum'/>
      <exports symbol='XML_RNGP_PAT_ONEMORE_GROUP_ATTR' type='enum'/>
      <exports symbol='XML_ERR_VALUE_REQUIRED' type='enum'/>
@@ -1871,6 +1874,7 @@
      <exports symbol='XML_FROM_DTD' type='enum'/>
      <exports symbol='XML_SCHEMAV_CONSTRUCT' type='enum'/>
      <exports symbol='XML_RNGP_EXTERNALREF_RECURSE' type='enum'/>
+     <exports symbol='XML_XINCLUDE_RECURSION' type='enum'/>
      <exports symbol='XML_DTD_ATTRIBUTE_DEFAULT' type='enum'/>
      <exports symbol='XML_RNGP_UNKNOWN_COMBINE' type='enum'/>
      <exports symbol='XML_SCHEMAV_EXTRACONTENT' type='enum'/>
@@ -1897,7 +1901,7 @@
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_REF' type='enum'/>
      <exports symbol='XML_FROM_PARSER' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_REF' type='enum'/>
-     <exports symbol='XML_XINCLUDE_RECURSION' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_5' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_RESOLVE' type='enum'/>
      <exports symbol='XML_C14N_CREATE_CTXT' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_FACET_VALID' type='enum'/>
@@ -1960,7 +1964,7 @@
      <exports symbol='XML_SCHEMAV_HAVEDEFAULT' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_NOTATION' type='enum'/>
      <exports symbol='XML_RNGP_ERROR_TYPE_LIB' type='enum'/>
-     <exports symbol='XML_XPTR_EVAL_FAILED' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_IMPORT_2_1' type='enum'/>
      <exports symbol='XML_DTD_NO_ROOT' type='enum'/>
      <exports symbol='XML_SCHEMAP_IMPORT_REDEFINE_NSNAME' type='enum'/>
      <exports symbol='XML_RNGP_PAT_NSNAME_EXCEPT_NSNAME' type='enum'/>
@@ -2011,7 +2015,7 @@
      <exports symbol='XML_SCHEMAV_ELEMCONT' type='enum'/>
      <exports symbol='XML_SCHEMAV_MISSING' type='enum'/>
      <exports symbol='XML_RNGP_GRAMMAR_CONTENT' type='enum'/>
-     <exports symbol='XML_XINCLUDE_XPTR_FAILED' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_MISSING_SIMPLETYPE_CHILD' type='enum'/>
      <exports symbol='XML_IO_ENFILE' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_CREATE_FAILED' type='enum'/>
@@ -2033,13 +2037,15 @@
      <exports symbol='XML_RNGP_DEF_CHOICE_AND_INTERLEAVE' type='enum'/>
      <exports symbol='XML_TREE_UNTERMINATED_ENTITY' type='enum'/>
      <exports symbol='XML_ERR_URI_REQUIRED' type='enum'/>
+     <exports symbol='XML_XINCLUDE_XPTR_FAILED' type='enum'/>
      <exports symbol='XML_FROM_TREE' type='enum'/>
      <exports symbol='XML_CATALOG_PREFER_VALUE' type='enum'/>
      <exports symbol='XML_ERR_HYPHEN_IN_COMMENT' type='enum'/>
-     <exports symbol='XML_TREE_INVALID_HEX' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_IMPORT_1_1' type='enum'/>
      <exports symbol='XML_C14N_REQUIRES_UTF8' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_IMPORT_1_2' type='enum'/>
      <exports symbol='XML_FROM_XINCLUDE' type='enum'/>
-     <exports symbol='XML_SCHEMAP_TYPE_AND_SUBTYPE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_CVC_SIMPLE_TYPE' type='enum'/>
      <exports symbol='XML_SCHEMAP_NO_XMLNS' type='enum'/>
      <exports symbol='XML_SCHEMAP_NO_XSI' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_3' type='enum'/>
@@ -2082,7 +2088,7 @@
      <exports symbol='XML_FROM_HTTP' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_ONEMORE' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_1' type='enum'/>
-     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_5' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_CT_EXTENDS_1_1' type='enum'/>
      <exports symbol='XML_RNGP_REF_CREATE_FAILED' type='enum'/>
      <exports symbol='XML_ERR_SEPARATOR_REQUIRED' type='enum'/>
      <exports symbol='XML_DTD_ROOT_NAME' type='enum'/>
@@ -2092,7 +2098,8 @@
      <exports symbol='XML_RNGP_REF_NOT_EMPTY' type='enum'/>
      <exports symbol='XML_DTD_XMLID_TYPE' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_1_2' type='enum'/>
-     <exports symbol='XML_XPATH_VARIABLE_REF_ERROR' type='enum'/>
+     <exports symbol='XML_SCHEMAP_TYPE_AND_SUBTYPE' type='enum'/>
+     <exports symbol='XML_TREE_INVALID_HEX' type='enum'/>
      <exports symbol='XML_RNGP_INTERLEAVE_ADD' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_CHOICE_CHILD' type='enum'/>
      <exports symbol='XML_DTD_NOTATION_REDEFINED' type='enum'/>
@@ -2103,6 +2110,7 @@
      <exports symbol='XML_ERR_PUBID_REQUIRED' type='enum'/>
      <exports symbol='XML_IO_ENOTSOCK' type='enum'/>
      <exports symbol='XML_RNGP_PAT_START_GROUP' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2' type='enum'/>
      <exports symbol='XML_RNGP_NOTALLOWED_NOT_EMPTY' type='enum'/>
      <exports symbol='XML_RNGP_MISSING_HREF' type='enum'/>
      <exports symbol='XML_ERR_PI_NOT_FINISHED' type='enum'/>
@@ -2280,6 +2288,7 @@
      <exports symbol='XML_IO_NETWORK_ATTEMPT' type='enum'/>
      <exports symbol='XML_FROM_OUTPUT' type='enum'/>
      <exports symbol='XML_FROM_NAMESPACE' type='enum'/>
+     <exports symbol='XML_XPTR_EVAL_FAILED' type='enum'/>
      <exports symbol='XML_IO_EBUSY' type='enum'/>
      <exports symbol='XML_ERR_ATTLIST_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_XINCLUDE_TEXT_FRAGMENT' type='enum'/>
@@ -2315,6 +2324,7 @@
      <exports symbol='XML_WAR_LANG_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAV_INVALIDELEM' type='enum'/>
      <exports symbol='XML_NS_ERR_QNAME' type='enum'/>
+     <exports symbol='XML_XPATH_VARIABLE_REF_ERROR' type='enum'/>
      <exports symbol='XML_DTD_NOTATION_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAP_ST_PROPS_CORRECT_2' type='enum'/>
      <exports symbol='XML_ERR_INVALID_ENCODING' type='enum'/>
@@ -2352,7 +2362,7 @@
      <exports symbol='XML_DTD_INVALID_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_PATTERN_VALID' type='enum'/>
      <exports symbol='XML_RNGP_TYPE_MISSING' type='enum'/>
-     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_1' type='enum'/>
      <exports symbol='XML_ERR_TAG_NAME_MISMATCH' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_3' type='enum'/>
@@ -2395,6 +2405,7 @@
      <exports symbol='XML_SCHEMAP_NOT_SCHEMA' type='enum'/>
      <exports symbol='XML_FROM_SCHEMASV' type='enum'/>
      <exports symbol='XML_FROM_SCHEMASP' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_1' type='enum'/>
      <exports symbol='XML_ERR_MIXED_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_PREFIX_UNDEFINED' type='enum'/>
@@ -2919,11 +2930,12 @@
      <summary>compile-time version informations</summary>
      <description>compile-time version informations for the XML library </description>
      <author>Daniel Veillard </author>
-     <exports symbol='LIBXML_VERSION_STRING' type='macro'/>
+     <exports symbol='LIBXML_VERSION_EXTRA' type='macro'/>
      <exports symbol='LIBXML_DOCB_ENABLED' type='macro'/>
      <exports symbol='LIBXML_CATALOG_ENABLED' type='macro'/>
      <exports symbol='LIBXML_LEGACY_ENABLED' type='macro'/>
      <exports symbol='LIBXML_REGEXP_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_VERSION_STRING' type='macro'/>
      <exports symbol='LIBXML_XPTR_ENABLED' type='macro'/>
      <exports symbol='LIBXML_READER_ENABLED' type='macro'/>
      <exports symbol='LIBXML_ICONV_ENABLED' type='macro'/>
@@ -3125,7 +3137,7 @@
      <exports symbol='xmlXPathConvertFunc' type='function'/>
      <exports symbol='xmlXPathIsInf' type='function'/>
      <exports symbol='xmlXPathOrderDocElems' type='function'/>
-     <exports symbol='xmlXPathFunction' type='function'/>
+     <exports symbol='xmlXPathFuncLookupFunc' type='function'/>
      <exports symbol='xmlXPathFreeNodeSetList' type='function'/>
      <exports symbol='xmlXPathCmpNodes' type='function'/>
      <exports symbol='xmlXPathCastBooleanToNumber' type='function'/>
@@ -3137,12 +3149,14 @@
      <exports symbol='xmlXPathCastBooleanToString' type='function'/>
      <exports symbol='xmlXPathCastNodeToNumber' type='function'/>
      <exports symbol='xmlXPathCastNumberToBoolean' type='function'/>
-     <exports symbol='xmlXPathIsNaN' type='function'/>
+     <exports symbol='xmlXPathFunction' type='function'/>
+     <exports symbol='xmlXPathVariableLookupFunc' type='function'/>
      <exports symbol='xmlXPathEvalFunc' type='function'/>
      <exports symbol='xmlXPathFreeCompExpr' type='function'/>
      <exports symbol='xmlXPathObjectCopy' type='function'/>
      <exports symbol='xmlXPathNewContext' type='function'/>
      <exports symbol='xmlXPathEvalPredicate' type='function'/>
+     <exports symbol='xmlXPathIsNaN' type='function'/>
      <exports symbol='xmlXPathConvertNumber' type='function'/>
      <exports symbol='xmlXPathCompile' type='function'/>
      <exports symbol='xmlXPathFreeObject' type='function'/>
@@ -3254,13 +3268,11 @@
      <exports symbol='xmlXPathErr' type='function'/>
      <exports symbol='xmlXPathNextPreceding' type='function'/>
      <exports symbol='xmlXPathFunctionLookupNS' type='function'/>
-     <exports symbol='xmlXPathFuncLookupFunc' type='function'/>
      <exports symbol='xmlXPathRegisteredFuncsCleanup' type='function'/>
      <exports symbol='xmlXPathRegisterAllFunctions' type='function'/>
      <exports symbol='xmlXPathNewCString' type='function'/>
      <exports symbol='xmlXPathRegisterFunc' type='function'/>
      <exports symbol='xmlXPathPositionFunction' type='function'/>
-     <exports symbol='xmlXPathVariableLookupFunc' type='function'/>
      <exports symbol='xmlXPathSubstringBeforeFunction' type='function'/>
      <exports symbol='xmlXPathRegisteredVariablesCleanup' type='function'/>
      <exports symbol='xmlXPathNextDescendant' type='function'/>
@@ -3290,7 +3302,7 @@
      <exports symbol='xmlXPathNotFunction' type='function'/>
      <exports symbol='xmlXPathStringEvalNumber' type='function'/>
      <exports symbol='xmlXPathNextDescendantOrSelf' type='function'/>
-     <exports symbol='xmlXPathRegisterFuncLookup' type='function'/>
+     <exports symbol='xmlXPathParseName' type='function'/>
      <exports symbol='xmlXPathNextAttribute' type='function'/>
      <exports symbol='xmlXPathDivValues' type='function'/>
      <exports symbol='xmlXPathStringLengthFunction' type='function'/>
@@ -3303,7 +3315,7 @@
      <exports symbol='xmlXPathValueFlipSign' type='function'/>
      <exports symbol='xmlXPathTranslateFunction' type='function'/>
      <exports symbol='xmlXPathLeading' type='function'/>
-     <exports symbol='xmlXPathParseName' type='function'/>
+     <exports symbol='xmlXPathRegisterFuncLookup' type='function'/>
      <exports symbol='xmlXPathTrueFunction' type='function'/>
      <exports symbol='xmlXPathPopNumber' type='function'/>
     </file>
@@ -3542,6 +3554,9 @@
     </macro>
     <macro name='LIBXML_VERSION' file='xmlversion'>
       <info>the version number: 1.2.3 value is 1002003</info>
+    </macro>
+    <macro name='LIBXML_VERSION_EXTRA' file='xmlversion'>
+      <info>extra version information, used to show a CVS compilation</info>
     </macro>
     <macro name='LIBXML_VERSION_STRING' file='xmlversion'>
       <info>the version number string, 1.2.3 value is &quot;1002003&quot;</info>
@@ -4617,6 +4632,7 @@
     <enum name='XML_SCHEMAP_ATTRGRP_NONAME_NOREF' file='xmlerror' value='1702' type='xmlParserErrors' info='1702'/>
     <enum name='XML_SCHEMAP_ATTR_NONAME_NOREF' file='xmlerror' value='1703' type='xmlParserErrors' info='1703'/>
     <enum name='XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF' file='xmlerror' value='1704' type='xmlParserErrors' info='1704'/>
+    <enum name='XML_SCHEMAP_COS_CT_EXTENDS_1_1' file='xmlerror' value='3063' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAP_COS_CT_EXTENDS_1_3' file='xmlerror' value='1800' type='xmlParserErrors' info='1799'/>
     <enum name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_1' file='xmlerror' value='3031' type='xmlParserErrors' info='3031'/>
     <enum name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_2' file='xmlerror' value='3032' type='xmlParserErrors' info='3032'/>
@@ -4640,11 +4656,16 @@
     <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_3' file='xmlerror' value='3028' type='xmlParserErrors' info='3028'/>
     <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_4' file='xmlerror' value='3029' type='xmlParserErrors' info='3029'/>
     <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_5' file='xmlerror' value='3030' type='xmlParserErrors' info='3030'/>
+    <enum name='XML_SCHEMAP_COS_VALID_DEFAULT_1' file='xmlerror' value='3058' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAP_COS_VALID_DEFAULT_2_1' file='xmlerror' value='3059' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1' file='xmlerror' value='3060' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2' file='xmlerror' value='3061' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAP_CT_PROPS_CORRECT_1' file='xmlerror' value='1782' type='xmlParserErrors' info='1781'/>
     <enum name='XML_SCHEMAP_CT_PROPS_CORRECT_2' file='xmlerror' value='1783' type='xmlParserErrors' info='1782'/>
     <enum name='XML_SCHEMAP_CT_PROPS_CORRECT_3' file='xmlerror' value='1784' type='xmlParserErrors' info='1783'/>
     <enum name='XML_SCHEMAP_CT_PROPS_CORRECT_4' file='xmlerror' value='1785' type='xmlParserErrors' info='1784'/>
     <enum name='XML_SCHEMAP_CT_PROPS_CORRECT_5' file='xmlerror' value='1786' type='xmlParserErrors' info='1785'/>
+    <enum name='XML_SCHEMAP_CVC_SIMPLE_TYPE' file='xmlerror' value='3062' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAP_DEF_AND_PREFIX' file='xmlerror' value='1768' type='xmlParserErrors' info='1767'/>
     <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1' file='xmlerror' value='1787' type='xmlParserErrors' info='1786'/>
     <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1' file='xmlerror' value='1788' type='xmlParserErrors' info='1787'/>
@@ -4694,7 +4715,7 @@
     <enum name='XML_SCHEMAP_NOTYPE_NOREF' file='xmlerror' value='1724' type='xmlParserErrors' info='1724'/>
     <enum name='XML_SCHEMAP_NOT_SCHEMA' file='xmlerror' value='1772' type='xmlParserErrors' info='1771'/>
     <enum name='XML_SCHEMAP_NO_XMLNS' file='xmlerror' value='3056' type='xmlParserErrors' info='3056'/>
-    <enum name='XML_SCHEMAP_NO_XSI' file='xmlerror' value='3057' type='xmlParserErrors' info=' 3057'/>
+    <enum name='XML_SCHEMAP_NO_XSI' file='xmlerror' value='3057' type='xmlParserErrors' info='3057'/>
     <enum name='XML_SCHEMAP_PREFIX_UNDEFINED' file='xmlerror' value='1700' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAP_P_PROPS_CORRECT_1' file='xmlerror' value='3042' type='xmlParserErrors' info='3042'/>
     <enum name='XML_SCHEMAP_P_PROPS_CORRECT_2_1' file='xmlerror' value='3043' type='xmlParserErrors' info='3043'/>
@@ -4725,6 +4746,11 @@
     <enum name='XML_SCHEMAP_SRC_ELEMENT_2_1' file='xmlerror' value='3039' type='xmlParserErrors' info='3039'/>
     <enum name='XML_SCHEMAP_SRC_ELEMENT_2_2' file='xmlerror' value='3040' type='xmlParserErrors' info='3040'/>
     <enum name='XML_SCHEMAP_SRC_ELEMENT_3' file='xmlerror' value='3041' type='xmlParserErrors' info='3041'/>
+    <enum name='XML_SCHEMAP_SRC_IMPORT_1_1' file='xmlerror' value='3064' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAP_SRC_IMPORT_1_2' file='xmlerror' value='3065' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAP_SRC_IMPORT_2' file='xmlerror' value='3066' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAP_SRC_IMPORT_2_1' file='xmlerror' value='3067' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAP_SRC_IMPORT_2_2' file='xmlerror' value='3068' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAP_SRC_IMPORT_3_1' file='xmlerror' value='1795' type='xmlParserErrors' info='1794'/>
     <enum name='XML_SCHEMAP_SRC_IMPORT_3_2' file='xmlerror' value='1796' type='xmlParserErrors' info='1795'/>
     <enum name='XML_SCHEMAP_SRC_INCLUDE' file='xmlerror' value='3050' type='xmlParserErrors' info='3050'/>
@@ -5921,12 +5947,12 @@ actually an xmlCharEncoding'/>
       <field name='here' type='xmlNodePtr' info=' for here()'/>
       <field name='origin' type='xmlNodePtr' info=' for origin() the set of namespace declarations in scope for the expression'/>
       <field name='nsHash' type='xmlHashTablePtr' info=' The namespaces hash table'/>
-      <field name='varLookupFunc' type='void *' info=' variable lookup func'/>
+      <field name='varLookupFunc' type='xmlXPathVariableLookupFunc' info=' variable lookup func'/>
       <field name='varLookupData' type='void *' info=' variable lookup data Possibility to link in an extra item'/>
       <field name='extra' type='void *' info=' needed for XSLT The function name and URI when calling a function'/>
       <field name='function' type='const xmlChar *' info=''/>
       <field name='functionURI' type='const xmlChar *' info=' function lookup function and data'/>
-      <field name='funcLookupFunc' type='void *' info=' function lookup func'/>
+      <field name='funcLookupFunc' type='xmlXPathFuncLookupFunc' info=' function lookup func'/>
       <field name='funcLookupData' type='void *' info=' function lookup data temporary namespace lists kept for walking the namespace axis'/>
       <field name='tmpNsList' type='xmlNsPtr *' info=' Array of namespaces'/>
       <field name='tmpNsNr' type='int' info=' number of namespace in scope error reporting mechanism'/>
@@ -12754,7 +12780,7 @@ actually an xmlCharEncoding'/>
       <info>Signature of the function to use when there is an error and the module handles the new error reporting mechanism.</info>
       <return type='void'/>
       <arg name='userData' type='void *' info='user provided data for the error callback'/>
-      <arg name='xmlerr' type='xmlErrorPtr' info='the error being raised.'/>
+      <arg name='error' type='xmlErrorPtr' info='the error being raised.'/>
     </functype>
     <function name='xmlSubstituteEntitiesDefault' file='parser'>
       <info>Set and return the previous value for default entity support. Initially the parser always keep entity references instead of substituting entity values in the output. This function has to be used to change the default parser behavior SAX::substituteEntities() has to be used for changing that on a file by file basis.</info>
@@ -15589,7 +15615,7 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the context to free'/>
     </function>
-    <functype name='xmlXPathFuncLookupFunc' file='xpathInternals'>
+    <functype name='xmlXPathFuncLookupFunc' file='xpath'>
       <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Prototype for callbacks used to plug function lookup in the XPath engine.</info>
       <return type='xmlXPathFunction' info='the XPath function or NULL if not found.'/>
@@ -16251,7 +16277,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
       <arg name='name' type='const xmlChar *' info='the variable name'/>
     </function>
-    <functype name='xmlXPathVariableLookupFunc' file='xpathInternals'>
+    <functype name='xmlXPathVariableLookupFunc' file='xpath'>
       <cond>LIBXML_XPATH_ENABLED</cond>
       <info>Prototype for callbacks used to plug variable lookup in the XPath engine.</info>
       <return type='xmlXPathObjectPtr' info='the XPath object value or NULL if not found.'/>

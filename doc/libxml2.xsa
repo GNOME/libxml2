@@ -8,26 +8,36 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.10</version>
-    <last-release> May 17 2004</last-release>
+    <version>2.6.11</version>
+    <last-release> July 5 2004</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Web page generated for ChangeLog
-   - build fixes: --without-html problems, make check without make all
-   - portability: problem with xpath.c on Windows (MSC and Borland), memcmp
-    vs. strncmp on Solaris, XPath tests on Windows (Mark Vakoc), C++ do not
-    use "list" as parameter name, make tests work with Python 1.5 (Ed
-  Davis),
-   - improvements: made xmlTextReaderMode public, small buffers resizing
-    (Morten Welinder), add --maxmem option to xmllint, add
-    xmlPopInputCallback() for Matt Sergeant, refactoring of serialization
-    escaping, added escaping customization
-   - bugfixes: xsd:extension (Taihei Goi), assorted regexp bugs (William
-    Brack), xmlReader end of stream problem, node deregistration with reader,
-    URI escaping and filemanes,  XHTML1 formatting (Nick Wellnhofer), regexp
-    transition reduction (William), various XSD Schemas fixes (Kasimier
-    Buchcik), XInclude fallback problem (William), weird problems with DTD
-    (William), structured error handler callback context (William), reverse
-    xmlEncodeSpecialChars() behaviour back to escaping '"'
+    <changes>   - Schemas: a lot of changes and improvements by Kasimier Buchcik for
+    attributes, namespaces and simple types.
+   - build fixes: --with-minimum (William Brack),  some gcc cleanup
+    (William), --with-thread-alloc (William)
+   - portability: Windows binary package change (Igor Zlatkovic), Catalog
+    path on Windows
+   - documentation: update to the tutorial (John Fleck), xmllint return code
+    (John Fleck), man pages (Ville Skytta),
+   - bug fixes: C14N bug serializing namespaces (Aleksey Sanin), testSAX
+    properly initialize the library (William), empty node set in XPath
+    (William), xmlSchemas errors (William), invalid charref problem pointed
+    by Morus Walter, XInclude xml:base generation (William), Relax-NG bug
+    with div processing (William), XPointer and xml:base problem(William),
+    Reader and entities, xmllint return code for schemas (William), reader
+    streaming problem (Steve Ball), DTD serialization problem (William),
+    libxml.m4 fixes (Mike Hommey), do not provide destructors as methods on
+    Python classes, xmlReader buffer bug, Python bindings memory interfaces
+    improvement (with St&#xE9;phane Bidoul), Fixed the push parser to be back to
+    synchronous behaviour.
+   - improvement: custom per-thread I/O enhancement (Rob Richards), register
+    namespace in debug shell (Stefano Debenedetti), Python based regression
+    test for non-Unix users (William), dynamically increase the number of
+    XPath extension functions in Python and fix a memory leak (Marc-Antoine
+    Parent and William)
+   - performance: hack done with Arjan van de Ven to reduce ELF footprint
+    and generated code on Linux, plus use gcc runtime profiling to optimize
+    the code generated in the RPM packages.
 
 </changes>
   </product>

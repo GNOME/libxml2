@@ -1,3 +1,8 @@
+Sun Aug 22 16:26:46 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/* NEWS: preparing 2.6.12 release, updated and
+	  and rebuilt the docs.
+
 Sun Aug 22 16:07:20 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: fix a problem on last commit

@@ -623,8 +623,8 @@ href="http://xmlsoft.org/sources/win32/">win32</a> directory.</p>
   <li>Red Hat RPMs for i386 are available directly on <a
     href="ftp://xmlsoft.org/">xmlsoft.org</a>, the source RPM will compile on
     any architecture supported by Red Hat.</li>
-  <li><a href="mailto:igor@zlatkovic.com">Igor Zlatkovic</a>
-    is now the maintainer of the Windows port, <a
+  <li><a href="mailto:igor@zlatkovic.com">Igor Zlatkovic</a> is now the
+    maintainer of the Windows port, <a
     href="http://www.zlatkovic.com/projects/libxml/index.html">he provides
     binaries</a>.</li>
   <li><a href="mailto:Gary.Pennington@sun.com">Gary Pennington</a> provides
@@ -656,9 +656,8 @@ href="python.html">bindings section</a></p>
 
 <p>Libxml2 is also available from CVS:</p>
 <ul>
-  <li><p>The <a
-    href="http://cvs.gnome.org/viewcvs/libxml2/">Gnome
-    CVS base</a>. Check the <a
+  <li><p>The <a href="http://cvs.gnome.org/viewcvs/libxml2/">Gnome CVS
+    base</a>. Check the <a
     href="http://developer.gnome.org/tools/cvs.html">Gnome CVS Tools</a>
     page; the CVS module is <b>libxml2</b>.</p>
   </li>
@@ -680,6 +679,35 @@ to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p>
 
 <p>There is the list of public releases:</p>
 
+<h3>2.6.12: Aug 22 2004</h3>
+<ul>
+  <li>build fixes: fix --with-minimum, elfgcchack.h fixes (Peter
+    Breitenlohner), perl path lookup (William), diff on Solaris (Albert
+    Chin), some 64bits cleanups.</li>
+  <li>Python: avoid a warning with 2.3 (William Brack), tab and space mixes
+    (William), wrapper generator fixes (William), Cygwin support (Gerrit P.
+    Haase), node wrapper fix (Marc-Antoine Parent), XML Schemas support
+    (Torkel Lyng)</li>
+  <li>Schemas: a lot of bug fixes and improvements from Kasimier Buchcik</li>
+  <li>fixes: RVT fixes (William), XPath context resets bug (William), memory
+    debug (Steve Hay), catalog white space handling (Peter Breitenlohner),
+    xmlReader state after attribute reading (William), structured error
+    handler (William), XInclude generated xml:base fixup (William), Windows
+    memory reallocation problem (Steve Hay), Out of Memory conditions
+    handling (William and Olivier Andrieu), htmlNewDoc() charset bug,
+    htmlReadMemory init (William), a posteriori validation DTD base
+    (William), notations serialization missing, xmlGetNodePath (Dodji),
+    xmlCheckUTF8 (Diego Tartara), missing line numbers on entity
+  (William)</li>
+  <li>improvements: DocBook catalog build scrip (William), xmlcatalog tool
+    (Albert Chin), xmllint --c14n option, no_proxy environment (Mike Hommey),
+    xmlParseInNodeContext() addition, extend xmllint --shell, allow XInclude
+    to not generate start/end nodes, extend xmllint --version to include CVS
+    tag (William)</li>
+  <li>documentation: web pages fixes, validity API docs fixes (William)
+    schemas API fix (Eric Haszlakiewicz), xmllint man page (John Fleck)</li>
+</ul>
+
 <h3>2.6.11: July 5 2004</h3>
 <ul>
   <li>Schemas: a lot of changes and improvements by Kasimier Buchcik for
@@ -689,12 +717,12 @@ to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p>
   <li>portability: Windows binary package change (Igor Zlatkovic), Catalog
     path on Windows</li>
   <li>documentation: update to the tutorial (John Fleck), xmllint return code
-    (John Fleck), man pages (Ville Skytta), </li>
+    (John Fleck), man pages (Ville Skytta),</li>
   <li>bug fixes: C14N bug serializing namespaces (Aleksey Sanin), testSAX
     properly initialize the library (William), empty node set in XPath
     (William), xmlSchemas errors (William), invalid charref problem pointed
     by Morus Walter, XInclude xml:base generation (William), Relax-NG bug
-    with div processing (William), XPointer and xml:base problem(William), 
+    with div processing (William), XPointer and xml:base problem(William),
     Reader and entities, xmllint return code for schemas (William), reader
     streaming problem (Steve Ball), DTD serialization problem (William),
     libxml.m4 fixes (Mike Hommey), do not provide destructors as methods on

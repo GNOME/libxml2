@@ -73,6 +73,7 @@
     <reference name='LIBXML_UNICODE_ENABLED' href='html/libxml-xmlversion.html#LIBXML_UNICODE_ENABLED'/>
     <reference name='LIBXML_VALID_ENABLED' href='html/libxml-xmlversion.html#LIBXML_VALID_ENABLED'/>
     <reference name='LIBXML_VERSION' href='html/libxml-xmlversion.html#LIBXML_VERSION'/>
+    <reference name='LIBXML_VERSION_EXTRA' href='html/libxml-xmlversion.html#LIBXML_VERSION_EXTRA'/>
     <reference name='LIBXML_VERSION_STRING' href='html/libxml-xmlversion.html#LIBXML_VERSION_STRING'/>
     <reference name='LIBXML_WRITER_ENABLED' href='html/libxml-xmlversion.html#LIBXML_WRITER_ENABLED'/>
     <reference name='LIBXML_XINCLUDE_ENABLED' href='html/libxml-xmlversion.html#LIBXML_XINCLUDE_ENABLED'/>
@@ -688,6 +689,7 @@
     <reference name='XML_SCHEMAP_ATTRGRP_NONAME_NOREF' href='html/libxml-xmlerror.html#XML_SCHEMAP_ATTRGRP_NONAME_NOREF'/>
     <reference name='XML_SCHEMAP_ATTR_NONAME_NOREF' href='html/libxml-xmlerror.html#XML_SCHEMAP_ATTR_NONAME_NOREF'/>
     <reference name='XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF' href='html/libxml-xmlerror.html#XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF'/>
+    <reference name='XML_SCHEMAP_COS_CT_EXTENDS_1_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_CT_EXTENDS_1_1'/>
     <reference name='XML_SCHEMAP_COS_CT_EXTENDS_1_3' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_CT_EXTENDS_1_3'/>
     <reference name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_ST_DERIVED_OK_2_1'/>
     <reference name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_ST_DERIVED_OK_2_2'/>
@@ -711,11 +713,16 @@
     <reference name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_3' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_3'/>
     <reference name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_4' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_4'/>
     <reference name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_5' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_5'/>
+    <reference name='XML_SCHEMAP_COS_VALID_DEFAULT_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_VALID_DEFAULT_1'/>
+    <reference name='XML_SCHEMAP_COS_VALID_DEFAULT_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_VALID_DEFAULT_2_1'/>
+    <reference name='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1'/>
+    <reference name='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2'/>
     <reference name='XML_SCHEMAP_CT_PROPS_CORRECT_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_CT_PROPS_CORRECT_1'/>
     <reference name='XML_SCHEMAP_CT_PROPS_CORRECT_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_CT_PROPS_CORRECT_2'/>
     <reference name='XML_SCHEMAP_CT_PROPS_CORRECT_3' href='html/libxml-xmlerror.html#XML_SCHEMAP_CT_PROPS_CORRECT_3'/>
     <reference name='XML_SCHEMAP_CT_PROPS_CORRECT_4' href='html/libxml-xmlerror.html#XML_SCHEMAP_CT_PROPS_CORRECT_4'/>
     <reference name='XML_SCHEMAP_CT_PROPS_CORRECT_5' href='html/libxml-xmlerror.html#XML_SCHEMAP_CT_PROPS_CORRECT_5'/>
+    <reference name='XML_SCHEMAP_CVC_SIMPLE_TYPE' href='html/libxml-xmlerror.html#XML_SCHEMAP_CVC_SIMPLE_TYPE'/>
     <reference name='XML_SCHEMAP_DEF_AND_PREFIX' href='html/libxml-xmlerror.html#XML_SCHEMAP_DEF_AND_PREFIX'/>
     <reference name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1'/>
     <reference name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1'/>
@@ -796,6 +803,11 @@
     <reference name='XML_SCHEMAP_SRC_ELEMENT_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_2_1'/>
     <reference name='XML_SCHEMAP_SRC_ELEMENT_2_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_2_2'/>
     <reference name='XML_SCHEMAP_SRC_ELEMENT_3' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_3'/>
+    <reference name='XML_SCHEMAP_SRC_IMPORT_1_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_IMPORT_1_1'/>
+    <reference name='XML_SCHEMAP_SRC_IMPORT_1_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_IMPORT_1_2'/>
+    <reference name='XML_SCHEMAP_SRC_IMPORT_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_IMPORT_2'/>
+    <reference name='XML_SCHEMAP_SRC_IMPORT_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_IMPORT_2_1'/>
+    <reference name='XML_SCHEMAP_SRC_IMPORT_2_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_IMPORT_2_2'/>
     <reference name='XML_SCHEMAP_SRC_IMPORT_3_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_IMPORT_3_1'/>
     <reference name='XML_SCHEMAP_SRC_IMPORT_3_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_IMPORT_3_2'/>
     <reference name='XML_SCHEMAP_SRC_INCLUDE' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_INCLUDE'/>
@@ -2946,7 +2958,7 @@
     <reference name='xmlXPathFreeNodeSetList' href='html/libxml-xpath.html#xmlXPathFreeNodeSetList'/>
     <reference name='xmlXPathFreeObject' href='html/libxml-xpath.html#xmlXPathFreeObject'/>
     <reference name='xmlXPathFreeParserContext' href='html/libxml-xpathInternals.html#xmlXPathFreeParserContext'/>
-    <reference name='xmlXPathFuncLookupFunc' href='html/libxml-xpathInternals.html#xmlXPathFuncLookupFunc'/>
+    <reference name='xmlXPathFuncLookupFunc' href='html/libxml-xpath.html#xmlXPathFuncLookupFunc'/>
     <reference name='xmlXPathFuncPtr' href='html/libxml-xpath.html#xmlXPathFuncPtr'/>
     <reference name='xmlXPathFunct' href='html/libxml-xpath.html#xmlXPathFunct'/>
     <reference name='xmlXPathFunction' href='html/libxml-xpath.html#xmlXPathFunction'/>
@@ -3077,7 +3089,7 @@
     <reference name='xmlXPathValueFlipSign' href='html/libxml-xpathInternals.html#xmlXPathValueFlipSign'/>
     <reference name='xmlXPathVariable' href='html/libxml-xpath.html#xmlXPathVariable'/>
     <reference name='xmlXPathVariableLookup' href='html/libxml-xpathInternals.html#xmlXPathVariableLookup'/>
-    <reference name='xmlXPathVariableLookupFunc' href='html/libxml-xpathInternals.html#xmlXPathVariableLookupFunc'/>
+    <reference name='xmlXPathVariableLookupFunc' href='html/libxml-xpath.html#xmlXPathVariableLookupFunc'/>
     <reference name='xmlXPathVariableLookupNS' href='html/libxml-xpathInternals.html#xmlXPathVariableLookupNS'/>
     <reference name='xmlXPathVariablePtr' href='html/libxml-xpath.html#xmlXPathVariablePtr'/>
     <reference name='xmlXPathWrapCString' href='html/libxml-xpathInternals.html#xmlXPathWrapCString'/>
@@ -3193,6 +3205,7 @@
       <ref name='LIBXML_UNICODE_ENABLED'/>
       <ref name='LIBXML_VALID_ENABLED'/>
       <ref name='LIBXML_VERSION'/>
+      <ref name='LIBXML_VERSION_EXTRA'/>
       <ref name='LIBXML_VERSION_STRING'/>
       <ref name='LIBXML_WRITER_ENABLED'/>
       <ref name='LIBXML_XINCLUDE_ENABLED'/>
@@ -3818,6 +3831,7 @@
       <ref name='XML_SCHEMAP_ATTRGRP_NONAME_NOREF'/>
       <ref name='XML_SCHEMAP_ATTR_NONAME_NOREF'/>
       <ref name='XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF'/>
+      <ref name='XML_SCHEMAP_COS_CT_EXTENDS_1_1'/>
       <ref name='XML_SCHEMAP_COS_CT_EXTENDS_1_3'/>
       <ref name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_1'/>
       <ref name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_2'/>
@@ -3841,11 +3855,16 @@
       <ref name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_3'/>
       <ref name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_4'/>
       <ref name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_5'/>
+      <ref name='XML_SCHEMAP_COS_VALID_DEFAULT_1'/>
+      <ref name='XML_SCHEMAP_COS_VALID_DEFAULT_2_1'/>
+      <ref name='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1'/>
+      <ref name='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_1'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_2'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_3'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_4'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_5'/>
+      <ref name='XML_SCHEMAP_CVC_SIMPLE_TYPE'/>
       <ref name='XML_SCHEMAP_DEF_AND_PREFIX'/>
       <ref name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1'/>
       <ref name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1'/>
@@ -3926,6 +3945,11 @@
       <ref name='XML_SCHEMAP_SRC_ELEMENT_2_1'/>
       <ref name='XML_SCHEMAP_SRC_ELEMENT_2_2'/>
       <ref name='XML_SCHEMAP_SRC_ELEMENT_3'/>
+      <ref name='XML_SCHEMAP_SRC_IMPORT_1_1'/>
+      <ref name='XML_SCHEMAP_SRC_IMPORT_1_2'/>
+      <ref name='XML_SCHEMAP_SRC_IMPORT_2'/>
+      <ref name='XML_SCHEMAP_SRC_IMPORT_2_1'/>
+      <ref name='XML_SCHEMAP_SRC_IMPORT_2_2'/>
       <ref name='XML_SCHEMAP_SRC_IMPORT_3_1'/>
       <ref name='XML_SCHEMAP_SRC_IMPORT_3_2'/>
       <ref name='XML_SCHEMAP_SRC_INCLUDE'/>
@@ -11499,6 +11523,7 @@
       <ref name='XML_SCHEMAP_ATTRGRP_NONAME_NOREF'/>
       <ref name='XML_SCHEMAP_ATTR_NONAME_NOREF'/>
       <ref name='XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF'/>
+      <ref name='XML_SCHEMAP_COS_CT_EXTENDS_1_1'/>
       <ref name='XML_SCHEMAP_COS_CT_EXTENDS_1_3'/>
       <ref name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_1'/>
       <ref name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_2'/>
@@ -11522,11 +11547,16 @@
       <ref name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_3'/>
       <ref name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_4'/>
       <ref name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_5'/>
+      <ref name='XML_SCHEMAP_COS_VALID_DEFAULT_1'/>
+      <ref name='XML_SCHEMAP_COS_VALID_DEFAULT_2_1'/>
+      <ref name='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1'/>
+      <ref name='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_1'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_2'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_3'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_4'/>
       <ref name='XML_SCHEMAP_CT_PROPS_CORRECT_5'/>
+      <ref name='XML_SCHEMAP_CVC_SIMPLE_TYPE'/>
       <ref name='XML_SCHEMAP_DEF_AND_PREFIX'/>
       <ref name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1'/>
       <ref name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1'/>
@@ -11607,6 +11637,11 @@
       <ref name='XML_SCHEMAP_SRC_ELEMENT_2_1'/>
       <ref name='XML_SCHEMAP_SRC_ELEMENT_2_2'/>
       <ref name='XML_SCHEMAP_SRC_ELEMENT_3'/>
+      <ref name='XML_SCHEMAP_SRC_IMPORT_1_1'/>
+      <ref name='XML_SCHEMAP_SRC_IMPORT_1_2'/>
+      <ref name='XML_SCHEMAP_SRC_IMPORT_2'/>
+      <ref name='XML_SCHEMAP_SRC_IMPORT_2_1'/>
+      <ref name='XML_SCHEMAP_SRC_IMPORT_2_2'/>
       <ref name='XML_SCHEMAP_SRC_IMPORT_3_1'/>
       <ref name='XML_SCHEMAP_SRC_IMPORT_3_2'/>
       <ref name='XML_SCHEMAP_SRC_INCLUDE'/>
@@ -12260,6 +12295,7 @@
       <ref name='LIBXML_UNICODE_ENABLED'/>
       <ref name='LIBXML_VALID_ENABLED'/>
       <ref name='LIBXML_VERSION'/>
+      <ref name='LIBXML_VERSION_EXTRA'/>
       <ref name='LIBXML_VERSION_STRING'/>
       <ref name='LIBXML_WRITER_ENABLED'/>
       <ref name='LIBXML_XINCLUDE_ENABLED'/>
@@ -12436,6 +12472,7 @@
       <ref name='xmlXPathFreeNodeSet'/>
       <ref name='xmlXPathFreeNodeSetList'/>
       <ref name='xmlXPathFreeObject'/>
+      <ref name='xmlXPathFuncLookupFunc'/>
       <ref name='xmlXPathFuncPtr'/>
       <ref name='xmlXPathFunct'/>
       <ref name='xmlXPathFunction'/>
@@ -12460,6 +12497,7 @@
       <ref name='xmlXPathType'/>
       <ref name='xmlXPathTypePtr'/>
       <ref name='xmlXPathVariable'/>
+      <ref name='xmlXPathVariableLookupFunc'/>
       <ref name='xmlXPathVariablePtr'/>
     </file>
     <file name='xpathInternals'>
@@ -12497,7 +12535,6 @@
       <ref name='xmlXPathFalseFunction'/>
       <ref name='xmlXPathFloorFunction'/>
       <ref name='xmlXPathFreeParserContext'/>
-      <ref name='xmlXPathFuncLookupFunc'/>
       <ref name='xmlXPathFunctionLookup'/>
       <ref name='xmlXPathFunctionLookupNS'/>
       <ref name='xmlXPathGetContextNode'/>
@@ -12604,7 +12641,6 @@
       <ref name='xmlXPathTrueFunction'/>
       <ref name='xmlXPathValueFlipSign'/>
       <ref name='xmlXPathVariableLookup'/>
-      <ref name='xmlXPathVariableLookupFunc'/>
       <ref name='xmlXPathVariableLookupNS'/>
       <ref name='xmlXPathWrapCString'/>
       <ref name='xmlXPathWrapExternal'/>
@@ -13086,6 +13122,9 @@
         </word>
         <word name='CJKUnifiedIdeographsExtensionB'>
           <ref name='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
+        </word>
+        <word name='CVS'>
+          <ref name='LIBXML_VERSION_EXTRA'/>
         </word>
         <word name='CWD'>
           <ref name='xmlNanoFTPCwd'/>
@@ -18298,6 +18337,7 @@
           <ref name='xmlShellPwd'/>
         </word>
         <word name='compilation'>
+          <ref name='LIBXML_VERSION_EXTRA'/>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlXPathCompile'/>
           <ref name='xmlXPathCtxtCompile'/>
@@ -21429,6 +21469,7 @@
           <ref name='xmlReallocLoc'/>
         </word>
         <word name='information'>
+          <ref name='LIBXML_VERSION_EXTRA'/>
           <ref name='_xmlError'/>
           <ref name='xmlDebugDumpAttr'/>
           <ref name='xmlDebugDumpAttrList'/>
@@ -25331,6 +25372,7 @@
           <ref name='xmlTextReaderPrefix'/>
         </word>
         <word name='show'>
+          <ref name='LIBXML_VERSION_EXTRA'/>
           <ref name='xlinkExtendedLinkFunk'/>
           <ref name='xmlMemDisplay'/>
           <ref name='xmlMemShow'/>

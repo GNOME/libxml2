@@ -34,7 +34,7 @@ void	<a href="#xmlGenericErrorFunc">xmlGenericErrorFunc</a>		(void * ctx, <br />
 <pre class="programlisting">void	<a href="#xmlSetGenericErrorFunc">xmlSetGenericErrorFunc</a>		(void * ctx, <br />					 <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler)</pre>
 <pre class="programlisting">void	<a href="#xmlSetStructuredErrorFunc">xmlSetStructuredErrorFunc</a>	(void * ctx, <br />					 <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler)</pre>
 <pre class="programlisting">Function type: <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>
-void	<a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userData, <br />					 <a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> xmlerr)
+void	<a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userData, <br />					 <a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> error)
 </pre>
 <h2>Description</h2>
 <h3><a name="xmlError" id="xmlError">Structure xmlError</a></h3><pre class="programlisting">Structure xmlError<br />struct _xmlError {
@@ -684,6 +684,17 @@ void	<a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userD
     <a name="XML_SCHEMAP_SRC_ATTRIBUTE_4" id="XML_SCHEMAP_SRC_ATTRIBUTE_4">XML_SCHEMAP_SRC_ATTRIBUTE_4</a> = 3055 : 3055
     <a name="XML_SCHEMAP_NO_XMLNS" id="XML_SCHEMAP_NO_XMLNS">XML_SCHEMAP_NO_XMLNS</a> = 3056 : 3056
     <a name="XML_SCHEMAP_NO_XSI" id="XML_SCHEMAP_NO_XSI">XML_SCHEMAP_NO_XSI</a> = 3057 : 3057
+    <a name="XML_SCHEMAP_COS_VALID_DEFAULT_1" id="XML_SCHEMAP_COS_VALID_DEFAULT_1">XML_SCHEMAP_COS_VALID_DEFAULT_1</a> = 3058
+    <a name="XML_SCHEMAP_COS_VALID_DEFAULT_2_1" id="XML_SCHEMAP_COS_VALID_DEFAULT_2_1">XML_SCHEMAP_COS_VALID_DEFAULT_2_1</a> = 3059
+    <a name="XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1" id="XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1">XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1</a> = 3060
+    <a name="XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2" id="XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2">XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2</a> = 3061
+    <a name="XML_SCHEMAP_CVC_SIMPLE_TYPE" id="XML_SCHEMAP_CVC_SIMPLE_TYPE">XML_SCHEMAP_CVC_SIMPLE_TYPE</a> = 3062
+    <a name="XML_SCHEMAP_COS_CT_EXTENDS_1_1" id="XML_SCHEMAP_COS_CT_EXTENDS_1_1">XML_SCHEMAP_COS_CT_EXTENDS_1_1</a> = 3063
+    <a name="XML_SCHEMAP_SRC_IMPORT_1_1" id="XML_SCHEMAP_SRC_IMPORT_1_1">XML_SCHEMAP_SRC_IMPORT_1_1</a> = 3064
+    <a name="XML_SCHEMAP_SRC_IMPORT_1_2" id="XML_SCHEMAP_SRC_IMPORT_1_2">XML_SCHEMAP_SRC_IMPORT_1_2</a> = 3065
+    <a name="XML_SCHEMAP_SRC_IMPORT_2" id="XML_SCHEMAP_SRC_IMPORT_2">XML_SCHEMAP_SRC_IMPORT_2</a> = 3066
+    <a name="XML_SCHEMAP_SRC_IMPORT_2_1" id="XML_SCHEMAP_SRC_IMPORT_2_1">XML_SCHEMAP_SRC_IMPORT_2_1</a> = 3067
+    <a name="XML_SCHEMAP_SRC_IMPORT_2_2" id="XML_SCHEMAP_SRC_IMPORT_2_2">XML_SCHEMAP_SRC_IMPORT_2_2</a> = 3068
 }
 </pre><h3><a name="initGenericErrorDefaultFunc" id="initGenericErrorDefaultFunc"></a>Function: initGenericErrorDefaultFunc</h3><pre class="programlisting">void	initGenericErrorDefaultFunc	(<a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> * handler)<br />
 </pre><p>Set or reset (if NULL) the default handler for generic errors to the builtin error function.</p>
@@ -719,6 +730,6 @@ void	xmlGenericErrorFunc		(void * ctx, <br />					 const char * msg, <br />					
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the new error handling context</td></tr><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td>the new handler function</td></tr></tbody></table></div><h3><a name="xmlSetStructuredErrorFunc" id="xmlSetStructuredErrorFunc"></a>Function: xmlSetStructuredErrorFunc</h3><pre class="programlisting">void	xmlSetStructuredErrorFunc	(void * ctx, <br />					 <a href="libxml-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler)<br />
 </pre><p>Function to reset the handler and the error context for out of context structured error messages. This simply means that @handler will be called for subsequent error messages while not parsing nor validating. And @ctx will be passed as first argument to @handler For multi-threaded applications, this must be set separately for each thread.</p>
 <div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>ctx</tt></i>:</span></td><td>the new error handling context</td></tr><tr><td><span class="term"><i><tt>handler</tt></i>:</span></td><td>the new handler function</td></tr></tbody></table></div><h3><a name="xmlStructuredErrorFunc" id="xmlStructuredErrorFunc"></a>Function type: xmlStructuredErrorFunc</h3><pre class="programlisting">Function type: xmlStructuredErrorFunc
-void	xmlStructuredErrorFunc		(void * userData, <br />					 <a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> xmlerr)
-</pre><p>Signature of the function to use when there is an error and the module handles the new error reporting mechanism.</p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>userData</tt></i>:</span></td><td>user provided data for the error callback</td></tr><tr><td><span class="term"><i><tt>xmlerr</tt></i>:</span></td><td>the error being raised.</td></tr></tbody></table></div><br />
+void	xmlStructuredErrorFunc		(void * userData, <br />					 <a href="libxml-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> error)
+</pre><p>Signature of the function to use when there is an error and the module handles the new error reporting mechanism.</p><div class="variablelist"><table border="0"><col align="left" /><tbody><tr><td><span class="term"><i><tt>userData</tt></i>:</span></td><td>user provided data for the error callback</td></tr><tr><td><span class="term"><i><tt>error</tt></i>:</span></td><td>the error being raised.</td></tr></tbody></table></div><br />
 <p><a href="../bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

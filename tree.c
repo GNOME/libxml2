@@ -28,6 +28,7 @@
 
 #include "xmlmemory.h"
 #include "tree.h"
+#include "parser.h"
 #include "entities.h"
 #include "valid.h"
 

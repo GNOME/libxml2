@@ -1,3 +1,8 @@
+Thu Mar 22 22:44:15 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: 2.3.5
+	* doc/html/*: rebuilt the docs
+
 Thu Mar 22 15:36:45 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixed a reported bug in NOTATION parsing

@@ -121,7 +121,7 @@ NAME="LIBXML-XPOINTER"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN13277"
+NAME="AEN13475"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN13277"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN13280"
+NAME="AEN13478"
 ></A
 ><H2
 >Synopsis</H2
@@ -152,6 +152,16 @@ typedef     <A
 HREF="libxml-xpointer.html#XMLLOCATIONSETPTR"
 >xmlLocationSetPtr</A
 >;
+<A
+HREF="libxml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> <A
+HREF="libxml-xpointer.html#XMLXPTRLOCATIONSETCREATE"
+>xmlXPtrLocationSetCreate</A
+>  (<A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> val);
 void        <A
 HREF="libxml-xpointer.html#XMLXPTRFREELOCATIONSET"
 >xmlXPtrFreeLocationSet</A
@@ -173,6 +183,41 @@ HREF="libxml-xpointer.html#XMLLOCATIONSETPTR"
 HREF="libxml-xpointer.html#XMLLOCATIONSETPTR"
 >xmlLocationSetPtr</A
 > val2);
+<A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> <A
+HREF="libxml-xpointer.html#XMLXPTRNEWRANGENODEOBJECT"
+>xmlXPtrNewRangeNodeObject</A
+> (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> start,
+                                             <A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> end);
+void        <A
+HREF="libxml-xpointer.html#XMLXPTRLOCATIONSETADD"
+>xmlXPtrLocationSetAdd</A
+>           (<A
+HREF="libxml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> cur,
+                                             <A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> val);
+<A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> <A
+HREF="libxml-xpointer.html#XMLXPTRWRAPLOCATIONSET"
+>xmlXPtrWrapLocationSet</A
+>    (<A
+HREF="libxml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> val);
 <A
 HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
@@ -237,7 +282,7 @@ HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN13307"
+NAME="AEN13518"
 ></A
 ><H2
 >Description</H2
@@ -247,14 +292,14 @@ NAME="AEN13307"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN13310"
+NAME="AEN13521"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13312"
+NAME="AEN13523"
 ></A
 ><H3
 ><A
@@ -284,7 +329,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13317"
+NAME="AEN13528"
 ></A
 ><H3
 ><A
@@ -310,7 +355,93 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13322"
+NAME="AEN13533"
+></A
+><H3
+><A
+NAME="XMLXPTRLOCATIONSETCREATE"
+></A
+>xmlXPtrLocationSetCreate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> xmlXPtrLocationSetCreate  (<A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new xmlLocationSetPtr of type double and of value <TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an initial xmlXPathObjectPtr, or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the newly created object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13555"
 ></A
 ><H3
 ><A
@@ -373,7 +504,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13338"
+NAME="AEN13571"
 ></A
 ><H3
 ><A
@@ -485,7 +616,285 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13366"
+NAME="AEN13599"
+></A
+><H3
+><A
+NAME="XMLXPTRNEWRANGENODEOBJECT"
+></A
+>xmlXPtrNewRangeNodeObject ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> xmlXPtrNewRangeNodeObject (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> start,
+                                             <A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> end);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new xmlXPathObjectPtr of type range from a not to an object</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>start</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the starting node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>end</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the ending object</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the newly created object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13625"
+></A
+><H3
+><A
+NAME="XMLXPTRLOCATIONSETADD"
+></A
+>xmlXPtrLocationSetAdd ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlXPtrLocationSetAdd           (<A
+HREF="libxml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> cur,
+                                             <A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>add a new xmlXPathObjectPtr ot an existing LocationSet
+If the location already exist in the set <TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+> is freed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the initial range set</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a new xmlXPathObjectPtr</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13647"
+></A
+><H3
+><A
+NAME="XMLXPTRWRAPLOCATIONSET"
+></A
+>xmlXPtrWrapLocationSet ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> xmlXPtrWrapLocationSet    (<A
+HREF="libxml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Wrap the LocationSet <TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+> in a new xmlXPathObjectPtr</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the LocationSet value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the newly created object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13669"
 ></A
 ><H3
 ><A
@@ -609,7 +1018,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13397"
+NAME="AEN13700"
 ></A
 ><H3
 ><A
@@ -712,7 +1121,7 @@ the caller has to free the object.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13423"
+NAME="AEN13726"
 ></A
 ><H3
 ><A
@@ -796,7 +1205,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13444"
+NAME="AEN13747"
 ></A
 ><H3
 ><A
@@ -878,7 +1287,7 @@ the caller has to free the node tree.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13465"
+NAME="AEN13768"
 ></A
 ><H3
 ><A
@@ -905,9 +1314,9 @@ HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >[8]   Predicate ::=   '[' PredicateExpr ']'
 [9]   PredicateExpr ::=   Expr </P
 ><P
->Evaluate a predicate as in <GTKDOCLINK
-HREF="XMLXPATHEVALPREDICATE"
->xmlXPathEvalPredicate</GTKDOCLINK
+>Evaluate a predicate as in <A
+HREF="libxml-xpath.html#XMLXPATHEVALPREDICATE"
+>xmlXPathEvalPredicate</A
 >() but for
 a Location Set instead of a node set</P
 ><P

@@ -8680,6 +8680,13 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
+>Parse a well-balanced chunk of an XML document
+called by the parser
+The allowed sequence for the Well Balanced Chunk is the one defined by
+the content production in the XML grammar:</P
+><P
+>[43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
@@ -8707,7 +8714,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document the chunk pertains to</TD
 ></TR
 ><TR
 ><TD
@@ -8724,7 +8731,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the SAX handler bloc (possibly NULL)</TD
 ></TR
 ><TR
 ><TD
@@ -8741,7 +8748,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The user data returned on SAX callbacks (possibly NULL)</TD
 ></TR
 ><TR
 ><TD
@@ -8758,7 +8765,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  Used for loop detection, use 0</TD
 ></TR
 ><TR
 ><TD
@@ -8775,7 +8782,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the input string in UTF8 or ISO-Latin (zero terminated)</TD
 ></TR
 ><TR
 ><TD
@@ -8792,7 +8799,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the return value for the set of parsed nodes</TD
 ></TR
 ><TR
 ><TD
@@ -8807,7 +8814,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>0 if the chunk is well balanced, -1 in case of args problem and
+the parser error code otherwise</TD
 ></TR
 ></TABLE
 ><P
@@ -8817,7 +8825,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2113"
+NAME="AEN2115"
 ></A
 ><H3
 ><A
@@ -9020,7 +9028,7 @@ the parser error code otherwise</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2162"
+NAME="AEN2164"
 ></A
 ><H3
 ><A
@@ -9166,7 +9174,7 @@ the parser error code otherwise</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2198"
+NAME="AEN2200"
 ></A
 ><H3
 ><A
@@ -9194,7 +9202,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2204"
+NAME="AEN2206"
 ></A
 ><H3
 ><A
@@ -9222,7 +9230,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2210"
+NAME="AEN2212"
 ></A
 ><H3
 ><A
@@ -9285,7 +9293,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2226"
+NAME="AEN2228"
 ></A
 ><H3
 ><A
@@ -9348,7 +9356,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2242"
+NAME="AEN2244"
 ></A
 ><H3
 ><A
@@ -9412,7 +9420,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2258"
+NAME="AEN2260"
 ></A
 ><H3
 ><A
@@ -9516,7 +9524,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2283"
+NAME="AEN2285"
 ></A
 ><H3
 ><A
@@ -9597,7 +9605,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2304"
+NAME="AEN2306"
 ></A
 ><H3
 ><A
@@ -9688,7 +9696,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2326"
+NAME="AEN2328"
 ></A
 ><H3
 ><A
@@ -9800,7 +9808,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2353"
+NAME="AEN2355"
 ></A
 ><H3
 ><A
@@ -9912,7 +9920,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2380"
+NAME="AEN2382"
 ></A
 ><H3
 ><A
@@ -10078,7 +10086,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2419"
+NAME="AEN2421"
 ></A
 ><H3
 ><A
@@ -10210,7 +10218,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2451"
+NAME="AEN2453"
 ></A
 ><H3
 ><A
@@ -10391,7 +10399,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2495"
+NAME="AEN2497"
 ></A
 ><H3
 ><A
@@ -10520,7 +10528,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2527"
+NAME="AEN2529"
 ></A
 ><H3
 ><A
@@ -10623,7 +10631,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2553"
+NAME="AEN2555"
 ></A
 ><H3
 ><A
@@ -10686,7 +10694,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2569"
+NAME="AEN2571"
 ></A
 ><H3
 ><A
@@ -10750,7 +10758,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2585"
+NAME="AEN2587"
 ></A
 ><H3
 ><A
@@ -10853,7 +10861,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2611"
+NAME="AEN2613"
 ></A
 ><H3
 ><A
@@ -10937,7 +10945,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2632"
+NAME="AEN2634"
 ></A
 ><H3
 ><A
@@ -10998,7 +11006,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2647"
+NAME="AEN2649"
 ></A
 ><H3
 ><A
@@ -11058,7 +11066,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2662"
+NAME="AEN2664"
 ></A
 ><H3
 ><A

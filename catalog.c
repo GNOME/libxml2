@@ -1262,25 +1262,27 @@ xmlParseXMLCatalogNode(xmlNodePtr cur, xmlCatalogPrefer prefer,
 		BAD_CAST "nextCatalog", NULL,
 		BAD_CAST "catalog", prefer, cgroup);
     }
-    if ((entry != NULL) && (parent != NULL)) {
-	entry->parent = parent;
-	if (parent->children == NULL)
-	    parent->children = entry;
-	else {
-	    xmlCatalogEntryPtr prev;
+    if (entry != NULL) {
+        if (parent != NULL) {
+	    entry->parent = parent;
+	    if (parent->children == NULL)
+		parent->children = entry;
+	    else {
+		xmlCatalogEntryPtr prev;
 
-	    prev = parent->children;
-	    while (prev->next != NULL)
-		prev = prev->next;
-	    prev->next = entry;
+		prev = parent->children;
+		while (prev->next != NULL)
+		    prev = prev->next;
+		prev->next = entry;
+	    }
 	}
-    }
-    if (entry->type == XML_CATA_GROUP) {
-	/*
-	 * Recurse to propagate prefer to the subtree
-	 * (xml:base handling is automated)
-	 */
-        xmlParseXMLCatalogNodeList(cur->children, prefer, parent, entry);
+	if (entry->type == XML_CATA_GROUP) {
+	    /*
+	     * Recurse to propagate prefer to the subtree
+	     * (xml:base handling is automated)
+	     */
+            xmlParseXMLCatalogNodeList(cur->children, prefer, parent, entry);
+	}
     }
     if (base != NULL)
 	xmlFree(base);

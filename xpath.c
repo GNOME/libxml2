@@ -6883,7 +6883,7 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlBufferPtr target;
     int offset, max;
     xmlChar ch;
-    xmlChar *point;
+    const xmlChar *point;
     xmlChar *cptr;
 
     CHECK_ARITY(3);
@@ -8014,7 +8014,6 @@ static xmlChar *
 xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
     int len = 0, l;
     int c;
-    int count = 0;
     const xmlChar *cur;
     xmlChar *ret;
 

@@ -1,3 +1,8 @@
+Fri Nov  5 16:26:28 UTC 2004 William Brack <wbrack@mmm.com.hk>
+
+	* catalog.c: fixed problem with NULL entry (bug 157407)
+	* xpath.c: fixed a couple of warnings (no change to logic)
+
 Fri Nov  5 15:30:43 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: more coverage

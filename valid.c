@@ -112,6 +112,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
 		    "realloc failed !n");
 	    return(0);
 	}
+	ctxt->vstate = &ctxt->vstateTab[0];
     }
     ctxt->vstateTab[ctxt->vstateNr].cont = cont;
     ctxt->vstateTab[ctxt->vstateNr].node = node;

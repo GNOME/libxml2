@@ -1,3 +1,8 @@
+Sun Apr 22 12:34:41 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c: Bjorn detected an invalid memory access. Fixed
+	  vstateVPush()
+
 Sun Apr 22 10:49:23 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: fixed xmlXPathCompile to detected unproperly ended expr

@@ -1,3 +1,8 @@
+Wed Oct 27 11:44:35 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c nanohttp.c: second part of the security fix for
+	  xmlNanoFTPConnect() and xmlNanoHTTPConnectHost().
+
 Tue Oct 26 23:57:02 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c: applied fixes for a couple of potential security problems

@@ -765,6 +765,8 @@
     <reference name='XML_SCHEMAP_INVALID_MINOCCURS' href='html/libxml-xmlerror.html#XML_SCHEMAP_INVALID_MINOCCURS'/>
     <reference name='XML_SCHEMAP_INVALID_REF_AND_SUBTYPE' href='html/libxml-xmlerror.html#XML_SCHEMAP_INVALID_REF_AND_SUBTYPE'/>
     <reference name='XML_SCHEMAP_INVALID_WHITE_SPACE' href='html/libxml-xmlerror.html#XML_SCHEMAP_INVALID_WHITE_SPACE'/>
+    <reference name='XML_SCHEMAP_MG_PROPS_CORRECT_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_MG_PROPS_CORRECT_1'/>
+    <reference name='XML_SCHEMAP_MG_PROPS_CORRECT_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_MG_PROPS_CORRECT_2'/>
     <reference name='XML_SCHEMAP_MISSING_SIMPLETYPE_CHILD' href='html/libxml-xmlerror.html#XML_SCHEMAP_MISSING_SIMPLETYPE_CHILD'/>
     <reference name='XML_SCHEMAP_NOATTR_NOREF' href='html/libxml-xmlerror.html#XML_SCHEMAP_NOATTR_NOREF'/>
     <reference name='XML_SCHEMAP_NOROOT' href='html/libxml-xmlerror.html#XML_SCHEMAP_NOROOT'/>
@@ -801,6 +803,9 @@
     <reference name='XML_SCHEMAP_SRC_ATTRIBUTE_3_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ATTRIBUTE_3_1'/>
     <reference name='XML_SCHEMAP_SRC_ATTRIBUTE_3_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ATTRIBUTE_3_2'/>
     <reference name='XML_SCHEMAP_SRC_ATTRIBUTE_4' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ATTRIBUTE_4'/>
+    <reference name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_1'/>
+    <reference name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_2'/>
+    <reference name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_3' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_3'/>
     <reference name='XML_SCHEMAP_SRC_ELEMENT_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_1'/>
     <reference name='XML_SCHEMAP_SRC_ELEMENT_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_2_1'/>
     <reference name='XML_SCHEMAP_SRC_ELEMENT_2_2' href='html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_2_2'/>
@@ -867,6 +872,7 @@
     <reference name='XML_SCHEMAS_ANY_SKIP' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ANY_SKIP'/>
     <reference name='XML_SCHEMAS_ANY_STRICT' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ANY_STRICT'/>
     <reference name='XML_SCHEMAS_ATTRGROUP_GLOBAL' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ATTRGROUP_GLOBAL'/>
+    <reference name='XML_SCHEMAS_ATTRGROUP_MARKED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ATTRGROUP_MARKED'/>
     <reference name='XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED'/>
     <reference name='XML_SCHEMAS_ATTR_FIXED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ATTR_FIXED'/>
     <reference name='XML_SCHEMAS_ATTR_GLOBAL' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ATTR_GLOBAL'/>
@@ -980,6 +986,7 @@
     <reference name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
     <reference name='XML_SCHEMAS_TYPE_FINAL_UNION' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_FINAL_UNION'/>
     <reference name='XML_SCHEMAS_TYPE_GLOBAL' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_GLOBAL'/>
+    <reference name='XML_SCHEMAS_TYPE_MARKED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_MARKED'/>
     <reference name='XML_SCHEMAS_TYPE_MIXED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_MIXED'/>
     <reference name='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD'/>
     <reference name='XML_SCHEMAS_TYPE_VARIETY_ABSENT' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_VARIETY_ABSENT'/>
@@ -3937,6 +3944,8 @@
       <ref name='XML_SCHEMAP_INVALID_MINOCCURS'/>
       <ref name='XML_SCHEMAP_INVALID_REF_AND_SUBTYPE'/>
       <ref name='XML_SCHEMAP_INVALID_WHITE_SPACE'/>
+      <ref name='XML_SCHEMAP_MG_PROPS_CORRECT_1'/>
+      <ref name='XML_SCHEMAP_MG_PROPS_CORRECT_2'/>
       <ref name='XML_SCHEMAP_MISSING_SIMPLETYPE_CHILD'/>
       <ref name='XML_SCHEMAP_NOATTR_NOREF'/>
       <ref name='XML_SCHEMAP_NOROOT'/>
@@ -3973,6 +3982,9 @@
       <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_3_1'/>
       <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_3_2'/>
       <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_4'/>
+      <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_1'/>
+      <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_2'/>
+      <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_3'/>
       <ref name='XML_SCHEMAP_SRC_ELEMENT_1'/>
       <ref name='XML_SCHEMAP_SRC_ELEMENT_2_1'/>
       <ref name='XML_SCHEMAP_SRC_ELEMENT_2_2'/>
@@ -4039,6 +4051,7 @@
       <ref name='XML_SCHEMAS_ANY_SKIP'/>
       <ref name='XML_SCHEMAS_ANY_STRICT'/>
       <ref name='XML_SCHEMAS_ATTRGROUP_GLOBAL'/>
+      <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
       <ref name='XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED'/>
       <ref name='XML_SCHEMAS_ATTR_FIXED'/>
       <ref name='XML_SCHEMAS_ATTR_GLOBAL'/>
@@ -4152,6 +4165,7 @@
       <ref name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
       <ref name='XML_SCHEMAS_TYPE_FINAL_UNION'/>
       <ref name='XML_SCHEMAS_TYPE_GLOBAL'/>
+      <ref name='XML_SCHEMAS_TYPE_MARKED'/>
       <ref name='XML_SCHEMAS_TYPE_MIXED'/>
       <ref name='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD'/>
       <ref name='XML_SCHEMAS_TYPE_VARIETY_ABSENT'/>
@@ -10497,6 +10511,7 @@
       <ref name='XML_SCHEMAS_ANY_SKIP'/>
       <ref name='XML_SCHEMAS_ANY_STRICT'/>
       <ref name='XML_SCHEMAS_ATTRGROUP_GLOBAL'/>
+      <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
       <ref name='XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED'/>
       <ref name='XML_SCHEMAS_ATTR_FIXED'/>
       <ref name='XML_SCHEMAS_ATTR_GLOBAL'/>
@@ -10584,6 +10599,7 @@
       <ref name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
       <ref name='XML_SCHEMAS_TYPE_FINAL_UNION'/>
       <ref name='XML_SCHEMAS_TYPE_GLOBAL'/>
+      <ref name='XML_SCHEMAS_TYPE_MARKED'/>
       <ref name='XML_SCHEMAS_TYPE_MIXED'/>
       <ref name='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD'/>
       <ref name='XML_SCHEMAS_TYPE_VARIETY_ABSENT'/>
@@ -11659,6 +11675,8 @@
       <ref name='XML_SCHEMAP_INVALID_MINOCCURS'/>
       <ref name='XML_SCHEMAP_INVALID_REF_AND_SUBTYPE'/>
       <ref name='XML_SCHEMAP_INVALID_WHITE_SPACE'/>
+      <ref name='XML_SCHEMAP_MG_PROPS_CORRECT_1'/>
+      <ref name='XML_SCHEMAP_MG_PROPS_CORRECT_2'/>
       <ref name='XML_SCHEMAP_MISSING_SIMPLETYPE_CHILD'/>
       <ref name='XML_SCHEMAP_NOATTR_NOREF'/>
       <ref name='XML_SCHEMAP_NOROOT'/>
@@ -11695,6 +11713,9 @@
       <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_3_1'/>
       <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_3_2'/>
       <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_4'/>
+      <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_1'/>
+      <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_2'/>
+      <ref name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_3'/>
       <ref name='XML_SCHEMAP_SRC_ELEMENT_1'/>
       <ref name='XML_SCHEMAP_SRC_ELEMENT_2_1'/>
       <ref name='XML_SCHEMAP_SRC_ELEMENT_2_2'/>
@@ -13312,7 +13333,6 @@
         <word name='Char'>
           <ref name='IS_BYTE_CHAR'/>
           <ref name='IS_CHAR'/>
-          <ref name='xmlGetUTF8Char'/>
           <ref name='xmlParseCDSect'/>
           <ref name='xmlParseCharRef'/>
           <ref name='xmlParseComment'/>
@@ -14825,6 +14845,9 @@
         <word name='Maps'>
           <ref name='xmlChildrenNode'/>
           <ref name='xmlRootNode'/>
+        </word>
+        <word name='Marks'>
+          <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
         </word>
         <word name='Markup'>
           <ref name='xmlParseExternalSubset'/>
@@ -16986,6 +17009,7 @@
           <ref name='xmlGetProp'/>
         </word>
         <word name='actual'>
+          <ref name='xmlGetUTF8Char'/>
           <ref name='xmlXPathFreeNodeSet'/>
           <ref name='xmlXPtrFreeLocationSet'/>
         </word>
@@ -17498,6 +17522,9 @@
           <ref name='xmlSaveFileTo'/>
           <ref name='xmlSaveFormatFileTo'/>
         </word>
+        <word name='assure'>
+          <ref name='xmlGetUTF8Char'/>
+        </word>
         <word name='atomic'>
           <ref name='xmlGcMemGet'/>
           <ref name='xmlGcMemSetup'/>
@@ -17506,6 +17533,7 @@
           <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='attr'>
+          <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
           <ref name='_xmlID'/>
           <ref name='_xmlRef'/>
         </word>
@@ -18167,6 +18195,7 @@
           <ref name='xmlValidateOneElement'/>
         </word>
         <word name='checks'>
+          <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
           <ref name='htmlAutoCloseTag'/>
           <ref name='htmlIsAutoClosed'/>
           <ref name='htmlNodeStatus'/>
@@ -18225,6 +18254,9 @@
           <ref name='xmlParseExternalEntity'/>
           <ref name='xmlParseInNodeContext'/>
           <ref name='xmlSAXParseEntity'/>
+        </word>
+        <word name='circular'>
+          <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
         </word>
         <word name='cleanly'>
           <ref name='xmlCheckHTTPInput'/>
@@ -18500,6 +18532,7 @@
           <ref name='xmlValidateDocumentFinal'/>
         </word>
         <word name='completely'>
+          <ref name='xmlGetUTF8Char'/>
           <ref name='xmlNodeGetBase'/>
         </word>
         <word name='complex'>
@@ -18726,6 +18759,7 @@
           <ref name='xmlXPathTrailingSorted'/>
         </word>
         <word name='contained'>
+          <ref name='xmlGetUTF8Char'/>
           <ref name='xmlNodeListGetRawString'/>
           <ref name='xmlNodeListGetString'/>
           <ref name='xmlParseElementChildrenContentDecl'/>
@@ -20946,6 +20980,7 @@
           <ref name='xmlNewTextChild'/>
         </word>
         <word name='group'>
+          <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
           <ref name='XML_SCHEMAS_ELEM_FINAL_ABSENT'/>
           <ref name='_xmlSchemaAttribute'/>
           <ref name='_xmlSchemaAttributeGroup'/>
@@ -22482,6 +22517,7 @@
           <ref name='xmlTextReaderQuoteChar'/>
         </word>
         <word name='marked'>
+          <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
           <ref name='_xmlParserInput'/>
         </word>
         <word name='marker'>
@@ -22667,6 +22703,7 @@
           <ref name='xmlAutomataNewOnceTrans'/>
           <ref name='xmlBufferGrow'/>
           <ref name='xmlBufferResize'/>
+          <ref name='xmlGetUTF8Char'/>
         </word>
         <word name='minus'>
           <ref name='xmlXPathStringFunction'/>
@@ -23970,6 +24007,7 @@
           <ref name='xmlBufferCreateStatic'/>
           <ref name='xmlDictLookup'/>
           <ref name='xmlDictQLookup'/>
+          <ref name='xmlGetUTF8Char'/>
           <ref name='xmlNewNs'/>
           <ref name='xmlTextReaderConstValue'/>
           <ref name='xmlTextReaderValue'/>
@@ -24614,6 +24652,7 @@
           <ref name='xmlNewCharRef'/>
         </word>
         <word name='referenced'>
+          <ref name='_xmlSchemaAttributeGroup'/>
           <ref name='xmlLinkGetData'/>
           <ref name='xmlParseAttValue'/>
         </word>
@@ -25415,6 +25454,7 @@
         </word>
         <word name='sets'>
           <ref name='initxmlDefaultSAXHandler'/>
+          <ref name='xmlGetUTF8Char'/>
           <ref name='xmlSAX2InitDefaultSAXHandler'/>
           <ref name='xmlXPathDifference'/>
           <ref name='xmlXPathIntersection'/>
@@ -26969,9 +27009,6 @@
           <ref name='xmlSplitQName'/>
           <ref name='xmlSplitQName2'/>
         </word>
-        <word name='updates'>
-          <ref name='xmlGetUTF8Char'/>
-        </word>
         <word name='upon'>
           <ref name='checkNamespace'/>
           <ref name='xlinkNodeDetectFunc'/>
@@ -27313,6 +27350,7 @@
         <word name='within'>
           <ref name='_xmlValidCtxt'/>
           <ref name='xmlAutomataNewCounterTrans'/>
+          <ref name='xmlGetUTF8Char'/>
           <ref name='xmlNewDocComment'/>
           <ref name='xmlNewDocNode'/>
           <ref name='xmlNewDocNodeEatName'/>

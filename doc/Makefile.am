@@ -33,62 +33,61 @@ api: libxml2-api.xml libxml2-refs.xml $(APIPAGES) $(srcdir)/html/index.html $(WI
 web: $(PAGES)
 
 ../elfgcchack.h: $(srcdir)/elfgcchack.xsl $(srcdir)/libxml2-api.xml
-	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding the elfgcchack.h header" ; \
-	  $(bindir)/xsltproc --nonet $(srcdir)/elfgcchack.xsl $(srcdir)/libxml2-api.xml > elfgcchack.h ; \
+	  $(XSLTPROC) --nonet $(srcdir)/elfgcchack.xsl $(srcdir)/libxml2-api.xml > elfgcchack.h ; \
 	  if [ "`diff -q elfgcchack.h ../elfgcchack.h`" ] ; then \
 	    echo "updating ../elfgcchack.h"; \
 	    cp elfgcchack.h ../elfgcchack.h; \
 	  fi ; rm -f elfgcchack.h ;  fi );
 
 $(PAGES): xml.html site.xsl
-	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding the HTML Web pages from xml.html" ; \
-	  $(bindir)/xsltproc --nonet --html $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/xml.html > index.html ; fi );
-	-@(if [ -x $(bindir)/xmllint ] ; then \
+	  $(XSLTPROC) --nonet --html $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/xml.html > index.html ; fi );
+	-@(if [ -x $(XMLLINT) ] ; then \
 	  echo "Validating the HTML Web pages" ; \
-	  $(bindir)/xmllint --nonet --valid --noout $(PAGES) ; fi );
+	  $(XMLLINT) --nonet --valid --noout $(PAGES) ; fi );
 
 $(top_srcdir)/NEWS: $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html
-	-@(if [ -x $(bindir)/xsltproc ] ; then \
-	  $(bindir)/xsltproc --nonet $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html > $(top_srcdir)/NEWS ; fi );
+	-@(if [ -x $(XSLTPROC) ] ; then \
+	  $(XSLTPROC) --nonet $(top_srcdir)/doc/news.xsl $(top_srcdir)/doc/news.html > $(top_srcdir)/NEWS ; fi );
 
 libxml2.xsa: $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html
-	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding the NEWS file" ; \
-	  $(bindir)/xsltproc --nonet $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html > libxml2.xsa ; fi );
+	  $(XSLTPROC) --nonet $(top_srcdir)/doc/xsa.xsl $(top_srcdir)/doc/news.html > libxml2.xsa ; fi );
 
 $(APIPAGES): libxml2-api.xml libxml2-refs.xml $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/api.xsl
-	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding the HTML API pages from libxml2-refs.xml" ; \
-	  $(bindir)/xsltproc --nonet --html $(top_srcdir)/doc/api.xsl \
+	  $(XSLTPROC) --nonet --html $(top_srcdir)/doc/api.xsl \
 	                     $(top_srcdir)/doc/xml.html ; fi );
-	-@(if [ -x $(bindir)/xmllint ] ; then \
+	-@(if [ -x $(XMLLINT) ] ; then \
 	  echo "Validating the HTML API pages" ; \
-	  $(bindir)/xmllint --nonet --valid --noout API*.html ; fi );
+	  $(XMLLINT) --nonet --valid --noout API*.html ; fi );
 
 $(srcdir)/html/index.html: libxml2-api.xml $(srcdir)/newapi.xsl
-	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	-@(if [ -x $(XSLTPROC) ] ; then \
 	  echo "Rebuilding the HTML pages from the XML API" ; \
-	  $(bindir)/xsltproc \
-	  --nonet $(srcdir)/newapi.xsl libxml2-api.xml ; fi )
-	-@(if [ -x $(bindir)/xmllint ] ; then \
+	  $(XSLTPROC) --nonet $(srcdir)/newapi.xsl libxml2-api.xml ; fi )
+	-@(if [ -x $(XMLLINT) ] ; then \
 	  echo "Validating the resulting XHTML pages" ; \
-	  $(bindir)/xmllint --nonet --valid --noout html/*.html ; fi );
+	  $(XMLLINT) --nonet --valid --noout html/*.html ; fi );
 
 $(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
-	-@(if [ -x $(bindir)/xsltproc ] ; then \
-	  $(bindir)/xsltproc -o $(WIN32_DIR)/libxml2.def.src \
+	-@(if [ -x $(XSLTPROC) ] ; then \
+	  $(XSLTPROC) -o $(WIN32_DIR)/libxml2.def.src \
 	  --nonet $(WIN32_DIR)/defgen.xsl libxml2-api.xml ; fi )
 
 libxml2-api.xml libxml2-refs.xml: apibuild.py ../include/libxml/*.h ../*.c
 	-(./apibuild.py)
 
 xmllint.1: xmllint.xml
-	-@(xsltproc --nonet xmllint.xml)
+	-@($(XSLTPROC) --nonet xmllint.xml)
 
 xmlcatalog.1: xmlcatalog_man.xml
-	-@(xsltproc --nonet xmlcatalog_man.xml)
+	-@($(XSLTPROC) --nonet xmlcatalog_man.xml)
 
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt

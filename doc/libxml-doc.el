@@ -32,7 +32,7 @@
 ;;  "Look up libxml-symbols and start browser on documentation." t)
 ;;
 ;; 2. adapt libxmldoc-root:
-;; i.e. (setq libxmldoc-root "~/libxml2-2.0.0/doc/html/")
+;; i.e. (setq libxmldoc-root "~/libxml2-2.0.0/doc/html")
 ;;
 ;; 3. change the filter-regex: by default, cpp-defines, callbacks and
 ;; html-functions are excluded (C-h v libxmldoc-filter-regexp)
@@ -63,13 +63,11 @@
 ;; (thing-at-point 'word) if it matches a symbol
 ;; Thu Jun 22 02:37:46 2000: filtering is only done for completion
 ;; Thu Jun 22 21:03:41 2000: libxmldoc-browse-url can be customized
-
 ;; Thu May 31 2001 (Geert): 
 ;;       - Changed the `gnome-xml-' html file prefix into `libxml-'.
 ;;       - Changed the 'word match from thing-at-point into 'symbol.
 ;;         With 'word, identifiers with an underscore (e.g. BAD_CAST)
 ;;         don't get matched.
-
 ;; Fri Jun  8 16:29:18 2001, Sat Jun 23 16:19:47 2001:
 ;; complete rewrite of libxmldoc-lookup-symbol
 ;; by Felix Natter <fnatter@gmx.net>, Geert Kloosterman <geertk@ai.rug.nl>:
@@ -86,6 +84,8 @@
 ;; minibuffer's value of case-fold-search, and not the one in the
 ;; c-mode buffer that we had set => so there's a new *-string-match-cs
 ;; (case sensitive) function which binds case-fold-search and runs string-match
+;; Wed Sep 1 20:26:29 2004: adapted for libxml2-2.6.9: handle
+;; document-relative (#XXX) links
 
 ;;; TODO:
 ;; - use command-execute for libxmldoc-browse-url
@@ -192,13 +192,17 @@ buffer's value of case-fold-search (different from GNU Emacs)."
         (uri))
     (message "collecting libxml-symbols...")
     (while (car files)
+      (message "processing %s" (car files))
       (with-temp-buffer
         (insert-file-contents (car files))
         (goto-char (point-min))
         (while (re-search-forward
                 "<a[^>]*href[ \t\n]*=[ \t\n]*\"\\([^=>]*\\)\"[^>]*>" nil t nil)
-          (setq uri (concat "file://" (expand-file-name libxmldoc-root) "/"
-                            (match-string 1)))
+          ;; is it a relative link (#XXX)?
+          (if (char-equal (elt (match-string 1) 0) ?#)
+              (setq uri (concat "file://" (car files) (match-string 1)))
+            (setq uri (concat "file://" (expand-file-name libxmldoc-root)
+                              "/" (match-string 1))))
           (if (not (re-search-forward "\\([^<]*\\)<" nil t nil))
               (error "regexp error while getting libxml-symbols.."))
           ;; this needs add-to-list because i.e. xmlChar appears often

@@ -7316,21 +7316,28 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
     SKIP_BLANKS;
 
     /*
-     * We should have the VersionInfo here.
+     * We must have the VersionInfo here.
      */
     version = xmlParseVersionInfo(ctxt);
-    if (version == NULL)
-	version = xmlCharStrdup(XML_DEFAULT_VERSION);
-    else if (!xmlStrEqual(version, (const xmlChar *) XML_DEFAULT_VERSION)) {
-	/*
-	 * TODO: Blueberry should be detected here
-	 */
-	if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt->userData, "Unsupported version '%s'\n",
-		               version);
+    if (version == NULL) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	    "Malformed declaration expecting version\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+    } else {
+	if (!xmlStrEqual(version, (const xmlChar *) XML_DEFAULT_VERSION)) {
+	    /*
+	     * TODO: Blueberry should be detected here
+	     */
+	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		ctxt->sax->warning(ctxt->userData, "Unsupported version '%s'\n",
+				   version);
+	}
+	if (ctxt->version != NULL)
+	    xmlFree(ctxt->version);
+	ctxt->version = version;
     }
-    ctxt->version = xmlStrdup(version);
-    xmlFree(version);
 
     /*
      * We may have the encoding declaration

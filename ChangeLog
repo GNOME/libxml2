@@ -1,3 +1,8 @@
+Thu Nov 29 17:10:22 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: Robin Berjon <robin@knowscape.com> found a case
+	  where non-wellformed XML declaractions were not detected.
+
 Wed Nov 28 15:41:40 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xpointer.c: fixed a compilation bug pointed by Danny Jamshy

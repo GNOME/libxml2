@@ -1,3 +1,7 @@
+Mon Sep 27 10:16:43 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xmlmemory.h: turning off memory debug :-(
+
 Sun Sep 26 13:16:54 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.[ch] : added xmlSAXUserParseFile() and xmlSAXUserParseMemory()

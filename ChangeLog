@@ -1,3 +1,7 @@
+Fri Feb  7 14:00:53 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: applied another bug fix from Sean Chittenden
+
 Fri Feb  7 13:34:08 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in xmllint.c: I f...ed up the default configuration

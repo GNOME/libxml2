@@ -1756,13 +1756,9 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc) {
     /*
      * Second Phase : collect the infosets fragments
      */
-    /*
-    for (i = ctxt->incBase;i < ctxt->incNr; i++) {
-        xmlXIncludePreloadNode(ctxt, i);
-    }
-     */
     for (i = ctxt->incBase;i < ctxt->incNr; i++) {
         xmlXIncludeLoadNode(ctxt, i);
+	ret++;
     }
 
     /*

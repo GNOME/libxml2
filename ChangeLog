@@ -1,3 +1,8 @@
+Wed Mar 14 14:55:46 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* SAX.c: external subset notations were improperly registered
+	  in the internal subset.
+
 Tue Mar 13 10:28:49 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* README.cvs-commits: added, pointing to HACKING

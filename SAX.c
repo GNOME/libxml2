@@ -584,7 +584,7 @@ notationDecl(void *ctx, const xmlChar *name,
 	nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, name,
                               publicId, systemId);
     else if (ctxt->inSubset == 2)
-	nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, name,
+	nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->extSubset, name,
                               publicId, systemId);
     else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))

@@ -693,6 +693,23 @@ Relaxtests: xmllint$(EXEEXT)
 	@echo "##"
 	-@(for i in $(srcdir)/test/relaxng/*.rng ; do \
 	  name=`basename $$i | sed 's+\.rng++'`; \
+	  if [ ! -f $(srcdir)/result/relaxng/"$$name"_valid ] ; then \
+	      echo New schemas $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --relaxng $(srcdir)/test/relaxng/tutorA.rng $$i \
+		      > $(srcdir)/result/relaxng/"$$name"_valid \
+		      2> $(srcdir)/result/relaxng/"$$name"_err; \
+	  else \
+	      echo Checking schemas $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --relaxng $(srcdir)/test/relaxng/tutorA.rng $$i \
+	      > res.$$name 2> err.$$name;\
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/relaxng/"$$name"_valid \
+		   res.$$name;\
+	      diff $(srcdir)/result/relaxng/"$$name"_err \
+		   err.$$name | grep -v "error detected at";\
+	      grep Unimplemented err.$$name; \
+	      rm res.$$name err.$$name ; \
+	  fi; \
 	  for j in $(srcdir)/test/relaxng/"$$name"_*.xml ; do \
 	      if [ -f $$j ] ; then \
 	      xno=`basename $$j | sed 's+.*_\(.*\).xml+\1+'`; \

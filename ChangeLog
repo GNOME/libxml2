@@ -1,3 +1,12 @@
+Sun Feb  9 15:18:43 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* libxml.spec.in: fixes a libtool problem on AMD 64bits builds
+	* relaxng.c: found the validation problem I had with interleave
+	  when not covering all remaining siblings
+	* Makefile.am test.relaxng/* result/relaxng/*: augmented the
+	  testsuite and check the RNG schemas against the RNG schemas
+	  given in appendix A
+
 Sat Feb  8 18:55:43 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/Makefile.msvc: updates for RelaxNG

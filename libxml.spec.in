@@ -61,7 +61,7 @@ at parse time or later once the document has been modified.
 
 %build
 %configure
-make
+make LIBTOOL=/usr/bin/libtool
 
 %install
 rm -fr %{buildroot}

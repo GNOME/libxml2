@@ -1,3 +1,7 @@
+Mon Feb 24 19:14:57 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: Fixes bug #106931 in XInclude entities merging.
+
 Mon Feb 24 18:50:35 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: fixed bug #105992

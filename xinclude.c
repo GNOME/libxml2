@@ -1062,6 +1062,9 @@ xmlXIncludeMergeEntity(xmlEntityPtr ent, xmlXIncludeMergeDataPtr data,
 	    } else if ((ent->SystemID != NULL) && (prev->SystemID != NULL)) {
 		if (!xmlStrEqual(ent->ExternalID, prev->ExternalID))
 		    goto error;
+	    } else if ((ent->content != NULL) && (prev->content != NULL)) {
+		if (!xmlStrEqual(ent->content, prev->content))
+		    goto error;
 	    } else {
 		goto error;
 	    }

@@ -16,7 +16,7 @@ TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="NEXT"
 TITLE="SAX"
-HREF="gnome-xml-sax.html"></HEAD
+HREF="libxml-sax.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -101,7 +101,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-sax.html"
+HREF="libxml-sax.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -115,7 +115,7 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="GNOME-XML-PARSER"
+NAME="LIBXML-PARSER"
 >parser</A
 ></H1
 ><DIV
@@ -145,928 +145,928 @@ CLASS="SYNOPSIS"
 >&#13;
 
 #define     <A
-HREF="gnome-xml-parser.html#XML-DEFAULT-VERSION-CAPS"
+HREF="libxml-parser.html#XML-DEFAULT-VERSION-CAPS"
 >XML_DEFAULT_VERSION</A
 >
 void        (<A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTDEALLOCATE"
+HREF="libxml-parser.html#XMLPARSERINPUTDEALLOCATE"
 >*xmlParserInputDeallocate</A
 >)     (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*);
 struct      <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUT"
+HREF="libxml-parser.html#XMLPARSERINPUT"
 >xmlParserInput</A
 >;
 typedef     <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 >;
 struct      <A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
+HREF="libxml-parser.html#XMLPARSERNODEINFO"
 >xmlParserNodeInfo</A
 >;
 typedef     <A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFOPTR"
+HREF="libxml-parser.html#XMLPARSERNODEINFOPTR"
 >xmlParserNodeInfoPtr</A
 >;
 struct      <A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQ"
+HREF="libxml-parser.html#XMLPARSERNODEINFOSEQ"
 >xmlParserNodeInfoSeq</A
 >;
 typedef     <A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQPTR"
+HREF="libxml-parser.html#XMLPARSERNODEINFOSEQPTR"
 >xmlParserNodeInfoSeqPtr</A
 >;
 enum        <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTSTATE"
+HREF="libxml-parser.html#XMLPARSERINPUTSTATE"
 >xmlParserInputState</A
 >;
 struct      <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXT"
+HREF="libxml-parser.html#XMLPARSERCTXT"
 >xmlParserCtxt</A
 >;
 typedef     <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 >;
 struct      <A
-HREF="gnome-xml-parser.html#XMLSAXLOCATOR"
+HREF="libxml-parser.html#XMLSAXLOCATOR"
 >xmlSAXLocator</A
 >;
 typedef     <A
-HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
+HREF="libxml-parser.html#XMLSAXLOCATORPTR"
 >xmlSAXLocatorPtr</A
 >;
 <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > (<A
-HREF="gnome-xml-parser.html#RESOLVEENTITYSAXFUNC"
+HREF="libxml-parser.html#RESOLVEENTITYSAXFUNC"
 >*resolveEntitySAXFunc</A
 >)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *systemId);
 void        (<A
-HREF="gnome-xml-parser.html#INTERNALSUBSETSAXFUNC"
+HREF="libxml-parser.html#INTERNALSUBSETSAXFUNC"
 >*internalSubsetSAXFunc</A
 >)        (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);
 void        (<A
-HREF="gnome-xml-parser.html#EXTERNALSUBSETSAXFUNC"
+HREF="libxml-parser.html#EXTERNALSUBSETSAXFUNC"
 >*externalSubsetSAXFunc</A
 >)        (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);
 <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > (<A
-HREF="gnome-xml-parser.html#GETENTITYSAXFUNC"
+HREF="libxml-parser.html#GETENTITYSAXFUNC"
 >*getEntitySAXFunc</A
 >)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > (<A
-HREF="gnome-xml-parser.html#GETPARAMETERENTITYSAXFUNC"
+HREF="libxml-parser.html#GETPARAMETERENTITYSAXFUNC"
 >*getParameterEntitySAXFunc</A
 >)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 void        (<A
-HREF="gnome-xml-parser.html#ENTITYDECLSAXFUNC"
+HREF="libxml-parser.html#ENTITYDECLSAXFUNC"
 >*entityDeclSAXFunc</A
 >)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              int type,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *systemId,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 void        (<A
-HREF="gnome-xml-parser.html#NOTATIONDECLSAXFUNC"
+HREF="libxml-parser.html#NOTATIONDECLSAXFUNC"
 >*notationDeclSAXFunc</A
 >)          (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *systemId);
 void        (<A
-HREF="gnome-xml-parser.html#ATTRIBUTEDECLSAXFUNC"
+HREF="libxml-parser.html#ATTRIBUTEDECLSAXFUNC"
 >*attributeDeclSAXFunc</A
 >)         (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *elem,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              int type,
                                              int def,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *defaultValue,
                                              <A
-HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+HREF="libxml-tree.html#XMLENUMERATIONPTR"
 >xmlEnumerationPtr</A
 > tree);
 void        (<A
-HREF="gnome-xml-parser.html#ELEMENTDECLSAXFUNC"
+HREF="libxml-parser.html#ELEMENTDECLSAXFUNC"
 >*elementDeclSAXFunc</A
 >)           (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              int type,
                                              <A
-HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 >xmlElementContentPtr</A
 > content);
 void        (<A
-HREF="gnome-xml-parser.html#UNPARSEDENTITYDECLSAXFUNC"
+HREF="libxml-parser.html#UNPARSEDENTITYDECLSAXFUNC"
 >*unparsedEntityDeclSAXFunc</A
 >)    (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *systemId,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *notationName);
 void        (<A
-HREF="gnome-xml-parser.html#SETDOCUMENTLOCATORSAXFUNC"
+HREF="libxml-parser.html#SETDOCUMENTLOCATORSAXFUNC"
 >*setDocumentLocatorSAXFunc</A
 >)    (void *ctx,
                                              <A
-HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
+HREF="libxml-parser.html#XMLSAXLOCATORPTR"
 >xmlSAXLocatorPtr</A
 > loc);
 void        (<A
-HREF="gnome-xml-parser.html#STARTDOCUMENTSAXFUNC"
+HREF="libxml-parser.html#STARTDOCUMENTSAXFUNC"
 >*startDocumentSAXFunc</A
 >)         (void *ctx);
 void        (<A
-HREF="gnome-xml-parser.html#ENDDOCUMENTSAXFUNC"
+HREF="libxml-parser.html#ENDDOCUMENTSAXFUNC"
 >*endDocumentSAXFunc</A
 >)           (void *ctx);
 void        (<A
-HREF="gnome-xml-parser.html#STARTELEMENTSAXFUNC"
+HREF="libxml-parser.html#STARTELEMENTSAXFUNC"
 >*startElementSAXFunc</A
 >)          (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **atts);
 void        (<A
-HREF="gnome-xml-parser.html#ENDELEMENTSAXFUNC"
+HREF="libxml-parser.html#ENDELEMENTSAXFUNC"
 >*endElementSAXFunc</A
 >)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 void        (<A
-HREF="gnome-xml-parser.html#ATTRIBUTESAXFUNC"
+HREF="libxml-parser.html#ATTRIBUTESAXFUNC"
 >*attributeSAXFunc</A
 >)             (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);
 void        (<A
-HREF="gnome-xml-parser.html#REFERENCESAXFUNC"
+HREF="libxml-parser.html#REFERENCESAXFUNC"
 >*referenceSAXFunc</A
 >)             (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 void        (<A
-HREF="gnome-xml-parser.html#CHARACTERSSAXFUNC"
+HREF="libxml-parser.html#CHARACTERSSAXFUNC"
 >*charactersSAXFunc</A
 >)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ch,
                                              int len);
 void        (<A
-HREF="gnome-xml-parser.html#IGNORABLEWHITESPACESAXFUNC"
+HREF="libxml-parser.html#IGNORABLEWHITESPACESAXFUNC"
 >*ignorableWhitespaceSAXFunc</A
 >)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ch,
                                              int len);
 void        (<A
-HREF="gnome-xml-parser.html#PROCESSINGINSTRUCTIONSAXFUNC"
+HREF="libxml-parser.html#PROCESSINGINSTRUCTIONSAXFUNC"
 >*processingInstructionSAXFunc</A
 >) (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *target,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *data);
 void        (<A
-HREF="gnome-xml-parser.html#COMMENTSAXFUNC"
+HREF="libxml-parser.html#COMMENTSAXFUNC"
 >*commentSAXFunc</A
 >)               (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);
 void        (<A
-HREF="gnome-xml-parser.html#CDATABLOCKSAXFUNC"
+HREF="libxml-parser.html#CDATABLOCKSAXFUNC"
 >*cdataBlockSAXFunc</A
 >)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value,
                                              int len);
 void        (<A
-HREF="gnome-xml-parser.html#WARNINGSAXFUNC"
+HREF="libxml-parser.html#WARNINGSAXFUNC"
 >*warningSAXFunc</A
 >)               (void *ctx,
                                              const char *msg,
                                              ...);
 void        (<A
-HREF="gnome-xml-parser.html#ERRORSAXFUNC"
+HREF="libxml-parser.html#ERRORSAXFUNC"
 >*errorSAXFunc</A
 >)                 (void *ctx,
                                              const char *msg,
                                              ...);
 void        (<A
-HREF="gnome-xml-parser.html#FATALERRORSAXFUNC"
+HREF="libxml-parser.html#FATALERRORSAXFUNC"
 >*fatalErrorSAXFunc</A
 >)            (void *ctx,
                                              const char *msg,
                                              ...);
 int         (<A
-HREF="gnome-xml-parser.html#ISSTANDALONESAXFUNC"
+HREF="libxml-parser.html#ISSTANDALONESAXFUNC"
 >*isStandaloneSAXFunc</A
 >)          (void *ctx);
 int         (<A
-HREF="gnome-xml-parser.html#HASINTERNALSUBSETSAXFUNC"
+HREF="libxml-parser.html#HASINTERNALSUBSETSAXFUNC"
 >*hasInternalSubsetSAXFunc</A
 >)     (void *ctx);
 int         (<A
-HREF="gnome-xml-parser.html#HASEXTERNALSUBSETSAXFUNC"
+HREF="libxml-parser.html#HASEXTERNALSUBSETSAXFUNC"
 >*hasExternalSubsetSAXFunc</A
 >)     (void *ctx);
 struct      <A
-HREF="gnome-xml-parser.html#XMLSAXHANDLER"
+HREF="libxml-parser.html#XMLSAXHANDLER"
 >xmlSAXHandler</A
 >;
 typedef     <A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 >;
 <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > (<A
-HREF="gnome-xml-parser.html#XMLEXTERNALENTITYLOADER"
+HREF="libxml-parser.html#XMLEXTERNALENTITYLOADER"
 >*xmlExternalEntityLoader</A
 >)
                                             (const char *URL,
                                              const char *ID,
                                              <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > context);
 #define     <A
-HREF="gnome-xml-parser.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE"
+HREF="libxml-parser.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE"
 >xmlSubstituteEntitiesDefaultValue</A
 >
 void        <A
-HREF="gnome-xml-parser.html#XMLINITPARSER"
+HREF="libxml-parser.html#XMLINITPARSER"
 >xmlInitParser</A
 >                   (void);
 void        <A
-HREF="gnome-xml-parser.html#XMLCLEANUPPARSER"
+HREF="libxml-parser.html#XMLCLEANUPPARSER"
 >xmlCleanupParser</A
 >                (void);
 int         <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTREAD"
+HREF="libxml-parser.html#XMLPARSERINPUTREAD"
 >xmlParserInputRead</A
 >              (<A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > in,
                                              int len);
 int         <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTGROW"
+HREF="libxml-parser.html#XMLPARSERINPUTGROW"
 >xmlParserInputGrow</A
 >              (<A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > in,
                                              int len);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-parser.html#XMLSTRDUP"
+HREF="libxml-parser.html#XMLSTRDUP"
 >xmlStrdup</A
 >                       (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-parser.html#XMLSTRNDUP"
+HREF="libxml-parser.html#XMLSTRNDUP"
 >xmlStrndup</A
 >                      (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              int len);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-parser.html#XMLSTRSUB"
+HREF="libxml-parser.html#XMLSTRSUB"
 >xmlStrsub</A
 >                       (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              int start,
                                              int len);
 const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* <A
-HREF="gnome-xml-parser.html#XMLSTRCHR"
+HREF="libxml-parser.html#XMLSTRCHR"
 >xmlStrchr</A
 >                    (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > val);
 const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* <A
-HREF="gnome-xml-parser.html#XMLSTRSTR"
+HREF="libxml-parser.html#XMLSTRSTR"
 >xmlStrstr</A
 >                    (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *val);
 const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* <A
-HREF="gnome-xml-parser.html#XMLSTRCASESTR"
+HREF="libxml-parser.html#XMLSTRCASESTR"
 >xmlStrcasestr</A
 >                (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *val);
 int         <A
-HREF="gnome-xml-parser.html#XMLSTRCMP"
+HREF="libxml-parser.html#XMLSTRCMP"
 >xmlStrcmp</A
 >                       (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str2);
 int         <A
-HREF="gnome-xml-parser.html#XMLSTRNCMP"
+HREF="libxml-parser.html#XMLSTRNCMP"
 >xmlStrncmp</A
 >                      (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str2,
                                              int len);
 int         <A
-HREF="gnome-xml-parser.html#XMLSTRCASECMP"
+HREF="libxml-parser.html#XMLSTRCASECMP"
 >xmlStrcasecmp</A
 >                   (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str2);
 int         <A
-HREF="gnome-xml-parser.html#XMLSTRNCASECMP"
+HREF="libxml-parser.html#XMLSTRNCASECMP"
 >xmlStrncasecmp</A
 >                  (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str2,
                                              int len);
 int         <A
-HREF="gnome-xml-parser.html#XMLSTREQUAL"
+HREF="libxml-parser.html#XMLSTREQUAL"
 >xmlStrEqual</A
 >                     (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str2);
 int         <A
-HREF="gnome-xml-parser.html#XMLSTRLEN"
+HREF="libxml-parser.html#XMLSTRLEN"
 >xmlStrlen</A
 >                       (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-parser.html#XMLSTRCAT"
+HREF="libxml-parser.html#XMLSTRCAT"
 >xmlStrcat</A
 >                       (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *add);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-parser.html#XMLSTRNCAT"
+HREF="libxml-parser.html#XMLSTRNCAT"
 >xmlStrncat</A
 >                      (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *add,
                                              int len);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLPARSEDOC"
+HREF="libxml-parser.html#XMLPARSEDOC"
 >xmlParseDoc</A
 >                     (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLPARSEMEMORY"
+HREF="libxml-parser.html#XMLPARSEMEMORY"
 >xmlParseMemory</A
 >                  (char *buffer,
                                              int size);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLPARSEFILE"
+HREF="libxml-parser.html#XMLPARSEFILE"
 >xmlParseFile</A
 >                    (const char *filename);
 int         <A
-HREF="gnome-xml-parser.html#XMLSUBSTITUTEENTITIESDEFAULT"
+HREF="libxml-parser.html#XMLSUBSTITUTEENTITIESDEFAULT"
 >xmlSubstituteEntitiesDefault</A
 >    (int val);
 int         <A
-HREF="gnome-xml-parser.html#XMLKEEPBLANKSDEFAULT"
+HREF="libxml-parser.html#XMLKEEPBLANKSDEFAULT"
 >xmlKeepBlanksDefault</A
 >            (int val);
 void        <A
-HREF="gnome-xml-parser.html#XMLSTOPPARSER"
+HREF="libxml-parser.html#XMLSTOPPARSER"
 >xmlStopParser</A
 >                   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
-HREF="gnome-xml-parser.html#XMLPEDANTICPARSERDEFAULT"
+HREF="libxml-parser.html#XMLPEDANTICPARSERDEFAULT"
 >xmlPedanticParserDefault</A
 >        (int val);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLRECOVERDOC"
+HREF="libxml-parser.html#XMLRECOVERDOC"
 >xmlRecoverDoc</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLRECOVERMEMORY"
+HREF="libxml-parser.html#XMLRECOVERMEMORY"
 >xmlRecoverMemory</A
 >                (char *buffer,
                                              int size);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLRECOVERFILE"
+HREF="libxml-parser.html#XMLRECOVERFILE"
 >xmlRecoverFile</A
 >                  (const char *filename);
 int         <A
-HREF="gnome-xml-parser.html#XMLPARSEDOCUMENT"
+HREF="libxml-parser.html#XMLPARSEDOCUMENT"
 >xmlParseDocument</A
 >                (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
-HREF="gnome-xml-parser.html#XMLPARSEEXTPARSEDENT"
+HREF="libxml-parser.html#XMLPARSEEXTPARSEDENT"
 >xmlParseExtParsedEnt</A
 >            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLSAXPARSEDOC"
+HREF="libxml-parser.html#XMLSAXPARSEDOC"
 >xmlSAXParseDoc</A
 >                  (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              int recovery);
 int         <A
-HREF="gnome-xml-parser.html#XMLSAXUSERPARSEFILE"
+HREF="libxml-parser.html#XMLSAXUSERPARSEFILE"
 >xmlSAXUserParseFile</A
 >             (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
                                              const char *filename);
 int         <A
-HREF="gnome-xml-parser.html#XMLSAXUSERPARSEMEMORY"
+HREF="libxml-parser.html#XMLSAXUSERPARSEMEMORY"
 >xmlSAXUserParseMemory</A
 >           (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
                                              char *buffer,
                                              int size);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLSAXPARSEMEMORY"
+HREF="libxml-parser.html#XMLSAXPARSEMEMORY"
 >xmlSAXParseMemory</A
 >               (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              char *buffer,
                                              int size,
                                              int recovery);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLSAXPARSEFILE"
+HREF="libxml-parser.html#XMLSAXPARSEFILE"
 >xmlSAXParseFile</A
 >                 (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *filename,
                                              int recovery);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLSAXPARSEENTITY"
+HREF="libxml-parser.html#XMLSAXPARSEENTITY"
 >xmlSAXParseEntity</A
 >               (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *filename);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLPARSEENTITY"
+HREF="libxml-parser.html#XMLPARSEENTITY"
 >xmlParseEntity</A
 >                  (const char *filename);
 <A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLPARSEDTD"
+HREF="libxml-parser.html#XMLPARSEDTD"
 >xmlParseDTD</A
 >                     (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);
 <A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLSAXPARSEDTD"
+HREF="libxml-parser.html#XMLSAXPARSEDTD"
 >xmlSAXParseDTD</A
 >                  (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);
 <A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   <A
-HREF="gnome-xml-parser.html#XMLIOPARSEDTD"
+HREF="libxml-parser.html#XMLIOPARSEDTD"
 >xmlIOParseDTD</A
 >                   (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > input,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 int         <A
-HREF="gnome-xml-parser.html#XMLPARSEBALANCEDCHUNKMEMORY"
+HREF="libxml-parser.html#XMLPARSEBALANCEDCHUNKMEMORY"
 >xmlParseBalancedChunkMemory</A
 >     (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
                                              int depth,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *string,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > *list);
 int         <A
-HREF="gnome-xml-parser.html#XMLPARSEEXTERNALENTITY"
+HREF="libxml-parser.html#XMLPARSEEXTERNALENTITY"
 >xmlParseExternalEntity</A
 >          (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
                                              int depth,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *URL,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ID,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > *list);
 int         <A
-HREF="gnome-xml-parser.html#XMLPARSECTXTEXTERNALENTITY"
+HREF="libxml-parser.html#XMLPARSECTXTEXTERNALENTITY"
 >xmlParseCtxtExternalEntity</A
 >      (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *URL,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ID,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > *list);
 void        <A
-HREF="gnome-xml-parser.html#XMLDEFAULTSAXHANDLERINIT"
+HREF="libxml-parser.html#XMLDEFAULTSAXHANDLERINIT"
 >xmlDefaultSAXHandlerInit</A
 >        (void);
 void        <A
-HREF="gnome-xml-parser.html#HTMLDEFAULTSAXHANDLERINIT"
+HREF="libxml-parser.html#HTMLDEFAULTSAXHANDLERINIT"
 >htmlDefaultSAXHandlerInit</A
 >       (void);
 void        <A
-HREF="gnome-xml-parser.html#XMLINITPARSERCTXT"
+HREF="libxml-parser.html#XMLINITPARSERCTXT"
 >xmlInitParserCtxt</A
 >               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-parser.html#XMLCLEARPARSERCTXT"
+HREF="libxml-parser.html#XMLCLEARPARSERCTXT"
 >xmlClearParserCtxt</A
 >              (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-parser.html#XMLFREEPARSERCTXT"
+HREF="libxml-parser.html#XMLFREEPARSERCTXT"
 >xmlFreeParserCtxt</A
 >               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-parser.html#XMLSETUPPARSERFORBUFFER"
+HREF="libxml-parser.html#XMLSETUPPARSERFORBUFFER"
 >xmlSetupParserForBuffer</A
 >         (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *buffer,
                                              const char *filename);
 <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > <A
-HREF="gnome-xml-parser.html#XMLCREATEDOCPARSERCTXT"
+HREF="libxml-parser.html#XMLCREATEDOCPARSERCTXT"
 >xmlCreateDocParserCtxt</A
 >     (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur);
 int         <A
-HREF="gnome-xml-parser.html#XMLGETFEATURESLIST"
+HREF="libxml-parser.html#XMLGETFEATURESLIST"
 >xmlGetFeaturesList</A
 >              (int *len,
                                              const char **result);
 int         <A
-HREF="gnome-xml-parser.html#XMLGETFEATURE"
+HREF="libxml-parser.html#XMLGETFEATURE"
 >xmlGetFeature</A
 >                   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const char *name,
                                              void *result);
 int         <A
-HREF="gnome-xml-parser.html#XMLSETFEATURE"
+HREF="libxml-parser.html#XMLSETFEATURE"
 >xmlSetFeature</A
 >                   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const char *name,
                                              void *value);
 <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > <A
-HREF="gnome-xml-parser.html#XMLCREATEPUSHPARSERCTXT"
+HREF="libxml-parser.html#XMLCREATEPUSHPARSERCTXT"
 >xmlCreatePushParserCtxt</A
 >    (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -1074,136 +1074,136 @@ HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
                                              int size,
                                              const char *filename);
 int         <A
-HREF="gnome-xml-parser.html#XMLPARSECHUNK"
+HREF="libxml-parser.html#XMLPARSECHUNK"
 >xmlParseChunk</A
 >                   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const char *chunk,
                                              int size,
                                              int terminate);
 <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > <A
-HREF="gnome-xml-parser.html#XMLCREATEIOPARSERCTXT"
+HREF="libxml-parser.html#XMLCREATEIOPARSERCTXT"
 >xmlCreateIOParserCtxt</A
 >      (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTREADCALLBACK"
 >xmlInputReadCallback</A
 > ioread,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >xmlInputCloseCallback</A
 > ioclose,
                                              void *ioctx,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > <A
-HREF="gnome-xml-parser.html#XMLNEWIOINPUTSTREAM"
+HREF="libxml-parser.html#XMLNEWIOINPUTSTREAM"
 >xmlNewIOInputStream</A
 >       (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > input,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 const <A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
+HREF="libxml-parser.html#XMLPARSERNODEINFO"
 >xmlParserNodeInfo</A
 >* <A
-HREF="gnome-xml-parser.html#XMLPARSERFINDNODEINFO"
+HREF="libxml-parser.html#XMLPARSERFINDNODEINFO"
 >xmlParserFindNodeInfo</A
 >
                                             (const <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXT"
+HREF="libxml-parser.html#XMLPARSERCTXT"
 >xmlParserCtxt</A
 > *ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLNODE"
+HREF="libxml-tree.html#XMLNODE"
 >xmlNode</A
 > *node);
 void        <A
-HREF="gnome-xml-parser.html#XMLINITNODEINFOSEQ"
+HREF="libxml-parser.html#XMLINITNODEINFOSEQ"
 >xmlInitNodeInfoSeq</A
 >              (<A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQPTR"
+HREF="libxml-parser.html#XMLPARSERNODEINFOSEQPTR"
 >xmlParserNodeInfoSeqPtr</A
 > seq);
 void        <A
-HREF="gnome-xml-parser.html#XMLCLEARNODEINFOSEQ"
+HREF="libxml-parser.html#XMLCLEARNODEINFOSEQ"
 >xmlClearNodeInfoSeq</A
 >             (<A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQPTR"
+HREF="libxml-parser.html#XMLPARSERNODEINFOSEQPTR"
 >xmlParserNodeInfoSeqPtr</A
 > seq);
 unsigned <GTKDOCLINK
 HREF="LONG"
 >long</GTKDOCLINK
 > <A
-HREF="gnome-xml-parser.html#XMLPARSERFINDNODEINFOINDEX"
+HREF="libxml-parser.html#XMLPARSERFINDNODEINFOINDEX"
 >xmlParserFindNodeInfoIndex</A
 >    (const <A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQ"
+HREF="libxml-parser.html#XMLPARSERNODEINFOSEQ"
 >xmlParserNodeInfoSeq</A
 > *seq,
                                              const <A
-HREF="gnome-xml-tree.html#XMLNODE"
+HREF="libxml-tree.html#XMLNODE"
 >xmlNode</A
 > *node);
 void        <A
-HREF="gnome-xml-parser.html#XMLPARSERADDNODEINFO"
+HREF="libxml-parser.html#XMLPARSERADDNODEINFO"
 >xmlParserAddNodeInfo</A
 >            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
+HREF="libxml-parser.html#XMLPARSERNODEINFO"
 >xmlParserNodeInfo</A
 > *info);
 void        <A
-HREF="gnome-xml-parser.html#XMLSETEXTERNALENTITYLOADER"
+HREF="libxml-parser.html#XMLSETEXTERNALENTITYLOADER"
 >xmlSetExternalEntityLoader</A
 >      (<A
-HREF="gnome-xml-parser.html#XMLEXTERNALENTITYLOADER"
+HREF="libxml-parser.html#XMLEXTERNALENTITYLOADER"
 >xmlExternalEntityLoader</A
 > f);
 <A
-HREF="gnome-xml-parser.html#XMLEXTERNALENTITYLOADER"
+HREF="libxml-parser.html#XMLEXTERNALENTITYLOADER"
 >xmlExternalEntityLoader</A
 > <A
-HREF="gnome-xml-parser.html#XMLGETEXTERNALENTITYLOADER"
+HREF="libxml-parser.html#XMLGETEXTERNALENTITYLOADER"
 >xmlGetExternalEntityLoader</A
 >
                                             (void);
 <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > <A
-HREF="gnome-xml-parser.html#XMLLOADEXTERNALENTITY"
+HREF="libxml-parser.html#XMLLOADEXTERNALENTITY"
 >xmlLoadExternalEntity</A
 >     (const char *URL,
                                              const char *ID,
                                              <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > context);</PRE
 ></TD
@@ -1273,7 +1273,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        (*xmlParserInputDeallocate)     (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*);</PRE
 ></TD
@@ -1740,15 +1740,15 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > (*resolveEntitySAXFunc)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *systemId);</PRE
 ></TD
@@ -1859,15 +1859,15 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*internalSubsetSAXFunc)        (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);</PRE
 ></TD
@@ -1980,15 +1980,15 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*externalSubsetSAXFunc)        (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);</PRE
 ></TD
@@ -2100,11 +2100,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > (*getEntitySAXFunc)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -2197,11 +2197,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > (*getParameterEntitySAXFunc)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -2295,20 +2295,20 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*entityDeclSAXFunc)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              int type,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *systemId,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -2455,15 +2455,15 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*notationDeclSAXFunc)          (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *systemId);</PRE
 ></TD
@@ -2576,21 +2576,21 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*attributeDeclSAXFunc)         (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *elem,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              int type,
                                              int def,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *defaultValue,
                                              <A
-HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+HREF="libxml-tree.html#XMLENUMERATIONPTR"
 >xmlEnumerationPtr</A
 > tree);</PRE
 ></TD
@@ -2754,12 +2754,12 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*elementDeclSAXFunc)           (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              int type,
                                              <A
-HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 >xmlElementContentPtr</A
 > content);</PRE
 ></TD
@@ -2872,19 +2872,19 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*unparsedEntityDeclSAXFunc)    (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *systemId,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *notationName);</PRE
 ></TD
@@ -3014,7 +3014,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*setDocumentLocatorSAXFunc)    (void *ctx,
                                              <A
-HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
+HREF="libxml-parser.html#XMLSAXLOCATORPTR"
 >xmlSAXLocatorPtr</A
 > loc);</PRE
 ></TD
@@ -3209,11 +3209,11 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*startElementSAXFunc)          (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **atts);</PRE
 ></TD
@@ -3309,7 +3309,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*endElementSAXFunc)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -3388,11 +3388,11 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*attributeSAXFunc)             (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);</PRE
 ></TD
@@ -3488,7 +3488,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*referenceSAXFunc)             (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -3567,7 +3567,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*charactersSAXFunc)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ch,
                                              int len);</PRE
@@ -3664,7 +3664,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*ignorableWhitespaceSAXFunc)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ch,
                                              int len);</PRE
@@ -3761,11 +3761,11 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*processingInstructionSAXFunc) (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *target,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *data);</PRE
 ></TD
@@ -3861,7 +3861,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*commentSAXFunc)               (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);</PRE
 ></TD
@@ -3940,7 +3940,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*cdataBlockSAXFunc)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value,
                                              int len);</PRE
@@ -4617,13 +4617,13 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > (*xmlExternalEntityLoader)
                                             (const char *URL,
                                              const char *ID,
                                              <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > context);</PRE
 ></TD
@@ -4820,7 +4820,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParserInputRead              (<A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > in,
                                              int len);</PRE
@@ -4918,7 +4918,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParserInputGrow              (<A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > in,
                                              int len);</PRE
@@ -5016,10 +5016,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlStrdup                       (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur);</PRE
 ></TD
@@ -5099,10 +5099,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlStrndup                      (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              int len);</PRE
@@ -5203,10 +5203,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlStrsub                       (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              int start,
@@ -5320,14 +5320,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* xmlStrchr                    (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > val);</PRE
 ></TD
@@ -5422,14 +5422,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* xmlStrstr                    (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *val);</PRE
 ></TD
@@ -5524,14 +5524,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* xmlStrcasestr                (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *val);</PRE
 ></TD
@@ -5626,11 +5626,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlStrcmp                       (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str2);</PRE
 ></TD
@@ -5725,11 +5725,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlStrncmp                      (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str2,
                                              int len);</PRE
@@ -5842,11 +5842,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlStrcasecmp                   (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str2);</PRE
 ></TD
@@ -5941,11 +5941,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlStrncasecmp                  (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str2,
                                              int len);</PRE
@@ -6058,11 +6058,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlStrEqual                     (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str2);</PRE
 ></TD
@@ -6071,7 +6071,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ><P
 >Check if both string are equal of have same content
 Should be a bit more readable and faster than <A
-HREF="gnome-xml-parser.html#XMLSTREQUAL"
+HREF="libxml-parser.html#XMLSTREQUAL"
 >xmlStrEqual</A
 >()</P
 ><P
@@ -6161,7 +6161,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlStrlen                       (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str);</PRE
 ></TD
@@ -6239,14 +6239,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlStrcat                       (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *add);</PRE
 ></TD
@@ -6343,14 +6343,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlStrncat                      (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *add,
                                              int len);</PRE
@@ -6468,10 +6468,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlParseDoc                     (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur);</PRE
 ></TD
@@ -6549,7 +6549,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlParseMemory                  (char *buffer,
                                              int size);</PRE
@@ -6645,7 +6645,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlParseFile                    (const char *filename);</PRE
 ></TD
@@ -6815,16 +6815,16 @@ CLASS="PROGRAMLISTING"
 The 1.x version of the parser used an heuristic to try to detect
 ignorable white spaces. As a result the SAX callback was generating
 <A
-HREF="gnome-xml-sax.html#IGNORABLEWHITESPACE"
+HREF="libxml-sax.html#IGNORABLEWHITESPACE"
 >ignorableWhitespace</A
 >() callbacks instead of <A
-HREF="gnome-xml-sax.html#CHARACTERS"
+HREF="libxml-sax.html#CHARACTERS"
 >characters</A
 >() one, and when
 using the DOM output text nodes containing those blanks were not generated.
 The 2.x and later version will switch to the XML standard way and
 <A
-HREF="gnome-xml-sax.html#IGNORABLEWHITESPACE"
+HREF="libxml-sax.html#IGNORABLEWHITESPACE"
 >ignorableWhitespace</A
 >() are only generated when running the parser in
 validating mode and when the current element doesn't allow CDATA or
@@ -6833,7 +6833,7 @@ This function is provided as a way to force the standard behaviour
 on 1.X libs and to switch back to the old mode for compatibility when
 running 1.X client code on 2.X . Upgrade of 1.X code should be done
 by using <A
-HREF="gnome-xml-tree.html#XMLISBLANKNODE"
+HREF="libxml-tree.html#XMLISBLANKNODE"
 >xmlIsBlankNode</A
 >() commodity function to detect the "empty"
 nodes generated.
@@ -6909,7 +6909,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlStopParser                   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7047,10 +7047,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlRecoverDoc                   (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur);</PRE
 ></TD
@@ -7129,7 +7129,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlRecoverMemory                (char *buffer,
                                              int size);</PRE
@@ -7226,7 +7226,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlRecoverFile                  (const char *filename);</PRE
 ></TD
@@ -7306,7 +7306,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseDocument                (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7390,7 +7390,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseExtParsedEnt            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7473,14 +7473,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlSAXParseDoc                  (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              int recovery);</PRE
@@ -7596,7 +7596,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlSAXUserParseFile             (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -7711,7 +7711,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlSAXUserParseMemory           (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -7844,10 +7844,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlSAXParseMemory               (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              char *buffer,
@@ -7982,10 +7982,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlSAXParseFile                 (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *filename,
@@ -8103,10 +8103,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlSAXParseEntity               (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const char *filename);</PRE
@@ -8208,7 +8208,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlParseEntity                  (const char *filename);</PRE
 ></TD
@@ -8290,14 +8290,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   xmlParseDTD                     (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);</PRE
 ></TD
@@ -8392,18 +8392,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   xmlSAXParseDTD                  (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);</PRE
 ></TD
@@ -8515,18 +8515,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   xmlIOParseDTD                   (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > input,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -8644,21 +8644,21 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseBalancedChunkMemory     (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
                                              int depth,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *string,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > *list);</PRE
 ></TD
@@ -8819,25 +8819,25 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseExternalEntity          (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
                                              int depth,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *URL,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ID,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > *list);</PRE
 ></TD
@@ -9022,19 +9022,19 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseCtxtExternalEntity      (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctx,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *URL,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ID,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > *list);</PRE
 ></TD
@@ -9224,7 +9224,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlInitParserCtxt               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -9287,7 +9287,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlClearParserCtxt              (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -9350,7 +9350,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeParserCtxt               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -9414,11 +9414,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlSetupParserForBuffer         (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *buffer,
                                              const char *filename);</PRE
@@ -9518,10 +9518,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > xmlCreateDocParserCtxt     (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur);</PRE
 ></TD
@@ -9690,7 +9690,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlGetFeature                   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const char *name,
@@ -9802,7 +9802,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlSetFeature                   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const char *name,
@@ -9914,10 +9914,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > xmlCreatePushParserCtxt    (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -10080,7 +10080,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseChunk                   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const char *chunk,
@@ -10212,24 +10212,24 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > xmlCreateIOParserCtxt      (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+HREF="libxml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTREADCALLBACK"
 >xmlInputReadCallback</A
 > ioread,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >xmlInputCloseCallback</A
 > ioclose,
                                              void *ioctx,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -10393,18 +10393,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > xmlNewIOInputStream       (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > input,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -10522,15 +10522,15 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
+HREF="libxml-parser.html#XMLPARSERNODEINFO"
 >xmlParserNodeInfo</A
 >* xmlParserFindNodeInfo
                                             (const <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXT"
+HREF="libxml-parser.html#XMLPARSERCTXT"
 >xmlParserCtxt</A
 > *ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLNODE"
+HREF="libxml-tree.html#XMLNODE"
 >xmlNode</A
 > *node);</PRE
 ></TD
@@ -10625,7 +10625,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlInitNodeInfoSeq              (<A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQPTR"
+HREF="libxml-parser.html#XMLPARSERNODEINFOSEQPTR"
 >xmlParserNodeInfoSeqPtr</A
 > seq);</PRE
 ></TD
@@ -10688,7 +10688,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlClearNodeInfoSeq             (<A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQPTR"
+HREF="libxml-parser.html#XMLPARSERNODEINFOSEQPTR"
 >xmlParserNodeInfoSeqPtr</A
 > seq);</PRE
 ></TD
@@ -10755,11 +10755,11 @@ CLASS="PROGRAMLISTING"
 HREF="LONG"
 >long</GTKDOCLINK
 > xmlParserFindNodeInfoIndex    (const <A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQ"
+HREF="libxml-parser.html#XMLPARSERNODEINFOSEQ"
 >xmlParserNodeInfoSeq</A
 > *seq,
                                              const <A
-HREF="gnome-xml-tree.html#XMLNODE"
+HREF="libxml-tree.html#XMLNODE"
 >xmlNode</A
 > *node);</PRE
 ></TD
@@ -10855,11 +10855,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParserAddNodeInfo            (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
+HREF="libxml-parser.html#XMLPARSERNODEINFO"
 >xmlParserNodeInfo</A
 > *info);</PRE
 ></TD
@@ -10939,7 +10939,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlSetExternalEntityLoader      (<A
-HREF="gnome-xml-parser.html#XMLEXTERNALENTITYLOADER"
+HREF="libxml-parser.html#XMLEXTERNALENTITYLOADER"
 >xmlExternalEntityLoader</A
 > f);</PRE
 ></TD
@@ -11000,7 +11000,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-parser.html#XMLEXTERNALENTITYLOADER"
+HREF="libxml-parser.html#XMLEXTERNALENTITYLOADER"
 >xmlExternalEntityLoader</A
 > xmlGetExternalEntityLoader
                                             (void);</PRE
@@ -11060,12 +11060,12 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > xmlLoadExternalEntity     (const char *URL,
                                              const char *ID,
                                              <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > context);</PRE
 ></TD
@@ -11225,7 +11225,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-sax.html"
+HREF="libxml-sax.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"

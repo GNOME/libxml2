@@ -13,10 +13,10 @@ TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
 TITLE="tree"
-HREF="gnome-xml-tree.html"><LINK
+HREF="libxml-tree.html"><LINK
 REL="NEXT"
 TITLE="valid"
-HREF="gnome-xml-valid.html"></HEAD
+HREF="libxml-valid.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -47,7 +47,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-tree.html"
+HREF="libxml-tree.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -101,7 +101,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-valid.html"
+HREF="libxml-valid.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -115,13 +115,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="GNOME-XML-ENTITIES"
+NAME="LIBXML-ENTITIES"
 >entities</A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN7097"
+NAME="AEN7139"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN7097"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN7100"
+NAME="AEN7142"
 ></A
 ><H2
 >Synopsis</H2
@@ -145,221 +145,221 @@ CLASS="SYNOPSIS"
 >&#13;
 
 enum        <A
-HREF="gnome-xml-entities.html#XMLENTITYTYPE"
+HREF="libxml-entities.html#XMLENTITYTYPE"
 >xmlEntityType</A
 >;
 struct      <A
-HREF="gnome-xml-entities.html#XMLENTITY"
+HREF="libxml-entities.html#XMLENTITY"
 >xmlEntity</A
 >;
 typedef     <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 >;
 typedef     <A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 >;
 void        <A
-HREF="gnome-xml-entities.html#XMLINITIALIZEPREDEFINEDENTITIES"
+HREF="libxml-entities.html#XMLINITIALIZEPREDEFINEDENTITIES"
 >xmlInitializePredefinedEntities</A
 > (void);
 <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > <A
-HREF="gnome-xml-entities.html#XMLADDDOCENTITY"
+HREF="libxml-entities.html#XMLADDDOCENTITY"
 >xmlAddDocEntity</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              int type,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > <A
-HREF="gnome-xml-entities.html#XMLADDDTDENTITY"
+HREF="libxml-entities.html#XMLADDDTDENTITY"
 >xmlAddDtdEntity</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              int type,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > <A
-HREF="gnome-xml-entities.html#XMLGETPREDEFINEDENTITY"
+HREF="libxml-entities.html#XMLGETPREDEFINEDENTITY"
 >xmlGetPredefinedEntity</A
 >         (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > <A
-HREF="gnome-xml-entities.html#XMLGETDOCENTITY"
+HREF="libxml-entities.html#XMLGETDOCENTITY"
 >xmlGetDocEntity</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > <A
-HREF="gnome-xml-entities.html#XMLGETDTDENTITY"
+HREF="libxml-entities.html#XMLGETDTDENTITY"
 >xmlGetDtdEntity</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > <A
-HREF="gnome-xml-entities.html#XMLGETPARAMETERENTITY"
+HREF="libxml-entities.html#XMLGETPARAMETERENTITY"
 >xmlGetParameterEntity</A
 >          (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* <A
-HREF="gnome-xml-entities.html#XMLENCODEENTITIES"
+HREF="libxml-entities.html#XMLENCODEENTITIES"
 >xmlEncodeEntities</A
 >            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *input);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-entities.html#XMLENCODEENTITIESREENTRANT"
+HREF="libxml-entities.html#XMLENCODEENTITIESREENTRANT"
 >xmlEncodeEntitiesReentrant</A
 >      (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *input);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-entities.html#XMLENCODESPECIALCHARS"
+HREF="libxml-entities.html#XMLENCODESPECIALCHARS"
 >xmlEncodeSpecialChars</A
 >           (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *input);
 <A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 > <A
-HREF="gnome-xml-entities.html#XMLCREATEENTITIESTABLE"
+HREF="libxml-entities.html#XMLCREATEENTITIESTABLE"
 >xmlCreateEntitiesTable</A
 >  (void);
 <A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 > <A
-HREF="gnome-xml-entities.html#XMLCOPYENTITIESTABLE"
+HREF="libxml-entities.html#XMLCOPYENTITIESTABLE"
 >xmlCopyEntitiesTable</A
 >    (<A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 > table);
 void        <A
-HREF="gnome-xml-entities.html#XMLFREEENTITIESTABLE"
+HREF="libxml-entities.html#XMLFREEENTITIESTABLE"
 >xmlFreeEntitiesTable</A
 >            (<A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 > table);
 void        <A
-HREF="gnome-xml-entities.html#XMLDUMPENTITIESTABLE"
+HREF="libxml-entities.html#XMLDUMPENTITIESTABLE"
 >xmlDumpEntitiesTable</A
 >            (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              <A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 > table);
 void        <A
-HREF="gnome-xml-entities.html#XMLDUMPENTITYDECL"
+HREF="libxml-entities.html#XMLDUMPENTITYDECL"
 >xmlDumpEntityDecl</A
 >               (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > ent);
 void        <A
-HREF="gnome-xml-entities.html#XMLCLEANUPPREDEFINEDENTITIES"
+HREF="libxml-entities.html#XMLCLEANUPPREDEFINEDENTITIES"
 >xmlCleanupPredefinedEntities</A
 >    (void);</PRE
 ></TD
@@ -369,7 +369,7 @@ HREF="gnome-xml-entities.html#XMLCLEANUPPREDEFINEDENTITIES"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7163"
+NAME="AEN7205"
 ></A
 ><H2
 >Description</H2
@@ -379,14 +379,14 @@ NAME="AEN7163"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7166"
+NAME="AEN7208"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7168"
+NAME="AEN7210"
 ></A
 ><H3
 ><A
@@ -419,7 +419,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7173"
+NAME="AEN7215"
 ></A
 ><H3
 ><A
@@ -467,7 +467,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7178"
+NAME="AEN7220"
 ></A
 ><H3
 ><A
@@ -493,7 +493,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7183"
+NAME="AEN7225"
 ></A
 ><H3
 ><A
@@ -519,7 +519,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7188"
+NAME="AEN7230"
 ></A
 ><H3
 ><A
@@ -547,7 +547,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7194"
+NAME="AEN7236"
 ></A
 ><H3
 ><A
@@ -564,27 +564,27 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > xmlAddDocEntity                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              int type,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -730,7 +730,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7239"
+NAME="AEN7281"
 ></A
 ><H3
 ><A
@@ -747,27 +747,27 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > xmlAddDtdEntity                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              int type,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -913,7 +913,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7284"
+NAME="AEN7326"
 ></A
 ><H3
 ><A
@@ -930,10 +930,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > xmlGetPredefinedEntity         (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -994,7 +994,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7305"
+NAME="AEN7347"
 ></A
 ><H3
 ><A
@@ -1011,14 +1011,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > xmlGetDocEntity                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -1098,7 +1098,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7331"
+NAME="AEN7373"
 ></A
 ><H3
 ><A
@@ -1115,14 +1115,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > xmlGetDtdEntity                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -1201,7 +1201,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7357"
+NAME="AEN7399"
 ></A
 ><H3
 ><A
@@ -1218,14 +1218,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > xmlGetParameterEntity          (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -1304,7 +1304,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7383"
+NAME="AEN7425"
 ></A
 ><H3
 ><A
@@ -1321,14 +1321,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* xmlEncodeEntities            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *input);</PRE
 ></TD
@@ -1413,7 +1413,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7411"
+NAME="AEN7453"
 ></A
 ><H3
 ><A
@@ -1430,14 +1430,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlEncodeEntitiesReentrant      (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *input);</PRE
 ></TD
@@ -1518,7 +1518,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7437"
+NAME="AEN7479"
 ></A
 ><H3
 ><A
@@ -1535,14 +1535,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlEncodeSpecialChars           (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *input);</PRE
 ></TD
@@ -1621,7 +1621,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7463"
+NAME="AEN7505"
 ></A
 ><H3
 ><A
@@ -1638,7 +1638,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 > xmlCreateEntitiesTable  (void);</PRE
 ></TD
@@ -1682,7 +1682,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7479"
+NAME="AEN7521"
 ></A
 ><H3
 ><A
@@ -1699,10 +1699,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 > xmlCopyEntitiesTable    (<A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 > table);</PRE
 ></TD
@@ -1763,7 +1763,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7500"
+NAME="AEN7542"
 ></A
 ><H3
 ><A
@@ -1780,7 +1780,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeEntitiesTable            (<A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 > table);</PRE
 ></TD
@@ -1826,7 +1826,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7516"
+NAME="AEN7558"
 ></A
 ><H3
 ><A
@@ -1843,11 +1843,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlDumpEntitiesTable            (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              <A
-HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+HREF="libxml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 > table);</PRE
 ></TD
@@ -1910,7 +1910,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7537"
+NAME="AEN7579"
 ></A
 ><H3
 ><A
@@ -1927,11 +1927,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlDumpEntityDecl               (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              <A
-HREF="gnome-xml-entities.html#XMLENTITYPTR"
+HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > ent);</PRE
 ></TD
@@ -1994,7 +1994,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7558"
+NAME="AEN7600"
 ></A
 ><H3
 ><A
@@ -2035,7 +2035,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-tree.html"
+HREF="libxml-tree.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -2089,7 +2089,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-valid.html"
+HREF="libxml-valid.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"

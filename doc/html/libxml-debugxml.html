@@ -1,7 +1,7 @@
 <HTML
 ><HEAD
 ><TITLE
->xmlmemory</TITLE
+>debugXML</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
@@ -12,8 +12,11 @@ REL="UP"
 TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
-TITLE="debugXML"
-HREF="gnome-xml-debugxml.html"></HEAD
+TITLE="encoding"
+HREF="libxml-encoding.html"><LINK
+REL="NEXT"
+TITLE="xmlmemory"
+HREF="libxml-xmlmemory.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -44,7 +47,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-debugxml.html"
+HREF="libxml-encoding.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -97,27 +100,36 @@ SIZE="3"
 WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
->&nbsp;</TD
+><A
+HREF="libxml-xmlmemory.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
 ></TR
 ></TABLE
 ></DIV
 ><H1
 ><A
-NAME="GNOME-XML-XMLMEMORY"
->xmlmemory</A
+NAME="LIBXML-DEBUGXML"
+>debugXML</A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN18452"
+NAME="AEN18296"
 ></A
 ><H2
 >Name</H2
->xmlmemory&nbsp;--&nbsp;</DIV
+>debugXML&nbsp;--&nbsp;</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN18455"
+NAME="AEN18299"
 ></A
 ><H2
 >Synopsis</H2
@@ -132,127 +144,176 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
-#define     <A
-HREF="gnome-xml-xmlmemory.html#DEBUG-MEMORY-CAPS"
->DEBUG_MEMORY</A
->
-#define     <A
-HREF="gnome-xml-xmlmemory.html#MEM-LIST-CAPS"
->MEM_LIST</A
->
-void        (<A
-HREF="gnome-xml-xmlmemory.html#XMLFREEFUNC"
->*xmlFreeFunc</A
->)                  (void*);
-void*       (<A
-HREF="gnome-xml-xmlmemory.html#XMLMALLOCFUNC"
->*xmlMallocFunc</A
->)                (...);
-void*       (<A
-HREF="gnome-xml-xmlmemory.html#XMLREALLOCFUNC"
->*xmlReallocFunc</A
->)               (void*,
-                                             ...);
+void        <A
+HREF="libxml-debugxml.html#XMLDEBUGDUMPSTRING"
+>xmlDebugDumpString</A
+>              (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *str);
+void        <A
+HREF="libxml-debugxml.html#XMLDEBUGDUMPATTR"
+>xmlDebugDumpAttr</A
+>                (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> attr,
+                                             int depth);
+void        <A
+HREF="libxml-debugxml.html#XMLDEBUGDUMPATTRLIST"
+>xmlDebugDumpAttrList</A
+>            (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> attr,
+                                             int depth);
+void        <A
+HREF="libxml-debugxml.html#XMLDEBUGDUMPONENODE"
+>xmlDebugDumpOneNode</A
+>             (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             int depth);
+void        <A
+HREF="libxml-debugxml.html#XMLDEBUGDUMPNODE"
+>xmlDebugDumpNode</A
+>                (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             int depth);
+void        <A
+HREF="libxml-debugxml.html#XMLDEBUGDUMPNODELIST"
+>xmlDebugDumpNodeList</A
+>            (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             int depth);
+void        <A
+HREF="libxml-debugxml.html#XMLDEBUGDUMPDOCUMENTHEAD"
+>xmlDebugDumpDocumentHead</A
+>        (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);
+void        <A
+HREF="libxml-debugxml.html#XMLDEBUGDUMPDOCUMENT"
+>xmlDebugDumpDocument</A
+>            (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);
+void        <A
+HREF="libxml-debugxml.html#XMLDEBUGDUMPDTD"
+>xmlDebugDumpDTD</A
+>                 (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> doc);
+void        <A
+HREF="libxml-debugxml.html#XMLDEBUGDUMPENTITIES"
+>xmlDebugDumpEntities</A
+>            (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);
+void        <A
+HREF="libxml-debugxml.html#XMLLSONENODE"
+>xmlLsOneNode</A
+>                    (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);
 char*       (<A
-HREF="gnome-xml-xmlmemory.html#XMLSTRDUPFUNC"
->*xmlStrdupFunc</A
->)                (const char*);
-int         <A
-HREF="gnome-xml-xmlmemory.html#XMLMEMSETUP"
->xmlMemSetup</A
->                     (<A
-HREF="gnome-xml-xmlmemory.html#XMLFREEFUNC"
->xmlFreeFunc</A
-> freeFunc,
+HREF="libxml-debugxml.html#XMLSHELLREADLINEFUNC"
+>*xmlShellReadlineFunc</A
+>)         (char *prompt);
+struct      <A
+HREF="libxml-debugxml.html#XMLSHELLCTXT"
+>xmlShellCtxt</A
+>;
+typedef     <A
+HREF="libxml-debugxml.html#XMLSHELLCTXTPTR"
+>xmlShellCtxtPtr</A
+>;
+int         (<A
+HREF="libxml-debugxml.html#XMLSHELLCMD"
+>*xmlShellCmd</A
+>)                  (<A
+HREF="libxml-debugxml.html#XMLSHELLCTXTPTR"
+>xmlShellCtxtPtr</A
+> ctxt,
+                                             char *arg,
                                              <A
-HREF="gnome-xml-xmlmemory.html#XMLMALLOCFUNC"
->xmlMallocFunc</A
-> mallocFunc,
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
                                              <A
-HREF="gnome-xml-xmlmemory.html#XMLREALLOCFUNC"
->xmlReallocFunc</A
-> reallocFunc,
-                                             <A
-HREF="gnome-xml-xmlmemory.html#XMLSTRDUPFUNC"
->xmlStrdupFunc</A
-> strdupFunc);
-int         <A
-HREF="gnome-xml-xmlmemory.html#XMLMEMGET"
->xmlMemGet</A
->                       (<A
-HREF="gnome-xml-xmlmemory.html#XMLFREEFUNC"
->xmlFreeFunc</A
-> *freeFunc,
-                                             <A
-HREF="gnome-xml-xmlmemory.html#XMLMALLOCFUNC"
->xmlMallocFunc</A
-> *mallocFunc,
-                                             <A
-HREF="gnome-xml-xmlmemory.html#XMLREALLOCFUNC"
->xmlReallocFunc</A
-> *reallocFunc,
-                                             <A
-HREF="gnome-xml-xmlmemory.html#XMLSTRDUPFUNC"
->xmlStrdupFunc</A
-> *strdupFunc);
-int         <A
-HREF="gnome-xml-xmlmemory.html#XMLINITMEMORY"
->xmlInitMemory</A
->                   (void);
-int         <A
-HREF="gnome-xml-xmlmemory.html#XMLMEMUSED"
->xmlMemUsed</A
->                      (void);
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node2);
 void        <A
-HREF="gnome-xml-xmlmemory.html#XMLMEMDISPLAY"
->xmlMemDisplay</A
->                   (<GTKDOCLINK
+HREF="libxml-debugxml.html#XMLSHELL"
+>xmlShell</A
+>                        (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             char *filename,
+                                             <A
+HREF="libxml-debugxml.html#XMLSHELLREADLINEFUNC"
+>xmlShellReadlineFunc</A
+> input,
+                                             <GTKDOCLINK
 HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
-> *fp);
-void        <A
-HREF="gnome-xml-xmlmemory.html#XMLMEMSHOW"
->xmlMemShow</A
->                      (<GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *fp,
-                                             int nr);
-void        <A
-HREF="gnome-xml-xmlmemory.html#XMLMEMORYDUMP"
->xmlMemoryDump</A
->                   (void);
-#define     <A
-HREF="gnome-xml-xmlmemory.html#XMLMALLOC"
->xmlMalloc</A
->                       (x)
-#define     <A
-HREF="gnome-xml-xmlmemory.html#XMLREALLOC"
->xmlRealloc</A
->                      (p, x)
-#define     <A
-HREF="gnome-xml-xmlmemory.html#XMLMEMSTRDUP"
->xmlMemStrdup</A
->                    (x)
-void*       <A
-HREF="gnome-xml-xmlmemory.html#XMLMALLOCLOC"
->xmlMallocLoc</A
->                    (int size,
-                                             const char *file,
-                                             int line);
-void*       <A
-HREF="gnome-xml-xmlmemory.html#XMLREALLOCLOC"
->xmlReallocLoc</A
->                   (void *ptr,
-                                             int size,
-                                             const char *file,
-                                             int line);
-char*       <A
-HREF="gnome-xml-xmlmemory.html#XMLMEMSTRDUPLOC"
->xmlMemStrdupLoc</A
->                 (const char *str,
-                                             const char *file,
-                                             int line);</PRE
+> *output);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -260,7 +321,7 @@ HREF="gnome-xml-xmlmemory.html#XMLMEMSTRDUPLOC"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN18487"
+NAME="AEN18346"
 ></A
 ><H2
 >Description</H2
@@ -270,20 +331,20 @@ NAME="AEN18487"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN18490"
+NAME="AEN18349"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18492"
+NAME="AEN18351"
 ></A
 ><H3
 ><A
-NAME="DEBUG-MEMORY-CAPS"
+NAME="XMLDEBUGDUMPSTRING"
 ></A
->DEBUG_MEMORY</H3
+>xmlDebugDumpString ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -293,929 +354,14 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define DEBUG_MEMORY</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18497"
-></A
-><H3
-><A
-NAME="MEM-LIST-CAPS"
-></A
->MEM_LIST</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define MEM_LIST /* keep a list of all the allocated memory blocks */</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18502"
-></A
-><H3
-><A
-NAME="XMLFREEFUNC"
-></A
->xmlFreeFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlFreeFunc)                  (void*);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->Param1</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&#13;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18516"
-></A
-><H3
-><A
-NAME="XMLMALLOCFUNC"
-></A
->xmlMallocFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void*       (*xmlMallocFunc)                (...);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&#13;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18530"
-></A
-><H3
-><A
-NAME="XMLREALLOCFUNC"
-></A
->xmlReallocFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void*       (*xmlReallocFunc)               (void*,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->Param1</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&#13;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18548"
-></A
-><H3
-><A
-NAME="XMLSTRDUPFUNC"
-></A
->xmlStrdupFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->char*       (*xmlStrdupFunc)                (const char*);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->Param1</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&#13;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18566"
-></A
-><H3
-><A
-NAME="XMLMEMSETUP"
-></A
->xmlMemSetup ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlMemSetup                     (<A
-HREF="gnome-xml-xmlmemory.html#XMLFREEFUNC"
->xmlFreeFunc</A
-> freeFunc,
-                                             <A
-HREF="gnome-xml-xmlmemory.html#XMLMALLOCFUNC"
->xmlMallocFunc</A
-> mallocFunc,
-                                             <A
-HREF="gnome-xml-xmlmemory.html#XMLREALLOCFUNC"
->xmlReallocFunc</A
-> reallocFunc,
-                                             <A
-HREF="gnome-xml-xmlmemory.html#XMLSTRDUPFUNC"
->xmlStrdupFunc</A
-> strdupFunc);</PRE
-></TD
-></TR
-></TABLE
-><P
->Override the default memory access functions with a new set
-This has to be called before any other libxml routines !</P
-><P
->Should this be blocked if there was already some allocations
-done ?</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->freeFunc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the <GTKDOCLINK
-HREF="FREE"
->free</GTKDOCLINK
->() function to use</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mallocFunc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the <GTKDOCLINK
-HREF="MALLOC"
->malloc</GTKDOCLINK
->() function to use</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->reallocFunc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the <GTKDOCLINK
-HREF="REALLOC"
->realloc</GTKDOCLINK
->() function to use</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->strdupFunc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the <GTKDOCLINK
-HREF="STRDUP"
->strdup</GTKDOCLINK
->() function to use</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18606"
-></A
-><H3
-><A
-NAME="XMLMEMGET"
-></A
->xmlMemGet ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlMemGet                       (<A
-HREF="gnome-xml-xmlmemory.html#XMLFREEFUNC"
->xmlFreeFunc</A
-> *freeFunc,
-                                             <A
-HREF="gnome-xml-xmlmemory.html#XMLMALLOCFUNC"
->xmlMallocFunc</A
-> *mallocFunc,
-                                             <A
-HREF="gnome-xml-xmlmemory.html#XMLREALLOCFUNC"
->xmlReallocFunc</A
-> *reallocFunc,
-                                             <A
-HREF="gnome-xml-xmlmemory.html#XMLSTRDUPFUNC"
->xmlStrdupFunc</A
-> *strdupFunc);</PRE
-></TD
-></TR
-></TABLE
-><P
->Return the memory access functions set currently in use</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->freeFunc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the <GTKDOCLINK
-HREF="FREE"
->free</GTKDOCLINK
->() function in use</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mallocFunc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the <GTKDOCLINK
-HREF="MALLOC"
->malloc</GTKDOCLINK
->() function in use</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->reallocFunc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the <GTKDOCLINK
-HREF="REALLOC"
->realloc</GTKDOCLINK
->() function in use</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->strdupFunc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the <GTKDOCLINK
-HREF="STRDUP"
->strdup</GTKDOCLINK
->() function in use</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18645"
-></A
-><H3
-><A
-NAME="XMLINITMEMORY"
-></A
->xmlInitMemory ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlInitMemory                   (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Initialize the memory layer.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18660"
-></A
-><H3
-><A
-NAME="XMLMEMUSED"
-></A
->xmlMemUsed ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlMemUsed                      (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->returns the amount of memory currenly allocated</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->an int representing the amount of memory allocated.</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18675"
-></A
-><H3
-><A
-NAME="XMLMEMDISPLAY"
-></A
->xmlMemDisplay ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlMemDisplay                   (<GTKDOCLINK
+>void        xmlDebugDumpString              (<GTKDOCLINK
 HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
-> *fp);</PRE
-></TD
-></TR
-></TABLE
-><P
->show in-extenso the memory blocks allocated</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->fp</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a FILE descriptor used as the output file, if NULL, the result is
-written to the file .memorylist</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18691"
-></A
-><H3
-><A
-NAME="XMLMEMSHOW"
-></A
->xmlMemShow ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlMemShow                      (<GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *fp,
-                                             int nr);</PRE
-></TD
-></TR
-></TABLE
-><P
->show a show display of the memory allocated, and dump
-the <TT
-CLASS="PARAMETER"
-><I
->nr</I
-></TT
-> last allocated areas which were not freed</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->fp</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a FILE descriptor used as the output file</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->nr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  number of entries to dump</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18712"
-></A
-><H3
-><A
-NAME="XMLMEMORYDUMP"
-></A
->xmlMemoryDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlMemoryDump                   (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Dump in-extenso the memory blocks allocated to the file .memorylist</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18718"
-></A
-><H3
-><A
-NAME="XMLMALLOC"
-></A
->xmlMalloc()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlMalloc(x) xmlMallocLoc((x), __FILE__, __LINE__)</PRE
+> *output,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *str);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1240,65 +386,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->x</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&#13;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18732"
-></A
-><H3
-><A
-NAME="XMLREALLOC"
-></A
->xmlRealloc()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlRealloc(p, x) xmlReallocLoc((p), (x), __FILE__, __LINE__)</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->p</I
+>output</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -1307,345 +395,6 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >&nbsp;</TD
 ></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&#13;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18750"
-></A
-><H3
-><A
-NAME="XMLMEMSTRDUP"
-></A
->xmlMemStrdup()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlMemStrdup(x) xmlMemStrdupLoc((x), __FILE__, __LINE__)</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&#13;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18764"
-></A
-><H3
-><A
-NAME="XMLMALLOCLOC"
-></A
->xmlMallocLoc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void*       xmlMallocLoc                    (int size,
-                                             const char *file,
-                                             int line);</PRE
-></TD
-></TR
-></TABLE
-><P
->a <GTKDOCLINK
-HREF="MALLOC"
->malloc</GTKDOCLINK
->() equivalent, with logging of the allocation info.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an int specifying the size in byte to allocate.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->file</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the file name or NULL</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->line</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the line number</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18788"
-></A
-><H3
-><A
-NAME="XMLREALLOCLOC"
-></A
->xmlReallocLoc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void*       xmlReallocLoc                   (void *ptr,
-                                             int size,
-                                             const char *file,
-                                             int line);</PRE
-></TD
-></TR
-></TABLE
-><P
->a <GTKDOCLINK
-HREF="REALLOC"
->realloc</GTKDOCLINK
->() equivalent, with logging of the allocation info.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ptr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the initial memory block pointer</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an int specifying the size in byte to allocate.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->file</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the file name or NULL</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->line</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the line number</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18816"
-></A
-><H3
-><A
-NAME="XMLMEMSTRDUPLOC"
-></A
->xmlMemStrdupLoc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->char*       xmlMemStrdupLoc                 (const char *str,
-                                             const char *file,
-                                             int line);</PRE
-></TD
-></TR
-></TABLE
-><P
->a <GTKDOCLINK
-HREF="STRDUP"
->strdup</GTKDOCLINK
->() equivalent, with logging of the allocation info.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
 ><TR
 ><TD
 WIDTH="20%"
@@ -1661,6 +410,72 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18371"
+></A
+><H3
+><A
+NAME="XMLDEBUGDUMPATTR"
+></A
+>xmlDebugDumpAttr ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDebugDumpAttr                (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> attr,
+                                             int depth);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ><TR
@@ -1671,14 +486,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->file</I
+>attr</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the file name or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1688,14 +503,882 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->line</I
+>depth</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the line number</TD
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18395"
+></A
+><H3
+><A
+NAME="XMLDEBUGDUMPATTRLIST"
+></A
+>xmlDebugDumpAttrList ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDebugDumpAttrList            (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> attr,
+                                             int depth);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>attr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>depth</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18419"
+></A
+><H3
+><A
+NAME="XMLDEBUGDUMPONENODE"
+></A
+>xmlDebugDumpOneNode ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDebugDumpOneNode             (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             int depth);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>depth</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18443"
+></A
+><H3
+><A
+NAME="XMLDEBUGDUMPNODE"
+></A
+>xmlDebugDumpNode ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDebugDumpNode                (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             int depth);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>depth</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18467"
+></A
+><H3
+><A
+NAME="XMLDEBUGDUMPNODELIST"
+></A
+>xmlDebugDumpNodeList ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDebugDumpNodeList            (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             int depth);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>depth</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18491"
+></A
+><H3
+><A
+NAME="XMLDEBUGDUMPDOCUMENTHEAD"
+></A
+>xmlDebugDumpDocumentHead ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDebugDumpDocumentHead        (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18511"
+></A
+><H3
+><A
+NAME="XMLDEBUGDUMPDOCUMENT"
+></A
+>xmlDebugDumpDocument ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDebugDumpDocument            (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18531"
+></A
+><H3
+><A
+NAME="XMLDEBUGDUMPDTD"
+></A
+>xmlDebugDumpDTD ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDebugDumpDTD                 (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> doc);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18551"
+></A
+><H3
+><A
+NAME="XMLDEBUGDUMPENTITIES"
+></A
+>xmlDebugDumpEntities ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDebugDumpEntities            (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18571"
+></A
+><H3
+><A
+NAME="XMLLSONENODE"
+></A
+>xmlLsOneNode ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlLsOneNode                    (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18591"
+></A
+><H3
+><A
+NAME="XMLSHELLREADLINEFUNC"
+></A
+>xmlShellReadlineFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>char*       (*xmlShellReadlineFunc)         (char *prompt);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prompt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1710,7 +1393,328 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new string or NULL if allocation error occured.</TD
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18609"
+></A
+><H3
+><A
+NAME="XMLSHELLCTXT"
+></A
+>struct xmlShellCtxt</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlShellCtxt {
+    char *filename;
+    xmlDocPtr doc;
+    xmlNodePtr node;
+    xmlXPathContextPtr pctxt;
+    int loaded;
+    FILE *output;
+    xmlShellReadlineFunc input;
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18614"
+></A
+><H3
+><A
+NAME="XMLSHELLCTXTPTR"
+></A
+>xmlShellCtxtPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlShellCtxt *xmlShellCtxtPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18619"
+></A
+><H3
+><A
+NAME="XMLSHELLCMD"
+></A
+>xmlShellCmd ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlShellCmd)                  (<A
+HREF="libxml-debugxml.html#XMLSHELLCTXTPTR"
+>xmlShellCtxtPtr</A
+> ctxt,
+                                             char *arg,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node2);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>arg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node2</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18652"
+></A
+><H3
+><A
+NAME="XMLSHELL"
+></A
+>xmlShell ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlShell                        (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             char *filename,
+                                             <A
+HREF="libxml-debugxml.html#XMLSHELLREADLINEFUNC"
+>xmlShellReadlineFunc</A
+> input,
+                                             <GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Implements the XML shell 
+This allow to load, validate, view, modify and save a document
+using a environment similar to a UNIX commandline.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the initial document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the output buffer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the line reading function</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the output FILE*</TD
 ></TR
 ></TABLE
 ><P
@@ -1733,7 +1737,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-debugxml.html"
+HREF="libxml-encoding.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -1786,7 +1790,16 @@ SIZE="3"
 WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
->&nbsp;</TD
+><A
+HREF="libxml-xmlmemory.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
 ></TR
 ><TR
 ><TD
@@ -1796,13 +1809,19 @@ ALIGN="left"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->debugXML</B
+>encoding</B
 ></FONT
 ></TD
 ><TD
 COLSPAN="2"
 ALIGN="right"
->&nbsp;</TD
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>xmlmemory</B
+></FONT
+></TD
 ></TR
 ></TABLE
 ></DIV

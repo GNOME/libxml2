@@ -32,7 +32,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
 <h2><a name="General">General overview</a></h2>
 
 <p>The module <code><a
-href="http://xmlsoft.org/html/gnome-xml-xmlmemory.html">xmlmemory.h</a></code>
+href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlmemory.h</a></code>
 provides the interfaces to the libxml memory system:</p>
 <ul>
   <li>libxml does not use the libc memory allocator directly but xmlFree(),
@@ -48,10 +48,10 @@ provides the interfaces to the libxml memory system:</p>
 debugging, analysis or to implement a specific behaviour on memory management
 (like on embedded systems). Two function calls are available to do so:</p>
 <ul>
-  <li><a href="http://xmlsoft.org/html/gnome-xml-xmlmemory.html">xmlMemGet
+  <li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemGet
     ()</a> which return the current set of functions in use by the parser</li>
   <li><a
-    href="http://xmlsoft.org/html/gnome-xml-xmlmemory.html">xmlMemSetup()</a>
+    href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemSetup()</a>
     which allow to set up a new set of memory allocation functions</li>
 </ul>
 
@@ -67,11 +67,11 @@ for example). This also mean that once parsing is finished there is a tiny
 amount of memory (a few hundred bytes) which can be recollected if you don't
 reuse the parser immediately:</p>
 <ul>
-  <li><a href="http://xmlsoft.org/html/gnome-xml-parser.html">xmlCleanupParser
+  <li><a href="http://xmlsoft.org/html/libxml-parser.html">xmlCleanupParser
     ()</a> is a centralized routine to free the parsing states. Note that it
     won't deallocate any produced tree if any (use the xmlFreeDoc() and
     related routines for this).</li>
-  <li><a href="http://xmlsoft.org/html/gnome-xml-parser.html">xmlInitParser
+  <li><a href="http://xmlsoft.org/html/libxml-parser.html">xmlInitParser
     ()</a> is the dual routine allowing to preallocate the parsing state which
     can be useful for example to avoid initialization reentrancy problems when
     using libxml in multithreaded applications</li>
@@ -90,13 +90,13 @@ other debugging routines allow to dump the memory allocated infos to a file or
 call a specific routine when a given block number is allocated:</p>
 <ul>
   <li><a
-    href="http://xmlsoft.org/html/gnome-xml-xmlmemory.html">xmlMallocLoc()</a>
+    href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMallocLoc()</a>
     <a
-    href="http://xmlsoft.org/html/gnome-xml-xmlmemory.html">xmlReallocLoc()</a>
+    href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlReallocLoc()</a>
     and <a
-    href="http://xmlsoft.org/html/gnome-xml-xmlmemory.html">xmlMemStrdupLoc()</a>
+    href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemStrdupLoc()</a>
     are the memory debugging replacement allocation routines</li>
-  <li><a href="http://xmlsoft.org/html/gnome-xml-xmlmemory.html">xmlMemoryDump
+  <li><a href="http://xmlsoft.org/html/libxml-xmlmemory.html">xmlMemoryDump
     ()</a> dumps all the informations about the allocated memory block lefts
     in the <code>.memdump</code> file</li>
 </ul>

@@ -569,12 +569,12 @@ you want to test those</p>
 <h3>1.7.0: sep 23 1999</h3>
 <ul>
   <li>Added the ability to fetch remote DTD or parsed entities, see the <a
-    href="html/gnome-xml-nanohttp.html">nanohttp</a> module.</li>
+    href="html/libxml-nanohttp.html">nanohttp</a> module.</li>
   <li>Added an errno to report errors by another mean than a simple printf
     like callback</li>
   <li>Finished ID/IDREF support and checking when validation</li>
   <li>Serious memory leaks fixed (there is now a <a
-    href="html/gnome-xml-xmlmemory.html">memory wrapper</a> module)</li>
+    href="html/libxml-xmlmemory.html">memory wrapper</a> module)</li>
   <li>Improvement of <a href="http://www.w3.org/TR/xpath">XPath</a>
     implementation</li>
   <li>Added an HTML parser front-end</li>
@@ -778,8 +778,8 @@ required, but as a separate set of documents. The interfaces of the XML
 library are by principle low level, there is nearly zero abstraction. Those
 interested in a higher level API should <a href="#DOM">look at DOM</a>.</p>
 
-<p>The <a href="html/gnome-xml-parser.html">parser interfaces for XML</a> are
-separated from the <a href="html/gnome-xml-htmlparser.html">HTML parser
+<p>The <a href="html/libxml-parser.html">parser interfaces for XML</a> are
+separated from the <a href="html/libxml-htmlparser.html">HTML parser
 interfaces</a>.  Let's have a look at how the XML parser can be called:</p>
 
 <h3><a name="Invoking">Invoking the parser : the pull method</a></h3>
@@ -879,7 +879,7 @@ that produces the XML document used in the previous examples:</p>
 
 <h3><a name="Traversing">Traversing the tree</a></h3>
 
-<p>Basically by <a href="html/gnome-xml-tree.html">including "tree.h"</a> your
+<p>Basically by <a href="html/libxml-tree.html">including "tree.h"</a> your
 code has access to the internal structure of all the elements of the tree. The
 names should be somewhat simple like <strong>parent</strong>,
 <strong>children</strong>, <strong>next</strong>, <strong>prev</strong>,
@@ -901,7 +901,7 @@ to an element which is not the document Root Element, a function
 <h3><a name="Modifying">Modifying the tree</a></h3>
 
 <p>Functions are provided for reading and writing the document content. Here
-is an excerpt from the <a href="html/gnome-xml-tree.html">tree API</a>:</p>
+is an excerpt from the <a href="html/libxml-tree.html">tree API</a>:</p>
 <dl>
   <dt><code>xmlAttrPtr xmlSetProp(xmlNodePtr node, const xmlChar *name, const
   xmlChar *value);</code></dt>
@@ -1021,7 +1021,7 @@ content to be able to save the document back without losing this usually
 precious information (if the user went through the pain of explicitly defining
 entities, he may have a a rather negative attitude if you blindly susbtitute
 them as saving time). The <a
-href="html/gnome-xml-parser.html#XMLSUBSTITUTEENTITIESDEFAULT">xmlSubstituteEntitiesDefault()</a>
+href="html/libxml-parser.html#XMLSUBSTITUTEENTITIESDEFAULT">xmlSubstituteEntitiesDefault()</a>
 function allows you to check and change the behaviour, which is to not
 substitute entities by default.</p>
 
@@ -1410,6 +1410,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.64 2001/01/22 15:32:01 veillard Exp $</p>
+<p>$Id: xml.html,v 1.65 2001/01/23 11:39:52 veillard Exp $</p>
 </body>
 </html>

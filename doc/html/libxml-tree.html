@@ -13,10 +13,10 @@ TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
 TITLE="SAX"
-HREF="gnome-xml-sax.html"><LINK
+HREF="libxml-sax.html"><LINK
 REL="NEXT"
 TITLE="entities"
-HREF="gnome-xml-entities.html"></HEAD
+HREF="libxml-entities.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -47,7 +47,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-sax.html"
+HREF="libxml-sax.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -101,7 +101,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-entities.html"
+HREF="libxml-entities.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -115,7 +115,7 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="GNOME-XML-TREE"
+NAME="LIBXML-TREE"
 >tree</A
 ></H1
 ><DIV
@@ -145,1312 +145,1334 @@ CLASS="SYNOPSIS"
 >&#13;
 
 enum        <A
-HREF="gnome-xml-tree.html#XMLELEMENTTYPE"
+HREF="libxml-tree.html#XMLELEMENTTYPE"
 >xmlElementType</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >;
 #define     <A
-HREF="gnome-xml-tree.html#CHAR-CAPS"
+HREF="libxml-tree.html#CHAR-CAPS"
 >CHAR</A
 >
 #define     <A
-HREF="gnome-xml-tree.html#BAD-CAST-CAPS"
+HREF="libxml-tree.html#BAD-CAST-CAPS"
 >BAD_CAST</A
 >
 struct      <A
-HREF="gnome-xml-tree.html#XMLNOTATION"
+HREF="libxml-tree.html#XMLNOTATION"
 >xmlNotation</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
+HREF="libxml-tree.html#XMLNOTATIONPTR"
 >xmlNotationPtr</A
 >;
 enum        <A
-HREF="gnome-xml-tree.html#XMLATTRIBUTETYPE"
+HREF="libxml-tree.html#XMLATTRIBUTETYPE"
 >xmlAttributeType</A
 >;
 enum        <A
-HREF="gnome-xml-tree.html#XMLATTRIBUTEDEFAULT"
+HREF="libxml-tree.html#XMLATTRIBUTEDEFAULT"
 >xmlAttributeDefault</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLENUMERATION"
+HREF="libxml-tree.html#XMLENUMERATION"
 >xmlEnumeration</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+HREF="libxml-tree.html#XMLENUMERATIONPTR"
 >xmlEnumerationPtr</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLATTRIBUTE"
+HREF="libxml-tree.html#XMLATTRIBUTE"
 >xmlAttribute</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
+HREF="libxml-tree.html#XMLATTRIBUTEPTR"
 >xmlAttributePtr</A
 >;
 enum        <A
-HREF="gnome-xml-tree.html#XMLELEMENTCONTENTTYPE"
+HREF="libxml-tree.html#XMLELEMENTCONTENTTYPE"
 >xmlElementContentType</A
 >;
 enum        <A
-HREF="gnome-xml-tree.html#XMLELEMENTCONTENTOCCUR"
+HREF="libxml-tree.html#XMLELEMENTCONTENTOCCUR"
 >xmlElementContentOccur</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLELEMENTCONTENT"
+HREF="libxml-tree.html#XMLELEMENTCONTENT"
 >xmlElementContent</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 >xmlElementContentPtr</A
 >;
 enum        <A
-HREF="gnome-xml-tree.html#XMLELEMENTTYPEVAL"
+HREF="libxml-tree.html#XMLELEMENTTYPEVAL"
 >xmlElementTypeVal</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLELEMENT"
+HREF="libxml-tree.html#XMLELEMENT"
 >xmlElement</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLELEMENTPTR"
+HREF="libxml-tree.html#XMLELEMENTPTR"
 >xmlElementPtr</A
 >;
 #define     <A
-HREF="gnome-xml-tree.html#XML-LOCAL-NAMESPACE-CAPS"
+HREF="libxml-tree.html#XML-LOCAL-NAMESPACE-CAPS"
 >XML_LOCAL_NAMESPACE</A
 >
 typedef     <A
-HREF="gnome-xml-tree.html#XMLNSTYPE"
+HREF="libxml-tree.html#XMLNSTYPE"
 >xmlNsType</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLNS"
+HREF="libxml-tree.html#XMLNS"
 >xmlNs</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLDTD"
+HREF="libxml-tree.html#XMLDTD"
 >xmlDtd</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLATTR"
+HREF="libxml-tree.html#XMLATTR"
 >xmlAttr</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLID"
+HREF="libxml-tree.html#XMLID"
 >xmlID</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLIDPTR"
+HREF="libxml-tree.html#XMLIDPTR"
 >xmlIDPtr</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLREF"
+HREF="libxml-tree.html#XMLREF"
 >xmlRef</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLREFPTR"
+HREF="libxml-tree.html#XMLREFPTR"
 >xmlRefPtr</A
 >;
 enum        <A
-HREF="gnome-xml-tree.html#XMLBUFFERALLOCATIONSCHEME"
+HREF="libxml-tree.html#XMLBUFFERALLOCATIONSCHEME"
 >xmlBufferAllocationScheme</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLBUFFER"
+HREF="libxml-tree.html#XMLBUFFER"
 >xmlBuffer</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLNODE"
+HREF="libxml-tree.html#XMLNODE"
 >xmlNode</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >;
 struct      <A
-HREF="gnome-xml-tree.html#XMLDOC"
+HREF="libxml-tree.html#XMLDOC"
 >xmlDoc</A
 >;
 typedef     <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >;
 #define     <A
-HREF="gnome-xml-tree.html#XMLCHILDRENNODE"
+HREF="libxml-tree.html#XMLCHILDRENNODE"
 >xmlChildrenNode</A
 >
 #define     <A
-HREF="gnome-xml-tree.html#XMLROOTNODE"
+HREF="libxml-tree.html#XMLROOTNODE"
 >xmlRootNode</A
 >
 <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > <A
-HREF="gnome-xml-tree.html#XMLBUFFERCREATE"
+HREF="libxml-tree.html#XMLBUFFERCREATE"
 >xmlBufferCreate</A
 >                (void);
 <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > <A
-HREF="gnome-xml-tree.html#XMLBUFFERCREATESIZE"
+HREF="libxml-tree.html#XMLBUFFERCREATESIZE"
 >xmlBufferCreateSize</A
 >            (<GTKDOCLINK
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
 > size);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERFREE"
+HREF="libxml-tree.html#XMLBUFFERFREE"
 >xmlBufferFree</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);
 int         <A
-HREF="gnome-xml-tree.html#XMLBUFFERDUMP"
+HREF="libxml-tree.html#XMLBUFFERDUMP"
 >xmlBufferDump</A
 >                   (<GTKDOCLINK
 HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *file,
                                              <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERADD"
+HREF="libxml-tree.html#XMLBUFFERADD"
 >xmlBufferAdd</A
 >                    (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              int len);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERADDHEAD"
+HREF="libxml-tree.html#XMLBUFFERADDHEAD"
 >xmlBufferAddHead</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              int len);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERCAT"
+HREF="libxml-tree.html#XMLBUFFERCAT"
 >xmlBufferCat</A
 >                    (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERCCAT"
+HREF="libxml-tree.html#XMLBUFFERCCAT"
 >xmlBufferCCat</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const char *str);
 int         <A
-HREF="gnome-xml-tree.html#XMLBUFFERSHRINK"
+HREF="libxml-tree.html#XMLBUFFERSHRINK"
 >xmlBufferShrink</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              unsigned int len);
 int         <A
-HREF="gnome-xml-tree.html#XMLBUFFERGROW"
+HREF="libxml-tree.html#XMLBUFFERGROW"
 >xmlBufferGrow</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              unsigned int len);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFEREMPTY"
+HREF="libxml-tree.html#XMLBUFFEREMPTY"
 >xmlBufferEmpty</A
 >                  (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);
 const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* <A
-HREF="gnome-xml-tree.html#XMLBUFFERCONTENT"
+HREF="libxml-tree.html#XMLBUFFERCONTENT"
 >xmlBufferContent</A
 >             (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);
 int         <A
-HREF="gnome-xml-tree.html#XMLBUFFERUSE"
+HREF="libxml-tree.html#XMLBUFFERUSE"
 >xmlBufferUse</A
 >                    (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERSETALLOCATIONSCHEME"
+HREF="libxml-tree.html#XMLBUFFERSETALLOCATIONSCHEME"
 >xmlBufferSetAllocationScheme</A
 >    (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              <A
-HREF="gnome-xml-tree.html#XMLBUFFERALLOCATIONSCHEME"
+HREF="libxml-tree.html#XMLBUFFERALLOCATIONSCHEME"
 >xmlBufferAllocationScheme</A
 > scheme);
 int         <A
-HREF="gnome-xml-tree.html#XMLBUFFERLENGTH"
+HREF="libxml-tree.html#XMLBUFFERLENGTH"
 >xmlBufferLength</A
 >                 (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);
 <A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   <A
-HREF="gnome-xml-tree.html#XMLCREATEINTSUBSET"
+HREF="libxml-tree.html#XMLCREATEINTSUBSET"
 >xmlCreateIntSubset</A
 >              (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);
 <A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   <A
-HREF="gnome-xml-tree.html#XMLNEWDTD"
+HREF="libxml-tree.html#XMLNEWDTD"
 >xmlNewDtd</A
 >                       (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);
 <A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   <A
-HREF="gnome-xml-tree.html#XMLGETINTSUBSET"
+HREF="libxml-tree.html#XMLGETINTSUBSET"
 >xmlGetIntSubset</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);
 void        <A
-HREF="gnome-xml-tree.html#XMLFREEDTD"
+HREF="libxml-tree.html#XMLFREEDTD"
 >xmlFreeDtd</A
 >                      (<A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    <A
-HREF="gnome-xml-tree.html#XMLNEWGLOBALNS"
+HREF="libxml-tree.html#XMLNEWGLOBALNS"
 >xmlNewGlobalNs</A
 >                  (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *href,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *prefix);
 <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    <A
-HREF="gnome-xml-tree.html#XMLNEWNS"
+HREF="libxml-tree.html#XMLNEWNS"
 >xmlNewNs</A
 >                        (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *href,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *prefix);
 void        <A
-HREF="gnome-xml-tree.html#XMLFREENS"
+HREF="libxml-tree.html#XMLFREENS"
 >xmlFreeNs</A
 >                       (<A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-tree.html#XMLNEWDOC"
+HREF="libxml-tree.html#XMLNEWDOC"
 >xmlNewDoc</A
 >                       (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *version);
 void        <A
-HREF="gnome-xml-tree.html#XMLFREEDOC"
+HREF="libxml-tree.html#XMLFREEDOC"
 >xmlFreeDoc</A
 >                      (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWDOCPROP"
+HREF="libxml-tree.html#XMLNEWDOCPROP"
 >xmlNewDocProp</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);
 <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWPROP"
+HREF="libxml-tree.html#XMLNEWPROP"
 >xmlNewProp</A
 >                      (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);
 <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWNSPROP"
+HREF="libxml-tree.html#XMLNEWNSPROP"
 >xmlNewNsProp</A
 >                    (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);
 void        <A
-HREF="gnome-xml-tree.html#XMLFREEPROPLIST"
+HREF="libxml-tree.html#XMLFREEPROPLIST"
 >xmlFreePropList</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > cur);
 void        <A
-HREF="gnome-xml-tree.html#XMLFREEPROP"
+HREF="libxml-tree.html#XMLFREEPROP"
 >xmlFreeProp</A
 >                     (<A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLCOPYPROP"
+HREF="libxml-tree.html#XMLCOPYPROP"
 >xmlCopyProp</A
 >                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > target,
                                              <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLCOPYPROPLIST"
+HREF="libxml-tree.html#XMLCOPYPROPLIST"
 >xmlCopyPropList</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > target,
                                              <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   <A
-HREF="gnome-xml-tree.html#XMLCOPYDTD"
+HREF="libxml-tree.html#XMLCOPYDTD"
 >xmlCopyDtd</A
 >                      (<A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd);
 <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   <A
-HREF="gnome-xml-tree.html#XMLCOPYDOC"
+HREF="libxml-tree.html#XMLCOPYDOC"
 >xmlCopyDoc</A
 >                      (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              int recursive);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWDOCNODE"
+HREF="libxml-tree.html#XMLNEWDOCNODE"
 >xmlNewDocNode</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWDOCRAWNODE"
+HREF="libxml-tree.html#XMLNEWDOCRAWNODE"
 >xmlNewDocRawNode</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWNODE"
+HREF="libxml-tree.html#XMLNEWNODE"
 >xmlNewNode</A
 >                      (<A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWCHILD"
+HREF="libxml-tree.html#XMLNEWCHILD"
 >xmlNewChild</A
 >                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWTEXTCHILD"
+HREF="libxml-tree.html#XMLNEWTEXTCHILD"
 >xmlNewTextChild</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWDOCTEXT"
+HREF="libxml-tree.html#XMLNEWDOCTEXT"
 >xmlNewDocText</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWTEXT"
+HREF="libxml-tree.html#XMLNEWTEXT"
 >xmlNewText</A
 >                      (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWPI"
+HREF="libxml-tree.html#XMLNEWPI"
 >xmlNewPI</A
 >                        (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWDOCTEXTLEN"
+HREF="libxml-tree.html#XMLNEWDOCTEXTLEN"
 >xmlNewDocTextLen</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWTEXTLEN"
+HREF="libxml-tree.html#XMLNEWTEXTLEN"
 >xmlNewTextLen</A
 >                   (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWDOCCOMMENT"
+HREF="libxml-tree.html#XMLNEWDOCCOMMENT"
 >xmlNewDocComment</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWCOMMENT"
+HREF="libxml-tree.html#XMLNEWCOMMENT"
 >xmlNewComment</A
 >                   (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWCDATABLOCK"
+HREF="libxml-tree.html#XMLNEWCDATABLOCK"
 >xmlNewCDataBlock</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWCHARREF"
+HREF="libxml-tree.html#XMLNEWCHARREF"
 >xmlNewCharRef</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWREFERENCE"
+HREF="libxml-tree.html#XMLNEWREFERENCE"
 >xmlNewReference</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLCOPYNODE"
+HREF="libxml-tree.html#XMLCOPYNODE"
 >xmlCopyNode</A
 >                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              int recursive);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLCOPYNODELIST"
+HREF="libxml-tree.html#XMLCOPYNODELIST"
 >xmlCopyNodeList</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWDOCFRAGMENT"
+HREF="libxml-tree.html#XMLNEWDOCFRAGMENT"
 >xmlNewDocFragment</A
 >               (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLDOCGETROOTELEMENT"
+HREF="libxml-tree.html#XMLDOCGETROOTELEMENT"
 >xmlDocGetRootElement</A
 >            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLGETLASTCHILD"
+HREF="libxml-tree.html#XMLGETLASTCHILD"
 >xmlGetLastChild</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent);
 int         <A
-HREF="gnome-xml-tree.html#XMLNODEISTEXT"
+HREF="libxml-tree.html#XMLNODEISTEXT"
 >xmlNodeIsText</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);
 int         <A
-HREF="gnome-xml-tree.html#XMLISBLANKNODE"
+HREF="libxml-tree.html#XMLISBLANKNODE"
 >xmlIsBlankNode</A
 >                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLDOCSETROOTELEMENT"
+HREF="libxml-tree.html#XMLDOCSETROOTELEMENT"
 >xmlDocSetRootElement</A
 >            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > root);
 void        <A
-HREF="gnome-xml-tree.html#XMLNODESETNAME"
+HREF="libxml-tree.html#XMLNODESETNAME"
 >xmlNodeSetName</A
 >                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLADDCHILD"
+HREF="libxml-tree.html#XMLADDCHILD"
 >xmlAddChild</A
 >                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLADDCHILDLIST"
+HREF="libxml-tree.html#XMLADDCHILDLIST"
 >xmlAddChildList</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLREPLACENODE"
+HREF="libxml-tree.html#XMLREPLACENODE"
 >xmlReplaceNode</A
 >                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > old,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLADDSIBLING"
+HREF="libxml-tree.html#XMLADDSIBLING"
 >xmlAddSibling</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > elem);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLADDPREVSIBLING"
+HREF="libxml-tree.html#XMLADDPREVSIBLING"
 >xmlAddPrevSibling</A
 >               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > elem);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLADDNEXTSIBLING"
+HREF="libxml-tree.html#XMLADDNEXTSIBLING"
 >xmlAddNextSibling</A
 >               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > elem);
 void        <A
-HREF="gnome-xml-tree.html#XMLUNLINKNODE"
+HREF="libxml-tree.html#XMLUNLINKNODE"
 >xmlUnlinkNode</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLTEXTMERGE"
+HREF="libxml-tree.html#XMLTEXTMERGE"
 >xmlTextMerge</A
 >                    (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > first,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > second);
 void        <A
-HREF="gnome-xml-tree.html#XMLTEXTCONCAT"
+HREF="libxml-tree.html#XMLTEXTCONCAT"
 >xmlTextConcat</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);
 void        <A
-HREF="gnome-xml-tree.html#XMLFREENODELIST"
+HREF="libxml-tree.html#XMLFREENODELIST"
 >xmlFreeNodeList</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 void        <A
-HREF="gnome-xml-tree.html#XMLFREENODE"
+HREF="libxml-tree.html#XMLFREENODE"
 >xmlFreeNode</A
 >                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 void        <A
-HREF="gnome-xml-tree.html#XMLSETTREEDOC"
+HREF="libxml-tree.html#XMLSETTREEDOC"
 >xmlSetTreeDoc</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > tree,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);
 void        <A
-HREF="gnome-xml-tree.html#XMLSETLISTDOC"
+HREF="libxml-tree.html#XMLSETLISTDOC"
 >xmlSetListDoc</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > list,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);
 <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    <A
-HREF="gnome-xml-tree.html#XMLSEARCHNS"
+HREF="libxml-tree.html#XMLSEARCHNS"
 >xmlSearchNs</A
 >                     (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *nameSpace);
 <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    <A
-HREF="gnome-xml-tree.html#XMLSEARCHNSBYHREF"
+HREF="libxml-tree.html#XMLSEARCHNSBYHREF"
 >xmlSearchNsByHref</A
 >               (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *href);
 <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >*   <A
-HREF="gnome-xml-tree.html#XMLGETNSLIST"
+HREF="libxml-tree.html#XMLGETNSLIST"
 >xmlGetNsList</A
 >                    (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);
 void        <A
-HREF="gnome-xml-tree.html#XMLSETNS"
+HREF="libxml-tree.html#XMLSETNS"
 >xmlSetNs</A
 >                        (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns);
 <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    <A
-HREF="gnome-xml-tree.html#XMLCOPYNAMESPACE"
+HREF="libxml-tree.html#XMLCOPYNAMESPACE"
 >xmlCopyNamespace</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    <A
-HREF="gnome-xml-tree.html#XMLCOPYNAMESPACELIST"
+HREF="libxml-tree.html#XMLCOPYNAMESPACELIST"
 >xmlCopyNamespaceList</A
 >            (<A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLSETPROP"
+HREF="libxml-tree.html#XMLSETPROP"
 >xmlSetProp</A
 >                      (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-tree.html#XMLGETPROP"
+HREF="libxml-tree.html#XMLGETPROP"
 >xmlGetProp</A
 >                      (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLHASPROP"
+HREF="libxml-tree.html#XMLHASPROP"
 >xmlHasProp</A
 >                      (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
->*    <A
-HREF="gnome-xml-tree.html#XMLGETNSPROP"
->xmlGetNsProp</A
+HREF="libxml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  <A
+HREF="libxml-tree.html#XMLSETNSPROP"
+>xmlSetNsProp</A
 >                    (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
+                                             <A
+HREF="libxml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-tree.html#XMLGETNSPROP"
+>xmlGetNsProp</A
+>                    (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *nameSpace);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLSTRINGGETNODELIST"
+HREF="libxml-tree.html#XMLSTRINGGETNODELIST"
 >xmlStringGetNodeList</A
 >            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);
 <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLSTRINGLENGETNODELIST"
+HREF="libxml-tree.html#XMLSTRINGLENGETNODELIST"
 >xmlStringLenGetNodeList</A
 >         (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value,
                                              int len);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-tree.html#XMLNODELISTGETSTRING"
+HREF="libxml-tree.html#XMLNODELISTGETSTRING"
 >xmlNodeListGetString</A
 >            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > list,
                                              int inLine);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-tree.html#XMLNODELISTGETRAWSTRING"
+HREF="libxml-tree.html#XMLNODELISTGETRAWSTRING"
 >xmlNodeListGetRawString</A
 >         (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > list,
                                              int inLine);
 void        <A
-HREF="gnome-xml-tree.html#XMLNODESETCONTENT"
+HREF="libxml-tree.html#XMLNODESETCONTENT"
 >xmlNodeSetContent</A
 >               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 void        <A
-HREF="gnome-xml-tree.html#XMLNODESETCONTENTLEN"
+HREF="libxml-tree.html#XMLNODESETCONTENTLEN"
 >xmlNodeSetContentLen</A
 >            (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);
 void        <A
-HREF="gnome-xml-tree.html#XMLNODEADDCONTENT"
+HREF="libxml-tree.html#XMLNODEADDCONTENT"
 >xmlNodeAddContent</A
 >               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);
 void        <A
-HREF="gnome-xml-tree.html#XMLNODEADDCONTENTLEN"
+HREF="libxml-tree.html#XMLNODEADDCONTENTLEN"
 >xmlNodeAddContentLen</A
 >            (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-tree.html#XMLNODEGETCONTENT"
+HREF="libxml-tree.html#XMLNODEGETCONTENT"
 >xmlNodeGetContent</A
 >               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-tree.html#XMLNODEGETLANG"
+HREF="libxml-tree.html#XMLNODEGETLANG"
 >xmlNodeGetLang</A
 >                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 void        <A
-HREF="gnome-xml-tree.html#XMLNODESETLANG"
+HREF="libxml-tree.html#XMLNODESETLANG"
 >xmlNodeSetLang</A
 >                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *lang);
 int         <A
-HREF="gnome-xml-tree.html#XMLNODEGETSPACEPRESERVE"
+HREF="libxml-tree.html#XMLNODEGETSPACEPRESERVE"
 >xmlNodeGetSpacePreserve</A
 >         (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 void        <A
-HREF="gnome-xml-tree.html#XMLNODESETSPACEPRESERVE"
+HREF="libxml-tree.html#XMLNODESETSPACEPRESERVE"
 >xmlNodeSetSpacePreserve</A
 >         (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              <GTKDOCLINK
@@ -1458,229 +1480,229 @@ HREF="INTVAL"
 >intval</GTKDOCLINK
 >);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-tree.html#XMLNODEGETBASE"
+HREF="libxml-tree.html#XMLNODEGETBASE"
 >xmlNodeGetBase</A
 >                  (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 void        <A
-HREF="gnome-xml-tree.html#XMLNODESETBASE"
+HREF="libxml-tree.html#XMLNODESETBASE"
 >xmlNodeSetBase</A
 >                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *uri);
 int         <A
-HREF="gnome-xml-tree.html#XMLREMOVEPROP"
+HREF="libxml-tree.html#XMLREMOVEPROP"
 >xmlRemoveProp</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > attr);
 int         <A
-HREF="gnome-xml-tree.html#XMLREMOVENODE"
+HREF="libxml-tree.html#XMLREMOVENODE"
 >xmlRemoveNode</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERWRITEXMLCHAR"
+HREF="libxml-tree.html#XMLBUFFERWRITEXMLCHAR"
 >xmlBufferWriteXmlCHAR</A
 >           (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *string);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERWRITECHAR"
+HREF="libxml-tree.html#XMLBUFFERWRITECHAR"
 >xmlBufferWriteCHAR</A
 >              (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *string);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERWRITECHAR"
+HREF="libxml-tree.html#XMLBUFFERWRITECHAR"
 >xmlBufferWriteChar</A
 >              (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const char *string);
 void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERWRITEQUOTEDSTRING"
+HREF="libxml-tree.html#XMLBUFFERWRITEQUOTEDSTRING"
 >xmlBufferWriteQuotedString</A
 >      (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *string);
 int         <A
-HREF="gnome-xml-tree.html#XMLRECONCILIATENS"
+HREF="libxml-tree.html#XMLRECONCILIATENS"
 >xmlReconciliateNs</A
 >               (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > tree);
 void        <A
-HREF="gnome-xml-tree.html#XMLDOCDUMPFORMATMEMORY"
+HREF="libxml-tree.html#XMLDOCDUMPFORMATMEMORY"
 >xmlDocDumpFormatMemory</A
 >          (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **mem,
                                              int *size,
                                              int format);
 void        <A
-HREF="gnome-xml-tree.html#XMLDOCDUMPMEMORY"
+HREF="libxml-tree.html#XMLDOCDUMPMEMORY"
 >xmlDocDumpMemory</A
 >                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **mem,
                                              int *size);
 void        <A
-HREF="gnome-xml-tree.html#XMLDOCDUMPMEMORYENC"
+HREF="libxml-tree.html#XMLDOCDUMPMEMORYENC"
 >xmlDocDumpMemoryEnc</A
 >             (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > out_doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **doc_txt_ptr,
                                              int *doc_txt_len,
                                              const char *txt_encoding);
 void        <A
-HREF="gnome-xml-tree.html#XMLDOCDUMPFORMATMEMORYENC"
+HREF="libxml-tree.html#XMLDOCDUMPFORMATMEMORYENC"
 >xmlDocDumpFormatMemoryEnc</A
 >       (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > out_doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **doc_txt_ptr,
                                              int *doc_txt_len,
                                              const char *txt_encoding,
                                              int format);
 int         <A
-HREF="gnome-xml-tree.html#XMLDOCDUMP"
+HREF="libxml-tree.html#XMLDOCDUMP"
 >xmlDocDump</A
 >                      (<GTKDOCLINK
 HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *f,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur);
 void        <A
-HREF="gnome-xml-tree.html#XMLELEMDUMP"
+HREF="libxml-tree.html#XMLELEMDUMP"
 >xmlElemDump</A
 >                     (<GTKDOCLINK
 HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *f,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 int         <A
-HREF="gnome-xml-tree.html#XMLSAVEFILE"
+HREF="libxml-tree.html#XMLSAVEFILE"
 >xmlSaveFile</A
 >                     (const char *filename,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur);
 void        <A
-HREF="gnome-xml-tree.html#XMLNODEDUMP"
+HREF="libxml-tree.html#XMLNODEDUMP"
 >xmlNodeDump</A
 >                     (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              int level,
                                              int format);
 int         <A
-HREF="gnome-xml-tree.html#XMLSAVEFILEENC"
+HREF="libxml-tree.html#XMLSAVEFILEENC"
 >xmlSaveFileEnc</A
 >                  (const char *filename,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur,
                                              const char *encoding);
 int         <A
-HREF="gnome-xml-tree.html#XMLGETDOCCOMPRESSMODE"
+HREF="libxml-tree.html#XMLGETDOCCOMPRESSMODE"
 >xmlGetDocCompressMode</A
 >           (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);
 void        <A
-HREF="gnome-xml-tree.html#XMLSETDOCCOMPRESSMODE"
+HREF="libxml-tree.html#XMLSETDOCCOMPRESSMODE"
 >xmlSetDocCompressMode</A
 >           (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              int mode);
 int         <A
-HREF="gnome-xml-tree.html#XMLGETCOMPRESSMODE"
+HREF="libxml-tree.html#XMLGETCOMPRESSMODE"
 >xmlGetCompressMode</A
 >              (void);
 void        <A
-HREF="gnome-xml-tree.html#XMLSETCOMPRESSMODE"
+HREF="libxml-tree.html#XMLSETCOMPRESSMODE"
 >xmlSetCompressMode</A
 >              (int mode);</PRE
 ></TD
@@ -1690,7 +1712,7 @@ HREF="gnome-xml-tree.html#XMLSETCOMPRESSMODE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4066"
+NAME="AEN4072"
 ></A
 ><H2
 >Description</H2
@@ -1700,14 +1722,14 @@ NAME="AEN4066"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4069"
+NAME="AEN4075"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4071"
+NAME="AEN4077"
 ></A
 ><H3
 ><A
@@ -1757,7 +1779,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4076"
+NAME="AEN4082"
 ></A
 ><H3
 ><A
@@ -1783,7 +1805,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4081"
+NAME="AEN4087"
 ></A
 ><H3
 ><A
@@ -1809,7 +1831,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4086"
+NAME="AEN4092"
 ></A
 ><H3
 ><A
@@ -1835,7 +1857,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4091"
+NAME="AEN4097"
 ></A
 ><H3
 ><A
@@ -1865,7 +1887,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4096"
+NAME="AEN4102"
 ></A
 ><H3
 ><A
@@ -1891,7 +1913,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4101"
+NAME="AEN4107"
 ></A
 ><H3
 ><A
@@ -1928,7 +1950,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4106"
+NAME="AEN4112"
 ></A
 ><H3
 ><A
@@ -1959,7 +1981,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4111"
+NAME="AEN4117"
 ></A
 ><H3
 ><A
@@ -1988,7 +2010,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4116"
+NAME="AEN4122"
 ></A
 ><H3
 ><A
@@ -2014,7 +2036,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4121"
+NAME="AEN4127"
 ></A
 ><H3
 ><A
@@ -2060,7 +2082,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4126"
+NAME="AEN4132"
 ></A
 ><H3
 ><A
@@ -2086,7 +2108,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4131"
+NAME="AEN4137"
 ></A
 ><H3
 ><A
@@ -2117,7 +2139,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4136"
+NAME="AEN4142"
 ></A
 ><H3
 ><A
@@ -2148,7 +2170,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4141"
+NAME="AEN4147"
 ></A
 ><H3
 ><A
@@ -2180,7 +2202,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4146"
+NAME="AEN4152"
 ></A
 ><H3
 ><A
@@ -2206,7 +2228,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4151"
+NAME="AEN4157"
 ></A
 ><H3
 ><A
@@ -2237,7 +2259,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4156"
+NAME="AEN4162"
 ></A
 ><H3
 ><A
@@ -2280,7 +2302,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4161"
+NAME="AEN4167"
 ></A
 ><H3
 ><A
@@ -2306,7 +2328,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4166"
+NAME="AEN4172"
 ></A
 ><H3
 ><A
@@ -2332,7 +2354,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4171"
+NAME="AEN4177"
 ></A
 ><H3
 ><A
@@ -2358,7 +2380,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4176"
+NAME="AEN4182"
 ></A
 ><H3
 ><A
@@ -2389,7 +2411,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4181"
+NAME="AEN4187"
 ></A
 ><H3
 ><A
@@ -2415,7 +2437,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4186"
+NAME="AEN4192"
 ></A
 ><H3
 ><A
@@ -2462,7 +2484,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4191"
+NAME="AEN4197"
 ></A
 ><H3
 ><A
@@ -2488,7 +2510,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4196"
+NAME="AEN4202"
 ></A
 ><H3
 ><A
@@ -2528,7 +2550,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4201"
+NAME="AEN4207"
 ></A
 ><H3
 ><A
@@ -2554,7 +2576,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4206"
+NAME="AEN4212"
 ></A
 ><H3
 ><A
@@ -2584,7 +2606,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4211"
+NAME="AEN4217"
 ></A
 ><H3
 ><A
@@ -2610,7 +2632,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4216"
+NAME="AEN4222"
 ></A
 ><H3
 ><A
@@ -2640,7 +2662,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4221"
+NAME="AEN4227"
 ></A
 ><H3
 ><A
@@ -2666,7 +2688,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4226"
+NAME="AEN4232"
 ></A
 ><H3
 ><A
@@ -2695,7 +2717,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4231"
+NAME="AEN4237"
 ></A
 ><H3
 ><A
@@ -2726,7 +2748,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4236"
+NAME="AEN4242"
 ></A
 ><H3
 ><A
@@ -2752,7 +2774,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4241"
+NAME="AEN4247"
 ></A
 ><H3
 ><A
@@ -2800,7 +2822,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4246"
+NAME="AEN4252"
 ></A
 ><H3
 ><A
@@ -2826,7 +2848,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4251"
+NAME="AEN4257"
 ></A
 ><H3
 ><A
@@ -2878,7 +2900,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4256"
+NAME="AEN4262"
 ></A
 ><H3
 ><A
@@ -2904,7 +2926,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4261"
+NAME="AEN4267"
 ></A
 ><H3
 ><A
@@ -2930,7 +2952,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4266"
+NAME="AEN4272"
 ></A
 ><H3
 ><A
@@ -2956,7 +2978,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4271"
+NAME="AEN4277"
 ></A
 ><H3
 ><A
@@ -2973,7 +2995,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > xmlBufferCreate                (void);</PRE
 ></TD
@@ -3017,7 +3039,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4287"
+NAME="AEN4293"
 ></A
 ><H3
 ><A
@@ -3034,7 +3056,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > xmlBufferCreateSize            (<GTKDOCLINK
 HREF="SIZE-T"
@@ -3098,7 +3120,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4308"
+NAME="AEN4314"
 ></A
 ><H3
 ><A
@@ -3115,7 +3137,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferFree                   (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);</PRE
 ></TD
@@ -3161,7 +3183,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4324"
+NAME="AEN4330"
 ></A
 ><H3
 ><A
@@ -3182,7 +3204,7 @@ HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *file,
                                              <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);</PRE
 ></TD
@@ -3260,7 +3282,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4349"
+NAME="AEN4355"
 ></A
 ><H3
 ><A
@@ -3277,11 +3299,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferAdd                    (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              int len);</PRE
@@ -3363,7 +3385,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4374"
+NAME="AEN4380"
 ></A
 ><H3
 ><A
@@ -3380,11 +3402,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferAddHead                (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              int len);</PRE
@@ -3471,7 +3493,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4400"
+NAME="AEN4406"
 ></A
 ><H3
 ><A
@@ -3488,11 +3510,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferCat                    (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str);</PRE
 ></TD
@@ -3555,7 +3577,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4421"
+NAME="AEN4427"
 ></A
 ><H3
 ><A
@@ -3572,7 +3594,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferCCat                   (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const char *str);</PRE
@@ -3636,7 +3658,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4441"
+NAME="AEN4447"
 ></A
 ><H3
 ><A
@@ -3653,7 +3675,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlBufferShrink                 (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              unsigned int len);</PRE
@@ -3732,7 +3754,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4465"
+NAME="AEN4471"
 ></A
 ><H3
 ><A
@@ -3749,7 +3771,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlBufferGrow                   (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              unsigned int len);</PRE
@@ -3828,7 +3850,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4489"
+NAME="AEN4495"
 ></A
 ><H3
 ><A
@@ -3845,7 +3867,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferEmpty                  (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);</PRE
 ></TD
@@ -3891,7 +3913,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4505"
+NAME="AEN4511"
 ></A
 ><H3
 ><A
@@ -3908,10 +3930,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* xmlBufferContent             (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);</PRE
 ></TD
@@ -3972,7 +3994,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4526"
+NAME="AEN4532"
 ></A
 ><H3
 ><A
@@ -3989,7 +4011,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlBufferUse                    (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);</PRE
 ></TD
@@ -4048,7 +4070,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4545"
+NAME="AEN4551"
 ></A
 ><H3
 ><A
@@ -4065,11 +4087,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferSetAllocationScheme    (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              <A
-HREF="gnome-xml-tree.html#XMLBUFFERALLOCATIONSCHEME"
+HREF="libxml-tree.html#XMLBUFFERALLOCATIONSCHEME"
 >xmlBufferAllocationScheme</A
 > scheme);</PRE
 ></TD
@@ -4132,7 +4154,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4566"
+NAME="AEN4572"
 ></A
 ><H3
 ><A
@@ -4149,7 +4171,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlBufferLength                 (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);</PRE
 ></TD
@@ -4210,7 +4232,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4586"
+NAME="AEN4592"
 ></A
 ><H3
 ><A
@@ -4227,22 +4249,22 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   xmlCreateIntSubset              (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);</PRE
 ></TD
@@ -4354,7 +4376,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4622"
+NAME="AEN4628"
 ></A
 ><H3
 ><A
@@ -4371,22 +4393,22 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   xmlNewDtd                       (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);</PRE
 ></TD
@@ -4395,7 +4417,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ><P
 >Creation of a new DTD for the external subset. To create an
 internal subset, use <A
-HREF="gnome-xml-tree.html#XMLCREATEINTSUBSET"
+HREF="libxml-tree.html#XMLCREATEINTSUBSET"
 >xmlCreateIntSubset</A
 >().</P
 ><P
@@ -4502,7 +4524,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4659"
+NAME="AEN4665"
 ></A
 ><H3
 ><A
@@ -4519,10 +4541,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   xmlGetIntSubset                 (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);</PRE
 ></TD
@@ -4583,7 +4605,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4680"
+NAME="AEN4686"
 ></A
 ><H3
 ><A
@@ -4600,7 +4622,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeDtd                      (<A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > cur);</PRE
 ></TD
@@ -4646,7 +4668,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4696"
+NAME="AEN4702"
 ></A
 ><H3
 ><A
@@ -4663,18 +4685,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    xmlNewGlobalNs                  (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *href,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *prefix);</PRE
 ></TD
@@ -4771,7 +4793,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4727"
+NAME="AEN4733"
 ></A
 ><H3
 ><A
@@ -4788,18 +4810,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    xmlNewNs                        (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *href,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *prefix);</PRE
 ></TD
@@ -4898,7 +4920,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4758"
+NAME="AEN4764"
 ></A
 ><H3
 ><A
@@ -4915,7 +4937,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeNs                       (<A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > cur);</PRE
 ></TD
@@ -4961,7 +4983,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4774"
+NAME="AEN4780"
 ></A
 ><H3
 ><A
@@ -4978,10 +5000,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlNewDoc                       (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *version);</PRE
 ></TD
@@ -5042,7 +5064,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4795"
+NAME="AEN4801"
 ></A
 ><H3
 ><A
@@ -5059,7 +5081,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeDoc                      (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur);</PRE
 ></TD
@@ -5106,7 +5128,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4811"
+NAME="AEN4817"
 ></A
 ><H3
 ><A
@@ -5123,18 +5145,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  xmlNewDocProp                   (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);</PRE
 ></TD
@@ -5229,7 +5251,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4842"
+NAME="AEN4848"
 ></A
 ><H3
 ><A
@@ -5246,18 +5268,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  xmlNewProp                      (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);</PRE
 ></TD
@@ -5352,7 +5374,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4873"
+NAME="AEN4879"
 ></A
 ><H3
 ><A
@@ -5369,22 +5391,22 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  xmlNewNsProp                    (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);</PRE
 ></TD
@@ -5496,7 +5518,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4909"
+NAME="AEN4915"
 ></A
 ><H3
 ><A
@@ -5513,7 +5535,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreePropList                 (<A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > cur);</PRE
 ></TD
@@ -5559,7 +5581,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4925"
+NAME="AEN4931"
 ></A
 ><H3
 ><A
@@ -5576,7 +5598,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeProp                     (<A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > cur);</PRE
 ></TD
@@ -5622,7 +5644,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4941"
+NAME="AEN4947"
 ></A
 ><H3
 ><A
@@ -5639,14 +5661,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  xmlCopyProp                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > target,
                                              <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > cur);</PRE
 ></TD
@@ -5724,7 +5746,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4967"
+NAME="AEN4973"
 ></A
 ><H3
 ><A
@@ -5741,14 +5763,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  xmlCopyPropList                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > target,
                                              <A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > cur);</PRE
 ></TD
@@ -5826,7 +5848,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4993"
+NAME="AEN4999"
 ></A
 ><H3
 ><A
@@ -5843,10 +5865,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   xmlCopyDtd                      (<A
-HREF="gnome-xml-tree.html#XMLDTDPTR"
+HREF="libxml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd);</PRE
 ></TD
@@ -5907,7 +5929,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5014"
+NAME="AEN5020"
 ></A
 ><H3
 ><A
@@ -5924,10 +5946,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlCopyDoc                      (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              int recursive);</PRE
@@ -6007,7 +6029,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5039"
+NAME="AEN5045"
 ></A
 ><H3
 ><A
@@ -6024,22 +6046,22 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewDocNode                   (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -6066,10 +6088,10 @@ CLASS="PARAMETER"
 > is supposed to be a piece of XML CDATA, so it allow entities
 references, but XML special chars need to be escaped first by using
 <A
-HREF="gnome-xml-entities.html#XMLENCODEENTITIESREENTRANT"
+HREF="libxml-entities.html#XMLENCODEENTITIESREENTRANT"
 >xmlEncodeEntitiesReentrant</A
 >(). Use <A
-HREF="gnome-xml-tree.html#XMLNEWDOCRAWNODE"
+HREF="libxml-tree.html#XMLNEWDOCRAWNODE"
 >xmlNewDocRawNode</A
 >() if you don't
 need entities support.</P
@@ -6177,7 +6199,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5080"
+NAME="AEN5086"
 ></A
 ><H3
 ><A
@@ -6194,22 +6216,22 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewDocRawNode                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -6332,7 +6354,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5118"
+NAME="AEN5124"
 ></A
 ><H3
 ><A
@@ -6349,14 +6371,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewNode                      (<A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -6439,7 +6461,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5145"
+NAME="AEN5151"
 ></A
 ><H3
 ><A
@@ -6456,22 +6478,22 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewChild                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -6504,10 +6526,10 @@ CLASS="PARAMETER"
 > is supposed to be a piece of XML CDATA, so it allow entities
 references, but XML special chars need to be escaped first by using
 <A
-HREF="gnome-xml-entities.html#XMLENCODEENTITIESREENTRANT"
+HREF="libxml-entities.html#XMLENCODEENTITIESREENTRANT"
 >xmlEncodeEntitiesReentrant</A
 >(). Use <A
-HREF="gnome-xml-tree.html#XMLNEWTEXTCHILD"
+HREF="libxml-tree.html#XMLNEWTEXTCHILD"
 >xmlNewTextChild</A
 >() if entities
 support is not needed.</P
@@ -6615,7 +6637,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5187"
+NAME="AEN5193"
 ></A
 ><H3
 ><A
@@ -6632,22 +6654,22 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewTextChild                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -6776,7 +6798,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5226"
+NAME="AEN5232"
 ></A
 ><H3
 ><A
@@ -6793,14 +6815,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewDocText                   (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -6878,7 +6900,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5252"
+NAME="AEN5258"
 ></A
 ><H3
 ><A
@@ -6895,10 +6917,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewText                      (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -6959,7 +6981,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5273"
+NAME="AEN5279"
 ></A
 ><H3
 ><A
@@ -6976,14 +6998,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewPI                        (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -7061,7 +7083,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5299"
+NAME="AEN5305"
 ></A
 ><H3
 ><A
@@ -7078,14 +7100,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewDocTextLen                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);</PRE
@@ -7182,7 +7204,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5329"
+NAME="AEN5335"
 ></A
 ><H3
 ><A
@@ -7199,10 +7221,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewTextLen                   (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);</PRE
@@ -7281,7 +7303,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5354"
+NAME="AEN5360"
 ></A
 ><H3
 ><A
@@ -7298,14 +7320,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewDocComment                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -7383,7 +7405,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5380"
+NAME="AEN5386"
 ></A
 ><H3
 ><A
@@ -7400,10 +7422,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewComment                   (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -7464,7 +7486,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5401"
+NAME="AEN5407"
 ></A
 ><H3
 ><A
@@ -7481,14 +7503,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewCDataBlock                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);</PRE
@@ -7584,7 +7606,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5431"
+NAME="AEN5437"
 ></A
 ><H3
 ><A
@@ -7601,14 +7623,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewCharRef                   (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -7686,7 +7708,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5457"
+NAME="AEN5463"
 ></A
 ><H3
 ><A
@@ -7703,14 +7725,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewReference                 (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -7788,7 +7810,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5483"
+NAME="AEN5489"
 ></A
 ><H3
 ><A
@@ -7805,10 +7827,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlCopyNode                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              int recursive);</PRE
@@ -7887,7 +7909,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5508"
+NAME="AEN5514"
 ></A
 ><H3
 ><A
@@ -7904,10 +7926,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlCopyNodeList                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);</PRE
 ></TD
@@ -7968,7 +7990,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5529"
+NAME="AEN5535"
 ></A
 ><H3
 ><A
@@ -7985,10 +8007,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewDocFragment               (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);</PRE
 ></TD
@@ -8049,7 +8071,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5550"
+NAME="AEN5556"
 ></A
 ><H3
 ><A
@@ -8066,10 +8088,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlDocGetRootElement            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);</PRE
 ></TD
@@ -8131,7 +8153,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5571"
+NAME="AEN5577"
 ></A
 ><H3
 ><A
@@ -8148,10 +8170,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlGetLastChild                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent);</PRE
 ></TD
@@ -8212,7 +8234,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5592"
+NAME="AEN5598"
 ></A
 ><H3
 ><A
@@ -8229,7 +8251,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlNodeIsText                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);</PRE
 ></TD
@@ -8290,7 +8312,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5612"
+NAME="AEN5618"
 ></A
 ><H3
 ><A
@@ -8307,7 +8329,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlIsBlankNode                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);</PRE
 ></TD
@@ -8369,7 +8391,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5632"
+NAME="AEN5638"
 ></A
 ><H3
 ><A
@@ -8386,14 +8408,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlDocSetRootElement            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > root);</PRE
 ></TD
@@ -8472,7 +8494,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5658"
+NAME="AEN5664"
 ></A
 ><H3
 ><A
@@ -8489,11 +8511,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNodeSetName                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -8556,7 +8578,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5679"
+NAME="AEN5685"
 ></A
 ><H3
 ><A
@@ -8573,14 +8595,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlAddChild                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -8669,7 +8691,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5707"
+NAME="AEN5713"
 ></A
 ><H3
 ><A
@@ -8686,14 +8708,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlAddChildList                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -8777,7 +8799,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5734"
+NAME="AEN5740"
 ></A
 ><H3
 ><A
@@ -8794,14 +8816,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlReplaceNode                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > old,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -8881,7 +8903,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5760"
+NAME="AEN5766"
 ></A
 ><H3
 ><A
@@ -8898,14 +8920,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlAddSibling                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > elem);</PRE
 ></TD
@@ -9001,7 +9023,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5789"
+NAME="AEN5795"
 ></A
 ><H3
 ><A
@@ -9018,14 +9040,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlAddPrevSibling               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > elem);</PRE
 ></TD
@@ -9121,7 +9143,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5818"
+NAME="AEN5824"
 ></A
 ><H3
 ><A
@@ -9138,14 +9160,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlAddNextSibling               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > elem);</PRE
 ></TD
@@ -9241,7 +9263,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5847"
+NAME="AEN5853"
 ></A
 ><H3
 ><A
@@ -9258,7 +9280,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlUnlinkNode                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -9304,7 +9326,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5863"
+NAME="AEN5869"
 ></A
 ><H3
 ><A
@@ -9321,14 +9343,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlTextMerge                    (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > first,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > second);</PRE
 ></TD
@@ -9406,7 +9428,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5889"
+NAME="AEN5895"
 ></A
 ><H3
 ><A
@@ -9423,11 +9445,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlTextConcat                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);</PRE
@@ -9513,7 +9535,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5915"
+NAME="AEN5921"
 ></A
 ><H3
 ><A
@@ -9530,7 +9552,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeNodeList                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -9577,7 +9599,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5931"
+NAME="AEN5937"
 ></A
 ><H3
 ><A
@@ -9594,7 +9616,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeNode                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -9603,7 +9625,7 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 ><P
 >Free a node, this is a recursive behaviour, all the children are freed too.
 This doesn't unlink the child from the list, use <A
-HREF="gnome-xml-tree.html#XMLUNLINKNODE"
+HREF="libxml-tree.html#XMLUNLINKNODE"
 >xmlUnlinkNode</A
 >() first.</P
 ><P
@@ -9644,7 +9666,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5948"
+NAME="AEN5954"
 ></A
 ><H3
 ><A
@@ -9661,11 +9683,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlSetTreeDoc                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > tree,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);</PRE
 ></TD
@@ -9728,7 +9750,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5969"
+NAME="AEN5975"
 ></A
 ><H3
 ><A
@@ -9745,11 +9767,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlSetListDoc                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > list,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);</PRE
 ></TD
@@ -9812,7 +9834,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5990"
+NAME="AEN5996"
 ></A
 ><H3
 ><A
@@ -9829,18 +9851,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    xmlSearchNs                     (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *nameSpace);</PRE
 ></TD
@@ -9946,7 +9968,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6022"
+NAME="AEN6028"
 ></A
 ><H3
 ><A
@@ -9963,18 +9985,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    xmlSearchNsByHref               (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *href);</PRE
 ></TD
@@ -10070,7 +10092,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6053"
+NAME="AEN6059"
 ></A
 ><H3
 ><A
@@ -10087,14 +10109,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >*   xmlGetNsList                    (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);</PRE
 ></TD
@@ -10174,7 +10196,7 @@ namespace if defined</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6079"
+NAME="AEN6085"
 ></A
 ><H3
 ><A
@@ -10191,11 +10213,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlSetNs                        (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > ns);</PRE
 ></TD
@@ -10258,7 +10280,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6100"
+NAME="AEN6106"
 ></A
 ><H3
 ><A
@@ -10275,10 +10297,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    xmlCopyNamespace                (<A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > cur);</PRE
 ></TD
@@ -10339,7 +10361,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6121"
+NAME="AEN6127"
 ></A
 ><H3
 ><A
@@ -10356,10 +10378,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 >    xmlCopyNamespaceList            (<A
-HREF="gnome-xml-tree.html#XMLNSPTR"
+HREF="libxml-tree.html#XMLNSPTR"
 >xmlNsPtr</A
 > cur);</PRE
 ></TD
@@ -10420,7 +10442,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6142"
+NAME="AEN6148"
 ></A
 ><H3
 ><A
@@ -10437,18 +10459,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  xmlSetProp                      (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);</PRE
 ></TD
@@ -10543,7 +10565,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6173"
+NAME="AEN6179"
 ></A
 ><H3
 ><A
@@ -10560,14 +10582,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlGetProp                      (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -10652,7 +10674,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6200"
+NAME="AEN6206"
 ></A
 ><H3
 ><A
@@ -10669,14 +10691,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 >  xmlHasProp                      (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -10760,7 +10782,152 @@ neither was found.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6227"
+NAME="AEN6233"
+></A
+><H3
+><A
+NAME="XMLSETNSPROP"
+></A
+>xmlSetNsProp ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  xmlSetNsProp                    (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             <A
+HREF="libxml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> ns,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Set (or reset) an attribute carried by a node.
+The ns structure must be in scope, this is not checked.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ns</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the namespace definition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the attribute pointer.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6269"
 ></A
 ><H3
 ><A
@@ -10777,18 +10944,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlGetNsProp                    (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *nameSpace);</PRE
 ></TD
@@ -10891,7 +11058,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6259"
+NAME="AEN6301"
 ></A
 ><H3
 ><A
@@ -10908,14 +11075,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlStringGetNodeList            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value);</PRE
 ></TD
@@ -10994,7 +11161,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6285"
+NAME="AEN6327"
 ></A
 ><H3
 ><A
@@ -11011,14 +11178,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlStringLenGetNodeList         (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *value,
                                              int len);</PRE
@@ -11115,7 +11282,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6315"
+NAME="AEN6357"
 ></A
 ><H3
 ><A
@@ -11132,14 +11299,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlNodeListGetString            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > list,
                                              int inLine);</PRE
@@ -11236,7 +11403,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6345"
+NAME="AEN6387"
 ></A
 ><H3
 ><A
@@ -11253,14 +11420,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlNodeListGetRawString         (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > list,
                                              int inLine);</PRE
@@ -11270,7 +11437,7 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 ><P
 >Returns the string equivalent to the text contained in the Node list
 made of TEXTs and ENTITY_REFs, contrary to <A
-HREF="gnome-xml-tree.html#XMLNODELISTGETSTRING"
+HREF="libxml-tree.html#XMLNODELISTGETSTRING"
 >xmlNodeListGetString</A
 >()
 this function doesn't do any character encoding handling.</P
@@ -11361,7 +11528,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6376"
+NAME="AEN6418"
 ></A
 ><H3
 ><A
@@ -11378,11 +11545,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNodeSetContent               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -11445,7 +11612,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6397"
+NAME="AEN6439"
 ></A
 ><H3
 ><A
@@ -11462,11 +11629,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNodeSetContentLen            (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);</PRE
@@ -11552,7 +11719,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6423"
+NAME="AEN6465"
 ></A
 ><H3
 ><A
@@ -11569,11 +11736,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNodeAddContent               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content);</PRE
 ></TD
@@ -11636,7 +11803,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6444"
+NAME="AEN6486"
 ></A
 ><H3
 ><A
@@ -11653,11 +11820,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNodeAddContentLen            (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *content,
                                              int len);</PRE
@@ -11743,7 +11910,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6470"
+NAME="AEN6512"
 ></A
 ><H3
 ><A
@@ -11760,10 +11927,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlNodeGetContent               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -11828,7 +11995,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6491"
+NAME="AEN6533"
 ></A
 ><H3
 ><A
@@ -11845,10 +12012,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlNodeGetLang                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -11911,7 +12078,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6512"
+NAME="AEN6554"
 ></A
 ><H3
 ><A
@@ -11928,11 +12095,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNodeSetLang                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *lang);</PRE
 ></TD
@@ -11996,7 +12163,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6533"
+NAME="AEN6575"
 ></A
 ><H3
 ><A
@@ -12013,7 +12180,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlNodeGetSpacePreserve         (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -12076,7 +12243,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6553"
+NAME="AEN6595"
 ></A
 ><H3
 ><A
@@ -12093,7 +12260,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNodeSetSpacePreserve         (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              <GTKDOCLINK
@@ -12161,7 +12328,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6574"
+NAME="AEN6616"
 ></A
 ><H3
 ><A
@@ -12178,14 +12345,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlNodeGetBase                  (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -12274,7 +12441,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6601"
+NAME="AEN6643"
 ></A
 ><H3
 ><A
@@ -12291,11 +12458,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNodeSetBase                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *uri);</PRE
 ></TD
@@ -12359,7 +12526,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6622"
+NAME="AEN6664"
 ></A
 ><H3
 ><A
@@ -12376,7 +12543,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlRemoveProp                   (<A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
+HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > attr);</PRE
 ></TD
@@ -12438,7 +12605,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6642"
+NAME="AEN6684"
 ></A
 ><H3
 ><A
@@ -12455,7 +12622,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlRemoveNode                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);</PRE
 ></TD
@@ -12514,7 +12681,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6661"
+NAME="AEN6703"
 ></A
 ><H3
 ><A
@@ -12531,11 +12698,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferWriteXmlCHAR           (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *string);</PRE
 ></TD
@@ -12596,7 +12763,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6681"
+NAME="AEN6723"
 ></A
 ><H3
 ><A
@@ -12613,11 +12780,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferWriteCHAR              (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *string);</PRE
 ></TD
@@ -12681,7 +12848,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6702"
+NAME="AEN6744"
 ></A
 ><H3
 ><A
@@ -12698,7 +12865,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferWriteChar              (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const char *string);</PRE
@@ -12763,7 +12930,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6722"
+NAME="AEN6764"
 ></A
 ><H3
 ><A
@@ -12780,11 +12947,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlBufferWriteQuotedString      (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *string);</PRE
 ></TD
@@ -12849,7 +13016,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6743"
+NAME="AEN6785"
 ></A
 ><H3
 ><A
@@ -12866,11 +13033,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlReconciliateNs               (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > tree);</PRE
 ></TD
@@ -12959,7 +13126,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6769"
+NAME="AEN6811"
 ></A
 ><H3
 ><A
@@ -12976,11 +13143,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlDocDumpFormatMemory          (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **mem,
                                              int *size,
@@ -13080,7 +13247,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6798"
+NAME="AEN6840"
 ></A
 ><H3
 ><A
@@ -13097,11 +13264,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlDocDumpMemory                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **mem,
                                              int *size);</PRE
@@ -13183,7 +13350,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6823"
+NAME="AEN6865"
 ></A
 ><H3
 ><A
@@ -13200,11 +13367,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlDocDumpMemoryEnc             (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > out_doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **doc_txt_ptr,
                                              int *doc_txt_len,
@@ -13305,7 +13472,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6852"
+NAME="AEN6894"
 ></A
 ><H3
 ><A
@@ -13322,11 +13489,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlDocDumpFormatMemoryEnc       (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > out_doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **doc_txt_ptr,
                                              int *doc_txt_len,
@@ -13441,7 +13608,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6884"
+NAME="AEN6926"
 ></A
 ><H3
 ><A
@@ -13462,7 +13629,7 @@ HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *f,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur);</PRE
 ></TD
@@ -13540,7 +13707,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6909"
+NAME="AEN6951"
 ></A
 ><H3
 ><A
@@ -13561,11 +13728,11 @@ HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *f,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);</PRE
 ></TD
@@ -13645,7 +13812,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6935"
+NAME="AEN6977"
 ></A
 ><H3
 ><A
@@ -13663,7 +13830,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >int         xmlSaveFile                     (const char *filename,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur);</PRE
 ></TD
@@ -13748,7 +13915,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6960"
+NAME="AEN7002"
 ></A
 ><H3
 ><A
@@ -13765,15 +13932,15 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNodeDump                     (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+HREF="libxml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              int level,
@@ -13889,7 +14056,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6994"
+NAME="AEN7036"
 ></A
 ><H3
 ><A
@@ -13907,7 +14074,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >int         xmlSaveFileEnc                  (const char *filename,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur,
                                              const char *encoding);</PRE
@@ -14003,7 +14170,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7022"
+NAME="AEN7064"
 ></A
 ><H3
 ><A
@@ -14020,7 +14187,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlGetDocCompressMode           (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);</PRE
 ></TD
@@ -14081,7 +14248,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7042"
+NAME="AEN7084"
 ></A
 ><H3
 ><A
@@ -14098,7 +14265,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlSetDocCompressMode           (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              int mode);</PRE
@@ -14163,7 +14330,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7062"
+NAME="AEN7104"
 ></A
 ><H3
 ><A
@@ -14221,7 +14388,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7077"
+NAME="AEN7119"
 ></A
 ><H3
 ><A
@@ -14295,7 +14462,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-sax.html"
+HREF="libxml-sax.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -14349,7 +14516,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-entities.html"
+HREF="libxml-entities.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"

@@ -13,10 +13,10 @@ TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
 TITLE="nanoftp"
-HREF="gnome-xml-nanoftp.html"><LINK
+HREF="libxml-nanoftp.html"><LINK
 REL="NEXT"
 TITLE="parserInternals"
-HREF="gnome-xml-parserinternals.html"></HEAD
+HREF="libxml-parserinternals.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -47,7 +47,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-nanoftp.html"
+HREF="libxml-nanoftp.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -101,7 +101,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-parserinternals.html"
+HREF="libxml-parserinternals.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -115,13 +115,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="GNOME-XML-XMLIO"
+NAME="LIBXML-XMLIO"
 >xmlIO</A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN13993"
+NAME="AEN14201"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN13993"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN13996"
+NAME="AEN14204"
 ></A
 ><H2
 >Synopsis</H2
@@ -145,102 +145,102 @@ CLASS="SYNOPSIS"
 >&#13;
 
 int         (<A
-HREF="gnome-xml-xmlio.html#XMLINPUTMATCHCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTMATCHCALLBACK"
 >*xmlInputMatchCallback</A
 >)        (char const *filename);
 void*       (<A
-HREF="gnome-xml-xmlio.html#XMLINPUTOPENCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTOPENCALLBACK"
 >*xmlInputOpenCallback</A
 >)         (char const *filename);
 int         (<A
-HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTREADCALLBACK"
 >*xmlInputReadCallback</A
 >)         (void *context,
                                              char *buffer,
                                              int len);
 void        (<A
-HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >*xmlInputCloseCallback</A
 >)        (void *context);
 struct      <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFER"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFER"
 >xmlParserInputBuffer</A
 >;
 typedef     <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 >;
 int         (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
 >*xmlOutputMatchCallback</A
 >)       (char const *filename);
 void*       (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTOPENCALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTOPENCALLBACK"
 >*xmlOutputOpenCallback</A
 >)        (char const *filename);
 int         (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTWRITECALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTWRITECALLBACK"
 >*xmlOutputWriteCallback</A
 >)       (void *context,
                                              const char *buffer,
                                              int len);
 void        (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 >*xmlOutputCloseCallback</A
 >)       (void *context);
 struct      <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFER"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFER"
 >xmlOutputBuffer</A
 >;
 typedef     <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 >;
 void        <A
-HREF="gnome-xml-xmlio.html#XMLREGISTERDEFAULTINPUTCALLBACKS"
+HREF="libxml-xmlio.html#XMLREGISTERDEFAULTINPUTCALLBACKS"
 >xmlRegisterDefaultInputCallbacks</A
 >
                                             (void);
 <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLALLOCPARSERINPUTBUFFER"
+HREF="libxml-xmlio.html#XMLALLOCPARSERINPUTBUFFER"
 >xmlAllocParserInputBuffer</A
 >
                                             (<A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFNAME"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFNAME"
 >xmlParserInputBufferCreateFname</A
 >
                                             (const char *URI,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFILENAME"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFILENAME"
 >xmlParserInputBufferCreateFilename</A
 >
                                             (const char *URI,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFILE"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFILE"
 >xmlParserInputBufferCreateFile</A
 >
                                             (<GTKDOCLINK
@@ -248,142 +248,142 @@ HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *file,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFD"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFD"
 >xmlParserInputBufferCreateFd</A
 >
                                             (int fd,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEMEM"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEMEM"
 >xmlParserInputBufferCreateMem</A
 >
                                             (const char *mem,
                                              int size,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEIO"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEIO"
 >xmlParserInputBufferCreateIO</A
 >
                                             (<A
-HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTREADCALLBACK"
 >xmlInputReadCallback</A
 > ioread,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >xmlInputCloseCallback</A
 > ioclose,
                                              void *ioctx,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 int         <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERREAD"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERREAD"
 >xmlParserInputBufferRead</A
 >        (<A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len);
 int         <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERGROW"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERGROW"
 >xmlParserInputBufferGrow</A
 >        (<A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len);
 int         <A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPUSH"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPUSH"
 >xmlParserInputBufferPush</A
 >        (<A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len,
                                              const char *buf);
 void        <A
-HREF="gnome-xml-xmlio.html#XMLFREEPARSERINPUTBUFFER"
+HREF="libxml-xmlio.html#XMLFREEPARSERINPUTBUFFER"
 >xmlFreeParserInputBuffer</A
 >        (<A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in);
 char*       <A
-HREF="gnome-xml-xmlio.html#XMLPARSERGETDIRECTORY"
+HREF="libxml-xmlio.html#XMLPARSERGETDIRECTORY"
 >xmlParserGetDirectory</A
 >           (const char *filename);
 int         <A
-HREF="gnome-xml-xmlio.html#XMLREGISTERINPUTCALLBACKS"
+HREF="libxml-xmlio.html#XMLREGISTERINPUTCALLBACKS"
 >xmlRegisterInputCallbacks</A
 >       (<A
-HREF="gnome-xml-xmlio.html#XMLINPUTMATCHCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTMATCHCALLBACK"
 >xmlInputMatchCallback</A
 > match,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTOPENCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTOPENCALLBACK"
 >xmlInputOpenCallback</A
 > open,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTREADCALLBACK"
 >xmlInputReadCallback</A
 > read,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >xmlInputCloseCallback</A
 > close);
 void        <A
-HREF="gnome-xml-xmlio.html#XMLREGISTERDEFAULTOUTPUTCALLBACKS"
+HREF="libxml-xmlio.html#XMLREGISTERDEFAULTOUTPUTCALLBACKS"
 >xmlRegisterDefaultOutputCallbacks</A
 >
                                             (void);
 <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLALLOCOUTPUTBUFFER"
+HREF="libxml-xmlio.html#XMLALLOCOUTPUTBUFFER"
 >xmlAllocOutputBuffer</A
 >     (<A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);
 <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERCREATEFILENAME"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERCREATEFILENAME"
 >xmlOutputBufferCreateFilename</A
 >
                                             (const char *URI,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder,
                                              int compression);
 <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERCREATEFILE"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERCREATEFILE"
 >xmlOutputBufferCreateFile</A
 >
                                             (<GTKDOCLINK
@@ -391,118 +391,130 @@ HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *file,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);
 <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERCREATEFD"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERCREATEFD"
 >xmlOutputBufferCreateFd</A
 >  (int fd,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);
 <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERCREATEIO"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERCREATEIO"
 >xmlOutputBufferCreateIO</A
 >  (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTWRITECALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTWRITECALLBACK"
 >xmlOutputWriteCallback</A
 > iowrite,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 >xmlOutputCloseCallback</A
 > ioclose,
                                              void *ioctx,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);
 int         <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERWRITE"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERWRITE"
 >xmlOutputBufferWrite</A
 >            (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out,
                                              int len,
                                              const char *buf);
 int         <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERWRITESTRING"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERWRITESTRING"
 >xmlOutputBufferWriteString</A
 >      (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out,
                                              const char *str);
 int         <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERFLUSH"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERFLUSH"
 >xmlOutputBufferFlush</A
 >            (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out);
 int         <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERCLOSE"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERCLOSE"
 >xmlOutputBufferClose</A
 >            (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out);
 int         <A
-HREF="gnome-xml-xmlio.html#XMLREGISTEROUTPUTCALLBACKS"
+HREF="libxml-xmlio.html#XMLREGISTEROUTPUTCALLBACKS"
 >xmlRegisterOutputCallbacks</A
 >      (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
 >xmlOutputMatchCallback</A
 > match,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTOPENCALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTOPENCALLBACK"
 >xmlOutputOpenCallback</A
 > open,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTWRITECALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTWRITECALLBACK"
 >xmlOutputWriteCallback</A
 > write,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 >xmlOutputCloseCallback</A
 > close);
 int         <A
-HREF="gnome-xml-xmlio.html#XMLSAVEFILETO"
+HREF="libxml-xmlio.html#XMLSAVEFILETO"
 >xmlSaveFileTo</A
 >                   (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFER"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFER"
 >xmlOutputBuffer</A
 > *buf,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur,
                                              const char *encoding);
 void        <A
-HREF="gnome-xml-xmlio.html#XMLNODEDUMPOUTPUT"
+HREF="libxml-xmlio.html#XMLNODEDUMPOUTPUT"
 >xmlNodeDumpOutput</A
 >               (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > buf,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              int level,
                                              int format,
+                                             const char *encoding);
+void        <A
+HREF="libxml-xmlio.html#HTMLDOCCONTENTDUMPOUTPUT"
+>htmlDocContentDumpOutput</A
+>        (<A
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> buf,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
                                              const char *encoding);</PRE
 ></TD
 ></TR
@@ -511,7 +523,7 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN14089"
+NAME="AEN14300"
 ></A
 ><H2
 >Description</H2
@@ -521,14 +533,14 @@ NAME="AEN14089"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN14092"
+NAME="AEN14303"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14094"
+NAME="AEN14305"
 ></A
 ><H3
 ><A
@@ -601,7 +613,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14112"
+NAME="AEN14323"
 ></A
 ><H3
 ><A
@@ -659,7 +671,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14126"
+NAME="AEN14337"
 ></A
 ><H3
 ><A
@@ -768,7 +780,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14152"
+NAME="AEN14363"
 ></A
 ><H3
 ><A
@@ -826,7 +838,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14166"
+NAME="AEN14377"
 ></A
 ><H3
 ><A
@@ -861,7 +873,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14171"
+NAME="AEN14382"
 ></A
 ><H3
 ><A
@@ -887,7 +899,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14176"
+NAME="AEN14387"
 ></A
 ><H3
 ><A
@@ -960,7 +972,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14194"
+NAME="AEN14405"
 ></A
 ><H3
 ><A
@@ -1018,7 +1030,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14208"
+NAME="AEN14419"
 ></A
 ><H3
 ><A
@@ -1127,7 +1139,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14234"
+NAME="AEN14445"
 ></A
 ><H3
 ><A
@@ -1185,7 +1197,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14248"
+NAME="AEN14459"
 ></A
 ><H3
 ><A
@@ -1221,7 +1233,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14253"
+NAME="AEN14464"
 ></A
 ><H3
 ><A
@@ -1247,7 +1259,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14258"
+NAME="AEN14469"
 ></A
 ><H3
 ><A
@@ -1276,7 +1288,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14264"
+NAME="AEN14475"
 ></A
 ><H3
 ><A
@@ -1293,11 +1305,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlAllocParserInputBuffer
                                             (<A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -1358,7 +1370,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14285"
+NAME="AEN14496"
 ></A
 ><H3
 ><A
@@ -1375,12 +1387,12 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateFname
                                             (const char *URI,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -1456,7 +1468,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14309"
+NAME="AEN14520"
 ></A
 ><H3
 ><A
@@ -1473,12 +1485,12 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateFilename
                                             (const char *URI,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -1560,7 +1572,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14334"
+NAME="AEN14545"
 ></A
 ><H3
 ><A
@@ -1577,7 +1589,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateFile
                                             (<GTKDOCLINK
@@ -1585,7 +1597,7 @@ HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *file,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -1664,7 +1676,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14360"
+NAME="AEN14571"
 ></A
 ><H3
 ><A
@@ -1681,12 +1693,12 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateFd
                                             (int fd,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -1765,7 +1777,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14385"
+NAME="AEN14596"
 ></A
 ><H3
 ><A
@@ -1782,13 +1794,13 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateMem
                                             (const char *mem,
                                              int size,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -1884,7 +1896,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14414"
+NAME="AEN14625"
 ></A
 ><H3
 ><A
@@ -1901,20 +1913,20 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateIO
                                             (<A
-HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTREADCALLBACK"
 >xmlInputReadCallback</A
 > ioread,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >xmlInputCloseCallback</A
 > ioclose,
                                              void *ioctx,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -2027,7 +2039,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14449"
+NAME="AEN14660"
 ></A
 ><H3
 ><A
@@ -2044,7 +2056,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParserInputBufferRead        (<A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len);</PRE
@@ -2126,7 +2138,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14473"
+NAME="AEN14684"
 ></A
 ><H3
 ><A
@@ -2143,7 +2155,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParserInputBufferGrow        (<A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len);</PRE
@@ -2228,7 +2240,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14498"
+NAME="AEN14709"
 ></A
 ><H3
 ><A
@@ -2245,7 +2257,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParserInputBufferPush        (<A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len,
@@ -2345,7 +2357,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14526"
+NAME="AEN14737"
 ></A
 ><H3
 ><A
@@ -2362,7 +2374,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeParserInputBuffer        (<A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in);</PRE
 ></TD
@@ -2408,7 +2420,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14542"
+NAME="AEN14753"
 ></A
 ><H3
 ><A
@@ -2481,7 +2493,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14560"
+NAME="AEN14771"
 ></A
 ><H3
 ><A
@@ -2498,19 +2510,19 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlRegisterInputCallbacks       (<A
-HREF="gnome-xml-xmlio.html#XMLINPUTMATCHCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTMATCHCALLBACK"
 >xmlInputMatchCallback</A
 > match,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTOPENCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTOPENCALLBACK"
 >xmlInputOpenCallback</A
 > open,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTREADCALLBACK"
 >xmlInputReadCallback</A
 > read,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >xmlInputCloseCallback</A
 > close);</PRE
 ></TD
@@ -2622,7 +2634,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14595"
+NAME="AEN14806"
 ></A
 ><H3
 ><A
@@ -2651,7 +2663,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14601"
+NAME="AEN14812"
 ></A
 ><H3
 ><A
@@ -2668,10 +2680,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > xmlAllocOutputBuffer     (<A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);</PRE
 ></TD
@@ -2732,7 +2744,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14622"
+NAME="AEN14833"
 ></A
 ><H3
 ><A
@@ -2749,12 +2761,12 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > xmlOutputBufferCreateFilename
                                             (const char *URI,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder,
                                              int compression);</PRE
@@ -2855,7 +2867,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14651"
+NAME="AEN14862"
 ></A
 ><H3
 ><A
@@ -2872,7 +2884,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > xmlOutputBufferCreateFile
                                             (<GTKDOCLINK
@@ -2880,7 +2892,7 @@ HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *file,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);</PRE
 ></TD
@@ -2959,7 +2971,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14677"
+NAME="AEN14888"
 ></A
 ><H3
 ><A
@@ -2976,11 +2988,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > xmlOutputBufferCreateFd  (int fd,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);</PRE
 ></TD
@@ -3059,7 +3071,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14702"
+NAME="AEN14913"
 ></A
 ><H3
 ><A
@@ -3076,19 +3088,19 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > xmlOutputBufferCreateIO  (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTWRITECALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTWRITECALLBACK"
 >xmlOutputWriteCallback</A
 > iowrite,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 >xmlOutputCloseCallback</A
 > ioclose,
                                              void *ioctx,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);</PRE
 ></TD
@@ -3201,7 +3213,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14737"
+NAME="AEN14948"
 ></A
 ><H3
 ><A
@@ -3218,7 +3230,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlOutputBufferWrite            (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out,
                                              int len,
@@ -3319,7 +3331,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14765"
+NAME="AEN14976"
 ></A
 ><H3
 ><A
@@ -3336,7 +3348,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlOutputBufferWriteString      (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out,
                                              const char *str);</PRE
@@ -3419,7 +3431,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14789"
+NAME="AEN15000"
 ></A
 ><H3
 ><A
@@ -3436,7 +3448,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlOutputBufferFlush            (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out);</PRE
 ></TD
@@ -3497,7 +3509,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14809"
+NAME="AEN15020"
 ></A
 ><H3
 ><A
@@ -3514,7 +3526,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlOutputBufferClose            (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out);</PRE
 ></TD
@@ -3576,7 +3588,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14829"
+NAME="AEN15040"
 ></A
 ><H3
 ><A
@@ -3593,19 +3605,19 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlRegisterOutputCallbacks      (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
 >xmlOutputMatchCallback</A
 > match,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTOPENCALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTOPENCALLBACK"
 >xmlOutputOpenCallback</A
 > open,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTWRITECALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTWRITECALLBACK"
 >xmlOutputWriteCallback</A
 > write,
                                              <A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
+HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 >xmlOutputCloseCallback</A
 > close);</PRE
 ></TD
@@ -3717,7 +3729,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14864"
+NAME="AEN15075"
 ></A
 ><H3
 ><A
@@ -3734,11 +3746,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlSaveFileTo                   (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFER"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFER"
 >xmlOutputBuffer</A
 > *buf,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur,
                                              const char *encoding);</PRE
@@ -3834,7 +3846,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14893"
+NAME="AEN15104"
 ></A
 ><H3
 ><A
@@ -3851,15 +3863,15 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNodeDumpOutput               (<A
-HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > buf,
                                              <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
                                              int level,
@@ -3990,6 +4002,106 @@ VALIGN="TOP"
 ></P
 ></DIV
 ></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15142"
+></A
+><H3
+><A
+NAME="HTMLDOCCONTENTDUMPOUTPUT"
+></A
+>htmlDocContentDumpOutput ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        htmlDocContentDumpOutput        (<A
+HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> buf,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
+                                             const char *encoding);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoding</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -4006,7 +4118,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-nanoftp.html"
+HREF="libxml-nanoftp.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -4060,7 +4172,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-parserinternals.html"
+HREF="libxml-parserinternals.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"

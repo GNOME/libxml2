@@ -13,10 +13,10 @@ TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
 TITLE="HTMLtree"
-HREF="gnome-xml-htmltree.html"><LINK
+HREF="libxml-htmltree.html"><LINK
 REL="NEXT"
 TITLE="xpathInternals"
-HREF="gnome-xml-xpathinternals.html"></HEAD
+HREF="libxml-xpathinternals.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -47,7 +47,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-htmltree.html"
+HREF="libxml-htmltree.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -101,7 +101,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-xpathinternals.html"
+HREF="libxml-xpathinternals.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -115,13 +115,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="GNOME-XML-XPATH"
+NAME="LIBXML-XPATH"
 >xpath</A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN10522"
+NAME="AEN10597"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN10522"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN10525"
+NAME="AEN10600"
 ></A
 ><H2
 >Synopsis</H2
@@ -145,219 +145,233 @@ CLASS="SYNOPSIS"
 >&#13;
 
 struct      <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXT"
+HREF="libxml-xpath.html#XMLXPATHCONTEXT"
 >xmlXPathContext</A
 >;
 typedef     <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 >;
 struct      <A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXT"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXT"
 >xmlXPathParserContext</A
 >;
 typedef     <A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 >;
 enum        <A
-HREF="gnome-xml-xpath.html#XMLXPATHERROR"
+HREF="libxml-xpath.html#XMLXPATHERROR"
 >xmlXPathError</A
 >;
 struct      <A
-HREF="gnome-xml-xpath.html#XMLNODESET"
+HREF="libxml-xpath.html#XMLNODESET"
 >xmlNodeSet</A
 >;
 typedef     <A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 >;
 enum        <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTTYPE"
+HREF="libxml-xpath.html#XMLXPATHOBJECTTYPE"
 >xmlXPathObjectType</A
 >;
 struct      <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECT"
+HREF="libxml-xpath.html#XMLXPATHOBJECT"
 >xmlXPathObject</A
 >;
-typedef     <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+<GTKDOCLINK
+HREF="TYPEDEF"
+>typedef</GTKDOCLINK
+>     <A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
->;
+>               ();
 int         (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONVERTFUNC"
+HREF="libxml-xpath.html#XMLXPATHCONVERTFUNC"
 >*xmlXPathConvertFunc</A
 >)          (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > obj,
                                              int type);
 struct      <A
-HREF="gnome-xml-xpath.html#XMLXPATHTYPE"
+HREF="libxml-xpath.html#XMLXPATHTYPE"
 >xmlXPathType</A
 >;
 typedef     <A
-HREF="gnome-xml-xpath.html#XMLXPATHTYPEPTR"
+HREF="libxml-xpath.html#XMLXPATHTYPEPTR"
 >xmlXPathTypePtr</A
 >;
 struct      <A
-HREF="gnome-xml-xpath.html#XMLXPATHVARIABLE"
+HREF="libxml-xpath.html#XMLXPATHVARIABLE"
 >xmlXPathVariable</A
 >;
 typedef     <A
-HREF="gnome-xml-xpath.html#XMLXPATHVARIABLEPTR"
+HREF="libxml-xpath.html#XMLXPATHVARIABLEPTR"
 >xmlXPathVariablePtr</A
 >;
 void        (<A
-HREF="gnome-xml-xpath.html#XMLXPATHEVALFUNC"
+HREF="libxml-xpath.html#XMLXPATHEVALFUNC"
 >*xmlXPathEvalFunc</A
 >)             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 struct      <A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCT"
+HREF="libxml-xpath.html#XMLXPATHFUNCT"
 >xmlXPathFunct</A
 >;
 typedef     <A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCPTR"
+HREF="libxml-xpath.html#XMLXPATHFUNCPTR"
 >xmlXPathFuncPtr</A
 >;
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > (<A
-HREF="gnome-xml-xpath.html#XMLXPATHAXISFUNC"
+HREF="libxml-xpath.html#XMLXPATHAXISFUNC"
 >*xmlXPathAxisFunc</A
 >)       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > cur);
 struct      <A
-HREF="gnome-xml-xpath.html#XMLXPATHAXIS"
+HREF="libxml-xpath.html#XMLXPATHAXIS"
 >xmlXPathAxis</A
 >;
 typedef     <A
-HREF="gnome-xml-xpath.html#XMLXPATHAXISPTR"
+HREF="libxml-xpath.html#XMLXPATHAXISPTR"
 >xmlXPathAxisPtr</A
 >;
 void        (<A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCTION"
+HREF="libxml-xpath.html#XMLXPATHFUNCTION"
 >*xmlXPathFunction</A
 >)             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHINIT"
+HREF="libxml-xpath.html#XMLXPATHINIT"
 >xmlXPathInit</A
 >                    (void);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > <A
-HREF="gnome-xml-xpath.html#XMLXPATHNEWCONTEXT"
+HREF="libxml-xpath.html#XMLXPATHNEWCONTEXT"
 >xmlXPathNewContext</A
 >       (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHFREECONTEXT"
+HREF="libxml-xpath.html#XMLXPATHFREECONTEXT"
 >xmlXPathFreeContext</A
 >             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpath.html#XMLXPATHEVAL"
+HREF="libxml-xpath.html#XMLXPATHEVAL"
 >xmlXPathEval</A
 >              (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpath.html#XMLXPATHEVALXPTREXPR"
+HREF="libxml-xpath.html#XMLXPATHEVALXPTREXPR"
 >xmlXPathEvalXPtrExpr</A
 >      (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHFREEOBJECT"
+HREF="libxml-xpath.html#XMLXPATHFREEOBJECT"
 >xmlXPathFreeObject</A
 >              (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > obj);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpath.html#XMLXPATHEVALEXPRESSION"
+HREF="libxml-xpath.html#XMLXPATHEVALEXPRESSION"
 >xmlXPathEvalExpression</A
 >    (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > <A
-HREF="gnome-xml-xpath.html#XMLXPATHNODESETCREATE"
+HREF="libxml-xpath.html#XMLXPATHNODESETCREATE"
 >xmlXPathNodeSetCreate</A
 >         (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHFREENODESETLIST"
+HREF="libxml-xpath.html#XMLXPATHFREENODESETLIST"
 >xmlXPathFreeNodeSetList</A
 >         (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > obj);
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHFREENODESET"
+HREF="libxml-xpath.html#XMLXPATHFREENODESET"
 >xmlXPathFreeNodeSet</A
 >             (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > obj);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTCOPY"
+HREF="libxml-xpath.html#XMLXPATHOBJECTCOPY"
 >xmlXPathObjectCopy</A
 >        (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
-> val);</PRE
+> val);
+int         <A
+HREF="libxml-xpath.html#XMLXPATHCMPNODES"
+>xmlXPathCmpNodes</A
+>                (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node1,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node2);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -365,7 +379,7 @@ HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10586"
+NAME="AEN10665"
 ></A
 ><H2
 >Description</H2
@@ -375,14 +389,14 @@ NAME="AEN10586"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10589"
+NAME="AEN10668"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10591"
+NAME="AEN10670"
 ></A
 ><H3
 ><A
@@ -434,6 +448,11 @@ CLASS="PROGRAMLISTING"
 
     /* the set of namespace declarations in scope for the expression */
     xmlHashTablePtr nsHash;		/* The namespaces hash table */
+    void *varLookupFunc;		/* variable lookup func */
+    void *varLookupData;		/* variable lookup data */
+
+    /* Possibility to link in an extra item */
+    void *extra;                        /* needed for XSLT */
 };</PRE
 ></TD
 ></TR
@@ -444,7 +463,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10596"
+NAME="AEN10675"
 ></A
 ><H3
 ><A
@@ -470,7 +489,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10601"
+NAME="AEN10680"
 ></A
 ><H3
 ><A
@@ -507,7 +526,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10606"
+NAME="AEN10685"
 ></A
 ><H3
 ><A
@@ -533,7 +552,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10611"
+NAME="AEN10690"
 ></A
 ><H3
 ><A
@@ -587,7 +606,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10618"
+NAME="AEN10697"
 ></A
 ><H3
 ><A
@@ -617,7 +636,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10623"
+NAME="AEN10702"
 ></A
 ><H3
 ><A
@@ -643,7 +662,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10628"
+NAME="AEN10707"
 ></A
 ><H3
 ><A
@@ -668,7 +687,8 @@ CLASS="PROGRAMLISTING"
     XPATH_POINT = 5,
     XPATH_RANGE = 6,
     XPATH_LOCATIONSET = 7,
-    XPATH_USERS = 8
+    XPATH_USERS = 8,
+    XPATH_XSLT_TREE = 9  /* An XSLT value tree, non modifiable */
 } xmlXPathObjectType;</PRE
 ></TD
 ></TR
@@ -679,7 +699,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10633"
+NAME="AEN10712"
 ></A
 ><H3
 ><A
@@ -715,13 +735,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10638"
+NAME="AEN10717"
 ></A
 ><H3
 ><A
 NAME="XMLXPATHOBJECTPTR"
 ></A
->xmlXPathObjectPtr</H3
+>xmlXPathObjectPtr ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -731,17 +751,50 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef xmlXPathObject *xmlXPathObjectPtr;</PRE
+><GTKDOCLINK
+HREF="TYPEDEF"
+>typedef</GTKDOCLINK
+>     xmlXPathObjectPtr               ();</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10643"
+NAME="AEN10732"
 ></A
 ><H3
 ><A
@@ -758,7 +811,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         (*xmlXPathConvertFunc)          (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > obj,
                                              int type);</PRE
@@ -835,7 +888,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10666"
+NAME="AEN10755"
 ></A
 ><H3
 ><A
@@ -864,7 +917,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10671"
+NAME="AEN10760"
 ></A
 ><H3
 ><A
@@ -890,7 +943,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10676"
+NAME="AEN10765"
 ></A
 ><H3
 ><A
@@ -919,7 +972,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10681"
+NAME="AEN10770"
 ></A
 ><H3
 ><A
@@ -945,7 +998,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10686"
+NAME="AEN10775"
 ></A
 ><H3
 ><A
@@ -962,7 +1015,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        (*xmlXPathEvalFunc)             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -1024,7 +1077,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10705"
+NAME="AEN10794"
 ></A
 ><H3
 ><A
@@ -1053,7 +1106,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10710"
+NAME="AEN10799"
 ></A
 ><H3
 ><A
@@ -1079,7 +1132,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10715"
+NAME="AEN10804"
 ></A
 ><H3
 ><A
@@ -1096,14 +1149,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > (*xmlXPathAxisFunc)       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > cur);</PRE
 ></TD
@@ -1179,7 +1232,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10740"
+NAME="AEN10829"
 ></A
 ><H3
 ><A
@@ -1208,7 +1261,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10745"
+NAME="AEN10834"
 ></A
 ><H3
 ><A
@@ -1234,7 +1287,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10750"
+NAME="AEN10839"
 ></A
 ><H3
 ><A
@@ -1251,7 +1304,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        (*xmlXPathFunction)             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -1313,7 +1366,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10769"
+NAME="AEN10858"
 ></A
 ><H3
 ><A
@@ -1341,7 +1394,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10775"
+NAME="AEN10864"
 ></A
 ><H3
 ><A
@@ -1358,10 +1411,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > xmlXPathNewContext       (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);</PRE
 ></TD
@@ -1397,7 +1450,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XML document</TD
 ></TR
 ><TR
 ><TD
@@ -1412,7 +1465,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>the xmlXPathContext just allocated.</TD
 ></TR
 ></TABLE
 ><P
@@ -1422,7 +1475,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10796"
+NAME="AEN10885"
 ></A
 ><H3
 ><A
@@ -1439,7 +1492,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFreeContext             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -1475,7 +1528,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the context to free</TD
 ></TR
 ></TABLE
 ><P
@@ -1485,7 +1538,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10812"
+NAME="AEN10901"
 ></A
 ><H3
 ><A
@@ -1502,14 +1555,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathEval              (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -1588,7 +1641,7 @@ the caller has to free the object.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10838"
+NAME="AEN10927"
 ></A
 ><H3
 ><A
@@ -1605,14 +1658,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathEvalXPtrExpr      (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -1688,7 +1741,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10863"
+NAME="AEN10952"
 ></A
 ><H3
 ><A
@@ -1705,7 +1758,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFreeObject              (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > obj);</PRE
 ></TD
@@ -1741,7 +1794,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the object to free</TD
 ></TR
 ></TABLE
 ><P
@@ -1751,7 +1804,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10879"
+NAME="AEN10968"
 ></A
 ><H3
 ><A
@@ -1768,14 +1821,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathEvalExpression    (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -1854,7 +1907,7 @@ the caller has to free the object.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10905"
+NAME="AEN10994"
 ></A
 ><H3
 ><A
@@ -1871,10 +1924,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > xmlXPathNodeSetCreate         (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);</PRE
 ></TD
@@ -1915,7 +1968,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an initial xmlNodePtr, or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -1930,7 +1983,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>the newly created object.</TD
 ></TR
 ></TABLE
 ><P
@@ -1940,7 +1993,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10927"
+NAME="AEN11016"
 ></A
 ><H3
 ><A
@@ -1957,7 +2010,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFreeNodeSetList         (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > obj);</PRE
 ></TD
@@ -1971,7 +2024,7 @@ CLASS="PARAMETER"
 ></TT
 > but don't deallocate the objects in
 the list contrary to <A
-HREF="gnome-xml-xpath.html#XMLXPATHFREEOBJECT"
+HREF="libxml-xpath.html#XMLXPATHFREEOBJECT"
 >xmlXPathFreeObject</A
 >().</P
 ><P
@@ -2002,7 +2055,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  an existing NodeSetList object</TD
 ></TR
 ></TABLE
 ><P
@@ -2012,7 +2065,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10945"
+NAME="AEN11034"
 ></A
 ><H3
 ><A
@@ -2029,7 +2082,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFreeNodeSet             (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > obj);</PRE
 ></TD
@@ -2065,7 +2118,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the xmlNodeSetPtr to free</TD
 ></TR
 ></TABLE
 ><P
@@ -2075,7 +2128,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10961"
+NAME="AEN11050"
 ></A
 ><H3
 ><A
@@ -2092,10 +2145,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathObjectCopy        (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > val);</PRE
 ></TD
@@ -2153,6 +2206,106 @@ VALIGN="TOP"
 ></P
 ></DIV
 ></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11071"
+></A
+><H3
+><A
+NAME="XMLXPATHCMPNODES"
+></A
+>xmlXPathCmpNodes ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlXPathCmpNodes                (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node1,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node2);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Compare two nodes w.r.t document order</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node1</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node2</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the second node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>-2 in case of error 1 if first point &lt; second point, 0 if
+that's the same point, -1 otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -2169,7 +2322,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-htmltree.html"
+HREF="libxml-htmltree.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -2223,7 +2376,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-xpathinternals.html"
+HREF="libxml-xpathinternals.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"

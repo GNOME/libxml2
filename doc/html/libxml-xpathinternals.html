@@ -13,10 +13,10 @@ TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
 TITLE="xpath"
-HREF="gnome-xml-xpath.html"><LINK
+HREF="libxml-xpath.html"><LINK
 REL="NEXT"
 TITLE="xpointer"
-HREF="gnome-xml-xpointer.html"></HEAD
+HREF="libxml-xpointer.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -47,7 +47,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-xpath.html"
+HREF="libxml-xpath.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -101,7 +101,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-xpointer.html"
+HREF="libxml-xpointer.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -115,13 +115,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="GNOME-XML-XPATHINTERNALS"
+NAME="LIBXML-XPATHINTERNALS"
 >xpathInternals</A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN10987"
+NAME="AEN11101"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN10987"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN10990"
+NAME="AEN11104"
 ></A
 ><H2
 >Synopsis</H2
@@ -145,766 +145,803 @@ CLASS="SYNOPSIS"
 >&#13;
 
 #define     <A
-HREF="gnome-xml-xpathinternals.html#CHECK-ERROR-CAPS"
+HREF="libxml-xpathinternals.html#CHECK-ERROR-CAPS"
 >CHECK_ERROR</A
 >
 #define     <A
-HREF="gnome-xml-xpathinternals.html#CHECK-ERROR0-CAPS"
+HREF="libxml-xpathinternals.html#CHECK-ERROR0-CAPS"
 >CHECK_ERROR0</A
 >
 #define     <A
-HREF="gnome-xml-xpathinternals.html#XP-ERROR-CAPS"
+HREF="libxml-xpathinternals.html#XP-ERROR-CAPS"
 >XP_ERROR</A
 >                        (X)
 #define     <A
-HREF="gnome-xml-xpathinternals.html#XP-ERROR0-CAPS"
+HREF="libxml-xpathinternals.html#XP-ERROR0-CAPS"
 >XP_ERROR0</A
 >                       (X)
 #define     <A
-HREF="gnome-xml-xpathinternals.html#CHECK-TYPE-CAPS"
+HREF="libxml-xpathinternals.html#CHECK-TYPE-CAPS"
 >CHECK_TYPE</A
 >                      (typeval)
 #define     <A
-HREF="gnome-xml-xpathinternals.html#CHECK-ARITY-CAPS"
+HREF="libxml-xpathinternals.html#CHECK-ARITY-CAPS"
 >CHECK_ARITY</A
 >                     (x)
 #define     <A
-HREF="gnome-xml-xpathinternals.html#CAST-TO-STRING-CAPS"
+HREF="libxml-xpathinternals.html#CAST-TO-STRING-CAPS"
 >CAST_TO_STRING</A
 >
 #define     <A
-HREF="gnome-xml-xpathinternals.html#CAST-TO-NUMBER-CAPS"
+HREF="libxml-xpathinternals.html#CAST-TO-NUMBER-CAPS"
 >CAST_TO_NUMBER</A
 >
 #define     <A
-HREF="gnome-xml-xpathinternals.html#CAST-TO-BOOLEAN-CAPS"
+HREF="libxml-xpathinternals.html#CAST-TO-BOOLEAN-CAPS"
 >CAST_TO_BOOLEAN</A
 >
+<GTKDOCLINK
+HREF="TYPEDEF"
+>typedef</GTKDOCLINK
+>     <A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+>               ();
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHERROR"
+HREF="libxml-xpathinternals.html#XMLXPATHREGISTERVARIABLELOOKUP"
+>xmlXPathRegisterVariableLookup</A
+>  (<A
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
+>xmlXPathContextPtr</A
+> ctxt,
+                                             <GTKDOCLINK
+HREF="XMLXPATHVARIABLELOOKUPFUNC"
+>xmlXPathVariableLookupFunc</GTKDOCLINK
+> f,
+                                             void *varCtxt);
+void        <A
+HREF="libxml-xpath.html#XMLXPATHERROR"
 >xmlXPatherror</A
 >                   (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              const char *file,
                                              int line,
                                              int no);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHDEBUGDUMPOBJECT"
+HREF="libxml-xpathinternals.html#XMLXPATHDEBUGDUMPOBJECT"
 >xmlXPathDebugDumpObject</A
 >         (<GTKDOCLINK
 HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *output,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > cur,
                                              int depth);
 int         <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHREGISTERNS"
+HREF="libxml-xpathinternals.html#XMLXPATHREGISTERNS"
 >xmlXPathRegisterNs</A
 >              (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *prefix,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri);
 const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNSLOOKUP"
+HREF="libxml-xpathinternals.html#XMLXPATHNSLOOKUP"
 >xmlXPathNsLookup</A
 >             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHREGISTEREDNSCLEANUP"
+HREF="libxml-xpathinternals.html#XMLXPATHREGISTEREDNSCLEANUP"
 >xmlXPathRegisteredNsCleanup</A
 >     (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);
 int         <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHREGISTERFUNC"
+HREF="libxml-xpathinternals.html#XMLXPATHREGISTERFUNC"
 >xmlXPathRegisterFunc</A
 >            (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCTION"
+HREF="libxml-xpath.html#XMLXPATHFUNCTION"
 >xmlXPathFunction</A
 > f);
 int         <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHREGISTERFUNCNS"
+HREF="libxml-xpathinternals.html#XMLXPATHREGISTERFUNCNS"
 >xmlXPathRegisterFuncNS</A
 >          (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCTION"
+HREF="libxml-xpath.html#XMLXPATHFUNCTION"
 >xmlXPathFunction</A
 > f);
 int         <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHREGISTERVARIABLE"
+HREF="libxml-xpathinternals.html#XMLXPATHREGISTERVARIABLE"
 >xmlXPathRegisterVariable</A
 >        (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > value);
 int         <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHREGISTERVARIABLENS"
+HREF="libxml-xpathinternals.html#XMLXPATHREGISTERVARIABLENS"
 >xmlXPathRegisterVariableNS</A
 >      (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > value);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCTION"
+HREF="libxml-xpath.html#XMLXPATHFUNCTION"
 >xmlXPathFunction</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHFUNCTIONLOOKUP"
+HREF="libxml-xpathinternals.html#XMLXPATHFUNCTIONLOOKUP"
 >xmlXPathFunctionLookup</A
 >     (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCTION"
+HREF="libxml-xpath.html#XMLXPATHFUNCTION"
 >xmlXPathFunction</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHFUNCTIONLOOKUPNS"
+HREF="libxml-xpathinternals.html#XMLXPATHFUNCTIONLOOKUPNS"
 >xmlXPathFunctionLookupNS</A
 >   (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHREGISTEREDFUNCSCLEANUP"
+HREF="libxml-xpathinternals.html#XMLXPATHREGISTEREDFUNCSCLEANUP"
 >xmlXPathRegisteredFuncsCleanup</A
 >  (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHVARIABLELOOKUP"
+HREF="libxml-xpathinternals.html#XMLXPATHVARIABLELOOKUP"
 >xmlXPathVariableLookup</A
 >    (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHVARIABLELOOKUPNS"
+HREF="libxml-xpathinternals.html#XMLXPATHVARIABLELOOKUPNS"
 >xmlXPathVariableLookupNS</A
 >  (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHREGISTEREDVARIABLESCLEANUP"
+HREF="libxml-xpathinternals.html#XMLXPATHREGISTEREDVARIABLESCLEANUP"
 >xmlXPathRegisteredVariablesCleanup</A
 >
                                             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNEWPARSERCONTEXT"
+HREF="libxml-xpathinternals.html#XMLXPATHNEWPARSERCONTEXT"
 >xmlXPathNewParserContext</A
 >
                                             (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHFREEPARSERCONTEXT"
+HREF="libxml-xpathinternals.html#XMLXPATHFREEPARSERCONTEXT"
 >xmlXPathFreeParserContext</A
 >       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#VALUEPOP"
+HREF="libxml-xpathinternals.html#VALUEPOP"
 >valuePop</A
 >                  (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 int         <A
-HREF="gnome-xml-xpathinternals.html#VALUEPUSH"
+HREF="libxml-xpathinternals.html#VALUEPUSH"
 >valuePush</A
 >                       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > value);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNEWSTRING"
+HREF="libxml-xpathinternals.html#XMLXPATHNEWSTRING"
 >xmlXPathNewString</A
 >         (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *val);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNEWCSTRING"
+HREF="libxml-xpathinternals.html#XMLXPATHNEWCSTRING"
 >xmlXPathNewCString</A
 >        (const char *val);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNEWFLOAT"
+HREF="libxml-xpathinternals.html#XMLXPATHNEWFLOAT"
 >xmlXPathNewFloat</A
 >          (<GTKDOCLINK
 HREF="DOUBLE"
 >double</GTKDOCLINK
 > val);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNEWBOOLEAN"
+HREF="libxml-xpathinternals.html#XMLXPATHNEWBOOLEAN"
 >xmlXPathNewBoolean</A
 >        (int val);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNEWNODESET"
+HREF="libxml-xpathinternals.html#XMLXPATHNEWNODESET"
 >xmlXPathNewNodeSet</A
 >        (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> val);
+<A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEWVALUETREE"
+>xmlXPathNewValueTree</A
+>      (<A
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNODESETADD"
+HREF="libxml-xpathinternals.html#XMLXPATHNODESETADD"
 >xmlXPathNodeSetAdd</A
 >              (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHIDFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHIDFUNCTION"
 >xmlXPathIdFunction</A
 >              (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHROOT"
+HREF="libxml-xpathinternals.html#XMLXPATHROOT"
 >xmlXPathRoot</A
 >                    (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHEVALEXPR"
+HREF="libxml-xpathinternals.html#XMLXPATHEVALEXPR"
 >xmlXPathEvalExpr</A
 >                (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHPARSENAME"
+HREF="libxml-xpathinternals.html#XMLXPATHPARSENAME"
 >xmlXPathParseName</A
 >               (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHPARSENCNAME"
+HREF="libxml-xpathinternals.html#XMLXPATHPARSENCNAME"
 >xmlXPathParseNCName</A
 >             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 <GTKDOCLINK
 HREF="DOUBLE"
 >double</GTKDOCLINK
 >      <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHSTRINGEVALNUMBER"
+HREF="libxml-xpathinternals.html#XMLXPATHSTRINGEVALNUMBER"
 >xmlXPathStringEvalNumber</A
 >        (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str);
 int         <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHEVALUATEPREDICATERESULT"
+HREF="libxml-xpathinternals.html#XMLXPATHEVALUATEPREDICATERESULT"
 >xmlXPathEvaluatePredicateResult</A
 > (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > res);
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHINIT"
+HREF="libxml-xpath.html#XMLXPATHINIT"
 >xmlXPathInit</A
 >                    (void);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHSTRINGFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHSTRINGFUNCTION"
 >xmlXPathStringFunction</A
 >          (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHREGISTERALLFUNCTIONS"
+HREF="libxml-xpathinternals.html#XMLXPATHREGISTERALLFUNCTIONS"
 >xmlXPathRegisterAllFunctions</A
 >    (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > <A
-HREF="gnome-xml-xpath.html#XMLXPATHNODESETCREATE"
+HREF="libxml-xpath.html#XMLXPATHNODESETCREATE"
 >xmlXPathNodeSetCreate</A
 >         (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);
 <A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNODESETMERGE"
+HREF="libxml-xpathinternals.html#XMLXPATHNODESETMERGE"
 >xmlXPathNodeSetMerge</A
 >          (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > val1,
                                              <A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > val2);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNODESETDEL"
+HREF="libxml-xpathinternals.html#XMLXPATHNODESETDEL"
 >xmlXPathNodeSetDel</A
 >              (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNODESETREMOVE"
+HREF="libxml-xpathinternals.html#XMLXPATHNODESETREMOVE"
 >xmlXPathNodeSetRemove</A
 >           (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > cur,
                                              int val);
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHFREENODESET"
+HREF="libxml-xpath.html#XMLXPATHFREENODESET"
 >xmlXPathFreeNodeSet</A
 >             (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > obj);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNEWNODESETLIST"
+HREF="libxml-xpathinternals.html#XMLXPATHNEWNODESETLIST"
 >xmlXPathNewNodeSetList</A
 >    (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > val);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHWRAPNODESET"
+HREF="libxml-xpathinternals.html#XMLXPATHWRAPNODESET"
 >xmlXPathWrapNodeSet</A
 >       (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > val);
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHFREENODESETLIST"
+HREF="libxml-xpath.html#XMLXPATHFREENODESETLIST"
 >xmlXPathFreeNodeSetList</A
 >         (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > obj);
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHFREEOBJECT"
+HREF="libxml-xpath.html#XMLXPATHFREEOBJECT"
 >xmlXPathFreeObject</A
 >              (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > obj);
 <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > <A
-HREF="gnome-xml-xpath.html#XMLXPATHNEWCONTEXT"
+HREF="libxml-xpath.html#XMLXPATHNEWCONTEXT"
 >xmlXPathNewContext</A
 >       (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);
 void        <A
-HREF="gnome-xml-xpath.html#XMLXPATHFREECONTEXT"
+HREF="libxml-xpath.html#XMLXPATHFREECONTEXT"
 >xmlXPathFreeContext</A
 >             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);
 int         <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHEQUALVALUES"
+HREF="libxml-xpathinternals.html#XMLXPATHEQUALVALUES"
 >xmlXPathEqualValues</A
 >             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 int         <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHCOMPAREVALUES"
+HREF="libxml-xpathinternals.html#XMLXPATHCOMPAREVALUES"
 >xmlXPathCompareValues</A
 >           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int inf,
                                              int strict);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHVALUEFLIPSIGN"
+HREF="libxml-xpathinternals.html#XMLXPATHVALUEFLIPSIGN"
 >xmlXPathValueFlipSign</A
 >           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHADDVALUES"
+HREF="libxml-xpathinternals.html#XMLXPATHADDVALUES"
 >xmlXPathAddValues</A
 >               (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHSUBVALUES"
+HREF="libxml-xpathinternals.html#XMLXPATHSUBVALUES"
 >xmlXPathSubValues</A
 >               (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHMULTVALUES"
+HREF="libxml-xpathinternals.html#XMLXPATHMULTVALUES"
 >xmlXPathMultValues</A
 >              (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHDIVVALUES"
+HREF="libxml-xpathinternals.html#XMLXPATHDIVVALUES"
 >xmlXPathDivValues</A
 >               (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHMODVALUES"
+HREF="libxml-xpathinternals.html#XMLXPATHMODVALUES"
 >xmlXPathModValues</A
 >               (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHLASTFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHLASTFUNCTION"
 >xmlXPathLastFunction</A
 >            (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHPOSITIONFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHPOSITIONFUNCTION"
 >xmlXPathPositionFunction</A
 >        (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHCOUNTFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHCOUNTFUNCTION"
 >xmlXPathCountFunction</A
 >           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHLOCALNAMEFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHLOCALNAMEFUNCTION"
 >xmlXPathLocalNameFunction</A
 >       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNAMESPACEURIFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHNAMESPACEURIFUNCTION"
 >xmlXPathNamespaceURIFunction</A
 >    (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHSTRINGLENGTHFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHSTRINGLENGTHFUNCTION"
 >xmlXPathStringLengthFunction</A
 >    (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHCONCATFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHCONCATFUNCTION"
 >xmlXPathConcatFunction</A
 >          (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHCONTAINSFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHCONTAINSFUNCTION"
 >xmlXPathContainsFunction</A
 >        (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHSTARTSWITHFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHSTARTSWITHFUNCTION"
 >xmlXPathStartsWithFunction</A
 >      (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHSUBSTRINGFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHSUBSTRINGFUNCTION"
 >xmlXPathSubstringFunction</A
 >       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHSUBSTRINGBEFOREFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHSUBSTRINGBEFOREFUNCTION"
 >xmlXPathSubstringBeforeFunction</A
 > (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHSUBSTRINGAFTERFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHSUBSTRINGAFTERFUNCTION"
 >xmlXPathSubstringAfterFunction</A
 >  (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNORMALIZEFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHNORMALIZEFUNCTION"
 >xmlXPathNormalizeFunction</A
 >       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHTRANSLATEFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHTRANSLATEFUNCTION"
 >xmlXPathTranslateFunction</A
 >       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNOTFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHNOTFUNCTION"
 >xmlXPathNotFunction</A
 >             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHTRUEFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHTRUEFUNCTION"
 >xmlXPathTrueFunction</A
 >            (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHFALSEFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHFALSEFUNCTION"
 >xmlXPathFalseFunction</A
 >           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHLANGFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHLANGFUNCTION"
 >xmlXPathLangFunction</A
 >            (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHNUMBERFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHNUMBERFUNCTION"
 >xmlXPathNumberFunction</A
 >          (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHSUMFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHSUMFUNCTION"
 >xmlXPathSumFunction</A
 >             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHFLOORFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHFLOORFUNCTION"
 >xmlXPathFloorFunction</A
 >           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHCEILINGFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHCEILINGFUNCTION"
 >xmlXPathCeilingFunction</A
 >         (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);
 void        <A
-HREF="gnome-xml-xpathinternals.html#XMLXPATHROUNDFUNCTION"
+HREF="libxml-xpathinternals.html#XMLXPATHROUNDFUNCTION"
 >xmlXPathRoundFunction</A
 >           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             int nargs);
+void        <A
+HREF="libxml-xpathinternals.html#XMLXPATHBOOLEANFUNCTION"
+>xmlXPathBooleanFunction</A
+>         (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -915,7 +952,7 @@ HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11199"
+NAME="AEN11323"
 ></A
 ><H2
 >Description</H2
@@ -925,14 +962,14 @@ NAME="AEN11199"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11202"
+NAME="AEN11326"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11204"
+NAME="AEN11328"
 ></A
 ><H3
 ><A
@@ -958,7 +995,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11209"
+NAME="AEN11333"
 ></A
 ><H3
 ><A
@@ -984,7 +1021,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11214"
+NAME="AEN11338"
 ></A
 ><H3
 ><A
@@ -1042,7 +1079,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11228"
+NAME="AEN11352"
 ></A
 ><H3
 ><A
@@ -1100,7 +1137,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11242"
+NAME="AEN11366"
 ></A
 ><H3
 ><A
@@ -1158,7 +1195,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11256"
+NAME="AEN11380"
 ></A
 ><H3
 ><A
@@ -1216,7 +1253,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11270"
+NAME="AEN11394"
 ></A
 ><H3
 ><A
@@ -1242,7 +1279,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11275"
+NAME="AEN11399"
 ></A
 ><H3
 ><A
@@ -1268,7 +1305,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11280"
+NAME="AEN11404"
 ></A
 ><H3
 ><A
@@ -1294,7 +1331,168 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11285"
+NAME="AEN11409"
+></A
+><H3
+><A
+NAME="XMLXPATHOBJECTPTR"
+></A
+>xmlXPathObjectPtr ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="TYPEDEF"
+>typedef</GTKDOCLINK
+>     xmlXPathObjectPtr               ();</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11424"
+></A
+><H3
+><A
+NAME="XMLXPATHREGISTERVARIABLELOOKUP"
+></A
+>xmlXPathRegisterVariableLookup ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlXPathRegisterVariableLookup  (<A
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
+>xmlXPathContextPtr</A
+> ctxt,
+                                             <GTKDOCLINK
+HREF="XMLXPATHVARIABLELOOKUPFUNC"
+>xmlXPathVariableLookupFunc</GTKDOCLINK
+> f,
+                                             void *varCtxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>register an external mechanism to do variable lookup</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>f</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the lookup function</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>varCtxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11449"
 ></A
 ><H3
 ><A
@@ -1311,7 +1509,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPatherror                   (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              const char *file,
@@ -1409,7 +1607,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11312"
+NAME="AEN11476"
 ></A
 ><H3
 ><A
@@ -1430,7 +1628,7 @@ HREF="FILE-CAPS"
 >FILE</GTKDOCLINK
 > *output,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > cur,
                                              int depth);</PRE
@@ -1509,7 +1707,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11336"
+NAME="AEN11500"
 ></A
 ><H3
 ><A
@@ -1526,15 +1724,15 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlXPathRegisterNs              (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *prefix,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri);</PRE
 ></TD
@@ -1635,7 +1833,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11367"
+NAME="AEN11531"
 ></A
 ><H3
 ><A
@@ -1652,14 +1850,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >* xmlXPathNsLookup             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri);</PRE
 ></TD
@@ -1738,7 +1936,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11393"
+NAME="AEN11557"
 ></A
 ><H3
 ><A
@@ -1755,7 +1953,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathRegisteredNsCleanup     (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -1799,7 +1997,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11408"
+NAME="AEN11572"
 ></A
 ><H3
 ><A
@@ -1816,15 +2014,15 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlXPathRegisterFunc            (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCTION"
+HREF="libxml-xpath.html#XMLXPATHFUNCTION"
 >xmlXPathFunction</A
 > f);</PRE
 ></TD
@@ -1924,7 +2122,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11439"
+NAME="AEN11603"
 ></A
 ><H3
 ><A
@@ -1941,19 +2139,19 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlXPathRegisterFuncNS          (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCTION"
+HREF="libxml-xpath.html#XMLXPATHFUNCTION"
 >xmlXPathFunction</A
 > f);</PRE
 ></TD
@@ -2070,7 +2268,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11475"
+NAME="AEN11639"
 ></A
 ><H3
 ><A
@@ -2087,15 +2285,15 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlXPathRegisterVariable        (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > value);</PRE
 ></TD
@@ -2196,7 +2394,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11506"
+NAME="AEN11670"
 ></A
 ><H3
 ><A
@@ -2213,19 +2411,19 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlXPathRegisterVariableNS      (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > value);</PRE
 ></TD
@@ -2343,7 +2541,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11542"
+NAME="AEN11706"
 ></A
 ><H3
 ><A
@@ -2360,14 +2558,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCTION"
+HREF="libxml-xpath.html#XMLXPATHFUNCTION"
 >xmlXPathFunction</A
 > xmlXPathFunctionLookup     (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -2446,7 +2644,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11568"
+NAME="AEN11732"
 ></A
 ><H3
 ><A
@@ -2463,18 +2661,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHFUNCTION"
+HREF="libxml-xpath.html#XMLXPATHFUNCTION"
 >xmlXPathFunction</A
 > xmlXPathFunctionLookupNS   (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri);</PRE
 ></TD
@@ -2570,7 +2768,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11599"
+NAME="AEN11763"
 ></A
 ><H3
 ><A
@@ -2587,7 +2785,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathRegisteredFuncsCleanup  (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -2633,7 +2831,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11615"
+NAME="AEN11779"
 ></A
 ><H3
 ><A
@@ -2650,14 +2848,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathVariableLookup    (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -2736,7 +2934,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11641"
+NAME="AEN11805"
 ></A
 ><H3
 ><A
@@ -2753,18 +2951,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathVariableLookupNS  (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *ns_uri);</PRE
 ></TD
@@ -2860,7 +3058,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11672"
+NAME="AEN11836"
 ></A
 ><H3
 ><A
@@ -2878,7 +3076,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        xmlXPathRegisteredVariablesCleanup
                                             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -2924,7 +3122,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11688"
+NAME="AEN11852"
 ></A
 ><H3
 ><A
@@ -2941,15 +3139,15 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > xmlXPathNewParserContext
                                             (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -3027,7 +3225,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11714"
+NAME="AEN11878"
 ></A
 ><H3
 ><A
@@ -3044,7 +3242,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFreeParserContext       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -3090,7 +3288,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11730"
+NAME="AEN11894"
 ></A
 ><H3
 ><A
@@ -3107,10 +3305,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > valuePop                  (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -3169,7 +3367,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11750"
+NAME="AEN11914"
 ></A
 ><H3
 ><A
@@ -3186,11 +3384,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         valuePush                       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > value);</PRE
 ></TD
@@ -3266,7 +3464,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11774"
+NAME="AEN11938"
 ></A
 ><H3
 ><A
@@ -3283,10 +3481,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathNewString         (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *val);</PRE
 ></TD
@@ -3352,7 +3550,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11796"
+NAME="AEN11960"
 ></A
 ><H3
 ><A
@@ -3369,7 +3567,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathNewCString        (const char *val);</PRE
 ></TD
@@ -3435,7 +3633,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11817"
+NAME="AEN11981"
 ></A
 ><H3
 ><A
@@ -3452,7 +3650,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathNewFloat          (<GTKDOCLINK
 HREF="DOUBLE"
@@ -3521,7 +3719,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11839"
+NAME="AEN12003"
 ></A
 ><H3
 ><A
@@ -3538,7 +3736,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathNewBoolean        (int val);</PRE
 ></TD
@@ -3604,7 +3802,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11860"
+NAME="AEN12024"
 ></A
 ><H3
 ><A
@@ -3621,10 +3819,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathNewNodeSet        (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);</PRE
 ></TD
@@ -3691,7 +3889,94 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11882"
+NAME="AEN12046"
+></A
+><H3
+><A
+NAME="XMLXPATHNEWVALUETREE"
+></A
+>xmlXPathNewValueTree ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> xmlXPathNewValueTree      (<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new xmlXPathObjectPtr of type Value Tree (XSLT) and initialize
+it with the tree root <TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the NodePtr value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the newly created object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12068"
 ></A
 ><H3
 ><A
@@ -3708,11 +3993,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathNodeSetAdd              (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);</PRE
 ></TD
@@ -3775,7 +4060,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11903"
+NAME="AEN12089"
 ></A
 ><H3
 ><A
@@ -3792,7 +4077,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathIdFunction              (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -3860,7 +4145,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -3870,7 +4155,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11924"
+NAME="AEN12110"
 ></A
 ><H3
 ><A
@@ -3887,7 +4172,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathRoot                    (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -3933,7 +4218,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11940"
+NAME="AEN12126"
 ></A
 ><H3
 ><A
@@ -3950,7 +4235,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathEvalExpr                (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -4000,7 +4285,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11957"
+NAME="AEN12143"
 ></A
 ><H3
 ><A
@@ -4017,10 +4302,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlXPathParseName               (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -4061,7 +4346,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XPointer Parser context</TD
+>  the XPath Parser context</TD
 ></TR
 ><TR
 ><TD
@@ -4086,7 +4371,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11980"
+NAME="AEN12166"
 ></A
 ><H3
 ><A
@@ -4103,10 +4388,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlXPathParseNCName             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -4172,7 +4457,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12003"
+NAME="AEN12189"
 ></A
 ><H3
 ><A
@@ -4192,7 +4477,7 @@ CLASS="PROGRAMLISTING"
 HREF="DOUBLE"
 >double</GTKDOCLINK
 >      xmlXPathStringEvalNumber        (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *str);</PRE
 ></TD
@@ -4259,7 +4544,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12025"
+NAME="AEN12211"
 ></A
 ><H3
 ><A
@@ -4276,11 +4561,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlXPathEvaluatePredicateResult (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > res);</PRE
 ></TD
@@ -4365,7 +4650,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12050"
+NAME="AEN12236"
 ></A
 ><H3
 ><A
@@ -4393,7 +4678,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12056"
+NAME="AEN12242"
 ></A
 ><H3
 ><A
@@ -4410,7 +4695,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathStringFunction          (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -4496,7 +4781,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -4506,7 +4791,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12078"
+NAME="AEN12264"
 ></A
 ><H3
 ><A
@@ -4523,12 +4808,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathRegisterAllFunctions    (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Registers all default XPath functions in this context</P
 ><P
 ></P
 ><DIV
@@ -4557,7 +4844,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the XPath context</TD
 ></TR
 ></TABLE
 ><P
@@ -4567,7 +4854,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12093"
+NAME="AEN12280"
 ></A
 ><H3
 ><A
@@ -4584,10 +4871,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > xmlXPathNodeSetCreate         (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);</PRE
 ></TD
@@ -4628,7 +4915,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an initial xmlNodePtr, or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4643,7 +4930,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the newly created object.</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -4653,7 +4940,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12115"
+NAME="AEN12302"
 ></A
 ><H3
 ><A
@@ -4670,14 +4957,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > xmlXPathNodeSetMerge          (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > val1,
                                              <A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > val2);</PRE
 ></TD
@@ -4776,7 +5063,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12145"
+NAME="AEN12332"
 ></A
 ><H3
 ><A
@@ -4793,11 +5080,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathNodeSetDel              (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > cur,
                                              <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
+HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);</PRE
 ></TD
@@ -4860,7 +5147,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12166"
+NAME="AEN12353"
 ></A
 ><H3
 ><A
@@ -4877,7 +5164,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathNodeSetRemove           (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > cur,
                                              int val);</PRE
@@ -4941,7 +5228,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12186"
+NAME="AEN12373"
 ></A
 ><H3
 ><A
@@ -4958,7 +5245,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFreeNodeSet             (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > obj);</PRE
 ></TD
@@ -4994,7 +5281,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlNodeSetPtr to free</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -5004,7 +5291,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12202"
+NAME="AEN12389"
 ></A
 ><H3
 ><A
@@ -5021,10 +5308,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathNewNodeSetList    (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > val);</PRE
 ></TD
@@ -5091,7 +5378,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12224"
+NAME="AEN12411"
 ></A
 ><H3
 ><A
@@ -5108,10 +5395,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > xmlXPathWrapNodeSet       (<A
-HREF="gnome-xml-xpath.html#XMLNODESETPTR"
+HREF="libxml-xpath.html#XMLNODESETPTR"
 >xmlNodeSetPtr</A
 > val);</PRE
 ></TD
@@ -5177,7 +5464,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12246"
+NAME="AEN12433"
 ></A
 ><H3
 ><A
@@ -5194,7 +5481,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFreeNodeSetList         (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > obj);</PRE
 ></TD
@@ -5208,7 +5495,7 @@ CLASS="PARAMETER"
 ></TT
 > but don't deallocate the objects in
 the list contrary to <A
-HREF="gnome-xml-xpath.html#XMLXPATHFREEOBJECT"
+HREF="libxml-xpath.html#XMLXPATHFREEOBJECT"
 >xmlXPathFreeObject</A
 >().</P
 ><P
@@ -5239,7 +5526,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an existing NodeSetList object</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -5249,7 +5536,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12264"
+NAME="AEN12451"
 ></A
 ><H3
 ><A
@@ -5266,7 +5553,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFreeObject              (<A
-HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > obj);</PRE
 ></TD
@@ -5302,7 +5589,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the object to free</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -5312,7 +5599,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12280"
+NAME="AEN12467"
 ></A
 ><H3
 ><A
@@ -5329,10 +5616,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > xmlXPathNewContext       (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
+HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc);</PRE
 ></TD
@@ -5368,7 +5655,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5383,7 +5670,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlXPathContext just allocated.</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -5393,7 +5680,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12301"
+NAME="AEN12488"
 ></A
 ><H3
 ><A
@@ -5410,7 +5697,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFreeContext             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -5446,7 +5733,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the context to free</TD
+>&#13;</TD
 ></TR
 ></TABLE
 ><P
@@ -5456,7 +5743,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12317"
+NAME="AEN12504"
 ></A
 ><H3
 ><A
@@ -5473,7 +5760,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlXPathEqualValues             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -5544,7 +5831,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12339"
+NAME="AEN12526"
 ></A
 ><H3
 ><A
@@ -5561,7 +5848,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlXPathCompareValues           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int inf,
@@ -5670,7 +5957,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  less than (1) or greater than (2)</TD
+>  less than (1) or greater than (0)</TD
 ></TR
 ><TR
 ><TD
@@ -5702,7 +5989,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>1 if the comparaison succeeded, 0 if it failed</TD
 ></TR
 ></TABLE
 ><P
@@ -5712,7 +5999,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12376"
+NAME="AEN12563"
 ></A
 ><H3
 ><A
@@ -5729,7 +6016,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathValueFlipSign           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -5777,7 +6064,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12392"
+NAME="AEN12579"
 ></A
 ><H3
 ><A
@@ -5794,7 +6081,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathAddValues               (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -5842,7 +6129,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12408"
+NAME="AEN12595"
 ></A
 ><H3
 ><A
@@ -5859,7 +6146,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathSubValues               (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -5907,7 +6194,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12424"
+NAME="AEN12611"
 ></A
 ><H3
 ><A
@@ -5924,7 +6211,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathMultValues              (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -5972,7 +6259,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12440"
+NAME="AEN12627"
 ></A
 ><H3
 ><A
@@ -5989,7 +6276,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathDivValues               (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -6037,7 +6324,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12456"
+NAME="AEN12643"
 ></A
 ><H3
 ><A
@@ -6054,7 +6341,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathModValues               (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);</PRE
 ></TD
@@ -6112,7 +6399,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12474"
+NAME="AEN12661"
 ></A
 ><H3
 ><A
@@ -6129,7 +6416,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathLastFunction            (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -6191,7 +6478,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -6201,7 +6488,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12496"
+NAME="AEN12683"
 ></A
 ><H3
 ><A
@@ -6218,7 +6505,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathPositionFunction        (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -6285,7 +6572,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -6295,7 +6582,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12519"
+NAME="AEN12706"
 ></A
 ><H3
 ><A
@@ -6312,7 +6599,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathCountFunction           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -6370,7 +6657,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -6380,7 +6667,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12540"
+NAME="AEN12727"
 ></A
 ><H3
 ><A
@@ -6397,7 +6684,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathLocalNameFunction       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -6460,7 +6747,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -6470,7 +6757,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12561"
+NAME="AEN12748"
 ></A
 ><H3
 ><A
@@ -6487,7 +6774,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathNamespaceURIFunction    (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -6551,7 +6838,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -6561,7 +6848,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12582"
+NAME="AEN12769"
 ></A
 ><H3
 ><A
@@ -6578,7 +6865,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathStringLengthFunction    (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -6640,7 +6927,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -6650,7 +6937,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12603"
+NAME="AEN12790"
 ></A
 ><H3
 ><A
@@ -6667,7 +6954,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathConcatFunction          (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -6726,7 +7013,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -6736,7 +7023,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12624"
+NAME="AEN12811"
 ></A
 ><H3
 ><A
@@ -6753,7 +7040,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathContainsFunction        (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -6813,7 +7100,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -6823,7 +7110,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12645"
+NAME="AEN12832"
 ></A
 ><H3
 ><A
@@ -6840,7 +7127,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathStartsWithFunction      (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -6900,7 +7187,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -6910,7 +7197,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12666"
+NAME="AEN12853"
 ></A
 ><H3
 ><A
@@ -6927,7 +7214,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathSubstringFunction       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7005,7 +7292,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7015,7 +7302,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12687"
+NAME="AEN12874"
 ></A
 ><H3
 ><A
@@ -7032,7 +7319,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathSubstringBeforeFunction (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7095,7 +7382,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7105,7 +7392,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12708"
+NAME="AEN12895"
 ></A
 ><H3
 ><A
@@ -7122,7 +7409,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathSubstringAfterFunction  (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7186,7 +7473,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7196,7 +7483,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12729"
+NAME="AEN12916"
 ></A
 ><H3
 ><A
@@ -7213,7 +7500,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathNormalizeFunction       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7277,7 +7564,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7287,7 +7574,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12750"
+NAME="AEN12937"
 ></A
 ><H3
 ><A
@@ -7304,7 +7591,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathTranslateFunction       (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7371,7 +7658,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7381,7 +7668,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12771"
+NAME="AEN12958"
 ></A
 ><H3
 ><A
@@ -7398,7 +7685,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathNotFunction             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7458,7 +7745,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7468,7 +7755,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12792"
+NAME="AEN12979"
 ></A
 ><H3
 ><A
@@ -7485,7 +7772,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathTrueFunction            (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7546,7 +7833,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7556,7 +7843,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12814"
+NAME="AEN13001"
 ></A
 ><H3
 ><A
@@ -7573,7 +7860,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFalseFunction           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7634,7 +7921,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7644,7 +7931,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12836"
+NAME="AEN13023"
 ></A
 ><H3
 ><A
@@ -7661,7 +7948,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathLangFunction            (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7727,7 +8014,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7737,7 +8024,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12857"
+NAME="AEN13044"
 ></A
 ><H3
 ><A
@@ -7754,7 +8041,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathNumberFunction          (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7812,7 +8099,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7822,7 +8109,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12878"
+NAME="AEN13065"
 ></A
 ><H3
 ><A
@@ -7839,7 +8126,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathSumFunction             (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7899,7 +8186,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7909,7 +8196,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12899"
+NAME="AEN13086"
 ></A
 ><H3
 ><A
@@ -7926,7 +8213,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathFloorFunction           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -7986,7 +8273,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -7996,7 +8283,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12920"
+NAME="AEN13107"
 ></A
 ><H3
 ><A
@@ -8013,7 +8300,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathCeilingFunction         (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -8073,7 +8360,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -8083,7 +8370,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12941"
+NAME="AEN13128"
 ></A
 ><H3
 ><A
@@ -8100,7 +8387,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlXPathRoundFunction           (<A
-HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt,
                                              int nargs);</PRE
@@ -8161,7 +8448,97 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&#13;</TD
+>  the number of arguments</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13149"
+></A
+><H3
+><A
+NAME="XMLXPATHBOOLEANFUNCTION"
+></A
+>xmlXPathBooleanFunction ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlXPathBooleanFunction         (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             int nargs);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Implement the <GTKDOCLINK
+HREF="BOOLEAN"
+>boolean</GTKDOCLINK
+>() XPath function
+boolean boolean(object)
+he boolean function converts its argument to a boolean as follows:
+- a number is true if and only if it is neither positive or
+negative zero nor NaN
+- a node-set is true if and only if it is non-empty
+- a string is true if and only if its length is non-zero</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nargs</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the number of arguments</TD
 ></TR
 ></TABLE
 ><P
@@ -8184,7 +8561,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-xpath.html"
+HREF="libxml-xpath.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -8238,7 +8615,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-xpointer.html"
+HREF="libxml-xpointer.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"

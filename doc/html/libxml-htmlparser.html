@@ -13,10 +13,10 @@ TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
 TITLE="uri"
-HREF="gnome-xml-uri.html"><LINK
+HREF="libxml-uri.html"><LINK
 REL="NEXT"
 TITLE="HTMLtree"
-HREF="gnome-xml-htmltree.html"></HEAD
+HREF="libxml-htmltree.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -47,7 +47,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-uri.html"
+HREF="libxml-uri.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -101,7 +101,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-htmltree.html"
+HREF="libxml-htmltree.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -115,13 +115,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="GNOME-XML-HTMLPARSER"
+NAME="LIBXML-HTMLPARSER"
 >HTMLparser</A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN9548"
+NAME="AEN9623"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN9548"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN9551"
+NAME="AEN9626"
 ></A
 ><H2
 >Synopsis</H2
@@ -145,195 +145,195 @@ CLASS="SYNOPSIS"
 >&#13;
 
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXT"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXT"
 >htmlParserCtxt</A
 >;
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 >;
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERNODEINFO"
+HREF="libxml-htmlparser.html#HTMLPARSERNODEINFO"
 >htmlParserNodeInfo</A
 >;
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLER"
+HREF="libxml-htmlparser.html#HTMLSAXHANDLER"
 >htmlSAXHandler</A
 >;
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
+HREF="libxml-htmlparser.html#HTMLSAXHANDLERPTR"
 >htmlSAXHandlerPtr</A
 >;
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERINPUT"
+HREF="libxml-htmlparser.html#HTMLPARSERINPUT"
 >htmlParserInput</A
 >;
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERINPUTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERINPUTPTR"
 >htmlParserInputPtr</A
 >;
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >;
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLNODEPTR"
+HREF="libxml-htmlparser.html#HTMLNODEPTR"
 >htmlNodePtr</A
 >;
 struct      <A
-HREF="gnome-xml-htmlparser.html#HTMLELEMDESC"
+HREF="libxml-htmlparser.html#HTMLELEMDESC"
 >htmlElemDesc</A
 >;
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLELEMDESCPTR"
+HREF="libxml-htmlparser.html#HTMLELEMDESCPTR"
 >htmlElemDescPtr</A
 >;
 struct      <A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESC"
+HREF="libxml-htmlparser.html#HTMLENTITYDESC"
 >htmlEntityDesc</A
 >;
 typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
+HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 >htmlEntityDescPtr</A
 >;
 <A
-HREF="gnome-xml-htmlparser.html#HTMLELEMDESCPTR"
+HREF="libxml-htmlparser.html#HTMLELEMDESCPTR"
 >htmlElemDescPtr</A
 > <A
-HREF="gnome-xml-htmlparser.html#HTMLTAGLOOKUP"
+HREF="libxml-htmlparser.html#HTMLTAGLOOKUP"
 >htmlTagLookup</A
 >               (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *tag);
 <A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
+HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 >htmlEntityDescPtr</A
 > <A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYLOOKUP"
+HREF="libxml-htmlparser.html#HTMLENTITYLOOKUP"
 >htmlEntityLookup</A
 >          (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 <A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
+HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 >htmlEntityDescPtr</A
 > <A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYVALUELOOKUP"
+HREF="libxml-htmlparser.html#HTMLENTITYVALUELOOKUP"
 >htmlEntityValueLookup</A
 >     (int value);
 int         <A
-HREF="gnome-xml-htmlparser.html#HTMLISAUTOCLOSED"
+HREF="libxml-htmlparser.html#HTMLISAUTOCLOSED"
 >htmlIsAutoClosed</A
 >                (<A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-htmlparser.html#HTMLNODEPTR"
+HREF="libxml-htmlparser.html#HTMLNODEPTR"
 >htmlNodePtr</A
 > elem);
 int         <A
-HREF="gnome-xml-htmlparser.html#HTMLAUTOCLOSETAG"
+HREF="libxml-htmlparser.html#HTMLAUTOCLOSETAG"
 >htmlAutoCloseTag</A
 >                (<A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              <A
-HREF="gnome-xml-htmlparser.html#HTMLNODEPTR"
+HREF="libxml-htmlparser.html#HTMLNODEPTR"
 >htmlNodePtr</A
 > elem);
 <A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
+HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 >htmlEntityDescPtr</A
 > <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSEENTITYREF"
+HREF="libxml-htmlparser.html#HTMLPARSEENTITYREF"
 >htmlParseEntityRef</A
 >        (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **str);
 int         <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSECHARREF"
+HREF="libxml-htmlparser.html#HTMLPARSECHARREF"
 >htmlParseCharRef</A
 >                (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt);
 void        <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSEELEMENT"
+HREF="libxml-htmlparser.html#HTMLPARSEELEMENT"
 >htmlParseElement</A
 >                (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >  <A
-HREF="gnome-xml-htmlparser.html#HTMLSAXPARSEDOC"
+HREF="libxml-htmlparser.html#HTMLSAXPARSEDOC"
 >htmlSAXParseDoc</A
 >                 (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              const char *encoding,
                                              <A
-HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
+HREF="libxml-htmlparser.html#HTMLSAXHANDLERPTR"
 >htmlSAXHandlerPtr</A
 > sax,
                                              void *userData);
 <A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >  <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSEDOC"
+HREF="libxml-htmlparser.html#HTMLPARSEDOC"
 >htmlParseDoc</A
 >                    (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              const char *encoding);
 <A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >  <A
-HREF="gnome-xml-htmlparser.html#HTMLSAXPARSEFILE"
+HREF="libxml-htmlparser.html#HTMLSAXPARSEFILE"
 >htmlSAXParseFile</A
 >                (const char *filename,
                                              const char *encoding,
                                              <A
-HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
+HREF="libxml-htmlparser.html#HTMLSAXHANDLERPTR"
 >htmlSAXHandlerPtr</A
 > sax,
                                              void *userData);
 <A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >  <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSEFILE"
+HREF="libxml-htmlparser.html#HTMLPARSEFILE"
 >htmlParseFile</A
 >                   (const char *filename,
                                              const char *encoding);
 int         <A
-HREF="gnome-xml-htmlparser.html#UTF8TOHTML"
+HREF="libxml-htmlparser.html#UTF8TOHTML"
 >UTF8ToHtml</A
 >                      (unsigned char *out,
                                              int *outlen,
                                              unsigned char *in,
                                              int *inlen);
 int         <A
-HREF="gnome-xml-htmlparser.html#HTMLENCODEENTITIES"
+HREF="libxml-htmlparser.html#HTMLENCODEENTITIES"
 >htmlEncodeEntities</A
 >              (unsigned char *out,
                                              int *outlen,
@@ -341,31 +341,31 @@ HREF="gnome-xml-htmlparser.html#HTMLENCODEENTITIES"
                                              int *inlen,
                                              int quoteChar);
 int         <A
-HREF="gnome-xml-htmlparser.html#HTMLISSCRIPTATTRIBUTE"
+HREF="libxml-htmlparser.html#HTMLISSCRIPTATTRIBUTE"
 >htmlIsScriptAttribute</A
 >           (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
 int         <A
-HREF="gnome-xml-htmlparser.html#HTMLHANDLEOMITTEDELEM"
+HREF="libxml-htmlparser.html#HTMLHANDLEOMITTEDELEM"
 >htmlHandleOmittedElem</A
 >           (int val);
 void        <A
-HREF="gnome-xml-htmlparser.html#HTMLFREEPARSERCTXT"
+HREF="libxml-htmlparser.html#HTMLFREEPARSERCTXT"
 >htmlFreeParserCtxt</A
 >              (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt);
 <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > <A
-HREF="gnome-xml-htmlparser.html#HTMLCREATEPUSHPARSERCTXT"
+HREF="libxml-htmlparser.html#HTMLCREATEPUSHPARSERCTXT"
 >htmlCreatePushParserCtxt</A
 >  (<A
-HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
+HREF="libxml-htmlparser.html#HTMLSAXHANDLERPTR"
 >htmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -373,14 +373,14 @@ HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
                                              int size,
                                              const char *filename,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 int         <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSECHUNK"
+HREF="libxml-htmlparser.html#HTMLPARSECHUNK"
 >htmlParseChunk</A
 >                  (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt,
                                              const char *chunk,
@@ -393,7 +393,7 @@ HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9615"
+NAME="AEN9690"
 ></A
 ><H2
 >Description</H2
@@ -403,14 +403,14 @@ NAME="AEN9615"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9618"
+NAME="AEN9693"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9620"
+NAME="AEN9695"
 ></A
 ><H3
 ><A
@@ -436,7 +436,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9625"
+NAME="AEN9700"
 ></A
 ><H3
 ><A
@@ -462,7 +462,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9630"
+NAME="AEN9705"
 ></A
 ><H3
 ><A
@@ -488,7 +488,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9635"
+NAME="AEN9710"
 ></A
 ><H3
 ><A
@@ -514,7 +514,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9640"
+NAME="AEN9715"
 ></A
 ><H3
 ><A
@@ -540,7 +540,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9645"
+NAME="AEN9720"
 ></A
 ><H3
 ><A
@@ -566,7 +566,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9650"
+NAME="AEN9725"
 ></A
 ><H3
 ><A
@@ -592,7 +592,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9655"
+NAME="AEN9730"
 ></A
 ><H3
 ><A
@@ -618,7 +618,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9660"
+NAME="AEN9735"
 ></A
 ><H3
 ><A
@@ -644,7 +644,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9665"
+NAME="AEN9740"
 ></A
 ><H3
 ><A
@@ -678,7 +678,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9670"
+NAME="AEN9745"
 ></A
 ><H3
 ><A
@@ -704,7 +704,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9675"
+NAME="AEN9750"
 ></A
 ><H3
 ><A
@@ -734,7 +734,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9680"
+NAME="AEN9755"
 ></A
 ><H3
 ><A
@@ -760,7 +760,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9685"
+NAME="AEN9760"
 ></A
 ><H3
 ><A
@@ -777,10 +777,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-htmlparser.html#HTMLELEMDESCPTR"
+HREF="libxml-htmlparser.html#HTMLELEMDESCPTR"
 >htmlElemDescPtr</A
 > htmlTagLookup               (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *tag);</PRE
 ></TD
@@ -841,7 +841,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9706"
+NAME="AEN9781"
 ></A
 ><H3
 ><A
@@ -858,10 +858,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
+HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 >htmlEntityDescPtr</A
 > htmlEntityLookup          (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -924,7 +924,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9728"
+NAME="AEN9803"
 ></A
 ><H3
 ><A
@@ -941,7 +941,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
+HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 >htmlEntityDescPtr</A
 > htmlEntityValueLookup     (int value);</PRE
 ></TD
@@ -1004,7 +1004,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9749"
+NAME="AEN9824"
 ></A
 ><H3
 ><A
@@ -1021,11 +1021,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         htmlIsAutoClosed                (<A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 > doc,
                                              <A
-HREF="gnome-xml-htmlparser.html#HTMLNODEPTR"
+HREF="libxml-htmlparser.html#HTMLNODEPTR"
 >htmlNodePtr</A
 > elem);</PRE
 ></TD
@@ -1105,7 +1105,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9774"
+NAME="AEN9849"
 ></A
 ><H3
 ><A
@@ -1122,15 +1122,15 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         htmlAutoCloseTag                (<A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 > doc,
                                              const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
                                              <A
-HREF="gnome-xml-htmlparser.html#HTMLNODEPTR"
+HREF="libxml-htmlparser.html#HTMLNODEPTR"
 >htmlNodePtr</A
 > elem);</PRE
 ></TD
@@ -1228,7 +1228,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9804"
+NAME="AEN9879"
 ></A
 ><H3
 ><A
@@ -1245,14 +1245,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
+HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 >htmlEntityDescPtr</A
 > htmlParseEntityRef        (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > **str);</PRE
 ></TD
@@ -1333,7 +1333,7 @@ if non-NULL *str will have to be freed by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9831"
+NAME="AEN9906"
 ></A
 ><H3
 ><A
@@ -1350,7 +1350,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         htmlParseCharRef                (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -1417,7 +1417,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9853"
+NAME="AEN9928"
 ></A
 ><H3
 ><A
@@ -1434,7 +1434,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        htmlParseElement                (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -1484,7 +1484,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9871"
+NAME="AEN9946"
 ></A
 ><H3
 ><A
@@ -1501,15 +1501,15 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >  htmlSAXParseDoc                 (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              const char *encoding,
                                              <A
-HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
+HREF="libxml-htmlparser.html#HTMLSAXHANDLERPTR"
 >htmlSAXHandlerPtr</A
 > sax,
                                              void *userData);</PRE
@@ -1624,7 +1624,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9905"
+NAME="AEN9980"
 ></A
 ><H3
 ><A
@@ -1641,10 +1641,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >  htmlParseDoc                    (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur,
                                              const char *encoding);</PRE
@@ -1723,7 +1723,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9930"
+NAME="AEN10005"
 ></A
 ><H3
 ><A
@@ -1740,12 +1740,12 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >  htmlSAXParseFile                (const char *filename,
                                              const char *encoding,
                                              <A
-HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
+HREF="libxml-htmlparser.html#HTMLSAXHANDLERPTR"
 >htmlSAXHandlerPtr</A
 > sax,
                                              void *userData);</PRE
@@ -1861,7 +1861,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9963"
+NAME="AEN10038"
 ></A
 ><H3
 ><A
@@ -1878,7 +1878,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+HREF="libxml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >  htmlParseFile                   (const char *filename,
                                              const char *encoding);</PRE
@@ -1958,7 +1958,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9987"
+NAME="AEN10062"
 ></A
 ><H3
 ><A
@@ -2111,7 +2111,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10022"
+NAME="AEN10097"
 ></A
 ><H3
 ><A
@@ -2282,7 +2282,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10061"
+NAME="AEN10136"
 ></A
 ><H3
 ><A
@@ -2299,7 +2299,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         htmlIsScriptAttribute           (const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
+HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);</PRE
 ></TD
@@ -2360,7 +2360,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10081"
+NAME="AEN10156"
 ></A
 ><H3
 ><A
@@ -2435,7 +2435,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10100"
+NAME="AEN10175"
 ></A
 ><H3
 ><A
@@ -2452,7 +2452,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        htmlFreeParserCtxt              (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -2499,7 +2499,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10116"
+NAME="AEN10191"
 ></A
 ><H3
 ><A
@@ -2516,10 +2516,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > htmlCreatePushParserCtxt  (<A
-HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
+HREF="libxml-htmlparser.html#HTMLSAXHANDLERPTR"
 >htmlSAXHandlerPtr</A
 > sax,
                                              void *user_data,
@@ -2527,7 +2527,7 @@ HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
                                              int size,
                                              const char *filename,
                                              <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);</PRE
 ></TD
@@ -2686,7 +2686,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10160"
+NAME="AEN10235"
 ></A
 ><H3
 ><A
@@ -2703,7 +2703,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         htmlParseChunk                  (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt,
                                              const char *chunk,
@@ -2831,7 +2831,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-uri.html"
+HREF="libxml-uri.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -2885,7 +2885,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-htmltree.html"
+HREF="libxml-htmltree.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"

@@ -13,10 +13,10 @@ TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
 TITLE="nanohttp"
-HREF="gnome-xml-nanohttp.html"><LINK
+HREF="libxml-nanohttp.html"><LINK
 REL="NEXT"
 TITLE="xmlIO"
-HREF="gnome-xml-xmlio.html"></HEAD
+HREF="libxml-xmlio.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -47,7 +47,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-nanohttp.html"
+HREF="libxml-nanohttp.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -101,7 +101,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-xmlio.html"
+HREF="libxml-xmlio.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -115,13 +115,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="GNOME-XML-NANOFTP"
+NAME="LIBXML-NANOFTP"
 >nanoftp</A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN13453"
+NAME="AEN13661"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN13453"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN13456"
+NAME="AEN13664"
 ></A
 ><H2
 >Synopsis</H2
@@ -145,7 +145,7 @@ CLASS="SYNOPSIS"
 >&#13;
 
 void        (<A
-HREF="gnome-xml-nanoftp.html#FTPLISTCALLBACK"
+HREF="libxml-nanoftp.html#FTPLISTCALLBACK"
 >*ftpListCallback</A
 >)              (void *userData,
                                              const char *filename,
@@ -163,54 +163,54 @@ HREF="LONG"
                                              int hour,
                                              int minute);
 void        (<A
-HREF="gnome-xml-nanoftp.html#FTPDATACALLBACK"
+HREF="libxml-nanoftp.html#FTPDATACALLBACK"
 >*ftpDataCallback</A
 >)              (void *userData,
                                              const char *data,
                                              int len);
 void        <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPINIT"
+HREF="libxml-nanoftp.html#XMLNANOFTPINIT"
 >xmlNanoFTPInit</A
 >                  (void);
 void        <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPCLEANUP"
+HREF="libxml-nanoftp.html#XMLNANOFTPCLEANUP"
 >xmlNanoFTPCleanup</A
 >               (void);
 void*       <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPNEWCTXT"
+HREF="libxml-nanoftp.html#XMLNANOFTPNEWCTXT"
 >xmlNanoFTPNewCtxt</A
 >               (const char *URL);
 void        <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPFREECTXT"
+HREF="libxml-nanoftp.html#XMLNANOFTPFREECTXT"
 >xmlNanoFTPFreeCtxt</A
 >              (void *ctx);
 void*       <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPCONNECTTO"
+HREF="libxml-nanoftp.html#XMLNANOFTPCONNECTTO"
 >xmlNanoFTPConnectTo</A
 >             (const char *server,
                                              int port);
 void*       <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPOPEN"
+HREF="libxml-nanoftp.html#XMLNANOFTPOPEN"
 >xmlNanoFTPOpen</A
 >                  (const char *URL);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPCONNECT"
+HREF="libxml-nanoftp.html#XMLNANOFTPCONNECT"
 >xmlNanoFTPConnect</A
 >               (void *ctx);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPCLOSE"
+HREF="libxml-nanoftp.html#XMLNANOFTPCLOSE"
 >xmlNanoFTPClose</A
 >                 (void *ctx);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPQUIT"
+HREF="libxml-nanoftp.html#XMLNANOFTPQUIT"
 >xmlNanoFTPQuit</A
 >                  (void *ctx);
 void        <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPSCANPROXY"
+HREF="libxml-nanoftp.html#XMLNANOFTPSCANPROXY"
 >xmlNanoFTPScanProxy</A
 >             (const char *URL);
 void        <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPPROXY"
+HREF="libxml-nanoftp.html#XMLNANOFTPPROXY"
 >xmlNanoFTPProxy</A
 >                 (const char *host,
                                              int port,
@@ -218,58 +218,58 @@ HREF="gnome-xml-nanoftp.html#XMLNANOFTPPROXY"
                                              const char *passwd,
                                              int type);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPUPDATEURL"
+HREF="libxml-nanoftp.html#XMLNANOFTPUPDATEURL"
 >xmlNanoFTPUpdateURL</A
 >             (void *ctx,
                                              const char *URL);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPGETRESPONSE"
+HREF="libxml-nanoftp.html#XMLNANOFTPGETRESPONSE"
 >xmlNanoFTPGetResponse</A
 >           (void *ctx);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPCHECKRESPONSE"
+HREF="libxml-nanoftp.html#XMLNANOFTPCHECKRESPONSE"
 >xmlNanoFTPCheckResponse</A
 >         (void *ctx);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPCWD"
+HREF="libxml-nanoftp.html#XMLNANOFTPCWD"
 >xmlNanoFTPCwd</A
 >                   (void *ctx,
                                              char *directory);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPGETCONNECTION"
+HREF="libxml-nanoftp.html#XMLNANOFTPGETCONNECTION"
 >xmlNanoFTPGetConnection</A
 >         (void *ctx);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPCLOSECONNECTION"
+HREF="libxml-nanoftp.html#XMLNANOFTPCLOSECONNECTION"
 >xmlNanoFTPCloseConnection</A
 >       (void *ctx);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPLIST"
+HREF="libxml-nanoftp.html#XMLNANOFTPLIST"
 >xmlNanoFTPList</A
 >                  (void *ctx,
                                              <A
-HREF="gnome-xml-nanoftp.html#FTPLISTCALLBACK"
+HREF="libxml-nanoftp.html#FTPLISTCALLBACK"
 >ftpListCallback</A
 > callback,
                                              void *userData,
                                              char *filename);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPGETSOCKET"
+HREF="libxml-nanoftp.html#XMLNANOFTPGETSOCKET"
 >xmlNanoFTPGetSocket</A
 >             (void *ctx,
                                              const char *filename);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPGET"
+HREF="libxml-nanoftp.html#XMLNANOFTPGET"
 >xmlNanoFTPGet</A
 >                   (void *ctx,
                                              <A
-HREF="gnome-xml-nanoftp.html#FTPDATACALLBACK"
+HREF="libxml-nanoftp.html#FTPDATACALLBACK"
 >ftpDataCallback</A
 > callback,
                                              void *userData,
                                              const char *filename);
 int         <A
-HREF="gnome-xml-nanoftp.html#XMLNANOFTPREAD"
+HREF="libxml-nanoftp.html#XMLNANOFTPREAD"
 >xmlNanoFTPRead</A
 >                  (void *ctx,
                                              void *dest,
@@ -281,7 +281,7 @@ HREF="gnome-xml-nanoftp.html#XMLNANOFTPREAD"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN13485"
+NAME="AEN13693"
 ></A
 ><H2
 >Description</H2
@@ -291,14 +291,14 @@ NAME="AEN13485"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN13488"
+NAME="AEN13696"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13490"
+NAME="AEN13698"
 ></A
 ><H3
 ><A
@@ -557,7 +557,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13549"
+NAME="AEN13757"
 ></A
 ><H3
 ><A
@@ -651,7 +651,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13571"
+NAME="AEN13779"
 ></A
 ><H3
 ><A
@@ -681,7 +681,7 @@ and get the hostname</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13577"
+NAME="AEN13785"
 ></A
 ><H3
 ><A
@@ -707,7 +707,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13582"
+NAME="AEN13790"
 ></A
 ><H3
 ><A
@@ -767,7 +767,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13597"
+NAME="AEN13805"
 ></A
 ><H3
 ><A
@@ -827,7 +827,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13612"
+NAME="AEN13820"
 ></A
 ><H3
 ><A
@@ -905,7 +905,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13631"
+NAME="AEN13839"
 ></A
 ><H3
 ><A
@@ -965,7 +965,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13646"
+NAME="AEN13854"
 ></A
 ><H3
 ><A
@@ -1040,7 +1040,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13665"
+NAME="AEN13873"
 ></A
 ><H3
 ><A
@@ -1115,7 +1115,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13684"
+NAME="AEN13892"
 ></A
 ><H3
 ><A
@@ -1190,7 +1190,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13703"
+NAME="AEN13911"
 ></A
 ><H3
 ><A
@@ -1253,7 +1253,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13718"
+NAME="AEN13926"
 ></A
 ><H3
 ><A
@@ -1392,7 +1392,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13750"
+NAME="AEN13958"
 ></A
 ><H3
 ><A
@@ -1489,7 +1489,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13773"
+NAME="AEN13981"
 ></A
 ><H3
 ><A
@@ -1564,7 +1564,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13792"
+NAME="AEN14000"
 ></A
 ><H3
 ><A
@@ -1639,7 +1639,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13811"
+NAME="AEN14019"
 ></A
 ><H3
 ><A
@@ -1732,7 +1732,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13834"
+NAME="AEN14042"
 ></A
 ><H3
 ><A
@@ -1808,7 +1808,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13853"
+NAME="AEN14061"
 ></A
 ><H3
 ><A
@@ -1883,7 +1883,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13872"
+NAME="AEN14080"
 ></A
 ><H3
 ><A
@@ -1901,7 +1901,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >int         xmlNanoFTPList                  (void *ctx,
                                              <A
-HREF="gnome-xml-nanoftp.html#FTPLISTCALLBACK"
+HREF="libxml-nanoftp.html#FTPLISTCALLBACK"
 >ftpListCallback</A
 > callback,
                                              void *userData,
@@ -2016,7 +2016,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13904"
+NAME="AEN14112"
 ></A
 ><H3
 ><A
@@ -2109,7 +2109,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13927"
+NAME="AEN14135"
 ></A
 ><H3
 ><A
@@ -2127,7 +2127,7 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >int         xmlNanoFTPGet                   (void *ctx,
                                              <A
-HREF="gnome-xml-nanoftp.html#FTPDATACALLBACK"
+HREF="libxml-nanoftp.html#FTPDATACALLBACK"
 >ftpDataCallback</A
 > callback,
                                              void *userData,
@@ -2242,7 +2242,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13959"
+NAME="AEN14167"
 ></A
 ><H3
 ><A
@@ -2378,7 +2378,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-nanohttp.html"
+HREF="libxml-nanohttp.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -2432,7 +2432,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-xmlio.html"
+HREF="libxml-xmlio.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"

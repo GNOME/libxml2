@@ -1,3 +1,11 @@
+Fri Feb 11 18:37:22 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* dict.c: fixed compilation warning
+	* parser.c: changed xmlWarningMsg so ctxt->errNo is not set
+	* xmllint.c: changed to return non-zero status if error
+	  on xinclude processing
+	* xmlsave.c: minor deletion of a redundant condition statement
+	
 Wed Feb  9 17:47:40 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied patch to xmlSetNsProp from Mike Hommey

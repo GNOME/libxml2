@@ -670,9 +670,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     }
     if (cur->type == XML_TEXT_NODE) {
 	if (cur->content != NULL) {
-	    if ((cur->name == xmlStringText) ||
-		(cur->name != xmlStringTextNoenc)) {
-
+	    if (cur->name != xmlStringTextNoenc) {
                 xmlOutputBufferWriteEscape(buf, cur->content, ctxt->escape);
 	    } else {
 		/*

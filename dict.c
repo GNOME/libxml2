@@ -82,13 +82,13 @@ static xmlRMutexPtr xmlDictMutex = NULL;
 static int xmlDictInitialized = 0;
 
 /**
- * xmlInitializeCatalog:
+ * xmlInitializeDict:
  *
  * Do the dictionary mutex initialization.
  * this function is not thread safe, initialization should
  * preferably be done once at startup
  */
-static int xmlInitializeDict() {
+static int xmlInitializeDict(void) {
     if (xmlDictInitialized)
         return(1);
 

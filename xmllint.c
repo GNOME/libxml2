@@ -1341,7 +1341,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	if ((timing) && (!repeat)) {
 	    startTimer();
 	}
-	xmlXIncludeProcessFlags(doc, options);
+	if (xmlXIncludeProcessFlags(doc, options) < 0)
+	    progresult = XMLLINT_ERR_UNCLASS;
 	if ((timing) && (!repeat)) {
 	    endTimer("Xinclude processing");
 	}

@@ -162,6 +162,10 @@ int     xmlRegisterOutputCallbacks	(xmlOutputMatchCallback matchFunc,
 int		xmlSaveFileTo		(xmlOutputBuffer *buf,
 					 xmlDocPtr cur,
 					 const char *encoding);
+int             xmlSaveFormatFileTo     (xmlOutputBuffer *buf,
+					 xmlDocPtr cur,
+				         const char *encoding,
+				         int format);
 void		xmlNodeDumpOutput	(xmlOutputBufferPtr buf,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur,

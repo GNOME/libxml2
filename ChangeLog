@@ -1,3 +1,8 @@
+Sat Apr 28 18:54:28 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.[ch] xmlIO.h: applied patch from Joe McAlerney to add
+	  xmlSaveFormatFileTo()
+
 Sat Apr 28 16:33:05 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: simple and efficient optimization, XPath functions

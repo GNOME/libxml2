@@ -689,11 +689,15 @@ void		xmlNodeDump		(xmlBufferPtr buf,
 					 int level,
 					 int format);
 
-/* This one is exported from xmlIO.h
+/* These are exported from xmlIO.h
  
 int		xmlSaveFileTo		(xmlOutputBuffer *buf,
 					 xmlDocPtr cur,
 					 const char *encoding);
+int             xmlSaveFormatFileTo     (xmlOutputBuffer *buf,
+                                         xmlDocPtr cur,
+                                         const char *encoding,
+                                         int format);
  */ 					 
 
 int		xmlSaveFileEnc		(const char *filename,

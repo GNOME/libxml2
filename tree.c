@@ -6130,6 +6130,27 @@ xmlSaveFileTo(xmlOutputBuffer *buf, xmlDocPtr cur, const char *encoding) {
 }
 
 /**
+ * xmlSaveFormatFileTo:
+ * @buf:  an output I/O buffer
+ * @cur:  the document
+ * @encoding:  the encoding if any assuming the i/O layer handles the trancoding
+ * @format: should formatting spaces been added
+ *
+ * Dump an XML document to an I/O buffer.
+ *
+ * returns: the number of byte written or -1 in case of failure.
+ */
+int
+xmlSaveFormatFileTo(xmlOutputBuffer *buf, xmlDocPtr cur, const char *encoding, int format) {
+  int ret;
+
+  if (buf == NULL) return(0);
+  xmlDocContentDumpOutput(buf, cur, encoding, format);
+  ret = xmlOutputBufferClose(buf);
+  return(ret);
+}
+
+/**
  * xmlSaveFileEnc:
  * @filename:  the filename (or URL)
  * @cur:  the document

@@ -1,3 +1,8 @@
+Mon Jun 17 19:02:49 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* hash.c: applied patch from Sander Vesik improving the quality of
+	  the hash function.
+
 2002-06-14  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* DOCBparser.c HTMLparser.c debugXML.c encoding.c

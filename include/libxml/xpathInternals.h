@@ -193,6 +193,13 @@ void xmlXPathMultValues(xmlXPathParserContextPtr ctxt);
 void xmlXPathDivValues(xmlXPathParserContextPtr ctxt);
 void xmlXPathModValues(xmlXPathParserContextPtr ctxt);
 
+
+/*
+ * Some of the axis navigation routines
+ */
+xmlNodePtr xmlXPathNextPreceding(xmlXPathParserContextPtr ctxt, xmlNodePtr cur);
+xmlNodePtr xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur);
+xmlNodePtr xmlXPathNextPrecedingSibling(xmlXPathParserContextPtr ctxt, xmlNodePtr cur);
 /*
  * The official core of XPath functions
  */

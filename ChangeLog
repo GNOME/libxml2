@@ -1,3 +1,8 @@
+Thu Feb 15 16:53:20 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpathInternals.h: exported a few axis functions
+	* doc/xml.html: updated the doc
+
 Thu Feb 15 15:57:14 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: applied patch from Daniel van Balen for OpenBSD

@@ -55,6 +55,7 @@ alt="W3C Logo"></a></p>
   <li><a href="xmlmem.html">libxml Memory interfaces</a></li>
   <li><a href="xmldtd.html">a short introduction about DTDs and
   libxml</a></li>
+  <li><a href="http://xmlsoft.org/XSLT/">the libxslt page</a></li>
 </ul>
 
 <h2><a name="Introducti">Introduction</a></h2>
@@ -229,13 +230,39 @@ for a really accurate description</h3>
 <p>Item floating around but not actively worked on, get in touch with me if
 you want to test those</p>
 <ul>
-  <li>Implementing <a href="http://www.w3.org/TR/xslt">XSLT</a>, this is done
-    as a separate C library on top of libxml called libxslt, not released yet
-    but available from CVS</li>
+  <li>Implementing <a href="http://xmlsoft.org/XSLT">XSLT</a>, this is done as
+    a separate C library on top of libxml called libxslt, not released yet but
+    available from CVS</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xptr">XPointer</a> and <a
     href="http://www.w3.org/TR/xinclude">XInclude</a></li>
   <li>(seeems working but delayed from release) parsing/import of Docbook SGML
     docs</li>
+</ul>
+
+<p>2.3.1: Feb 15 2000</p>
+<ul>
+  <li>some XPath and HTML bug fixes for XSLT</li>
+  <li>small extension of the hash table interfaces for DOM gdome2
+    implementation</li>
+  <li>A few bug fixes</li>
+</ul>
+
+<p>2.3.0: Feb 8 2000 (2.2.12 was on 25 Jan but I didn't kept track)</p>
+<ul>
+  <li>Lots of XPath bug fixes</li>
+  <li>Add a mode with Dtd lookup but without validation error reporting for
+    XSLT</li>
+  <li>Add support for text node without escaping (XSLT)</li>
+  <li>bug fixes for xmlCheckFilename</li>
+  <li>validation code bug fixes from Gary Pennington</li>
+  <li>Patch from Paul D. Smith correcting URI path normalization</li>
+  <li>Patch to allow simultaneous install of libxml-devel and
+  libxml2-devel</li>
+  <li>the example Makefile is now fixed</li>
+  <li>added HTML to the RPM packages</li>
+  <li>tree copying bugfixes</li>
+  <li>updates to Windows makefiles</li>
+  <li>optimisation patch from Bjorn Reese</li>
 </ul>
 
 <h3>2.2.11: Jan 4 2000</h3>
@@ -615,6 +642,8 @@ it is used to encode remote calls between a client and a server.</p>
 
 <h2><a name="XSLT">XSLT</a></h2>
 
+<p>Check <a href="http://xmlsoft.org/XSLT">the separate libxslt page</a></p>
+
 <p><a href="http://www.w3.org/TR/xslt">XSL Transformations</a>,  is a language
 for transforming XML documents into other XML documents (or HTML/textual
 output).</p>
@@ -623,8 +652,8 @@ output).</p>
 module "libxslt" can be found in the Gnome CVS base too.</p>
 
 <p>You can check the <a
-href="http://cvs.gnome.org/lxr/source/libxslt/FEATURES">features</a>
-supported and the progresses on the <a
+href="http://cvs.gnome.org/lxr/source/libxslt/FEATURES">features</a> supported
+and the progresses on the <a
 href="http://cvs.gnome.org/lxr/source/libxslt/ChangeLog">Changelog</a></p>
 
 <h2>An overview of libxml architecture</h2>
@@ -1410,6 +1439,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.65 2001/01/23 11:39:52 veillard Exp $</p>
+<p>$Id: xml.html,v 1.66 2001/01/29 08:22:12 veillard Exp $</p>
 </body>
 </html>

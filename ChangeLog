@@ -1,3 +1,8 @@
+Sun Jul 16 00:17:15 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
+
+	* include/libxml/xpath.h: exported xmlXPath{NAN,PINF,NINF}
+	  fixed xmlXPathNodeSetItem when passing index=0
+
 Sun Jul 15 17:58:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* include/libxml/xmlwin32version.h.in: added xmlCheckVersion()

@@ -1,3 +1,8 @@
+Sun Jan 20 13:38:22 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmlcatalog_man.xml xmlcatalog.c: Fixed bug #68830, xmlcatalog
+	  now provides return codes in case of errors
+
 Sat Jan 19 16:36:21 CET 2002 Bjorn Reese <breese@users.sourceforge.net>
 
 	* trio.h trio.c triodef.h triop.h trionan.h trionan.c Makefile.am:

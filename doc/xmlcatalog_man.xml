@@ -246,6 +246,18 @@ FIXME - Is my list of possible types correct? Are SGML types the same?
 
   </refsect1>
 
+  <refsect1 id="return">
+    <title>Return values</title>
+    <para><application>xmlcatalog</application>'s return codes provide
+    information that can be used when calling it from scripts.</para>
+
+    <para>0: normal</para>
+    <para>1: Failed to remove an entry from the catalog</para>
+    <para>2: Failed to save to the catalog, check file permissions</para>
+    <para>3: Failed to add an entry to the catalog</para>
+    <para>4: Failed to lookup and entry in the catalog</para>
+  </refsect1>
+
   <refsect1>
     <title>References</title>
     <para><ulink url="http://www.xmlsoft.org/">libxml web page</ulink></para>

@@ -313,6 +313,7 @@ static void usage(const char *name) {
 int main(int argc, char **argv) {
     int i;
     int ret;
+    int exit_value = 0;
 
 
     if (argc <= 1) {
@@ -430,9 +431,11 @@ int main(int argc, char **argv) {
 			ret = xmlACatalogRemove(catal, BAD_CAST argv[i + 2]);
 		    else
 			ret = -1;
-		    if (ret < 0)
-			fprintf(stderr, "Failed to removed entry from %s\n",
+		    if (ret < 0) {
+			fprintf(stderr, "Failed to remove entry from %s\n",
 				argv[i + 1]);
+			exit_value = 1;
+		    }
 		    if ((noout) && (catal != NULL) &&
 			(xmlCatalogIsEmpty(catal))) {
 			super = xmlLoadSGMLSuperCatalog(
@@ -440,10 +443,12 @@ int main(int argc, char **argv) {
 			if (super != NULL) {
 			    ret = xmlACatalogRemove(super,
 				    BAD_CAST argv[i + 1]);
-			    if (ret < 0)
+			    if (ret < 0) {
 				fprintf(stderr,
-					"Failed to removed entry from %s\n",
+					"Failed to remove entry from %s\n",
 					XML_SGML_DEFAULT_CATALOG);
+				exit_value = 1;
+			    }
 			}
 		    }
 		}
@@ -457,6 +462,7 @@ int main(int argc, char **argv) {
 			if (out == NULL) {
 			    fprintf(stderr, "could not open %s for saving\n",
 				    argv[i + 1]);
+			    exit_value = 2;
 			    noout = 0;
 			} else {
 			    xmlACatalogDump(catal, out);
@@ -472,6 +478,7 @@ int main(int argc, char **argv) {
 				fprintf(stderr,
 					"could not open %s for saving\n",
 					XML_SGML_DEFAULT_CATALOG);
+				exit_value = 2;
 				noout = 0;
 			    } else {
 				
@@ -494,12 +501,19 @@ int main(int argc, char **argv) {
 			    ret = xmlCatalogAdd(BAD_CAST argv[i + 1],
 						BAD_CAST argv[i + 2],
 						BAD_CAST argv[i + 3]);
-			if (ret != 0)
+			if (ret != 0) {
 			    printf("add command failed\n");
+			    exit_value = 3;
+			}
 			i += 3;
 		} else if ((!strcmp(argv[i], "-del")) ||
 		    (!strcmp(argv[i], "--del"))) {
 		    ret = xmlCatalogRemove(BAD_CAST argv[i + 1]);
+		    if (ret < 0) {
+			fprintf(stderr, "Failed to remove entry %s\n",
+				argv[i + 1]);
+			exit_value = 1;
+		    }
 		    i += 1;
 		}
 	    }
@@ -517,6 +531,7 @@ int main(int argc, char **argv) {
 		ans = xmlCatalogResolvePublic((const xmlChar *) argv[i]);
 		if (ans == NULL) {
 		    printf("No entry for PUBLIC %s\n", argv[i]);
+		    exit_value = 4;
 		} else {
 		    printf("%s\n", ans);
 		    xmlFree(ans);
@@ -526,6 +541,7 @@ int main(int argc, char **argv) {
 		ans = xmlCatalogResolveSystem((const xmlChar *) argv[i]);
 		if (ans == NULL) {
 		    printf("No entry for SYSTEM %s\n", argv[i]);
+		    exit_value = 4;
 		} else {
 		    printf("%s\n", ans);
 		    xmlFree(ans);
@@ -540,6 +556,7 @@ int main(int argc, char **argv) {
 	    out = fopen(filename, "w");
 	    if (out == NULL) {
 		fprintf(stderr, "could not open %s for saving\n", filename);
+		exit_value = 2;
 		noout = 0;
 	    } else {
 		xmlCatalogDump(out);
@@ -554,7 +571,7 @@ int main(int argc, char **argv) {
      */
     xmlCleanupParser();
     xmlMemoryDump();
-    return(0);
+    return(exit_value);
 }
 #else
 int main(int argc, char **argv) {

@@ -1,3 +1,9 @@
+Sat Sep 23 12:19:45 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c uri.c: Another patch from Wayne Davison, correcting
+	  an URI bug and a fix for the control-character-induced infinite loop
+	* nanohttp.c: preventive fix for compiling on WIN32
+
 Fri Sep 22 18:06:08 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xmlint.c: closing bug #25000

@@ -4206,8 +4206,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			    ctxt->sax->error(ctxt->userData,
 				 "detected an error in element content\n");
 			ctxt->wellFormed = 0;
-			NEXT;
 		    }
+		    NEXT;
 		    break;
 		}
 

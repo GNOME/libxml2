@@ -1547,15 +1547,13 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
      * b) The reference's path component is appended to the buffer
      *    string.
      */
-    if (ref->path != NULL) {
+    if (ref->path != NULL && ref->path[0] != 0) {
 	index = 0;
 	/*
 	 * Ensure the path includes a '/'
 	 */
-	if ((out >0) && (res->path[out -1] != '/') &&
-	    (ref->path[0] != 0) && (ref->path[index] != '/')) {
+	if (out == 0)
 	    res->path[out++] = '/';
-	}
 	while (ref->path[index] != 0) {
 	    res->path[out++] = ref->path[index++];
 	}

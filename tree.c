@@ -193,6 +193,7 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
     xmlChar *ret = NULL;
 
     *prefix = NULL;
+    if (name == NULL) return(NULL);
 
 #ifndef XML_XML_NAMESPACE
     /* xml: prefix is not really a namespace */
@@ -216,7 +217,21 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
 	return(NULL);
 
     *prefix = xmlStrndup(name, len);
+    if (*prefix == NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlSplitQName2 : out of memory!\n");
+	return(NULL);
+    }
     ret = xmlStrdup(&name[len + 1]);
+    if (ret == NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlSplitQName2 : out of memory!\n");
+	if (*prefix != NULL) {
+	    xmlFree(*prefix);
+	    *prefix = NULL;
+	}
+	return(NULL);
+    }
 
     return(ret);
 }
@@ -1670,6 +1685,7 @@ xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewNsPropEatName : malloc failed\n");
+        xmlFree(name);
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttr));
@@ -1988,6 +2004,7 @@ xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewNode : malloc failed\n");
+        xmlFree(name);
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -6047,11 +6064,13 @@ xmlIsBlankNode(xmlNodePtr node) {
  * @len:  @content length
  * 
  * Concat the given string at the end of the existing node content
+ *
+ * Returns -1 in case of error, 0 otherwise
  */
 
-void
+int
 xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
-    if (node == NULL) return;
+    if (node == NULL) return(-1);
 
     if ((node->type != XML_TEXT_NODE) &&
         (node->type != XML_CDATA_SECTION_NODE)) {
@@ -6059,9 +6078,12 @@ xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlTextConcat: node is not text nor CDATA\n");
 #endif
-        return;
+        return(-1);
     }
     node->content = xmlStrncat(node->content, content, len);
+    if (node->content == NULL)
+        return(-1);
+    return(0);
 }
 
 /************************************************************************

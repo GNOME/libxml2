@@ -1720,6 +1720,8 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 
     *prefix = NULL;
 
+    if (cur == NULL) return(NULL);
+
 #ifndef XML_XML_NAMESPACE
     /* xml: prefix is not really a namespace */
     if ((cur[0] == 'x') && (cur[1] == 'm') &&
@@ -1905,6 +1907,14 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
 	    ctxt->input->cur = in;
 	    ctxt->nbChars += count;
 	    ctxt->input->col += count;
+	    if (ret == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData, 
+			 "XML parser: out of memory\n");
+		ctxt->errNo = XML_ERR_NO_MEMORY;
+		ctxt->instate = XML_PARSER_EOF;
+		ctxt->disableSAX = 1;
+	    }
 	    return(ret);
 	}
     }
@@ -4581,6 +4591,15 @@ xmlParseElementChildrenContentDecl
 	    return(NULL);
 	}
         cur = ret = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
+	if (cur == NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData, 
+		"xmlParseElementChildrenContentDecl : out of memory\n");
+	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+	    xmlFree(elem);
+	    return(NULL);
+	}
 	GROW;
 	if (RAW == '?') {
 	    cur->ocur = XML_ELEMENT_CONTENT_OPT;
@@ -6731,18 +6750,35 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "malloc of %ld byte failed\n",
 			    maxatts * (long)sizeof(xmlChar *));
-		    return(NULL);
+		    if (attname != NULL)
+			xmlFree(attname);
+		    if (attvalue != NULL)
+			xmlFree(attvalue);
+		    ctxt->errNo = XML_ERR_NO_MEMORY;
+		    ctxt->instate = XML_PARSER_EOF;
+		    ctxt->disableSAX = 1;
+		    goto failed;
 		}
 	    } else if (nbatts + 4 > maxatts) {
+	        const xmlChar **n;
+
 	        maxatts *= 2;
-	        atts = (const xmlChar **) xmlRealloc((void *) atts,
+	        n = (const xmlChar **) xmlRealloc((void *) atts,
 						     maxatts * sizeof(xmlChar *));
-		if (atts == NULL) {
+		if (n == NULL) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "realloc of %ld byte failed\n",
 			    maxatts * (long)sizeof(xmlChar *));
-		    return(NULL);
+		    if (attname != NULL)
+			xmlFree(attname);
+		    if (attvalue != NULL)
+			xmlFree(attvalue);
+		    ctxt->errNo = XML_ERR_NO_MEMORY;
+		    ctxt->instate = XML_PARSER_EOF;
+		    ctxt->disableSAX = 1;
+		    goto failed;
 		}
+		atts = n;
 	    }
 	    atts[nbatts++] = attname;
 	    atts[nbatts++] = attvalue;
@@ -6790,7 +6826,9 @@ failed:
         ctxt->sax->startElement(ctxt->userData, name, atts);
 
     if (atts != NULL) {
-        for (i = 0;i < nbatts;i++) xmlFree((xmlChar *) atts[i]);
+        for (i = 0;i < nbatts;i++)
+	    if (atts[i] != NULL)
+	       xmlFree((xmlChar *) atts[i]);
 	xmlFree((void *) atts);
     }
     return(name);
@@ -8317,6 +8355,10 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
     xmlParseGetLasts(ctxt, &lastlt, &lastgt);
 
     while (1) {
+	if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
+	    return(0);
+
+        
 	/*
 	 * Pop-up of finished entities.
 	 */
@@ -9128,6 +9170,8 @@ done:
 int
 xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
+    if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
+        return(ctxt->errNo);
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL) && (ctxt->instate != XML_PARSER_EOF))  {
 	int base = ctxt->input->base - ctxt->input->buf->buffer->content;
@@ -9163,6 +9207,8 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	}
     }
     xmlParseTryOrFinish(ctxt, terminate);
+    if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
+        return(ctxt->errNo);
     if (terminate) {
 	/*
 	 * Check for termination
@@ -9259,7 +9305,9 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
-	xmlFree(buf);
+	xmlGenericError(xmlGenericErrorContext,
+		"xml parser: out of memory\n");
+	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
     if (sax != NULL) {
@@ -9267,8 +9315,10 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	    xmlFree(ctxt->sax);
 	ctxt->sax = (xmlSAXHandlerPtr) xmlMalloc(sizeof(xmlSAXHandler));
 	if (ctxt->sax == NULL) {
-	    xmlFree(buf);
-	    xmlFree(ctxt);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xml parser: out of memory\n");
+	    xmlFreeParserInputBuffer(buf);
+	    xmlFreeParserCtxt(ctxt);
 	    return(NULL);
 	}
 	memcpy(ctxt->sax, sax, sizeof(xmlSAXHandler));
@@ -9284,7 +9334,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     inputStream = xmlNewInputStream(ctxt);
     if (inputStream == NULL) {
 	xmlFreeParserCtxt(ctxt);
-	xmlFree(buf);
+	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
 

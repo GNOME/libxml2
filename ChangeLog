@@ -1,3 +1,14 @@
+Thu Apr 24 18:01:46 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am testOOM.c testOOMlib.[ch] : integrated the Out Of
+	  Memory test from Havoc Pennington #109368
+	* SAX.c parser.c parserInternals.c tree.c uri.c valid.c
+	  xmlmemory.c xmlreader.c xmlregexp.c include/libxml/tree.h
+	  include/libxml/parser.h: a lot of memory allocation cleanups
+	  based on the results of the OOM testing
+	* check-relaxng-test-suite2.py: seems I forgot to commit the
+	  script.
+
 Wed Apr 23 17:16:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: trivial fix for 109774 removing a warning

@@ -724,7 +724,7 @@ xmlNodePtr	xmlAddNextSibling	(xmlNodePtr cur,
 void		xmlUnlinkNode		(xmlNodePtr cur);
 xmlNodePtr	xmlTextMerge		(xmlNodePtr first,
 					 xmlNodePtr second);
-void		xmlTextConcat		(xmlNodePtr node,
+int		xmlTextConcat		(xmlNodePtr node,
 					 const xmlChar *content,
 					 int len);
 void		xmlFreeNodeList		(xmlNodePtr cur);

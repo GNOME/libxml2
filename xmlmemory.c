@@ -305,6 +305,8 @@ xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
     unsigned long number;
 
     if (!xmlMemInitialized) xmlInitMemory();
+    if (ptr == NULL)
+        return(NULL);
     TEST_POINT
 
     p = CLIENT_2_HDR(ptr);

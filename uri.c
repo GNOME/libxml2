@@ -1992,6 +1992,9 @@ xmlCanonicPath(const xmlChar *path)
     }
 
     uri = xmlCreateURI();
+    if (uri == NULL) {
+        return(NULL);
+    }
 
 #if defined(_WIN32) && !defined(__CYGWIN__)    
     len = xmlStrlen(path);

@@ -802,7 +802,7 @@ int		xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx,
 /*
  * Parser contexts handling.
  */
-void		xmlInitParserCtxt	(xmlParserCtxtPtr ctxt);
+int		xmlInitParserCtxt	(xmlParserCtxtPtr ctxt);
 void		xmlClearParserCtxt	(xmlParserCtxtPtr ctxt);
 void		xmlFreeParserCtxt	(xmlParserCtxtPtr ctxt);
 void		xmlSetupParserForBuffer	(xmlParserCtxtPtr ctxt,

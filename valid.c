@@ -59,24 +59,27 @@ typedef struct _xmlValidState {
 
 static int
 vstateVPush(xmlValidCtxtPtr ctxt, xmlElementPtr elemDecl, xmlNodePtr node) {
-    if (ctxt->vstateMax == 0) {
+    if ((ctxt->vstateMax == 0) || (ctxt->vstateTab == NULL)) {
 	ctxt->vstateMax = 10;
 	ctxt->vstateTab = (xmlValidState *) xmlMalloc(ctxt->vstateMax *
 		              sizeof(ctxt->vstateTab[0]));
         if (ctxt->vstateTab == NULL) {
-	    VERROR(ctxt->userData, "realloc failed !n");
+	    VERROR(ctxt->userData, "malloc failed !n");
 	    return(-1);
 	}
     }
 
     if (ctxt->vstateNr >= ctxt->vstateMax) {
-	ctxt->vstateMax *= 2;
-        ctxt->vstateTab = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
-	             ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
-        if (ctxt->vstateTab == NULL) {
+        xmlValidState *tmp;
+
+	tmp = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
+	             2 * ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
+        if (tmp == NULL) {
 	    VERROR(ctxt->userData, "realloc failed !n");
 	    return(-1);
 	}
+	ctxt->vstateMax *= 2;
+	ctxt->vstateTab = tmp;
     }
     ctxt->vstate = &ctxt->vstateTab[ctxt->vstateNr];
     ctxt->vstateTab[ctxt->vstateNr].elemDecl = elemDecl;
@@ -161,15 +164,28 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
     if (ctxt->vstateNr > MAX_RECURSE) {
 	return(-1);
     }
+    if (ctxt->vstateTab == NULL) {
+	ctxt->vstateMax = 8;
+	ctxt->vstateTab = (xmlValidState *) xmlMalloc(
+		     ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
+	if (ctxt->vstateTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "malloc failed !n");
+	    return(-1);
+	}
+    }
     if (ctxt->vstateNr >= ctxt->vstateMax) {
-	ctxt->vstateMax *= 2;
-        ctxt->vstateTab = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
-	             ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
-        if (ctxt->vstateTab == NULL) {
+        xmlValidState *tmp;
+
+        tmp = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
+	             2 * ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
+        if (tmp == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "realloc failed !n");
 	    return(-1);
 	}
+	ctxt->vstateMax *= 2;
+	ctxt->vstateTab = tmp;
 	ctxt->vstate = &ctxt->vstateTab[0];
     }
     /*
@@ -219,15 +235,15 @@ nodeVPush(xmlValidCtxtPtr ctxt, xmlNodePtr value)
         }
     }
     if (ctxt->nodeNr >= ctxt->nodeMax) {
-        ctxt->nodeMax *= 2;
-        ctxt->nodeTab =
-            (xmlNodePtr *) xmlRealloc(ctxt->nodeTab,
-                                      ctxt->nodeMax *
-                                      sizeof(ctxt->nodeTab[0]));
-        if (ctxt->nodeTab == NULL) {
+        xmlNodePtr *tmp;
+        tmp = (xmlNodePtr *) xmlRealloc(ctxt->nodeTab,
+			      ctxt->nodeMax * 2 * sizeof(ctxt->nodeTab[0]));
+        if (tmp == NULL) {
             xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
             return (0);
         }
+        ctxt->nodeMax *= 2;
+	ctxt->nodeTab = tmp;
     }
     ctxt->nodeTab[ctxt->nodeNr] = value;
     ctxt->node = value;
@@ -635,7 +651,7 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     xmlValidBuildAContentModel(elem->content, ctxt, elem->name);
     xmlAutomataSetFinalState(ctxt->am, ctxt->state);
     elem->contModel = xmlAutomataCompile(ctxt->am);
-    if (!xmlRegexpIsDeterminist(elem->contModel)) {
+    if (xmlRegexpIsDeterminist(elem->contModel) != 1) {
 	char expr[5000];
 	expr[0] = 0;
 	xmlSnprintfElementContent(expr, 5000, elem->content, 1);
@@ -901,7 +917,8 @@ xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int
 		strcat(buf, " ...");
 		return;
 	    }
-	    strcat(buf, (char *) content->name);
+	    if (content->name != NULL)
+		strcat(buf, (char *) content->name);
 	    break;
 	case XML_ELEMENT_CONTENT_SEQ:
 	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
@@ -1086,6 +1103,10 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     if (table == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlAddElementDecl: Table creation failed!\n");
+	if (uqname != NULL)
+	    xmlFree(uqname);
+	if (ns != NULL)
+	    xmlFree(ns);
         return(NULL);
     }
 
@@ -1116,6 +1137,8 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
 	    VERROR(ctxt->userData, "Redefinition of element %s\n", name);
 	    if (uqname != NULL)
 		xmlFree(uqname);
+            if (ns != NULL)
+	        xmlFree(ns);
 	    return(NULL);
 	}
     } else {
@@ -1123,6 +1146,10 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
 	if (ret == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "xmlAddElementDecl: out of memory\n");
+	    if (uqname != NULL)
+		xmlFree(uqname);
+            if (ns != NULL)
+	        xmlFree(ns);
 	    return(NULL);
 	}
 	memset(ret, 0, sizeof(xmlElement));
@@ -1132,6 +1159,16 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
 	 * fill the structure.
 	 */
 	ret->name = xmlStrdup(name);
+	if (ret->name == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlAddElementDecl: out of memory\n");
+	    if (uqname != NULL)
+		xmlFree(uqname);
+            if (ns != NULL)
+	        xmlFree(ns);
+	    xmlFree(ret);
+	    return(NULL);
+	}
 	ret->prefix = ns;
 
 	/*
@@ -2667,7 +2704,7 @@ xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
     xmlElementPtr cur;
     xmlChar *uqname = NULL, *prefix = NULL;
 
-    if (dtd == NULL) return(NULL);
+    if ((dtd == NULL) || (name == NULL)) return(NULL);
     if (dtd->elements == NULL)
 	return(NULL);
     table = (xmlElementTablePtr) dtd->elements;
@@ -4641,7 +4678,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     if (elemDecl->contModel == NULL)
 	ret = xmlValidBuildContentModel(ctxt, elemDecl);
     if (elemDecl->contModel == NULL) {
-	ret = -1;
+	return(-1);
     } else {
 	xmlRegExecCtxtPtr exec;
 
@@ -4837,14 +4874,14 @@ fail:
 	    char list[5000];
 
 	    expr[0] = 0;
-	    xmlSnprintfElementContent(expr, 5000, cont, 1);
+	    xmlSnprintfElementContent(&expr[0], 5000, cont, 1);
 	    list[0] = 0;
 #ifndef LIBXML_REGEXP_ENABLED
 	    if (repl != NULL)
-		xmlSnprintfElements(list, 5000, repl, 1);
+		xmlSnprintfElements(&list[0], 5000, repl, 1);
 	    else
 #endif /* LIBXML_REGEXP_ENABLED */
-		xmlSnprintfElements(list, 5000, child, 1);
+		xmlSnprintfElements(&list[0], 5000, child, 1);
 
 	    if (name != NULL) {
 		if (parent != NULL) VECTXT(ctxt, parent);

@@ -83,7 +83,8 @@ typedef enum {
     XML_TEXTREADER_END= 2,
     XML_TEXTREADER_EMPTY= 3,
     XML_TEXTREADER_BACKTRACK= 4,
-    XML_TEXTREADER_DONE= 5
+    XML_TEXTREADER_DONE= 5,
+    XML_TEXTREADER_ERROR= 6
 } xmlTextReaderState;
 
 typedef enum {
@@ -417,6 +418,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		    s, 1);
 	    reader->cur = inbuf->use;
 	    reader->mode = XML_TEXTREADER_DONE;
+	    if (val != 0) return(-1);
 	}
     }
     reader->state = oldstate;
@@ -1151,11 +1153,17 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
 	ret->base = 0;
 	ret->cur = 0;
     }
+    if (ret->ctxt == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewTextReader : malloc failed\n");
+	xmlFree(ret->sax);
+	xmlFree(ret);
+	return(NULL);
+    }
     ret->ctxt->_private = ret;
     ret->ctxt->linenumbers = 1;
     ret->allocs = XML_TEXTREADER_CTXT;
     return(ret);
-
 }
 
 /**

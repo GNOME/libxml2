@@ -2166,15 +2166,17 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
  * @ctxt:  an XML parser context
  *
  * Initialize a parser context
+ *
+ * Returns 0 in case of success and -1 in case of error
  */
 
-void
+int
 xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 {
     if(ctxt==NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlInitParserCtxt: NULL context given\n");
-        return;
+        return(-1);
     }
 
     xmlDefaultSAXHandlerInit();
@@ -2183,6 +2185,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     if (ctxt->sax == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlInitParserCtxt: out of memory\n");
+	return(-1);
     }
     else
         memcpy(ctxt->sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
@@ -2196,7 +2199,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	ctxt->inputNr = 0;
 	ctxt->inputMax = 0;
 	ctxt->input = NULL;
-	return;
+	return(-1);
     }
     ctxt->inputNr = 0;
     ctxt->inputMax = 5;
@@ -2224,7 +2227,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	ctxt->inputNr = 0;
 	ctxt->inputMax = 0;
 	ctxt->input = NULL;
-	return;
+	return(-1);
     }
     ctxt->nodeNr = 0;
     ctxt->nodeMax = 10;
@@ -2244,7 +2247,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	ctxt->nameNr = 0;
 	ctxt->nameMax = 0;
 	ctxt->name = NULL;
-	return;
+	return(-1);
     }
     ctxt->nameNr = 0;
     ctxt->nameMax = 10;
@@ -2267,7 +2270,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	ctxt->spaceNr = 0;
 	ctxt->spaceMax = 0;
 	ctxt->space = NULL;
-	return;
+	return(-1);
     }
     ctxt->spaceNr = 1;
     ctxt->spaceMax = 10;
@@ -2305,6 +2308,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->charset = XML_CHAR_ENCODING_UTF8;
     ctxt->catalogs = NULL;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
+    return(0);
 }
 
 /**
@@ -2370,7 +2374,10 @@ xmlNewParserCtxt()
 	return(NULL);
     }
     memset(ctxt, 0, sizeof(xmlParserCtxt));
-    xmlInitParserCtxt(ctxt);
+    if (xmlInitParserCtxt(ctxt) < 0) {
+        xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
     return(ctxt);
 }
 

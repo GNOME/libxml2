@@ -232,6 +232,8 @@ externalSubset(void *ctx, const xmlChar *name,
 		ctxt->sax->error(ctxt->userData, 
 		     "externalSubset: out of memory\n");
 	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    ctxt->instate = XML_PARSER_EOF;
+	    ctxt->disableSAX = 1;
 	    ctxt->input = oldinput;
 	    ctxt->inputNr = oldinputNr;
 	    ctxt->inputMax = oldinputMax;
@@ -745,12 +747,25 @@ startDocument(void *ctx)
 	    "SAX.startDocument()\n");
 #endif
     if (ctxt->html) {
-	if (ctxt->myDoc == NULL)
 #ifdef LIBXML_HTML_ENABLED
+	if (ctxt->myDoc == NULL)
 	    ctxt->myDoc = htmlNewDocNoDtD(NULL, NULL);
+	if (ctxt->myDoc == NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData, 
+		     "SAX.startDocument(): out of memory\n");
+	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    ctxt->instate = XML_PARSER_EOF;
+	    ctxt->disableSAX = 1;
+	    return;
+	}
 #else
         xmlGenericError(xmlGenericErrorContext,
 		"libxml2 built without HTML support\n");
+	ctxt->errNo = XML_ERR_INTERNAL_ERROR;
+	ctxt->instate = XML_PARSER_EOF;
+	ctxt->disableSAX = 1;
+	return;
 #endif
     } else {
 	doc = ctxt->myDoc = xmlNewDoc(ctxt->version);
@@ -760,6 +775,14 @@ startDocument(void *ctx)
 	    else
 		doc->encoding = NULL;
 	    doc->standalone = ctxt->standalone;
+	} else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData, 
+		     "SAX.startDocument(): out of memory\n");
+	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    ctxt->instate = XML_PARSER_EOF;
+	    ctxt->disableSAX = 1;
+	    return;
 	}
     }
     if ((ctxt->myDoc != NULL) && (ctxt->myDoc->URL == NULL) &&
@@ -839,6 +862,17 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
      * Split the full name into a namespace prefix and the tag name
      */
     name = xmlSplitQName(ctxt, fullname, &ns);
+    if (name == NULL) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, 
+		 "SAX.startElement(): out of memory\n");
+	ctxt->errNo = XML_ERR_NO_MEMORY;
+	ctxt->instate = XML_PARSER_EOF;
+	ctxt->disableSAX = 1;
+	if (ns != NULL)
+	    xmlFree(ns);
+	return;
+    }
 
     /*
      * Do the last stage of the attribute normalization
@@ -921,6 +955,18 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
 	    val = xmlStringDecodeEntities(ctxt, value, XML_SUBSTITUTE_REF,
 		                          0,0,0);
 	    ctxt->depth--;
+	    if (val == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData, 
+			 "SAX.startElement(): out of memory\n");
+		ctxt->errNo = XML_ERR_NO_MEMORY;
+		ctxt->instate = XML_PARSER_EOF;
+		ctxt->disableSAX = 1;
+	        xmlFree(ns);
+		if (name != NULL) 
+		    xmlFree(name);
+		return;
+	    }
 	} else {
 	    val = (xmlChar *) value;
 	}
@@ -1200,14 +1246,19 @@ process_external_subset:
 					     attr->elem, attr->name,
 					     attr->prefix);
 		    if ((tst == attr) || (tst == NULL)) {
+		        xmlChar fn[50];
 			xmlChar *fulln;
 
-			if (attr->prefix != NULL) {
-			    fulln = xmlStrdup(attr->prefix);
-			    fulln = xmlStrcat(fulln, BAD_CAST ":");
-			    fulln = xmlStrcat(fulln, attr->name);
-			} else {
-			    fulln = xmlStrdup(attr->name);
+                        fulln = xmlBuildQName(attr->name, attr->prefix, fn, 50);
+			if (fulln == NULL) {
+			    if ((ctxt->sax != NULL) &&
+			        (ctxt->sax->error != NULL))
+				ctxt->sax->error(ctxt->userData, 
+				     "SAX.startElement(): out of memory\n");
+			    ctxt->errNo = XML_ERR_NO_MEMORY;
+			    ctxt->instate = XML_PARSER_EOF;
+			    ctxt->disableSAX = 1;
+			    return;
 			}
 
 			/*
@@ -1229,7 +1280,8 @@ process_external_subset:
 			    my_attribute(ctxt, fulln, attr->defaultValue,
 			                 prefix);
 			}
-			xmlFree(fulln);
+			if ((fulln != fn) && (fulln != attr->name))
+			    xmlFree(fulln);
 		    }
 		}
 	    }
@@ -1301,7 +1353,14 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
      *        an attribute at this level.
      */
     ret = xmlNewDocNodeEatName(ctxt->myDoc, NULL, name, NULL);
-    if (ret == NULL) return;
+    if (ret == NULL) {
+        if (prefix != NULL)
+	    xmlFree(prefix);
+	ctxt->errNo = XML_ERR_NO_MEMORY;
+	ctxt->instate = XML_PARSER_EOF;
+	ctxt->disableSAX = 1;
+        return;
+    }
     if (ctxt->myDoc->children == NULL) {
 #ifdef DEBUG_SAX_TREE
 	xmlGenericError(xmlGenericErrorContext, "Setting %s as root\n", name);
@@ -1587,6 +1646,9 @@ characters(void *ctx, const xmlChar *ch, int len)
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			ctxt->sax->error(ctxt->userData, 
 			     "SAX.characters(): out of memory\n");
+		    ctxt->errNo = XML_ERR_NO_MEMORY;
+		    ctxt->instate = XML_PARSER_EOF;
+		    ctxt->disableSAX = 1;
 		    return;
 		}
 		ctxt->nodemem = size;
@@ -1596,7 +1658,14 @@ characters(void *ctx, const xmlChar *ch, int len)
 	    ctxt->nodelen += len;
 	    lastChild->content[ctxt->nodelen] = 0;
 	} else if (coalesceText) {
-	    xmlTextConcat(lastChild, ch, len);
+	    if (xmlTextConcat(lastChild, ch, len)) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData, 
+			 "SAX.characters(): out of memory\n");
+		ctxt->errNo = XML_ERR_NO_MEMORY;
+		ctxt->instate = XML_PARSER_EOF;
+		ctxt->disableSAX = 1;
+	    }
 	    if (ctxt->node->children != NULL) {
 		ctxt->nodelen = xmlStrlen(lastChild->content);
 		ctxt->nodemem = ctxt->nodelen + 1;
@@ -1604,10 +1673,19 @@ characters(void *ctx, const xmlChar *ch, int len)
 	} else {
 	    /* Mixed content, first time */
 	    lastChild = xmlNewTextLen(ch, len);
-	    xmlAddChild(ctxt->node, lastChild);
-	    if (ctxt->node->children != NULL) {
-		ctxt->nodelen = len;
-		ctxt->nodemem = len + 1;
+	    if (lastChild == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData, 
+			 "SAX.characters(): out of memory\n");
+		ctxt->errNo = XML_ERR_NO_MEMORY;
+		ctxt->instate = XML_PARSER_EOF;
+		ctxt->disableSAX = 1;
+	    } else {
+		xmlAddChild(ctxt->node, lastChild);
+		if (ctxt->node->children != NULL) {
+		    ctxt->nodelen = len;
+		    ctxt->nodemem = len + 1;
+		}
 	    }
 	}
     }

@@ -9,7 +9,7 @@
 <h1 class="title">
 <a name="id2703858"></a>xmlcatalog</h1>
 <div class="refnamediv">
-<a name="id2707811"></a><h2>Name</h2>xmlcatalog &#x2014; Command line tool to parse and manipulate XML or
+<a name="id2707811"></a><h2>Name</h2>xmlcatalog &#8212; Command line tool to parse and manipulate XML or
       SGML catalog files.</div>
 <div class="refsynopsisdiv">
 <a name="id2707831"></a><h2>Synopsis</h2>
@@ -39,28 +39,26 @@
 <dt>
 <a name="id2705356"></a><span class="term"><tt>--shell</tt> <i><tt>filename</tt></i></span>
 </dt>
-<dd><p>
-<a name="id2705369"></a>
+<dd>
 	    Run a shell
 	    allowing interactive queries on catalog file
 	    <i><tt>filename</tt></i>.
-	  </p></dd>
+	  </dd>
 <dt>
 <a name="id2705383"></a><span class="term"><tt>--create</tt> <i><tt>filename</tt></i></span>
 </dt>
-<dd><p>
-<a name="id2705396"></a>
+<dd>
 	    Create a new
 	    XML catalog. Outputs to stdout, ignoring
 	    <i><tt>filename</tt></i> unless <tt>--noout</tt> is
 	    used, in which case it creates a new catalog file
 	    <i><tt>filename</tt></i>.
-	  </p></dd>
+	  </dd>
 <dt>
 <a name="id2705423"></a><span class="term"><tt>--add</tt> <i><tt>'type'</tt></i> <i><tt>'orig'</tt></i> <i><tt>'replace'</tt></i> <i><tt>filename</tt></i></span>
 </dt>
-<dd><p>
-<a name="id2705448"></a>
+<dd>
+<p>
 	    Add an entry to catalog file
 	    <tt>filename</tt>. <i><tt>type</tt></i> indicates
 	    the type of entry. Possible types are 'public', 'system', 'rewriteSystem',
@@ -68,40 +66,46 @@
 	    is the original reference to 
 	    be replaced, and <i><tt>'replace'</tt></i> is the
 	    URI of the replacement entity to be used. The
-	    <tt>-add</tt> option will not overwrite
+	    <tt>--add</tt> option will not overwrite
 	    <i><tt>filename</tt></i>, outputing to stdout, unless
 	    <tt>--noout</tt> is used. The <tt>--add</tt> will always
 	    take three parameters even if some of the XML catalog
 	    constructs will have only a single argument.
 
-	  </p></dd>
+	  </p>
+<p>
+	    If the <tt>--add</tt> option is used following the
+	    <tt>--sgml</tt> option, only a single argument, a
+	    <i><tt>filename</tt></i>, is used. This is used to add
+	    the name of a catalog file to an SGML
+	    supercatalog, a file that contains references to other included
+	    SGML catalog files.
+	  </p>
+</dd>
 <dt>
-<a name="id2708138"></a><span class="term"><tt>--del</tt> <i><tt>'values'</tt></i> <i><tt>filename</tt></i></span>
+<a name="id2708168"></a><span class="term"><tt>--del</tt> <i><tt>'values'</tt></i> <i><tt>filename</tt></i></span>
 </dt>
-<dd><p>
-<a name="id2708155"></a>
+<dd>
 	    Remove entries from the catalog file
 	    <i><tt>filename</tt></i> matching
 	    <i><tt>'values'</tt></i>. The <tt>--del</tt> option
 	    will not overwrite <i><tt>filename</tt></i>, outputing to
 	    stdout, unless <tt>--noout</tt> is used.
-	  </p></dd>
+	  </dd>
 <dt>
-<a name="id2708187"></a><span class="term"><tt>--noout</tt></span>
+<a name="id2708217"></a><span class="term"><tt>--noout</tt></span>
 </dt>
-<dd><p>
-<a name="id2708196"></a>
+<dd>
 	    Save output to the named file rather than
 	    outputing to stdout.
-	  </p></dd>
+	  </dd>
 <dt>
-<a name="id2708207"></a><span class="term"><tt>-v</tt> or <tt>--verbose</tt></span>
+<a name="id2708237"></a><span class="term"><tt>-v</tt> or <tt>--verbose</tt></span>
 </dt>
-<dd><p>
-<a name="id2708220"></a>
+<dd>
 	    output debugging
 	    information.
-	  </p></dd>
+	  </dd>
 </dl></div>
 </div>
 <div class="refsect1">
@@ -115,30 +119,27 @@
     </p>
 <div class="variablelist"><dl>
 <dt>
-<a name="id2708274"></a><span class="term"><tt>public</tt> <i><tt>'PublicID'</tt></i></span>
+<a name="id2708304"></a><span class="term"><tt>public</tt> <i><tt>'PublicID'</tt></i></span>
 </dt>
-<dd><p>
-<a name="id2708287"></a>
+<dd>
 	    Execute a
 	    public identifier lookup of the catalog entry for
 	    <i><tt>'PublicID'</tt></i>. The corresponding entry will be
 	    output to the command line.
-	  </p></dd>
+	  </dd>
 <dt>
-<a name="id2708302"></a><span class="term"><tt>system</tt> <i><tt>'SystemID'</tt></i></span>
+<a name="id2708332"></a><span class="term"><tt>system</tt> <i><tt>'SystemID'</tt></i></span>
 </dt>
-<dd><p>
-<a name="id2708315"></a>
+<dd>
 	    Execute a
 	    public identifier lookup of the catalog entry for
 	    <i><tt>'SystemID'</tt></i>. The corresponding entry will be
 	    output to the command line.
-	  </p></dd>
+	  </dd>
 <dt>
-<a name="id2708331"></a><span class="term"><tt>add </tt> <i><tt>'type'</tt></i> <i><tt>'orig'</tt></i> <i><tt>'replace'</tt></i></span>
+<a name="id2708361"></a><span class="term"><tt>add </tt> <i><tt>'type'</tt></i> <i><tt>'orig'</tt></i> <i><tt>'replace'</tt></i></span>
 </dt>
-<dd><p>
-<a name="id2708352"></a>
+<dd>
 	    Add an entry to the catalog
 	    file. <i><tt>type</tt></i> indicates the type of
 	    entry. Possible types are 'public', 'system', 'rewriteSystem',
@@ -146,44 +147,39 @@
 	    is the original reference to  be replaced, and
 	    <i><tt>'replace'</tt></i> is the URI of the
 	    replacement entity to be used.
-	  </p></dd>
+	  </dd>
 <dt>
-<a name="id2708383"></a><span class="term"><tt>del</tt> <i><tt>'values'</tt></i></span>
+<a name="id2708681"></a><span class="term"><tt>del</tt> <i><tt>'values'</tt></i></span>
 </dt>
-<dd><p>
-<a name="id2708396"></a>
+<dd>
 	    Remove the
 	    catalog entry corresponding to <i><tt>'values'</tt></i>.
-	  </p></dd>
+	  </dd>
 <dt>
-<a name="id2705468"></a><span class="term"><tt>dump</tt></span>
+<a name="id2708708"></a><span class="term"><tt>dump</tt></span>
 </dt>
-<dd><p>
-<a name="id2705478"></a>
+<dd>
 	    Print the current catalog.
-	  </p></dd>
+	  </dd>
 <dt>
-<a name="id2708682"></a><span class="term"><tt>debug</tt></span>
+<a name="id2708728"></a><span class="term"><tt>debug</tt></span>
 </dt>
-<dd><p>
-<a name="id2708691"></a>
+<dd>
 	    Print debugging statements showing the steps
 	    xmlcatalog is executing.
-	  </p></dd>
+	  </dd>
 <dt>
-<a name="id2708708"></a><span class="term"><tt>quiet</tt></span>
+<a name="id2708755"></a><span class="term"><tt>quiet</tt></span>
 </dt>
-<dd><p>
-<a name="id2708717"></a>
+<dd>
 	    Stop printing debugging statements.
-	  </p></dd>
+	  </dd>
 <dt>
-<a name="id2708728"></a><span class="term"><tt>exit</tt></span>
+<a name="id2708774"></a><span class="term"><tt>exit</tt></span>
 </dt>
-<dd><p>
-<a name="id2708737"></a>
+<dd>
 	    Quit the shell.
-	  </p></dd>
+	  </dd>
 </dl></div>
 </div>
 <div class="refsect1">
@@ -191,25 +187,25 @@
 <a name="references"></a>References</h2>
 <div class="variablelist"><dl>
 <dt>
-<a name="id2708766"></a><span class="term">libxml web page:</span>
+<a name="id2708813"></a><span class="term">libxml web page:</span>
 </dt>
 <dd>
 	  <a href="http://www.xmlsoft.org/" target="_top">http://www.xmlsoft.org/</a>
 	  </dd>
 <dt>
-<a name="id2708794"></a><span class="term">libxml catalog support web page:</span>
+<a name="id2708841"></a><span class="term">libxml catalog support web page:</span>
 </dt>
 <dd>
 	    <a href="http://www.xmlsoft.org/catalog.html" target="_top">http://www.xmlsoft.org/catalog.html</a>
 	  </dd>
 <dt>
-<a name="id2708828"></a><span class="term">James Clark's SGML catalog page:</span>
+<a name="id2708875"></a><span class="term">James Clark's SGML catalog page:</span>
 </dt>
 <dd>
 	     <a href="http://www.jclark.com/sp/catalog.htm" target="_top">http://www.jclark.com/sp/catalog.htm</a>
 	  </dd>
 <dt>
-<a name="id2708861"></a><span class="term">OASIS XML catalog specification:</span>
+<a name="id2708909"></a><span class="term">OASIS XML catalog specification:</span>
 </dt>
 <dd>
 	     <a href="http://www.oasis-open.org/committees/entity/spec.html" target="_top">http://www.oasis-open.org/committees/entity/spec.html</a>

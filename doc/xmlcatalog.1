@@ -47,7 +47,10 @@ Create a new XML catalog. Outputs to stdout, ignoring \fIfilename\fR unless \fB-
 .TP
 \fB--add\fR \fI'type'\fR \fI'orig'\fR \fI'replace'\fR \fIfilename\fR
 
-Add an entry to catalog file \fIfilename\fR. \fItype\fR indicates the type of entry. Possible types are 'public', 'system', 'rewriteSystem', 'delegatePublic' and 'delegateSystem'. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used. The \fB-add\fR option will not overwrite \fIfilename\fR, outputing to stdout, unless \fB--noout\fR is used. The \fB--add\fR will always take three parameters even if some of the XML catalog constructs will have only a single argument.
+Add an entry to catalog file \fIfilename\fR. \fItype\fR indicates the type of entry. Possible types are 'public', 'system', 'rewriteSystem', 'delegatePublic' and 'delegateSystem'. \fI'orig'\fR is the original reference to be replaced, and \fI'replace'\fR is the URI of the replacement entity to be used. The \fB--add\fR option will not overwrite \fIfilename\fR, outputing to stdout, unless \fB--noout\fR is used. The \fB--add\fR will always take three parameters even if some of the XML catalog constructs will have only a single argument.
+
+
+If the \fB--add\fR option is used following the \fB--sgml\fR option, only a single argument, a \fIfilename\fR, is used. This is used to add the name of a catalog file to an SGML supercatalog, a file that contains references to other included SGML catalog files.
 
 .TP
 \fB--del\fR \fI'values'\fR \fIfilename\fR

@@ -1806,7 +1806,7 @@ xmlShellLoad(xmlShellCtxtPtr ctxt, char *filename,
         doc = NULL;
 #endif /* LIBXML_HTML_ENABLED */
     } else {
-        doc = xmlParseFile(filename);
+        doc = xmlReadFile(filename,NULL,0);
     }
     if (doc != NULL) {
         if (ctxt->loaded == 1) {

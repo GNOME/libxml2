@@ -1873,7 +1873,11 @@ main(int argc, char **argv) {
 	if (timing) {
 	    endTimer("Compiling the schemas");
 	}
-    } else if ((schema != NULL) && (stream == 0)) {
+    } else if ((schema != NULL)
+#ifdef LIBXML_READER_ENABLED
+		   	&& (stream == 0)
+#endif
+	) {
 	xmlSchemaParserCtxtPtr ctxt;
 
 	if (timing) {

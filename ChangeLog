@@ -1,3 +1,11 @@
+Thu Mar 25 10:33:05 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c testXPath.c xmllint.c xmlschemastypes.c: applied
+	  patch from Mark Vadoc avoiding using xmlParse* option and use
+	  xmlRead* instead
+	* win32/Makefile.bcb: patch to Borland C++ builder from Eric Zurcher
+	  to avoid problems with some pathnames.
+
 Tue Mar 23 12:35:08 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/* News: preparing 2.6.8 release, updated and rebuilt

@@ -76,6 +76,22 @@ Expression: substring("12345",0,3)
 Object is a string : 12
 
 ========================
+Expression: substring("12345", 0 div 0, 3)
+Object is a string : 
+
+========================
+Expression: substring("12345", 1, 0 div 0)
+Object is a string : 
+
+========================
+Expression: substring("12345", -42, 1 div 0)
+Object is a string : 12345
+
+========================
+Expression: substring("12345", -1 div 0, 1 div 0)
+Object is a string : 
+
+========================
 Expression: string-length("")
 Object is a number : 0
 

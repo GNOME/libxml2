@@ -1,3 +1,10 @@
+Wed Apr 10 18:12:52 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: another patch from Richard Jinks for substring conformance
+	* test/XPath/expr/floats test/XPath/expr/strings
+	  result/XPath/expr/floats result/XPath/expr/strings: update of the
+	  test suite to check those.
+
 Wed Apr 10 13:29:49 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: patch from Richard Jinks for .x float parsing.

@@ -6152,34 +6152,44 @@ xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     if (nargs != 3)
 	le = m;
 
-    /*
-     * To meet our requirements, initial index calculations
-     * must be done before we convert to integer format
-     *
-     * First we normalize indices
+    /* Need to check for the special cases where either 
+     * the index is NaN, the length is NaN, or both
+     * arguments are infinity (relying on Inf + -Inf = NaN)
      */
-    in -= 1.0;
-    le += in;
-    if (in < 0.0)
-	in = 0.0;
-    if (le > (double)m)
-	le = (double)m;
+    if (!xmlXPathIsNaN(in + le)) {
+        /*
+         * To meet our requirements, initial index calculations
+         * must be done before we convert to integer format
+         *
+         * First we normalize indices
+         */
+        in -= 1.0;
+        le += in;
+        if (in < 0.0)
+            in = 0.0;
+        if (le > (double)m)
+            le = (double)m;
 
-    /*
-     * Now we go to integer form, rounding up
-     */
-    i = (int) in;
-    if (((double)i) != in) i++;
+        /*
+         * Now we go to integer form, rounding up
+         */
+        i = (int) in;
+        if (((double)i) != in) i++;
     
-    l = (int) le;
-    if (((double)l) != le) l++;
+        l = (int) le;
+        if (((double)l) != le) l++;
 
-    if (l > m) l=m;
+        if (l > m) l=m;
 
-    /* number of chars to copy */
-    l -= i;
+        /* number of chars to copy */
+        l -= i;
 
-    ret = xmlUTF8Strsub(str->stringval, i, l);
+        ret = xmlUTF8Strsub(str->stringval, i, l);
+    }
+    else {
+        ret = NULL;
+    }
+
     if (ret == NULL)
 	valuePush(ctxt, xmlXPathNewCString(""));
     else {

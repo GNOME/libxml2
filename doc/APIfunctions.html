@@ -97,6 +97,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XMLPARSERWARNING">xmlParserWarning</a>
 <a href="html/libxml-xmlerror.html#XMLPARSERVALIDITYERROR">xmlParserValidityError</a>
 <a href="html/libxml-xmlerror.html#XMLPARSERVALIDITYWARNING">xmlParserValidityWarning</a>
+<a href="">xmlSchemaValidityErrorFunc</a>
+<a href="">xmlSchemaValidityWarningFunc</a>
 </p>
 <h2>Type FILE *:</h2>
 <p>
@@ -127,6 +129,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlmemory.html#XMLMEMSHOW">xmlMemShow</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHDEBUGDUMPOBJECT">xmlXPathDebugDumpObject</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHDEBUGDUMPCOMPEXPR">xmlXPathDebugDumpCompExpr</a>
+<a href="">xmlRegexpPrint</a>
+<a href="">xmlSchemaDump</a>
 </p>
 <h2>Type char **:</h2>
 <p>
@@ -518,6 +522,17 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-sax.html#NAMESPACEDECL">namespaceDecl</a>
 <a href="html/libxml-sax.html#COMMENT">comment</a>
 <a href="html/libxml-sax.html#CDATABLOCK">cdataBlock</a>
+<a href="">xmlRegexpCompile</a>
+<a href="">xmlRegexpExec</a>
+<a href="">xmlRegExecCallbacks</a>
+<a href="">xmlRegExecPushString</a>
+<a href="">xmlAutomataNewTransition</a>
+<a href="">xmlAutomataNewCountTrans</a>
+<a href="">xmlAutomataNewOnceTrans</a>
+<a href="">xmlSchemaGetPredefinedType</a>
+<a href="">xmlSchemaGetPredefinedType</a>
+<a href="">xmlSchemaValidatePredefinedType</a>
+<a href="">xmlSchemaValidateFacet</a>
 </p>
 <h2>Type const xmlChar **:</h2>
 <p>
@@ -540,6 +555,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#XMLPARSERFINDNODEINFO">xmlParserFindNodeInfo</a>
 <a href="html/libxml-parser.html#XMLPARSERFINDNODEINFOINDEX">xmlParserFindNodeInfoIndex</a>
 <a href="html/libxml-tree.html#XMLCOPYNODE">xmlCopyNode</a>
+<a href="html/libxml-tree.html#XMLDOCCOPYNODE">xmlDocCopyNode</a>
+<a href="html/libxml-tree.html#XMLCOPYNODELIST">xmlCopyNodeList</a>
 </p>
 <h2>Type const xmlParserCtxtPtr:</h2>
 <p>
@@ -818,6 +835,18 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-sax.html#NAMESPACEDECL">namespaceDecl</a>
 <a href="html/libxml-sax.html#COMMENT">comment</a>
 <a href="html/libxml-sax.html#CDATABLOCK">cdataBlock</a>
+<a href="">xmlRegExecCallbacks</a>
+<a href="">xmlRegExecCallbacks</a>
+<a href="">xmlRegNewExecCtxt</a>
+<a href="">xmlRegExecPushString</a>
+<a href="">xmlAutomataNewTransition</a>
+<a href="">xmlAutomataNewCountTrans</a>
+<a href="">xmlAutomataNewOnceTrans</a>
+<a href="">xmlSchemaValidityErrorFunc</a>
+<a href="">xmlSchemaValidityWarningFunc</a>
+<a href="">xmlSchemaSetParserErrors</a>
+<a href="">xmlSchemaSetValidErrors</a>
+<a href="">xmlSchemaValidateStream</a>
 </p>
 <h2>Type xmlAttrPtr:</h2>
 <p>
@@ -855,6 +884,41 @@ A:link, A:visited, A:active { text-decoration: underline }
 <p>
 <a href="html/libxml-valid.html#XMLADDATTRIBUTEDECL">xmlAddAttributeDecl</a>
 <a href="html/libxml-valid.html#XMLVALIDATEATTRIBUTEVALUE">xmlValidateAttributeValue</a>
+</p>
+<h2>Type xmlAutomataPtr:</h2>
+<p>
+<a href="">xmlFreeAutomata</a>
+<a href="">xmlAutomataGetInitState</a>
+<a href="">xmlAutomataSetFinalState</a>
+<a href="">xmlAutomataNewState</a>
+<a href="">xmlAutomataNewTransition</a>
+<a href="">xmlAutomataNewCountTrans</a>
+<a href="">xmlAutomataNewOnceTrans</a>
+<a href="">xmlAutomataNewAllTrans</a>
+<a href="">xmlAutomataNewEpsilon</a>
+<a href="">xmlAutomataNewCountedTrans</a>
+<a href="">xmlAutomataNewCounterTrans</a>
+<a href="">xmlAutomataNewCounter</a>
+<a href="">xmlAutomataCompile</a>
+<a href="">xmlAutomataIsDeterminist</a>
+</p>
+<h2>Type xmlAutomataStatePtr:</h2>
+<p>
+<a href="">xmlAutomataSetFinalState</a>
+<a href="">xmlAutomataNewTransition</a>
+<a href="">xmlAutomataNewTransition</a>
+<a href="">xmlAutomataNewCountTrans</a>
+<a href="">xmlAutomataNewCountTrans</a>
+<a href="">xmlAutomataNewOnceTrans</a>
+<a href="">xmlAutomataNewOnceTrans</a>
+<a href="">xmlAutomataNewAllTrans</a>
+<a href="">xmlAutomataNewAllTrans</a>
+<a href="">xmlAutomataNewEpsilon</a>
+<a href="">xmlAutomataNewEpsilon</a>
+<a href="">xmlAutomataNewCountedTrans</a>
+<a href="">xmlAutomataNewCountedTrans</a>
+<a href="">xmlAutomataNewCounterTrans</a>
+<a href="">xmlAutomataNewCounterTrans</a>
 </p>
 <h2>Type xmlBufferAllocationScheme:</h2>
 <p>
@@ -992,6 +1056,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFD">xmlParserInputBufferCreateFd</a>
 <a href="html/libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEMEM">xmlParserInputBufferCreateMem</a>
 <a href="html/libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEIO">xmlParserInputBufferCreateIO</a>
+<a href="">xmlSchemaValidateStream</a>
 </p>
 <h2>Type xmlCharEncodingHandler *:</h2>
 <p>
@@ -1112,6 +1177,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-c14n.html#XMLC14NDOCSAVETO">xmlC14NDocSaveTo</a>
 <a href="html/libxml-c14n.html#XMLC14NDOCDUMPMEMORY">xmlC14NDocDumpMemory</a>
 <a href="html/libxml-c14n.html#XMLC14NDOCSAVE">xmlC14NDocSave</a>
+<a href="">xmlSchemaValidateDoc</a>
 </p>
 <h2>Type xmlDtdPtr:</h2>
 <p>
@@ -1407,8 +1473,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#XMLCOPYPROPLIST">xmlCopyPropList</a>
 <a href="html/libxml-tree.html#XMLNEWCHILD">xmlNewChild</a>
 <a href="html/libxml-tree.html#XMLNEWTEXTCHILD">xmlNewTextChild</a>
-<a href="html/libxml-tree.html#XMLDOCCOPYNODE">xmlDocCopyNode</a>
-<a href="html/libxml-tree.html#XMLCOPYNODELIST">xmlCopyNodeList</a>
 <a href="html/libxml-tree.html#XMLGETLINENO">xmlGetLineNo</a>
 <a href="html/libxml-tree.html#XMLGETNODEPATH">xmlGetNodePath</a>
 <a href="html/libxml-tree.html#XMLGETLASTCHILD">xmlGetLastChild</a>
@@ -1721,6 +1785,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlio.html#XMLPARSERINPUTBUFFERGROW">xmlParserInputBufferGrow</a>
 <a href="html/libxml-xmlio.html#XMLPARSERINPUTBUFFERPUSH">xmlParserInputBufferPush</a>
 <a href="html/libxml-xmlio.html#XMLFREEPARSERINPUTBUFFER">xmlFreeParserInputBuffer</a>
+<a href="">xmlSchemaValidateStream</a>
 </p>
 <h2>Type xmlParserInputPtr:</h2>
 <p>
@@ -1758,6 +1823,23 @@ A:link, A:visited, A:active { text-decoration: underline }
 <p>
 <a href="html/libxml-valid.html#XMLFREEREFTABLE">xmlFreeRefTable</a>
 </p>
+<h2>Type xmlRegExecCallbacks:</h2>
+<p>
+<a href="">xmlRegNewExecCtxt</a>
+</p>
+<h2>Type xmlRegExecCtxtPtr:</h2>
+<p>
+<a href="">xmlRegExecCallbacks</a>
+<a href="">xmlRegFreeExecCtxt</a>
+<a href="">xmlRegExecPushString</a>
+</p>
+<h2>Type xmlRegexpPtr:</h2>
+<p>
+<a href="">xmlRegFreeRegexp</a>
+<a href="">xmlRegexpExec</a>
+<a href="">xmlRegexpPrint</a>
+<a href="">xmlRegNewExecCtxt</a>
+</p>
 <h2>Type xmlSAXHandler *:</h2>
 <p>
 <a href="html/libxml-sax.html#INITXMLDEFAULTSAXHANDLER">initxmlDefaultSAXHandler</a>
@@ -1779,11 +1861,60 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#XMLPARSEEXTERNALENTITY">xmlParseExternalEntity</a>
 <a href="html/libxml-parser.html#XMLCREATEPUSHPARSERCTXT">xmlCreatePushParserCtxt</a>
 <a href="html/libxml-parser.html#XMLCREATEIOPARSERCTXT">xmlCreateIOParserCtxt</a>
+<a href="">xmlSchemaValidateStream</a>
 </p>
 <h2>Type xmlSAXLocatorPtr:</h2>
 <p>
 <a href="html/libxml-parser.html#SETDOCUMENTLOCATORSAXFUNC">setDocumentLocatorSAXFunc</a>
 <a href="html/libxml-sax.html#SETDOCUMENTLOCATOR">setDocumentLocator</a>
+</p>
+<h2>Type xmlSchemaFacetPtr:</h2>
+<p>
+<a href="">xmlSchemaValidateFacet</a>
+</p>
+<h2>Type xmlSchemaParserCtxtPtr:</h2>
+<p>
+<a href="">xmlSchemaFreeParserCtxt</a>
+<a href="">xmlSchemaSetParserErrors</a>
+<a href="">xmlSchemaParse</a>
+</p>
+<h2>Type xmlSchemaPtr:</h2>
+<p>
+<a href="">xmlSchemaFree</a>
+<a href="">xmlSchemaDump</a>
+<a href="">xmlSchemaNewValidCtxt</a>
+</p>
+<h2>Type xmlSchemaTypePtr:</h2>
+<p>
+<a href="">xmlSchemaFreeType</a>
+<a href="">xmlSchemaValidatePredefinedType</a>
+<a href="">xmlSchemaValidateFacet</a>
+</p>
+<h2>Type xmlSchemaValPtr:</h2>
+<p>
+<a href="">xmlSchemaValidateFacet</a>
+<a href="">xmlSchemaFreeValue</a>
+</p>
+<h2>Type xmlSchemaValPtr *:</h2>
+<p>
+<a href="">xmlSchemaValidatePredefinedType</a>
+</p>
+<h2>Type xmlSchemaValidCtxtPtr:</h2>
+<p>
+<a href="">xmlSchemaSetValidErrors</a>
+<a href="">xmlSchemaFreeValidCtxt</a>
+<a href="">xmlSchemaValidateDoc</a>
+<a href="">xmlSchemaValidateStream</a>
+</p>
+<h2>Type xmlSchemaValidityErrorFunc:</h2>
+<p>
+<a href="">xmlSchemaSetParserErrors</a>
+<a href="">xmlSchemaSetValidErrors</a>
+</p>
+<h2>Type xmlSchemaValidityWarningFunc:</h2>
+<p>
+<a href="">xmlSchemaSetParserErrors</a>
+<a href="">xmlSchemaSetValidErrors</a>
 </p>
 <h2>Type xmlShellCtxtPtr:</h2>
 <p>

@@ -1,3 +1,9 @@
+Wed Oct  9 16:22:54 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/index.py doc/search.php: integrated the XSLT indexing,
+	  a few fixed in the indexer, added a scope selection at the
+	  search level.
+
 Wed Oct  9 12:18:37 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: Joe Marcus Clarke reported a segfault on FBsd 

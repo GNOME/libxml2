@@ -469,7 +469,6 @@ def cleanupWordsString(str):
     str = string.replace(str, "'", " ")
     str = string.replace(str, '"', " ")
     str = string.replace(str, ";", " ")
-    str = string.replace(str, "-", " ")
     str = string.replace(str, "(", " ")
     str = string.replace(str, ")", " ")
     str = string.replace(str, "{", " ")
@@ -489,6 +488,7 @@ def cleanupWordsString(str):
     return str
     
 def cleanupDescrString(str):
+    str = string.replace(str, "'", " ")
     str = string.replace(str, "\n", " ")
     str = string.replace(str, "\r", " ")
     str = string.replace(str, "\xc2", " ")
@@ -781,6 +781,8 @@ def analyzeAPIStruct(top):
 
     info = top.prop("info")
     if info != None:
+	info = string.replace(info, "'", " ")
+	info = string.strip(info)
 	l = string.split(info)
 	for word in l:
 	    if len(word) > 2:
@@ -794,6 +796,8 @@ def analyzeAPIMacro(top):
     symbol = top.prop("name")
     if symbol == None:
         return 0
+    symbol = string.replace(symbol, "'", " ")
+    symbol = string.strip(symbol)
 
     info = None
     cur = top.children
@@ -815,6 +819,8 @@ def analyzeAPIMacro(top):
         print "Macro %s description has no <info>" % (symbol)
         return 0
 
+    info = string.replace(info, "'", " ")
+    info = string.strip(info)
     addMacro(symbol, file, info)
     l = string.split(info)
     for word in l:
@@ -830,6 +836,8 @@ def analyzeAPIFunction(top):
     if symbol == None:
         return 0
 
+    symbol = string.replace(symbol, "'", " ")
+    symbol = string.strip(symbol)
     info = None
     cur = top.children
     while cur != None:
@@ -841,19 +849,27 @@ def analyzeAPIFunction(top):
 	elif cur.name == "return":
 	    rinfo = cur.prop("info")
 	    if rinfo != None:
+		rinfo = string.replace(rinfo, "'", " ")
+		rinfo = string.strip(rinfo)
 	        addString(rinfo, file, symbol, 7)
 	elif cur.name == "arg":
 	    ainfo = cur.prop("info")
-	    if rinfo != None:
+	    if ainfo != None:
+		ainfo = string.replace(ainfo, "'", " ")
+		ainfo = string.strip(ainfo)
 	        addString(ainfo, file, symbol, 5)
 	    name = cur.prop("name")
 	    if name != None:
+		name = string.replace(name, "'", " ")
+		name = string.strip(name)
 	        addWord(name, file, symbol, 7)
         cur = cur.next
     if info == None:
         print "Function %s description has no <info>" % (symbol)
 	addFunction(symbol, file, "")
     else:
+        info = string.replace(info, "'", " ")
+	info = string.strip(info)
 	addFunction(symbol, file, info)
         addString(info, file, symbol, 5)
 

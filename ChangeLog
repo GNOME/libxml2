@@ -1,3 +1,8 @@
+Sun Jul 21 19:15:00 HKT 2002 William Brack <wbrack@mmm.com.hk>
+
+	* python/Makefile.am: enhanced to fix bug 72012 (errors
+	  when using '-jX' make parameter)
+
 Fri Jul 19 16:35:00 HKT 2002 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: small additional enhancement for booleans

@@ -28,7 +28,7 @@ if WITH_PYTHON
 mylibs = \
 	$(top_builddir)/libxml2.la
 
-all: libxml2.py libxml2mod.la
+all_local:	libxml2.py
 
 pythondir = $(prefix)/lib/python${PYTHON_VERSION}/site-packages
 python_LTLIBRARIES = libxml2mod.la
@@ -53,8 +53,11 @@ GENERATED= $(srcdir)/libxml2class.py \
 	   $(srcdir)/libxml2-py.c \
 	   $(srcdir)/libxml2-py.h
 
-$(GENERATED): $(srcdir)/$(GENERATE) $(API_DESC)
+$(GENERATED): gen_prog
+
+gen_prog: $(srcdir)/$(GENERATE) $(API_DESC)
 	cd $(srcdir) && $(PYTHON) $(GENERATE)
+	touch gen_prog
 
 $(libxml2mod_la_OBJECTS): $(GENERATED)
 
@@ -65,5 +68,5 @@ tests test: all
 	cd tests && $(MAKE) tests
 
 clean:
-	rm -f $(GENERATED) *.o _libxml.so *.pyc libxml2.py
+	rm -f $(GENERATED) *.o _libxml.so *.pyc libxml2.py gen_prog
 

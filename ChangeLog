@@ -1,3 +1,8 @@
+Tue Aug 31 09:46:18 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlstring.c: fixed error reported on the list caused by
+	  my last change
+
 Tue Aug 31 15:41:52 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS configure.in doc/*: release of libxml2-2.6.13

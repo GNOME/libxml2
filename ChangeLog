@@ -1,3 +1,7 @@
+Thu Nov 15 14:53:42 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: use the URL notation file:// for default catalog paths
+
 Wed Nov 14 16:03:02 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/tree.h: better comments for _private fields

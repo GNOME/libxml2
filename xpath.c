@@ -2813,7 +2813,7 @@ xmlXPathRegisterFuncNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 	return(-1);
     if (f == NULL)
         return(xmlHashRemoveEntry2(ctxt->funcHash, name, ns_uri, NULL));
-    return(xmlHashAddEntry2(ctxt->funcHash, name, ns_uri, (void *) f));
+    return(xmlHashAddEntry2(ctxt->funcHash, name, ns_uri, XML_CAST_FPTR(f)));
 }
 
 /**
@@ -2875,13 +2875,14 @@ xmlXPathFunctionLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
 xmlXPathFunction
 xmlXPathFunctionLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 			 const xmlChar *ns_uri) {
+    xmlXPathFunction ret;
+    
     if (ctxt == NULL)
 	return(NULL);
     if (name == NULL)
 	return(NULL);
 
     if (ctxt->funcLookupFunc != NULL) {
-	xmlXPathFunction ret;
 	xmlXPathFuncLookupFunc f;
 
 	f = ctxt->funcLookupFunc;
@@ -2893,7 +2894,8 @@ xmlXPathFunctionLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
     if (ctxt->funcHash == NULL)
 	return(NULL);
 
-    return((xmlXPathFunction) xmlHashLookup2(ctxt->funcHash, name, ns_uri));
+    XML_CAST_FPTR(ret) = xmlHashLookup2(ctxt->funcHash, name, ns_uri);
+    return(ret);
 }
 
 /**
@@ -10404,7 +10406,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 			return (total);
 		    }
                 if (op->cache != NULL)
-                    func = (xmlXPathFunction) op->cache;
+                    XML_CAST_FPTR(func) = op->cache;
                 else {
                     const xmlChar *URI = NULL;
 
@@ -10429,7 +10431,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                                         op->value4);
                         XP_ERROR0(XPATH_UNKNOWN_FUNC_ERROR);
                     }
-                    op->cache = (void *) func;
+                    op->cache = XML_CAST_FPTR(func);
                     op->cacheURI = (void *) URI;
                 }
                 oldFunc = ctxt->context->function;

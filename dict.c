@@ -612,9 +612,7 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
 const xmlChar *
 xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
     unsigned long key, okey, nbi = 0;
-    xmlDictEntryPtr entry;
     xmlDictEntryPtr insert;
-    const xmlChar *ret;
 
     if ((dict == NULL) || (name == NULL))
 	return(NULL);

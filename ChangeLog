@@ -1,3 +1,9 @@
+Wed Aug 14 16:43:53 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: oops I was missing the xml:base fixup too
+	* result/XInclude/*.xml: this adds xml:base attributes to most
+	  results of the tests
+
 Wed Aug 14 16:05:37 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: quick but apparently working implementation of

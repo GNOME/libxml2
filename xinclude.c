@@ -892,6 +892,20 @@ loaded:
 	xmlXPathFreeContext(xptrctxt);
 	xmlFree(fragment);
     }
+
+    /*
+     * Do the xml:base fixup if needed
+     */
+    if ((doc != NULL) && (URL != NULL) && (xmlStrchr(URL, (xmlChar) '/'))) {
+	xmlNodePtr node;
+
+	node = ctxt->repTab[nr];
+	while (node != NULL) {
+	    if (node->type == XML_ELEMENT_NODE)
+		xmlNodeSetBase(node, URL);
+	    node = node->next;
+	}
+    }
     xmlFree(URL);
     return(0);
 }

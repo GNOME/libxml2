@@ -1,3 +1,10 @@
+Thu Dec 18 20:10:34 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* tree.c fix misc. typos in doc comments
+	* include/libxml/tree.h elaborate on macro define doc
+	comments
+	* doc/* rebuild docs
+
 Wed Dec 17 16:07:33 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/*: don't call the result files .out but .res as

@@ -6433,8 +6433,8 @@ xmlBufferCreateSize(size_t size) {
  * @mem: the memory area
  * @size:  the size in byte
  *
- * routine to create an XML buffer from an immutable memory area,
- * The are won't be modified nor copied, and is expected to be
+ * routine to create an XML buffer from an immutable memory area.
+ * The area won't be modified nor copied, and is expected to be
  * present until the end of the buffer lifetime.
  *
  * returns the new structure.

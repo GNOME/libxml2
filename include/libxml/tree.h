@@ -520,7 +520,8 @@ struct _xmlDoc {
 /**
  * xmlChildrenNode:
  *
- * Macro for compatibility naming layer with libxml1.
+ * Macro for compatibility naming layer with libxml1. Maps
+ * to "children."
  */
 #ifndef xmlChildrenNode
 #define xmlChildrenNode children
@@ -529,7 +530,8 @@ struct _xmlDoc {
 /**
  * xmlRootNode:
  *
- * Macro for compatibility naming layer with libxml1.
+ * Macro for compatibility naming layer with libxml1. Maps 
+ * to "children".
  */
 #ifndef xmlRootNode
 #define xmlRootNode children

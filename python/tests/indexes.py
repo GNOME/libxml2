@@ -14,43 +14,43 @@ class callback:
         self.starte = starte
         self.ende = ende
         self.endd = endd
-	self.delta = delta
-	self.count = 0
+        self.delta = delta
+        self.count = 0
 
     def startDocument(self):
         global ctxt
-	if ctxt.byteConsumed() != self.startd:
-	    print "document start at wrong index: %d expecting %d\n" % (
-	          ctxt.byteConsumed(), self.startd)
+        if ctxt.byteConsumed() != self.startd:
+            print "document start at wrong index: %d expecting %d\n" % (
+                  ctxt.byteConsumed(), self.startd)
             sys.exit(1)
 
     def endDocument(self):
         global ctxt
-	expect = self.ende + self.delta * (self.count - 1) + self.endd
-	if ctxt.byteConsumed() != expect:
-	    print "document end at wrong index: %d expecting %d\n" % (
-	          ctxt.byteConsumed(), expect)
+        expect = self.ende + self.delta * (self.count - 1) + self.endd
+        if ctxt.byteConsumed() != expect:
+            print "document end at wrong index: %d expecting %d\n" % (
+                  ctxt.byteConsumed(), expect)
             sys.exit(1)
 
     def startElement(self, tag, attrs):
         global ctxt
-	if tag == "bar1":
-	    expect = self.starte + self.delta * self.count
-	    if ctxt.byteConsumed() != expect:
-		print "element start at wrong index: %d expecting %d\n" % (
-		      ctxt.byteConsumed(), expect)
-		sys.exit(1)
-	    
+        if tag == "bar1":
+            expect = self.starte + self.delta * self.count
+            if ctxt.byteConsumed() != expect:
+                print "element start at wrong index: %d expecting %d\n" % (
+                   ctxt.byteConsumed(), expect)
+                sys.exit(1)
+            
 
     def endElement(self, tag):
         global ctxt
-	if tag == "bar1":
-	    expect = self.ende + self.delta * self.count
-	    if ctxt.byteConsumed() != expect:
-		print "element end at wrong index: %d expecting %d\n" % (
-		      ctxt.byteConsumed(), expect)
-		sys.exit(1)
-	    self.count = self.count + 1
+        if tag == "bar1":
+            expect = self.ende + self.delta * self.count
+            if ctxt.byteConsumed() != expect:
+                print "element end at wrong index: %d expecting %d\n" % (
+                      ctxt.byteConsumed(), expect)
+                sys.exit(1)
+            self.count = self.count + 1
 
     def characters(self, data):
         pass

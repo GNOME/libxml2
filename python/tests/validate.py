@@ -32,8 +32,8 @@ while i > 0:
     valid = ctxt.isValid()
     doc.freeDoc()
     if valid != 1:
-	print "validity check failed"
-	sys.exit(1)
+        print "validity check failed"
+        sys.exit(1)
     i = i - 1
 
 #desactivate error messages from the validation
@@ -68,8 +68,8 @@ while i > 0:
     valid = ctxt.isValid()
     doc.freeDoc()
     if valid != 0:
-	print "validity check failed"
-	sys.exit(1)
+        print "validity check failed"
+        sys.exit(1)
     i = i - 1
 del ctxt
 

@@ -22,10 +22,10 @@ res=""
 while reader.Read():
     while reader.Name() == 'bibl':
         node = reader.Expand()            # expand the subtree
-	if node.xpathEval("@id = 'Aho'"): # use XPath on it
-	    res = res + node.serialize()
-	if reader.Next() != 1:            # skip the subtree
-	    break;
+        if node.xpathEval("@id = 'Aho'"): # use XPath on it
+            res = res + node.serialize()
+        if reader.Next() != 1:            # skip the subtree
+            break;
 
 if res != expect:
     print "Error: didn't get the expected output"

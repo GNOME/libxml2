@@ -36,9 +36,9 @@ if err != expect:
 i = 10000
 while i > 0:
     try:
-	doc = libxml2.parseFile("missing.xml")
+        doc = libxml2.parseFile("missing.xml")
     except libxml2.parserError:
-	got_exc = 1
+        got_exc = 1
     err = ""
     i = i - 1
 

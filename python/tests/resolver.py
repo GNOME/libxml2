@@ -23,8 +23,8 @@ while i < 5000:
     doc = libxml2.parseFile("doesnotexist.xml")
     root = doc.children
     if root.name != "foo":
-	print "root element name error"
-	sys.exit(1)
+        print "root element name error"
+        sys.exit(1)
     doc.freeDoc()
     i = i + 1
 

@@ -15,11 +15,11 @@ def tst_reader(s):
     reader = input.newTextReader("tst")
     res = ""
     while reader.Read():
-	res=res + "%s (%s) [%s] %d\n" % (reader.NodeType(),reader.Name(),
+        res=res + "%s (%s) [%s] %d\n" % (reader.NodeType(),reader.Name(),
 				      reader.Value(), reader.IsEmptyElement())
-	if reader.NodeType() == 1: # Element
-	    while reader.MoveToNextAttribute():
-		res = res + "-- %s (%s) [%s]\n" % (reader.NodeType(),
+        if reader.NodeType() == 1: # Element
+            while reader.MoveToNextAttribute():
+                res = res + "-- %s (%s) [%s]\n" % (reader.NodeType(),
 						   reader.Name(),reader.Value())
     return res
     

@@ -61,7 +61,24 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests : tester
+tests: HTMLtests XMLtests
+HTMLtests : testHTML
+	@(DIR=`pwd`; cd $(srcdir) ;  \
+	  for i in test/HTML/* ; do \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f result/HTML/`basename $$i` ] ; then \
+	      echo New test file `basename $$i` ; \
+	      $$DIR/testHTML $$i > result/HTML/`basename $$i` ; \
+	  else \
+	      echo Testing `basename $$i` ; \
+	      $$DIR/testHTML $$i > result.`basename $$i` ; \
+	      diff result/HTML/`basename $$i` result.`basename $$i` ; \
+	      $$DIR/testHTML result.`basename $$i` > result2.`basename $$i` ; \
+	      diff result.`basename $$i` result2.`basename $$i` ; \
+	      rm result.`basename $$i` result2.`basename $$i` ; \
+	  fi ; fi ; done)
+
+XMLtests : tester
 	@(DIR=`pwd`; cd $(srcdir) ;  \
 	  for i in test/* ; do \
 	  if [ ! -d $$i ] ; then \

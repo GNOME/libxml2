@@ -12,13 +12,10 @@
 #include <stdlib.h>
 #include <string.h> /* for memset() only ! */
 
-#include "tree.h"
+#include "HTMLparser.h"
+#include "HTMLtree.h"
 #include "entities.h"
 #include "valid.h"
-
-#define HTML_TEXT_NODE		XML_TEXT_NODE
-#define HTML_ENTITY_REF_NODE	XML_ENTITY_REF_NODE
-#define HTML_COMMENT_NODE	XML_COMMENT_NODE
 
 /**
  * htmlDtdDump:
@@ -46,23 +43,6 @@ htmlDtdDump(xmlBufferPtr buf, xmlDocPtr doc) {
 	xmlBufferWriteChar(buf, " SYSTEM ");
 	xmlBufferWriteQuotedString(buf, cur->SystemID);
     }
-    if ((cur->entities == NULL) && (cur->elements == NULL) &&
-        (cur->attributes == NULL) && (cur->notations == NULL)) {
-	xmlBufferWriteChar(buf, ">\n");
-	return;
-    }
-    xmlBufferWriteChar(buf, " [\n");
-    if (cur->entities != NULL)
-	xmlDumpEntitiesTable(buf, (xmlEntitiesTablePtr) cur->entities);
-    if (cur->notations != NULL)
-	xmlDumpNotationTable(buf, (xmlNotationTablePtr) cur->notations);
-    if (cur->elements != NULL)
-	xmlDumpElementTable(buf, (xmlElementTablePtr) cur->elements);
-    if (cur->attributes != NULL)
-	xmlDumpAttributeTable(buf, (xmlAttributeTablePtr) cur->attributes);
-    xmlBufferWriteChar(buf, "]");
-
-    /* TODO !!! a lot more things to dump ... */
     xmlBufferWriteChar(buf, ">\n");
 }
 
@@ -116,30 +96,23 @@ htmlAttrListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 
 
 static void
-htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level);
+htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur);
 /**
  * htmlNodeListDump:
  * @buf:  the HTML buffer output
  * @doc:  the document
  * @cur:  the first node
- * @level: the imbrication level for indenting
  *
  * Dump an HTML node list, recursive behaviour,children are printed too.
  */
 static void
-htmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
-    int i;
-
+htmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     if (cur == NULL) {
         fprintf(stderr, "htmlNodeListDump : node == NULL\n");
 	return;
     }
     while (cur != NULL) {
-        if ((cur->type != HTML_TEXT_NODE) &&
-	    (cur->type != HTML_ENTITY_REF_NODE)) {
-		xmlBufferWriteChar(buf, "\n");
-	}
-        htmlNodeDump(buf, doc, cur, level);
+        htmlNodeDump(buf, doc, cur);
 	cur = cur->next;
     }
 }
@@ -149,22 +122,26 @@ htmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
  * @buf:  the HTML buffer output
  * @doc:  the document
  * @cur:  the current node
- * @level: the imbrication level for indenting
  *
  * Dump an HTML node, recursive behaviour,children are printed too.
  */
 static void
-htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
+htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     int i;
+    htmlElemDescPtr info;
 
     if (cur == NULL) {
         fprintf(stderr, "htmlNodeDump : node == NULL\n");
 	return;
     }
+    /*
+     * Special cases.
+     */
     if (cur->type == HTML_TEXT_NODE) {
 	if (cur->content != NULL) {
             CHAR *buffer;
 
+	    /* uses the HTML encoding routine !!!!!!!!!! */
             buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 	    if (buffer != NULL) {
 		xmlBufferWriteCHAR(buf, buffer);
@@ -188,20 +165,38 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 	return;
     }
 
-    xmlBufferWriteChar(buf, "<");
-    if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
-        xmlBufferWriteCHAR(buf, cur->ns->prefix);
-	xmlBufferWriteChar(buf, ":");
-    }
+    /*
+     * Get specific HTmL info for taht node.
+     */
+    info = htmlTagLookup(cur->name);
 
+    xmlBufferWriteChar(buf, "<");
     xmlBufferWriteCHAR(buf, cur->name);
-    if (cur->nsDef)
-        xmlNsListDump(buf, cur->nsDef);
     if (cur->properties != NULL)
         htmlAttrListDump(buf, doc, cur->properties);
 
+    if (info->empty) {
+        xmlBufferWriteChar(buf, ">");
+	if (cur->next != NULL) {
+	    if ((cur->next->type != HTML_TEXT_NODE) &&
+		(cur->next->type != HTML_ENTITY_REF_NODE))
+		xmlBufferWriteChar(buf, "\n");
+	}
+	return;
+    }
     if ((cur->content == NULL) && (cur->childs == NULL)) {
-        xmlBufferWriteChar(buf, "/>\n");
+        if (info->endTag != 0)
+	    xmlBufferWriteChar(buf, ">");
+	else {
+	    xmlBufferWriteChar(buf, "></");
+	    xmlBufferWriteCHAR(buf, cur->name);
+	    xmlBufferWriteChar(buf, ">");
+	}
+	if (cur->next != NULL) {
+	    if ((cur->next->type != HTML_TEXT_NODE) &&
+		(cur->next->type != HTML_ENTITY_REF_NODE))
+		xmlBufferWriteChar(buf, "\n");
+	}
 	return;
     }
     xmlBufferWriteChar(buf, ">");
@@ -215,16 +210,22 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 	}
     }
     if (cur->childs != NULL) {
-	htmlNodeListDump(buf, doc, cur->childs, level + 1);
+        if ((cur->childs->type != HTML_TEXT_NODE) &&
+	    (cur->childs->type != HTML_ENTITY_REF_NODE))
+	    xmlBufferWriteChar(buf, "\n");
+	htmlNodeListDump(buf, doc, cur->childs);
+        if ((cur->last->type != HTML_TEXT_NODE) &&
+	    (cur->last->type != HTML_ENTITY_REF_NODE))
+	    xmlBufferWriteChar(buf, "\n");
     }
     xmlBufferWriteChar(buf, "</");
-    if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
-        xmlBufferWriteCHAR(buf, cur->ns->prefix);
-	xmlBufferWriteChar(buf, ":");
-    }
-
     xmlBufferWriteCHAR(buf, cur->name);
-    xmlBufferWriteChar(buf, ">\n");
+    xmlBufferWriteChar(buf, ">");
+    if (cur->next != NULL) {
+        if ((cur->next->type != HTML_TEXT_NODE) &&
+	    (cur->next->type != HTML_ENTITY_REF_NODE))
+	    xmlBufferWriteChar(buf, "\n");
+    }
 }
 
 /**
@@ -236,29 +237,12 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
  */
 static void
 htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
-    xmlBufferWriteChar(buf, "<?xml version=");
-    if (cur->version != NULL) 
-	xmlBufferWriteQuotedString(buf, cur->version);
-    else
-	xmlBufferWriteChar(buf, "\"1.0\"");
-    if (cur->encoding != NULL) {
-        xmlBufferWriteChar(buf, " encoding=");
-	xmlBufferWriteQuotedString(buf, cur->encoding);
-    }
-    switch (cur->standalone) {
-        case 0:
-	    xmlBufferWriteChar(buf, " standalone=\"no\"");
-	    break;
-        case 1:
-	    xmlBufferWriteChar(buf, " standalone=\"yes\"");
-	    break;
-    }
-    xmlBufferWriteChar(buf, "?>\n");
     if (cur->intSubset != NULL)
         htmlDtdDump(buf, cur);
     if (cur->root != NULL) {
-        htmlNodeDump(buf, cur, cur->root, 0);
+        htmlNodeDump(buf, cur, cur->root);
     }
+    xmlBufferWriteChar(buf, "\n");
 }
 
 /**

@@ -34,7 +34,7 @@
 #include "valid.h"
 #include "parserInternals.h"
 
-#define DEBUG */
+/* #define DEBUG */
 
 /************************************************************************
  *									*
@@ -351,7 +351,6 @@ htmlInitAutoClose(void) {
 htmlElemDescPtr
 htmlTagLookup(const CHAR *tag) {
     int i = 0;
-	int cnt;
 
     for (i = 0; i < (sizeof(html40ElementTable) /
                      sizeof(html40ElementTable[0]));i++) {
@@ -408,7 +407,6 @@ htmlCheckAutoClose(const CHAR *new, const CHAR *old) {
  */
 void
 htmlAutoClose(htmlParserCtxtPtr ctxt, const CHAR *new) {
-    const CHAR *old;
 
     while ((ctxt->node != NULL) && 
            (htmlCheckAutoClose(new, ctxt->node->name))) {
@@ -1933,7 +1931,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	        atts = (const CHAR **) malloc(maxatts * sizeof(CHAR *));
 		if (atts == NULL) {
 		    fprintf(stderr, "malloc of %ld byte failed\n",
-			    maxatts * sizeof(CHAR *));
+			    maxatts * (long)sizeof(CHAR *));
 		    return(NULL);
 		}
 	    } else if (nbatts + 2 < maxatts) {
@@ -1941,7 +1939,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	        atts = (const CHAR **) realloc(atts, maxatts * sizeof(CHAR *));
 		if (atts == NULL) {
 		    fprintf(stderr, "realloc of %ld byte failed\n",
-			    maxatts * sizeof(CHAR *));
+			    maxatts * (long)sizeof(CHAR *));
 		    return(NULL);
 		}
 	    }

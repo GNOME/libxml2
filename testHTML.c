@@ -27,7 +27,7 @@
 #include <stdlib.h>
 
 #include "HTMLparser.h"
-#include "tree.h"
+#include "HTMLtree.h"
 #include "debugXML.h"
 
 static int debug = 0;
@@ -80,7 +80,7 @@ void parseAndPrintFile(char *filename) {
      * print it.
      */
     if (!debug)
-	xmlDocDump(stdout, doc);
+	htmlDocDump(stdout, doc);
     else
         xmlDebugDumpDocument(stdout, doc);
 
@@ -111,7 +111,7 @@ void parseAndPrintBuffer(CHAR *buf) {
      * print it.
      */
     if (!debug)
-	xmlDocDump(stdout, doc);
+	htmlDocDump(stdout, doc);
     else
         xmlDebugDumpDocument(stdout, doc);
 

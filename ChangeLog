@@ -1,3 +1,9 @@
+Wed Jul  7 09:28:43 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.[ch], HTMLtree.[ch]: more work for HTML parsing and
+	  output.
+        * Makefile.am, test/HTML/*, result/HTML/*: added HTMLtests targetestHTMLt
+
 Wed Jul  7 00:25:42 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.h : Oops removed the binary compatibility problem

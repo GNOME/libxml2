@@ -1,3 +1,8 @@
+Mon Feb 24 20:12:57 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixes bug #105998 about false detection of
+	  attribute consumption loop.
+
 Mon Feb 24 19:14:57 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: Fixes bug #106931 in XInclude entities merging.

@@ -6727,7 +6727,8 @@ failed:
 	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	}
 	SKIP_BLANKS;
-        if ((cons == ctxt->input->consumed) && (q == CUR_PTR)) {
+        if ((cons == ctxt->input->consumed) && (q == CUR_PTR) &&
+            (attname == NULL) && (attvalue == NULL)) {
 	    ctxt->errNo = XML_ERR_INTERNAL_ERROR;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData, 

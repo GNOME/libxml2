@@ -1,3 +1,7 @@
+Thu Sep 23 18:23:46 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: fixing an out of bound adressing issue
+
 Thu Sep 23 15:14:12 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c parser.c relaxng.c xmlschemas.c: more memory related

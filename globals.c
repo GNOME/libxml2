@@ -650,23 +650,6 @@ xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func)
     return(old);
 }
 
-/**
- * xmlParserInputBufferCreateFilename:
- * @func: function pointer to the new ParserInputBufferCreateFilenameFunc
- *
- * Registers a callback for URI input file handling
- *
- * Returns the old value of the registration function
- */
-xmlParserInputBufferCreateFilenameFunc
-xmlParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func)
-{
-    xmlParserInputBufferCreateFilenameFunc old = xmlParserInputBufferCreateFilenameValue;
-    
-    xmlParserInputBufferCreateFilenameValue = func;
-    return(old);
-}
-
 xmlParserInputBufferCreateFilenameFunc
 xmlThrDefParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func)
 {
@@ -674,27 +657,13 @@ xmlThrDefParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilena
     
     xmlMutexLock(xmlThrDefMutex);
     old = xmlParserInputBufferCreateFilenameValueThrDef;
-    
+    if (old == NULL) {
+		old = __xmlParserInputBufferCreateFilename;
+	}
+
     xmlParserInputBufferCreateFilenameValueThrDef = func;
     xmlMutexUnlock(xmlThrDefMutex);
 
-    return(old);
-}
-
-/**
- * xmlOutputBufferCreateFilename:
- * @func: function pointer to the new OutputBufferCreateFilenameFunc
- *
- * Registers a callback for URI output file handling
- *
- * Returns the old value of the registration function
- */
-xmlOutputBufferCreateFilenameFunc
-xmlOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func)
-{
-    xmlOutputBufferCreateFilenameFunc old = xmlOutputBufferCreateFilenameValue;
-    
-    xmlOutputBufferCreateFilenameValue = func;
     return(old);
 }
 
@@ -705,7 +674,11 @@ xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc fun
     
     xmlMutexLock(xmlThrDefMutex);
     old = xmlOutputBufferCreateFilenameValueThrDef;
-    
+#ifdef LIBXML_OUTPUT_ENABLED
+    if (old == NULL) {
+		old = __xmlOutputBufferCreateFilename;
+	}
+#endif
     xmlOutputBufferCreateFilenameValueThrDef = func;
     xmlMutexUnlock(xmlThrDefMutex);
 
@@ -1071,4 +1044,3 @@ __xmlOutputBufferCreateFilenameValue(void) {
     else
 	return (&xmlGetGlobalState()->xmlOutputBufferCreateFilenameValue);
 }
-

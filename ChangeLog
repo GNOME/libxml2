@@ -1,3 +1,8 @@
+Tue Jun  8 12:14:16 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c xmlIO.c include/libxml/globals.h include/libxml/xmlIO.h:
+	  applied patch from Rob Richards for the per thread I/O mappings
+
 Tue Jun  8 09:58:31 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: some further enhancement to take care of

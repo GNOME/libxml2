@@ -2125,7 +2125,7 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
-static xmlParserInputBufferPtr
+xmlParserInputBufferPtr
 __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
     int i = 0;
@@ -2205,7 +2205,7 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
-static xmlOutputBufferPtr
+xmlOutputBufferPtr
 __xmlOutputBufferCreateFilename(const char *URI,
                               xmlCharEncodingHandlerPtr encoder,
                               int compression ATTRIBUTE_UNUSED) {
@@ -2597,6 +2597,47 @@ xmlOutputBufferCreateIO(xmlOutputWriteCallback   iowrite,
     return(ret);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
+
+/**
+ * xmlParserInputBufferCreateFilenameDefault:
+ * @func: function pointer to the new ParserInputBufferCreateFilenameFunc
+ *
+ * Registers a callback for URI input file handling
+ *
+ * Returns the old value of the registration function
+ */
+xmlParserInputBufferCreateFilenameFunc
+xmlParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func)
+{
+    xmlParserInputBufferCreateFilenameFunc old = xmlParserInputBufferCreateFilenameValue;
+    if (old == NULL) {
+		old = __xmlParserInputBufferCreateFilename;
+	}
+
+    xmlParserInputBufferCreateFilenameValue = func;
+    return(old);
+}
+
+/**
+ * xmlOutputBufferCreateFilenameDefault:
+ * @func: function pointer to the new OutputBufferCreateFilenameFunc
+ *
+ * Registers a callback for URI output file handling
+ *
+ * Returns the old value of the registration function
+ */
+xmlOutputBufferCreateFilenameFunc
+xmlOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func)
+{
+    xmlOutputBufferCreateFilenameFunc old = xmlOutputBufferCreateFilenameValue;
+#ifdef LIBXML_OUTPUT_ENABLED
+    if (old == NULL) {
+		old = __xmlOutputBufferCreateFilename;
+	}
+#endif
+    xmlOutputBufferCreateFilenameValue = func;
+    return(old);
+}
 
 /**
  * xmlParserInputBufferPush:

@@ -69,9 +69,6 @@ XMLPUBFUN void XMLCALL xmlCleanupGlobals(void);
 typedef void (*xmlRegisterNodeFunc) (xmlNodePtr node);
 typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
 
-typedef xmlParserInputBufferPtr (*xmlParserInputBufferCreateFilenameFunc) (const char *URI, xmlCharEncoding enc);
-typedef xmlOutputBufferPtr (*xmlOutputBufferCreateFilenameFunc) (const char *URI, xmlCharEncodingHandlerPtr encoder, int compression);
-
 typedef struct _xmlGlobalState xmlGlobalState;
 typedef xmlGlobalState *xmlGlobalStatePtr;
 struct _xmlGlobalState 
@@ -139,11 +136,10 @@ XMLPUBFUN xmlRegisterNodeFunc XMLCALL xmlThrDefRegisterNodeDefault(xmlRegisterNo
 XMLPUBFUN xmlDeregisterNodeFunc XMLCALL xmlDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 XMLPUBFUN xmlDeregisterNodeFunc XMLCALL xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 
-XMLPUBFUN xmlParserInputBufferCreateFilenameFunc XMLCALL xmlParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func);
-XMLPUBFUN xmlParserInputBufferCreateFilenameFunc XMLCALL xmlThrDefParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func);
-
-XMLPUBFUN xmlOutputBufferCreateFilenameFunc XMLCALL xmlOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func);
-XMLPUBFUN xmlOutputBufferCreateFilenameFunc XMLCALL xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func);
+XMLPUBFUN xmlOutputBufferCreateFilenameFunc XMLCALL 
+	xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func);
+XMLPUBFUN xmlParserInputBufferCreateFilenameFunc XMLCALL 
+	xmlThrDefParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func);
 
 /** DOC_DISABLE */
 /*

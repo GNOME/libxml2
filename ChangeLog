@@ -1,3 +1,8 @@
+Mon Mar 31 18:36:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: more work on bug #109225, and fixed an uninitialized
+	  variable pointed out by valgrind
+
 Mon Mar 31 18:05:22 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: try to work on bug #109225 and provide better

@@ -58,6 +58,8 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
 /* #define DEBUG_ERROR 1 */
 
 #define UNBOUNDED (1 << 30)
+#define MAX_ERROR 5
+
 #define TODO 								\
     xmlGenericError(xmlGenericErrorContext,				\
 	    "Unimplemented block at %s:%d\n",				\
@@ -2112,25 +2114,28 @@ xmlRelaxNGPopErrors(xmlRelaxNGValidCtxtPtr ctxt, int level) {
  */
 static void
 xmlRelaxNGDumpValidError(xmlRelaxNGValidCtxtPtr ctxt) {
-    int i, j;
+    int i, j, k;
     xmlRelaxNGValidErrorPtr err, dup;
 
 #ifdef DEBUG_ERROR
     xmlGenericError(xmlGenericErrorContext,
 	    "Dumping error stack %d errors\n", ctxt->errNr);
 #endif
-    for (i = 0;i < ctxt->errNr;i++) {
+    for (i = 0, k = 0;i < ctxt->errNr;i++) {
 	err = &ctxt->errTab[i];
-	for (j = 0;j < i;j++) {
-	    dup = &ctxt->errTab[j];
-	    if ((err->err == dup->err) && (err->node == dup->node) &&
-		(xmlStrEqual(err->arg1, dup->arg1)) &&
-		(xmlStrEqual(err->arg2, dup->arg2))) {
-		goto skip;
+	if (k < MAX_ERROR) {
+	    for (j = 0;j < i;j++) {
+		dup = &ctxt->errTab[j];
+		if ((err->err == dup->err) && (err->node == dup->node) &&
+		    (xmlStrEqual(err->arg1, dup->arg1)) &&
+		    (xmlStrEqual(err->arg2, dup->arg2))) {
+		    goto skip;
+		}
 	    }
+	    xmlRelaxNGShowValidError(ctxt, err->err, err->node, err->seq,
+				     err->arg1, err->arg2);
+	    k++;
 	}
-	xmlRelaxNGShowValidError(ctxt, err->err, err->node, err->seq,
-		                 err->arg1, err->arg2);
 skip:
 	if (err->flags & ERROR_IS_DUP) {
 	    if (err->arg1 != NULL)
@@ -2893,7 +2898,7 @@ xmlRelaxNGGetDataTypeLibrary(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
 static xmlRelaxNGDefinePtr
 xmlRelaxNGParseValue(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     xmlRelaxNGDefinePtr def = NULL;
-    xmlRelaxNGTypeLibraryPtr lib;
+    xmlRelaxNGTypeLibraryPtr lib = NULL;
     xmlChar *type;
     xmlChar *library;
     int success = 0;

@@ -1,3 +1,9 @@
+Fri Nov 24 14:01:44 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/xmldtd.html doc/xml.html: following a short step by step
+	  guidance on IRC to help maciej with DTDs I started a small
+	  page on the subject.
+
 Fri Nov 17 17:28:06 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c: fixed handling of broken charrefs

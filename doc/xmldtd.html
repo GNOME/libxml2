@@ -1,0 +1,191 @@
+<html>
+<head>
+  <title>Libxml Input/Output handling</title>
+  <meta name="GENERATOR" content="amaya V4.0">
+  <meta http-equiv="Content-Type" content="text/html">
+</head>
+
+<body bgcolor="#ffffff">
+<h1 align="center">Libxml DTD support</h1>
+
+<p>Location: <a
+href="http://xmlsoft.org/xmlio.html">http://xmlsoft.org/xmldtd.html</a></p>
+
+<p>Libxml home page: <a href="http://xmlsoft.org/">http://xmlsoft.org/</a></p>
+
+<p>Mailing-list archive:  <a
+href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
+
+<p>Version: $Revision$</p>
+
+<p>Table of Content:</p>
+<ol>
+  <li><a href="#General">General overview</a></li>
+  <li><a href="#definition">The definition</a></li>
+  <li><a href="#Simple">Simple rules</a>
+    <ol>
+      <li><a href="#reference">How to reference a DTD from a document</a></li>
+      <li><a href="#Declaring">Declaring elements</a></li>
+      <li><a href="#Declaring1">Declaring attributes</a></li>
+    </ol>
+  </li>
+  <li><a href="#Some">Some examples</a></li>
+  <li><a href="#validate">How to validate</a></li>
+  <li><a href="#Other">Other resources</a></li>
+</ol>
+
+<h2><a name="General">General overview</a></h2>
+
+<p>DTD is the acronym for Document Type Definition. This is a description of
+the content for a familly of XML files. This is part of the XML 1.0
+specification, and alows to describe and check that a given document instance
+conforms to a set of rules detailing its structure and content.  </p>
+
+<h2><a name="definition">The definition</a></h2>
+
+<p>The <a href="http://www.w3.org/TR/REC-xml">W3C XML Recommendation</a> (<a
+href="http://www.xml.com/axml/axml.html">Tim Bray's annotated version of
+Rev1</a>):</p>
+<ul>
+  <li><a href="http://www.w3.org/TR/REC-xml#elemdecls">Declaring
+  elements</a></li>
+  <li><a href="http://www.w3.org/TR/REC-xml#attdecls">Declaring
+  attributes</a></li>
+</ul>
+
+<p>(unfortunately) all this is inherited from the SGML world, the syntax is
+ancient...</p>
+
+<h2><a name="Simple">Simple rules</a></h2>
+
+<p>Writing DTD can be done in multiple ways, the rules to build them if you
+need something fixed or something which can evolve over time can be radically
+different. Really complex DTD like Docbook ones are flexible but quite harder
+to design. I will just focuse on DTDs for a formats with a fixed simple
+structure. It is just a set of basic rules, and definitely not exhaustive nor
+useable for complex DTD design.</p>
+
+<h3><a name="reference">How to reference a DTD from a document</a>:</h3>
+
+<p>Assuming the top element of the document is <code>spec</code> and the dtd
+is placed in the file <code>mydtd</code> in the subdirectory <code>dtds</code>
+of the directory from where the document were loaded:</p>
+
+<p><code>&lt;!DOCTYPE spec SYSTEM "dtds/mydtd"&gt;</code></p>
+
+<p>Notes: </p>
+<ul>
+  <li>the system string is actually an URI-Reference (as defined in RFC 2396)
+    so you can use a full URL string indicating the location of your DTD on
+    the Web, this is a really good thing to do if you want others to validate
+    your document</li>
+  <li>it is also possible to associate a <code>PUBLIC</code> identifier (a
+    magic string) so that the DTd is looked up in catalogs on the client side
+    without having to locate it on the web </li>
+  <li>a dtd contains a set of elements and attributes declarations, but they
+    don't define what the root of the document should be. This is explicitely
+    told to the parser/validator as the first element of the
+    <code>DOCTYPE</code> declaration.</li>
+</ul>
+
+<h3><a name="Declaring">Declaring elements</a>:</h3>
+
+<p>The following declares an element <code>spec</code>:</p>
+
+<p><code>&lt;!ELEMENT spec (front, body, back?)&gt;</code></p>
+
+<p>it also expresses that the spec element contains one front, one body and
+one optionnal back in this order. The declaration of one element of the
+structure and its content are done in a single declaration. Similary the
+following declares <code>div1</code> elements:</p>
+
+<p><code>&lt;!ELEMENT div1 (head, (p | list | note)*, div2*)&gt;</code></p>
+
+<p>means div1 contains one head then a series of optional p, lists and notes
+and then an optional div2. And last but not least an element can contain
+text:</p>
+
+<p><code>&lt;!ELEMENT b (#PCDATA)&gt;</code></p>
+
+<p><code>b</code> contains text or being of mixed content (text and elements
+in no particular order):</p>
+
+<p><code>&lt;!ELEMENT p (#PCDATA|a|ul|b|i|em)*&gt;</code></p>
+
+<p> <code>p </code>can contain text or <code>a</code>, <code>ul</code>,
+<code>b</code>, <code>i </code>or <code>em</code> elements in no particular
+order.</p>
+
+<h3><a name="Declaring1">Declaring attributes</a>:</h3>
+
+<p>again the attributes declaration includes their content definition:</p>
+
+<p><code>&lt;!ATTLIST termdef name CDATA #IMPLIED&gt;</code></p>
+
+<p>means that the element <code>termdef</code> can have a <code>name</code>
+attribute containing text (<code>CDATA</code>) and which is optionnal
+(<code>#IMPLIED</code>). The attribute value can also be defined within a
+set:</p>
+
+<p><code>&lt;!ATTLIST list type (bullets|ordered|glossary)
+"ordered"&gt;</code></p>
+
+<p>means <code>list</code> element have a <code>type</code> attribute with 3
+allowed values "bullets", "ordered" or "glossary" and which default to
+"ordered" if the attribute is not explicitely specified. </p>
+
+<p>The content type of an attribute can be text (<code>CDATA</code>),
+anchor/reference/references
+(<code>ID</code>/<code>IDREF</code>/<code>IDREFS</code>), entity(ies)
+(<code>ENTITY</code>/<code>ENTITIES</code>) or name(s)
+(<code>NMTOKEN</code>/<code>NMTOKENS</code>). The following defines that a
+<code>chapter</code> element can have an optional <code>id</code> attribute of
+type <code>ID</code>, usable for reference from attribute of type IDREF:</p>
+
+<p><code>&lt;!ATTLIST chapter id ID #IMPLIED&gt;</code></p>
+
+<p>The last value of an attribute definition can be <code>#REQUIRED
+</code>meaning that the attribute has to be given, <code>#IMPLIED</code>
+meaning that it is optional, or the default value (possibly prefixed by
+<code>#FIXED</code> if it is the only allowed).</p>
+
+<h2><a name="Some">Some examples</a></h2>
+
+<p>The directory <code>test/valid/dtds/</code> in the libxml distribution
+contains some complex DTD examples. The  <code>test/valid/dia.xml</code>
+example shows an XML file where the simple DTD is directly included within the
+document.</p>
+
+<h2><a name="validate">How to validate</a></h2>
+
+<p>The simplest is to use the xmllint program comming with libxml. The
+<code>--valid</code> option turn on validation of the files given as input,
+for example the following validates a copy of the first revision of the XML
+1.0 specification:</p>
+
+<p><code>xmllint --valid --noout test/valid/REC-xml-19980210.xml</code></p>
+
+<p>the -- noout is used to not output the resulting tree.</p>
+
+<p>The <code>--dtdvalid dtd</code> allows to validate the document(s) against
+a given DTD.</p>
+
+<p>Libxml exports an API to handle DTDs and validation, check the <a
+href="http://xmlsoft.org/html/gnome-xml-valid.html">associated
+description</a>.</p>
+
+<h2><a name="Other">Other resources</a></h2>
+
+<p>DTDs are as old as SGML. So there may be a number of examples on-line, I
+will just list one for now, others pointers welcome:</p>
+<ul>
+  <li><a href="http://www.xml101.com:8081/dtd/">XML-101 DTD</a></li>
+</ul>
+
+<p></p>
+
+<p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
+
+<p>$Id$</p>
+</body>
+</html>

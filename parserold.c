@@ -2231,6 +2231,12 @@ xmlOldParseAttValue(xmlParserCtxtPtr ctxt) {
         if ((cur == '&') && (NXT(1) == '#')) {
 	    int val = xmlOldParseCharRef(ctxt);
 	    *out++ = val;
+	    if (out - buffer > buffer_size - 10) {
+		int index = out - buffer;
+
+		growBuffer(buffer);
+		out = &buffer[index];
+	    }
 	} else if (cur == '&') {
 	    ent = xmlOldParseEntityRef(ctxt);
 	    if ((ent != NULL) && 
@@ -2250,7 +2256,7 @@ xmlOldParseAttValue(xmlParserCtxtPtr ctxt) {
 		const xmlChar *cur = ent->name;
 
 		*out++ = '&';
-		if (out - buffer > buffer_size - i - 10) {
+		while (out - buffer > buffer_size - i - 10) {
 		    int index = out - buffer;
 
 		    growBuffer(buffer);

@@ -1,3 +1,7 @@
+Mon Mar 26 09:51:40 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parserold.c : reapplied bug 52299 fix
+
 Sun Mar 25 16:56:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixed an I18N breakage on the new parser due

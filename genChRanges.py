@@ -278,7 +278,7 @@ output.write(
  * William Brack <wbrack@mmm.com.hk>
  */
 
-#include "chvalid.h"
+#include <libxml/chvalid.h>
 
 /*
  * The initial tables ({func_name}_tab) are used to validate whether a

@@ -1,5 +1,5 @@
 /*
- * hash.c: chained hash tables
+ * hash.h: chained hash tables
  *
  * Copyright (C) 2000 Bjorn Reese and Daniel Veillard.
  *

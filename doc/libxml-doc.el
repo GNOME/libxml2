@@ -21,7 +21,8 @@
  ;;; Commentary / README
 
 ;; these functions allow you to browse the libxml documentation
-;; (using lynx within emacs by default; 
+;; (using lynx within emacs by default)
+;;
 ;; ----- Installing
 ;; 1. add the following to ~/.emacs (adapt path and remove comments !)
 ;; (autoload 'libxmldoc-lookup-symbol "~/elisp/libxml-doc" 
@@ -29,12 +30,16 @@
 ;; or put this file in load-path and use this:
 ;; (autoload 'libxmldoc-lookup-symbol "libxml-doc"
 ;;  "Look up libxml-symbols and start browser on documentation." t)
+;;
 ;; 2. adapt libxmldoc-root:
 ;; i.e. (setq libxmldoc-root "~/libxml2-2.0.0/doc/html/")
+;;
 ;; 3. change the filter-regex: by default, cpp-defines, callbacks and
 ;; html-functions are excluded (C-h v libxmldoc-filter-regexp)
+;;
 ;; 4. consider customizing libxmldoc-browse-url (lynx by default);
 ;; cannot use Emacs/W3 4.0pre46 because it has problems with the html
+;;
 ;; ----- Using
 ;; call M-x libxmldoc-lookup-symbol: this will prompt with completion and
 ;; then open the browser showing the documentation. If the word around the
@@ -44,7 +49,7 @@
 ;; Note:
 ;; an alternative to libxml-doc is emacs tags:
 ;; $ cd libxml2-2.3.8
-;; $ etags *.c *.h
+;; $ make TAGS
 ;; $ emacs
 ;; M-. (M-x find-tag) ...  or
 ;; M-x tags-search ... RET M-, M-, ...
@@ -76,15 +81,19 @@
 ;; Sat Jun 23 16:20:34 2001: update the docstrings
 ;; Sat Jun 23 16:22:54 2001 (Geert Kloosterman <geertk@ai.rug.nl>):
 ;; update README: use autoload instead of load+c-mode-hook
+;; Sat Jul 7 19:00:31 2001: fixed a problem with XEmacs: the
+;; string-match of XEmacs when used in completing-read used the
+;; minibuffer's value of case-fold-search, and not the one in the
+;; c-mode buffer that we had set => so there's a new *-string-match-cs
+;; (case sensitive) function which binds case-fold-search and runs string-match
 
 ;;; TODO:
 ;; - use command-execute for libxmldoc-browse-url
 ;; - keep (match-string 1) in a variable (libxmldoc-get-list-of-symbols)
+;;   (only if it improves performance)
 ;; - check the (require ..)-statements
 
  ;;; Code:
-
-(provide 'libxmldoc)
 
 (require 'browse-url)
 (require 'term)
@@ -114,47 +123,59 @@ the html (and would be too slow), so lynx-emacs is used by default.")
 
 (defun libxmldoc-lookup-symbol(&optional symbol)
   "Look up xml-symbol." (interactive)
-  (let
-      ;; this is necessary so that filtering is done case-sensitively
-      ((case-fold-search nil))
+  ;; setting case-fold-search is now done in libxmldoc-string-match-cs
 
-    ;; Build up a symbol list if neccesary
-    (if (null libxmldoc-symbols)
-        (setq libxmldoc-symbols (libxmldoc-get-list-of-symbols)))
+  ;; Build up a symbol list if neccesary
+  (if (null libxmldoc-symbols)
+      (setq libxmldoc-symbols (libxmldoc-get-list-of-symbols)))
     
-    (cond
-     ((not (null symbol)) ;; symbol is specified as argument
-      (if (not (assoc symbol libxmldoc-symbols))
-          (setq symbol nil)))
-     ((assoc (thing-at-point 'symbol) libxmldoc-symbols)
-      (setq symbol (thing-at-point 'symbol)))
-     ;; this is needed to catch callbacks
-     ;; note: this could be rewritten to use (thing-at-point 'word)
-     ((assoc (concat "*" (thing-at-point 'symbol)) libxmldoc-symbols)
-      (setq symbol (concat "*" (thing-at-point 'symbol))))
-     )
+  (cond
+   (symbol ;; symbol is specified as argument
+    (if (not (assoc symbol libxmldoc-symbols))
+        (setq symbol nil)))
+   ((assoc (thing-at-point 'symbol) libxmldoc-symbols)
+    (setq symbol (thing-at-point 'symbol)))
+   ;; this is needed to catch callbacks
+   ;; note: this could be rewritten to use (thing-at-point 'word)
+   ((assoc (concat "*" (thing-at-point 'symbol)) libxmldoc-symbols)
+    (setq symbol (concat "*" (thing-at-point 'symbol))))
+   )
 
-     ;; omit "" t) from call to completing-read for the sake of xemacs
-    (setq symbol
-          (completing-read "Libxml: " (if (or symbol
-                                              (null libxmldoc-filter-regexp))
-                                          libxmldoc-symbols
-                                        (mapcar
-                                         '(lambda(key,value)
-                                            (if (null (string-match 
-                                                       libxmldoc-filter-regexp
-                                                       (car key,value)))
-                                                key,value))
-                                         libxmldoc-symbols))
-                           nil t symbol
-                           'libxmldoc-symbol-history))
+  ;; omit "" t) from call to completing-read for the sake of xemacs
+  (setq symbol (completing-read 
+                "Libxml: " libxmldoc-symbols
+                (if (or symbol (null libxmldoc-filter-regexp))
+                    nil
+                  '(lambda(key,value)
+                     (not (libxmldoc-string-match-cs libxmldoc-filter-regexp
+                                                     (car key,value)))))
+                t symbol
+                'libxmldoc-symbol-history))
     
     
-    ;; start browser
-    (apply libxmldoc-browse-url 
-           (list (cdr (assoc symbol libxmldoc-symbols))))))
+  ;; start browser
+  (apply libxmldoc-browse-url 
+         (list (cdr (assoc symbol libxmldoc-symbols)))))
+
+;; (if (or symbol
+;;         (null libxmldoc-filter-regexp))
+;;     libxmldoc-symbols
+;;   (mapcar
+;;    '(lambda(key,value)
+;;       (if (null (string-match 
+;;                  libxmldoc-filter-regexp
+;;                  (car key,value)))
+;;           key,value))
+;;    libxmldoc-symbols))
+
 
 ;;;; internal
+
+(defun libxmldoc-string-match-cs(regexp str)
+  "This is needed because string-match in XEmacs uses the current-
+buffer's value of case-fold-search (different from GNU Emacs)."
+  (let ((case-fold-search nil))
+    (string-match regexp str)))
 
 (defun libxmldoc-get-list-of-symbols()
   "Get the list of html-links in the libxml-documentation."
@@ -183,13 +204,15 @@ the html (and would be too slow), so lynx-emacs is used by default.")
           ;; this needs add-to-list because i.e. xmlChar appears often
           (if (not (string-equal "" (match-string 1)))
               (add-to-list 'symbols (cons (match-string 1) uri))))
-          ;;  (setq symbols (cons (cons (match-string 1) uri) symbols)))
-      )
-    (setq files (cdr files)))
-  symbols))
+        ;;  (setq symbols (cons (cons (match-string 1) uri) symbols)))
+        )
+      (setq files (cdr files)))
+    symbols))
+
+(provide 'libxmldoc)
 
 ;;; libxml-doc.el ends here
-  
+
 ;;; Local Variables:
 ;;; indent-tabs-mode: nil
 ;;; End:

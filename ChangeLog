@@ -1,3 +1,8 @@
+Sat Jul  7 21:09:55 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/libxml-doc.el: Felix Natter provided anew version working
+	  with XEmacs too
+
 Sat Jul  7 02:16:00 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* include/libxml/xpath.h: small cleanup

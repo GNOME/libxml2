@@ -1,3 +1,8 @@
+Sat Aug 12 23:19:42 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/* : rebuilt the docs
+	* getting ready for 2.2.2 release
+
 Sat Aug 12 16:42:37 EDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.[ch]: added xmlGetFeaturesList() xmlGetFeature()

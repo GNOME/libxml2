@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN11125"
+NAME="AEN11277"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN11125"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN11128"
+NAME="AEN11280"
 ></A
 ><H2
 >Synopsis</H2
@@ -236,6 +236,19 @@ HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFD"
 >xmlParserInputBufferCreateFd</A
 >
                                             (int fd,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);
+<A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> <A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEMEM"
+>xmlParserInputBufferCreateMem</A
+>
+                                            (const char *mem,
+                                             int size,
                                              <A
 HREF="gnome-xml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
@@ -452,7 +465,7 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11209"
+NAME="AEN11364"
 ></A
 ><H2
 >Description</H2
@@ -462,14 +475,14 @@ NAME="AEN11209"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11212"
+NAME="AEN11367"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11214"
+NAME="AEN11369"
 ></A
 ><H3
 ><A
@@ -542,7 +555,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11232"
+NAME="AEN11387"
 ></A
 ><H3
 ><A
@@ -600,7 +613,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11246"
+NAME="AEN11401"
 ></A
 ><H3
 ><A
@@ -709,7 +722,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11272"
+NAME="AEN11427"
 ></A
 ><H3
 ><A
@@ -767,7 +780,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11286"
+NAME="AEN11441"
 ></A
 ><H3
 ><A
@@ -802,7 +815,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11291"
+NAME="AEN11446"
 ></A
 ><H3
 ><A
@@ -828,7 +841,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11296"
+NAME="AEN11451"
 ></A
 ><H3
 ><A
@@ -901,7 +914,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11314"
+NAME="AEN11469"
 ></A
 ><H3
 ><A
@@ -959,7 +972,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11328"
+NAME="AEN11483"
 ></A
 ><H3
 ><A
@@ -1068,7 +1081,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11354"
+NAME="AEN11509"
 ></A
 ><H3
 ><A
@@ -1126,7 +1139,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11368"
+NAME="AEN11523"
 ></A
 ><H3
 ><A
@@ -1162,7 +1175,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11373"
+NAME="AEN11528"
 ></A
 ><H3
 ><A
@@ -1188,7 +1201,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11378"
+NAME="AEN11533"
 ></A
 ><H3
 ><A
@@ -1270,7 +1283,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11399"
+NAME="AEN11554"
 ></A
 ><H3
 ><A
@@ -1374,7 +1387,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11424"
+NAME="AEN11579"
 ></A
 ><H3
 ><A
@@ -1478,7 +1491,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11450"
+NAME="AEN11605"
 ></A
 ><H3
 ><A
@@ -1579,7 +1592,126 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11475"
+NAME="AEN11630"
+></A
+><H3
+><A
+NAME="XMLPARSERINPUTBUFFERCREATEMEM"
+></A
+>xmlParserInputBufferCreateMem ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> xmlParserInputBufferCreateMem
+                                            (const char *mem,
+                                             int size,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a buffered parser input for the progressive parsing for the input
+from a file descriptor</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the memory input</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the length of the memory block</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>enc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the charset encoding if known</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser input or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11659"
 ></A
 ><H3
 ><A
@@ -1722,7 +1854,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11510"
+NAME="AEN11694"
 ></A
 ><H3
 ><A
@@ -1821,7 +1953,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11534"
+NAME="AEN11718"
 ></A
 ><H3
 ><A
@@ -1923,7 +2055,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11559"
+NAME="AEN11743"
 ></A
 ><H3
 ><A
@@ -2040,7 +2172,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11587"
+NAME="AEN11771"
 ></A
 ><H3
 ><A
@@ -2103,7 +2235,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11603"
+NAME="AEN11787"
 ></A
 ><H3
 ><A
@@ -2176,7 +2308,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11621"
+NAME="AEN11805"
 ></A
 ><H3
 ><A
@@ -2317,7 +2449,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11656"
+NAME="AEN11840"
 ></A
 ><H3
 ><A
@@ -2398,7 +2530,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11677"
+NAME="AEN11861"
 ></A
 ><H3
 ><A
@@ -2521,7 +2653,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11706"
+NAME="AEN11890"
 ></A
 ><H3
 ><A
@@ -2625,7 +2757,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11732"
+NAME="AEN11916"
 ></A
 ><H3
 ><A
@@ -2725,7 +2857,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11757"
+NAME="AEN11941"
 ></A
 ><H3
 ><A
@@ -2867,7 +2999,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11792"
+NAME="AEN11976"
 ></A
 ><H3
 ><A
@@ -2985,7 +3117,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11820"
+NAME="AEN12004"
 ></A
 ><H3
 ><A
@@ -3085,7 +3217,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11844"
+NAME="AEN12028"
 ></A
 ><H3
 ><A
@@ -3163,7 +3295,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11864"
+NAME="AEN12048"
 ></A
 ><H3
 ><A
@@ -3242,7 +3374,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11884"
+NAME="AEN12068"
 ></A
 ><H3
 ><A
@@ -3383,7 +3515,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11919"
+NAME="AEN12103"
 ></A
 ><H3
 ><A

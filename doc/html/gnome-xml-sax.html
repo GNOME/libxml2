@@ -1,0 +1,3916 @@
+<HTML
+><HEAD
+><TITLE
+>SAX</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Libxml Library Reference"
+HREF="libxml-lib.html"><LINK
+REL="PREVIOUS"
+TITLE="parser"
+HREF="gnome-xml-parser.html"><LINK
+REL="NEXT"
+TITLE="tree"
+HREF="gnome-xml-tree.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>Gnome XML Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="gnome-xml-parser.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="gnome-xml-tree.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+>SAX</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN2071"
+></A
+><H2
+>Name</H2
+>SAX &#8212; </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN2074"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+#define     <A
+HREF="gnome-xml-sax.html#EXTERN"
+>extern</A
+>
+const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>* <A
+HREF="gnome-xml-sax.html#GETPUBLICID"
+>getPublicId</A
+>                  (void *ctx);
+const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>* <A
+HREF="gnome-xml-sax.html#GETSYSTEMID"
+>getSystemId</A
+>                  (void *ctx);
+void        <A
+HREF="gnome-xml-sax.html#SETDOCUMENTLOCATOR"
+>setDocumentLocator</A
+>              (void *ctx,
+                                             <A
+HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
+>xmlSAXLocatorPtr</A
+> loc);
+int         <A
+HREF="gnome-xml-sax.html#GETLINENUMBER"
+>getLineNumber</A
+>                   (void *ctx);
+int         <A
+HREF="gnome-xml-sax.html#GETCOLUMNNUMBER"
+>getColumnNumber</A
+>                 (void *ctx);
+int         <A
+HREF="gnome-xml-sax.html#ISSTANDALONE"
+>isStandalone</A
+>                    (void *ctx);
+int         <A
+HREF="gnome-xml-sax.html#HASINTERNALSUBSET"
+>hasInternalSubset</A
+>               (void *ctx);
+int         <A
+HREF="gnome-xml-sax.html#HASEXTERNALSUBSET"
+>hasExternalSubset</A
+>               (void *ctx);
+void        <A
+HREF="gnome-xml-sax.html#INTERNALSUBSET"
+>internalSubset</A
+>                  (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *SystemID);
+<A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> <A
+HREF="gnome-xml-sax.html#GETENTITY"
+>getEntity</A
+>                      (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);
+<A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> <A
+HREF="gnome-xml-sax.html#GETPARAMETERENTITY"
+>getParameterEntity</A
+>             (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);
+<A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> <A
+HREF="gnome-xml-sax.html#RESOLVEENTITY"
+>resolveEntity</A
+>             (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *systemId);
+void        <A
+HREF="gnome-xml-sax.html#ENTITYDECL"
+>entityDecl</A
+>                      (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             int type,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *systemId,
+                                             <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *content);
+void        <A
+HREF="gnome-xml-sax.html#ATTRIBUTEDECL"
+>attributeDecl</A
+>                   (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *elem,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             int type,
+                                             int def,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *defaultValue,
+                                             <A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> tree);
+void        <A
+HREF="gnome-xml-sax.html#ELEMENTDECL"
+>elementDecl</A
+>                     (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             int type,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> content);
+void        <A
+HREF="gnome-xml-sax.html#NOTATIONDECL"
+>notationDecl</A
+>                    (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *systemId);
+void        <A
+HREF="gnome-xml-sax.html#UNPARSEDENTITYDECL"
+>unparsedEntityDecl</A
+>              (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *systemId,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *notationName);
+void        <A
+HREF="gnome-xml-sax.html#STARTDOCUMENT"
+>startDocument</A
+>                   (void *ctx);
+void        <A
+HREF="gnome-xml-sax.html#ENDDOCUMENT"
+>endDocument</A
+>                     (void *ctx);
+void        <A
+HREF="gnome-xml-sax.html#ATTRIBUTE"
+>attribute</A
+>                       (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *fullname,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);
+void        <A
+HREF="gnome-xml-sax.html#STARTELEMENT"
+>startElement</A
+>                    (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *fullname,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> **atts);
+void        <A
+HREF="gnome-xml-sax.html#ENDELEMENT"
+>endElement</A
+>                      (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);
+void        <A
+HREF="gnome-xml-sax.html#REFERENCE"
+>reference</A
+>                       (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);
+void        <A
+HREF="gnome-xml-sax.html#CHARACTERS"
+>characters</A
+>                      (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ch,
+                                             int len);
+void        <A
+HREF="gnome-xml-sax.html#IGNORABLEWHITESPACE"
+>ignorableWhitespace</A
+>             (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ch,
+                                             int len);
+void        <A
+HREF="gnome-xml-sax.html#PROCESSINGINSTRUCTION"
+>processingInstruction</A
+>           (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *target,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *data);
+void        <A
+HREF="gnome-xml-sax.html#GLOBALNAMESPACE"
+>globalNamespace</A
+>                 (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *href,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix);
+void        <A
+HREF="gnome-xml-sax.html#SETNAMESPACE"
+>setNamespace</A
+>                    (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);
+<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    <A
+HREF="gnome-xml-sax.html#GETNAMESPACE"
+>getNamespace</A
+>                    (void *ctx);
+int         <A
+HREF="gnome-xml-sax.html#CHECKNAMESPACE"
+>checkNamespace</A
+>                  (void *ctx,
+                                             <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *nameSpace);
+void        <A
+HREF="gnome-xml-sax.html#NAMESPACEDECL"
+>namespaceDecl</A
+>                   (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *href,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix);
+void        <A
+HREF="gnome-xml-sax.html#COMMENT"
+>comment</A
+>                         (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);
+void        <A
+HREF="gnome-xml-sax.html#CDATABLOCK"
+>cdataBlock</A
+>                      (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value,
+                                             int len);
+void        <A
+HREF="gnome-xml-parser.html#XMLDEFAULTSAXHANDLERINIT"
+>xmlDefaultSAXHandlerInit</A
+>        (void);
+void        <A
+HREF="gnome-xml-parser.html#HTMLDEFAULTSAXHANDLERINIT"
+>htmlDefaultSAXHandlerInit</A
+>       (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN2162"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN2165"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2167"
+></A
+><H3
+><A
+NAME="EXTERN"
+></A
+>extern</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     extern</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2172"
+></A
+><H3
+><A
+NAME="GETPUBLICID"
+></A
+>getPublicId ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>* getPublicId                  (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Return the public ID e.g. "-//SGMLSOURCE//DTD DEMO//EN"</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a xmlChar *</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2192"
+></A
+><H3
+><A
+NAME="GETSYSTEMID"
+></A
+>getSystemId ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>* getSystemId                  (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Return the system ID, basically URL or filename e.g.
+http://www.sgmlsource.com/dtds/memo.dtd</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a xmlChar *</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2212"
+></A
+><H3
+><A
+NAME="SETDOCUMENTLOCATOR"
+></A
+>setDocumentLocator ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        setDocumentLocator              (void *ctx,
+                                             <A
+HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
+>xmlSAXLocatorPtr</A
+> loc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Receive the document locator at startup, actually xmlDefaultSAXLocator
+Everything is available on the context, so this is useless in our case.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>loc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> A SAX Locator</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2232"
+></A
+><H3
+><A
+NAME="GETLINENUMBER"
+></A
+>getLineNumber ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         getLineNumber                   (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Return the line number of the current parsing point.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>an int</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2251"
+></A
+><H3
+><A
+NAME="GETCOLUMNNUMBER"
+></A
+>getColumnNumber ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         getColumnNumber                 (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Return the column number of the current parsing point.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>an int</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2270"
+></A
+><H3
+><A
+NAME="ISSTANDALONE"
+></A
+>isStandalone ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         isStandalone                    (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Is this document tagged standalone ?</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if true</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2289"
+></A
+><H3
+><A
+NAME="HASINTERNALSUBSET"
+></A
+>hasInternalSubset ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         hasInternalSubset               (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Does this document has an internal subset</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if true</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2308"
+></A
+><H3
+><A
+NAME="HASEXTERNALSUBSET"
+></A
+>hasExternalSubset ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         hasExternalSubset               (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Does this document has an external subset</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if true</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2327"
+></A
+><H3
+><A
+NAME="INTERNALSUBSET"
+></A
+>internalSubset ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        internalSubset                  (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *SystemID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Callback on internal subset declaration.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ExternalID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>SystemID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2357"
+></A
+><H3
+><A
+NAME="GETENTITY"
+></A
+>getEntity ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> getEntity                      (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Get an entity by name</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The entity name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlEntityPtr if found.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2382"
+></A
+><H3
+><A
+NAME="GETPARAMETERENTITY"
+></A
+>getParameterEntity ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> getParameterEntity             (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Get a parameter entity by name</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The entity name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlEntityPtr if found.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2407"
+></A
+><H3
+><A
+NAME="RESOLVEENTITY"
+></A
+>resolveEntity ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> resolveEntity             (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *systemId);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The entity loader, to control the loading of external entities,
+the application can either:
+- override this <A
+HREF="gnome-xml-sax.html#RESOLVEENTITY"
+>resolveEntity</A
+>() callback in the SAX block
+- or better use the <A
+HREF="gnome-xml-parser.html#XMLSETEXTERNALENTITYLOADER"
+>xmlSetExternalEntityLoader</A
+>() function to
+set up it's own entity resolution routine</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>publicId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The public ID of the entity</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>systemId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The system ID of the entity</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlParserInputPtr if inlined or NULL for DOM behaviour.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2439"
+></A
+><H3
+><A
+NAME="ENTITYDECL"
+></A
+>entityDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        entityDecl                      (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             int type,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *systemId,
+                                             <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>An entity definition has been parsed</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity name </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity type </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>publicId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The public ID of the entity</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>systemId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The system ID of the entity</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the entity value (without processing).</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2478"
+></A
+><H3
+><A
+NAME="ATTRIBUTEDECL"
+></A
+>attributeDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        attributeDecl                   (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *elem,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             int type,
+                                             int def,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *defaultValue,
+                                             <A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> tree);</PRE
+></TD
+></TR
+></TABLE
+><P
+>An attribute definition has been parsed</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>elem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute name </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute type </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>def</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>defaultValue</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>tree</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2521"
+></A
+><H3
+><A
+NAME="ELEMENTDECL"
+></A
+>elementDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        elementDecl                     (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             int type,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>An element definition has been parsed</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element name </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element type </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the element value (without processing).</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2550"
+></A
+><H3
+><A
+NAME="NOTATIONDECL"
+></A
+>notationDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        notationDecl                    (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *systemId);</PRE
+></TD
+></TR
+></TABLE
+><P
+>What to do when a notation declaration has been parsed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The name of the notation</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>publicId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The public ID of the entity</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>systemId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The system ID of the entity</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2580"
+></A
+><H3
+><A
+NAME="UNPARSEDENTITYDECL"
+></A
+>unparsedEntityDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        unparsedEntityDecl              (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *systemId,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *notationName);</PRE
+></TD
+></TR
+></TABLE
+><P
+>What to do when an unparsed entity declaration is parsed</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The name of the entity</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>publicId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The public ID of the entity</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>systemId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> The system ID of the entity</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>notationName</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the name of the notation</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2615"
+></A
+><H3
+><A
+NAME="STARTDOCUMENT"
+></A
+>startDocument ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        startDocument                   (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>called when the document start being processed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2630"
+></A
+><H3
+><A
+NAME="ENDDOCUMENT"
+></A
+>endDocument ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        endDocument                     (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>called when the document end has been detected.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2645"
+></A
+><H3
+><A
+NAME="ATTRIBUTE"
+></A
+>attribute ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        attribute                       (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *fullname,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Handle an attribute that has been read by the parser.
+The default handling is to convert the attribute into an
+DOM subtree and past it in a new xmlAttr element added to
+the element.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>fullname</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  The attribute value</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2670"
+></A
+><H3
+><A
+NAME="STARTELEMENT"
+></A
+>startElement ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        startElement                    (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *fullname,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> **atts);</PRE
+></TD
+></TR
+></TABLE
+><P
+>called when an opening tag has been processed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>fullname</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>atts</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An array of name/value attributes pairs, NULL terminated</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2695"
+></A
+><H3
+><A
+NAME="ENDELEMENT"
+></A
+>endElement ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        endElement                      (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>called when the end of an element has been detected.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  The element name</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2715"
+></A
+><H3
+><A
+NAME="REFERENCE"
+></A
+>reference ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        reference                       (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>called when an entity reference is detected.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  The entity name</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2735"
+></A
+><H3
+><A
+NAME="CHARACTERS"
+></A
+>characters ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        characters                      (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ch,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>receiving some chars from the parser.
+Question: how much at a time ???</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ch</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a xmlChar string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the number of xmlChar</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2759"
+></A
+><H3
+><A
+NAME="IGNORABLEWHITESPACE"
+></A
+>ignorableWhitespace ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        ignorableWhitespace             (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ch,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>receiving some ignorable whitespaces from the parser.
+Question: how much at a time ???</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ch</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a xmlChar string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the number of xmlChar</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2783"
+></A
+><H3
+><A
+NAME="PROCESSINGINSTRUCTION"
+></A
+>processingInstruction ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        processingInstruction           (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *target,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *data);</PRE
+></TD
+></TR
+></TABLE
+><P
+>A processing instruction has been parsed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>target</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the target name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the PI data's</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2808"
+></A
+><H3
+><A
+NAME="GLOBALNAMESPACE"
+></A
+>globalNamespace ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        globalNamespace                 (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *href,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix);</PRE
+></TD
+></TR
+></TABLE
+><P
+>An old global namespace has been parsed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>href</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the namespace associated URN</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prefix</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the namespace prefix</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2833"
+></A
+><H3
+><A
+NAME="SETNAMESPACE"
+></A
+>setNamespace ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        setNamespace                    (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Set the current element namespace.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the namespace prefix</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2853"
+></A
+><H3
+><A
+NAME="GETNAMESPACE"
+></A
+>getNamespace ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    getNamespace                    (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Get the current element namespace.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2873"
+></A
+><H3
+><A
+NAME="CHECKNAMESPACE"
+></A
+>checkNamespace ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         checkNamespace                  (void *ctx,
+                                             <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *nameSpace);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check that the current element namespace is the same as the
+one read upon parsing.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nameSpace</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the namespace to check against</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2897"
+></A
+><H3
+><A
+NAME="NAMESPACEDECL"
+></A
+>namespaceDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        namespaceDecl                   (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *href,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix);</PRE
+></TD
+></TR
+></TABLE
+><P
+>A namespace has been parsed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>href</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the namespace associated URN</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prefix</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the namespace prefix</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2922"
+></A
+><H3
+><A
+NAME="COMMENT"
+></A
+>comment ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        comment                         (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>A comment has been parsed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the comment content</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2942"
+></A
+><H3
+><A
+NAME="CDATABLOCK"
+></A
+>cdataBlock ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        cdataBlock                      (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>called when a pcdata block has been parsed</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  The pcdata content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the block length</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2966"
+></A
+><H3
+><A
+NAME="XMLDEFAULTSAXHANDLERINIT"
+></A
+>xmlDefaultSAXHandlerInit ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDefaultSAXHandlerInit        (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Initialize the default SAX handler</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2972"
+></A
+><H3
+><A
+NAME="HTMLDEFAULTSAXHANDLERINIT"
+></A
+>htmlDefaultSAXHandlerInit ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        htmlDefaultSAXHandlerInit       (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Initialize the default SAX handler</P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="gnome-xml-parser.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="gnome-xml-tree.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>parser</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>tree</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

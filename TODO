@@ -6,6 +6,14 @@
 
     this tend to be outdated :-\ ...
 
+DOCS:
+=====
+
+- use case of using XInclude to load for example a description.
+  order document + product base -(XSLT)-> quote with XIncludes 
+                                                   |
+  HTML output with description of parts <---(XSLT)--
+
 TODO:
 =====
 

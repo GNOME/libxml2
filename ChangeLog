@@ -1,3 +1,8 @@
+Sat Jul 14 19:31:21 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmllint.c: fixed compilation under Cygwin #57503
+	* TODO: update
+
 2001-07-13  Peter Williams  <peterw@ximian.com>
 
 	* config.h.in: add #undef HAVE_DLFCN_H

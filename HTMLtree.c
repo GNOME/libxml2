@@ -158,6 +158,8 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     /*
      * Special cases.
      */
+    if (cur->type == XML_DTD_NODE)
+	return;
     if (cur->type == XML_HTML_DOCUMENT_NODE) {
 	htmlDocContentDump(buf, (xmlDocPtr) cur);
 	return;

@@ -618,7 +618,7 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *new) {
  */
 void
 htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *new) {
-    if (!strcmp(new, "html"))
+    if (!xmlStrcmp(new, BAD_CAST"html"))
 	return;
     if (ctxt->nameNr <= 0) {
 #ifdef DEBUG
@@ -628,12 +628,15 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *new) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
 	    ctxt->sax->startElement(ctxt->userData, BAD_CAST"html", NULL);
     }
-    if ((!strcmp(new, "body")) || (!strcmp(new, "head")))
+    if ((!xmlStrcmp(new, BAD_CAST"body")) || (!xmlStrcmp(new, BAD_CAST"head")))
         return;
     if (ctxt->nameNr <= 1) {
-	if ((!strcmp(new, "script")) || (!strcmp(new, "style")) ||
-	    (!strcmp(new, "meta")) || (!strcmp(new, "link")) ||
-	    (!strcmp(new, "title")) || (!strcmp(new, "base"))) {
+	if ((!xmlStrcmp(new, BAD_CAST"script")) ||
+	    (!xmlStrcmp(new, BAD_CAST"style")) ||
+	    (!xmlStrcmp(new, BAD_CAST"meta")) ||
+	    (!xmlStrcmp(new, BAD_CAST"link")) ||
+	    (!xmlStrcmp(new, BAD_CAST"title")) ||
+	    (!xmlStrcmp(new, BAD_CAST"base"))) {
 	    /* 
 	     * dropped OBJECT ... i you put it first BODY will be
 	     * assumed !
@@ -2152,17 +2155,15 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
 	    ctxt->sax->error(ctxt->userData, "DOCTYPE unproperly terminated\n");
 	ctxt->wellFormed = 0;
         /* We shouldn't try to resynchronize ... */
-    } else {
     }
     NEXT;
 
     /*
-     * Create the document accordingly to the DOCTYPE
+     * Create or update the document accordingly to the DOCTYPE
      */
-    if (ctxt->myDoc != NULL)
-        xmlFreeDoc(ctxt->myDoc);
-    
-    ctxt->myDoc = htmlNewDoc(URI, ExternalID);
+    if ((ctxt->sax != NULL) && (ctxt->sax->internalSubset != NULL) &&
+	(!ctxt->disableSAX))
+	ctxt->sax->internalSubset(ctxt->userData, name, ExternalID, URI);
 
     /*
      * Cleanup, since we don't use all those identifiers
@@ -2846,13 +2847,6 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     SKIP_BLANKS;
 
     /*
-     * Create the document if not done already.
-     */
-    if (ctxt->myDoc == NULL) {
-        ctxt->myDoc = htmlNewDoc(NULL, NULL);
-    }
-
-    /*
      * Time to start parsing the tree itself
      */
     htmlParseContent(ctxt);
@@ -3171,6 +3165,10 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if ((ctxt->sax) && (ctxt->sax->setDocumentLocator))
 		    ctxt->sax->setDocumentLocator(ctxt->userData,
 						  &xmlDefaultSAXLocator);
+		if ((ctxt->sax) && (ctxt->sax->startDocument) &&
+	            (!ctxt->disableSAX))
+		    ctxt->sax->startDocument(ctxt->userData);
+
 		cur = in->cur[0];
 		next = in->cur[1];
 		if ((cur == '<') && (next == '!') &&
@@ -3190,7 +3188,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    fprintf(stderr, "HPP: entering PROLOG\n");
 #endif
                 } else {
-		    ctxt->myDoc = htmlNewDoc(NULL, NULL);
 		    ctxt->instate = XML_PARSER_MISC;
 		}
 #ifdef DEBUG_PUSH

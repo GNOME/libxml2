@@ -25,6 +25,7 @@
 #include <libxml/xmlIO.h>
 #include <libxml/SAX.h>
 #include <libxml/uri.h>
+#include <libxml/HTMLtree.h>
 
 /* #define DEBUG_SAX */
 /* #define DEBUG_SAX_TREE */
@@ -157,11 +158,22 @@ internalSubset(void *ctx, const xmlChar *name,
 	       const xmlChar *ExternalID, const xmlChar *SystemID)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlDtdPtr dtd;
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.internalSubset(%s, %s, %s)\n",
             name, ExternalID, SystemID);
 #endif
-    xmlCreateIntSubset(ctxt->myDoc, name, ExternalID, SystemID);
+
+    if (ctxt->myDoc == NULL)
+	return;
+    dtd = xmlGetIntSubset(ctxt->myDoc);
+    if (dtd != NULL) {
+	xmlUnlinkNode((xmlNodePtr) dtd);
+	xmlFreeDtd(dtd);
+	ctxt->myDoc->intSubset = NULL;
+    }
+    ctxt->myDoc->intSubset = 
+	xmlCreateIntSubset(ctxt->myDoc, name, ExternalID, SystemID);
 }
 
 /**
@@ -1485,7 +1497,7 @@ xmlDefaultSAXHandlerInit(void)
  * Default handler for HTML, builds the DOM tree
  */
 xmlSAXHandler htmlDefaultSAXHandler = {
-    NULL,
+    internalSubset,
     NULL,
     NULL,
     NULL,
@@ -1522,7 +1534,7 @@ xmlSAXHandler htmlDefaultSAXHandler = {
 void
 htmlDefaultSAXHandlerInit(void)
 {
-    htmlDefaultSAXHandler.internalSubset = NULL;
+    htmlDefaultSAXHandler.internalSubset = internalSubset;
     htmlDefaultSAXHandler.externalSubset = NULL;
     htmlDefaultSAXHandler.isStandalone = NULL;
     htmlDefaultSAXHandler.hasInternalSubset = NULL;

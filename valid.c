@@ -2031,6 +2031,9 @@ xmlIsRef(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
             ((attr->name[1] == 'D') || (attr->name[1] == 'd')) &&
 	    (attr->name[2] == 0)) return(1);
 	 *******************/
+    } else if (doc->type == XML_HTML_DOCUMENT_NODE) {
+	/* TODO @@@ */
+	return(0);    
     } else {
 	xmlAttributePtr attrDecl;
 

@@ -48,7 +48,7 @@ mail</a>:</p>
     Use <strong>xmlDocGetRootElement(doc)</strong> to get the root element of
     a document. Alternatively if you are sure to not reference Dtds nor have
     PIs or comments before or after the root element s/->root/->children/g
-    will probably do it.    </li>
+    will probably do it.</li>
   <li>The white space issue, this one is more complex, unless special case of
     validating parsing, the line breaks and spaces usually used for indenting
     and formatting the document content becomes significant. So they are
@@ -90,7 +90,7 @@ They offers the following:</p>
     <strong>#include&lt;libxml/...></strong> in both cases.</li>
   <li>similar identifiers defined via macros for the child and root fields:
     respectively <strong>xmlChildrenNode</strong> and
-    <strong>xmlRootNode</strong> </li>
+    <strong>xmlRootNode</strong></li>
   <li>a new macro <strong>LIBXML_TEST_VERSION</strong> which should be
     inserted once in the client code</li>
 </ol>
@@ -118,7 +118,7 @@ following:</p>
     <strong>LIBXML_TEST_VERSION</strong> is a fine place).</li>
 </ol>
 
-<p>Following those 3 steps should work. It worked for some of my own code.</p>
+<p>Following those steps should work. It worked for some of my own code.</p>
 
 <p>Let me put some emphasis on the fact that there is far more changes from
 libxml 1.x to 2.x than the ones you may have to patch for. The overall code
@@ -128,6 +128,6 @@ upgrade, it may cost a lot on the long term ...</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: upgrade.html,v 1.5 2000/05/06 08:11:18 veillard Exp $</p>
+<p>$Id: upgrade.html,v 1.6 2000/06/29 00:43:26 veillard Exp $</p>
 </body>
 </html>

@@ -414,6 +414,7 @@ xmlDtdPtr	xmlNewDtd		(xmlDocPtr doc,
 					 const xmlChar *name,
 					 const xmlChar *ExternalID,
 					 const xmlChar *SystemID);
+xmlDtdPtr	xmlGetIntSubset		(xmlDocPtr doc);
 void		xmlFreeDtd		(xmlDtdPtr cur);
 xmlNsPtr	xmlNewGlobalNs		(xmlDocPtr doc,
 					 const xmlChar *href,

@@ -1,3 +1,8 @@
+Fri Jun 30 20:29:08 MEST 2000
+
+	* HTMLparser.c HTMLtree.c SAX.c valid.c tree.h : more cleanup
+	  of the HTML parser to force it to not bypass SAX
+
 Fri Jun 30 11:19:59 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* win32config.h.in: updated

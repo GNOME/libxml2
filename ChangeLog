@@ -1,3 +1,8 @@
+Sat Feb  7 16:53:11 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: fixed problem with function xmlXIncludeCopyRange
+	  (bug 133686).
+
 Fri Feb  6 21:03:41 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlwriter.c: fixed problem with return value of

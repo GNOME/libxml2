@@ -874,7 +874,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
     /* pointers to traversal nodes */
     xmlNodePtr start, cur, end;
     int index1, index2;
-    int level = 0, lastLevel = 0;
+    int level = 0, lastLevel = 0, endLevel = 0, endFlag = 0;
 
     if ((ctxt == NULL) || (target == NULL) || (source == NULL) ||
 	(range == NULL))
@@ -950,6 +950,8 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		    xmlAddChild(last, tmp);
 		return(list);
 	    } else {	/* ending node not a text node */
+	        endLevel = level;	/* remember the level of the end node */
+		endFlag = 1;
 		tmp = xmlDocCopyNode(cur, target, 0);
 		if (list == NULL) {
 		    list = tmp;
@@ -971,13 +973,14 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		if ((cur == start) && (index1 > 1)) {
 		    cur = xmlXIncludeGetNthChild(cur, index1 - 1);
 		    index1 = 0;
-		} else {
+		}  else {
 		    cur = cur->children;
 		}
+		level++;	/* increment level to show change */
 		/*
 		 * Now gather the remaining nodes from cur to end
 		 */
-		continue; /* while */
+		continue;	/* while */
 	    }
 	} else if (cur == start) {	/* Not at the end, are we at start? */
 	    if ((cur->type == XML_TEXT_NODE) ||
@@ -1046,6 +1049,8 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 	 * Skip to next node in document order
 	 */
 	cur = xmlXPtrAdvanceNode(cur, &level);
+	if (endFlag && (level >= endLevel))
+	    break;
     }
     return(list);
 }

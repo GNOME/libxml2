@@ -500,7 +500,8 @@ TRIO_ARGS1((number),
 #endif
 }
 
-
+#if 0
+	/* Temporary fix - this routine is not used anywhere */
 /**
    Check for finity.
 
@@ -542,6 +543,7 @@ TRIO_ARGS1((number),
 #endif
 }
 
+#endif
 
 /*
  * The sign of NaN is always false
@@ -729,6 +731,8 @@ TRIO_ARGS1((number),
   return is_negative;
 }
 
+#if 0
+	/* Temporary fix - this routine is not used in libxml */
 /**
    Examine the class of a number.
 
@@ -745,6 +749,7 @@ TRIO_ARGS1((number),
   return trio_fpclassify_and_signbit(number, &dummy);
 }
 
+#endif
 
 /** @} SpecialQuantities */
 

@@ -365,8 +365,8 @@ def print_function_wrapper(name, output, export, include):
 	    if args[1][1] == "char *" or args[1][1] == "xmlChar *":
 		c_call = "\n    if (%s->%s != NULL) xmlFree(%s->%s);\n" % (
 		                 args[0][0], args[1][0], args[0][0], args[1][0])
-		c_call = c_call + "    %s->%s = xmlStrdup((const xmlChar *)%s);\n" % (args[0][0],
-		                 args[1][0], args[1][0])
+		c_call = c_call + "    %s->%s = (%s)xmlStrdup((const xmlChar *)%s);\n" % (args[0][0],
+		                 args[1][0], args[1][1], args[1][0])
 	    else:
 		c_call = "\n    %s->%s = %s;\n" % (args[0][0], args[1][0],
 						   args[1][0])
@@ -553,6 +553,7 @@ def buildStubs():
 #    wrapper.write("#include \"config.h\"\n")
     wrapper.write("#include <libxml/xmlversion.h>\n")
     wrapper.write("#include <libxml/tree.h>\n")
+    wrapper.write("#include <libxml/xmlschemastypes.h>\n")
     wrapper.write("#include \"libxml_wrap.h\"\n")
     wrapper.write("#include \"libxml2-py.h\"\n\n")
     for function in functions.keys():

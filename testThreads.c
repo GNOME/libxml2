@@ -84,7 +84,7 @@ thread_specific_data(void *private_data)
 }
 
 int
-main()
+main(void)
 {
     unsigned int i, repeat;
     unsigned int num_threads = sizeof(testfiles) / sizeof(testfiles[0]);

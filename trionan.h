@@ -66,11 +66,14 @@ TRIO_PUBLIC int trio_isinf TRIO_PROTO((double number));
 /*
  * If number is finite return non-zero, otherwise return zero.
  */
+#if 0
+	/* Temporary fix - these 2 routines not used in libxml */
 TRIO_PUBLIC int trio_isfinite TRIO_PROTO((double number));
 
-TRIO_PUBLIC int trio_signbit TRIO_PROTO((double number));
-
 TRIO_PUBLIC int trio_fpclassify TRIO_PROTO((double number));
+#endif
+
+TRIO_PUBLIC int trio_signbit TRIO_PROTO((double number));
 
 TRIO_PUBLIC int trio_fpclassify_and_signbit TRIO_PROTO((double number, int *is_negative));
 

@@ -1,3 +1,9 @@
+Wed Aug  6 12:32:11 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* error.c trionan.[ch] testThreads.c python/generator.py:
+	  further small changes to elminate most of the remaining
+	  warnings.
+
 Tue Aug  5 23:51:21 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* error.c HTMLparser.c testC14N.c testHTML.c testURI.c

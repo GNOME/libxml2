@@ -1,3 +1,9 @@
+Wed Feb 26 15:46:48 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: Fixed a couple of problem raised by James Clark
+	  in bug #107083, the support for ID/IDREF/IDREFS at the WXS
+	  datatype level still not fixed though.
+
 Mon Feb 24 21:09:19 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing release 2.5.4

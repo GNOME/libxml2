@@ -9,9 +9,6 @@
 /**
  * TODO:
  * - error reporting
- * - simplification of the resulting compiled trees:
- *    - NOT_ALLOWED
- *    - EMPTY
  * - handle namespace declarations as attributes.
  * - add support for DTD compatibility spec
  *   http://www.oasis-open.org/committees/relax-ng/compatibility-20011203.html
@@ -50,6 +47,7 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
 
 
 /* #define DEBUG 1 */                /* very verbose output */
+/* #define DEBUG_GRAMMAR 1 */
 /* #define DEBUG_CONTENT 1 */
 /* #define DEBUG_TYPE 1 */
 /* #define DEBUG_VALID 1 */
@@ -154,8 +152,8 @@ struct _xmlRelaxNG {
 
     xmlHashTablePtr defs;	/* define */
     xmlHashTablePtr refs;	/* references */
-    xmlHashTablePtr documents;  /* all the documents loaded */
-    xmlHashTablePtr includes;   /* all the includes loaded */
+    xmlRelaxNGDocumentPtr documents; /* all the documents loaded */
+    xmlRelaxNGIncludePtr includes;   /* all the includes loaded */
     int                  defNr; /* number of defines used */
     xmlRelaxNGDefinePtr *defTab;/* pointer to the allocated definitions */
     void *_private;	/* unused by the library for users or bindings */
@@ -196,8 +194,8 @@ struct _xmlRelaxNGParserCtxt {
     int                nbInterleaves;
     xmlHashTablePtr    interleaves;   /* keep track of all the interleaves */
 
-    xmlHashTablePtr    documents;     /* all the documents loaded */
-    xmlHashTablePtr    includes;      /* all the includes loaded */
+    xmlRelaxNGDocumentPtr documents;  /* all the documents loaded */
+    xmlRelaxNGIncludePtr includes;    /* all the includes loaded */
     xmlChar	      *URL;
     xmlDocPtr          document;
 
@@ -291,6 +289,7 @@ struct _xmlRelaxNGValidCtxt {
  * Structure associated to a RelaxNGs document element
  */
 struct _xmlRelaxNGInclude {
+    xmlRelaxNGIncludePtr next;	/* keep a chain of includes */
     xmlChar   *href;		/* the normalized href value */
     xmlDocPtr  doc;		/* the associated XML document */
     xmlRelaxNGDefinePtr content;/* the definitions */
@@ -303,6 +302,7 @@ struct _xmlRelaxNGInclude {
  * Structure associated to a RelaxNGs document element
  */
 struct _xmlRelaxNGDocument {
+    xmlRelaxNGDocumentPtr next; /* keep a chain of documents */
     xmlChar   *href;		/* the normalized href value */
     xmlDocPtr  doc;		/* the associated XML document */
     xmlRelaxNGDefinePtr content;/* the definitions */
@@ -373,6 +373,7 @@ struct _xmlRelaxNGTypeLibrary {
 static void xmlRelaxNGFreeGrammar(xmlRelaxNGGrammarPtr grammar);
 static void xmlRelaxNGFreeDefine(xmlRelaxNGDefinePtr define);
 static void xmlRelaxNGNormExtSpace(xmlChar *value);
+static void xmlRelaxNGFreeInnerSchema(xmlRelaxNGPtr schema);
 
 /**
  * xmlRelaxNGFreeDocument:
@@ -391,8 +392,25 @@ xmlRelaxNGFreeDocument(xmlRelaxNGDocumentPtr docu)
     if (docu->doc != NULL)
 	xmlFreeDoc(docu->doc);
     if (docu->schema != NULL)
-	xmlRelaxNGFree(docu->schema);
+	xmlRelaxNGFreeInnerSchema(docu->schema);
     xmlFree(docu);
+}
+
+/**
+ * xmlRelaxNGFreeDocumentList:
+ * @docu:  a list of  document structure
+ *
+ * Deallocate a RelaxNG document structures.
+ */
+static void
+xmlRelaxNGFreeDocumentList(xmlRelaxNGDocumentPtr docu)
+{
+    xmlRelaxNGDocumentPtr next;
+    while (docu != NULL) {
+	next = docu->next;
+	xmlRelaxNGFreeDocument(docu);
+	docu = next;
+    }
 }
 
 /**
@@ -414,6 +432,23 @@ xmlRelaxNGFreeInclude(xmlRelaxNGIncludePtr incl)
     if (incl->schema != NULL)
 	xmlRelaxNGFree(incl->schema);
     xmlFree(incl);
+}
+
+/**
+ * xmlRelaxNGFreeIncludeList:
+ * @incl:  a include structure list
+ *
+ * Deallocate a RelaxNG include structure.
+ */
+static void
+xmlRelaxNGFreeIncludeList(xmlRelaxNGIncludePtr incl)
+{
+    xmlRelaxNGIncludePtr next;
+    while (incl != NULL) {
+	next = incl->next;
+	xmlRelaxNGFreeInclude(incl);
+	incl = next;
+    }
 }
 
 /**
@@ -442,6 +477,31 @@ xmlRelaxNGNewRelaxNG(xmlRelaxNGParserCtxtPtr ctxt)
 }
 
 /**
+ * xmlRelaxNGFreeInnerSchema:
+ * @schema:  a schema structure
+ *
+ * Deallocate a RelaxNG schema structure.
+ */
+static void
+xmlRelaxNGFreeInnerSchema(xmlRelaxNGPtr schema)
+{
+    if (schema == NULL)
+        return;
+
+    if (schema->doc != NULL)
+	xmlFreeDoc(schema->doc);
+    if (schema->defTab != NULL) {
+	int i;
+
+	for (i = 0;i < schema->defNr;i++)
+	    xmlRelaxNGFreeDefine(schema->defTab[i]);
+	xmlFree(schema->defTab);
+    }
+
+    xmlFree(schema);
+}
+
+/**
  * xmlRelaxNGFree:
  * @schema:  a schema structure
  *
@@ -458,11 +518,9 @@ xmlRelaxNGFree(xmlRelaxNGPtr schema)
     if (schema->doc != NULL)
 	xmlFreeDoc(schema->doc);
     if (schema->documents != NULL)
-	xmlHashFree(schema->documents, (xmlHashDeallocator)
-		xmlRelaxNGFreeDocument);
+	xmlRelaxNGFreeDocumentList(schema->documents);
     if (schema->includes != NULL)
-	xmlHashFree(schema->includes, (xmlHashDeallocator)
-		xmlRelaxNGFreeInclude);
+	xmlRelaxNGFreeIncludeList(schema->includes);
     if (schema->defTab != NULL) {
 	int i;
 
@@ -511,6 +569,9 @@ xmlRelaxNGFreeGrammar(xmlRelaxNGGrammarPtr grammar)
     if (grammar == NULL)
         return;
 
+    if (grammar->children != NULL) {
+	xmlRelaxNGFreeGrammar(grammar->children);
+    }
     if (grammar->next != NULL) {
 	xmlRelaxNGFreeGrammar(grammar->next);
     }
@@ -886,34 +947,12 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
 	if (xmlStrEqual(ctxt->incTab[i]->href, URL)) {
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData,
-		    "Detected an externalRef recursion for %s\n",
+		    "Detected an Include recursion for %s\n",
 			    URL);
 	    ctxt->nbErrors++;
 	    return(NULL);
 	}
     }
-
-    /*
-     * Lookup in the hash table
-     */
-    if (ctxt->includes == NULL) {
-	ctxt->includes = xmlHashCreate(10);
-	if (ctxt->includes == NULL) {
-	    if (ctxt->error != NULL)
-		ctxt->error(ctxt->userData,
-		    "Failed to allocate hash table for document\n");
-	    ctxt->nbErrors++;
-	    return(NULL);
-	}
-    } else {
-	if (ns == NULL)
-	    ret = xmlHashLookup2(ctxt->includes, BAD_CAST "", URL);
-	else
-	    ret = xmlHashLookup2(ctxt->includes, ns, URL);
-	if (ret != NULL)
-	    return(ret);
-    }
-
 
     /*
      * load the document
@@ -942,6 +981,8 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
     memset(ret, 0, sizeof(xmlRelaxNGInclude));
     ret->doc = doc;
     ret->href = xmlStrdup(URL);
+    ret->next = ctxt->includes;
+    ctxt->includes = ret;
 
     /*
      * transmit the ns if needed
@@ -956,12 +997,8 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
     }
 
     /*
-     * push it on the stack and register it in the hash table
+     * push it on the stack
      */
-    if (ns == NULL)
-	xmlHashAddEntry2(ctxt->includes, BAD_CAST "", URL, ret);
-    else
-	xmlHashAddEntry2(ctxt->includes, ns, URL, ret);
     xmlRelaxNGIncludePush(ctxt, ret);
 
     /*
@@ -1171,28 +1208,6 @@ xmlRelaxNGLoadExternalRef(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
     }
 
     /*
-     * Lookup in the hash table
-     */
-    if (ctxt->documents == NULL) {
-	ctxt->documents = xmlHashCreate(10);
-	if (ctxt->documents == NULL) {
-	    if (ctxt->error != NULL)
-		ctxt->error(ctxt->userData,
-		    "Failed to allocate hash table for document\n");
-	    ctxt->nbErrors++;
-	    return(NULL);
-	}
-    } else {
-	if (ns == NULL)
-	    ret = xmlHashLookup2(ctxt->documents, BAD_CAST "", URL);
-	else
-	    ret = xmlHashLookup2(ctxt->documents, ns, URL);
-	if (ret != NULL)
-	    return(ret);
-    }
-
-
-    /*
      * load the document
      */
     doc = xmlParseFile((const char *) URL);
@@ -1219,6 +1234,8 @@ xmlRelaxNGLoadExternalRef(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
     memset(ret, 0, sizeof(xmlRelaxNGDocument));
     ret->doc = doc;
     ret->href = xmlStrdup(URL);
+    ret->next = ctxt->documents;
+    ctxt->documents = ret;
 
     /*
      * transmit the ns if needed
@@ -1235,10 +1252,6 @@ xmlRelaxNGLoadExternalRef(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
     /*
      * push it on the stack and register it in the hash table
      */
-    if (ns == NULL)
-	xmlHashAddEntry2(ctxt->documents, BAD_CAST "", URL, ret);
-    else
-	xmlHashAddEntry2(ctxt->documents, ns, URL, ret);
     xmlRelaxNGDocumentPush(ctxt, ret);
 
     /*
@@ -2986,6 +2999,10 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	xmlRelaxNGGrammarPtr grammar, old;
 	xmlRelaxNGGrammarPtr oldparent;
 
+#ifdef DEBUG_GRAMMAR
+	xmlGenericError(xmlGenericErrorContext, "Found <grammar> pattern\n");
+#endif
+
 	oldparent = ctxt->parentgrammar;
 	old = ctxt->grammar;
 	ctxt->parentgrammar = old;
@@ -2993,10 +3010,12 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	if (old != NULL) {
 	    ctxt->grammar = old;
 	    ctxt->parentgrammar = oldparent;
+#if 0
 	    if (grammar != NULL) {
 		grammar->next = old->next;
 		old->next = grammar;
 	    }
+#endif
 	}
 	if (grammar != NULL)
 	    def = grammar->start;
@@ -3795,7 +3814,7 @@ xmlRelaxNGCheckCombine(xmlRelaxNGDefinePtr define,
 	    else {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
-		    "Some defines for %s lacks the combine attribute\n",
+		    "Some defines for %s needs the combine attribute\n",
 				name);
 		ctxt->nbErrors++;
 	    }
@@ -3931,7 +3950,7 @@ xmlRelaxNGCombineStart(xmlRelaxNGParserCtxtPtr ctxt,
 	    else {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
-		    "Some <start> elements lacks the combine attribute\n");
+		    "Some <start> element miss the combine attribute\n");
 		ctxt->nbErrors++;
 	    }
 	}
@@ -4543,6 +4562,10 @@ static xmlRelaxNGGrammarPtr
 xmlRelaxNGParseGrammar(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes) {
     xmlRelaxNGGrammarPtr ret, tmp, old;
 
+#ifdef DEBUG_GRAMMAR
+    xmlGenericError(xmlGenericErrorContext, "Parsing a new grammar\n");
+#endif
+
     ret = xmlRelaxNGNewGrammar(ctxt);
     if (ret == NULL)
         return(NULL);
@@ -4627,13 +4650,28 @@ xmlRelaxNGParseDocument(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     if (IS_RELAXNG(node, "grammar")) {
 	schema->topgrammar = xmlRelaxNGParseGrammar(ctxt, node->children);
     } else {
-	schema->topgrammar = xmlRelaxNGNewGrammar(ctxt);
+	xmlRelaxNGGrammarPtr tmp, ret;
+
+	schema->topgrammar = ret = xmlRelaxNGNewGrammar(ctxt);
 	if (schema->topgrammar == NULL) {
 	    return(schema);
 	}
-	schema->topgrammar->parent = NULL;
+	/*
+	 * Link the new grammar in the tree
+	 */
+	ret->parent = ctxt->grammar;
+	if (ctxt->grammar != NULL) {
+	    tmp = ctxt->grammar->children;
+	    if (tmp == NULL) {
+		ctxt->grammar->children = ret;
+	    } else {
+		while (tmp->next != NULL)
+		    tmp = tmp->next;
+		tmp->next = ret;
+	    }
+	}
 	old = ctxt->grammar;
-	ctxt->grammar = schema->topgrammar;
+	ctxt->grammar = ret;
 	xmlRelaxNGParseStart(ctxt, node);
 	if (old != NULL)
 	    ctxt->grammar = old;
@@ -4744,11 +4782,9 @@ xmlRelaxNGFreeParserCtxt(xmlRelaxNGParserCtxtPtr ctxt) {
     if (ctxt->interleaves != NULL)
         xmlHashFree(ctxt->interleaves, NULL);
     if (ctxt->documents != NULL)
-	xmlHashFree(ctxt->documents, (xmlHashDeallocator)
-		xmlRelaxNGFreeDocument);
+	xmlRelaxNGFreeDocumentList(ctxt->documents);
     if (ctxt->includes != NULL)
-	xmlHashFree(ctxt->includes, (xmlHashDeallocator)
-		xmlRelaxNGFreeInclude);
+	xmlRelaxNGFreeIncludeList(ctxt->includes);
     if (ctxt->docTab != NULL)
 	xmlFree(ctxt->docTab);
     if (ctxt->incTab != NULL)

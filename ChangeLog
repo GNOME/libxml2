@@ -1,3 +1,8 @@
+Tue Nov 19 09:09:04 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: Martin Stoilov pointed out a potential leak in
+	  xmlCreateMemoryParserCtxt
+
 Mon Nov 18 16:05:51 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fixed bug #98879 a corner case when 0 is

@@ -2326,7 +2326,7 @@ xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
  * returns the xmlElementPtr if found or NULL
  */
 
-xmlElementPtr
+static xmlElementPtr
 xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
     xmlElementTablePtr table;
     xmlElementPtr cur;

@@ -297,6 +297,9 @@ found_meta:
 
 static void
 htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur, int format);
+static void
+htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
+	           int format);
 
 /**
  * htmlDtdDump:
@@ -395,9 +398,6 @@ htmlAttrListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur, int format) {
     }
 }
 
-static void
-htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int format);
-
 /**
  * htmlNodeListDump:
  * @buf:  the HTML buffer output
@@ -428,7 +428,7 @@ htmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int format) {
  *
  * Dump an HTML node, recursive behaviour,children are printed too.
  */
-void
+static void
 htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	           int format) {
     const htmlElemDesc * info;

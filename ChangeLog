@@ -1,3 +1,7 @@
+Thu Dec 13 15:54:35 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c valid.c: cleanup some static declarations
+
 Thu Dec 13 15:23:04 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: removed another strdup()

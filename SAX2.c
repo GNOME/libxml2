@@ -2393,9 +2393,10 @@ xmlSAX2ProcessingInstruction(void *ctx, const xmlChar *target,
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr ret;
-    xmlNodePtr parent = ctxt->node;
+    xmlNodePtr parent;
 
     if (ctx == NULL) return;
+    parent = ctxt->node;
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,
 	    "SAX.xmlSAX2ProcessingInstruction(%s, %s)\n", target, data);

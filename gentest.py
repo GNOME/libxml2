@@ -278,6 +278,9 @@ def type_convert(str, name, info, module, function, pos):
         res = 'const_char_ptr_ptr'
     if res == 'FILE_ptr' and module == 'debugXML':
         res = 'debug_FILE_ptr';
+    if res == 'int' and name == 'options':
+        if module == 'parser' or module == 'xmlreader':
+	    res = 'parseroptions'
         
     return res
 

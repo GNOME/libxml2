@@ -219,6 +219,19 @@ static int gen_int(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_int(int no ATTRIBUTE_UNUSED, int val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#define gen_nb_parseroptions 5
+
+static int gen_parseroptions(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(XML_PARSE_NOBLANKS | XML_PARSE_RECOVER);
+    if (no == 1) return(XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_DTDVALID | XML_PARSE_NOCDATA);
+    if (no == 2) return(XML_PARSE_XINCLUDE | XML_PARSE_NOXINCNODE | XML_PARSE_NSCLEAN);
+    if (no == 3) return(XML_PARSE_XINCLUDE | XML_PARSE_NODICT);
+    return(XML_PARSE_SAX1);
+}
+
+static void des_parseroptions(int no ATTRIBUTE_UNUSED, int val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
 #if 0
 #define gen_nb_long 4
 
@@ -12804,13 +12817,13 @@ test_xmlCtxtReadDoc(void) {
     for (n_cur = 0;n_cur < gen_nb_const_xmlChar_ptr;n_cur++) {
     for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
         cur = gen_const_xmlChar_ptr(n_cur, 1);
         URL = gen_filepath(n_URL, 2);
         encoding = gen_const_char_ptr(n_encoding, 3);
-        options = gen_int(n_options, 4);
+        options = gen_parseroptions(n_options, 4);
 
         ret_val = xmlCtxtReadDoc(ctxt, cur, URL, encoding, options);
         desret_xmlDocPtr(ret_val);
@@ -12819,7 +12832,7 @@ test_xmlCtxtReadDoc(void) {
         des_const_xmlChar_ptr(n_cur, cur, 1);
         des_filepath(n_URL, URL, 2);
         des_const_char_ptr(n_encoding, encoding, 3);
-        des_int(n_options, options, 4);
+        des_parseroptions(n_options, options, 4);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlCtxtReadDoc",
@@ -12861,12 +12874,12 @@ test_xmlCtxtReadFile(void) {
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
     for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
         filename = gen_filepath(n_filename, 1);
         encoding = gen_const_char_ptr(n_encoding, 2);
-        options = gen_int(n_options, 3);
+        options = gen_parseroptions(n_options, 3);
 
         ret_val = xmlCtxtReadFile(ctxt, filename, encoding, options);
         desret_xmlDocPtr(ret_val);
@@ -12874,7 +12887,7 @@ test_xmlCtxtReadFile(void) {
         des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
         des_filepath(n_filename, filename, 1);
         des_const_char_ptr(n_encoding, encoding, 2);
-        des_int(n_options, options, 3);
+        des_parseroptions(n_options, options, 3);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlCtxtReadFile",
@@ -12920,14 +12933,14 @@ test_xmlCtxtReadMemory(void) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
     for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
         buffer = gen_const_char_ptr(n_buffer, 1);
         size = gen_int(n_size, 2);
         URL = gen_filepath(n_URL, 3);
         encoding = gen_const_char_ptr(n_encoding, 4);
-        options = gen_int(n_options, 5);
+        options = gen_parseroptions(n_options, 5);
 
         ret_val = xmlCtxtReadMemory(ctxt, buffer, size, URL, encoding, options);
         desret_xmlDocPtr(ret_val);
@@ -12937,7 +12950,7 @@ test_xmlCtxtReadMemory(void) {
         des_int(n_size, size, 2);
         des_filepath(n_URL, URL, 3);
         des_const_char_ptr(n_encoding, encoding, 4);
-        des_int(n_options, options, 5);
+        des_parseroptions(n_options, options, 5);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlCtxtReadMemory",
@@ -13065,16 +13078,16 @@ test_xmlCtxtUseOptions(void) {
     int n_options;
 
     for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
-        options = gen_int(n_options, 1);
+        options = gen_parseroptions(n_options, 1);
 
         ret_val = xmlCtxtUseOptions(ctxt, options);
         desret_int(ret_val);
         call_tests++;
         des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
-        des_int(n_options, options, 1);
+        des_parseroptions(n_options, options, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlCtxtUseOptions",
@@ -14059,13 +14072,13 @@ test_xmlParseInNodeContext(void) {
     for (n_node = 0;n_node < gen_nb_xmlNodePtr;n_node++) {
     for (n_data = 0;n_data < gen_nb_const_char_ptr;n_data++) {
     for (n_datalen = 0;n_datalen < gen_nb_int;n_datalen++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
     for (n_lst = 0;n_lst < gen_nb_xmlNodePtr_ptr;n_lst++) {
         mem_base = xmlMemBlocks();
         node = gen_xmlNodePtr(n_node, 0);
         data = gen_const_char_ptr(n_data, 1);
         datalen = gen_int(n_datalen, 2);
-        options = gen_int(n_options, 3);
+        options = gen_parseroptions(n_options, 3);
         lst = gen_xmlNodePtr_ptr(n_lst, 4);
 
         ret_val = xmlParseInNodeContext(node, data, datalen, options, lst);
@@ -14074,7 +14087,7 @@ test_xmlParseInNodeContext(void) {
         des_xmlNodePtr(n_node, node, 0);
         des_const_char_ptr(n_data, data, 1);
         des_int(n_datalen, datalen, 2);
-        des_int(n_options, options, 3);
+        des_parseroptions(n_options, options, 3);
         des_xmlNodePtr_ptr(n_lst, lst, 4);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
@@ -14351,12 +14364,12 @@ test_xmlReadDoc(void) {
     for (n_cur = 0;n_cur < gen_nb_const_xmlChar_ptr;n_cur++) {
     for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         cur = gen_const_xmlChar_ptr(n_cur, 0);
         URL = gen_filepath(n_URL, 1);
         encoding = gen_const_char_ptr(n_encoding, 2);
-        options = gen_int(n_options, 3);
+        options = gen_parseroptions(n_options, 3);
 
         ret_val = xmlReadDoc(cur, URL, encoding, options);
         desret_xmlDocPtr(ret_val);
@@ -14364,7 +14377,7 @@ test_xmlReadDoc(void) {
         des_const_xmlChar_ptr(n_cur, cur, 0);
         des_filepath(n_URL, URL, 1);
         des_const_char_ptr(n_encoding, encoding, 2);
-        des_int(n_options, options, 3);
+        des_parseroptions(n_options, options, 3);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlReadDoc",
@@ -14401,18 +14414,18 @@ test_xmlReadFile(void) {
 
     for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         filename = gen_filepath(n_filename, 0);
         encoding = gen_const_char_ptr(n_encoding, 1);
-        options = gen_int(n_options, 2);
+        options = gen_parseroptions(n_options, 2);
 
         ret_val = xmlReadFile(filename, encoding, options);
         desret_xmlDocPtr(ret_val);
         call_tests++;
         des_filepath(n_filename, filename, 0);
         des_const_char_ptr(n_encoding, encoding, 1);
-        des_int(n_options, options, 2);
+        des_parseroptions(n_options, options, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlReadFile",
@@ -14453,13 +14466,13 @@ test_xmlReadMemory(void) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
     for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
         size = gen_int(n_size, 1);
         URL = gen_filepath(n_URL, 2);
         encoding = gen_const_char_ptr(n_encoding, 3);
-        options = gen_int(n_options, 4);
+        options = gen_parseroptions(n_options, 4);
 
         ret_val = xmlReadMemory(buffer, size, URL, encoding, options);
         desret_xmlDocPtr(ret_val);
@@ -14468,7 +14481,7 @@ test_xmlReadMemory(void) {
         des_int(n_size, size, 1);
         des_filepath(n_URL, URL, 2);
         des_const_char_ptr(n_encoding, encoding, 3);
-        des_int(n_options, options, 4);
+        des_parseroptions(n_options, options, 4);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlReadMemory",
@@ -28016,12 +28029,12 @@ test_xmlReaderForDoc(void) {
     for (n_cur = 0;n_cur < gen_nb_const_xmlChar_ptr;n_cur++) {
     for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         cur = gen_const_xmlChar_ptr(n_cur, 0);
         URL = gen_filepath(n_URL, 1);
         encoding = gen_const_char_ptr(n_encoding, 2);
-        options = gen_int(n_options, 3);
+        options = gen_parseroptions(n_options, 3);
 
         ret_val = xmlReaderForDoc(cur, URL, encoding, options);
         desret_xmlTextReaderPtr(ret_val);
@@ -28029,7 +28042,7 @@ test_xmlReaderForDoc(void) {
         des_const_xmlChar_ptr(n_cur, cur, 0);
         des_filepath(n_URL, URL, 1);
         des_const_char_ptr(n_encoding, encoding, 2);
-        des_int(n_options, options, 3);
+        des_parseroptions(n_options, options, 3);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlReaderForDoc",
@@ -28068,18 +28081,18 @@ test_xmlReaderForFile(void) {
 
     for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         filename = gen_filepath(n_filename, 0);
         encoding = gen_const_char_ptr(n_encoding, 1);
-        options = gen_int(n_options, 2);
+        options = gen_parseroptions(n_options, 2);
 
         ret_val = xmlReaderForFile(filename, encoding, options);
         desret_xmlTextReaderPtr(ret_val);
         call_tests++;
         des_filepath(n_filename, filename, 0);
         des_const_char_ptr(n_encoding, encoding, 1);
-        des_int(n_options, options, 2);
+        des_parseroptions(n_options, options, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlReaderForFile",
@@ -28122,13 +28135,13 @@ test_xmlReaderForMemory(void) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
     for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         buffer = gen_const_char_ptr(n_buffer, 0);
         size = gen_int(n_size, 1);
         URL = gen_filepath(n_URL, 2);
         encoding = gen_const_char_ptr(n_encoding, 3);
-        options = gen_int(n_options, 4);
+        options = gen_parseroptions(n_options, 4);
 
         ret_val = xmlReaderForMemory(buffer, size, URL, encoding, options);
         desret_xmlTextReaderPtr(ret_val);
@@ -28137,7 +28150,7 @@ test_xmlReaderForMemory(void) {
         des_int(n_size, size, 1);
         des_filepath(n_URL, URL, 2);
         des_const_char_ptr(n_encoding, encoding, 3);
-        des_int(n_options, options, 4);
+        des_parseroptions(n_options, options, 4);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlReaderForMemory",
@@ -28184,13 +28197,13 @@ test_xmlReaderNewDoc(void) {
     for (n_cur = 0;n_cur < gen_nb_const_xmlChar_ptr;n_cur++) {
     for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         reader = gen_xmlTextReaderPtr(n_reader, 0);
         cur = gen_const_xmlChar_ptr(n_cur, 1);
         URL = gen_filepath(n_URL, 2);
         encoding = gen_const_char_ptr(n_encoding, 3);
-        options = gen_int(n_options, 4);
+        options = gen_parseroptions(n_options, 4);
 
         ret_val = xmlReaderNewDoc(reader, cur, URL, encoding, options);
         desret_int(ret_val);
@@ -28199,7 +28212,7 @@ test_xmlReaderNewDoc(void) {
         des_const_xmlChar_ptr(n_cur, cur, 1);
         des_filepath(n_URL, URL, 2);
         des_const_char_ptr(n_encoding, encoding, 3);
-        des_int(n_options, options, 4);
+        des_parseroptions(n_options, options, 4);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlReaderNewDoc",
@@ -28243,12 +28256,12 @@ test_xmlReaderNewFile(void) {
     for (n_reader = 0;n_reader < gen_nb_xmlTextReaderPtr;n_reader++) {
     for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         reader = gen_xmlTextReaderPtr(n_reader, 0);
         filename = gen_filepath(n_filename, 1);
         encoding = gen_const_char_ptr(n_encoding, 2);
-        options = gen_int(n_options, 3);
+        options = gen_parseroptions(n_options, 3);
 
         ret_val = xmlReaderNewFile(reader, filename, encoding, options);
         desret_int(ret_val);
@@ -28256,7 +28269,7 @@ test_xmlReaderNewFile(void) {
         des_xmlTextReaderPtr(n_reader, reader, 0);
         des_filepath(n_filename, filename, 1);
         des_const_char_ptr(n_encoding, encoding, 2);
-        des_int(n_options, options, 3);
+        des_parseroptions(n_options, options, 3);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlReaderNewFile",
@@ -28304,14 +28317,14 @@ test_xmlReaderNewMemory(void) {
     for (n_size = 0;n_size < gen_nb_int;n_size++) {
     for (n_URL = 0;n_URL < gen_nb_filepath;n_URL++) {
     for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-    for (n_options = 0;n_options < gen_nb_int;n_options++) {
+    for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
         mem_base = xmlMemBlocks();
         reader = gen_xmlTextReaderPtr(n_reader, 0);
         buffer = gen_const_char_ptr(n_buffer, 1);
         size = gen_int(n_size, 2);
         URL = gen_filepath(n_URL, 3);
         encoding = gen_const_char_ptr(n_encoding, 4);
-        options = gen_int(n_options, 5);
+        options = gen_parseroptions(n_options, 5);
 
         ret_val = xmlReaderNewMemory(reader, buffer, size, URL, encoding, options);
         desret_int(ret_val);
@@ -28321,7 +28334,7 @@ test_xmlReaderNewMemory(void) {
         des_int(n_size, size, 2);
         des_filepath(n_URL, URL, 3);
         des_const_char_ptr(n_encoding, encoding, 4);
-        des_int(n_options, options, 5);
+        des_parseroptions(n_options, options, 5);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlReaderNewMemory",

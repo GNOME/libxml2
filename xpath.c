@@ -4867,7 +4867,7 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
     xmlXPathObjectPtr arg1, arg2, argtmp;
     int ret = 0;
 
-    if ((ctxt == NULL) || (ctxt->context == NULL)) return;
+    if ((ctxt == NULL) || (ctxt->context == NULL)) return(0);
     arg2 = valuePop(ctxt); 
     arg1 = valuePop(ctxt);
     if ((arg1 == NULL) || (arg2 == NULL)) {
@@ -4951,7 +4951,7 @@ xmlXPathNotEqualValues(xmlXPathParserContextPtr ctxt) {
     xmlXPathObjectPtr arg1, arg2, argtmp;
     int ret = 0;
 
-    if ((ctxt == NULL) || (ctxt->context == NULL)) return;
+    if ((ctxt == NULL) || (ctxt->context == NULL)) return(0);
     arg2 = valuePop(ctxt); 
     arg1 = valuePop(ctxt);
     if ((arg1 == NULL) || (arg2 == NULL)) {
@@ -5051,7 +5051,7 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
     int ret = 0, arg1i = 0, arg2i = 0;
     xmlXPathObjectPtr arg1, arg2;
 
-    if ((ctxt == NULL) || (ctxt->context == NULL)) return;
+    if ((ctxt == NULL) || (ctxt->context == NULL)) return(0);
     arg2 = valuePop(ctxt); 
     arg1 = valuePop(ctxt);
     if ((arg1 == NULL) || (arg2 == NULL)) {

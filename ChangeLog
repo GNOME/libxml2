@@ -1,3 +1,8 @@
+Mon Nov  8 18:16:43 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: better parser options coverage
+	* SAX2.c xpath.c: more cleanups.
+
 Tue Nov  9 01:50:08 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* testapi.c: trying to fix some optional support brokenness

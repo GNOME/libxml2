@@ -797,7 +797,7 @@ xmlTextReaderDoExpand(xmlTextReaderPtr reader) {
 int
 xmlTextReaderRead(xmlTextReaderPtr reader) {
     int val, olddepth = 0;
-    xmlTextReaderState oldstate = 0;
+    xmlTextReaderState oldstate = XML_TEXTREADER_START;
     xmlNodePtr oldnode = NULL;
 
     if ((reader == NULL) || (reader->ctxt == NULL))
@@ -1206,7 +1206,6 @@ xmlTextReaderReadBinHex(xmlTextReaderPtr reader,
 xmlTextReaderPtr
 xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     xmlTextReaderPtr ret;
-    int val;
 
     if (input == NULL)
 	return(NULL);
@@ -1252,7 +1251,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->node = NULL;
     ret->curnode = NULL;
     if (ret->input->buffer->use < 4) {
-	val = xmlParserInputBufferRead(input, 4);
+	xmlParserInputBufferRead(input, 4);
     }
     if (ret->input->buffer->use >= 4) {
 	ret->ctxt = xmlCreatePushParserCtxt(ret->sax, NULL,
@@ -3056,7 +3055,7 @@ xmlTextReaderLocatorBaseURI(xmlTextReaderLocatorPtr locator) {
 }
 
 static void
-xmlTextReaderGenericError(void *ctxt, int severity, char *str) {
+xmlTextReaderGenericError(void *ctxt, xmlParserSeverities severity, char *str) {
     xmlParserCtxtPtr ctx = (xmlParserCtxtPtr)ctxt;
     xmlTextReaderPtr reader = (xmlTextReaderPtr)ctx->_private;
 

@@ -771,11 +771,13 @@ xmlEncodeSpecialChars(xmlDocPtr doc, const xmlChar *input) {
     xmlChar *buffer = NULL;
     xmlChar *out = NULL;
     int buffer_size = 0;
+#if 0
     int html = 0;
 
-    if (input == NULL) return(NULL);
     if (doc != NULL)
         html = (doc->type == XML_HTML_DOCUMENT_NODE);
+#endif
+    if (input == NULL) return(NULL);
 
     /*
      * allocate an translation buffer.

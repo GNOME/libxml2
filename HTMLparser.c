@@ -1037,10 +1037,11 @@ static void
 htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
 {
     const htmlElemDesc *info;
-    const xmlChar *oldname;
     int i, priority;
 
 #ifdef DEBUG
+    const xmlChar *oldname;
+
     xmlGenericError(xmlGenericErrorContext,
                     "Close of %s stack: %d elements\n", newtag,
                     ctxt->nameNr);
@@ -1090,12 +1091,14 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
         }
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, ctxt->name);
-        oldname = htmlnamePop(ctxt);
 #ifdef DEBUG
+        oldname = htmlnamePop(ctxt);
         if (oldname != NULL) {
             xmlGenericError(xmlGenericErrorContext,
                             "htmlAutoCloseOnClose: popped %s\n", oldname);
         }
+#else
+	htmlnamePop(ctxt);
 #endif
     }
 }
@@ -1109,16 +1112,16 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
 static void
 htmlAutoCloseOnEnd(htmlParserCtxtPtr ctxt)
 {
-    const xmlChar *oldname;
     int i;
-
-    if (ctxt->nameNr == 0)
-        return;
 #ifdef DEBUG
+    const xmlChar *oldname;
+
     xmlGenericError(xmlGenericErrorContext,
                     "Close of stack: %d elements\n", ctxt->nameNr);
 #endif
 
+    if (ctxt->nameNr == 0)
+        return;
     for (i = (ctxt->nameNr - 1); i >= 0; i--) {
 #ifdef DEBUG
         xmlGenericError(xmlGenericErrorContext, "%d : %s\n", i,
@@ -1126,12 +1129,14 @@ htmlAutoCloseOnEnd(htmlParserCtxtPtr ctxt)
 #endif
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, ctxt->name);
-        oldname = htmlnamePop(ctxt);
 #ifdef DEBUG
+        oldname = htmlnamePop(ctxt);
         if (oldname != NULL) {
             xmlGenericError(xmlGenericErrorContext,
                             "htmlAutoCloseOnEnd: popped %s\n", oldname);
         }
+#else
+	htmlnamePop(ctxt);
 #endif
     }
 }
@@ -1151,7 +1156,9 @@ htmlAutoCloseOnEnd(htmlParserCtxtPtr ctxt)
 static void
 htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
 {
+#ifdef DEBUG
     const xmlChar *oldname;
+#endif
 
     while ((newtag != NULL) && (ctxt->name != NULL) &&
            (htmlCheckAutoClose(newtag, ctxt->name))) {
@@ -1162,12 +1169,14 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
 #endif
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, ctxt->name);
-        oldname = htmlnamePop(ctxt);
 #ifdef DEBUG
+        oldname = htmlnamePop(ctxt);
         if (oldname != NULL) {
             xmlGenericError(xmlGenericErrorContext,
                             "htmlAutoClose: popped %s\n", oldname);
         }
+#else
+	htmlnamePop(ctxt);
 #endif
     }
     if (newtag == NULL) {
@@ -1184,12 +1193,14 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
 #endif
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, ctxt->name);
-        oldname = htmlnamePop(ctxt);
 #ifdef DEBUG
+        oldname = htmlnamePop(ctxt);
         if (oldname != NULL) {
             xmlGenericError(xmlGenericErrorContext,
                             "htmlAutoClose: popped %s\n", oldname);
         }
+#else
+	htmlnamePop(ctxt);
 #endif
     }
 

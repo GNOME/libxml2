@@ -1,3 +1,10 @@
+Mon Sep 29 19:58:26 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in entities.c tree.c valid.c xmllint.c
+	  include/libxml/tree.h include/libxml/xmlversion.h.in:
+	  Adding a configure option to remove tree manipulation
+	  code which is not strictly needed by the parser.
+
 Mon Sep 29 15:23:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c nanohttp.c: last finishing touch to the BeOS

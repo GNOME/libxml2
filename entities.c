@@ -704,6 +704,7 @@ xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
     xmlHashFree(table, (xmlHashDeallocator) xmlFreeEntityWrapper);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlCopyEntity:
  * @ent:  An entity
@@ -753,6 +754,7 @@ xmlEntitiesTablePtr
 xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
     return(xmlHashCopy(table, (xmlHashCopier) xmlCopyEntity));
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**

@@ -82,6 +82,7 @@ static int xmlCheckDTD = 1;
  ************************************************************************/
 #include <libxml/hash.h>
  
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlGetEntityFromDtd:
  * @dtd:  A pointer to the DTD to search
@@ -124,6 +125,7 @@ xmlGetParameterEntityFromDtd(xmlDtdPtr dtd, const xmlChar *name) {
     }
     return(NULL);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /************************************************************************
  *									*
@@ -273,6 +275,7 @@ xmlSplitQName3(const xmlChar *name, int *len) {
     return(&name[l+1]);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /************************************************************************
  *									*
  *		Check Name, NCName and QName strings			*
@@ -582,6 +585,7 @@ try_complex:
 	return(1);
     return(0);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /************************************************************************
  *									*
@@ -1542,6 +1546,8 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine)
     }
     return (ret);
 }
+
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlNodeListGetRawString:
  * @doc:  the document
@@ -1623,7 +1629,9 @@ xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine)
     }
     return (ret);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlNewProp:
  * @node:  the holding node
@@ -1703,6 +1711,7 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlNewNsProp:
@@ -1965,6 +1974,7 @@ xmlFreeProp(xmlAttrPtr cur) {
     xmlFree(cur);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlRemoveProp:
  * @cur:  an attribute
@@ -2013,6 +2023,7 @@ xmlRemoveProp(xmlAttrPtr cur) {
 #endif
     return(-1);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlNewPI:
@@ -2204,7 +2215,7 @@ xmlNewDocNodeEatName(xmlDocPtr doc, xmlNsPtr ns,
     return(cur);
 }
 
-
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlNewDocRawNode:
  * @doc:  the document
@@ -2262,6 +2273,7 @@ xmlNewDocFragment(xmlDocPtr doc) {
 	xmlRegisterNodeDefaultValue(cur);
     return(cur);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlNewText:
@@ -2296,6 +2308,7 @@ xmlNewText(const xmlChar *content) {
     return(cur);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlNewTextChild:
  * @parent:  the parent node
@@ -2357,6 +2370,7 @@ xmlNewTextChild(xmlNodePtr parent, xmlNsPtr ns,
 
     return(cur);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlNewCharRef:
@@ -2657,7 +2671,7 @@ xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc) {
     }
 }
 
-
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlNewChild:
  * @parent:  the parent node
@@ -2735,6 +2749,7 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
 
     return(cur);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlAddNextSibling:
@@ -2814,6 +2829,7 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
     return(elem);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlAddPrevSibling:
  * @cur:  the child node
@@ -2900,6 +2916,7 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
     }
     return(elem);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlAddSibling:
@@ -3363,6 +3380,7 @@ xmlUnlinkNode(xmlNodePtr cur) {
     cur->next = cur->prev = NULL;
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlReplaceNode:
  * @old:  the old node
@@ -3428,6 +3446,7 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
     old->parent = NULL;
     return(old);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /************************************************************************
  *									*
@@ -3517,15 +3536,7 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
 
     if ((cur->ns != NULL) && (target != NULL)) {
       xmlNsPtr ns;
-/*
- *      if (target->doc) 
- *	ns = xmlSearchNs(target->doc, target, cur->ns->prefix);
- *      else if (cur->doc)  / * target may not yet have a doc : KPI * /
- *	ns = xmlSearchNs(cur->doc, target, cur->ns->prefix);       
- *      else
- *	ns = NULL;
- *	ret->ns = ns;
- */
+
       ns = xmlSearchNs(target->doc, target, cur->ns->prefix);
       if (ns == NULL) {
         /*
@@ -3672,7 +3683,9 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 #ifdef LIBXML_DOCB_ENABLED
         case XML_DOCB_DOCUMENT_NODE:
 #endif
+#ifdef LIBXML_TREE_ENABLED
 	    return((xmlNodePtr) xmlCopyDoc((xmlDocPtr) node, recursive));
+#endif /* LIBXML_TREE_ENABLED */
         case XML_DOCUMENT_TYPE_NODE:
         case XML_NOTATION_NODE:
         case XML_DTD_NODE:
@@ -3793,6 +3806,7 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
     xmlNodePtr p = NULL,q;
 
     while (node != NULL) {
+#ifdef LIBXML_TREE_ENABLED
 	if (node->type == XML_DTD_NODE ) {
 	    if (doc == NULL) {
 		node = node->next;
@@ -3809,6 +3823,7 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
 		xmlAddChild(parent, q);
 	    }
 	} else
+#endif /* LIBXML_TREE_ENABLED */
 	    q = xmlStaticCopyNode(node, doc, parent, 1);
 	if (ret == NULL) {
 	    q->prev = NULL;
@@ -3872,6 +3887,7 @@ xmlNodePtr xmlCopyNodeList(const xmlNodePtr node) {
     return(ret);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlCopyDtd:
  * @dtd:  the dtd
@@ -4007,6 +4023,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
     }
     return(ret);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /************************************************************************
  *									*
@@ -4044,6 +4061,7 @@ xmlGetLineNo(xmlNodePtr node)
     return result;
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlGetNodePath:
  * @node: a node
@@ -4250,6 +4268,7 @@ xmlGetNodePath(xmlNodePtr node)
     xmlFree(buf);
     return (buffer);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlDocGetRootElement:
@@ -4274,6 +4293,7 @@ xmlDocGetRootElement(xmlDocPtr doc) {
     return(ret);
 }
  
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlDocSetRootElement:
  * @doc:  the document
@@ -4358,6 +4378,7 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
 	return;
     xmlSetNsProp(cur, ns, BAD_CAST "lang", lang);
 }
+#endif /* LIBXML_TREE_ENABLED */
  
 /**
  * xmlNodeGetLang:
@@ -4383,6 +4404,7 @@ xmlNodeGetLang(xmlNodePtr cur) {
 }
  
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlNodeSetSpacePreserve:
  * @cur:  the node being changed
@@ -4435,6 +4457,7 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
 	break;
     }
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlNodeGetSpacePreserve:
@@ -4468,6 +4491,7 @@ xmlNodeGetSpacePreserve(xmlNodePtr cur) {
     return(-1);
 }
  
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlNodeSetName:
  * @cur:  the node being changed
@@ -4566,6 +4590,7 @@ xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
 	return;
     xmlSetNsProp(cur, ns, BAD_CAST "base", uri);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlNodeGetBase:
@@ -4845,6 +4870,7 @@ xmlNodeGetContent(xmlNodePtr cur)
     }
     return (NULL);
 }
+
 /**
  * xmlNodeSetContent:
  * @cur:  the node being modified
@@ -4912,6 +4938,7 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
     }
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlNodeSetContentLen:
  * @cur:  the node being modified
@@ -4976,6 +5003,7 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	    break;
     }
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlNodeAddContentLen:
@@ -5087,6 +5115,7 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
     return(first);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlGetNsList:
  * @doc:  the document
@@ -5150,6 +5179,7 @@ xmlGetNsList(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node)
     }
     return (ret);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlSearchNs:
@@ -5287,7 +5317,6 @@ xmlNsInScope(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
         return (-1);
     return (1);
 }
-                  
                   
 /**
  * xmlSearchNsByHref:
@@ -5444,6 +5473,7 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
     return(def);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlReconciliateNs:
  * @doc:  the document
@@ -5641,6 +5671,7 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 	xmlFree(newNs);
     return(ret);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlHasProp:
@@ -5710,7 +5741,9 @@ xmlHasProp(xmlNodePtr node, const xmlChar *name) {
 xmlAttrPtr
 xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     xmlAttrPtr prop;
+#ifdef LIBXML_TREE_ENABLED
     xmlDocPtr doc;
+#endif /* LIBXML_TREE_ENABLED */
 
     if (node == NULL)
 	return(NULL);
@@ -5732,6 +5765,7 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     }
     if (!xmlCheckDTD) return(NULL);
 
+#ifdef LIBXML_TREE_ENABLED
     /*
      * Check if there is a default declaration in the internal
      * or external subsets
@@ -5774,6 +5808,7 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
 	    return((xmlAttrPtr) attrDecl);
 	}
     }
+#endif /* LIBXML_TREE_ENABLED */
     return(NULL);
 }
 
@@ -5964,6 +5999,7 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     return(NULL);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlSetProp:
  * @node:  the node
@@ -6145,6 +6181,7 @@ xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
     }
     return(-1);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlNodeIsText:

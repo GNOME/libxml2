@@ -1266,6 +1266,7 @@ xmlFreeElementTable(xmlElementTablePtr table) {
     xmlHashFree(table, (xmlHashDeallocator) xmlFreeElement);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlCopyElement:
  * @elem:  An element
@@ -1314,6 +1315,7 @@ xmlCopyElementTable(xmlElementTablePtr table) {
     return((xmlElementTablePtr) xmlHashCopy(table,
 		                            (xmlHashCopier) xmlCopyElement));
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
@@ -1430,6 +1432,7 @@ xmlFreeEnumeration(xmlEnumerationPtr cur) {
     xmlFree(cur);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlCopyEnumeration:
  * @cur:  the tree to copy.
@@ -1451,6 +1454,7 @@ xmlCopyEnumeration(xmlEnumerationPtr cur) {
 
     return(ret);
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
@@ -1818,6 +1822,7 @@ xmlFreeAttributeTable(xmlAttributeTablePtr table) {
     xmlHashFree(table, (xmlHashDeallocator) xmlFreeAttribute);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlCopyAttribute:
  * @attr:  An attribute
@@ -1865,6 +1870,7 @@ xmlCopyAttributeTable(xmlAttributeTablePtr table) {
     return((xmlAttributeTablePtr) xmlHashCopy(table,
 				    (xmlHashCopier) xmlCopyAttribute));
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
@@ -2087,6 +2093,7 @@ xmlFreeNotationTable(xmlNotationTablePtr table) {
     xmlHashFree(table, (xmlHashDeallocator) xmlFreeNotation);
 }
 
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlCopyNotation:
  * @nota:  A notation
@@ -2133,6 +2140,7 @@ xmlCopyNotationTable(xmlNotationTablePtr table) {
     return((xmlNotationTablePtr) xmlHashCopy(table,
 				    (xmlHashCopier) xmlCopyNotation));
 }
+#endif /* LIBXML_TREE_ENABLED */
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
@@ -3530,7 +3538,7 @@ xmlValidCtxtNormalizeAttributeValue(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * trailing space (#x20) characters, and by replacing sequences of space
  * (#x20) characters by single space (#x20) character.
  *
- * returns a new normalized string if normalization is needed, NULL otherwise
+ * Returns a new normalized string if normalization is needed, NULL otherwise
  *      the caller must free the returned value.
  */
 

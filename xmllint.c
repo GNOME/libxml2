@@ -99,7 +99,9 @@ static int shell = 0;
 static int debugent = 0;
 #endif
 static int debug = 0;
+#ifdef LIBXML_TREE_ENABLED
 static int copy = 0;
+#endif /* LIBXML_TREE_ENABLED */
 static int recovery = 0;
 static int noent = 0;
 static int noblanks = 0;
@@ -733,12 +735,16 @@ static void streamFile(char *filename) {
  * 									*
  ************************************************************************/
 static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
-    xmlDocPtr doc = NULL, tmp;
+    xmlDocPtr doc = NULL;
+#ifdef LIBXML_TREE_ENABLED
+    xmlDocPtr tmp;
+#endif /* LIBXML_TREE_ENABLED */
 
     if ((timing) && (!repeat))
 	startTimer();
     
 
+#ifdef LIBXML_TREE_ENABLED
     if (filename == NULL) {
 	if (generate) {
 	    xmlNodePtr n;
@@ -749,6 +755,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    xmlDocSetRootElement(doc, n);
 	}
     }
+#endif /* LIBXML_TREE_ENABLED */
 #ifdef LIBXML_HTML_ENABLED
     else if ((html) && (push)) {
         FILE *f;
@@ -950,6 +957,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
         xmlShell(doc, filename, xmlShellReadline, stdout);
 #endif
 
+#ifdef LIBXML_TREE_ENABLED
     /*
      * test intermediate copy if needed.
      */
@@ -958,6 +966,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	doc = xmlCopyDoc(doc, 1);
 	xmlFreeDoc(tmp);
     }
+#endif /* LIBXML_TREE_ENABLED */
 
 #ifdef LIBXML_VALID_ENABLED
     if ((insert) && (!html)) {
@@ -1295,7 +1304,9 @@ static void usage(const char *name) {
 #else
     printf("\t--debug : dump the nodes content when using --stream\n");
 #endif
+#ifdef LIBXML_TREE_ENABLED
     printf("\t--copy : used to test the internal copy implementation\n");
+#endif /* LIBXML_TREE_ENABLED */
     printf("\t--recover : output what was parsable on broken XML documents\n");
     printf("\t--noent : substitute entity references by their value\n");
     printf("\t--noout : don't output the result tree\n");
@@ -1397,9 +1408,12 @@ main(int argc, char **argv) {
             noout = 1;
         } else 
 #endif
+#ifdef LIBXML_TREE_ENABLED
 	if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
 	    copy++;
-	else if ((!strcmp(argv[i], "-recover")) ||
+	else
+#endif /* LIBXML_TREE_ENABLED */
+	if ((!strcmp(argv[i], "-recover")) ||
 	         (!strcmp(argv[i], "--recover"))) {
 	    recovery++;
 	    options |= XML_PARSE_RECOVER;

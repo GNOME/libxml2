@@ -897,3 +897,5 @@ xmlDictSize(xmlDictPtr dict) {
 }
 
 
+#define bottom_dict
+#include "elfgcchack.h"

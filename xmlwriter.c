@@ -4606,4 +4606,6 @@ xmlTextWriterHandleStateDependencies(xmlTextWriterPtr writer,
     return sum;
 }
 
+#define bottom_xmlwriter
+#include "elfgcchack.h"
 #endif

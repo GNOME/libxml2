@@ -774,3 +774,5 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
     return TRUE;
 }
 #endif
+#define bottom_threads
+#include "elfgcchack.h"

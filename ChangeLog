@@ -1,3 +1,13 @@
+Fri Apr  1 16:07:59 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* doc/apibuild.py doc/elfgcchack.xsl: revamped the elfgcchack.h 
+	  format to cope with gcc4 change of aliasing allowed scopes, had
+	  to add extra informations to doc/libxml2-api.xml to separate
+	  the header from the c module source.
+	* *.c: updated all c library files to add a #define bottom_xxx
+	  and reimport elfgcchack.h thereafter, and a bit of cleanups.
+	* doc//* testapi.c: regenerated when rebuilding the API
+
 Thu Mar 31 17:20:32 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: fixed bug reported by Petr Pajas, in the absence of

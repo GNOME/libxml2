@@ -775,3 +775,5 @@ xmlListCopy(xmlListPtr cur, const xmlListPtr old)
 }
 /* xmlListUnique() */
 /* xmlListSwap */
+#define bottom_list
+#include "elfgcchack.h"

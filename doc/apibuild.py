@@ -33,6 +33,7 @@ ignored_files = {
   "rngparser.h": "not yet integrated",
   "elfgcchack.h": "not a normal header",
   "testapi.c": "generated regression tests",
+  "tst.c": "not part of the library",
   "testdso.c": "test for dynamid shared libraries",
 }
 
@@ -70,9 +71,10 @@ def uniq(items):
     return d.keys()
 
 class identifier:
-    def __init__(self, name, module=None, type=None, lineno = 0,
+    def __init__(self, name, header=None, module=None, type=None, lineno = 0,
                  info=None, extra=None, conditionals = None):
         self.name = name
+	self.header = header
 	self.module = module
 	self.type = type
 	self.info = info
@@ -102,6 +104,8 @@ class identifier:
 	return r
 
 
+    def set_header(self, header):
+        self.header = header
     def set_module(self, module):
         self.module = module
     def set_type(self, type):
@@ -122,6 +126,8 @@ class identifier:
 
     def get_name(self):
         return self.name
+    def get_header(self):
+        return self.module
     def get_module(self):
         return self.module
     def get_type(self):
@@ -137,12 +143,14 @@ class identifier:
     def get_conditionals(self):
         return self.conditionals
 
-    def update(self, module, type = None, info = None, extra=None,
+    def update(self, header, module, type = None, info = None, extra=None,
                conditionals=None):
 	if self.name == debugsym:
 	    print "=> update %s : %s" % (debugsym, (module, type, info,
 	                                 extra, conditionals))
-        if module != None and self.module == None:
+        if header != None and self.header == None:
+	    self.set_header(module)
+        if module != None and (self.module == None or self.header == self.module):
 	    self.set_module(module)
         if type != None and self.type == None:
 	    self.set_type(type)
@@ -152,6 +160,8 @@ class identifier:
 	    self.set_extra(extra)
         if conditionals != None:
 	    self.set_conditionals(conditionals)
+	if self.name == 'xmlCleanupPredefinedEntities':
+	    print "updating xmlCleanupPredefinedEntities : header %s module %s info %s" % (self.header, self.module, self.info)
 
 
 class index:
@@ -168,15 +178,17 @@ class index:
 	self.references = {}
 	self.info = {}
 
-    def add_ref(self, name, module, static, type, lineno, info=None, extra=None, conditionals = None):
+    def add_ref(self, name, header, module, static, type, lineno, info=None, extra=None, conditionals = None):
         if name[0:2] == '__':
 	    return None
+	if name == 'xmlCleanupPredefinedEntities':
+	    print "adding ref xmlCleanupPredefinedEntities : header %s module %s info %s" % (header, module, info)
         d = None
         try:
 	   d = self.identifiers[name]
-	   d.update(module, type, lineno, info, extra, conditionals)
+	   d.update(header, module, type, lineno, info, extra, conditionals)
 	except:
-	   d = identifier(name, module, type, lineno, info, extra, conditionals)
+	   d = identifier(name, header, module, type, lineno, info, extra, conditionals)
 	   self.identifiers[name] = d
 
 	if d != None and static == 1:
@@ -190,15 +202,17 @@ class index:
 
 	return d
 
-    def add(self, name, module, static, type, lineno, info=None, extra=None, conditionals = None):
+    def add(self, name, header, module, static, type, lineno, info=None, extra=None, conditionals = None):
         if name[0:2] == '__':
 	    return None
+	if name == 'xmlCleanupPredefinedEntities':
+	    print "adding xmlCleanupPredefinedEntities : header %s module %s info %s" % (header, module, info)
         d = None
         try:
 	   d = self.identifiers[name]
-	   d.update(module, type, lineno, info, extra, conditionals)
+	   d.update(header, module, type, lineno, info, extra, conditionals)
 	except:
-	   d = identifier(name, module, type, lineno, info, extra, conditionals)
+	   d = identifier(name, header, module, type, lineno, info, extra, conditionals)
 	   self.identifiers[name] = d
 
 	if d != None and static == 1:
@@ -239,7 +253,7 @@ class index:
 	         del self.macros[id]
 	     if self.functions.has_key(id):
 	         print "function %s from %s redeclared in %s" % (
-		    id, self.functions[id].module, idx.functions[id].module)
+		    id, self.functions[id].header, idx.functions[id].header)
 	     else:
 	         self.functions[id] = idx.functions[id]
 		 self.identifiers[id] = idx.functions[id]
@@ -252,21 +266,21 @@ class index:
 	         del self.macros[id]
 	     if self.variables.has_key(id):
 	         print "variable %s from %s redeclared in %s" % (
-		    id, self.variables[id].module, idx.variables[id].module)
+		    id, self.variables[id].header, idx.variables[id].header)
 	     else:
 	         self.variables[id] = idx.variables[id]
 		 self.identifiers[id] = idx.variables[id]
         for id in idx.structs.keys():
 	     if self.structs.has_key(id):
 	         print "struct %s from %s redeclared in %s" % (
-		    id, self.structs[id].module, idx.structs[id].module)
+		    id, self.structs[id].header, idx.structs[id].header)
 	     else:
 	         self.structs[id] = idx.structs[id]
 		 self.identifiers[id] = idx.structs[id]
         for id in idx.typedefs.keys():
 	     if self.typedefs.has_key(id):
 	         print "typedef %s from %s redeclared in %s" % (
-		    id, self.typedefs[id].module, idx.typedefs[id].module)
+		    id, self.typedefs[id].header, idx.typedefs[id].header)
 	     else:
 	         self.typedefs[id] = idx.typedefs[id]
 		 self.identifiers[id] = idx.typedefs[id]
@@ -283,14 +297,14 @@ class index:
                  continue
 	     if self.macros.has_key(id):
 	         print "macro %s from %s redeclared in %s" % (
-		    id, self.macros[id].module, idx.macros[id].module)
+		    id, self.macros[id].header, idx.macros[id].header)
 	     else:
 	         self.macros[id] = idx.macros[id]
 		 self.identifiers[id] = idx.macros[id]
         for id in idx.enums.keys():
 	     if self.enums.has_key(id):
 	         print "enum %s from %s redeclared in %s" % (
-		    id, self.enums[id].module, idx.enums[id].module)
+		    id, self.enums[id].header, idx.enums[id].header)
 	     else:
 	         self.enums[id] = idx.enums[id]
 		 self.identifiers[id] = idx.enums[id]
@@ -306,7 +320,7 @@ class index:
 		     print "  H: %s" % self.functions[id].conditionals
 		     print "  C: %s" % idx.functions[id].conditionals
 	         up = idx.functions[id]
-	         self.functions[id].update(None, up.type, up.info, up.extra)
+	         self.functions[id].update(None, up.module, up.type, up.info, up.extra)
 	 #     else:
 	 #         print "Function %s from %s is not declared in headers" % (
 	 #	        id, idx.functions[id].module)
@@ -574,13 +588,21 @@ class CParser:
         return self.lexer.getlineno()
 
     def index_add(self, name, module, static, type, info=None, extra = None):
-        self.index.add(name, module, static, type, self.lineno(),
-	               info, extra, self.conditionals)
+	if self.is_header == 1:
+	    self.index.add(name, module, module, static, type, self.lineno(),
+			   info, extra, self.conditionals)
+	else:
+	    self.index.add(name, None, module, static, type, self.lineno(),
+			   info, extra, self.conditionals)
 
     def index_add_ref(self, name, module, static, type, info=None,
                       extra = None):
-        self.index.add_ref(name, module, static, type, self.lineno(),
-	               info, extra, self.conditionals)
+	if self.is_header == 1:
+	    self.index.add_ref(name, module, module, static, type,
+	                       self.lineno(), info, extra, self.conditionals)
+	else:
+	    self.index.add_ref(name, None, module, static, type, self.lineno(),
+			       info, extra, self.conditionals)
 
     def warning(self, msg):
         if self.no_error:
@@ -1603,12 +1625,14 @@ class docBuilder:
         module = os.path.basename(file)
 	if module[-2:] == '.h':
 	    module = module[:-2]
+	elif module[-2:] == '.c':
+	    module = module[:-2]
 	return module
 
     def serialize_enum(self, output, name):
         id = self.idx.enums[name]
         output.write("    <enum name='%s' file='%s'" % (name,
-	             self.modulename_file(id.module)))
+	             self.modulename_file(id.header)))
 	if id.info != None:
 	    info = id.info
 	    if info[0] != None and info[0] != '':
@@ -1626,7 +1650,7 @@ class docBuilder:
     def serialize_macro(self, output, name):
         id = self.idx.macros[name]
         output.write("    <macro name='%s' file='%s'>\n" % (name,
-	             self.modulename_file(id.module)))
+	             self.modulename_file(id.header)))
 	if id.info != None:
             try:
 		(args, desc) = id.info
@@ -1649,7 +1673,7 @@ class docBuilder:
         id = self.idx.typedefs[name]
 	if id.info[0:7] == 'struct ':
 	    output.write("    <struct name='%s' file='%s' type='%s'" % (
-	             name, self.modulename_file(id.module), id.info))
+	             name, self.modulename_file(id.header), id.info))
 	    name = id.info[7:]
 	    if self.idx.structs.has_key(name) and ( \
 	       type(self.idx.structs[name].info) == type(()) or
@@ -1671,24 +1695,25 @@ class docBuilder:
 	        output.write("/>\n");
 	else :
 	    output.write("    <typedef name='%s' file='%s' type='%s'/>\n" % (
-	             name, self.modulename_file(id.module), id.info))
+	             name, self.modulename_file(id.header), id.info))
 
     def serialize_variable(self, output, name):
         id = self.idx.variables[name]
 	if id.info != None:
 	    output.write("    <variable name='%s' file='%s' type='%s'/>\n" % (
-		    name, self.modulename_file(id.module), id.info))
+		    name, self.modulename_file(id.header), id.info))
 	else:
 	    output.write("    <variable name='%s' file='%s'/>\n" % (
-	            name, self.modulename_file(id.module)))
+	            name, self.modulename_file(id.header)))
 	              
     def serialize_function(self, output, name):
         id = self.idx.functions[name]
 	if name == debugsym:
 	    print "=>", id
 
-        output.write("    <%s name='%s' file='%s'>\n" % (id.type, name,
-	             self.modulename_file(id.module)))
+        output.write("    <%s name='%s' file='%s' module='%s'>\n" % (id.type,
+	             name, self.modulename_file(id.header),
+		     self.modulename_file(id.module)))
 	#
 	# Processing of conditionals modified by Bill 1/1/05
 	#
@@ -1870,7 +1895,7 @@ class docBuilder:
 	typ.sort()
 	for id in typ:
 	    idf = self.idx.identifiers[id]
-	    module = idf.module
+	    module = idf.header
 	    output.write("    <reference name='%s' href='%s'/>\n" % (id,
 	                 'html/' + self.basename + '-' +
 		         self.modulename_file(module) + '.html#' +

@@ -78,13 +78,6 @@ void xmlCleanupGlobals()
 #undef	xmlRealloc
 
 #if defined(DEBUG_MEMORY_LOCATION) || defined(DEBUG_MEMORY)
-#ifndef __DEBUG_MEMORY_ALLOC__
-extern void xmlMemFree(void *ptr);
-extern void * xmlMemMalloc(size_t size);
-extern void * xmlMemRealloc(void *ptr,size_t size);
-extern char * xmlMemoryStrdup(const char *str);
-#endif
-
 xmlFreeFunc xmlFree = (xmlFreeFunc) xmlMemFree;
 xmlMallocFunc xmlMalloc = (xmlMallocFunc) xmlMemMalloc;
 xmlMallocFunc xmlMallocAtomic = (xmlMallocFunc) xmlMemMalloc;
@@ -1096,3 +1089,6 @@ __xmlOutputBufferCreateFilenameValue(void) {
     else
 	return (&xmlGetGlobalState()->xmlOutputBufferCreateFilenameValue);
 }
+
+#define bottom_globals
+#include "elfgcchack.h"

@@ -975,3 +975,6 @@ xmlUTF8Strsub(const xmlChar *utf, int start, int len) {
 
     return(xmlUTF8Strndup(utf, len));
 }
+
+#define bottom_xmlstring
+#include "elfgcchack.h"

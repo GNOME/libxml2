@@ -1075,3 +1075,5 @@ xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
     }
 }
 
+#define bottom_hash
+#include "elfgcchack.h"

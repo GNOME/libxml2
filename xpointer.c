@@ -2997,6 +2997,7 @@ xmlXPtrEvalRangePredicate(xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
 }
 
-#else
+#define bottom_xpointer
+#include "elfgcchack.h"
 #endif
 

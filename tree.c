@@ -7119,3 +7119,5 @@ xmlSetCompressMode(int mode) {
     else xmlCompressMode = mode;
 }
 
+#define bottom_tree
+#include "elfgcchack.h"

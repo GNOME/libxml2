@@ -2230,3 +2230,5 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
 
 #endif /* LIBXML_OUTPUT_ENABLED */
 
+#define bottom_xmlsave
+#include "elfgcchack.h"

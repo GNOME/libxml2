@@ -137,7 +137,9 @@
     <reference name='XML_C14N_CREATE_CTXT' href='html/libxml-xmlerror.html#XML_C14N_CREATE_CTXT'/>
     <reference name='XML_C14N_CREATE_STACK' href='html/libxml-xmlerror.html#XML_C14N_CREATE_STACK'/>
     <reference name='XML_C14N_INVALID_NODE' href='html/libxml-xmlerror.html#XML_C14N_INVALID_NODE'/>
+    <reference name='XML_C14N_RELATIVE_NAMESPACE' href='html/libxml-xmlerror.html#XML_C14N_RELATIVE_NAMESPACE'/>
     <reference name='XML_C14N_REQUIRES_UTF8' href='html/libxml-xmlerror.html#XML_C14N_REQUIRES_UTF8'/>
+    <reference name='XML_C14N_UNKNOW_NODE' href='html/libxml-xmlerror.html#XML_C14N_UNKNOW_NODE'/>
     <reference name='XML_CAST_FPTR' href='html/libxml-hash.html#XML_CAST_FPTR'/>
     <reference name='XML_CATALOGS_NAMESPACE' href='html/libxml-catalog.html#XML_CATALOGS_NAMESPACE'/>
     <reference name='XML_CATALOG_ENTRY_BROKEN' href='html/libxml-xmlerror.html#XML_CATALOG_ENTRY_BROKEN'/>
@@ -2540,6 +2542,7 @@
     <reference name='xmlSchemaGetFacetValueAsULong' href='html/libxml-xmlschemastypes.html#xmlSchemaGetFacetValueAsULong'/>
     <reference name='xmlSchemaGetParserErrors' href='html/libxml-xmlschemas.html#xmlSchemaGetParserErrors'/>
     <reference name='xmlSchemaGetPredefinedType' href='html/libxml-xmlschemastypes.html#xmlSchemaGetPredefinedType'/>
+    <reference name='xmlSchemaGetValType' href='html/libxml-xmlschemastypes.html#xmlSchemaGetValType'/>
     <reference name='xmlSchemaGetValidErrors' href='html/libxml-xmlschemas.html#xmlSchemaGetValidErrors'/>
     <reference name='xmlSchemaInitTypes' href='html/libxml-xmlschemastypes.html#xmlSchemaInitTypes'/>
     <reference name='xmlSchemaIsBuiltInTypeFacet' href='html/libxml-xmlschemastypes.html#xmlSchemaIsBuiltInTypeFacet'/>
@@ -2576,7 +2579,9 @@
     <reference name='xmlSchemaValidOption' href='html/libxml-xmlschemas.html#xmlSchemaValidOption'/>
     <reference name='xmlSchemaValidateDoc' href='html/libxml-xmlschemas.html#xmlSchemaValidateDoc'/>
     <reference name='xmlSchemaValidateFacet' href='html/libxml-xmlschemastypes.html#xmlSchemaValidateFacet'/>
+    <reference name='xmlSchemaValidateFacetWhtsp' href='html/libxml-xmlschemastypes.html#xmlSchemaValidateFacetWhtsp'/>
     <reference name='xmlSchemaValidateLengthFacet' href='html/libxml-xmlschemastypes.html#xmlSchemaValidateLengthFacet'/>
+    <reference name='xmlSchemaValidateLengthFacetWhtsp' href='html/libxml-xmlschemastypes.html#xmlSchemaValidateLengthFacetWhtsp'/>
     <reference name='xmlSchemaValidateListSimpleTypeFacet' href='html/libxml-xmlschemastypes.html#xmlSchemaValidateListSimpleTypeFacet'/>
     <reference name='xmlSchemaValidateOneElement' href='html/libxml-xmlschemas.html#xmlSchemaValidateOneElement'/>
     <reference name='xmlSchemaValidatePredefinedType' href='html/libxml-xmlschemastypes.html#xmlSchemaValidatePredefinedType'/>
@@ -3449,7 +3454,9 @@
       <ref name='XML_C14N_CREATE_CTXT'/>
       <ref name='XML_C14N_CREATE_STACK'/>
       <ref name='XML_C14N_INVALID_NODE'/>
+      <ref name='XML_C14N_RELATIVE_NAMESPACE'/>
       <ref name='XML_C14N_REQUIRES_UTF8'/>
+      <ref name='XML_C14N_UNKNOW_NODE'/>
       <ref name='XML_CAST_FPTR'/>
       <ref name='XML_CATALOGS_NAMESPACE'/>
       <ref name='XML_CATALOG_ENTRY_BROKEN'/>
@@ -5888,6 +5895,7 @@
       <ref name='xmlSchemaGetFacetValueAsULong'/>
       <ref name='xmlSchemaGetParserErrors'/>
       <ref name='xmlSchemaGetPredefinedType'/>
+      <ref name='xmlSchemaGetValType'/>
       <ref name='xmlSchemaGetValidErrors'/>
       <ref name='xmlSchemaInitTypes'/>
       <ref name='xmlSchemaIsBuiltInTypeFacet'/>
@@ -5924,7 +5932,9 @@
       <ref name='xmlSchemaValidOption'/>
       <ref name='xmlSchemaValidateDoc'/>
       <ref name='xmlSchemaValidateFacet'/>
+      <ref name='xmlSchemaValidateFacetWhtsp'/>
       <ref name='xmlSchemaValidateLengthFacet'/>
+      <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
       <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
       <ref name='xmlSchemaValidateOneElement'/>
       <ref name='xmlSchemaValidatePredefinedType'/>
@@ -7272,6 +7282,9 @@
       <ref name='xmlSchemaNewNOTATIONValue'/>
       <ref name='xmlSchemaNewStringValue'/>
     </type>
+    <type name='xmlSchemaValType'>
+      <ref name='xmlSchemaGetValType'/>
+    </type>
     <type name='xmlSchemaValidCtxtPtr'>
       <ref name='xmlSchemaNewValidCtxt'/>
     </type>
@@ -7683,6 +7696,7 @@
       <ref name='xmlParseBalancedChunkMemoryRecover'/>
       <ref name='xmlParseCtxtExternalEntity'/>
       <ref name='xmlParseDTD'/>
+      <ref name='xmlParseDoc'/>
       <ref name='xmlParseElementContentDecl'/>
       <ref name='xmlParseExternalEntity'/>
       <ref name='xmlParseExternalSubset'/>
@@ -7717,6 +7731,7 @@
       <ref name='xmlSAX2StartElementNs'/>
       <ref name='xmlSAX2UnparsedEntityDecl'/>
       <ref name='xmlSAXParseDTD'/>
+      <ref name='xmlSAXParseDoc'/>
       <ref name='xmlSchemaCheckFacet'/>
       <ref name='xmlSchemaCollapseString'/>
       <ref name='xmlSchemaGetPredefinedType'/>
@@ -7725,7 +7740,9 @@
       <ref name='xmlSchemaValPredefTypeNode'/>
       <ref name='xmlSchemaValPredefTypeNodeNoNorm'/>
       <ref name='xmlSchemaValidateFacet'/>
+      <ref name='xmlSchemaValidateFacetWhtsp'/>
       <ref name='xmlSchemaValidateLengthFacet'/>
+      <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
       <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
       <ref name='xmlSchemaValidatePredefinedType'/>
       <ref name='xmlSchemaWhiteSpaceReplace'/>
@@ -8022,6 +8039,7 @@
     </type>
     <type name='unsigned long *'>
       <ref name='xmlSchemaValidateLengthFacet'/>
+      <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
       <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
     </type>
     <type name='va_list'>
@@ -8444,11 +8462,9 @@
       <ref name='xmlNewDocNodeEatName'/>
       <ref name='xmlNewNodeEatName'/>
       <ref name='xmlNewNsPropEatName'/>
-      <ref name='xmlParseDoc'/>
       <ref name='xmlParserInputDeallocate'/>
       <ref name='xmlRecoverDoc'/>
       <ref name='xmlSAX2EntityDecl'/>
-      <ref name='xmlSAXParseDoc'/>
       <ref name='xmlStrPrintf'/>
       <ref name='xmlStrVPrintf'/>
       <ref name='xmlStrcasestr'/>
@@ -9450,7 +9466,9 @@
       <ref name='xmlSchemaFreeFacet'/>
       <ref name='xmlSchemaGetFacetValueAsULong'/>
       <ref name='xmlSchemaValidateFacet'/>
+      <ref name='xmlSchemaValidateFacetWhtsp'/>
       <ref name='xmlSchemaValidateLengthFacet'/>
+      <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
       <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
     </type>
     <type name='xmlSchemaParserCtxtPtr'>
@@ -9482,8 +9500,11 @@
       <ref name='xmlSchemaCopyValue'/>
       <ref name='xmlSchemaFreeValue'/>
       <ref name='xmlSchemaGetCanonValue'/>
+      <ref name='xmlSchemaGetValType'/>
       <ref name='xmlSchemaValidateFacet'/>
+      <ref name='xmlSchemaValidateFacetWhtsp'/>
       <ref name='xmlSchemaValidateLengthFacet'/>
+      <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
     </type>
     <type name='xmlSchemaValPtr *'>
       <ref name='xmlSchemaValPredefTypeNode'/>
@@ -9493,6 +9514,8 @@
     <type name='xmlSchemaValType'>
       <ref name='xmlSchemaGetBuiltInType'/>
       <ref name='xmlSchemaNewStringValue'/>
+      <ref name='xmlSchemaValidateFacetWhtsp'/>
+      <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
     </type>
     <type name='xmlSchemaValidCtxtPtr'>
       <ref name='xmlSchemaFreeValidCtxt'/>
@@ -9522,6 +9545,8 @@
     </type>
     <type name='xmlSchemaWhitespaceValueType'>
       <ref name='xmlSchemaCompareValuesWhtsp'/>
+      <ref name='xmlSchemaValidateFacetWhtsp'/>
+      <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
     </type>
     <type name='xmlSchemaWildcardPtr'>
       <ref name='xmlSchemaFreeWildcard'/>
@@ -11624,7 +11649,9 @@
       <ref name='XML_C14N_CREATE_CTXT'/>
       <ref name='XML_C14N_CREATE_STACK'/>
       <ref name='XML_C14N_INVALID_NODE'/>
+      <ref name='XML_C14N_RELATIVE_NAMESPACE'/>
       <ref name='XML_C14N_REQUIRES_UTF8'/>
+      <ref name='XML_C14N_UNKNOW_NODE'/>
       <ref name='XML_CATALOG_ENTRY_BROKEN'/>
       <ref name='XML_CATALOG_MISSING_ATTR'/>
       <ref name='XML_CATALOG_NOT_CATALOG'/>
@@ -12654,6 +12681,7 @@
       <ref name='xmlSchemaGetCanonValue'/>
       <ref name='xmlSchemaGetFacetValueAsULong'/>
       <ref name='xmlSchemaGetPredefinedType'/>
+      <ref name='xmlSchemaGetValType'/>
       <ref name='xmlSchemaInitTypes'/>
       <ref name='xmlSchemaIsBuiltInTypeFacet'/>
       <ref name='xmlSchemaNewFacet'/>
@@ -12662,7 +12690,9 @@
       <ref name='xmlSchemaValPredefTypeNode'/>
       <ref name='xmlSchemaValPredefTypeNodeNoNorm'/>
       <ref name='xmlSchemaValidateFacet'/>
+      <ref name='xmlSchemaValidateFacetWhtsp'/>
       <ref name='xmlSchemaValidateLengthFacet'/>
+      <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
       <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
       <ref name='xmlSchemaValidatePredefinedType'/>
       <ref name='xmlSchemaWhiteSpaceReplace'/>
@@ -13307,37 +13337,6 @@
           <ref name='xmlIsMixedElement'/>
           <ref name='xmlParseElementContentDecl'/>
         </word>
-        <word name='API'>
-          <ref name='LIBXML_TREE_ENABLED'/>
-          <ref name='xmlBufferAdd'/>
-          <ref name='xmlBufferAddHead'/>
-          <ref name='xmlBufferCCat'/>
-          <ref name='xmlBufferCat'/>
-          <ref name='xmlInputCloseCallback'/>
-          <ref name='xmlInputMatchCallback'/>
-          <ref name='xmlInputOpenCallback'/>
-          <ref name='xmlInputReadCallback'/>
-          <ref name='xmlLoadExternalEntity'/>
-          <ref name='xmlOutputCloseCallback'/>
-          <ref name='xmlOutputMatchCallback'/>
-          <ref name='xmlOutputOpenCallback'/>
-          <ref name='xmlOutputWriteCallback'/>
-          <ref name='xmlRelaxNGValidateDoc'/>
-          <ref name='xmlSchemaGetCanonValue'/>
-          <ref name='xmlSchemaSetValidOptions'/>
-          <ref name='xmlSchemaValPredefTypeNode'/>
-          <ref name='xmlSchemaValPredefTypeNodeNoNorm'/>
-          <ref name='xmlSchemaValidateDoc'/>
-          <ref name='xmlSchemaValidateFacet'/>
-          <ref name='xmlSchemaValidateLengthFacet'/>
-          <ref name='xmlSchemaValidateOneElement'/>
-          <ref name='xmlSchemaValidatePredefinedType'/>
-          <ref name='xmlSchemaValidateStream'/>
-          <ref name='xmlValidateNCName'/>
-          <ref name='xmlValidateNMToken'/>
-          <ref name='xmlValidateName'/>
-          <ref name='xmlValidateQName'/>
-        </word>
         <word name='APIs'>
           <ref name='LIBXML_LEGACY_ENABLED'/>
         </word>
@@ -13882,6 +13881,7 @@
         </word>
         <word name='Checka'>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
         </word>
         <word name='Checks'>
           <ref name='htmlAttrAllowed'/>
@@ -15668,6 +15668,7 @@
           <ref name='xmlSAXDefaultVersion'/>
           <ref name='xmlSaveFormatFile'/>
           <ref name='xmlSaveFormatFileEnc'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlTextReaderSetParserProp'/>
           <ref name='xmlValidateDtd'/>
         </word>
@@ -16648,6 +16649,7 @@
         <word name='Some'>
           <ref name='_htmlElemDesc'/>
           <ref name='xmlBuildRelativeURI'/>
+          <ref name='xmlSchemaGetCanonValue'/>
         </word>
         <word name='Sort'>
           <ref name='xmlListSort'/>
@@ -17155,6 +17157,7 @@
           <ref name='xmlSchemaParse'/>
         </word>
         <word name='WARNING:'>
+          <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaNewStringValue'/>
         </word>
         <word name='WFC:'>
@@ -17551,6 +17554,7 @@
           <ref name='xmlBuildURI'/>
           <ref name='xmlDetectCharEncoding'/>
           <ref name='xmlSAXVersion'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlURIEscape'/>
           <ref name='xmlXPathCompareValues'/>
         </word>
@@ -17559,6 +17563,9 @@
           <ref name='xmlParserHandlePEReference'/>
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlValidCtxtNormalizeAttributeValue'/>
+        </word>
+        <word name='account'>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
         </word>
         <word name='act'>
           <ref name='xmlStreamPush'/>
@@ -17588,6 +17595,7 @@
         <word name='actual'>
           <ref name='xmlGetUTF8Char'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
           <ref name='xmlXPathFreeNodeSet'/>
           <ref name='xmlXPtrFreeLocationSet'/>
         </word>
@@ -17732,7 +17740,9 @@
           <ref name='xmlRegexpCompile'/>
           <ref name='xmlRegexpExec'/>
           <ref name='xmlSchemaValidateFacet'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
           <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
           <ref name='xmlShellValidate'/>
           <ref name='xmlValidateDtd'/>
@@ -18507,7 +18517,9 @@
           <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
           <ref name='xmlSchemaGetBuiltInType'/>
           <ref name='xmlSchemaIsBuiltInTypeFacet'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
         </word>
         <word name='builtin'>
           <ref name='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE'/>
@@ -19197,6 +19209,7 @@
           <ref name='xmlSchemaValPredefTypeNode'/>
           <ref name='xmlSchemaValPredefTypeNodeNoNorm'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
           <ref name='xmlSchemaValidatePredefinedType'/>
           <ref name='xmlTextReaderByteConsumed'/>
         </word>
@@ -19211,6 +19224,7 @@
         </word>
         <word name='condition'>
           <ref name='xmlSchemaValidateFacet'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
         </word>
         <word name='conditionalSect'>
           <ref name='xmlParseExternalSubset'/>
@@ -21022,7 +21036,9 @@
           <ref name='xmlSchemaGetFacetValueAsULong'/>
           <ref name='xmlSchemaIsBuiltInTypeFacet'/>
           <ref name='xmlSchemaValidateFacet'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
           <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
         </word>
         <word name='facets'>
@@ -22590,6 +22606,7 @@
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlNewIOInputStream'/>
           <ref name='xmlParserAddNodeInfo'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlStrPrintf'/>
           <ref name='xmlStrVPrintf'/>
           <ref name='xmlTextMerge'/>
@@ -22871,10 +22888,13 @@
         </word>
         <word name='lexical'>
           <ref name='xmlParseDefaultDecl'/>
+          <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaValPredefTypeNode'/>
           <ref name='xmlSchemaValPredefTypeNodeNoNorm'/>
           <ref name='xmlSchemaValidateFacet'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
           <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
           <ref name='xmlSchemaValidatePredefinedType'/>
           <ref name='xmlValidateNCName'/>
@@ -23311,6 +23331,7 @@
         </word>
         <word name='maxLength'>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
         </word>
         <word name='maximal'>
           <ref name='xmlAutomataNewCounter'/>
@@ -23423,6 +23444,7 @@
         </word>
         <word name='minLength'>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
         </word>
         <word name='minimal'>
           <ref name='xmlAutomataNewCounter'/>
@@ -23710,6 +23732,7 @@
         </word>
         <word name='needs'>
           <ref name='xmlEntityReferenceFunc'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlXPathNodeSetFreeNs'/>
         </word>
         <word name='negated'>
@@ -23877,6 +23900,7 @@
           <ref name='xmlNormalizeURIPath'/>
           <ref name='xmlParseSDDecl'/>
           <ref name='xmlSchemaValPredefTypeNodeNoNorm'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlValidCtxtNormalizeAttributeValue'/>
           <ref name='xmlValidNormalizeAttributeValue'/>
         </word>
@@ -23896,6 +23920,7 @@
         </word>
         <word name='normalized'>
           <ref name='xmlParseAttValue'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlValidCtxtNormalizeAttributeValue'/>
           <ref name='xmlValidNormalizeAttributeValue'/>
           <ref name='xmlXPathNormalizeFunction'/>
@@ -24525,6 +24550,7 @@
           <ref name='xmlPatternMaxDepth'/>
           <ref name='xmlPatternStreamable'/>
           <ref name='xmlPatterncompile'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlTextReaderPreservePattern'/>
         </word>
         <word name='pcdata'>
@@ -24641,37 +24667,6 @@
         <word name='positions'>
           <ref name='xmlUTF8Strsub'/>
         </word>
-        <word name='positive'>
-          <ref name='UTF8ToHtml'/>
-          <ref name='UTF8Toisolat1'/>
-          <ref name='docbEncodeEntities'/>
-          <ref name='htmlEncodeEntities'/>
-          <ref name='isolat1ToUTF8'/>
-          <ref name='xmlBufferAdd'/>
-          <ref name='xmlBufferAddHead'/>
-          <ref name='xmlBufferCCat'/>
-          <ref name='xmlBufferCat'/>
-          <ref name='xmlCharEncodingInputFunc'/>
-          <ref name='xmlCharEncodingOutputFunc'/>
-          <ref name='xmlRelaxNGValidateDoc'/>
-          <ref name='xmlSchemaValPredefTypeNode'/>
-          <ref name='xmlSchemaValPredefTypeNodeNoNorm'/>
-          <ref name='xmlSchemaValidateDoc'/>
-          <ref name='xmlSchemaValidateFacet'/>
-          <ref name='xmlSchemaValidateLengthFacet'/>
-          <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
-          <ref name='xmlSchemaValidateOneElement'/>
-          <ref name='xmlSchemaValidatePredefinedType'/>
-          <ref name='xmlSchemaValidateStream'/>
-          <ref name='xmlTextReaderPreservePattern'/>
-          <ref name='xmlValidateNCName'/>
-          <ref name='xmlValidateNMToken'/>
-          <ref name='xmlValidateName'/>
-          <ref name='xmlValidateQName'/>
-          <ref name='xmlXPathBooleanFunction'/>
-          <ref name='xmlXPathFloorFunction'/>
-          <ref name='xmlXPathStringFunction'/>
-        </word>
         <word name='possible'>
           <ref name='_xmlSchemaType'/>
           <ref name='xmlCopyNodeList'/>
@@ -24754,7 +24749,9 @@
           <ref name='xmlSchemaCopyValue'/>
           <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaValidateFacet'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
         </word>
         <word name='predefined'>
           <ref name='XML_XML_NAMESPACE'/>
@@ -25698,7 +25695,9 @@
         </word>
         <word name='repr'>
           <ref name='xmlSchemaValidateFacet'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
           <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
         </word>
         <word name='representation'>
@@ -26113,6 +26112,7 @@
           <ref name='xmlSchemaNewMemParserCtxt'/>
           <ref name='xmlSchemaValidateDoc'/>
           <ref name='xmlSchemaValidateFacet'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
           <ref name='xmlSchemaValidateStream'/>
         </word>
         <word name='scheme'>
@@ -26290,6 +26290,7 @@
           <ref name='xmlGetUTF8Char'/>
           <ref name='xmlSAX2InitDefaultSAXHandler'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
           <ref name='xmlXPathDifference'/>
           <ref name='xmlXPathIntersection'/>
         </word>
@@ -27200,6 +27201,9 @@
         <word name='take'>
           <ref name='xmlLockLibrary'/>
         </word>
+        <word name='takes'>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
+        </word>
         <word name='tell'>
           <ref name='XML_COMPLETE_ATTRS'/>
           <ref name='XML_DETECT_IDS'/>
@@ -27695,7 +27699,9 @@
           <ref name='xmlExternalEntityLoader'/>
           <ref name='xmlParseSDDecl'/>
           <ref name='xmlSchemaCheckFacet'/>
+          <ref name='xmlSchemaGetCanonValue'/>
           <ref name='xmlSchemaNewStringValue'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
         </word>
         <word name='typo'>
           <ref name='xmlParseTextDecl'/>
@@ -27955,6 +27961,7 @@
         <word name='validated'>
           <ref name='xmlCharInRange'/>
           <ref name='xmlSchemaValidateLengthFacet'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
         </word>
         <word name='validates'>
           <ref name='xmlSchemaValPredefTypeNode'/>
@@ -28209,6 +28216,8 @@
           <ref name='xmlIsBlankNode'/>
           <ref name='xmlParseAttValue'/>
           <ref name='xmlSchemaCompareValuesWhtsp'/>
+          <ref name='xmlSchemaValidateFacetWhtsp'/>
+          <ref name='xmlSchemaValidateLengthFacetWhtsp'/>
           <ref name='xmlXPathIdFunction'/>
           <ref name='xmlXPathNormalizeFunction'/>
         </word>

@@ -5181,4 +5181,6 @@ xmlAutomataIsDeterminist(xmlAutomataPtr am) {
     return(ret);
 }
 #endif /* LIBXML_AUTOMATA_ENABLED */
+#define bottom_xmlregexp
+#include "elfgcchack.h"
 #endif /* LIBXML_REGEXP_ENABLED */

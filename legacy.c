@@ -1338,5 +1338,7 @@ cdataBlock(void *ctx, const xmlChar * value, int len)
     DEPRECATED("cdataBlock")
         xmlSAX2CDataBlock(ctx, value, len);
 }
+#define bottom_legacy
+#include "elfgcchack.h"
 #endif /* LIBXML_LEGACY_ENABLED */
 

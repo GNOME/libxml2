@@ -11753,3 +11753,5 @@ xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt)
 }
 
 #endif /* LIBXML_XPATH_ENABLED */
+#define bottom_xpath
+#include "elfgcchack.h"

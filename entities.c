@@ -964,3 +964,5 @@ xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table) {
     xmlHashScan(table, (xmlHashScanner)xmlDumpEntityDeclScan, buf);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
+#define bottom_entities
+#include "elfgcchack.h"

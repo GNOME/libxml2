@@ -3202,4 +3202,6 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 }
 
 #endif /* LIBXML_XPATH_ENABLED */
+#define bottom_debugXML
+#include "elfgcchack.h"
 #endif /* LIBXML_DEBUG_ENABLED */

@@ -2274,3 +2274,5 @@ xmlCanonicPath(const xmlChar *path)
     return(ret);
 }
 
+#define bottom_uri
+#include "elfgcchack.h"

@@ -21144,4 +21144,6 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
     TODO return (0);
 }
 
+#define bottom_xmlschemas
+#include "elfgcchack.h"
 #endif /* LIBXML_SCHEMAS_ENABLED */

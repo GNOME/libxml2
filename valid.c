@@ -6930,3 +6930,5 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **names,
 }
 #endif /* LIBXML_VALID_ENABLED */
 
+#define bottom_valid
+#include "elfgcchack.h"

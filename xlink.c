@@ -179,3 +179,5 @@ xlinkIsLink	(xmlDocPtr doc, xmlNodePtr node) {
     return(ret);
 }
 #endif /* LIBXML_XPTR_ENABLED */
+#define bottom_xlink
+#include "elfgcchack.h"

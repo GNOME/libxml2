@@ -95,6 +95,7 @@ static int xmlXPathDisableOptimizer = 0;
 double xmlXPathNAN = 0;
 double xmlXPathPINF = 1;
 double xmlXPathNINF = -1;
+double xmlXPathNZERO = 0;
 static int xmlXPathInitialized = 0;
 
 /**
@@ -109,6 +110,7 @@ xmlXPathInit(void) {
     xmlXPathPINF = trio_pinf();
     xmlXPathNINF = trio_ninf();
     xmlXPathNAN = trio_nan();
+    xmlXPathNZERO = trio_nzero();
 
     xmlXPathInitialized = 1;
 }
@@ -142,6 +144,22 @@ int
 xmlXPathIsInf(double val) {
     return(trio_isinf(val));
 }
+
+/**
+ * xmlXPathGetSign:
+ * @val:  a double value
+ *
+ * Provides a portable function to detect the sign of a double
+ * Modified from trio code
+ * http://sourceforge.net/projects/ctrio/
+ * 
+ * Returns 1 if the value is Negative, 0 if positive
+ */
+int
+xmlXPathGetSign(double val) {
+    return(trio_get_sign(val));
+}
+
 
 /************************************************************************
  * 									*
@@ -583,7 +601,7 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
         case XPATH_NUMBER:
 	    switch (xmlXPathIsInf(cur->floatval)) {
 	    case 1:
-		fprintf(output, "Object is a number : +Infinity\n");
+		fprintf(output, "Object is a number : Infinity\n");
 		break;
 	    case -1:
 		fprintf(output, "Object is a number : -Infinity\n");
@@ -1114,8 +1132,8 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 {
     switch (xmlXPathIsInf(number)) {
     case 1:
-	if (buffersize > (int)sizeof("+Infinity"))
-	    sprintf(buffer, "+Infinity");
+	if (buffersize > (int)sizeof("Infinity"))
+	    sprintf(buffer, "Infinity");
 	break;
     case -1:
 	if (buffersize > (int)sizeof("-Infinity"))
@@ -1263,9 +1281,12 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file,
     const xmlChar *cur;
     const xmlChar *base;
 
-    xmlGenericError(xmlGenericErrorContext,
+/*    xmlGenericError(xmlGenericErrorContext,
 	    "Error %s:%d: %s\n", file, line,
             xmlXPathErrorMessages[no]);
+*/
+    xmlGenericError(xmlGenericErrorContext,
+	    "Error %s\n", xmlXPathErrorMessages[no]);
 
     cur = ctxt->cur;
     base = ctxt->base;
@@ -3161,7 +3182,7 @@ xmlXPathCastNumberToString (double val) {
     xmlChar *ret;
     switch (xmlXPathIsInf(val)) {
     case 1:
-	ret = xmlStrdup((const xmlChar *) "+Infinity");
+	ret = xmlStrdup((const xmlChar *) "Infinity");
 	break;
     case -1:
 	ret = xmlStrdup((const xmlChar *) "-Infinity");
@@ -4614,7 +4635,14 @@ void
 xmlXPathValueFlipSign(xmlXPathParserContextPtr ctxt) {
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
-    ctxt->value->floatval = - ctxt->value->floatval;
+    if (ctxt->value->floatval == 0) {
+        if (xmlXPathGetSign(ctxt->value->floatval) == 0)
+	    ctxt->value->floatval = xmlXPathNZERO;
+	else
+	    ctxt->value->floatval = 0;
+    }
+    else
+        ctxt->value->floatval = - ctxt->value->floatval;
 }
 
 /**
@@ -4710,7 +4738,15 @@ xmlXPathDivValues(xmlXPathParserContextPtr ctxt) {
 
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
-    if (val == 0) {
+    if (val == 0 && xmlXPathGetSign(val) == 1) {
+	if (ctxt->value->floatval == 0)
+	    ctxt->value->floatval = xmlXPathNAN;
+	else if (ctxt->value->floatval > 0)
+	    ctxt->value->floatval = xmlXPathNINF;
+	else if (ctxt->value->floatval < 0)
+	    ctxt->value->floatval = xmlXPathPINF;
+    }
+    else if (val == 0) {
 	if (ctxt->value->floatval == 0)
 	    ctxt->value->floatval = xmlXPathNAN;
 	else if (ctxt->value->floatval > 0)
@@ -4732,21 +4768,23 @@ xmlXPathDivValues(xmlXPathParserContextPtr ctxt) {
 void
 xmlXPathModValues(xmlXPathParserContextPtr ctxt) {
     xmlXPathObjectPtr arg;
-    int arg1, arg2;
+    double arg1, arg2, tmp;
 
     arg = valuePop(ctxt);
     if (arg == NULL)
 	XP_ERROR(XPATH_INVALID_OPERAND);
-    arg2 = (int) xmlXPathCastToNumber(arg);
+    arg2 = xmlXPathCastToNumber(arg);
     xmlXPathFreeObject(arg);
 
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
-    arg1 = (int) ctxt->value->floatval;
+    arg1 = ctxt->value->floatval;
     if (arg2 == 0)
 	ctxt->value->floatval = xmlXPathNAN;
-    else
-	ctxt->value->floatval = arg1 % arg2;
+    else {
+	tmp=arg1/arg2;
+	ctxt->value->floatval = arg2 * (tmp - (double)((int)tmp));
+    }
 }
 
 /************************************************************************
@@ -6523,8 +6561,13 @@ xmlXPathCeilingFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     if (f != ctxt->value->floatval) {
 	if (ctxt->value->floatval > 0)
 	    ctxt->value->floatval = f + 1;
-	else
-	    ctxt->value->floatval = f;
+	else {
+	    if (ctxt->value->floatval < 0 && f == 0)
+	        ctxt->value->floatval = xmlXPathNZERO;
+	    else
+	        ctxt->value->floatval = f;
+	}
+
     }
 #endif
 }
@@ -6560,6 +6603,8 @@ xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    ctxt->value->floatval = f - 1;
 	else 
 	    ctxt->value->floatval = f;
+	if (ctxt->value->floatval == 0)
+	    ctxt->value->floatval = xmlXPathNZERO;
     } else {
 	if (ctxt->value->floatval < f + 0.5)
 	    ctxt->value->floatval = f;

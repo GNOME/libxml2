@@ -145,6 +145,11 @@ static const char rcsid[] = "@(#)$Id$";
 
 static TRIO_CONST double internalEndianMagic = 7.949928895127363e-275;
 
+/* Mask for the sign */
+static TRIO_CONST unsigned char ieee_754_sign_mask[] = {
+  0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
 /* Mask for the exponent */
 static TRIO_CONST unsigned char ieee_754_exponent_mask[] = {
   0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
@@ -153,6 +158,11 @@ static TRIO_CONST unsigned char ieee_754_exponent_mask[] = {
 /* Mask for the mantissa */
 static TRIO_CONST unsigned char ieee_754_mantissa_mask[] = {
   0x00, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+};
+
+/* Bit-pattern for negative zero */
+static TRIO_CONST unsigned char ieee_754_negzero_array[] = {
+  0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 /* Bit-pattern for infinity */
@@ -205,6 +215,37 @@ trio_is_special_quantity(double number,
     *has_mantissa |= (current & ieee_754_mantissa_mask[i]);
   }
   return is_special_quantity;
+}
+
+/**
+   Get the sign value
+
+   @return 1 for negative, 0 for positive
+*/
+TRIO_PUBLIC int
+trio_get_sign(double number) 
+{
+  unsigned int i;
+  unsigned char current;
+  int sign = (1 == 1);
+
+  for (i = 0; i < (unsigned int)sizeof(double); i++) {
+    current = ((unsigned char *)&number)[TRIO_DOUBLE_INDEX(i)];
+    sign
+      &= ((current & ieee_754_sign_mask[i]) == ieee_754_sign_mask[i]);
+  }
+  return sign;
+}
+
+/**
+   Generate negative zero
+
+   @return Floating-point representation of negative zero.
+*/
+TRIO_PUBLIC double
+trio_nzero(void) 
+{
+  return trio_make_double(ieee_754_negzero_array);
 }
 
 #endif /* USE_IEEE_754 */

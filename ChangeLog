@@ -1,3 +1,9 @@
+Wed Mar 27 10:03:11 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* AUTHORS HACKING: Added Igor Zlatkovic as official maintainer
+	* python/Makefile.am python/tests/Makefile.am: Albert Chin pointed
+	  that $(datadir) should be used for docs
+
 Tue Mar 26 13:43:16 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: Thomas Steinborn pointed out #76404 that libxml2

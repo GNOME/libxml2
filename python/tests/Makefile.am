@@ -1,4 +1,4 @@
-EXAMPLE_DIR = $(prefix)/share/doc/libxml2-python-$(LIBXML_VERSION)/examples
+EXAMPLE_DIR = $(datadir)/doc/libxml2-python-$(LIBXML_VERSION)/examples
 
 PYTESTS=	\
     build.py	\

@@ -2467,7 +2467,6 @@ xmlXPtrSearchString(const xmlChar *string, xmlNodePtr *start, int *startindex,
     const xmlChar *str;
     int pos; /* 0 based */
     int len; /* in bytes */
-    int stringlen; /* in bytes */
     xmlChar first;
 
     if (string == NULL)
@@ -2481,7 +2480,6 @@ xmlXPtrSearchString(const xmlChar *string, xmlNodePtr *start, int *startindex,
 	return(-1);
     pos = *startindex - 1;
     first = string[0];
-    stringlen = xmlStrlen(string);
 
     while (cur != NULL) {
 	if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {

@@ -1,3 +1,9 @@
+Tue Jun 29 14:52:18 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/globals.h include/libxml/xmlIO.h
+	  doc/libxml2-api.xml doc/libxml2-refs.xml: moved some definitions
+	  to globals.h to avoid some troubles pointed out by Rob Richards
+
 Mon Jun 28 11:25:31 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.m4: applied changes suggested by Mike Hommey, remove

@@ -62,9 +62,6 @@ typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
  */
 typedef int (*xmlInputCloseCallback) (void * context);
 
-typedef xmlParserInputBufferPtr (*xmlParserInputBufferCreateFilenameFunc) (const char *URI, xmlCharEncoding enc);
-typedef xmlOutputBufferPtr (*xmlOutputBufferCreateFilenameFunc) (const char *URI, xmlCharEncodingHandlerPtr encoder, int compression);
-
 #ifdef LIBXML_OUTPUT_ENABLED
 /*
  * Those are the functions and datatypes for the library output
@@ -209,11 +206,6 @@ XMLPUBFUN int XMLCALL
 						 xmlInputOpenCallback openFunc,
 						 xmlInputReadCallback readFunc,
 						 xmlInputCloseCallback closeFunc);
-
-XMLPUBFUN xmlParserInputBufferCreateFilenameFunc XMLCALL 
-	xmlParserInputBufferCreateFilenameDefault (xmlParserInputBufferCreateFilenameFunc func);
-XMLPUBFUN xmlOutputBufferCreateFilenameFunc XMLCALL 
-	xmlOutputBufferCreateFilenameDefault (xmlOutputBufferCreateFilenameFunc func);
 
 xmlParserInputBufferPtr
 	__xmlParserInputBufferCreateFilename(const char *URI,

@@ -494,15 +494,18 @@
      <exports symbol='xmlPedanticParserDefaultValue' type='variable'/>
      <exports symbol='oldXMLWDcompatibility' type='variable'/>
      <exports symbol='xmlThrDefSetStructuredErrorFunc' type='function'/>
-     <exports symbol='xmlCleanupGlobals' type='function'/>
      <exports symbol='xmlThrDefParserInputBufferCreateFilenameDefault' type='function'/>
-     <exports symbol='xmlThrDefRegisterNodeDefault' type='function'/>
+     <exports symbol='xmlDeregisterNodeDefault' type='function'/>
+     <exports symbol='xmlThrDefDeregisterNodeDefault' type='function'/>
+     <exports symbol='xmlThrDefPedanticParserDefaultValue' type='function'/>
      <exports symbol='xmlInitializeGlobalState' type='function'/>
      <exports symbol='xmlThrDefBufferAllocScheme' type='function'/>
      <exports symbol='xmlThrDefSetGenericErrorFunc' type='function'/>
+     <exports symbol='xmlParserInputBufferCreateFilenameDefault' type='function'/>
      <exports symbol='xmlThrDefDoValidityCheckingDefaultValue' type='function'/>
-     <exports symbol='xmlThrDefPedanticParserDefaultValue' type='function'/>
+     <exports symbol='xmlCleanupGlobals' type='function'/>
      <exports symbol='xmlRegisterNodeDefault' type='function'/>
+     <exports symbol='xmlParserInputBufferCreateFilenameFunc' type='function'/>
      <exports symbol='xmlThrDefGetWarningsDefaultValue' type='function'/>
      <exports symbol='xmlThrDefOutputBufferCreateFilenameDefault' type='function'/>
      <exports symbol='xmlThrDefSubstituteEntitiesDefaultValue' type='function'/>
@@ -510,8 +513,8 @@
      <exports symbol='xmlThrDefSaveNoEmptyTags' type='function'/>
      <exports symbol='xmlThrDefIndentTreeOutput' type='function'/>
      <exports symbol='xmlThrDefDefaultBufferSize' type='function'/>
-     <exports symbol='xmlThrDefDeregisterNodeDefault' type='function'/>
-     <exports symbol='xmlDeregisterNodeDefault' type='function'/>
+     <exports symbol='xmlOutputBufferCreateFilenameFunc' type='function'/>
+     <exports symbol='xmlOutputBufferCreateFilenameDefault' type='function'/>
      <exports symbol='xmlInitGlobals' type='function'/>
      <exports symbol='xmlThrDefLoadExtDtdDefaultValue' type='function'/>
      <exports symbol='xmlThrDefLineNumbersDefaultValue' type='function'/>
@@ -519,6 +522,7 @@
      <exports symbol='xmlDeregisterNodeFunc' type='function'/>
      <exports symbol='xmlThrDefParserDebugEntities' type='function'/>
      <exports symbol='xmlThrDefTreeIndentString' type='function'/>
+     <exports symbol='xmlThrDefRegisterNodeDefault' type='function'/>
     </file>
     <file name='hash'>
      <summary>chained hash tables</summary>
@@ -1609,7 +1613,6 @@
      <exports symbol='xmlInputMatchCallback' type='function'/>
      <exports symbol='xmlRegisterDefaultOutputCallbacks' type='function'/>
      <exports symbol='xmlFileClose' type='function'/>
-     <exports symbol='xmlAllocParserInputBuffer' type='function'/>
      <exports symbol='xmlOutputMatchCallback' type='function'/>
      <exports symbol='xmlParserInputBufferPush' type='function'/>
      <exports symbol='xmlIOFTPRead' type='function'/>
@@ -1617,10 +1620,8 @@
      <exports symbol='xmlIOFTPOpen' type='function'/>
      <exports symbol='xmlIOFTPClose' type='function'/>
      <exports symbol='xmlFileOpen' type='function'/>
-     <exports symbol='xmlParserInputBufferCreateFilenameFunc' type='function'/>
      <exports symbol='xmlOutputBufferCreateFile' type='function'/>
      <exports symbol='xmlCheckFilename' type='function'/>
-     <exports symbol='xmlOutputBufferCreateFilenameDefault' type='function'/>
      <exports symbol='xmlOutputOpenCallback' type='function'/>
      <exports symbol='xmlParserInputBufferCreateFilename' type='function'/>
      <exports symbol='xmlOutputBufferClose' type='function'/>
@@ -1646,7 +1647,6 @@
      <exports symbol='xmlNormalizeWindowsPath' type='function'/>
      <exports symbol='xmlInputReadCallback' type='function'/>
      <exports symbol='xmlParserInputBufferCreateStatic' type='function'/>
-     <exports symbol='xmlParserInputBufferCreateFilenameDefault' type='function'/>
      <exports symbol='xmlIOHTTPClose' type='function'/>
      <exports symbol='xmlOutputBufferWriteEscape' type='function'/>
      <exports symbol='xmlOutputBufferCreateFilename' type='function'/>
@@ -1663,7 +1663,7 @@
      <exports symbol='xmlCleanupInputCallbacks' type='function'/>
      <exports symbol='xmlInputCloseCallback' type='function'/>
      <exports symbol='xmlIOHTTPOpenW' type='function'/>
-     <exports symbol='xmlOutputBufferCreateFilenameFunc' type='function'/>
+     <exports symbol='xmlAllocParserInputBuffer' type='function'/>
     </file>
     <file name='xmlautomata'>
      <summary>API to build regexp automata</summary>
@@ -9218,9 +9218,9 @@ actually an xmlCharEncoding'/>
       <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist'/>
     </function>
     <function name='xmlMemFree' file='xmlmemory'>
-      <info>a free() equivalent, with error checking.</info>
+      <info></info>
       <return type='void'/>
-      <arg name='ptr' type='void *' info='the memory block pointer'/>
+      <arg name='ptr' type='void *' info=''/>
     </function>
     <function name='xmlMemGet' file='xmlmemory'>
       <info>Provides the memory access functions set currently in use</info>
@@ -9231,15 +9231,15 @@ actually an xmlCharEncoding'/>
       <arg name='strdupFunc' type='xmlStrdupFunc *' info='place to save the strdup() function in use'/>
     </function>
     <function name='xmlMemMalloc' file='xmlmemory'>
-      <info>a malloc() equivalent, with logging of the allocation info.</info>
-      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
-      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
+      <info></info>
+      <return type='void *' info=''/>
+      <arg name='size' type='size_t' info=''/>
     </function>
     <function name='xmlMemRealloc' file='xmlmemory'>
-      <info>a realloc() equivalent, with logging of the allocation info.</info>
-      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
-      <arg name='ptr' type='void *' info='the initial memory block pointer'/>
-      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
+      <info></info>
+      <return type='void *' info=''/>
+      <arg name='ptr' type='void *' info=''/>
+      <arg name='size' type='size_t' info=''/>
     </function>
     <function name='xmlMemSetup' file='xmlmemory'>
       <info>Override the default memory access functions with a new set This has to be called before any other libxml routines !  Should this be blocked if there was already some allocations done ?</info>
@@ -9271,9 +9271,9 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='xmlMemoryStrdup' file='xmlmemory'>
-      <info>a strdup() equivalent, with logging of the allocation info.</info>
-      <return type='char *' info='a pointer to the new string or NULL if allocation error occurred.'/>
-      <arg name='str' type='const char *' info='the initial string pointer'/>
+      <info></info>
+      <return type='char *' info=''/>
+      <arg name='str' type='const char *' info=''/>
     </function>
     <function name='xmlMutexLock' file='threads'>
       <info>xmlMutexLock() is used to lock a libxml2 token.</info>
@@ -10035,12 +10035,12 @@ actually an xmlCharEncoding'/>
       <arg name='encoder' type='xmlCharEncodingHandlerPtr' info='the encoding converter or NULL'/>
       <arg name='compression' type='int' info='the compression ration (0 none, 9 max).'/>
     </function>
-    <function name='xmlOutputBufferCreateFilenameDefault' file='xmlIO'>
+    <function name='xmlOutputBufferCreateFilenameDefault' file='globals'>
       <info>Registers a callback for URI output file handling</info>
       <return type='xmlOutputBufferCreateFilenameFunc' info='the old value of the registration function'/>
       <arg name='func' type='xmlOutputBufferCreateFilenameFunc' info='function pointer to the new OutputBufferCreateFilenameFunc'/>
     </function>
-    <functype name='xmlOutputBufferCreateFilenameFunc' file='xmlIO'>
+    <functype name='xmlOutputBufferCreateFilenameFunc' file='globals'>
       <info></info>
       <return type='xmlOutputBufferPtr' info=''/>
       <arg name='URI' type='const char *' info=''/>
@@ -10521,12 +10521,12 @@ actually an xmlCharEncoding'/>
       <arg name='URI' type='const char *' info='a C string containing the URI or filename'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known'/>
     </function>
-    <function name='xmlParserInputBufferCreateFilenameDefault' file='xmlIO'>
+    <function name='xmlParserInputBufferCreateFilenameDefault' file='globals'>
       <info>Registers a callback for URI input file handling</info>
       <return type='xmlParserInputBufferCreateFilenameFunc' info='the old value of the registration function'/>
       <arg name='func' type='xmlParserInputBufferCreateFilenameFunc' info='function pointer to the new ParserInputBufferCreateFilenameFunc'/>
     </function>
-    <functype name='xmlParserInputBufferCreateFilenameFunc' file='xmlIO'>
+    <functype name='xmlParserInputBufferCreateFilenameFunc' file='globals'>
       <info></info>
       <return type='xmlParserInputBufferPtr' info=''/>
       <arg name='URI' type='const char *' info=''/>

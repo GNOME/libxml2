@@ -62,10 +62,11 @@ void *xmlGenericErrorContext = NULL;
  */
 void
 xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
-    if (ctx != NULL)
-	xmlGenericErrorContext = ctx;
+    xmlGenericErrorContext = ctx;
     if (handler != NULL)
 	xmlGenericError = handler;
+    else
+	xmlGenericError = xmlGenericErrorDefaultFunc;
 }
 
 /************************************************************************

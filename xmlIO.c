@@ -836,7 +836,8 @@ xmlOutputBufferClose(xmlOutputBufferPtr out) {
 
     if (out == NULL)
         return(-1);
-    xmlOutputBufferFlush(out);
+    if (out->writecallback != NULL)
+	xmlOutputBufferFlush(out);
     if (out->closecallback != NULL) {
 	out->closecallback(out->context);
     }

@@ -1,3 +1,8 @@
+Sat Nov 25 01:21:01 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.[ch] xmlIO.c: added xmlDocDumpMemoryEnc() from John Kroll
+	* error.c: applied fix suggested by "Leo Davidson" <leo@ox.compsoc.net>
+
 Sat Nov 25 00:24:49 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c: some fixes on auto-open of html/head/body

@@ -628,6 +628,10 @@ int		xmlReconciliateNs	(xmlDocPtr doc,
 void		xmlDocDumpMemory	(xmlDocPtr cur,
 					 xmlChar**mem,
 					 int *size);
+void		xmlDocDumpMemoryEnc	(xmlDocPtr out_doc,
+					 xmlChar **doc_txt_ptr,
+					 int * doc_txt_len,
+					 const char *txt_encoding);
 int		xmlDocDump		(FILE *f,
 					 xmlDocPtr cur);
 void		xmlElemDump		(FILE *f,

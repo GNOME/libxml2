@@ -5594,6 +5594,96 @@ xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
 }
 
 /**
+ * xmlDocDumpMemoryEnc:
+ * @out_doc:  Document to generate XML text from
+ * @doc_txt_ptr:  Memory pointer for allocated XML text
+ * @doc_txt_len:  Length of the generated XML text
+ * @txt_encoding:  Character encoding to use when generating XML text
+ *
+ * Dump the current DOM tree into memory using the character encoding specified
+ * by the caller.  Note it is up to the caller of this function to free the
+ * allocated memory.
+ */
+
+void
+xmlDocDumpMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
+	            int * doc_txt_len, const char * txt_encoding) {
+    int                         dummy = 0;
+
+    xmlCharEncoding             doc_charset;
+    xmlOutputBufferPtr          out_buff = NULL;
+    xmlCharEncodingHandlerPtr   conv_hdlr = NULL;
+
+    if (doc_txt_len == NULL) {
+        doc_txt_len = &dummy;   /*  Continue, caller just won't get length */
+    }
+
+    if (doc_txt_ptr == NULL) {
+        *doc_txt_len = 0;
+        xmlGenericError(xmlGenericErrorContext,
+                    "xmlDocDumpMemoryEnc:  Null return buffer pointer.");
+        return;
+    }
+
+    *doc_txt_ptr = NULL;
+    *doc_txt_len = 0;
+
+    if (out_doc == NULL) {
+        /*  No document, no output  */
+        xmlGenericError(xmlGenericErrorContext,
+                "xmlDocDumpMemoryEnc:  Null DOM tree document pointer.\n");
+        return;
+    }
+
+    /*
+     *  Validate the encoding value, if provided.
+     *  This logic is copied from xmlSaveFileEnc.
+     */
+
+    if (txt_encoding != NULL) {
+        doc_charset = xmlParseCharEncoding(txt_encoding);
+
+        if (out_doc->charset != XML_CHAR_ENCODING_UTF8) {
+            xmlGenericError(xmlGenericErrorContext,
+                    "xmlDocDumpMemoryEnc:  Source document not in UTF8\n");
+            return;
+
+        } else if (doc_charset != XML_CHAR_ENCODING_UTF8) {
+            conv_hdlr = xmlFindCharEncodingHandler(txt_encoding);
+            if ( conv_hdlr == NULL ) {
+                xmlGenericError(xmlGenericErrorContext,
+                                "%s:  %s %s '%s'\n",
+                                "xmlDocDumpMemoryEnc",
+                                "Failed to identify encoding handler for",
+                                "character set",
+                                txt_encoding);
+                return;
+            }
+        }
+    }
+
+    if ((out_buff = xmlAllocOutputBuffer(conv_hdlr)) == NULL ) {
+        xmlGenericError(xmlGenericErrorContext,
+                "xmlDocDumpMemoryEnc:  Failed to allocate output buffer.\n");
+        return;
+    }
+
+    xmlDocContentDumpOutput(out_buff, out_doc, txt_encoding);
+    *doc_txt_len = out_buff->buffer->use;
+    *doc_txt_ptr = xmlStrndup(out_buff->buffer->content, *doc_txt_len);
+    (void)xmlOutputBufferClose(out_buff);
+
+    if ((*doc_txt_ptr == NULL) && (*doc_txt_len > 0)) {
+        *doc_txt_len = 0;
+        xmlGenericError(xmlGenericErrorContext,
+                "xmlDocDumpMemoryEnc:  %s\n",
+                "Failed to allocate memory for document text representation.");
+    }
+
+    return;
+}
+
+/**
  * xmlGetDocCompressMode:
  * @doc:  the document
  *

@@ -429,30 +429,17 @@ AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)
 
 dnl
-dnl create the libxml and include links needed to get dependencies right
+dnl cleanup any remaining symlinks if any for include/libxml
 dnl
 if test ! -d $srcdir/include/libxml
 then
-    if test ! -d $srcdir/include
+    if test -d $srcdir/include/CVS
     then
-        rm -f $srcdir/include
-        mkdir $srcdir/include
+	rm -rf $srcdir/include/libxml
+	echo The CVS repository changed a bit
+	echo 'please run "cvs update -d" and rerun the configuration script'
+	exit 1
     fi
-    rm -f $srcdir/libxml
-    (cd $srcdir/include ; ln -s .. libxml)
-fi
-if test ! -r $srcdir/libxml
-then
-    (cd $srcdir ; ln -s include/libxml libxml)
-fi
-if test ! -r include/libxml
-then
-    if test ! -d include
-    then
-        rm -f include
-        mkdir include
-    fi
-    (cd include ; ln -s ../libxml libxml)
 fi
 if test ! -r libxml
 then

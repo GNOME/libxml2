@@ -1,3 +1,8 @@
+Thu Mar  4 14:39:38 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am tree.c xmlsave.c include/libxml/xmlsave.h: commiting
+	  the new xmlsave module before the actuall big code change.
+
 Thu Mar  4 12:38:53 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: applied patch from Adam Dickmeiss for mixed content

@@ -3707,6 +3707,8 @@ xmlCopyPropList(xmlNodePtr target, xmlAttrPtr cur) {
 
     while (cur != NULL) {
         q = xmlCopyProp(target, cur);
+	if (q == NULL)
+	    return(NULL);
 	if (p == NULL) {
 	    ret = p = q;
 	} else {
@@ -4207,11 +4209,11 @@ xmlGetNodePath(xmlNodePtr node)
             name = (const char *) cur->name;
             if (cur->ns) {
 	        if (cur->ns->prefix != NULL)
-                    snprintf(nametemp, sizeof(nametemp) - 1,
-                         "%s:%s", cur->ns->prefix, cur->name);
+                    snprintf(nametemp, sizeof(nametemp) - 1, "%s:%s",
+		    	(char *)cur->ns->prefix, (char *)cur->name);
 		else
-		    snprintf(nametemp, sizeof(nametemp) - 1,
-		         "%s", cur->name);
+		    snprintf(nametemp, sizeof(nametemp) - 1, "%s",
+		    	(char *)cur->name);
                 nametemp[sizeof(nametemp) - 1] = 0;
                 name = nametemp;
             }
@@ -4296,7 +4298,7 @@ xmlGetNodePath(xmlNodePtr node)
         } else if (cur->type == XML_PI_NODE) {
             sep = "/";
 	    snprintf(nametemp, sizeof(nametemp) - 1,
-		     "processing-instruction('%s')", cur->name);
+		     "processing-instruction('%s')", (char *)cur->name);
             nametemp[sizeof(nametemp) - 1] = 0;
             name = nametemp;
 
@@ -4362,7 +4364,7 @@ xmlGetNodePath(xmlNodePtr node)
         else
             snprintf((char *) buf, buf_len, "%s%s[%d]%s",
                      sep, name, occur, (char *) buffer);
-        snprintf((char *) buffer, buf_len, "%s", buf);
+        snprintf((char *) buffer, buf_len, "%s", (char *)buf);
         cur = next;
     } while (cur != NULL);
     xmlFree(buf);
@@ -5637,7 +5639,7 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
     if (ns->prefix == NULL)
 	snprintf((char *) prefix, sizeof(prefix), "default");
     else
-	snprintf((char *) prefix, sizeof(prefix), "%.20s", ns->prefix);
+	snprintf((char *) prefix, sizeof(prefix), "%.20s", (char *)ns->prefix);
 
     def = xmlSearchNs(doc, tree, prefix);
     while (def != NULL) {
@@ -5645,7 +5647,8 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
 	if (ns->prefix == NULL)
 	    snprintf((char *) prefix, sizeof(prefix), "default%d", counter++);
 	else
-	    snprintf((char *) prefix, sizeof(prefix), "%.20s%d", ns->prefix, counter++);
+	    snprintf((char *) prefix, sizeof(prefix), "%.20s%d",
+	    	(char *)ns->prefix, counter++);
 	def = xmlSearchNs(doc, tree, prefix);
     }
 

@@ -1,3 +1,15 @@
+Fri Sep 17 21:25:33 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* nanohttp.c, include/libxml/nanohttp.h: added the routine
+	  xmlNanoHTTPContentLength to the external API (bug151968).
+	* parser.c: fixed unnecessary internal error message (bug152060);
+	  also changed call to strncmp over to xmlStrncmp.
+	* encoding.c: fixed compilation warning (bug152307).
+	* tree.c: fixed segfault in xmlCopyPropList (bug152368); fixed
+	  a couple of compilation warnings.
+	* HTMLtree.c, debugXML.c, xmlmemory.c: fixed a few compilation
+	  warnings; no change to logic.
+
 Fri Sep 17 10:40:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: removed some extern before function code reported by

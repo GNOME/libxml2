@@ -85,13 +85,13 @@ xmlDebugDumpDtdNode(FILE *output, xmlDtdPtr dtd, int depth) {
 	return;
     }
     if (dtd->name != NULL)
-	fprintf(output, "DTD(%s)", dtd->name);
+	fprintf(output, "DTD(%s)", (char *)dtd->name);
     else
 	fprintf(output, "DTD");
     if (dtd->ExternalID != NULL)
-	fprintf(output, ", PUBLIC %s", dtd->ExternalID);
+	fprintf(output, ", PUBLIC %s", (char *)dtd->ExternalID);
     if (dtd->SystemID != NULL)
-	fprintf(output, ", SYSTEM %s", dtd->SystemID);
+	fprintf(output, ", SYSTEM %s", (char *)dtd->SystemID);
     fprintf(output, "\n");
     /*
      * Do a bit of checking
@@ -138,11 +138,11 @@ xmlDebugDumpAttrDecl(FILE *output, xmlAttributePtr attr, int depth) {
 	return;
     }
     if (attr->name != NULL)
-	fprintf(output, "ATTRDECL(%s)", attr->name);
+	fprintf(output, "ATTRDECL(%s)", (char *)attr->name);
     else
 	fprintf(output, "PBM ATTRDECL noname!!!");
     if (attr->elem != NULL)
-	fprintf(output, " for %s", attr->elem);
+	fprintf(output, " for %s", (char *)attr->elem);
     else
 	fprintf(output, " PBM noelem!!!");
     switch (attr->atype) {
@@ -183,9 +183,9 @@ xmlDebugDumpAttrDecl(FILE *output, xmlAttributePtr attr, int depth) {
 
 	for (indx = 0;indx < 5; indx++) {
 	    if (indx != 0)
-		fprintf(output, "|%s", cur->name);
+		fprintf(output, "|%s", (char *)cur->name);
 	    else
-		fprintf(output, " (%s", cur->name);
+		fprintf(output, " (%s", (char *)cur->name);
 	    cur = cur->next;
 	    if (cur == NULL) break;
 	}
@@ -364,15 +364,15 @@ xmlDebugDumpEntityDecl(FILE *output, xmlEntityPtr ent, int depth) {
     }
     if (ent->ExternalID) {
         fprintf(output, shift);
-        fprintf(output, " ExternalID=%s\n", ent->ExternalID);
+        fprintf(output, " ExternalID=%s\n", (char *)ent->ExternalID);
     }
     if (ent->SystemID) {
         fprintf(output, shift);
-        fprintf(output, " SystemID=%s\n", ent->SystemID);
+        fprintf(output, " SystemID=%s\n", (char *)ent->SystemID);
     }
     if (ent->URI != NULL) {
         fprintf(output, shift);
-        fprintf(output, " URI=%s\n", ent->URI);
+        fprintf(output, " URI=%s\n", (char *)ent->URI);
     }
     if (ent->content) {
         fprintf(output, shift);
@@ -422,17 +422,18 @@ xmlDebugDumpNamespace(FILE *output, xmlNsPtr ns, int depth) {
 	return;
     }
     if (ns->type != XML_NAMESPACE_DECL) {
-        fprintf(output, "invalid namespace node %d\n", ns->type);
+        fprintf(output, "invalid namespace node %d\n", (char *)ns->type);
 	return;
     }
     if (ns->href == NULL) {
 	if (ns->prefix != NULL)
-	    fprintf(output, "incomplete namespace %s href=NULL\n", ns->prefix);
+	    fprintf(output, "incomplete namespace %s href=NULL\n",
+	    	(char *)ns->prefix);
 	else
 	    fprintf(output, "incomplete default namespace href=NULL\n");
     } else {
 	if (ns->prefix != NULL)
-	    fprintf(output, "namespace %s href=", ns->prefix);
+	    fprintf(output, "namespace %s href=", (char *)ns->prefix);
 	else
 	    fprintf(output, "default namespace href=");
 
@@ -481,20 +482,20 @@ xmlDebugDumpEntity(FILE *output, xmlEntityPtr ent, int depth) {
 	    fprintf(output, "EXTERNAL_PARAMETER_ENTITY ");
 	    break;
 	default:
-	    fprintf(output, "ENTITY_%d ! ", ent->etype);
+	    fprintf(output, "ENTITY_%d ! ", (char *)ent->etype);
     }
     fprintf(output, "%s\n", ent->name);
     if (ent->ExternalID) {
         fprintf(output, shift);
-        fprintf(output, "ExternalID=%s\n", ent->ExternalID);
+        fprintf(output, "ExternalID=%s\n", (char *)ent->ExternalID);
     }
     if (ent->SystemID) {
         fprintf(output, shift);
-        fprintf(output, "SystemID=%s\n", ent->SystemID);
+        fprintf(output, "SystemID=%s\n", (char *)ent->SystemID);
     }
     if (ent->URI) {
         fprintf(output, shift);
-        fprintf(output, "URI=%s\n", ent->URI);
+        fprintf(output, "URI=%s\n", (char *)ent->URI);
     }
     if (ent->content) {
         fprintf(output, shift);
@@ -627,7 +628,7 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
             break;
         case XML_ENTITY_REF_NODE:
             fprintf(output, shift);
-            fprintf(output, "ENTITY_REF(%s)\n", node->name);
+            fprintf(output, "ENTITY_REF(%s)\n", (char *)node->name);
             break;
         case XML_ENTITY_NODE:
             fprintf(output, shift);
@@ -635,7 +636,7 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
             break;
         case XML_PI_NODE:
             fprintf(output, shift);
-            fprintf(output, "PI %s\n", node->name);
+            fprintf(output, "PI %s\n", (char *)node->name);
             break;
         case XML_COMMENT_NODE:
             fprintf(output, shift);
@@ -683,7 +684,7 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
             return;
         default:
             fprintf(output, shift);
-            fprintf(output, "NODE_%d !!!\n", node->type);
+            fprintf(output, "NODE_%d !!!\n", (char *)node->type);
             return;
     }
     if (node->doc == NULL) {
@@ -845,7 +846,7 @@ xmlDebugDumpDocumentHead(FILE * output, xmlDocPtr doc)
             fprintf(output, "Error, NOTATION\n");
             break;
         default:
-            fprintf(output, "NODE_%d\n", doc->type);
+            fprintf(output, "NODE_%d\n", (char *)doc->type);
     }
     if (doc->name != NULL) {
         fprintf(output, "name=");
@@ -916,13 +917,13 @@ xmlDebugDumpDTD(FILE * output, xmlDtdPtr dtd)
         return;
     }
     if (dtd->name != NULL)
-        fprintf(output, "DTD(%s)", dtd->name);
+        fprintf(output, "DTD(%s)", (char *)dtd->name);
     else
         fprintf(output, "DTD");
     if (dtd->ExternalID != NULL)
-        fprintf(output, ", PUBLIC %s", dtd->ExternalID);
+        fprintf(output, ", PUBLIC %s", (char *)dtd->ExternalID);
     if (dtd->SystemID != NULL)
-        fprintf(output, ", SYSTEM %s", dtd->SystemID);
+        fprintf(output, ", SYSTEM %s", (char *)dtd->SystemID);
     fprintf(output, "\n");
     /*
      * Do a bit of checking
@@ -958,7 +959,7 @@ xmlDebugDumpEntityCallback(xmlEntityPtr cur, FILE *output) {
 	fprintf(output, "Entity is NULL");
 	return;
     }
-    fprintf(output, "%s : ", cur->name);
+    fprintf(output, "%s : ", (char *)cur->name);
     switch (cur->etype) {
 	case XML_INTERNAL_GENERAL_ENTITY:
 	    fprintf(output, "INTERNAL GENERAL, ");
@@ -977,17 +978,17 @@ xmlDebugDumpEntityCallback(xmlEntityPtr cur, FILE *output) {
 	    break;
 	default:
 	    fprintf(output, "UNKNOWN TYPE %d",
-		    cur->etype);
+		    (char *)cur->etype);
     }
     if (cur->ExternalID != NULL) 
-	fprintf(output, "ID \"%s\"", cur->ExternalID);
+	fprintf(output, "ID \"%s\"", (char *)cur->ExternalID);
     if (cur->SystemID != NULL)
-	fprintf(output, "SYSTEM \"%s\"", cur->SystemID);
+	fprintf(output, "SYSTEM \"%s\"", (char *)cur->SystemID);
     if (cur->orig != NULL)
-	fprintf(output, "\n orig \"%s\"", cur->orig);
+	fprintf(output, "\n orig \"%s\"", (char *)cur->orig);
     if ((cur->type != XML_ELEMENT_NODE) &&
 	(cur->content != NULL))
-	fprintf(output, "\n content \"%s\"", cur->content);
+	fprintf(output, "\n content \"%s\"", (char *)cur->content);
     fprintf(output, "\n");	
 }
 
@@ -1049,7 +1050,7 @@ xmlDebugDumpEntities(FILE * output, xmlDocPtr doc)
             fprintf(output, "Error, NOTATION\n");
             break;
         default:
-            fprintf(output, "NODE_%d\n", doc->type);
+            fprintf(output, "NODE_%d\n", (char *)doc->type);
     }
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
         xmlEntitiesTablePtr table = (xmlEntitiesTablePtr)
@@ -1245,9 +1246,10 @@ xmlLsOneNode(FILE *output, xmlNodePtr node) {
 	    xmlNsPtr ns = (xmlNsPtr) node;
 
 	    if (ns->prefix == NULL)
-		fprintf(output, "default -> %s", ns->href);
+		fprintf(output, "default -> %s", (char *)ns->href);
 	    else
-		fprintf(output, "%s -> %s", ns->prefix, ns->href);
+		fprintf(output, "%s -> %s", (char *)ns->prefix,
+			(char *)ns->href);
 	    break;
 	}
 	default:

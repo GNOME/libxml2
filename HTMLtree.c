@@ -170,7 +170,7 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
 
     if (encoding != NULL) {
 	snprintf(newcontent, sizeof(newcontent), "text/html; charset=%s",
-                encoding);
+                (char *)encoding);
 	newcontent[sizeof(newcontent) - 1] = 0;
     }
 

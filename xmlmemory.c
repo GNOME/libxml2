@@ -644,11 +644,11 @@ xmlMemDisplay(FILE *fp)
            case MALLOC_ATOMIC_TYPE:fprintf(fp,"atomicmalloc()  in ");break;
            case REALLOC_ATOMIC_TYPE:fprintf(fp,"atomicrealloc() in ");break;
            default:
-	        fprintf(fp,"Unknow memory block, corruped maybe");
+	        fprintf(fp,"Unknown memory block, may be corrupted");
 		xmlMutexUnlock(xmlMemMutex);
 		return;
         }
-	if (p->mh_file != NULL) fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
+	if (p->mh_file != NULL) fprintf(fp,"%s(%u)", p->mh_file, p->mh_line);
         if (p->mh_tag != MEMTAG)
 	      fprintf(fp,"  INVALID");
         nb++;
@@ -750,7 +750,7 @@ xmlMemShow(FILE *fp, int nr ATTRIBUTE_UNUSED)
 		default:fprintf(fp,"   ???    in ");break;
 	    }
 	    if (p->mh_file != NULL)
-	        fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
+	        fprintf(fp,"%s(%u)", p->mh_file, p->mh_line);
 	    if (p->mh_tag != MEMTAG)
 		fprintf(fp,"  INVALID");
 	    xmlMemContentShow(fp, p);

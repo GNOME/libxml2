@@ -159,7 +159,6 @@ static int proxyPort;	/* the proxy port if any */
 static unsigned int timeout = 60;/* the select() timeout in seconds */
 
 static int xmlNanoHTTPFetchContent( void * ctx, char ** ptr, int * len );
-int xmlNanoHTTPContentLength( void * ctx );
 
 /**
  * xmlHTTPErrMemory:

@@ -1,3 +1,7 @@
+Thu May  1 10:02:35 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixed a problem with xmlUnlinkNode() for DTDs.
+
 Wed Apr 30 14:16:08 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xml2-config.in: try to fix Red hat bug #89957, do not

@@ -3250,10 +3250,12 @@ xmlUnlinkNode(xmlNodePtr cur) {
     if (cur->type == XML_DTD_NODE) {
 	xmlDocPtr doc;
 	doc = cur->doc;
-	if (doc->intSubset == (xmlDtdPtr) cur)
-	    doc->intSubset = NULL;
-	if (doc->extSubset == (xmlDtdPtr) cur)
-	    doc->extSubset = NULL;
+	if (doc != NULL) {
+	    if (doc->intSubset == (xmlDtdPtr) cur)
+		doc->intSubset = NULL;
+	    if (doc->extSubset == (xmlDtdPtr) cur)
+		doc->extSubset = NULL;
+	}
     }
     if (cur->parent != NULL) {
 	xmlNodePtr parent;

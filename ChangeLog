@@ -1,3 +1,7 @@
+Sun Sep 17 18:37:03 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/xml.html : updated with new releases, adding "how to help"
+
 Sun Sep 17 17:58:37 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* SAX.c debugXML.c parser.c parserInternals.c tree.c valid.c xpath.c:

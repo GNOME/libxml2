@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML C library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V3.2.1">
+  <meta name="GENERATOR" content="amaya V3.2">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -20,6 +20,8 @@ alt="W3C Logo"></a></p>
 <ul>
   <li><a href="#Introducti">Introduction</a></li>
   <li><a href="#Documentat">Documentation</a></li>
+  <li><a href="#Reporting">Reporting bugs and getting help</a></li>
+  <li><a href="#help">how to help</a></li>
   <li><a href="#Downloads">Downloads</a></li>
   <li><a href="#News">News</a></li>
   <li><a href="#XML">XML</a></li>
@@ -118,11 +120,11 @@ structured documents/data.</p>
     archive</a>.</li>
 </ol>
 
-<h3>Reporting bugs and getting help</h3>
+<h2><a name="Reporting">Reporting bugs and getting help</a></h2>
 
 <p>Well, bugs or missing features are always possible, and I will make a point
-of fixing them in a timely fashion. The best way to report a bug is to <a
-href="http://bugs.gnome.org/db/pa/lgnome-xml.html">use the Gnome bug tracking
+of fixing them in a timely fashion. The best way to report a bug is to use the
+<a href="http://bugs.gnome.org/db/pa/lgnome-xml.html">Gnome bug tracking
 database</a>. I look at reports there regularly and it's good to have a
 reminder when a bug is still open. Check the <a
 href="http://bugs.gnome.org/Reporting.html">instructions on reporting bugs</a>
@@ -148,6 +150,25 @@ provide the answer, I usually send source samples when answering libxml usage
 questions. The <a href="http://xmlsoft.org/html/book1.html">auto-generated
 documentantion</a> is not as polished as I would like (i need to learn more
 about Docbook), but it's a good starting point.</p>
+
+<h2><a name="help">How to help</a></h2>
+
+<p>You can help the project in various ways, the best thing to do first is to
+subscribe to the mailing-list as explained before, check the <a
+href="http://xmlsoft.org/messages/">archives </a>and the <a
+href="http://bugs.gnome.org/db/pa/lgnome-xml.html">Gnome bug
+database:</a>:</p>
+<ol>
+  <li>provide patches when you find problems</li>
+  <li>provice documentation fixes (either as patches to the code comments or
+    as HTML diffs).</li>
+  <li>provide new documentations pieces (translations, examples, etc ...)</li>
+  <li>Check the TODO file and try to close one of the items</li>
+  <li>take one of the points raised in the archive or the bug database and
+    provide a fix. <a href="mailto:Daniel.Veillard@w3.org">Get in touch with
+    me </a>before to avoid synchronization problems and check that the
+    suggested fix will fit in nicely :-)</li>
+</ol>
 
 <h2><a name="Downloads">Downloads</a></h2>
 
@@ -204,13 +225,28 @@ for really accurate description</h3>
     if you want to test those.</li>
 </ul>
 
-<h2>2.2.2: August 12 2000</h2>
+<h3>2.2.3: Sep 17 2000</h3>
+<ul>
+  <li>bug fixes</li>
+  <li>cleanup of entity handling code</li>
+  <li>overall review of all loops in the parsers, all sprintf usage has been
+    checked too</li>
+  <li>Far better handling of larges Dtd. Validating against Docbook XML Dtd
+    works smoothly now.</li>
+</ul>
+
+<h3>1.8.10: Sep 6 2000</h3>
+<ul>
+  <li>bug fix release for some Gnome projects</li>
+</ul>
+
+<h3>2.2.2: August 12 2000</h3>
 <ul>
   <li>mostly bug fixes</li>
   <li>started adding routines to access xml parser context options</li>
 </ul>
 
-<h2>2.2.1: July 21 2000</h2>
+<h3>2.2.1: July 21 2000</h3>
 <ul>
   <li>a purely bug fixes release</li>
   <li>fixed an encoding support problem when parsing from a memory block</li>
@@ -219,7 +255,7 @@ for really accurate description</h3>
     routines</li>
 </ul>
 
-<h2>2.2.0: July 14 2000</h2>
+<h3>2.2.0: July 14 2000</h3>
 <ul>
   <li>applied a lot of portability fixes</li>
   <li>better encoding support/cleanup and saving (content is now always
@@ -1272,6 +1308,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.50 2000/08/29 23:40:42 veillard Exp $</p>
+<p>$Id: xml.html,v 1.51 2000/08/31 13:50:12 veillard Exp $</p>
 </body>
 </html>

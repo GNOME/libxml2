@@ -2332,7 +2332,7 @@ ISO8859xToUTF8(unsigned char* out, int *outlen,
     unsigned char* outend;
     const unsigned char* instart = in;
     const unsigned char* inend;
-    const unsigned char* instop = inend;
+    const unsigned char* instop;
     unsigned int c;
 
     if ((out == NULL) || (outlen == NULL) || (inlen == NULL) ||
@@ -2340,6 +2340,7 @@ ISO8859xToUTF8(unsigned char* out, int *outlen,
 	return(-1);
     outend = out + *outlen;
     inend = in + *inlen;
+    instop = inend;
     c = *in;
     while (in < inend && out < outend - 1) {
         if (c >= 0x80) {

@@ -1,3 +1,10 @@
+Sun Jan  4 22:45:14 HKT 2004 William Brack <wbarck@mmm.com.hk>
+
+	* parser.c, include/libxml/parser.h: added a routine
+	  xmlStrncatNew to create a new string from 2 frags.
+	* tree.c: added code to check if node content is from
+	  dictionary before trying to change or concatenate.
+
 Sun Jan  4 08:57:51 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlmemory.c: applied suggestion from Miloslav Trmac (see

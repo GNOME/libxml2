@@ -5024,7 +5024,9 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
 	    if (cur->content != NULL) {
-		xmlFree(cur->content);
+	        if (!((cur->doc != NULL) && (cur->doc->dict != NULL) &&
+			xmlDictOwns(cur->doc->dict, cur->content)))
+		    xmlFree(cur->content);
 	    }	
 	    if (cur->children != NULL) xmlFreeNodeList(cur->children);
 	    cur->last = cur->children = NULL;
@@ -5172,6 +5174,12 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_COMMENT_NODE:
         case XML_NOTATION_NODE:
 	    if (content != NULL) {
+	        if ((cur->doc != NULL) && (cur->doc->dict != NULL) &&
+			    xmlDictOwns(cur->doc->dict, cur->content)) {
+		    cur->content =
+			    xmlStrncatNew(cur->content, content, len);
+		    break;
+		}
 		cur->content = xmlStrncat(cur->content, content, len);
             }
         case XML_DOCUMENT_NODE:
@@ -6362,7 +6370,13 @@ xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
 #endif
         return(-1);
     }
-    node->content = xmlStrncat(node->content, content, len);
+    /* need to check if content is currently in the dictionary */
+    if ((node->doc != NULL) && (node->doc->dict != NULL) &&
+		xmlDictOwns(node->doc->dict, node->content)) {
+	node->content = xmlStrncatNew(node->content, content, len);
+    } else {
+        node->content = xmlStrncat(node->content, content, len);
+    }
     if (node->content == NULL)
         return(-1);
     return(0);

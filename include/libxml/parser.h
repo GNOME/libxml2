@@ -861,6 +861,11 @@ XMLPUBFUN xmlChar * XMLCALL
 					 const xmlChar *add,
 					 int len);
 
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlStrncatNew		(const xmlChar *str1,
+					 const xmlChar *str2,
+					 int len);
+
 XMLPUBFUN int XMLCALL	
 		xmlStrPrintf		(xmlChar *buf,
 					 int len,

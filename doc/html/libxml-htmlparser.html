@@ -121,7 +121,7 @@ NAME="LIBXML-HTMLPARSER"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN9623"
+NAME="AEN9626"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN9623"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN9626"
+NAME="AEN9629"
 ></A
 ><H2
 >Synopsis</H2
@@ -393,7 +393,7 @@ HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9690"
+NAME="AEN9693"
 ></A
 ><H2
 >Description</H2
@@ -403,14 +403,14 @@ NAME="AEN9690"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9693"
+NAME="AEN9696"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9695"
+NAME="AEN9698"
 ></A
 ><H3
 ><A
@@ -436,7 +436,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9700"
+NAME="AEN9703"
 ></A
 ><H3
 ><A
@@ -462,7 +462,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9705"
+NAME="AEN9708"
 ></A
 ><H3
 ><A
@@ -488,7 +488,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9710"
+NAME="AEN9713"
 ></A
 ><H3
 ><A
@@ -514,7 +514,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9715"
+NAME="AEN9718"
 ></A
 ><H3
 ><A
@@ -540,7 +540,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9720"
+NAME="AEN9723"
 ></A
 ><H3
 ><A
@@ -566,7 +566,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9725"
+NAME="AEN9728"
 ></A
 ><H3
 ><A
@@ -592,7 +592,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9730"
+NAME="AEN9733"
 ></A
 ><H3
 ><A
@@ -618,7 +618,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9735"
+NAME="AEN9738"
 ></A
 ><H3
 ><A
@@ -644,7 +644,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9740"
+NAME="AEN9743"
 ></A
 ><H3
 ><A
@@ -662,11 +662,12 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >struct htmlElemDesc {
     const char *name;	/* The tag name */
-    int startTag;       /* Whether the start tag can be implied */
-    int endTag;         /* Whether the end tag can be implied */
-    int empty;          /* Is this an empty element ? */
-    int depr;           /* Is this a deprecated element ? */
-    int dtd;            /* 1: only in Loose DTD, 2: only Frameset one */
+    char startTag;       /* Whether the start tag can be implied */
+    char endTag;         /* Whether the end tag can be implied */
+    char saveEndTag;     /* Whether the end tag should be saved */
+    char empty;          /* Is this an empty element ? */
+    char depr;           /* Is this a deprecated element ? */
+    char dtd;            /* 1: only in Loose DTD, 2: only Frameset one */
     const char *desc;   /* the description */
 };</PRE
 ></TD
@@ -678,7 +679,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9745"
+NAME="AEN9748"
 ></A
 ><H3
 ><A
@@ -704,7 +705,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9750"
+NAME="AEN9753"
 ></A
 ><H3
 ><A
@@ -734,7 +735,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9755"
+NAME="AEN9758"
 ></A
 ><H3
 ><A
@@ -760,7 +761,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9760"
+NAME="AEN9763"
 ></A
 ><H3
 ><A
@@ -841,7 +842,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9781"
+NAME="AEN9784"
 ></A
 ><H3
 ><A
@@ -924,7 +925,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9803"
+NAME="AEN9806"
 ></A
 ><H3
 ><A
@@ -1004,7 +1005,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9824"
+NAME="AEN9827"
 ></A
 ><H3
 ><A
@@ -1105,7 +1106,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9849"
+NAME="AEN9852"
 ></A
 ><H3
 ><A
@@ -1228,7 +1229,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9879"
+NAME="AEN9882"
 ></A
 ><H3
 ><A
@@ -1333,7 +1334,7 @@ if non-NULL *str will have to be freed by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9906"
+NAME="AEN9909"
 ></A
 ><H3
 ><A
@@ -1417,7 +1418,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9928"
+NAME="AEN9931"
 ></A
 ><H3
 ><A
@@ -1484,7 +1485,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9946"
+NAME="AEN9949"
 ></A
 ><H3
 ><A
@@ -1624,7 +1625,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9980"
+NAME="AEN9983"
 ></A
 ><H3
 ><A
@@ -1723,7 +1724,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10005"
+NAME="AEN10008"
 ></A
 ><H3
 ><A
@@ -1861,7 +1862,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10038"
+NAME="AEN10041"
 ></A
 ><H3
 ><A
@@ -1958,7 +1959,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10062"
+NAME="AEN10065"
 ></A
 ><H3
 ><A
@@ -2111,7 +2112,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10097"
+NAME="AEN10100"
 ></A
 ><H3
 ><A
@@ -2282,7 +2283,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10136"
+NAME="AEN10139"
 ></A
 ><H3
 ><A
@@ -2360,7 +2361,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10156"
+NAME="AEN10159"
 ></A
 ><H3
 ><A
@@ -2435,7 +2436,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10175"
+NAME="AEN10178"
 ></A
 ><H3
 ><A
@@ -2499,7 +2500,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10191"
+NAME="AEN10194"
 ></A
 ><H3
 ><A
@@ -2686,7 +2687,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10235"
+NAME="AEN10238"
 ></A
 ><H3
 ><A

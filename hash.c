@@ -531,3 +531,90 @@ xmlHashSize(xmlHashTablePtr table) {
 	return(-1);
     return(table->nbElems);
 }
+
+/**
+ * @table: the hash table
+ * @name: the name of the userdata
+ * @f: the deallocator function for removed item (if any)
+ *
+ * Find the userdata specified by the (name, name2, name3) tuple and remove
+ * it from the hash table. Existing userdata for this tuple will be removed
+ * and freed with @f.
+ *
+ * Returns 0 if the removal succeeded and -1 in case of error or not found.
+ */
+int xmlHashRemoveEntry(xmlHashTablePtr table, const xmlChar *name,
+											 xmlHashDeallocator f) {
+	return(xmlHashRemoveEntry3(table, name, NULL, NULL, f));
+}
+
+/**
+ * @table: the hash table
+ * @name: the name of the userdata
+ * @name2: a second name of the userdata
+ * @f: the deallocator function for removed item (if any)
+ *
+ * Find the userdata specified by the (name, name2, name3) tuple and remove
+ * it from the hash table. Existing userdata for this tuple will be removed
+ * and freed with @f.
+ *
+ * Returns 0 if the removal succeeded and -1 in case of error or not found.
+ */
+int xmlHashRemoveEntry2(xmlHashTablePtr table, const xmlChar *name,
+												const xmlChar *name2, xmlHashDeallocator f) {
+	return(xmlHashRemoveEntry3(table, name, name2, NULL, f));
+}
+
+/**
+ * @table: the hash table
+ * @name: the name of the userdata
+ * @name2: a second name of the userdata
+ * @name3: a third name of the userdata
+ * @f: the deallocator function for removed item (if any)
+ *
+ * Find the userdata specified by the (name, name2, name3) tuple and remove
+ * it from the hash table. Existing userdata for this tuple will be removed
+ * and freed with @f.
+ *
+ * Returns 0 if the removal succeeded and -1 in case of error or not found.
+ */
+int xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
+												const xmlChar *name2, const xmlChar *name3,
+												xmlHashDeallocator f) {
+	unsigned long key;
+	xmlHashEntryPtr entry;
+	xmlHashEntryPtr prev = NULL;
+
+	if (table == NULL || name == NULL)
+		return(-1);
+
+	key = xmlHashComputeKey(table, name);
+	if (table->table[key] == NULL) {
+		return(-1);
+	} else {
+		for (entry = table->table[key]; entry != NULL; entry = entry->next) {
+			if (xmlStrEqual(entry->name, name) &&
+					xmlStrEqual(entry->name2, name2) &&
+					xmlStrEqual(entry->name3, name3)) {
+				if(f)
+					f(entry->payload, entry->name);
+				entry->payload = NULL;
+				if(entry->name)
+					xmlFree(entry->name);
+				if(entry->name2)
+					xmlFree(entry->name2);
+				if(entry->name3)
+					xmlFree(entry->name3);
+				if(prev)
+					prev->next = entry->next;
+				else
+					table->table[key] = entry->next;
+				xmlFree(entry);
+				table->nbElems--;
+				return(0);
+			}
+			prev = entry;
+		}
+		return(-1);
+	}
+}

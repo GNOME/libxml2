@@ -1,3 +1,9 @@
+Wed Feb 14 11:35:39 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* hash.[ch]: added Paolo Casarini patch to provide Delete from
+	  hash functionnalities.
+	* doc/html/* : rebuild the doc
+
 Tue Feb 13 18:01:48 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c result/XPath/tests/chaptersprefol: bugfixes on order and

@@ -18292,7 +18292,7 @@ xmlSchemaBubbleIDCNodeTables(xmlSchemaValidCtxtPtr vctxt)
     xmlSchemaPSVIIDCNodePtr node, parNode = NULL; /* node-table entries. */
     xmlSchemaPSVIIDCKeyPtr key, parKey; /* keys of in a key-sequence. */
     xmlSchemaIDCAugPtr aidc;
-    int i, j, k, ret = 0, oldNum, newDupls = 0;
+    int i, j, k, ret = 0, oldNum, newDupls;
     int duplTop;
 
     /*
@@ -18334,7 +18334,8 @@ start_binding:
 	aidc = vctxt->aidcs;
 	do {
 	    if (aidc->def == bind->definition) {
-		if (aidc->bubbleDepth >= vctxt->depth) {
+		if ((aidc->bubbleDepth == -1) ||
+		    (aidc->bubbleDepth >= vctxt->depth)) {
 		    bind = bind->next;
 		    goto start_binding;
 		}
@@ -18358,6 +18359,7 @@ start_binding:
 		*/
 		oldNum = parBind->nbNodes; /* Skip newly added items. */
 		duplTop = oldNum + parBind->nbDupls;
+		newDupls = 0;
 
 		for (i = 0; i < bind->nbNodes; i++) {
 		    node = bind->nodeTable[i];
@@ -18456,7 +18458,7 @@ start_binding:
 			*/
 			if (parBind->nodeTable == NULL) {			
 			    parBind->nodeTable = (xmlSchemaPSVIIDCNodePtr *) 
-				xmlMalloc(1 * sizeof(xmlSchemaPSVIIDCNodePtr));
+				xmlMalloc(10 * sizeof(xmlSchemaPSVIIDCNodePtr));
 			    if (parBind->nodeTable == NULL) {
 				xmlSchemaVErrMemory(NULL, 
 				    "allocating IDC list of node-table items", NULL);
@@ -18464,7 +18466,7 @@ start_binding:
 			    }
 			    parBind->sizeNodes = 1;
 			} else if (duplTop >= parBind->sizeNodes) {
-			    parBind->sizeNodes++;
+			    parBind->sizeNodes *= 2;
 			    parBind->nodeTable = (xmlSchemaPSVIIDCNodePtr *) 
 				xmlRealloc(parBind->nodeTable, parBind->sizeNodes * 
 				sizeof(xmlSchemaPSVIIDCNodePtr));
@@ -18507,7 +18509,7 @@ start_binding:
 		lastParBind = parBind;
 	    parBind = parBind->next;
 	}
-	if (parBind == NULL) {
+	if ((parBind == NULL) && (bind->nbNodes != 0)) {
 	    /*
 	    * No binding for the IDC was found: create a new one and
 	    * copy all node-tables.

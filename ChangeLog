@@ -1,3 +1,10 @@
+Mon Mar 21 21:09:07 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Fixed a segfault, which occured during bubbling
+	  of IDC nodes (bug #170779 and #170778, reported by GUY Fabrice):
+	  a variable was missed to be reset in a loop. Deactivated bubbling,
+	  if not referenced by a keyref.
+
 Sun Mar 20 11:13:02 PST 2005 Aleksey Sanin <aleksey@aleksey.com>
 	
 	* c14n.c include/libxml/xmlerror.h: special case "DAV:" namespace

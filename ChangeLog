@@ -1,3 +1,9 @@
+Mon Aug 25 12:37:05 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed a couple of stupid bugs in the state allocation
+	  routines which led to bug #120040 and the ones reported by
+	  Martijn Faassen
+
 Mon Aug 25 12:37:23 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* include/libxml/parserInternals.h include/libxml/relaxng.h

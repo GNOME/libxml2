@@ -1,3 +1,9 @@
+Sat Nov 25 11:46:27 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in doc/html/* doc/xml.html: made a 2.2.9 release
+	  on a non-updated tree :-(, made a 2.2.10 release to correct the
+	  situation
+
 Sat Nov 25 10:41:37 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanohttp.c parser.[ch] tree.[ch] xmlIO.[ch] xmllint.c xpath.c

@@ -1,8 +1,14 @@
+Mon Mar 10 14:10:47 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: stop generating wrong result file with * in name
+	* relaxng.c: fixing the include bug raised by Sebastian Rahtz
+	* result/relaxng/demo* test/relaxng/demo: added the tests from
+	  Sebastian reproducing the problem.
+
 Sun Mar  9 18:02:31 MST 2003 John Fleck <jfleck@inkstain.net>
 
-	* doc/xmllint.1
-	regenerating man page from xmllint.xml to pick up Aleksey's
-	change
+	* doc/xmllint.1: regenerating man page from xmllint.xml to pick
+	  up Aleksey's change
 
 Sun Mar  9 13:53:16 2003  Aleksey Sanin  <aleksey@aleksey.com>
 

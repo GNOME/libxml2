@@ -53,6 +53,7 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
 /* #define DEBUG_VALID 1 */
 /* #define DEBUG_INTERLEAVE 1 */
 /* #define DEBUG_LIST 1 */
+/* #define DEBUG_INCLUDE */
 
 #define UNBOUNDED (1 << 30)
 #define TODO 								\
@@ -967,6 +968,72 @@ xmlRelaxNGIncludePop(xmlRelaxNGParserCtxtPtr ctxt)
 }
 
 /**
+ * xmlRelaxNGRemoveRedefine:
+ * @ctxt: the parser context
+ * @URL:  the normalized URL
+ * @target:  the included target
+ * @name:  the define name to eliminate
+ *
+ * Applies the elimination algorithm of 4.7
+ *
+ * Returns 0 in case of error, 1 in case of success.
+ */
+static int
+xmlRelaxNGRemoveRedefine(xmlRelaxNGParserCtxtPtr ctxt,
+			 const xmlChar *URL ATTRIBUTE_UNUSED,
+	                 xmlNodePtr target, const xmlChar *name) {
+    int found = 0;
+    xmlNodePtr tmp, tmp2;
+    xmlChar *name2;
+
+#ifdef DEBUG_INCLUDE
+    xmlGenericError(xmlGenericErrorContext,
+		"Elimination of <include> %s from %s\n", name, URL);
+#endif
+    tmp = target;
+    while (tmp != NULL) {
+	tmp2 = tmp->next;
+	if ((name == NULL) && (IS_RELAXNG(tmp, "start"))) {
+	    found = 1;
+	    xmlUnlinkNode(tmp);
+	    xmlFreeNode(tmp);
+	} else if ((name != NULL) && (IS_RELAXNG(tmp, "define"))) {
+	    name2 = xmlGetProp(tmp, BAD_CAST "name");
+	    xmlRelaxNGNormExtSpace(name2);
+	    if (name2 != NULL) {
+		if (xmlStrEqual(name, name2)) {
+		    found = 1;
+		    xmlUnlinkNode(tmp);
+		    xmlFreeNode(tmp);
+		}
+		xmlFree(name2);
+	    }
+	} else if (IS_RELAXNG(tmp, "include")) {
+	    xmlChar *href = NULL;
+	    xmlRelaxNGDocumentPtr inc = tmp->_private;
+
+	    if ((inc != NULL) && (inc->doc != NULL) &&
+		(inc->doc->children != NULL)) {
+
+		if (xmlStrEqual(inc->doc->children->name, BAD_CAST "grammar")) {
+#ifdef DEBUG_INCLUDE
+		    href = xmlGetProp(tmp, BAD_CAST "href");
+#endif
+		    if (xmlRelaxNGRemoveRedefine(ctxt, href,
+				inc->doc->children->children, name) == 1) {
+			found = 1;
+		    }
+		    if (href != NULL)
+			xmlFree(href);
+		}
+	    }
+	}
+	tmp = tmp2;
+    }
+    return(found);
+}
+
+/**
  * xmlRelaxNGLoadInclude:
  * @ctxt: the parser context
  * @URL:  the normalized URL
@@ -985,7 +1052,12 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
     xmlRelaxNGIncludePtr ret = NULL;
     xmlDocPtr doc;
     int i;
-    xmlNodePtr root, tmp, tmp2, cur;
+    xmlNodePtr root, cur;
+
+#ifdef DEBUG_INCLUDE
+    xmlGenericError(xmlGenericErrorContext,
+		    "xmlRelaxNGLoadInclude(%s)\n", URL);
+#endif
 
     /*
      * check against recursion in the stack
@@ -1012,6 +1084,11 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
 	ctxt->nbErrors++;
 	return (NULL);
     }
+
+#ifdef DEBUG_INCLUDE
+    xmlGenericError(xmlGenericErrorContext,
+		    "Parsed %s Okay\n", URL);
+#endif
 
     /*
      * Allocate the document structures and register it first.
@@ -1052,6 +1129,11 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
      * Some preprocessing of the document content, this include recursing
      * in the include stack.
      */
+#ifdef DEBUG_INCLUDE
+    xmlGenericError(xmlGenericErrorContext,
+		    "cleanup of %s\n", URL);
+#endif
+
     doc = xmlRelaxNGCleanupDoc(ctxt, doc);
     if (doc == NULL) {
 	ctxt->inc = NULL;
@@ -1063,6 +1145,10 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
      */
     xmlRelaxNGIncludePop(ctxt);
 
+#ifdef DEBUG_INCLUDE
+    xmlGenericError(xmlGenericErrorContext,
+		    "Checking of %s\n", URL);
+#endif
     /*
      * Check that the top element is a grammar
      */
@@ -1091,16 +1177,7 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
 	if (IS_RELAXNG(cur, "start")) {
 	    int found = 0;
 
-	    tmp = root->children;
-	    while (tmp != NULL) {
-		tmp2 = tmp->next;
-		if (IS_RELAXNG(tmp, "start")) {
-		    found = 1;
-		    xmlUnlinkNode(tmp);
-		    xmlFreeNode(tmp);
-		}
-		tmp = tmp2;
-	    }
+	    found = xmlRelaxNGRemoveRedefine(ctxt, URL, root->children, NULL);
 	    if (!found) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
@@ -1109,7 +1186,7 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
 		ctxt->nbErrors++;
 	    }
 	} else if (IS_RELAXNG(cur, "define")) {
-	    xmlChar *name, *name2;
+	    xmlChar *name;
 
 	    name = xmlGetProp(cur, BAD_CAST "name");
 	    if (name == NULL) {
@@ -1119,26 +1196,11 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
 				URL);
 		ctxt->nbErrors++;
 	    } else {
-		int found = 0;
+		int found;
 
 		xmlRelaxNGNormExtSpace(name);
-		tmp = root->children;
-		while (tmp != NULL) {
-		    tmp2 = tmp->next;
-		    if (IS_RELAXNG(tmp, "define")) {
-			name2 = xmlGetProp(tmp, BAD_CAST "name");
-			xmlRelaxNGNormExtSpace(name2);
-			if (name2 != NULL) {
-			    if (xmlStrEqual(name, name2)) {
-				found = 1;
-				xmlUnlinkNode(tmp);
-				xmlFreeNode(tmp);
-			    }
-			    xmlFree(name2);
-			}
-		    }
-		    tmp = tmp2;
-		}
+		found = xmlRelaxNGRemoveRedefine(ctxt, URL,
+			                         root->children, name);
 		if (!found) {
 		    if (ctxt->error != NULL)
 			ctxt->error(ctxt->userData,

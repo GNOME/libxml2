@@ -665,6 +665,7 @@ Schemastests: testSchemas$(EXEEXT)
 	  name=`basename $$i | sed 's+_.*++'`; \
 	  sno=`basename $$i | sed 's+.*_\(.*\).xsd+\1+'`; \
 	  for j in $(srcdir)/test/schemas/"$$name"_*.xml ; do \
+	      if [ -f $$j ] ; then \
 	      xno=`basename $$j | sed 's+.*_\(.*\).xml+\1+'`; \
 	      if [ ! -f $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno" ]; \
 	      then \
@@ -683,7 +684,7 @@ Schemastests: testSchemas$(EXEEXT)
 		       err.$$name;\
 		  grep Unimplemented err.$$name; \
 	          rm res.$$name err.$$name ; \
-	       fi ; \
+	       fi ; fi ;\
 	  done; done)
 
 Relaxtests: xmllint$(EXEEXT)

@@ -1,3 +1,9 @@
+Tue Nov  4 15:52:28 PST 2003 William Brack <wbrack@mmm.com.hk>
+
+	* include/libxml/xmlversion.h.in: changed macro ATTRIBUTE_UNUSED
+	  for gcc so that, if undefined, it's defined as
+	  __attribute__((unused))
+
 Tue Nov  4 15:28:07 PST 2003 William Brack <wbrack@mmm.com.hk>
 
 	* python/generator.py: small enhancement to assure ATTRIBUTE_UNUSED

@@ -318,7 +318,7 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #include <ansidecl.h>
 #endif
 #ifndef ATTRIBUTE_UNUSED
-#define ATTRIBUTE_UNUSED
+#define ATTRIBUTE_UNUSED __attribute__((unused))
 #endif
 #else
 #define ATTRIBUTE_UNUSED

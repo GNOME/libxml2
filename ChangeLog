@@ -1,3 +1,8 @@
+Sun Nov  8 13:11:07 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.[ch]: Added interfaces allowing to specify a SAX
+	  handler before parsing.
+
 Sun Nov  8 09:39:17 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: redirrect all errors reporting through the SAX

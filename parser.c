@@ -2394,7 +2394,8 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 	        NEXT;
 		entity = xmlGetDtdEntity(ctxt->doc, name);
 		if (entity == NULL) {
-		    xmlParserWarning(ctxt,
+		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		        ctxt->sax->warning(ctxt,
 		         "xmlParsePEReference: %%%s; not found\n");
 		} else {
 		    input = xmlNewEntityInputStream(ctxt, entity);
@@ -3438,15 +3439,18 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlParseDoc :
+ * xmlSAXParseDoc :
+ * @sax:  the SAX handler block
  * @cur:  a pointer to an array of CHAR
  *
  * parse an XML in-memory document and build a tree.
+ * It use the given SAX function block to handle the parsing callback.
+ * If sax is NULL, fallback to the default DOM tree building routines.
  * 
  * return values: the resulting document tree
  */
 
-xmlDocPtr xmlParseDoc(CHAR *cur) {
+xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
@@ -3459,6 +3463,7 @@ xmlDocPtr xmlParseDoc(CHAR *cur) {
 	return(NULL);
     }
     xmlInitParserCtxt(ctxt);
+    if (sax != NULL) ctxt->sax == sax;
     input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (input == NULL) {
         perror("malloc");
@@ -3488,16 +3493,32 @@ xmlDocPtr xmlParseDoc(CHAR *cur) {
 }
 
 /**
- * xmlParseFile :
+ * xmlParseDoc :
+ * @cur:  a pointer to an array of CHAR
+ *
+ * parse an XML in-memory document and build a tree.
+ * 
+ * return values: the resulting document tree
+ */
+
+xmlDocPtr xmlParseDoc(CHAR *cur) {
+    return(xmlSAXParseDoc(NULL, cur));
+}
+
+/**
+ * xmlSAXParseFile :
+ * @sax:  the SAX handler block
  * @filename:  the filename
  *
  * parse an XML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
+ * It use the given SAX function block to handle the parsing callback.
+ * If sax is NULL, fallback to the default DOM tree building routines.
  *
  * return values: the resulting document tree
  */
 
-xmlDocPtr xmlParseFile(const char *filename) {
+xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename) {
     xmlDocPtr ret;
 #ifdef HAVE_ZLIB_H
     gzFile input;
@@ -3577,6 +3598,7 @@ retry_bigger:
 	return(NULL);
     }
     xmlInitParserCtxt(ctxt);
+    if (sax != NULL) ctxt->sax == sax;
     inputStream = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (inputStream == NULL) {
         perror("malloc");
@@ -3610,20 +3632,36 @@ retry_bigger:
     return(ret);
 }
 
+/**
+ * xmlParseFile :
+ * @filename:  the filename
+ *
+ * parse an XML file and build a tree. Automatic support for ZLIB/Compress
+ * compressed document is provided by default if found at compile-time.
+ *
+ * return values: the resulting document tree
+ */
+
+xmlDocPtr xmlParseFile(const char *filename) {
+    return(xmlSAXParseFile(NULL, filename));
+}
 
 /**
- * xmlParseMemory :
+ * xmlSAXParseMemory :
+ * @sax:  the SAX handler block
  * @cur:  an pointer to a char array
  * @size:  the siwe of the array
  *
- * parse an XML in-memory block and build a tree.
+ * parse an XML in-memory block and use the given SAX function block
+ * to handle the parsing callback. If sax is NULL, fallback to the default
+ * DOM tree building routines.
  * 
  * TODO : plug some encoding conversion routines here. !!!
  *
  * return values: the resulting document tree
  */
 
-xmlDocPtr xmlParseMemory(char *buffer, int size) {
+xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
@@ -3636,6 +3674,7 @@ xmlDocPtr xmlParseMemory(char *buffer, int size) {
 	return(NULL);
     }
     xmlInitParserCtxt(ctxt);
+    if (sax != NULL) ctxt->sax == sax;
     input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (input == NULL) {
         perror("malloc");
@@ -3670,6 +3709,19 @@ xmlDocPtr xmlParseMemory(char *buffer, int size) {
     return(ret);
 }
 
+/**
+ * xmlParseMemory :
+ * @cur:  an pointer to a char array
+ * @size:  the size of the array
+ *
+ * parse an XML in-memory block and build a tree.
+ * 
+ * return values: the resulting document tree
+ */
+
+xmlDocPtr xmlParseMemory(char *buffer, int size) {
+   return(xmlSAXParseMemory(NULL, buffer, size));
+}
 
 /**
  * xmlInitParserCtxt:

@@ -8,10 +8,11 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exsl="http://exslt.org/common"
-  extension-element-prefixes="exsl"
-  exclude-result-prefixes="exsl">
+  xmlns:str="http://exslt.org/strings"
+  extension-element-prefixes="exsl str"
+  exclude-result-prefixes="exsl str">
 
-  <!-- Import the resto of the site stylesheets -->
+  <!-- Import the main part of the site stylesheets -->
   <xsl:import href="site.xsl"/>
 
   <!-- Generate XHTML-1.0 transitional -->
@@ -25,28 +26,107 @@
   <!-- the target directory -->
   <xsl:variable name="htmldir">newhtml</xsl:variable>
 
+  <!-- This is convoluted but needed to force the current document to
+       be the API one and not the result tree from the tokenize() result,
+       because the keys are only defined on the main document -->
+  <xsl:template mode="dumptoken" match='*'>
+    <xsl:param name="token"/>
+    <xsl:variable name="ref" select="key('symbols', $token)"/>
+    <xsl:choose>
+      <xsl:when test="$ref">
+        <a href="libxml-{$ref/@file}.html#{$ref/@name}"><xsl:value-of select="$token"/></a>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$token"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- dumps a string, making cross-reference links -->
   <xsl:template name="dumptext">
     <xsl:param name="text"/>
-    <xsl:value-of select="$text"/>
+    <xsl:variable name="ctxt" select='.'/>
+    <!-- <xsl:value-of select="$text"/> -->
+    <xsl:for-each select="str:tokenize($text, ' &#9;')">
+      <xsl:apply-templates select="$ctxt" mode='dumptoken'>
+        <xsl:with-param name="token" select="string(.)"/>
+      </xsl:apply-templates>
+      <xsl:if test="position() != last()">
+        <xsl:text> </xsl:text>
+      </xsl:if>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="macro" mode="toc">
+    <pre class="programlisting">
     <xsl:text>#define </xsl:text><a href="#{@name}"><xsl:value-of select="@name"/></a><xsl:text>
 
 </xsl:text>
+    </pre>
+  </xsl:template>
+
+  <xsl:template match="typedef" mode="toc">
+    <xsl:variable name="name" select="string(@name)"/>
+    <pre class="programlisting">
+    <xsl:choose>
+      <xsl:when test="@type = 'enum'">
+	<xsl:text>Enum </xsl:text>
+	<a name="{$name}"><xsl:value-of select="$name"/></a>
+	<xsl:text> {
+</xsl:text>
+        <xsl:for-each select="/api/symbols/enum[@type = $name]">
+	  <xsl:sort select="@value" data-type="number" order="ascending"/>
+	  <xsl:text>    </xsl:text>
+	  <a name="{@name}"><xsl:value-of select="@name"/></a>
+	  <xsl:text> = </xsl:text>
+	  <xsl:value-of select="@value"/>
+	  <xsl:if test="@info != ''">
+	    <xsl:text> : </xsl:text>
+	    <xsl:call-template name="dumptext">
+	      <xsl:with-param name="text" select="@info"/>
+	    </xsl:call-template>
+	  </xsl:if>
+	  <xsl:text>
+</xsl:text>
+	</xsl:for-each>
+	<xsl:text>}
+
+</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:text>Typedef </xsl:text>
+	<xsl:call-template name="dumptext">
+	  <xsl:with-param name="text" select="@type"/>
+	</xsl:call-template>
+	<xsl:text> </xsl:text>
+	<a name="{$name}"><xsl:value-of select="$name"/></a>
+	<xsl:text>
+
+</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+    </pre>
   </xsl:template>
 
   <xsl:template match="struct" mode="toc">
+    <pre class="programlisting">
     <xsl:text>Structure </xsl:text><a name="{@name}"><xsl:value-of select="@name"/></a><br/>
     <xsl:value-of select="@type"/><xsl:text> {
 </xsl:text>
     <xsl:for-each select="field">
         <xsl:text>    </xsl:text>
-	<xsl:value-of select="@type"/><xsl:text>&#9;</xsl:text>
+	<xsl:call-template name="dumptext">
+	  <xsl:with-param name="text" select="@type"/>
+	</xsl:call-template>
+	<xsl:text>&#9;</xsl:text>
 	<xsl:value-of select="@name"/><xsl:text>&#9;: </xsl:text>
-	<xsl:value-of select="substring(@info, 1, 50)"/><xsl:text>
+	<xsl:call-template name="dumptext">
+	  <xsl:with-param name="text" select="substring(@info, 1, 50)"/>
+	</xsl:call-template>
+	<xsl:text>
 </xsl:text>
     </xsl:for-each>
+    </pre>
     <xsl:text>}
 
 </xsl:text>
@@ -65,12 +145,16 @@
   </xsl:template>
 
   <xsl:template match="function" mode="toc">
+    <pre class="programlisting">
     <xsl:call-template name="dumptext">
       <xsl:with-param name="text" select="return/@type"/>
     </xsl:call-template>
     <xsl:text>&#9;</xsl:text>
     <a href="#{@name}"><xsl:value-of select="@name"/></a>
     <xsl:text>&#9;(</xsl:text>
+    <xsl:if test="not(arg)">
+      <xsl:text>void</xsl:text>
+    </xsl:if>
     <xsl:for-each select="arg">
       <xsl:call-template name="dumptext">
         <xsl:with-param name="text" select="@type"/>
@@ -78,12 +162,67 @@
       <xsl:text> </xsl:text>
       <xsl:value-of select="@name"/>
       <xsl:if test="position() != last()">
-        <xsl:text>, </xsl:text><br/><xsl:text>&#9;&#9;&#9;&#9;</xsl:text>
+        <xsl:text>, </xsl:text><br/><xsl:text>&#9;&#9;&#9;&#9; </xsl:text>
       </xsl:if>
     </xsl:for-each>
     <xsl:text>)</xsl:text><br/>
     <xsl:text>
 </xsl:text>
+    </pre>
+  </xsl:template>
+
+  <xsl:template match="functype" mode="toc">
+    <pre class="programlisting">
+    <xsl:variable name="name" select="string(@name)"/>
+    <a name="{$name}"></a>
+    <xsl:text>Function type: </xsl:text>
+    <xsl:value-of select="$name"/>
+    <xsl:text>
+</xsl:text>
+    <xsl:call-template name="dumptext">
+      <xsl:with-param name="text" select="return/@type"/>
+    </xsl:call-template>
+    <xsl:text>&#9;</xsl:text>
+    <xsl:value-of select="@name"/>
+    <xsl:text>&#9;(</xsl:text>
+    <xsl:if test="not(arg)">
+      <xsl:text>void</xsl:text>
+    </xsl:if>
+    <xsl:for-each select="arg">
+      <xsl:call-template name="dumptext">
+        <xsl:with-param name="text" select="@type"/>
+      </xsl:call-template>
+      <xsl:text> </xsl:text>
+      <xsl:value-of select="@name"/>
+      <xsl:if test="position() != last()">
+        <xsl:text>, </xsl:text><br/><xsl:text>&#9;&#9;&#9;&#9; </xsl:text>
+      </xsl:if>
+    </xsl:for-each>
+    <xsl:text>)
+</xsl:text>
+    </pre>
+    <p>
+    <xsl:call-template name="dumptext">
+      <xsl:with-param name="text" select="info"/>
+    </xsl:call-template>
+    </p><xsl:text>
+</xsl:text>
+    <xsl:if test="arg | return">
+      <div class="variablelist"><table border="0"><col align="left"/><tbody>
+      <xsl:for-each select="arg">
+        <tr>
+          <td><span class="term"><i><tt><xsl:value-of select="@name"/></tt></i>:</span></td>
+	  <td><xsl:value-of select="@info"/></td>
+        </tr>
+      </xsl:for-each>
+      <xsl:if test="return/@info">
+        <tr>
+          <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+	  <td><xsl:value-of select="return/@info"/></td>
+        </tr>
+      </xsl:if>
+      </tbody></table></div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="function">
@@ -96,6 +235,9 @@
     <xsl:text>&#9;</xsl:text>
     <xsl:value-of select="@name"/>
     <xsl:text>&#9;(</xsl:text>
+    <xsl:if test="not(arg)">
+      <xsl:text>void</xsl:text>
+    </xsl:if>
     <xsl:for-each select="arg">
       <xsl:call-template name="dumptext">
         <xsl:with-param name="text" select="@type"/>
@@ -103,7 +245,7 @@
       <xsl:text> </xsl:text>
       <xsl:value-of select="@name"/>
       <xsl:if test="position() != last()">
-        <xsl:text>, </xsl:text><br/><xsl:text>&#9;&#9;&#9;&#9;</xsl:text>
+        <xsl:text>, </xsl:text><br/><xsl:text>&#9;&#9;&#9;&#9; </xsl:text>
       </xsl:if>
     </xsl:for-each>
     <xsl:text>)</xsl:text><br/>
@@ -116,20 +258,22 @@
     </xsl:call-template>
     </p><xsl:text>
 </xsl:text>
-    <div class="variablelist"><table border="0"><col align="left"/><tbody>
-    <xsl:for-each select="arg">
-      <tr>
-        <td><span class="term"><i><tt><xsl:value-of select="@name"/></tt></i>:</span></td>
-	<td><xsl:value-of select="@info"/></td>
-      </tr>
-    </xsl:for-each>
-    <xsl:if test="return/@info">
-      <tr>
-        <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-	<td><xsl:value-of select="return/@info"/></td>
-      </tr>
+    <xsl:if test="arg | return/@info">
+      <div class="variablelist"><table border="0"><col align="left"/><tbody>
+      <xsl:for-each select="arg">
+        <tr>
+          <td><span class="term"><i><tt><xsl:value-of select="@name"/></tt></i>:</span></td>
+	  <td><xsl:value-of select="@info"/></td>
+        </tr>
+      </xsl:for-each>
+      <xsl:if test="return/@info">
+        <tr>
+          <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+	  <td><xsl:value-of select="return/@info"/></td>
+        </tr>
+      </xsl:if>
+      </tbody></table></div>
     </xsl:if>
-    </tbody></table></div>
   </xsl:template>
 
   <xsl:template match="exports" mode="toc">
@@ -174,9 +318,7 @@
 				    <tr>
 				      <td bgcolor="#fffacd">
 	    <h2>Table of Contents</h2>
-	    <pre>
 	    <xsl:apply-templates select="exports" mode="toc"/>
-	    </pre>
 	    <h2>Description</h2>
 	    <xsl:text>
 </xsl:text>

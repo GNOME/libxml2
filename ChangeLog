@@ -1,3 +1,8 @@
+Mon Nov 17 12:50:28 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/newapi.xsl: lot of improvements, this starts looking good
+	  enough to be usable.
+
 Mon Nov 17 00:58:09 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/newapi.xsl: stylesheet to build HTML pages from the

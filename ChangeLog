@@ -1,3 +1,8 @@
+Mon Nov 25 14:18:27 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: patch from Marcus Clarke fixing a problem in entities
+	  parsing that was detected in KDe documentations environment.
+
 Mon Nov 24 14:13:21 CET 2002 ERDI Gergo <cactus@cactus.rulez.org>
 
 	* python/libxml.c (libxml_prev): Return the previous as opposed to

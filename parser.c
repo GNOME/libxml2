@@ -9820,7 +9820,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	ctxt->myDoc = oldctxt->myDoc;
         content = ctxt->myDoc->children;
     }
-    ctxt->myDoc->children = xmlNewDocNode(newDoc, NULL,
+    ctxt->myDoc->children = xmlNewDocNode(ctxt->myDoc, NULL,
 	                                  BAD_CAST "pseudoroot", NULL);
     if (ctxt->myDoc->children == NULL) {
 	ctxt->sax = oldsax;

@@ -1,3 +1,11 @@
+Thu Feb 20 16:00:31 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: implemented the checks from section 7.1, fixed
+	  some of the 4.20 and 4.21 problems.
+	  found 373 test schemas: 338 success 35 failures
+	  found 529 test instances: 519 success 6 failures
+	* result/relaxng/*: updated the results
+
 Thu Feb 20 01:09:24 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: implemented the 4.20 and 4.21 simplification rules.

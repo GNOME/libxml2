@@ -254,9 +254,10 @@ def handle_testCase(node):
     global nb_instances_tests
     global resources
 
-    log.write("\n    ============= test %d line %d ================\n" % (
+    sections = node.xpathEval('string(section)')
+    log.write("\n    ======== test %d line %d section %s ==========\n" % (
 
-              nb_schemas_tests, node.lineNo()))
+              nb_schemas_tests, node.lineNo(), sections))
     resources = {}
     if debug:
         print "test %d line %d" % (nb_schemas_tests, node.lineNo())
@@ -320,7 +321,7 @@ def handle_testSuite(node, level = 0):
 	        msg = msg + author.content + " "
 	print msg
     sections = node.xpathEval('section')
-    if sections != []:
+    if sections != [] and level <= 0:
         msg = ""
         for section in sections:
 	    msg = msg + section.content + " "
@@ -332,6 +333,10 @@ def handle_testSuite(node, level = 0):
 	        
 
     if level >= 1 and sections != []:
+        msg = ""
+        for section in sections:
+	    msg = msg + section.content + " "
+        print "Result of tests for section %s" % (msg)
         if nb_schemas_tests != old_schemas_tests:
 	    print "found %d test schemas: %d success %d failures" % (
 		  nb_schemas_tests - old_schemas_tests,

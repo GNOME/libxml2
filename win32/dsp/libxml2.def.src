@@ -604,6 +604,7 @@ EXPORTS
 	xmlSetProp
 	xmlGetProp
 	xmlHasProp
+	xmlHasNsProp
 	xmlSetNsProp
 	xmlGetNsProp
 	xmlStringGetNodeList
@@ -910,6 +911,8 @@ EXPORTS
 	valuePush
 	xmlXPathNewString
 	xmlXPathNewCString
+	xmlXPathWrapString
+	xmlXPathWrapCString
 	xmlXPathNewFloat
 	xmlXPathNewBoolean
 	xmlXPathNewNodeSet

@@ -1,3 +1,8 @@
+Tue Oct  2 11:18:32 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* win32/dsp/libxml2.def.src: Igor Zlatkovic patches
+	* DOCBparser.c HTMLparser.c parser.c: fixed typos
+
 Mon Oct  1 09:34:51 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: Justin Fletcher provided cleaup code in case

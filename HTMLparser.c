@@ -2669,7 +2669,7 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
      */
     if (CUR != '>') {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "DOCTYPE unproperly terminated\n");
+	    ctxt->sax->error(ctxt->userData, "DOCTYPE improperly terminated\n");
 	ctxt->wellFormed = 0;
         /* We shouldn't try to resynchronize ... */
     }

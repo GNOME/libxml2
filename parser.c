@@ -6036,7 +6036,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
     if (RAW != '>') {
 	ctxt->errNo = XML_ERR_DOCTYPE_NOT_FINISHED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "DOCTYPE unproperly terminated\n");
+	    ctxt->sax->error(ctxt->userData, "DOCTYPE improperly terminated\n");
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
     }
@@ -6101,7 +6101,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
     if (RAW != '>') {
 	ctxt->errNo = XML_ERR_DOCTYPE_NOT_FINISHED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "DOCTYPE unproperly terminated\n");
+	    ctxt->sax->error(ctxt->userData, "DOCTYPE improperly terminated\n");
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
     }

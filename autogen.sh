@@ -41,8 +41,9 @@ if test -z "$*"; then
         echo "to pass any to it, please specify them on the $0 command line."
 fi
 
-aclocal
-automake
+libtoolize --copy --force                                                     
+aclocal                                                                       
+automake --add-missing
 autoconf
 ./configure "$@"
 

@@ -1,3 +1,8 @@
+Thu Oct  1 16:22:37 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+        * autogen.sh : applied patch from Frederic Devernay <devernay@istar.fr>
+	  to autoupdate libtool and automake conf files.
+
 1998-09-30  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* Makefile.am: Use '?' to separate the sed

@@ -1391,68 +1391,69 @@ encoding_error:
  */
 
 int
-xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar *cur, int *len) {
+xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar * cur, int *len)
+{
     if ((ctxt == NULL) || (ctxt->charset == XML_CHAR_ENCODING_UTF8)) {
-	/*
-	 * We are supposed to handle UTF8, check it's valid
-	 * From rfc2044: encoding of the Unicode values on UTF-8:
-	 *
-	 * UCS-4 range (hex.)           UTF-8 octet sequence (binary)
-	 * 0000 0000-0000 007F   0xxxxxxx
-	 * 0000 0080-0000 07FF   110xxxxx 10xxxxxx
-	 * 0000 0800-0000 FFFF   1110xxxx 10xxxxxx 10xxxxxx 
-	 *
-	 * Check for the 0x110000 limit too
-	 */
-	unsigned char c;
-	unsigned int val;
+        /*
+         * We are supposed to handle UTF8, check it's valid
+         * From rfc2044: encoding of the Unicode values on UTF-8:
+         *
+         * UCS-4 range (hex.)           UTF-8 octet sequence (binary)
+         * 0000 0000-0000 007F   0xxxxxxx
+         * 0000 0080-0000 07FF   110xxxxx 10xxxxxx
+         * 0000 0800-0000 FFFF   1110xxxx 10xxxxxx 10xxxxxx 
+         *
+         * Check for the 0x110000 limit too
+         */
+        unsigned char c;
+        unsigned int val;
 
-	c = *cur;
-	if (c & 0x80) {
-	    if ((cur[1] & 0xc0) != 0x80)
-		goto encoding_error;
-	    if ((c & 0xe0) == 0xe0) {
+        c = *cur;
+        if (c & 0x80) {
+            if ((cur[1] & 0xc0) != 0x80)
+                goto encoding_error;
+            if ((c & 0xe0) == 0xe0) {
 
-		if ((cur[2] & 0xc0) != 0x80)
-		    goto encoding_error;
-		if ((c & 0xf0) == 0xf0) {
-		    if (((c & 0xf8) != 0xf0) ||
-			((cur[3] & 0xc0) != 0x80))
-			goto encoding_error;
-		    /* 4-byte code */
-		    *len = 4;
-		    val = (cur[0] & 0x7) << 18;
-		    val |= (cur[1] & 0x3f) << 12;
-		    val |= (cur[2] & 0x3f) << 6;
-		    val |= cur[3] & 0x3f;
-		} else {
-		  /* 3-byte code */
-		    *len = 3;
-		    val = (cur[0] & 0xf) << 12;
-		    val |= (cur[1] & 0x3f) << 6;
-		    val |= cur[2] & 0x3f;
-		}
-	    } else {
-	      /* 2-byte code */
-		*len = 2;
-		val = (cur[0] & 0x1f) << 6;
-		val |= cur[1] & 0x3f;
-	    }
-	    if (!IS_CHAR(val)) {
-		if ((ctxt->sax != NULL) &&
-		    (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, 
-				     "Char 0x%X out of allowed range\n", val);
-		ctxt->errNo = XML_ERR_INVALID_ENCODING;
-		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
-	    }    
-	    return(val);
-	} else {
-	    /* 1-byte code */
-	    *len = 1;
-	    return((int) *cur);
-	}
+                if ((cur[2] & 0xc0) != 0x80)
+                    goto encoding_error;
+                if ((c & 0xf0) == 0xf0) {
+                    if (((c & 0xf8) != 0xf0) || ((cur[3] & 0xc0) != 0x80))
+                        goto encoding_error;
+                    /* 4-byte code */
+                    *len = 4;
+                    val = (cur[0] & 0x7) << 18;
+                    val |= (cur[1] & 0x3f) << 12;
+                    val |= (cur[2] & 0x3f) << 6;
+                    val |= cur[3] & 0x3f;
+                } else {
+                    /* 3-byte code */
+                    *len = 3;
+                    val = (cur[0] & 0xf) << 12;
+                    val |= (cur[1] & 0x3f) << 6;
+                    val |= cur[2] & 0x3f;
+                }
+            } else {
+                /* 2-byte code */
+                *len = 2;
+                val = (cur[0] & 0x1f) << 6;
+                val |= cur[1] & 0x3f;
+            }
+            if (!IS_CHAR(val)) {
+                if ((ctxt != NULL) && (ctxt->sax != NULL) &&
+                    (ctxt->sax->error != NULL))
+                    ctxt->sax->error(ctxt->userData,
+                                     "Char 0x%X out of allowed range\n",
+                                     val);
+                ctxt->errNo = XML_ERR_INVALID_ENCODING;
+                ctxt->wellFormed = 0;
+                ctxt->disableSAX = 1;
+            }
+            return (val);
+        } else {
+            /* 1-byte code */
+            *len = 1;
+            return ((int) *cur);
+        }
     }
     /*
      * Assume it's a fixed length encoding (1) with
@@ -1460,8 +1461,9 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar *cur, int *len) {
      * XML constructs only use < 128 chars
      */
     *len = 1;
-    return((int) *cur);
+    return ((int) *cur);
 encoding_error:
+
     /*
      * If we detect an UTF8 error that probably mean that the
      * input encoding didn't get properly advertised in the
@@ -1469,17 +1471,20 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
-    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
-	ctxt->sax->error(ctxt->userData, 
-			 "Input is not proper UTF-8, indicate encoding !\n");
-	ctxt->sax->error(ctxt->userData, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
-			ctxt->input->cur[0], ctxt->input->cur[1],
-			ctxt->input->cur[2], ctxt->input->cur[3]);
+    if (ctxt != NULL) {
+        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+            ctxt->sax->error(ctxt->userData,
+                         "Input is not proper UTF-8, indicate encoding !\n");
+            ctxt->sax->error(ctxt->userData,
+                             "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+                             ctxt->input->cur[0], ctxt->input->cur[1],
+                             ctxt->input->cur[2], ctxt->input->cur[3]);
+        }
+        ctxt->errNo = XML_ERR_INVALID_ENCODING;
     }
-    ctxt->errNo = XML_ERR_INVALID_ENCODING;
 
     *len = 1;
-    return((int) *cur);
+    return ((int) *cur);
 }
 
 /**

@@ -1,3 +1,9 @@
+Sun Jan 13 16:37:15 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixed validation of attributes content of type
+	  NAME NAMES NMTOKEN and NMTOKENS to accept internationalized
+	  values, very old bug. Fixes #67671
+
 Sun Jan 13 15:07:49 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/parserInternals.h tree.c: integrated

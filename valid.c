@@ -2565,23 +2565,29 @@ xmlIsMixedElement(xmlDocPtr doc, const xmlChar *name) {
 static int
 xmlValidateNameValue(const xmlChar *value) {
     const xmlChar *cur;
+    int val, len;
 
     if (value == NULL) return(0);
     cur = value;
-    
-    if (!IS_LETTER(*cur) && (*cur != '_') &&
-        (*cur != ':')) {
+    val = xmlStringCurrentChar(NULL, cur, &len);
+    cur += len;
+    if (!IS_LETTER(val) && (val != '_') &&
+        (val != ':')) {
 	return(0);
     }
 
-    while ((IS_LETTER(*cur)) || (IS_DIGIT(*cur)) ||
-           (*cur == '.') || (*cur == '-') ||
-	   (*cur == '_') || (*cur == ':') || 
-	   (IS_COMBINING(*cur)) ||
-	   (IS_EXTENDER(*cur)))
-	   cur++;
+    val = xmlStringCurrentChar(NULL, cur, &len);
+    cur += len;
+    while ((IS_LETTER(val)) || (IS_DIGIT(val)) ||
+           (val == '.') || (val == '-') ||
+	   (val == '_') || (val == ':') || 
+	   (IS_COMBINING(val)) ||
+	   (IS_EXTENDER(val))) {
+	val = xmlStringCurrentChar(NULL, cur, &len);
+	cur += len;
+    }
 
-    if (*cur != 0) return(0);
+    if (val != 0) return(0);
 
     return(1);
 }
@@ -2598,39 +2604,53 @@ xmlValidateNameValue(const xmlChar *value) {
 static int
 xmlValidateNamesValue(const xmlChar *value) {
     const xmlChar *cur;
+    int val, len;
 
     if (value == NULL) return(0);
     cur = value;
+    val = xmlStringCurrentChar(NULL, cur, &len);
+    cur += len;
     
-    if (!IS_LETTER(*cur) && (*cur != '_') &&
-        (*cur != ':')) {
+    if (!IS_LETTER(val) && (val != '_') &&
+        (val != ':')) {
 	return(0);
     }
 
-    while ((IS_LETTER(*cur)) || (IS_DIGIT(*cur)) ||
-           (*cur == '.') || (*cur == '-') ||
-	   (*cur == '_') || (*cur == ':') || 
-	   (IS_COMBINING(*cur)) ||
-	   (IS_EXTENDER(*cur)))
-	   cur++;
-
-    while (IS_BLANK(*cur)) {
-	while (IS_BLANK(*cur)) cur++;
-
-	if (!IS_LETTER(*cur) && (*cur != '_') &&
-	    (*cur != ':')) {
-	    return(0);
-	}
-
-	while ((IS_LETTER(*cur)) || (IS_DIGIT(*cur)) ||
-	       (*cur == '.') || (*cur == '-') ||
-	       (*cur == '_') || (*cur == ':') || 
-	       (IS_COMBINING(*cur)) ||
-	       (IS_EXTENDER(*cur)))
-	       cur++;
+    val = xmlStringCurrentChar(NULL, cur, &len);
+    cur += len;
+    while ((IS_LETTER(val)) || (IS_DIGIT(val)) ||
+           (val == '.') || (val == '-') ||
+	   (val == '_') || (val == ':') || 
+	   (IS_COMBINING(val)) ||
+	   (IS_EXTENDER(val))) {
+	val = xmlStringCurrentChar(NULL, cur, &len);
+	cur += len;
     }
 
-    if (*cur != 0) return(0);
+    while (IS_BLANK(val)) {
+	while (IS_BLANK(val)) {
+	    val = xmlStringCurrentChar(NULL, cur, &len);
+	    cur += len;
+	}
+
+	if (!IS_LETTER(val) && (val != '_') &&
+	    (val != ':')) {
+	    return(0);
+	}
+	val = xmlStringCurrentChar(NULL, cur, &len);
+	cur += len;
+
+	while ((IS_LETTER(val)) || (IS_DIGIT(val)) ||
+	       (val == '.') || (val == '-') ||
+	       (val == '_') || (val == ':') || 
+	       (IS_COMBINING(val)) ||
+	       (IS_EXTENDER(val))) {
+	    val = xmlStringCurrentChar(NULL, cur, &len);
+	    cur += len;
+	}
+    }
+
+    if (val != 0) return(0);
 
     return(1);
 }
@@ -2649,25 +2669,30 @@ xmlValidateNamesValue(const xmlChar *value) {
 static int
 xmlValidateNmtokenValue(const xmlChar *value) {
     const xmlChar *cur;
+    int val, len;
 
     if (value == NULL) return(0);
     cur = value;
+    val = xmlStringCurrentChar(NULL, cur, &len);
+    cur += len;
     
-    if (!IS_LETTER(*cur) && !IS_DIGIT(*cur) &&
-        (*cur != '.') && (*cur != '-') &&
-        (*cur != '_') && (*cur != ':') && 
-        (!IS_COMBINING(*cur)) &&
-        (!IS_EXTENDER(*cur)))
+    if (!IS_LETTER(val) && !IS_DIGIT(val) &&
+        (val != '.') && (val != '-') &&
+        (val != '_') && (val != ':') && 
+        (!IS_COMBINING(val)) &&
+        (!IS_EXTENDER(val)))
 	return(0);
 
-    while ((IS_LETTER(*cur)) || (IS_DIGIT(*cur)) ||
-           (*cur == '.') || (*cur == '-') ||
-	   (*cur == '_') || (*cur == ':') || 
-	   (IS_COMBINING(*cur)) ||
-	   (IS_EXTENDER(*cur)))
-	   cur++;
+    while ((IS_LETTER(val)) || (IS_DIGIT(val)) ||
+           (val == '.') || (val == '-') ||
+	   (val == '_') || (val == ':') || 
+	   (IS_COMBINING(val)) ||
+	   (IS_EXTENDER(val))) {
+	val = xmlStringCurrentChar(NULL, cur, &len);
+	cur += len;
+    }
 
-    if (*cur != 0) return(0);
+    if (val != 0) return(0);
 
     return(1);
 }
@@ -2686,45 +2711,59 @@ xmlValidateNmtokenValue(const xmlChar *value) {
 static int
 xmlValidateNmtokensValue(const xmlChar *value) {
     const xmlChar *cur;
+    int val, len;
 
     if (value == NULL) return(0);
     cur = value;
+    val = xmlStringCurrentChar(NULL, cur, &len);
+    cur += len;
     
-    while (IS_BLANK(*cur)) cur++;
-    if (!IS_LETTER(*cur) && !IS_DIGIT(*cur) &&
-        (*cur != '.') && (*cur != '-') &&
-        (*cur != '_') && (*cur != ':') && 
-        (!IS_COMBINING(*cur)) &&
-        (!IS_EXTENDER(*cur)))
-	return(0);
-
-    while ((IS_LETTER(*cur)) || (IS_DIGIT(*cur)) ||
-           (*cur == '.') || (*cur == '-') ||
-	   (*cur == '_') || (*cur == ':') || 
-	   (IS_COMBINING(*cur)) ||
-	   (IS_EXTENDER(*cur)))
-	   cur++;
-
-    while (IS_BLANK(*cur)) {
-	while (IS_BLANK(*cur)) cur++;
-	if (*cur == 0) return(1);
-
-	if (!IS_LETTER(*cur) && !IS_DIGIT(*cur) &&
-	    (*cur != '.') && (*cur != '-') &&
-	    (*cur != '_') && (*cur != ':') && 
-	    (!IS_COMBINING(*cur)) &&
-	    (!IS_EXTENDER(*cur)))
-	    return(0);
-
-	while ((IS_LETTER(*cur)) || (IS_DIGIT(*cur)) ||
-	       (*cur == '.') || (*cur == '-') ||
-	       (*cur == '_') || (*cur == ':') || 
-	       (IS_COMBINING(*cur)) ||
-	       (IS_EXTENDER(*cur)))
-	       cur++;
+    while (IS_BLANK(val)) {
+	val = xmlStringCurrentChar(NULL, cur, &len);
+	cur += len;
     }
 
-    if (*cur != 0) return(0);
+    if (!IS_LETTER(val) && !IS_DIGIT(val) &&
+        (val != '.') && (val != '-') &&
+        (val != '_') && (val != ':') && 
+        (!IS_COMBINING(val)) &&
+        (!IS_EXTENDER(val)))
+	return(0);
+
+    while ((IS_LETTER(val)) || (IS_DIGIT(val)) ||
+           (val == '.') || (val == '-') ||
+	   (val == '_') || (val == ':') || 
+	   (IS_COMBINING(val)) ||
+	   (IS_EXTENDER(val))) {
+	val = xmlStringCurrentChar(NULL, cur, &len);
+	cur += len;
+    }
+
+    while (IS_BLANK(val)) {
+	while (IS_BLANK(val)) {
+	    val = xmlStringCurrentChar(NULL, cur, &len);
+	    cur += len;
+	}
+	if (val == 0) return(1);
+
+	if (!IS_LETTER(val) && !IS_DIGIT(val) &&
+	    (val != '.') && (val != '-') &&
+	    (val != '_') && (val != ':') && 
+	    (!IS_COMBINING(val)) &&
+	    (!IS_EXTENDER(val)))
+	    return(0);
+
+	while ((IS_LETTER(val)) || (IS_DIGIT(val)) ||
+	       (val == '.') || (val == '-') ||
+	       (val == '_') || (val == ':') || 
+	       (IS_COMBINING(val)) ||
+	       (IS_EXTENDER(val))) {
+	    val = xmlStringCurrentChar(NULL, cur, &len);
+	    cur += len;
+	}
+    }
+
+    if (val != 0) return(0);
 
     return(1);
 }

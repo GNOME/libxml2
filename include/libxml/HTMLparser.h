@@ -10,6 +10,10 @@
 #define __HTML_PARSER_H__
 #include "parser.h"
 
+#ifdef __cplusplus
+#define extern "C" {
+#endif
+
 /*
  * Most of the back-end structures from XML and HTML are shared
  */
@@ -61,5 +65,9 @@ htmlDocPtr htmlParseDoc(xmlChar *cur, const char *encoding);
 htmlDocPtr htmlSAXParseFile(const char *filename, const char *encoding,
                             htmlSAXHandlerPtr sax, void *userData);
 htmlDocPtr htmlParseFile(const char *filename, const char *encoding);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __HTML_PARSER_H__ */

@@ -15,6 +15,9 @@
 
 #include "tree.h"
 
+#ifdef __cplusplus
+#define extern "C" {
+#endif
 /**
  * Various defines for the various Link properties.
  *
@@ -172,4 +175,7 @@ void		xlinkSetDefaultHandler	(xlinkHandlerPtr handler);
 xlinkType	 xlinkIsLink		(xmlDocPtr doc,
 					 xmlNodePtr node);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* __XML_XLINK_H__ */

@@ -4186,6 +4186,10 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 	if (CUR == ')') {
 	    NEXT;
 	    ret = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_PCDATA);
+	    if (CUR == '*') {
+		ret->ocur = XML_ELEMENT_CONTENT_MULT;
+		NEXT;
+	    }
 	    return(ret);
 	}
 	if ((CUR == '(') || (CUR == '|')) {

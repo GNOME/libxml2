@@ -8,6 +8,9 @@
  
 #ifndef __NANO_HTTP_H__
 #define __NANO_HTTP_H__
+#ifdef __cplusplus
+#define extern "C" {
+#endif
 int	xmlNanoHTTPFetch	(const char *URL,
 				 const char *filename,
 				 char **contentType);
@@ -25,4 +28,7 @@ int	xmlNanoHTTPRead		(void *ctx,
 int	xmlNanoHTTPSave		(void *ctxt,
 				 const char *filename);
 void	xmlNanoHTTPClose	(void *ctx);
+#ifdef __cplusplus
+}
+#endif
 #endif /* __NANO_HTTP_H__ */

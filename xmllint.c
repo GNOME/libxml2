@@ -128,6 +128,7 @@ static int repeat = 0;
 static int insert = 0;
 #ifdef  LIBXML_HTML_ENABLED
 static int html = 0;
+static int xmlout = 0;
 #endif
 static int htmlout = 0;
 #ifdef LIBXML_PUSH_ENABLED
@@ -1052,6 +1053,45 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    if ((timing) && (!repeat)) {
 		startTimer();
 	    }
+#ifdef LIBXML_VALID_ENABLED
+            if ((html) && (!xmlout)) {
+		if (compress) {
+		    htmlSaveFile(output ? output : "-", doc);
+		}
+		else if (encoding != NULL) {
+		    if ( format ) {
+			htmlSaveFileFormat(output ? output : "-", doc, encoding, 1);
+		    }
+		    else {
+			htmlSaveFileFormat(output ? output : "-", doc, encoding, 0);
+		    }
+		}
+		else if (format) {
+		    htmlSaveFileFormat(output ? output : "-", doc, NULL, 1);
+		}
+		else {
+		    FILE *out;
+		    if (output == NULL)
+			out = stdout;
+		    else {
+			out = fopen(output,"wb");
+		    }
+		    if (out != NULL) {
+			if (htmlDocDump(out, doc) < 0)
+			    progresult = 6;
+
+			if (output != NULL)
+			    fclose(out);
+		    } else {
+			fprintf(stderr, "failed to open %s\n", output);
+			progresult = 6;
+		    }
+		}
+		if ((timing) && (!repeat)) {
+		    endTimer("Saving");
+		}
+	    } else
+#endif
 #ifdef HAVE_SYS_MMAN_H
 	    if (memory) {
 		xmlChar *result;
@@ -1390,6 +1430,7 @@ static void usage(const char *name) {
 #endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_HTML_ENABLED
     printf("\t--html : use the HTML parser\n");
+    printf("\t--xmlout : force to use the XML serializer when using --html\n");
 #endif
 #ifdef LIBXML_PUSH_ENABLED
     printf("\t--push : use the push mode of the parser\n");
@@ -1520,6 +1561,10 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-html")) ||
 	         (!strcmp(argv[i], "--html"))) {
 	    html++;
+        }
+	else if ((!strcmp(argv[i], "-xmlout")) ||
+	         (!strcmp(argv[i], "--xmlout"))) {
+	    xmlout++;
         }
 #endif /* LIBXML_HTML_ENABLED */
 	else if ((!strcmp(argv[i], "-loaddtd")) ||

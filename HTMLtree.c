@@ -835,7 +835,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	    if ((cur->next->type != HTML_TEXT_NODE) &&
 		(cur->next->type != HTML_ENTITY_REF_NODE) &&
 		(cur->parent != NULL) &&
-		(!xmlStrEqual(cur->parent->name, BAD_CAST "pre")))
+		(cur->parent->name != NULL) &&
+		(cur->parent->name[0] != 'p')) /* p, pre, param */
 		xmlOutputBufferWriteString(buf, "\n");
 	}
 	return;
@@ -860,7 +861,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	    if ((cur->next->type != HTML_TEXT_NODE) &&
 		(cur->next->type != HTML_ENTITY_REF_NODE) &&
 		(cur->parent != NULL) &&
-		(!xmlStrEqual(cur->parent->name, BAD_CAST "pre")))
+		(cur->parent->name != NULL) &&
+		(cur->parent->name[0] != 'p')) /* p, pre, param */
 		xmlOutputBufferWriteString(buf, "\n");
 	}
 	return;
@@ -880,14 +882,16 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	    (cur->children->type != HTML_TEXT_NODE) &&
 	    (cur->children->type != HTML_ENTITY_REF_NODE) &&
 	    (cur->children != cur->last) &&
-	    (!xmlStrEqual(cur->name, BAD_CAST "pre")))
+	    (cur->name != NULL) &&
+	    (cur->name[0] != 'p')) /* p, pre, param */
 	    xmlOutputBufferWriteString(buf, "\n");
 	htmlNodeListDumpOutput(buf, doc, cur->children, encoding, format);
         if ((format) && (info != NULL) && (!info->isinline) &&
 	    (cur->last->type != HTML_TEXT_NODE) &&
 	    (cur->last->type != HTML_ENTITY_REF_NODE) &&
 	    (cur->children != cur->last) &&
-	    (!xmlStrEqual(cur->name, BAD_CAST "pre")))
+	    (cur->name != NULL) &&
+	    (cur->name[0] != 'p')) /* p, pre, param */
 	    xmlOutputBufferWriteString(buf, "\n");
     }
     xmlOutputBufferWriteString(buf, "</");
@@ -902,7 +906,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
         if ((cur->next->type != HTML_TEXT_NODE) &&
 	    (cur->next->type != HTML_ENTITY_REF_NODE) &&
 	    (cur->parent != NULL) &&
-	    (!xmlStrEqual(cur->parent->name, BAD_CAST "pre")))
+	    (cur->parent->name != NULL) &&
+	    (cur->parent->name[0] != 'p')) /* p, pre, param */
 	    xmlOutputBufferWriteString(buf, "\n");
     }
 }

@@ -1,3 +1,12 @@
+Tue Nov  4 09:38:46 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: change --html to make sure we use the HTML serialization
+	  rule by default when HTML parser is used, add --xmlout to allow to
+	  force the XML serializer on HTML.
+	* HTMLtree.c: ugly tweak to fix the output on <p> element and 
+	  solve #125093
+	* result/HTML/*: this changes the output of some tests
+
 Mon Nov  3 17:51:28 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: fixed bug #125812, about XPointer in XInclude 

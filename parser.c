@@ -109,6 +109,10 @@ void xmlParserHandlePEReference(xmlParserCtxtPtr ctxt);
 xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
                                        const xmlChar **str);
 
+static int
+xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlSAXHandlerPtr sax,
+		      void *user_data, int depth, const xmlChar *URL,
+		      const xmlChar *ID, xmlNodePtr *list, void *private);
 
 /************************************************************************
  *									*
@@ -4992,9 +4996,10 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    } else if (ent->etype ==
 			       XML_EXTERNAL_GENERAL_PARSED_ENTITY) {
 			ctxt->depth++;
-			ret = xmlParseExternalEntity(ctxt->myDoc,
+			ret = xmlParseExternalEntityPrivate(ctxt->myDoc,
 				   ctxt->sax, NULL, ctxt->depth,
-				   ent->URI, ent->ExternalID, &list);
+				   ent->URI, ent->ExternalID, &list,
+				   ctxt->_private);
 			ctxt->depth--;
 		    } else {
 			ret = -1;
@@ -8912,7 +8917,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 }
 
 /**
- * xmlParseExternalEntity:
+ * xmlParseExternalEntityPrivate:
  * @doc:  the document the chunk pertains to
  * @sax:  the SAX handler bloc (possibly NULL)
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)
@@ -8920,20 +8925,18 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
  * @URL:  the URL for the entity to load
  * @ID:  the System ID for the entity to load
  * @list:  the return value for the set of parsed nodes
+ * @private:  extra field for the _private parser context
  *
- * Parse an external general entity
- * An external general parsed entity is well-formed if it matches the
- * production labeled extParsedEnt.
- *
- * [78] extParsedEnt ::= TextDecl? content
+ * Private version of xmlParseExternalEntity()
  *
  * Returns 0 if the entity is well formed, -1 in case of args problem and
  *    the parser error code otherwise
  */
 
-int
-xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
-	  int depth, const xmlChar *URL, const xmlChar *ID, xmlNodePtr *list) {
+static int
+xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlSAXHandlerPtr sax,
+		      void *user_data, int depth, const xmlChar *URL,
+		      const xmlChar *ID, xmlNodePtr *list, void *private) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
@@ -8956,6 +8959,7 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
     ctxt = xmlCreateEntityParserCtxt(URL, ID, NULL);
     if (ctxt == NULL) return(-1);
     ctxt->userData = ctxt;
+    ctxt->_private = private;
     if (sax != NULL) {
 	oldsax = ctxt->sax;
         ctxt->sax = sax;
@@ -9068,6 +9072,33 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
     xmlFreeDoc(newDoc);
     
     return(ret);
+}
+
+/**
+ * xmlParseExternalEntity:
+ * @doc:  the document the chunk pertains to
+ * @sax:  the SAX handler bloc (possibly NULL)
+ * @user_data:  The user data returned on SAX callbacks (possibly NULL)
+ * @depth:  Used for loop detection, use 0
+ * @URL:  the URL for the entity to load
+ * @ID:  the System ID for the entity to load
+ * @list:  the return value for the set of parsed nodes
+ *
+ * Parse an external general entity
+ * An external general parsed entity is well-formed if it matches the
+ * production labeled extParsedEnt.
+ *
+ * [78] extParsedEnt ::= TextDecl? content
+ *
+ * Returns 0 if the entity is well formed, -1 in case of args problem and
+ *    the parser error code otherwise
+ */
+
+int
+xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
+	  int depth, const xmlChar *URL, const xmlChar *ID, xmlNodePtr *list) {
+    return(xmlParseExternalEntityPrivate(doc, sax, user_data, depth, URL,
+		                       ID, list, NULL));
 }
 
 /**

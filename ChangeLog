@@ -1,3 +1,8 @@
+Tue May  8 12:31:40 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: added xmlParseExternalEntityPrivate() to allow
+	  propagation of ctxt->_private when parsing external entities
+
 Tue May  8 10:26:22 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLtree.c: fixed the bug reported by Bjorn in htmlNodeDump

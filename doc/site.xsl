@@ -328,7 +328,7 @@ A:link, A:visited, A:active { text-decoration: underline }
                                     <tr>
                                       <td bgcolor="#fffacd">
                                         <xsl:apply-templates mode="subfile" select="$header/following-sibling::*[preceding-sibling::h2[1] = $header         and name() != 'h2' ]"/>
-					<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+					<p><a href="bugs.html">Daniel Veillard</a></p>
                                       </td>
                                     </tr>
                                   </table>
@@ -387,7 +387,7 @@ A:link, A:visited, A:active { text-decoration: underline }
                                         <xsl:with-param name="header" select="."/>
                                       </xsl:call-template>
                                     </xsl:for-each>
-				    <p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+				    <p><a href="bugs.html">Daniel Veillard</a></p>
                                   </td>
                                 </tr>
                               </table>

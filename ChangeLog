@@ -1,3 +1,8 @@
+Mon Sep 29 15:23:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c nanohttp.c: last finishing touch to the BeOS
+	  patch from Marcin 'Shard' Konicki
+
 Mon Sep 29 15:15:08 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c SAX2.c c14n.c catalog.c configure.in debugXML.c

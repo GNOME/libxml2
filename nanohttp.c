@@ -101,6 +101,12 @@
 #define SOCKET int
 #endif
 
+#ifdef __BEOS__
+#ifndef PF_INET
+#define PF_INET AF_INET
+#endif
+#endif
+
 #ifndef SOCKLEN_T
 #define SOCKLEN_T unsigned int
 #endif

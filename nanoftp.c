@@ -99,6 +99,12 @@
 #define SOCKLEN_T unsigned int
 #endif
 
+#ifdef __BEOS__
+#ifndef PF_INET
+#define PF_INET AF_INET
+#endif
+#endif
+
 
 #define FTP_COMMAND_OK		200
 #define FTP_SYNTAX_ERROR	500

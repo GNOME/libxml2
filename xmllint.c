@@ -663,6 +663,7 @@ static void streamFile(char *filename) {
 	    if (ret < 0) {
 		xmlGenericError(xmlGenericErrorContext,
 			"Relax-NG schema %s failed to compile\n", relaxng);
+		progresult = 5;
 		relaxng = NULL;
 	    }
 	    if ((timing) && (!repeat)) {
@@ -1064,10 +1065,15 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		else {
 		    out = fopen(output,"wb");
 		}
-		xmlDocDump(out, doc);
+		if (out != NULL) {
+		    xmlDocDump(out, doc);
 
-		if (output)
-		    fclose(out);
+		    if (output != NULL)
+			fclose(out);
+		} else {
+		    fprintf(stderr, "failed to open %s\n", output);
+		    progresult = 6;
+		}
 	    }
 	    if ((timing) && (!repeat)) {
 		endTimer("Saving");
@@ -1080,10 +1086,15 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    else {
 		out = fopen(output,"wb");
 	    }
-	    xmlDebugDumpDocument(out, doc);
+	    if (out != NULL) {
+		xmlDebugDumpDocument(out, doc);
 
-	    if (output)
-		fclose(out);
+		if (output != NULL)
+		    fclose(out);
+	    } else {
+		fprintf(stderr, "failed to open %s\n", output);
+		progresult = 6;
+	    }
 	}
 #endif
     }
@@ -1721,6 +1732,7 @@ main(int argc, char **argv) {
 	if (relaxngschemas == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Relax-NG schema %s failed to compile\n", relaxng);
+            progresult = 5;
 	    relaxng = NULL;
 	}
 	xmlRelaxNGFreeParserCtxt(ctxt);
@@ -1742,6 +1754,7 @@ main(int argc, char **argv) {
 	if (wxschemas == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "WXS schema %s failed to compile\n", schema);
+            progresult = 5;
 	    schema = NULL;
 	}
 	xmlSchemaFreeParserCtxt(ctxt);

@@ -48,7 +48,6 @@
 #include "xml-error.h"
 
 #define HTML_MAX_NAMELEN 1000
-#define INPUT_CHUNK     50
 #define HTML_PARSER_BIG_BUFFER_SIZE 1000
 #define HTML_PARSER_BUFFER_SIZE 100
 

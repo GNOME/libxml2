@@ -1467,6 +1467,11 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     xmlURIPtr bas = NULL;
     xmlURIPtr res = NULL;
 
+    if ((URI == NULL) && (base == NULL))
+	return(NULL);
+    if (URI == NULL)
+	return((xmlChar *) xmlMemStrdup((const char *) base));
+
     /*
      * 1) The URI reference is parsed into the potential four components and
      *    fragment identifier, as described in Section 4.3.

@@ -2294,14 +2294,41 @@ xmlGetDtdQElementDesc(xmlDtdPtr dtd, const xmlChar *name,
 xmlAttributePtr
 xmlGetDtdAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name) {
     xmlAttributeTablePtr table;
+    xmlElementTablePtr etable;
     xmlAttributePtr cur;
+    xmlElementPtr ecur;
     xmlChar *uqname = NULL, *prefix = NULL;
     int i;
 
     if (dtd == NULL) return(NULL);
     if (dtd->attributes == NULL) return(NULL);
-    table = (xmlAttributeTablePtr) dtd->attributes;
 
+    /*
+     * Faster lookup through the element table
+     */
+    etable = (xmlElementTablePtr) dtd->elements;
+    if (etable != NULL) {
+	for (i = 0;i < etable->nb_elements;i++) {
+	    ecur = etable->table[i];
+	    if (!xmlStrcmp(ecur->name, elem)) {
+		cur = ecur->attributes;
+		while (cur != NULL) {
+		    if (!xmlStrcmp(cur->name, name))
+			return(cur);
+                    cur = cur->nexth;
+		}
+		/* TODO: same accelerator for QNames !!! */
+		break;
+	    }
+	}
+    }
+    /*
+     * Miss on the element table, retry on the attribute one
+     */
+
+    table = (xmlAttributeTablePtr) dtd->attributes;
+    if (table == NULL)
+	return(NULL);
     for (i = 0;i < table->nb_attributes;i++) {
         cur = table->table[i];
 	if ((!xmlStrcmp(cur->name, name)) &&

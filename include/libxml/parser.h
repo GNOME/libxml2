@@ -371,6 +371,7 @@ xmlDocPtr	xmlRecoverFile		(const char *filename);
  * Less common routines and SAX interfaces
  */
 int		xmlParseDocument	(xmlParserCtxtPtr ctxt);
+int		xmlParseExtParsedEnt	(xmlParserCtxtPtr ctxt);
 xmlDocPtr	xmlSAXParseDoc		(xmlSAXHandlerPtr sax,
 					 xmlChar *cur,
 					 int recovery);
@@ -388,6 +389,9 @@ xmlDocPtr	xmlSAXParseMemory	(xmlSAXHandlerPtr sax,
 xmlDocPtr	xmlSAXParseFile		(xmlSAXHandlerPtr sax,
 					 const char *filename,
 					 int recovery);
+xmlDocPtr	xmlSAXParseEntity	(xmlSAXHandlerPtr sax,
+					 const char *filename);
+xmlDocPtr	xmlParseEntity		(const char *filename);
 xmlDtdPtr	xmlParseDTD		(const xmlChar *ExternalID,
 					 const xmlChar *SystemID);
 xmlDtdPtr	xmlSAXParseDTD		(xmlSAXHandlerPtr sax,

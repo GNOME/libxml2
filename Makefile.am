@@ -20,6 +20,7 @@ libxml_la_SOURCES = \
 		entities.c \
 		encoding.c \
 		error.c \
+		parserInternals.c \
 		parser.c \
 		tree.c \
 		xmlIO.c \

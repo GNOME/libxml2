@@ -1,3 +1,12 @@
+Wed Sep 13 22:03:18 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parserInternals.c parserInternals.h parser.c Makefile.am:
+	  created a new module parserInternals.c, moved most of the
+	  code shared by the various parsers there, as well as
+	  deprecated  code from parser.c. More cleanup of parser.c
+	* uri.c: fixed a problem when URI is NULL
+	* valid.c: speedup when looking for an attribute declaration
+
 Sun Sep 10 17:53:48 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* uri.c tree.c SAX.c parser.c entities.c debugXML.c: finished

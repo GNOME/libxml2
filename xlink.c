@@ -164,12 +164,13 @@ xlinkIsLink	(xmlDocPtr doc, xmlNodePtr node) {
 		} else {
 		    xmlChar buf[200];
 #ifdef HAVE_SNPRINTF
-		    snprintf((char *) buf, 199, "%s:external-linkset",
+		    snprintf((char *) buf, sizeof(buf), "%s:external-linkset",
 			     (char *) xlink->prefix);
 #else
 		    sprintf((char *) buf, "%s:external-linkset",
 			    (char *) xlink->prefix);
 #endif
+                    buf[sizeof(buf) - 1] = 0;
 		    if (!xmlStrcmp(role, buf))
 			ret = XLINK_TYPE_EXTENDED_SET;
 

@@ -15,7 +15,17 @@
 extern "C" {
 #endif
 
+ /* 
+  * Identifiers can be longer, but this will be more costly
+  * at runtime.
+  */
 #define XML_MAX_NAMELEN 100
+
+/*
+ * The parser tries to always have that amount of input ready
+ * one of the point is providing context when reporting errors
+ */
+#define INPUT_CHUNK	250
 
 /************************************************************************
  *									*
@@ -87,6 +97,18 @@ extern "C" {
 #define MOVETO_STARTTAG(p)						\
     while ((*p) && (*(p) != '<')) (p)++
 
+/**
+ * Global vaiables affecting the default parser behaviour.
+ */
+
+extern int xmlParserDebugEntities;
+extern int xmlGetWarningsDefaultValue;
+extern int xmlParserDebugEntities;
+extern int xmlSubstituteEntitiesDefaultValue;
+extern int xmlDoValidityCheckingDefaultValue;
+extern int xmlPedanticParserDefaultValue;
+extern int xmlKeepBlanksDefaultValue;
+
 /*
  * Function to finish teh work of the macros where needed
  */
@@ -100,12 +122,6 @@ int			xmlIsCombining	(int c);
 int			xmlIsExtender	(int c);
 int			xmlIsCombining	(int c);
 int			xmlIsChar	(int c);
-
-/**
- * Not for the faint of heart
- */
-
-extern int xmlParserDebugEntities;
 
 /**
  * Parser context
@@ -141,6 +157,7 @@ xmlChar			xmlPopInput		(xmlParserCtxtPtr ctxt);
 void			xmlFreeInputStream	(xmlParserInputPtr input);
 xmlParserInputPtr	xmlNewInputFromFile	(xmlParserCtxtPtr ctxt,
 						 const char *filename);
+xmlParserInputPtr	xmlNewInputStream	(xmlParserCtxtPtr ctxt);
 
 /**
  * Namespaces.
@@ -247,6 +264,18 @@ xmlNodePtr		nodePop			(xmlParserCtxtPtr ctxt);
 int			inputPush		(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr value);
 xmlParserInputPtr	inputPop		(xmlParserCtxtPtr ctxt);
+
+/*
+ * other comodities shared between parser.c and parserInternals
+ */
+int			xmlSkipBlankChars	(xmlParserCtxtPtr ctxt);
+int			xmlStringCurrentChar	(xmlParserCtxtPtr ctxt,
+						 const xmlChar *cur,
+						 int *len);
+void			xmlParserHandlePEReference(xmlParserCtxtPtr ctxt);
+void			xmlParserHandleReference(xmlParserCtxtPtr ctxt);
+xmlChar                *namePop			(xmlParserCtxtPtr ctxt);
+int			xmlCheckLanguageID	(const xmlChar *lang);
 
 /*
  * Really core function shared with HTML parser

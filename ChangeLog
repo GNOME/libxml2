@@ -1,3 +1,10 @@
+Thu Jan  4 14:09:58 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: fixed a stupid bug
+	* valid.c: applied "Paul D. Smith" <pausmith@nortelnetworks.com>
+	  patches related to validation of an XInclude processing result
+	* TODO: updated
+
 Thu Jan  4 11:46:40 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* encoding.c xmlIO.c: Fixing the problem reported by Marc Sanfacon

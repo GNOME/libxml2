@@ -2900,6 +2900,54 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     return(ret);
 }
 
+/* Find the next XML_ELEMENT_NODE, subject to the content constraints.
+ * Return -1 if we found something unexpected, or 1 otherwise.
+ */
+
+static int
+xmlValidateFindNextElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
+                           xmlElementContentPtr cont)
+{
+  while (*child && (*child)->type != XML_ELEMENT_NODE) {
+    switch ((*child)->type) {
+      /*
+       * If there is an entity declared and it's not empty
+       * Push the current node on the stack and process with the
+       * entity content.
+       */
+      case XML_ENTITY_REF_NODE:
+        if (((*child)->children != NULL) &&
+            ((*child)->children->children != NULL)) {
+          nodeVPush(ctxt, *child);
+          *child = (*child)->children->children;
+          continue;
+        }
+        break;
+
+      /* These things are ignored (skipped) during validation.  */
+      case XML_PI_NODE:
+      case XML_COMMENT_NODE:
+      case XML_XINCLUDE_START:
+      case XML_XINCLUDE_END:
+        break;
+
+      case XML_TEXT_NODE:
+        if (xmlIsBlankNode(*child)
+            && (cont->type == XML_ELEMENT_CONTENT_ELEMENT
+                || cont->type == XML_ELEMENT_CONTENT_SEQ
+                || cont->type == XML_ELEMENT_CONTENT_OR))
+          break;
+        return -1;
+
+      default:
+        return -1;
+    }
+    *child = (*child)->next;
+  }
+
+  return 1;
+}
+
 int xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 				  xmlElementContentPtr cont);
 
@@ -2924,42 +2972,9 @@ xmlValidateElementTypeExpr(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 
     if (cont == NULL) return(-1);
     DEBUG_VALID_STATE(*child, cont)
-    while (*child != NULL) {
-        if ((*child)->type == XML_ENTITY_REF_NODE) {
-	    /*
-	     * If there is an entity declared an it's not empty
-	     * Push the current node on the stack and process with the
-	     * entity content.
-	     */
-	    if (((*child)->children != NULL) &&
-		((*child)->children->children != NULL)) {
-		nodeVPush(ctxt, *child);
-		*child = (*child)->children->children;
-	    } else
-		*child = (*child)->next;
-	    continue;
-	}
-        if (((*child)->type == XML_TEXT_NODE) &&
-	    (xmlIsBlankNode(*child)) &&
-	    ((cont->type == XML_ELEMENT_CONTENT_ELEMENT) ||
-	     (cont->type == XML_ELEMENT_CONTENT_SEQ) ||
-	     (cont->type == XML_ELEMENT_CONTENT_OR))) {
-	    *child = (*child)->next;
-	    continue;
-	}
-        if ((*child)->type == XML_PI_NODE) {
-	    *child = (*child)->next;
-	    continue;
-	}
-        if ((*child)->type == XML_COMMENT_NODE) {
-	    *child = (*child)->next;
-	    continue;
-	}
-	else if ((*child)->type != XML_ELEMENT_NODE) {
+    ret = xmlValidateFindNextElement(ctxt, child, cont);
+    if (ret < 0)
 	    return(-1);
-	}
-	break;
-    }
     DEBUG_VALID_STATE(*child, cont)
     switch (cont->type) {
 	case XML_ELEMENT_CONTENT_PCDATA:
@@ -3032,47 +3047,14 @@ int
 xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 			      xmlElementContentPtr cont) {
     xmlNodePtr cur;
-    int ret = 1;
+    int ret;
 
     if (cont == NULL) return(-1);
 
     DEBUG_VALID_STATE(*child, cont)
-    while (*child != NULL) {
-        if ((*child)->type == XML_ENTITY_REF_NODE) {
-	    /*
-	     * If there is an entity declared an it's not empty
-	     * Push the current node on the stack and process with the
-	     * entity content.
-	     */
-	    if (((*child)->children != NULL) &&
-		((*child)->children->children != NULL)) {
-		nodeVPush(ctxt, *child);
-		*child = (*child)->children->children;
-	    } else
-		*child = (*child)->next;
-	    continue;
-	}
-        if (((*child)->type == XML_TEXT_NODE) &&
-	    (xmlIsBlankNode(*child)) &&
-	    ((cont->type == XML_ELEMENT_CONTENT_ELEMENT) ||
-	     (cont->type == XML_ELEMENT_CONTENT_SEQ) ||
-	     (cont->type == XML_ELEMENT_CONTENT_OR))) {
-	    *child = (*child)->next;
-	    continue;
-	}
-        if ((*child)->type == XML_PI_NODE) {
-	    *child = (*child)->next;
-	    continue;
-	}
-        if ((*child)->type == XML_COMMENT_NODE) {
-	    *child = (*child)->next;
-	    continue;
-	}
-	else if ((*child)->type != XML_ELEMENT_NODE) {
+    ret = xmlValidateFindNextElement(ctxt, child, cont);
+    if (ret < 0)
 	    return(-1);
-	}
-	break;
-    }
     DEBUG_VALID_STATE(*child, cont)
     cur = *child;
     ret = xmlValidateElementTypeExpr(ctxt, child, cont);
@@ -3082,8 +3064,10 @@ xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 	    if (ret == 1) {
 		/* skip ignorable elems */
 		while ((*child != NULL) &&
-		       (((*child)->type == XML_PI_NODE) ||
-			((*child)->type == XML_COMMENT_NODE))) {
+		       ((*child)->type == XML_PI_NODE
+                        || (*child)->type == XML_COMMENT_NODE
+                        || (*child)->type == XML_XINCLUDE_START
+                        || (*child)->type == XML_XINCLUDE_END)) {
 		    while ((*child)->next == NULL) {
 			if (((*child)->parent != NULL) &&
 			    ((*child)->parent->type == XML_ENTITY_REF_NODE)) {
@@ -3119,8 +3103,8 @@ xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 	    do {
 		if (*child == NULL)
 		    break; /* while */
-		if (((*child)->type == XML_TEXT_NODE) &&
-		    (xmlIsBlankNode(*child))) {
+		if ((*child)->type == XML_TEXT_NODE
+                    && xmlIsBlankNode(*child)) {
 		    *child = (*child)->next;
 		    continue;
 		}
@@ -3132,43 +3116,8 @@ xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
 	    *child = cur;
 	    break;
     }
-    while (*child != NULL) {
-        if ((*child)->type == XML_ENTITY_REF_NODE) {
-	    /*
-	     * If there is an entity declared an it's not empty
-	     * Push the current node on the stack and process with the
-	     * entity content.
-	     */
-	    if (((*child)->children != NULL) &&
-		((*child)->children->children != NULL)) {
-		nodeVPush(ctxt, *child);
-		*child = (*child)->children->children;
-	    } else
-		*child = (*child)->next;
-	    continue;
-	}
-        if (((*child)->type == XML_TEXT_NODE) &&
-	    (xmlIsBlankNode(*child)) &&
-	    ((cont->type == XML_ELEMENT_CONTENT_ELEMENT) ||
-	     (cont->type == XML_ELEMENT_CONTENT_SEQ) ||
-	     (cont->type == XML_ELEMENT_CONTENT_OR))) {
-	    *child = (*child)->next;
-	    continue;
-	}
-        if ((*child)->type == XML_PI_NODE) {
-	    *child = (*child)->next;
-	    continue;
-	}
-        if ((*child)->type == XML_COMMENT_NODE) {
-	    *child = (*child)->next;
-	    continue;
-	}
-	else if ((*child)->type != XML_ELEMENT_NODE) {
-	    return(-1);
-	}
-	break;
-    }
-    return(1);
+
+    return xmlValidateFindNextElement(ctxt, child, cont);
 }
 
 /**
@@ -3296,6 +3245,9 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		return(0);
 	    }
 	    return(1);
+        case XML_XINCLUDE_START:
+        case XML_XINCLUDE_END:
+            return(1);
         case XML_CDATA_SECTION_NODE:
         case XML_ENTITY_REF_NODE:
         case XML_PI_NODE:
@@ -3607,6 +3559,15 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
     int ret = 1;
 
     if (elem == NULL) return(0);
+
+    /*
+     * XInclude elements were added after parsing in the infoset,
+     * they don't really mean anything validation wise.
+     */
+    if ((elem->type == XML_XINCLUDE_START) ||
+	(elem->type == XML_XINCLUDE_END))
+	return(1);
+
     CHECK_DTD;
 
     ret &= xmlValidateOneElement(ctxt, doc, elem);

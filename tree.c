@@ -4062,7 +4062,7 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
 		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
 		
-	    if (attrDecl->prefix != NULL) {
+	    if ((attrDecl != NULL) && (attrDecl->prefix != NULL)) {
 	        /*
 		 * The DTD declaration only allows a prefix search
 		 */

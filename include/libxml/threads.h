@@ -9,6 +9,8 @@
 #ifndef __XML_THREADS_H__
 #define __XML_THREADS_H__
 
+#include <libxml/xmlversion.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -33,26 +35,27 @@ typedef xmlRMutex *xmlRMutexPtr;
 extern "C" {
 #endif
 
-xmlMutexPtr		xmlNewMutex	(void);
-void			xmlMutexLock	(xmlMutexPtr tok);
-void			xmlMutexUnlock	(xmlMutexPtr tok);
-void			xmlFreeMutex	(xmlMutexPtr tok);
+XMLPUBFUN xmlMutexPtr XMLCALL		
+			xmlNewMutex	(void);
+XMLPUBFUN void XMLCALL			xmlMutexLock	(xmlMutexPtr tok);
+XMLPUBFUN void XMLCALL			xmlMutexUnlock	(xmlMutexPtr tok);
+XMLPUBFUN void XMLCALL			xmlFreeMutex	(xmlMutexPtr tok);
 
-xmlRMutexPtr		xmlNewRMutex	(void);
-void			xmlRMutexLock	(xmlRMutexPtr tok);
-void			xmlRMutexUnlock	(xmlRMutexPtr tok);
-void			xmlFreeRMutex	(xmlRMutexPtr tok);
+XMLPUBFUN xmlRMutexPtr XMLCALL		xmlNewRMutex	(void);
+XMLPUBFUN void XMLCALL			xmlRMutexLock	(xmlRMutexPtr tok);
+XMLPUBFUN void XMLCALL			xmlRMutexUnlock	(xmlRMutexPtr tok);
+XMLPUBFUN void XMLCALL			xmlFreeRMutex	(xmlRMutexPtr tok);
 
 /*
  * Library wide APIs.
  */
-void			xmlInitThreads	(void);
-void			xmlLockLibrary	(void);
-void			xmlUnlockLibrary(void);
-int			xmlGetThreadId	(void);
-int			xmlIsMainThread	(void);
-void			xmlCleanupThreads(void);
-xmlGlobalStatePtr	xmlGetGlobalState(void);
+XMLPUBFUN void XMLCALL			xmlInitThreads	(void);
+XMLPUBFUN void XMLCALL			xmlLockLibrary	(void);
+XMLPUBFUN void XMLCALL			xmlUnlockLibrary(void);
+XMLPUBFUN int XMLCALL			xmlGetThreadId	(void);
+XMLPUBFUN int XMLCALL			xmlIsMainThread	(void);
+XMLPUBFUN void XMLCALL			xmlCleanupThreads(void);
+XMLPUBFUN xmlGlobalStatePtr XMLCALL	xmlGetGlobalState(void);
 
 #ifdef __cplusplus
 }

@@ -155,28 +155,28 @@ typedef void (*xmlGenericErrorFunc) (void *ctx,
  * Use the following function to reset the two global variables
  * xmlGenericError and xmlGenericErrorContext.
  */
-void	xmlSetGenericErrorFunc	(void *ctx,
+XMLPUBFUN void XMLCALL	xmlSetGenericErrorFunc	(void *ctx,
 				 xmlGenericErrorFunc handler);
-void	initGenericErrorDefaultFunc(xmlGenericErrorFunc *handler);
+XMLPUBFUN void XMLCALL	initGenericErrorDefaultFunc(xmlGenericErrorFunc *handler);
 
 /*
  * Default message routines used by SAX and Valid context for error
  * and warning reporting.
  */
-void	xmlParserError		(void *ctx,
+XMLPUBFUN void XMLCALL	xmlParserError		(void *ctx,
 				 const char *msg,
 				 ...);
-void	xmlParserWarning	(void *ctx,
+XMLPUBFUN void XMLCALL	xmlParserWarning	(void *ctx,
 				 const char *msg,
 				 ...);
-void	xmlParserValidityError	(void *ctx,
+XMLPUBFUN void XMLCALL	xmlParserValidityError	(void *ctx,
 				 const char *msg,
 				 ...);
-void	xmlParserValidityWarning(void *ctx,
+XMLPUBFUN void XMLCALL	xmlParserValidityWarning(void *ctx,
 				 const char *msg,
 				 ...);
-void	xmlParserPrintFileInfo	(xmlParserInputPtr input);
-void	xmlParserPrintFileContext(xmlParserInputPtr input);
+XMLPUBFUN void XMLCALL	xmlParserPrintFileInfo	(xmlParserInputPtr input);
+XMLPUBFUN void XMLCALL	xmlParserPrintFileContext(xmlParserInputPtr input);
 
 #ifdef __cplusplus
 }

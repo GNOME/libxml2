@@ -9,6 +9,79 @@
 #ifndef __XML_VERSION_H__
 #define __XML_VERSION_H__
 
+/**
+ * XMLPUBFUN, XMLPUBVAR, XMLCALL
+ *
+ * Macros which declare an exportable function, an exportable variable and
+ * the calling convention used for functions.
+ *
+ * Please use an extra block for every platform/compiler combination when
+ * modifying this, rather than overlong #ifdef lines. This helps
+ * readability as well as the fact that different compilers on the same
+ * platform might need different definitions.
+ */
+#define XMLPUBFUN
+#define XMLPUBVAR
+#define XMLCALL
+/* Windows platform with MS compiler */
+#if defined(_WIN32) && defined(_MSC_VER)
+  #undef XMLPUBFUN
+  #undef XMLPUBVAR
+  #undef XMLCALL
+  #if defined(IN_LIBXML) && !defined(LIBXML_STATIC)
+    #define XMLPUBFUN __declspec(dllexport)
+    #define XMLPUBVAR __declspec(dllexport)
+  #else
+    #define XMLPUBFUN
+    #if !defined(LIBXML_STATIC)
+      #define XMLPUBVAR __declspec(dllimport) extern
+    #else
+      #define XMLPUBVAR
+    #endif
+  #endif
+  #define XMLCALL __cdecl
+#endif
+/* Windows platform with Borland compiler */
+#if defined(_WIN32) && defined(__BORLANDC__)
+  #undef XMLPUBFUN
+  #undef XMLPUBVAR
+  #undef XMLCALL
+  #if defined(IN_LIBXML) && !defined(LIBXML_STATIC)
+    #define XMLPUBFUN __declspec(dllexport)
+    #define XMLPUBVAR __declspec(dllexport)
+  #else
+    #define XMLPUBFUN
+    #if !defined(LIBXML_STATIC)
+      #define XMLPUBVAR __declspec(dllimport) extern
+    #else
+      #define XMLPUBVAR
+    #endif
+  #endif
+  #define XMLCALL __cdecl
+#endif
+/* Cygwin platform, GNU compiler */
+#if defined(_WIN32) && defined(__CYGWIN__)
+  #undef XMLPUBFUN
+  #undef XMLPUBVAR
+  #undef XMLCALL
+  #if defined(IN_LIBXML) && !defined(LIBXML_STATIC)
+    #define XMLPUBFUN __declspec(dllexport)
+    #define XMLPUBVAR __declspec(dllexport)
+  #else
+    #define XMLPUBFUN
+    #if !defined(LIBXML_STATIC)
+      #define XMLPUBVAR __declspec(dllimport) extern
+    #else
+      #define XMLPUBVAR
+    #endif
+  #endif
+  #define XMLCALL __cdecl
+#endif
+/* Compatibility */
+#if !defined(LIBXML_DLL_IMPORT)
+#define LIBXML_DLL_IMPORT XMLPUBVAR
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -18,7 +91,7 @@ extern "C" {
  * your library and includes mismatch
  */
 #ifndef LIBXML2_COMPILING_MSCCDEF
-extern void xmlCheckVersion(int version);
+XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #endif /* LIBXML2_COMPILING_MSCCDEF */
 
 /**
@@ -232,29 +305,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_SCHEMAS@
 #define LIBXML_SCHEMAS_ENABLED
-#endif
-
-/**
- * LIBXML_DLL_IMPORT:
- *
- * Used on Windows (MS C compiler only) to declare a variable as 
- * imported from the library. This macro should be empty when compiling
- * libxml itself. It should expand to __declspec(dllimport)
- * when the client code includes this header, and that only if the client
- * links dynamically against libxml.
- * For this to work, we need three macros. One tells us which compiler is
- * being used and luckily the compiler defines such a thing: _MSC_VER. The
- * second macro tells us if we are compiling libxml or the client code and
- * we define the macro IN_LIBXML on the compiler's command line for this 
- * purpose. The third macro, LIBXML_STATIC, must be defined by any client 
- * code which links against libxml statically. 
- */
-#ifndef LIBXML_DLL_IMPORT
-#if (defined(_MSC_VER) || defined(__BORLANDC__) || defined(__CYGWIN__)) && !defined(IN_LIBXML) && !defined(LIBXML_STATIC)
-#define LIBXML_DLL_IMPORT __declspec(dllimport)
-#else
-#define LIBXML_DLL_IMPORT
-#endif
 #endif
 
 /**

@@ -11,6 +11,7 @@
 #ifndef __XML_URI_H__
 #define __XML_URI_H__
 
+#include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 
 #ifdef __cplusplus
@@ -43,24 +44,26 @@ struct _xmlURI {
  * xmlChar *	xmlNodeGetBase	(xmlDocPtr doc,
  *                               xmlNodePtr cur);
  */
-xmlURIPtr	xmlCreateURI		(void);
-xmlChar *	xmlBuildURI		(const xmlChar *URI,
+XMLPUBFUN xmlURIPtr XMLCALL	
+		xmlCreateURI		(void);
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlBuildURI		(const xmlChar *URI,
 	                        	 const xmlChar *base);
-xmlURIPtr	xmlParseURI		(const char *str);
-int		xmlParseURIReference	(xmlURIPtr uri,
+XMLPUBFUN xmlURIPtr XMLCALL	xmlParseURI		(const char *str);
+XMLPUBFUN int XMLCALL		xmlParseURIReference	(xmlURIPtr uri,
 					 const char *str);
-xmlChar *	xmlSaveUri		(xmlURIPtr uri);
-void		xmlPrintURI		(FILE *stream,
+XMLPUBFUN xmlChar * XMLCALL	xmlSaveUri		(xmlURIPtr uri);
+XMLPUBFUN void XMLCALL		xmlPrintURI		(FILE *stream,
 					 xmlURIPtr uri);
-xmlChar *       xmlURIEscapeStr         (const xmlChar *str,
+XMLPUBFUN xmlChar * XMLCALL       xmlURIEscapeStr         (const xmlChar *str,
  					 const xmlChar *list);
-char *		xmlURIUnescapeString	(const char *str,
+XMLPUBFUN char * XMLCALL		xmlURIUnescapeString	(const char *str,
 					 int len,
 					 char *target);
-int		xmlNormalizeURIPath	(char *path);
-xmlChar *	xmlURIEscape		(const xmlChar *str);
-void		xmlFreeURI		(xmlURIPtr uri);
-xmlChar*	xmlCanonicPath		(const xmlChar *path);
+XMLPUBFUN int XMLCALL		xmlNormalizeURIPath	(char *path);
+XMLPUBFUN xmlChar * XMLCALL	xmlURIEscape		(const xmlChar *str);
+XMLPUBFUN void XMLCALL		xmlFreeURI		(xmlURIPtr uri);
+XMLPUBFUN xmlChar* XMLCALL	xmlCanonicPath		(const xmlChar *path);
 
 #ifdef __cplusplus
 }

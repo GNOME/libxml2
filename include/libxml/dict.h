@@ -19,6 +19,7 @@
 #ifndef __XML_DICT_H__
 #define __XML_DICT_H__
 
+#include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 
 #ifdef __cplusplus
@@ -34,16 +35,20 @@ typedef xmlDict *xmlDictPtr;
 /*
  * Constructor and destructor.
  */
-xmlDictPtr		xmlDictCreate	(void);
-void			xmlDictFree	(xmlDictPtr dict);
+XMLPUBFUN xmlDictPtr XMLCALL
+			xmlDictCreate	(void);
+XMLPUBFUN void XMLCALL			
+			xmlDictFree	(xmlDictPtr dict);
 
 /*
  * Lookup of entry in the dictionnary.
  */
-const xmlChar *		xmlDictLookup	(xmlDictPtr dict,
+XMLPUBFUN const xmlChar * XMLCALL		
+			xmlDictLookup	(xmlDictPtr dict,
 		                         const xmlChar *name,
 		                         int len);
-int			xmlDictSize	(xmlDictPtr dict);
+XMLPUBFUN int XMLCALL			
+			xmlDictSize	(xmlDictPtr dict);
 #ifdef __cplusplus
 }
 #endif

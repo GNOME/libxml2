@@ -16,6 +16,7 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
+#include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 #include <libxml/xpath.h> 
 
@@ -45,21 +46,24 @@ extern "C" {
  */
 
 
-int 		xmlC14NDocSaveTo	(xmlDocPtr doc,
+XMLPUBFUN int XMLCALL 		
+		xmlC14NDocSaveTo	(xmlDocPtr doc,
 					 xmlNodeSetPtr nodes,
 					 int exclusive,
 					 xmlChar **inclusive_ns_prefixes,
 					 int with_comments, 
 					 xmlOutputBufferPtr buf);
 
-int 		xmlC14NDocDumpMemory	(xmlDocPtr doc,
+XMLPUBFUN int XMLCALL
+		xmlC14NDocDumpMemory	(xmlDocPtr doc,
 					 xmlNodeSetPtr nodes,
 					 int exclusive,
 					 xmlChar **inclusive_ns_prefixes,
 					 int with_comments, 
 					 xmlChar **doc_txt_ptr);
 
-int 		xmlC14NDocSave		(xmlDocPtr doc,
+XMLPUBFUN int XMLCALL
+		xmlC14NDocSave		(xmlDocPtr doc,
 					 xmlNodeSetPtr nodes,
 					 int exclusive,
 					 xmlChar **inclusive_ns_prefixes,
@@ -75,7 +79,8 @@ typedef int (*xmlC14NIsVisibleCallback)	(void* user_data,
 					 xmlNodePtr node,
 					 xmlNodePtr parent);
 
-int 		xmlC14NExecute		(xmlDocPtr doc,
+XMLPUBFUN int XMLCALL
+		xmlC14NExecute		(xmlDocPtr doc,
 					 xmlC14NIsVisibleCallback is_visible_callback,
 					 void* user_data,				 
 					 int exclusive,

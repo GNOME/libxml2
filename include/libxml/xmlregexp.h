@@ -45,13 +45,14 @@ extern "C" {
 /*
  * The POSIX like API
  */
-xmlRegexpPtr		xmlRegexpCompile(const xmlChar *regexp);
-void			xmlRegFreeRegexp(xmlRegexpPtr regexp);
-int			xmlRegexpExec	(xmlRegexpPtr comp,
+XMLPUBFUN xmlRegexpPtr XMLCALL
+			xmlRegexpCompile(const xmlChar *regexp);
+XMLPUBFUN void XMLCALL			xmlRegFreeRegexp(xmlRegexpPtr regexp);
+XMLPUBFUN int XMLCALL			xmlRegexpExec	(xmlRegexpPtr comp,
 					 const xmlChar *value);
-void			xmlRegexpPrint	(FILE *output,
+XMLPUBFUN void XMLCALL			xmlRegexpPrint	(FILE *output,
 					 xmlRegexpPtr regexp);
-int			xmlRegexpIsDeterminist(xmlRegexpPtr comp);
+XMLPUBFUN int XMLCALL			xmlRegexpIsDeterminist(xmlRegexpPtr comp);
 
 /*
  * Callback function when doing a transition in the automata
@@ -64,14 +65,14 @@ typedef void (*xmlRegExecCallbacks) (xmlRegExecCtxtPtr exec,
 /*
  * The progressive API
  */
-xmlRegExecCtxtPtr	xmlRegNewExecCtxt	(xmlRegexpPtr comp,
+XMLPUBFUN xmlRegExecCtxtPtr XMLCALL	xmlRegNewExecCtxt	(xmlRegexpPtr comp,
 						 xmlRegExecCallbacks callback,
 						 void *data);
-void			xmlRegFreeExecCtxt	(xmlRegExecCtxtPtr exec);
-int			xmlRegExecPushString	(xmlRegExecCtxtPtr exec,
+XMLPUBFUN void XMLCALL			xmlRegFreeExecCtxt	(xmlRegExecCtxtPtr exec);
+XMLPUBFUN int XMLCALL			xmlRegExecPushString	(xmlRegExecCtxtPtr exec,
 						 const xmlChar *value,
 						 void *data);
-int			xmlRegExecPushString2	(xmlRegExecCtxtPtr exec,
+XMLPUBFUN int XMLCALL			xmlRegExecPushString2	(xmlRegExecCtxtPtr exec,
 						 const xmlChar *value,
 						 const xmlChar *value2,
 						 void *data);

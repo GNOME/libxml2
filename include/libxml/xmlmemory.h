@@ -96,20 +96,21 @@ LIBXML_DLL_IMPORT extern xmlStrdupFunc xmlMemStrdup;
  * The xmlGc function have an extra entry for atomic block
  * allocations useful for garbage collected memory allocators
  */
-int     xmlMemSetup	(xmlFreeFunc freeFunc,
+XMLPUBFUN int XMLCALL
+	xmlMemSetup	(xmlFreeFunc freeFunc,
 			 xmlMallocFunc mallocFunc,
 			 xmlReallocFunc reallocFunc,
 			 xmlStrdupFunc strdupFunc);
-int     xmlMemGet	(xmlFreeFunc *freeFunc,
+XMLPUBFUN int XMLCALL     xmlMemGet	(xmlFreeFunc *freeFunc,
 			 xmlMallocFunc *mallocFunc,
 			 xmlReallocFunc *reallocFunc,
 			 xmlStrdupFunc *strdupFunc);
-int     xmlGcMemSetup	(xmlFreeFunc freeFunc,
+XMLPUBFUN int XMLCALL     xmlGcMemSetup	(xmlFreeFunc freeFunc,
 			 xmlMallocFunc mallocFunc,
 			 xmlMallocFunc mallocAtomicFunc,
 			 xmlReallocFunc reallocFunc,
 			 xmlStrdupFunc strdupFunc);
-int     xmlGcMemGet	(xmlFreeFunc *freeFunc,
+XMLPUBFUN int XMLCALL     xmlGcMemGet	(xmlFreeFunc *freeFunc,
 			 xmlMallocFunc *mallocFunc,
 			 xmlMallocFunc *mallocAtomicFunc,
 			 xmlReallocFunc *reallocFunc,
@@ -118,23 +119,23 @@ int     xmlGcMemGet	(xmlFreeFunc *freeFunc,
 /*
  * Initialization of the memory layer.
  */
-int	xmlInitMemory	(void);
+XMLPUBFUN int XMLCALL	xmlInitMemory	(void);
 
 /*
  * These are specific to the XML debug memory wrapper.
  */
-int	xmlMemUsed	(void);
-void	xmlMemDisplay	(FILE *fp);
-void	xmlMemShow	(FILE *fp, int nr);
-void	xmlMemoryDump	(void);
-void *	xmlMemMalloc	(size_t size);
-void *	xmlMemRealloc	(void *ptr,size_t size);
-void	xmlMemFree	(void *ptr);
-char *	xmlMemoryStrdup	(const char *str);
-void *  xmlMallocLoc	(size_t size, const char *file, int line);
-void *	xmlReallocLoc	(void *ptr, size_t size, const char *file, int line);
-void *	xmlMallocAtomicLoc (size_t size, const char *file, int line);
-char *	xmlMemStrdupLoc	(const char *str, const char *file, int line);
+XMLPUBFUN int XMLCALL	xmlMemUsed	(void);
+XMLPUBFUN void XMLCALL	xmlMemDisplay	(FILE *fp);
+XMLPUBFUN void XMLCALL	xmlMemShow	(FILE *fp, int nr);
+XMLPUBFUN void XMLCALL	xmlMemoryDump	(void);
+XMLPUBFUN void * XMLCALL	xmlMemMalloc	(size_t size);
+XMLPUBFUN void * XMLCALL	xmlMemRealloc	(void *ptr,size_t size);
+XMLPUBFUN void XMLCALL	xmlMemFree	(void *ptr);
+XMLPUBFUN char * XMLCALL	xmlMemoryStrdup	(const char *str);
+XMLPUBFUN void * XMLCALL  xmlMallocLoc	(size_t size, const char *file, int line);
+XMLPUBFUN void * XMLCALL	xmlReallocLoc	(void *ptr, size_t size, const char *file, int line);
+XMLPUBFUN void * XMLCALL	xmlMallocAtomicLoc (size_t size, const char *file, int line);
+XMLPUBFUN char * XMLCALL	xmlMemStrdupLoc	(const char *str, const char *file, int line);
 
 
 #ifdef DEBUG_MEMORY_LOCATION

@@ -145,14 +145,17 @@ extern "C" {
 /*
  * Interfaces for encoding handlers.
  */
-void	xmlInitCharEncodingHandlers	(void);
-void	xmlCleanupCharEncodingHandlers	(void);
-void	xmlRegisterCharEncodingHandler	(xmlCharEncodingHandlerPtr handler);
-xmlCharEncodingHandlerPtr
+XMLPUBFUN void XMLCALL	
+	xmlInitCharEncodingHandlers	(void);
+XMLPUBFUN void XMLCALL	
+	xmlCleanupCharEncodingHandlers	(void);
+XMLPUBFUN void XMLCALL	
+	xmlRegisterCharEncodingHandler	(xmlCharEncodingHandlerPtr handler);
+XMLPUBFUN xmlCharEncodingHandlerPtr XMLCALL
 	xmlGetCharEncodingHandler	(xmlCharEncoding enc);
-xmlCharEncodingHandlerPtr
+XMLPUBFUN xmlCharEncodingHandlerPtr XMLCALL
 	xmlFindCharEncodingHandler	(const char *name);
-xmlCharEncodingHandlerPtr
+XMLPUBFUN xmlCharEncodingHandlerPtr XMLCALL
 	xmlNewCharEncodingHandler	(const char *name, 
                           		 xmlCharEncodingInputFunc input,
                           		 xmlCharEncodingOutputFunc output);
@@ -160,68 +163,87 @@ xmlCharEncodingHandlerPtr
 /*
  * Interfaces for encoding names and aliases.
  */
-int	xmlAddEncodingAlias		(const char *name,
+XMLPUBFUN int XMLCALL	
+	xmlAddEncodingAlias		(const char *name,
 					 const char *alias);
-int	xmlDelEncodingAlias		(const char *alias);
-const char *
+XMLPUBFUN int XMLCALL	
+	xmlDelEncodingAlias		(const char *alias);
+XMLPUBFUN const char * XMLCALL
 	xmlGetEncodingAlias		(const char *alias);
-void	xmlCleanupEncodingAliases	(void);
-xmlCharEncoding
+XMLPUBFUN void XMLCALL	
+	xmlCleanupEncodingAliases	(void);
+XMLPUBFUN xmlCharEncoding XMLCALL
 	xmlParseCharEncoding		(const char *name);
-const char *
+XMLPUBFUN const char * XMLCALL
 	xmlGetCharEncodingName		(xmlCharEncoding enc);
 
 /*
  * Interfaces directly used by the parsers.
  */
-xmlCharEncoding
+XMLPUBFUN xmlCharEncoding XMLCALL
 	xmlDetectCharEncoding		(const unsigned char *in,
 					 int len);
 
-int	xmlCharEncOutFunc		(xmlCharEncodingHandler *handler,
+XMLPUBFUN int XMLCALL	
+	xmlCharEncOutFunc		(xmlCharEncodingHandler *handler,
 					 xmlBufferPtr out,
 					 xmlBufferPtr in);
 
-int	xmlCharEncInFunc		(xmlCharEncodingHandler *handler,
+XMLPUBFUN int XMLCALL	
+	xmlCharEncInFunc		(xmlCharEncodingHandler *handler,
 					 xmlBufferPtr out,
 					 xmlBufferPtr in);
-int	xmlCharEncFirstLine		(xmlCharEncodingHandler *handler,
+XMLPUBFUN int XMLCALL
+	xmlCharEncFirstLine		(xmlCharEncodingHandler *handler,
 					 xmlBufferPtr out,
 					 xmlBufferPtr in);
-int	xmlCharEncCloseFunc		(xmlCharEncodingHandler *handler);
+XMLPUBFUN int XMLCALL	
+	xmlCharEncCloseFunc		(xmlCharEncodingHandler *handler);
 
 /*
  * Export a few useful functions
  */
-int	UTF8Toisolat1			(unsigned char *out,
+XMLPUBFUN int XMLCALL	
+	UTF8Toisolat1			(unsigned char *out,
 					 int *outlen,
 					 const unsigned char *in,
 					 int *inlen);
-int	isolat1ToUTF8			(unsigned char *out,
+XMLPUBFUN int XMLCALL	
+	isolat1ToUTF8			(unsigned char *out,
 					 int *outlen,
 					 const unsigned char *in,
 					 int *inlen);
-int	xmlGetUTF8Char			(const unsigned char *utf,
+XMLPUBFUN int XMLCALL	
+	xmlGetUTF8Char			(const unsigned char *utf,
 					 int *len);
 /*
  * exports additional "UTF-8 aware" string routines which are.
  */
 
-int	xmlCheckUTF8			(const unsigned char *utf);
-int	xmlUTF8Strsize			(const xmlChar *utf,
+XMLPUBFUN int XMLCALL	
+	xmlCheckUTF8			(const unsigned char *utf);
+XMLPUBFUN int XMLCALL	
+	xmlUTF8Strsize			(const xmlChar *utf,
 					 int len);
-xmlChar * xmlUTF8Strndup		(const xmlChar *utf,
+XMLPUBFUN xmlChar * XMLCALL 
+	xmlUTF8Strndup			(const xmlChar *utf,
 					 int len);
-xmlChar * xmlUTF8Strpos			(const xmlChar *utf,
+XMLPUBFUN xmlChar * XMLCALL 
+	xmlUTF8Strpos			(const xmlChar *utf,
 					 int pos);
-int	xmlUTF8Strloc			(const xmlChar *utf,
+XMLPUBFUN int XMLCALL	
+	xmlUTF8Strloc			(const xmlChar *utf,
 					 const xmlChar *utfchar);
-xmlChar * xmlUTF8Strsub			(const xmlChar *utf,
+XMLPUBFUN xmlChar * XMLCALL 
+	xmlUTF8Strsub			(const xmlChar *utf,
 					 int start,
 					 int len);
-int	xmlUTF8Strlen			(const xmlChar *utf);
-int	xmlUTF8Size			(const xmlChar *utf);
-int	xmlUTF8Charcmp			(const xmlChar *utf1,
+XMLPUBFUN int XMLCALL	
+	xmlUTF8Strlen			(const xmlChar *utf);
+XMLPUBFUN int XMLCALL	
+	xmlUTF8Size			(const xmlChar *utf);
+XMLPUBFUN int XMLCALL	
+	xmlUTF8Charcmp			(const xmlChar *utf1,
 					 const xmlChar *utf2);
 #ifdef __cplusplus
 }

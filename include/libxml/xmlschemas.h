@@ -72,30 +72,30 @@ typedef xmlSchemaValidCtxt *xmlSchemaValidCtxtPtr;
 /*
  * Interfaces for parsing.
  */
-xmlSchemaParserCtxtPtr xmlSchemaNewParserCtxt	(const char *URL);
-xmlSchemaParserCtxtPtr xmlSchemaNewMemParserCtxt(const char *buffer,
+XMLPUBFUN xmlSchemaParserCtxtPtr XMLCALL xmlSchemaNewParserCtxt	(const char *URL);
+XMLPUBFUN xmlSchemaParserCtxtPtr XMLCALL xmlSchemaNewMemParserCtxt(const char *buffer,
 						 int size);
-void		xmlSchemaFreeParserCtxt	(xmlSchemaParserCtxtPtr ctxt);
-void		xmlSchemaSetParserErrors(xmlSchemaParserCtxtPtr ctxt,
+XMLPUBFUN void XMLCALL		xmlSchemaFreeParserCtxt	(xmlSchemaParserCtxtPtr ctxt);
+XMLPUBFUN void XMLCALL		xmlSchemaSetParserErrors(xmlSchemaParserCtxtPtr ctxt,
 					 xmlSchemaValidityErrorFunc err,
 					 xmlSchemaValidityWarningFunc warn,
 					 void *ctx);
-xmlSchemaPtr	xmlSchemaParse		(xmlSchemaParserCtxtPtr ctxt);
-void		xmlSchemaFree		(xmlSchemaPtr schema);
-void		xmlSchemaDump		(FILE *output,
+XMLPUBFUN xmlSchemaPtr XMLCALL	xmlSchemaParse		(xmlSchemaParserCtxtPtr ctxt);
+XMLPUBFUN void XMLCALL		xmlSchemaFree		(xmlSchemaPtr schema);
+XMLPUBFUN void XMLCALL		xmlSchemaDump		(FILE *output,
 					 xmlSchemaPtr schema);
 /*
  * Interfaces for validating
  */
-void		xmlSchemaSetValidErrors	(xmlSchemaValidCtxtPtr ctxt,
+XMLPUBFUN void XMLCALL		xmlSchemaSetValidErrors	(xmlSchemaValidCtxtPtr ctxt,
 					 xmlSchemaValidityErrorFunc err,
 					 xmlSchemaValidityWarningFunc warn,
 					 void *ctx);
-xmlSchemaValidCtxtPtr	xmlSchemaNewValidCtxt	(xmlSchemaPtr schema);
-void			xmlSchemaFreeValidCtxt	(xmlSchemaValidCtxtPtr ctxt);
-int			xmlSchemaValidateDoc	(xmlSchemaValidCtxtPtr ctxt,
+XMLPUBFUN xmlSchemaValidCtxtPtr XMLCALL	xmlSchemaNewValidCtxt	(xmlSchemaPtr schema);
+XMLPUBFUN void XMLCALL			xmlSchemaFreeValidCtxt	(xmlSchemaValidCtxtPtr ctxt);
+XMLPUBFUN int XMLCALL			xmlSchemaValidateDoc	(xmlSchemaValidCtxtPtr ctxt,
 					 	 xmlDocPtr instance);
-int			xmlSchemaValidateStream	(xmlSchemaValidCtxtPtr ctxt,
+XMLPUBFUN int XMLCALL			xmlSchemaValidateStream	(xmlSchemaValidCtxtPtr ctxt,
 						 xmlParserInputBufferPtr input,
 						 xmlCharEncoding enc,
 					 	 xmlSAXHandlerPtr sax,

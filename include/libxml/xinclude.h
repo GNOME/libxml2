@@ -12,14 +12,15 @@
 #ifndef __XML_XINCLUDE_H__
 #define __XML_XINCLUDE_H__
 
+#include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int	xmlXIncludeProcess	(xmlDocPtr doc);
-int	xmlXIncludeProcessTree	(xmlNodePtr tree);
+XMLPUBFUN int XMLCALL	xmlXIncludeProcess	(xmlDocPtr doc);
+XMLPUBFUN int XMLCALL	xmlXIncludeProcessTree	(xmlNodePtr tree);
 
 #ifdef __cplusplus
 }

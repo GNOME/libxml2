@@ -62,74 +62,110 @@ typedef xmlCatalog *xmlCatalogPtr;
 /*
  * Operations on a given catalog.
  */
-xmlCatalogPtr	xmlNewCatalog		(int sgml);
-xmlCatalogPtr	xmlLoadACatalog		(const char *filename);
-xmlCatalogPtr	xmlLoadSGMLSuperCatalog	(const char *filename);
-int		xmlConvertSGMLCatalog	(xmlCatalogPtr catal);
-int		xmlACatalogAdd		(xmlCatalogPtr catal,
+XMLPUBFUN xmlCatalogPtr XMLCALL
+		xmlNewCatalog		(int sgml);
+XMLPUBFUN xmlCatalogPtr XMLCALL	
+		xmlLoadACatalog		(const char *filename);
+XMLPUBFUN xmlCatalogPtr XMLCALL	
+		xmlLoadSGMLSuperCatalog	(const char *filename);
+XMLPUBFUN int XMLCALL		
+		xmlConvertSGMLCatalog	(xmlCatalogPtr catal);
+XMLPUBFUN int XMLCALL		
+		xmlACatalogAdd		(xmlCatalogPtr catal,
 					 const xmlChar *type,
 					 const xmlChar *orig,
 					 const xmlChar *replace);
-int		xmlACatalogRemove	(xmlCatalogPtr catal,
+XMLPUBFUN int XMLCALL		
+		xmlACatalogRemove	(xmlCatalogPtr catal,
 					 const xmlChar *value);
-xmlChar *	xmlACatalogResolve	(xmlCatalogPtr catal,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlACatalogResolve	(xmlCatalogPtr catal,
 					 const xmlChar *pubID,
 	                                 const xmlChar *sysID);
-xmlChar *	xmlACatalogResolveSystem(xmlCatalogPtr catal,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlACatalogResolveSystem(xmlCatalogPtr catal,
 					 const xmlChar *sysID);
-xmlChar *	xmlACatalogResolvePublic(xmlCatalogPtr catal,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlACatalogResolvePublic(xmlCatalogPtr catal,
 					 const xmlChar *pubID);
-xmlChar *	xmlACatalogResolveURI	(xmlCatalogPtr catal,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlACatalogResolveURI	(xmlCatalogPtr catal,
 					 const xmlChar *URI);
-void		xmlACatalogDump		(xmlCatalogPtr catal,
+XMLPUBFUN void XMLCALL		
+		xmlACatalogDump		(xmlCatalogPtr catal,
 					 FILE *out);
-void		xmlFreeCatalog		(xmlCatalogPtr catal);
-int		xmlCatalogIsEmpty	(xmlCatalogPtr catal);
+XMLPUBFUN void XMLCALL		
+		xmlFreeCatalog		(xmlCatalogPtr catal);
+XMLPUBFUN int XMLCALL		
+		xmlCatalogIsEmpty	(xmlCatalogPtr catal);
 
 /*
  * Global operations.
  */
-void		xmlInitializeCatalog	(void);
-int		xmlLoadCatalog		(const char *filename);
-void		xmlLoadCatalogs		(const char *paths);
-void		xmlCatalogCleanup	(void);
-void		xmlCatalogDump		(FILE *out);
-xmlChar *	xmlCatalogResolve	(const xmlChar *pubID,
+XMLPUBFUN void XMLCALL		
+		xmlInitializeCatalog	(void);
+XMLPUBFUN int XMLCALL		
+		xmlLoadCatalog		(const char *filename);
+XMLPUBFUN void XMLCALL		
+		xmlLoadCatalogs		(const char *paths);
+XMLPUBFUN void XMLCALL		
+		xmlCatalogCleanup	(void);
+XMLPUBFUN void XMLCALL		
+		xmlCatalogDump		(FILE *out);
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlCatalogResolve	(const xmlChar *pubID,
 	                                 const xmlChar *sysID);
-xmlChar *	xmlCatalogResolveSystem	(const xmlChar *sysID);
-xmlChar *	xmlCatalogResolvePublic	(const xmlChar *pubID);
-xmlChar *	xmlCatalogResolveURI	(const xmlChar *URI);
-int		xmlCatalogAdd		(const xmlChar *type,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlCatalogResolveSystem	(const xmlChar *sysID);
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlCatalogResolvePublic	(const xmlChar *pubID);
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlCatalogResolveURI	(const xmlChar *URI);
+XMLPUBFUN int XMLCALL		
+		xmlCatalogAdd		(const xmlChar *type,
 					 const xmlChar *orig,
 					 const xmlChar *replace);
-int		xmlCatalogRemove	(const xmlChar *value);
-xmlDocPtr	xmlParseCatalogFile	(const char *filename);
-int		xmlCatalogConvert	(void);
+XMLPUBFUN int XMLCALL		
+		xmlCatalogRemove	(const xmlChar *value);
+XMLPUBFUN xmlDocPtr XMLCALL	
+		xmlParseCatalogFile	(const char *filename);
+XMLPUBFUN int XMLCALL		
+		xmlCatalogConvert	(void);
 
 /*
  * Strictly minimal interfaces for per-document catalogs used
  * by the parser.
  */
-void		xmlCatalogFreeLocal	(void *catalogs);
-void *		xmlCatalogAddLocal	(void *catalogs,
+XMLPUBFUN void XMLCALL		
+		xmlCatalogFreeLocal	(void *catalogs);
+XMLPUBFUN void * XMLCALL		
+		xmlCatalogAddLocal	(void *catalogs,
 					 const xmlChar *URL);
-xmlChar *	xmlCatalogLocalResolve	(void *catalogs,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlCatalogLocalResolve	(void *catalogs,
 					 const xmlChar *pubID,
 	                                 const xmlChar *sysID);
-xmlChar *	xmlCatalogLocalResolveURI(void *catalogs,
+XMLPUBFUN xmlChar * XMLCALL	
+		xmlCatalogLocalResolveURI(void *catalogs,
 					 const xmlChar *URI);
 /*
  * Preference settings.
  */
-int		xmlCatalogSetDebug	(int level);
-xmlCatalogPrefer xmlCatalogSetDefaultPrefer(xmlCatalogPrefer prefer);
-void		xmlCatalogSetDefaults	(xmlCatalogAllow allow);
-xmlCatalogAllow	xmlCatalogGetDefaults	(void);
+XMLPUBFUN int XMLCALL		
+		xmlCatalogSetDebug	(int level);
+XMLPUBFUN xmlCatalogPrefer XMLCALL 
+		xmlCatalogSetDefaultPrefer(xmlCatalogPrefer prefer);
+XMLPUBFUN void XMLCALL		
+		xmlCatalogSetDefaults	(xmlCatalogAllow allow);
+XMLPUBFUN xmlCatalogAllow XMLCALL	
+		xmlCatalogGetDefaults	(void);
 
 
 /* DEPRECATED interfaces */
-const xmlChar *	xmlCatalogGetSystem	(const xmlChar *sysID);
-const xmlChar *	xmlCatalogGetPublic	(const xmlChar *pubID);
+XMLPUBFUN const xmlChar * XMLCALL	
+		xmlCatalogGetSystem	(const xmlChar *sysID);
+XMLPUBFUN const xmlChar * XMLCALL	
+		xmlCatalogGetPublic	(const xmlChar *pubID);
 
 #ifdef __cplusplus
 }

@@ -8,6 +8,7 @@
 #ifndef __DEBUG_XML__
 #define __DEBUG_XML__
 #include <stdio.h>
+#include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 
 #ifdef LIBXML_DEBUG_ENABLED
@@ -21,36 +22,49 @@ extern "C" {
 /*
  * The standard Dump routines.
  */
-void	xmlDebugDumpString	(FILE *output,
+XMLPUBFUN void XMLCALL	
+	xmlDebugDumpString	(FILE *output,
 				 const xmlChar *str);
-void	xmlDebugDumpAttr	(FILE *output,
+XMLPUBFUN void XMLCALL	
+	xmlDebugDumpAttr	(FILE *output,
 				 xmlAttrPtr attr,
 				 int depth);
-void	xmlDebugDumpAttrList	(FILE *output,
+XMLPUBFUN void XMLCALL	
+	xmlDebugDumpAttrList	(FILE *output,
 				 xmlAttrPtr attr,
 				 int depth);
-void	xmlDebugDumpOneNode	(FILE *output,
+XMLPUBFUN void XMLCALL	
+	xmlDebugDumpOneNode	(FILE *output,
 				 xmlNodePtr node,
 				 int depth);
-void	xmlDebugDumpNode	(FILE *output,
+XMLPUBFUN void XMLCALL
+	xmlDebugDumpNode	(FILE *output,
 				 xmlNodePtr node,
 				 int depth);
-void	xmlDebugDumpNodeList	(FILE *output,
+XMLPUBFUN void XMLCALL
+	xmlDebugDumpNodeList	(FILE *output,
 				 xmlNodePtr node,
 				 int depth);
-void	xmlDebugDumpDocumentHead(FILE *output,
+XMLPUBFUN void XMLCALL
+	xmlDebugDumpDocumentHead(FILE *output,
 				 xmlDocPtr doc);
-void	xmlDebugDumpDocument	(FILE *output,
+XMLPUBFUN void XMLCALL
+	xmlDebugDumpDocument	(FILE *output,
 				 xmlDocPtr doc);
-void	xmlDebugDumpDTD		(FILE *output,
+XMLPUBFUN void XMLCALL	
+	xmlDebugDumpDTD		(FILE *output,
 				 xmlDtdPtr dtd);
-void	xmlDebugDumpEntities	(FILE *output,
+XMLPUBFUN void XMLCALL	
+	xmlDebugDumpEntities	(FILE *output,
 				 xmlDocPtr doc);
 
-void	xmlLsOneNode		(FILE *output, xmlNodePtr node);
-int	xmlLsCountNode		(xmlNodePtr node);
+XMLPUBFUN void XMLCALL	
+	xmlLsOneNode		(FILE *output, xmlNodePtr node);
+XMLPUBFUN int XMLCALL	
+	xmlLsCountNode		(xmlNodePtr node);
 
-LIBXML_DLL_IMPORT const char *xmlBoolToText	(int boolval);
+XMLPUBFUN const char * XMLCALL 
+	xmlBoolToText		(int boolval);
 
 /****************************************************************
  *								*
@@ -102,47 +116,60 @@ typedef int (* xmlShellCmd) (xmlShellCtxtPtr ctxt,
 			     xmlNodePtr node,
 			     xmlNodePtr node2);
 
-void	xmlShellPrintXPathError	(int errorType,
+XMLPUBFUN void XMLCALL	
+	xmlShellPrintXPathError	(int errorType,
 				 const char *arg);
-void	xmlShellPrintNode	(xmlNodePtr node);
-void	xmlShellPrintXPathResult(xmlXPathObjectPtr list);
-int	xmlShellList		(xmlShellCtxtPtr ctxt,
+XMLPUBFUN void XMLCALL	
+	xmlShellPrintNode	(xmlNodePtr node);
+XMLPUBFUN void XMLCALL	
+	xmlShellPrintXPathResult(xmlXPathObjectPtr list);
+XMLPUBFUN int XMLCALL	
+	xmlShellList		(xmlShellCtxtPtr ctxt,
 				 char *arg,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
-int	xmlShellBase		(xmlShellCtxtPtr ctxt,
+XMLPUBFUN int XMLCALL	
+	xmlShellBase		(xmlShellCtxtPtr ctxt,
 				 char *arg,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
-int	xmlShellDir		(xmlShellCtxtPtr ctxt,
+XMLPUBFUN int XMLCALL	
+	xmlShellDir		(xmlShellCtxtPtr ctxt,
 				 char *arg,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
-int	xmlShellCat		(xmlShellCtxtPtr ctxt,
+XMLPUBFUN int XMLCALL	
+	xmlShellCat		(xmlShellCtxtPtr ctxt,
 				 char *arg,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
-int	xmlShellLoad		(xmlShellCtxtPtr ctxt,
+XMLPUBFUN int XMLCALL	
+	xmlShellLoad		(xmlShellCtxtPtr ctxt,
 				 char *filename,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
-int	xmlShellWrite		(xmlShellCtxtPtr ctxt,
+XMLPUBFUN int XMLCALL	
+	xmlShellWrite		(xmlShellCtxtPtr ctxt,
 				 char *filename,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
-int	xmlShellSave		(xmlShellCtxtPtr ctxt,
+XMLPUBFUN int XMLCALL	
+	xmlShellSave		(xmlShellCtxtPtr ctxt,
 				 char *filename,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
-int	xmlShellValidate	(xmlShellCtxtPtr ctxt,
+XMLPUBFUN int XMLCALL	
+	xmlShellValidate	(xmlShellCtxtPtr ctxt,
 				 char *dtd,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
-int	xmlShellDu		(xmlShellCtxtPtr ctxt,
+XMLPUBFUN int XMLCALL	
+	xmlShellDu		(xmlShellCtxtPtr ctxt,
 				 char *arg,
 				 xmlNodePtr tree,
 				 xmlNodePtr node2);
-int	xmlShellPwd		(xmlShellCtxtPtr ctxt,
+XMLPUBFUN int XMLCALL	
+	xmlShellPwd		(xmlShellCtxtPtr ctxt,
 				 char *buffer,
 				 xmlNodePtr node,
 				 xmlNodePtr node2);
@@ -150,7 +177,8 @@ int	xmlShellPwd		(xmlShellCtxtPtr ctxt,
 /*
  * The Shell interface.
  */
-void	xmlShell		(xmlDocPtr doc,
+XMLPUBFUN void XMLCALL	
+	xmlShell		(xmlDocPtr doc,
 				 char *filename,
 				 xmlShellReadlineFunc input,
 				 FILE *output);

@@ -345,7 +345,7 @@ struct _xmlSchema {
     xmlHashTablePtr groupDecl;
 };
 
-void	xmlSchemaFreeType	(xmlSchemaTypePtr type);
+XMLPUBFUN void XMLCALL 	xmlSchemaFreeType	(xmlSchemaTypePtr type);
 
 #ifdef __cplusplus
 }

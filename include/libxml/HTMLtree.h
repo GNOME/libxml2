@@ -11,6 +11,7 @@
 #define __HTML_TREE_H__
 
 #include <stdio.h>
+#include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 #include <libxml/HTMLparser.h>
 
@@ -56,55 +57,74 @@ extern "C" {
  */
 #define HTML_PI_NODE		XML_PI_NODE
 
-htmlDocPtr	htmlNewDoc		(const xmlChar *URI,
+XMLPUBFUN htmlDocPtr XMLCALL
+		htmlNewDoc		(const xmlChar *URI,
 					 const xmlChar *ExternalID);
-htmlDocPtr	htmlNewDocNoDtD		(const xmlChar *URI,
+XMLPUBFUN htmlDocPtr XMLCALL	
+		htmlNewDocNoDtD		(const xmlChar *URI,
 					 const xmlChar *ExternalID);
-const xmlChar *	htmlGetMetaEncoding	(htmlDocPtr doc);
-int		htmlSetMetaEncoding	(htmlDocPtr doc,
+XMLPUBFUN const xmlChar * XMLCALL	
+		htmlGetMetaEncoding	(htmlDocPtr doc);
+XMLPUBFUN int XMLCALL		
+		htmlSetMetaEncoding	(htmlDocPtr doc,
 					 const xmlChar *encoding);
-void		htmlDocDumpMemory	(xmlDocPtr cur,
+XMLPUBFUN void XMLCALL	    
+		htmlDocDumpMemory	(xmlDocPtr cur,
 					 xmlChar **mem,
 					 int *size);
-int		htmlDocDump		(FILE *f,
+XMLPUBFUN int XMLCALL		
+		htmlDocDump		(FILE *f,
 					 xmlDocPtr cur);
-int		htmlSaveFile		(const char *filename,
+XMLPUBFUN int XMLCALL		
+		htmlSaveFile		(const char *filename,
 					 xmlDocPtr cur);
-int		htmlNodeDump		(xmlBufferPtr buf,
+XMLPUBFUN int XMLCALL		
+		htmlNodeDump		(xmlBufferPtr buf,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur);
-void		htmlNodeDumpFile	(FILE *out,
+XMLPUBFUN void XMLCALL		
+		htmlNodeDumpFile	(FILE *out,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur);
-int		htmlNodeDumpFileFormat	(FILE *out,
+XMLPUBFUN int XMLCALL		
+		htmlNodeDumpFileFormat	(FILE *out,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur,
 					 const char *encoding,
 					 int format);
-int		htmlSaveFileEnc		(const char *filename,
+XMLPUBFUN int XMLCALL		
+		htmlSaveFileEnc		(const char *filename,
 					 xmlDocPtr cur,
 					 const char *encoding);
-int		htmlSaveFileFormat	(const char *filename,
+XMLPUBFUN int XMLCALL		
+		htmlSaveFileFormat	(const char *filename,
 					 xmlDocPtr cur,
 					 const char *encoding,
 					 int format);
 
-void		htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur,
 					 const char *encoding,
 					 int format);
-void		htmlDocContentDumpOutput(xmlOutputBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		htmlDocContentDumpOutput(xmlOutputBufferPtr buf,
 					 xmlDocPtr cur,
 					 const char *encoding);
-void		htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf,
+XMLPUBFUN void XMLCALL		
+		htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf,
 					 xmlDocPtr cur,
 					 const char *encoding,
 					 int format);
 
-int		htmlIsBooleanAttr	(const xmlChar *name);
-void htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
-	                xmlNodePtr cur, const char *encoding);
+XMLPUBFUN int XMLCALL		
+		htmlIsBooleanAttr	(const xmlChar *name);
+XMLPUBFUN void XMLCALL 
+		htmlNodeDumpOutput	(xmlOutputBufferPtr buf, 
+					 xmlDocPtr doc,
+					 xmlNodePtr cur, 
+					 const char *encoding);
 
 
 

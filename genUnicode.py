@@ -146,6 +146,8 @@ header.write(
 #ifndef __XML_UNICODE_H__
 #define __XML_UNICODE_H__
 
+#include <libxml/xmlversion.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -181,7 +183,7 @@ keys.sort()
 for block in keys:
     (start, end) = BlockNames[block]
     name = string.replace(block, '-', '')
-    header.write("int\txmlUCSIs%s\t(int code);\n" % name)
+    header.write("XMLPUBFUN int XMLCALL xmlUCSIs%s\t(int code);\n" % name)
     output.write("/**\n * xmlUCSIs%s:\n * @code: UCS code point\n" % (name))
     output.write(" *\n * Check whether the character is part of %s UCS Block\n"%
                  (block))
@@ -190,7 +192,7 @@ for block in keys:
     output.write("    return((code >= %s) && (code <= %s));\n" % (start, end))
     output.write("}\n\n")
 
-header.write("\nint\txmlUCSIsBlock\t(int code,\n\t\t\t const char *block);\n\n")
+header.write("\nXMLPUBFUN int XMLCALL xmlUCSIsBlock\t(int code,\n\t\t\t const char *block);\n\n")
 output.write("/**\n * xmlUCSIsBlock:\n * @code: UCS code point\n")
 output.write(" * @block: UCS block name\n")
 output.write(" *\n * Check whether the caracter is part of the UCS Block\n")
@@ -209,7 +211,7 @@ keys = Categories.keys()
 keys.sort()
 for name in keys:
     ranges = Categories[name]
-    header.write("int\txmlUCSIsCat%s\t(int code);\n" % name)
+    header.write("XMLPUBFUN int XMLCALL xmlUCSIsCat%s\t(int code);\n" % name)
     output.write("/**\n * xmlUCSIsCat%s:\n * @code: UCS code point\n" % (name))
     output.write(" *\n * Check whether the character is part of %s UCS Category\n"%
                  (name))
@@ -230,7 +232,7 @@ for name in keys:
 	                 hex(begin), hex(end)))
     output.write(");\n}\n\n")
 
-header.write("\nint\txmlUCSIsCat\t(int code,\n\t\t\t const char *cat);\n")
+header.write("\nXMLPUBFUN int XMLCALL xmlUCSIsCat\t(int code,\n\t\t\t const char *cat);\n")
 output.write("/**\n * xmlUCSIsCat:\n * @code: UCS code point\n")
 output.write(" * @cat: UCS Category name\n")
 output.write(" *\n * Check whether the caracter is part of the UCS Category\n")

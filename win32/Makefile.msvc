@@ -128,6 +128,7 @@ LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
 XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\catalog.obj\
 	$(XML_INTDIR)\debugXML.obj\
+	$(XML_INTDIR)\dict.obj\
 	$(XML_INTDIR)\DOCBparser.obj\
 	$(XML_INTDIR)\encoding.obj\
 	$(XML_INTDIR)\entities.obj\
@@ -142,6 +143,7 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\parser.obj\
 	$(XML_INTDIR)\parserInternals.obj\
 	$(XML_INTDIR)\relaxng.obj\
+	$(XML_INTDIR)\SAX2.obj\
 	$(XML_INTDIR)\SAX.obj\
 	$(XML_INTDIR)\threads.obj\
 	$(XML_INTDIR)\tree.obj\
@@ -163,6 +165,7 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
 	$(XML_INTDIR_A)\catalog.obj\
 	$(XML_INTDIR_A)\debugXML.obj\
+	$(XML_INTDIR_A)\dict.obj\
 	$(XML_INTDIR_A)\DOCBparser.obj\
 	$(XML_INTDIR_A)\encoding.obj\
 	$(XML_INTDIR_A)\entities.obj\
@@ -177,6 +180,7 @@ XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
 	$(XML_INTDIR_A)\parser.obj\
 	$(XML_INTDIR_A)\parserInternals.obj\
 	$(XML_INTDIR_A)\relaxng.obj\
+	$(XML_INTDIR_A)\SAX2.obj\
 	$(XML_INTDIR_A)\SAX.obj\
 	$(XML_INTDIR_A)\threads.obj\
 	$(XML_INTDIR_A)\tree.obj\
@@ -287,8 +291,12 @@ $(XML_INTDIR)\$(XML_DEF) : $(XML_INTDIR) $(XML_DEF).src
 
 # Creates the libxml shared object.
 $(BINDIR)\$(XML_SO) : $(BINDIR) $(XML_OBJS) $(XML_INTDIR)\$(XML_DEF)
-	$(LD) $(LDFLAGS) /DLL /DEF:$(XML_INTDIR)\$(XML_DEF) \
+	$(LD) $(LDFLAGS) /DLL \
 		/IMPLIB:$(BINDIR)\$(XML_IMP) /OUT:$(BINDIR)\$(XML_SO) $(XML_OBJS) $(LIBS)
+
+#$(BINDIR)\$(XML_SO) : $(BINDIR) $(XML_OBJS) $(XML_INTDIR)\$(XML_DEF)
+#	$(LD) $(LDFLAGS) /DLL /DEF:$(XML_INTDIR)\$(XML_DEF) \
+#		/IMPLIB:$(BINDIR)\$(XML_IMP) /OUT:$(BINDIR)\$(XML_SO) $(XML_OBJS) $(LIBS)
 
 # Creates the libxml archive.
 $(BINDIR)\$(XML_A) : $(BINDIR) $(XML_OBJS_A)

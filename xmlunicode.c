@@ -6,7 +6,7 @@
  * http://www.unicode.org/Public/3.1-Update/UnicodeCharacterDatabase-3.1.0.html
  * using the genUnicode.py Python script.
  *
- * Generation date: Tue Apr 16 17:28:05 2002
+ * Generation date: Mon Aug 25 10:45:50 2003
  * Sources: Blocks-4.txt UnicodeData-3.1.0.txt
  * Daniel Veillard <veillard@redhat.com>
  */

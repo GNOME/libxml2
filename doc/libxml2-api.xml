@@ -2598,8 +2598,11 @@
      <summary>dynamic module loading</summary>
      <description>basic API for dynamic module loading, used by libexslt added in 2.6.17 </description>
      <author>Joel W. Reed </author>
+     <exports symbol='XML_MODULE_LAZY' type='enum'/>
+     <exports symbol='XML_MODULE_LOCAL' type='enum'/>
      <exports symbol='xmlModule' type='typedef'/>
      <exports symbol='xmlModulePtr' type='typedef'/>
+     <exports symbol='xmlModuleOption' type='typedef'/>
      <exports symbol='xmlModuleFree' type='function'/>
      <exports symbol='xmlModuleSymbol' type='function'/>
      <exports symbol='xmlModuleOpen' type='function'/>
@@ -4616,6 +4619,8 @@
     <enum name='XML_IO_UNKNOWN' file='xmlerror' value='1500' type='xmlParserErrors'/>
     <enum name='XML_IO_WRITE' file='xmlerror' value='1546' type='xmlParserErrors' info='1546'/>
     <enum name='XML_MODULE_CLOSE' file='xmlerror' value='4901' type='xmlParserErrors' info='4901'/>
+    <enum name='XML_MODULE_LAZY' file='xmlmodule' value='1' type='xmlModuleOption' info='lazy binding'/>
+    <enum name='XML_MODULE_LOCAL' file='xmlmodule' value='2' type='xmlModuleOption' info=' local binding'/>
     <enum name='XML_MODULE_OPEN' file='xmlerror' value='4900' type='xmlParserErrors' info='4900'/>
     <enum name='XML_NAMESPACE_DECL' file='tree' value='18' type='xmlElementType'/>
     <enum name='XML_NOTATION_NODE' file='tree' value='12' type='xmlElementType'/>
@@ -5662,6 +5667,7 @@ actually an xmlCharEncoding'/>
     </struct>
     <typedef name='xmlLocationSetPtr' file='xpointer' type='xmlLocationSet *'/>
     <struct name='xmlModule' file='xmlmodule' type='struct _xmlModule'/>
+    <typedef name='xmlModuleOption' file='xmlmodule' type='enum'/>
     <typedef name='xmlModulePtr' file='xmlmodule' type='xmlModule *'/>
     <struct name='xmlMutex' file='threads' type='struct _xmlMutex'/>
     <typedef name='xmlMutexPtr' file='threads' type='xmlMutex *'/>
@@ -10070,9 +10076,10 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlModuleOpen' file='xmlmodule'>
       <cond>defined(LIBXML_MODULES_ENABLED)</cond>
-      <info>Opens a module/shared library given its name or path</info>
+      <info>Opens a module/shared library given its name or path TODO: options are not yet implemented.</info>
       <return type='xmlModulePtr' info='a handle for the module or NULL in case of error'/>
       <arg name='name' type='const char *' info='the module name'/>
+      <arg name='options' type='int' info='a set of xmlModuleOption'/>
     </function>
     <function name='xmlModuleSymbol' file='xmlmodule'>
       <cond>defined(LIBXML_MODULES_ENABLED)</cond>

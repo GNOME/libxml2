@@ -9256,6 +9256,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    (!ctxt->disableSAX))
 			    ctxt->sax->endElementNs(ctxt->userData, name,
 			                            prefix, URI);
+			if (ctxt->nsNr - nsNr > 0)
+			    nsPop(ctxt, ctxt->nsNr - nsNr);
 #ifdef LIBXML_SAX1_ENABLED
 		    } else {
 			if ((ctxt->sax != NULL) &&

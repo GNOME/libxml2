@@ -27,7 +27,7 @@
 #define MODULE_PATH ".libs"
 #endif
 
-typedef int (*hello_world_t)();
+typedef int (*hello_world_t)(void);
  
 int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     xmlChar filename[PATH_MAX];
@@ -35,11 +35,12 @@ int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     hello_world_t hello_world = NULL;
 
     /* build the module filename, and confirm the module exists */
-    xmlStrPrintf(filename, sizeof(filename), "%s/testdso%s",
+    xmlStrPrintf(filename, sizeof(filename),
+                 (const xmlChar*) "%s/testdso%s",
                  (const xmlChar*)MODULE_PATH,
 		 (const xmlChar*)LIBXML_MODULE_EXTENSION);
 
-    module = xmlModuleOpen((const char*)filename);
+    module = xmlModuleOpen((const char*)filename, 0);
     if (module)
       {
         if (xmlModuleSymbol(module, "hello_world", (void **) &hello_world)) {

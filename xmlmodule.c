@@ -58,13 +58,15 @@ xmlModuleErrMemory(xmlModulePtr module, const char *extra)
 /**
  * xmlModuleOpen:
  * @name: the module name
+ * @options: a set of xmlModuleOption
  *
  * Opens a module/shared library given its name or path
+ * TODO: options are not yet implemented.
  *
  * Returns a handle for the module or NULL in case of error
  */
 xmlModulePtr
-xmlModuleOpen(const char *name)
+xmlModuleOpen(const char *name, int options ATTRIBUTE_UNUSED)
 {
     xmlModulePtr module;
 

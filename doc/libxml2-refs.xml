@@ -492,6 +492,8 @@
     <reference name='XML_LOCAL_NAMESPACE' href='html/libxml-tree.html#XML_LOCAL_NAMESPACE'/>
     <reference name='XML_MAX_NAMELEN' href='html/libxml-parserInternals.html#XML_MAX_NAMELEN'/>
     <reference name='XML_MODULE_CLOSE' href='html/libxml-xmlerror.html#XML_MODULE_CLOSE'/>
+    <reference name='XML_MODULE_LAZY' href='html/libxml-xmlmodule.html#XML_MODULE_LAZY'/>
+    <reference name='XML_MODULE_LOCAL' href='html/libxml-xmlmodule.html#XML_MODULE_LOCAL'/>
     <reference name='XML_MODULE_OPEN' href='html/libxml-xmlerror.html#XML_MODULE_OPEN'/>
     <reference name='XML_NAMESPACE_DECL' href='html/libxml-tree.html#XML_NAMESPACE_DECL'/>
     <reference name='XML_NOTATION_NODE' href='html/libxml-tree.html#XML_NOTATION_NODE'/>
@@ -2044,6 +2046,7 @@
     <reference name='xmlModuleClose' href='html/libxml-xmlmodule.html#xmlModuleClose'/>
     <reference name='xmlModuleFree' href='html/libxml-xmlmodule.html#xmlModuleFree'/>
     <reference name='xmlModuleOpen' href='html/libxml-xmlmodule.html#xmlModuleOpen'/>
+    <reference name='xmlModuleOption' href='html/libxml-xmlmodule.html#xmlModuleOption'/>
     <reference name='xmlModulePtr' href='html/libxml-xmlmodule.html#xmlModulePtr'/>
     <reference name='xmlModuleSymbol' href='html/libxml-xmlmodule.html#xmlModuleSymbol'/>
     <reference name='xmlMutex' href='html/libxml-threads.html#xmlMutex'/>
@@ -3764,6 +3767,8 @@
       <ref name='XML_LOCAL_NAMESPACE'/>
       <ref name='XML_MAX_NAMELEN'/>
       <ref name='XML_MODULE_CLOSE'/>
+      <ref name='XML_MODULE_LAZY'/>
+      <ref name='XML_MODULE_LOCAL'/>
       <ref name='XML_MODULE_OPEN'/>
       <ref name='XML_NAMESPACE_DECL'/>
       <ref name='XML_NOTATION_NODE'/>
@@ -5352,6 +5357,7 @@
       <ref name='xmlModuleClose'/>
       <ref name='xmlModuleFree'/>
       <ref name='xmlModuleOpen'/>
+      <ref name='xmlModuleOption'/>
       <ref name='xmlModulePtr'/>
       <ref name='xmlModuleSymbol'/>
       <ref name='xmlMutex'/>
@@ -12261,10 +12267,13 @@
       <ref name='xmlStrdupFunc'/>
     </file>
     <file name='xmlmodule'>
+      <ref name='XML_MODULE_LAZY'/>
+      <ref name='XML_MODULE_LOCAL'/>
       <ref name='xmlModule'/>
       <ref name='xmlModuleClose'/>
       <ref name='xmlModuleFree'/>
       <ref name='xmlModuleOpen'/>
+      <ref name='xmlModuleOption'/>
       <ref name='xmlModulePtr'/>
       <ref name='xmlModuleSymbol'/>
     </file>
@@ -16575,6 +16584,7 @@
           <ref name='xmlDecodeEntities'/>
           <ref name='xmlEncodeEntities'/>
           <ref name='xmlLoadExternalEntity'/>
+          <ref name='xmlModuleOpen'/>
           <ref name='xmlNamespaceParseNCName'/>
           <ref name='xmlNamespaceParseNSDef'/>
           <ref name='xmlNamespaceParseQName'/>
@@ -21776,6 +21786,7 @@
           <ref name='HTML_PI_NODE'/>
           <ref name='HTML_PRESERVE_NODE'/>
           <ref name='HTML_TEXT_NODE'/>
+          <ref name='xmlModuleOpen'/>
           <ref name='xmlSaveDoc'/>
           <ref name='xmlSaveTree'/>
           <ref name='xmlTextReaderNextSibling'/>
@@ -23941,6 +23952,7 @@
         <word name='options'>
           <ref name='htmlCtxtUseOptions'/>
           <ref name='xmlCtxtUseOptions'/>
+          <ref name='xmlModuleOpen'/>
           <ref name='xmlSaveToFd'/>
           <ref name='xmlSaveToFilename'/>
           <ref name='xmlSaveToIO'/>
@@ -28437,6 +28449,9 @@
         <word name='xmlLockLibrary'>
           <ref name='xmlLockLibrary'/>
         </word>
+        <word name='xmlModuleOption'>
+          <ref name='xmlModuleOpen'/>
+        </word>
         <word name='xmlMutexLock'>
           <ref name='xmlMutexLock'/>
         </word>
@@ -28953,6 +28968,7 @@
           <ref name='xmlTextWriterStartDocument'/>
         </word>
         <word name='yet'>
+          <ref name='xmlModuleOpen'/>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlSaveDoc'/>
           <ref name='xmlSaveTree'/>

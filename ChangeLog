@@ -1,3 +1,12 @@
+Tue Jan  4 22:47:22 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed namespace bug in push mode reported by 
+	  Rob Richards
+	* test/ns6 result//ns6*: added it to the regression tests
+	* xmlmodule.c testModule.c include/libxml/xmlmodule.h:
+	  added an extra option argument to module opening and defined
+	  a couple of flags to the API.
+
 Tue Jan  4 21:16:05 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlmodule.c include/libxml/xmlmodule.h: applied patch from

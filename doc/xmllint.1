@@ -31,167 +31,167 @@ xmllint \- command line XML tool
         | \fB--noblanks\fR | \fB--format\fR | \fB--testIO\fR | \fB--encode \fIencoding\fR\fR
         | \fB--catalogs\fR | \fB--nocatalogs\fR | \fB--auto\fR | \fB--xinclude\fR
         | \fB--loaddtd\fR | \fB--dtdattr\fR | \fB--dropdtd\fR | \fB--stream\fR
-        | \fB--chkregister\fR | \fB--relaxng\fR] [\fB\fIxmlfile\fR\fR]
+        | \fB--chkregister\fR | \fB--relaxng\fR] [\fBxmlfile\fR]
 .fi
 
 .SH "INTRODUCTION"
 
 .PP
-The xmllint program parses one or more XML files, specified on the command line as \fIxmlfile\fR\&. It prints various types of output, depending upon the options selected\&. It is useful for detecting errors both in XML code and in the XML parser itself\&.
+The xmllint program parses one or more XML files, specified on the command line as \fIxmlfile\fR. It prints various types of output, depending upon the options selected. It is useful for detecting errors both in XML code and in the XML parser itself.
 
 .PP
-It is included in libxml2\&.
+It is included in libxml2.
 
 .SH "OPTIONS"
 
 .TP
 \fB--version\fR
-Display the version of libxml2 used\&.
+Display the version of libxml2 used.
 
 .TP
 \fB--debug\fR
-Parse a file and output an annotated tree of the in-memory version of the document\&.
+Parse a file and output an annotated tree of the in-memory version of the document.
 
 .TP
 \fB--shell\fR
-Run a navigating shell\&. Details on available commands in shell mode are below\&.
+Run a navigating shell. Details on available commands in shell mode are below.
 
 .TP
 \fB--debugent\fR
-Debug the entities defined in the document\&.
+Debug the entities defined in the document.
 
 .TP
 \fB--copy\fR
-Test the internal copy implementation\&.
+Test the internal copy implementation.
 
 .TP
 \fB--recover\fR
-Output any parsable portions of an invalid document\&.
+Output any parsable portions of an invalid document.
 
 .TP
 \fB--noent\fR
-Substitute entity values for entity references\&. By default, xmllint leaves entity references in place\&.
+Substitute entity values for entity references. By default, xmllint leaves entity references in place.
 
 .TP
 \fB--noout\fR
-Suppress output\&. By default, xmllint outputs the result tree\&.
+Suppress output. By default, xmllint outputs the result tree.
 
 .TP
 \fB--htmlout\fR
-Output results as an HTML file\&. This causes xmllint to output the necessary HTML tags surrounding the result tree output so the results can be displayed in a browser\&.
+Output results as an HTML file. This causes xmllint to output the necessary HTML tags surrounding the result tree output so the results can be displayed in a browser.
 
 .TP
 \fB--nowrap \fR
-Do not output HTML doc wrapper\&.
+Do not output HTML doc wrapper.
 
 .TP
 \fB--valid \fR
-Determine if the document is a valid instance of the included Document Type Definition (DTD)\&. A DTD to be validated against also can be specified at the command line using the \fB--dtdvalid\fR option\&. By default, xmllint also checks to determine if the document is well-formed\&.
+Determine if the document is a valid instance of the included Document Type Definition (DTD). A DTD to be validated against also can be specified at the command line using the \fB--dtdvalid\fR option. By default, xmllint also checks to determine if the document is well-formed.
 
 .TP
 \fB--postvalid\fR
-Validate after parsing is completed\&.
+Validate after parsing is completed.
 
 .TP
 \fB--dtdvalid\fR \fIURL\fR
-Use the DTD specified by \fIURL\fR for validation\&.
+Use the DTD specified by \fIURL\fR for validation.
 
 .TP
 \fB--timing\fR
-Output information about the time it takes xmllint to perform the various steps\&.
+Output information about the time it takes xmllint to perform the various steps.
 
 .TP
 \fB--repeat\fR
-Repeat 100 times, for timing or profiling\&.
+Repeat 100 times, for timing or profiling.
 
 .TP
 \fB--insert\fR
-Test for valid insertions\&.
+Test for valid insertions.
 
 .TP
 \fB--compress\fR
-Turn on gzip compression of output\&.
+Turn on gzip compression of output.
 
 .TP
 \fB--sgml\fR
-Use the DocBook SGML parser\&. This allows documents written in SGML DocBook to be converted into an in-memory tree and treated as if they were written in XML\&.
+Use the DocBook SGML parser. This allows documents written in SGML DocBook to be converted into an in-memory tree and treated as if they were written in XML.
 
 .TP
 \fB--html\fR
-Use the HTML parser\&.
+Use the HTML parser.
 
 .TP
 \fB--push\fR
-Use the push mode of the parser\&.
+Use the push mode of the parser.
 
 .TP
 \fB--memory\fR
-Parse from memory\&.
+Parse from memory.
 
 .TP
 \fB--nowarning\fR
-Do not emit warnings from the parser and/or validator\&.
+Do not emit warnings from the parser and/or validator.
 
 .TP
 \fB--noblanks\fR
-Drop ignorable blank spaces\&.
+Drop ignorable blank spaces.
 
 .TP
 \fB--format\fR
-Reformat and reindent the output\&. The $XMLLINT_INDENT environment variable controls the indentation (default value is two spaces "  ")\&.
+Reformat and reindent the output. The $XMLLINT_INDENT environment variable controls the indentation (default value is two spaces " ").
 
 .TP
 \fB--testIO\fR
-Test user input/output support\&.
+Test user input/output support.
 
 .TP
 \fB--encode\fR \fIencoding\fR
-Output in the given encoding\&.
+Output in the given encoding.
 
 .TP
 \fB--catalogs\fR
-Use the catalogs from $SGML_CATALOG_FILES\&. Otherwise /etc/xml/catalog is used by default\&.
+Use the catalogs from $SGML_CATALOG_FILES. Otherwise /etc/xml/catalog is used by default.
 
 .TP
 \fB--nocatalogs\fR
-Do not use any catalogs\&.
+Do not use any catalogs.
 
 .TP
 \fB--auto\fR
-Generate a small document for testing purposes\&.
+Generate a small document for testing purposes.
 
 .TP
 \fB--xinclude\fR
-Do XInclude processing\&.
+Do XInclude processing.
 
 .TP
 \fB--loaddtd\fR
-Fetch external DTD\&.
+Fetch external DTD.
 
 .TP
 \fB--dtdattr\fR
-Fetch external DTD and populate the tree with inherited attributes\&.
+Fetch external DTD and populate the tree with inherited attributes.
 
 .TP
 \fB--dropdtd\fR
-Remove DTD from output\&.
+Remove DTD from output.
 
 .TP
 \fB--stream\fR
-Use streaming API - useful when used in combination with --relaxng or --valid options for validation of files that are too large to be held in memory\&.
+Use streaming API - useful when used in combination with --relaxng or --valid options for validation of files that are too large to be held in memory.
 
 .TP
 \fB--chkregister\fR
-Turn on node registration\&. Useful for developeres testing libxml2 node tracking code\&.
+Turn on node registration. Useful for developeres testing libxml2 node tracking code.
 
 .TP
 \fB--relaxng\fR \fIschema\fR
-Use RelaxNG file named \fIschema\fR for validation\&.
+Use RelaxNG file named \fIschema\fR for validation.
 
 .SH "SHELL"
 
 .PP
- xmllint offers an interactive shell mode invoked with the \fB--shell\fR command\&. Available commands in shell mode include:
+ xmllint offers an interactive shell mode invoked with the \fB--shell\fR command. Available commands in shell mode include:
 
 .TP
 \fBbase\fR
@@ -202,65 +202,65 @@ display XML base of the node
 leave shell
 
 .TP
-\fBcat \fInode\fR\fR
-Display node if given or current node\&.
+\fBcat node\fR
+Display node if given or current node.
 
 .TP
-\fBcd \fIpath\fR\fR
-Change the current node to \fIpath\fR (if given and unique) or root if no argument given\&.
+\fBcd path\fR
+Change the current node to \fIpath\fR (if given and unique) or root if no argument given.
 
 .TP
-\fBdir \fIpath\fR\fR
-Dumps information about the node (namespace, attributes, content)\&.
+\fBdir path\fR
+Dumps information about the node (namespace, attributes, content).
 
 .TP
-\fBdu \fIpath\fR\fR
-Show the structure of the subtree under path or the current node\&.
+\fBdu path\fR
+Show the structure of the subtree under path or the current node.
 
 .TP
 \fBexit\fR
-Leave the shell\&.
+Leave the shell.
 
 .TP
 \fBhelp\fR
-Show this help\&.
+Show this help.
 
 .TP
 \fBfree\fR
-Display memory usage\&.
+Display memory usage.
 
 .TP
-\fBload \fIname\fR\fR
-Load a new document with the given name\&.
+\fBload name\fR
+Load a new document with the given name.
 
 .TP
-\fBls \fIpath\fR\fR
-List contents of \fIpath\fR (if given) or the current directory\&.
+\fBls path\fR
+List contents of \fIpath\fR (if given) or the current directory.
 
 .TP
 \fBpwd\fR
-Display the path to the current node\&.
+Display the path to the current node.
 
 .TP
 \fBquit\fR
-Leave the shell\&.
+Leave the shell.
 
 .TP
-\fBsave \fIname\fR\fR
-Saves the current document to \fIname\fR if given or to the original name\&.
+\fBsave name\fR
+Saves the current document to \fIname\fR if given or to the original name.
 
 .TP
 \fBvalidate\fR
-Check the document for error\&.
+Check the document for error.
 
 .TP
-\fBwrite \fIname\fR\fR
-Write the current node to the given filename\&.
+\fBwrite name\fR
+Write the current node to the given filename.
 
 .SH "DEBUGGING CATALOGS"
 
 .PP
-Setting the environment variable \fIXML_DEBUG_CATALOG\fR using the command \fB"export XML_DEBUG_CATALOG="\fR outputs debugging information related to catalog operations\&.
+Setting the environment variable \fIXML_DEBUG_CATALOG\fR using the command \fB"export XML_DEBUG_CATALOG="\fR outputs debugging information related to catalog operations.
 
 .SH AUTHORS
 John Fleck, Ziying Sherwin, Heiko Rupp.

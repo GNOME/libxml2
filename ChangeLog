@@ -1,3 +1,9 @@
+Fri Apr 25 15:20:29 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/Makefile.am doc/xmlcatalog.1 doc/xmlcatalog_man.xml
+	  doc/xmllint.1 doc/xmllint.xml: automated the generation of the
+	  man page based on xsltproc and a stylesheet PI in the XML.
+
 Fri Apr 25 12:37:33 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xmllint.*: trying to fix #110541 where &nbsp; generated

@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>Libxml Frequently asqued Questions</title>
-  <meta name="GENERATOR" content="amaya V2.1">
+  <meta name="GENERATOR" content="amaya V3.2.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -57,8 +57,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     <p>Most linux and Bsd distribution includes libxml, this is probably the
     safer way for end-users</p>
     <p>David Doolin provides precompiled Windows versions at <a
-    href="http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/    
-    ">http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/</a></p>
+    href="http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/         ">http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/</a></p>
   </li>
   <li><em>I see libxml and libxml2 releases, which one should I install ?</em>
     <ul>
@@ -117,8 +116,10 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
         included by default on recent glibc libraries, so it doesn't need to
         be installed specifically on linux. It seems it's now <a
         href="http://www.opennc.org/onlinepubs/7908799/xsh/iconv.html">part of
-        the official UNIX</a> specification, though I could not find a home
-        page for the project.</li>
+        the official UNIX</a> specification. Here is one <a
+        href="http://clisp.cons.org/~haible/packages-libiconv.html">implementation
+        of the library</a> which source can be found <a
+        href="ftp://ftp.ilog.fr/pub/Users/haible/gnu/">here</a>. </li>
     </ul>
   </li>
   <li><em>The Makefile for the example gjobread is not generated</em>
@@ -134,13 +135,13 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
         all: gjobread
 
         clean:
-        &lt;TAB>@(rm -f gjobread gjobread.o)
+        &lt;TAB&gt;@(rm -f gjobread gjobread.o)
 
         gjobread.o : gjobread.c
-        &lt;TAB>$(CC) $(CFLAGS) -c gjobread.c
+        &lt;TAB&gt;$(CC) $(CFLAGS) -c gjobread.c
 
         gjobread: gjobread.o
-        &lt;TAB>$(CC) -o gjobread gjobread.o $(LDFLAGS)</pre>
+        &lt;TAB&gt;$(CC) -o gjobread gjobread.o $(LDFLAGS)</pre>
   </li>
   <li><em>libxml does not compile with HP-UX's optional ANSI-C compiler</em>
     <p>this is due to macro limitations. Try to add " -Wp,-H16800 -Ae" to the
@@ -173,7 +174,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     <p>The source code you are using has been <a
     href="upgrade.html">upgraded</a> to be able to compile with both libxml
     and libxml2, but you need to install a more recent version: libxml(-devel)
-    >= 1.8.8 or libxml2(-devel) >= 2.1.0</p>
+    &gt;= 1.8.8 or libxml2(-devel) &gt;= 2.1.0</p>
   </li>
   <li><em>XPath implementation looks seriously broken</em>
     <p>True, it's incomplete and the version released in 2.0.0 was nearly
@@ -185,7 +186,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
   </li>
   <li><em>The example provided in the web page does not compile</em>
     <p>It's hard to maintain the documentation in sync with the code
-    &lt;grin/> ...</p>
+    &lt;grin/&gt; ...</p>
     <p>Check the previous points 1/ and 2/ raised before, and send
     patches.</p>
   </li>
@@ -194,8 +195,8 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     <p>Ideally a libxml book would be nice. I have no such plan ... But you
     can:</p>
     <ul>
-      <li>check more deeply the <a href="html/libxml-lib.html">existing generated
-        doc</a></li>
+      <li>check more deeply the <a href="html/libxml-lib.html">existing
+        generated doc</a></li>
       <li>looks for examples of use for libxml function using the Gnome code
         for example the following will query the full Gnome CVs base for the
         use of the <strong>xmlAddChild()</strong> function:
@@ -205,7 +206,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
         could cure this :-)</p>
       </li>
       <li><a
-        href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&dir=gnome-xml">Browse
+        href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Browse
         the libxml source</a>, I try to write code as clean and documented as
         possible, so looking at it may be helpful</li>
     </ul>
@@ -215,7 +216,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     platforms, including embedded systems. I don't intend to convert to
     C++.</p>
     <p>There is however a C++ wrapper provided by Ari Johnson
-    &lt;ari@btigate.com> which may fullfill your needs:</p>
+    &lt;ari@btigate.com&gt; which may fullfill your needs:</p>
     <p>Website: <a
     href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a></p>
     <p>Download: <a
@@ -230,11 +231,11 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     document:</p>
     <pre>xmlDocPtr doc; /* your existing document */
         xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
-        dtd->name = xmlStrDup((xmlChar*)"root_name"); /* use the given root */
+        dtd-&gt;name = xmlStrDup((xmlChar*)"root_name"); /* use the given root */
 
-        doc->intSubset = dtd;
-        if (doc->children == NULL) xmlAddChild((xmlNodePtr)doc, (xmlNodePtr)dtd);
-        else xmlAddPrevSibling(doc->children, (xmlNodePtr)dtd);
+        doc-&gt;intSubset = dtd;
+        if (doc-&gt;children == NULL) xmlAddChild((xmlNodePtr)doc, (xmlNodePtr)dtd);
+        else xmlAddPrevSibling(doc-&gt;children, (xmlNodePtr)dtd);
           </pre>
   </li>
   <li>etc ...</li>

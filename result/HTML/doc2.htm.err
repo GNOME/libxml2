@@ -1,3 +1,15 @@
 ./test/HTML/doc2.htm:10: error: Misplaced DOCTYPE declaration
 <!-- END Naviscope Javascript --><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Tr
                                  ^
+./test/HTML/doc2.htm:11: error: error parsing attribute name
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+                                                  ^
+./test/HTML/doc2.htm:11: error: htmlParseStartTag: problem parsing attributes
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+                                                  ^
+./test/HTML/doc2.htm:11: error: Couldn't find end of Start Tag meta
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+                                                  ^
+./test/HTML/doc2.htm:18: error: Unexpected end tag : head
+<META content="MSHTML 5.00.3103.1000" name=GENERATOR></HEAD><FRAMESET 
+                                                            ^

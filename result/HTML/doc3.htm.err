@@ -1,6 +1,18 @@
 ./test/HTML/doc3.htm:10: error: Misplaced DOCTYPE declaration
 <!-- END Naviscope Javascript --><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//E
                                  ^
+./test/HTML/doc3.htm:11: error: error parsing attribute name
+<META content=text/html;CHARSET=iso-8859-1 http-equiv=Content-Type>
+                                               ^
+./test/HTML/doc3.htm:11: error: htmlParseStartTag: problem parsing attributes
+<META content=text/html;CHARSET=iso-8859-1 http-equiv=Content-Type>
+                                               ^
+./test/HTML/doc3.htm:11: error: Couldn't find end of Start Tag meta
+<META content=text/html;CHARSET=iso-8859-1 http-equiv=Content-Type>
+                                               ^
+./test/HTML/doc3.htm:37: error: Unexpected end tag : head
+<META content="MSHTML 5.00.3103.1000" name=GENERATOR></HEAD>
+                                                           ^
 ./test/HTML/doc3.htm:52: error: htmlParseEntityRef: expecting ';'
  href="http://ads.gamesquad.net/addclick.exe/adclick.cgi?REGION=game|tech|ent&i
                                                                                 ^

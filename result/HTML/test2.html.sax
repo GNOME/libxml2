@@ -10,20 +10,20 @@ SAX.endElement(title)
 SAX.endElement(head)
 SAX.ignorableWhitespace(
 , 1)
-SAX.startElement(body, bgcolor='White', link='Blue', text='Black', VLINK='Black', ALINK='Red')
+SAX.startElement(body, bgcolor='White', link='Blue', text='Black', vlink='Black', alink='Red')
 SAX.ignorableWhitespace(
 
 , 2)
 SAX.startElement(center)
 SAX.characters(
 , 1)
-SAX.startElement(table, BORDER='0', WIDTH='100%', CELLSPACING='0', CELLPADDING='0')
+SAX.startElement(table, border='0', width='100%', cellspacing='0', cellpadding='0')
 SAX.characters(
         , 9)
-SAX.startElement(tr, BGCOLOR='#FFFFFF')
+SAX.startElement(tr, bgcolor='#FFFFFF')
 SAX.characters(
                 , 17)
-SAX.startElement(td, HEIGHT='90')
+SAX.startElement(td, height='90')
 SAX.characters(
 , 1)
 SAX.startElement(a, href='http://linuxtoday.com/cgi-bin/click.pl?adnum=49')
@@ -37,7 +37,7 @@ SAX.endElement(td)
 SAX.characters(
     , 5)
 SAX.startElement(td)
-SAX.startElement(img, SRC='/pics/lt.gif', VSPACE='5', alt='Linux Today Logo')
+SAX.startElement(img, src='/pics/lt.gif', vspace='5', alt='Linux Today Logo')
 SAX.endElement(img)
 SAX.startElement(br)
 SAX.endElement(br)

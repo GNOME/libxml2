@@ -1,3 +1,9 @@
+Tue Oct  3 11:28:52 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c: Doohhh, attribute name parsing was still case
+	  sensitive ! Fixed this ...
+	* result/HTML/* : updated the tests results accordingly
+
 Mon Oct  2 23:47:32 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.[ch] debugXML.c testXPath.c: fixed the XPath evaluation

@@ -142,10 +142,6 @@ PUSH_AND_POP(extern, xmlChar*, name)
 
 #define SKIP_BLANKS htmlSkipBlankChars(ctxt);
 
-#if 0
-#define CUR ((int) (*ctxt->input->cur))
-#define NEXT htmlNextChar(ctxt);
-#else
 /* Inported from XML */
 
 /* #define CUR (ctxt->token ? ctxt->token : (int) (*ctxt->input->cur)) */
@@ -175,7 +171,6 @@ PUSH_AND_POP(extern, xmlChar*, name)
 #define COPY_BUF(l,b,i,v)						\
     if (l == 1) b[i++] = (xmlChar) v;					\
     else i += xmlCopyChar(l,&b[i],v);
-#endif
 
 /**
  * htmlCurrentChar:
@@ -1858,27 +1853,6 @@ htmlParseName(htmlParserCtxtPtr ctxt) {
 
 xmlChar *
 htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
-#if 0
-    xmlChar buf[HTML_MAX_NAMELEN];
-    int len = 0;
-
-    GROW;
-    while ((CUR != 0) && (CUR != stop) && (CUR != '>')) {
-	if ((stop == 0) && (IS_BLANK(CUR))) break;
-	buf[len++] = CUR;
-	NEXT;
-	if (len >= HTML_MAX_NAMELEN) {
-	    fprintf(stderr, 
-	       "htmlParseHTMLAttribute: reached HTML_MAX_NAMELEN limit\n");
-	    while ((!IS_BLANK(CUR)) && (CUR != '<') &&
-		   (CUR != '>') &&
-		   (CUR != '\'') && (CUR != '"'))
-		 NEXT;
-	    break;
-	}
-    }
-    return(xmlStrndup(buf, len));
-#else    
     xmlChar *buffer = NULL;
     int buffer_size = 0;
     xmlChar *out = NULL;
@@ -1998,7 +1972,6 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
     }
     *out++ = 0;
     return(buffer);
-#endif
 }
 
 /**
@@ -2620,7 +2593,7 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
     xmlChar *name, *val = NULL;
 
     *value = NULL;
-    name = htmlParseName(ctxt);
+    name = htmlParseHTMLName(ctxt);
     if (name == NULL) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, "error parsing attribute name\n");

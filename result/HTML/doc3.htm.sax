@@ -22,19 +22,24 @@ SAX.internalSubset(HTML, -//W3C//DTD HTML 3.2//EN, )
 SAX.comment(last modified on Tuesday, February 22, 2000 11:47 PM )
 SAX.ignorableWhitespace(
 , 2)
-SAX.startElement(meta, content='text/html;CHARSET=iso-8859-1', http-equiv='Content-Type')
-SAX.endElement(meta)
-SAX.ignorableWhitespace(
-, 2)
+SAX.error: error parsing attribute name
+SAX.error: htmlParseStartTag: problem parsing attributes
+SAX.startElement(meta, content='text/html;CHARSET=iso-8859-1', http)
+SAX.error: Couldn't find end of Start Tag meta
+SAX.endElement(head)
+SAX.startElement(body)
+SAX.startElement(p)
+SAX.characters(-equiv=Content-Type&gt;
+, 22)
 SAX.startElement(meta, content='Tim', name='Author')
 SAX.endElement(meta)
-SAX.ignorableWhitespace(
+SAX.characters(
 , 2)
 SAX.startElement(style, type='text/css')
 SAX.characters(A.nav {
 	COLOR: #003399; TEXT, 115)
 SAX.endElement(style)
-SAX.ignorableWhitespace(
+SAX.characters(
 
 , 4)
 SAX.startElement(script, language='JavaScript')
@@ -64,15 +69,16 @@ eval("page" + id + " = window.open(URL, '" + id + "', 'toolbars=0, scrollbars=0,
 SAX.characters(
 , 1)
 SAX.endElement(script)
-SAX.ignorableWhitespace(
+SAX.characters(
 
 , 4)
 SAX.startElement(meta, content='MSHTML 5.00.3103.1000', name='GENERATOR')
 SAX.endElement(meta)
-SAX.endElement(head)
-SAX.ignorableWhitespace(
+SAX.error: Unexpected end tag : head
+SAX.characters(
 , 2)
-SAX.startElement(body, aLink='red', bgColor='black', link='red', text='white', vLink='red')
+SAX.endElement(p)
+SAX.startElement(body, alink='red', bgcolor='black', link='red', text='white', vlink='red')
 SAX.ignorableWhitespace(
 , 2)
 SAX.startElement(p)
@@ -82,7 +88,7 @@ SAX.endElement(p)
 SAX.startElement(div, align='center')
 SAX.characters(
 , 2)
-SAX.startElement(table, border='0', cellPadding='0', cellSpacing='0', width='80%')
+SAX.startElement(table, border='0', cellpadding='0', cellspacing='0', width='80%')
 SAX.characters(
   , 4)
 SAX.startElement(tbody)
@@ -91,7 +97,7 @@ SAX.characters(
 SAX.startElement(tr)
 SAX.characters(
     , 6)
-SAX.startElement(td, vAlign='top', width='31')
+SAX.startElement(td, valign='top', width='31')
 SAX.startElement(a, href='http://bp6.gamesquad.net/')
 SAX.startElement(img, align='bottom', border='0', height='74', src='doc3_files/logo.gif', width='252')
 SAX.endElement(img)
@@ -99,20 +105,20 @@ SAX.endElement(a)
 SAX.endElement(td)
 SAX.characters(
     , 6)
-SAX.startElement(td, align='left', bgColor='#000000')
+SAX.startElement(td, align='left', bgcolor='#000000')
 SAX.startElement(img, height='15', src='doc3_files/spacer.gif', width='15')
 SAX.endElement(img)
 SAX.comment( START GAMESQUAD.NET IFRAME RICH MEDIA CODE )
 SAX.characters( , 1)
 SAX.comment( © 2000 GameSquad.net All Rights Reserved. )
-SAX.startElement(iframe, border='0', frameBorder='no', height='60', marginHeight='0', marginWidth='0', scrolling='no', src='doc3_files/adcycle.htm', width='468')
+SAX.startElement(iframe, border='0', frameborder='no', height='60', marginheight='0', marginwidth='0', scrolling='no', src='doc3_files/adcycle.htm', width='468')
 SAX.characters(
 , 1)
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.startElement(a, href='http://ads.gamesquad.net/addclick.exe/adclick.cgi?REGION=game|tech|ent&amp;id=1', target='_top')
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
-SAX.startElement(img, src='http://ads.gamesquad.net/addclick.exe/adcycle.cgi?group=52&amp;media=1&amp;id=1', width='468', height='60', border='0', ALT='GSN ROS Ad')
+SAX.startElement(img, src='http://ads.gamesquad.net/addclick.exe/adcycle.cgi?group=52&amp;media=1&amp;id=1', width='468', height='60', border='0', alt='GSN ROS Ad')
 SAX.endElement(img)
 SAX.endElement(a)
 SAX.characters(
@@ -131,7 +137,7 @@ SAX.characters(
 SAX.startElement(tr)
 SAX.characters(
     , 6)
-SAX.startElement(td, bgColor='#003399', colSpan='2')
+SAX.startElement(td, bgcolor='#003399', colspan='2')
 SAX.characters(
       , 8)
 SAX.startElement(p, align='right')
@@ -151,17 +157,17 @@ SAX.characters(
 SAX.startElement(tr)
 SAX.characters(
     , 6)
-SAX.startElement(td, colSpan='2')
+SAX.startElement(td, colspan='2')
 SAX.characters(
       , 8)
-SAX.startElement(table, bgColor='#003399', border='0', cellPadding='0', cellSpacing='4', width='100%')
+SAX.startElement(table, bgcolor='#003399', border='0', cellpadding='0', cellspacing='4', width='100%')
 SAX.startElement(tbody)
 SAX.characters(
         , 10)
 SAX.startElement(tr)
 SAX.characters(
           , 12)
-SAX.startElement(td, bgColor='#666666', width='100%')
+SAX.startElement(td, bgcolor='#666666', width='100%')
 SAX.characters(
             , 14)
 SAX.startElement(center)
@@ -171,7 +177,7 @@ SAX.startElement(p)
 SAX.characters(
             , 14)
 SAX.endElement(p)
-SAX.startElement(table, bgColor='black', border='0', cellPadding='0', cellSpacing='1', width='100%')
+SAX.startElement(table, bgcolor='black', border='0', cellpadding='0', cellspacing='1', width='100%')
 SAX.characters(
               , 16)
 SAX.startElement(tbody)
@@ -180,7 +186,7 @@ SAX.characters(
 SAX.startElement(tr)
 SAX.characters(
                 , 18)
-SAX.startElement(td, background='doc3_files/hscan.gif', bgColor='#666666', width='100%')
+SAX.startElement(td, background='doc3_files/hscan.gif', bgcolor='#666666', width='100%')
 SAX.startElement(img, height='1', src='doc3_files/spacer.gif', width='738')
 SAX.endElement(img)
 SAX.startElement(br)
@@ -190,7 +196,7 @@ SAX.characters(
 SAX.startElement(center)
 SAX.characters(
                   , 20)
-SAX.startElement(table, border='0', cellPadding='2', cellSpacing='0', width='91%')
+SAX.startElement(table, border='0', cellpadding='2', cellspacing='0', width='91%')
 SAX.characters(
                     , 22)
 SAX.startElement(tbody)
@@ -199,7 +205,7 @@ SAX.characters(
 SAX.startElement(tr)
 SAX.characters(
                       , 24)
-SAX.startElement(td, vAlign='top', width='15%')
+SAX.startElement(td, valign='top', width='15%')
 SAX.characters(
                         , 26)
 SAX.startElement(p, align='center')
@@ -222,7 +228,7 @@ SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
                       , 24)
-SAX.startElement(td, vAlign='top', width='15%')
+SAX.startElement(td, valign='top', width='15%')
 SAX.characters(
                         , 26)
 SAX.startElement(p, align='center')
@@ -245,7 +251,7 @@ SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
                       , 24)
-SAX.startElement(td, vAlign='top', width='15%')
+SAX.startElement(td, valign='top', width='15%')
 SAX.characters(
                         , 26)
 SAX.startElement(p, align='center')
@@ -268,7 +274,7 @@ SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
                       , 24)
-SAX.startElement(td, vAlign='top', width='15%')
+SAX.startElement(td, valign='top', width='15%')
 SAX.characters(
                         , 26)
 SAX.startElement(p, align='center')
@@ -291,7 +297,7 @@ SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
                       , 24)
-SAX.startElement(td, vAlign='top', width='15%')
+SAX.startElement(td, valign='top', width='15%')
 SAX.characters(
                         , 26)
 SAX.startElement(p, align='center')
@@ -314,7 +320,7 @@ SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
                       , 24)
-SAX.startElement(td, vAlign='top', width='15%')
+SAX.startElement(td, valign='top', width='15%')
 SAX.characters(
                         , 26)
 SAX.startElement(p, align='center')
@@ -337,14 +343,14 @@ SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
                       , 24)
-SAX.startElement(td, vAlign='top', width='15%')
+SAX.startElement(td, valign='top', width='15%')
 SAX.characters(
                         , 26)
 SAX.startElement(p, align='center')
 SAX.startElement(a, href='http://www.gentus.com/')
 SAX.error: error parsing attribute name
 SAX.error: htmlParseStartTag: problem parsing attributes
-SAX.startElement(img, align='bottom', alt='Taking a first look at the Abit Linux release called ', border='0', height='45', src='doc3_files/gentusbox.gif', width='70', Gentus)
+SAX.startElement(img, align='bottom', alt='Taking a first look at the Abit Linux release called ', border='0', height='45', src='doc3_files/gentusbox.gif', width='70', gentus)
 SAX.error: Couldn't find end of Start Tag img
 SAX.characters(?.?&gt;, 4)
 SAX.endElement(a)
@@ -379,7 +385,7 @@ SAX.endElement(tbody)
 SAX.endElement(table)
 SAX.characters(
 , 2)
-SAX.startElement(table, bgColor='#003399', border='0', cellSpacing='6', width='80%')
+SAX.startElement(table, bgcolor='#003399', border='0', cellspacing='6', width='80%')
 SAX.characters(
   , 4)
 SAX.startElement(tbody)
@@ -388,10 +394,10 @@ SAX.characters(
 SAX.startElement(tr)
 SAX.characters(
     , 6)
-SAX.startElement(td, bgColor='black', vAlign='top', width='10%')
+SAX.startElement(td, bgcolor='black', valign='top', width='10%')
 SAX.characters(
       , 8)
-SAX.startElement(table, border='0', cellPadding='3', cellSpacing='0', width='100%')
+SAX.startElement(table, border='0', cellpadding='3', cellspacing='0', width='100%')
 SAX.characters(
         , 10)
 SAX.startElement(tbody)
@@ -742,7 +748,7 @@ SAX.endElement(table)
 SAX.endElement(td)
 SAX.characters(
     , 6)
-SAX.startElement(td, bgColor='white', vAlign='top', width='80%')
+SAX.startElement(td, bgcolor='white', valign='top', width='80%')
 SAX.startElement(img, height='1', src='doc3_files/spacer.gif', width='490')
 SAX.endElement(img)
 SAX.startElement(br)
@@ -756,7 +762,7 @@ SAX.startElement(p)
 SAX.characters(
       , 8)
 SAX.endElement(p)
-SAX.startElement(table, bgColor='white', border='0', cellPadding='10', cellSpacing='0', height='100%', width='100%')
+SAX.startElement(table, bgcolor='white', border='0', cellpadding='10', cellspacing='0', height='100%', width='100%')
 SAX.characters(
         , 10)
 SAX.startElement(tbody)
@@ -765,7 +771,7 @@ SAX.characters(
 SAX.startElement(tr)
 SAX.characters(
           , 12)
-SAX.startElement(td, bgColor='white', vAlign='top', width='100%')
+SAX.startElement(td, bgcolor='white', valign='top', width='100%')
 SAX.characters(
             , 14)
 SAX.startElement(center)
@@ -874,7 +880,7 @@ SAX.startElement(a, name='newsitem965012956,78924,')
 SAX.endElement(a)
 SAX.characters(
             , 14)
-SAX.startElement(table, bgColor='#003399', width='100%')
+SAX.startElement(table, bgcolor='#003399', width='100%')
 SAX.characters(
               , 16)
 SAX.startElement(tbody)
@@ -987,7 +993,7 @@ SAX.startElement(a, name='newsitem964766837,26344,')
 SAX.endElement(a)
 SAX.characters(
             , 14)
-SAX.startElement(table, bgColor='#003399', width='100%')
+SAX.startElement(table, bgcolor='#003399', width='100%')
 SAX.characters(
               , 16)
 SAX.startElement(tbody)
@@ -1372,7 +1378,7 @@ SAX.startElement(a, name='newsitem964671589,7831,')
 SAX.endElement(a)
 SAX.characters(
             , 14)
-SAX.startElement(table, bgColor='#003399', width='100%')
+SAX.startElement(table, bgcolor='#003399', width='100%')
 SAX.characters(
               , 16)
 SAX.startElement(tbody)
@@ -1627,7 +1633,7 @@ SAX.startElement(a, name='newsitem964587833,74573,')
 SAX.endElement(a)
 SAX.characters(
             , 14)
-SAX.startElement(table, bgColor='#003399', width='100%')
+SAX.startElement(table, bgcolor='#003399', width='100%')
 SAX.characters(
               , 16)
 SAX.startElement(tbody)
@@ -1757,7 +1763,7 @@ SAX.startElement(a, name='newsitem964429577,13375,')
 SAX.endElement(a)
 SAX.characters(
             , 14)
-SAX.startElement(table, bgColor='#003399', width='100%')
+SAX.startElement(table, bgcolor='#003399', width='100%')
 SAX.characters(
               , 16)
 SAX.startElement(tbody)
@@ -1905,7 +1911,7 @@ SAX.startElement(a, name='newsitem963875853,12731,')
 SAX.endElement(a)
 SAX.characters(
             , 14)
-SAX.startElement(table, bgColor='#003399', width='100%')
+SAX.startElement(table, bgcolor='#003399', width='100%')
 SAX.characters(
               , 16)
 SAX.startElement(tbody)
@@ -2183,7 +2189,7 @@ SAX.startElement(a, name='newsitem963766655,78511,')
 SAX.endElement(a)
 SAX.characters(
             , 14)
-SAX.startElement(table, bgColor='#003399', width='100%')
+SAX.startElement(table, bgcolor='#003399', width='100%')
 SAX.characters(
               , 16)
 SAX.startElement(tbody)
@@ -2338,7 +2344,7 @@ SAX.startElement(a, name='newsitem963685749,28290,')
 SAX.endElement(a)
 SAX.characters(
             , 14)
-SAX.startElement(table, bgColor='#003399', width='100%')
+SAX.startElement(table, bgcolor='#003399', width='100%')
 SAX.characters(
               , 16)
 SAX.startElement(tbody)
@@ -2500,7 +2506,7 @@ SAX.startElement(a, name='newsitem963619505,3764,')
 SAX.endElement(a)
 SAX.characters(
             , 14)
-SAX.startElement(table, bgColor='#003399', width='100%')
+SAX.startElement(table, bgcolor='#003399', width='100%')
 SAX.characters(
               , 16)
 SAX.startElement(tbody)
@@ -2591,7 +2597,7 @@ SAX.characters(
             , 14)
 SAX.endElement(font)
 SAX.startElement(center)
-SAX.startElement(iframe, frameBorder='0', height='60', marginHeight='0', marginWidth='0', noResize, scrolling='no', src='doc3_files/ad_iframe.htm', width='468')
+SAX.startElement(iframe, frameborder='0', height='60', marginheight='0', marginwidth='0', noresize, scrolling='no', src='doc3_files/ad_iframe.htm', width='468')
 SAX.startElement(a, href='http://ads.adflight.com/go_static.asp?asid=7708', target='_top')
 SAX.error: htmlParseEntityRef: expecting ';'
 SAX.error: htmlParseEntityRef: expecting ';'
@@ -2611,7 +2617,7 @@ SAX.error: Unexpected end tag : p
 SAX.endElement(td)
 SAX.characters(
     , 6)
-SAX.startElement(td, bgColor='silver', vAlign='top', width='10%')
+SAX.startElement(td, bgcolor='silver', valign='top', width='10%')
 SAX.characters(
       , 8)
 SAX.startElement(center)
@@ -2621,7 +2627,7 @@ SAX.startElement(p)
 SAX.characters(
       , 8)
 SAX.endElement(p)
-SAX.startElement(table, bgColor='silver', border='0', cellPadding='0', cellSpacing='0', width='100%')
+SAX.startElement(table, bgcolor='silver', border='0', cellpadding='0', cellspacing='0', width='100%')
 SAX.characters(
         , 10)
 SAX.startElement(tbody)
@@ -2630,7 +2636,7 @@ SAX.characters(
 SAX.startElement(tr)
 SAX.characters(
           , 12)
-SAX.startElement(td, COLSTART='1')
+SAX.startElement(td, colstart='1')
 SAX.characters(
             , 14)
 SAX.startElement(center)
@@ -2703,7 +2709,7 @@ SAX.comment(				<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%" B
 )
 SAX.characters(
       , 8)
-SAX.startElement(table, bgColor='silver', border='0', cellPadding='0', cellSpacing='0', width='100%')
+SAX.startElement(table, bgcolor='silver', border='0', cellpadding='0', cellspacing='0', width='100%')
 SAX.characters(
         , 10)
 SAX.startElement(tbody)
@@ -2758,7 +2764,7 @@ SAX.error: Opening and ending tag mismatch: b and noscript
 SAX.endElement(noscript)
 SAX.endElement(b)
 SAX.startElement(a, href='http://www.goto.com/d/search/ssn/?fromGIF=true', target='_blank')
-SAX.startElement(img, align='bottom', border='0', height='90', isMap, src='doc3_files/100x90.gif', width='100')
+SAX.startElement(img, align='bottom', border='0', height='90', ismap, src='doc3_files/100x90.gif', width='100')
 SAX.endElement(img)
 SAX.endElement(a)
 SAX.startElement(b)
@@ -2792,7 +2798,7 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.endElement(font)
 SAX.endElement(b)
-SAX.startElement(input, maxLength='30', name='criteria', size='10')
+SAX.startElement(input, maxlength='30', name='criteria', size='10')
 SAX.endElement(input)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2844,7 +2850,7 @@ SAX.endElement(tbody)
 SAX.endElement(table)
 SAX.characters(
       , 8)
-SAX.startElement(table, bgColor='silver', border='0', cellPadding='0', cellSpacing='0', height='100%', width='100%')
+SAX.startElement(table, bgcolor='silver', border='0', cellpadding='0', cellspacing='0', height='100%', width='100%')
 SAX.characters(
         , 10)
 SAX.startElement(tbody)
@@ -2872,7 +2878,7 @@ SAX.endElement(center)
 SAX.error: Unexpected end tag : td
 SAX.error: Unexpected end tag : tr
 SAX.startElement(tr)
-SAX.startElement(td, COLSPAN='3', VALIGN='TOP', HEIGHT='70')
+SAX.startElement(td, colspan='3', valign='TOP', height='70')
 SAX.characters(&nbsp;, 2)
 SAX.endElement(td)
 SAX.characters( , 1)
@@ -2920,6 +2926,7 @@ SAX.characters( window.open=NS_ActualOpen; , 28)
 SAX.endElement(script)
 SAX.ignorableWhitespace(
 , 2)
+SAX.endElement(body)
 SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(

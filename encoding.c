@@ -384,24 +384,25 @@ isolat1ToUTF8(unsigned char* out, int *outlen,
     unsigned char* outend = out + *outlen;
     const unsigned char* inend;
     unsigned int c;
-    int bits;
 
     inend = in + (*inlen);
-    while ((in < inend) && (out - outstart + 5 < *outlen)) {
-	c= *in++;
+    while (in < inend) {
+	c = *in++;
 
-	/* assertion: c is a single UTF-4 value */
         if (out >= outend)
 	    break;
-        if      (c <    0x80) {  *out++=  c;                bits= -6; }
-        else                  {  *out++= ((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
- 
-        for ( ; bits >= 0; bits-= 6) {
+
+        if (c < 0x80) {
+	    *out++ =  c;
+	    processed++;
+	    continue;
+	} else {
+	    *out++= ((c >>  6) & 0x1F) | 0xC0;
             if (out >= outend)
-	        break;
-            *out++= ((c >> bits) & 0x3F) | 0x80;
+		break;
+            *out++= (c & 0x3F) | 0x80;
+	    processed++;
         }
-	processed = (const unsigned char*) in;
     }
     *outlen = out - outstart;
     *inlen = processed - base;

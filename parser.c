@@ -287,30 +287,57 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 
 int
 xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
-    int cur, res = 0;
+    int res = 0;
 
+    if (ctxt->token != 0) {
+	if (!IS_BLANK(ctxt->token))
+	    return(0);
+	ctxt->token = 0;
+	res++;
+    }
     /*
      * It's Okay to use CUR/NEXT here since all the blanks are on
      * the ASCII range.
      */
-    do {
-	cur = CUR;
-	while (IS_BLANK(cur)) { /* CHECKED tstblanks.xml */
-	    NEXT;
-	    cur = CUR;
-	    res++;
-	}
-	while ((cur == 0) && (ctxt->inputNr > 1) &&
-	       (ctxt->instate != XML_PARSER_COMMENT)) {
-	    xmlPopInput(ctxt);
-	    cur = CUR;
-	}
+    if ((ctxt->inputNr == 1) && (ctxt->instate != XML_PARSER_DTD)) {
+	const xmlChar *cur;
 	/*
-	 * Need to handle support of entities branching here
+	 * if we are in the document content, go really fast
 	 */
-	if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);
-	/* DEPR if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt); */
-    } while (IS_BLANK(cur)); /* CHECKED tstblanks.xml */
+	cur = ctxt->input->cur;
+	while (IS_BLANK(*cur)) {
+	    if (*cur == '\n') {
+		ctxt->input->line++; ctxt->input->col = 1;
+	    }
+	    cur++;
+	    res++;
+	    if (*cur == 0) {
+		ctxt->input->cur = cur;
+		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+		cur = ctxt->input->cur;
+	    }
+	}
+	ctxt->input->cur = cur;
+    } else {
+	int cur;
+	do {
+	    cur = CUR;
+	    while (IS_BLANK(cur)) { /* CHECKED tstblanks.xml */
+		NEXT;
+		cur = CUR;
+		res++;
+	    }
+	    while ((cur == 0) && (ctxt->inputNr > 1) &&
+		   (ctxt->instate != XML_PARSER_COMMENT)) {
+		xmlPopInput(ctxt);
+		cur = CUR;
+	    }
+	    /*
+	     * Need to handle support of entities branching here
+	     */
+	    if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);
+	} while (IS_BLANK(cur)); /* CHECKED tstblanks.xml */
+    }
     return(res);
 }
 

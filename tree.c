@@ -2335,7 +2335,28 @@ xmlFreeNodeList(xmlNodePtr cur) {
     }
     while (cur != NULL) {
         next = cur->next;
-        xmlFreeNode(cur);
+	/* unroll to speed up freeing the document */
+	if (cur->type != XML_DTD_NODE) {
+	    if ((cur->children != NULL) &&
+		(cur->type != XML_ENTITY_REF_NODE))
+		xmlFreeNodeList(cur->children);
+	    if (cur->properties != NULL)
+		xmlFreePropList(cur->properties);
+	    if (cur->type != XML_ENTITY_REF_NODE)
+#ifndef XML_USE_BUFFER_CONTENT
+		if (cur->content != NULL) xmlFree(cur->content);
+#else
+		if (cur->content != NULL) xmlBufferFree(cur->content);
+#endif
+	    if ((cur->name != NULL) &&
+		(cur->name != xmlStringText) &&
+		(cur->name != xmlStringTextNoenc) &&
+		(cur->name != xmlStringComment))
+		xmlFree((char *) cur->name);
+	    /* TODO : derecursivate this function */
+	    if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
+	    xmlFree(cur);
+	}
 	cur = next;
     }
 }
@@ -2356,16 +2377,14 @@ xmlFreeNode(xmlNodePtr cur) {
 #endif
 	return;
     }
+    /* use xmlFreeDtd for DTD nodes */
     if (cur->type == XML_DTD_NODE)
 	return;
-    cur->doc = NULL;
-    cur->parent = NULL;
-    cur->next = NULL;
-    cur->prev = NULL;
     if ((cur->children != NULL) &&
 	(cur->type != XML_ENTITY_REF_NODE))
 	xmlFreeNodeList(cur->children);
-    if (cur->properties != NULL) xmlFreePropList(cur->properties);
+    if (cur->properties != NULL)
+	xmlFreePropList(cur->properties);
     if (cur->type != XML_ENTITY_REF_NODE)
 #ifndef XML_USE_BUFFER_CONTENT
 	if (cur->content != NULL) xmlFree(cur->content);

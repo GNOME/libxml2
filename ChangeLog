@@ -1,3 +1,9 @@
+Mon Apr 30 13:44:48 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c parser.c encoding.c: spent a bit more time looking
+	  at the parsing speed and DOM handling. Added a few more
+	  speedups.
+
 Sun Apr 29 21:53:47 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: small but effective parsing speed improvement

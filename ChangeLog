@@ -1,3 +1,7 @@
+Tue May  8 10:26:22 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.c: fixed the bug reported by Bjorn in htmlNodeDump
+
 Tue May  8 09:30:12 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: fixed a small portability problem with AM_CONDITIONAL

@@ -493,16 +493,6 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	}
 	return;
     }
-    if (cur->type == HTML_PRESERVE_NODE) {
-	if (cur->content != NULL) {
-#ifndef XML_USE_BUFFER_CONTENT
-	    xmlBufferWriteCHAR(buf, cur->content);
-#else
-	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
-#endif
-	}
-	return;
-    }
     if (cur->type == HTML_COMMENT_NODE) {
 	if (cur->content != NULL) {
 	    xmlBufferWriteChar(buf, "<!--");
@@ -537,9 +527,19 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
         xmlBufferWriteChar(buf, ";");
 	return;
     }
+    if (cur->type == HTML_PRESERVE_NODE) {
+	if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
+	    xmlBufferWriteCHAR(buf, cur->content);
+#else
+	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
+#endif
+	}
+	return;
+    }
 
     /*
-     * Get specific HTmL info for taht node.
+     * Get specific HTML info for taht node.
      */
     info = htmlTagLookup(cur->name);
 
@@ -558,9 +558,10 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	return;
     }
     if ((cur->content == NULL) && (cur->children == NULL)) {
-        if ((info != NULL) && (info->endTag != 0))
+        if ((info != NULL) && (info->saveEndTag != 0) &&
+	    (strcmp(info->name, "html")) && (strcmp(info->name, "body"))) {
 	    xmlBufferWriteChar(buf, ">");
-	else {
+	} else {
 	    xmlBufferWriteChar(buf, "></");
 	    xmlBufferWriteCHAR(buf, cur->name);
 	    xmlBufferWriteChar(buf, ">");
@@ -577,10 +578,10 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	xmlChar *buffer;
 
 #ifndef XML_USE_BUFFER_CONTENT
-    buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+	buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 #else
-    buffer = xmlEncodeEntitiesReentrant(doc, 
-                                        xmlBufferContent(cur->content));
+	buffer = xmlEncodeEntitiesReentrant(doc, 
+			    xmlBufferContent(cur->content));
 #endif
 	if (buffer != NULL) {
 	    xmlBufferWriteCHAR(buf, buffer);
@@ -597,11 +598,6 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	    (cur->last->type != HTML_ENTITY_REF_NODE) &&
 	    (cur->children != cur->last))
 	    xmlBufferWriteChar(buf, "\n");
-    }
-    if (!htmlIsAutoClosed(doc, cur)) {
-	xmlBufferWriteChar(buf, "</");
-	xmlBufferWriteCHAR(buf, cur->name);
-	xmlBufferWriteChar(buf, ">");
     }
     xmlBufferWriteChar(buf, "</");
     xmlBufferWriteCHAR(buf, cur->name);
@@ -939,10 +935,6 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     }
     if ((cur->content == NULL) && (cur->children == NULL)) {
         if ((info != NULL) && (info->saveEndTag != 0) &&
-/*
-	    (xmlStrcasecmp(BAD_CAST info->name, BAD_CAST "html")) && 
-	    (xmlStrcasecmp(BAD_CAST info->name, BAD_CAST "body"))) {
-*/
 	    (strcmp(info->name, "html")) && (strcmp(info->name, "body"))) {
 	    xmlOutputBufferWriteString(buf, ">");
 	} else {

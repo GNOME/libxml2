@@ -903,6 +903,9 @@ xmlCleanupPredefinedEntities
 	xmlSaveFormatFileEnc
 	xmlSaveFileEnc
 
+	/* XHTML */
+	xmlIsXHTML
+
 	/* Compression */
 	xmlGetDocCompressMode
 	xmlSetDocCompressMode

@@ -92,8 +92,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
-%doc /usr/man/man1/xmllint.1
-%doc /usr/man/man4/libxml.4
+%doc /usr/man/man1/xmllint.1*
+%doc /usr/man/man4/libxml.4*
 
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/xmllint

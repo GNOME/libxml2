@@ -3561,6 +3561,9 @@ xmlSprintfElementChilds(char *buf, xmlNodePtr node, int glob) {
 		 break;
             case XML_ATTRIBUTE_NODE:
             case XML_DOCUMENT_NODE:
+#ifdef LIBXML_SGML_ENABLED
+	    case XML_SGML_DOCUMENT_NODE:
+#endif
 	    case XML_HTML_DOCUMENT_NODE:
             case XML_DOCUMENT_TYPE_NODE:
             case XML_DOCUMENT_FRAG_NODE:

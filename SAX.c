@@ -312,7 +312,7 @@ resolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr ret;
-    char *URI;
+    xmlChar *URI;
     const char *base = NULL;
 
     if (ctxt->input != NULL)
@@ -320,7 +320,7 @@ resolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
     if (base == NULL)
 	base = ctxt->directory;
 
-    URI = xmlBuildURI(systemId, base);
+    URI = xmlBuildURI(systemId, (const xmlChar *) base);
 
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.resolveEntity(%s, %s)\n", publicId, systemId);
@@ -423,7 +423,7 @@ entityDecl(void *ctx, const xmlChar *name, int type,
 	    ctxt->sax->warning(ctxt, 
 	     "Entity(%s) already defined in the internal subset\n", name);
 	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
-	    char *URI;
+	    xmlChar *URI;
 	    const char *base = NULL;
 
 	    if (ctxt->input != NULL)
@@ -431,7 +431,7 @@ entityDecl(void *ctx, const xmlChar *name, int type,
 	    if (base == NULL)
 		base = ctxt->directory;
 	
-	    URI = xmlBuildURI(systemId, base);
+	    URI = xmlBuildURI(systemId, (const xmlChar *) base);
 	    ent->URI = URI;
 	}
     } else if (ctxt->inSubset == 2) {
@@ -442,7 +442,7 @@ entityDecl(void *ctx, const xmlChar *name, int type,
 	    ctxt->sax->warning(ctxt, 
 	     "Entity(%s) already defined in the external subset\n", name);
 	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
-	    char *URI;
+	    xmlChar *URI;
 	    const char *base = NULL;
 
 	    if (ctxt->input != NULL)
@@ -450,7 +450,7 @@ entityDecl(void *ctx, const xmlChar *name, int type,
 	    if (base == NULL)
 		base = ctxt->directory;
 	
-	    URI = xmlBuildURI(systemId, base);
+	    URI = xmlBuildURI(systemId, (const xmlChar *) base);
 	    ent->URI = URI;
 	}
     } else {

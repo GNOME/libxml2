@@ -1,3 +1,11 @@
+Sun Sep 17 17:58:37 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* SAX.c debugXML.c parser.c parserInternals.c tree.c valid.c xpath.c:
+	  removed a few warnings in pedantic mode ...
+	* parserInternals.c parser.c: moved encoding switching function
+	  to parserInternals.c
+	* configure.in, doc/Makefile.am libxml.spec.in: released 2.2.3
+
 Sat Sep 16 20:12:41 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c parser.c: set ctxt->errNo before calling the

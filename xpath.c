@@ -1504,6 +1504,9 @@ xmlXPathNextChild(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
             case XML_DOCUMENT_TYPE_NODE:
             case XML_DOCUMENT_FRAG_NODE:
             case XML_HTML_DOCUMENT_NODE:
+#ifdef LIBXML_SGML_ENABLED
+	    case XML_SGML_DOCUMENT_NODE:
+#endif
 		return(((xmlDocPtr) ctxt->context->node)->children);
 	    case XML_ELEMENT_DECL:
 	    case XML_ATTRIBUTE_DECL:
@@ -1632,6 +1635,9 @@ xmlXPathNextParent(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
             case XML_DOCUMENT_TYPE_NODE:
             case XML_DOCUMENT_FRAG_NODE:
             case XML_HTML_DOCUMENT_NODE:
+#ifdef LIBXML_SGML_ENABLED
+	    case XML_SGML_DOCUMENT_NODE:
+#endif
                 return(NULL);
 	}
     }
@@ -1686,6 +1692,9 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
             case XML_DOCUMENT_TYPE_NODE:
             case XML_DOCUMENT_FRAG_NODE:
             case XML_HTML_DOCUMENT_NODE:
+#ifdef LIBXML_SGML_ENABLED
+	    case XML_SGML_DOCUMENT_NODE:
+#endif
                 return(NULL);
 	}
 	return(NULL);
@@ -1717,6 +1726,9 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	case XML_DOCUMENT_TYPE_NODE:
 	case XML_DOCUMENT_FRAG_NODE:
 	case XML_HTML_DOCUMENT_NODE:
+#ifdef LIBXML_SGML_ENABLED
+	case XML_SGML_DOCUMENT_NODE:
+#endif
 	    return(NULL);
     }
     return(NULL);

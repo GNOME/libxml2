@@ -2342,7 +2342,7 @@ static xmlChar * xmlParseAttValueInternal(xmlParserCtxtPtr ctxt,
  *
  * [5] Name ::= (Letter | '_' | ':') (NameChar)*
  *
- * [6] Names ::= Name (S Name)*
+ * [6] Names ::= Name (#x20 Name)*
  *
  * Returns the Name parsed or NULL
  */
@@ -2467,7 +2467,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
  *
  * [5] Name ::= (Letter | '_' | ':') (NameChar)*
  *
- * [6] Names ::= Name (S Name)*
+ * [6] Names ::= Name (#x20 Name)*
  *
  * Returns the Name parsed or NULL. The @str pointer 
  * is updated to the current location in the string.
@@ -2547,7 +2547,7 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
  *
  * [7] Nmtoken ::= (NameChar)+
  *
- * [8] Nmtokens ::= Nmtoken (S Nmtoken)*
+ * [8] Nmtokens ::= Nmtoken (#x20 Nmtoken)*
  *
  * Returns the Nmtoken parsed or NULL
  */

@@ -3306,8 +3306,9 @@ xmlValidateNamesValue(const xmlChar *value) {
 	cur += len;
     }
 
-    while (IS_BLANK(val)) {
-	while (IS_BLANK(val)) {
+    /* Should not test IS_BLANK(val) here -- see erratum E20*/
+    while (val == 0x20) {
+	while (val == 0x20) {
 	    val = xmlStringCurrentChar(NULL, cur, &len);
 	    cur += len;
 	}
@@ -3418,8 +3419,9 @@ xmlValidateNmtokensValue(const xmlChar *value) {
 	cur += len;
     }
 
-    while (IS_BLANK(val)) {
-	while (IS_BLANK(val)) {
+    /* Should not test IS_BLANK(val) here -- see erratum E20*/
+    while (val == 0x20) {
+	while (val == 0x20) {
 	    val = xmlStringCurrentChar(NULL, cur, &len);
 	    cur += len;
 	}

@@ -1,6 +1,14 @@
+Sun Sep 26 16:40:24 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c TODO: applied patch from Malcolm Tredinnick fixing errata
+	  E20 concerning NMTOKENS and co. validation #153722
+	* result/VC/AttributeNmtokens test/VC/AttributeNmtokens
+	  test/VCM/AttributeNmtokens.xml: also added tests from Malcolm
+
 Sun Sep 26 16:24:44 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xstc/xstc.py: applied patch from Malcolm Tredinnick fixing space/tabs
+	  #153713
 	* xpath.c: fixed a realloc potential problem
 
 Fri Sep 24 16:14:12 CEST 2004 Daniel Veillard <daniel@veillard.com>

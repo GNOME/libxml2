@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Upgrading libxml client code from 1.x to 2.x</title>
+  <meta name="GENERATOR" content="amaya V2.4">
+  <meta http-equiv="Content-Type" content="text/html">
+</head>
+
+<body bgcolor="#ffffff">
+<h1 align="center">Upgrading libxml client code from 1.x to 2.x</h1>
+
+<p>Version 2 of libxml is the first version introducing serious backward
+incompatible changes. The main goals were:</p>
+<ul>
+  <li>a general cleanup. A number of mistakes inherited from the very early
+    versions couldn't be changed due to compatibility constraints. Example the
+    "childs" element in the nodes.</li>
+  <li>Uniformization of the various nodes, at least for their header and link
+    parts (doc, parent, children, prev, next), the goal is a simpler
+    programming model and simplifying the task of the DOM implementors.</li>
+  <li>better conformances to the XML specification, for example version 1.x
+    had an heuristic to try to detect ignorable white spaces. As a result the
+    SAX event generated were ignorableWhitespace() while the spec requires
+    character() in that case. This also mean that a number of DOM node
+    containing blank text may populate the DOM tree which were not present
+    before.</li>
+</ul>
+
+<p>So client code of libxml designed to run with version 1.x may have to be
+changed to compile against version 2.x of libxml. Here is a list of changes
+that I have collected, they may not be sufficient, so in case you find other
+change which are required, <a href="mailto:Daniel.Ïeillardw3.org">drop me a
+mail</a>:</p>
+<ol>
+  <li>Node <strong>childs</strong> field has been renamed
+    <strong>children</strong> so s/childs/children/g should be  applied
+    (probablility of having "childs" anywere else is close to 0+</li>
+  <li>The document don't have anymore a <strong>root</strong> element it has
+    been replaced by <strong>children</strong> and usually you will get a list
+    of element here. Áor example a Dtd element for the internal subset and
+    it's declaration may be found in that list, as well as processing
+    instructions or comments found before or after the document root element.
+    Use <strong>xmlDocGetRootElement(doc)</strong> to get the root element of
+    a document. Alternatively if you are sure to not reference Dtds nor have
+    PIs or comments before or after the root element s/->root/->children/g
+    will probably do it.</li>
+  <li>The white space issue, this one is more complex, unless special case of
+    validating parsing, the line breaks and spaces usually used for indenting
+    and formatting the document content becomes significant. So they are
+    reported by SAX and if your using the DOM tree, corresponding nodes are
+    generated. Too approach can be taken:
+    <ol>
+      <li>lazy one, use the compatibility call
+        <strong>xmlKeepBlanksDefault(0)</strong> but be aware that you are
+        relying on a special (and possibly broken) set of heuristics of libxml
+        to detect ignorable blanks. Don't complain if it breaks or make your
+        application not 100% clean w.r.t. to it's input.</li>
+      <li>the Right Way: change you code to accept possibly unsignificant
+        blanks characters, or have your tree populated with weird blank text
+        nodes. You can spot them using the comodity function
+        <strong>xmlIsBlankNode(node)</strong> returning 1 for such blank
+        nodes.</li>
+    </ol>
+    <p>Note also that with the new default the output functions don't add any
+    extra indentation when saving a tree in order to be able to round trip
+    (read and save) without inflating the document with extra formatting
+    chars.</p>
+  </li>
+</ol>
+
+<p>Let me put some emphasis on the fact that there is far more changes from
+libxml 1.x to 2.x than the ones you may have to pacth for. The overall code
+has been considerably improved and the conformance to the XML specification
+has been drastically improve. Don't take those changes as an excuse to not
+upgrade, it may cost a lot on the long term ...</p>
+
+<p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
+
+<p>$Id$</p>
+</body>
+</html>

@@ -435,6 +435,7 @@ xmlNodePtr	xmlNewDocFragment	(xmlDocPtr doc);
 xmlNodePtr	xmlDocGetRootElement	(xmlDocPtr doc);
 xmlNodePtr	xmlGetLastChild		(xmlNodePtr parent);
 int		xmlNodeIsText		(xmlNodePtr node);
+int		xmlIsBlankNode		(xmlNodePtr node);
 
 /*
  * Changing the structure

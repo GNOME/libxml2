@@ -59,6 +59,7 @@ static int compress = 0;
 static int html = 0;
 static int shell = 0;
 static int push = 0;
+static int blanks = 0;
 
 extern int xmlDoValidityCheckingDefaultValue;
 
@@ -243,6 +244,11 @@ int main(int argc, char **argv) {
 	    compress++;
 	    xmlSetCompressMode(9);
         }
+	else if ((!strcmp(argv[i], "-blanks")) ||
+	         (!strcmp(argv[i], "--blanks"))) {
+	    blanks++;
+	    xmlKeepBlanksDefault(1);
+        }
 	else if ((!strcmp(argv[i], "-html")) ||
 	         (!strcmp(argv[i], "--html"))) {
 	    html++;
@@ -266,7 +272,7 @@ int main(int argc, char **argv) {
 	}
     }
     if (files == 0) {
-	printf("Usage : %s [--debug] [--debugent] [--copy] [--recover] [--noent] [--noout] [--valid] [--repeat] XMLfiles ...\n",
+	printf("Usage : %s [--debug] [--shell] [--debugent] [--copy] [--recover] [--noent] [--noout] [--valid] [--repeat] XMLfiles ...\n",
 	       argv[0]);
 	printf("\tParse the XML files and output the result of the parsing\n");
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
@@ -282,6 +288,7 @@ int main(int argc, char **argv) {
 	printf("\t--compress : turn on gzip compression of output\n");
 	printf("\t--html : use the HTML parser\n");
 	printf("\t--shell : run a navigating shell\n");
+	printf("\t--blanks : keep blank text node\n");
 	printf("\t--push : use the push mode of the parser\n");
     }
     xmlCleanupParser();

@@ -327,6 +327,7 @@ xmlDocPtr	xmlParseMemory		(char *buffer,
 					 int size);
 xmlDocPtr	xmlParseFile		(const char *filename);
 int		xmlSubstituteEntitiesDefault(int val);
+int		xmlKeepBlanksDefault	(int val);
 
 /**
  * Recovery mode 

@@ -39,6 +39,10 @@ xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
 static int xmlCompressMode = 0;
 static int xmlCheckDTD = 1;
 int xmlSaveNoEmptyTags = 0;
+extern int xmlKeepBlanksDefaultValue;
+
+#define IS_BLANK(c)							\
+  (((c) == '\n') || ((c) == '\r') || ((c) == '\t') || ((c) == ' '))
 
 #define UPDATE_LAST_CHILD(n) if ((n) != NULL) {				\
     xmlNodePtr ulccur = (n)->childs;					\
@@ -3524,6 +3528,29 @@ xmlNodeIsText(xmlNodePtr node) {
 }
 
 /**
+ * xmlIsBlankNode:
+ * @node:  the node
+ * 
+ * Is this node a Text node ?
+ * Returns 1 yes, 0 no
+ */
+int
+xmlIsBlankNode(xmlNodePtr node) {
+    xmlChar *cur;
+    if (node == NULL) return(0);
+
+    if (node->type != XML_TEXT_NODE) return(0);
+    if (node->content == NULL) return(0);
+    cur = node->content;
+    while (*cur != 0) {
+	if (!IS_BLANK(*cur)) return(0);
+	cur++;
+    }
+
+    return(1);
+}
+
+/**
  * xmlTextConcat:
  * @node:  the node
  * @content:  the content
@@ -4163,7 +4190,7 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur);
  * @buf:  the XML buffer output
  * @doc:  the document
  * @cur:  the first node
- * @level: the imbrication level for indenting
+ * @level: the imbrication level for indenting, -1 to disable it
  * @format: is formatting allowed
  *
  * Dump an XML node list, recursive behaviour,children are printed too.
@@ -4197,7 +4224,7 @@ xmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
  * @buf:  the XML buffer output
  * @doc:  the document
  * @cur:  the current node
- * @level: the imbrication level for indenting
+ * @level: the imbrication level for indenting, -1 to disable it
  * @format: is formatting allowed
  *
  * Dump an XML node, recursive behaviour,children are printed too.
@@ -4322,7 +4349,8 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     }
     if (cur->childs != NULL) {
 	if (format) xmlBufferWriteChar(buf, "\n");
-	xmlNodeListDump(buf, doc, cur->childs, level + 1, format);
+	xmlNodeListDump(buf, doc, cur->childs,
+		        (level >= 0?level+1:-1), format);
 	if ((xmlIndentTreeOutput) && (format))
 	    for (i = 0;i < level;i++)
 		xmlBufferWriteChar(buf, "  ");

@@ -330,7 +330,9 @@
 	<term><option>--format</option></term>
 	<listitem>
 	  <simpara>
-	   Reformat and reindent the output.
+	   Reformat and reindent the output. The $XMLLINT_INDENT
+	   environment variable controls the indentation (default 
+	   value is two spaces &quot;&nbsp;&nbsp;&quot;).
 	  </simpara>
 	</listitem>
       </varlistentry>

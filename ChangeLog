@@ -1,3 +1,9 @@
+Sun Mar  9 13:53:16 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* xmllint.c doc/xmllint.xml: use $XMLLINT_INDENT environment
+	variable to control the indentation for the xmllint "--format" 
+	option
+
 Sat Mar  8 14:27:43 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* encoding.c: applied Gennady's patch against buffer overrun

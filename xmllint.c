@@ -1247,7 +1247,8 @@ main(int argc, char **argv) {
     int i, acount;
     int files = 0;
     int version = 0;
-
+    const char* indent;
+    
     if (argc <= 1) {
 	usage(argv[0]);
 	return(1);
@@ -1452,6 +1453,12 @@ main(int argc, char **argv) {
 	xmlRegisterNodeDefault(registerNode);
 	xmlDeregisterNodeDefault(deregisterNode);
     }
+    
+    indent = getenv("XMLLINT_INDENT");
+    if(indent != NULL) {
+	xmlTreeIndentString = indent;
+    }
+    
 
     xmlLineNumbersDefault(1);
     if (loaddtd != 0)

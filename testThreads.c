@@ -9,7 +9,9 @@
 #include <libxml/catalog.h>
 #include <pthread.h>
 #include <string.h>
+#if !defined(_MSC_VER)
 #include <unistd.h>
+#endif
 #include <assert.h>
 
 #define	MAX_ARGC	20

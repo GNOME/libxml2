@@ -1,3 +1,8 @@
+Tue Apr 20 13:27:06 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/SAX2.h: Kasimier Buchcik pointed out some 
+	  inexistent functions, cleaned them out.
+
 Tue Apr 20 11:42:50 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* error.c: Johnson Cameron pointed out that

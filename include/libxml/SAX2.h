@@ -136,22 +136,6 @@ XMLPUBFUN void XMLCALL
 						 const xmlChar *target,
 						 const xmlChar *data);
 XMLPUBFUN void XMLCALL		
-		xmlSAX2GlobalNamespace		(void *ctx,
-						 const xmlChar *href,
-						 const xmlChar *prefix);
-XMLPUBFUN void XMLCALL		
-		xmlSAX2SetNamespace		(void *ctx,
-						 const xmlChar *name);
-XMLPUBFUN xmlNsPtr XMLCALL	
-		xmlSAX2GetNamespace		(void *ctx);
-XMLPUBFUN int XMLCALL		
-		xmlSAX2CheckNamespace		(void *ctx,
-						 xmlChar *nameSpace);
-XMLPUBFUN void XMLCALL		
-		xmlSAX2NamespaceDecl		(void *ctx,
-						 const xmlChar *href,
-						 const xmlChar *prefix);
-XMLPUBFUN void XMLCALL		
 		xmlSAX2Comment			(void *ctx,
 						 const xmlChar *value);
 XMLPUBFUN void XMLCALL		

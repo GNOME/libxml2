@@ -240,7 +240,9 @@ libxml2</p>
     <p>Sometime the regression tests results don't completely match the value
     produced by the parser, and the makefile uses diff to print the delta. On
     some platforms the diff return breaks the compilation process, if the
-    diff is small this is probably not a serious problem</p>
+    diff is small this is probably not a serious problem.</p>
+    <p>Sometimes (especially on Solaris) make checks fails due to limitations
+    in make. Try using GNU-make instead.</p>
   </li>
   <li><em>I use the CVS version and there is no configure script</em>
     <p>The configure (and other Makefiles) are generated. Use the autogen.sh
@@ -2195,6 +2197,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

@@ -2010,7 +2010,11 @@ CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
 
     while (prop != NULL) {
         if (!xmlStrcmp(prop->name, name)) 
-	    return(xmlNodeListGetString(node->doc, prop->val, 1));
+	    CHAR *ret;
+
+	    ret = xmlNodeListGetString(node->doc, prop->val, 1);
+	    if (ret == NULL) return(xmlStrdup(""));
+	    return(ret);
 	prop = prop->next;
     }
     return(NULL);

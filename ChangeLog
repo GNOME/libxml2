@@ -1,3 +1,8 @@
+Mon Feb  8 19:27:56 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c: fixed xmlGetProp to return "" when the attribute
+	  exists, even if the node-list is NULL.
+
 Mon Feb  8 16:10:15 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.c: patched an error outputting empty attribute values.

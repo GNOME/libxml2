@@ -872,27 +872,37 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
         (name[0] == 'x') && (name[1] == 'm') && (name[2] == 'l') &&
         (name[3] == 'n') && (name[4] == 's') && (name[5] == 0)) {
 	xmlNsPtr nsret;
+	xmlChar *val;
 
-	if (value[0] != 0) {
+        if (!ctxt->replaceEntities) {
+	    ctxt->depth++;
+	    val = xmlStringDecodeEntities(ctxt, value, XML_SUBSTITUTE_REF,
+		                          0,0,0);
+	    ctxt->depth--;
+	} else {
+	    val = value;
+	}
+
+	if (val[0] != 0) {
 	    xmlURIPtr uri;
 
-	    uri = xmlParseURI((const char *)value);
+	    uri = xmlParseURI((const char *)val);
 	    if (uri == NULL) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 		    ctxt->sax->warning(ctxt->userData, 
-			 "nmlns: %s not a valid URI\n", value);
+			 "nmlns: %s not a valid URI\n", val);
 	    } else {
 		if (uri->scheme == NULL) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 			ctxt->sax->warning(ctxt->userData, 
-			     "xmlns: URI %s is not absolute\n", value);
+			     "xmlns: URI %s is not absolute\n", val);
 		}
 		xmlFreeURI(uri);
 	    }
 	}
 
 	/* a default namespace definition */
-	nsret = xmlNewNs(ctxt->node, value, NULL);
+	nsret = xmlNewNs(ctxt->node, val, NULL);
 
 	/*
 	 * Validate also for namespace decls, they are attributes from
@@ -901,27 +911,39 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
         if (nsret != NULL && ctxt->validate && ctxt->wellFormed &&
 	    ctxt->myDoc && ctxt->myDoc->intSubset)
 	    ctxt->valid &= xmlValidateOneNamespace(&ctxt->vctxt, ctxt->myDoc,
-					   ctxt->node, prefix, nsret, value);
+					   ctxt->node, prefix, nsret, val);
 	if (name != NULL) 
 	    xmlFree(name);
 	if (nval != NULL)
 	    xmlFree(nval);
+	if (val != value)
+	    xmlFree(val);
 	return;
     }
     if ((!ctxt->html) &&
 	(ns != NULL) && (ns[0] == 'x') && (ns[1] == 'm') && (ns[2] == 'l') &&
         (ns[3] == 'n') && (ns[4] == 's') && (ns[5] == 0)) {
 	xmlNsPtr nsret;
+	xmlChar *val;
 
-	if (value[0] == 0) {
+        if (!ctxt->replaceEntities) {
+	    ctxt->depth++;
+	    val = xmlStringDecodeEntities(ctxt, value, XML_SUBSTITUTE_REF,
+		                          0,0,0);
+	    ctxt->depth--;
+	} else {
+	    val = value;
+	}
+
+	if (val[0] == 0) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData, 
 		     "Empty namespace name for prefix %s\n", name);
 	}
-	if ((ctxt->pedantic != 0) && (value[0] != 0)) {
+	if ((ctxt->pedantic != 0) && (val[0] != 0)) {
 	    xmlURIPtr uri;
 
-	    uri = xmlParseURI((const char *)value);
+	    uri = xmlParseURI((const char *)val);
 	    if (uri == NULL) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 		    ctxt->sax->warning(ctxt->userData, 
@@ -937,7 +959,7 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
 	}
 
 	/* a standard namespace definition */
-	nsret = xmlNewNs(ctxt->node, value, name);
+	nsret = xmlNewNs(ctxt->node, val, name);
 	xmlFree(ns);
 	/*
 	 * Validate also for namespace decls, they are attributes from
@@ -951,6 +973,8 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
 	    xmlFree(name);
 	if (nval != NULL)
 	    xmlFree(nval);
+	if (val != value)
+	    xmlFree(val);
 	return;
     }
 

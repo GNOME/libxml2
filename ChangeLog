@@ -1,3 +1,10 @@
+Sat Mar 22 15:53:27 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: Fixed validation bug #108858 on namespace names using
+	  entities and reported by Brent Hendricks
+	* xmllint.c: report xmlTextReaderHasValue() result in --stream
+	  --debug output.
+
 Sat Mar 22 13:32:39 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fixed bug #108801 reported by Malcolm Tredinnick

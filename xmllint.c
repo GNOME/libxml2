@@ -593,13 +593,15 @@ static void processNode(xmlTextReaderPtr reader) {
     name = xmlTextReaderName(reader);
     if (name == NULL)
 	name = xmlStrdup(BAD_CAST "--");
+
     value = xmlTextReaderValue(reader);
 
-    printf("%d %d %s %d", 
+    printf("%d %d %s %d %d", 
 	    xmlTextReaderDepth(reader),
 	    xmlTextReaderNodeType(reader),
 	    name,
-	    xmlTextReaderIsEmptyElement(reader));
+	    xmlTextReaderIsEmptyElement(reader),
+	    xmlTextReaderHasValue(reader));
     xmlFree(name);
     if (value == NULL)
 	printf("\n");

@@ -139,6 +139,7 @@ endif
 XML_OBJS = $(XML_INTDIR)/c14n.o\
 	$(XML_INTDIR)/catalog.o\
 	$(XML_INTDIR)/debugXML.o\
+	$(XML_INTDIR)/dict.o\
 	$(XML_INTDIR)/DOCBparser.o\
 	$(XML_INTDIR)/encoding.o\
 	$(XML_INTDIR)/entities.o\
@@ -154,6 +155,7 @@ XML_OBJS = $(XML_INTDIR)/c14n.o\
 	$(XML_INTDIR)/parserInternals.o\
 	$(XML_INTDIR)/relaxng.o\
 	$(XML_INTDIR)/SAX.o\
+	$(XML_INTDIR)/SAX2.o\
 	$(XML_INTDIR)/threads.o\
 	$(XML_INTDIR)/tree.o\
 	$(XML_INTDIR)/uri.o\
@@ -176,6 +178,7 @@ XML_SRCS = $(subst .o,.c,$(subst $(XML_INTDIR)/,$(XML_SRCDIR)/,$(XML_OBJS)))
 XML_OBJS_A = $(XML_INTDIR_A)/c14n.o\
 	$(XML_INTDIR_A)/catalog.o\
 	$(XML_INTDIR_A)/debugXML.o\
+	$(XML_INTDIR_A)/dict.o\
 	$(XML_INTDIR_A)/DOCBparser.o\
 	$(XML_INTDIR_A)/encoding.o\
 	$(XML_INTDIR_A)/entities.o\
@@ -191,6 +194,7 @@ XML_OBJS_A = $(XML_INTDIR_A)/c14n.o\
 	$(XML_INTDIR_A)/parserInternals.o\
 	$(XML_INTDIR_A)/relaxng.o\
 	$(XML_INTDIR_A)/SAX.o\
+	$(XML_INTDIR_A)/SAX2.o\
 	$(XML_INTDIR_A)/threads.o\
 	$(XML_INTDIR_A)/tree.o\
 	$(XML_INTDIR_A)/uri.o\
@@ -245,27 +249,27 @@ libxmla : $(BINDIR)/$(XML_A)
 utils : $(UTILS)
 
 clean :
-	if exist $(XML_INTDIR) rmdir /S /Q $(XML_INTDIR)
-	if exist $(XML_INTDIR_A) rmdir /S /Q $(XML_INTDIR_A)
-	if exist $(UTILS_INTDIR) rmdir /S /Q $(UTILS_INTDIR)
-	if exist $(BINDIR) rmdir /S /Q $(BINDIR)
-	if exist depends.mingw del depends.mingw
+	cmd.exe /C if exist $(XML_INTDIR) rmdir /S /Q $(XML_INTDIR)
+	cmd.exe /C if exist $(XML_INTDIR_A) rmdir /S /Q $(XML_INTDIR_A)
+	cmd.exe /C if exist $(UTILS_INTDIR) rmdir /S /Q $(UTILS_INTDIR)
+	cmd.exe /C if exist $(BINDIR) rmdir /S /Q $(BINDIR)
+	cmd.exe /C if exist depends.mingw del depends.mingw
 
 distclean : clean
-	if exist config.* del config.*
-	if exist Makefile del Makefile
+	cmd.exe /C if exist config.* del config.*
+	cmd.exe /C if exist Makefile del Makefile
 
 rebuild : clean all
 
 install : all
-	if not exist $(INCPREFIX)\libxml mkdir $(INCPREFIX)\libxml
-	if not exist $(BINPREFIX) mkdir $(BINPREFIX)
-	if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
-	copy $(XML_SRCDIR)\include\libxml\*.h $(INCPREFIX)\libxml
-	copy $(BINDIR)\$(XML_SO) $(SOPREFIX)
-	copy $(BINDIR)\$(XML_A) $(LIBPREFIX)
-	copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)
-	copy $(BINDIR)\*.exe $(BINPREFIX)
+	cmd.exe /C if not exist $(INCPREFIX)\libxml mkdir $(INCPREFIX)\libxml
+	cmd.exe /C if not exist $(BINPREFIX) mkdir $(BINPREFIX)
+	cmd.exe /C if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
+	cmd.exe /C copy $(XML_SRCDIR)\include\libxml\*.h $(INCPREFIX)\libxml
+	cmd.exe /C copy $(BINDIR)\$(XML_SO) $(SOPREFIX)
+	cmd.exe /C copy $(BINDIR)\$(XML_A) $(LIBPREFIX)
+	cmd.exe /C copy $(BINDIR)\$(XML_IMP) $(LIBPREFIX)
+	cmd.exe /C copy $(BINDIR)\*.exe $(BINPREFIX)
 
 # This is a target for me, to make a binary distribution. Not for the public use,
 # keep your hands off :-)
@@ -283,16 +287,16 @@ dep :
 
 # Makes the output directory.
 $(BINDIR) :
-	if not exist $(BINDIR) mkdir $(BINDIR)
+	cmd.exe /C if not exist $(BINDIR) mkdir $(BINDIR)
 
 
 # Makes the libxml intermediate directory.
 $(XML_INTDIR) :
-	if not exist $(XML_INTDIR) mkdir $(XML_INTDIR)
+	cmd.exe /C if not exist $(XML_INTDIR) mkdir $(XML_INTDIR)
 
 # Makes the static libxml intermediate directory.
 $(XML_INTDIR_A) :
-	if not exist $(XML_INTDIR_A) mkdir $(XML_INTDIR_A)
+	cmd.exe /C if not exist $(XML_INTDIR_A) mkdir $(XML_INTDIR_A)
 
 # An implicit rule for libxml compilation.
 $(XML_INTDIR)/%.o : $(XML_SRCDIR)/%.c
@@ -321,7 +325,7 @@ $(BINDIR)/$(XML_A) : $(BINDIR) $(XML_OBJS_A)
 
 # Makes the utils intermediate directory.
 $(UTILS_INTDIR) :
-	if not exist $(UTILS_INTDIR) mkdir $(UTILS_INTDIR)
+	cmd.exe /C if not exist $(UTILS_INTDIR) mkdir $(UTILS_INTDIR)
 
 # An implicit rule for xmllint and friends.
 ifeq ($(STATIC),1)

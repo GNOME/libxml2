@@ -77,7 +77,7 @@ CPPFLAGS = $(CPPFLAGS) /D "_REENTRANT"
 
 # The compiler and its options.
 CC = cl.exe
-CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W3 /MD
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W1 /MD
 CFLAGS = $(CFLAGS) /I$(XML_SRCDIR) /I$(XML_SRCDIR)\include /I$(INCPREFIX)
 !if "$(WITH_THREADS)" != "no"
 CFLAGS = $(CFLAGS) /D "_REENTRANT"

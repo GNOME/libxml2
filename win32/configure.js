@@ -47,14 +47,15 @@ var withSchemas = true;
 var withRegExps = true;
 var withPython = false;
 /* Win32 build options. */
+var dirSep = "/";
 var compiler = "msvc";
 var buildDebug = 0;
 var buildStatic = 0;
 var buildPrefix = ".";
-var buildBinPrefix = "$(PREFIX)\\bin";
-var buildIncPrefix = "$(PREFIX)\\include";
-var buildLibPrefix = "$(PREFIX)\\lib";
-var buildSoPrefix = "$(PREFIX)\\lib";
+var buildBinPrefix = "$(PREFIX)" + dirSep + "bin";
+var buildIncPrefix = "$(PREFIX)" + dirSep + "include";
+var buildLibPrefix = "$(PREFIX)" + dirSep + "lib";
+var buildSoPrefix = "$(PREFIX)" + dirSep + "lib";
 var buildInclude = ".";
 var buildLib = ".";
 /* Local stuff */
@@ -479,6 +480,12 @@ else if (compiler == "bcb")
 	makefile = ".\\Makefile.bcb";
 fso.CopyFile(makefile, ".\\Makefile", true);
 WScript.Echo("Created Makefile.");
+// Create the config.h.
+var confighsrc = "..\\include\\win32config.h";
+var configh = "..\\config.h";
+fso.CopyFile(confighsrc, configh, true);
+WScript.Echo("Created config.h.");
+
 
 // Display the final configuration. 
 var txtOut = "\nXML processor configuration\n";

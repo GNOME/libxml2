@@ -1,3 +1,7 @@
+Thu Aug 28 12:23:51 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/Makefile.* win32/configure.js: fixed for mingw
+
 Thu Aug 28 10:01:44 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c threads.c: fixing bug #120870 try to avoid problem

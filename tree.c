@@ -904,7 +904,7 @@ xmlFreeDtd(xmlDtdPtr cur) {
 	 */
         while (c != NULL) {
 	    next = c->next;
-	    if (c->type == XML_COMMENT_NODE) {
+	    if ((c->type == XML_COMMENT_NODE) || (c->type == XML_PI_NODE)) {
 		xmlUnlinkNode(c);
 		xmlFreeNode(c);
 	    }

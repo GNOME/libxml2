@@ -1,3 +1,7 @@
+Fri Aug 17 11:35:31 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: removed a couple of unused variable (Albert Chin)
+
 Fri Aug 17 01:25:21 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c HTMLtree.c include/libxml/HTMLparser.h:

@@ -205,7 +205,6 @@ externalSubset(void *ctx, const xmlChar *name,
 	int oldinputNr;
 	int oldinputMax;
 	xmlParserInputPtr *oldinputTab;
-	int oldwellFormed;
 	xmlParserInputPtr input = NULL;
 	xmlCharEncoding enc;
 	int oldcharset;
@@ -229,7 +228,6 @@ externalSubset(void *ctx, const xmlChar *name,
 	oldinputNr = ctxt->inputNr;
 	oldinputMax = ctxt->inputMax;
 	oldinputTab = ctxt->inputTab;
-	oldwellFormed = ctxt->wellFormed;
 	oldcharset = ctxt->charset;
 
 	ctxt->inputTab = (xmlParserInputPtr *)
@@ -360,11 +358,9 @@ getEntity(void *ctx, const xmlChar *name)
 	 * for validation purposes we really need to fetch and
 	 * parse the external entity
 	 */
-	int parse;
 	xmlNodePtr children;
 
-        parse = xmlParseCtxtExternalEntity(ctxt,
-		  ret->URI, ret->ExternalID, &children);
+        xmlParseCtxtExternalEntity(ctxt, ret->URI, ret->ExternalID, &children);
 	xmlAddChildList((xmlNodePtr) ret, children);
     }
     return(ret);

@@ -1459,6 +1459,16 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	return(-1);
     }
     ctxt->incTab[nr]->doc = doc;
+    /*
+     * It's possible that the requested URL has been mapped to a
+     * completely different location (e.g. through a catalog entry).
+     * To check for this, we compare the URL with that of the doc
+     * and change it if they disagree (bug 146988).
+     */
+   if (!xmlStrEqual(URL, doc->URL)) {
+       xmlFree(URL);
+       URL = xmlStrdup(doc->URL);
+   }
     for (i = nr + 1; i < ctxt->incNr; i++) {
 	if (xmlStrEqual(URL, ctxt->incTab[i]->URI)) {
 	    ctxt->incTab[nr]->count++;

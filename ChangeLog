@@ -1,3 +1,10 @@
+Thu Jun  3 18:38:27 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemas.c: small change to xmlSchemaValidateAttributes,
+	  also corrected typo on error code enum.
+	* include/libxml/xmlerror.h: corrected typo on schema error
+	  code enum
+
 Thu Jun  3 10:12:38 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemas.c: minor cosmetic changes, no change to logic.

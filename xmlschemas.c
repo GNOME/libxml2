@@ -3485,7 +3485,7 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		if (!xmlStrEqual(import->schema->targetNamespace, namespace)) {
 		    if (namespace == NULL) {
 			if (import->schema->targetNamespace != NULL) {
-			   xmlSchemaPErr(ctxt, node, XML_SCHRMAP_SRC_IMPORT_3_2,
+			   xmlSchemaPErr(ctxt, node, XML_SCHEMAP_SRC_IMPORT_3_2,
 			    "There is no namespace attribute on the <import> "
 			    "element information item, so the imported document "
 			    "must have no targetNamespace attribute.\n", 
@@ -3493,14 +3493,14 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 			}
 		    } else {
 			if (import->schema->targetNamespace != NULL) {
-			    xmlSchemaPErr(ctxt, node, XML_SCHRMAP_SRC_IMPORT_3_1,
+			    xmlSchemaPErr(ctxt, node, XML_SCHEMAP_SRC_IMPORT_3_1,
 				"The namespace attribute \"%s\" of an <import> "
 				"element information item must be identical to the "
 				"targetNamespace attribute \"%s\" of the "
 				"imported document.\n", 
 				namespace, import->schema->targetNamespace);
 			} else {
-			    xmlSchemaPErr(ctxt, node, XML_SCHRMAP_SRC_IMPORT_3_1,
+			    xmlSchemaPErr(ctxt, node, XML_SCHEMAP_SRC_IMPORT_3_1,
 				"The namespace attribute on the <import> "
 				"element information item, requires the imported "
 				"document to have a targetNamespace attribute "
@@ -8430,7 +8430,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 	    printf("found\n");
 #endif
             found = 1;
-            ctxt->cur = (xmlNodePtr) attrDecl;
+            ctxt->cur = (xmlNodePtr) attr;
 
             if (attrDecl->subtypes == NULL) {
 		curState->state = XML_SCHEMAS_ATTR_TYPE_NOT_RESOLVED;

@@ -1,3 +1,8 @@
+Sat Jul 31 11:01:33 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* doc/buildDocBookCatalog: enhanced per bug 119876.  Further
+	  info posted to the mailing list.
+
 Sat Jul 31 09:12:44 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* SAX2.c, encoding.c, error.c, parser.c, tree.c, uri.c, xmlIO.c,

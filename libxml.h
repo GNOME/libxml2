@@ -40,4 +40,10 @@
 #include "trio.h"
 #endif
 
+/*
+ * Internal variable indicating if a callback has been registered for
+ * node creation/destruction. It avoids spending a lot of time in locking
+ * function while checking if the callback exists.
+ */
+extern int __xmlRegisterCallbacks;
 #endif /* ! __XML_LIBXML_H__ */

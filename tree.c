@@ -38,6 +38,8 @@
 #include <libxml/HTMLtree.h>
 #endif
 
+int __xmlRegisterCallbacks = 0;
+
 xmlNsPtr xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
 
 /************************************************************************
@@ -744,7 +746,7 @@ xmlNewDtd(xmlDocPtr doc, const xmlChar *name,
 	doc->extSubset = cur;
     cur->doc = doc;
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
@@ -854,7 +856,7 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
 	}
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
@@ -875,7 +877,7 @@ xmlFreeDtd(xmlDtdPtr cur) {
 	return;
     }
 
-    if (xmlDeregisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 	xmlDeregisterNodeDefaultValue((xmlNodePtr)cur);
 
     if (cur->children != NULL) {
@@ -946,7 +948,7 @@ xmlNewDoc(const xmlChar *version) {
     cur->doc = cur;
     cur->charset = XML_CHAR_ENCODING_UTF8;
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
@@ -969,7 +971,7 @@ xmlFreeDoc(xmlDocPtr cur) {
 	return;
     }
 
-    if (xmlDeregisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 	xmlDeregisterNodeDefaultValue((xmlNodePtr)cur);
 
     /*
@@ -1552,7 +1554,7 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	}
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
@@ -1632,7 +1634,7 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 	}
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
@@ -1712,7 +1714,7 @@ xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
 	}
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
@@ -1767,7 +1769,7 @@ xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value) {
 	}
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
@@ -1811,7 +1813,7 @@ xmlFreeProp(xmlAttrPtr cur) {
 	return;
     }
 
-    if (xmlDeregisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 	xmlDeregisterNodeDefaultValue((xmlNodePtr)cur);
 
     /* Check for ID removal -> leading to invalid references ! */
@@ -1912,7 +1914,7 @@ xmlNewPI(const xmlChar *name, const xmlChar *content) {
 	cur->content = xmlStrdup(content);
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
@@ -1953,7 +1955,7 @@ xmlNewNode(xmlNsPtr ns, const xmlChar *name) {
     cur->name = xmlStrdup(name);
     cur->ns = ns;
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(cur);
     return(cur);
 }
@@ -1994,7 +1996,7 @@ xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
     cur->name = name;
     cur->ns = ns;
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
@@ -2118,7 +2120,7 @@ xmlNewDocFragment(xmlDocPtr doc) {
 
     cur->doc = doc;
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(cur);
     return(cur);
 }
@@ -2151,7 +2153,7 @@ xmlNewText(const xmlChar *content) {
 	cur->content = xmlStrdup(content);
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(cur);
     return(cur);
 }
@@ -2254,7 +2256,7 @@ xmlNewCharRef(xmlDocPtr doc, const xmlChar *name) {
     } else
 	cur->name = xmlStrdup(name);
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(cur);
     return(cur);
 }
@@ -2308,7 +2310,7 @@ xmlNewReference(xmlDocPtr doc, const xmlChar *name) {
 	cur->last = (xmlNodePtr) ent;
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(cur);
     return(cur);
 }
@@ -2359,7 +2361,7 @@ xmlNewTextLen(const xmlChar *content, int len) {
 	cur->content = xmlStrndup(content, len);
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(cur);
     return(cur);
 }
@@ -2411,7 +2413,7 @@ xmlNewComment(const xmlChar *content) {
 	cur->content = xmlStrdup(content);
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(cur);
     return(cur);
 }
@@ -2446,7 +2448,7 @@ xmlNewCDataBlock(xmlDocPtr doc, const xmlChar *content, int len) {
 	cur->content = xmlStrndup(content, len);
     }
 
-    if (xmlRegisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(cur);
     return(cur);
 }
@@ -3076,7 +3078,7 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	/* unroll to speed up freeing the document */
 	if (cur->type != XML_DTD_NODE) {
 
-	    if (xmlDeregisterNodeDefaultValue)
+	    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 		xmlDeregisterNodeDefaultValue(cur);
 
 	    if ((cur->children != NULL) &&
@@ -3161,7 +3163,7 @@ xmlFreeNode(xmlNodePtr cur) {
 	return;
     }
 
-    if (xmlDeregisterNodeDefaultValue)
+    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 	xmlDeregisterNodeDefaultValue(cur);
 
     if ((cur->children != NULL) &&
@@ -3630,7 +3632,7 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	 * in case ret does get coalesced in xmlAddChild
 	 * the deregister-node callback is called; so we register ret now already
 	 */
-	if (xmlRegisterNodeDefaultValue)
+	if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	    xmlRegisterNodeDefaultValue((xmlNodePtr)ret);
 
         tmp = xmlAddChild(parent, ret);

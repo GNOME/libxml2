@@ -56,6 +56,7 @@
 #define DUMP_READER
 #endif
 
+#define CHUNK_SIZE 512
 /************************************************************************
  *									*
  *	The parser: maps the Text Reader API on top of the existing	*
@@ -340,9 +341,8 @@ xmlTextReaderCDataBlock(void *ctx, const xmlChar *ch, int len)
  */
 static int
 xmlTextReaderPushData(xmlTextReaderPtr reader) {
-    unsigned int cur = reader->cur;
     xmlBufferPtr inbuf;
-    int val;
+    int val, s;
     int oldstate;
 
     if ((reader->input == NULL) || (reader->input->buffer == NULL))
@@ -351,8 +351,9 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
     oldstate = reader->state;
     reader->state = XML_TEXTREADER_NONE;
     inbuf = reader->input->buffer;
+
     while (reader->state == XML_TEXTREADER_NONE) {
-	if (cur >= inbuf->use) {
+	if (inbuf->use < reader->cur + CHUNK_SIZE) {
 	    /*
 	     * Refill the buffer unless we are at the end of the stream
 	     */
@@ -365,47 +366,39 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 			(reader->ctxt->myDoc != NULL))
 			return(val);
 		}
+
 	    } else 
 		break;
 	}
 	/*
-	 * parse by block of 512 bytes
+	 * parse by block of CHUNK_SIZE bytes, various tests show that
+	 * it's the best tradeoff at least on a 1.2GH Duron
 	 */
-	if ((cur >= reader->cur + 512) || (cur >= inbuf->use)) {
-	    if (cur < inbuf->use)
-		cur = cur + 1;
+	if (inbuf->use >= reader->cur + CHUNK_SIZE) {
 	    val = xmlParseChunk(reader->ctxt,
 		          (const char *) &inbuf->content[reader->cur],
-			  cur - reader->cur, 0);
+			  CHUNK_SIZE, 0);
+	    reader->cur += CHUNK_SIZE;
 	    if (val != 0)
 		return(-1);
-	    reader->cur = cur;
-	    break;
 	} else {
-	    cur = cur + 1;
-
-	    /*
-	     * One may have to force a flush at some point when parsing really
-	     * large CDATA sections
-	     */
-	    if ((cur - reader->cur > 4096) && (reader->base == 0) &&
-		(reader->mode == XML_TEXTREADER_MODE_INTERACTIVE)) {
-		cur = cur + 1;
-		val = xmlParseChunk(reader->ctxt,
-			      (const char *) &inbuf->content[reader->cur],
-			      cur - reader->cur, 0);
-		if (val != 0)
-		    return(-1);
-		reader->cur = cur;
-	    }
+	    s = inbuf->use - reader->cur;
+	    val = xmlParseChunk(reader->ctxt,
+		          (const char *) &inbuf->content[reader->cur],
+			  s, 0);
+	    reader->cur += s;
+	    if (val != 0)
+		return(-1);
+	    break;
 	}
     }
+
     /*
      * Discard the consumed input when needed and possible
      */
     if (reader->mode == XML_TEXTREADER_MODE_INTERACTIVE) {
-	if ((reader->cur >= 4096) && (reader->base == 0)) {
-	    val = xmlBufferShrink(inbuf, cur);
+	if (reader->cur >= 4096) {
+	    val = xmlBufferShrink(inbuf, reader->cur);
 	    if (val >= 0) {
 		reader->cur -= val;
 	    }
@@ -416,12 +409,13 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
      * At the end of the stream signal that the work is done to the Push
      * parser.
      */
-    if (reader->mode == XML_TEXTREADER_MODE_EOF) {
+    else if (reader->mode == XML_TEXTREADER_MODE_EOF) {
 	if (reader->mode != XML_TEXTREADER_DONE) {
+	    s = inbuf->use - reader->cur;
 	    val = xmlParseChunk(reader->ctxt,
 		    (const char *) &inbuf->content[reader->cur], 
-		    cur - reader->cur, 1);
-	    reader->cur = cur;
+		    s, 1);
+	    reader->cur = inbuf->use;
 	    reader->mode = XML_TEXTREADER_DONE;
 	}
     }
@@ -767,62 +761,23 @@ get_next_node:
      * that the parser didn't finished or that we arent at the end
      * of stream, continue processing.
      */
-    while (((oldstate == XML_TEXTREADER_BACKTRACK) ||
+    while ((reader->node->next == NULL) &&
+	   (reader->ctxt->nodeNr == olddepth) &&
+           ((oldstate == XML_TEXTREADER_BACKTRACK) ||
             (reader->node->children == NULL) ||
 	    (reader->node->type == XML_ENTITY_REF_NODE) ||
 	    (reader->node->type == XML_DTD_NODE) ||
 	    (reader->node->type == XML_DOCUMENT_NODE) ||
 	    (reader->node->type == XML_HTML_DOCUMENT_NODE)) &&
-	   (reader->node->next == NULL) &&
 	   ((reader->ctxt->node == NULL) ||
 	    (reader->ctxt->node == reader->node) ||
 	    (reader->ctxt->node == reader->node->parent)) &&
-	   (reader->ctxt->nodeNr == olddepth) &&
 	   (reader->ctxt->instate != XML_PARSER_EOF)) {
 	val = xmlTextReaderPushData(reader);
 	if (val < 0)
 	    return(-1);
 	if (reader->node == NULL)
 	    goto node_end;
-    }
-    /*
-     * If we are in the middle of a piece of CDATA make sure it's finished
-     * Maybe calling a function checking that a non-character() callback was
-     * received would be cleaner for the loop exit.
-     */
-    if ((oldstate == XML_TEXTREADER_ELEMENT) &&
-	(reader->ctxt->instate == XML_PARSER_CDATA_SECTION)) {
-	while ((reader->ctxt->instate == XML_PARSER_CDATA_SECTION) &&
-	       (((reader->node->content == NULL) &&
-		 (reader->node->next != NULL) &&
-		 (reader->node->next->type == XML_CDATA_SECTION_NODE) &&
-		 (reader->node->next->next == NULL) &&
-		 (reader->node->parent->next == NULL)) ||
-	        ((reader->node->children != NULL) &&
-		 (reader->node->children->type == XML_CDATA_SECTION_NODE) &&
-		 (reader->node->children->next == NULL) &&
-		 (reader->node->children->next == NULL)))) {
-	    val = xmlTextReaderPushData(reader);
-	    if (val < 0)
-		return(-1);
-	}
-    }
-    if ((oldstate == XML_TEXTREADER_ELEMENT) &&
-	(reader->ctxt->instate == XML_PARSER_CONTENT)) {
-	while ((reader->ctxt->instate == XML_PARSER_CONTENT) &&
-	       (((reader->node->content == NULL) &&
-		 (reader->node->next != NULL) &&
-		 (reader->node->next->type == XML_TEXT_NODE) &&
-		 (reader->node->next->next == NULL) &&
-		 (reader->node->parent->next == NULL)) ||
-	        ((reader->node->children != NULL) &&
-		 (reader->node->children->type == XML_TEXT_NODE) &&
-		 (reader->node->children->next == NULL) &&
-		 (reader->node->children->next == NULL)))) {
-	    val = xmlTextReaderPushData(reader);
-	    if (val < 0)
-		return(-1);
-	}
     }
     if (oldstate != XML_TEXTREADER_BACKTRACK) {
 	if ((reader->node->children != NULL) &&
@@ -898,6 +853,15 @@ get_next_node:
 
 node_found:
     DUMP_READER
+
+    /*
+     * If we are in the middle of a piece of CDATA make sure it's finished
+     */
+    if ((reader->node != NULL) &&
+        ((reader->node->type == XML_TEXT_NODE) ||
+	 (reader->node->type == XML_CDATA_SECTION_NODE))) {
+            xmlTextReaderExpand(reader);
+    }
 
     /*
      * Handle entities enter and exit when in entity replacement mode

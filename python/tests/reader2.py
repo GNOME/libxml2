@@ -16,7 +16,7 @@ expect="""../../test/valid/rss.xml:172: validity error: Element rss does not car
 </rss>
      ^
 ../../test/valid/xlink.xml:450: validity error: ID dt-arc already defined
-	<p><termdef id="dt-arc" term="Arc">An <term>arc</term> is contained within an 
+	<p><termdef id="dt-arc" term="Arc">An <ter
                                    ^
 ../../test/valid/xlink.xml:530: validity error: attribute def line 199 references an unknown ID "dt-xlg"
 

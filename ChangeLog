@@ -1,3 +1,11 @@
+Mon Apr 21 23:33:38 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c libxml.h parser.c parserInternals.c tree.c xmllint.c
+	  xmlreader.c include/libxml/parser.h: a lot of performance work
+	  especially the speed of streaming through the reader and push
+	  interface. Some thread related optimizations. Nearly doubled the
+	  speed of parsing through the reader.
+
 Sun Apr 20 10:36:05 MDT 2003 John Fleck <jfleck@inkstain.net>
 
 	* doc/xmllint.xml

@@ -1,3 +1,9 @@
+Wed Jan 23 18:53:55 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/APIchunk*.html doc/parsedecl.py doc/api.xsl: generated
+	  an alphabetic index based on comments content
+	* doc/*: rebuilt the web site with the new references
+
 Wed Jan 23 15:14:22 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.h: Greg Sjaardema suggested to use an

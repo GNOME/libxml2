@@ -27,6 +27,52 @@ identifiers_type = {}
 
 ##################################################################
 #
+#          Indexer to generate the word index
+#
+##################################################################
+index = {}
+
+
+def indexString(id, str):
+    str = string.replace(str, "'", ' ')
+    str = string.replace(str, '"', ' ')
+    str = string.replace(str, "/", ' ')
+    str = string.replace(str, '*', ' ')
+    str = string.replace(str, "[", ' ')
+    str = string.replace(str, "]", ' ')
+    str = string.replace(str, "(", ' ')
+    str = string.replace(str, ")", ' ')
+    str = string.replace(str, "<", ' ')
+    str = string.replace(str, '>', ' ')
+    str = string.replace(str, "&", ' ')
+    str = string.replace(str, '#', ' ')
+    str = string.replace(str, ",", ' ')
+    str = string.replace(str, '.', ' ')
+    str = string.replace(str, ';', ' ')
+    tokens = string.split(str)
+    for token in tokens:
+        try:
+	    c = token[0]
+	    if string.find(string.letters, c) < 0:
+	        pass
+	    elif len(token) < 3:
+		pass
+	    else:
+		lower = string.lower(token)
+		# TODO: generalize this a bit
+		if lower == 'and' or lower == 'the':
+		    pass
+		elif index.has_key(token):
+		    index[token].append(id)
+		else:
+		    index[token] = [id]
+	except:
+	    pass
+       
+
+
+##################################################################
+#
 #          Parsing: libxml-decl.txt
 #
 ##################################################################
@@ -320,6 +366,7 @@ nbcomments = 0
 def insertParameterComment(id, name, value, is_param):
     global nbcomments
 
+    indexString(id, value)
     if functions.has_key(id):
         if is_param == 1:
 	    args = functions[id][1]
@@ -375,6 +422,7 @@ def insertComment(name, title, value, id):
     global nbcomments
 
     ids[name] = id
+    indexString(name, value)
     if functions.has_key(name):
         functions[name][2] = value
 	return "function"
@@ -611,6 +659,7 @@ def escape(raw):
 
 print "Saving XML description libxml2-api.xml"
 output = open("libxml2-api.xml", "w")
+output.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
 output.write("<api name='libxml2'>\n")
 output.write("  <files>\n")
 for file in files.keys():
@@ -756,6 +805,7 @@ def link(id):
     
 print "Saving XML crossreferences libxml2-refs.xml"
 output = open("libxml2-refs.xml", "w")
+output.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
 output.write("<apirefs name='libxml2'>\n")
 output.write("  <references>\n")
 typ = ids.keys()
@@ -813,6 +863,51 @@ for file in typ:
 	output.write("      <ref name='%s'/>\n" % (id))
     output.write("    </file>\n")
 output.write("  </files>\n")
+
+output.write("  <index>\n")
+typ = index.keys()
+typ.sort()
+letter = None
+count = 0
+chunk = 0
+chunks = []
+for id in typ:
+    if len(index[id]) > 30:
+        continue
+    if id[0] != letter:
+        if letter == None or count > 200:
+	    if letter != None:
+		output.write("      </letter>\n")
+	        output.write("    </chunk>\n")
+		count = 0
+		chunks.append(["chunk%s" % (chunk -1), first_letter, letter])
+	    output.write("    <chunk name='chunk%s'>\n" % (chunk))
+	    first_letter = id[0]
+	    chunk = chunk + 1
+        elif letter != None:
+	    output.write("      </letter>\n")
+        letter = id[0]
+	output.write("      <letter name='%s'>\n" % (letter))
+    output.write("        <word name='%s'>\n" % (id))
+    tokens = index[id];
+    tokens.sort()
+    tok = None
+    for token in index[id]:
+        if tok == token:
+	    continue
+	tok = token
+	output.write("          <ref name='%s'/>\n" % (token))
+	count = count + 1
+    output.write("        </word>\n")
+if letter != None:
+    output.write("      </letter>\n")
+    output.write("    </chunk>\n")
+    output.write("    <chunks>\n")
+    for ch in chunks:
+        output.write("      <chunk name='%s' start='%s' end='%s'/>\n" % (
+	             ch[0], ch[1], ch[2]))
+    output.write("    </chunks>\n")
+output.write("  </index>\n")
+
 output.write("</apirefs>\n")
 output.close()
-print "generated %d XML references" % (len(ids))

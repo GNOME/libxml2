@@ -130,6 +130,7 @@
   </xsl:variable>
   <xsl:variable name="api">
     <ul><!-- style="margin-left: -1em" -->
+      <li><a href="APIchunk0.html">Alphabetic</a></li>
       <li><a href="APIconstructors.html">Constructors</a></li>
       <li><a href="APIfunctions.html">Functions/Types</a></li>
       <li><a href="APIfiles.html">Modules</a></li>

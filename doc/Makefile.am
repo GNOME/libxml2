@@ -17,7 +17,7 @@ PAGES= architecture.html bugs.html contribs.html docs.html DOM.html \
     interface.html intro.html library.html namespaces.html news.html \
     tree.html xmldtd.html XMLinfo.html XSLT.html
 APIPAGES=APIconstructors.html APIfiles.html APIfunctions.html \
-    APIsymbols.html
+    APIsymbols.html APIchunk0.html
 
 man_MANS = xmllint.1 xmlcatalog.1
 

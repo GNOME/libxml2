@@ -2498,6 +2498,7 @@ xmlNodeGetContent(xmlNodePtr cur) {
 		return(xmlNodeListGetString(NULL, attr->val, 1));
 	    break;
 	}
+        case XML_COMMENT_NODE:
         case XML_PI_NODE:
 	    if (cur->content != NULL)
 #ifndef XML_USE_BUFFER_CONTENT
@@ -2507,8 +2508,12 @@ xmlNodeGetContent(xmlNodePtr cur) {
 #endif
 	    return(NULL);
         case XML_ENTITY_REF_NODE:
+	    /*
+	     * Locate the entity, and get it's content
+	     * @@@
+	     */
+            return(NULL);
         case XML_ENTITY_NODE:
-        case XML_COMMENT_NODE:
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
@@ -2858,18 +2863,6 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 	}
 	node = node->parent;
     }
-#if 0    
-    /* Removed support for old namespaces */
-    if (doc != NULL) {
-        cur = doc->oldNs;
-	while (cur != NULL) {
-	    if ((cur->prefix != NULL) && (nameSpace != NULL) &&
-	        (!xmlStrcmp(cur->prefix, nameSpace)))
-		return(cur);
-	    cur = cur->next;
-	}
-    }
-#endif    
     return(NULL);
 }
 
@@ -2886,31 +2879,283 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 xmlNsPtr
 xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
     xmlNsPtr cur;
+    xmlNodePtr orig = node;
 
     if ((node == NULL) || (href == NULL)) return(NULL);
     while (node != NULL) {
 	cur = node->nsDef;
 	while (cur != NULL) {
 	    if ((cur->href != NULL) && (href != NULL) &&
-	        (!xmlStrcmp(cur->href, href)))
+	        (!xmlStrcmp(cur->href, href))) {
+		/*
+		 * Check that the prefix is not shadowed between orig and node
+		 */
+		xmlNodePtr check = orig;
+		xmlNsPtr tst;
+
+		while (check != node) {
+		    tst = check->nsDef;
+		    while (tst != NULL) {
+			if ((tst->prefix == NULL) && (cur->prefix == NULL))
+	                    goto shadowed;
+			if ((tst->prefix != NULL) && (cur->prefix != NULL) &&
+			    (!xmlStrcmp(tst->prefix, cur->prefix)))
+	                    goto shadowed;
+		        tst = tst->next;
+		    }
+		}
 		return(cur);
+	    }
+shadowed:		    
 	    cur = cur->next;
 	}
 	node = node->parent;
     }
-#if 0    
-    /* Removed support for old namespaces */
-    if (doc != NULL) {
-        cur = doc->oldNs;
-	while (cur != NULL) {
-	    if ((cur->href != NULL) && (href != NULL) &&
-	        (!xmlStrcmp(cur->href, href)))
-		return(cur);
-	    cur = cur->next;
+    return(NULL);
+}
+
+/**
+ * xmlNewReconciliedNs
+ * @doc:  the document
+ * @tree:  a node expected to hold the new namespace
+ * @ns:  the original namespace
+ *
+ * This function tries to locate a namespace definition in a tree
+ * ancestors, or create a new namespace definition node similar to
+ * @ns trying to reuse the same prefix. However if the given prefix is
+ * null (default namespace) or reused within the subtree defined by
+ * @tree or on one of its ancestors then a new prefix is generated.
+ * Returns the (new) namespace definition or NULL in case of error
+ */
+xmlNsPtr
+xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
+    xmlNsPtr def;
+    xmlChar prefix[50];
+    int counter = 1;
+
+    if (tree == NULL) {
+#ifdef DEBUG_TREE
+        fprintf(stderr, "xmlNewReconciliedNs : tree == NULL\n");
+#endif
+	return(NULL);
+    }
+    if (ns == NULL) {
+#ifdef DEBUG_TREE
+        fprintf(stderr, "xmlNewReconciliedNs : ns == NULL\n");
+#endif
+	return(NULL);
+    }
+    /*
+     * Search an existing namespace definition inherited.
+     */
+    def = xmlSearchNsByHref(doc, tree, ns->href);
+    if (def != NULL)
+        return(def);
+
+    /*
+     * Find a close prefix which is not already in use.
+     * Let's strip namespace prefixes longer than 20 chars !
+     */
+    sprintf((char *) prefix, "%.20s", ns->prefix);
+    def = xmlSearchNs(doc, tree, prefix);
+    while (def != NULL) {
+        if (counter > 1000) return(NULL);
+        sprintf((char *) prefix, "%.20s%d", ns->prefix, counter++);
+	def = xmlSearchNs(doc, tree, prefix);
+    }
+
+    /*
+     * Ok, now we are ready to create a new one.
+     */
+    def = xmlNewNs(tree, ns->href, prefix);
+    return(def);
+}
+
+/**
+ * xmlReconciliateNs
+ * @doc:  the document
+ * @tree:  a node defining the subtree to reconciliate
+ *
+ * This function checks that all the namespaces declared within the given
+ * tree are properly declared. This is needed for example after Copy or Cut
+ * and then paste operations. The subtree may still hold pointers to
+ * namespace declarations outside the subtree or invalid/masked. As much
+ * as possible the function try tu reuse the existing namespaces found in
+ * the new environment. If not possible the new namespaces are redeclared
+ * on @tree at the top of the given subtree.
+ * Returns the number of namespace declarations created or -1 in case of error.
+ */
+int
+xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
+    xmlNsPtr *oldNs = NULL;
+    xmlNsPtr *newNs = NULL;
+    int sizeCache = 0;
+    int nbCache = 0;
+
+    xmlNsPtr n;
+    xmlNodePtr node = tree;
+    xmlAttrPtr attr;
+    int ret = 0, i;
+
+    while (node != NULL) {
+        /*
+	 * Reconciliate the node namespace
+	 */
+	if (node->ns != NULL) {
+	    /*
+	     * initialize the cache if needed
+	     */
+	    if (sizeCache == 0) {
+		sizeCache = 10;
+		oldNs = (xmlNsPtr *) xmlMalloc(sizeCache *
+					       sizeof(xmlNsPtr));
+		if (oldNs == NULL) {
+		    fprintf(stderr, "xmlReconciliateNs : memory pbm\n");
+		    return(-1);
+		}
+		newNs = (xmlNsPtr *) xmlMalloc(sizeCache *
+					       sizeof(xmlNsPtr));
+		if (newNs == NULL) {
+		    fprintf(stderr, "xmlReconciliateNs : memory pbm\n");
+		    xmlFree(oldNs);
+		    return(-1);
+		}
+	    }
+	    for (i = 0;i < nbCache;i++) {
+	        if (oldNs[i] == node->ns) {
+		    node->ns = newNs[i];
+		    break;
+		}
+	    }
+	    if (i == nbCache) {
+	        /*
+		 * Ok we need to recreate a new namespace definition
+		 */
+		n = xmlNewReconciliedNs(doc, tree, node->ns);
+		if (n != NULL) { /* :-( what if else ??? */
+		    /*
+		     * check if we need to grow the cache buffers.
+		     */
+		    if (sizeCache <= nbCache) {
+		        sizeCache *= 2;
+			oldNs = (xmlNsPtr *) xmlRealloc(oldNs, sizeCache *
+			                               sizeof(xmlNsPtr));
+		        if (oldNs == NULL) {
+			    fprintf(stderr, "xmlReconciliateNs : memory pbm\n");
+			    xmlFree(newNs);
+			    return(-1);
+			}
+			newNs = (xmlNsPtr *) xmlRealloc(newNs, sizeCache *
+			                               sizeof(xmlNsPtr));
+		        if (newNs == NULL) {
+			    fprintf(stderr, "xmlReconciliateNs : memory pbm\n");
+			    xmlFree(oldNs);
+			    return(-1);
+			}
+		    }
+		    newNs[nbCache] = n;
+		    oldNs[nbCache++] = node->ns;
+		    node->ns = n;
+                }
+	    }
+	}
+	/*
+	 * now check for namespace hold by attributes on the node.
+	 */
+	attr = node->properties;
+	while (attr != NULL) {
+	    if (attr->ns != NULL) {
+		/*
+		 * initialize the cache if needed
+		 */
+		if (sizeCache == 0) {
+		    sizeCache = 10;
+		    oldNs = (xmlNsPtr *) xmlMalloc(sizeCache *
+						   sizeof(xmlNsPtr));
+		    if (oldNs == NULL) {
+			fprintf(stderr, "xmlReconciliateNs : memory pbm\n");
+			return(-1);
+		    }
+		    newNs = (xmlNsPtr *) xmlMalloc(sizeCache *
+						   sizeof(xmlNsPtr));
+		    if (newNs == NULL) {
+			fprintf(stderr, "xmlReconciliateNs : memory pbm\n");
+			xmlFree(oldNs);
+			return(-1);
+		    }
+		}
+		for (i = 0;i < nbCache;i++) {
+		    if (oldNs[i] == attr->ns) {
+			node->ns = newNs[i];
+			break;
+		    }
+		}
+		if (i == nbCache) {
+		    /*
+		     * Ok we need to recreate a new namespace definition
+		     */
+		    n = xmlNewReconciliedNs(doc, tree, attr->ns);
+		    if (n != NULL) { /* :-( what if else ??? */
+			/*
+			 * check if we need to grow the cache buffers.
+			 */
+			if (sizeCache <= nbCache) {
+			    sizeCache *= 2;
+			    oldNs = (xmlNsPtr *) xmlRealloc(oldNs, sizeCache *
+							   sizeof(xmlNsPtr));
+			    if (oldNs == NULL) {
+				fprintf(stderr,
+				        "xmlReconciliateNs : memory pbm\n");
+				xmlFree(newNs);
+				return(-1);
+			    }
+			    newNs = (xmlNsPtr *) xmlRealloc(newNs, sizeCache *
+							   sizeof(xmlNsPtr));
+			    if (newNs == NULL) {
+				fprintf(stderr,
+				        "xmlReconciliateNs : memory pbm\n");
+				xmlFree(oldNs);
+				return(-1);
+			    }
+			}
+			newNs[nbCache] = n;
+			oldNs[nbCache++] = attr->ns;
+			attr->ns = n;
+		    }
+		}
+	    }
+	    attr = attr->next;
+	}
+
+	/*
+	 * Browse the full subtree, deep first
+	 */
+        if (node->childs != NULL) {
+	    /* deep first */
+	    node = node->childs;
+	} else if ((node != tree) && (node->next != NULL)) {
+	    /* then siblings */
+	    node = node->next;
+	} else if (node != tree) {
+	    /* go up to parents->next if needed */
+	    while (node != tree) {
+	        if (node->parent != NULL)
+		    node = node->parent;
+		if ((node != tree) && (node->next != NULL)) {
+		    node = node->next;
+		    break;
+		}
+		if (node->parent == NULL) {
+		    node = NULL;
+		    break;
+		}
+	    }
+	    /* exit condition */
+	    if (node == tree) 
+	        node = NULL;
 	}
     }
-#endif    
-    return(NULL);
+    return(ret);
 }
 
 /**
@@ -3095,8 +3340,9 @@ void
 xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
     if (node == NULL) return;
 
-    if (node->type != XML_TEXT_NODE) {
-	fprintf(stderr, "xmlTextConcat: node is not text\n");
+    if ((node->type != XML_TEXT_NODE) &&
+        (node->type != XML_CDATA_SECTION_NODE)) {
+	fprintf(stderr, "xmlTextConcat: node is not text nor cdata\n");
         return;
     }
 #ifndef XML_USE_BUFFER_CONTENT
@@ -3376,7 +3622,11 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
     if (len == 0) return;
 
     /* CJN What's this for??? */
-    l = xmlStrlen(str);
+    if (len < 0)
+        l = xmlStrlen(str);
+    else 
+	for (l = 0;l < len;l++)
+	    if (str[l] == 0) break;
     if (l < len){  len = l; printf("xmlBufferAdd bad length\n"); }
 
     /* CJN 11.18.99 okay, now I'm using the length */
@@ -3676,6 +3926,9 @@ xmlAttrListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 static void
 xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
             int format);
+void
+htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur);
+
 /**
  * xmlNodeListDump:
  * @buf:  the XML buffer output
@@ -3851,6 +4104,40 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
 }
 
 /**
+ * xmlElemDump:
+ * @buf:  the XML buffer output
+ * @doc:  the document
+ * @cur:  the current node
+ *
+ * Dump an XML/HTML node, recursive behaviour,children are printed too.
+ */
+void
+xmlElemDump(FILE *f, xmlDocPtr doc, xmlNodePtr cur) {
+    xmlBufferPtr buf;
+
+    if (cur == NULL) {
+#ifdef DEBUG_TREE
+        fprintf(stderr, "xmlElemDump : cur == NULL\n");
+#endif
+	return;
+    }
+    if (doc == NULL) {
+#ifdef DEBUG_TREE
+        fprintf(stderr, "xmlElemDump : doc == NULL\n");
+#endif
+    }
+    buf = xmlBufferCreate();
+    if (buf == NULL) return;
+    if ((doc != NULL) && 
+        (doc->type == XML_HTML_DOCUMENT_NODE)) {
+        htmlNodeDump(buf, doc, cur);
+    } else
+        xmlNodeDump(buf, doc, cur, 0, 1);
+    xmlBufferDump(f, buf);
+    xmlBufferFree(buf);
+}
+
+/**
  * xmlDocContentDump:
  * @buf:  the XML buffer output
  * @cur:  the document
@@ -3937,7 +4224,7 @@ xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  * Returns 0 (uncompressed) to 9 (max compression)
  */
 int
- xmlGetDocCompressMode (xmlDocPtr doc) {
+xmlGetDocCompressMode (xmlDocPtr doc) {
     if (doc == NULL) return(-1);
     return(doc->compression);
 }

@@ -57,8 +57,8 @@
  * Generic function for accessing stacks in the Parser Context
  */
 
-#define PUSH_AND_POP(type, name)					\
-int html##name##Push(htmlParserCtxtPtr ctxt, type value) {		\
+#define PUSH_AND_POP(scope, type, name)					\
+scope int html##name##Push(htmlParserCtxtPtr ctxt, type value) {	\
     if (ctxt->name##Nr >= ctxt->name##Max) {				\
 	ctxt->name##Max *= 2;						\
         ctxt->name##Tab = (void *) xmlRealloc(ctxt->name##Tab,		\
@@ -72,7 +72,7 @@ int html##name##Push(htmlParserCtxtPtr ctxt, type value) {		\
     ctxt->name = value;							\
     return(ctxt->name##Nr++);						\
 }									\
-type html##name##Pop(htmlParserCtxtPtr ctxt) {				\
+scope type html##name##Pop(htmlParserCtxtPtr ctxt) {			\
     type ret;								\
     if (ctxt->name##Nr < 0) return(0);					\
     ctxt->name##Nr--;							\
@@ -86,8 +86,8 @@ type html##name##Pop(htmlParserCtxtPtr ctxt) {				\
     return(ret);							\
 }									\
 
-PUSH_AND_POP(xmlNodePtr, node)
-PUSH_AND_POP(xmlChar*, name)
+PUSH_AND_POP(extern, xmlNodePtr, node)
+PUSH_AND_POP(extern, xmlChar*, name)
 
 /*
  * Macros for accessing the content. Those should be used only by the parser,
@@ -2626,11 +2626,11 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
 }
 
 
-/********************************************************************************
- *										*
- *				Parser contexts handling			*
- *										*
- ********************************************************************************/
+/************************************************************************
+ *									*
+ *			Parser contexts handling			*
+ *									*
+ ************************************************************************/
 
 /**
  * xmlInitParserCtxt:
@@ -2665,6 +2665,7 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->version = NULL;
     ctxt->encoding = NULL;
     ctxt->standalone = -1;
+    ctxt->instate = XML_PARSER_START;
 
     /* Allocate the Node stack */
     ctxt->nodeTab = (htmlNodePtr *) xmlMalloc(10 * sizeof(htmlNodePtr));
@@ -2691,6 +2692,7 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->record_info = 0;
     ctxt->validate = 0;
     ctxt->nbChars = 0;
+    ctxt->checkIndex = 0;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
 }
 

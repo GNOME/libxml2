@@ -47,6 +47,10 @@
 #include "xpath.h"
 #include "parserInternals.h"
 
+/* #define DEBUG */
+/* #define DEBUG_STEP */
+/* #define DEBUG_EXPR */
+
 /*
  * Setup stuff for floating point
  * The lack of portability of this section of the libc is annoying !
@@ -150,10 +154,6 @@ xmlXPathInit(void) {
 
     initialized = 1;
 }
-
-/* #define DEBUG */
-/* #define DEBUG_STEP */
-/* #define DEBUG_EXPR */
 
 FILE *xmlXPathDebug = NULL;
 
@@ -748,6 +748,22 @@ xmlXPathNewNodeSetList(xmlNodeSetPtr val) {
 }
 
 /**
+ * xmlXPathFreeNodeSetList:
+ * @obj:  an existing NodeSetList object
+ *
+ * Free up the xmlXPathObjectPtr @obj but don't deallocate the objects in
+ * the list contrary to xmlXPathFreeObject().
+ */
+void
+xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj) {
+    if (obj == NULL) return;
+#ifdef DEBUG
+    memset(obj, 0xB , (size_t) sizeof(xmlXPathObject));
+#endif
+    xmlFree(obj);
+}
+
+/**
  * xmlXPathFreeObject:
  * @obj:  the object to free
  *
@@ -791,6 +807,12 @@ xmlXPathNewContext(xmlDocPtr doc) {
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathContext));
     ret->doc = doc;
+ /***********   
+    ret->node = (xmlNodePtr) doc;
+    ret->nodelist = xmlXPathNodeSetCreate(ret->node);
+  ***********/  
+    ret->node = NULL;
+    ret->nodelist = NULL;
 
     ret->nb_variables = 0;
     ret->max_variables = 0;
@@ -825,6 +847,10 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
     if (ctxt->namespaces != NULL)
         xmlFree(ctxt->namespaces);
 
+ /***********   
+    if (ctxt->nodelist != NULL) 
+        xmlXPathFreeNodeSet(ctxt->nodelist);
+  ***********/  
 #ifdef DEBUG
     memset(ctxt, 0xB , (size_t) sizeof(xmlXPathContext));
 #endif
@@ -1467,12 +1493,13 @@ xmlXPathNextSelf(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 xmlNodePtr
 xmlXPathNextChild(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     if (cur == NULL) {
-        if (ctxt->context->node == (xmlNodePtr) ctxt->context->doc)
-	    return(ctxt->context->doc->root);
+	if ((ctxt->context->node->type == XML_DOCUMENT_NODE) ||
+	    (ctxt->context->node->type == XML_HTML_DOCUMENT_NODE))
+	    return(((xmlDocPtr) ctxt->context->node)->root);
         return(ctxt->context->node->childs);
     }
-    if ((ctxt->context->node->type == XML_DOCUMENT_NODE) ||
-        (ctxt->context->node->type == XML_HTML_DOCUMENT_NODE))
+    if ((cur->type == XML_DOCUMENT_NODE) ||
+        (cur->type == XML_HTML_DOCUMENT_NODE))
 	return(NULL);
     return(cur->next);
 }
@@ -1918,23 +1945,23 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, int axis,
             ctxt->context->nodelist->nodeNr);
     switch (test) {
 	case NODE_TEST_NONE:
-	    fprintf(xmlXPathDebug, "           seaching for none !!!\n");
+	    fprintf(xmlXPathDebug, "           searching for none !!!\n");
 	    break;
 	case NODE_TEST_TYPE:
-	    fprintf(xmlXPathDebug, "           seaching for type %d\n", type);
+	    fprintf(xmlXPathDebug, "           searching for type %d\n", type);
 	    break;
 	case NODE_TEST_PI:
-	    fprintf(xmlXPathDebug, "           seaching for PI !!!\n");
+	    fprintf(xmlXPathDebug, "           searching for PI !!!\n");
 	    break;
 	case NODE_TEST_ALL:
-	    fprintf(xmlXPathDebug, "           seaching for *\n");
+	    fprintf(xmlXPathDebug, "           searching for *\n");
 	    break;
 	case NODE_TEST_NS:
-	    fprintf(xmlXPathDebug, "           seaching for namespace %s\n",
+	    fprintf(xmlXPathDebug, "           searching for namespace %s\n",
 	            prefix);
 	    break;
 	case NODE_TEST_NAME:
-	    fprintf(xmlXPathDebug, "           seaching for name %s\n", name);
+	    fprintf(xmlXPathDebug, "           searching for name %s\n", name);
 	    if (prefix != NULL)
 		fprintf(xmlXPathDebug, "           with namespace %s\n",
 		        prefix);
@@ -1958,7 +1985,10 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, int axis,
 		    STRANGE
 		    return(NULL);
                 case NODE_TEST_TYPE:
-		    if (cur->type == type) {
+		    if ((cur->type == type) ||
+		        ((type == XML_ELEMENT_NODE) && 
+			 ((cur->type == XML_DOCUMENT_NODE) ||
+			  (cur->type == XML_HTML_DOCUMENT_NODE)))) {
 #ifdef DEBUG_STEP
                         n++;
 #endif
@@ -4400,6 +4430,7 @@ xmlXPathObjectPtr
 xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctxt) {
     xmlXPathParserContextPtr pctxt;
     xmlXPathObjectPtr res = NULL, tmp;
+    int stack = 0;
 
     xmlXPathInit();
 
@@ -4408,16 +4439,26 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctxt) {
     if (xmlXPathDebug == NULL)
         xmlXPathDebug = stderr;
     pctxt = xmlXPathNewParserContext(str, ctxt);
+    if (str[0] == '/')
+        xmlXPathRoot(pctxt);
     xmlXPathEvalLocationPath(pctxt);
 
     /* TODO: cleanup nodelist, res = valuePop(pctxt); */
     do {
         tmp = valuePop(pctxt);
-	if (tmp != NULL);
+	if (tmp != NULL) {
 	    xmlXPathFreeObject(tmp);
+	    stack++;    
+        }
     } while (tmp != NULL);
-    if (res == NULL)
+    if (stack != 0) {
+	fprintf(xmlXPathDebug, "xmlXPathEval: %d object left on the stack\n",
+	        stack);
+    }
+    if (pctxt->error == XPATH_EXPRESSION_OK)
 	res = xmlXPathNewNodeSetList(pctxt->context->nodelist);
+    else
+        res = NULL;
     xmlXPathFreeParserContext(pctxt);
     return(res);
 }
@@ -4436,6 +4477,7 @@ xmlXPathObjectPtr
 xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     xmlXPathParserContextPtr pctxt;
     xmlXPathObjectPtr res, tmp;
+    int stack = 0;
 
     xmlXPathInit();
 
@@ -4449,9 +4491,15 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     res = valuePop(pctxt);
     do {
         tmp = valuePop(pctxt);
-	if (tmp != NULL);
+	if (tmp != NULL) {
 	    xmlXPathFreeObject(tmp);
+	    stack++;
+	}
     } while (tmp != NULL);
+    if (stack != 0) {
+	fprintf(xmlXPathDebug, "xmlXPathEval: %d object left on the stack\n",
+	        stack);
+    }
     xmlXPathFreeParserContext(pctxt);
     return(res);
 }

@@ -1101,14 +1101,22 @@ void
 cdataBlock(void *ctx, const xmlChar *value, int len)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlNodePtr ret;
+    xmlNodePtr ret, lastChild;
 
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.pcdata(%.10s, %d)\n", value, len);
 #endif
-    ret = xmlNewCDataBlock(ctxt->myDoc, value, len);
-    xmlAddChild(ctxt->node, ret);
-    /* !!!!! merges */
+    lastChild = xmlGetLastChild(ctxt->node);
+#ifdef DEBUG_SAX_TREE
+    fprintf(stderr, "add chars to %s \n", ctxt->node->name);
+#endif
+    if ((lastChild != NULL) &&
+        (lastChild->type == XML_CDATA_SECTION_NODE)) {
+	xmlTextConcat(lastChild, value, len);
+    } else {
+	ret = xmlNewCDataBlock(ctxt->myDoc, value, len);
+	xmlAddChild(ctxt->node, ret);
+    }
 }
 
 /*

@@ -369,9 +369,52 @@ xmlMemUsed(void) {
 }
 
 /**
+ * xmlMemShow:
+ * @fp:  a FILE descriptor used as the output file
+ * @nr:  number of entries to dump
+ *
+ * show a show display of the memory allocated, and dump
+ * the @nr last allocated areas which were not freed
+ */
+
+void
+xmlMemShow(FILE *fp, int nr)
+{
+#ifdef MEM_LIST
+    MEMHDR *p;
+#endif
+
+    if (fp != NULL)
+	fprintf(fp,"      MEMORY ALLOCATED : %lu, MAX was %lu\n",
+		debugMemSize, debugMaxMemSize);
+#ifdef MEM_LIST
+    if (nr > 0) {
+	fprintf(fp,"NUMBER   SIZE  TYPE   WHERE\n");
+	p = memlist;
+	while ((p) && nr > 0) {
+	      fprintf(fp,"%6lu %6u ",p->mh_number,p->mh_size);
+	    switch (p->mh_type) {
+	       case STRDUP_TYPE:fprintf(fp,"strdup()  in ");break;
+	       case MALLOC_TYPE:fprintf(fp,"malloc()  in ");break;
+	      case REALLOC_TYPE:fprintf(fp,"realloc() in ");break;
+			default:fprintf(fp,"   ???    in ");break;
+	    }
+	    if (p->mh_file != NULL)
+	        fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
+	    if (p->mh_tag != MEMTAG)
+		fprintf(fp,"  INVALID");
+	    fprintf(fp,"\n");
+	    nr--;
+	    p = p->mh_next;
+	}
+    }
+#endif /* MEM_LIST */    
+}
+
+/**
  * xmlMemDisplay:
  * @fp:  a FILE descriptor used as the output file, if NULL, the result is
- 8       written to the file .memorylist
+ *       written to the file .memorylist
  *
  * show in-extenso the memory blocks allocated
  */

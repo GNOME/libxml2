@@ -1,5 +1,5 @@
 /*
- * memory.h: interface for the memory allocation debug.
+ * xmlmemory.h: interface for the memory allocation debug.
  *
  * Daniel.Veillard@w3.org
  */
@@ -24,6 +24,7 @@
 #define xmlInitMemory()
 #define xmlMemoryDump()
 #define xmlMemDisplay(x)
+#define xmlMemShow(x, d)
 
 #else /* ! NO_DEBUG_MEMORY */
 #include <stdio.h>
@@ -51,6 +52,7 @@ void	xmlFree		(void *ptr);
 char *	xmlMemStrdup	(const char *str);
 int	xmlMemUsed	(void);
 void	xmlMemDisplay	(FILE *fp);
+void	xmlMemShow	(FILE *fp, int nr);
 void	xmlMemoryDump	(void);
 int	xmlInitMemory	(void);
 

@@ -34,6 +34,7 @@ typedef struct xmlEntity {
     const xmlChar  *ExternalID;	/* External identifier for PUBLIC Entity */
     const xmlChar  *SystemID;	/* URI for a SYSTEM or PUBLIC Entity */
     xmlChar *content;		/* The entity content or ndata if unparsed */
+    int length;			/* the content length */
     xmlChar *orig;		/* The entity cont without ref substitution */
 } xmlEntity;
 typedef xmlEntity *xmlEntityPtr;

@@ -38,6 +38,9 @@ typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
  */
 
 xmlParserInputBufferPtr
+	xmlAllocParserInputBuffer		(xmlCharEncoding enc);
+
+xmlParserInputBufferPtr
 	xmlParserInputBufferCreateFilename	(const char *filename,
                                                  xmlCharEncoding enc);
 xmlParserInputBufferPtr

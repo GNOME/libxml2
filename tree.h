@@ -526,6 +526,9 @@ void		xmlDocDumpMemory	(xmlDocPtr cur,
 					 int *size);
 void		xmlDocDump		(FILE *f,
 					 xmlDocPtr cur);
+void		xmlElemDump		(FILE *f,
+					 xmlDocPtr cur,
+					 xmlNodePtr elem);
 int		xmlSaveFile		(const char *filename,
 					 xmlDocPtr cur);
 

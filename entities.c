@@ -114,10 +114,13 @@ xmlAddEntity(xmlEntitiesTablePtr table, const xmlChar *name, int type,
 	cur->SystemID = xmlStrdup(SystemID);
     else
         cur->SystemID = NULL;
-    if (content != NULL)
-	cur->content = xmlStrdup(content);
-    else
+    if (content != NULL) {
+        cur->length = xmlStrlen(content);
+	cur->content = xmlStrndup(content, cur->length);
+     } else {
+        cur->length = 0;
         cur->content = NULL;
+    }
     cur->orig = NULL;
     table->nb_entities++;
 }

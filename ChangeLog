@@ -1,3 +1,20 @@
+Tue Dec 28 18:44:22 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.[ch] parserInternals.h: Push parser for XML,
+	     seems to work fine now
+	* tester.c debugXML.[ch]: Added an XML shell debug facility and
+	     --push for push testing
+	* xpath.[ch] : cleaned up for Shell usage, added missing APIs
+	* testSAX.c: added --push
+	* HTMLtree.[ch] tree.[ch]: new functions for dumping parts of the
+	     subtree
+	* xmlIO.[ch] : enriched API + fixes for push mode     
+	* entities.[ch]: added the entity content length to the struct.
+	* xmlmemory.[ch]: new API to show the last entries for the shell
+	* valid.c: added required attribute testing
+	* SAX.c: the cdata callback now merge contiguous fragments
+	* HTMLparser.c: cleanup of some macros
+
 Wed Dec 22 12:20:53 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: fix for PIs name starting with xml

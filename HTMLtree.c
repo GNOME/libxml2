@@ -28,6 +28,9 @@
 #include "entities.h"
 #include "valid.h"
 
+static void
+htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur);
+
 /**
  * htmlDtdDump:
  * @buf:  the HTML buffer output
@@ -108,7 +111,7 @@ htmlAttrListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 }
 
 
-static void
+void
 htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur);
 /**
  * htmlNodeListDump:
@@ -138,7 +141,7 @@ htmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
  *
  * Dump an HTML node, recursive behaviour,children are printed too.
  */
-static void
+void
 htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     htmlElemDescPtr info;
 
@@ -149,6 +152,10 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     /*
      * Special cases.
      */
+    if (cur->type == XML_HTML_DOCUMENT_NODE) {
+	htmlDocContentDump(buf, (xmlDocPtr) cur);
+	return;
+    }
     if (cur->type == HTML_TEXT_NODE) {
 	if (cur->content != NULL) {
             xmlChar *buffer;

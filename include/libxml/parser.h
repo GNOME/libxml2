@@ -40,11 +40,12 @@ typedef struct xmlParserInput {
 
     const char *filename;             /* The file analyzed, if any */
     const char *directory;            /* the directory/base of teh file */
-    const xmlChar *base;                 /* Base of the array to parse */
-    const xmlChar *cur;                  /* Current char being parsed */
+    const xmlChar *base;              /* Base of the array to parse */
+    const xmlChar *cur;               /* Current char being parsed */
+    int length;                       /* length if known */
     int line;                         /* Current line */
     int col;                          /* Current column */
-    int consumed;                     /* How many xmlChars were already consumed */
+    int consumed;                     /* How many xmlChars already consumed */
     xmlParserInputDeallocate free;    /* function to deallocate the base */
 } xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
@@ -77,20 +78,25 @@ typedef _xmlParserNodeInfoSeq xmlParserNodeInfoSeq;
 typedef xmlParserNodeInfoSeq *xmlParserNodeInfoSeqPtr;
 
 /**
- * The parser is not a state based parser, but we need to maintain
+ * The parser is not (yet) a state based parser, but we need to maintain
  * minimum state informations, especially for entities processing.
  */
 typedef enum {
-    XML_PARSER_EOF = 0,
-    XML_PARSER_PROLOG,
-    XML_PARSER_CONTENT,
-    XML_PARSER_ENTITY_DECL,
-    XML_PARSER_ENTITY_VALUE,
-    XML_PARSER_ATTRIBUTE_VALUE,
-    XML_PARSER_DTD,
-    XML_PARSER_EPILOG,
-    XML_PARSER_COMMENT,
-    XML_PARSER_CDATA_SECTION 
+    XML_PARSER_EOF = -1,	/* nothing is to be parsed */
+    XML_PARSER_START = 0,	/* nothing has been parsed */
+    XML_PARSER_MISC,		/* Misc* before int subset */
+    XML_PARSER_PI,		/* Whithin a processing instruction */
+    XML_PARSER_DTD,		/* within some DTD content */
+    XML_PARSER_PROLOG,		/* Misc* after internal subset */
+    XML_PARSER_COMMENT,		/* within a comment */
+    XML_PARSER_START_TAG,	/* within a start tag */
+    XML_PARSER_CONTENT,		/* within the content */
+    XML_PARSER_CDATA_SECTION,	/* within a CDATA section */
+    XML_PARSER_END_TAG,		/* within a closing tag */
+    XML_PARSER_ENTITY_DECL,	/* within an entity declaration */
+    XML_PARSER_ENTITY_VALUE,	/* within an entity value in a decl */
+    XML_PARSER_ATTRIBUTE_VALUE,	/* within an attribute value */
+    XML_PARSER_EPILOG 		/* the Misc* after the last end tag */
 } xmlParserInputState;
 
 /**
@@ -151,6 +157,7 @@ typedef struct _xmlParserCtxt {
     xmlChar *         *nameTab;       /* array of nodes */
 
     long               nbChars;       /* number of xmlChar processed */
+    long            checkIndex;       /* used by progressive parsing lookup */
 } _xmlParserCtxt;
 typedef _xmlParserCtxt xmlParserCtxt;
 typedef xmlParserCtxt *xmlParserCtxtPtr;
@@ -347,13 +354,35 @@ xmlDtdPtr	xmlParseDTD		(const xmlChar *ExternalID,
 xmlDtdPtr	xmlSAXParseDTD		(xmlSAXHandlerPtr sax,
 					 const xmlChar *ExternalID,
 					 const xmlChar *SystemID);
+/**
+ * SAX initialization routines
+ */
+void		xmlDefaultSAXHandlerInit(void);
+void		htmlDefaultSAXHandlerInit(void);
+
+/**
+ * Parser contexts handling.
+ */
 void		xmlInitParserCtxt	(xmlParserCtxtPtr ctxt);
 void		xmlClearParserCtxt	(xmlParserCtxtPtr ctxt);
+void		xmlFreeParserCtxt	(xmlParserCtxtPtr ctxt);
 void		xmlSetupParserForBuffer	(xmlParserCtxtPtr ctxt,
 					 const xmlChar* buffer,
 					 const char* filename);
-void		xmlDefaultSAXHandlerInit(void);
-void		htmlDefaultSAXHandlerInit(void);
+xmlParserCtxtPtr xmlCreateDocParserCtxt	(xmlChar *cur);
+
+/**
+ * Interfaces for the Push mode
+ */
+xmlParserCtxtPtr xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax,
+					 void *user_data,
+					 const char *chunk,
+					 int size,
+					 const char *filename);
+int		 xmlParseChunk		(xmlParserCtxtPtr ctxt,
+					 const char *chunk,
+					 int size,
+					 int terminate);
 
 /**
  * Node infos

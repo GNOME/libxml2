@@ -435,9 +435,10 @@ typedef unsigned char CHARVAL;
  * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
  */
 #define IS_CHAR(c)							\
-    ((((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) ||		\
-      (((c) >= 0x20) && ((c) != 0xFFFE) && ((c) != 0xFFFF))) &&		\
-      (((c) <= 0xD7FF) || ((c) >= 0xE000)) && ((c) <= 0x10FFFF))
+    ((((c) >= 0x20) && ((c) <= 0xD7FF)) ||				\
+     ((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) ||			\
+     (((c) >= 0xE000) && ((c) <= 0xFFFD)) ||				\
+     (((c) >= 0x10000) && ((c) <= 0x10FFFF)))
 
 /*
  * [85] BaseChar ::= ... long list see REC ...
@@ -595,8 +596,7 @@ void			xmlParseDocTypeDecl	(xmlParserCtxtPtr ctxt);
 xmlChar *			xmlParseAttribute	(xmlParserCtxtPtr ctxt,
 						 xmlChar **value);
 xmlChar *			xmlParseStartTag	(xmlParserCtxtPtr ctxt);
-void			xmlParseEndTag		(xmlParserCtxtPtr ctxt,
-						 xmlChar *tagname);
+void			xmlParseEndTag		(xmlParserCtxtPtr ctxt);
 void			xmlParseCDSect		(xmlParserCtxtPtr ctxt);
 void			xmlParseContent		(xmlParserCtxtPtr ctxt);
 void			xmlParseElement		(xmlParserCtxtPtr ctxt);

@@ -45,6 +45,7 @@
 static int debug = 0;
 static int copy = 0;
 static int recovery = 0;
+static int push = 0;
 
 xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* internalSubset */
@@ -76,29 +77,6 @@ xmlSAXHandler emptySAXHandlerStruct = {
 
 xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
 extern xmlSAXHandlerPtr debugSAXHandler;
-
-/*
- * Note: there is a couple of errors introduced on purpose.
- */
-static char buffer[] = 
-"<?xml version=\"1.0\"?>\n\
-<?xml:namespace ns = \"http://www.ietf.org/standards/dav/\" prefix = \"D\"?>\n\
-<?xml:namespace ns = \"http://www.w3.com/standards/z39.50/\" prefix = \"Z\"?>\n\
-<D:propertyupdate>\n\
-<D:set a=\"'toto'\" b>\n\
-       <D:prop>\n\
-            <Z:authors>\n\
-                 <Z:Author>Jim Whitehead</Z:Author>\n\
-                 <Z:Author>Roy Fielding</Z:Author>\n\
-            </Z:authors>\n\
-       </D:prop>\n\
-  </D:set>\n\
-  <D:remove>\n\
-       <D:prop><Z:Copyright-Owner/></D:prop>\n\
-  </D:remove>\n\
-</D:propertyupdate>\n\
-\n\
-";
 
 /************************************************************************
  *									*
@@ -588,42 +566,76 @@ xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;
 void parseAndPrintFile(char *filename) {
     int res;
 
-    /*
-     * Empty callbacks for checking
-     */
-    res = xmlSAXUserParseFile(emptySAXHandler, NULL, filename);
-    if (res != 0) {
-        fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
-    }
+    if (push) {
+	FILE *f;
 
-    /*
-     * Debug callback
-     */
-    res = xmlSAXUserParseFile(debugSAXHandler, NULL, filename);
-    if (res != 0) {
-        fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
+	/*
+	 * Empty callbacks for checking
+	 */
+	f = fopen(filename, "r");
+	if (f != NULL) {
+	    int res;
+	    char chars[10];
+	    xmlParserCtxtPtr ctxt;
+
+	    res = fread(chars, 1, 4, f);
+	    if (res > 0) {
+		ctxt = xmlCreatePushParserCtxt(emptySAXHandler, NULL,
+			    chars, res, filename);
+		while ((res = fread(chars, 1, 3, f)) > 0) {
+		    xmlParseChunk(ctxt, chars, res, 0);
+		}
+		xmlParseChunk(ctxt, chars, 0, 1);
+		xmlFreeParserCtxt(ctxt);
+	    }
+	    fclose(f);
+	} else {
+	    fprintf(stderr, "Cannot read file %s\n", filename);
+	}
+	/*
+	 * Debug callback
+	 */
+	f = fopen(filename, "r");
+	if (f != NULL) {
+	    int res;
+	    char chars[10];
+	    xmlParserCtxtPtr ctxt;
+
+	    res = fread(chars, 1, 4, f);
+	    if (res > 0) {
+		ctxt = xmlCreatePushParserCtxt(debugSAXHandler, NULL,
+			    chars, res, filename);
+		while ((res = fread(chars, 1, 3, f)) > 0) {
+		    xmlParseChunk(ctxt, chars, res, 0);
+		}
+		res = xmlParseChunk(ctxt, chars, 0, 1);
+		xmlFreeParserCtxt(ctxt);
+		if (res != 0) {
+		    fprintf(stdout,
+		            "xmlSAXUserParseFile returned error %d\n", res);
+		}
+	    }
+	    fclose(f);
+	}
+    } else {
+	/*
+	 * Empty callbacks for checking
+	 */
+	res = xmlSAXUserParseFile(emptySAXHandler, NULL, filename);
+	if (res != 0) {
+	    fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
+	}
+
+	/*
+	 * Debug callback
+	 */
+	res = xmlSAXUserParseFile(debugSAXHandler, NULL, filename);
+	if (res != 0) {
+	    fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
+	}
     }
 }
 
-void parseAndPrintBuffer(char *buf) {
-    int res;
-
-    /*
-     * Empty callbacks for checking
-     */
-    res = xmlSAXUserParseMemory(emptySAXHandler, NULL, buf, strlen(buf));
-    if (res != 0) {
-        fprintf(stdout, "xmlSAXUserParseMemory returned error %d\n", res);
-    }
-
-    /*
-     * Debug callback
-     */
-    res = xmlSAXUserParseMemory(debugSAXHandler, NULL, buf, strlen(buf));
-    if (res != 0) {
-        fprintf(stdout, "xmlSAXUserParseMemory returned error %d\n", res);
-    }
-}
 
 int main(int argc, char **argv) {
     int i;
@@ -637,16 +649,15 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-recover")) ||
 	         (!strcmp(argv[i], "--recover")))
 	    recovery++;
+	else if ((!strcmp(argv[i], "-push")) ||
+	         (!strcmp(argv[i], "--push")))
+	    push++;
     }
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {
 	    parseAndPrintFile(argv[i]);
 	    files ++;
 	}
-    }
-    if (files == 0) {
-	printf("\nFirst test for the parser, with errors\n");
-        parseAndPrintBuffer(buffer);
     }
     xmlCleanupParser();
     xmlMemoryDump();

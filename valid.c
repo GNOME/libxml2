@@ -25,6 +25,8 @@
 #include "parser.h"
 #include "parserInternals.h"
 
+/* TODO: use hash table for accesses to elem and attribute dedinitions */
+
 #define VERROR							\
    if ((ctxt != NULL) && (ctxt->error != NULL)) ctxt->error
 
@@ -494,6 +496,7 @@ xmlCopyElementTable(xmlElementTablePtr table) {
 	else
 	    cur->name = NULL;
 	cur->content = xmlCopyElementContent(ent->content);
+	/* TODO : rebuild the attribute list on the copy */
 	cur->attributes = NULL;
     }
     return(ret);
@@ -2723,6 +2726,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
                       xmlNodePtr elem) {
     xmlElementPtr elemDecl;
     xmlElementContentPtr cont;
+    xmlAttributePtr attr;
     xmlNodePtr child;
     int ret = 1;
     const xmlChar *name;
@@ -2869,7 +2873,69 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    break;
     }
 
-    /* TODO - [ VC: Required Attribute ] */
+    /* [ VC: Required Attribute ] */
+    attr = elemDecl->attributes;
+    while (attr != NULL) {
+	if (attr->def == XML_ATTRIBUTE_REQUIRED) {
+	    xmlAttrPtr attrib;
+	    int qualified = -1;
+	    
+	    attrib = elem->properties;
+	    while (attrib != NULL) {
+		if (!xmlStrcmp(attrib->name, attr->name)) {
+		    if (attr->prefix != NULL) {
+		        xmlNsPtr nameSpace = attrib->ns;
+
+			if (nameSpace == NULL)
+			    nameSpace = elem->ns;
+			/*
+			 * qualified names handling is problematic, having a
+			 * different prefix should be possible but DTDs don't
+			 * allow to define the URI instead of the prefix :-(
+			 */
+			if (nameSpace == NULL) {
+			    if (qualified < 0) 
+				qualified = 0;
+	    		} else if (xmlStrcmp(nameSpace->prefix, attr->prefix)) {
+			    if (qualified < 1) 
+				qualified = 1;
+			} else
+			    goto found;
+		    } else {
+		        /*
+			 * We should allow applications to define namespaces
+			 * for their application even if the DTD doesn't 
+			 * carry one, otherwise, basically we would always
+			 * break.
+			 */
+			goto found;
+		    }
+		}
+		attrib = attrib->next;
+	    }
+	    if (qualified == -1) {
+		if (attr->prefix == NULL) {
+		    VERROR(ctxt->userData,
+		       "Element %s doesn't carry attribute %s\n",
+			   elem->name, attr->name);
+	        } else {
+		    VERROR(ctxt->userData,
+		       "Element %s doesn't carry attribute %s:%s\n",
+			   elem->name, attr->prefix,attr->name);
+		}
+	    } else if (qualified == 0) {
+		VWARNING(ctxt->userData,
+		   "Element %s required attribute %s:%s has no prefix\n",
+		       elem->name, attr->prefix,attr->name);
+	    } else if (qualified == 1) {
+		VWARNING(ctxt->userData,
+		   "Element %s required attribute %s:%s has different prefix\n",
+		       elem->name, attr->prefix,attr->name);
+	    }
+	}
+found:	    
+        attr = attr->next;
+    }
     return(ret);
 }
 

@@ -205,6 +205,9 @@ xmlXPathObjectPtr  xmlXPathEval			(const xmlChar *str,
 void		   xmlXPathFreeObject		(xmlXPathObjectPtr obj);
 xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,
 						 xmlXPathContextPtr ctxt);
+xmlNodeSetPtr	   xmlXPathNodeSetCreate	(xmlNodePtr val);
+void		   xmlXPathFreeNodeSetList	(xmlXPathObjectPtr obj);
+void		   xmlXPathFreeNodeSet		(xmlNodeSetPtr obj);
 
 #ifdef __cplusplus
 }

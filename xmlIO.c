@@ -68,6 +68,11 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     }
     memset(ret, 0, (size_t) sizeof(xmlParserInputBuffer));
     ret->buffer = xmlBufferCreate();
+    if (ret->buffer == NULL) {
+        xmlFree(ret);
+	return(NULL);
+    }
+    ret->buffer->alloc = XML_BUFFER_ALLOC_DOUBLEIT;
     ret->encoder = xmlGetCharEncodingHandler(enc);
     ret->fd = -1;
     ret->netIO = NULL;
@@ -263,32 +268,30 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
  */
 int
 xmlParserInputBufferPush(xmlParserInputBufferPtr in, int len, const char *buf) {
-    char *buffer = NULL;
     int nbchars = 0;
 
     if (len < 0) return(0);
     if (in->encoder != NULL) {
-        xmlChar *buf;
+        xmlChar *buffer;
 
-	buf = (xmlChar *) xmlMalloc((len + 1) * 2 * sizeof(xmlChar));
-	if (buf == NULL) {
+	buffer = (xmlChar *) xmlMalloc((len + 1) * 2 * sizeof(xmlChar));
+	if (buffer == NULL) {
 	    fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
 	    xmlFree(buffer);
 	    return(-1);
 	}
-	nbchars = in->encoder->input(buf, (len + 1) * 2 * sizeof(xmlChar),
-	                             BAD_CAST buffer, len);
+	nbchars = in->encoder->input(buffer, (len + 1) * 2 * sizeof(xmlChar),
+	                             (xmlChar *) buf, len);
 	/*
 	 * TODO : we really need to have something atomic or the 
 	 *        encoder must report the number of bytes read
 	 */
-        buf[nbchars] = 0;
-        xmlBufferAdd(in->buffer, (xmlChar *) buf, nbchars);
-	xmlFree(buf);
-    } else {
-	nbchars = len;
         buffer[nbchars] = 0;
         xmlBufferAdd(in->buffer, (xmlChar *) buffer, nbchars);
+	xmlFree(buffer);
+    } else {
+	nbchars = len;
+        xmlBufferAdd(in->buffer, (xmlChar *) buf, nbchars);
     }
 #ifdef DEBUG_INPUT
     fprintf(stderr, "I/O: pushed %d chars, buffer %d/%d\n",
@@ -401,7 +404,14 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 int
 xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
     /* xmlBufferEmpty(in->buffer); */
-    return(xmlParserInputBufferGrow(in, len));
+    if ((in->netIO != NULL) || (in->file != NULL) ||
+#ifdef HAVE_ZLIB_H
+        (in->gzfile != NULL) ||
+#endif
+        (in->fd >= 0))
+	return(xmlParserInputBufferGrow(in, len));
+    else
+        return(0);
 }
 
 /*

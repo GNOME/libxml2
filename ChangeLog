@@ -1,3 +1,12 @@
+Sat Oct 26 15:27:00 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: Christian Glahn found a problem with a recent
+	  patch to xmlParseBalancedChunkMemoryRecover()
+	* xmlschemas.c: Charles Bozeman fixed some Schemas validation
+	  problems
+	* result/schemas/elem* result/schemas/seq* test/schemas.elem*
+	  test/schemas/seq*: added the test cases from Charles
+
 Wed Oct 23 16:42:29 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am config.h.in libxml.spec.in doc/Makefile.am:

@@ -9831,11 +9831,15 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     ctxt->validate = 0;
     ctxt->loadsubset = 0;
 
-    content = doc->children;
-    doc->children = NULL;
-    xmlParseContent(ctxt);
-    doc->children = content;
-   
+    if ( doc != NULL ){
+        content = doc->children;
+        doc->children = NULL;
+        xmlParseContent(ctxt);
+        doc->children = content;
+    }
+    else {
+        xmlParseContent(ctxt);
+    }
     if ((RAW == '<') && (NXT(1) == '/')) {
 	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))

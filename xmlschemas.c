@@ -3165,6 +3165,10 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 					   counter);
 		ctxt->state = xmlAutomataNewCounterTrans(ctxt->am, tmp,
 					   NULL, counter);
+		if (elem->minOccurs == 0) {
+		    /* basically an elem? */
+		    xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
+		}
 
 	    } else {
 		if (elem->refDecl != NULL) {
@@ -3186,12 +3190,87 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 	    xmlSchemaTypePtr subtypes;
 
 	    /*
-	     * Simply iterate over the subtypes
+	     * If max and min occurances are default (1) then
+	     * simply iterate over the subtypes
 	     */
-	    subtypes = type->subtypes;
-	    while (subtypes != NULL) {
-		xmlSchemaBuildAContentModel(subtypes, ctxt, name);
-		subtypes = subtypes->next;
+	    if ((type->minOccurs == 1 ) && (type->maxOccurs == 1)) {
+	        subtypes = type->subtypes;
+	        while (subtypes != NULL) {
+		    xmlSchemaBuildAContentModel(subtypes, ctxt, name);
+		    subtypes = subtypes->next;
+	        }
+	    } else {
+	        xmlAutomataStatePtr oldstate = ctxt->state;
+	        if (type->maxOccurs >= UNBOUNDED) {
+		    if (type->minOccurs > 1) {
+		        xmlAutomataStatePtr tmp;
+		        int counter;
+
+		        ctxt->state = xmlAutomataNewEpsilon(ctxt->am,
+			                                oldstate, NULL);
+		        oldstate = ctxt->state;
+
+		        counter = xmlAutomataNewCounter(ctxt->am,
+			        	    type->minOccurs - 1, UNBOUNDED);
+
+	                subtypes = type->subtypes;
+	                while (subtypes != NULL) {
+		            xmlSchemaBuildAContentModel(subtypes, ctxt, name);
+		            subtypes = subtypes->next;
+	                }
+		        tmp = ctxt->state;
+		        xmlAutomataNewCountedTrans(ctxt->am, tmp, oldstate,
+		                            counter);
+		        ctxt->state = xmlAutomataNewCounterTrans(ctxt->am, tmp,
+		                            NULL, counter);
+
+		    } else {
+	                subtypes = type->subtypes;
+	                while (subtypes != NULL) {
+		            xmlSchemaBuildAContentModel(subtypes, ctxt, name);
+		            subtypes = subtypes->next;
+	                }
+		        xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldstate);
+		        if (type->minOccurs == 0) {
+			    xmlAutomataNewEpsilon(ctxt->am, oldstate,
+				                  ctxt->state);
+		        }
+		    }
+	        } else if ((type->maxOccurs > 1) || (type->minOccurs > 1)) {
+		    xmlAutomataStatePtr tmp;
+		    int counter;
+
+		    ctxt->state = xmlAutomataNewEpsilon(ctxt->am,
+						    oldstate, NULL);
+		    oldstate = ctxt->state;
+
+		    counter = xmlAutomataNewCounter(ctxt->am,
+		                  type->minOccurs - 1, type->maxOccurs - 1);
+
+	            subtypes = type->subtypes;
+	            while (subtypes != NULL) {
+		        xmlSchemaBuildAContentModel(subtypes, ctxt, name);
+		        subtypes = subtypes->next;
+	            }
+		    tmp = ctxt->state;
+		    xmlAutomataNewCountedTrans(ctxt->am, tmp, oldstate,
+		          counter);
+		    ctxt->state = xmlAutomataNewCounterTrans(ctxt->am, tmp,
+		                                             NULL, counter);
+		    if (type->minOccurs == 0) {
+		        xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
+		    }
+
+	        } else {
+	            subtypes = type->subtypes;
+	            while (subtypes != NULL) {
+		        xmlSchemaBuildAContentModel(subtypes, ctxt, name);
+		        subtypes = subtypes->next;
+	            }
+		    if (type->minOccurs == 0) {
+		        xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
+		    }
+	        }
 	    }
 	    break;
 	}
@@ -3217,18 +3296,15 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 	    } else {
 		int counter;
 		xmlAutomataStatePtr hop;
+		int maxOccurs = type->maxOccurs == UNBOUNDED ?
+		                      UNBOUNDED : type->maxOccurs - 1;
+		int minOccurs = type->minOccurs < 1 ? 0 : type->minOccurs - 1;
 
 		/*
 		 * use a counter to keep track of the number of transtions
 		 * which went through the choice.
 		 */
-		if (type->minOccurs < 1) {
-		    counter = xmlAutomataNewCounter(ctxt->am, 0,
-			                            type->maxOccurs - 1);
-		} else {
-		    counter = xmlAutomataNewCounter(ctxt->am,
-			    type->minOccurs - 1, type->maxOccurs - 1);
-		}
+		counter = xmlAutomataNewCounter(ctxt->am, minOccurs, maxOccurs);
 		hop = xmlAutomataNewState(ctxt->am);
 
 		subtypes = type->subtypes;

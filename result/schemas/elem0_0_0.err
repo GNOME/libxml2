@@ -1,0 +1,5 @@
+Type of sequence 2 : ./test/schemas/elem0_0.xsd:11 :elements
+Type of anontype1 : ./test/schemas/elem0_0.xsd:10 :elements
+Type of sequence 2 : ./test/schemas/elem0_0.xsd:11 :elements
+Building content model for doc
+Element doc content check succeeded

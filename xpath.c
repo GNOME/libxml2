@@ -7361,9 +7361,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 			    addNode(list, cur);
 			}
 		    } else {
-			if ((cur->type == XML_ELEMENT_NODE) ||
-			    (cur->type == XML_DOCUMENT_NODE) ||
-			    (cur->type == XML_HTML_DOCUMENT_NODE)) {
+			if (cur->type == XML_ELEMENT_NODE) {
 			    if (prefix == NULL) {
 #ifdef DEBUG_STEP
 				n++;

@@ -35,6 +35,9 @@ TODO:
 - Fix output of <tst val="x&#xA;y"/>
 - Implement OASIS XML Catalog support
   http://www.oasis-open.org/committees/entity/
+- Stricten the UTF8 conformance (Martin Duerst):
+  http://www.w3.org/2001/06/utf-8-test/.
+  The bad files are in http://www.w3.org/2001/06/utf-8-wrong/.
   
 
 TODO:

@@ -109,8 +109,8 @@ static DWORD globalkey = TLS_OUT_OF_INDEXES;
 static DWORD mainthread;
 static struct
 {
-    int32 done;
-    int32; control;
+    DWORD done;
+    DWORD control;
 } run_once = { 0, 0 };
 /* endif HAVE_WIN32_THREADS */
 #elif defined HAVE_BEOS_THREADS
@@ -699,7 +699,7 @@ xmlOnceInit(void) {
 
 #if defined(HAVE_WIN32_THREADS)
     if (!run_once.done) {
-        if (InterlockedIncrement(&run_once.control) == 0)
+        if (InterlockedIncrement(&run_once.control) == 1)
         {
 #if !defined(HAVE_COMPILER_TLS)
             globalkey = TlsAlloc();

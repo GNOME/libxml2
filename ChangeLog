@@ -1,3 +1,7 @@
+Fri Feb 25 08:31:16 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c: new version with fixes from Rob Richards
+
 Thu Feb 24 16:37:51 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: applied patch from Rich Salz for multithreading on

@@ -41,12 +41,12 @@ sometimes combines two pairs), it makes implementation easier, but looks a bit
 overkill for Western languages encoding. Moreover the XML specification allows
 document to be encoded in other encodings at the condition that they are
 clearly labelled as such. For example the following is a wellformed XML
-document encoded in ISO-Latin 1 and using accentuated letter that we French
+document encoded in ISO-8859 1 and using accentuated letter that we French
 likes for both markup and content:</p>
 <pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
 &lt;très&gt;là&lt;/très&gt;</pre>
 
-<p>  Having internationalization support in libxml means the foolowing:</p>
+<p>Having internationalization support in libxml means the foolowing:</p>
 <ul>
   <li>the document is properly parsed</li>
   <li>informations about it's encoding are saved</li>
@@ -68,7 +68,7 @@ an internationalized fashion by libxml too:</p>
                       "http://www.w3.org/TR/REC-html40/loose.dtd"&gt;
 &lt;html lang="fr"&gt;
 &lt;head&gt;
-  &lt;META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-latin-1"&gt;
+  &lt;META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1"&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;p&gt;W3C crée des standards pour le Web.&lt;/body&gt;
@@ -122,7 +122,7 @@ rationale for those choices:</p>
   <li>xmlChar, the libxml data type is a byte, those bytes must be assembled
     as UTF-8 valid strings. The proper way to terminate an xmlChar * string is
     simply to append 0 byte, as usual.</li>
-  <li> One just need to make sure that when using chars outside the ASCII set,
+  <li>One just need to make sure that when using chars outside the ASCII set,
     the values has been properly converted to UTF-8</li>
 </ul>
 
@@ -161,7 +161,7 @@ err2.xml:1: error: Unsupported encoding UnsupportedEnc
 &lt;?xml version="1.0" encoding="UnsupportedEnc"?&gt;
                                              ^</pre>
   </li>
-  <li> From that point the encoder process progressingly the input (it is
+  <li>From that point the encoder process progressingly the input (it is
     plugged as a front-end to the I/O module) for that entity. It captures and
     convert on-the-fly the document to be parsed to UTF-8. The parser itself
     just does UTF-8 checking of this input and process it transparently. The
@@ -178,7 +178,7 @@ called, xmlSaveFile() will just try to save in the original encoding, while
 xmlSaveFileTo() and xmlSaveFileEnc() can optionally save to a given
 encoding:</p>
 <ol>
-  <li> if no encoding is given, libxml will look for an encoding value
+  <li>if no encoding is given, libxml will look for an encoding value
     associated to the document and if it exists will try to save to that
     encoding,
     <p>otherwise everything is written in the internal form, i.e. UTF-8</p>
@@ -193,13 +193,16 @@ encoding:</p>
     the I/O layer.</li>
   <li>It is possible that the converter code fails on some input, for example
     trying to push an UTF-8 encoded chinese character through the UTF-8 to
-    ISO-Latin-1 converter won't work. Since the encoders are progressive they
+    ISO-8859-1 converter won't work. Since the encoders are progressive they
     will just report the error and the number of bytes converted, at that
     point libxml will decode the offending character, remove it from the
     buffer and replace it with the associated charRef encoding &amp;#123; and
     resume the convertion. This guarante that any document will be saved
-    without losses. A special "ascii" encoding name is used to save documents
-    to a pure ascii form can be used when portability is really crucial</li>
+    without losses (except for markup names where this is not legal, this is a
+    problem in the current version, in pactice avoid using non-ascci
+    characters for tags or attributes names  @@). A special "ascii" encoding
+    name is used to save documents to a pure ascii form can be used when
+    portability is really crucial</li>
 </ol>
 
 <p>Here is a few examples based on the same test document:</p>
@@ -209,18 +212,15 @@ encoding:</p>
 ~/XML -&gt; ./xmllint --encode UTF-8 isolat1 
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;trÃ¨s&gt;lÃ  &lt;/trÃ¨s&gt;
-~/XML -&gt; ./xmllint --encode ascii isolat1 
-&lt;?xml version="1.0" encoding="ascii"?&gt;
-&lt;tr&amp;#xE8;s&gt;l&amp;#xE0;&lt;/tr&amp;#xE8;s&gt;
 ~/XML -&gt; </pre>
 
-<p> The same processing is applied (and reuse most of the code) for HTML I18N
+<p>The same processing is applied (and reuse most of the code) for HTML I18N
 processing. Looking up and modifying the content encoding is a bit more
 difficult since it is located in a &lt;meta&gt; tag under the &lt;head&gt;, so
 a couple of functions htmlGetMetaEncoding() and htmlSetMetaEncoding() have
 been provided. The parser also attempts to switch encoding on the fly when
 detecting such a tag on input. Except for that the processing is the same (and
-again reuses the same code). </p>
+again reuses the same code).</p>
 
 <h2><a name="Default">Default supported encodings</a></h2>
 

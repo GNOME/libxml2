@@ -1,3 +1,7 @@
+Wed Aug 23 01:50:51 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/encoding.html: propagated Martin Duerst suggestions
+
 Wed Aug 23 00:23:41 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: Fixed Bug#21552: libxml fails to decode &amp;

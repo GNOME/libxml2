@@ -4422,7 +4422,10 @@ xmlXPathModValues(xmlXPathParserContextPtr ctxt) {
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
     arg1 = (int) ctxt->value->floatval;
-    ctxt->value->floatval = arg1 % arg2;
+    if (arg2 == 0)
+	ctxt->value->floatval = xmlXPathNAN;
+    else
+	ctxt->value->floatval = arg1 % arg2;
 }
 
 /************************************************************************

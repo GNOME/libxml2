@@ -3479,7 +3479,8 @@ cont:
 	     * save the second branch 'or' branch
 	     */
 	    DEBUG_VALID_MSG("saving 'or' branch");
-	    vstateVPush(ctxt, CONT->c2, NODE, DEPTH + 1, OCCURS, ROLLBACK_OR);
+	    vstateVPush(ctxt, CONT->c2, NODE, (unsigned char)(DEPTH + 1),
+		        OCCURS, ROLLBACK_OR);
 
 	    DEPTH++;
 	    CONT = CONT->c1;

@@ -1,3 +1,9 @@
+Tue Aug 29 20:22:53 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c: Fixed bug on invalid ontent characters and when using
+	  push.
+	* xmllint.c: fixed xmllint endling of errors in push mode
+
 Tue Aug 29 11:24:48 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c testHTML.c: applied two new patches from

@@ -382,6 +382,7 @@ void parseAndPrintFile(char *filename) {
 
 	    f = fopen(filename, "r");
 	    if (f != NULL) {
+		int ret;
 	        int res, size = 3;
 	        char chars[1024];
                 xmlParserCtxtPtr ctxt;
@@ -397,7 +398,12 @@ void parseAndPrintFile(char *filename) {
 		    }
 		    xmlParseChunk(ctxt, chars, 0, 1);
 		    doc = ctxt->myDoc;
+		    ret = ctxt->wellFormed;
 		    xmlFreeParserCtxt(ctxt);
+		    if (!ret) {
+			xmlFreeDoc(doc);
+			doc = NULL;
+		    }
 	        }
 	    }
 	} else if (testIO) {

@@ -8597,6 +8597,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	    ctxt->errNo = XML_ERR_INTERNAL_ERROR;
 	    ctxt->wellFormed = 0;
 	    ctxt->disableSAX = 1;
+	    ctxt->instate = XML_PARSER_EOF;
             break;
 	}
     }
@@ -9982,7 +9983,11 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 #endif
                 break;
 	    }
-            case XML_PARSER_CONTENT:
+            case XML_PARSER_CONTENT: {
+		const xmlChar *test;
+		int cons;
+		xmlChar tok;
+
                 /*
 		 * Handle preparsed entities and charRef
 		 */
@@ -9999,6 +10004,10 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    goto done;
 		cur = ctxt->input->cur[0];
 		next = ctxt->input->cur[1];
+
+		test = CUR_PTR;
+	        cons = ctxt->input->consumed;
+	        tok = ctxt->token;
 	        if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
 		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
@@ -10082,7 +10091,19 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		 */
 		while ((RAW == 0) && (ctxt->inputNr > 1))
 		    xmlPopInput(ctxt);
+		if ((cons == ctxt->input->consumed) && (test == CUR_PTR) &&
+		    (tok == ctxt->token)) {
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData,
+			     "detected an error in element content\n");
+		    ctxt->errNo = XML_ERR_INTERNAL_ERROR;
+		    ctxt->wellFormed = 0;
+		    ctxt->disableSAX = 1;
+		    ctxt->instate = XML_PARSER_EOF;
+		    break;
+		}
 		break;
+	    }
             case XML_PARSER_CDATA_SECTION: {
 	        /*
 		 * The Push mode need to have the SAX callback for 

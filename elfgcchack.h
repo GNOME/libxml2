@@ -3483,6 +3483,12 @@ extern __typeof (xmlRelaxNGGetValidErrors) xmlRelaxNGGetValidErrors __attribute(
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlRelaxNGInitTypes) xmlRelaxNGInitTypes__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlRelaxNGInitTypes) xmlRelaxNGInitTypes __attribute((alias("xmlRelaxNGInitTypes__internal_alias")));
+#define xmlRelaxNGInitTypes xmlRelaxNGInitTypes__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
 extern __typeof (xmlRelaxNGNewDocParserCtxt) xmlRelaxNGNewDocParserCtxt__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlRelaxNGNewDocParserCtxt) xmlRelaxNGNewDocParserCtxt __attribute((alias("xmlRelaxNGNewDocParserCtxt__internal_alias")));
 #define xmlRelaxNGNewDocParserCtxt xmlRelaxNGNewDocParserCtxt__internal_alias

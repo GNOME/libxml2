@@ -1471,7 +1471,7 @@ xmlNanoFTPConnectTo(const char *server, int port) {
  */
 
 int
-xmlNanoFTPCwd(void *ctx, char *directory) {
+xmlNanoFTPCwd(void *ctx, const char *directory) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[400];
     int len;
@@ -1517,7 +1517,7 @@ xmlNanoFTPCwd(void *ctx, char *directory) {
  */
 
 int
-xmlNanoFTPDele(void *ctx, char *file) {
+xmlNanoFTPDele(void *ctx, const char *file) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[400];
     int len;
@@ -1913,7 +1913,7 @@ xmlNanoFTPParseList(const char *list, ftpListCallback callback, void *userData) 
 
 int
 xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
-	       char *filename) {
+	       const char *filename) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[4096 + 1];
     int len, res;

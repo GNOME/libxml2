@@ -156,6 +156,7 @@ setEntityLoader()
 
 # functions from module relaxng
 relaxNGCleanupTypes()
+relaxNGInitTypes()
 relaxNGNewMemParserCtxt()
 relaxNGNewParserCtxt()
 

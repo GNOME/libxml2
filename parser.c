@@ -1416,7 +1416,7 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
  */
 xmlChar
 xmlPopInput(xmlParserCtxtPtr ctxt) {
-    if (ctxt->inputNr == 1) return(0); /* End of main Input */
+    if (ctxt->inputNr <= 1) return(0); /* End of main Input */
     if (xmlParserDebugEntities)
 	xmlGenericError(xmlGenericErrorContext,
 		"Popping input %d\n", ctxt->inputNr);
@@ -3203,15 +3203,17 @@ get_more_space:
 		    const xmlChar *tmp = ctxt->input->cur;
 		    ctxt->input->cur = in;
 
-		    if (ctxt->sax->ignorableWhitespace !=
-		        ctxt->sax->characters) {
+		    if ((ctxt->sax != NULL) &&
+		        (ctxt->sax->ignorableWhitespace !=
+		         ctxt->sax->characters)) {
 			if (areBlanks(ctxt, tmp, nbchar, 1)) {
 			    ctxt->sax->ignorableWhitespace(ctxt->userData,
 						   tmp, nbchar);
 			} else if (ctxt->sax->characters != NULL)
 			    ctxt->sax->characters(ctxt->userData,
 						  tmp, nbchar);
-		    } else if (ctxt->sax->characters != NULL) {
+		    } else if ((ctxt->sax != NULL) &&
+		               (ctxt->sax->characters != NULL)) {
 			ctxt->sax->characters(ctxt->userData,
 					      tmp, nbchar);
 		    }
@@ -3245,7 +3247,8 @@ get_more:
 	    }
 	    nbchar = in - ctxt->input->cur;
 	    if (nbchar > 0) {
-		if ((ctxt->sax->ignorableWhitespace !=
+		if ((ctxt->sax != NULL) &&
+		    (ctxt->sax->ignorableWhitespace !=
 		     ctxt->sax->characters) &&
 		    (IS_BLANK_CH(*ctxt->input->cur))) {
 		    const xmlChar *tmp = ctxt->input->cur;
@@ -3259,7 +3262,7 @@ get_more:
 					      tmp, nbchar);
                     line = ctxt->input->line;
                     col = ctxt->input->col;
-		} else {
+		} else if (ctxt->sax != NULL) {
 		    if (ctxt->sax->characters != NULL)
 			ctxt->sax->characters(ctxt->userData,
 					      ctxt->input->cur, nbchar);
@@ -10271,7 +10274,8 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     if (input == NULL) {
         if (sax != NULL) ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);
-	xmlFree(systemIdCanonic);
+	if (systemIdCanonic != NULL)
+	    xmlFree(systemIdCanonic);
 	return(NULL);
     }
 
@@ -11716,6 +11720,10 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
     }
     if (sax != NULL)
 	ctxt->sax = NULL;
+    if (ctxt->myDoc != NULL) {
+        xmlFreeDoc(ctxt->myDoc);
+	ctxt->myDoc = NULL;
+    }
     xmlFreeParserCtxt(ctxt);
     
     return ret;
@@ -11918,6 +11926,10 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 	    ret = -1;
     }
     ctxt->sax = oldsax;
+    if (ctxt->myDoc != NULL) {
+        xmlFreeDoc(ctxt->myDoc);
+	ctxt->myDoc = NULL;
+    }
     xmlFreeParserCtxt(ctxt);
     
     return ret;
@@ -11962,12 +11974,14 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, xmlChar *cur, int recovery) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
 
-    if (cur == NULL) return(NULL);
+    if ((cur == NULL) || (sax == NULL)) return(NULL);
 
 
     ctxt = xmlCreateDocParserCtxt(cur);
     if (ctxt == NULL) return(NULL);
     if (sax != NULL) { 
+        if (ctxt->sax != NULL)
+	    xmlFree(ctxt->sax);
         ctxt->sax = sax;
         ctxt->userData = NULL;
     }
@@ -11980,7 +11994,7 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, xmlChar *cur, int recovery) {
        xmlFreeDoc(ctxt->myDoc);
        ctxt->myDoc = NULL;
     }
-    if (sax != NULL) 
+    if (sax != NULL)
 	ctxt->sax = NULL;
     xmlFreeParserCtxt(ctxt);
     

@@ -409,6 +409,7 @@
     <reference name='XML_FROM_SCHEMASV' href='html/libxml-xmlerror.html#XML_FROM_SCHEMASV'/>
     <reference name='XML_FROM_TREE' href='html/libxml-xmlerror.html#XML_FROM_TREE'/>
     <reference name='XML_FROM_VALID' href='html/libxml-xmlerror.html#XML_FROM_VALID'/>
+    <reference name='XML_FROM_WRITER' href='html/libxml-xmlerror.html#XML_FROM_WRITER'/>
     <reference name='XML_FROM_XINCLUDE' href='html/libxml-xmlerror.html#XML_FROM_XINCLUDE'/>
     <reference name='XML_FROM_XPATH' href='html/libxml-xmlerror.html#XML_FROM_XPATH'/>
     <reference name='XML_FROM_XPOINTER' href='html/libxml-xmlerror.html#XML_FROM_XPOINTER'/>
@@ -2361,6 +2362,7 @@
     <reference name='xmlRelaxNGFreeValidCtxt' href='html/libxml-relaxng.html#xmlRelaxNGFreeValidCtxt'/>
     <reference name='xmlRelaxNGGetParserErrors' href='html/libxml-relaxng.html#xmlRelaxNGGetParserErrors'/>
     <reference name='xmlRelaxNGGetValidErrors' href='html/libxml-relaxng.html#xmlRelaxNGGetValidErrors'/>
+    <reference name='xmlRelaxNGInitTypes' href='html/libxml-relaxng.html#xmlRelaxNGInitTypes'/>
     <reference name='xmlRelaxNGNewDocParserCtxt' href='html/libxml-relaxng.html#xmlRelaxNGNewDocParserCtxt'/>
     <reference name='xmlRelaxNGNewMemParserCtxt' href='html/libxml-relaxng.html#xmlRelaxNGNewMemParserCtxt'/>
     <reference name='xmlRelaxNGNewParserCtxt' href='html/libxml-relaxng.html#xmlRelaxNGNewParserCtxt'/>
@@ -3662,6 +3664,7 @@
       <ref name='XML_FROM_SCHEMASV'/>
       <ref name='XML_FROM_TREE'/>
       <ref name='XML_FROM_VALID'/>
+      <ref name='XML_FROM_WRITER'/>
       <ref name='XML_FROM_XINCLUDE'/>
       <ref name='XML_FROM_XPATH'/>
       <ref name='XML_FROM_XPOINTER'/>
@@ -5650,6 +5653,7 @@
       <ref name='xmlRelaxNGFreeValidCtxt'/>
       <ref name='xmlRelaxNGGetParserErrors'/>
       <ref name='xmlRelaxNGGetValidErrors'/>
+      <ref name='xmlRelaxNGInitTypes'/>
       <ref name='xmlRelaxNGNewDocParserCtxt'/>
       <ref name='xmlRelaxNGNewMemParserCtxt'/>
       <ref name='xmlRelaxNGNewParserCtxt'/>
@@ -10658,6 +10662,7 @@
       <ref name='xmlRelaxNGFreeValidCtxt'/>
       <ref name='xmlRelaxNGGetParserErrors'/>
       <ref name='xmlRelaxNGGetValidErrors'/>
+      <ref name='xmlRelaxNGInitTypes'/>
       <ref name='xmlRelaxNGNewDocParserCtxt'/>
       <ref name='xmlRelaxNGNewMemParserCtxt'/>
       <ref name='xmlRelaxNGNewParserCtxt'/>
@@ -11626,6 +11631,7 @@
       <ref name='XML_FROM_SCHEMASV'/>
       <ref name='XML_FROM_TREE'/>
       <ref name='XML_FROM_VALID'/>
+      <ref name='XML_FROM_WRITER'/>
       <ref name='XML_FROM_XINCLUDE'/>
       <ref name='XML_FROM_XPATH'/>
       <ref name='XML_FROM_XPOINTER'/>
@@ -14912,6 +14918,9 @@
         <word name='Initiate'>
           <ref name='xmlNanoFTPGetSocket'/>
         </word>
+        <word name='Initilize'>
+          <ref name='xmlRelaxNGInitTypes'/>
+        </word>
         <word name='Input'>
           <ref name='_xmlParserCtxt'/>
           <ref name='xmlIOParseDTD'/>
@@ -15278,7 +15287,6 @@
           <ref name='xmlParseExternalID'/>
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
-          <ref name='xmlSaveFormatFileTo'/>
           <ref name='xmlTextReaderCurrentDoc'/>
         </word>
         <word name='NRK'>
@@ -16917,6 +16925,10 @@
           <ref name='xmlListReverseWalk'/>
           <ref name='xmlListWalk'/>
         </word>
+        <word name='Warning'>
+          <ref name='xmlSaveFileTo'/>
+          <ref name='xmlSaveFormatFileTo'/>
+        </word>
         <word name='Was'>
           <ref name='_xmlParserInput'/>
         </word>
@@ -17432,6 +17444,8 @@
           <ref name='xmlNanoFTPFreeCtxt'/>
           <ref name='xmlNanoFTPGetResponse'/>
           <ref name='xmlReconciliateNs'/>
+          <ref name='xmlSaveFileTo'/>
+          <ref name='xmlSaveFormatFileTo'/>
           <ref name='xmlValidGetValidElements'/>
           <ref name='xmlXPathNextFollowing'/>
           <ref name='xmlXPathStringFunction'/>
@@ -18127,6 +18141,10 @@
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlTextReaderNormalization'/>
         </word>
+        <word name='buf'>
+          <ref name='xmlSaveFileTo'/>
+          <ref name='xmlSaveFormatFileTo'/>
+        </word>
         <word name='buffered'>
           <ref name='xmlAllocOutputBuffer'/>
           <ref name='xmlAllocParserInputBuffer'/>
@@ -18227,6 +18245,7 @@
           <ref name='xmlParseReference'/>
           <ref name='xmlSAXUserParseFile'/>
           <ref name='xmlSAXUserParseMemory'/>
+          <ref name='xmlSaveFileTo'/>
           <ref name='xmlSaveFormatFileTo'/>
           <ref name='xmlSetEntityReferenceFunc'/>
           <ref name='xmlTextReaderCurrentDoc'/>
@@ -18580,7 +18599,6 @@
           <ref name='xmlReadFd'/>
           <ref name='xmlReaderForFd'/>
           <ref name='xmlReaderNewFd'/>
-          <ref name='xmlSaveFormatFileTo'/>
           <ref name='xmlTextWriterEndDocument'/>
         </word>
         <word name='closes'>
@@ -22498,6 +22516,9 @@
         </word>
         <word name='libc'>
           <ref name='DEBUG_MEMORY'/>
+        </word>
+        <word name='libraries'>
+          <ref name='xmlRelaxNGInitTypes'/>
         </word>
         <word name='library'>
           <ref name='_xmlError'/>
@@ -28342,6 +28363,10 @@
           <ref name='xmlCopyNamespace'/>
           <ref name='xmlCopyNamespaceList'/>
           <ref name='xmlGetNsList'/>
+        </word>
+        <word name='xmlOutputBufferClose'>
+          <ref name='xmlSaveFileTo'/>
+          <ref name='xmlSaveFormatFileTo'/>
         </word>
         <word name='xmlOutputBufferPtr'>
           <ref name='xmlNewTextWriter'/>

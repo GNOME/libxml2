@@ -1023,6 +1023,7 @@
      <exports symbol='xmlRelaxNGGetValidErrors' type='function'/>
      <exports symbol='xmlRelaxNGNewMemParserCtxt' type='function'/>
      <exports symbol='xmlRelaxNGDump' type='function'/>
+     <exports symbol='xmlRelaxNGInitTypes' type='function'/>
      <exports symbol='xmlRelaxNGValidityErrorFunc' type='function'/>
      <exports symbol='xmlRelaxNGParse' type='function'/>
      <exports symbol='xmlRelaxNGDumpTree' type='function'/>
@@ -1994,6 +1995,7 @@
      <exports symbol='XML_SCHEMAP_INVALID_ATTR_COMBINATION' type='enum'/>
      <exports symbol='XML_RNGP_PARAM_FORBIDDEN' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_PROCESSCONTENT_CHILD' type='enum'/>
+     <exports symbol='XML_FROM_WRITER' type='enum'/>
      <exports symbol='XML_ERR_UNSUPPORTED_ENCODING' type='enum'/>
      <exports symbol='XML_RNGP_PAT_NSNAME_EXCEPT_ANYNAME' type='enum'/>
      <exports symbol='XML_ERR_ENTITYREF_IN_PROLOG' type='enum'/>
@@ -4474,7 +4476,7 @@
     <enum name='XML_EXTERNAL_PARAMETER_ENTITY' file='entities' value='5' type='xmlEntityType'/>
     <enum name='XML_FROM_C14N' file='xmlerror' value='21' type='xmlErrorDomain' info='The Canonicalization module'/>
     <enum name='XML_FROM_CATALOG' file='xmlerror' value='20' type='xmlErrorDomain' info='The Catalog module'/>
-    <enum name='XML_FROM_CHECK' file='xmlerror' value='24' type='xmlErrorDomain' info=' The error checking module'/>
+    <enum name='XML_FROM_CHECK' file='xmlerror' value='24' type='xmlErrorDomain' info='The error checking module'/>
     <enum name='XML_FROM_DATATYPE' file='xmlerror' value='15' type='xmlErrorDomain' info='The W3C XML Schemas Datatype module'/>
     <enum name='XML_FROM_DTD' file='xmlerror' value='4' type='xmlErrorDomain' info='The XML DTD validation with parser contex'/>
     <enum name='XML_FROM_FTP' file='xmlerror' value='9' type='xmlErrorDomain' info='The FTP module'/>
@@ -4493,6 +4495,7 @@
     <enum name='XML_FROM_SCHEMASV' file='xmlerror' value='17' type='xmlErrorDomain' info='The W3C XML Schemas validation module'/>
     <enum name='XML_FROM_TREE' file='xmlerror' value='2' type='xmlErrorDomain' info='The tree module'/>
     <enum name='XML_FROM_VALID' file='xmlerror' value='23' type='xmlErrorDomain' info='The XML DTD validation with valid context'/>
+    <enum name='XML_FROM_WRITER' file='xmlerror' value='25' type='xmlErrorDomain' info=' The xmlwriter module'/>
     <enum name='XML_FROM_XINCLUDE' file='xmlerror' value='11' type='xmlErrorDomain' info='The XInclude processing'/>
     <enum name='XML_FROM_XPATH' file='xmlerror' value='12' type='xmlErrorDomain' info='The XPath module'/>
     <enum name='XML_FROM_XPOINTER' file='xmlerror' value='13' type='xmlErrorDomain' info='The XPointer module'/>
@@ -9744,7 +9747,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlListEmpty' file='list'>
       <info>Is the list empty ?</info>
-      <return type='int' info='1 if the list is empty, 0 otherwise'/>
+      <return type='int' info='1 if the list is empty, 0 if not empty and -1 in case of error'/>
       <arg name='l' type='xmlListPtr' info='a list'/>
     </function>
     <function name='xmlListEnd' file='list'>
@@ -9835,7 +9838,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlListSize' file='list'>
       <info>Get the number of elements in the list</info>
-      <return type='int' info='the number of elements in the list'/>
+      <return type='int' info='the number of elements in the list or -1 in case of error'/>
       <arg name='l' type='xmlListPtr' info='a list'/>
     </function>
     <function name='xmlListSort' file='list'>
@@ -10057,14 +10060,14 @@ actually an xmlCharEncoding'/>
       <info>Tries to change the remote directory</info>
       <return type='int' info='-1 incase of error, 1 if CWD worked, 0 if it failed'/>
       <arg name='ctx' type='void *' info='an FTP context'/>
-      <arg name='directory' type='char *' info='a directory on the server'/>
+      <arg name='directory' type='const char *' info='a directory on the server'/>
     </function>
     <function name='xmlNanoFTPDele' file='nanoftp'>
       <cond>LIBXML_FTP_ENABLED</cond>
       <info>Tries to delete an item (file or directory) from server</info>
       <return type='int' info='-1 incase of error, 1 if DELE worked, 0 if it failed'/>
       <arg name='ctx' type='void *' info='an FTP context'/>
-      <arg name='file' type='char *' info='a file or directory on the server'/>
+      <arg name='file' type='const char *' info='a file or directory on the server'/>
     </function>
     <function name='xmlNanoFTPFreeCtxt' file='nanoftp'>
       <cond>LIBXML_FTP_ENABLED</cond>
@@ -10112,7 +10115,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctx' type='void *' info='an FTP context'/>
       <arg name='callback' type='ftpListCallback' info='the user callback'/>
       <arg name='userData' type='void *' info='the user callback data'/>
-      <arg name='filename' type='char *' info='optional files to list'/>
+      <arg name='filename' type='const char *' info='optional files to list'/>
     </function>
     <function name='xmlNanoFTPNewCtxt' file='nanoftp'>
       <cond>LIBXML_FTP_ENABLED</cond>
@@ -11780,6 +11783,11 @@ actually an xmlCharEncoding'/>
       <arg name='warn' type='xmlRelaxNGValidityWarningFunc *' info='the warning function result'/>
       <arg name='ctx' type='void **' info='the functions context result'/>
     </function>
+    <function name='xmlRelaxNGInitTypes' file='relaxng'>
+      <cond>LIBXML_SCHEMAS_ENABLED</cond>
+      <info>Initilize the default type libraries.</info>
+      <return type='int' info='0 in case of success and -1 in case of error.'/>
+    </function>
     <function name='xmlRelaxNGNewDocParserCtxt' file='relaxng'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
       <info>Create an XML RelaxNGs parser context for that document. Note: since the process of compiling a RelaxNG schemas modifies the document, the @doc parameter is duplicated internally.</info>
@@ -12257,7 +12265,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSaveFileTo' file='tree'>
       <cond>LIBXML_OUTPUT_ENABLED</cond>
-      <info>Dump an XML document to an I/O buffer.</info>
+      <info>Dump an XML document to an I/O buffer. Warning ! This call xmlOutputBufferClose() on buf which is not available after this call.</info>
       <return type='int' info='the number of bytes written or -1 in case of failure.'/>
       <arg name='buf' type='xmlOutputBufferPtr' info='an output I/O buffer'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
@@ -12288,7 +12296,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSaveFormatFileTo' file='tree'>
       <cond>LIBXML_OUTPUT_ENABLED</cond>
-      <info>Dump an XML document to an I/O buffer. NOTE: the I/O buffer is closed as part of the call.</info>
+      <info>Dump an XML document to an I/O buffer. Warning ! This call xmlOutputBufferClose() on buf which is not available after this call.</info>
       <return type='int' info='the number of bytes written or -1 in case of failure.'/>
       <arg name='buf' type='xmlOutputBufferPtr' info='an output I/O buffer'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>

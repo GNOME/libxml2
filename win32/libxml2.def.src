@@ -1380,6 +1380,9 @@ xmlRelaxNGGetParserErrors
 xmlRelaxNGGetValidErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGInitTypes
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlRelaxNGNewDocParserCtxt
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED

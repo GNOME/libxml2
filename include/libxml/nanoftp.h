@@ -109,10 +109,10 @@ XMLPUBFUN int XMLCALL
  */
 XMLPUBFUN int XMLCALL	
 	xmlNanoFTPCwd		(void *ctx,
-				 char *directory);
+				 const char *directory);
 XMLPUBFUN int XMLCALL	
 	xmlNanoFTPDele		(void *ctx,
-				 char *file);
+				 const char *file);
 
 XMLPUBFUN int XMLCALL	
 	xmlNanoFTPGetConnection	(void *ctx);
@@ -122,7 +122,7 @@ XMLPUBFUN int XMLCALL
 	xmlNanoFTPList		(void *ctx,
 				 ftpListCallback callback,
 				 void *userData,
-				 char *filename);
+				 const char *filename);
 XMLPUBFUN int XMLCALL	
 	xmlNanoFTPGetSocket	(void *ctx,
 				 const char *filename);

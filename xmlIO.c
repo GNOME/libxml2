@@ -551,11 +551,11 @@ xmlCleanupOutputCallbacks(void)
 int
 xmlCheckFilename (const char *path)
 {
-    if (path == NULL)
-        return(0);
-
 #ifdef HAVE_STAT
     struct stat stat_buffer;
+
+    if (path == NULL)
+        return(0);
 
     if (stat(path, &stat_buffer) == -1)
         return 0;
@@ -566,6 +566,9 @@ xmlCheckFilename (const char *path)
     }
 #endif
 #endif
+    if (path == NULL)
+        return(0);
+
     return 1;
 }
 

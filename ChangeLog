@@ -1,3 +1,7 @@
+Thu Sep 11 18:29:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed a bug in one corner case of attribute parsing.
+
 Thu Sep 11 16:21:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/* : 2.6.0beta1 changes

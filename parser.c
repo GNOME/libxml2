@@ -7613,7 +7613,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *len, int *alloc,
 	/*
 	 * skip the trailing blanks
 	 */
-	while (last[-1] == 0x20) last--;
+	while ((last[-1] == 0x20) && (last > start)) last--;
 	while ((in < end) && (*in != limit) && 
 	       ((*in == 0x20) || (*in == 0x9) ||
 	        (*in == 0xA) || (*in == 0xD))) {

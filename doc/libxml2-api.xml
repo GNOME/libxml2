@@ -3705,10 +3705,10 @@ actually an xmlCharEncoding'/>
       <arg name='encoding' type='const char *' info='the encoding string'/>
     </function>
     <function name='htmlNodeStatus' file='HTMLparser'>
-      <info>for Element nodes)  Checks whether the tree node is valid.  Experimental (the author only uses the HTML enhancements in a SAX parser)</info>
+      <info>Checks whether the tree node is valid.  Experimental (the author only uses the HTML enhancements in a SAX parser)</info>
       <return type='htmlStatus' info='for Element nodes, a return from htmlElementAllowedHere (if legacy allowed) or htmlElementStatusHere (otherwise). for Attribute nodes, a return from htmlAttrAllowed for other nodes, HTML_NA (no checks performed)'/>
-      <arg name='node' type='const htmlNodePtr' info=''/>
-      <arg name='legacy' type='int' info=''/>
+      <arg name='node' type='const htmlNodePtr' info='an htmlNodePtr in a tree'/>
+      <arg name='legacy' type='int' info='whether to allow deprecated elements (YES is faster here for Element nodes)'/>
     </function>
     <function name='htmlParseCharRef' file='HTMLparser'>
       <info>parse Reference declarations  [66] CharRef ::= &apos;&amp;#&apos; [0-9]+ &apos;;&apos; | &apos;&amp;#x&apos; [0-9a-fA-F]+ &apos;;&apos;</info>
@@ -4987,7 +4987,7 @@ actually an xmlCharEncoding'/>
       <arg name='alias' type='const char *' info='the alias name as parsed, in UTF-8 format (ASCII actually)'/>
     </function>
     <function name='xmlDeregisterNodeDefault' file='globals'>
-      <info></info>
+      <info>Registers a callback for node destruction</info>
       <return type='xmlDeregisterNodeFunc' info='the previous value of the deregistration function'/>
       <arg name='func' type='xmlDeregisterNodeFunc' info='function pointer to the new DeregisterNodeFunc'/>
     </function>
@@ -7498,8 +7498,8 @@ actually an xmlCharEncoding'/>
       <arg name='closeFunc' type='xmlInputCloseCallback' info='the xmlInputCloseCallback'/>
     </function>
     <function name='xmlRegisterNodeDefault' file='globals'>
-      <info></info>
-      <return type='xmlRegisterNodeFunc' info='the previous value of the registration function'/>
+      <info>Registers a callback for node creation</info>
+      <return type='xmlRegisterNodeFunc' info='the old value of the registration function'/>
       <arg name='func' type='xmlRegisterNodeFunc' info='function pointer to the new RegisterNodeFunc'/>
     </function>
     <functype name='xmlRegisterNodeFunc' file='globals'>

@@ -18,6 +18,15 @@ to test those
 
 
 
+2.5.3: Feb 10 2003:
+   - RelaxNG and XML Schemas datatypes improvements, and added a first
+    version of RelaxNG Python bindings
+   - Fixes: XLink (Sean Chittenden), XInclude (Sean Chittenden), API fix for
+    serializing namespace nodes, encoding conversion bug, XHTML1
+  serialization
+   - Portability fixes: Windows (Igor), AMD 64bits RPM spec file
+
+
 2.5.2: Feb 5 2003:
    - First implementation of RelaxNG, added --relaxng flag to xmllint
    - Schemas support now compiled in by default.

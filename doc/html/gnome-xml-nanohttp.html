@@ -12,8 +12,8 @@ REL="UP"
 TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
-TITLE="xpointer"
-HREF="gnome-xml-xpointer.html"><LINK
+TITLE="xinclude"
+HREF="gnome-xml-xinclude.html"><LINK
 REL="NEXT"
 TITLE="nanoftp"
 HREF="gnome-xml-nanoftp.html"></HEAD
@@ -44,7 +44,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-xpointer.html"
+HREF="gnome-xml-xinclude.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN13002"
+NAME="AEN13067"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN13002"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN13005"
+NAME="AEN13070"
 ></A
 ><H2
 >Synopsis</H2
@@ -173,6 +173,10 @@ int         <A
 HREF="gnome-xml-nanohttp.html#XMLNANOHTTPRETURNCODE"
 >xmlNanoHTTPReturnCode</A
 >           (void *ctx);
+const char* <A
+HREF="gnome-xml-nanohttp.html#XMLNANOHTTPAUTHHEADER"
+>xmlNanoHTTPAuthHeader</A
+>           (void *ctx);
 int         <A
 HREF="gnome-xml-nanohttp.html#XMLNANOHTTPREAD"
 >xmlNanoHTTPRead</A
@@ -195,7 +199,7 @@ HREF="gnome-xml-nanohttp.html#XMLNANOHTTPCLOSE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN13018"
+NAME="AEN13084"
 ></A
 ><H2
 >Description</H2
@@ -205,14 +209,14 @@ NAME="AEN13018"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN13021"
+NAME="AEN13087"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13023"
+NAME="AEN13089"
 ></A
 ><H3
 ><A
@@ -241,7 +245,7 @@ Currently it just checks for proxy informations</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13029"
+NAME="AEN13095"
 ></A
 ><H3
 ><A
@@ -267,7 +271,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13034"
+NAME="AEN13100"
 ></A
 ><H3
 ><A
@@ -330,7 +334,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13049"
+NAME="AEN13115"
 ></A
 ><H3
 ><A
@@ -444,7 +448,7 @@ if provided must be freed by the caller</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13076"
+NAME="AEN13142"
 ></A
 ><H3
 ><A
@@ -583,7 +587,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13108"
+NAME="AEN13174"
 ></A
 ><H3
 ><A
@@ -663,7 +667,7 @@ returned at that location</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13127"
+NAME="AEN13193"
 ></A
 ><H3
 ><A
@@ -738,7 +742,83 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13146"
+NAME="AEN13212"
+></A
+><H3
+><A
+NAME="XMLNANOHTTPAUTHHEADER"
+></A
+>xmlNanoHTTPAuthHeader ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>const char* xmlNanoHTTPAuthHeader           (void *ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the HTTP context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the stashed value of the WWW-Authenticate or Proxy-Authenticate
+header.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13231"
 ></A
 ><H3
 ><A
@@ -861,7 +941,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13175"
+NAME="AEN13260"
 ></A
 ><H3
 ><A
@@ -955,7 +1035,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13198"
+NAME="AEN13283"
 ></A
 ><H3
 ><A
@@ -1029,7 +1109,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-xpointer.html"
+HREF="gnome-xml-xinclude.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -1101,7 +1181,7 @@ ALIGN="left"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->xpointer</B
+>xinclude</B
 ></FONT
 ></TD
 ><TD

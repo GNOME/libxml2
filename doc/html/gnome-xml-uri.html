@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN9175"
+NAME="AEN9152"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN9175"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN9178"
+NAME="AEN9155"
 ></A
 ><H2
 >Synopsis</H2
@@ -213,6 +213,16 @@ int         <A
 HREF="gnome-xml-uri.html#XMLNORMALIZEURIPATH"
 >xmlNormalizeURIPath</A
 >             (char *path);
+<A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="gnome-xml-uri.html#XMLURIESCAPE"
+>xmlURIEscape</A
+>                    (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *str);
 void        <A
 HREF="gnome-xml-uri.html#XMLFREEURI"
 >xmlFreeURI</A
@@ -227,7 +237,7 @@ HREF="gnome-xml-uri.html#XMLURIPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9203"
+NAME="AEN9183"
 ></A
 ><H2
 >Description</H2
@@ -237,14 +247,14 @@ NAME="AEN9203"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9206"
+NAME="AEN9186"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9208"
+NAME="AEN9188"
 ></A
 ><H3
 ><A
@@ -280,7 +290,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9213"
+NAME="AEN9193"
 ></A
 ><H3
 ><A
@@ -306,7 +316,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9218"
+NAME="AEN9198"
 ></A
 ><H3
 ><A
@@ -367,7 +377,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9234"
+NAME="AEN9214"
 ></A
 ><H3
 ><A
@@ -475,7 +485,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9261"
+NAME="AEN9241"
 ></A
 ><H3
 ><A
@@ -555,7 +565,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9282"
+NAME="AEN9262"
 ></A
 ><H3
 ><A
@@ -659,7 +669,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9308"
+NAME="AEN9288"
 ></A
 ><H3
 ><A
@@ -740,7 +750,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9329"
+NAME="AEN9309"
 ></A
 ><H3
 ><A
@@ -829,7 +839,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9351"
+NAME="AEN9331"
 ></A
 ><H3
 ><A
@@ -944,7 +954,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9379"
+NAME="AEN9359"
 ></A
 ><H3
 ><A
@@ -1020,7 +1030,90 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9398"
+NAME="AEN9378"
+></A
+><H3
+><A
+NAME="XMLURIESCAPE"
+></A
+>xmlURIEscape ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlURIEscape                    (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *str);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Escaping routine, does not do validity checks !
+It will try to escape the chars needing this, but this is heuristic
+based it's impossible to be sure.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the string of the URI to escape</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>an copy of the string, but escaped</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9399"
 ></A
 ><H3
 ><A

@@ -13,6 +13,7 @@
 <!entity xpath SYSTEM "sgml/xpath.sgml">
 <!entity xpathInternals SYSTEM "sgml/xpathInternals.sgml">
 <!entity xpointer SYSTEM "sgml/xpointer.sgml">
+<!entity xinclude SYSTEM "sgml/xinclude.sgml">
 <!entity xmlIO SYSTEM "sgml/xmlIO.sgml">
 <!entity xmlmemory SYSTEM "sgml/xmlmemory.sgml">
 <!entity nanohttp SYSTEM "sgml/nanohttp.sgml">
@@ -88,6 +89,7 @@
     &xpath;
     &xpathInternals;
     &xpointer;
+    &xinclude;
     &nanohttp;
     &nanoftp;
     &xmlIO;

@@ -1,3 +1,9 @@
+Mon Nov 13 19:17:20 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/xml.html doc/html/* : rebuilt the docs after adding
+	  xinclude and updated page for 2.2.7 and 2.2.8
+	* configure.in: releasing 2.2.8
+
 Mon Nov 13 12:39:38 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.[ch] parserInternals.c: applied the conditional

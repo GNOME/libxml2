@@ -5972,7 +5972,7 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     }
 
     buf = xmlOutputBufferCreateFilename(filename, handler, cur->compression);
-    if (buf == NULL) return(0);
+    if (buf == NULL) return(-1);
 
     xmlDocContentDumpOutput(buf, cur, NULL, 1);
 

@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LIBXML2_SO_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\..\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -69,8 +69,8 @@ LINK32=link.exe
 # PROP Intermediate_Dir "debug_so"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LIBXML2_SO_EXPORTS" /YX /FD /GZ  /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /FD /GZ  /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LIBXML2_SO_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /MD /W3 /Gm /GX /Zi /Od /I "..\..\include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /FR /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -122,6 +122,44 @@ SOURCE=..\..\HTMLtree.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\libxml2.def
+# End Source File
+# Begin Source File
+
+SOURCE=.\libxml2.def.src
+
+!IF  "$(CFG)" == "libxml2_so - Win32 Release"
+
+USERDEP__LIBXM="../../include/libxml/xmlversion.h"	
+# Begin Custom Build
+InputPath=.\libxml2.def.src
+
+"libxml2.def" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /EP $(InputPath) > libxml2.def
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "libxml2_so - Win32 Debug"
+
+# PROP Ignore_Default_Tool 1
+USERDEP__LIBXM="../../include/libxml/xmlversion.h"	
+# Begin Custom Build
+InputPath=.\libxml2.def.src
+
+"libxml2.def" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /EP $(InputPath) > libxml2.def
+
+# End Custom Build
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\list.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\nanoftp.c
 # End Source File
 # Begin Source File
@@ -142,6 +180,10 @@ SOURCE=..\..\SAX.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\strio.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\tree.c
 # End Source File
 # Begin Source File
@@ -151,6 +193,10 @@ SOURCE=..\..\uri.c
 # Begin Source File
 
 SOURCE=..\..\valid.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\xinclude.c
 # End Source File
 # Begin Source File
 
@@ -178,7 +224,107 @@ SOURCE=..\..\xpointer.c
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
+SOURCE=..\..\include\libxml\debugXML.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\encoding.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\entities.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\hash.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\HTMLparser.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\HTMLtree.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\list.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\nanoftp.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\nanohttp.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\parser.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\parserInternals.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\SAX.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\strio.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\tree.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\uri.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\valid.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\win32config.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xinclude.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xlink.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xmlerror.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xmlIO.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xmlmemory.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\libxml\xmlversion.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xpath.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xpathInternals.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xpointer.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

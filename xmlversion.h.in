@@ -17,7 +17,9 @@ extern "C" {
  * use those to be sure nothing nasty will happen if
  * your library and includes mismatch
  */
+#ifndef LIBXML2_COMPILING_MSCCDEF
 extern void xmlCheckVersion(int version);
+#endif /* LIBXML2_COMPILING_MSCCDEF */
 #define LIBXML_DOTTED_VERSION "@VERSION@"
 #define LIBXML_VERSION @LIBXML_VERSION_NUMBER@
 #define LIBXML_VERSION_STRING "@LIBXML_VERSION_NUMBER@"

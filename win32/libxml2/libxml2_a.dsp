@@ -66,8 +66,8 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "debug_a"
 # PROP Target_Dir ""
 F90=df.exe
-# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ  /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "STATIC" /FD /GZ  /c
+# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
+# ADD CPP /nologo /MD /W3 /Gm /GX /Zi /Od /I "..\..\include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "STATIC" /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
@@ -117,6 +117,10 @@ SOURCE=..\..\HTMLtree.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\list.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\nanoftp.c
 # End Source File
 # Begin Source File
@@ -137,6 +141,10 @@ SOURCE=..\..\SAX.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\strio.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\tree.c
 # End Source File
 # Begin Source File
@@ -146,6 +154,10 @@ SOURCE=..\..\uri.c
 # Begin Source File
 
 SOURCE=..\..\valid.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\xinclude.c
 # End Source File
 # Begin Source File
 
@@ -173,7 +185,107 @@ SOURCE=..\..\xpointer.c
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
+SOURCE=..\..\include\libxml\debugXML.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\encoding.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\entities.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\hash.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\HTMLparser.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\HTMLtree.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\list.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\nanoftp.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\nanohttp.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\parser.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\parserInternals.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\SAX.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\strio.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\tree.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\uri.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\valid.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\win32config.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xinclude.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xlink.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xmlerror.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xmlIO.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xmlmemory.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\libxml\xmlversion.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xpath.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xpathInternals.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\libxml\xpointer.h
 # End Source File
 # End Group
 # End Target

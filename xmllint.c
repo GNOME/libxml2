@@ -16,7 +16,15 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
+#ifdef _WIN32
+#ifdef _MSC_VER
+#include <winsock2.h>
+#pragma comment(lib, "ws2_32.lib")
+#define gettimeofday(p1,p2)
+#endif /* _MSC_VER */
+#else /* _WIN32 */
 #include <sys/time.h>
+#endif /* _WIN32 */
 
 
 #ifdef HAVE_SYS_TYPES_H

@@ -88,5 +88,13 @@ static int isnan (double d) {
 
 #include <direct.h>
 
-#define HAVE_SYS_STAT_H                                                         #define HAVE__STAT
+#define HAVE_SYS_STAT_H
+#define HAVE__STAT
+
+/* Microsoft's C runtime names all non-ANSI functions with a leading
+   underscore. Since functionality is still the same, they can be used. */
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#define vsnprintf _vsnprintf
+#endif /* _MSC_VER */
 

@@ -1,3 +1,9 @@
+Mon Apr 16 19:44:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmlversion.h.in win32config.h win32/libxml2/*: applied 
+	  Igor Zlatkovic patches for MSC compilation and added his
+	  updates
+
 Tue Apr 17 10:08:19 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: fixed xmlXPathNodeCollectAndTest() to do proper

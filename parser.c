@@ -7632,11 +7632,31 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		 */
 	        goto done;
             case XML_PARSER_START:
-	        /*
-		 * Very first chars read from the document flow.
-		 */
-		if (avail < 2)
-		    goto done;
+		if (ctxt->charset == XML_CHAR_ENCODING_NONE) {
+		    xmlChar start[4];
+		    xmlCharEncoding enc;
+
+		    /*
+		     * Very first chars read from the document flow.
+		     */
+		    if (avail < 4)
+			goto done;
+
+		    /* 
+		     * Get the 4 first bytes and decode the charset
+		     * if enc != XML_CHAR_ENCODING_NONE
+		     * plug some encoding conversion routines.
+		     */
+		    start[0] = RAW;
+		    start[1] = NXT(1);
+		    start[2] = NXT(2);
+		    start[3] = NXT(3);
+		    enc = xmlDetectCharEncoding(start, 4);
+		    if (enc != XML_CHAR_ENCODING_NONE) {
+			xmlSwitchEncoding(ctxt, enc);
+		    }
+		    break;
+		}
 
 		cur = ctxt->input->cur[0];
 		next = ctxt->input->cur[1];
@@ -8509,9 +8529,6 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     inputStream->cur = inputStream->buf->buffer->content;
     inputStream->end = 
 	&inputStream->buf->buffer->content[inputStream->buf->buffer->use];
-    if (enc != XML_CHAR_ENCODING_NONE) {
-        xmlSwitchEncoding(ctxt, enc);
-    }
 
     inputPush(ctxt, inputStream);
 
@@ -8521,6 +8538,10 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif
+    }
+
+    if (enc != XML_CHAR_ENCODING_NONE) {
+        xmlSwitchEncoding(ctxt, enc);
     }
 
     return(ctxt);

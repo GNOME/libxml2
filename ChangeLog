@@ -1,3 +1,9 @@
+Thu Jun 28 14:11:28 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: fixed UTF8 BOM support in push mode
+	* test/utf8bom.xml result/utf8bom.xml result/noent/utf8bom.xml:
+	  added a specific testcase
+
 Wed Jun 27 18:33:13 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am: added --push regression tests

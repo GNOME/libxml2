@@ -1017,12 +1017,14 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     if (cur->children != NULL) {
         if ((cur->children->type != HTML_TEXT_NODE) &&
 	    (cur->children->type != HTML_ENTITY_REF_NODE) &&
-	    (cur->children != cur->last))
+	    (cur->children != cur->last) &&
+	    (!xmlStrEqual(cur->name, BAD_CAST "pre")))
 	    xmlOutputBufferWriteString(buf, "\n");
 	htmlNodeListDumpOutput(buf, doc, cur->children, encoding);
         if ((cur->last->type != HTML_TEXT_NODE) &&
 	    (cur->last->type != HTML_ENTITY_REF_NODE) &&
-	    (cur->children != cur->last))
+	    (cur->children != cur->last) &&
+	    (!xmlStrEqual(cur->name, BAD_CAST "pre")))
 	    xmlOutputBufferWriteString(buf, "\n");
     }
     xmlOutputBufferWriteString(buf, "</");
@@ -1030,7 +1032,9 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     xmlOutputBufferWriteString(buf, ">");
     if (cur->next != NULL) {
         if ((cur->next->type != HTML_TEXT_NODE) &&
-	    (cur->next->type != HTML_ENTITY_REF_NODE))
+	    (cur->next->type != HTML_ENTITY_REF_NODE) &&
+	    (cur->parent != NULL) &&
+	    (!xmlStrEqual(cur->parent->name, BAD_CAST "pre")))
 	    xmlOutputBufferWriteString(buf, "\n");
     }
 }

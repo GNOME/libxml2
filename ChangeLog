@@ -1,3 +1,9 @@
+Thu Jun  7 18:06:34 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.c: when in a pre element no formatting space should
+	  be added.
+	* test/HTML/pre.html result/HTML/pre.html*: added a regression test
+
 Thu Jun  7 17:29:38 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: added tests for signal() and signal.h

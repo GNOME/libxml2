@@ -5601,7 +5601,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	}	
 	while ((IS_SCHEMA(child, "unique")) ||
 	    (IS_SCHEMA(child, "key")) || (IS_SCHEMA(child, "keyref"))) {
-	    /*TODO*/ child = child->next;
+	    TODO child = child->next;
 	}
 	if (child != NULL) {
 	    xmlSchemaPContentErr(ctxt,

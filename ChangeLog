@@ -1,3 +1,8 @@
+Wed Oct 22 10:50:31 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* chvalid.c genChRanges.py: Stephane Bidoul pointed out another
+	  small glitch missing a const
+
 Wed Oct 22 10:43:21 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* chvalid.c genChRanges.py: Stephane Bidoul pointed out that

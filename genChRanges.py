@@ -482,7 +482,7 @@ output.write(
  * Returns: true if character valid, false otherwise
  */
 int
-xmlCharInRange (unsigned int val, xmlChRangeGroupPtr rptr) {
+xmlCharInRange (unsigned int val, const xmlChRangeGroupPtr rptr) {
     int low, high, mid;
     xmlChSRangePtr sptr;
     xmlChLRangePtr lptr;

@@ -377,13 +377,13 @@ try_complex:
 	    c = CUR_SCHAR(cur, l);
 	}
     }
-    if ((!xmlIsLetter(c)) && (c != '_'))
+    if ((!IS_LETTER(c)) && (c != '_'))
 	return(1);
     cur += l;
     c = CUR_SCHAR(cur, l);
-    while (xmlIsLetter(c) || xmlIsDigit(c) || (c == '.') ||
-	   (c == '-') || (c == '_') || xmlIsCombining(c) ||
-	   xmlIsExtender(c)) {
+    while (IS_LETTER(c) || IS_DIGIT(c) || (c == '.') ||
+	   (c == '-') || (c == '_') || IS_COMBINING(c) ||
+	   IS_EXTENDER(c)) {
 	cur += l;
 	c = CUR_SCHAR(cur, l);
     }
@@ -460,26 +460,26 @@ try_complex:
 	    c = CUR_SCHAR(cur, l);
 	}
     }
-    if ((!xmlIsLetter(c)) && (c != '_'))
+    if ((!IS_LETTER(c)) && (c != '_'))
 	return(1);
     cur += l;
     c = CUR_SCHAR(cur, l);
-    while (xmlIsLetter(c) || xmlIsDigit(c) || (c == '.') ||
-	   (c == '-') || (c == '_') || xmlIsCombining(c) ||
-	   xmlIsExtender(c)) {
+    while (IS_LETTER(c) || IS_DIGIT(c) || (c == '.') ||
+	   (c == '-') || (c == '_') || IS_COMBINING(c) ||
+	   IS_EXTENDER(c)) {
 	cur += l;
 	c = CUR_SCHAR(cur, l);
     }
     if (c == ':') {
 	cur += l;
 	c = CUR_SCHAR(cur, l);
-	if ((!xmlIsLetter(c)) && (c != '_'))
+	if ((!IS_LETTER(c)) && (c != '_'))
 	    return(1);
 	cur += l;
 	c = CUR_SCHAR(cur, l);
-	while (xmlIsLetter(c) || xmlIsDigit(c) || (c == '.') ||
-	       (c == '-') || (c == '_') || xmlIsCombining(c) ||
-	       xmlIsExtender(c)) {
+	while (IS_LETTER(c) || IS_DIGIT(c) || (c == '.') ||
+	       (c == '-') || (c == '_') || IS_COMBINING(c) ||
+	       IS_EXTENDER(c)) {
 	    cur += l;
 	    c = CUR_SCHAR(cur, l);
 	}
@@ -542,12 +542,12 @@ try_complex:
 	    c = CUR_SCHAR(cur, l);
 	}
     }
-    if ((!xmlIsLetter(c)) && (c != '_') && (c != ':'))
+    if ((!IS_LETTER(c)) && (c != '_') && (c != ':'))
 	return(1);
     cur += l;
     c = CUR_SCHAR(cur, l);
-    while (xmlIsLetter(c) || xmlIsDigit(c) || (c == '.') || (c == ':') ||
-	   (c == '-') || (c == '_') || xmlIsCombining(c) || xmlIsExtender(c)) {
+    while (IS_LETTER(c) || IS_DIGIT(c) || (c == '.') || (c == ':') ||
+	   (c == '-') || (c == '_') || IS_COMBINING(c) || IS_EXTENDER(c)) {
 	cur += l;
 	c = CUR_SCHAR(cur, l);
     }
@@ -611,13 +611,13 @@ try_complex:
 	    c = CUR_SCHAR(cur, l);
 	}
     }
-    if (!(xmlIsLetter(c) || xmlIsDigit(c) || (c == '.') || (c == ':') ||
-        (c == '-') || (c == '_') || xmlIsCombining(c) || xmlIsExtender(c)))
+    if (!(IS_LETTER(c) || IS_DIGIT(c) || (c == '.') || (c == ':') ||
+        (c == '-') || (c == '_') || IS_COMBINING(c) || IS_EXTENDER(c)))
 	return(1);
     cur += l;
     c = CUR_SCHAR(cur, l);
-    while (xmlIsLetter(c) || xmlIsDigit(c) || (c == '.') || (c == ':') ||
-	   (c == '-') || (c == '_') || xmlIsCombining(c) || xmlIsExtender(c)) {
+    while (IS_LETTER(c) || IS_DIGIT(c) || (c == '.') || (c == ':') ||
+	   (c == '-') || (c == '_') || IS_COMBINING(c) || IS_EXTENDER(c)) {
 	cur += l;
 	c = CUR_SCHAR(cur, l);
     }

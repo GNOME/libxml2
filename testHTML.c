@@ -78,10 +78,11 @@ xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* getParameterEntity */
     NULL, /* cdataBlock */
     NULL, /* externalSubset */
-    1,
-    NULL,
-    NULL,
-    NULL
+    1,    /* initialized */
+    NULL, /* private */
+    NULL, /* startElementNsSAX2Func */
+    NULL, /* endElementNsSAX2Func */
+    NULL  /* xmlStructuredErrorFunc */
 };
 
 xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
@@ -602,6 +603,7 @@ xmlSAXHandler debugSAXHandlerStruct = {
     cdataDebug,
     NULL,
     1,
+    NULL,
     NULL,
     NULL,
     NULL

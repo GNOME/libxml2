@@ -8,6 +8,12 @@
 # William Brack
 # October 2003
 #
+# 18 October 2003
+# Modified to maintain binary compatibility with previous library versions
+# by adding a suffix 'Q' ('quick') to the macro generated for the original,
+# function, and adding generation of a function (with the original name) which
+# instantiates the macro.
+#
 
 import sys
 import string
@@ -215,6 +221,8 @@ header.write(
 #ifndef __XML_CHVALID_H__
 #define __XML_CHVALID_H__
 
+#include <libxml/xmlversion.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -247,7 +255,8 @@ struct _xmlChRangeGroup {
 };
 
 /* Range checking routine */
-int xmlCharInRange(unsigned int val, const xmlChRangeGroupPtr group);
+XMLPUBFUN int XMLCALL
+		xmlCharInRange(unsigned int val, const xmlChRangeGroupPtr group);
 
 """ % (date, sources));
 output.write(
@@ -297,7 +306,7 @@ for f in fkeys:
         rangeTable = makeRange(Functs[f][0])
 	numRanges = len(rangeTable)
 	if numRanges >= minTableSize:	# table is worthwhile
-	    header.write("extern unsigned char %s_tab[256];\n" % f)
+	    header.write("XMLPUBVAR unsigned char %s_tab[256];\n" % f)
 	    header.write("#define %s_ch(c)\t(%s_tab[(c)])\n" % (f, f))
 
 	    # write the constant data to the code file
@@ -342,7 +351,7 @@ for f in fkeys:
 	    pline += ")\n"
 	    header.write(pline)
 
-    pline = "#define %s(c)" % f
+    pline = "#define %sQ(c)" % f
     ntab = 4 - (len(pline)) / 8
     if ntab < 0:
 	ntab = 0
@@ -380,7 +389,7 @@ for f in fkeys:
 
 
     if len(Functs[f][1]) > 0:
-	header.write("extern xmlChRangeGroup %sGroup;\n" % f)
+	header.write("XMLPUBVAR xmlChRangeGroup %sGroup;\n" % f)
 
 
 #
@@ -429,18 +438,6 @@ for f in fkeys:
 	    pline += ", (xmlChLRangePtr)0"
 	
 	output.write(pline + "};\n\n")
-#
-# Run complete - write trailers and close the output files
-#
-
-header.write("""
-#ifdef __cplusplus
-}
-#endif
-#endif /* __XML_CHVALID_H__ */
-""");
-
-header.close()
 
 output.write(
 """
@@ -492,4 +489,23 @@ xmlCharInRange (unsigned int val, xmlChRangeGroupPtr rptr) {
 
 """);
 
+#
+# finally, generate the ABI compatibility functions
+#
+for f in fkeys:
+    output.write("int\n%s(unsigned int ch) {\n    return(%sQ(ch));\n}\n\n" % (f,f))
+    header.write("XMLPUBFUN int XMLCALL\n\t\t%s(unsigned int ch);\n" % f);
+#
+# Run complete - write trailers and close the output files
+#
+
+header.write("""
+#ifdef __cplusplus
+}
+#endif
+#endif /* __XML_CHVALID_H__ */
+""");
+
+header.close()
 output.close()
+

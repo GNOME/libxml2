@@ -70,7 +70,7 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  *                  | [#x10000-#x10FFFF]
  * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
  */
-#define IS_CHAR(c)   xmlIsChar(c)
+#define IS_CHAR(c)   xmlIsCharQ(c)
 
 /**
  * IS_BLANK:
@@ -80,7 +80,7 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  *
  * [3] S ::= (#x20 | #x9 | #xD | #xA)+
  */
-#define IS_BLANK(c)  xmlIsBlank(c)
+#define IS_BLANK(c)  xmlIsBlankQ(c)
 
 /**
  * IS_BASECHAR:
@@ -90,7 +90,7 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  *
  * [85] BaseChar ::= ... long list see REC ...
  */
-#define IS_BASECHAR(c) xmlIsBaseChar(c)
+#define IS_BASECHAR(c) xmlIsBaseCharQ(c)
 
 /**
  * IS_DIGIT:
@@ -100,7 +100,7 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  *
  * [88] Digit ::= ... long list see REC ...
  */
-#define IS_DIGIT(c) xmlIsDigit(c)
+#define IS_DIGIT(c) xmlIsDigitQ(c)
 
 /**
  * IS_COMBINING:
@@ -110,7 +110,7 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  *
  * [87] CombiningChar ::= ... long list see REC ...
  */
-#define IS_COMBINING(c) xmlIsCombining(c)
+#define IS_COMBINING(c) xmlIsCombiningQ(c)
 
 /**
  * IS_EXTENDER:
@@ -123,7 +123,7 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  *                   #x0E46 | #x0EC6 | #x3005 | [#x3031-#x3035] |
  *                   [#x309D-#x309E] | [#x30FC-#x30FE]
  */
-#define IS_EXTENDER(c) xmlIsExtender(c)
+#define IS_EXTENDER(c) xmlIsExtenderQ(c)
 
 /**
  * IS_IDEOGRAPHIC:
@@ -134,7 +134,7 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  *
  * [86] Ideographic ::= [#x4E00-#x9FA5] | #x3007 | [#x3021-#x3029]
  */
-#define IS_IDEOGRAPHIC(c) xmlIsIdeographic(c)
+#define IS_IDEOGRAPHIC(c) xmlIsIdeographicQ(c)
 
 /**
  * IS_LETTER:
@@ -157,7 +157,7 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  *
  * [13] PubidChar ::= #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
  */
-#define IS_PUBIDCHAR(c)	xmlIsPubidChar(c)
+#define IS_PUBIDCHAR(c)	xmlIsPubidCharQ(c)
 
 /**
  * SKIP_EOL:

@@ -2029,7 +2029,7 @@ xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
         xmlCatalogErrMemory("allocating public ID");
 	return(NULL);
     }
-    while (xmlIsPubidChar(*cur) || (*cur == '?')) {
+    while (xmlIsPubidCharQ(*cur) || (*cur == '?')) {
 	if ((*cur == stop) && (stop != ' '))
 	    break;
 	if ((stop == ' ') && (IS_BLANK(*cur)))

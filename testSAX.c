@@ -82,7 +82,8 @@ xmlSAXHandler emptySAXHandlerStruct = {
     1,
     NULL,
     NULL, /* startElementNs */
-    NULL /* endElementNs */
+    NULL, /* endElementNs */
+    NULL  /* xmlStructuredErrorFunc */
 };
 
 xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
@@ -694,6 +695,7 @@ xmlSAXHandler debugSAXHandlerStruct = {
     1,
     NULL,
     NULL,
+    NULL,
     NULL
 };
 
@@ -817,7 +819,8 @@ xmlSAXHandler debugSAX2HandlerStruct = {
     XML_SAX2_MAGIC,
     NULL,
     startElementNsDebug,
-    endElementNsDebug
+    endElementNsDebug,
+    NULL
 };
 
 xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;

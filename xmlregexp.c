@@ -1832,16 +1832,16 @@ xmlRegCheckCharacterRange(xmlRegAtomType type, int codepoint, int neg,
         case XML_REGEXP_NOTINITNAME:
 	    neg = !neg;
         case XML_REGEXP_INITNAME:
-	    ret = (xmlIsLetter(codepoint) || 
+	    ret = (IS_LETTER(codepoint) || 
 		   (codepoint == '_') || (codepoint == ':'));
 	    break;
         case XML_REGEXP_NOTNAMECHAR:
 	    neg = !neg;
         case XML_REGEXP_NAMECHAR:
-	    ret = (xmlIsLetter(codepoint) || xmlIsDigit(codepoint) ||
+	    ret = (IS_LETTER(codepoint) || IS_DIGIT(codepoint) ||
 		   (codepoint == '.') || (codepoint == '-') ||
 		   (codepoint == '_') || (codepoint == ':') ||
-		   xmlIsCombining(codepoint) || xmlIsExtender(codepoint));
+		   IS_COMBINING(codepoint) || IS_EXTENDER(codepoint));
 	    break;
         case XML_REGEXP_NOTDECIMAL:
 	    neg = !neg;
@@ -1981,7 +1981,7 @@ xmlRegCheckCharacter(xmlRegAtomPtr atom, int codepoint) {
     int i, ret = 0;
     xmlRegRangePtr range;
 
-    if ((atom == NULL) || (!xmlIsChar(codepoint)))
+    if ((atom == NULL) || (!IS_CHAR(codepoint)))
 	return(-1);
 
     switch (atom->type) {

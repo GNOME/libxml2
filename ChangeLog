@@ -1,3 +1,15 @@
+Sat Oct 18 12:46:02 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* genChRanges.py, chvalid.c, include/libxml/chvalid.h,
+	  include/libxml/parserInternals.h: enhanced macros to avoid
+	  breaking ABI from previous versions.
+	* catalog.c, parser.c, tree.c: modified to use IS_* macros
+	  defined in parserInternals.h.  Makes maintenance much easier.
+	* testHTML.c, testSAX.c, python/libxml.c: minor fixes to avoid
+	  compilation warnings
+	* configuration.in: fixed pushHTML test error; enhanced for
+	  better devel (me) testing
+
 Fri Oct 17 14:38:54 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* legacy.c: remove the warning for startDocument(), as it is used by

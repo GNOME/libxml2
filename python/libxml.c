@@ -1061,6 +1061,7 @@ static xmlSAXHandler pythonSaxHandler = {
     1,
     NULL,			/* TODO mograte to SAX2 */
     NULL,
+    NULL,
     NULL
 };
 

@@ -1457,7 +1457,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
      * Characters referred to using character references must match the
      * production for Char. 
      */
-    if (xmlIsChar(val)) {
+    if (IS_CHAR(val)) {
         return(val);
     } else {
         xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
@@ -1541,7 +1541,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
      * Characters referred to using character references must match the
      * production for Char. 
      */
-    if (xmlIsChar(val)) {
+    if (IS_CHAR(val)) {
         return(val);
     } else {
         xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
@@ -2817,11 +2817,11 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
     }
 
     while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
-	   ((xmlIsLetter(c)) || (xmlIsDigit(c)) ||
+	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
             (c == '.') || (c == '-') ||
 	    (c == '_') || (c == ':') || 
-	    (xmlIsCombining(c)) ||
-	    (xmlIsExtender(c)))) {
+	    (IS_COMBINING(c)) ||
+	    (IS_EXTENDER(c)))) {
 	if (count++ > 100) {
 	    count = 0;
 	    GROW;
@@ -2859,16 +2859,16 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
     int c;
 
     c = CUR_SCHAR(cur, l);
-    if (!xmlIsLetter(c) && (c != '_') &&
+    if (!IS_LETTER(c) && (c != '_') &&
         (c != ':')) {
 	return(NULL);
     }
 
-    while ((xmlIsLetter(c)) || (xmlIsDigit(c)) || /* test bigentname.xml */
+    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigentname.xml */
            (c == '.') || (c == '-') ||
 	   (c == '_') || (c == ':') || 
-	   (xmlIsCombining(c)) ||
-	   (xmlIsExtender(c))) {
+	   (IS_COMBINING(c)) ||
+	   (IS_EXTENDER(c))) {
 	COPY_BUF(l,buf,len,c);
 	cur += l;
 	c = CUR_SCHAR(cur, l);
@@ -2886,12 +2886,12 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 		return(NULL);
 	    }
 	    memcpy(buffer, buf, len);
-	    while ((xmlIsLetter(c)) || (xmlIsDigit(c)) ||
+	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
 	             /* test bigentname.xml */
 		   (c == '.') || (c == '-') ||
 		   (c == '_') || (c == ':') || 
-		   (xmlIsCombining(c)) ||
-		   (xmlIsExtender(c))) {
+		   (IS_COMBINING(c)) ||
+		   (IS_EXTENDER(c))) {
 		if (len + 10 > max) {
 		    max *= 2;
 		    buffer = (xmlChar *) xmlRealloc(buffer,
@@ -2937,11 +2937,11 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
     GROW;
     c = CUR_CHAR(l);
 
-    while ((xmlIsLetter(c)) || (xmlIsDigit(c)) || /* test bigtoken.xml */
+    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigtoken.xml */
            (c == '.') || (c == '-') ||
 	   (c == '_') || (c == ':') || 
-	   (xmlIsCombining(c)) ||
-	   (xmlIsExtender(c))) {
+	   (IS_COMBINING(c)) ||
+	   (IS_EXTENDER(c))) {
 	if (count++ > 100) {
 	    count = 0;
 	    GROW;
@@ -2963,11 +2963,11 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
 		return(NULL);
 	    }
 	    memcpy(buffer, buf, len);
-	    while ((xmlIsLetter(c)) || (xmlIsDigit(c)) || /* test bigtoken.xml */
+	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigtoken.xml */
 		   (c == '.') || (c == '-') ||
 		   (c == '_') || (c == ':') || 
-		   (xmlIsCombining(c)) ||
-		   (xmlIsExtender(c))) {
+		   (IS_COMBINING(c)) ||
+		   (IS_EXTENDER(c))) {
 		if (count++ > 100) {
 		    count = 0;
 		    GROW;
@@ -3048,7 +3048,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
      * In practice it means we stop the loop only when back at parsing
      * the initial entity and the quote is found
      */
-    while ((xmlIsChar(c)) && ((c != stop) || /* checked */
+    while ((IS_CHAR(c)) && ((c != stop) || /* checked */
 	   (ctxt->input != input))) {
 	if (len + 5 >= size) {
 	    size *= 2;
@@ -3402,7 +3402,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
     }
     ctxt->instate = XML_PARSER_SYSTEM_LITERAL;
     cur = CUR_CHAR(l);
-    while ((xmlIsChar(cur)) && (cur != stop)) { /* checked */
+    while ((IS_CHAR(cur)) && (cur != stop)) { /* checked */
 	if (len + 5 >= size) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
@@ -3428,7 +3428,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
     }
     buf[len] = 0;
     ctxt->instate = (xmlParserInputState) state;
-    if (!xmlIsChar(cur)) {
+    if (!IS_CHAR(cur)) {
 	xmlFatalErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED, NULL);
     } else {
 	NEXT;
@@ -3636,7 +3636,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
     cur = CUR_CHAR(l);
     while ((cur != '<') && /* checked */
            (cur != '&') && 
-	   (xmlIsChar(cur))) /* test also done in xmlCurrentChar() */ {
+	   (IS_CHAR(cur))) /* test also done in xmlCurrentChar() */ {
 	if ((cur == ']') && (NXT(1) == ']') &&
 	    (NXT(2) == '>')) {
 	    if (cdata) break;
@@ -3821,7 +3821,7 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     if (cur == 0)
         goto not_terminated;
     len = 0;
-    while (xmlIsChar(cur) && /* checked */
+    while (IS_CHAR(cur) && /* checked */
            ((cur != '>') ||
 	    (r != '-') || (q != '-'))) {
 	if ((r == '-') && (q == '-')) {
@@ -3856,7 +3856,7 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
 	}
     }
     buf[len] = 0;
-    if (!xmlIsChar(cur)) {
+    if (!IS_CHAR(cur)) {
 	xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
 	                     "Comment not terminated \n<!--%.50s\n", buf);
 	xmlFree(buf);
@@ -4050,7 +4050,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 	    }
             SKIP_BLANKS;
 	    cur = CUR_CHAR(l);
-	    while (xmlIsChar(cur) && /* checked */
+	    while (IS_CHAR(cur) && /* checked */
 		   ((cur != '?') || (NXT(1) != '>'))) {
 		if (len + 5 >= size) {
 		    size *= 2;
@@ -7076,10 +7076,10 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
     }
 
     while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
-	   ((xmlIsLetter(c)) || (xmlIsDigit(c)) ||
+	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
             (c == '.') || (c == '-') || (c == '_') ||
-	    (xmlIsCombining(c)) ||
-	    (xmlIsExtender(c)))) {
+	    (IS_COMBINING(c)) ||
+	    (IS_EXTENDER(c)))) {
 	if (count++ > 100) {
 	    count = 0;
 	    GROW;
@@ -8016,14 +8016,14 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 
     ctxt->instate = XML_PARSER_CDATA_SECTION;
     r = CUR_CHAR(rl);
-    if (!xmlIsChar(r)) {
+    if (!IS_CHAR(r)) {
 	xmlFatalErr(ctxt, XML_ERR_CDATA_NOT_FINISHED, NULL);
 	ctxt->instate = XML_PARSER_CONTENT;
         return;
     }
     NEXTL(rl);
     s = CUR_CHAR(sl);
-    if (!xmlIsChar(s)) {
+    if (!IS_CHAR(s)) {
 	xmlFatalErr(ctxt, XML_ERR_CDATA_NOT_FINISHED, NULL);
 	ctxt->instate = XML_PARSER_CONTENT;
         return;
@@ -8035,7 +8035,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 	xmlErrMemory(ctxt, NULL);
 	return;
     }
-    while (xmlIsChar(cur) &&
+    while (IS_CHAR(cur) &&
            ((r != ']') || (s != ']') || (cur != '>'))) {
 	if (len + 5 >= size) {
 	    size *= 2;

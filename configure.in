@@ -416,7 +416,9 @@ dnl
 dnl specific tests to setup DV's devel environment with debug etc ...
 dnl (-Wunreachable-code)
 dnl
-if test "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ; then
+if [[ "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ]] || \
+   [[ "${LOGNAME}" = "bill" -a "`pwd`" = "/home/bill/gnomecvs/xmltest" ]]
+   then
     if test "$with_minimum" != "yes"
     then
 	if test "${with_mem_debug}" = "" ; then
@@ -686,7 +688,7 @@ else
     WITH_HTML=1
     HTML_OBJ="HTMLparser.o HTMLtree.o"
     TEST_HTML=HTMLtests
-    if "$with_push" != "no" ; then
+    if test "$with_push" != "no" ; then
         TEST_PHTML=HTMLPushtests
     else
         TEST_PHTML=

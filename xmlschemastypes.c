@@ -85,7 +85,7 @@ typedef enum {
     XML_SCHEMAS_UBYTE
 } xmlSchemaValType;
 
-unsigned long powten[10] = {
+static unsigned long powten[10] = {
     1, 10, 100, 1000, 10000, 100000, 1000000, 10000000L,
     100000000L, 1000000000L
 };

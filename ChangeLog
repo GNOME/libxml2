@@ -1,3 +1,10 @@
+Wed Mar  5 10:57:09 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastype.c: made powten array static it should not be exported
+	* HTMLparser.c: fix bug #107361 by reusing the code from the XML 
+	  parser function.
+	* testHTML.c: get rid of valgrind messages on the HTML SAX tests
+
 Fri Feb 28 00:23:00 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed a node dump crash on attributes

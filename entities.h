@@ -69,7 +69,7 @@ CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input);
 xmlEntitiesTablePtr xmlCreateEntitiesTable(void);
 xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
 void xmlFreeEntitiesTable(xmlEntitiesTablePtr table);
-void xmlDumpEntitiesTable(xmlEntitiesTablePtr table);
+void xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table);
 xmlParserInputPtr xmlNewEntityInputStream(xmlParserCtxtPtr ctxt,
                                                  xmlEntityPtr entity);
 xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);

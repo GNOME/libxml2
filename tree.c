@@ -1707,6 +1707,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
  * of the values carried by this node child's (TEXT and ENTITY_REF).
  * Entity references are substitued.
  * Returns a new CHAR * or NULL if no content is available.
+ *     It's up to the caller to free the memory.
  */
 CHAR *
 xmlNodeGetContent(xmlNodePtr cur) {
@@ -2106,79 +2107,202 @@ xmlTextConcat(xmlNodePtr node, const CHAR *content, int len) {
  *									*
  ************************************************************************/
 
-static CHAR *buffer = NULL;
-static int buffer_index = 0;
-static int buffer_size = 0;
+#define BASE_BUFFER_SIZE 4000
+
+/**
+ * xmlBufferCreate:
+ *
+ * routine to create an XML buffer.
+ * returns the new structure.
+ */
+xmlBufferPtr
+xmlBufferCreate(void) {
+    xmlBufferPtr ret;
+
+    ret = (xmlBufferPtr) malloc(sizeof(xmlBuffer));
+    if (ret == NULL) {
+	fprintf(stderr, "xmlBufferCreate : out of memory!\n");
+        return(NULL);
+    }
+    ret->use = 0;
+    ret->size = BASE_BUFFER_SIZE;
+    ret->content = (CHAR *) malloc(ret->size * sizeof(CHAR));
+    if (ret->content == NULL) {
+	fprintf(stderr, "xmlBufferCreate : out of memory!\n");
+	free(ret);
+        return(NULL);
+    }
+    ret->content[0] = 0;
+    return(ret);
+}
+
+/**
+ * xmlBufferFree:
+ * @buf:  the buffer to free
+ *
+ * Frees an XML buffer.
+ */
+void
+xmlBufferFree(xmlBufferPtr buf) {
+    if (buf == NULL) {
+        fprintf(stderr, "xmlBufferFree: buf == NULL\n");
+	return;
+    }
+    if (buf->content == NULL) {
+        fprintf(stderr, "xmlBufferFree: buf->content == NULL\n");
+    } else {
+        memset(buf->content, -1, BASE_BUFFER_SIZE);
+        free(buf->content);
+    }
+    memset(buf, -1, sizeof(xmlBuffer));
+    free(buf);
+}
+
+/**
+ * xmlBufferDump:
+ * @file:  the file output
+ * @buf:  the buffer to dump
+ *
+ * Dumps an XML buffer to  a FILE *.
+ * Returns the number of CHAR written
+ */
+int
+xmlBufferDump(FILE *file, xmlBufferPtr buf) {
+    int ret;
+
+    if (buf == NULL) {
+        fprintf(stderr, "xmlBufferDump: buf == NULL\n");
+	return(0);
+    }
+    if (buf->content == NULL) {
+        fprintf(stderr, "xmlBufferDump: buf->content == NULL\n");
+	return(0);
+    }
+    if (file == NULL) file = stdout;
+    ret = fwrite(buf->content, sizeof(CHAR), buf->use, file);
+    return(ret);
+}
+
+/**
+ * xmlBufferAdd:
+ * @buf:  the buffer to dump
+ * @str:  the CHAR string
+ * @len:  the number of CHAR to add
+ *
+ * Add a string range to an XML buffer.
+ */
+void
+xmlBufferAdd(xmlBufferPtr buf, const CHAR *str, int len) {
+    const CHAR *cur;
+
+    if (str == NULL) {
+        fprintf(stderr, "xmlBufferAdd: str == NULL\n");
+	return;
+    }
+    for (cur = str;(len > 0) && (*cur != 0);cur++, len--) {
+        if (buf->use  + 10 >= buf->size) {
+	    CHAR *rebuf;
+
+	    buf->size *= 2;
+	    rebuf = (CHAR *) realloc(buf->content, buf->size * sizeof(CHAR));
+	    if (rebuf == NULL) {
+	        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
+		return;
+	    }
+	    buf->content = rebuf;
+	}
+        buf->content[buf->use++] = *cur;
+    }
+}
+
+/**
+ * xmlBufferCat:
+ * @buf:  the buffer to dump
+ * @str:  the CHAR string
+ *
+ * Append a zero terminated string to an XML buffer.
+ */
+void
+xmlBufferCat(xmlBufferPtr buf, const CHAR *str) {
+    const CHAR *cur;
+
+    if (str == NULL) {
+        fprintf(stderr, "xmlBufferAdd: str == NULL\n");
+	return;
+    }
+    for (cur = str;*cur != 0;cur++) {
+        if (buf->use  + 10 >= buf->size) {
+	    CHAR *rebuf;
+
+	    buf->size *= 2;
+	    rebuf = (CHAR *) realloc(buf->content, buf->size * sizeof(CHAR));
+	    if (rebuf == NULL) {
+	        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
+		return;
+	    }
+	    buf->content = rebuf;
+	}
+        buf->content[buf->use++] = *cur;
+    }
+}
+
+/**
+ * xmlBufferCCat:
+ * @buf:  the buffer to dump
+ * @str:  the C char string
+ *
+ * Append a zero terminated C string to an XML buffer.
+ */
+void
+xmlBufferCCat(xmlBufferPtr buf, const char *str) {
+    const char *cur;
+
+    if (str == NULL) {
+        fprintf(stderr, "xmlBufferAdd: str == NULL\n");
+	return;
+    }
+    for (cur = str;*cur != 0;cur++) {
+        if (buf->use  + 10 >= buf->size) {
+	    CHAR *rebuf;
+
+	    buf->size *= 2;
+	    rebuf = (CHAR *) realloc(buf->content, buf->size * sizeof(CHAR));
+	    if (rebuf == NULL) {
+	        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
+		return;
+	    }
+	    buf->content = rebuf;
+	}
+        buf->content[buf->use++] = *cur;
+    }
+}
 
 /**
  * xmlBufferWriteCHAR:
+ * @buf:  the XML buffer
  * @string:  the string to add
  *
  * routine which manage and grows an output buffer. This one add
- * CHARs at the end of the array.
+ * CHARs at the end of the buffer.
  */
 void
-xmlBufferWriteCHAR(const CHAR *string) {
-    const CHAR *cur;
-
-    if (buffer == NULL) {
-        buffer_size = 50000;
-        buffer = (CHAR *) malloc(buffer_size * sizeof(CHAR));
-	if (buffer == NULL) {
-	    fprintf(stderr, "xmlBufferWrite : out of memory!\n");
-	    exit(1);
-	}
-    }
-    
-    if (string == NULL) return;
-    for (cur = string;*cur != 0;cur++) {
-        if (buffer_index  + 10 >= buffer_size) {
-	    buffer_size *= 2;
-	    buffer = (CHAR *) realloc(buffer, buffer_size * sizeof(CHAR));
-	    if (buffer == NULL) {
-	        fprintf(stderr, "xmlBufferWrite : out of memory!\n");
-		exit(1);
-	    }
-	}
-        buffer[buffer_index++] = *cur;
-    }
-    buffer[buffer_index] = 0;
+xmlBufferWriteCHAR(xmlBufferPtr buf, const CHAR *string) {
+    xmlBufferCat(buf, string);
 }
 
 /**
  * xmlBufferWriteChar:
+ * @buf:  the XML buffer
  * @string:  the string to add
  *
  * routine which manage and grows an output buffer. This one add
  * C chars at the end of the array.
  */
 void
-xmlBufferWriteChar(const char *string) {
-    const char *cur;
-
-    if (buffer == NULL) {
-        buffer_size = 50000;
-        buffer = (CHAR *) malloc(buffer_size * sizeof(CHAR));
-	if (buffer == NULL) {
-	    fprintf(stderr, "xmlBufferWrite : out of memory!\n");
-	    exit(1);
-	}
-    }
-    
-    if (string == NULL) return;
-    for (cur = string;*cur != 0;cur++) {
-        if (buffer_index  + 10 >= buffer_size) {
-	    buffer_size *= 2;
-	    buffer = (CHAR *) realloc(buffer, buffer_size * sizeof(CHAR));
-	    if (buffer == NULL) {
-	        fprintf(stderr, "xmlBufferWrite : out of memory!\n");
-		exit(1);
-	    }
-	}
-        buffer[buffer_index++] = *cur;
-    }
-    buffer[buffer_index] = 0;
+xmlBufferWriteChar(xmlBufferPtr buf, const char *string) {
+    xmlBufferCCat(buf, string);
 }
+
 
 /**
  * xmlGlobalNsDump:
@@ -2187,24 +2311,24 @@ xmlBufferWriteChar(const char *string) {
  * Dump a global Namespace, this is the old version based on PIs.
  */
 static void
-xmlGlobalNsDump(xmlNsPtr cur) {
+xmlGlobalNsDump(xmlBufferPtr buf, xmlNsPtr cur) {
     if (cur == NULL) {
         fprintf(stderr, "xmlGlobalNsDump : Ns == NULL\n");
 	return;
     }
     if (cur->type == XML_GLOBAL_NAMESPACE) {
-	xmlBufferWriteChar("<?namespace");
+	xmlBufferWriteChar(buf, "<?namespace");
 	if (cur->href != NULL) {
-	    xmlBufferWriteChar(" href=\"");
-	    xmlBufferWriteCHAR(cur->href);
-	    xmlBufferWriteChar("\"");
+	    xmlBufferWriteChar(buf, " href=\"");
+	    xmlBufferWriteCHAR(buf, cur->href);
+	    xmlBufferWriteChar(buf, "\"");
 	}
 	if (cur->prefix != NULL) {
-	    xmlBufferWriteChar(" AS=\"");
-	    xmlBufferWriteCHAR(cur->prefix);
-	    xmlBufferWriteChar("\"");
+	    xmlBufferWriteChar(buf, " AS=\"");
+	    xmlBufferWriteCHAR(buf, cur->prefix);
+	    xmlBufferWriteChar(buf, "\"");
 	}
-	xmlBufferWriteChar("?>\n");
+	xmlBufferWriteChar(buf, "?>\n");
     }
 }
 
@@ -2215,9 +2339,9 @@ xmlGlobalNsDump(xmlNsPtr cur) {
  * Dump a list of global Namespace, this is the old version based on PIs.
  */
 static void
-xmlGlobalNsListDump(xmlNsPtr cur) {
+xmlGlobalNsListDump(xmlBufferPtr buf, xmlNsPtr cur) {
     while (cur != NULL) {
-        xmlGlobalNsDump(cur);
+        xmlGlobalNsDump(buf, cur);
 	cur = cur->next;
     }
 }
@@ -2230,7 +2354,7 @@ xmlGlobalNsListDump(xmlNsPtr cur) {
  * Should be called in the context of attributes dumps.
  */
 static void
-xmlNsDump(xmlNsPtr cur) {
+xmlNsDump(xmlBufferPtr buf, xmlNsPtr cur) {
     if (cur == NULL) {
         fprintf(stderr, "xmlNsDump : Ns == NULL\n");
 	return;
@@ -2238,13 +2362,13 @@ xmlNsDump(xmlNsPtr cur) {
     if (cur->type == XML_LOCAL_NAMESPACE) {
         /* Within the context of an element attributes */
 	if (cur->prefix != NULL) {
-	    xmlBufferWriteChar(" xmlns:");
-	    xmlBufferWriteCHAR(cur->prefix);
+	    xmlBufferWriteChar(buf, " xmlns:");
+	    xmlBufferWriteCHAR(buf, cur->prefix);
 	} else
-	    xmlBufferWriteChar(" xmlns");
-	xmlBufferWriteChar("=\"");
-	xmlBufferWriteCHAR(cur->href);
-	xmlBufferWriteChar("\"");
+	    xmlBufferWriteChar(buf, " xmlns");
+	xmlBufferWriteChar(buf, "=\"");
+	xmlBufferWriteCHAR(buf, cur->href);
+	xmlBufferWriteChar(buf, "\"");
     }
 }
 
@@ -2256,9 +2380,9 @@ xmlNsDump(xmlNsPtr cur) {
  * Should be called in the context of attributes dumps.
  */
 static void
-xmlNsListDump(xmlNsPtr cur) {
+xmlNsListDump(xmlBufferPtr buf, xmlNsPtr cur) {
     while (cur != NULL) {
-        xmlNsDump(cur);
+        xmlNsDump(buf, cur);
 	cur = cur->next;
     }
 }
@@ -2270,44 +2394,44 @@ xmlNsListDump(xmlNsPtr cur) {
  * Dump the XML document DTD, if any.
  */
 static void
-xmlDtdDump(xmlDocPtr doc) {
+xmlDtdDump(xmlBufferPtr buf, xmlDocPtr doc) {
     xmlDtdPtr cur = doc->intSubset;
 
     if (cur == NULL) {
         fprintf(stderr, "xmlDtdDump : no internal subset\n");
 	return;
     }
-    xmlBufferWriteChar("<!DOCTYPE ");
-    xmlBufferWriteCHAR(cur->name);
+    xmlBufferWriteChar(buf, "<!DOCTYPE ");
+    xmlBufferWriteCHAR(buf, cur->name);
     if (cur->ExternalID != NULL) {
-	xmlBufferWriteChar(" PUBLIC \"");
-	xmlBufferWriteCHAR(cur->ExternalID);
-	xmlBufferWriteChar("\" \"");
-	xmlBufferWriteCHAR(cur->SystemID);
-	xmlBufferWriteChar("\"");
+	xmlBufferWriteChar(buf, " PUBLIC \"");
+	xmlBufferWriteCHAR(buf, cur->ExternalID);
+	xmlBufferWriteChar(buf, "\" \"");
+	xmlBufferWriteCHAR(buf, cur->SystemID);
+	xmlBufferWriteChar(buf, "\"");
     }  else if (cur->SystemID != NULL) {
-	xmlBufferWriteChar(" SYSTEM \"");
-	xmlBufferWriteCHAR(cur->SystemID);
-	xmlBufferWriteChar("\"");
+	xmlBufferWriteChar(buf, " SYSTEM \"");
+	xmlBufferWriteCHAR(buf, cur->SystemID);
+	xmlBufferWriteChar(buf, "\"");
     }
     if ((cur->entities == NULL) && (cur->elements == NULL) &&
         (cur->attributes == NULL) && (cur->notations == NULL)) {
-	xmlBufferWriteChar(">\n");
+	xmlBufferWriteChar(buf, ">\n");
 	return;
     }
-    xmlBufferWriteChar(" [\n");
+    xmlBufferWriteChar(buf, " [\n");
     if (cur->entities != NULL)
-	xmlDumpEntitiesTable((xmlEntitiesTablePtr) cur->entities);
+	xmlDumpEntitiesTable(buf, (xmlEntitiesTablePtr) cur->entities);
     if (cur->notations != NULL)
-	xmlDumpNotationTable((xmlNotationTablePtr) cur->notations);
+	xmlDumpNotationTable(buf, (xmlNotationTablePtr) cur->notations);
     if (cur->elements != NULL)
-	xmlDumpElementTable((xmlElementTablePtr) cur->elements);
+	xmlDumpElementTable(buf, (xmlElementTablePtr) cur->elements);
     if (cur->attributes != NULL)
-	xmlDumpAttributeTable((xmlAttributeTablePtr) cur->attributes);
-    xmlBufferWriteChar("]");
+	xmlDumpAttributeTable(buf, (xmlAttributeTablePtr) cur->attributes);
+    xmlBufferWriteChar(buf, "]");
 
     /* TODO !!! a lot more things to dump ... */
-    xmlBufferWriteChar(">\n");
+    xmlBufferWriteChar(buf, ">\n");
 }
 
 /**
@@ -2318,23 +2442,23 @@ xmlDtdDump(xmlDocPtr doc) {
  * Dump an XML attribute
  */
 static void
-xmlAttrDump(xmlDocPtr doc, xmlAttrPtr cur) {
+xmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     CHAR *value;
 
     if (cur == NULL) {
         fprintf(stderr, "xmlAttrDump : property == NULL\n");
 	return;
     }
-    xmlBufferWriteChar(" ");
-    xmlBufferWriteCHAR(cur->name);
+    xmlBufferWriteChar(buf, " ");
+    xmlBufferWriteCHAR(buf, cur->name);
     value = xmlNodeListGetString(doc, cur->val, 0);
     if (value) {
-	xmlBufferWriteChar("=\"");
-	xmlBufferWriteCHAR(value);
-	xmlBufferWriteChar("\"");
+	xmlBufferWriteChar(buf, "=\"");
+	xmlBufferWriteCHAR(buf, value);
+	xmlBufferWriteChar(buf, "\"");
 	free(value);
     } else  {
-	xmlBufferWriteChar("=\"\"");
+	xmlBufferWriteChar(buf, "=\"\"");
     }
 }
 
@@ -2346,20 +2470,20 @@ xmlAttrDump(xmlDocPtr doc, xmlAttrPtr cur) {
  * Dump a list of XML attributes
  */
 static void
-xmlAttrListDump(xmlDocPtr doc, xmlAttrPtr cur) {
+xmlAttrListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     if (cur == NULL) {
         fprintf(stderr, "xmlAttrListDump : property == NULL\n");
 	return;
     }
     while (cur != NULL) {
-        xmlAttrDump(doc, cur);
+        xmlAttrDump(buf, doc, cur);
 	cur = cur->next;
     }
 }
 
 
 static void
-xmlNodeDump(xmlDocPtr doc, xmlNodePtr cur, int level);
+xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level);
 /**
  * xmlNodeListDump:
  * @doc:  the document
@@ -2369,7 +2493,7 @@ xmlNodeDump(xmlDocPtr doc, xmlNodePtr cur, int level);
  * Dump an XML node list, recursive behaviour,children are printed too.
  */
 static void
-xmlNodeListDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
+xmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
     int needIndent = 0, i;
 
     if (cur == NULL) {
@@ -2381,15 +2505,15 @@ xmlNodeListDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
 	    (cur->type != XML_ENTITY_REF_NODE)) {
 	    if (!needIndent) {
 	        needIndent = 1;
-		xmlBufferWriteChar("\n");
+		xmlBufferWriteChar(buf, "\n");
 	    }
 	}
-        xmlNodeDump(doc, cur, level);
+        xmlNodeDump(buf, doc, cur, level);
 	cur = cur->next;
     }
     if ((xmlIndentTreeOutput) && (needIndent))
 	for (i = 1;i < level;i++)
-	    xmlBufferWriteChar("  ");
+	    xmlBufferWriteChar(buf, "  ");
 }
 
 /**
@@ -2401,7 +2525,7 @@ xmlNodeListDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
  * Dump an XML node, recursive behaviour,children are printed too.
  */
 static void
-xmlNodeDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
+xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
     int i;
 
     if (cur == NULL) {
@@ -2410,57 +2534,57 @@ xmlNodeDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
     }
     if (cur->type == XML_TEXT_NODE) {
 	if (cur->content != NULL)
-	    xmlBufferWriteCHAR(xmlEncodeEntities(doc, cur->content));
+	    xmlBufferWriteCHAR(buf, xmlEncodeEntities(doc, cur->content));
 	return;
     }
     if (cur->type == XML_COMMENT_NODE) {
 	if (cur->content != NULL) {
-	    xmlBufferWriteChar("<!--");
-	    xmlBufferWriteCHAR(cur->content);
-	    xmlBufferWriteChar("-->");
+	    xmlBufferWriteChar(buf, "<!--");
+	    xmlBufferWriteCHAR(buf, cur->content);
+	    xmlBufferWriteChar(buf, "-->");
 	}
 	return;
     }
     if (cur->type == XML_ENTITY_REF_NODE) {
-        xmlBufferWriteChar("&");
-	xmlBufferWriteCHAR(cur->name);
-        xmlBufferWriteChar(";");
+        xmlBufferWriteChar(buf, "&");
+	xmlBufferWriteCHAR(buf, cur->name);
+        xmlBufferWriteChar(buf, ";");
 	return;
     }
     if (xmlIndentTreeOutput)
 	for (i = 0;i < level;i++)
-	    xmlBufferWriteChar("  ");
+	    xmlBufferWriteChar(buf, "  ");
 
-    xmlBufferWriteChar("<");
+    xmlBufferWriteChar(buf, "<");
     if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
-        xmlBufferWriteCHAR(cur->ns->prefix);
-	xmlBufferWriteChar(":");
+        xmlBufferWriteCHAR(buf, cur->ns->prefix);
+	xmlBufferWriteChar(buf, ":");
     }
 
-    xmlBufferWriteCHAR(cur->name);
+    xmlBufferWriteCHAR(buf, cur->name);
     if (cur->nsDef)
-        xmlNsListDump(cur->nsDef);
+        xmlNsListDump(buf, cur->nsDef);
     if (cur->properties != NULL)
-        xmlAttrListDump(doc, cur->properties);
+        xmlAttrListDump(buf, doc, cur->properties);
 
     if ((cur->content == NULL) && (cur->childs == NULL)) {
-        xmlBufferWriteChar("/>\n");
+        xmlBufferWriteChar(buf, "/>\n");
 	return;
     }
-    xmlBufferWriteChar(">");
+    xmlBufferWriteChar(buf, ">");
     if (cur->content != NULL)
-	xmlBufferWriteCHAR(xmlEncodeEntities(doc, cur->content));
+	xmlBufferWriteCHAR(buf, xmlEncodeEntities(doc, cur->content));
     if (cur->childs != NULL) {
-	xmlNodeListDump(doc, cur->childs, level + 1);
+	xmlNodeListDump(buf, doc, cur->childs, level + 1);
     }
-    xmlBufferWriteChar("</");
+    xmlBufferWriteChar(buf, "</");
     if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
-        xmlBufferWriteCHAR(cur->ns->prefix);
-	xmlBufferWriteChar(":");
+        xmlBufferWriteCHAR(buf, cur->ns->prefix);
+	xmlBufferWriteChar(buf, ":");
     }
 
-    xmlBufferWriteCHAR(cur->name);
-    xmlBufferWriteChar(">\n");
+    xmlBufferWriteCHAR(buf, cur->name);
+    xmlBufferWriteChar(buf, ">\n");
 }
 
 /**
@@ -2470,36 +2594,36 @@ xmlNodeDump(xmlDocPtr doc, xmlNodePtr cur, int level) {
  * Dump an XML document.
  */
 static void
-xmlDocContentDump(xmlDocPtr cur) {
+xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
     if (oldXMLWDcompatibility)
-	xmlBufferWriteChar("<?XML version=\"");
+	xmlBufferWriteChar(buf, "<?XML version=\"");
     else 
-	xmlBufferWriteChar("<?xml version=\"");
-    xmlBufferWriteCHAR(cur->version);
-    xmlBufferWriteChar("\"");
+	xmlBufferWriteChar(buf, "<?xml version=\"");
+    xmlBufferWriteCHAR(buf, cur->version);
+    xmlBufferWriteChar(buf, "\"");
     if (cur->encoding != NULL) {
-        xmlBufferWriteChar(" encoding=\"");
-	xmlBufferWriteCHAR(cur->encoding);
-	xmlBufferWriteChar("\"");
+        xmlBufferWriteChar(buf, " encoding=\"");
+	xmlBufferWriteCHAR(buf, cur->encoding);
+	xmlBufferWriteChar(buf, "\"");
     }
     switch (cur->standalone) {
         case 0:
-	    xmlBufferWriteChar(" standalone=\"no\"");
+	    xmlBufferWriteChar(buf, " standalone=\"no\"");
 	    break;
         case 1:
-	    xmlBufferWriteChar(" standalone=\"yes\"");
+	    xmlBufferWriteChar(buf, " standalone=\"yes\"");
 	    break;
     }
-    xmlBufferWriteChar("?>\n");
+    xmlBufferWriteChar(buf, "?>\n");
     if (cur->intSubset != NULL)
-        xmlDtdDump(cur);
+        xmlDtdDump(buf, cur);
     if (cur->root != NULL) {
 	/* global namespace definitions, the old way */
 	if (oldXMLWDcompatibility)
-	    xmlGlobalNsListDump(cur->oldNs);
+	    xmlGlobalNsListDump(buf, cur->oldNs);
 	else 
 	    xmlUpgradeOldNs(cur);
-        xmlNodeDump(cur, cur->root, 0);
+        xmlNodeDump(buf, cur, cur->root, 0);
     }
 }
 
@@ -2514,6 +2638,8 @@ xmlDocContentDump(xmlDocPtr cur) {
  */
 void
 xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
+    xmlBufferPtr buf;
+
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         fprintf(stderr, "xmlDocDumpMemory : document == NULL\n");
@@ -2522,11 +2648,17 @@ xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
 	*size = 0;
 	return;
     }
-    buffer_index = 0;
-    xmlDocContentDump(cur);
-
-    *mem = buffer;
-    *size = buffer_index;
+    buf = xmlBufferCreate();
+    if (buf == NULL) {
+	*mem = NULL;
+	*size = 0;
+	return;
+    }
+    xmlDocContentDump(buf, cur);
+    *mem = buf->content;
+    *size = buf->use;
+    memset(buf, -1, sizeof(xmlBuffer));
+    free(buf);
 }
 
 /**
@@ -2592,16 +2724,19 @@ xmlSetCompressMode(int mode) {
  */
 void
 xmlDocDump(FILE *f, xmlDocPtr cur) {
+    xmlBufferPtr buf;
+
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         fprintf(stderr, "xmlDocDump : document == NULL\n");
 #endif
 	return;
     }
-    buffer_index = 0;
-    xmlDocContentDump(cur);
-
-    fwrite(buffer, sizeof(CHAR), buffer_index, f);
+    buf = xmlBufferCreate();
+    if (buf == NULL) return;
+    xmlDocContentDump(buf, cur);
+    xmlBufferDump(f, buf);
+    xmlBufferFree(buf);
 }
 
 /**
@@ -2615,12 +2750,20 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
  */
 int
 xmlSaveFile(const char *filename, xmlDocPtr cur) {
+    xmlBufferPtr buf;
 #ifdef HAVE_ZLIB_H
     gzFile zoutput = NULL;
     char mode[15];
 #endif
     FILE *output = NULL;
     int ret;
+
+    /* 
+     * save the content to a temp buffer.
+     */
+    buf = xmlBufferCreate();
+    if (buf == NULL) return(0);
+    xmlDocContentDump(buf, cur);
 
 #ifdef HAVE_ZLIB_H
     if ((cur->compression > 0) && (cur->compression <= 9)) {
@@ -2635,21 +2778,19 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     }
 #endif
 
-    /* 
-     * save the content to a temp buffer.
-     */
-    buffer_index = 0;
-    xmlDocContentDump(cur);
+    xmlDocContentDump(buf, cur);
 
 #ifdef HAVE_ZLIB_H
     if (zoutput != NULL) {
-        ret = gzwrite(zoutput, buffer, sizeof(CHAR) * buffer_index);
+        ret = gzwrite(zoutput, buf->content, sizeof(CHAR) * buf->use);
 	gzclose(zoutput);
-	return(ret);
+    } else {
+#endif
+        ret = xmlBufferDump(output, buf);
+	fclose(output);
+#ifdef HAVE_ZLIB_H
     }
 #endif
-    ret = fwrite(buffer, sizeof(CHAR), buffer_index, output);
-    fclose(output);
     return(ret * sizeof(CHAR));
 }
 

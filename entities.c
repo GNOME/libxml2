@@ -523,15 +523,13 @@ xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
 
 /**
  * xmlDumpEntitiesTable:
+ * @buf:  An XML buffer.
  * @table:  An entity table
  *
  * This will dump the content of the entity table as an XML DTD definition
- *
- * NOTE: TODO an extra parameter allowing a reentant implementation will
- *       be added.
  */
 void
-xmlDumpEntitiesTable(xmlEntitiesTablePtr table) {
+xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table) {
     int i;
     xmlEntityPtr cur;
 
@@ -541,70 +539,70 @@ xmlDumpEntitiesTable(xmlEntitiesTablePtr table) {
         cur = &table->table[i];
         switch (cur->type) {
 	    case XML_INTERNAL_GENERAL_ENTITY:
-	        xmlBufferWriteChar("<!ENTITY ");
-		xmlBufferWriteCHAR(cur->name);
-		xmlBufferWriteChar(" \"");
-		xmlBufferWriteCHAR(cur->content);
-		xmlBufferWriteChar("\">\n");
+	        xmlBufferWriteChar(buf, "<!ENTITY ");
+		xmlBufferWriteCHAR(buf, cur->name);
+		xmlBufferWriteChar(buf, " \"");
+		xmlBufferWriteCHAR(buf, cur->content);
+		xmlBufferWriteChar(buf, "\">\n");
 	        break;
 	    case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
-	        xmlBufferWriteChar("<!ENTITY ");
-		xmlBufferWriteCHAR(cur->name);
+	        xmlBufferWriteChar(buf, "<!ENTITY ");
+		xmlBufferWriteCHAR(buf, cur->name);
 		if (cur->ExternalID != NULL) {
-		     xmlBufferWriteChar(" PUBLIC \"");
-		     xmlBufferWriteCHAR(cur->ExternalID);
-		     xmlBufferWriteChar("\" \"");
-		     xmlBufferWriteCHAR(cur->SystemID);
-		     xmlBufferWriteChar("\"");
+		     xmlBufferWriteChar(buf, " PUBLIC \"");
+		     xmlBufferWriteCHAR(buf, cur->ExternalID);
+		     xmlBufferWriteChar(buf, "\" \"");
+		     xmlBufferWriteCHAR(buf, cur->SystemID);
+		     xmlBufferWriteChar(buf, "\"");
 		} else {
-		     xmlBufferWriteChar(" SYSTEM \"");
-		     xmlBufferWriteCHAR(cur->SystemID);
-		     xmlBufferWriteChar("\"");
+		     xmlBufferWriteChar(buf, " SYSTEM \"");
+		     xmlBufferWriteCHAR(buf, cur->SystemID);
+		     xmlBufferWriteChar(buf, "\"");
 		}
-		xmlBufferWriteChar(">\n");
+		xmlBufferWriteChar(buf, ">\n");
 	        break;
 	    case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
-	        xmlBufferWriteChar("<!ENTITY ");
-		xmlBufferWriteCHAR(cur->name);
+	        xmlBufferWriteChar(buf, "<!ENTITY ");
+		xmlBufferWriteCHAR(buf, cur->name);
 		if (cur->ExternalID != NULL) {
-		     xmlBufferWriteChar(" PUBLIC \"");
-		     xmlBufferWriteCHAR(cur->ExternalID);
-		     xmlBufferWriteChar("\" \"");
-		     xmlBufferWriteCHAR(cur->SystemID);
-		     xmlBufferWriteChar("\"");
+		     xmlBufferWriteChar(buf, " PUBLIC \"");
+		     xmlBufferWriteCHAR(buf, cur->ExternalID);
+		     xmlBufferWriteChar(buf, "\" \"");
+		     xmlBufferWriteCHAR(buf, cur->SystemID);
+		     xmlBufferWriteChar(buf, "\"");
 		} else {
-		     xmlBufferWriteChar(" SYSTEM \"");
-		     xmlBufferWriteCHAR(cur->SystemID);
-		     xmlBufferWriteChar("\"");
+		     xmlBufferWriteChar(buf, " SYSTEM \"");
+		     xmlBufferWriteCHAR(buf, cur->SystemID);
+		     xmlBufferWriteChar(buf, "\"");
 		}
 		if (cur->content != NULL) { /* Should be true ! */
-		    xmlBufferWriteChar(" NDATA ");
-		    xmlBufferWriteCHAR(cur->content);
+		    xmlBufferWriteChar(buf, " NDATA ");
+		    xmlBufferWriteCHAR(buf, cur->content);
 		}
-		xmlBufferWriteChar(">\n");
+		xmlBufferWriteChar(buf, ">\n");
 	        break;
 	    case XML_INTERNAL_PARAMETER_ENTITY:
-	        xmlBufferWriteChar("<!ENTITY % ");
-		xmlBufferWriteCHAR(cur->name);
-		xmlBufferWriteChar(" \"");
-		xmlBufferWriteCHAR(cur->content);
-		xmlBufferWriteChar("\">\n");
+	        xmlBufferWriteChar(buf, "<!ENTITY % ");
+		xmlBufferWriteCHAR(buf, cur->name);
+		xmlBufferWriteChar(buf, " \"");
+		xmlBufferWriteCHAR(buf, cur->content);
+		xmlBufferWriteChar(buf, "\">\n");
 	        break;
 	    case XML_EXTERNAL_PARAMETER_ENTITY:
-	        xmlBufferWriteChar("<!ENTITY % ");
-		xmlBufferWriteCHAR(cur->name);
+	        xmlBufferWriteChar(buf, "<!ENTITY % ");
+		xmlBufferWriteCHAR(buf, cur->name);
 		if (cur->ExternalID != NULL) {
-		     xmlBufferWriteChar(" PUBLIC \"");
-		     xmlBufferWriteCHAR(cur->ExternalID);
-		     xmlBufferWriteChar("\" \"");
-		     xmlBufferWriteCHAR(cur->SystemID);
-		     xmlBufferWriteChar("\"");
+		     xmlBufferWriteChar(buf, " PUBLIC \"");
+		     xmlBufferWriteCHAR(buf, cur->ExternalID);
+		     xmlBufferWriteChar(buf, "\" \"");
+		     xmlBufferWriteCHAR(buf, cur->SystemID);
+		     xmlBufferWriteChar(buf, "\"");
 		} else {
-		     xmlBufferWriteChar(" SYSTEM \"");
-		     xmlBufferWriteCHAR(cur->SystemID);
-		     xmlBufferWriteChar("\"");
+		     xmlBufferWriteChar(buf, " SYSTEM \"");
+		     xmlBufferWriteCHAR(buf, cur->SystemID);
+		     xmlBufferWriteChar(buf, "\"");
 		}
-		xmlBufferWriteChar(">\n");
+		xmlBufferWriteChar(buf, ">\n");
 	        break;
 	    default:
 	        fprintf(stderr,

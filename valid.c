@@ -101,67 +101,65 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
 
 /**
  * xmlDumpElementContent:
+ * @buf:  An XML buffer
  * @content:  An element table
  * @glob: 1 if one must print the englobing parenthesis, 0 otherwise
  *
  * This will dump the content of the element table as an XML DTD definition
- *
- * NOTE: TODO an extra parameter allowing a reentant implementation will
- *       be added.
  */
 void
-xmlDumpElementContent(xmlElementContentPtr content, int glob) {
+xmlDumpElementContent(xmlBufferPtr buf, xmlElementContentPtr content, int glob) {
     if (content == NULL) return;
 
-    if (glob) xmlBufferWriteChar("(");
+    if (glob) xmlBufferWriteChar(buf, "(");
     switch (content->type) {
         case XML_ELEMENT_CONTENT_PCDATA:
-            xmlBufferWriteChar("#PCDATA");
+            xmlBufferWriteChar(buf, "#PCDATA");
 	    break;
 	case XML_ELEMENT_CONTENT_ELEMENT:
-	    xmlBufferWriteCHAR(content->name);
+	    xmlBufferWriteCHAR(buf, content->name);
 	    break;
 	case XML_ELEMENT_CONTENT_SEQ:
 	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
 	        (content->c1->type == XML_ELEMENT_CONTENT_SEQ))
-		xmlDumpElementContent(content->c1, 1);
+		xmlDumpElementContent(buf, content->c1, 1);
 	    else
-		xmlDumpElementContent(content->c1, 0);
-            xmlBufferWriteChar(" , ");
+		xmlDumpElementContent(buf, content->c1, 0);
+            xmlBufferWriteChar(buf, " , ");
 	    if (content->c2->type == XML_ELEMENT_CONTENT_OR)
-		xmlDumpElementContent(content->c2, 1);
+		xmlDumpElementContent(buf, content->c2, 1);
 	    else
-		xmlDumpElementContent(content->c2, 0);
+		xmlDumpElementContent(buf, content->c2, 0);
 	    break;
 	case XML_ELEMENT_CONTENT_OR:
 	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
 	        (content->c1->type == XML_ELEMENT_CONTENT_SEQ))
-		xmlDumpElementContent(content->c1, 1);
+		xmlDumpElementContent(buf, content->c1, 1);
 	    else
-		xmlDumpElementContent(content->c1, 0);
-            xmlBufferWriteChar(" | ");
+		xmlDumpElementContent(buf, content->c1, 0);
+            xmlBufferWriteChar(buf, " | ");
 	    if (content->c2->type == XML_ELEMENT_CONTENT_SEQ)
-		xmlDumpElementContent(content->c2, 1);
+		xmlDumpElementContent(buf, content->c2, 1);
 	    else
-		xmlDumpElementContent(content->c2, 0);
+		xmlDumpElementContent(buf, content->c2, 0);
 	    break;
 	default:
 	    fprintf(stderr, "xmlDumpElementContent: unknown type %d\n",
 	            content->type);
     }
     if (glob)
-        xmlBufferWriteChar(")");
+        xmlBufferWriteChar(buf, ")");
     switch (content->ocur) {
         case XML_ELEMENT_CONTENT_ONCE:
 	    break;
         case XML_ELEMENT_CONTENT_OPT:
-	    xmlBufferWriteChar("?");
+	    xmlBufferWriteChar(buf, "?");
 	    break;
         case XML_ELEMENT_CONTENT_MULT:
-	    xmlBufferWriteChar("*");
+	    xmlBufferWriteChar(buf, "*");
 	    break;
         case XML_ELEMENT_CONTENT_PLUS:
-	    xmlBufferWriteChar("+");
+	    xmlBufferWriteChar(buf, "+");
 	    break;
     }
 }
@@ -404,7 +402,7 @@ xmlCopyElementTable(xmlElementTablePtr table) {
  *       be added.
  */
 void
-xmlDumpElementTable(xmlElementTablePtr table) {
+xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table) {
     int i;
     xmlElementPtr cur;
 
@@ -414,28 +412,28 @@ xmlDumpElementTable(xmlElementTablePtr table) {
         cur = &table->table[i];
         switch (cur->type) {
 	    case XML_ELEMENT_TYPE_EMPTY:
-	        xmlBufferWriteChar("<!ELEMENT ");
-		xmlBufferWriteCHAR(cur->name);
-		xmlBufferWriteChar(" EMPTY>\n");
+	        xmlBufferWriteChar(buf, "<!ELEMENT ");
+		xmlBufferWriteCHAR(buf, cur->name);
+		xmlBufferWriteChar(buf, " EMPTY>\n");
 	        break;
 	    case XML_ELEMENT_TYPE_ANY:
-	        xmlBufferWriteChar("<!ELEMENT ");
-		xmlBufferWriteCHAR(cur->name);
-		xmlBufferWriteChar(" ANY>\n");
+	        xmlBufferWriteChar(buf, "<!ELEMENT ");
+		xmlBufferWriteCHAR(buf, cur->name);
+		xmlBufferWriteChar(buf, " ANY>\n");
 	        break;
 	    case XML_ELEMENT_TYPE_MIXED:
-	        xmlBufferWriteChar("<!ELEMENT ");
-		xmlBufferWriteCHAR(cur->name);
-		xmlBufferWriteChar(" ");
-		xmlDumpElementContent(cur->content, 1);
-		xmlBufferWriteChar(">\n");
+	        xmlBufferWriteChar(buf, "<!ELEMENT ");
+		xmlBufferWriteCHAR(buf, cur->name);
+		xmlBufferWriteChar(buf, " ");
+		xmlDumpElementContent(buf, cur->content, 1);
+		xmlBufferWriteChar(buf, ">\n");
 	        break;
 	    case XML_ELEMENT_TYPE_ELEMENT:
-	        xmlBufferWriteChar("<!ELEMENT ");
-		xmlBufferWriteCHAR(cur->name);
-		xmlBufferWriteChar(" ");
-		xmlDumpElementContent(cur->content, 1);
-		xmlBufferWriteChar(">\n");
+	        xmlBufferWriteChar(buf, "<!ELEMENT ");
+		xmlBufferWriteCHAR(buf, cur->name);
+		xmlBufferWriteChar(buf, " ");
+		xmlDumpElementContent(buf, cur->content, 1);
+		xmlBufferWriteChar(buf, ">\n");
 	        break;
 	    default:
 	        fprintf(stderr,
@@ -765,7 +763,7 @@ xmlCopyAttributeTable(xmlAttributeTablePtr table) {
  *       be added.
  */
 void
-xmlDumpAttributeTable(xmlAttributeTablePtr table) {
+xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
     int i;
     xmlAttributePtr cur;
 
@@ -773,40 +771,40 @@ xmlDumpAttributeTable(xmlAttributeTablePtr table) {
 
     for (i = 0;i < table->nb_attributes;i++) {
         cur = &table->table[i];
-	xmlBufferWriteChar("<!ATTLIST ");
-	xmlBufferWriteCHAR(cur->elem);
-	xmlBufferWriteChar(" ");
-	xmlBufferWriteCHAR(cur->name);
+	xmlBufferWriteChar(buf, "<!ATTLIST ");
+	xmlBufferWriteCHAR(buf, cur->elem);
+	xmlBufferWriteChar(buf, " ");
+	xmlBufferWriteCHAR(buf, cur->name);
         switch (cur->type) {
             case XML_ATTRIBUTE_CDATA:
-		xmlBufferWriteChar(" CDATA");
+		xmlBufferWriteChar(buf, " CDATA");
                 break;
             case XML_ATTRIBUTE_ID:
-		xmlBufferWriteChar(" ID");
+		xmlBufferWriteChar(buf, " ID");
                 break;
             case XML_ATTRIBUTE_IDREF:
-		xmlBufferWriteChar(" IDREF");
+		xmlBufferWriteChar(buf, " IDREF");
                 break;
             case XML_ATTRIBUTE_IDREFS:
-		xmlBufferWriteChar(" IDREFS");
+		xmlBufferWriteChar(buf, " IDREFS");
                 break;
             case XML_ATTRIBUTE_ENTITY:
-		xmlBufferWriteChar(" ENTITY");
+		xmlBufferWriteChar(buf, " ENTITY");
                 break;
             case XML_ATTRIBUTE_ENTITIES:
-		xmlBufferWriteChar(" ENTITIES");
+		xmlBufferWriteChar(buf, " ENTITIES");
                 break;
             case XML_ATTRIBUTE_NMTOKEN:
-		xmlBufferWriteChar(" NMTOKEN");
+		xmlBufferWriteChar(buf, " NMTOKEN");
                 break;
             case XML_ATTRIBUTE_NMTOKENS:
-		xmlBufferWriteChar(" NMTOKENS");
+		xmlBufferWriteChar(buf, " NMTOKENS");
                 break;
             case XML_ATTRIBUTE_ENUMERATION:
-                xmlBufferWriteChar(" (pbm)");
+                xmlBufferWriteChar(buf, " (pbm)");
                 break;
             case XML_ATTRIBUTE_NOTATION:
-                xmlBufferWriteChar(" NOTATION (pbm)");
+                xmlBufferWriteChar(buf, " NOTATION (pbm)");
                 break;
 	    default:
 	        fprintf(stderr,
@@ -817,27 +815,27 @@ xmlDumpAttributeTable(xmlAttributeTablePtr table) {
             case XML_ATTRIBUTE_NONE:
                 break;
             case XML_ATTRIBUTE_REQUIRED:
-		xmlBufferWriteChar(" #REQUIRED");
+		xmlBufferWriteChar(buf, " #REQUIRED");
                 break;
             case XML_ATTRIBUTE_IMPLIED:
-		xmlBufferWriteChar(" #IMPLIED");
+		xmlBufferWriteChar(buf, " #IMPLIED");
 		if (cur->defaultValue != NULL) {
-		    xmlBufferWriteChar(" \"");
-		    xmlBufferWriteCHAR(cur->defaultValue);
-		    xmlBufferWriteChar("\"");
+		    xmlBufferWriteChar(buf, " \"");
+		    xmlBufferWriteCHAR(buf, cur->defaultValue);
+		    xmlBufferWriteChar(buf, "\"");
 		}
                 break;
             case XML_ATTRIBUTE_FIXED:
-		xmlBufferWriteChar(" #FIXED \"");
-		xmlBufferWriteCHAR(cur->defaultValue);
-		xmlBufferWriteChar("\"");
+		xmlBufferWriteChar(buf, " #FIXED \"");
+		xmlBufferWriteCHAR(buf, cur->defaultValue);
+		xmlBufferWriteChar(buf, "\"");
                 break;
 	    default:
 	        fprintf(stderr,
 		    "xmlDumpAttributeTable: internal: unknown default %d\n",
 		        cur->def);
         }
-        xmlBufferWriteChar(">\n");
+        xmlBufferWriteChar(buf, ">\n");
     }
 }
 
@@ -1063,7 +1061,7 @@ xmlCopyNotationTable(xmlNotationTablePtr table) {
  *       be added.
  */
 void
-xmlDumpNotationTable(xmlNotationTablePtr table) {
+xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
     int i;
     xmlNotationPtr cur;
 
@@ -1071,20 +1069,20 @@ xmlDumpNotationTable(xmlNotationTablePtr table) {
 
     for (i = 0;i < table->nb_notations;i++) {
         cur = &table->table[i];
-	xmlBufferWriteChar("<!NOTATION ");
-	xmlBufferWriteCHAR(cur->name);
+	xmlBufferWriteChar(buf, "<!NOTATION ");
+	xmlBufferWriteCHAR(buf, cur->name);
 	if (cur->PublicID != NULL) {
-	    xmlBufferWriteChar(" PUBLIC \"");
-	    xmlBufferWriteCHAR(cur->PublicID);
-	    xmlBufferWriteChar("\"");
+	    xmlBufferWriteChar(buf, " PUBLIC \"");
+	    xmlBufferWriteCHAR(buf, cur->PublicID);
+	    xmlBufferWriteChar(buf, "\"");
 	    if (cur->SystemID != NULL) {
-		xmlBufferWriteChar(" ");
-		xmlBufferWriteCHAR(cur->SystemID);
+		xmlBufferWriteChar(buf, " ");
+		xmlBufferWriteCHAR(buf, cur->SystemID);
 	    }
 	} else {
-	    xmlBufferWriteChar(" SYSTEM ");
-	    xmlBufferWriteCHAR(cur->SystemID);
+	    xmlBufferWriteChar(buf, " SYSTEM ");
+	    xmlBufferWriteCHAR(buf, cur->SystemID);
 	}
-        xmlBufferWriteChar(" >\n");
+        xmlBufferWriteChar(buf, " >\n");
     }
 }

@@ -65,7 +65,7 @@ WIDTH="100%"></DIV
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN3359"
+NAME="AEN3824"
 ></A
 ><H2
 >Name</H2
@@ -73,7 +73,7 @@ NAME="AEN3359"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN3362"
+NAME="AEN3827"
 ></A
 ><H2
 >Synopsis</H2
@@ -122,15 +122,15 @@ HREF="gnome-xml-valid.html#XMLADDNOTATIONDECL"
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *name,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *PublicID,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *SystemID);
@@ -155,6 +155,10 @@ void        <A
 HREF="gnome-xml-valid.html#XMLDUMPNOTATIONTABLE"
 >xmlDumpNotationTable</A
 >            (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
 HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
 >xmlNotationTablePtr</A
 > table);
@@ -196,7 +200,7 @@ HREF="gnome-xml-valid.html#XMLADDELEMENTDECL"
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *name,
@@ -226,6 +230,10 @@ void        <A
 HREF="gnome-xml-valid.html#XMLDUMPELEMENTTABLE"
 >xmlDumpElementTable</A
 >             (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
 HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
 >xmlElementTablePtr</A
 > table);
@@ -266,17 +274,17 @@ HREF="gnome-xml-valid.html#XMLADDATTRIBUTEDECL"
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *elem,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *name,
                                              int type,
                                              int def,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *defaultValue,
@@ -305,6 +313,10 @@ void        <A
 HREF="gnome-xml-valid.html#XMLDUMPATTRIBUTETABLE"
 >xmlDumpAttributeTable</A
 >           (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
 HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
 >xmlAttributeTablePtr</A
 > table);</PRE
@@ -315,7 +327,7 @@ HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3426"
+NAME="AEN3894"
 ></A
 ><H2
 >Description</H2
@@ -325,14 +337,14 @@ NAME="AEN3426"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3429"
+NAME="AEN3897"
 ></A
 ><H2
 >Details</H2
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3431"
+NAME="AEN3899"
 ></A
 ><H3
 ><A
@@ -358,7 +370,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3436"
+NAME="AEN3904"
 ></A
 ><H3
 ><A
@@ -384,7 +396,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3441"
+NAME="AEN3909"
 ></A
 ><H3
 ><A
@@ -410,7 +422,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3446"
+NAME="AEN3914"
 ></A
 ><H3
 ><A
@@ -436,7 +448,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3451"
+NAME="AEN3919"
 ></A
 ><H3
 ><A
@@ -462,7 +474,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3456"
+NAME="AEN3924"
 ></A
 ><H3
 ><A
@@ -488,7 +500,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3461"
+NAME="AEN3929"
 ></A
 ><H3
 ><A
@@ -511,15 +523,15 @@ HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *name,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *PublicID,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *SystemID);</PRE
@@ -632,7 +644,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3497"
+NAME="AEN3965"
 ></A
 ><H3
 ><A
@@ -713,7 +725,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3518"
+NAME="AEN3986"
 ></A
 ><H3
 ><A
@@ -776,7 +788,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3534"
+NAME="AEN4002"
 ></A
 ><H3
 ><A
@@ -793,6 +805,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlDumpNotationTable            (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
 HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
 >xmlNotationTablePtr</A
 > table);</PRE
@@ -825,6 +841,23 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
 >table</I
 ></TT
 >&nbsp;:</TD
@@ -842,7 +875,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3551"
+NAME="AEN4024"
 ></A
 ><H3
 ><A
@@ -941,7 +974,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3576"
+NAME="AEN4049"
 ></A
 ><H3
 ><A
@@ -1022,7 +1055,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3597"
+NAME="AEN4070"
 ></A
 ><H3
 ><A
@@ -1085,7 +1118,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3613"
+NAME="AEN4086"
 ></A
 ><H3
 ><A
@@ -1108,7 +1141,7 @@ HREF="gnome-xml-tree.html#XMLELEMENTPTR"
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *name,
@@ -1226,7 +1259,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3648"
+NAME="AEN4121"
 ></A
 ><H3
 ><A
@@ -1307,7 +1340,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3669"
+NAME="AEN4142"
 ></A
 ><H3
 ><A
@@ -1370,7 +1403,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3685"
+NAME="AEN4158"
 ></A
 ><H3
 ><A
@@ -1387,6 +1420,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlDumpElementTable             (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
 HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
 >xmlElementTablePtr</A
 > table);</PRE
@@ -1419,6 +1456,23 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
 >table</I
 ></TT
 >&nbsp;:</TD
@@ -1436,7 +1490,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3702"
+NAME="AEN4180"
 ></A
 ><H3
 ><A
@@ -1518,7 +1572,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3723"
+NAME="AEN4201"
 ></A
 ><H3
 ><A
@@ -1581,7 +1635,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3739"
+NAME="AEN4217"
 ></A
 ><H3
 ><A
@@ -1663,7 +1717,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3760"
+NAME="AEN4238"
 ></A
 ><H3
 ><A
@@ -1686,17 +1740,17 @@ HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *elem,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *name,
                                              int type,
                                              int def,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *defaultValue,
@@ -1864,7 +1918,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3809"
+NAME="AEN4287"
 ></A
 ><H3
 ><A
@@ -1945,7 +1999,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3830"
+NAME="AEN4308"
 ></A
 ><H3
 ><A
@@ -2008,7 +2062,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3846"
+NAME="AEN4324"
 ></A
 ><H3
 ><A
@@ -2025,6 +2079,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlDumpAttributeTable           (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
 HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
 >xmlAttributeTablePtr</A
 > table);</PRE
@@ -2049,6 +2107,23 @@ BGCOLOR="#FFE0E0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
 ><TR
 ><TD
 WIDTH="20%"

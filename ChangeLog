@@ -1,3 +1,12 @@
+Wed Apr 21 22:07:35 CEST 1999
+
+	* parser.[ch] tree.[ch] entities.[ch] valid.[ch] : removed the main
+	  reentrancy problem at printing. One is left in entities.c, to
+	  remove ASAP
+	* testSAX.c : added a test example showing the use of the SAX 
+	  interface if one doesn't want to build the DOM tree.
+	* html/gnome-xml-*.html html/index.sgml: regenerated the documentation
+
 Mon Apr  5 14:14:40 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.[ch] tree.[ch] SAX.c, parserInternals.h valid.[ch]:

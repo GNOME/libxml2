@@ -6,18 +6,9 @@
   asbtraction of an input stream. A large part of the context is still
   located on the stack, moving to a state machine and putting everyting
   in the parsing context should provide an adequate solution.
-- DOM support, instead of using a proprietary in memory
-  format for the document representation, the parser should
-  call a DOM API to actually build the resulting document.
-  Then the parser becomes independent of the in-memory
-  representation of the document. Even better using RPC's
-  the parser can actually build the document in another
-  program.
-- Support for Comments (bad, should be in ASAP, they are parsed
-  but not stored), should be configurable.
-- Improve the support of entities on save (+SAX).
 
 Done:
+- Improve the support for SAX
 - C++ support : John Ehresman <jehresma@dsg.harvard.edu>
 - Updated code to follow more recent specs, added compatibility flag
 - Better error handling, use a dedicated, overridable error

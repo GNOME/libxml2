@@ -65,7 +65,7 @@ WIDTH="100%"></DIV
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN1205"
+NAME="AEN1503"
 ></A
 ><H2
 >Name</H2
@@ -73,7 +73,7 @@ NAME="AEN1205"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN1208"
+NAME="AEN1506"
 ></A
 ><H2
 >Synopsis</H2
@@ -168,6 +168,70 @@ typedef     <A
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >
+typedef     <A
+HREF="gnome-xml-tree.html#XMLBUFFER"
+>xmlBuffer</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+>
+<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> <A
+HREF="gnome-xml-tree.html#XMLBUFFERCREATE"
+>xmlBufferCreate</A
+>                (void);
+void        <A
+HREF="gnome-xml-tree.html#XMLBUFFERFREE"
+>xmlBufferFree</A
+>                   (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf);
+int         <A
+HREF="gnome-xml-tree.html#XMLBUFFERDUMP"
+>xmlBufferDump</A
+>                   (<GTKDOCLINK
+HREF="FILE"
+>FILE</GTKDOCLINK
+> *file,
+                                             <A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf);
+void        <A
+HREF="gnome-xml-tree.html#XMLBUFFERADD"
+>xmlBufferAdd</A
+>                    (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str,
+                                             int len);
+void        <A
+HREF="gnome-xml-tree.html#XMLBUFFERCAT"
+>xmlBufferCat</A
+>                    (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str);
+void        <A
+HREF="gnome-xml-tree.html#XMLBUFFERCCAT"
+>xmlBufferCCat</A
+>                   (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             const char *str);
 <A
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
@@ -488,7 +552,7 @@ HREF="gnome-xml-tree.html#XMLNEWDOCCOMMENT"
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *content);
@@ -498,7 +562,7 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 >  <A
 HREF="gnome-xml-tree.html#XMLNEWCOMMENT"
 >xmlNewComment</A
->                   (<A
+>                   (const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *content);
@@ -817,14 +881,22 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 void        <A
 HREF="gnome-xml-tree.html#XMLBUFFERWRITECHAR"
 >xmlBufferWriteCHAR</A
->              (const <A
+>              (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *string);
 void        <A
 HREF="gnome-xml-tree.html#XMLBUFFERWRITECHAR"
 >xmlBufferWriteChar</A
->              (const char *string);
+>              (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             const char *string);
 void        <A
 HREF="gnome-xml-tree.html#XMLDOCDUMPMEMORY"
 >xmlDocDumpMemory</A
@@ -886,7 +958,7 @@ HREF="gnome-xml-tree.html#XMLSETCOMPRESSMODE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN1429"
+NAME="AEN1746"
 ></A
 ><H2
 >Description</H2
@@ -896,14 +968,14 @@ NAME="AEN1429"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN1432"
+NAME="AEN1749"
 ></A
 ><H2
 >Details</H2
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1434"
+NAME="AEN1751"
 ></A
 ><H3
 ><A
@@ -942,7 +1014,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1439"
+NAME="AEN1756"
 ></A
 ><H3
 ><A
@@ -955,7 +1027,7 @@ NAME="CHAR"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1443"
+NAME="AEN1760"
 ></A
 ><H3
 ><A
@@ -981,7 +1053,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1448"
+NAME="AEN1765"
 ></A
 ><H3
 ><A
@@ -1018,7 +1090,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1453"
+NAME="AEN1770"
 ></A
 ><H3
 ><A
@@ -1049,7 +1121,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1458"
+NAME="AEN1775"
 ></A
 ><H3
 ><A
@@ -1075,7 +1147,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1463"
+NAME="AEN1780"
 ></A
 ><H3
 ><A
@@ -1101,7 +1173,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1468"
+NAME="AEN1785"
 ></A
 ><H3
 ><A
@@ -1132,7 +1204,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1473"
+NAME="AEN1790"
 ></A
 ><H3
 ><A
@@ -1163,7 +1235,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1478"
+NAME="AEN1795"
 ></A
 ><H3
 ><A
@@ -1189,7 +1261,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1483"
+NAME="AEN1800"
 ></A
 ><H3
 ><A
@@ -1220,7 +1292,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1488"
+NAME="AEN1805"
 ></A
 ><H3
 ><A
@@ -1246,7 +1318,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1493"
+NAME="AEN1810"
 ></A
 ><H3
 ><A
@@ -1275,7 +1347,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1498"
+NAME="AEN1815"
 ></A
 ><H3
 ><A
@@ -1301,7 +1373,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1503"
+NAME="AEN1820"
 ></A
 ><H3
 ><A
@@ -1327,7 +1399,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1508"
+NAME="AEN1825"
 ></A
 ><H3
 ><A
@@ -1353,7 +1425,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1513"
+NAME="AEN1830"
 ></A
 ><H3
 ><A
@@ -1379,7 +1451,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1518"
+NAME="AEN1835"
 ></A
 ><H3
 ><A
@@ -1405,7 +1477,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1523"
+NAME="AEN1840"
 ></A
 ><H3
 ><A
@@ -1431,7 +1503,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1528"
+NAME="AEN1845"
 ></A
 ><H3
 ><A
@@ -1457,7 +1529,549 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1533"
+NAME="AEN1850"
+></A
+><H3
+><A
+NAME="XMLBUFFER"
+></A
+>xmlBuffer</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef _xmlBuffer xmlBuffer;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1855"
+></A
+><H3
+><A
+NAME="XMLBUFFERPTR"
+></A
+>xmlBufferPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlBuffer *xmlBufferPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1860"
+></A
+><H3
+><A
+NAME="XMLBUFFERCREATE"
+></A
+>xmlBufferCreate()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> xmlBufferCreate                (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>routine to create an XML buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new structure.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1876"
+></A
+><H3
+><A
+NAME="XMLBUFFERFREE"
+></A
+>xmlBufferFree()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlBufferFree                   (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Frees an XML buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the buffer to free</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1892"
+></A
+><H3
+><A
+NAME="XMLBUFFERDUMP"
+></A
+>xmlBufferDump()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlBufferDump                   (<GTKDOCLINK
+HREF="FILE"
+>FILE</GTKDOCLINK
+> *file,
+                                             <A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dumps an XML buffer to  a FILE *.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>file</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the file output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the buffer to dump</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of CHAR written</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1917"
+></A
+><H3
+><A
+NAME="XMLBUFFERADD"
+></A
+>xmlBufferAdd()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlBufferAdd                    (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Add a string range to an XML buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the buffer to dump</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the CHAR string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the number of CHAR to add</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1942"
+></A
+><H3
+><A
+NAME="XMLBUFFERCAT"
+></A
+>xmlBufferCat()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlBufferCat                    (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Append a zero terminated string to an XML buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the buffer to dump</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the CHAR string</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1963"
+></A
+><H3
+><A
+NAME="XMLBUFFERCCAT"
+></A
+>xmlBufferCCat()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlBufferCCat                   (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             const char *str);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Append a zero terminated C string to an XML buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the buffer to dump</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the C char string</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1983"
 ></A
 ><H3
 ><A
@@ -1601,7 +2215,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1569"
+NAME="AEN2019"
 ></A
 ><H3
 ><A
@@ -1745,7 +2359,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1605"
+NAME="AEN2055"
 ></A
 ><H3
 ><A
@@ -1808,7 +2422,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1621"
+NAME="AEN2071"
 ></A
 ><H3
 ><A
@@ -1931,7 +2545,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1652"
+NAME="AEN2102"
 ></A
 ><H3
 ><A
@@ -2054,7 +2668,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1683"
+NAME="AEN2133"
 ></A
 ><H3
 ><A
@@ -2117,7 +2731,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1699"
+NAME="AEN2149"
 ></A
 ><H3
 ><A
@@ -2198,7 +2812,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1720"
+NAME="AEN2170"
 ></A
 ><H3
 ><A
@@ -2262,7 +2876,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1736"
+NAME="AEN2186"
 ></A
 ><H3
 ><A
@@ -2385,7 +2999,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1767"
+NAME="AEN2217"
 ></A
 ><H3
 ><A
@@ -2508,7 +3122,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1798"
+NAME="AEN2248"
 ></A
 ><H3
 ><A
@@ -2571,7 +3185,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1814"
+NAME="AEN2264"
 ></A
 ><H3
 ><A
@@ -2634,7 +3248,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1830"
+NAME="AEN2280"
 ></A
 ><H3
 ><A
@@ -2715,7 +3329,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1851"
+NAME="AEN2301"
 ></A
 ><H3
 ><A
@@ -2796,7 +3410,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1872"
+NAME="AEN2322"
 ></A
 ><H3
 ><A
@@ -2877,7 +3491,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1893"
+NAME="AEN2343"
 ></A
 ><H3
 ><A
@@ -2977,7 +3591,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1918"
+NAME="AEN2368"
 ></A
 ><H3
 ><A
@@ -3132,7 +3746,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1956"
+NAME="AEN2406"
 ></A
 ><H3
 ><A
@@ -3246,7 +3860,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1984"
+NAME="AEN2434"
 ></A
 ><H3
 ><A
@@ -3407,7 +4021,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2023"
+NAME="AEN2473"
 ></A
 ><H3
 ><A
@@ -3509,7 +4123,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2049"
+NAME="AEN2499"
 ></A
 ><H3
 ><A
@@ -3590,7 +4204,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2070"
+NAME="AEN2520"
 ></A
 ><H3
 ><A
@@ -3711,7 +4325,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2100"
+NAME="AEN2550"
 ></A
 ><H3
 ><A
@@ -3810,7 +4424,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2125"
+NAME="AEN2575"
 ></A
 ><H3
 ><A
@@ -3833,7 +4447,7 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
-                                             <A
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *content);</PRE
@@ -3912,7 +4526,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2151"
+NAME="AEN2601"
 ></A
 ><H3
 ><A
@@ -3931,7 +4545,7 @@ CLASS="PROGRAMLISTING"
 ><A
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
->  xmlNewComment                   (<A
+>  xmlNewComment                   (const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *content);</PRE
@@ -3993,7 +4607,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2172"
+NAME="AEN2622"
 ></A
 ><H3
 ><A
@@ -4095,7 +4709,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2198"
+NAME="AEN2648"
 ></A
 ><H3
 ><A
@@ -4194,7 +4808,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2223"
+NAME="AEN2673"
 ></A
 ><H3
 ><A
@@ -4275,7 +4889,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2244"
+NAME="AEN2694"
 ></A
 ><H3
 ><A
@@ -4356,7 +4970,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2265"
+NAME="AEN2715"
 ></A
 ><H3
 ><A
@@ -4434,7 +5048,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2285"
+NAME="AEN2735"
 ></A
 ><H3
 ><A
@@ -4541,7 +5155,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2312"
+NAME="AEN2762"
 ></A
 ><H3
 ><A
@@ -4604,7 +5218,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2328"
+NAME="AEN2778"
 ></A
 ><H3
 ><A
@@ -4706,7 +5320,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2354"
+NAME="AEN2804"
 ></A
 ><H3
 ><A
@@ -4813,7 +5427,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2380"
+NAME="AEN2830"
 ></A
 ><H3
 ><A
@@ -4877,7 +5491,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2396"
+NAME="AEN2846"
 ></A
 ><H3
 ><A
@@ -4940,7 +5554,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2412"
+NAME="AEN2862"
 ></A
 ><H3
 ><A
@@ -5071,7 +5685,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2444"
+NAME="AEN2894"
 ></A
 ><H3
 ><A
@@ -5195,7 +5809,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2475"
+NAME="AEN2925"
 ></A
 ><H3
 ><A
@@ -5279,7 +5893,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2496"
+NAME="AEN2946"
 ></A
 ><H3
 ><A
@@ -5360,7 +5974,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2517"
+NAME="AEN2967"
 ></A
 ><H3
 ><A
@@ -5441,7 +6055,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2538"
+NAME="AEN2988"
 ></A
 ><H3
 ><A
@@ -5564,7 +6178,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2569"
+NAME="AEN3019"
 ></A
 ><H3
 ><A
@@ -5667,7 +6281,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2595"
+NAME="AEN3045"
 ></A
 ><H3
 ><A
@@ -5770,7 +6384,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2621"
+NAME="AEN3071"
 ></A
 ><H3
 ><A
@@ -5891,7 +6505,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2651"
+NAME="AEN3101"
 ></A
 ><H3
 ><A
@@ -6012,7 +6626,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2681"
+NAME="AEN3131"
 ></A
 ><H3
 ><A
@@ -6096,7 +6710,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2702"
+NAME="AEN3152"
 ></A
 ><H3
 ><A
@@ -6203,7 +6817,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2728"
+NAME="AEN3178"
 ></A
 ><H3
 ><A
@@ -6287,7 +6901,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2749"
+NAME="AEN3199"
 ></A
 ><H3
 ><A
@@ -6394,7 +7008,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2775"
+NAME="AEN3225"
 ></A
 ><H3
 ><A
@@ -6468,7 +7082,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new CHAR * or NULL if no content is available.</TD
+>a new CHAR * or NULL if no content is available.
+It's up to the caller to free the memory.</TD
 ></TR
 ></TABLE
 ><P
@@ -6478,7 +7093,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2796"
+NAME="AEN3246"
 ></A
 ><H3
 ><A
@@ -6494,7 +7109,11 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlBufferWriteCHAR              (const <A
+>void        xmlBufferWriteCHAR              (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             const <A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *string);</PRE
@@ -6503,7 +7122,7 @@ HREF="gnome-xml-tree.html#CHAR"
 ></TABLE
 ><P
 >routine which manage and grows an output buffer. This one add
-CHARs at the end of the array.</P
+CHARs at the end of the buffer.</P
 ><P
 ></P
 ><DIV
@@ -6517,6 +7136,23 @@ BGCOLOR="#FFE0E0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XML buffer</TD
+></TR
 ><TR
 ><TD
 WIDTH="20%"
@@ -6542,7 +7178,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2812"
+NAME="AEN3267"
 ></A
 ><H3
 ><A
@@ -6558,7 +7194,11 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlBufferWriteChar              (const char *string);</PRE
+>void        xmlBufferWriteChar              (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             const char *string);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -6586,6 +7226,23 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XML buffer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
 >string</I
 ></TT
 >&nbsp;:</TD
@@ -6603,7 +7260,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2827"
+NAME="AEN3287"
 ></A
 ><H3
 ><A
@@ -6706,7 +7363,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2852"
+NAME="AEN3312"
 ></A
 ><H3
 ><A
@@ -6790,7 +7447,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2873"
+NAME="AEN3333"
 ></A
 ><H3
 ><A
@@ -6887,7 +7544,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2897"
+NAME="AEN3357"
 ></A
 ><H3
 ><A
@@ -6965,7 +7622,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2917"
+NAME="AEN3377"
 ></A
 ><H3
 ><A
@@ -7047,7 +7704,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2937"
+NAME="AEN3397"
 ></A
 ><H3
 ><A
@@ -7105,7 +7762,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2952"
+NAME="AEN3412"
 ></A
 ><H3
 ><A

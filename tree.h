@@ -241,11 +241,34 @@ typedef _xmlDoc xmlDoc;
 typedef xmlDoc *xmlDocPtr;
 
 /*
+ * A buffer structure
+ */
+
+typedef struct xmlBuffer {
+    CHAR *content;		/* The buffer content UTF8 */
+    unsigned int use;		/* The buffer size used */
+    unsigned int size;		/* The buffer size */
+} _xmlBuffer;
+typedef _xmlBuffer xmlBuffer;
+typedef xmlBuffer *xmlBufferPtr;
+
+/*
  * Variables.
  */
 extern xmlNsPtr baseDTD;
 extern int oldXMLWDcompatibility;/* maintain compatibility with old WD */
 extern int xmlIndentTreeOutput;  /* try to indent the tree dumps */
+
+/*
+ * Handling Buffers.
+ */
+
+xmlBufferPtr xmlBufferCreate(void);
+void xmlBufferFree(xmlBufferPtr buf);
+int xmlBufferDump(FILE *file, xmlBufferPtr buf);
+void xmlBufferAdd(xmlBufferPtr buf, const CHAR *str, int len);
+void xmlBufferCat(xmlBufferPtr buf, const CHAR *str);
+void xmlBufferCCat(xmlBufferPtr buf, const char *str);
 
 /*
  * Creating/freeing new structures
@@ -337,8 +360,8 @@ CHAR *xmlNodeGetContent(xmlNodePtr cur);
 /*
  * Internal, don't use
  */
-void xmlBufferWriteCHAR(const CHAR *string);
-void xmlBufferWriteChar(const char *string);
+void xmlBufferWriteCHAR(xmlBufferPtr buf, const CHAR *string);
+void xmlBufferWriteChar(xmlBufferPtr buf, const char *string);
 
 /*
  * Saving

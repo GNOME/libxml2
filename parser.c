@@ -4337,7 +4337,7 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
 
     if (ctxt->nodeTab != NULL) free(ctxt->nodeTab);
     if (ctxt->inputTab != NULL) free(ctxt->inputTab);
-    if (ctxt->version != NULL) free(ctxt->version);
+    if (ctxt->version != NULL) free((char *) ctxt->version);
     free(ctxt);
 }
 

@@ -58,7 +58,7 @@ xmlNotationPtr xmlAddNotationDecl(xmlDtdPtr dtd, const CHAR *name,
 	       const CHAR *PublicID, const CHAR *SystemID);
 xmlNotationTablePtr xmlCopyNotationTable(xmlNotationTablePtr table);
 void xmlFreeNotationTable(xmlNotationTablePtr table);
-void xmlDumpNotationTable(xmlNotationTablePtr table);
+void xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table);
 
 /* Element Content */
 xmlElementContentPtr xmlNewElementContent(CHAR *name, int type);
@@ -70,7 +70,7 @@ xmlElementPtr xmlAddElementDecl(xmlDtdPtr dtd, const CHAR *name, int type,
                                        xmlElementContentPtr content);
 xmlElementTablePtr xmlCopyElementTable(xmlElementTablePtr table);
 void xmlFreeElementTable(xmlElementTablePtr table);
-void xmlDumpElementTable(xmlElementTablePtr table);
+void xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table);
 
 /* Enumeration */
 xmlEnumerationPtr xmlCreateEnumeration(CHAR *name);
@@ -83,6 +83,6 @@ xmlAttributePtr xmlAddAttributeDecl(xmlDtdPtr dtd, const CHAR *elem,
 	       const CHAR *defaultValue, xmlEnumerationPtr tree);
 xmlAttributeTablePtr xmlCopyAttributeTable(xmlAttributeTablePtr table);
 void xmlFreeAttributeTable(xmlAttributeTablePtr table);
-void xmlDumpAttributeTable(xmlAttributeTablePtr table);
+void xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table);
 
 #endif /* __XML_VALID_H__ */

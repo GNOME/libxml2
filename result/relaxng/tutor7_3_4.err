@@ -1,6 +1,6 @@
-error detected at relaxng.c:4406
+error detected at relaxng.c:4753
 Extra data in list: 5.6
-error detected at relaxng.c:5384
+error detected at relaxng.c:5735
 internal error validating list
-error detected at relaxng.c:5164
+error detected at relaxng.c:5511
 Extra content for element path: text

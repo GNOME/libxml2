@@ -976,136 +976,6 @@ error:
 
 
 /**
- * xmlSchemaValidateNCName:
- * @value: the value to check
- *
- * Check that a value conforms to the lexical space of NCName
- *
- * Returns 0 if this validates, a positive error code number otherwise
- *         and -1 in case of internal or API error.
- */
-static int
-xmlSchemaValidateNCName(const xmlChar *value) {
-    const xmlChar *cur = value;
-
-    /*
-     * First quick algorithm for ASCII range
-     */
-    while (IS_BLANK(*cur)) cur++;
-    if (((*cur >= 'a') && (*cur <= 'z')) || ((*cur >= 'A') && (*cur <= 'Z')) ||
-	(*cur == '_'))
-	cur++;
-    else
-	goto try_complex;
-    while (((*cur >= 'a') && (*cur <= 'z')) ||
-	   ((*cur >= 'A') && (*cur <= 'Z')) ||
-	   ((*cur >= '0') && (*cur <= '9')) ||
-	   (*cur == '_') || (*cur == '-') || (*cur == '.'))
-	cur++;
-    while (IS_BLANK(*cur)) cur++;
-    if (*cur == 0)
-	return(0);
-
-try_complex:
-    /*
-     * Second check for chars outside the ASCII range
-     */
-    TODO
-    return(0);
-}
-
-/**
- * xmlSchemaValidateQName:
- * @value: the value to check
- *
- * Check that a value conforms to the lexical space of QName
- *
- * Returns 0 if this validates, a positive error code number otherwise
- *         and -1 in case of internal or API error.
- */
-static int
-xmlSchemaValidateQName(const xmlChar *value) {
-    const xmlChar *cur = value;
-
-    /*
-     * First quick algorithm for ASCII range
-     */
-    while (IS_BLANK(*cur)) cur++;
-    if (((*cur >= 'a') && (*cur <= 'z')) || ((*cur >= 'A') && (*cur <= 'Z')) ||
-	(*cur == '_'))
-	cur++;
-    else
-	goto try_complex;
-    while (((*cur >= 'a') && (*cur <= 'z')) ||
-	   ((*cur >= 'A') && (*cur <= 'Z')) ||
-	   ((*cur >= '0') && (*cur <= '9')) ||
-	   (*cur == '_') || (*cur == '-') || (*cur == '.'))
-	cur++;
-    if (*cur == ':') {
-	cur++;
-	if (((*cur >= 'a') && (*cur <= 'z')) ||
-	    ((*cur >= 'A') && (*cur <= 'Z')) ||
-	    (*cur == '_'))
-	    cur++;
-	else
-	    goto try_complex;
-	while (((*cur >= 'a') && (*cur <= 'z')) ||
-	       ((*cur >= 'A') && (*cur <= 'Z')) ||
-	       ((*cur >= '0') && (*cur <= '9')) ||
-	       (*cur == '_') || (*cur == '-') || (*cur == '.'))
-	    cur++;
-    }
-    while (IS_BLANK(*cur)) cur++;
-    if (*cur == 0)
-	return(0);
-
-try_complex:
-    /*
-     * Second check for chars outside the ASCII range
-     */
-    TODO
-    return(0);
-}
-
-/**
- * xmlSchemaValidateName:
- * @value: the value to check
- *
- * Check that a value conforms to the lexical space of Name
- *
- * Returns 0 if this validates, a positive error code number otherwise
- *         and -1 in case of internal or API error.
- */
-static int
-xmlSchemaValidateName(const xmlChar *value) {
-    const xmlChar *cur = value;
-
-    /*
-     * First quick algorithm for ASCII range
-     */
-    while (IS_BLANK(*cur)) cur++;
-    if (((*cur >= 'a') && (*cur <= 'z')) || ((*cur >= 'A') && (*cur <= 'Z')) ||
-	(*cur == '_') || (*cur == ':'))
-	cur++;
-    else
-	goto try_complex;
-    while (((*cur >= 'a') && (*cur <= 'z')) ||
-	   ((*cur >= 'A') && (*cur <= 'Z')) ||
-	   ((*cur >= '0') && (*cur <= '9')) ||
-	   (*cur == '_') || (*cur == '-') || (*cur == '.') || (*cur == ':'))
-	cur++;
-    while (IS_BLANK(*cur)) cur++;
-    if (*cur == 0)
-	return(0);
-
-try_complex:
-    /*
-     * Second check for chars outside the ASCII range
-     */
-    TODO
-    return(0);
-}
-/**
  * xmlSchemaValidatePredefinedType:
  * @type: the predefined type
  * @value: the value to check
@@ -1405,19 +1275,19 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 	}
 	return(0);
     } else if (type == xmlSchemaTypeNameDef) {
-	ret = xmlSchemaValidateName(value);
+	ret = xmlValidateName(value, 1);
 	if ((ret == 0) && (val != NULL)) {
 	    TODO;
 	}
 	return(ret);
     } else if (type == xmlSchemaTypeQNameDef) {
-	ret = xmlSchemaValidateQName(value);
+	ret = xmlValidateQName(value, 1);
 	if ((ret == 0) && (val != NULL)) {
 	    TODO;
 	}
 	return(ret);
     } else if (type == xmlSchemaTypeNCNameDef) {
-	ret = xmlSchemaValidateNCName(value);
+	ret = xmlValidateNCName(value, 1);
 	if ((ret == 0) && (val != NULL)) {
 	    TODO;
 	}

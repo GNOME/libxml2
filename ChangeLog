@@ -1,3 +1,16 @@
+Fri Feb 14 17:49:26 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* check-relaxng-test-suite.py relaxng.c: more testing on the
+	  Relax-NG front, cleaning up the regression tests failures
+	  current state and I forgot support for "mixed":
+	  found 373 test schemas: 280 success 93 failures
+	  found 529 test instances: 401 success 68 failures
+	* tree.c include/libxml/tree.h xmlschemastypes.c: finished and
+	  moved the Name, NCName and QName validation routine in tree.c
+	* uri.c: fixed handling of URI ending up with #, i.e. having
+	  an empty fragment ID.
+	* result/relaxng/*: updated the results
+
 Thu Feb 13 16:49:24 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* check-xinclude-test-suite.py: improved the script accordingly

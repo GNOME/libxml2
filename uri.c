@@ -803,7 +803,7 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
     if (str == NULL)
 	return(NULL);
     if (len <= 0) len = strlen(str);
-    if (len <= 0) return(NULL);
+    if (len < 0) return(NULL);
 
     if (target == NULL) {
 	ret = (char *) xmlMalloc(len + 1);

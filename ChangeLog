@@ -1,3 +1,10 @@
+Tue Jun  8 09:58:31 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: some further enhancement to take care of
+	  xml:base for XPointer elements (bug 143886).  Also fixed
+	  a problem when xml:base was already specified on an
+	  XInclude'd element.
+
 Mon Jun  7 22:14:58 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* relaxng.c: fixed a problem with internal cleanup of <DIV> element

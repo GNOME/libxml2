@@ -1563,6 +1563,7 @@ loaded:
 		    xmlFree(fragment);
 		    return(-1);
 		}
+
 	    case XPATH_RANGE:
 	    case XPATH_LOCATIONSET:
 		break;
@@ -1575,7 +1576,6 @@ loaded:
 		switch (set->nodeTab[i]->type) {
 		    case XML_TEXT_NODE:
 		    case XML_CDATA_SECTION_NODE:
-		    case XML_ELEMENT_NODE:
 		    case XML_ENTITY_REF_NODE:
 		    case XML_ENTITY_NODE:
 		    case XML_PI_NODE:
@@ -1586,6 +1586,19 @@ loaded:
 		    case XML_DOCB_DOCUMENT_NODE:
 #endif
 			continue;
+		    case XML_ELEMENT_NODE: {
+			xmlChar *nodeBase;
+			xmlNodePtr el = set->nodeTab[i];
+
+			nodeBase = xmlNodeGetBase(el->doc, el);
+			if (nodeBase != NULL) {
+			    if (!xmlStrEqual(nodeBase, el->doc->URL))
+			        xmlNodeSetBase(el, nodeBase);
+			    xmlFree(nodeBase);
+			}
+			continue;
+		    }
+
 		    case XML_ATTRIBUTE_NODE:
 			xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 
 			               XML_XINCLUDE_XPTR_RESULT,
@@ -1638,6 +1651,7 @@ loaded:
     if ((doc != NULL) && (URL != NULL) && (xmlStrchr(URL, (xmlChar) '/'))) {
 	xmlNodePtr node;
 	xmlChar *relURI;
+	xmlChar *curBase;
 
 	/*
 	 * The base is only adjusted if necessary for the existing base
@@ -1651,8 +1665,13 @@ loaded:
 	    if (xmlStrchr(relURI, (xmlChar) '/')) {
 		node = ctxt->incTab[nr]->inc;
 		while (node != NULL) {
-	            if (node->type == XML_ELEMENT_NODE)
-			xmlNodeSetBase(node, relURI);
+	            if (node->type == XML_ELEMENT_NODE) {
+			curBase = xmlNodeGetBase(node->doc, node);
+			if ((curBase == NULL) || xmlStrEqual(curBase, node->doc->URL))
+			    xmlNodeSetBase(node, relURI);
+			if (curBase != NULL)
+			    xmlFree(curBase);
+		    }
 	            node = node->next;
 		}
 	    }

@@ -1182,6 +1182,9 @@ static void
 xmlRegStateAddTrans(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 	            xmlRegAtomPtr atom, xmlRegStatePtr target,
 		    int counter, int count) {
+
+    int nrtrans;
+
     if (state == NULL) {
 	ERROR("add state: state is NULL");
 	return;
@@ -1190,6 +1193,25 @@ xmlRegStateAddTrans(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 	ERROR("add state: target is NULL");
 	return;
     }
+    /*
+     * Other routines follow the philosophy 'When in doubt, add a transition'
+     * so we check here whether such a transition is already present and, if
+     * so, silently ignore this request.
+     */
+
+    for (nrtrans=0; nrtrans<state->nbTrans; nrtrans++) {
+        if ((state->trans[nrtrans].atom == atom) &&
+            (state->trans[nrtrans].to == target->no) &&
+            (state->trans[nrtrans].counter == counter) &&
+            (state->trans[nrtrans].count == count)) {
+#ifdef DEBUG_REGEXP_GRAPH
+            printf("Ignoring duplicate transition from %d to %d\n",
+                    state->no, target->no);
+#endif
+            return;
+        }
+    }
+
     if (state->maxTrans == 0) {
 	state->maxTrans = 4;
 	state->trans = (xmlRegTrans *) xmlMalloc(state->maxTrans *

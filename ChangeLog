@@ -1,3 +1,10 @@
+Mon May 10 15:49:22 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlregexp.c: enhanced xmlRegStateAddTrans to check if transition
+	  is already present and, if so, to ignore the request to add it.
+	  This has a very dramatic effect on memory requirements as well
+	  as efficiency.  It also fixes bug 141762.
+
 Sun May  9 20:40:59 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am python/tests/Makefile.am python/tests/tstLastError.py:

@@ -205,7 +205,8 @@ AC_TRY_COMPILE2([
 (void)getsockopt (1, 1, 1, NULL, (int *)NULL)],[
       AC_MSG_RESULT(int *)
       SOCKLEN_T=int],[
-      AC_MSG_WARN(could not determine)])])])
+      AC_MSG_WARN(could not determine)
+      SOCKLEN_T="unsigned int"])])])
 AC_DEFINE_UNQUOTED(SOCKLEN_T, $SOCKLEN_T, [Determine what socket length (socklen_t) data type is])
 
 dnl ***********************Checking for availability of IPv6*******************

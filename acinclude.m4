@@ -11,7 +11,7 @@ AC_DEFUN([AC_TRY_COMPILE2],
 [#]line __oline__ "configure"
 #include "confdefs.h"
 [$1]
-int main() {
+int main(void) {
 [$2]
 ; return 0; }
 EOF

@@ -1,3 +1,9 @@
+Mon Feb  9 22:37:14 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* acinclude.m4, configure.in: fixed problem concerning
+	  determining SOCKLEN_T as pointed out by Daniel Richard G.
+	  on the mailing list
+
 Mon Feb  9 15:31:24 CET 2004 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* nanohttp.c: fixed buffer overflow reported by Yuuichi Teranishi

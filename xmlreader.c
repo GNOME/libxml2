@@ -598,7 +598,11 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 		return(-1);
 	    reader->state = XML_TEXTREADER_ELEMENT;
 	} else {
-	    reader->node = reader->ctxt->nodeTab[0];
+	    if (reader->ctxt->myDoc != NULL) {
+		reader->node = reader->ctxt->myDoc->children;
+	    }
+	    if (reader->node == NULL)
+		reader->node = reader->ctxt->nodeTab[0];
 	    reader->state = XML_TEXTREADER_ELEMENT;
 	}
 	reader->depth = 0;

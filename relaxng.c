@@ -42,7 +42,7 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
 #define DEBUG_CONTENT 1
 #define DEBUG_TYPE 1
 #define DEBUG_VALID 1
-#define DEBUG_INTERLEAVE 1
+#define DEBUG_INTERLEAVE 1 */
 
 #define UNBOUNDED (1 << 30)
 #define TODO 								\
@@ -1299,7 +1299,8 @@ xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
     parent = NULL;
     cur = def;
     while (cur != NULL) {
-	if (cur->type == XML_RELAXNG_ELEMENT) {
+	if ((cur->type == XML_RELAXNG_ELEMENT) ||
+	    (cur->type == XML_RELAXNG_TEXT)) {
 	    if (ret == NULL) {
 		max = 10;
 		ret = (xmlRelaxNGDefinePtr *)
@@ -1322,13 +1323,16 @@ xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
 		    return(NULL);
 		}
 	    }
-	    ret[len++] = def;
+	    ret[len++] = cur;
 	    ret[len] = NULL;
 	} else if ((cur->type == XML_RELAXNG_CHOICE) ||
 		   (cur->type == XML_RELAXNG_INTERLEAVE) ||
 		   (cur->type == XML_RELAXNG_GROUP) ||
 		   (cur->type == XML_RELAXNG_ONEORMORE) ||
-		   (cur->type == XML_RELAXNG_ZEROORMORE)) {
+		   (cur->type == XML_RELAXNG_ZEROORMORE) ||
+		   (cur->type == XML_RELAXNG_OPTIONAL) ||
+		   (cur->type == XML_RELAXNG_REF) ||
+		   (cur->type == XML_RELAXNG_DEF)) {
 	    /*
 	     * Don't go within elements or attributes or string values.
 	     * Just gather the element top list
@@ -3627,7 +3631,7 @@ static int
 xmlRelaxNGValidatePartGroup(xmlRelaxNGValidCtxtPtr ctxt, 
 			    xmlRelaxNGInterleaveGroupPtr *groups,
 			    int nbgroups, xmlNodePtr *nodes, int len) {
-    int level = -1, ret = -1, i, j, k;
+    int level, ret = -1, i, j, k;
     xmlNodePtr *array = NULL, *list, oldseq;
     xmlRelaxNGInterleaveGroupPtr group;
 
@@ -3662,6 +3666,7 @@ xmlRelaxNGValidatePartGroup(xmlRelaxNGValidCtxtPtr ctxt,
 	ctxt->state->seq = oldseq;
 	if (k > 1) {
 	    memset(array, 0, k * sizeof(xmlNodePtr));
+	    level = -1;
 	    ret = xmlRelaxNGValidateWalkPermutations(ctxt, group->rule,
 					  list, array, k, &level, -1);
 	} else {

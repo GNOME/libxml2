@@ -1,0 +1,5 @@
+xmlRelaxNGComputeInterleaves(interleave0)
+  6 child
+  6 groups
+xmlRelaxNGValidateDefinition(): validated title : 0
+xmlRelaxNGValidateDefinition(): validated head : 0

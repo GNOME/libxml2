@@ -176,7 +176,7 @@ xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
  *
  * Constant string describing the internal version of the library
  */
-const char *xmlParserVersion = LIBXML_VERSION_STRING;
+const char *xmlParserVersion = LIBXML_VERSION_STRING LIBXML_VERSION_EXTRA;
 
 /**
  * xmlBufferAllocScheme:

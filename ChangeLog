@@ -1,3 +1,10 @@
+Wed Aug 18 14:04:31 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* configure.in globals.c include/libxml/xmlversion.h.in
+	  include/libxml/xmlwin32version.h.in: added some code to
+	  include the CVS ChangeLog version in the xmlParserVersion
+	  string (printed by xmllint with --version)
+
 Wed Aug 18 11:14:06 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c include/libxml/xmlschemas.h python/generator.py

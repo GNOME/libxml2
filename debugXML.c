@@ -1538,7 +1538,7 @@ xmlShellBase(xmlShellCtxtPtr ctxt,
     return (0);
 }
 
-#ifdef XML_TREE_ENABLED
+#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlShellSetBase:
  * @ctxt:  the shell context

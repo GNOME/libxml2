@@ -54,22 +54,22 @@ libxml2.registerErrorHandler(callback, None)
 #
 TABLES={
   "symbols" : """CREATE TABLE symbols (
-           name varchar(255) NOT NULL,
-	   module varchar(255) NOT NULL,
+           name varchar(255) BINARY NOT NULL,
+	   module varchar(255) BINARY NOT NULL,
            type varchar(25) NOT NULL,
 	   descr varchar(255),
 	   UNIQUE KEY name (name),
 	   KEY module (module))""",
   "words" : """CREATE TABLE words (
-           name varchar(50) NOT NULL,
-	   symbol varchar(255) NOT NULL,
+           name varchar(50) BINARY NOT NULL,
+	   symbol varchar(255) BINARY NOT NULL,
            relevance int,
 	   KEY name (name),
 	   KEY symbol (symbol),
 	   UNIQUE KEY ID (name, symbol))""",
   "wordsHTML" : """CREATE TABLE wordsHTML (
-           name varchar(50) NOT NULL,
-	   resource varchar(255) NOT NULL,
+           name varchar(50) BINARY NOT NULL,
+	   resource varchar(255) BINARY NOT NULL,
 	   section varchar(255),
 	   id varchar(50),
            relevance int,
@@ -77,8 +77,8 @@ TABLES={
 	   KEY resource (resource),
 	   UNIQUE KEY ref (name, resource))""",
   "pages" : """CREATE TABLE pages (
-           resource varchar(255) NOT NULL,
-	   title varchar(255) NOT NULL,
+           resource varchar(255) BINARY NOT NULL,
+	   title varchar(255) BINARY NOT NULL,
 	   UNIQUE KEY name (resource))""",
   "Queries" : """CREATE TABLE Queries (
            ID int(11) NOT NULL auto_increment,
@@ -403,9 +403,7 @@ def addWordHTML(word, resource, id, section, relevance):
     if wordsDictHTML.has_key(word):
         d = wordsDictHTML[word]
 	if d == None:
-	    return 0
-	if len(d) > 15:
-	    wordsDictHTML[word] = None
+	    print "skipped %s" % (word)
 	    return 0
 	try:
 	    (r,i,s) = d[resource]
@@ -418,7 +416,8 @@ def addWordHTML(word, resource, id, section, relevance):
 	    pass
     else:
         wordsDictHTML[word] = {}
-    wordsDictHTML[word][resource] = (relevance, id, section)
+    d = wordsDictHTML[word];
+    d[resource] = (relevance, id, section)
     return relevance
     
 def addStringHTML(str, resource, id, section, relevance):
@@ -440,6 +439,8 @@ def addStringHTML(str, resource, id, section, relevance):
     str = string.replace(str, "/", " ")
     str = string.replace(str, "*", " ")
     str = string.replace(str, ":", " ")
+    str = string.replace(str, "#", " ")
+    str = string.replace(str, "!", " ")
     str = string.replace(str, "\n", " ")
     str = string.replace(str, "\r", " ")
     str = string.replace(str, "\xc2", " ")
@@ -447,7 +448,14 @@ def addStringHTML(str, resource, id, section, relevance):
     l = string.split(str)
     for word in l:
 	if len(word) > 2:
-	    ret = ret + addWordHTML(word, resource, id, section, relevance)
+	    try:
+		r = addWordHTML(word, resource, id, section, relevance)
+		if r <= 0:
+		    print "addWordHTML failed: %s %s" % (word, resource)
+		ret = ret + r
+	    except:
+		print "addWordHTML failed: %s %s %d" % (word, resource, relevance)
+		print sys.exc_type, sys.exc_value
 
     return ret
 
@@ -776,7 +784,7 @@ def analyzeHTML(doc, resource):
 	    elif item.type == 'text':
 	        analyzeHTMLText(doc, resource, item, section, id)
 		para = para + 1
-	    elif item.name == 'text':
+	    elif item.name == 'p':
 	        analyzeHTMLPara(doc, resource, item, section, id)
 		para = para + 1
 	    elif item.name == 'pre':

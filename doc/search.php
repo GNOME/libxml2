@@ -125,7 +125,7 @@ simply provide a set of keywords:
         $result = NULL;
 	$j = 0;
         if ($word) {
-	    $result = mysql_query ("SELECT words.relevance, symbols.name, symbols.type, symbols.module, symbols.descr FROM words, symbols WHERE words.name='$word' and words.symbol = symbols.name ORDER BY words.relevance DESC");
+	    $result = mysql_query ("SELECT words.relevance, symbols.name, symbols.type, symbols.module, symbols.descr FROM words, symbols WHERE LCASE(words.name) LIKE LCASE('$word') and words.symbol = symbols.name ORDER BY words.relevance DESC");
 	    if ($result) {
 		$j = mysql_num_rows($result);
 		if ($j == 0) 
@@ -139,7 +139,7 @@ simply provide a set of keywords:
         $result = NULL;
 	$j = 0;
         if ($word) {
-	    $result = mysql_query ("SELECT relevance, name, id, resource, section FROM wordsHTML WHERE name='$word' ORDER BY relevance DESC");
+	    $result = mysql_query ("SELECT relevance, name, id, resource, section FROM wordsHTML WHERE LCASE(name) LIKE LCASE('$word') ORDER BY relevance DESC");
 	    if ($result) {
 		$j = mysql_num_rows($result);
 		if ($j == 0) 
@@ -177,7 +177,7 @@ simply provide a set of keywords:
 			$desc = mysql_result($result, $i, 4);
 			if (array_key_exists($name, $results)) {
 			    list($r,$t,$m,$d,$w,$u) = $results[$name];
-			    $results[$name] = array($r + $relevance + 40,
+			    $results[$name] = array(($r + $relevance) * 2,
 			                            $t,$m,$d,$w,$u);
 			} else {
 			    $id = strtoupper($name);
@@ -201,9 +201,9 @@ simply provide a set of keywords:
 			if ($id != "") {
 			    $url = $url + "#$id";
 			}
-			$results[$name + "_html_" + $number+ "_" + $i ] =
+			$results[$name + "_html_" + $number+ "_" + $i] =
 			                  array($relevance, "documentation",
-						$module, $desc, $word, $url);
+						$module, $desc, $name, $url);
 		    }
 		    mysql_free_result($result);
 		}

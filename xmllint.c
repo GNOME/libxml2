@@ -120,6 +120,8 @@ static int dropdtd = 0;
 static int catalogs = 0;
 static int nocatalogs = 0;
 #endif
+static const char *output = NULL;
+
 
 /*
  * Internal timing routines to remove the necessity to have unix-specific
@@ -809,26 +811,47 @@ static void parseAndPrintFile(char *filename) {
 		}
 	    } else
 #endif /* HAVE_SYS_MMAN_H */
-	    if (compress)
-		xmlSaveFile("-", doc);
+	    if (compress) {
+		xmlSaveFile(output ? output : "-", doc);
+	    }
 	    else if (encoding != NULL) {
 	        if ( format ) {
-	            xmlSaveFormatFileEnc("-", doc, encoding, 1);
-		}  
+		    xmlSaveFormatFileEnc(output ? output : "-", doc, encoding, 1);
+		}
 		else {
-		    xmlSaveFileEnc("-", doc, encoding);
+		    xmlSaveFileEnc(output ? output : "-", doc, encoding);
 		}
 	    }
-	    else if (format)
-		xmlSaveFormatFile("-", doc, 1);
-	    else
-		xmlDocDump(stdout, doc);
+	    else if (format) {
+		xmlSaveFormatFile(output ? output : "-", doc, 1);
+	    }
+	    else {
+		FILE *out;
+		if (output == NULL)
+		    out = stdout;
+		else {
+		    out = fopen(output,"wb");
+		}
+		xmlDocDump(out, doc);
+
+		if (output)
+		    fclose(out);
+	    }
 	    if ((timing) && (!repeat)) {
 		endTimer("Saving");
 	    }
 #ifdef LIBXML_DEBUG_ENABLED
 	} else {
-	    xmlDebugDumpDocument(stdout, doc);
+	    FILE *out;
+	    if (output == NULL)
+	        out = stdout;
+	    else {
+		out = fopen(output,"wb");
+	    }
+	    xmlDebugDumpDocument(out, doc);
+
+	    if (output)
+		fclose(out);
 	}
 #endif
     }
@@ -929,9 +952,12 @@ static void usage(const char *name) {
     printf("\t--postvalid : do a posteriori validation, i.e after parsing\n");
     printf("\t--dtdvalid URL : do a posteriori validation against a given DTD\n");
     printf("\t--timing : print some timings\n");
+    printf("\t--output file or -o file: save to a given file\n");
     printf("\t--repeat : repeat 100 times, for timing or profiling\n");
     printf("\t--insert : ad-hoc test for valid insertions\n");
+#ifdef HAVE_ZLIB_H
     printf("\t--compress : turn on gzip compression of output\n");
+#endif
 #ifdef LIBXML_DOCB_ENABLED
     printf("\t--sgml : use the DocBook SGML parser\n");
 #endif
@@ -1001,6 +1027,12 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-noout")) ||
 	         (!strcmp(argv[i], "--noout")))
 	    noout++;
+	else if ((!strcmp(argv[i], "-o")) ||
+	         (!strcmp(argv[i], "-output")) ||
+	         (!strcmp(argv[i], "--output"))) {
+	    i++;
+	    output = argv[i++];
+	}
 	else if ((!strcmp(argv[i], "-htmlout")) ||
 	         (!strcmp(argv[i], "--htmlout")))
 	    htmlout++;
@@ -1070,11 +1102,13 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--xinclude")))
 	    xinclude++;
 #endif
+#ifdef HAVE_ZLIB_H
 	else if ((!strcmp(argv[i], "-compress")) ||
 	         (!strcmp(argv[i], "--compress"))) {
 	    compress++;
 	    xmlSetCompressMode(9);
         }
+#endif
 	else if ((!strcmp(argv[i], "-nowarning")) ||
 	         (!strcmp(argv[i], "--nowarning"))) {
 	    xmlGetWarningsDefaultValue = 0;
@@ -1164,6 +1198,11 @@ main(int argc, char **argv) {
 	if ((!strcmp(argv[i], "-encode")) ||
 	         (!strcmp(argv[i], "--encode"))) {
 	    i++;
+	    continue;
+        } else if ((!strcmp(argv[i], "-o")) ||
+                   (!strcmp(argv[i], "-output")) ||
+                   (!strcmp(argv[i], "--output"))) {
+            i++;
 	    continue;
         }
 	if ((!strcmp(argv[i], "-dtdvalid")) ||

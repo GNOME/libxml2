@@ -30,6 +30,9 @@ void			xmlFreeTextReader	(xmlTextReaderPtr reader);
  * Iterators
  */
 int		xmlTextReaderRead	(xmlTextReaderPtr reader);
+xmlChar *	xmlTextReaderReadInnerXml	(xmlTextReaderPtr reader);
+xmlChar *	xmlTextReaderReadOuterXml	(xmlTextReaderPtr reader);
+xmlChar *	xmlTextReaderReadString		(xmlTextReaderPtr reader);
 
 /*
  * Attributes of the node
@@ -49,6 +52,7 @@ xmlChar *	xmlTextReaderPrefix	(xmlTextReaderPtr reader);
 int		xmlTextReaderQuoteChar	(xmlTextReaderPtr reader);
 xmlChar *	xmlTextReaderValue	(xmlTextReaderPtr reader);
 xmlChar *	xmlTextReaderXmlLang	(xmlTextReaderPtr reader);
+int		xmlTextReaderReadState	(xmlTextReaderPtr reader);
 
 /*
  * Methods of the XmlTextReader
@@ -74,6 +78,7 @@ int		xmlTextReaderMoveToAttributeNs	(xmlTextReaderPtr reader,
 int		xmlTextReaderMoveToFirstAttribute(xmlTextReaderPtr reader);
 int		xmlTextReaderMoveToNextAttribute(xmlTextReaderPtr reader);
 int		xmlTextReaderMoveToElement	(xmlTextReaderPtr reader);
+int		xmlTextReaderNormalization	(xmlTextReaderPtr reader);
 
 #ifdef __cplusplus
 }

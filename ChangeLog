@@ -1,3 +1,11 @@
+Mon Dec 16 23:00:05 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: Vyacheslav Pindyura managed to trigger a bug in
+	  parseStartTag, fixing it.
+	* test/att4 result/att4 result/noent/att4: adding the test
+	* xmlreader.c include/libxml/xmlreader.h doc/libxml2-api.xml: added
+	  more methods to XmlTextReader.
+
 Mon Dec 16 19:31:16 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/libxml2.def.src: added more xml reader exports

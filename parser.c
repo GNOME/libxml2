@@ -6688,6 +6688,9 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 
 failed:     
 
+	if (CUR == 0) {
+	    GROW
+	}
 	if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
 	    break;
 	if (!IS_BLANK(RAW)) {

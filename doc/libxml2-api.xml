@@ -1114,10 +1114,15 @@
      <exports symbol='xmlTextReaderName'/>
      <exports symbol='xmlTextReaderNamespaceUri'/>
      <exports symbol='xmlTextReaderNodeType'/>
+     <exports symbol='xmlTextReaderNormalization'/>
      <exports symbol='xmlTextReaderPrefix'/>
      <exports symbol='xmlTextReaderPtr'/>
      <exports symbol='xmlTextReaderQuoteChar'/>
      <exports symbol='xmlTextReaderRead'/>
+     <exports symbol='xmlTextReaderReadInnerXml'/>
+     <exports symbol='xmlTextReaderReadOuterXml'/>
+     <exports symbol='xmlTextReaderReadState'/>
+     <exports symbol='xmlTextReaderReadString'/>
      <exports symbol='xmlTextReaderValue'/>
      <exports symbol='xmlTextReaderXmlLang'/>
     </file>
@@ -8002,6 +8007,11 @@ actually an xmlCharEncoding'/>
       <return type='int' info='the xmlNodeType of the current node or -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
+    <function name='xmlTextReaderNormalization' file='xmlreader'>
+      <info>The value indicating whether to normalize white space and attribute values. Since attribute value and end of line normalizations are a MUST in the XML specification only the value true is accepted. The broken bahaviour of accepting out of range character entities like &amp;#0; is of course not supported either.</info>
+      <return type='int' info='1 or -1 in case of error.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
     <function name='xmlTextReaderPrefix' file='xmlreader'>
       <info>A shorthand reference to the namespace associated with the node.</info>
       <return type='xmlChar *' info='the prefix or NULL if not available'/>
@@ -8015,6 +8025,26 @@ actually an xmlCharEncoding'/>
     <function name='xmlTextReaderRead' file='xmlreader'>
       <info>Moves the position of the current instance to the next node in the stream, exposing its properties.</info>
       <return type='int' info='1 if the node was read successfully, 0 if there is no more nodes to read, or -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderReadInnerXml' file='xmlreader'>
+      <info>Reads the contents of the current node, including child nodes and markup.</info>
+      <return type='xmlChar *' info='a string containing the XML content, or NULL if the current node is neither an element nor attribute, or has no child nodes. The string must be deallocated by the caller.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderReadOuterXml' file='xmlreader'>
+      <info>Reads the contents of the current node, including child nodes and markup.</info>
+      <return type='xmlChar *' info='a string containing the XML content, or NULL if the current node is neither an element nor attribute, or has no child nodes. The string must be deallocated by the caller.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderReadState' file='xmlreader'>
+      <info>Gets the read state of the reader.</info>
+      <return type='int' info='the state value, or -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderReadString' file='xmlreader'>
+      <info>Reads the contents of an element or a text node as a string.</info>
+      <return type='xmlChar *' info='a string containing the contents of the Element or Text node, or NULL if the reader is positioned on any other type of node. The string must be deallocated by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderValue' file='xmlreader'>

@@ -1,6 +1,10 @@
 /*
  * xmlreader.c: implements the xmlTextReader streaming node API
  *
+ * NOTE: 
+ *   XmlTextReader.Normalization Property won't be supported, since
+ *     it makes the parser non compliant to the XML recommendation
+ *
  * See Copyright for the status of this software.
  *
  * daniel@veillard.com
@@ -52,9 +56,12 @@
 #define XML_TEXTREADER_CTXT	2
 
 typedef enum {
-    XML_TEXTREADER_MODE_NORMAL = 0,
-    XML_TEXTREADER_MODE_EOF = 1,
-    XML_TEXTREADER_MODE_CLOSED = 1
+    XML_TEXTREADER_MODE_INITIAL = 0,
+    XML_TEXTREADER_MODE_INTERACTIVE = 1,
+    XML_TEXTREADER_MODE_ERROR = 2,
+    XML_TEXTREADER_MODE_EOF =3,
+    XML_TEXTREADER_MODE_CLOSED = 4,
+    XML_TEXTREADER_MODE_READING = 5
 } xmlTextReaderMode;
 
 typedef enum {
@@ -206,7 +213,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	     * large CDATA sections
 	     */
 	    if ((cur - reader->cur > 4096) && (reader->base == 0) &&
-		(reader->mode == XML_TEXTREADER_MODE_NORMAL)) {
+		(reader->mode == XML_TEXTREADER_MODE_INTERACTIVE)) {
 		cur = cur + 1;
 		val = xmlParseChunk(reader->ctxt,
 			      (const char *) &inbuf->content[reader->cur],
@@ -220,7 +227,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
     /*
      * Discard the consumed input when needed and possible
      */
-    if (reader->mode == XML_TEXTREADER_MODE_NORMAL) {
+    if (reader->mode == XML_TEXTREADER_MODE_INTERACTIVE) {
 	if ((reader->cur >= 4096) && (reader->base == 0)) {
 	    val = xmlBufferShrink(inbuf, cur);
 	    if (val >= 0) {
@@ -265,7 +272,8 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     fprintf(stderr, "\nREAD ");
     DUMP_READER
 #endif
-    if (reader->node == NULL) {
+    if (reader->mode == XML_TEXTREADER_MODE_INITIAL) {
+	reader->mode = XML_TEXTREADER_MODE_INTERACTIVE;
 	/*
 	 * Initial state
 	 */
@@ -365,6 +373,69 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     return(1);
 }
 
+/**
+ * xmlTextReaderReadState:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Gets the read state of the reader.
+ *
+ * Returns the state value, or -1 in case of error
+ */
+int
+xmlTextReaderReadState(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(-1);
+    return(reader->mode);
+}
+
+/**
+ * xmlTextReaderReadInnerXml:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Reads the contents of the current node, including child nodes and markup.
+ *
+ * Returns a string containing the XML content, or NULL if the current node
+ *         is neither an element nor attribute, or has no child nodes. The 
+ *         string must be deallocated by the caller.
+ */
+xmlChar *
+xmlTextReaderReadInnerXml(xmlTextReaderPtr reader) {
+    TODO
+    return(NULL);
+}
+
+/**
+ * xmlTextReaderReadOuterXml:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Reads the contents of the current node, including child nodes and markup.
+ *
+ * Returns a string containing the XML content, or NULL if the current node
+ *         is neither an element nor attribute, or has no child nodes. The 
+ *         string must be deallocated by the caller.
+ */
+xmlChar *
+xmlTextReaderReadOuterXml(xmlTextReaderPtr reader) {
+    TODO
+    return(NULL);
+}
+
+/**
+ * xmlTextReaderReadString:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Reads the contents of an element or a text node as a string.
+ *
+ * Returns a string containing the contents of the Element or Text node,
+ *         or NULL if the reader is positioned on any other type of node.
+ *         The string must be deallocated by the caller.
+ */
+xmlChar *
+xmlTextReaderReadString(xmlTextReaderPtr reader) {
+    TODO
+    return(NULL);
+}
+
 /************************************************************************
  *									*
  *			Constructor and destructors			*
@@ -406,7 +477,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input) {
     ret->endElement = ret->sax->endElement;
     ret->sax->endElement = xmlTextReaderEndElement;
 
-    ret->mode = XML_TEXTREADER_MODE_NORMAL;
+    ret->mode = XML_TEXTREADER_MODE_INITIAL;
     ret->node = NULL;
     ret->curnode = NULL;
     val = xmlParserInputBufferRead(input, 4);
@@ -1028,6 +1099,7 @@ int
 xmlTextReaderAttributeCount(xmlTextReaderPtr reader) {
     int ret;
     xmlAttrPtr attr;
+    xmlNsPtr ns;
     xmlNodePtr node;
 
     if (reader == NULL)
@@ -1050,6 +1122,11 @@ xmlTextReaderAttributeCount(xmlTextReaderPtr reader) {
     while (attr != NULL) {
 	ret++;
 	attr = attr->next;
+    }
+    ns = node->nsDef;
+    while (ns != NULL) {
+	ret++;
+	ns = ns->next;
     }
     return(ret);
 }
@@ -1491,5 +1568,24 @@ xmlTextReaderXmlLang(xmlTextReaderPtr reader) {
     if (reader->node == NULL)
 	return(NULL);
     return(xmlNodeGetLang(reader->node));
+}
+
+/**
+ * xmlTextReaderNormalization:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * The value indicating whether to normalize white space and attribute values.
+ * Since attribute value and end of line normalizations are a MUST in the XML
+ * specification only the value true is accepted. The broken bahaviour of
+ * accepting out of range character entities like &#0; is of course not
+ * supported either.
+ *
+ * Returns 1 or -1 in case of error.
+ */
+int
+xmlTextReaderNormalization(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(-1);
+    return(1);
 }
 

@@ -1,3 +1,7 @@
+Tue Mar  5 10:35:24 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py: applied patch fixing #73450
+
 Mon Mar  4 17:59:29 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixing #61290 "namespace nodes have no parent"

@@ -3661,6 +3661,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     /*
      * The first entry in the stack is reserved to the current state
      */
+    ctxt->nodeTab = NULL;
     ctxt->vstate = &ctxt->vstateTab[0];
     ctxt->vstateNr = 1;
     CONT = cont;

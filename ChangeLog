@@ -1,3 +1,10 @@
+Tue Apr 24 15:19:53 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* SAX.c testDocbook.c DOCBparser.c: more work on the support
+	  of external parsed entities, added --noent to testDocbook
+	* valid.c: Garry Pennington found an uninitialized variable
+	  access in xmlValidateElementContent()
+
 Tue Apr 24 14:41:25 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c : HTML parsing still sucks ... trying to deal

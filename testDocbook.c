@@ -43,6 +43,7 @@ static int copy = 0;
 static int sax = 0;
 static int repeat = 0;
 static int noout = 0;
+static int noent = 0;
 static int push = 0;
 static char *encoding = NULL;
 
@@ -789,6 +790,8 @@ int main(int argc, char **argv) {
 	    push++;
 	else if ((!strcmp(argv[i], "-sax")) || (!strcmp(argv[i], "--sax")))
 	    sax++;
+	else if ((!strcmp(argv[i], "-noent")) || (!strcmp(argv[i], "--noent")))
+	    noent++;
 	else if ((!strcmp(argv[i], "-noout")) || (!strcmp(argv[i], "--noout")))
 	    noout++;
 	else if ((!strcmp(argv[i], "-repeat")) ||
@@ -800,6 +803,7 @@ int main(int argc, char **argv) {
 	    encoding = argv[i];
         }
     }
+    if (noent != 0) xmlSubstituteEntitiesDefault(1);
     for (i = 1; i < argc ; i++) {
 	if ((!strcmp(argv[i], "-encode")) ||
 	         (!strcmp(argv[i], "--encode"))) {

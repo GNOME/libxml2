@@ -1706,12 +1706,12 @@ htmlDefaultSAXHandlerInit(void)
  */
 xmlSAXHandler docbDefaultSAXHandler = {
     internalSubset,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    isStandalone,
+    hasInternalSubset,
+    hasExternalSubset,
+    resolveEntity,
     getEntity,
-    NULL,
+    entityDecl,
     NULL,
     NULL,
     NULL,
@@ -1744,13 +1744,13 @@ docbDefaultSAXHandlerInit(void)
 {
     docbDefaultSAXHandler.internalSubset = internalSubset;
     docbDefaultSAXHandler.externalSubset = NULL;
-    docbDefaultSAXHandler.isStandalone = NULL;
-    docbDefaultSAXHandler.hasInternalSubset = NULL;
-    docbDefaultSAXHandler.hasExternalSubset = NULL;
-    docbDefaultSAXHandler.resolveEntity = NULL;
+    docbDefaultSAXHandler.isStandalone = isStandalone;
+    docbDefaultSAXHandler.hasInternalSubset = hasInternalSubset;
+    docbDefaultSAXHandler.hasExternalSubset = hasExternalSubset;
+    docbDefaultSAXHandler.resolveEntity = resolveEntity;
     docbDefaultSAXHandler.getEntity = getEntity;
     docbDefaultSAXHandler.getParameterEntity = NULL;
-    docbDefaultSAXHandler.entityDecl = NULL;
+    docbDefaultSAXHandler.entityDecl = entityDecl;
     docbDefaultSAXHandler.attributeDecl = NULL;
     docbDefaultSAXHandler.elementDecl = NULL;
     docbDefaultSAXHandler.notationDecl = NULL;

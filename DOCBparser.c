@@ -65,10 +65,10 @@ int                    docbAutoCloseTag(docbDocPtr doc,
                                         docbNodePtr elem);
 
 #endif
-static int                    docbParseCharRef(docbParserCtxtPtr ctxt);
-static docbEntityDescPtr      docbParseEntityRef(docbParserCtxtPtr ctxt,
+static int             docbParseCharRef(docbParserCtxtPtr ctxt);
+static xmlEntityPtr    docbParseEntityRef(docbParserCtxtPtr ctxt,
                                         xmlChar **str);
-static void                   docbParseElement(docbParserCtxtPtr ctxt);
+static void            docbParseElement(docbParserCtxtPtr ctxt);
 
 /*
  * Internal description of an SGML element
@@ -2458,9 +2458,179 @@ static int areBlanks(docbParserCtxtPtr ctxt, const xmlChar *str, int len) {
 }
 
 /************************************************************************
- *                                                                     *
- *                     The parser itself                               *
- *                                                                     *
+ *									*
+ *                     External entities support			*
+ *									*
+ ************************************************************************/
+
+/**
+ * docbParseCtxtExternalEntity:
+ * @ctx:  the existing parsing context
+ * @URL:  the URL for the entity to load
+ * @ID:  the System ID for the entity to load
+ * @list:  the return value for the set of parsed nodes
+ *
+ * Parse an external general entity within an existing parsing context
+ *
+ * Returns 0 if the entity is well formed, -1 in case of args problem and
+ *    the parser error code otherwise
+ */
+
+static int
+docbParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
+	                    const xmlChar *ID, xmlNodePtr *list) {
+    xmlParserCtxtPtr ctxt;
+    xmlDocPtr newDoc;
+    xmlSAXHandlerPtr oldsax = NULL;
+    int ret = 0;
+
+    if (ctx->depth > 40) {
+	return(XML_ERR_ENTITY_LOOP);
+    }
+
+    if (list != NULL)
+        *list = NULL;
+    if ((URL == NULL) && (ID == NULL))
+	return(-1);
+    if (ctx->myDoc == NULL) /* @@ relax but check for dereferences */
+	return(-1);
+
+
+    ctxt = xmlCreateEntityParserCtxt(URL, ID, ctx->myDoc->URL);
+    if (ctxt == NULL) return(-1);
+    ctxt->userData = ctxt;
+    oldsax = ctxt->sax;
+    ctxt->sax = ctx->sax;
+    newDoc = xmlNewDoc(BAD_CAST "1.0");
+    if (newDoc == NULL) {
+	xmlFreeParserCtxt(ctxt);
+	return(-1);
+    }
+    if (ctx->myDoc != NULL) {
+	newDoc->intSubset = ctx->myDoc->intSubset;
+	newDoc->extSubset = ctx->myDoc->extSubset;
+    }
+    if (ctx->myDoc->URL != NULL) {
+	newDoc->URL = xmlStrdup(ctx->myDoc->URL);
+    }
+    newDoc->children = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
+    if (newDoc->children == NULL) {
+	ctxt->sax = oldsax;
+	xmlFreeParserCtxt(ctxt);
+	newDoc->intSubset = NULL;
+	newDoc->extSubset = NULL;
+        xmlFreeDoc(newDoc);
+	return(-1);
+    }
+    nodePush(ctxt, newDoc->children);
+    if (ctx->myDoc == NULL) {
+	ctxt->myDoc = newDoc;
+    } else {
+	ctxt->myDoc = ctx->myDoc;
+	newDoc->children->doc = ctx->myDoc;
+    }
+
+    /*
+     * Parse a possible text declaration first
+     */
+    GROW;
+    if ((RAW == '<') && (NXT(1) == '?') &&
+	(NXT(2) == 'x') && (NXT(3) == 'm') &&
+	(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
+	xmlParseTextDecl(ctxt);
+    }
+
+    /*
+     * Doing validity checking on chunk doesn't make sense
+     */
+    ctxt->instate = XML_PARSER_CONTENT;
+    ctxt->validate = ctx->validate;
+    ctxt->loadsubset = ctx->loadsubset;
+    ctxt->depth = ctx->depth + 1;
+    ctxt->replaceEntities = ctx->replaceEntities;
+    if (ctxt->validate) {
+	ctxt->vctxt.error = ctx->vctxt.error;
+	ctxt->vctxt.warning = ctx->vctxt.warning;
+	/* Allocate the Node stack */
+	ctxt->vctxt.nodeTab = (xmlNodePtr *) xmlMalloc(4 * sizeof(xmlNodePtr));
+	if (ctxt->vctxt.nodeTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "docbParseCtxtExternalEntity: out of memory\n");
+	    ctxt->validate = 0;
+	    ctxt->vctxt.error = NULL;
+	    ctxt->vctxt.warning = NULL;
+	} else {
+	    ctxt->vctxt.nodeNr = 0;
+	    ctxt->vctxt.nodeMax = 4;
+	    ctxt->vctxt.node = NULL;
+	}
+    } else {
+	ctxt->vctxt.error = NULL;
+	ctxt->vctxt.warning = NULL;
+    }
+
+    docbParseContent(ctxt);
+   
+    if ((RAW == '<') && (NXT(1) == '/')) {
+	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+		"chunk is not well balanced\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+    } else if (RAW != 0) {
+	ctxt->errNo = XML_ERR_EXTRA_CONTENT;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+		"extra content at the end of well balanced chunk\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+    }
+    if (ctxt->node != newDoc->children) {
+	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+		"chunk is not well balanced\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+    }
+
+    if (!ctxt->wellFormed) {
+        if (ctxt->errNo == 0)
+	    ret = 1;
+	else
+	    ret = ctxt->errNo;
+    } else {
+	if (list != NULL) {
+	    xmlNodePtr cur;
+
+	    /*
+	     * Return the newly created nodeset after unlinking it from
+	     * they pseudo parent.
+	     */
+	    cur = newDoc->children->children;
+	    *list = cur;
+	    while (cur != NULL) {
+		cur->parent = NULL;
+		cur = cur->next;
+	    }
+            newDoc->children->children = NULL;
+	}
+	ret = 0;
+    }
+    ctxt->sax = oldsax;
+    xmlFreeParserCtxt(ctxt);
+    newDoc->intSubset = NULL;
+    newDoc->extSubset = NULL;
+    xmlFreeDoc(newDoc);
+    
+    return(ret);
+}
+
+/************************************************************************
+ *									*
+ *			The parser itself				*
+ *									*
  ************************************************************************/
 
 /**
@@ -2557,6 +2727,7 @@ docbParseSGMLAttribute(docbParserCtxtPtr ctxt, const xmlChar stop) {
     xmlChar *name = NULL;
 
     xmlChar *cur = NULL;
+    xmlEntityPtr xent;
     docbEntityDescPtr ent;
 
     /*
@@ -2682,40 +2853,46 @@ docbParseSGMLAttribute(docbParserCtxtPtr ctxt, const xmlChar stop) {
  *
  * [68] EntityRef ::= '&' Name ';'
  *
- * Returns the associated docbEntityDescPtr if found, or NULL otherwise,
+ * Returns the associated xmlEntityPtr if found, or NULL otherwise,
  *         if non-NULL *str will have to be freed by the caller.
  */
-static docbEntityDescPtr
+static xmlEntityPtr
 docbParseEntityRef(docbParserCtxtPtr ctxt, xmlChar **str) {
     xmlChar *name;
-    docbEntityDescPtr ent = NULL;
+    xmlEntityPtr ent = NULL;
     *str = NULL;
 
     if (CUR == '&') {
         NEXT;
         name = docbParseName(ctxt);
-       if (name == NULL) {
-           if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-               ctxt->sax->error(ctxt->userData, "docbParseEntityRef: no name\n");
-           ctxt->wellFormed = 0;
-       } else {
+        if (name == NULL) {
+            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+                ctxt->sax->error(ctxt->userData,
+			   "docbParseEntityRef: no name\n");
+            ctxt->wellFormed = 0;
+        } else {
            GROW;
-           if (CUR == ';') {
-               *str = name;
+            if (CUR == ';') {
+                *str = name;
 
-               /*
-                * Lookup the entity in the table.
-                */
-               ent = docbEntityLookup(name);
-               if (ent != NULL) /* OK that's ugly !!! */
-                   NEXT;
-           } else {
-               if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                   ctxt->sax->error(ctxt->userData,
+		/*
+		 * Ask first SAX for entity resolution, otherwise try the
+		 * predefined set.
+		 */
+		if (ctxt->sax != NULL) {
+		    if (ctxt->sax->getEntity != NULL)
+			ent = ctxt->sax->getEntity(ctxt->userData, name);
+		    if (ent == NULL)
+		        ent = xmlGetPredefinedEntity(name);
+		}
+	        NEXT;
+            } else {
+                if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+                    ctxt->sax->error(ctxt->userData,
                                     "docbParseEntityRef: expecting ';'\n");
-               *str = name;
-           }
-       }
+                *str = name;
+            }
+        }
     }
     return(ent);
 }
@@ -3206,20 +3383,21 @@ docbParseDocTypeDecl(docbParserCtxtPtr ctxt) {
      * Is there any internal subset declarations ?
      * they are handled separately in docbParseInternalSubset()
      */
-    if (RAW == '[')
+    if (RAW != '[') {
        return;
 
-
-    /*
-     * We should be at the end of the DOCTYPE declaration.
-     */
-    if (CUR != '>') {
-       if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-           ctxt->sax->error(ctxt->userData, "DOCTYPE unproperly terminated\n");
-       ctxt->wellFormed = 0;
-        /* We shouldn't try to resynchronize ... */
+	/*
+	 * We should be at the end of the DOCTYPE declaration.
+	 */
+	if (CUR != '>') {
+	   if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	       ctxt->sax->error(ctxt->userData,
+		                "DOCTYPE unproperly terminated\n");
+	   ctxt->wellFormed = 0;
+	    /* We shouldn't try to resynchronize ... */
+	}
+	NEXT;
     }
-    NEXT;
 
     /*
      * Cleanup, since we don't use all those identifiers
@@ -3672,6 +3850,7 @@ docbParseEndTag(docbParserCtxtPtr ctxt) {
 static void
 docbParseReference(docbParserCtxtPtr ctxt) {
     docbEntityDescPtr ent;
+    xmlEntityPtr xent;
     xmlChar out[6];
     xmlChar *name;
     if (CUR != '&') return;
@@ -3695,44 +3874,88 @@ docbParseReference(docbParserCtxtPtr ctxt) {
        if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
            ctxt->sax->characters(ctxt->userData, out, i);
     } else {
-       ent = docbParseEntityRef(ctxt, &name);
-       if (name == NULL) {
+	/*
+	 * Lookup the entity in the table.
+	 */
+       xent = docbParseEntityRef(ctxt, &name);
+       if (xent != NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->reference != NULL) &&
+		(ctxt->replaceEntities == 0) && (!ctxt->disableSAX)) {
+		/*
+		 * Create a node.
+		 */
+		ctxt->sax->reference(ctxt->userData, xent->name);
+		return;
+	    } else if (ctxt->replaceEntities) {
+		if ((xent->children == NULL) &&
+		    (xent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)) {
+		    /*
+		     * we really need to fetch and parse the external entity
+		     */
+		    int parse;
+		    xmlNodePtr children = NULL;
+
+		    parse = docbParseCtxtExternalEntity(ctxt,
+			       xent->SystemID, xent->ExternalID, &children);
+		    xmlAddChildList((xmlNodePtr) xent, children);
+		}
+		if ((ctxt->node != NULL) && (xent->children != NULL)) {
+		    /*
+		     * Seems we are generating the DOM content, do
+		     * a simple tree copy
+		     */
+		    xmlNodePtr new;
+		    new = xmlCopyNodeList(xent->children);
+		    
+		    xmlAddChildList(ctxt->node, new);
+		    /*
+		     * This is to avoid a nasty side effect, see
+		     * characters() in SAX.c
+		     */
+		    ctxt->nodemem = 0;
+		    ctxt->nodelen = 0;
+		}
+	    }
+       } else if (name != NULL) {
+	   ent = docbEntityLookup(name);
+	   if ((ent == NULL) || (ent->value <= 0)) {
+	       docbCheckParagraph(ctxt);
+	       if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL)) {
+		   ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
+		   ctxt->sax->characters(ctxt->userData, name, xmlStrlen(name));
+		   /* ctxt->sax->characters(ctxt->userData, BAD_CAST ";", 1); */
+	       }
+	   } else {
+	       unsigned int c;
+	       int bits, i = 0;
+
+	       c = ent->value;
+	       if      (c <    0x80)
+		       { out[i++]= c;                bits= -6; }
+	       else if (c <   0x800)
+		       { out[i++]=((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
+	       else if (c < 0x10000)
+		       { out[i++]=((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
+	       else                 
+		       { out[i++]=((c >> 18) & 0x07) | 0xF0;  bits= 12; }
+	 
+	       for ( ; bits >= 0; bits-= 6) {
+		   out[i++]= ((c >> bits) & 0x3F) | 0x80;
+	       }
+	       out[i] = 0;
+
+	       docbCheckParagraph(ctxt);
+	       if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
+		   ctxt->sax->characters(ctxt->userData, out, i);
+	   }
+       } else {
            docbCheckParagraph(ctxt);
            if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
                ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
            return;
        }
-       if ((ent == NULL) || (ent->value <= 0)) {
-           docbCheckParagraph(ctxt);
-           if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL)) {
-               ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
-               ctxt->sax->characters(ctxt->userData, name, xmlStrlen(name));
-               /* ctxt->sax->characters(ctxt->userData, BAD_CAST ";", 1); */
-           }
-       } else {
-           unsigned int c;
-           int bits, i = 0;
-
-           c = ent->value;
-           if      (c <    0x80)
-                   { out[i++]= c;                bits= -6; }
-           else if (c <   0x800)
-                   { out[i++]=((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
-           else if (c < 0x10000)
-                   { out[i++]=((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
-           else                 
-                   { out[i++]=((c >> 18) & 0x07) | 0xF0;  bits= 12; }
-     
-           for ( ; bits >= 0; bits-= 6) {
-               out[i++]= ((c >> bits) & 0x3F) | 0x80;
-           }
-           out[i] = 0;
-
-           docbCheckParagraph(ctxt);
-           if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
-               ctxt->sax->characters(ctxt->userData, out, i);
-       }
-       xmlFree(name);
+       if (name != NULL)
+	   xmlFree(name);
     }
 }
 
@@ -3818,6 +4041,8 @@ docbParseContent(docbParserCtxtPtr ctxt) {
         */
        else if (CUR == 0) {
            docbAutoClose(ctxt, NULL);
+	   if (ctxt->nameNr == 0)
+	       break;
        }
 
        /*
@@ -3834,7 +4059,7 @@ docbParseContent(docbParserCtxtPtr ctxt) {
                         "detected an error in element content\n");
                ctxt->wellFormed = 0;
            }
-            break;
+           break;
        }
 
         GROW;
@@ -4043,9 +4268,9 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
     
     GROW;
     if ((RAW == '<') && (NXT(1) == '!') &&
-        (NXT(2) == 'E') && (NXT(3) == 'N') &&
-        (NXT(4) == 'T') && (NXT(5) == 'I') &&
-        (NXT(6) == 'T') && (NXT(7) == 'Y')) {
+        (UPP(2) == 'E') && (UPP(3) == 'N') &&
+        (UPP(4) == 'T') && (UPP(5) == 'I') &&
+        (UPP(6) == 'T') && (UPP(7) == 'Y')) {
        xmlParserInputPtr input = ctxt->input;
        ctxt->instate = XML_PARSER_ENTITY_DECL;
        SHRINK;
@@ -4504,10 +4729,10 @@ docbParseDocument(docbParserCtxtPtr ctxt) {
      */
     GROW;
     if ((RAW == '<') && (NXT(1) == '!') &&
-       (NXT(2) == 'D') && (NXT(3) == 'O') &&
-       (NXT(4) == 'C') && (NXT(5) == 'T') &&
-       (NXT(6) == 'Y') && (NXT(7) == 'P') &&
-       (NXT(8) == 'E')) {
+       (UPP(2) == 'D') && (UPP(3) == 'O') &&
+       (UPP(4) == 'C') && (UPP(5) == 'T') &&
+       (UPP(6) == 'Y') && (UPP(7) == 'P') &&
+       (UPP(8) == 'E')) {
 
        ctxt->inSubset = 1;
        docbParseDocTypeDecl(ctxt);
@@ -4625,7 +4850,7 @@ docbInitParserCtxt(docbParserCtxtPtr ctxt)
     ctxt->userData = ctxt;
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
-    ctxt->replaceEntities = 0;
+    ctxt->replaceEntities = xmlSubstituteEntitiesDefaultValue;
     ctxt->html = 2;
     ctxt->record_info = 0;
     ctxt->validate = 0;

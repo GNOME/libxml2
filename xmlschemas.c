@@ -25,7 +25,7 @@
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlregexp.h>
 
-/* #define DEBUG 1       */         /* very verbose output */
+/* #define DEBUG 1 */
 /* #define DEBUG_CONTENT 1 */
 /* #define DEBUG_TYPE 1 */
 /* #define DEBUG_CONTENT_REGEXP 1 */
@@ -406,6 +406,9 @@ xmlSchemaFree(xmlSchemaPtr schema)
     if (schema->typeDecl != NULL)
         xmlHashFree(schema->typeDecl,
                     (xmlHashDeallocator) xmlSchemaFreeType);
+    if (schema->groupDecl != NULL)
+        xmlHashFree(schema->groupDecl,
+                    (xmlHashDeallocator) xmlSchemaFreeType);
     if (schema->annot != NULL)
 	xmlSchemaFreeAnnot(schema->annot);
     if (schema->doc != NULL)
@@ -436,6 +439,7 @@ xmlSchemaErrorContext(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     int line = 0;
     const xmlChar *file = NULL;
     const xmlChar *name = NULL;
+    const xmlChar *prefix = NULL;
     const char *type = "error";
 
     if ((ctxt == NULL) || (ctxt->error == NULL))
@@ -467,6 +471,9 @@ xmlSchemaErrorContext(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		file = node->doc->URL;
 	    if (node->name != NULL)
 		name = node->name;
+	    if ((node->type == XML_ELEMENT_NODE) && (node->ns != NULL) &&
+	        (node->ns->prefix != NULL))
+		prefix = node->ns->prefix;
 	}
     } 
     
@@ -475,9 +482,15 @@ xmlSchemaErrorContext(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     else if (schema != NULL)
 	type = "runtime error";
 
-    if ((file != NULL) && (line != 0) && (name != NULL))
+    if ((file != NULL) && (line != 0) && (name != NULL) && (prefix != NULL))
+	ctxt->error(ctxt->userData, "%s: file %s line %d element %s:%s\n",
+		type, file, line, prefix, name);
+    else if ((file != NULL) && (line != 0) && (name != NULL))
 	ctxt->error(ctxt->userData, "%s: file %s line %d element %s\n",
 		type, file, line, name);
+    else if ((file != NULL) && (name != NULL) && (prefix != NULL))
+	ctxt->error(ctxt->userData, "%s: file %s element %s:%s\n",
+		type, file, prefix, name);
     else if ((file != NULL) && (name != NULL))
 	ctxt->error(ctxt->userData, "%s: file %s element %s\n",
 		type, file, name);
@@ -485,6 +498,8 @@ xmlSchemaErrorContext(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	ctxt->error(ctxt->userData, "%s: file %s line %d\n", type, file, line);
     else if (file != NULL)
 	ctxt->error(ctxt->userData, "%s: file %s\n", type, file);
+    else if ((name != NULL) && (prefix != NULL))
+	ctxt->error(ctxt->userData, "%s: element %s:%s\n", type, prefix, name);
     else if (name != NULL)
 	ctxt->error(ctxt->userData, "%s: element %s\n", type, name);
     else
@@ -741,7 +756,7 @@ xmlSchemaDump(FILE * output, xmlSchemaPtr schema)
  *
  * Lookup a type in the schemas or the predefined types
  *
- * Returns 1 if the string is NULL or made of blanks chars, 0 otherwise
+ * Returns the group definition or NULL if not found.
  */
 static xmlSchemaTypePtr
 xmlSchemaGetType(xmlSchemaPtr schema, const xmlChar * name,
@@ -835,7 +850,7 @@ xmlSchemaAddNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (val != 0) {
         ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
-            ctxt->error(ctxt->userData, "Could not add notation %s\n",
+            ctxt->error(ctxt->userData, "Notation %s already defined\n",
                         name);
         xmlFree((char *) ret->name);
         xmlFree(ret);
@@ -886,7 +901,7 @@ xmlSchemaAddAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (val != 0) {
         ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
-            ctxt->error(ctxt->userData, "Could not add attribute %s\n",
+            ctxt->error(ctxt->userData, "Attribute %s already defined\n",
                         name);
         xmlFree((char *) ret->name);
         xmlFree(ret);
@@ -934,7 +949,7 @@ xmlSchemaAddAttributeGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (val != 0) {
         ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
-            ctxt->error(ctxt->userData, "Could not add attribute group %s\n",
+            ctxt->error(ctxt->userData, "Attribute group %s already defined\n",
                         name);
         xmlFree((char *) ret->name);
         xmlFree(ret);
@@ -990,7 +1005,7 @@ xmlSchemaAddElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	if (val != 0) {
 	    ctxt->nberrors++;
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
-		ctxt->error(ctxt->userData, "Could not add element %s\n",
+		ctxt->error(ctxt->userData, "Element %s already defined\n",
 			    name);
 	    xmlFree((char *) ret->name);
 	    xmlFree(ret);
@@ -1040,7 +1055,57 @@ xmlSchemaAddType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (val != 0) {
         ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
-            ctxt->error(ctxt->userData, "Could not add type %s\n", name);
+            ctxt->error(ctxt->userData, "Type %s already defined\n", name);
+        xmlFree((char *) ret->name);
+        xmlFree(ret);
+        return (NULL);
+    }
+    ret->minOccurs = 1;
+    ret->maxOccurs = 1;
+
+    return (ret);
+}
+
+/**
+ * xmlSchemaAddGroup:
+ * @ctxt:  a schema validation context
+ * @schema:  the schema being built
+ * @name:  the group name
+ *
+ * Add an XML schema Group definition
+ *
+ * Returns the new struture or NULL in case of error
+ */
+static xmlSchemaTypePtr
+xmlSchemaAddGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
+                 const xmlChar * name)
+{
+    xmlSchemaTypePtr ret = NULL;
+    int val;
+
+    if ((ctxt == NULL) || (schema == NULL) || (name == NULL))
+        return (NULL);
+
+    if (schema->groupDecl == NULL)
+        schema->groupDecl = xmlHashCreate(10);
+    if (schema->groupDecl == NULL)
+        return (NULL);
+
+    ret = (xmlSchemaTypePtr) xmlMalloc(sizeof(xmlSchemaType));
+    if (ret == NULL) {
+        ctxt->nberrors++;
+        if ((ctxt != NULL) && (ctxt->error != NULL))
+            ctxt->error(ctxt->userData, "Out of memory\n");
+        return (NULL);
+    }
+    memset(ret, 0, sizeof(xmlSchemaType));
+    ret->name = xmlStrdup(name);
+    val = xmlHashAddEntry2(schema->groupDecl, name, schema->targetNamespace,
+                           ret);
+    if (val != 0) {
+        ctxt->nberrors++;
+        if ((ctxt != NULL) && (ctxt->error != NULL))
+            ctxt->error(ctxt->userData, "Group %s already defined\n", name);
         xmlFree((char *) ret->name);
         xmlFree(ret);
         return (NULL);
@@ -1808,6 +1873,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                                 schema->targetNamespace);
     else
         ret = xmlSchemaAddElement(ctxt, schema, name, namespace);
+    ret->node = node;
     if (namespace != NULL)
         xmlFree(namespace);
     if (ret == NULL) {
@@ -2118,7 +2184,7 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	snprintf(buf, 99, "anongroup%d", ctxt->counter++ + 1);
 	name = xmlStrdup((xmlChar *) buf);
     }
-    type = xmlSchemaAddType(ctxt, schema, name);
+    type = xmlSchemaAddGroup(ctxt, schema, name);
     if (type == NULL)
         return (NULL);
     type->node = node;
@@ -3456,6 +3522,8 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 		xmlSchemaBuildAContentModel(type->subtypes, ctxt, name);
 	    break;
 	case XML_SCHEMA_TYPE_GROUP:
+	    if (type->subtypes == NULL) {
+	    }
 	case XML_SCHEMA_TYPE_COMPLEX:
 	case XML_SCHEMA_TYPE_COMPLEX_CONTENT:
 	    if (type->subtypes != NULL)
@@ -3470,10 +3538,11 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 }
 /**
  * xmlSchemaBuildContentModel:
- * @typeDecl:  the schema type definition
+ * @elem:  the element
  * @ctxt:  the schema parser context
+ * @name:  the element name
  *
- * Fixes the content model of the element.
+ * Builds the content model of the element.
  */
 static void
 xmlSchemaBuildContentModel(xmlSchemaElementPtr elem,
@@ -3507,19 +3576,29 @@ xmlSchemaBuildContentModel(xmlSchemaElementPtr elem,
     xmlSchemaBuildAContentModel(elem->subtypes, ctxt, name);
     xmlAutomataSetFinalState(ctxt->am, ctxt->state);
     elem->contModel = xmlAutomataCompile(ctxt->am);
-    if (!xmlAutomataIsDeterminist(ctxt->am)) {
-	xmlGenericError(xmlGenericErrorContext,
+    if (elem->contModel == NULL) {
+	xmlSchemaErrorContext(ctxt, NULL, elem->node, NULL);
+	if ((ctxt != NULL) && (ctxt->error != NULL))
+	    ctxt->error(ctxt->userData,
+			"failed to compile %s content model\n",
+			name);
+	ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
+	ctxt->nberrors++;
+    } else if (xmlRegexpIsDeterminist(elem->contModel) != 1) {
+	xmlSchemaErrorContext(ctxt, NULL, elem->node, NULL);
+	if ((ctxt != NULL) && (ctxt->error != NULL))
+	    ctxt->error(ctxt->userData,
 			"Content model of %s is not determinist:\n", name);
 	ctxt->err = XML_SCHEMAS_ERR_NOTDETERMINIST;
-	ctxt->state = NULL;
+	ctxt->nberrors++;
     } else {
 #ifdef DEBUG_CONTENT_REGEXP
 	xmlGenericError(xmlGenericErrorContext,
 			"Content model of %s:\n", name);
 	xmlRegexpPrint(stderr, elem->contModel);
 #endif
-	ctxt->state = NULL;
     }
+    ctxt->state = NULL;
     xmlFreeAutomata(ctxt->am);
     ctxt->am = NULL;
 }

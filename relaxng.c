@@ -2659,9 +2659,9 @@ xmlRelaxNGInitTypes(void) {
  */
 void	
 xmlRelaxNGCleanupTypes(void) {
+    xmlSchemaCleanupTypes();
     if (xmlRelaxNGTypeInitialized == 0)
 	return;
-    xmlSchemaCleanupTypes();
     xmlHashFree(xmlRelaxNGRegisteredTypes, (xmlHashDeallocator)
 	        xmlRelaxNGFreeTypeLibrary);
     xmlRelaxNGTypeInitialized = 0;

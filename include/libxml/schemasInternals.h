@@ -342,6 +342,7 @@ struct _xmlSchema {
     xmlHashTablePtr schemasImports;
 
     void *_private;	/* unused by the library for users or bindings */
+    xmlHashTablePtr groupDecl;
 };
 
 void	xmlSchemaFreeType	(xmlSchemaTypePtr type);

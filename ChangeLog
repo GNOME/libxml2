@@ -1,3 +1,11 @@
+Mon Jun  2 21:56:15 MVT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c xmlschemas.c include/libxml/schemasInternals.h: commiting
+	  some work done while in the Maldives (hence the timezone on the
+	  laptop !)
+	* result/schemas/length3* test/schemas/deter0_*
+	  test/schemas/group0_*: some tests added too
+
 Mon Jun  2 15:34:17 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: small fix

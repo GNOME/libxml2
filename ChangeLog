@@ -1,3 +1,7 @@
+Sun Aug 22 16:07:20 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: fix a problem on last commit
+
 Sun Aug 22 15:16:53 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c xpath.c include/libxml/xpath.h 

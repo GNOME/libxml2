@@ -3086,6 +3086,7 @@ libxml_xmlSchemaSetValidErrors(ATTRIBUTE_UNUSED PyObject * self, PyObject * args
 	return(py_retval);
 }
 
+#if 0
 PyObject *
 libxml_xmlSchemaFreeValidCtxt(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
@@ -3112,6 +3113,7 @@ libxml_xmlSchemaFreeValidCtxt(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 	Py_INCREF(Py_None);
 	return(Py_None);
 }
+#endif
 
 #endif
 

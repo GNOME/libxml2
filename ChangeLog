@@ -1,3 +1,10 @@
+Wed Mar 31 09:50:32 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* Makefile.am: added PYTHONPATH to python tests for Schemas
+	  and RelaxNG
+	* test/xsdtest/xsdtestsuite.xml: added testfile for
+	  SchemasPythonTests
+	  
 Mon Mar 29 16:56:49 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/examples.xsl doc/examples/index.html: added

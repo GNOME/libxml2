@@ -246,7 +246,7 @@ class xmlCore:
     # Serialization routines, the optional arguments have the following
     # meaning:
     #     encoding: string to ask saving in a specific encoding
-    #     indent: if 1 the serializer is asked to indent the output
+    #     format: if 1 the serializer is asked to indent the output
     #
     def serialize(self, encoding = None, format = 0):
         return libxml2mod.serializeNode(self._o, encoding, format)

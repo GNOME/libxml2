@@ -28,3 +28,4 @@ testHTML
 testSAX
 testXPath
 libxml-2.0.pc
+xmlversion.h

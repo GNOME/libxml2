@@ -43,7 +43,8 @@ LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@
 
 man_MANS = xmllint.1 xml-config.1 libxml.4
 
-m4datadir = $(datadir)/aclocal                                                  m4data_DATA = libxml.m4
+m4datadir = $(datadir)/aclocal
+m4data_DATA = libxml.m4
 
 xmllint_SOURCES=xmllint.c
 xmllint_LDFLAGS = 

@@ -1,3 +1,9 @@
+Thu Jan  2 13:57:07 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in python/Makefile.am python/drv_libxml2.py:
+	  integrated drv_libxml2.py Python xml.sax driver from Stéphane Bidoul
+	  based on the python XmlTextReader interface.
+
 Wed Jan  1 22:05:40 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: backing out one change in the last patch which broke the

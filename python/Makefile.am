@@ -19,6 +19,7 @@ EXTRA_DIST = 			\
 	generator.py		\
 	libxml_wrap.h		\
 	libxml.py		\
+	drv_libxml.py		\
 	libxml2-python-api.xml	\
 	$(DOCS)
 
@@ -42,6 +43,7 @@ libxml2.py: $(srcdir)/libxml.py $(srcdir)/libxml2class.py
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(libdir)/python${PYTHON_VERSION}/site-packages
 	@INSTALL@ -m 0644 libxml2.py $(DESTDIR)$(libdir)/python${PYTHON_VERSION}/site-packages
+	@INSTALL@ -m 0644 drv_libxml2.py $(DESTDIR)$(libdir)/python${PYTHON_VERSION}/site-packages
 	$(mkinstalldirs) $(DESTDIR)$(DOCS_DIR)
 	@(for doc in $(DOCS) ; \
 	   do @INSTALL@ -m 0644 $$doc $(DESTDIR)$(DOCS_DIR) ; done)

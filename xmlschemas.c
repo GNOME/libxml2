@@ -13100,7 +13100,11 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
  * @warn: the warning function
  * @ctx: the functions context
  *
- * Set the error and warning callback informations
+ * Set the callback functions for errors and warning found while
+ * validating a document using the provided validation context.
+ * These function will be passed only a basic error string that doesn't
+ * include various useful things, such as line numbers.
+ * For a more useful API, see xmlSetStructuredErrorFunc().
  */
 void
 xmlSchemaSetValidErrors(xmlSchemaValidCtxtPtr ctxt,

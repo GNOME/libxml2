@@ -102,6 +102,7 @@ initGenericErrorDefaultFunc(xmlGenericErrorFunc * handler)
  * be passed as first argument to @handler
  * One can simply force messages to be emitted to another FILE * than
  * stderr by setting @ctx to this file handle and @handler to NULL.
+ * For multi-threaded applications, this must be set separately for each thread.
  */
 void
 xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
@@ -122,6 +123,7 @@ xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
  * This simply means that @handler will be called for subsequent
  * error messages while not parsing nor validating. And @ctx will
  * be passed as first argument to @handler
+ * For multi-threaded applications, this must be set separately for each thread.
  */
 void
 xmlSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {

@@ -523,6 +523,10 @@ xmlDtdDumpOutput(xmlSaveCtxtPtr ctxt, xmlDtdPtr dtd) {
 	return;
     }
     xmlOutputBufferWrite(buf, 3, " [\n");
+    /* Dump the notations first they are not in the DTD children list */
+    if (dtd->notations != NULL) {
+        xmlDumpNotationTable(buf->buffer, (xmlNotationTablePtr) dtd->notations);
+    }
     format = ctxt->format;
     level = ctxt->level;
     doc = ctxt->doc;

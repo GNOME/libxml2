@@ -1,3 +1,15 @@
+Sat Aug 14 13:18:57 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: added a dumb rule to able to compile tst.c
+	  when people submit a sample test program
+	* xmlschemas.c: applied small patch from Eric Haszlakiewicz
+	  to document xmlSchemasSetValidErrors() limitations, #141827
+	* error.c: Add information in generic and structured error
+	  setter functions that this need to be done per thread #144308
+	* xmlsave.c: fixed bug whith missing NOTATION(s) serialization
+	  bug #144162
+	* doc/xmllint.xml: typo fix #144840
+
 Tue Aug 10 07:19:31 PDT 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in xmlregexp.c xmlschemas.c xmlschemastypes.c

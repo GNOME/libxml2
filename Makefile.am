@@ -1000,3 +1000,6 @@ install-data-local:
 	-@INSTALL@ -m 0644 $(srcdir)/testSAX.c $(DESTDIR)$(EXAMPLES_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/testHTML.c $(DESTDIR)$(EXAMPLES_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/testXPath.c $(DESTDIR)$(EXAMPLES_DIR)
+
+tst: tst.c
+	$(CC) $(CFLAGS) -Iinclude -o tst tst.c .libs/libxml2.a -lpthread -lm -lz

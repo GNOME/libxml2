@@ -457,7 +457,7 @@
       <varlistentry>
 	<term><option>--chkregister</option></term>
 	<listitem>
-	  <simpara>Turn on node registration. Useful for developeres testing
+	  <simpara>Turn on node registration. Useful for developers testing
 	  libxml2 node tracking code.</simpara>
 	</listitem>
       </varlistentry>

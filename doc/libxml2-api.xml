@@ -1155,6 +1155,10 @@
      <exports symbol='xmlDefaultSAXHandler'/>
      <exports symbol='xmlDefaultSAXLocator'/>
      <exports symbol='xmlDefaultSAXLocator'/>
+     <exports symbol='xmlDeregisterNodeDefault'/>
+     <exports symbol='xmlDeregisterNodeDefaultValue'/>
+     <exports symbol='xmlDeregisterNodeDefaultValue'/>
+     <exports symbol='xmlDeregisterNodeFunc'/>
      <exports symbol='xmlDoValidityCheckingDefaultValue'/>
      <exports symbol='xmlDoValidityCheckingDefaultValue'/>
      <exports symbol='xmlFree'/>
@@ -1188,6 +1192,10 @@
      <exports symbol='xmlPedanticParserDefaultValue'/>
      <exports symbol='xmlRealloc'/>
      <exports symbol='xmlRealloc'/>
+     <exports symbol='xmlRegisterNodeDefault'/>
+     <exports symbol='xmlRegisterNodeDefaultValue'/>
+     <exports symbol='xmlRegisterNodeDefaultValue'/>
+     <exports symbol='xmlRegisterNodeFunc'/>
      <exports symbol='xmlSaveNoEmptyTags'/>
      <exports symbol='xmlSaveNoEmptyTags'/>
      <exports symbol='xmlSubstituteEntitiesDefaultValue'/>
@@ -2634,6 +2642,7 @@ actually an xmlCharEncoding'/>
       <field name='SystemID' type='const xmlChar *' info=' URI for a SYSTEM or PUBLIC Entity'/>
       <field name='nexte' type='struct _xmlEntity *' info=' unused'/>
       <field name='URI' type='const xmlChar *' info=' the full URI as computed'/>
+      <field name='owner' type='int' info=' does the entity own the childrens'/>
     </struct>
     <typedef name='xmlEntityPtr' file='tree' type='xmlEntity *'/>
     <typedef name='xmlEntityType' file='entities' type='enum'/>
@@ -2668,6 +2677,8 @@ actually an xmlCharEncoding'/>
       <field name='xmlSaveNoEmptyTags' type='int' info=''/>
       <field name='xmlIndentTreeOutput' type='int' info=''/>
       <field name='xmlTreeIndentString' type='const char *' info=''/>
+      <field name='xmlRegisterNodeDefaultValue' type='xmlRegisterNodeFunc' info=''/>
+      <field name='xmlDeregisterNodeDefaultValue' type='xmlDeregisterNodeFunc' info=''/>
     </struct>
     <typedef name='xmlGlobalStatePtr' file='globals' type='xmlGlobalState *'/>
     <struct name='xmlHashTable' file='hash' type='struct _xmlHashTable'/>
@@ -3040,6 +3051,7 @@ actually an xmlCharEncoding'/>
     <variable name='xmlDefaultBufferSize' file='globals' type='int'/>
     <variable name='xmlDefaultSAXHandler' file='globals' type='xmlSAXHandler'/>
     <variable name='xmlDefaultSAXLocator' file='globals' type='xmlSAXLocator'/>
+    <variable name='xmlDeregisterNodeDefaultValue' file='globals' type='xmlDeregisterNodeFunc'/>
     <variable name='xmlDoValidityCheckingDefaultValue' file='globals' type='int'/>
     <variable name='xmlFree' file='globals' type='xmlFreeFunc'/>
     <variable name='xmlGenericError' file='globals' type='xmlGenericErrorFunc'/>
@@ -3055,6 +3067,7 @@ actually an xmlCharEncoding'/>
     <variable name='xmlParserVersion' file='parser' type='const char *'/>
     <variable name='xmlPedanticParserDefaultValue' file='globals' type='int'/>
     <variable name='xmlRealloc' file='globals' type='xmlReallocFunc'/>
+    <variable name='xmlRegisterNodeDefaultValue' file='globals' type='xmlRegisterNodeFunc'/>
     <variable name='xmlSaveNoEmptyTags' file='globals' type='int'/>
     <variable name='xmlStringComment' file='parserInternals' type='const xmlCharxmlStringComment[]'/>
     <variable name='xmlStringText' file='parserInternals' type='const xmlCharxmlStringText[]'/>
@@ -4861,6 +4874,16 @@ actually an xmlCharEncoding'/>
       <return type='int' info='0 in case of success, -1 in case of error'/>
       <arg name='alias' type='const char *' info='the alias name as parsed, in UTF-8 format (ASCII actually)'/>
     </function>
+    <function name='xmlDeregisterNodeDefault' file='globals'>
+      <info></info>
+      <return type='xmlDeregisterNodeFunc' info='the previous value of the deregistration function'/>
+      <arg name='func' type='xmlDeregisterNodeFunc' info='function pointer to the new DeregisterNodeFunc'/>
+    </function>
+    <functype name='xmlDeregisterNodeFunc' file='globals'>
+      <info></info>
+      <return type='void'/>
+      <arg name='node' type='xmlNodePtr' info=''/>
+    </functype>
     <function name='xmlDetectCharEncoding' file='encoding'>
       <info>Guess the encoding of the entity using the first bytes of the entity content accordingly of the non-normative appendix F of the XML-1.0 recommendation.</info>
       <return type='xmlCharEncoding' info='one of the XML_CHAR_ENCODING_... values.'/>
@@ -7356,6 +7379,16 @@ actually an xmlCharEncoding'/>
       <arg name='readFunc' type='xmlInputReadCallback' info='the xmlInputReadCallback'/>
       <arg name='closeFunc' type='xmlInputCloseCallback' info='the xmlInputCloseCallback'/>
     </function>
+    <function name='xmlRegisterNodeDefault' file='globals'>
+      <info></info>
+      <return type='xmlRegisterNodeFunc' info='the previous value of the registration function'/>
+      <arg name='func' type='xmlRegisterNodeFunc' info='function pointer to the new RegisterNodeFunc'/>
+    </function>
+    <functype name='xmlRegisterNodeFunc' file='globals'>
+      <info></info>
+      <return type='void'/>
+      <arg name='node' type='xmlNodePtr' info=''/>
+    </functype>
     <function name='xmlRegisterOutputCallbacks' file='xmlIO'>
       <info>Register a new set of I/O callback for handling output.</info>
       <return type='int' info='the registered handler number or -1 in case of error'/>

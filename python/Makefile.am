@@ -19,7 +19,7 @@ EXTRA_DIST = 			\
 	generator.py		\
 	libxml_wrap.h		\
 	libxml.py		\
-	drv_libxml.py		\
+	drv_libxml2.py		\
 	libxml2-python-api.xml	\
 	$(DOCS)
 

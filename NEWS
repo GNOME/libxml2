@@ -17,6 +17,25 @@ to test those
 
 
 
+2.5.0: Jan 6 2003:
+   - New XmltextReader interface based on C#
+    API (with help of Stéphane Bidoul)
+   - Windows: more exports, including the new API (Igor)
+   - XInclude fallback fix
+   - Python: bindings for the new API, packaging (Stéphane Bidoul),
+    drv_libxml2.py Python xml.sax driver (Stéphane Bidoul), fixes, speedup
+    and iterators for Python-2.2 (Hannu Krosing)
+   - Tutorial fixes (john Fleck and Niraj Tolia) xmllint man update
+  (John)
+   - Fix an XML parser bug raised by Vyacheslav Pindyura
+   - Fix for VMS serialization (Nigel Hall) and config (Craig A. Berry)
+   - Entities handling fixes
+   - new API to optionally track node creation and deletion (Lukas
+  Schroeder)
+   - Added documentation for the XmltextReader interface and some XML guidelines
+
+
+
 2.4.30: Dec 12 2002:
    - 2.4.29 broke the python bindings, rereleasing
    - Improvement/fixes of the XML API generator, and couple of minor code

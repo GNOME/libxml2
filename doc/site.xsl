@@ -128,7 +128,9 @@
           </xsl:element>
         </li>
       </xsl:for-each>
+      <li><a href="xmlreader.html">The Reader Interface</a></li>
       <li><a href="tutorial/index.html">Tutorial</a></li>
+      <li><a href="guidelines.html">XML Guidelines</a></li>
       <li><a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a></li>
     </ul>
   </xsl:variable>

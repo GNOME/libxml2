@@ -901,7 +901,7 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
 		ctxt->sax->error(ctxt->userData, 
 		     "Empty namespace name for prefix %s\n", name);
 	}
-	if (value[0] != 0) {
+	if ((ctxt->pedantic != 0) && (value[0] != 0)) {
 	    xmlURIPtr uri;
 
 	    uri = xmlParseURI((const char *)value);

@@ -55,7 +55,9 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="DOM.html">DOM Principles</a></li>
 <li><a href="example.html">A real example</a></li>
 <li><a href="contribs.html">Contributions</a></li>
+<li><a href="xmlreader.html">The Reader Interface</a></li>
 <li><a href="tutorial/index.html">Tutorial</a></li>
+<li><a href="guidelines.html">XML Guidelines</a></li>
 <li>
 <a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a>
 </li>
@@ -100,6 +102,25 @@ to test those</p>
 <ul>
 <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
     Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a>
+</li>
+</ul>
+<h3>2.5.0: Jan 6 2003</h3>
+<ul>
+<li>New <a href="xmlreader.html">XmltextReader interface</a> based on C#
+    API (with help of Stéphane Bidoul)</li>
+  <li>Windows: more exports, including the new API (Igor)</li>
+  <li>XInclude fallback fix</li>
+  <li>Python: bindings for the new API, packaging (Stéphane Bidoul),
+    drv_libxml2.py Python xml.sax driver (Stéphane Bidoul), fixes, speedup
+    and iterators for Python-2.2 (Hannu Krosing)</li>
+  <li>Tutorial fixes (john Fleck and Niraj Tolia) xmllint man update
+  (John)</li>
+  <li>Fix an XML parser bug raised by Vyacheslav Pindyura</li>
+  <li>Fix for VMS serialization (Nigel Hall) and config (Craig A. Berry)</li>
+  <li>Entities handling fixes</li>
+  <li>new API to optionally track node creation and deletion (Lukas
+  Schroeder)</li>
+  <li>Added documentation for the XmltextReader interface and some <a href="guidelines.html">XML guidelines</a>
 </li>
 </ul>
 <h3>2.4.30: Dec 12 2002</h3>

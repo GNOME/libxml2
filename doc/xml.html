@@ -541,13 +541,13 @@ mirror in Austria</a>. (NOTE that you need both the <a
 href="http://rpmfind.net/linux/RPM/libxml2.html">libxml(2)</a> and <a
 href="http://rpmfind.net/linux/RPM/libxml2-devel.html">libxml(2)-devel</a>
 packages installed to compile applications using libxml.) <a
-href="mailto:igor@zlatkovic.com">Igor  Zlatkovic</a> is now the
-maintainer of the Windows port, <a
-href="http://www.zlatkovic.com/projects/libxml/index.html">he
-provides binaries</a>. <a href="mailto:Gary.Pennington@sun.com">Gary
-Pennington</a> provides <a href="http://garypennington.net/libxml2/">Solaris
-binaries</a>. <a href="mailto:Steve.Ball@zveno.com">Steve Ball</a> provides
-<a href="http://www.zveno.com/open_source/libxml2xslt.html">Mac Os X
+href="mailto:igor@zlatkovic.com">Igor  Zlatkovic</a> is now the maintainer of
+the Windows port, <a
+href="http://www.zlatkovic.com/projects/libxml/index.html">he provides
+binaries</a>. <a href="mailto:Gary.Pennington@sun.com">Gary Pennington</a>
+provides <a href="http://garypennington.net/libxml2/">Solaris binaries</a>.
+<a href="mailto:Steve.Ball@zveno.com">Steve Ball</a> provides <a
+href="http://www.zveno.com/open_source/libxml2xslt.html">Mac Os X
 binaries</a>.</p>
 
 <p><a name="Snapshot">Snapshot:</a></p>
@@ -587,6 +587,26 @@ to test those</p>
 <ul>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
     Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a></li>
+</ul>
+
+<h3>2.5.0: Jan 6 2003</h3>
+<ul>
+  <li>New <a href="xmlreader.html">XmltextReader interface</a> based on C#
+    API (with help of Stéphane Bidoul)</li>
+  <li>Windows: more exports, including the new API (Igor)</li>
+  <li>XInclude fallback fix</li>
+  <li>Python: bindings for the new API, packaging (Stéphane Bidoul),
+    drv_libxml2.py Python xml.sax driver (Stéphane Bidoul), fixes, speedup
+    and iterators for Python-2.2 (Hannu Krosing)</li>
+  <li>Tutorial fixes (john Fleck and Niraj Tolia) xmllint man update
+  (John)</li>
+  <li>Fix an XML parser bug raised by Vyacheslav Pindyura</li>
+  <li>Fix for VMS serialization (Nigel Hall) and config (Craig A. Berry)</li>
+  <li>Entities handling fixes</li>
+  <li>new API to optionally track node creation and deletion (Lukas
+  Schroeder)</li>
+  <li>Added documentation for the XmltextReader interface and some <a
+    href="guidelines.html">XML guidelines</a></li>
 </ul>
 
 <h3>2.4.30: Dec 12 2002</h3>
@@ -1561,15 +1581,16 @@ or libxslt wrappers or bindings:</p>
 <p>The distribution includes a set of Python bindings, which are guaranteed
 to be maintained as part of the library in the future, though the Python
 interface have not yet reached the maturity of the C API.</p>
+
 <p><a href="mailto:stephane.bidoul@softwareag.com">Stéphane Bidoul</a>
-maintains <a href="http://users.skynet.be/sbi/libxml-python/">a Windows
-port of the Python bindings</a>.
+maintains <a href="http://users.skynet.be/sbi/libxml-python/">a Windows port
+of the Python bindings</a>.</p>
 
 <p>Note to people interested in building bindings, the API is formalized as
 <a href="libxml2-api.xml">an XML API description file</a> which allows to
 automate a large part of the Python bindings, this includes function
-descriptions, enums, structures, typedefs, etc... The Python script used
-to build the bindings is python/generator.py in the source distribution.</p>
+descriptions, enums, structures, typedefs, etc... The Python script used to
+build the bindings is python/generator.py in the source distribution.</p>
 
 <p>To install the Python bindings there are 2 options:</p>
 <ul>
@@ -2771,6 +2792,8 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
 
 
 
+
+
 } </pre>
   </li>
   <li>And then use it to save the document:
@@ -3900,10 +3923,10 @@ Gnome CVS base under gnome-xml/example</p>
     patches, Gary Pennington worked on the validation API, threading support
     and Solaris port.</li>
   <li>John Fleck helps maintaining the documentation and man pages.</li>
-  <li><a href="mailto:igor@zlatkovic.com">Igor  Zlatkovic</a> is now
-    the maintainer of the Windows port, <a
-    href="http://www.zlatkovic.com/projects/libxml/index.html">he
-    provides binaries</a></li>
+  <li><a href="mailto:igor@zlatkovic.com">Igor  Zlatkovic</a> is now the
+    maintainer of the Windows port, <a
+    href="http://www.zlatkovic.com/projects/libxml/index.html">he provides
+    binaries</a></li>
   <li><a href="mailto:Gary.Pennington@sun.com">Gary Pennington</a> provides
     <a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
   <li><a

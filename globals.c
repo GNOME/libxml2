@@ -459,9 +459,10 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 }
 
 /**
- * xmlRegisterNodeDefault
+ * xmlRegisterNodeDefault:
  * @func: function pointer to the new RegisterNodeFunc
  *
+ * Returns the previous value of the registration function
  */
 xmlRegisterNodeFunc
 xmlRegisterNodeDefault(xmlRegisterNodeFunc func)
@@ -473,9 +474,10 @@ xmlRegisterNodeDefault(xmlRegisterNodeFunc func)
 }
 
 /**
- * xmlDeegisterNodeDefault
+ * xmlDeregisterNodeDefault:
  * @func: function pointer to the new DeregisterNodeFunc
  *
+ * Returns the previous value of the deregistration function
  */
 xmlDeregisterNodeFunc
 xmlDeregisterNodeDefault(xmlDeregisterNodeFunc func)

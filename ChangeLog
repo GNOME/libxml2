@@ -1,3 +1,8 @@
+Wed Aug 14 10:47:46 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: xmlSAXUserParseMemory() really ought to fail if
+	  the caller don't pass a SAX callback block.
+
 Wed Aug 14 10:29:02 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied the same fix for the XML-1.0 namespace to

@@ -3732,6 +3732,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 			cur = cur->children->children;
 			continue;
 		    }
+		    break;
 		case XML_TEXT_NODE:
 		    if (xmlIsBlankNode(cur))
 			break;

@@ -518,7 +518,7 @@ xmlMemShow(FILE *fp, int nr)
 	fprintf(fp,"NUMBER   SIZE  TYPE   WHERE\n");
 	p = memlist;
 	while ((p) && nr > 0) {
-	      fprintf(fp,"%6lu %6u ",p->mh_number,p->mh_size);
+	      fprintf(fp,"%6lu %6lu ",p->mh_number,(unsigned long)p->mh_size);
 	    switch (p->mh_type) {
 	       case STRDUP_TYPE:fprintf(fp,"strdup()  in ");break;
 	       case MALLOC_TYPE:fprintf(fp,"malloc()  in ");break;
@@ -551,7 +551,7 @@ xmlMemDisplay(FILE *fp)
 {
 #ifdef MEM_LIST
     MEMHDR *p;
-    int     idx;
+    unsigned idx;
     int     nb = 0;
 #if defined(HAVE_LOCALTIME) && defined(HAVE_STRFTIME)
     time_t currentTime;
@@ -571,7 +571,8 @@ xmlMemDisplay(FILE *fp)
     idx = 0;
     p = memlist;
     while (p) {
-	  fprintf(fp,"%-5u  %6lu %6u ",idx++,p->mh_number,p->mh_size);
+	  fprintf(fp,"%-5u  %6lu %6lu ",idx++,p->mh_number,
+		  (unsigned long)p->mh_size);
         switch (p->mh_type) {
            case STRDUP_TYPE:fprintf(fp,"strdup()  in ");break;
            case MALLOC_TYPE:fprintf(fp,"malloc()  in ");break;

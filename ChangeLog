@@ -1,3 +1,8 @@
+Wed Feb 13 22:13:33 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmemory.c: Jesse Perry provided a patch to remove a few
+	  warning on alpha/Tru64
+
 Wed Feb 13 14:30:49 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/entities.h: fixing a comment

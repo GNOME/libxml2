@@ -672,9 +672,9 @@ def nameFixup(name, classe, type, file):
     elif name[0:20] == "xmlParserInputBuffer" and file != "python":
         func = name[20:]
         func = string.lower(func[0:1]) + func[1:]
-    elif name[0:9] == "xmlRegexp":
+    elif name[0:9] == "xmlRegexp" and file == "xmlregexp":
         func = "regexp" + name[9:]
-    elif name[0:6] == "xmlReg":
+    elif name[0:6] == "xmlReg" and file == "xmlregexp":
         func = "regexp" + name[6:]
     elif name[0:11] == "xmlACatalog":
         func = name[11:]

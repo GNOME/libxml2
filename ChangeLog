@@ -1,3 +1,8 @@
+Thu Sep 26 11:33:28 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml2class.txt: fixed a stupid error
+	  breaking the python API
+
 Thu Sep 26 00:31:46 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* trio.c trio.h triodef.h trionan.c trionan.h triop.h

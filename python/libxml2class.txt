@@ -123,7 +123,7 @@ dumpMemory()
 htmlCreatePushParser()
 htmlSAXParseFile()
 newNode()
-regexpisterErrorHandler()
+registerErrorHandler()
 setEntityLoader()
 
 # functions from module tree
@@ -158,9 +158,9 @@ iOFTPMatch()
 iOHTTPMatch()
 normalizeWindowsPath()
 parserGetDirectory()
-regexpisterDefaultInputCallbacks()
-regexpisterDefaultOutputCallbacks()
-regexpisterHTTPPostCallbacks()
+registerDefaultInputCallbacks()
+registerDefaultOutputCallbacks()
+registerHTTPPostCallbacks()
 
 # functions from module xmlregexp
 regexpCompile()
@@ -734,7 +734,7 @@ Class xpathContext()
     setContextNode()
 
     # functions from module python
-    regexpisterXPathFunction()
+    registerXPathFunction()
 
     # functions from module xpath
     xpathEval()

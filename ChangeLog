@@ -2,6 +2,8 @@ Wed Dec 22 12:20:53 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: fix for PIs name starting with xml
 	* tree.c: fixed a potential problem with || and && ops
+	* *.c, configure.in win32config.h.in : generate win32config.h for
+	  those on the Other Side !
 
 Tue Dec 21 17:22:17 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 

@@ -1,3 +1,14 @@
+Fri Apr 20 14:52:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.[ch] tree.h: worked *hard* to get non-determinist content
+	  validation without using an ugly NFA -> DFA algo in the source.
+	  Made a specific algorithm easier to maintain, using a single
+	  stack and without recursion.
+	* Makefile.am test/VCM/*.xml: added more tests to "make Validtests"
+	* hash.c: made the growing routine static
+	* tree.h parser.c: added the parent information to an
+	  xmlElementContent node.
+
 Wed Apr 18 23:33:11 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* SAX.c parser.c xpath.c: generating IDs when not validating

@@ -296,6 +296,7 @@ XPtrtests : testXPath
 	  fi ; fi ; done ; fi ; done)
 
 XIncludetests : xmllint
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## XInclude regression tests"
 	@echo "##"
@@ -351,6 +352,17 @@ SAXtests : testSAX
 
 
 Validtests : xmllint
+	@(rm -f .memdump ; touch .memdump)
+	@echo "##"
+	@echo "## Valid documents regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/VCM/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	      echo Testing $$name ; \
+	      $(top_builddir)/xmllint --valid --noout $$i ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	  fi ; done ; exit 0)
 	@echo "##"
 	@echo "## Validity checking regression tests"
 	@echo "##"
@@ -363,11 +375,12 @@ Validtests : xmllint
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/xmllint --noout --valid $$i 2> result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/VC/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 	@echo "##"
-	@echo "## Valid documents regression tests"
+	@echo "## General documents valid regression tests"
 	@echo "##"
 	@(for i in $(srcdir)/test/valid/* ; do \
 	  name=`basename $$i`; \
@@ -378,6 +391,7 @@ Validtests : xmllint
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/xmllint --valid $$i > result.$$name 2>error.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/valid/$$name result.$$name ; \
 	      diff $(srcdir)/result/valid/$$name.err error.$$name ; \
 	      rm result.$$name error.$$name ; \

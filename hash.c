@@ -125,7 +125,7 @@ xmlHashCreate(int size) {
  *
  * Returns 0 in case of success, -1 in case of failure
  */
-int
+static int
 xmlHashGrow(xmlHashTablePtr table, int size) {
     unsigned long key;
     int oldsize, i;

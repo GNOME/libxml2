@@ -3926,12 +3926,18 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 	        ret = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
 		if (ret == NULL) return(NULL);
 		ret->c1 = cur;
+		if (cur != NULL)
+		    cur->parent = ret;
 		cur = ret;
 	    } else {
 	        n = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
 		if (n == NULL) return(NULL);
 		n->c1 = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
+		if (n->c1 != NULL)
+		    n->c1->parent = n;
 	        cur->c2 = n;
+		if (n != NULL)
+		    n->parent = cur;
 		cur = n;
 		xmlFree(elem);
 	    }
@@ -3954,6 +3960,8 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 	    if (elem != NULL) {
 		cur->c2 = xmlNewElementContent(elem,
 		                               XML_ELEMENT_CONTENT_ELEMENT);
+		if (cur->c2 != NULL)
+		    cur->c2->parent = cur;
 	        xmlFree(elem);
             }
 	    ret->ocur = XML_ELEMENT_CONTENT_MULT;
@@ -4098,10 +4106,16 @@ xmlParseElementChildrenContentDecl
 	    }
 	    if (last == NULL) {
 		op->c1 = ret;
+		if (ret != NULL)
+		    ret->parent = op;
 		ret = cur = op;
 	    } else {
 	        cur->c2 = op;
+		if (op != NULL)
+		    op->parent = cur;
 		op->c1 = last;
+		if (last != NULL)
+		    last->parent = op;
 		cur =op;
 		last = NULL;
 	    }
@@ -4143,10 +4157,16 @@ xmlParseElementChildrenContentDecl
 	    }
 	    if (last == NULL) {
 		op->c1 = ret;
+		if (ret != NULL)
+		    ret->parent = op;
 		ret = cur = op;
 	    } else {
 	        cur->c2 = op;
+		if (op != NULL)
+		    op->parent = cur;
 		op->c1 = last;
+		if (last != NULL)
+		    last->parent = op;
 		cur =op;
 		last = NULL;
 	    }
@@ -4213,6 +4233,8 @@ xmlParseElementChildrenContentDecl
     }
     if ((cur != NULL) && (last != NULL)) {
         cur->c2 = last;
+	if (last != NULL)
+	    last->parent = cur;
     }
     ctxt->entity = ctxt->input;
     NEXT;
@@ -8883,7 +8905,6 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
-    int oldexternal = ctxt->external;
     int ret = 0;
 
     if (depth > 40) {

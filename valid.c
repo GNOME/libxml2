@@ -6586,6 +6586,14 @@ xmlValidGetPotentialChildren(xmlElementContent *ctree, const xmlChar **list,
    return(*len);
 }
 
+/*
+ * Dummy function to suppress messages while we try out valid elements
+ */
+static void xmlNoValidityErr(void *ctx ATTRIBUTE_UNUSED,
+                                const char *msg ATTRIBUTE_UNUSED, ...) {
+    return;
+}
+
 /**
  * xmlValidGetValidElements:
  * @prev:  an element to insert after
@@ -6631,13 +6639,14 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **names,
     
     xmlElement *element_desc;
 
-    memset(&vctxt, 0, sizeof (xmlValidCtxt));
-
     if (prev == NULL && next == NULL)
         return(-1);
 
     if (names == NULL) return(-1);
     if (max <= 0) return(-1);
+
+    memset(&vctxt, 0, sizeof (xmlValidCtxt));
+    vctxt.error = xmlNoValidityErr;	/* this suppresses err/warn output */
 
     nb_valid_elements = 0;
     ref_node = prev ? prev : next;

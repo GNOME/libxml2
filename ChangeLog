@@ -1,3 +1,10 @@
+Thu Jun 24 16:27:44 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* valid.c: suppressed warnings from within xmlValidGetValidElements
+	  (bug 144644)
+	* doc/examples/testWriter.c: corrected typo in comment for ISO-8859-1
+	  (bug 144245)
+
 Thu Jun 24 10:17:31 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* valid.c: implemented bugfix from Massimo Morara for DTD

@@ -1,3 +1,7 @@
+Tue Mar 27 00:51:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: fixed line number reporting on error
+
 Mon Mar 26 23:21:41 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: Sullivan and Darin found a parser bug,

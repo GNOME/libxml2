@@ -384,7 +384,7 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
  */
 int
 xmlParseCharRef(xmlParserCtxtPtr ctxt) {
-    int val = 0;
+    unsigned int val = 0;
     int count = 0;
 
     if (ctxt->token != 0) {
@@ -2438,6 +2438,8 @@ void
 xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
     const xmlChar *in;
     int nbchar = 0;
+    int line = ctxt->input->line;
+    int col = ctxt->input->col;
 
     SHRINK;
     GROW;
@@ -2491,6 +2493,8 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
 	} while ((*in >= 0x20) && (*in <= 0x7F));
 	nbchar = 0;
     }
+    ctxt->input->line = line;
+    ctxt->input->col = col;
     xmlParseCharDataComplex(ctxt, cdata);
 }
 

@@ -23,8 +23,7 @@ def errorHandler(ctx, str):
     global error_nr
     global error_msg
 
-    if string.find(str, "error:") >= 0:
-	error_nr = error_nr + 1
+    error_nr = error_nr + 1
     if len(error_msg) < 300:
         if len(error_msg) == 0 or error_msg[-1] == '\n':
 	    error_msg = error_msg + "   >>" + str
@@ -77,16 +76,17 @@ def testNotWf(filename, id):
     ctxt = libxml2.createFileParserCtxt(filename)
     if ctxt == None:
         return -1
-    ctxt.parseDocument()
+    ret = ctxt.parseDocument()
 
     try:
 	doc = ctxt.doc()
     except:
         doc = None
-    if error_nr == 0 or ctxt.wellFormed() != 0:
+    if doc != None:
+	doc.freeDoc()
+    if ret == 0 or ctxt.wellFormed() != 0:
         print "%s: error: Well Formedness error not detected" % (id)
 	log.write("%s: error: Well Formedness error not detected\n" % (id))
-	doc.freeDoc()
 	return 0
     return 1
 
@@ -102,16 +102,17 @@ def testNotWfEnt(filename, id):
     if ctxt == None:
         return -1
     ctxt.replaceEntities(1)
-    ctxt.parseDocument()
+    ret = ctxt.parseDocument()
 
     try:
 	doc = ctxt.doc()
     except:
         doc = None
-    if error_nr == 0 or ctxt.wellFormed() != 0:
+    if doc != None:
+	doc.freeDoc()
+    if ret == 0 or ctxt.wellFormed() != 0:
         print "%s: error: Well Formedness error not detected" % (id)
 	log.write("%s: error: Well Formedness error not detected\n" % (id))
-	doc.freeDoc()
 	return 0
     return 1
 
@@ -128,16 +129,17 @@ def testNotWfEntDtd(filename, id):
         return -1
     ctxt.replaceEntities(1)
     ctxt.loadSubset(1)
-    ctxt.parseDocument()
+    ret = ctxt.parseDocument()
 
     try:
 	doc = ctxt.doc()
     except:
         doc = None
-    if error_nr == 0 or ctxt.wellFormed() != 0:
+    if doc != None:
+	doc.freeDoc()
+    if ret == 0 or ctxt.wellFormed() != 0:
         print "%s: error: Well Formedness error not detected" % (id)
 	log.write("%s: error: Well Formedness error not detected\n" % (id))
-	doc.freeDoc()
 	return 0
     return 1
 
@@ -154,15 +156,17 @@ def testWfEntDtd(filename, id):
         return -1
     ctxt.replaceEntities(1)
     ctxt.loadSubset(1)
-    ctxt.parseDocument()
+    ret = ctxt.parseDocument()
 
     try:
 	doc = ctxt.doc()
     except:
         doc = None
-    if ctxt.wellFormed() == 0:
+    if doc == None or ret != 0 or ctxt.wellFormed() == 0:
         print "%s: error: wrongly failed to parse the document" % (id)
 	log.write("%s: error: wrongly failed to parse the document\n" % (id))
+	if doc != None:
+	    doc.freeDoc()
 	return 0
     if error_nr != 0:
         print "%s: warning: WF document generated an error msg" % (id)
@@ -185,12 +189,14 @@ def testError(filename, id):
         return -1
     ctxt.replaceEntities(1)
     ctxt.loadSubset(1)
-    ctxt.parseDocument()
+    ret = ctxt.parseDocument()
 
     try:
 	doc = ctxt.doc()
     except:
         doc = None
+    if doc != None:
+	doc.freeDoc()
     if ctxt.wellFormed() == 0:
         print "%s: warning: failed to parse the document but accepted" % (id)
 	log.write("%s: warning: failed to parse the document but accepte\n" % (id))
@@ -198,9 +204,7 @@ def testError(filename, id):
     if error_nr != 0:
         print "%s: warning: WF document generated an error msg" % (id)
 	log.write("%s: error: WF document generated an error msg\n" % (id))
-	doc.freeDoc()
 	return 2
-    doc.freeDoc()
     return 1
 
 def testInvalid(filename, id):
@@ -215,7 +219,7 @@ def testInvalid(filename, id):
     if ctxt == None:
         return -1
     ctxt.validate(1)
-    ctxt.parseDocument()
+    ret = ctxt.parseDocument()
 
     try:
 	doc = ctxt.doc()

@@ -1,3 +1,10 @@
+Mon Oct  6 10:16:30 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* check-xml-test-suite.py: fixing the script
+	* parser.c: replace sequences of RAW && NXT(.) == '.' with
+	  memcmp calls, seems to not break conformance, slightly inflate
+	  the size of the gcc generated code though.
+
 Sun Oct  5 23:30:48 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c parser.c valid.c include/libxml/parserInternals.h:

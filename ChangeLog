@@ -1,3 +1,8 @@
+Sat Mar 22 01:57:40 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fixed bug #108546 on long CDATA (or text nodes)
+	  reported by Edd Dumbill
+
 Sat Mar 23 01:00:24 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c parser.c parserInternals.c: patch from

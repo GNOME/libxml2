@@ -632,6 +632,45 @@ get_next_node:
 	if (reader->node == NULL)
 	    goto node_end;
     }
+    /*
+     * If we are in the middle of a piece of CDATA make sure it's finished
+     * Maybe calling a function checking that a non-character() callback was
+     * received would be cleaner for the loop exit.
+     */
+    if ((oldstate == XML_TEXTREADER_ELEMENT) &&
+	(reader->ctxt->instate == XML_PARSER_CDATA_SECTION)) {
+	while ((reader->ctxt->instate == XML_PARSER_CDATA_SECTION) &&
+	       (((reader->node->content == NULL) &&
+		 (reader->node->next != NULL) &&
+		 (reader->node->next->type == XML_CDATA_SECTION_NODE) &&
+		 (reader->node->next->next == NULL) &&
+		 (reader->node->parent->next == NULL)) ||
+	        ((reader->node->children != NULL) &&
+		 (reader->node->children->type == XML_CDATA_SECTION_NODE) &&
+		 (reader->node->children->next == NULL) &&
+		 (reader->node->children->next == NULL)))) {
+	    val = xmlTextReaderPushData(reader);
+	    if (val < 0)
+		return(-1);
+	}
+    }
+    if ((oldstate == XML_TEXTREADER_ELEMENT) &&
+	(reader->ctxt->instate == XML_PARSER_CONTENT)) {
+	while ((reader->ctxt->instate == XML_PARSER_CONTENT) &&
+	       (((reader->node->content == NULL) &&
+		 (reader->node->next != NULL) &&
+		 (reader->node->next->type == XML_TEXT_NODE) &&
+		 (reader->node->next->next == NULL) &&
+		 (reader->node->parent->next == NULL)) ||
+	        ((reader->node->children != NULL) &&
+		 (reader->node->children->type == XML_TEXT_NODE) &&
+		 (reader->node->children->next == NULL) &&
+		 (reader->node->children->next == NULL)))) {
+	    val = xmlTextReaderPushData(reader);
+	    if (val < 0)
+		return(-1);
+	}
+    }
     if (oldstate != XML_TEXTREADER_BACKTRACK) {
 	if ((reader->node->children != NULL) &&
 	    (reader->node->type != XML_ENTITY_REF_NODE) &&

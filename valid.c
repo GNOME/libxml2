@@ -27,6 +27,10 @@
 
 /* #define DEBUG_VALID_ALGO */
 
+#define TODO 								\
+    xmlGenericError(xmlGenericErrorContext,				\
+	    "Unimplemented block at %s:%d\n",				\
+            __FILE__, __LINE__);
 /*
  * Generic function for accessing stacks in the Validity Context
  */
@@ -385,27 +389,49 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 	    break;
 	case XML_ELEMENT_CONTENT_ELEMENT: {
 	    xmlAutomataStatePtr oldstate = ctxt->state;
+	    xmlChar *QName = NULL;
+	    const xmlChar *fname = content->name;
+
+	    if (content->prefix != NULL) {
+		int len;
+
+		len = xmlStrlen(content->name) + 
+		      xmlStrlen(content->prefix) + 2;
+		QName = xmlMalloc(len);
+		if (QName == NULL) {
+		    VERROR(ctxt->userData,
+			   "ContentModel %s : alloc failed\n", name);
+		    return(0);
+		}
+		snprintf((char *) QName, len, "%s:%s",
+			 (char *)content->prefix,
+			 (char *)content->name);
+		fname = QName;
+	    }
+
 	    switch (content->ocur) {
 		case XML_ELEMENT_CONTENT_ONCE:
 		    ctxt->state = xmlAutomataNewTransition(ctxt->am,
-			    ctxt->state, NULL, content->name, NULL);
+			    ctxt->state, NULL, fname, NULL);
 		    break;
 		case XML_ELEMENT_CONTENT_OPT:
 		    ctxt->state = xmlAutomataNewTransition(ctxt->am,
-			    ctxt->state, NULL, content->name, NULL);
+			    ctxt->state, NULL, fname, NULL);
 		    xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
 		    break;
 		case XML_ELEMENT_CONTENT_PLUS:
 		    ctxt->state = xmlAutomataNewTransition(ctxt->am,
-			    ctxt->state, NULL, content->name, NULL);
+			    ctxt->state, NULL, fname, NULL);
 		    xmlAutomataNewTransition(ctxt->am, ctxt->state,
-			                     ctxt->state, content->name, NULL);
+			                     ctxt->state, fname, NULL);
 		    break;
 		case XML_ELEMENT_CONTENT_MULT:
 		    xmlAutomataNewTransition(ctxt->am, ctxt->state,
-			                     ctxt->state, content->name, NULL);
+			                     ctxt->state, fname, NULL);
 		    break;
 	    }
+	    if (QName != NULL)
+		xmlFree(QName);
 	    break;
 	}
 	case XML_ELEMENT_CONTENT_SEQ: {
@@ -417,11 +443,12 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 	     */
 	    oldstate = ctxt->state;
 	    ocur = content->ocur;
-	    while (content->type == XML_ELEMENT_CONTENT_SEQ) {
+	    do {
 		xmlValidBuildAContentModel(content->c1, ctxt, name);
 		content = content->c2;
-	    }
-	    xmlValidBuildAContentModel(content->c2, ctxt, name);
+	    } while ((content->type == XML_ELEMENT_CONTENT_SEQ) &&
+		     (content->ocur == XML_ELEMENT_CONTENT_ONCE));
+	    xmlValidBuildAContentModel(content, ctxt, name);
 	    switch (ocur) {
 		case XML_ELEMENT_CONTENT_ONCE:
 		    break;
@@ -450,14 +477,15 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 	     * iterate over the subtypes and remerge the end with an
 	     * epsilon transition
 	     */
-	    while (content->type == XML_ELEMENT_CONTENT_OR) {
+	    do {
 		ctxt->state = start;
 		xmlValidBuildAContentModel(content->c1, ctxt, name);
 		xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
 		content = content->c2;
-	    }
+	    } while ((content->type == XML_ELEMENT_CONTENT_OR) &&
+		     (content->ocur == XML_ELEMENT_CONTENT_ONCE));
 	    ctxt->state = start;
-	    xmlValidBuildAContentModel(content->c1, ctxt, name);
+	    xmlValidBuildAContentModel(content, ctxt, name);
 	    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
 	    ctxt->state = end;
 	    switch (ocur) {
@@ -4280,6 +4308,82 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     cont = elemDecl->content;
     name = elemDecl->name;
 
+#ifdef LIBXML_REGEXP_ENABLED
+    /* Build the regexp associated to the content model */
+    if (elemDecl->contModel == NULL)
+	ret = xmlValidBuildContentModel(ctxt, elemDecl);
+    if (elemDecl->contModel == NULL) {
+	ret = -1;
+    } else {
+	xmlRegExecCtxtPtr exec;
+
+	exec = xmlRegNewExecCtxt(elemDecl->contModel, NULL, NULL);
+	if (exec != NULL) {
+	    cur = child;
+	    while (cur != NULL) {
+		switch (cur->type) {
+		    case XML_ENTITY_REF_NODE:
+			/*
+			 * Push the current node to be able to roll back
+			 * and process within the entity
+			 */
+			if ((cur->children != NULL) &&
+			    (cur->children->children != NULL)) {
+			    nodeVPush(ctxt, cur);
+			    cur = cur->children->children;
+			    continue;
+			}
+			break;
+		    case XML_TEXT_NODE:
+			if (xmlIsBlankNode(cur))
+			    break;
+			ret = 0;
+			goto fail;
+		    case XML_CDATA_SECTION_NODE:
+			TODO
+			ret = 0;
+			goto fail;
+		    case XML_ELEMENT_NODE:
+			if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+			    xmlChar *QName;
+			    int len;
+
+			    len = xmlStrlen(cur->name) + 
+				  xmlStrlen(cur->ns->prefix) + 2;
+			    QName = xmlMalloc(len);
+			    if (QName == NULL) {
+				ret = -1;
+				goto fail;
+			    }
+			    snprintf((char *) QName, len, "%s:%s",
+				     (char *)cur->ns->prefix,
+				     (char *)cur->name);
+                            ret = xmlRegExecPushString(exec, QName, NULL);
+			    xmlFree(QName);
+			} else {
+			    ret = xmlRegExecPushString(exec, cur->name, NULL);
+			}
+			break;
+		    default:
+			break;
+		}
+		/*
+		 * Switch to next element
+		 */
+		cur = cur->next;
+		while (cur == NULL) {
+		    cur = nodeVPop(ctxt);
+		    if (cur == NULL)
+			break;
+		    cur = cur->next;
+		}
+	    }
+	    ret = xmlRegExecPushString(exec, NULL, NULL);
+fail:
+	    xmlRegFreeExecCtxt(exec);
+	}
+    }
+#else  /* LIBXML_REGEXP_ENABLED */
     /*
      * Allocate the stack
      */
@@ -4395,6 +4499,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 	STATE = 0;
 	ret = xmlValidateElementType(ctxt);
     }
+#endif /* LIBXML_REGEXP_ENABLED */
     if ((warn) && ((ret != 1) && (ret != -3))) {
 	if ((ctxt != NULL) && (ctxt->warning != NULL)) {
 	    char expr[5000];
@@ -4435,7 +4540,6 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     }
     if (ret == -3)
 	ret = 1;
-
 
 done:
     /*

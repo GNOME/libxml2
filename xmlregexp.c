@@ -161,6 +161,7 @@ struct _xmlRegAtom {
     int max;
 
     void *valuep;
+    void *valuep2;
     int neg;
     int codepoint;
     xmlRegStatePtr start;

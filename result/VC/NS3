@@ -1,0 +1,3 @@
+./test/VC/NS3:9: validity error: Element foo namespace name for default namespace does not match the DTD
+mlns="http://example.com/foo" xmlns:foo="http://example.com/fo" foo:info="toto"
+                                                                              ^

@@ -35,7 +35,7 @@ typedef enum {
 struct _xmlEntity {
     void           *_private;	        /* application data */
     xmlElementType          type;       /* XML_ENTITY_DECL, must be second ! */
-    const xmlChar          *name;	/* Attribute name */
+    const xmlChar          *name;	/* Entity name */
     struct _xmlNode    *children;	/* First child link */
     struct _xmlNode        *last;	/* Last child link */
     struct _xmlDtd       *parent;	/* -> DTD */

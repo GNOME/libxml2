@@ -4369,42 +4369,64 @@ child_ok:
     attr = elemDecl->attributes;
     while (attr != NULL) {
 	if (attr->def == XML_ATTRIBUTE_REQUIRED) {
-	    xmlAttrPtr attrib;
 	    int qualified = -1;
-	    
-	    attrib = elem->properties;
-	    while (attrib != NULL) {
-		if (xmlStrEqual(attrib->name, attr->name)) {
-		    if (attr->prefix != NULL) {
-		        xmlNsPtr nameSpace = attrib->ns;
 
-			if (nameSpace == NULL)
-			    nameSpace = elem->ns;
-			/*
-			 * qualified names handling is problematic, having a
-			 * different prefix should be possible but DTDs don't
-			 * allow to define the URI instead of the prefix :-(
-			 */
-			if (nameSpace == NULL) {
-			    if (qualified < 0) 
-				qualified = 0;
-	    		} else if (!xmlStrEqual(nameSpace->prefix,
-				                attr->prefix)) {
-			    if (qualified < 1) 
-				qualified = 1;
-			} else
-			    goto found;
-		    } else {
-		        /*
-			 * We should allow applications to define namespaces
-			 * for their application even if the DTD doesn't 
-			 * carry one, otherwise, basically we would always
-			 * break.
-			 */
+	    if ((attr->prefix == NULL) &&
+		(xmlStrEqual(attr->name, BAD_CAST "xmlns"))) {
+		xmlNsPtr ns;
+
+		ns = elem->nsDef;
+		while (ns != NULL) {
+		    if (ns->prefix == NULL)
 			goto found;
-		    }
+		    ns = ns->next;
 		}
-		attrib = attrib->next;
+	    } else if (xmlStrEqual(attr->prefix, BAD_CAST "xmlns")) {
+		xmlNsPtr ns;
+
+		ns = elem->nsDef;
+		while (ns != NULL) {
+		    if (xmlStrEqual(attr->name, ns->prefix))
+			goto found;
+		    ns = ns->next;
+		}
+	    } else {
+		xmlAttrPtr attrib;
+		
+		attrib = elem->properties;
+		while (attrib != NULL) {
+		    if (xmlStrEqual(attrib->name, attr->name)) {
+			if (attr->prefix != NULL) {
+			    xmlNsPtr nameSpace = attrib->ns;
+
+			    if (nameSpace == NULL)
+				nameSpace = elem->ns;
+			    /*
+			     * qualified names handling is problematic, having a
+			     * different prefix should be possible but DTDs don't
+			     * allow to define the URI instead of the prefix :-(
+			     */
+			    if (nameSpace == NULL) {
+				if (qualified < 0) 
+				    qualified = 0;
+			    } else if (!xmlStrEqual(nameSpace->prefix,
+						    attr->prefix)) {
+				if (qualified < 1) 
+				    qualified = 1;
+			    } else
+				goto found;
+			} else {
+			    /*
+			     * We should allow applications to define namespaces
+			     * for their application even if the DTD doesn't 
+			     * carry one, otherwise, basically we would always
+			     * break.
+			     */
+			    goto found;
+			}
+		    }
+		    attrib = attrib->next;
+		}
 	    }
 	    if (qualified == -1) {
 		if (attr->prefix == NULL) {
@@ -4426,6 +4448,44 @@ child_ok:
 		VWARNING(ctxt->userData,
 		   "Element %s required attribute %s:%s has different prefix\n",
 		       elem->name, attr->prefix,attr->name);
+	    }
+	} else if (attr->def == XML_ATTRIBUTE_FIXED) {
+	    /*
+	     * Special tests checking #FIXED namespace declarations
+	     * have the right value since this is not done as an
+	     * attribute checking
+	     */
+	    if ((attr->prefix == NULL) &&
+		(xmlStrEqual(attr->name, BAD_CAST "xmlns"))) {
+		xmlNsPtr ns;
+
+		ns = elem->nsDef;
+		while (ns != NULL) {
+		    if (ns->prefix == NULL) {
+			if (!xmlStrEqual(attr->defaultValue, ns->href)) {
+			    VERROR(ctxt->userData,
+   "Element %s namespace name for default namespace does not match the DTD\n",
+				   elem->name);
+			}
+			goto found;
+		    }
+		    ns = ns->next;
+		}
+	    } else if (xmlStrEqual(attr->prefix, BAD_CAST "xmlns")) {
+		xmlNsPtr ns;
+
+		ns = elem->nsDef;
+		while (ns != NULL) {
+		    if (xmlStrEqual(attr->name, ns->prefix)) {
+			if (!xmlStrEqual(attr->defaultValue, ns->href)) {
+			    VERROR(ctxt->userData,
+		   "Element %s namespace name for %s doesn't match the DTD\n",
+				   elem->name, ns->prefix);
+			}
+			goto found;
+		    }
+		    ns = ns->next;
+		}
 	    }
 	}
 found:	    

@@ -5,8 +5,6 @@
 TODO:
 =====
 
-- extend validity checks to go through entities content instead of
-  just labelling them PCDATA
 - add support for the trick from Henry conf/sun/valid/empty.xml
 - Correct standalone checking/emitting (hard)
   2.9 Standalone Document Declaration
@@ -90,6 +88,8 @@ EXTENSIONS:
 Done:
 =====
 
+- extend validity checks to go through entities content instead of
+  just labelling them PCDATA
 - Save Dtds using the children list instead of dumping the tables,
   order is preserved as well as comments and PIs
 - Wrote a notice of changes requires to go from 1.x to 2.x

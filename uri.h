@@ -38,9 +38,11 @@ struct _xmlURI {
  * xmlChar *	xmlNodeGetBase	(xmlDocPtr doc,
  *                               xmlNodePtr cur);
  */
-xmlChar *	xmlBuildURI	(const xmlChar *URI,
-	                         const xmlChar *base);
-xmlURIPtr	xmlParseURI	(const char *URI);
+xmlChar *	xmlBuildURI		(const xmlChar *URI,
+	                        	 const xmlChar *base);
+xmlURIPtr	xmlParseURI		(const char *URI);
+xmlChar *	xmlSaveUri		(xmlURIPtr uri);
+int		xmlNormalizeURIPath	(char *path);
 
 #ifdef __cplusplus
 }

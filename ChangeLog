@@ -1,3 +1,13 @@
+Fri Mar 24 14:35:21 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* uri.c uri.h: finished the escaping handling, the base support
+	  and the URI path normalization. Looks good just lacks the
+	  authority content parsing code.
+	* Makefile.am: added instructions to generate testURI
+	* TODO: updated
+	* doc/xml.html, doc/smallfootonly.gif doc/w3c.png: updated,
+	  added links and icons for W3C and Gnome
+
 Mon Mar 20 14:05:26 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xmlmemory.[ch] : seems I forgot to actually update the files in

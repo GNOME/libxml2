@@ -6,7 +6,7 @@ INCLUDES = -I@srcdir@ @Z_CFLAGS@ @CORBA_CFLAGS@ $(VERSION_FLAGS)
 
 VERSION_FLAGS = -DLIBXML_VERSION=\"@LIBXML_VERSION@\"
 
-noinst_PROGRAMS=tester testSAX testHTML testXPath
+noinst_PROGRAMS=tester testSAX testHTML testXPath testURI
 
 bin_SCRIPTS=xml-config
 
@@ -83,6 +83,9 @@ check-local: tests
 testall : tests SVGtests SAXtests XPathtests XMLenttests
 
 tests: XMLtests HTMLtests Validtests
+
+testURI: $(srcdir)/uri.c $(srcdir)/uri.h xmlmemory.o
+	$(CC) $(CFLAGS) -DSTANDALONE -o testURI $(srcdir)/uri.c xmlmemory.o 
 
 HTMLtests : testHTML
 	@echo "##"

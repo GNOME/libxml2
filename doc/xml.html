@@ -8,6 +8,10 @@
 </head>
 
 <body bgcolor="#ffffff">
+<p><a href="http://www.gnome.org/"><img src="smallfootonly.gif" alt="Gnome
+Logo"></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C
+Logo"></a></p>
+
 <h1 align="center">The XML library for Gnome</h1>
 
 <h2 style="text-align: center">libxml, a.k.a. gnome-xml</h2>
@@ -58,8 +62,10 @@ building tag-based structured documents/data.</p>
     href="http://www.w3.org/TR/xpath">XPath</a> implementation.</li>
   <li>Libxml exports Push and Pull type parser interfaces for both XML and
     HTML.</li>
-  <li>This library is released both under the W3C Copyright and the GNU LGPL.
-    Basically, everybody should be happy; if not, drop me a mail.</li>
+  <li>This library is released both under the <a
+    href="http://www.w3.org/Consortium/Legal/copyright-software-19980720.html">W3C
+    IPR</a> and the GNU LGPL. Use either at your convenience, basically this
+    should make everybody happy, if not, drop me a mail.</li>
   <li>There is <a href="upgrade.html">a  first set of instruction</a>
     concerning upgrade from libxml-1.x to libxml-2.x</li>
 </ul>
@@ -87,6 +93,11 @@ building tag-based structured documents/data.</p>
     href="http://www.levien.com/svg/">gill</a>. Check his <a
     href="http://www.levien.com/gnome/domination.html">DOMination
   paper</a>.</li>
+  <li>Check <a href="http://cvs.gnome.org/lxr/source/gnome-xml/TODO">the TODO
+    file</a></li>
+  <li>Read the <a href="upgrade.html">1.x to 2.x upgrade path</a>. If you are
+    starting a new project using libxml you should really use the 2.x
+  version.</li>
   <li>And don't forget to look at the <a href="/messages/">mailing-list
     archive</a>, too.</li>
 </ol>
@@ -110,6 +121,16 @@ href="mailto:majordomo@rufus.w3.org">majordomo@rufus.w3.org</a> with
 
 <p>Alternatively, you can just send the bug to the <a
 href="mailto:xml@rufus.w3.org">xml@rufus.w3.org</a> list.</p>
+
+<p>Of course, bugs reports with a suggested patch for fixing them will
+probably be processed faster.</p>
+
+<p>If you're looking for help, a quick look at <a
+href="http://xmlsoft.org/messages/#407">the list archive</a> may actually
+provide the answer, I usually send source samples when answering libxml usage
+questions. The <a href="http://xmlsoft.org/book1.html">auto-generated
+documentantion</a> is not as polished as I would like (i need to learn more
+about Docbook), but it's a good starting point.</p>
 
 <h2><a name="Downloads">Downloads</a></h2>
 
@@ -771,33 +792,42 @@ finding them in the input).</p>
 
 <h2><a name="Namespaces">Namespaces</a></h2>
 
-<p>The libxml library implements namespace @@ support by recognizing namespace
-contructs in the input, and does namespace lookup automatically when building
-the DOM tree. A namespace declaration is associated with an in-memory
-structure and all elements or attributes within that namespace point to it.
-Hence testing the namespace is a simple and fast equality operation at the
-user level.</p>
+<p>The libxml library implements <a
+href="http://www.w3.org/TR/REC-xml-names/">XML namespaces</a> support by
+recognizing namespace contructs in the input, and does namespace lookup
+automatically when building the DOM tree. A namespace declaration is
+associated with an in-memory structure and all elements or attributes within
+that namespace point to it. Hence testing the namespace is a simple and fast
+equality operation at the user level.</p>
 
 <p>I suggest that people using libxml use a namespace, and declare it in the
 root element of their document as the default namespace. Then they don't need
 to use the prefix in the content but we will have a basis for future semantic
 refinement and  merging of data from different sources. This doesn't augment
 significantly the size of the XML output, but significantly increase its value
-in the long-term.</p>
+in the long-term. Example:</p>
+<pre>&lt;mydoc xmlns="http://mydoc.example.org/schemas/">
+   &lt;elem1>...&lt;/elem1>
+   &lt;elem2>...&lt;/elem2>
+&lt;/mydoc></pre>
 
 <p>Concerning the namespace value, this has to be an URL, but the URL doesn't
-have to point to any existing resource on the Web. I suggest that it makes
-sense to use an URL within a domain you control, and that the URL should
-contain some kind of version information if possible. For example,
-<code>"http://www.gnome.org/gnumeric/1.0"</code> is a good namespace scheme.
-Then when you load a file, make sure that a namespace carrying the
+have to point to any existing resource on the Web. It will bind all the
+element and atributes with that URL. I suggest to use an URL within a domain
+you control, and that the URL should contain some kind of version information
+if possible. For example, <code>"http://www.gnome.org/gnumeric/1.0/"</code> is
+a good namespace scheme. </p>
+
+<p>Then when you load a file, make sure that a namespace carrying the
 version-independent prefix is installed on the root element of your document,
 and if the version information don't match something you know, warn the user
 and be liberal in what you accept as the input. Also do *not* try to base
 namespace checking on the prefix value. &lt;foo:text> may be exactly the same
 as &lt;bar:text> in another document. What really matter is the URI associated
 with the element or the attribute, not the prefix string (which is just a
-shortcut for the full URI).</p>
+shortcut for the full URI). In libxml element and attributes have a
+<code>ns</code> field pointing to an xmlNs structure detailing the namespace
+prefix and it's URI.</p>
 
 <p>@@Interfaces@@</p>
 
@@ -1082,6 +1112,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.29 2000/03/14 19:59:03 veillard Exp $</p>
+<p>$Id: xml.html,v 1.30 2000/03/20 13:07:14 veillard Exp $</p>
 </body>
 </html>

@@ -24,7 +24,6 @@ parseDoc(char *docname, char *keyword) {
 	
 	if (doc == NULL ) {
 		fprintf(stderr,&quot;Document not parsed successfully. \n&quot;);
-		xmlFreeDoc(doc);
 		return (NULL);
 	}
 	

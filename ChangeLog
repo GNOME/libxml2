@@ -1,3 +1,8 @@
+Mon Jan  6 12:05:12 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/tutorial/* : fixed #101894 if doc == NULL xmlFreeDoc 
+	  should not be called.
+
 Mon Jan  6 11:59:09 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* libxml-2.0.pc.in: applied the patch to fix #101894

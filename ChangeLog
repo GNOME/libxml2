@@ -1,3 +1,7 @@
+Wed Mar 26 22:38:39 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixed bug #109160 on non-ASCII IDs
+
 Wed Mar 26 17:30:37 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: Norm suggested a nicer error message for xml:space values

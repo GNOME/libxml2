@@ -5946,23 +5946,26 @@ xmlXPathGetElementsByIds (xmlDocPtr doc, const xmlChar *ids) {
 
     while (IS_BLANK(*cur)) cur++;
     while (*cur != 0) {
-	while ((IS_LETTER(*cur)) || (IS_DIGIT(*cur)) ||
-	       (*cur == '.') || (*cur == '-') ||
-	       (*cur == '_') || (*cur == ':') || 
-	       (IS_COMBINING(*cur)) ||
-	       (IS_EXTENDER(*cur)))
-	       cur++;
-
-	if ((!IS_BLANK(*cur)) && (*cur != 0)) break;
+	while ((!IS_BLANK(*cur)) && (*cur != 0))
+	    cur++;
 
         ID = xmlStrndup(ids, cur - ids);
-	attr = xmlGetID(doc, ID);
-	if (attr != NULL) {
-	    elem = attr->parent;
-            xmlXPathNodeSetAdd(ret, elem);
-        }
-	if (ID != NULL)
+	if (ID != NULL) {
+	    if (xmlValidateNCName(ID, 1) == 0) {
+		attr = xmlGetID(doc, ID);
+		if (attr != NULL) {
+		    if (attr->type == XML_ATTRIBUTE_NODE)
+			elem = attr->parent;
+		    else if (attr->type == XML_ELEMENT_NODE)
+			elem = (xmlNodePtr) attr;
+		    else
+			elem = NULL;
+		    if (elem != NULL)
+			xmlXPathNodeSetAdd(ret, elem);
+		}
+	    }
 	    xmlFree(ID);
+	}
 
 	while (IS_BLANK(*cur)) cur++;
 	ids = cur;

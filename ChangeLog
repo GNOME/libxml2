@@ -1,3 +1,9 @@
+Tue Mar 18 12:36:22 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed error msg cleanup deallocation
+	* xmlschemastypes.c: added a function to handle lists of
+	  atomic types, added support for IDREFS
+
 Tue Mar 18 01:28:15 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c valid.c xmlschemastypes.c: added Datatype ID

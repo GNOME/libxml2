@@ -1057,6 +1057,73 @@ error:
 
 
 /**
+ * xmlSchemaValAtomicListNode:
+ * @type: the predefined atomic type for a token in the list
+ * @value: the list value to check
+ * @ret:  the return computed value
+ * @node:  the node containing the value
+ *
+ * Check that a value conforms to the lexical space of the predefined
+ * list type. if true a value is computed and returned in @ret.
+ *
+ * Returns 0 if this validates, a positive error code number otherwise
+ *         and -1 in case of internal or API error.
+ */
+static int
+xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
+	                   xmlSchemaValPtr *ret, xmlNodePtr node) {
+    xmlChar *val, *cur, *endval;
+    int nb_values = 0;
+    int tmp;
+
+    if (value == NULL) {
+	return(-1);
+    }
+    val = xmlStrdup(value);
+    if (val == NULL) {
+	return(-1);
+    }
+    cur = val;
+    /*
+     * Split the list
+     */
+    while (IS_BLANK(*cur)) cur++;
+    while (*cur != 0) {
+	if (IS_BLANK(*cur)) {
+	    *cur = 0;
+	    cur++;
+	    while (IS_BLANK(*cur)) *cur++ = 0;
+	} else {
+	    nb_values++;
+	    cur++;
+	    while ((*cur != 0) && (!IS_BLANK(*cur))) cur++;
+	}
+    }
+    if (nb_values == 0) {
+	if (ret != NULL) {
+	    TODO
+	}
+	xmlFree(val);
+	return(0);
+    }
+    endval = cur;
+    cur = val;
+    while ((*cur == 0) && (cur != endval)) cur++;
+    while (cur != endval) {
+	tmp = xmlSchemaValPredefTypeNode(type, cur, NULL, node);
+	if (tmp != 0)
+	    break;
+	while (*cur != 0) cur++;
+	while ((*cur == 0) && (cur != endval)) cur++;
+    }
+    xmlFree(val);
+    if (ret != NULL) {
+	TODO
+    }
+    return(tmp);
+}
+
+/**
  * xmlSchemaValPredefTypeNode:
  * @type: the predefined type
  * @value: the value to check
@@ -1423,6 +1490,16 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 
 	    xmlAddRef(NULL, node->doc, value, attr);
 	    attr->atype = XML_ATTRIBUTE_IDREF;
+	}
+	return(ret);
+    } else if (type == xmlSchemaTypeIdrefsDef) {
+	ret = xmlSchemaValAtomicListNode(xmlSchemaTypeIdrefDef,
+		                         value, val, node);
+	if ((ret == 0) && (node != NULL) &&
+	    (node->type == XML_ATTRIBUTE_NODE)) {
+	    xmlAttrPtr attr = (xmlAttrPtr) node;
+
+	    attr->atype = XML_ATTRIBUTE_IDREFS;
 	}
 	return(ret);
     } else if (type == xmlSchemaTypeIdDef) {

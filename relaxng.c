@@ -1879,6 +1879,32 @@ xmlRelaxNGShowValidError(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
 }
 
 /**
+ * xmlRelaxNGPopErrors:
+ * @ctxt:  the validation context
+ * @level:  the error level in the stack
+ *
+ * pop and discard all errors until the given level is reached
+ */
+static void
+xmlRelaxNGPopErrors(xmlRelaxNGValidCtxtPtr ctxt, int level) {
+    int i;
+    xmlRelaxNGValidErrorPtr err;
+
+    for (i = level;i < ctxt->errNr;i++) {
+	err = &ctxt->errTab[i];
+	if (err->flags & ERROR_IS_DUP) {
+	    if (err->arg1 != NULL)
+		xmlFree((xmlChar *)err->arg1);
+	    err->arg1 = NULL;
+	    if (err->arg2 != NULL)
+		xmlFree((xmlChar *)err->arg2);
+	    err->arg2 = NULL;
+	    err->flags = 0;
+	}
+    }
+    ctxt->errNr = level;
+}
+/**
  * xmlRelaxNGDumpValidError:
  * @ctxt:  the validation context
  *
@@ -6925,7 +6951,7 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 		if ((ctxt->flags & FLAGS_IGNORABLE) == 0)
 		    xmlRelaxNGDumpValidError(ctxt);
 	    } else {
-		ctxt->errNr = 0;
+		if (ctxt->errNr > 0) xmlRelaxNGPopErrors(ctxt, 0);
 	    }
 	    if (ret == 0)
 		xmlRelaxNGNextValue(ctxt);
@@ -7030,7 +7056,7 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 		if ((ctxt->flags & FLAGS_IGNORABLE) == 0)
 		    xmlRelaxNGDumpValidError(ctxt);
 	    } else {
-		ctxt->errNr = 0;
+		if (ctxt->errNr > 0) xmlRelaxNGPopErrors(ctxt, 0);
 	    }
 	    break;
 	}
@@ -7498,7 +7524,7 @@ done:
 	cur = cur->prev;
     }
     if (ret == 0) {
-	ctxt->errNr = errNr;
+	if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
     }
 
     xmlFree(list);
@@ -7632,7 +7658,7 @@ xmlRelaxNGElementMatch(xmlRelaxNGValidCtxtPtr ctxt,
 	    if ((ctxt->flags & FLAGS_IGNORABLE) == 0)
 		xmlRelaxNGDumpValidError(ctxt);
 	} else {
-	    ctxt->errNr = 0;
+	    if (ctxt->errNr > 0) xmlRelaxNGPopErrors(ctxt, 0);
 	}
 	ret = 0;
 	ctxt->flags = oldflags;
@@ -7836,7 +7862,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		if ((ctxt->flags & FLAGS_IGNORABLE) == 0)
 		    xmlRelaxNGDumpValidError(ctxt);
 	    } else {
-		ctxt->errNr = errNr;
+		if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 	    }
 
 #ifdef DEBUG
@@ -8057,7 +8083,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		if ((ctxt->flags & FLAGS_IGNORABLE) == 0)
 		    xmlRelaxNGDumpValidError(ctxt);
 	    } else if ((ctxt->flags & FLAGS_IGNORABLE) == 0) {
-		ctxt->errNr = errNr;
+		if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 	    }
 	    break;
 	}

@@ -5917,7 +5917,7 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
      * save the content to a temp buffer.
      */
     buf = xmlOutputBufferCreateFilename(filename, handler, 0);
-    if (buf == NULL) return(0);
+    if (buf == NULL) return(-1);
 
     xmlDocContentDumpOutput(buf, cur, encoding, 1);
 

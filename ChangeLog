@@ -1,3 +1,7 @@
+Sun Dec  8 18:36:01 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/libxml2.def.src: applied YALDSP from Mark Vakoc
+
 Wed Dec  4 16:08:49 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: Chip turner indicated that XHTML1 serialization

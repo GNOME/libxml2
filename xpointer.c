@@ -1,8 +1,13 @@
 /*
  * xpointer.c : Code to handle XML Pointer
  *
- * World Wide Web Consortium Working Draft 03-March-1998 
+ * Base implementation was made accordingly to
+ * W3C Candidate Recommendation 7 June 2000
  * http://www.w3.org/TR/2000/CR-xptr-20000607
+ *
+ * Added support for the element() scheme described in:
+ * W3C Proposed Recommendation 13 November 2002
+ * http://www.w3.org/TR/2002/PR-xptr-element-20021113/  
  *
  * See Copyright for the status of this software.
  *
@@ -815,6 +820,8 @@ xmlXPtrWrapLocationSet(xmlLocationSetPtr val) {
  *									*
  ************************************************************************/
 
+static void xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name);
+
 /*
  * Macros for accessing the content. Those should be used only by the parser,
  * and not exported.
@@ -978,6 +985,24 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	CUR_PTR = buffer;
 	xmlXPathEvalExpr(ctxt);
 	CUR_PTR=left;
+    } else if (xmlStrEqual(name, (xmlChar *) "element")) {
+	const xmlChar *left = CUR_PTR;
+	xmlChar *name2;
+
+	CUR_PTR = buffer;
+	if (buffer[0] == '/') {
+	    xmlXPathRoot(ctxt);
+	    xmlXPtrEvalChildSeq(ctxt, NULL);
+	} else {
+	    name2 = xmlXPathParseName(ctxt);
+	    if (name2 == NULL) {
+		CUR_PTR = left;
+		xmlFree(buffer);
+		XP_ERROR(XPATH_EXPR_ERROR);
+	    }
+	    xmlXPtrEvalChildSeq(ctxt, name2);
+	}
+	CUR_PTR = left;
 #ifdef XPTR_XMLNS_SCHEME
     } else if (xmlStrEqual(name, (xmlChar *) "xmlns")) {
 	const xmlChar *left = CUR_PTR;

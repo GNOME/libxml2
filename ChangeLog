@@ -1,3 +1,13 @@
+Thu Feb 13 16:49:24 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* check-xinclude-test-suite.py: improved the script accordingly
+	  to the XInclude regression tests updates
+	* xpointer.c: Implemented XPointer element() Scheme W3C PR of 13
+	  November 2002
+	* result/XPath/xptr/chapterschildseq result/XPath/xptr/vidchildseq
+	  test/XPath/xptr/chapterschildseq test/XPath/xptr/vidchildseq:
+	  augmented the Xpointer testsuite for the element() scheme
+
 Thu Feb 13 12:00:30 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: added TODO for the DTD compatibility spec

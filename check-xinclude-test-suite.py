@@ -9,10 +9,13 @@ import libxml2
 #
 # the testsuite description
 #
-CONF="xinclude-test-suite/testdescr.xml"
+DIR="xinclude-test-suite"
+CONF="testdescr.xml"
 LOG="check-xinclude-test-suite.log"
 
 log = open(LOG, "w")
+
+os.chdir(DIR)
 
 test_nr = 0
 test_succeed = 0
@@ -60,10 +63,14 @@ def runTest(test, basedir):
     fatal_error = 0
     uri = test.prop('href')
     id = test.prop('id')
+    type = test.prop('type')
     if uri == None:
         print "Test without ID:", uri
 	return -1
     if id == None:
+        print "Test without URI:", id
+	return -1
+    if type == None:
         print "Test without URI:", id
 	return -1
     if basedir != None:
@@ -74,28 +81,25 @@ def runTest(test, basedir):
         print "Test %s missing: base %s uri %s" % (URI, basedir, uri)
 	return -1
 
-    output = test.xpathEval('string(output)')
     expected = None
-    if output == 'No output file.':
-        output = None
-    if output == '':
-        output = None
-    if output != None:
-        if basedir != None:
-	    output = basedir + "/" + output
-	if os.access(output, os.R_OK) == 0:
-	    print "Result for %s missing: %s" % (id, output)
+    if type != 'error':
+	output = test.xpathEval('string(output)')
+	if output == 'No output file.':
 	    output = None
-	else:
-	    try:
-		f = open(output)
-		expected = f.read()
-	    except:
-	        print "Result for %s unreadable: %s" % (id, output)
-
-    description = test.xpathEval('string(description)')
-    if string.find(description, 'fatal error') != -1:
-        fatal_error = 1
+	if output == '':
+	    output = None
+	if output != None:
+	    if basedir != None:
+		output = basedir + "/" + output
+	    if os.access(output, os.R_OK) == 0:
+		print "Result for %s missing: %s" % (id, output)
+		output = None
+	    else:
+		try:
+		    f = open(output)
+		    expected = f.read()
+		except:
+		    print "Result for %s unreadable: %s" % (id, output)
 
     try:
         # print "testing %s" % (URI)
@@ -104,10 +108,15 @@ def runTest(test, basedir):
         doc = None
     if doc != None:
         res = doc.xincludeProcess()
-	if expected != None and fatal_error != 0:
+	if res >= 0 and expected != None:
 	    result = doc.serialize()
 	    if result != expected:
 	        print "Result for %s differs" % (id)
+		print '----'
+		print result
+		print '----'
+		print expected
+		print '----'
 
 	doc.freeDoc()
     else:
@@ -117,7 +126,7 @@ def runTest(test, basedir):
     
 
     test_nr = test_nr + 1
-    if fatal_error == 0 and output != None:
+    if type == 'success':
 	if res > 0:
 	    test_succeed = test_succeed + 1
 	elif res == 0:
@@ -126,7 +135,7 @@ def runTest(test, basedir):
 	elif res < 0:
 	    test_error = test_error + 1
 	    print "Test %s: failed valid XInclude processing" % (id)
-    else:
+    elif type == 'error':
 	if res > 0:
 	    test_error = test_error + 1
 	    print "Test %s: failed to detect invalid XInclude processing" % (id)
@@ -135,6 +144,11 @@ def runTest(test, basedir):
 	    print "Test %s: Invalid but no substitution done" % (id)
 	elif res < 0:
 	    test_succeed = test_succeed + 1
+    elif type == 'optional':
+	if res > 0:
+	    test_succeed = test_succeed + 1
+	else:
+	    print "Test %s: failed optional test" % (id)
 
     # Log the ontext
     if res != 1:

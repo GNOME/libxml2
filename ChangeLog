@@ -1,3 +1,7 @@
+Wed Apr 10 13:29:49 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: patch from Richard Jinks for .x float parsing.
+
 Tue Apr  9 18:09:31 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: patch from Markus Henke when an encoding ain't recognized

@@ -7414,7 +7414,7 @@ xmlXPathCompPrimaryExpr(xmlXPathParserContextPtr ctxt) {
 	}
 	NEXT;
 	SKIP_BLANKS;
-    } else if (IS_DIGIT(CUR)) {
+    } else if (IS_DIGIT(CUR) || (CUR == '.' && IS_DIGIT(NXT(1)))) {
 	xmlXPathCompNumber(ctxt);
     } else if ((CUR == '\'') || (CUR == '"')) {
 	xmlXPathCompLiteral(ctxt);
@@ -7528,7 +7528,7 @@ xmlXPathCompPathExpr(xmlXPathParserContextPtr ctxt) {
 
     SKIP_BLANKS;
     if ((CUR == '$') || (CUR == '(') || (IS_DIGIT(CUR)) ||
-        (CUR == '\'') || (CUR == '"')) {
+        (CUR == '\'') || (CUR == '"') || (CUR == '.' && IS_DIGIT(NXT(1)))) {
 	lc = 0;
     } else if (CUR == '*') {
 	/* relative or absolute location path */

@@ -137,6 +137,7 @@
      <exports symbol='xmlCurrentChar'/>
      <exports symbol='xmlDecodeEntities'/>
      <exports symbol='xmlEntityReferenceFunc'/>
+     <exports symbol='xmlErrMemory'/>
      <exports symbol='xmlFreeInputStream'/>
      <exports symbol='xmlHandleEntity'/>
      <exports symbol='xmlIsBaseChar'/>
@@ -154,7 +155,6 @@
      <exports symbol='xmlNewEntityInputStream'/>
      <exports symbol='xmlNewInputFromFile'/>
      <exports symbol='xmlNewInputStream'/>
-     <exports symbol='xmlNewParserCtxt'/>
      <exports symbol='xmlNewStringInputStream'/>
      <exports symbol='xmlNextChar'/>
      <exports symbol='xmlParseAttValue'/>
@@ -308,6 +308,7 @@
      <exports symbol='xmlXPathDivValues'/>
      <exports symbol='xmlXPathEmptyNodeSet'/>
      <exports symbol='xmlXPathEqualValues'/>
+     <exports symbol='xmlXPathErr'/>
      <exports symbol='xmlXPathEvalExpr'/>
      <exports symbol='xmlXPathEvaluatePredicateResult'/>
      <exports symbol='xmlXPathFalseFunction'/>
@@ -670,6 +671,44 @@
      <exports symbol='xlinkTitle'/>
      <exports symbol='xlinkType'/>
     </file>
+    <file name='xmldwalk'>
+     <exports symbol='XML_DWALK_BACKTRACK'/>
+     <exports symbol='XML_DWALK_END'/>
+     <exports symbol='XML_DWALK_NONE'/>
+     <exports symbol='XML_DWALK_START'/>
+     <exports symbol='xmlDocWalker'/>
+     <exports symbol='xmlDocWalkerAttributeCount'/>
+     <exports symbol='xmlDocWalkerBaseUri'/>
+     <exports symbol='xmlDocWalkerCurrentDoc'/>
+     <exports symbol='xmlDocWalkerCurrentNode'/>
+     <exports symbol='xmlDocWalkerDepth'/>
+     <exports symbol='xmlDocWalkerGetAttribute'/>
+     <exports symbol='xmlDocWalkerGetAttributeNo'/>
+     <exports symbol='xmlDocWalkerGetAttributeNs'/>
+     <exports symbol='xmlDocWalkerHasAttributes'/>
+     <exports symbol='xmlDocWalkerHasValue'/>
+     <exports symbol='xmlDocWalkerIsEmptyElement'/>
+     <exports symbol='xmlDocWalkerLocalName'/>
+     <exports symbol='xmlDocWalkerLookupNamespace'/>
+     <exports symbol='xmlDocWalkerMoveToAttribute'/>
+     <exports symbol='xmlDocWalkerMoveToAttributeNo'/>
+     <exports symbol='xmlDocWalkerMoveToAttributeNs'/>
+     <exports symbol='xmlDocWalkerMoveToElement'/>
+     <exports symbol='xmlDocWalkerMoveToFirstAttribute'/>
+     <exports symbol='xmlDocWalkerMoveToNextAttribute'/>
+     <exports symbol='xmlDocWalkerName'/>
+     <exports symbol='xmlDocWalkerNamespaceUri'/>
+     <exports symbol='xmlDocWalkerNext'/>
+     <exports symbol='xmlDocWalkerNodeType'/>
+     <exports symbol='xmlDocWalkerPrefix'/>
+     <exports symbol='xmlDocWalkerPtr'/>
+     <exports symbol='xmlDocWalkerRewind'/>
+     <exports symbol='xmlDocWalkerState'/>
+     <exports symbol='xmlDocWalkerStep'/>
+     <exports symbol='xmlDocWalkerValue'/>
+     <exports symbol='xmlFreeDocWalker'/>
+     <exports symbol='xmlNewDocWalker'/>
+    </file>
     <file name='entities'>
      <exports symbol='XML_EXTERNAL_GENERAL_PARSED_ENTITY'/>
      <exports symbol='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY'/>
@@ -894,6 +933,7 @@
      <exports symbol='LIBXML_VALID_ENABLED'/>
      <exports symbol='LIBXML_VERSION'/>
      <exports symbol='LIBXML_VERSION_STRING'/>
+     <exports symbol='LIBXML_WALKER_ENABLED'/>
      <exports symbol='LIBXML_XINCLUDE_ENABLED'/>
      <exports symbol='LIBXML_XPATH_ENABLED'/>
      <exports symbol='LIBXML_XPTR_ENABLED'/>
@@ -1160,6 +1200,7 @@
      <exports symbol='xmlLineNumbersDefault'/>
      <exports symbol='xmlLoadExternalEntity'/>
      <exports symbol='xmlNewIOInputStream'/>
+     <exports symbol='xmlNewParserCtxt'/>
      <exports symbol='xmlParseBalancedChunkMemory'/>
      <exports symbol='xmlParseBalancedChunkMemoryRecover'/>
      <exports symbol='xmlParseChunk'/>
@@ -1209,6 +1250,7 @@
      <exports symbol='xmlSetupParserForBuffer'/>
      <exports symbol='xmlStopParser'/>
      <exports symbol='xmlStrEqual'/>
+     <exports symbol='xmlStrPrintf'/>
      <exports symbol='xmlStrQEqual'/>
      <exports symbol='xmlStrcasecmp'/>
      <exports symbol='xmlStrcasestr'/>
@@ -1681,6 +1723,44 @@
      <exports symbol='xmlHashUpdateEntry3'/>
     </file>
     <file name='xmlerror'>
+     <exports symbol='XML_DTD_ATTRIBUTE_DEFAULT'/>
+     <exports symbol='XML_DTD_ATTRIBUTE_REDEFINED'/>
+     <exports symbol='XML_DTD_ATTRIBUTE_VALUE'/>
+     <exports symbol='XML_DTD_CONTENT_ERROR'/>
+     <exports symbol='XML_DTD_CONTENT_MODEL'/>
+     <exports symbol='XML_DTD_CONTENT_NOT_DETERMINIST'/>
+     <exports symbol='XML_DTD_DIFFERENT_PREFIX'/>
+     <exports symbol='XML_DTD_ELEM_DEFAULT_NAMESPACE'/>
+     <exports symbol='XML_DTD_ELEM_NAMESPACE'/>
+     <exports symbol='XML_DTD_ELEM_REDEFINED'/>
+     <exports symbol='XML_DTD_EMPTY_NOTATION'/>
+     <exports symbol='XML_DTD_ENTITY_TYPE'/>
+     <exports symbol='XML_DTD_ID_FIXED'/>
+     <exports symbol='XML_DTD_ID_REDEFINED'/>
+     <exports symbol='XML_DTD_ID_SUBSET'/>
+     <exports symbol='XML_DTD_INVALID_CHILD'/>
+     <exports symbol='XML_DTD_INVALID_DEFAULT'/>
+     <exports symbol='XML_DTD_LOAD_ERROR'/>
+     <exports symbol='XML_DTD_MISSING_ATTRIBUTE'/>
+     <exports symbol='XML_DTD_MIXED_CORRUPT'/>
+     <exports symbol='XML_DTD_MULTIPLE_ID'/>
+     <exports symbol='XML_DTD_NOTATION_REDEFINED'/>
+     <exports symbol='XML_DTD_NOTATION_VALUE'/>
+     <exports symbol='XML_DTD_NOT_EMPTY'/>
+     <exports symbol='XML_DTD_NOT_PCDATA'/>
+     <exports symbol='XML_DTD_NOT_STANDALONE'/>
+     <exports symbol='XML_DTD_NO_DOC'/>
+     <exports symbol='XML_DTD_NO_DTD'/>
+     <exports symbol='XML_DTD_NO_ELEM_NAME'/>
+     <exports symbol='XML_DTD_NO_PREFIX'/>
+     <exports symbol='XML_DTD_NO_ROOT'/>
+     <exports symbol='XML_DTD_ROOT_NAME'/>
+     <exports symbol='XML_DTD_STANDALONE_WHITE_SPACE'/>
+     <exports symbol='XML_DTD_UNKNOWN_ATTRIBUTE'/>
+     <exports symbol='XML_DTD_UNKNOWN_ELEM'/>
+     <exports symbol='XML_DTD_UNKNOWN_ENTITY'/>
+     <exports symbol='XML_DTD_UNKNOWN_ID'/>
+     <exports symbol='XML_DTD_UNKNOWN_NOTATION'/>
      <exports symbol='XML_ERR_ATTLIST_NOT_FINISHED'/>
      <exports symbol='XML_ERR_ATTLIST_NOT_STARTED'/>
      <exports symbol='XML_ERR_ATTRIBUTE_NOT_FINISHED'/>
@@ -1725,7 +1805,6 @@
      <exports symbol='XML_ERR_EXT_SUBSET_NOT_FINISHED'/>
      <exports symbol='XML_ERR_FATAL'/>
      <exports symbol='XML_ERR_GT_REQUIRED'/>
-     <exports symbol='XML_ERR_HTML'/>
      <exports symbol='XML_ERR_HYPHEN_IN_COMMENT'/>
      <exports symbol='XML_ERR_INTERNAL_ERROR'/>
      <exports symbol='XML_ERR_INVALID_CHAR'/>
@@ -1734,13 +1813,11 @@
      <exports symbol='XML_ERR_INVALID_ENCODING'/>
      <exports symbol='XML_ERR_INVALID_HEX_CHARREF'/>
      <exports symbol='XML_ERR_INVALID_URI'/>
-     <exports symbol='XML_ERR_IO'/>
      <exports symbol='XML_ERR_LITERAL_NOT_FINISHED'/>
      <exports symbol='XML_ERR_LITERAL_NOT_STARTED'/>
      <exports symbol='XML_ERR_LTSLASH_REQUIRED'/>
      <exports symbol='XML_ERR_LT_IN_ATTRIBUTE'/>
      <exports symbol='XML_ERR_LT_REQUIRED'/>
-     <exports symbol='XML_ERR_MEMORY'/>
      <exports symbol='XML_ERR_MISPLACED_CDATA_END'/>
      <exports symbol='XML_ERR_MIXED_NOT_FINISHED'/>
      <exports symbol='XML_ERR_MIXED_NOT_STARTED'/>
@@ -1754,7 +1831,6 @@
      <exports symbol='XML_ERR_NO_MEMORY'/>
      <exports symbol='XML_ERR_NS_DECL_ERROR'/>
      <exports symbol='XML_ERR_OK'/>
-     <exports symbol='XML_ERR_OUTPUT'/>
      <exports symbol='XML_ERR_PCDATA_REQUIRED'/>
      <exports symbol='XML_ERR_PEREF_AT_EOF'/>
      <exports symbol='XML_ERR_PEREF_IN_EPILOG'/>
@@ -1782,19 +1858,241 @@
      <exports symbol='XML_ERR_VALUE_REQUIRED'/>
      <exports symbol='XML_ERR_VERSION_MISSING'/>
      <exports symbol='XML_ERR_WARNING'/>
-     <exports symbol='XML_ERR_XINCLUDE'/>
      <exports symbol='XML_ERR_XMLDECL_NOT_FINISHED'/>
      <exports symbol='XML_ERR_XMLDECL_NOT_STARTED'/>
-     <exports symbol='XML_ERR_XPATH'/>
-     <exports symbol='XML_ERR_XPOINTER'/>
+     <exports symbol='XML_FROM_C14N'/>
+     <exports symbol='XML_FROM_CATALOG'/>
+     <exports symbol='XML_FROM_DTD'/>
+     <exports symbol='XML_FROM_HTML'/>
+     <exports symbol='XML_FROM_IO'/>
+     <exports symbol='XML_FROM_MEMORY'/>
+     <exports symbol='XML_FROM_NAMESPACE'/>
      <exports symbol='XML_FROM_NONE'/>
+     <exports symbol='XML_FROM_OUTPUT'/>
      <exports symbol='XML_FROM_PARSER'/>
+     <exports symbol='XML_FROM_REGEXP'/>
+     <exports symbol='XML_FROM_RELAXNGP'/>
+     <exports symbol='XML_FROM_RELAXNGV'/>
+     <exports symbol='XML_FROM_SCHEMAS'/>
+     <exports symbol='XML_FROM_TREE'/>
+     <exports symbol='XML_FROM_XINCLUDE'/>
+     <exports symbol='XML_FROM_XPATH'/>
+     <exports symbol='XML_FROM_XPOINTER'/>
+     <exports symbol='XML_FROM_XSLT'/>
+     <exports symbol='XML_HTML_STRUCURE_ERROR'/>
+     <exports symbol='XML_HTML_UNKNOWN_TAG'/>
+     <exports symbol='XML_IO_BUFFER_FULL'/>
+     <exports symbol='XML_IO_EACCES'/>
+     <exports symbol='XML_IO_EAGAIN'/>
+     <exports symbol='XML_IO_EBADF'/>
+     <exports symbol='XML_IO_EBADMSG'/>
+     <exports symbol='XML_IO_EBUSY'/>
+     <exports symbol='XML_IO_ECANCELED'/>
+     <exports symbol='XML_IO_ECHILD'/>
+     <exports symbol='XML_IO_EDEADLK'/>
+     <exports symbol='XML_IO_EDOM'/>
+     <exports symbol='XML_IO_EEXIST'/>
+     <exports symbol='XML_IO_EFAULT'/>
+     <exports symbol='XML_IO_EFBIG'/>
+     <exports symbol='XML_IO_EINPROGRESS'/>
+     <exports symbol='XML_IO_EINTR'/>
+     <exports symbol='XML_IO_EINVAL'/>
+     <exports symbol='XML_IO_EIO'/>
+     <exports symbol='XML_IO_EISDIR'/>
+     <exports symbol='XML_IO_EMFILE'/>
+     <exports symbol='XML_IO_EMLINK'/>
+     <exports symbol='XML_IO_EMSGSIZE'/>
+     <exports symbol='XML_IO_ENAMETOOLONG'/>
+     <exports symbol='XML_IO_ENCODER'/>
+     <exports symbol='XML_IO_ENFILE'/>
+     <exports symbol='XML_IO_ENODEV'/>
+     <exports symbol='XML_IO_ENOENT'/>
+     <exports symbol='XML_IO_ENOEXEC'/>
+     <exports symbol='XML_IO_ENOLCK'/>
+     <exports symbol='XML_IO_ENOMEM'/>
+     <exports symbol='XML_IO_ENOSPC'/>
+     <exports symbol='XML_IO_ENOSYS'/>
+     <exports symbol='XML_IO_ENOTDIR'/>
+     <exports symbol='XML_IO_ENOTEMPTY'/>
+     <exports symbol='XML_IO_ENOTSUP'/>
+     <exports symbol='XML_IO_ENOTTY'/>
+     <exports symbol='XML_IO_ENXIO'/>
+     <exports symbol='XML_IO_EPERM'/>
+     <exports symbol='XML_IO_EPIPE'/>
+     <exports symbol='XML_IO_ERANGE'/>
+     <exports symbol='XML_IO_EROFS'/>
+     <exports symbol='XML_IO_ESPIPE'/>
+     <exports symbol='XML_IO_ESRCH'/>
+     <exports symbol='XML_IO_ETIMEDOUT'/>
+     <exports symbol='XML_IO_EXDEV'/>
+     <exports symbol='XML_IO_FLUSH'/>
+     <exports symbol='XML_IO_LOAD_ERROR'/>
+     <exports symbol='XML_IO_NETWORK_ATTEMPT'/>
+     <exports symbol='XML_IO_NO_INPUT'/>
+     <exports symbol='XML_IO_UNKNOWN'/>
+     <exports symbol='XML_IO_WRITE'/>
      <exports symbol='XML_NS_ERR_ATTRIBUTE_REDEFINED'/>
      <exports symbol='XML_NS_ERR_QNAME'/>
      <exports symbol='XML_NS_ERR_UNDEFINED_NAMESPACE'/>
      <exports symbol='XML_NS_ERR_XML_NAMESPACE'/>
+     <exports symbol='XML_REGEXP_COMPILE_ERROR'/>
+     <exports symbol='XML_RNGP_ANYNAME_ATTR_ANCESTOR'/>
+     <exports symbol='XML_RNGP_ATTRIBUTE_CHILDREN'/>
+     <exports symbol='XML_RNGP_ATTRIBUTE_CONTENT'/>
+     <exports symbol='XML_RNGP_ATTRIBUTE_EMPTY'/>
+     <exports symbol='XML_RNGP_ATTRIBUTE_NOOP'/>
+     <exports symbol='XML_RNGP_ATTR_CONFLICT'/>
+     <exports symbol='XML_RNGP_CHOICE_CONTENT'/>
+     <exports symbol='XML_RNGP_CHOICE_EMPTY'/>
+     <exports symbol='XML_RNGP_CREATE_FAILURE'/>
+     <exports symbol='XML_RNGP_DATA_CONTENT'/>
+     <exports symbol='XML_RNGP_DEFINE_CREATE_FAILED'/>
+     <exports symbol='XML_RNGP_DEFINE_EMPTY'/>
+     <exports symbol='XML_RNGP_DEFINE_MISSING'/>
+     <exports symbol='XML_RNGP_DEFINE_NAME_MISSING'/>
+     <exports symbol='XML_RNGP_DEF_CHOICE_AND_INTERLEAVE'/>
+     <exports symbol='XML_RNGP_ELEMENT_CONTENT'/>
+     <exports symbol='XML_RNGP_ELEMENT_EMPTY'/>
+     <exports symbol='XML_RNGP_ELEMENT_NAME'/>
+     <exports symbol='XML_RNGP_ELEMENT_NO_CONTENT'/>
+     <exports symbol='XML_RNGP_ELEM_CONTENT_EMPTY'/>
+     <exports symbol='XML_RNGP_ELEM_CONTENT_ERROR'/>
+     <exports symbol='XML_RNGP_ELEM_TEXT_CONFLICT'/>
+     <exports symbol='XML_RNGP_EMPTY'/>
+     <exports symbol='XML_RNGP_EMPTY_CONSTRUCT'/>
+     <exports symbol='XML_RNGP_EMPTY_CONTENT'/>
+     <exports symbol='XML_RNGP_EMPTY_NOT_EMPTY'/>
+     <exports symbol='XML_RNGP_ERROR_TYPE_LIB'/>
+     <exports symbol='XML_RNGP_EXCEPT_EMPTY'/>
+     <exports symbol='XML_RNGP_EXCEPT_MISSING'/>
+     <exports symbol='XML_RNGP_EXCEPT_MULTIPLE'/>
+     <exports symbol='XML_RNGP_EXCEPT_NO_CONTENT'/>
+     <exports symbol='XML_RNGP_EXTERNALREF_EMTPY'/>
+     <exports symbol='XML_RNGP_EXTERNALREF_RECURSE'/>
+     <exports symbol='XML_RNGP_EXTERNAL_REF_FAILURE'/>
+     <exports symbol='XML_RNGP_FORBIDDEN_ATTRIBUTE'/>
+     <exports symbol='XML_RNGP_FOREIGN_ELEMENT'/>
+     <exports symbol='XML_RNGP_GRAMMAR_CONTENT'/>
+     <exports symbol='XML_RNGP_GRAMMAR_EMPTY'/>
+     <exports symbol='XML_RNGP_GRAMMAR_MISSING'/>
+     <exports symbol='XML_RNGP_GRAMMAR_NO_START'/>
+     <exports symbol='XML_RNGP_GROUP_ATTR_CONFLICT'/>
+     <exports symbol='XML_RNGP_HREF_ERROR'/>
+     <exports symbol='XML_RNGP_INCLUDE_EMPTY'/>
+     <exports symbol='XML_RNGP_INCLUDE_FAILURE'/>
+     <exports symbol='XML_RNGP_INCLUDE_RECURSE'/>
+     <exports symbol='XML_RNGP_INTERLEAVE_ADD'/>
+     <exports symbol='XML_RNGP_INTERLEAVE_CREATE_FAILED'/>
+     <exports symbol='XML_RNGP_INTERLEAVE_EMPTY'/>
+     <exports symbol='XML_RNGP_INTERLEAVE_NO_CONTENT'/>
+     <exports symbol='XML_RNGP_INVALID_DEFINE_NAME'/>
+     <exports symbol='XML_RNGP_INVALID_URI'/>
+     <exports symbol='XML_RNGP_INVALID_VALUE'/>
+     <exports symbol='XML_RNGP_MISSING_HREF'/>
+     <exports symbol='XML_RNGP_NAME_MISSING'/>
+     <exports symbol='XML_RNGP_NEED_COMBINE'/>
+     <exports symbol='XML_RNGP_NOTALLOWED_NOT_EMPTY'/>
+     <exports symbol='XML_RNGP_NSNAME_ATTR_ANCESTOR'/>
+     <exports symbol='XML_RNGP_NSNAME_NO_NS'/>
+     <exports symbol='XML_RNGP_PARAM_FORBIDDEN'/>
+     <exports symbol='XML_RNGP_PARAM_NAME_MISSING'/>
+     <exports symbol='XML_RNGP_PARENTREF_CREATE_FAILED'/>
+     <exports symbol='XML_RNGP_PARENTREF_NAME_INVALID'/>
+     <exports symbol='XML_RNGP_PARENTREF_NOT_EMPTY'/>
+     <exports symbol='XML_RNGP_PARENTREF_NO_NAME'/>
+     <exports symbol='XML_RNGP_PARENTREF_NO_PARENT'/>
+     <exports symbol='XML_RNGP_PARSE_ERROR'/>
+     <exports symbol='XML_RNGP_PAT_ANYNAME_EXCEPT_ANYNAME'/>
+     <exports symbol='XML_RNGP_PAT_ATTR_ATTR'/>
+     <exports symbol='XML_RNGP_PAT_ATTR_ELEM'/>
+     <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_ATTR'/>
+     <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_ELEM'/>
+     <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_EMPTY'/>
+     <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_GROUP'/>
+     <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_INTERLEAVE'/>
+     <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_LIST'/>
+     <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_ONEMORE'/>
+     <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_REF'/>
+     <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_TEXT'/>
+     <exports symbol='XML_RNGP_PAT_LIST_ATTR'/>
+     <exports symbol='XML_RNGP_PAT_LIST_ELEM'/>
+     <exports symbol='XML_RNGP_PAT_LIST_INTERLEAVE'/>
+     <exports symbol='XML_RNGP_PAT_LIST_LIST'/>
+     <exports symbol='XML_RNGP_PAT_LIST_REF'/>
+     <exports symbol='XML_RNGP_PAT_LIST_TEXT'/>
+     <exports symbol='XML_RNGP_PAT_NSNAME_EXCEPT_ANYNAME'/>
+     <exports symbol='XML_RNGP_PAT_NSNAME_EXCEPT_NSNAME'/>
+     <exports symbol='XML_RNGP_PAT_ONEMORE_GROUP_ATTR'/>
+     <exports symbol='XML_RNGP_PAT_ONEMORE_INTERLEAVE_ATTR'/>
+     <exports symbol='XML_RNGP_PAT_START_ATTR'/>
+     <exports symbol='XML_RNGP_PAT_START_DATA'/>
+     <exports symbol='XML_RNGP_PAT_START_EMPTY'/>
+     <exports symbol='XML_RNGP_PAT_START_GROUP'/>
+     <exports symbol='XML_RNGP_PAT_START_INTERLEAVE'/>
+     <exports symbol='XML_RNGP_PAT_START_LIST'/>
+     <exports symbol='XML_RNGP_PAT_START_ONEMORE'/>
+     <exports symbol='XML_RNGP_PAT_START_TEXT'/>
+     <exports symbol='XML_RNGP_PAT_START_VALUE'/>
+     <exports symbol='XML_RNGP_PREFIX_UNDEFINED'/>
+     <exports symbol='XML_RNGP_REF_CREATE_FAILED'/>
+     <exports symbol='XML_RNGP_REF_CYCLE'/>
+     <exports symbol='XML_RNGP_REF_NAME_INVALID'/>
+     <exports symbol='XML_RNGP_REF_NOT_EMPTY'/>
+     <exports symbol='XML_RNGP_REF_NO_DEF'/>
+     <exports symbol='XML_RNGP_REF_NO_NAME'/>
+     <exports symbol='XML_RNGP_START_CHOICE_AND_INTERLEAVE'/>
+     <exports symbol='XML_RNGP_START_CONTENT'/>
+     <exports symbol='XML_RNGP_START_EMPTY'/>
+     <exports symbol='XML_RNGP_START_MISSING'/>
+     <exports symbol='XML_RNGP_TEXT_EXPECTED'/>
+     <exports symbol='XML_RNGP_TEXT_HAS_CHILD'/>
+     <exports symbol='XML_RNGP_TYPE_MISSING'/>
+     <exports symbol='XML_RNGP_TYPE_NOT_FOUND'/>
+     <exports symbol='XML_RNGP_TYPE_VALUE'/>
+     <exports symbol='XML_RNGP_UNKNOWN_ATTRIBUTE'/>
+     <exports symbol='XML_RNGP_UNKNOWN_COMBINE'/>
+     <exports symbol='XML_RNGP_UNKNOWN_CONSTRUCT'/>
+     <exports symbol='XML_RNGP_UNKNOWN_TYPE_LIB'/>
+     <exports symbol='XML_RNGP_URI_FRAGMENT'/>
+     <exports symbol='XML_RNGP_URI_NOT_ABSOLUTE'/>
+     <exports symbol='XML_RNGP_VALUE_EMPTY'/>
+     <exports symbol='XML_RNGP_VALUE_NO_CONTENT'/>
+     <exports symbol='XML_RNGP_XMLNS_NAME'/>
+     <exports symbol='XML_RNGP_XML_NS'/>
+     <exports symbol='XML_SAVE_CHAR_INVALID'/>
+     <exports symbol='XML_SAVE_NOT_UTF8'/>
+     <exports symbol='XML_SAVE_UNKNOWN_ENCODING'/>
+     <exports symbol='XML_TREE_INVALID_DEC'/>
+     <exports symbol='XML_TREE_INVALID_HEX'/>
+     <exports symbol='XML_TREE_UNTERMINATED_ENTITY'/>
      <exports symbol='XML_WAR_CATALOG_PI'/>
+     <exports symbol='XML_WAR_LANG_VALUE'/>
+     <exports symbol='XML_WAR_NS_URI'/>
+     <exports symbol='XML_WAR_NS_URI_RELATIVE'/>
      <exports symbol='XML_WAR_UNDECLARED_ENTITY'/>
+     <exports symbol='XML_WAR_UNKNOWN_VERSION'/>
+     <exports symbol='XML_XPATH_ENCODING_ERROR'/>
+     <exports symbol='XML_XPATH_EXPRESSION_OK'/>
+     <exports symbol='XML_XPATH_EXPR_ERROR'/>
+     <exports symbol='XML_XPATH_INVALID_ARITY'/>
+     <exports symbol='XML_XPATH_INVALID_CHAR_ERROR'/>
+     <exports symbol='XML_XPATH_INVALID_CTXT_POSITION'/>
+     <exports symbol='XML_XPATH_INVALID_CTXT_SIZE'/>
+     <exports symbol='XML_XPATH_INVALID_OPERAND'/>
+     <exports symbol='XML_XPATH_INVALID_PREDICATE_ERROR'/>
+     <exports symbol='XML_XPATH_INVALID_TYPE'/>
+     <exports symbol='XML_XPATH_MEMORY_ERROR'/>
+     <exports symbol='XML_XPATH_NUMBER_ERROR'/>
+     <exports symbol='XML_XPATH_START_LITERAL_ERROR'/>
+     <exports symbol='XML_XPATH_UNCLOSED_ERROR'/>
+     <exports symbol='XML_XPATH_UNDEF_PREFIX_ERROR'/>
+     <exports symbol='XML_XPATH_UNDEF_VARIABLE_ERROR'/>
+     <exports symbol='XML_XPATH_UNFINISHED_LITERAL_ERROR'/>
+     <exports symbol='XML_XPATH_UNKNOWN_FUNC_ERROR'/>
+     <exports symbol='XML_XPATH_VARIABLE_REF_ERROR'/>
+     <exports symbol='XML_XPTR_RESOURCE_ERROR'/>
+     <exports symbol='XML_XPTR_SUB_RESOURCE_ERROR'/>
+     <exports symbol='XML_XPTR_SYNTAX_ERROR'/>
      <exports symbol='_xmlError'/>
      <exports symbol='initGenericErrorDefaultFunc'/>
      <exports symbol='xmlCopyError'/>
@@ -1813,8 +2111,10 @@
      <exports symbol='xmlParserValidityError'/>
      <exports symbol='xmlParserValidityWarning'/>
      <exports symbol='xmlParserWarning'/>
+     <exports symbol='xmlResetError'/>
      <exports symbol='xmlResetLastError'/>
      <exports symbol='xmlSetGenericErrorFunc'/>
+     <exports symbol='xmlStructuredErrorFunc'/>
     </file>
     <file name='tree'>
      <exports symbol='BAD_CAST'/>
@@ -2505,6 +2805,9 @@
     <macro name='LIBXML_VERSION_STRING' file='xmlversion'>
       <info>the version number string, 1.2.3 value is &quot;1002003&quot;</info>
     </macro>
+    <macro name='LIBXML_WALKER_ENABLED' file='xmlversion'>
+      <info>Whether the xmlDocWalker interface is configured in</info>
+    </macro>
     <macro name='LIBXML_XINCLUDE_ENABLED' file='xmlversion'>
       <info>Whether XInclude is configured in</info>
     </macro>
@@ -2835,7 +3138,49 @@
     <enum name='XML_DOCUMENT_FRAG_NODE' file='tree' value='11' type='xmlElementType'/>
     <enum name='XML_DOCUMENT_NODE' file='tree' value='9' type='xmlElementType'/>
     <enum name='XML_DOCUMENT_TYPE_NODE' file='tree' value='10' type='xmlElementType'/>
+    <enum name='XML_DTD_ATTRIBUTE_DEFAULT' file='xmlerror' value='500' type='xmlParserErrors'/>
+    <enum name='XML_DTD_ATTRIBUTE_REDEFINED' file='xmlerror' value='501' type='xmlParserErrors'/>
+    <enum name='XML_DTD_ATTRIBUTE_VALUE' file='xmlerror' value='502' type='xmlParserErrors'/>
+    <enum name='XML_DTD_CONTENT_ERROR' file='xmlerror' value='503' type='xmlParserErrors'/>
+    <enum name='XML_DTD_CONTENT_MODEL' file='xmlerror' value='504' type='xmlParserErrors'/>
+    <enum name='XML_DTD_CONTENT_NOT_DETERMINIST' file='xmlerror' value='505' type='xmlParserErrors'/>
+    <enum name='XML_DTD_DIFFERENT_PREFIX' file='xmlerror' value='506' type='xmlParserErrors'/>
+    <enum name='XML_DTD_ELEM_DEFAULT_NAMESPACE' file='xmlerror' value='507' type='xmlParserErrors'/>
+    <enum name='XML_DTD_ELEM_NAMESPACE' file='xmlerror' value='508' type='xmlParserErrors'/>
+    <enum name='XML_DTD_ELEM_REDEFINED' file='xmlerror' value='509' type='xmlParserErrors'/>
+    <enum name='XML_DTD_EMPTY_NOTATION' file='xmlerror' value='510' type='xmlParserErrors'/>
+    <enum name='XML_DTD_ENTITY_TYPE' file='xmlerror' value='511' type='xmlParserErrors'/>
+    <enum name='XML_DTD_ID_FIXED' file='xmlerror' value='512' type='xmlParserErrors'/>
+    <enum name='XML_DTD_ID_REDEFINED' file='xmlerror' value='513' type='xmlParserErrors'/>
+    <enum name='XML_DTD_ID_SUBSET' file='xmlerror' value='514' type='xmlParserErrors'/>
+    <enum name='XML_DTD_INVALID_CHILD' file='xmlerror' value='515' type='xmlParserErrors'/>
+    <enum name='XML_DTD_INVALID_DEFAULT' file='xmlerror' value='516' type='xmlParserErrors'/>
+    <enum name='XML_DTD_LOAD_ERROR' file='xmlerror' value='517' type='xmlParserErrors'/>
+    <enum name='XML_DTD_MISSING_ATTRIBUTE' file='xmlerror' value='518' type='xmlParserErrors'/>
+    <enum name='XML_DTD_MIXED_CORRUPT' file='xmlerror' value='519' type='xmlParserErrors'/>
+    <enum name='XML_DTD_MULTIPLE_ID' file='xmlerror' value='520' type='xmlParserErrors'/>
     <enum name='XML_DTD_NODE' file='tree' value='14' type='xmlElementType'/>
+    <enum name='XML_DTD_NOTATION_REDEFINED' file='xmlerror' value='526' type='xmlParserErrors'/>
+    <enum name='XML_DTD_NOTATION_VALUE' file='xmlerror' value='527' type='xmlParserErrors'/>
+    <enum name='XML_DTD_NOT_EMPTY' file='xmlerror' value='528' type='xmlParserErrors'/>
+    <enum name='XML_DTD_NOT_PCDATA' file='xmlerror' value='529' type='xmlParserErrors'/>
+    <enum name='XML_DTD_NOT_STANDALONE' file='xmlerror' value='530' type='xmlParserErrors'/>
+    <enum name='XML_DTD_NO_DOC' file='xmlerror' value='521' type='xmlParserErrors'/>
+    <enum name='XML_DTD_NO_DTD' file='xmlerror' value='522' type='xmlParserErrors'/>
+    <enum name='XML_DTD_NO_ELEM_NAME' file='xmlerror' value='523' type='xmlParserErrors'/>
+    <enum name='XML_DTD_NO_PREFIX' file='xmlerror' value='524' type='xmlParserErrors'/>
+    <enum name='XML_DTD_NO_ROOT' file='xmlerror' value='525' type='xmlParserErrors'/>
+    <enum name='XML_DTD_ROOT_NAME' file='xmlerror' value='531' type='xmlParserErrors'/>
+    <enum name='XML_DTD_STANDALONE_WHITE_SPACE' file='xmlerror' value='532' type='xmlParserErrors'/>
+    <enum name='XML_DTD_UNKNOWN_ATTRIBUTE' file='xmlerror' value='533' type='xmlParserErrors'/>
+    <enum name='XML_DTD_UNKNOWN_ELEM' file='xmlerror' value='534' type='xmlParserErrors'/>
+    <enum name='XML_DTD_UNKNOWN_ENTITY' file='xmlerror' value='535' type='xmlParserErrors'/>
+    <enum name='XML_DTD_UNKNOWN_ID' file='xmlerror' value='536' type='xmlParserErrors'/>
+    <enum name='XML_DTD_UNKNOWN_NOTATION' file='xmlerror' value='537' type='xmlParserErrors'/>
+    <enum name='XML_DWALK_BACKTRACK' file='xmldwalk' value='2' type='xmlDocWalkerState'/>
+    <enum name='XML_DWALK_END' file='xmldwalk' value='3' type='xmlDocWalkerState'/>
+    <enum name='XML_DWALK_NONE' file='xmldwalk' value='0' type='xmlDocWalkerState'/>
+    <enum name='XML_DWALK_START' file='xmldwalk' value='1' type='xmlDocWalkerState'/>
     <enum name='XML_ELEMENT_CONTENT_ELEMENT' file='tree' value='2' type='xmlElementContentType'/>
     <enum name='XML_ELEMENT_CONTENT_MULT' file='tree' value='3' type='xmlElementContentOccur'/>
     <enum name='XML_ELEMENT_CONTENT_ONCE' file='tree' value='1' type='xmlElementContentOccur'/>
@@ -2867,7 +3212,7 @@
     <enum name='XML_ERR_CHARREF_IN_PROLOG' file='xmlerror' value='11' type='xmlParserErrors'/>
     <enum name='XML_ERR_COMMENT_NOT_FINISHED' file='xmlerror' value='45' type='xmlParserErrors' info='45'/>
     <enum name='XML_ERR_CONDSEC_INVALID' file='xmlerror' value='83' type='xmlParserErrors' info='83'/>
-    <enum name='XML_ERR_CONDSEC_INVALID_KEYWORD' file='xmlerror' value='99' type='xmlParserErrors'/>
+    <enum name='XML_ERR_CONDSEC_INVALID_KEYWORD' file='xmlerror' value='95' type='xmlParserErrors'/>
     <enum name='XML_ERR_CONDSEC_NOT_FINISHED' file='xmlerror' value='59' type='xmlParserErrors'/>
     <enum name='XML_ERR_CONDSEC_NOT_STARTED' file='xmlerror' value='58' type='xmlParserErrors' info='58'/>
     <enum name='XML_ERR_DOCTYPE_NOT_FINISHED' file='xmlerror' value='61' type='xmlParserErrors' info='61'/>
@@ -2898,7 +3243,6 @@
     <enum name='XML_ERR_EXT_SUBSET_NOT_FINISHED' file='xmlerror' value='60' type='xmlParserErrors' info='60'/>
     <enum name='XML_ERR_FATAL' file='xmlerror' value='3' type='xmlErrorLevel' info=' A fatal error'/>
     <enum name='XML_ERR_GT_REQUIRED' file='xmlerror' value='73' type='xmlParserErrors'/>
-    <enum name='XML_ERR_HTML' file='xmlerror' value='2' type='xmlErrorDomain' info='The HTML parser'/>
     <enum name='XML_ERR_HYPHEN_IN_COMMENT' file='xmlerror' value='80' type='xmlParserErrors' info='80'/>
     <enum name='XML_ERR_INTERNAL_ERROR' file='xmlerror' value='1' type='xmlParserErrors'/>
     <enum name='XML_ERR_INVALID_CHAR' file='xmlerror' value='9' type='xmlParserErrors'/>
@@ -2907,13 +3251,11 @@
     <enum name='XML_ERR_INVALID_ENCODING' file='xmlerror' value='81' type='xmlParserErrors' info='81'/>
     <enum name='XML_ERR_INVALID_HEX_CHARREF' file='xmlerror' value='6' type='xmlParserErrors' info='6'/>
     <enum name='XML_ERR_INVALID_URI' file='xmlerror' value='91' type='xmlParserErrors' info='91'/>
-    <enum name='XML_ERR_IO' file='xmlerror' value='5' type='xmlErrorDomain' info='The Input/Output stack'/>
     <enum name='XML_ERR_LITERAL_NOT_FINISHED' file='xmlerror' value='44' type='xmlParserErrors'/>
     <enum name='XML_ERR_LITERAL_NOT_STARTED' file='xmlerror' value='43' type='xmlParserErrors' info='43'/>
     <enum name='XML_ERR_LTSLASH_REQUIRED' file='xmlerror' value='74' type='xmlParserErrors'/>
     <enum name='XML_ERR_LT_IN_ATTRIBUTE' file='xmlerror' value='38' type='xmlParserErrors' info='38'/>
     <enum name='XML_ERR_LT_REQUIRED' file='xmlerror' value='72' type='xmlParserErrors'/>
-    <enum name='XML_ERR_MEMORY' file='xmlerror' value='3' type='xmlErrorDomain' info='The memory allocator'/>
     <enum name='XML_ERR_MISPLACED_CDATA_END' file='xmlerror' value='62' type='xmlParserErrors' info='62'/>
     <enum name='XML_ERR_MIXED_NOT_FINISHED' file='xmlerror' value='53' type='xmlParserErrors'/>
     <enum name='XML_ERR_MIXED_NOT_STARTED' file='xmlerror' value='52' type='xmlParserErrors' info='52'/>
@@ -2927,7 +3269,6 @@
     <enum name='XML_ERR_NO_MEMORY' file='xmlerror' value='2' type='xmlParserErrors'/>
     <enum name='XML_ERR_NS_DECL_ERROR' file='xmlerror' value='35' type='xmlParserErrors'/>
     <enum name='XML_ERR_OK' file='xmlerror' value='0' type='xmlParserErrors'/>
-    <enum name='XML_ERR_OUTPUT' file='xmlerror' value='4' type='xmlErrorDomain' info='The serialization code'/>
     <enum name='XML_ERR_PCDATA_REQUIRED' file='xmlerror' value='69' type='xmlParserErrors'/>
     <enum name='XML_ERR_PEREF_AT_EOF' file='xmlerror' value='18' type='xmlParserErrors'/>
     <enum name='XML_ERR_PEREF_IN_EPILOG' file='xmlerror' value='20' type='xmlParserErrors'/>
@@ -2953,28 +3294,94 @@
     <enum name='XML_ERR_URI_FRAGMENT' file='xmlerror' value='92' type='xmlParserErrors' info='92'/>
     <enum name='XML_ERR_URI_REQUIRED' file='xmlerror' value='70' type='xmlParserErrors'/>
     <enum name='XML_ERR_VALUE_REQUIRED' file='xmlerror' value='84' type='xmlParserErrors' info='84'/>
-    <enum name='XML_ERR_VERSION_MISSING' file='xmlerror' value='100' type='xmlParserErrors'/>
+    <enum name='XML_ERR_VERSION_MISSING' file='xmlerror' value='96' type='xmlParserErrors'/>
     <enum name='XML_ERR_WARNING' file='xmlerror' value='1' type='xmlErrorLevel' info='A simple warning'/>
-    <enum name='XML_ERR_XINCLUDE' file='xmlerror' value='6' type='xmlErrorDomain' info='The XInclude processing'/>
     <enum name='XML_ERR_XMLDECL_NOT_FINISHED' file='xmlerror' value='57' type='xmlParserErrors'/>
     <enum name='XML_ERR_XMLDECL_NOT_STARTED' file='xmlerror' value='56' type='xmlParserErrors' info='56'/>
-    <enum name='XML_ERR_XPATH' file='xmlerror' value='7' type='xmlErrorDomain' info='The XPath engine'/>
-    <enum name='XML_ERR_XPOINTER' file='xmlerror' value='8' type='xmlErrorDomain' info=' The XPointer engine'/>
     <enum name='XML_EXTERNAL_GENERAL_PARSED_ENTITY' file='entities' value='2' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY' file='entities' value='3' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_PARAMETER_ENTITY' file='entities' value='5' type='xmlEntityType'/>
+    <enum name='XML_FROM_C14N' file='xmlerror' value='17' type='xmlErrorDomain' info='The Canonicalization module'/>
+    <enum name='XML_FROM_CATALOG' file='xmlerror' value='16' type='xmlErrorDomain' info='The Catalog module'/>
+    <enum name='XML_FROM_DTD' file='xmlerror' value='4' type='xmlErrorDomain' info='The XML DTD validation'/>
+    <enum name='XML_FROM_HTML' file='xmlerror' value='5' type='xmlErrorDomain' info='The HTML parser'/>
+    <enum name='XML_FROM_IO' file='xmlerror' value='8' type='xmlErrorDomain' info='The Input/Output stack'/>
+    <enum name='XML_FROM_MEMORY' file='xmlerror' value='6' type='xmlErrorDomain' info='The memory allocator'/>
+    <enum name='XML_FROM_NAMESPACE' file='xmlerror' value='3' type='xmlErrorDomain' info='The XML Namespace module'/>
     <enum name='XML_FROM_NONE' file='xmlerror' value='0' type='xmlErrorDomain'/>
+    <enum name='XML_FROM_OUTPUT' file='xmlerror' value='7' type='xmlErrorDomain' info='The serialization code'/>
     <enum name='XML_FROM_PARSER' file='xmlerror' value='1' type='xmlErrorDomain' info='The XML parser'/>
+    <enum name='XML_FROM_REGEXP' file='xmlerror' value='12' type='xmlErrorDomain' info='The regular expressions module'/>
+    <enum name='XML_FROM_RELAXNGP' file='xmlerror' value='14' type='xmlErrorDomain' info='The Relax-NG parser module'/>
+    <enum name='XML_FROM_RELAXNGV' file='xmlerror' value='15' type='xmlErrorDomain' info='The Relax-NG validator module'/>
+    <enum name='XML_FROM_SCHEMAS' file='xmlerror' value='13' type='xmlErrorDomain' info='The W3C XML Schemas module'/>
+    <enum name='XML_FROM_TREE' file='xmlerror' value='2' type='xmlErrorDomain' info='The tree module'/>
+    <enum name='XML_FROM_XINCLUDE' file='xmlerror' value='9' type='xmlErrorDomain' info='The XInclude processing'/>
+    <enum name='XML_FROM_XPATH' file='xmlerror' value='10' type='xmlErrorDomain' info='The XPath module'/>
+    <enum name='XML_FROM_XPOINTER' file='xmlerror' value='11' type='xmlErrorDomain' info='The XPointer module'/>
+    <enum name='XML_FROM_XSLT' file='xmlerror' value='18' type='xmlErrorDomain' info=' The XSLT engine from libxslt'/>
     <enum name='XML_HTML_DOCUMENT_NODE' file='tree' value='13' type='xmlElementType'/>
+    <enum name='XML_HTML_STRUCURE_ERROR' file='xmlerror' value='800' type='xmlParserErrors'/>
+    <enum name='XML_HTML_UNKNOWN_TAG' file='xmlerror' value='801' type='xmlParserErrors'/>
     <enum name='XML_INTERNAL_GENERAL_ENTITY' file='entities' value='1' type='xmlEntityType'/>
     <enum name='XML_INTERNAL_PARAMETER_ENTITY' file='entities' value='4' type='xmlEntityType'/>
     <enum name='XML_INTERNAL_PREDEFINED_ENTITY' file='entities' value='6' type='xmlEntityType'/>
+    <enum name='XML_IO_BUFFER_FULL' file='xmlerror' value='1548' type='xmlParserErrors'/>
+    <enum name='XML_IO_EACCES' file='xmlerror' value='1501' type='xmlParserErrors'/>
+    <enum name='XML_IO_EAGAIN' file='xmlerror' value='1502' type='xmlParserErrors'/>
+    <enum name='XML_IO_EBADF' file='xmlerror' value='1503' type='xmlParserErrors'/>
+    <enum name='XML_IO_EBADMSG' file='xmlerror' value='1504' type='xmlParserErrors'/>
+    <enum name='XML_IO_EBUSY' file='xmlerror' value='1505' type='xmlParserErrors'/>
+    <enum name='XML_IO_ECANCELED' file='xmlerror' value='1506' type='xmlParserErrors'/>
+    <enum name='XML_IO_ECHILD' file='xmlerror' value='1507' type='xmlParserErrors'/>
+    <enum name='XML_IO_EDEADLK' file='xmlerror' value='1508' type='xmlParserErrors'/>
+    <enum name='XML_IO_EDOM' file='xmlerror' value='1509' type='xmlParserErrors'/>
+    <enum name='XML_IO_EEXIST' file='xmlerror' value='1510' type='xmlParserErrors'/>
+    <enum name='XML_IO_EFAULT' file='xmlerror' value='1511' type='xmlParserErrors'/>
+    <enum name='XML_IO_EFBIG' file='xmlerror' value='1512' type='xmlParserErrors'/>
+    <enum name='XML_IO_EINPROGRESS' file='xmlerror' value='1513' type='xmlParserErrors'/>
+    <enum name='XML_IO_EINTR' file='xmlerror' value='1514' type='xmlParserErrors'/>
+    <enum name='XML_IO_EINVAL' file='xmlerror' value='1515' type='xmlParserErrors'/>
+    <enum name='XML_IO_EIO' file='xmlerror' value='1516' type='xmlParserErrors'/>
+    <enum name='XML_IO_EISDIR' file='xmlerror' value='1517' type='xmlParserErrors'/>
+    <enum name='XML_IO_EMFILE' file='xmlerror' value='1518' type='xmlParserErrors'/>
+    <enum name='XML_IO_EMLINK' file='xmlerror' value='1519' type='xmlParserErrors'/>
+    <enum name='XML_IO_EMSGSIZE' file='xmlerror' value='1520' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENAMETOOLONG' file='xmlerror' value='1521' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENCODER' file='xmlerror' value='1544' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENFILE' file='xmlerror' value='1522' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENODEV' file='xmlerror' value='1523' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENOENT' file='xmlerror' value='1524' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENOEXEC' file='xmlerror' value='1525' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENOLCK' file='xmlerror' value='1526' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENOMEM' file='xmlerror' value='1527' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENOSPC' file='xmlerror' value='1528' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENOSYS' file='xmlerror' value='1529' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENOTDIR' file='xmlerror' value='1530' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENOTEMPTY' file='xmlerror' value='1531' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENOTSUP' file='xmlerror' value='1532' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENOTTY' file='xmlerror' value='1533' type='xmlParserErrors'/>
+    <enum name='XML_IO_ENXIO' file='xmlerror' value='1534' type='xmlParserErrors'/>
+    <enum name='XML_IO_EPERM' file='xmlerror' value='1535' type='xmlParserErrors'/>
+    <enum name='XML_IO_EPIPE' file='xmlerror' value='1536' type='xmlParserErrors'/>
+    <enum name='XML_IO_ERANGE' file='xmlerror' value='1537' type='xmlParserErrors'/>
+    <enum name='XML_IO_EROFS' file='xmlerror' value='1538' type='xmlParserErrors'/>
+    <enum name='XML_IO_ESPIPE' file='xmlerror' value='1539' type='xmlParserErrors'/>
+    <enum name='XML_IO_ESRCH' file='xmlerror' value='1540' type='xmlParserErrors'/>
+    <enum name='XML_IO_ETIMEDOUT' file='xmlerror' value='1541' type='xmlParserErrors'/>
+    <enum name='XML_IO_EXDEV' file='xmlerror' value='1542' type='xmlParserErrors'/>
+    <enum name='XML_IO_FLUSH' file='xmlerror' value='1545' type='xmlParserErrors'/>
+    <enum name='XML_IO_LOAD_ERROR' file='xmlerror' value='1549' type='xmlParserErrors'/>
+    <enum name='XML_IO_NETWORK_ATTEMPT' file='xmlerror' value='1543' type='xmlParserErrors'/>
+    <enum name='XML_IO_NO_INPUT' file='xmlerror' value='1547' type='xmlParserErrors'/>
+    <enum name='XML_IO_UNKNOWN' file='xmlerror' value='1500' type='xmlParserErrors'/>
+    <enum name='XML_IO_WRITE' file='xmlerror' value='1546' type='xmlParserErrors'/>
     <enum name='XML_NAMESPACE_DECL' file='tree' value='18' type='xmlElementType'/>
     <enum name='XML_NOTATION_NODE' file='tree' value='12' type='xmlElementType'/>
-    <enum name='XML_NS_ERR_ATTRIBUTE_REDEFINED' file='xmlerror' value='98' type='xmlParserErrors'/>
-    <enum name='XML_NS_ERR_QNAME' file='xmlerror' value='97' type='xmlParserErrors'/>
-    <enum name='XML_NS_ERR_UNDEFINED_NAMESPACE' file='xmlerror' value='96' type='xmlParserErrors'/>
-    <enum name='XML_NS_ERR_XML_NAMESPACE' file='xmlerror' value='95' type='xmlParserErrors'/>
+    <enum name='XML_NS_ERR_ATTRIBUTE_REDEFINED' file='xmlerror' value='203' type='xmlParserErrors'/>
+    <enum name='XML_NS_ERR_QNAME' file='xmlerror' value='202' type='xmlParserErrors'/>
+    <enum name='XML_NS_ERR_UNDEFINED_NAMESPACE' file='xmlerror' value='201' type='xmlParserErrors'/>
+    <enum name='XML_NS_ERR_XML_NAMESPACE' file='xmlerror' value='200' type='xmlParserErrors'/>
     <enum name='XML_PARSER_ATTRIBUTE_VALUE' file='parser' value='12' type='xmlParserInputState' info='within an attribute value'/>
     <enum name='XML_PARSER_CDATA_SECTION' file='parser' value='8' type='xmlParserInputState' info='within a CDATA section'/>
     <enum name='XML_PARSER_COMMENT' file='parser' value='5' type='xmlParserInputState' info='within a comment'/>
@@ -3035,6 +3442,7 @@
     <enum name='XML_READER_TYPE_TEXT' file='xmlreader' value='3' type='xmlReaderTypes'/>
     <enum name='XML_READER_TYPE_WHITESPACE' file='xmlreader' value='13' type='xmlReaderTypes'/>
     <enum name='XML_READER_TYPE_XML_DECLARATION' file='xmlreader' value='17' type='xmlReaderTypes'/>
+    <enum name='XML_REGEXP_COMPILE_ERROR' file='xmlerror' value='1450' type='xmlParserErrors'/>
     <enum name='XML_RELAXNG_ERR_ATTREXTRANS' file='relaxng' value='20' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_ATTRNAME' file='relaxng' value='14' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_ATTRNONS' file='relaxng' value='16' type='xmlRelaxNGValidErr'/>
@@ -3075,6 +3483,132 @@
     <enum name='XML_RELAXNG_ERR_VALELEM' file='relaxng' value='29' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_VALUE' file='relaxng' value='32' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_OK' file='relaxng' value='0' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RNGP_ANYNAME_ATTR_ANCESTOR' file='xmlerror' value='1000' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ATTRIBUTE_CHILDREN' file='xmlerror' value='1002' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ATTRIBUTE_CONTENT' file='xmlerror' value='1003' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ATTRIBUTE_EMPTY' file='xmlerror' value='1004' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ATTRIBUTE_NOOP' file='xmlerror' value='1005' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ATTR_CONFLICT' file='xmlerror' value='1001' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_CHOICE_CONTENT' file='xmlerror' value='1006' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_CHOICE_EMPTY' file='xmlerror' value='1007' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_CREATE_FAILURE' file='xmlerror' value='1008' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_DATA_CONTENT' file='xmlerror' value='1009' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_DEFINE_CREATE_FAILED' file='xmlerror' value='1011' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_DEFINE_EMPTY' file='xmlerror' value='1012' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_DEFINE_MISSING' file='xmlerror' value='1013' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_DEFINE_NAME_MISSING' file='xmlerror' value='1014' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_DEF_CHOICE_AND_INTERLEAVE' file='xmlerror' value='1010' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ELEMENT_CONTENT' file='xmlerror' value='1018' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ELEMENT_EMPTY' file='xmlerror' value='1017' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ELEMENT_NAME' file='xmlerror' value='1019' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ELEMENT_NO_CONTENT' file='xmlerror' value='1020' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ELEM_CONTENT_EMPTY' file='xmlerror' value='1015' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ELEM_CONTENT_ERROR' file='xmlerror' value='1016' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ELEM_TEXT_CONFLICT' file='xmlerror' value='1021' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EMPTY' file='xmlerror' value='1022' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EMPTY_CONSTRUCT' file='xmlerror' value='1023' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EMPTY_CONTENT' file='xmlerror' value='1024' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EMPTY_NOT_EMPTY' file='xmlerror' value='1025' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_ERROR_TYPE_LIB' file='xmlerror' value='1026' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EXCEPT_EMPTY' file='xmlerror' value='1027' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EXCEPT_MISSING' file='xmlerror' value='1028' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EXCEPT_MULTIPLE' file='xmlerror' value='1029' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EXCEPT_NO_CONTENT' file='xmlerror' value='1030' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EXTERNALREF_EMTPY' file='xmlerror' value='1031' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EXTERNALREF_RECURSE' file='xmlerror' value='1033' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_EXTERNAL_REF_FAILURE' file='xmlerror' value='1032' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_FORBIDDEN_ATTRIBUTE' file='xmlerror' value='1034' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_FOREIGN_ELEMENT' file='xmlerror' value='1035' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_GRAMMAR_CONTENT' file='xmlerror' value='1036' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_GRAMMAR_EMPTY' file='xmlerror' value='1037' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_GRAMMAR_MISSING' file='xmlerror' value='1038' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_GRAMMAR_NO_START' file='xmlerror' value='1039' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_GROUP_ATTR_CONFLICT' file='xmlerror' value='1040' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_HREF_ERROR' file='xmlerror' value='1041' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_INCLUDE_EMPTY' file='xmlerror' value='1042' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_INCLUDE_FAILURE' file='xmlerror' value='1043' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_INCLUDE_RECURSE' file='xmlerror' value='1044' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_INTERLEAVE_ADD' file='xmlerror' value='1045' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_INTERLEAVE_CREATE_FAILED' file='xmlerror' value='1046' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_INTERLEAVE_EMPTY' file='xmlerror' value='1047' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_INTERLEAVE_NO_CONTENT' file='xmlerror' value='1048' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_INVALID_DEFINE_NAME' file='xmlerror' value='1049' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_INVALID_URI' file='xmlerror' value='1050' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_INVALID_VALUE' file='xmlerror' value='1051' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_MISSING_HREF' file='xmlerror' value='1052' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_NAME_MISSING' file='xmlerror' value='1053' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_NEED_COMBINE' file='xmlerror' value='1054' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_NOTALLOWED_NOT_EMPTY' file='xmlerror' value='1055' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_NSNAME_ATTR_ANCESTOR' file='xmlerror' value='1056' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_NSNAME_NO_NS' file='xmlerror' value='1057' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PARAM_FORBIDDEN' file='xmlerror' value='1058' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PARAM_NAME_MISSING' file='xmlerror' value='1059' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PARENTREF_CREATE_FAILED' file='xmlerror' value='1060' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PARENTREF_NAME_INVALID' file='xmlerror' value='1061' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PARENTREF_NOT_EMPTY' file='xmlerror' value='1064' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PARENTREF_NO_NAME' file='xmlerror' value='1062' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PARENTREF_NO_PARENT' file='xmlerror' value='1063' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PARSE_ERROR' file='xmlerror' value='1065' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_ANYNAME_EXCEPT_ANYNAME' file='xmlerror' value='1066' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_ATTR_ATTR' file='xmlerror' value='1067' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_ATTR_ELEM' file='xmlerror' value='1068' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_DATA_EXCEPT_ATTR' file='xmlerror' value='1069' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_DATA_EXCEPT_ELEM' file='xmlerror' value='1070' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_DATA_EXCEPT_EMPTY' file='xmlerror' value='1071' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_DATA_EXCEPT_GROUP' file='xmlerror' value='1072' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_DATA_EXCEPT_INTERLEAVE' file='xmlerror' value='1073' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_DATA_EXCEPT_LIST' file='xmlerror' value='1074' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_DATA_EXCEPT_ONEMORE' file='xmlerror' value='1075' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_DATA_EXCEPT_REF' file='xmlerror' value='1076' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_DATA_EXCEPT_TEXT' file='xmlerror' value='1077' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_LIST_ATTR' file='xmlerror' value='1078' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_LIST_ELEM' file='xmlerror' value='1079' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_LIST_INTERLEAVE' file='xmlerror' value='1080' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_LIST_LIST' file='xmlerror' value='1081' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_LIST_REF' file='xmlerror' value='1082' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_LIST_TEXT' file='xmlerror' value='1083' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_NSNAME_EXCEPT_ANYNAME' file='xmlerror' value='1084' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_NSNAME_EXCEPT_NSNAME' file='xmlerror' value='1085' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_ONEMORE_GROUP_ATTR' file='xmlerror' value='1086' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_ONEMORE_INTERLEAVE_ATTR' file='xmlerror' value='1087' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_START_ATTR' file='xmlerror' value='1088' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_START_DATA' file='xmlerror' value='1089' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_START_EMPTY' file='xmlerror' value='1090' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_START_GROUP' file='xmlerror' value='1091' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_START_INTERLEAVE' file='xmlerror' value='1092' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_START_LIST' file='xmlerror' value='1093' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_START_ONEMORE' file='xmlerror' value='1094' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_START_TEXT' file='xmlerror' value='1095' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PAT_START_VALUE' file='xmlerror' value='1096' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_PREFIX_UNDEFINED' file='xmlerror' value='1097' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_REF_CREATE_FAILED' file='xmlerror' value='1098' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_REF_CYCLE' file='xmlerror' value='1099' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_REF_NAME_INVALID' file='xmlerror' value='1100' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_REF_NOT_EMPTY' file='xmlerror' value='1103' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_REF_NO_DEF' file='xmlerror' value='1101' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_REF_NO_NAME' file='xmlerror' value='1102' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_START_CHOICE_AND_INTERLEAVE' file='xmlerror' value='1104' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_START_CONTENT' file='xmlerror' value='1105' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_START_EMPTY' file='xmlerror' value='1106' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_START_MISSING' file='xmlerror' value='1107' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_TEXT_EXPECTED' file='xmlerror' value='1108' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_TEXT_HAS_CHILD' file='xmlerror' value='1109' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_TYPE_MISSING' file='xmlerror' value='1110' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_TYPE_NOT_FOUND' file='xmlerror' value='1111' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_TYPE_VALUE' file='xmlerror' value='1112' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_UNKNOWN_ATTRIBUTE' file='xmlerror' value='1113' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_UNKNOWN_COMBINE' file='xmlerror' value='1114' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_UNKNOWN_CONSTRUCT' file='xmlerror' value='1115' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_UNKNOWN_TYPE_LIB' file='xmlerror' value='1116' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_URI_FRAGMENT' file='xmlerror' value='1117' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_URI_NOT_ABSOLUTE' file='xmlerror' value='1118' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_VALUE_EMPTY' file='xmlerror' value='1119' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_VALUE_NO_CONTENT' file='xmlerror' value='1120' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_XMLNS_NAME' file='xmlerror' value='1121' type='xmlParserErrors'/>
+    <enum name='XML_RNGP_XML_NS' file='xmlerror' value='1122' type='xmlParserErrors'/>
+    <enum name='XML_SAVE_CHAR_INVALID' file='xmlerror' value='1401' type='xmlParserErrors'/>
+    <enum name='XML_SAVE_NOT_UTF8' file='xmlerror' value='1400' type='xmlParserErrors'/>
+    <enum name='XML_SAVE_UNKNOWN_ENCODING' file='xmlerror' value='1402' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAS_ERR_' file='xmlschemas' value='24' type='xmlSchemaValidError'/>
     <enum name='XML_SCHEMAS_ERR_ATTRINVALID' file='xmlschemas' value='21' type='xmlSchemaValidError'/>
     <enum name='XML_SCHEMAS_ERR_ATTRUNKNOWN' file='xmlschemas' value='20' type='xmlSchemaValidError'/>
@@ -3142,10 +3676,39 @@
     <enum name='XML_SCHEMA_TYPE_UNION' file='schemasInternals' value='20' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_UR' file='schemasInternals' value='11' type='xmlSchemaTypeType'/>
     <enum name='XML_TEXT_NODE' file='tree' value='3' type='xmlElementType'/>
+    <enum name='XML_TREE_INVALID_DEC' file='xmlerror' value='1301' type='xmlParserErrors'/>
+    <enum name='XML_TREE_INVALID_HEX' file='xmlerror' value='1300' type='xmlParserErrors'/>
+    <enum name='XML_TREE_UNTERMINATED_ENTITY' file='xmlerror' value='1302' type='xmlParserErrors'/>
     <enum name='XML_WAR_CATALOG_PI' file='xmlerror' value='93' type='xmlParserErrors' info='93'/>
+    <enum name='XML_WAR_LANG_VALUE' file='xmlerror' value='98' type='xmlParserErrors'/>
+    <enum name='XML_WAR_NS_URI' file='xmlerror' value='99' type='xmlParserErrors'/>
+    <enum name='XML_WAR_NS_URI_RELATIVE' file='xmlerror' value='100' type='xmlParserErrors'/>
     <enum name='XML_WAR_UNDECLARED_ENTITY' file='xmlerror' value='27' type='xmlParserErrors'/>
+    <enum name='XML_WAR_UNKNOWN_VERSION' file='xmlerror' value='97' type='xmlParserErrors'/>
     <enum name='XML_XINCLUDE_END' file='tree' value='20' type='xmlElementType'/>
     <enum name='XML_XINCLUDE_START' file='tree' value='19' type='xmlElementType'/>
+    <enum name='XML_XPATH_ENCODING_ERROR' file='xmlerror' value='1220' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_EXPRESSION_OK' file='xmlerror' value='1200' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_EXPR_ERROR' file='xmlerror' value='1207' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_INVALID_ARITY' file='xmlerror' value='1212' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_INVALID_CHAR_ERROR' file='xmlerror' value='1221' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_INVALID_CTXT_POSITION' file='xmlerror' value='1214' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_INVALID_CTXT_SIZE' file='xmlerror' value='1213' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_INVALID_OPERAND' file='xmlerror' value='1210' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_INVALID_PREDICATE_ERROR' file='xmlerror' value='1206' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_INVALID_TYPE' file='xmlerror' value='1211' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_MEMORY_ERROR' file='xmlerror' value='1215' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_NUMBER_ERROR' file='xmlerror' value='1201' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_START_LITERAL_ERROR' file='xmlerror' value='1203' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_UNCLOSED_ERROR' file='xmlerror' value='1208' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_UNDEF_PREFIX_ERROR' file='xmlerror' value='1219' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_UNDEF_VARIABLE_ERROR' file='xmlerror' value='1205' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_UNFINISHED_LITERAL_ERROR' file='xmlerror' value='1202' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_UNKNOWN_FUNC_ERROR' file='xmlerror' value='1209' type='xmlParserErrors'/>
+    <enum name='XML_XPATH_VARIABLE_REF_ERROR' file='xmlerror' value='1204' type='xmlParserErrors'/>
+    <enum name='XML_XPTR_RESOURCE_ERROR' file='xmlerror' value='1217' type='xmlParserErrors'/>
+    <enum name='XML_XPTR_SUB_RESOURCE_ERROR' file='xmlerror' value='1218' type='xmlParserErrors'/>
+    <enum name='XML_XPTR_SYNTAX_ERROR' file='xmlerror' value='1216' type='xmlParserErrors'/>
     <enum name='XPATH_BOOLEAN' file='xpath' value='2' type='xmlXPathObjectType'/>
     <enum name='XPATH_ENCODING_ERROR' file='xpath' value='20' type='xmlXPathError'/>
     <enum name='XPATH_EXPRESSION_OK' file='xpath' value='0' type='xmlXPathError'/>
@@ -3331,6 +3894,9 @@ actually an xmlCharEncoding'/>
       <field name='dict' type='struct _xmlDict *' info=' dict used to allocate names or NULL'/>
     </struct>
     <typedef name='xmlDocPtr' file='tree' type='xmlDoc *'/>
+    <struct name='xmlDocWalker' file='xmldwalk' type='struct _xmlDocWalker'/>
+    <typedef name='xmlDocWalkerPtr' file='xmldwalk' type='xmlDocWalker *'/>
+    <typedef name='xmlDocWalkerState' file='xmldwalk' type='enum'/>
     <struct name='xmlDtd' file='tree' type='struct _xmlDtd'>
       <field name='_private' type='void *' info=' application data'/>
       <field name='type' type='xmlElementType' info=' XML_DTD_NODE, must be second !'/>
@@ -3422,8 +3988,11 @@ actually an xmlCharEncoding'/>
       <field name='line' type='int' info=' the line number if available'/>
       <field name='str1' type='char *' info=' extra string information'/>
       <field name='str2' type='char *' info=' extra string information'/>
+      <field name='str3' type='char *' info=' extra string information'/>
       <field name='int1' type='int' info=' extra number information'/>
       <field name='int2' type='int' info=' extra number information'/>
+      <field name='ctxt' type='void *' info=' the parser context if available'/>
+      <field name='node' type='void *' info=' the node in the tree'/>
     </struct>
     <typedef name='xmlErrorDomain' file='xmlerror' type='enum'/>
     <typedef name='xmlErrorLevel' file='xmlerror' type='enum'/>
@@ -3531,6 +4100,7 @@ actually an xmlCharEncoding'/>
       <field name='buffer' type='xmlBufferPtr' info=' Local buffer encoded in UTF-8 or ISOLatin'/>
       <field name='conv' type='xmlBufferPtr' info=' if encoder != NULL buffer for output'/>
       <field name='written' type='int' info=' total number of byte written'/>
+      <field name='error' type='int' info=''/>
     </struct>
     <typedef name='xmlOutputBufferPtr' file='tree' type='xmlOutputBuffer *'/>
     <struct name='xmlParserCtxt' file='tree' type='struct _xmlParserCtxt'>
@@ -3616,7 +4186,9 @@ actually an xmlCharEncoding'/>
       <field name='freeElemsNr' type='int' info=' number of freed element nodes'/>
       <field name='freeElems' type='xmlNodePtr' info=' List of freed element nodes'/>
       <field name='freeAttrsNr' type='int' info=' number of freed attributes nodes'/>
-      <field name='freeAttrs' type='xmlAttrPtr' info=' List of freed attributes nodes'/>
+      <field name='freeAttrs' type='xmlAttrPtr' info='* the complete error informations for the last error.
+*'/>
+      <field name='lastError' type='xmlError' info=''/>
     </struct>
     <typedef name='xmlParserCtxtPtr' file='tree' type='xmlParserCtxt *'/>
     <typedef name='xmlParserErrors' file='xmlerror' type='enum'/>
@@ -3648,6 +4220,7 @@ actually an xmlCharEncoding'/>
       <field name='buffer' type='xmlBufferPtr' info=' Local buffer encoded in UTF-8'/>
       <field name='raw' type='xmlBufferPtr' info=' if encoder != NULL buffer for raw input'/>
       <field name='compressed' type='int' info=' -1=unknown, 0=not compressed, 1=compressed'/>
+      <field name='error' type='int' info=''/>
     </struct>
     <typedef name='xmlParserInputBufferPtr' file='tree' type='xmlParserInputBuffer *'/>
     <typedef name='xmlParserInputPtr' file='tree' type='xmlParserInput *'/>
@@ -3981,7 +4554,11 @@ actually an xmlCharEncoding'/>
       <field name='funcLookupFunc' type='void *' info=' function lookup func'/>
       <field name='funcLookupData' type='void *' info=' function lookup data temporary namespace lists kept for walking the namespace axis'/>
       <field name='tmpNsList' type='xmlNsPtr *' info=' Array of namespaces'/>
-      <field name='tmpNsNr' type='int' info=' number of namespace in scope'/>
+      <field name='tmpNsNr' type='int' info=' number of namespace in scope error reporting mechanism'/>
+      <field name='userData' type='void *' info=' user specific data block'/>
+      <field name='error' type='xmlStructuredErrorFunc' info=' the callback in case of errors'/>
+      <field name='lastError' type='xmlError' info=' the last error'/>
+      <field name='debugNode' type='xmlNodePtr' info=' the source node XSLT'/>
     </struct>
     <typedef name='xmlXPathContextPtr' file='xpath' type='xmlXPathContext *'/>
     <typedef name='xmlXPathError' file='xpath' type='enum'/>
@@ -4516,7 +5093,7 @@ actually an xmlCharEncoding'/>
     <function name='htmlCtxtReset' file='HTMLparser'>
       <info>Reset a parser context</info>
       <return type='void'/>
-      <arg name='ctxt' type='htmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
     </function>
     <function name='htmlCtxtUseOptions' file='HTMLparser'>
       <info>Applies the options to the parser context</info>
@@ -4688,7 +5265,7 @@ actually an xmlCharEncoding'/>
     <function name='htmlParseChunk' file='HTMLparser'>
       <info>Parse a Chunk of memory</info>
       <return type='int' info='zero if no error, the xmlParserErrors otherwise.'/>
-      <arg name='ctxt' type='htmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
       <arg name='chunk' type='const char *' info='an char array'/>
       <arg name='size' type='int' info='the size in byte of the chunk'/>
       <arg name='terminate' type='int' info='last chunk indicator'/>
@@ -5854,10 +6431,10 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='xmlEnumerationPtr' info='the tree to copy.'/>
     </function>
     <function name='xmlCopyError' file='xmlerror'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='from' type='xmlErrorPtr' info=''/>
-      <arg name='to' type='xmlErrorPtr' info=''/>
+      <info>Save the original error to the new place.</info>
+      <return type='int' info='0 in case of success and -1 in case of error.'/>
+      <arg name='from' type='xmlErrorPtr' info='a source error'/>
+      <arg name='to' type='xmlErrorPtr' info='a target error'/>
     </function>
     <function name='xmlCopyNamespace' file='tree'>
       <info>Do a copy of the namespace.</info>
@@ -5961,9 +6538,9 @@ actually an xmlCharEncoding'/>
       <return type='xmlURIPtr' info='the new structure or NULL in case of error'/>
     </function>
     <function name='xmlCtxtGetLastError' file='xmlerror'>
-      <info></info>
-      <return type='xmlErrorPtr' info=''/>
-      <arg name='ctxt' type='void *' info=''/>
+      <info>Get the last parsing error registered.</info>
+      <return type='xmlErrorPtr' info='NULL if no error occured or a pointer to the error'/>
+      <arg name='ctx' type='void *' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtReadDoc' file='parser'>
       <info>parse an XML in-memory document and build a tree. This reuses the existing @ctxt parser context</info>
@@ -6018,9 +6595,9 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtResetLastError' file='xmlerror'>
-      <info></info>
+      <info>Cleanup the last global error registered. For parsing error this does not change the well-formedness result.</info>
       <return type='void'/>
-      <arg name='ctxt' type='void *' info=''/>
+      <arg name='ctx' type='void *' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtUseOptions' file='parser'>
       <info>Applies the options to the parser context</info>
@@ -6236,6 +6813,150 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='root' type='xmlNodePtr' info='the new document root element'/>
     </function>
+    <function name='xmlDocWalkerAttributeCount' file='xmldwalk'>
+      <info>Provides the number of attributes of the current node</info>
+      <return type='int' info='0 if no attributes, -1 in case of error or the attribute count'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerBaseUri' file='xmldwalk'>
+      <info></info>
+      <return type='xmlChar *' info=''/>
+      <arg name='iter' type='xmlDocWalkerPtr' info=''/>
+    </function>
+    <function name='xmlDocWalkerCurrentDoc' file='xmldwalk'>
+      <info>Hacking interface allowing to get the xmlDocPtr correponding to the current document being accessed by the xmlDocWalker.</info>
+      <return type='xmlDocPtr' info='the xmlDocPtr or NULL in case of error.'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerCurrentNode' file='xmldwalk'>
+      <info>Hacking interface allowing to get the xmlNodePtr correponding to the current node being accessed by the xmlDocWalker.</info>
+      <return type='xmlNodePtr' info='the xmlNodePtr or NULL in case of error.'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerDepth' file='xmldwalk'>
+      <info>The depth of the node in the tree.</info>
+      <return type='int' info='the depth or -1 in case of error'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerGetAttribute' file='xmldwalk'>
+      <info>Provides the value of the attribute with the specified qualified name.</info>
+      <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+      <arg name='name' type='const xmlChar *' info='the qualified name of the attribute.'/>
+    </function>
+    <function name='xmlDocWalkerGetAttributeNo' file='xmldwalk'>
+      <info>Provides the value of the attribute with the specified index relative to the containing element.</info>
+      <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+      <arg name='no' type='int' info='the zero-based index of the attribute relative to the containing element'/>
+    </function>
+    <function name='xmlDocWalkerGetAttributeNs' file='xmldwalk'>
+      <info>Provides the value of the specified attribute</info>
+      <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+      <arg name='localName' type='const xmlChar *' info='the local name of the attribute.'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='the namespace URI of the attribute.'/>
+    </function>
+    <function name='xmlDocWalkerHasAttributes' file='xmldwalk'>
+      <info>Whether the node has attributes.</info>
+      <return type='int' info='1 if true, 0 if false, and -1 in case or error'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerHasValue' file='xmldwalk'>
+      <info>Whether the node can have a text value.</info>
+      <return type='int' info='1 if true, 0 if false, and -1 in case or error'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerIsEmptyElement' file='xmldwalk'>
+      <info>Check if the current node is empty</info>
+      <return type='int' info='1 if empty, 0 if not and -1 in case of error'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerLocalName' file='xmldwalk'>
+      <info>The local name of the node.</info>
+      <return type='xmlChar *' info='the local name or NULL if not available'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerLookupNamespace' file='xmldwalk'>
+      <info>Resolves a namespace prefix in the scope of the current element.</info>
+      <return type='xmlChar *' info='a string containing the namespace URI to which the prefix maps or NULL in case of error. The string must be deallocated by the caller.'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+      <arg name='prefix' type='const xmlChar *' info='the prefix whose namespace URI is to be resolved. To return the default namespace, specify NULL'/>
+    </function>
+    <function name='xmlDocWalkerMoveToAttribute' file='xmldwalk'>
+      <info>Moves the position of the current instance to the attribute with the specified qualified name.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+      <arg name='name' type='const xmlChar *' info='the qualified name of the attribute.'/>
+    </function>
+    <function name='xmlDocWalkerMoveToAttributeNo' file='xmldwalk'>
+      <info>Moves the position of the current instance to the attribute with the specified index relative to the containing element.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+      <arg name='no' type='int' info='the zero-based index of the attribute relative to the containing element.'/>
+    </function>
+    <function name='xmlDocWalkerMoveToAttributeNs' file='xmldwalk'>
+      <info>Moves the position of the current instance to the attribute with the specified local name and namespace URI.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+      <arg name='localName' type='const xmlChar *' info='the local name of the attribute.'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='the namespace URI of the attribute.'/>
+    </function>
+    <function name='xmlDocWalkerMoveToElement' file='xmldwalk'>
+      <info>Moves the position of the current instance to the node that contains the current Attribute  node.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not moved'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerMoveToFirstAttribute' file='xmldwalk'>
+      <info>Moves the position of the current instance to the first attribute associated with the current node.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerMoveToNextAttribute' file='xmldwalk'>
+      <info>Moves the position of the current instance to the next attribute associated with the current node.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerName' file='xmldwalk'>
+      <info>The qualified name of the node, equal to Prefix :LocalName.</info>
+      <return type='xmlChar *' info='the local name or NULL if not available'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerNamespaceUri' file='xmldwalk'>
+      <info>The URI defining the namespace associated with the node.</info>
+      <return type='xmlChar *' info='the namespace URI or NULL if not available'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerNext' file='xmldwalk'>
+      <info>Step to the next sibling of the current node in document order</info>
+      <return type='int' info='1 if ok, 0 if there are no more nodes, or -1 in case of error'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerNodeType' file='xmldwalk'>
+      <info>Get the node type of the current node Reference: http://dotgnu.org/pnetlib-doc/System/Xml/XmlNodeType.html</info>
+      <return type='int' info='the xmlNodeType of the current node or -1 in case of error'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerPrefix' file='xmldwalk'>
+      <info>A shorthand reference to the namespace associated with the node.</info>
+      <return type='xmlChar *' info='the prefix or NULL if not available'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerRewind' file='xmldwalk'>
+      <info>Initializes the xmlDocWalker</info>
+      <return type='int' info='0 or -1 in case of error'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerStep' file='xmldwalk'>
+      <info>Steps through the xml tree</info>
+      <return type='int' info='0 or -1 in case of error'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
+    <function name='xmlDocWalkerValue' file='xmldwalk'>
+      <info>Provides the text value of the node if present</info>
+      <return type='xmlChar *' info='the string or NULL if not available. The retsult must be deallocated with xmlFree()'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
+    </function>
     <function name='xmlDumpAttributeDecl' file='valid'>
       <info>This will dump the content of the attribute declaration as an XML DTD definition</info>
       <return type='void'/>
@@ -6316,6 +7037,12 @@ actually an xmlCharEncoding'/>
       <arg name='firstNode' type='xmlNodePtr' info='the fist node in the chunk'/>
       <arg name='lastNode' type='xmlNodePtr' info='the last nod in the chunk'/>
     </functype>
+    <function name='xmlErrMemory' file='parserInternals'>
+      <info>Handle a redefinition of attribute error</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='extra' type='const char *' info='extra informations'/>
+    </function>
     <functype name='xmlExternalEntityLoader' file='parser'>
       <info>External entity loaders types.</info>
       <return type='xmlParserInputPtr' info='the entity input parser.'/>
@@ -6369,6 +7096,11 @@ actually an xmlCharEncoding'/>
       <info>Free up all the structures used by a document, tree included.</info>
       <return type='void'/>
       <arg name='cur' type='xmlDocPtr' info='pointer to the document'/>
+    </function>
+    <function name='xmlFreeDocWalker' file='xmldwalk'>
+      <info>Deallocate the xmlDocWalker</info>
+      <return type='void'/>
+      <arg name='iter' type='xmlDocWalkerPtr' info='the xmlDocWalkerPtr'/>
     </function>
     <function name='xmlFreeDtd' file='tree'>
       <info>Free a DTD structure.</info>
@@ -6622,8 +7354,8 @@ actually an xmlCharEncoding'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
     </function>
     <function name='xmlGetLastError' file='xmlerror'>
-      <info></info>
-      <return type='xmlErrorPtr' info=''/>
+      <info>Get the last global error registered. This is per thread if compiled with thread support.</info>
+      <return type='xmlErrorPtr' info='NULL if no error occured or a pointer to the error'/>
     </function>
     <function name='xmlGetLineNo' file='tree'>
       <info>Get line number of node. this requires activation of this option before invoking the parser by calling xmlLineNumbersDefault(1)</info>
@@ -7747,6 +8479,11 @@ actually an xmlCharEncoding'/>
       <arg name='content' type='const xmlChar *' info='the text content'/>
       <arg name='len' type='int' info='the text len.'/>
     </function>
+    <function name='xmlNewDocWalker' file='xmldwalk'>
+      <info>Creates a new instance of the xmlDocWalker</info>
+      <return type='xmlDocWalkerPtr' info='0 in case of error, the new allocated xmlDocWalkerPtr otherwise'/>
+      <arg name='doc' type='xmlDocPtr' info='the xmlDocPtr'/>
+    </function>
     <function name='xmlNewDtd' file='tree'>
       <info>Creation of a new DTD for the external subset. To create an internal subset, use xmlCreateIntSubset().</info>
       <return type='xmlDtdPtr' info='a pointer to the new DTD structure'/>
@@ -7837,7 +8574,7 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='the processing instruction name'/>
       <arg name='content' type='const xmlChar *' info='the PI content'/>
     </function>
-    <function name='xmlNewParserCtxt' file='parserInternals'>
+    <function name='xmlNewParserCtxt' file='parser'>
       <info>Allocate and initialize a new parser context.</info>
       <return type='xmlParserCtxtPtr' info='the xmlParserCtxtPtr or NULL'/>
     </function>
@@ -8978,8 +9715,13 @@ actually an xmlCharEncoding'/>
       <arg name='old' type='xmlNodePtr' info='the old node'/>
       <arg name='cur' type='xmlNodePtr' info='the node'/>
     </function>
+    <function name='xmlResetError' file='xmlerror'>
+      <info>Cleanup the error.</info>
+      <return type='void'/>
+      <arg name='err' type='xmlErrorPtr' info='pointer to the error.'/>
+    </function>
     <function name='xmlResetLastError' file='xmlerror'>
-      <info></info>
+      <info>Cleanup the last global error registered. For parsing error this does not change the well-formedness result.</info>
       <return type='void'/>
     </function>
     <function name='xmlSAX2AttributeDecl' file='SAX2'>
@@ -9783,6 +10525,14 @@ actually an xmlCharEncoding'/>
       <arg name='str1' type='const xmlChar *' info='the first xmlChar *'/>
       <arg name='str2' type='const xmlChar *' info='the second xmlChar *'/>
     </function>
+    <function name='xmlStrPrintf' file='parser'>
+      <info>Formats @msg and places result into @buf.</info>
+      <return type='int' info='the number of characters written to @buf or -1 if an error occurs.'/>
+      <arg name='buf' type='xmlChar *' info='the result buffer.'/>
+      <arg name='len' type='int' info='the result buffer length.'/>
+      <arg name='msg' type='const xmlChar *' info='the message with printf formatting.'/>
+      <arg name='...' type='...' info='extra parameters for the message.'/>
+    </function>
     <function name='xmlStrQEqual' file='parser'>
       <info>Check if a QName is Equal to a given string</info>
       <return type='int' info='1 if they are equal, 0 if they are different'/>
@@ -9916,6 +10666,12 @@ actually an xmlCharEncoding'/>
       <arg name='start' type='int' info='the index of the first char (zero based)'/>
       <arg name='len' type='int' info='the length of the substring'/>
     </function>
+    <functype name='xmlStructuredErrorFunc' file='xmlerror'>
+      <info>Signature of the function to use when there is an error and the module handles the new error reporting mechanism.</info>
+      <return type='void'/>
+      <arg name='userData' type='void *' info='user provided data for the error callback'/>
+      <arg name='error' type='xmlErrorPtr' info='the error being raised.'/>
+    </functype>
     <function name='xmlSubstituteEntitiesDefault' file='parser'>
       <info>Set and return the previous value for default entity support. Initially the parser always keep entity references instead of substituting entity values in the output. This function has to be used to change the default parser behavior SAX::substituteEntities() has to be used for changing that on a file by file basis.</info>
       <return type='int' info='the last value for 0 for no substitution, 1 for substitution.'/>
@@ -11511,6 +12267,12 @@ actually an xmlCharEncoding'/>
       <info>Implement the equal operation on XPath objects content: @arg1 == @arg2</info>
       <return type='int' info='0 or 1 depending on the results of the test.'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
+    </function>
+    <function name='xmlXPathErr' file='xpathInternals'>
+      <info>Handle a Relax NG Parsing error</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlXPathParserContextPtr' info='a XPath parser context'/>
+      <arg name='error' type='int' info='the error code'/>
     </function>
     <function name='xmlXPathEval' file='xpath'>
       <info>Evaluate the XPath Location Path in the given context.</info>

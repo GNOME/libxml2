@@ -417,13 +417,18 @@ __xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
               const char *str2, const char *str3, int int1, int int2,
 	      const char *msg, ...)
 {
-    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlParserCtxtPtr ctxt = NULL;
     xmlNodePtr node = (xmlNodePtr) nod;
     char *str = NULL;
     xmlParserInputPtr input = NULL;
     xmlErrorPtr to = &xmlLastError;
     xmlChar *base = NULL;
 
+    if ((domain == XML_FROM_PARSER) || (domain == XML_FROM_HTML) ||
+        (domain == XML_FROM_DTD) || (domain == XML_FROM_NAMESPACE) ||
+	(domain == XML_FROM_IO)) {
+	ctxt = (xmlParserCtxtPtr) ctx;
+    }
     if (code == XML_ERR_OK)
         return;
     /*
@@ -492,7 +497,7 @@ __xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
     to->int1 = int1;
     to->int2 = int2;
     to->node = node;
-    to->ctxt = ctxt;
+    to->ctxt = ctx;
 
     /*
      * Find the callback channel.

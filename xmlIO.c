@@ -194,7 +194,7 @@ xmlIOErrMemory(const char *extra)
  * @code:  the error number
  * @extra:  extra informations
  *
- * Handle an out of memory condition
+ * Handle an I/O error
  */
 static void
 xmlIOErr(int code, const char *extra)
@@ -338,6 +338,37 @@ xmlIOErr(int code, const char *extra)
     if (idx >= (sizeof(IOerr) / sizeof(IOerr[0]))) idx = 0;
     
     __xmlSimpleError(XML_FROM_IO, code, NULL, IOerr[idx], extra);
+}
+
+/**
+ * xmlLoaderErr:
+ * @ctxt: the parser context
+ * @extra:  extra informations
+ *
+ * Handle a resource access error
+ */
+static void
+xmlLoaderErr(xmlParserCtxtPtr ctxt, const char *msg, const char *filename)
+{
+    xmlGenericErrorFunc channel = NULL;
+    void *data = NULL;
+    xmlErrorLevel level = XML_ERR_ERROR;
+
+    if ((ctxt != NULL) && (ctxt->sax != NULL)) {
+        if (ctxt->validate) {
+	    channel = ctxt->sax->error;
+	    level = XML_ERR_ERROR;
+	} else {
+	    channel = ctxt->sax->warning;
+	    level = XML_ERR_WARNING;
+	}
+	data = ctxt->userData;
+    }
+    __xmlRaiseError(channel, data, ctxt, NULL, XML_FROM_IO,
+                    XML_IO_LOAD_ERROR, level, NULL, 0,
+		    filename, NULL, NULL, 0, 0,
+		    msg, filename);
+                    
 }
 
 /************************************************************************
@@ -2986,24 +3017,13 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
     if (resource == NULL) {
 	if (ID == NULL)
 	    ID = "NULL";
-	if ((ctxt->validate) && (ctxt->sax != NULL) && 
-            (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-		    "failed to load external entity \"%s\"\n", ID);
-	else if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt->userData,
-		    "failed to load external entity \"%s\"\n", ID);
+	xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n", ID);
         return(NULL);
     }
     ret = xmlNewInputFromFile(ctxt, (const char *)resource);
     if (ret == NULL) {
-	if ((ctxt->validate) && (ctxt->sax != NULL) && 
-            (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-		    "failed to load external entity \"%s\"\n", resource);
-	else if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt->userData,
-		    "failed to load external entity \"%s\"\n", resource);
+	xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n",
+	             (const char *) resource);
     }
     if ((resource != NULL) && (resource != (xmlChar *) URL))
 	xmlFree(resource);

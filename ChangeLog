@@ -1,3 +1,9 @@
+Thu Oct  9 00:36:03 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: final error handling cleanup
+	* xinclude.c error.c: converted XInclude to the new error handling
+	* include/libxml/xmlerror.h: added XInclude errors
+
 Wed Oct  8 23:31:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: bug in compression saving was crashing galeon

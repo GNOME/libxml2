@@ -12534,7 +12534,6 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     xmlSchemaPtr ret = NULL;
     xmlDocPtr doc;
     xmlNodePtr root;
-    int nberrors;
     int preserve = 0;
 
     /*
@@ -12547,7 +12546,6 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     if (ctxt == NULL)
         return (NULL);
 
-    nberrors = ctxt->nberrors;
     ctxt->nberrors = 0;
     ctxt->counter = 0;
     ctxt->container = NULL;
@@ -12895,7 +12893,7 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
     xmlSchemaTypePtr  biType; /* The build-in type. */
     xmlSchemaTypePtr tmpType;
     xmlSchemaFacetLinkPtr facetLink;
-    int retFacet, hasFacet;
+    int retFacet;
     xmlSchemaFacetPtr facet;
     unsigned long len = 0;
 
@@ -12997,7 +12995,6 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 	* Process patters. Pattern facets are ORed at type level 
 	* and ANDed if derived. Walk the base type axis.
 	*/
-	hasFacet = 0;
 	tmpType = type;
 	facet = NULL;
 	do {

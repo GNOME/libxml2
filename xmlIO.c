@@ -2217,7 +2217,9 @@ __xmlOutputBufferCreateFilename(const char *URI,
     int i = 0;
     void *context = NULL;
     char *unescaped = NULL;
+#ifdef HAVE_ZLIB_H
     int is_file_uri = 1;
+#endif
 
     if (xmlOutputCallbackInitialized == 0)
 	xmlRegisterDefaultOutputCallbacks();
@@ -2228,7 +2230,9 @@ __xmlOutputBufferCreateFilename(const char *URI,
     if (puri != NULL) {
         if ((puri->scheme != NULL) &&
 	    (!xmlStrEqual(BAD_CAST puri->scheme, BAD_CAST "file")))
+#ifdef HAVE_ZLIB_H
 	    is_file_uri = 0;
+#endif
 	/*
 	 * try to limit the damages of the URI unescaping code.
 	 */

@@ -529,7 +529,7 @@ xmlSchemaIsBuiltInTypeFacet(xmlSchemaTypePtr type, int facetType)
 	    else
 		return (0);	    				 
 	default:
-	    return (0);
+	    break;
     }
     return (0);
 }

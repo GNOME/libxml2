@@ -319,7 +319,6 @@ xmlCatalogUnWrapURN(const xmlChar *urn) {
 
 static xmlCatalogEntryPtr
 xmlParseXMLCatalogFile(xmlCatalogPrefer prefer, const xmlChar *filename);
-
 static xmlCatalogEntryPtr
 xmlParseXMLCatalog(const xmlChar *value, xmlCatalogPrefer prefer,
 	           const char *file);
@@ -329,6 +328,9 @@ xmlParseXMLCatalogNodeList(xmlNodePtr cur, xmlCatalogPrefer prefer,
 static xmlChar *
 xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	              const xmlChar *sysID);
+static xmlChar *
+xmlCatalogListXMLResolveURI(xmlCatalogEntryPtr catal, const xmlChar *URI);
+
 
 static xmlCatalogEntryType
 xmlGetXMLCatalogEntryType(const xmlChar *name) {
@@ -1105,6 +1107,127 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 }
 
 /**
+ * xmlCatalogXMLResolveURI:
+ * @catal:  a catalog list
+ * @URI:  the URI
+ * @sysId:  the system ID string
+ *
+ * Do a complete resolution lookup of an External Identifier for a
+ * list of catalog entries.
+ *
+ * Implements (or tries to) 7.2.2. URI Resolution
+ * from http://www.oasis-open.org/committees/entity/spec-2001-08-06.html
+ *
+ * Returns the URI of the resource or NULL if not found
+ */
+static xmlChar *
+xmlCatalogXMLResolveURI(xmlCatalogEntryPtr catal, const xmlChar *URI) {
+    xmlChar *ret = NULL;
+    xmlCatalogEntryPtr cur;
+    int haveDelegate = 0;
+    int haveNext = 0;
+    xmlCatalogEntryPtr rewrite = NULL;
+    int lenrewrite = 0, len;
+
+    if (catal == NULL)
+	return(NULL);
+
+    if (URI == NULL)
+	return(NULL);
+
+    /*
+     * First tries steps 2/ 3/ 4/ if a system ID is provided.
+     */
+    cur = catal;
+    haveDelegate = 0;
+    while (cur != NULL) {
+	switch (cur->type) {
+	    case XML_CATA_URI:
+		if (xmlStrEqual(URI, cur->name)) {
+		    if (xmlDebugCatalogs)
+			xmlGenericError(xmlGenericErrorContext,
+				"Found URI match %s\n", cur->name);
+		    return(xmlStrdup(cur->value));
+		}
+		break;
+	    case XML_CATA_REWRITE_URI:
+		len = xmlStrlen(cur->name);
+		if ((len > lenrewrite) &&
+		    (!xmlStrncmp(URI, cur->name, len))) {
+		    lenrewrite = len;
+		    rewrite = cur;
+		}
+		break;
+	    case XML_CATA_DELEGATE_URI:
+		if (!xmlStrncmp(URI, cur->name, xmlStrlen(cur->name)))
+		    haveDelegate++;
+		break;
+	    case XML_CATA_NEXT_CATALOG:
+		haveNext++;
+		break;
+	    default:
+		break;
+	}
+	cur = cur->next;
+    }
+    if (rewrite != NULL) {
+	if (xmlDebugCatalogs)
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Using rewriting rule %s\n", rewrite->name);
+	ret = xmlStrdup(rewrite->value);
+	if (ret != NULL)
+	    ret = xmlStrcat(ret, &URI[lenrewrite]);
+	return(ret);
+    }
+    if (haveDelegate) {
+	/*
+	 * Assume the entries have been sorted by decreasing substring
+	 * matches when the list was produced.
+	 */
+	cur = catal;
+	while (cur != NULL) {
+	    if ((cur->type == XML_CATA_DELEGATE_SYSTEM) &&
+		(!xmlStrncmp(URI, cur->name, xmlStrlen(cur->name)))) {
+		if (cur->children == NULL) {
+		    xmlFetchXMLCatalogFile(cur);
+		}
+		if (cur->children != NULL) {
+		    if (xmlDebugCatalogs)
+			xmlGenericError(xmlGenericErrorContext,
+				"Trying URI delegate %s\n", cur->value);
+		    ret = xmlCatalogListXMLResolveURI(cur->children, URI);
+		    if (ret != NULL)
+			return(ret);
+		}
+	    }
+	    cur = cur->next;
+	}
+	/*
+	 * Apply the cut algorithm explained in 4/
+	 */
+	return(XML_CATAL_BREAK);
+    }
+    if (haveNext) {
+	cur = catal;
+	while (cur != NULL) {
+	    if (cur->type == XML_CATA_NEXT_CATALOG) {
+		if (cur->children == NULL) {
+		    xmlFetchXMLCatalogFile(cur);
+		}
+		if (cur->children != NULL) {
+		    ret = xmlCatalogListXMLResolveURI(cur->children, URI);
+		    if (ret != NULL)
+			return(ret);
+		}
+	    }
+	    cur = cur->next;
+	}
+    }
+
+    return(NULL);
+}
+
+/**
  * xmlCatalogListXMLResolve:
  * @catal:  a catalog list
  * @pubId:  the public ID string
@@ -1172,6 +1295,59 @@ xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	    }
 	    if (catal->children != NULL) {
 		ret = xmlCatalogXMLResolve(catal->children, pubID, sysID);
+		if (ret != NULL)
+		    return(ret);
+	    }
+	}
+	catal = catal->next;
+    }
+    return(ret);
+}
+
+/**
+ * xmlCatalogListXMLResolveURI:
+ * @catal:  a catalog list
+ * @URI:  the URI
+ *
+ * Do a complete resolution lookup of an URI for a list of catalogs
+ *
+ * Implements (or tries to) 7.2. URI Resolution
+ * from http://www.oasis-open.org/committees/entity/spec-2001-08-06.html
+ *
+ * Returns the URI of the resource or NULL if not found
+ */
+static xmlChar *
+xmlCatalogListXMLResolveURI(xmlCatalogEntryPtr catal, const xmlChar *URI) {
+    xmlChar *ret = NULL;
+    xmlChar *urnID = NULL;
+    
+    if (catal == NULL)
+        return(NULL);
+    if (URI == NULL)
+	return(NULL);
+
+    if (!xmlStrncmp(URI, BAD_CAST XML_URN_PUBID, sizeof(XML_URN_PUBID) - 1)) {
+	urnID = xmlCatalogUnWrapURN(URI);
+	if (xmlDebugCatalogs) {
+	    if (urnID == NULL)
+		xmlGenericError(xmlGenericErrorContext,
+			"URN ID %s expanded to NULL\n", URI);
+	    else
+		xmlGenericError(xmlGenericErrorContext,
+			"URN ID expanded to %s\n", urnID);
+	}
+	ret = xmlCatalogListXMLResolve(catal, urnID, NULL);
+	if (urnID != NULL)
+	    xmlFree(urnID);
+	return(ret);
+    }
+    while (catal != NULL) {
+	if (catal->type == XML_CATA_CATALOG) {
+	    if (catal->children == NULL) {
+		xmlFetchXMLCatalogFile(catal);
+	    }
+	    if (catal->children != NULL) {
+		ret = xmlCatalogXMLResolveURI(catal->children, URI);
 		if (ret != NULL)
 		    return(ret);
 	    }
@@ -1947,6 +2123,32 @@ xmlCatalogResolve(const xmlChar *pubID, const xmlChar *sysID) {
 }
 
 /**
+ * xmlCatalogResolveURI:
+ * @pubId:  the URI
+ *
+ * Do a complete resolution lookup of an URI
+ *
+ * Returns the URI of the resource or NULL if not found, it must be freed
+ *      by the caller.
+ */
+xmlChar *
+xmlCatalogResolveURI(const xmlChar *URI) {
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+
+    if (xmlDefaultXMLCatalogList != NULL) {
+	return(xmlCatalogListXMLResolveURI(xmlDefaultXMLCatalogList, URI));
+    } else {
+	const xmlChar *ret;
+
+	ret = xmlCatalogSGMLResolve(NULL, URI);
+	if (ret != NULL)
+	    return(xmlStrdup(ret));
+    }
+    return(NULL);
+}
+
+/**
  * xmlCatalogDump:
  * @out:  the file.
  *
@@ -2200,6 +2402,29 @@ xmlCatalogLocalResolve(void *catalogs, const xmlChar *pubID,
     if (catal == NULL)
 	return(NULL);
     return(xmlCatalogListXMLResolve(catal, pubID, sysID));
+}
+
+/**
+ * xmlCatalogLocalResolveURI:
+ * @catalogs:  a document's list of catalogs
+ * @pubId:  the URI
+ *
+ * Do a complete resolution lookup of an URI using a 
+ * document's private catalog list
+ *
+ * Returns the URI of the resource or NULL if not found, it must be freed
+ *      by the caller.
+ */
+xmlChar *
+xmlCatalogLocalResolveURI(void *catalogs, const xmlChar *URI) {
+    xmlCatalogEntryPtr catal;
+
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+    catal = (xmlCatalogEntryPtr) catalogs;
+    if (catal == NULL)
+	return(NULL);
+    return(xmlCatalogListXMLResolveURI(catal, URI));
 }
 
 #endif /* LIBXML_CATALOG_ENABLED */

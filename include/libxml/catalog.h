@@ -63,6 +63,7 @@ xmlChar *	xmlCatalogResolve	(const xmlChar *pubID,
 	                                 const xmlChar *sysID);
 xmlChar *	xmlCatalogResolveSystem	(const xmlChar *sysID);
 xmlChar *	xmlCatalogResolvePublic	(const xmlChar *pubID);
+xmlChar *	xmlCatalogResolveURI	(const xmlChar *URI);
 int		xmlCatalogAdd		(const xmlChar *type,
 					 const xmlChar *orig,
 					 const xmlChar *replace);
@@ -78,6 +79,8 @@ void *		xmlCatalogAddLocal	(void *catalogs,
 xmlChar *	xmlCatalogLocalResolve	(void *catalogs,
 					 const xmlChar *pubID,
 	                                 const xmlChar *sysID);
+xmlChar *	xmlCatalogLocalResolveURI(void *catalogs,
+					 const xmlChar *URI);
 /*
  * Preference settings
  */

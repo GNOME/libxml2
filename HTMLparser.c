@@ -3739,6 +3739,7 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->validate = 0;
     ctxt->nbChars = 0;
     ctxt->checkIndex = 0;
+    ctxt->catalogs = NULL;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
 }
 

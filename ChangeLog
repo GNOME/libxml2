@@ -1,3 +1,10 @@
+Wed Aug 22 18:27:47 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/catalog.h catalog.c xmlIO.c HTMLparser.c:
+	  Added the part about section 7.2 on URI resolution,
+	  fixed a side effect in the HTML parser, look complete
+	  and ready to rock except the URI/SystemID part!
+
 Wed Aug 22 16:27:03 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/catalog.h include/libxml/parser.h

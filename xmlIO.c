@@ -2384,7 +2384,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 #ifdef LIBXML_CATALOG_ENABLED
     /*
      * If the resource doesn't exists as a file,
-     * try to load it from the resource pointed in the catalog
+     * try to load it from the resource pointed in the catalogs
      */
     pref = xmlCatalogGetDefaults();
 
@@ -2404,21 +2404,43 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 					      (const xmlChar *)URL);
         }
 	/*
-	 * Do a global lookup
+	 * Try a global lookup
 	 */
-	if (((resource == NULL)
-#ifdef HAVE_STAT
-            || (stat((const char *) resource, &info) < 0)
-#endif
-	    ) && ((pref == XML_CATA_ALLOW_ALL) ||
-		  (pref == XML_CATA_ALLOW_GLOBAL))) {
-
+	if ((resource == NULL) &&
+	    ((pref == XML_CATA_ALLOW_ALL) ||
+	     (pref == XML_CATA_ALLOW_GLOBAL))) {
 	    resource = xmlCatalogResolve((const xmlChar *)ID,
 					 (const xmlChar *)URL);
 	}
+	if ((resource == NULL) && (URL != NULL))
+	    resource = xmlStrdup(URL);
+
 	/*
 	 * TODO: do an URI lookup on the reference
 	 */
+	if ((resource != NULL)
+#ifdef HAVE_STAT
+            && (stat((const char *) resource, &info) < 0)
+#endif
+	    ) {
+	    xmlChar *tmp = NULL;
+
+	    if ((ctxt->catalogs != NULL) &&
+		((pref == XML_CATA_ALLOW_ALL) ||
+		 (pref == XML_CATA_ALLOW_DOCUMENT))) {
+		tmp = xmlCatalogLocalResolveURI(ctxt->catalogs, resource);
+	    }
+	    if ((tmp == NULL) &&
+		(pref == XML_CATA_ALLOW_ALL) ||
+	        (pref == XML_CATA_ALLOW_GLOBAL)) {
+		tmp = xmlCatalogResolveURI(resource);
+	    }
+
+	    if (tmp != NULL) {
+		xmlFree(resource);
+		resource = tmp;
+	    }
+	}
     }
 #endif
 
@@ -2445,7 +2467,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 	    ctxt->sax->warning(ctxt,
 		    "failed to load external entity \"%s\"\n", resource);
     }
-    if (resource != (xmlChar *) URL)
+    if ((resource != NULL) && (resource != (xmlChar *) URL))
 	xmlFree(resource);
     return(ret);
 }

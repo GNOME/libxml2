@@ -54,7 +54,7 @@ type="text/css"?>
 	</authlist>
 
 	<status>
-		<p>This is a W3C Working Draft for review by W3C members and other interested parties. It is a draft document and may be updated, replaced, or obsoleted by other documents at any time. It is inappropriate to use W3C Working Drafts as reference material or to cite them as other than &quot;work in progress&quot;. A list of current W3C working drafts can be found at <loc href="http://www.w3.org/TR">http://www.w3.org/TR</loc>.</p>
+		<p>This is a W3C Working Draft for review by W3C members and other interested parties. It is a draft document and may be updated, replaced, or obsoleted by other documents at any time. It is inappropriate to use W3C Working Drafts as reference material or to cite them as other than "work in progress". A list of current W3C working drafts can be found at <loc href="http://www.w3.org/TR">http://www.w3.org/TR</loc>.</p>
 		<p><emph>Note:</emph> Since working drafts are subject to frequent change, you are advised to reference the above URI, rather than the URIs for working drafts themselves. Some of the work remaining is described in <specref ref="unfinished"/>. </p>
 		<p>This work is part of the W3C XML Activity (for current status, see <loc href="http://www.w3.org/MarkUp/SGML/Activity">http://www.w3.org/XML/Activity 		  </loc>). For information about the XPointer language which is expected to be used with XLink, see <loc href="http://www.w3.org/MarkUp/SGML/Activity">http://www.w3.org/TR/WD-xptr</loc>.
 		</p>
@@ -164,7 +164,7 @@ document. bent-->
 			</gitem>
 			<gitem>
 				<label><termdef id="dt-eltree" term="Element Tree">element tree</termdef></label>
-				<def><p>A representation of the relevant structure specified by the tags and attributes in an XML document, based on &quot;groves&quot; as defined in the ISO DSSSL standard. </p></def>
+				<def><p>A representation of the relevant structure specified by the tags and attributes in an XML document, based on "groves" as defined in the ISO DSSSL standard. </p></def>
 			</gitem>
 			<gitem>
 				<label><termdef id="dt-inline" term="In-Line Link">inline link</termdef></label>
@@ -191,14 +191,14 @@ document. bent-->
 			</gitem>
 			<gitem>
 				<label><termdef id="dt-multidir" term="Multi-Directional Link">multidirectional link</termdef></label>
-				<def><p>A <termref def="dt-link">link</termref> whose <termref def="dt-traversal"> traversal</termref> can be initiated from more than one of its <termref def="dt-particip-resource"> participating resources</termref>. Note that being able to &quot;go back&quot; after following a one-directional link does not make the link multidirectional.</p></def>
+				<def><p>A <termref def="dt-link">link</termref> whose <termref def="dt-traversal"> traversal</termref> can be initiated from more than one of its <termref def="dt-particip-resource"> participating resources</termref>. Note that being able to "go back" after following a one-directional link does not make the link multidirectional.</p></def>
 			</gitem>
 			<gitem>
 				<label><termdef id="dt-outofline" term="Out-of-line Link">out-of-line link</termdef></label>
 				<def><p>A <termref def="dt-link">link</termref> whose content does not serve as one of the link's <termref def="dt-particip-resource">participating resources </termref>. Such links 						presuppose a notion like <termref def="dt-xlg">extended link groups</termref>, which instruct application software where to look for links. Out-of-line links are generally required for supporting multidirectional <termref def="dt-traversal">traversal</termref> and for allowing read-only resources to have outgoing links.</p></def>
 			</gitem>
 			<gitem>
-				<label><termdef id="dt-parsedq" term="Parsed">parsed</termdef></label> <def><p>In the context of link behavior, a parsed link is any link			whose content is transcluded into the document where the link originated. The	use of the term &quot;parsed&quot; directly refers to the concept in XML of a
+				<label><termdef id="dt-parsedq" term="Parsed">parsed</termdef></label> <def><p>In the context of link behavior, a parsed link is any link			whose content is transcluded into the document where the link originated. The	use of the term "parsed" directly refers to the concept in XML of a
 				parsed entity.</p></def>
 			</gitem>
 			<gitem>
@@ -237,7 +237,7 @@ document. bent-->
 	<head>Locator Syntax</head>
 	<p>The locator for a <termref def="dt-resource">resource</termref> is typically provided by means of a Uniform Resource Identifier, or URI. XPointers can be used in conjunction with the URI structure, as fragment identifiers, to specify a more precise sub-resource. </p>
 	<!-- Removed the discussion of queries from the previous paragraph, due to contention within the WG. bent -->
-	<p>A locator generally contains a URI, as described in IETF RFCs <bibref ref="rfc1738"/> and <bibref ref="rfc1808"/>. As these RFCs state, the URI may include a trailing <emph>query</emph> (marked by a leading &quot;<code>?</code>&quot;), and be followed by a &quot;<code>#</code>&quot; and a <emph>fragment identifier</emph>, with the query interpreted by the host providing the indicated resource, and the interpretation of the fragment identifier dependent on the data type of the indicated resource.</p>
+	<p>A locator generally contains a URI, as described in IETF RFCs <bibref ref="rfc1738"/> and <bibref ref="rfc1808"/>. As these RFCs state, the URI may include a trailing <emph>query</emph> (marked by a leading "<code>?</code>"), and be followed by a "<code>#</code>" and a <emph>fragment identifier</emph>, with the query interpreted by the host providing the indicated resource, and the interpretation of the fragment identifier dependent on the data type of the indicated resource.</p>
 	<!--Is there some restriction on URNs having queries and/or fragment identifiers?  Since these RFCs don't mention URIs explicitly, should the wording here lead from URLs to URIs more explicitly? -elm-->
 	<p>In order to locate XML documents and portions of documents, a locator value may contain either a <xtermref href="http://www.w3.org/Addressing/rfc1738.txt"> URI</xtermref> or a fragment identifier, or both. Any fragment identifier for pointing into XML must be an <xtermref href="http://www.w3.org/TR/WD-xptr#dt-xpointer"> XPointer</xtermref>.</p>
 	<p>Special syntax may be used to request the use of particular processing models in accessing the locator's resource. This is designed to reflect the realities of network operation, where it may or may not be desirable to exercise fine control over the distribution of work between local and remote processors. 
@@ -273,15 +273,15 @@ document. bent-->
 			<!--Is this now incorrect, given the nature of the switch from here() to origin()? -elm 
 			Oy, yes, i think so. it will require some fun wording, though, so i haven't fixed it yet here -sjd-->
 			<item>
-				<p>If the <nt def="nt-connector">Connector</nt> is followed directly by a <xnt href="http://www.w3.org/TR/REC-xml#NT-Name">Name</xnt>, the <xnt href="http://www.w3.org/TR/REC-xml#NT-Name">Name</xnt> is shorthand for the XPointer&quot;<code>id(Name)</code>&quot;; that is, the sub-resource is the element in the containing resource that has an XML <xtermref href="http://www.w3.org/TR/REC-xml#sec-attrtypes">ID attribute</xtermref> whose value <xtermref href="http://www.w3.org/TR/REC-xml#dt-match">matches</xtermref> the 				  <xnt href="http://www.w3.org/TR/REC-xml#NT-Name">Name</xnt>. This shorthand is to encourage use of the robust <code>id</code> addressing mode.</p>
+				<p>If the <nt def="nt-connector">Connector</nt> is followed directly by a <xnt href="http://www.w3.org/TR/REC-xml#NT-Name">Name</xnt>, the <xnt href="http://www.w3.org/TR/REC-xml#NT-Name">Name</xnt> is shorthand for the XPointer"<code>id(Name)</code>"; that is, the sub-resource is the element in the containing resource that has an XML <xtermref href="http://www.w3.org/TR/REC-xml#sec-attrtypes">ID attribute</xtermref> whose value <xtermref href="http://www.w3.org/TR/REC-xml#dt-match">matches</xtermref> the 				  <xnt href="http://www.w3.org/TR/REC-xml#NT-Name">Name</xnt>. This shorthand is to encourage use of the robust <code>id</code> addressing mode.</p>
 			</item>
 			<!-- fixed links to the XML recommendation - bent -->
 			<item>
-				<p>If the connector is &quot;<code>#</code>&quot;, this signals an intent that the containing resource is to be fetched as a whole from the host that provides it, and that the XPointer processing to extract the sub-resource
+				<p>If the connector is "<code>#</code>", this signals an intent that the containing resource is to be fetched as a whole from the host that provides it, and that the XPointer processing to extract the sub-resource
 				is to be performed on the client, that is to say on the same system where the linking element is recognized and processed.</p>
 			</item>
 			<item>
-				<p>If the connector is &quot;<code>|</code>&quot;, no intent is signaled as to what processing model is to be used to go about accessing the designated resource.</p>
+				<p>If the connector is "<code>|</code>", no intent is signaled as to what processing model is to be used to go about accessing the designated resource.</p>
 			</item>
 		</ulist>
 	</p>
@@ -301,10 +301,10 @@ document. bent-->
 	<head>Link Recognition</head>
 	<p>The existence of a <termref def="dt-link">link</termref> is asserted by a <termref def="dt-linkel">linking element</termref>. Linking elements must be recognized reliably by application software in order to provide appropriate display and behavior. There are several ways link recognition could be accomplished: for example, reserving element type names, reserving attributes names, leaving the matter of recognition entirely up to stylesheets and application software, or using the XLink <xtermref href="http://www.w3.org/TR/REC-xml-names/">namespace</xtermref> to specify element names and attribute names that would be recognized by namespace and XLink-aware processors. Using element and attribute names within the XLink namespace provides a balance between giving users control of their own markup language design and keeping the identification of linking elements simple and unambiguous.</p>
 	<p>The two approaches to identifying linking elements are relatively simple to implement. For example, here's how the HTML <code>A</code> element would be declared using attributes within the XLink namespace, and then how an element within the XLink namespace might do the same:
-		<eg>&lt;A xlink:type=&quot;simple&quot; xlink:href=&quot;http://www.w3.org/TR/wd-xlink/&quot;
-xlink:title=&quot;The Xlink Working Draft&quot;&gt;The XLink Working Draft.&lt;/A&gt;</eg>
-		<eg>&lt;xlink:simple href=&quot;http://www.w3.org/TR/wd-xlink/&quot;
-title=&quot;The XLink Working Draft&quot;&gt;The XLink Working Draft&lt;/xlink:simple&gt;</eg>
+		<eg>&lt;A xlink:type="simple" xlink:href="http://www.w3.org/TR/wd-xlink/"
+xlink:title="The Xlink Working Draft"&gt;The XLink Working Draft.&lt;/A&gt;</eg>
+		<eg>&lt;xlink:simple href="http://www.w3.org/TR/wd-xlink/"
+title="The XLink Working Draft"&gt;The XLink Working Draft&lt;/xlink:simple&gt;</eg>
 	Any arbitrary element can be made into an XLink by using the <code>xlink:type</code> attribute. And, of course, the explicit XLink elements may be used, as well. This document will go on to describe the linking attributes that are associated with linking elements. It may be assumed by the reader that these attributes would require the <code>xlink</code> namespace prefix if they existed within an arbitrary element, or that they may be used directly if they exist within an explicit Xlink element.</p>
 		<!-- heavily modified this section to accomodate namespace-aware link recognition - bent -->
 </div1>
@@ -336,7 +336,7 @@ title=&quot;The XLink Working Draft&quot;&gt;The XLink Working Draft&lt;/xlink:s
 
 	<div2 id="link-semantics">
 		<head>Semantic Attributes</head>
-		<p>There are two attributes associated with semantics, <code>role</code> and <code>title</code>. The <code>role</code> attribute is a generic string used to describe the function of the link's content. For example, a poem might have a link with a <code>role=&quot;stanza&quot;</code>. The <code>role</code> is also used as an identifier for the <code>from</code> and <code>to</code> attributes of arcs.</p>
+		<p>There are two attributes associated with semantics, <code>role</code> and <code>title</code>. The <code>role</code> attribute is a generic string used to describe the function of the link's content. For example, a poem might have a link with a <code>role="stanza"</code>. The <code>role</code> is also used as an identifier for the <code>from</code> and <code>to</code> attributes of arcs.</p>
 		<p>The <code>title</code> attribute is designed to provide human-readable text describing the link. It is very useful for those who have text-based applications, whether that be due to a constricted device that cannot display the link's content, or if it's being read by an application to a visually-impaired user, or if it's being used to create a table of links. The <code>title</code> attribute contains a simple, descriptive string.</p>
 	</div2>
 </div1>
@@ -355,28 +355,28 @@ title=&quot;The XLink Working Draft&quot;&gt;The XLink Working Draft&lt;/xlink:s
     href           CDATA    				#REQUIRED
     role           CDATA    				#IMPLIED
     title          CDATA    				#IMPLIED
-    show           (new|parsed|replace)  	&quot;replace&quot;
-    actuate        (user|auto) 				&quot;user&quot;
+    show           (new|parsed|replace)  	"replace"
+    actuate        (user|auto) 				"user"
 &gt;</eg>
 	And here is how to make an arbitrary element into a simple link.
 	<eg>&lt;!ELEMENT xlink:simple ANY&gt;
 &lt;!ATTLIST foo
-	xlink:type     (simple|extended|locator|arc) #FIXED &quot;simple&quot;		
+	xlink:type     (simple|extended|locator|arc) #FIXED "simple"		
     xlink:href     CDATA    				#REQUIRED
     xlink:role     CDATA    				#IMPLIED
     xlink:title    CDATA    				#IMPLIED
-    xlink:show     (new|parsed|replace)  	&quot;replace&quot;
-    xlink:actuate  (user|auto) 				&quot;user&quot;
+    xlink:show     (new|parsed|replace)  	"replace"
+    xlink:actuate  (user|auto) 				"user"
 &gt;</eg>
 	Here is how the first example might look in a document:
-<eg>&lt;xlink:simple href=&quot;http://www.w3.org/TR/wd-xlink&quot; role=&quot;working draft&quot; 
-	title=&quot;The XLink Working Draft&quot; show=&quot;replace&quot; actuate=&quot;user&quot;&gt;
+<eg>&lt;xlink:simple href="http://www.w3.org/TR/wd-xlink" role="working draft" 
+	title="The XLink Working Draft" show="replace" actuate="user"&gt;
 The XLink Working Draft.&lt;/xlink:simple&gt;</eg>
-<eg>&lt;foo xlink:href=&quot;http://www.w3.org/TR/wd-xlink&quot; xlink:role=&quot;working draft&quot;
-	xlink:title=&quot;The XLink Working Draft&quot; xlink:show=&quot;new&quot; xlink:actuate=&quot;user&quot;&gt;
+<eg>&lt;foo xlink:href="http://www.w3.org/TR/wd-xlink" xlink:role="working draft"
+	xlink:title="The XLink Working Draft" xlink:show="new" xlink:actuate="user"&gt;
 The XLink Working Draft.&lt;/foo&gt;</eg>
 	Alternately, a simple link could be as terse as this:
-<eg>&lt;foo xlink:href=&quot;#stanza1&quot;&gt;The First Stanza.&lt;/foo&gt;</eg>
+<eg>&lt;foo xlink:href="#stanza1"&gt;The First Stanza.&lt;/foo&gt;</eg>
 	</p>
 	<p>
 	There are no constraints on the contents of a simple linking element. In
@@ -385,7 +385,7 @@ The XLink Working Draft.&lt;/foo&gt;</eg>
 	a valid document, every element that is significant to XLink must still conform
 	to the constraints expressed in its governing DTD.</p>
 	<p>Note that it is meaningful to have an out-of-line simple link, although
-	such links are uncommon. They are called &quot;one-ended&quot; and are typically used
+	such links are uncommon. They are called "one-ended" and are typically used
 	to associate discrete semantic properties with locations. The properties might
 	be expressed by attributes on the link, the link's element type name, or in
 	some other way, and are not considered full-fledged resources of the link.
@@ -427,7 +427,7 @@ The XLink Working Draft.&lt;/foo&gt;</eg>
 
 <eg>&lt;!ELEMENT foo ((xlink:arc | xlink:locator)*)&gt;
 &lt;!ATTLIST foo
-	xlink:type     	(simple|extended|locator|arc) 	#FIXED &quot;extended&quot;
+	xlink:type     	(simple|extended|locator|arc) 	#FIXED "extended"
 	xlink:role           CDATA    					#IMPLIED
 	xlink:title          CDATA    					#IMPLIED
 	xlink:showdefault    (new|parsed|replace)    	#IMPLIED 
@@ -435,11 +435,11 @@ The XLink Working Draft.&lt;/foo&gt;</eg>
 
 	The following two examples demonstrate how each of the above might appear within a document instance. Note that the content of these examples would be other elements. For brevity's sake, they've been left blank. The first example shows how the link might appear, using an explicit XLink extended link:
 
-<eg>&lt;xlink:extended role=&quot;address book&quot; title=&quot;Ben's Address Book&quot; showdefault=&quot;replace&quot; actuatedefault=&quot;user&quot;&gt; ... &lt;/xlink:extended&gt;</eg>
+<eg>&lt;xlink:extended role="address book" title="Ben's Address Book" showdefault="replace" actuatedefault="user"&gt; ... &lt;/xlink:extended&gt;</eg>
 
 	And the second shows how the link might appear, using an arbitrary element:
 
-<eg>&lt;foo xlink:type=&quot;extended&quot; xlink:role=&quot;address book&quot; xlink:title=&quot;Ben's Address Book&quot; xlink:showdefault=&quot;replace&quot; xlink:actuatedefault=&quot;user&quot;&gt; ... &lt;/foo&gt;</eg>
+<eg>&lt;foo xlink:type="extended" xlink:role="address book" xlink:title="Ben's Address Book" xlink:showdefault="replace" xlink:actuatedefault="user"&gt; ... &lt;/foo&gt;</eg>
 	</p>
 
 </div2>
@@ -514,8 +514,8 @@ for Computers and the Humanities (ACH), Association for Computational
 Linguistics
 (ACL), and Association for Literary and Linguistic Computing (ALLC). Chicago,
 Oxford: Text Encoding Initiative, 1994. <!-- add cite to DOM work --> </bibl>
-<bibl id="chum" key="CHUM">]Steven J. DeRose and David G. Durand. 1995. &quot;The
-TEI Hypertext Guidelines.&quot; In <titleref>Computing and the Humanities
+<bibl id="chum" key="CHUM">]Steven J. DeRose and David G. Durand. 1995. "The
+TEI Hypertext Guidelines." In <titleref>Computing and the Humanities
 </titleref>29(3).
 Reprinted in <titleref>Text Encoding Initiative: Background and
 Context</titleref>,

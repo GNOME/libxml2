@@ -787,7 +787,7 @@
       </NewsComponent>
       <NewsComponent>
         <NewsLines>
-          <HeadLine>Sibyll Klotz: Vollblutpolitikerin mit &quot;Berliner Schnauze&quot;</HeadLine>
+          <HeadLine>Sibyll Klotz: Vollblutpolitikerin mit "Berliner Schnauze"</HeadLine>
         </NewsLines>
         <NewsItemRef NewsItem="011021184658.lctevest.xml"/>
       </NewsComponent>

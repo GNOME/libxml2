@@ -1016,7 +1016,7 @@ confexecdir=$(libdir)
 confexec_DATA = xml2Conf.sh
 CVS_EXTRA_DIST=
 EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
-             libxml.m4 Copyright check-xml-test-suite.py \
+             libxml.m4 Copyright check-xml-test-suite.py gentest.py \
 	     check-relaxng-test-suite.py check-relaxng-test-suite2.py \
 	     check-xsddata-test-suite.py check-xinclude-test-suite.py \
              example/Makefile.am example/gjobread.c example/gjobs.xml \

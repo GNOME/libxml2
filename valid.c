@@ -4935,6 +4935,7 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
     int nb_valid_elements = 0;
     const xmlChar *elements[256];
     int nb_elements = 0, i;
+    xmlChar *name;
     
     xmlNode *ref_node;
     xmlNode *parent;
@@ -4987,6 +4988,7 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
     test_node->parent = parent;
     test_node->prev = prev;
     test_node->next = next;
+    name = test_node->name;
     
     if (prev) prev->next = test_node;
     else parent->children = test_node;
@@ -5020,6 +5022,12 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
     if (next) next->prev = next_prev;
     parent->children = parent_childs;
     parent->last = parent_last;
-    
+
+    /*
+     * Free up the dummy node
+     */
+    test_node->name = name;
+    xmlFreeNode(test_node);
+
     return(nb_valid_elements);
 }

@@ -1,3 +1,11 @@
+Fri Feb  8 14:37:05 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixing #70166
+
+Fri Feb  8 14:31:24 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixing #70077
+
 Fri Feb  8 14:24:02 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Copyright Makefile.am README configure.in libxml.spec.in:

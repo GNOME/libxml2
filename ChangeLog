@@ -1,3 +1,9 @@
+Wed Oct  9 23:11:02 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c include/libxml/xmlschemas.h: added
+	  xmlSchemaNewMemParserCtxt to parse a schemas from a memory area
+	* testSchemas.c: added --memory to test the new interface
+
 Wed Oct  9 16:22:54 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/index.py doc/search.php: integrated the XSLT indexing,

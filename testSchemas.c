@@ -32,6 +32,13 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
+#ifdef HAVE_SYS_MMAN_H
+#include <sys/mman.h>
+/* seems needed for Solaris */
+#ifndef MAP_FAILED
+#define MAP_FAILED ((void *) -1)
+#endif
+#endif
 
 #include <libxml/xmlmemory.h>
 #include <libxml/debugXML.h>
@@ -42,6 +49,9 @@
 static int debug = 0;
 #endif
 static int noout = 0;
+#ifdef HAVE_SYS_MMAN_H
+static int memory = 0;
+#endif
 
 
 int main(int argc, char **argv) {
@@ -55,6 +65,11 @@ int main(int argc, char **argv) {
 	    debug++;
 	else
 #endif
+#ifdef HAVE_SYS_MMAN_H
+	if ((!strcmp(argv[i], "-memory")) || (!strcmp(argv[i], "--memory"))) {
+	    memory++;
+        } else
+#endif
 	if ((!strcmp(argv[i], "-noout")) || (!strcmp(argv[i], "--noout"))) {
 	    noout++;
         }
@@ -65,13 +80,40 @@ int main(int argc, char **argv) {
 	    if (schema == NULL) {
 		xmlSchemaParserCtxtPtr ctxt;
 
-		ctxt = xmlSchemaNewParserCtxt(argv[i]);
-		xmlSchemaSetParserErrors(ctxt,
-			(xmlSchemaValidityErrorFunc) fprintf,
-			(xmlSchemaValidityWarningFunc) fprintf,
-			stderr);
-		schema = xmlSchemaParse(ctxt);
-		xmlSchemaFreeParserCtxt(ctxt);
+#ifdef HAVE_SYS_MMAN_H
+		if (memory) {
+		    int fd;
+		    struct stat info;
+		    const char *base;
+		    if (stat(argv[i], &info) < 0) 
+			break;
+		    if ((fd = open(argv[i], O_RDONLY)) < 0)
+			break;
+		    base = mmap(NULL, info.st_size, PROT_READ,
+			        MAP_SHARED, fd, 0) ;
+		    if (base == (void *) MAP_FAILED)
+			break;
+
+		    ctxt = xmlSchemaNewMemParserCtxt((char *)base,info.st_size);
+
+		    xmlSchemaSetParserErrors(ctxt,
+			    (xmlSchemaValidityErrorFunc) fprintf,
+			    (xmlSchemaValidityWarningFunc) fprintf,
+			    stderr);
+		    schema = xmlSchemaParse(ctxt);
+		    xmlSchemaFreeParserCtxt(ctxt);
+		    munmap((char *) base, info.st_size);
+		} else
+#endif
+		{
+		    ctxt = xmlSchemaNewParserCtxt(argv[i]);
+		    xmlSchemaSetParserErrors(ctxt,
+			    (xmlSchemaValidityErrorFunc) fprintf,
+			    (xmlSchemaValidityWarningFunc) fprintf,
+			    stderr);
+		    schema = xmlSchemaParse(ctxt);
+		    xmlSchemaFreeParserCtxt(ctxt);
+		}
 #ifdef LIBXML_DEBUG_ENABLED
 		if (debug)
 		    xmlSchemaDump(stdout, schema);
@@ -118,6 +160,9 @@ int main(int argc, char **argv) {
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
 #endif
 	printf("\t--noout : do not print the result\n");
+#ifdef HAVE_SYS_MMAN_H
+	printf("\t--memory : test the schemas in memory parsing\n");
+#endif
     }
     xmlSchemaCleanupTypes();
     xmlCleanupParser();

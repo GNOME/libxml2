@@ -68,6 +68,9 @@ struct _xmlSchemaParserCtxt {
     xmlChar	      *URL;
     xmlDocPtr          doc;
 
+    const char     *buffer;
+    int               size;
+
     /*
      * Used to build complex element content models
      */
@@ -3015,6 +3018,35 @@ xmlSchemaNewParserCtxt(const char *URL) {
 }
 
 /**
+ * xmlSchemaNewMemParserCtxt:
+ * @buffer:  a pointer to a char array containing the schemas
+ * @size:  the size of the array
+ *
+ * Create an XML Schemas parse context for that memory buffer expected
+ * to contain an XML Schemas file.
+ *
+ * Returns the parser context or NULL in case of error
+ */
+xmlSchemaParserCtxtPtr
+xmlSchemaNewMemParserCtxt(const char *buffer, int size) {
+    xmlSchemaParserCtxtPtr ret;
+
+    if ((buffer == NULL) || (size <= 0))
+	return(NULL);
+
+    ret = (xmlSchemaParserCtxtPtr) xmlMalloc(sizeof(xmlSchemaParserCtxt));
+    if (ret == NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Failed to allocate new schama parser context\n");
+        return (NULL);
+    }
+    memset(ret, 0, sizeof(xmlSchemaParserCtxt));
+    ret->buffer = buffer;
+    ret->size = size;
+    return (ret);
+}
+
+/**
  * xmlSchemaFreeParserCtxt:
  * @ctxt:  the schema parser context
  *
@@ -3026,6 +3058,8 @@ xmlSchemaFreeParserCtxt(xmlSchemaParserCtxtPtr ctxt) {
 	return;
     if (ctxt->URL != NULL)
 	xmlFree(ctxt->URL);
+    if (ctxt->doc != NULL)
+	xmlFreeDoc(ctxt->doc);
     xmlFree(ctxt);
 }
 
@@ -3795,7 +3829,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
 
     xmlSchemaInitTypes();
 
-    if ((ctxt == NULL) || (ctxt->URL == NULL))
+    if (ctxt == NULL)
         return (NULL);
 
     ctxt->counter = 0;
@@ -3804,12 +3838,29 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     /*
      * First step is to parse the input document into an DOM/Infoset
      */
-    doc = xmlParseFile((const char *) ctxt->URL);
-    if (doc == NULL) {
-        if (ctxt->error != NULL)
-            ctxt->error(ctxt->userData,
-                        "xmlSchemaParse: could not load %s\n", ctxt->URL);
-        return (NULL);
+    if (ctxt->URL != NULL) {
+	doc = xmlParseFile((const char *) ctxt->URL);
+	if (doc == NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+			    "xmlSchemaParse: could not load %s\n", ctxt->URL);
+	    return (NULL);
+	}
+    } else if (ctxt->buffer != NULL) {
+	doc = xmlParseMemory(ctxt->buffer, ctxt->size);
+	if (doc == NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+			    "xmlSchemaParse: could not parse schemas\n");
+	    return (NULL);
+	}
+	doc->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
+	ctxt->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
+    } else {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+			"xmlSchemaParse: nothing to parse\n");
+	return (NULL);
     }
 
     /*

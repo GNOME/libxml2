@@ -73,7 +73,9 @@ typedef xmlSchemaValidCtxt *xmlSchemaValidCtxtPtr;
 /*
  * Interfaces for parsing.
  */
-xmlSchemaParserCtxtPtr xmlSchemaNewParserCtxt(const char *URL);
+xmlSchemaParserCtxtPtr xmlSchemaNewParserCtxt	(const char *URL);
+xmlSchemaParserCtxtPtr xmlSchemaNewMemParserCtxt(const char *buffer,
+						 int size);
 void		xmlSchemaFreeParserCtxt	(xmlSchemaParserCtxtPtr ctxt);
 void		xmlSchemaSetParserErrors(xmlSchemaParserCtxtPtr ctxt,
 					 xmlSchemaValidityErrorFunc err,

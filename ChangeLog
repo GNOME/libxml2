@@ -1,3 +1,7 @@
+Sun Oct  4 03:18:09 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* added xml-config script.
+
 Thu Oct  1 16:22:37 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
         * autogen.sh : applied patch from Frederic Devernay <devernay@istar.fr>

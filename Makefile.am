@@ -2,6 +2,8 @@
 
 noinst_PROGRAMS=tester
 
+bin_SCRIPTS=xml-config
+
 lib_LTLIBRARIES = libxml.la
 
 libxml_la_SOURCES = \

@@ -359,6 +359,7 @@ xmlCleanupPredefinedEntities
 	htmlNodeDumpFormatOutput
 	htmlDocContentDumpOutput
 	htmlDocContentDumpFormatOutput
+	htmlIsBooleanAttr
 #endif /* LIBXML_HTML_ENABLED */
 
 
@@ -785,6 +786,7 @@ xmlCleanupPredefinedEntities
 	xmlNewDocProp
 	xmlNewProp
 	xmlNewNsProp
+	xmlNewNsPropEatName
 	xmlFreePropList
 	xmlFreeProp
 	xmlCopyProp
@@ -794,8 +796,10 @@ xmlCleanupPredefinedEntities
 	
 	/* Creating new nodes */
 	xmlNewDocNode
+	xmlNewDocNodeEatName
 	xmlNewDocRawNode
 	xmlNewNode
+	xmlNewNodeEatName
 	xmlNewChild
 	xmlNewTextChild
 	xmlNewDocText
@@ -887,6 +891,7 @@ xmlCleanupPredefinedEntities
 	xmlDocDumpMemory
 	xmlDocDumpMemoryEnc
 	xmlDocDumpFormatMemoryEnc
+	xmlDocFormatDump
 	xmlDocDump
 	xmlElemDump
 	xmlSaveFile
@@ -997,6 +1002,13 @@ xmlCleanupPredefinedEntities
 	xmlGetDtdElementDesc
 	xmlValidGetValidElements
 	xmlValidGetPotentialChildren
+	xmlValidateNameValue
+	xmlValidateNamesValue
+	xmlValidateNmtokenValue
+	xmlValidateNmtokensValue
+	#ifdef LIBXML_REGEXP_ENABLED
+		xmlValidBuildContentModel
+	#endif /* LIBXML_REGEXP_ENABLED */
 
 
 /* xinclude.h 
@@ -1028,9 +1040,14 @@ xmlCleanupPredefinedEntities
 	xmlAutomataNewState
 	xmlAutomataNewTransition
 	xmlAutomataNewCountTrans
+	xmlAutomataNewOnceTrans
+	xmlAutomataNewAllTrans
 	xmlAutomataNewEpsilon
-	// xmlAutomataNewCounter <-- not activated in the source (xmlregexp.c).
+	xmlAutomataNewCountedTrans
+	xmlAutomataNewCounterTrans
+	xmlAutomataNewCounter
 	xmlAutomataCompile
+	xmlAutomataIsDeterminist
 #endif /* LIBXML_SCHEMAS_ENABLED */
 
 
@@ -1085,6 +1102,9 @@ xmlCleanupPredefinedEntities
 	#endif /* LIBXML_HTTP_ENABLED */
 	xmlNoNetExternalEntityLoader
 
+	xmlNormalizeWindowsPath
+	xmlCheckFilename
+
 	/**
 	 * Default 'file://' protocol callbacks 
 	 */
@@ -1131,6 +1151,11 @@ xmlCleanupPredefinedEntities
 		xmlReallocLoc
 		xmlMemStrdupLoc
 	#endif /* DEBUG_MEMORY_LOCATION */
+	/* xmlmemory.c subgrup */
+	xmlMemMalloc
+	xmlMemRealloc
+	xmlMemFree
+	xmlMemoryStrdup
 
 
 /* xmlregexp.h 
@@ -1142,25 +1167,12 @@ xmlCleanupPredefinedEntities
 	xmlRegFreeRegexp
 	xmlRegexpExec
 	xmlRegexpPrint
+	xmlRegexpIsDeterminist
 
 	/* The progressive API */
 	xmlRegNewExecCtxt
 	xmlRegFreeExecCtxt
 	xmlRegExecPushString		
-	xmlRegFreeRegexp
-	xmlRegFreeExecCtxt
-	xmlRegExecPushString
-	xmlRegNewExecCtxt
-	xmlRegexpPrint
-	xmlFreeAutomata
-	xmlAutomataCompile
-	xmlAutomataSetFinalState
-	xmlAutomataNewCountTrans
-	xmlAutomataNewTransition
-	xmlAutomataGetInitState
-	xmlNewAutomata
-	xmlAutomataNewEpsilon
-	xmlAutomataNewState
 #endif /* LIBXML_REGEXP_ENABLED */
 
 
@@ -1169,6 +1181,7 @@ xmlCleanupPredefinedEntities
 #ifdef LIBXML_SCHEMAS_ENABLED
 	/* Interfaces for parsing. */
 	xmlSchemaNewParserCtxt
+	xmlSchemaNewMemParserCtxt
 	xmlSchemaFreeParserCtxt
 	xmlSchemaSetParserErrors
 	xmlSchemaParse
@@ -1504,6 +1517,7 @@ xmlCleanupPredefinedEntities
 	xmlXPathFreeContext
 
 	xmlXPathEqualValues
+	xmlXPathNotEqualValues
 	xmlXPathCompareValues
 	xmlXPathValueFlipSign
 	xmlXPathAddValues

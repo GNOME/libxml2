@@ -1,3 +1,8 @@
+Wed Dec 24 12:04:35 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c result/XInclude/nodes2.*: XInclude xpointer support
+	  was broken with the new namespace. Fixes #129932
+
 Wed Dec 24 00:29:30 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c include/libxml/schemasInternals.h: types might be

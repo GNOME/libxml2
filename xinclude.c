@@ -1334,6 +1334,11 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	fragment = (xmlChar *) uri->fragment;
 	uri->fragment = NULL;
     }
+    if ((ctxt->incTab != NULL) && (ctxt->incTab[nr] != NULL) &&
+        (ctxt->incTab[nr]->fragment != NULL)) {
+	if (fragment != NULL) xmlFree(fragment);
+	fragment = xmlStrdup(ctxt->incTab[nr]->fragment);
+    }
     URL = xmlSaveUri(uri);
     xmlFreeURI(uri);
     if (URL == NULL) {

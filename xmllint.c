@@ -1081,14 +1081,21 @@ static void parseAndPrintFile(char *filename) {
 		    "Could not parse DTD %s\n", dtdvalid);
 	    progresult = 2;
 	} else {
-	    xmlValidCtxt cvp;
+	    xmlValidCtxtPtr cvp;
+
+	    if ((cvp = xmlNewValidCtxt()) == NULL) {
+		xmlGenericError(xmlGenericErrorContext,
+			"Couldn't allocate validation context\n");
+		exit(-1);
+	    }
+	    cvp->userData = (void *) stderr;
+	    cvp->error    = (xmlValidityErrorFunc) fprintf;
+	    cvp->warning  = (xmlValidityWarningFunc) fprintf;
+
 	    if ((timing) && (!repeat)) {
 		startTimer();
 	    }
-	    cvp.userData = (void *) stderr;
-	    cvp.error    = (xmlValidityErrorFunc) fprintf;
-	    cvp.warning  = (xmlValidityWarningFunc) fprintf;
-	    if (!xmlValidateDtd(&cvp, doc, dtd)) {
+	    if (!xmlValidateDtd(cvp, doc, dtd)) {
 		xmlGenericError(xmlGenericErrorContext,
 			"Document %s does not validate against %s\n",
 			filename, dtdvalid);
@@ -1097,17 +1104,25 @@ static void parseAndPrintFile(char *filename) {
 	    if ((timing) && (!repeat)) {
 		endTimer("Validating against DTD");
 	    }
+	    xmlFreeValidCtxt(cvp);
 	    xmlFreeDtd(dtd);
 	}
     } else if (postvalid) {
-	xmlValidCtxt cvp;
+	xmlValidCtxtPtr cvp;
+
+	if ((cvp = xmlNewValidCtxt()) == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Couldn't allocate validation context\n");
+	    exit(-1);
+	}
+
 	if ((timing) && (!repeat)) {
 	    startTimer();
 	}
-	cvp.userData = (void *) stderr;
-	cvp.error    = (xmlValidityErrorFunc) fprintf;
-	cvp.warning  = (xmlValidityWarningFunc) fprintf;
-	if (!xmlValidateDocument(&cvp, doc)) {
+	cvp->userData = (void *) stderr;
+	cvp->error    = (xmlValidityErrorFunc) fprintf;
+	cvp->warning  = (xmlValidityWarningFunc) fprintf;
+	if (!xmlValidateDocument(cvp, doc)) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Document %s does not validate\n", filename);
 	    progresult = 3;
@@ -1115,6 +1130,7 @@ static void parseAndPrintFile(char *filename) {
 	if ((timing) && (!repeat)) {
 	    endTimer("Validating");
 	}
+	xmlFreeValidCtxt(cvp);
 #ifdef LIBXML_SCHEMAS_ENABLED
     } else if (relaxngschemas != NULL) {
 	xmlRelaxNGValidCtxtPtr ctxt;

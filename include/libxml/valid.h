@@ -127,6 +127,10 @@ typedef xmlIDTable *xmlIDTablePtr;
 typedef struct _xmlHashTable xmlRefTable;
 typedef xmlRefTable *xmlRefTablePtr;
 
+/* Allocate/Release Validation Contexts */
+xmlValidCtxtPtr	    xmlNewValidCtxt(void);
+void		    xmlFreeValidCtxt(xmlValidCtxtPtr);
+
 /* Notation */
 xmlNotationPtr	    xmlAddNotationDecl	(xmlValidCtxtPtr ctxt,
 					 xmlDtdPtr dtd,

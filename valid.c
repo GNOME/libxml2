@@ -681,6 +681,36 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
  ****************************************************************/
 
 /**
+ * xmlNewValidCtxt:
+ *
+ * Allocate a validation context structure.
+ *
+ * Returns NULL if not, otherwise the new validation context structure
+ */
+xmlValidCtxtPtr
+xmlNewValidCtxt(void) {
+    xmlValidCtxtPtr ret;
+
+    if ((ret = xmlMalloc(sizeof (xmlValidCtxt))) == NULL)
+	return (NULL);
+
+    (void) memset(ret, 0, sizeof (xmlValidCtxt));
+
+    return (ret);
+}
+
+/**
+ * xmlFreeValidCtxt:
+ * @cur:  the validation context to free
+ *
+ * Free a validation context structure.
+ */
+void
+xmlFreeValidCtxt(xmlValidCtxtPtr cur) {
+    xmlFree(cur);
+}
+
+/**
  * xmlNewElementContent:
  * @name:  the subelement name or NULL
  * @type:  the type of element content decl

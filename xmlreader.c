@@ -688,6 +688,8 @@ xmlTextReaderDoExpand(xmlTextReaderPtr reader) {
     do {
         if (xmlTextReaderGetSuccessor(reader->node) != NULL)
 	    return(1);
+	if (reader->ctxt->nodeNr <= reader->depth)
+	    return(1);
 	if (reader->mode == XML_TEXTREADER_MODE_EOF)
 	    return(1);
 	val = xmlTextReaderPushData(reader);

@@ -1,3 +1,11 @@
+Mon Jun  9 11:06:09 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/*: applied a patch from Gman for building docs
+	* valid.c xmllint.c include/libxml/valid.h: applied a patch from
+	  Gary Pennington to provide an allocator for xmlValidCtxt
+	* xmlreader.c: applied patch from Jacek Konieczny fixing bug
+	  #113580 about data not being passed immediately.
+
 Thu Jun  5 11:31:02 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied a couple of patches from Mark Itzcovitz

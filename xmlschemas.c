@@ -8240,7 +8240,7 @@ xmlSchemaParseInclude(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     const xmlChar *schemaLocation, *targetNamespace;
     xmlDocPtr doc = NULL;
     xmlNodePtr root = NULL;
-    xmlSchemaIncludePtr include;
+    xmlSchemaIncludePtr include = NULL;
     int wasConvertingNs = 0;
     xmlAttrPtr attr;
     xmlParserCtxtPtr parserCtxt;

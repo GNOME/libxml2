@@ -159,7 +159,7 @@ if with_xslt == 1:
 
 
 descr = "libxml2 package"
-modules = [ 'libxml2' ]
+modules = [ 'libxml2', 'drv_libxml2' ]
 if WITHDLLS:
     modules.append('libxmlmods.__init__')
 c_files = ['libxml2-py.c', 'libxml.c', 'types.c' ]

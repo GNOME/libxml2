@@ -1,3 +1,8 @@
+Sat Jan  4 13:46:14 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/setup.py.in: patch from Stéphane Bidoul to include
+	  drv_libxml2.py in setup.py
+
 Sat Jan  4 01:43:06 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xmlreader.html: starting documenting the new XmlTextReader

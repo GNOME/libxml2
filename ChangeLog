@@ -1,3 +1,7 @@
+Tue Aug 12 22:48:10 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* doc/Makefile.am: Removed dependency from libxml2.def.src
+
 Tue Aug 12 18:55:08 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* autogen.sh: took away the requirement for automake-1.4,

@@ -72,7 +72,7 @@ xml: templates
 libxml2-api.xml: apibuild.py ../include/libxml/*.h
 	-(./apibuild.py)
 
-$(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
+$(WIN32_DIR)/libxml2.def.src:
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
 	  $(bindir)/xsltproc -o $(WIN32_DIR)/libxml2.def.src \
 	  --nonet $(WIN32_DIR)/defgen.xsl libxml2-api.xml ; fi )

@@ -1,3 +1,17 @@
+Sun Mar 23 12:57:00 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixing bug #108976 get the ID/REFs to reference 
+	  the ID in the document content and not in the entity copy
+	* SAX.c include/libxml/parser.h: more checking of the ID/REF
+	  stuff, better solution for #107208
+	* xmlregexp.c: removed a direct printf, dohhh
+        * xmlreader.c: fixed a bug on streaming validation of empty 
+	  elements in entities
+	* result/VC/ElementValid8 test/VCM/v20.xml result/valid/xhtml1.xhtml:
+	  cleanup of the validation tests
+	* test/valid/id* test/valid/dtds/destfoo.ent result/valid/id*:
+	  added more ID/IDREF tests to the suite
+
 Sat Mar 22 23:38:08 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fixed #107043 removing 2 warnings with Sun One

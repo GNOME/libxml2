@@ -5620,24 +5620,57 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		     * a simple tree copy for all references except the first
 		     * In the first occurrence list contains the replacement
 		     */
-		    if (list == NULL) {
-			xmlNodePtr new = NULL, cur, firstChild = NULL;
+		    if ((list == NULL) && (ent->owner == 0)) {
+			xmlNodePtr nw = NULL, cur, firstChild = NULL;
 			cur = ent->children;
 			while (cur != NULL) {
-			    new = xmlCopyNode(cur, 1);
-			    if (new != NULL) {
-				new->_private = cur->_private;
+			    nw = xmlCopyNode(cur, 1);
+			    if (nw != NULL) {
+				nw->_private = cur->_private;
 				if (firstChild == NULL){
-				    firstChild = new;
+				    firstChild = nw;
 				}
-				xmlAddChild(ctxt->node, new);
+				xmlAddChild(ctxt->node, nw);
 			    }
 			    if (cur == ent->last)
 				break;
 			    cur = cur->next;
 			}
 			if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)			      
-			  xmlAddEntityReference(ent, firstChild, new);
+			  xmlAddEntityReference(ent, firstChild, nw);
+		    } else if (list == NULL) {
+			xmlNodePtr nw = NULL, cur, next, last,
+			           firstChild = NULL;
+			/*
+			 * Copy the entity child list and make it the new
+			 * entity child list. The goal is to make sure any
+			 * ID or REF referenced will be the one from the
+			 * document content and not the entity copy.
+			 */
+			cur = ent->children;
+			ent->children = NULL;
+			last = ent->last;
+			ent->last = NULL;
+			while (cur != NULL) {
+			    next = cur->next;
+			    cur->next = NULL;
+			    cur->parent = NULL;
+			    nw = xmlCopyNode(cur, 1);
+			    if (nw != NULL) {
+				nw->_private = cur->_private;
+				if (firstChild == NULL){
+				    firstChild = cur;
+				}
+				xmlAddChild((xmlNodePtr) ent, nw);
+				xmlAddChild(ctxt->node, cur);
+			    }
+			    if (cur == last)
+				break;
+			    cur = next;
+			}
+			ent->owner = 1;
+			if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)			      
+			  xmlAddEntityReference(ent, firstChild, nw);
 		    } else {
 			/*
 			 * the name change is to avoid coalescing of the
@@ -9976,6 +10009,12 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 
     ctxt->validate = 0;
     ctxt->loadsubset = oldctxt->loadsubset;
+    if ((oldctxt->validate) || (oldctxt->replaceEntities != 0)) {
+	/*
+	 * ID/IDREF registration will be done in xmlValidateElement below
+	 */
+	ctxt->loadsubset |= XML_SKIP_IDS;
+    }
 
     xmlParseContent(ctxt);
     if ((RAW == '<') && (NXT(1) == '/')) {

@@ -5170,6 +5170,7 @@ xmlValidatePushElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     xmlElementPtr eDecl;
     int extsubset = 0;
 
+/* printf("PushElem %s\n", qname); */
     if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
 	xmlValidStatePtr state = ctxt->vstate;
 	xmlElementPtr elemDecl;
@@ -5257,6 +5258,7 @@ int
 xmlValidatePushCData(xmlValidCtxtPtr ctxt, const xmlChar *data, int len) {
     int ret = 1;
 
+/* printf("CDATA %s %d\n", data, len); */
     if (len <= 0)
 	return(ret);
     if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
@@ -5330,6 +5332,7 @@ xmlValidatePopElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc ATTRIBUTE_UNUSED,
 		      const xmlChar *qname ATTRIBUTE_UNUSED) {
     int ret = 1;
 
+/* printf("PopElem %s\n", qname); */
     if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
 	xmlValidStatePtr state = ctxt->vstate;
 	xmlElementPtr elemDecl;

@@ -134,6 +134,14 @@ typedef enum {
 #define XML_COMPLETE_ATTRS	4
 
 /**
+ * XML_SKIP_IDS:
+ *
+ * Bit in the loadsubset context field to tell to not do ID/REFs registration.
+ * Used to initialize xmlLoadExtDtdDefaultValue in some special cases.
+ */
+#define XML_SKIP_IDS		8
+
+/**
  * xmlParserCtxt:
  *
  * The parser context.

@@ -524,6 +524,8 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 	if (node->children != NULL) {
 	    node = node->children;
 	    continue;
+	} else if (node->type == XML_ELEMENT_NODE) {
+	    xmlTextReaderValidatePop(reader);
 	}
 	if (node->next != NULL) {
 	    node = node->next;

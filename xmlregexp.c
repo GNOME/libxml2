@@ -455,7 +455,6 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 		prev = transitions[stateno * (nbatoms + 1) + atomno + 1];
 		if (prev != 0) {
 		    if (prev != targetno + 1) {
-			printf("not determinist\n");
 			ret->determinist = 0;
 #ifdef DEBUG_COMPACTION
 			printf("Indet: state %d trans %d, atom %d to %d : %d to %d\n",

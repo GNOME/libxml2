@@ -1,3 +1,1 @@
 ./test/schemas/choice_6.xml:3: element b: Schemas validity error : Element 'b': This element is not expected.
-./test/schemas/choice_6.xml:4: element a: Schemas validity error : Element 'a': This element is not expected.
-./test/schemas/choice_6.xml:5: element a: Schemas validity error : Element 'a': This element is not expected.

@@ -1078,10 +1078,121 @@ xmlSchemaVComplexTypeErr(xmlSchemaValidCtxtPtr ctxt,
 	msg = xmlStrcat(msg, xmlSchemaFormatItemForReport(&str, NULL, type, NULL, 0));
 	msg = xmlStrcat(msg, BAD_CAST "]");
     }
-    msg = xmlStrcat(msg, BAD_CAST ": %s.\n");
-    xmlSchemaVErr(ctxt, node, error, (const char *) msg, 
+    msg = xmlStrcat(msg, BAD_CAST ": %s.\n");   
+    xmlSchemaVErr(ctxt, node, error, (const char *) msg,
 	(const xmlChar *) message, NULL);
     FREE_AND_NULL(str)	
+    xmlFree(msg);
+}
+
+/**
+ * xmlSchemaVComplexTypeElemErr:
+ * @ctxt:  the schema validation context
+ * @error: the error code
+ * @node: the node containing the validated value
+ * @type: the complex type used for validation
+ * @message: the error message
+ *
+ * Reports a complex type validation error.
+ */
+static void
+xmlSchemaVComplexTypeElemErr(xmlSchemaValidCtxtPtr ctxt, 
+			xmlParserErrors error,
+			xmlNodePtr node,
+			xmlSchemaTypePtr type,			
+			const char *message,
+			int nbval,
+			int nbneg,
+			xmlChar **values)
+{
+    xmlChar *str = NULL, *msg = NULL;
+    xmlChar *localName, *nsName;
+    const xmlChar *cur, *end;
+    int i;
+    
+    xmlSchemaFormatItemForReport(&msg, NULL,  NULL, node, 0);
+    /* Specify the complex type only if it is global. */
+    if ((type != NULL) && (type->flags & XML_SCHEMAS_TYPE_GLOBAL)) {
+	msg = xmlStrcat(msg, BAD_CAST " [");
+	msg = xmlStrcat(msg, xmlSchemaFormatItemForReport(&str, NULL, type, NULL, 0));
+	msg = xmlStrcat(msg, BAD_CAST "]");
+	FREE_AND_NULL(str)
+    }
+    msg = xmlStrcat(msg, BAD_CAST ": ");
+    msg = xmlStrcat(msg, (const xmlChar *) message);
+    /*
+    * Note that is does not make sense to report that we have a
+    * wildcard here, since the wildcard might be unfolded into
+    * multiple transitions.
+    */
+    if (nbval + nbneg > 0) {
+	if (nbval + nbneg > 1) {
+	    str = xmlStrdup(BAD_CAST ". Expected is one of ");
+	} else
+	    str = xmlStrdup(BAD_CAST ". Expected is ");
+	nsName = NULL;
+    	    
+	for (i = 0; i < nbval + nbneg; i++) {
+	    cur = values[i];
+	    /*
+	    * Get the local name.
+	    */
+	    localName = NULL;
+	    
+	    end = cur;
+	    if (*end == '*') {
+		localName = xmlStrdup(BAD_CAST "*");
+		*end++;
+	    } else {
+		while ((*end != 0) && (*end != '|'))
+		    end++;
+		localName = xmlStrcat(localName, BAD_CAST "'");
+		localName = xmlStrncat(localName, BAD_CAST cur, end - cur);
+		localName = xmlStrcat(localName, BAD_CAST "'");
+	    }		
+	    if (*end != 0) {		    
+		*end++;
+		/*
+		* Skip "*|*" if they come with negated expressions, since
+		* they represent the same negated wildcard.
+		*/
+		if ((nbneg == 0) || (*end != '*') || (*localName != '*')) {
+		    /*
+		    * Get the namespace name.
+		    */
+		    cur = end;
+		    if (*end == '*') {
+			nsName = xmlStrdup(BAD_CAST "{*}");
+		    } else {
+			while (*end != 0)
+			    end++;
+			
+			if (i >= nbval)
+			    nsName = xmlStrdup(BAD_CAST "{##other:");
+			else
+			    nsName = xmlStrdup(BAD_CAST "{");
+			
+			nsName = xmlStrncat(nsName, BAD_CAST cur, end - cur);
+			nsName = xmlStrcat(nsName, BAD_CAST "}");
+		    }
+		    str = xmlStrcat(str, BAD_CAST nsName);
+		    FREE_AND_NULL(nsName)
+		} else {
+		    FREE_AND_NULL(localName);
+		    continue;
+		}
+	    }	        
+	    str = xmlStrcat(str, BAD_CAST localName);
+	    FREE_AND_NULL(localName);
+		
+	    if (i < nbval + nbneg -1)
+		str = xmlStrcat(str, BAD_CAST ", ");
+	}	    
+	msg = xmlStrcat(msg, BAD_CAST str);
+	FREE_AND_NULL(str)
+    }    
+    msg = xmlStrcat(msg, BAD_CAST ".\n");
+    xmlSchemaVErr(ctxt, node, error, (const char *) msg, NULL, NULL);    	
     xmlFree(msg);
 }
 
@@ -8552,7 +8663,7 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
                         oldstate = ctxt->state;
                         counter = xmlAutomataNewCounter(ctxt->am,
 			    particle->minOccurs - 1, UNBOUNDED);                      
-                        ctxt->state =                            
+                        ctxt->state =
 			    xmlAutomataNewTransition2(ctxt->am,
 				ctxt->state, NULL, 
 				elemDecl->name, 
@@ -14710,8 +14821,6 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 	* in the ·lexical space· of {item type definition} 
 	*/
 	
-	if (value == NULL)
-	    value = BAD_CAST "";
 	tmpType = xmlSchemaGetListSimpleTypeItemType(type);	
 	cur = value;
 	do {
@@ -15849,6 +15958,8 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
         case XML_SCHEMA_CONTENT_ELEMENTS:
         {
 	    xmlRegExecCtxtPtr oldregexp = NULL;
+	    xmlChar *values[10];
+	    int terminal, nbval = 10, nbneg;
 	    
 	    /*
 	    * Content model check initialization.
@@ -15877,8 +15988,10 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 		    /*
 		    * URGENT TODO: Could we anchor an error report
 		    * here to notify of invalid elements?
+		    * TODO: Perhaps it would be better to report 
+		    * only the first erroneous element and then break.
 		    */
-#ifdef DEBUG_AUTOMATA		    
+#ifdef DEBUG_AUTOMATA
 		    if (ret < 0)
 			xmlGenericError(xmlGenericErrorContext,
 			"  --> %s Error\n", child->name);
@@ -15887,11 +16000,19 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 			"  --> %s\n", child->name);
 #endif
 		    if (ret < 0) {
-			xmlSchemaVComplexTypeErr(ctxt, 
+			xmlRegExecErrInfo(ctxt->regexp, NULL, &nbval, &nbneg,
+			    &values[0], &terminal);
+			xmlSchemaVComplexTypeElemErr(ctxt, 
 			    XML_SCHEMAV_ELEMENT_CONTENT,
 			    child, NULL/* type */, 
-			    "This element is not expected");
+			    "This element is not expected",
+			    nbval, nbneg, values);
 			ret = 1;
+			/*
+			* Note that this will skip further validation of the
+			* content.
+			*/
+			break;
 		    }
 		} else if ((type->contentType == XML_SCHEMA_CONTENT_ELEMENTS) && 
 		    /* 
@@ -15922,29 +16043,36 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 	    * Content model check finalization.
 	    */
        	    if (type->contModel != NULL) {
-		if (ret != 1) {
-		    ret = xmlRegExecPushString(ctxt->regexp, NULL, NULL);
+		if (ret == 0) {
+		    xmlRegExecNextValues(ctxt->regexp, &nbval, &nbneg,
+			&values[0], &terminal);
+		    if (nbval + nbneg != 0) {
+			/*
+			* If a next value still exists, I does not have to
+			* mean that there's an element missing, since it
+			* might be an optional element. So double check it.
+			*/
+			ret = xmlRegExecPushString(ctxt->regexp,
+			    NULL, NULL);
+			if (ret <= 0) {
+			    ret = 1;
+    			    xmlSchemaVComplexTypeElemErr(ctxt,
+				XML_SCHEMAV_ELEMENT_CONTENT,
+				elem, type, "Missing child element(s)",
+				nbval, nbneg, values);			    
+			} else
+			    ret = 0;			
 #ifdef DEBUG_AUTOMATA
-		    xmlGenericError(xmlGenericErrorContext,
-			"====> %s : %d\n", elem->name, ret);
+			xmlGenericError(xmlGenericErrorContext,
+			    "====> %s : %d\n", elem->name, ret);
 #endif
-		    if (ret == 0) {
-			/* TODO: Hmm, can this one really happen? */
-			xmlSchemaVComplexTypeErr(ctxt, 
-			    XML_SCHEMAV_ELEMENT_CONTENT,
-			    elem, type, "Missing child element(s)");
-		    } else if (ret < 0) {
-			xmlSchemaVComplexTypeErr(ctxt, 
-			    XML_SCHEMAV_ELEMENT_CONTENT,
-			    elem, type, "Missing child element(s)");
+		    }		    
 #ifdef DEBUG_CONTENT
-		    } else {
+		    if (ret == 0)
 			xmlGenericError(xmlGenericErrorContext,
 			    "Element %s content check succeeded\n",
 			    elem->name);
-			
 #endif
-		    }
 		}
 		xmlRegFreeExecCtxt(ctxt->regexp);
 		ctxt->regexp = oldregexp;
@@ -16071,8 +16199,8 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 		}
 	    }
 	    if (value != NULL)
-		xmlFree(value);    
-	    
+		xmlFree(value);
+
 	}
 	    break;
         default:

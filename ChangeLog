@@ -1,3 +1,10 @@
+Thu Jan 13 12:59:25 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Integrated xmlRegExecErrInfo and xmlRegExecNextValues
+	  from xmlregexp.c to report expected elements on content model errors.
+	* all_*.err any3_0_0.err choice_*.err list0_0_1.err list0_1_1.err:
+	  Adapted output of regression tests.
+
 Thu Jan 13 12:24:09 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* config.h.in configure.in xmlmodule.c: trying to work around

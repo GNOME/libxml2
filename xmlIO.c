@@ -1416,12 +1416,12 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
 		ret = out->writecallback(out->context, 
 				 (const char *)out->conv->content, nbchars);
 		if (ret >= 0)
-		    xmlBufferShrink(out->conv, nbchars);
+		    xmlBufferShrink(out->conv, ret);
 	    } else {
 		ret = out->writecallback(out->context, 
 				 (const char *)out->buffer->content, nbchars);
 		if (ret >= 0)
-		    xmlBufferShrink(out->buffer, nbchars);
+		    xmlBufferShrink(out->buffer, ret);
 	    }
 	    if (ret < 0) {
 		xmlGenericError(xmlGenericErrorContext,

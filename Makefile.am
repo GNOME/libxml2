@@ -2,13 +2,17 @@
 
 SUBDIRS = doc
 
-INCLUDES = -I@srcdir@ @CORBA_CFLAGS@
+INCLUDES = -I@srcdir@ @CORBA_CFLAGS@ $(VERSION_FLAGS)
+
+VERSION_FLAGS = -DLIBXML_VERSION=\"@LIBXML_VERSION@\"
 
 noinst_PROGRAMS=tester testSAX
 
 bin_SCRIPTS=xml-config
 
 lib_LTLIBRARIES = libxml.la
+
+libxml_la_LDFLAGS = -version-info @LIBXML_VERSION_INFO@
 
 libxml_la_SOURCES = \
 		SAX.c \
@@ -29,6 +33,7 @@ xmlinc_HEADERS = \
 		debugXML.h \
 		xml-error.h \
 		tree.h \
+		xmlIO.h \
 		valid.h
 
 DEPS = $(top_builddir)/libxml.la

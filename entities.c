@@ -30,19 +30,6 @@ struct xmlPredefinedEntityValue xmlPredefinedEntityValues[] = {
 xmlEntitiesTablePtr xmlPredefinedEntities = NULL;
 
 /*
- * Macro used to grow the current buffer.
- */
-#define growBuffer() {							\
-    buffer_size *= 2;							\
-    buffer = (CHAR *) realloc(buffer, buffer_size * sizeof(CHAR));	\
-    if (buffer == NULL) {						\
-	perror("realloc failed");					\
-	exit(1);							\
-    }									\
-}
-
-
-/*
  * xmlFreeEntity : clean-up an entity record.
  */
 void xmlFreeEntity(xmlEntityPtr entity) {
@@ -301,6 +288,25 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
     (((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) ||			\
      (((c) >= 0x20) && ((c) != 0xFFFE) && ((c) != 0xFFFF)))
 
+/*
+ * A buffer used for converting entities to their equivalent and back.
+ *
+ * TODO: remove this, this helps performances but forbid reentrancy in a 
+ *       stupid way.
+ */
+static int buffer_size = 0;
+static CHAR *buffer = NULL;
+
+void growBuffer(void) {
+    buffer_size *= 2;
+    buffer = (CHAR *) realloc(buffer, buffer_size * sizeof(CHAR));
+    if (buffer == NULL) {
+        perror("realloc failed");
+        exit(1);
+    }
+}
+
+
 /**
  * xmlEncodeEntities:
  * @doc:  the document containing the string
@@ -312,10 +318,142 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
  * TODO !!!! Once moved to UTF-8 internal encoding, the encoding of non-ascii
  *           get erroneous.
  *
+ * TODO This routine is not reentrant, the interface
+ *      should not be modified though.
+ *
+ * People must migrate their code to xmlEncodeEntitiesReentrant !
+ * 
+ * Returns A newly allocated string with the substitution done.
+ */
+const CHAR *
+xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
+    const CHAR *cur = input;
+    CHAR *out = buffer;
+
+    if (input == NULL) return(NULL);
+    if (buffer == NULL) {
+        buffer_size = 1000;
+        buffer = (CHAR *) malloc(buffer_size * sizeof(CHAR));
+	if (buffer == NULL) {
+	    perror("malloc failed");
+            exit(1);
+	}
+	out = buffer;
+    }
+    while (*cur != '\0') {
+        if (out - buffer > buffer_size - 100) {
+	    int index = out - buffer;
+
+	    growBuffer();
+	    out = &buffer[index];
+	}
+
+	/*
+	 * By default one have to encode at least '<', '>', '"' and '&' !
+	 */
+	if (*cur == '<') {
+	    *out++ = '&';
+	    *out++ = 'l';
+	    *out++ = 't';
+	    *out++ = ';';
+	} else if (*cur == '>') {
+	    *out++ = '&';
+	    *out++ = 'g';
+	    *out++ = 't';
+	    *out++ = ';';
+	} else if (*cur == '&') {
+	    *out++ = '&';
+	    *out++ = 'a';
+	    *out++ = 'm';
+	    *out++ = 'p';
+	    *out++ = ';';
+	} else if (*cur == '"') {
+	    *out++ = '&';
+	    *out++ = 'q';
+	    *out++ = 'u';
+	    *out++ = 'o';
+	    *out++ = 't';
+	    *out++ = ';';
+	} else if (*cur == '\'') {
+	    *out++ = '&';
+	    *out++ = 'a';
+	    *out++ = 'p';
+	    *out++ = 'o';
+	    *out++ = 's';
+	    *out++ = ';';
+	} else if (((*cur >= 0x20) && (*cur < 0x80)) ||
+	    (*cur == '\n') || (*cur == '\r') || (*cur == '\t')) {
+	    /*
+	     * default case, just copy !
+	     */
+	    *out++ = *cur;
+#ifndef USE_UTF_8
+	} else if ((sizeof(CHAR) == 1) && (*cur >= 0x80)) {
+	    char buf[10], *ptr;
+#ifdef HAVE_SNPRINTF
+	    snprintf(buf, 9, "&#%d;", *cur);
+#else
+	    sprintf(buf, "&#%d;", *cur);
+#endif
+            ptr = buf;
+	    while (*ptr != 0) *out++ = *ptr++;
+#endif
+	} else if (IS_CHAR(*cur)) {
+	    char buf[10], *ptr;
+
+#ifdef HAVE_SNPRINTF
+	    snprintf(buf, 9, "&#%d;", *cur);
+#else
+	    sprintf(buf, "&#%d;", *cur);
+#endif
+            ptr = buf;
+	    while (*ptr != 0) *out++ = *ptr++;
+	}
+#if 0
+	else {
+	    /*
+	     * default case, this is not a valid char !
+	     * Skip it...
+	     */
+	    fprintf(stderr, "xmlEncodeEntities: invalid char %d\n", (int) *cur);
+	}
+#endif
+	cur++;
+    }
+    *out++ = 0;
+    return(buffer);
+}
+
+/*
+ * Macro used to grow the current buffer.
+ */
+#define growBufferReentrant() {						\
+    buffer_size *= 2;							\
+    buffer = (CHAR *) realloc(buffer, buffer_size * sizeof(CHAR));	\
+    if (buffer == NULL) {						\
+	perror("realloc failed");					\
+	exit(1);							\
+    }									\
+}
+
+
+/**
+ * xmlEncodeEntitiesReentrant:
+ * @doc:  the document containing the string
+ * @input:  A string to convert to XML.
+ *
+ * Do a global encoding of a string, replacing the predefined entities
+ * and non ASCII values with their entities and CharRef counterparts.
+ * Contrary to xmlEncodeEntities, this routine is reentrant, and result
+ * must be deallocated.
+ *
+ * TODO !!!! Once moved to UTF-8 internal encoding, the encoding of non-ascii
+ *           get erroneous.
+ *
  * Returns A newly allocated string with the substitution done.
  */
 CHAR *
-xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
+xmlEncodeEntitiesReentrant(xmlDocPtr doc, const CHAR *input) {
     const CHAR *cur = input;
     CHAR *buffer = NULL;
     CHAR *out = NULL;
@@ -338,7 +476,7 @@ xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
         if (out - buffer > buffer_size - 100) {
 	    int index = out - buffer;
 
-	    growBuffer();
+	    growBufferReentrant();
 	    out = &buffer[index];
 	}
 

@@ -177,8 +177,16 @@ internalSubsetDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
 xmlParserInputPtr
 resolveEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *systemId)
 {
-    fprintf(stdout, "SAX.resolveEntity(%s, %s)\n",
-            (char *)publicId, (char *)systemId);
+    
+    fprintf(stdout, "SAX.resolveEntity(");
+    if (publicId != NULL)
+	fprintf(stdout, "%s", (char *)publicId);
+    else
+	fprintf(stdout, " ");
+    if (systemId != NULL)
+	fprintf(stdout, ", %s)\n", (char *)systemId);
+    else
+	fprintf(stdout, ", )\n");
     if (systemId != NULL) {
         return(xmlNewInputFromFile(ctxt, systemId));
     }

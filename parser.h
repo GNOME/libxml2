@@ -10,6 +10,7 @@
 #define __XML_PARSER_H__
 
 #include "tree.h"
+#include "xmlIO.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,6 +23,9 @@ extern "C" {
 
 typedef void (* xmlParserInputDeallocate)(CHAR *);
 typedef struct xmlParserInput {
+    /* Input buffer */
+    xmlParserInputBufferPtr buf;      /* UTF-8 encoded buffer */
+
     const char *filename;             /* The file analyzed, if any */
     const CHAR *base;                 /* Base of the array to parse */
     const CHAR *cur;                  /* Current char being parsed */
@@ -169,8 +173,10 @@ typedef xmlSAXHandler *xmlSAXHandlerPtr;
 
 /*
  * Global variables: just the SAX interface tables we are looking for full
- *      reentrancy of the code !
+ *      reentrancy of the code and version infos.
  */
+extern const char *xmlParserVersion;
+
 extern xmlSAXLocator xmlDefaultSAXLocator;
 extern xmlSAXHandler xmlDefaultSAXHandler;
 

@@ -808,10 +808,13 @@ void
 comment(void *ctx, const CHAR *value)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlNodePtr ret;
+
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.comment(%s)\n", value);
 #endif
-    xmlNewDocComment(ctxt->myDoc, value);
+    ret = xmlNewDocComment(ctxt->myDoc, value);
+    xmlAddChild(ctxt->node, ret);
 }
 
 xmlSAXHandler xmlDefaultSAXHandler = {

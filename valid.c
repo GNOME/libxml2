@@ -78,8 +78,13 @@ xmlCopyElementContent(xmlElementContentPtr cur) {
 
     if (cur == NULL) return(NULL);
     ret = xmlNewElementContent((CHAR *) cur->name, cur->type);
-    if (cur->c1 != NULL) cur->c1 = xmlCopyElementContent(cur->c1);
-    if (cur->c2 != NULL) cur->c2 = xmlCopyElementContent(cur->c2);
+    if (ret == NULL) {
+        fprintf(stderr, "xmlCopyElementContent : out of memory\n");
+	return(NULL);
+    }
+    ret->ocur = cur->ocur;
+    if (cur->c1 != NULL) ret->c1 = xmlCopyElementContent(cur->c1);
+    if (cur->c2 != NULL) ret->c2 = xmlCopyElementContent(cur->c2);
     return(ret);
 }
 
@@ -311,7 +316,7 @@ xmlAddElementDecl(xmlDtdPtr dtd, const CHAR *name, int type,
      */
     ret->type = type;
     ret->name = xmlStrdup(name);
-    ret->content = content;
+    ret->content = xmlCopyElementContent(content);
     table->nb_elements++;
 
     return(ret);

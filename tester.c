@@ -197,10 +197,13 @@ int main(int argc, char **argv) {
 	}
     }
     if (files == 0) {
-	printf("\nFirst test for the parser, with errors\n");
-        parseAndPrintBuffer(buffer);
-	printf("\nBuilding a tree from scratch and printing it\n");
-	treeTest();
+	printf("Usage : %s [--debug] [--copy] [--recover] [--noent] XMLfiles ...\n",
+	       argv[0]);
+	printf("\tParse the XML files and output the result of the parsing\n");
+	printf("\t--debug : dump a debug tree of the in-memory document\n");
+	printf("\t--copy : used to test the internal copy implementation\n");
+	printf("\t--recover : output what is parsable on broken XmL documents\n");
+	printf("\t--noent : substitute entity references by their value\n");
     }
 
     return(0);

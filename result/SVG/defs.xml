@@ -9,4 +9,5 @@
   </defs>
   <desc>Defining things for later use
   </desc>
-</svg>
+<!-- SVG elements in here would reference/use 
+       the elements defined in the <defs> --></svg>

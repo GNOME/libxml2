@@ -20,7 +20,7 @@ href="http://www.w3.org/DOM/">DOM</a> interfaces.</p>
 XML is a standard for markup based structured documents, here is <a
 name="example">an example</a>:</p>
 <pre>&lt;?xml version="1.0"?>
-&lt;EXAMPLE prop1="gnome is great" prop2="&amp;linux; too">
+&lt;EXAMPLE prop1="gnome is great" prop2="&amp;amp; linux too">
   &lt;head>
    &lt;title>Welcome to Gnome&lt;/title>
   &lt;/head>
@@ -36,7 +36,7 @@ The first line specify that it's an XML document and gives useful informations
 about it's encoding. Then the document is a text format whose structure is
 specified by tags between brackets. <strong>Each tag opened have to be
 closed</strong> XML is pedantic about this, not that for example the image
-tage has no content (just an attribute) and is closed by ending up the tag
+tag has no content (just an attribute) and is closed by ending up the tag
 with <code>/></code>.</p>
 
 <h2>The tree output</h2>
@@ -285,7 +285,213 @@ presents on other programs like this:</p>
 <p>
 This should help greatly doing things like modifying a gnumeric spreadsheet
 embedded in a GWP document for example.</p>
+
+<h3><a name="Example">A real example</a></h3>
 <p>
+Here is a real size example, where the actual content of the application data
+is not kept in the DOM tree but uses internal structures. It is based on
+a proposal to keep a database of jobs related to Gnome, with an XML based
+storage structure. Here is an <a href="gjobs.xml">XML encoded jobs base</a>:
+<pre>
+&lt;?xml version="1.0"?>
+&lt;gjob:Helping xmlns:gjob="http://www.gnome.org/some-location">
+  &lt;gjob:Jobs>
+
+    &lt;gjob:Job>
+      &lt;gjob:Project ID="3"/>
+      &lt;gjob:Application>GBackup&lt;/gjob:Application>
+      &lt;gjob:Category>Development&lt;/gjob:Category>
+
+      &lt;gjob:Update>
+	&lt;gjob:Status>Open&lt;/gjob:Status>
+	&lt;gjob:Modified>Mon, 07 Jun 1999 20:27:45 -0400 MET DST&lt;/gjob:Modified>
+        &lt;gjob:Salary>USD 0.00&lt;/gjob:Salary>
+      &lt;/gjob:Update>
+
+      &lt;gjob:Developers>
+        &lt;gjob:Developer>
+        &lt;/gjob:Developer>
+      &lt;/gjob:Developers>
+
+      &lt;gjob:Contact>
+        &lt;gjob:Person>Nathan Clemons&lt;/gjob:Person>
+	&lt;gjob:Email>nathan@windsofstorm.net&lt;/gjob:Email>
+        &lt;gjob:Company>
+	&lt;/gjob:Company>
+        &lt;gjob:Organisation>
+	&lt;/gjob:Organisation>
+        &lt;gjob:Webpage>
+	&lt;/gjob:Webpage>
+	&lt;gjob:Snailmail>
+	&lt;/gjob:Snailmail>
+	&lt;gjob:Phone>
+	&lt;/gjob:Phone>
+      &lt;/gjob:Contact>
+
+      &lt;gjob:Requirements>
+      The program should be released as free software, under the GPL.
+      &lt;/gjob:Requirements>
+
+      &lt;gjob:Skills>
+      &lt;/gjob:Skills>
+
+      &lt;gjob:Details>
+      A GNOME based system that will allow a superuser to configure 
+      compressed and uncompressed files and/or file systems to be backed 
+      up with a supported media in the system.  This should be able to 
+      perform via find commands generating a list of files that are passed 
+      to tar, dd, cpio, cp, gzip, etc., to be directed to the tape machine 
+      or via operations performed on the filesystem itself. Email 
+      notification and GUI status display very important.
+      &lt;/gjob:Details>
+
+    &lt;/gjob:Job>
+
+  &lt;/gjob:Jobs>
+&lt;/gjob:Helping>
+
+</pre>
+<p>
+While loading the XML file into an internal DOM tree is a matter of calling
+only a couple of functions, browsing the tree to gather the informations
+and generate the internals structures is harder, and more error prone. 
 </p>
+<p>
+The suggested principle is to be tolerant with respect to the input
+structure. For example the ordering of the attributes is not significant,
+Cthe XML specification is clear about it. It's also usually a good idea
+to not be dependant of the orders of the childs of a given node, unless it
+really makes things harder. Here is some code to parse the informations
+for a person:
+</p>
+<pre>
+/*
+ * A person record
+ */
+typedef struct person {
+    char *name;
+    char *email;
+    char *company;
+    char *organisation;
+    char *smail;
+    char *webPage;
+    char *phone;
+} person, *personPtr;
+
+/*
+ * And the code needed to parse it
+ */
+personPtr parsePerson(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur) {
+    personPtr ret = NULL;
+
+DEBUG("parsePerson\n");
+    /*
+     * allocate the struct
+     */
+    ret = (personPtr) malloc(sizeof(person));
+    if (ret == NULL) {
+        fprintf(stderr,"out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0, sizeof(person));
+
+    /* We don't care what the top level element name is */
+    cur = cur->childs;
+    while (cur != NULL) {
+        if ((!strcmp(cur->name, "Person")) &amp;&amp; (cur->ns == ns))
+	    ret->name = xmlNodeListGetString(doc, cur->childs, 1);
+        if ((!strcmp(cur->name, "Email")) &amp;&amp; (cur->ns == ns))
+	    ret->email = xmlNodeListGetString(doc, cur->childs, 1);
+	cur = cur->next;
+    }
+
+    return(ret);
+}
+</pre>
+<p>
+Here is a couple of things to notice:</p>
+<ul>
+<li> Usually a recursive parsing style is the more convenient one,
+XML data being by nature subject to repetitive constructs and usualy exibit
+highly stuctured patterns.
+<li> The two arguments of type <em>xmlDocPtr</em> and <em>xmlNsPtr</em>, i.e.
+the pointer to the global XML document and the namespace reserved to the
+application. Document wide information are needed for example to decode
+entities and it's a good coding practice to define a namespace for your
+application set of data and test that the element and attributes you're
+analyzing actually pertains to your application space. This is done by a simple
+equality test (cur->ns == ns).
+<li> To retrieve text and attributes value, it is suggested to use
+the function <em>xmlNodeListGetString</em> to gather all the text and
+entity reference nodes generated by the DOM output and produce an
+single text string.
+</ul>
+<p>
+Here is another piece of code used to parse another level of the structure:
+</p>
+<pre>
+/*
+ * a Description for a Job
+ */
+typedef struct job {
+    char *projectID;
+    char *application;
+    char *category;
+    personPtr contact;
+    int nbDevelopers;
+    personPtr developers[100]; /* using dynamic alloc is left as an exercise */
+} job, *jobPtr;
+
+/*
+ * And the code needed to parse it
+ */
+jobPtr parseJob(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur) {
+    jobPtr ret = NULL;
+
+DEBUG("parseJob\n");
+    /*
+     * allocate the struct
+     */
+    ret = (jobPtr) malloc(sizeof(job));
+    if (ret == NULL) {
+        fprintf(stderr,"out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0, sizeof(job));
+
+    /* We don't care what the top level element name is */
+    cur = cur->childs;
+    while (cur != NULL) {
+        
+        if ((!strcmp(cur->name, "Project")) &amp;&amp; (cur->ns == ns)) {
+	    ret->projectID = xmlGetProp(cur, "ID");
+	    if (ret->projectID == NULL) {
+		fprintf(stderr, "Project has no ID\n");
+	    }
+	}
+        if ((!strcmp(cur->name, "Application")) &amp;&amp; (cur->ns == ns))
+	    ret->application = xmlNodeListGetString(doc, cur->childs, 1);
+        if ((!strcmp(cur->name, "Category")) &amp;&amp; (cur->ns == ns))
+	    ret->category = xmlNodeListGetString(doc, cur->childs, 1);
+        if ((!strcmp(cur->name, "Contact")) &amp;&amp; (cur->ns == ns))
+	    ret->contact = parsePerson(doc, ns, cur);
+	cur = cur->next;
+    }
+
+    return(ret);
+}
+</pre>
+<p>
+One can notice that once used to it, writing this kind of code
+is quite simple, but boring. Ultimately, it could be possble to write
+stubbers taking either C data structure definitions, a set of XML examples
+or an XML DTD and produce the code needed to import and export the
+content between C data and XML storage. This is left as an exercise to
+the reader :-)</p>
+<p>
+Feel free to use <a href="gjobread.c">the code for the full C parsing
+example</a> as a template,
+
+<a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a>
 </body>
 </html>

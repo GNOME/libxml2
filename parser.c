@@ -34,6 +34,8 @@
 #include "valid.h"
 #include "parserInternals.h"
 
+const char *xmlParserVersion = LIBXML_VERSION;
+
 /************************************************************************
  *									*
  * 		Parser stacks related functions and macros		*
@@ -2845,6 +2847,9 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 	        ctxt->sax->elementDecl(ctxt->userData, name, ret,
 		                       content);
 	}
+	if (content != NULL) {
+	    xmlFreeElementContent(content);
+	}
 	if (name != NULL) {
 	    free(name);
 	}
@@ -3162,7 +3167,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
  */
 xmlEntityPtr
 xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
-    const CHAR *q;
+    const CHAR *q; /* !!!!!!!!!!! Unused !!!!!!!!!! */
     CHAR *name;
     xmlEntityPtr ent = NULL;
 
@@ -3482,9 +3487,11 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, CHAR **value) {
  * [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
  *
  * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
+ *
+ * Returns the element name parsed
  */
 
-void
+CHAR *
 xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     CHAR *name;
     CHAR *attname;
@@ -3494,7 +3501,7 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     int maxatts = 0;
     int i;
 
-    if (CUR != '<') return;
+    if (CUR != '<') return(NULL);
     NEXT;
 
     name = xmlParseName(ctxt);
@@ -3503,7 +3510,7 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 	    ctxt->sax->error(ctxt->userData, 
 	     "xmlParseStartTag: invalid element name\n");
 	ctxt->wellFormed = 0;
-        return;
+        return(NULL);
     }
 
     /*
@@ -3543,7 +3550,7 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 		if (atts == NULL) {
 		    fprintf(stderr, "malloc of %d byte failed\n",
 			    maxatts * sizeof(CHAR *));
-		    return;
+		    return(NULL);
 		}
 	    } else if (nbatts + 2 < maxatts) {
 	        maxatts *= 2;
@@ -3551,7 +3558,7 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 		if (atts == NULL) {
 		    fprintf(stderr, "realloc of %d byte failed\n",
 			    maxatts * sizeof(CHAR *));
-		    return;
+		    return(NULL);
 		}
 	    }
 	    atts[nbatts++] = attname;
@@ -3576,16 +3583,17 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
         ctxt->sax->startElement(ctxt->userData, name, atts);
 
-    free(name);
     if (atts != NULL) {
         for (i = 0;i < nbatts;i++) free((CHAR *) atts[i]);
 	free(atts);
     }
+    return(name);
 }
 
 /**
  * xmlParseEndTag:
  * @ctxt:  an XML parser context
+ * @tagname:  the tag name as parsed in the opening tag.
  *
  * parse an end of tag
  *
@@ -3597,7 +3605,7 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
  */
 
 void
-xmlParseEndTag(xmlParserCtxtPtr ctxt) {
+xmlParseEndTag(xmlParserCtxtPtr ctxt, CHAR *tagname) {
     CHAR *name;
 
     if ((CUR != '<') || (NXT(1) != '/')) {
@@ -3620,6 +3628,16 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
 	ctxt->wellFormed = 0;
     } else
 	NEXT;
+
+    /*
+     * Well formedness constraints, opening and closing must match.
+     */
+    if (xmlStrcmp(name, tagname)) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	     "Opening and ending tag mismatch: %s and %s\n", tagname, name);
+	ctxt->wellFormed = 0;
+    }
 
     /*
      * SAX: End of Tag
@@ -3792,13 +3810,17 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 void
 xmlParseElement(xmlParserCtxtPtr ctxt) {
     const CHAR *openTag = CUR_PTR;
+    CHAR *name;
     xmlParserNodeInfo node_info;
 
     /* Capture start position */
     node_info.begin_pos = CUR_PTR - ctxt->input->base;
     node_info.begin_line = ctxt->input->line;
 
-    xmlParseStartTag(ctxt);
+    name = xmlParseStartTag(ctxt);
+    if (name == NULL) {
+        return;
+    }
 
     /*
      * Check for an Empty Element.
@@ -3806,7 +3828,8 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     if ((CUR == '/') && (NXT(1) == '>')) {
         SKIP(2);
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-	    ctxt->sax->endElement(ctxt->userData, NULL);
+	    ctxt->sax->endElement(ctxt->userData, name);
+	free(name);
 	return;
     }
     if (CUR == '>') NEXT;
@@ -3818,10 +3841,9 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 
 	/*
 	 * end of parsing of this node.
-	 * TODO !!!!!!!! check the macro in case of non DOM parsing
 	 */
 	nodePop(ctxt);
-
+	free(name);
 	return;
     }
 
@@ -3837,17 +3859,17 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 
 	/*
 	 * end of parsing of this node.
-	 * TODO !!!!!!!! check the macro in case of non DOM parsing
 	 */
 	nodePop(ctxt);
-
+	free(name);
 	return;
     }
 
     /*
      * parse the end of tag: '</' should be here.
      */
-    xmlParseEndTag(ctxt);
+    xmlParseEndTag(ctxt, name);
+    free(name);
 }
 
 /**
@@ -4451,7 +4473,7 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const CHAR *ExternalID,
                           const CHAR *SystemID) {
     xmlDtdPtr ret = NULL;
     xmlParserCtxtPtr ctxt;
-    xmlParserInputPtr input;
+    xmlParserInputPtr input = NULL;
     xmlCharEncoding enc;
 
     if ((ExternalID == NULL) && (SystemID == NULL)) return(NULL);
@@ -4462,12 +4484,6 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const CHAR *ExternalID,
 	return(NULL);
     }
     xmlInitParserCtxt(ctxt);
-    input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
-    if (input == NULL) {
-        perror("malloc");
-	free(ctxt);
-	return(NULL);
-    }
 
     /*
      * Set-up the SAX context
@@ -4641,7 +4657,7 @@ retry_bigger:
     close(input);
 #endif
 
-    buffer[buf.st_size] = '\0';
+    buffer[res] = '\0';
 
     ctxt = (xmlParserCtxtPtr) malloc(sizeof(xmlParserCtxt));
     if (ctxt == NULL) {

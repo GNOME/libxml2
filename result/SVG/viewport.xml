@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 <parent xmlns="http://some.url">
-  <svg xmlns="http://www.w3.org/Graphics/SVG/svg-19990412.dtd" width="100px" height="200px">
+<!-- SVG graphic -->  <svg xmlns="http://www.w3.org/Graphics/SVG/svg-19990412.dtd" width="100px" height="200px">
     <path d="M100,100 Q200,400,300,100"/>
-  </svg>
+<!-- rest of SVG graphic would go here -->  </svg>
 </parent>

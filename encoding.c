@@ -12,7 +12,7 @@
  * [US-ASCII]     Coded Character Set--7-bit American Standard Code for
  *                Information Interchange, ANSI X3.4-1986.
  *
- * Original code from "Martin J. Duerst" <duerst@w3.org>
+ * Original code for IsoLatin1 and UTF-16 by "Martin J. Duerst" <duerst@w3.org>
  *
  * See Copyright for the status of this software.
  *
@@ -20,6 +20,8 @@
  */
 
 #include <ctype.h>
+#include <string.h>
+#include <stdio.h>
 #include "encoding.h"
 
 /*
@@ -311,3 +313,168 @@ xmlParseCharEncoding(const char* name)
     if (!strcmp(upper, "EUC-JP")) return(XML_CHAR_ENCODING_EUC_JP);
     return(XML_CHAR_ENCODING_ERROR);
 }
+
+/****************************************************************
+ *								*
+ *		Char encoding handlers				*
+ *								*
+ ****************************************************************/
+
+/* the size should be growable, but it's not a big deal ... */
+#define MAX_ENCODING_HANDLERS 50
+static xmlCharEncodingHandlerPtr *handlers = NULL;
+static int nbCharEncodingHandler = 0;
+
+/*
+ * The default is UTF-8 for XML, that's also the default used for the
+ * parser internals, so the default encoding handler is NULL
+ */
+
+static xmlCharEncodingHandlerPtr xmlDefaultCharEncodingHandler = NULL;
+
+/**
+ * xmlNewCharEncodingHandler:
+ * @name:  the encoding name, in UTF-8 format (ASCCI actually)
+ * @input:  the xmlCharEncodingInputFunc to read that encoding
+ * @output:  the xmlCharEncodingOutputFunc to write that encoding
+ *
+ * Create and registers an xmlCharEncodingHandler.
+ * Returns the xmlCharEncodingHandlerPtr created (or NULL in case of error).
+ */
+xmlCharEncodingHandlerPtr
+xmlNewCharEncodingHandler(const char *name, xmlCharEncodingInputFunc input,
+                          xmlCharEncodingOutputFunc output) {
+    xmlCharEncodingHandlerPtr handler;
+    char upper[500];
+    int i;
+    char *up = 0;
+
+    /*
+     * Keep only the uppercase version of the encoding.
+     */
+    if (name == NULL) {
+        fprintf(stderr, "xmlNewCharEncodingHandler : no name !\n");
+	return(NULL);
+    }
+    for (i = 0;i < 499;i++) {
+        upper[i] = toupper(name[i]);
+	if (upper[i] == 0) break;
+    }
+    upper[i] = 0;
+    up = strdup(upper);
+    if (up == NULL) {
+        fprintf(stderr, "xmlNewCharEncodingHandler : out of memory !\n");
+	return(NULL);
+    }
+
+    /*
+     * allocate and fill-up an handler block.
+     */
+    handler = (xmlCharEncodingHandlerPtr)
+              malloc(sizeof(xmlCharEncodingHandler));
+    if (handler == NULL) {
+        fprintf(stderr, "xmlNewCharEncodingHandler : out of memory !\n");
+	return(NULL);
+    }
+    handler->input = input;
+    handler->output = output;
+    handler->name = up;
+
+    /*
+     * registers and returns the handler.
+     */
+    xmlRegisterCharEncodingHandler(handler);
+    return(handler);
+}
+
+/**
+ * xmlInitCharEncodingHandlers:
+ *
+ * Initialize the char encoding support, it registers the default
+ * encoding supported.
+ * NOTE: while public theis function usually don't need to be called
+ *       in normal processing.
+ */
+void
+xmlInitCharEncodingHandlers(void) {
+    if (handlers != NULL) return;
+
+    handlers = (xmlCharEncodingHandlerPtr *)
+        malloc(MAX_ENCODING_HANDLERS * sizeof(xmlCharEncodingHandlerPtr));
+
+    if (handlers == NULL) {
+        fprintf(stderr, "xmlInitCharEncodingHandlers : out of memory !\n");
+	return;
+    }
+    xmlNewCharEncodingHandler("UTF-8", NULL, NULL);
+    xmlNewCharEncodingHandler("UTF-16", UTF16ToUTF8, UTF8ToUTF16);
+    xmlNewCharEncodingHandler("ISO-8859-1", isolat1ToUTF8, UTF8Toisolat1);
+}
+
+/**
+ * xmlRegisterCharEncodingHandler:
+ * @handler:  the xmlCharEncodingHandlerPtr handler block
+ *
+ * Register the char encoding handler, surprizing, isn't it ?
+ */
+void
+xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
+    if (handlers == NULL) xmlInitCharEncodingHandlers();
+    if (handler == NULL) {
+        fprintf(stderr, "xmlRegisterCharEncodingHandler: NULL handler !\n");
+	return;
+    }
+
+    if (nbCharEncodingHandler >= MAX_ENCODING_HANDLERS) {
+        fprintf(stderr, 
+	"xmlRegisterCharEncodingHandler: Too many handler registered\n");
+        fprintf(stderr, "\tincrease MAX_ENCODING_HANDLERS : %s\n", __FILE__);
+	return;
+    }
+    handlers[nbCharEncodingHandler++] = handler;
+}
+
+/**
+ * xmlGetCharEncodingHandler:
+ * @enc:  an xmlCharEncoding value.
+ *
+ * Search in the registrered set the handler able to read/write that encoding.
+ *
+ * Returns the handler or NULL if not found
+ */
+xmlCharEncodingHandlerPtr
+xmlGetCharEncodingHandler(xmlCharEncoding enc) {
+    if (handlers == NULL) xmlInitCharEncodingHandlers();
+    return(NULL);
+}
+
+/**
+ * xmlGetCharEncodingHandler:
+ * @enc:  a string describing the char encoding.
+ *
+ * Search in the registrered set the handler able to read/write that encoding.
+ *
+ * Returns the handler or NULL if not found
+ */
+xmlCharEncodingHandlerPtr
+xmlFindCharEncodingHandler(const char *name) {
+    char upper[500];
+    int i;
+
+    if (handlers == NULL) xmlInitCharEncodingHandlers();
+    if (name == NULL) return(xmlDefaultCharEncodingHandler);
+    if (name[0] == 0) return(xmlDefaultCharEncodingHandler);
+
+    for (i = 0;i < 499;i++) {
+        upper[i] = toupper(name[i]);
+	if (upper[i] == 0) break;
+    }
+    upper[i] = 0;
+
+    for (i = 0;i < nbCharEncodingHandler; i++)
+        if (!strcmp(name, handlers[i]->name))
+	    return(handlers[i]);
+
+    return(NULL);
+}
+

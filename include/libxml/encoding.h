@@ -25,6 +25,9 @@
 extern "C" {
 #endif
 
+/**
+ * Predefined values for some standard encodings
+ */
 typedef enum {
     XML_CHAR_ENCODING_ERROR=   -1, /* No char encoding detected */
     XML_CHAR_ENCODING_NONE=	0, /* No char encoding detected */
@@ -51,8 +54,57 @@ typedef enum {
     XML_CHAR_ENCODING_EUC_JP=   21,/* EUC-JP */
 } xmlCharEncoding;
 
-extern xmlCharEncoding xmlDetectCharEncoding(const unsigned char* in);
-extern xmlCharEncoding xmlParseCharEncoding(const char* name);
+/**
+ * xmlCharEncodingInputFunc:
+ * @out:  a pointer ot an array of bytes to store the UTF-8 result
+ * @outlen:  the lenght of @out
+ * @in:  a pointer ot an array of chars in the original encoding
+ * @inlen:  the lenght of @in
+ *
+ * Take a block of chars in the original encoding and try to convert
+ * it to an UTF-8 block of chars out.
+ *
+ * Returns the number of byte written, or -1 by lack of space.
+ */
+typedef int (* xmlCharEncodingInputFunc)(unsigned char* out, int outlen,
+                                         unsigned char* in, int inlen);
+
+
+/**
+ * xmlCharEncodingInputFunc:
+ * @out:  a pointer ot an array of bytes to store the result
+ * @outlen:  the lenght of @out
+ * @in:  a pointer ot an array of UTF-8 chars
+ * @inlen:  the lenght of @in
+ *
+ * Take a block of UTF-8 chars in and try to convert it to an other
+ * encoding.
+ *
+ * Returns the number of byte written, or -1 by lack of space, or -2
+ *     if the transcoding failed.
+ */
+typedef int (* xmlCharEncodingOutputFunc)(unsigned char* out, int outlen,
+                                          unsigned char* in, int inlen);
+
+/*
+ * Block defining the handlers for non UTF-8 encodings.
+ */
+
+typedef struct xmlCharEncodingHandler {
+    char                       *name;
+    xmlCharEncodingInputFunc   input;
+    xmlCharEncodingOutputFunc output;
+} xmlCharEncodingHandler;
+typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
+
+void xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler);
+xmlCharEncodingHandlerPtr xmlGetCharEncodingHandler(xmlCharEncoding enc);
+xmlCharEncodingHandlerPtr xmlFindCharEncodingHandler(const char *name);
+
+xmlCharEncoding xmlDetectCharEncoding(const unsigned char* in);
+xmlCharEncoding xmlParseCharEncoding(const char* name);
+
+void xmlInitCharEncodingHandlers(void);
 
 #ifdef __cplusplus
 }

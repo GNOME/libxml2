@@ -673,8 +673,15 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
         if (node->type == XML_TEXT_NODE) {
 	    if (inLine)
 		ret = xmlStrcat(ret, node->content);
-	    else
-		ret = xmlStrcat(ret, xmlEncodeEntities(doc, node->content));
+	    else {
+	        CHAR *buffer;
+
+		buffer = xmlEncodeEntitiesReentrant(doc, node->content);
+		if (buffer != NULL) {
+		    ret = xmlStrcat(ret, buffer);
+		    free(buffer);
+		}
+            }
 	} else if (node->type == XML_ENTITY_REF_NODE) {
 	    if (inLine) {
 		ent = xmlGetDocEntity(doc, node->name);
@@ -2566,8 +2573,15 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 	return;
     }
     if (cur->type == XML_TEXT_NODE) {
-	if (cur->content != NULL)
-	    xmlBufferWriteCHAR(buf, xmlEncodeEntities(doc, cur->content));
+	if (cur->content != NULL) {
+            CHAR *buffer;
+
+            buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+	    if (buffer != NULL) {
+		xmlBufferWriteCHAR(buf, buffer);
+		free(buffer);
+	    }
+	}
 	return;
     }
     if (cur->type == XML_COMMENT_NODE) {
@@ -2605,8 +2619,15 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 	return;
     }
     xmlBufferWriteChar(buf, ">");
-    if (cur->content != NULL)
-	xmlBufferWriteCHAR(buf, xmlEncodeEntities(doc, cur->content));
+    if (cur->content != NULL) {
+	CHAR *buffer;
+
+	buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+	if (buffer != NULL) {
+	    xmlBufferWriteCHAR(buf, buffer);
+	    free(buffer);
+	}
+    }
     if (cur->childs != NULL) {
 	xmlNodeListDump(buf, doc, cur->childs, level + 1);
     }

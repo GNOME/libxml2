@@ -12,26 +12,27 @@
     <defs>
       <symbol id="spoke">
         <desc>14/12 gauge double butted spoke</desc>
-      </symbol>
+<!-- the path data goes here -->      </symbol>
       <symbol id="hub">
         <desc>black anodised low torsion hub</desc>
-      </symbol>
+<!--the path data goes here -->      </symbol>
       <symbol id="rim">
         <desc>twin wall, eyeletted rim</desc>
-      </symbol>
+<!-- the path data goes here-->      </symbol>
       <symbol id="cogs">
         <desc>8 speed, wide ratio gearing</desc>
-      </symbol>
+<!--the path data goes here -->      </symbol>
       <symbol id="lacing">
         <desc>double cross lacing of 32 spokes</desc>
       </symbol>
     </defs>
-    <g id="frontwheel">
+<!-- the overall bike drawing goes here -->    <g id="frontwheel">
       <title>Front wheel</title>
       <desc>The front wheel provides grip, steering and some shock absorption</desc>
       <use href="id(lacing)" style="rotation: 20deg; fillcolor: black"/>
     </g>
     <g id="backwheel"/>
-    <g id="frame"/>
+    <g id="frame">
+<!-- and so on -->    </g>
   </g>
 </svg>

@@ -614,10 +614,10 @@ void
 xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt);
 CHAR *
 xmlParseAttribute(xmlParserCtxtPtr ctxt, CHAR **value);
-void
+CHAR *
 xmlParseStartTag(xmlParserCtxtPtr ctxt);
 void
-xmlParseEndTag(xmlParserCtxtPtr ctxt);
+xmlParseEndTag(xmlParserCtxtPtr ctxt, CHAR *tagname);
 void
 xmlParseCDSect(xmlParserCtxtPtr ctxt);
 void

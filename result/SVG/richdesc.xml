@@ -7,5 +7,6 @@
       <mydoc:emph>mydoc</mydoc:emph>
  namespace.    </mydoc:para>
   </desc>
-  <g/>
+  <g>
+<!-- the picture goes here -->  </g>
 </svg>

@@ -1,3 +1,9 @@
+Tue Oct 16 23:01:49 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: serious cleanup on the management of the
+	  XML catalog tree, more tests done, especially with
+	  the catalog PI.
+
 Tue Oct 16 08:43:43 EDT 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: avoid a problem in catalog cleanup on SMP if

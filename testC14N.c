@@ -41,12 +41,12 @@ static void usage(const char *name) {
     "--exc-without-comments\t Exclusive XML file canonization w/o comments\n");
 }
 
-xmlXPathObjectPtr
+static xmlXPathObjectPtr
 load_xpath_expr (xmlDocPtr parent_doc, const char* filename);
 
-xmlChar **parse_list(xmlChar *str);
+static xmlChar **parse_list(xmlChar *str);
 
-void print_xpath_nodes(xmlNodeSetPtr nodes);
+static void print_xpath_nodes(xmlNodeSetPtr nodes);
 
 static int 
 test_c14n(const char* xml_filename, int with_comments, int exclusive,

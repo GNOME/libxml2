@@ -1,3 +1,8 @@
+Tue Dec  9 15:07:09 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlexports.h: applied patch from Kenneth Haley
+	  for compiling on Mingw see #128786
+
 Tue Dec  9 14:52:59 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: some flags were not passed down correctly as

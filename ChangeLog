@@ -1,3 +1,9 @@
+Thu Aug 28 22:58:38 PDT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* doc/apibuild.py, doc/libxml2-api.xml: enhanced code
+	  to compensate for pollution from Igor's header taint
+	  (quick before Daniel notices)
+
 Thu Aug 28 23:01:36 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c: fixed a namespace error on attribute reporting bug

@@ -30,6 +30,9 @@ ignored_files = {
 ignored_words = {
   "WINAPI": (0, "Windows keyword"),
   "LIBXML_DLL_IMPORT": (0, "Special macro to flag external keywords"),
+  "XMLPUBVAR": (0, "Special macro for extern vars for win32"),
+  "XMLPUBFUN": (0, "Special macro for extern funcs for win32"),
+  "XMLCALL": (0, "Special macro for win32 calls"),
   "__declspec": (3, "Windows keyword"),
   "ATTRIBUTE_UNUSED": (0, "macro keyword"),
   "LIBEXSLT_PUBLIC": (0, "macro keyword"),

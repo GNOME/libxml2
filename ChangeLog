@@ -1,3 +1,8 @@
+Sat Dec 20 16:42:07 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* tree.c - add explanation of namespace inheritance when
+	ns is NULL to xmlNewChild and xmlNewTextChild API doc
+
 Sat Dec 20 18:17:28 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* include/libxml/xpathInternals.h: undid last change (my

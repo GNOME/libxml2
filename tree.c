@@ -2349,7 +2349,8 @@ xmlNewText(const xmlChar *content) {
  * @content:  the text content of the child if any.
  *
  * Creation of a new child element, added at the end of @parent children list.
- * @ns and @content parameters are optional (NULL). If @content is non NULL,
+ * @ns and @content parameters are optional (NULL). If @ns is NULL, the newly
+ * created element inherits the namespace of @parent. If @content is non NULL,
  * a child TEXT node will be created containing the string @content.
  * NOTE: Use xmlNewChild() if @content will contain entities that need to be
  * preserved. Use this function, xmlNewTextChild(), if you need to ensure that
@@ -2724,7 +2725,8 @@ xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc) {
  * @content:  the XML content of the child if any.
  *
  * Creation of a new child element, added at the end of @parent children list.
- * @ns and @content parameters are optional (NULL). If @content is non NULL,
+ * @ns and @content parameters are optional (NULL). If @ns is NULL, the newly
+ * created element inherits the namespace of @parent. If @content is non NULL,
  * a child list containing the TEXTs and ENTITY_REFs node will be created.
  * NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity
  *       references. XML special chars must be escaped first by using

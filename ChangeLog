@@ -1,3 +1,7 @@
+Sun Apr 22 21:11:45 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: fixed the XPointer problem introduced in 2.3.6
+
 Sun Apr 22 14:11:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: fixed #53388 with the provided patch

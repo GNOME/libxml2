@@ -779,6 +779,9 @@ xmlXPathDebugDumpStepOp(FILE *output, xmlXPathCompExprPtr comp,
         case XPATH_OP_ARG: fprintf(output, "ARG"); break;
         case XPATH_OP_PREDICATE: fprintf(output, "PREDICATE"); break;
         case XPATH_OP_FILTER: fprintf(output, "FILTER"); break;
+#ifdef LIBXML_XPTR_ENABLED
+        case XPATH_OP_RANGETO: fprintf(output, "RANGETO"); break;
+#endif
 	default:
         fprintf(output, "UNKNOWN %d\n", op->op); return;
     }
@@ -6294,6 +6297,11 @@ xmlXPathIsAxisName(const xmlChar *name) {
  */
 static void
 xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
+#ifdef LIBXML_XPTR_ENABLED
+    int rangeto = 0;
+    int op2 = -1;
+#endif
+
     SKIP_BLANKS;
     if ((CUR == '.') && (NXT(1) == '.')) {
 	SKIP(2);
@@ -6318,7 +6326,7 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 	if (ctxt->xptr) {
 	    name = xmlXPathParseNCName(ctxt);
 	    if ((name != NULL) && (xmlStrEqual(name, BAD_CAST "range-to"))) {
-		int op2 = ctxt->comp->last;
+                op2 = ctxt->comp->last;
 		xmlFree(name);
 		SKIP_BLANKS;
 		if (CUR != '(') {
@@ -6328,7 +6336,7 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 		SKIP_BLANKS;
 
 		xmlXPathCompileExpr(ctxt);
-		PUSH_BINARY_EXPR(XPATH_OP_RANGETO, op2, ctxt->comp->last, 0, 0);
+		/* PUSH_BINARY_EXPR(XPATH_OP_RANGETO, op2, ctxt->comp->last, 0, 0); */
 		CHECK_ERROR;
 
 		SKIP_BLANKS;
@@ -6336,6 +6344,7 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 		    XP_ERROR(XPATH_EXPR_ERROR);
 		}
 		NEXT;
+		rangeto = 1;
 		goto eval_predicates;
 	    }
 	}
@@ -6377,7 +6386,12 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 
 #ifdef DEBUG_STEP
 	xmlGenericError(xmlGenericErrorContext, "Basis : ");
-	xmlGenericErrorContextNodeSet(stdout, ctxt->value->nodesetval);
+	if (ctxt->value == NULL)
+	    xmlGenericError(xmlGenericErrorContext, "no value\n");
+	else if (ctxt->value->nodesetval == NULL)
+	    xmlGenericError(xmlGenericErrorContext, "Empty\n");
+	else
+	    xmlGenericErrorContextNodeSet(stdout, ctxt->value->nodesetval);
 #endif
 
 eval_predicates:
@@ -6389,14 +6403,24 @@ eval_predicates:
 	    xmlXPathCompPredicate(ctxt, 0);
 	}
 
-	PUSH_FULL_EXPR(XPATH_OP_COLLECT, op1, ctxt->comp->last, axis,
-		       test, type, (void *)prefix, (void *)name);
+#ifdef LIBXML_XPTR_ENABLED
+	if (rangeto) {
+	    PUSH_BINARY_EXPR(XPATH_OP_RANGETO, op2, op1, 0, 0);
+	} else
+#endif
+	    PUSH_FULL_EXPR(XPATH_OP_COLLECT, op1, ctxt->comp->last, axis,
+			   test, type, (void *)prefix, (void *)name);
 
     }
 #ifdef DEBUG_STEP
     xmlGenericError(xmlGenericErrorContext, "Step : ");
-    xmlGenericErrorContextNodeSet(xmlGenericErrorContext,
-	    ctxt->value->nodesetval);
+    if (ctxt->value == NULL)
+	xmlGenericError(xmlGenericErrorContext, "no value\n");
+    else if (ctxt->value->nodesetval == NULL)
+	xmlGenericError(xmlGenericErrorContext, "Empty\n");
+    else
+	xmlGenericErrorContextNodeSet(xmlGenericErrorContext,
+		ctxt->value->nodesetval);
 #endif
 }
 
@@ -6643,10 +6667,6 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 	    " context contains %d nodes\n",
             nodelist->nodeNr);
     switch (test) {
-	case NODE_TEST_NODE:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "           searching all nodes\n");
-	    break;
 	case NODE_TEST_NONE:
 	    xmlGenericError(xmlGenericErrorContext,
 		    "           searching for none !!!\n");

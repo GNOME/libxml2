@@ -12,6 +12,8 @@ NOTE:
      Rules for commits on the gnome-xml module
      =========================================
 
+  BEFORE READING FURTHER: DO NOT COMMIT DIRECTLY !
+
 If what you are patching is a non-compilation issue either at compile
 time or linking time on one of the main Linux platforms, then feel free
 to patch first and send mail afterward as long as the change is limited.
@@ -29,5 +31,5 @@ This simply mean that I'm on holliday or on the road.
 Daniel
 
 P.S.: Bjorn Reese, William Brack and Thomas Broyer get an exception for
-      the send before commit rule as well as John Fleck for the doc subdir
+      the send before commit rule as well as John Fleck for the doc maintenance
 

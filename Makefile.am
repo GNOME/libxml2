@@ -482,7 +482,8 @@ Validtests : xmllint
 	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)
 
-dist-hook:
+dist-hook: libxml.spec
+	-cp libxml.spec $(distdir)
 	(cd $(srcdir) ; tar -cf - --exclude CVS win32 test result SAXresult ) | (cd $(distdir); tar xf -)
 
 cleantar:

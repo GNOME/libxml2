@@ -1,10 +1,10 @@
-Wed Sep 19 08:42:20 CEST 2001 Jens Finke <jens@gnome.org>
+Wed Sep 19 10:01:37 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
-	* Makfefile.am (dist-hook): Don't copy libxml.spec, it's already
-	included due to listing in EXTRA_DIST.
+        PISSED !!! DO NOT COMMIT DIRECTLY IF NOT ALLOWED PERSONALLY
+	* Makefile.am libxml.spec.in: backing up non-documented changes
+	  commited without review or aproval by Jens Finke <jens@gnome.org>
+	* HACKING: made 100% clear that no commit should be done directly
 
-	* libxml.spec.in: Updated.
-	
 Mon Sep 17 18:52:37 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: Joe Orton provided a patch fixing a problem

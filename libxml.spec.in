@@ -1,12 +1,19 @@
-Summary:	Library providing XML and HTML support
-Name:		libxml2
-Version:	@VERSION@
-Release:	1
-License:	LGPL
-Group:		Development/Libraries
-Source:		ftp://xmlsoft.org/%{name}-%{version}.tar.gz
-BuildRoot:	/var/tmp/%{name}-%{version}-root
-URL:		http://xmlsoft.org/
+# Note that this is NOT a relocatable package
+%define ver      @VERSION@
+%define prefix   /usr
+%define datadir  %{prefix}/share
+
+Summary: Library providing XML and HTML support
+Name: libxml2
+Version: %ver
+Release: 1
+Copyright: LGPL
+Group: Development/Libraries
+Source: ftp://xmlsoft.org/libxml2-%{ver}.tar.gz
+BuildRoot: /var/tmp/libxml2-%{PACKAGE_VERSION}-root
+
+URL: http://xmlsoft.org/
+Docdir: %{datadir}/doc
 
 %description
 This library allows to manipulate XML files. It includes support 
@@ -20,9 +27,9 @@ available, with existing HTTP and FTP modules and combined to an
 URI library.
 
 %package devel
-Summary:	Libraries, includes, etc. to develop XML and HTML applications
-Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Summary: Libraries, includes, etc. to develop XML and HTML applications
+Group: Development/Libraries
+Requires: libxml2 = %{version}
 
 %description devel
 Libraries, include files, etc you can use to develop XML applications.
@@ -37,95 +44,11 @@ available, with existing HTTP and FTP modules and combined to an
 URI library.
 
 
-%prep
-%setup -q
-
-%build
-%ifarch alpha
-    MYARCH_FLAGS="--host=alpha-redhat-linux"
-%endif
-
-# Needed for snapshot releases.
-MYCFLAGS="$RPM_OPT_FLAGS"
-if [ ! -f configure ]; then
-    CFLAGS="$MYCFLAGS" ./autogen.sh $MYARCH_FLAGS \
-        --prefix=%{_prefix} \
-	--sysconfdir=%{_sysconfdir} \
-	--mandir=%{_mandir} --libdir=%{_libdir} \
-	--includedir=%{_includedir} \
-	--with-html-dir='$(datadir)/gtk-doc/html'
-else
-    CFLAGS="$MYCFLAGS" ./configure $MYARCH_FLAGS \
-        --prefix=%{_prefix} \
-	--sysconfdir=%{_sysconfdir} \
-	--mandir=%{_mandir} --libdir=%{_libdir} \
-	--includedir=%{_includedir} \
-	--with-html-dir='$(datadir)/gtk-doc/html'
-fi
-
-if [ "$SMP" != "" ]; then
-  (make "MAKE=make -k -j $SMP"; exit 0)
-  make
-else
-  make
-fi
-
-%install
-rm -rf $RPM_BUILD_ROOT
-
-make -k sysconfdir=$RPM_BUILD_ROOT%{_sysconfdir} \
-    prefix=$RPM_BUILD_ROOT%{_prefix} \
-    mandir=$RPM_BUILD_ROOT%{_mandir} \
-    libdir=$RPM_BUILD_ROOT%{_libdir} \
-    includedir=$RPM_BUILD_ROOT%{_includedir} \
-    install 
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
-
-%files
-%defattr(-, root, root)
-
-%doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
-%doc %{_mandir}/man1/xmllint.1*
-%doc %{_mandir}/man1/xmlcatalog.1*
-%doc %{_mandir}/man4/libxml.4*
-
-%{_libdir}/lib*.so.*
-%{_bindir}/xmllint
-%{_bindir}/xmlcatalog
-
-%files devel
-%defattr(-, root, root)
-
-%doc %{_mandir}/man1/xml2-config.1*
-%{_libdir}/lib*.so
-%{_libdir}/*a
-%{_libdir}/*.sh
-%{_includedir}/libxml2
-%{_bindir}/xml2-config
-%{_datadir}/gtk-doc/html/%{name}-%{version}
-%{_datadir}/aclocal/libxml.m4
-%{_libdir}/pkgconfig/*.pc
-
-
 %changelog
-* Wed Sep 19 2001 Jens Finke <jens@gnome.org>
-- Updated file to match gpp standard
-- beautified header
-- moved changelog to the end of the file
-- removed all hardcoded paths (prefix, docdir)
-- make use of rpm macros (like _prefix, _bindir, ...)
-- moved the html doc to $(datadir)/gtk-doc/html where
-  other GNOME 2.0 packages reside too
-- removed mandir hacks, this should be handled by 
-  a proper ~/.rpmmacros file. 
 
 * Thu Apr 26 2001 Toshio Kuratomi <badger@prtr-13.ucsc.edu>
+
+[2.3.7]
 - Added libxml.m4 to the distribution file list
 - Moved the man pages from /usr/man to /usr/share/man to conform to FHS2.0
 - Moved programmer documentation into the devel package
@@ -149,3 +72,69 @@ rm -rf $RPM_BUILD_ROOT
 * Thu Sep 24 1998 Michael Fulbright <msf@redhat.com>
 
 - Built release 0.30
+
+%prep
+%setup
+
+%build
+# Needed for snapshot releases.
+if [ ! -f configure ]; then
+%ifarch alpha
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
+%else
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
+%endif
+else
+%ifarch alpha
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
+%else
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
+%endif
+fi
+
+if [ "$SMP" != "" ]; then
+  (make "MAKE=make -k -j $SMP"; exit 0)
+  make
+else
+  make
+fi
+
+%install
+rm -rf $RPM_BUILD_ROOT
+
+install -d $RPM_BUILD_ROOT%{datadir}/man/man1
+install -d $RPM_BUILD_ROOT%{datadir}/man/man4
+make prefix=$RPM_BUILD_ROOT%{prefix} mandir=$RPM_BUILD_ROOT%{datadir}/man install
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
+%files
+%defattr(-, root, root)
+
+%doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
+%doc %{prefix}/share/man/man1/xmllint.1*
+%doc %{prefix}/share/man/man1/xmlcatalog.1*
+%doc %{prefix}/share/man/man4/libxml.4*
+
+%{prefix}/lib/lib*.so.*
+%{prefix}/bin/xmllint
+%{prefix}/bin/xmlcatalog
+
+%files devel
+%defattr(-, root, root)
+
+%doc /usr/share/man/man1/xml2-config.1*
+%doc doc/*.html doc/html
+
+%{prefix}/lib/lib*.so
+%{prefix}/lib/*a
+%{prefix}/lib/*.sh
+%{prefix}/include/*
+%{prefix}/bin/xml2-config
+%{prefix}/share/aclocal/libxml.m4
+%{prefix}/lib/pkgconfig/libxml-2.0.pc

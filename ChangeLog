@@ -1,3 +1,14 @@
+Mon Dec 28 10:47:32 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemas.c: edited a couple of comments in accordance with
+	  posting on the mailing list (no logic change)
+	* xpointer.c: working on Bug 129967, added check for NULL
+	  nodeset to prevent crash.  Further work required.
+	* xpath.c: working on Bug 129967, added code to handle
+	  XPATH_LOCATIONSET in RANGETO code, also added code to
+	  handle it in xmlXPathEvaluatePredicateResult.  Further
+	  work required.
+
 Sat Dec 27 12:32:58 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemas.c: added tests for xs:all to assure minOccurs

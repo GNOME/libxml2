@@ -2771,6 +2771,10 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
         XP_ERROR(XPATH_INVALID_TYPE)
 
     set = valuePop(ctxt);
+    newset = xmlXPtrLocationSetCreate(NULL);
+    if (set->nodesetval == NULL) {
+        goto error;
+    }
     if (set->type == XPATH_NODESET) {
 	xmlXPathObjectPtr tmp;
 
@@ -2787,7 +2791,6 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
      * The loop is to search for each element in the location set
      * the list of location set corresponding to that search
      */
-    newset = xmlXPtrLocationSetCreate(NULL);
     for (i = 0;i < oldset->locNr;i++) {
 #ifdef DEBUG_RANGES
 	xmlXPathDebugDumpObject(stdout, oldset->locTab[i], 0);
@@ -2851,6 +2854,7 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     /*
      * Save the new value and cleanup
      */
+error:
     valuePush(ctxt, xmlXPtrWrapLocationSet(newset));
     xmlXPathFreeObject(set);
     xmlXPathFreeObject(string);

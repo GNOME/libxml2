@@ -356,7 +356,7 @@ xmlSchemaVErr(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node, int error,
 
 /**
  * xmlSchemaNewSchema:
- * @ctxt:  a schema validation context (optional)
+ * @ctxt:  a schema validation context
  *
  * Allocate a new Schema structure.
  *
@@ -402,7 +402,7 @@ xmlSchemaNewFacet(void)
 
 /**
  * xmlSchemaNewAnnot:
- * @ctxt:  a schema validation context (optional)
+ * @ctxt:  a schema validation context
  * @node:  a node
  *
  * Allocate a new annotation structure.

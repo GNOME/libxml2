@@ -122,6 +122,56 @@ static xmlOutputCallback xmlOutputCallbackTable[MAX_OUTPUT_CALLBACK];
 static int xmlOutputCallbackNr = 0;
 static int xmlOutputCallbackInitialized = 0;
 
+/**
+ * xmlCleanupInputCallbacks:
+ *
+ * clears the entire input callback table. this includes the
+ * compiled-in I/O. 
+ */
+void
+xmlCleanupInputCallbacks(void)
+{
+    int i;
+
+    if (!xmlInputCallbackInitialized)
+        return;
+
+    for (i = xmlInputCallbackNr - 1; i <= 0; i--) {
+        xmlInputCallbackTable[i].matchcallback = NULL;
+        xmlInputCallbackTable[i].opencallback = NULL;
+        xmlInputCallbackTable[i].readcallback = NULL;
+        xmlInputCallbackTable[i].closecallback = NULL;
+    }
+
+    xmlInputCallbackNr = 0;
+    xmlInputCallbackInitialized = 0;
+}
+
+/**
+ * xmlCleanupOutputCallbacks:
+ *
+ * clears the entire output callback table. this includes the
+ * compiled-in I/O callbacks. 
+ */
+void
+xmlCleanupOutputCallbacks(void)
+{
+    int i;
+
+    if (!xmlOutputCallbackInitialized)
+        return;
+
+    for (i = xmlOutputCallbackNr - 1; i <= 0; i--) {
+        xmlOutputCallbackTable[i].matchcallback = NULL;
+        xmlOutputCallbackTable[i].opencallback = NULL;
+        xmlOutputCallbackTable[i].writecallback = NULL;
+        xmlOutputCallbackTable[i].closecallback = NULL;
+    }
+
+    xmlOutputCallbackNr = 0;
+    xmlOutputCallbackInitialized = 0;
+}
+
 /************************************************************************
  *									*
  *		Standard I/O for file accesses				*

@@ -50,6 +50,7 @@ extern void xmlCheckVersion(int version);
  */
 #define LIBXML_TEST_VERSION xmlCheckVersion(@LIBXML_VERSION_NUMBER@);
 
+#ifndef VMS
 #if @WITH_TRIO@
 /**
  * WITH_TRIO:
@@ -65,6 +66,9 @@ extern void xmlCheckVersion(int version);
  */
 #define WITHOUT_TRIO
 #endif
+#else /* VMS */
+#define WITH_TRIO 1
+#endif /* VMS */
 
 /**
  * LIBXML_THREADS_ENABLED:

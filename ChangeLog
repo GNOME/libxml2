@@ -1,3 +1,11 @@
+Mon Oct 29 19:09:46 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* vms/readme.vms vms/build_libxml.com nanoftp.c 
+	  include/libxml/xmlversion.h.in: a few VMS updates from
+	  John A Fotheringham
+	* include/libxml/xmlIO.h xmlIO.c: added xmlCleanupInputCallbacks()
+	  and xmlCleanupOutputCallbacks() for the Perl binding people.
+
 Mon Oct 29 12:44:17 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c globals.c DOCBparser.c HTMLparser.c error.c:

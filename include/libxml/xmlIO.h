@@ -77,6 +77,8 @@ struct _xmlOutputBuffer {
 /*
  * Interfaces for input
  */
+void	xmlCleanupInputCallbacks		(void);
+void	xmlCleanupOutputCallbacks		(void);
 
 void	xmlRegisterDefaultInputCallbacks	(void);
 xmlParserInputBufferPtr

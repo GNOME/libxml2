@@ -277,6 +277,42 @@ found_meta:
     return(0);
 }
 
+/**
+ * booleanHTMLAttrs:
+ *
+ * These are the HTML attributes which will be output
+ * in minimized form, i.e. <option selected="selected"> will be
+ * output as <option selected>, as per XSLT 1.0 16.2 "HTML Output Method"
+ *
+ */
+static const char* htmlBooleanAttrs[] = {
+  "checked", "compact", "declare", "defer", "disabled", "ismap",
+  "multiple", "nohref", "noresize", "noshade", "nowrap", "readonly",
+  "selected", NULL
+};
+
+
+/**
+ * htmlIsBooleanAttr:
+ * @name:  the name of the attribute to check
+ *
+ * Determine if a given attribute is a boolean attribute.
+ * 
+ * returns: false if the attribute is not boolean, true otherwise.
+ */
+int
+htmlIsBooleanAttr(const xmlChar *name)
+{
+    int i = 0;
+
+    while (htmlBooleanAttrs[i] != NULL) {
+        if (xmlStrcmp((const xmlChar *)htmlBooleanAttrs[i], name) == 0)
+            return 1;
+        i++;
+    }
+    return 0;
+}
+
 /************************************************************************
  *									*
  *   		Dumping HTML tree content to a simple buffer		*
@@ -346,7 +382,7 @@ htmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     }
     xmlBufferWriteChar(buf, " ");
     xmlBufferWriteCHAR(buf, cur->name);
-    if (cur->children != NULL) {
+    if ((cur->children != NULL) && (!htmlIsBooleanAttr(cur->name))) {
 	value = xmlNodeListGetString(doc, cur->children, 0);
 	if (value) {
 	    xmlBufferWriteChar(buf, "=");
@@ -771,6 +807,7 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  *									*
  ************************************************************************/
 
+
 /**
  * htmlDtdDumpOutput:
  * @buf:  the HTML buffer output
@@ -834,7 +871,7 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
     }
     xmlOutputBufferWriteString(buf, " ");
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
-    if (cur->children != NULL) {
+    if ((cur->children != NULL) && (!htmlIsBooleanAttr(cur->name))) {
 	value = xmlNodeListGetString(doc, cur->children, 0);
 	if (value) {
 	    xmlOutputBufferWriteString(buf, "=");
@@ -1329,5 +1366,7 @@ int
 htmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
     return(htmlSaveFileFormat(filename, cur, encoding, 1));
 }
+
+
 
 #endif /* LIBXML_HTML_ENABLED */

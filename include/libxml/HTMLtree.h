@@ -19,6 +19,7 @@
 extern "C" {
 #endif
 
+
 /**
  * HTML_TEXT_NODE:
  *
@@ -100,6 +101,11 @@ void		htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf,
 					 xmlDocPtr cur,
 					 const char *encoding,
 					 int format);
+
+int		htmlIsBooleanAttr	(const xmlChar *name);
+
+
+
 #ifdef __cplusplus
 }
 #endif

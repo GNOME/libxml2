@@ -1,3 +1,9 @@
+Mon Aug 12 15:24:05 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c include/libxml/HTMLtree.h: integrated a cleaned up
+	  version of Marc Liyanage' patch for boolean attributes in HTML
+	  output
+
 Mon Aug 12 14:11:59 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/tests/serialize.py: fixed the test results, indenting

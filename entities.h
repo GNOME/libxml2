@@ -103,7 +103,6 @@ void			xmlDumpEntitiesTable	(xmlBufferPtr buf,
 						 xmlEntitiesTablePtr table);
 void			xmlDumpEntityDecl	(xmlBufferPtr buf,
 						 xmlEntityPtr ent);
-xmlEntitiesTablePtr	xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);
 void			xmlCleanupPredefinedEntities(void);
 
 

@@ -2822,9 +2822,11 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	} else {
             ret->children = node->children;
 	}
-    } else if (node->children != NULL)
+	ret->last = ret->children;
+    } else if (node->children != NULL) {
         ret->children = xmlStaticCopyNodeList(node->children, doc, ret);
-    UPDATE_LAST_CHILD_AND_PARENT(ret)
+	UPDATE_LAST_CHILD_AND_PARENT(ret)
+    }
     return(ret);
 }
 

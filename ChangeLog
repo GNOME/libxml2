@@ -1,3 +1,8 @@
+Wed Nov 14 16:03:02 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/tree.h: better comments for _private fields
+	* tree.c: removed a problem when copying an entity reference.
+
 Tue Nov 13 16:23:04 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* vms/*: updated instructions and diffs from John A Fotheringham

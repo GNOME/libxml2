@@ -12,7 +12,7 @@ END           {
                 print "</log>"
 	      }
 /^[ \t]*$/    { next }
-/^Mon|^Tue|^Wed|^Thu|^Fri|^Sat|^Sun/ { 
+/^[A-Za-z0-9]/ { 
                 match($0, "\(.*\) \([A-Z]+\) \([0-9][0-9][0-9][0-9]\) \(.*\) <\(.*\)>", loge)
                 if (in_item == 1)  printf("%s</item>\n", item)
                 if (in_entry == 1) print "  </entry>"

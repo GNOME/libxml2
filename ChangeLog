@@ -1,3 +1,8 @@
+Sun May 16 03:06:31 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/ChangeLog.awk: fixed a couple of problems when parsing
+          libxslt ChangeLog
+
 Sat May 15 20:14:21 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/ChangeLog.awk doc/ChangeLog.xsl: first steps of a good

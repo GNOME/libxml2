@@ -2035,6 +2035,8 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
  * @encoding:  the encoding if any assuming the I/O layer handles the trancoding
  *
  * Dump an XML document to an I/O buffer.
+ * Warning ! This call xmlOutputBufferClose() on buf which is not available
+ * after this call.
  *
  * returns: the number of bytes written or -1 in case of failure.
  */
@@ -2043,7 +2045,11 @@ xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
     xmlSaveCtxt ctxt;
     int ret;
 
-    if (buf == NULL) return(0);
+    if (buf == NULL) return(-1);
+    if (cur == NULL) {
+        xmlOutputBufferClose(buf);
+	return(-1);
+    }
     memset(&ctxt, 0, sizeof(ctxt));
     ctxt.doc = cur;
     ctxt.buf = buf;
@@ -2064,7 +2070,8 @@ xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
  * @format: should formatting spaces been added
  *
  * Dump an XML document to an I/O buffer.
- * NOTE: the I/O buffer is closed as part of the call.
+ * Warning ! This call xmlOutputBufferClose() on buf which is not available
+ * after this call.
  *
  * returns: the number of bytes written or -1 in case of failure.
  */
@@ -2075,8 +2082,11 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur,
     xmlSaveCtxt ctxt;
     int ret;
 
-    if (buf == NULL)
-        return (0);
+    if (buf == NULL) return(-1);
+    if (cur == NULL) {
+        xmlOutputBufferClose(buf);
+	return(-1);
+    }
     memset(&ctxt, 0, sizeof(ctxt));
     ctxt.doc = cur;
     ctxt.buf = buf;

@@ -944,6 +944,9 @@ htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 
     xmlInitParser();
 
+    if ((buf == NULL) || (cur == NULL))
+        return;
+
     /*
      * force to output the stuff as HTML, especially for entities
      */
@@ -997,7 +1000,7 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
 
     xmlInitParser();
 
-    if (cur == NULL) {
+    if ((cur == NULL) || (f == NULL)) {
 	return(-1);
     }
 

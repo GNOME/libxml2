@@ -559,7 +559,7 @@ xmlXPtrNewRangeNodeObject(xmlNodePtr start, xmlXPathObjectPtr end) {
 		return(NULL);
 	    break;
 	default:
-	    TODO
+	    /* TODO */
 	    return(NULL);
     }
 

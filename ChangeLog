@@ -1,3 +1,8 @@
+Thu Nov  4 11:48:47 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: extending the tests coverage
+	* HTMLtree.c tree.c xmlsave.c xpointer.c: more fixes and cleanups
+
 Thu Nov  4 00:25:36 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: more fixes and extending the tests coverage

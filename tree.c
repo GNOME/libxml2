@@ -6709,6 +6709,7 @@ xmlBufferEmpty(xmlBufferPtr buf) {
  */
 int
 xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
+    if (buf == NULL) return(-1);
     if (len == 0) return(0);
     if (len > buf->use) return(-1);
 
@@ -6735,6 +6736,8 @@ int
 xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
     int size;
     xmlChar *newbuf;
+
+    if (buf == NULL) return(-1);
 
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return(0);
     if (len + buf->use < buf->size) return(0);

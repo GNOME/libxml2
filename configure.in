@@ -388,6 +388,8 @@ AC_CHECK_HEADERS([resolv.h], [], [],
 # include <arpa/nameser.h>
 # endif
 ])
+AC_CHECK_HEADERS([dl.h])
+AC_CHECK_HEADERS([dlfcn.h])
 
 
 echo Checking libraries

@@ -1,3 +1,8 @@
+Thu Jan 13 12:24:09 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* config.h.in configure.in xmlmodule.c: trying to work around
+	  the compilation problem on HP-UX
+
 Wed Jan 12 22:03:33 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* pattern.c: fixed the fixed size array structure problem reported by

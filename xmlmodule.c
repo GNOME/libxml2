@@ -191,8 +191,9 @@ xmlModuleFree(xmlModulePtr module)
 }
 
 #ifdef HAVE_DLOPEN
-
+#ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
+#endif
 
 /**
  * xmlModulePlatformOpen:
@@ -239,7 +240,9 @@ xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
 #endif /* HAVE_DLOPEN */
 
 #ifdef HAVE_SHLLOAD             /* HAVE_SHLLOAD */
-
+#ifdef HAVE_DL_H
+#include <dl.h>
+#endif
 /*
  * xmlModulePlatformOpen:
  * returns a handle on success, and zero on error.

@@ -1,3 +1,8 @@
+Fri Jan 21 17:54:06 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* dict.c: patch from Gary Coady to fix a race in dict reference
+	  counting in multithreaded apps.
+
 Fri Jan 21 16:08:21 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed bug #164556 where non-fatal errors stopped

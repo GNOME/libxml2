@@ -60,6 +60,7 @@ struct _xmlDictStrings {
  */
 struct _xmlDict {
     int ref_counter;
+    xmlRMutexPtr mutex;
 
     struct _xmlDictEntry *dict;
     int size;
@@ -288,8 +289,11 @@ xmlDictCreate(void) {
 	dict->strings = NULL;
 	dict->subdict = NULL;
         if (dict->dict) {
-  	    memset(dict->dict, 0, MIN_DICT_SIZE * sizeof(xmlDictEntry));
-  	    return(dict);
+            if ((dict->mutex = xmlNewRMutex()) != NULL) {
+                memset(dict->dict, 0, MIN_DICT_SIZE * sizeof(xmlDictEntry));
+                return(dict);
+            }
+            xmlFree(dict->dict);
         }
         xmlFree(dict);
     }
@@ -329,7 +333,9 @@ xmlDictCreateSub(xmlDictPtr sub) {
 int
 xmlDictReference(xmlDictPtr dict) {
     if (dict == NULL) return -1;
+    xmlRMutexLock(dict->mutex);
     dict->ref_counter++;
+    xmlRMutexUnlock(dict->mutex);
     return(0);
 }
 
@@ -446,8 +452,14 @@ xmlDictFree(xmlDictPtr dict) {
 	return;
 
     /* decrement the counter, it may be shared by a parser and docs */
+    xmlRMutexLock(dict->mutex);
     dict->ref_counter--;
-    if (dict->ref_counter > 0) return;
+    if (dict->ref_counter > 0) {
+        xmlRMutexUnlock(dict->mutex);
+        return;
+    }
+
+    xmlRMutexUnlock(dict->mutex);
 
     if (dict->subdict != NULL) {
         xmlDictFree(dict->subdict);
@@ -477,6 +489,7 @@ xmlDictFree(xmlDictPtr dict) {
 	xmlFree(pool);
 	pool = nextp;
     }
+    xmlFreeRMutex(dict->mutex);
     xmlFree(dict);
 }
 

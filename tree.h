@@ -426,6 +426,7 @@ xmlNodePtr	xmlNewReference		(xmlDocPtr doc,
 xmlNodePtr	xmlCopyNode		(xmlNodePtr node,
 					 int recursive);
 xmlNodePtr	xmlCopyNodeList		(xmlNodePtr node);
+xmlNodePtr	xmlNewDocFragment	(xmlDocPtr doc);
 
 /*
  * Navigating

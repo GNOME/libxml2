@@ -1152,6 +1152,44 @@ xmlNewDocRawNode(xmlDocPtr doc, xmlNsPtr ns,
     return(cur);
 }
 
+/**
+ * xmlNewDocFragment:
+ * @doc:  the document owning the fragment
+ *
+ * Creation of a new Fragment node.
+ * Returns a pointer to the new node object.
+ */
+xmlNodePtr
+xmlNewDocFragment(xmlDocPtr doc) {
+    xmlNodePtr cur;
+
+    /*
+     * Allocate a new DocumentFragment node and fill the fields.
+     */
+    cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
+    if (cur == NULL) {
+        fprintf(stderr, "xmlNewDocFragment : malloc failed\n");
+	return(NULL);
+    }
+
+    cur->type = XML_DOCUMENT_FRAG_NODE;
+    cur->doc = doc;
+    cur->parent = NULL; 
+    cur->next = NULL;
+    cur->prev = NULL;
+    cur->childs = NULL;
+    cur->last = NULL;
+    cur->properties = NULL;
+    cur->name = NULL;
+    cur->ns = NULL;
+    cur->nsDef = NULL;
+    cur->content = NULL;
+#ifndef XML_WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif
+    return(cur);
+}
 
 /**
  * xmlNewText:

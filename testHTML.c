@@ -584,7 +584,7 @@ void parseSAXFile(char *filename) {
 }
 
 void parseAndPrintFile(char *filename) {
-    htmlDocPtr doc, tmp;
+    htmlDocPtr doc = NULL, tmp;
 
     /*
      * build an HTML tree from a string;

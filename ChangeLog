@@ -1,3 +1,7 @@
+Sun Dec  7 20:30:53 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: attempt to fix #126211 ... 
+
 Fri Dec  5 17:07:29 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* pattern.c xmlreader.c xmllint.c include/libxml/pattern.h

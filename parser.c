@@ -10386,7 +10386,7 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
      * generate a parser input from the I/O handler
      */
 
-    pinput = xmlNewIOInputStream(ctxt, input, enc);
+    pinput = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
     if (pinput == NULL) {
         if (sax != NULL) ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);
@@ -10397,6 +10397,9 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
      * plug some encoding conversion routines here.
      */
     xmlPushInput(ctxt, pinput);
+    if (enc != XML_CHAR_ENCODING_NONE) {
+        xmlSwitchEncoding(ctxt, enc);
+    }
 
     pinput->filename = NULL;
     pinput->line = 1;

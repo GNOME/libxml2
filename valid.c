@@ -189,8 +189,8 @@ xmlCreateElementTable(void) {
     ret = (xmlElementTablePtr) 
          malloc(sizeof(xmlElementTable));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateElementTable : malloc(%d) failed\n",
-	        sizeof(xmlElementTable));
+        fprintf(stderr, "xmlCreateElementTable : malloc(%ld) failed\n",
+	        (long)sizeof(xmlElementTable));
         return(NULL);
     }
     ret->max_elements = XML_MIN_ELEMENT_TABLE;
@@ -198,8 +198,8 @@ xmlCreateElementTable(void) {
     ret->table = (xmlElementPtr ) 
          malloc(ret->max_elements * sizeof(xmlElement));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateElementTable : malloc(%d) failed\n",
-	        ret->max_elements * sizeof(xmlElement));
+        fprintf(stderr, "xmlCreateElementTable : malloc(%ld) failed\n",
+	        ret->max_elements * (long)sizeof(xmlElement));
 	free(ret);
         return(NULL);
     }
@@ -461,8 +461,8 @@ xmlCreateEnumeration(CHAR *name) {
 
     ret = (xmlEnumerationPtr) malloc(sizeof(xmlEnumeration));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateEnumeration : malloc(%d) failed\n",
-	        sizeof(xmlEnumeration));
+        fprintf(stderr, "xmlCreateEnumeration : malloc(%ld) failed\n",
+	        (long)sizeof(xmlEnumeration));
         return(NULL);
     }
 
@@ -528,8 +528,8 @@ xmlCreateAttributeTable(void) {
     ret = (xmlAttributeTablePtr) 
          malloc(sizeof(xmlAttributeTable));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateAttributeTable : malloc(%d) failed\n",
-	        sizeof(xmlAttributeTable));
+        fprintf(stderr, "xmlCreateAttributeTable : malloc(%ld) failed\n",
+	        (long)sizeof(xmlAttributeTable));
         return(NULL);
     }
     ret->max_attributes = XML_MIN_ATTRIBUTE_TABLE;
@@ -537,8 +537,8 @@ xmlCreateAttributeTable(void) {
     ret->table = (xmlAttributePtr ) 
          malloc(ret->max_attributes * sizeof(xmlAttribute));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateAttributeTable : malloc(%d) failed\n",
-	        ret->max_attributes * sizeof(xmlAttribute));
+        fprintf(stderr, "xmlCreateAttributeTable : malloc(%ld) failed\n",
+	        ret->max_attributes * (long)sizeof(xmlAttribute));
 	free(ret);
         return(NULL);
     }
@@ -858,8 +858,8 @@ xmlCreateNotationTable(void) {
     ret = (xmlNotationTablePtr) 
          malloc(sizeof(xmlNotationTable));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateNotationTable : malloc(%d) failed\n",
-	        sizeof(xmlNotationTable));
+        fprintf(stderr, "xmlCreateNotationTable : malloc(%ld) failed\n",
+	        (long)sizeof(xmlNotationTable));
         return(NULL);
     }
     ret->max_notations = XML_MIN_NOTATION_TABLE;
@@ -867,8 +867,8 @@ xmlCreateNotationTable(void) {
     ret->table = (xmlNotationPtr ) 
          malloc(ret->max_notations * sizeof(xmlNotation));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateNotationTable : malloc(%d) failed\n",
-	        ret->max_notations * sizeof(xmlNotation));
+        fprintf(stderr, "xmlCreateNotationTable : malloc(%ld) failed\n",
+	        ret->max_notations * (long)sizeof(xmlNotation));
 	free(ret);
         return(NULL);
     }

@@ -55,7 +55,7 @@ fi
 AC_SUBST(HTML_DIR)
 
 XML_LIBDIR='-L${libdir}'
-XML_INCLUDEDIR='-I${includedir}'
+XML_INCLUDEDIR='-I${includedir}/gnome-xml'
 XML_LIBS="-lxml $Z_LIBS"
 
 AC_SUBST(XML_LIBDIR)

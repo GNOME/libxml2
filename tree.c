@@ -387,6 +387,8 @@ xmlNewDoc(const CHAR *version) {
 
     cur->type = XML_DOCUMENT_NODE;
     cur->version = xmlStrdup(version); 
+    cur->ID = NULL;
+    cur->DTD = NULL;
     cur->name = NULL;
     cur->root = NULL; 
     cur->intSubset = NULL;
@@ -2650,11 +2652,11 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
  */
 static void
 xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
-    if (oldXMLWDcompatibility)
-	xmlBufferWriteChar(buf, "<?XML version=");
-    else 
-	xmlBufferWriteChar(buf, "<?xml version=");
-    xmlBufferWriteQuotedString(buf, cur->version);
+    xmlBufferWriteChar(buf, "<?xml version=");
+    if (cur->version != NULL) 
+	xmlBufferWriteQuotedString(buf, cur->version);
+    else
+	xmlBufferWriteChar(buf, "\"1.0\"");
     if (cur->encoding != NULL) {
         xmlBufferWriteChar(buf, " encoding=");
 	xmlBufferWriteQuotedString(buf, cur->encoding);

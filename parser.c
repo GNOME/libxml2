@@ -628,8 +628,8 @@ xmlStrndup(const CHAR *cur, int len) {
     CHAR *ret = malloc((len + 1) * sizeof(CHAR));
 
     if (ret == NULL) {
-        fprintf(stderr, "malloc of %d byte failed\n",
-	        (len + 1) * sizeof(CHAR));
+        fprintf(stderr, "malloc of %ld byte failed\n",
+	        (len + 1) * (long)sizeof(CHAR));
         return(NULL);
     }
     memcpy(ret, cur, len * sizeof(CHAR));
@@ -669,8 +669,8 @@ xmlCharStrndup(const char *cur, int len) {
     CHAR *ret = malloc((len + 1) * sizeof(CHAR));
 
     if (ret == NULL) {
-        fprintf(stderr, "malloc of %d byte failed\n",
-	        (len + 1) * sizeof(CHAR));
+        fprintf(stderr, "malloc of %ld byte failed\n",
+	        (len + 1) * (long)sizeof(CHAR));
         return(NULL);
     }
     for (i = 0;i < len;i++)
@@ -807,8 +807,8 @@ xmlStrncat(CHAR *cur, const CHAR *add, int len) {
     size = xmlStrlen(cur);
     ret = realloc(cur, (size + len + 1) * sizeof(CHAR));
     if (ret == NULL) {
-        fprintf(stderr, "xmlStrncat: realloc of %d byte failed\n",
-	        (size + len + 1) * sizeof(CHAR));
+        fprintf(stderr, "xmlStrncat: realloc of %ld byte failed\n",
+	        (size + len + 1) * (long)sizeof(CHAR));
         return(cur);
     }
     memcpy(&ret[size], add, len * sizeof(CHAR));
@@ -3548,16 +3548,16 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 	        maxatts = 10;
 	        atts = (const CHAR **) malloc(maxatts * sizeof(CHAR *));
 		if (atts == NULL) {
-		    fprintf(stderr, "malloc of %d byte failed\n",
-			    maxatts * sizeof(CHAR *));
+		    fprintf(stderr, "malloc of %ld byte failed\n",
+			    maxatts * (long)sizeof(CHAR *));
 		    return(NULL);
 		}
 	    } else if (nbatts + 2 < maxatts) {
 	        maxatts *= 2;
 	        atts = (const CHAR **) realloc(atts, maxatts * sizeof(CHAR *));
 		if (atts == NULL) {
-		    fprintf(stderr, "realloc of %d byte failed\n",
-			    maxatts * sizeof(CHAR *));
+		    fprintf(stderr, "realloc of %ld byte failed\n",
+			    maxatts * (long)sizeof(CHAR *));
 		    return(NULL);
 		}
 	    }
@@ -4359,7 +4359,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlCreateFileParserCtxt :
+ * xmlCreateDocParserCtxt :
  * @cur:  a pointer to an array of CHAR
  *
  * Create a parser context for an XML in-memory document.

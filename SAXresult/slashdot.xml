@@ -1,0 +1,641 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(ultramode)
+SAX.characters(
+ <story>
+    <title>100 Mbit/, 2)
+SAX.startElement(story)
+SAX.characters(
+    <title>100 Mbit/s on Fibr, 5)
+SAX.startElement(title)
+SAX.characters(100 Mbit/s on Fibre to the hom, 31)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(url)
+SAX.characters(
+    <time>1999-06-06 14:39:59, 5)
+SAX.startElement(time)
+SAX.characters(1999-06-06 14:39:59</time>
+   , 19)
+SAX.endElement(time)
+SAX.characters(
+    <author>CmdrTaco</author>, 5)
+SAX.startElement(author)
+SAX.characters(CmdrTaco</author>
+    <departm, 8)
+SAX.endElement(author)
+SAX.characters(
+    <department>wouldn't-it-b, 5)
+SAX.startElement(department)
+SAX.characters(wouldn't-it-be-nice</departmen, 19)
+SAX.endElement(department)
+SAX.characters(
+    <topic>internet</topic>
+ , 5)
+SAX.startElement(topic)
+SAX.characters(internet</topic>
+    <comments, 8)
+SAX.endElement(topic)
+SAX.characters(
+    <comments>20</comments>
+ , 5)
+SAX.startElement(comments)
+SAX.characters(20</comments>
+    <section>art, 2)
+SAX.endElement(comments)
+SAX.characters(
+    <section>articles</sectio, 5)
+SAX.startElement(section)
+SAX.characters(articles</section>
+    <image>, 8)
+SAX.endElement(section)
+SAX.characters(
+    <image>topicinternet.jpg<, 5)
+SAX.startElement(image)
+SAX.characters(topicinternet.jpg</image>
+  </, 17)
+SAX.endElement(image)
+SAX.characters(
+  </story>
+ <story>
+    <titl, 3)
+SAX.endElement(story)
+SAX.characters(
+ <story>
+    <title>Gimp 1.2 , 2)
+SAX.startElement(story)
+SAX.characters(
+    <title>Gimp 1.2 Preview</, 5)
+SAX.startElement(title)
+SAX.characters(Gimp 1.2 Preview</title>
+    <, 16)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(url)
+SAX.characters(
+    <time>1999-06-06 14:38:40, 5)
+SAX.startElement(time)
+SAX.characters(1999-06-06 14:38:40</time>
+   , 19)
+SAX.endElement(time)
+SAX.characters(
+    <author>CmdrTaco</author>, 5)
+SAX.startElement(author)
+SAX.characters(CmdrTaco</author>
+    <departm, 8)
+SAX.endElement(author)
+SAX.characters(
+    <department>stuff-to-read, 5)
+SAX.startElement(department)
+SAX.characters(stuff-to-read</department>
+   , 13)
+SAX.endElement(department)
+SAX.characters(
+    <topic>gimp</topic>
+    <, 5)
+SAX.startElement(topic)
+SAX.characters(gimp</topic>
+    <comments>12<, 4)
+SAX.endElement(topic)
+SAX.characters(
+    <comments>12</comments>
+ , 5)
+SAX.startElement(comments)
+SAX.characters(12</comments>
+    <section>art, 2)
+SAX.endElement(comments)
+SAX.characters(
+    <section>articles</sectio, 5)
+SAX.startElement(section)
+SAX.characters(articles</section>
+    <image>, 8)
+SAX.endElement(section)
+SAX.characters(
+    <image>topicgimp.gif</ima, 5)
+SAX.startElement(image)
+SAX.characters(topicgimp.gif</image>
+  </stor, 13)
+SAX.endElement(image)
+SAX.characters(
+  </story>
+ <story>
+    <titl, 3)
+SAX.endElement(story)
+SAX.characters(
+ <story>
+    <title>Sony's AI, 2)
+SAX.startElement(story)
+SAX.characters(
+    <title>Sony's AIBO robot , 5)
+SAX.startElement(title)
+SAX.characters(Sony's AIBO robot Sold Out</ti, 26)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(url)
+SAX.characters(
+    <time>1999-06-06 14:32:51, 5)
+SAX.startElement(time)
+SAX.characters(1999-06-06 14:32:51</time>
+   , 19)
+SAX.endElement(time)
+SAX.characters(
+    <author>CmdrTaco</author>, 5)
+SAX.startElement(author)
+SAX.characters(CmdrTaco</author>
+    <departm, 8)
+SAX.endElement(author)
+SAX.characters(
+    <department>stuff-to-see<, 5)
+SAX.startElement(department)
+SAX.characters(stuff-to-see</department>
+    , 12)
+SAX.endElement(department)
+SAX.characters(
+    <topic>tech</topic>
+    <, 5)
+SAX.startElement(topic)
+SAX.characters(tech</topic>
+    <comments>10<, 4)
+SAX.endElement(topic)
+SAX.characters(
+    <comments>10</comments>
+ , 5)
+SAX.startElement(comments)
+SAX.characters(10</comments>
+    <section>art, 2)
+SAX.endElement(comments)
+SAX.characters(
+    <section>articles</sectio, 5)
+SAX.startElement(section)
+SAX.characters(articles</section>
+    <image>, 8)
+SAX.endElement(section)
+SAX.characters(
+    <image>topictech2.jpg</im, 5)
+SAX.startElement(image)
+SAX.characters(topictech2.jpg</image>
+  </sto, 14)
+SAX.endElement(image)
+SAX.characters(
+  </story>
+ <story>
+    <titl, 3)
+SAX.endElement(story)
+SAX.characters(
+ <story>
+    <title>Ask Slash, 2)
+SAX.startElement(story)
+SAX.characters(
+    <title>Ask Slashdot: Anot, 5)
+SAX.startElement(title)
+SAX.characters(Ask Slashdot: Another Word for, 40)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/askslashdo, 54)
+SAX.endElement(url)
+SAX.characters(
+    <time>1999-06-05 20:00:00, 5)
+SAX.startElement(time)
+SAX.characters(1999-06-05 20:00:00</time>
+   , 19)
+SAX.endElement(time)
+SAX.characters(
+    <author>Cliff</author>
+  , 5)
+SAX.startElement(author)
+SAX.characters(Cliff</author>
+    <department, 5)
+SAX.endElement(author)
+SAX.characters(
+    <department>hacker-vs-cra, 5)
+SAX.startElement(department)
+SAX.characters(hacker-vs-cracker</department>, 17)
+SAX.endElement(department)
+SAX.characters(
+    <topic>news</topic>
+    <, 5)
+SAX.startElement(topic)
+SAX.characters(news</topic>
+    <comments>385, 4)
+SAX.endElement(topic)
+SAX.characters(
+    <comments>385</comments>
+, 5)
+SAX.startElement(comments)
+SAX.characters(385</comments>
+    <section>as, 3)
+SAX.endElement(comments)
+SAX.characters(
+    <section>askslashdot</sec, 5)
+SAX.startElement(section)
+SAX.characters(askslashdot</section>
+    <ima, 11)
+SAX.endElement(section)
+SAX.characters(
+    <image>topicnews.gif</ima, 5)
+SAX.startElement(image)
+SAX.characters(topicnews.gif</image>
+  </stor, 13)
+SAX.endElement(image)
+SAX.characters(
+  </story>
+ <story>
+    <titl, 3)
+SAX.endElement(story)
+SAX.characters(
+ <story>
+    <title>Corel Lin, 2)
+SAX.startElement(story)
+SAX.characters(
+    <title>Corel Linux FAQ</t, 5)
+SAX.startElement(title)
+SAX.characters(Corel Linux FAQ</title>
+    <u, 15)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(url)
+SAX.characters(
+    <time>1999-06-05 18:42:06, 5)
+SAX.startElement(time)
+SAX.characters(1999-06-05 18:42:06</time>
+   , 19)
+SAX.endElement(time)
+SAX.characters(
+    <author>CmdrTaco</author>, 5)
+SAX.startElement(author)
+SAX.characters(CmdrTaco</author>
+    <departm, 8)
+SAX.endElement(author)
+SAX.characters(
+    <department>stuff-to-read, 5)
+SAX.startElement(department)
+SAX.characters(stuff-to-read</department>
+   , 13)
+SAX.endElement(department)
+SAX.characters(
+    <topic>corel</topic>
+    , 5)
+SAX.startElement(topic)
+SAX.characters(corel</topic>
+    <comments>16, 5)
+SAX.endElement(topic)
+SAX.characters(
+    <comments>164</comments>
+, 5)
+SAX.startElement(comments)
+SAX.characters(164</comments>
+    <section>ar, 3)
+SAX.endElement(comments)
+SAX.characters(
+    <section>articles</sectio, 5)
+SAX.startElement(section)
+SAX.characters(articles</section>
+    <image>, 8)
+SAX.endElement(section)
+SAX.characters(
+    <image>topiccorel.gif</im, 5)
+SAX.startElement(image)
+SAX.characters(topiccorel.gif</image>
+  </sto, 14)
+SAX.endElement(image)
+SAX.characters(
+  </story>
+ <story>
+    <titl, 3)
+SAX.endElement(story)
+SAX.characters(
+ <story>
+    <title>Upside do, 2)
+SAX.startElement(story)
+SAX.characters(
+    <title>Upside downsides M, 5)
+SAX.startElement(title)
+SAX.characters(Upside downsides MP3.COM.</tit, 25)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(url)
+SAX.characters(
+    <time>1999-06-05 15:56:45, 5)
+SAX.startElement(time)
+SAX.characters(1999-06-05 15:56:45</time>
+   , 19)
+SAX.endElement(time)
+SAX.characters(
+    <author>CmdrTaco</author>, 5)
+SAX.startElement(author)
+SAX.characters(CmdrTaco</author>
+    <departm, 8)
+SAX.endElement(author)
+SAX.characters(
+    <department>stuff-to-thin, 5)
+SAX.startElement(department)
+SAX.characters(stuff-to-think-about</departme, 20)
+SAX.endElement(department)
+SAX.characters(
+    <topic>music</topic>
+    , 5)
+SAX.startElement(topic)
+SAX.characters(music</topic>
+    <comments>48, 5)
+SAX.endElement(topic)
+SAX.characters(
+    <comments>48</comments>
+ , 5)
+SAX.startElement(comments)
+SAX.characters(48</comments>
+    <section>art, 2)
+SAX.endElement(comments)
+SAX.characters(
+    <section>articles</sectio, 5)
+SAX.startElement(section)
+SAX.characters(articles</section>
+    <image>, 8)
+SAX.endElement(section)
+SAX.characters(
+    <image>topicmusic.gif</im, 5)
+SAX.startElement(image)
+SAX.characters(topicmusic.gif</image>
+  </sto, 14)
+SAX.endElement(image)
+SAX.characters(
+  </story>
+ <story>
+    <titl, 3)
+SAX.endElement(story)
+SAX.characters(
+ <story>
+    <title>2 Terabit, 2)
+SAX.startElement(story)
+SAX.characters(
+    <title>2 Terabits of Band, 5)
+SAX.startElement(title)
+SAX.characters(2 Terabits of Bandwidth</title, 23)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(url)
+SAX.characters(
+    <time>1999-06-05 15:53:43, 5)
+SAX.startElement(time)
+SAX.characters(1999-06-05 15:53:43</time>
+   , 19)
+SAX.endElement(time)
+SAX.characters(
+    <author>CmdrTaco</author>, 5)
+SAX.startElement(author)
+SAX.characters(CmdrTaco</author>
+    <departm, 8)
+SAX.endElement(author)
+SAX.characters(
+    <department>faster-porn</, 5)
+SAX.startElement(department)
+SAX.characters(faster-porn</department>
+    <, 11)
+SAX.endElement(department)
+SAX.characters(
+    <topic>internet</topic>
+ , 5)
+SAX.startElement(topic)
+SAX.characters(internet</topic>
+    <comments, 8)
+SAX.endElement(topic)
+SAX.characters(
+    <comments>66</comments>
+ , 5)
+SAX.startElement(comments)
+SAX.characters(66</comments>
+    <section>art, 2)
+SAX.endElement(comments)
+SAX.characters(
+    <section>articles</sectio, 5)
+SAX.startElement(section)
+SAX.characters(articles</section>
+    <image>, 8)
+SAX.endElement(section)
+SAX.characters(
+    <image>topicinternet.jpg<, 5)
+SAX.startElement(image)
+SAX.characters(topicinternet.jpg</image>
+  </, 17)
+SAX.endElement(image)
+SAX.characters(
+  </story>
+ <story>
+    <titl, 3)
+SAX.endElement(story)
+SAX.characters(
+ <story>
+    <title>Suppressi, 2)
+SAX.startElement(story)
+SAX.characters(
+    <title>Suppression of col, 5)
+SAX.startElement(title)
+SAX.characters(Suppression of cold fusion res, 36)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(url)
+SAX.characters(
+    <time>1999-06-04 23:12:29, 5)
+SAX.startElement(time)
+SAX.characters(1999-06-04 23:12:29</time>
+   , 19)
+SAX.endElement(time)
+SAX.characters(
+    <author>Hemos</author>
+  , 5)
+SAX.startElement(author)
+SAX.characters(Hemos</author>
+    <department, 5)
+SAX.endElement(author)
+SAX.characters(
+    <department>possibly-prob, 5)
+SAX.startElement(department)
+SAX.characters(possibly-probably</department>, 17)
+SAX.endElement(department)
+SAX.characters(
+    <topic>science</topic>
+  , 5)
+SAX.startElement(topic)
+SAX.characters(science</topic>
+    <comments>, 7)
+SAX.endElement(topic)
+SAX.characters(
+    <comments>217</comments>
+, 5)
+SAX.startElement(comments)
+SAX.characters(217</comments>
+    <section>ar, 3)
+SAX.endElement(comments)
+SAX.characters(
+    <section>articles</sectio, 5)
+SAX.startElement(section)
+SAX.characters(articles</section>
+    <image>, 8)
+SAX.endElement(section)
+SAX.characters(
+    <image>topicscience.gif</, 5)
+SAX.startElement(image)
+SAX.characters(topicscience.gif</image>
+  </s, 16)
+SAX.endElement(image)
+SAX.characters(
+  </story>
+ <story>
+    <titl, 3)
+SAX.endElement(story)
+SAX.characters(
+ <story>
+    <title>Californi, 2)
+SAX.startElement(story)
+SAX.characters(
+    <title>California Gov. Ha, 5)
+SAX.startElement(title)
+SAX.characters(California Gov. Halts Wage Inf, 36)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/articles/9, 50)
+SAX.endElement(url)
+SAX.characters(
+    <time>1999-06-04 23:05:34, 5)
+SAX.startElement(time)
+SAX.characters(1999-06-04 23:05:34</time>
+   , 19)
+SAX.endElement(time)
+SAX.characters(
+    <author>Hemos</author>
+  , 5)
+SAX.startElement(author)
+SAX.characters(Hemos</author>
+    <department, 5)
+SAX.endElement(author)
+SAX.characters(
+    <department>woo-hoo!</dep, 5)
+SAX.startElement(department)
+SAX.characters(woo-hoo!</department>
+    <top, 8)
+SAX.endElement(department)
+SAX.characters(
+    <topic>usa</topic>
+    <c, 5)
+SAX.startElement(topic)
+SAX.characters(usa</topic>
+    <comments>16</, 3)
+SAX.endElement(topic)
+SAX.characters(
+    <comments>16</comments>
+ , 5)
+SAX.startElement(comments)
+SAX.characters(16</comments>
+    <section>art, 2)
+SAX.endElement(comments)
+SAX.characters(
+    <section>articles</sectio, 5)
+SAX.startElement(section)
+SAX.characters(articles</section>
+    <image>, 8)
+SAX.endElement(section)
+SAX.characters(
+    <image>topicus.gif</image, 5)
+SAX.startElement(image)
+SAX.characters(topicus.gif</image>
+  </story>, 11)
+SAX.endElement(image)
+SAX.characters(
+  </story>
+ <story>
+    <titl, 3)
+SAX.endElement(story)
+SAX.characters(
+ <story>
+    <title>Red Hat A, 2)
+SAX.startElement(story)
+SAX.characters(
+    <title>Red Hat Announces , 5)
+SAX.startElement(title)
+SAX.characters(Red Hat Announces IPO</title>
+, 21)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(url)
+SAX.characters(
+    <time>1999-06-04 19:30:18, 5)
+SAX.startElement(time)
+SAX.characters(1999-06-04 19:30:18</time>
+   , 19)
+SAX.endElement(time)
+SAX.characters(
+    <author>Justin</author>
+ , 5)
+SAX.startElement(author)
+SAX.characters(Justin</author>
+    <departmen, 6)
+SAX.endElement(author)
+SAX.characters(
+    <department>details-sketc, 5)
+SAX.startElement(department)
+SAX.characters(details-sketchy</department>
+ , 15)
+SAX.endElement(department)
+SAX.characters(
+    <topic>redhat</topic>
+   , 5)
+SAX.startElement(topic)
+SAX.characters(redhat</topic>
+    <comments>1, 6)
+SAX.endElement(topic)
+SAX.characters(
+    <comments>155</comments>
+, 5)
+SAX.startElement(comments)
+SAX.characters(155</comments>
+    <section>ar, 3)
+SAX.endElement(comments)
+SAX.characters(
+    <section>articles</sectio, 5)
+SAX.startElement(section)
+SAX.characters(articles</section>
+    <image>, 8)
+SAX.endElement(section)
+SAX.characters(
+    <image>topicredhat.gif</i, 5)
+SAX.startElement(image)
+SAX.characters(topicredhat.gif</image>
+  </st, 15)
+SAX.endElement(image)
+SAX.characters(
+  </story>
+</ultramode>
+, 3)
+SAX.endElement(story)
+SAX.characters(
+</ultramode>
+, 1)
+SAX.endElement(ultramode)
+SAX.endDocument()

@@ -1,0 +1,274 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(rdf:RDF, xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#', xmlns='http://my.netscape.com/rdf/simple/0.9/')
+SAX.characters(
+
+  <channel>
+    <title>Slash, 4)
+SAX.startElement(channel)
+SAX.characters(
+    <title>Slashdot:News for , 5)
+SAX.startElement(title)
+SAX.characters(Slashdot:News for Nerds. Stuff, 44)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/</link>
+  , 20)
+SAX.endElement(link)
+SAX.characters(
+    <description>News for Ner, 5)
+SAX.startElement(description)
+SAX.characters(News for Nerds.  Stuff that Ma, 35)
+SAX.endElement(description)
+SAX.characters(
+  </channel>
+
+  <image>
+    <, 3)
+SAX.endElement(channel)
+SAX.characters(
+
+  <image>
+    <title>Slashdo, 4)
+SAX.startElement(image)
+SAX.characters(
+    <title>Slashdot</title>
+ , 5)
+SAX.startElement(title)
+SAX.characters(Slashdot</title>
+    <url>http, 8)
+SAX.endElement(title)
+SAX.characters(
+    <url>http://slashdot.org/, 5)
+SAX.startElement(url)
+SAX.characters(http://slashdot.org/images/sla, 41)
+SAX.endElement(url)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org</link>
+  <, 19)
+SAX.endElement(link)
+SAX.characters(
+  </image>
+  
+  <item>
+    <t, 3)
+SAX.endElement(image)
+SAX.characters(
+  
+  <item>
+    <title>100 Mb, 6)
+SAX.startElement(item)
+SAX.characters(
+    <title>100 Mbit/s on Fibr, 5)
+SAX.startElement(title)
+SAX.characters(100 Mbit/s on Fibre to the hom, 31)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(link)
+SAX.characters(
+  </item>
+  
+  <item>
+    <ti, 3)
+SAX.endElement(item)
+SAX.characters(
+  
+  <item>
+    <title>Gimp 1, 6)
+SAX.startElement(item)
+SAX.characters(
+    <title>Gimp 1.2 Preview</, 5)
+SAX.startElement(title)
+SAX.characters(Gimp 1.2 Preview</title>
+    <, 16)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(link)
+SAX.characters(
+  </item>
+  
+  <item>
+    <ti, 3)
+SAX.endElement(item)
+SAX.characters(
+  
+  <item>
+    <title>Sony's, 6)
+SAX.startElement(item)
+SAX.characters(
+    <title>Sony's AIBO robot , 5)
+SAX.startElement(title)
+SAX.characters(Sony's AIBO robot Sold Out</ti, 26)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(link)
+SAX.characters(
+  </item>
+  
+  <item>
+    <ti, 3)
+SAX.endElement(item)
+SAX.characters(
+  
+  <item>
+    <title>Ask Sl, 6)
+SAX.startElement(item)
+SAX.characters(
+    <title>Ask Slashdot: Anot, 5)
+SAX.startElement(title)
+SAX.characters(Ask Slashdot: Another Word for, 40)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/askslashdo, 54)
+SAX.endElement(link)
+SAX.characters(
+  </item>
+  
+  <item>
+    <ti, 3)
+SAX.endElement(item)
+SAX.characters(
+  
+  <item>
+    <title>Corel , 6)
+SAX.startElement(item)
+SAX.characters(
+    <title>Corel Linux FAQ</t, 5)
+SAX.startElement(title)
+SAX.characters(Corel Linux FAQ</title>
+    <l, 15)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(link)
+SAX.characters(
+  </item>
+  
+  <item>
+    <ti, 3)
+SAX.endElement(item)
+SAX.characters(
+  
+  <item>
+    <title>Upside, 6)
+SAX.startElement(item)
+SAX.characters(
+    <title>Upside downsides M, 5)
+SAX.startElement(title)
+SAX.characters(Upside downsides MP3.COM.</tit, 25)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(link)
+SAX.characters(
+  </item>
+  
+  <item>
+    <ti, 3)
+SAX.endElement(item)
+SAX.characters(
+  
+  <item>
+    <title>2 Tera, 6)
+SAX.startElement(item)
+SAX.characters(
+    <title>2 Terabits of Band, 5)
+SAX.startElement(title)
+SAX.characters(2 Terabits of Bandwidth</title, 23)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(link)
+SAX.characters(
+  </item>
+  
+  <item>
+    <ti, 3)
+SAX.endElement(item)
+SAX.characters(
+  
+  <item>
+    <title>Suppre, 6)
+SAX.startElement(item)
+SAX.characters(
+    <title>Suppression of col, 5)
+SAX.startElement(title)
+SAX.characters(Suppression of cold fusion res, 36)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(link)
+SAX.characters(
+  </item>
+  
+  <item>
+    <ti, 3)
+SAX.endElement(item)
+SAX.characters(
+  
+  <item>
+    <title>Califo, 6)
+SAX.startElement(item)
+SAX.characters(
+    <title>California Gov. Ha, 5)
+SAX.startElement(title)
+SAX.characters(California Gov. Halts Wage Inf, 36)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/articles/9, 50)
+SAX.endElement(link)
+SAX.characters(
+  </item>
+  
+  <item>
+    <ti, 3)
+SAX.endElement(item)
+SAX.characters(
+  
+  <item>
+    <title>Red Ha, 6)
+SAX.startElement(item)
+SAX.characters(
+    <title>Red Hat Announces , 5)
+SAX.startElement(title)
+SAX.characters(Red Hat Announces IPO</title>
+, 21)
+SAX.endElement(title)
+SAX.characters(
+    <link>http://slashdot.org, 5)
+SAX.startElement(link)
+SAX.characters(http://slashdot.org/articles/9, 51)
+SAX.endElement(link)
+SAX.characters(
+  </item>
+</rdf:RDF>, 3)
+SAX.endElement(item)
+SAX.characters(
+</rdf:RDF>, 1)
+SAX.endElement(rdf:RDF)
+SAX.endDocument()

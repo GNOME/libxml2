@@ -46,10 +46,10 @@ gnome-xml-sections.txt : scan
 rebuild: gnome-xml-sections.txt templates sgml html
 
 install-data-local: 
-	install -d -m 0755 $(TARGET_DIR)
-	-install -m 0644 $(srcdir)/xml.html $(srcdir)/structure.gif $(srcdir)/DOM.gif $(TARGET_DIR)
-	-install -m 0644 $(srcdir)/html/*.html $(TARGET_DIR)
-	-install -m 0644 $(srcdir)/html/index.sgml $(TARGET_DIR)
+	@INSTALL@ -d -m 0755 $(TARGET_DIR)
+	-@INSTALL@ -m 0644 $(srcdir)/xml.html $(srcdir)/structure.gif $(srcdir)/DOM.gif $(TARGET_DIR)
+	-@INSTALL@ -m 0644 $(srcdir)/html/*.html $(TARGET_DIR)
+	-@INSTALL@ -m 0644 $(srcdir)/html/index.sgml $(TARGET_DIR)
 	-gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR)
 
 dist-hook:

@@ -817,6 +817,9 @@ comment(void *ctx, const CHAR *value)
     xmlAddChild(ctxt->node, ret);
 }
 
+/*
+ * Default handler for XML, builds the DOM tree
+ */
 xmlSAXHandler xmlDefaultSAXHandler = {
     internalSubset,
     isStandalone,
@@ -876,4 +879,68 @@ xmlDefaultSAXHandlerInit(void)
     xmlDefaultSAXHandler.warning = xmlParserWarning;
     xmlDefaultSAXHandler.error = xmlParserError;
     xmlDefaultSAXHandler.fatalError = xmlParserError;
+}
+
+/*
+ * Default handler for HTML, builds the DOM tree
+ */
+xmlSAXHandler htmlDefaultSAXHandler = {
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    getEntity,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    setDocumentLocator,
+    startDocument,
+    endDocument,
+    startElement,
+    endElement,
+    NULL,
+    characters,
+    ignorableWhitespace,
+    NULL,
+    comment,
+    xmlParserWarning,
+    xmlParserError,
+    xmlParserError,
+};
+
+/**
+ * htmlDefaultSAXHandlerInit:
+ *
+ * Initialize the default SAX handler
+ */
+void
+htmlDefaultSAXHandlerInit(void)
+{
+    htmlDefaultSAXHandler.internalSubset = NULL;
+    htmlDefaultSAXHandler.isStandalone = NULL;
+    htmlDefaultSAXHandler.hasInternalSubset = NULL;
+    htmlDefaultSAXHandler.hasExternalSubset = NULL;
+    htmlDefaultSAXHandler.resolveEntity = NULL;
+    htmlDefaultSAXHandler.getEntity = getEntity;
+    htmlDefaultSAXHandler.entityDecl = NULL;
+    htmlDefaultSAXHandler.attributeDecl = NULL;
+    htmlDefaultSAXHandler.elementDecl = NULL;
+    htmlDefaultSAXHandler.notationDecl = NULL;
+    htmlDefaultSAXHandler.unparsedEntityDecl = NULL;
+    htmlDefaultSAXHandler.setDocumentLocator = setDocumentLocator;
+    htmlDefaultSAXHandler.startDocument = startDocument;
+    htmlDefaultSAXHandler.endDocument = endDocument;
+    htmlDefaultSAXHandler.startElement = startElement;
+    htmlDefaultSAXHandler.endElement = endElement;
+    htmlDefaultSAXHandler.reference = NULL;
+    htmlDefaultSAXHandler.characters = characters;
+    htmlDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
+    htmlDefaultSAXHandler.processingInstruction = NULL;
+    htmlDefaultSAXHandler.comment = comment;
+    htmlDefaultSAXHandler.warning = xmlParserWarning;
+    htmlDefaultSAXHandler.error = xmlParserError;
+    htmlDefaultSAXHandler.fatalError = xmlParserError;
 }

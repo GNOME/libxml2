@@ -1,3 +1,11 @@
+Mon Jul  5 18:45:31 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c, entities.c, valid.c: cleanup bug #1591
+	* configure.in: cleanup bug #1592
+	* HTMLparser.[ch], testHTML.c: started adding an HTML parser using
+	  the same tree back-end. Hence gdome will be available for it.
+	* doc/Makefile.am: close bug #617
+
 Sat Jun 26 23:36:38 EDT 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: alloctate a per parser context SAX interface block

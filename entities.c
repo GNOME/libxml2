@@ -570,8 +570,8 @@ xmlCreateEntitiesTable(void) {
     ret = (xmlEntitiesTablePtr) 
          malloc(sizeof(xmlEntitiesTable));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateEntitiesTable : malloc(%d) failed\n",
-	        sizeof(xmlEntitiesTable));
+        fprintf(stderr, "xmlCreateEntitiesTable : malloc(%ld) failed\n",
+	        (long)sizeof(xmlEntitiesTable));
         return(NULL);
     }
     ret->max_entities = XML_MIN_ENTITIES_TABLE;
@@ -579,8 +579,8 @@ xmlCreateEntitiesTable(void) {
     ret->table = (xmlEntityPtr ) 
          malloc(ret->max_entities * sizeof(xmlEntity));
     if (ret == NULL) {
-        fprintf(stderr, "xmlCreateEntitiesTable : malloc(%d) failed\n",
-	        ret->max_entities * sizeof(xmlEntity));
+        fprintf(stderr, "xmlCreateEntitiesTable : malloc(%ld) failed\n",
+	        ret->max_entities * (long)sizeof(xmlEntity));
 	free(ret);
         return(NULL);
     }

@@ -62,6 +62,7 @@ typedef struct _xmlParserCtxt {
     const CHAR     *version;	      /* the XML version string */
     const CHAR     *encoding;         /* encoding, if any */
     int             standalone;       /* standalone document */
+    int                   html;       /* are we parsing an HTML document */
 
     /* Input stream stack */
     xmlParserInputPtr  input;         /* Current input stream */
@@ -179,6 +180,7 @@ extern const char *xmlParserVersion;
 
 extern xmlSAXLocator xmlDefaultSAXLocator;
 extern xmlSAXHandler xmlDefaultSAXHandler;
+extern xmlSAXHandler htmlDefaultSAXHandler;
 
 #include "entities.h"
 #include "xml-error.h"
@@ -237,6 +239,7 @@ void xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
                           const xmlParserNodeInfo* info);
 
 void xmlDefaultSAXHandlerInit(void);
+void htmlDefaultSAXHandlerInit(void);
 #ifdef __cplusplus
 }
 #endif

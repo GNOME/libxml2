@@ -6,7 +6,7 @@ INCLUDES = -I@srcdir@ @CORBA_CFLAGS@ $(VERSION_FLAGS)
 
 VERSION_FLAGS = -DLIBXML_VERSION=\"@LIBXML_VERSION@\"
 
-noinst_PROGRAMS=tester testSAX
+noinst_PROGRAMS=tester testSAX testHTML
 
 bin_SCRIPTS=xml-config
 
@@ -20,6 +20,7 @@ libxml_la_SOURCES = \
 		encoding.c \
 		error.c \
 		parser.c \
+		HTMLparser.c \
 		debugXML.c \
 		tree.c \
 		valid.c
@@ -48,6 +49,11 @@ testSAX_SOURCES=testSAX.c
 testSAX_LDFLAGS = 
 testSAX_DEPENDENCIES = $(DEPS)
 testSAX_LDADD= $(LDADDS)
+
+testHTML_SOURCES=testHTML.c
+testHTML_LDFLAGS = 
+testHTML_DEPENDENCIES = $(DEPS)
+testHTML_LDADD= $(LDADDS)
 
 check-local: tests
 

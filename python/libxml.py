@@ -462,12 +462,12 @@ PARSER_VALIDATE=3
 PARSER_SUBST_ENTITIES=4
 
 #
-# For the xmlTextReader error severities
+# For the error callback severities
 #
-XMLREADER_SEVERITY_VALIDITY_WARNING=1
-XMLREADER_SEVERITY_VALIDITY_ERROR=2
-XMLREADER_SEVERITY_WARNING=3
-XMLREADER_SEVERITY_ERROR=4
+PARSER_SEVERITY_VALIDITY_WARNING=1
+PARSER_SEVERITY_VALIDITY_ERROR=2
+PARSER_SEVERITY_WARNING=3
+PARSER_SEVERITY_ERROR=4
 
 #
 # register the libxml2 error handler
@@ -499,11 +499,21 @@ class parserCtxtCore:
             libxml2mod.xmlFreeParserCtxt(self._o)
 	self._o = None
 
-    def registerErrorHandler(self,f,arg):
-        libxml2mod.xmlSetParserCtxtErrorHandler(self._o,f,arg)
+    def setErrorHandler(self,f,arg):
+        """Register an error handler that will be called back as
+           f(arg,msg,severity,reserved).
+           
+           @reserved is currently always None."""
+        libxml2mod.xmlParserCtxtSetErrorHandler(self._o,f,arg)
 
-    def registerWarningHandler(self,f,arg):
-        libxml2mod.xmlSetParserCtxtWarningHandler(self._o,f,arg)
+    def getErrorHandler(self):
+        """Return (f,arg) as previously registered with setErrorHandler
+           or (None,None)."""
+        return libxml2mod.xmlParserCtxtGetErrorHandler(self._o)
+
+def _xmlTextReaderErrorFunc((f,arg),msg,severity,locator):
+    """Intermediate callback to wrap the locator"""
+    return f(arg,msg,severity,xmlTextReaderLocator(locator))
 
 class xmlTextReaderCore:
 
@@ -517,15 +527,25 @@ class xmlTextReaderCore:
             libxml2mod.xmlFreeTextReader(self._o)
         self._o = None
 
-    def setErrorHandler(self,f,arg):
+    def SetErrorHandler(self,f,arg):
         """Register an error handler that will be called back as
-           f(arg,msg,line,col,URI,severity)."""
-        libxml2mod.xmlTextReaderSetErrorHandler(self._o,f,arg)
+           f(arg,msg,severity,locator)."""
+        if f is None:
+            libxml2mod.xmlTextReaderSetErrorHandler(\
+                self._o,None,None)
+        else:
+            libxml2mod.xmlTextReaderSetErrorHandler(\
+                self._o,_xmlTextReaderErrorFunc,(f,arg))
 
-    def getErrorHandler(self):
+    def GetErrorHandler(self):
         """Return (f,arg) as previously registered with setErrorHandler
            or (None,None)."""
-        return libxml2mod.xmlTextReaderGetErrorHandler(self._o)
+        f,arg = libxml2mod.xmlTextReaderGetErrorHandler(self._o)
+        if f is None:
+            return None,None
+        else:
+            # assert f is _xmlTextReaderErrorFunc
+            return arg
 
 # WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
 #

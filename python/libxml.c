@@ -1177,32 +1177,6 @@ libxml_htmlSAXParseFile(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     return (Py_None);
 }
 
-PyObject *
-libxml_xmlFreeParserCtxt(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
-    xmlParserCtxtPtr ctxt;
-    PyObject *pyobj_ctxt;
-    xmlParserCtxtPyCtxtPtr pyCtxt;
-
-    if (!PyArg_ParseTuple(args, (char *)"O:xmlFreeParserCtxt", &pyobj_ctxt))
-        return(NULL);
-    ctxt = (xmlParserCtxtPtr) PyparserCtxt_Get(pyobj_ctxt);
-
-    if (ctxt != NULL) {
-	pyCtxt = (xmlParserCtxtPyCtxtPtr)((xmlParserCtxtPtr)ctxt)->_private;
-	if (pyCtxt) {
-	    Py_XDECREF(pyCtxt->errorFunc);
-	    Py_XDECREF(pyCtxt->errorFuncArg);
-	    Py_XDECREF(pyCtxt->warningFunc);
-	    Py_XDECREF(pyCtxt->warningFuncArg);
-	    xmlFree(pyCtxt);
-	}
-	xmlFreeParserCtxt(ctxt);
-    }
-
-    Py_INCREF(Py_None);
-    return(Py_None);
-}
-
 /************************************************************************
  *									*
  *			Error message callback				*
@@ -1332,44 +1306,87 @@ libxml_xmlRegisterErrorHandler(ATTRIBUTE_UNUSED PyObject * self,
  *									*
  ************************************************************************/
 
-static void 
-libxml_xmlParserCtxtErrorFuncHandler(void *ctxt, const char *msg, ...)
+typedef struct 
 {
-    char *str;
-    va_list ap;
+    PyObject *f;
+    PyObject *arg;
+} xmlParserCtxtPyCtxt;
+typedef xmlParserCtxtPyCtxt *xmlParserCtxtPyCtxtPtr;
+
+static void
+libxml_xmlParserCtxtGenericErrorFuncHandler(void *ctx, int severity, char *str) 
+{
     PyObject *list;
-    PyObject *message;
     PyObject *result;
+    xmlParserCtxtPtr ctxt;
     xmlParserCtxtPyCtxtPtr pyCtxt;
     
 #ifdef DEBUG_ERROR
-    printf("libxml_xmlParserCtxtErrorFuncHandler(%p, %s, ...) called\n", ctx, msg);
+    printf("libxml_xmlParserCtxtGenericErrorFuncHandler(%p, %s, ...) called\n", ctx, msg);
 #endif
 
-    pyCtxt = (xmlParserCtxtPyCtxtPtr)((xmlParserCtxtPtr)ctxt)->_private;
+    ctxt = (xmlParserCtxtPtr)ctx;
+    pyCtxt = (xmlParserCtxtPyCtxtPtr)ctxt->_private;
 
-    if (pyCtxt->errorFunc == NULL) {
-        va_start(ap, msg);
-        vfprintf(stdout, msg, ap);
-        va_end(ap);
-    } else {
-	va_start(ap, msg);
-	str = libxml_buildMessage(msg,ap);
-	va_end(ap);
-
-        list = PyTuple_New(2);
-        PyTuple_SetItem(list, 0, pyCtxt->errorFuncArg);
-        Py_XINCREF(pyCtxt->errorFuncArg);
-        message = libxml_charPtrWrap(str);
-        PyTuple_SetItem(list, 1, message);
-        result = PyEval_CallObject(pyCtxt->errorFunc, list);
-        Py_XDECREF(list);
-        Py_XDECREF(result);
+    list = PyTuple_New(4);
+    PyTuple_SetItem(list, 0, pyCtxt->arg);
+    Py_XINCREF(pyCtxt->arg);
+    PyTuple_SetItem(list, 1, libxml_charPtrWrap(str));
+    PyTuple_SetItem(list, 2, libxml_intWrap(severity));
+    PyTuple_SetItem(list, 3, Py_None);
+    Py_INCREF(Py_None);
+    result = PyEval_CallObject(pyCtxt->f, list);
+    if (result == NULL) 
+    {
+	/* TODO: manage for the exception to be propagated... */
+	PyErr_Print();
     }
+    Py_XDECREF(list);
+    Py_XDECREF(result);
+}
+
+static void 
+libxml_xmlParserCtxtErrorFuncHandler(void *ctx, const char *msg, ...) 
+{
+    va_list ap;
+
+    va_start(ap, msg);
+    libxml_xmlParserCtxtGenericErrorFuncHandler(ctx,XML_PARSER_SEVERITY_ERROR,libxml_buildMessage(msg,ap));
+    va_end(ap);
+}
+
+static void 
+libxml_xmlParserCtxtWarningFuncHandler(void *ctx, const char *msg, ...) 
+{
+    va_list ap;
+
+    va_start(ap, msg);
+    libxml_xmlParserCtxtGenericErrorFuncHandler(ctx,XML_PARSER_SEVERITY_WARNING,libxml_buildMessage(msg,ap));
+    va_end(ap);
+}
+
+static void 
+libxml_xmlParserCtxtValidityErrorFuncHandler(void *ctx, const char *msg, ...) 
+{
+    va_list ap;
+
+    va_start(ap, msg);
+    libxml_xmlParserCtxtGenericErrorFuncHandler(ctx,XML_PARSER_SEVERITY_VALIDITY_ERROR,libxml_buildMessage(msg,ap));
+    va_end(ap);
+}
+
+static void 
+libxml_xmlParserCtxtValidityWarningFuncHandler(void *ctx, const char *msg, ...) 
+{
+    va_list ap;
+
+    va_start(ap, msg);
+    libxml_xmlParserCtxtGenericErrorFuncHandler(ctx,XML_PARSER_SEVERITY_VALIDITY_WARNING,libxml_buildMessage(msg,ap));
+    va_end(ap);
 }
 
 PyObject *
-libxml_xmlSetParserCtxtErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *args)
+libxml_xmlParserCtxtSetErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) 
 {
     PyObject *py_retval;
     xmlParserCtxtPtr ctxt;
@@ -1378,7 +1395,7 @@ libxml_xmlSetParserCtxtErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *a
     PyObject *pyobj_f;
     PyObject *pyobj_arg;
 
-    if (!PyArg_ParseTuple(args, (char *)"OOO:xmlSetParserCtxtErrorHandler",
+    if (!PyArg_ParseTuple(args, (char *)"OOO:xmlParserCtxtSetErrorHandler",
 		          &pyobj_ctxt, &pyobj_f, &pyobj_arg))
         return(NULL);
     ctxt = (xmlParserCtxtPtr) PyparserCtxt_Get(pyobj_ctxt);
@@ -1392,97 +1409,86 @@ libxml_xmlSetParserCtxtErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *a
 	ctxt->_private = pyCtxt;
     }
     else {
-	pyCtxt = ctxt->_private;
+	pyCtxt = (xmlParserCtxtPyCtxtPtr)ctxt->_private;
     }
     /* TODO: check f is a function ! */
-    Py_XDECREF(pyCtxt->errorFunc);
+    Py_XDECREF(pyCtxt->f);
     Py_XINCREF(pyobj_f);
-    pyCtxt->errorFunc = pyobj_f;
-    Py_XDECREF(pyCtxt->errorFuncArg);
+    pyCtxt->f = pyobj_f;
+    Py_XDECREF(pyCtxt->arg);
     Py_XINCREF(pyobj_arg);
-    pyCtxt->errorFuncArg = pyobj_arg;
+    pyCtxt->arg = pyobj_arg;
 
-    ctxt->sax->error = libxml_xmlParserCtxtErrorFuncHandler;
-    ctxt->vctxt.error = libxml_xmlParserCtxtErrorFuncHandler;
+    if (pyobj_f != Py_None) {
+	ctxt->sax->error = libxml_xmlParserCtxtErrorFuncHandler;
+	ctxt->sax->warning = libxml_xmlParserCtxtWarningFuncHandler;
+	ctxt->vctxt.error = libxml_xmlParserCtxtValidityErrorFuncHandler;
+	ctxt->vctxt.warning = libxml_xmlParserCtxtValidityWarningFuncHandler;
+    }
+    else {
+	ctxt->sax->error = xmlParserError;
+	ctxt->vctxt.error = xmlParserValidityError;
+	ctxt->sax->warning = xmlParserWarning;
+	ctxt->vctxt.warning = xmlParserValidityWarning;
+    }
 
     py_retval = libxml_intWrap(1);
     return(py_retval);
 }
 
-static void 
-libxml_xmlParserCtxtWarningFuncHandler(void *ctxt, const char *msg, ...)
-{
-    char *str;
-    va_list ap;
-    PyObject *list;
-    PyObject *message;
-    PyObject *result;
-    xmlParserCtxtPyCtxtPtr pyCtxt;
-
-#ifdef DEBUG_ERROR
-    printf("libxml_xmlParserCtxtWarningFuncHandler(%p, %s, ...) called\n", ctx, msg);
-#endif
-
-    pyCtxt = (xmlParserCtxtPyCtxtPtr)((xmlParserCtxtPtr)ctxt)->_private;
-
-    if (pyCtxt->warningFunc == NULL) {
-        va_start(ap, msg);
-        vfprintf(stdout, msg, ap);
-        va_end(ap);
-    } else {
-	va_start(ap, msg);
-	str = libxml_buildMessage(msg,ap);
-	va_end(ap);
-
-        list = PyTuple_New(2);
-        PyTuple_SetItem(list, 0, pyCtxt->warningFuncArg);
-        Py_XINCREF(pyCtxt->warningFuncArg);
-        message = libxml_charPtrWrap(str);
-        PyTuple_SetItem(list, 1, message);
-        result = PyEval_CallObject(pyCtxt->warningFunc, list);
-        Py_XDECREF(list);
-        Py_XDECREF(result);
-    }
-}
-
 PyObject *
-libxml_xmlSetParserCtxtWarningHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *args)
+libxml_xmlParserCtxtGetErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) 
 {
     PyObject *py_retval;
     xmlParserCtxtPtr ctxt;
     xmlParserCtxtPyCtxtPtr pyCtxt;
     PyObject *pyobj_ctxt;
-    PyObject *pyobj_f;
-    PyObject *pyobj_arg;
 
-    if (!PyArg_ParseTuple(args, (char *)"OOO:xmlSetParserCtxtWarningHandler", &pyobj_ctxt, &pyobj_f, &pyobj_arg))
+    if (!PyArg_ParseTuple(args, (char *)"O:xmlParserCtxtGetErrorHandler",
+		          &pyobj_ctxt))
         return(NULL);
     ctxt = (xmlParserCtxtPtr) PyparserCtxt_Get(pyobj_ctxt);
-    if (ctxt->_private == NULL) {
-	pyCtxt = xmlMalloc(sizeof(xmlParserCtxtPyCtxt));
-	if (pyCtxt == NULL) {
-	    py_retval = libxml_intWrap(-1);
-	    return(py_retval);
-	}
-	memset(pyCtxt,0,sizeof(xmlParserCtxtPyCtxt));
-	ctxt->_private = pyCtxt;
+    py_retval = PyTuple_New(2);
+    if (ctxt->_private != NULL) {
+	pyCtxt = (xmlParserCtxtPyCtxtPtr)ctxt->_private;
+
+	PyTuple_SetItem(py_retval, 0, pyCtxt->f);
+	Py_XINCREF(pyCtxt->f);
+	PyTuple_SetItem(py_retval, 1, pyCtxt->arg);
+	Py_XINCREF(pyCtxt->arg);
     }
     else {
-	pyCtxt = ctxt->_private;
+	/* no python error handler registered */
+	PyTuple_SetItem(py_retval, 0, Py_None);
+	Py_XINCREF(Py_None);
+	PyTuple_SetItem(py_retval, 1, Py_None);
+	Py_XINCREF(Py_None);
     }
-    /* TODO: check f is a function ! */
-    Py_XDECREF(pyCtxt->warningFunc);
-    Py_XINCREF(pyobj_f);
-    pyCtxt->warningFunc = pyobj_f;
-    Py_XDECREF(pyCtxt->warningFuncArg);
-    Py_XINCREF(pyobj_arg);
-    pyCtxt->warningFuncArg = pyobj_arg;
-
-    ctxt->sax->warning = libxml_xmlParserCtxtWarningFuncHandler;
-    ctxt->vctxt.warning = libxml_xmlParserCtxtWarningFuncHandler;
-
-    py_retval = libxml_intWrap(1);
     return(py_retval);
+}
+
+PyObject *
+libxml_xmlFreeParserCtxt(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
+    xmlParserCtxtPtr ctxt;
+    PyObject *pyobj_ctxt;
+    xmlParserCtxtPyCtxtPtr pyCtxt;
+
+    if (!PyArg_ParseTuple(args, (char *)"O:xmlFreeParserCtxt", &pyobj_ctxt))
+        return(NULL);
+    ctxt = (xmlParserCtxtPtr) PyparserCtxt_Get(pyobj_ctxt);
+
+    if (ctxt != NULL) {
+	pyCtxt = (xmlParserCtxtPyCtxtPtr)((xmlParserCtxtPtr)ctxt)->_private;
+	if (pyCtxt) {
+	    Py_XDECREF(pyCtxt->f);
+	    Py_XDECREF(pyCtxt->arg);
+	    xmlFree(pyCtxt);
+	}
+	xmlFreeParserCtxt(ctxt);
+    }
+
+    Py_INCREF(Py_None);
+    return(Py_None);
 }
 
 /************************************************************************
@@ -1501,27 +1507,23 @@ typedef xmlTextReaderPyCtxt *xmlTextReaderPyCtxtPtr;
 static void 
 libxml_xmlTextReaderErrorCallback(void *arg, 
 				  const char *msg,
-				  int line,
-				  int col,
-				  const char *URI,
-				  int severity)
+				  int severity,
+				  xmlTextReaderLocatorPtr locator)
 {
     xmlTextReaderPyCtxt *pyCtxt = (xmlTextReaderPyCtxt *)arg;
     PyObject *list;
     PyObject *result;
     
-    list = PyTuple_New(6);
+    list = PyTuple_New(4);
     PyTuple_SetItem(list, 0, pyCtxt->arg);
     Py_XINCREF(pyCtxt->arg);
     PyTuple_SetItem(list, 1, libxml_charPtrConstWrap(msg));
-    PyTuple_SetItem(list, 2, libxml_intWrap(line));
-    PyTuple_SetItem(list, 3, libxml_intWrap(col));
-    PyTuple_SetItem(list, 4, libxml_charPtrConstWrap(URI));
-    PyTuple_SetItem(list, 5, libxml_intWrap(severity));
+    PyTuple_SetItem(list, 2, libxml_intWrap(severity));
+    PyTuple_SetItem(list, 3, libxml_xmlTextReaderLocatorPtrWrap(locator));
     result = PyEval_CallObject(pyCtxt->f, list);
     if (result == NULL)
     {
-	/* TODO: manage for the exception to be go up... */
+	/* TODO: manage for the exception to be propagated... */
 	PyErr_Print();
     }
     Py_XDECREF(list);
@@ -2558,8 +2560,8 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "inputBufferCreate", libxml_xmlCreateInputBuffer, METH_VARARGS, NULL},
     {(char *) "setEntityLoader", libxml_xmlSetEntityLoader, METH_VARARGS, NULL},
     {(char *)"xmlRegisterErrorHandler", libxml_xmlRegisterErrorHandler, METH_VARARGS, NULL },
-    {(char *)"xmlSetParserCtxtErrorHandler", libxml_xmlSetParserCtxtErrorHandler, METH_VARARGS, NULL },
-    {(char *)"xmlSetParserCtxtWarningHandler", libxml_xmlSetParserCtxtWarningHandler, METH_VARARGS, NULL },
+    {(char *)"xmlParserCtxtSetErrorHandler", libxml_xmlParserCtxtSetErrorHandler, METH_VARARGS, NULL },
+    {(char *)"xmlParserCtxtGetErrorHandler", libxml_xmlParserCtxtGetErrorHandler, METH_VARARGS, NULL },
     {(char *)"xmlFreeParserCtxt", libxml_xmlFreeParserCtxt, METH_VARARGS, NULL },
     {(char *)"xmlTextReaderSetErrorHandler", libxml_xmlTextReaderSetErrorHandler, METH_VARARGS, NULL },
     {(char *)"xmlTextReaderGetErrorHandler", libxml_xmlTextReaderGetErrorHandler, METH_VARARGS, NULL },

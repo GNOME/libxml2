@@ -2281,6 +2281,74 @@ xmlTextReaderBuildMessage(const char *msg, va_list ap) {
     return str;
 }
 
+/**
+ * xmlTextReaderLocatorLineNumber
+ * @locator: the xmlTextReaderLocatorPtr used
+ *
+ * Obtain the line number for the given locator.
+ *
+ * Returns the line number or -1 in case of error.
+ */
+int
+xmlTextReaderLocatorLineNumber(xmlTextReaderLocatorPtr locator) {
+    /* we know that locator is a xmlParserCtxtPtr */
+    xmlParserCtxtPtr ctx = (xmlParserCtxtPtr)locator;
+    int ret = -1;
+
+    if (ctx->node != NULL) {
+	ret = xmlGetLineNo(ctx->node);
+    }
+    else {
+	/* inspired from error.c */
+	xmlParserInputPtr input;
+	input = ctx->input;
+	if ((input->filename == NULL) && (ctx->inputNr > 1))
+	    input = ctx->inputTab[ctx->inputNr - 2];
+	if (input != NULL) {
+	    ret = input->line;
+	} 
+	else {
+	    ret = -1;
+	}
+    }
+
+    return ret;
+}
+
+/**
+ * xmlTextReaderLocatorBaseURI
+ * @locator: the xmlTextReaderLocatorPtr used
+ *
+ * Obtain the base URI for the given locator.
+ *
+ * Returns the base URI or NULL in case of error.
+ */
+xmlChar *
+xmlTextReaderLocatorBaseURI(xmlTextReaderLocatorPtr locator) {
+    /* we know that locator is a xmlParserCtxtPtr */
+    xmlParserCtxtPtr ctx = (xmlParserCtxtPtr)locator;
+    xmlChar *ret = NULL;
+
+    if (ctx->node != NULL) {
+	ret = xmlNodeGetBase(NULL,ctx->node);
+    }
+    else {
+	/* inspired from error.c */
+	xmlParserInputPtr input;
+	input = ctx->input;
+	if ((input->filename == NULL) && (ctx->inputNr > 1))
+	    input = ctx->inputTab[ctx->inputNr - 2];
+	if (input != NULL) {
+	    ret = xmlStrdup(input->filename);
+	} 
+	else {
+	    ret = NULL;
+	}
+    }
+
+    return ret;
+}
+
 static void
 xmlTextReaderGenericError(void *ctxt, int severity, char *str) {
     xmlParserCtxtPtr ctx = (xmlParserCtxtPtr)ctxt;
@@ -2289,10 +2357,8 @@ xmlTextReaderGenericError(void *ctxt, int severity, char *str) {
     if (str != NULL) {
 	reader->errorFunc(reader->errorFuncArg,
 			  str,
-			  ctx->input->line,
-			  ctx->input->col,
-			  ctx->input->filename,
-			  severity);
+			  severity,
+			  (xmlTextReaderLocatorPtr)ctx);
 	xmlFree(str);
     }
 }
@@ -2303,7 +2369,7 @@ xmlTextReaderError(void *ctxt, const char *msg, ...) {
 
     va_start(ap,msg);
     xmlTextReaderGenericError(ctxt,
-                              XMLREADER_SEVERITY_ERROR,
+                              XML_PARSER_SEVERITY_ERROR,
 	                      xmlTextReaderBuildMessage(msg,ap));
     va_end(ap);
 
@@ -2315,7 +2381,7 @@ xmlTextReaderWarning(void *ctxt, const char *msg, ...) {
 
     va_start(ap,msg);
     xmlTextReaderGenericError(ctxt,
-                              XMLREADER_SEVERITY_WARNING,
+                              XML_PARSER_SEVERITY_WARNING,
 	                      xmlTextReaderBuildMessage(msg,ap));
     va_end(ap);
 }
@@ -2323,24 +2389,37 @@ xmlTextReaderWarning(void *ctxt, const char *msg, ...) {
 static void 
 xmlTextReaderValidityError(void *ctxt, const char *msg, ...) {
     va_list ap;
+    int len = xmlStrlen((const xmlChar *) msg);
 
-    va_start(ap,msg);
-    xmlTextReaderGenericError(ctxt,
-                              XMLREADER_SEVERITY_VALIDITY_ERROR,
-	                      xmlTextReaderBuildMessage(msg,ap));
-    va_end(ap);
-
+    if ((len > 1) && (msg[len - 2] != ':')) {
+	/* 
+	 * some callbacks only report locator information: 
+	 * skip them (mimicking behaviour in error.c) 
+	 */
+	va_start(ap,msg);
+	xmlTextReaderGenericError(ctxt,
+				  XML_PARSER_SEVERITY_VALIDITY_ERROR,
+				  xmlTextReaderBuildMessage(msg,ap));
+	va_end(ap);
+    }
 }
 
 static void 
 xmlTextReaderValidityWarning(void *ctxt, const char *msg, ...) {
     va_list ap;
+    int len = xmlStrlen((const xmlChar *) msg);
 
-    va_start(ap,msg);
-    xmlTextReaderGenericError(ctxt,
-                              XMLREADER_SEVERITY_VALIDITY_WARNING,
-	                      xmlTextReaderBuildMessage(msg,ap));
-    va_end(ap);
+    if ((len != 0) && (msg[len - 1] != ':')) {
+	/* 
+	 * some callbacks only report locator information: 
+	 * skip them (mimicking behaviour in error.c) 
+	 */
+	va_start(ap,msg);
+	xmlTextReaderGenericError(ctxt,
+				  XML_PARSER_SEVERITY_VALIDITY_WARNING,
+				  xmlTextReaderBuildMessage(msg,ap));
+	va_end(ap);
+    }
 }
 
 /**
@@ -2349,13 +2428,14 @@ xmlTextReaderValidityWarning(void *ctxt, const char *msg, ...) {
  * @f:	the callback function to call on error and warnings
  * @arg:    a user argument to pass to the callback function
  *
+ * Register a callback function that will be called on error and warnings.
+ *
  * If @f is NULL, the default error and warning handlers are restored.
  */
 void
 xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader, 
 			     xmlTextReaderErrorFunc f, 
-			     void *arg)
-{
+			     void *arg) {
     if (f != NULL) {
 	reader->ctxt->sax->error = xmlTextReaderError;
 	reader->ctxt->vctxt.error = xmlTextReaderValidityError;
@@ -2375,11 +2455,18 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
     }
 }
 
+/**
+ * xmlTextReaderGetErrorHandler:
+ * @reader:  the xmlTextReaderPtr used
+ * @f:	the callback function or NULL is no callback has been registered
+ * @arg:    a user argument
+ *
+ * Retrieve the error callback function and user argument.
+ */
 void
 xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader, 
 			     xmlTextReaderErrorFunc *f, 
-			     void **arg)
-{
+			     void **arg) {
     *f = reader->errorFunc;
     *arg = reader->errorFuncArg;
 }

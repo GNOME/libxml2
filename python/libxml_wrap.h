@@ -93,6 +93,14 @@ typedef struct {
     xmlTextReaderPtr obj;
 } PyxmlTextReader_Object;
 
+#define PyxmlTextReaderLocator_Get(v) (((v) == Py_None) ? NULL : \
+        (((PyxmlTextReaderLocator_Object *)(v))->obj))
+
+typedef struct {
+    PyObject_HEAD
+    xmlTextReaderLocatorPtr obj;
+} PyxmlTextReaderLocator_Object;
+
 #define PyURI_Get(v) (((v) == Py_None) ? NULL : \
 	(((PyURI_Object *)(v))->obj))
 
@@ -147,19 +155,6 @@ PyObject * libxml_xmlOutputBufferPtrWrap(xmlOutputBufferPtr buffer);
 PyObject * libxml_xmlParserInputBufferPtrWrap(xmlParserInputBufferPtr buffer);
 PyObject * libxml_xmlRegexpPtrWrap(xmlRegexpPtr regexp);
 PyObject * libxml_xmlTextReaderPtrWrap(xmlTextReaderPtr reader);
+PyObject * libxml_xmlTextReaderLocatorPtrWrap(xmlTextReaderLocatorPtr locator);
 
 xmlXPathObjectPtr libxml_xmlXPathObjectPtrConvert(PyObject * obj);
-
-/*
- * Data structure that makes the link from the parser context
- * to the python wrapper.
- */
-typedef struct 
-{
-    PyObject *errorFunc;
-    PyObject *errorFuncArg;
-    PyObject *warningFunc;
-    PyObject *warningFuncArg;
-} xmlParserCtxtPyCtxt;
-typedef xmlParserCtxtPyCtxt *xmlParserCtxtPyCtxtPtr;
-

@@ -1,3 +1,12 @@
+Mon Jan 20 23:25:00 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c python/drv_libxml2.py python/generator.py
+	  python/libxml.c python/libxml.py python/libxml_wrap.h
+	  python/types.c: patch from Stéphane Bidoul for better per
+	  context error message APIs
+	* python/tests/ctxterror.py python/tests/readererr.py:
+	  update of the tests
+
 Sun Jan 19 17:09:28 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* doc/guidelines.html

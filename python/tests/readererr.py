@@ -13,14 +13,14 @@ expect="""--> (3) test1:1:xmlns: URI foo is not absolute
 --> (4) test1:1:Opening and ending tag mismatch: c and a
 """
 err=""
-def myErrorHandler(arg,msg,line,col,URI,severity):
+def myErrorHandler(arg,msg,severity,locator):
     global err
-    err = err + "%s (%d) %s:%d:%s" % (arg,severity,URI,line,msg)
+    err = err + "%s (%d) %s:%d:%s" % (arg,severity,locator.BaseURI(),locator.LineNumber(),msg)
 
 f = StringIO.StringIO("""<a xmlns="foo"><b b1="b1"/><c>content of c</a>""")
 input = libxml2.inputBuffer(f)
 reader = input.newTextReader("test1")
-reader.setErrorHandler(myErrorHandler,"-->")
+reader.SetErrorHandler(myErrorHandler,"-->")
 while reader.Read() == 1:
     pass
 
@@ -30,9 +30,9 @@ if err != expect:
     print "expected %s" %(expect)
     sys.exit(1)
 
-reader.setErrorHandler(None,None)
-if reader.getErrorHandler() != (None,None):
-    print "getErrorHandler failed"
+reader.SetErrorHandler(None,None)
+if reader.GetErrorHandler() != (None,None):
+    print "GetErrorHandler failed"
     sys.exit(1)
 
 #

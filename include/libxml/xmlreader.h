@@ -24,11 +24,11 @@ typedef enum {
 } xmlParserProperties;
 
 typedef enum {
-    XMLREADER_SEVERITY_VALIDITY_WARNING = 1,
-    XMLREADER_SEVERITY_VALIDITY_ERROR = 2,
-    XMLREADER_SEVERITY_WARNING = 3,
-    XMLREADER_SEVERITY_ERROR = 4
-} xmlReaderSeverities;
+    XML_PARSER_SEVERITY_VALIDITY_WARNING = 1,
+    XML_PARSER_SEVERITY_VALIDITY_ERROR = 2,
+    XML_PARSER_SEVERITY_WARNING = 3,
+    XML_PARSER_SEVERITY_ERROR = 4
+} xmlParserSeverities;
 
 typedef struct _xmlTextReader xmlTextReader;
 typedef xmlTextReader *xmlTextReaderPtr;
@@ -110,12 +110,14 @@ xmlDocPtr	xmlTextReaderCurrentDoc		(xmlTextReaderPtr reader);
 /*
  * Error handling extensions
  */
-typedef void (*xmlTextReaderErrorFunc)          (void *arg, 
+typedef void *  xmlTextReaderLocatorPtr;
+typedef void   (*xmlTextReaderErrorFunc)        (void *arg, 
 						 const char *msg,
-						 int line, 
-						 int col, 
-						 const char *URI, 
-						 xmlReaderSeverities severity);
+						 xmlParserSeverities severity,
+						 xmlTextReaderLocatorPtr locator);
+int             xmlTextReaderLocatorLineNumber  (xmlTextReaderLocatorPtr locator);
+/*int             xmlTextReaderLocatorLinePosition(xmlTextReaderLocatorPtr locator);*/
+xmlChar *       xmlTextReaderLocatorBaseURI     (xmlTextReaderLocatorPtr locator);
 void            xmlTextReaderSetErrorHandler    (xmlTextReaderPtr reader, 
 						 xmlTextReaderErrorFunc f, 
 						 void *arg);

@@ -9,10 +9,10 @@ USAGE
 CAVEATS
     - Lexical handlers are supported, except for start/endEntity
       (waiting for XmlReader.ResolveEntity) and start/endDTD
-    - as understand it, libxml2 error handlers are globals (per thread);
-      each call to parse() registers a new error handler, 
-      overwriting any previously registered handler 
-      --> you can't have 2 LibXml2Reader active at the same time
+    - Error callbacks are not exactly synchronous, they tend
+      to be invoked before the corresponding content callback,
+      because the underlying reader interface parses
+      data by chunks of 512 bytes
     
 TODO
     - search for TODO
@@ -34,7 +34,7 @@ TODO
 """
 
 __author__  = u"Stéphane Bidoul <sbi@skynet.be>"
-__version__ = "0.2"
+__version__ = "0.3"
 
 import codecs
 import sys
@@ -69,15 +69,27 @@ except ImportError, e:
     raise SAXReaderNotAvailable("libxml2 not available: " \
                                 "import error was: %s" % e)
 
-def _registerErrorHandler(handler):
-    if not sys.modules.has_key('libxslt'):
-        # normal behaviour when libxslt is not imported
-        libxml2.registerErrorHandler(handler,"drv_libxml2")
-    else:
-        # when libxslt is imported, one must
-        # use libxst's error handler instead (see libxml2 bug 102181)
-        import libxslt
-        libxslt.registerErrorHandler(handler,"drv_libxml2")
+class Locator(xmlreader.Locator):
+    """SAX Locator adapter for libxml2.xmlTextReaderLocator"""
+
+    def __init__(self,locator):
+        self.__locator = locator
+
+    def getColumnNumber(self):
+        "Return the column number where the current event ends."
+        return -1
+
+    def getLineNumber(self):
+        "Return the line number where the current event ends."
+        return self.__locator.LineNumber()
+
+    def getPublicId(self):
+        "Return the public identifier for the current event."
+        return None
+
+    def getSystemId(self):
+        "Return the system identifier for the current event."
+        return self.__locator.BaseURI()
 
 class LibXml2Reader(xmlreader.XMLReader):
 
@@ -95,21 +107,30 @@ class LibXml2Reader(xmlreader.XMLReader):
         # error messages accumulator
         self.__errors = None
 
-    def _errorHandler(self,ctx,str):
+    def _errorHandler(self,arg,msg,severity,locator):
         if self.__errors is None:
             self.__errors = []
-        self.__errors.append(str)
+        self.__errors.append((severity,
+                              SAXParseException(msg,None,
+                                                Locator(locator))))
 
-    def _reportError(self,callback):
-        # TODO: use SAXParseException, but we need a Locator for that
-        # TODO: distinguish warnings from errors
-        msg = "".join(self.__errors)
+    def _reportErrors(self,fatal):
+        for severity,exception in self.__errors:
+            if severity in (libxml2.PARSER_SEVERITY_VALIDITY_WARNING,
+                            libxml2.PARSER_SEVERITY_WARNING):
+                self._err_handler.warning(exception)
+            else:
+                # when fatal is set, the parse will stop;
+                # we consider that the last error reported
+                # is the fatal one.
+                if fatal and exception is self.__errors[-1][1]:
+                    self._err_handler.fatalError(exception)
+                else:
+                    self._err_handler.error(exception)
         self.__errors = None
-        callback(SAXException(msg))
 
     def parse(self, source):
         self.__parsing = 1
-        _registerErrorHandler(self._errorHandler)
         try:
             # prepare source and create reader
             if type(source) in StringTypes:
@@ -118,6 +139,7 @@ class LibXml2Reader(xmlreader.XMLReader):
                 source = saxutils.prepare_input_source(source)
                 input = libxml2.inputBuffer(source.getByteStream())
                 reader = input.newTextReader(source.getSystemId())
+            reader.SetErrorHandler(self._errorHandler,None)
             # configure reader
             reader.SetParserProp(libxml2.PARSER_LOADDTD,1)
             reader.SetParserProp(libxml2.PARSER_DEFAULTATTRS,1)
@@ -137,21 +159,18 @@ class LibXml2Reader(xmlreader.XMLReader):
                 # check for errors
                 if r == 1:
                     if not self.__errors is None:
-                        # non-fatal error
-                        self._reportError(self._err_handler.error)
+                        self._reportErrors(0)
                 elif r == 0:
                     if not self.__errors is None:
-                        # non-fatal error
-                        self._reportError(self._err_handler.error)
-                    break
+                        self._reportErrors(0)
+                    break # end of parse
                 else:
-                    # fatal error
                     if not self.__errors is None:
-                        self._reportError(self._err_handler.fatalError)
+                        self._reportErrors(1)
                     else:
                         self._err_handler.fatalError(\
                             SAXException("Read failed (no details available)"))
-                    break
+                    break # fatal parse error
                 # get node type
                 nodeType = reader.NodeType()
                 # Element
@@ -180,6 +199,7 @@ class LibXml2Reader(xmlreader.XMLReader):
                                        _d(reader.LocalName()))
                             qnames[attName] = qname
                             attrs[attName] = value
+                        reader.MoveToElement()
                         self._cont_handler.startElementNS( \
                             eltName,eltQName,attributesNSImpl) 
                         if reader.IsEmptyElement():
@@ -194,6 +214,7 @@ class LibXml2Reader(xmlreader.XMLReader):
                         while reader.MoveToNextAttribute():
                             attName = _d(reader.Name())
                             attrs[attName] = _d(reader.Value())
+                        reader.MoveToElement()
                         self._cont_handler.startElement( \
                             eltName,attributesImpl)
                         if reader.IsEmptyElement():
@@ -275,7 +296,6 @@ class LibXml2Reader(xmlreader.XMLReader):
             reader.Close()
         finally:
             self.__parsing = 0
-            # TODO: unregister error handler?
 
     def setDTDHandler(self, handler):
         # TODO (when supported, the inherited method works just fine)

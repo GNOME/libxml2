@@ -9,20 +9,22 @@ import libxml2
 # Memory debug specific
 libxml2.debugMemory(1)
 
-expect="""--> Opening and ending tag mismatch: x and y
+expect="""--> (3) xmlns: URI foo is not absolute
+--> (4) Opening and ending tag mismatch: x and y
 """
 
 err=""
-def callback(ctx, str):
-     global err
+def callback(arg,msg,severity,reserved):
+    global err
+    err = err + "%s (%d) %s" % (arg,severity,msg)
 
-     err = err + "%s %s" % (ctx, str)
-
-s = """<x></y>"""
+s = """<x xmlns="foo"></y>"""
 
 parserCtxt = libxml2.createPushParser(None,"",0,"test.xml")
-parserCtxt.registerErrorHandler(callback, "-->")
-parserCtxt.registerWarningHandler(callback, "-->")
+parserCtxt.setErrorHandler(callback, "-->")
+if parserCtxt.getErrorHandler() != (callback,"-->"):
+    print "getErrorHandler failed"
+    sys.exit(1)
 parserCtxt.parseChunk(s,len(s),1)
 doc = parserCtxt.doc()
 doc.freeDoc()
@@ -37,8 +39,7 @@ if err != expect:
 i = 10000
 while i > 0:
     parserCtxt = libxml2.createPushParser(None,"",0,"test.xml")
-    parserCtxt.registerErrorHandler(callback, "-->")
-    parserCtxt.registerWarningHandler(callback, "-->")
+    parserCtxt.setErrorHandler(callback, "-->")
     parserCtxt.parseChunk(s,len(s),1)
     doc = parserCtxt.doc()
     doc.freeDoc()

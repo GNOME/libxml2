@@ -1219,6 +1219,9 @@ xmlCleanupPredefinedEntities
 	/* Error handling extensions */
 	xmlTextReaderSetErrorHandler
 	xmlTextReaderGetErrorHandler
+	xmlTextReaderLocatorLineNumber
+	/*xmlTextReaderLocatorLinePosition*/
+	xmlTextReaderLocatorBaseURI
 
 
 

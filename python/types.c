@@ -566,3 +566,22 @@ libxml_xmlTextReaderPtrWrap(xmlTextReaderPtr reader)
                                      (char *) "xmlTextReaderPtr", NULL);
     return (ret);
 }
+
+PyObject *
+libxml_xmlTextReaderLocatorPtrWrap(xmlTextReaderLocatorPtr locator)
+{
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlTextReaderLocatorPtrWrap: locator = %p\n", locator);
+#endif
+    if (locator == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+    ret =
+        PyCObject_FromVoidPtrAndDesc((void *) locator,
+                                     (char *) "xmlTextReaderLocatorPtr", NULL);
+    return (ret);
+}
+

@@ -1,19 +1,14 @@
-# Note that this is NOT a relocatable package
-%define ver      @VERSION@
-%define prefix   /usr
-%define datadir  %{prefix}/share
-
 Summary: Library providing XML and HTML support
 Name: libxml2
-Version: %ver
+Version: @VERSION@
 Release: 1
-Copyright: LGPL
+License: LGPL
 Group: Development/Libraries
-Source: ftp://xmlsoft.org/libxml2-%{ver}.tar.gz
-BuildRoot: /var/tmp/libxml2-%{PACKAGE_VERSION}-root
-
+Source: ftp://xmlsoft.org/libxml2-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL: http://xmlsoft.org/
-Docdir: %{datadir}/doc
+Prefix: %{_prefix}
+Docdir: %{_docdir}
 
 %description
 This library allows to manipulate XML files. It includes support 
@@ -43,11 +38,77 @@ to select subnodes or ranges. A flexible Input/Output mechanism is
 available, with existing HTTP and FTP modules and combined to an
 URI library.
 
+%prep
+%setup -q
+
+%build
+# Needed for snapshot releases.
+if [ ! -f configure ]; then
+%ifarch alpha
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+%else
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+%endif
+else
+%ifarch alpha
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+%else
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+%endif
+fi
+
+if [ "$SMP" != "" ]; then
+  (make "MAKE=make -k -j $SMP"; exit 0)
+  make
+else
+  make
+fi
+
+%install
+rm -rf $RPM_BUILD_ROOT
+
+install -d $RPM_BUILD_ROOT%{_mandir}/man1
+install -d $RPM_BUILD_ROOT%{_mandir}/man4
+make prefix=$RPM_BUILD_ROOT%{prefix} mandir=$RPM_BUILD_ROOT%{_mandir} install
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
+%files
+%defattr(-, root, root)
+
+%doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
+%doc %{_mandir}/man1/xmllint.1*
+%doc %{_mandir}/man1/xmlcatalog.1*
+%doc %{_mandir}/man4/libxml.4*
+
+%{prefix}/lib/lib*.so.*
+%{prefix}/bin/xmllint
+%{prefix}/bin/xmlcatalog
+
+%files devel
+%defattr(-, root, root)
+
+%doc %{_mandir}/man1/xml2-config.1*
+%doc doc/*.html doc/html
+
+%{prefix}/lib/lib*.so
+%{prefix}/lib/*a
+%{prefix}/lib/*.sh
+%{prefix}/include/*
+%{prefix}/bin/xml2-config
+%{prefix}/share/aclocal/libxml.m4
+%{prefix}/lib/pkgconfig/libxml-2.0.pc
 
 %changelog
 
 * Sun Nov  4 2001 Daniel Veillard <veillard@redhat.com>
 
+- cleaned up the specfile
 - 2.4.7 broke SGML catalogs badly. this fixes it.
 
 * Thu Apr 26 2001 Toshio Kuratomi <badger@prtr-13.ucsc.edu>
@@ -77,68 +138,3 @@ URI library.
 
 - Built release 0.30
 
-%prep
-%setup
-
-%build
-# Needed for snapshot releases.
-if [ ! -f configure ]; then
-%ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
-%else
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
-%endif
-else
-%ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
-%else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc" --mandir=%datadir/man
-%endif
-fi
-
-if [ "$SMP" != "" ]; then
-  (make "MAKE=make -k -j $SMP"; exit 0)
-  make
-else
-  make
-fi
-
-%install
-rm -rf $RPM_BUILD_ROOT
-
-install -d $RPM_BUILD_ROOT%{datadir}/man/man1
-install -d $RPM_BUILD_ROOT%{datadir}/man/man4
-make prefix=$RPM_BUILD_ROOT%{prefix} mandir=$RPM_BUILD_ROOT%{datadir}/man install
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
-
-%files
-%defattr(-, root, root)
-
-%doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
-%doc %{prefix}/share/man/man1/xmllint.1*
-%doc %{prefix}/share/man/man1/xmlcatalog.1*
-%doc %{prefix}/share/man/man4/libxml.4*
-
-%{prefix}/lib/lib*.so.*
-%{prefix}/bin/xmllint
-%{prefix}/bin/xmlcatalog
-
-%files devel
-%defattr(-, root, root)
-
-%doc /usr/share/man/man1/xml2-config.1*
-%doc doc/*.html doc/html
-
-%{prefix}/lib/lib*.so
-%{prefix}/lib/*a
-%{prefix}/lib/*.sh
-%{prefix}/include/*
-%{prefix}/bin/xml2-config
-%{prefix}/share/aclocal/libxml.m4
-%{prefix}/lib/pkgconfig/libxml-2.0.pc

@@ -2110,6 +2110,10 @@ xmlTextWriterStartPI(xmlTextWriterPtr writer, const xmlChar * target)
                     sum += count;
                     p->state = XML_TEXTWRITER_TEXT;
                     break;
+		case XML_TEXTWRITER_NONE:
+		case XML_TEXTWRITER_TEXT:
+		case XML_TEXTWRITER_DTD:
+		    break;
                 case XML_TEXTWRITER_PI:
                 case XML_TEXTWRITER_PI_TEXT:
                     xmlGenericError(xmlGenericErrorContext,

@@ -1,3 +1,8 @@
+Tue Dec  9 16:12:50 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlwriter.c: applied the patch to xmlTextWriterStartPI()
+	  suggested by Daniel Schulman in #128313
+
 Tue Dec  9 15:18:32 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in Makefile.am: another patch from Kenneth Haley

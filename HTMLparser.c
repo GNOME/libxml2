@@ -2642,11 +2642,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     }
 
     cnt = 0;
-#ifdef HAVE_ZLIB_H
-    while(!gzeof(input)) {
-#else
     while(1) {
-#endif
 	if (cnt == len) {
 	    len *= 2;
 	    nbuf =  (char *)realloc(buffer,(len+1)*sizeof(char));

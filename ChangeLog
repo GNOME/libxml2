@@ -1,3 +1,8 @@
+Mon Jul 12 12:36:39 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c, HTMLparser.c: applied patch from John Ellson <ellson@lucent.com>
+	  closing bug #1646
+
 Mon Jul 12 11:04:44 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Makefile.am, example/Makefile.am: closed bug #1683

@@ -2837,18 +2837,39 @@ xmlInitializeCatalog(void) {
 
     if (xmlDefaultCatalog == NULL) {
 	const char *catalogs;
+	char *path;
+	const char *cur, *paths;
 	xmlCatalogPtr catal;
+	xmlCatalogEntryPtr *nextent;
 
 	catalogs = (const char *) getenv("XML_CATALOG_FILES");
 	if (catalogs == NULL)
 	    catalogs = XML_XML_DEFAULT_CATALOG;
 
-	catal = xmlCreateNewCatalog(XML_XML_CATALOG_TYPE, xmlCatalogDefaultPrefer);
+	catal = xmlCreateNewCatalog(XML_XML_CATALOG_TYPE, 
+		xmlCatalogDefaultPrefer);
 	if (catal != NULL) {
-
-	    catal->xml = xmlNewCatalogEntry(XML_CATA_CATALOG, NULL,
-			   NULL, BAD_CAST catalogs, xmlCatalogDefaultPrefer);
-
+	    /* the XML_CATALOG_FILES envvar is allowed to contain a 
+	       space-separated list of entries. */
+	    cur = catalogs;
+	    nextent = &catal->xml;
+	    while (*cur != '\0') {
+		while (IS_BLANK(*cur)) 
+		    cur++;
+		if (*cur != 0) {
+		    paths = cur;
+		    while ((*cur != 0) && (!IS_BLANK(*cur)))
+			cur++;
+		    path = xmlStrndup((const xmlChar *)paths, cur - paths);
+		    if (path != NULL) {
+			*nextent = xmlNewCatalogEntry(XML_CATA_CATALOG, NULL,
+				NULL, BAD_CAST path, xmlCatalogDefaultPrefer);
+			if (*nextent != NULL)
+			    nextent = &((*nextent)->next);
+			xmlFree(path);
+		    }
+		}
+	    }
 	    xmlDefaultCatalog = catal;
 	}
     }
@@ -2896,7 +2917,7 @@ xmlLoadCatalog(const char *filename)
 
 /**
  * xmlLoadCatalogs:
- * @paths:  a list of file path separated by ':' or spaces
+ * @paths:  a space-separated list of catalog files.
  *
  * Load the catalogs and makes their definitions effective for the default
  * external entity loader.
@@ -2917,7 +2938,7 @@ xmlLoadCatalogs(const char *pathss) {
 	while (IS_BLANK(*cur)) cur++;
 	if (*cur != 0) {
 	    paths = cur;
-	    while ((*cur != 0) && (*cur != ':') && (!IS_BLANK(*cur)))
+	    while ((*cur != 0) && (!IS_BLANK(*cur)))
 		cur++;
 	    path = xmlStrndup((const xmlChar *)paths, cur - paths);
 	    if (path != NULL) {
@@ -2925,8 +2946,6 @@ xmlLoadCatalogs(const char *pathss) {
 		xmlFree(path);
 	    }
 	}
-	while (*cur == ':')
-	    cur++;
     }
 }
 

@@ -5758,6 +5758,8 @@ xmlXPathNextPrecedingInternal(xmlXPathParserContextPtr ctxt,
         cur = ctxt->context->node;
         if (cur == NULL)
             return (NULL);
+	if (cur->type == XML_NAMESPACE_DECL)
+	    cur = (xmlNodePtr)((xmlNsPtr)cur)->next;
         ctxt->ancestor = cur->parent;
     }
     if ((cur->prev != NULL) && (cur->prev->type == XML_DTD_NODE))

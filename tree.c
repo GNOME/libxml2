@@ -4484,8 +4484,9 @@ xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
 	return;
     }
     xmlDocContentDump(buf, cur);
-    *mem = xmlStrndup(buf->content, buf->use);
+    *mem = buf->content;
     *size = buf->use;
+    buf->content = NULL;
     xmlBufferFree(buf);
 }
 

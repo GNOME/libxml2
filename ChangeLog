@@ -1,3 +1,7 @@
+Mon Aug 27 19:08:32 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: improved xmlDocDumpMemory() memory usage for Jody
+
 Wed Aug 22 02:56:31 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: xmlSAXParseDoc() fixing a memleak on ctxt->sax,

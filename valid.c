@@ -350,6 +350,185 @@ static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
 	                           int create);
 xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem);
 
+#ifdef LIBXML_REGEXP_ENABLED
+
+/************************************************************************
+ *									*
+ *		Content model validation based on the regexps		*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlValidBuildAContentModel:
+ * @content:  the content model
+ * @ctxt:  the schema parser context
+ * @name:  the element name whose content is being built
+ *
+ * Generate the automata sequence needed for that type
+ *
+ * Returns 0 if successful or -1 in case of error.
+ */
+static int
+xmlValidBuildAContentModel(xmlElementContentPtr content,
+		           xmlValidCtxtPtr ctxt,
+		           const xmlChar *name) {
+    if (content == NULL) {
+	VERROR(ctxt->userData,
+	       "Found unexpected type = NULL in %s content model\n", name);
+	return(-1);
+    }
+    switch (content->type) {
+	case XML_ELEMENT_CONTENT_PCDATA:
+	    VERROR(ctxt->userData, "ContentModel found PCDATA for element %s\n",
+		   name);
+	    return(-1);
+	    break;
+	case XML_ELEMENT_CONTENT_ELEMENT: {
+	    xmlAutomataStatePtr oldstate = ctxt->state;
+	    switch (content->ocur) {
+		case XML_ELEMENT_CONTENT_ONCE:
+		    ctxt->state = xmlAutomataNewTransition(ctxt->am,
+			    ctxt->state, NULL, content->name, NULL);
+		    break;
+		case XML_ELEMENT_CONTENT_OPT:
+		    ctxt->state = xmlAutomataNewTransition(ctxt->am,
+			    ctxt->state, NULL, content->name, NULL);
+		    xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
+		    break;
+		case XML_ELEMENT_CONTENT_PLUS:
+		    ctxt->state = xmlAutomataNewTransition(ctxt->am,
+			    ctxt->state, NULL, content->name, NULL);
+		    xmlAutomataNewTransition(ctxt->am, ctxt->state,
+			                     ctxt->state, content->name, NULL);
+		    break;
+		case XML_ELEMENT_CONTENT_MULT:
+		    xmlAutomataNewTransition(ctxt->am, ctxt->state,
+			                     ctxt->state, content->name, NULL);
+		    break;
+	    }
+	    break;
+	}
+	case XML_ELEMENT_CONTENT_SEQ: {
+	    xmlAutomataStatePtr oldstate;
+	    xmlElementContentOccur ocur;
+
+	    /*
+	     * Simply iterate over the content
+	     */
+	    oldstate = ctxt->state;
+	    ocur = content->ocur;
+	    while (content->type == XML_ELEMENT_CONTENT_SEQ) {
+		xmlValidBuildAContentModel(content->c1, ctxt, name);
+		content = content->c2;
+	    }
+	    xmlValidBuildAContentModel(content->c2, ctxt, name);
+	    switch (ocur) {
+		case XML_ELEMENT_CONTENT_ONCE:
+		    break;
+		case XML_ELEMENT_CONTENT_OPT:
+		    xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
+		    break;
+		case XML_ELEMENT_CONTENT_MULT:
+		    xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
+		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldstate);
+		    break;
+		case XML_ELEMENT_CONTENT_PLUS:
+		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldstate);
+		    break;
+	    }
+	    break;
+	}
+	case XML_ELEMENT_CONTENT_OR: {
+	    xmlAutomataStatePtr start, end;
+	    xmlElementContentOccur ocur;
+
+	    start = ctxt->state;
+	    end = xmlAutomataNewState(ctxt->am);
+	    ocur = content->ocur;
+
+	    /*
+	     * iterate over the subtypes and remerge the end with an
+	     * epsilon transition
+	     */
+	    while (content->type == XML_ELEMENT_CONTENT_OR) {
+		ctxt->state = start;
+		xmlValidBuildAContentModel(content->c1, ctxt, name);
+		xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
+		content = content->c2;
+	    }
+	    ctxt->state = start;
+	    xmlValidBuildAContentModel(content->c1, ctxt, name);
+	    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
+	    ctxt->state = end;
+	    switch (ocur) {
+		case XML_ELEMENT_CONTENT_ONCE:
+		    break;
+		case XML_ELEMENT_CONTENT_OPT:
+		    xmlAutomataNewEpsilon(ctxt->am, start, ctxt->state);
+		    break;
+		case XML_ELEMENT_CONTENT_MULT:
+		    xmlAutomataNewEpsilon(ctxt->am, start, ctxt->state);
+		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, start);
+		    break;
+		case XML_ELEMENT_CONTENT_PLUS:
+		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, start);
+		    break;
+	    }
+	    break;
+	}
+	default:
+	    VERROR(ctxt->userData, "ContentModel broken for element %s\n",
+		   name);
+	    return(-1);
+    }
+    return(0);
+}
+/**
+ * xmlValidBuildContentModel:
+ * @ctxt:  a validation context
+ * @elem:  an element declaration node
+ *
+ * (Re)Build the automata associated to the content model of this
+ * element
+ *
+ * Returns 0 in case of success, -1 in case of error
+ */
+int
+xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
+    xmlAutomataStatePtr start;
+
+    if ((ctxt == NULL) || (elem == NULL))
+	return(-1);
+    if (elem->type != XML_ELEMENT_DECL)
+	return(-1);
+    if (elem->etype != XML_ELEMENT_TYPE_ELEMENT)
+	return(0);
+    /* TODO: should we rebuild in this case ? */
+    if (elem->contModel != NULL)
+	return(0);
+
+    ctxt->am = xmlNewAutomata();
+    if (ctxt->am == NULL) {
+	VERROR(ctxt->userData, "Cannot create automata for element %s\n",
+	       elem->name);
+	return(-1);
+    }
+    start = ctxt->state = xmlAutomataGetInitState(ctxt->am);
+    xmlValidBuildAContentModel(elem->content, ctxt, elem->name);
+    xmlAutomataSetFinalState(ctxt->am, ctxt->state);
+    if (!xmlAutomataIsDeterminist(ctxt->am)) {
+	VERROR(ctxt->userData, "Content model of %s is not determinist:\n",
+	       elem->name);
+        ctxt->valid = 0;
+    }
+    ctxt->state = NULL;
+    xmlFreeAutomata(ctxt->am);
+    ctxt->am = NULL;
+    return(0);
+}
+
+#endif /* LIBXML_REGEXP_ENABLED */
+
 /************************************************************************
  *									*
  *			QName handling helper				*

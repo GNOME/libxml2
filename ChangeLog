@@ -1,3 +1,9 @@
+Fri Sep 13 16:46:14 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* hash.c: cosmetic cleanup
+	* valid.c include/libxml/tree.h include/libxml/valid.h: started 
+	  integrating a DTD validation layer based on the regexps
+
 Thu Sep 12 18:01:29 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c xmlschemas.c: fixed a bug reported by Jeff Goff,

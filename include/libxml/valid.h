@@ -12,6 +12,8 @@
 
 #include <libxml/tree.h>
 #include <libxml/list.h>
+#include <libxml/xmlautomata.h>
+#include <libxml/xmlregexp.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -75,6 +77,14 @@ struct _xmlValidCtxt {
     int                vstateNr;      /* Depth of the validation stack */
     int                vstateMax;     /* Max depth of the validation stack */
     xmlValidState     *vstateTab;     /* array of validation states */
+
+#ifdef LIBXML_REGEXP_ENABLED
+    xmlAutomataPtr            am;     /* the automata */
+    xmlAutomataStatePtr    state;     /* used to build the automata */
+#else
+    void                     *am;
+    void                  *state;
+#endif
 };
 
 /*

@@ -20,3 +20,5 @@ update.log
 .libs
 *.la
 tester
+xml-config
+xmlConf.sh

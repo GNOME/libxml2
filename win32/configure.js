@@ -112,7 +112,7 @@ function usage()
 	txt += "  schemas:    Enable XML Schema support (" + (withSchemas? "yes" : "no")  + ")\n";
 	txt += "  python:     Build Python bindings (" + (withPython? "yes" : "no")  + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
-	txt += "  compiler:   Compiler to be used [msvc|mingw] (" + compiler + ")\n";
+	txt += "  compiler:   Compiler to be used [msvc|mingw|bcb] (" + compiler + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  static:     Link xmllint statically to libxml2 (" + (buildStatic? "yes" : "no")  + ")\n";
 	txt += "  prefix:     Base directory for the installation (" + buildPrefix + ")\n";
@@ -143,6 +143,8 @@ function discoverVersion()
 		versionFile = ".\\config.msvc";
 	else if (compiler == "mingw")
 		versionFile = ".\\config.mingw";
+	else if (compiler == "bcb")
+		versionFile = ".\\config.bcb";
 	vf = fso.CreateTextFile(versionFile, true);
 	vf.WriteLine("# " + versionFile);
 	vf.WriteLine("# This file is generated automatically by " + WScript.ScriptName + ".");
@@ -196,6 +198,10 @@ function discoverVersion()
 	} else if (compiler == "mingw") {
 		vf.WriteLine("INCLUDE+=;" + buildInclude);
 		vf.WriteLine("LIB+=;" + buildLib);
+	}
+	} else if (compiler == "bcb") {
+		vf.WriteLine("INCLUDE=" + buildInclude);
+		vf.WriteLine("LIB=" + buildLib);
 	}
 	vf.Close();
 }

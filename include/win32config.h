@@ -30,7 +30,7 @@
 #define HAVE_ISINF
 #define HAVE_ISNAN
 #include <math.h>
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__BORLANDC__)
 /* MS C-runtime has functions which can be used in order to determine if
    a given floating-point variable contains NaN, (+-)INF. These are 
    preferred, because floating-point technology is considered propriatary

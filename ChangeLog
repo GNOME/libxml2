@@ -1,3 +1,9 @@
+Sat Jun 14 18:46:51 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/configure.js include/win32config.h 
+	  include/libxml/xmlversion.h.in: Applied the patch for BCB
+	  by Eric Zurcher.
+
 Fri Jun 13 14:27:19 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/Makefile.am doc/html/*: reverted back patch for #113521,

@@ -76,7 +76,7 @@ extern void xmlCheckVersion(int version);
  * Whether the thread support is configured in
  */
 #if @WITH_THREADS@
-#if defined(_REENTRANT) || (_POSIX_C_SOURCE - 0 >= 199506L)
+#if defined(_REENTRANT) || defined(__MT__) || (_POSIX_C_SOURCE - 0 >= 199506L)
 #define LIBXML_THREAD_ENABLED
 #endif
 #endif
@@ -241,7 +241,7 @@ extern void xmlCheckVersion(int version);
  * code which links against libxml statically. 
  */
 #ifndef LIBXML_DLL_IMPORT
-#if (defined(_MSC_VER) || defined(__CYGWIN__)) && !defined(IN_LIBXML) && !defined(LIBXML_STATIC)
+#if (defined(_MSC_VER) || defined(__BORLANDC__) || defined(__CYGWIN__)) && !defined(IN_LIBXML) && !defined(LIBXML_STATIC)
 #define LIBXML_DLL_IMPORT __declspec(dllimport)
 #else
 #define LIBXML_DLL_IMPORT

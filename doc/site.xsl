@@ -341,7 +341,7 @@
       <li><a href="examples/index.html" style="font-weight:bold">Code Examples</a></li>
       <li><a href="html/index.html" style="font-weight:bold">API Menu</a></li>
       <li><a href="guidelines.html">XML Guidelines</a></li>
-      <li><a href="ChangeLog.html">ChangeLog</a></li>
+      <li><a href="ChangeLog.html">Recent Changes</a></li>
     </ul>
   </xsl:variable>
   <xsl:variable name="develtoc">

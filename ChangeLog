@@ -1,3 +1,7 @@
+Mon Oct 22 14:20:17 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fixed a bug in htmlNewDoc()
+
 Mon Oct 22 11:32:36 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* test/threads/*: added entities testing to the Thread test

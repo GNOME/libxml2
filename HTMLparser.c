@@ -1810,9 +1810,6 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->type = XML_HTML_DOCUMENT_NODE;
     cur->version = NULL;
     cur->intSubset = NULL;
-    if ((ExternalID != NULL) ||
-	(URI != NULL))
-	xmlCreateIntSubset(cur, BAD_CAST "HTML", ExternalID, URI);
     cur->doc = cur;
     cur->name = NULL;
     cur->children = NULL; 
@@ -1824,6 +1821,9 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->ids = NULL;
     cur->refs = NULL;
     cur->_private = NULL;
+    if ((ExternalID != NULL) ||
+	(URI != NULL))
+	xmlCreateIntSubset(cur, BAD_CAST "html", ExternalID, URI);
     return(cur);
 }
 

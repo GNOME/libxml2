@@ -1,3 +1,8 @@
+Tue Aug 28 22:38:45 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied patch from Armin Sander to make some pointers
+	  const in xmlCopyNode()
+
 Mon Aug 27 16:24:47 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: hum, restrict the integer usage gcc bug workaround

@@ -2705,7 +2705,7 @@ static xmlNodePtr
 xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent);
 
 static xmlNodePtr
-xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
+xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
                   int recursive) {
     xmlNodePtr ret;
 
@@ -2875,7 +2875,7 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
  * Returns: a new xmlNodePtr, or NULL in case of error.
  */
 xmlNodePtr
-xmlCopyNode(xmlNodePtr node, int recursive) {
+xmlCopyNode(const xmlNodePtr node, int recursive) {
     xmlNodePtr ret;
 
     ret = xmlStaticCopyNode(node, NULL, NULL, recursive);
@@ -2892,7 +2892,7 @@ xmlCopyNode(xmlNodePtr node, int recursive) {
  * Returns: a new xmlNodePtr, or NULL in case of error.
  */
 xmlNodePtr
-xmlDocCopyNode(xmlNodePtr node, xmlDocPtr doc, int recursive) {
+xmlDocCopyNode(const xmlNodePtr node, xmlDocPtr doc, int recursive) {
     xmlNodePtr ret;
 
     ret = xmlStaticCopyNode(node, doc, NULL, recursive);
@@ -2907,7 +2907,7 @@ xmlDocCopyNode(xmlNodePtr node, xmlDocPtr doc, int recursive) {
  *
  * Returns: a new xmlNodePtr, or NULL in case of error.
  */
-xmlNodePtr xmlCopyNodeList(xmlNodePtr node) {
+xmlNodePtr xmlCopyNodeList(const xmlNodePtr node) {
     xmlNodePtr ret = xmlStaticCopyNodeList(node, NULL, NULL);
     return(ret);
 }

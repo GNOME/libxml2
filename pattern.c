@@ -25,7 +25,7 @@
 
 #ifdef LIBXML_PATTERN_ENABLED
 
-#define DEBUG_STREAMING
+/* #define DEBUG_STREAMING */
 
 #define ERROR(a, b, c, d)
 #define ERROR5(a, b, c, d, e)

@@ -1,3 +1,7 @@
+Mon Apr 15 12:14:49 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: first part of fixing #78729
+
 Sun Apr 14 23:44:58 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c uri.c: fixing bug #78662 i.e. add proper

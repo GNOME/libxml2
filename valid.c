@@ -91,6 +91,7 @@ typedef struct _xmlValidState {
     unsigned char        state; /* ROLLBACK_XXX */
 } _xmlValidState;
 
+#define MAX_RECURSE 1024
 #define MAX_DEPTH ((sizeof(_xmlValidState.occurs)) * 8)
 #define CONT ctxt->vstate->cont
 #define NODE ctxt->vstate->node
@@ -110,6 +111,9 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
 	    unsigned char state) {
     int i = ctxt->vstateNr - 1;
 
+    if (ctxt->vstateNr > MAX_RECURSE) {
+	return(-1);
+    }
     if (ctxt->vstateNr >= ctxt->vstateMax) {
 	ctxt->vstateMax *= 2;
         ctxt->vstateTab = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
@@ -117,7 +121,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
         if (ctxt->vstateTab == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "realloc failed !n");
-	    return(0);
+	    return(-1);
 	}
 	ctxt->vstate = &ctxt->vstateTab[0];
     }
@@ -3608,7 +3612,8 @@ cont:
 	 (CONT->ocur == XML_ELEMENT_CONTENT_OPT) ||
 	 ((CONT->ocur == XML_ELEMENT_CONTENT_PLUS) && (OCCURRENCE)))) {
 	DEBUG_VALID_MSG("saving parent branch");
-	vstateVPush(ctxt, CONT, NODE, DEPTH, OCCURS, ROLLBACK_PARENT);
+	if (vstateVPush(ctxt, CONT, NODE, DEPTH, OCCURS, ROLLBACK_PARENT) < 0)
+	    return(0);
     }
 
 
@@ -3714,9 +3719,9 @@ cont:
 	     * save the second branch 'or' branch
 	     */
 	    DEBUG_VALID_MSG("saving 'or' branch");
-	    vstateVPush(ctxt, CONT->c2, NODE, (unsigned char)(DEPTH + 1),
-		        OCCURS, ROLLBACK_OR);
-
+	    if (vstateVPush(ctxt, CONT->c2, NODE, (unsigned char)(DEPTH + 1),
+			    OCCURS, ROLLBACK_OR) < 0)
+		return(-1);
 	    DEPTH++;
 	    CONT = CONT->c1;
 	    goto cont;

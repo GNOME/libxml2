@@ -105,6 +105,7 @@ typedef enum {
     XML_RELAXNG_DEF,		/* a definition */
     XML_RELAXNG_REF,		/* reference to a definition */
     XML_RELAXNG_EXTERNALREF,	/* reference to an external def */
+    XML_RELAXNG_PARENTREF,	/* reference to a def in the parent grammar */
     XML_RELAXNG_OPTIONAL,	/* optional patterns */
     XML_RELAXNG_ZEROORMORE,	/* zero or more non empty patterns */
     XML_RELAXNG_ONEORMORE,	/* one or more non empty patterns */
@@ -140,8 +141,10 @@ struct _xmlRelaxNG {
 
     xmlHashTablePtr defs;	/* define */
     xmlHashTablePtr refs;	/* references */
-    xmlHashTablePtr documents;     /* all the documents loaded */
-    xmlHashTablePtr includes;      /* all the includes loaded */
+    xmlHashTablePtr documents;  /* all the documents loaded */
+    xmlHashTablePtr includes;   /* all the includes loaded */
+    int                  defNr; /* number of defines used */
+    xmlRelaxNGDefinePtr *defTab;/* pointer to the allocated definitions */
     void *_private;	/* unused by the library for users or bindings */
 };
 
@@ -161,6 +164,7 @@ struct _xmlRelaxNGParserCtxt {
 
     xmlRelaxNGPtr      schema;        /* The schema in use */
     xmlRelaxNGGrammarPtr grammar;     /* the current grammar */
+    xmlRelaxNGGrammarPtr parentgrammar;/* the parent grammar */
     int                flags;         /* parser flags */
     int                nbErrors;      /* number of errors at parse time */
     int                nbWarnings;    /* number of warnings at parse time */
@@ -174,6 +178,10 @@ struct _xmlRelaxNGParserCtxt {
     xmlHashTablePtr    includes;      /* all the includes loaded */
     xmlChar	      *URL;
     xmlDocPtr          document;
+
+    int                  defNr;       /* number of defines used */
+    int                  defMax;      /* number of defines aloocated */
+    xmlRelaxNGDefinePtr *defTab;      /* pointer to the allocated definitions */
 
     const char     *buffer;
     int               size;
@@ -337,7 +345,6 @@ struct _xmlRelaxNGTypeLibrary {
  * 			Allocation functions				*
  * 									*
  ************************************************************************/
-static void xmlRelaxNGFreeDefineList(xmlRelaxNGDefinePtr defines);
 static void xmlRelaxNGFreeGrammar(xmlRelaxNGGrammarPtr grammar);
 static void xmlRelaxNGFreeDefine(xmlRelaxNGDefinePtr define);
 
@@ -430,6 +437,13 @@ xmlRelaxNGFree(xmlRelaxNGPtr schema)
     if (schema->includes != NULL)
 	xmlHashFree(schema->includes, (xmlHashDeallocator)
 		xmlRelaxNGFreeInclude);
+    if (schema->defTab != NULL) {
+	int i;
+
+	for (i = 0;i < schema->defNr;i++)
+	    xmlRelaxNGFreeDefine(schema->defTab[i]);
+	xmlFree(schema->defTab);
+    }
 
     xmlFree(schema);
 }
@@ -460,24 +474,6 @@ xmlRelaxNGNewGrammar(xmlRelaxNGParserCtxtPtr ctxt)
 }
 
 /**
- * xmlRelaxNGFreeDefineHash:
- * @defines:  a list of define structures
- *
- * Deallocate a RelaxNG definition in the hash table
- */
-static void
-xmlRelaxNGFreeDefineHash(xmlRelaxNGDefinePtr defines)
-{
-    xmlRelaxNGDefinePtr next;
-
-    while (defines != NULL) {
-	next = defines->nextHash;
-	xmlRelaxNGFreeDefine(defines);
-	defines = next;
-    }
-}
-
-/**
  * xmlRelaxNGFreeGrammar:
  * @grammar:  a grammar structure
  *
@@ -489,14 +485,14 @@ xmlRelaxNGFreeGrammar(xmlRelaxNGGrammarPtr grammar)
     if (grammar == NULL)
         return;
 
-    if (grammar->start != NULL)
-	xmlRelaxNGFreeDefine(grammar->start);
+    if (grammar->next != NULL) {
+	xmlRelaxNGFreeGrammar(grammar->next);
+    }
     if (grammar->refs != NULL) {
 	xmlHashFree(grammar->refs, NULL);
     }
     if (grammar->defs != NULL) {
-	xmlHashFree(grammar->defs, (xmlHashDeallocator)
-		xmlRelaxNGFreeDefineHash);
+	xmlHashFree(grammar->defs, NULL);
     }
 
     xmlFree(grammar);
@@ -516,35 +512,41 @@ xmlRelaxNGNewDefine(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
 {
     xmlRelaxNGDefinePtr ret;
 
+    if (ctxt->defMax == 0) {
+	ctxt->defMax = 16;
+	ctxt->defNr = 0;
+	ctxt->defTab = (xmlRelaxNGDefinePtr *)
+	    xmlMalloc(ctxt->defMax * sizeof(xmlRelaxNGDefinePtr));
+	if (ctxt->defTab == NULL) {
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData, "Out of memory\n");
+	    ctxt->nbErrors++;
+	    return (NULL);
+	}
+    } else if (ctxt->defMax <= ctxt->defNr) {
+	xmlRelaxNGDefinePtr *tmp;
+	ctxt->defMax *= 2;
+	tmp = (xmlRelaxNGDefinePtr *) xmlRealloc(ctxt->defTab,
+		ctxt->defMax * sizeof(xmlRelaxNGDefinePtr));
+	if (tmp == NULL) {
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData, "Out of memory\n");
+	    ctxt->nbErrors++;
+	    return (NULL);
+	}
+	ctxt->defTab = tmp;
+    }
     ret = (xmlRelaxNGDefinePtr) xmlMalloc(sizeof(xmlRelaxNGDefine));
     if (ret == NULL) {
-        if ((ctxt != NULL) && (ctxt->error != NULL))
-            ctxt->error(ctxt->userData, "Out of memory\n");
+	if ((ctxt != NULL) && (ctxt->error != NULL))
+	    ctxt->error(ctxt->userData, "Out of memory\n");
 	ctxt->nbErrors++;
-        return (NULL);
+	return(NULL);
     }
     memset(ret, 0, sizeof(xmlRelaxNGDefine));
+    ctxt->defTab[ctxt->defNr++] = ret;
     ret->node = node;
-
     return (ret);
-}
-
-/**
- * xmlRelaxNGFreeDefineList:
- * @defines:  a list of define structures
- *
- * Deallocate a RelaxNG define structures.
- */
-static void
-xmlRelaxNGFreeDefineList(xmlRelaxNGDefinePtr defines)
-{
-    xmlRelaxNGDefinePtr next;
-
-    while (defines != NULL) {
-	next = defines->next;
-	xmlRelaxNGFreeDefine(defines);
-	defines = next;
-    }
 }
 
 /**
@@ -585,23 +587,15 @@ xmlRelaxNGFreeDefine(xmlRelaxNGDefinePtr define)
     if (define == NULL)
         return;
 
+    if ((define->data != NULL) &&
+	(define->type == XML_RELAXNG_INTERLEAVE))
+	xmlRelaxNGFreePartition((xmlRelaxNGPartitionPtr) define->data);
     if (define->name != NULL)
 	xmlFree(define->name);
     if (define->ns != NULL)
 	xmlFree(define->ns);
     if (define->value != NULL)
 	xmlFree(define->value);
-    if (define->attrs != NULL)
-	xmlRelaxNGFreeDefineList(define->attrs);
-    if ((define->content != NULL) &&
-	(define->type != XML_RELAXNG_REF) &&
-	(define->type != XML_RELAXNG_EXTERNALREF))
-	xmlRelaxNGFreeDefineList(define->content);
-    if (define->nameClass != NULL)
-	xmlRelaxNGFreeDefineList(define->nameClass);
-    if ((define->data != NULL) &&
-	(define->type == XML_RELAXNG_INTERLEAVE))
-	xmlRelaxNGFreePartition((xmlRelaxNGPartitionPtr) define->data);
     xmlFree(define);
 }
 
@@ -1572,6 +1566,8 @@ static int xmlRelaxNGParseGrammarContent(
 static xmlRelaxNGDefinePtr xmlRelaxNGParseNameClass(
 	      xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
 	      xmlRelaxNGDefinePtr def);
+static xmlRelaxNGGrammarPtr xmlRelaxNGParseGrammar(
+	      xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes);
 
 
 #define IS_BLANK_NODE(n)						\
@@ -2202,7 +2198,6 @@ xmlRelaxNGParseDefine(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 			    "Could not create definition hash\n");
 	    ctxt->nbErrors++;
 	    ret = -1;
-	    xmlRelaxNGFreeDefine(def);
 	} else {
 	    tmp = xmlHashAddEntry(ctxt->grammar->defs, name, def);
 	    if (tmp < 0) {
@@ -2216,7 +2211,6 @@ xmlRelaxNGParseDefine(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 			            name);
 		    ctxt->nbErrors++;
 		    ret = -1;
-		    xmlRelaxNGFreeDefine(def);
 		} else {
 		    while (prev->nextHash != NULL)
 			prev = prev->nextHash;
@@ -2325,7 +2319,6 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		ctxt->error(ctxt->userData,
 			    "Could not create references hash\n");
 	    ctxt->nbErrors++;
-	    xmlRelaxNGFreeDefine(def);
 	    def = NULL;
 	} else {
 	    int tmp;
@@ -2342,7 +2335,6 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 			    "Internal error refs definitions '%s'\n",
 				    def->name);
 		    ctxt->nbErrors++;
-		    xmlRelaxNGFreeDefine(def);
 		    def = NULL;
 		} else {
 		    def->nextHash = prev->nextHash;
@@ -2410,6 +2402,81 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 			"xmlRelaxNGParse: notAllowed element is not empty\n");
 	    ctxt->nbErrors++;
 	}
+    } else if (IS_RELAXNG(node, "grammar")) {
+	xmlRelaxNGGrammarPtr grammar, old;
+	xmlRelaxNGGrammarPtr oldparent;
+
+	oldparent = ctxt->parentgrammar;
+	old = ctxt->grammar;
+	ctxt->parentgrammar = old;
+	grammar = xmlRelaxNGParseGrammar(ctxt, node->children);
+	if (old != NULL) {
+	    ctxt->grammar = old;
+	    ctxt->parentgrammar = oldparent;
+	    if (grammar != NULL) {
+		grammar->next = old->next;
+		old->next = grammar;
+	    }
+	}
+	if (grammar != NULL)
+	    def = grammar->start;
+	else
+	    def = NULL;
+    } else if (IS_RELAXNG(node, "parentRef")) {
+	if (ctxt->parentgrammar == NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+			"Use of parentRef without a parent grammar\n");
+	    ctxt->nbErrors++;
+	    return(NULL);
+	}
+	def = xmlRelaxNGNewDefine(ctxt, node);
+	if (def == NULL)
+	    return(NULL);
+	def->type = XML_RELAXNG_PARENTREF;
+	def->name = xmlGetProp(node, BAD_CAST "name");
+	if (def->name == NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+			    "parentRef has no name\n");
+	    ctxt->nbErrors++;
+	}
+	if (node->children != NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+			    "parentRef is not empty\n");
+	    ctxt->nbErrors++;
+	}
+	if (ctxt->parentgrammar->refs == NULL)
+	    ctxt->parentgrammar->refs = xmlHashCreate(10);
+	if (ctxt->parentgrammar->refs == NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+			    "Could not create references hash\n");
+	    ctxt->nbErrors++;
+	    def = NULL;
+	} else {
+	    int tmp;
+
+	    tmp = xmlHashAddEntry(ctxt->parentgrammar->refs, def->name, def);
+	    if (tmp < 0) {
+		xmlRelaxNGDefinePtr prev;
+
+		prev = (xmlRelaxNGDefinePtr)
+		      xmlHashLookup(ctxt->parentgrammar->refs, def->name);
+		if (prev == NULL) {
+		    if (ctxt->error != NULL)
+			ctxt->error(ctxt->userData,
+			    "Internal error parentRef definitions '%s'\n",
+				    def->name);
+		    ctxt->nbErrors++;
+		    def = NULL;
+		} else {
+		    def->nextHash = prev->nextHash;
+		    prev->nextHash = def;
+		}
+	    }
+	}
     } else {
 	TODO
 	def = NULL;
@@ -2465,6 +2532,7 @@ xmlRelaxNGParseAttribute(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		case XML_RELAXNG_VALUE:
 		case XML_RELAXNG_LIST:
 		case XML_RELAXNG_REF:
+		case XML_RELAXNG_PARENTREF:
 		case XML_RELAXNG_EXTERNALREF:
 		case XML_RELAXNG_DEF:
 		case XML_RELAXNG_ONEORMORE:
@@ -2547,9 +2615,7 @@ xmlRelaxNGParseExceptNameClass(xmlRelaxNGParserCtxtPtr ctxt,
 	else
 	    cur->type = XML_RELAXNG_ELEMENT;
 	
-        if (xmlRelaxNGParseNameClass(ctxt, child, cur) == NULL) {
-	    xmlRelaxNGFreeDefine(cur);
-	} else {
+        if (xmlRelaxNGParseNameClass(ctxt, child, cur) != NULL) {
 	    if (last == NULL) {
 		ret->content = cur;
 	    } else {
@@ -2674,6 +2740,7 @@ xmlRelaxNGParseElement(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		case XML_RELAXNG_VALUE:
 		case XML_RELAXNG_LIST:
 		case XML_RELAXNG_REF:
+		case XML_RELAXNG_PARENTREF:
 		case XML_RELAXNG_EXTERNALREF:
 		case XML_RELAXNG_DEF:
 		case XML_RELAXNG_ZEROORMORE:
@@ -2749,13 +2816,14 @@ xmlRelaxNGParsePatterns(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes,
 	    cur->parent = parent;
 	} else {
 	    cur = xmlRelaxNGParsePattern(ctxt, nodes);
-	    if (def == NULL) {
-		def = last = cur;
-	    } else {
-		last->next = cur;
-		last = cur;
+	    if (cur != NULL) {
+		if (def == NULL) {
+		    def = last = cur;
+		} else {
+		    last->next = cur;
+		    last = cur;
+		}
 	    }
-	    cur->parent = parent;
 	}
 	nodes = nodes->next;
     }
@@ -3321,6 +3389,13 @@ xmlRelaxNGFreeParserCtxt(xmlRelaxNGParserCtxtPtr ctxt) {
 	xmlFree(ctxt->docTab);
     if (ctxt->incTab != NULL)
 	xmlFree(ctxt->incTab);
+    if (ctxt->defTab != NULL) {
+	int i;
+
+	for (i = 0;i < ctxt->defNr;i++)
+	    xmlRelaxNGFreeDefine(ctxt->defTab[i]);
+	xmlFree(ctxt->defTab);
+    }
     xmlFree(ctxt);
 }
 
@@ -3746,6 +3821,9 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
     ctxt->documents = NULL;
     ret->includes = ctxt->includes;
     ctxt->includes = NULL;
+    ret->defNr = ctxt->defNr;
+    ret->defTab = ctxt->defTab;
+    ctxt->defTab = NULL;
 
     return (ret);
 }
@@ -3879,6 +3957,14 @@ xmlRelaxNGDumpDefine(FILE * output, xmlRelaxNGDefinePtr define) {
 	    fprintf(output, ">\n");
 	    xmlRelaxNGDumpDefines(output, define->content);
 	    fprintf(output, "</ref>\n");
+	    break;
+        case XML_RELAXNG_PARENTREF:
+	    fprintf(output, "<parentRef");
+	    if (define->name != NULL)
+		fprintf(output, " name=\"%s\"", define->name);
+	    fprintf(output, ">\n");
+	    xmlRelaxNGDumpDefines(output, define->content);
+	    fprintf(output, "</parentRef>\n");
 	    break;
 	case XML_RELAXNG_EXTERNALREF:
 	    fprintf(output, "<externalRef");
@@ -5081,8 +5167,9 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
         case XML_RELAXNG_ATTRIBUTE:
 	    ret = xmlRelaxNGValidateAttribute(ctxt, define);
 	    break;
-	case XML_RELAXNG_EXTERNALREF:
         case XML_RELAXNG_REF:
+        case XML_RELAXNG_PARENTREF:
+	case XML_RELAXNG_EXTERNALREF:
 	    ret = xmlRelaxNGValidateDefinition(ctxt, define->content);
 	    break;
         case XML_RELAXNG_DATATYPE: {

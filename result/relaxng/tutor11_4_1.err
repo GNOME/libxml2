@@ -1,0 +1,4 @@
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): -1
+xmlRelaxNGValidateAttribute(space): 0
+xmlRelaxNGValidateDefinition(): validated example : 0

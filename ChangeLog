@@ -1,3 +1,9 @@
+Tue Feb  4 00:20:58 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng: more work on grammars and refs/defs
+	* test/relaxng/* result/relaxng/*: augmented/updated the
+	  regression tests
+
 Mon Feb  3 14:16:59 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng: more work on name classes, except support

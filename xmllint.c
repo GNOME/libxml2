@@ -779,7 +779,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
             res = fread(chars, 1, 4, f);
             if (res > 0) {
                 ctxt = htmlCreatePushParserCtxt(NULL, NULL,
-                            chars, res, filename, 0);
+                            chars, res, filename, XML_CHAR_ENCODING_NONE);
                 while ((res = fread(chars, 1, size, f)) > 0) {
                     htmlParseChunk(ctxt, chars, res, 0);
                 }
@@ -1801,9 +1801,6 @@ main(int argc, char **argv) {
 	if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
 	    if (repeat) {
 		xmlParserCtxtPtr ctxt = NULL;
-#ifdef LIBXML_READER_ENABLED
-                xmlTextReaderPtr reader = NULL;
-#endif /* LIBXML_READER_ENABLED */
 
 		for (acount = 0;acount < repeat;acount++) {
 #ifdef LIBXML_READER_ENABLED

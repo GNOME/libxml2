@@ -1,3 +1,9 @@
+Mon Oct 27 21:12:27 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xmllint.c: fixed warning message from IRIX (bug 125182)
+	* python/libxml.py: removed tabs, replaced with spaces
+	  (bug 125572)
+
 Mon Oct 27 06:17:30 EST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.h parserInternals.c xmlIO.c: make sure we report errors

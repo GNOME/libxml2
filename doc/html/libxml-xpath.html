@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xpath</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xpath</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-xmlIO.html" title="xmlIO"><link rel="next" href="libxml-SAX.html" title="SAX"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlIO.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-SAX.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xpath"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">xpath</span></h2><p>xpath &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-HTMLtree.html" title="HTMLtree"><link rel="next" href="libxml-xpathInternals.html" title="xpathInternals"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-HTMLtree.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xpathInternals.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xpath"></a><div class="titlepage"></div><div class="refnamediv"><h2>xpath</h2><p>xpath &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -106,7 +106,6 @@ void        <a href="libxml-xpath.html#xmlXPathFreeCompExpr">xmlXPathFreeCompExp
 </pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
 
 </p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="xmlXPathContext"></a>struct xmlXPathContext</h3><pre class="programlisting">struct xmlXPathContext {
-
     xmlDocPtr doc;			/* The current document */
     xmlNodePtr node;			/* The current node */
 
@@ -175,7 +174,6 @@ the next binary incompatible release.</p><p>
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathParserContext"></a>struct xmlXPathParserContext</h3><pre class="programlisting">struct xmlXPathParserContext {
-
     const xmlChar *cur;			/* the current char being parsed */
     const xmlChar *base;			/* the full expression */
 
@@ -225,7 +223,6 @@ an xmlXPathContext, and the stack of objects.</p><p>
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNodeSet"></a>struct xmlNodeSet</h3><pre class="programlisting">struct xmlNodeSet {
-
     int nodeNr;			/* number of nodes in the set */
     int nodeMax;		/* size of the array as allocated */
     xmlNodePtr *nodeTab;	/* array of nodes in no particular order */
@@ -251,7 +248,6 @@ an xmlXPathContext, and the stack of objects.</p><p>
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathObject"></a>struct xmlXPathObject</h3><pre class="programlisting">struct xmlXPathObject {
-
     xmlXPathObjectType type;
     xmlNodeSetPtr nodesetval;
     int boolval;
@@ -272,11 +268,10 @@ an xmlXPathContext, and the stack of objects.</p><p>
 A conversion function is associated to a type and used to cast
 the new type to primitive values.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>obj</tt></i> :</span></td><td>  an XPath object
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td>  the number of the target type
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>obj</tt></i> :</span></td><td>  an XPath object
+</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the number of the target type
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 in case of error, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathType"></a>struct xmlXPathType</h3><pre class="programlisting">struct xmlXPathType {
-
     const xmlChar         *name;		/* the type name */
     xmlXPathConvertFunc func;		/* the conversion function */
 };
@@ -286,7 +281,6 @@ the new type to primitive values.</p><p>
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathVariable"></a>struct xmlXPathVariable</h3><pre class="programlisting">struct xmlXPathVariable {
-
     const xmlChar       *name;		/* the variable name */
     xmlXPathObjectPtr value;		/* the value */
 };
@@ -299,10 +293,9 @@ the new type to primitive values.</p><p>
                                              int nargs);</pre><p>
 An XPath evaluation function, the parameters are on the XPath context stack.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td> an XPath parser context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>nargs</tt></i> :</span></td><td> the number of arguments passed to the function
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td> an XPath parser context
+</td></tr><tr><td><span class="term"><i><tt>nargs</tt></i> :</span></td><td> the number of arguments passed to the function
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathFunct"></a>struct xmlXPathFunct</h3><pre class="programlisting">struct xmlXPathFunct {
-
     const xmlChar      *name;		/* the function name */
     xmlXPathEvalFunc func;		/* the evaluation function */
 };
@@ -317,11 +310,10 @@ An axis traversal function. To traverse an axis, the engine calls
 the first time with cur == NULL and repeat until the function returns
 NULL indicating the end of the axis traversal.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the XPath interpreter context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the previous node being explored on that axis
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath interpreter context
+</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the previous node being explored on that axis
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next node in that axis or NULL if at the end of the axis.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathAxis"></a>struct xmlXPathAxis</h3><pre class="programlisting">struct xmlXPathAxis {
-
     const xmlChar      *name;		/* the axis name */
     xmlXPathAxisFunc func;		/* the search function */
 };
@@ -341,169 +333,169 @@ An XPath function.
 The arguments (if any) are popped out from the context stack
 and the result is pushed on the stack.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the XPath interprestation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>nargs</tt></i> :</span></td><td>  the number of arguments
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath interprestation context
+</td></tr><tr><td><span class="term"><i><tt>nargs</tt></i> :</span></td><td>  the number of arguments
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathIsNaN"></a>xmlXPathIsNaN ()</h3><pre class="programlisting">int         xmlXPathIsNaN                   (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="double">double</GTKDOCLINK> val);</pre><p>
 Provides a portable <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="isnan">isnan</GTKDOCLINK>() function to detect whether a double
 is a NotaNumber. Based on trio code
 http://sourceforge.net/projects/ctrio/</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  a double value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  a double value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if the value is a NaN, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathIsInf"></a>xmlXPathIsInf ()</h3><pre class="programlisting">int         xmlXPathIsInf                   (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="double">double</GTKDOCLINK> val);</pre><p>
 Provides a portable <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="isinf">isinf</GTKDOCLINK>() function to detect whether a double
 is a +Infinite or -Infinite. Based on trio code
 http://sourceforge.net/projects/ctrio/</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  a double value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  a double value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 vi the value is +Infinite, -1 if -Infinite, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNodeSetGetLength"></a>xmlXPathNodeSetGetLength()</h3><pre class="programlisting">#define xmlXPathNodeSetGetLength(ns) ((ns) ? (ns)-&gt;nodeNr : 0)
 </pre><p>
 Implement a functionality similar to the DOM NodeList.length.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ns</tt></i> :</span></td><td>  a node-set
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ns</tt></i> :</span></td><td>  a node-set
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNodeSetItem"></a>xmlXPathNodeSetItem()</h3><pre class="programlisting">#define     xmlXPathNodeSetItem(ns, index)</pre><p>
 Implements a functionality similar to the DOM NodeList.<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="item">item</GTKDOCLINK>().</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ns</tt></i> :</span></td><td>  a node-set
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>index</tt></i> :</span></td><td>  index of a node in the set
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ns</tt></i> :</span></td><td>  a node-set
+</td></tr><tr><td><span class="term"><i><tt>index</tt></i> :</span></td><td>  index of a node in the set
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNodeSetIsEmpty"></a>xmlXPathNodeSetIsEmpty()</h3><pre class="programlisting">#define     xmlXPathNodeSetIsEmpty(ns)</pre><p>
-Checks whether <i class="parameter"><tt>ns</tt></i> is empty or not.</p><p>
+Checks whether <i><tt>ns</tt></i> is empty or not.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ns</tt></i> :</span></td><td> a node-set
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ns</tt></i> :</span></td><td> a node-set
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathFreeObject"></a>xmlXPathFreeObject ()</h3><pre class="programlisting">void        xmlXPathFreeObject              (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> obj);</pre><p>
 Free up an xmlXPathObjectPtr object.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>obj</tt></i> :</span></td><td>  the object to free
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>obj</tt></i> :</span></td><td>  the object to free
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNodeSetCreate"></a>xmlXPathNodeSetCreate ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> xmlXPathNodeSetCreate         (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> val);</pre><p>
-Create a new xmlNodeSetPtr of type double and of value <i class="parameter"><tt>val</tt></i></p><p>
+Create a new xmlNodeSetPtr of type double and of value <i><tt>val</tt></i></p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  an initial xmlNodePtr, or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  an initial xmlNodePtr, or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathFreeNodeSetList"></a>xmlXPathFreeNodeSetList ()</h3><pre class="programlisting">void        xmlXPathFreeNodeSetList         (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> obj);</pre><p>
-Free up the xmlXPathObjectPtr <i class="parameter"><tt>obj</tt></i> but don't deallocate the objects in
+Free up the xmlXPathObjectPtr <i><tt>obj</tt></i> but don't deallocate the objects in
 the list contrary to <a href="libxml-xpath.html#xmlXPathFreeObject">xmlXPathFreeObject</a>().</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>obj</tt></i> :</span></td><td>  an existing NodeSetList object
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>obj</tt></i> :</span></td><td>  an existing NodeSetList object
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathFreeNodeSet"></a>xmlXPathFreeNodeSet ()</h3><pre class="programlisting">void        xmlXPathFreeNodeSet             (<a href="libxml-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> obj);</pre><p>
 Free the NodeSet compound (not the actual nodes !).</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>obj</tt></i> :</span></td><td>  the xmlNodeSetPtr to free
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>obj</tt></i> :</span></td><td>  the xmlNodeSetPtr to free
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathObjectCopy"></a>xmlXPathObjectCopy ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPathObjectCopy        (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);</pre><p>
 allocate a new copy of a given object</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  the original object
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the original object
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCmpNodes"></a>xmlXPathCmpNodes ()</h3><pre class="programlisting">int         xmlXPathCmpNodes                (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node1,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
 Compare two nodes w.r.t document order</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>node1</tt></i> :</span></td><td>  the first node
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>node2</tt></i> :</span></td><td>  the second node
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>node1</tt></i> :</span></td><td>  the first node
+</td></tr><tr><td><span class="term"><i><tt>node2</tt></i> :</span></td><td>  the second node
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-2 in case of error 1 if first point &lt; second point, 0 if
         that's the same node, -1 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastNumberToBoolean"></a>xmlXPathCastNumberToBoolean ()</h3><pre class="programlisting">int         xmlXPathCastNumberToBoolean     (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="double">double</GTKDOCLINK> val);</pre><p>
 Converts a number to its boolean value</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  a number
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  a number
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the boolean value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastStringToBoolean"></a>xmlXPathCastStringToBoolean ()</h3><pre class="programlisting">int         xmlXPathCastStringToBoolean     (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *val);</pre><p>
 Converts a string to its boolean value</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  a string
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  a string
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the boolean value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastNodeSetToBoolean"></a>xmlXPathCastNodeSetToBoolean ()</h3><pre class="programlisting">int         xmlXPathCastNodeSetToBoolean    (<a href="libxml-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> ns);</pre><p>
 Converts a node-set to its boolean value</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ns</tt></i> :</span></td><td>  a node-set
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ns</tt></i> :</span></td><td>  a node-set
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the boolean value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastToBoolean"></a>xmlXPathCastToBoolean ()</h3><pre class="programlisting">int         xmlXPathCastToBoolean           (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);</pre><p>
 Converts an XPath object to its boolean value</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  an XPath object
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  an XPath object
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the boolean value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastBooleanToNumber"></a>xmlXPathCastBooleanToNumber ()</h3><pre class="programlisting"><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="double">double</GTKDOCLINK>      xmlXPathCastBooleanToNumber     (int val);</pre><p>
 Converts a boolean to its number value</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  a boolean
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  a boolean
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastStringToNumber"></a>xmlXPathCastStringToNumber ()</h3><pre class="programlisting"><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="double">double</GTKDOCLINK>      xmlXPathCastStringToNumber      (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *val);</pre><p>
 Converts a string to its number value</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  a string
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  a string
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastNodeToNumber"></a>xmlXPathCastNodeToNumber ()</h3><pre class="programlisting"><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="double">double</GTKDOCLINK>      xmlXPathCastNodeToNumber        (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
 Converts a node to its number value</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>node</tt></i> :</span></td><td>  a node
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  a node
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastNodeSetToNumber"></a>xmlXPathCastNodeSetToNumber ()</h3><pre class="programlisting"><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="double">double</GTKDOCLINK>      xmlXPathCastNodeSetToNumber     (<a href="libxml-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> ns);</pre><p>
 Converts a node-set to its number value</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ns</tt></i> :</span></td><td>  a node-set
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ns</tt></i> :</span></td><td>  a node-set
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastToNumber"></a>xmlXPathCastToNumber ()</h3><pre class="programlisting"><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="double">double</GTKDOCLINK>      xmlXPathCastToNumber            (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);</pre><p>
 Converts an XPath object to its number value</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  an XPath object
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  an XPath object
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number value
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastBooleanToString"></a>xmlXPathCastBooleanToString ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlXPathCastBooleanToString     (int val);</pre><p>
 Converts a boolean to its string value.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  a boolean
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  a boolean
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a newly allocated string.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastNumberToString"></a>xmlXPathCastNumberToString ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlXPathCastNumberToString      (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="double">double</GTKDOCLINK> val);</pre><p>
 Converts a number to its string value.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  a number
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  a number
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a newly allocated string.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastNodeToString"></a>xmlXPathCastNodeToString ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlXPathCastNodeToString        (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
 Converts a node to its string value.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>node</tt></i> :</span></td><td>  a node
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  a node
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a newly allocated string.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastNodeSetToString"></a>xmlXPathCastNodeSetToString ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlXPathCastNodeSetToString     (<a href="libxml-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> ns);</pre><p>
 Converts a node-set to its string value.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ns</tt></i> :</span></td><td>  a node-set
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ns</tt></i> :</span></td><td>  a node-set
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a newly allocated string.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCastToString"></a>xmlXPathCastToString ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlXPathCastToString            (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);</pre><p>
 Converts an existing object to its <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="string">string</GTKDOCLINK>() equivalent</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  an XPath object
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  an XPath object
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the string value of the object, NULL in case of error.
-        A new string is allocated only if needed (<i class="parameter"><tt>val</tt></i> isn't a
+        A new string is allocated only if needed (<i><tt>val</tt></i> isn't a
         string object).
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathConvertBoolean"></a>xmlXPathConvertBoolean ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPathConvertBoolean    (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);</pre><p>
 Converts an existing object to its <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="boolean">boolean</GTKDOCLINK>() equivalent</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  an XPath object
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  an XPath object
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new object, the old one is freed (or the operation
-        is done directly on <i class="parameter"><tt>val</tt></i>)
+        is done directly on <i><tt>val</tt></i>)
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathConvertNumber"></a>xmlXPathConvertNumber ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPathConvertNumber     (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);</pre><p>
 Converts an existing object to its <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="number">number</GTKDOCLINK>() equivalent</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  an XPath object
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  an XPath object
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new object, the old one is freed (or the operation
-        is done directly on <i class="parameter"><tt>val</tt></i>)
+        is done directly on <i><tt>val</tt></i>)
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathConvertString"></a>xmlXPathConvertString ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPathConvertString     (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);</pre><p>
 Converts an existing object to its <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="string">string</GTKDOCLINK>() equivalent</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  an XPath object
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  an XPath object
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new object, the old one is freed (or the operation
-        is done directly on <i class="parameter"><tt>val</tt></i>)
+        is done directly on <i><tt>val</tt></i>)
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathInit"></a>xmlXPathInit ()</h3><pre class="programlisting">void        xmlXPathInit                    (void);</pre><p>
 Initialize the XPath environment</p><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNewContext"></a>xmlXPathNewContext ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> xmlXPathNewContext       (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
 Create a new xmlXPathContext</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the XML document
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the XML document
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlXPathContext just allocated. The caller will need to free it.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathFreeContext"></a>xmlXPathFreeContext ()</h3><pre class="programlisting">void        xmlXPathFreeContext             (<a href="libxml-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt);</pre><p>
 Free up an xmlXPathContext</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the context to free
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the context to free
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathOrderDocElems"></a>xmlXPathOrderDocElems ()</h3><pre class="programlisting"><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="long">long</GTKDOCLINK>        xmlXPathOrderDocElems           (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
 Call this routine to speed up XPath computation on static documents.
 This stamps all the element nodes with the document order
@@ -511,23 +503,23 @@ Like for line information, the order is kept in the element-&gt;content
 field, the value stored is actually - the node number (startting at -1)
 to be able to differenciate from line numbers.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  an input document
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  an input document
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of element found in the document or -1 in case
    of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathEval"></a>xmlXPathEval ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPathEval              (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str,
                                              <a href="libxml-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctx);</pre><p>
 Evaluate the XPath Location Path in the given context.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>str</tt></i> :</span></td><td>  the XPath expression
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ctx</tt></i> :</span></td><td>  the XPath context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the XPath expression
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the XPath context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlXPathObjectPtr resulting from the evaluation or NULL.
         the caller has to free the object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathEvalExpression"></a>xmlXPathEvalExpression ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPathEvalExpression    (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str,
                                              <a href="libxml-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt);</pre><p>
 Evaluate the XPath expression in the given context.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>str</tt></i> :</span></td><td>  the XPath expression
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the XPath context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the XPath expression
+</td></tr><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlXPathObjectPtr resulting from the evaluation or NULL.
         the caller has to free the object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathEvalPredicate"></a>xmlXPathEvalPredicate ()</h3><pre class="programlisting">int         xmlXPathEvalPredicate           (<a href="libxml-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt,
@@ -541,25 +533,25 @@ function) and will be converted to false otherwise; if the result
 is not a number, then the result will be converted as if by a call
 to the boolean function.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the XPath context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>res</tt></i> :</span></td><td>  the Predicate Expression evaluation result
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath context
+</td></tr><tr><td><span class="term"><i><tt>res</tt></i> :</span></td><td>  the Predicate Expression evaluation result
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if predicate is true, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCompile"></a>xmlXPathCompile ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathCompExprPtr">xmlXPathCompExprPtr</a> xmlXPathCompile         (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str);</pre><p>
 Compile an XPath expression</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>str</tt></i> :</span></td><td>  the XPath expression
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the XPath expression
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlXPathCompExprPtr resulting from the compilation or NULL.
         the caller has to free the object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathCompiledEval"></a>xmlXPathCompiledEval ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPathCompiledEval      (<a href="libxml-xpath.html#xmlXPathCompExprPtr">xmlXPathCompExprPtr</a> comp,
                                              <a href="libxml-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctx);</pre><p>
 Evaluate the Precompiled XPath expression in the given context.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>comp</tt></i> :</span></td><td>  the compiled XPath expression
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ctx</tt></i> :</span></td><td>  the XPath context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>comp</tt></i> :</span></td><td>  the compiled XPath expression
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the XPath context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlXPathObjectPtr resulting from the evaluation or NULL.
         the caller has to free the object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathFreeCompExpr"></a>xmlXPathFreeCompExpr ()</h3><pre class="programlisting">void        xmlXPathFreeCompExpr            (<a href="libxml-xpath.html#xmlXPathCompExprPtr">xmlXPathCompExprPtr</a> comp);</pre><p>
-Free up the memory allocated by <i class="parameter"><tt>comp</tt></i></p><p>
+Free up the memory allocated by <i><tt>comp</tt></i></p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>comp</tt></i> :</span></td><td>  an XPATH comp
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlIO.html"><b>&lt;&lt; xmlIO</b></a></td><td align="right"><a accesskey="n" href="libxml-SAX.html"><b>SAX &gt;&gt;</b></a></td></tr></table></body></html>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>comp</tt></i> :</span></td><td>  an XPATH comp
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-HTMLtree.html"><b>&lt;&lt; HTMLtree</b></a></td><td align="right"><a accesskey="n" href="libxml-xpathInternals.html"><b>xpathInternals &gt;&gt;</b></a></td></tr></table></body></html>

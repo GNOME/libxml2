@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>HTMLparser</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>HTMLparser</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-entities.html" title="entities"><link rel="next" href="libxml-valid.html" title="valid"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-entities.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-valid.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-HTMLparser"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">HTMLparser</span></h2><p>HTMLparser &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-xmlerror.html" title="xmlerror"><link rel="next" href="libxml-HTMLtree.html" title="HTMLtree"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlerror.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-HTMLtree.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-HTMLparser"></a><div class="titlepage"></div><div class="refnamediv"><h2>HTMLparser</h2><p>HTMLparser &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -54,7 +54,7 @@ int         <a href="libxml-HTMLparser.html#htmlAutoCloseTag">htmlAutoCloseTag</
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              <a href="libxml-HTMLparser.html#htmlNodePtr">htmlNodePtr</a> elem);
 const <a href="libxml-HTMLparser.html#htmlEntityDesc">htmlEntityDesc</a>* <a href="libxml-HTMLparser.html#htmlParseEntityRef">htmlParseEntityRef</a>    (<a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt,
-                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **str);
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> **str);
 int         <a href="libxml-HTMLparser.html#htmlParseCharRef">htmlParseCharRef</a>                (<a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt);
 void        <a href="libxml-HTMLparser.html#htmlParseElement">htmlParseElement</a>                (<a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt);
 <a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> <a href="libxml-HTMLparser.html#htmlCreateMemoryParserCtxt">htmlCreateMemoryParserCtxt</a>
@@ -125,7 +125,6 @@ int         <a href="libxml-HTMLparser.html#htmlParseChunk">htmlParseChunk</a>  
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlElemDesc"></a>struct htmlElemDesc</h3><pre class="programlisting">struct htmlElemDesc {
-
     const char *name;	/* The tag name */
     char startTag;      /* Whether the start tag can be implied */
     char endTag;        /* Whether the end tag can be implied */
@@ -159,7 +158,6 @@ int         <a href="libxml-HTMLparser.html#htmlParseChunk">htmlParseChunk</a>  
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlEntityDesc"></a>struct htmlEntityDesc</h3><pre class="programlisting">struct htmlEntityDesc {
-
     unsigned int value;	/* the UNICODE value for the character */
     const char *name;	/* The entity name */
     const char *desc;   /* the description */
@@ -172,21 +170,21 @@ int         <a href="libxml-HTMLparser.html#htmlParseChunk">htmlParseChunk</a>  
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlTagLookup"></a>htmlTagLookup ()</h3><pre class="programlisting">const <a href="libxml-HTMLparser.html#htmlElemDesc">htmlElemDesc</a>* htmlTagLookup           (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *tag);</pre><p>
 Lookup the HTML tag in the ElementTable</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tag</tt></i> :</span></td><td>  The tag name in lowercase
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tag</tt></i> :</span></td><td>  The tag name in lowercase
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the related htmlElemDescPtr or NULL if not found.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlEntityLookup"></a>htmlEntityLookup ()</h3><pre class="programlisting">const <a href="libxml-HTMLparser.html#htmlEntityDesc">htmlEntityDesc</a>* htmlEntityLookup      (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Lookup the given entity in EntitiesTable
 </p><p>
 TODO: the linear scan is really ugly, an hash table is really needed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> the entity name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td> the entity name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the associated htmlEntityDescPtr if found, NULL otherwise.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlEntityValueLookup"></a>htmlEntityValueLookup ()</h3><pre class="programlisting">const <a href="libxml-HTMLparser.html#htmlEntityDesc">htmlEntityDesc</a>* htmlEntityValueLookup (unsigned int value);</pre><p>
 Lookup the given entity in EntitiesTable
 </p><p>
 TODO: the linear scan is really ugly, an hash table is really needed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td> the entity's unicode value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td> the entity's unicode value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the associated htmlEntityDescPtr if found, NULL otherwise.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlIsAutoClosed"></a>htmlIsAutoClosed ()</h3><pre class="programlisting">int         htmlIsAutoClosed                (<a href="libxml-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc,
                                              <a href="libxml-HTMLparser.html#htmlNodePtr">htmlNodePtr</a> elem);</pre><p>
@@ -194,8 +192,8 @@ The HTML DTD allows a tag to implicitly close other tags.
 The list is kept in htmlStartClose array. This function checks
 if a tag is autoclosed by one of it's child</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the HTML document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  the HTML element
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the HTML document
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  the HTML element
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if autoclosed, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlAutoCloseTag"></a>htmlAutoCloseTag ()</h3><pre class="programlisting">int         htmlAutoCloseTag                (<a href="libxml-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
@@ -205,18 +203,18 @@ The list is kept in htmlStartClose array. This function checks
 if the element or one of it's children would autoclose the
 given tag.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the HTML document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  The tag name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  the HTML element
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the HTML document
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  The tag name
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  the HTML element
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if autoclose, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlParseEntityRef"></a>htmlParseEntityRef ()</h3><pre class="programlisting">const <a href="libxml-HTMLparser.html#htmlEntityDesc">htmlEntityDesc</a>* htmlParseEntityRef    (<a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt,
-                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **str);</pre><p>
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> **str);</pre><p>
 parse an HTML ENTITY references
 </p><p>
 [68] EntityRef ::= '&amp;' Name ';'</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  an HTML parser context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>str</tt></i> :</span></td><td>  location to store the entity name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an HTML parser context
+</td></tr><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  location to store the entity name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the associated htmlEntityDescPtr if found, or NULL otherwise,
         if non-NULL *str will have to be freed by the caller.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlParseCharRef"></a>htmlParseCharRef ()</h3><pre class="programlisting">int         htmlParseCharRef                (<a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt);</pre><p>
@@ -225,7 +223,7 @@ parse Reference declarations
 [66] CharRef ::= '&amp;#' [0-9]+ ';' |
                  '&amp;<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x">x</GTKDOCLINK>' [0-9a-fA-F]+ ';'</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  an HTML parser context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an HTML parser context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the value parsed (as an int)
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlParseElement"></a>htmlParseElement ()</h3><pre class="programlisting">void        htmlParseElement                (<a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt);</pre><p>
 parse an HTML element, this is highly recursive
@@ -234,20 +232,20 @@ parse an HTML element, this is highly recursive
 </p><p>
 [41] Attribute ::= Name Eq AttValue</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  an HTML parser context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an HTML parser context
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlCreateMemoryParserCtxt"></a>htmlCreateMemoryParserCtxt ()</h3><pre class="programlisting"><a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> htmlCreateMemoryParserCtxt
                                             (const char *buffer,
                                              int size);</pre><p>
 Create a parser context for an HTML in-memory document.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buffer</tt></i> :</span></td><td>  a pointer to a char array
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>size</tt></i> :</span></td><td>  the size of the array
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  a pointer to a char array
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size of the array
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser context or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlParseDocument"></a>htmlParseDocument ()</h3><pre class="programlisting">int         htmlParseDocument               (<a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt);</pre><p>
 parse an HTML document (and build a tree if using the standard SAX
 interface).</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  an HTML parser context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an HTML parser context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0, -1 in case of error. the parser context is augmented
                as a result of the parsing.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlSAXParseDoc"></a>htmlSAXParseDoc ()</h3><pre class="programlisting"><a href="libxml-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>  htmlSAXParseDoc                 (<a href="libxml-tree.html#xmlChar">xmlChar</a> *cur,
@@ -258,18 +256,18 @@ Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks
 to handle parse events. If sax is NULL, fallback to the default DOM
 behavior and return a tree.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  a pointer to an array of xmlChar
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td>  a free form C string describing the HTML document encoding, or NULL
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>sax</tt></i> :</span></td><td>  the SAX handler block
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>userData</tt></i> :</span></td><td> if using SAX, this pointer will be provided on callbacks. 
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  a pointer to an array of xmlChar
+</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td>  a free form C string describing the HTML document encoding, or NULL
+</td></tr><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block
+</td></tr><tr><td><span class="term"><i><tt>userData</tt></i> :</span></td><td> if using SAX, this pointer will be provided on callbacks. 
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree unless SAX is NULL or the document is
     not well formed.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlParseDoc"></a>htmlParseDoc ()</h3><pre class="programlisting"><a href="libxml-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>  htmlParseDoc                    (<a href="libxml-tree.html#xmlChar">xmlChar</a> *cur,
                                              const char *encoding);</pre><p>
 parse an HTML in-memory document and build a tree.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  a pointer to an array of xmlChar
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td>  a free form C string describing the HTML document encoding, or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  a pointer to an array of xmlChar
+</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td>  a free form C string describing the HTML document encoding, or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlSAXParseFile"></a>htmlSAXParseFile ()</h3><pre class="programlisting"><a href="libxml-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>  htmlSAXParseFile                (const char *filename,
                                              const char *encoding,
@@ -280,10 +278,10 @@ compressed document is provided by default if found at compile-time.
 It use the given SAX function block to handle the parsing callback.
 If sax is NULL, fallback to the default DOM tree building routines.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the filename
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td>  a free form C string describing the HTML document encoding, or NULL
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>sax</tt></i> :</span></td><td>  the SAX handler block
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>userData</tt></i> :</span></td><td> if using SAX, this pointer will be provided on callbacks. 
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td>  a free form C string describing the HTML document encoding, or NULL
+</td></tr><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block
+</td></tr><tr><td><span class="term"><i><tt>userData</tt></i> :</span></td><td> if using SAX, this pointer will be provided on callbacks. 
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree unless SAX is NULL or the document is
     not well formed.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlParseFile"></a>htmlParseFile ()</h3><pre class="programlisting"><a href="libxml-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>  htmlParseFile                   (const char *filename,
@@ -291,8 +289,8 @@ If sax is NULL, fallback to the default DOM tree building routines.</p><p>
 parse an HTML file and build a tree. Automatic support for ZLIB/Compress
 compressed document is provided by default if found at compile-time.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the filename
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td>  a free form C string describing the HTML document encoding, or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td>  a free form C string describing the HTML document encoding, or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="UTF8ToHtml"></a>UTF8ToHtml ()</h3><pre class="programlisting">int         UTF8ToHtml                      (unsigned char *out,
                                              int *outlen,
@@ -301,14 +299,14 @@ compressed document is provided by default if found at compile-time.</p><p>
 Take a block of UTF-8 chars in and try to convert it to an ASCII
 plus HTML entities block of chars out.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>out</tt></i> :</span></td><td>  a pointer to an array of bytes to store the result
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>outlen</tt></i> :</span></td><td>  the length of <i class="parameter"><tt>out</tt></i>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>in</tt></i> :</span></td><td>  a pointer to an array of UTF-8 chars
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>inlen</tt></i> :</span></td><td>  the length of <i class="parameter"><tt>in</tt></i>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  a pointer to an array of bytes to store the result
+</td></tr><tr><td><span class="term"><i><tt>outlen</tt></i> :</span></td><td>  the length of <i><tt>out</tt></i>
+</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a pointer to an array of UTF-8 chars
+</td></tr><tr><td><span class="term"><i><tt>inlen</tt></i> :</span></td><td>  the length of <i><tt>in</tt></i>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if success, -2 if the transcoding fails, or -1 otherwise
-The value of <i class="parameter"><tt>inlen</tt></i> after return is the number of octets consumed
+The value of <i><tt>inlen</tt></i> after return is the number of octets consumed
     as the return value is positive, else unpredictable.
-The value of <i class="parameter"><tt>outlen</tt></i> after return is the number of octets consumed.
+The value of <i><tt>outlen</tt></i> after return is the number of octets consumed.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlEncodeEntities"></a>htmlEncodeEntities ()</h3><pre class="programlisting">int         htmlEncodeEntities              (unsigned char *out,
                                              int *outlen,
                                              unsigned char *in,
@@ -317,30 +315,30 @@ The value of <i class="parameter"><tt>outlen</tt></i> after return is the number
 Take a block of UTF-8 chars in and try to convert it to an ASCII
 plus HTML entities block of chars out.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>out</tt></i> :</span></td><td>  a pointer to an array of bytes to store the result
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>outlen</tt></i> :</span></td><td>  the length of <i class="parameter"><tt>out</tt></i>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>in</tt></i> :</span></td><td>  a pointer to an array of UTF-8 chars
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>inlen</tt></i> :</span></td><td>  the length of <i class="parameter"><tt>in</tt></i>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>quoteChar</tt></i> :</span></td><td> the quote character to escape (' or ") or zero.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  a pointer to an array of bytes to store the result
+</td></tr><tr><td><span class="term"><i><tt>outlen</tt></i> :</span></td><td>  the length of <i><tt>out</tt></i>
+</td></tr><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a pointer to an array of UTF-8 chars
+</td></tr><tr><td><span class="term"><i><tt>inlen</tt></i> :</span></td><td>  the length of <i><tt>in</tt></i>
+</td></tr><tr><td><span class="term"><i><tt>quoteChar</tt></i> :</span></td><td> the quote character to escape (' or ") or zero.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if success, -2 if the transcoding fails, or -1 otherwise
-The value of <i class="parameter"><tt>inlen</tt></i> after return is the number of octets consumed
+The value of <i><tt>inlen</tt></i> after return is the number of octets consumed
     as the return value is positive, else unpredictable.
-The value of <i class="parameter"><tt>outlen</tt></i> after return is the number of octets consumed.
+The value of <i><tt>outlen</tt></i> after return is the number of octets consumed.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlIsScriptAttribute"></a>htmlIsScriptAttribute ()</h3><pre class="programlisting">int         htmlIsScriptAttribute           (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Check if an attribute is of content type Script</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  an attribute name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  an attribute name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 is the attribute is a script 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlHandleOmittedElem"></a>htmlHandleOmittedElem ()</h3><pre class="programlisting">int         htmlHandleOmittedElem           (int val);</pre><p>
 Set and return the previous value for handling HTML omitted tags.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  int 0 or 1 
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  int 0 or 1 
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the last value for 0 for no handling, 1 for auto insertion.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlFreeParserCtxt"></a>htmlFreeParserCtxt ()</h3><pre class="programlisting">void        htmlFreeParserCtxt              (<a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt);</pre><p>
 Free all the memory used by a parser context. However the parsed
 document in ctxt-&gt;myDoc is not freed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  an HTML parser context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an HTML parser context
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlCreatePushParserCtxt"></a>htmlCreatePushParserCtxt ()</h3><pre class="programlisting"><a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> htmlCreatePushParserCtxt  (<a href="libxml-HTMLparser.html#htmlSAXHandlerPtr">htmlSAXHandlerPtr</a> sax,
                                              void *user_data,
                                              const char *chunk,
@@ -348,15 +346,15 @@ document in ctxt-&gt;myDoc is not freed.</p><p>
                                              const char *filename,
                                              <a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);</pre><p>
 Create a parser context for using the HTML parser in push mode
-The value of <i class="parameter"><tt>filename</tt></i> is used for fetching external entities
+The value of <i><tt>filename</tt></i> is used for fetching external entities
 and error/warning reports.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>sax</tt></i> :</span></td><td>  a SAX handler
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>user_data</tt></i> :</span></td><td>  The user data returned on SAX callbacks
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>chunk</tt></i> :</span></td><td>  a pointer to an array of chars
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>size</tt></i> :</span></td><td>  number of chars in the array
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  an optional file name or URI
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>enc</tt></i> :</span></td><td>  an optional encoding
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  a SAX handler
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>  The user data returned on SAX callbacks
+</td></tr><tr><td><span class="term"><i><tt>chunk</tt></i> :</span></td><td>  a pointer to an array of chars
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  number of chars in the array
+</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  an optional file name or URI
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  an optional encoding
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser context or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlParseChunk"></a>htmlParseChunk ()</h3><pre class="programlisting">int         htmlParseChunk                  (<a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt,
                                              const char *chunk,
@@ -364,9 +362,9 @@ and error/warning reports.</p><p>
                                              int terminate);</pre><p>
 Parse a Chunk of memory</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>chunk</tt></i> :</span></td><td>  an char array
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>size</tt></i> :</span></td><td>  the size in byte of the chunk
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>terminate</tt></i> :</span></td><td>  last chunk indicator
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>chunk</tt></i> :</span></td><td>  an char array
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size in byte of the chunk
+</td></tr><tr><td><span class="term"><i><tt>terminate</tt></i> :</span></td><td>  last chunk indicator
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>zero if no error, the xmlParserErrors otherwise.
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-entities.html"><b>&lt;&lt; entities</b></a></td><td align="right"><a accesskey="n" href="libxml-valid.html"><b>valid &gt;&gt;</b></a></td></tr></table></body></html>
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlerror.html"><b>&lt;&lt; xmlerror</b></a></td><td align="right"><a accesskey="n" href="libxml-HTMLtree.html"><b>HTMLtree &gt;&gt;</b></a></td></tr></table></body></html>

@@ -145,7 +145,7 @@ void		    xmlDumpNotationTable(xmlBufferPtr buf,
 					 xmlNotationTablePtr table);
 
 /* Element Content */
-xmlElementContentPtr xmlNewElementContent (xmlChar *name,
+xmlElementContentPtr xmlNewElementContent (const xmlChar *name,
 					   xmlElementContentType type);
 xmlElementContentPtr xmlCopyElementContent(xmlElementContentPtr content);
 void		     xmlFreeElementContent(xmlElementContentPtr cur);
@@ -173,7 +173,7 @@ void		   xmlDumpElementDecl	(xmlBufferPtr buf,
 					 xmlElementPtr elem);
 
 /* Enumeration */
-xmlEnumerationPtr  xmlCreateEnumeration	(xmlChar *name);
+xmlEnumerationPtr  xmlCreateEnumeration	(const xmlChar *name);
 void		   xmlFreeEnumeration	(xmlEnumerationPtr cur);
 xmlEnumerationPtr  xmlCopyEnumeration	(xmlEnumerationPtr cur);
 

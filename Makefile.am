@@ -1,5 +1,4 @@
 ## Process this file with automake to produce Makefile.in
-# AUTOMAKE_ OPTIONS=no-dependencies
 
 SUBDIRS = include . doc example @PYTHON_SUBDIR@
 
@@ -27,7 +26,7 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
 		catalog.c globals.c threads.c c14n.c \
 		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
-		triostr.c trio.c xmlreader.c relaxng.c
+		triostr.c trio.c xmlreader.c relaxng.c dict.c
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
@@ -35,7 +34,7 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
 		catalog.c globals.c threads.c c14n.c \
 		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
-		xmlreader.c relaxng.c
+		xmlreader.c relaxng.c dict.c
 endif
 
 DEPS = $(top_builddir)/libxml2.la

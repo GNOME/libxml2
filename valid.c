@@ -719,7 +719,7 @@ xmlFreeValidCtxt(xmlValidCtxtPtr cur) {
  * Returns NULL if not, otherwise the new element content structure
  */
 xmlElementContentPtr
-xmlNewElementContent(xmlChar *name, xmlElementContentType type) {
+xmlNewElementContent(const xmlChar *name, xmlElementContentType type) {
     xmlElementContentPtr ret;
 
     switch(type) {
@@ -1380,7 +1380,7 @@ xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table) {
  *                of error.
  */
 xmlEnumerationPtr
-xmlCreateEnumeration(xmlChar *name) {
+xmlCreateEnumeration(const xmlChar *name) {
     xmlEnumerationPtr ret;
 
     ret = (xmlEnumerationPtr) xmlMalloc(sizeof(xmlEnumeration));

@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>entities</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>entities</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,12 +28,12 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-parserInternals.html" title="parserInternals"><link rel="next" href="libxml-HTMLparser.html" title="HTMLparser"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-parserInternals.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-HTMLparser.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-entities"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">entities</span></h2><p>entities &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-tree.html" title="tree"><link rel="next" href="libxml-valid.html" title="valid"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-tree.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-valid.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-entities"></a><div class="titlepage"></div><div class="refnamediv"><h2>entities</h2><p>entities &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
 enum        <a href="libxml-entities.html#xmlEntityType">xmlEntityType</a>;
-struct      <a href="libxml-entities.html#xmlEntity">xmlEntity</a>;
+struct      <a href="libxml-tree.html#xmlEntity">xmlEntity</a>;
 typedef     <a href="libxml-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a>;
 void        <a href="libxml-entities.html#xmlInitializePredefinedEntities">xmlInitializePredefinedEntities</a> (void);
 <a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> <a href="libxml-entities.html#xmlAddDocEntity">xmlAddDocEntity</a>                (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -82,7 +82,6 @@ void        <a href="libxml-entities.html#xmlCleanupPredefinedEntities">xmlClean
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlEntity"></a>struct xmlEntity</h3><pre class="programlisting">struct xmlEntity {
-
     void           *_private;	        /* application data */
     xmlElementType          type;       /* XML_ENTITY_DECL, must be second ! */
     const xmlChar          *name;	/* Entity name */
@@ -120,12 +119,12 @@ Set up the predefined entities.</p><p>
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
 Register a new entity for this document.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the entity name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td>  the entity type XML_xxx_yyy_ENTITY
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ExternalID</tt></i> :</span></td><td>  the entity external ID if available
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>SystemID</tt></i> :</span></td><td>  the entity system ID if available
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>content</tt></i> :</span></td><td>  the entity content
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the entity name
+</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the entity type XML_xxx_yyy_ENTITY
+</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>  the entity external ID if available
+</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>  the entity system ID if available
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i> :</span></td><td>  the entity content
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a pointer to the entity or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlAddDtdEntity"></a>xmlAddDtdEntity ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> xmlAddDtdEntity                (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
@@ -135,17 +134,17 @@ Register a new entity for this document.</p><p>
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *content);</pre><p>
 Register a new entity for this document DTD external subset.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the entity name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td>  the entity type XML_xxx_yyy_ENTITY
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ExternalID</tt></i> :</span></td><td>  the entity external ID if available
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>SystemID</tt></i> :</span></td><td>  the entity system ID if available
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>content</tt></i> :</span></td><td>  the entity content
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the entity name
+</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the entity type XML_xxx_yyy_ENTITY
+</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>  the entity external ID if available
+</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>  the entity system ID if available
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i> :</span></td><td>  the entity content
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a pointer to the entity or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetPredefinedEntity"></a>xmlGetPredefinedEntity ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> xmlGetPredefinedEntity         (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Check whether this name is an predefined entity.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the entity name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the entity name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not, otherwise the entity
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetDocEntity"></a>xmlGetDocEntity ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> xmlGetDocEntity                (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
@@ -153,8 +152,8 @@ Do an entity lookup in the document entity hash table and
 returns the corresponding entity, otherwise a lookup is done
 in the predefined entities too.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document referencing the entity
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the entity name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document referencing the entity
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the entity name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>A pointer to the entity structure or NULL if not found.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetDtdEntity"></a>xmlGetDtdEntity ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> xmlGetDtdEntity                (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
@@ -162,16 +161,16 @@ Do an entity lookup in the DTD entity hash table and
 returns the corresponding entity, if found.
 Note: the first argument is the document node, not the DTD node.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document referencing the entity
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the entity name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document referencing the entity
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the entity name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>A pointer to the entity structure or NULL if not found.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetParameterEntity"></a>xmlGetParameterEntity ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> xmlGetParameterEntity          (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Do an entity lookup in the internal and external subsets and
 returns the corresponding parameter entity, if found.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document referencing the entity
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the entity name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document referencing the entity
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the entity name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>A pointer to the entity structure or NULL if not found.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlEncodeEntities"></a>xmlEncodeEntities ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* xmlEncodeEntities            (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *input);</pre><p>
@@ -184,8 +183,8 @@ TODO: remove xmlEncodeEntities, once we are not afraid of breaking binary
 People must migrate their code to xmlEncodeEntitiesReentrant !
 This routine will issue a warning when encountered.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document containing the string
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>input</tt></i> :</span></td><td>  A string to convert to XML.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document containing the string
+</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  A string to convert to XML.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>A newly allocated string with the substitution done.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlEncodeEntitiesReentrant"></a>xmlEncodeEntitiesReentrant ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlEncodeEntitiesReentrant      (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *input);</pre><p>
@@ -194,16 +193,16 @@ and non ASCII values with their entities and CharRef counterparts.
 Contrary to xmlEncodeEntities, this routine is reentrant, and result
 must be deallocated.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document containing the string
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>input</tt></i> :</span></td><td>  A string to convert to XML.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document containing the string
+</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  A string to convert to XML.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>A newly allocated string with the substitution done.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlEncodeSpecialChars"></a>xmlEncodeSpecialChars ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlEncodeSpecialChars           (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *input);</pre><p>
 Do a global encoding of a string, replacing the predefined entities
 this routine is reentrant, and result must be deallocated.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document containing the string
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>input</tt></i> :</span></td><td>  A string to convert to XML.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document containing the string
+</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  A string to convert to XML.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>A newly allocated string with the substitution done.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCreateEntitiesTable"></a>xmlCreateEntitiesTable ()</h3><pre class="programlisting"><a href="libxml-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> xmlCreateEntitiesTable  (void);</pre><p>
 create and initialize an empty entities hash table.</p><p>
@@ -212,25 +211,25 @@ create and initialize an empty entities hash table.</p><p>
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCopyEntitiesTable"></a>xmlCopyEntitiesTable ()</h3><pre class="programlisting"><a href="libxml-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> xmlCopyEntitiesTable    (<a href="libxml-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> table);</pre><p>
 Build a copy of an entity table.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An entity table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An entity table
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new xmlEntitiesTablePtr or NULL in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeEntitiesTable"></a>xmlFreeEntitiesTable ()</h3><pre class="programlisting">void        xmlFreeEntitiesTable            (<a href="libxml-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> table);</pre><p>
 Deallocate the memory used by an entities hash table.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An entity table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An entity table
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDumpEntitiesTable"></a>xmlDumpEntitiesTable ()</h3><pre class="programlisting">void        xmlDumpEntitiesTable            (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> table);</pre><p>
 This will dump the content of the entity table as an XML DTD definition</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  An XML buffer.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An entity table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  An XML buffer.
+</td></tr><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An entity table
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDumpEntityDecl"></a>xmlDumpEntityDecl ()</h3><pre class="programlisting">void        xmlDumpEntityDecl               (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> ent);</pre><p>
 This will dump the content of the entity table as an XML DTD definition</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  An XML buffer.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ent</tt></i> :</span></td><td>  An entity table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  An XML buffer.
+</td></tr><tr><td><span class="term"><i><tt>ent</tt></i> :</span></td><td>  An entity table
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCleanupPredefinedEntities"></a>xmlCleanupPredefinedEntities ()</h3><pre class="programlisting">void        xmlCleanupPredefinedEntities    (void);</pre><p>
 Cleanup up the predefined entities table.</p><p>
 
-</p></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-parserInternals.html"><b>&lt;&lt; parserInternals</b></a></td><td align="right"><a accesskey="n" href="libxml-HTMLparser.html"><b>HTMLparser &gt;&gt;</b></a></td></tr></table></body></html>
+</p></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-tree.html"><b>&lt;&lt; tree</b></a></td><td align="right"><a accesskey="n" href="libxml-valid.html"><b>valid &gt;&gt;</b></a></td></tr></table></body></html>

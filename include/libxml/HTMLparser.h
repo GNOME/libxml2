@@ -86,7 +86,7 @@ int			htmlAutoCloseTag(htmlDocPtr doc,
 					 const xmlChar *name,
 					 htmlNodePtr elem);
 const htmlEntityDesc * 	htmlParseEntityRef(htmlParserCtxtPtr ctxt,
-					 xmlChar **str);
+					 const xmlChar **str);
 int			htmlParseCharRef(htmlParserCtxtPtr ctxt);
 void			htmlParseElement(htmlParserCtxtPtr ctxt);
 

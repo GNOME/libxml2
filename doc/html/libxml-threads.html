@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>threads</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>threads</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-schemasInternals.html" title="schemasInternals"><link rel="next" href="libxml-parser.html" title="parser"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-schemasInternals.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-parser.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-threads"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">threads</span></h2><p>threads &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-c14n.html" title="c14n"><link rel="next" href="libxml-globals.html" title="globals"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-c14n.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-globals.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-threads"></a><div class="titlepage"></div><div class="refnamediv"><h2>threads</h2><p>threads &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -71,16 +71,16 @@ synchronizing access to data.</p><p>
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMutexLock"></a>xmlMutexLock ()</h3><pre class="programlisting">void        xmlMutexLock                    (<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok);</pre><p>
 <a href="libxml-threads.html#xmlMutexLock">xmlMutexLock</a>() is used to lock a libxml2 token.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tok</tt></i> :</span></td><td>  the simple mutex
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the simple mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMutexUnlock"></a>xmlMutexUnlock ()</h3><pre class="programlisting">void        xmlMutexUnlock                  (<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok);</pre><p>
 <a href="libxml-threads.html#xmlMutexUnlock">xmlMutexUnlock</a>() is used to unlock a libxml2 token.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tok</tt></i> :</span></td><td>  the simple mutex
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the simple mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeMutex"></a>xmlFreeMutex ()</h3><pre class="programlisting">void        xmlFreeMutex                    (<a href="libxml-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok);</pre><p>
 <a href="libxml-threads.html#xmlFreeMutex">xmlFreeMutex</a>() is used to reclaim resources associated with a libxml2 token
 struct.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tok</tt></i> :</span></td><td>  the simple mutex
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the simple mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewRMutex"></a>xmlNewRMutex ()</h3><pre class="programlisting"><a href="libxml-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> xmlNewRMutex                   (void);</pre><p>
 <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xmlRNewMutex">xmlRNewMutex</GTKDOCLINK>() is used to allocate a reentrant mutex for use in
 synchronizing access to data. token_r is a re-entrant lock and thus useful
@@ -91,16 +91,16 @@ recursive fashion.</p><p>
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRMutexLock"></a>xmlRMutexLock ()</h3><pre class="programlisting">void        xmlRMutexLock                   (<a href="libxml-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);</pre><p>
 <a href="libxml-threads.html#xmlRMutexLock">xmlRMutexLock</a>() is used to lock a libxml2 token_r.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tok</tt></i> :</span></td><td>  the reentrant mutex
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the reentrant mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRMutexUnlock"></a>xmlRMutexUnlock ()</h3><pre class="programlisting">void        xmlRMutexUnlock                 (<a href="libxml-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);</pre><p>
 <a href="libxml-threads.html#xmlRMutexUnlock">xmlRMutexUnlock</a>() is used to unlock a libxml2 token_r.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tok</tt></i> :</span></td><td>  the reentrant mutex
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the reentrant mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeRMutex"></a>xmlFreeRMutex ()</h3><pre class="programlisting">void        xmlFreeRMutex                   (<a href="libxml-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);</pre><p>
 <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xmlRFreeMutex">xmlRFreeMutex</GTKDOCLINK>() is used to reclaim resources associated with a
 reentrant mutex.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>tok</tt></i> :</span></td><td>  the reentrant mutex
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tok</tt></i> :</span></td><td>  the reentrant mutex
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInitThreads"></a>xmlInitThreads ()</h3><pre class="programlisting">void        xmlInitThreads                  (void);</pre><p>
 <a href="libxml-threads.html#xmlInitThreads">xmlInitThreads</a>() is used to to initialize all the thread related
 data of the libxml2 library.</p><p>
@@ -129,4 +129,4 @@ data of the libxml2 library once processing has ended.</p><p>
 <a href="libxml-threads.html#xmlGetGlobalState">xmlGetGlobalState</a>() is called to retrieve the global state for a thread.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the thread global state or NULL in case of error
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-schemasInternals.html"><b>&lt;&lt; schemasInternals</b></a></td><td align="right"><a accesskey="n" href="libxml-parser.html"><b>parser &gt;&gt;</b></a></td></tr></table></body></html>
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-c14n.html"><b>&lt;&lt; c14n</b></a></td><td align="right"><a accesskey="n" href="libxml-globals.html"><b>globals &gt;&gt;</b></a></td></tr></table></body></html>

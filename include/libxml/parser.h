@@ -10,6 +10,7 @@
 #define __XML_PARSER_H__
 
 #include <libxml/tree.h>
+#include <libxml/dict.h>
 #include <libxml/valid.h>
 #include <libxml/entities.h>
 
@@ -200,17 +201,17 @@ struct _xmlParserCtxt {
     char           *directory;        /* the data directory */
 
     /* Node name stack */
-    xmlChar           *name;          /* Current parsed Node */
+    const xmlChar     *name;          /* Current parsed Node */
     int                nameNr;        /* Depth of the parsing stack */
     int                nameMax;       /* Max depth of the parsing stack */
-    xmlChar *         *nameTab;       /* array of nodes */
+    const xmlChar *   *nameTab;       /* array of nodes */
 
     long               nbChars;       /* number of xmlChar processed */
     long            checkIndex;       /* used by progressive parsing lookup */
     int             keepBlanks;       /* ugly but ... */
     int             disableSAX;       /* SAX callbacks are disabled */
     int               inSubset;       /* Parsing is in int 1/ext 2 subset */
-    xmlChar *          intSubName;    /* name of subset */
+    const xmlChar *    intSubName;    /* name of subset */
     xmlChar *          extSubURI;     /* URI of external subset */
     xmlChar *          extSubSystem;  /* SYSTEM ID of external subset */
 
@@ -234,6 +235,7 @@ struct _xmlParserCtxt {
     void              *catalogs;       /* document's own catalog */
     int                recovery;      /* run in recovery mode */
     int                progressive;   /* is this a progressive parsing */
+    xmlDictPtr         dict;          /* dictionnary for the parser */
 };
 
 /**

@@ -39,7 +39,8 @@ xmlinc_HEADERS = \
 		xmlschemastypes.h \
 		xmlunicode.h \
 		xmlreader.h \
-		relaxng.h
+		relaxng.h \
+		dict.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)

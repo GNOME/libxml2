@@ -660,6 +660,10 @@ xmlDefaultSAXHandlerInit
 xmlDelEncodingAlias
 xmlDeregisterNodeDefault
 xmlDetectCharEncoding
+xmlDictCreate
+xmlDictFree
+xmlDictLookup
+xmlDictSize
 xmlDocCopyNode
 xmlDocDump
 xmlDocDumpFormatMemory

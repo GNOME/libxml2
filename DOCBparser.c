@@ -113,12 +113,12 @@ struct _docbElemDesc {
  * Returns 0 in case of error, the index in the stack otherwise
  */
 static int
-docbnamePush(docbParserCtxtPtr ctxt, xmlChar * value)
+docbnamePush(docbParserCtxtPtr ctxt, const xmlChar * value)
 {
     if (ctxt->nameNr >= ctxt->nameMax) {
         ctxt->nameMax *= 2;
-        ctxt->nameTab =
-            (xmlChar * *)xmlRealloc(ctxt->nameTab,
+        ctxt->nameTab = (const xmlChar * *)
+                         xmlRealloc(ctxt->nameTab,
                                     ctxt->nameMax *
                                     sizeof(ctxt->nameTab[0]));
         if (ctxt->nameTab == NULL) {
@@ -138,10 +138,10 @@ docbnamePush(docbParserCtxtPtr ctxt, xmlChar * value)
  *
  * Returns the name just removed
  */
-static xmlChar *
+static const xmlChar *
 docbnamePop(docbParserCtxtPtr ctxt)
 {
-    xmlChar *ret;
+    const xmlChar *ret;
 
     if (ctxt->nameNr < 0)
         return (0);
@@ -950,7 +950,7 @@ docbCheckAutoClose(const xmlChar *newtag, const xmlChar *oldtag) {
 static void
 docbAutoCloseOnClose(docbParserCtxtPtr ctxt, const xmlChar *newtag) {
     docbElemDescPtr info;
-    xmlChar *oldname;
+    const xmlChar *oldname;
     int i;
 
     if ((newtag[0] == '/') && (newtag[1] == 0))
@@ -983,12 +983,11 @@ docbAutoCloseOnClose(docbParserCtxtPtr ctxt, const xmlChar *newtag) {
        if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
            ctxt->sax->endElement(ctxt->userData, ctxt->name);
        oldname = docbnamePop(ctxt);
-       if (oldname != NULL) {
 #ifdef DEBUG
+       if (oldname != NULL) {
            xmlGenericError(xmlGenericErrorContext,"docbAutoCloseOnClose: popped %s\n", oldname);
-#endif
-           xmlFree(oldname);
        }       
+#endif
     }
 }
 
@@ -1006,7 +1005,7 @@ docbAutoCloseOnClose(docbParserCtxtPtr ctxt, const xmlChar *newtag) {
  */
 static void
 docbAutoClose(docbParserCtxtPtr ctxt, const xmlChar *newtag) {
-    xmlChar *oldname;
+    const xmlChar *oldname;
     while ((newtag != NULL) && (ctxt->name != NULL) && 
            (docbCheckAutoClose(newtag, ctxt->name))) {
 #ifdef DEBUG
@@ -1015,12 +1014,11 @@ docbAutoClose(docbParserCtxtPtr ctxt, const xmlChar *newtag) {
        if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
            ctxt->sax->endElement(ctxt->userData, ctxt->name);
        oldname = docbnamePop(ctxt);
-       if (oldname != NULL) {
 #ifdef DEBUG
+       if (oldname != NULL) {
            xmlGenericError(xmlGenericErrorContext,"docbAutoClose: popped %s\n", oldname);
-#endif
-           xmlFree(oldname);
         }
+#endif
     }
 }
 
@@ -3136,7 +3134,7 @@ docbParsePI(xmlParserCtxtPtr ctxt) {
     int len = 0;
     int size = DOCB_PARSER_BUFFER_SIZE;
     int cur, l;
-    xmlChar *target;
+    const xmlChar *target;
     xmlParserInputState state;
     int count = 0;
 
@@ -3177,7 +3175,6 @@ docbParsePI(xmlParserCtxtPtr ctxt) {
 		    ctxt->sax->processingInstruction(ctxt->userData,
 		                                     target, NULL);
 		ctxt->instate = state;
-		xmlFree(target);
 		return;
 	    }
 	    if (xmlStrEqual(target, BAD_CAST "sgml-declaration")) {
@@ -3273,7 +3270,6 @@ docbParsePI(xmlParserCtxtPtr ctxt) {
 		                                     target, buf);
 	    }
 	    xmlFree(buf);
-	    xmlFree(target);
 	} else {
 	    ctxt->errNo = XML_ERR_PI_NOT_STARTED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -3799,7 +3795,7 @@ failed:
     /*
      * SAX: Start of Element !
      */
-    docbnamePush(ctxt, xmlStrdup(name));
+    docbnamePush(ctxt, name);
 #ifdef DEBUG
     xmlGenericError(xmlGenericErrorContext,"Start of element %s: pushed %s\n", name, ctxt->name);
 #endif    
@@ -3831,8 +3827,8 @@ failed:
 
 static void
 docbParseEndTag(docbParserCtxtPtr ctxt) {
-    xmlChar *name;
-    xmlChar *oldname;
+    const xmlChar *name;
+    const xmlChar *oldname;
     int i;
 
     if ((CUR != '<') || (NXT(1) != '/')) {
@@ -3853,9 +3849,6 @@ docbParseEndTag(docbParserCtxtPtr ctxt) {
                    ctxt->sax->endElement(ctxt->userData, name);
 #ifdef DEBUG
                xmlGenericError(xmlGenericErrorContext,"End of tag </>: popping out %s\n", oldname);
-#endif
-               xmlFree(oldname);
-#ifdef DEBUG
            } else {
                xmlGenericError(xmlGenericErrorContext,"End of tag </>: stack empty !!!\n");
 #endif
@@ -3887,7 +3880,6 @@ docbParseEndTag(docbParserCtxtPtr ctxt) {
        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
            ctxt->sax->error(ctxt->userData,
             "Unexpected end tag : %s\n", name);
-       xmlFree(name);
        ctxt->wellFormed = 0;
        return;
     }
@@ -3931,17 +3923,11 @@ docbParseEndTag(docbParserCtxtPtr ctxt) {
        if (oldname != NULL) {
 #ifdef DEBUG
            xmlGenericError(xmlGenericErrorContext,"End of tag %s: popping out %s\n", name, oldname);
-#endif
-           xmlFree(oldname);
-#ifdef DEBUG
        } else {
            xmlGenericError(xmlGenericErrorContext,"End of tag %s: stack empty !!!\n", name);
 #endif
        }
     }
-
-    if (name != NULL)
-       xmlFree(name);
 
     return;
 }
@@ -4194,11 +4180,11 @@ docbParseContent(docbParserCtxtPtr ctxt)
 
 static void
 docbParseElement(docbParserCtxtPtr ctxt) {
-    xmlChar *name;
+    const xmlChar *name;
     xmlChar *currentNode = NULL;
     docbElemDescPtr info;
     docbParserNodeInfo node_info;
-    xmlChar *oldname;
+    const xmlChar *oldname;
     int depth = ctxt->nameNr;
 
     /* Capture start position */
@@ -4226,12 +4212,8 @@ docbParseElement(docbParserCtxtPtr ctxt) {
         (name == NULL)) {
        if (CUR == '>')
            NEXT;
-       if (oldname != NULL)
-           xmlFree(oldname);
         return;
     }
-    if (oldname != NULL)
-       xmlFree(oldname);
 
     /*
      * Lookup the info for that element.
@@ -4261,8 +4243,6 @@ docbParseElement(docbParserCtxtPtr ctxt) {
 #ifdef DEBUG
         xmlGenericError(xmlGenericErrorContext,"End of tag the XML way: popping out %s\n", oldname);
 #endif
-       if (oldname != NULL)
-           xmlFree(oldname);
        return;
     }
 
@@ -4284,8 +4264,6 @@ docbParseElement(docbParserCtxtPtr ctxt) {
 #ifdef DEBUG
            xmlGenericError(xmlGenericErrorContext,"End of start tag problem: popping out %s\n", oldname);
 #endif
-           if (oldname != NULL)
-               xmlFree(oldname);
        }    
 
        /*
@@ -4311,8 +4289,6 @@ docbParseElement(docbParserCtxtPtr ctxt) {
 #ifdef DEBUG
        xmlGenericError(xmlGenericErrorContext,"End of empty tag %s : popping out %s\n", name, oldname);
 #endif
-       if (oldname != NULL)
-           xmlFree(oldname);
        return;
     }
 
@@ -4342,8 +4318,6 @@ docbParseElement(docbParserCtxtPtr ctxt) {
 #ifdef DEBUG
        xmlGenericError(xmlGenericErrorContext,"Premature end of tag %s : popping out %s\n", name, oldname);
 #endif
-       if (oldname != NULL)
-           xmlFree(oldname);
        if (currentNode != NULL)
            xmlFree(currentNode);
        return;
@@ -4373,10 +4347,10 @@ docbParseElement(docbParserCtxtPtr ctxt) {
 
 static void
 docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
-    xmlChar *name = NULL;
+    const xmlChar *name = NULL;
     xmlChar *value = NULL;
     xmlChar *URI = NULL, *literal = NULL;
-    xmlChar *ndata = NULL;
+    const xmlChar *ndata = NULL;
     int isParameter = 0;
     xmlChar *orig = NULL;
     
@@ -4413,7 +4387,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
            isParameter = 1;
        }
 
-        name = xmlParseName(ctxt);
+       name = xmlParseName(ctxt);
        if (name == NULL) {
            ctxt->errNo = XML_ERR_NAME_REQUIRED;
            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -4545,7 +4519,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                 * SGML specific: here we can get the content model
                 */
                if (RAW != '>') {
-                   xmlChar *contmod;
+                   const xmlChar *contmod;
 
                    contmod = xmlParseName(ctxt);
 
@@ -4599,7 +4573,6 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                                        name, literal, URI, ndata);
                            }
                        }
-                       xmlFree(contmod);
                    }
                } else {
                    if ((ctxt->sax != NULL) &&
@@ -4652,11 +4625,9 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
            } else
                xmlFree(orig);
        }
-       if (name != NULL) xmlFree(name);
        if (value != NULL) xmlFree(value);
        if (URI != NULL) xmlFree(URI);
        if (literal != NULL) xmlFree(literal);
-       if (ndata != NULL) xmlFree(ndata);
     }
 }
 
@@ -4952,7 +4923,7 @@ docbInitParserCtxt(docbParserCtxtPtr ctxt)
     ctxt->node = NULL;
 
     /* Allocate the Name stack */
-    ctxt->nameTab = (xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
+    ctxt->nameTab = (const xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
     ctxt->nameNr = 0;
     ctxt->nameMax = 10;
     ctxt->name = NULL;
@@ -5382,7 +5353,7 @@ docbParseTryOrFinish(docbParserCtxtPtr ctxt, int terminate) {
                }
                break;
             case XML_PARSER_START_TAG: {
-               xmlChar *name, *oldname;
+               const xmlChar *name, *oldname;
                int depth = ctxt->nameNr;
                docbElemDescPtr info;
 
@@ -5401,7 +5372,7 @@ docbParseTryOrFinish(docbParserCtxtPtr ctxt, int terminate) {
                    (docbParseLookupSequence(ctxt, '>', 0, 0) < 0))
                    goto done;
 
-               oldname = xmlStrdup(ctxt->name);
+               oldname = ctxt->name;
                docbParseStartTag(ctxt);
                name = ctxt->name;
 #ifdef DEBUG
@@ -5422,12 +5393,8 @@ docbParseTryOrFinish(docbParserCtxtPtr ctxt, int terminate) {
                    (name == NULL)) {
                    if (CUR == '>')
                        NEXT;
-                   if (oldname != NULL)
-                       xmlFree(oldname);
                    break;
                }
-               if (oldname != NULL)
-                   xmlFree(oldname);
 
                /*
                 * Lookup the info for that element.
@@ -5459,8 +5426,6 @@ docbParseTryOrFinish(docbParserCtxtPtr ctxt, int terminate) {
                    xmlGenericError(xmlGenericErrorContext,"End of tag the XML way: popping out %s\n",
                            oldname);
 #endif
-                   if (oldname != NULL)
-                       xmlFree(oldname);
                    ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH
                    xmlGenericError(xmlGenericErrorContext,
@@ -5488,8 +5453,6 @@ docbParseTryOrFinish(docbParserCtxtPtr ctxt, int terminate) {
                        xmlGenericError(xmlGenericErrorContext,
                         "End of start tag problem: popping out %s\n", oldname);
 #endif
-                       if (oldname != NULL)
-                           xmlFree(oldname);
                    }    
 
                    ctxt->instate = XML_PARSER_CONTENT;
@@ -5510,8 +5473,6 @@ docbParseTryOrFinish(docbParserCtxtPtr ctxt, int terminate) {
 #ifdef DEBUG
                    xmlGenericError(xmlGenericErrorContext,"End of empty tag %s : popping out %s\n", name, oldname);
 #endif
-                   if (oldname != NULL)
-                       xmlFree(oldname);
                }
                ctxt->instate = XML_PARSER_CONTENT;
 #ifdef DEBUG_PUSH

@@ -243,7 +243,7 @@ void			xmlParseNamespace	(xmlParserCtxtPtr ctxt);
  * Generic production rules.
  */
 xmlChar *		xmlScanName		(xmlParserCtxtPtr ctxt);
-xmlChar *		xmlParseName		(xmlParserCtxtPtr ctxt);
+const xmlChar *		xmlParseName		(xmlParserCtxtPtr ctxt);
 xmlChar *		xmlParseNmtoken		(xmlParserCtxtPtr ctxt);
 xmlChar *		xmlParseEntityValue	(xmlParserCtxtPtr ctxt,
 						 xmlChar **orig);
@@ -256,7 +256,7 @@ xmlChar *		xmlParseExternalID	(xmlParserCtxtPtr ctxt,
 						 xmlChar **publicID,
 						 int strict);
 void			xmlParseComment		(xmlParserCtxtPtr ctxt);
-xmlChar *		xmlParsePITarget	(xmlParserCtxtPtr ctxt);
+const xmlChar *		xmlParsePITarget	(xmlParserCtxtPtr ctxt);
 void			xmlParsePI		(xmlParserCtxtPtr ctxt);
 void			xmlParseNotationDecl	(xmlParserCtxtPtr ctxt);
 void			xmlParseEntityDecl	(xmlParserCtxtPtr ctxt);
@@ -276,7 +276,7 @@ xmlElementContentPtr	xmlParseElementChildrenContentDecl
 						(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr inputchk);
 int			xmlParseElementContentDecl(xmlParserCtxtPtr ctxt,
-						 xmlChar *name,
+						 const xmlChar *name,
 						 xmlElementContentPtr *result);
 int			xmlParseElementDecl	(xmlParserCtxtPtr ctxt);
 void			xmlParseMarkupDecl	(xmlParserCtxtPtr ctxt);
@@ -285,9 +285,9 @@ xmlEntityPtr		xmlParseEntityRef	(xmlParserCtxtPtr ctxt);
 void			xmlParseReference	(xmlParserCtxtPtr ctxt);
 void			xmlParsePEReference	(xmlParserCtxtPtr ctxt);
 void			xmlParseDocTypeDecl	(xmlParserCtxtPtr ctxt);
-xmlChar *		xmlParseAttribute	(xmlParserCtxtPtr ctxt,
+const xmlChar *		xmlParseAttribute	(xmlParserCtxtPtr ctxt,
 						 xmlChar **value);
-xmlChar *		xmlParseStartTag	(xmlParserCtxtPtr ctxt);
+const xmlChar *		xmlParseStartTag	(xmlParserCtxtPtr ctxt);
 void			xmlParseEndTag		(xmlParserCtxtPtr ctxt);
 void			xmlParseCDSect		(xmlParserCtxtPtr ctxt);
 void			xmlParseContent		(xmlParserCtxtPtr ctxt);
@@ -350,9 +350,9 @@ xmlNodePtr		nodePop			(xmlParserCtxtPtr ctxt);
 int			inputPush		(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr value);
 xmlParserInputPtr	inputPop		(xmlParserCtxtPtr ctxt);
-xmlChar                *namePop			(xmlParserCtxtPtr ctxt);
+const xmlChar          *namePop			(xmlParserCtxtPtr ctxt);
 int			namePush		(xmlParserCtxtPtr ctxt,
-						 xmlChar *value);
+						 const xmlChar *value);
 
 /*
  * other commodities shared between parser.c and parserInternals.

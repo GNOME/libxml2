@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>valid</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>valid</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-HTMLparser.html" title="HTMLparser"><link rel="next" href="libxml-catalog.html" title="catalog"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-HTMLparser.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-catalog.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-valid"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">valid</span></h2><p>valid &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-entities.html" title="entities"><link rel="next" href="libxml-relaxng.html" title="relaxng"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-entities.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-relaxng.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-valid"></a><div class="titlepage"></div><div class="refnamediv"><h2>valid</h2><p>valid &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -60,7 +60,7 @@ void        <a href="libxml-valid.html#xmlDumpNotationDecl">xmlDumpNotationDecl<
                                              <a href="libxml-tree.html#xmlNotationPtr">xmlNotationPtr</a> nota);
 void        <a href="libxml-valid.html#xmlDumpNotationTable">xmlDumpNotationTable</a>            (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-valid.html#xmlNotationTablePtr">xmlNotationTablePtr</a> table);
-<a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> <a href="libxml-valid.html#xmlNewElementContent">xmlNewElementContent</a>   (<a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+<a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> <a href="libxml-valid.html#xmlNewElementContent">xmlNewElementContent</a>   (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              <a href="libxml-tree.html#xmlElementContentType">xmlElementContentType</a> type);
 <a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> <a href="libxml-valid.html#xmlCopyElementContent">xmlCopyElementContent</a>  (<a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> content);
 void        <a href="libxml-valid.html#xmlFreeElementContent">xmlFreeElementContent</a>           (<a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> cur);
@@ -82,7 +82,7 @@ void        <a href="libxml-valid.html#xmlDumpElementTable">xmlDumpElementTable<
                                              <a href="libxml-valid.html#xmlElementTablePtr">xmlElementTablePtr</a> table);
 void        <a href="libxml-valid.html#xmlDumpElementDecl">xmlDumpElementDecl</a>              (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-tree.html#xmlElementPtr">xmlElementPtr</a> elem);
-<a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> <a href="libxml-valid.html#xmlCreateEnumeration">xmlCreateEnumeration</a>      (<a href="libxml-tree.html#xmlChar">xmlChar</a> *name);
+<a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> <a href="libxml-valid.html#xmlCreateEnumeration">xmlCreateEnumeration</a>      (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);
 void        <a href="libxml-valid.html#xmlFreeEnumeration">xmlFreeEnumeration</a>              (<a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> cur);
 <a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> <a href="libxml-valid.html#xmlCopyEnumeration">xmlCopyEnumeration</a>        (<a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> cur);
 <a href="libxml-tree.html#xmlAttributePtr">xmlAttributePtr</a> <a href="libxml-valid.html#xmlAddAttributeDecl">xmlAddAttributeDecl</a>         (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
@@ -122,7 +122,7 @@ int         <a href="libxml-valid.html#xmlIsRef">xmlIsRef</a>                   
                                              <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);
 int         <a href="libxml-valid.html#xmlRemoveRef">xmlRemoveRef</a>                    (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);
-<a href="libxml-list.html#xmlListPtr">xmlListPtr</a>  <a href="libxml-valid.html#xmlGetRefs">xmlGetRefs</a>                      (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xmlListPtr">xmlListPtr</GTKDOCLINK>  <a href="libxml-valid.html#xmlGetRefs">xmlGetRefs</a>                      (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ID);
 int         <a href="libxml-valid.html#xmlValidateRoot">xmlValidateRoot</a>                 (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
@@ -230,20 +230,19 @@ int         <a href="libxml-valid.html#xmlValidatePopElement">xmlValidatePopElem
 Callback called when a validity error is found. This is a message
 oriented function similar to an *printf function.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctx</tt></i> :</span></td><td>  an xmlValidCtxtPtr validity error context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>msg</tt></i> :</span></td><td>  the string to format *printf like vararg
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>...</tt></i> :</span></td><td>  remaining arguments to the format
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an xmlValidCtxtPtr validity error context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the string to format *printf like vararg
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  remaining arguments to the format
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidityWarningFunc"></a>xmlValidityWarningFunc ()</h3><pre class="programlisting">void        (*xmlValidityWarningFunc)       (void *ctx,
                                              const char *msg,
                                              ...);</pre><p>
 Callback called when a validity warning is found. This is a message
 oriented function similar to an *printf function.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctx</tt></i> :</span></td><td>  an xmlValidCtxtPtr validity error context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>msg</tt></i> :</span></td><td>  the string to format *printf like vararg
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>...</tt></i> :</span></td><td>  remaining arguments to the format
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an xmlValidCtxtPtr validity error context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the string to format *printf like vararg
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  remaining arguments to the format
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidCtxt"></a>struct xmlValidCtxt</h3><pre class="programlisting">struct xmlValidCtxt {
-
     void *userData;			/* user specific data block */
     xmlValidityErrorFunc error;		/* the callback in case of errors */
     xmlValidityWarningFunc warning;	/* the callback in case of warning */
@@ -300,7 +299,7 @@ Allocate a validation context structure.</p><p>
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeValidCtxt"></a>xmlFreeValidCtxt ()</h3><pre class="programlisting">void        xmlFreeValidCtxt                (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a>);</pre><p>
 Free a validation context structure.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>Param1</tt></i> :</span></td><td>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>Param1</tt></i> :</span></td><td>
 
 
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlAddNotationDecl"></a>xmlAddNotationDecl ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNotationPtr">xmlNotationPtr</a> xmlAddNotationDecl           (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
@@ -310,49 +309,49 @@ Free a validation context structure.</p><p>
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *SystemID);</pre><p>
 Register a new notation declaration</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>dtd</tt></i> :</span></td><td>  pointer to the DTD
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the entity name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>PublicID</tt></i> :</span></td><td>  the public identifier or NULL
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>SystemID</tt></i> :</span></td><td>  the system identifier or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  pointer to the DTD
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the entity name
+</td></tr><tr><td><span class="term"><i><tt>PublicID</tt></i> :</span></td><td>  the public identifier or NULL
+</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td>  the system identifier or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not, otherwise the entity
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCopyNotationTable"></a>xmlCopyNotationTable ()</h3><pre class="programlisting"><a href="libxml-valid.html#xmlNotationTablePtr">xmlNotationTablePtr</a> xmlCopyNotationTable    (<a href="libxml-valid.html#xmlNotationTablePtr">xmlNotationTablePtr</a> table);</pre><p>
 Build a copy of a notation table.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  A notation table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  A notation table
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new xmlNotationTablePtr or NULL in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeNotationTable"></a>xmlFreeNotationTable ()</h3><pre class="programlisting">void        xmlFreeNotationTable            (<a href="libxml-valid.html#xmlNotationTablePtr">xmlNotationTablePtr</a> table);</pre><p>
 Deallocate the memory used by an entities hash table.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An notation table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An notation table
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDumpNotationDecl"></a>xmlDumpNotationDecl ()</h3><pre class="programlisting">void        xmlDumpNotationDecl             (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-tree.html#xmlNotationPtr">xmlNotationPtr</a> nota);</pre><p>
 This will dump the content the notation declaration as an XML DTD definition</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the XML buffer output
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>nota</tt></i> :</span></td><td>  A notation declaration
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the XML buffer output
+</td></tr><tr><td><span class="term"><i><tt>nota</tt></i> :</span></td><td>  A notation declaration
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDumpNotationTable"></a>xmlDumpNotationTable ()</h3><pre class="programlisting">void        xmlDumpNotationTable            (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-valid.html#xmlNotationTablePtr">xmlNotationTablePtr</a> table);</pre><p>
 This will dump the content of the notation table as an XML DTD definition</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the XML buffer output
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  A notation table
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewElementContent"></a>xmlNewElementContent ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> xmlNewElementContent   (<a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the XML buffer output
+</td></tr><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  A notation table
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewElementContent"></a>xmlNewElementContent ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> xmlNewElementContent   (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              <a href="libxml-tree.html#xmlElementContentType">xmlElementContentType</a> type);</pre><p>
 Allocate an element content structure.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the subelement name or NULL
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td>  the type of element content decl
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the subelement name or NULL
+</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the type of element content decl
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not, otherwise the new element content structure
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCopyElementContent"></a>xmlCopyElementContent ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> xmlCopyElementContent  (<a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> content);</pre><p>
 Build a copy of an element content description.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>content</tt></i> :</span></td><td>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>content</tt></i> :</span></td><td>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new xmlElementContentPtr or NULL in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeElementContent"></a>xmlFreeElementContent ()</h3><pre class="programlisting">void        xmlFreeElementContent           (<a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> cur);</pre><p>
 Free an element content structure. This is a recursive call !</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the element content tree to free
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the element content tree to free
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSnprintfElementContent"></a>xmlSnprintfElementContent ()</h3><pre class="programlisting">void        xmlSnprintfElementContent       (char *buf,
                                              int size,
                                              <a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> content,
@@ -360,18 +359,18 @@ Free an element content structure. This is a recursive call !</p><p>
 This will dump the content of the element content definition
 Intended just for the debug routine</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  an output buffer
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>size</tt></i> :</span></td><td>  the buffer size
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>content</tt></i> :</span></td><td>  An element table
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>glob</tt></i> :</span></td><td> 1 if one must print the englobing parenthesis, 0 otherwise
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  an output buffer
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the buffer size
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i> :</span></td><td>  An element table
+</td></tr><tr><td><span class="term"><i><tt>glob</tt></i> :</span></td><td> 1 if one must print the englobing parenthesis, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSprintfElementContent"></a>xmlSprintfElementContent ()</h3><pre class="programlisting">void        xmlSprintfElementContent        (char *buf,
                                              <a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> content,
                                              int glob);</pre><p>
 Deprecated, unsafe, use xmlSnprintfElementContent</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  an output buffer
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>content</tt></i> :</span></td><td>  An element table
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>glob</tt></i> :</span></td><td> 1 if one must print the englobing parenthesis, 0 otherwise
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  an output buffer
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i> :</span></td><td>  An element table
+</td></tr><tr><td><span class="term"><i><tt>glob</tt></i> :</span></td><td> 1 if one must print the englobing parenthesis, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlAddElementDecl"></a>xmlAddElementDecl ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlElementPtr">xmlElementPtr</a> xmlAddElementDecl             (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
@@ -379,48 +378,48 @@ Deprecated, unsafe, use xmlSnprintfElementContent</p><p>
                                              <a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> content);</pre><p>
 Register a new element declaration</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>dtd</tt></i> :</span></td><td>  pointer to the DTD
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the entity name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td>  the element type
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>content</tt></i> :</span></td><td>  the element content tree or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  pointer to the DTD
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the entity name
+</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the element type
+</td></tr><tr><td><span class="term"><i><tt>content</tt></i> :</span></td><td>  the element content tree or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not, otherwise the entity
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCopyElementTable"></a>xmlCopyElementTable ()</h3><pre class="programlisting"><a href="libxml-valid.html#xmlElementTablePtr">xmlElementTablePtr</a> xmlCopyElementTable      (<a href="libxml-valid.html#xmlElementTablePtr">xmlElementTablePtr</a> table);</pre><p>
 Build a copy of an element table.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An element table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An element table
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new xmlElementTablePtr or NULL in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeElementTable"></a>xmlFreeElementTable ()</h3><pre class="programlisting">void        xmlFreeElementTable             (<a href="libxml-valid.html#xmlElementTablePtr">xmlElementTablePtr</a> table);</pre><p>
 Deallocate the memory used by an element hash table.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An element table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An element table
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDumpElementTable"></a>xmlDumpElementTable ()</h3><pre class="programlisting">void        xmlDumpElementTable             (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-valid.html#xmlElementTablePtr">xmlElementTablePtr</a> table);</pre><p>
 This will dump the content of the element table as an XML DTD definition</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the XML buffer output
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An element table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the XML buffer output
+</td></tr><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An element table
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDumpElementDecl"></a>xmlDumpElementDecl ()</h3><pre class="programlisting">void        xmlDumpElementDecl              (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-tree.html#xmlElementPtr">xmlElementPtr</a> elem);</pre><p>
 This will dump the content of the element declaration as an XML
 DTD definition</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the XML buffer output
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  An element table
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCreateEnumeration"></a>xmlCreateEnumeration ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> xmlCreateEnumeration      (<a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the XML buffer output
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  An element table
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCreateEnumeration"></a>xmlCreateEnumeration ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> xmlCreateEnumeration      (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 create and initialize an enumeration attribute node.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the enumeration name or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the enumeration name or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlEnumerationPtr just created or NULL in case
                of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeEnumeration"></a>xmlFreeEnumeration ()</h3><pre class="programlisting">void        xmlFreeEnumeration              (<a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> cur);</pre><p>
 free an enumeration attribute node (recursive).</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the tree to free.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the tree to free.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCopyEnumeration"></a>xmlCopyEnumeration ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> xmlCopyEnumeration        (<a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> cur);</pre><p>
 Copy an enumeration attribute node (recursive).</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the tree to copy.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the tree to copy.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlEnumerationPtr just created or NULL in case
                of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlAddAttributeDecl"></a>xmlAddAttributeDecl ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlAttributePtr">xmlAttributePtr</a> xmlAddAttributeDecl         (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
@@ -433,61 +432,61 @@ Copy an enumeration attribute node (recursive).</p><p>
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *defaultValue,
                                              <a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> tree);</pre><p>
 Register a new attribute declaration
-Note that <i class="parameter"><tt>tree</tt></i> becomes the ownership of the DTD</p><p>
+Note that <i><tt>tree</tt></i> becomes the ownership of the DTD</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>dtd</tt></i> :</span></td><td>  pointer to the DTD
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  the element name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the attribute name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ns</tt></i> :</span></td><td>  the attribute namespace prefix
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td>  the attribute type
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>def</tt></i> :</span></td><td>  the attribute default type
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>defaultValue</tt></i> :</span></td><td>  the attribute default value
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>tree</tt></i> :</span></td><td>  if it's an enumeration, the associated list
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  pointer to the DTD
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  the element name
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the attribute name
+</td></tr><tr><td><span class="term"><i><tt>ns</tt></i> :</span></td><td>  the attribute namespace prefix
+</td></tr><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  the attribute type
+</td></tr><tr><td><span class="term"><i><tt>def</tt></i> :</span></td><td>  the attribute default type
+</td></tr><tr><td><span class="term"><i><tt>defaultValue</tt></i> :</span></td><td>  the attribute default value
+</td></tr><tr><td><span class="term"><i><tt>tree</tt></i> :</span></td><td>  if it's an enumeration, the associated list
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not new, otherwise the attribute decl
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCopyAttributeTable"></a>xmlCopyAttributeTable ()</h3><pre class="programlisting"><a href="libxml-valid.html#xmlAttributeTablePtr">xmlAttributeTablePtr</a> xmlCopyAttributeTable  (<a href="libxml-valid.html#xmlAttributeTablePtr">xmlAttributeTablePtr</a> table);</pre><p>
 Build a copy of an attribute table.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An attribute table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An attribute table
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new xmlAttributeTablePtr or NULL in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeAttributeTable"></a>xmlFreeAttributeTable ()</h3><pre class="programlisting">void        xmlFreeAttributeTable           (<a href="libxml-valid.html#xmlAttributeTablePtr">xmlAttributeTablePtr</a> table);</pre><p>
 Deallocate the memory used by an entities hash table.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An attribute table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An attribute table
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDumpAttributeTable"></a>xmlDumpAttributeTable ()</h3><pre class="programlisting">void        xmlDumpAttributeTable           (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-valid.html#xmlAttributeTablePtr">xmlAttributeTablePtr</a> table);</pre><p>
 This will dump the content of the attribute table as an XML DTD definition</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the XML buffer output
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An attribute table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the XML buffer output
+</td></tr><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An attribute table
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDumpAttributeDecl"></a>xmlDumpAttributeDecl ()</h3><pre class="programlisting">void        xmlDumpAttributeDecl            (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-tree.html#xmlAttributePtr">xmlAttributePtr</a> attr);</pre><p>
 This will dump the content of the attribute declaration as an XML
 DTD definition</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the XML buffer output
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>attr</tt></i> :</span></td><td>  An attribute declaration
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the XML buffer output
+</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  An attribute declaration
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlAddID"></a>xmlAddID ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlIDPtr">xmlIDPtr</a>    xmlAddID                        (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
                                              <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);</pre><p>
 Register a new id declaration</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  pointer to the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  the value name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>attr</tt></i> :</span></td><td>  the attribute holding the ID
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  pointer to the document
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the value name
+</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  the attribute holding the ID
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not, otherwise the new xmlIDPtr
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeIDTable"></a>xmlFreeIDTable ()</h3><pre class="programlisting">void        xmlFreeIDTable                  (<a href="libxml-valid.html#xmlIDTablePtr">xmlIDTablePtr</a> table);</pre><p>
 Deallocate the memory used by an ID hash table.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An id table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An id table
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetID"></a>xmlGetID ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a>  xmlGetID                        (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ID);</pre><p>
 Search the attribute declaring the given ID</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  pointer to the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ID</tt></i> :</span></td><td>  the ID value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  pointer to the document
+</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>  the ID value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not found, otherwise the xmlAttrPtr defining the ID
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsID"></a>xmlIsID ()</h3><pre class="programlisting">int         xmlIsID                         (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem,
@@ -497,16 +496,16 @@ then this is done if DTD loading has been requested. In the case
 of HTML documents parsed with the HTML parser, then ID detection is
 done systematically.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  the element carrying the attribute
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>attr</tt></i> :</span></td><td>  the attribute
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  the element carrying the attribute
+</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  the attribute
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or 1 depending on the lookup result
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRemoveID"></a>xmlRemoveID ()</h3><pre class="programlisting">int         xmlRemoveID                     (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);</pre><p>
 Remove the given attribute from the ID table maintained internally.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>attr</tt></i> :</span></td><td>  the attribute
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  the attribute
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 if the lookup failed and 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlAddRef"></a>xmlAddRef ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlRefPtr">xmlRefPtr</a>   xmlAddRef                       (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -514,15 +513,15 @@ Remove the given attribute from the ID table maintained internally.</p><p>
                                              <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);</pre><p>
 Register a new ref declaration</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  pointer to the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  the value name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>attr</tt></i> :</span></td><td>  the attribute holding the Ref
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  pointer to the document
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the value name
+</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  the attribute holding the Ref
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not, otherwise the new xmlRefPtr
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeRefTable"></a>xmlFreeRefTable ()</h3><pre class="programlisting">void        xmlFreeRefTable                 (<a href="libxml-valid.html#xmlRefTablePtr">xmlRefTablePtr</a> table);</pre><p>
 Deallocate the memory used by an Ref hash table.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>table</tt></i> :</span></td><td>  An ref table
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>table</tt></i> :</span></td><td>  An ref table
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsRef"></a>xmlIsRef ()</h3><pre class="programlisting">int         xmlIsRef                        (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem,
                                              <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);</pre><p>
@@ -530,23 +529,23 @@ Determine whether an attribute is of type Ref. In case we have DTD(s)
 then this is simple, otherwise we use an heuristic: name Ref (upper
 or lowercase).</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  the element carrying the attribute
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>attr</tt></i> :</span></td><td>  the attribute
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  the element carrying the attribute
+</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  the attribute
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or 1 depending on the lookup result
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRemoveRef"></a>xmlRemoveRef ()</h3><pre class="programlisting">int         xmlRemoveRef                    (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);</pre><p>
 Remove the given attribute from the Ref table maintained internally.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>attr</tt></i> :</span></td><td>  the attribute
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  the attribute
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 if the lookup failed and 0 otherwise
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetRefs"></a>xmlGetRefs ()</h3><pre class="programlisting"><a href="libxml-list.html#xmlListPtr">xmlListPtr</a>  xmlGetRefs                      (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetRefs"></a>xmlGetRefs ()</h3><pre class="programlisting"><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xmlListPtr">xmlListPtr</GTKDOCLINK>  xmlGetRefs                      (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ID);</pre><p>
 Find the set of references for the supplied ID.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  pointer to the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ID</tt></i> :</span></td><td>  the ID value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  pointer to the document
+</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>  the ID value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not found, otherwise node set for the ID.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateRoot"></a>xmlValidateRoot ()</h3><pre class="programlisting">int         xmlValidateRoot                 (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
@@ -556,8 +555,8 @@ XML-1.0 recommendation:
  - [ VC: Root Element Type ]
 it doesn't try to recurse or apply other check to the element</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateElementDecl"></a>xmlValidateElementDecl ()</h3><pre class="programlisting">int         xmlValidateElementDecl          (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -569,9 +568,9 @@ XML-1.0 recommendation:
  - [ VC: No Duplicate Types ]
  - [ VC: Unique Element Type Declaration ]</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  an element definition
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element definition
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidNormalizeAttributeValue"></a>xmlValidNormalizeAttributeValue ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlValidNormalizeAttributeValue (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem,
@@ -585,10 +584,10 @@ process the normalized attribute value by discarding any leading and
 trailing space (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK>) characters, and by replacing sequences of space
 (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK>) characters by single space (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK>) character.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  the parent
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the attribute name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  the attribute value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  the parent
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the attribute name
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the attribute value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new normalized string if normalization is needed, NULL otherwise
      the caller must free the returned value.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidCtxtNormalizeAttributeValue"></a>xmlValidCtxtNormalizeAttributeValue ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlValidCtxtNormalizeAttributeValue
@@ -608,11 +607,11 @@ trailing space (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HRE
 Also  check VC: Standalone Document Declaration in P32, and update
  ctxt-&gt;valid accordingly</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td> the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  the parent
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the attribute name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  the attribute value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td> the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  the parent
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the attribute name
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the attribute value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new normalized string if normalization is needed, NULL otherwise
      the caller must free the returned value.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateAttributeDecl"></a>xmlValidateAttributeDecl ()</h3><pre class="programlisting">int         xmlValidateAttributeDecl        (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
@@ -627,9 +626,9 @@ XML-1.0 recommendation:
 </p><p>
 The ID/IDREF uniqueness and matching are done separately</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>attr</tt></i> :</span></td><td>  an attribute definition
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  an attribute definition
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateAttributeValue"></a>xmlValidateAttributeValue ()</h3><pre class="programlisting">int         xmlValidateAttributeValue       (<a href="libxml-tree.html#xmlAttributeType">xmlAttributeType</a> type,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
@@ -650,8 +649,8 @@ of type ENTITIES must match Names ...
 Values of type NMTOKEN must match the Nmtoken production; values
 of type NMTOKENS must match Nmtokens.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td>  an attribute type
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  an attribute value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  an attribute type
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  an attribute value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateNotationDecl"></a>xmlValidateNotationDecl ()</h3><pre class="programlisting">int         xmlValidateNotationDecl         (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -662,9 +661,9 @@ XML-1.0 recommendation:
  - it seems that no validity constraint exists on notation declarations
 But this function get called anyway ...</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>nota</tt></i> :</span></td><td>  a notation definition
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>nota</tt></i> :</span></td><td>  a notation definition
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateDtd"></a>xmlValidateDtd ()</h3><pre class="programlisting">int         xmlValidateDtd                  (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -673,9 +672,9 @@ Try to validate the document against the dtd instance
 </p><p>
 basically it does check all the definitions in the DtD.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>dtd</tt></i> :</span></td><td>  a dtd instance
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  a dtd instance
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateDtdFinal"></a>xmlValidateDtdFinal ()</h3><pre class="programlisting">int         xmlValidateDtdFinal             (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
@@ -688,8 +687,8 @@ basically it does the following checks described by the XML Rec
 - check that NOTATION type attributes default or 
   possible values matches one of the defined notations.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 if invalid and -1 if not well-formed
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateDocument"></a>xmlValidateDocument ()</h3><pre class="programlisting">int         xmlValidateDocument             (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
@@ -699,17 +698,17 @@ basically it does the all the checks described by the XML Rec
 i.e. validates the internal and external subset (if present)
 and validate the document tree.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateElement"></a>xmlValidateElement ()</h3><pre class="programlisting">int         xmlValidateElement              (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);</pre><p>
 Try to validate the subtree under an element</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  an element instance
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element instance
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateOneElement"></a>xmlValidateOneElement ()</h3><pre class="programlisting">int         xmlValidateOneElement           (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -723,9 +722,9 @@ Then call <a href="libxml-valid.html#xmlValidateOneAttribute">xmlValidateOneAttr
 </p><p>
 The ID/IDREF checkings are done separately</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  an element instance
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element instance
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateOneAttribute"></a>xmlValidateOneAttribute ()</h3><pre class="programlisting">int         xmlValidateOneAttribute         (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -746,11 +745,11 @@ XML-1.0 recommendation:
 </p><p>
 The ID/IDREF uniqueness and matching are done separately</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  an element instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>attr</tt></i> :</span></td><td>  an attribute instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  the attribute value (without entities processing)
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element instance
+</td></tr><tr><td><span class="term"><i><tt>attr</tt></i> :</span></td><td>  an attribute instance
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the attribute value (without entities processing)
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateOneNamespace"></a>xmlValidateOneNamespace ()</h3><pre class="programlisting">int         xmlValidateOneNamespace         (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -772,12 +771,12 @@ XML-1.0 recommendation:
 </p><p>
 The ID/IDREF uniqueness and matching are done separately</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  an element instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>prefix</tt></i> :</span></td><td>  the namespace prefix
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ns</tt></i> :</span></td><td>  an namespace declaration instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  the attribute value (without entities processing)
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element instance
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i> :</span></td><td>  the namespace prefix
+</td></tr><tr><td><span class="term"><i><tt>ns</tt></i> :</span></td><td>  an namespace declaration instance
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the attribute value (without entities processing)
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateDocumentFinal"></a>xmlValidateDocumentFinal ()</h3><pre class="programlisting">int         xmlValidateDocumentFinal        (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
@@ -788,8 +787,8 @@ basically it does the following checks described by the XML Rec
 </p><p>
 Check all the IDREF/IDREFS attributes definition for validity</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateNotationUse"></a>xmlValidateNotationUse ()</h3><pre class="programlisting">int         xmlValidateNotationUse          (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -797,17 +796,17 @@ Check all the IDREF/IDREFS attributes definition for validity</p><p>
 Validate that the given name match a notation declaration.
 - [ VC: Notation Declared ]</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>notationName</tt></i> :</span></td><td>  the notation name to check
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i><tt>notationName</tt></i> :</span></td><td>  the notation name to check
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsMixedElement"></a>xmlIsMixedElement ()</h3><pre class="programlisting">int         xmlIsMixedElement               (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Search in the DtDs whether an element accept Mixed content (or ANY)
 basically if it is supposed to accept text childs</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the element name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the element name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if no, 1 if yes, and -1 if no element description is available
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetDtdAttrDesc"></a>xmlGetDtdAttrDesc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlAttributePtr">xmlAttributePtr</a> xmlGetDtdAttrDesc           (<a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *elem,
@@ -815,9 +814,9 @@ basically if it is supposed to accept text childs</p><p>
 Search the DTD for the description of this attribute on
 this element.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>dtd</tt></i> :</span></td><td>  a pointer to the DtD to search
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  the element name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the attribute name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  a pointer to the DtD to search
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  the element name
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the attribute name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlAttributePtr if found or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetDtdQAttrDesc"></a>xmlGetDtdQAttrDesc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlAttributePtr">xmlAttributePtr</a> xmlGetDtdQAttrDesc          (<a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *elem,
@@ -826,33 +825,33 @@ this element.</p><p>
 Search the DTD for the description of this qualified attribute on
 this element.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>dtd</tt></i> :</span></td><td>  a pointer to the DtD to search
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  the element name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the attribute name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>prefix</tt></i> :</span></td><td>  the attribute namespace prefix
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  a pointer to the DtD to search
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  the element name
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the attribute name
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i> :</span></td><td>  the attribute namespace prefix
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlAttributePtr if found or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetDtdNotationDesc"></a>xmlGetDtdNotationDesc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNotationPtr">xmlNotationPtr</a> xmlGetDtdNotationDesc        (<a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Search the DTD for the description of this notation</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>dtd</tt></i> :</span></td><td>  a pointer to the DtD to search
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the notation name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  a pointer to the DtD to search
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the notation name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlNotationPtr if found or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetDtdQElementDesc"></a>xmlGetDtdQElementDesc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlElementPtr">xmlElementPtr</a> xmlGetDtdQElementDesc         (<a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *prefix);</pre><p>
 Search the DTD for the description of this element</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>dtd</tt></i> :</span></td><td>  a pointer to the DtD to search
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the element name
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>prefix</tt></i> :</span></td><td>  the element namespace prefix
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  a pointer to the DtD to search
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the element name
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i> :</span></td><td>  the element namespace prefix
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlElementPtr if found or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetDtdElementDesc"></a>xmlGetDtdElementDesc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlElementPtr">xmlElementPtr</a> xmlGetDtdElementDesc          (<a href="libxml-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Search the DTD for the description of this element</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>dtd</tt></i> :</span></td><td>  a pointer to the DtD to search
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the element name
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>dtd</tt></i> :</span></td><td>  a pointer to the DtD to search
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the element name
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlElementPtr if found or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidGetValidElements"></a>xmlValidGetValidElements ()</h3><pre class="programlisting">int         xmlValidGetValidElements        (<a href="libxml-tree.html#xmlNode">xmlNode</a> *prev,
                                              <a href="libxml-tree.html#xmlNode">xmlNode</a> *next,
@@ -860,8 +859,8 @@ Search the DTD for the description of this element</p><p>
                                              int max);</pre><p>
 This function returns the list of authorized children to insert
 within an existing tree while respecting the validity constraints
-forced by the Dtd. The insertion point is defined using <i class="parameter"><tt>prev</tt></i> and
-<i class="parameter"><tt>next</tt></i> in the following ways:
+forced by the Dtd. The insertion point is defined using <i><tt>prev</tt></i> and
+<i><tt>next</tt></i> in the following ways:
  to insert before 'node': xmlValidGetValidElements(node-&gt;prev, node, ...
  to insert next 'node': xmlValidGetValidElements(node, node-&gt;next, ...
  to replace 'node': xmlValidGetValidElements(node-&gt;prev, node-&gt;next, ...
@@ -871,12 +870,12 @@ forced by the Dtd. The insertion point is defined using <i class="parameter"><tt
 pointers to the element names are inserted at the beginning of the array
 and do not need to be freed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>prev</tt></i> :</span></td><td>  an element to insert after
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>next</tt></i> :</span></td><td>  an element to insert next
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>list</tt></i> :</span></td><td>  an array to store the list of child names
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>max</tt></i> :</span></td><td>  the size of the array
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>prev</tt></i> :</span></td><td>  an element to insert after
+</td></tr><tr><td><span class="term"><i><tt>next</tt></i> :</span></td><td>  an element to insert next
+</td></tr><tr><td><span class="term"><i><tt>list</tt></i> :</span></td><td>  an array to store the list of child names
+</td></tr><tr><td><span class="term"><i><tt>max</tt></i> :</span></td><td>  the size of the array
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of element in the list, or -1 in case of error. If
-   the function returns the value <i class="parameter"><tt>max</tt></i> the caller is invited to grow the
+   the function returns the value <i><tt>max</tt></i> the caller is invited to grow the
    receiving array and retry.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidGetPotentialChildren"></a>xmlValidGetPotentialChildren ()</h3><pre class="programlisting">int         xmlValidGetPotentialChildren    (<a href="libxml-tree.html#xmlElementContent">xmlElementContent</a> *ctree,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> **list,
@@ -884,42 +883,42 @@ and do not need to be freed.</p><p>
                                              int max);</pre><p>
 Build/extend a list of  potential children allowed by the content tree</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctree</tt></i> :</span></td><td>  an element content tree
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>list</tt></i> :</span></td><td>  an array to store the list of child names
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  a pointer to the number of element in the list
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>max</tt></i> :</span></td><td>  the size of the array
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctree</tt></i> :</span></td><td>  an element content tree
+</td></tr><tr><td><span class="term"><i><tt>list</tt></i> :</span></td><td>  an array to store the list of child names
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  a pointer to the number of element in the list
+</td></tr><tr><td><span class="term"><i><tt>max</tt></i> :</span></td><td>  the size of the array
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of element in the list, or -1 in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateNameValue"></a>xmlValidateNameValue ()</h3><pre class="programlisting">int         xmlValidateNameValue            (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
 Validate that the given value match Name production</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  an Name value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  an Name value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateNamesValue"></a>xmlValidateNamesValue ()</h3><pre class="programlisting">int         xmlValidateNamesValue           (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
 Validate that the given value match Names production</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  an Names value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  an Names value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateNmtokenValue"></a>xmlValidateNmtokenValue ()</h3><pre class="programlisting">int         xmlValidateNmtokenValue         (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
 Validate that the given value match Nmtoken production
 </p><p>
 [ VC: Name Token ]</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  an Nmtoken value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  an Nmtoken value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidateNmtokensValue"></a>xmlValidateNmtokensValue ()</h3><pre class="programlisting">int         xmlValidateNmtokensValue        (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
 Validate that the given value match Nmtokens production
 </p><p>
 [ VC: Name Token ]</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  an Nmtokens value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  an Nmtokens value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if valid or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidBuildContentModel"></a>xmlValidBuildContentModel ()</h3><pre class="programlisting">int         xmlValidBuildContentModel       (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlElementPtr">xmlElementPtr</a> elem);</pre><p>
 (Re)Build the automata associated to the content model of this
 element</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  a validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  an element declaration node
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a validation context
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element declaration node
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 in case of success, 0 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidatePushElement"></a>xmlValidatePushElement ()</h3><pre class="programlisting">int         xmlValidatePushElement          (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -927,19 +926,19 @@ element</p><p>
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *qname);</pre><p>
 Push a new element start on the validation stack.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  an element instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>qname</tt></i> :</span></td><td>  the qualified name as appearing in the serialization
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element instance
+</td></tr><tr><td><span class="term"><i><tt>qname</tt></i> :</span></td><td>  the qualified name as appearing in the serialization
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if no validation problem was found or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidatePushCData"></a>xmlValidatePushCData ()</h3><pre class="programlisting">int         xmlValidatePushCData            (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *data,
                                              int len);</pre><p>
 check the CData parsed for validation in the current stack</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td>  some character data read
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  the lenght of the data
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td>  some character data read
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the lenght of the data
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if no validation problem was found or 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlValidatePopElement"></a>xmlValidatePopElement ()</h3><pre class="programlisting">int         xmlValidatePopElement           (<a href="libxml-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -947,9 +946,9 @@ check the CData parsed for validation in the current stack</p><p>
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *qname);</pre><p>
 Pop the element end from the validation stack.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the validation context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  a document instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>elem</tt></i> :</span></td><td>  an element instance
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>qname</tt></i> :</span></td><td>  the qualified name as appearing in the serialization
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element instance
+</td></tr><tr><td><span class="term"><i><tt>qname</tt></i> :</span></td><td>  the qualified name as appearing in the serialization
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if no validation problem was found or 0 otherwise
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-HTMLparser.html"><b>&lt;&lt; HTMLparser</b></a></td><td align="right"><a accesskey="n" href="libxml-catalog.html"><b>catalog &gt;&gt;</b></a></td></tr></table></body></html>
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-entities.html"><b>&lt;&lt; entities</b></a></td><td align="right"><a accesskey="n" href="libxml-relaxng.html"><b>relaxng &gt;&gt;</b></a></td></tr></table></body></html>

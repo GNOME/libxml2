@@ -1,3 +1,20 @@
+Mon Aug 18 14:03:03 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* dict.c include/libxml/dict.h Makefile.am include/libxml/Makefile.am:
+	  new dictionary module to keep a single instance of the names used
+	  by the parser
+	* DOCBparser.c HTMLparser.c parser.c parserInternals.c valid.c:
+	  switched all parsers to use the dictionary internally
+	* include/libxml/HTMLparser.h include/libxml/parser.h
+	  include/libxml/parserInternals.h include/libxml/valid.h:
+	  Some of the interfaces changed as a result to receive or return
+	  "const xmlChar *" instead of "xmlChar *", this is either
+	  insignificant from an user point of view or when the returning
+	  value changed, those function are really parser internal methods
+	  that no user code should really change
+	* doc/libxml2-api.xml doc/html/*: the API interface changed and
+	  the docs were regenerated
+
 Sun Aug 17 23:05:38 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: applied patch to xmlCleanupParser from Dave Beckett

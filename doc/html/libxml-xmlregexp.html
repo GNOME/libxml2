@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlregexp</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlregexp</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-encoding.html" title="encoding"><link rel="next" href="libxml-xmlmemory.html" title="xmlmemory"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-encoding.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-xmlmemory.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xmlregexp"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">xmlregexp</span></h2><p>xmlregexp &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-xmlmemory.html" title="xmlmemory"><link rel="next" href="libxml-xmlautomata.html" title="xmlautomata"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlmemory.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xmlautomata.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xmlregexp"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlregexp</h2><p>xmlregexp &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -78,39 +78,39 @@ Parses a regular expression conforming to XML Schemas Part 2 Datatype
 Appendix F and build an automata suitable for testing strings against
 that regular expression</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>regexp</tt></i> :</span></td><td>  a regular expression string
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>regexp</tt></i> :</span></td><td>  a regular expression string
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the compiled expression or NULL in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegFreeRegexp"></a>xmlRegFreeRegexp ()</h3><pre class="programlisting">void        xmlRegFreeRegexp                (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> regexp);</pre><p>
 Free a regexp</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>regexp</tt></i> :</span></td><td>  the regexp
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>regexp</tt></i> :</span></td><td>  the regexp
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegexpExec"></a>xmlRegexpExec ()</h3><pre class="programlisting">int         xmlRegexpExec                   (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
 Check if the regular expression generate the value</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>comp</tt></i> :</span></td><td>  the compiled regular expression
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>comp</tt></i> :</span></td><td>  the compiled regular expression
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if it matches, 0 if not and a negativa value in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegexpPrint"></a>xmlRegexpPrint ()</h3><pre class="programlisting">void        xmlRegexpPrint                  (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
                                              <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> regexp);</pre><p>
 Print the content of the compiled regular expression</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>output</tt></i> :</span></td><td> the file for the output debug
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>regexp</tt></i> :</span></td><td> the compiled regexp
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td> the file for the output debug
+</td></tr><tr><td><span class="term"><i><tt>regexp</tt></i> :</span></td><td> the compiled regexp
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegexpIsDeterminist"></a>xmlRegexpIsDeterminist ()</h3><pre class="programlisting">int         xmlRegexpIsDeterminist          (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp);</pre><p>
 Check if the regular expression is determinist</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>comp</tt></i> :</span></td><td>  the compiled regular expression
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>comp</tt></i> :</span></td><td>  the compiled regular expression
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if it yes, 0 if not and a negativa value in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegExecCallbacks"></a>xmlRegExecCallbacks ()</h3><pre class="programlisting">void        (*xmlRegExecCallbacks)          (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *token,
                                              void *transdata,
                                              void *inputdata);</pre><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>exec</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>token</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>transdata</tt></i> :</span></td><td>
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>inputdata</tt></i> :</span></td><td>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>exec</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>token</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>transdata</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>inputdata</tt></i> :</span></td><td>
 
 
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegNewExecCtxt"></a>xmlRegNewExecCtxt ()</h3><pre class="programlisting"><a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> xmlRegNewExecCtxt         (<a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a> comp,
@@ -118,23 +118,23 @@ Check if the regular expression is determinist</p><p>
                                              void *data);</pre><p>
 Build a context used for progressive evaluation of a regexp.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>comp</tt></i> :</span></td><td> a precompiled regular expression
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>callback</tt></i> :</span></td><td> a callback function used for handling progresses in the
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>comp</tt></i> :</span></td><td> a precompiled regular expression
+</td></tr><tr><td><span class="term"><i><tt>callback</tt></i> :</span></td><td> a callback function used for handling progresses in the
            automata matching phase
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td> the context data associated to the callback in this context
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td> the context data associated to the callback in this context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new context
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegFreeExecCtxt"></a>xmlRegFreeExecCtxt ()</h3><pre class="programlisting">void        xmlRegFreeExecCtxt              (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec);</pre><p>
 Free the structures associated to a regular expression evaulation context.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>exec</tt></i> :</span></td><td> a regular expression evaulation context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>exec</tt></i> :</span></td><td> a regular expression evaulation context
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegExecPushString"></a>xmlRegExecPushString ()</h3><pre class="programlisting">int         xmlRegExecPushString            (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
                                              void *data);</pre><p>
 Push one input token in the execution context</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>exec</tt></i> :</span></td><td> a regexp execution context or NULL to indicate the end
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td> a string token input
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td> data associated to the token to reuse in callbacks
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>exec</tt></i> :</span></td><td> a regexp execution context or NULL to indicate the end
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td> a string token input
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td> data associated to the token to reuse in callbacks
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> 1 if the regexp reached a final state, 0 if non-final, and
     a negative value in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegExecPushString2"></a>xmlRegExecPushString2 ()</h3><pre class="programlisting">int         xmlRegExecPushString2           (<a href="libxml-xmlregexp.html#xmlRegExecCtxtPtr">xmlRegExecCtxtPtr</a> exec,
@@ -143,10 +143,10 @@ Push one input token in the execution context</p><p>
                                              void *data);</pre><p>
 Push one input token in the execution context</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>exec</tt></i> :</span></td><td> a regexp execution context or NULL to indicate the end
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td> the first string token input
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>value2</tt></i> :</span></td><td> the second string token input
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>data</tt></i> :</span></td><td> data associated to the token to reuse in callbacks
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>exec</tt></i> :</span></td><td> a regexp execution context or NULL to indicate the end
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td> the first string token input
+</td></tr><tr><td><span class="term"><i><tt>value2</tt></i> :</span></td><td> the second string token input
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td> data associated to the token to reuse in callbacks
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> 1 if the regexp reached a final state, 0 if non-final, and
     a negative value in case of error.
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-encoding.html"><b>&lt;&lt; encoding</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlmemory.html"><b>xmlmemory &gt;&gt;</b></a></td></tr></table></body></html>
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlmemory.html"><b>&lt;&lt; xmlmemory</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlautomata.html"><b>xmlautomata &gt;&gt;</b></a></td></tr></table></body></html>

@@ -47,6 +47,7 @@
 #include <libxml/valid.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
+#include <libxml/dict.h>
 #include <libxml/SAX.h>
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
@@ -2202,6 +2203,12 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 
     xmlDefaultSAXHandlerInit();
 
+    ctxt->dict = xmlDictCreate();
+    if (ctxt->dict == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlInitParserCtxt: out of memory\n");
+	return(-1);
+    }
     ctxt->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (ctxt->sax == NULL) {
         xmlGenericError(xmlGenericErrorContext,
@@ -2255,7 +2262,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->node = NULL;
 
     /* Allocate the Name stack */
-    ctxt->nameTab = (xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
+    ctxt->nameTab = (const xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
     if (ctxt->nameTab == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlInitParserCtxt: out of memory\n");
@@ -2344,15 +2351,11 @@ void
 xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
 {
     xmlParserInputPtr input;
-    xmlChar *oldname;
 
     if (ctxt == NULL) return;
 
     while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
         xmlFreeInputStream(input);
-    }
-    while ((oldname = namePop(ctxt)) != NULL) { /* Non consuming */
-	xmlFree(oldname);
     }
     if (ctxt->spaceTab != NULL) xmlFree(ctxt->spaceTab);
     if (ctxt->nameTab != NULL) xmlFree(ctxt->nameTab);
@@ -2360,13 +2363,13 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
     if (ctxt->inputTab != NULL) xmlFree(ctxt->inputTab);
     if (ctxt->version != NULL) xmlFree((char *) ctxt->version);
     if (ctxt->encoding != NULL) xmlFree((char *) ctxt->encoding);
-    if (ctxt->intSubName != NULL) xmlFree((char *) ctxt->intSubName);
     if (ctxt->extSubURI != NULL) xmlFree((char *) ctxt->extSubURI);
     if (ctxt->extSubSystem != NULL) xmlFree((char *) ctxt->extSubSystem);
     if ((ctxt->sax != NULL) && (ctxt->sax != &xmlDefaultSAXHandler))
         xmlFree(ctxt->sax);
     if (ctxt->directory != NULL) xmlFree((char *) ctxt->directory);
     if (ctxt->vctxt.nodeTab != NULL) xmlFree(ctxt->vctxt.nodeTab);
+    if (ctxt->dict != NULL) xmlDictFree(ctxt->dict);
 #ifdef LIBXML_CATALOG_ENABLED
     if (ctxt->catalogs != NULL)
 	xmlCatalogFreeLocal(ctxt->catalogs);

@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlIO</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlIO</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-xmlmemory.html" title="xmlmemory"><link rel="next" href="libxml-xpath.html" title="xpath"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlmemory.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-xpath.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xmlIO"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">xmlIO</span></h2><p>xmlIO &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-nanoftp.html" title="nanoftp"><link rel="next" href="libxml-catalog.html" title="catalog"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-nanoftp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-catalog.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xmlIO"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlIO</h2><p>xmlIO &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -44,8 +44,8 @@ int         (<a href="libxml-xmlIO.html#xmlOutputWriteCallback">*xmlOutputWriteC
                                              const char *buffer,
                                              int len);
 int         (<a href="libxml-xmlIO.html#xmlOutputCloseCallback">*xmlOutputCloseCallback</a>)       (void *context);
-struct      <a href="libxml-xmlIO.html#xmlParserInputBuffer">xmlParserInputBuffer</a>;
-struct      <a href="libxml-xmlIO.html#xmlOutputBuffer">xmlOutputBuffer</a>;
+struct      <a href="libxml-tree.html#xmlParserInputBuffer">xmlParserInputBuffer</a>;
+struct      <a href="libxml-tree.html#xmlOutputBuffer">xmlOutputBuffer</a>;
 void        <a href="libxml-xmlIO.html#xmlCleanupInputCallbacks">xmlCleanupInputCallbacks</a>        (void);
 void        <a href="libxml-xmlIO.html#xmlCleanupOutputCallbacks">xmlCleanupOutputCallbacks</a>       (void);
 void        <a href="libxml-xmlIO.html#xmlRegisterDefaultInputCallbacks">xmlRegisterDefaultInputCallbacks</a>
@@ -143,52 +143,51 @@ int         <a href="libxml-xmlIO.html#xmlIOFTPClose">xmlIOFTPClose</a>         
 Callback used in the I/O Input API to detect if the current handler 
 can provide input fonctionnalities for this resource.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td> the filename or URI
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td> the filename or URI
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if yes and 0 if another Input module should be used
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInputOpenCallback"></a>xmlInputOpenCallback ()</h3><pre class="programlisting">void*       (*xmlInputOpenCallback)         (char const *filename);</pre><p>
 Callback used in the I/O Input API to open the resource</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td> the filename or URI
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td> the filename or URI
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInputReadCallback"></a>xmlInputReadCallback ()</h3><pre class="programlisting">int         (*xmlInputReadCallback)         (void *context,
                                              char *buffer,
                                              int len);</pre><p>
 Callback used in the I/O Input API to read the resource</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>context</tt></i> :</span></td><td>  an Input context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>buffer</tt></i> :</span></td><td>  the buffer to store data read
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  the length of the buffer in bytes
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>  an Input context
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  the buffer to store data read
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the length of the buffer in bytes
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of bytes read or -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInputCloseCallback"></a>xmlInputCloseCallback ()</h3><pre class="programlisting">int         (*xmlInputCloseCallback)        (void *context);</pre><p>
 Callback used in the I/O Input API to close the resource</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>context</tt></i> :</span></td><td>  an Input context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>  an Input context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputMatchCallback"></a>xmlOutputMatchCallback ()</h3><pre class="programlisting">int         (*xmlOutputMatchCallback)       (char const *filename);</pre><p>
 Callback used in the I/O Output API to detect if the current handler 
 can provide output fonctionnalities for this resource.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td> the filename or URI
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td> the filename or URI
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if yes and 0 if another Output module should be used
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputOpenCallback"></a>xmlOutputOpenCallback ()</h3><pre class="programlisting">void*       (*xmlOutputOpenCallback)        (char const *filename);</pre><p>
 Callback used in the I/O Output API to open the resource</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td> the filename or URI
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td> the filename or URI
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputWriteCallback"></a>xmlOutputWriteCallback ()</h3><pre class="programlisting">int         (*xmlOutputWriteCallback)       (void *context,
                                              const char *buffer,
                                              int len);</pre><p>
 Callback used in the I/O Output API to write to the resource</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>context</tt></i> :</span></td><td>  an Output context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>buffer</tt></i> :</span></td><td>  the buffer of data to write
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  the length of the buffer in bytes
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>  an Output context
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  the buffer of data to write
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the length of the buffer in bytes
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of bytes written or -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputCloseCallback"></a>xmlOutputCloseCallback ()</h3><pre class="programlisting">int         (*xmlOutputCloseCallback)       (void *context);</pre><p>
 Callback used in the I/O Output API to close the resource</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>context</tt></i> :</span></td><td>  an Output context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>  an Output context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputBuffer"></a>struct xmlParserInputBuffer</h3><pre class="programlisting">struct xmlParserInputBuffer {
-
     void*                  context;
     xmlInputReadCallback   readcallback;
     xmlInputCloseCallback  closecallback;
@@ -201,7 +200,6 @@ Callback used in the I/O Output API to close the resource</p><p>
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputBuffer"></a>struct xmlOutputBuffer</h3><pre class="programlisting">struct xmlOutputBuffer {
-
     void*                   context;
     xmlOutputWriteCallback  writecallback;
     xmlOutputCloseCallback  closecallback;
@@ -230,7 +228,7 @@ Registers the default compiled-in I/O handlers.</p><p>
                                             (<a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);</pre><p>
 Create a buffered parser input for progressive parsing</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser input or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputBufferCreateFilename"></a>xmlParserInputBufferCreateFilename ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> xmlParserInputBufferCreateFilename
                                             (const char *URI,
@@ -241,8 +239,8 @@ Automatic support for ZLIB/Compress compressed document is provided
 by default if found at compile-time.
 Do an encoding check if enc == XML_CHAR_ENCODING_NONE</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URI</tt></i> :</span></td><td>  a C string containing the URI or filename
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>  a C string containing the URI or filename
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser input or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputBufferCreateFile"></a>xmlParserInputBufferCreateFile ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> xmlParserInputBufferCreateFile
                                             (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *file,
@@ -250,8 +248,8 @@ Do an encoding check if enc == XML_CHAR_ENCODING_NONE</p><p>
 Create a buffered parser input for the progressive parsing of a FILE *
 buffered C I/O</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>file</tt></i> :</span></td><td>  a FILE* 
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>file</tt></i> :</span></td><td>  a FILE* 
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser input or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputBufferCreateFd"></a>xmlParserInputBufferCreateFd ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> xmlParserInputBufferCreateFd
                                             (int fd,
@@ -259,8 +257,8 @@ buffered C I/O</p><p>
 Create a buffered parser input for the progressive parsing for the input
 from a file descriptor</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>fd</tt></i> :</span></td><td>  a file descriptor number
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>fd</tt></i> :</span></td><td>  a file descriptor number
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser input or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputBufferCreateMem"></a>xmlParserInputBufferCreateMem ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> xmlParserInputBufferCreateMem
                                             (const char *mem,
@@ -269,9 +267,9 @@ from a file descriptor</p><p>
 Create a buffered parser input for the progressive parsing for the input
 from a memory area.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>mem</tt></i> :</span></td><td>  the memory input
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>size</tt></i> :</span></td><td>  the length of the memory block
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>mem</tt></i> :</span></td><td>  the memory input
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the length of the memory block
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser input or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputBufferCreateIO"></a>xmlParserInputBufferCreateIO ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> xmlParserInputBufferCreateIO
                                             (<a href="libxml-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread,
@@ -281,10 +279,10 @@ from a memory area.</p><p>
 Create a buffered parser input for the progressive parsing for the input
 from an I/O handler</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ioread</tt></i> :</span></td><td>  an I/O read function
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ioclose</tt></i> :</span></td><td>  an I/O close function
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ioctx</tt></i> :</span></td><td>  an I/O handler
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ioread</tt></i> :</span></td><td>  an I/O read function
+</td></tr><tr><td><span class="term"><i><tt>ioclose</tt></i> :</span></td><td>  an I/O close function
+</td></tr><tr><td><span class="term"><i><tt>ioctx</tt></i> :</span></td><td>  an I/O handler
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the charset encoding if known
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser input or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputBufferRead"></a>xmlParserInputBufferRead ()</h3><pre class="programlisting">int         xmlParserInputBufferRead        (<a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in,
                                              int len);</pre><p>
@@ -292,8 +290,8 @@ Refresh the content of the input buffer, the old data are considered
 consumed
 This routine handle the I18N transcoding to internal UTF-8</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>in</tt></i> :</span></td><td>  a buffered parser input
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  indicative value of the amount of chars to read
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a buffered parser input
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  indicative value of the amount of chars to read
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of chars read and stored in the buffer, or -1
         in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputBufferGrow"></a>xmlParserInputBufferGrow ()</h3><pre class="programlisting">int         xmlParserInputBufferGrow        (<a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in,
@@ -305,8 +303,8 @@ This routine is used when operating the parser in normal (pull) mode
 TODO: one should be able to remove one extra copy by copying directly
       onto in-&gt;buffer or in-&gt;raw</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>in</tt></i> :</span></td><td>  a buffered parser input
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  indicative value of the amount of chars to read
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a buffered parser input
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  indicative value of the amount of chars to read
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of chars read and stored in the buffer, or -1
         in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputBufferPush"></a>xmlParserInputBufferPush ()</h3><pre class="programlisting">int         xmlParserInputBufferPush        (<a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in,
@@ -316,19 +314,19 @@ Push the content of the arry in the input buffer
 This routine handle the I18N transcoding to internal UTF-8
 This is used when operating the parser in progressive (push) mode.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>in</tt></i> :</span></td><td>  a buffered parser input
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  the size in bytes of the array.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  an char array
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a buffered parser input
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the size in bytes of the array.
+</td></tr><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  an char array
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of chars read and stored in the buffer, or -1
         in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeParserInputBuffer"></a>xmlFreeParserInputBuffer ()</h3><pre class="programlisting">void        xmlFreeParserInputBuffer        (<a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in);</pre><p>
 Free up the memory used by a buffered parser input</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>in</tt></i> :</span></td><td>  a buffered parser input
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  a buffered parser input
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserGetDirectory"></a>xmlParserGetDirectory ()</h3><pre class="programlisting">char*       xmlParserGetDirectory           (const char *filename);</pre><p>
 lookup the directory for that file</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the path to a file
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the path to a file
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new allocated string containing the directory, or NULL.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegisterInputCallbacks"></a>xmlRegisterInputCallbacks ()</h3><pre class="programlisting">int         xmlRegisterInputCallbacks       (<a href="libxml-xmlIO.html#xmlInputMatchCallback">xmlInputMatchCallback</a> matchFunc,
                                              <a href="libxml-xmlIO.html#xmlInputOpenCallback">xmlInputOpenCallback</a> openFunc,
@@ -336,10 +334,10 @@ lookup the directory for that file</p><p>
                                              <a href="libxml-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> closeFunc);</pre><p>
 Register a new set of I/O callback for handling parser input.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matchFunc</tt></i> :</span></td><td>  the xmlInputMatchCallback
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>openFunc</tt></i> :</span></td><td>  the xmlInputOpenCallback
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>readFunc</tt></i> :</span></td><td>  the xmlInputReadCallback
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>closeFunc</tt></i> :</span></td><td>  the xmlInputCloseCallback
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>matchFunc</tt></i> :</span></td><td>  the xmlInputMatchCallback
+</td></tr><tr><td><span class="term"><i><tt>openFunc</tt></i> :</span></td><td>  the xmlInputOpenCallback
+</td></tr><tr><td><span class="term"><i><tt>readFunc</tt></i> :</span></td><td>  the xmlInputReadCallback
+</td></tr><tr><td><span class="term"><i><tt>closeFunc</tt></i> :</span></td><td>  the xmlInputCloseCallback
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the registered handler number or -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegisterDefaultOutputCallbacks"></a>xmlRegisterDefaultOutputCallbacks ()</h3><pre class="programlisting">void        xmlRegisterDefaultOutputCallbacks
                                             (void);</pre><p>
@@ -348,7 +346,7 @@ Registers the default compiled-in I/O handlers.</p><p>
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlAllocOutputBuffer"></a>xmlAllocOutputBuffer ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> xmlAllocOutputBuffer     (<a href="libxml-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder);</pre><p>
 Create a buffered parser output</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>encoder</tt></i> :</span></td><td>  the encoding converter or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>encoder</tt></i> :</span></td><td>  the encoding converter or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser output or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputBufferCreateFilename"></a>xmlOutputBufferCreateFilename ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> xmlOutputBufferCreateFilename
                                             (const char *URI,
@@ -361,9 +359,9 @@ by default if found at compile-time.
 TODO: currently if compression is set, the library only support
       writing to a local file.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URI</tt></i> :</span></td><td>  a C string containing the URI or filename
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoder</tt></i> :</span></td><td>  the encoding converter or NULL
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>compression</tt></i> :</span></td><td>  the compression ration (0 none, 9 max).
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>  a C string containing the URI or filename
+</td></tr><tr><td><span class="term"><i><tt>encoder</tt></i> :</span></td><td>  the encoding converter or NULL
+</td></tr><tr><td><span class="term"><i><tt>compression</tt></i> :</span></td><td>  the compression ration (0 none, 9 max).
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new output or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputBufferCreateFile"></a>xmlOutputBufferCreateFile ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> xmlOutputBufferCreateFile
                                             (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *file,
@@ -371,16 +369,16 @@ TODO: currently if compression is set, the library only support
 Create a buffered output for the progressive saving to a FILE *
 buffered C I/O</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>file</tt></i> :</span></td><td>  a FILE* 
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoder</tt></i> :</span></td><td>  the encoding converter or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>file</tt></i> :</span></td><td>  a FILE* 
+</td></tr><tr><td><span class="term"><i><tt>encoder</tt></i> :</span></td><td>  the encoding converter or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser output or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputBufferCreateFd"></a>xmlOutputBufferCreateFd ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> xmlOutputBufferCreateFd  (int fd,
                                              <a href="libxml-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder);</pre><p>
 Create a buffered output for the progressive saving 
 to a file descriptor</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>fd</tt></i> :</span></td><td>  a file descriptor number
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoder</tt></i> :</span></td><td>  the encoding converter or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>fd</tt></i> :</span></td><td>  a file descriptor number
+</td></tr><tr><td><span class="term"><i><tt>encoder</tt></i> :</span></td><td>  the encoding converter or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser output or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputBufferCreateIO"></a>xmlOutputBufferCreateIO ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> xmlOutputBufferCreateIO  (<a href="libxml-xmlIO.html#xmlOutputWriteCallback">xmlOutputWriteCallback</a> iowrite,
                                              <a href="libxml-xmlIO.html#xmlOutputCloseCallback">xmlOutputCloseCallback</a> ioclose,
@@ -389,10 +387,10 @@ to a file descriptor</p><p>
 Create a buffered output for the progressive saving
 to an I/O handler</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>iowrite</tt></i> :</span></td><td>  an I/O write function
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ioclose</tt></i> :</span></td><td>  an I/O close function
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ioctx</tt></i> :</span></td><td>  an I/O handler
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoder</tt></i> :</span></td><td>  the charset encoding if known
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>iowrite</tt></i> :</span></td><td>  an I/O write function
+</td></tr><tr><td><span class="term"><i><tt>ioclose</tt></i> :</span></td><td>  an I/O close function
+</td></tr><tr><td><span class="term"><i><tt>ioctx</tt></i> :</span></td><td>  an I/O handler
+</td></tr><tr><td><span class="term"><i><tt>encoder</tt></i> :</span></td><td>  the charset encoding if known
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser output or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputBufferWrite"></a>xmlOutputBufferWrite ()</h3><pre class="programlisting">int         xmlOutputBufferWrite            (<a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out,
                                              int len,
@@ -402,9 +400,9 @@ This routine handle the I18N transcoding from internal UTF-8
 The buffer is lossless, i.e. will store in case of partial
 or delayed writes.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>out</tt></i> :</span></td><td>  a buffered parser output
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  the size in bytes of the array.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  an char array
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  a buffered parser output
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the size in bytes of the array.
+</td></tr><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  an char array
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of chars immediately written, or -1
         in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputBufferWriteString"></a>xmlOutputBufferWriteString ()</h3><pre class="programlisting">int         xmlOutputBufferWriteString      (<a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out,
@@ -414,20 +412,20 @@ This routine handle the I18N transcoding from internal UTF-8
 The buffer is lossless, i.e. will store in case of partial
 or delayed writes.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>out</tt></i> :</span></td><td>  a buffered parser output
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>str</tt></i> :</span></td><td>  a zero terminated C string
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  a buffered parser output
+</td></tr><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  a zero terminated C string
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of chars immediately written, or -1
         in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputBufferFlush"></a>xmlOutputBufferFlush ()</h3><pre class="programlisting">int         xmlOutputBufferFlush            (<a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out);</pre><p>
 flushes the output I/O channel</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>out</tt></i> :</span></td><td>  a buffered output
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  a buffered output
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of byte written or -1 in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlOutputBufferClose"></a>xmlOutputBufferClose ()</h3><pre class="programlisting">int         xmlOutputBufferClose            (<a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out);</pre><p>
 flushes and close the output I/O channel
 and free up all the associated resources</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>out</tt></i> :</span></td><td>  a buffered output
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  a buffered output
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of byte written or -1 in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegisterOutputCallbacks"></a>xmlRegisterOutputCallbacks ()</h3><pre class="programlisting">int         xmlRegisterOutputCallbacks      (<a href="libxml-xmlIO.html#xmlOutputMatchCallback">xmlOutputMatchCallback</a> matchFunc,
                                              <a href="libxml-xmlIO.html#xmlOutputOpenCallback">xmlOutputOpenCallback</a> openFunc,
@@ -435,18 +433,18 @@ and free up all the associated resources</p><p>
                                              <a href="libxml-xmlIO.html#xmlOutputCloseCallback">xmlOutputCloseCallback</a> closeFunc);</pre><p>
 Register a new set of I/O callback for handling output.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>matchFunc</tt></i> :</span></td><td>  the xmlOutputMatchCallback
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>openFunc</tt></i> :</span></td><td>  the xmlOutputOpenCallback
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>writeFunc</tt></i> :</span></td><td>  the xmlOutputWriteCallback
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>closeFunc</tt></i> :</span></td><td>  the xmlOutputCloseCallback
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>matchFunc</tt></i> :</span></td><td>  the xmlOutputMatchCallback
+</td></tr><tr><td><span class="term"><i><tt>openFunc</tt></i> :</span></td><td>  the xmlOutputOpenCallback
+</td></tr><tr><td><span class="term"><i><tt>writeFunc</tt></i> :</span></td><td>  the xmlOutputWriteCallback
+</td></tr><tr><td><span class="term"><i><tt>closeFunc</tt></i> :</span></td><td>  the xmlOutputCloseCallback
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the registered handler number or -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIOHTTPOpenW"></a>xmlIOHTTPOpenW ()</h3><pre class="programlisting">void*       xmlIOHTTPOpenW                  (const char *post_uri,
                                              int compression);</pre><p>
 Open a temporary buffer to collect the document for a subsequent HTTP POST
 request.  Non-static as is called from the output buffer creation routine.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>post_uri</tt></i> :</span></td><td>  The destination URI for the document
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>compression</tt></i> :</span></td><td>  The compression desired for the document.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>post_uri</tt></i> :</span></td><td>  The destination URI for the document
+</td></tr><tr><td><span class="term"><i><tt>compression</tt></i> :</span></td><td>  The compression desired for the document.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegisterHTTPPostCallbacks"></a>xmlRegisterHTTPPostCallbacks ()</h3><pre class="programlisting">void        xmlRegisterHTTPPostCallbacks    (void);</pre><p>
 By default, libxml submits HTTP output requests using the "PUT" method.
 Calling this method changes the HTTP output method to use the "POST"
@@ -459,18 +457,18 @@ method instead.</p><p>
 A specific entity loader disabling network accesses, though still
 allowing local catalog accesses for resolution.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URL</tt></i> :</span></td><td>  the URL for the entity to load
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ID</tt></i> :</span></td><td>  the System ID for the entity to load
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the context in which the entity is called or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  the URL for the entity to load
+</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>  the System ID for the entity to load
+</td></tr><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the context in which the entity is called or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new allocated xmlParserInputPtr, or NULL.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNormalizeWindowsPath"></a>xmlNormalizeWindowsPath ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlNormalizeWindowsPath         (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *path);</pre><p>
 This function is obsolete. Please see xmlURIFromPath in uri.c for
 a better solution.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>path</tt></i> :</span></td><td> the input file path
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>path</tt></i> :</span></td><td> the input file path
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a canonicalized version of the path
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCheckFilename"></a>xmlCheckFilename ()</h3><pre class="programlisting">int         xmlCheckFilename                (const char *path);</pre><p>
-function checks to see if <i class="parameter"><tt>path</tt></i> is a valid source
+function checks to see if <i><tt>path</tt></i> is a valid source
 (file, socket...) for XML.
 </p><p>
 if stat is not available on the target machine,
@@ -478,76 +476,76 @@ returns 1.  if stat fails, returns 0 (if calling
 stat on the filename fails, it can't be right).
 if stat succeeds and the file is a directory,</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>path</tt></i> :</span></td><td>  the path to check
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>path</tt></i> :</span></td><td>  the path to check
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>2.  otherwise returns 1.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFileMatch"></a>xmlFileMatch ()</h3><pre class="programlisting">int         xmlFileMatch                    (const char *filename);</pre><p>
 input from FILE *</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the URI for matching
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the URI for matching
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if matches, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFileOpen"></a>xmlFileOpen ()</h3><pre class="programlisting">void*       xmlFileOpen                     (const char *filename);</pre><p>
 Wrapper around xmlFileOpen_real that try it with an unescaped
-version of <i class="parameter"><tt>filename</tt></i>, if this fails fallback to <i class="parameter"><tt>filename</tt></i></p><p>
+version of <i><tt>filename</tt></i>, if this fails fallback to <i><tt>filename</tt></i></p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the URI for matching
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the URI for matching
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFileRead"></a>xmlFileRead ()</h3><pre class="programlisting">int         xmlFileRead                     (void *context,
                                              char *buffer,
                                              int len);</pre><p>
-Read <i class="parameter"><tt>len</tt></i> bytes to <i class="parameter"><tt>buffer</tt></i> from the I/O channel.</p><p>
+Read <i><tt>len</tt></i> bytes to <i><tt>buffer</tt></i> from the I/O channel.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>context</tt></i> :</span></td><td>  the I/O context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>buffer</tt></i> :</span></td><td>  where to drop data
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  number of bytes to write
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>  the I/O context
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  where to drop data
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  number of bytes to write
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of bytes written
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFileClose"></a>xmlFileClose ()</h3><pre class="programlisting">int         xmlFileClose                    (void *context);</pre><p>
 Close an I/O channel</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>context</tt></i> :</span></td><td>  the I/O context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>  the I/O context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 or -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIOHTTPMatch"></a>xmlIOHTTPMatch ()</h3><pre class="programlisting">int         xmlIOHTTPMatch                  (const char *filename);</pre><p>
 check if the URI matches an HTTP one</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the URI for matching
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the URI for matching
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if matches, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIOHTTPOpen"></a>xmlIOHTTPOpen ()</h3><pre class="programlisting">void*       xmlIOHTTPOpen                   (const char *filename);</pre><p>
 open an HTTP I/O channel</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the URI for matching
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the URI for matching
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIOHTTPRead"></a>xmlIOHTTPRead ()</h3><pre class="programlisting">int         xmlIOHTTPRead                   (void *context,
                                              char *buffer,
                                              int len);</pre><p>
-Read <i class="parameter"><tt>len</tt></i> bytes to <i class="parameter"><tt>buffer</tt></i> from the I/O channel.</p><p>
+Read <i><tt>len</tt></i> bytes to <i><tt>buffer</tt></i> from the I/O channel.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>context</tt></i> :</span></td><td>  the I/O context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>buffer</tt></i> :</span></td><td>  where to drop data
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  number of bytes to write
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>  the I/O context
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  where to drop data
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  number of bytes to write
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of bytes written
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIOHTTPClose"></a>xmlIOHTTPClose ()</h3><pre class="programlisting">int         xmlIOHTTPClose                  (void *context);</pre><p>
 Close an HTTP I/O channel</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>context</tt></i> :</span></td><td>  the I/O context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>  the I/O context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIOFTPMatch"></a>xmlIOFTPMatch ()</h3><pre class="programlisting">int         xmlIOFTPMatch                   (const char *filename);</pre><p>
 check if the URI matches an FTP one</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the URI for matching
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the URI for matching
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if matches, 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIOFTPOpen"></a>xmlIOFTPOpen ()</h3><pre class="programlisting">void*       xmlIOFTPOpen                    (const char *filename);</pre><p>
 open an FTP I/O channel</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the URI for matching
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the URI for matching
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIOFTPRead"></a>xmlIOFTPRead ()</h3><pre class="programlisting">int         xmlIOFTPRead                    (void *context,
                                              char *buffer,
                                              int len);</pre><p>
-Read <i class="parameter"><tt>len</tt></i> bytes to <i class="parameter"><tt>buffer</tt></i> from the I/O channel.</p><p>
+Read <i><tt>len</tt></i> bytes to <i><tt>buffer</tt></i> from the I/O channel.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>context</tt></i> :</span></td><td>  the I/O context
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>buffer</tt></i> :</span></td><td>  where to drop data
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  number of bytes to write
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>  the I/O context
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  where to drop data
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  number of bytes to write
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of bytes written
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIOFTPClose"></a>xmlIOFTPClose ()</h3><pre class="programlisting">int         xmlIOFTPClose                   (void *context);</pre><p>
 Close an FTP I/O channel</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>context</tt></i> :</span></td><td>  the I/O context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>context</tt></i> :</span></td><td>  the I/O context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlmemory.html"><b>&lt;&lt; xmlmemory</b></a></td><td align="right"><a accesskey="n" href="libxml-xpath.html"><b>xpath &gt;&gt;</b></a></td></tr></table></body></html>
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-nanoftp.html"><b>&lt;&lt; nanoftp</b></a></td><td align="right"><a accesskey="n" href="libxml-catalog.html"><b>catalog &gt;&gt;</b></a></td></tr></table></body></html>

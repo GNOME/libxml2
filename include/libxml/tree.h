@@ -643,6 +643,8 @@ xmlNodePtr	xmlNewDocFragment	(xmlDocPtr doc);
 /*
  * Navigating
  */
+long		xmlGetLineNo		(xmlNodePtr node);
+xmlChar *	xmlGetNodePath		(xmlNodePtr node);
 xmlNodePtr	xmlDocGetRootElement	(xmlDocPtr doc);
 xmlNodePtr	xmlGetLastChild		(xmlNodePtr parent);
 int		xmlNodeIsText		(xmlNodePtr node);

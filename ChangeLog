@@ -1,3 +1,9 @@
+Mon Nov 26 16:56:00 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c debugXML.c include/libxml/tree.h include/libxml/debugXML.h:
+	  moved xmlGetLineNo() and xmlGetNodePath() into the main tree module,
+	  they are not really tied to debugging
+
 Mon Nov 26 11:31:36 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in include/libxml/xmlwin32version.h: preparing 2.4.11

@@ -51,8 +51,6 @@ void	xmlLsOneNode		(FILE *output, xmlNodePtr node);
 int	xmlLsCountNode		(xmlNodePtr node);
 
 const char *xmlBoolToText	(int boolval);
-long	xmlGetLineNo		(xmlNodePtr node);
-xmlChar *xmlGetNodePath		(xmlNodePtr node);
 
 /****************************************************************
  *								*

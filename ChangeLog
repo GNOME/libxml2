@@ -1,3 +1,8 @@
+Mon Dec 17 16:29:08 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/tree.h tree.c: applied documentation patches
+	  from Charlie Bozeman
+
 Thu Dec 13 21:24:16 MST 2001 John Fleck <jfleck@inkstain.net>
 
 	*doc/xmllint.xml, xmllint.1 - document --dropdtd

@@ -207,7 +207,7 @@ typedef enum {
 /**
  * xmlElementContentOccur:
  *
- * Possible definitions of element content occurences
+ * Possible definitions of element content occurrences
  */
 typedef enum {
     XML_ELEMENT_CONTENT_ONCE = 1,
@@ -238,7 +238,7 @@ struct _xmlElementContent {
 /**
  * xmlElementTypeVal:
  *
- * the differnt possibility for an element content type
+ * the different possibilities for an element content type
  */
 
 typedef enum {
@@ -288,7 +288,7 @@ typedef xmlElementType xmlNsType;
  *
  * An XML namespace.
  * Note that prefix == NULL is valid, it defines the default namespace
- * within the subtree (until overriden).
+ * within the subtree (until overridden).
  *
  * xmlNsType is unified with xmlElementType
  */
@@ -305,7 +305,7 @@ struct _xmlNs {
 /**
  * xmlDtd:
  *
- * An XML DtD, as defined by <!DOCTYPE ... There is actually one for
+ * An XML DTD, as defined by <!DOCTYPE ... There is actually one for
  * the internal subset and for the external subset
  */
 typedef struct _xmlDtd xmlDtd;
@@ -363,7 +363,7 @@ typedef xmlID *xmlIDPtr;
 struct _xmlID {
     struct _xmlID    *next;	/* next ID */
     const xmlChar    *value;	/* The ID name */
-    xmlAttrPtr        attr;	/* The attribut holding it */
+    xmlAttrPtr        attr;	/* The attribute holding it */
 };
 
 /**
@@ -377,7 +377,7 @@ typedef xmlRef *xmlRefPtr;
 struct _xmlRef {
     struct _xmlRef    *next;	/* next Ref */
     const xmlChar     *value;	/* The Ref name */
-    xmlAttrPtr        attr;	/* The attribut holding it */
+    xmlAttrPtr        attr;	/* The attribute holding it */
 };
 
 /**
@@ -744,8 +744,8 @@ xmlChar *	xmlNodeGetLang		(xmlNodePtr cur);
 void		xmlNodeSetLang		(xmlNodePtr cur,
 					 const xmlChar *lang);
 int		xmlNodeGetSpacePreserve	(xmlNodePtr cur);
-void		xmlNodeSetSpacePreserve (xmlNodePtr cur, int
-					 val);
+void		xmlNodeSetSpacePreserve (xmlNodePtr cur,
+					 int val);
 xmlChar *	xmlNodeGetBase		(xmlDocPtr doc,
 					 xmlNodePtr cur);
 void		xmlNodeSetBase		(xmlNodePtr cur,
@@ -754,7 +754,7 @@ void		xmlNodeSetBase		(xmlNodePtr cur,
 /*
  * Removing content.
  */
-int		xmlRemoveProp		(xmlAttrPtr attr);
+int		xmlRemoveProp		(xmlAttrPtr cur);
 int		xmlUnsetProp		(xmlNodePtr node,
 					 const xmlChar *name);
 int		xmlUnsetNsProp		(xmlNodePtr node,
@@ -832,10 +832,10 @@ void		xmlNodeDumpOutput	(xmlOutputBufferPtr buf,
 					 int format,
 					 const char *encoding);
 
-int		xmlSaveFormatFileEnc    ( const char * filename,
-					  xmlDocPtr cur,
-					  const char * encoding,
-					  int format );
+int		xmlSaveFormatFileEnc    (const char *filename,
+					 xmlDocPtr cur,
+					 const char *encoding,
+					 int format);
 
 int		xmlSaveFileEnc		(const char *filename,
 					 xmlDocPtr cur,

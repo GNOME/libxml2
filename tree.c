@@ -1,5 +1,5 @@
 /*
- * tree.c : implemetation of access function for an XML tree.
+ * tree.c : implementation of access function for an XML tree.
  *
  * See Copyright for the status of this software.
  *
@@ -115,7 +115,7 @@ xmlGetBufferAllocationScheme(void) {
  * node.
  * We use href==NULL in the case of an element creation where the namespace
  * was not defined.
- * Returns returns a new namespace pointer or NULL
+ * Returns a new namespace pointer or NULL
  */
 xmlNsPtr
 xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
@@ -341,7 +341,7 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
     cur = (xmlDtdPtr) xmlMalloc(sizeof(xmlDtd));
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewDtd : malloc failed\n");
+		"xmlCreateIntSubset : malloc failed\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlDtd));
@@ -482,7 +482,6 @@ xmlNewDoc(const xmlChar *version) {
 /**
  * xmlFreeDoc:
  * @cur:  pointer to the document
- * @:  
  *
  * Free up all the structures used by a document, tree included.
  */
@@ -698,7 +697,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 			charval = charval * 16 + (tmp - 'A') + 10;
 		    else {
 			xmlGenericError(xmlGenericErrorContext,
-		    "xmlStringGetNodeList: incharvalid hexadecimal charvalue\n");
+		    "xmlStringGetNodeList: invalid hexadecimal charvalue\n");
 			charval = 0;
 			break;
 		    }
@@ -716,7 +715,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 			charval = charval * 10 + (tmp - '0');
 		    else {
 			xmlGenericError(xmlGenericErrorContext,
-		    "xmlStringGetNodeList: incharvalid decimal charvalue\n");
+		    "xmlStringGetNodeList: invalid decimal charvalue\n");
 			charval = 0;
 			break;
 		    }
@@ -821,7 +820,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
  *
  * Returns the string equivalent to the text contained in the Node list
  * made of TEXTs and ENTITY_REFs
- * Returns a pointer to the string copy, the calller must free it.
+ * Returns a pointer to the string copy, the caller must free it.
  */
 xmlChar *
 xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
@@ -878,7 +877,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
 #if 0
 	else {
 	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlGetNodeListString : invalide node type %d\n",
+		    "xmlGetNodeListString : invalid node type %d\n",
 	            node->type);
 	}
 #endif
@@ -897,7 +896,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
  * made of TEXTs and ENTITY_REFs, contrary to xmlNodeListGetString()
  * this function doesn't do any character encoding handling.
  *
- * Returns a pointer to the string copy, the calller must free it.
+ * Returns a pointer to the string copy, the caller must free it.
  */
 xmlChar *
 xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
@@ -954,7 +953,7 @@ xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
 #if 0
 	else {
 	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlGetNodeListString : invalide node type %d\n",
+		    "xmlGetNodeListString : invalid node type %d\n",
 	            node->type);
 	}
 #endif
@@ -1057,7 +1056,7 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
     if (name == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewProp : name == NULL\n");
+		"xmlNewNsProp : name == NULL\n");
 #endif
 	return(NULL);
     }
@@ -1068,7 +1067,7 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewProp : malloc failed\n");
+		"xmlNewNsProp : malloc failed\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttr));
@@ -1131,7 +1130,7 @@ xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value) {
     if (name == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewProp : name == NULL\n");
+		"xmlNewDocProp : name == NULL\n");
 #endif
 	return(NULL);
     }
@@ -1142,7 +1141,7 @@ xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value) {
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewProp : malloc failed\n");
+		"xmlNewDocProp : malloc failed\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttr));
@@ -1317,7 +1316,7 @@ xmlNewPI(const xmlChar *name, const xmlChar *content) {
  * @ns:  namespace if any
  * @name:  the node name
  *
- * Creation of a new node element. @ns is optionnal (NULL).
+ * Creation of a new node element. @ns is optional (NULL).
  *
  * Returns a pointer to the new node object.
  */
@@ -1358,7 +1357,7 @@ xmlNewNode(xmlNsPtr ns, const xmlChar *name) {
  * @content:  the XML text content if any
  *
  * Creation of a new node element within a document. @ns and @content
- * are optionnal (NULL).
+ * are optional (NULL).
  * NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities
  *       references, but XML special chars need to be escaped first by using
  *       xmlEncodeEntitiesReentrant(). Use xmlNewDocRawNode() if you don't
@@ -1391,7 +1390,7 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
  * @content:  the text content if any
  *
  * Creation of a new node element within a document. @ns and @content
- * are optionnal (NULL).
+ * are optional (NULL).
  *
  * Returns a pointer to the new node object.
  */
@@ -1483,7 +1482,7 @@ xmlNewText(const xmlChar *content) {
  * @content:  the text content of the child if any.
  *
  * Creation of a new child element, added at the end of @parent children list.
- * @ns and @content parameters are optionnal (NULL). If content is non NULL,
+ * @ns and @content parameters are optional (NULL). If content is non NULL,
  * a child TEXT node will be created containing the string content.
  *
  * Returns a pointer to the new node object.
@@ -1555,7 +1554,7 @@ xmlNewCharRef(xmlDocPtr doc, const xmlChar *name) {
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewText : malloc failed\n");
+		"xmlNewCharRef : malloc failed\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -1594,7 +1593,7 @@ xmlNewReference(xmlDocPtr doc, const xmlChar *name) {
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewText : malloc failed\n");
+		"xmlNewReference : malloc failed\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -1674,7 +1673,7 @@ xmlNewTextLen(const xmlChar *content, int len) {
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewText : malloc failed\n");
+		"xmlNewTextLen : malloc failed\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));
@@ -1753,10 +1752,10 @@ xmlNewComment(const xmlChar *content) {
 /**
  * xmlNewCDataBlock:
  * @doc:  the document
- * @content:  the CData block content content
+ * @content:  the CDATA block content content
  * @len:  the length of the block
  *
- * Creation of a new node containing a CData block.
+ * Creation of a new node containing a CDATA block.
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
@@ -1794,7 +1793,7 @@ xmlNewCDataBlock(xmlDocPtr doc, const xmlChar *content, int len) {
  * @doc:  the document
  * @content:  the comment content
  *
- * Creation of a new node containing a commentwithin a document.
+ * Creation of a new node containing a comment within a document.
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
@@ -1836,7 +1835,7 @@ xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
 
 /**
  * xmlSetListDoc:
- * @tree:  the first element
+ * @list:  the first element
  * @doc:  the document
  *
  * update all nodes in the list to point to the right document
@@ -1864,7 +1863,7 @@ xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc) {
  * @content:  the XML content of the child if any.
  *
  * Creation of a new child element, added at the end of @parent children list.
- * @ns and @content parameters are optionnal (NULL). If content is non NULL,
+ * @ns and @content parameters are optional (NULL). If content is non NULL,
  * a child list containing the TEXTs and ENTITY_REFs node will be created.
  * NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities
  *       references, but XML special chars need to be escaped first by using
@@ -2157,7 +2156,7 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
     if (parent == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlAddChild : parent == NULL\n");
+		"xmlAddChildList : parent == NULL\n");
 #endif
 	return(NULL);
     }
@@ -2165,7 +2164,7 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlAddChild : child == NULL\n");
+		"xmlAddChildList : child == NULL\n");
 #endif
 	return(NULL);
     }
@@ -2382,7 +2381,7 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	     * The xmlStrEqual comparisons need to be done when (happened with
 	     * XML::libXML and XML::libXSLT) the library is included twice
 	     * statically in the binary and a tree allocated by one occurent
-	     * of the lib gets freed by the other occurence, in this case
+	     * of the lib gets freed by the other occurrence, in this case
 	     * the string addresses compare are not sufficient.
 	     */
 	    if ((cur->name != NULL) &&
@@ -2449,7 +2448,7 @@ xmlFreeNode(xmlNodePtr cur) {
      * The xmlStrEqual comparisons need to be done when (happened with
      * XML::libXML and XML::libXSLT) the library is included twice statically
      * in the binary and a tree allocated by one occurent of the lib gets
-     * freed by the other occurence, in this case the string addresses compare
+     * freed by the other occurrence, in this case the string addresses compare
      * are not sufficient.
      */
     if ((cur->name != NULL) &&
@@ -2512,10 +2511,10 @@ xmlUnlinkNode(xmlNodePtr cur) {
  * @cur:  the node
  *
  * Unlink the old node from it's current context, prune the new one
- * at the same place. If cur was already inserted in a document it is
+ * at the same place. If @cur was already inserted in a document it is
  * first unlinked from its existing context.
  *
- * Returns the old node
+ * Returns the @old node
  */
 xmlNodePtr
 xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
@@ -2565,7 +2564,7 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
  *
  * Do a copy of the namespace.
  *
- * Returns: a new xmlNsPtr, or NULL in case of error.
+ * Returns: a new #xmlNsPtr, or NULL in case of error.
  */
 xmlNsPtr
 xmlCopyNamespace(xmlNsPtr cur) {
@@ -2592,7 +2591,7 @@ xmlCopyNamespace(xmlNsPtr cur) {
  *
  * Do a copy of an namespace list.
  *
- * Returns: a new xmlNsPtr, or NULL in case of error.
+ * Returns: a new #xmlNsPtr, or NULL in case of error.
  */
 xmlNsPtr
 xmlCopyNamespaceList(xmlNsPtr cur) {
@@ -2621,7 +2620,7 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent);
  *
  * Do a copy of the attribute.
  *
- * Returns: a new xmlAttrPtr, or NULL in case of error.
+ * Returns: a new #xmlAttrPtr, or NULL in case of error.
  */
 xmlAttrPtr
 xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
@@ -2670,7 +2669,7 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
  *
  * Do a copy of an attribute list.
  *
- * Returns: a new xmlAttrPtr, or NULL in case of error.
+ * Returns: a new #xmlAttrPtr, or NULL in case of error.
  */
 xmlAttrPtr
 xmlCopyPropList(xmlNodePtr target, xmlAttrPtr cur) {
@@ -2692,9 +2691,9 @@ xmlCopyPropList(xmlNodePtr target, xmlAttrPtr cur) {
 }
 
 /*
- * NOTE abeut the CopyNode operations !
+ * NOTE about the CopyNode operations !
  *
- * They are splitted into external and internal parts for one
+ * They are split into external and internal parts for one
  * tricky reason: namespaces. Doing a direct copy of a node
  * say RPM:Copyright without changing the namespace pointer to
  * something else can produce stale links. One way to do it is
@@ -2822,7 +2821,7 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	if ((doc == NULL) || (node->doc != doc)) {
 	    /*
 	     * The copied node will go into a separate document, so
-	     * to havoid dandling references to the ENTITY_DECL node
+	     * to avoid dangling references to the ENTITY_DECL node
 	     * we cannot keep the reference. Try to find it in the
 	     * target document.
 	     */
@@ -2879,7 +2878,7 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
  *
  * Do a copy of the node.
  *
- * Returns: a new xmlNodePtr, or NULL in case of error.
+ * Returns: a new #xmlNodePtr, or NULL in case of error.
  */
 xmlNodePtr
 xmlCopyNode(const xmlNodePtr node, int recursive) {
@@ -2892,11 +2891,12 @@ xmlCopyNode(const xmlNodePtr node, int recursive) {
 /**
  * xmlDocCopyNode:
  * @node:  the node
+ * @doc:  the document
  * @recursive:  if 1 do a recursive copy.
  *
  * Do a copy of the node to a given document.
  *
- * Returns: a new xmlNodePtr, or NULL in case of error.
+ * Returns: a new #xmlNodePtr, or NULL in case of error.
  */
 xmlNodePtr
 xmlDocCopyNode(const xmlNodePtr node, xmlDocPtr doc, int recursive) {
@@ -2912,7 +2912,7 @@ xmlDocCopyNode(const xmlNodePtr node, xmlDocPtr doc, int recursive) {
  *
  * Do a recursive copy of the node list.
  *
- * Returns: a new xmlNodePtr, or NULL in case of error.
+ * Returns: a new #xmlNodePtr, or NULL in case of error.
  */
 xmlNodePtr xmlCopyNodeList(const xmlNodePtr node) {
     xmlNodePtr ret = xmlStaticCopyNodeList(node, NULL, NULL);
@@ -2925,7 +2925,7 @@ xmlNodePtr xmlCopyNodeList(const xmlNodePtr node) {
  *
  * Do a copy of the dtd.
  *
- * Returns: a new xmlDtdPtr, or NULL in case of error.
+ * Returns: a new #xmlDtdPtr, or NULL in case of error.
  */
 xmlDtdPtr
 xmlCopyDtd(xmlDtdPtr dtd) {
@@ -2957,7 +2957,7 @@ xmlCopyDtd(xmlDtdPtr dtd) {
  * Do a copy of the document info. If recursive, the content tree will
  * be copied too as well as Dtd, namespaces and entities.
  *
- * Returns: a new xmlDocPtr, or NULL in case of error.
+ * Returns: a new #xmlDocPtr, or NULL in case of error.
  */
 xmlDocPtr
 xmlCopyDoc(xmlDocPtr doc, int recursive) {
@@ -3011,9 +3011,9 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
  * @node : valid node
  *
  * Get line number of node. this requires activation of this option
- * before inoking the parser by calling xmlLineNumbersDefault(1)
+ * before invoking the parser by calling xmlLineNumbersDefault(1)
  *
- * Returns the line number if sucessfull, -1 otherwise
+ * Returns the line number if successful, -1 otherwise
  */
 long
 xmlGetLineNo(xmlNodePtr node)
@@ -3162,7 +3162,7 @@ xmlGetNodePath(xmlNodePtr node)
  * Get the root element of the document (doc->children is a list
  * containing possibly comments, PIs, etc ...).
  *
- * Returns the xmlNodePtr for the root or NULL
+ * Returns the #xmlNodePtr for the root or NULL
  */
 xmlNodePtr
 xmlDocGetRootElement(xmlDocPtr doc) {
@@ -3215,7 +3215,7 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
 /**
  * xmlNodeSetLang:
  * @cur:  the node being changed
- * @lang:  the langage description
+ * @lang:  the language description
  *
  * Set the language of a node, i.e. the values of the xml:lang
  * attribute.
@@ -3334,7 +3334,7 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
  * of the xml:space attribute or the one carried by the nearest
  * ancestor.
  *
- * Returns -1 if xml:space is not inheried, 0 if "default", 1 if "preserve"
+ * Returns -1 if xml:space is not inherited, 0 if "default", 1 if "preserve"
  */
 int
 xmlNodeGetSpacePreserve(xmlNodePtr cur) {
@@ -3535,8 +3535,8 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
  * Read the value of a node, this can be either the text carried
  * directly by this node if it's a TEXT node or the aggregate string
  * of the values carried by this node child's (TEXT and ENTITY_REF).
- * Entity references are substitued.
- * Returns a new xmlChar * or NULL if no content is available.
+ * Entity references are substituted.
+ * Returns a new #xmlChar * or NULL if no content is available.
  *     It's up to the caller to free the memory.
  */
 xmlChar *
@@ -3947,7 +3947,7 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
  * @node:  the current node
  *
  * Search all the namespace applying to a given element.
- * Returns an NULL terminated array of all the xmlNsPtr found
+ * Returns an NULL terminated array of all the #xmlNsPtr found
  *         that need to be freed by the caller or NULL if no
  *         namespace if defined
  */
@@ -4035,7 +4035,7 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 	    doc->oldNs = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
 	    if (doc->oldNs == NULL) {
 		xmlGenericError(xmlGenericErrorContext,
-			"xmlSearchNsByHref : malloc failed\n");
+			"xmlSearchNs : malloc failed\n");
 		return(NULL);
 	    }
 	    memset(doc->oldNs, 0, sizeof(xmlNs));
@@ -4190,7 +4190,7 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
     }
 
     /*
-     * Ok, now we are ready to create a new one.
+     * OK, now we are ready to create a new one.
      */
     def = xmlNewNs(tree, ns->href, prefix);
     return(def);
@@ -4205,7 +4205,7 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
  * tree are properly declared. This is needed for example after Copy or Cut
  * and then paste operations. The subtree may still hold pointers to
  * namespace declarations outside the subtree or invalid/masked. As much
- * as possible the function try tu reuse the existing namespaces found in
+ * as possible the function try to reuse the existing namespaces found in
  * the new environment. If not possible the new namespaces are redeclared
  * on @tree at the top of the given subtree.
  * Returns the number of namespace declarations created or -1 in case of error.
@@ -4256,7 +4256,7 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 	    }
 	    if (i == nbCache) {
 	        /*
-		 * Ok we need to recreate a new namespace definition
+		 * OK we need to recreate a new namespace definition
 		 */
 		n = xmlNewReconciliedNs(doc, tree, node->ns);
 		if (n != NULL) { /* :-( what if else ??? */
@@ -4323,7 +4323,7 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 		}
 		if (i == nbCache) {
 		    /*
-		     * Ok we need to recreate a new namespace definition
+		     * OK we need to recreate a new namespace definition
 		     */
 		    n = xmlNewReconciliedNs(doc, tree, attr->ns);
 		    if (n != NULL) { /* :-( what if else ??? */
@@ -4881,7 +4881,7 @@ xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
         (node->type != XML_CDATA_SECTION_NODE)) {
 #ifdef DEBUG_TREE
 	xmlGenericError(xmlGenericErrorContext,
-		"xmlTextConcat: node is not text nor cdata\n");
+		"xmlTextConcat: node is not text nor CDATA\n");
 #endif
         return;
     }
@@ -5024,7 +5024,7 @@ xmlBufferEmpty(xmlBufferPtr buf) {
  *
  * Remove the beginning of an XML buffer.
  *
- * Returns the number of xmlChar removed, or -1 in case of failure.
+ * Returns the number of #xmlChar removed, or -1 in case of failure.
  */
 int
 xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
@@ -5069,7 +5069,7 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
  * @buf:  the buffer to dump
  *
  * Dumps an XML buffer to  a FILE *.
- * Returns the number of xmlChar written
+ * Returns the number of #xmlChar written
  */
 int
 xmlBufferDump(FILE *file, xmlBufferPtr buf) {
@@ -5136,7 +5136,7 @@ xmlBufferLength(const xmlBufferPtr buf)
  * @buf:  the buffer to resize
  * @size:  the desired size
  *
- * Resize a buffer to accomodate minimum size of @size.
+ * Resize a buffer to accommodate minimum size of @size.
  *
  * Returns  0 in case of problems, 1 otherwise
  */
@@ -5173,7 +5173,7 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 				       newSize * sizeof(xmlChar));
     if (rebuf == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlBufferAdd : out of memory!\n");
+		"xmlBufferResize : out of memory!\n");
         return 0;
     }
     buf->content = rebuf;
@@ -5185,8 +5185,8 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 /**
  * xmlBufferAdd:
  * @buf:  the buffer to dump
- * @str:  the xmlChar string
- * @len:  the number of xmlChar to add
+ * @str:  the #xmlChar string
+ * @len:  the number of #xmlChar to add
  *
  * Add a string range to an XML buffer. if len == -1, the length of
  * str is recomputed.
@@ -5233,8 +5233,8 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
 /**
  * xmlBufferAddHead:
  * @buf:  the buffer
- * @str:  the xmlChar string
- * @len:  the number of xmlChar to add
+ * @str:  the #xmlChar string
+ * @len:  the number of #xmlChar to add
  *
  * Add a string range to the beginning of an XML buffer.
  * if len == -1, the length of @str is recomputed.
@@ -5246,14 +5246,14 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
     if (str == NULL) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
-		"xmlBufferAdd: str == NULL\n");
+		"xmlBufferAddHead: str == NULL\n");
 #endif
 	return;
     }
     if (len < -1) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
-		"xmlBufferAdd: len < 0\n");
+		"xmlBufferAddHead: len < 0\n");
 #endif
 	return;
     }
@@ -5282,7 +5282,7 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
 /**
  * xmlBufferCat:
  * @buf:  the buffer to dump
- * @str:  the xmlChar string
+ * @str:  the #xmlChar string
  *
  * Append a zero terminated string to an XML buffer.
  */
@@ -5306,7 +5306,7 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
     if (str == NULL) {
 #ifdef DEBUG_BUFFER
         xmlGenericError(xmlGenericErrorContext,
-		"xmlBufferAdd: str == NULL\n");
+		"xmlBufferCCat: str == NULL\n");
 #endif
 	return;
     }
@@ -5370,7 +5370,7 @@ xmlBufferWriteChar(xmlBufferPtr buf, const char *string) {
  * @string:  the string to add
  *
  * routine which manage and grows an output buffer. This one writes
- * a quoted or double quoted xmlChar string, checking first if it holds
+ * a quoted or double quoted #xmlChar string, checking first if it holds
  * quote or double-quotes internally
  */
 void
@@ -5456,7 +5456,7 @@ xmlNsListDump(xmlBufferPtr buf, xmlNsPtr cur) {
 /**
  * xmlDtdDump:
  * @buf:  the XML buffer output
- * @doc:  the document
+ * @dtd:  the DTD
  * 
  * Dump the XML document DTD, if any.
  */
@@ -5789,7 +5789,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
  * @doc:  the document
  * @cur:  the current node
  *
- * Dump an XML/HTML node, recursive behaviour,children are printed too.
+ * Dump an XML/HTML node, recursive behaviour, children are printed too.
  */
 void
 xmlElemDump(FILE *f, xmlDocPtr doc, xmlNodePtr cur) {
@@ -5850,7 +5850,7 @@ xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNsDump : Ns == NULL\n");
+		"xmlNsDumpOutput : Ns == NULL\n");
 #endif
 	return;
     }
@@ -5895,7 +5895,7 @@ xmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDtdPtr dtd, const char *encoding) {
     if (dtd == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlDtdDump : no internal subset\n");
+		"xmlDtdDumpOutput : no internal subset\n");
 #endif
 	return;
     }
@@ -5937,7 +5937,7 @@ xmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlAttrDump : property == NULL\n");
+		"xmlAttrDumpOutput : property == NULL\n");
 #endif
 	return;
     }
@@ -5972,7 +5972,7 @@ xmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlAttrListDump : property == NULL\n");
+		"xmlAttrListDumpOutput : property == NULL\n");
 #endif
 	return;
     }
@@ -5993,7 +5993,7 @@ xmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @format: is formatting allowed
  * @encoding:  an optional encoding string
  *
- * Dump an XML node list, recursive behaviour,children are printed too.
+ * Dump an XML node list, recursive behaviour, children are printed too.
  */
 static void
 xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
@@ -6003,7 +6003,7 @@ xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNodeListDump : node == NULL\n");
+		"xmlNodeListDumpOutput : node == NULL\n");
 #endif
 	return;
     }
@@ -6029,7 +6029,7 @@ xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @format: is formatting allowed
  * @encoding:  an optional encoding string
  *
- * Dump an XML node, recursive behaviour,children are printed too.
+ * Dump an XML node, recursive behaviour, children are printed too.
  */
 void
 xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
@@ -6040,7 +6040,7 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNodeDump : node == NULL\n");
+		"xmlNodeDumpOutput : node == NULL\n");
 #endif
 	return;
     }
@@ -6378,7 +6378,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
  * @mem:  OUT: the memory pointer
  * @size:  OUT: the memory length
  *
- * Dump an XML document in memory and return the xmlChar * and it's size.
+ * Dump an XML document in memory and return the #xmlChar * and it's size.
  * It's up to the caller to free the memory.
  */
 void
@@ -6394,7 +6394,7 @@ xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  * @format:  should formatting spaces been added
  *
  *
- * Dump an XML document in memory and return the xmlChar * and it's size.
+ * Dump an XML document in memory and return the #xmlChar * and it's size.
  * It's up to the caller to free the memory.
  */
 void
@@ -6482,7 +6482,7 @@ xmlSetCompressMode(int mode) {
  *
  * Dump an XML document to an open FILE.
  *
- * returns: the number of byte written or -1 in case of failure.
+ * returns: the number of bytes written or -1 in case of failure.
  */
 int
 xmlDocDump(FILE *f, xmlDocPtr cur) {
@@ -6530,11 +6530,11 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
  * xmlSaveFileTo:
  * @buf:  an output I/O buffer
  * @cur:  the document
- * @encoding:  the encoding if any assuming the i/O layer handles the trancoding
+ * @encoding:  the encoding if any assuming the I/O layer handles the trancoding
  *
  * Dump an XML document to an I/O buffer.
  *
- * returns: the number of byte written or -1 in case of failure.
+ * returns: the number of bytes written or -1 in case of failure.
  */
 int
 xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
@@ -6550,12 +6550,12 @@ xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
  * xmlSaveFormatFileTo:
  * @buf:  an output I/O buffer
  * @cur:  the document
- * @encoding:  the encoding if any assuming the i/O layer handles the trancoding
+ * @encoding:  the encoding if any assuming the I/O layer handles the trancoding
  * @format: should formatting spaces been added
  *
  * Dump an XML document to an I/O buffer.
  *
- * returns: the number of byte written or -1 in case of failure.
+ * returns: the number of bytes written or -1 in case of failure.
  */
 int
 xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding, int format) {
@@ -6573,6 +6573,8 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding,
  * @cur:  the document being saved
  * @encoding:  the name of the encoding to use or NULL.
  * @format:  should formatting spaces be added.
+ *
+ * Returns the number of bytes written or -1 in case of error.
  */
 int
 xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
@@ -6587,7 +6589,7 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
 	enc = xmlParseCharEncoding(encoding);
 	if (cur->charset != XML_CHAR_ENCODING_UTF8) {
 	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlSaveFileEnc: document not in UTF8\n");
+		    "xmlSaveFormatFileEnc: document not in UTF8\n");
 	    return(-1);
 	}
 	if (enc != XML_CHAR_ENCODING_UTF8) {
@@ -6621,7 +6623,7 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
  *
  * Dump an XML document, converting it to the given encoding
  *
- * returns: the number of byte written or -1 in case of failure.
+ * returns: the number of bytes written or -1 in case of failure.
  */
 int
 xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
@@ -6636,9 +6638,9 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
  *
  * Dump an XML document to a file. Will use compression if
  * compiled in and enabled. If @filename is "-" the stdout file is
- * used. If format is set then the document will be indented on output.
+ * used. If @format is set then the document will be indented on output.
  *
- * returns: the number of byte written or -1 in case of failure.
+ * returns: the number of bytes written or -1 in case of failure.
  */
 int
 xmlSaveFormatFile(const char *filename, xmlDocPtr cur, int format) {
@@ -6653,7 +6655,7 @@ xmlSaveFormatFile(const char *filename, xmlDocPtr cur, int format) {
  * Dump an XML document to a file. Will use compression if
  * compiled in and enabled. If @filename is "-" the stdout file is
  * used.
- * returns: the number of byte written or -1 in case of failure.
+ * returns: the number of bytes written or -1 in case of failure.
  */
 int
 xmlSaveFile(const char *filename, xmlDocPtr cur) {

@@ -1,3 +1,8 @@
+Fri May  4 19:51:15 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c: fixed htmlNewDoc SYSTEM and PUBLIC ID inversion
+	  when both parameters are NULL.
+
 Fri May  4 17:19:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: applied small patch from Gary Pennington, reindented

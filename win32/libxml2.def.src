@@ -1,1738 +1,2361 @@
-/* win32/libxml2.def.src
-   Pseudo-source used to create a .DEF file for proper dynamic linkage. 
-   
-   Assuming you use Microsoft's C compiler, you run a
-   
-       cl /EP libxml2.def.src > libxml2.def
-       
-   in order to get the right .DEF file. Basically, all you do is
-   preprocess this file using a C/C++ preprocessor and the right
-   .DEF file should come out. 
-   
-   Should you need a function which does not seem to be exported
-   from the libxml2.dll, its name is most certainly missing here.
-   Add the name of the offending function to this file and rebuild.
-
-   21.03.2001, Igor Zlatkovic (igor@zlatkovic.com)
-*/
-
 #define LIBXML2_COMPILING_MSCCDEF
 #include "../include/libxml/xmlversion.h"
-
 LIBRARY libxml2
 EXPORTS
-
-
-/* c14n.h
-   --------------------------------------------------------------------- */
-#ifdef LIBXML_C14N_ENABLED
-	xmlC14NDocSaveTo
-	xmlC14NDocDumpMemory
-	xmlC14NDocSave
-	xmlC14NExecute
-#endif /* LIBXML_C14N_ENABLED */
-
-
-/* catalog.h 
-   --------------------------------------------------------------------- */
-#ifdef LIBXML_CATALOG_ENABLED
-	/* Operations on a given catalog */
-	xmlNewCatalog
-	xmlLoadACatalog
-	xmlLoadSGMLSuperCatalog
-	xmlConvertSGMLCatalog
-	xmlACatalogAdd
-	xmlACatalogRemove
-	xmlACatalogResolve
-	xmlACatalogResolveSystem
-	xmlACatalogResolvePublic
-	xmlACatalogResolveURI
-	xmlACatalogDump
-	xmlFreeCatalog
-	xmlCatalogIsEmpty
-	
-	/* Global operations */
-	xmlInitializeCatalog
-	xmlLoadCatalog
-	xmlLoadCatalogs
-	xmlCatalogCleanup
-	xmlCatalogDump
-	xmlCatalogResolve
-	xmlCatalogResolveSystem
-	xmlCatalogResolvePublic
-	xmlCatalogResolveURI
-	xmlCatalogAdd
-	xmlCatalogRemove
-	xmlParseCatalogFile
-	xmlCatalogConvert
-
-	/* Strictly minimal interfaces for per-document catalogs used by the parser. */
-	xmlCatalogFreeLocal
-	xmlCatalogAddLocal
-	xmlCatalogLocalResolve
-	xmlCatalogLocalResolveURI
-	
-	/* Preference settings */
-	xmlCatalogSetDebug
-	xmlCatalogSetDefaultPrefer
-	xmlCatalogSetDefaults
-	xmlCatalogGetDefaults
-	
-	/* DEPRECATED interfaces */
-	xmlCatalogGetSystem
-	xmlCatalogGetPublic
-#endif /* LIBXML_CATALOG_ENABLED */
-
-
-/* debugXML.h 
-   --------------------------------------------------------------------- */
-#ifdef LIBXML_DEBUG_ENABLED
-	/* The standard Dump routines */
-	xmlDebugDumpString
-	xmlDebugDumpAttr
-	xmlDebugDumpAttrList
-	xmlDebugDumpOneNode
-	xmlDebugDumpNode
-	xmlDebugDumpNodeList
-	xmlDebugDumpDocumentHead
-	xmlDebugDumpDocument
-	xmlDebugDumpDTD
-	xmlDebugDumpEntities
-	xmlLsOneNode
-	xmlLsCountNode
-	xmlBoolToText
-	
-	/* ??? */
-	xmlShellPrintXPathError
-	xmlShellPrintNode
-	xmlShellPrintXPathResult
-	xmlShellList
-	xmlShellBase
-	xmlShellDir
-	xmlShellCat
-	xmlShellLoad
-	xmlShellWrite
-	xmlShellSave
-	xmlShellValidate
-	xmlShellDu
-	xmlShellPwd
-
-	/* The Shell interface. */
-	xmlShell
-#endif /* LIBXML_DEBUG_ENABLED */
-
-
-/* DOCBParser.h 
-   --------------------------------------------------------------------- */
+#ifdef LIBXML_THREAD_ENABLED
 #ifdef LIBXML_DOCB_ENABLED
-	/* There is only few public functions. */
-	docbEncodeEntities
-	docbSAXParseDoc
-	docbParseDoc
-	docbSAXParseFile
-	docbParseFile
-
-	/* Interfaces for the Push mode */
-	docbFreeParserCtxt
-	docbCreatePushParserCtxt
-	docbParseChunk
-	docbCreateFileParserCtxt
-	docbParseDocument
-#endif /* LIBXML_DOCB_ENABLED */
-
-
-/* encoding.h 
-   --------------------------------------------------------------------- */
-	/* Interfaces for encoding handlers */
-	xmlInitCharEncodingHandlers
-	xmlCleanupCharEncodingHandlers
-	xmlRegisterCharEncodingHandler
-	xmlGetCharEncodingHandler
-	xmlFindCharEncodingHandler
-
-	/* Interfaces for encoding names and aliases */
-	xmlAddEncodingAlias
-	xmlDelEncodingAlias
-	xmlGetEncodingAlias
-	xmlCleanupEncodingAliases
-	xmlParseCharEncoding
-	xmlGetCharEncodingName
-
-	/* Interfaces directly used by the parsers. */
-	xmlDetectCharEncoding
-	xmlCharEncOutFunc
-	xmlCharEncInFunc
-	xmlCharEncFirstLine
-	xmlCharEncCloseFunc
-
-	/* Export a few useful functions */
-	UTF8Toisolat1
-	isolat1ToUTF8
-
-	/* exports additional "UTF-8 aware" string routines which are */
-	xmlCheckUTF8
-	xmlUTF8Strsize
-	xmlUTF8Strndup
-	xmlUTF8Strpos
-	xmlUTF8Strloc
-	xmlUTF8Strsub
-	xmlUTF8Strlen
-
-
-/* entities.h 
-   --------------------------------------------------------------------- */
-	xmlInitializePredefinedEntities
-	xmlAddDocEntity
-	xmlAddDtdEntity
-	xmlGetPredefinedEntity
-	xmlGetDocEntity
-	xmlGetDtdEntity
-	xmlGetParameterEntity
-	xmlEncodeEntities
-	xmlEncodeEntitiesReentrant
-	xmlEncodeSpecialChars
-	xmlCreateEntitiesTable
-	xmlCopyEntitiesTable
-	xmlFreeEntitiesTable
-	xmlDumpEntitiesTable
-	xmlDumpEntityDecl
-xmlCleanupPredefinedEntities
-
-
-/* globals.h 
-   --------------------------------------------------------------------- */
-	xmlInitializeGlobalState
-	xmlRegisterNodeDefault
-	xmlDeregisterNodeDefault
-
-	/* Memory */
-#ifdef LIBXML_THREAD_ALLOC_ENABLED
-#ifdef LIBXML_THREAD_ENABLED
-	__xmlMalloc
-	__xmlMallocAtomic
-	__xmlRealloc
-	__xmlFree
-	__xmlMemStrdup
+__docbDefaultSAXHandler
+#endif
 #else
-	xmlMalloc DATA
-	xmlMallocAtomic DATA
-	xmlRealloc DATA
-	xmlFree DATA
-	xmlMemStrdup DATA
+#ifdef LIBXML_DOCB_ENABLED
+docbDefaultSAXHandler DATA
 #endif
-#else /* !LIBXML_THREAD_ALLOC_ENABLED */
-	xmlMalloc DATA
-	xmlMallocAtomic DATA
-	xmlRealloc DATA
-	xmlFree DATA
-	xmlMemStrdup DATA
-#endif /* LIBXML_THREAD_ALLOC_ENABLED */
-	
-	/* Autogenerated (not here, but in the globals.h) */
+#endif
 #ifdef LIBXML_THREAD_ENABLED
-	#ifdef LIBXML_DOCB_ENABLED
-		__docbDefaultSAXHandler
-	#endif
-	#ifdef LIBXML_HTML_ENABLED
-		__htmlDefaultSAXHandler
-	#endif
-	__oldXMLWDcompatibility
-	__xmlBufferAllocScheme
-	__xmlDefaultBufferSize
-	__xmlDefaultSAXHandler
-	__xmlDefaultSAXLocator
-	__xmlDoValidityCheckingDefaultValue
-	__xmlGenericError
-	__xmlGenericErrorContext
-	__xmlGetWarningsDefaultValue
-	__xmlIndentTreeOutput
-	__xmlTreeIndentString
-	__xmlKeepBlanksDefaultValue
-	__xmlLineNumbersDefaultValue
-	__xmlLoadExtDtdDefaultValue
-	__xmlParserDebugEntities
-	__xmlParserVersion
-	__xmlPedanticParserDefaultValue
-	__xmlSaveNoEmptyTags
-	__xmlSubstituteEntitiesDefaultValue
-	__xmlRegisterNodeDefaultValue
-	__xmlDeregisterNodeDefaultValue
-#else /* LIBXML_THREAD_ENABLED */
-	#ifdef LIBXML_DOCB_ENABLED
-		docbDefaultSAXHandler DATA
-	#endif
-	#ifdef LIBXML_HTML_ENABLED
-		htmlDefaultSAXHandler DATA
-	#endif
-	oldXMLWDcompatibility DATA
-	xmlBufferAllocScheme DATA
-	xmlDefaultBufferSize DATA
-	xmlDefaultSAXHandler DATA
-	xmlDefaultSAXLocator DATA
-	xmlDoValidityCheckingDefaultValue DATA
-	xmlGenericError DATA
-	xmlGenericErrorContext DATA
-	xmlGetWarningsDefaultValue DATA
-	xmlIndentTreeOutput DATA
-	xmlTreeIndentString DATA
-	xmlKeepBlanksDefaultValue DATA
-	xmlLineNumbersDefaultValue DATA
-	xmlLoadExtDtdDefaultValue DATA
-	xmlParserDebugEntities DATA
-	xmlParserVersion DATA
-	xmlPedanticParserDefaultValue DATA
-	xmlSaveNoEmptyTags DATA
-	xmlSubstituteEntitiesDefaultValue DATA
-	xmlRegisterNodeDefaultValue DATA
-	xmlDeregisterNodeDefaultValue DATA
-#endif /* LIBXML_THREAD_ENABLED */
-
-
-/* hash.h 
-   --------------------------------------------------------------------- */
-	/* Constructor and destructor */
-	xmlHashCreate
-	xmlHashFree
-	
-	/* Add a new entry to the hash table */
-	xmlHashAddEntry
-	xmlHashUpdateEntry
-	xmlHashAddEntry2
-	xmlHashUpdateEntry2
-	xmlHashAddEntry3
-	xmlHashUpdateEntry3
-
-	/* Remove an entry from the hash table */
-	xmlHashRemoveEntry
-	xmlHashRemoveEntry2
-	xmlHashRemoveEntry3
-
-	/* Retrieve the userdata */
-	xmlHashLookup
-	xmlHashLookup2
-	xmlHashLookup3
-
-	/* Helpers */
-	xmlHashCopy
-	xmlHashSize
-	xmlHashScan
-	xmlHashScan3
-	xmlHashScanFull
-	xmlHashScanFull3
-
-
-/* HTMLparser.h 
-   --------------------------------------------------------------------- */
 #ifdef LIBXML_HTML_ENABLED
-	/* There is only few public functions. */
-	htmlTagLookup
-	htmlEntityLookup
-	htmlEntityValueLookup
-	htmlIsAutoClosed
-	htmlAutoCloseTag
-	htmlParseEntityRef
-	htmlParseCharRef
-	htmlParseElement
-	htmlCreateMemoryParserCtxt
-	htmlParseDocument
-	htmlSAXParseDoc
-	htmlParseDoc
-	htmlSAXParseFile
-	htmlParseFile
-	UTF8ToHtml
-	htmlEncodeEntities
-	htmlIsScriptAttribute
-	htmlHandleOmittedElem
-
-	/* Interfaces for the Push mode */
-	htmlFreeParserCtxt
-	htmlCreatePushParserCtxt
-	htmlParseChunk
-
-	/* More things */
-	htmlAttrAllowed
-	htmlElementAllowedHere
-	htmlElementStatusHere
-	htmlNodeStatus
-#endif /* LIBXML_HTML_ENABLED */
-
-
-/* HTMLtree.h 
-   --------------------------------------------------------------------- */
-#ifdef LIBXML_HTML_ENABLED
-	htmlNewDoc
-	htmlNewDocNoDtD
-	htmlGetMetaEncoding
-	htmlSetMetaEncoding
-	htmlDocDumpMemory
-	htmlDocDump
-	htmlSaveFile
-	htmlNodeDump
-	htmlNodeDumpFile
-	htmlNodeDumpFileFormat
-	htmlSaveFileEnc
-	htmlSaveFileFormat
-	htmlNodeDumpOutput
-	htmlNodeDumpFormatOutput
-	htmlDocContentDumpOutput
-	htmlDocContentDumpFormatOutput
-	htmlIsBooleanAttr
-#endif /* LIBXML_HTML_ENABLED */
-
-
-/* list.h 
-   --------------------------------------------------------------------- */
-	/* Creation/Deletion */
-	xmlListCreate
-	xmlListDelete
-	
-	/* Basic Operators */
-	xmlListSearch
-	xmlListReverseSearch
-	xmlListInsert
-	xmlListAppend
-	xmlListRemoveFirst
-	xmlListRemoveLast
-	xmlListRemoveAll
-	xmlListClear
-	xmlListEmpty
-	xmlListFront
-	xmlListEnd
-	xmlListSize
-	xmlListPopFront
-	xmlListPopBack
-	xmlListPushFront
-	xmlListPushBack
-
-	/* Advanced Operators */
-	xmlListReverse
-	xmlListSort
-	xmlListWalk
-	xmlListReverseWalk
-	xmlListMerge
-	xmlListDup
-	xmlListCopy
-	xmlLinkGetData
-
-
-/* nanoftp.h 
-   --------------------------------------------------------------------- */
-#ifdef LIBXML_FTP_ENABLED
-	/* Init */
-	xmlNanoFTPInit
-	xmlNanoFTPCleanup
-	
-	/* Creating/freeing contexts */
-	xmlNanoFTPNewCtxt
-	xmlNanoFTPFreeCtxt
-	xmlNanoFTPConnectTo
-
-	/* Opening/closing session connections */
-	xmlNanoFTPOpen
-	xmlNanoFTPConnect
-	xmlNanoFTPClose
-	xmlNanoFTPQuit
-	xmlNanoFTPScanProxy
-	xmlNanoFTPProxy
-	xmlNanoFTPUpdateURL
-
-	/* Rathern internal commands */
-	xmlNanoFTPGetResponse
-	xmlNanoFTPCheckResponse
-
-	/* CD/DIR/GET handlers */
-	xmlNanoFTPCwd
-	xmlNanoFTPGetConnection
-	xmlNanoFTPCloseConnection
-	xmlNanoFTPList
-	xmlNanoFTPGetSocket
-	xmlNanoFTPGet
-	xmlNanoFTPRead
-#endif /* LIBXML_FTP_ENABLED */
-
-
-/* nanohttp.h 
-   --------------------------------------------------------------------- */
-#ifdef LIBXML_HTTP_ENABLED
-	xmlNanoHTTPInit
-	xmlNanoHTTPCleanup
-	xmlNanoHTTPScanProxy
-	xmlNanoHTTPFetch
-	xmlNanoHTTPMethod
-	xmlNanoHTTPMethodRedir
-	xmlNanoHTTPOpen
-	xmlNanoHTTPOpenRedir
-	xmlNanoHTTPReturnCode
-	xmlNanoHTTPAuthHeader
-	xmlNanoHTTPRead
-	xmlNanoHTTPSave
-	xmlNanoHTTPClose
-#endif /* LIBXML_HTTP_ENABLED */
-
-
-/* parser.h  
-   --------------------------------------------------------------------- */
-	// xmlParserVersion DATA <-- moved to the globals.h section
-	// xmlDefaultSAXLocator DATA <-- moved to the globals.h section
-	// xmlDefaultSAXHandler DATA <-- moved to the globals.h section
-	//#ifdef LIBXML_HTML_ENABLED <-- moved to the globals.h section
-	//	htmlDefaultSAXHandler DATA <-- moved to the globals.h section
-	//#endif <-- moved to globals.h section
-	//#ifdef LIBXML_DOCB_ENABLED <-- moved to the globals.h section
-	//	docbDefaultSAXHandler DATA <-- moved to the globals.h section
-	//#endif <-- moved to globals.h section
-	// xmlSubstituteEntitiesDefaultValue DATA <-- moved to globals.h section
-	// xmlGetWarningsDefaultValue DATA <-- moved to globals.h section
-
-	/* Init/Cleanup */
-	xmlInitParser
-	xmlCleanupParser
-	
-	/* Input functions */
-	xmlParserInputRead
-	xmlParserInputGrow
-
-	/* xmlChar handling */
-	xmlStrdup
-	xmlStrndup
-	xmlCharStrndup
-	xmlCharStrdup
-	xmlStrsub
-	xmlStrchr
-	xmlStrstr
-	xmlStrcasestr
-	xmlStrcmp
-	xmlStrncmp
-	xmlStrcasecmp
-	xmlStrncasecmp
-	xmlStrEqual
-	xmlStrlen
-	xmlStrcat
-	xmlStrncat
-
-	/* Basic parsing Interfaces */
-	xmlParseDoc
-	xmlParseMemory
-	xmlParseFile
-	xmlSubstituteEntitiesDefault
-	xmlKeepBlanksDefault
-	xmlStopParser
-	xmlPedanticParserDefault
-	xmlLineNumbersDefault
-
-	/* Recovery mode */
-	xmlRecoverDoc
-	xmlRecoverMemory
-	xmlRecoverFile
-
-	/* Less common routines and SAX interfaces */
-	xmlParseDocument
-	xmlParseExtParsedEnt
-	xmlSAXParseDoc
-	xmlSAXUserParseFile
-	xmlSAXUserParseMemory
-	xmlSAXParseMemory
-	xmlSAXParseFile
-	xmlSAXParseFileWithData
-	xmlSAXParseEntity
-	xmlParseEntity
-	xmlParseDTD
-	xmlSAXParseDTD
-	xmlIOParseDTD
-	xmlParseBalancedChunkMemory
-	xmlParseExternalEntity
-	xmlParseCtxtExternalEntity
-
-	/* SAX initialization routines */
-	xmlDefaultSAXHandlerInit
-	#ifdef LIBXML_HTML_ENABLED
-		htmlDefaultSAXHandlerInit
-	#endif /* LIBXML_HTML_ENABLED */
-	
-	/* Parser contexts handling. */
-	xmlInitParserCtxt
-	xmlClearParserCtxt
-	xmlFreeParserCtxt
-	xmlSetupParserForBuffer
-	xmlCreateDocParserCtxt
-
-	/* Reading/setting optional parsing features. */
-	xmlGetFeaturesList
-	xmlGetFeature
-	xmlSetFeature
-
-	/* Interfaces for the Push mode */
-	xmlCreatePushParserCtxt
-	xmlParseChunk
-
-	/* Special I/O mode */
-	xmlCreateIOParserCtxt
-	xmlNewIOInputStream
-
-	/* Node infos */
-	xmlParserFindNodeInfo
-	xmlInitNodeInfoSeq
-	xmlClearNodeInfoSeq
-	xmlParserFindNodeInfoIndex
-	xmlParserAddNodeInfo
-
-	/* External entities handling actually implemented in xmlIO */
-	xmlSetExternalEntityLoader
-	xmlGetExternalEntityLoader
-	xmlLoadExternalEntity
-
-
-/* parserinternals.h 
-   --------------------------------------------------------------------- */
-	/* Global variables used for predefined strings */
-	xmlStringText DATA
-	xmlStringTextNoenc DATA
-	xmlStringComment DATA
-
-	/* Function to finish the work of the macros where needed */
-	xmlIsBaseChar
-	xmlIsBlank
-	xmlIsPubidChar
-	xmlIsLetter
-	xmlIsDigit
-	xmlIsIdeographic
-	xmlIsCombining
-	xmlIsExtender
-	xmlIsCombining
-	xmlIsChar
-
-	/* Parser context */
-	xmlCreateDocParserCtxt
-	xmlCreateFileParserCtxt
-	xmlCreateMemoryParserCtxt
-	xmlNewParserCtxt
-	xmlCreateEntityParserCtxt
-	xmlSwitchEncoding
-	xmlSwitchToEncoding
-	xmlFreeParserCtxt
-
-	/* Entities */
-	xmlHandleEntity
-
-	/* Input Streams */
-	xmlNewStringInputStream
-	xmlNewEntityInputStream
-	xmlPushInput
-	xmlPopInput
-	xmlFreeInputStream
-	xmlNewInputFromFile
-	xmlNewInputStream
-
-	/* Namespaces. */
-	xmlSplitQName
-	xmlNamespaceParseNCName
-	xmlNamespaceParseQName
-	xmlNamespaceParseNSDef
-	xmlParseQuotedString
-	xmlParseNamespace
-
-	/* Generic production rules */
-	xmlScanName
-	xmlParseName
-	xmlParseNmtoken
-	xmlParseEntityValue
-	xmlParseAttValue
-	xmlParseSystemLiteral
-	xmlParsePubidLiteral
-	xmlParseCharData
-	xmlParseExternalID
-	xmlParseComment
-	xmlParsePITarget
-	xmlParsePI
-	xmlParseNotationDecl
-	xmlParseEntityDecl
-	xmlParseDefaultDecl
-	xmlParseNotationType
-	xmlParseEnumerationType
-	xmlParseEnumeratedType
-	xmlParseAttributeType
-	xmlParseAttributeListDecl
-	xmlParseElementMixedContentDecl
-	xmlParseElementChildrenContentDecl
-	xmlParseElementContentDecl
-	xmlParseElementDecl
-	xmlParseMarkupDecl
-	xmlParseCharRef
-	xmlParseEntityRef
-	xmlParseReference
-	xmlParsePEReference
-	xmlParseDocTypeDecl
-	xmlParseAttribute
-	xmlParseStartTag
-	xmlParseEndTag
-	xmlParseCDSect
-	xmlParseContent
-	xmlParseElement
-	xmlParseVersionNum
-	xmlParseVersionInfo
-	xmlParseEncName
-	xmlParseEncodingDecl
-	xmlParseSDDecl
-	xmlParseXMLDecl
-	xmlParseTextDecl
-	xmlParseMisc
-	xmlParseExternalSubset
-
-	xmlDecodeEntities
-	xmlStringDecodeEntities
-
-	/* Generated by MACROS on top of parser.c c.f. PUSH_AND_POP */
-	nodePush
-	nodePop
-	inputPush
-	inputPop
-	namePop
-	namePush
-
-	/* other comodities shared between parser.c and parserInternals */
-	xmlSkipBlankChars
-	xmlStringCurrentChar
-	xmlParserHandlePEReference
-	xmlParserHandleReference
-	xmlCheckLanguageID
-
-	/* Really core function shared with HTML parser */
-	xmlCurrentChar
-	xmlCopyCharMultiByte
-	xmlCopyChar
-	xmlNextChar
-	xmlParserInputShrink
-	
-	/* Actually comes from the HTML parser but launched from the init stuff */
-	#ifdef LIBXML_HTML_ENABLED
-		htmlInitAutoClose
-		htmlCreateFileParserCtxt
-	#endif /* LIBXML_HTML_ENABLED */
-
-	/* Specific function to keep track of entities references and used by the XSLT debugger. */
-	xmlSetEntityReferenceFunc
-
-
-/* relaxng.h
-   --------------------------------------------------------------------- */
-#ifdef LIBXML_SCHEMAS_ENABLED
-	/* Interfaces for parsing. */
-	xmlRelaxNGNewParserCtxt
-	xmlRelaxNGNewMemParserCtxt
-	xmlRelaxNGNewDocParserCtxt
-	xmlRelaxNGFreeParserCtxt
-	xmlRelaxNGSetParserErrors
-	xmlRelaxNGParse
-	xmlRelaxNGFree
-	xmlRelaxNGDump
-	xmlRelaxNGDumpTree	
-	/* Interfaces for validating */
-	xmlRelaxNGSetValidErrors
-	xmlRelaxNGNewValidCtxt
-	xmlRelaxNGFreeValidCtxt
-	xmlRelaxNGValidateDoc
-	/* not existent in the source */
-	/*xmlRelaxNGValidateStream*/
-	xmlRelaxNGCleanupTypes
-	/* Interfaces for progressive validation when possible */
-	xmlRelaxNGValidatePushElement
-	xmlRelaxNGValidatePushCData
-	xmlRelaxNGValidatePopElement
-	xmlRelaxNGValidateFullElement
-#endif /* LIBXML_SCHEMAS_ENABLED */
-
-
-/* SAX.h
-   --------------------------------------------------------------------- */
-	getPublicId
-	getSystemId
-	setDocumentLocator
-	getLineNumber
-	getColumnNumber
-	isStandalone
-	hasInternalSubset
-	hasExternalSubset
-	internalSubset
-	externalSubset
-	getEntity
-	getParameterEntity
-	resolveEntity
-	entityDecl
-	attributeDecl
-	elementDecl
-	notationDecl
-	unparsedEntityDecl
-	startDocument
-	endDocument
-	attribute
-	startElement
-	endElement
-	reference
-	characters
-	ignorableWhitespace
-	processingInstruction
-	globalNamespace
-	setNamespace
-	getNamespace
-	checkNamespace
-	namespaceDecl
-	comment
-	cdataBlock
-	initxmlDefaultSAXHandler
-	xmlDefaultSAXHandlerInit
-	#ifdef LIBXML_HTML_ENABLED
-		htmlDefaultSAXHandlerInit
-		inithtmlDefaultSAXHandler
-	#endif /* LIBXML_HTML_ENABLED */
-	#ifdef LIBXML_DOCB_ENABLED
-		docbDefaultSAXHandlerInit
-		initdocbDefaultSAXHandler
-	#endif /* LIBXML_DOCB_ENABLED */
-
-
-/* tree.h 
-   --------------------------------------------------------------------- */
-	/* Variables. */
-	// baseDTD DATA <-- has been removed from the code
-	// oldXMLWDcompatibility DATA <-- moved to the globals.h section
-	// xmlIndentTreeOutput DATA <-- moved to the globals.h section
-	// xmlBufferAllocScheme DATA <-- moved to the globals.h section
-	// xmlSaveNoEmptyTags DATA <-- moved to the globals.h section
-	// xmlDefaultBufferSize DATA <-- moved to the globals.h section
-	
-	/* Some helper functions */
-	xmlValidateNCName
-	xmlValidateQName
-	xmlValidateName
-	xmlValidateNMToken
-	xmlBuildQName
-	xmlSplitQName2
-
-	/* handling buffers */	
-	xmlSetBufferAllocationScheme
-	xmlGetBufferAllocationScheme
-	xmlBufferCreate
-	xmlBufferCreateSize
-	xmlBufferResize
-	xmlBufferFree
-	xmlBufferDump
-	xmlBufferAdd
-	xmlBufferAddHead
-	xmlBufferCat
-	xmlBufferCCat
-	xmlBufferShrink
-	xmlBufferGrow
-	xmlBufferEmpty
-	xmlBufferContent
-	xmlBufferSetAllocationScheme
-	xmlBufferLength
-
-	/* Creating/freeing new structures */
-	xmlCreateIntSubset
-	xmlNewDtd
-	xmlGetIntSubset
-	xmlFreeDtd
-	xmlNewGlobalNs
-	xmlNewNs
-	xmlFreeNs
-	xmlFreeNsList
-	xmlNewDoc
-	xmlFreeDoc
-	xmlNewDocProp
-	xmlNewProp
-	xmlNewNsProp
-	xmlNewNsPropEatName
-	xmlFreePropList
-	xmlFreeProp
-	xmlCopyProp
-	xmlCopyPropList
-	xmlCopyDtd
-	xmlCopyDoc
-	
-	/* Creating new nodes */
-	xmlNewDocNode
-	xmlNewDocNodeEatName
-	xmlNewDocRawNode
-	xmlNewNode
-	xmlNewNodeEatName
-	xmlNewChild
-	xmlNewTextChild
-	xmlNewDocText
-	xmlNewText
-	xmlNewPI
-	xmlNewDocTextLen
-	xmlNewTextLen
-	xmlNewDocComment
-	xmlNewComment
-	xmlNewCDataBlock
-	xmlNewCharRef
-	xmlNewReference
-	xmlCopyNode
-	xmlDocCopyNode
-	xmlCopyNodeList
-	xmlNewDocFragment
-	
-	/* Navigating */
-	xmlGetLineNo
-	xmlGetNodePath
-	xmlDocGetRootElement
-	xmlGetLastChild
-	xmlNodeIsText
-	xmlIsBlankNode
-	
-	/* Changing the structure */
-	xmlDocSetRootElement
-	xmlNodeSetName
-	xmlAddChild
-	xmlAddChildList
-	xmlReplaceNode
-	xmlAddSibling
-	xmlAddPrevSibling
-	xmlAddNextSibling
-	xmlUnlinkNode
-	xmlTextMerge
-	xmlTextConcat
-	xmlFreeNodeList
-	xmlFreeNode
-	xmlSetTreeDoc
-	xmlSetListDoc
-	
-	/* Namespaces */
-	xmlSearchNs
-	xmlSearchNsByHref
-	xmlGetNsList
-	xmlSetNs
-	xmlCopyNamespace
-	xmlCopyNamespaceList
-	
-	/* Changing the content. */
-	xmlSetProp
-	xmlGetProp
-	xmlGetNoNsProp
-	xmlHasProp
-	xmlHasNsProp
-	xmlSetNsProp
-	xmlGetNsProp
-	xmlStringGetNodeList
-	xmlStringLenGetNodeList
-	xmlNodeListGetString
-	xmlNodeListGetRawString
-	xmlNodeSetContent
-	xmlNodeSetContentLen
-	xmlNodeAddContent
-	xmlNodeAddContentLen
-	xmlNodeGetContent
-	xmlNodeGetLang
-	xmlNodeSetLang
-	xmlNodeGetSpacePreserve
-	xmlNodeSetSpacePreserve
-	xmlNodeGetBase
-	xmlNodeSetBase
-	
-	/* Removing content. */
-	xmlRemoveProp
-	xmlUnsetProp
-	xmlUnsetNsProp
-
-	/* Internal, don't use */
-	xmlBufferWriteCHAR
-	xmlBufferWriteChar
-	xmlBufferWriteQuotedString
-
-	/* Namespace handling */
-	xmlReconciliateNs
-
-	/* Saving */
-	xmlDocDumpFormatMemory
-	xmlDocDumpMemory
-	xmlDocDumpMemoryEnc
-	xmlDocDumpFormatMemoryEnc
-	xmlDocFormatDump
-	xmlDocDump
-	xmlElemDump
-	xmlSaveFile
-	xmlSaveFormatFile
-	xmlNodeDump
-	xmlSaveFileTo
-	xmlSaveFormatFileTo
-	xmlNodeDumpOutput
-	xmlSaveFormatFileEnc
-	xmlSaveFileEnc
-
-	/* XHTML */
-	#ifdef LIBXML_HTML_ENABLED
-		xmlIsXHTML
-	#endif /* LIBXML_HTML_ENABLED */
-
-	/* Compression */
-	xmlGetDocCompressMode
-	xmlSetDocCompressMode
-	xmlGetCompressMode
-	xmlSetCompressMode
-
-
-/* uri.h
-   --------------------------------------------------------------------- */
-	xmlCreateURI
-	xmlBuildURI
-	xmlParseURI
-	xmlParseURIReference
-	xmlSaveUri
-	xmlPrintURI
-	xmlURIEscapeStr
-	xmlURIUnescapeString
-	xmlNormalizeURIPath
-	xmlURIEscape
-	xmlFreeURI
-	xmlCanonicPath
-
-
-/* valid.h
-   --------------------------------------------------------------------- */
-	/* helper */
-	xmlSplitQName2
-
-	/* Notation */
-	xmlAddNotationDecl
-	xmlCopyNotationTable
-	xmlFreeNotationTable
-	xmlDumpNotationDecl
-	xmlDumpNotationTable
-
-	/* Element Content */
-	xmlNewElementContent
-	xmlCopyElementContent
-	xmlFreeElementContent
-	xmlSnprintfElementContent
-	
-	/* DEPRECATED */
-	xmlSprintfElementContent
-	
-	/* Element */
-	xmlAddElementDecl
-	xmlCopyElementTable
-	xmlFreeElementTable
-	xmlDumpElementTable
-	xmlDumpElementDecl
-
-	/* Enumeration */
-	xmlCreateEnumeration
-	xmlFreeEnumeration
-	xmlCopyEnumeration
-
-	/* Attribute */
-	xmlAddAttributeDecl
-	xmlCopyAttributeTable
-	xmlFreeAttributeTable
-	xmlDumpAttributeTable
-	xmlDumpAttributeDecl
-	
-	/* IDs */
-	xmlAddID
-	xmlFreeIDTable
-	xmlGetID
-	xmlIsID
-	xmlRemoveID
-
-	/* IDREFs */
-	xmlAddRef
-	xmlFreeRefTable
-	xmlIsRef
-	xmlRemoveRef
-	xmlGetRefs
-
-	/* The public function calls related to validity checking */
-	xmlValidateRoot
-	xmlValidateElementDecl
-	xmlValidNormalizeAttributeValue
-	xmlValidateAttributeDecl
-	xmlValidateAttributeValue
-	xmlValidateNotationDecl
-	xmlValidateDtd
-	xmlValidateDtdFinal
-	xmlValidateDocument
-	xmlValidateElement
-	xmlValidateOneElement
-	xmlValidateOneAttribute
-	xmlValidateDocumentFinal
-	xmlValidateNotationUse
-	xmlIsMixedElement
-	xmlGetDtdAttrDesc
-	xmlGetDtdQAttrDesc
-	xmlGetDtdNotationDesc
-	xmlGetDtdQElementDesc
-	xmlGetDtdElementDesc
-	xmlValidGetValidElements
-	xmlValidGetPotentialChildren
-	xmlValidateNameValue
-	xmlValidateNamesValue
-	xmlValidateNmtokenValue
-	xmlValidateNmtokensValue
-	#ifdef LIBXML_REGEXP_ENABLED
-		xmlValidBuildContentModel
-	#endif /* LIBXML_REGEXP_ENABLED */
-
-
-/* xinclude.h 
-   --------------------------------------------------------------------- */
-#ifdef LIBXML_XINCLUDE_ENABLED
-	xmlXIncludeProcess
-#endif /* LIBXML_XINCLUDE_ENABLED */
-
-
-/* xlink.h 
-   --------------------------------------------------------------------- */
-#ifdef LIBXML_XLINK_INCLUDED
-	xlinkGetDefaultDetect
-	xlinkSetDefaultDetect
-	xlinkGetDefaultHandler
-	xlinkSetDefaultHandler
-	xlinkIsLink
+__htmlDefaultSAXHandler
 #endif
-
-
-/* xmlautomata.h 
-   --------------------------------------------------------------------- */
+#else
+#ifdef LIBXML_HTML_ENABLED
+htmlDefaultSAXHandler DATA
+#endif
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__oldXMLWDcompatibility
+#else
+oldXMLWDcompatibility DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlBufferAllocScheme
+#else
+xmlBufferAllocScheme DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlDefaultBufferSize
+#else
+xmlDefaultBufferSize DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlDefaultSAXHandler
+#else
+xmlDefaultSAXHandler DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlDefaultSAXLocator
+#else
+xmlDefaultSAXLocator DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlDeregisterNodeDefaultValue
+#else
+xmlDeregisterNodeDefaultValue DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlDoValidityCheckingDefaultValue
+#else
+xmlDoValidityCheckingDefaultValue DATA
+#endif
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+__xmlFree
+#else
+xmlFree DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlGenericError
+#else
+xmlGenericError DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlGenericErrorContext
+#else
+xmlGenericErrorContext DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlGetWarningsDefaultValue
+#else
+xmlGetWarningsDefaultValue DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlIndentTreeOutput
+#else
+xmlIndentTreeOutput DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlKeepBlanksDefaultValue
+#else
+xmlKeepBlanksDefaultValue DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlLineNumbersDefaultValue
+#else
+xmlLineNumbersDefaultValue DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlLoadExtDtdDefaultValue
+#else
+xmlLoadExtDtdDefaultValue DATA
+#endif
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+__xmlMalloc
+#else
+xmlMalloc DATA
+#endif
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+__xmlMallocAtomic
+#else
+xmlMallocAtomic DATA
+#endif
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+__xmlMemStrdup
+#else
+xmlMemStrdup DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlParserDebugEntities
+#else
+xmlParserDebugEntities DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlParserVersion
+#else
+xmlParserVersion DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlPedanticParserDefaultValue
+#else
+xmlPedanticParserDefaultValue DATA
+#endif
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+__xmlRealloc
+#else
+xmlRealloc DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlRegisterNodeDefaultValue
+#else
+xmlRegisterNodeDefaultValue DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlSaveNoEmptyTags
+#else
+xmlSaveNoEmptyTags DATA
+#endif
+xmlStringComment DATA
+xmlStringText DATA
+xmlStringTextNoenc DATA
+#ifdef LIBXML_THREAD_ENABLED
+__xmlSubstituteEntitiesDefaultValue
+#else
+xmlSubstituteEntitiesDefaultValue DATA
+#endif
+#ifdef LIBXML_THREAD_ENABLED
+__xmlTreeIndentString
+#else
+xmlTreeIndentString DATA
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNAN DATA
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNINF DATA
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathPINF DATA
+#endif
+#ifdef LIBXML_HTML_ENABLED
+UTF8ToHtml
+#endif
+UTF8Toisolat1
+attribute
+attributeDecl
+cdataBlock
+characters
+checkNamespace
+comment
+docbCreateFileParserCtxt
+docbCreatePushParserCtxt
+#ifdef LIBXML_DOCB_ENABLED
+docbDefaultSAXHandlerInit
+#endif
+docbEncodeEntities
+docbFreeParserCtxt
+docbParseChunk
+docbParseDoc
+docbParseDocument
+docbParseFile
+docbSAXParseDoc
+docbSAXParseFile
+elementDecl
+endDocument
+endElement
+entityDecl
+externalSubset
+getColumnNumber
+getEntity
+getLineNumber
+getNamespace
+getParameterEntity
+getPublicId
+getSystemId
+globalNamespace
+hasExternalSubset
+hasInternalSubset
+#ifdef LIBXML_HTML_ENABLED
+htmlAttrAllowed
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlAutoCloseTag
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlCreateFileParserCtxt
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlCreateMemoryParserCtxt
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlCreatePushParserCtxt
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlDefaultSAXHandlerInit
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlDocContentDumpFormatOutput
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlDocContentDumpOutput
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlDocDump
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlDocDumpMemory
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlElementAllowedHere
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlElementStatusHere
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlEncodeEntities
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlEntityLookup
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlEntityValueLookup
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlFreeParserCtxt
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlGetMetaEncoding
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlHandleOmittedElem
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlInitAutoClose
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlIsAutoClosed
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlIsBooleanAttr
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlIsScriptAttribute
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlNewDoc
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlNewDocNoDtD
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlNodeDump
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlNodeDumpFile
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlNodeDumpFileFormat
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlNodeDumpFormatOutput
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlNodeDumpOutput
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlNodeStatus
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlParseCharRef
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlParseChunk
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlParseDoc
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlParseDocument
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlParseElement
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlParseEntityRef
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlParseFile
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlSAXParseDoc
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlSAXParseFile
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlSaveFile
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlSaveFileEnc
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlSaveFileFormat
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlSetMetaEncoding
+#endif
+#ifdef LIBXML_HTML_ENABLED
+htmlTagLookup
+#endif
+ignorableWhitespace
+initGenericErrorDefaultFunc
+#ifdef LIBXML_DOCB_ENABLED
+initdocbDefaultSAXHandler
+#endif
+#ifdef LIBXML_HTML_ENABLED
+inithtmlDefaultSAXHandler
+#endif
+initxmlDefaultSAXHandler
+inputPop
+inputPush
+internalSubset
+isStandalone
+isolat1ToUTF8
+namePop
+namePush
+namespaceDecl
+nodePop
+nodePush
+notationDecl
+processingInstruction
+reference
+resolveEntity
+setDocumentLocator
+setNamespace
+startDocument
+startElement
+unparsedEntityDecl
+#ifdef LIBXML_XPATH_ENABLED
+valuePop
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+valuePush
+#endif
+#ifdef LIBXML_XLINK_ENABLED
+xlinkGetDefaultDetect
+#endif
+#ifdef LIBXML_XLINK_ENABLED
+xlinkGetDefaultHandler
+#endif
+#ifdef LIBXML_XLINK_ENABLED
+xlinkIsLink
+#endif
+#ifdef LIBXML_XLINK_ENABLED
+xlinkSetDefaultDetect
+#endif
+#ifdef LIBXML_XLINK_ENABLED
+xlinkSetDefaultHandler
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlACatalogAdd
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlACatalogDump
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlACatalogRemove
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlACatalogResolve
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlACatalogResolvePublic
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlACatalogResolveSystem
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlACatalogResolveURI
+#endif
+xmlAddAttributeDecl
+xmlAddChild
+xmlAddChildList
+xmlAddDocEntity
+xmlAddDtdEntity
+xmlAddElementDecl
+xmlAddEncodingAlias
+xmlAddID
+xmlAddNextSibling
+xmlAddNotationDecl
+xmlAddPrevSibling
+xmlAddRef
+xmlAddSibling
+xmlAllocOutputBuffer
+xmlAllocParserInputBuffer
 #ifdef LIBXML_AUTOMATA_ENABLED
-	/* Building API */
-	xmlNewAutomata
-	xmlFreeAutomata
-	xmlAutomataGetInitState
-	xmlAutomataSetFinalState
-	xmlAutomataNewState
-	xmlAutomataNewTransition
-	xmlAutomataNewCountTrans
-	xmlAutomataNewOnceTrans
-	xmlAutomataNewAllTrans
-	xmlAutomataNewEpsilon
-	xmlAutomataNewCountedTrans
-	xmlAutomataNewCounterTrans
-	xmlAutomataNewCounter
-	xmlAutomataCompile
-	xmlAutomataIsDeterminist
-#endif /* LIBXML_AUTOMATA_ENABLED */
-
-
-/* xmlerror.h 
-   --------------------------------------------------------------------- */
-	xmlSetGenericErrorFunc
-	initGenericErrorDefaultFunc
-	xmlParserError
-	xmlParserWarning
-	xmlParserValidityError
-	xmlParserValidityWarning
-	xmlParserPrintFileInfo
-	xmlParserPrintFileContext
-	// xmlGenericError DATA <-- moved to the globals.h section
-	// xmlGenericErrorContext DATA <-- moved to the globals.h section
-
-
-/* xmlIO.h 
-   --------------------------------------------------------------------- */
-	/* Interfaces for input */
-	xmlCleanupInputCallbacks
-	xmlCleanupOutputCallbacks
-	xmlRegisterDefaultInputCallbacks
-	xmlAllocParserInputBuffer
-	xmlParserInputBufferCreateFilename
-	xmlParserInputBufferCreateFile
-	xmlParserInputBufferCreateFd
-	xmlParserInputBufferCreateMem
-	xmlParserInputBufferCreateIO
-	xmlParserInputBufferRead
-	xmlParserInputBufferGrow
-	xmlParserInputBufferPush
-	xmlFreeParserInputBuffer
-	xmlParserGetDirectory
-	xmlRegisterInputCallbacks
-
-	/* Interfaces for output */
-	xmlRegisterDefaultOutputCallbacks
-	xmlAllocOutputBuffer
-	xmlOutputBufferCreateFilename
-	xmlOutputBufferCreateFile
-	xmlOutputBufferCreateFd
-	xmlOutputBufferCreateIO
-	xmlOutputBufferWrite
-	xmlOutputBufferWriteString
-	xmlOutputBufferFlush
-	xmlOutputBufferClose
-	xmlRegisterOutputCallbacks
-	#ifdef LIBXML_HTTP_ENABLED
-		xmlIOHTTPOpenW
-		xmlRegisterHTTPPostCallbacks
-	#endif /* LIBXML_HTTP_ENABLED */
-	xmlNoNetExternalEntityLoader
-
-	xmlNormalizeWindowsPath
-	xmlCheckFilename
-
-	/**
-	 * Default 'file://' protocol callbacks 
-	 */
-	xmlFileMatch
-	xmlFileOpen 
-	xmlFileRead 
-	xmlFileClose
-
-	/**
-	 * Default 'http://' protocol callbacks 
-	 */
-	#ifdef LIBXML_HTTP_ENABLED
-    	xmlIOHTTPMatch
-	xmlIOHTTPOpen 
- 	xmlIOHTTPRead
-        xmlIOHTTPClose
-	#endif /* LIBXML_HTTP_ENABLED */
-
-	/**
-	 * Default 'ftp://' protocol callbacks 
-	 */
-	#ifdef LIBXML_FTP_ENABLED 
-	xmlIOFTPMatch 
-	xmlIOFTPOpen 
- 	xmlIOFTPRead
- 	xmlIOFTPClose
-	#endif /* LIBXML_FTP_ENABLED */
-
-/* xmlmemory.h 
-   --------------------------------------------------------------------- */
-	// xmlFree DATA <-- moved to the globals.h section
-	// xmlMalloc DATA <-- moved to the globals.h section
-	// xmlMallocAtomic DATA <-- moved to the globals.h section
-	// xmlRealloc DATA <-- moved to the globals.h section
-	// xmlMemStrdup DATA <-- moved to the globals.h section
-	xmlMemSetup
-	xmlMemGet
-	xmlGcMemSetup
-	xmlGcMemGet
-	xmlInitMemory
-	xmlMemUsed
-	xmlMemDisplay
-	xmlMemShow
-	xmlMemoryDump
-	#ifdef DEBUG_MEMORY_LOCATION
-		xmlMallocLoc
-		xmlMallocAtomicLoc
-		xmlReallocLoc
-		xmlMemStrdupLoc
-	#endif /* DEBUG_MEMORY_LOCATION */
-	/* xmlmemory.c subgrup */
-	xmlMemMalloc
-	xmlMemRealloc
-	xmlMemFree
-	xmlMemoryStrdup
-
-
-/* xmlreader.h 
-   --------------------------------------------------------------------- */
-	/* Constructors & Destructor */
-	xmlNewTextReader
-	xmlNewTextReaderFilename
-	xmlFreeTextReader
-	/* Iterators */
-	xmlTextReaderRead
-	xmlTextReaderReadInnerXml
-	xmlTextReaderReadOuterXml
-	xmlTextReaderReadString
-	xmlTextReaderReadAttributeValue
-	/* Attributes of the node */
-	xmlTextReaderAttributeCount
-	xmlTextReaderBaseUri
-	xmlTextReaderDepth
-	xmlTextReaderHasAttributes
-	xmlTextReaderHasValue
-	xmlTextReaderIsDefault
-	xmlTextReaderIsEmptyElement
-	xmlTextReaderLocalName
-	xmlTextReaderName
-	xmlTextReaderNamespaceUri
-	xmlTextReaderNodeType
-	xmlTextReaderPrefix
-	xmlTextReaderQuoteChar
-	xmlTextReaderValue
-	xmlTextReaderXmlLang
-	xmlTextReaderReadState
-	/* Methods of the XmlTextReader */
-	xmlTextReaderClose
-	xmlTextReaderGetAttributeNo
-	xmlTextReaderGetAttribute
-	xmlTextReaderGetAttributeNs
-	xmlTextReaderGetRemainder
-	xmlTextReaderLookupNamespace
-	xmlTextReaderMoveToAttributeNo
-	xmlTextReaderMoveToAttribute
-	xmlTextReaderMoveToAttributeNs
-	xmlTextReaderMoveToFirstAttribute
-	xmlTextReaderMoveToNextAttribute
-	xmlTextReaderMoveToElement
-	xmlTextReaderNormalization
-	/* Extensions */
-	xmlTextReaderSetParserProp
-	xmlTextReaderGetParserProp
-	xmlTextReaderCurrentNode
-	xmlTextReaderCurrentDoc
-	xmlTextReaderExpand
-	xmlTextReaderNext
-	xmlTextReaderIsValid
-	#ifdef LIBXML_SCHEMAS_ENABLED
-		xmlTextReaderRelaxNGValidate
-		xmlTextReaderRelaxNGSetSchema
-	#endif /* LIBXML_SCHEMAS_ENABLED */
-	/* Error handling extensions */
-	xmlTextReaderLocatorLineNumber
-	/*xmlTextReaderLocatorLinePosition*/
-	xmlTextReaderLocatorBaseURI
-	xmlTextReaderSetErrorHandler
-	xmlTextReaderGetErrorHandler
-
-
-
-/* xmlregexp.h 
-   --------------------------------------------------------------------- */
+xmlAutomataCompile
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataGetInitState
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataIsDeterminist
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewAllTrans
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewCountTrans
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewCountedTrans
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewCounter
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewCounterTrans
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewEpsilon
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewOnceTrans
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewState
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewTransition
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewTransition2
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataSetFinalState
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlBoolToText
+#endif
+xmlBufferAdd
+xmlBufferAddHead
+xmlBufferCCat
+xmlBufferCat
+xmlBufferContent
+xmlBufferCreate
+xmlBufferCreateSize
+xmlBufferDump
+xmlBufferEmpty
+xmlBufferFree
+xmlBufferGrow
+xmlBufferLength
+xmlBufferResize
+xmlBufferSetAllocationScheme
+xmlBufferShrink
+xmlBufferWriteCHAR
+xmlBufferWriteChar
+xmlBufferWriteQuotedString
+xmlBuildQName
+xmlBuildURI
+#ifdef LIBXML_C14N_ENABLED
+xmlC14NDocDumpMemory
+#endif
+#ifdef LIBXML_C14N_ENABLED
+xmlC14NDocSave
+#endif
+#ifdef LIBXML_C14N_ENABLED
+xmlC14NDocSaveTo
+#endif
+#ifdef LIBXML_C14N_ENABLED
+xmlC14NExecute
+#endif
+xmlCanonicPath
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogAdd
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogAddLocal
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogCleanup
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogConvert
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogDump
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogFreeLocal
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogGetDefaults
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogGetPublic
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogGetSystem
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogIsEmpty
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogLocalResolve
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogLocalResolveURI
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogRemove
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogResolve
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogResolvePublic
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogResolveSystem
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogResolveURI
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogSetDebug
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogSetDefaultPrefer
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlCatalogSetDefaults
+#endif
+xmlCharEncCloseFunc
+xmlCharEncFirstLine
+xmlCharEncInFunc
+xmlCharEncOutFunc
+xmlCharStrdup
+xmlCharStrndup
+xmlCheckFilename
+xmlCheckLanguageID
+xmlCheckUTF8
+xmlCheckVersion
+xmlCleanupCharEncodingHandlers
+xmlCleanupEncodingAliases
+xmlCleanupInputCallbacks
+xmlCleanupOutputCallbacks
+xmlCleanupParser
+xmlCleanupPredefinedEntities
+xmlCleanupThreads
+xmlClearNodeInfoSeq
+xmlClearParserCtxt
+#ifdef LIBXML_CATALOG_ENABLED
+xmlConvertSGMLCatalog
+#endif
+xmlCopyAttributeTable
+xmlCopyChar
+xmlCopyCharMultiByte
+xmlCopyDoc
+xmlCopyDtd
+xmlCopyElementContent
+xmlCopyElementTable
+xmlCopyEntitiesTable
+xmlCopyEnumeration
+xmlCopyNamespace
+xmlCopyNamespaceList
+xmlCopyNode
+xmlCopyNodeList
+xmlCopyNotationTable
+xmlCopyProp
+xmlCopyPropList
+xmlCreateDocParserCtxt
+xmlCreateEntitiesTable
+xmlCreateEntityParserCtxt
+xmlCreateEnumeration
+xmlCreateFileParserCtxt
+xmlCreateIOParserCtxt
+xmlCreateIntSubset
+xmlCreateMemoryParserCtxt
+xmlCreatePushParserCtxt
+xmlCreateURI
+xmlCurrentChar
+#ifdef LIBXML_DEBUG_ENABLED
+xmlDebugDumpAttr
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlDebugDumpAttrList
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlDebugDumpDTD
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlDebugDumpDocument
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlDebugDumpDocumentHead
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlDebugDumpEntities
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlDebugDumpNode
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlDebugDumpNodeList
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlDebugDumpOneNode
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlDebugDumpString
+#endif
+xmlDecodeEntities
+xmlDefaultSAXHandlerInit
+xmlDelEncodingAlias
+xmlDeregisterNodeDefault
+xmlDetectCharEncoding
+xmlDocCopyNode
+xmlDocDump
+xmlDocDumpFormatMemory
+xmlDocDumpFormatMemoryEnc
+xmlDocDumpMemory
+xmlDocDumpMemoryEnc
+xmlDocFormatDump
+xmlDocGetRootElement
+xmlDocSetRootElement
+xmlDumpAttributeDecl
+xmlDumpAttributeTable
+xmlDumpElementDecl
+xmlDumpElementTable
+xmlDumpEntitiesTable
+xmlDumpEntityDecl
+xmlDumpNotationDecl
+xmlDumpNotationTable
+xmlElemDump
+xmlEncodeEntities
+xmlEncodeEntitiesReentrant
+xmlEncodeSpecialChars
+xmlFileClose
+xmlFileMatch
+xmlFileOpen
+xmlFileRead
+xmlFindCharEncodingHandler
+xmlFreeAttributeTable
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlFreeAutomata
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlFreeCatalog
+#endif
+xmlFreeDoc
+xmlFreeDtd
+xmlFreeElementContent
+xmlFreeElementTable
+xmlFreeEntitiesTable
+xmlFreeEnumeration
+xmlFreeIDTable
+xmlFreeInputStream
+xmlFreeMutex
+xmlFreeNode
+xmlFreeNodeList
+xmlFreeNotationTable
+xmlFreeNs
+xmlFreeNsList
+xmlFreeParserCtxt
+xmlFreeParserInputBuffer
+xmlFreeProp
+xmlFreePropList
+xmlFreeRMutex
+xmlFreeRefTable
+xmlFreeTextReader
+xmlFreeURI
+xmlGcMemGet
+xmlGcMemSetup
+xmlGetBufferAllocationScheme
+xmlGetCharEncodingHandler
+xmlGetCharEncodingName
+xmlGetCompressMode
+xmlGetDocCompressMode
+xmlGetDocEntity
+xmlGetDtdAttrDesc
+xmlGetDtdElementDesc
+xmlGetDtdEntity
+xmlGetDtdNotationDesc
+xmlGetDtdQAttrDesc
+xmlGetDtdQElementDesc
+xmlGetEncodingAlias
+xmlGetExternalEntityLoader
+xmlGetFeature
+xmlGetFeaturesList
+xmlGetGlobalState
+xmlGetID
+xmlGetIntSubset
+xmlGetLastChild
+xmlGetLineNo
+xmlGetNoNsProp
+xmlGetNodePath
+xmlGetNsList
+xmlGetNsProp
+xmlGetParameterEntity
+xmlGetPredefinedEntity
+xmlGetProp
+xmlGetRefs
+xmlGetThreadId
+xmlGetUTF8Char
+xmlHandleEntity
+xmlHasNsProp
+xmlHasProp
+xmlHashAddEntry
+xmlHashAddEntry2
+xmlHashAddEntry3
+xmlHashCopy
+xmlHashCreate
+xmlHashFree
+xmlHashLookup
+xmlHashLookup2
+xmlHashLookup3
+xmlHashRemoveEntry
+xmlHashRemoveEntry2
+xmlHashRemoveEntry3
+xmlHashScan
+xmlHashScan3
+xmlHashScanFull
+xmlHashScanFull3
+xmlHashSize
+xmlHashUpdateEntry
+xmlHashUpdateEntry2
+xmlHashUpdateEntry3
+#ifdef LIBXML_FTP_ENABLED
+xmlIOFTPClose
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlIOFTPMatch
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlIOFTPOpen
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlIOFTPRead
+#endif
+#ifdef LIBXML_HTML_ENABLED
+xmlIOHTTPClose
+#endif
+#ifdef LIBXML_HTML_ENABLED
+xmlIOHTTPMatch
+#endif
+#ifdef LIBXML_HTML_ENABLED
+xmlIOHTTPOpen
+#endif
+#ifdef LIBXML_HTML_ENABLED
+xmlIOHTTPOpenW
+#endif
+#ifdef LIBXML_HTML_ENABLED
+xmlIOHTTPRead
+#endif
+xmlIOParseDTD
+xmlInitCharEncodingHandlers
+xmlInitMemory
+xmlInitNodeInfoSeq
+xmlInitParser
+xmlInitParserCtxt
+xmlInitThreads
+#ifdef LIBXML_CATALOG_ENABLED
+xmlInitializeCatalog
+#endif
+xmlInitializeGlobalState
+xmlInitializePredefinedEntities
+xmlIsBaseChar
+xmlIsBlank
+xmlIsBlankNode
+xmlIsChar
+xmlIsCombining
+xmlIsDigit
+xmlIsExtender
+xmlIsID
+xmlIsIdeographic
+xmlIsLetter
+xmlIsMainThread
+xmlIsMixedElement
+xmlIsPubidChar
+xmlIsRef
+#ifdef LIBXML_HTML_ENABLED
+xmlIsXHTML
+#endif
+xmlKeepBlanksDefault
+xmlLineNumbersDefault
+xmlLinkGetData
+xmlListAppend
+xmlListClear
+xmlListCopy
+xmlListCreate
+xmlListDelete
+xmlListDup
+xmlListEmpty
+xmlListEnd
+xmlListFront
+xmlListInsert
+xmlListMerge
+xmlListPopBack
+xmlListPopFront
+xmlListPushBack
+xmlListPushFront
+xmlListRemoveAll
+xmlListRemoveFirst
+xmlListRemoveLast
+xmlListReverse
+xmlListReverseSearch
+xmlListReverseWalk
+xmlListSearch
+xmlListSize
+xmlListSort
+xmlListWalk
+#ifdef LIBXML_CATALOG_ENABLED
+xmlLoadACatalog
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlLoadCatalog
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+xmlLoadCatalogs
+#endif
+xmlLoadExternalEntity
+#ifdef LIBXML_CATALOG_ENABLED
+xmlLoadSGMLSuperCatalog
+#endif
+xmlLockLibrary
+#ifdef LIBXML_DEBUG_ENABLED
+xmlLsCountNode
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlLsOneNode
+#endif
+#ifdef DEBUG_MEMORY_LOCATION
+xmlMallocLoc
+#endif
+xmlMemDisplay
+xmlMemFree
+xmlMemGet
+xmlMemMalloc
+xmlMemRealloc
+xmlMemSetup
+xmlMemShow
+#ifdef DEBUG_MEMORY_LOCATION
+xmlMemStrdupLoc
+#endif
+xmlMemUsed
+xmlMemoryDump
+xmlMemoryStrdup
+xmlMutexLock
+xmlMutexUnlock
+xmlNamespaceParseNCName
+xmlNamespaceParseNSDef
+xmlNamespaceParseQName
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPCheckResponse
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPCleanup
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPClose
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPCloseConnection
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPConnect
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPConnectTo
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPCwd
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPDele
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPFreeCtxt
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPGet
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPGetConnection
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPGetResponse
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPGetSocket
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPInit
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPList
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPNewCtxt
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPOpen
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPProxy
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPQuit
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPRead
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPScanProxy
+#endif
+#ifdef LIBXML_FTP_ENABLED
+xmlNanoFTPUpdateURL
+#endif
+xmlNanoHTTPAuthHeader
+xmlNanoHTTPCleanup
+xmlNanoHTTPClose
+xmlNanoHTTPFetch
+xmlNanoHTTPInit
+xmlNanoHTTPMethod
+xmlNanoHTTPMethodRedir
+xmlNanoHTTPOpen
+xmlNanoHTTPOpenRedir
+xmlNanoHTTPRead
+xmlNanoHTTPReturnCode
+xmlNanoHTTPSave
+xmlNanoHTTPScanProxy
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlNewAutomata
+#endif
+xmlNewCDataBlock
+#ifdef LIBXML_CATALOG_ENABLED
+xmlNewCatalog
+#endif
+xmlNewCharEncodingHandler
+xmlNewCharRef
+xmlNewChild
+xmlNewComment
+xmlNewDoc
+xmlNewDocComment
+xmlNewDocFragment
+xmlNewDocNode
+xmlNewDocNodeEatName
+xmlNewDocProp
+xmlNewDocRawNode
+xmlNewDocText
+xmlNewDocTextLen
+xmlNewDtd
+xmlNewElementContent
+xmlNewEntityInputStream
+xmlNewGlobalNs
+xmlNewIOInputStream
+xmlNewInputFromFile
+xmlNewInputStream
+xmlNewMutex
+xmlNewNode
+xmlNewNodeEatName
+xmlNewNs
+xmlNewNsProp
+xmlNewNsPropEatName
+xmlNewPI
+xmlNewParserCtxt
+xmlNewProp
+xmlNewRMutex
+xmlNewReference
+xmlNewStringInputStream
+xmlNewText
+xmlNewTextChild
+xmlNewTextLen
+xmlNewTextReader
+xmlNewTextReaderFilename
+xmlNextChar
+xmlNoNetExternalEntityLoader
+xmlNodeAddContent
+xmlNodeAddContentLen
+xmlNodeDump
+xmlNodeDumpOutput
+xmlNodeGetBase
+xmlNodeGetContent
+xmlNodeGetLang
+xmlNodeGetSpacePreserve
+xmlNodeIsText
+xmlNodeListGetRawString
+xmlNodeListGetString
+xmlNodeSetBase
+xmlNodeSetContent
+xmlNodeSetContentLen
+xmlNodeSetLang
+xmlNodeSetName
+xmlNodeSetSpacePreserve
+xmlNormalizeURIPath
+xmlNormalizeWindowsPath
+xmlOutputBufferClose
+xmlOutputBufferCreateFd
+xmlOutputBufferCreateFile
+xmlOutputBufferCreateFilename
+xmlOutputBufferCreateIO
+xmlOutputBufferFlush
+xmlOutputBufferWrite
+xmlOutputBufferWriteString
+xmlParseAttValue
+xmlParseAttribute
+xmlParseAttributeListDecl
+xmlParseAttributeType
+xmlParseBalancedChunkMemory
+xmlParseBalancedChunkMemoryRecover
+xmlParseCDSect
+#ifdef LIBXML_CATALOG_ENABLED
+xmlParseCatalogFile
+#endif
+xmlParseCharData
+xmlParseCharEncoding
+xmlParseCharRef
+xmlParseChunk
+xmlParseComment
+xmlParseContent
+xmlParseCtxtExternalEntity
+xmlParseDTD
+xmlParseDefaultDecl
+xmlParseDoc
+xmlParseDocTypeDecl
+xmlParseDocument
+xmlParseElement
+xmlParseElementChildrenContentDecl
+xmlParseElementContentDecl
+xmlParseElementDecl
+xmlParseElementMixedContentDecl
+xmlParseEncName
+xmlParseEncodingDecl
+xmlParseEndTag
+xmlParseEntity
+xmlParseEntityDecl
+xmlParseEntityRef
+xmlParseEntityValue
+xmlParseEnumeratedType
+xmlParseEnumerationType
+xmlParseExtParsedEnt
+xmlParseExternalEntity
+xmlParseExternalID
+xmlParseExternalSubset
+xmlParseFile
+xmlParseMarkupDecl
+xmlParseMemory
+xmlParseMisc
+xmlParseName
+xmlParseNamespace
+xmlParseNmtoken
+xmlParseNotationDecl
+xmlParseNotationType
+xmlParsePEReference
+xmlParsePI
+xmlParsePITarget
+xmlParsePubidLiteral
+xmlParseQuotedString
+xmlParseReference
+xmlParseSDDecl
+xmlParseStartTag
+xmlParseSystemLiteral
+xmlParseTextDecl
+xmlParseURI
+xmlParseURIReference
+xmlParseVersionInfo
+xmlParseVersionNum
+xmlParseXMLDecl
+xmlParserAddNodeInfo
+xmlParserError
+xmlParserFindNodeInfo
+xmlParserFindNodeInfoIndex
+xmlParserGetDirectory
+xmlParserHandlePEReference
+xmlParserHandleReference
+xmlParserInputBufferCreateFd
+xmlParserInputBufferCreateFile
+xmlParserInputBufferCreateFilename
+xmlParserInputBufferCreateIO
+xmlParserInputBufferCreateMem
+xmlParserInputBufferGrow
+xmlParserInputBufferPush
+xmlParserInputBufferRead
+xmlParserInputGrow
+xmlParserInputRead
+xmlParserInputShrink
+xmlParserPrintFileContext
+xmlParserPrintFileInfo
+xmlParserValidityError
+xmlParserValidityWarning
+xmlParserWarning
+xmlPedanticParserDefault
+xmlPopInput
+xmlPrintURI
+xmlPushInput
+xmlRMutexLock
+xmlRMutexUnlock
+#ifdef DEBUG_MEMORY_LOCATION
+xmlReallocLoc
+#endif
+xmlReconciliateNs
+xmlRecoverDoc
+xmlRecoverFile
+xmlRecoverMemory
 #ifdef LIBXML_REGEXP_ENABLED
-	/* The POSIX like API */
-	xmlRegexpCompile
-	xmlRegFreeRegexp
-	xmlRegexpExec
-	xmlRegexpPrint
-	xmlRegexpIsDeterminist
-
-	/* The progressive API */
-	xmlRegNewExecCtxt
-	xmlRegFreeExecCtxt
-	xmlRegExecPushString		
-#endif /* LIBXML_REGEXP_ENABLED */
-
-
-/* xmlschemas.h 
-   --------------------------------------------------------------------- */
+xmlRegExecPushString
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlRegExecPushString2
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlRegFreeExecCtxt
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlRegFreeRegexp
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlRegNewExecCtxt
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlRegexpCompile
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlRegexpExec
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlRegexpIsDeterminist
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlRegexpPrint
+#endif
+xmlRegisterCharEncodingHandler
+xmlRegisterDefaultInputCallbacks
+xmlRegisterDefaultOutputCallbacks
+#ifdef LIBXML_HTML_ENABLED
+xmlRegisterHTTPPostCallbacks
+#endif
+xmlRegisterInputCallbacks
+xmlRegisterNodeDefault
+xmlRegisterOutputCallbacks
 #ifdef LIBXML_SCHEMAS_ENABLED
-	/* Interfaces for parsing. */
-	xmlSchemaNewParserCtxt
-	xmlSchemaNewMemParserCtxt
-	xmlSchemaFreeParserCtxt
-	xmlSchemaSetParserErrors
-	xmlSchemaParse
-	xmlSchemaFree
-	xmlSchemaDump
-
-	/* Interfaces for validating */
-	xmlSchemaSetValidErrors
-	xmlSchemaNewValidCtxt
-	xmlSchemaFreeValidCtxt
-	xmlSchemaValidateDoc
-	xmlSchemaValidateStream
-#endif /* LIBXML_SCHEMAS_ENABLED */
-
-
-/* xmlschemastypes.h 
-   --------------------------------------------------------------------- */
+xmlRelaxNGCleanupTypes
+#endif
 #ifdef LIBXML_SCHEMAS_ENABLED
-	xmlSchemaInitTypes
-	xmlSchemaCleanupTypes
-	xmlSchemaGetPredefinedType
-	xmlSchemaValidatePredefinedType
-	xmlSchemaValidateFacet
-	xmlSchemaFreeValue
-#endif /* LIBXML_SCHEMAS_ENABLED */
-
-
-/* xmlunicode.h 
-   --------------------------------------------------------------------- */
+xmlRelaxNGDump
+#endif
 #ifdef LIBXML_SCHEMAS_ENABLED
-	xmlUCSIsAlphabeticPresentationForms
-	xmlUCSIsArabic
-	xmlUCSIsArabicPresentationFormsA
-	xmlUCSIsArabicPresentationFormsB
-	xmlUCSIsArmenian
-	xmlUCSIsArrows
-	xmlUCSIsBasicLatin
-	xmlUCSIsBengali
-	xmlUCSIsBlockElements
-	xmlUCSIsBopomofo
-	xmlUCSIsBopomofoExtended
-	xmlUCSIsBoxDrawing
-	xmlUCSIsBraillePatterns
-	xmlUCSIsByzantineMusicalSymbols
-	xmlUCSIsCJKCompatibility
-	xmlUCSIsCJKCompatibilityForms
-	xmlUCSIsCJKCompatibilityIdeographs
-	xmlUCSIsCJKCompatibilityIdeographsSupplement
-	xmlUCSIsCJKRadicalsSupplement
-	xmlUCSIsCJKSymbolsandPunctuation
-	xmlUCSIsCJKUnifiedIdeographs
-	xmlUCSIsCJKUnifiedIdeographsExtensionA
-	xmlUCSIsCJKUnifiedIdeographsExtensionB
-	xmlUCSIsCherokee
-	xmlUCSIsCombiningDiacriticalMarks
-	xmlUCSIsCombiningHalfMarks
-	xmlUCSIsCombiningMarksforSymbols
-	xmlUCSIsControlPictures
-	xmlUCSIsCurrencySymbols
-	xmlUCSIsCyrillic
-	xmlUCSIsDeseret
-	xmlUCSIsDevanagari
-	xmlUCSIsDingbats
-	xmlUCSIsEnclosedAlphanumerics
-	xmlUCSIsEnclosedCJKLettersandMonths
-	xmlUCSIsEthiopic
-	xmlUCSIsGeneralPunctuation
-	xmlUCSIsGeometricShapes
-	xmlUCSIsGeorgian
-	xmlUCSIsGothic
-	xmlUCSIsGreek
-	xmlUCSIsGreekExtended
-	xmlUCSIsGujarati
-	xmlUCSIsGurmukhi
-	xmlUCSIsHalfwidthandFullwidthForms
-	xmlUCSIsHangulCompatibilityJamo
-	xmlUCSIsHangulJamo
-	xmlUCSIsHangulSyllables
-	xmlUCSIsHebrew
-	xmlUCSIsHighPrivateUseSurrogates
-	xmlUCSIsHighSurrogates
-	xmlUCSIsHiragana
-	xmlUCSIsIPAExtensions
-	xmlUCSIsIdeographicDescriptionCharacters
-	xmlUCSIsKanbun
-	xmlUCSIsKangxiRadicals
-	xmlUCSIsKannada
-	xmlUCSIsKatakana
-	xmlUCSIsKhmer
-	xmlUCSIsLao
-	xmlUCSIsLatin1Supplement
-	xmlUCSIsLatinExtendedA
-	xmlUCSIsLatinExtendedB
-	xmlUCSIsLatinExtendedAdditional
-	xmlUCSIsLetterlikeSymbols
-	xmlUCSIsLowSurrogates
-	xmlUCSIsMalayalam
-	xmlUCSIsMathematicalAlphanumericSymbols
-	xmlUCSIsMathematicalOperators
-	xmlUCSIsMiscellaneousSymbols
-	xmlUCSIsMiscellaneousTechnical
-	xmlUCSIsMongolian
-	xmlUCSIsMusicalSymbols
-	xmlUCSIsMyanmar
-	xmlUCSIsNumberForms
-	xmlUCSIsOgham
-	xmlUCSIsOldItalic
-	xmlUCSIsOpticalCharacterRecognition
-	xmlUCSIsOriya
-	xmlUCSIsPrivateUse
-	xmlUCSIsRunic
-	xmlUCSIsSinhala
-	xmlUCSIsSmallFormVariants
-	xmlUCSIsSpacingModifierLetters
-	xmlUCSIsSpecials
-	xmlUCSIsSuperscriptsandSubscripts
-	xmlUCSIsSyriac
-	xmlUCSIsTags
-	xmlUCSIsTamil
-	xmlUCSIsTelugu
-	xmlUCSIsThaana
-	xmlUCSIsThai
-	xmlUCSIsTibetan
-	xmlUCSIsUnifiedCanadianAboriginalSyllabics
-	xmlUCSIsYiRadicals
-	xmlUCSIsYiSyllables
-	xmlUCSIsBlock
-	xmlUCSIsCatC
-	xmlUCSIsCatCc
-	xmlUCSIsCatCf
-	xmlUCSIsCatCo
-	xmlUCSIsCatCs
-	xmlUCSIsCatL
-	xmlUCSIsCatLl
-	xmlUCSIsCatLm
-	xmlUCSIsCatLo
-	xmlUCSIsCatLt
-	xmlUCSIsCatLu
-	xmlUCSIsCatM
-	xmlUCSIsCatMc
-	xmlUCSIsCatMe
-	xmlUCSIsCatMn
-	xmlUCSIsCatN
-	xmlUCSIsCatNd
-	xmlUCSIsCatNl
-	xmlUCSIsCatNo
-	xmlUCSIsCatP
-	xmlUCSIsCatPc
-	xmlUCSIsCatPd
-	xmlUCSIsCatPe
-	xmlUCSIsCatPf
-	xmlUCSIsCatPi
-	xmlUCSIsCatPo
-	xmlUCSIsCatPs
-	xmlUCSIsCatS
-	xmlUCSIsCatSc
-	xmlUCSIsCatSk
-	xmlUCSIsCatSm
-	xmlUCSIsCatSo
-	xmlUCSIsCatZ
-	xmlUCSIsCatZl
-	xmlUCSIsCatZp
-	xmlUCSIsCatZs
-	xmlUCSIsCat
-#endif /* LIBXML_SCHEMAS_ENABLED */
-
-
-/* xmlversion.h 
-   --------------------------------------------------------------------- */
-	xmlCheckVersion
-
-
-/* xpath.h 
-   --------------------------------------------------------------------- */
+xmlRelaxNGDumpTree
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGFree
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGFreeParserCtxt
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGFreeValidCtxt
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGNewDocParserCtxt
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGNewMemParserCtxt
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGNewParserCtxt
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGNewValidCtxt
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGParse
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGSetParserErrors
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGSetValidErrors
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGValidateDoc
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGValidateFullElement
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGValidatePopElement
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGValidatePushCData
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlRelaxNGValidatePushElement
+#endif
+xmlRemoveID
+xmlRemoveProp
+xmlRemoveRef
+xmlReplaceNode
+xmlSAXParseDTD
+xmlSAXParseDoc
+xmlSAXParseEntity
+xmlSAXParseFile
+xmlSAXParseFileWithData
+xmlSAXParseMemory
+xmlSAXParseMemoryWithData
+xmlSAXUserParseFile
+xmlSAXUserParseMemory
+xmlSaveFile
+xmlSaveFileEnc
+xmlSaveFileTo
+xmlSaveFormatFile
+xmlSaveFormatFileEnc
+xmlSaveFormatFileTo
+xmlSaveUri
+xmlScanName
+xmlSearchNs
+xmlSearchNsByHref
+xmlSetBufferAllocationScheme
+xmlSetCompressMode
+xmlSetDocCompressMode
+xmlSetEntityReferenceFunc
+xmlSetExternalEntityLoader
+xmlSetFeature
+xmlSetGenericErrorFunc
+xmlSetListDoc
+xmlSetNs
+xmlSetNsProp
+xmlSetProp
+xmlSetTreeDoc
+xmlSetupParserForBuffer
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShell
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellBase
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellCat
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellDir
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellDu
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellList
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellLoad
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellPrintNode
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellPrintXPathError
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellPrintXPathResult
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellPwd
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellSave
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellValidate
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
+xmlShellWrite
+#endif
+xmlSkipBlankChars
+xmlSnprintfElementContent
+xmlSplitQName
+xmlSplitQName2
+xmlSprintfElementContent
+xmlStopParser
+xmlStrEqual
+xmlStrcasecmp
+xmlStrcasestr
+xmlStrcat
+xmlStrchr
+xmlStrcmp
+xmlStrdup
+xmlStringCurrentChar
+xmlStringDecodeEntities
+xmlStringGetNodeList
+xmlStringLenGetNodeList
+xmlStrlen
+xmlStrncasecmp
+xmlStrncat
+xmlStrncmp
+xmlStrndup
+xmlStrstr
+xmlStrsub
+xmlSubstituteEntitiesDefault
+xmlSwitchEncoding
+xmlSwitchToEncoding
+xmlTextConcat
+xmlTextMerge
+xmlTextReaderAttributeCount
+xmlTextReaderBaseUri
+xmlTextReaderClose
+xmlTextReaderCurrentDoc
+xmlTextReaderCurrentNode
+xmlTextReaderDepth
+xmlTextReaderExpand
+xmlTextReaderGetAttribute
+xmlTextReaderGetAttributeNo
+xmlTextReaderGetAttributeNs
+xmlTextReaderGetErrorHandler
+xmlTextReaderGetParserProp
+xmlTextReaderGetRemainder
+xmlTextReaderHasAttributes
+xmlTextReaderHasValue
+xmlTextReaderIsDefault
+xmlTextReaderIsEmptyElement
+xmlTextReaderIsValid
+xmlTextReaderLocalName
+xmlTextReaderLocatorBaseURI
+xmlTextReaderLocatorLineNumber
+xmlTextReaderLookupNamespace
+xmlTextReaderMoveToAttribute
+xmlTextReaderMoveToAttributeNo
+xmlTextReaderMoveToAttributeNs
+xmlTextReaderMoveToElement
+xmlTextReaderMoveToFirstAttribute
+xmlTextReaderMoveToNextAttribute
+xmlTextReaderName
+xmlTextReaderNamespaceUri
+xmlTextReaderNext
+xmlTextReaderNodeType
+xmlTextReaderNormalization
+xmlTextReaderPrefix
+xmlTextReaderQuoteChar
+xmlTextReaderRead
+xmlTextReaderReadAttributeValue
+xmlTextReaderReadInnerXml
+xmlTextReaderReadOuterXml
+xmlTextReaderReadState
+xmlTextReaderReadString
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlTextReaderRelaxNGSetSchema
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlTextReaderRelaxNGValidate
+#endif
+xmlTextReaderSetErrorHandler
+xmlTextReaderSetParserProp
+xmlTextReaderValue
+xmlTextReaderXmlLang
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsAlphabeticPresentationForms
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsArabic
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsArabicPresentationFormsA
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsArabicPresentationFormsB
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsArmenian
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsArrows
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsBasicLatin
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsBengali
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsBlock
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsBlockElements
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsBopomofo
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsBopomofoExtended
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsBoxDrawing
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsBraillePatterns
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsByzantineMusicalSymbols
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCJKCompatibility
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCJKCompatibilityForms
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCJKCompatibilityIdeographs
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCJKCompatibilityIdeographsSupplement
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCJKRadicalsSupplement
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCJKSymbolsandPunctuation
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCJKUnifiedIdeographs
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCJKUnifiedIdeographsExtensionA
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCJKUnifiedIdeographsExtensionB
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCat
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatC
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatCc
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatCf
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatCo
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatCs
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatL
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatLl
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatLm
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatLo
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatLt
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatLu
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatM
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatMc
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatMe
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatMn
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatN
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatNd
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatNl
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatNo
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatP
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatPc
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatPd
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatPe
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatPf
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatPi
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatPo
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatPs
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatS
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatSc
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatSk
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatSm
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatSo
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatZ
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatZl
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatZp
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCatZs
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCherokee
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCombiningDiacriticalMarks
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCombiningHalfMarks
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCombiningMarksforSymbols
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsControlPictures
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCurrencySymbols
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsCyrillic
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsDeseret
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsDevanagari
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsDingbats
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsEnclosedAlphanumerics
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsEnclosedCJKLettersandMonths
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsEthiopic
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsGeneralPunctuation
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsGeometricShapes
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsGeorgian
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsGothic
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsGreek
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsGreekExtended
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsGujarati
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsGurmukhi
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsHalfwidthandFullwidthForms
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsHangulCompatibilityJamo
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsHangulJamo
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsHangulSyllables
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsHebrew
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsHighPrivateUseSurrogates
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsHighSurrogates
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsHiragana
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsIPAExtensions
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsIdeographicDescriptionCharacters
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsKanbun
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsKangxiRadicals
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsKannada
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsKatakana
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsKhmer
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsLao
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsLatin1Supplement
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsLatinExtendedA
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsLatinExtendedAdditional
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsLatinExtendedB
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsLetterlikeSymbols
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsLowSurrogates
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsMalayalam
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsMathematicalAlphanumericSymbols
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsMathematicalOperators
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsMiscellaneousSymbols
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsMiscellaneousTechnical
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsMongolian
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsMusicalSymbols
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsMyanmar
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsNumberForms
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsOgham
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsOldItalic
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsOpticalCharacterRecognition
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsOriya
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsPrivateUse
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsRunic
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsSinhala
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsSmallFormVariants
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsSpacingModifierLetters
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsSpecials
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsSuperscriptsandSubscripts
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsSyriac
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsTags
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsTamil
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsTelugu
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsThaana
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsThai
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsTibetan
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsUnifiedCanadianAboriginalSyllabics
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsYiRadicals
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlUCSIsYiSyllables
+#endif
+xmlURIEscape
+xmlURIEscapeStr
+xmlURIUnescapeString
+xmlUTF8Strlen
+xmlUTF8Strloc
+xmlUTF8Strndup
+xmlUTF8Strpos
+xmlUTF8Strsize
+xmlUTF8Strsub
+xmlUnlinkNode
+xmlUnlockLibrary
+xmlUnsetNsProp
+xmlUnsetProp
+#ifdef LIBXML_REGEXP_ENABLED
+xmlValidBuildContentModel
+#endif
+xmlValidCtxtNormalizeAttributeValue
+xmlValidGetPotentialChildren
+xmlValidGetValidElements
+xmlValidNormalizeAttributeValue
+xmlValidateAttributeDecl
+xmlValidateAttributeValue
+xmlValidateDocument
+xmlValidateDocumentFinal
+xmlValidateDtd
+xmlValidateDtdFinal
+xmlValidateElement
+xmlValidateElementDecl
+xmlValidateNCName
+xmlValidateNMToken
+xmlValidateName
+xmlValidateNameValue
+xmlValidateNamesValue
+xmlValidateNmtokenValue
+xmlValidateNmtokensValue
+xmlValidateNotationDecl
+xmlValidateNotationUse
+xmlValidateOneAttribute
+xmlValidateOneElement
+xmlValidateOneNamespace
+xmlValidatePopElement
+xmlValidatePushCData
+xmlValidatePushElement
+xmlValidateQName
+xmlValidateRoot
+#ifdef LIBXML_XINCLUDE_ENABLED
+xmlXIncludeProcess
+#endif
 #ifdef LIBXML_XPATH_ENABLED
-	/* Objects and Nodesets handling */
-	xmlXPathNAN DATA
-	xmlXPathPINF DATA
-	xmlXPathNINF DATA
-	xmlXPathIsNaN
-	xmlXPathIsInf
-	
-	xmlXPathFreeObject
-	xmlXPathNodeSetCreate
-	xmlXPathFreeNodeSetList
-	xmlXPathFreeNodeSet
-	xmlXPathObjectCopy
-	xmlXPathCmpNodes
-
-	/* Conversion functions to basic types */
-	xmlXPathCastNumberToBoolean
-	xmlXPathCastStringToBoolean
-	xmlXPathCastNodeSetToBoolean
-	xmlXPathCastToBoolean
-	xmlXPathCastBooleanToNumber
-	xmlXPathCastStringToNumber
-	xmlXPathCastNodeToNumber
-	xmlXPathCastNodeSetToNumber
-	xmlXPathCastToNumber
-	xmlXPathCastBooleanToString
-	xmlXPathCastNumberToString
-	xmlXPathCastNodeToString
-	xmlXPathCastNodeSetToString
-	xmlXPathCastToString
-	xmlXPathConvertBoolean
-	xmlXPathConvertNumber
-	xmlXPathConvertString
-
-	/* Context handling */
-	xmlXPathInit
-	xmlXPathNewContext
-	xmlXPathFreeContext
-	
-	/* Evaluation functions. */
-	xmlXPathOrderDocElems
-	xmlXPathEval
-	xmlXPathEvalExpression
-	xmlXPathEvalPredicate
-
-	/* Separate compilation/evaluation entry points */
-	xmlXPathCompile
-	xmlXPathCompiledEval
-	xmlXPathFreeCompExpr
-#endif /* LIBXML_XPATH_ENABLED */
-
-
-/* xpathinternals.h 
-   --------------------------------------------------------------------- */
+xmlXPathAddValues
+#endif
 #ifdef LIBXML_XPATH_ENABLED
-	xmlXPathPopBoolean
-	xmlXPathPopNumber
-	xmlXPathPopString
-	xmlXPathPopNodeSet
-	xmlXPathPopExternal
-
-	/* Variable Lookup forwarding */
-	xmlXPathRegisterVariableLookup
-
-	/* Function Lookup forwarding */
-	xmlXPathRegisterFuncLookup
-
-	/* Error reporting */
-	xmlXPatherror
-
-	/* NodeSet handling */
-	xmlXPathNodeSetContains
-	xmlXPathDifference
-	xmlXPathIntersection
-	xmlXPathDistinctSorted
-	xmlXPathDistinct
-	xmlXPathHasSameNodes
-	xmlXPathNodeLeadingSorted
-	xmlXPathLeadingSorted
-	xmlXPathNodeLeading
-	xmlXPathLeading
-	xmlXPathNodeTrailingSorted
-	xmlXPathTrailingSorted
-	xmlXPathNodeTrailing
-	xmlXPathTrailing
-
-	/* Extending a context */
-	xmlXPathRegisterNs
-	xmlXPathNsLookup
-	xmlXPathRegisteredNsCleanup
-	xmlXPathRegisterFunc
-	xmlXPathRegisterFuncNS
-	xmlXPathRegisterVariable
-	xmlXPathRegisterVariableNS
-	xmlXPathFunctionLookup
-	xmlXPathFunctionLookupNS
-	xmlXPathRegisteredFuncsCleanup
-	xmlXPathVariableLookup
-	xmlXPathVariableLookupNS
-	xmlXPathRegisteredVariablesCleanup
-
-	/* Utilities to extend XPath */
-	xmlXPathNewParserContext
-	xmlXPathFreeParserContext
-
-	/* TODO: remap to xmlXPathValuePop and Push */
-	valuePop
-	valuePush
-
-	xmlXPathNewString
-	xmlXPathNewCString
-	xmlXPathWrapString
-	xmlXPathWrapCString
-	xmlXPathNewFloat
-	xmlXPathNewBoolean
-	xmlXPathNewNodeSet
-	xmlXPathNewValueTree
-	xmlXPathNodeSetAdd
-	xmlXPathNodeSetAddUnique
-	xmlXPathNodeSetAddNs
-	xmlXPathNodeSetSort
-	xmlXPathIdFunction
-	xmlXPathRoot
-	xmlXPathEvalExpr
-	xmlXPathParseName
-	xmlXPathParseNCName
-
-	/* Debug */
-	#ifdef LIBXML_DEBUG_ENABLED
-		xmlXPathDebugDumpObject
-		xmlXPathDebugDumpCompExpr
-	#endif /* LIBXML_DEBUG_ENABLED */
-
-	/* Existing functions */
-	xmlXPathStringEvalNumber
-	xmlXPathEvaluatePredicateResult
-	xmlXPathInit
-	xmlXPathStringFunction
-	xmlXPathRegisterAllFunctions
-	xmlXPathNodeSetCreate
-	xmlXPathNodeSetAdd
-	xmlXPathNodeSetMerge
-	xmlXPathNodeSetDel
-	xmlXPathNodeSetRemove
-	xmlXPathFreeNodeSet
-	xmlXPathNewNodeSet
-	xmlXPathNewNodeSetList
-	xmlXPathWrapNodeSet
-	xmlXPathWrapExternal
-	xmlXPathFreeNodeSetList
-
-	xmlXPathNewFloat
-	xmlXPathNewBoolean
-	xmlXPathNewString
-	xmlXPathNewCString
-	xmlXPathFreeObject
-	xmlXPathNewContext
-	xmlXPathFreeContext
-
-	xmlXPathEqualValues
-	xmlXPathNotEqualValues
-	xmlXPathCompareValues
-	xmlXPathValueFlipSign
-	xmlXPathAddValues
-	xmlXPathSubValues
-	xmlXPathMultValues
-	xmlXPathDivValues
-	xmlXPathModValues
-
-	xmlXPathIsNodeType
-
-	/* Some of the axis navigation routines */
-	xmlXPathNextSelf
-	xmlXPathNextChild
-	xmlXPathNextDescendant
-	xmlXPathNextDescendantOrSelf
-	xmlXPathNextParent
-	xmlXPathNextAncestorOrSelf
-	xmlXPathNextFollowingSibling
-	xmlXPathNextFollowing
-	xmlXPathNextNamespace
-	xmlXPathNextAttribute
-	xmlXPathNextPreceding
-	xmlXPathNextAncestor
-	xmlXPathNextPrecedingSibling
-
-	/* The official core of XPath functions */
-	xmlXPathRoot
-	xmlXPathLastFunction
-	xmlXPathPositionFunction
-	xmlXPathCountFunction
-	xmlXPathIdFunction
-	xmlXPathLocalNameFunction
-	xmlXPathNamespaceURIFunction
-	xmlXPathStringFunction
-	xmlXPathStringLengthFunction
-	xmlXPathConcatFunction
-	xmlXPathContainsFunction
-	xmlXPathStartsWithFunction
-	xmlXPathSubstringFunction
-	xmlXPathSubstringBeforeFunction
-	xmlXPathSubstringAfterFunction
-	xmlXPathNormalizeFunction
-	xmlXPathTranslateFunction
-	xmlXPathNotFunction
-	xmlXPathTrueFunction
-	xmlXPathFalseFunction
-	xmlXPathLangFunction
-	xmlXPathNumberFunction
-	xmlXPathSumFunction
-	xmlXPathFloorFunction
-	xmlXPathCeilingFunction
-	xmlXPathRoundFunction
-	xmlXPathBooleanFunction
-
-	/* really internal functions */
-	xmlXPathNodeSetFreeNs
-#endif /* LIBXML_XPATH_ENABLED */
-
-
-
-/* xpointer.h 
-   --------------------------------------------------------------------- */
+xmlXPathBooleanFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastBooleanToNumber
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastBooleanToString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastNodeSetToBoolean
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastNodeSetToNumber
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastNodeSetToString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastNodeToNumber
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastNodeToString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastNumberToBoolean
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastNumberToString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastStringToBoolean
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastStringToNumber
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastToBoolean
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastToNumber
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCastToString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCeilingFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCmpNodes
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCompareValues
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCompile
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCompiledEval
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathConcatFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathContainsFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathConvertBoolean
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathConvertNumber
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathConvertString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathCountFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+#ifdef LIBXML_DEBUG_ENABLED
+xmlXPathDebugDumpCompExpr
+#endif
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+#ifdef LIBXML_DEBUG_ENABLED
+xmlXPathDebugDumpObject
+#endif
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathDifference
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathDistinct
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathDistinctSorted
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathDivValues
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathEqualValues
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathEval
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathEvalExpr
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathEvalExpression
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathEvalPredicate
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathEvaluatePredicateResult
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathFalseFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathFloorFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathFreeCompExpr
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathFreeContext
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathFreeNodeSet
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathFreeNodeSetList
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathFreeObject
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathFreeParserContext
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathFunctionLookup
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathFunctionLookupNS
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathHasSameNodes
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathIdFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathInit
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathIntersection
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathIsInf
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathIsNaN
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathIsNodeType
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathLangFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathLastFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathLeading
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathLeadingSorted
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathLocalNameFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathModValues
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathMultValues
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNamespaceURIFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNewBoolean
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNewCString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNewContext
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNewFloat
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNewNodeSet
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNewNodeSetList
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNewParserContext
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNewString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNewValueTree
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextAncestor
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextAncestorOrSelf
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextAttribute
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextChild
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextDescendant
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextDescendantOrSelf
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextFollowing
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextFollowingSibling
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextNamespace
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextParent
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextPreceding
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextPrecedingSibling
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNextSelf
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeLeading
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeLeadingSorted
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeSetAdd
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeSetAddNs
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeSetAddUnique
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeSetContains
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeSetCreate
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeSetDel
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeSetFreeNs
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeSetMerge
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeSetRemove
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeSetSort
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeTrailing
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNodeTrailingSorted
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNormalizeFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNotEqualValues
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNotFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNsLookup
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathNumberFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathObjectCopy
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathOrderDocElems
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathParseNCName
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathParseName
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathPopBoolean
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathPopExternal
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathPopNodeSet
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathPopNumber
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathPopString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathPositionFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisterAllFunctions
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisterFunc
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisterFuncLookup
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisterFuncNS
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisterNs
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisterVariable
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisterVariableLookup
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisterVariableNS
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisteredFuncsCleanup
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisteredNsCleanup
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRegisteredVariablesCleanup
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRoot
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathRoundFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathStartsWithFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathStringEvalNumber
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathStringFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathStringLengthFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathSubValues
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathSubstringAfterFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathSubstringBeforeFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathSubstringFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathSumFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathTrailing
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathTrailingSorted
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathTranslateFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathTrueFunction
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathValueFlipSign
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathVariableLookup
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathVariableLookupNS
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathWrapCString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathWrapExternal
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathWrapNodeSet
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathWrapString
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPatherror
+#endif
 #ifdef LIBXML_XPTR_ENABLED
-	/* Handling of location sets */
-	xmlXPtrLocationSetCreate
-	xmlXPtrFreeLocationSet
-	xmlXPtrLocationSetMerge
-	xmlXPtrNewRange
-	xmlXPtrNewRangePoints
-	xmlXPtrNewRangeNodePoint
-	xmlXPtrNewRangePointNode
-	xmlXPtrNewRangeNodes
-	xmlXPtrNewLocationSetNodes
-	xmlXPtrNewLocationSetNodeSet
-	xmlXPtrNewRangeNodeObject
-	xmlXPtrNewCollapsedRange
-	xmlXPtrLocationSetAdd
-	xmlXPtrWrapLocationSet
-	xmlXPtrLocationSetDel
-	xmlXPtrLocationSetRemove
-
-	/* Functions */
-	xmlXPtrNewContext
-	xmlXPtrEval
-	xmlXPtrRangeToFunction
-	xmlXPtrBuildNodeList
-	xmlXPtrEvalRangePredicate
-#endif /* LIBXML_XPTR_ENABLED */
-
-
+xmlXPtrBuildNodeList
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrEval
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrEvalRangePredicate
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrFreeLocationSet
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrLocationSetAdd
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrLocationSetCreate
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrLocationSetDel
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrLocationSetMerge
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrLocationSetRemove
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrNewCollapsedRange
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrNewContext
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrNewLocationSetNodeSet
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrNewLocationSetNodes
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrNewRange
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrNewRangeNodeObject
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrNewRangeNodePoint
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrNewRangeNodes
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrNewRangePointNode
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrNewRangePoints
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrRangeToFunction
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+xmlXPtrWrapLocationSet
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaNewParserCtxt
+xmlSchemaNewMemParserCtxt
+xmlSchemaFreeParserCtxt
+xmlSchemaSetParserErrors
+xmlSchemaParse
+xmlSchemaFree
+xmlSchemaDump
+xmlSchemaSetValidErrors
+xmlSchemaNewValidCtxt
+xmlSchemaFreeValidCtxt
+xmlSchemaValidateDoc
+xmlSchemaValidateStream
+xmlSchemaInitTypes
+xmlSchemaCleanupTypes
+xmlSchemaGetPredefinedType
+xmlSchemaValidatePredefinedType
+xmlSchemaValidateFacet
+xmlSchemaFreeValue
+#endif

@@ -1968,7 +1968,8 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	    xmlFreeNode(elem);
 	    return(cur);
 	}
-	if ((cur->next != NULL) && (cur->type == XML_TEXT_NODE)) {
+	if ((cur->next != NULL) && (cur->next->type == XML_TEXT_NODE) &&
+            (cur->name == cur->next->name)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    xmlChar *tmp;
 
@@ -2047,7 +2048,8 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	    xmlFreeNode(elem);
 	    return(cur);
 	}
-	if ((cur->prev != NULL) && (cur->prev->type == XML_TEXT_NODE)) {
+	if ((cur->prev != NULL) && (cur->prev->type == XML_TEXT_NODE) &&
+            (cur->name == cur->prev->name)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    xmlNodeAddContent(cur->prev, elem->content);
 #else

@@ -5671,7 +5671,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
                 if ((cur->href != NULL) && (href != NULL) &&
                     (xmlStrEqual(cur->href, href))) {
 		    if (((!is_attr) || (cur->prefix != NULL)) &&
-		        (xmlNsInScope(doc, orig, node, cur->href) == 1))
+		        (xmlNsInScope(doc, orig, node, cur->prefix) == 1))
 			return (cur);
                 }
                 cur = cur->next;
@@ -5682,7 +5682,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
                     if ((cur->href != NULL) && (href != NULL) &&
                         (xmlStrEqual(cur->href, href))) {
 			if (((!is_attr) || (cur->prefix != NULL)) &&
-		            (xmlNsInScope(doc, orig, node, cur->href) == 1))
+		            (xmlNsInScope(doc, orig, node, cur->prefix) == 1))
 			    return (cur);
                     }
                 }

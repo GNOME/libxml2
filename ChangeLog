@@ -1,3 +1,11 @@
+Mon Feb 28 11:18:24 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* tree.c: Changed xmlSearchNsByHref to call xmlNsInScope with
+	  the prefix instead of the namespace name.
+	* test/schemas/annot-err_0.xsd test/schemas/element-err_0.xsd:
+	  Adapted invalid values of the "id" attribute, since they are
+	  validated now.
+
 Fri Feb 25 08:31:16 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: new version with fixes from Rob Richards

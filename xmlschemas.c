@@ -3041,9 +3041,7 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 	    break;
 	}
 	case XML_SCHEMA_TYPE_RESTRICTION:
-	    if (type->baseType != NULL) {
-		TODO
-	    } else if (type->subtypes != NULL)
+	    if (type->subtypes != NULL)
 		xmlSchemaBuildAContentModel(type->subtypes, ctxt, name);
 	    break;
 	case XML_SCHEMA_TYPE_EXTENSION:
@@ -3685,6 +3683,8 @@ skip_children:
      * Then do the parsing for good
      */
     ret = xmlSchemaParseSchema(ctxt, root);
+    if (ret == NULL)
+	return(NULL);
     ret->doc = doc;
 
     /*

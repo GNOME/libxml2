@@ -1,3 +1,9 @@
+Fri Apr 19 09:00:56 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: more Schemas work
+	* test/schemas/* result/schemas/*: added more tests coming
+	  from the spec.
+
 Thu Apr 18 23:00:02 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* c14n.c: patch from Aleksey Sanin reflecting a change in the

@@ -1,0 +1,26 @@
+Type of sequence 4 : ./test/schemas/restriction0_0.xsd:13 :elements
+Type of sequence 4 : ./test/schemas/restriction0_0.xsd:13 :elements
+Type of restriction 3 : ./test/schemas/restriction0_0.xsd:12 :elements
+Type of complexContent 2 : ./test/schemas/restriction0_0.xsd:11 :elements
+Type of complexContent 2 : ./test/schemas/restriction0_0.xsd:11 :elements
+Type of simpleName : ./test/schemas/restriction0_0.xsd:10 :elements
+Type of sequence 1 : ./test/schemas/restriction0_0.xsd:4 :elements
+Type of personName : ./test/schemas/restriction0_0.xsd:3 :elements
+Type of sequence 1 : ./test/schemas/restriction0_0.xsd:4 :elements
+Type of restriction 3 : ./test/schemas/restriction0_0.xsd:12 :elements
+Building content model for who
+Content model of who:
+ regexp: '(null)' 
+2 atoms:
+ 00  atom: string once 'forename' 
+ 01  atom: string once 'surname' 
+3 states:
+ state: 0, 1 transitions:
+  trans: atom 0, to 1
+ state: 1, 1 transitions:
+  trans: atom 1, to 2
+ state: FINAL 2, 0 transitions:
+0 counters:
+xmlSchemaValidateCallback: forename, forename, forename
+xmlSchemaValidateCallback: surname, surname, surname
+Element who content check succeeded

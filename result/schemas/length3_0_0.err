@@ -1,0 +1,20 @@
+Unable to lookup type non-positive-integer:http://www.w3.org/2001/XMLSchemaSchemas: element size type non-positive-integer not found
+Type of sequence 1 : ./test/schemas/length3_0.xsd:4 :elements
+Type of length3 : ./test/schemas/length3_0.xsd:3 :elements
+Type of sequence 1 : ./test/schemas/length3_0.xsd:4 :elements
+Building content model for depth
+Content model of depth:
+ regexp: '(null)' 
+2 atoms:
+ 00  atom: string once 'size' 
+ 01  atom: string once 'unit' 
+3 states:
+ state: 0, 1 transitions:
+  trans: atom 0, to 1
+ state: 1, 1 transitions:
+  trans: atom 1, to 2
+ state: FINAL 2, 0 transitions:
+0 counters:
+xmlSchemaValidateCallback: size, size, size
+xmlSchemaValidateCallback: unit, unit, unit
+Element depth content check succeeded

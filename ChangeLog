@@ -1,3 +1,8 @@
+Fri May 31 12:16:48 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* Makefile.am: updated c14n tests suite
+	* c14n.c: performance improvement for previous c14n patch
+
 Fri May 31 11:47:12 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: another peroformance patch from Peter Jacobi, that

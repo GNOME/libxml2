@@ -614,12 +614,12 @@ Automatatests: testAutomata$(EXEEXT)
 C14Ntests : testC14N$(EXEEXT)
 	-@(for m in with-comments without-comments exc-without-comments ; do \
 	    echo "##"; \
-	    echo "## C14N tests: $$m"; \
+	    echo "## C14N regression tests: $$m"; \
 	    echo "##"; \
 	    for i in $(srcdir)/test/c14n/$$m/*.xml ; do  \
 		if [ ! -d $$i ] ; then \
 		    name=`basename $$i .xml`; \
-		    echo $$name; \
+		    echo Testing $$name; \
 		    if [ -e $(srcdir)/test/c14n/$$m/$$name.xpath ] ; then \
 			xpathFile=$(srcdir)/test/c14n/$$m/$$name.xpath; \
 		    else \
@@ -632,7 +632,7 @@ C14Ntests : testC14N$(EXEEXT)
 		    fi; \
 		    $(CHECKER) $(top_builddir)/testC14N --$$m $$i $$xpathFile $$nsList > $(srcdir)/test/c14n/test.tmp; \
 		    if [ $$? -eq 0 ]; then \
-			diff $(srcdir)/result/c14n/$$m/$$name $(srcdir)/test/c14n/test.tmp ; \
+			diff  $(srcdir)/result/c14n/$$m/$$name $(srcdir)/test/c14n/test.tmp; \
 			if [ $$? -ne 0 ]; then \
 			    echo "Test failed"; \
 			fi; \

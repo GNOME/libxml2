@@ -41,6 +41,7 @@ typedef enum {
 typedef struct _xmlC14NNamespaces {
     int nsNr;		/* number of nodes in the set */
     int nsMax;		/* size of the array as allocated */
+    int nsPos;		/* the begginning of the stack for this node */
     xmlNsPtr *nsTab;	/* array of nodes in no particular order */	      
 } xmlC14NNamespaces, *xmlC14NNamespacesPtr;
 
@@ -212,25 +213,28 @@ static int
 xmlExcC14NIsRendered(xmlC14NCtxPtr ctx, xmlNsPtr ns)
 {
     int i;
-
+    int emptyNs;
+    
     if ((ctx == NULL) || (ctx->ns_rendered == NULL) || (ns == NULL)) {
         return (0);
     }
 
+    /*
+     * if the default namespace xmlns="" is not defined yet then 
+     * we do not want to print it out
+     */
+    emptyNs = ((xmlStrlen(ns->prefix) == 0) && (xmlStrlen(ns->href) == 0));
     if (ctx->ns_rendered->nsTab != NULL) {
-        for (i = ctx->ns_rendered->nsNr - 1; i >= 0; --i) {
-            xmlNsPtr ns1 = (xmlNsPtr) ctx->ns_rendered->nsTab[i];
+	int pos = (emptyNs) ? 0 : ctx->ns_rendered->nsPos;
+        for (i = ctx->ns_rendered->nsNr - 1; i >= pos; --i) {
+            xmlNsPtr ns1 = ctx->ns_rendered->nsTab[i];
 
             if (xmlStrEqual(ns1->prefix, ns->prefix)) {
                 return (xmlStrEqual(ns1->href, ns->href));
             }
         }
     }
-    /*
-     * if the default namespace xmlns="" is not defined yet then 
-     * we do not want to print it out
-     */
-    return ((xmlStrlen(ns->prefix) == 0) && (xmlStrlen(ns->href) == 0));
+    return(emptyNs);
 }
 
 /**
@@ -333,7 +337,6 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
 {
     xmlNsPtr ns;
     xmlListPtr list;
-    xmlNodePtr visible_parent;
     
     if ((ctx == NULL) || (cur == NULL) || (cur->type != XML_ELEMENT_NODE)) {
 #ifdef DEBUG_C14N
@@ -356,30 +359,19 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
         return (-1);
     }
 
-    /* find nearest visible parent */
-    visible_parent = cur->parent;
-    while ((visible_parent != NULL) && (!xmlC14NIsVisible(ctx, visible_parent))) {
-        visible_parent = visible_parent->parent;
-    }
-
     if(ctx->visible_nodes == NULL) {
-	xmlNodePtr node;
-	
-	/* 
-         * the libxml does not create nodes for all namespaces known 
-	 * to the node (i.e. for namespaces defined in node parents). 
-	 * By this we need to now walk thru all namespace in current 
-	 * node and all invisible ancesstors
-         */
-	node = cur;
-	while (cur != visible_parent) {
-    	    for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
-		if(!xmlC14NIsXmlNs(ns) && !xmlExcC14NIsRendered(ctx, ns)) {
-                    xmlListInsert(list, ns);
-                    xmlC14NNamespacesAdd(ctx->ns_rendered, ns);
-                }
-    	    }
-    	    cur = cur->parent;
+	xmlNsPtr tmp;
+
+	for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
+	    if(!xmlC14NIsXmlNs(ns)) {
+	        tmp = (cur->parent != NULL) ?
+			xmlSearchNs(ctx->doc, cur->parent, ns->prefix) :
+			NULL;
+		if(((tmp == NULL) && (xmlStrlen(ns->href) > 0)) || 
+		    ((tmp != NULL) && !xmlStrEqual(ns->href, tmp->href))) {
+		    xmlListInsert(list, ns); 
+		}
+	    }
 	}
     } else {
 	int i;
@@ -391,9 +383,10 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
 	    if(ctx->visible_nodes->nodeTab[i]->type == XML_NAMESPACE_DECL) {
 		ns = (xmlNsPtr) ctx->visible_nodes->nodeTab[i];
 		
-		if((ns != NULL) && (ns->next == (xmlNsPtr)cur) &&
-		   !xmlC14NIsXmlNs(ns) && !xmlExcC14NIsRendered(ctx, ns)) {
-                    xmlListInsert(list, ns);
+		if((ns != NULL) && (ns->next == (xmlNsPtr)cur) && !xmlC14NIsXmlNs(ns)) {
+		    if(!xmlExcC14NIsRendered(ctx, ns)) {
+                	xmlListInsert(list, ns);
+		    }
                     xmlC14NNamespacesAdd(ctx->ns_rendered, ns);
                 }
             }
@@ -488,10 +481,11 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
      * todo: shouldn't we check for namespaces "visibility"?
      */
     ns = (cur->ns != NULL) ? cur->ns : xmlSearchNs(ctx->doc, cur, NULL);
-    if ((ns != NULL) && (!xmlC14NIsXmlNs(ns)) &&
-	(xmlListSearch(list, ns) == NULL) && !xmlExcC14NIsRendered(ctx, ns)) {
+    if ((ns != NULL) && (!xmlC14NIsXmlNs(ns)) && (xmlListSearch(list, ns) == NULL)) {
+	 if(!xmlExcC14NIsRendered(ctx, ns)) {
             xmlListInsert(list, ns);
-            xmlC14NNamespacesAdd(ctx->ns_rendered, ns);
+	}
+        xmlC14NNamespacesAdd(ctx->ns_rendered, ns);
     }
     attr = cur->properties;
     while (attr != NULL) {
@@ -501,9 +495,10 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
 	   * do not apply directly to attributes")	 
          */
         if ((attr->ns != NULL) && xmlC14NIsVisible(ctx, attr) && 
-	    (!xmlC14NIsXmlNs(attr->ns)) && 
-            (xmlListSearch(list, attr->ns) == NULL) && (!xmlExcC14NIsRendered(ctx, attr->ns))) {
-        	xmlListInsert(list, attr->ns);
+	    (!xmlC14NIsXmlNs(attr->ns)) && (xmlListSearch(list, attr->ns) == NULL)) {
+		if(!xmlExcC14NIsRendered(ctx, attr->ns)) {
+        	    xmlListInsert(list, attr->ns);
+		}
         	xmlC14NNamespacesAdd(ctx->ns_rendered, attr->ns);
         }
         attr = attr->next;
@@ -527,9 +522,10 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
             }
             ns = xmlSearchNs(ctx->doc, cur, prefix);
             if ((ns != NULL) && (!xmlC14NIsXmlNs(ns))) {
-                if (xmlListSearch(list, ns) == NULL &&
-                    !xmlExcC14NIsRendered(ctx, ns)) {
-                    xmlListInsert(list, ns);
+                if (xmlListSearch(list, ns) == NULL) {
+                    if(!xmlExcC14NIsRendered(ctx, ns)) {
+                	xmlListInsert(list, ns);
+		    }
                     xmlC14NNamespacesAdd(ctx->ns_rendered, ns);
                 }
             }
@@ -841,6 +837,7 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
 {
     int ret;
     int ns_rendered_pos = 0;
+    int ns_rendered_nr = 0;
     int parent_is_doc = 0;
 
     if ((ctx == NULL) || (cur == NULL) || (cur->type != XML_ELEMENT_NODE)) {
@@ -869,8 +866,9 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
      * Save ns_rendered stack position for exclusive 
      * processing
      */
-    if (ctx->ns_rendered != NULL) {
-        ns_rendered_pos = ctx->ns_rendered->nsNr;
+    if (ctx->ns_rendered != NULL) {    
+        ns_rendered_pos = ctx->ns_rendered->nsPos;
+        ns_rendered_nr = ctx->ns_rendered->nsNr;
     }
 
     if (visible) {	
@@ -901,6 +899,9 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
 #endif
             return (-1);
         }
+	if (ctx->ns_rendered != NULL) { 
+	    ctx->ns_rendered->nsPos = ns_rendered_nr; 
+	}
 
         ret = xmlC14NProcessAttrsAxis(ctx, cur);
         if (ret < 0) {
@@ -944,7 +945,8 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
      * processing
      */
     if (ctx->ns_rendered != NULL) {
-        ctx->ns_rendered->nsNr = ns_rendered_pos;
+        ctx->ns_rendered->nsPos = ns_rendered_pos;
+        ctx->ns_rendered->nsNr = ns_rendered_nr;
     }
     return (0);
 }

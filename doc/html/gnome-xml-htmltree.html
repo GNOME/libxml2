@@ -4,7 +4,7 @@
 >HTMLtree</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -20,9 +20,6 @@ HREF="gnome-xml-xpath.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -114,22 +111,19 @@ SIZE="3"
 ></TABLE
 ></DIV
 ><H1
-><A
-NAME="GNOME-XML-HTMLTREE"
->HTMLtree</A
-></H1
+>HTMLtree</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN7499"
+NAME="AEN8541"
 ></A
 ><H2
 >Name</H2
->HTMLtree&nbsp;--&nbsp;</DIV
+>HTMLtree &#8212; </DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN7502"
+NAME="AEN8544"
 ></A
 ><H2
 >Synopsis</H2
@@ -194,7 +188,7 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7516"
+NAME="AEN8558"
 ></A
 ><H2
 >Description</H2
@@ -204,14 +198,14 @@ NAME="AEN7516"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7519"
+NAME="AEN8561"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7521"
+NAME="AEN8563"
 ></A
 ><H3
 ><A
@@ -227,7 +221,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_TEXT_NODE</PRE
+>#define HTML_TEXT_NODE		XML_TEXT_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -237,7 +231,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7526"
+NAME="AEN8568"
 ></A
 ><H3
 ><A
@@ -253,7 +247,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_ENTITY_REF_NODE</PRE
+>#define HTML_ENTITY_REF_NODE	XML_ENTITY_REF_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -263,7 +257,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7531"
+NAME="AEN8573"
 ></A
 ><H3
 ><A
@@ -279,7 +273,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_COMMENT_NODE</PRE
+>#define HTML_COMMENT_NODE	XML_COMMENT_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -289,7 +283,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7536"
+NAME="AEN8578"
 ></A
 ><H3
 ><A
@@ -348,7 +342,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -365,7 +359,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  OUT: the memory pointer</TD
 ></TR
 ><TR
 ><TD
@@ -382,7 +376,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  OUT: the memory lenght</TD
 ></TR
 ></TABLE
 ><P
@@ -392,7 +386,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7561"
+NAME="AEN8603"
 ></A
 ><H3
 ><A
@@ -449,7 +443,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE*</TD
 ></TR
 ><TR
 ><TD
@@ -466,7 +460,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ></TABLE
 ><P
@@ -476,7 +470,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7582"
+NAME="AEN8624"
 ></A
 ><H3
 ><A
@@ -530,7 +524,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the filename</TD
 ></TR
 ><TR
 ><TD
@@ -547,7 +541,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -562,7 +556,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of byte written or -1 in case of failure.</TD
 ></TR
 ></TABLE
 ><P

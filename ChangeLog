@@ -1,3 +1,9 @@
+Sun Oct 31 16:33:54 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c doc/examples/testWriter.c: Fixed bug #153937, making
+	  sure the conversion functions return the number of byte written.
+	  Had to fix one of the examples.
+
 Fri Oct 29 14:16:56 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xmllint.1 doc/xmllint.xml: indicate - means stdin closing #156626

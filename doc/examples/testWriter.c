@@ -1168,8 +1168,8 @@ ConvertInput(const char *in, const char *encoding)
     if (out != 0) {
         temp = size - 1;
         ret = handler->input(out, &out_size, (const xmlChar *) in, &temp);
-        if (ret || temp - size + 1) {
-            if (ret) {
+        if ((ret < 0) || (temp - size + 1)) {
+            if (ret < 0) {
                 printf("ConvertInput: conversion wasn't successful.\n");
             } else {
                 printf

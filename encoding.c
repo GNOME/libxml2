@@ -125,7 +125,7 @@ asciiToUTF8(unsigned char* out, int *outlen,
     }
     *outlen = out - outstart;
     *inlen = processed - base;
-    return(0);
+    return(*outlen);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -209,7 +209,7 @@ UTF8Toascii(unsigned char* out, int *outlen,
     }
     *outlen = out - outstart;
     *inlen = processed - instart;
-    return(0);
+    return(*outlen);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -255,7 +255,7 @@ isolat1ToUTF8(unsigned char* out, int *outlen,
     }
     *outlen = out - outstart;
     *inlen = in - base;
-    return(0);
+    return(*outlen);
 }
 
 /**
@@ -291,7 +291,7 @@ UTF8ToUTF8(unsigned char* out, int *outlen,
 
     *outlen = len;
     *inlenb = len;
-    return(0);
+    return(*outlen);
 }
 
 
@@ -381,7 +381,7 @@ UTF8Toisolat1(unsigned char* out, int *outlen,
     }
     *outlen = out - outstart;
     *inlen = processed - instart;
-    return(0);
+    return(*outlen);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -470,7 +470,7 @@ UTF16LEToUTF8(unsigned char* out, int *outlen,
     }
     *outlen = out - outstart;
     *inlenb = processed - inb;
-    return(0);
+    return(*outlen);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -578,7 +578,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
     }
     *outlen = (out - outstart) * 2;
     *inlen = processed - instart;
-    return(0);
+    return(*outlen);
 }
 
 /**
@@ -710,7 +710,7 @@ UTF16BEToUTF8(unsigned char* out, int *outlen,
     }
     *outlen = out - outstart;
     *inlenb = processed - inb;
-    return(0);
+    return(*outlen);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -815,7 +815,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
     }
     *outlen = (out - outstart) * 2;
     *inlen = processed - instart;
-    return(0);
+    return(*outlen);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -2290,7 +2290,7 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
     }
     *outlen = out - outstart;
     *inlen = in - instart;
-    return(0);
+    return(*outlen);
 }
 
 /**
@@ -2350,7 +2350,7 @@ ISO8859xToUTF8(unsigned char* out, int *outlen,
     }
     *outlen = out - outstart;
     *inlen = in - instart;
-    return (0);
+    return (*outlen);
 }
 
     

@@ -1,3 +1,8 @@
+Sun Jan 23 21:14:20 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: small speedup in skipping blanks characters
+	* entities.c: interning the entities strings 
+
 Sun Jan 23 18:35:00 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: boosting common commnent parsing code, it was really

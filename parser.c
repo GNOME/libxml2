@@ -1389,7 +1389,7 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 	int cur;
 	do {
 	    cur = CUR;
-	    while (IS_BLANK(cur)) { /* CHECKED tstblanks.xml */
+	    while (IS_BLANK_CH(cur)) { /* CHECKED tstblanks.xml */
 		NEXT;
 		cur = CUR;
 		res++;

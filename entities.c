@@ -20,6 +20,7 @@
 #include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
 #include <libxml/globals.h>
+#include <libxml/dict.h>
 
 /*
  * The XML predefined entities.
@@ -89,24 +90,51 @@ xmlEntitiesErr(xmlParserErrors code, const char *msg)
 /*
  * xmlFreeEntity : clean-up an entity record.
  */
-static void xmlFreeEntity(xmlEntityPtr entity) {
-    if (entity == NULL) return;
+static void
+xmlFreeEntity(xmlEntityPtr entity)
+{
+    xmlDictPtr dict = NULL;
+
+    if (entity == NULL)
+        return;
+
+    if (entity->doc != NULL)
+        dict = entity->doc->dict;
+
 
     if ((entity->children) && (entity->owner == 1) &&
-	(entity == (xmlEntityPtr) entity->children->parent))
-	xmlFreeNodeList(entity->children);
-    if (entity->name != NULL)
-	xmlFree((char *) entity->name);
-    if (entity->ExternalID != NULL)
-        xmlFree((char *) entity->ExternalID);
-    if (entity->SystemID != NULL)
-        xmlFree((char *) entity->SystemID);
-    if (entity->URI != NULL)
-        xmlFree((char *) entity->URI);
-    if (entity->content != NULL)
-        xmlFree((char *) entity->content);
-    if (entity->orig != NULL)
-        xmlFree((char *) entity->orig);
+        (entity == (xmlEntityPtr) entity->children->parent))
+        xmlFreeNodeList(entity->children);
+    if (dict != NULL) {
+        if ((entity->name != NULL) && (!xmlDictOwns(dict, entity->name)))
+            xmlFree((char *) entity->name);
+        if ((entity->ExternalID != NULL) &&
+	    (!xmlDictOwns(dict, entity->ExternalID)))
+            xmlFree((char *) entity->ExternalID);
+        if ((entity->SystemID != NULL) &&
+	    (!xmlDictOwns(dict, entity->SystemID)))
+            xmlFree((char *) entity->SystemID);
+        if ((entity->URI != NULL) && (!xmlDictOwns(dict, entity->URI)))
+            xmlFree((char *) entity->URI);
+        if ((entity->content != NULL)
+            && (!xmlDictOwns(dict, entity->content)))
+            xmlFree((char *) entity->content);
+        if ((entity->orig != NULL) && (!xmlDictOwns(dict, entity->orig)))
+            xmlFree((char *) entity->orig);
+    } else {
+        if (entity->name != NULL)
+            xmlFree((char *) entity->name);
+        if (entity->ExternalID != NULL)
+            xmlFree((char *) entity->ExternalID);
+        if (entity->SystemID != NULL)
+            xmlFree((char *) entity->SystemID);
+        if (entity->URI != NULL)
+            xmlFree((char *) entity->URI);
+        if (entity->content != NULL)
+            xmlFree((char *) entity->content);
+        if (entity->orig != NULL)
+            xmlFree((char *) entity->orig);
+    }
     xmlFree(entity);
 }
 
@@ -117,11 +145,17 @@ static xmlEntityPtr
 xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
 	  const xmlChar *ExternalID, const xmlChar *SystemID,
 	  const xmlChar *content) {
+    xmlDictPtr dict = NULL;
     xmlEntitiesTablePtr table = NULL;
     xmlEntityPtr ret;
 
     if (name == NULL)
 	return(NULL);
+    if (dtd == NULL)
+	return(NULL);
+    if (dtd->doc != NULL)
+        dict = dtd->doc->dict;
+
     switch (type) {
         case XML_INTERNAL_GENERAL_ENTITY:
         case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
@@ -152,15 +186,27 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
     /*
      * fill the structure.
      */
-    ret->name = xmlStrdup(name);
     ret->etype = (xmlEntityType) type;
-    if (ExternalID != NULL)
-	ret->ExternalID = xmlStrdup(ExternalID);
-    if (SystemID != NULL)
-	ret->SystemID = xmlStrdup(SystemID);
+    if (dict == NULL) {
+	ret->name = xmlStrdup(name);
+	if (ExternalID != NULL)
+	    ret->ExternalID = xmlStrdup(ExternalID);
+	if (SystemID != NULL)
+	    ret->SystemID = xmlStrdup(SystemID);
+    } else {
+        ret->name = xmlDictLookup(dict, name, -1);
+	if (ExternalID != NULL)
+	    ret->ExternalID = xmlDictLookup(dict, ExternalID, -1);
+	if (SystemID != NULL)
+	    ret->SystemID = xmlDictLookup(dict, SystemID, -1);
+    }
     if (content != NULL) {
         ret->length = xmlStrlen(content);
-	ret->content = xmlStrndup(content, ret->length);
+	if ((dict != NULL) && (ret->length < 5))
+	    ret->content = (xmlChar *)
+	                   xmlDictLookup(dict, content, ret->length);
+	else
+	    ret->content = xmlStrndup(content, ret->length);
      } else {
         ret->length = 0;
         ret->content = NULL;
@@ -169,6 +215,7 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
 			the defining entity */
     ret->orig = NULL;
     ret->owner = 0;
+    ret->doc = dtd->doc;
 
     if (xmlHashAddEntry(table, name, ret)) {
 	/*

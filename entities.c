@@ -401,6 +401,8 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
     const xmlChar *cur = input;
     xmlChar *out = buffer;
     static int warning = 1;
+    int html = 0;
+
 
     if (warning) {
     fprintf(stderr, "Deprecated API xmlEncodeEntities() used\n");
@@ -409,6 +411,9 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
     }
 
     if (input == NULL) return(NULL);
+    if (doc != NULL)
+        html = (doc->type == XML_HTML_DOCUMENT_NODE);
+
     if (buffer == NULL) {
         buffer_size = 1000;
         buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
@@ -452,7 +457,7 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
 	    *out++ = 'o';
 	    *out++ = 't';
 	    *out++ = ';';
-	} else if (*cur == '\'') {
+	} else if ((*cur == '\'') && (!html)) {
 	    *out++ = '&';
 	    *out++ = 'a';
 	    *out++ = 'p';
@@ -536,8 +541,11 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
     xmlChar *buffer = NULL;
     xmlChar *out = NULL;
     int buffer_size = 0;
+    int html = 0;
 
     if (input == NULL) return(NULL);
+    if (doc != NULL)
+        html = (doc->type == XML_HTML_DOCUMENT_NODE);
 
     /*
      * allocate an translation buffer.
@@ -584,7 +592,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	    *out++ = 'o';
 	    *out++ = 't';
 	    *out++ = ';';
-	} else if (*cur == '\'') {
+	} else if ((*cur == '\'') && (!html)) {
 	    *out++ = '&';
 	    *out++ = 'a';
 	    *out++ = 'p';

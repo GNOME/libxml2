@@ -2670,6 +2670,7 @@ xmlSprintfElementChilds(char *buf, xmlNodePtr node, int glob) {
 		 break;
             case XML_ATTRIBUTE_NODE:
             case XML_DOCUMENT_NODE:
+	    case XML_HTML_DOCUMENT_NODE:
             case XML_DOCUMENT_TYPE_NODE:
             case XML_DOCUMENT_FRAG_NODE:
             case XML_NOTATION_NODE:
@@ -2962,3 +2963,170 @@ xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     return(ret);
 }
 
+
+/************************************************************************
+ *									*
+ *		Routines for dynamic validation editing			*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlValidGetPotentialChildren:
+ * @ctree:  an element content tree
+ * @list:  an array to store the list of child names
+ * @len:  a pointer to the number of element in the list
+ * @max:  the size of the array
+ *
+ * Build/extend a list of  potential children allowed by the content tree
+ *
+ * returns the number of element in the list, or -1 in case of error.
+ */
+
+int
+xmlValidGetPotentialChildren(xmlElementContent *ctree, const xmlChar **list,
+                             int *len, int max) {
+    int i;
+
+    if ((ctree == NULL) || (list == NULL) || (len == NULL))
+        return(-1);
+    if (*len >= max) return(*len);
+
+    switch (ctree->type) {
+	case XML_ELEMENT_CONTENT_PCDATA: 
+	    for (i = 0; i < *len;i++)
+		if (!xmlStrcmp("#PCDATA", list[i])) return(*len);
+	    list[(*len)++] = "#PCDATA";
+	    break;
+	case XML_ELEMENT_CONTENT_ELEMENT: 
+	    for (i = 0; i < *len;i++)
+		if (!xmlStrcmp(ctree->name, list[i])) return(*len);
+	    list[(*len)++] = ctree->name;
+	    break;
+	case XML_ELEMENT_CONTENT_SEQ: 
+	    xmlValidGetPotentialChildren(ctree->c1, list, len, max);
+	    xmlValidGetPotentialChildren(ctree->c2, list, len, max);
+	    break;
+	case XML_ELEMENT_CONTENT_OR:
+	    xmlValidGetPotentialChildren(ctree->c1, list, len, max);
+	    xmlValidGetPotentialChildren(ctree->c2, list, len, max);
+	    break;
+   }
+   
+   return(*len);
+}
+
+/**
+ * xmlValidGetValidElements:
+ * @prev:  an element to insert after
+ * @next:  an element to insert next
+ * @list:  an array to store the list of child names
+ * @max:  the size of the array
+ *
+ * This function returns the list of authorized children to insert
+ * within an existing tree while respecting the validity constraints
+ * forced by the Dtd. The insertion point is defined using @prev and
+ * @next in the following ways:
+ *  to insert before 'node': xmlValidGetValidElements(node->prev, node, ...
+ *  to insert next 'node': xmlValidGetValidElements(node, node->next, ...
+ *  to replace 'node': xmlValidGetValidElements(node->prev, node->next, ...
+ *  to prepend a child to 'node': xmlValidGetValidElements(NULL, node->childs,
+ *  to append a child to 'node': xmlValidGetValidElements(node->last, NULL, ...
+ *
+ * pointers to the element names are inserted at the beginning of the array
+ * and do not need to be freed.
+ *
+ * returns the number of element in the list, or -1 in case of error. If
+ *    the function returns the value @max the caller is invited to grow the
+ *    receiving array and retry.
+ */
+
+int
+xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
+                         int max) {
+    int nb_valid_elements = 0;
+    const xmlChar *elements[256];
+    int nb_elements = 0, i;
+    
+    xmlNode *ref_node;
+    xmlNode *parent;
+    xmlNode *test_node;
+    
+    xmlNode *prev_next;
+    xmlNode *next_prev;
+    xmlNode *parent_childs;
+    xmlNode *parent_last;
+    
+    xmlElement *element_desc;
+
+    if (prev == NULL && next == NULL)
+        return(-1);
+
+    if (list == NULL) return(-1);
+    if (max <= 0) return(-1);
+
+    nb_valid_elements = 0;
+    ref_node = prev ? prev : next;
+    parent = ref_node->parent;
+
+    /*
+     * Retrieves the parent element declaration
+     */
+    element_desc = xmlGetDtdElementDesc(parent->doc->intSubset,
+                                         parent->name);
+    if ((element_desc == NULL) && (parent->doc->extSubset != NULL))
+        element_desc = xmlGetDtdElementDesc(parent->doc->extSubset,
+                                             parent->name);
+    if (element_desc == NULL) return(-1);
+	
+    /*
+     * Do a backup of the current tree structure
+     */
+    prev_next = prev ? prev->next : NULL;
+    next_prev = next ? next->prev : NULL;
+    parent_childs = parent->childs;
+    parent_last = parent->last;
+
+    /*
+     * Creates a dummy node and insert it into the tree
+     */    
+    test_node = xmlNewNode (NULL, "<!dummy?>");
+    test_node->doc = ref_node->doc;
+    test_node->parent = parent;
+    test_node->prev = prev;
+    test_node->next = next;
+    
+    if (prev) prev->next = test_node;
+    else parent->childs = test_node;
+		
+    if (next) next->prev = test_node;
+    else parent->last = test_node;
+
+    /*
+     * Insert each potential child node and check if the parent is
+     * still valid
+     */
+    nb_elements = xmlValidGetPotentialChildren(element_desc->content,
+		       elements, &nb_elements, 256);
+    
+    for (i = 0;i < nb_elements;i++) {
+	test_node->name = elements[i];
+	if (xmlValidateOneElement(NULL, parent->doc, parent)) {
+	    int j;
+
+	    for (j = 0; j < nb_valid_elements;j++)
+		if (!xmlStrcmp(elements[i], list[j])) break;
+	    list[nb_valid_elements++] = elements[i];
+	    if (nb_valid_elements >= max) break;
+	}
+    }
+
+    /*
+     * Restore the tree structure
+     */
+    if (prev) prev->next = prev_next;
+    if (next) next->prev = next_prev;
+    parent->childs = parent_childs;
+    parent->last = parent_last;
+    
+    return(nb_valid_elements);
+}

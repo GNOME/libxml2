@@ -152,6 +152,7 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	    fprintf(output, "COMMENT\n");
 	    break;
 	case XML_DOCUMENT_NODE:
+	case XML_HTML_DOCUMENT_NODE:
 	    fprintf(output, "Error, DOCUMENT found here\n");
 	    break;
 	case XML_DOCUMENT_TYPE_NODE:
@@ -237,6 +238,9 @@ void xmlDebugDumpDocument(FILE *output, xmlDocPtr doc) {
 	    break;
 	case XML_DOCUMENT_NODE:
 	    fprintf(output, "DOCUMENT\n");
+	    break;
+	case XML_HTML_DOCUMENT_NODE:
+	    fprintf(output, "HTML DOCUMENT\n");
 	    break;
 	case XML_DOCUMENT_TYPE_NODE:
 	    fprintf(output, "Error, DOCUMENT_TYPE\n");

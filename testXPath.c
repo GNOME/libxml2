@@ -90,7 +90,8 @@ void xmlXPAthDebugDumpNodeSet(FILE *output, xmlNodeSetPtr cur) {
         fprintf(output, "%d", i + 1);
 	if (cur->nodeTab[i] == NULL)
 	    fprintf(output, " NULL\n");
-	else if (cur->nodeTab[i]->type == XML_DOCUMENT_NODE)
+	else if ((cur->nodeTab[i]->type == XML_DOCUMENT_NODE) ||
+	         (cur->nodeTab[i]->type == XML_HTML_DOCUMENT_NODE))
 	    fprintf(output, " /\n");
 	else if (cur->nodeTab[i]->type == XML_ATTRIBUTE_NODE)
 	    xmlDebugDumpAttr(output, (xmlAttrPtr)cur->nodeTab[i], 2);

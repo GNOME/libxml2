@@ -23,6 +23,10 @@
 #ifdef HAVE_MALLOC_H
 #include <malloc.h>
 #endif
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
+
 
 #include "xmlmemory.h"
 
@@ -78,7 +82,10 @@ typedef struct memnod {
 
 
 static unsigned long  debugMemSize = 0;
+static unsigned long  debugMaxMemSize = 0;
 static int block=0;
+int xmlMemStopAtBlock = 0;
+int xmlMemInitialized = 0;
 #ifdef MEM_LIST
 static MEMHDR *memlist = NULL;
 #endif
@@ -95,10 +102,23 @@ void debugmem_list_delete(MEMHDR *);
 #endif
 
 /**
+ * xmlMallocBreakpoint:
+ *
+ * Breakpoint to use in conjunction with xmlMemStopAtBlock. When the block
+ * number reaches the specified value this function is called. One need to add a breakpoint
+ * to it to get the context in which the given block is allocated.
+ */
+
+void
+xmlMallocBreakpoint(void) {
+    fprintf(stderr, "xmlMallocBreakpoint reached on block %d\n", xmlMemStopAtBlock);
+}
+
+/**
  * xmlMallocLoc:
  * @size:  an int specifying the size in byte to allocate.
  * @file:  the file name or NULL
- * @file:  the line number
+  @file:  the line number
  *
  * a malloc() equivalent, with logging of the allocation info.
  *
@@ -110,6 +130,7 @@ xmlMallocLoc(int size, const char * file, int line)
 {
     MEMHDR *p;
     
+    if (!xmlMemInitialized) xmlInitMemory();
 #ifdef DEBUG_MEMORY
     fprintf(stderr, "Malloc(%d)\n",size);
 #endif
@@ -129,6 +150,7 @@ xmlMallocLoc(int size, const char * file, int line)
     p->mh_file = file;
     p->mh_line = line;
     debugMemSize += size;
+    if (debugMemSize > debugMaxMemSize) debugMaxMemSize = debugMemSize;
 #ifdef MEM_LIST
     debugmem_list_add(p);
 #endif
@@ -137,6 +159,7 @@ xmlMallocLoc(int size, const char * file, int line)
     fprintf(stderr, "Malloc(%d) Ok\n",size);
 #endif
     
+    if (xmlMemStopAtBlock == block) xmlMallocBreakpoint();
 
     TEST_POINT
 
@@ -176,6 +199,7 @@ xmlReallocLoc(void *ptr,int size, const char * file, int line)
     MEMHDR *p;
     unsigned long number;
 
+    if (!xmlMemInitialized) xmlInitMemory();
     TEST_POINT
 
     p = CLIENT_2_HDR(ptr);
@@ -201,6 +225,7 @@ xmlReallocLoc(void *ptr,int size, const char * file, int line)
     p->mh_file = file;
     p->mh_line = line;
     debugMemSize += size;
+    if (debugMemSize > debugMaxMemSize) debugMaxMemSize = debugMemSize;
 #ifdef MEM_LIST
     debugmem_list_add(p);
 #endif
@@ -281,6 +306,7 @@ xmlMemStrdupLoc(const char *str, const char *file, int line)
     size_t size = strlen(str) + 1;
     MEMHDR *p;
 
+    if (!xmlMemInitialized) xmlInitMemory();
     TEST_POINT
 
     p = (MEMHDR *) malloc(RESERVE_SIZE+size);
@@ -294,11 +320,14 @@ xmlMemStrdupLoc(const char *str, const char *file, int line)
     p->mh_file = file;
     p->mh_line = line;
     debugMemSize += size;
+    if (debugMemSize > debugMaxMemSize) debugMaxMemSize = debugMemSize;
 #ifdef MEM_LIST
     debugmem_list_add(p);
 #endif
     s = HDR_2_CLIENT(p);
     
+    if (xmlMemStopAtBlock == block) xmlMallocBreakpoint();
+
     if (s != NULL)
       strcpy(s,str);
     else
@@ -365,7 +394,8 @@ xmlMemDisplay(FILE *fp)
 #endif
 
     
-    fprintf(fp,"      MEMORY ALLOCATED : %lu\n",debugMemSize);
+    fprintf(fp,"      MEMORY ALLOCATED : %lu, MAX was %lu\n",
+            debugMemSize, debugMaxMemSize);
     fprintf(fp,"BLOCK  NUMBER   SIZE  TYPE\n");
     idx = 0;
     p = memlist;
@@ -473,6 +503,15 @@ int
 xmlInitMemory(void)
 {
      int ret;
+     
+#ifdef HAVE_STDLIB_H
+     char *breakpoint;
+
+     breakpoint = getenv("XML_MEM_BREAKPOINT");
+     if (breakpoint != NULL) {
+         sscanf(breakpoint, "%d", &xmlMemStopAtBlock);
+     }
+#endif     
     
 #ifdef DEBUG_MEMORY
      fprintf(stderr, "xmlInitMemory() Ok\n");

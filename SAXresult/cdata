@@ -1,0 +1,9 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(doc)
+SAX.characters(
+, 1)
+SAX.characters(
+, 1)
+SAX.endElement(doc)
+SAX.endDocument()

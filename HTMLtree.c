@@ -185,7 +185,7 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     if (cur->properties != NULL)
         htmlAttrListDump(buf, doc, cur->properties);
 
-    if (info->empty) {
+    if ((info != NULL) && (info->empty)) {
         xmlBufferWriteChar(buf, ">");
 	if (cur->next != NULL) {
 	    if ((cur->next->type != HTML_TEXT_NODE) &&
@@ -195,7 +195,7 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	return;
     }
     if ((cur->content == NULL) && (cur->childs == NULL)) {
-        if (info->endTag != 0)
+        if ((info != NULL) && (info->endTag != 0))
 	    xmlBufferWriteChar(buf, ">");
 	else {
 	    xmlBufferWriteChar(buf, "></");

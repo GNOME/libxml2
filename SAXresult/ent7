@@ -1,0 +1,21 @@
+xmlSAXUserParseFile returned error 27
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.internalSubset(item, (null), (null))
+SAX.entityDecl(sampleEnt, 4, (null), (null), <!ELEMENT item (para)+>)
+SAX.getParameterEntity(sampleEnt)
+SAX.entityDecl(sampleEnt, 1, (null), (null), the hyacinth girl)
+SAX.getEntity(sampleEnt)
+SAX.getParameterEntity(sampleEnt)
+SAX.error: PEReference: %sampleEnt; not found
+SAX.elementDecl(para, 3, ...)
+SAX.startElement(item)
+SAX.startElement(para)
+SAX.characters('they called me , 16)
+SAX.getEntity(sampleEnt)
+SAX.warning: Entity 'sampleEnt' not defined
+SAX.characters(', 1)
+SAX.endElement(para)
+SAX.endElement(item)
+SAX.endDocument()
+xmlSAXUserParseFile returned error 27

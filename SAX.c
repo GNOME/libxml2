@@ -552,7 +552,7 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
     ret = xmlNewNsProp(ctxt->node, namespace, name, NULL);
 
     if (ret != NULL) {
-        if (ctxt->replaceEntities == 0)
+        if ((ctxt->replaceEntities == 0) && (!ctxt->html))
 	    ret->val = xmlStringGetNodeList(ctxt->myDoc, value);
 	else
 	    ret->val = xmlNewDocText(ctxt->myDoc, value);

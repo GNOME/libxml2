@@ -44,6 +44,7 @@ static int noent = 0;
 static int noout = 0;
 static int valid = 0;
 static int repeat = 0;
+static int insert = 0;
 
 extern int xmlDoValidityCheckingDefaultValue;
 
@@ -140,10 +141,33 @@ void parseAndPrintFile(char *filename) {
 	xmlFreeDoc(tmp);
     }
 
-    /*
-     * print it.
-     */
-    if (noout == 0) {
+    if (insert) {
+        const xmlChar* list[256];
+	int nb, i;
+	xmlNodePtr node;
+
+	if (doc->root != NULL) {
+	    node = doc->root;
+	    while ((node != NULL) && (node->last == NULL)) node = node->next;
+	    if (node != NULL) {
+		nb = xmlValidGetValidElements(node->last, NULL, list, 256);
+		if (nb < 0) {
+		    printf("could not get valid list of elements\n");
+		} else if (nb == 0) {
+		    printf("No element can be indersted under root\n");
+		} else {
+		    printf("%d element types can be indersted under root:\n",
+		           nb);
+		    for (i = 0;i < nb;i++) {
+			 printf("%s\n", list[i]);
+		    }
+		}
+	    }
+	}    
+    }else if (noout == 0) {
+	/*
+	 * print it.
+	 */
 	if (!debug)
 	    xmlDocDump(stdout, doc);
 	else
@@ -211,6 +235,9 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-valid")) ||
 	         (!strcmp(argv[i], "--valid")))
 	    valid++;
+	else if ((!strcmp(argv[i], "-insert")) ||
+	         (!strcmp(argv[i], "--insert")))
+	    insert++;
 	else if ((!strcmp(argv[i], "-repeat")) ||
 	         (!strcmp(argv[i], "--repeat")))
 	    repeat++;
@@ -238,6 +265,7 @@ int main(int argc, char **argv) {
 	printf("\t--noout : don't output the result\n");
 	printf("\t--valid : validate the document in addition to std well-formed check\n");
 	printf("\t--repeat : parse the file 100 times, for timing or profiling\n");
+	printf("\t--insert : test for valid insertions\n");
     }
     xmlMemoryDump();
 

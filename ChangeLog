@@ -1,3 +1,20 @@
+Thu Oct 14 10:29:56 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c, HTMLtree.c, tree.h: completely revamped the
+	     HTMLparser and debugged the HTML related code. HTML documents
+	     now have their own type
+	* entities.c: do not dump &apos; for HTML output
+	* xmlmemory.c: improvement, breakpoint mechanism
+	* testHTML.c: added --sax --repeat ...
+	* Makefile.am: improved the HTML tests
+	* valid.[ch]: added xmlValidGetValidElements and
+	              xmlValidGetPotentialChildren
+	* tester.c: added --insert to test the 2 new functions
+	* test//* result//* SAXresult//* : regression test cleanup
+	               and extension.
+	* doc/html : added doc for new modules gnome-xml-xmlmemory.html and
+	             gnome-xml-nanohttp.html
+
 Mon Oct 11 14:31:58 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c: fixed problems with some autoclose tags

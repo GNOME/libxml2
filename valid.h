@@ -218,6 +218,14 @@ xmlNotationPtr	xmlGetDtdNotationDesc	(xmlDtdPtr dtd,
 xmlElementPtr	xmlGetDtdElementDesc	(xmlDtdPtr dtd,
 					 const xmlChar *name);
 
+int		xmlValidGetValidElements(xmlNode *prev,
+					 xmlNode *next,
+					 const xmlChar **list,
+					 int max);
+int		xmlValidGetPotentialChildren(xmlElementContent *ctree,
+					 const xmlChar **list,
+					 int *len,
+					 int max);
 #ifdef __cplusplus
 }
 #endif

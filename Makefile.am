@@ -86,13 +86,15 @@ HTMLtests : testHTML
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
 	      echo New test file $$name ; \
 	      $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name ; \
+	      $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(top_builddir)/testHTML $$i > result.$$name ; \
+	      $(top_builddir)/testHTML $$i > result.$$name 2>error.$$name ; \
 	      diff $(srcdir)/result/HTML/$$name result.$$name ; \
+	      diff $(srcdir)/result/HTML/$$name.err error.$$name ; \
 	      $(top_builddir)/testHTML result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
-	      rm result.$$name result2.$$name ; \
+	      rm result.$$name result2.$$name error.$$name ; \
 	  fi ; fi ; done)
 
 XMLtests : tester

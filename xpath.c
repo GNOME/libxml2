@@ -562,7 +562,8 @@ xmlXPathDebugNodeSet(FILE *output, xmlNodeSetPtr obj) {
 	    fprintf(output, " NULL !\n");
 	    return;
         }
-	if (obj->nodeTab[i]->type == XML_DOCUMENT_NODE)
+	if ((obj->nodeTab[i]->type == XML_DOCUMENT_NODE) ||
+	    (obj->nodeTab[i]->type == XML_HTML_DOCUMENT_NODE))
 	    fprintf(output, " /");
 	else if (obj->nodeTab[i]->name == NULL)
 	    fprintf(output, " noname!");
@@ -1471,7 +1472,8 @@ xmlXPathNextChild(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    return(ctxt->context->doc->root);
         return(ctxt->context->node->childs);
     }
-    if (ctxt->context->node->type == XML_DOCUMENT_NODE) 
+    if ((ctxt->context->node->type == XML_DOCUMENT_NODE) ||
+        (ctxt->context->node->type == XML_HTML_DOCUMENT_NODE))
 	return(NULL);
     return(cur->next);
 }

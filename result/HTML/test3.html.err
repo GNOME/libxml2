@@ -1,0 +1,12 @@
+./test/HTML/test3.html:6: error: Unexpected end tag : P
+</a><p><hr></p>
+              ^
+./test/HTML/test3.html:13: error: Unexpected end tag : P
+<p><hr></p>
+          ^
+./test/HTML/test3.html:27: error: Opening and ending tag mismatch: H4 and B
+<h4><b>Links</h4></b>
+                 ^
+./test/HTML/test3.html:27: error: Unexpected end tag : B
+<h4><b>Links</h4></b>
+                    ^

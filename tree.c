@@ -2013,6 +2013,7 @@ xmlNodeGetContent(xmlNodePtr cur) {
         case XML_ENTITY_NODE:
         case XML_COMMENT_NODE:
         case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
         case XML_NOTATION_NODE:
 	    return(NULL);
@@ -2066,6 +2067,7 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
 		cur->content = NULL;
 	    break;
         case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
 	    break;
         case XML_NOTATION_NODE:
@@ -2115,6 +2117,7 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 		cur->content = NULL;
 	    break;
         case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
 	    break;
         case XML_NOTATION_NODE:
@@ -2180,6 +2183,7 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	    if (content != NULL)
 		cur->content = xmlStrncat(cur->content, content, len);
         case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
 	    break;
         case XML_NOTATION_NODE:

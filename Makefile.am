@@ -19,7 +19,7 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c  \
-		trio.c strio.c
+		strio.c strio.h trio.c trio.h triop.h libxml.h
 
 DEPS = $(top_builddir)/libxml2.la
 LDADDS = $(top_builddir)/libxml2.la @Z_LIBS@ -lm

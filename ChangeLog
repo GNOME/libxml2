@@ -1,3 +1,8 @@
+Sun Apr 22 22:09:35 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: release of 2.3.7
+	* Makefile.am: fixing make distcheck
+
 Sun Apr 22 21:29:52 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/html/* doc/xml.html: updated and regenerated the docs

@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+   "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<title>No title</title>
+<meta name="GENERATOR" content="amaya V1.3b">
+</head>
+<body bgcolor="#ffffff">
+
+<h1 align="center">The XML library for Gnome</h1>
+<p>
+This document describes the <a href="http://www.w3.org/XML/">XML</a> library
+provideed in the <a href="http://www.gnome.org/">Gnome</a> framework. XML is a
+standard to build tag based structured documents. The internal document
+repesentation is as close as possible to the <a
+href="http://www.w3.org/DOM/">DOM</a> interfaces.</p>
+
+<h2>xml</h2>
+<p>
+XML is a standard for markup based structured documents, here is an
+example:</p>
+<pre>&lt;?xml version="1.0"?>
+&lt;EXAMPLE prop1="gnome is great" prop2="&amp;linux; too">
+  &lt;head>
+   &lt;title>Welcome to Gnome&lt;/title>
+  &lt;/head>
+  &lt;chapter>
+   &lt;title>The Linux adventure&lt;/title>
+   &lt;p>bla bla bla ...&lt;/p>
+   &lt;image href="linus.gif"/>
+   &lt;p>...&lt;/p>
+  &lt;/chapter>
+&lt;/EXAMPLE></pre>
+<p>
+ </p>
+
+<h2>Invoking the parser</h2>
+
+<h2>The tree output</h2>
+<p>
+The parser returns a tree built during the document analysis. The value
+returned is an <strong>xmlDocPtr</strong> (i.e. a pointer to an
+<strong>xmlDoc</strong> structure). This structure contains informations like
+the file  name, the document type, and a <strong>root</strong> pointer which
+is the root of the document (or more exactly the first child under the root
+which is the document). The tree is made of <strong>xmlNode</strong>s, chained
+in double linked lists of siblings and with childs&lt;->parent relationship.
+An xmlNode can also carry properties (a chain of xmlAttr structures). An
+attribute may have a value which is a list of TEXT or ENTITY_REF nodes.</p>
+<p>
+Here is an example (erroneous w.r.t. the XML spec since there should be only
+one ELEMENT under the root):</p>
+<p>
+<img src="structure.gif" alt=" structure.gif "></p>
+<p>
+</p>
+
+<h2>Modifying the tree</h2>
+
+<h2>Saving a tree</h2>
+
+<h2>DOM interfaces</h2>
+<p>
+<a href="http://www.w3.org/DOM/">DOM</a> stands for the <em>Document Object
+Model</em> this is an API for accessing XML or HTML structured documents.
+Native support for DOM in Gnome is on the way (module gnome-dom), and it will
+be based on gnome-xml. DOM defiles a set of IDL (or Java) interfaces allowing
+to traverse and manipulate a document. The DOM library will allow accessing
+and modifying "live" documents presents on other programs like this:</p>
+<p>
+<img src="DOM.gif" alt=" DOM.gif "></p>
+<p>
+This should help greatly doing things like modifying a gnumeric spreadsheet
+embedded in a GWP document for example.</p>
+<p>
+</p>
+</body>
+</html>

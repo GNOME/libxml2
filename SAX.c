@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "tree.h"
 #include "parser.h"
+#include "entities.h"
 #include "error.h"
 
 /* #define DEBUG_SAX */
@@ -85,8 +86,11 @@ xmlSAXLocator xmlDefaultSAXLocator = {
  *
  * Special entity resolver, better left to the parser, it has
  * more context than the application layer.
+ * The default behaviour is to NOT resolve the entities, in that case
+ * the ENTITY_REF nodes are built in the structure (and the parameter
+ * values).
  *
- * return values: an int
+ * return values: the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 xmlParserInputPtr
 resolveEntity(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *systemId)
@@ -95,6 +99,7 @@ resolveEntity(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *systemId)
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.resolveEntity(%s, %s)\n", publicId, systemId);
 #endif
+
     return(NULL);
 }
 
@@ -206,16 +211,9 @@ endDocument(xmlParserCtxtPtr ctxt)
 void
 startElement(xmlParserCtxtPtr ctxt, const CHAR *name)
 {
-    xmlNodePtr parent;
-
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.startElement(%s)\n", name);
 #endif
-    if (ctxt->nodeNr < 2) return;
-    parent = ctxt->nodeTab[ctxt->nodeNr - 2];
-    if (parent != NULL)
-	xmlAddChild(parent, ctxt->node);
-    
 }
 
 /**
@@ -254,7 +252,6 @@ attribute(xmlParserCtxtPtr ctxt, const CHAR *name, const CHAR *value)
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.attribute(%s, %s)\n", name, value);
 #endif
-    xmlNewProp(ctxt->node, name, value);
 }
 
 /**

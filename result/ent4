@@ -3,4 +3,5 @@
 <!ENTITY xml "Extensible Markup Language">
 ]>
 <EXAMPLE>
-    &xml;</EXAMPLE>
+  Test of &amp;amp; behaviour a&amp;b .
+</EXAMPLE>

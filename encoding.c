@@ -77,7 +77,7 @@ UTF8Toisolat1(unsigned char* out, int outlen, unsigned char* in, int inlen)
     unsigned char* outstart= out;
     unsigned char* outend= out+outlen;
     unsigned char* inend= in+inlen;
-    unsigned char c, d;
+    unsigned char c;
 
     while (in < inend) {
         c= *in++;

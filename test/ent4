@@ -2,5 +2,7 @@
 <!DOCTYPE EXAMPLE SYSTEM "example.dtd" [
 <!ENTITY xml "Extensible Markup Language">
 ]>
-<EXAMPLE>
-    &xml;</EXAMPLE>
+<EXAMPLE >
+  Test of &amp;amp; behaviour a&amp;b .
+</EXAMPLE>
+

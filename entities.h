@@ -8,8 +8,8 @@
 
 #ifndef __XML_ENTITIES_H__
 #define __XML_ENTITIES_H__
-#include "parser.h"
 
+#include "parser.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,6 +48,7 @@ typedef struct xmlEntitiesTable {
     xmlEntityPtr table;		/* the table of entities */
 } xmlEntitiesTable, *xmlEntitiesTablePtr;
 
+
 /*
  * External functions :
  */
@@ -56,12 +57,15 @@ extern void xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
               const CHAR *ExternalID, const CHAR *SystemID, CHAR *content);
 extern void xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
               const CHAR *ExternalID, const CHAR *SystemID, CHAR *content);
+extern xmlEntityPtr xmlGetPredefinedEntity(const CHAR *name);
 extern xmlEntityPtr xmlGetDocEntity(xmlDocPtr doc, const CHAR *name);
 extern xmlEntityPtr xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name);
 extern CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input);
 extern xmlEntitiesTablePtr xmlCreateEntitiesTable(void);
 extern void xmlFreeEntitiesTable(xmlEntitiesTablePtr table);
 extern void xmlDumpEntitiesTable(xmlEntitiesTablePtr table);
+extern xmlParserInputPtr xmlNewEntityInputStream(xmlParserCtxtPtr ctxt,
+                                                 xmlEntityPtr entity);
 
 #ifdef __cplusplus
 }

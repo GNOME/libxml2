@@ -5,6 +5,5 @@
 <!ENTITY image SYSTEM "img.gif" NDATA GIF>
 ]>
 <EXAMPLE>
-  
-  This text is about XML, the Extensible Markup Language and this is an embedded 
-</EXAMPLE>
+  &title;
+  This text is about XML, the &xml; and this is an embedded &image;</EXAMPLE>

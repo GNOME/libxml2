@@ -128,6 +128,8 @@ typedef struct xmlSAXHandler {
 extern xmlSAXLocator xmlDefaultSAXLocator;
 extern xmlSAXHandler xmlDefaultSAXHandler;
 
+#include "entities.h"
+
 /*
  * Interfaces
  */

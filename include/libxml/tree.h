@@ -16,7 +16,30 @@ extern "C" {
 #endif
 
 /*
- * Type definitions
+ * The different element types carried by an XML tree
+ *
+ * NOTE: This is synchronized with DOM Level1 values
+ *       See http://www.w3.org/TR/REC-DOM-Level-1/
+ */
+typedef enum {
+    XML_ELEMENT_NODE=		1,
+    XML_ATTRIBUTE_NODE=		2,
+    XML_TEXT_NODE=		3,
+    XML_CDATA_SECTION_NODE=	4,
+    XML_ENTITY_REF_NODE=	5,
+    XML_ENTITY_NODE=		6,
+    XML_PI_NODE=		7,
+    XML_COMMENT_NODE=		8,
+    XML_DOCUMENT_NODE=		9,
+    XML_DOCUMENT_TYPE_NODE=	10,
+    XML_DOCUMENT_FRAG_NODE=	11,
+    XML_NOTATION_NODE=		12
+} xmlElementType;
+
+/*
+ * Currently we use only 8bit chars internal representation, but
+ * the parser is not tied to that, just define UNICODE to switch to
+ * a 16 bits representation.
  */
 #ifdef UNICODE
 typedef unsigned short CHAR;
@@ -84,37 +107,22 @@ typedef struct xmlAttr {
     void           *_private;	/* for Corba, must be first ! */
     void           *vepv;	/* for Corba, must be next ! */
 #endif
-    int             type;       /* XML_ATTRIBUTE_NODE, must be third ! */
+    xmlElementType  type;       /* XML_ATTRIBUTE_NODE, must be third ! */
     struct xmlNode *node;	/* attr->node link */
     struct xmlAttr *next;	/* parent->childs link */
     const CHAR     *name;       /* the name of the property */
-    const CHAR     *value;      /* the value of the property */
+    struct xmlNode *val;        /* the value of the property */
 } xmlAttr, *xmlAttrPtr;
 
 /*
  * A node in an XML tree.
- * NOTE: This is synchronized with DOM Level1 values
- *       See http://www.w3.org/TR/REC-DOM-Level-1/
  */
-#define XML_ELEMENT_NODE	1
-#define XML_ATTRIBUTE_NODE	2
-#define XML_TEXT_NODE		3
-#define XML_CDATA_SECTION_NODE	4
-#define XML_ENTITY_REF_NODE	5
-#define XML_ENTITY_NODE		6
-#define XML_PI_NODE		7
-#define XML_COMMENT_NODE	8
-#define XML_DOCUMENT_NODE	9
-#define XML_DOCUMENT_TYPE_NODE	10
-#define XML_DOCUMENT_FRAG_NODE	11
-#define XML_NOTATION_NODE	12
-
 typedef struct xmlNode {
 #ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
     void           *vepv;	/* for Corba, must be next ! */
 #endif
-    int             type;	/* type number in the DTD, must be third ! */
+    xmlElementType  type;	/* type number in the DTD, must be third ! */
     struct xmlDoc  *doc;	/* the containing document */
     struct xmlNode *parent;	/* child->parent link */
     struct xmlNode *next;	/* next sibling link  */
@@ -135,7 +143,7 @@ typedef struct xmlDoc {
     void           *_private;	/* for Corba, must be first ! */
     void           *vepv;	/* for Corba, must be next ! */
 #endif
-    int             type;       /* XML_DOCUMENT_NODE, must be second ! */
+    xmlElementType  type;       /* XML_DOCUMENT_NODE, must be second ! */
     char           *name;	/* name/filename/URI of the document */
     const CHAR     *version;	/* the XML version string */
     const CHAR     *encoding;   /* encoding, if any */
@@ -165,22 +173,27 @@ extern xmlNsPtr xmlNewNs(xmlNodePtr node, const CHAR *href, const CHAR *AS);
 extern void xmlFreeNs(xmlNsPtr cur);
 extern xmlDocPtr xmlNewDoc(const CHAR *version);
 extern void xmlFreeDoc(xmlDocPtr cur);
+extern xmlAttrPtr xmlNewDocProp(xmlDocPtr doc, const CHAR *name,
+                                const CHAR *value);
 extern xmlAttrPtr xmlNewProp(xmlNodePtr node, const CHAR *name,
                              const CHAR *value);
 extern xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name,
                              const CHAR *value);
 extern const CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name);
+extern xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value);
+extern CHAR *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine);
 extern void xmlFreePropList(xmlAttrPtr cur);
 extern void xmlFreeProp(xmlAttrPtr cur);
 extern xmlNodePtr xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
                              const CHAR *name, CHAR *content);
-extern xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name, CHAR *content);
+extern xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name);
 extern xmlNodePtr xmlNewDocText(xmlDocPtr doc, const CHAR *content);
 extern xmlNodePtr xmlNewText(const CHAR *content);
 extern xmlNodePtr xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len);
 extern xmlNodePtr xmlNewTextLen(const CHAR *content, int len);
 extern xmlNodePtr xmlNewDocComment(xmlDocPtr doc, CHAR *content);
 extern xmlNodePtr xmlNewComment(CHAR *content);
+extern xmlNodePtr xmlNewReference(xmlDocPtr doc, const CHAR *name);
 extern xmlNodePtr xmlAddChild(xmlNodePtr parent, xmlNodePtr cur);
 extern xmlNodePtr xmlGetLastChild(xmlNodePtr node);
 extern int xmlNodeIsText(xmlNodePtr node);

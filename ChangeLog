@@ -1,3 +1,14 @@
+Tue Oct 27 01:15:39 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+        * parser.[ch] SAX.c tree.[ch]: large amount of changes to improve
+          entity support and provide an internal representation close to
+          DOM one (entity ref nodes, and attribute value as tree). I tried
+          to preserve the interface but this will surely break some apps
+          (I have to change rpm2html/rpmfind for example). I had to change
+	  two interfaces, and the generated tree is somewhat different.
+	* doc/* : started documenting the XML library, the tree and
+	  DOM/Corba. This is a first step.
+
 Sat Oct 24 14:23:51 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: Set up the fonctions comment block, boring but useful.

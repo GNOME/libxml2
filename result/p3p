@@ -13,7 +13,7 @@
       </STATEMENT>
     </USES>
     <USES>
-      <STATEMENT action="read&amp;write" purp="0" recpnt="0" id="1">
+      <STATEMENT action="read" purp="0" recpnt="0" id="1">
         <REF name="User.Shipping."/>
       </STATEMENT>
     </USES>

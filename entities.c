@@ -143,6 +143,29 @@ void xmlInitializePredefinedEntities(void) {
     }
 }
 
+/**
+ * xmlGetPredefinedEntity:
+ * @name:  the entity name
+ *
+ * Check whether this name is an predefined entity.
+ *
+ * return values: NULL if not, othervise the entity
+ */
+xmlEntityPtr
+xmlGetPredefinedEntity(const CHAR *name) {
+    int i;
+    xmlEntityPtr cur;
+
+    if (xmlPredefinedEntities == NULL)
+        xmlInitializePredefinedEntities();
+    for (i = 0;i < xmlPredefinedEntities->nb_entities;i++) {
+	cur = &xmlPredefinedEntities->table[i];
+	if (!xmlStrcmp(cur->name, name)) return(cur);
+    }
+    return(NULL);
+}
+
+
 
 /*
  * xmlAddDtdEntity : register a new entity for this DTD.

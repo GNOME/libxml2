@@ -58,7 +58,10 @@ int name##Push(xmlParserCtxtPtr ctxt, type value) {			\
 type name##Pop(xmlParserCtxtPtr ctxt) {					\
     if (ctxt->name##Nr <= 0) return(0);					\
     ctxt->name##Nr--;							\
-    ctxt->name = ctxt->name##Tab[ctxt->name##Nr - 1];			\
+    if (ctxt->name##Nr > 0)						\
+	ctxt->name = ctxt->name##Tab[ctxt->name##Nr - 1];		\
+    else								\
+        ctxt->name = NULL;						\
     return(ctxt->name);							\
 }									\
 
@@ -123,31 +126,33 @@ void xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
  * @entity:  an Entity pointer
  *
  * Create a new input stream based on a memory buffer.
+ * return vakues: the new input stream
  */
-void xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
+xmlParserInputPtr
+xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     xmlParserInputPtr input;
 
     if (entity == NULL) {
         xmlParserError(ctxt,
 	      "internal: xmlNewEntityInputStream entity = NULL\n");
-	return;
+	return(NULL);
     }
     if (entity->content == NULL) {
         xmlParserError(ctxt,
 	      "internal: xmlNewEntityInputStream entity->input = NULL\n");
-	return;
+	return(NULL);
     }
     input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (input == NULL) {
 	xmlParserError(ctxt, "malloc: couldn't allocate a new input stream\n");
-	return;
+	return(NULL);
     }
     input->filename = entity->SystemID; /* TODO !!! char <- CHAR */
     input->base = entity->content;
     input->cur = entity->content;
     input->line = 1;
     input->col = 1;
-    xmlPushInput(ctxt, input);
+    return(input);
 }
 
 /*
@@ -876,6 +881,7 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const CHAR *str, int len) {
 
 void xmlHandleEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     int len;
+    xmlParserInputPtr input;
 
     if (entity->content == NULL) {
         xmlParserError(ctxt, "xmlHandleEntity %s: content == NULL\n",
@@ -888,7 +894,8 @@ void xmlHandleEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     /*
      * Redefine its content as an input stream.
      */
-    xmlNewEntityInputStream(ctxt, entity);
+    input = xmlNewEntityInputStream(ctxt, entity);
+    xmlPushInput(ctxt, input);
     return;
 
 handle_as_char:
@@ -904,8 +911,8 @@ handle_as_char:
  * Forward definition for recusive behaviour.
  */
 xmlNodePtr xmlParseElement(xmlParserCtxtPtr ctxt);
-CHAR *xmlParsePEReference(xmlParserCtxtPtr ctxt, int inLine);
-CHAR *xmlParseReference(xmlParserCtxtPtr ctxt, int inLine);
+CHAR *xmlParsePEReference(xmlParserCtxtPtr ctxt);
+CHAR *xmlParseReference(xmlParserCtxtPtr ctxt);
 
 /************************************************************************
  *									*
@@ -1231,13 +1238,22 @@ CHAR *xmlParseEntityValue(xmlParserCtxtPtr ctxt) {
 	while ((IS_CHAR(CUR)) && (CUR != '"')) {
 	    if (CUR == '%') {
 	        ret = xmlStrncat(ret, q, CUR_PTR - q);
-	        cur = xmlParsePEReference(ctxt, 1);
+	        cur = xmlParsePEReference(ctxt);
 		ret = xmlStrcat(ret, cur);
 		q = CUR_PTR;
 	    } else if (CUR == '&') {
 	        ret = xmlStrncat(ret, q, CUR_PTR - q);
-	        cur = xmlParseReference(ctxt, 1);
-		ret = xmlStrcat(ret, cur);
+	        cur = xmlParseReference(ctxt);
+		if (cur != NULL) {
+		    CHAR buf[2];
+		    buf[0] = '&';
+		    buf[1] = 0;
+		    ret = xmlStrncat(ret, buf, 1);
+		    ret = xmlStrcat(ret, cur);
+		    buf[0] = ';';
+		    buf[1] = 0;
+		    ret = xmlStrncat(ret, buf, 1);
+		}
 		q = CUR_PTR;
 	    } else 
 	        NEXT;
@@ -1254,13 +1270,22 @@ CHAR *xmlParseEntityValue(xmlParserCtxtPtr ctxt) {
 	while ((IS_CHAR(CUR)) && (CUR != '\'')) {
 	    if (CUR == '%') {
 	        ret = xmlStrncat(ret, q, CUR_PTR - q);
-	        cur = xmlParsePEReference(ctxt, 1);
+	        cur = xmlParsePEReference(ctxt);
 		ret = xmlStrcat(ret, cur);
 		q = CUR_PTR;
 	    } else if (CUR == '&') {
 	        ret = xmlStrncat(ret, q, CUR_PTR - q);
-	        cur = xmlParseReference(ctxt, 1);
-		ret = xmlStrcat(ret, cur);
+	        cur = xmlParseReference(ctxt);
+		if (cur != NULL) {
+		    CHAR buf[2];
+		    buf[0] = '&';
+		    buf[1] = 0;
+		    ret = xmlStrncat(ret, buf, 1);
+		    ret = xmlStrcat(ret, cur);
+		    buf[0] = ';';
+		    buf[1] = 0;
+		    ret = xmlStrncat(ret, buf, 1);
+		}
 		q = CUR_PTR;
 	    } else 
 	        NEXT;
@@ -1300,11 +1325,32 @@ CHAR *xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 	while ((IS_CHAR(CUR)) && (CUR != '"')) {
 	    if (CUR == '&') {
 	        ret = xmlStrncat(ret, q, CUR_PTR - q);
-	        cur = xmlParseReference(ctxt, 1);
-		ret = xmlStrcat(ret, cur);
+	        cur = xmlParseReference(ctxt);
+		if (cur != NULL) {
+		    /*
+		     * Special case for '&amp;', we don't want to
+		     * resolve it here since it will break later
+		     * when searching entities in the string.
+		     */
+		    if ((cur[0] == '&') && (cur[1] == 0)) {
+		        CHAR buf[6] = { '&', 'a', 'm', 'p', ';', 0 };
+		        ret = xmlStrncat(ret, buf, 5);
+		    } else
+		        ret = xmlStrcat(ret, cur);
+		    free(cur);
+		}
 		q = CUR_PTR;
 	    } else 
 	        NEXT;
+	    /*
+	     * Pop out finished entity references.
+	     */
+	    while ((CUR == 0) && (ctxt->inputNr > 1)) {
+		if (CUR_PTR != q)
+		    ret = xmlStrncat(ret, q, CUR_PTR - q);
+	        xmlPopInput(ctxt);
+		q = CUR_PTR;
+	    }
 	}
 	if (!IS_CHAR(CUR)) {
 	    xmlParserError(ctxt, "Unfinished AttValue\n");
@@ -1318,11 +1364,32 @@ CHAR *xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 	while ((IS_CHAR(CUR)) && (CUR != '\'')) {
 	    if (CUR == '&') {
 	        ret = xmlStrncat(ret, q, CUR_PTR - q);
-	        cur = xmlParseReference(ctxt, 1);
-		ret = xmlStrcat(ret, cur);
+	        cur = xmlParseReference(ctxt);
+		if (cur != NULL) {
+		    /*
+		     * Special case for '&amp;', we don't want to
+		     * resolve it here since it will break later
+		     * when searching entities in the string.
+		     */
+		    if ((cur[0] == '&') && (cur[1] == 0)) {
+		        CHAR buf[6] = { '&', 'a', 'm', 'p', ';', 0 };
+		        ret = xmlStrncat(ret, buf, 5);
+		    } else
+		        ret = xmlStrcat(ret, cur);
+		    free(cur);
+		}
 		q = CUR_PTR;
 	    } else 
 	        NEXT;
+	    /*
+	     * Pop out finished entity references.
+	     */
+	    while ((CUR == 0) && (ctxt->inputNr > 1)) {
+		if (CUR_PTR != q)
+		    ret = xmlStrncat(ret, q, CUR_PTR - q);
+	        xmlPopInput(ctxt);
+		q = CUR_PTR;
+	    }
 	}
 	if (!IS_CHAR(CUR)) {
 	    xmlParserError(ctxt, "Unfinished AttValue\n");
@@ -2060,7 +2127,6 @@ void xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseCharRef:
  * @ctxt:  an XML parser context
- * @inLine:  handle it as inline or pass it to SAX as chars ?
  *
  * parse Reference declarations
  *
@@ -2068,7 +2134,7 @@ void xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
  *                  '&#x' [0-9a-fA-F]+ ';'
  * return values: the value parsed
  */
-CHAR *xmlParseCharRef(xmlParserCtxtPtr ctxt, int inLine) {
+CHAR *xmlParseCharRef(xmlParserCtxtPtr ctxt) {
     int val = 0;
     CHAR buf[2];
 
@@ -2114,10 +2180,7 @@ CHAR *xmlParseCharRef(xmlParserCtxtPtr ctxt, int inLine) {
     if (IS_CHAR(val)) {
         buf[0] = (CHAR) val;
 	buf[1] = 0;
-	if (inLine)
-	    return(xmlStrndup(buf, 1));
-	else if (ctxt->sax != NULL)
-	    ctxt->sax->characters(ctxt, buf, 0, 1);
+	return(xmlStrndup(buf, 1));
     } else {
 	xmlParserError(ctxt, "xmlParseCharRef: invalid value");
     }
@@ -2127,18 +2190,19 @@ CHAR *xmlParseCharRef(xmlParserCtxtPtr ctxt, int inLine) {
 /**
  * xmlParseEntityRef:
  * @ctxt:  an XML parser context
- * @inLine:  handle it as inline or pass it to SAX as chars ?
  *
  * parse ENTITY references declarations
  *
  * [68] EntityRef ::= '&' Name ';'
- * return values: the entity content, or NULL if directly handled (inLine == 0)
+ * return values: the entity ref string or NULL if directly as input stream.
  */
-CHAR *xmlParseEntityRef(xmlParserCtxtPtr ctxt, int inLine) {
+CHAR *xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
     CHAR *ret = NULL;
+    const CHAR *q;
     CHAR *name;
-    xmlEntityPtr entity;
+    xmlParserInputPtr input = NULL;
 
+    q = CUR_PTR;
     if (CUR == '&') {
         NEXT;
         name = xmlParseName(ctxt);
@@ -2147,40 +2211,18 @@ CHAR *xmlParseEntityRef(xmlParserCtxtPtr ctxt, int inLine) {
 	} else {
 	    if (CUR == ';') {
 	        NEXT;
-		entity = xmlGetDocEntity(ctxt->doc, name);
-		if (entity == NULL) {
-		    /* TODO !!! Create a reference ! */
-		    xmlParserWarning(ctxt,
-		         "xmlParseEntityRef: &%s; not found\n", name);
-		}
 		/*
-		 * If we can get the content, push the entity content
-		 * as the next input stream.
+		 * We parsed the entity reference correctly, call SAX
+		 * interface for the proper behaviour:
+		 *   - get a new input stream
+		 *   - or keep the reference inline
 		 */
+		if (ctxt->sax)
+		    input = ctxt->sax->resolveEntity(ctxt, NULL, name);
+		if (input != NULL)
+		    xmlPushInput(ctxt, input);
 		else {
-		    switch (entity->type) {
-		        case XML_INTERNAL_PARAMETER_ENTITY:
-			case XML_EXTERNAL_PARAMETER_ENTITY:
-			    xmlParserError(ctxt,
-		"internal: xmlGetDtdEntity returned a general entity\n");
-		            break;
-			case XML_INTERNAL_GENERAL_ENTITY:
-			    if (inLine)
-			        ret = entity->content;
-			    else
-				xmlHandleEntity(ctxt, entity);
-			    break;
-			case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
-			case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
-			    xmlParserWarning(ctxt,
-	    "xmlParseEntityRef: external entity &%s; not supported\n",
-	                                     name);
-	                    break;
-			default:
-			    xmlParserError(ctxt, 
-		    "internal: xmlParseEntityRef: unknown entity type %d\n",
-			                   entity->type);
-		    }
+		    ret = xmlStrndup(q, CUR_PTR - q);
 		}
 	    } else {
 		char cst[2] = { '&', 0 };
@@ -2198,18 +2240,18 @@ CHAR *xmlParseEntityRef(xmlParserCtxtPtr ctxt, int inLine) {
 /**
  * xmlParseReference:
  * @ctxt:  an XML parser context
- * @inLine:  handle it as inline or pass it to SAX as chars ?
  * 
  * parse Reference declarations
  *
  * [67] Reference ::= EntityRef | CharRef
- * return values: the entity content or NULL is handled directly
+ * return values: the entity string or NULL if handled directly by pushing
+ *      the entity value as the input.
  */
-CHAR *xmlParseReference(xmlParserCtxtPtr ctxt, int inLine) {
+CHAR *xmlParseReference(xmlParserCtxtPtr ctxt) {
     if ((CUR == '&') && (NXT(1) == '#')) {
-        return(xmlParseCharRef(ctxt, inLine));
+        return(xmlParseCharRef(ctxt));
     } else if (CUR == '&') {
-        return(xmlParseEntityRef(ctxt, inLine));
+        return(xmlParseEntityRef(ctxt));
     }
     return(NULL);
 }
@@ -2217,17 +2259,17 @@ CHAR *xmlParseReference(xmlParserCtxtPtr ctxt, int inLine) {
 /**
  * xmlParsePEReference:
  * @ctxt:  an XML parser context
- * @inLine:  handle it as inline or pass it to SAX as chars ?
  *
  * parse PEReference declarations
  *
  * [69] PEReference ::= '%' Name ';'
- * return values: the entity content or NULL if handled differently.
+ * return values: the entity content or NULL if handled directly.
  */
-CHAR *xmlParsePEReference(xmlParserCtxtPtr ctxt, int inLine) {
+CHAR *xmlParsePEReference(xmlParserCtxtPtr ctxt) {
     CHAR *ret = NULL;
     CHAR *name;
     xmlEntityPtr entity;
+    xmlParserInputPtr input;
 
     if (CUR == '%') {
         NEXT;
@@ -2241,37 +2283,12 @@ CHAR *xmlParsePEReference(xmlParserCtxtPtr ctxt, int inLine) {
 		if (entity == NULL) {
 		    xmlParserWarning(ctxt,
 		         "xmlParsePEReference: %%%s; not found\n");
-		}
-		/*
-		 * If we can get the content, push the entity content
-		 * as the next input stream.
-		 */
-		else {
-		    switch (entity->type) {
-		        case XML_INTERNAL_PARAMETER_ENTITY:
-			    if (inLine)
-			        ret = entity->content;
-			    else
-				xmlNewEntityInputStream(ctxt, entity);
-			    break;
-			case XML_EXTERNAL_PARAMETER_ENTITY:
-			    xmlParserWarning(ctxt,
-	    "xmlParsePEReference: external entity %%%s; not supported\n");
-	                    break;
-			case XML_INTERNAL_GENERAL_ENTITY:
-			case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
-			case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
-			    xmlParserError(ctxt,
-		"internal: xmlGetDtdEntity returned a general entity\n");
-		            break;
-			default:
-			    xmlParserError(ctxt, 
-		    "internal: xmlParsePEReference: unknown entity type %d\n",
-			                   entity->type);
-		    }
+		} else {
+		    input = xmlNewEntityInputStream(ctxt, entity);
+		    xmlPushInput(ctxt, input);
 		}
 	    } else {
-		char cst[2] = { '&', 0 };
+		char cst[2] = { '%', 0 };
 
 		xmlParserError(ctxt, "xmlParsePEReference: expecting ';'\n");
 		ret = xmlStrndup(cst, 1);
@@ -2339,7 +2356,7 @@ void xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
 
 	    SKIP_BLANKS;
 	    xmlParseMarkupDecl(ctxt);
-	    xmlParsePEReference(ctxt, 0);
+	    xmlParsePEReference(ctxt);
 
 	    if (CUR_PTR == check) {
 		xmlParserError(ctxt, 
@@ -2387,15 +2404,16 @@ void xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
  * definition.
  */
 
-void xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
-    CHAR *name, *value = NULL;
+xmlAttrPtr xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
+    CHAR *name;
     CHAR *ns;
-    xmlNodePtr val = NULL;
+    CHAR *value = NULL;
+    xmlAttrPtr ret;
 
     name = xmlNamespaceParseQName(ctxt, &ns);
     if (name == NULL) {
 	xmlParserError(ctxt, "error parsing attribute name\n");
-        return;
+        return(NULL);
     }
 
     /*
@@ -2423,31 +2441,30 @@ void xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
 	    free(name);
 	if (value != NULL)
 	    free(value);
-	return;
+	return(NULL);
     }
     if ((ns != NULL) && (ns[0] == 'x') && (ns[1] == 'm') && (ns[2] == 'l') &&
         (ns[3] == 'n') && (ns[4] == 's') && (ns[5] == 0)) {
 	/* a standard namespace definition */
 	xmlNewNs(node, value, name);
+	free(ns);
 	if (name != NULL) 
 	    free(name);
 	if (value != NULL)
 	    free(value);
-	return;
+	return(NULL);
     }
 
-    /*
-     * Handle the attribute, this is done by the the SAX back end. The
-     * DOM default handling is to build the attribute content tree and
-     * link it to the element.
-     */
-    if (name != NULL) {
-	if (ctxt->sax)
-	    ctxt->sax->attribute(ctxt, name, value);
-        free(name);
-    }
+    ret = xmlNewProp(ctxt->node, name, NULL);
+    if (ret != NULL)
+        ret->val = xmlStringGetNodeList(ctxt->doc, value);
+
+    if (ns != NULL)
+      free(ns);
     if (value != NULL)
-      free(value);
+	free(value);
+    free(name);
+    return(ret);
 }
 
 /**
@@ -2474,11 +2491,13 @@ xmlNodePtr xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     CHAR *namespace, *name;
     xmlNsPtr ns = NULL;
     xmlNodePtr ret = NULL;
+    xmlNodePtr parent = ctxt->node;
 
     if (CUR != '<') return(NULL);
     NEXT;
 
     name = xmlNamespaceParseQName(ctxt, &namespace);
+    if (name == NULL) return(NULL);
 
     /*
      * Note : the namespace resolution is deferred until the end of the
@@ -2486,6 +2505,17 @@ xmlNodePtr xmlParseStartTag(xmlParserCtxtPtr ctxt) {
      *        an attribute at this level.
      */
     ret = xmlNewDocNode(ctxt->doc, ns, name, NULL);
+    if (ret == NULL) {
+	if (namespace != NULL)
+	    free(namespace);
+	free(name);
+        return(NULL);
+    }
+
+    /*
+     * We are parsing a new node.
+     */
+    nodePush(ctxt, ret);
 
     /*
      * Now parse the attributes, it ends up with the ending
@@ -2513,21 +2543,25 @@ xmlNodePtr xmlParseStartTag(xmlParserCtxtPtr ctxt) {
      */
     ns = xmlSearchNs(ctxt->doc, ret, namespace);
     if (ns == NULL) /* ret still doesn't have a parent yet ! */
-	ns = xmlSearchNs(ctxt->doc, ctxt->node, namespace);
+	ns = xmlSearchNs(ctxt->doc, parent, namespace);
     xmlSetNs(ret, ns);
     if (namespace != NULL)
 	free(namespace);
-
-    /*
-     * We are parsing a new node.
-     */
-    nodePush(ctxt, ret);
 
     /*
      * SAX: Start of Element !
      */
     if (ctxt->sax != NULL)
         ctxt->sax->startElement(ctxt, name);
+    free(name);
+
+    /*
+     * Link the child element
+     */
+    if (ctxt->nodeNr < 2) return(ret);
+    parent = ctxt->nodeTab[ctxt->nodeNr - 2];
+    if (parent != NULL)
+	xmlAddChild(parent, ctxt->node);
 
     return(ret);
 }
@@ -2688,10 +2722,27 @@ void xmlParseContent(xmlParserCtxtPtr ctxt) {
 	    ret = xmlParseElement(ctxt);
 	}
 	/*
-	 * Fifth case : a reference.
+	 * Fifth case : a reference. If if has not been resolved,
+	 *    parsing returns it's Name, create the node 
 	 */
 	else if (CUR == '&') {
-	    xmlParseReference(ctxt, 0);
+	    CHAR *val = xmlParseReference(ctxt);
+	    if (val != NULL) {
+	        if (val[0] != '&') {
+		    /*
+		     * inline predefined entity.
+		     */
+                    if (ctxt->sax != NULL)
+			ctxt->sax->characters(ctxt, val, 0, xmlStrlen(val));
+		} else {
+		    /*
+		     * user defined entity, create a node.
+		     */
+		    ret = xmlNewReference(ctxt->doc, val);
+		    xmlAddChild(ctxt->node, ret);
+		}
+		free(val);
+	    }
 	}
 	/*
 	 * Last case, text. Note that References are handled directly.
@@ -3266,6 +3317,11 @@ xmlDocPtr xmlParseDoc(CHAR *cur) {
 
     xmlParseDocument(ctxt);
     ret = ctxt->doc;
+    free(ctxt->nodeTab);
+    free(ctxt->inputTab);
+    if (input->filename != NULL)
+	free((char *)input->filename);
+    free(input);
     free(ctxt);
     
     return(ret);
@@ -3381,6 +3437,11 @@ retry_bigger:
 
     ret = ctxt->doc;
     free(buffer);
+    free(ctxt->nodeTab);
+    free(ctxt->inputTab);
+    if (inputStream->filename != NULL)
+	free((char *)inputStream->filename);
+    free(inputStream);
     free(ctxt);
     
     return(ret);
@@ -3415,6 +3476,8 @@ xmlDocPtr xmlParseMemory(char *buffer, int size) {
     input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (input == NULL) {
         perror("malloc");
+        free(ctxt->nodeTab);
+	free(ctxt->inputTab);
 	free(ctxt);
 	return(NULL);
     }
@@ -3434,6 +3497,11 @@ xmlDocPtr xmlParseMemory(char *buffer, int size) {
     xmlParseDocument(ctxt);
 
     ret = ctxt->doc;
+    free(ctxt->nodeTab);
+    free(ctxt->inputTab);
+    if (input->filename != NULL)
+	free((char *)input->filename);
+    free(input);
     free(ctxt);
     
     return(ret);

@@ -1,3 +1,10 @@
+Fri Jun 23 22:26:07 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/xml.html: various patches and improvements typo fixed by
+	  Felix Natter
+	* doc/libxml-doc.el: Emacs module to lookup the libxml documentation
+	  from Felix Natter <fnatter@gmx.net>
+
 Sat May  6 10:09:45 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/upgrade.html: updated with instructions for support of both

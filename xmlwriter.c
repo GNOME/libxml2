@@ -1224,6 +1224,9 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
 	    break;
     }
 
+    if (writer->indent)
+      writer->doindent = 0;
+
     if (buf != 0) {
         count =
             xmlOutputBufferWriteString(writer->out, (const char *) buf);
@@ -1980,7 +1983,6 @@ xmlTextWriterWriteElement(xmlTextWriterPtr writer, const xmlChar * name,
     if (count == -1)
         return -1;
     sum += count;
-    writer->doindent = 0;
     count = xmlTextWriterEndElement(writer);
     if (count == -1)
         return -1;

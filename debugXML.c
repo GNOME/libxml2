@@ -44,9 +44,6 @@ struct _xmlDebugCtxt {
     xmlNodePtr node;		/* current node */
     int check;                  /* do just checkings */
     int errors;                 /* number of errors found */
-    int                nsNr;    /* the number of inherited namespaces */
-    int                nsMax;   /* the size of the arrays */
-    xmlNsPtr          *nsTab;   /* the array of namespace nodes */
 };
 
 static void xmlCtxtDumpNodeList(xmlDebugCtxtPtr ctxt, xmlNodePtr node);
@@ -57,9 +54,6 @@ xmlCtxtDumpInitCtxt(xmlDebugCtxtPtr ctxt)
     int i;
 
     ctxt->depth = 0;
-    ctxt->nsNr = 0;
-    ctxt->nsMax = 0;
-    ctxt->nsTab = NULL;
     ctxt->check = 0;
     ctxt->errors = 0;
     ctxt->output = stdout;
@@ -71,77 +65,64 @@ xmlCtxtDumpInitCtxt(xmlDebugCtxtPtr ctxt)
 static void
 xmlCtxtDumpCleanCtxt(xmlDebugCtxtPtr ctxt)
 {
-    if (ctxt->nsTab != NULL)
-        xmlFree(ctxt->nsTab);
 }
 
 /**
- * xmlNsCheckPush:
- * @ctxt:  an XML parser context
- * @ns:  the namespace node
+ * xmlNsCheckScope:
+ * @node: the node
+ * @ns: the namespace node
  *
- * Pushes a new namespace on top of the ns stack
+ * Check that a given namespace is in scope on a node.
  *
- * Returns -1 in case of error, and the index in the stack otherwise.
+ * Returns 1 if in scope, -1 in case of argument error, 
+ *         -2 if the namespace is not in scope, and -3 if not on
+ *         an ancestor node.
  */
 static int
-xmlNsCheckPush(xmlDebugCtxtPtr ctxt, xmlNsPtr ns)
+xmlNsCheckScope(xmlNodePtr node, xmlNsPtr ns)
 {
-    if (ns == NULL)
-        return(ctxt->nsNr);
+    xmlNsPtr cur;
 
-    if ((ctxt->nsMax == 0) || (ctxt->nsTab == NULL)) {
-	ctxt->nsMax = 10;
-	ctxt->nsNr = 0;
-	ctxt->nsTab = (xmlNsPtr *)
-	              xmlMalloc(ctxt->nsMax * sizeof(ctxt->nsTab[0]));
-	if (ctxt->nsTab == NULL) {
-	    xmlErrMemory(NULL, NULL);
-	    ctxt->nsMax = 0;
-            return (-1);
+    if ((node == NULL) || (ns == NULL))
+        return(-1);
+
+    if ((node->type != XML_ELEMENT_NODE) &&
+	(node->type != XML_ATTRIBUTE_NODE) &&
+	(node->type != XML_DOCUMENT_NODE) &&
+	(node->type != XML_TEXT_NODE) &&
+	(node->type != XML_HTML_DOCUMENT_NODE) &&
+	(node->type != XML_XINCLUDE_START))
+	return(-2);
+
+    while ((node != NULL) &&
+           ((node->type == XML_ELEMENT_NODE) ||
+            (node->type == XML_ATTRIBUTE_NODE) ||
+            (node->type == XML_TEXT_NODE) ||
+	    (node->type == XML_XINCLUDE_START))) {
+	if ((node->type == XML_ELEMENT_NODE) ||
+	    (node->type == XML_XINCLUDE_START)) {
+	    cur = node->nsDef;
+	    while (cur != NULL) {
+	        if (cur == ns)
+		    return(1);
+		if (xmlStrEqual(cur->prefix, ns->prefix))
+		    return(-2);
+		cur = cur->next;
+	    }
 	}
-    } else if (ctxt->nsNr >= ctxt->nsMax) {
-        ctxt->nsMax *= 2;
-        ctxt->nsTab = (xmlNsPtr *)
-	              xmlRealloc((char *) ctxt->nsTab,
-				 ctxt->nsMax * sizeof(ctxt->nsTab[0]));
-        if (ctxt->nsTab == NULL) {
-            xmlErrMemory(NULL, NULL);
-	    ctxt->nsMax /= 2;
-            return (-1);
-        }
+	node = node->parent;
     }
-    ctxt->nsTab[ctxt->nsNr++] = ns;
-    return (ctxt->nsNr);
+    /* the xml namespace may be declared on the document node */
+    if ((node != NULL) &&
+        ((node->type == XML_DOCUMENT_NODE) ||
+	 (node->type == XML_HTML_DOCUMENT_NODE))) {
+	 xmlNsPtr oldNs = ((xmlDocPtr) node)->oldNs;
+	 if (oldNs == ns)
+	     return(1);
+    }
+    return(-3);
 }
-/**
- * xmlNsCheckPop:
- * @ctxt: an XML parser context
- * @nr:  the number to pop
- *
- * Pops the top @nr parser prefix/namespace from the ns stack
- *
- * Returns the number of namespaces removed
- */
-static int
-xmlNsCheckPop(xmlDebugCtxtPtr ctxt, int nr)
-{
-    int i;
 
-    if (ctxt->nsTab == NULL) return(0);
-    if (ctxt->nsNr < nr) {
-        xmlGenericError(xmlGenericErrorContext, "Pbm popping %d NS\n", nr);
-        nr = ctxt->nsNr;
-    }
-    if (ctxt->nsNr <= 0)
-        return (0);
-    
-    for (i = 0;i < nr;i++) {
-         ctxt->nsNr--;
-	 ctxt->nsTab[ctxt->nsNr] = NULL;
-    }
-    return(nr);
-}
 static void
 xmlCtxtDumpSpaces(xmlDebugCtxtPtr ctxt)
 {
@@ -193,6 +174,40 @@ xmlDebugErr3(xmlDebugCtxtPtr ctxt, int error, const char *msg, char *extra)
 		    msg, extra);
 }
 
+/**
+ * xmlCtxtNsCheckScope:
+ * @ctxt: the debugging context
+ * @node: the node
+ * @ns: the namespace node
+ *
+ * Report if a given namespace is is not in scope.
+ */
+static void
+xmlCtxtNsCheckScope(xmlDebugCtxtPtr ctxt, xmlNodePtr node, xmlNsPtr ns)
+{
+    int ret;
+
+    ret = xmlNsCheckScope(node, ns);
+    if (ret == -2) {
+        if (ns->prefix == NULL)
+	    xmlDebugErr(ctxt, XML_CHECK_NS_SCOPE,
+			"Reference to default namespace not in scope\n");
+	else
+	    xmlDebugErr3(ctxt, XML_CHECK_NS_SCOPE,
+			 "Reference to namespace '%s' not in scope\n",
+			 (char *) ns->prefix);
+    }
+    if (ret == -3) {
+        if (ns->prefix == NULL)
+	    xmlDebugErr(ctxt, XML_CHECK_NS_ANCESTOR,
+			"Reference to default namespace not on ancestor\n");
+	else
+	    xmlDebugErr3(ctxt, XML_CHECK_NS_ANCESTOR,
+			 "Reference to namespace '%s' not on ancestor\n",
+			 (char *) ns->prefix);
+    }
+}
+
 static void
 xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
     if (node->parent == NULL)
@@ -229,7 +244,25 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
         if (node->next->prev != node)
 	    xmlDebugErr(ctxt, XML_CHECK_WRONG_NEXT,
                     "Node next->prev : forward link wrong\n");
+        if (node->next->parent != node->parent)
+	    xmlDebugErr(ctxt, XML_CHECK_WRONG_PARENT,
+                    "Node next->prev : forward link wrong\n");
     }
+    if (node->type == XML_ELEMENT_NODE) {
+        xmlNsPtr ns;
+
+	ns = node->nsDef;
+	while (ns != NULL) {
+	    xmlCtxtNsCheckScope(ctxt, node, ns);
+	    ns = ns->next;
+	}
+	if (node->ns != NULL)
+	    xmlCtxtNsCheckScope(ctxt, node, node->ns);
+    } else if (node->type == XML_ATTRIBUTE_NODE) {
+	if (node->ns != NULL)
+	    xmlCtxtNsCheckScope(ctxt, node, node->ns);
+    }
+
 }
 
 static void

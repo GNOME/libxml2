@@ -774,11 +774,11 @@ typedef enum {
     XML_CHECK_NOT_ENTITY_DECL, /* 5026 */
     XML_CHECK_NOT_NS_DECL, /* 5027 */
     XML_CHECK_NO_HREF, /* 5028 */
-    XML_CHECK_ /* 5029 */
+    XML_CHECK_WRONG_PARENT,/* 5029 */
+    XML_CHECK_NS_SCOPE, /* 5030 */
+    XML_CHECK_NS_ANCESTOR, /* 5031 */
+    XML_CHECK_ /* 5032 */
 #if 0
-    XML_CHECK_, /* 5030 */
-    XML_CHECK_, /* 5031 */
-    XML_CHECK_, /* 5032 */
     XML_CHECK_, /* 5033 */
     XML_CHECK_X /* 503 */
 #endif

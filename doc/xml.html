@@ -909,6 +909,13 @@ transparently replace those with chars (i.e., it will not generate entity
 reference elements in the DOM tree or call the reference() SAX callback when
 finding them in the input).</p>
 
+<p><span style="background-color: #FF0000">WARNING</span>: handling entities
+on top of libxml SAX interface is difficult !!! If you plan to use
+non-predefined entities in your documents, then the learning cuvre to handle
+then using the SAX API may be long. If you plan to use complex document, I
+strongly suggest you consider using the DOM interface instead and let libxml
+deal with the complexity rather than trying to do it yourself. </p>
+
 <h2><a name="Namespaces">Namespaces</a></h2>
 
 <p>The libxml library implements <a
@@ -1254,6 +1261,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.46 2000/08/19 16:40:28 veillard Exp $</p>
+<p>$Id: xml.html,v 1.47 2000/08/25 10:25:23 veillard Exp $</p>
 </body>
 </html>

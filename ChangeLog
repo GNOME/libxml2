@@ -1,3 +1,8 @@
+Wed Apr 10 23:31:34 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/configure.js: patch from Nilo for the c14n option
+	* win32/Makefile.msvc: fixed libxml2.def generation with threads
+
 Wed Apr 10 21:24:16 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c include/libxml/xmlwin32version.h.in: Silvan Minghetti

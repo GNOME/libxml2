@@ -287,6 +287,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withHttp = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "html")
 			withHtml = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "c14n")
+			withC14n = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "catalog")
 			withCatalog = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "docb")

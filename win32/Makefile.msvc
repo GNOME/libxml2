@@ -68,6 +68,9 @@ UTILS_INTDIR = utils.int
 # The preprocessor and its options.
 CPP = cl.exe /EP
 CPPFLAGS = /nologo /I$(XML_SRCDIR)\include
+!if "$(WITH_THREADS)" == "1"
+CPPFLAGS = $(CPPFLAGS) /D "_REENTRANT"
+!endif
 
 # The compiler and its options.
 CC = cl.exe

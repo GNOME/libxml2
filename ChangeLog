@@ -1,4 +1,10 @@
-Thu Nov 18 14:57:18 CET 1999
+Fri Nov 19 18:41:28 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c: bugfixing, the damn thing MUST not crash even
+	                if given /proc/kcore as input !
+	* doc/xml.html doc/*: updated and rebuilt the documentation
+
+Thu Nov 18 14:57:18 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: Fixed some wrongly space collapsing code due to
 	            a misreading of the spec.

@@ -419,6 +419,7 @@
 <ANCHOR id ="INPUTPUSH" href="gnome-xml/gnome-xml-parserinternals.html#INPUTPUSH">
 <ANCHOR id ="INPUTPOP" href="gnome-xml/gnome-xml-parserinternals.html#INPUTPOP">
 <ANCHOR id ="GNOME-XML-XMLMEMORY" href="gnome-xml/gnome-xml-xmlmemory.html">
+<ANCHOR id ="NO-DEBUG-MEMORY" href="gnome-xml/gnome-xml-xmlmemory.html#NO-DEBUG-MEMORY">
 <ANCHOR id ="XMLFREE" href="gnome-xml/gnome-xml-xmlmemory.html#XMLFREE">
 <ANCHOR id ="XMLMALLOC" href="gnome-xml/gnome-xml-xmlmemory.html#XMLMALLOC">
 <ANCHOR id ="XMLREALLOC" href="gnome-xml/gnome-xml-xmlmemory.html#XMLREALLOC">

@@ -1986,7 +1986,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the siwe of the array</TD
+>  the size of the array</TD
 ></TR
 ><TR
 ><TD
@@ -2630,7 +2630,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an xmlP arserInputPtr</TD
+>  an xmlParserInputPtr</TD
 ></TR
 ></TABLE
 ><P
@@ -2837,7 +2837,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the function returns the local part, and prefix is updated
+>the local part, and prefix is updated
 to get the Prefix if any.</TD
 ></TR
 ></TABLE
@@ -3032,7 +3032,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the function returns the local part, and prefix is updated
+>the local part, and prefix is updated
 to get the Prefix if any.</TD
 ></TR
 ></TABLE
@@ -3238,7 +3238,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >This is what the older xml-name Working Draft specified, a bunch of
 other stuff may still rely on it, so support is still here as
-if ot was declared on the root of the Tree:-(</P
+if it was declared on the root of the Tree:-(</P
 ><P
 >To be removed at next drop of binary compatibility</P
 ><P
@@ -3680,6 +3680,58 @@ will be handled later in xmlStringGetNodeList</P
 >[10] AttValue ::= '"' ([^&lt;&amp;"] | Reference)* '"' |
 "'" ([^&lt;&amp;'] | Reference)* "'"</P
 ><P
+>3.3.3 Attribute-Value Normalization:
+Before the value of an attribute is passed to the application or
+checked for validity, the XML processor must normalize it as follows: 
+- a character reference is processed by appending the referenced
+character to the attribute value
+- an entity reference is processed by recursively processing the
+replacement text of the entity 
+- a whitespace character (<GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+>, <GTKDOCLINK
+HREF="XD"
+>xD</GTKDOCLINK
+>, <GTKDOCLINK
+HREF="XA"
+>xA</GTKDOCLINK
+>, <GTKDOCLINK
+HREF="X9"
+>x9</GTKDOCLINK
+>) is processed by
+appending <GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+> to the normalized value, except that only a single
+<GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+> is appended for a "<GTKDOCLINK
+HREF="XD"
+>xD</GTKDOCLINK
+><GTKDOCLINK
+HREF="XA"
+>xA</GTKDOCLINK
+>" sequence that is part of an external
+parsed entity or the literal entity value of an internal parsed entity 
+- other characters are processed by appending them to the normalized value 
+If the declared value is not CDATA, then the XML processor must further
+process the normalized attribute value by discarding any leading and
+trailing space (<GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+>) characters, and by replacing sequences of space
+(<GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+>) characters by a single space (<GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+>) character.  
+All attributes for which no declaration has been read should be treated
+by a non-validating parser as if declared CDATA.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
@@ -3722,7 +3774,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the AttValue parsed or NULL.</TD
+>the AttValue parsed or NULL. The value has to be freed by the caller.</TD
 ></TR
 ></TABLE
 ><P
@@ -3732,7 +3784,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8131"
+NAME="AEN8143"
 ></A
 ><H3
 ><A
@@ -3815,7 +3867,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8153"
+NAME="AEN8165"
 ></A
 ><H3
 ><A
@@ -3898,7 +3950,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8175"
+NAME="AEN8187"
 ></A
 ><H3
 ><A
@@ -3982,7 +4034,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8196"
+NAME="AEN8208"
 ></A
 ><H3
 ><A
@@ -4113,7 +4165,7 @@ it is possible to return NULL and have publicID set.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8229"
+NAME="AEN8241"
 ></A
 ><H3
 ><A
@@ -4180,7 +4232,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8246"
+NAME="AEN8258"
 ></A
 ><H3
 ><A
@@ -4263,7 +4315,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8268"
+NAME="AEN8280"
 ></A
 ><H3
 ><A
@@ -4330,7 +4382,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8286"
+NAME="AEN8298"
 ></A
 ><H3
 ><A
@@ -4405,7 +4457,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8306"
+NAME="AEN8318"
 ></A
 ><H3
 ><A
@@ -4483,7 +4535,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8329"
+NAME="AEN8341"
 ></A
 ><H3
 ><A
@@ -4622,7 +4674,7 @@ or XML_ATTRIBUTE_FIXED. </TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8366"
+NAME="AEN8378"
 ></A
 ><H3
 ><A
@@ -4711,7 +4763,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8390"
+NAME="AEN8402"
 ></A
 ><H3
 ><A
@@ -4798,7 +4850,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8413"
+NAME="AEN8425"
 ></A
 ><H3
 ><A
@@ -4901,7 +4953,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8440"
+NAME="AEN8452"
 ></A
 ><H3
 ><A
@@ -5045,7 +5097,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8478"
+NAME="AEN8490"
 ></A
 ><H3
 ><A
@@ -5112,7 +5164,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8496"
+NAME="AEN8508"
 ></A
 ><H3
 ><A
@@ -5210,7 +5262,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8522"
+NAME="AEN8534"
 ></A
 ><H3
 ><A
@@ -5313,7 +5365,7 @@ hierarchy.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8548"
+NAME="AEN8560"
 ></A
 ><H3
 ><A
@@ -5436,7 +5488,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8579"
+NAME="AEN8591"
 ></A
 ><H3
 ><A
@@ -5519,7 +5571,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8601"
+NAME="AEN8613"
 ></A
 ><H3
 ><A
@@ -5598,7 +5650,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8620"
+NAME="AEN8632"
 ></A
 ><H3
 ><A
@@ -5686,7 +5738,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8643"
+NAME="AEN8655"
 ></A
 ><H3
 ><A
@@ -5787,7 +5839,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8667"
+NAME="AEN8679"
 ></A
 ><H3
 ><A
@@ -5861,7 +5913,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8686"
+NAME="AEN8698"
 ></A
 ><H3
 ><A
@@ -5947,7 +5999,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8707"
+NAME="AEN8719"
 ></A
 ><H3
 ><A
@@ -6017,7 +6069,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8725"
+NAME="AEN8737"
 ></A
 ><H3
 ><A
@@ -6142,7 +6194,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8759"
+NAME="AEN8771"
 ></A
 ><H3
 ><A
@@ -6190,6 +6242,8 @@ empty-element tag. </P
 ><P
 >[NS 10] EmptyElement ::= '&lt;' QName (S Attribute)* S? '/&gt;'</P
 ><P
+>Returne the element name parsed</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
@@ -6232,7 +6286,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the element name parsed</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6242,7 +6296,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8787"
+NAME="AEN8800"
 ></A
 ><H3
 ><A
@@ -6332,7 +6386,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8811"
+NAME="AEN8824"
 ></A
 ><H3
 ><A
@@ -6403,7 +6457,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8831"
+NAME="AEN8844"
 ></A
 ><H3
 ><A
@@ -6468,7 +6522,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8848"
+NAME="AEN8861"
 ></A
 ><H3
 ><A
@@ -6550,7 +6604,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8867"
+NAME="AEN8880"
 ></A
 ><H3
 ><A
@@ -6633,7 +6687,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8889"
+NAME="AEN8902"
 ></A
 ><H3
 ><A
@@ -6718,7 +6772,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8912"
+NAME="AEN8925"
 ></A
 ><H3
 ><A
@@ -6801,7 +6855,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8934"
+NAME="AEN8947"
 ></A
 ><H3
 ><A
@@ -6886,7 +6940,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8957"
+NAME="AEN8970"
 ></A
 ><H3
 ><A
@@ -6981,7 +7035,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8979"
+NAME="AEN8992"
 ></A
 ><H3
 ><A
@@ -7046,7 +7100,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8996"
+NAME="AEN9009"
 ></A
 ><H3
 ><A
@@ -7111,7 +7165,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9013"
+NAME="AEN9026"
 ></A
 ><H3
 ><A
@@ -7220,7 +7274,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9041"
+NAME="AEN9054"
 ></A
 ><H3
 ><A
@@ -7246,7 +7300,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9046"
+NAME="AEN9059"
 ></A
 ><H3
 ><A
@@ -7272,7 +7326,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9051"
+NAME="AEN9064"
 ></A
 ><H3
 ><A
@@ -7298,7 +7352,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9056"
+NAME="AEN9069"
 ></A
 ><H3
 ><A
@@ -7324,7 +7378,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9061"
+NAME="AEN9074"
 ></A
 ><H3
 ><A
@@ -7507,7 +7561,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9106"
+NAME="AEN9119"
 ></A
 ><H3
 ><A
@@ -7604,7 +7658,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9130"
+NAME="AEN9143"
 ></A
 ><H3
 ><A
@@ -7683,7 +7737,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9150"
+NAME="AEN9163"
 ></A
 ><H3
 ><A
@@ -7780,7 +7834,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9174"
+NAME="AEN9187"
 ></A
 ><H3
 ><A

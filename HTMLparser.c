@@ -455,8 +455,7 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar *new) {
 #endif
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, ctxt->name);
-	oldname = ctxt->name;
-	htmlnamePop(ctxt);
+	oldname = htmlnamePop(ctxt);
 	if (oldname != NULL) {
 #ifdef DEBUG
 	    fprintf(stderr,"htmlAutoClose: popped %s\n", oldname);
@@ -505,8 +504,7 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *new) {
 	}
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, ctxt->name);
-	oldname = ctxt->name;
-	htmlnamePop(ctxt);
+	oldname = htmlnamePop(ctxt);
 	if (oldname != NULL) {
 #ifdef DEBUG
 	    fprintf(stderr,"htmlAutoCloseOnClose: popped %s\n", oldname);
@@ -1698,10 +1696,11 @@ htmlParseComment(htmlParserCtxtPtr ctxt, int create) {
     } else {
         NEXT;
 	if (create) {
-	    val = xmlStrndup(start, q - start);
-	    if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL))
+	    if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL)) {
+		val = xmlStrndup(start, q - start);
 		ctxt->sax->comment(ctxt->userData, val);
-	    xmlFree(val);
+		xmlFree(val);
+	    }
 	}
     }
 }
@@ -2065,6 +2064,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt) {
     SKIP(2);
 
     name = htmlParseHTMLName(ctxt);
+    if (name == NULL) return;
 
     /*
      * We should definitely be at the ending "S? '>'" part
@@ -2123,10 +2123,10 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt) {
      * SAX: End of Tag
      */
     oldname = ctxt->name;
-    if (!xmlStrcmp(oldname, name)) {
+    if ((oldname != NULL) && (!xmlStrcmp(oldname, name))) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
-	htmlnamePop(ctxt);
+	oldname = htmlnamePop(ctxt);
 	if (oldname != NULL) {
 #ifdef DEBUG
 	    fprintf(stderr,"End of tag %s: popping out %s\n", name, oldname);
@@ -2338,11 +2338,10 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
         SKIP(2);
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
-	oldname = ctxt->name;
+	oldname = htmlnamePop(ctxt);
 #ifdef DEBUG
         fprintf(stderr,"End of tag the XML way: popping out %s\n", oldname);
 #endif
-	htmlnamePop(ctxt);
 	if (oldname != NULL)
 	    xmlFree(oldname);
 	return;
@@ -2361,12 +2360,10 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	 */
 	if (!xmlStrcmp(name, ctxt->name)) { 
 	    nodePop(ctxt);
-	    xmlFree(name);
-	    oldname = ctxt->name;
+	    oldname = htmlnamePop(ctxt);
 #ifdef DEBUG
 	    fprintf(stderr,"End of start tag problem: popping out %s\n", oldname);
 #endif
-	    htmlnamePop(ctxt);
 	    if (oldname != NULL)
 		xmlFree(oldname);
 	}    
@@ -2390,11 +2387,10 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     if ((info != NULL) && (info->empty)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
-	oldname = ctxt->name;
+	oldname = htmlnamePop(ctxt);
 #ifdef DEBUG
 	fprintf(stderr,"End of empty tag %s : popping out %s\n", name, oldname);
 #endif
-	htmlnamePop(ctxt);
 	if (oldname != NULL)
 	    xmlFree(oldname);
 	return;
@@ -2420,11 +2416,10 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	 * end of parsing of this node.
 	 */
 	nodePop(ctxt);
-	oldname = ctxt->name;
+	oldname = htmlnamePop(ctxt);
 #ifdef DEBUG
 	fprintf(stderr,"Premature end of tag %s : popping out %s\n", name, oldname);
 #endif
-	htmlnamePop(ctxt);
 	if (oldname != NULL)
 	    xmlFree(oldname);
 	return;
@@ -2609,10 +2604,8 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
     }
 
     if (ctxt->nodeTab != NULL) xmlFree(ctxt->nodeTab);
-    while ((oldname = ctxt->name) != NULL) {
-        htmlnamePop(ctxt);
-	if (oldname != NULL)
-	    xmlFree(oldname);
+    while ((oldname = htmlnamePop(ctxt)) != NULL) {
+	xmlFree(oldname);
     }
     if (ctxt->nameTab != NULL) xmlFree(ctxt->nameTab);
     if (ctxt->inputTab != NULL) xmlFree(ctxt->inputTab);

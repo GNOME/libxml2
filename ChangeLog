@@ -1,3 +1,7 @@
+Sun Aug 10 08:13:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* win32/libxml2.def.src: renerated with fixed libxml2-api.xml
+
 Sun Aug 10 00:22:55 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* News configure.in: preparing libxml2-2.5.9 release

@@ -29,6 +29,9 @@
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
 #include "encoding.h"
 #ifdef HAVE_UNICODE_H
 #include <unicode.h>

@@ -1,3 +1,9 @@
+Thu Dec 16 16:19:29 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c: fixed a bug introduced in 1.8.0 and breaking default
+	  namespace recognition, and Dia as a resul :-(
+	* encoding.c: closed bug #3950
+
 Wed Dec 15 19:22:23 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* valid.c: debugging a posteriori validation, except URI expansion

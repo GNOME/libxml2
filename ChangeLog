@@ -1,3 +1,8 @@
+Sat Mar 27 09:56:14 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* relaxng.c: fixed problem with IS_COMPILABLE flag
+	  (bug 130216)
+
 Fri Mar 26 18:28:32 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: applied patch from Dave Beckett to correct line number

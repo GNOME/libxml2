@@ -2340,7 +2340,8 @@ xmlRelaxNGAddValidError(xmlRelaxNGValidCtxtPtr ctxt,
     /*
      * generate the error directly
      */
-    if (((ctxt->flags & 1) == 0) || (ctxt->flags & 2)) {
+    if (((ctxt->flags & FLAGS_IGNORABLE) == 0) ||
+    	 (ctxt->flags & FLAGS_NEGATIVE)) {
         xmlNodePtr node, seq;
 
         /*
@@ -2880,9 +2881,15 @@ xmlRelaxNGIsCompileable(xmlRelaxNGDefinePtr def)
                         break;
                     list = list->next;
                 }
-                if (ret == 0)
+		/*
+		 * Because the routine is recursive, we must guard against
+		 * discovering both COMPILABLE and NOT_COMPILABLE
+		 */
+                if (ret == 0) {
+		    def->dflags &= ~IS_COMPILABLE;
                     def->dflags |= IS_NOT_COMPILABLE;
-                if (ret == 1)
+		}
+                if ((ret == 1) && !(def->dflags &= IS_NOT_COMPILABLE))
                     def->dflags |= IS_COMPILABLE;
 #ifdef DEBUG_COMPILE
                 if (ret == 1) {

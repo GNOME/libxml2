@@ -1,3 +1,8 @@
+Mon Jun  9 12:28:58 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c xmlIO.c: trying to fix #114277 about when file
+	  remapping and escaping should really be attempted.
+
 Mon Jun  9 11:06:09 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/*: applied a patch from Gman for building docs

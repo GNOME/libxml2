@@ -532,20 +532,22 @@ xmlGzfileOpen_real (const char *filename) {
  * xmlGzfileOpen:
  * @filename:  the URI for matching
  *
- * Wrapper around xmlGzfileOpen that try it with an unescaped
- * version of @filename, if this fails fallback to @filename
+ * Wrapper around xmlGzfileOpen if the open fais, it will
+ * try to unescape @filename
  */
 static void *
 xmlGzfileOpen (const char *filename) {
     char *unescaped;
     void *retval;
-    unescaped = xmlURIUnescapeString(filename, 0, NULL);
-    if (unescaped != NULL) {
-	retval = xmlGzfileOpen_real(unescaped);
-    } else {
-	retval = xmlGzfileOpen_real(filename);
+
+    retval = xmlGzfileOpen_real(filename);
+    if (retval == NULL) {
+	unescaped = xmlURIUnescapeString(filename, 0, NULL);
+	if (unescaped != NULL) {
+	    retval = xmlGzfileOpen_real(unescaped);
+	}
+	xmlFree(unescaped);
     }
-    xmlFree(unescaped);
     return retval;
 }
 
@@ -2487,7 +2489,6 @@ xmlParserGetDirectory(const char *filename) {
  *								*
  ****************************************************************/
 
-#ifdef LIBXML_CATALOG_ENABLED
 static int xmlSysIDExists(const char *URL) {
 #ifdef HAVE_STAT
     int ret;
@@ -2517,7 +2518,6 @@ static int xmlSysIDExists(const char *URL) {
 #endif
     return(0);
 }
-#endif
 
 /**
  * xmlDefaultExternalEntityLoader:
@@ -2669,6 +2669,22 @@ xmlGetExternalEntityLoader(void) {
 xmlParserInputPtr
 xmlLoadExternalEntity(const char *URL, const char *ID,
                       xmlParserCtxtPtr ctxt) {
+    if ((URL != NULL) && (xmlSysIDExists(URL) == 0)) {
+	char *canonicFilename;
+	xmlParserInputPtr ret;
+
+	canonicFilename = (char *) xmlCanonicPath((const xmlChar *) URL);
+	if (canonicFilename == NULL) {
+	    if (xmlDefaultSAXHandler.error != NULL) {
+		xmlDefaultSAXHandler.error(NULL, "out of memory\n");
+	    }
+	    return(NULL);
+	}
+
+	ret = xmlCurrentExternalEntityLoader(canonicFilename, ID, ctxt);
+	xmlFree(canonicFilename);
+	return(ret);
+    }
     return(xmlCurrentExternalEntityLoader(URL, ID, ctxt));
 }
 

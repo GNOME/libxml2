@@ -2347,7 +2347,7 @@ xmlTextReaderLocatorBaseURI(xmlTextReaderLocatorPtr locator) {
 	if ((input->filename == NULL) && (ctx->inputNr > 1))
 	    input = ctx->inputTab[ctx->inputNr - 2];
 	if (input != NULL) {
-	    ret = xmlStrdup(input->filename);
+	    ret = xmlStrdup(BAD_CAST input->filename);
 	} 
 	else {
 	    ret = NULL;

@@ -1200,11 +1200,11 @@ xmlLsOneNode(FILE *output, xmlNodePtr node) {
     switch (node->type) {
 	case XML_ELEMENT_NODE:
 	    if (node->name != NULL)
-		fprintf(output, "%s", node->name);
+		fprintf(output, "%s", (const char *) node->name);
 	    break;
 	case XML_ATTRIBUTE_NODE:
 	    if (node->name != NULL)
-		fprintf(output, "%s", node->name);
+		fprintf(output, "%s", (const char *) node->name);
 	    break;
 	case XML_TEXT_NODE:
 	    if (node->content != NULL) {
@@ -1215,15 +1215,15 @@ xmlLsOneNode(FILE *output, xmlNodePtr node) {
 	    break;
 	case XML_ENTITY_REF_NODE:
 	    if (node->name != NULL)
-		fprintf(output, "%s", node->name);
+		fprintf(output, "%s", (const char *) node->name);
 	    break;
 	case XML_ENTITY_NODE:
 	    if (node->name != NULL)
-		fprintf(output, "%s", node->name);
+		fprintf(output, "%s", (const char *) node->name);
 	    break;
 	case XML_PI_NODE:
 	    if (node->name != NULL)
-		fprintf(output, "%s", node->name);
+		fprintf(output, "%s", (const char *) node->name);
 	    break;
 	case XML_COMMENT_NODE:
 	    break;
@@ -1248,7 +1248,7 @@ xmlLsOneNode(FILE *output, xmlNodePtr node) {
 	}
 	default:
 	    if (node->name != NULL)
-		fprintf(output, "%s", node->name);
+		fprintf(output, "%s", (const char *) node->name);
     }
     fprintf(output, "\n");
 }

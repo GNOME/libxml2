@@ -1103,7 +1103,7 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
 	                   xmlSchemaValPtr *ret, xmlNodePtr node) {
     xmlChar *val, *cur, *endval;
     int nb_values = 0;
-    int tmp;
+    int tmp = 0;
 
     if (value == NULL) {
 	return(-1);

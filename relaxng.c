@@ -1593,8 +1593,10 @@ xmlRelaxNGValidErrorPop(xmlRelaxNGValidCtxtPtr ctxt)
 {
     xmlRelaxNGValidErrorPtr cur;
 
-    if (ctxt->errNr <= 0)
+    if (ctxt->errNr <= 0) {
+	ctxt->err = NULL;
         return;
+    }
     ctxt->errNr--;
     if (ctxt->errNr > 0)
         ctxt->err = &ctxt->errTab[ctxt->errNr - 1];
@@ -2066,6 +2068,8 @@ xmlRelaxNGPopErrors(xmlRelaxNGValidCtxtPtr ctxt, int level) {
 	}
     }
     ctxt->errNr = level;
+    if (ctxt->errNr <= 0)
+	ctxt->err = NULL;
 }
 /**
  * xmlRelaxNGDumpValidError:
@@ -2075,13 +2079,22 @@ xmlRelaxNGPopErrors(xmlRelaxNGValidCtxtPtr ctxt, int level) {
  */
 static void
 xmlRelaxNGDumpValidError(xmlRelaxNGValidCtxtPtr ctxt) {
-    int i;
-    xmlRelaxNGValidErrorPtr err;
+    int i, j;
+    xmlRelaxNGValidErrorPtr err, dup;
 
     for (i = 0;i < ctxt->errNr;i++) {
 	err = &ctxt->errTab[i];
+	for (j = 0;j < i;j++) {
+	    dup = &ctxt->errTab[j];
+	    if ((err->err == dup->err) && (err->node == dup->node) &&
+		(xmlStrEqual(err->arg1, dup->arg1)) &&
+		(xmlStrEqual(err->arg2, dup->arg2))) {
+		goto skip;
+	    }
+	}
 	xmlRelaxNGShowValidError(ctxt, err->err, err->node, err->seq,
 		                 err->arg1, err->arg2);
+skip:
 	if (err->flags & ERROR_IS_DUP) {
 	    if (err->arg1 != NULL)
 		xmlFree((xmlChar *)err->arg1);
@@ -7912,7 +7925,7 @@ static int
 xmlRelaxNGElementMatch(xmlRelaxNGValidCtxtPtr ctxt, 
 	               xmlRelaxNGDefinePtr define,
 		       xmlNodePtr elem) {
-    int ret = 0, oldflags;
+    int ret = 0, oldflags = 0;
 
     if (define->name != NULL) {
 	if (!xmlStrEqual(elem->name, define->name)) {
@@ -8126,10 +8139,13 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	     */
 	    if (node->_private == define) {
 		ctxt->state->seq = xmlRelaxNGSkipIgnored(ctxt, node->next);
+		if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 		if (ctxt->errNr != 0) {
 		    while ((ctxt->err != NULL) &&
 			   (((ctxt->err->err == XML_RELAXNG_ERR_ELEMNAME) &&
 			     (xmlStrEqual(ctxt->err->arg2, node->name))) ||
+			    ((ctxt->err->err == XML_RELAXNG_ERR_ELEMEXTRANS) &&
+			     (xmlStrEqual(ctxt->err->arg1, node->name))) ||
 			    (ctxt->err->err == XML_RELAXNG_ERR_NOELEM) ||
 			    (ctxt->err->err == XML_RELAXNG_ERR_NOTELEM)))
 			xmlRelaxNGValidErrorPop(ctxt);
@@ -8146,9 +8162,12 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	    ret = 0;
 	    if (ctxt->errNr != 0) {
+                if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 		while ((ctxt->err != NULL) &&
 		       (((ctxt->err->err == XML_RELAXNG_ERR_ELEMNAME) &&
 			 (xmlStrEqual(ctxt->err->arg2, node->name))) ||
+			((ctxt->err->err == XML_RELAXNG_ERR_ELEMEXTRANS) &&
+			 (xmlStrEqual(ctxt->err->arg1, node->name))) ||
 		        (ctxt->err->err == XML_RELAXNG_ERR_NOELEM) ||
 		        (ctxt->err->err == XML_RELAXNG_ERR_NOTELEM)))
 		    xmlRelaxNGValidErrorPop(ctxt);
@@ -8394,7 +8413,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    break;
 	}
         case XML_RELAXNG_CHOICE: {
-	    xmlRelaxNGDefinePtr list;
+	    xmlRelaxNGDefinePtr list = NULL;
 	    xmlRelaxNGStatesPtr states = NULL;
 
 	    node = xmlRelaxNGSkipIgnored(ctxt, node);
@@ -8853,8 +8872,15 @@ xmlRelaxNGValidateDocument(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc) {
         xmlRelaxNGFreeValidState(ctxt, ctxt->state);
 	ctxt->state = NULL;
     }
-    if (ret != 0)
+    if (ret != 0) 
 	xmlRelaxNGDumpValidError(ctxt);
+#ifdef DEBUG
+    else if (ctxt->errNr != 0) {
+	ctxt->error(ctxt->userData, "%d Extra error messages left on stack !\n",
+		    ctxt->errNr);
+	xmlRelaxNGDumpValidError(ctxt);
+    }
+#endif
     if (ctxt->idref == 1) {
 	xmlValidCtxt vctxt;
 

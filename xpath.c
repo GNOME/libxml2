@@ -800,7 +800,7 @@ xmlXPathDebugDumpStepOp(FILE *output, xmlXPathCompExprPtr comp,
 	    if (prefix != NULL)
 		fprintf(output, "%s:", prefix);
 	    if (name != NULL)
-		fprintf(output, "%s", name);
+		fprintf(output, "%s", (const char *) name);
 	    break;
 
         }

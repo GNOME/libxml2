@@ -484,6 +484,7 @@
      <exports symbol='xmlNanoFTPConnect'/>
      <exports symbol='xmlNanoFTPConnectTo'/>
      <exports symbol='xmlNanoFTPCwd'/>
+     <exports symbol='xmlNanoFTPDele'/>
      <exports symbol='xmlNanoFTPFreeCtxt'/>
      <exports symbol='xmlNanoFTPGet'/>
      <exports symbol='xmlNanoFTPGetConnection'/>
@@ -1164,6 +1165,44 @@
      <exports symbol='xmlTextReaderXmlLang'/>
     </file>
     <file name='relaxng'>
+     <exports symbol='XML_RELAXNG_ERR_ATTREXTRANS'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRNAME'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRNONS'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRVALID'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRWRONGNS'/>
+     <exports symbol='XML_RELAXNG_ERR_CONTENTVALID'/>
+     <exports symbol='XML_RELAXNG_ERR_DATAELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_DATATYPE'/>
+     <exports symbol='XML_RELAXNG_ERR_DUPID'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMEXTRANS'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNAME'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNONS'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNOTEMPTY'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMWRONGNS'/>
+     <exports symbol='XML_RELAXNG_ERR_EXTRACONTENT'/>
+     <exports symbol='XML_RELAXNG_ERR_EXTRADATA'/>
+     <exports symbol='XML_RELAXNG_ERR_INTEREXTRA'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERNAL'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERNODATA'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERSEQ'/>
+     <exports symbol='XML_RELAXNG_ERR_INVALIDATTR'/>
+     <exports symbol='XML_RELAXNG_ERR_LACKDATA'/>
+     <exports symbol='XML_RELAXNG_ERR_LIST'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTEMPTY'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTEXTRA'/>
+     <exports symbol='XML_RELAXNG_ERR_MEMORY'/>
+     <exports symbol='XML_RELAXNG_ERR_NODEFINE'/>
+     <exports symbol='XML_RELAXNG_ERR_NOELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_NOGRAMMAR'/>
+     <exports symbol='XML_RELAXNG_ERR_NOSTATE'/>
+     <exports symbol='XML_RELAXNG_ERR_NOTELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPE'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPECMP'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPEVAL'/>
+     <exports symbol='XML_RELAXNG_ERR_VALELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_VALUE'/>
+     <exports symbol='XML_RELAXNG_OK'/>
      <exports symbol='xmlRelaxNG'/>
      <exports symbol='xmlRelaxNGCleanupTypes'/>
      <exports symbol='xmlRelaxNGDump'/>
@@ -1182,6 +1221,7 @@
      <exports symbol='xmlRelaxNGSetValidErrors'/>
      <exports symbol='xmlRelaxNGValidCtxt'/>
      <exports symbol='xmlRelaxNGValidCtxtPtr'/>
+     <exports symbol='xmlRelaxNGValidErr'/>
      <exports symbol='xmlRelaxNGValidateDoc'/>
      <exports symbol='xmlRelaxNGValidateStream'/>
      <exports symbol='xmlRelaxNGValidityErrorFunc'/>
@@ -2466,6 +2506,44 @@
     <enum name='XML_PARSER_SYSTEM_LITERAL' file='parser' value='13' type='xmlParserInputState' info='within a SYSTEM value'/>
     <enum name='XML_PARSER_VALIDATE' file='xmlreader' value='3' type='xmlParserProperties'/>
     <enum name='XML_PI_NODE' file='tree' value='7' type='xmlElementType'/>
+    <enum name='XML_RELAXNG_ERR_ATTREXTRANS' file='relaxng' value='20' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_ATTRNAME' file='relaxng' value='14' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_ATTRNONS' file='relaxng' value='16' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_ATTRVALID' file='relaxng' value='24' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_ATTRWRONGNS' file='relaxng' value='18' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_CONTENTVALID' file='relaxng' value='25' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_DATAELEM' file='relaxng' value='28' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_DATATYPE' file='relaxng' value='31' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_DUPID' file='relaxng' value='4' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_ELEMEXTRANS' file='relaxng' value='19' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_ELEMNAME' file='relaxng' value='13' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_ELEMNONS' file='relaxng' value='15' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_ELEMNOTEMPTY' file='relaxng' value='21' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_ELEMWRONGNS' file='relaxng' value='17' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_EXTRACONTENT' file='relaxng' value='26' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_EXTRADATA' file='relaxng' value='35' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_INTEREXTRA' file='relaxng' value='12' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_INTERNAL' file='relaxng' value='37' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_INTERNODATA' file='relaxng' value='10' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_INTERSEQ' file='relaxng' value='11' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_INVALIDATTR' file='relaxng' value='27' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_LACKDATA' file='relaxng' value='36' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_LIST' file='relaxng' value='33' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_LISTELEM' file='relaxng' value='30' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_LISTEMPTY' file='relaxng' value='9' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_LISTEXTRA' file='relaxng' value='8' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_MEMORY' file='relaxng' value='1' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_NODEFINE' file='relaxng' value='7' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_NOELEM' file='relaxng' value='22' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_NOGRAMMAR' file='relaxng' value='34' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_NOSTATE' file='relaxng' value='6' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_NOTELEM' file='relaxng' value='23' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_TYPE' file='relaxng' value='2' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_TYPECMP' file='relaxng' value='5' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_TYPEVAL' file='relaxng' value='3' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_VALELEM' file='relaxng' value='29' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_VALUE' file='relaxng' value='32' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_OK' file='relaxng' value='0' type='xmlRelaxNGValidErr'/>
     <enum name='XML_TEXT_NODE' file='tree' value='3' type='xmlElementType'/>
     <enum name='XML_WAR_CATALOG_PI' file='xmlerror' value='93' type='xmlParserErrors' info='93'/>
     <enum name='XML_WAR_UNDECLARED_ENTITY' file='xmlerror' value='27' type='xmlParserErrors'/>
@@ -2965,6 +3043,7 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlRelaxNGPtr' file='relaxng' type='xmlRelaxNG *'/>
     <struct name='xmlRelaxNGValidCtxt' file='relaxng' type='struct _xmlRelaxNGValidCtxt'/>
     <typedef name='xmlRelaxNGValidCtxtPtr' file='relaxng' type='xmlRelaxNGValidCtxt *'/>
+    <typedef name='xmlRelaxNGValidErr' file='relaxng' type='enum'/>
     <struct name='xmlSAXHandler' file='tree' type='struct _xmlSAXHandler'>
       <field name='internalSubset' type='internalSubsetSAXFunc' info=''/>
       <field name='isStandalone' type='isStandaloneSAXFunc' info=''/>
@@ -6249,6 +6328,12 @@ actually an xmlCharEncoding'/>
       <arg name='ctx' type='void *' info='an FTP context'/>
       <arg name='directory' type='char *' info='a directory on the server'/>
     </function>
+    <function name='xmlNanoFTPDele' file='nanoftp'>
+      <info>Tries to delete an item (file or directory) from server</info>
+      <return type='int' info='-1 incase of error, 1 if DELE worked, 0 if it failed'/>
+      <arg name='ctx' type='void *' info='an FTP context'/>
+      <arg name='file' type='char *' info='a file or directory on the server'/>
+    </function>
     <function name='xmlNanoFTPFreeCtxt' file='nanoftp'>
       <info>Frees the context after closing the connection.</info>
       <return type='void'/>
@@ -9206,7 +9291,7 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='a document instance'/>
     </function>
     <function name='xmlValidateDocumentFinal' file='valid'>
-      <info>Does the final step for the document validation once all the incremental validation steps have been completed  basically it does the following checks described by the XML Rec</info>
+      <info>Does the final step for the document validation once all the incremental validation steps have been completed  basically it does the following checks described by the XML Rec  Check all the IDREF/IDREFS attributes definition for validity</info>
       <return type='int' info='1 if valid or 0 otherwise'/>
       <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>
       <arg name='doc' type='xmlDocPtr' info='a document instance'/>

@@ -411,7 +411,7 @@ xmlCatalogDumpEntry(xmlCatalogEntryPtr entry, FILE *out) {
 	case SGML_CATA_DOCTYPE:
 	case SGML_CATA_LINKTYPE:
 	case SGML_CATA_NOTATION:
-	    fprintf(out, "%s", entry->name); break;
+	    fprintf(out, "%s", (const char *) entry->name); break;
 	case SGML_CATA_PUBLIC:
 	case SGML_CATA_SYSTEM:
 	case SGML_CATA_SGMLDECL:

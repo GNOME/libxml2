@@ -5326,7 +5326,8 @@ done:
  */
 int
 xmlValidatePopElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc ATTRIBUTE_UNUSED,
-                      xmlNodePtr elem, const xmlChar *qname ATTRIBUTE_UNUSED) {
+                      xmlNodePtr elem ATTRIBUTE_UNUSED,
+		      const xmlChar *qname ATTRIBUTE_UNUSED) {
     int ret = 1;
 
     if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {

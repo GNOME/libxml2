@@ -1,3 +1,13 @@
+Fri Mar 21 22:19:14 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in Makefile.am: fixed Red Hat bug #86118 use libxml2.spec
+	  instead of libxml.spec
+	* relaxng.c: fixed some of the error reporting excessive
+	  verbosity
+	* catalog.c debugXML.c valid.c xmlreader.c xmlschemas.c xpath.c
+	  xmlschemastypes.c: removed some warnings from gcc
+	* doc/libxml2-api.xml: rebuilt
+
 Fri Mar 21 17:25:23 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: another optimization, for choice this time

@@ -734,8 +734,8 @@ Relaxtests: xmllint$(EXEEXT)
 	       fi ; fi ; \
 	  done; done)
 
-dist-hook: libxml.spec
-	-cp libxml.spec $(distdir)
+dist-hook: libxml2.spec
+	-cp libxml2.spec $(distdir)
 	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms test result SAXresult ) | (cd $(distdir); tar xf -)
 
 cleantar:
@@ -753,7 +753,7 @@ CLEANFILES=xml2Conf.sh
 
 confexecdir=$(libdir)
 confexec_DATA = xml2Conf.sh
-EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml.spec \
+EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
              libxml.m4 Copyright check-xml-test-suite.py \
 	     check-relaxng-test-suite.py check-xinclude-test-suite.py \
              example/Makefile.am example/gjobread.c example/gjobs.xml \

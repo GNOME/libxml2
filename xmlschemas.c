@@ -702,7 +702,7 @@ xmlSchemaDump(FILE * output, xmlSchemaPtr schema)
     else
         fprintf(output, "no name, ");
     if (schema->targetNamespace != NULL)
-        fprintf(output, "%s", schema->targetNamespace);
+        fprintf(output, "%s", (const char *) schema->targetNamespace);
     else
         fprintf(output, "no target namespace");
     fprintf(output, "\n");

@@ -649,6 +649,6 @@ AC_SUBST(RELDATE)
 rm -f COPYING.LIB COPYING
 ln -s Copyright COPYING
 
-AC_OUTPUT(libxml.spec Makefile include/Makefile include/libxml/Makefile doc/Makefile example/Makefile python/Makefile python/tests/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc xml2Conf.sh python/setup.py)
+AC_OUTPUT(libxml2.spec:libxml.spec.in Makefile include/Makefile include/libxml/Makefile doc/Makefile example/Makefile python/Makefile python/tests/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc xml2Conf.sh python/setup.py)
 
 chmod +x xml2-config xml2Conf.sh python/setup.py

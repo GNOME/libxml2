@@ -29,6 +29,7 @@
 #include <libxml/xmlerror.h>
 #include <libxml/globals.h>
 #include <libxml/xpathInternals.h>
+#include <libxml/uri.h>
 
 /**
  * xmlDebugDumpString:

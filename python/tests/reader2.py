@@ -12,22 +12,23 @@ import libxml2
 libxml2.debugMemory(1)
 
 err=""
-expect="""../../test/valid/xlink.xml:450: validity error: ID dt-arc already defined
+expect="""../../test/valid/rss.xml:172: validity error: Element rss does not carry attribute version
+</rss>
+      ^
+../../test/valid/xlink.xml:450: validity error: ID dt-arc already defined
 	<p><termdef id="dt-arc" term="Arc">
                                    ^
 ../../test/valid/xlink.xml:529: validity error: attribute def line 199 references an unknown ID "dt-xlg"
 <?Pub *0000052575?>
                    ^
-../../test/valid/rss.xml:172: validity error: Element rss does not carry attribute version
-</rss>
-      ^
 """
 def callback(ctx, str):
     global err
     err = err + "%s" % (str)
 libxml2.registerErrorHandler(callback, "")
 
-valid_files = files = glob.glob("../../test/valid/*.x*")
+valid_files = glob.glob("../../test/valid/*.x*")
+valid_files.sort()
 for file in valid_files:
     if string.find(file, "t8") != -1:
         continue

@@ -29,6 +29,7 @@
 #include <libxml/parser.h>
 
 static int shell = 0;
+static int sgml = 0;
 static int noout = 0;
 static int create = 0;
 static int add = 0;
@@ -198,17 +199,26 @@ static void usershell(void) {
 		}
 	    }
 	} else if (!strcmp(command, "add")) {
-	    if ((nbargs != 3) && (nbargs != 2)) {
-		printf("add requires 2 or 3 arguments\n");
+	    if (sgml) {
+		if (nbargs != 1) {
+		    printf("add requires 1 argument\n");
+		} else {
+		    ret = xmlCatalogAdd(BAD_CAST "sgmlcatalog", NULL,
+			                BAD_CAST argv[0]);
+		}
 	    } else {
-		if (argv[2] == NULL)
-		    ret = xmlCatalogAdd(BAD_CAST argv[0], NULL,
-			                BAD_CAST argv[1]);
-		else
-		    ret = xmlCatalogAdd(BAD_CAST argv[0], BAD_CAST argv[1],
-			                BAD_CAST argv[2]);
-		if (ret != 0)
-		    printf("add command failed\n");
+		if ((nbargs != 3) && (nbargs != 2)) {
+		    printf("add requires 2 or 3 arguments\n");
+		} else {
+		    if (argv[2] == NULL)
+			ret = xmlCatalogAdd(BAD_CAST argv[0], NULL,
+					    BAD_CAST argv[1]);
+		    else
+			ret = xmlCatalogAdd(BAD_CAST argv[0], BAD_CAST argv[1],
+					    BAD_CAST argv[2]);
+		    if (ret != 0)
+			printf("add command failed\n");
+		}
 	    }
 	} else if (!strcmp(command, "del")) {
 	    if (nbargs != 1) {
@@ -280,6 +290,7 @@ static void usershell(void) {
 static void usage(const char *name) {
     printf("Usage : %s [options] catalogfile entities...\n", name);
     printf("\tParse the catalog file and query it for the entities\n");
+    printf("\t--sgml : handle an SGML Super catalog\n");
     printf("\t--shell : run a shell allowing interactive queries\n");
     printf("\t--create : create a new catalog\n");
     printf("\t--add 'type' 'orig' 'replace' : add an entry\n");
@@ -317,6 +328,9 @@ int main(int argc, char **argv) {
 	    (!strcmp(argv[i], "--shell"))) {
 	    shell++;
             noout = 1;
+	} else if ((!strcmp(argv[i], "-sgml")) ||
+	    (!strcmp(argv[i], "--sgml"))) {
+	    sgml++;
 	} else if ((!strcmp(argv[i], "-create")) ||
 	    (!strcmp(argv[i], "--create"))) {
 	    create++;
@@ -325,7 +339,10 @@ int main(int argc, char **argv) {
 	    convert++;
 	} else if ((!strcmp(argv[i], "-add")) ||
 	    (!strcmp(argv[i], "--add"))) {
-	    i += 3;
+	    if (sgml)
+		i += 1;
+	    else
+		i += 3;
 	    add++;
 	} else if ((!strcmp(argv[i], "-del")) ||
 	    (!strcmp(argv[i], "--del"))) {
@@ -341,7 +358,10 @@ int main(int argc, char **argv) {
     for (i = 1; i < argc; i++) {
 	if ((!strcmp(argv[i], "-add")) ||
 	    (!strcmp(argv[i], "--add"))) {
-	    i += 3;
+	    if (sgml)
+		i += 1;
+	    else
+		i += 3;
 	    continue;
 	} else if ((!strcmp(argv[i], "-del")) ||
 	    (!strcmp(argv[i], "--del"))) {
@@ -350,8 +370,11 @@ int main(int argc, char **argv) {
 	} else if (argv[i][0] == '-')
 	    continue;
 	filename = argv[i];
-	ret = xmlLoadCatalog(argv[i]);
-	if ((ret < 0) && (create)) {
+	if (sgml)
+	    ret = xmlLoadSGMLSuperCatalog(argv[i]);
+	else
+	    ret = xmlLoadCatalog(argv[i]);
+	if ((!sgml) && (ret < 0) && (create)) {
 	    xmlCatalogAdd(BAD_CAST "catalog", BAD_CAST argv[i], NULL);
 	}
 	break;
@@ -369,16 +392,22 @@ int main(int argc, char **argv) {
 		continue;
 	    if ((!strcmp(argv[i], "-add")) ||
 		(!strcmp(argv[i], "--add"))) {
-		if ((argv[i + 3] == NULL) || (argv[i + 3][0] == 0))
-		    ret = xmlCatalogAdd(BAD_CAST argv[i + 1], NULL,
-			                BAD_CAST argv[i + 2]);
-		else
-		    ret = xmlCatalogAdd(BAD_CAST argv[i + 1],
-			                BAD_CAST argv[i + 2],
-			                BAD_CAST argv[i + 3]);
-		if (ret != 0)
-		    printf("add command failed\n");
-		i += 3;
+		if (sgml) {
+		    ret = xmlCatalogAdd(BAD_CAST "sgmlcatalog", NULL,
+			                BAD_CAST argv[i + 1]);
+		    i += 1;
+		} else {
+		    if ((argv[i + 3] == NULL) || (argv[i + 3][0] == 0))
+			ret = xmlCatalogAdd(BAD_CAST argv[i + 1], NULL,
+					    BAD_CAST argv[i + 2]);
+		    else
+			ret = xmlCatalogAdd(BAD_CAST argv[i + 1],
+					    BAD_CAST argv[i + 2],
+					    BAD_CAST argv[i + 3]);
+		    if (ret != 0)
+			printf("add command failed\n");
+		    i += 3;
+		}
 	    } else if ((!strcmp(argv[i], "-del")) ||
 		(!strcmp(argv[i], "--del"))) {
 		ret = xmlCatalogRemove(BAD_CAST argv[i + 1]);

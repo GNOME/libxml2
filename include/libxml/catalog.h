@@ -56,6 +56,7 @@ typedef enum {
 
 void		xmlInitializeCatalog	(void);
 int		xmlLoadCatalog		(const char *filename);
+int		xmlLoadSGMLSuperCatalog	(const char *filename);
 void		xmlLoadCatalogs		(const char *paths);
 void		xmlCatalogCleanup	(void);
 void		xmlCatalogDump		(FILE *out);

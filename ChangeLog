@@ -1,3 +1,9 @@
+Mon Oct  8 17:00:16 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/catalog.h catalog.c xmlcatalog.c: adding SGML
+	  super catalog support adding one API and one flag --sgml to
+	  xmlcatalog
+
 Sun Oct  7 16:43:57 MDT 2001 John Fleck <jfleck@inkstain.net>
 
 	* doc/xmlcatalog_man.xml, xmlcatalog.1

@@ -1719,7 +1719,7 @@ xmlGetSGMLCatalogEntryType(const xmlChar *name) {
 }
 
 static int
-xmlParseSGMLCatalog(const xmlChar *value, const char *file) {
+xmlParseSGMLCatalog(const xmlChar *value, const char *file, int super) {
     const xmlChar *cur = value;
     xmlChar *base = NULL;
     int res;
@@ -1874,12 +1874,23 @@ xmlParseSGMLCatalog(const xmlChar *value, const char *file) {
 		}
 
 	    } else if (type == SGML_CATA_CATALOG) {
-		xmlChar *filename;
+		if (super) {
+		    xmlCatalogEntryPtr entry;
 
-		filename = xmlBuildURI(sysid, base);
-		if (filename != NULL) {
-		    xmlLoadCatalog((const char *)filename);
-		    xmlFree(filename);
+		    entry = xmlNewCatalogEntry(type, sysid, NULL,
+			                       XML_CATA_PREFER_NONE);
+		    res = xmlHashAddEntry(xmlDefaultCatalog, sysid, entry);
+		    if (res < 0) {
+			xmlFreeCatalogEntry(entry);
+		    }
+		} else {
+		    xmlChar *filename;
+
+		    filename = xmlBuildURI(sysid, base);
+		    if (filename != NULL) {
+			xmlLoadCatalog((const char *)filename);
+			xmlFree(filename);
+		    }
 		}
 	    }
 	    /*
@@ -2005,6 +2016,91 @@ xmlInitializeCatalog(void) {
 }
 
 /**
+ * xmlLoadSGMLSuperCatalog:
+ * @filename:  a file path
+ *
+ * Load an SGML super catalog. It won't expand CATALOG or DELEGATE
+ * references. This is only needed for manipulating SGML Super Catalogs
+ * like adding and removing CATALOG or DELEGATE entries.
+ *
+ * Returns 0 in case of success -1 in case of error
+ */
+int
+xmlLoadSGMLSuperCatalog(const char *filename)
+{
+#ifdef HAVE_STAT
+    int fd;
+#else
+    FILE *fd;
+#endif
+    int len, ret;
+    long size;
+
+#ifdef HAVE_STAT
+    struct stat info;
+#endif
+    xmlChar *content;
+
+    if (filename == NULL)
+        return (-1);
+
+    if (xmlDefaultCatalog == NULL)
+        xmlDefaultCatalog = xmlHashCreate(20);
+    if (xmlDefaultCatalog == NULL)
+        return (-1);
+
+#ifdef HAVE_STAT
+    if (stat(filename, &info) < 0)
+        return (-1);
+#endif
+
+#ifdef HAVE_STAT
+    if ((fd = open(filename, O_RDONLY)) < 0) {
+#else
+    if ((fd = fopen(filename, "rb")) == NULL) {
+#endif
+        catalNr--;
+        return (-1);
+    }
+#ifdef HAVE_STAT
+    size = info.st_size;
+#else
+    if (fseek(fd, 0, SEEK_END) || (size = ftell(fd)) == EOF || fseek(fd, 0, SEEK_SET)) {        /* File operations denied? ok, just close and return failure */
+        fclose(fd);
+        return (-1);
+    }
+#endif
+    content = xmlMalloc(size + 10);
+    if (content == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "realloc of %d byte failed\n", size + 10);
+        catalNr--;
+        return (-1);
+    }
+#ifdef HAVE_STAT
+    len = read(fd, content, size);
+#else
+    len = fread(content, 1, size, fd);
+#endif
+    if (len < 0) {
+        xmlFree(content);
+        catalNr--;
+        return (-1);
+    }
+    content[len] = 0;
+#ifdef HAVE_STAT
+    close(fd);
+#else
+    fclose(fd);
+#endif
+
+    ret = xmlParseSGMLCatalog(content, filename, 1);
+
+    xmlFree(content);
+    return (ret);
+}
+
+/**
  * xmlLoadCatalog:
  * @filename:  a file path
  *
@@ -2113,7 +2209,7 @@ xmlLoadCatalog(const char *filename)
     if ((content[0] == ' ') || (content[0] == '-') ||
         ((content[0] >= 'A') && (content[0] <= 'Z')) ||
         ((content[0] >= 'a') && (content[0] <= 'z')))
-        ret = xmlParseSGMLCatalog(content, filename);
+        ret = xmlParseSGMLCatalog(content, filename, 0);
     else {
         xmlCatalogEntryPtr catal, tmp;
 
@@ -2465,6 +2561,15 @@ int
 xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) {
     int res = -1;
 
+    if ((xmlDefaultCatalog != NULL) &&
+	(xmlStrEqual(type, BAD_CAST "sgmlcatalog"))) {
+	xmlCatalogEntryPtr entry;
+
+	entry = xmlNewCatalogEntry(SGML_CATA_CATALOG, replace, NULL,
+				   XML_CATA_PREFER_NONE);
+	res = xmlHashAddEntry(xmlDefaultCatalog, replace, entry);
+	return(0);
+    } 
     if ((xmlDefaultXMLCatalogList == NULL) &&
 	(xmlStrEqual(type, BAD_CAST "catalog"))) {
 	xmlDefaultXMLCatalogList = xmlNewCatalogEntry(XML_CATA_CATALOG, NULL,
@@ -2497,7 +2602,7 @@ xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) 
  *
  * Remove an entry from the catalog
  *
- * Returns 0 if successful, -1 otherwise
+ * Returns the number of entries removed if successful, -1 otherwise
  */
 int
 xmlCatalogRemove(const xmlChar *value) {
@@ -2509,7 +2614,10 @@ xmlCatalogRemove(const xmlChar *value) {
     if (xmlDefaultXMLCatalogList != NULL) {
 	res = xmlDelXMLCatalog(xmlDefaultXMLCatalogList, value);
     } else if (xmlDefaultCatalog != NULL) {
-	TODO
+	res = xmlHashRemoveEntry(xmlDefaultCatalog, value,
+		(xmlHashDeallocator) xmlFreeCatalogEntry);
+	if (res == 0)
+	    res = 1;
     } 
     return(res);
 }

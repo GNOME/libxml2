@@ -264,6 +264,8 @@ struct _xmlSchema {
     xmlHashTablePtr attrgrpDecl;
     xmlHashTablePtr elemDecl;
     xmlHashTablePtr notaDecl;
+
+    xmlHashTablePtr schemasImports;
 };
 
 void	xmlSchemaFreeType	(xmlSchemaTypePtr type);

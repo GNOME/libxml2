@@ -5,7 +5,7 @@ then
     mkdir /etc/xml
     chmod 755 /etc/xml
 fi
-if [ -w /etc/xml/catalog -a -w /etc/xml ]
+if [ -w /etc/xml/catalog ] || [ -w /etc/xml -a ! -e /etc/xml/catalog ]
 then
     ROOTCATALOG=/etc/xml/catalog
     CATALOG=/etc/xml/docbook

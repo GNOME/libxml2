@@ -1,3 +1,12 @@
+Sat May 18 09:54:12 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.3 doc/buildDocBookCatalog: apply a couple of patches
+	  from Christian Cornelssen fixing the man pages and the Catalog
+	  building script.
+	* xmlschemas.c include/libxml/schemasInternals.h: nothing new yet
+	  next step is <xs:import> I now have a reasonable understanding
+	  of how it works.
+
 Thu May 16 10:43:26 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: applied a small buffer performance patch from Gary Pennington

@@ -2791,6 +2791,7 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
 	    } else if (IS_SCHEMA(child, "include")) {
 		TODO
 	    } else if (IS_SCHEMA(child, "import")) {
+		/* xmlSchemaParseImport(ctxt, schema, child);*/
 		TODO
 	    } else if (IS_SCHEMA(child, "redefine")) {
 		TODO

@@ -531,7 +531,7 @@ xmlSaveUri(xmlURIPtr uri) {
  * @stream:  a FILE* for the output
  * @uri:  pointer to an xmlURI
  *
- * Prints the URI in the stream @steam.
+ * Prints the URI in the stream @stream.
  */
 void
 xmlPrintURI(FILE *stream, xmlURIPtr uri) {
@@ -874,6 +874,8 @@ xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
 
     if (str == NULL)
 	return(NULL);
+    if (str[0] == 0)
+	return(xmlStrdup(str));
     len = xmlStrlen(str);
     if (!(len > 0)) return(NULL);
 
@@ -1690,7 +1692,7 @@ xmlParseURIReference(xmlURIPtr uri, const char *str) {
  * 
  * URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
  *
- * Returns a newly build xmlURIPtr or NULL in case of error
+ * Returns a newly built xmlURIPtr or NULL in case of error
  */
 xmlURIPtr
 xmlParseURI(const char *str) {

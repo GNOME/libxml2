@@ -1,3 +1,9 @@
+Thu Jan  6 09:57:03 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* uri.c: fixed problem with xmlURIEscape when query part was
+	  empty (actually fixed xmlURIEscapeStr to return an empty
+	  string rather than NULL for empty string input) (bug 163079)
+	  
 Tue Jan  4 17:08:45 PST 2005 Aleksey Sanin <aleksey@aleksey.com>
 
 	* parser.c, parserInternal.c: fixed "col" calculation for 

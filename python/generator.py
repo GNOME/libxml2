@@ -350,7 +350,7 @@ def print_function_wrapper(name, output, export, include):
 	    if args[1][1] == "char *" or args[1][1] == "xmlChar *":
 		c_call = "\n    if (%s->%s != NULL) xmlFree(%s->%s);\n" % (
 		                 args[0][0], args[1][0], args[0][0], args[1][0])
-		c_call = c_call + "    %s->%s = xmlStrdup(%s);\n" % (args[0][0],
+		c_call = c_call + "    %s->%s = xmlStrdup((const xmlChar *)%s);\n" % (args[0][0],
 		                 args[1][0], args[1][0])
 	    else:
 		c_call = "\n    %s->%s = %s;\n" % (args[0][0], args[1][0],
@@ -384,9 +384,9 @@ def print_function_wrapper(name, output, export, include):
         return -1
 
     include.write("PyObject * ")
-    include.write("libxml_%s(PyObject *self, PyObject *args);\n" % (name))
+    include.write("libxml_%s(PyObject *self, PyObject *args);\n" % (name));
 
-    export.write("    { \"%s\", libxml_%s, METH_VARARGS, NULL },\n" %
+    export.write("    { (char *)\"%s\", libxml_%s, METH_VARARGS, NULL },\n" %
                  (name, name))
 
     if file == "python":
@@ -397,7 +397,10 @@ def print_function_wrapper(name, output, export, include):
         return 1
 
     output.write("PyObject *\n")
-    output.write("libxml_%s(PyObject *self, PyObject *args) {\n" % (name))
+    output.write("libxml_%s(ATTRIBUTE_UNUSED PyObject *self," % (name))
+    if format == "":
+	output.write("ATTRIBUTE_UNUSED ")
+    output.write(" PyObject *args) {\n")
     if ret[0] != 'void':
         output.write("    PyObject *py_retval;\n")
     if c_return != "":
@@ -405,7 +408,7 @@ def print_function_wrapper(name, output, export, include):
     if c_args != "":
         output.write(c_args)
     if format != "":
-        output.write("\n    if (!PyArg_ParseTuple(args, \"%s\"%s))\n" %
+        output.write("\n    if (!PyArg_ParseTuple(args, (char *)\"%s\"%s))\n" %
                      (format, format_args))
         output.write("        return(NULL);\n")
     if c_convert != "":
@@ -465,6 +468,8 @@ def buildStubs():
     wrapper = open("libxml2-py.c", "w")
     wrapper.write("/* Generated */\n\n")
     wrapper.write("#include <Python.h>\n")
+    wrapper.write("#include \"config.h\"\n")
+    wrapper.write("#include <libxml/xmlversion.h>\n")
     wrapper.write("#include <libxml/tree.h>\n")
     wrapper.write("#include \"libxml_wrap.h\"\n")
     wrapper.write("#include \"libxml2-py.h\"\n\n")

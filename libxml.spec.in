@@ -98,8 +98,10 @@ do
         echo generating bindings for Python $py_version
 	(cd python ; make clean ; \
          make PYTHON="%{prefix}/bin/python$py_version" \
+	      PYTHON_INCLUDES="%{prefix}/include/python$py_version" \
 	      PYTHON_VERSION="$py_version"; \
          make PYTHON="%{prefix}/bin/python$py_version" \
+	      PYTHON_INCLUDES="%{prefix}/include/python$py_version" \
 	      PYTHON_VERSION="$py_version" \
 	      prefix=$RPM_BUILD_ROOT%{prefix} \
 	      mandir=$RPM_BUILD_ROOT%{_mandir} install)

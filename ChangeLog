@@ -1,3 +1,12 @@
+Fri Mar 15 23:21:40 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in python/Makefile.am python/tests/Makefile.am
+	  python/generator.py python/libxml.c python/types.c: Cleanup
+	  of the python Makefiles based on Jacob and James feedback,
+	  fixed the spec file accordingly, fixed the number of warning
+	  that passing my pedantic CFLAGS was generating. Conclusion
+	  is that Python includes are real crap.
+
 Fri Mar 15 19:41:25 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure,in: it was reported quite a few times that

@@ -5201,6 +5201,9 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
  * This does the entity substitution.
  * This function looks in DTD attribute declaration for #FIXED or
  * default declaration values unless DTD use has been turned off.
+ * NOTE: this function acts independantly of namespaces associated
+ *       to the attribute. Use xmlGetNsProp() or xmlGetNoNsProp()
+ *       for namespace aware processing.
  *
  * Returns the attribute value or NULL if not found.
  *     It's up to the caller to free the memory with xmlFree().
@@ -5217,6 +5220,61 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
     prop = node->properties;
     while (prop != NULL) {
         if (xmlStrEqual(prop->name, name))  {
+	    xmlChar *ret;
+
+	    ret = xmlNodeListGetString(node->doc, prop->children, 1);
+	    if (ret == NULL) return(xmlStrdup((xmlChar *)""));
+	    return(ret);
+        }
+	prop = prop->next;
+    }
+    if (!xmlCheckDTD) return(NULL);
+
+    /*
+     * Check if there is a default declaration in the internal
+     * or external subsets
+     */
+    doc =  node->doc;
+    if (doc != NULL) {
+        xmlAttributePtr attrDecl;
+        if (doc->intSubset != NULL) {
+	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
+	    if (attrDecl != NULL)
+		return(xmlStrdup(attrDecl->defaultValue));
+	}
+    }
+    return(NULL);
+}
+
+/**
+ * xmlGetNoNsProp:
+ * @node:  the node
+ * @name:  the attribute name
+ *
+ * Search and get the value of an attribute associated to a node
+ * This does the entity substitution.
+ * This function looks in DTD attribute declaration for #FIXED or
+ * default declaration values unless DTD use has been turned off.
+ * This function is similar to xmlGetProp except it will accept only
+ * an attribute in no namespace.
+ *
+ * Returns the attribute value or NULL if not found.
+ *     It's up to the caller to free the memory with xmlFree().
+ */
+xmlChar *
+xmlGetNoNsProp(xmlNodePtr node, const xmlChar *name) {
+    xmlAttrPtr prop;
+    xmlDocPtr doc;
+
+    if ((node == NULL) || (name == NULL)) return(NULL);
+    /*
+     * Check on the properties attached to the node
+     */
+    prop = node->properties;
+    while (prop != NULL) {
+        if ((prop->ns == NULL) && (xmlStrEqual(prop->name, name)))  {
 	    xmlChar *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->children, 1);
@@ -5271,7 +5329,7 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
 
     prop = node->properties;
     if (nameSpace == NULL)
-	return(xmlGetProp(node, name));
+	return(xmlGetNoNsProp(node, name));
     while (prop != NULL) {
 	/*
 	 * One need to have

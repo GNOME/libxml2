@@ -1,8 +1,1 @@
-xmlRelaxNGComputeInterleaves(interleave0)
-  6 child
-  6 groups
-xmlRelaxNGValidateDefinition(): validated title : 0
-xmlRelaxNGValidateDefinition(): validated base : 0
-xmlRelaxNGValidateDefinition(): validated base : 0
-error detected at relaxng.c:5046
-xmlRelaxNGValidateDefinition(): validated head : -1
+error detected at relaxng.c:5053

@@ -1,5 +1,1 @@
-xmlRelaxNGValidateDefinition(): validated name : 0
-xmlRelaxNGValidateDefinition(): validated email : 0
-error detected at relaxng.c:5046
-xmlRelaxNGValidateDefinition(): validated preferredFormat : -1
-xmlRelaxNGValidateDefinition(): validated card : -1
+error detected at relaxng.c:5053

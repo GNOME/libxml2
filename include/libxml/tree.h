@@ -740,6 +740,8 @@ xmlAttrPtr	xmlSetProp		(xmlNodePtr node,
 					 const xmlChar *value);
 xmlChar *	xmlGetProp		(xmlNodePtr node,
 					 const xmlChar *name);
+xmlChar *	xmlGetNoNsProp		(xmlNodePtr node,
+					 const xmlChar *name);
 xmlAttrPtr	xmlHasProp		(xmlNodePtr node,
 					 const xmlChar *name);
 xmlAttrPtr	xmlHasNsProp		(xmlNodePtr node,

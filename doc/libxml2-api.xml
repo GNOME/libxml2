@@ -61,141 +61,47 @@
      <exports symbol='xmlXPtrRangeToFunction'/>
      <exports symbol='xmlXPtrWrapLocationSet'/>
     </file>
-    <file name='xmlunicode'>
-     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
-     <exports symbol='xmlUCSIsArabic'/>
-     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
-     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
-     <exports symbol='xmlUCSIsArmenian'/>
-     <exports symbol='xmlUCSIsArrows'/>
-     <exports symbol='xmlUCSIsBasicLatin'/>
-     <exports symbol='xmlUCSIsBengali'/>
-     <exports symbol='xmlUCSIsBlock'/>
-     <exports symbol='xmlUCSIsBlockElements'/>
-     <exports symbol='xmlUCSIsBopomofo'/>
-     <exports symbol='xmlUCSIsBopomofoExtended'/>
-     <exports symbol='xmlUCSIsBoxDrawing'/>
-     <exports symbol='xmlUCSIsBraillePatterns'/>
-     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
-     <exports symbol='xmlUCSIsCJKCompatibility'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
-     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
-     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
-     <exports symbol='xmlUCSIsCat'/>
-     <exports symbol='xmlUCSIsCatC'/>
-     <exports symbol='xmlUCSIsCatCc'/>
-     <exports symbol='xmlUCSIsCatCf'/>
-     <exports symbol='xmlUCSIsCatCo'/>
-     <exports symbol='xmlUCSIsCatCs'/>
-     <exports symbol='xmlUCSIsCatL'/>
-     <exports symbol='xmlUCSIsCatLl'/>
-     <exports symbol='xmlUCSIsCatLm'/>
-     <exports symbol='xmlUCSIsCatLo'/>
-     <exports symbol='xmlUCSIsCatLt'/>
-     <exports symbol='xmlUCSIsCatLu'/>
-     <exports symbol='xmlUCSIsCatM'/>
-     <exports symbol='xmlUCSIsCatMc'/>
-     <exports symbol='xmlUCSIsCatMe'/>
-     <exports symbol='xmlUCSIsCatMn'/>
-     <exports symbol='xmlUCSIsCatN'/>
-     <exports symbol='xmlUCSIsCatNd'/>
-     <exports symbol='xmlUCSIsCatNl'/>
-     <exports symbol='xmlUCSIsCatNo'/>
-     <exports symbol='xmlUCSIsCatP'/>
-     <exports symbol='xmlUCSIsCatPc'/>
-     <exports symbol='xmlUCSIsCatPd'/>
-     <exports symbol='xmlUCSIsCatPe'/>
-     <exports symbol='xmlUCSIsCatPf'/>
-     <exports symbol='xmlUCSIsCatPi'/>
-     <exports symbol='xmlUCSIsCatPo'/>
-     <exports symbol='xmlUCSIsCatPs'/>
-     <exports symbol='xmlUCSIsCatS'/>
-     <exports symbol='xmlUCSIsCatSc'/>
-     <exports symbol='xmlUCSIsCatSk'/>
-     <exports symbol='xmlUCSIsCatSm'/>
-     <exports symbol='xmlUCSIsCatSo'/>
-     <exports symbol='xmlUCSIsCatZ'/>
-     <exports symbol='xmlUCSIsCatZl'/>
-     <exports symbol='xmlUCSIsCatZp'/>
-     <exports symbol='xmlUCSIsCatZs'/>
-     <exports symbol='xmlUCSIsCherokee'/>
-     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
-     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
-     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
-     <exports symbol='xmlUCSIsControlPictures'/>
-     <exports symbol='xmlUCSIsCurrencySymbols'/>
-     <exports symbol='xmlUCSIsCyrillic'/>
-     <exports symbol='xmlUCSIsDeseret'/>
-     <exports symbol='xmlUCSIsDevanagari'/>
-     <exports symbol='xmlUCSIsDingbats'/>
-     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
-     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
-     <exports symbol='xmlUCSIsEthiopic'/>
-     <exports symbol='xmlUCSIsGeneralPunctuation'/>
-     <exports symbol='xmlUCSIsGeometricShapes'/>
-     <exports symbol='xmlUCSIsGeorgian'/>
-     <exports symbol='xmlUCSIsGothic'/>
-     <exports symbol='xmlUCSIsGreek'/>
-     <exports symbol='xmlUCSIsGreekExtended'/>
-     <exports symbol='xmlUCSIsGujarati'/>
-     <exports symbol='xmlUCSIsGurmukhi'/>
-     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
-     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
-     <exports symbol='xmlUCSIsHangulJamo'/>
-     <exports symbol='xmlUCSIsHangulSyllables'/>
-     <exports symbol='xmlUCSIsHebrew'/>
-     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
-     <exports symbol='xmlUCSIsHighSurrogates'/>
-     <exports symbol='xmlUCSIsHiragana'/>
-     <exports symbol='xmlUCSIsIPAExtensions'/>
-     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
-     <exports symbol='xmlUCSIsKanbun'/>
-     <exports symbol='xmlUCSIsKangxiRadicals'/>
-     <exports symbol='xmlUCSIsKannada'/>
-     <exports symbol='xmlUCSIsKatakana'/>
-     <exports symbol='xmlUCSIsKhmer'/>
-     <exports symbol='xmlUCSIsLao'/>
-     <exports symbol='xmlUCSIsLatin1Supplement'/>
-     <exports symbol='xmlUCSIsLatinExtendedA'/>
-     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
-     <exports symbol='xmlUCSIsLatinExtendedB'/>
-     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
-     <exports symbol='xmlUCSIsLowSurrogates'/>
-     <exports symbol='xmlUCSIsMalayalam'/>
-     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
-     <exports symbol='xmlUCSIsMathematicalOperators'/>
-     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
-     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
-     <exports symbol='xmlUCSIsMongolian'/>
-     <exports symbol='xmlUCSIsMusicalSymbols'/>
-     <exports symbol='xmlUCSIsMyanmar'/>
-     <exports symbol='xmlUCSIsNumberForms'/>
-     <exports symbol='xmlUCSIsOgham'/>
-     <exports symbol='xmlUCSIsOldItalic'/>
-     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
-     <exports symbol='xmlUCSIsOriya'/>
-     <exports symbol='xmlUCSIsPrivateUse'/>
-     <exports symbol='xmlUCSIsRunic'/>
-     <exports symbol='xmlUCSIsSinhala'/>
-     <exports symbol='xmlUCSIsSmallFormVariants'/>
-     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
-     <exports symbol='xmlUCSIsSpecials'/>
-     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
-     <exports symbol='xmlUCSIsSyriac'/>
-     <exports symbol='xmlUCSIsTags'/>
-     <exports symbol='xmlUCSIsTamil'/>
-     <exports symbol='xmlUCSIsTelugu'/>
-     <exports symbol='xmlUCSIsThaana'/>
-     <exports symbol='xmlUCSIsThai'/>
-     <exports symbol='xmlUCSIsTibetan'/>
-     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
-     <exports symbol='xmlUCSIsYiRadicals'/>
-     <exports symbol='xmlUCSIsYiSyllables'/>
+    <file name='SAX'>
+     <exports symbol='attribute'/>
+     <exports symbol='attributeDecl'/>
+     <exports symbol='cdataBlock'/>
+     <exports symbol='characters'/>
+     <exports symbol='checkNamespace'/>
+     <exports symbol='comment'/>
+     <exports symbol='docbDefaultSAXHandlerInit'/>
+     <exports symbol='elementDecl'/>
+     <exports symbol='endDocument'/>
+     <exports symbol='endElement'/>
+     <exports symbol='entityDecl'/>
+     <exports symbol='externalSubset'/>
+     <exports symbol='getColumnNumber'/>
+     <exports symbol='getEntity'/>
+     <exports symbol='getLineNumber'/>
+     <exports symbol='getNamespace'/>
+     <exports symbol='getParameterEntity'/>
+     <exports symbol='getPublicId'/>
+     <exports symbol='getSystemId'/>
+     <exports symbol='globalNamespace'/>
+     <exports symbol='hasExternalSubset'/>
+     <exports symbol='hasInternalSubset'/>
+     <exports symbol='htmlDefaultSAXHandlerInit'/>
+     <exports symbol='ignorableWhitespace'/>
+     <exports symbol='initdocbDefaultSAXHandler'/>
+     <exports symbol='inithtmlDefaultSAXHandler'/>
+     <exports symbol='initxmlDefaultSAXHandler'/>
+     <exports symbol='internalSubset'/>
+     <exports symbol='isStandalone'/>
+     <exports symbol='namespaceDecl'/>
+     <exports symbol='notationDecl'/>
+     <exports symbol='processingInstruction'/>
+     <exports symbol='reference'/>
+     <exports symbol='resolveEntity'/>
+     <exports symbol='setDocumentLocator'/>
+     <exports symbol='setNamespace'/>
+     <exports symbol='startDocument'/>
+     <exports symbol='startElement'/>
+     <exports symbol='unparsedEntityDecl'/>
+     <exports symbol='xmlDefaultSAXHandlerInit'/>
     </file>
     <file name='parserInternals'>
      <exports symbol='INPUT_CHUNK'/>
@@ -720,142 +626,6 @@
      <exports symbol='xmlXPathVariable'/>
      <exports symbol='xmlXPathVariablePtr'/>
     </file>
-    <file name='xmlunicode'>
-     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
-     <exports symbol='xmlUCSIsArabic'/>
-     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
-     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
-     <exports symbol='xmlUCSIsArmenian'/>
-     <exports symbol='xmlUCSIsArrows'/>
-     <exports symbol='xmlUCSIsBasicLatin'/>
-     <exports symbol='xmlUCSIsBengali'/>
-     <exports symbol='xmlUCSIsBlock'/>
-     <exports symbol='xmlUCSIsBlockElements'/>
-     <exports symbol='xmlUCSIsBopomofo'/>
-     <exports symbol='xmlUCSIsBopomofoExtended'/>
-     <exports symbol='xmlUCSIsBoxDrawing'/>
-     <exports symbol='xmlUCSIsBraillePatterns'/>
-     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
-     <exports symbol='xmlUCSIsCJKCompatibility'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
-     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
-     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
-     <exports symbol='xmlUCSIsCat'/>
-     <exports symbol='xmlUCSIsCatC'/>
-     <exports symbol='xmlUCSIsCatCc'/>
-     <exports symbol='xmlUCSIsCatCf'/>
-     <exports symbol='xmlUCSIsCatCo'/>
-     <exports symbol='xmlUCSIsCatCs'/>
-     <exports symbol='xmlUCSIsCatL'/>
-     <exports symbol='xmlUCSIsCatLl'/>
-     <exports symbol='xmlUCSIsCatLm'/>
-     <exports symbol='xmlUCSIsCatLo'/>
-     <exports symbol='xmlUCSIsCatLt'/>
-     <exports symbol='xmlUCSIsCatLu'/>
-     <exports symbol='xmlUCSIsCatM'/>
-     <exports symbol='xmlUCSIsCatMc'/>
-     <exports symbol='xmlUCSIsCatMe'/>
-     <exports symbol='xmlUCSIsCatMn'/>
-     <exports symbol='xmlUCSIsCatN'/>
-     <exports symbol='xmlUCSIsCatNd'/>
-     <exports symbol='xmlUCSIsCatNl'/>
-     <exports symbol='xmlUCSIsCatNo'/>
-     <exports symbol='xmlUCSIsCatP'/>
-     <exports symbol='xmlUCSIsCatPc'/>
-     <exports symbol='xmlUCSIsCatPd'/>
-     <exports symbol='xmlUCSIsCatPe'/>
-     <exports symbol='xmlUCSIsCatPf'/>
-     <exports symbol='xmlUCSIsCatPi'/>
-     <exports symbol='xmlUCSIsCatPo'/>
-     <exports symbol='xmlUCSIsCatPs'/>
-     <exports symbol='xmlUCSIsCatS'/>
-     <exports symbol='xmlUCSIsCatSc'/>
-     <exports symbol='xmlUCSIsCatSk'/>
-     <exports symbol='xmlUCSIsCatSm'/>
-     <exports symbol='xmlUCSIsCatSo'/>
-     <exports symbol='xmlUCSIsCatZ'/>
-     <exports symbol='xmlUCSIsCatZl'/>
-     <exports symbol='xmlUCSIsCatZp'/>
-     <exports symbol='xmlUCSIsCatZs'/>
-     <exports symbol='xmlUCSIsCherokee'/>
-     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
-     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
-     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
-     <exports symbol='xmlUCSIsControlPictures'/>
-     <exports symbol='xmlUCSIsCurrencySymbols'/>
-     <exports symbol='xmlUCSIsCyrillic'/>
-     <exports symbol='xmlUCSIsDeseret'/>
-     <exports symbol='xmlUCSIsDevanagari'/>
-     <exports symbol='xmlUCSIsDingbats'/>
-     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
-     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
-     <exports symbol='xmlUCSIsEthiopic'/>
-     <exports symbol='xmlUCSIsGeneralPunctuation'/>
-     <exports symbol='xmlUCSIsGeometricShapes'/>
-     <exports symbol='xmlUCSIsGeorgian'/>
-     <exports symbol='xmlUCSIsGothic'/>
-     <exports symbol='xmlUCSIsGreek'/>
-     <exports symbol='xmlUCSIsGreekExtended'/>
-     <exports symbol='xmlUCSIsGujarati'/>
-     <exports symbol='xmlUCSIsGurmukhi'/>
-     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
-     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
-     <exports symbol='xmlUCSIsHangulJamo'/>
-     <exports symbol='xmlUCSIsHangulSyllables'/>
-     <exports symbol='xmlUCSIsHebrew'/>
-     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
-     <exports symbol='xmlUCSIsHighSurrogates'/>
-     <exports symbol='xmlUCSIsHiragana'/>
-     <exports symbol='xmlUCSIsIPAExtensions'/>
-     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
-     <exports symbol='xmlUCSIsKanbun'/>
-     <exports symbol='xmlUCSIsKangxiRadicals'/>
-     <exports symbol='xmlUCSIsKannada'/>
-     <exports symbol='xmlUCSIsKatakana'/>
-     <exports symbol='xmlUCSIsKhmer'/>
-     <exports symbol='xmlUCSIsLao'/>
-     <exports symbol='xmlUCSIsLatin1Supplement'/>
-     <exports symbol='xmlUCSIsLatinExtendedA'/>
-     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
-     <exports symbol='xmlUCSIsLatinExtendedB'/>
-     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
-     <exports symbol='xmlUCSIsLowSurrogates'/>
-     <exports symbol='xmlUCSIsMalayalam'/>
-     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
-     <exports symbol='xmlUCSIsMathematicalOperators'/>
-     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
-     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
-     <exports symbol='xmlUCSIsMongolian'/>
-     <exports symbol='xmlUCSIsMusicalSymbols'/>
-     <exports symbol='xmlUCSIsMyanmar'/>
-     <exports symbol='xmlUCSIsNumberForms'/>
-     <exports symbol='xmlUCSIsOgham'/>
-     <exports symbol='xmlUCSIsOldItalic'/>
-     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
-     <exports symbol='xmlUCSIsOriya'/>
-     <exports symbol='xmlUCSIsPrivateUse'/>
-     <exports symbol='xmlUCSIsRunic'/>
-     <exports symbol='xmlUCSIsSinhala'/>
-     <exports symbol='xmlUCSIsSmallFormVariants'/>
-     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
-     <exports symbol='xmlUCSIsSpecials'/>
-     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
-     <exports symbol='xmlUCSIsSyriac'/>
-     <exports symbol='xmlUCSIsTags'/>
-     <exports symbol='xmlUCSIsTamil'/>
-     <exports symbol='xmlUCSIsTelugu'/>
-     <exports symbol='xmlUCSIsThaana'/>
-     <exports symbol='xmlUCSIsThai'/>
-     <exports symbol='xmlUCSIsTibetan'/>
-     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
-     <exports symbol='xmlUCSIsYiRadicals'/>
-     <exports symbol='xmlUCSIsYiSyllables'/>
-    </file>
     <file name='xlink'>
      <exports symbol='XLINK_ACTUATE_AUTO'/>
      <exports symbol='XLINK_ACTUATE_NONE'/>
@@ -1147,14 +917,24 @@
      <exports symbol='xmlValidityWarningFunc'/>
     </file>
     <file name='HTMLparser'>
+     <exports symbol='HTML_DEPRECATED'/>
+     <exports symbol='HTML_INVALID'/>
+     <exports symbol='HTML_NA'/>
+     <exports symbol='HTML_REQUIRED'/>
+     <exports symbol='HTML_VALID'/>
      <exports symbol='UTF8ToHtml'/>
      <exports symbol='_htmlElemDesc'/>
      <exports symbol='_htmlEntityDesc'/>
+     <exports symbol='htmlAttrAllowed'/>
      <exports symbol='htmlAutoCloseTag'/>
      <exports symbol='htmlCreatePushParserCtxt'/>
+     <exports symbol='htmlDefaultSubelement'/>
      <exports symbol='htmlDocPtr'/>
      <exports symbol='htmlElemDesc'/>
      <exports symbol='htmlElemDescPtr'/>
+     <exports symbol='htmlElementAllowedHere'/>
+     <exports symbol='htmlElementAllowedHereDesc'/>
+     <exports symbol='htmlElementStatusHere'/>
      <exports symbol='htmlEncodeEntities'/>
      <exports symbol='htmlEntityDesc'/>
      <exports symbol='htmlEntityDescPtr'/>
@@ -1165,6 +945,7 @@
      <exports symbol='htmlIsAutoClosed'/>
      <exports symbol='htmlIsScriptAttribute'/>
      <exports symbol='htmlNodePtr'/>
+     <exports symbol='htmlNodeStatus'/>
      <exports symbol='htmlParseCharRef'/>
      <exports symbol='htmlParseChunk'/>
      <exports symbol='htmlParseDoc'/>
@@ -1177,10 +958,12 @@
      <exports symbol='htmlParserInput'/>
      <exports symbol='htmlParserInputPtr'/>
      <exports symbol='htmlParserNodeInfo'/>
+     <exports symbol='htmlRequiredAttrs'/>
      <exports symbol='htmlSAXHandler'/>
      <exports symbol='htmlSAXHandlerPtr'/>
      <exports symbol='htmlSAXParseDoc'/>
      <exports symbol='htmlSAXParseFile'/>
+     <exports symbol='htmlStatus'/>
      <exports symbol='htmlTagLookup'/>
     </file>
     <file name='parser'>
@@ -1380,6 +1163,29 @@
      <exports symbol='xmlTextReaderValue'/>
      <exports symbol='xmlTextReaderXmlLang'/>
     </file>
+    <file name='relaxng'>
+     <exports symbol='xmlRelaxNG'/>
+     <exports symbol='xmlRelaxNGCleanupTypes'/>
+     <exports symbol='xmlRelaxNGDump'/>
+     <exports symbol='xmlRelaxNGFree'/>
+     <exports symbol='xmlRelaxNGFreeParserCtxt'/>
+     <exports symbol='xmlRelaxNGFreeValidCtxt'/>
+     <exports symbol='xmlRelaxNGNewMemParserCtxt'/>
+     <exports symbol='xmlRelaxNGNewParserCtxt'/>
+     <exports symbol='xmlRelaxNGNewValidCtxt'/>
+     <exports symbol='xmlRelaxNGParse'/>
+     <exports symbol='xmlRelaxNGParserCtxt'/>
+     <exports symbol='xmlRelaxNGParserCtxtPtr'/>
+     <exports symbol='xmlRelaxNGPtr'/>
+     <exports symbol='xmlRelaxNGSetParserErrors'/>
+     <exports symbol='xmlRelaxNGSetValidErrors'/>
+     <exports symbol='xmlRelaxNGValidCtxt'/>
+     <exports symbol='xmlRelaxNGValidCtxtPtr'/>
+     <exports symbol='xmlRelaxNGValidateDoc'/>
+     <exports symbol='xmlRelaxNGValidateStream'/>
+     <exports symbol='xmlRelaxNGValidityErrorFunc'/>
+     <exports symbol='xmlRelaxNGValidityWarningFunc'/>
+    </file>
     <file name='globals'>
      <exports symbol='_xmlGlobalState'/>
      <exports symbol='docbDefaultSAXHandler'/>
@@ -1443,48 +1249,6 @@
      <exports symbol='xmlSubstituteEntitiesDefaultValue'/>
      <exports symbol='xmlTreeIndentString'/>
      <exports symbol='xmlTreeIndentString'/>
-    </file>
-    <file name='SAX'>
-     <exports symbol='attribute'/>
-     <exports symbol='attributeDecl'/>
-     <exports symbol='cdataBlock'/>
-     <exports symbol='characters'/>
-     <exports symbol='checkNamespace'/>
-     <exports symbol='comment'/>
-     <exports symbol='docbDefaultSAXHandlerInit'/>
-     <exports symbol='elementDecl'/>
-     <exports symbol='endDocument'/>
-     <exports symbol='endElement'/>
-     <exports symbol='entityDecl'/>
-     <exports symbol='externalSubset'/>
-     <exports symbol='getColumnNumber'/>
-     <exports symbol='getEntity'/>
-     <exports symbol='getLineNumber'/>
-     <exports symbol='getNamespace'/>
-     <exports symbol='getParameterEntity'/>
-     <exports symbol='getPublicId'/>
-     <exports symbol='getSystemId'/>
-     <exports symbol='globalNamespace'/>
-     <exports symbol='hasExternalSubset'/>
-     <exports symbol='hasInternalSubset'/>
-     <exports symbol='htmlDefaultSAXHandlerInit'/>
-     <exports symbol='ignorableWhitespace'/>
-     <exports symbol='initdocbDefaultSAXHandler'/>
-     <exports symbol='inithtmlDefaultSAXHandler'/>
-     <exports symbol='initxmlDefaultSAXHandler'/>
-     <exports symbol='internalSubset'/>
-     <exports symbol='isStandalone'/>
-     <exports symbol='namespaceDecl'/>
-     <exports symbol='notationDecl'/>
-     <exports symbol='processingInstruction'/>
-     <exports symbol='reference'/>
-     <exports symbol='resolveEntity'/>
-     <exports symbol='setDocumentLocator'/>
-     <exports symbol='setNamespace'/>
-     <exports symbol='startDocument'/>
-     <exports symbol='startElement'/>
-     <exports symbol='unparsedEntityDecl'/>
-     <exports symbol='xmlDefaultSAXHandlerInit'/>
     </file>
     <file name='threads'>
      <exports symbol='xmlCleanupThreads'/>
@@ -1798,6 +1562,7 @@
      <exports symbol='xmlGetIntSubset'/>
      <exports symbol='xmlGetLastChild'/>
      <exports symbol='xmlGetLineNo'/>
+     <exports symbol='xmlGetNoNsProp'/>
      <exports symbol='xmlGetNodePath'/>
      <exports symbol='xmlGetNsList'/>
      <exports symbol='xmlGetNsProp'/>
@@ -1931,6 +1696,142 @@
      <exports symbol='xmlNanoHTTPReturnCode'/>
      <exports symbol='xmlNanoHTTPSave'/>
      <exports symbol='xmlNanoHTTPScanProxy'/>
+    </file>
+    <file name='xmlunicode'>
+     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
+     <exports symbol='xmlUCSIsArabic'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
+     <exports symbol='xmlUCSIsArmenian'/>
+     <exports symbol='xmlUCSIsArrows'/>
+     <exports symbol='xmlUCSIsBasicLatin'/>
+     <exports symbol='xmlUCSIsBengali'/>
+     <exports symbol='xmlUCSIsBlock'/>
+     <exports symbol='xmlUCSIsBlockElements'/>
+     <exports symbol='xmlUCSIsBopomofo'/>
+     <exports symbol='xmlUCSIsBopomofoExtended'/>
+     <exports symbol='xmlUCSIsBoxDrawing'/>
+     <exports symbol='xmlUCSIsBraillePatterns'/>
+     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
+     <exports symbol='xmlUCSIsCJKCompatibility'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
+     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
+     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
+     <exports symbol='xmlUCSIsCat'/>
+     <exports symbol='xmlUCSIsCatC'/>
+     <exports symbol='xmlUCSIsCatCc'/>
+     <exports symbol='xmlUCSIsCatCf'/>
+     <exports symbol='xmlUCSIsCatCo'/>
+     <exports symbol='xmlUCSIsCatCs'/>
+     <exports symbol='xmlUCSIsCatL'/>
+     <exports symbol='xmlUCSIsCatLl'/>
+     <exports symbol='xmlUCSIsCatLm'/>
+     <exports symbol='xmlUCSIsCatLo'/>
+     <exports symbol='xmlUCSIsCatLt'/>
+     <exports symbol='xmlUCSIsCatLu'/>
+     <exports symbol='xmlUCSIsCatM'/>
+     <exports symbol='xmlUCSIsCatMc'/>
+     <exports symbol='xmlUCSIsCatMe'/>
+     <exports symbol='xmlUCSIsCatMn'/>
+     <exports symbol='xmlUCSIsCatN'/>
+     <exports symbol='xmlUCSIsCatNd'/>
+     <exports symbol='xmlUCSIsCatNl'/>
+     <exports symbol='xmlUCSIsCatNo'/>
+     <exports symbol='xmlUCSIsCatP'/>
+     <exports symbol='xmlUCSIsCatPc'/>
+     <exports symbol='xmlUCSIsCatPd'/>
+     <exports symbol='xmlUCSIsCatPe'/>
+     <exports symbol='xmlUCSIsCatPf'/>
+     <exports symbol='xmlUCSIsCatPi'/>
+     <exports symbol='xmlUCSIsCatPo'/>
+     <exports symbol='xmlUCSIsCatPs'/>
+     <exports symbol='xmlUCSIsCatS'/>
+     <exports symbol='xmlUCSIsCatSc'/>
+     <exports symbol='xmlUCSIsCatSk'/>
+     <exports symbol='xmlUCSIsCatSm'/>
+     <exports symbol='xmlUCSIsCatSo'/>
+     <exports symbol='xmlUCSIsCatZ'/>
+     <exports symbol='xmlUCSIsCatZl'/>
+     <exports symbol='xmlUCSIsCatZp'/>
+     <exports symbol='xmlUCSIsCatZs'/>
+     <exports symbol='xmlUCSIsCherokee'/>
+     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
+     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
+     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
+     <exports symbol='xmlUCSIsControlPictures'/>
+     <exports symbol='xmlUCSIsCurrencySymbols'/>
+     <exports symbol='xmlUCSIsCyrillic'/>
+     <exports symbol='xmlUCSIsDeseret'/>
+     <exports symbol='xmlUCSIsDevanagari'/>
+     <exports symbol='xmlUCSIsDingbats'/>
+     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
+     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
+     <exports symbol='xmlUCSIsEthiopic'/>
+     <exports symbol='xmlUCSIsGeneralPunctuation'/>
+     <exports symbol='xmlUCSIsGeometricShapes'/>
+     <exports symbol='xmlUCSIsGeorgian'/>
+     <exports symbol='xmlUCSIsGothic'/>
+     <exports symbol='xmlUCSIsGreek'/>
+     <exports symbol='xmlUCSIsGreekExtended'/>
+     <exports symbol='xmlUCSIsGujarati'/>
+     <exports symbol='xmlUCSIsGurmukhi'/>
+     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
+     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
+     <exports symbol='xmlUCSIsHangulJamo'/>
+     <exports symbol='xmlUCSIsHangulSyllables'/>
+     <exports symbol='xmlUCSIsHebrew'/>
+     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
+     <exports symbol='xmlUCSIsHighSurrogates'/>
+     <exports symbol='xmlUCSIsHiragana'/>
+     <exports symbol='xmlUCSIsIPAExtensions'/>
+     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
+     <exports symbol='xmlUCSIsKanbun'/>
+     <exports symbol='xmlUCSIsKangxiRadicals'/>
+     <exports symbol='xmlUCSIsKannada'/>
+     <exports symbol='xmlUCSIsKatakana'/>
+     <exports symbol='xmlUCSIsKhmer'/>
+     <exports symbol='xmlUCSIsLao'/>
+     <exports symbol='xmlUCSIsLatin1Supplement'/>
+     <exports symbol='xmlUCSIsLatinExtendedA'/>
+     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
+     <exports symbol='xmlUCSIsLatinExtendedB'/>
+     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
+     <exports symbol='xmlUCSIsLowSurrogates'/>
+     <exports symbol='xmlUCSIsMalayalam'/>
+     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
+     <exports symbol='xmlUCSIsMathematicalOperators'/>
+     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
+     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
+     <exports symbol='xmlUCSIsMongolian'/>
+     <exports symbol='xmlUCSIsMusicalSymbols'/>
+     <exports symbol='xmlUCSIsMyanmar'/>
+     <exports symbol='xmlUCSIsNumberForms'/>
+     <exports symbol='xmlUCSIsOgham'/>
+     <exports symbol='xmlUCSIsOldItalic'/>
+     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
+     <exports symbol='xmlUCSIsOriya'/>
+     <exports symbol='xmlUCSIsPrivateUse'/>
+     <exports symbol='xmlUCSIsRunic'/>
+     <exports symbol='xmlUCSIsSinhala'/>
+     <exports symbol='xmlUCSIsSmallFormVariants'/>
+     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
+     <exports symbol='xmlUCSIsSpecials'/>
+     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
+     <exports symbol='xmlUCSIsSyriac'/>
+     <exports symbol='xmlUCSIsTags'/>
+     <exports symbol='xmlUCSIsTamil'/>
+     <exports symbol='xmlUCSIsTelugu'/>
+     <exports symbol='xmlUCSIsThaana'/>
+     <exports symbol='xmlUCSIsThai'/>
+     <exports symbol='xmlUCSIsTibetan'/>
+     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
+     <exports symbol='xmlUCSIsYiRadicals'/>
+     <exports symbol='xmlUCSIsYiSyllables'/>
     </file>
     <file name='uri'>
      <exports symbol='_xmlURI'/>
@@ -2233,6 +2134,12 @@
     </macro>
     <macro name='_DEBUG_MEMORY_ALLOC_' file='xmlmemory'>
     </macro>
+    <macro name='htmlDefaultSubelement' file='HTMLparser'>
+    </macro>
+    <macro name='htmlElementAllowedHereDesc' file='HTMLparser'>
+    </macro>
+    <macro name='htmlRequiredAttrs' file='HTMLparser'>
+    </macro>
     <macro name='xmlChildrenNode' file='tree'>
       <info>Macro for compatibility naming layer with libxml1.</info>
     </macro>
@@ -2334,6 +2241,11 @@
       <info>Check if the current value on the XPath stack is a node set or an XSLT value tree.  Returns true if the current object on the stack is a node-set.</info>
       <arg name='ctxt' info='an XPath parser context'/>
     </macro>
+    <enum name='HTML_DEPRECATED' file='HTMLparser' value='0x2' type='htmlStatus'/>
+    <enum name='HTML_INVALID' file='HTMLparser' value='0x1' type='htmlStatus'/>
+    <enum name='HTML_NA' file='HTMLparser' value='0' type='htmlStatus' info='something we don&apos;t check at all'/>
+    <enum name='HTML_REQUIRED' file='HTMLparser' value='0xc' type='htmlStatus' info=' VALID bit set so ( &amp; HTML_VALID ) is TRUE'/>
+    <enum name='HTML_VALID' file='HTMLparser' value='0x4' type='htmlStatus'/>
     <enum name='XLINK_ACTUATE_AUTO' file='xlink' value='1' type='xlinkActuate'/>
     <enum name='XLINK_ACTUATE_NONE' file='xlink' value='0' type='xlinkActuate'/>
     <enum name='XLINK_ACTUATE_ONREQUEST' file='xlink' value='2' type='xlinkActuate'/>
@@ -2604,7 +2516,22 @@
       <field name='depr' type='char' info=' Is this a deprecated element ?'/>
       <field name='dtd' type='char' info=' 1: only in Loose DTD, 2: only Frameset one'/>
       <field name='isinline' type='char' info=' is this a block 0 or inline 1 element'/>
-      <field name='desc' type='const char *' info=' the description'/>
+      <field name='desc' type='const char *' info=' the description NRK Jan.2003
+* New fields encapsulating HTML structure
+*
+* Bugs:
+*	This is a very limited representation.  It fails to tell us when
+*	an element *requires* subelements (we only have whether they&apos;re
+*	allowed or not), and it doesn&apos;t tell us where CDATA and PCDATA
+*	are allowed.  Some element relationships are not fully represented:
+*	these are flagged with the word MODIFIER
+*'/>
+      <field name='subelts' type='const char **' info=' allowed sub-elements of this element'/>
+      <field name='defaultsubelt' type='const char *' info=' subelement for suggested auto-repair
+if necessary or NULL'/>
+      <field name='attrs_opt' type='const char **' info=' Optional Attributes'/>
+      <field name='attrs_depr' type='const char **' info=' Additional deprecated attributes'/>
+      <field name='attrs_req' type='const char **' info=' Required attributes'/>
     </struct>
     <typedef name='htmlElemDescPtr' file='HTMLparser' type='htmlElemDesc *'/>
     <struct name='htmlEntityDesc' file='HTMLparser' type='struct _htmlEntityDesc'>
@@ -2621,6 +2548,7 @@
     <typedef name='htmlParserNodeInfo' file='HTMLparser' type='xmlParserNodeInfo'/>
     <typedef name='htmlSAXHandler' file='HTMLparser' type='xmlSAXHandler'/>
     <typedef name='htmlSAXHandlerPtr' file='HTMLparser' type='xmlSAXHandlerPtr'/>
+    <typedef name='htmlStatus' file='HTMLparser' type='enum'/>
     <typedef name='xlinkActuate' file='xlink' type='enum'/>
     <typedef name='xlinkHRef' file='xlink' type='xmlChar *'/>
     <struct name='xlinkHandler' file='xlink' type='struct _xlinkHandler'>
@@ -3025,6 +2953,12 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlRegExecCtxtPtr' file='xmlregexp' type='xmlRegExecCtxt *'/>
     <struct name='xmlRegexp' file='xmlregexp' type='struct _xmlRegexp'/>
     <typedef name='xmlRegexpPtr' file='xmlregexp' type='xmlRegexp *'/>
+    <struct name='xmlRelaxNG' file='relaxng' type='struct _xmlRelaxNG'/>
+    <struct name='xmlRelaxNGParserCtxt' file='relaxng' type='struct _xmlRelaxNGParserCtxt'/>
+    <typedef name='xmlRelaxNGParserCtxtPtr' file='relaxng' type='xmlRelaxNGParserCtxt *'/>
+    <typedef name='xmlRelaxNGPtr' file='relaxng' type='xmlRelaxNG *'/>
+    <struct name='xmlRelaxNGValidCtxt' file='relaxng' type='struct _xmlRelaxNGValidCtxt'/>
+    <typedef name='xmlRelaxNGValidCtxtPtr' file='relaxng' type='xmlRelaxNGValidCtxt *'/>
     <struct name='xmlSAXHandler' file='tree' type='struct _xmlSAXHandler'>
       <field name='internalSubset' type='internalSubsetSAXFunc' info=''/>
       <field name='isStandalone' type='isStandaloneSAXFunc' info=''/>
@@ -3590,6 +3524,13 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if true'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </functype>
+    <function name='htmlAttrAllowed' file='HTMLparser'>
+      <info></info>
+      <return type='htmlStatus' info=''/>
+      <arg name='elt' type='const htmlElemDesc *' info=''/>
+      <arg name='attr' type='const xmlChar *' info=''/>
+      <arg name='legacy' type='int' info=''/>
+    </function>
     <function name='htmlAutoCloseTag' file='HTMLparser'>
       <info>The HTML DTD allows a tag to implicitly close other tags. The list is kept in htmlStartClose array. This function checks if the element or one of it&apos;s children would autoclose the given tag.</info>
       <return type='int' info='1 if autoclose, 0 otherwise'/>
@@ -3604,7 +3545,7 @@ actually an xmlCharEncoding'/>
       <arg name='encoding' type='const char *' info='a free form C string describing the HTML document encoding, or NULL'/>
     </function>
     <function name='htmlCreatePushParserCtxt' file='HTMLparser'>
-      <info>Create a parser context for using the HTML parser in push mode To allow content encoding detection, @size should be &gt;= 4 The value of @filename is used for fetching external entities and error/warning reports.</info>
+      <info>Create a parser context for using the HTML parser in push mode The value of @filename is used for fetching external entities and error/warning reports.</info>
       <return type='htmlParserCtxtPtr' info='the new parser context or NULL'/>
       <arg name='sax' type='htmlSAXHandlerPtr' info='a SAX handler'/>
       <arg name='user_data' type='void *' info='The user data returned on SAX callbacks'/>
@@ -3644,6 +3585,18 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
       <arg name='mem' type='xmlChar **' info='OUT: the memory pointer'/>
       <arg name='size' type='int *' info='OUT: the memory length'/>
+    </function>
+    <function name='htmlElementAllowedHere' file='HTMLparser'>
+      <info>Checks whether an HTML element may be a direct child of a parent element. Note - doesn&apos;t check for deprecated elements</info>
+      <return type='int' info='1 if allowed; 0 otherwise.'/>
+      <arg name='parent' type='const htmlElemDesc *' info='HTML parent element'/>
+      <arg name='elt' type='const xmlChar *' info='HTML element'/>
+    </function>
+    <function name='htmlElementStatusHere' file='HTMLparser'>
+      <info>Checks whether an HTML element may be a direct child of a parent element. and if so whether it is valid or deprecated.</info>
+      <return type='htmlStatus' info='one of HTML_VALID, HTML_DEPRECATED, HTML_INVALID'/>
+      <arg name='parent' type='const htmlElemDesc *' info='HTML parent element'/>
+      <arg name='elt' type='const htmlElemDesc *' info='HTML element'/>
     </function>
     <function name='htmlEncodeEntities' file='HTMLparser'>
       <info>Take a block of UTF-8 chars in and try to convert it to an ASCII plus HTML entities block of chars out.</info>
@@ -3751,6 +3704,12 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='xmlNodePtr' info='the current node'/>
       <arg name='encoding' type='const char *' info='the encoding string'/>
     </function>
+    <function name='htmlNodeStatus' file='HTMLparser'>
+      <info></info>
+      <return type='htmlStatus' info=''/>
+      <arg name='node' type='const htmlNodePtr' info=''/>
+      <arg name='legacy' type='int' info=''/>
+    </function>
     <function name='htmlParseCharRef' file='HTMLparser'>
       <info>parse Reference declarations  [66] CharRef ::= &apos;&amp;#&apos; [0-9]+ &apos;;&apos; | &apos;&amp;#x&apos; [0-9a-fA-F]+ &apos;;&apos;</info>
       <return type='int' info='the value parsed (as an int)'/>
@@ -3855,7 +3814,7 @@ actually an xmlCharEncoding'/>
       <arg name='len' type='int' info='the number of xmlChar'/>
     </functype>
     <function name='initGenericErrorDefaultFunc' file='xmlerror'>
-      <info>Set or reset (if NULL) the default handler for generic errors</info>
+      <info>Set or reset (if NULL) the default handler for generic errors to the builtin error function.</info>
       <return type='void'/>
       <arg name='handler' type='xmlGenericErrorFunc *' info='the handler'/>
     </function>
@@ -4210,7 +4169,7 @@ actually an xmlCharEncoding'/>
       <arg name='tree' type='xmlEnumerationPtr' info='if it&apos;s an enumeration, the associated list'/>
     </function>
     <function name='xmlAddChild' file='tree'>
-      <info>Add a new node to @parent, at the end of the child (or property) list merging adjacent TEXT nodes (in which case @cur is freed) If the new node was already inserted in a document it is first unlinked from its existing context. If the new node is ATTRIBUTE, it is added into properties instead of children. If there is an attribute with equal name, it is first destroyed.</info>
+      <info>Add a new node to @parent, at the end of the child (or property) list merging adjacent TEXT nodes (in which case @cur is freed) If the new node is ATTRIBUTE, it is added into properties instead of children. If there is an attribute with equal name, it is first destroyed.</info>
       <return type='xmlNodePtr' info='the child or NULL in case of error.'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
       <arg name='cur' type='xmlNodePtr' info='the child node'/>
@@ -4761,7 +4720,7 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='xmlCleanupParser' file='parser'>
-      <info>Cleanup function for the XML parser. It tries to reclaim all parsing related global memory allocated for the parser processing. It doesn&apos;t deallocate any document related memory. Calling this function should not prevent reusing the parser.</info>
+      <info>Cleanup function for the XML parser. It tries to reclaim all parsing related global memory allocated for the parser processing. It doesn&apos;t deallocate any document related memory. Calling this function should not prevent reusing the parser. One should call xmlCleanupParser() only when the process has finished using the library or XML document built with it.</info>
       <return type='void'/>
     </function>
     <function name='xmlCleanupPredefinedEntities' file='entities'>
@@ -5057,7 +5016,7 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
     </function>
     <function name='xmlDocDumpFormatMemory' file='tree'>
-      <info>Dump an XML document in memory and return the #xmlChar * and it&apos;s size. It&apos;s up to the caller to free the memory with xmlFree(). Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
+      <info>Dump an XML document in memory and return the #xmlChar * and it&apos;s size. It&apos;s up to the caller to free the memory with xmlFree(). Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='void'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
       <arg name='mem' type='xmlChar **' info='OUT: the memory pointer'/>
@@ -5065,7 +5024,7 @@ actually an xmlCharEncoding'/>
       <arg name='format' type='int' info='should formatting spaces been added'/>
     </function>
     <function name='xmlDocDumpFormatMemoryEnc' file='tree'>
-      <info>Dump the current DOM tree into memory using the character encoding specified by the caller.  Note it is up to the caller of this function to free the allocated memory with xmlFree(). Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
+      <info>Dump the current DOM tree into memory using the character encoding specified by the caller.  Note it is up to the caller of this function to free the allocated memory with xmlFree(). Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='void'/>
       <arg name='out_doc' type='xmlDocPtr' info='Document to generate XML text from'/>
       <arg name='doc_txt_ptr' type='xmlChar **' info='Memory pointer for allocated XML text'/>
@@ -5090,7 +5049,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlDocFormatDump' file='tree'>
       <info>Dump an XML document to an open FILE.</info>
-      <return type='int' info='the number of bytes written or -1 in case of failure.'/>
+      <return type='int' info='the number of bytes written or -1 in case of failure. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called'/>
       <arg name='f' type='FILE *' info='the FILE*'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
       <arg name='format' type='int' info='should formatting spaces been added'/>
@@ -5205,7 +5164,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlFileOpen' file='xmlIO'>
       <info>Wrapper around xmlFileOpen_real that try it with an unescaped version of @filename, if this fails fallback to @filename</info>
-      <return type='void *' info=''/>
+      <return type='void *' info='a handler or NULL in case or failure'/>
       <arg name='filename' type='const char *' info='the URI for matching'/>
     </function>
     <function name='xmlFileRead' file='xmlIO'>
@@ -5473,6 +5432,12 @@ actually an xmlCharEncoding'/>
       <return type='long' info='the line number if successful, -1 otherwise'/>
       <arg name='node' type='xmlNodePtr' info='valid node'/>
     </function>
+    <function name='xmlGetNoNsProp' file='tree'>
+      <info>Search and get the value of an attribute associated to a node This does the entity substitution. This function looks in DTD attribute declaration for #FIXED or default declaration values unless DTD use has been turned off. This function is similar to xmlGetProp except it will accept only an attribute in no namespace.</info>
+      <return type='xmlChar *' info='the attribute value or NULL if not found. It&apos;s up to the caller to free the memory with xmlFree().'/>
+      <arg name='node' type='xmlNodePtr' info='the node'/>
+      <arg name='name' type='const xmlChar *' info='the attribute name'/>
+    </function>
     <function name='xmlGetNodePath' file='tree'>
       <info>Build a structure based Path for the given node</info>
       <return type='xmlChar *' info='the new path or NULL in case of error. The caller must free the returned string'/>
@@ -5503,7 +5468,7 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='the entity name'/>
     </function>
     <function name='xmlGetProp' file='tree'>
-      <info>Search and get the value of an attribute associated to a node This does the entity substitution. This function looks in DTD attribute declaration for #FIXED or default declaration values unless DTD use has been turned off.</info>
+      <info>Search and get the value of an attribute associated to a node This does the entity substitution. This function looks in DTD attribute declaration for #FIXED or default declaration values unless DTD use has been turned off. NOTE: this function acts independantly of namespaces associated to the attribute. Use xmlGetNsProp() or xmlGetNoNsProp() for namespace aware processing.</info>
       <return type='xmlChar *' info='the attribute value or NULL if not found. It&apos;s up to the caller to free the memory with xmlFree().'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
       <arg name='name' type='const xmlChar *' info='the attribute name'/>
@@ -6713,7 +6678,7 @@ actually an xmlCharEncoding'/>
       <arg name='len' type='int' info='the size of @content'/>
     </function>
     <function name='xmlNodeDump' file='tree'>
-      <info>Dump an XML node, recursive behaviour,children are printed too. Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
+      <info>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='int' info='the number of bytes written to the buffer or -1 in case of error'/>
       <arg name='buf' type='xmlBufferPtr' info='the XML buffer output'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
@@ -6722,7 +6687,7 @@ actually an xmlCharEncoding'/>
       <arg name='format' type='int' info='is formatting allowed'/>
     </function>
     <function name='xmlNodeDumpOutput' file='tree'>
-      <info>Dump an XML node, recursive behaviour, children are printed too. Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
+      <info>Dump an XML node, recursive behaviour, children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='void'/>
       <arg name='buf' type='xmlOutputBufferPtr' info='the XML buffer output'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
@@ -7550,6 +7515,97 @@ actually an xmlCharEncoding'/>
       <arg name='writeFunc' type='xmlOutputWriteCallback' info='the xmlOutputWriteCallback'/>
       <arg name='closeFunc' type='xmlOutputCloseCallback' info='the xmlOutputCloseCallback'/>
     </function>
+    <function name='xmlRelaxNGCleanupTypes' file='relaxng'>
+      <info>Cleanup the default Schemas type library associated to RelaxNG</info>
+      <return type='void'/>
+    </function>
+    <function name='xmlRelaxNGDump' file='relaxng'>
+      <info>Dump a RelaxNG structure back</info>
+      <return type='void'/>
+      <arg name='output' type='FILE *' info='the file output'/>
+      <arg name='schema' type='xmlRelaxNGPtr' info='a schema structure'/>
+    </function>
+    <function name='xmlRelaxNGFree' file='relaxng'>
+      <info>Deallocate a RelaxNG structure.</info>
+      <return type='void'/>
+      <arg name='schema' type='xmlRelaxNGPtr' info='a schema structure'/>
+    </function>
+    <function name='xmlRelaxNGFreeParserCtxt' file='relaxng'>
+      <info>Free the resources associated to the schema parser context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='the schema parser context'/>
+    </function>
+    <function name='xmlRelaxNGFreeValidCtxt' file='relaxng'>
+      <info>Free the resources associated to the schema validation context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the schema validation context'/>
+    </function>
+    <function name='xmlRelaxNGNewMemParserCtxt' file='relaxng'>
+      <info>Create an XML RelaxNGs parse context for that memory buffer expected to contain an XML RelaxNGs file.</info>
+      <return type='xmlRelaxNGParserCtxtPtr' info='the parser context or NULL in case of error'/>
+      <arg name='buffer' type='const char *' info='a pointer to a char array containing the schemas'/>
+      <arg name='size' type='int' info='the size of the array'/>
+    </function>
+    <function name='xmlRelaxNGNewParserCtxt' file='relaxng'>
+      <info>Create an XML RelaxNGs parse context for that file/resource expected to contain an XML RelaxNGs file.</info>
+      <return type='xmlRelaxNGParserCtxtPtr' info='the parser context or NULL in case of error'/>
+      <arg name='URL' type='const char *' info='the location of the schema'/>
+    </function>
+    <function name='xmlRelaxNGNewValidCtxt' file='relaxng'>
+      <info>Create an XML RelaxNGs validation context based on the given schema</info>
+      <return type='xmlRelaxNGValidCtxtPtr' info='the validation context or NULL in case of error'/>
+      <arg name='schema' type='xmlRelaxNGPtr' info='a precompiled XML RelaxNGs'/>
+    </function>
+    <function name='xmlRelaxNGParse' file='relaxng'>
+      <info>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances. *WARNING* this interface is highly subject to change</info>
+      <return type='xmlRelaxNGPtr' info='the internal XML RelaxNG structure built from the resource or NULL in case of error'/>
+      <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a Relax-NG parser context'/>
+    </function>
+    <function name='xmlRelaxNGSetParserErrors' file='relaxng'>
+      <info>Set the callback functions used to handle errors for a validation context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a Relax-NG validation context'/>
+      <arg name='err' type='xmlRelaxNGValidityErrorFunc' info='the error callback'/>
+      <arg name='warn' type='xmlRelaxNGValidityWarningFunc' info='the warning callback'/>
+      <arg name='ctx' type='void *' info='contextual data for the callbacks'/>
+    </function>
+    <function name='xmlRelaxNGSetValidErrors' file='relaxng'>
+      <info>Set the error and warning callback informations</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='a Relax-NG validation context'/>
+      <arg name='err' type='xmlRelaxNGValidityErrorFunc' info='the error function'/>
+      <arg name='warn' type='xmlRelaxNGValidityWarningFunc' info='the warning function'/>
+      <arg name='ctx' type='void *' info='the functions context'/>
+    </function>
+    <function name='xmlRelaxNGValidateDoc' file='relaxng'>
+      <info>Validate a document tree in memory.</info>
+      <return type='int' info='0 if the document is valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='a Relax-NG validation context'/>
+      <arg name='doc' type='xmlDocPtr' info='a parsed document tree'/>
+    </function>
+    <function name='xmlRelaxNGValidateStream' file='relaxng'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info=''/>
+      <arg name='input' type='xmlParserInputBufferPtr' info=''/>
+      <arg name='enc' type='xmlCharEncoding' info=''/>
+      <arg name='sax' type='xmlSAXHandlerPtr' info=''/>
+      <arg name='user_data' type='void *' info=''/>
+    </function>
+    <functype name='xmlRelaxNGValidityErrorFunc' file='relaxng'>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctx' type='void *' info=''/>
+      <arg name='msg' type='const char *' info=''/>
+      <arg name='...' type='...' info=''/>
+    </functype>
+    <functype name='xmlRelaxNGValidityWarningFunc' file='relaxng'>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctx' type='void *' info=''/>
+      <arg name='msg' type='const char *' info=''/>
+      <arg name='...' type='...' info=''/>
+    </functype>
     <function name='xmlRemoveID' file='valid'>
       <info>Remove the given attribute from the ID table maintained internally.</info>
       <return type='int' info='-1 if the lookup failed and 0 otherwise'/>
@@ -7661,7 +7717,7 @@ actually an xmlCharEncoding'/>
       <arg name='encoding' type='const char *' info='the encoding if any assuming the I/O layer handles the trancoding'/>
     </function>
     <function name='xmlSaveFormatFile' file='tree'>
-      <info>Dump an XML document to a file. Will use compression if compiled in and enabled. If @filename is &quot;-&quot; the stdout file is used. If @format is set then the document will be indented on output.</info>
+      <info>Dump an XML document to a file. Will use compression if compiled in and enabled. If @filename is &quot;-&quot; the stdout file is used. If @format is set then the document will be indented on output. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='int' info='the number of bytes written or -1 in case of failure.'/>
       <arg name='filename' type='const char *' info='the filename (or URL)'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
@@ -7669,7 +7725,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSaveFormatFileEnc' file='tree'>
       <info>Dump an XML document to a file or an URL.</info>
-      <return type='int' info='the number of bytes written or -1 in case of error.'/>
+      <return type='int' info='the number of bytes written or -1 in case of error. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called'/>
       <arg name='filename' type='const char *' info='the filename or URL to output'/>
       <arg name='cur' type='xmlDocPtr' info='the document being saved'/>
       <arg name='encoding' type='const char *' info='the name of the encoding to use or NULL.'/>
@@ -7677,7 +7733,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSaveFormatFileTo' file='tree'>
       <info>Dump an XML document to an I/O buffer.</info>
-      <return type='int' info='the number of bytes written or -1 in case of failure.'/>
+      <return type='int' info='the number of bytes written or -1 in case of failure. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called'/>
       <arg name='buf' type='xmlOutputBufferPtr' info='an output I/O buffer'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
       <arg name='encoding' type='const char *' info='the encoding if any assuming the I/O layer handles the trancoding'/>

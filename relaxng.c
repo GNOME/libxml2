@@ -47,10 +47,10 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
     (xmlStrEqual(node->ns->href, xmlRelaxNGNs)))
 
 
-#define DEBUG 1                 /* very verbose output */
-#define DEBUG_CONTENT 1
-#define DEBUG_TYPE 1
-#define DEBUG_VALID 1
+/* #define DEBUG 1 */                /* very verbose output */
+/* #define DEBUG_CONTENT 1 */
+/* #define DEBUG_TYPE 1 */
+/* #define DEBUG_VALID 1 */
 /* #define DEBUG_INTERLEAVE 1 */
 
 #define UNBOUNDED (1 << 30)
@@ -5407,6 +5407,11 @@ xmlRelaxNGValidateDoc(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc) {
     ctxt->doc = doc;
 
     ret = xmlRelaxNGValidateDocument(ctxt, doc);
+    /*
+     * TODO: build error codes
+     */
+    if (ret == -1)
+	return(1);
     return(ret);
 }
 

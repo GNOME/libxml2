@@ -5493,7 +5493,7 @@ htmlElementStatusHere(const htmlElemDesc* parent, const htmlElemDesc* elt) {
   return ( elt->dtd == 0 ) ? HTML_VALID : HTML_DEPRECATED ;
 }
 /**
- * htmlAttrAllowed
+ * htmlAttrAllowed:
  * @elt: HTML element
  * @attr: HTML attribute
  * @legacy: whether to allow deprecated attributes
@@ -5528,7 +5528,7 @@ htmlAttrAllowed(const htmlElemDesc* elt, const xmlChar* attr, int legacy) {
   return HTML_INVALID ;
 }
 /**
- * htmlNodeStatus
+ * htmlNodeStatus:
  * @node - an htmlNodePtr in a tree
  * @legacy - whether to allow deprecated elements (YES is faster here
  *	for Element nodes)

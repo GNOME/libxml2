@@ -391,6 +391,8 @@ xmlFileOpen_real (const char *filename) {
  *
  * Wrapper around xmlFileOpen_real that try it with an unescaped
  * version of @filename, if this fails fallback to @filename
+ *
+ * Returns a handler or NULL in case or failure
  */
 void *
 xmlFileOpen (const char *filename) {

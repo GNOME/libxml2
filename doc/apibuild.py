@@ -1216,7 +1216,7 @@ class CParser:
 			 self.index.add(self.name, self.filename, static,
 			                "function", d)
 			 token = self.token()
-		     if token[0] == "sep" and token[1] == "{":
+		     elif token[0] == "sep" and token[1] == "{":
 		         d = self.mergeFunctionComment(self.name,
 				 ((type, None), self.signature), static)
 			 self.index.add(self.name, self.filename, static,

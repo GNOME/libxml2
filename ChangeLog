@@ -1,3 +1,15 @@
+Wed Feb  5 14:15:59 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c tree.c xmlIO.c: comments cleanups
+	* Makefile.am: use xmllint for doing the RelaxNG tests
+	* configure.in: preparing 2.5.2 made schemas support default to
+	  on instead of off
+	* relaxng.c: removed the verbosity
+	* xmllint.c: added --relaxng option
+	* python/generator.py python/libxml_wrap.h: prepared the integration
+	  of the new RelaxNG module and schemas
+	* result/relaxng/*: less verbose output
+
 Wed Feb  5 12:00:36 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: do not run content model validation if the

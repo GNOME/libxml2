@@ -1,2 +1,2 @@
 Extra content for element preferredFormat: text
-./test/relaxng/tutor6_2_4.xml validation generated an internal error
+./test/relaxng/tutor6_2_4.xml fails to validate

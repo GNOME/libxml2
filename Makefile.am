@@ -686,7 +686,7 @@ Schemastests: testSchemas$(EXEEXT)
 	       fi ; \
 	  done; done)
 
-Relaxtests: testRelax$(EXEEXT)
+Relaxtests: xmllint$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## Relax-NG regression tests"
@@ -699,12 +699,12 @@ Relaxtests: testRelax$(EXEEXT)
 	      if [ ! -f $(srcdir)/result/relaxng/"$$name"_"$$xno" ]; \
 	      then \
 		  echo New test file "$$name"_"$$xno" ; \
-		  $(CHECKER) $(top_builddir)/testRelax $$i $$j \
+		  $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --relaxng $$i $$j \
 		    > $(srcdir)/result/relaxng/"$$name"_"$$xno" \
 		    2> $(srcdir)/result/relaxng/"$$name"_"$$xno".err; \
 	      else \
 		  echo Testing "$$name"_"$$xno" ; \
-	          $(CHECKER) $(top_builddir)/testRelax $$i $$j \
+	          $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --noout --relaxng $$i $$j \
 		    > res.$$name 2> err.$$name;\
 	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	          diff $(srcdir)/result/relaxng/"$$name"_"$$xno" \

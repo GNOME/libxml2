@@ -420,6 +420,11 @@ def print_function_wrapper(name, output, export, include):
         include.write("#ifdef LIBXML_REGEXP_ENABLED\n");
         export.write("#ifdef LIBXML_REGEXP_ENABLED\n");
         output.write("#ifdef LIBXML_REGEXP_ENABLED\n");
+    elif file == "xmlschemas" or file == "xmlschemastypes" or \
+         file == "relaxng":
+        include.write("#ifdef LIBXML_SCHEMAS_ENABLED\n");
+        export.write("#ifdef LIBXML_SCHEMAS_ENABLED\n");
+        output.write("#ifdef LIBXML_SCHEMAS_ENABLED\n");
 
     include.write("PyObject * ")
     include.write("libxml_%s(PyObject *self, PyObject *args);\n" % (name));
@@ -483,6 +488,11 @@ def print_function_wrapper(name, output, export, include):
         include.write("#endif /* LIBXML_REGEXP_ENABLED */\n");
         export.write("#endif /* LIBXML_REGEXP_ENABLED */\n");
         output.write("#endif /* LIBXML_REGEXP_ENABLED */\n");
+    elif file == "xmlschemas" or file == "xmlschemastypes" or \
+         file == "relaxng":
+        include.write("#endif /* LIBXML_SCHEMAS_ENABLED */\n");
+        export.write("#endif /* LIBXML_SCHEMAS_ENABLED */\n");
+        output.write("#endif /* LIBXML_SCHEMAS_ENABLED */\n");
     return 1
 
 def buildStubs():

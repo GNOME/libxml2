@@ -84,6 +84,9 @@
 #endif
 #include <libxml/globals.h>
 #include <libxml/xmlreader.h>
+#ifdef LIBXML_SCHEMAS_ENABLED
+#include <libxml/relaxng.h>
+#endif
 
 #ifndef XML_XML_DEFAULT_CATALOG
 #define XML_XML_DEFAULT_CATALOG "file:///etc/xml/catalog"
@@ -102,6 +105,10 @@ static int nowrap = 0;
 static int valid = 0;
 static int postvalid = 0;
 static char * dtdvalid = NULL;
+#ifdef LIBXML_SCHEMAS_ENABLED
+static char * relaxng = NULL;
+static xmlRelaxNGPtr relaxngschemas = NULL;
+#endif
 static int repeat = 0;
 static int insert = 0;
 static int compress = 0;
@@ -1054,6 +1061,27 @@ static void parseAndPrintFile(char *filename) {
 	if ((timing) && (!repeat)) {
 	    endTimer("Validating");
 	}
+#ifdef LIBXML_SCHEMAS_ENABLED
+    } else if (relaxngschemas != NULL) {
+	xmlRelaxNGValidCtxtPtr ctxt;
+	int ret;
+
+	ctxt = xmlRelaxNGNewValidCtxt(relaxngschemas);
+	xmlRelaxNGSetValidErrors(ctxt,
+		(xmlRelaxNGValidityErrorFunc) fprintf,
+		(xmlRelaxNGValidityWarningFunc) fprintf,
+		stderr);
+	ret = xmlRelaxNGValidateDoc(ctxt, doc);
+	if (ret == 0) {
+	    printf("%s validates\n", filename);
+	} else if (ret > 0) {
+	    printf("%s fails to validate\n", filename);
+	} else {
+	    printf("%s validation generated an internal error\n",
+		   filename);
+	}
+	xmlRelaxNGFreeValidCtxt(ctxt);
+#endif
     }
 
 #ifdef LIBXML_DEBUG_ENABLED
@@ -1187,6 +1215,9 @@ static void usage(const char *name) {
     printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
     printf("\t--stream : use the streaming interface to process very large files\n");
     printf("\t--chkregister : verify the node registration code\n");
+#ifdef LIBXML_XINCLUDE_ENABLED
+    printf("\t--relaxng schema : do RelaxNG validation against the schema\n");
+#endif
     printf("\nLibxml project home page: http://xmlsoft.org/\n");
     printf("To report bugs or get some help check: http://xmlsoft.org/bugs.html\n");
 }
@@ -1381,6 +1412,13 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-chkregister")) ||
 	         (!strcmp(argv[i], "--chkregister"))) {
 	     chkregister++;
+#ifdef LIBXML_SCHEMAS_ENABLED
+	} else if ((!strcmp(argv[i], "-relaxng")) ||
+	         (!strcmp(argv[i], "--relaxng"))) {
+	    i++;
+	    relaxng = argv[i];
+	    noent++;
+#endif
 	} else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);
 	    usage(argv[0]);
@@ -1427,6 +1465,20 @@ main(int argc, char **argv) {
 	 "<body bgcolor=\"#ffffff\"><h1 align=\"center\">%s output</h1>\n",
 		argv[0]);
     }
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+    if (relaxng != NULL) {
+	xmlRelaxNGParserCtxtPtr ctxt;
+
+	ctxt = xmlRelaxNGNewParserCtxt(relaxng);
+	xmlRelaxNGSetParserErrors(ctxt,
+		(xmlRelaxNGValidityErrorFunc) fprintf,
+		(xmlRelaxNGValidityWarningFunc) fprintf,
+		stderr);
+	relaxngschemas = xmlRelaxNGParse(ctxt);
+	xmlRelaxNGFreeParserCtxt(ctxt);
+    }
+#endif
     for (i = 1; i < argc ; i++) {
 	if ((!strcmp(argv[i], "-encode")) ||
 	         (!strcmp(argv[i], "--encode"))) {
@@ -1440,6 +1492,11 @@ main(int argc, char **argv) {
         }
 	if ((!strcmp(argv[i], "-dtdvalid")) ||
 	         (!strcmp(argv[i], "--dtdvalid"))) {
+	    i++;
+	    continue;
+        }
+	if ((!strcmp(argv[i], "-relaxng")) ||
+	         (!strcmp(argv[i], "--relaxng"))) {
 	    i++;
 	    continue;
         }
@@ -1473,6 +1530,11 @@ main(int argc, char **argv) {
     if ((files == 0) && (!generate) && (version == 0)) {
 	usage(argv[0]);
     }
+#ifdef LIBXML_SCHEMAS_ENABLED
+    if (relaxngschemas != NULL)
+	xmlRelaxNGFree(relaxngschemas);
+    xmlRelaxNGCleanupTypes();
+#endif
     xmlCleanupParser();
     xmlMemoryDump();
 

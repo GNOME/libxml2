@@ -18,6 +18,7 @@
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlreader.h>
+#include <libxml/relaxng.h>
 
 /**
  * ATTRIBUTE_UNUSED:

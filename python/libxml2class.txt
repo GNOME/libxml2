@@ -126,6 +126,9 @@ htmlSAXParseFile()
 newNode()
 setEntityLoader()
 
+# functions from module relaxng
+relaxNGCleanupTypes()
+
 # functions from module tree
 compressMode()
 isXHTML()
@@ -366,6 +369,7 @@ Class xmlNode(xmlCore)
     newNsPropEatName()
     newProp()
     newTextChild()
+    noNsProp()
     nodePath()
     nsProp()
     prop()

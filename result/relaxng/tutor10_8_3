@@ -1,2 +1,2 @@
 Extra content for element addressBook: card
-./test/relaxng/tutor10_8_3.xml validation generated an internal error
+./test/relaxng/tutor10_8_3.xml fails to validate

@@ -6,7 +6,7 @@ SAX.getEntity(xml)
 SAX.externalSubset(EXAMPLE, , example.dtd)
 SAX.getEntity(amp)
 SAX.getEntity(xml)
-SAX.startElement(EXAMPLE, prop1='a&amp;b', prop2='&xml;')
+SAX.startElement(EXAMPLE, prop1='a&#38;b', prop2='&xml;')
 SAX.characters(
   Test of entities in attribu, 35)
 SAX.endElement(EXAMPLE)

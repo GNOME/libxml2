@@ -1754,7 +1754,7 @@ xmlShellLoad(xmlShellCtxtPtr ctxt, char *filename,
 #ifdef LIBXML_XPATH_ENABLED
         ctxt->pctxt = xmlXPathNewContext(doc);
 #endif /* LIBXML_XPATH_ENABLED */
-        ctxt->filename = (char *) xmlStrdup((xmlChar *) filename);
+        ctxt->filename = (char *) xmlCanonicPath((xmlChar *) filename);
     } else
         return (-1);
     return (0);

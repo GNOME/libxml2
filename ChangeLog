@@ -1,3 +1,9 @@
+Wed Apr 23 15:49:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* DOCBparser.c SAX.c catalog.c debugXML.c parser.c: try to find
+	  more places where xmlCanonicPath() must be used to convert
+	  filenames to URLs, trying to fix #111088
+
 Wed Apr 23 09:35:12 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c python/libxml.py: applied patch from 

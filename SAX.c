@@ -253,7 +253,7 @@ externalSubset(void *ctx, const xmlChar *name,
 	}
 
 	if (input->filename == NULL)
-	    input->filename = (char *) xmlStrdup(SystemID);
+	    input->filename = (char *) xmlCanonicPath(SystemID);
 	input->line = 1;
 	input->col = 1;
 	input->base = ctxt->input->cur;

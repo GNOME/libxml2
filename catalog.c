@@ -788,7 +788,7 @@ xmlParseCatalogFile(const char *filename) {
 	return(NULL);
     }
 
-    inputStream->filename = xmlMemStrdup(filename);
+    inputStream->filename = xmlCanonicPath(filename);
     inputStream->buf = buf;
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;

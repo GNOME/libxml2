@@ -2068,7 +2068,11 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
      * First we compare the two strings and find where they first differ
      */
     bptr = (xmlChar *)bas->path;
-    if ((*bptr == '/') && (ref->path[0] != '/'))
+    if ((ref->path[pos] == '.') && (ref->path[pos+1] == '/'))
+        pos += 2;
+    if ((*bptr == '.') && (bptr[1] == '/'))
+        bptr += 2;
+    else if ((*bptr == '/') && (ref->path[pos] != '/'))
 	bptr++;
     while ((bptr[pos] == ref->path[pos]) && (bptr[pos] != 0))
 	pos++;

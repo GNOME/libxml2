@@ -158,7 +158,7 @@ HTMLPushtests : testHTML$(EXEEXT)
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
+	      $(CHECKER) $(top_builddir)/testHTML --push $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
 	  else \
 	      log=`$(CHECKER) $(top_builddir)/testHTML --push $$i > result.$$name 2> error.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
@@ -191,7 +191,7 @@ HTMLPushtests : testHTML$(EXEEXT)
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/testHTML --sax $$i > $(srcdir)/result/HTML/$$name.sax ; \
+	      $(CHECKER) $(top_builddir)/testHTML --push --sax $$i > $(srcdir)/result/HTML/$$name.sax ; \
 	  else \
 	      log=`$(CHECKER) $(top_builddir)/testHTML --push --sax $$i 2>&1 > result.$$name.sax ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
@@ -483,7 +483,7 @@ XIncludetests : xmllint$(EXEEXT)
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/XInclude/$$name.rdr ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --walker --debug $$i > $(srcdir)/result/XInclude/$$name.rdr ; \
+	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i > $(srcdir)/result/XInclude/$$name.rdr ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i > result.$$name 2>error.$$name | grep -v 'failed to load external entity' ; \
@@ -523,7 +523,7 @@ Catatests : xmlcatalog$(EXEEXT)
 	  if [ -f $$xml ] ; then \
 	  if [ ! -f $(srcdir)/result/catalogs/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmlcatalog --shell $$xml < $$i > $(srcdir)/result/catalogs/$$name ; \
+	      $(CHECKER) $(top_builddir)/xmlcatalog --shell $$xml < $$i 2>&1 > $(srcdir)/result/catalogs/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      log=`$(CHECKER) $(top_builddir)/xmlcatalog --shell $$xml < $$i 2>&1 > result.$$name ; \
@@ -985,7 +985,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc
 
 #
-# Instll the tests program sources as examples 
+# Install the tests program sources as examples 
 #
 BASE_DIR=$(datadir)/doc
 DOC_MODULE=libxml2-$(VERSION)

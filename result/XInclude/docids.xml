@@ -11,7 +11,7 @@
 <isid myid="dup"/>
 </doc>
 <!-- including another XML document with IDs -->
-<doc xml:base="../../../test/XInclude/ents/ids.xml">
+<doc xml:base="../ents/ids.xml">
 <isid myid="dup"/>
 <isid myid="foo"/>
 <isid myid="bar"/>

@@ -1,3 +1,10 @@
+Fri Jun 25 13:38:57 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* uri.c: fixed a problem when base path was "./xxx"
+	* result/XInclude/*: 5 test results changed by above.
+	* Makefile.am: fixed a couple of spots where a new
+	  result file used different flags that the testing one.
+
 Thu Jun 24 16:27:44 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* valid.c: suppressed warnings from within xmlValidGetValidElements

@@ -538,6 +538,11 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	    newctxt->incTab[i]->count--;
 	    newctxt->incTab[i] = NULL;
 	}
+
+	/* urlTab may have been reallocated */
+	ctxt->urlTab = newctxt->urlTab;
+	ctxt->urlMax = newctxt->urlMax;
+
 	newctxt->urlMax = 0;
 	newctxt->urlNr = 0;
 	newctxt->urlTab = NULL;

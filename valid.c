@@ -885,6 +885,10 @@ xmlValidCtxtPtr xmlNewValidCtxt(void) {
  */
 void
 xmlFreeValidCtxt(xmlValidCtxtPtr cur) {
+    if (cur->vstateTab != NULL)
+        xmlFree(cur->vstateTab);
+    if (cur->nodeTab != NULL)
+        xmlFree(cur->nodeTab);
     xmlFree(cur);
 }
 
@@ -5388,7 +5392,9 @@ xmlValidGetElemDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     xmlElementPtr elemDecl = NULL;
     const xmlChar *prefix = NULL;
 
-    if ((elem == NULL) || (elem->name == NULL)) return(NULL);
+    if ((ctxt == NULL) || (doc == NULL) || 
+        (elem == NULL) || (elem->name == NULL))
+        return(NULL);
     if (extsubset != NULL)
 	*extsubset = 0;
 
@@ -5450,6 +5456,8 @@ xmlValidatePushElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     xmlElementPtr eDecl;
     int extsubset = 0;
 
+    if (ctxt == NULL)
+        return(0);
 /* printf("PushElem %s\n", qname); */
     if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
 	xmlValidStatePtr state = ctxt->vstate;
@@ -5539,6 +5547,8 @@ xmlValidatePushCData(xmlValidCtxtPtr ctxt, const xmlChar *data, int len) {
     int ret = 1;
 
 /* printf("CDATA %s %d\n", data, len); */
+    if (ctxt == NULL)
+        return(0);
     if (len <= 0)
 	return(ret);
     if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
@@ -5612,6 +5622,8 @@ xmlValidatePopElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc ATTRIBUTE_UNUSED,
 		      const xmlChar *qname ATTRIBUTE_UNUSED) {
     int ret = 1;
 
+    if (ctxt == NULL)
+        return(0);
 /* printf("PopElem %s\n", qname); */
     if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
 	xmlValidStatePtr state = ctxt->vstate;
@@ -6299,6 +6311,8 @@ int
 xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     xmlRefTablePtr table;
 
+    if (ctxt == NULL)
+        return(0);
     if (doc == NULL) {
         xmlErrValid(ctxt, XML_DTD_NO_DOC, 
 		"xmlValidateDocumentFinal: doc == NULL\n", NULL);
@@ -6530,6 +6544,8 @@ xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     int ret;
     xmlNodePtr root;
 
+    if (doc == NULL)
+        return(0);
     if ((doc->intSubset == NULL) && (doc->extSubset == NULL)) {
         xmlErrValid(ctxt, XML_DTD_NO_DTD,
 	            "no DTD found!\n", NULL);

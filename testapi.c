@@ -202,6 +202,16 @@ static void des_xmlParserCtxtPtr(int no ATTRIBUTE_UNUSED, xmlParserCtxtPtr val) 
         xmlFreeParserCtxt(val);
 }
 
+#define gen_nb_xmlValidCtxtPtr 2
+static xmlValidCtxtPtr gen_xmlValidCtxtPtr(int no) {
+    if (no == 0) return(xmlNewValidCtxt());
+    return(NULL);
+}
+static void des_xmlValidCtxtPtr(int no ATTRIBUTE_UNUSED, xmlValidCtxtPtr val) {
+    if (val != NULL)
+        xmlFreeValidCtxt(val);
+}
+
 #define gen_nb_xmlDocPtr 3
 static xmlDocPtr gen_xmlDocPtr(int no) {
     if (no == 0) return(xmlNewDoc(BAD_CAST "1.0"));
@@ -10948,8 +10958,59 @@ static int
 test_xmlValidCtxtNormalizeAttributeValue(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    xmlChar * ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context or NULL */
+    int n_ctxt;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlNodePtr elem; /* the parent */
+    int n_elem;
+    const xmlChar * name; /* the attribute name */
+    int n_name;
+    const xmlChar * value; /* the attribute value */
+    int n_value;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_value = 0;n_value < gen_nb_const_xmlChar_ptr;n_value++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        doc = gen_xmlDocPtr(n_doc);
+        elem = gen_xmlNodePtr(n_elem);
+        name = gen_const_xmlChar_ptr(n_name);
+        value = gen_const_xmlChar_ptr(n_value);
+
+        ret_val = xmlValidCtxtNormalizeAttributeValue(ctxt, doc, elem, name, value);
+        desret_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_xmlDocPtr(n_doc, doc);
+        des_xmlNodePtr(n_elem, elem);
+        des_const_xmlChar_ptr(n_name, name);
+        des_const_xmlChar_ptr(n_value, value);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidCtxtNormalizeAttributeValue",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf(" %d", n_elem);
+            printf(" %d", n_name);
+            printf(" %d", n_value);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11052,8 +11113,38 @@ static int
 test_xmlValidateDocument(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        doc = gen_xmlDocPtr(n_doc);
+
+        ret_val = xmlValidateDocument(ctxt, doc);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_xmlDocPtr(n_doc, doc);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidateDocument",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11062,8 +11153,38 @@ static int
 test_xmlValidateDocumentFinal(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        doc = gen_xmlDocPtr(n_doc);
+
+        ret_val = xmlValidateDocumentFinal(ctxt, doc);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_xmlDocPtr(n_doc, doc);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidateDocumentFinal",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11082,8 +11203,38 @@ static int
 test_xmlValidateDtdFinal(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        doc = gen_xmlDocPtr(n_doc);
+
+        ret_val = xmlValidateDtdFinal(ctxt, doc);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_xmlDocPtr(n_doc, doc);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidateDtdFinal",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11092,8 +11243,45 @@ static int
 test_xmlValidateElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
+    xmlNodePtr elem; /* an element instance */
+    int n_elem;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        doc = gen_xmlDocPtr(n_doc);
+        elem = gen_xmlNodePtr(n_elem);
+
+        ret_val = xmlValidateElement(ctxt, doc, elem);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_xmlDocPtr(n_doc, doc);
+        des_xmlNodePtr(n_elem, elem);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidateElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf(" %d", n_elem);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11254,8 +11442,45 @@ static int
 test_xmlValidateNotationUse(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    const xmlChar * notationName; /* the notation name to check */
+    int n_notationName;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_notationName = 0;n_notationName < gen_nb_const_xmlChar_ptr;n_notationName++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        doc = gen_xmlDocPtr(n_doc);
+        notationName = gen_const_xmlChar_ptr(n_notationName);
+
+        ret_val = xmlValidateNotationUse(ctxt, doc, notationName);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_xmlDocPtr(n_doc, doc);
+        des_const_xmlChar_ptr(n_notationName, notationName);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidateNotationUse",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf(" %d", n_notationName);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11274,8 +11499,45 @@ static int
 test_xmlValidateOneElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
+    xmlNodePtr elem; /* an element instance */
+    int n_elem;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        doc = gen_xmlDocPtr(n_doc);
+        elem = gen_xmlNodePtr(n_elem);
+
+        ret_val = xmlValidateOneElement(ctxt, doc, elem);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_xmlDocPtr(n_doc, doc);
+        des_xmlNodePtr(n_elem, elem);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidateOneElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf(" %d", n_elem);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11294,8 +11556,52 @@ static int
 test_xmlValidatePopElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_REGEXP_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
+    xmlNodePtr elem; /* an element instance */
+    int n_elem;
+    const xmlChar * qname; /* the qualified name as appearing in the serialization */
+    int n_qname;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_qname = 0;n_qname < gen_nb_const_xmlChar_ptr;n_qname++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        doc = gen_xmlDocPtr(n_doc);
+        elem = gen_xmlNodePtr(n_elem);
+        qname = gen_const_xmlChar_ptr(n_qname);
+
+        ret_val = xmlValidatePopElement(ctxt, doc, elem, qname);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_xmlDocPtr(n_doc, doc);
+        des_xmlNodePtr(n_elem, elem);
+        des_const_xmlChar_ptr(n_qname, qname);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidatePopElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf(" %d", n_elem);
+            printf(" %d", n_qname);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11304,8 +11610,45 @@ static int
 test_xmlValidatePushCData(void) {
     int ret = 0;
 
+#ifdef LIBXML_REGEXP_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    const xmlChar * data; /* some character data read */
+    int n_data;
+    int len; /* the lenght of the data */
+    int n_len;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_data = 0;n_data < gen_nb_const_xmlChar_ptr;n_data++) {
+    for (n_len = 0;n_len < gen_nb_int;n_len++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        data = gen_const_xmlChar_ptr(n_data);
+        len = gen_int(n_len);
+
+        ret_val = xmlValidatePushCData(ctxt, data, len);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_const_xmlChar_ptr(n_data, data);
+        des_int(n_len, len);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidatePushCData",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_data);
+            printf(" %d", n_len);
+            printf("\n");
+        }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11314,8 +11657,52 @@ static int
 test_xmlValidatePushElement(void) {
     int ret = 0;
 
+#ifdef LIBXML_REGEXP_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
+    xmlNodePtr elem; /* an element instance */
+    int n_elem;
+    const xmlChar * qname; /* the qualified name as appearing in the serialization */
+    int n_qname;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_qname = 0;n_qname < gen_nb_const_xmlChar_ptr;n_qname++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        doc = gen_xmlDocPtr(n_doc);
+        elem = gen_xmlNodePtr(n_elem);
+        qname = gen_const_xmlChar_ptr(n_qname);
+
+        ret_val = xmlValidatePushElement(ctxt, doc, elem, qname);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_xmlDocPtr(n_doc, doc);
+        des_xmlNodePtr(n_elem, elem);
+        des_const_xmlChar_ptr(n_qname, qname);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidatePushElement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf(" %d", n_elem);
+            printf(" %d", n_qname);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+#endif
+
     return(ret);
 }
 
@@ -11324,8 +11711,38 @@ static int
 test_xmlValidateRoot(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt);
+        doc = gen_xmlDocPtr(n_doc);
+
+        ret_val = xmlValidateRoot(ctxt, doc);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt);
+        des_xmlDocPtr(n_doc, doc);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidateRoot",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
     return(ret);
 }
 

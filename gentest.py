@@ -260,7 +260,7 @@ known_param_types = [ "int", "const_char_ptr", "const_xmlChar_ptr",
    "xmlParserCtxtPtr", "xmlDocPtr", "filepath", "fileoutput",
    "xmlNodePtr", "xmlNodePtr_in", "userdata", "xmlChar_ptr",
    "xmlTextWriterPtr", "xmlTextReaderPtr", "xmlBufferPtr",
-   "xmlListPtr", "xmlXPathObjectPtr", "xmlHashTablePtr",
+   "xmlListPtr", "xmlXPathObjectPtr", "xmlHashTablePtr", "xmlValidCtxtPtr",
 ]
 
 def is_known_param_type(name):
@@ -361,6 +361,16 @@ static xmlParserCtxtPtr gen_xmlParserCtxtPtr(int no) {
 static void des_xmlParserCtxtPtr(int no ATTRIBUTE_UNUSED, xmlParserCtxtPtr val) {
     if (val != NULL)
         xmlFreeParserCtxt(val);
+}
+
+#define gen_nb_xmlValidCtxtPtr 2
+static xmlValidCtxtPtr gen_xmlValidCtxtPtr(int no) {
+    if (no == 0) return(xmlNewValidCtxt());
+    return(NULL);
+}
+static void des_xmlValidCtxtPtr(int no ATTRIBUTE_UNUSED, xmlValidCtxtPtr val) {
+    if (val != NULL)
+        xmlFreeValidCtxt(val);
 }
 
 #define gen_nb_xmlDocPtr 3

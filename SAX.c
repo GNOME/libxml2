@@ -247,8 +247,10 @@ externalSubset(void *ctx, const xmlChar *name,
 	/*
 	 * On the fly encoding conversion if needed
 	 */
-	enc = xmlDetectCharEncoding(ctxt->input->cur, 4);
-	xmlSwitchEncoding(ctxt, enc);
+	if (ctxt->input->length >= 4) {
+	    enc = xmlDetectCharEncoding(ctxt->input->cur, 4);
+	    xmlSwitchEncoding(ctxt, enc);
+	}
 
 	if (input->filename == NULL)
 	    input->filename = (char *) xmlStrdup(SystemID);

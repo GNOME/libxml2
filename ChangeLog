@@ -1,3 +1,8 @@
+Tue Apr  1 11:52:15 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: fixed an uninitialized memory access pointed by valgrind
+	  on C14Ntests
+
 Tue Apr  1 00:12:28 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: one more fixup of error message reporting

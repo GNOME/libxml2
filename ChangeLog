@@ -1,3 +1,8 @@
+Sat Oct  4 23:06:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c include/libxml/xmlerror.h: more error/warning
+	  handling cleanups, the XML parser module should be okay now.
+
 Sat Oct  4 01:58:27 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am configure.in xmldwalk.c include/libxml/Makefile.am

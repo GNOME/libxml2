@@ -406,6 +406,50 @@ xmlFatalErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
+ * xmlWarningMsg:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @str1:  extra data
+ * @str2:  extra data
+ *
+ * Handle a warning.
+ */
+static void
+xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+              const char *msg, const xmlChar *str1, const xmlChar *str2)
+{
+    ctxt->errNo = error;
+    __xmlRaiseError((ctxt->sax) ? ctxt->sax->warning : NULL, ctxt->userData,
+                    ctxt, NULL, XML_FROM_PARSER, error,
+                    XML_ERR_WARNING, NULL, 0,
+		    (const char *) str1, (const char *) str2, NULL, 0, 0,
+		    msg, (const char *) str1, (const char *) str2);
+}
+
+/**
+ * xmlValidityError:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @str1:  extra data
+ *
+ * Handle a warning.
+ */
+static void
+xmlValidityError(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+              const char *msg, const xmlChar *str1)
+{
+    ctxt->errNo = error;
+    __xmlRaiseError(ctxt->vctxt.error, ctxt->vctxt.userData,
+                    ctxt, NULL, XML_FROM_DTD, error,
+                    XML_ERR_ERROR, NULL, 0, (const char *) str1,
+		    NULL, NULL, 0, 0,
+		    msg, (const char *) str1);
+    ctxt->valid = 0;
+}
+
+/**
  * xmlFatalErrMsgInt:
  * @ctxt:  an XML parser context
  * @error:  the error number
@@ -1658,14 +1702,14 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		     * ... The declaration of a parameter entity must precede
 		     * any reference to it...
 		     */
-		    if ((!ctxt->disableSAX) &&
-			(ctxt->validate) && (ctxt->vctxt.error != NULL)) {
-			ctxt->vctxt.error(ctxt->vctxt.userData,
-			     "PEReference: %%%s; not found\n", name);
-		    } else if ((!ctxt->disableSAX) &&
-			(ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-			ctxt->sax->warning(ctxt->userData,
-			 "PEReference: %%%s; not found\n", name);
+		    if ((ctxt->validate) && (ctxt->vctxt.error != NULL)) {
+		        xmlValidityError(ctxt, XML_WAR_UNDECLARED_ENTITY,
+			                 "PEReference: %%%s; not found\n",
+				         name);
+		    } else 
+		        xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
+			              "PEReference: %%%s; not found\n",
+				      name, NULL);
 		    ctxt->valid = 0;
 		}
 	    } else if (ctxt->input->free != deallocblankswrapper) {
@@ -3836,11 +3880,9 @@ xmlParsePITarget(xmlParserCtxtPtr ctxt) {
 	    if (xmlStrEqual(name, (const xmlChar *)xmlW3CPIs[i]))
 	        return(name);
 	}
-	if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL)) {
-	    ctxt->errNo = XML_ERR_RESERVED_XML_NAME;
-	    ctxt->sax->warning(ctxt->userData,
-	         "xmlParsePITarget: invalid name prefix 'xml'\n");
-	}
+	xmlWarningMsg(ctxt, XML_ERR_RESERVED_XML_NAME,
+		      "xmlParsePITarget: invalid name prefix 'xml'\n",
+		      NULL, NULL);
     }
     return(name);
 }
@@ -3899,10 +3941,9 @@ xmlParseCatalogPI(xmlParserCtxtPtr ctxt, const xmlChar *catalog) {
     return;
 
 error:
-    ctxt->errNo = XML_WAR_CATALOG_PI;
-    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	ctxt->sax->warning(ctxt->userData, 
-	     "Catalog PI syntax error: %s\n", catalog);
+    xmlWarningMsg(ctxt, XML_WAR_CATALOG_PI,
+	          "Catalog PI syntax error: %s\n",
+		  catalog, NULL);
     if (URL != NULL)
 	xmlFree(URL);
 }
@@ -4860,11 +4901,9 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
 	SHRINK;
 	if (RAW == ')') {
 	    if ((ctxt->validate) && (ctxt->input->id != inputchk)) {
-		ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
-		if (ctxt->vctxt.error != NULL)
-		    ctxt->vctxt.error(ctxt->vctxt.userData, 
-"Element content declaration doesn't start and stop in the same entity\n");
-		ctxt->valid = 0;
+		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
+"Element content declaration doesn't start and stop in the same entity\n",
+                                 NULL);
 	    }
 	    NEXT;
 	    ret = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_PCDATA);
@@ -4918,11 +4957,9 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
             }
 	    ret->ocur = XML_ELEMENT_CONTENT_MULT;
 	    if ((ctxt->validate) && (ctxt->input->id != inputchk)) {
-		ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
-		if (ctxt->vctxt.error != NULL)
-		    ctxt->vctxt.error(ctxt->vctxt.userData, 
-"Element content declaration doesn't start and stop in the same entity\n");
-		ctxt->valid = 0;
+		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
+"Element content declaration doesn't start and stop in the same entity\n",
+				 NULL);
 	    }
 	    SKIP(2);
 	} else {
@@ -5145,11 +5182,9 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
 	    last->parent = cur;
     }
     if ((ctxt->validate) && (ctxt->input->id != inputchk)) {
-	ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
-	if (ctxt->vctxt.error != NULL)
-	    ctxt->vctxt.error(ctxt->vctxt.userData, 
-"Element content declaration doesn't start and stop in the same entity\n");
-	ctxt->valid = 0;
+	xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
+"Element content declaration doesn't start and stop in the same entity\n",
+			 NULL);
     }
     NEXT;
     if (RAW == '?') {
@@ -6295,11 +6330,11 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 			xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 				 "Entity '%s' not defined\n", name);
 		    } else {
-			ctxt->errNo = XML_WAR_UNDECLARED_ENTITY;
-			if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-			    ctxt->sax->warning(ctxt->userData, 
-				 "Entity '%s' not defined\n", name);
+			xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
+				      "Entity '%s' not defined\n",
+				      name, NULL);
 		    }
+		    /* TODO ? check regressions ctxt->valid = 0; */
 		}
 
 		/*
@@ -6455,10 +6490,9 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 			 * ... The declaration of a parameter entity must precede
 			 * any reference to it...
 			 */
-			if ((!ctxt->disableSAX) &&
-			    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-			    ctxt->sax->warning(ctxt->userData,
-			     "PEReference: %%%s; not found\n", name);
+			xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
+			              "PEReference: %%%s; not found\n",
+				      name, NULL);
 			ctxt->valid = 0;
 		    }
 		} else {
@@ -6467,9 +6501,9 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 		     */
 		    if ((entity->etype != XML_INTERNAL_PARAMETER_ENTITY) &&
 		        (entity->etype != XML_EXTERNAL_PARAMETER_ENTITY)) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-			    ctxt->sax->warning(ctxt->userData,
-			 "Internal: %%%s; is not a parameter entity\n", name);
+			xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
+				 "Internal: %%%s; is not a parameter entity\n",
+				      name, NULL);
 	        } else if (ctxt->input->free != deallocblankswrapper) {
 		    input = xmlNewBlanksWrapperInputStream(ctxt, entity);
 		    xmlPushInput(ctxt, input);
@@ -6584,9 +6618,9 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 			 * ... The declaration of a parameter entity must
 			 * precede any reference to it...
 			 */
-			if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-			    ctxt->sax->warning(ctxt->userData,
-			     "PEReference: %%%s; not found\n", name);
+			xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
+				      "PEReference: %%%s; not found\n",
+			              name, NULL);
 			ctxt->valid = 0;
 		    }
 		} else {
@@ -6595,9 +6629,9 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 		     */
 		    if ((entity->etype != XML_INTERNAL_PARAMETER_ENTITY) &&
 		        (entity->etype != XML_EXTERNAL_PARAMETER_ENTITY)) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-			    ctxt->sax->warning(ctxt->userData,
-			 "Internal: %%%s; is not a parameter entity\n", name);
+			xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
+			              "%%%s; is not a parameter entity\n",
+				      name, NULL);
 		    }
 		}
 		ctxt->hasPErefs = 1;
@@ -6813,9 +6847,9 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
      */
     if ((ctxt->pedantic) && (xmlStrEqual(name, BAD_CAST "xml:lang"))) {
 	if (!xmlCheckLanguageID(val)) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-		ctxt->sax->warning(ctxt->userData,
-		   "Malformed value for xml:lang : %s\n", val);
+	    xmlWarningMsg(ctxt, XML_WAR_LANG_VALUE,
+		          "Malformed value for xml:lang : %s\n",
+			  val, NULL);
 	}
     }
 
@@ -7549,9 +7583,9 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
      */
     if ((ctxt->pedantic) && (xmlStrEqual(name, BAD_CAST "xml:lang"))) {
 	if (!xmlCheckLanguageID(val)) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-		ctxt->sax->warning(ctxt->userData,
-		   "Malformed value for xml:lang : %s\n", val);
+	    xmlWarningMsg(ctxt, XML_WAR_LANG_VALUE,
+		          "Malformed value for xml:lang : %s\n",
+			  val, NULL);
 	}
     }
 
@@ -7673,15 +7707,14 @@ reparse:
                 if (*URL != 0) {
 		    uri = xmlParseURI((const char *) URL);
 		    if (uri == NULL) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-			    ctxt->sax->warning(ctxt->userData, 
-				 "xmlns: %s not a valid URI\n", URL);
+			xmlWarningMsg(ctxt, XML_WAR_NS_URI,
+				      "xmlns: %s not a valid URI\n",
+				      URL, NULL);
 		    } else {
 			if (uri->scheme == NULL) {
-			    if ((ctxt->sax != NULL) &&
-				(ctxt->sax->warning != NULL))
-				ctxt->sax->warning(ctxt->userData, 
-				   "xmlns: URI %s is not absolute\n", URL);
+			    xmlWarningMsg(ctxt, XML_WAR_NS_URI_RELATIVE,
+				   "xmlns: URI %s is not absolute\n",
+				          URL, NULL);
 			}
 			xmlFreeURI(uri);
 		    }
@@ -7719,17 +7752,14 @@ reparse:
 		}
 		uri = xmlParseURI((const char *) URL);
 		if (uri == NULL) {
-		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-			ctxt->sax->warning(ctxt->userData, 
-			     "xmlns:%s: '%s' is not a valid URI\n",
-			                   attname, URL);
+		    xmlWarningMsg(ctxt, XML_WAR_NS_URI,
+			 "xmlns:%s: '%s' is not a valid URI\n",
+				       attname, URL);
 		} else {
 		    if ((ctxt->pedantic) && (uri->scheme == NULL)) {
-			if ((ctxt->sax != NULL) &&
-			    (ctxt->sax->warning != NULL))
-			    ctxt->sax->warning(ctxt->userData, 
-			       "xmlns:%s: URI %s is not absolute\n",
-			                       attname, URL);
+			xmlWarningMsg(ctxt, XML_WAR_NS_URI_RELATIVE,
+				      "xmlns:%s: URI %s is not absolute\n",
+			              attname, URL);
 		    }
 		    xmlFreeURI(uri);
 		}
@@ -8748,9 +8778,9 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 	    /*
 	     * TODO: Blueberry should be detected here
 	     */
-	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-		ctxt->sax->warning(ctxt->userData, "Unsupported version '%s'\n",
-				   version);
+	    xmlWarningMsg(ctxt, XML_WAR_UNKNOWN_VERSION,
+		          "Unsupported version '%s'\n",
+			  version, NULL);
 	}
 	if (ctxt->version != NULL)
 	    xmlFree((void *) ctxt->version);
@@ -10101,6 +10131,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 		    
 		nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
 		if (nbchars < 0) {
+		    /* TODO 2.6.0 */
 		    xmlGenericError(xmlGenericErrorContext,
 				    "xmlParseChunk: encoder error\n");
 		    return(XML_ERR_INVALID_ENCODING);
@@ -10196,8 +10227,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xml parser: out of memory\n");
+        xmlErrMemory(NULL, "creating parser: out of memory\n");
 	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
@@ -11602,8 +11632,7 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
 
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		        "malloc");
+        xmlErrMemory(NULL, "parsing new buffer: out of memory\n");
         xmlFree(ctxt);
         return;
     }

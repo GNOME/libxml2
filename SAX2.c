@@ -1824,6 +1824,7 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 						    valueend - value);
 	    tmp = ret->children;
 	    while (tmp != NULL) {
+	        tmp->doc = ret->doc;
 		tmp->parent = (xmlNodePtr) ret;
 		if (tmp->next == NULL)
 		    ret->last = tmp;

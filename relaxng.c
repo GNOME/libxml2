@@ -6749,7 +6749,7 @@ xmlRelaxNGNormExtSpace(xmlChar * value)
 }
 
 /**
- * xmlRelaxNGCheckAttributes:
+ * xmlRelaxNGCleanupAttributes:
  * @ctxt:  a Relax-NG parser context
  * @node:  a Relax-NG node
  *

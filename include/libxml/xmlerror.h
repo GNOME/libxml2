@@ -57,7 +57,8 @@ typedef enum {
     XML_FROM_CATALOG,	/* The Catalog module */
     XML_FROM_C14N,	/* The Canonicalization module */
     XML_FROM_XSLT,	/* The XSLT engine from libxslt */
-    XML_FROM_VALID	/* The XML DTD validation with valid context */
+    XML_FROM_VALID,	/* The XML DTD validation with valid context */
+    XML_FROM_CHECK	/* The error checking module */
 } xmlErrorDomain;
 
 /**
@@ -743,7 +744,44 @@ typedef enum {
     XML_SCHEMAP_SRC_CT_1, /* 3076 */
     XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_3, /* 3077 */
     XML_SCHEMAP_AU_PROPS_CORRECT_2, /* 3078 */
-    XML_SCHEMAP_A_PROPS_CORRECT_2
+    XML_SCHEMAP_A_PROPS_CORRECT_2, /* 3079 */
+    XML_CHECK_FOUND_ELEMENT = 5000,
+    XML_CHECK_FOUND_ATTRIBUTE, /* 5001 */
+    XML_CHECK_FOUND_TEXT, /* 5002 */
+    XML_CHECK_FOUND_CDATA, /* 5003 */
+    XML_CHECK_FOUND_ENTITYREF, /* 5004 */
+    XML_CHECK_FOUND_ENTITY, /* 5005 */
+    XML_CHECK_FOUND_PI, /* 5006 */
+    XML_CHECK_FOUND_COMMENT, /* 5007 */
+    XML_CHECK_FOUND_DOCTYPE, /* 5008 */
+    XML_CHECK_FOUND_FRAGMENT, /* 5009 */
+    XML_CHECK_FOUND_NOTATION, /* 5010 */
+    XML_CHECK_UNKNOWN_NODE, /* 5011 */
+    XML_CHECK_ENTITY_TYPE, /* 5012 */
+    XML_CHECK_NO_PARENT, /* 5013 */
+    XML_CHECK_NO_DOC, /* 5014 */
+    XML_CHECK_NO_NAME, /* 5015 */
+    XML_CHECK_NO_ELEM, /* 5016 */
+    XML_CHECK_WRONG_DOC, /* 5017 */
+    XML_CHECK_NO_PREV, /* 5018 */
+    XML_CHECK_WRONG_PREV, /* 5019 */
+    XML_CHECK_NO_NEXT, /* 5020 */
+    XML_CHECK_WRONG_NEXT, /* 5021 */
+    XML_CHECK_NOT_DTD, /* 5022 */
+    XML_CHECK_NOT_ATTR, /* 5023 */
+    XML_CHECK_NOT_ATTR_DECL, /* 5024 */
+    XML_CHECK_NOT_ELEM_DECL, /* 5025 */
+    XML_CHECK_NOT_ENTITY_DECL, /* 5026 */
+    XML_CHECK_NOT_NS_DECL, /* 5027 */
+    XML_CHECK_NO_HREF, /* 5028 */
+    XML_CHECK_ /* 5029 */
+#if 0
+    XML_CHECK_, /* 5030 */
+    XML_CHECK_, /* 5031 */
+    XML_CHECK_, /* 5032 */
+    XML_CHECK_, /* 5033 */
+    XML_CHECK_X /* 503 */
+#endif
 } xmlParserErrors;
 
 /**

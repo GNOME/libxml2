@@ -61,6 +61,22 @@ XMLPUBFUN void XMLCALL
 	xmlDebugDumpEntities	(FILE *output,
 				 xmlDocPtr doc);
 
+/****************************************************************
+ *								*
+ *	 		Checking routines			*
+ *								*
+ ****************************************************************/
+
+XMLPUBFUN int XMLCALL
+	xmlDebugCheckDocument	(FILE * output,
+				 xmlDocPtr doc);
+
+/****************************************************************
+ *								*
+ *	 		XML shell helpers			*
+ *								*
+ ****************************************************************/
+
 XMLPUBFUN void XMLCALL	
 	xmlLsOneNode		(FILE *output, xmlNodePtr node);
 XMLPUBFUN int XMLCALL	

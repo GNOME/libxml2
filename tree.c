@@ -1119,6 +1119,10 @@ xmlFreeDoc(xmlDocPtr cur) {
 #endif
 	return;
     }
+#ifdef LIBXML_DEBUG_RUNTIME
+    xmlDebugCheckDocument(stderr, cur);
+#endif
+
     if (cur != NULL) dict = cur->dict;
 
     if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
@@ -1302,6 +1306,7 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 			    temp = ent->children;
 			    while (temp) {
 				temp->parent = (xmlNodePtr)ent;
+				ent->last = temp;
 				temp = temp->next;
 			    }
 			}
@@ -4414,7 +4419,7 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
     if (root == NULL)
 	return(NULL);
     xmlUnlinkNode(root);
-    root->doc = doc;
+    xmlSetTreeDoc(root, doc);
     root->parent = (xmlNodePtr) doc;
     old = doc->children;
     while (old != NULL) {
@@ -6207,10 +6212,17 @@ xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
     while (prop != NULL) {
         if ((xmlStrEqual(prop->name, name)) &&
 	    (prop->ns == NULL)) {
-	    if (prev == NULL)
+	    if (prev == NULL) {
 		node->properties = prop->next;
-	    else
+		if (prop->next != NULL)
+		    prop->next->prev = NULL;
+	    } else {
 		prev->next = prop->next;
+		if (prop->next != NULL)
+		    prop->next->prev = NULL;
+	    }
+	    prop->next = NULL;
+	    prop->prev = NULL;
 	    xmlFreeProp(prop);
 	    return(0);
 	}
@@ -6242,10 +6254,17 @@ xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
     while (prop != NULL) {
         if ((xmlStrEqual(prop->name, name)) &&
 	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))) {
-	    if (prev == NULL)
+	    if (prev == NULL) {
 		node->properties = prop->next;
-	    else
+		if (prop->next != NULL)
+		    prop->next->prev = NULL;
+	    } else {
 		prev->next = prop->next;
+		if (prop->next != NULL)
+		    prop->next->prev = NULL;
+	    }
+	    prop->next = NULL;
+	    prop->prev = NULL;
 	    xmlFreeProp(prop);
 	    return(0);
 	}

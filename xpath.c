@@ -254,7 +254,7 @@ xmlXPathErrMemory(xmlXPathContextPtr ctxt, const char *extra)
 }
 
 /**
- * xmlXPathErrMemory:
+ * xmlXPathPErrMemory:
  * @ctxt:  an XPath parser context
  * @extra:  extra informations
  *

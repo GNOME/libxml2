@@ -41,7 +41,9 @@ struct _xmlDebugCtxt {
     char shift[101];            /* used for indenting */
     int depth;                  /* current depth */
     xmlDocPtr doc;              /* current document */
+    xmlNodePtr node;		/* current node */
     int check;                  /* do just checkings */
+    int errors;                 /* number of errors found */
 };
 
 static void xmlCtxtDumpNodeList(xmlDebugCtxtPtr ctxt, xmlNodePtr node);
@@ -53,6 +55,7 @@ xmlCtxtDumpInitCtxt(xmlDebugCtxtPtr ctxt)
 
     ctxt->depth = 0;
     ctxt->check = 0;
+    ctxt->errors = 0;
     ctxt->output = stdout;
     for (i = 0; i < 100; i++)
         ctxt->shift[i] = ' ';
@@ -69,6 +72,83 @@ xmlCtxtDumpSpaces(xmlDebugCtxtPtr ctxt)
             fprintf(ctxt->output, &ctxt->shift[100 - 2 * ctxt->depth]);
         else
             fprintf(ctxt->output, ctxt->shift);
+    }
+}
+
+/**
+ * xmlDebugErr:
+ * @ctxt:  a debug context
+ * @error:  the error code
+ *
+ * Handle a debug error.
+ */
+static void
+xmlDebugErr(xmlDebugCtxtPtr ctxt, int error, const char *msg)
+{
+    ctxt->errors++;
+    __xmlRaiseError(NULL, NULL, NULL,
+		    NULL, ctxt->node, XML_FROM_CHECK,
+		    error, XML_ERR_ERROR, NULL, 0,
+		    NULL, NULL, NULL, 0, 0,
+		    msg);
+}
+static void
+xmlDebugErr2(xmlDebugCtxtPtr ctxt, int error, const char *msg, int extra)
+{
+    ctxt->errors++;
+    __xmlRaiseError(NULL, NULL, NULL,
+		    NULL, ctxt->node, XML_FROM_CHECK,
+		    error, XML_ERR_ERROR, NULL, 0,
+		    NULL, NULL, NULL, 0, 0,
+		    msg, extra);
+}
+static void
+xmlDebugErr3(xmlDebugCtxtPtr ctxt, int error, const char *msg, char *extra)
+{
+    ctxt->errors++;
+    __xmlRaiseError(NULL, NULL, NULL,
+		    NULL, ctxt->node, XML_FROM_CHECK,
+		    error, XML_ERR_ERROR, NULL, 0,
+		    NULL, NULL, NULL, 0, 0,
+		    msg, extra);
+}
+
+static void
+xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
+    if (node->parent == NULL)
+        xmlDebugErr(ctxt, XML_CHECK_NO_PARENT,
+	            "Node has no parent\n");
+    if (node->doc == NULL)
+        xmlDebugErr(ctxt, XML_CHECK_NO_DOC,
+	            "Node has no doc\n");
+    if ((node->parent != NULL) && (node->doc != node->parent->doc) &&
+        (!xmlStrEqual(node->name, BAD_CAST "pseudoroot")))
+        xmlDebugErr(ctxt, XML_CHECK_WRONG_DOC,
+	            "Node doc differs from parent's one\n");
+    if (node->prev == NULL) {
+        if (node->type == XML_ATTRIBUTE_NODE) {
+	    if ((node->parent != NULL) &&
+	        (node != (xmlNodePtr) node->parent->properties))
+		xmlDebugErr(ctxt, XML_CHECK_NO_PREV,
+                    "Attr has no prev and not first of attr list\n");
+	        
+        } else if ((node->parent != NULL) && (node->parent->children != node))
+	    xmlDebugErr(ctxt, XML_CHECK_NO_PREV,
+                    "Node has no prev and not first of parent list\n");
+    } else {
+        if (node->prev->next != node)
+	    xmlDebugErr(ctxt, XML_CHECK_WRONG_PREV,
+                        "Node prev->next : back link wrong\n");
+    }
+    if (node->next == NULL) {
+	if ((node->parent != NULL) && (node->type != XML_ATTRIBUTE_NODE) &&
+	    (node->parent->last != node))
+	    xmlDebugErr(ctxt, XML_CHECK_NO_NEXT,
+                    "Node has no next and not last of parent list\n");
+    } else {
+        if (node->next->prev != node)
+	    xmlDebugErr(ctxt, XML_CHECK_WRONG_NEXT,
+                    "Node next->prev : forward link wrong\n");
     }
 }
 
@@ -108,7 +188,8 @@ xmlCtxtDumpDtdNode(xmlDebugCtxtPtr ctxt, xmlDtdPtr dtd)
     }
 
     if (dtd->type != XML_DTD_NODE) {
-        fprintf(ctxt->output, "PBM: not a DTD\n");
+	xmlDebugErr(ctxt, XML_CHECK_NOT_DTD,
+	            "Node is not a DTD");
         return;
     }
     if (!ctxt->check) {
@@ -125,32 +206,7 @@ xmlCtxtDumpDtdNode(xmlDebugCtxtPtr ctxt, xmlDtdPtr dtd)
     /*
      * Do a bit of checking
      */
-    if (dtd->parent == NULL)
-        fprintf(ctxt->output, "PBM: DTD has no parent\n");
-    if (dtd->doc == NULL)
-        fprintf(ctxt->output, "PBM: DTD has no doc\n");
-    if ((dtd->parent != NULL) && (dtd->doc != dtd->parent->doc))
-        fprintf(ctxt->output, "PBM: DTD doc differs from parent's one\n");
-    if (dtd->prev == NULL) {
-        if ((dtd->parent != NULL)
-            && (dtd->parent->children != (xmlNodePtr) dtd))
-            fprintf(ctxt->output,
-                    "PBM: DTD has no prev and not first of list\n");
-    } else {
-        if (dtd->prev->next != (xmlNodePtr) dtd)
-            fprintf(ctxt->output,
-                    "PBM: DTD prev->next : back link wrong\n");
-    }
-    if (dtd->next == NULL) {
-        if ((dtd->parent != NULL)
-            && (dtd->parent->last != (xmlNodePtr) dtd))
-            fprintf(ctxt->output,
-                    "PBM: DTD has no next and not last of list\n");
-    } else {
-        if (dtd->next->prev != (xmlNodePtr) dtd)
-            fprintf(ctxt->output,
-                    "PBM: DTD next->prev : forward link wrong\n");
-    }
+    xmlCtxtGenericNodeCheck(ctxt, (xmlNodePtr) dtd);
 }
 
 static void
@@ -164,19 +220,22 @@ xmlCtxtDumpAttrDecl(xmlDebugCtxtPtr ctxt, xmlAttributePtr attr)
         return;
     }
     if (attr->type != XML_ATTRIBUTE_DECL) {
-        fprintf(ctxt->output, "PBM: not a Attr\n");
+	xmlDebugErr(ctxt, XML_CHECK_NOT_ATTR_DECL,
+	            "Node is not an attribute declaration");
         return;
     }
     if (attr->name != NULL) {
         if (!ctxt->check)
             fprintf(ctxt->output, "ATTRDECL(%s)", (char *) attr->name);
     } else
-        fprintf(ctxt->output, "PBM ATTRDECL noname!!!");
+	xmlDebugErr(ctxt, XML_CHECK_NO_NAME,
+	            "Node attribute declaration has no name");
     if (attr->elem != NULL) {
         if (!ctxt->check)
             fprintf(ctxt->output, " for %s", (char *) attr->elem);
     } else
-        fprintf(ctxt->output, " PBM noelem!!!");
+	xmlDebugErr(ctxt, XML_CHECK_NO_ELEM,
+	            "Node attribute declaration has no element name");
     if (!ctxt->check) {
         switch (attr->atype) {
             case XML_ATTRIBUTE_CDATA:
@@ -252,32 +311,7 @@ xmlCtxtDumpAttrDecl(xmlDebugCtxtPtr ctxt, xmlAttributePtr attr)
     /*
      * Do a bit of checking
      */
-    if (attr->parent == NULL)
-        fprintf(ctxt->output, "PBM: Attr has no parent\n");
-    if (attr->doc == NULL)
-        fprintf(ctxt->output, "PBM: Attr has no doc\n");
-    if ((attr->parent != NULL) && (attr->doc != attr->parent->doc))
-        fprintf(ctxt->output, "PBM: Attr doc differs from parent's one\n");
-    if (attr->prev == NULL) {
-        if ((attr->parent != NULL)
-            && (attr->parent->children != (xmlNodePtr) attr))
-            fprintf(ctxt->output,
-                    "PBM: Attr has no prev and not first of list\n");
-    } else {
-        if (attr->prev->next != (xmlNodePtr) attr)
-            fprintf(ctxt->output,
-                    "PBM: Attr prev->next : back link wrong\n");
-    }
-    if (attr->next == NULL) {
-        if ((attr->parent != NULL)
-            && (attr->parent->last != (xmlNodePtr) attr))
-            fprintf(ctxt->output,
-                    "PBM: Attr has no next and not last of list\n");
-    } else {
-        if (attr->next->prev != (xmlNodePtr) attr)
-            fprintf(ctxt->output,
-                    "PBM: Attr next->prev : forward link wrong\n");
-    }
+    xmlCtxtGenericNodeCheck(ctxt, (xmlNodePtr) attr);
 }
 
 static void
@@ -291,7 +325,8 @@ xmlCtxtDumpElemDecl(xmlDebugCtxtPtr ctxt, xmlElementPtr elem)
         return;
     }
     if (elem->type != XML_ELEMENT_DECL) {
-        fprintf(ctxt->output, "PBM: not a Elem\n");
+	xmlDebugErr(ctxt, XML_CHECK_NOT_ELEM_DECL,
+	            "Node is not an element declaration");
         return;
     }
     if (elem->name != NULL) {
@@ -301,7 +336,8 @@ xmlCtxtDumpElemDecl(xmlDebugCtxtPtr ctxt, xmlElementPtr elem)
             fprintf(ctxt->output, ")");
         }
     } else
-        fprintf(ctxt->output, "PBM ELEMDECL noname!!!");
+	xmlDebugErr(ctxt, XML_CHECK_NO_NAME,
+	            "Element declaration has no name");
     if (!ctxt->check) {
         switch (elem->etype) {
             case XML_ELEMENT_TYPE_UNDEFINED:
@@ -334,32 +370,7 @@ xmlCtxtDumpElemDecl(xmlDebugCtxtPtr ctxt, xmlElementPtr elem)
     /*
      * Do a bit of checking
      */
-    if (elem->parent == NULL)
-        fprintf(ctxt->output, "PBM: Elem has no parent\n");
-    if (elem->doc == NULL)
-        fprintf(ctxt->output, "PBM: Elem has no doc\n");
-    if ((elem->parent != NULL) && (elem->doc != elem->parent->doc))
-        fprintf(ctxt->output, "PBM: Elem doc differs from parent's one\n");
-    if (elem->prev == NULL) {
-        if ((elem->parent != NULL)
-            && (elem->parent->children != (xmlNodePtr) elem))
-            fprintf(ctxt->output,
-                    "PBM: Elem has no prev and not first of list\n");
-    } else {
-        if (elem->prev->next != (xmlNodePtr) elem)
-            fprintf(ctxt->output,
-                    "PBM: Elem prev->next : back link wrong\n");
-    }
-    if (elem->next == NULL) {
-        if ((elem->parent != NULL)
-            && (elem->parent->last != (xmlNodePtr) elem))
-            fprintf(ctxt->output,
-                    "PBM: Elem has no next and not last of list\n");
-    } else {
-        if (elem->next->prev != (xmlNodePtr) elem)
-            fprintf(ctxt->output,
-                    "PBM: Elem next->prev : forward link wrong\n");
-    }
+    xmlCtxtGenericNodeCheck(ctxt, (xmlNodePtr) elem);
 }
 
 static void
@@ -373,7 +384,8 @@ xmlCtxtDumpEntityDecl(xmlDebugCtxtPtr ctxt, xmlEntityPtr ent)
         return;
     }
     if (ent->type != XML_ENTITY_DECL) {
-        fprintf(ctxt->output, "PBM: not a Entity decl\n");
+	xmlDebugErr(ctxt, XML_CHECK_NOT_ENTITY_DECL,
+	            "Node is not an entity declaration");
         return;
     }
     if (ent->name != NULL) {
@@ -383,7 +395,8 @@ xmlCtxtDumpEntityDecl(xmlDebugCtxtPtr ctxt, xmlEntityPtr ent)
             fprintf(ctxt->output, ")");
         }
     } else
-        fprintf(ctxt->output, "PBM ENTITYDECL noname!!!");
+	xmlDebugErr(ctxt, XML_CHECK_NO_NAME,
+	            "Entity declaration has no name");
     if (!ctxt->check) {
         switch (ent->etype) {
             case XML_INTERNAL_GENERAL_ENTITY:
@@ -430,32 +443,7 @@ xmlCtxtDumpEntityDecl(xmlDebugCtxtPtr ctxt, xmlEntityPtr ent)
     /*
      * Do a bit of checking
      */
-    if (ent->parent == NULL)
-        fprintf(ctxt->output, "PBM: Ent has no parent\n");
-    if (ent->doc == NULL)
-        fprintf(ctxt->output, "PBM: Ent has no doc\n");
-    if ((ent->parent != NULL) && (ent->doc != ent->parent->doc))
-        fprintf(ctxt->output, "PBM: Ent doc differs from parent's one\n");
-    if (ent->prev == NULL) {
-        if ((ent->parent != NULL)
-            && (ent->parent->children != (xmlNodePtr) ent))
-            fprintf(ctxt->output,
-                    "PBM: Ent has no prev and not first of list\n");
-    } else {
-        if (ent->prev->next != (xmlNodePtr) ent)
-            fprintf(ctxt->output,
-                    "PBM: Ent prev->next : back link wrong\n");
-    }
-    if (ent->next == NULL) {
-        if ((ent->parent != NULL)
-            && (ent->parent->last != (xmlNodePtr) ent))
-            fprintf(ctxt->output,
-                    "PBM: Ent has no next and not last of list\n");
-    } else {
-        if (ent->next->prev != (xmlNodePtr) ent)
-            fprintf(ctxt->output,
-                    "PBM: Ent next->prev : forward link wrong\n");
-    }
+    xmlCtxtGenericNodeCheck(ctxt, (xmlNodePtr) ent);
 }
 
 static void
@@ -469,17 +457,18 @@ xmlCtxtDumpNamespace(xmlDebugCtxtPtr ctxt, xmlNsPtr ns)
         return;
     }
     if (ns->type != XML_NAMESPACE_DECL) {
-        fprintf(ctxt->output, "invalid namespace type %d\n", ns->type);
+	xmlDebugErr(ctxt, XML_CHECK_NOT_NS_DECL,
+	            "Node is not a namespace declaration");
         return;
     }
     if (ns->href == NULL) {
         if (ns->prefix != NULL)
-            fprintf(ctxt->output,
-                    "PBM: incomplete namespace %s href=NULL\n",
+	    xmlDebugErr3(ctxt, XML_CHECK_NO_HREF,
+                    "Incomplete namespace %s href=NULL\n",
                     (char *) ns->prefix);
         else
-            fprintf(ctxt->output,
-                    "PBM: incomplete default namespace href=NULL\n");
+	    xmlDebugErr(ctxt, XML_CHECK_NO_HREF,
+                    "Incomplete default namespace href=NULL\n");
     } else {
         if (!ctxt->check) {
             if (ns->prefix != NULL)
@@ -576,7 +565,7 @@ xmlCtxtDumpAttr(xmlDebugCtxtPtr ctxt, xmlAttrPtr attr)
     }
     if (!ctxt->check) {
         fprintf(ctxt->output, "ATTRIBUTE ");
-        xmlCtxtDumpString(ctxt, attr->name);
+	xmlCtxtDumpString(ctxt, attr->name);
         fprintf(ctxt->output, "\n");
         if (attr->children != NULL) {
             ctxt->depth++;
@@ -584,30 +573,14 @@ xmlCtxtDumpAttr(xmlDebugCtxtPtr ctxt, xmlAttrPtr attr)
             ctxt->depth--;
         }
     }
+    if (attr->name == NULL)
+	xmlDebugErr(ctxt, XML_CHECK_NO_NAME,
+	            "Attribute has no name");
 
     /*
      * Do a bit of checking
      */
-    if (attr->parent == NULL)
-        fprintf(ctxt->output, "PBM: Attr has no parent\n");
-    if (attr->doc == NULL)
-        fprintf(ctxt->output, "PBM: Attr has no doc\n");
-    if ((attr->parent != NULL) && (attr->doc != attr->parent->doc))
-        fprintf(ctxt->output, "PBM: Attr doc differs from parent's one\n");
-    if (attr->prev == NULL) {
-        if ((attr->parent != NULL) && (attr->parent->properties != attr))
-            fprintf(ctxt->output,
-                    "PBM: Attr has no prev and not first of list\n");
-    } else {
-        if (attr->prev->next != attr)
-            fprintf(ctxt->output,
-                    "PBM: Attr prev->next : back link wrong\n");
-    }
-    if (attr->next != NULL) {
-        if (attr->next->prev != attr)
-            fprintf(ctxt->output,
-                    "PBM: Attr next->prev : forward link wrong\n");
-    }
+    xmlCtxtGenericNodeCheck(ctxt, (xmlNodePtr) attr);
 }
 
 /**
@@ -645,6 +618,8 @@ xmlCtxtDumpOneNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
         }
         return;
     }
+    ctxt->node = node;
+
     switch (node->type) {
         case XML_ELEMENT_NODE:
             if (!ctxt->check) {
@@ -758,7 +733,8 @@ xmlCtxtDumpOneNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
         default:
             if (!ctxt->check)
                 xmlCtxtDumpSpaces(ctxt);
-            fprintf(ctxt->output, "PBM: NODE_%d !!!\n", node->type);
+	    xmlDebugErr2(ctxt, XML_CHECK_UNKNOWN_NODE,
+	                "Unknown node type %d\n", node->type);
             return;
     }
     if (node->doc == NULL) {
@@ -793,30 +769,7 @@ xmlCtxtDumpOneNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
     /*
      * Do a bit of checking
      */
-    if (node->parent == NULL)
-        fprintf(ctxt->output, "PBM: Node has no parent\n");
-    if (node->doc == NULL)
-        fprintf(ctxt->output, "PBM: Node has no doc\n");
-    if ((node->parent != NULL) && (node->doc != node->parent->doc))
-        fprintf(ctxt->output, "PBM: Node doc differs from parent's one\n");
-    if (node->prev == NULL) {
-        if ((node->parent != NULL) && (node->parent->children != node))
-            fprintf(ctxt->output,
-                    "PBM: Node has no prev and not first of list\n");
-    } else {
-        if (node->prev->next != node)
-            fprintf(ctxt->output,
-                    "PBM: Node prev->next : back link wrong\n");
-    }
-    if (node->next == NULL) {
-        if ((node->parent != NULL) && (node->parent->last != node))
-            fprintf(ctxt->output,
-                    "PBM: Node has no next and not last of list\n");
-    } else {
-        if (node->next->prev != node)
-            fprintf(ctxt->output,
-                    "PBM: Node next->prev : forward link wrong\n");
-    }
+    xmlCtxtGenericNodeCheck(ctxt, node);
 }
 
 /**
@@ -862,6 +815,74 @@ xmlCtxtDumpNodeList(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
     }
 }
 
+static void
+xmlCtxtDumpDocHead(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
+{
+    if (doc == NULL) {
+        if (!ctxt->check)
+            fprintf(ctxt->output, "DOCUMENT == NULL !\n");
+        return;
+    }
+    ctxt->node = (xmlNodePtr) doc;
+
+    switch (doc->type) {
+        case XML_ELEMENT_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_ELEMENT,
+	                "Misplaced ELEMENT node\n");
+            break;
+        case XML_ATTRIBUTE_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_ATTRIBUTE,
+	                "Misplaced ATTRIBUTE node\n");
+            break;
+        case XML_TEXT_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_TEXT,
+	                "Misplaced TEXT node\n");
+            break;
+        case XML_CDATA_SECTION_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_CDATA,
+	                "Misplaced CDATA node\n");
+            break;
+        case XML_ENTITY_REF_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_ENTITYREF,
+	                "Misplaced ENTITYREF node\n");
+            break;
+        case XML_ENTITY_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_ENTITY,
+	                "Misplaced ENTITY node\n");
+            break;
+        case XML_PI_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_PI,
+	                "Misplaced PI node\n");
+            break;
+        case XML_COMMENT_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_COMMENT,
+	                "Misplaced COMMENT node\n");
+            break;
+        case XML_DOCUMENT_NODE:
+	    if (!ctxt->check)
+		fprintf(ctxt->output, "DOCUMENT\n");
+            break;
+        case XML_HTML_DOCUMENT_NODE:
+	    if (!ctxt->check)
+		fprintf(ctxt->output, "HTML DOCUMENT\n");
+            break;
+        case XML_DOCUMENT_TYPE_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_DOCTYPE,
+	                "Misplaced DOCTYPE node\n");
+            break;
+        case XML_DOCUMENT_FRAG_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_FRAGMENT,
+	                "Misplaced FRAGMENT node\n");
+            break;
+        case XML_NOTATION_NODE:
+	    xmlDebugErr(ctxt, XML_CHECK_FOUND_NOTATION,
+	                "Misplaced NOTATION node\n");
+            break;
+        default:
+	    xmlDebugErr2(ctxt, XML_CHECK_UNKNOWN_NODE,
+	                "Unknown node type %d\n", doc->type);
+    }
+}
 
 /**
  * xmlCtxtDumpDocumentHead:
@@ -873,55 +894,7 @@ xmlCtxtDumpNodeList(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
 static void
 xmlCtxtDumpDocumentHead(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
 {
-    if (doc == NULL) {
-        if (!ctxt->check)
-            fprintf(ctxt->output, "DOCUMENT == NULL !\n");
-        return;
-    }
-
-    switch (doc->type) {
-        case XML_ELEMENT_NODE:
-            fprintf(ctxt->output, "Error, ELEMENT found here ");
-            break;
-        case XML_ATTRIBUTE_NODE:
-            fprintf(ctxt->output, "Error, ATTRIBUTE found here\n");
-            break;
-        case XML_TEXT_NODE:
-            fprintf(ctxt->output, "Error, TEXT\n");
-            break;
-        case XML_CDATA_SECTION_NODE:
-            fprintf(ctxt->output, "Error, CDATA_SECTION\n");
-            break;
-        case XML_ENTITY_REF_NODE:
-            fprintf(ctxt->output, "Error, ENTITY_REF\n");
-            break;
-        case XML_ENTITY_NODE:
-            fprintf(ctxt->output, "Error, ENTITY\n");
-            break;
-        case XML_PI_NODE:
-            fprintf(ctxt->output, "Error, PI\n");
-            break;
-        case XML_COMMENT_NODE:
-            fprintf(ctxt->output, "Error, COMMENT\n");
-            break;
-        case XML_DOCUMENT_NODE:
-            fprintf(ctxt->output, "DOCUMENT\n");
-            break;
-        case XML_HTML_DOCUMENT_NODE:
-            fprintf(ctxt->output, "HTML DOCUMENT\n");
-            break;
-        case XML_DOCUMENT_TYPE_NODE:
-            fprintf(ctxt->output, "Error, DOCUMENT_TYPE\n");
-            break;
-        case XML_DOCUMENT_FRAG_NODE:
-            fprintf(ctxt->output, "Error, DOCUMENT_FRAG\n");
-            break;
-        case XML_NOTATION_NODE:
-            fprintf(ctxt->output, "Error, NOTATION\n");
-            break;
-        default:
-            fprintf(ctxt->output, "NODE_%d\n", doc->type);
-    }
+    xmlCtxtDumpDocHead(ctxt, doc);
     if (!ctxt->check) {
         if (doc->name != NULL) {
             fprintf(ctxt->output, "name=");
@@ -1002,7 +975,8 @@ xmlCtxtDumpEntityCallback(xmlEntityPtr cur, xmlDebugCtxtPtr ctxt)
                 fprintf(ctxt->output, "EXTERNAL PARAMETER, ");
                 break;
             default:
-                fprintf(ctxt->output, "UNKNOWN TYPE %d", cur->etype);
+		xmlDebugErr2(ctxt, XML_CHECK_ENTITY_TYPE,
+			     "Unknown entity type %d\n", cur->etype);
         }
         if (cur->ExternalID != NULL)
             fprintf(ctxt->output, "ID \"%s\"", (char *) cur->ExternalID);
@@ -1027,55 +1001,7 @@ xmlCtxtDumpEntityCallback(xmlEntityPtr cur, xmlDebugCtxtPtr ctxt)
 static void
 xmlCtxtDumpEntities(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
 {
-    if (doc == NULL) {
-        if (!ctxt->check)
-            fprintf(ctxt->output, "DOCUMENT == NULL !\n");
-        return;
-    }
-
-    switch (doc->type) {
-        case XML_ELEMENT_NODE:
-            fprintf(ctxt->output, "Error, ELEMENT found here ");
-            break;
-        case XML_ATTRIBUTE_NODE:
-            fprintf(ctxt->output, "Error, ATTRIBUTE found here\n");
-            break;
-        case XML_TEXT_NODE:
-            fprintf(ctxt->output, "Error, TEXT\n");
-            break;
-        case XML_CDATA_SECTION_NODE:
-            fprintf(ctxt->output, "Error, CDATA_SECTION\n");
-            break;
-        case XML_ENTITY_REF_NODE:
-            fprintf(ctxt->output, "Error, ENTITY_REF\n");
-            break;
-        case XML_ENTITY_NODE:
-            fprintf(ctxt->output, "Error, ENTITY\n");
-            break;
-        case XML_PI_NODE:
-            fprintf(ctxt->output, "Error, PI\n");
-            break;
-        case XML_COMMENT_NODE:
-            fprintf(ctxt->output, "Error, COMMENT\n");
-            break;
-        case XML_DOCUMENT_NODE:
-            fprintf(ctxt->output, "DOCUMENT\n");
-            break;
-        case XML_HTML_DOCUMENT_NODE:
-            fprintf(ctxt->output, "HTML DOCUMENT\n");
-            break;
-        case XML_DOCUMENT_TYPE_NODE:
-            fprintf(ctxt->output, "Error, DOCUMENT_TYPE\n");
-            break;
-        case XML_DOCUMENT_FRAG_NODE:
-            fprintf(ctxt->output, "Error, DOCUMENT_FRAG\n");
-            break;
-        case XML_NOTATION_NODE:
-            fprintf(ctxt->output, "Error, NOTATION\n");
-            break;
-        default:
-            fprintf(ctxt->output, "NODE_%d\n", doc->type);
-    }
+    xmlCtxtDumpDocHead(ctxt, doc);
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
         xmlEntitiesTablePtr table = (xmlEntitiesTablePtr)
             doc->intSubset->entities;
@@ -1113,46 +1039,7 @@ xmlCtxtDumpDTD(xmlDebugCtxtPtr ctxt, xmlDtdPtr dtd)
             fprintf(ctxt->output, "DTD is NULL\n");
         return;
     }
-    if (dtd->type != XML_DTD_NODE) {
-        fprintf(ctxt->output, "PBM: not a DTD\n");
-        return;
-    }
-    if (!ctxt->check) {
-        if (dtd->name != NULL)
-            fprintf(ctxt->output, "DTD(%s)", (char *) dtd->name);
-        else
-            fprintf(ctxt->output, "DTD");
-        if (dtd->ExternalID != NULL)
-            fprintf(ctxt->output, ", PUBLIC %s", (char *) dtd->ExternalID);
-        if (dtd->SystemID != NULL)
-            fprintf(ctxt->output, ", SYSTEM %s", (char *) dtd->SystemID);
-        fprintf(ctxt->output, "\n");
-    }
-    /*
-     * Do a bit of checking
-     */
-    if ((dtd->parent != NULL) && (dtd->doc != dtd->parent->doc))
-        fprintf(ctxt->output, "PBM: DTD doc differs from parent's one\n");
-    if (dtd->prev == NULL) {
-        if ((dtd->parent != NULL)
-            && (dtd->parent->children != (xmlNodePtr) dtd))
-            fprintf(ctxt->output,
-                    "PBM: DTD has no prev and not first of list\n");
-    } else {
-        if (dtd->prev->next != (xmlNodePtr) dtd)
-            fprintf(ctxt->output,
-                    "PBM: DTD prev->next : back link wrong\n");
-    }
-    if (dtd->next == NULL) {
-        if ((dtd->parent != NULL)
-            && (dtd->parent->last != (xmlNodePtr) dtd))
-            fprintf(ctxt->output,
-                    "PBM: DTD has no next and not last of list\n");
-    } else {
-        if (dtd->next->prev != (xmlNodePtr) dtd)
-            fprintf(ctxt->output,
-                    "PBM: DTD next->prev : forward link wrong\n");
-    }
+    xmlCtxtDumpDtdNode(ctxt, dtd);
     if (dtd->children == NULL)
         fprintf(ctxt->output, "    DTD is empty\n");
     else {
@@ -1161,9 +1048,10 @@ xmlCtxtDumpDTD(xmlDebugCtxtPtr ctxt, xmlDtdPtr dtd)
         ctxt->depth--;
     }
 }
+
 /************************************************************************
  *									*
- *			Public entry points				*
+ *			Public entry points for dump			*
  *									*
  ************************************************************************/
 
@@ -1368,6 +1256,36 @@ xmlDebugDumpDTD(FILE * output, xmlDtdPtr dtd)
     xmlCtxtDumpInitCtxt(&ctxt);
     ctxt.output = output;
     xmlCtxtDumpDTD(&ctxt, dtd);
+}
+
+/************************************************************************
+ *									*
+ *			Public entry points for checkings		*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlDebugCheckDocument:
+ * @output:  the FILE * for the output
+ * @doc:  the document
+ *
+ * Check the document for potential content problems, and output
+ * the errors to @output
+ *
+ * Returns the number of errors found
+ */
+int
+xmlDebugCheckDocument(FILE * output, xmlDocPtr doc)
+{
+    xmlDebugCtxt ctxt;
+
+    if (output == NULL)
+	output = stdout;
+    xmlCtxtDumpInitCtxt(&ctxt);
+    ctxt.output = output;
+    ctxt.check = 1;
+    xmlCtxtDumpDocument(&ctxt, doc);
+    return(ctxt.errors);
 }
 
 /************************************************************************

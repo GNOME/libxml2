@@ -10336,6 +10336,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	               const xmlChar *ID, xmlNodePtr *lst) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
+    xmlNodePtr newRoot;
     xmlSAXHandlerPtr oldsax = NULL;
     int ret = 0;
     xmlChar start[4];
@@ -10372,8 +10373,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     if (ctx->myDoc->URL != NULL) {
 	newDoc->URL = xmlStrdup(ctx->myDoc->URL);
     }
-    newDoc->children = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
-    if (newDoc->children == NULL) {
+    newRoot = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
+    if (newRoot == NULL) {
 	ctxt->sax = oldsax;
 	xmlFreeParserCtxt(ctxt);
 	newDoc->intSubset = NULL;
@@ -10381,6 +10382,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
         xmlFreeDoc(newDoc);
 	return(-1);
     }
+    xmlAddChild((xmlNodePtr) newDoc, newRoot);
     nodePush(ctxt, newDoc->children);
     if (ctx->myDoc == NULL) {
 	ctxt->myDoc = newDoc;
@@ -10515,6 +10517,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 		      const xmlChar *ID, xmlNodePtr *list) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
+    xmlNodePtr newRoot;
     xmlSAXHandlerPtr oldsax = NULL;
     xmlParserErrors ret = XML_ERR_OK;
     xmlChar start[4];
@@ -10578,8 +10581,8 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     if (doc->URL != NULL) {
 	newDoc->URL = xmlStrdup(doc->URL);
     }
-    newDoc->children = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
-    if (newDoc->children == NULL) {
+    newRoot = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
+    if (newRoot == NULL) {
 	if (sax != NULL)
 	    ctxt->sax = oldsax;
 	ctxt->node_seq.maximum = 0;
@@ -10591,12 +10594,13 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
         xmlFreeDoc(newDoc);
 	return(XML_ERR_INTERNAL_ERROR);
     }
+    xmlAddChild((xmlNodePtr) newDoc, newRoot);
     nodePush(ctxt, newDoc->children);
     if (doc == NULL) {
 	ctxt->myDoc = newDoc;
     } else {
 	ctxt->myDoc = doc;
-	newDoc->children->doc = doc;
+	newRoot->doc = doc;
     }
 
     /* 
@@ -10758,8 +10762,10 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	const xmlChar *string, void *user_data, xmlNodePtr *lst) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc = NULL;
+    xmlNodePtr newRoot;
     xmlSAXHandlerPtr oldsax = NULL;
     xmlNodePtr content = NULL;
+    xmlNodePtr last = NULL;
     int size;
     xmlParserErrors ret = XML_ERR_OK;
 
@@ -10806,10 +10812,10 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     } else {
 	ctxt->myDoc = oldctxt->myDoc;
         content = ctxt->myDoc->children;
+	last = ctxt->myDoc->last;
     }
-    ctxt->myDoc->children = xmlNewDocNode(ctxt->myDoc, NULL,
-	                                  BAD_CAST "pseudoroot", NULL);
-    if (ctxt->myDoc->children == NULL) {
+    newRoot = xmlNewDocNode(ctxt->myDoc, NULL, BAD_CAST "pseudoroot", NULL);
+    if (newRoot == NULL) {
 	ctxt->sax = oldsax;
 	ctxt->dict = NULL;
 	xmlFreeParserCtxt(ctxt);
@@ -10817,6 +10823,9 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	    xmlFreeDoc(newDoc);
 	return(XML_ERR_INTERNAL_ERROR);
     }
+    ctxt->myDoc->children = NULL;
+    ctxt->myDoc->last = NULL;
+    xmlAddChild((xmlNodePtr) ctxt->myDoc, newRoot);
     nodePush(ctxt, ctxt->myDoc->children);
     ctxt->instate = XML_PARSER_CONTENT;
     ctxt->depth = oldctxt->depth + 1;
@@ -10877,6 +10886,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     if (ctxt->myDoc != NULL) {
 	xmlFreeNode(ctxt->myDoc->children);
         ctxt->myDoc->children = content;
+        ctxt->myDoc->last = last;
     }
 	
     ctxt->sax = oldsax;

@@ -1,3 +1,11 @@
+Thu Oct  7 15:12:58 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c include/libxml/debugXML.h include/libxml/xmlerror.h:
+	  adding the tree debug mode
+	* parser.c relaxng.c tree.c xpath.c: fixing various problems reported
+	  by the debug mode.
+	* SAX2.c: another tree fix from Rob Richards
+
 Wed Oct  6 10:50:03 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* catalog.c: small change to last fix, to get xml:base right

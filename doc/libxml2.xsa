@@ -18,7 +18,7 @@
     Zlatkovic)
    - xmlWriter bugfix (Alfred Mickautsch)
    - chvalid.[ch]: couple of fixes from Stephane Bidoul
-   - context reset: error state reset, push parser reset (Graham Benett)
+   - context reset: error state reset, push parser reset (Graham Bennett)
    - context reuse: generate errors if file is not readable
    - defaulted attributes for element coming from internal entities
     (Stephane Bidoul)

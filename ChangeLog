@@ -1,3 +1,8 @@
+Fri Feb  1 10:28:51 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am: Jacob sent a patch to allow building from
+	  tarfile.
+
 Fri Feb  1 00:40:48 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am python/libxml.c configure.in Makefile.am:

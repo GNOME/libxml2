@@ -2,6 +2,13 @@ LIBS=-L../.libs -L.. $(XML_LIBS)
 INCLUDES=-I$(PYTHON_INCLUDES) -I$(top_srcdir)/include
 SHCFLAGS=$(INCLUDES) -Wall -fPIC
 LINK_FLAGS= -shared
+
+EXTRA_DIST = \
+	libxml.c	\
+	generator.py	\
+	libxml_wrap.h	\
+	libxml.py
+
 if WITH_PYTHON
 all: _libxml.so libxml2.py
 

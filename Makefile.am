@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-#AUTOMAKE_OPTIONS=no-dependencies
+#AUTOMAKE_ OPTIONS=no-dependencies
 
 SUBDIRS = include . doc example python
 

@@ -1,3 +1,10 @@
+Sat May 15 20:14:21 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/ChangeLog.awk doc/ChangeLog.xsl: first steps of a good
+	  ChangeLog page generation. The awk shoudl escape characters
+	  not okay in XML and the xslt should make links to functions
+	  or variables or bug reported in the entries.
+
 Sat May 15 14:57:40 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c include/libxml/xmlsave.h: start adding API for 

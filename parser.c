@@ -7635,7 +7635,8 @@ xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlChar *prefix,
     }
     SKIP(2);
 
-    if ((tlen > 0) && (strncmp(ctxt->input->cur, ctxt->name, tlen) == 0)) {
+    if ((tlen > 0) && (strncmp(ctxt->input->cur,
+                               (const char *)ctxt->name, tlen) == 0)) {
         if (ctxt->input->cur[tlen] == '>') {
 	    ctxt->input->cur += tlen + 1;
 	    goto done;

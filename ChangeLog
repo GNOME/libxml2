@@ -1,3 +1,8 @@
+Thu Aug 26 12:27:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: remove a warning on Solaris
+	* xmlschemastype.c: fix a crashing bug #151111
+
 Tue Aug 24 20:49:15 MDT 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial/xmltutorial.xml, xmltutorial.pdf, *.html

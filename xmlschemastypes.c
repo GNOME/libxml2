@@ -1733,6 +1733,13 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
     if (type == NULL)
         return (-1);
 
+    /*
+     * validating a non existant text node is similar to validating
+     * an empty one.
+     */
+    if (value == NULL)
+        value = BAD_CAST "";
+
     if (val != NULL)
         *val = NULL;
     if ((flags == 0) && (value != NULL)) {
@@ -2297,7 +2304,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 xmlChar *base;
                 int total, i = 0;
 
-                if (cur == NULL)
+                if ((cur == NULL) || (*cur == 0))
                     goto return1;
 
                 while (((*cur >= '0') && (*cur <= '9')) ||

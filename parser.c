@@ -41,6 +41,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
+#include <libxml/threads.h>
+#include <libxml/globals.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -76,11 +78,6 @@
 
 #define XML_PARSER_BIG_BUFFER_SIZE 300
 #define XML_PARSER_BUFFER_SIZE 100
-
-/*
- * Various global defaults for parsing
- */
-int xmlParserDebugEntities = 0;
 
 /*
  * List of XML prefixed PI allowed by W3C specs
@@ -10191,6 +10188,8 @@ void
 xmlInitParser(void) {
     if (xmlParserInitialized) return;
 
+    xmlInitThreads();
+    initGenericErrorDefaultFunc(NULL);
     xmlInitCharEncodingHandlers();
     xmlInitializePredefinedEntities();
     xmlDefaultSAXHandlerInit();
@@ -10217,11 +10216,11 @@ xmlInitParser(void) {
 
 void
 xmlCleanupParser(void) {
-    xmlParserInitialized = 0;
     xmlCleanupCharEncodingHandlers();
     xmlCleanupPredefinedEntities();
 #ifdef LIBXML_CATALOG_ENABLED
     xmlCatalogCleanup();
 #endif
+    xmlCleanupThreads();
+    xmlParserInitialized = 0;
 }
-

@@ -2,6 +2,7 @@
 #define __XML_ERROR_H__
 
 #include <libxml/parser.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -144,18 +145,12 @@ typedef enum {
 typedef void (*xmlGenericErrorFunc) (void *ctx, const char *msg, ...);
 
 /*
- * Those are the default error function and associated context to use
- * when when there is an error and no parsing or validity context available
- */
-
-LIBXML_DLL_IMPORT extern xmlGenericErrorFunc xmlGenericError;
-LIBXML_DLL_IMPORT extern void *xmlGenericErrorContext;
-
-/*
- * Use the following function to reset the two previous global variables.
+ * Use the following function to reset the two global variables
+ * xmlGenericError and xmlGenericErrorContext.
  */
 void	xmlSetGenericErrorFunc	(void *ctx,
 				 xmlGenericErrorFunc handler);
+void	initGenericErrorDefaultFunc(xmlGenericErrorFunc *handler);
 
 /*
  * Default message routines used by SAX and Valid context for error

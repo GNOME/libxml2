@@ -31,6 +31,7 @@
 #endif
 
 
+#include <libxml/globals.h>
 #include <libxml/xmlerror.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h> /* only for xmlNewInputFromFile() */
@@ -71,7 +72,8 @@ xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* xmlParserError */
     NULL, /* getParameterEntity */
     NULL, /* cdataBlock; */
-    NULL  /* externalSubset; */
+    NULL,  /* externalSubset; */
+    1
 };
 
 xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
@@ -597,7 +599,8 @@ xmlSAXHandler debugSAXHandlerStruct = {
     fatalErrorDebug,
     getParameterEntityDebug,
     cdataBlockDebug,
-    externalSubsetDebug
+    externalSubsetDebug,
+    1
 };
 
 xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;

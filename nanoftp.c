@@ -56,8 +56,9 @@
 #endif
 
 #include <libxml/xmlmemory.h>
-#include <libxml/nanoftp.h>
+#include <libxml/parser.h>
 #include <libxml/xmlerror.h>
+#include <libxml/nanoftp.h>
 
 /* #define DEBUG_FTP 1  */
 #ifdef STANDALONE

@@ -3557,6 +3557,8 @@ static int
 htmlParseDocument(htmlParserCtxtPtr ctxt) {
     xmlDtdPtr dtd;
 
+    xmlInitParser();
+
     htmlDefaultSAXHandlerInit();
     ctxt->html = 1;
 
@@ -4669,6 +4671,8 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
     htmlParserInputPtr inputStream;
     xmlParserInputBufferPtr buf;
 
+    xmlInitParser();
+
     buf = xmlAllocParserInputBuffer(enc);
     if (buf == NULL) return(NULL);
 
@@ -4744,6 +4748,8 @@ htmlDocPtr
 htmlSAXParseDoc(xmlChar *cur, const char *encoding, htmlSAXHandlerPtr sax, void *userData) {
     htmlDocPtr ret;
     htmlParserCtxtPtr ctxt;
+
+    xmlInitParser();
 
     if (cur == NULL) return(NULL);
 
@@ -4868,6 +4874,8 @@ htmlSAXParseFile(const char *filename, const char *encoding, htmlSAXHandlerPtr s
     htmlDocPtr ret;
     htmlParserCtxtPtr ctxt;
     htmlSAXHandlerPtr oldsax = NULL;
+
+    xmlInitParser();
 
     ctxt = htmlCreateFileParserCtxt(filename, encoding);
     if (ctxt == NULL) return(NULL);

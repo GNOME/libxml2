@@ -45,8 +45,8 @@
  *								*
  ****************************************************************/
  
-xlinkHandlerPtr xlinkDefaultHandler = NULL;
-xlinkNodeDetectFunc	xlinkDefaultDetect = NULL;
+static xlinkHandlerPtr xlinkDefaultHandler = NULL;
+static xlinkNodeDetectFunc	xlinkDefaultDetect = NULL;
 
 /**
  * xlinkGetDefaultHandler:

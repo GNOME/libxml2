@@ -56,27 +56,12 @@ void xmlUpgradeOldNs(xmlDocPtr doc);
 /*
  * Various global defaults for parsing
  */
-int xmlGetWarningsDefaultValue = 1;
 #ifdef VMS
 int xmlSubstituteEntitiesDefaultVal = 0;
 #define xmlSubstituteEntitiesDefaultValue xmlSubstituteEntitiesDefaultVal 
 int xmlDoValidityCheckingDefaultVal = 0;
 #define xmlDoValidityCheckingDefaultValue xmlDoValidityCheckingDefaultVal
-#else
-int xmlSubstituteEntitiesDefaultValue = 0;
-int xmlDoValidityCheckingDefaultValue = 0;
 #endif
-int xmlLoadExtDtdDefaultValue = 0;
-int xmlPedanticParserDefaultValue = 0;
-int xmlLineNumbersDefaultValue = 0;
-int xmlKeepBlanksDefaultValue = 1;
-
-/************************************************************************
- *									*
- * 		Version and Features handling				*
- *									*
- ************************************************************************/
-const char *xmlParserVersion = LIBXML_VERSION_STRING;
 
 /**
  * xmlCheckVersion:

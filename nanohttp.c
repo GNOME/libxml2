@@ -63,6 +63,7 @@
 #define SOCKET int
 #endif
 
+#include <libxml/globals.h>
 #include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h> /* for xmlStr(n)casecmp() */

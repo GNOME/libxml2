@@ -25,6 +25,8 @@
 extern "C" {
 #endif
 
+#define BASE_BUFFER_SIZE 4000
+
 /**
  * XML_XML_NAMESPACE:
  *

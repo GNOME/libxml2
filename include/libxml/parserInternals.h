@@ -174,19 +174,6 @@ extern "C" {
     while ((*p) && (*(p) != '<')) (p)++
 
 /**
- * Global vaiables affecting the default parser behaviour.
- */
-
-LIBXML_DLL_IMPORT extern int xmlParserDebugEntities;
-LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;
-LIBXML_DLL_IMPORT extern int xmlParserDebugEntities;
-LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
-LIBXML_DLL_IMPORT extern int xmlDoValidityCheckingDefaultValue;
-LIBXML_DLL_IMPORT extern int xmlLoadExtDtdDefaultValue;
-LIBXML_DLL_IMPORT extern int xmlPedanticParserDefaultValue;
-LIBXML_DLL_IMPORT extern int xmlKeepBlanksDefaultValue;
-
-/**
  * Global variables used for predefined strings
  */
 LIBXML_DLL_IMPORT extern const xmlChar xmlStringText[];

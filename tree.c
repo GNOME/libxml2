@@ -38,28 +38,19 @@ xmlNsPtr xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
 
 /************************************************************************
  *									*
- *			Deprecated					*
- *									*
- ************************************************************************/
-int oldXMLWDcompatibility = 0;
- 
-/************************************************************************
- *									*
  * 		A few static variables and macros			*
  *									*
  ************************************************************************/
-
+/* #undef xmlStringText */
 const xmlChar xmlStringText[] = { 't', 'e', 'x', 't', 0 };
+/* #undef xmlStringTextNoenc */
 const xmlChar xmlStringTextNoenc[] =
               { 't', 'e', 'x', 't', 'n', 'o', 'e', 'n', 'c', 0 };
+/* #undef xmlStringComment */
 const xmlChar xmlStringComment[] = { 'c', 'o', 'm', 'm', 'e', 'n', 't', 0 };
-
-int xmlIndentTreeOutput = 0;
-xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
 
 static int xmlCompressMode = 0;
 static int xmlCheckDTD = 1;
-int xmlSaveNoEmptyTags = 0;
 
 #define UPDATE_LAST_CHILD_AND_PARENT(n) if ((n) != NULL) {		\
     xmlNodePtr ulccur = (n)->children;					\
@@ -4743,10 +4734,6 @@ xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
  *			Output : to a FILE or in memory			*
  *									*
  ************************************************************************/
-
-#define BASE_BUFFER_SIZE 4000
-
-int xmlDefaultBufferSize = BASE_BUFFER_SIZE;
 
 /**
  * xmlBufferCreate:

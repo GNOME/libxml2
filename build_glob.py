@@ -78,9 +78,9 @@ if __name__ == "__main__":
         writeline(global_functions_hdr,"(*(__"+fields[1]+"()))")
         writeline(global_functions_hdr,"#else")
         if len(fields) == 3:
-            writeline(global_functions_hdr,"extern "+fields[0]+" "+fields[1]+fields[2]+";")
+            writeline(global_functions_hdr,"LIBXML_DLL_IMPORT extern "+fields[0]+" "+fields[1]+fields[2]+";")
         else:
-            writeline(global_functions_hdr,"extern "+fields[0]+" "+fields[1]+";")
+            writeline(global_functions_hdr,"LIBXML_DLL_IMPORT extern "+fields[0]+" "+fields[1]+";")
         writeline(global_functions_hdr,"#endif")
         # Update the implementation file
         writeline(global_functions_impl)
@@ -96,7 +96,7 @@ if __name__ == "__main__":
         writeline(global_functions_impl, "    if (IS_MAIN_THREAD)")
         writeline(global_functions_impl, "\treturn (&"+fields[1]+");")
         writeline(global_functions_impl, "    else")
-        writeline(global_functions_impl, "\treturn (&get_glob_struct()->"+fields[1]+");")
+        writeline(global_functions_impl, "\treturn (&xmlGetGlobalState()->"+fields[1]+");")
         writeline(global_functions_impl, "}")
     # Terminate the header file with appropriate boilerplate
     writeline(global_functions_hdr)

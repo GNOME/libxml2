@@ -1,3 +1,17 @@
+Sat Oct 13 11:08:20 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/SAX.h include/libxml/globals.h include/libxml/parser.h
+	  include/libxml/parserInternals.h include/libxml/tree.h
+	  include/libxml/xmlerror.h HTMLparser.c SAX.c error.c globals.c
+	  nanoftp.c nanohttp.c parser.c parserInternals.c testDocbook.c
+	  testHTML.c testSAX.c tree.c uri.c xlink.c xmlmemory.c:
+	  Applied the last patches from Gary, cleanup, activated threading
+	  all user accessible global variables are now handled in globals.[ch]
+	  Still a bit rought but make tests passes with either 
+	  --with-threads defined at configure time or not.
+	* Makefile.am example/Makefile.am: added globals.[ch] and threads
+	  linking options
+
 Fri Oct 12 19:25:55 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am include/libxml/Makefile.am

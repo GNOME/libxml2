@@ -88,14 +88,6 @@ getColumnNumber(void *ctx)
     return(ctxt->input->col);
 }
 
-/*
- * The default SAX Locator.
- */
-
-xmlSAXLocator xmlDefaultSAXLocator = {
-    getPublicId, getSystemId, getLineNumber, getColumnNumber
-};
-
 /**
  * isStandalone:
  * @ctx: the user data (XML parser context)
@@ -1667,38 +1659,51 @@ cdataBlock(void *ctx, const xmlChar *value, int len)
     }
 }
 
-/*
- * Default handler for XML, builds the DOM tree
+/**
+ * xmlDefaultSAXHandlerInit:
+ *
+ * Initialize the default SAX handler
  */
-xmlSAXHandler xmlDefaultSAXHandler = {
-    internalSubset,
-    isStandalone,
-    hasInternalSubset,
-    hasExternalSubset,
-    resolveEntity,
-    getEntity,
-    entityDecl,
-    notationDecl,
-    attributeDecl,
-    elementDecl,
-    unparsedEntityDecl,
-    setDocumentLocator,
-    startDocument,
-    endDocument,
-    startElement,
-    endElement,
-    reference,
-    characters,
-    characters,
-    processingInstruction,
-    comment,
-    xmlParserWarning,
-    xmlParserError,
-    xmlParserError,
-    getParameterEntity,
-    cdataBlock,
-    externalSubset,
-};
+void
+initxmlDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
+{
+    if(hdlr->initialized == 1)
+	return;
+
+    hdlr->internalSubset = internalSubset;
+    hdlr->externalSubset = externalSubset;
+    hdlr->isStandalone = isStandalone;
+    hdlr->hasInternalSubset = hasInternalSubset;
+    hdlr->hasExternalSubset = hasExternalSubset;
+    hdlr->resolveEntity = resolveEntity;
+    hdlr->getEntity = getEntity;
+    hdlr->getParameterEntity = getParameterEntity;
+    hdlr->entityDecl = entityDecl;
+    hdlr->attributeDecl = attributeDecl;
+    hdlr->elementDecl = elementDecl;
+    hdlr->notationDecl = notationDecl;
+    hdlr->unparsedEntityDecl = unparsedEntityDecl;
+    hdlr->setDocumentLocator = setDocumentLocator;
+    hdlr->startDocument = startDocument;
+    hdlr->endDocument = endDocument;
+    hdlr->startElement = startElement;
+    hdlr->endElement = endElement;
+    hdlr->reference = reference;
+    hdlr->characters = characters;
+    hdlr->cdataBlock = cdataBlock;
+    hdlr->ignorableWhitespace = characters;
+    hdlr->processingInstruction = processingInstruction;
+    hdlr->comment = comment;
+    /* if (xmlGetWarningsDefaultValue == 0) */
+    if (warning == 0)
+	hdlr->warning = NULL;
+    else
+	hdlr->warning = xmlParserWarning;
+    hdlr->error = xmlParserError;
+    hdlr->fatalError = xmlParserError;
+
+    hdlr->initialized = 1;
+}
 
 /**
  * xmlDefaultSAXHandlerInit:
@@ -1708,77 +1713,52 @@ xmlSAXHandler xmlDefaultSAXHandler = {
 void
 xmlDefaultSAXHandlerInit(void)
 {
-    static int xmlSAXInitialized = 0;
-    if (xmlSAXInitialized)
-	return;
-
-    xmlDefaultSAXHandler.internalSubset = internalSubset;
-    xmlDefaultSAXHandler.externalSubset = externalSubset;
-    xmlDefaultSAXHandler.isStandalone = isStandalone;
-    xmlDefaultSAXHandler.hasInternalSubset = hasInternalSubset;
-    xmlDefaultSAXHandler.hasExternalSubset = hasExternalSubset;
-    xmlDefaultSAXHandler.resolveEntity = resolveEntity;
-    xmlDefaultSAXHandler.getEntity = getEntity;
-    xmlDefaultSAXHandler.getParameterEntity = getParameterEntity;
-    xmlDefaultSAXHandler.entityDecl = entityDecl;
-    xmlDefaultSAXHandler.attributeDecl = attributeDecl;
-    xmlDefaultSAXHandler.elementDecl = elementDecl;
-    xmlDefaultSAXHandler.notationDecl = notationDecl;
-    xmlDefaultSAXHandler.unparsedEntityDecl = unparsedEntityDecl;
-    xmlDefaultSAXHandler.setDocumentLocator = setDocumentLocator;
-    xmlDefaultSAXHandler.startDocument = startDocument;
-    xmlDefaultSAXHandler.endDocument = endDocument;
-    xmlDefaultSAXHandler.startElement = startElement;
-    xmlDefaultSAXHandler.endElement = endElement;
-    xmlDefaultSAXHandler.reference = reference;
-    xmlDefaultSAXHandler.characters = characters;
-    xmlDefaultSAXHandler.cdataBlock = cdataBlock;
-    xmlDefaultSAXHandler.ignorableWhitespace = characters;
-    xmlDefaultSAXHandler.processingInstruction = processingInstruction;
-    xmlDefaultSAXHandler.comment = comment;
-    if (xmlGetWarningsDefaultValue == 0)
-	xmlDefaultSAXHandler.warning = NULL;
-    else
-	xmlDefaultSAXHandler.warning = xmlParserWarning;
-    xmlDefaultSAXHandler.error = xmlParserError;
-    xmlDefaultSAXHandler.fatalError = xmlParserError;
-
-    xmlSAXInitialized = 1;
+	initxmlDefaultSAXHandler(&xmlDefaultSAXHandler, xmlGetWarningsDefaultValue);
 }
 
 #ifdef LIBXML_HTML_ENABLED
-/*
- * Default handler for HTML, builds the DOM tree
+
+/**
+ * htmlDefaultSAXHandlerInit:
+ *
+ * Initialize the default SAX handler
  */
-xmlSAXHandler htmlDefaultSAXHandler = {
-    internalSubset,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    getEntity,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    setDocumentLocator,
-    startDocument,
-    endDocument,
-    startElement,
-    endElement,
-    NULL,
-    characters,
-    ignorableWhitespace,
-    NULL,
-    comment,
-    xmlParserWarning,
-    xmlParserError,
-    xmlParserError,
-    getParameterEntity,
-    cdataBlock,
-    NULL,
-};
+void
+inithtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
+{
+    if(hdlr->initialized == 1)
+	return;
+
+    hdlr->internalSubset = internalSubset;
+    hdlr->externalSubset = NULL;
+    hdlr->isStandalone = NULL;
+    hdlr->hasInternalSubset = NULL;
+    hdlr->hasExternalSubset = NULL;
+    hdlr->resolveEntity = NULL;
+    hdlr->getEntity = getEntity;
+    hdlr->getParameterEntity = NULL;
+    hdlr->entityDecl = NULL;
+    hdlr->attributeDecl = NULL;
+    hdlr->elementDecl = NULL;
+    hdlr->notationDecl = NULL;
+    hdlr->unparsedEntityDecl = NULL;
+    hdlr->setDocumentLocator = setDocumentLocator;
+    hdlr->startDocument = startDocument;
+    hdlr->endDocument = endDocument;
+    hdlr->startElement = startElement;
+    hdlr->endElement = endElement;
+    hdlr->reference = NULL;
+    hdlr->characters = characters;
+    hdlr->cdataBlock = cdataBlock;
+    hdlr->ignorableWhitespace = ignorableWhitespace;
+    hdlr->processingInstruction = NULL;
+    hdlr->comment = comment;
+    hdlr->warning = xmlParserWarning;
+    hdlr->error = xmlParserError;
+    hdlr->fatalError = xmlParserError;
+
+    hdlr->initialized = 1;
+}
 
 /**
  * htmlDefaultSAXHandlerInit:
@@ -1788,75 +1768,49 @@ xmlSAXHandler htmlDefaultSAXHandler = {
 void
 htmlDefaultSAXHandlerInit(void)
 {
-    static int htmlSAXInitialized = 0;
-    if (htmlSAXInitialized)
-	return;
-
-    htmlDefaultSAXHandler.internalSubset = internalSubset;
-    htmlDefaultSAXHandler.externalSubset = NULL;
-    htmlDefaultSAXHandler.isStandalone = NULL;
-    htmlDefaultSAXHandler.hasInternalSubset = NULL;
-    htmlDefaultSAXHandler.hasExternalSubset = NULL;
-    htmlDefaultSAXHandler.resolveEntity = NULL;
-    htmlDefaultSAXHandler.getEntity = getEntity;
-    htmlDefaultSAXHandler.getParameterEntity = NULL;
-    htmlDefaultSAXHandler.entityDecl = NULL;
-    htmlDefaultSAXHandler.attributeDecl = NULL;
-    htmlDefaultSAXHandler.elementDecl = NULL;
-    htmlDefaultSAXHandler.notationDecl = NULL;
-    htmlDefaultSAXHandler.unparsedEntityDecl = NULL;
-    htmlDefaultSAXHandler.setDocumentLocator = setDocumentLocator;
-    htmlDefaultSAXHandler.startDocument = startDocument;
-    htmlDefaultSAXHandler.endDocument = endDocument;
-    htmlDefaultSAXHandler.startElement = startElement;
-    htmlDefaultSAXHandler.endElement = endElement;
-    htmlDefaultSAXHandler.reference = NULL;
-    htmlDefaultSAXHandler.characters = characters;
-    htmlDefaultSAXHandler.cdataBlock = cdataBlock;
-    htmlDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
-    htmlDefaultSAXHandler.processingInstruction = NULL;
-    htmlDefaultSAXHandler.comment = comment;
-    htmlDefaultSAXHandler.warning = xmlParserWarning;
-    htmlDefaultSAXHandler.error = xmlParserError;
-    htmlDefaultSAXHandler.fatalError = xmlParserError;
-
-    htmlSAXInitialized = 1;
+	inithtmlDefaultSAXHandler(&htmlDefaultSAXHandler);
 }
+
 #endif /* LIBXML_HTML_ENABLED */
 
 #ifdef LIBXML_DOCB_ENABLED
-/*
- * Default handler for SGML DocBook, builds the DOM tree
- */
-xmlSAXHandler docbDefaultSAXHandler = {
-    internalSubset,
-    isStandalone,
-    hasInternalSubset,
-    hasExternalSubset,
-    resolveEntity,
-    getEntity,
-    entityDecl,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    setDocumentLocator,
-    startDocument,
-    endDocument,
-    startElement,
-    endElement,
-    reference,
-    characters,
-    ignorableWhitespace,
-    NULL,
-    comment,
-    xmlParserWarning,
-    xmlParserError,
-    xmlParserError,
-    getParameterEntity,
-    NULL,
-    NULL,
-};
+
+void
+initdocbDefaultSAXHandler(xmlSAXHandler *hdlr)
+{
+    if(hdlr->initialized == 1)
+	return;
+
+    hdlr->internalSubset = internalSubset;
+    hdlr->externalSubset = NULL;
+    hdlr->isStandalone = isStandalone;
+    hdlr->hasInternalSubset = hasInternalSubset;
+    hdlr->hasExternalSubset = hasExternalSubset;
+    hdlr->resolveEntity = resolveEntity;
+    hdlr->getEntity = getEntity;
+    hdlr->getParameterEntity = NULL;
+    hdlr->entityDecl = entityDecl;
+    hdlr->attributeDecl = NULL;
+    hdlr->elementDecl = NULL;
+    hdlr->notationDecl = NULL;
+    hdlr->unparsedEntityDecl = NULL;
+    hdlr->setDocumentLocator = setDocumentLocator;
+    hdlr->startDocument = startDocument;
+    hdlr->endDocument = endDocument;
+    hdlr->startElement = startElement;
+    hdlr->endElement = endElement;
+    hdlr->reference = reference;
+    hdlr->characters = characters;
+    hdlr->cdataBlock = NULL;
+    hdlr->ignorableWhitespace = ignorableWhitespace;
+    hdlr->processingInstruction = NULL;
+    hdlr->comment = comment;
+    hdlr->warning = xmlParserWarning;
+    hdlr->error = xmlParserError;
+    hdlr->fatalError = xmlParserError;
+
+    hdlr->initialized = 1;
+}
 
 /**
  * docbDefaultSAXHandlerInit:
@@ -1866,39 +1820,7 @@ xmlSAXHandler docbDefaultSAXHandler = {
 void
 docbDefaultSAXHandlerInit(void)
 {
-    static int docbSAXInitialized = 0;
-    if (docbSAXInitialized)
-	return;
-
-    docbDefaultSAXHandler.internalSubset = internalSubset;
-    docbDefaultSAXHandler.externalSubset = NULL;
-    docbDefaultSAXHandler.isStandalone = isStandalone;
-    docbDefaultSAXHandler.hasInternalSubset = hasInternalSubset;
-    docbDefaultSAXHandler.hasExternalSubset = hasExternalSubset;
-    docbDefaultSAXHandler.resolveEntity = resolveEntity;
-    docbDefaultSAXHandler.getEntity = getEntity;
-    docbDefaultSAXHandler.getParameterEntity = NULL;
-    docbDefaultSAXHandler.entityDecl = entityDecl;
-    docbDefaultSAXHandler.attributeDecl = NULL;
-    docbDefaultSAXHandler.elementDecl = NULL;
-    docbDefaultSAXHandler.notationDecl = NULL;
-    docbDefaultSAXHandler.unparsedEntityDecl = NULL;
-    docbDefaultSAXHandler.setDocumentLocator = setDocumentLocator;
-    docbDefaultSAXHandler.startDocument = startDocument;
-    docbDefaultSAXHandler.endDocument = endDocument;
-    docbDefaultSAXHandler.startElement = startElement;
-    docbDefaultSAXHandler.endElement = endElement;
-    docbDefaultSAXHandler.reference = reference;
-    docbDefaultSAXHandler.characters = characters;
-    docbDefaultSAXHandler.cdataBlock = NULL;
-    docbDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
-    docbDefaultSAXHandler.processingInstruction = NULL;
-    docbDefaultSAXHandler.comment = comment;
-    docbDefaultSAXHandler.warning = xmlParserWarning;
-    docbDefaultSAXHandler.error = xmlParserError;
-    docbDefaultSAXHandler.fatalError = xmlParserError;
-
-    docbSAXInitialized = 1;
+	initdocbDefaultSAXHandler(&docbDefaultSAXHandler);
 }
 
 #endif /* LIBXML_DOCB_ENABLED */

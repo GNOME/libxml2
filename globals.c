@@ -13,8 +13,7 @@
 
 #include "libxml.h"
 
-#include <libxml/threads.h>
-#include <libxml/globals.h>
+#include <libxml/xmlmemory.h>
 
 /*
  * Helpful Macro
@@ -38,10 +37,16 @@
  ************************************************************************/
 
 const char *xmlParserVersion = LIBXML_VERSION_STRING;
+
 /*
  * Memory allocation routines
  */
 #if defined(DEBUG_MEMORY_LOCATION) | defined(DEBUG_MEMORY)
+extern void xmlMemFree(void *ptr);
+extern void * xmlMemMalloc(size_t size);
+extern void * xmlMemRealloc(void *ptr,size_t size);
+extern char * xmlMemoryStrdup(const char *str);
+
 xmlFreeFunc xmlFree = (xmlFreeFunc) xmlMemFree;
 xmlMallocFunc xmlMalloc = (xmlMallocFunc) xmlMemMalloc;
 xmlReallocFunc xmlRealloc = (xmlReallocFunc) xmlMemRealloc;
@@ -53,6 +58,36 @@ xmlReallocFunc xmlRealloc = (xmlReallocFunc) realloc;
 xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) strdup;
 #endif
 
+#include <libxml/threads.h>
+#include <libxml/globals.h>
+#include <libxml/SAX.h>
+
+#undef	docbDefaultSAXHandler
+#undef	htmlDefaultSAXHandler
+#undef	oldXMLWDcompatibility
+#undef	xmlBufferAllocScheme
+#undef	xmlDefaultBufferSize
+#undef	xmlDefaultSAXHandler
+#undef	xmlDefaultSAXLocator
+#undef	xmlDoValidityCheckingDefaultValue
+#undef	xmlGenericError
+#undef	xmlGenericErrorContext
+#undef	xmlGetWarningsDefaultValue
+#undef	xmlIndentTreeOutput
+#undef	xmlKeepBlanksDefaultValue
+#undef	xmlLineNumbersDefaultValue
+#undef	xmlLoadExtDtdDefaultValue
+#undef	xmlParserDebugEntities
+#undef	xmlParserVersion
+#undef	xmlPedanticParserDefaultValue
+#undef	xmlSaveNoEmptyTags
+#undef	xmlSubstituteEntitiesDefaultValue
+
+#undef	xmlFree
+#undef	xmlMalloc
+#undef	xmlMemStrdup
+#undef	xmlRealloc
+
 /*
  * Buffers stuff
  */
@@ -62,6 +97,7 @@ int xmlDefaultBufferSize = BASE_BUFFER_SIZE;
 /*
  * Parser defaults
  */
+
 int oldXMLWDcompatibility = 0; /* DEPRECATED */
 int xmlParserDebugEntities = 0;
 int xmlDoValidityCheckingDefaultValue = 0;
@@ -264,7 +300,7 @@ __docbDefaultSAXHandler(void) {
     if (IS_MAIN_THREAD)
 	return (&docbDefaultSAXHandler);
     else
-	return (&get_glob_struct()->docbDefaultSAXHandler);
+	return (&xmlGetGlobalState()->docbDefaultSAXHandler);
 }
 
 extern xmlSAXHandler htmlDefaultSAXHandler;
@@ -274,7 +310,7 @@ __htmlDefaultSAXHandler(void) {
     if (IS_MAIN_THREAD)
 	return (&htmlDefaultSAXHandler);
     else
-	return (&get_glob_struct()->htmlDefaultSAXHandler);
+	return (&xmlGetGlobalState()->htmlDefaultSAXHandler);
 }
 
 extern int oldXMLWDcompatibility;
@@ -284,7 +320,7 @@ __oldXMLWDcompatibility(void) {
     if (IS_MAIN_THREAD)
 	return (&oldXMLWDcompatibility);
     else
-	return (&get_glob_struct()->oldXMLWDcompatibility);
+	return (&xmlGetGlobalState()->oldXMLWDcompatibility);
 }
 
 extern xmlBufferAllocationScheme xmlBufferAllocScheme;
@@ -294,7 +330,7 @@ __xmlBufferAllocScheme(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlBufferAllocScheme);
     else
-	return (&get_glob_struct()->xmlBufferAllocScheme);
+	return (&xmlGetGlobalState()->xmlBufferAllocScheme);
 }
 
 extern int xmlDefaultBufferSize;
@@ -304,7 +340,7 @@ __xmlDefaultBufferSize(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlDefaultBufferSize);
     else
-	return (&get_glob_struct()->xmlDefaultBufferSize);
+	return (&xmlGetGlobalState()->xmlDefaultBufferSize);
 }
 
 extern xmlSAXHandler xmlDefaultSAXHandler;
@@ -314,7 +350,7 @@ __xmlDefaultSAXHandler(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlDefaultSAXHandler);
     else
-	return (&get_glob_struct()->xmlDefaultSAXHandler);
+	return (&xmlGetGlobalState()->xmlDefaultSAXHandler);
 }
 
 extern xmlSAXLocator xmlDefaultSAXLocator;
@@ -324,7 +360,7 @@ __xmlDefaultSAXLocator(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlDefaultSAXLocator);
     else
-	return (&get_glob_struct()->xmlDefaultSAXLocator);
+	return (&xmlGetGlobalState()->xmlDefaultSAXLocator);
 }
 
 extern int xmlDoValidityCheckingDefaultValue;
@@ -334,7 +370,7 @@ __xmlDoValidityCheckingDefaultValue(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlDoValidityCheckingDefaultValue);
     else
-	return (&get_glob_struct()->xmlDoValidityCheckingDefaultValue);
+	return (&xmlGetGlobalState()->xmlDoValidityCheckingDefaultValue);
 }
 
 extern xmlFreeFunc xmlFree;
@@ -344,7 +380,7 @@ __xmlFree(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlFree);
     else
-	return (&get_glob_struct()->xmlFree);
+	return (&xmlGetGlobalState()->xmlFree);
 }
 
 extern xmlGenericErrorFunc xmlGenericError;
@@ -354,7 +390,7 @@ __xmlGenericError(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlGenericError);
     else
-	return (&get_glob_struct()->xmlGenericError);
+	return (&xmlGetGlobalState()->xmlGenericError);
 }
 
 extern void * xmlGenericErrorContext;
@@ -364,7 +400,7 @@ __xmlGenericErrorContext(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlGenericErrorContext);
     else
-	return (&get_glob_struct()->xmlGenericErrorContext);
+	return (&xmlGetGlobalState()->xmlGenericErrorContext);
 }
 
 extern int xmlGetWarningsDefaultValue;
@@ -374,7 +410,7 @@ __xmlGetWarningsDefaultValue(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlGetWarningsDefaultValue);
     else
-	return (&get_glob_struct()->xmlGetWarningsDefaultValue);
+	return (&xmlGetGlobalState()->xmlGetWarningsDefaultValue);
 }
 
 extern int xmlIndentTreeOutput;
@@ -384,7 +420,7 @@ __xmlIndentTreeOutput(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlIndentTreeOutput);
     else
-	return (&get_glob_struct()->xmlIndentTreeOutput);
+	return (&xmlGetGlobalState()->xmlIndentTreeOutput);
 }
 
 extern int xmlKeepBlanksDefaultValue;
@@ -394,7 +430,7 @@ __xmlKeepBlanksDefaultValue(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlKeepBlanksDefaultValue);
     else
-	return (&get_glob_struct()->xmlKeepBlanksDefaultValue);
+	return (&xmlGetGlobalState()->xmlKeepBlanksDefaultValue);
 }
 
 extern int xmlLineNumbersDefaultValue;
@@ -404,7 +440,7 @@ __xmlLineNumbersDefaultValue(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlLineNumbersDefaultValue);
     else
-	return (&get_glob_struct()->xmlLineNumbersDefaultValue);
+	return (&xmlGetGlobalState()->xmlLineNumbersDefaultValue);
 }
 
 extern int xmlLoadExtDtdDefaultValue;
@@ -414,7 +450,7 @@ __xmlLoadExtDtdDefaultValue(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlLoadExtDtdDefaultValue);
     else
-	return (&get_glob_struct()->xmlLoadExtDtdDefaultValue);
+	return (&xmlGetGlobalState()->xmlLoadExtDtdDefaultValue);
 }
 
 extern xmlMallocFunc xmlMalloc;
@@ -424,7 +460,7 @@ __xmlMalloc(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlMalloc);
     else
-	return (&get_glob_struct()->xmlMalloc);
+	return (&xmlGetGlobalState()->xmlMalloc);
 }
 
 extern xmlStrdupFunc xmlMemStrdup;
@@ -434,7 +470,7 @@ __xmlMemStrdup(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlMemStrdup);
     else
-	return (&get_glob_struct()->xmlMemStrdup);
+	return (&xmlGetGlobalState()->xmlMemStrdup);
 }
 
 extern int xmlParserDebugEntities;
@@ -444,7 +480,7 @@ __xmlParserDebugEntities(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlParserDebugEntities);
     else
-	return (&get_glob_struct()->xmlParserDebugEntities);
+	return (&xmlGetGlobalState()->xmlParserDebugEntities);
 }
 
 extern const char * xmlParserVersion;
@@ -454,7 +490,7 @@ __xmlParserVersion(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlParserVersion);
     else
-	return (&get_glob_struct()->xmlParserVersion);
+	return (&xmlGetGlobalState()->xmlParserVersion);
 }
 
 extern int xmlPedanticParserDefaultValue;
@@ -464,7 +500,7 @@ __xmlPedanticParserDefaultValue(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlPedanticParserDefaultValue);
     else
-	return (&get_glob_struct()->xmlPedanticParserDefaultValue);
+	return (&xmlGetGlobalState()->xmlPedanticParserDefaultValue);
 }
 
 extern xmlReallocFunc xmlRealloc;
@@ -474,7 +510,7 @@ __xmlRealloc(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlRealloc);
     else
-	return (&get_glob_struct()->xmlRealloc);
+	return (&xmlGetGlobalState()->xmlRealloc);
 }
 
 extern int xmlSaveNoEmptyTags;
@@ -484,7 +520,7 @@ __xmlSaveNoEmptyTags(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlSaveNoEmptyTags);
     else
-	return (&get_glob_struct()->xmlSaveNoEmptyTags);
+	return (&xmlGetGlobalState()->xmlSaveNoEmptyTags);
 }
 
 extern int xmlSubstituteEntitiesDefaultValue;
@@ -494,5 +530,5 @@ __xmlSubstituteEntitiesDefaultValue(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlSubstituteEntitiesDefaultValue);
     else
-	return (&get_glob_struct()->xmlSubstituteEntitiesDefaultValue);
+	return (&xmlGetGlobalState()->xmlSubstituteEntitiesDefaultValue);
 }

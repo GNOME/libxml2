@@ -7,5 +7,5 @@ INCLUDES =					\
 	-I$(top_builddir)/include		\
 	-I$(top_srcdir)/include -I@srcdir@
 
-LDADD = $(top_builddir)/libxml2.la @Z_LIBS@ $(ICONV_LIBS) -lm
+LDADD = $(top_builddir)/libxml2.la @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) -lm
 

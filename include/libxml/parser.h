@@ -13,7 +13,9 @@
 #include <libxml/valid.h>
 #include <libxml/xmlIO.h>
 #include <libxml/entities.h>
-
+#if defined(_REENTRANT) || (_POSIX_C_SOURCE - 0 >= 199506L)
+#include <pthread.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -319,6 +321,7 @@ struct _xmlSAXHandler {
     getParameterEntitySAXFunc getParameterEntity;
     cdataBlockSAXFunc cdataBlock;
     externalSubsetSAXFunc externalSubset;
+    int initialized;
 };
 
 /**
@@ -571,6 +574,12 @@ xmlParserInputPtr
 		xmlLoadExternalEntity	(const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr context);
+#include <libxml/globals.h>
+/*
+ * Parser Locking
+ */
+int	xmlLockContext(xmlParserCtxtPtr ctxt);
+int	xmlUnlockContext(xmlParserCtxtPtr ctxt);
 
 #ifdef __cplusplus
 }

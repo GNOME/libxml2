@@ -111,6 +111,14 @@ void		cdataBlock			(void *ctx,
 						 const xmlChar *value,
 						 int len);
 
+void		initxmlDefaultSAXHandler	(xmlSAXHandler *hdlr,
+						 int warning);
+#ifdef LIBXML_HTML_ENABLED
+void		inithtmlDefaultSAXHandler	(xmlSAXHandler *hdlr);
+#endif
+#ifdef LIBXML_DOCB_ENABLED
+void		initdocbDefaultSAXHandler	(xmlSAXHandler *hdlr);
+#endif
 void		xmlDefaultSAXHandlerInit	(void);
 void		htmlDefaultSAXHandlerInit	(void);
 void		docbDefaultSAXHandlerInit	(void);

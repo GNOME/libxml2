@@ -69,9 +69,14 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
     va_end(args);
 }
 
-xmlGenericErrorFunc xmlGenericError = xmlGenericErrorDefaultFunc;
-void *xmlGenericErrorContext = NULL;
-
+void
+initGenericErrorDefaultFunc(xmlGenericErrorFunc *handler)
+{
+	if (handler == NULL)
+		xmlGenericError = xmlGenericErrorDefaultFunc;
+	else
+		(*handler) = xmlGenericErrorDefaultFunc;
+}
 
 /**
  * xmlSetGenericErrorFunc:

@@ -26,6 +26,7 @@
 
 
 #include <libxml/xmlmemory.h>
+#include <libxml/globals.h>
 #include <libxml/xmlerror.h>
 
 void xmlMallocBreakpoint(void);
@@ -656,18 +657,6 @@ xmlMemoryDump(void)
  *		Initialization Routines				*
  *								*
  ****************************************************************/
-
-#if defined(DEBUG_MEMORY_LOCATION) | defined(DEBUG_MEMORY)
-xmlFreeFunc xmlFree = (xmlFreeFunc) xmlMemFree;
-xmlMallocFunc xmlMalloc = (xmlMallocFunc) xmlMemMalloc;
-xmlReallocFunc xmlRealloc = (xmlReallocFunc) xmlMemRealloc;
-xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlMemoryStrdup;
-#else
-xmlFreeFunc xmlFree = (xmlFreeFunc) free;
-xmlMallocFunc xmlMalloc = (xmlMallocFunc) malloc;
-xmlReallocFunc xmlRealloc = (xmlReallocFunc) realloc;
-xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) strdup;
-#endif
 
 /**
  * xmlInitMemory:

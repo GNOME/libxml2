@@ -1144,20 +1144,41 @@ xmlFAReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int fromnr,
 	     * Don't remove counted transitions
 	     * Don't loop either
 	     */
-	    if ((to->trans[transnr].count < 0) &&
-	        (to->trans[transnr].to != fromnr)) {
+	    if (to->trans[transnr].to != fromnr) {
+		if (to->trans[transnr].count >= 0) {
+		    int newto = to->trans[transnr].to;
+
+		    xmlRegStateAddTrans(ctxt, from, NULL,
+					ctxt->states[newto], 
+					-1, to->trans[transnr].count);
+		} else {
 #ifdef DEBUG_REGEXP_GRAPH
-		printf("Found epsilon trans %d from %d to %d\n",
-		       transnr, tonr, to->trans[transnr].to);
+		    printf("Found epsilon trans %d from %d to %d\n",
+			   transnr, tonr, to->trans[transnr].to);
 #endif
-		xmlFAReduceEpsilonTransitions(ctxt, fromnr,
-				      to->trans[transnr].to, counter);
+		    if (to->trans[transnr].counter >= 0) {
+			xmlFAReduceEpsilonTransitions(ctxt, fromnr,
+					      to->trans[transnr].to,
+					      to->trans[transnr].counter);
+		    } else {
+			xmlFAReduceEpsilonTransitions(ctxt, fromnr,
+					      to->trans[transnr].to,
+					      counter);
+		    }
+		}
 	    }
 	} else {
 	    int newto = to->trans[transnr].to;
 
-	    xmlRegStateAddTrans(ctxt, from, to->trans[transnr].atom, 
-		                ctxt->states[newto], counter, -1);
+	    if (to->trans[transnr].counter >= 0) {
+		xmlRegStateAddTrans(ctxt, from, to->trans[transnr].atom, 
+				    ctxt->states[newto], 
+				    to->trans[transnr].counter, -1);
+	    } else {
+		xmlRegStateAddTrans(ctxt, from, to->trans[transnr].atom, 
+				    ctxt->states[newto], counter, -1);
+	    }
+
 	}
     }
     to->mark = XML_REGEXP_MARK_NORMAL;
@@ -1966,7 +1987,7 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	 * still have epsilon like transition for counted transitions
 	 * on counters, in that case don't break too early.
 	 */
-	if (value == NULL)
+	if ((value == NULL) && (exec->counts == NULL))
 	    goto rollback;
 
 	exec->transcount = 0;
@@ -2612,7 +2633,7 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
     } else if ((cur == 's') || (cur == 'S') || (cur == 'i') || (cur == 'I') ||
 	(cur == 'c') || (cur == 'C') || (cur == 'd') || (cur == 'D') ||
 	(cur == 'w') || (cur == 'W')) {
-	xmlRegAtomType type;
+	xmlRegAtomType type = XML_REGEXP_ANYSPACE;
 
 	switch (cur) {
 	    case 's': 
@@ -3444,9 +3465,78 @@ xmlAutomataNewEpsilon(xmlAutomataPtr am, xmlAutomataStatePtr from,
     return(to);
 }
 
-#if 0
-int			xmlAutomataNewCounter	(xmlAutomataPtr am);
-#endif
+/**
+ * xmlAutomataNewCounter:
+ * @am: an automata
+ * @min:  the minimal value on the counter
+ * @max:  the maximal value on the counter
+ *
+ * Create a new counter
+ *
+ * Returns the counter number or -1 in case of error
+ */
+int		
+xmlAutomataNewCounter(xmlAutomataPtr am, int min, int max) {
+    int ret;
+
+    if (am == NULL)
+	return(-1);
+
+    ret = xmlRegGetCounter(am);
+    if (ret < 0)
+	return(-1);
+    am->counters[ret].min = min;
+    am->counters[ret].max = max;
+    return(ret);
+}
+
+/**
+ * xmlAutomataNewCountedTrans:
+ * @am: an automata
+ * @from: the starting point of the transition
+ * @to: the target point of the transition or NULL
+ * @counter: the counter associated to that transition
+ *
+ * If @to is NULL, this create first a new target state in the automata
+ * and then adds an epsilon transition from the @from state to the target state
+ * which will increment the counter provided
+ *
+ * Returns the target state or NULL in case of error
+ */
+xmlAutomataStatePtr
+xmlAutomataNewCountedTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
+		xmlAutomataStatePtr to, int counter) {
+    if ((am == NULL) || (from == NULL) || (counter < 0))
+	return(NULL);
+    xmlFAGenerateCountedEpsilonTransition(am, from, to, counter);
+    if (to == NULL)
+	return(am->state);
+    return(to);
+}
+
+/**
+ * xmlAutomataNewCounterTrans:
+ * @am: an automata
+ * @from: the starting point of the transition
+ * @to: the target point of the transition or NULL
+ * @counter: the counter associated to that transition
+ *
+ * If @to is NULL, this create first a new target state in the automata
+ * and then adds an epsilon transition from the @from state to the target state
+ * which will be allowed only if the counter is within the right range.
+ *
+ * Returns the target state or NULL in case of error
+ */
+xmlAutomataStatePtr
+xmlAutomataNewCounterTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
+		xmlAutomataStatePtr to, int counter) {
+    if ((am == NULL) || (from == NULL) || (counter < 0))
+	return(NULL);
+    xmlFAGenerateCountedTransition(am, from, to, counter);
+    if (to == NULL)
+	return(am->state);
+    return(to);
+}
 
 /**
  * xmlAutomataCompile:

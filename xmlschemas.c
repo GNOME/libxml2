@@ -2995,12 +2995,43 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 	     * iterate over the subtypes and remerge the end with an
 	     * epsilon transition
 	     */
-	    subtypes = type->subtypes;
-	    while (subtypes != NULL) {
-		ctxt->state = start;
-		xmlSchemaBuildAContentModel(subtypes, ctxt, name);
-		xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
-		subtypes = subtypes->next;
+	    if (type->maxOccurs == 1) {
+		subtypes = type->subtypes;
+		while (subtypes != NULL) {
+		    ctxt->state = start;
+		    xmlSchemaBuildAContentModel(subtypes, ctxt, name);
+		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
+		    subtypes = subtypes->next;
+		}
+	    } else {
+		int counter;
+		xmlAutomataStatePtr hop;
+
+		/*
+		 * use a counter to keep track of the number of transtions
+		 * which went through the choice.
+		 */
+		if (type->minOccurs < 1) {
+		    counter = xmlAutomataNewCounter(ctxt->am, 0,
+			                            type->maxOccurs - 1);
+		} else {
+		    counter = xmlAutomataNewCounter(ctxt->am,
+			    type->minOccurs - 1, type->maxOccurs - 1);
+		}
+		hop = xmlAutomataNewState(ctxt->am);
+
+		subtypes = type->subtypes;
+		while (subtypes != NULL) {
+		    ctxt->state = start;
+		    xmlSchemaBuildAContentModel(subtypes, ctxt, name);
+		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, hop);
+		    subtypes = subtypes->next;
+		}
+		xmlAutomataNewCountedTrans(ctxt->am, hop, start, counter);
+		xmlAutomataNewCounterTrans(ctxt->am, hop, end, counter);
+	    }
+	    if (type->minOccurs == 0) {
+		xmlAutomataNewEpsilon(ctxt->am, start, end);
 	    }
 	    ctxt->state = end;
 	    break;

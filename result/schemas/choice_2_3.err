@@ -1,0 +1,41 @@
+Type of choice 3 : ./test/schemas/choice_2.xsd:6 :elements
+Type of sequence 2 : ./test/schemas/choice_2.xsd:5 :elements
+Type of anontype1 : ./test/schemas/choice_2.xsd:4 :elements
+Type of sequence 2 : ./test/schemas/choice_2.xsd:5 :elements
+Building content model for doc
+Content model of doc:
+ regexp: '(null)' 
+2 atoms:
+ 00  atom: string once 'a' 
+ 01  atom: string once 'b' 
+5 states:
+ state: 0, 2 transitions:
+  trans: atom 0, to 3
+  trans: atom 1, to 4
+ state: FINAL 1, 0 transitions:
+ state: 2, 4 transitions:
+  trans: removed
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+ state: 3, 6 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+ state: 4, 6 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+1 counters:
+ 0: min 0 max 2
+Building content model for a
+Building content model for b
+xmlSchemaValidateCallback: a, a, a
+xmlSchemaValidateCallback: a, a, a
+Element doc content check succeeded

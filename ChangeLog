@@ -1,3 +1,9 @@
+Wed Apr 17 18:26:07 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c xmlschemas.c include/libxml/xmlautomata.h: more work
+	  on the automata interfaces and debug of counted choices
+	* test/schemas/* result/schemas/*: added a number of tests
+
 Wed Apr 17 11:03:03 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c xmlschemastypes.c include/libxml/xmlschemas.h:

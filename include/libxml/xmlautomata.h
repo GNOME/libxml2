@@ -63,7 +63,17 @@ xmlAutomataStatePtr	xmlAutomataNewCountTrans(xmlAutomataPtr am,
 xmlAutomataStatePtr	xmlAutomataNewEpsilon	(xmlAutomataPtr am,
 						 xmlAutomataStatePtr from,
 						 xmlAutomataStatePtr to);
-int			xmlAutomataNewCounter	(xmlAutomataPtr am);
+xmlAutomataStatePtr	xmlAutomataNewCountedTrans(xmlAutomataPtr am,
+						 xmlAutomataStatePtr from,
+						 xmlAutomataStatePtr to,
+						 int counter);
+xmlAutomataStatePtr	xmlAutomataNewCounterTrans(xmlAutomataPtr am,
+						 xmlAutomataStatePtr from,
+						 xmlAutomataStatePtr to,
+						 int counter);
+int			xmlAutomataNewCounter	(xmlAutomataPtr am,
+						 int min,
+						 int max);
 
 xmlRegexpPtr		xmlAutomataCompile	(xmlAutomataPtr am);
 

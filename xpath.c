@@ -53,6 +53,10 @@
 #include <libxml/threads.h>
 #include <libxml/globals.h>
 
+/*
+ * TODO: when compatibility allows remove all "fake node libxslt" strings
+ *       the test should just be name[0] = ' '
+ */
 /* #define DEBUG */
 /* #define DEBUG_STEP */
 /* #define DEBUG_STEP_NTH */
@@ -1676,6 +1680,9 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
 
     if (val == NULL) return;
 
+    if ((val->type == XML_ELEMENT_NODE) && (val->name[0] == ' '))
+	return;	/* an XSLT fake node */
+
     /* @@ with_ns to check wether namespace nodes should be looked at @@ */
     /*
      * check against doublons
@@ -1730,6 +1737,9 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
 void
 xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
     if (val == NULL) return;
+
+    if ((val->type == XML_ELEMENT_NODE) && (val->name[0] == ' '))
+	return;	/* an XSLT fake node */
 
     /* @@ with_ns to check wether namespace nodes should be looked at @@ */
     /*
@@ -5269,8 +5279,9 @@ xmlXPathNextParent(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 		if (ctxt->context->node->parent == NULL)
 		    return((xmlNodePtr) ctxt->context->doc);
 		if ((ctxt->context->node->parent->type == XML_ELEMENT_NODE) &&
-		    (xmlStrEqual(ctxt->context->node->parent->name,
-				 BAD_CAST "fake node libxslt")))
+		    ((ctxt->context->node->parent->name[0] == ' ') ||
+		     (xmlStrEqual(ctxt->context->node->parent->name,
+				 BAD_CAST "fake node libxslt"))))
 		    return(NULL);
 		return(ctxt->context->node->parent);
             case XML_ATTRIBUTE_NODE: {
@@ -5340,8 +5351,9 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 		if (ctxt->context->node->parent == NULL)
 		    return((xmlNodePtr) ctxt->context->doc);
 		if ((ctxt->context->node->parent->type == XML_ELEMENT_NODE) &&
-		    (xmlStrEqual(ctxt->context->node->parent->name,
-				 BAD_CAST "fake node libxslt")))
+		    ((ctxt->context->node->parent->name[0] == ' ') ||
+		     (xmlStrEqual(ctxt->context->node->parent->name,
+				 BAD_CAST "fake node libxslt"))))
 		    return(NULL);
 		return(ctxt->context->node->parent);
             case XML_ATTRIBUTE_NODE: {
@@ -5391,7 +5403,9 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    if (cur->parent == NULL)
 		return(NULL);
 	    if ((cur->parent->type == XML_ELEMENT_NODE) &&
-		(xmlStrEqual(cur->parent->name, BAD_CAST "fake node libxslt")))
+		((cur->parent->name[0] == ' ') ||
+		 (xmlStrEqual(cur->parent->name,
+			      BAD_CAST "fake node libxslt"))))
 		return(NULL);
 	    return(cur->parent);
 	case XML_ATTRIBUTE_NODE: {
@@ -5959,7 +5973,10 @@ xmlXPathLocalNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	case XML_ELEMENT_NODE:
 	case XML_ATTRIBUTE_NODE:
 	case XML_PI_NODE:
-	    valuePush(ctxt,
+	    if (cur->nodesetval->nodeTab[i]->name[0] == ' ')
+		valuePush(ctxt, xmlXPathNewCString(""));
+	    else
+		valuePush(ctxt,
 		      xmlXPathNewString(cur->nodesetval->nodeTab[i]->name));
 	    break;
 	case XML_NAMESPACE_DECL:
@@ -6069,13 +6086,15 @@ xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs)
         switch (cur->nodesetval->nodeTab[i]->type) {
             case XML_ELEMENT_NODE:
             case XML_ATTRIBUTE_NODE:
-                if ((cur->nodesetval->nodeTab[i]->ns == NULL) ||
-                    (cur->nodesetval->nodeTab[i]->ns->prefix == NULL))
+		if (cur->nodesetval->nodeTab[i]->name[0] == ' ')
+		    valuePush(ctxt, xmlXPathNewCString(""));
+		else if ((cur->nodesetval->nodeTab[i]->ns == NULL) ||
+                         (cur->nodesetval->nodeTab[i]->ns->prefix == NULL)) {
                     valuePush(ctxt,
                               xmlXPathNewString(cur->nodesetval->
                                                 nodeTab[i]->name));
 
-                else {
+		} else {
                     char name[2000];
 
                     snprintf(name, sizeof(name), "%s:%s",

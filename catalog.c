@@ -1705,7 +1705,8 @@ xmlCatalogXMLResolveURI(xmlCatalogEntryPtr catal, const xmlChar *URI) {
 	 */
 	cur = catal;
 	while (cur != NULL) {
-	    if ((cur->type == XML_CATA_DELEGATE_SYSTEM) &&
+	    if (((cur->type == XML_CATA_DELEGATE_SYSTEM) ||
+	         (cur->type == XML_CATA_DELEGATE_URI)) &&
 		(!xmlStrncmp(URI, cur->name, xmlStrlen(cur->name)))) {
 		for (i = 0;i < nbList;i++)
 		    if (xmlStrEqual(cur->URL, delegates[i]))

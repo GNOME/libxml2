@@ -1,3 +1,8 @@
+Tue Feb  4 20:26:22 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: fixed bug #104817 with delegateURI
+	* xpath.c: fixing bugs #104123 and #104125
+
 Tue Feb  4 17:12:56 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in valid.c xmlreader.c python/libxml_wrap.h 

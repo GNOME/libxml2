@@ -1,3 +1,7 @@
+Thu Dec 13 21:24:16 MST 2001 John Fleck <jfleck@inkstain.net>
+
+	*doc/xmllint.xml, xmllint.1 - document --dropdtd
+	
 Thu Dec 13 23:19:50 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fix the xmlStrdup() used in the previous patch.

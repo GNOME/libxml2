@@ -73,6 +73,7 @@
 	<arg>--xinclude</arg>
 	<arg>--loaddtd</arg>
 	<arg>--dtdattr</arg>
+	<arg>--dropdtd</arg>
       </group>
       <arg><option><replaceable>xmlfile</replaceable></option></arg>
   </cmdsynopsis>
@@ -403,7 +404,14 @@
 	  </simpara>
 	</listitem>
       </varlistentry>
-
+      <varlistentry>
+	<term><option>--dropdtd</option></term>
+	<listitem>
+	  <simpara>
+	    Remove <acronym>DTD</acronym> from output.
+	  </simpara>
+	</listitem>
+      </varlistentry>
     </variablelist>
   </refsect1>
 
@@ -546,7 +554,7 @@
 	  </simpara>
 	</listitem>
       </varlistentry>
-      
+     
     </variablelist>
   </refsect1>
 </refentry>

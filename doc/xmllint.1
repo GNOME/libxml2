@@ -21,7 +21,7 @@
 .SH NAME
 xmllint \- command line XML tool
 .SH "SYNOPSIS"
-\fBxmllint\fR [\fB--version\fR | \fB--debug\fR | \fB--shell\fR | \fB--debugent\fR | \fB--copy\fR | \fB--recover\fR | \fB--noent\fR | \fB--noout\fR | \fB--htmlout\fR | \fB--nowrap\fR | \fB--valid\fR | \fB--postvalid\fR | \fB--dtdvalid  \fIURL\fR \fR | \fB--timing\fR | \fB--repeat\fR | \fB--insert\fR | \fB--compress\fR | \fB--sgml\fR | \fB--html\fR | \fB--push\fR | \fB--memory\fR | \fB--nowarning\fR | \fB--noblanks\fR | \fB--format\fR | \fB--testIO\fR | \fB--encode  \fIencoding\fR \fR | \fB--catalogs\fR | \fB--nocatalogs\fR | \fB--auto\fR | \fB--xinclude\fR | \fB--loaddtd\fR | \fB--dtdattr\fR] [\fB\fIxmlfile\fR\fR]
+\fBxmllint\fR [\fB--version\fR | \fB--debug\fR | \fB--shell\fR | \fB--debugent\fR | \fB--copy\fR | \fB--recover\fR | \fB--noent\fR | \fB--noout\fR | \fB--htmlout\fR | \fB--nowrap\fR | \fB--valid\fR | \fB--postvalid\fR | \fB--dtdvalid  \fIURL\fR \fR | \fB--timing\fR | \fB--repeat\fR | \fB--insert\fR | \fB--compress\fR | \fB--sgml\fR | \fB--html\fR | \fB--push\fR | \fB--memory\fR | \fB--nowarning\fR | \fB--noblanks\fR | \fB--format\fR | \fB--testIO\fR | \fB--encode  \fIencoding\fR \fR | \fB--catalogs\fR | \fB--nocatalogs\fR | \fB--auto\fR | \fB--xinclude\fR | \fB--loaddtd\fR | \fB--dtdattr\fR | \fB--dropdtd\fR] [\fB\fIxmlfile\fR\fR]
 .SH "INTRODUCTION"
 
 .PP
@@ -191,6 +191,11 @@ Fetch external DTD.
 \fB--dtdattr\fR
 
 Fetch external DTD and populate the tree with inherited attributes.
+
+.TP
+\fB--dropdtd\fR
+
+Remove DTD from output.
 
 .SH "SHELL"
 

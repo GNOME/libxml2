@@ -1,3 +1,8 @@
+Sat Sep  4 22:48:05 CEST 1999 Timur Bakeyev <mc@bat.ru>
+
+	* doc/Makefile.am: replaced "install -d " with "mkinstalldirs" -
+	not all invocations of install understand -d.
+
 Sat Sep  4 22:20:07 CEST 1999 Timur Bakeyev <mc@bat.ru>
 
 	* Makefile.am: prepend all the test* calls with $(top_builddir) -

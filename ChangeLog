@@ -1,3 +1,8 @@
+Mon Feb 11 14:53:24 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/xmlcatalog_man.xml: trying to close Red Hat bug #58707
+	  https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=58707
+
 Mon Feb 11 09:53:02 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/encoding.h include/libxml/entities.h

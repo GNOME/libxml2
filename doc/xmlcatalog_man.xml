@@ -138,6 +138,14 @@ FIXME - Is my list of possible types correct? Are SGML types the same?
 	</listitem>
       </varlistentry>
       <varlistentry>
+	<term><option>--sgml</option></term>
+	<listitem>
+	  <simpara>
+	    Uses SGML Super catalogs for --add and --del options
+	  </simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
 	<term><option>-v</option> or <option>--verbose</option></term>
 	<listitem>
 	  <simpara>

@@ -7370,7 +7370,8 @@ xmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDtdPtr dtd, const char *encoding) {
 	xmlBufferWriteQuotedString(buf->buffer, dtd->SystemID);
     }
     if ((dtd->entities == NULL) && (dtd->elements == NULL) &&
-        (dtd->attributes == NULL) && (dtd->notations == NULL)) {
+            (dtd->attributes == NULL) && (dtd->notations == NULL) &&
+	    (dtd->pentities == NULL)) {
 	xmlOutputBufferWriteString(buf, ">");
 	return;
     }

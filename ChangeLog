@@ -1,3 +1,8 @@
+Tue May 11 09:06:53 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/tests/tstLastError.py: better portability fix for f(*args),
+	  use apply(f, args) as Stephane Bidoul suggested
+
 Mon May 10 15:49:22 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlregexp.c: enhanced xmlRegStateAddTrans to check if transition

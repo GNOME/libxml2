@@ -27,7 +27,8 @@ xmlinc_HEADERS = \
 		libxml/valid.h \
 		libxml/xlink.h \
 		libxml/xmlversion.h \
-		libxml/DOCBparser.h
+		libxml/DOCBparser.h \
+		libxml/catalog.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir) $(DESTDIR)$(xmlincdir)/libxml

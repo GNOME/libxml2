@@ -62,6 +62,15 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /*
+ * Whether the Catalog support is configured in
+ */
+#if @WITH_CATALOG@
+#define LIBXML_CATALOG_ENABLED
+#else
+#define LIBXML_CATALOG_DISABLED
+#endif
+
+/*
  * Whether the SGML Docbook support is configured in
  */
 #if @WITH_DOCB@

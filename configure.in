@@ -301,6 +301,18 @@ fi
 AC_SUBST(WITH_HTML)
 AC_SUBST(HTML_OBJ)
 
+AC_ARG_WITH(catalog, [  --with-catalog          Add the Catalog support (on)])
+if test "$with_catalog" = "no" ; then
+    echo Disabling Catalog support
+    WITH_CATALOG=0
+    CATALOG_OBJ=
+else    
+    WITH_CATALOG=1
+    CATALOG_OBJ="catalog.o"
+fi
+AC_SUBST(WITH_CATALOG)
+AC_SUBST(CATALOG_OBJ)
+
 AC_ARG_WITH(docbook, [  --with-docbook         Add Docbook SGML support (on)])
 if test "$with_docbook" = "no" ; then
     echo Disabling Docbook support

@@ -1,3 +1,11 @@
+Thu May 10 16:14:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am xmlversion.h.in configure.in include/Makefile.am:
+	  integrating catalogs
+	* catalog.[ch] testCatalog.c: adding a small catalo API
+	  (only SGML catalog support).
+	* parser.c: restaured xmlKeepBlanksDefault(0) API
+
 Wed May  9 12:50:15 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: zb@bisp.com reported an error in xmlNodeGetLang()

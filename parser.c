@@ -2495,11 +2495,18 @@ get_more:
 	    }
 	    nbchar = in - ctxt->input->cur;
 	    if (nbchar > 0) {
-		if (IS_BLANK(*ctxt->input->cur) &&
-		    areBlanks(ctxt, ctxt->input->cur, nbchar)) {
-		    if (ctxt->sax->ignorableWhitespace != NULL)
-			ctxt->sax->ignorableWhitespace(ctxt->userData,
-					       ctxt->input->cur, nbchar);
+		if (IS_BLANK(*ctxt->input->cur)) {
+		    const xmlChar *tmp = ctxt->input->cur;
+		    ctxt->input->cur = in;
+		    if (areBlanks(ctxt, tmp, nbchar)) {
+			if (ctxt->sax->ignorableWhitespace != NULL)
+			    ctxt->sax->ignorableWhitespace(ctxt->userData,
+						   tmp, nbchar);
+		    } else {
+			if (ctxt->sax->characters != NULL)
+			    ctxt->sax->characters(ctxt->userData,
+						  tmp, nbchar);
+		    }
 		} else {
 		    if (ctxt->sax->characters != NULL)
 			ctxt->sax->characters(ctxt->userData,

@@ -4,7 +4,7 @@ SUBDIRS = . include doc example
 
 INCLUDES = -I@srcdir@/include -I./include @Z_CFLAGS@ @CORBA_CFLAGS@ 
 
-noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook
+noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook testCatalog
 
 bin_PROGRAMS = xmllint
 
@@ -20,13 +20,14 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		strio.c trio.c
+		catalog.c strio.c trio.c
 
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
-		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c
+		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
+		catalog.c
 
 endif
 
@@ -57,6 +58,11 @@ testDocbook_SOURCES=testDocbook.c
 testDocbook_LDFLAGS = 
 testDocbook_DEPENDENCIES = $(DEPS)
 testDocbook_LDADD= $(LDADDS)
+
+testCatalog_SOURCES=testCatalog.c
+testCatalog_LDFLAGS = 
+testCatalog_DEPENDENCIES = $(DEPS)
+testCatalog_LDADD= $(LDADDS)
 
 testXPath_SOURCES=testXPath.c
 testXPath_LDFLAGS = 

@@ -3324,8 +3324,8 @@ xmlXPathSubstringAfterFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * xmlXPathNormalizeFunction:
  * @ctxt:  the XPath Parser context
  *
- * Implement the normalize() XPath function
- * The normalize function returns the argument string with white
+ * Implement the normalize-space() XPath function
+ * The normalize-space function returns the argument string with white
  * space normalized by stripping leading and trailing whitespace
  * and replacing sequences of whitespace characters by a single
  * space. Whitespace characters are the same allowed by the S production
@@ -3568,8 +3568,6 @@ not_equal:
  *
  * Implement the number() XPath function
  *
- * BUG: since we directly call xmlXPathStringEvalNumber(),
- *      number("-1") isn't evaluated in -1.0 but in NaN.
  */
 void
 xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs) {
@@ -3648,6 +3646,7 @@ xmlXPathSumFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     } else {
 	valuePush(ctxt,
 		  xmlXPathNewNodeSet(cur->nodesetval->nodeTab[0]));
+	xmlXPathNumberFunction(ctxt, 1);
 	for (i = 1; i < cur->nodesetval->nodeNr; i++) {
 	    valuePush(ctxt,
 		      xmlXPathNewNodeSet(cur->nodesetval->nodeTab[i]));
@@ -3858,6 +3857,8 @@ xmlXPathParseName(xmlXPathParserContextPtr ctxt) {
  *  [31]   Digits ::=   [0-9]+
  *
  * Parse and evaluate a Number in the string
+ * In complement of the Number expression, this function also handles
+ * negative values : '-' Number.
  *
  * Returns the double value.
  */
@@ -3867,10 +3868,15 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
     double ret = 0.0;
     double mult = 1;
     int ok = 0;
+    int isneg = 0;
 
     while (*cur == ' ') cur++;
-    if ((*cur != '.') && ((*cur < '0') || (*cur > '9'))) {
+    if ((*cur != '.') && ((*cur < '0') || (*cur > '9')) && (*cur != '-')) {
         return(xmlXPathNAN);
+    }
+    if (*cur == '-') {
+	isneg = 1;
+	cur++;
     }
     while ((*cur >= '0') && (*cur <= '9')) {
         ret = ret * 10 + (*cur - '0');
@@ -3890,6 +3896,7 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
     }
     while (*cur == ' ') cur++;
     if (*cur != 0) return(xmlXPathNAN);
+    if (isneg) ret = -ret;
     return(ret);
 }
 
@@ -4366,7 +4373,7 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 	    SKIP(2);
 	    SKIP_BLANKS;
 	    xmlXPathNodeCollectAndTest(ctxt, AXIS_DESCENDANT_OR_SELF,
-			     NODE_TEST_TYPE, XML_ELEMENT_NODE, NULL, NULL);
+			     NODE_TEST_TYPE, NODE_TYPE_NODE, NULL, NULL);
 	    ctxt->context->node = NULL;
 	    xmlXPathEvalRelativeLocationPath(ctxt);
 	} else if (CUR == '/') {
@@ -5083,7 +5090,7 @@ xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
 	SKIP(2);
 	SKIP_BLANKS;
 	xmlXPathNodeCollectAndTest(ctxt, AXIS_PARENT,
-			 NODE_TEST_TYPE, XML_ELEMENT_NODE, NULL, NULL);
+			 NODE_TEST_TYPE, NODE_TYPE_NODE, NULL, NULL);
     } else if (CUR == '.') {
 	NEXT;
 	SKIP_BLANKS;
@@ -5195,7 +5202,7 @@ xmlXPathEvalRelativeLocationPath(xmlXPathParserContextPtr ctxt) {
 	SKIP(2);
 	SKIP_BLANKS;
 	xmlXPathNodeCollectAndTest(ctxt, AXIS_DESCENDANT_OR_SELF,
-			 NODE_TEST_TYPE, XML_ELEMENT_NODE, NULL, NULL);
+			 NODE_TEST_TYPE, NODE_TYPE_NODE, NULL, NULL);
     } else if (CUR == '/') {
 	    NEXT;
 	SKIP_BLANKS;
@@ -5207,7 +5214,7 @@ xmlXPathEvalRelativeLocationPath(xmlXPathParserContextPtr ctxt) {
 	    SKIP(2);
 	    SKIP_BLANKS;
 	    xmlXPathNodeCollectAndTest(ctxt, AXIS_DESCENDANT_OR_SELF,
-			     NODE_TEST_TYPE, XML_ELEMENT_NODE, NULL, NULL);
+			     NODE_TEST_TYPE, NODE_TYPE_NODE, NULL, NULL);
 	    xmlXPathEvalStep(ctxt);
 	} else if (CUR == '/') {
 	    NEXT;
@@ -5249,7 +5256,7 @@ xmlXPathEvalLocationPath(xmlXPathParserContextPtr ctxt) {
 		SKIP_BLANKS;
 		xmlXPathNodeCollectAndTest(ctxt,
 		                 AXIS_DESCENDANT_OR_SELF, NODE_TEST_TYPE,
-				 XML_ELEMENT_NODE, NULL, NULL);
+				 NODE_TYPE_NODE, NULL, NULL);
 		xmlXPathEvalRelativeLocationPath(ctxt);
 	    } else if (CUR == '/') {
 		NEXT;
@@ -5292,9 +5299,9 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 	xmlXPathRoot(ctxt);
     xmlXPathEvalExpr(ctxt);
 
-    if ((ctxt->value == NULL) || (ctxt->value->type != XPATH_NODESET)) {
+    if (ctxt->value == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathEval: evaluation failed to return a node set\n");
+		"xmlXPathEval: evaluation failed\n");
     } else {
 	res = valuePop(ctxt);
     }
@@ -5393,8 +5400,6 @@ xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt)
     xmlXPathRegisterFunc(ctxt, (const xmlChar *)"namespace-uri",
                          xmlXPathNamespaceURIFunction);
     xmlXPathRegisterFunc(ctxt, (const xmlChar *)"normalize-space",
-                         xmlXPathNormalizeFunction);
-    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"normalize",
                          xmlXPathNormalizeFunction);
     xmlXPathRegisterFunc(ctxt, (const xmlChar *)"number",
                          xmlXPathNumberFunction);

@@ -3,7 +3,6 @@
 xmlincdir = $(includedir)
 
 xmlinc_HEADERS = \
-		libxml/xmlversion.h.in \
 		libxml/SAX.h \
 		libxml/entities.h \
 		libxml/encoding.h \
@@ -30,4 +29,4 @@ xmlinc_HEADERS = \
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir) $(DESTDIR)$(xmlincdir)/libxml
 
-EXTRA_DIST = win32config.h
+EXTRA_DIST = win32config.h libxml/xmlversion.h.in

@@ -1,3 +1,9 @@
+Fri Oct 27 18:57:32 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.c: applied another XPath patch from TOM 
+	* xpath.c include/makefile.am: applied another patch from 
+	  china@thewrittenword.com (cleanup on IRIX).
+
 Fri Oct 27 13:45:28 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xml-config.1: received a fixed version from Fredrik Hallenberg

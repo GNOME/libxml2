@@ -69,7 +69,7 @@ scope int html##name##Push(htmlParserCtxtPtr ctxt, type value) {	\
 	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
         if (ctxt->name##Tab == NULL) {					\
 	    fprintf(stderr, "realloc failed !\n");			\
-	    exit(1);							\
+	    return(0);							\
 	}								\
     }									\
     ctxt->name##Tab[ctxt->name##Nr] = value;				\
@@ -854,7 +854,7 @@ htmlEntityDesc  html40EntitiesTable[] = {
     buffer = (xmlChar *) xmlRealloc(buffer, buffer##_size * sizeof(xmlChar));	\
     if (buffer == NULL) {						\
 	perror("realloc failed");					\
-	exit(1);							\
+	return(NULL);							\
     }									\
 }
 

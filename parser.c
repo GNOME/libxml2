@@ -277,7 +277,7 @@ scope int name##Push(xmlParserCtxtPtr ctxt, type value) {		\
 	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
         if (ctxt->name##Tab == NULL) {					\
 	    fprintf(stderr, "realloc failed !\n");			\
-	    exit(1);							\
+	    return(0);							\
 	}								\
     }									\
     ctxt->name##Tab[ctxt->name##Nr] = value;				\
@@ -917,7 +917,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 	}
 	if (cur == ';')
 	    ptr++;
-    } else if  ((cur = '&') && (ptr[1] == '#')){
+    } else if  ((cur == '&') && (ptr[1] == '#')){
 	ptr += 2;
 	cur = *ptr;
 	while (cur != ';') {
@@ -1366,10 +1366,11 @@ fprintf(stderr, "xmlParserHandlePEReference : ctxt->token != 0\n");
  */
 #define growBuffer(buffer) {						\
     buffer##_size *= 2;							\
-    buffer = (xmlChar *) xmlRealloc(buffer, buffer##_size * sizeof(xmlChar));	\
+    buffer = (xmlChar *)						\
+    		xmlRealloc(buffer, buffer##_size * sizeof(xmlChar));	\
     if (buffer == NULL) {						\
 	perror("realloc failed");					\
-	exit(1);							\
+	return(NULL);							\
     }									\
 }
 
@@ -8045,6 +8046,107 @@ xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
 }
 
 /**
+ * xmlSAXParseBalancedChunk :
+ * @ctx:  an XML parser context (possibly NULL)
+ * @sax:  the SAX handler bloc (possibly NULL)
+ * @user_data:  The user data returned on SAX callbacks (possibly NULL)
+ * @input:  a parser input stream
+ * @enc:  the encoding
+ *
+ * Parse a well-balanced chunk of an XML document
+ * The user has to provide SAX callback block whose routines will be
+ * called by the parser
+ * The allowed sequence for the Well Balanced Chunk is the one defined by
+ * the content production in the XML grammar:
+ *
+ * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+ *
+ * Returns 0 id the chunk is well balanced, -1 in case of args problem and
+ *    the error code otherwise
+ */
+
+int
+xmlSAXParseBalancedChunk(xmlParserCtxtPtr ctx, xmlSAXHandlerPtr sax,
+                         void *user_data, xmlParserInputPtr input,
+			 xmlCharEncoding enc) {
+    xmlParserCtxtPtr ctxt;
+    int ret;
+
+    if (input == NULL) return(-1);
+
+    if (ctx != NULL)
+        ctxt = ctx;
+    else {	
+	ctxt = xmlNewParserCtxt();
+	if (ctxt == NULL)
+	    return(-1);
+        if (sax == NULL)
+	    ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
+    }	
+
+    /*
+     * Set-up the SAX context
+     */
+    if (sax != NULL) {
+	if (ctxt->sax != NULL)
+	    xmlFree(ctxt->sax);
+	ctxt->sax = sax;
+	ctxt->userData = user_data;
+    }
+
+    /*
+     * plug some encoding conversion routines here.
+     */
+    xmlPushInput(ctxt, input);
+    if (enc != XML_CHAR_ENCODING_NONE)
+	xmlSwitchEncoding(ctxt, enc);
+
+    /*
+     * let's parse that entity knowing it's an external subset.
+     */
+    xmlParseContent(ctxt);
+    ret = ctxt->errNo;
+
+    if (ctx == NULL) {
+	if (sax != NULL) 
+	    ctxt->sax = NULL;
+	else
+	    xmlFreeDoc(ctxt->myDoc);
+	xmlFreeParserCtxt(ctxt);
+    }
+    return(ret);
+}
+
+/**
+ * xmlParseBalancedChunk :
+ * @doc:  the document the chunk pertains to
+ * @node:  the node defining the context in which informations will be added
+ *
+ * Parse a well-balanced chunk of an XML document present in memory
+ * 
+ * Returns the resulting list of nodes resulting from the parsing,
+ *     they are not added to @node
+ */
+
+xmlNodePtr
+xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlNodePtr node) {
+}
+
+/**
+ * xmlParseBalancedChunkFile :
+ * @doc:  the document the chunk pertains to
+ *
+ * Parse a well-balanced chunk of an XML document contained in a file
+ * 
+ * Returns the resulting list of nodes resulting from the parsing,
+ *     they are not added to @node
+ */
+
+xmlNodePtr
+xmlParseBalancedChunkFile(xmlDocPtr doc, xmlNodePtr node) {
+}
+
+/**
  * xmlRecoverDoc :
  * @cur:  a pointer to an array of xmlChar
  *
@@ -8326,7 +8428,7 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
     if (input == NULL) {
         perror("malloc");
         xmlFree(ctxt);
-        exit(1);
+        return;
     }
   
     xmlClearParserCtxt(ctxt);

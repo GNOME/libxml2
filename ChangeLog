@@ -1,3 +1,17 @@
+Thu Jan 13 11:49:11 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c : restored xmlNewGlobalNs since this seems used by
+	  a lot of existing code :-(, fixed a bug in xmlNewNs
+	* nanohttp.c: fixed a problem with INCLUDE_WINSOCK
+	* HTMLparser.c, parser.c, entities.c, valid.c : removed all calls
+	  to exit() from the library code.
+	* xpath.c, parser.c: removed bugs or unused code detected by 
+	  Windows compilers
+	* parser.c: started adding interfaces for parsing well balanced
+	  XML fragments
+	* configure.in: releasing 1.8.4
+	* doc/* : rebuilt the docs
+
 Sun Jan  9 23:03:20 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.[ch] : added xmlNewDocFragment() for DOM

@@ -186,7 +186,7 @@ extern int name##Push(xmlXPathParserContextPtr ctxt, type value) {	\
 	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
         if (ctxt->name##Tab == NULL) {					\
 	    fprintf(xmlXPathDebug, "realloc failed !\n");		\
-	    exit(1);							\
+	    return(0);							\
 	}								\
     }									\
     ctxt->name##Tab[ctxt->name##Nr] = value;				\
@@ -1218,11 +1218,6 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    break;
 	    }
 	    break;
-#ifdef DEBUG_EXPR
-	    fprintf(xmlXPathDebug, "Equal: %s string %s \n",
-	            arg1->stringval, arg2->stringval);
-#endif
-	    ret = !xmlStrcmp(arg1->stringval, arg2->stringval);
     }
     xmlXPathFreeObject(arg1);
     xmlXPathFreeObject(arg2);

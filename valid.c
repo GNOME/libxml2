@@ -74,7 +74,7 @@ xmlNewElementContent(xmlChar *name, xmlElementContentType type) {
 	    break;
 	default:
 	    fprintf(stderr, "xmlNewElementContent: unknown type %d\n", type);
-	    exit(1);
+	    return(NULL);
     }
     ret = (xmlElementContentPtr) xmlMalloc(sizeof(xmlElementContent));
     if (ret == NULL) {

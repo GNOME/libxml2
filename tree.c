@@ -160,13 +160,18 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
 	} else {
 	    xmlNsPtr prev = node->nsDef;
 
+	    if (((prev->prefix == NULL) && (cur->prefix == NULL)) ||
+		(!xmlStrcmp(prev->prefix, cur->prefix))) {
+		xmlFreeNs(cur);
+		return(NULL);
+	    }    
 	    while (prev->next != NULL) {
+	        prev = prev->next;
 		if (((prev->prefix == NULL) && (cur->prefix == NULL)) ||
 		    (!xmlStrcmp(prev->prefix, cur->prefix))) {
 		    xmlFreeNs(cur);
 		    return(NULL);
 		}    
-	        prev = prev->next;
 	    }
 	    prev->next = cur;
 	}
@@ -182,12 +187,55 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
  *
  * Creation of a Namespace, the old way using PI and without scoping
  *   DEPRECATED !!!
- * Will be removed at next major release !
+ * It now create a namespace on the root element of the document if found.
  * Returns NULL this functionnality had been removed
  */
 xmlNsPtr
 xmlNewGlobalNs(xmlDocPtr doc, const xmlChar *href, const xmlChar *prefix) {
-    return(NULL);
+    xmlNodePtr root;
+
+    xmlNsPtr cur;
+ 
+    root = xmlDocGetRootElement(doc);
+    if (root != NULL)
+	return(xmlNewNs(root, href, prefix));
+	
+    /*
+     * if there is no root element yet, create an old Namespace type
+     * and it will be moved to the root at save time.
+     */
+    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+    if (cur == NULL) {
+        fprintf(stderr, "xmlNewGlobalNs : malloc failed\n");
+	return(NULL);
+    }
+
+    cur->type = XML_GLOBAL_NAMESPACE;
+    if (href != NULL)
+	cur->href = xmlStrdup(href); 
+    else
+        cur->href = NULL;
+    if (prefix != NULL)
+	cur->prefix = xmlStrdup(prefix); 
+    else
+        cur->prefix = NULL;
+
+    /*
+     * Add it at the end to preserve parsing order ...
+     */
+    cur->next = NULL;
+    if (doc != NULL) {
+	if (doc->oldNs == NULL) {
+	    doc->oldNs = cur;
+	} else {
+	    xmlNsPtr prev = doc->oldNs;
+
+	    while (prev->next != NULL) prev = prev->next;
+	    prev->next = cur;
+	}
+    }
+
+  return(NULL);
 }
 
 /**

@@ -388,13 +388,14 @@ xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
 static int buffer_size = 0;
 static xmlChar *buffer = NULL;
 
-void growBuffer(void) {
+int growBuffer(void) {
     buffer_size *= 2;
     buffer = (xmlChar *) xmlRealloc(buffer, buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
         perror("realloc failed");
-        exit(1);
+	return(-1);
     }
+    return(0);
 }
 
 
@@ -437,7 +438,7 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
         buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
 	if (buffer == NULL) {
 	    perror("malloc failed");
-            exit(1);
+            return(NULL);
 	}
 	out = buffer;
     }
@@ -530,10 +531,11 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
  */
 #define growBufferReentrant() {						\
     buffer_size *= 2;							\
-    buffer = (xmlChar *) xmlRealloc(buffer, buffer_size * sizeof(xmlChar));	\
+    buffer = (xmlChar *)						\
+    		xmlRealloc(buffer, buffer_size * sizeof(xmlChar));	\
     if (buffer == NULL) {						\
 	perror("realloc failed");					\
-	exit(1);							\
+	return(NULL);							\
     }									\
 }
 
@@ -572,7 +574,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
 	perror("malloc failed");
-	exit(1);
+	return(NULL);
     }
     out = buffer;
 

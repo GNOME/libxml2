@@ -97,6 +97,18 @@
 #define XML_XML_DEFAULT_CATALOG "file:///etc/xml/catalog"
 #endif
 
+typedef enum {
+    XMLLINT_RETURN_OK = 0,	/* No error */
+    XMLLINT_ERR_UNCLASS,	/* Unclassified */
+    XMLLINT_ERR_DTD,		/* Error in DTD */
+    XMLLINT_ERR_VALID,		/* Validation error */
+    XMLLINT_ERR_RDFILE,		/* CtxtReadFile error */
+    XMLLINT_ERR_SCHEMACOMP,	/* Schema compilation */
+    XMLLINT_ERR_OUT,		/* Error writing output */
+    XMLLINT_ERR_SCHEMAPAT,	/* Error in schema pattern */
+    XMLLINT_ERR_RDREGIS,	/* Error in Reader registration */
+    XMLLINT_ERR_MEM		/* Out of memory error */
+} xmllintReturnCode;
 #ifdef LIBXML_DEBUG_ENABLED
 static int shell = 0;
 static int debugent = 0;
@@ -148,7 +160,7 @@ static int xinclude = 0;
 #endif
 static int dtdattrs = 0;
 static int loaddtd = 0;
-static int progresult = 0;
+static xmllintReturnCode progresult = XMLLINT_RETURN_OK;
 static int timing = 0;
 static int generate = 0;
 static int dropdtd = 0;
@@ -181,7 +193,7 @@ static void
 OOM(void)
 {
     fprintf(stderr, "Ran out of memory needs > %d bytes\n", maxmem);
-    progresult = 9;
+    progresult = XMLLINT_ERR_MEM;
 }
 
 static void
@@ -744,7 +756,7 @@ static void streamFile(char *filename) {
 	    if (ret < 0) {
 		xmlGenericError(xmlGenericErrorContext,
 			"Relax-NG schema %s failed to compile\n", relaxng);
-		progresult = 5;
+		progresult = XMLLINT_ERR_SCHEMACOMP;
 		relaxng = NULL;
 	    }
 	    if ((timing) && (!repeat)) {
@@ -788,7 +800,7 @@ static void streamFile(char *filename) {
 	    if (xmlTextReaderIsValid(reader) != 1) {
 		xmlGenericError(xmlGenericErrorContext,
 			"Document %s does not validate\n", filename);
-		progresult = 3;
+		progresult = XMLLINT_ERR_VALID;
 	    }
 	}
 #endif /* LIBXML_VALID_ENABLED */
@@ -796,7 +808,7 @@ static void streamFile(char *filename) {
 	if (relaxng != NULL) {
 	    if (xmlTextReaderIsValid(reader) != 1) {
 		fprintf(stderr, "%s fails to validate\n", filename);
-		progresult = 3;
+		progresult = XMLLINT_ERR_VALID;
 	    } else {
 		fprintf(stderr, "%s validates\n", filename);
 	    }
@@ -808,11 +820,11 @@ static void streamFile(char *filename) {
 	xmlFreeTextReader(reader);
 	if (ret != 0) {
 	    fprintf(stderr, "%s : failed to parse\n", filename);
-	    progresult = 1;
+	    progresult = XMLLINT_ERR_UNCLASS;
 	}
     } else {
 	fprintf(stderr, "Unable to open %s\n", filename);
-	progresult = 1;
+	progresult = XMLLINT_ERR_UNCLASS;
     }
 #ifdef HAVE_SYS_MMAN_H
     if (memory) {
@@ -848,11 +860,11 @@ static void walkDoc(xmlDocPtr doc) {
 	xmlFreeTextReader(reader);
 	if (ret != 0) {
 	    fprintf(stderr, "failed to walk through the doc\n");
-	    progresult = 1;
+	    progresult = XMLLINT_ERR_UNCLASS;
 	}
     } else {
 	fprintf(stderr, "Failed to crate a reader from the document\n");
-	progresult = 1;
+	progresult = XMLLINT_ERR_UNCLASS;
     }
 }
 #endif /* LIBXML_READER_ENABLED */
@@ -1033,7 +1045,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
 
 		if (ctxt->valid == 0)
-		    progresult = 4;
+		    progresult = XMLLINT_ERR_RDFILE;
 		if (rectxt == NULL)
 		    xmlFreeParserCtxt(ctxt);
 	    }
@@ -1050,7 +1062,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
      * If we don't have a document we might as well give up.  Do we
      * want an error message here?  <sven@zen.org> */
     if (doc == NULL) {
-	progresult = 1;
+	progresult = XMLLINT_ERR_UNCLASS;
 	return;
     }
 
@@ -1171,13 +1183,13 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    }
 		    if (out != NULL) {
 			if (htmlDocDump(out, doc) < 0)
-			    progresult = 6;
+			    progresult = XMLLINT_ERR_OUT;
 
 			if (output != NULL)
 			    fclose(out);
 		    } else {
 			fprintf(stderr, "failed to open %s\n", output);
-			progresult = 6;
+			progresult = XMLLINT_ERR_OUT;
 		    }
 		}
 		if ((timing) && (!repeat)) {
@@ -1224,7 +1236,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		if (ret < 0) {
 		    fprintf(stderr, "failed save to %s\n",
 		            output ? output : "-");
-		    progresult = 6;
+		    progresult = XMLLINT_ERR_OUT;
 		}
 	    }
 	    else if (format) {
@@ -1232,7 +1244,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		if (ret < 0) {
 		    fprintf(stderr, "failed save to %s\n",
 		            output ? output : "-");
-		    progresult = 6;
+		    progresult = XMLLINT_ERR_OUT;
 		}
 	    }
 	    else {
@@ -1244,13 +1256,13 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		}
 		if (out != NULL) {
 		    if (xmlDocDump(out, doc) < 0)
-		        progresult = 6;
+		        progresult = XMLLINT_ERR_OUT;
 
 		    if (output != NULL)
 			fclose(out);
 		} else {
 		    fprintf(stderr, "failed to open %s\n", output);
-		    progresult = 6;
+		    progresult = XMLLINT_ERR_OUT;
 		}
 	    }
 	    if ((timing) && (!repeat)) {
@@ -1271,7 +1283,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    fclose(out);
 	    } else {
 		fprintf(stderr, "failed to open %s\n", output);
-		progresult = 6;
+		progresult = XMLLINT_ERR_OUT;
 	    }
 	}
 #endif
@@ -1302,7 +1314,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    else
 		xmlGenericError(xmlGenericErrorContext,
 			"Could not parse DTD %s\n", dtdvalidfpi);
-	    progresult = 2;
+	    progresult = XMLLINT_ERR_DTD;
 	} else {
 	    xmlValidCtxtPtr cvp;
 
@@ -1327,7 +1339,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "Document %s does not validate against %s\n",
 			    filename, dtdvalidfpi);
-		progresult = 3;
+		progresult = XMLLINT_ERR_VALID;
 	    }
 	    if ((timing) && (!repeat)) {
 		endTimer("Validating against DTD");
@@ -1353,7 +1365,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	if (!xmlValidateDocument(cvp, doc)) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Document %s does not validate\n", filename);
-	    progresult = 3;
+	    progresult = XMLLINT_ERR_VALID;
 	}
 	if ((timing) && (!repeat)) {
 	    endTimer("Validating");
@@ -1380,9 +1392,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    fprintf(stderr, "%s validates\n", filename);
 	} else if (ret > 0) {
 	    fprintf(stderr, "%s fails to validate\n", filename);
+	    progresult = XMLLINT_ERR_VALID;
 	} else {
 	    fprintf(stderr, "%s validation generated an internal error\n",
 		   filename);
+	    progresult = XMLLINT_ERR_VALID;
 	}
 	xmlRelaxNGFreeValidCtxt(ctxt);
 	if ((timing) && (!repeat)) {
@@ -1406,9 +1420,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    fprintf(stderr, "%s validates\n", filename);
 	} else if (ret > 0) {
 	    fprintf(stderr, "%s fails to validate\n", filename);
+	    progresult = XMLLINT_ERR_VALID;
 	} else {
 	    fprintf(stderr, "%s validation generated an internal error\n",
 		   filename);
+	    progresult = XMLLINT_ERR_VALID;
 	}
 	xmlSchemaFreeValidCtxt(ctxt);
 	if ((timing) && (!repeat)) {
@@ -1946,7 +1962,7 @@ main(int argc, char **argv) {
 	if (relaxngschemas == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Relax-NG schema %s failed to compile\n", relaxng);
-            progresult = 5;
+            progresult = XMLLINT_ERR_SCHEMACOMP;
 	    relaxng = NULL;
 	}
 	xmlRelaxNGFreeParserCtxt(ctxt);
@@ -1972,7 +1988,7 @@ main(int argc, char **argv) {
 	if (wxschemas == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "WXS schema %s failed to compile\n", schema);
-            progresult = 5;
+            progresult = XMLLINT_ERR_SCHEMACOMP;
 	    schema = NULL;
 	}
 	xmlSchemaFreeParserCtxt(ctxt);
@@ -1987,7 +2003,7 @@ main(int argc, char **argv) {
 	if (patternc == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Pattern %s failed to compile\n", pattern);
-            progresult = 7;
+            progresult = XMLLINT_ERR_SCHEMAPAT;
 	    pattern = NULL;
 	}
     }
@@ -2071,7 +2087,7 @@ main(int argc, char **argv) {
 
                 if ((chkregister) && (nbregister != 0)) {
 		    fprintf(stderr, "Registration count off: %d\n", nbregister);
-		    progresult = 8;
+		    progresult = XMLLINT_ERR_RDREGIS;
 		}
 	    }
 	    files ++;

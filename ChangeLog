@@ -1,3 +1,9 @@
+Tue Jun  8 21:27:03 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmllint.c: fixed missing error return code for schema
+	  validation (bug 143880), also changed over to an enum for
+	  defining the error return codes for all conditions.
+
 Tue Jun  8 14:01:14 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c xmlreader.c include/libxml/parser.h: fixed a serious

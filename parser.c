@@ -11957,6 +11957,10 @@ xmlCleanupParser(void) {
 #ifdef LIBXML_CATALOG_ENABLED
     xmlCatalogCleanup();
 #endif
+    xmlCleanupInputCallbacks();
+#ifdef LIBXML_OUTPUT_ENABLED
+    xmlCleanupOutputCallbacks();
+#endif
     xmlCleanupThreads();
     xmlCleanupGlobals();
     xmlResetLastError();

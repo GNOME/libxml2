@@ -1,1 +1,2 @@
-error detected at relaxng.c:5143
+error detected at relaxng.c:5164
+Extra content for element preferredFormat: text

@@ -1,2 +1,4 @@
-error detected at relaxng.c:5059
-error detected at relaxng.c:5143
+error detected at relaxng.c:5080
+Expecting an element, got empty
+error detected at relaxng.c:5164
+Extra content for element head: meta

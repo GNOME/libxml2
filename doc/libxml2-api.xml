@@ -9437,7 +9437,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlXPathCompile' file='xpath'>
       <info>Compile an XPath expression</info>
-      <return type='xmlXPathCompExprPtr' info='the xmlXPathObjectPtr resulting from the evaluation or NULL. the caller has to free the object.'/>
+      <return type='xmlXPathCompExprPtr' info='the xmlXPathCompExprPtr resulting from the compilation or NULL. the caller has to free the object.'/>
       <arg name='str' type='const xmlChar *' info='the XPath expression'/>
     </function>
     <function name='xmlXPathCompiledEval' file='xpath'>

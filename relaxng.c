@@ -1180,9 +1180,16 @@ xmlRelaxNGLoadExternalRef(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
          xmlGenericError(xmlGenericErrorContext,			\
 	    "error detected at %s:%d\n",				\
             __FILE__, __LINE__);
-#define VALID_ERROR							\
+
+#define VALID_ERROR(a)							\
     if (((ctxt->flags & 1) == 0) || (ctxt->flags & 2))			\
-        printf
+        if (ctxt->error != NULL) ctxt->error(ctxt->userData, a)
+#define VALID_ERROR2(a, b)						\
+    if (((ctxt->flags & 1) == 0) || (ctxt->flags & 2))			\
+        if (ctxt->error != NULL) ctxt->error(ctxt->userData, a, b)
+#define VALID_ERROR3(a, b, c)						\
+    if (((ctxt->flags & 1) == 0) || (ctxt->flags & 2))			\
+        if (ctxt->error != NULL) ctxt->error(ctxt->userData, a, b, c)
 
 static const char *
 xmlRelaxNGDefName(xmlRelaxNGDefinePtr def) {
@@ -1710,14 +1717,16 @@ xmlRelaxNGParseValue(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	} else {
 	    def->data = lib;
 	    if (lib->have == NULL) {
-		ctxt->error(ctxt->userData,
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
 		    "Internal error with type library '%s': no 'have'\n",
 			    library);
 		ctxt->nbErrors++;
 	    } else {
 		tmp = lib->have(lib->data, def->name);
 		if (tmp != 1) {
-		    ctxt->error(ctxt->userData,
+		    if (ctxt->error != NULL)
+			ctxt->error(ctxt->userData,
 		    "Error type '%s' is not exported by type library '%s'\n",
 				def->name, library);
 		    ctxt->nbErrors++;
@@ -1800,14 +1809,16 @@ xmlRelaxNGParseData(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     } else {
 	def->data = lib;
 	if (lib->have == NULL) {
-	    ctxt->error(ctxt->userData,
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
 		"Internal error with type library '%s': no 'have'\n",
 		        library);
 	    ctxt->nbErrors++;
 	} else {
 	    tmp = lib->have(lib->data, def->name);
 	    if (tmp != 1) {
-		ctxt->error(ctxt->userData,
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
 		    "Error type '%s' is not exported by type library '%s'\n",
 			    def->name, library);
 		ctxt->nbErrors++;
@@ -1817,6 +1828,7 @@ xmlRelaxNGParseData(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     content = node->children;
     while (content != NULL) {
 	TODO
+	ctxt->nbErrors++;
 	content = content->next;
     }
 
@@ -2511,6 +2523,7 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	}
     } else {
 	TODO
+	ctxt->nbErrors++;
 	def = NULL;
     }
     return(def);
@@ -2598,6 +2611,7 @@ xmlRelaxNGParseAttribute(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		case XML_RELAXNG_START:
 		case XML_RELAXNG_EXCEPT:
 		    TODO
+		    ctxt->nbErrors++;
 		    break;
 	    }
 	}
@@ -2706,6 +2720,7 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
 	}
     } else if (IS_RELAXNG(node, "choice")) {
 	TODO
+	ctxt->nbErrors++;
     } else {
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
@@ -2805,6 +2820,7 @@ xmlRelaxNGParseElement(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		case XML_RELAXNG_START:
 		case XML_RELAXNG_EXCEPT:
 		    TODO
+		    ctxt->nbErrors++;
 		    break;
 	    }
 	}
@@ -2879,10 +2895,10 @@ xmlRelaxNGParseStart(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes) {
     while (nodes != NULL) {
 	if (IS_RELAXNG(nodes, "empty")) {
 	    TODO
-	    xmlElemDump(stdout, nodes->doc, nodes);
+	    ctxt->nbErrors++;
 	} else if (IS_RELAXNG(nodes, "notAllowed")) {
 	    TODO
-	    xmlElemDump(stdout, nodes->doc, nodes);
+	    ctxt->nbErrors++;
 	} else {
 	    def = xmlRelaxNGParsePatterns(ctxt, nodes, 1);
 	    ctxt->grammar->start = def;
@@ -2987,6 +3003,7 @@ xmlRelaxNGCheckReference(xmlRelaxNGDefinePtr ref,
 	    }
 	} else {
 	    TODO
+	    ctxt->nbErrors++;
 	}
     }
     /*
@@ -3366,6 +3383,8 @@ xmlRelaxNGNewParserCtxt(const char *URL) {
     }
     memset(ret, 0, sizeof(xmlRelaxNGParserCtxt));
     ret->URL = xmlStrdup((const xmlChar *)URL);
+    ret->error = xmlGenericError;
+    ret->userData = xmlGenericErrorContext;
     return (ret);
 }
 
@@ -3395,6 +3414,8 @@ xmlRelaxNGNewMemParserCtxt(const char *buffer, int size) {
     memset(ret, 0, sizeof(xmlRelaxNGParserCtxt));
     ret->buffer = buffer;
     ret->size = size;
+    ret->error = xmlGenericError;
+    ret->userData = xmlGenericErrorContext;
     return (ret);
 }
 
@@ -3672,7 +3693,7 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
 		    xmlNodePtr child, ins, tmp;
 
 		    child = cur->children;
-		    ins = child;
+		    ins = cur;
 		    while (child != NULL) {
 			tmp = child->next;
 			xmlUnlinkNode(child);
@@ -4194,13 +4215,13 @@ xmlRelaxNGValidateDatatype(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *value,
 	ret = -1;
     if (ret < 0) {
 	VALID_CTXT();
-	VALID_ERROR("Internal: failed to validate type %s\n", define->name);
+	VALID_ERROR2("Internal: failed to validate type %s\n", define->name);
 	return(-1);
     } else if (ret == 1) {
 	ret = 0;
     } else {
 	VALID_CTXT();
-	VALID_ERROR("Type %s doesn't allow value %s\n", define->name, value);
+	VALID_ERROR3("Type %s doesn't allow value %s\n", define->name, value);
 	return(-1);
 	ret = -1;
     }
@@ -4293,7 +4314,7 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 			ret = -1;
 		    if (ret < 0) {
 			VALID_CTXT();
-			VALID_ERROR("Internal: failed to compare type %s\n",
+			VALID_ERROR2("Internal: failed to compare type %s\n",
 				    define->name);
 			return(-1);
 		    } else if (ret == 1) {
@@ -4383,7 +4404,7 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 	    if ((ret == 0) && (ctxt->state->value != NULL) &&
 		(ctxt->state->value != ctxt->state->endvalue)) {
 		VALID_CTXT();
-		VALID_ERROR("Extra data in list: %s\n", ctxt->state->value);
+		VALID_ERROR2("Extra data in list: %s\n", ctxt->state->value);
 		ret = -1;
 	    }
 	    xmlFree(val);
@@ -5063,7 +5084,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	    if (node->type != XML_ELEMENT_NODE) {
 		VALID_CTXT();
-		VALID_ERROR("Expecting an element got %d type\n", node->type);
+		VALID_ERROR2("Expecting an element got %d type\n", node->type);
 		ret = -1;
 		break;
 	    }
@@ -5076,7 +5097,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    if (define->name != NULL) {
 		if (!xmlStrEqual(node->name, define->name)) {
 		    VALID_CTXT();
-		    VALID_ERROR("Expecting element %s, got %s\n",
+		    VALID_ERROR3("Expecting element %s, got %s\n",
 			        define->name, node->name);
 		    ret = -1;
 		    break;
@@ -5085,13 +5106,13 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    if ((define->ns != NULL) && (define->ns[0] != 0)) {
 		if (node->ns == NULL) {
 		    VALID_CTXT();
-		    VALID_ERROR("Expecting a namespace for element %s\n",
+		    VALID_ERROR2("Expecting a namespace for element %s\n",
 			        node->name);
 		    ret = -1;
 		    break;
 		} else if (!xmlStrEqual(node->ns->href, define->ns)) {
 		    VALID_CTXT();
-		    VALID_ERROR("Expecting element %s has wrong namespace: expecting %s\n",
+		    VALID_ERROR3("Expecting element %s has wrong namespace: expecting %s\n",
 			        node->name, define->ns);
 		    ret = -1;
 		    break;
@@ -5099,7 +5120,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    } else if (define->name != NULL) {
 		if (node->ns != NULL) {
 		    VALID_CTXT();
-		    VALID_ERROR("Expecting no namespace for element %s\n",
+		    VALID_ERROR2("Expecting no namespace for element %s\n",
 			        define->name);
 		    ret = -1;
 		    break;
@@ -5141,7 +5162,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 		state->seq = xmlRelaxNGSkipIgnored(ctxt, state->seq);
 		if (state->seq != NULL) {
 		    VALID_CTXT();
-		    VALID_ERROR("Extra content for element %s: %s\n",
+		    VALID_ERROR3("Extra content for element %s: %s\n",
 				node->name, state->seq->name);
 		    ret = -1;
 #ifdef DEBUG
@@ -5154,7 +5175,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    for (i = 0;i < state->nbAttrs;i++) {
 		if (state->attrs[i] != NULL) {
 		    VALID_CTXT();
-		    VALID_ERROR("Invalid attribute %s for element %s\n",
+		    VALID_ERROR3("Invalid attribute %s for element %s\n",
 				state->attrs[i]->name, node->name);
 		    ret = -1;
 		}
@@ -5293,9 +5314,12 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    ret = xmlRelaxNGValidateDatatype(ctxt, content, define);
 	    if (ret == -1) {
 		VALID_CTXT();
-		VALID_ERROR("internal error validating %s\n", define->name);
+		VALID_ERROR2("internal error validating %s\n", define->name);
 	    } else if (ret == 0) {
-		ctxt->state->seq = node->next;
+		if (node != NULL)
+		    ctxt->state->seq = node->next;
+		else
+		    ctxt->state->seq = NULL;
 	    }
 	    /*
 	     * TODO cover the problems with
@@ -5304,7 +5328,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	     */
 	    if ((node != NULL) && (node->next != NULL)) {
 		VALID_CTXT();
-		VALID_ERROR("The data does not cover the full element %s\n",
+		VALID_ERROR2("The data does not cover the full element %s\n",
 			    node->parent->name);
 		ret = -1;
 	    }
@@ -5323,7 +5347,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    ctxt->state->value = oldvalue;
 	    if (ret == -1) {
 		VALID_CTXT();
-		VALID_ERROR("internal error validating %s\n", define->name);
+		VALID_ERROR2("internal error validating %s\n", define->name);
 	    } else if (ret == 0) {
 		ctxt->state->seq = node->next;
 	    }
@@ -5334,7 +5358,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	     */
 	    if ((node != NULL) && (node->next != NULL)) {
 		VALID_CTXT();
-		VALID_ERROR("The value does not cover the full element %s\n",
+		VALID_ERROR2("The value does not cover the full element %s\n",
 			    node->parent->name);
 		ret = -1;
 	    }
@@ -5369,7 +5393,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	     */
 	    if ((node != NULL) && (node->next != NULL)) {
 		VALID_CTXT();
-		VALID_ERROR("The list does not cover the full element %s\n",
+		VALID_ERROR2("The list does not cover the full element %s\n",
 			    node->parent->name);
 		ret = -1;
 	    }
@@ -5469,6 +5493,8 @@ xmlRelaxNGNewValidCtxt(xmlRelaxNGPtr schema) {
     }
     memset(ret, 0, sizeof(xmlRelaxNGValidCtxt));
     ret->schema = schema;
+    ret->error = xmlGenericError;
+    ret->userData = xmlGenericErrorContext;
     return (ret);
 }
 

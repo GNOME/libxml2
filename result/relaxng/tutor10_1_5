@@ -1,3 +1,1 @@
-Expecting element foo has wrong namespace: expecting http://www.example.com
-extra data on the document
 ./test/relaxng/tutor10_1_5.xml fails to validate

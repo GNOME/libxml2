@@ -1,3 +1,14 @@
+Mon Feb 10 15:24:47 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* test/relaxng/OASIS/spectest.xml: OASIS RelaxNG testsuite
+	* check-relaxng-test-suite.py: python script to run regression
+	  against OASIS RelaxNG testsuite
+	* relaxng.c: some cleanup tweaks
+	* HTMLparser.c globals.c: cleanups in comments
+	* doc/libxml2-api.xml: updated the API
+	* result/relaxng/*: errors moved files, so large diffs but
+	  no changes at the semantic level.
+
 Mon Feb 10 01:00:31 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixing #105678 problem when dumping a namespace node.

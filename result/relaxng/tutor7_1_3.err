@@ -1,3 +1,6 @@
-error detected at relaxng.c:4385
-error detected at relaxng.c:5360
-error detected at relaxng.c:5143
+error detected at relaxng.c:4406
+Extra data in list: 5.6
+error detected at relaxng.c:5384
+internal error validating list
+error detected at relaxng.c:5164
+Extra content for element vector: text

@@ -1,2 +1,4 @@
-error detected at relaxng.c:4360
-error detected at relaxng.c:5360
+error detected at relaxng.c:4381
+Internal: no state
+error detected at relaxng.c:5384
+internal error validating list

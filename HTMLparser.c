@@ -5529,8 +5529,8 @@ htmlAttrAllowed(const htmlElemDesc* elt, const xmlChar* attr, int legacy) {
 }
 /**
  * htmlNodeStatus:
- * @node - an htmlNodePtr in a tree
- * @legacy - whether to allow deprecated elements (YES is faster here
+ * @node: an htmlNodePtr in a tree
+ * @legacy: whether to allow deprecated elements (YES is faster here
  *	for Element nodes)
  *
  * Checks whether the tree node is valid.  Experimental (the author

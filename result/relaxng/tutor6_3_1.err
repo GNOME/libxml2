@@ -1,1 +1,2 @@
-error detected at relaxng.c:5156
+error detected at relaxng.c:5177
+Invalid attribute preferredFormat for element card

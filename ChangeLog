@@ -1,3 +1,10 @@
+Mon Nov 11 20:47:03 MST 2002 John Fleck <jfleck@inkstain.net>
+
+	adding pdf of tutorial, changing web page to link to it
+	* doc/tutorial/xmltutorial.pdf
+	* doc/xml.html
+	* doc/docs.html
+
 Sun Nov 10 20:48:57 MST 2002 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial/ar01s08.html

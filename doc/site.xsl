@@ -387,7 +387,7 @@
       <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
       <li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li>
       <li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li>
-      <li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
+      <li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml2">Bug Tracker</a></li>
     </ul>
   </xsl:variable>
   <xsl:template name="toc">

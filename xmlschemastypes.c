@@ -3528,7 +3528,8 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
 		    	len = xmlSchemaNormLen(value);
 		    	break;
 		    case XML_SCHEMAS_STRING:
-		    	len = xmlUTF8Strlen(value);
+		        if (value != NULL)
+			    len = xmlUTF8Strlen(value);
 		    	break;
 		    default:
 		        TODO

@@ -1,3 +1,9 @@
+Tue Feb  3 09:53:18 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemastypes.c: fixed validation of maxLength with no
+	  content using patch submitted by Eric Haszlakiewicz
+	  (bug 133259)
+
 Tue Feb  3 09:21:09 CET 2004 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* include/libxml/xmlreader.h include/libxml/xmlmemory.h: added

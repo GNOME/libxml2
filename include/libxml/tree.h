@@ -465,7 +465,7 @@ xmlChar *	xmlGetProp		(xmlNodePtr node,
 					 const xmlChar *name);
 xmlChar *	xmlGetNsProp		(xmlNodePtr node,
 					 const xmlChar *name,
-					 const xmlChar *namespace);
+					 const xmlChar *nameSpace);
 xmlNodePtr	xmlStringGetNodeList	(xmlDocPtr doc,
 					 const xmlChar *value);
 xmlNodePtr	xmlStringLenGetNodeList	(xmlDocPtr doc,

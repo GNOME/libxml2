@@ -93,7 +93,7 @@ void		setNamespace			(void *ctx,
 						 const xmlChar *name);
 xmlNsPtr	getNamespace			(void *ctx);
 int		checkNamespace			(void *ctx,
-						 xmlChar *namespace);
+						 xmlChar *nameSpace);
 void		namespaceDecl			(void *ctx,
 						 const xmlChar *href,
 						 const xmlChar *prefix);

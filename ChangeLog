@@ -1,3 +1,8 @@
+Tue Dec 14 20:30:34 PST 1999 Ramiro Estrugo <ramiro@eazel.com>
+
+	* SAX.h, tree.h : changed 'namespace' to 'nameSpace' to workaround
+	c++ losage.
+
 Sun Dec 12 13:08:15 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in, doc/xml.html : bumped to 1.8.0

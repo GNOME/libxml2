@@ -1,3 +1,8 @@
+Thu Jul  5 00:04:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: improved the description of a couple of interfaces
+	  upon Larry Stamper suggestion
+
 Wed Jul  4 21:42:24 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* SAX.c entities.c parser.c: changed completely the way entities

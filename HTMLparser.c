@@ -4737,11 +4737,12 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
  * @sax:  the SAX handler block
  * @userData: if using SAX, this pointer will be provided on callbacks. 
  *
- * parse an HTML in-memory document and build a tree.
- * It use the given SAX function block to handle the parsing callback.
- * If sax is NULL, fallback to the default DOM tree building routines.
+ * Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks
+ * to handle parse events. If sax is NULL, fallback to the default DOM
+ * behavior and return a tree.
  * 
- * Returns the resulting document tree
+ * Returns the resulting document tree unless SAX is NULL or the document is
+ *     not well formed.
  */
 
 htmlDocPtr
@@ -4862,7 +4863,8 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
  * It use the given SAX function block to handle the parsing callback.
  * If sax is NULL, fallback to the default DOM tree building routines.
  *
- * Returns the resulting document tree
+ * Returns the resulting document tree unless SAX is NULL or the document is
+ *     not well formed.
  */
 
 htmlDocPtr

@@ -74,8 +74,7 @@
 #define xmlRegisterDefaultOutputCallbacks xmlRegisterDefOutputCallbacks
 #endif
 
-/* #define VERBOSE_FAILURE */
-/* #define DEBUG_EXTERNAL_ENTITIES */
+#define DEBUG_EXTERNAL_ENTITIES 
 /* #define DEBUG_INPUT */
 
 #ifdef DEBUG_INPUT
@@ -1594,7 +1593,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 
 #ifdef DEBUG_EXTERNAL_ENTITIES
     xmlGenericError(xmlGenericErrorContext,
-	    "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
+	    "xmlDefaultExternalEntityLoader(%s, %s)\n", URL, ID);
 #endif
 #ifdef LIBXML_CATALOG_ENABLED
     /*

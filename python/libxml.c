@@ -1378,7 +1378,7 @@ libxml_xmlSAXParseFile(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     SAX = &pythonSaxHandler;
     Py_INCREF(pyobj_SAX);
     /* The reference is released in pythonEndDocument() */
-    xmlSAXParseFileWithData(SAX, URI, recover, pyobj_SAX);
+    xmlSAXUserParseFile(SAX, pyobj_SAX, URI);
     Py_INCREF(Py_None);
     return (Py_None);
 }

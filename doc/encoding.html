@@ -241,6 +241,21 @@ machine with glibc-2.1 the list of supported encodings and aliases fill 3 full
 pages, and include UCS-4, the full set of ISO-Latin encodings, and the various
 Japanese ones.</p>
 
+<h3>Encoding aliases</h3>
+
+<p>From 2.2.3, libxml has support to register encoding names aliases. The goal
+is to be able to parse document whose encoding is supported but where the name
+differs (for example from the default set of names accepted by iconv). The
+following functions allow to register and handle new aliases for existing
+encodings. Once registered libxml will automatically lookup the aliases when
+handling a document:</p>
+<ul>
+  <li>int xmlAddEncodingAlias(const char *name, const char *alias);</li>
+  <li>int xmlDelEncodingAlias(const char *alias);</li>
+  <li>const char * xmlGetEncodingAlias(const char *alias);</li>
+  <li>void xmlCleanupEncodingAliases(void);</li>
+</ul>
+
 <h2><a name="extend">How to extend the existing support</a></h2>
 
 <p>Well adding support for new encoding, or overriding one of the encoders

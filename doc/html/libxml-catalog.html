@@ -257,6 +257,10 @@ HREF="libxml-tree.html#XMLDOCPTR"
 HREF="libxml-catalog.html#XMLPARSECATALOGFILE"
 >xmlParseCatalogFile</A
 >             (const char *filename);
+int         <A
+HREF="libxml-catalog.html#XMLCATALOGCONVERT"
+>xmlCatalogConvert</A
+>               (void);
 void        <A
 HREF="libxml-catalog.html#XMLCATALOGFREELOCAL"
 >xmlCatalogFreeLocal</A
@@ -350,7 +354,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN18748"
+NAME="AEN18749"
 ></A
 ><H2
 >Description</H2
@@ -360,14 +364,14 @@ NAME="AEN18748"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN18751"
+NAME="AEN18752"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18753"
+NAME="AEN18754"
 ></A
 ><H3
 ><A
@@ -395,7 +399,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18759"
+NAME="AEN18760"
 ></A
 ><H3
 ><A
@@ -421,7 +425,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18764"
+NAME="AEN18765"
 ></A
 ><H3
 ><A
@@ -451,7 +455,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18769"
+NAME="AEN18770"
 ></A
 ><H3
 ><A
@@ -482,7 +486,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18774"
+NAME="AEN18775"
 ></A
 ><H3
 ><A
@@ -512,7 +516,7 @@ preferably be done once at startup</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18780"
+NAME="AEN18781"
 ></A
 ><H3
 ><A
@@ -534,7 +538,7 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 >Load the catalog and makes its definitions effective for the default
-external entity loader. It will recuse in CATALOG entries.
+external entity loader. It will recurse in SGML CATALOG entries.
 TODO: this function is not thread safe, catalog initialization should
 preferably be done once at startup</P
 ><P
@@ -542,7 +546,7 @@ preferably be done once at startup</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18786"
+NAME="AEN18787"
 ></A
 ><P
 ></P
@@ -595,7 +599,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18799"
+NAME="AEN18800"
 ></A
 ><H3
 ><A
@@ -625,7 +629,7 @@ preferably be done once at startup</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18805"
+NAME="AEN18806"
 ></A
 ><P
 ></P
@@ -663,7 +667,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18814"
+NAME="AEN18815"
 ></A
 ><H3
 ><A
@@ -691,7 +695,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18820"
+NAME="AEN18821"
 ></A
 ><H3
 ><A
@@ -721,7 +725,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18827"
+NAME="AEN18828"
 ></A
 ><P
 ></P
@@ -759,7 +763,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18836"
+NAME="AEN18837"
 ></A
 ><H3
 ><A
@@ -796,7 +800,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18845"
+NAME="AEN18846"
 ></A
 ><P
 ></P
@@ -867,7 +871,7 @@ by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18862"
+NAME="AEN18863"
 ></A
 ><H3
 ><A
@@ -900,7 +904,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18870"
+NAME="AEN18871"
 ></A
 ><P
 ></P
@@ -954,7 +958,7 @@ must be freed by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18883"
+NAME="AEN18884"
 ></A
 ><H3
 ><A
@@ -987,7 +991,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18891"
+NAME="AEN18892"
 ></A
 ><P
 ></P
@@ -1041,7 +1045,7 @@ must be freed by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18904"
+NAME="AEN18905"
 ></A
 ><H3
 ><A
@@ -1074,7 +1078,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18912"
+NAME="AEN18913"
 ></A
 ><P
 ></P
@@ -1128,7 +1132,7 @@ by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18925"
+NAME="AEN18926"
 ></A
 ><H3
 ><A
@@ -1167,7 +1171,7 @@ different entries.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18934"
+NAME="AEN18935"
 ></A
 ><P
 ></P
@@ -1254,7 +1258,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18955"
+NAME="AEN18956"
 ></A
 ><H3
 ><A
@@ -1284,7 +1288,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18962"
+NAME="AEN18963"
 ></A
 ><P
 ></P
@@ -1337,7 +1341,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18975"
+NAME="AEN18976"
 ></A
 ><H3
 ><A
@@ -1371,7 +1375,7 @@ except it bypass all catalog lookups.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18983"
+NAME="AEN18984"
 ></A
 ><P
 ></P
@@ -1424,7 +1428,70 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18996"
+NAME="AEN18997"
+></A
+><H3
+><A
+NAME="XMLCATALOGCONVERT"
+></A
+>xmlCatalogConvert ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlCatalogConvert               (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Convert all the SGML catalog entries as XML ones</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19003"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of entries converted if successful, -1 otherwise</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19012"
 ></A
 ><H3
 ><A
@@ -1451,7 +1518,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19002"
+NAME="AEN19018"
 ></A
 ><P
 ></P
@@ -1489,7 +1556,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19011"
+NAME="AEN19027"
 ></A
 ><H3
 ><A
@@ -1520,7 +1587,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19018"
+NAME="AEN19034"
 ></A
 ><P
 ></P
@@ -1575,7 +1642,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19031"
+NAME="AEN19047"
 ></A
 ><H3
 ><A
@@ -1614,7 +1681,7 @@ document's private catalog list</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19040"
+NAME="AEN19056"
 ></A
 ><P
 ></P
@@ -1702,7 +1769,7 @@ by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19061"
+NAME="AEN19077"
 ></A
 ><H3
 ><A
@@ -1737,7 +1804,7 @@ document's private catalog list</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19069"
+NAME="AEN19085"
 ></A
 ><P
 ></P
@@ -1808,7 +1875,7 @@ by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19086"
+NAME="AEN19102"
 ></A
 ><H3
 ><A
@@ -1836,7 +1903,7 @@ debugging, 1 enable it</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19092"
+NAME="AEN19108"
 ></A
 ><P
 ></P
@@ -1889,7 +1956,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19105"
+NAME="AEN19121"
 ></A
 ><H3
 ><A
@@ -1924,7 +1991,7 @@ Values accepted are XML_CATA_PREFER_PUBLIC or XML_CATA_PREFER_SYSTEM</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19113"
+NAME="AEN19129"
 ></A
 ><P
 ></P
@@ -1977,7 +2044,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19126"
+NAME="AEN19142"
 ></A
 ><H3
 ><A
@@ -2008,7 +2075,7 @@ be accepted</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19133"
+NAME="AEN19149"
 ></A
 ><P
 ></P
@@ -2046,7 +2113,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19142"
+NAME="AEN19158"
 ></A
 ><H3
 ><A
@@ -2077,7 +2144,7 @@ be accepted</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19149"
+NAME="AEN19165"
 ></A
 ><P
 ></P
@@ -2113,7 +2180,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19158"
+NAME="AEN19174"
 ></A
 ><H3
 ><A
@@ -2150,7 +2217,7 @@ HREF="libxml-catalog.html#XMLCATALOGRESOLVESYSTEM"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19167"
+NAME="AEN19183"
 ></A
 ><P
 ></P
@@ -2203,7 +2270,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19180"
+NAME="AEN19196"
 ></A
 ><H3
 ><A
@@ -2240,7 +2307,7 @@ HREF="libxml-catalog.html#XMLCATALOGRESOLVEPUBLIC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19189"
+NAME="AEN19205"
 ></A
 ><P
 ></P

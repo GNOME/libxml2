@@ -1,3 +1,8 @@
+Wed Sep 12 20:49:32 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: preparing for 2.4.4
+	* doc/xml.html doc/html/*: updated and rebuilt the docs
+
 Wed Sep 12 16:58:16 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* win32/dsp/libxml2.def.src: tried to incorporate comments

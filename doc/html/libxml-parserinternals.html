@@ -122,7 +122,7 @@ NAME="LIBXML-PARSERINTERNALS"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN19593"
+NAME="AEN19609"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN19593"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN19596"
+NAME="AEN19612"
 ></A
 ><H2
 >Synopsis</H2
@@ -1131,7 +1131,7 @@ HREF="libxml-parserinternals.html#HTMLCREATEFILEPARSERCTXT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN19871"
+NAME="AEN19887"
 ></A
 ><H2
 >Description</H2
@@ -1141,14 +1141,14 @@ NAME="AEN19871"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN19874"
+NAME="AEN19890"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19876"
+NAME="AEN19892"
 ></A
 ><H3
 ><A
@@ -1177,7 +1177,7 @@ at runtime.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19882"
+NAME="AEN19898"
 ></A
 ><H3
 ><A
@@ -1206,7 +1206,7 @@ one of the point is providing context when reporting errors</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19888"
+NAME="AEN19904"
 ></A
 ><H3
 ><A
@@ -1264,7 +1264,7 @@ any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN19904"
+NAME="AEN19920"
 ></A
 ><P
 ></P
@@ -1302,7 +1302,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN19913"
+NAME="AEN19929"
 ></A
 ><H3
 ><A
@@ -1338,73 +1338,6 @@ HREF="XD"
 HREF="XA"
 >xA</GTKDOCLINK
 >)+</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN19924"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->c</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an UNICODE value (int)</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN19933"
-></A
-><H3
-><A
-NAME="IS-BASECHAR-CAPS"
-></A
->IS_BASECHAR()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define IS_BASECHAR(c) xmlIsBaseChar(c)</PRE
-></TD
-></TR
-></TABLE
-><P
->Macro to check the following production in the XML spec</P
-><P
->[85] BaseChar ::= ... long list see REC ...</P
 ><P
 ></P
 ><DIV
@@ -1452,9 +1385,9 @@ NAME="AEN19949"
 ></A
 ><H3
 ><A
-NAME="IS-DIGIT-CAPS"
+NAME="IS-BASECHAR-CAPS"
 ></A
->IS_DIGIT()</H3
+>IS_BASECHAR()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1464,14 +1397,14 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define IS_DIGIT(c) xmlIsDigit(c)</PRE
+>#define IS_BASECHAR(c) xmlIsBaseChar(c)</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
 >Macro to check the following production in the XML spec</P
 ><P
->[88] Digit ::= ... long list see REC ...</P
+>[85] BaseChar ::= ... long list see REC ...</P
 ><P
 ></P
 ><DIV
@@ -1519,9 +1452,9 @@ NAME="AEN19965"
 ></A
 ><H3
 ><A
-NAME="IS-COMBINING-CAPS"
+NAME="IS-DIGIT-CAPS"
 ></A
->IS_COMBINING()</H3
+>IS_DIGIT()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1531,14 +1464,14 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define IS_COMBINING(c) xmlIsCombining(c)</PRE
+>#define IS_DIGIT(c) xmlIsDigit(c)</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
 >Macro to check the following production in the XML spec</P
 ><P
->[87] CombiningChar ::= ... long list see REC ...</P
+>[88] Digit ::= ... long list see REC ...</P
 ><P
 ></P
 ><DIV
@@ -1583,6 +1516,73 @@ VALIGN="TOP"
 CLASS="REFSECT2"
 ><A
 NAME="AEN19981"
+></A
+><H3
+><A
+NAME="IS-COMBINING-CAPS"
+></A
+>IS_COMBINING()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define IS_COMBINING(c) xmlIsCombining(c)</PRE
+></TD
+></TR
+></TABLE
+><P
+>Macro to check the following production in the XML spec</P
+><P
+>[87] CombiningChar ::= ... long list see REC ...</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN19988"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an UNICODE value (int)</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19997"
 ></A
 ><H3
 ><A
@@ -1655,7 +1655,7 @@ HREF="X30FE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20002"
+NAME="AEN20018"
 ></A
 ><P
 ></P
@@ -1693,7 +1693,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20011"
+NAME="AEN20027"
 ></A
 ><H3
 ><A
@@ -1732,73 +1732,6 @@ HREF="X3021-"
 HREF="X3029"
 >x3029</GTKDOCLINK
 >]</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN20023"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->c</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an UNICODE value (int)</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN20032"
-></A
-><H3
-><A
-NAME="IS-LETTER-CAPS"
-></A
->IS_LETTER()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))</PRE
-></TD
-></TR
-></TABLE
-><P
->Macro to check the following production in the XML spec</P
-><P
->[84] Letter ::= BaseChar | Ideographic</P
 ><P
 ></P
 ><DIV
@@ -1846,9 +1779,9 @@ NAME="AEN20048"
 ></A
 ><H3
 ><A
-NAME="IS-PUBIDCHAR-CAPS"
+NAME="IS-LETTER-CAPS"
 ></A
->IS_PUBIDCHAR()</H3
+>IS_LETTER()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1858,29 +1791,20 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define IS_PUBIDCHAR(c)	xmlIsPubidChar(c)</PRE
+>#define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
 >Macro to check the following production in the XML spec</P
 ><P
->[13] PubidChar ::= <GTKDOCLINK
-HREF="X20"
->x20</GTKDOCLINK
-> | <GTKDOCLINK
-HREF="XD"
->xD</GTKDOCLINK
-> | <GTKDOCLINK
-HREF="XA"
->xA</GTKDOCLINK
-> | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]</P
+>[84] Letter ::= BaseChar | Ideographic</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20058"
+NAME="AEN20055"
 ></A
 ><P
 ></P
@@ -1918,7 +1842,83 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20067"
+NAME="AEN20064"
+></A
+><H3
+><A
+NAME="IS-PUBIDCHAR-CAPS"
+></A
+>IS_PUBIDCHAR()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define IS_PUBIDCHAR(c)	xmlIsPubidChar(c)</PRE
+></TD
+></TR
+></TABLE
+><P
+>Macro to check the following production in the XML spec</P
+><P
+>[13] PubidChar ::= <GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XD"
+>xD</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XA"
+>xA</GTKDOCLINK
+> | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN20074"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an UNICODE value (int)</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN20083"
 ></A
 ><H3
 ><A
@@ -1945,7 +1945,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20073"
+NAME="AEN20089"
 ></A
 ><P
 ></P
@@ -1983,7 +1983,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20082"
+NAME="AEN20098"
 ></A
 ><H3
 ><A
@@ -2010,7 +2010,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20088"
+NAME="AEN20104"
 ></A
 ><P
 ></P
@@ -2048,7 +2048,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20097"
+NAME="AEN20113"
 ></A
 ><H3
 ><A
@@ -2075,7 +2075,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20103"
+NAME="AEN20119"
 ></A
 ><P
 ></P
@@ -2113,7 +2113,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20112"
+NAME="AEN20128"
 ></A
 ><H3
 ><A
@@ -2155,7 +2155,7 @@ HREF="X"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20122"
+NAME="AEN20138"
 ></A
 ><P
 ></P
@@ -2208,7 +2208,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20135"
+NAME="AEN20151"
 ></A
 ><H3
 ><A
@@ -2252,7 +2252,7 @@ HREF="libxml-parserinternals.html#IS-BLANK-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20146"
+NAME="AEN20162"
 ></A
 ><P
 ></P
@@ -2305,7 +2305,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20159"
+NAME="AEN20175"
 ></A
 ><H3
 ><A
@@ -2342,7 +2342,7 @@ HREF="XA"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20168"
+NAME="AEN20184"
 ></A
 ><P
 ></P
@@ -2395,7 +2395,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20181"
+NAME="AEN20197"
 ></A
 ><H3
 ><A
@@ -2423,7 +2423,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20187"
+NAME="AEN20203"
 ></A
 ><P
 ></P
@@ -2476,7 +2476,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20200"
+NAME="AEN20216"
 ></A
 ><H3
 ><A
@@ -2504,7 +2504,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20206"
+NAME="AEN20222"
 ></A
 ><P
 ></P
@@ -2557,7 +2557,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20219"
+NAME="AEN20235"
 ></A
 ><H3
 ><A
@@ -2600,7 +2600,7 @@ HREF="X3029"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20230"
+NAME="AEN20246"
 ></A
 ><P
 ></P
@@ -2653,7 +2653,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20243"
+NAME="AEN20259"
 ></A
 ><H3
 ><A
@@ -2681,7 +2681,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20249"
+NAME="AEN20265"
 ></A
 ><P
 ></P
@@ -2734,7 +2734,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20262"
+NAME="AEN20278"
 ></A
 ><H3
 ><A
@@ -2806,7 +2806,7 @@ HREF="X30FE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20282"
+NAME="AEN20298"
 ></A
 ><P
 ></P
@@ -2859,7 +2859,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20295"
+NAME="AEN20311"
 ></A
 ><H3
 ><A
@@ -2920,7 +2920,7 @@ HREF="libxml-parserinternals.html#IS-CHAR-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20311"
+NAME="AEN20327"
 ></A
 ><P
 ></P
@@ -2973,7 +2973,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20324"
+NAME="AEN20340"
 ></A
 ><H3
 ><A
@@ -3006,7 +3006,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20332"
+NAME="AEN20348"
 ></A
 ><P
 ></P
@@ -3059,7 +3059,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20345"
+NAME="AEN20361"
 ></A
 ><H3
 ><A
@@ -3091,7 +3091,7 @@ by default if found at compile-time.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20352"
+NAME="AEN20368"
 ></A
 ><P
 ></P
@@ -3144,7 +3144,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20365"
+NAME="AEN20381"
 ></A
 ><H3
 ><A
@@ -3175,7 +3175,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20372"
+NAME="AEN20388"
 ></A
 ><P
 ></P
@@ -3245,7 +3245,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20389"
+NAME="AEN20405"
 ></A
 ><H3
 ><A
@@ -3275,7 +3275,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20396"
+NAME="AEN20412"
 ></A
 ><P
 ></P
@@ -3311,7 +3311,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20405"
+NAME="AEN20421"
 ></A
 ><H3
 ><A
@@ -3354,7 +3354,7 @@ by default if found at compile-time.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20415"
+NAME="AEN20431"
 ></A
 ><P
 ></P
@@ -3441,7 +3441,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20436"
+NAME="AEN20452"
 ></A
 ><H3
 ><A
@@ -3476,7 +3476,7 @@ of a given entity.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20444"
+NAME="AEN20460"
 ></A
 ><P
 ></P
@@ -3546,7 +3546,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20461"
+NAME="AEN20477"
 ></A
 ><H3
 ><A
@@ -3581,7 +3581,7 @@ of a given entity.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20469"
+NAME="AEN20485"
 ></A
 ><P
 ></P
@@ -3651,7 +3651,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20486"
+NAME="AEN20502"
 ></A
 ><H3
 ><A
@@ -3682,7 +3682,7 @@ document in ctxt-&gt;myDoc is not freed.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20493"
+NAME="AEN20509"
 ></A
 ><P
 ></P
@@ -3720,7 +3720,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20502"
+NAME="AEN20518"
 ></A
 ><H3
 ><A
@@ -3757,7 +3757,7 @@ stream ? When do we just handle that as a set of chars ?</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20511"
+NAME="AEN20527"
 ></A
 ><P
 ></P
@@ -3812,7 +3812,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20524"
+NAME="AEN20540"
 ></A
 ><H3
 ><A
@@ -3849,7 +3849,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20533"
+NAME="AEN20549"
 ></A
 ><P
 ></P
@@ -3919,7 +3919,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20550"
+NAME="AEN20566"
 ></A
 ><H3
 ><A
@@ -3956,7 +3956,7 @@ HREF="libxml-entities.html#XMLENTITYPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20559"
+NAME="AEN20575"
 ></A
 ><P
 ></P
@@ -4026,7 +4026,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20576"
+NAME="AEN20592"
 ></A
 ><H3
 ><A
@@ -4061,7 +4061,7 @@ of the previous one(s).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20584"
+NAME="AEN20600"
 ></A
 ><P
 ></P
@@ -4116,7 +4116,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20597"
+NAME="AEN20613"
 ></A
 ><H3
 ><A
@@ -4150,7 +4150,7 @@ pop it and return the next char.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20605"
+NAME="AEN20621"
 ></A
 ><P
 ></P
@@ -4203,7 +4203,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20618"
+NAME="AEN20634"
 ></A
 ><H3
 ><A
@@ -4233,7 +4233,7 @@ HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20625"
+NAME="AEN20641"
 ></A
 ><P
 ></P
@@ -4271,7 +4271,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20634"
+NAME="AEN20650"
 ></A
 ><H3
 ><A
@@ -4305,7 +4305,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20642"
+NAME="AEN20658"
 ></A
 ><P
 ></P
@@ -4375,7 +4375,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20659"
+NAME="AEN20675"
 ></A
 ><H3
 ><A
@@ -4408,7 +4408,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20667"
+NAME="AEN20683"
 ></A
 ><P
 ></P
@@ -4461,7 +4461,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20680"
+NAME="AEN20696"
 ></A
 ><H3
 ><A
@@ -4508,7 +4508,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20693"
+NAME="AEN20709"
 ></A
 ><P
 ></P
@@ -4596,7 +4596,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20714"
+NAME="AEN20730"
 ></A
 ><H3
 ><A
@@ -4637,7 +4637,7 @@ CombiningChar | Extender</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20725"
+NAME="AEN20741"
 ></A
 ><P
 ></P
@@ -4690,7 +4690,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20738"
+NAME="AEN20754"
 ></A
 ><H3
 ><A
@@ -4736,7 +4736,7 @@ top of the SAX interfaces, i.e. not on raw input.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20751"
+NAME="AEN20767"
 ></A
 ><P
 ></P
@@ -4807,7 +4807,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20768"
+NAME="AEN20784"
 ></A
 ><H3
 ><A
@@ -4847,7 +4847,7 @@ top of the SAX interfaces, i.e. not on raw input.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20779"
+NAME="AEN20795"
 ></A
 ><P
 ></P
@@ -4900,7 +4900,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20792"
+NAME="AEN20808"
 ></A
 ><H3
 ><A
@@ -4935,7 +4935,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20801"
+NAME="AEN20817"
 ></A
 ><P
 ></P
@@ -4988,7 +4988,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20814"
+NAME="AEN20830"
 ></A
 ><H3
 ><A
@@ -5026,7 +5026,7 @@ if it was declared on the root of the Tree:-(</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20824"
+NAME="AEN20840"
 ></A
 ><P
 ></P
@@ -5064,7 +5064,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20833"
+NAME="AEN20849"
 ></A
 ><H3
 ><A
@@ -5108,7 +5108,7 @@ CombiningChar | Extender</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20845"
+NAME="AEN20861"
 ></A
 ><P
 ></P
@@ -5161,7 +5161,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20858"
+NAME="AEN20874"
 ></A
 ><H3
 ><A
@@ -5201,7 +5201,7 @@ CombiningChar | Extender</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20869"
+NAME="AEN20885"
 ></A
 ><P
 ></P
@@ -5254,7 +5254,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20882"
+NAME="AEN20898"
 ></A
 ><H3
 ><A
@@ -5291,7 +5291,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20892"
+NAME="AEN20908"
 ></A
 ><P
 ></P
@@ -5344,7 +5344,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20905"
+NAME="AEN20921"
 ></A
 ><H3
 ><A
@@ -5384,7 +5384,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20915"
+NAME="AEN20931"
 ></A
 ><P
 ></P
@@ -5454,7 +5454,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20932"
+NAME="AEN20948"
 ></A
 ><H3
 ><A
@@ -5544,7 +5544,7 @@ by a non-validating parser as if declared CDATA.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20953"
+NAME="AEN20969"
 ></A
 ><P
 ></P
@@ -5597,7 +5597,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20966"
+NAME="AEN20982"
 ></A
 ><H3
 ><A
@@ -5632,7 +5632,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20975"
+NAME="AEN20991"
 ></A
 ><P
 ></P
@@ -5685,7 +5685,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20988"
+NAME="AEN21004"
 ></A
 ><H3
 ><A
@@ -5720,7 +5720,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20997"
+NAME="AEN21013"
 ></A
 ><P
 ></P
@@ -5773,7 +5773,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21010"
+NAME="AEN21026"
 ></A
 ><H3
 ><A
@@ -5812,7 +5812,7 @@ string is not marking the end of a CDATA section. </P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21019"
+NAME="AEN21035"
 ></A
 ><P
 ></P
@@ -5867,7 +5867,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21032"
+NAME="AEN21048"
 ></A
 ><H3
 ><A
@@ -5913,7 +5913,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21044"
+NAME="AEN21060"
 ></A
 ><P
 ></P
@@ -6003,7 +6003,7 @@ it is possible to return NULL and have publicID set.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21065"
+NAME="AEN21081"
 ></A
 ><H3
 ><A
@@ -6037,7 +6037,7 @@ must not occur within comments. "</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21073"
+NAME="AEN21089"
 ></A
 ><P
 ></P
@@ -6075,7 +6075,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21082"
+NAME="AEN21098"
 ></A
 ><H3
 ><A
@@ -6110,7 +6110,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21091"
+NAME="AEN21107"
 ></A
 ><P
 ></P
@@ -6163,7 +6163,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21104"
+NAME="AEN21120"
 ></A
 ><H3
 ><A
@@ -6197,7 +6197,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21113"
+NAME="AEN21129"
 ></A
 ><P
 ></P
@@ -6235,7 +6235,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21122"
+NAME="AEN21138"
 ></A
 ><H3
 ><A
@@ -6277,7 +6277,7 @@ HREF="libxml-parserinternals.html#XMLPARSEEXTERNALID"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21133"
+NAME="AEN21149"
 ></A
 ><P
 ></P
@@ -6315,7 +6315,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21142"
+NAME="AEN21158"
 ></A
 ><H3
 ><A
@@ -6360,7 +6360,7 @@ The Name must match the declared name of a notation.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21156"
+NAME="AEN21172"
 ></A
 ><P
 ></P
@@ -6398,7 +6398,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21165"
+NAME="AEN21181"
 ></A
 ><H3
 ><A
@@ -6471,7 +6471,7 @@ HREF="libxml-parserinternals.html#XMLPARSEATTVALUE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21185"
+NAME="AEN21201"
 ></A
 ><P
 ></P
@@ -6542,7 +6542,7 @@ or XML_ATTRIBUTE_FIXED. </TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21202"
+NAME="AEN21218"
 ></A
 ><H3
 ><A
@@ -6583,7 +6583,7 @@ in the declaration; all notation names in the declaration must be declared.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21213"
+NAME="AEN21229"
 ></A
 ><P
 ></P
@@ -6636,7 +6636,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21226"
+NAME="AEN21242"
 ></A
 ><H3
 ><A
@@ -6675,7 +6675,7 @@ the declaration</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21236"
+NAME="AEN21252"
 ></A
 ><P
 ></P
@@ -6728,7 +6728,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21249"
+NAME="AEN21265"
 ></A
 ><H3
 ><A
@@ -6766,7 +6766,7 @@ HREF="libxml-tree.html#XMLENUMERATIONPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21259"
+NAME="AEN21275"
 ></A
 ><P
 ></P
@@ -6836,7 +6836,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21276"
+NAME="AEN21292"
 ></A
 ><H3
 ><A
@@ -6915,7 +6915,7 @@ of type NMTOKENS must match Nmtokens.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21297"
+NAME="AEN21313"
 ></A
 ><P
 ></P
@@ -6985,7 +6985,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21314"
+NAME="AEN21330"
 ></A
 ><H3
 ><A
@@ -7019,7 +7019,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21323"
+NAME="AEN21339"
 ></A
 ><P
 ></P
@@ -7057,7 +7057,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21332"
+NAME="AEN21348"
 ></A
 ><H3
 ><A
@@ -7107,7 +7107,7 @@ mixed-content declaration.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21345"
+NAME="AEN21361"
 ></A
 ><P
 ></P
@@ -7160,7 +7160,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21358"
+NAME="AEN21374"
 ></A
 ><H3
 ><A
@@ -7197,7 +7197,7 @@ HREF="libxml-parserinternals.html#XMLPARSEELEMENTCHILDRENCONTENTDECL"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21367"
+NAME="AEN21383"
 ></A
 ><P
 ></P
@@ -7251,7 +7251,7 @@ hierarchy.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21380"
+NAME="AEN21396"
 ></A
 ><H3
 ><A
@@ -7305,7 +7305,7 @@ the replacement text should be a connector (| or ,).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21393"
+NAME="AEN21409"
 ></A
 ><P
 ></P
@@ -7359,7 +7359,7 @@ hierarchy.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21406"
+NAME="AEN21422"
 ></A
 ><H3
 ><A
@@ -7400,7 +7400,7 @@ the cases EMPTY and ANY are handled directly in xmlParseElementDecl</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21416"
+NAME="AEN21432"
 ></A
 ><P
 ></P
@@ -7487,7 +7487,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21437"
+NAME="AEN21453"
 ></A
 ><H3
 ><A
@@ -7522,7 +7522,7 @@ No element type may be declared more than once</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21446"
+NAME="AEN21462"
 ></A
 ><P
 ></P
@@ -7575,7 +7575,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21459"
+NAME="AEN21475"
 ></A
 ><H3
 ><A
@@ -7621,7 +7621,7 @@ entities or to the external subset.)</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21469"
+NAME="AEN21485"
 ></A
 ><P
 ></P
@@ -7659,7 +7659,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21478"
+NAME="AEN21494"
 ></A
 ><H3
 ><A
@@ -7699,7 +7699,7 @@ production for Char.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21488"
+NAME="AEN21504"
 ></A
 ><P
 ></P
@@ -7752,7 +7752,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21501"
+NAME="AEN21517"
 ></A
 ><H3
 ><A
@@ -7805,7 +7805,7 @@ An entity reference must not contain the name of an unparsed entity</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21512"
+NAME="AEN21528"
 ></A
 ><P
 ></P
@@ -7858,7 +7858,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21525"
+NAME="AEN21541"
 ></A
 ><H3
 ><A
@@ -7899,7 +7899,7 @@ or if the parser was asked to switch to that mode.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21535"
+NAME="AEN21551"
 ></A
 ><P
 ></P
@@ -7937,7 +7937,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21544"
+NAME="AEN21560"
 ></A
 ><H3
 ><A
@@ -7990,7 +7990,7 @@ NOTE: misleading but this is handled.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21556"
+NAME="AEN21572"
 ></A
 ><P
 ></P
@@ -8028,7 +8028,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21565"
+NAME="AEN21581"
 ></A
 ><H3
 ><A
@@ -8065,7 +8065,7 @@ type of the root element.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21574"
+NAME="AEN21590"
 ></A
 ><P
 ></P
@@ -8103,7 +8103,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21583"
+NAME="AEN21599"
 ></A
 ><H3
 ><A
@@ -8163,7 +8163,7 @@ definition.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21600"
+NAME="AEN21616"
 ></A
 ><P
 ></P
@@ -8233,7 +8233,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21617"
+NAME="AEN21633"
 ></A
 ><H3
 ><A
@@ -8285,7 +8285,7 @@ empty-element tag. </P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21632"
+NAME="AEN21648"
 ></A
 ><P
 ></P
@@ -8338,7 +8338,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21645"
+NAME="AEN21661"
 ></A
 ><H3
 ><A
@@ -8374,7 +8374,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21655"
+NAME="AEN21671"
 ></A
 ><P
 ></P
@@ -8412,7 +8412,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21664"
+NAME="AEN21680"
 ></A
 ><H3
 ><A
@@ -8450,7 +8450,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21675"
+NAME="AEN21691"
 ></A
 ><P
 ></P
@@ -8488,7 +8488,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21684"
+NAME="AEN21700"
 ></A
 ><H3
 ><A
@@ -8520,7 +8520,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21692"
+NAME="AEN21708"
 ></A
 ><P
 ></P
@@ -8558,7 +8558,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21701"
+NAME="AEN21717"
 ></A
 ><H3
 ><A
@@ -8607,7 +8607,7 @@ been declared.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21711"
+NAME="AEN21727"
 ></A
 ><P
 ></P
@@ -8645,7 +8645,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21720"
+NAME="AEN21736"
 ></A
 ><H3
 ><A
@@ -8680,7 +8680,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21729"
+NAME="AEN21745"
 ></A
 ><P
 ></P
@@ -8733,7 +8733,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21742"
+NAME="AEN21758"
 ></A
 ><H3
 ><A
@@ -8770,7 +8770,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21752"
+NAME="AEN21768"
 ></A
 ><P
 ></P
@@ -8823,7 +8823,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21765"
+NAME="AEN21781"
 ></A
 ><H3
 ><A
@@ -8858,7 +8858,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21774"
+NAME="AEN21790"
 ></A
 ><P
 ></P
@@ -8911,7 +8911,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21787"
+NAME="AEN21803"
 ></A
 ><H3
 ><A
@@ -8948,7 +8948,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21797"
+NAME="AEN21813"
 ></A
 ><P
 ></P
@@ -9001,7 +9001,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21810"
+NAME="AEN21826"
 ></A
 ><H3
 ><A
@@ -9048,7 +9048,7 @@ within any instance of those types.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21819"
+NAME="AEN21835"
 ></A
 ><P
 ></P
@@ -9101,7 +9101,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21832"
+NAME="AEN21848"
 ></A
 ><H3
 ><A
@@ -9133,7 +9133,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21840"
+NAME="AEN21856"
 ></A
 ><P
 ></P
@@ -9171,7 +9171,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21849"
+NAME="AEN21865"
 ></A
 ><H3
 ><A
@@ -9205,7 +9205,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21858"
+NAME="AEN21874"
 ></A
 ><P
 ></P
@@ -9243,7 +9243,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21867"
+NAME="AEN21883"
 ></A
 ><H3
 ><A
@@ -9275,7 +9275,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21875"
+NAME="AEN21891"
 ></A
 ><P
 ></P
@@ -9313,7 +9313,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21884"
+NAME="AEN21900"
 ></A
 ><H3
 ><A
@@ -9355,7 +9355,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21895"
+NAME="AEN21911"
 ></A
 ><P
 ></P
@@ -9427,7 +9427,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21912"
+NAME="AEN21928"
 ></A
 ><H3
 ><A
@@ -9455,7 +9455,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21918"
+NAME="AEN21934"
 ></A
 ><H3
 ><A
@@ -9483,7 +9483,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21924"
+NAME="AEN21940"
 ></A
 ><H3
 ><A
@@ -9511,7 +9511,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21930"
+NAME="AEN21946"
 ></A
 ><H3
 ><A
@@ -9539,7 +9539,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21936"
+NAME="AEN21952"
 ></A
 ><H3
 ><A
@@ -9593,7 +9593,7 @@ through xmlStringDecodeEntities</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21950"
+NAME="AEN21966"
 ></A
 ><P
 ></P
@@ -9732,7 +9732,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21983"
+NAME="AEN21999"
 ></A
 ><H3
 ><A
@@ -9786,7 +9786,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21997"
+NAME="AEN22013"
 ></A
 ><P
 ></P
@@ -9925,7 +9925,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22030"
+NAME="AEN22046"
 ></A
 ><H3
 ><A
@@ -9959,7 +9959,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22038"
+NAME="AEN22054"
 ></A
 ><P
 ></P
@@ -10029,7 +10029,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22055"
+NAME="AEN22071"
 ></A
 ><H3
 ><A
@@ -10062,7 +10062,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22063"
+NAME="AEN22079"
 ></A
 ><P
 ></P
@@ -10115,7 +10115,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22076"
+NAME="AEN22092"
 ></A
 ><H3
 ><A
@@ -10149,7 +10149,7 @@ HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22084"
+NAME="AEN22100"
 ></A
 ><P
 ></P
@@ -10219,7 +10219,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22101"
+NAME="AEN22117"
 ></A
 ><H3
 ><A
@@ -10252,7 +10252,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22109"
+NAME="AEN22125"
 ></A
 ><P
 ></P
@@ -10305,7 +10305,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22122"
+NAME="AEN22138"
 ></A
 ><H3
 ><A
@@ -10338,7 +10338,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22130"
+NAME="AEN22146"
 ></A
 ><P
 ></P
@@ -10391,7 +10391,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22143"
+NAME="AEN22159"
 ></A
 ><H3
 ><A
@@ -10425,7 +10425,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22151"
+NAME="AEN22167"
 ></A
 ><P
 ></P
@@ -10495,7 +10495,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22168"
+NAME="AEN22184"
 ></A
 ><H3
 ><A
@@ -10526,7 +10526,7 @@ It pops up finished entities in the process if allowable at that point.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22175"
+NAME="AEN22191"
 ></A
 ><P
 ></P
@@ -10579,7 +10579,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22188"
+NAME="AEN22204"
 ></A
 ><H3
 ><A
@@ -10615,7 +10615,7 @@ bytes in the input buffer.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22196"
+NAME="AEN22212"
 ></A
 ><P
 ></P
@@ -10702,7 +10702,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22217"
+NAME="AEN22233"
 ></A
 ><H3
 ><A
@@ -10761,7 +10761,7 @@ i.e.
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22230"
+NAME="AEN22246"
 ></A
 ><P
 ></P
@@ -10799,7 +10799,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22239"
+NAME="AEN22255"
 ></A
 ><H3
 ><A
@@ -10856,7 +10856,7 @@ HREF="ENTPROC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22254"
+NAME="AEN22270"
 ></A
 ><P
 ></P
@@ -10894,7 +10894,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22263"
+NAME="AEN22279"
 ></A
 ><H3
 ><A
@@ -10934,7 +10934,7 @@ the XML Second edition.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22272"
+NAME="AEN22288"
 ></A
 ><P
 ></P
@@ -10987,7 +10987,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22285"
+NAME="AEN22301"
 ></A
 ><H3
 ><A
@@ -11041,7 +11041,7 @@ HREF="XA"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22297"
+NAME="AEN22313"
 ></A
 ><P
 ></P
@@ -11111,7 +11111,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22314"
+NAME="AEN22330"
 ></A
 ><H3
 ><A
@@ -11142,7 +11142,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22321"
+NAME="AEN22337"
 ></A
 ><P
 ></P
@@ -11212,7 +11212,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22338"
+NAME="AEN22354"
 ></A
 ><H3
 ><A
@@ -11244,7 +11244,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22345"
+NAME="AEN22361"
 ></A
 ><P
 ></P
@@ -11331,7 +11331,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22366"
+NAME="AEN22382"
 ></A
 ><H3
 ><A
@@ -11361,7 +11361,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22373"
+NAME="AEN22389"
 ></A
 ><P
 ></P
@@ -11399,7 +11399,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22382"
+NAME="AEN22398"
 ></A
 ><H3
 ><A
@@ -11429,7 +11429,7 @@ HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22389"
+NAME="AEN22405"
 ></A
 ><P
 ></P
@@ -11467,7 +11467,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22398"
+NAME="AEN22414"
 ></A
 ><H3
 ><A
@@ -11500,7 +11500,7 @@ case of use in multithreaded programs.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22405"
+NAME="AEN22421"
 ></A
 ><H3
 ><A
@@ -11533,7 +11533,7 @@ by default if found at compile-time.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22412"
+NAME="AEN22428"
 ></A
 ><P
 ></P

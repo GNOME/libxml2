@@ -7451,6 +7451,10 @@ xmlNodeDumpOutputInternal(xmlOutputBufferPtr buf, xmlDocPtr doc,
         xmlDtdDumpOutput(buf, (xmlDtdPtr) cur, encoding);
 	return;
     }
+    if (cur->type == XML_DOCUMENT_FRAG_NODE) {
+        xmlNodeListDumpOutput(buf, doc, cur->children, level, format, encoding);
+	return;
+    }
     if (cur->type == XML_ELEMENT_DECL) {
         xmlDumpElementDecl(buf->buffer, (xmlElementPtr) cur);
 	return;

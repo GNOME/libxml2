@@ -1,3 +1,8 @@
+Tue Oct 28 13:48:52 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fix bug #125047 about serializing when finding a 
+	  document fragment node.
+
 Mon Oct 27 11:11:29 EST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* testSAX.c: fix bug #125592 need a NULL check

@@ -220,7 +220,7 @@ xmlErrValidWarning(xmlValidCtxtPtr ctxt,
     void *data = NULL;
 
     if (ctxt != NULL) {
-        channel = ctxt->error;
+        channel = ctxt->warning;
         data = ctxt->userData;
 	/* Use the special values to detect if it is part of a parsing
 	   context */

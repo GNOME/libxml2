@@ -1,3 +1,8 @@
+Fri Dec 17 16:03:41 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* valid.c: changed xmlErrValidWarning to use ctxt->warning
+	  instead of ctxt->error for its reports (bug #160662)
+
 Fri Dec 17 14:52:17 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* python/generator.py: modified to allow the ns and nsDefs

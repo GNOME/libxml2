@@ -1,3 +1,9 @@
+Fri Jan  7 14:54:51 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* TODO: small update
+	* xmlregexp.c: trying to add an API to get useful error informations
+	  back from a failing regexp context.
+
 Thu Jan  6 17:35:41 HKT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: fixed problem with xmlXPathErr when error number

@@ -39,7 +39,7 @@ TODO:
 - Stricten the UTF8 conformance (Martin Duerst):
   http://www.w3.org/2001/06/utf-8-test/.
   The bad files are in http://www.w3.org/2001/06/utf-8-wrong/.
-  
+- xml:id normalized value
 
 TODO:
 =====

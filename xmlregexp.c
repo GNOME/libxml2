@@ -312,6 +312,13 @@ struct _xmlRegExecCtxt {
     const xmlChar *inputString; /* when operating on characters */
     xmlRegInputTokenPtr inputStack;/* when operating on strings */
 
+    /*
+     * error handling
+     */
+    int errStateNo;		/* the error state number */
+    xmlRegStatePtr errState;    /* the error state */
+    xmlChar *errString;		/* the string raising the error */
+    int *errCounts;		/* counters at the error state */
 };
 
 #define REGEXP_ALL_COUNTER	0x123456
@@ -2240,7 +2247,7 @@ static int
 xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
     xmlRegExecCtxt execval;
     xmlRegExecCtxtPtr exec = &execval;
-    int ret, codepoint, len;
+    int ret, codepoint = 0, len;
 
     exec->inputString = content;
     exec->index = 0;
@@ -2452,6 +2459,9 @@ progress:
  *	Progressive interface to the verifier one atom at a time	*
  * 									*
  ************************************************************************/
+#ifdef DEBUG_ERR
+static void testerr(xmlRegExecCtxtPtr exec);
+#endif
 
 /**
  * xmlRegNewExecCtxt:
@@ -2493,18 +2503,28 @@ xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {
     exec->callback = callback;
     exec->data = data;
     if (comp->nbCounters > 0) {
-	exec->counts = (int *) xmlMalloc(comp->nbCounters * sizeof(int));
+        /*
+	 * For error handling, exec->counts is allocated twice the size
+	 * the second half is used to store the data in case of rollback
+	 */
+	exec->counts = (int *) xmlMalloc(comp->nbCounters * sizeof(int)
+	                                 * 2);
 	if (exec->counts == NULL) {
 	    xmlRegexpErrMemory(NULL, "creating execution context");
 	    xmlFree(exec);
 	    return(NULL);
 	}
-        memset(exec->counts, 0, comp->nbCounters * sizeof(int));
-    } else
+        memset(exec->counts, 0, comp->nbCounters * sizeof(int) * 2);
+	exec->errCounts = &exec->counts[comp->nbCounters];
+    } else {
 	exec->counts = NULL;
+	exec->errCounts = NULL;
+    }
     exec->inputStackMax = 0;
     exec->inputStackNr = 0;
     exec->inputStack = NULL;
+    exec->errStateNo = -1;
+    exec->errString = NULL;
     return(exec);
 }
 
@@ -2540,6 +2560,8 @@ xmlRegFreeExecCtxt(xmlRegExecCtxtPtr exec) {
 	}
 	xmlFree(exec->inputStack);
     }
+    if (exec->errString != NULL)
+        xmlFree(exec->errString);
     xmlFree(exec);
 }
 
@@ -2687,7 +2709,14 @@ xmlRegCompactPushString(xmlRegExecCtxtPtr exec,
 #ifdef DEBUG_PUSH
     printf("failed to find a transition for %s on state %d\n", value, state);
 #endif
+    if (exec->errString != NULL)
+        xmlFree(exec->errString);
+    exec->errString = xmlStrdup(value);
+    exec->errStateNo = state;
     exec->status = -1;
+#ifdef DEBUG_ERR
+    testerr(exec);
+#endif
     return(-1);
 }
 
@@ -2996,6 +3025,15 @@ progress:
     if (exec->status == 0) {
         return(exec->state->type == XML_REGEXP_FINAL_STATE);
     }
+    if (exec->status < 0) {
+	if (exec->errString != NULL)
+	    xmlFree(exec->errString);
+	exec->errString = xmlStrdup(value);
+	exec->errState = exec->state;
+#ifdef DEBUG_ERR
+	testerr(exec);
+#endif
+    }
     return(exec->status);
 }
 
@@ -3054,6 +3092,100 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
         xmlFree(buf);
     return(ret);
 }
+
+/**
+ * xmlRegExecErrInfo:
+ * @exec: a regexp execution context generating an error
+ * @string: return value for the error string
+ * @nbval: pointer to the number of accepted values IN/OUT
+ * @values: pointer to the array of acceptable values
+ *
+ * Extract error informations from the regexp execution, the parameter
+ * @string will be updated with the value pushed and not accepted,
+ * the parameter @values must point to an array of @nbval string pointers
+ * on return nbval will contain the number of possible strings in that
+ * state and the @values array will be updated with them. The string values
+ * returned will be freed with the @exec context.
+ *
+ * Returns: 0 in case of success or -1 in case of error.
+ */
+int
+xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
+                  int *nbval, xmlChar **values) {
+    int maxval;
+
+    if (exec == NULL)
+        return(-1);
+    if (string != NULL) {
+        if (exec->status != 0)
+	    *string = exec->errString;
+	else
+	    *string = NULL;
+    }
+    if ((nbval == NULL) || (values == NULL) || (*nbval <= 0))
+        return(-1);
+    maxval = *nbval;
+    *nbval = 0;
+    if ((exec->comp != NULL) && (exec->comp->compact != NULL)) {
+        xmlRegexpPtr comp;
+	int target, i, state;
+
+        comp = exec->comp;
+        if (exec->errStateNo == -1) return(-1);
+	state = exec->errStateNo;
+	for (i = 0;(i < comp->nbstrings) && (*nbval < maxval);i++) {
+	    target = comp->compact[state * (comp->nbstrings + 1) + i + 1];
+	    if ((target > 0) && (target <= comp->nbstates)) {
+	        values[*nbval] = comp->stringMap[i];
+		(*nbval)++;
+	    }
+	}
+    } else {
+        int transno;
+	xmlRegTransPtr trans;
+	xmlRegAtomPtr atom;
+
+        if (exec->errState == NULL) return(-1);
+	for (transno = 0;
+	     (transno < exec->errState->nbTrans) && (*nbval < maxval);
+	     transno++) {
+	    trans = &exec->errState->trans[transno];
+	    if (trans->to < 0)
+		continue;
+	    atom = trans->atom;
+	    if ((atom == NULL) || (atom->valuep == NULL))
+		continue;
+	    if (trans->count == REGEXP_ALL_LAX_COUNTER) {
+	        TODO;
+	    } else if (trans->count == REGEXP_ALL_COUNTER) {
+	        TODO;
+	    } else if (trans->counter >= 0) {
+		xmlRegCounterPtr counter;
+		int count;
+
+		count = exec->counts[trans->counter];
+		counter = &exec->comp->counters[trans->counter];
+		if (count < counter->max) {
+		    values[*nbval] = (const xmlChar *) atom->valuep;
+		    (*nbval)++;
+		}
+	    } else {
+		values[*nbval] = (const xmlChar *) atom->valuep;
+		(*nbval)++;
+	    } 
+	}
+    }
+    return(0);
+}
+
+#ifdef DEBUG_ERR
+static void testerr(xmlRegExecCtxtPtr exec) {
+    const xmlChar *string;
+    const xmlChar *values[5];
+    int nb = 5;
+    xmlRegExecErrInfo(exec, &string, &nb, &values[0]);
+}
+#endif
 
 #if 0
 static int

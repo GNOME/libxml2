@@ -13,9 +13,8 @@
 #include "win32config.h"
 #else
 #include "config.h"
-#endif
-
 #include <libxml/xmlversion.h>
+#endif
 
 #ifdef WITHOUT_TRIO
 #include <stdio.h>

@@ -2726,13 +2726,13 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	CHECK_TYPE(XPATH_NUMBER);
 	number = valuePop(ctxt);
 	if (number != NULL)
-	    num = number->floatval;
+	    num = (int) number->floatval;
     }
     if (nargs >= 3) {
 	CHECK_TYPE(XPATH_NUMBER);
 	position = valuePop(ctxt);
 	if (position != NULL)
-	    pos = position->floatval;
+	    pos = (int) position->floatval;
     }
     CHECK_TYPE(XPATH_STRING);
     string = valuePop(ctxt);

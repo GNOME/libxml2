@@ -18,7 +18,7 @@
 */
 
 #define LIBXML2_COMPILING_MSCCDEF
-#include "../../include/libxml/xmlversion.h"
+#include "../../include/libxml/xmlwin32version.h"
 
 LIBRARY libxml2
 EXPORTS

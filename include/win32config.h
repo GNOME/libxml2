@@ -99,7 +99,7 @@ static int isnan (double d) {
 /* Microsoft's C runtime names all non-ANSI functions with a leading
    underscore. Since functionality is still the same, they can be used. */
 #ifdef _MSC_VER
-#include <libxml/xmlversion.h>
+#include <libxml/xmlwin32version.h>
 #ifndef WITH_TRIO
 #define snprintf _snprintf
 #define vsnprintf _vsnprintf

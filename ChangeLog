@@ -1,3 +1,9 @@
+Thu Jun 28 14:51:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpointer.c include/win32config.h win32/libxml2/libxml2.def.src
+	  libxml.h : Yon Derek provided a set of changes to compile from
+	  CVS on Windows/MSC
+
 Thu Jun 28 14:11:28 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixed UTF8 BOM support in push mode

@@ -1,3 +1,7 @@
+Wed Apr 11 13:50:42 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/xml.html: added 2.3.6 release
+
 Wed Apr 11 13:26:34 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: fixed xmlStringGetNodeList() to handle charrefs

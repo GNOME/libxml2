@@ -165,6 +165,9 @@ registerDefaultInputCallbacks()
 registerDefaultOutputCallbacks()
 registerHTTPPostCallbacks()
 
+# functions from module xmlreader
+newTextReaderFilename()
+
 # functions from module xmlregexp
 regexpCompile()
 
@@ -556,6 +559,30 @@ Class xmlAttr(xmlNode)
     freeProp()
     freePropList()
     removeProp()
+Class xmlTextReader()
+
+    # functions from module xmlreader
+    attributeCount()
+    baseUri()
+    close()
+    depth()
+    freeTextReader()
+    getAttribute()
+    getAttributeNo()
+    getAttributeNs()
+    hasAttributes()
+    hasValue()
+    isDefault()
+    isEmptyElement()
+    localName()
+    name()
+    namespaceUri()
+    nodeType()
+    prefix()
+    quoteChar()
+    read()
+    value()
+    xmlLang()
 Class xmlReg()
 
     # functions from module xmlregexp
@@ -730,6 +757,9 @@ Class inputBuffer(ioReadWrapper)
     grow()
     push()
     read()
+
+    # functions from module xmlreader
+    newTextReader()
 
 
 Class outputBuffer(ioWriteWrapper)

@@ -1769,7 +1769,8 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	    int first = CUR_SCHAR(cur, l);
 
 	    if (!IS_LETTER(first) && (first != '_')) {
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		if ((ctxt != NULL) && (ctxt->sax != NULL) &&
+		    (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
 			    "Name %s is not XML Namespace compliant\n",
 			             name);
@@ -1790,7 +1791,8 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	    
 	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
 	    if (buffer == NULL) {
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		if ((ctxt != NULL) && (ctxt->sax != NULL) &&
+	            (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
 				     "xmlSplitQName: out of memory\n");
 		return(NULL);
@@ -1802,7 +1804,8 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 		    buffer = (xmlChar *) xmlRealloc(buffer,
 						    max * sizeof(xmlChar));
 		    if (buffer == NULL) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			if ((ctxt != NULL) && (ctxt->sax != NULL) &&
+			    (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData,
 					     "xmlSplitQName: out of memory\n");
 			return(NULL);

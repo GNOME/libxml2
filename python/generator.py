@@ -271,6 +271,7 @@ py_types = {
     'xmlOutputBufferPtr': ('O', "outputBuffer", "xmlOutputBufferPtr", "xmlOutputBufferPtr"),
     'xmlParserInputBufferPtr': ('O', "inputBuffer", "xmlParserInputBufferPtr", "xmlParserInputBufferPtr"),
     'xmlRegexpPtr': ('O', "xmlReg", "xmlRegexpPtr", "xmlRegexpPtr"),
+    'xmlTextReaderPtr': ('O', "xmlTextReader", "xmlTextReaderPtr", "xmlTextReaderPtr"),
 }
 
 py_return_types = {
@@ -597,6 +598,7 @@ classes_type = {
     "xmlOutputBufferPtr": ("._o", "outputBuffer(_obj=%s)", "outputBuffer"),
     "xmlParserInputBufferPtr": ("._o", "inputBuffer(_obj=%s)", "inputBuffer"),
     "xmlRegexpPtr": ("._o", "xmlReg(_obj=%s)", "xmlReg"),
+    "xmlTextReaderPtr": ("._o", "xmlTextReader(_obj=%s)", "xmlTextReader"),
 }
 
 converter_type = {
@@ -624,6 +626,7 @@ classes_destructors = {
 #    "outputBuffer": "xmlOutputBufferClose",
     "inputBuffer": "xmlFreeParserInputBuffer",
     "xmlReg": "xmlRegFreeRegexp",
+    "xmlTextReader": "xmlFreeTextReader",
 }
 
 functions_noexcept = {
@@ -676,6 +679,9 @@ def nameFixup(name, classe, type, file):
         func = "regexp" + name[9:]
     elif name[0:6] == "xmlReg" and file == "xmlregexp":
         func = "regexp" + name[6:]
+    elif name[0:13] == "xmlTextReader" and file == "xmlreader":
+        func = name[13:]
+        func = string.lower(func[0:1]) + func[1:]
     elif name[0:11] == "xmlACatalog":
         func = name[11:]
         func = string.lower(func[0:1]) + func[1:]

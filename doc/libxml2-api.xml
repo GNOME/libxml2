@@ -1093,7 +1093,11 @@
      <exports symbol='xmlTextReader'/>
      <exports symbol='xmlTextReaderAttributeCount'/>
      <exports symbol='xmlTextReaderBaseUri'/>
+     <exports symbol='xmlTextReaderClose'/>
      <exports symbol='xmlTextReaderDepth'/>
+     <exports symbol='xmlTextReaderGetAttribute'/>
+     <exports symbol='xmlTextReaderGetAttributeNo'/>
+     <exports symbol='xmlTextReaderGetAttributeNs'/>
      <exports symbol='xmlTextReaderHasAttributes'/>
      <exports symbol='xmlTextReaderHasValue'/>
      <exports symbol='xmlTextReaderIsDefault'/>
@@ -7876,10 +7880,34 @@ actually an xmlCharEncoding'/>
       <return type='xmlChar *' info='the base URI or NULL if not available'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
+    <function name='xmlTextReaderClose' file='xmlreader'>
+      <info>This method releases any resources allocated by the current instance changes the state to Closed and close any underlying input.</info>
+      <return type='int' info='0 or -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
     <function name='xmlTextReaderDepth' file='xmlreader'>
       <info>The depth of the node in the tree.</info>
       <return type='int' info='the depth or -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderGetAttribute' file='xmlreader'>
+      <info>Provides the value of the attribute with the specified qualified name.</info>
+      <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='name' type='const xmlChar *' info='the qualified name of the attribute.'/>
+    </function>
+    <function name='xmlTextReaderGetAttributeNo' file='xmlreader'>
+      <info>Provides the value of the attribute with the specified index relative to the containing element.</info>
+      <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='no' type='int' info='the zero-based index of the attribute relative to the containing element'/>
+    </function>
+    <function name='xmlTextReaderGetAttributeNs' file='xmlreader'>
+      <info>Provides the value of the specified attribute</info>
+      <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='localName' type='const xmlChar *' info='the local name of the attribute.'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='the namespace URI of the attribute.'/>
     </function>
     <function name='xmlTextReaderHasAttributes' file='xmlreader'>
       <info>Whether the node has attributes.</info>

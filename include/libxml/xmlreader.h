@@ -49,6 +49,18 @@ xmlChar *	xmlTextReaderPrefix	(xmlTextReaderPtr reader);
 int		xmlTextReaderQuoteChar	(xmlTextReaderPtr reader);
 xmlChar *	xmlTextReaderValue	(xmlTextReaderPtr reader);
 xmlChar *	xmlTextReaderXmlLang	(xmlTextReaderPtr reader);
+
+/*
+ * Methods of the XmlTextReader
+ */
+int		xmlTextReaderClose		(xmlTextReaderPtr reader);
+xmlChar *	xmlTextReaderGetAttributeNo	(xmlTextReaderPtr reader,
+						 int no);
+xmlChar *	xmlTextReaderGetAttribute	(xmlTextReaderPtr reader,
+						 const xmlChar *name);
+xmlChar *	xmlTextReaderGetAttributeNs	(xmlTextReaderPtr reader,
+						 const xmlChar *localName,
+						 const xmlChar *namespaceURI);
 #ifdef __cplusplus
 }
 #endif

@@ -17,6 +17,26 @@
 #include <libxml/xmlunicode.h>
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlautomata.h>
+#include <libxml/xmlreader.h>
+
+/**
+ * ATTRIBUTE_UNUSED:
+ *
+ * Macro used to signal to GCC unused function parameters
+ * Repeated here since the definition is not available when
+ * compiled outside the libxml2 build tree.
+ */
+#ifdef __GNUC__
+#ifdef ATTRIBUTE_UNUSED
+#undef ATTRIBUTE_UNUSED
+#endif
+#include <ansidecl.h>
+#ifndef ATTRIBUTE_UNUSED
+#define ATTRIBUTE_UNUSED
+#endif
+#else
+#define ATTRIBUTE_UNUSED
+#endif
 
 #define PyxmlNode_Get(v) (((v) == Py_None) ? NULL : \
 	(((PyxmlNode_Object *)(v))->obj))
@@ -65,6 +85,14 @@ typedef struct {
     PyObject_HEAD
     xmlRegexpPtr obj;
 } PyxmlReg_Object;
+
+#define PyxmlTextReader_Get(v) (((v) == Py_None) ? NULL : \
+        (((PyxmlTextReader_Object *)(v))->obj))
+
+typedef struct {
+    PyObject_HEAD
+    xmlTextReaderPtr obj;
+} PyxmlTextReader_Object;
 
 #define PyURI_Get(v) (((v) == Py_None) ? NULL : \
 	(((PyURI_Object *)(v))->obj))
@@ -119,5 +147,6 @@ PyObject * libxml_xmlURIPtrWrap(xmlURIPtr uri);
 PyObject * libxml_xmlOutputBufferPtrWrap(xmlOutputBufferPtr buffer);
 PyObject * libxml_xmlParserInputBufferPtrWrap(xmlParserInputBufferPtr buffer);
 PyObject * libxml_xmlRegexpPtrWrap(xmlRegexpPtr regexp);
+PyObject * libxml_xmlTextReaderPtrWrap(xmlTextReaderPtr reader);
 
 xmlXPathObjectPtr libxml_xmlXPathObjectPtrConvert(PyObject * obj);

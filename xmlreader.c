@@ -53,7 +53,8 @@
 
 typedef enum {
     XML_TEXTREADER_MODE_NORMAL = 0,
-    XML_TEXTREADER_MODE_EOF = 1
+    XML_TEXTREADER_MODE_EOF = 1,
+    XML_TEXTREADER_MODE_CLOSED = 1
 } xmlTextReaderMode;
 
 typedef enum {
@@ -471,6 +472,163 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
     if ((reader->input != NULL)  && (reader->allocs & XML_TEXTREADER_INPUT))
 	xmlFreeParserInputBuffer(reader->input);
     xmlFree(reader);
+}
+
+/************************************************************************
+ *									*
+ *			Methods for XmlTextReader			*
+ *									*
+ ************************************************************************/
+/**
+ * xmlTextReaderClose:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * This method releases any resources allocated by the current instance
+ * changes the state to Closed and close any underlying input.
+ *
+ * Returns 0 or -1 in case of error
+ */
+int
+xmlTextReaderClose(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(-1);
+    reader->node = NULL;
+    reader->mode = XML_TEXTREADER_MODE_CLOSED;
+    if (reader->ctxt != NULL) {
+	if (reader->ctxt->myDoc != NULL) {
+	    xmlFreeDoc(reader->ctxt->myDoc);
+	    reader->ctxt->myDoc = NULL;
+	}
+	if (reader->allocs & XML_TEXTREADER_CTXT) {
+	    xmlFreeParserCtxt(reader->ctxt);
+	    reader->allocs -= XML_TEXTREADER_CTXT;
+	}
+    }
+    if (reader->sax != NULL) {
+        xmlFree(reader->sax);
+	reader->sax = NULL;
+    }
+    if ((reader->input != NULL)  && (reader->allocs & XML_TEXTREADER_INPUT)) {
+	xmlFreeParserInputBuffer(reader->input);
+	reader->allocs -= XML_TEXTREADER_INPUT;
+    }
+    return(0);
+}
+
+/**
+ * xmlTextReaderGetAttributeNo:
+ * @reader:  the xmlTextReaderPtr used
+ * @no: the zero-based index of the attribute relative to the containing element
+ *
+ * Provides the value of the attribute with the specified index relative
+ * to the containing element.
+ *
+ * Returns a string containing the value of the specified attribute, or NULL
+ *    in case of error. The string must be deallocated by the caller.
+ */
+xmlChar *
+xmlTextReaderGetAttributeNo(xmlTextReaderPtr reader, int no) {
+    xmlChar *ret;
+    int i;
+    xmlAttrPtr cur;
+    xmlNsPtr ns;
+
+    if (reader == NULL)
+	return(NULL);
+    if (reader->node == NULL)
+	return(NULL);
+    /* TODO: handle the xmlDecl */
+    if (reader->node->type != XML_ELEMENT_NODE) 
+	return(NULL);
+
+    ns = reader->node->nsDef;
+    for (i = 0;(i < no) && (ns != NULL);i++) {
+	ns = ns->next;
+    }
+    if (ns != NULL)
+	return(xmlStrdup(ns->href));
+
+    cur = reader->node->properties;
+    if (cur == NULL)
+	return(NULL);
+    for (;i < no;i++) {
+	cur = cur->next;
+	if (cur == NULL)
+	    return(NULL);
+    }
+    /* TODO walk the DTD if present */
+
+    ret = xmlNodeListGetString(reader->node->doc, cur->children, 1);
+    if (ret == NULL) return(xmlStrdup((xmlChar *)""));
+    return(ret);
+}
+
+/**
+ * xmlTextReaderGetAttribute:
+ * @reader:  the xmlTextReaderPtr used
+ * @name: the qualified name of the attribute.
+ *
+ * Provides the value of the attribute with the specified qualified name.
+ *
+ * Returns a string containing the value of the specified attribute, or NULL
+ *    in case of error. The string must be deallocated by the caller.
+ */
+xmlChar *
+xmlTextReaderGetAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
+    xmlChar *prefix = NULL;
+    xmlChar *localname;
+    xmlNsPtr ns;
+    xmlChar *ret = NULL;
+
+    if ((reader == NULL) || (name == NULL))
+	return(NULL);
+    if (reader->node == NULL)
+	return(NULL);
+
+    /* TODO: handle the xmlDecl */
+    if (reader->node->type != XML_ELEMENT_NODE)
+	return(NULL);
+
+    localname = xmlSplitQName2(name, &prefix);
+    if (localname == NULL)
+	return(xmlGetProp(reader->node, name));
+    
+    ns = xmlSearchNs(reader->node->doc, reader->node, prefix);
+    if (ns != NULL)
+        ret = xmlGetNsProp(reader->node, localname, ns->href);
+
+    if (localname != NULL)
+        xmlFree(localname);
+    if (prefix != NULL)
+        xmlFree(prefix);
+    return(ret);
+}
+
+
+/**
+ * xmlTextReaderGetAttributeNs:
+ * @reader:  the xmlTextReaderPtr used
+ * @localName: the local name of the attribute.
+ * @namespaceURI: the namespace URI of the attribute.
+ *
+ * Provides the value of the specified attribute
+ *
+ * Returns a string containing the value of the specified attribute, or NULL
+ *    in case of error. The string must be deallocated by the caller.
+ */
+xmlChar *
+xmlTextReaderGetAttributeNs(xmlTextReaderPtr reader, const xmlChar *localName,
+			    const xmlChar *namespaceURI) {
+    if ((reader == NULL) || (localName == NULL))
+	return(NULL);
+    if (reader->node == NULL)
+	return(NULL);
+
+    /* TODO: handle the xmlDecl */
+    if (reader->node->type != XML_ELEMENT_NODE)
+	return(NULL);
+
+    return(xmlGetNsProp(reader->node, localName, namespaceURI));
 }
 
 /************************************************************************

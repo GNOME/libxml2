@@ -1,3 +1,13 @@
+Sat Dec 14 23:57:39 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c doc/libxml2-api.xml: added the close and getattribute
+	  methods of XmlTextReader.
+	* python/generator.py python/libxml_wrap.h python/types.c 
+	  python/libxml2class.txt: added the reader to the Python bindings
+	* python/tests/Makefile.am python/tests/reader.py: added a specific
+	  test for the Python bindings of the Reader APIs
+	* parser.c: small cleanup.
+
 Fri Dec 13 11:39:44 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: fallback was only copying the first child not the

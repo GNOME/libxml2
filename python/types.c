@@ -547,3 +547,21 @@ libxml_xmlRegexpPtrWrap(xmlRegexpPtr regexp)
                                      (char *) "xmlRegexpPtr", NULL);
     return (ret);
 }
+
+PyObject *
+libxml_xmlTextReaderPtrWrap(xmlTextReaderPtr reader)
+{
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlTextReaderPtrWrap: reader = %p\n", reader);
+#endif
+    if (reader == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+    ret =
+        PyCObject_FromVoidPtrAndDesc((void *) reader,
+                                     (char *) "xmlTextReaderPtr", NULL);
+    return (ret);
+}

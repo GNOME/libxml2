@@ -1,3 +1,9 @@
+Sat Dec 25 18:10:02 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* parserInternals.c: fixed to skip (if necessary) the BOM for
+	  encoding 'utf-16'.  Completes the fix for bug #152286.
+	* tree.c, parser.c: minor warning cleanup, no change to logic
+	
 Fri Dec 24 16:31:22 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* python/generator.py: added most required entires to

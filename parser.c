@@ -57,7 +57,10 @@
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
 #endif
-
+#ifdef LIBXML_SCHEMAS_ENABLED
+#include <libxml/xmlschemastypes.h>
+#include <libxml/relaxng.h>
+#endif
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif

@@ -1145,7 +1145,8 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
              * UTF-16
              */
             if ((handler->name != NULL) &&
-                (!strcmp(handler->name, "UTF-16LE")) &&
+                (!strcmp(handler->name, "UTF-16LE") ||
+                 !strcmp(handler->name, "UTF-16")) &&
                 (input->cur[0] == 0xFF) && (input->cur[1] == 0xFE)) {
                 input->cur += 2;
             }

@@ -603,8 +603,8 @@ database</a>:</p>
 href="ftp://xmlsoft.org/">xmlsoft.org</a> server ( <a
 href="http://xmlsoft.org/sources/">HTTP</a>, <a
 href="ftp://xmlsoft.org/">FTP</a> and rsync are available), there is also
-mirrors (<a href="ftp://ftp.planetmirror.com/pub/xmlsoft/">Australia</a>(
-<a href="http://xmlsoft.planetmirror.com/">Web</a>), <a
+mirrors (<a href="ftp://ftp.planetmirror.com/pub/xmlsoft/">Australia</a>( <a
+href="http://xmlsoft.planetmirror.com/">Web</a>), <a
 href="ftp://fr.rpmfind.net/pub/libxml/">France</a>) or on the <a
 href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> as <a
 href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/">source archive</a>
@@ -680,10 +680,29 @@ to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p>
 
 <p>There is the list of public releases:</p>
 
+<h3>2.6.14: Sep 29 2004</h3>
+<ul>
+  <li>build fixes: configure paths for xmllint and xsltproc, compilation
+    without HTML parser, compilation warning cleanups (William Brack &amp;
+    Malcolm Tredinnick), VMS makefile update (Craig Berry), </li>
+  <li>bug fixes: xmlGetUTF8Char (William Brack), QName properties (Kasimier
+    Buchcik), XInclude testing, Notation serialization, UTF8ToISO8859x
+    transcoding (Mark Itzcovitz), lots of XML Schemas cleanup and fixes
+    (Kasimier), ChangeLog cleanup (Stepan Kasal), memory fixes (Mark Vakoc),
+    handling of failed realloc(), out of bound array adressing in Schemas
+    date handling, Python space/tabs cleanups (Malcolm Tredinnick), NMTOKENS
+    E20 validation fix (Malcolm), </li>
+  <li>improvements: added W3C XML Schemas testsuite (Kasimier Buchcik), add
+    xmlSchemaValidateOneElement (Kasimier), Python exception hierearchy
+    (Malcolm Tredinnick), Python libxml2 driver improvement (Malcolm
+    Tredinnick), Schemas support for xsi:schemaLocation,
+    xsi:noNamespaceSchemaLocation, xsi:type (Kasimier Buchcik)</li>
+</ul>
+
 <h3>2.6.13: Aug 31 2004</h3>
 <ul>
   <li>build fixes: Windows and zlib (Igor Zlatkovic), -O flag with gcc,
-    Solaris compiler warning, fixing RPM BuildRequires, </li>
+    Solaris compiler warning, fixing RPM BuildRequires,</li>
   <li>fixes: DTD loading on Windows (Igor), Schemas error reports APIs
     (Kasimier Buchcik), Schemas validation crash, xmlCheckUTF8 (William Brack
     and Julius Mittenzwei), Schemas facet check (Kasimier), default namespace

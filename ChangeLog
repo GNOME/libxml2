@@ -1,3 +1,7 @@
+Wed Sep 29 17:47:56 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/*: releasing 2.6.14, rebuilding the docs
+	  
 Wed Sep 29 15:00:11 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c include/libxml/xmlerror.h include/libxml/xmlschemas.h

@@ -628,6 +628,7 @@
      <summary>minimal HTTP implementation</summary>
      <description>minimal HTTP implementation allowing to fetch resources like external subset. </description>
      <author>Daniel Veillard </author>
+     <exports symbol='xmlNanoHTTPRead' type='function'/>
      <exports symbol='xmlNanoHTTPSave' type='function'/>
      <exports symbol='xmlNanoHTTPRedir' type='function'/>
      <exports symbol='xmlNanoHTTPAuthHeader' type='function'/>
@@ -637,7 +638,7 @@
      <exports symbol='xmlNanoHTTPClose' type='function'/>
      <exports symbol='xmlNanoHTTPCleanup' type='function'/>
      <exports symbol='xmlNanoHTTPMethod' type='function'/>
-     <exports symbol='xmlNanoHTTPRead' type='function'/>
+     <exports symbol='xmlNanoHTTPContentLength' type='function'/>
      <exports symbol='xmlNanoHTTPOpen' type='function'/>
      <exports symbol='xmlNanoHTTPOpenRedir' type='function'/>
      <exports symbol='xmlNanoHTTPMethodRedir' type='function'/>
@@ -1053,6 +1054,7 @@
      <exports symbol='XML_SCHEMAS_FACET_UNKNOWN' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_INTERNAL_RESOLVED' type='macro'/>
      <exports symbol='XML_SCHEMAS_WILDCARD_COMPLETE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_BLOCK_DEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_EXTENSION' type='macro'/>
      <exports symbol='XML_SCHEMAS_BLOCK_DEFAULT_SUBSTITUTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_FIXED' type='macro'/>
@@ -1061,6 +1063,7 @@
      <exports symbol='XML_SCHEMAS_ATTR_USE_OPTIONAL' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTR_NSDEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_DEFAULT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_BLOCK_RESTRICTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANYATTR_STRICT' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_VARIETY_ABSENT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTRGROUP_MARKED' type='macro'/>
@@ -1071,6 +1074,7 @@
      <exports symbol='XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANYATTR_LAX' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_GLOBAL' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_ABSTRACT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTR_FIXED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANY_SKIP' type='macro'/>
      <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_LIST' type='macro'/>
@@ -1083,6 +1087,7 @@
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_RESTRICTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_FINAL_EXTENSION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_FINAL_ABSENT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_BLOCK_EXTENSION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_TOPLEVEL' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_ABSTRACT' type='macro'/>
      <exports symbol='XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION' type='macro'/>
@@ -1765,16 +1770,18 @@
      <exports symbol='xmlAutomataNewCounter' type='function'/>
      <exports symbol='xmlAutomataGetInitState' type='function'/>
      <exports symbol='xmlAutomataNewTransition2' type='function'/>
-     <exports symbol='xmlAutomataNewCountTrans' type='function'/>
-     <exports symbol='xmlAutomataNewAllTrans' type='function'/>
      <exports symbol='xmlAutomataNewState' type='function'/>
+     <exports symbol='xmlAutomataNewCountTrans' type='function'/>
+     <exports symbol='xmlAutomataNewOnceTrans2' type='function'/>
+     <exports symbol='xmlAutomataNewAllTrans' type='function'/>
+     <exports symbol='xmlAutomataNewOnceTrans' type='function'/>
      <exports symbol='xmlAutomataNewCounterTrans' type='function'/>
      <exports symbol='xmlAutomataCompile' type='function'/>
      <exports symbol='xmlNewAutomata' type='function'/>
      <exports symbol='xmlAutomataNewEpsilon' type='function'/>
-     <exports symbol='xmlAutomataNewCountedTrans' type='function'/>
+     <exports symbol='xmlAutomataNewCountTrans2' type='function'/>
      <exports symbol='xmlAutomataSetFinalState' type='function'/>
-     <exports symbol='xmlAutomataNewOnceTrans' type='function'/>
+     <exports symbol='xmlAutomataNewCountedTrans' type='function'/>
      <exports symbol='xmlAutomataNewTransition' type='function'/>
      <exports symbol='xmlAutomataIsDeterminist' type='function'/>
     </file>
@@ -1869,7 +1876,7 @@
      <exports symbol='XML_SCHEMAP_FAILED_BUILD_IMPORT' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ATTRGRP_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAP_REGEXP_INVALID' type='enum'/>
-     <exports symbol='XML_XPTR_CHILDSEQ_START' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_1' type='enum'/>
      <exports symbol='XML_C14N_CREATE_STACK' type='enum'/>
      <exports symbol='XML_WAR_LANG_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ANYATTRIBUTE_CHILD' type='enum'/>
@@ -1877,6 +1884,7 @@
      <exports symbol='XML_SCHEMAP_WILDCARD_INVALID_NS_MEMBER' type='enum'/>
      <exports symbol='XML_XPATH_INVALID_PREDICATE_ERROR' type='enum'/>
      <exports symbol='XML_ERR_EXT_SUBSET_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_AU' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_NAME_INVALID' type='enum'/>
      <exports symbol='XML_FROM_DTD' type='enum'/>
      <exports symbol='XML_SCHEMAV_CONSTRUCT' type='enum'/>
@@ -1893,7 +1901,7 @@
      <exports symbol='XML_XINCLUDE_FRAGMENT_ID' type='enum'/>
      <exports symbol='XML_WAR_NS_URI' type='enum'/>
      <exports symbol='XML_IO_EMLINK' type='enum'/>
-     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_CT_1' type='enum'/>
      <exports symbol='XML_ERR_NMTOKEN_REQUIRED' type='enum'/>
      <exports symbol='XML_RNGP_ANYNAME_ATTR_ANCESTOR' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_IS_EXTERNAL' type='enum'/>
@@ -1936,6 +1944,7 @@
      <exports symbol='XML_DTD_INVALID_DEFAULT' type='enum'/>
      <exports symbol='XML_DTD_UNKNOWN_ELEM' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_TYPE' type='enum'/>
+     <exports symbol='XML_XPTR_EXTRA_OBJECTS' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_MAXINCLUSIVE_VALID' type='enum'/>
      <exports symbol='XML_SCHEMAV_NOTYPE' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_FACET_CHILD' type='enum'/>
@@ -1965,6 +1974,7 @@
      <exports symbol='XML_RNGP_PAT_START_LIST' type='enum'/>
      <exports symbol='XML_ERR_LT_REQUIRED' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_2' type='enum'/>
+     <exports symbol='XML_SCHEMAP_AU_PROPS_CORRECT_2' type='enum'/>
      <exports symbol='XML_ERR_ATTLIST_NOT_STARTED' type='enum'/>
      <exports symbol='XML_RNGP_ELEMENT_NAME' type='enum'/>
      <exports symbol='XML_ERR_PCDATA_REQUIRED' type='enum'/>
@@ -2042,6 +2052,7 @@
      <exports symbol='XML_ERR_CHARREF_AT_EOF' type='enum'/>
      <exports symbol='XML_IO_ENOMEM' type='enum'/>
      <exports symbol='XML_IO_ENOSPC' type='enum'/>
+     <exports symbol='XML_XPTR_CHILDSEQ_START' type='enum'/>
      <exports symbol='XML_RNGP_ATTR_CONFLICT' type='enum'/>
      <exports symbol='XML_RNGP_TYPE_VALUE' type='enum'/>
      <exports symbol='XML_FROM_REGEXP' type='enum'/>
@@ -2068,7 +2079,7 @@
      <exports symbol='XML_ERR_ENTITYREF_NO_NAME' type='enum'/>
      <exports symbol='XML_DTD_ID_FIXED' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_2' type='enum'/>
-     <exports symbol='XML_XPTR_EXTRA_OBJECTS' type='enum'/>
+     <exports symbol='XML_SCHEMAP_A_PROPS_CORRECT_2' type='enum'/>
      <exports symbol='XML_XINCLUDE_NO_HREF' type='enum'/>
      <exports symbol='XML_XPATH_INVALID_OPERAND' type='enum'/>
      <exports symbol='XML_IO_ENOEXEC' type='enum'/>
@@ -2169,6 +2180,7 @@
      <exports symbol='XML_SCHEMAP_UNKNOWN_NOTATION_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_UNION_MEMBERTYPES_OR_SIMPLETYPES' type='enum'/>
      <exports symbol='XML_IO_ENOTTY' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2' type='enum'/>
      <exports symbol='XML_RNGP_EMPTY_CONTENT' type='enum'/>
      <exports symbol='XML_IO_EALREADY' type='enum'/>
      <exports symbol='XML_DTD_NO_DTD' type='enum'/>
@@ -2276,6 +2288,7 @@
      <exports symbol='XML_RNGP_GRAMMAR_NO_START' type='enum'/>
      <exports symbol='XML_RNGP_VALUE_NO_CONTENT' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_SIMPLECONTENT_CHILD' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_TYPE_1' type='enum'/>
      <exports symbol='XML_IO_EAFNOSUPPORT' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_2' type='enum'/>
      <exports symbol='XML_SCHEMAV_ELEMENT_CONTENT' type='enum'/>
@@ -2337,6 +2350,7 @@
      <exports symbol='XML_DTD_ELEM_REDEFINED' type='enum'/>
      <exports symbol='XML_SCHEMAV_NOTNILLABLE' type='enum'/>
      <exports symbol='XML_SCHEMAP_ELEM_DEFAULT_FIXED' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_TYPE_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_ELEMENT' type='enum'/>
      <exports symbol='XML_RNGP_REF_NO_DEF' type='enum'/>
      <exports symbol='XML_SCHEMAP_S4S_ATTR_NOT_ALLOWED' type='enum'/>
@@ -2377,6 +2391,7 @@
      <exports symbol='XML_RNGP_DATA_CONTENT' type='enum'/>
      <exports symbol='XML_ERR_STRING_NOT_STARTED' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_2' type='enum'/>
+     <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_3' type='enum'/>
      <exports symbol='XML_TREE_INVALID_DEC' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1' type='enum'/>
      <exports symbol='XML_RNGP_EXCEPT_MULTIPLE' type='enum'/>
@@ -2695,6 +2710,7 @@
      <exports symbol='XML_SCHEMAS_ERR_EXTRACONTENT' type='enum'/>
      <exports symbol='XML_SCHEMAS_ERR_NOTDETERMINIST' type='enum'/>
      <exports symbol='XML_SCHEMAS_ERR_NOTSIMPLE' type='enum'/>
+     <exports symbol='XML_SCHEMA_VAL_VC_I_CREATE' type='enum'/>
      <exports symbol='XML_SCHEMAS_ERR_INTERNAL' type='enum'/>
      <exports symbol='XML_SCHEMAS_ERR_UNDECLAREDELEM' type='enum'/>
      <exports symbol='XML_SCHEMAS_ERR_WRONGELEM' type='enum'/>
@@ -2708,6 +2724,7 @@
      <exports symbol='XML_SCHEMAS_ERR_NOTYPE' type='enum'/>
      <exports symbol='xmlSchemaPtr' type='typedef'/>
      <exports symbol='xmlSchemaParserCtxt' type='typedef'/>
+     <exports symbol='xmlSchemaValidOption' type='typedef'/>
      <exports symbol='xmlSchemaValidCtxtPtr' type='typedef'/>
      <exports symbol='xmlSchemaParserCtxtPtr' type='typedef'/>
      <exports symbol='xmlSchema' type='typedef'/>
@@ -2715,21 +2732,24 @@
      <exports symbol='xmlSchemaValidCtxt' type='typedef'/>
      <exports symbol='xmlSchemaValidateStream' type='function'/>
      <exports symbol='xmlSchemaSetParserErrors' type='function'/>
+     <exports symbol='xmlSchemaValidateOneElement' type='function'/>
      <exports symbol='xmlSchemaValidityWarningFunc' type='function'/>
      <exports symbol='xmlSchemaValidateDoc' type='function'/>
      <exports symbol='xmlSchemaNewDocParserCtxt' type='function'/>
      <exports symbol='xmlSchemaFree' type='function'/>
      <exports symbol='xmlSchemaDump' type='function'/>
+     <exports symbol='xmlSchemaSetValidOptions' type='function'/>
      <exports symbol='xmlSchemaParse' type='function'/>
      <exports symbol='xmlSchemaNewMemParserCtxt' type='function'/>
      <exports symbol='xmlSchemaFreeParserCtxt' type='function'/>
+     <exports symbol='xmlSchemaValidityErrorFunc' type='function'/>
      <exports symbol='xmlSchemaFreeValidCtxt' type='function'/>
      <exports symbol='xmlSchemaGetParserErrors' type='function'/>
      <exports symbol='xmlSchemaNewValidCtxt' type='function'/>
      <exports symbol='xmlSchemaSetValidErrors' type='function'/>
      <exports symbol='xmlSchemaGetValidErrors' type='function'/>
      <exports symbol='xmlSchemaNewParserCtxt' type='function'/>
-     <exports symbol='xmlSchemaValidityErrorFunc' type='function'/>
+     <exports symbol='xmlSchemaValidCtxtGetOptions' type='function'/>
     </file>
     <file name='xmlschemastypes'>
      <summary>implementation of XML Schema Datatypes</summary>
@@ -3727,6 +3747,7 @@
     <macro name='XML_SCHEMAS_ATTR_GLOBAL' file='schemasInternals'>
     </macro>
     <macro name='XML_SCHEMAS_ATTR_INTERNAL_RESOLVED' file='schemasInternals'>
+      <info>this is set when the &quot;type&quot; and &quot;ref&quot; references have been resolved.</info>
     </macro>
     <macro name='XML_SCHEMAS_ATTR_NSDEFAULT' file='schemasInternals'>
       <info>allow elements in no namespace</info>
@@ -3828,6 +3849,17 @@
     </macro>
     <macro name='XML_SCHEMAS_QUALIF_ELEM' file='schemasInternals'>
       <info>the schema requires qualified elements</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_ABSTRACT' file='schemasInternals'>
+      <info>the simple/complexType is abstract.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_BLOCK_DEFAULT' file='schemasInternals'>
+      <info>the complexType did not specify &apos;block&apos; so use the default of the &lt;schema&gt; item.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_BLOCK_EXTENSION' file='schemasInternals'>
+      <info>the complexType has a &apos;block&apos; of &quot;extension&quot;.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_BLOCK_RESTRICTION' file='schemasInternals'>
     </macro>
     <macro name='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE' file='schemasInternals'>
     </macro>
@@ -4673,6 +4705,8 @@
     <enum name='XML_SCHEMAP_ATTRFORMDEFAULT_VALUE' file='xmlerror' value='1701' type='xmlParserErrors' info='1701'/>
     <enum name='XML_SCHEMAP_ATTRGRP_NONAME_NOREF' file='xmlerror' value='1702' type='xmlParserErrors' info='1702'/>
     <enum name='XML_SCHEMAP_ATTR_NONAME_NOREF' file='xmlerror' value='1703' type='xmlParserErrors' info='1703'/>
+    <enum name='XML_SCHEMAP_AU_PROPS_CORRECT_2' file='xmlerror' value='3078' type='xmlParserErrors' info='3078'/>
+    <enum name='XML_SCHEMAP_A_PROPS_CORRECT_2' file='xmlerror' value='3079' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF' file='xmlerror' value='1704' type='xmlParserErrors' info='1704'/>
     <enum name='XML_SCHEMAP_COS_CT_EXTENDS_1_1' file='xmlerror' value='3063' type='xmlParserErrors' info='3063'/>
     <enum name='XML_SCHEMAP_COS_CT_EXTENDS_1_3' file='xmlerror' value='1800' type='xmlParserErrors' info='1800'/>
@@ -4712,6 +4746,7 @@
     <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1' file='xmlerror' value='1787' type='xmlParserErrors' info='1787'/>
     <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1' file='xmlerror' value='1788' type='xmlParserErrors' info='1788'/>
     <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_2' file='xmlerror' value='1789' type='xmlParserErrors' info='1789'/>
+    <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_3' file='xmlerror' value='3077' type='xmlParserErrors' info='3077'/>
     <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_2' file='xmlerror' value='1790' type='xmlParserErrors' info='1790'/>
     <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_3' file='xmlerror' value='1791' type='xmlParserErrors' info='1791'/>
     <enum name='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_1' file='xmlerror' value='1797' type='xmlParserErrors' info='1797'/>
@@ -4751,7 +4786,7 @@
     <enum name='XML_SCHEMAP_INVALID_REF_AND_SUBTYPE' file='xmlerror' value='1720' type='xmlParserErrors' info='1720'/>
     <enum name='XML_SCHEMAP_INVALID_WHITE_SPACE' file='xmlerror' value='1721' type='xmlParserErrors' info='1721'/>
     <enum name='XML_SCHEMAP_MG_PROPS_CORRECT_1' file='xmlerror' value='3074' type='xmlParserErrors' info='3074'/>
-    <enum name='XML_SCHEMAP_MG_PROPS_CORRECT_2' file='xmlerror' value='3075' type='xmlParserErrors' info=' 3075'/>
+    <enum name='XML_SCHEMAP_MG_PROPS_CORRECT_2' file='xmlerror' value='3075' type='xmlParserErrors' info='3075'/>
     <enum name='XML_SCHEMAP_MISSING_SIMPLETYPE_CHILD' file='xmlerror' value='1779' type='xmlParserErrors' info='1779'/>
     <enum name='XML_SCHEMAP_NOATTR_NOREF' file='xmlerror' value='1722' type='xmlParserErrors' info='1722'/>
     <enum name='XML_SCHEMAP_NOROOT' file='xmlerror' value='1759' type='xmlParserErrors' info='1759'/>
@@ -4791,6 +4826,7 @@
     <enum name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_1' file='xmlerror' value='3071' type='xmlParserErrors' info='3071'/>
     <enum name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_2' file='xmlerror' value='3072' type='xmlParserErrors' info='3072'/>
     <enum name='XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_3' file='xmlerror' value='3073' type='xmlParserErrors' info='3073'/>
+    <enum name='XML_SCHEMAP_SRC_CT_1' file='xmlerror' value='3076' type='xmlParserErrors' info='3076'/>
     <enum name='XML_SCHEMAP_SRC_ELEMENT_1' file='xmlerror' value='3038' type='xmlParserErrors' info='3038'/>
     <enum name='XML_SCHEMAP_SRC_ELEMENT_2_1' file='xmlerror' value='3039' type='xmlParserErrors' info='3039'/>
     <enum name='XML_SCHEMAP_SRC_ELEMENT_2_2' file='xmlerror' value='3040' type='xmlParserErrors' info='3040'/>
@@ -4927,6 +4963,8 @@
     <enum name='XML_SCHEMAV_CVC_ATTRIBUTE_2' file='xmlerror' value='1862' type='xmlParserErrors' info='1862'/>
     <enum name='XML_SCHEMAV_CVC_ATTRIBUTE_3' file='xmlerror' value='1863' type='xmlParserErrors' info='1863'/>
     <enum name='XML_SCHEMAV_CVC_ATTRIBUTE_4' file='xmlerror' value='1864' type='xmlParserErrors' info='1864'/>
+    <enum name='XML_SCHEMAV_CVC_AU' file='xmlerror' value='1874' type='xmlParserErrors' info='1874'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_1' file='xmlerror' value='1873' type='xmlParserErrors' info='1873'/>
     <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1' file='xmlerror' value='1841' type='xmlParserErrors' info='1841'/>
     <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2' file='xmlerror' value='1842' type='xmlParserErrors' info='1842'/>
     <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3' file='xmlerror' value='1843' type='xmlParserErrors' info='1843'/>
@@ -4968,6 +5006,8 @@
     <enum name='XML_SCHEMAV_CVC_MINLENGTH_VALID' file='xmlerror' value='1831' type='xmlParserErrors' info='1831'/>
     <enum name='XML_SCHEMAV_CVC_PATTERN_VALID' file='xmlerror' value='1839' type='xmlParserErrors' info='1839'/>
     <enum name='XML_SCHEMAV_CVC_TOTALDIGITS_VALID' file='xmlerror' value='1837' type='xmlParserErrors' info='1837'/>
+    <enum name='XML_SCHEMAV_CVC_TYPE_1' file='xmlerror' value='1875' type='xmlParserErrors' info='1875'/>
+    <enum name='XML_SCHEMAV_CVC_TYPE_2' file='xmlerror' value='1876' type='xmlParserErrors' info='1876'/>
     <enum name='XML_SCHEMAV_CVC_TYPE_3_1_1' file='xmlerror' value='1827' type='xmlParserErrors' info='1827'/>
     <enum name='XML_SCHEMAV_CVC_TYPE_3_1_2' file='xmlerror' value='1828' type='xmlParserErrors' info='1828'/>
     <enum name='XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING' file='xmlerror' value='1872' type='xmlParserErrors' info='1872'/>
@@ -5033,6 +5073,9 @@
     <enum name='XML_SCHEMA_TYPE_SIMPLE_CONTENT' file='schemasInternals' value='9' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_UNION' file='schemasInternals' value='20' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_UR' file='schemasInternals' value='11' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_VAL_VC_I_CREATE' file='xmlschemas' value='1' type='xmlSchemaValidOption' info=' Default/fixed: create an attribute node
+* or an element&apos;s text node on the instance.
+*'/>
     <enum name='XML_TEXTREADER_MODE_CLOSED' file='xmlreader' value='4' type='xmlTextReaderMode'/>
     <enum name='XML_TEXTREADER_MODE_EOF' file='xmlreader' value='3' type='xmlTextReaderMode'/>
     <enum name='XML_TEXTREADER_MODE_ERROR' file='xmlreader' value='2' type='xmlTextReaderMode'/>
@@ -5776,6 +5819,7 @@ actually an xmlCharEncoding'/>
       <field name='dict' type='xmlDictPtr' info=''/>
       <field name='includes' type='void *' info=' the includes, this is opaque for now'/>
       <field name='preserve' type='int' info=' whether to free the document'/>
+      <field name='counter' type='int' info=' used to give ononymous components unique names'/>
     </struct>
     <struct name='xmlSchemaAnnot' file='schemasInternals' type='struct _xmlSchemaAnnot'>
       <field name='next' type='struct _xmlSchemaAnnot *' info=''/>
@@ -5800,6 +5844,8 @@ actually an xmlCharEncoding'/>
       <field name='targetNamespace' type='const xmlChar *' info=''/>
       <field name='flags' type='int' info=''/>
       <field name='refPrefix' type='const xmlChar *' info=''/>
+      <field name='defVal' type='xmlSchemaValPtr' info=''/>
+      <field name='refDecl' type='xmlSchemaAttributePtr' info=''/>
     </struct>
     <struct name='xmlSchemaAttributeGroup' file='schemasInternals' type='struct _xmlSchemaAttributeGroup'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
@@ -5849,6 +5895,7 @@ actually an xmlCharEncoding'/>
       <field name='contModel' type='xmlRegexpPtr' info=''/>
       <field name='contentType' type='xmlSchemaContentType' info=''/>
       <field name='refPrefix' type='const xmlChar *' info=''/>
+      <field name='defVal' type='xmlSchemaValPtr' info=''/>
     </struct>
     <typedef name='xmlSchemaElementPtr' file='schemasInternals' type='xmlSchemaElement *'/>
     <struct name='xmlSchemaFacet' file='schemasInternals' type='struct _xmlSchemaFacet'>
@@ -5907,6 +5954,7 @@ actually an xmlCharEncoding'/>
       <field name='facetSet' type='xmlSchemaFacetLinkPtr' info=''/>
       <field name='refPrefix' type='const xmlChar *' info=''/>
       <field name='contentTypeDef' type='xmlSchemaTypePtr' info=''/>
+      <field name='contModel' type='xmlRegexpPtr' info=''/>
     </struct>
     <struct name='xmlSchemaTypeLink' file='schemasInternals' type='struct _xmlSchemaTypeLink'>
       <field name='next' type='struct _xmlSchemaTypeLink *' info=' the next type link ...'/>
@@ -5921,6 +5969,7 @@ actually an xmlCharEncoding'/>
     <struct name='xmlSchemaValidCtxt' file='xmlschemas' type='struct _xmlSchemaValidCtxt'/>
     <typedef name='xmlSchemaValidCtxtPtr' file='xmlschemas' type='xmlSchemaValidCtxt *'/>
     <typedef name='xmlSchemaValidError' file='xmlschemas' type='enum'/>
+    <typedef name='xmlSchemaValidOption' file='xmlschemas' type='enum'/>
     <struct name='xmlSchemaWildcard' file='schemasInternals' type='struct _xmlSchemaWildcard'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='id' type='const xmlChar *' info=''/>
@@ -7541,6 +7590,19 @@ actually an xmlCharEncoding'/>
       <arg name='max' type='int' info='the maximum successive occurences of token'/>
       <arg name='data' type='void *' info='data associated to the transition'/>
     </function>
+    <function name='xmlAutomataNewCountTrans2' file='xmlautomata'>
+      <cond>LIBXML_AUTOMATA_ENABLED</cond>
+      <info>If @to is NULL, this creates first a new target state in the automata and then adds a transition from the @from state to the target state activated by a succession of input of value @token and @token2 and whose number is between @min and @max</info>
+      <return type='xmlAutomataStatePtr' info='the target state or NULL in case of error'/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata'/>
+      <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition'/>
+      <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL'/>
+      <arg name='token' type='const xmlChar *' info='the input string associated to that transition'/>
+      <arg name='token2' type='const xmlChar *' info='the second input string associated to that transition'/>
+      <arg name='min' type='int' info='the minimum successive occurences of token'/>
+      <arg name='max' type='int' info='the maximum successive occurences of token'/>
+      <arg name='data' type='void *' info='data associated to the transition'/>
+    </function>
     <function name='xmlAutomataNewCountedTrans' file='xmlautomata'>
       <cond>LIBXML_AUTOMATA_ENABLED</cond>
       <info>If @to is NULL, this creates first a new target state in the automata and then adds an epsilon transition from the @from state to the target state which will increment the counter provided</info>
@@ -7583,6 +7645,19 @@ actually an xmlCharEncoding'/>
       <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition'/>
       <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL'/>
       <arg name='token' type='const xmlChar *' info='the input string associated to that transition'/>
+      <arg name='min' type='int' info='the minimum successive occurences of token'/>
+      <arg name='max' type='int' info='the maximum successive occurences of token'/>
+      <arg name='data' type='void *' info='data associated to the transition'/>
+    </function>
+    <function name='xmlAutomataNewOnceTrans2' file='xmlautomata'>
+      <cond>LIBXML_AUTOMATA_ENABLED</cond>
+      <info>If @to is NULL, this creates first a new target state in the automata and then adds a transition from the @from state to the target state activated by a succession of input of value @token and @token2 and whose number is between @min and @max, moreover that transition can only be crossed once.</info>
+      <return type='xmlAutomataStatePtr' info='the target state or NULL in case of error'/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata'/>
+      <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition'/>
+      <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL'/>
+      <arg name='token' type='const xmlChar *' info='the input string associated to that transition'/>
+      <arg name='token2' type='const xmlChar *' info='the second input string associated to that transition'/>
       <arg name='min' type='int' info='the minimum successive occurences of token'/>
       <arg name='max' type='int' info='the maximum successive occurences of token'/>
       <arg name='data' type='void *' info='data associated to the transition'/>
@@ -9980,6 +10055,12 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the HTTP context'/>
     </function>
+    <function name='xmlNanoHTTPContentLength' file='nanohttp'>
+      <cond>LIBXML_HTTP_ENABLED</cond>
+      <info>Provides the specified content length from the HTTP header.</info>
+      <return type='int' info='the specified content length from the HTTP header.  Note that a value of -1 indicates that the content length element was not included in the response header.'/>
+      <arg name='ctx' type='void *' info='the HTTP context'/>
+    </function>
     <function name='xmlNanoHTTPEncoding' file='nanohttp'>
       <cond>LIBXML_HTTP_ENABLED</cond>
       <info>Provides the specified encoding if specified in the HTTP headers.</info>
@@ -10887,7 +10968,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseName' file='parserInternals'>
-      <info>parse an XML name.  [4] NameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; | &apos;:&apos; | CombiningChar | Extender  [5] Name ::= (Letter | &apos;_&apos; | &apos;:&apos;) (NameChar)*  [6] Names ::= Name (S Name)*</info>
+      <info>parse an XML name.  [4] NameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; | &apos;:&apos; | CombiningChar | Extender  [5] Name ::= (Letter | &apos;_&apos; | &apos;:&apos;) (NameChar)*  [6] Names ::= Name (#x20 Name)*</info>
       <return type='const xmlChar *' info='the Name parsed or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -10897,7 +10978,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseNmtoken' file='parserInternals'>
-      <info>parse an XML Nmtoken.  [7] Nmtoken ::= (NameChar)+  [8] Nmtokens ::= Nmtoken (S Nmtoken)*</info>
+      <info>parse an XML Nmtoken.  [7] Nmtoken ::= (NameChar)+  [8] Nmtokens ::= Nmtoken (#x20 Nmtoken)*</info>
       <return type='xmlChar *' info='the Nmtoken parsed or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -12200,9 +12281,9 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaFreeValidCtxt' file='xmlschemas'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
-      <info></info>
+      <info>Free the resources associated to the schema validation context</info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='the schema validation context'/>
     </function>
     <function name='xmlSchemaFreeValue' file='xmlschemastypes'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
@@ -12252,12 +12333,12 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaGetValidErrors' file='xmlschemas'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='err' type='xmlSchemaValidityErrorFunc *' info=''/>
-      <arg name='warn' type='xmlSchemaValidityWarningFunc *' info=''/>
-      <arg name='ctx' type='void **' info=''/>
+      <info>Get the error and warning callback informations</info>
+      <return type='int' info='-1 in case of error and 0 otherwise'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a XML-Schema validation context'/>
+      <arg name='err' type='xmlSchemaValidityErrorFunc *' info='the error function result'/>
+      <arg name='warn' type='xmlSchemaValidityWarningFunc *' info='the warning function result'/>
+      <arg name='ctx' type='void **' info='the functions context result'/>
     </function>
     <function name='xmlSchemaInitTypes' file='xmlschemastypes'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
@@ -12297,9 +12378,9 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaNewValidCtxt' file='xmlschemas'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
-      <info></info>
-      <return type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='schema' type='xmlSchemaPtr' info=''/>
+      <info>Create an XML Schemas validation context based on the given schema</info>
+      <return type='xmlSchemaValidCtxtPtr' info='the validation context or NULL in case of error'/>
+      <arg name='schema' type='xmlSchemaPtr' info='a precompiled XML Schemas'/>
     </function>
     <function name='xmlSchemaParse' file='xmlschemas'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
@@ -12318,12 +12399,19 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaSetValidErrors' file='xmlschemas'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
-      <info></info>
+      <info>Set the error and warning callback informations</info>
       <return type='void'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='err' type='xmlSchemaValidityErrorFunc' info='the error function'/>
+      <arg name='warn' type='xmlSchemaValidityWarningFunc' info='the warning function'/>
+      <arg name='ctx' type='void *' info='the functions context'/>
+    </function>
+    <function name='xmlSchemaSetValidOptions' file='xmlschemas'>
+      <cond>LIBXML_SCHEMAS_ENABLED</cond>
+      <info></info>
+      <return type='int' info=''/>
       <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='err' type='xmlSchemaValidityErrorFunc' info=''/>
-      <arg name='warn' type='xmlSchemaValidityWarningFunc' info=''/>
-      <arg name='ctx' type='void *' info=''/>
+      <arg name='options' type='int' info=''/>
     </function>
     <function name='xmlSchemaValPredefTypeNode' file='xmlschemastypes'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
@@ -12343,12 +12431,18 @@ actually an xmlCharEncoding'/>
       <arg name='val' type='xmlSchemaValPtr *' info='the return computed value'/>
       <arg name='node' type='xmlNodePtr' info='the node containing the value'/>
     </function>
-    <function name='xmlSchemaValidateDoc' file='xmlschemas'>
+    <function name='xmlSchemaValidCtxtGetOptions' file='xmlschemas'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
       <info></info>
       <return type='int' info=''/>
       <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='instance' type='xmlDocPtr' info=''/>
+    </function>
+    <function name='xmlSchemaValidateDoc' file='xmlschemas'>
+      <cond>LIBXML_SCHEMAS_ENABLED</cond>
+      <info>Validate a document tree in memory.</info>
+      <return type='int' info='0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='doc' type='xmlDocPtr' info='a parsed document tree'/>
     </function>
     <function name='xmlSchemaValidateFacet' file='xmlschemastypes'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
@@ -12378,6 +12472,13 @@ actually an xmlCharEncoding'/>
       <arg name='actualLen' type='unsigned long' info='the number of list items'/>
       <arg name='expectedLen' type='unsigned long *' info='the resulting expected number of list items'/>
     </function>
+    <function name='xmlSchemaValidateOneElement' file='xmlschemas'>
+      <cond>LIBXML_SCHEMAS_ENABLED</cond>
+      <info>Validate a branch of a tree, starting with the given @elem.</info>
+      <return type='int' info='0 if the element and its subtree is valid, a positive error code number otherwise and -1 in case of an internal or API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='elem' type='xmlNodePtr' info='an element node'/>
+    </function>
     <function name='xmlSchemaValidatePredefinedType' file='xmlschemastypes'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
       <info>Check that a value conforms to the lexical space of the predefined type. if true a value is computed and returned in @val.</info>
@@ -12388,13 +12489,13 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlSchemaValidateStream' file='xmlschemas'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info=''/>
-      <arg name='input' type='xmlParserInputBufferPtr' info=''/>
-      <arg name='enc' type='xmlCharEncoding' info=''/>
-      <arg name='sax' type='xmlSAXHandlerPtr' info=''/>
-      <arg name='user_data' type='void *' info=''/>
+      <info>Validate a document tree in memory.</info>
+      <return type='int' info='0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='input' type='xmlParserInputBufferPtr' info='the input to use for reading the data'/>
+      <arg name='enc' type='xmlCharEncoding' info='an optional encoding information'/>
+      <arg name='sax' type='xmlSAXHandlerPtr' info='a SAX handler for the resulting events'/>
+      <arg name='user_data' type='void *' info='the context to provide to the SAX handler.'/>
     </function>
     <functype name='xmlSchemaValidityErrorFunc' file='xmlschemas'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>

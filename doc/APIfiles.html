@@ -552,6 +552,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </p><h2><a name="nanohttp" id="nanohttp">Module nanohttp</a>:</h2><p><a href="html/libxml-nanohttp.html#xmlNanoHTTPAuthHeader">xmlNanoHTTPAuthHeader</a><br />
 <a href="html/libxml-nanohttp.html#xmlNanoHTTPCleanup">xmlNanoHTTPCleanup</a><br />
 <a href="html/libxml-nanohttp.html#xmlNanoHTTPClose">xmlNanoHTTPClose</a><br />
+<a href="html/libxml-nanohttp.html#xmlNanoHTTPContentLength">xmlNanoHTTPContentLength</a><br />
 <a href="html/libxml-nanohttp.html#xmlNanoHTTPEncoding">xmlNanoHTTPEncoding</a><br />
 <a href="html/libxml-nanohttp.html#xmlNanoHTTPFetch">xmlNanoHTTPFetch</a><br />
 <a href="html/libxml-nanohttp.html#xmlNanoHTTPInit">xmlNanoHTTPInit</a><br />
@@ -1017,6 +1018,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_STRING">XML_SCHEMAS_STRING</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TIME">XML_SCHEMAS_TIME</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TOKEN">XML_SCHEMAS_TOKEN</a><br />
+<a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_ABSTRACT">XML_SCHEMAS_TYPE_ABSTRACT</a><br />
+<a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_BLOCK_DEFAULT">XML_SCHEMAS_TYPE_BLOCK_DEFAULT</a><br />
+<a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_BLOCK_EXTENSION">XML_SCHEMAS_TYPE_BLOCK_EXTENSION</a><br />
+<a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_BLOCK_RESTRICTION">XML_SCHEMAS_TYPE_BLOCK_RESTRICTION</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE">XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION">XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION">XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION</a><br />
@@ -1619,11 +1624,13 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlautomata.html#xmlAutomataIsDeterminist">xmlAutomataIsDeterminist</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewAllTrans">xmlAutomataNewAllTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCountTrans">xmlAutomataNewCountTrans</a><br />
+<a href="html/libxml-xmlautomata.html#xmlAutomataNewCountTrans2">xmlAutomataNewCountTrans2</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCountedTrans">xmlAutomataNewCountedTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCounter">xmlAutomataNewCounter</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewCounterTrans">xmlAutomataNewCounterTrans</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewEpsilon">xmlAutomataNewEpsilon</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewOnceTrans">xmlAutomataNewOnceTrans</a><br />
+<a href="html/libxml-xmlautomata.html#xmlAutomataNewOnceTrans2">xmlAutomataNewOnceTrans2</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewState">xmlAutomataNewState</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewTransition">xmlAutomataNewTransition</a><br />
 <a href="html/libxml-xmlautomata.html#xmlAutomataNewTransition2">xmlAutomataNewTransition2</a><br />
@@ -2007,6 +2014,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_ATTRFORMDEFAULT_VALUE">XML_SCHEMAP_ATTRFORMDEFAULT_VALUE</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_ATTRGRP_NONAME_NOREF">XML_SCHEMAP_ATTRGRP_NONAME_NOREF</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_ATTR_NONAME_NOREF">XML_SCHEMAP_ATTR_NONAME_NOREF</a><br />
+<a href="html/libxml-xmlerror.html#XML_SCHEMAP_AU_PROPS_CORRECT_2">XML_SCHEMAP_AU_PROPS_CORRECT_2</a><br />
+<a href="html/libxml-xmlerror.html#XML_SCHEMAP_A_PROPS_CORRECT_2">XML_SCHEMAP_A_PROPS_CORRECT_2</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF">XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_COS_CT_EXTENDS_1_1">XML_SCHEMAP_COS_CT_EXTENDS_1_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_COS_CT_EXTENDS_1_3">XML_SCHEMAP_COS_CT_EXTENDS_1_3</a><br />
@@ -2046,6 +2055,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1">XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1">XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_2">XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_2</a><br />
+<a href="html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_3">XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_3</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_2">XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_2</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_3">XML_SCHEMAP_DERIVATION_OK_RESTRICTION_3</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_1">XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_1</a><br />
@@ -2125,6 +2135,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_1">XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_2">XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_2</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_3">XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_3</a><br />
+<a href="html/libxml-xmlerror.html#XML_SCHEMAP_SRC_CT_1">XML_SCHEMAP_SRC_CT_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_1">XML_SCHEMAP_SRC_ELEMENT_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_2_1">XML_SCHEMAP_SRC_ELEMENT_2_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAP_SRC_ELEMENT_2_2">XML_SCHEMAP_SRC_ELEMENT_2_2</a><br />
@@ -2188,6 +2199,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ATTRIBUTE_2">XML_SCHEMAV_CVC_ATTRIBUTE_2</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ATTRIBUTE_3">XML_SCHEMAV_CVC_ATTRIBUTE_3</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ATTRIBUTE_4">XML_SCHEMAV_CVC_ATTRIBUTE_4</a><br />
+<a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_AU">XML_SCHEMAV_CVC_AU</a><br />
+<a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_1">XML_SCHEMAV_CVC_COMPLEX_TYPE_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1">XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2">XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3">XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3</a><br />
@@ -2229,6 +2242,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_MINLENGTH_VALID">XML_SCHEMAV_CVC_MINLENGTH_VALID</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_PATTERN_VALID">XML_SCHEMAV_CVC_PATTERN_VALID</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TOTALDIGITS_VALID">XML_SCHEMAV_CVC_TOTALDIGITS_VALID</a><br />
+<a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TYPE_1">XML_SCHEMAV_CVC_TYPE_1</a><br />
+<a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TYPE_2">XML_SCHEMAV_CVC_TYPE_2</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TYPE_3_1_1">XML_SCHEMAV_CVC_TYPE_3_1_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TYPE_3_1_2">XML_SCHEMAV_CVC_TYPE_3_1_2</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING">XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING</a><br />
@@ -2527,6 +2542,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemas.html#XML_SCHEMAS_ERR_VALUE">XML_SCHEMAS_ERR_VALUE</a><br />
 <a href="html/libxml-xmlschemas.html#XML_SCHEMAS_ERR_WRONGELEM">XML_SCHEMAS_ERR_WRONGELEM</a><br />
 <a href="html/libxml-xmlschemas.html#XML_SCHEMAS_ERR_XXX">XML_SCHEMAS_ERR_XXX</a><br />
+<a href="html/libxml-xmlschemas.html#XML_SCHEMA_VAL_VC_I_CREATE">XML_SCHEMA_VAL_VC_I_CREATE</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchema">xmlSchema</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaDump">xmlSchemaDump</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaFree">xmlSchemaFree</a><br />
@@ -2544,10 +2560,14 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetValidErrors">xmlSchemaSetValidErrors</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaSetValidOptions">xmlSchemaSetValidOptions</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidCtxt">xmlSchemaValidCtxt</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaValidCtxtGetOptions">xmlSchemaValidCtxtGetOptions</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidError">xmlSchemaValidError</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaValidOption">xmlSchemaValidOption</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateDoc">xmlSchemaValidateDoc</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaValidateOneElement">xmlSchemaValidateOneElement</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a><br />

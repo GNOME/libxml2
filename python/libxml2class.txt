@@ -501,6 +501,9 @@ Class xmlNode(xmlCore)
     xincludeProcessTree()
     xincludeProcessTreeFlags()
 
+    # functions from module xmlschemas
+    schemaValidateOneElement()
+
     # functions from module xpath
     xpathCastNodeToNumber()
     xpathCastNodeToString()
@@ -1052,7 +1055,10 @@ Class SchemaParserCtxt()
 Class SchemaValidCtxt()
 
     # functions from module xmlschemas
+    schemaSetValidOptions()
+    schemaValidCtxtGetOptions()
     schemaValidateDoc()
+    schemaValidateOneElement()
 Class xmlTextReaderLocator()
 
     # functions from module xmlreader

@@ -164,14 +164,11 @@ xmlXPathInit(void) {
 
     if (initialized) return;
 
-    xmlXPathNAN = 0;
-    xmlXPathNAN /= 0;
+    xmlXPathNAN = 0.0 / 0.0;
 
-    xmlXPathPINF = 1;
-    xmlXPathPINF /= 0;
+    xmlXPathPINF = 1 / 0.0;
 
-    xmlXPathNINF = -1;
-    xmlXPathNINF /= 0;
+    xmlXPathNINF = -1 / 0.0;
 
     initialized = 1;
 }

@@ -1,3 +1,11 @@
+Tue Apr 10 18:13:10 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: trying to get 52979 solved
+	* tree.c result/ result/noent/: trying to get 52712 solved, this
+	  also made me clean up the fact that XML output in general should
+	  not add formating blanks by default, this changed the output of
+	  a few tests
+
 Tue Apr 10 16:30:20 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: Bill Brack pointer an error in detecting a null nodeset

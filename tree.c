@@ -5779,7 +5779,7 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 void
 xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 		int * doc_txt_len, const char * txt_encoding,
-		int format ATTRIBUTE_UNUSED) {
+		int format) {
     int                         dummy = 0;
 
     xmlCharEncoding             doc_charset;
@@ -5842,7 +5842,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
         return;
     }
 
-    xmlDocContentDumpOutput(out_buff, out_doc, txt_encoding, 1);
+    xmlDocContentDumpOutput(out_buff, out_doc, txt_encoding, format);
     xmlOutputBufferFlush(out_buff);
     if (out_buff->conv != NULL) {
 	*doc_txt_len = out_buff->conv->use;
@@ -5909,7 +5909,7 @@ void
 xmlDocDumpMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 	            int * doc_txt_len, const char * txt_encoding) {
     xmlDocDumpFormatMemoryEnc(out_doc, doc_txt_ptr, doc_txt_len,
-	                      txt_encoding, 1);
+	                      txt_encoding, 0);
 }
 
 /**
@@ -6011,7 +6011,7 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
     }
     buf = xmlOutputBufferCreateFile(f, handler);
     if (buf == NULL) return(-1);
-    xmlDocContentDumpOutput(buf, cur, NULL, 1);
+    xmlDocContentDumpOutput(buf, cur, NULL, 0);
 
     ret = xmlOutputBufferClose(buf);
     return(ret);
@@ -6032,7 +6032,7 @@ xmlSaveFileTo(xmlOutputBuffer *buf, xmlDocPtr cur, const char *encoding) {
     int ret;
 
     if (buf == NULL) return(0);
-    xmlDocContentDumpOutput(buf, cur, encoding, 1);
+    xmlDocContentDumpOutput(buf, cur, encoding, 0);
     ret = xmlOutputBufferClose(buf);
     return(ret);
 }
@@ -6076,7 +6076,7 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
     buf = xmlOutputBufferCreateFilename(filename, handler, 0);
     if (buf == NULL) return(-1);
 
-    xmlDocContentDumpOutput(buf, cur, encoding, 1);
+    xmlDocContentDumpOutput(buf, cur, encoding, 0);
 
     ret = xmlOutputBufferClose(buf);
     return(ret);
@@ -6131,7 +6131,7 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     buf = xmlOutputBufferCreateFilename(filename, handler, cur->compression);
     if (buf == NULL) return(-1);
 
-    xmlDocContentDumpOutput(buf, cur, NULL, 1);
+    xmlDocContentDumpOutput(buf, cur, NULL, 0);
 
     ret = xmlOutputBufferClose(buf);
     return(ret);

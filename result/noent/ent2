@@ -6,5 +6,7 @@
 ]>
 <EXAMPLE>
   
+<title>my title</title>
+
   This text is about XML, the Extensible Markup Language and this is an embedded <IMG src="image"/>
 </EXAMPLE>

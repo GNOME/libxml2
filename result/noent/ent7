@@ -5,6 +5,4 @@
 <!ELEMENT item (para)+>
 <!ELEMENT para (#PCDATA)>
 ]>
-<item>
-<para>'they called me the hyacinth girl'</para>
-</item>
+<item><para>'they called me the hyacinth girl'</para></item>

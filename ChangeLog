@@ -1,3 +1,8 @@
+Mon Aug 25 13:24:57 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/Makefile.am: make sure the new header will
+	  be included when generating a new distribution.
+
 Mon Aug 25 12:37:05 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fixed a couple of stupid bugs in the state allocation

@@ -3208,6 +3208,9 @@ xmlNodeGetContent(xmlNodePtr cur) {
 			continue;
 		    }
 		}
+		if (tmp == cur)
+		    break;
+
 		if (tmp->next != NULL) {
 		    tmp = tmp->next;
 		    continue;
@@ -3217,7 +3220,7 @@ xmlNodeGetContent(xmlNodePtr cur) {
 		    tmp = tmp->parent;
 		    if (tmp == NULL)
 			break;
-		    if (tmp == (xmlNodePtr) cur) {
+		    if (tmp == cur) {
 			tmp = NULL;
 			break;
 		    }

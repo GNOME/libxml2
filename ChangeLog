@@ -1,3 +1,8 @@
+Wed Mar  7 16:50:22 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am: Martin Baulig suggested to add -lm
+	* tree.c: found another bug in xmlNodeGetContent()
+
 Tue Mar  6 09:21:30 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: Bjorn found the error related to strictness of comparison.

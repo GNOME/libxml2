@@ -83,9 +83,11 @@ struct _xmlSaveCtxt {
     int options;
     int level;
     int format;
-    char indent[MAX_INDENT + 1];
+    char indent[MAX_INDENT + 1];	/* array for indenting output */
     int indent_nr;
     int indent_size;
+    xmlCharEncodingOutputFunc escape;	/* used for element content */
+    xmlCharEncodingOutputFunc escapeAttr;/* used for attribute content */
 };
 
 /************************************************************************
@@ -327,6 +329,8 @@ xmlSaveCtxtInit(xmlSaveCtxtPtr ctxt)
     int i;
 
     if (ctxt == NULL) return;
+    if ((ctxt->encoding == NULL) && (ctxt->escape == NULL))
+        ctxt->escape = xmlEscapeEntities;
     if (xmlTreeIndentString == NULL) {
         memset(&ctxt->indent[0], 0, MAX_INDENT + 1);
     } else {
@@ -382,6 +386,7 @@ xmlNewSaveCtxt(const char *encoding, int options)
 	    return(NULL);
 	}
         ret->encoding = xmlStrdup((const xmlChar *)encoding);
+	ret->escape = xmlEscapeEntities;
     }
     xmlSaveCtxtInit(ret);
 
@@ -646,12 +651,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	    if ((cur->name == xmlStringText) ||
 		(cur->name != xmlStringTextNoenc)) {
 
-		if (ctxt->encoding == NULL) {
-		    xmlOutputBufferWriteEscape(buf, cur->content,
-		                               xmlEscapeEntities);
-		} else {
-		    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
-		}
+                xmlOutputBufferWriteEscape(buf, cur->content, ctxt->escape);
 	    } else {
 		/*
 		 * Disable escaping, needed for XSLT
@@ -753,11 +753,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     }
     xmlOutputBufferWrite(buf, 1, ">");
     if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
-	if (ctxt->encoding == NULL) {
-	    xmlOutputBufferWriteEscape(buf, cur->content, xmlEscapeEntities);
-	} else {
-	    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
-	}
+	xmlOutputBufferWriteEscape(buf, cur->content, ctxt->escape);
     }
     if (cur->children != NULL) {
 	if (ctxt->format) xmlOutputBufferWrite(buf, 1, "\n");
@@ -1092,13 +1088,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	if (cur->content != NULL) {
 	    if ((cur->name == xmlStringText) ||
 		(cur->name != xmlStringTextNoenc)) {
-
-		if (ctxt->encoding == NULL) {
-		    xmlOutputBufferWriteEscape(buf, cur->content,
-		                               xmlEscapeEntities);
-		} else {
-		    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
-		}
+                xmlOutputBufferWriteEscape(buf, cur->content, ctxt->escape);
 	    } else {
 		/*
 		 * Disable escaping, needed for XSLT
@@ -1214,11 +1204,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     }
     xmlOutputBufferWrite(buf, 1, ">");
     if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
-	if (ctxt->encoding == NULL) {
-	    xmlOutputBufferWriteEscape(buf, cur->content, xmlEscapeEntities);
-	} else {
-	    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
-	}
+	xmlOutputBufferWriteEscape(buf, cur->content, ctxt->escape);
     }
 
     /*
@@ -1496,6 +1482,40 @@ xmlSaveClose(xmlSaveCtxtPtr ctxt)
     ret = xmlSaveFlush(ctxt);
     xmlFreeSaveCtxt(ctxt);
     return(ret);
+}
+
+/**
+ * xmlSaveSetEscape:
+ * @ctxt:  a document saving context
+ * @escape:  the escaping function
+ *
+ * Set a custom escaping function to be used for text in element content
+ *
+ * Returns 0 if successful or -1 in case of error.
+ */
+int
+xmlSaveSetEscape(xmlSaveCtxtPtr ctxt, xmlCharEncodingOutputFunc escape)
+{
+    if (ctxt == NULL) return(-1);
+    ctxt->escape = escape;
+    return(0);
+}
+
+/**
+ * xmlSaveSetAttrEscape:
+ * @ctxt:  a document saving context
+ * @escape:  the escaping function
+ *
+ * Set a custom escaping function to be used for text in attribute content
+ *
+ * Returns 0 if successful or -1 in case of error.
+ */
+int
+xmlSaveSetAttrEscape(xmlSaveCtxtPtr ctxt, xmlCharEncodingOutputFunc escape)
+{
+    if (ctxt == NULL) return(-1);
+    ctxt->escapeAttr = escape;
+    return(0);
 }
 
 /************************************************************************

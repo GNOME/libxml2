@@ -1,3 +1,8 @@
+Sat May 15 14:57:40 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c include/libxml/xmlsave.h: start adding API for 
+	  escaping customization.
+
 Sat May 15 12:38:17 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: more xmlSave cleanup, optimization and refactoring

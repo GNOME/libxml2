@@ -12,6 +12,7 @@
 
 #include <libxml/xmlversion.h>
 #include <libxml/tree.h>
+#include <libxml/encoding.h>
 #include <libxml/xmlIO.h>
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -52,6 +53,12 @@ XMLPUBFUN int XMLCALL
 		xmlSaveFlush		(xmlSaveCtxtPtr ctxt);
 XMLPUBFUN int XMLCALL
 		xmlSaveClose		(xmlSaveCtxtPtr ctxt);
+XMLPUBFUN int XMLCALL
+		xmlSaveSetEscape	(xmlSaveCtxtPtr ctxt,
+					 xmlCharEncodingOutputFunc escape);
+XMLPUBFUN int XMLCALL
+		xmlSaveSetAttrEscape	(xmlSaveCtxtPtr ctxt,
+					 xmlCharEncodingOutputFunc escape);
 #ifdef __cplusplus
 }
 #endif

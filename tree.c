@@ -1042,6 +1042,7 @@ xmlAttrPtr
 xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
            const xmlChar *value) {
     xmlAttrPtr cur;
+    xmlDocPtr doc = NULL;
 
     if (name == NULL) {
 #ifdef DEBUG_TREE
@@ -1064,16 +1065,18 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
     cur->type = XML_ATTRIBUTE_NODE;
 
     cur->parent = node; 
-    if (node != NULL)
-	cur->doc = node->doc; 
+    if (node != NULL) {
+	doc = node->doc;
+	cur->doc = doc;
+    }
     cur->ns = ns;
     cur->name = xmlStrdup(name);
     if (value != NULL) {
 	xmlChar *buffer;
 	xmlNodePtr tmp;
 
-	buffer = xmlEncodeEntitiesReentrant(node->doc, value);
-	cur->children = xmlStringGetNodeList(node->doc, buffer);
+	buffer = xmlEncodeEntitiesReentrant(doc, value);
+	cur->children = xmlStringGetNodeList(doc, buffer);
 	cur->last = NULL;
 	tmp = cur->children;
 	while (tmp != NULL) {

@@ -1,3 +1,8 @@
+Sun Oct 31 22:03:38 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed a bug reported by Petr Pajas on the list and
+	  affecting XML::Libxml
+
 Sun Oct 31 16:33:54 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c doc/examples/testWriter.c: Fixed bug #153937, making

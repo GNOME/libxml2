@@ -11163,7 +11163,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
-    xmlNodePtr content;
+    xmlNodePtr content, newRoot;
     int size;
     int ret = 0;
 
@@ -11193,14 +11193,23 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	xmlFreeParserCtxt(ctxt);
 	return(-1);
     }
-    newDoc->dict = ctxt->dict;
-    xmlDictReference(newDoc->dict);
+    if ((doc != NULL) && (doc->dict != NULL)) {
+        xmlDictFree(ctxt->dict);
+	ctxt->dict = doc->dict;
+	xmlDictReference(ctxt->dict);
+	ctxt->str_xml = xmlDictLookup(ctxt->dict, BAD_CAST "xml", 3);
+	ctxt->str_xmlns = xmlDictLookup(ctxt->dict, BAD_CAST "xmlns", 5);
+	ctxt->str_xml_ns = xmlDictLookup(ctxt->dict, XML_XML_NAMESPACE, 36);
+	ctxt->dictNames = 1;
+    } else {
+	xmlCtxtUseOptions(ctxt, XML_PARSE_NODICT);
+    }
     if (doc != NULL) {
 	newDoc->intSubset = doc->intSubset;
 	newDoc->extSubset = doc->extSubset;
     }
-    newDoc->children = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
-    if (newDoc->children == NULL) {
+    newRoot = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
+    if (newRoot == NULL) {
 	if (sax != NULL)
 	    ctxt->sax = oldsax;
 	xmlFreeParserCtxt(ctxt);
@@ -11209,7 +11218,8 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
         xmlFreeDoc(newDoc);
 	return(-1);
     }
-    nodePush(ctxt, newDoc->children);
+    xmlAddChild((xmlNodePtr) newDoc, newRoot);
+    nodePush(ctxt, newRoot);
     if (doc == NULL) {
 	ctxt->myDoc = newDoc;
     } else {
@@ -11253,21 +11263,22 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
       ret = 0;
     }
     
-    if (lst != NULL && (ret == 0 || recover == 1)) {
-      xmlNodePtr cur;
+    if ((lst != NULL) && ((ret == 0) || (recover == 1))) {
+	xmlNodePtr cur;
 
-	    /*
-	     * Return the newly created nodeset after unlinking it from
-	     * they pseudo parent.
-	     */
-	    cur = newDoc->children->children;
-	    *lst = cur;
-	    while (cur != NULL) {
-		cur->parent = NULL;
-		cur = cur->next;
-	    }
-            newDoc->children->children = NULL;
+	/*
+	 * Return the newly created nodeset after unlinking it from
+	 * they pseudo parent.
+	 */
+	cur = newDoc->children->children;
+	*lst = cur;
+	while (cur != NULL) {
+	    xmlSetTreeDoc(cur, doc);
+	    cur->parent = NULL;
+	    cur = cur->next;
 	}
+	newDoc->children->children = NULL;
+    }
 	
     if (sax != NULL) 
 	ctxt->sax = oldsax;

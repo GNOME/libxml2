@@ -1,3 +1,11 @@
+Thu Feb 12 13:41:16 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c: fixing bug #132930 with the provided patch, a bit
+	  suspicious about it but this is fairly contained and regression
+	  tests still passes.
+	* test/schemas/all1* result/schemas/all1*: added the test to
+	  the regression suite.
+
 Thu Feb 12 12:54:26 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed bug #132575 about finding the end of the

@@ -4325,6 +4325,7 @@ xmlAutomataNewCountTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 			 xmlAutomataStatePtr to, const xmlChar *token,
 			 int min, int max, void *data) {
     xmlRegAtomPtr atom;
+    int counter;
 
     if ((am == NULL) || (from == NULL) || (token == NULL))
 	return(NULL);
@@ -4343,10 +4344,22 @@ xmlAutomataNewCountTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 	atom->min = min;
     atom->max = max;
 
-    if (xmlFAGenerateTransitions(am, from, to, atom) < 0) {
-        xmlRegFreeAtom(atom);
-	return(NULL);
+    /*
+     * associate a counter to the transition.
+     */
+    counter = xmlRegGetCounter(am);
+    am->counters[counter].min = min;
+    am->counters[counter].max = max;
+
+    /* xmlFAGenerateTransitions(am, from, to, atom); */
+    if (to == NULL) {
+        to = xmlRegNewState(am);
+	xmlRegStatePush(am, to);
     }
+    xmlRegStateAddTrans(am, from, atom, to, counter, -1);
+    xmlRegAtomPush(am, atom);
+    am->state = to;
+
     if (to == NULL)
 	to = am->state;
     if (to == NULL)

@@ -1,5 +1,5 @@
 Unimplemented block at xmlschemastypes.c:1132
-error detected at relaxng.c:3551
-error detected at relaxng.c:4526
-error detected at relaxng.c:4341
+error detected at relaxng.c:3992
+error detected at relaxng.c:4964
+error detected at relaxng.c:4781
 xmlRelaxNGValidateDefinition(): validated vector : -1

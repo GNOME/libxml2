@@ -1,0 +1,6 @@
+xmlRelaxNGCheckCombine(): merging inline.extra defines: 1
+xmlRelaxNGValidateDefinition(): validated italic : 0
+xmlRelaxNGValidateDefinition(): validated em : 0
+xmlRelaxNGValidateDefinition(): validated bold : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated doc : 0

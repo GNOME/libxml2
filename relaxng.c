@@ -8,10 +8,10 @@
 
 /**
  * TODO:
- * - <interleave></interleave><element>...
  * - error reporting
- * - module
- * - fixing ref/def cross grammar contexts
+ * - simplification of the resulting compiled trees:
+ *    - NOT_ALLOWED
+ *    - EMPTY
  */
 
 #define IN_LIBXML
@@ -1560,6 +1560,8 @@ static xmlRelaxNGDefinePtr xmlRelaxNGParsePattern(
 	      xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node);
 static xmlRelaxNGPtr xmlRelaxNGParseDocument(
 	      xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node);
+static int xmlRelaxNGParseGrammarContent(
+	      xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes);
 
 
 #define IS_BLANK_NODE(n)						\
@@ -2087,13 +2089,68 @@ xmlRelaxNGParseInterleave(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 }
 
 /**
+ * xmlRelaxNGParseInclude:
+ * @ctxt:  a Relax-NG parser context
+ * @node:  the include node
+ *
+ * Integrate the content of an include node in the current grammar
+ *
+ * Returns 0 in case of success or -1 in case of error
+ */
+static int
+xmlRelaxNGParseInclude(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
+    xmlRelaxNGIncludePtr incl;
+    xmlNodePtr root;
+    int ret = 0, tmp;
+
+    incl = node->_private;
+    if (incl == NULL) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+		"Include node has no data\n");
+	ctxt->nbErrors++;
+	return(-1);
+    }
+    root = xmlDocGetRootElement(incl->doc);
+    if (root == NULL) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+		"Include document is empty\n");
+	ctxt->nbErrors++;
+	return(-1);
+    }
+    if (!xmlStrEqual(root->name, BAD_CAST "grammar")) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+		"Include document root is not a grammar\n");
+	ctxt->nbErrors++;
+	return(-1);
+    }
+
+    /*
+     * Merge the definition from both the include and the internal list
+     */
+    if (root->children != NULL) {
+	tmp = xmlRelaxNGParseGrammarContent(ctxt, root->children);
+	if (tmp != 0)
+	    ret = -1;
+    }
+    if (node->children != NULL) {
+	tmp = xmlRelaxNGParseGrammarContent(ctxt, node->children);
+	if (tmp != 0)
+	    ret = -1;
+    }
+    return(ret);
+}
+
+/**
  * xmlRelaxNGParseDefine:
  * @ctxt:  a Relax-NG parser context
  * @node:  the define node
  *
  * parse the content of a RelaxNG define element node.
  *
- * Returns the definition pointer or NULL in case of error.
+ * Returns 0 in case of success or -1 in case of error
  */
 static int
 xmlRelaxNGParseDefine(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
@@ -2332,8 +2389,20 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	} else {
 	    def = NULL;
 	}
+    } else if (IS_RELAXNG(node, "notAllowed")) {
+	def = xmlRelaxNGNewDefine(ctxt, node);
+	if (def == NULL)
+	    return(NULL);
+	def->type = XML_RELAXNG_NOT_ALLOWED;
+	if (node->children != NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+			"xmlRelaxNGParse: notAllowed element is not empty\n");
+	    ctxt->nbErrors++;
+	}
     } else {
 	TODO
+	def = NULL;
     }
     return(def);
 }
@@ -2644,10 +2713,9 @@ xmlRelaxNGParseStart(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes) {
  * Returns 0 in case of success, -1 in case of error
  */
 static int
-xmlRelaxNGParseGrammarContent(xmlRelaxNGParserCtxtPtr ctxt
-                              ATTRIBUTE_UNUSED, xmlNodePtr nodes)
+xmlRelaxNGParseGrammarContent(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes)
 {
-    int ret = 0;
+    int ret = 0, tmp;
 
     if (nodes == NULL) {
 	if (ctxt->error != NULL)
@@ -2656,30 +2724,30 @@ xmlRelaxNGParseGrammarContent(xmlRelaxNGParserCtxtPtr ctxt
 	ctxt->nbErrors++;
 	return(-1);
     }
-    if (IS_RELAXNG(nodes, "start")) {
-	if (nodes->children == NULL) {
-	    if (ctxt->error != NULL)
-		ctxt->error(ctxt->userData,
-			    "grammar has no children\n");
-	    ctxt->nbErrors++;
-	} else {
-	    xmlRelaxNGParseStart(ctxt, nodes->children);
-	}
-	nodes = nodes->next;
-    } else {
-	if (ctxt->error != NULL)
-	    ctxt->error(ctxt->userData,
-			"grammar first child must be a <start>\n");
-	ctxt->nbErrors++;
-	return(-1);
-    }
     while (nodes != NULL) {
-        if (IS_RELAXNG(nodes, "define")) {
-	    ret = xmlRelaxNGParseDefine(ctxt, nodes);
+	if (IS_RELAXNG(nodes, "start")) {
+	    if (nodes->children == NULL) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+				"grammar has no children\n");
+		ctxt->nbErrors++;
+	    } else {
+		tmp = xmlRelaxNGParseStart(ctxt, nodes->children);
+		if (tmp != 0)
+		    ret = -1;
+	    }
+	} else if (IS_RELAXNG(nodes, "define")) {
+	    tmp = xmlRelaxNGParseDefine(ctxt, nodes);
+	    if (tmp != 0)
+		ret = -1;
+	} else if (IS_RELAXNG(nodes, "include")) {
+	    tmp = xmlRelaxNGParseInclude(ctxt, nodes);
+	    if (tmp != 0)
+		ret = -1;
         } else {
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData,
-			"grammar allows onlys <define> child after <start>\n");
+			"grammar has unexpected child %s\n", nodes->name);
 	    ctxt->nbErrors++;
 	    ret = -1;
 	}
@@ -3213,23 +3281,7 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
 		delete = cur;
 		goto skip_children;
 	    } else {
-		if (xmlStrEqual(cur->name, BAD_CAST "div")) {
-		    /*
-		     * implements rule 4.11
-		     */
-		    xmlNodePtr child, ins, tmp;
-
-		    child = cur->children;
-		    ins = child;
-		    while (child != NULL) {
-			tmp = child->next;
-			xmlUnlinkNode(child);
-			ins = xmlAddNextSibling(ins, child);
-			child = tmp;
-		    }
-		    delete = cur;
-		    goto skip_children;
-		} else if (xmlStrEqual(cur->name, BAD_CAST "externalRef")) {
+		if (xmlStrEqual(cur->name, BAD_CAST "externalRef")) {
 		    xmlChar *href, *ns, *base, *URL;
 		    xmlRelaxNGDocumentPtr docu;
 
@@ -3281,7 +3333,7 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
 		    if (href == NULL) {
 			if (ctxt->error != NULL)
 			    ctxt->error(ctxt->userData,
-		    "xmlRelaxNGParse: externalRef has no href attribute\n");
+		    "xmlRelaxNGParse: include has no href attribute\n");
 			ctxt->nbErrors++;
 			delete = cur;
 			goto skip_children;
@@ -3291,7 +3343,7 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
 		    if (URL == NULL) {
 			if (ctxt->error != NULL)
 			    ctxt->error(ctxt->userData,
-			"Failed to compute URL for externalRef %s\n", href);
+			"Failed to compute URL for include %s\n", href);
 			ctxt->nbErrors++;
 			if (href != NULL)
 			    xmlFree(href);
@@ -3308,7 +3360,7 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
 		    if (incl == NULL) {
 			if (ctxt->error != NULL)
 			    ctxt->error(ctxt->userData,
-				"Failed to load externalRef %s\n", URL);
+				"Failed to load include %s\n", URL);
 			ctxt->nbErrors++;
 			xmlFree(URL);
 			delete = cur;
@@ -3417,6 +3469,27 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
 			    xmlFree(name);
 			} 
 		    }
+		}
+		/*
+		 * Thisd is not an else since "include" is transformed
+		 * into a div
+		 */
+		if (xmlStrEqual(cur->name, BAD_CAST "div")) {
+		    /*
+		     * implements rule 4.11
+		     */
+		    xmlNodePtr child, ins, tmp;
+
+		    child = cur->children;
+		    ins = child;
+		    while (child != NULL) {
+			tmp = child->next;
+			xmlUnlinkNode(child);
+			ins = xmlAddNextSibling(ins, child);
+			child = tmp;
+		    }
+		    delete = cur;
+		    goto skip_children;
 		}
 	    }
 	}
@@ -3587,6 +3660,8 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
     ctxt->document = NULL;
     ret->documents = ctxt->documents;
     ctxt->documents = NULL;
+    ret->includes = ctxt->includes;
+    ctxt->includes = NULL;
 
     return (ret);
 }
@@ -4631,8 +4706,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 #endif
 	    return(0);
         case XML_RELAXNG_NOT_ALLOWED:
-	    TODO
-	    break;
+	    return(-1);
         case XML_RELAXNG_TEXT:
 	    if (node == NULL)
 		return(0);
@@ -4794,6 +4868,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    ctxt->flags = oldflags;
 	    break;
 	}
+        case XML_RELAXNG_DEF:
         case XML_RELAXNG_GROUP: {
 	    xmlRelaxNGDefinePtr list = define->content;
 
@@ -4813,9 +4888,6 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    break;
 	case XML_RELAXNG_EXTERNALREF:
         case XML_RELAXNG_REF:
-	    ret = xmlRelaxNGValidateDefinition(ctxt, define->content);
-	    break;
-        case XML_RELAXNG_DEF:
 	    ret = xmlRelaxNGValidateDefinition(ctxt, define->content);
 	    break;
         case XML_RELAXNG_DATATYPE: {

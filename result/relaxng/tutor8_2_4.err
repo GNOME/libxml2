@@ -3,5 +3,5 @@ xmlRelaxNGComputeInterleaves(interleave0)
   6 groups
 xmlRelaxNGValidateDefinition(): validated title : 0
 xmlRelaxNGValidateDefinition(): validated title : 0
-error detected at relaxng.c:4341
+error detected at relaxng.c:4781
 xmlRelaxNGValidateDefinition(): validated head : -1

@@ -1,4 +1,7 @@
 xmlRelaxNGValidateDefinition(): validated name : 0
-xmlRelaxNGValidateDefinition(): validated card : -1
-error detected at relaxng.c:4341
-xmlRelaxNGValidateDefinition(): validated addressBook : -1
+xmlRelaxNGValidateDefinition(): validated email : 0
+xmlRelaxNGValidateDefinition(): validated card : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated email : 0
+xmlRelaxNGValidateDefinition(): validated card : 0
+xmlRelaxNGValidateDefinition(): validated addressBook : 0

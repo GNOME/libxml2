@@ -12,48 +12,11 @@
 #
 # March 2002, Igor Zlatkovic <igor@zlatkovic.com>
 
-AUTOCONF = .\config.msvc
-
-# If you cannot run the configuration script, which would take the burden of
-# editing this file from your back, then remove the following line...
-!include $(AUTOCONF)
-# ...and enable the following lines and adapt them to your environment.
-#XML_SRCDIR = ..
-#UTILS_SRCDIR = ..
-#BINDIR = binaries
-#LIBXML_MAJOR_VERSION = 0 # set this to the right value.
-#LIBXML_MINOR_VERSION = 0 # set this to the right value.
-#LIBXML_MICRO_VERSION = 0 # set this to the right value.
-#WITH_TRIO = 0
-#WITH_THREADS = 0
-#WITH_FTP = 1
-#WITH_HTTP = 1
-#WITH_HTML = 1
-#WITH_C14N = 1
-#WITH_CATALOG = 1
-#WITH_DOCB = 1
-#WITH_XPATH = 1
-#WITH_XPTR = 1
-#WITH_XINCLUDE = 1
-#WITH_ICONV = 1
-#WITH_ZLIB = 0
-#WITH_DEBUG = 1
-#WITH_MEM_DEBUG = 0
-#WITH_SCHEMAS = 1
-#DEBUG = 0
-#STATIC = 0
-#PREFIX = . # set this to the right value.
-#BINPREFIX = $(PREFIX)\bin
-#INCPREFIX = $(PREFIX)\include
-#LIBPREFIX = $(PREFIX)\lib
-#SOPREFIX = $(PREFIX)\lib
-#INCLUDE = $(INCLUDE);$(INCPREFIX)
-#LIB = $(LIB);$(LIBPREFIX) 
-
-
 # There should never be a need to modify anything below this line.
 # ----------------------------------------------------------------
 
+AUTOCONF = .\config.msvc
+!include $(AUTOCONF)
 
 # Names of various input and output components.
 XML_NAME = xml2
@@ -63,10 +26,11 @@ XML_IMP = $(XML_BASENAME).lib
 XML_DEF = $(XML_BASENAME).def
 XML_A = $(XML_BASENAME)_a.lib
 
-# Place where we let the compiler put its intermediate trash.
-XML_INTDIR = $(XML_BASENAME).int
-XML_INTDIR_A = $(XML_BASENAME)_a.int
-UTILS_INTDIR = utils.int
+# Place where we let the compiler put its output.
+BINDIR = bin.msvc
+XML_INTDIR = int.msvc
+XML_INTDIR_A = int.a.msvc
+UTILS_INTDIR = int.utils.msvc
 
 # The preprocessor and its options.
 CPP = cl.exe /EP
@@ -77,7 +41,7 @@ CPPFLAGS = $(CPPFLAGS) /D "_REENTRANT"
 
 # The compiler and its options.
 CC = cl.exe
-CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W1 /MD
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W1 $(CRUNTIME)
 CFLAGS = $(CFLAGS) /I$(XML_SRCDIR) /I$(XML_SRCDIR)\include /I$(INCPREFIX)
 !if "$(WITH_THREADS)" != "no"
 CFLAGS = $(CFLAGS) /D "_REENTRANT"
@@ -160,6 +124,7 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\xmlschemas.obj\
 	$(XML_INTDIR)\xmlschemastypes.obj\
 	$(XML_INTDIR)\xmlunicode.obj\
+	$(XML_INTDIR)\xmlwriter.obj\
 	$(XML_INTDIR)\xpath.obj\
 	$(XML_INTDIR)\xpointer.obj
 
@@ -199,6 +164,7 @@ XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
 	$(XML_INTDIR_A)\xmlschemas.obj\
 	$(XML_INTDIR_A)\xmlschemastypes.obj\
 	$(XML_INTDIR_A)\xmlunicode.obj\
+	$(XML_INTDIR_A)\xmlwriter.obj\
 	$(XML_INTDIR_A)\xpath.obj\
 	$(XML_INTDIR_A)\xpointer.obj
 

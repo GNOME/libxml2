@@ -15,51 +15,15 @@
 # March 2002, Igor Zlatkovic <igor@zlatkovic.com>
 #
 
-AUTOCONF = .\config.bcb
-
 # Extra setting to control whether to use dynamic or static Borland runtime. 
 # Set to "1" to use static RTL, anything else to use dynamic RTL
 STATIC_RTL = 0
 
-# If you cannot run the configuration script, which would take the burden of
-# editing this file from your back, then remove the following line...
-!include $(AUTOCONF)
-# ...and enable the following lines and adapt them to your environment.
-#XML_SRCDIR = ..
-#UTILS_SRCDIR = ..
-#BINDIR = binaries
-#LIBXML_MAJOR_VERSION = 0 # set this to the right value.
-#LIBXML_MINOR_VERSION = 0 # set this to the right value.
-#LIBXML_MICRO_VERSION = 0 # set this to the right value.
-#WITH_TRIO = 0
-#WITH_THREADS = 0
-#WITH_FTP = 1
-#WITH_HTTP = 1
-#WITH_HTML = 1
-#WITH_C14N = 1
-#WITH_CATALOG = 1
-#WITH_DOCB = 1
-#WITH_XPATH = 1
-#WITH_XPTR = 1
-#WITH_XINCLUDE = 1
-#WITH_ICONV = 1
-#WITH_ZLIB = 0
-#WITH_DEBUG = 1
-#WITH_MEM_DEBUG = 0
-#WITH_SCHEMAS = 1
-#DEBUG = 0
-#STATIC = 0
-#PREFIX = . # set this to the right value.
-#BINPREFIX = $(PREFIX)\bin
-#INCPREFIX = $(PREFIX)\include
-#LIBPREFIX = $(PREFIX)\lib
-#SOPREFIX = $(PREFIX)\lib
-#INCLUDE = $(INCLUDE);$(INCPREFIX)
-#LIB = $(LIB);$(LIBPREFIX) 
-
-
 # There should never be a need to modify anything below this line.
 # ----------------------------------------------------------------
+
+AUTOCONF = .\config.bcb
+!include $(AUTOCONF)
 
 !if !$d(BCB)
 BCB = $(MAKEDIR)\..
@@ -76,9 +40,10 @@ XML_A = $(XML_BASENAME)_a.lib
 DUMMY = dir.exists
 
 # Place where we let the compiler put its intermediate trash.
-XML_INTDIR = $(XML_BASENAME).int
-XML_INTDIR_A = $(XML_BASENAME)_a.int
-UTILS_INTDIR = utils.int
+BINDIR = bin.bcb
+XML_INTDIR = int.bcb
+XML_INTDIR_A = int.a.bcb
+UTILS_INTDIR = int.utils.bcb
 
 # The preprocessor and its options.
 CPP = cpp32.exe -P- -DWIN32
@@ -184,6 +149,7 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\xmlschemas.obj\
 	$(XML_INTDIR)\xmlschemastypes.obj\
 	$(XML_INTDIR)\xmlunicode.obj\
+	$(XML_INTDIR)\xmlwriter.obj\
 	$(XML_INTDIR)\xpath.obj\
 	$(XML_INTDIR)\xpointer.obj
 
@@ -223,6 +189,7 @@ XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
 	$(XML_INTDIR_A)\xmlschemas.obj\
 	$(XML_INTDIR_A)\xmlschemastypes.obj\
 	$(XML_INTDIR_A)\xmlunicode.obj\
+	$(XML_INTDIR_A)\xmlwriter.obj\
 	$(XML_INTDIR_A)\xpath.obj\
 	$(XML_INTDIR_A)\xpointer.obj
 

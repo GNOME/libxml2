@@ -79,13 +79,13 @@ Windows port.
 Once you have decided which options suit you, run the script with that
 options. Here is an example:
 
-  cscript configure.js prefix=c:\opt include=c:\opt\include 
-    lib=c:\opt\lib debug=yes
+  cscript configure.js compiler=msvc prefix=c:\opt 
+    include=c:\opt\include lib=c:\opt\lib debug=yes
 
-The previous example will configure the process to install the library
-in c:\opt, use c:\opt\include and c:\opt\lib as additional search
-paths for the compiler and the linker and build executables with debug
-symbols.
+The previous example will configure the process to use the Microsoft's
+compiler, install the library in c:\opt, use c:\opt\include and 
+c:\opt\lib as additional search paths for the compiler and the linker 
+and build executables with debug symbols.
 
 Note: Please do not use path names which contain spaces. This will
 fail. Allowing this would require me to put almost everything in the
@@ -106,19 +106,29 @@ with Microsoft's MSVC compiler, you would use the NMAKE utility. If
 you configured it to build with GNU C compiler, mingw edition, you
 would use the GNU make. Assuming you use MSVC, type
 
-  nmake
+  nmake /f Makefile.msvc
+
+and if you use MinGW, you would type
+
+  make -f Makefile.mingw
+
+and if you use Borland's compiler, you would type
+
+  bmake -f Makefile.bcb
 
 in the win32 subdirectory. When the building completes, you will find
-the executable files in win32\binaries directory.
- 
+the executable files in win32\bin.* directory, where * stands for the
+name of the compiler you have used.
+
 
 1.4 Installing
 --------------
 
 You can install the software into the directory you specified to the
-configure script during the configure stage by typing
+configure script during the configure stage by typing (with MSVC in
+this example)
 
-  nmake install
+  nmake /f Makefile.msvc install
 
 That would be it, enjoy.
 
@@ -134,8 +144,9 @@ That would be it, enjoy.
 --------------------------
 
 If you use the compiler which comes with Visual Studio .NET, note that
-it will link to its own C-runtime named msvcr70.dll. This file is not
-available on any machine which doesn't have .NET installed.
+it will link to its own C-runtime named msvcr70.dll or msvcr71.dll. This 
+file is not available on any machine which doesn't have Visual Studio 
+.NET installed.
 
 
 2.2 GNU C/C++, Mingw edition
@@ -143,8 +154,8 @@ available on any machine which doesn't have .NET installed.
 
 When specifying paths to configure.js, please use slashes instead of 
 backslashes for directory separation. Sometimes Mingw needs this. If
-this is the case, then 'make install' won't work correctly and you'll
-have to install manually.
+this is the case, and you specify backslashes, then the compiler will 
+complain about not finding necessary header files.
 
 
 2.2 Borland C++ Builder
@@ -204,7 +215,8 @@ A similar problem is likely with Cygwin.
 
 2.2.3 Other caveats
 
-I have tested this only with BCB6, Professional Edition.
+We have tested this only with BCB6, Professional Edition, and BCB 5.5 free
+command-line tools.
 
 
 

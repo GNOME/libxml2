@@ -12,48 +12,11 @@
 #
 # November 2002, Igor Zlatkovic <igor@zlatkovic.com>
 
-AUTOCONF = .\config.mingw
-
-# If you cannot run the configuration script, which would take the burden of
-# editing this file from your back, then remove the following line...
-include $(AUTOCONF)
-# ...and enable the following lines and adapt them to your environment.
-#XML_SRCDIR = ..
-#UTILS_SRCDIR = ..
-#BINDIR = binaries
-#LIBXML_MAJOR_VERSION = 0 # set this to the right value.
-#LIBXML_MINOR_VERSION = 0 # set this to the right value.
-#LIBXML_MICRO_VERSION = 0 # set this to the right value.
-#WITH_TRIO = 0
-#WITH_THREADS = 0
-#WITH_FTP = 1
-#WITH_HTTP = 1
-#WITH_HTML = 1
-#WITH_C14N = 1
-#WITH_CATALOG = 1
-#WITH_DOCB = 1
-#WITH_XPATH = 1
-#WITH_XPTR = 1
-#WITH_XINCLUDE = 1
-#WITH_ICONV = 1
-#WITH_ZLIB = 0
-#WITH_DEBUG = 1
-#WITH_MEM_DEBUG = 0
-#WITH_SCHEMAS = 1
-#DEBUG = 0
-#STATIC = 0
-#PREFIX = . # set this to the right value.
-#BINPREFIX = $(PREFIX)\bin
-#INCPREFIX = $(PREFIX)\include
-#LIBPREFIX = $(PREFIX)\lib
-#SOPREFIX = $(PREFIX)\lib
-#INCLUDE += ;$(INCPREFIX)
-#LIB += ;$(LIBPREFIX) 
-
-
 # There should never be a need to modify anything below this line.
 # ----------------------------------------------------------------
 
+AUTOCONF = .\config.mingw
+include $(AUTOCONF)
 
 # Names of various input and output components.
 XML_NAME = xml2
@@ -62,10 +25,11 @@ XML_SO = $(XML_BASENAME).dll
 XML_IMP = $(XML_BASENAME).lib
 XML_A = $(XML_BASENAME).a
 
-# Place where we let the compiler put its intermediate trash.
-XML_INTDIR = $(XML_BASENAME).int
-XML_INTDIR_A = $(XML_BASENAME)_a.int
-UTILS_INTDIR = utils.int
+# Place where we let the compiler put its output.
+BINDIR = bin.mingw
+XML_INTDIR = int.mingw
+XML_INTDIR_A = int.a.mingw
+UTILS_INTDIR = int.utils.mingw
 
 # The preprocessor and its options.
 CPP = gcc.exe -E
@@ -171,6 +135,7 @@ XML_OBJS = $(XML_INTDIR)/c14n.o\
 	$(XML_INTDIR)/xmlschemas.o\
 	$(XML_INTDIR)/xmlschemastypes.o\
 	$(XML_INTDIR)/xmlunicode.o\
+	$(XML_INTDIR)/xmlwriter.o\
 	$(XML_INTDIR)/xpath.o\
 	$(XML_INTDIR)/xpointer.o
 
@@ -212,6 +177,7 @@ XML_OBJS_A = $(XML_INTDIR_A)/c14n.o\
 	$(XML_INTDIR_A)/xmlschemas.o\
 	$(XML_INTDIR_A)/xmlschemastypes.o\
 	$(XML_INTDIR_A)/xmlunicode.o\
+	$(XML_INTDIR_A)/xmlwriter.o\
 	$(XML_INTDIR_A)/xpath.o\
 	$(XML_INTDIR_A)/xpointer.o
 

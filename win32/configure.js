@@ -10,8 +10,6 @@
 /* The source directory, relative to the one where this file resides. */
 var srcDirXml = "..";
 var srcDirUtils = "..";
-/* The directory where we put the binaries after compilation. */
-var binDir = "binaries";
 /* Base name of what we are building. */
 var baseName = "libxml2";
 /* Configure file which contains the version and the output file where
@@ -59,6 +57,7 @@ var withPython = false;
 /* Win32 build options. */
 var dirSep = "\\";
 var compiler = "msvc";
+var cruntime = "/MD";
 var buildDebug = 0;
 var buildStatic = 0;
 var buildPrefix = ".";
@@ -135,6 +134,7 @@ function usage()
 	txt += "  python:     Build Python bindings (" + (withPython? "yes" : "no")  + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  compiler:   Compiler to be used [msvc|mingw|bcb] (" + compiler + ")\n";
+	txt += "  cruntime:   C-runtime compiler option (only msvc) (" + cruntime + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  static:     Link xmllint statically to libxml2 (" + (buildStatic? "yes" : "no")  + ")\n";
 	txt += "  prefix:     Base directory for the installation (" + buildPrefix + ")\n";
@@ -191,7 +191,6 @@ function discoverVersion()
 	cf.Close();
 	vf.WriteLine("XML_SRCDIR=" + srcDirXml);
 	vf.WriteLine("UTILS_SRCDIR=" + srcDirUtils);
-	vf.WriteLine("BINDIR=" + binDir);
 	vf.WriteLine("WITH_TRIO=" + (withTrio? "1" : "0"));
 	vf.WriteLine("WITH_THREADS=" + withThreads);
 	vf.WriteLine("WITH_FTP=" + (withFtp? "1" : "0"));
@@ -230,6 +229,7 @@ function discoverVersion()
 	if (compiler == "msvc") {
 		vf.WriteLine("INCLUDE=$(INCLUDE);" + buildInclude);
 		vf.WriteLine("LIB=$(LIB);" + buildLib);
+		vf.WriteLine("CRUNTIME=" + cruntime);
 	} else if (compiler == "mingw") {
 		vf.WriteLine("INCLUDE+=;" + buildInclude);
 		vf.WriteLine("LIB+=;" + buildLib);
@@ -468,6 +468,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withPython = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "compiler")
 			compiler = arg.substring(opt.length + 1, arg.length);
+		else if (opt == "cruntime")
+			cruntime = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "debug")
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "static")
@@ -605,6 +607,8 @@ txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";
 txtOut += "          Compiler: " + compiler + "\n";
+if (compiler == "msvc")
+	txtOut += "  C-Runtime option: " + cruntime + "\n";
 txtOut += "     Debug symbols: " + boolToStr(buildDebug) + "\n";
 txtOut += "    Static xmllint: " + boolToStr(buildStatic) + "\n";
 txtOut += "    Install prefix: " + buildPrefix + "\n";

@@ -1,3 +1,9 @@
+Fri Jul 16 11:01:40 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c test/catalogs/white* result/catalogs/white*:
+	  applied patches from Peter Breitenlohner to fix handling
+	  of white space normalization in public ids and add tests
+
 Tue Jul 13 17:24:13 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlmemory.c: applied a small fix from Steve Hay

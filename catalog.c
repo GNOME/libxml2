@@ -75,6 +75,7 @@ void* __stdcall GetModuleHandleA(const char*);
 unsigned long __stdcall GetModuleFileNameA(void*, char*, unsigned long);
 #endif
 
+static xmlChar *xmlCatalogNormalizePublic(const xmlChar *pubID);
 static int xmlExpandCatalog(xmlCatalogPtr catal, const char *filename);
 
 /************************************************************************
@@ -254,6 +255,7 @@ static xmlCatalogEntryPtr
 xmlNewCatalogEntry(xmlCatalogEntryType type, const xmlChar *name,
 	   const xmlChar *value, const xmlChar *URL, xmlCatalogPrefer prefer) {
     xmlCatalogEntryPtr ret;
+    xmlChar *normid = NULL;
 
     ret = (xmlCatalogEntryPtr) xmlMalloc(sizeof(xmlCatalogEntry));
     if (ret == NULL) {
@@ -264,10 +266,17 @@ xmlNewCatalogEntry(xmlCatalogEntryType type, const xmlChar *name,
     ret->parent = NULL;
     ret->children = NULL;
     ret->type = type;
+    if (type == XML_CATA_PUBLIC || type == XML_CATA_DELEGATE_PUBLIC) {
+        normid = xmlCatalogNormalizePublic(name);
+        if (normid != NULL)
+            name = (*normid != 0 ? normid : NULL);
+    }
     if (name != NULL)
 	ret->name = xmlStrdup(name);
     else
 	ret->name = NULL;
+    if (normid != NULL)
+        xmlFree(normid);
     if (value != NULL)
 	ret->value = xmlStrdup(value);
     else
@@ -941,6 +950,61 @@ xmlLoadFileContent(const char *filename)
     content[len] = 0;
 
     return(content);
+}
+
+/**
+ * xmlCatalogNormalizePublic:
+ * @pubID:  the public ID string
+ *
+ *  Normalizes the Public Identifier
+ *
+ * Implements 6.2. Public Identifier Normalization
+ * from http://www.oasis-open.org/committees/entity/spec-2001-08-06.html
+ *
+ * Returns the new string or NULL, the string must be deallocated
+ *         by the caller.
+ */
+static xmlChar *
+xmlCatalogNormalizePublic(const xmlChar *pubID)
+{
+    int ok = 1;
+    int white;
+    const xmlChar *p;
+    xmlChar *ret;
+    xmlChar *q;
+
+    if (pubID == NULL)
+        return(NULL);
+
+    white = 1;
+    for (p = pubID;*p != 0 && ok;p++) {
+        if (!xmlIsBlank_ch(*p))
+            white = 0;
+        else if (*p == 0x20 && !white)
+            white = 1;
+        else
+            ok = 0;
+    }
+    if (ok && !white)	/* is normalized */
+        return(NULL);
+
+    ret = xmlStrdup(pubID);
+    q = ret;
+    white = 0;
+    for (p = pubID;*p != 0;p++) {
+        if (xmlIsBlank_ch(*p)) {
+            if (q != ret)
+                white = 1;
+        } else {
+            if (white) {
+                *(q++) = 0x20;
+                white = 0;
+            }
+            *(q++) = *p;
+        }
+    }
+    *q = 0;
+    return(ret);
 }
 
 /************************************************************************
@@ -1858,12 +1922,17 @@ xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	              const xmlChar *sysID) {
     xmlChar *ret = NULL;
     xmlChar *urnID = NULL;
+    xmlChar *normid;
     
     if (catal == NULL)
         return(NULL);
     if ((pubID == NULL) && (sysID == NULL))
 	return(NULL);
 
+    normid = xmlCatalogNormalizePublic(pubID);
+    if (normid != NULL)
+        pubID = (*normid != 0 ? normid : NULL);
+    
     if (!xmlStrncmp(pubID, BAD_CAST XML_URN_PUBID, sizeof(XML_URN_PUBID) - 1)) {
 	urnID = xmlCatalogUnWrapURN(pubID);
 	if (xmlDebugCatalogs) {
@@ -1877,6 +1946,8 @@ xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	ret = xmlCatalogListXMLResolve(catal, urnID, sysID);
 	if (urnID != NULL)
 	    xmlFree(urnID);
+	if (normid != NULL)
+	    xmlFree(normid);
 	return(ret);
     }
     if (!xmlStrncmp(sysID, BAD_CAST XML_URN_PUBID, sizeof(XML_URN_PUBID) - 1)) {
@@ -1898,6 +1969,8 @@ xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	}
 	if (urnID != NULL)
 	    xmlFree(urnID);
+	if (normid != NULL)
+	    xmlFree(normid);
 	return(ret);
     }
     while (catal != NULL) {
@@ -1907,12 +1980,17 @@ xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	    }
 	    if (catal->children != NULL) {
 		ret = xmlCatalogXMLResolve(catal->children, pubID, sysID);
-		if (ret != NULL)
+		if (ret != NULL) {
+                    if (normid != NULL)
+                        xmlFree(normid);
 		    return(ret);
+                }
 	    }
 	}
 	catal = catal->next;
     }
+	if (normid != NULL)
+	    xmlFree(normid);
     return(ret);
 }
 
@@ -2143,8 +2221,6 @@ xmlGetSGMLCatalogEntryType(const xmlChar *name) {
 	type = SGML_CATA_CATALOG;
     else if (xmlStrEqual(name, (const xmlChar *) "BASE"))
 	type = SGML_CATA_BASE;
-    else if (xmlStrEqual(name, (const xmlChar *) "DELEGATE"))
-	type = SGML_CATA_DELEGATE;
     return(type);
 }
 
@@ -2219,8 +2295,6 @@ xmlParseSGMLCatalog(xmlCatalogPtr catal, const xmlChar *value,
                 type = SGML_CATA_CATALOG;
 	    else if (xmlStrEqual(name, (const xmlChar *) "BASE"))
                 type = SGML_CATA_BASE;
-	    else if (xmlStrEqual(name, (const xmlChar *) "DELEGATE"))
-                type = SGML_CATA_DELEGATE;
 	    else if (xmlStrEqual(name, (const xmlChar *) "OVERRIDE")) {
 		xmlFree(name);
 		cur = xmlParseSGMLCatalogName(cur, &name);
@@ -2265,6 +2339,21 @@ xmlParseSGMLCatalog(xmlCatalogPtr catal, const xmlChar *value,
 		    if (cur == NULL) {
 			/* error */
 			break;
+		    }
+		    if (type != SGML_CATA_SYSTEM) {
+		        xmlChar *normid;
+
+		        normid = xmlCatalogNormalizePublic(name);
+		        if (normid != NULL) {
+		            if (name != NULL)
+		                xmlFree(name);
+		            if (*normid != 0)
+		                name = normid;
+		            else {
+		                xmlFree(normid);
+		                name = NULL;
+		            }
+		        }
 		    }
 		    if (!IS_BLANK_CH(*cur)) {
 			/* error */
@@ -2371,15 +2460,28 @@ xmlParseSGMLCatalog(xmlCatalogPtr catal, const xmlChar *value,
 static const xmlChar *
 xmlCatalogGetSGMLPublic(xmlHashTablePtr catal, const xmlChar *pubID) {
     xmlCatalogEntryPtr entry;
+    xmlChar *normid;
 
     if (catal == NULL)
 	return(NULL);
 
+    normid = xmlCatalogNormalizePublic(pubID);
+    if (normid != NULL)
+        pubID = (*normid != 0 ? normid : NULL);
+
     entry = (xmlCatalogEntryPtr) xmlHashLookup(catal, pubID);
-    if (entry == NULL)
+    if (entry == NULL) {
+	if (normid != NULL)
+	    xmlFree(normid);
 	return(NULL);
-    if (entry->type == SGML_CATA_PUBLIC)
+    }
+    if (entry->type == SGML_CATA_PUBLIC) {
+	if (normid != NULL)
+	    xmlFree(normid);
 	return(entry->URL);
+    }
+    if (normid != NULL)
+        xmlFree(normid);
     return(NULL);
 }
 

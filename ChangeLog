@@ -1,13 +1,21 @@
-Fri Sep 24 16:01:01 CEST 1999
+Sun Sep 26 13:16:54 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.[ch] : added xmlSAXUserParseFile() and xmlSAXUserParseMemory()
+	                better SAX interfaces.
+	* testSAX.c: uses the new SAX routine, avoid fetching any remote
+	             entity.
+	* configure.in: 1.7.2
+
+Fri Sep 24 16:01:01 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* libxml.spec.in: fixed the URL
 	* doc/xml.html: improved the documentation front-end
 
-Fri Sep 24 01:06:36 CEST 1999
+Fri Sep 24 01:06:36 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanohttp.c: conditionned references to snprintf with HAVE_SNPRINTF
 
-Fri Sep 24 00:15:58 CEST 1999
+Fri Sep 24 00:15:58 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* libxml.spec.in: fixed the alpha compile problem
 	* parser.[ch]: changed errno to errNo in the parser context :-(

@@ -272,10 +272,10 @@ int		xmlParserInputGrow	(xmlParserInputPtr in,
 /**
  * xmlChar handling
  */
-xmlChar *		xmlStrdup		(const xmlChar *cur);
-xmlChar *		xmlStrndup		(const xmlChar *cur,
+xmlChar *	xmlStrdup		(const xmlChar *cur);
+xmlChar *	xmlStrndup		(const xmlChar *cur,
 					 int len);
-xmlChar *		xmlStrsub		(const xmlChar *str,
+xmlChar *	xmlStrsub		(const xmlChar *str,
 					 int start,
 					 int len);
 const xmlChar *	xmlStrchr		(const xmlChar *str,
@@ -288,9 +288,9 @@ int		xmlStrncmp		(const xmlChar *str1,
 					 const xmlChar *str2,
 					 int len);
 int		xmlStrlen		(const xmlChar *str);
-xmlChar *		xmlStrcat		(xmlChar *cur,
+xmlChar *	xmlStrcat		(xmlChar *cur,
 					 const xmlChar *add);
-xmlChar *		xmlStrncat		(xmlChar *cur,
+xmlChar *	xmlStrncat		(xmlChar *cur,
 					 const xmlChar *add,
 					 int len);
 
@@ -318,6 +318,13 @@ int		xmlParseDocument	(xmlParserCtxtPtr ctxt);
 xmlDocPtr	xmlSAXParseDoc		(xmlSAXHandlerPtr sax,
 					 xmlChar *cur,
 					 int recovery);
+int		xmlSAXUserParseFile	(xmlSAXHandlerPtr sax,
+					 void *user_data,
+					 const char *filename);
+int		xmlSAXUserParseMemory	(xmlSAXHandlerPtr sax,
+					 void *user_data,
+					 char *buffer,
+					 int size);
 xmlDocPtr	xmlSAXParseMemory	(xmlSAXHandlerPtr sax,
 					 char *buffer,
                                    	 int size,

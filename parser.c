@@ -6474,6 +6474,83 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
     inputPush(ctxt, input);
 }
 
+/**
+ * xmlSAXUserParseFile:
+ * @sax:  a SAX handler
+ * @user_data:  The user data returned on SAX callbacks
+ * @filename:  a file name
+ *
+ * parse an XML file and call the given SAX handler routines.
+ * Automatic support for ZLIB/Compress compressed document is provided
+ * 
+ * Returns 0 in case of success or a error number otherwise
+ */
+int xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
+			      const char *filename) {
+    int ret = 0;
+    xmlParserCtxtPtr ctxt;
+    
+    ctxt = xmlCreateFileParserCtxt(filename);
+    if (ctxt == NULL) return -1;
+    ctxt->sax = sax;
+    ctxt->userData = user_data;
+    
+    xmlParseDocument(ctxt);
+    
+    if (ctxt->wellFormed)
+	ret = 0;
+    else {
+        if (ctxt->errNo != 0)
+	    ret = ctxt->errNo;
+	else
+	    ret = -1;
+    }
+    if (sax != NULL)
+	ctxt->sax = NULL;
+    xmlFreeParserCtxt(ctxt);
+    
+    return ret;
+}
+
+/**
+ * xmlSAXUserParseMemory:
+ * @sax:  a SAX handler
+ * @user_data:  The user data returned on SAX callbacks
+ * @buffer:  an in-memory XML document input
+ * @size:  the lenght of the XML document in bytes
+ *
+ * A better SAX parsing routine.
+ * parse an XML in-memory buffer and call the given SAX handler routines.
+ * 
+ * Returns 0 in case of success or a error number otherwise
+ */
+int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
+			  char *buffer, int size) {
+    int ret = 0;
+    xmlParserCtxtPtr ctxt;
+    
+    ctxt = xmlCreateMemoryParserCtxt(buffer, size);
+    if (ctxt == NULL) return -1;
+    ctxt->sax = sax;
+    ctxt->userData = user_data;
+    
+    xmlParseDocument(ctxt);
+    
+    if (ctxt->wellFormed)
+	ret = 0;
+    else {
+        if (ctxt->errNo != 0)
+	    ret = ctxt->errNo;
+	else
+	    ret = -1;
+    }
+    if (sax != NULL)
+	ctxt->sax = NULL;
+    xmlFreeParserCtxt(ctxt);
+    
+    return ret;
+}
+
 
 /************************************************************************
  *									*

@@ -32,6 +32,9 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
+#ifdef HAVE_STRING_H
+#include <string.h>
+#endif
 
 
 #include "parser.h"
@@ -77,7 +80,7 @@ extern xmlSAXHandlerPtr debugSAXHandler;
 /*
  * Note: there is a couple of errors introduced on purpose.
  */
-static xmlChar buffer[] = 
+static char buffer[] = 
 "<?xml version=\"1.0\"?>\n\
 <?xml:namespace ns = \"http://www.ietf.org/standards/dav/\" prefix = \"D\"?>\n\
 <?xml:namespace ns = \"http://www.w3.com/standards/z39.50/\" prefix = \"Z\"?>\n\
@@ -158,17 +161,19 @@ void
 internalSubsetDebug(void *ctx, const xmlChar *name,
 	       const xmlChar *ExternalID, const xmlChar *SystemID)
 {
-    xmlDtdPtr externalSubset;
+    /* xmlDtdPtr externalSubset; */
 
     fprintf(stdout, "SAX.internalSubset(%s, %s, %s)\n",
             name, ExternalID, SystemID);
 
+/***********
     if ((ExternalID != NULL) || (SystemID != NULL)) {
         externalSubset = xmlParseDTD(ExternalID, SystemID);
 	if (externalSubset != NULL) {
 	    xmlFreeDtd(externalSubset);
 	}
     }
+ ***********/
 }
 
 /**
@@ -188,7 +193,7 @@ internalSubsetDebug(void *ctx, const xmlChar *name,
 xmlParserInputPtr
 resolveEntityDebug(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 {
-    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
 
     
     fprintf(stdout, "SAX.resolveEntity(");
@@ -200,9 +205,11 @@ resolveEntityDebug(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 	fprintf(stdout, ", %s)\n", (char *)systemId);
     else
 	fprintf(stdout, ", )\n");
+/*********
     if (systemId != NULL) {
         return(xmlNewInputFromFile(ctxt, (char *) systemId));
     }
+ *********/
     return(NULL);
 }
 
@@ -579,46 +586,42 @@ xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;
  ************************************************************************/
 
 void parseAndPrintFile(char *filename) {
-    xmlDocPtr doc;
+    int res;
 
     /*
      * Empty callbacks for checking
      */
-    doc = xmlSAXParseFile(emptySAXHandler, filename, 0);
-    if (doc != NULL) {
-        fprintf(stdout, "xmlSAXParseFile returned non-NULL\n");
-	xmlDocDump(stdout, doc);
+    res = xmlSAXUserParseFile(emptySAXHandler, NULL, filename);
+    if (res != 0) {
+        fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
     }
 
     /*
      * Debug callback
      */
-    doc = xmlSAXParseFile(debugSAXHandler, filename, 0);
-    if (doc != NULL) {
-        fprintf(stderr, "xmlSAXParseFile returned non-NULL\n");
-	xmlDocDump(stdout, doc);
+    res = xmlSAXUserParseFile(debugSAXHandler, NULL, filename);
+    if (res != 0) {
+        fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
     }
 }
 
-void parseAndPrintBuffer(xmlChar *buf) {
-    xmlDocPtr doc;
+void parseAndPrintBuffer(char *buf) {
+    int res;
 
     /*
      * Empty callbacks for checking
      */
-    doc = xmlSAXParseDoc(emptySAXHandler, buf, 0);
-    if (doc != NULL) {
-        fprintf(stderr, "xmlSAXParseDoc returned non-NULL\n");
-	xmlDocDump(stdout, doc);
+    res = xmlSAXUserParseMemory(emptySAXHandler, NULL, buf, strlen(buf));
+    if (res != 0) {
+        fprintf(stdout, "xmlSAXUserParseMemory returned error %d\n", res);
     }
 
     /*
      * Debug callback
      */
-    doc = xmlSAXParseDoc(debugSAXHandler, buf, 0);
-    if (doc != NULL) {
-        fprintf(stderr, "xmlSAXParseDoc returned non-NULL\n");
-	xmlDocDump(stdout, doc);
+    res = xmlSAXUserParseMemory(debugSAXHandler, NULL, buf, strlen(buf));
+    if (res != 0) {
+        fprintf(stdout, "xmlSAXUserParseMemory returned error %d\n", res);
     }
 }
 

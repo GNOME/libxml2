@@ -63,6 +63,13 @@ typedef xmlEntity *xmlEntityPtr;
 #define XML_XML_NAMESPACE \
     (const xmlChar *) "http://www.w3.org/XML/1998/namespace"
 
+/**
+ * XML_XML_ID:
+ *
+ * This is the name for the special xml:id attribute
+ */
+#define XML_XML_ID (const xmlChar *) "xml:id"
+
 /*
  * The different element types carried by an XML tree.
  *

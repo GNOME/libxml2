@@ -1,3 +1,9 @@
+Fri Apr  9 23:49:37 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c include/libxml/tree.h: adding xml:id draft support
+	* Makefile.am test/xmlid/id_tst* result/xmlid/id_tst*: adding
+	  4 first regression tests
+
 Fri Apr  9 11:56:08 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in: fixing Red Hat bug #120482 , libxml2-python

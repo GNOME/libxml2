@@ -1204,6 +1204,14 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, value, ret);
 	else if (xmlIsRef(ctxt->myDoc, ctxt->node, ret))
 	    xmlAddRef(&ctxt->vctxt, ctxt->myDoc, value, ret);
+	else if (xmlStrEqual(fullname, BAD_CAST "xml:id")) {
+	    /*
+	     * Add the xml:id value
+	     *
+	     * Open issue: normalization of the value.
+	     */
+	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, value, ret);
+	}
     }
 
 error:
@@ -1925,7 +1933,18 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 	    if (dup == NULL)
 	        dup = xmlStrndup(value, valueend - value);
 	    xmlAddRef(&ctxt->vctxt, ctxt->myDoc, dup, ret);
-        }
+        } else if ((prefix == ctxt->str_xml) &&
+	           (localname[0] == 'i') && (localname[1] == 'd') &&
+		   (localname[2] == 0)) {
+	    /*
+	     * Add the xml:id value
+	     *
+	     * Open issue: normalization of the value.
+	     */
+	    if (dup == NULL)
+	        dup = xmlStrndup(value, valueend - value);
+	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, dup, ret);
+	}
     }
     if (dup != NULL)
 	xmlFree(dup);

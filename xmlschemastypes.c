@@ -728,9 +728,9 @@ xmlSchemaNewNOTATIONValue(const xmlChar *name,
     if (val == NULL)
 	return (NULL);
 
-    val->value.qname.name = name;
+    val->value.qname.name = (xmlChar *)name;
     if (ns != NULL)
-	val->value.qname.uri = ns;
+	val->value.qname.uri = (xmlChar *)ns;
     return(val);
 }
 

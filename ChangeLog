@@ -1,3 +1,9 @@
+Mon Feb 21 21:51:03 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* xmlsave.c: fixed problem when XMLLINT_INDENT was empty (bug 168033).
+	* xpath.c: fixed compilation warning, no change to logic.
+	* xmlschemastypes.c: fixed compilation warning, no change to logic.
+
 Mon Feb 21 14:48:27 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c: applied patch from Rob Richards to fix a problem with

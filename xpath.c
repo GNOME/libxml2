@@ -10938,7 +10938,7 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
     int max_depth;
     int from_root;
     int ret, depth;
-    xmlNodePtr cur, limit;
+    xmlNodePtr cur = NULL, limit = NULL;
     xmlXPathObjectPtr retval;
     xmlStreamCtxtPtr patstream;
 
@@ -10970,8 +10970,7 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
 	return(retval);
     }
     if (from_root) {
-        cur = ctxt->doc;
-	limit = NULL;
+        cur = (xmlNodePtr)ctxt->doc;
     } else if (ctxt->node != NULL) {
         switch (ctxt->node->type) {
             case XML_ELEMENT_NODE:
@@ -10999,7 +10998,6 @@ xmlXPathRunStreamEval(xmlXPathContextPtr ctxt, xmlPatternPtr comp) {
             case XML_NAMESPACE_DECL:
             case XML_XINCLUDE_START:
             case XML_XINCLUDE_END:
-	        cur = NULL;
 		break;
 	}
 	limit = cur;

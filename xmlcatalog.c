@@ -15,9 +15,6 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
 #ifdef HAVE_LIBREADLINE
 #include <readline/readline.h>
@@ -448,7 +445,7 @@ int main(int argc, char **argv) {
 		    FILE *out;
 
 		    if (xmlCatalogIsEmpty(catal)) {
-			unlink(argv[i + 1]);
+			remove(argv[i + 1]);
 		    } else {
 			out = fopen(argv[i + 1], "w");
 			if (out == NULL) {
@@ -462,7 +459,7 @@ int main(int argc, char **argv) {
 		    }
 		    if (super != NULL) {
 			if (xmlCatalogIsEmpty(super)) {
-			    unlink(XML_SGML_DEFAULT_CATALOG);
+			    remove(XML_SGML_DEFAULT_CATALOG);
 			} else {
 			    out = fopen(XML_SGML_DEFAULT_CATALOG, "w");
 			    if (out == NULL) {

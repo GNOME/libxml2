@@ -1,3 +1,7 @@
+Sun Nov  4 23:18:34 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xmlcatalog.c: avoid unlink() and use remove() instead.
+
 Sun Nov  4 23:12:38 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in: cleanup

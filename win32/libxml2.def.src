@@ -1034,7 +1034,7 @@ xmlCleanupPredefinedEntities
 
 /* xmlautomata.h 
    --------------------------------------------------------------------- */
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_AUTOMATA_ENABLED
 	/* Building API */
 	xmlNewAutomata
 	xmlFreeAutomata
@@ -1051,7 +1051,7 @@ xmlCleanupPredefinedEntities
 	xmlAutomataNewCounter
 	xmlAutomataCompile
 	xmlAutomataIsDeterminist
-#endif /* LIBXML_SCHEMAS_ENABLED */
+#endif /* LIBXML_AUTOMATA_ENABLED */
 
 
 /* xmlerror.h 

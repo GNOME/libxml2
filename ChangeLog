@@ -1,3 +1,7 @@
+Sat Aug 19 22:57:02 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* added an old VC testcase and updated title.xml entity
+
 Sat Aug 19 21:02:08 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c SAX.c tree.c HTMLtree.h result/HTML/*: work

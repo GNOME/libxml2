@@ -3717,7 +3717,9 @@ xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    break;
         case XPATH_XSLT_TREE:
         case XPATH_NODESET:
-	    if (cur->nodesetval->nodeNr == 0) {
+	    if (cur->nodesetval == NULL)
+		valuePush(ctxt, xmlXPathNewCString(""));
+	    else if (cur->nodesetval->nodeNr == 0) {
 		valuePush(ctxt, xmlXPathNewCString(""));
 	    } else {
 		xmlChar *res;

@@ -73,6 +73,14 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
 #define IS_CHAR(c)   xmlIsCharQ(c)
 
 /**
+ * IS_CHAR_CH:
+ * @c: an xmlChar (usually an unsigned char)
+ *
+ * Behaves like IS_CHAR on single-byte value
+ */
+#define IS_CHAR_CH(c)  xmlIsChar_ch(c)
+
+/**
  * IS_BLANK:
  * @c:  an UNICODE value (int)
  *
@@ -81,6 +89,14 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  * [3] S ::= (#x20 | #x9 | #xD | #xA)+
  */
 #define IS_BLANK(c)  xmlIsBlankQ(c)
+
+/**
+ * IS_BLANK_CH:
+ * @c:  an xmlChar value (normally unsigned char)
+ *
+ * Behaviour same as IS_BLANK
+ */
+#define IS_BLANK_CH(c)  xmlIsBlank_ch(c)
 
 /**
  * IS_BASECHAR:
@@ -103,6 +119,14 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
 #define IS_DIGIT(c) xmlIsDigitQ(c)
 
 /**
+ * IS_DIGIT_CH:
+ * @c:  an xmlChar value (usually an unsigned char)
+ *
+ * Behaves like IS_DIGIT but with a single byte argument
+ */
+#define IS_DIGIT_CH(c)  xmlIsDigit_ch(c)
+
+/**
  * IS_COMBINING:
  * @c:  an UNICODE value (int)
  *
@@ -111,6 +135,14 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  * [87] CombiningChar ::= ... long list see REC ...
  */
 #define IS_COMBINING(c) xmlIsCombiningQ(c)
+
+/**
+ * IS_COMBINING_CH:
+ * @c:  an xmlChar (usually an unsigned char)
+ *
+ * Always false (all combining chars > 0xff)
+ */
+#define IS_COMBINING_CH(c) 0 
 
 /**
  * IS_EXTENDER:
@@ -124,6 +156,14 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  *                   [#x309D-#x309E] | [#x30FC-#x30FE]
  */
 #define IS_EXTENDER(c) xmlIsExtenderQ(c)
+
+/**
+ * IS_EXTENDER_CH:
+ * @c:  an xmlChar value (usually an unsigned char)
+ *
+ * Behaves like IS_EXTENDER but with a single-byte argument
+ */
+#define IS_EXTENDER_CH(c)  xmlIsExtender_ch(c)
 
 /**
  * IS_IDEOGRAPHIC:
@@ -147,7 +187,14 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  */
 #define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))
 
-
+/**
+ * IS_LETTER_CH:
+ * @c:  an xmlChar value (normally unsigned char)
+ *
+ * Macro behaves like IS_LETTER, but only check base chars
+ *
+ */
+#define IS_LETTER_CH(c) xmlIsBaseChar_ch(c)
 /**
  * IS_PUBIDCHAR:
  * @c:  an UNICODE value (int)
@@ -158,6 +205,14 @@ XMLPUBVAR unsigned int xmlParserMaxDepth;
  * [13] PubidChar ::= #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
  */
 #define IS_PUBIDCHAR(c)	xmlIsPubidCharQ(c)
+
+/**
+ * IS_PUBIDCHAR_CH:
+ * @c:  an xmlChar value (normally unsigned char)
+ *
+ * Same as IS_PUBIDCHAR but for single-byte value
+ */
+#define IS_PUBIDCHAR_CH(c) xmlIsPubidChar_ch(c)
 
 /**
  * SKIP_EOL:

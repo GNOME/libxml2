@@ -2029,10 +2029,10 @@ xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
         xmlCatalogErrMemory("allocating public ID");
 	return(NULL);
     }
-    while (xmlIsPubidCharQ(*cur) || (*cur == '?')) {
+    while (IS_PUBIDCHAR_CH(*cur) || (*cur == '?')) {
 	if ((*cur == stop) && (stop != ' '))
 	    break;
-	if ((stop == ' ') && (IS_BLANK(*cur)))
+	if ((stop == ' ') && (IS_BLANK_CH(*cur)))
 	    break;
 	if (len + 1 >= size) {
 	    size *= 2;
@@ -2050,7 +2050,7 @@ xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
     }
     buf[len] = 0;
     if (stop == ' ') {
-	if (!IS_BLANK(*cur)) {
+	if (!IS_BLANK_CH(*cur)) {
 	    xmlFree(buf);
 	    return(NULL);
 	}
@@ -2185,7 +2185,7 @@ xmlParseSGMLCatalog(xmlCatalogPtr catal, const xmlChar *value,
 		/* error */
 		break;
 	    }
-	    if (!IS_BLANK(*cur)) {
+	    if (!IS_BLANK_CH(*cur)) {
 		/* error */
 		break;
 	    }
@@ -2240,7 +2240,7 @@ xmlParseSGMLCatalog(xmlCatalogPtr catal, const xmlChar *value,
 			/* error */
 			break;
 		    }
-		    if (!IS_BLANK(*cur)) {
+		    if (!IS_BLANK_CH(*cur)) {
 			/* error */
 			break;
 		    }
@@ -2259,7 +2259,7 @@ xmlParseSGMLCatalog(xmlCatalogPtr catal, const xmlChar *value,
 			/* error */
 			break;
 		    }
-		    if (!IS_BLANK(*cur)) {
+		    if (!IS_BLANK_CH(*cur)) {
 			/* error */
 			break;
 		    }

@@ -1263,7 +1263,7 @@ xmlXPathPopExternal (xmlXPathParserContextPtr ctxt) {
 #define NEXTL(l)  ctxt->cur += l
 
 #define SKIP_BLANKS 							\
-    while (IS_BLANK(*(ctxt->cur))) NEXT
+    while (IS_BLANK_CH(*(ctxt->cur))) NEXT
 
 #define CURRENT (*ctxt->cur)
 #define NEXT ((*ctxt->cur) ?  ctxt->cur++: ctxt->cur)
@@ -5994,9 +5994,9 @@ xmlXPathGetElementsByIds (xmlDocPtr doc, const xmlChar *ids) {
 
     ret = xmlXPathNodeSetCreate(NULL);
 
-    while (IS_BLANK(*cur)) cur++;
+    while (IS_BLANK_CH(*cur)) cur++;
     while (*cur != 0) {
-	while ((!IS_BLANK(*cur)) && (*cur != 0))
+	while ((!IS_BLANK_CH(*cur)) && (*cur != 0))
 	    cur++;
 
         ID = xmlStrndup(ids, cur - ids);
@@ -6017,7 +6017,7 @@ xmlXPathGetElementsByIds (xmlDocPtr doc, const xmlChar *ids) {
 	    xmlFree(ID);
 	}
 
-	while (IS_BLANK(*cur)) cur++;
+	while (IS_BLANK_CH(*cur)) cur++;
 	ids = cur;
     }
     return(ret);
@@ -6715,13 +6715,13 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
   if (target && source) {
     
     /* Skip leading whitespaces */
-    while (IS_BLANK(*source))
+    while (IS_BLANK_CH(*source))
       source++;
   
     /* Collapse intermediate whitespaces, and skip trailing whitespaces */
     blank = 0;
     while (*source) {
-      if (IS_BLANK(*source)) {
+      if (IS_BLANK_CH(*source)) {
 	blank = 0x20;
       } else {
 	if (blank) {
@@ -7440,7 +7440,7 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
     double temp;
 #endif
     if (cur == NULL) return(0);
-    while (IS_BLANK(*cur)) cur++;
+    while (IS_BLANK_CH(*cur)) cur++;
     if ((*cur != '.') && ((*cur < '0') || (*cur > '9')) && (*cur != '-')) {
         return(xmlXPathNAN);
     }
@@ -7502,7 +7502,7 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 	cur++;
       }
     }
-    while (IS_BLANK(*cur)) cur++;
+    while (IS_BLANK_CH(*cur)) cur++;
     if (*cur != 0) return(xmlXPathNAN);
     if (isneg) ret = -ret;
     if (is_exponent_negative) exponent = -exponent;
@@ -7608,9 +7608,9 @@ xmlXPathParseLiteral(xmlXPathParserContextPtr ctxt) {
     if (CUR == '"') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '"'))
+	while ((IS_CHAR_CH(CUR)) && (CUR != '"'))
 	    NEXT;
-	if (!IS_CHAR((unsigned int) CUR)) {
+	if (!IS_CHAR_CH(CUR)) {
 	    XP_ERROR0(XPATH_UNFINISHED_LITERAL_ERROR);
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
@@ -7619,9 +7619,9 @@ xmlXPathParseLiteral(xmlXPathParserContextPtr ctxt) {
     } else if (CUR == '\'') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '\''))
+	while ((IS_CHAR_CH(CUR)) && (CUR != '\''))
 	    NEXT;
-	if (!IS_CHAR((unsigned int) CUR)) {
+	if (!IS_CHAR_CH(CUR)) {
 	    XP_ERROR0(XPATH_UNFINISHED_LITERAL_ERROR);
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
@@ -7652,9 +7652,9 @@ xmlXPathCompLiteral(xmlXPathParserContextPtr ctxt) {
     if (CUR == '"') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '"'))
+	while ((IS_CHAR_CH(CUR)) && (CUR != '"'))
 	    NEXT;
-	if (!IS_CHAR((unsigned int) CUR)) {
+	if (!IS_CHAR_CH(CUR)) {
 	    XP_ERROR(XPATH_UNFINISHED_LITERAL_ERROR);
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
@@ -7663,9 +7663,9 @@ xmlXPathCompLiteral(xmlXPathParserContextPtr ctxt) {
     } else if (CUR == '\'') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '\''))
+	while ((IS_CHAR_CH(CUR)) && (CUR != '\''))
 	    NEXT;
-	if (!IS_CHAR((unsigned int) CUR)) {
+	if (!IS_CHAR_CH(CUR)) {
 	    XP_ERROR(XPATH_UNFINISHED_LITERAL_ERROR);
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
@@ -7831,7 +7831,7 @@ xmlXPathCompPrimaryExpr(xmlXPathParserContextPtr ctxt) {
 	}
 	NEXT;
 	SKIP_BLANKS;
-    } else if (IS_DIGIT(CUR) || (CUR == '.' && IS_DIGIT(NXT(1)))) {
+    } else if (IS_DIGIT_CH(CUR) || (CUR == '.' && IS_DIGIT_CH(NXT(1)))) {
 	xmlXPathCompNumber(ctxt);
     } else if ((CUR == '\'') || (CUR == '"')) {
 	xmlXPathCompLiteral(ctxt);
@@ -7893,26 +7893,26 @@ xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
     int len = 0;
 
     SKIP_BLANKS;
-    if (!IS_LETTER(CUR) && (CUR != '_') &&
+    if (!IS_LETTER_CH(CUR) && (CUR != '_') &&
         (CUR != ':')) {
 	return(NULL);
     }
 
-    while ((IS_LETTER(NXT(len))) || (IS_DIGIT(NXT(len))) ||
+    while ((IS_LETTER_CH(NXT(len))) || (IS_DIGIT_CH(NXT(len))) ||
            (NXT(len) == '.') || (NXT(len) == '-') ||
 	   (NXT(len) == '_') || (NXT(len) == ':') || 
-	   (IS_COMBINING(NXT(len))) ||
-	   (IS_EXTENDER(NXT(len)))) {
+	   (IS_COMBINING_CH(NXT(len))) ||
+	   (IS_EXTENDER_CH(NXT(len)))) {
 	buf[len] = NXT(len);
 	len++;
 	if (len >= XML_MAX_NAMELEN) {
 	    xmlGenericError(xmlGenericErrorContext, 
 	       "xmlScanName: reached XML_MAX_NAMELEN limit\n");
-	    while ((IS_LETTER(NXT(len))) || (IS_DIGIT(NXT(len))) ||
+	    while ((IS_LETTER_CH(NXT(len))) || (IS_DIGIT_CH(NXT(len))) ||
 		   (NXT(len) == '.') || (NXT(len) == '-') ||
 		   (NXT(len) == '_') || (NXT(len) == ':') || 
-		   (IS_COMBINING(NXT(len))) ||
-		   (IS_EXTENDER(NXT(len))))
+		   (IS_COMBINING_CH(NXT(len))) ||
+		   (IS_EXTENDER_CH(NXT(len))))
 		 len++;
 	    break;
 	}
@@ -7944,8 +7944,8 @@ xmlXPathCompPathExpr(xmlXPathParserContextPtr ctxt) {
     xmlChar *name = NULL; /* we may have to preparse a name to find out */
 
     SKIP_BLANKS;
-    if ((CUR == '$') || (CUR == '(') || (IS_DIGIT(CUR)) ||
-        (CUR == '\'') || (CUR == '"') || (CUR == '.' && IS_DIGIT(NXT(1)))) {
+    if ((CUR == '$') || (CUR == '(') || (IS_DIGIT_CH(CUR)) ||
+        (CUR == '\'') || (CUR == '"') || (CUR == '.' && IS_DIGIT_CH(NXT(1)))) {
 	lc = 0;
     } else if (CUR == '*') {
 	/* relative or absolute location path */
@@ -7993,7 +7993,7 @@ xmlXPathCompPathExpr(xmlXPathParserContextPtr ctxt) {
 #endif
 		    lc = 1;
 		    break;
-		} else if (IS_BLANK(NXT(len))) {
+		} else if (IS_BLANK_CH(NXT(len))) {
 		    /* ignore blanks */
 		    ;
 		} else if (NXT(len) == ':') {
@@ -8441,7 +8441,7 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	XP_ERROR0(XPATH_EXPR_ERROR);
     }
 
-    blanks = IS_BLANK(CUR);
+    blanks = IS_BLANK_CH(CUR);
     SKIP_BLANKS;
     if (CUR == '(') {
 	NEXT;
@@ -8839,7 +8839,7 @@ xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt) {
 		NEXT;
 		SKIP_BLANKS;
 		if ((CUR != 0 ) &&
-		    ((IS_LETTER(CUR)) || (CUR == '_') || (CUR == '.') ||
+		    ((IS_LETTER_CH(CUR)) || (CUR == '_') || (CUR == '.') ||
 		     (CUR == '@') || (CUR == '*')))
 		    xmlXPathCompRelativeLocationPath(ctxt);
 	    }

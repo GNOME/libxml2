@@ -755,7 +755,7 @@ startElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
 	    else
 		fprintf(stdout, ", %s='", attributes[i]);
 	    fprintf(stdout, "%.4s...', %d", attributes[i + 3],
-		    attributes[i + 4] - attributes[i + 3]);
+		    (int)(attributes[i + 4] - attributes[i + 3]));
 	}
     }
     fprintf(stdout, ")\n");

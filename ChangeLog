@@ -1,3 +1,15 @@
+Sun Oct 19 00:15:38 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* include/libxml/parserInternals.h HTMLparser.c HTMLtree.c
+	  SAX2.c catalog.c debugXML.c entities.c parser.c relaxng.c
+	  testSAX.c tree.c valid.c xmlschemas.c xmlschemastypes.c
+	  xpath.c: Changed all (?) occurences where validation macros
+	  (IS_xxx) had single-byte arguments to use IS_xxx_CH instead
+	  (e.g. IS_BLANK changed to IS_BLANK_CH).  This gets rid of
+	  many warning messages on certain platforms, and also high-
+	  lights places in the library which may need to be enhanced
+	  for proper UTF8 handling.
+
 Sat Oct 18 20:34:18 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* genChRanges.py, chvalid.c, include/libxml/chvalid.h,

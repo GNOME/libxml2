@@ -349,7 +349,7 @@ xmlValidateNCName(const xmlChar *value, int space) {
      * First quick algorithm for ASCII range
      */
     if (space)
-	while (IS_BLANK(*cur)) cur++;
+	while (IS_BLANK_CH(*cur)) cur++;
     if (((*cur >= 'a') && (*cur <= 'z')) || ((*cur >= 'A') && (*cur <= 'Z')) ||
 	(*cur == '_'))
 	cur++;
@@ -361,7 +361,7 @@ xmlValidateNCName(const xmlChar *value, int space) {
 	   (*cur == '_') || (*cur == '-') || (*cur == '.'))
 	cur++;
     if (space)
-	while (IS_BLANK(*cur)) cur++;
+	while (IS_BLANK_CH(*cur)) cur++;
     if (*cur == 0)
 	return(0);
 
@@ -418,7 +418,7 @@ xmlValidateQName(const xmlChar *value, int space) {
      * First quick algorithm for ASCII range
      */
     if (space)
-	while (IS_BLANK(*cur)) cur++;
+	while (IS_BLANK_CH(*cur)) cur++;
     if (((*cur >= 'a') && (*cur <= 'z')) || ((*cur >= 'A') && (*cur <= 'Z')) ||
 	(*cur == '_'))
 	cur++;
@@ -444,7 +444,7 @@ xmlValidateQName(const xmlChar *value, int space) {
 	    cur++;
     }
     if (space)
-	while (IS_BLANK(*cur)) cur++;
+	while (IS_BLANK_CH(*cur)) cur++;
     if (*cur == 0)
 	return(0);
 
@@ -514,7 +514,7 @@ xmlValidateName(const xmlChar *value, int space) {
      * First quick algorithm for ASCII range
      */
     if (space)
-	while (IS_BLANK(*cur)) cur++;
+	while (IS_BLANK_CH(*cur)) cur++;
     if (((*cur >= 'a') && (*cur <= 'z')) || ((*cur >= 'A') && (*cur <= 'Z')) ||
 	(*cur == '_') || (*cur == ':'))
 	cur++;
@@ -526,7 +526,7 @@ xmlValidateName(const xmlChar *value, int space) {
 	   (*cur == '_') || (*cur == '-') || (*cur == '.') || (*cur == ':'))
 	cur++;
     if (space)
-	while (IS_BLANK(*cur)) cur++;
+	while (IS_BLANK_CH(*cur)) cur++;
     if (*cur == 0)
 	return(0);
 
@@ -581,7 +581,7 @@ xmlValidateNMToken(const xmlChar *value, int space) {
      * First quick algorithm for ASCII range
      */
     if (space)
-	while (IS_BLANK(*cur)) cur++;
+	while (IS_BLANK_CH(*cur)) cur++;
     if (((*cur >= 'a') && (*cur <= 'z')) ||
         ((*cur >= 'A') && (*cur <= 'Z')) ||
         ((*cur >= '0') && (*cur <= '9')) ||
@@ -595,7 +595,7 @@ xmlValidateNMToken(const xmlChar *value, int space) {
 	   (*cur == '_') || (*cur == '-') || (*cur == '.') || (*cur == ':'))
 	cur++;
     if (space)
-	while (IS_BLANK(*cur)) cur++;
+	while (IS_BLANK_CH(*cur)) cur++;
     if (*cur == 0)
 	return(0);
 
@@ -6232,7 +6232,7 @@ xmlIsBlankNode(xmlNodePtr node) {
     if (node->content == NULL) return(1);
     cur = node->content;
     while (*cur != 0) {
-	if (!IS_BLANK(*cur)) return(0);
+	if (!IS_BLANK_CH(*cur)) return(0);
 	cur++;
     }
 

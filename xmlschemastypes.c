@@ -1250,12 +1250,12 @@ xmlSchemaStrip(const xmlChar *value) {
     const xmlChar *start = value, *end, *f;
 
     if (value == NULL) return(NULL);
-    while ((*start != 0) && (IS_BLANK(*start))) start++;
+    while ((*start != 0) && (IS_BLANK_CH(*start))) start++;
     end = start;
     while (*end != 0) end++;
     f = end;
     end--;
-    while ((end > start) && (IS_BLANK(*end))) end--;
+    while ((end > start) && (IS_BLANK_CH(*end))) end--;
     end++;
     if ((start == value) && (f == end)) return(NULL);
     return(xmlStrndup(start, end - start));
@@ -1276,10 +1276,10 @@ xmlSchemaCollapseString(const xmlChar *value) {
     int col = 0;
 
     if (value == NULL) return(NULL);
-    while ((*start != 0) && (IS_BLANK(*start))) start++;
+    while ((*start != 0) && (IS_BLANK_CH(*start))) start++;
     end = start;
     while (*end != 0) {
-	if ((*end == ' ') && (IS_BLANK(end[1]))) {
+	if ((*end == ' ') && (IS_BLANK_CH(end[1]))) {
 	    col = end - start;
 	    break;
 	} else if ((*end == 0xa) || (*end == 0x9) || (*end == 0xd)) {
@@ -1291,7 +1291,7 @@ xmlSchemaCollapseString(const xmlChar *value) {
     if (col == 0) {
 	f = end;
 	end--;
-	while ((end > start) && (IS_BLANK(*end))) end--;
+	while ((end > start) && (IS_BLANK_CH(*end))) end--;
 	end++;
 	if ((start == value) && (f == end)) return(NULL);
 	return(xmlStrndup(start, end - start));
@@ -1301,9 +1301,9 @@ xmlSchemaCollapseString(const xmlChar *value) {
     g = (xmlChar *) (start + col);
     end = g;
     while (*end != 0) {
-	if (IS_BLANK(*end)) {
+	if (IS_BLANK_CH(*end)) {
 	    end++;
-	    while (IS_BLANK(*end)) end++;
+	    while (IS_BLANK_CH(*end)) end++;
 	    if (*end != 0)
 		*g++ = ' ';
 	} else
@@ -1344,16 +1344,16 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
     /*
      * Split the list
      */
-    while (IS_BLANK(*cur)) *cur++ = 0;
+    while (IS_BLANK_CH(*cur)) *cur++ = 0;
     while (*cur != 0) {
-	if (IS_BLANK(*cur)) {
+	if (IS_BLANK_CH(*cur)) {
 	    *cur = 0;
 	    cur++;
-	    while (IS_BLANK(*cur)) *cur++ = 0;
+	    while (IS_BLANK_CH(*cur)) *cur++ = 0;
 	} else {
 	    nb_values++;
 	    cur++;
-	    while ((*cur != 0) && (!IS_BLANK(*cur))) cur++;
+	    while ((*cur != 0) && (!IS_BLANK_CH(*cur))) cur++;
 	}
     }
     if (nb_values == 0) {
@@ -1686,7 +1686,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         case XML_SCHEMAS_TOKEN:{
                 const xmlChar *cur = value;
 
-                if (IS_BLANK(*cur))
+                if (IS_BLANK_CH(*cur))
                     goto return1;
 
                 while (*cur != 0) {
@@ -3093,16 +3093,16 @@ xmlSchemaCompareNormStrings(xmlSchemaValPtr x, xmlSchemaValPtr y) {
     utf1 = x->value.str;
     utf2 = y->value.str;
     
-    while (IS_BLANK(*utf1)) utf1++;
-    while (IS_BLANK(*utf2)) utf2++;
+    while (IS_BLANK_CH(*utf1)) utf1++;
+    while (IS_BLANK_CH(*utf2)) utf2++;
     while ((*utf1 != 0) && (*utf2 != 0)) {
-	if (IS_BLANK(*utf1)) {
-	    if (!IS_BLANK(*utf2)) {
+	if (IS_BLANK_CH(*utf1)) {
+	    if (!IS_BLANK_CH(*utf2)) {
 		tmp = *utf1 - *utf2;
 		return(tmp);
 	    }
-	    while (IS_BLANK(*utf1)) utf1++;
-	    while (IS_BLANK(*utf2)) utf2++;
+	    while (IS_BLANK_CH(*utf1)) utf1++;
+	    while (IS_BLANK_CH(*utf2)) utf2++;
 	} else {
 	    tmp = *utf1++ - *utf2++;
 	    if (tmp < 0)
@@ -3112,12 +3112,12 @@ xmlSchemaCompareNormStrings(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 	}
     }
     if (*utf1 != 0) {
-	while (IS_BLANK(*utf1)) utf1++;
+	while (IS_BLANK_CH(*utf1)) utf1++;
 	if (*utf1 != 0)
 	    return(1);
     }
     if (*utf2 != 0) {
-	while (IS_BLANK(*utf2)) utf2++;
+	while (IS_BLANK_CH(*utf2)) utf2++;
 	if (*utf2 != 0)
 	    return(-1);
     }
@@ -3374,7 +3374,7 @@ xmlSchemaNormLen(const xmlChar *value) {
     if (value == NULL)
 	return(-1);
     utf = value;
-    while (IS_BLANK(*utf)) utf++;
+    while (IS_BLANK_CH(*utf)) utf++;
     while (*utf != 0) {
 	if (utf[0] & 0x80) {
 	    if ((utf[1] & 0xc0) != 0x80)
@@ -3392,8 +3392,8 @@ xmlSchemaNormLen(const xmlChar *value) {
 	    } else {
 		utf += 2;
 	    }
-	} else if (IS_BLANK(*utf)) {
-	    while (IS_BLANK(*utf)) utf++;
+	} else if (IS_BLANK_CH(*utf)) {
+	    while (IS_BLANK_CH(*utf)) utf++;
 	    if (*utf == 0)
 		break;
 	} else {

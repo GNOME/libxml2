@@ -408,7 +408,7 @@ static int
 htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
     int res = 0;
 
-    while (IS_BLANK(*(ctxt->input->cur))) {
+    while (IS_BLANK_CH(*(ctxt->input->cur))) {
 	if ((*ctxt->input->cur == 0) &&
 	    (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0)) {
 		xmlPopInput(ctxt);
@@ -1999,7 +1999,7 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     xmlNodePtr lastChild;
 
     for (j = 0;j < len;j++)
-        if (!(IS_BLANK(str[j]))) return(0);
+        if (!(IS_BLANK_CH(str[j]))) return(0);
 
     if (CUR == 0) return(1);
     if (CUR != '<') return(0);
@@ -2131,11 +2131,11 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
     int i = 0;
     xmlChar loc[HTML_PARSER_BUFFER_SIZE];
 
-    if (!IS_LETTER(CUR) && (CUR != '_') &&
+    if (!IS_LETTER_CH(CUR) && (CUR != '_') &&
         (CUR != ':')) return(NULL);
 
     while ((i < HTML_PARSER_BUFFER_SIZE) &&
-           ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
+           ((IS_LETTER_CH(CUR)) || (IS_DIGIT_CH(CUR)) ||
 	   (CUR == ':') || (CUR == '-') || (CUR == '_'))) {
 	if ((CUR >= 'A') && (CUR <= 'Z')) loc[i] = CUR + 0x20;
         else loc[i] = CUR;
@@ -2261,7 +2261,7 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
      */
     while ((CUR != 0) && (CUR != stop)) {
 	if ((stop == 0) && (CUR == '>')) break;
-	if ((stop == 0) && (IS_BLANK(CUR))) break;
+	if ((stop == 0) && (IS_BLANK_CH(CUR))) break;
         if (CUR == '&') {
 	    if (NXT(1) == '#') {
 		unsigned int c;
@@ -2474,9 +2474,9 @@ htmlParseSystemLiteral(htmlParserCtxtPtr ctxt) {
     if (CUR == '"') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '"'))
+	while ((IS_CHAR_CH(CUR)) && (CUR != '"'))
 	    NEXT;
-	if (!IS_CHAR((unsigned int) CUR)) {
+	if (!IS_CHAR_CH(CUR)) {
 	    htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
 			 "Unfinished SystemLiteral\n", NULL, NULL);
 	} else {
@@ -2486,9 +2486,9 @@ htmlParseSystemLiteral(htmlParserCtxtPtr ctxt) {
     } else if (CUR == '\'') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '\''))
+	while ((IS_CHAR_CH(CUR)) && (CUR != '\''))
 	    NEXT;
-	if (!IS_CHAR((unsigned int) CUR)) {
+	if (!IS_CHAR_CH(CUR)) {
 	    htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
 			 "Unfinished SystemLiteral\n", NULL, NULL);
 	} else {
@@ -2524,7 +2524,7 @@ htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
     if (CUR == '"') {
         NEXT;
 	q = CUR_PTR;
-	while (IS_PUBIDCHAR(CUR)) NEXT;
+	while (IS_PUBIDCHAR_CH(CUR)) NEXT;
 	if (CUR != '"') {
 	    htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
 	                 "Unfinished PubidLiteral\n", NULL, NULL);
@@ -2535,7 +2535,7 @@ htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
     } else if (CUR == '\'') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_PUBIDCHAR(CUR)) && (CUR != '\''))
+	while ((IS_PUBIDCHAR_CH(CUR)) && (CUR != '\''))
 	    NEXT;
 	if (CUR != '\'') {
 	    htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
@@ -2581,7 +2581,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 
     SHRINK;
     cur = CUR;
-    while (IS_CHAR((unsigned int) cur)) {
+    while (IS_CHAR_CH(cur)) {
 	if ((cur == '<') && (NXT(1) == '!') && (NXT(2) == '-') &&
 	    (NXT(3) == '-')) {
 	    if ((nbchar != 0) && (ctxt->sax != NULL) && (!ctxt->disableSAX)) {
@@ -2624,7 +2624,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	NEXT;
 	cur = CUR;
     }
-    if (!(IS_CHAR((unsigned int) cur))) {
+    if (!(IS_CHAR_CH(cur))) {
 	htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
 	                "Invalid char in CDATA 0x%X\n", cur);
 	NEXT;
@@ -2738,7 +2738,7 @@ htmlParseExternalID(htmlParserCtxtPtr ctxt, xmlChar **publicID) {
          (UPP(2) == 'S') && (UPP(3) == 'T') &&
 	 (UPP(4) == 'E') && (UPP(5) == 'M')) {
         SKIP(6);
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    htmlParseErr(ctxt, XML_ERR_SPACE_REQUIRED,
 	                 "Space required after 'SYSTEM'\n", NULL, NULL);
 	}
@@ -2752,7 +2752,7 @@ htmlParseExternalID(htmlParserCtxtPtr ctxt, xmlChar **publicID) {
 	       (UPP(2) == 'B') && (UPP(3) == 'L') &&
 	       (UPP(4) == 'I') && (UPP(5) == 'C')) {
         SKIP(6);
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    htmlParseErr(ctxt, XML_ERR_SPACE_REQUIRED,
 	                 "Space required after 'PUBLIC'\n", NULL, NULL);
 	}
@@ -3199,7 +3199,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	             "htmlParseStartTag: invalid element name\n",
 		     NULL, NULL);
 	/* Dump the bogus tag like browsers do */
-	while ((IS_CHAR((unsigned int) CUR)) && (CUR != '>'))
+	while ((IS_CHAR_CH(CUR)) && (CUR != '>'))
 	    NEXT;
         return;
     }
@@ -3251,7 +3251,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
      * (S Attribute)* S?
      */
     SKIP_BLANKS;
-    while ((IS_CHAR((unsigned int) CUR)) &&
+    while ((IS_CHAR_CH(CUR)) &&
            (CUR != '>') && 
 	   ((CUR != '/') || (NXT(1) != '>'))) {
 	long cons = ctxt->nbChars;
@@ -3314,8 +3314,8 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	        xmlFree(attvalue);
 	    /* Dump the bogus attribute string up to the next blank or
 	     * the end of the tag. */
-	    while ((IS_CHAR((unsigned int) CUR)) &&
-	           !(IS_BLANK(CUR)) && (CUR != '>') &&
+	    while ((IS_CHAR_CH(CUR)) &&
+	           !(IS_BLANK_CH(CUR)) && (CUR != '>') &&
 		   ((CUR != '/') || (NXT(1) != '>')))
 		NEXT;
 	}
@@ -3392,7 +3392,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
      * We should definitely be at the ending "S? '>'" part
      */
     SKIP_BLANKS;
-    if ((!IS_CHAR((unsigned int) CUR)) || (CUR != '>')) {
+    if ((!IS_CHAR_CH(CUR)) || (CUR != '>')) {
         htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
 	             "End tag : expected '>'\n", NULL, NULL);
     } else
@@ -3743,7 +3743,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
      */
     currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
-    while (IS_CHAR((unsigned int) CUR)) {
+    while (IS_CHAR_CH(CUR)) {
 	oldptr = ctxt->input->cur;
 	htmlParseContent(ctxt);
 	if (oldptr==ctxt->input->cur) break;
@@ -3760,7 +3760,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
        node_info.node = ctxt->node;
        xmlParserAddNodeInfo(ctxt, &node_info);
     }
-    if (!IS_CHAR((unsigned int) CUR)) {
+    if (!IS_CHAR_CH(CUR)) {
 	htmlAutoCloseOnEnd(ctxt);
     }
 
@@ -4335,7 +4335,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		 * Very first chars read from the document flow.
 		 */
 		cur = in->cur[0];
-		if (IS_BLANK(cur)) {
+		if (IS_BLANK_CH(cur)) {
 		    SKIP_BLANKS;
 		    if (in->buf == NULL)
 			avail = in->length - (in->cur - in->base);
@@ -4467,7 +4467,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if (avail < 1)
 		    goto done;
 		cur = in->cur[0];
-		if (IS_BLANK(cur)) {
+		if (IS_BLANK_CH(cur)) {
 		    htmlParseCharData(ctxt);
 		    goto done;
 		}
@@ -4623,7 +4623,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    cur = in->cur[0];
 		    if ((cur != '<') && (cur != '&')) {
 			if (ctxt->sax != NULL) {
-			    if (IS_BLANK(cur)) {
+			    if (IS_BLANK_CH(cur)) {
 				if (ctxt->sax->ignorableWhitespace != NULL)
 				    ctxt->sax->ignorableWhitespace(
 					    ctxt->userData, &cur, 1);

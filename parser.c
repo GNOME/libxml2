@@ -1284,7 +1284,7 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 	 * if we are in the document content, go really fast
 	 */
 	cur = ctxt->input->cur;
-	while (IS_BLANK(*cur)) {
+	while (IS_BLANK_CH(*cur)) {
 	    if (*cur == '\n') {
 		ctxt->input->line++; ctxt->input->col = 1;
 	    }
@@ -1687,7 +1687,7 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 	     */
 	    if ((ctxt->external == 0) && (ctxt->inputNr == 1))
 		return;
-	    if (IS_BLANK(NXT(1)) || NXT(1) == 0)
+	    if (IS_BLANK_CH(NXT(1)) || NXT(1) == 0)
 		return;
             break;
         case XML_PARSER_IGNORE:
@@ -1774,7 +1774,8 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		    }
 
 		    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
-			(memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK(NXT(5)))) {
+			(memcmp(CUR_PTR, "<?xml", 5) == 0) && 
+				(IS_BLANK_CH(NXT(5)))) {
 			xmlParseTextDecl(ctxt);
 		    }
 		} else {
@@ -2500,7 +2501,7 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
      * Check that the string is made of blanks
      */
     for (i = 0;i < len;i++)
-        if (!(IS_BLANK(str[i]))) return(0);
+        if (!(IS_BLANK_CH(str[i]))) return(0);
 
     /*
      * Look if the element is mixed content in the DTD if available
@@ -2785,7 +2786,7 @@ xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
     	++in;
 	++cmp;
     }
-    if (*cmp == 0 && (*in == '>' || IS_BLANK (*in))) {
+    if (*cmp == 0 && (*in == '>' || IS_BLANK_CH (*in))) {
     	/* success */
 	ctxt->input->cur = in;
 	return (const xmlChar*) 1;
@@ -3475,7 +3476,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     }
     ctxt->instate = XML_PARSER_PUBLIC_LITERAL;
     cur = CUR;
-    while ((IS_PUBIDCHAR(cur)) && (cur != stop)) { /* checked */
+    while ((IS_PUBIDCHAR_CH(cur)) && (cur != stop)) { /* checked */
 	if (len + 1 >= size) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
@@ -3567,7 +3568,7 @@ get_more:
 	    if (nbchar > 0) {
 		if ((ctxt->sax->ignorableWhitespace !=
 		     ctxt->sax->characters) &&
-		    (IS_BLANK(*ctxt->input->cur))) {
+		    (IS_BLANK_CH(*ctxt->input->cur))) {
 		    const xmlChar *tmp = ctxt->input->cur;
 		    ctxt->input->cur = in;
 
@@ -3719,7 +3720,7 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
     *publicID = NULL;
     if (memcmp(CUR_PTR, "SYSTEM", 6) == 0) {
         SKIP(6);
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 	                   "Space required after 'SYSTEM'\n");
 	}
@@ -3730,7 +3731,7 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
         }
     } else if (memcmp(CUR_PTR, "PUBLIC", 6) == 0) {
         SKIP(6);
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 		    "Space required after 'PUBLIC'\n");
 	}
@@ -3743,7 +3744,7 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
 	    /*
 	     * We don't handle [83] so "S SystemLiteral" is required.
 	     */
-	    if (!IS_BLANK(CUR)) {
+	    if (!IS_BLANK_CH(CUR)) {
 		xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			"Space required after the Public Identifier\n");
 	    }
@@ -3757,9 +3758,9 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
 	    GROW;
 
 	    ptr = CUR_PTR;
-	    if (!IS_BLANK(*ptr)) return(NULL);
+	    if (!IS_BLANK_CH(*ptr)) return(NULL);
 	    
-	    while (IS_BLANK(*ptr)) ptr++; /* TODO: dangerous, fix ! */
+	    while (IS_BLANK_CH(*ptr)) ptr++; /* TODO: dangerous, fix ! */
 	    if ((*ptr != '\'') && (*ptr != '"')) return(NULL);
 	}
         SKIP_BLANKS;
@@ -3944,16 +3945,16 @@ xmlParseCatalogPI(xmlParserCtxtPtr ctxt, const xmlChar *catalog) {
     xmlChar marker;
 
     tmp = catalog;
-    while (IS_BLANK(*tmp)) tmp++;
+    while (IS_BLANK_CH(*tmp)) tmp++;
     if (xmlStrncmp(tmp, BAD_CAST"catalog", 7))
 	goto error;
     tmp += 7;
-    while (IS_BLANK(*tmp)) tmp++;
+    while (IS_BLANK_CH(*tmp)) tmp++;
     if (*tmp != '=') {
 	return;
     }
     tmp++;
-    while (IS_BLANK(*tmp)) tmp++;
+    while (IS_BLANK_CH(*tmp)) tmp++;
     marker = *tmp;
     if ((marker != '\'') && (marker != '"'))
 	goto error;
@@ -3964,7 +3965,7 @@ xmlParseCatalogPI(xmlParserCtxtPtr ctxt, const xmlChar *catalog) {
 	goto error;
     URL = xmlStrndup(base, tmp - base);
     tmp++;
-    while (IS_BLANK(*tmp)) tmp++;
+    while (IS_BLANK_CH(*tmp)) tmp++;
     if (*tmp != 0)
 	goto error;
 
@@ -4140,7 +4141,7 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
 	xmlParserInputPtr input = ctxt->input;
 	SHRINK;
 	SKIP(10);
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "Space required after '<!NOTATION'\n");
 	    return;
@@ -4152,7 +4153,7 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
 	    xmlFatalErr(ctxt, XML_ERR_NOTATION_NOT_STARTED, NULL);
 	    return;
 	}
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 		     "Space required after the NOTATION name'\n");
 	    return;
@@ -4348,14 +4349,14 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 			xmlFreeURI(uri);
 		    }
 		}
-		if ((RAW != '>') && (!IS_BLANK(CUR))) {
+		if ((RAW != '>') && (!IS_BLANK_CH(CUR))) {
 		    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 				   "Space required before 'NDATA'\n");
 		}
 		SKIP_BLANKS;
 		if (memcmp(CUR_PTR, "NDATA", 5) == 0) {
 		    SKIP(5);
-		    if (!IS_BLANK(CUR)) {
+		    if (!IS_BLANK_CH(CUR)) {
 			xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 				       "Space required after 'NDATA'\n");
 		    }
@@ -4482,7 +4483,7 @@ xmlParseDefaultDecl(xmlParserCtxtPtr ctxt, xmlChar **value) {
     if (memcmp(CUR_PTR, "#FIXED", 6) == 0) {
 	SKIP(6);
 	val = XML_ATTRIBUTE_FIXED;
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "Space required after '#FIXED'\n");
 	}
@@ -4623,7 +4624,7 @@ int
 xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
     if (memcmp(CUR_PTR, "NOTATION", 8) == 0) {
 	SKIP(8);
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "Space required after 'NOTATION'\n");
 	    return(0);
@@ -4735,7 +4736,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 	xmlParserInputPtr input = ctxt->input;
 
 	SKIP(9);
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 		                 "Space required after '<!ATTLIST'\n");
 	}
@@ -4763,7 +4764,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 		break;
 	    }
 	    GROW;
-	    if (!IS_BLANK(CUR)) {
+	    if (!IS_BLANK_CH(CUR)) {
 		xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 		        "Space required after the attribute name\n");
                 if (defaultValue != NULL)
@@ -4780,7 +4781,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 	    }
 
 	    GROW;
-	    if (!IS_BLANK(CUR)) {
+	    if (!IS_BLANK_CH(CUR)) {
 		xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			       "Space required after the attribute type\n");
                 if (defaultValue != NULL)
@@ -4802,7 +4803,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 
 	    GROW;
             if (RAW != '>') {
-		if (!IS_BLANK(CUR)) {
+		if (!IS_BLANK_CH(CUR)) {
 		    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			"Space required after the attribute default value\n");
 		    if (defaultValue != NULL)
@@ -5294,7 +5295,7 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 	xmlParserInputPtr input = ctxt->input;
 
 	SKIP(9);
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 		           "Space required after 'ELEMENT'\n");
 	}
@@ -5307,7 +5308,7 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 	}
 	while ((RAW == 0) && (ctxt->inputNr > 1))
 	    xmlPopInput(ctxt);
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "Space required after the element name\n");
 	}
@@ -5410,7 +5411,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 
 	    if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
 		xmlParseConditionalSections(ctxt);
-	    } else if (IS_BLANK(CUR)) {
+	    } else if (IS_BLANK_CH(CUR)) {
 		NEXT;
 	    } else if (RAW == '%') {
 		xmlParsePEReference(ctxt);
@@ -5576,14 +5577,14 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
     /*
      * We know that '<?xml' is here.
      */
-    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK(NXT(5)))) {
+    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK_CH(NXT(5)))) {
 	SKIP(5);
     } else {
 	xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_STARTED, NULL);
 	return;
     }
 
-    if (!IS_BLANK(CUR)) {
+    if (!IS_BLANK_CH(CUR)) {
 	xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 		       "Space needed after '<?xml'\n");
     }
@@ -5596,7 +5597,7 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
     if (version == NULL)
 	version = xmlCharStrdup(XML_DEFAULT_VERSION);
     else {
-	if (!IS_BLANK(CUR)) {
+	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 		           "Space needed here\n");
 	}
@@ -5665,14 +5666,14 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
     ctxt->external = 1;
     while (((RAW == '<') && (NXT(1) == '?')) ||
            ((RAW == '<') && (NXT(1) == '!')) ||
-	   (RAW == '%') || IS_BLANK(CUR)) {
+	   (RAW == '%') || IS_BLANK_CH(CUR)) {
 	const xmlChar *check = CUR_PTR;
 	unsigned int cons = ctxt->input->consumed;
 
 	GROW;
         if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
 	    xmlParseConditionalSections(ctxt);
-	} else if (IS_BLANK(CUR)) {
+	} else if (IS_BLANK_CH(CUR)) {
 	    NEXT;
 	} else if (RAW == '%') {
             xmlParsePEReference(ctxt);
@@ -6002,7 +6003,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    input = xmlNewEntityInputStream(ctxt, ent);
 		    xmlPushInput(ctxt, input);
 		    if ((ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY) &&
-			(memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK(NXT(5)))) {
+			(memcmp(CUR_PTR, "<?xml", 5) == 0) &&
+				(IS_BLANK_CH(NXT(5)))) {
 			xmlParseTextDecl(ctxt);
 			if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
 			    /*
@@ -6459,7 +6461,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
                         xmlPushInput(ctxt, input);
                         if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
 			    (memcmp(CUR_PTR, "<?xml", 5) == 0) &&
-			    (IS_BLANK(NXT(5)))) {
+			    (IS_BLANK_CH(NXT(5)))) {
                             xmlParseTextDecl(ctxt);
                             if (ctxt->errNo ==
                                 XML_ERR_UNSUPPORTED_ENCODING) {
@@ -6935,7 +6937,7 @@ failed:
 	GROW
 	if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
 	    break;
-	if (!IS_BLANK(RAW)) {
+	if (!IS_BLANK_CH(RAW)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "attributes construct error\n");
 	}
@@ -7276,7 +7278,7 @@ xmlParseQNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *name,
 	    ++in;
 	    ++cmp;
 	}
-	if (*cmp == 0 && (*in == '>' || IS_BLANK (*in))) {
+	if (*cmp == 0 && (*in == '>' || IS_BLANK_CH (*in))) {
 	    /* success */
 	    ctxt->input->cur = in;
 	    return((const xmlChar*) 1);
@@ -7745,7 +7747,7 @@ failed:
 	if (ctxt->input->base != base) goto base_changed;
 	if ((RAW == '>') || (((RAW == '/') && (NXT(1) == '>'))))
 	    break;
-	if (!IS_BLANK(RAW)) {
+	if (!IS_BLANK_CH(RAW)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 			   "attributes construct error\n");
 	}
@@ -8658,7 +8660,7 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
      */
     SKIP(5);
 
-    if (!IS_BLANK(RAW)) {
+    if (!IS_BLANK_CH(RAW)) {
 	xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 	               "Blank needed after '<?xml'\n");
     }
@@ -8687,7 +8689,7 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
     /*
      * We may have the encoding declaration
      */
-    if (!IS_BLANK(RAW)) {
+    if (!IS_BLANK_CH(RAW)) {
         if ((RAW == '?') && (NXT(1) == '>')) {
 	    SKIP(2);
 	    return;
@@ -8705,7 +8707,7 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
     /*
      * We may have the standalone status.
      */
-    if ((ctxt->input->encoding != NULL) && (!IS_BLANK(RAW))) {
+    if ((ctxt->input->encoding != NULL) && (!IS_BLANK_CH(RAW))) {
         if ((RAW == '?') && (NXT(1) == '>')) {
 	    SKIP(2);
 	    return;
@@ -8742,10 +8744,10 @@ void
 xmlParseMisc(xmlParserCtxtPtr ctxt) {
     while (((RAW == '<') && (NXT(1) == '?')) ||
            (memcmp(CUR_PTR, "<!--", 4) == 0) ||
-           IS_BLANK(CUR)) {
+           IS_BLANK_CH(CUR)) {
         if ((RAW == '<') && (NXT(1) == '?')) {
 	    xmlParsePI(ctxt);
-	} else if (IS_BLANK(CUR)) {
+	} else if (IS_BLANK_CH(CUR)) {
 	    NEXT;
 	} else
 	    xmlParseComment(ctxt);
@@ -8813,7 +8815,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
      * Check for the XMLDecl in the Prolog.
      */
     GROW;
-    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK(NXT(5)))) {
+    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK_CH(NXT(5)))) {
 
 	/*
 	 * Note that we will switch encoding on the fly.
@@ -8970,7 +8972,7 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
      * Check for the XMLDecl in the Prolog.
      */
     GROW;
-    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK(NXT(5)))) {
+    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK_CH(NXT(5)))) {
 
 	/*
 	 * Note that we will switch encoding on the fly.
@@ -9328,7 +9330,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    if ((ctxt->input->cur[2] == 'x') &&
 			(ctxt->input->cur[3] == 'm') &&
 			(ctxt->input->cur[4] == 'l') &&
-			(IS_BLANK(ctxt->input->cur[5]))) {
+			(IS_BLANK_CH(ctxt->input->cur[5]))) {
 			ret += 5;
 #ifdef DEBUG_PUSH
 			xmlGenericError(xmlGenericErrorContext,
@@ -10591,7 +10593,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     /*
      * Parse a possible text declaration first
      */
-    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK(NXT(5)))) {
+    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK_CH(NXT(5)))) {
 	xmlParseTextDecl(ctxt);
     }
 
@@ -10789,7 +10791,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     /*
      * Parse a possible text declaration first
      */
-    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK(NXT(5)))) {
+    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK_CH(NXT(5)))) {
 	xmlParseTextDecl(ctxt);
     }
 

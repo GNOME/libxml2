@@ -665,7 +665,7 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 		xmlChar *escaped;
 		xmlChar *tmp = value;
 
-		while (IS_BLANK(*tmp)) tmp++;
+		while (IS_BLANK_CH(*tmp)) tmp++;
 
 		escaped = xmlURIEscapeStr(tmp, BAD_CAST"@/:=?;#%&,+");
 		if (escaped != NULL) {

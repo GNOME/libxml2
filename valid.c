@@ -3512,7 +3512,7 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    cur = dup;
 	    while (*cur != 0) {
 		nam = cur;
-		while ((*cur != 0) && (!IS_BLANK(*cur))) cur++;
+		while ((*cur != 0) && (!IS_BLANK_CH(*cur))) cur++;
 		save = *cur;
 		*cur = 0;
 		ent = xmlGetDocEntity(doc, nam);
@@ -3532,7 +3532,7 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		if (save == 0)
 		    break;
 		*cur = save;
-		while (IS_BLANK(*cur)) cur++;
+		while (IS_BLANK_CH(*cur)) cur++;
 	    }
 	    xmlFree(dup);
 	    break;
@@ -5463,7 +5463,7 @@ xmlValidatePushCData(xmlValidCtxtPtr ctxt, const xmlChar *data, int len) {
 			int i;
 
 			for (i = 0;i < len;i++) {
-			    if (!IS_BLANK(data[i])) {
+			    if (!IS_BLANK_CH(data[i])) {
 				xmlErrValidNode(ctxt, state->node,
 						XML_DTD_CONTENT_MODEL,
 	   "Element %s content does not follow the DTD, Text not allowed\n",
@@ -5764,7 +5764,7 @@ child_ok:
 		    if (child->type == XML_TEXT_NODE) {
 			const xmlChar *content = child->content;
 
-			while (IS_BLANK(*content))
+			while (IS_BLANK_CH(*content))
 			    content++;
 			if (*content == 0) {
 			    xmlErrValidNode(ctxt, elem,
@@ -6070,7 +6070,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	cur = dup;
 	while (*cur != 0) {
 	    str = cur;
-	    while ((*cur != 0) && (!IS_BLANK(*cur))) cur++;
+	    while ((*cur != 0) && (!IS_BLANK_CH(*cur))) cur++;
 	    save = *cur;
 	    *cur = 0;
 	    id = xmlGetID(ctxt->doc, str);
@@ -6083,7 +6083,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	    if (save == 0)
 		break;
 	    *cur = save;
-	    while (IS_BLANK(*cur)) cur++;
+	    while (IS_BLANK_CH(*cur)) cur++;
 	}
 	xmlFree(dup);
     } else if (attr->atype == XML_ATTRIBUTE_IDREF) {
@@ -6106,7 +6106,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	cur = dup;
 	while (*cur != 0) {
 	    str = cur;
-	    while ((*cur != 0) && (!IS_BLANK(*cur))) cur++;
+	    while ((*cur != 0) && (!IS_BLANK_CH(*cur))) cur++;
 	    save = *cur;
 	    *cur = 0;
 	    id = xmlGetID(ctxt->doc, str);
@@ -6119,7 +6119,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	    if (save == 0)
 		break;
 	    *cur = save;
-	    while (IS_BLANK(*cur)) cur++;
+	    while (IS_BLANK_CH(*cur)) cur++;
 	}
 	xmlFree(dup);
     }

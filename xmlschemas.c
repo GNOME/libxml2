@@ -889,7 +889,7 @@ xmlSchemaIsBlank(xmlChar * str)
     if (str == NULL)
         return (1);
     while (*str != 0) {
-        if (!(IS_BLANK(*str)))
+        if (!(IS_BLANK_CH(*str)))
             return (0);
         str++;
     }
@@ -1269,13 +1269,13 @@ xmlGetMaxOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
     }
 
     cur = val;
-    while (IS_BLANK(*cur))
+    while (IS_BLANK_CH(*cur))
         cur++;
     while ((*cur >= '0') && (*cur <= '9')) {
         ret = ret * 10 + (*cur - '0');
         cur++;
     }
-    while (IS_BLANK(*cur))
+    while (IS_BLANK_CH(*cur))
         cur++;
     if (*cur != 0) {
         xmlSchemaPErr(ctxt, node, XML_SCHEMAP_INVALID_MAXOCCURS,
@@ -1307,13 +1307,13 @@ xmlGetMinOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
         return (1);
 
     cur = val;
-    while (IS_BLANK(*cur))
+    while (IS_BLANK_CH(*cur))
         cur++;
     while ((*cur >= '0') && (*cur <= '9')) {
         ret = ret * 10 + (*cur - '0');
         cur++;
     }
-    while (IS_BLANK(*cur))
+    while (IS_BLANK_CH(*cur))
         cur++;
     if (*cur != 0) {
         xmlSchemaPErr(ctxt, node, XML_SCHEMAP_INVALID_MINOCCURS,
@@ -4549,10 +4549,10 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
         }
         cur = value;
         do {
-            while (IS_BLANK(*cur))
+            while (IS_BLANK_CH(*cur))
                 cur++;
             end = cur;
-            while ((*end != 0) && (!(IS_BLANK(*end))))
+            while ((*end != 0) && (!(IS_BLANK_CH(*end))))
                 end++;
             if (end == cur)
                 break;

@@ -52,7 +52,7 @@ xmlDebugDumpString(FILE * output, const xmlChar * str)
     for (i = 0; i < 40; i++)
         if (str[i] == 0)
             return;
-        else if (IS_BLANK(str[i]))
+        else if (IS_BLANK_CH(str[i]))
             fputc(' ', output);
         else if (str[i] >= 0x80)
             fprintf(output, "#%X", str[i]);

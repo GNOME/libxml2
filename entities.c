@@ -17,6 +17,7 @@
 #include <libxml/hash.h>
 #include <libxml/entities.h>
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
 #include <libxml/globals.h>
 
@@ -396,15 +397,6 @@ xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
 }
 
 /*
- * [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD]
- *                  | [#x10000-#x10FFFF]
- * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
- */
-#define IS_CHAR(c)							\
-    (((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) ||			\
-     (((c) >= 0x20) && ((c) != 0xFFFE) && ((c) != 0xFFFF)))
-
-/*
  * Macro used to grow the current buffer.
  */
 #define growBufferReentrant() {						\
@@ -563,7 +555,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		cur += l;
 		continue;
 	    }
-	} else if (IS_CHAR((unsigned int) *cur)) {
+	} else if (IS_BYTE_CHAR(*cur)) {
 	    char buf[11], *ptr;
 
 	    snprintf(buf, sizeof(buf), "&#%d;", *cur);

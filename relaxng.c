@@ -3363,7 +3363,7 @@ xmlRelaxNGIsBlank(xmlChar * str)
     if (str == NULL)
         return (1);
     while (*str != 0) {
-        if (!(IS_BLANK(*str)))
+        if (!(IS_BLANK_CH(*str)))
             return (0);
         str++;
     }
@@ -6669,16 +6669,16 @@ xmlRelaxNGNormExtSpace(xmlChar * value)
     if (value == NULL)
         return;
 
-    while (IS_BLANK(*cur))
+    while (IS_BLANK_CH(*cur))
         cur++;
     if (cur == start) {
         do {
-            while ((*cur != 0) && (!IS_BLANK(*cur)))
+            while ((*cur != 0) && (!IS_BLANK_CH(*cur)))
                 cur++;
             if (*cur == 0)
                 return;
             start = cur;
-            while (IS_BLANK(*cur))
+            while (IS_BLANK_CH(*cur))
                 cur++;
             if (*cur == 0) {
                 *start = 0;
@@ -6687,14 +6687,14 @@ xmlRelaxNGNormExtSpace(xmlChar * value)
         } while (1);
     } else {
         do {
-            while ((*cur != 0) && (!IS_BLANK(*cur)))
+            while ((*cur != 0) && (!IS_BLANK_CH(*cur)))
                 *start++ = *cur++;
             if (*cur == 0) {
                 *start = 0;
                 return;
             }
             /* don't try to normalize the inner spaces */
-            while (IS_BLANK(*cur))
+            while (IS_BLANK_CH(*cur))
                 cur++;
             if (*cur == 0) {
                 *start = 0;
@@ -8100,7 +8100,7 @@ xmlRelaxNGValidatePushCData(xmlRelaxNGValidCtxtPtr ctxt,
 #endif
 
     while (*data != 0) {
-        if (!IS_BLANK(*data))
+        if (!IS_BLANK_CH(*data))
             break;
         data++;
     }
@@ -8279,11 +8279,11 @@ xmlRelaxNGNormalize(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar * str)
         return (NULL);
     }
     p = ret;
-    while (IS_BLANK(*str))
+    while (IS_BLANK_CH(*str))
         str++;
     while (*str != 0) {
-        if (IS_BLANK(*str)) {
-            while (IS_BLANK(*str))
+        if (IS_BLANK_CH(*str)) {
+            while (IS_BLANK_CH(*str))
                 str++;
             if (*str == 0)
                 break;
@@ -8445,7 +8445,7 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
                 if ((value != NULL) && (value[0] != 0)) {
                     int idx = 0;
 
-                    while (IS_BLANK(value[idx]))
+                    while (IS_BLANK_CH(value[idx]))
                         idx++;
                     if (value[idx] != 0)
                         ret = -1;
@@ -8556,13 +8556,13 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
                 }
                 cur = val;
                 while (*cur != 0) {
-                    if (IS_BLANK(*cur)) {
+                    if (IS_BLANK_CH(*cur)) {
                         *cur = 0;
                         cur++;
 #ifdef DEBUG_LIST
                         nb_values++;
 #endif
-                        while (IS_BLANK(*cur))
+                        while (IS_BLANK_CH(*cur))
                             *cur++ = 0;
                     } else
                         cur++;
